@@ -1,0 +1,99 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { Bed, Bath, Car, Ruler, MapPin } from "lucide-react";
+import { PropertyGallery } from "@/components/property/PropertyGallery";
+import { AgentCardCompact } from "@/components/agent/AgentCard";
+import { EnquiryForm } from "@/components/forms/EnquiryForm";
+import { Breadcrumbs } from "@/components/layout";
+import { PropertyJsonLd, BreadcrumbJsonLd } from "@/components/seo";
+import { Badge } from "@/components/ui";
+import { getPropertyBySlug } from "@/lib/services/property-service";
+import { getAgentById } from "@/lib/services/agent-service";
+import { propertyTitle, propertyDescription, absoluteUrl } from "@/lib/utils/seo";
+import { SITE_NAME } from "@/lib/constants";
+
+interface RentDetailPageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: RentDetailPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const property = await getPropertyBySlug(slug);
+  if (!property) return { title: "Property Not Found" };
+  return {
+    title: propertyTitle(property),
+    description: propertyDescription(property),
+    openGraph: {
+      title: propertyTitle(property),
+      description: propertyDescription(property),
+      images: property.images.map((img) => ({ url: absoluteUrl(img.url) })),
+    },
+  };
+}
+
+export default async function RentDetailPage({ params }: RentDetailPageProps) {
+  const { slug } = await params;
+  const property = await getPropertyBySlug(slug);
+  if (!property) notFound();
+
+  const agent = await getAgentById(property.agentId);
+
+  return (
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+      <PropertyJsonLd property={property} />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Rent", url: "/rent" },
+          { name: property.address.street, url: `/rent/${property.slug}` },
+        ]}
+      />
+      <Breadcrumbs
+        items={[
+          { label: "Rent", href: "/rent" },
+          { label: property.address.street },
+        ]}
+      />
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
+        <div className="lg:col-span-2 space-y-6">
+          <PropertyGallery images={property.images} address={property.address.full} />
+          <div>
+            <Badge variant="accent">For Rent</Badge>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-2">
+              {property.price.display}
+            </h1>
+            <p className="text-lg text-gray-600 flex items-center gap-1 mt-1">
+              <MapPin className="w-5 h-5" /> {property.address.full}
+            </p>
+          </div>
+          <div className="flex items-center gap-6 py-4 border-y border-gray-200">
+            <span className="flex items-center gap-2 text-gray-700"><Bed className="w-5 h-5" /><span className="text-sm font-medium">{property.features.bedrooms} Beds</span></span>
+            <span className="flex items-center gap-2 text-gray-700"><Bath className="w-5 h-5" /><span className="text-sm font-medium">{property.features.bathrooms} Baths</span></span>
+            <span className="flex items-center gap-2 text-gray-700"><Car className="w-5 h-5" /><span className="text-sm font-medium">{property.features.carSpaces} Cars</span></span>
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-gray-900 mb-3">About This Property</h2>
+            <p className="text-gray-600 leading-relaxed whitespace-pre-line">{property.description}</p>
+          </div>
+        </div>
+        <div className="space-y-6">
+          {agent && (
+            <div className="rounded-xl border border-gray-200 bg-white p-4">
+              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Property Manager</h3>
+              <AgentCardCompact agent={agent} />
+            </div>
+          )}
+          <div className="rounded-xl border border-gray-200 bg-white p-6">
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Enquire About This Rental</h3>
+            <EnquiryForm
+              propertyId={property.id}
+              agentId={property.agentId}
+              agencyId={property.agencyId}
+              defaultMessage={`Hi, I'm interested in renting ${property.address.full}.`}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
