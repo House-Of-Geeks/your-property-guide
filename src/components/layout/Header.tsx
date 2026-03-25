@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { Menu, X, Search, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui";
@@ -32,16 +33,15 @@ export function Header() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg gradient-brand flex items-center justify-center">
-              <svg viewBox="0 0 24 24" className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                <polyline points="9 22 9 12 15 12 15 22" />
-              </svg>
-            </div>
-            <span className="font-bold text-lg hidden sm:block">
-              <span className="gradient-brand-text">Your Property Guide</span>
-            </span>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/images/YPG Logo.png"
+              alt="Your Property Guide"
+              width={160}
+              height={60}
+              className="h-12 w-auto"
+              priority
+            />
           </Link>
 
           {/* Desktop Nav */}
