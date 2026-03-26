@@ -9,9 +9,6 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    // DATABASE_URL  → Prisma Accelerate URL (connection pooling for Vercel serverless)
-    // DIRECT_URL    → Direct Railway Postgres URL (used by Prisma for migrations)
     url: process.env["DATABASE_URL"],
-    directUrl: process.env["DIRECT_URL"],
   },
 });
