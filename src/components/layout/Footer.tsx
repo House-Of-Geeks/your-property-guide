@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { SUBURBS } from "@/lib/constants";
 
 const FOOTER_LINKS = {
@@ -30,14 +31,14 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="col-span-2 md:col-span-4 lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg gradient-brand flex items-center justify-center">
-                <svg viewBox="0 0 24 24" className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                  <polyline points="9 22 9 12 15 12 15 22" />
-                </svg>
-              </div>
-              <span className="font-bold text-white">Your Property Guide</span>
+            <Link href="/" className="flex items-center mb-4">
+              <Image
+                src="/images/YPG Logo.png"
+                alt="Your Property Guide"
+                width={160}
+                height={60}
+                className="h-12 w-auto brightness-0 invert"
+              />
             </Link>
             <p className="text-sm text-gray-400 mb-4">
               Your local Moreton Bay property experts. Find homes for sale, rent, and off-market opportunities.
