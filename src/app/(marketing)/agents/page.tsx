@@ -6,7 +6,7 @@ import { getAgents } from "@/lib/services/agent-service";
 import { SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Find a Real Estate Agent | ${SITE_NAME}`,
+  title: `Real Estate Agents in Moreton Bay | ${SITE_NAME}`,
   description: "Browse our team of experienced local real estate agents across the Moreton Bay region.",
 };
 
@@ -19,7 +19,7 @@ export default async function AgentsPage() {
       <Breadcrumbs items={[{ label: "Agents" }]} />
 
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Real Estate Agents</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Real Estate Agents in Moreton Bay</h1>
         <p className="text-gray-500 mt-1">
           {agents.length} agents serving the Moreton Bay region
         </p>

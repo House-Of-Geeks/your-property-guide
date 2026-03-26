@@ -36,7 +36,7 @@ export default async function SoldPage({ searchParams }: SoldPageProps) {
       <Breadcrumbs items={[{ label: "Sold" }]} />
 
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Recently Sold</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Recently Sold in Moreton Bay</h1>
         <p className="text-gray-500 mt-1">
           {properties.length} sold {properties.length === 1 ? "property" : "properties"} in Moreton Bay
         </p>

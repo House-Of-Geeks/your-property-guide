@@ -51,6 +51,8 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
         {/* Description */}
         <div className="mt-6 max-w-3xl">
+          <h1 className="text-3xl font-bold text-gray-900 mb-1">{suburb.name} Real Estate</h1>
+          <p className="text-gray-500 mb-4">{suburb.name}, {suburb.state} {suburb.postcode} · {suburb.region}</p>
           <h2 className="text-2xl font-bold text-gray-900 mb-3">About {suburb.name}</h2>
           <p className="text-gray-600 leading-relaxed">{suburb.description}</p>
         </div>
@@ -132,11 +134,18 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
               <h2 className="text-2xl font-bold text-gray-900">
                 Properties in {suburb.name}
               </h2>
-              <Link href={`/buy?suburb=${suburb.slug}`}>
-                <Button variant="outline" size="sm">
-                  View All <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
+              <div className="flex gap-2">
+                <Link href={`/suburbs/${suburb.slug}/buy`}>
+                  <Button variant="outline" size="sm">
+                    For Sale <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+                <Link href={`/suburbs/${suburb.slug}/rent`}>
+                  <Button variant="outline" size="sm">
+                    For Rent <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
             </div>
             <PropertyGrid properties={properties} />
           </div>

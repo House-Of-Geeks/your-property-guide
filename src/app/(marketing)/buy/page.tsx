@@ -37,7 +37,7 @@ export default async function BuyPage({ searchParams }: BuyPageProps) {
       <Breadcrumbs items={[{ label: "Buy" }]} />
 
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Properties for Sale</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Properties for Sale in Moreton Bay</h1>
         <p className="text-gray-500 mt-1">
           {properties.length} {properties.length === 1 ? "property" : "properties"} found in Moreton Bay
         </p>

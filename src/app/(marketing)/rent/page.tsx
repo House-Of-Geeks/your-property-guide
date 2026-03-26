@@ -36,7 +36,7 @@ export default async function RentPage({ searchParams }: RentPageProps) {
       <Breadcrumbs items={[{ label: "Rent" }]} />
 
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Properties for Rent</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Properties for Rent in Moreton Bay</h1>
         <p className="text-gray-500 mt-1">
           {properties.length} rental {properties.length === 1 ? "property" : "properties"} in Moreton Bay
         </p>

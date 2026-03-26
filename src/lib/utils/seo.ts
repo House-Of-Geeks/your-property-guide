@@ -18,7 +18,23 @@ export function propertyDescription(property: Property): string {
 }
 
 export function suburbTitle(suburb: Suburb): string {
-  return `${suburb.name} ${suburb.state} ${suburb.postcode} - Real Estate & Property Market | ${SITE_NAME}`;
+  return `${suburb.name} Real Estate & Property Market ${suburb.state} ${suburb.postcode} | ${SITE_NAME}`;
+}
+
+export function suburbBuyTitle(suburb: Suburb): string {
+  return `Houses for Sale in ${suburb.name} ${suburb.state} ${suburb.postcode} | ${SITE_NAME}`;
+}
+
+export function suburbRentTitle(suburb: Suburb): string {
+  return `Houses for Rent in ${suburb.name} ${suburb.state} ${suburb.postcode} | ${SITE_NAME}`;
+}
+
+export function suburbBuyDescription(suburb: Suburb): string {
+  return `Browse properties for sale in ${suburb.name} ${suburb.postcode}. Median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}. View listings and enquire today.`;
+}
+
+export function suburbRentDescription(suburb: Suburb): string {
+  return `Find rental properties in ${suburb.name} ${suburb.postcode}. Median rent ${suburb.stats.medianRentHouse}/wk. Browse available homes and enquire today.`;
 }
 
 export function suburbDescription(suburb: Suburb): string {

@@ -6,7 +6,7 @@ import { getHouseAndLandPackages } from "@/lib/services/house-and-land-service";
 import { SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `House & Land Packages | ${SITE_NAME}`,
+  title: `House & Land Packages in Moreton Bay | ${SITE_NAME}`,
   description:
     "Browse house and land packages in the Moreton Bay region. New homes from top builders at competitive prices.",
 };
@@ -20,7 +20,7 @@ export default async function HouseAndLandPage() {
       <Breadcrumbs items={[{ label: "House & Land" }]} />
 
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">House & Land Packages</h1>
+        <h1 className="text-3xl font-bold text-gray-900">House & Land Packages in Moreton Bay</h1>
         <p className="text-gray-500 mt-1">
           {packages.length} new home packages available in the Moreton Bay region
         </p>
