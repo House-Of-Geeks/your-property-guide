@@ -90,6 +90,9 @@ export function Footer() {
             <Link href="/contact" className="text-sm text-gray-400 hover:text-primary transition-colors">
               Contact
             </Link>
+            <Link href="/sitemap.xml" className="text-sm text-gray-400 hover:text-primary transition-colors">
+              Sitemap
+            </Link>
           </div>
         </div>
       </div>
