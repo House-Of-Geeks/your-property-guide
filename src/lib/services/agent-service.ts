@@ -1,6 +1,6 @@
 import type { Agent, Agency } from "@/types";
 import { db } from "@/lib/db";
-import type { Agent as DbAgent, Agency as DbAgency } from "@/generated/prisma";
+import type { Agent as DbAgent, Agency as DbAgency } from "@/generated/prisma/client";
 
 function toAgent(a: DbAgent): Agent {
   return {

@@ -1,6 +1,6 @@
 import type { HouseAndLandPackage } from "@/types";
 import { db } from "@/lib/db";
-import type { HouseAndLandPackage as DbPackage, HouseAndLand_Image } from "@/generated/prisma";
+import type { HouseAndLandPackage as DbPackage, HouseAndLand_Image } from "@/generated/prisma/client";
 
 type DbPackageWithImages = DbPackage & { images: HouseAndLand_Image[] };
 

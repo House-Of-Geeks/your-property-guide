@@ -1,4 +1,6 @@
-import { PrismaClient } from "../src/generated/prisma";
+import "dotenv/config";
+import { PrismaClient } from "../src/generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { agencies } from "../src/lib/data/agencies";
 import { agents } from "../src/lib/data/agents";
 import { suburbs } from "../src/lib/data/suburbs";
@@ -6,7 +8,8 @@ import { properties } from "../src/lib/data/properties";
 import { houseAndLandPackages } from "../src/lib/data/house-and-land";
 import { blogPosts } from "../src/lib/data/blogs";
 
-const prisma = new PrismaClient();
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+const prisma = new PrismaClient({ adapter });
 
 // The data files use short slugs like "burpengary" but properties/packages
 // reference compound slugs like "burpengary-qld-4505". Derive the compound

@@ -1,6 +1,6 @@
 import type { Suburb } from "@/types";
 import { db } from "@/lib/db";
-import type { Suburb as DbSuburb, School as DbSchool } from "@/generated/prisma";
+import type { Suburb as DbSuburb, School as DbSchool } from "@/generated/prisma/client";
 
 type DbSuburbWithSchools = DbSuburb & { schools: DbSchool[] };
 

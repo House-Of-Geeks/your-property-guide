@@ -1,6 +1,6 @@
 import type { BlogPost } from "@/types";
 import { db } from "@/lib/db";
-import type { BlogPost as DbBlogPost } from "@/generated/prisma";
+import type { BlogPost as DbBlogPost } from "@/generated/prisma/client";
 
 function toBlogPost(p: DbBlogPost): BlogPost {
   return {

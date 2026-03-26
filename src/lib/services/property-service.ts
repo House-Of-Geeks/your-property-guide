@@ -1,6 +1,6 @@
 import type { Property, PropertySearchParams, ListingType } from "@/types";
 import { db } from "@/lib/db";
-import type { Property as DbProperty, Property_Image } from "@/generated/prisma";
+import type { Property as DbProperty, Property_Image } from "@/generated/prisma/client";
 
 type DbPropertyWithImages = DbProperty & { images: Property_Image[] };
 
