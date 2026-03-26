@@ -26,7 +26,7 @@ const FOOTER_LINKS = {
 
 export function Footer() {
   return (
-    <footer className="bg-primary-darker text-purple-200">
+    <footer className="bg-white text-gray-700 border-t-4 border-t-primary">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
           {/* Brand */}
@@ -37,10 +37,10 @@ export function Footer() {
                 alt="Your Property Guide"
                 width={160}
                 height={60}
-                className="h-12 w-auto brightness-0 invert"
+                className="h-12 w-auto"
               />
             </Link>
-            <p className="text-sm text-purple-300 mb-4">
+            <p className="text-sm text-gray-500 mb-4">
               Your local Moreton Bay property experts. Find homes for sale, rent, and off-market opportunities.
             </p>
           </div>
@@ -48,11 +48,11 @@ export function Footer() {
           {/* Link columns */}
           {Object.entries(FOOTER_LINKS).map(([heading, links]) => (
             <div key={heading}>
-              <h3 className="text-sm font-semibold text-white mb-3">{heading}</h3>
+              <h3 className="text-sm font-semibold text-gray-900 mb-3">{heading}</h3>
               <ul className="space-y-2">
                 {links.map((link) => (
                   <li key={link.href}>
-                    <Link href={link.href} className="text-sm text-purple-300 hover:text-white transition-colors">
+                    <Link href={link.href} className="text-sm text-gray-500 hover:text-primary transition-colors">
                       {link.label}
                     </Link>
                   </li>
@@ -63,13 +63,13 @@ export function Footer() {
 
           {/* Suburbs */}
           <div>
-            <h3 className="text-sm font-semibold text-white mb-3">Suburbs</h3>
+            <h3 className="text-sm font-semibold text-gray-900 mb-3">Suburbs</h3>
             <ul className="space-y-2">
               {SUBURBS.map((suburb) => (
                 <li key={suburb.slug}>
                   <Link
                     href={`/suburbs/${suburb.slug}`}
-                    className="text-sm text-purple-300 hover:text-white transition-colors"
+                    className="text-sm text-gray-500 hover:text-primary transition-colors"
                   >
                     {suburb.name}
                   </Link>
@@ -79,15 +79,15 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-primary-dark flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-purple-400">
+        <div className="mt-12 pt-8 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-gray-400">
             &copy; {new Date().getFullYear()} Your Property Guide. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <Link href="/privacy" className="text-sm text-purple-400 hover:text-white transition-colors">
+            <Link href="/privacy" className="text-sm text-gray-400 hover:text-primary transition-colors">
               Privacy
             </Link>
-            <Link href="/contact" className="text-sm text-purple-400 hover:text-white transition-colors">
+            <Link href="/contact" className="text-sm text-gray-400 hover:text-primary transition-colors">
               Contact
             </Link>
           </div>
