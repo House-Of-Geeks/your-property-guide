@@ -26,7 +26,7 @@ const FOOTER_LINKS = {
 
 export function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300">
+    <footer className="bg-primary-darker text-purple-200">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
           {/* Brand */}
@@ -40,7 +40,7 @@ export function Footer() {
                 className="h-12 w-auto brightness-0 invert"
               />
             </Link>
-            <p className="text-sm text-gray-400 mb-4">
+            <p className="text-sm text-purple-300 mb-4">
               Your local Moreton Bay property experts. Find homes for sale, rent, and off-market opportunities.
             </p>
           </div>
@@ -52,7 +52,7 @@ export function Footer() {
               <ul className="space-y-2">
                 {links.map((link) => (
                   <li key={link.href}>
-                    <Link href={link.href} className="text-sm text-gray-400 hover:text-white transition-colors">
+                    <Link href={link.href} className="text-sm text-purple-300 hover:text-white transition-colors">
                       {link.label}
                     </Link>
                   </li>
@@ -69,7 +69,7 @@ export function Footer() {
                 <li key={suburb.slug}>
                   <Link
                     href={`/suburbs/${suburb.slug}`}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                    className="text-sm text-purple-300 hover:text-white transition-colors"
                   >
                     {suburb.name}
                   </Link>
@@ -79,15 +79,15 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-gray-500">
+        <div className="mt-12 pt-8 border-t border-primary-dark flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-purple-400">
             &copy; {new Date().getFullYear()} Your Property Guide. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <Link href="/privacy" className="text-sm text-gray-500 hover:text-gray-300">
+            <Link href="/privacy" className="text-sm text-purple-400 hover:text-white transition-colors">
               Privacy
             </Link>
-            <Link href="/contact" className="text-sm text-gray-500 hover:text-gray-300">
+            <Link href="/contact" className="text-sm text-purple-400 hover:text-white transition-colors">
               Contact
             </Link>
           </div>
