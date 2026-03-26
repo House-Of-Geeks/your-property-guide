@@ -1,0 +1,274 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Agency
+// ---------------------------------------------------------------------------
+model Agency {
+  id              String   @id
+  slug            String   @unique
+  name            String
+  logo            String
+  description     String
+  phone           String
+  email           String
+  website         String
+  addressStreet   String
+  addressSuburb   String
+  addressState    String
+  addressPostcode String
+  addressFull     String
+  suburbs         String[]
+  primaryColor    String?
+
+  agents     Agent[]
+  properties Property[]
+  packages   HouseAndLandPackage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ---------------------------------------------------------------------------
+// Agent
+// ---------------------------------------------------------------------------
+model Agent {
+  id              String   @id
+  slug            String   @unique
+  firstName       String
+  lastName        String
+  fullName        String
+  title           String
+  phone           String
+  email           String
+  bio             String
+  image           String
+  agencyId        String
+  suburbs         String[]
+  specialties     String[]
+  yearsExperience Int
+  propertiesSold  Int      @default(0)
+  reviewCount     Int      @default(0)
+  averageRating   Float    @default(0)
+  isFeatured      Boolean  @default(false)
+
+  agency     Agency              @relation(fields: [agencyId], references: [id])
+  properties Property[]
+  packages   HouseAndLandPackage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([agencyId])
+  @@index([isFeatured])
+}
+
+// ---------------------------------------------------------------------------
+// Property
+// ---------------------------------------------------------------------------
+model Property {
+  id              String    @id
+  slug            String    @unique
+  // listingType: "buy" | "rent" | "sold" | "off-market" | "house-and-land"
+  listingType     String
+  // propertyType: "house" | "townhouse" | "apartment" | "unit" | "land" | "acreage" | "villa"
+  propertyType    String
+  // status: "active" | "under-contract" | "sold" | "off-market"
+  status          String
+  title           String
+  addressStreet   String
+  addressSuburb   String
+  addressState    String    @default("QLD")
+  addressPostcode String
+  addressFull     String
+  priceDisplay    String
+  priceValue      Int?
+  priceIsRange    Boolean   @default(false)
+  priceMin        Int?
+  priceMax        Int?
+  priceRentPerWeek Int?
+  bedrooms        Int
+  bathrooms       Int
+  carSpaces       Int
+  landSize        Int?
+  buildingSize    Int?
+  description     String
+  agentId         String
+  agencyId        String
+  suburbSlug      String
+  inspectionTimes String[]
+  auctionDate     DateTime?
+  dateAdded       DateTime
+  dateSold        DateTime?
+  soldPrice       Int?
+  isOffMarket     Boolean   @default(false)
+  isFeatured      Boolean   @default(false)
+
+  images Property_Image[]
+  agent  Agent    @relation(fields: [agentId], references: [id])
+  agency Agency   @relation(fields: [agencyId], references: [id])
+  suburb Suburb   @relation(fields: [suburbSlug], references: [slug])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Indexes for Australia-scale filtering and sorting
+  @@index([listingType, status])
+  @@index([suburbSlug])
+  @@index([addressState])
+  @@index([agentId])
+  @@index([agencyId])
+  @@index([priceValue])
+  @@index([bedrooms])
+  @@index([isFeatured])
+  @@index([dateAdded])
+}
+
+model Property_Image {
+  id         String   @id @default(cuid())
+  url        String
+  alt        String
+  width      Int
+  height     Int
+  sortOrder  Int      @default(0)
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId])
+}
+
+// ---------------------------------------------------------------------------
+// Suburb
+// ---------------------------------------------------------------------------
+model Suburb {
+  id               String   @id
+  slug             String   @unique
+  name             String
+  postcode         String
+  state            String
+  region           String
+  description      String
+  heroImage        String
+  // Stats
+  medianHousePrice  Int
+  medianUnitPrice   Int
+  medianRentHouse   Int
+  medianRentUnit    Int
+  annualGrowthHouse Float
+  annualGrowthUnit  Float
+  daysOnMarket      Int
+  population        Int
+  medianAge         Int
+  ownerOccupied     Float
+  renterOccupied    Float
+  // Arrays
+  amenities      String[]
+  transportLinks String[]
+  nearbySuburbs  String[]
+
+  schools    School[]
+  properties Property[]
+  packages   HouseAndLandPackage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([state])
+  @@index([postcode])
+  @@index([region])
+}
+
+model School {
+  id       String @id @default(cuid())
+  name     String
+  // type: "primary" | "secondary" | "combined" | "special"
+  type     String
+  // sector: "government" | "catholic" | "independent"
+  sector   String
+  distance Float
+  suburbId String
+  suburb   Suburb @relation(fields: [suburbId], references: [id], onDelete: Cascade)
+
+  @@index([suburbId])
+}
+
+// ---------------------------------------------------------------------------
+// Blog
+// ---------------------------------------------------------------------------
+model BlogPost {
+  id          String    @id
+  slug        String    @unique
+  title       String
+  excerpt     String
+  content     String
+  coverImage  String
+  authorName  String
+  authorImage String
+  category    String
+  tags        String[]
+  publishedAt DateTime
+  updatedAt   DateTime?
+  readingTime Int
+
+  createdAt DateTime @default(now())
+
+  @@index([category])
+  @@index([publishedAt])
+}
+
+// ---------------------------------------------------------------------------
+// House & Land
+// ---------------------------------------------------------------------------
+model HouseAndLandPackage {
+  id             String   @id
+  slug           String   @unique
+  title          String
+  builder        String
+  estate         String
+  suburb         String
+  suburbSlug     String
+  priceDisplay   String
+  priceValue     Int
+  bedrooms       Int
+  bathrooms      Int
+  carSpaces      Int
+  landSize       Int
+  buildingSize   Int
+  description    String
+  floorPlanImage String?
+  agentId        String
+  agencyId       String
+  inclusions     String[]
+  isNew          Boolean  @default(false)
+  dateAdded      DateTime
+
+  images    HouseAndLand_Image[]
+  agent     Agent  @relation(fields: [agentId], references: [id])
+  agency    Agency @relation(fields: [agencyId], references: [id])
+  suburbRef Suburb @relation(fields: [suburbSlug], references: [slug])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([suburbSlug])
+  @@index([priceValue])
+  @@index([builder])
+  @@index([agentId])
+}
+
+model HouseAndLand_Image {
+  id        String              @id @default(cuid())
+  url       String
+  alt       String
+  sortOrder Int                 @default(0)
+  packageId String
+  package   HouseAndLandPackage @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  @@index([packageId])
+}
