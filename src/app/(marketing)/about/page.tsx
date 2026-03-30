@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, OrganizationJsonLd } from "@/components/seo";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 import { Home, Users, TrendingUp, Shield } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: `About Us | ${SITE_NAME}`,
+  title: "About Us",
   description: "Your Property Guide is the Moreton Bay region's dedicated property portal. Learn about our mission to connect buyers with local agents.",
+  alternates: { canonical: `${SITE_URL}/about` },
+  openGraph: { title: "About Us", description: "Your Property Guide is the Moreton Bay region's dedicated property portal.", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function AboutPage() {

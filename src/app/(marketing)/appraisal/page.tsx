@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import { AppraisalForm } from "@/components/forms/AppraisalForm";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 import { CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: `Free Property Appraisal | ${SITE_NAME}`,
-  description:
-    "Request a free property appraisal from a local Moreton Bay real estate agent. No obligation, expert advice on your property's value.",
+  title: "Free Property Appraisal",
+  description: "Request a free property appraisal from a local Moreton Bay real estate agent. No obligation, expert advice on your property's value.",
+  alternates: { canonical: `${SITE_URL}/appraisal` },
+  openGraph: { title: "Free Property Appraisal", description: "Request a free property appraisal from a local Moreton Bay real estate agent.", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function AppraisalPage() {

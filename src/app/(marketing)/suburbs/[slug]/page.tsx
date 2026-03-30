@@ -12,7 +12,7 @@ import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getPropertiesBySuburb } from "@/lib/services/property-service";
 import { suburbTitle, suburbDescription } from "@/lib/utils/seo";
 import { formatPriceFull } from "@/lib/utils/format";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 interface SuburbDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -25,6 +25,9 @@ export async function generateMetadata({ params }: SuburbDetailPageProps): Promi
   return {
     title: suburbTitle(suburb),
     description: suburbDescription(suburb),
+    alternates: { canonical: `${SITE_URL}/suburbs/${slug}` },
+    openGraph: { title: suburbTitle(suburb), description: suburbDescription(suburb), type: "website" },
+    twitter: { card: "summary_large_image" },
   };
 }
 

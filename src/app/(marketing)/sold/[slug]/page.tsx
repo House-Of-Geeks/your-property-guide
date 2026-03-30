@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Bed, Bath, Car, MapPin, DollarSign, Calendar } from "lucide-react";
+import { Bed, Bath, Car, MapPin, Calendar } from "lucide-react";
 import { PropertyGallery } from "@/components/property/PropertyGallery";
 import { Breadcrumbs } from "@/components/layout";
+import { BreadcrumbJsonLd } from "@/components/seo";
 import { Badge } from "@/components/ui";
 import { getPropertyBySlug } from "@/lib/services/property-service";
 import { formatPriceFull, formatDate } from "@/lib/utils/format";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 interface SoldDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -16,9 +17,17 @@ export async function generateMetadata({ params }: SoldDetailPageProps): Promise
   const { slug } = await params;
   const property = await getPropertyBySlug(slug);
   if (!property) return { title: "Property Not Found" };
+  const description = `${property.address.full} sold for ${property.soldPrice ? formatPriceFull(property.soldPrice) : "undisclosed price"}.`;
   return {
-    title: `Sold - ${property.address.full} | ${SITE_NAME}`,
-    description: `${property.address.full} sold for ${property.soldPrice ? formatPriceFull(property.soldPrice) : "undisclosed price"}.`,
+    title: `Sold - ${property.address.full}`,
+    description,
+    alternates: { canonical: `${SITE_URL}/sold/${slug}` },
+    openGraph: {
+      title: `Sold - ${property.address.full}`,
+      description,
+      type: "website",
+    },
+    twitter: { card: "summary_large_image" },
   };
 }
 
@@ -29,6 +38,12 @@ export default async function SoldDetailPage({ params }: SoldDetailPageProps) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Sold", url: "/sold" },
+          { name: property.address.street, url: `/sold/${property.slug}` },
+        ]}
+      />
       <Breadcrumbs
         items={[
           { label: "Sold", href: "/sold" },
@@ -41,14 +56,14 @@ export default async function SoldDetailPage({ params }: SoldDetailPageProps) {
 
         <div>
           <Badge variant="success">Sold</Badge>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-2">
+            {property.address.full}
+          </h1>
           {property.soldPrice && (
-            <h1 className="text-3xl font-bold text-gray-900 mt-2">
-              {formatPriceFull(property.soldPrice)}
-            </h1>
+            <p className="text-xl font-semibold text-gray-700 flex items-center gap-1 mt-1">
+              <MapPin className="w-5 h-5" /> {formatPriceFull(property.soldPrice)}
+            </p>
           )}
-          <p className="text-lg text-gray-600 flex items-center gap-1 mt-1">
-            <MapPin className="w-5 h-5" /> {property.address.full}
-          </p>
           {property.dateSold && (
             <p className="text-sm text-gray-500 flex items-center gap-1 mt-2">
               <Calendar className="w-4 h-4" /> Sold {formatDate(property.dateSold)}

@@ -9,7 +9,7 @@ import { getBlogPostBySlug, getRelatedPosts } from "@/lib/services/blog-service"
 import { blogTitle, absoluteUrl } from "@/lib/utils/seo";
 import { formatDate } from "@/lib/utils/format";
 import { Clock, ArrowLeft } from "lucide-react";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 interface BlogDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
   return {
     title: blogTitle(post),
     description: post.excerpt,
+    alternates: { canonical: `${SITE_URL}/blog/${slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt,
@@ -29,6 +30,7 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
       images: [{ url: absoluteUrl(post.coverImage) }],
       publishedTime: post.publishedAt,
     },
+    twitter: { card: "summary_large_image" },
   };
 }
 

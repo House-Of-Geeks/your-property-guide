@@ -6,8 +6,8 @@ import { AgentCard } from "@/components/agent/AgentCard";
 import { Breadcrumbs } from "@/components/layout";
 import { AgencyJsonLd, BreadcrumbJsonLd } from "@/components/seo";
 import { getAgencyBySlug, getAgentsByAgency } from "@/lib/services/agent-service";
-import { agencyTitle } from "@/lib/utils/seo";
-import { SITE_NAME } from "@/lib/constants";
+import { agencyTitle, absoluteUrl } from "@/lib/utils/seo";
+import { SITE_URL } from "@/lib/constants";
 
 interface AgencyDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -20,6 +20,14 @@ export async function generateMetadata({ params }: AgencyDetailPageProps): Promi
   return {
     title: agencyTitle(agency),
     description: agency.description,
+    alternates: { canonical: `${SITE_URL}/agencies/${slug}` },
+    openGraph: {
+      title: agencyTitle(agency),
+      description: agency.description,
+      images: [{ url: absoluteUrl(agency.logo) }],
+      type: "website",
+    },
+    twitter: { card: "summary_large_image" },
   };
 }
 

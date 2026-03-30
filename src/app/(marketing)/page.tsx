@@ -3,7 +3,7 @@ import { HeroSearch } from "@/components/home/HeroSearch";
 import { FeaturedListings } from "@/components/home/FeaturedListings";
 import { SuburbSpotlight } from "@/components/home/SuburbSpotlight";
 import { OrganizationJsonLd } from "@/components/seo";
-import { SITE_NAME, SITE_DESCRIPTION } from "@/lib/constants";
+import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 import Link from "next/link";
 import { Button } from "@/components/ui";
 import { ArrowRight, Shield, TrendingUp, Users, Home } from "lucide-react";
@@ -11,11 +11,13 @@ import { ArrowRight, Shield, TrendingUp, Users, Home } from "lucide-react";
 export const metadata: Metadata = {
   title: `${SITE_NAME} - Find Property in Moreton Bay`,
   description: SITE_DESCRIPTION,
+  alternates: { canonical: SITE_URL },
   openGraph: {
     title: `${SITE_NAME} - Find Property in Moreton Bay`,
     description: SITE_DESCRIPTION,
     type: "website",
   },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function HomePage() {

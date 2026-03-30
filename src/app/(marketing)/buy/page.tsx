@@ -6,13 +6,15 @@ import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { PropertyCardSkeleton } from "@/components/ui";
 import { getProperties } from "@/lib/services/property-service";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 import type { PropertyType } from "@/types";
 
 export const metadata: Metadata = {
-  title: `Buy Property in Moreton Bay | ${SITE_NAME}`,
-  description:
-    "Browse houses, units, townhouses, and land for sale in Moreton Bay. Search by suburb, price, bedrooms, and more.",
+  title: "Buy Property in Moreton Bay",
+  description: "Browse houses, units, townhouses, and land for sale in Moreton Bay. Search by suburb, price, bedrooms, and more.",
+  alternates: { canonical: `${SITE_URL}/buy` },
+  openGraph: { title: "Buy Property in Moreton Bay", description: "Browse houses, units, townhouses, and land for sale in Moreton Bay. Search by suburb, price, bedrooms, and more.", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 interface BuyPageProps {

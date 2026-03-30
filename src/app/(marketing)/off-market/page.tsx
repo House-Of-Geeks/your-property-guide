@@ -5,12 +5,14 @@ import { OffMarketRegisterForm } from "@/components/forms/OffMarketRegisterForm"
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { getOffMarketProperties } from "@/lib/services/property-service";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Off-Market Properties | ${SITE_NAME}`,
-  description:
-    "Access exclusive off-market properties in Moreton Bay. Register to receive alerts for properties not listed on public portals.",
+  title: "Off-Market Properties in Moreton Bay",
+  description: "Access exclusive off-market properties in Moreton Bay. Register to receive alerts for properties not listed on public portals.",
+  alternates: { canonical: `${SITE_URL}/off-market` },
+  openGraph: { title: "Off-Market Properties in Moreton Bay", description: "Access exclusive off-market properties in Moreton Bay. Register to receive alerts for properties not listed on public portals.", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 export default async function OffMarketPage() {

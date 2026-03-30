@@ -3,11 +3,14 @@ import { AgentCard } from "@/components/agent/AgentCard";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { getAgents } from "@/lib/services/agent-service";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Real Estate Agents in Moreton Bay | ${SITE_NAME}`,
+  title: "Real Estate Agents in Moreton Bay",
   description: "Browse our team of experienced local real estate agents across the Moreton Bay region.",
+  alternates: { canonical: `${SITE_URL}/agents` },
+  openGraph: { title: "Real Estate Agents in Moreton Bay", description: "Browse our team of experienced local real estate agents across the Moreton Bay region.", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 export default async function AgentsPage() {

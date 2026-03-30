@@ -5,13 +5,15 @@ import { PropertyFilters } from "@/components/property/PropertyFilters";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { getProperties } from "@/lib/services/property-service";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 import type { PropertyType } from "@/types";
 
 export const metadata: Metadata = {
-  title: `Rent Property in Moreton Bay | ${SITE_NAME}`,
-  description:
-    "Find houses, units, and apartments for rent in Moreton Bay. Browse rental listings by suburb, price, and bedrooms.",
+  title: "Rent Property in Moreton Bay",
+  description: "Find houses, units, and apartments for rent in Moreton Bay. Browse rental listings by suburb, price, and bedrooms.",
+  alternates: { canonical: `${SITE_URL}/rent` },
+  openGraph: { title: "Rent Property in Moreton Bay", description: "Find houses, units, and apartments for rent in Moreton Bay. Browse rental listings by suburb, price, and bedrooms.", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 interface RentPageProps {

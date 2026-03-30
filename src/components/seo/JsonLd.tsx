@@ -12,20 +12,50 @@ function JsonLdScript({ data }: { data: Record<string, unknown> }) {
 
 export function OrganizationJsonLd() {
   return (
-    <JsonLdScript
-      data={{
-        "@context": "https://schema.org",
-        "@type": "RealEstateAgent",
-        name: SITE_NAME,
-        url: SITE_URL,
-        description:
-          "Find your next property in the Moreton Bay region. Browse houses, units, and land for sale and rent.",
-        areaServed: {
-          "@type": "Place",
-          name: "Moreton Bay Region, Queensland, Australia",
-        },
-      }}
-    />
+    <>
+      <JsonLdScript
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: SITE_NAME,
+          url: SITE_URL,
+          logo: `${SITE_URL}/og-image.jpg`,
+          description:
+            "Find your next property in the Moreton Bay region. Browse houses, units, and land for sale and rent.",
+          areaServed: {
+            "@type": "Place",
+            name: "Moreton Bay Region, Queensland, Australia",
+          },
+          contactPoint: {
+            "@type": "ContactPoint",
+            contactType: "customer support",
+            email: "hello@yourpropertyguide.com.au",
+            areaServed: "AU",
+            availableLanguage: "English",
+          },
+          sameAs: [
+            "https://www.facebook.com/yourpropertyguide",
+            "https://www.instagram.com/yourpropertyguide",
+          ],
+        }}
+      />
+      <JsonLdScript
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: SITE_NAME,
+          url: SITE_URL,
+          potentialAction: {
+            "@type": "SearchAction",
+            target: {
+              "@type": "EntryPoint",
+              urlTemplate: `${SITE_URL}/buy?suburb={search_term_string}`,
+            },
+            "query-input": "required name=search_term_string",
+          },
+        }}
+      />
+    </>
   );
 }
 
@@ -37,7 +67,7 @@ export function PropertyJsonLd({ property }: { property: Property }) {
         "@type": "RealEstateListing",
         name: property.title,
         description: property.description,
-        url: `${SITE_URL}/buy/${property.slug}`,
+        url: `${SITE_URL}/${property.listingType === "rent" ? "rent" : "buy"}/${property.slug}`,
         datePosted: property.dateAdded,
         image: property.images.map((img) => `${SITE_URL}${img.url}`),
         address: {

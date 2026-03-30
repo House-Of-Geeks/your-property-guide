@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui";
 import { getPropertyBySlug } from "@/lib/services/property-service";
 import { getAgentById } from "@/lib/services/agent-service";
 import { propertyTitle, propertyDescription, absoluteUrl } from "@/lib/utils/seo";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 interface RentDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -20,14 +20,19 @@ export async function generateMetadata({ params }: RentDetailPageProps): Promise
   const { slug } = await params;
   const property = await getPropertyBySlug(slug);
   if (!property) return { title: "Property Not Found" };
+  const title = propertyTitle(property);
+  const description = propertyDescription(property);
   return {
-    title: propertyTitle(property),
-    description: propertyDescription(property),
+    title,
+    description,
+    alternates: { canonical: `${SITE_URL}/rent/${property.slug}` },
     openGraph: {
-      title: propertyTitle(property),
-      description: propertyDescription(property),
-      images: property.images.map((img) => ({ url: absoluteUrl(img.url) })),
+      title,
+      description,
+      images: [{ url: absoluteUrl(property.images[0]?.url ?? "") }],
+      type: "website",
     },
+    twitter: { card: "summary_large_image" },
   };
 }
 
@@ -60,10 +65,10 @@ export default async function RentDetailPage({ params }: RentDetailPageProps) {
           <div>
             <Badge variant="accent">For Rent</Badge>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-2">
-              {property.price.display}
+              {property.address.full}
             </h1>
-            <p className="text-lg text-gray-600 flex items-center gap-1 mt-1">
-              <MapPin className="w-5 h-5" /> {property.address.full}
+            <p className="text-xl font-semibold text-gray-700 mt-1">
+              {property.price.display}
             </p>
           </div>
           <div className="flex items-center gap-6 py-4 border-y border-gray-200">

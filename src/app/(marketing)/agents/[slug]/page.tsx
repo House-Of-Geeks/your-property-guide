@@ -9,8 +9,8 @@ import { AgentJsonLd, BreadcrumbJsonLd } from "@/components/seo";
 import { Badge, Button } from "@/components/ui";
 import { getAgentBySlug, getAgencyById } from "@/lib/services/agent-service";
 import { getPropertiesByAgent } from "@/lib/services/property-service";
-import { agentTitle, agentDescription } from "@/lib/utils/seo";
-import { SITE_NAME } from "@/lib/constants";
+import { agentTitle, agentDescription, absoluteUrl } from "@/lib/utils/seo";
+import { SITE_URL } from "@/lib/constants";
 
 interface AgentProfilePageProps {
   params: Promise<{ slug: string }>;
@@ -23,6 +23,14 @@ export async function generateMetadata({ params }: AgentProfilePageProps): Promi
   return {
     title: agentTitle(agent),
     description: agentDescription(agent),
+    alternates: { canonical: `${SITE_URL}/agents/${slug}` },
+    openGraph: {
+      title: agentTitle(agent),
+      description: agentDescription(agent),
+      images: [{ url: absoluteUrl(agent.image) }],
+      type: "website",
+    },
+    twitter: { card: "summary_large_image" },
   };
 }
 

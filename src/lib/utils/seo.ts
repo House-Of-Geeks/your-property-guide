@@ -1,7 +1,5 @@
 import type { Property, Agent, Agency, BlogPost, Suburb } from "@/types";
-
-const SITE_URL = "https://yourpropertyguide.com.au";
-const SITE_NAME = "Your Property Guide";
+import { SITE_URL } from "@/lib/constants";
 
 export function absoluteUrl(path: string): string {
   return `${SITE_URL}${path}`;
@@ -9,7 +7,7 @@ export function absoluteUrl(path: string): string {
 
 export function propertyTitle(property: Property): string {
   const { bedrooms, bathrooms, carSpaces } = property.features;
-  return `${property.address.street}, ${property.address.suburb} - ${bedrooms} Bed ${bathrooms} Bath ${carSpaces} Car | ${SITE_NAME}`;
+  return `${property.address.street}, ${property.address.suburb} - ${bedrooms} Bed ${bathrooms} Bath ${carSpaces} Car`;
 }
 
 export function propertyDescription(property: Property): string {
@@ -18,15 +16,15 @@ export function propertyDescription(property: Property): string {
 }
 
 export function suburbTitle(suburb: Suburb): string {
-  return `${suburb.name} Real Estate & Property Market ${suburb.state} ${suburb.postcode} | ${SITE_NAME}`;
+  return `${suburb.name} Real Estate & Property Market ${suburb.state} ${suburb.postcode}`;
 }
 
 export function suburbBuyTitle(suburb: Suburb): string {
-  return `Houses for Sale in ${suburb.name} ${suburb.state} ${suburb.postcode} | ${SITE_NAME}`;
+  return `Houses for Sale in ${suburb.name} ${suburb.state} ${suburb.postcode}`;
 }
 
 export function suburbRentTitle(suburb: Suburb): string {
-  return `Houses for Rent in ${suburb.name} ${suburb.state} ${suburb.postcode} | ${SITE_NAME}`;
+  return `Houses for Rent in ${suburb.name} ${suburb.state} ${suburb.postcode}`;
 }
 
 export function suburbBuyDescription(suburb: Suburb): string {
@@ -42,7 +40,7 @@ export function suburbDescription(suburb: Suburb): string {
 }
 
 export function agentTitle(agent: Agent): string {
-  return `${agent.fullName} - Real Estate Agent | ${SITE_NAME}`;
+  return `${agent.fullName} - Real Estate Agent`;
 }
 
 export function agentDescription(agent: Agent): string {
@@ -50,11 +48,11 @@ export function agentDescription(agent: Agent): string {
 }
 
 export function agencyTitle(agency: Agency): string {
-  return `${agency.name} - Real Estate Agency | ${SITE_NAME}`;
+  return `${agency.name} - Real Estate Agency`;
 }
 
 export function blogTitle(post: BlogPost): string {
-  return `${post.title} | ${SITE_NAME}`;
+  return post.title;
 }
 
 function formatMetaPrice(value: number): string {

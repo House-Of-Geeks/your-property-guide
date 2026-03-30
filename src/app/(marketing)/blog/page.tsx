@@ -6,13 +6,15 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { Badge } from "@/components/ui";
 import { getBlogPosts } from "@/lib/services/blog-service";
 import { formatDate } from "@/lib/utils/format";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 import { Clock } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: `Property Blog | ${SITE_NAME}`,
-  description:
-    "Expert property insights, market updates, and buying guides for the Moreton Bay region.",
+  title: "Property Blog",
+  description: "Expert property insights, market updates, and buying guides for the Moreton Bay region.",
+  alternates: { canonical: `${SITE_URL}/blog` },
+  openGraph: { title: "Property Blog", description: "Expert property insights, market updates, and buying guides for the Moreton Bay region.", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 export default async function BlogPage() {

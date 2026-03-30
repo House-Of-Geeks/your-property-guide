@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui";
 import { getHouseAndLandBySlug } from "@/lib/services/house-and-land-service";
 import { getAgentById } from "@/lib/services/agent-service";
 import { AgentCardCompact } from "@/components/agent/AgentCard";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 interface HouseAndLandDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -18,9 +18,17 @@ export async function generateMetadata({ params }: HouseAndLandDetailPageProps):
   const { slug } = await params;
   const pkg = await getHouseAndLandBySlug(slug);
   if (!pkg) return { title: "Package Not Found" };
+  const description = `${pkg.title} in ${pkg.estate}, ${pkg.suburb}. ${pkg.features.bedrooms} bed, ${pkg.features.bathrooms} bath. ${pkg.price.display}.`;
   return {
-    title: `${pkg.title} - House & Land | ${SITE_NAME}`,
-    description: `${pkg.title} in ${pkg.estate}, ${pkg.suburb}. ${pkg.features.bedrooms} bed, ${pkg.features.bathrooms} bath. ${pkg.price.display}.`,
+    title: `${pkg.title} - House & Land`,
+    description,
+    alternates: { canonical: `${SITE_URL}/house-and-land/${slug}` },
+    openGraph: {
+      title: `${pkg.title} - House & Land`,
+      description,
+      type: "website",
+    },
+    twitter: { card: "summary_large_image" },
   };
 }
 
@@ -56,8 +64,8 @@ export default async function HouseAndLandDetailPage({ params }: HouseAndLandDet
               <Badge variant="primary">House & Land</Badge>
               {pkg.isNew && <Badge variant="accent">New</Badge>}
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{pkg.price.display}</h1>
-            <h2 className="text-lg text-gray-700 mt-1">{pkg.title}</h2>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{pkg.title}</h1>
+            <p className="text-xl font-semibold text-gray-700 mt-1">{pkg.price.display}</p>
             <p className="text-sm text-gray-500 mt-1">
               {pkg.builder} &middot; {pkg.estate}, {pkg.suburb}
             </p>

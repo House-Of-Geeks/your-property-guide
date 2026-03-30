@@ -5,13 +5,15 @@ import { PropertyFilters } from "@/components/property/PropertyFilters";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { getProperties } from "@/lib/services/property-service";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 import type { PropertyType } from "@/types";
 
 export const metadata: Metadata = {
-  title: `Sold Properties in Moreton Bay | ${SITE_NAME}`,
-  description:
-    "View recently sold properties in Moreton Bay. Research sale prices and market trends across suburbs.",
+  title: "Sold Properties in Moreton Bay",
+  description: "View recently sold properties in Moreton Bay. Research sale prices and market trends across suburbs.",
+  alternates: { canonical: `${SITE_URL}/sold` },
+  openGraph: { title: "Sold Properties in Moreton Bay", description: "View recently sold properties in Moreton Bay. Research sale prices and market trends across suburbs.", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 interface SoldPageProps {

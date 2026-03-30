@@ -3,12 +3,14 @@ import { HouseLandCard } from "@/components/property/HouseLandCard";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { getHouseAndLandPackages } from "@/lib/services/house-and-land-service";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `House & Land Packages in Moreton Bay | ${SITE_NAME}`,
-  description:
-    "Browse house and land packages in the Moreton Bay region. New homes from top builders at competitive prices.",
+  title: "House & Land Packages in Moreton Bay",
+  description: "Browse house and land packages in the Moreton Bay region. New homes from top builders at competitive prices.",
+  alternates: { canonical: `${SITE_URL}/house-and-land` },
+  openGraph: { title: "House & Land Packages in Moreton Bay", description: "Browse house and land packages in the Moreton Bay region. New homes from top builders at competitive prices.", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 export default async function HouseAndLandPage() {

@@ -6,12 +6,14 @@ import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { getSuburbs } from "@/lib/services/suburb-service";
 import { formatPrice, formatPercentage } from "@/lib/utils/format";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Explore Suburbs in Moreton Bay | ${SITE_NAME}`,
-  description:
-    "Explore suburbs in the Moreton Bay region. View median prices, growth rates, schools, and available properties.",
+  title: "Explore Suburbs in Moreton Bay",
+  description: "Explore suburbs in the Moreton Bay region. View median prices, growth rates, schools, and available properties.",
+  alternates: { canonical: `${SITE_URL}/suburbs` },
+  openGraph: { title: "Explore Suburbs in Moreton Bay", description: "Explore suburbs in the Moreton Bay region. View median prices, growth rates, schools, and available properties.", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 export default async function SuburbsPage() {

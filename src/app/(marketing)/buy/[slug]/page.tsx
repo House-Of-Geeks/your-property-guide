@@ -12,7 +12,7 @@ import { getPropertyBySlug, getPropertiesBySuburb } from "@/lib/services/propert
 import { getAgentById } from "@/lib/services/agent-service";
 import { propertyTitle, propertyDescription, absoluteUrl } from "@/lib/utils/seo";
 import { formatDate } from "@/lib/utils/format";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 interface PropertyDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -23,15 +23,19 @@ export async function generateMetadata({ params }: PropertyDetailPageProps): Pro
   const property = await getPropertyBySlug(slug);
   if (!property) return { title: "Property Not Found" };
 
+  const title = propertyTitle(property);
+  const description = propertyDescription(property);
   return {
-    title: propertyTitle(property),
-    description: propertyDescription(property),
+    title,
+    description,
+    alternates: { canonical: `${SITE_URL}/buy/${property.slug}` },
     openGraph: {
-      title: propertyTitle(property),
-      description: propertyDescription(property),
-      images: property.images.map((img) => ({ url: absoluteUrl(img.url) })),
+      title,
+      description,
+      images: [{ url: absoluteUrl(property.images[0]?.url ?? "") }],
       type: "website",
     },
+    twitter: { card: "summary_large_image" },
   };
 }
 
@@ -76,11 +80,10 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
               {property.isFeatured && <Badge variant="accent">Featured</Badge>}
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-              {property.price.display}
-            </h1>
-            <p className="text-lg text-gray-600 flex items-center gap-1 mt-1">
-              <MapPin className="w-5 h-5" />
               {property.address.full}
+            </h1>
+            <p className="text-xl font-semibold text-gray-700 mt-1">
+              {property.price.display}
             </p>
           </div>
 

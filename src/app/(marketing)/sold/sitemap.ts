@@ -6,7 +6,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const properties = await getProperties({ listingType: "sold" });
   return properties.map((p) => ({
     url: `${SITE_URL}/sold/${p.slug}`,
-    lastModified: new Date(p.dateAdded),
+    lastModified: new Date(p.dateSold ?? p.dateAdded),
     changeFrequency: "monthly" as const,
     priority: 0.6,
   }));

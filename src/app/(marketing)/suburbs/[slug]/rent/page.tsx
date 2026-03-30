@@ -9,6 +9,7 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getProperties } from "@/lib/services/property-service";
 import { suburbRentTitle, suburbRentDescription } from "@/lib/utils/seo";
+import { SITE_URL } from "@/lib/constants";
 import type { PropertyType } from "@/types";
 import { Suspense } from "react";
 
@@ -24,6 +25,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: suburbRentTitle(suburb),
     description: suburbRentDescription(suburb),
+    alternates: { canonical: `${SITE_URL}/suburbs/${slug}/rent` },
+    openGraph: { title: suburbRentTitle(suburb), description: suburbRentDescription(suburb), type: "website" },
+    twitter: { card: "summary_large_image" },
   };
 }
 

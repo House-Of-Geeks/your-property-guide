@@ -22,9 +22,9 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
         <div className="absolute bottom-0 inset-x-0 p-6 sm:p-8 lg:p-12">
           <div className="mx-auto max-w-7xl">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
+            <p className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
               {suburb.name}
-            </h1>
+            </p>
             <p className="text-lg text-white/90 mt-2">
               {suburb.state} {suburb.postcode} &middot; {suburb.region}
             </p>
