@@ -25,6 +25,11 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "en_AU",
   },
+  verification: {
+    other: {
+      "msvalidate.01": "91FC5FBF642A9F3DDC20E517CFAE11E9",
+    },
+  },
 };
 
 export default function RootLayout({
