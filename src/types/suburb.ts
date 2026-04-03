@@ -19,6 +19,13 @@ export interface School {
   distance: number;
 }
 
+export interface SuburbDataFreshness {
+  rentalAsOf:    Date | null;
+  rentalSource:  string | null;
+  crimeAsOf:     Date | null;
+  crimeSource:   string | null;
+}
+
 export interface Suburb {
   id: string;
   slug: string;
@@ -33,4 +40,5 @@ export interface Suburb {
   amenities: string[];
   transportLinks: string[];
   nearbySuburbs: string[];
+  dataFreshness: SuburbDataFreshness;
 }

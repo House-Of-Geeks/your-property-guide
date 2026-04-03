@@ -10,7 +10,6 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { Badge, Button } from "@/components/ui";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getPropertiesBySuburb } from "@/lib/services/property-service";
-import { getRentalFreshness, getCrimeFreshness } from "@/lib/services/data-freshness";
 import { suburbTitle, suburbDescription } from "@/lib/utils/seo";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
@@ -37,11 +36,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) notFound();
 
-  const [properties, rentalFreshness, crimeFreshness] = await Promise.all([
-    getPropertiesBySuburb(slug, 6),
-    getRentalFreshness(suburb.state),
-    getCrimeFreshness(suburb.state),
-  ]);
+  const properties = await getPropertiesBySuburb(slug, 6);
 
   return (
     <>
@@ -93,8 +88,8 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           </div>
           <DataFreshnessNote
             label="Rental"
-            asOf={rentalFreshness?.dataAsOf ?? null}
-            source={rentalFreshness?.label}
+            asOf={suburb.dataFreshness.rentalAsOf}
+            source={suburb.dataFreshness.rentalSource ?? undefined}
           />
         </div>
 
