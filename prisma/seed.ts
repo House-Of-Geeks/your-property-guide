@@ -18,8 +18,21 @@ function suburbCompoundSlug(name: string, state: string, postcode: string): stri
   return `${name.toLowerCase().replace(/\s+/g, "-")}-${state.toLowerCase()}-${postcode}`;
 }
 
+async function reset() {
+  console.log("🧹 Clearing existing agents, agencies and their properties...");
+  await prisma.houseAndLand_Image.deleteMany({});
+  await prisma.houseAndLandPackage.deleteMany({});
+  await prisma.property_Image.deleteMany({});
+  await prisma.property.deleteMany({});
+  await prisma.agent.deleteMany({});
+  await prisma.agency.deleteMany({});
+  console.log("  ✓ Cleared\n");
+}
+
 async function main() {
   console.log("🌱 Starting seed...\n");
+
+  await reset();
 
   // ── 1. Agencies ────────────────────────────────────────────────────────────
   console.log("Seeding agencies...");
