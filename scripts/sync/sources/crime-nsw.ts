@@ -1,16 +1,19 @@
 /**
  * NSW Crime Stats Sync (BOCSAR)
  *
- * Downloads suburb-level crime data from the NSW Bureau of Crime Statistics
- * and Research (BOCSAR). Data is published as a ZIP containing a CSV.
+ * Downloads suburb-level crime data from BOCSAR (Azure Blob).
+ * ZIP contains ~432 MB CSV with 375 columns (suburb × offence × monthly counts 1995–now).
+ * We stream-parse to avoid OOM — Buffer stays outside V8 heap, step callback
+ * processes one row at a time accumulating per-suburb totals.
  *
- * Data source: https://bocsar.nsw.gov.au/statistics-dashboards/open-datasets/criminal-offences-data.html
+ * CSV format: Suburb, Offence category, Subcategory, Jan 1995, Feb 1995, ..., Dec 2025
+ *
+ * Data source: https://bocsar.nsw.gov.au/statistics-dashboards/open-datasets/
  * Direct download: https://bocsarblob.blob.core.windows.net/bocsar-open-data/SuburbData.zip
- * Schedule: Quarterly (data updated to March 2026, next update June 2026)
- *
- * If the URL changes, update BOCSAR_NSW_ZIP_URL in GitHub secrets.
+ * Schedule: Quarterly
  */
 import "dotenv/config";
+import { Readable } from "stream";
 import AdmZip from "adm-zip";
 import Papa from "papaparse";
 import { prisma } from "../db";
@@ -18,16 +21,21 @@ import { startSync, finishSync, failSync, log } from "../logger";
 import { resolveSlug } from "../slug-matcher";
 
 const SOURCE_ID = "crime-nsw";
-// Use || (not ??) so empty string env var falls back to the default
 const ZIP_URL =
   process.env.BOCSAR_NSW_ZIP_URL ||
   "https://bocsarblob.blob.core.windows.net/bocsar-open-data/SuburbData.zip";
 
-interface BocRow {
-  Suburb:    string;
-  LGA:       string;
-  Postcode?: string;
-  [key: string]: string | undefined;
+// Month column name patterns: "Jan 1995", "Dec 2025"
+const MONTH_ABBR: Record<string, number> = {
+  Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6,
+  Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12,
+};
+
+function parseColMonth(colName: string): { year: string; month: number } | null {
+  // Format: "Mon YYYY" e.g. "Dec 2025"
+  const m = colName.trim().match(/^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{4})$/);
+  if (!m) return null;
+  return { year: m[2], month: MONTH_ABBR[m[1]] ?? 1 };
 }
 
 export async function run(): Promise<void> {
@@ -37,87 +45,113 @@ export async function run(): Promise<void> {
     const res = await fetch(ZIP_URL);
     if (!res.ok) throw new Error(`HTTP ${res.status} fetching BOCSAR ZIP`);
 
-    const buffer = Buffer.from(await res.arrayBuffer());
-    const zip = new AdmZip(buffer);
+    // Keep as Buffer (native memory, outside V8 heap) to avoid OOM
+    const zipBuffer = Buffer.from(await res.arrayBuffer());
+    const zip = new AdmZip(zipBuffer);
 
-    // Find the suburb-level CSV inside the ZIP
     const entry =
       zip.getEntries().find((e) => e.name.toLowerCase().includes("suburb") && e.name.endsWith(".csv")) ??
       zip.getEntries().find((e) => e.name.endsWith(".csv"));
     if (!entry) throw new Error("No CSV found in BOCSAR ZIP");
-    log(SOURCE_ID, `parsing ${entry.name}`);
+    log(SOURCE_ID, `streaming ${entry.name} (${Math.round(entry.header.size / 1e6)} MB uncompressed)`);
 
-    const csv = zip.readAsText(entry);
-    const { data } = Papa.parse<BocRow>(csv, { header: true, skipEmptyLines: true });
-    log(SOURCE_ID, `parsed ${data.length} rows`);
+    // Read entry as Buffer (not string) — stays outside V8 heap
+    const csvBuffer = zip.readFile(entry);
+    if (!csvBuffer) throw new Error("Could not read CSV entry from ZIP");
 
-    // BOCSAR data is monthly. Aggregate by suburb+year for annual summaries.
-    // Columns: Suburb, LGA, Postcode, [OffenceType_YYYY-MM ...]
-    // Detect if it's monthly columns or already annual
-    const firstRow = data[0];
-    if (!firstRow) throw new Error("Empty BOCSAR dataset");
+    // Create a Node.js readable stream from the buffer
+    const csvStream = new Readable();
+    csvStream.push(csvBuffer);
+    csvStream.push(null);
 
-    const offenceCols = Object.keys(firstRow).filter(
-      (k) => !["Suburb", "LGA", "Postcode", "suburb", "lga", "postcode"].includes(k)
-    );
+    // We'll accumulate per-suburb totals for the most recent year
+    // First pass: determine most recent year from column headers
+    // Second approach: detect latest year from first header row dynamically during parse
+    let latestYear: string | null = null;
+    let monthCols: string[] = []; // column names matching the latest year
+    let headerProcessed = false;
 
-    // Determine years from column names (e.g., "Theft 2023-04" → year 2023)
-    const yearSet = new Set<string>();
-    for (const col of offenceCols) {
-      const m = col.match(/(\d{4})/);
-      if (m) yearSet.add(m[1]);
-    }
-    const years = [...yearSet].sort();
+    // Accumulator: suburb → { total, breakdown }
+    const grouped = new Map<string, { total: number; breakdown: Record<string, number> }>();
 
-    // Use the most recent year only (to avoid re-processing all history each run)
-    const latestYear = years[years.length - 1];
-    if (!latestYear) throw new Error("Could not determine year from BOCSAR columns");
-    log(SOURCE_ID, `processing year ${latestYear} (${offenceCols.length} offence columns)`);
+    await new Promise<void>((resolve, reject) => {
+      Papa.parse(csvStream as unknown as File, {
+        header: true,
+        skipEmptyLines: true,
+        step: (result: Papa.ParseStepResult<Record<string, string>>) => {
+          const row = result.data;
+          if (!row) return;
+
+          // On first row, discover column names and determine latest year
+          if (!headerProcessed) {
+            const allCols = Object.keys(row);
+            // Find the most recent year across all month columns
+            const years = new Set<string>();
+            for (const col of allCols) {
+              const parsed = parseColMonth(col);
+              if (parsed) years.add(parsed.year);
+            }
+            const sortedYears = [...years].sort();
+            latestYear = sortedYears[sortedYears.length - 1] ?? null;
+            if (latestYear) {
+              monthCols = allCols.filter((c) => {
+                const p = parseColMonth(c);
+                return p?.year === latestYear;
+              });
+            }
+            headerProcessed = true;
+          }
+
+          if (!latestYear || monthCols.length === 0) return;
+
+          const suburb  = String(row["Suburb"]  ?? row["suburb"]  ?? "").trim();
+          const offence = String(row["Offence category"] ?? row["Offence_category"] ?? "").trim();
+          if (!suburb) return;
+
+          // Sum monthly counts for the latest year
+          let rowTotal = 0;
+          for (const col of monthCols) {
+            rowTotal += parseInt(row[col] ?? "0") || 0;
+          }
+          if (rowTotal === 0) return;
+
+          const existing = grouped.get(suburb) ?? { total: 0, breakdown: {} };
+          existing.total += rowTotal;
+          if (offence) {
+            existing.breakdown[offence] = (existing.breakdown[offence] ?? 0) + rowTotal;
+          }
+          grouped.set(suburb, existing);
+        },
+        complete: () => resolve(),
+        error: (err: Error) => reject(err),
+      });
+    });
+
+    if (!latestYear) throw new Error("Could not determine latest year from BOCSAR CSV");
+    log(SOURCE_ID, `processing year ${latestYear}, ${grouped.size} suburbs`);
 
     let count = 0;
+    const periodDate = new Date(`${latestYear}-01-01`);
 
-    for (const row of data) {
-      const suburb = String(row.Suburb ?? row.suburb ?? "").trim();
-      const lga    = String(row.LGA    ?? row.lga    ?? "").trim();
-      const pc     = String(row.Postcode ?? row.postcode ?? "").trim();
-      if (!suburb) continue;
-
-      const suburbSlug = await resolveSlug(suburb, "NSW", pc);
-
-      // Sum offence counts for latest year across all months
-      let total = 0;
-      const breakdown: Record<string, number> = {};
-      for (const col of offenceCols) {
-        if (!col.includes(latestYear)) continue;
-        const n = parseInt(String((row as Record<string, string | undefined>)[col] ?? "0")) || 0;
-        if (n <= 0) continue;
-        // Extract offence type from column name (everything before the date)
-        const offType = col.replace(/\s*\d{4}-\d{2}$/, "").trim() || "Other";
-        total += n;
-        breakdown[offType] = (breakdown[offType] ?? 0) + n;
-      }
-
-      const period     = latestYear;
-      const periodDate = new Date(`${latestYear}-01-01`);
+    for (const [suburbName, data] of grouped) {
+      const suburbSlug = await resolveSlug(suburbName, "NSW", "");
 
       await prisma.suburbCrimeStat.upsert({
-        where: { suburbName_state_period_source: { suburbName: suburb, state: "NSW", period, source: SOURCE_ID } },
+        where: { suburbName_state_period_source: { suburbName, state: "NSW", period: latestYear, source: SOURCE_ID } },
         create: {
           suburbSlug,
-          suburbName: suburb,
-          postcode:   pc || null,
-          lga:        lga || null,
-          state:      "NSW",
-          period,
+          suburbName,
+          state:            "NSW",
+          period:           latestYear,
           periodDate,
-          totalOffences:    total,
-          offenceBreakdown: breakdown,
+          totalOffences:    data.total,
+          offenceBreakdown: data.breakdown,
           source: SOURCE_ID,
         },
         update: {
           suburbSlug,
-          totalOffences:    total,
-          offenceBreakdown: breakdown,
+          totalOffences:    data.total,
+          offenceBreakdown: data.breakdown,
         },
       });
       count++;
@@ -128,7 +162,7 @@ export async function run(): Promise<void> {
       data: { statsUpdatedAt: new Date() },
     });
 
-    await finishSync(SOURCE_ID, count, new Date(`${latestYear}-01-01`));
+    await finishSync(SOURCE_ID, count, periodDate);
   } catch (err) {
     await failSync(SOURCE_ID, err);
     throw err;
