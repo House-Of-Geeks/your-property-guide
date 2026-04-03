@@ -102,10 +102,12 @@ export async function getCkanDownloadUrl(
 
   const pool = candidates.length > 0 ? candidates : resources;
 
+  // Normalize format: strip leading dot, uppercase — handles "XLSX", ".xlsx", ".xls", etc.
+  const normFmt = (f: string) => f.replace(/^\./, "").toUpperCase();
   const match =
-    pool.find((r) => r.format.toUpperCase() === upper) ??
-    pool.find((r) => r.format.toUpperCase() === "XLSX") ??
-    pool.find((r) => r.format.toUpperCase() === "XLS") ??
+    pool.find((r) => normFmt(r.format) === upper) ??
+    pool.find((r) => normFmt(r.format) === "XLSX") ??
+    pool.find((r) => normFmt(r.format) === "XLS") ??
     pool[0];
   if (!match) throw new Error(`No resources found in package: ${packageId}`);
   if (!match.url) throw new Error(`Resource has no download URL: ${match.id}`);

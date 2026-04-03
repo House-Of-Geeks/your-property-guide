@@ -2,8 +2,8 @@
  * VIC Rental Data Sync
  *
  * Downloads median rental data from the Victorian DFFH via the data.vic.gov.au
- * CKAN API. The CKAN package provides DFFH webpage URLs (not direct file downloads),
- * so we fetch the page HTML and extract the actual XLSX download link.
+ * CKAN API. The CKAN resource URL is a DFFH page that 307-redirects to the
+ * actual XLSX file — fetch() follows the redirect automatically.
  *
  * Data source: https://discover.data.vic.gov.au/dataset/rental-report
  * Schedule: Quarterly
@@ -18,7 +18,6 @@ import { getCkanDownloadUrl } from "../ckan";
 const SOURCE_ID = "rental-vic";
 const CKAN_BASE = "https://discover.data.vic.gov.au";
 const PACKAGE_ID = "rental-report-quarterly-moving-annual-rents-by-suburb";
-const DFFH_BASE = "https://www.dffh.vic.gov.au";
 
 // Normalize XLSX header keys to lowercase_underscore
 function norm(key: string): string {
@@ -43,69 +42,36 @@ function parsePeriod(q: string): { period: string; periodDate: Date } {
   };
 }
 
-/**
- * Try to resolve a DFFH page URL to an actual XLSX download URL.
- * Strategy 1: fetch the HTML page and regex-extract the .xlsx href.
- * Strategy 2: if the resource URL already looks like a file, use it directly.
- */
-async function resolveXlsxUrl(dffhPageUrl: string): Promise<string> {
-  // If URL already ends in .xlsx, use it directly
-  if (dffhPageUrl.endsWith(".xlsx") || dffhPageUrl.endsWith(".xls")) {
-    return dffhPageUrl;
-  }
-
-  // Fetch the DFFH page and extract the XLSX link
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 25000);
-  try {
-    const pageRes = await fetch(dffhPageUrl, {
-      signal: controller.signal,
-      headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; YourPropertyGuide/1.0; data-sync)",
-        "Accept": "text/html,application/xhtml+xml",
-      },
-    });
-    clearTimeout(timer);
-    if (!pageRes.ok) throw new Error(`HTTP ${pageRes.status} fetching DFFH page`);
-    const html = await pageRes.text();
-
-    const xlsxMatch = html.match(/href="([^"]*\.xlsx)"/i)
-      ?? html.match(/href='([^']*\.xlsx)'/i);
-    if (!xlsxMatch) throw new Error(`No XLSX link found on DFFH page: ${dffhPageUrl}`);
-    const href = xlsxMatch[1];
-    return href.startsWith("http") ? href : `${DFFH_BASE}${href}`;
-  } catch (err) {
-    clearTimeout(timer);
-    throw err;
-  }
-}
-
 export async function run(): Promise<void> {
   await startSync(SOURCE_ID);
   try {
-    // Get DFFH page URL from CKAN (most recent XLSX resource)
-    const dffhPageUrl = await getCkanDownloadUrl(PACKAGE_ID, CKAN_BASE, "XLSX");
-    log(SOURCE_ID, `DFFH resource URL: ${dffhPageUrl}`);
+    // CKAN returns a DFFH page URL that 307-redirects to the actual XLSX file
+    const dffhUrl = await getCkanDownloadUrl(PACKAGE_ID, CKAN_BASE, "XLSX");
+    log(SOURCE_ID, `downloading from ${dffhUrl} (follows 307 redirect to XLSX)`);
 
-    const xlsxUrl = await resolveXlsxUrl(dffhPageUrl);
-    log(SOURCE_ID, `downloading XLSX from ${xlsxUrl}`);
+    // fetch() follows the redirect automatically
+    const res = await fetch(dffhUrl);
+    if (!res.ok) throw new Error(`HTTP ${res.status} downloading VIC rental XLSX`);
 
-    const fileRes = await fetch(xlsxUrl);
-    if (!fileRes.ok) throw new Error(`HTTP ${fileRes.status} downloading VIC rental XLSX`);
-    const buffer = Buffer.from(await fileRes.arrayBuffer());
+    const contentType = res.headers.get("content-type") ?? "";
+    if (contentType.includes("text/html")) {
+      throw new Error(`Got HTML instead of XLSX from ${dffhUrl} — redirect may have failed`);
+    }
+
+    const buffer = Buffer.from(await res.arrayBuffer());
     const wb = XLSX.read(buffer, { type: "buffer" });
 
-    // Find the suburb-level sheet (not LGA)
+    // Find suburb-level sheet (prefer one with "suburb" in the name)
     const sheetName =
       wb.SheetNames.find((n) => n.toLowerCase().includes("suburb")) ??
       wb.SheetNames[0];
-    log(SOURCE_ID, `using sheet: ${sheetName}`);
+    log(SOURCE_ID, `sheets: ${wb.SheetNames.join(", ")} → using: ${sheetName}`);
 
     const ws = wb.Sheets[sheetName];
     const rawRows = XLSX.utils.sheet_to_json<Record<string, string>>(ws, { defval: "" });
     log(SOURCE_ID, `parsed ${rawRows.length} rows`);
 
-    // Normalize column keys
+    // Normalize column keys to lowercase_underscore
     const rows = rawRows.map((r) =>
       Object.fromEntries(Object.entries(r).map(([k, v]) => [norm(k), String(v)]))
     );
@@ -114,20 +80,20 @@ export async function run(): Promise<void> {
     let latestDate: Date | undefined;
 
     for (const row of rows) {
-      const suburb   = row["suburb"] ?? row["suburb_name"] ?? "";
+      const suburb   = row["suburb"] ?? row["suburb_name"] ?? row["suburb_town"] ?? "";
       const postcode = row["postcode"] ?? row["post_code"] ?? "";
-      const quarter  = row["moving_annual_quarter"] ?? row["quarter"] ?? row["period"] ?? "";
+      const quarter  = row["moving_annual_quarter"] ?? row["quarter"] ?? row["period"] ?? row["moving_annual_quarter_ended"] ?? "";
       if (!suburb || !postcode || !quarter) continue;
 
       const suburbSlug = await resolveSlug(suburb, "VIC", postcode);
       const { period, periodDate } = parsePeriod(quarter);
       if (!latestDate || periodDate > latestDate) latestDate = periodDate;
 
-      const rentAll = parseInt(row["median_rent_all_dwellings"] ?? row["median_rent_all"] ?? row["median_weekly_rent"] ?? "") || null;
-      const rent3br = parseInt(row["median_rent_3br_house"] ?? row["median_rent_3_bedroom_house"] ?? "") || null;
-      const rent2br = parseInt(row["median_rent_2br_house"] ?? row["median_rent_2_bedroom_house"] ?? "") || null;
-      const rent1br = parseInt(row["median_rent_1br_flat"] ?? row["median_rent_1_bedroom_flat"] ?? row["median_rent_1_bedroom_unit"] ?? "") || null;
-      const bonds   = parseInt(row["count"] ?? row["number_of_bonds"] ?? row["bond_lodgements"] ?? "") || null;
+      const rentAll = parseInt(row["median_rent_all_dwellings"] ?? row["median_rent_all"] ?? row["median_weekly_rent"] ?? row["median_rent"] ?? "") || null;
+      const rent3br = parseInt(row["median_rent_3br_house"] ?? row["median_rent_3_bedroom_house"] ?? row["3_bedroom_house"] ?? "") || null;
+      const rent2br = parseInt(row["median_rent_2br_house"] ?? row["median_rent_2_bedroom_house"] ?? row["2_bedroom_house"] ?? "") || null;
+      const rent1br = parseInt(row["median_rent_1br_flat"] ?? row["median_rent_1_bedroom_flat"] ?? row["median_rent_1_bedroom_unit"] ?? row["1_bedroom_flat"] ?? "") || null;
+      const bonds   = parseInt(row["count"] ?? row["number_of_bonds"] ?? row["bond_lodgements"] ?? row["observations"] ?? "") || null;
 
       await prisma.suburbRentalStat.upsert({
         where: { suburbName_postcode_state_period: { suburbName: suburb, postcode, state: "VIC", period } },

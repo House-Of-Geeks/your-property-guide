@@ -33,7 +33,8 @@ interface SaCrimeRow {
 export async function run(): Promise<void> {
   await startSync(SOURCE_ID);
   try {
-    const csvUrl = await getCkanDownloadUrl(PACKAGE_ID, CKAN_BASE, "CSV");
+    // Filter for "Crime Statistics" resources — package also contains FDV (Family/DV) data
+    const csvUrl = await getCkanDownloadUrl(PACKAGE_ID, CKAN_BASE, "CSV", "Crime Statistics");
     log(SOURCE_ID, `downloading from ${csvUrl}`);
 
     const res = await fetch(csvUrl);
