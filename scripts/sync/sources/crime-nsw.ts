@@ -18,8 +18,9 @@ import { startSync, finishSync, failSync, log } from "../logger";
 import { resolveSlug } from "../slug-matcher";
 
 const SOURCE_ID = "crime-nsw";
+// Use || (not ??) so empty string env var falls back to the default
 const ZIP_URL =
-  process.env.BOCSAR_NSW_ZIP_URL ??
+  process.env.BOCSAR_NSW_ZIP_URL ||
   "https://bocsarblob.blob.core.windows.net/bocsar-open-data/SuburbData.zip";
 
 interface BocRow {

@@ -2,8 +2,9 @@
  * SA Crime Stats Sync (SA Police)
  *
  * Downloads suburb-level crime data via the data.sa.gov.au CKAN API.
- * The dataset contains suburb-based statistics for crimes against the person
- * and crimes against property.
+ * CSV columns: "Reported Date", "Suburb - Incident", "Postcode - Incident",
+ * "Offence Level 1 Description", "Offence Level 2 Description",
+ * "Offence Level 3 Description", "Offence count"
  *
  * Data source: https://data.sa.gov.au/data/dataset/860126f7-eeb5-4fbc-be44-069aa0467d11
  * Schedule: Quarterly
@@ -17,11 +18,16 @@ import { getCkanDownloadUrl } from "../ckan";
 
 const SOURCE_ID = "crime-sa";
 const CKAN_BASE = "https://data.sa.gov.au/data";
-// SA Police crime statistics — suburb-based CSV data
 const PACKAGE_ID = "860126f7-eeb5-4fbc-be44-069aa0467d11";
 
 interface SaCrimeRow {
-  [key: string]: string;
+  "Reported Date":               string;
+  "Suburb - Incident":           string;
+  "Postcode - Incident":         string;
+  "Offence Level 1 Description": string;
+  "Offence Level 2 Description": string;
+  "Offence Level 3 Description": string;
+  "Offence count":               string;
 }
 
 export async function run(): Promise<void> {
@@ -36,56 +42,69 @@ export async function run(): Promise<void> {
     const { data } = Papa.parse<SaCrimeRow>(text, { header: true, skipEmptyLines: true });
     log(SOURCE_ID, `parsed ${data.length} rows`);
 
-    // Infer year from URL (e.g. data_sa_crime_q2_2025-26.csv → 2025)
-    const urlYearMatch = csvUrl.match(/(\d{4})-(\d{2})/);
-    const urlYear = urlYearMatch?.[1] ?? String(new Date().getFullYear() - 1);
-
-    const grouped = new Map<string, { total: number; breakdown: Record<string, number>; postcode?: string; date: Date; period: string }>();
+    // Group by suburb + financial year
+    const grouped = new Map<string, {
+      total:    number;
+      breakdown: Record<string, number>;
+      postcode: string;
+      period:   string;
+      date:     Date;
+    }>();
 
     for (const row of data) {
-      // Column name variants across SA crime CSV releases
-      const suburb = String(
-        row["Suburb"] ?? row["suburb"] ?? row["Location"] ?? row["location"] ?? ""
-      ).trim();
-      const postcode = String(row["Postcode"] ?? row["postcode"] ?? "").trim();
-      const rawYear = String(
-        row["Year"] ?? row["year"] ?? row["Financial_Year"] ?? row["financial_year"] ?? urlYear
-      ).trim();
-      if (!suburb || !rawYear) continue;
+      const suburb   = String(row["Suburb - Incident"]   ?? "").trim();
+      const postcode = String(row["Postcode - Incident"] ?? "").trim();
+      const dateStr  = String(row["Reported Date"]       ?? "").trim();
+      if (!suburb || !dateStr) continue;
 
-      // Normalise year — SA uses financial years like "2025-26", grab first year
-      const yearMatch = rawYear.match(/(\d{4})/);
-      const year = yearMatch?.[1] ?? rawYear;
-      const period = year;
+      // "Reported Date" format: "DD/MM/YYYY" — extract financial year
+      // SA financial year: Jul–Jun (so Jul 2025–Jun 2026 = FY2025-26)
+      const dateParts = dateStr.split("/");
+      const d = dateParts.length === 3
+        ? new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`)
+        : new Date(dateStr);
+      if (isNaN(d.getTime())) continue;
+
+      const calYear = d.getFullYear();
+      const month   = d.getMonth() + 1; // 1-12
+      // Financial year starts July: if month >= 7, FY = calYear/calYear+1, else calYear-1/calYear
+      const fyStart = month >= 7 ? calYear : calYear - 1;
+      const period  = `${fyStart}-${String(fyStart + 1).slice(-2)}`;
+      const fyDate  = new Date(`${fyStart + 1}-06-30`); // End of FY
+
+      const offence = String(row["Offence Level 1 Description"] ?? "Other").trim();
+      const count   = parseInt(row["Offence count"] ?? "0") || 0;
 
       const key = `${suburb}|${postcode}|${period}`;
-      const existing = grouped.get(key) ?? { total: 0, breakdown: {}, postcode: postcode || undefined, date: new Date(`${year}-01-01`), period };
-
-      const offence = String(
-        row["Offence_Level_1"] ?? row["offence_level_1"] ?? row["Offence"] ?? row["offence"] ?? "Other"
-      ).trim();
-      const n = parseInt(String(row["Offence_Count"] ?? row["offence_count"] ?? row["Count"] ?? row["count"] ?? "0")) || 0;
-      existing.total += n;
-      if (offence) existing.breakdown[offence] = (existing.breakdown[offence] ?? 0) + n;
+      const existing = grouped.get(key) ?? { total: 0, breakdown: {}, postcode, period, date: fyDate };
+      existing.total += count;
+      if (offence) existing.breakdown[offence] = (existing.breakdown[offence] ?? 0) + count;
       grouped.set(key, existing);
     }
+
+    // Process only the most recent financial year
+    const allPeriods = [...new Set([...grouped.values()].map((v) => v.period))].sort();
+    const latestPeriod = allPeriods[allPeriods.length - 1];
+    if (!latestPeriod) throw new Error("No period data found in SA crime CSV");
+    log(SOURCE_ID, `processing FY ${latestPeriod}`);
 
     let count = 0;
     let latestDate: Date | undefined;
 
     for (const [key, data] of grouped) {
-      const [suburbName, postcode, period] = key.split("|");
+      if (data.period !== latestPeriod) continue;
+      const [suburbName, postcode] = key.split("|");
       const suburbSlug = await resolveSlug(suburbName, "SA", postcode);
       if (!latestDate || data.date > latestDate) latestDate = data.date;
 
       await prisma.suburbCrimeStat.upsert({
-        where: { suburbName_state_period_source: { suburbName, state: "SA", period, source: SOURCE_ID } },
+        where: { suburbName_state_period_source: { suburbName, state: "SA", period: data.period, source: SOURCE_ID } },
         create: {
           suburbSlug,
           suburbName,
           postcode:         postcode || null,
           state:            "SA",
-          period,
+          period:           data.period,
           periodDate:       data.date,
           totalOffences:    data.total,
           offenceBreakdown: data.breakdown,

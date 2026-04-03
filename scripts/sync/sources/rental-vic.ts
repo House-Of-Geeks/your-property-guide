@@ -33,10 +33,9 @@ const MONTH_NUM: Record<string, number> = {
 };
 
 function parsePeriod(q: string): { period: string; periodDate: Date } {
-  // e.g. "September Quarter 2024" or "September 2024"
   const parts = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const month = parts.find((p) => MONTH_NUM[p]);
-  const year = parts.find((p) => /^\d{4}$/.test(p));
+  const year  = parts.find((p) => /^\d{4}$/.test(p));
   if (!month || !year) return { period: q, periodDate: new Date() };
   return {
     period: `${year}-${MONTH_TO_QUARTER[month] ?? "Q4"}`,
@@ -44,25 +43,53 @@ function parsePeriod(q: string): { period: string; periodDate: Date } {
   };
 }
 
-export async function run(): Promise<void> {
-  await startSync(SOURCE_ID);
-  try {
-    // Step 1: Get DFFH page URL from CKAN (most recent XLSX resource)
-    const dffhPageUrl = await getCkanDownloadUrl(PACKAGE_ID, CKAN_BASE, "XLSX");
-    log(SOURCE_ID, `DFFH page: ${dffhPageUrl}`);
+/**
+ * Try to resolve a DFFH page URL to an actual XLSX download URL.
+ * Strategy 1: fetch the HTML page and regex-extract the .xlsx href.
+ * Strategy 2: if the resource URL already looks like a file, use it directly.
+ */
+async function resolveXlsxUrl(dffhPageUrl: string): Promise<string> {
+  // If URL already ends in .xlsx, use it directly
+  if (dffhPageUrl.endsWith(".xlsx") || dffhPageUrl.endsWith(".xls")) {
+    return dffhPageUrl;
+  }
 
-    // Step 2: Fetch the DFFH HTML page and extract actual XLSX download link
-    const pageRes = await fetch(dffhPageUrl, { signal: AbortSignal.timeout(30000) });
+  // Fetch the DFFH page and extract the XLSX link
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 25000);
+  try {
+    const pageRes = await fetch(dffhPageUrl, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "Mozilla/5.0 (compatible; YourPropertyGuide/1.0; data-sync)",
+        "Accept": "text/html,application/xhtml+xml",
+      },
+    });
+    clearTimeout(timer);
     if (!pageRes.ok) throw new Error(`HTTP ${pageRes.status} fetching DFFH page`);
     const html = await pageRes.text();
 
-    const xlsxMatch = html.match(/href="([^"]*\.xlsx)"/i);
+    const xlsxMatch = html.match(/href="([^"]*\.xlsx)"/i)
+      ?? html.match(/href='([^']*\.xlsx)'/i);
     if (!xlsxMatch) throw new Error(`No XLSX link found on DFFH page: ${dffhPageUrl}`);
-    const xlsxHref = xlsxMatch[1];
-    const xlsxUrl = xlsxHref.startsWith("http") ? xlsxHref : `${DFFH_BASE}${xlsxHref}`;
+    const href = xlsxMatch[1];
+    return href.startsWith("http") ? href : `${DFFH_BASE}${href}`;
+  } catch (err) {
+    clearTimeout(timer);
+    throw err;
+  }
+}
+
+export async function run(): Promise<void> {
+  await startSync(SOURCE_ID);
+  try {
+    // Get DFFH page URL from CKAN (most recent XLSX resource)
+    const dffhPageUrl = await getCkanDownloadUrl(PACKAGE_ID, CKAN_BASE, "XLSX");
+    log(SOURCE_ID, `DFFH resource URL: ${dffhPageUrl}`);
+
+    const xlsxUrl = await resolveXlsxUrl(dffhPageUrl);
     log(SOURCE_ID, `downloading XLSX from ${xlsxUrl}`);
 
-    // Step 3: Download and parse XLSX
     const fileRes = await fetch(xlsxUrl);
     if (!fileRes.ok) throw new Error(`HTTP ${fileRes.status} downloading VIC rental XLSX`);
     const buffer = Buffer.from(await fileRes.arrayBuffer());
@@ -87,7 +114,6 @@ export async function run(): Promise<void> {
     let latestDate: Date | undefined;
 
     for (const row of rows) {
-      // Column name variants across DFFH XLSX versions
       const suburb   = row["suburb"] ?? row["suburb_name"] ?? "";
       const postcode = row["postcode"] ?? row["post_code"] ?? "";
       const quarter  = row["moving_annual_quarter"] ?? row["quarter"] ?? row["period"] ?? "";
@@ -97,12 +123,11 @@ export async function run(): Promise<void> {
       const { period, periodDate } = parsePeriod(quarter);
       if (!latestDate || periodDate > latestDate) latestDate = periodDate;
 
-      // Rent fields — try multiple column name patterns
-      const rentAll  = parseInt(row["median_rent_all_dwellings"] ?? row["median_rent_all"] ?? row["median_weekly_rent"] ?? "") || null;
-      const rent3br  = parseInt(row["median_rent_3br_house"] ?? row["median_rent_3_bedroom_house"] ?? "") || null;
-      const rent2br  = parseInt(row["median_rent_2br_house"] ?? row["median_rent_2_bedroom_house"] ?? "") || null;
-      const rent1br  = parseInt(row["median_rent_1br_flat"] ?? row["median_rent_1_bedroom_flat"] ?? row["median_rent_1_bedroom_unit"] ?? "") || null;
-      const bonds    = parseInt(row["count"] ?? row["number_of_bonds"] ?? row["bond_lodgements"] ?? "") || null;
+      const rentAll = parseInt(row["median_rent_all_dwellings"] ?? row["median_rent_all"] ?? row["median_weekly_rent"] ?? "") || null;
+      const rent3br = parseInt(row["median_rent_3br_house"] ?? row["median_rent_3_bedroom_house"] ?? "") || null;
+      const rent2br = parseInt(row["median_rent_2br_house"] ?? row["median_rent_2_bedroom_house"] ?? "") || null;
+      const rent1br = parseInt(row["median_rent_1br_flat"] ?? row["median_rent_1_bedroom_flat"] ?? row["median_rent_1_bedroom_unit"] ?? "") || null;
+      const bonds   = parseInt(row["count"] ?? row["number_of_bonds"] ?? row["bond_lodgements"] ?? "") || null;
 
       await prisma.suburbRentalStat.upsert({
         where: { suburbName_postcode_state_period: { suburbName: suburb, postcode, state: "VIC", period } },

@@ -49,7 +49,8 @@ export async function fetchCkan<T>(
 }
 
 /**
- * Get the package metadata from a CKAN portal.
+ * Get the package metadata from a CKAN portal, sorted by created date descending
+ * (most recent resource first).
  */
 async function getCkanPackage(packageId: string, baseUrl: string): Promise<CkanResource[]> {
   const url = `${baseUrl}/api/3/action/package_show?id=${packageId}`;
@@ -57,7 +58,10 @@ async function getCkanPackage(packageId: string, baseUrl: string): Promise<CkanR
   if (!res.ok) throw new Error(`CKAN package HTTP ${res.status}: ${url}`);
   const json = await res.json() as { success: boolean; result: { resources: CkanResource[] } };
   if (!json.success) throw new Error(`CKAN package error: ${packageId}`);
-  return json.result.resources;
+  // Sort most recent first so callers always get the latest resource
+  const resources = [...json.result.resources];
+  resources.sort((a, b) => (b.created ?? "").localeCompare(a.created ?? ""));
+  return resources;
 }
 
 /**
