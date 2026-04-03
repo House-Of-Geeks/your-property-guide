@@ -5,10 +5,10 @@
  * and Research (BOCSAR). Data is published as a ZIP containing a CSV.
  *
  * Data source: https://bocsar.nsw.gov.au/statistics-dashboards/open-datasets/criminal-offences-data.html
- * Schedule: Quarterly
+ * Direct download: https://bocsarblob.blob.core.windows.net/bocsar-open-data/SuburbData.zip
+ * Schedule: Quarterly (data updated to March 2026, next update June 2026)
  *
- * The ZIP URL changes each release — update BOCSAR_NSW_ZIP_URL in GitHub secrets
- * or the constant below when a new release is published.
+ * If the URL changes, update BOCSAR_NSW_ZIP_URL in GitHub secrets.
  */
 import "dotenv/config";
 import AdmZip from "adm-zip";
@@ -18,21 +18,16 @@ import { startSync, finishSync, failSync, log } from "../logger";
 import { resolveSlug } from "../slug-matcher";
 
 const SOURCE_ID = "crime-nsw";
-// Update this URL each quarter from:
-// https://bocsar.nsw.gov.au/statistics-dashboards/open-datasets/criminal-offences-data.html
 const ZIP_URL =
   process.env.BOCSAR_NSW_ZIP_URL ??
-  "https://bocsar.nsw.gov.au/Documents/RCS-Annual/SuburbDataCSV.zip";
+  "https://bocsarblob.blob.core.windows.net/bocsar-open-data/SuburbData.zip";
 
 interface BocRow {
   Suburb:    string;
   LGA:       string;
   Postcode?: string;
-  Year:      string;
-  [offence: string]: string | undefined;
+  [key: string]: string | undefined;
 }
-
-const TOTAL_FIELD = "Total"; // BOCSAR uses "Total" column for all offences
 
 export async function run(): Promise<void> {
   await startSync(SOURCE_ID);
@@ -55,34 +50,64 @@ export async function run(): Promise<void> {
     const { data } = Papa.parse<BocRow>(csv, { header: true, skipEmptyLines: true });
     log(SOURCE_ID, `parsed ${data.length} rows`);
 
+    // BOCSAR data is monthly. Aggregate by suburb+year for annual summaries.
+    // Columns: Suburb, LGA, Postcode, [OffenceType_YYYY-MM ...]
+    // Detect if it's monthly columns or already annual
+    const firstRow = data[0];
+    if (!firstRow) throw new Error("Empty BOCSAR dataset");
+
+    const offenceCols = Object.keys(firstRow).filter(
+      (k) => !["Suburb", "LGA", "Postcode", "suburb", "lga", "postcode"].includes(k)
+    );
+
+    // Determine years from column names (e.g., "Theft 2023-04" → year 2023)
+    const yearSet = new Set<string>();
+    for (const col of offenceCols) {
+      const m = col.match(/(\d{4})/);
+      if (m) yearSet.add(m[1]);
+    }
+    const years = [...yearSet].sort();
+
+    // Use the most recent year only (to avoid re-processing all history each run)
+    const latestYear = years[years.length - 1];
+    if (!latestYear) throw new Error("Could not determine year from BOCSAR columns");
+    log(SOURCE_ID, `processing year ${latestYear} (${offenceCols.length} offence columns)`);
+
     let count = 0;
-    const years = new Set<string>();
 
     for (const row of data) {
-      if (!row.Suburb || !row.Year) continue;
-      years.add(row.Year);
+      const suburb = String(row.Suburb ?? row.suburb ?? "").trim();
+      const lga    = String(row.LGA    ?? row.lga    ?? "").trim();
+      const pc     = String(row.Postcode ?? row.postcode ?? "").trim();
+      if (!suburb) continue;
 
-      const suburbSlug = await resolveSlug(row.Suburb, "NSW", row.Postcode ?? "");
-      const periodDate = new Date(`${row.Year}-01-01`);
-      const total = parseInt(row[TOTAL_FIELD] ?? "0") || 0;
+      const suburbSlug = await resolveSlug(suburb, "NSW", pc);
 
-      // Build offence breakdown from remaining columns
+      // Sum offence counts for latest year across all months
+      let total = 0;
       const breakdown: Record<string, number> = {};
-      for (const [k, v] of Object.entries(row)) {
-        if (["Suburb", "LGA", "Postcode", "Year"].includes(k)) continue;
-        const n = parseInt(v ?? "0");
-        if (!isNaN(n) && n > 0) breakdown[k] = n;
+      for (const col of offenceCols) {
+        if (!col.includes(latestYear)) continue;
+        const n = parseInt(String((row as Record<string, string | undefined>)[col] ?? "0")) || 0;
+        if (n <= 0) continue;
+        // Extract offence type from column name (everything before the date)
+        const offType = col.replace(/\s*\d{4}-\d{2}$/, "").trim() || "Other";
+        total += n;
+        breakdown[offType] = (breakdown[offType] ?? 0) + n;
       }
 
+      const period     = latestYear;
+      const periodDate = new Date(`${latestYear}-01-01`);
+
       await prisma.suburbCrimeStat.upsert({
-        where: { suburbName_state_period_source: { suburbName: row.Suburb, state: "NSW", period: row.Year, source: SOURCE_ID } },
+        where: { suburbName_state_period_source: { suburbName: suburb, state: "NSW", period, source: SOURCE_ID } },
         create: {
           suburbSlug,
-          suburbName: row.Suburb,
-          postcode:   row.Postcode ?? null,
-          lga:        row.LGA ?? null,
+          suburbName: suburb,
+          postcode:   pc || null,
+          lga:        lga || null,
           state:      "NSW",
-          period:     row.Year,
+          period,
           periodDate,
           totalOffences:    total,
           offenceBreakdown: breakdown,
@@ -97,7 +122,6 @@ export async function run(): Promise<void> {
       count++;
     }
 
-    const latestYear = Math.max(...[...years].map(Number));
     await prisma.suburb.updateMany({
       where: { state: "NSW" },
       data: { statsUpdatedAt: new Date() },

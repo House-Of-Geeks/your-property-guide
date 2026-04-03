@@ -1,40 +1,32 @@
 /**
  * VIC Crime Stats Sync (Crime Statistics Agency)
  *
- * Downloads LGA/suburb-level crime data from the Victorian Crime Statistics Agency.
- * Published as an Excel workbook.
+ * Downloads LGA-level crime data from the Victorian Crime Statistics Agency
+ * via the data.vic.gov.au CKAN API. Data files are direct XLSX downloads.
  *
- * Data source: https://www.crimestatistics.vic.gov.au/crime-statistics/latest-victorian-crime-data/download-data
+ * Data source: https://discover.data.vic.gov.au/dataset/92d47891-3cf8-45eb-9d39-aa7e1db2f478
  * Schedule: Quarterly
- *
- * Update VIC_CRIME_EXCEL_URL in GitHub secrets when a new release is published.
- * Note: VIC data is at LGA level, not always suburb level.
  */
 import "dotenv/config";
 import * as XLSX from "xlsx";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
+import { getCkanDownloadUrl } from "../ckan";
 
 const SOURCE_ID = "crime-vic";
-const EXCEL_URL =
-  process.env.VIC_CRIME_EXCEL_URL ??
-  "https://www.crimestatistics.vic.gov.au/sites/default/files/2024-03/01%20LGA%20Criminal%20Incidents%202023.xlsx";
-
-interface VicCrimeRow {
-  "Local Government Area": string;
-  "Year ending":           string;
-  "Offence Division":      string;
-  "Offence Subdivision":   string;
-  "Incidents Recorded":    string | number;
-}
+const CKAN_BASE = "https://discover.data.vic.gov.au";
+// Crime Statistics Agency - Criminal Incidents dataset
+const PACKAGE_ID = "92d47891-3cf8-45eb-9d39-aa7e1db2f478";
 
 export async function run(): Promise<void> {
   await startSync(SOURCE_ID);
   try {
-    log(SOURCE_ID, `downloading from ${EXCEL_URL}`);
-    const res = await fetch(EXCEL_URL);
-    if (!res.ok) throw new Error(`HTTP ${res.status} fetching VIC crime Excel`);
+    // Get latest LGA-level XLSX — filter by "LGA" in resource name
+    const xlsxUrl = await getCkanDownloadUrl(PACKAGE_ID, CKAN_BASE, "XLSX", "LGA");
+    log(SOURCE_ID, `downloading from ${xlsxUrl}`);
 
+    const res = await fetch(xlsxUrl);
+    if (!res.ok) throw new Error(`HTTP ${res.status} downloading VIC crime XLSX`);
     const buffer = Buffer.from(await res.arrayBuffer());
     const wb = XLSX.read(buffer, { type: "buffer" });
 
@@ -45,27 +37,35 @@ export async function run(): Promise<void> {
     log(SOURCE_ID, `using sheet: ${sheetName}`);
 
     const ws = wb.Sheets[sheetName];
-    const rows = XLSX.utils.sheet_to_json<VicCrimeRow>(ws, { defval: "" });
+    const rows = XLSX.utils.sheet_to_json<Record<string, string | number>>(ws, { defval: "" });
     log(SOURCE_ID, `parsed ${rows.length} rows`);
 
     // Group by LGA + period — sum all offence divisions
     const grouped = new Map<string, { total: number; breakdown: Record<string, number>; date: Date }>();
 
     for (const row of rows) {
-      const lga = String(row["Local Government Area"] ?? "").trim();
-      const yearStr = String(row["Year ending"] ?? "").trim();
+      const lga = String(
+        row["Local Government Area"] ?? row["LGA"] ?? row["lga"] ?? ""
+      ).trim();
+      const yearStr = String(
+        row["Year ending"] ?? row["Year Ending"] ?? row["year_ending"] ?? row["Year"] ?? ""
+      ).trim();
       if (!lga || !yearStr) continue;
 
-      // "Year ending" is often "December 2023" — extract year
+      // "Year ending" is often "December 2023" — extract 4-digit year
       const yearMatch = yearStr.match(/\d{4}/);
       if (!yearMatch) continue;
       const year = yearMatch[0];
-      const period = year;
 
       const key = `${lga}|${year}`;
       const existing = grouped.get(key) ?? { total: 0, breakdown: {}, date: new Date(`${year}-12-01`) };
-      const incidents = parseInt(String(row["Incidents Recorded"])) || 0;
-      const division = String(row["Offence Division"] ?? "Other").trim();
+
+      const incidents = parseInt(String(
+        row["Incidents Recorded"] ?? row["incidents_recorded"] ?? row["Count"] ?? "0"
+      )) || 0;
+      const division = String(
+        row["Offence Division"] ?? row["offence_division"] ?? row["Offence"] ?? "Other"
+      ).trim();
 
       existing.total += incidents;
       existing.breakdown[division] = (existing.breakdown[division] ?? 0) + incidents;

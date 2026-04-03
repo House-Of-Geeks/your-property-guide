@@ -2,47 +2,71 @@
  * SA Crime Stats Sync (SA Police)
  *
  * Downloads suburb-level crime data via the data.sa.gov.au CKAN API.
+ * The dataset contains suburb-based statistics for crimes against the person
+ * and crimes against property.
  *
- * Data source: https://data.sa.gov.au/data/dataset/crime-statistics
+ * Data source: https://data.sa.gov.au/data/dataset/860126f7-eeb5-4fbc-be44-069aa0467d11
  * Schedule: Quarterly
  */
 import "dotenv/config";
+import Papa from "papaparse";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
 import { resolveSlug } from "../slug-matcher";
-import { fetchCkan, getCkanResourceId } from "../ckan";
+import { getCkanDownloadUrl } from "../ckan";
 
 const SOURCE_ID = "crime-sa";
-const CKAN_BASE = "https://data.sa.gov.au";
-const PACKAGE_ID = "crime-statistics";
+const CKAN_BASE = "https://data.sa.gov.au/data";
+// SA Police crime statistics — suburb-based CSV data
+const PACKAGE_ID = "860126f7-eeb5-4fbc-be44-069aa0467d11";
 
 interface SaCrimeRow {
-  suburb:        string;
-  postcode?:     string;
-  year:          string;
-  offence_level1: string;
-  offence_level2: string;
-  offence_count: string;
+  [key: string]: string;
 }
 
 export async function run(): Promise<void> {
   await startSync(SOURCE_ID);
   try {
-    const resourceId = await getCkanResourceId(PACKAGE_ID, CKAN_BASE, "CSV");
-    log(SOURCE_ID, `resource ID: ${resourceId}`);
+    const csvUrl = await getCkanDownloadUrl(PACKAGE_ID, CKAN_BASE, "CSV");
+    log(SOURCE_ID, `downloading from ${csvUrl}`);
 
-    const rows = await fetchCkan<SaCrimeRow>(resourceId, CKAN_BASE);
-    log(SOURCE_ID, `fetched ${rows.length} rows`);
+    const res = await fetch(csvUrl);
+    if (!res.ok) throw new Error(`HTTP ${res.status} downloading SA crime CSV`);
+    const text = await res.text();
+    const { data } = Papa.parse<SaCrimeRow>(text, { header: true, skipEmptyLines: true });
+    log(SOURCE_ID, `parsed ${data.length} rows`);
 
-    const grouped = new Map<string, { total: number; breakdown: Record<string, number>; postcode?: string; date: Date }>();
+    // Infer year from URL (e.g. data_sa_crime_q2_2025-26.csv → 2025)
+    const urlYearMatch = csvUrl.match(/(\d{4})-(\d{2})/);
+    const urlYear = urlYearMatch?.[1] ?? String(new Date().getFullYear() - 1);
 
-    for (const row of rows) {
-      if (!row.suburb || !row.year) continue;
-      const key = `${row.suburb}|${row.year}`;
-      const existing = grouped.get(key) ?? { total: 0, breakdown: {}, postcode: row.postcode, date: new Date(`${row.year}-01-01`) };
-      const n = parseInt(row.offence_count) || 0;
+    const grouped = new Map<string, { total: number; breakdown: Record<string, number>; postcode?: string; date: Date; period: string }>();
+
+    for (const row of data) {
+      // Column name variants across SA crime CSV releases
+      const suburb = String(
+        row["Suburb"] ?? row["suburb"] ?? row["Location"] ?? row["location"] ?? ""
+      ).trim();
+      const postcode = String(row["Postcode"] ?? row["postcode"] ?? "").trim();
+      const rawYear = String(
+        row["Year"] ?? row["year"] ?? row["Financial_Year"] ?? row["financial_year"] ?? urlYear
+      ).trim();
+      if (!suburb || !rawYear) continue;
+
+      // Normalise year — SA uses financial years like "2025-26", grab first year
+      const yearMatch = rawYear.match(/(\d{4})/);
+      const year = yearMatch?.[1] ?? rawYear;
+      const period = year;
+
+      const key = `${suburb}|${postcode}|${period}`;
+      const existing = grouped.get(key) ?? { total: 0, breakdown: {}, postcode: postcode || undefined, date: new Date(`${year}-01-01`), period };
+
+      const offence = String(
+        row["Offence_Level_1"] ?? row["offence_level_1"] ?? row["Offence"] ?? row["offence"] ?? "Other"
+      ).trim();
+      const n = parseInt(String(row["Offence_Count"] ?? row["offence_count"] ?? row["Count"] ?? row["count"] ?? "0")) || 0;
       existing.total += n;
-      if (row.offence_level1) existing.breakdown[row.offence_level1] = (existing.breakdown[row.offence_level1] ?? 0) + n;
+      if (offence) existing.breakdown[offence] = (existing.breakdown[offence] ?? 0) + n;
       grouped.set(key, existing);
     }
 
@@ -50,8 +74,8 @@ export async function run(): Promise<void> {
     let latestDate: Date | undefined;
 
     for (const [key, data] of grouped) {
-      const [suburbName, period] = key.split("|");
-      const suburbSlug = await resolveSlug(suburbName, "SA", data.postcode ?? "");
+      const [suburbName, postcode, period] = key.split("|");
+      const suburbSlug = await resolveSlug(suburbName, "SA", postcode);
       if (!latestDate || data.date > latestDate) latestDate = data.date;
 
       await prisma.suburbCrimeStat.upsert({
@@ -59,7 +83,7 @@ export async function run(): Promise<void> {
         create: {
           suburbSlug,
           suburbName,
-          postcode:         data.postcode ?? null,
+          postcode:         postcode || null,
           state:            "SA",
           period,
           periodDate:       data.date,
