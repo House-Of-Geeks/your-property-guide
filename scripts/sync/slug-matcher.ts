@@ -43,10 +43,21 @@ export async function resolveSlug(
   // Postcode-only fallback (handles name spelling differences)
   const pcode = postcode.trim();
   const stateNorm = normalise(state);
-  const matches: string[] = [];
+  if (pcode) {
+    const matches: string[] = [];
+    for (const [k, slug] of map) {
+      const parts = k.split("|");
+      if (parts[1] === stateNorm && parts[2] === pcode) matches.push(slug);
+    }
+    if (matches.length === 1) return matches[0];
+  }
+
+  // Name+state fallback (for sources that have no postcode, e.g. SA/VIC rental)
+  const nameNorm = normalise(name);
+  const nameMatches: string[] = [];
   for (const [k, slug] of map) {
     const parts = k.split("|");
-    if (parts[1] === stateNorm && parts[2] === pcode) matches.push(slug);
+    if (parts[0] === nameNorm && parts[1] === stateNorm) nameMatches.push(slug);
   }
-  return matches.length === 1 ? matches[0] : null;
+  return nameMatches.length === 1 ? nameMatches[0] : null;
 }
