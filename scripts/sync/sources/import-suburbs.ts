@@ -22,6 +22,10 @@ function makeSlug(name: string, state: string, postcode: string): string {
   return `${namePart}-${state.toLowerCase()}-${postcode}`;
 }
 
+function titleCase(s: string): string {
+  return s.toLowerCase().replace(/(?:^|\s|-|')\S/g, (c) => c.toUpperCase());
+}
+
 export async function run(): Promise<void> {
   await startSync(SOURCE_ID);
   try {
@@ -86,11 +90,11 @@ export async function run(): Promise<void> {
         return {
           id:               randomUUID(),
           slug,
-          name,
+          name:             titleCase(name),
           postcode,
           state,
           region,
-          description:      `${name} is a suburb in ${region}.`,
+          description:      `${titleCase(name)} is a suburb in ${region}.`,
           heroImage:        "/images/suburbs/default.jpg",
           medianHousePrice: 0,
           medianUnitPrice:  0,
