@@ -6,6 +6,7 @@ import { z } from "zod";
 import { useState } from "react";
 import { Button, Input } from "@/components/ui";
 import { Send, CheckCircle } from "lucide-react";
+import { clarityEvent, clarityTag } from "@/lib/clarity";
 
 const enquirySchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -62,6 +63,8 @@ export function EnquiryForm({
         }),
       });
       if (!res.ok) throw new Error("Failed to send enquiry");
+      clarityEvent("contact_us");
+      clarityTag("enquiry_type", type);
       setSubmitted(true);
     } catch {
       setError("Something went wrong. Please try again.");

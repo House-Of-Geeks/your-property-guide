@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Button, Input, Select } from "@/components/ui";
 import { SUBURBS, PROPERTY_TYPES, PRICE_RANGES_BUY, BEDROOM_OPTIONS } from "@/lib/constants";
 import { CheckCircle, Lock } from "lucide-react";
+import { clarityEvent, clarityTag } from "@/lib/clarity";
 
 const offMarketSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -57,6 +58,9 @@ export function OffMarketRegisterForm() {
         }),
       });
       if (!res.ok) throw new Error("Failed to register");
+      clarityEvent("sign_up");
+      clarityTag("signup_type", "off_market_alert");
+      clarityTag("signup_suburb", data.suburbs);
       setSubmitted(true);
     } catch {
       setError("Something went wrong. Please try again.");

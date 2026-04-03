@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Button, Input, Select } from "@/components/ui";
 import { SUBURBS, PROPERTY_TYPES } from "@/lib/constants";
 import { CheckCircle } from "lucide-react";
+import { clarityEvent, clarityTag } from "@/lib/clarity";
 
 const appraisalSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -48,6 +49,9 @@ export function AppraisalForm() {
         }),
       });
       if (!res.ok) throw new Error("Failed to submit");
+      clarityEvent("request_quote");
+      clarityTag("appraisal_suburb", data.suburb);
+      clarityTag("appraisal_property_type", data.propertyType);
       setSubmitted(true);
     } catch {
       setError("Something went wrong. Please try again.");
