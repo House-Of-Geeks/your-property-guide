@@ -66,3 +66,7 @@ jobs:
       - name: Sync crime stats (SA)
         run: npx tsx scripts/sync/run.ts crime-sa
         continue-on-error: true
+
+      - name: Link suburb stubs and fix null slugs
+        run: npx tsx scripts/sync/run.ts import-suburbs
+        continue-on-error: true

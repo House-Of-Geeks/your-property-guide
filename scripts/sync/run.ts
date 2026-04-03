@@ -19,18 +19,20 @@ import { run as syncCrimeNsw }    from "./sources/crime-nsw";
 import { run as syncCrimeVic }    from "./sources/crime-vic";
 import { run as syncCrimeQld }    from "./sources/crime-qld";
 import { run as syncCrimeSa }     from "./sources/crime-sa";
-import { run as syncCrimeWa }     from "./sources/crime-wa";
+import { run as syncCrimeWa }       from "./sources/crime-wa";
+import { run as importSuburbs }     from "./sources/import-suburbs";
 
 const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" | "annual" }> = {
-  "acara-schools": { run: syncAcaraSchools, schedule: "annual"    },
-  "rental-vic":    { run: syncRentalVic,    schedule: "quarterly" },
-  "rental-nsw":    { run: syncRentalNsw,    schedule: "quarterly" },
-  "rental-sa":     { run: syncRentalSa,     schedule: "quarterly" },
-  "crime-nsw":     { run: syncCrimeNsw,     schedule: "quarterly" },
-  "crime-vic":     { run: syncCrimeVic,     schedule: "quarterly" },
-  "crime-qld":     { run: syncCrimeQld,     schedule: "quarterly" },
-  "crime-sa":      { run: syncCrimeSa,      schedule: "quarterly" },
-  "crime-wa":      { run: syncCrimeWa,      schedule: "annual"    },
+  "import-suburbs": { run: importSuburbs,    schedule: "quarterly" },
+  "acara-schools":  { run: syncAcaraSchools, schedule: "annual"    },
+  "rental-vic":     { run: syncRentalVic,    schedule: "quarterly" },
+  "rental-nsw":     { run: syncRentalNsw,    schedule: "quarterly" },
+  "rental-sa":      { run: syncRentalSa,     schedule: "quarterly" },
+  "crime-nsw":      { run: syncCrimeNsw,     schedule: "quarterly" },
+  "crime-vic":      { run: syncCrimeVic,     schedule: "quarterly" },
+  "crime-qld":      { run: syncCrimeQld,     schedule: "quarterly" },
+  "crime-sa":       { run: syncCrimeSa,      schedule: "quarterly" },
+  "crime-wa":       { run: syncCrimeWa,      schedule: "annual"    },
 };
 
 async function main(): Promise<void> {
