@@ -1,0 +1,68 @@
+name: Data Sync — Quarterly (rental + crime)
+
+on:
+  schedule:
+    # 02:00 UTC on the 1st of January, April, July, October
+    - cron: "0 2 1 1,4,7,10 *"
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "Source ID to run (or 'quarterly' for all)"
+        default: "quarterly"
+        required: false
+
+jobs:
+  sync:
+    name: Sync quarterly data sources
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      # Optional: set these if the default URLs have changed
+      BOCSAR_NSW_ZIP_URL: ${{ secrets.BOCSAR_NSW_ZIP_URL }}
+      VIC_CRIME_EXCEL_URL: ${{ secrets.VIC_CRIME_EXCEL_URL }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Sync rental data (VIC)
+        run: npx tsx scripts/sync/run.ts rental-vic
+        continue-on-error: true
+
+      - name: Sync rental data (NSW)
+        run: npx tsx scripts/sync/run.ts rental-nsw
+        continue-on-error: true
+
+      - name: Sync rental data (SA)
+        run: npx tsx scripts/sync/run.ts rental-sa
+        continue-on-error: true
+
+      - name: Sync crime stats (NSW — BOCSAR)
+        run: npx tsx scripts/sync/run.ts crime-nsw
+        continue-on-error: true
+
+      - name: Sync crime stats (VIC)
+        run: npx tsx scripts/sync/run.ts crime-vic
+        continue-on-error: true
+
+      - name: Sync crime stats (QLD)
+        run: npx tsx scripts/sync/run.ts crime-qld
+        continue-on-error: true
+
+      - name: Sync crime stats (SA)
+        run: npx tsx scripts/sync/run.ts crime-sa
+        continue-on-error: true

@@ -394,6 +394,28 @@ async function main() {
   }
   console.log(`  ✓ ${blogPosts.length} blog posts seeded`);
 
+  // ── 7. Data Sources (sync registry) ───────────────────────────────────────
+  console.log("Seeding data sources...");
+  const dataSources = [
+    { id: "acara-schools", label: "ACARA School Profiles",          category: "schools", schedule: "annual",    sourceUrl: "https://www.acara.edu.au/contact-us/acara-data-access" },
+    { id: "rental-vic",    label: "VIC Rental Report (DFFH)",        category: "rental",  schedule: "quarterly", sourceUrl: "https://discover.data.vic.gov.au/dataset/rental-report" },
+    { id: "rental-nsw",    label: "NSW Rent and Sales Report",        category: "rental",  schedule: "quarterly", sourceUrl: "https://data.nsw.gov.au/data/dataset/rent-and-sales-report" },
+    { id: "rental-sa",     label: "SA Private Rent Report",           category: "rental",  schedule: "quarterly", sourceUrl: "https://data.sa.gov.au/data/dataset/private-rent-report" },
+    { id: "crime-nsw",     label: "NSW Crime Stats (BOCSAR)",         category: "crime",   schedule: "quarterly", sourceUrl: "https://bocsar.nsw.gov.au/statistics-dashboards/open-datasets/criminal-offences-data.html" },
+    { id: "crime-vic",     label: "VIC Crime Statistics Agency",      category: "crime",   schedule: "quarterly", sourceUrl: "https://www.crimestatistics.vic.gov.au/crime-statistics/latest-victorian-crime-data/download-data" },
+    { id: "crime-qld",     label: "QLD Police Reported Offences",     category: "crime",   schedule: "quarterly", sourceUrl: "https://www.data.qld.gov.au/dataset/reported-offences-qld" },
+    { id: "crime-sa",      label: "SA Police Crime Statistics",       category: "crime",   schedule: "quarterly", sourceUrl: "https://data.sa.gov.au/data/dataset/crime-statistics" },
+    { id: "crime-wa",      label: "WA Police Crime Statistics",       category: "crime",   schedule: "annual",    sourceUrl: "https://www.police.wa.gov.au/Crime/CrimeStatistics" },
+  ];
+  for (const ds of dataSources) {
+    await prisma.dataSource.upsert({
+      where: { id: ds.id },
+      create: ds,
+      update: { label: ds.label, sourceUrl: ds.sourceUrl },
+    });
+  }
+  console.log(`  ✓ ${dataSources.length} data sources seeded`);
+
   // ── Summary ────────────────────────────────────────────────────────────────
   console.log("\n✅ Seed complete!");
   console.log(`   Agencies:              ${agencies.length}`);

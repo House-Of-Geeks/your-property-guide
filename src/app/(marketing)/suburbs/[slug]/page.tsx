@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, MapPin, Bus, ShoppingBag } from "lucide-react";
-import { SuburbHero, SuburbStats as SuburbStatsComponent } from "@/components/suburb";
+import { SuburbHero, SuburbStats as SuburbStatsComponent, DataFreshnessNote } from "@/components/suburb";
 import { SuburbSchools } from "@/components/suburb/SuburbSchools";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { Breadcrumbs } from "@/components/layout";
@@ -10,6 +10,7 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { Badge, Button } from "@/components/ui";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getPropertiesBySuburb } from "@/lib/services/property-service";
+import { getRentalFreshness, getCrimeFreshness } from "@/lib/services/data-freshness";
 import { suburbTitle, suburbDescription } from "@/lib/utils/seo";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
@@ -36,7 +37,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) notFound();
 
-  const properties = await getPropertiesBySuburb(slug, 6);
+  const [properties, rentalFreshness, crimeFreshness] = await Promise.all([
+    getPropertiesBySuburb(slug, 6),
+    getRentalFreshness(suburb.state),
+    getCrimeFreshness(suburb.state),
+  ]);
 
   return (
     <>
@@ -67,28 +72,36 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         </div>
 
         {/* Rent stats */}
-        <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="p-4 rounded-xl border border-gray-200 bg-white">
-            <p className="text-xs text-gray-500 uppercase tracking-wider">Weekly Rent (House)</p>
-            <p className="text-xl font-bold text-gray-900 mt-1">${suburb.stats.medianRentHouse}/wk</p>
+        <div className="mt-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+              <p className="text-xs text-gray-500 uppercase tracking-wider">Weekly Rent (House)</p>
+              <p className="text-xl font-bold text-gray-900 mt-1">${suburb.stats.medianRentHouse}/wk</p>
+            </div>
+            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+              <p className="text-xs text-gray-500 uppercase tracking-wider">Weekly Rent (Unit)</p>
+              <p className="text-xl font-bold text-gray-900 mt-1">${suburb.stats.medianRentUnit}/wk</p>
+            </div>
+            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+              <p className="text-xs text-gray-500 uppercase tracking-wider">Owner Occupied</p>
+              <p className="text-xl font-bold text-gray-900 mt-1">{suburb.stats.ownerOccupied}%</p>
+            </div>
+            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+              <p className="text-xs text-gray-500 uppercase tracking-wider">Renter Occupied</p>
+              <p className="text-xl font-bold text-gray-900 mt-1">{suburb.stats.renterOccupied}%</p>
+            </div>
           </div>
-          <div className="p-4 rounded-xl border border-gray-200 bg-white">
-            <p className="text-xs text-gray-500 uppercase tracking-wider">Weekly Rent (Unit)</p>
-            <p className="text-xl font-bold text-gray-900 mt-1">${suburb.stats.medianRentUnit}/wk</p>
-          </div>
-          <div className="p-4 rounded-xl border border-gray-200 bg-white">
-            <p className="text-xs text-gray-500 uppercase tracking-wider">Owner Occupied</p>
-            <p className="text-xl font-bold text-gray-900 mt-1">{suburb.stats.ownerOccupied}%</p>
-          </div>
-          <div className="p-4 rounded-xl border border-gray-200 bg-white">
-            <p className="text-xs text-gray-500 uppercase tracking-wider">Renter Occupied</p>
-            <p className="text-xl font-bold text-gray-900 mt-1">{suburb.stats.renterOccupied}%</p>
-          </div>
+          <DataFreshnessNote
+            label="Rental"
+            asOf={rentalFreshness?.dataAsOf ?? null}
+            source={rentalFreshness?.label}
+          />
         </div>
 
         {/* Schools */}
         <div className="mt-8">
           <SuburbSchools schools={suburb.schools} />
+          <DataFreshnessNote label="School" asOf={null} source="ACARA" />
         </div>
 
         {/* Amenities & Transport */}

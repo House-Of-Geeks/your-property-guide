@@ -176,6 +176,10 @@ model Suburb {
   properties Property[]
   packages   HouseAndLandPackage[]
 
+  // Data provenance
+  statsSource    String    @default("seed") // "seed" | source ID e.g. "rental-vic"
+  statsUpdatedAt DateTime?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -194,6 +198,14 @@ model School {
   distance Float
   suburbId String
   suburb   Suburb @relation(fields: [suburbId], references: [id], onDelete: Cascade)
+  // ACARA fields (populated by sync job)
+  acaraId          String?   @unique
+  lat              Float?
+  lng              Float?
+  icsea            Int?
+  enrolment        Int?
+  website          String?
+  updatedFromAcara DateTime?
 
   @@index([suburbId])
 }
@@ -271,4 +283,79 @@ model HouseAndLand_Image {
   package   HouseAndLandPackage @relation(fields: [packageId], references: [id], onDelete: Cascade)
 
   @@index([packageId])
+}
+
+// ---------------------------------------------------------------------------
+// Data Sync Registry
+// ---------------------------------------------------------------------------
+model DataSource {
+  id            String    @id       // e.g. "rental-vic", "crime-nsw", "acara-schools"
+  label         String
+  category      String              // "schools" | "rental" | "crime"
+  schedule      String              // "annual" | "quarterly" | "monthly"
+  sourceUrl     String
+  lastFetchedAt DateTime?
+  dataAsOf      DateTime?
+  recordCount   Int?
+  status        String    @default("idle") // "idle" | "running" | "ok" | "error"
+  errorMsg      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([status])
+}
+
+// ---------------------------------------------------------------------------
+// Suburb Rental Stats (time series — one row per suburb per period per source)
+// ---------------------------------------------------------------------------
+model SuburbRentalStat {
+  id              String   @id @default(cuid())
+  suburbSlug      String?            // null until suburb exists in DB
+  suburbName      String
+  postcode        String
+  state           String
+  period          String             // e.g. "2024-Q3"
+  periodDate      DateTime
+  medianRentHouse Int?
+  medianRentUnit  Int?
+  medianRent3Bed  Int?
+  medianRent2Bed  Int?
+  medianRent1Bed  Int?
+  bondLodgements  Int?
+  source          String             // DataSource.id
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([suburbName, postcode, state, period])
+  @@index([suburbSlug])
+  @@index([state, period])
+  @@index([postcode])
+}
+
+// ---------------------------------------------------------------------------
+// Suburb Crime Stats (time series — one row per suburb per year per source)
+// ---------------------------------------------------------------------------
+model SuburbCrimeStat {
+  id               String   @id @default(cuid())
+  suburbSlug       String?
+  suburbName       String
+  postcode         String?
+  lga              String?
+  state            String
+  period           String             // e.g. "2024"
+  periodDate       DateTime
+  totalOffences    Int
+  offenceBreakdown Json     @default("{}")
+  source           String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([suburbName, state, period, source])
+  @@index([suburbSlug])
+  @@index([state, period])
+  @@index([lga])
 }
