@@ -67,6 +67,14 @@ jobs:
         run: npx tsx scripts/sync/run.ts crime-sa
         continue-on-error: true
 
+      - name: Sync median house prices (VIC)
+        run: npx tsx scripts/sync/run.ts sales-vic
+        continue-on-error: true
+
+      - name: Sync median house prices (SA)
+        run: npx tsx scripts/sync/run.ts sales-sa
+        continue-on-error: true
+
       - name: Link suburb stubs and fix null slugs
         run: npx tsx scripts/sync/run.ts import-suburbs
         continue-on-error: true

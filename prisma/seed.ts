@@ -408,6 +408,8 @@ async function main() {
     { id: "crime-qld",     label: "QLD Police Reported Offences",     category: "crime",   schedule: "quarterly", sourceUrl: "https://www.data.qld.gov.au/dataset/reported-offences-qld" },
     { id: "crime-sa",      label: "SA Police Crime Statistics",       category: "crime",   schedule: "quarterly", sourceUrl: "https://data.sa.gov.au/data/dataset/crime-statistics" },
     { id: "crime-wa",      label: "WA Police Crime Statistics",       category: "crime",   schedule: "annual",    sourceUrl: "https://www.police.wa.gov.au/Crime/CrimeStatistics" },
+    { id: "sales-vic",     label: "VIC Property Sales Report",         category: "sales",   schedule: "quarterly", sourceUrl: "https://discover.data.vic.gov.au/dataset/victorian-property-sales-report-median-house-by-suburb" },
+    { id: "sales-sa",      label: "SA Metro Median House Sales",       category: "sales",   schedule: "quarterly", sourceUrl: "https://data.sa.gov.au/data/dataset/0d447195-1158-4a3c-8cc7-0e333b87eb72" },
   ];
   for (const ds of dataSources) {
     await prisma.dataSource.upsert({
