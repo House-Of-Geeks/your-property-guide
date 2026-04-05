@@ -3,27 +3,75 @@ import Image from "next/image";
 import { headers } from "next/headers";
 import { db } from "@/lib/db";
 
-const STATIC_LINKS = {
-  "Property Search": [
-    { label: "Buy",               href: "/buy" },
-    { label: "Rent",              href: "/rent" },
-    { label: "Sold Results",      href: "/sold" },
-    { label: "Off-Market",        href: "/off-market" },
-    { label: "House & Land",      href: "/house-and-land" },
-  ],
-  Tools: [
-    { label: "Stamp Duty Calculator", href: "/stamp-duty-calculator" },
-    { label: "Free Appraisal",        href: "/appraisal" },
-    { label: "Find an Agent",         href: "/agents" },
-    { label: "Agencies",              href: "/agencies" },
-  ],
-  Company: [
-    { label: "About Us",      href: "/about" },
-    { label: "Blog",          href: "/blog" },
-    { label: "Contact",       href: "/contact" },
-    { label: "Privacy Policy", href: "/privacy" },
-  ],
-};
+const FOOTER_COLUMNS = [
+  {
+    heading: "States",
+    links: [
+      { label: "NSW",                href: "/buy?state=nsw" },
+      { label: "Victoria",           href: "/buy?state=vic" },
+      { label: "Queensland",         href: "/buy?state=qld" },
+      { label: "Western Australia",  href: "/buy?state=wa" },
+      { label: "South Australia",    href: "/buy?state=sa" },
+      { label: "Tasmania",           href: "/buy?state=tas" },
+      { label: "ACT",                href: "/buy?state=act" },
+      { label: "Northern Territory", href: "/buy?state=nt" },
+    ],
+  },
+  {
+    heading: "Capital Cities",
+    links: [
+      { label: "Sydney real estate",    href: "/suburbs/sydney-nsw-2000" },
+      { label: "Melbourne real estate", href: "/suburbs/melbourne-vic-3000" },
+      { label: "Brisbane real estate",  href: "/suburbs/brisbane-city-qld-4000" },
+      { label: "Perth real estate",     href: "/suburbs/perth-wa-6000" },
+      { label: "Adelaide real estate",  href: "/suburbs/adelaide-sa-5000" },
+      { label: "Hobart real estate",    href: "/suburbs/hobart-tas-7000" },
+      { label: "Canberra real estate",  href: "/suburbs/canberra-act-2601" },
+      { label: "Darwin real estate",    href: "/suburbs/darwin-nt-800" },
+    ],
+  },
+  {
+    heading: "Capital Cities – Rentals",
+    links: [
+      { label: "Sydney rental properties",    href: "/rent?suburb=sydney-nsw-2000" },
+      { label: "Melbourne rental properties", href: "/rent?suburb=melbourne-vic-3000" },
+      { label: "Brisbane rental properties",  href: "/rent?suburb=brisbane-city-qld-4000" },
+      { label: "Perth rental properties",     href: "/rent?suburb=perth-wa-6000" },
+      { label: "Adelaide rental properties",  href: "/rent?suburb=adelaide-sa-5000" },
+      { label: "Hobart rental properties",    href: "/rent?suburb=hobart-tas-7000" },
+      { label: "Canberra rental properties",  href: "/rent?suburb=canberra-act-2601" },
+      { label: "Darwin rental properties",    href: "/rent?suburb=darwin-nt-800" },
+    ],
+  },
+  {
+    heading: "Popular Areas",
+    links: [
+      { label: "Gold Coast",      href: "/suburbs/surfers-paradise-qld-4217" },
+      { label: "Sunshine Coast",  href: "/suburbs/maroochydore-qld-4558" },
+      { label: "Geelong",         href: "/suburbs/geelong-vic-3220" },
+      { label: "Newcastle",       href: "/suburbs/newcastle-nsw-2300" },
+      { label: "Wollongong",      href: "/suburbs/wollongong-nsw-2500" },
+      { label: "Cairns",          href: "/suburbs/cairns-city-qld-4870" },
+      { label: "Toowoomba",       href: "/suburbs/toowoomba-city-qld-4350" },
+      { label: "Ballarat",        href: "/suburbs/ballarat-central-vic-3350" },
+    ],
+  },
+  {
+    heading: "Your Property Guide",
+    links: [
+      { label: "Research Hub",          href: "/research" },
+      { label: "Suburb Profiles",       href: "/suburbs" },
+      { label: "Price Guide",           href: "/price-guide" },
+      { label: "Search by School",      href: "/schools" },
+      { label: "Mortgage Calculator",   href: "/mortgage-calculator" },
+      { label: "Free Appraisal",        href: "/appraisal" },
+      { label: "Find an Agent",         href: "/agents" },
+      { label: "Blog",                  href: "/blog" },
+      { label: "About",                 href: "/about" },
+      { label: "Privacy Policy",        href: "/privacy" },
+    ],
+  },
+];
 
 async function getSuburbForFooter(slug: string) {
   return db.suburb.findUnique({
@@ -42,14 +90,19 @@ function nearbyName(slug: string): string {
 
 function FooterBottom() {
   return (
-    <div className="mt-12 pt-8 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-4">
-      <p className="text-sm text-gray-400">
-        &copy; {new Date().getFullYear()} Your Property Guide. All rights reserved.
-      </p>
-      <div className="flex gap-6">
-        <Link href="/privacy" className="text-sm text-gray-400 hover:text-primary transition-colors">Privacy</Link>
-        <Link href="/contact" className="text-sm text-gray-400 hover:text-primary transition-colors">Contact</Link>
-        <Link href="/sitemap.xml" className="text-sm text-gray-400 hover:text-primary transition-colors">Sitemap</Link>
+    <div className="mt-12 pt-8 border-t border-gray-200">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <Link href="/" className="flex items-center">
+          <Image src="/images/YPG Logo.png" alt="Your Property Guide" width={130} height={50} className="h-10 w-auto" />
+        </Link>
+        <p className="text-sm text-gray-400">
+          &copy; {new Date().getFullYear()} Your Property Guide. All rights reserved.
+        </p>
+        <div className="flex gap-6">
+          <Link href="/privacy" className="text-sm text-gray-400 hover:text-primary transition-colors">Privacy</Link>
+          <Link href="/contact" className="text-sm text-gray-400 hover:text-primary transition-colors">Contact</Link>
+          <Link href="/sitemap.xml" className="text-sm text-gray-400 hover:text-primary transition-colors">Sitemap</Link>
+        </div>
       </div>
     </div>
   );
@@ -72,18 +125,6 @@ function LinkCol({ heading, links }: { heading: string; links: { label: string; 
   );
 }
 
-function Brand() {
-  return (
-    <div>
-      <Link href="/" className="flex items-center mb-4">
-        <Image src="/images/YPG Logo.png" alt="Your Property Guide" width={160} height={60} className="h-12 w-auto" />
-      </Link>
-      <p className="text-sm text-gray-500">
-        Your local property experts. Find homes for sale, rent, and off-market opportunities.
-      </p>
-    </div>
-  );
-}
 
 export async function Footer() {
   const h = await headers();
@@ -147,16 +188,13 @@ export async function Footer() {
     }
   }
 
-  // Default footer for all other pages
+  // Default footer for all other pages — Domain-style national columns
   return (
-    <footer className="bg-white text-gray-700 border-t-4 border-t-primary">
+    <footer className="bg-white text-gray-700 border-t border-gray-200">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
-          <div className="col-span-2 md:col-span-4 lg:col-span-1">
-            <Brand />
-          </div>
-          {Object.entries(STATIC_LINKS).map(([heading, links]) => (
-            <LinkCol key={heading} heading={heading} links={links} />
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
+          {FOOTER_COLUMNS.map((col) => (
+            <LinkCol key={col.heading} heading={col.heading} links={col.links} />
           ))}
         </div>
         <FooterBottom />
