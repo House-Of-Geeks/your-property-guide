@@ -71,19 +71,27 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="p-4 rounded-xl border border-gray-200 bg-white">
               <p className="text-xs text-gray-500 uppercase tracking-wider">Weekly Rent (House)</p>
-              <p className="text-xl font-bold text-gray-900 mt-1">${suburb.stats.medianRentHouse}/wk</p>
+              <p className="text-xl font-bold text-gray-900 mt-1">
+                {suburb.stats.medianRentHouse ? `$${suburb.stats.medianRentHouse}/wk` : "–"}
+              </p>
             </div>
             <div className="p-4 rounded-xl border border-gray-200 bg-white">
               <p className="text-xs text-gray-500 uppercase tracking-wider">Weekly Rent (Unit)</p>
-              <p className="text-xl font-bold text-gray-900 mt-1">${suburb.stats.medianRentUnit}/wk</p>
+              <p className="text-xl font-bold text-gray-900 mt-1">
+                {suburb.stats.medianRentUnit ? `$${suburb.stats.medianRentUnit}/wk` : "–"}
+              </p>
             </div>
             <div className="p-4 rounded-xl border border-gray-200 bg-white">
               <p className="text-xs text-gray-500 uppercase tracking-wider">Owner Occupied</p>
-              <p className="text-xl font-bold text-gray-900 mt-1">{suburb.stats.ownerOccupied}%</p>
+              <p className="text-xl font-bold text-gray-900 mt-1">
+                {suburb.stats.ownerOccupied ? `${suburb.stats.ownerOccupied}%` : "–"}
+              </p>
             </div>
             <div className="p-4 rounded-xl border border-gray-200 bg-white">
               <p className="text-xs text-gray-500 uppercase tracking-wider">Renter Occupied</p>
-              <p className="text-xl font-bold text-gray-900 mt-1">{suburb.stats.renterOccupied}%</p>
+              <p className="text-xl font-bold text-gray-900 mt-1">
+                {suburb.stats.renterOccupied ? `${suburb.stats.renterOccupied}%` : "–"}
+              </p>
             </div>
           </div>
           <DataFreshnessNote

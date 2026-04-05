@@ -37,30 +37,31 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
 
 export function SuburbStats({ suburb }: SuburbHeroProps) {
   const { stats } = suburb;
+  const na = "–";
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
       <StatCard
         label="Median House Price"
-        value={formatPriceFull(stats.medianHousePrice)}
-        subtext={`${formatPercentage(stats.annualGrowthHouse)} annual growth`}
+        value={stats.medianHousePrice ? formatPriceFull(stats.medianHousePrice) : na}
+        subtext={stats.annualGrowthHouse ? `${formatPercentage(stats.annualGrowthHouse)} annual growth` : "Sales data pending"}
         icon={<TrendingUp className="w-5 h-5 text-primary" />}
       />
       <StatCard
         label="Median Unit Price"
-        value={formatPriceFull(stats.medianUnitPrice)}
-        subtext={`${formatPercentage(stats.annualGrowthUnit)} annual growth`}
+        value={stats.medianUnitPrice ? formatPriceFull(stats.medianUnitPrice) : na}
+        subtext={stats.annualGrowthUnit ? `${formatPercentage(stats.annualGrowthUnit)} annual growth` : "Sales data pending"}
         icon={<TrendingUp className="w-5 h-5 text-accent" />}
       />
       <StatCard
         label="Days on Market"
-        value={`${stats.daysOnMarket}`}
+        value={stats.daysOnMarket ? `${stats.daysOnMarket}` : na}
         subtext="Average days to sell"
         icon={<Clock className="w-5 h-5 text-primary" />}
       />
       <StatCard
         label="Population"
-        value={stats.population.toLocaleString()}
-        subtext={`Median age: ${stats.medianAge}`}
+        value={stats.population ? stats.population.toLocaleString() : na}
+        subtext={stats.medianAge ? `Median age: ${stats.medianAge}` : "Census data pending"}
         icon={<Users className="w-5 h-5 text-accent" />}
       />
     </div>
