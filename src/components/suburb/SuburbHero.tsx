@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Search, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import { SuburbSearch } from "./SuburbSearch";
 import type { Suburb } from "@/types";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { TrendingUp, Clock, Users } from "lucide-react";
@@ -47,22 +48,7 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
             </ol>
           </nav>
 
-          {/* Search box */}
-          <form action="/suburbs" method="get" className="hidden sm:flex items-center gap-0 flex-shrink-0">
-            <input
-              type="text"
-              name="q"
-              placeholder="Search by suburb or postcode"
-              className="w-64 lg:w-80 h-9 px-3 text-sm border border-gray-300 border-r-0 rounded-l-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
-            />
-            <button
-              type="submit"
-              className="h-9 w-9 flex items-center justify-center bg-primary hover:bg-primary/90 text-white rounded-r-md transition-colors flex-shrink-0"
-              aria-label="Search"
-            >
-              <Search className="w-4 h-4" />
-            </button>
-          </form>
+          <SuburbSearch />
         </div>
       </div>
 
