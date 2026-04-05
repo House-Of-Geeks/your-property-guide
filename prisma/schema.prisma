@@ -163,10 +163,13 @@ model Suburb {
   annualGrowthHouse Float
   annualGrowthUnit  Float
   daysOnMarket      Int
+  salesCountHouse   Int     @default(0)
   population        Int
   medianAge         Int
   ownerOccupied     Float
   renterOccupied    Float
+  householdsFamily     Float @default(0)
+  householdsLonePerson Float @default(0)
   // Arrays
   amenities      String[]
   transportLinks String[]

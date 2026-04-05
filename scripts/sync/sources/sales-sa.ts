@@ -4,12 +4,17 @@
  * Downloads the Metro Adelaide median house sale price XLSX from the
  * SA Government open data portal via CKAN.
  *
- * XLSX layout:
- *   Row 1:  Header row — includes "Suburb", "Median 4Q {year}", "YoY % Change"
- *   Row 2+: Data — Col B: Suburb name, Col F: current median price,
- *             Col G: YoY change (decimal, e.g. -0.042 = -4.2%)
+ * XLSX layout (two periods side by side):
+ *   Row 1:  Headers — "City", "Suburb",
+ *             "Sales 4Q {prev_year}", "Median 4Q {prev_year}",
+ *             "Sales 4Q {year}", "Median 4Q {year}",
+ *             "Median Change"
+ *   Row 2+: Data rows — suburb names in ALL CAPS
  *
- * Period is encoded in the column header name (e.g. "Median 4Q 2025").
+ * We pick the LATEST median column (highest year in header name),
+ * the sales count directly preceding it, and the "Median Change" decimal
+ * (e.g. -0.042 = -4.2%) for YoY growth.
+ *
  * This data covers Metro Adelaide only (not regional SA).
  *
  * Data source: https://data.sa.gov.au/data/dataset/0d447195-1158-4a3c-8cc7-0e333b87eb72
@@ -31,12 +36,11 @@ async function getLatestResourceUrl(): Promise<{ url: string; periodDate: Date; 
   if (!res.ok) throw new Error(`CKAN HTTP ${res.status}: ${apiUrl}`);
   const json = await res.json() as {
     success: boolean;
-    result: { resources: Array<{ url: string; period_end?: string; metadata_modified?: string; name?: string }> }
+    result: { resources: Array<{ url: string; period_end?: string; metadata_modified?: string }> }
   };
   if (!json.success) throw new Error(`CKAN error for package ${PACKAGE_ID}`);
 
   const resources = [...json.result.resources];
-  // Sort by period_end desc (most recent first)
   resources.sort((a, b) =>
     (b.period_end ?? b.metadata_modified ?? "").localeCompare(a.period_end ?? a.metadata_modified ?? "")
   );
@@ -44,7 +48,6 @@ async function getLatestResourceUrl(): Promise<{ url: string; periodDate: Date; 
   const latest = resources[0];
   if (!latest?.url) throw new Error(`No resource URL found for SA sales package`);
 
-  // Parse period from period_end or metadata_modified
   const dateStr = latest.period_end ?? latest.metadata_modified ?? "";
   const periodDate = dateStr ? new Date(dateStr) : new Date();
   const year = periodDate.getFullYear();
@@ -55,10 +58,75 @@ async function getLatestResourceUrl(): Promise<{ url: string; periodDate: Date; 
   return { url: latest.url, periodDate, period };
 }
 
-async function downloadXlsx(url: string): Promise<Buffer> {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status} downloading SA sales XLSX`);
-  return Buffer.from(await res.arrayBuffer());
+interface SuburbSalesRow {
+  median:    number;
+  salesCount: number;
+  yoyGrowth: number | null; // percentage e.g. -4.2
+}
+
+function parseXlsx(buffer: Buffer): Map<string, SuburbSalesRow> {
+  const wb = XLSX.read(buffer, { type: "buffer" });
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  const raw = XLSX.utils.sheet_to_json<(string | number)[]>(ws, { header: 1, defval: "" });
+
+  if (raw.length < 2) throw new Error("SA sales XLSX has fewer than 2 rows");
+
+  const headers = (raw[0] as (string | number)[]).map((h) => String(h ?? "").trim());
+
+  const suburbCol = headers.findIndex((h) => /^suburb$/i.test(h));
+  if (suburbCol < 0) throw new Error(`No Suburb column. Headers: ${headers.join(", ")}`);
+
+  // Find the latest "Median {period} {year}" column — the one with the highest year.
+  // Exclude "Median Change" which also starts with "Median".
+  let latestMedianCol = -1;
+  let latestYear = -1;
+  headers.forEach((h, i) => {
+    const m = h.match(/^Median\s+\S+\s+(\d{4})$/i);
+    if (m) {
+      const yr = parseInt(m[1]);
+      if (yr > latestYear) { latestYear = yr; latestMedianCol = i; }
+    }
+  });
+  if (latestMedianCol < 0) throw new Error(`No Median column found. Headers: ${headers.join(", ")}`);
+
+  // Sales count is the column immediately before the median column
+  const salesCol = latestMedianCol - 1;
+
+  // YoY change column ("Median Change")
+  const yoyCol = headers.findIndex((h) => /change/i.test(h));
+
+  log(SOURCE_ID, `median column: "${headers[latestMedianCol]}", sales: "${headers[salesCol]}", yoy: "${yoyCol >= 0 ? headers[yoyCol] : "none"}"`);
+
+  const result = new Map<string, SuburbSalesRow>();
+
+  for (let i = 1; i < raw.length; i++) {
+    const row = raw[i];
+    const suburb = String(row[suburbCol] ?? "").trim();
+    if (!suburb || suburb.startsWith("^") || suburb.startsWith("*") || suburb.startsWith("Source")) continue;
+
+    const medianRaw = row[latestMedianCol];
+    const median = typeof medianRaw === "number"
+      ? Math.round(medianRaw)
+      : parseInt(String(medianRaw).replace(/[,$]/g, "")) || 0;
+    if (!median) continue;
+
+    const salesRaw = row[salesCol];
+    const salesCount = typeof salesRaw === "number"
+      ? Math.round(salesRaw)
+      : parseInt(String(salesRaw).replace(/,/g, "")) || 0;
+
+    const yoyRaw = yoyCol >= 0 ? row[yoyCol] : null;
+    const yoyDecimal = typeof yoyRaw === "number"
+      ? yoyRaw
+      : yoyRaw ? parseFloat(String(yoyRaw)) : null;
+    const yoyGrowth = (yoyDecimal !== null && !isNaN(yoyDecimal))
+      ? Math.round(yoyDecimal * 1000) / 10  // decimal → %, 1 d.p.
+      : null;
+
+    result.set(suburb.toLowerCase(), { median, salesCount, yoyGrowth });
+  }
+
+  return result;
 }
 
 export async function run(): Promise<void> {
@@ -68,51 +136,10 @@ export async function run(): Promise<void> {
     log(SOURCE_ID, `downloading from ${url}`);
     log(SOURCE_ID, `period: ${period}`);
 
-    const buffer = await downloadXlsx(url);
-    const wb = XLSX.read(buffer, { type: "buffer" });
-    const ws = wb.Sheets[wb.SheetNames[0]];
-    const raw = XLSX.utils.sheet_to_json<(string | number)[]>(ws, { header: 1, defval: "" });
+    const buffer = await (await fetch(url)).arrayBuffer().then(Buffer.from);
+    const salesData = parseXlsx(buffer);
+    log(SOURCE_ID, `parsed ${salesData.size} suburb rows from XLSX`);
 
-    if (raw.length < 2) throw new Error("SA sales XLSX has fewer than 2 rows");
-
-    // Row 0 is the header — find column indices
-    const headers = (raw[0] as (string | number)[]).map((h) => String(h ?? "").trim());
-
-    // Suburb column (Col B = index 1)
-    const suburbCol = headers.findIndex((h) => /suburb/i.test(h));
-    if (suburbCol < 0) throw new Error(`Could not find Suburb column in SA sales XLSX. Headers: ${headers.join(", ")}`);
-
-    // Median column — "Median 4Q {year}" or similar
-    const medianCol = headers.findIndex((h) => /median/i.test(h));
-    if (medianCol < 0) throw new Error(`Could not find Median column in SA sales XLSX. Headers: ${headers.join(", ")}`);
-
-    // Try to extract period from column header name
-    const medianHeader = headers[medianCol];
-    const periodFromHeader = medianHeader.match(/(\d{4})/);
-    if (periodFromHeader) {
-      log(SOURCE_ID, `median column: "${medianHeader}"`);
-    }
-
-    const medians = new Map<string, number>(); // lowercase suburb name → median price
-
-    // Data rows start at index 1
-    for (let i = 1; i < raw.length; i++) {
-      const row = raw[i];
-      const suburb = String(row[suburbCol] ?? "").trim();
-      if (!suburb || suburb.startsWith("^") || suburb.startsWith("*") || suburb.startsWith("Source")) continue;
-
-      const medianRaw = row[medianCol];
-      const median = typeof medianRaw === "number"
-        ? Math.round(medianRaw)
-        : parseInt(String(medianRaw).replace(/[,$]/g, "")) || 0;
-
-      if (!median) continue;
-      medians.set(suburb.toLowerCase(), median);
-    }
-
-    log(SOURCE_ID, `parsed ${medians.size} suburb medians from XLSX`);
-
-    // Load SA suburbs from DB
     const suburbs = await prisma.suburb.findMany({
       where: { state: "SA" },
       select: { id: true, name: true },
@@ -121,22 +148,23 @@ export async function run(): Promise<void> {
 
     let count = 0;
     for (const suburb of suburbs) {
-      const key = suburb.name.toLowerCase();
-      const medianHouse = medians.get(key) ?? null;
-      if (!medianHouse) continue;
+      const row = salesData.get(suburb.name.toLowerCase());
+      if (!row) continue;
 
       await prisma.suburb.update({
         where: { id: suburb.id },
         data: {
-          medianHousePrice: medianHouse,
-          statsSource:      SOURCE_ID,
-          statsUpdatedAt:   new Date(),
+          medianHousePrice:  row.median,
+          salesCountHouse:   row.salesCount,
+          ...(row.yoyGrowth !== null ? { annualGrowthHouse: row.yoyGrowth } : {}),
+          statsSource:       SOURCE_ID,
+          statsUpdatedAt:    new Date(),
         },
       });
       count++;
     }
 
-    log(SOURCE_ID, `updated ${count} SA suburbs with median house price`);
+    log(SOURCE_ID, `updated ${count} SA suburbs (median + sales count + YoY growth)`);
     await finishSync(SOURCE_ID, count, periodDate);
   } catch (err) {
     await failSync(SOURCE_ID, err);

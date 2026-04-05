@@ -50,11 +50,13 @@ const STATE_PACKS: Array<{ state: string; url: string }> = [
 ];
 
 interface CensusRecord {
-  population:     number | null;
-  medianAge:      number | null;
-  medianRent:     number | null;
-  ownerOccupied:  number | null;
-  renterOccupied: number | null;
+  population:          number | null;
+  medianAge:           number | null;
+  medianRent:          number | null;
+  ownerOccupied:       number | null;
+  renterOccupied:      number | null;
+  householdsFamily:    number | null;
+  householdsLonePerson: number | null;
 }
 
 function normName(s: string): string {
@@ -184,19 +186,46 @@ async function processStatePack(
     }
   }
 
+  // ── G35: Household composition (family vs lone person) ───────────────────
+  const g35 = readCsv(/G35_[A-Z]+_SAL\.csv$/i);
+  const householdMap = new Map<string, { householdsFamily: number; householdsLonePerson: number }>();
+  if (g35) {
+    const headers = Object.keys(g35.data[0] ?? {});
+    const famCol      = findCol(headers, [/^Total_FamHhold$/i,        /^Total_Fam_Hhold$/i]);
+    const loneCol     = findCol(headers, [/^Num_Psns_UR_1_NonFamHhold$/i, /^Lone_Person$/i]);
+    const totalCol    = findCol(headers, [/^Total_Total$/i,            /^Total_Dwellings$/i]);
+
+    if (famCol && loneCol && totalCol) {
+      for (const row of g35.data) {
+        const code = String(row["SAL_CODE_2021"] ?? "").trim();
+        if (!code) continue;
+        const parse = (col: string) => parseInt(String(row[col] ?? "0").replace(/,/g, "")) || 0;
+        const total = parse(totalCol);
+        if (total > 0) {
+          householdMap.set(code, {
+            householdsFamily:    Math.round((parse(famCol)  / total) * 100),
+            householdsLonePerson: Math.round((parse(loneCol) / total) * 100),
+          });
+        }
+      }
+    }
+  }
+
   // ── Combine into CensusRecord per SAL code ────────────────────────────────
   const result = new Map<string, CensusRecord>();
-  const allCodes = new Set([...popMap.keys(), ...medianMap.keys(), ...tenureMap.keys()]);
+  const allCodes = new Set([...popMap.keys(), ...medianMap.keys(), ...tenureMap.keys(), ...householdMap.keys()]);
   for (const code of allCodes) {
     const name = salToName.get(code);
     if (!name) continue;
     const key = normName(name);
     result.set(key, {
-      population:     popMap.get(code)      ?? null,
-      medianAge:      medianMap.get(code)?.medianAge  ?? null,
-      medianRent:     medianMap.get(code)?.medianRent ?? null,
-      ownerOccupied:  tenureMap.get(code)?.ownerOccupied  ?? null,
-      renterOccupied: tenureMap.get(code)?.renterOccupied ?? null,
+      population:           popMap.get(code)      ?? null,
+      medianAge:            medianMap.get(code)?.medianAge  ?? null,
+      medianRent:           medianMap.get(code)?.medianRent ?? null,
+      ownerOccupied:        tenureMap.get(code)?.ownerOccupied  ?? null,
+      renterOccupied:       tenureMap.get(code)?.renterOccupied ?? null,
+      householdsFamily:     householdMap.get(code)?.householdsFamily    ?? null,
+      householdsLonePerson: householdMap.get(code)?.householdsLonePerson ?? null,
     });
   }
   log(SOURCE_ID, `${state}: ${result.size} SAL records with data`);
@@ -237,10 +266,12 @@ export async function run(): Promise<void> {
         await prisma.suburb.update({
           where: { id: suburb.id },
           data: {
-            ...(census.population     !== null ? { population:     census.population }     : {}),
-            ...(census.medianAge      !== null ? { medianAge:      census.medianAge }       : {}),
-            ...(census.ownerOccupied  !== null ? { ownerOccupied:  census.ownerOccupied }   : {}),
-            ...(census.renterOccupied !== null ? { renterOccupied: census.renterOccupied }  : {}),
+            ...(census.population          !== null ? { population:          census.population }          : {}),
+            ...(census.medianAge           !== null ? { medianAge:           census.medianAge }            : {}),
+            ...(census.ownerOccupied       !== null ? { ownerOccupied:       census.ownerOccupied }        : {}),
+            ...(census.renterOccupied      !== null ? { renterOccupied:      census.renterOccupied }       : {}),
+            ...(census.householdsFamily    !== null ? { householdsFamily:    census.householdsFamily }     : {}),
+            ...(census.householdsLonePerson !== null ? { householdsLonePerson: census.householdsLonePerson } : {}),
             ...(census.medianRent !== null && shouldUpdateRent
               ? { medianRentHouse: census.medianRent, medianRentUnit: census.medianRent }
               : census.medianRent !== null
