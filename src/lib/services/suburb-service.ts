@@ -62,8 +62,10 @@ function toSuburb(s: DbSuburbWithSchools, freshness: SuburbDataFreshness, rental
       daysOnMarket:      s.daysOnMarket,
       population:        s.population,
       medianAge:         s.medianAge,
-      ownerOccupied:     s.ownerOccupied,
-      renterOccupied:    s.renterOccupied,
+      ownerOccupied:        s.ownerOccupied,
+      renterOccupied:       s.renterOccupied,
+      householdsFamily:     s.householdsFamily,
+      householdsLonePerson: s.householdsLonePerson,
     },
     schools: s.schools.map((sc) => ({
       name:     sc.name,

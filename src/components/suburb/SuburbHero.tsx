@@ -9,15 +9,24 @@ interface SuburbHeroProps {
 
 const GMAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? "";
 
+const TAB_LINKS = [
+  { label: "About",        href: "#about"        },
+  { label: "Market",       href: "#market"       },
+  { label: "Demographics", href: "#demographics" },
+  { label: "Location",     href: "#location"     },
+  { label: "Schools",      href: "#schools"      },
+];
+
 export function SuburbHero({ suburb }: SuburbHeroProps) {
   const query = encodeURIComponent(`${suburb.name} ${suburb.state} ${suburb.postcode}`);
   const embedUrl = GMAPS_KEY
-    ? `https://www.google.com/maps/embed/v1/place?key=${GMAPS_KEY}&q=${query}&zoom=14`
+    ? `https://www.google.com/maps/embed/v1/place?key=${GMAPS_KEY}&q=${query}&zoom=13&maptype=satellite`
     : null;
 
   return (
-    <div className="relative">
-      <div className="relative h-64 sm:h-80 lg:h-96 overflow-hidden">
+    <>
+      {/* Satellite hero */}
+      <div className="relative h-64 sm:h-80 lg:h-96 overflow-hidden bg-gray-900">
         {embedUrl ? (
           <iframe
             src={embedUrl}
@@ -25,7 +34,7 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title={`Map of ${suburb.name}`}
+            title={`Aerial map of ${suburb.name}`}
           />
         ) : (
           <Image
@@ -37,19 +46,39 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
             priority
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
-        <div className="absolute bottom-0 inset-x-0 p-6 sm:p-8 lg:p-12 pointer-events-none">
-          <div className="mx-auto max-w-7xl">
-            <p className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white drop-shadow">
-              {suburb.name}
-            </p>
-            <p className="text-lg text-white/90 mt-2 drop-shadow">
-              {suburb.state} {suburb.postcode} &middot; {suburb.region}
-            </p>
-          </div>
+        {/* Subtle dark overlay for text legibility */}
+        <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+        {/* Centered suburb label */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-4 text-center">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white drop-shadow-lg">
+            {suburb.name}
+          </h1>
+          <p className="text-xl font-medium text-white/95 mt-2 drop-shadow">
+            {suburb.state} {suburb.postcode}
+          </p>
+          <p className="text-sm text-white/80 mt-1 drop-shadow">
+            {suburb.region}
+          </p>
         </div>
       </div>
-    </div>
+
+      {/* Tab navigation bar */}
+      <nav className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex gap-0 overflow-x-auto scrollbar-none">
+            {TAB_LINKS.map((tab) => (
+              <a
+                key={tab.href}
+                href={tab.href}
+                className="flex-shrink-0 px-5 py-4 text-sm font-semibold uppercase tracking-wider text-gray-500 hover:text-gray-900 border-b-2 border-transparent hover:border-primary transition-colors"
+              >
+                {tab.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </nav>
+    </>
   );
 }
 

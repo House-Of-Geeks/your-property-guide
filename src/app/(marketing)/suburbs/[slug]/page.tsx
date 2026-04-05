@@ -49,26 +49,21 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
       <SuburbHero suburb={suburb} />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 space-y-12">
         <Breadcrumbs items={[{ label: "Suburbs", href: "/suburbs" }, { label: suburb.name }]} />
 
-        {/* Description */}
-        <div className="mt-6 max-w-3xl">
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">{suburb.name} Real Estate</h1>
-          <p className="text-gray-500 mb-4">{suburb.name}, {suburb.state} {suburb.postcode} · {suburb.region}</p>
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">About {suburb.name}</h2>
+        {/* About */}
+        <section id="about" className="scroll-mt-16 max-w-3xl">
+          <h2 className="text-2xl font-bold text-gray-900 mb-3">Welcome to {suburb.name}</h2>
           <p className="text-gray-600 leading-relaxed">{suburb.description}</p>
-        </div>
+        </section>
 
-        {/* Stats */}
-        <div className="mt-8">
+        {/* Market */}
+        <section id="market" className="scroll-mt-16">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Market Data</h2>
           <SuburbStatsComponent suburb={suburb} />
-        </div>
 
-        {/* Rent stats */}
-        <div className="mt-8">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="p-4 rounded-xl border border-gray-200 bg-white">
               <p className="text-xs text-gray-500 uppercase tracking-wider">Weekly Rent (House)</p>
               <p className="text-xl font-bold text-gray-900 mt-1">
@@ -99,52 +94,86 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             asOf={suburb.dataFreshness?.rentalAsOf ?? null}
             source={suburb.dataFreshness?.rentalSource ?? undefined}
           />
-        </div>
+        </section>
+
+        {/* Demographics */}
+        <section id="demographics" className="scroll-mt-16">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Demographics</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+              <p className="text-xs text-gray-500 uppercase tracking-wider">Population</p>
+              <p className="text-xl font-bold text-gray-900 mt-1">
+                {suburb.stats.population ? suburb.stats.population.toLocaleString() : "–"}
+              </p>
+            </div>
+            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+              <p className="text-xs text-gray-500 uppercase tracking-wider">Median Age</p>
+              <p className="text-xl font-bold text-gray-900 mt-1">
+                {suburb.stats.medianAge ? suburb.stats.medianAge : "–"}
+              </p>
+            </div>
+            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+              <p className="text-xs text-gray-500 uppercase tracking-wider">Family Households</p>
+              <p className="text-xl font-bold text-gray-900 mt-1">
+                {suburb.stats.householdsFamily ? `${suburb.stats.householdsFamily}%` : "–"}
+              </p>
+            </div>
+            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+              <p className="text-xs text-gray-500 uppercase tracking-wider">Lone Person</p>
+              <p className="text-xl font-bold text-gray-900 mt-1">
+                {suburb.stats.householdsLonePerson ? `${suburb.stats.householdsLonePerson}%` : "–"}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Location */}
+        <section id="location" className="scroll-mt-16">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Location</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <ShoppingBag className="w-5 h-5 text-primary" /> Amenities
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {suburb.amenities.map((a) => (
+                  <Badge key={a} variant="outline">{a}</Badge>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <Bus className="w-5 h-5 text-primary" /> Transport
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {suburb.transportLinks.map((t) => (
+                  <Badge key={t} variant="outline">{t}</Badge>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-primary" /> Nearby Suburbs
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {suburb.nearbySuburbs.map((s) => (
+                <Link key={s} href={`/suburbs/${s}`}>
+                  <Badge variant="primary" className="cursor-pointer hover:bg-primary/20">
+                    <MapPin className="w-3 h-3 mr-1" />
+                    {s.split("-").slice(0, -2).join(" ").replace(/\b\w/g, (c) => c.toUpperCase())}
+                  </Badge>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* Schools */}
-        <div className="mt-8">
+        <section id="schools" className="scroll-mt-16">
           <SuburbSchools schools={suburb.schools} />
           <DataFreshnessNote label="School" asOf={null} source="ACARA" />
-        </div>
-
-        {/* Amenities & Transport */}
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-8">
-          <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
-              <ShoppingBag className="w-5 h-5 text-primary" /> Amenities
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {suburb.amenities.map((a) => (
-                <Badge key={a} variant="outline">{a}</Badge>
-              ))}
-            </div>
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
-              <Bus className="w-5 h-5 text-primary" /> Transport
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {suburb.transportLinks.map((t) => (
-                <Badge key={t} variant="outline">{t}</Badge>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Nearby suburbs */}
-        <div className="mt-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-3">Nearby Suburbs</h2>
-          <div className="flex flex-wrap gap-2">
-            {suburb.nearbySuburbs.map((s) => (
-              <Link key={s} href={`/suburbs/${s}`}>
-                <Badge variant="primary" className="cursor-pointer hover:bg-primary/20">
-                  <MapPin className="w-3 h-3 mr-1" />
-                  {s.split("-").slice(0, -2).join(" ").replace(/\b\w/g, (c) => c.toUpperCase())}
-                </Badge>
-              </Link>
-            ))}
-          </div>
-        </div>
+        </section>
 
         {/* Properties in this suburb */}
         {properties.length > 0 && (

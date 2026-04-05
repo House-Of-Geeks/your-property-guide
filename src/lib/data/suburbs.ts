@@ -23,6 +23,8 @@ export const suburbs: Suburb[] = [
       medianAge: 34,
       ownerOccupied: 68,
       renterOccupied: 32,
+      householdsFamily: 0,
+      householdsLonePerson: 0,
     },
     schools: [
       {
@@ -87,6 +89,8 @@ export const suburbs: Suburb[] = [
       medianAge: 35,
       ownerOccupied: 58,
       renterOccupied: 42,
+      householdsFamily: 0,
+      householdsLonePerson: 0,
     },
     schools: [
       {
@@ -151,6 +155,8 @@ export const suburbs: Suburb[] = [
       medianAge: 33,
       ownerOccupied: 74,
       renterOccupied: 26,
+      householdsFamily: 0,
+      householdsLonePerson: 0,
     },
     schools: [
       {
@@ -209,6 +215,8 @@ export const suburbs: Suburb[] = [
       medianAge: 32,
       ownerOccupied: 62,
       renterOccupied: 38,
+      householdsFamily: 0,
+      householdsLonePerson: 0,
     },
     schools: [
       {
@@ -273,6 +281,8 @@ export const suburbs: Suburb[] = [
       medianAge: 34,
       ownerOccupied: 60,
       renterOccupied: 40,
+      householdsFamily: 0,
+      householdsLonePerson: 0,
     },
     schools: [
       {
@@ -337,6 +347,8 @@ export const suburbs: Suburb[] = [
       medianAge: 31,
       ownerOccupied: 72,
       renterOccupied: 28,
+      householdsFamily: 0,
+      householdsLonePerson: 0,
     },
     schools: [
       {

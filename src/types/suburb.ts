@@ -10,6 +10,8 @@ export interface SuburbStats {
   medianAge: number;
   ownerOccupied: number;
   renterOccupied: number;
+  householdsFamily: number;
+  householdsLonePerson: number;
 }
 
 export interface School {
