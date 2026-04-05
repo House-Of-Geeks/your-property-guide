@@ -5,7 +5,9 @@ import Link from "next/link";
 import { Phone, Mail, Globe, MapPin } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { AgencyJsonLd, BreadcrumbJsonLd } from "@/components/seo";
+import { PropertyCard } from "@/components/property/PropertyCard";
 import { getAgencyBySlug, getAgentsByAgency } from "@/lib/services/agent-service";
+import { getPropertiesByAgency } from "@/lib/services/property-service";
 import { agencyTitle, absoluteUrl } from "@/lib/utils/seo";
 import { SITE_URL } from "@/lib/constants";
 import type { Agent, Agency } from "@/types";
@@ -87,7 +89,10 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
   const agency = await getAgencyBySlug(slug);
   if (!agency) notFound();
 
-  const agents = await getAgentsByAgency(agency.id);
+  const [agents, listings] = await Promise.all([
+    getAgentsByAgency(agency.id),
+    getPropertiesByAgency(agency.id, 6),
+  ]);
   const totalSold = agents.reduce((sum, a) => sum + (a.propertiesSold ?? 0), 0);
   const today = new Date().toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" });
 
@@ -210,6 +215,32 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
             ))}
           </div>
         </div>
+
+        {/* Current Listings */}
+        {listings.length > 0 && (
+          <>
+            <hr className="my-8 border-gray-200" />
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">Current Listings</h2>
+              <p className="text-sm text-gray-500 mt-1">
+                Active properties listed by {agency.name}
+              </p>
+              <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {listings.map((property) => (
+                  <PropertyCard key={property.id} property={property} variant="grid" />
+                ))}
+              </div>
+              <div className="mt-6">
+                <Link
+                  href={`/buy?agency=${agency.slug}`}
+                  className="text-primary text-sm font-medium hover:underline"
+                >
+                  View all listings by {agency.name} →
+                </Link>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

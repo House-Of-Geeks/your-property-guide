@@ -107,6 +107,16 @@ export async function getPropertiesBySuburb(suburbSlug: string, limit?: number):
   return rows.map(toProperty);
 }
 
+export async function getPropertiesByAgency(agencyId: string, limit = 6): Promise<Property[]> {
+  const rows = await db.property.findMany({
+    where: { agencyId, status: "active" },
+    orderBy: { dateAdded: "desc" },
+    take: limit,
+    include: includeImages,
+  });
+  return rows.map(toProperty);
+}
+
 export async function getPropertiesByAgent(agentId: string): Promise<Property[]> {
   const rows = await db.property.findMany({
     where: { agentId },
