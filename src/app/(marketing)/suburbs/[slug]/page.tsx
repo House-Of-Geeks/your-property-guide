@@ -88,8 +88,8 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           </div>
           <DataFreshnessNote
             label="Rental"
-            asOf={suburb.dataFreshness.rentalAsOf}
-            source={suburb.dataFreshness.rentalSource ?? undefined}
+            asOf={suburb.dataFreshness?.rentalAsOf ?? null}
+            source={suburb.dataFreshness?.rentalSource ?? undefined}
           />
         </div>
 

@@ -40,5 +40,5 @@ export interface Suburb {
   amenities: string[];
   transportLinks: string[];
   nearbySuburbs: string[];
-  dataFreshness: SuburbDataFreshness;
+  dataFreshness?: SuburbDataFreshness;
 }
