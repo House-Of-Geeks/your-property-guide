@@ -9,11 +9,11 @@ import { Button } from "@/components/ui";
 import { ArrowRight, Shield, TrendingUp, Users, Home } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: `${SITE_NAME} - Find Property in Moreton Bay`,
+  title: `${SITE_NAME} - Property Search, Made Simple`,
   description: SITE_DESCRIPTION,
   alternates: { canonical: SITE_URL },
   openGraph: {
-    title: `${SITE_NAME} - Find Property in Moreton Bay`,
+    title: `${SITE_NAME} - Property Search, Made Simple`,
     description: SITE_DESCRIPTION,
     type: "website",
   },
@@ -33,7 +33,7 @@ export default function HomePage() {
             <ValueProp
               icon={<Home className="w-6 h-6" />}
               title="Local Expertise"
-              description="Our agents live and breathe the Moreton Bay property market"
+              description="Our agents know their local markets inside and out"
             />
             <ValueProp
               icon={<Shield className="w-6 h-6" />}

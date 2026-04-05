@@ -7,9 +7,9 @@ import { CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Free Property Appraisal",
-  description: "Request a free property appraisal from a local Moreton Bay real estate agent. No obligation, expert advice on your property's value.",
+  description: "Request a free property appraisal from a local real estate agent. No obligation, expert advice on your property's value.",
   alternates: { canonical: `${SITE_URL}/appraisal` },
-  openGraph: { title: "Free Property Appraisal", description: "Request a free property appraisal from a local Moreton Bay real estate agent.", type: "website" },
+  openGraph: { title: "Free Property Appraisal", description: "Request a free property appraisal from a local real estate agent.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 

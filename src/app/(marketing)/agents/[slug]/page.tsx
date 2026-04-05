@@ -152,7 +152,7 @@ export default async function AgentProfilePage({ params }: AgentProfilePageProps
               agentId={agent.id}
               agencyId={agent.agencyId}
               type="general-contact"
-              defaultMessage={`Hi ${agent.firstName}, I'd like to discuss property in the Moreton Bay area.`}
+              defaultMessage={`Hi ${agent.firstName}, I'd like to discuss a property with you.`}
             />
           </div>
         </div>

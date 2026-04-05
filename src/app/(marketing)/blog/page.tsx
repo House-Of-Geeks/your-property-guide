@@ -11,9 +11,9 @@ import { Clock } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Property Blog",
-  description: "Expert property insights, market updates, and buying guides for the Moreton Bay region.",
+  description: "Expert property insights, market updates, and buying guides from across Australia.",
   alternates: { canonical: `${SITE_URL}/blog` },
-  openGraph: { title: "Property Blog", description: "Expert property insights, market updates, and buying guides for the Moreton Bay region.", type: "website" },
+  openGraph: { title: "Property Blog", description: "Expert property insights, market updates, and buying guides from across Australia.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 

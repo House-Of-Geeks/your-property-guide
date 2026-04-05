@@ -9,10 +9,10 @@ import { SITE_URL } from "@/lib/constants";
 import type { PropertyType } from "@/types";
 
 export const metadata: Metadata = {
-  title: "Sold Properties in Moreton Bay",
-  description: "View recently sold properties in Moreton Bay. Research sale prices and market trends across suburbs.",
+  title: "Sold Properties in Australia",
+  description: "View recently sold properties across Australia. Research sale prices and market trends across suburbs.",
   alternates: { canonical: `${SITE_URL}/sold` },
-  openGraph: { title: "Sold Properties in Moreton Bay", description: "View recently sold properties in Moreton Bay. Research sale prices and market trends across suburbs.", type: "website" },
+  openGraph: { title: "Sold Properties in Australia", description: "View recently sold properties across Australia. Research sale prices and market trends across suburbs.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
@@ -38,9 +38,9 @@ export default async function SoldPage({ searchParams }: SoldPageProps) {
       <Breadcrumbs items={[{ label: "Sold" }]} />
 
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Recently Sold in Moreton Bay</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Recently Sold</h1>
         <p className="text-gray-500 mt-1">
-          {properties.length} sold {properties.length === 1 ? "property" : "properties"} in Moreton Bay
+          {properties.length} sold {properties.length === 1 ? "property" : "properties"}
         </p>
       </div>
 

@@ -7,7 +7,7 @@ import { MapPin, Phone, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
   title: `Contact Us | ${SITE_NAME}`,
-  description: "Get in touch with Your Property Guide. We're here to help with all your property needs in the Moreton Bay region.",
+  description: "Get in touch with Your Property Guide. We're here to help with all your property needs across Australia.",
 };
 
 export default function ContactPage() {
@@ -26,7 +26,7 @@ export default function ContactPage() {
           <div className="p-4 rounded-xl border border-gray-200 bg-white text-center">
             <MapPin className="w-6 h-6 text-primary mx-auto mb-2" />
             <p className="text-sm font-medium text-gray-900">Visit Us</p>
-            <p className="text-xs text-gray-500 mt-1">Moreton Bay, QLD</p>
+            <p className="text-xs text-gray-500 mt-1">Australia</p>
           </div>
           <div className="p-4 rounded-xl border border-gray-200 bg-white text-center">
             <Phone className="w-6 h-6 text-primary mx-auto mb-2" />

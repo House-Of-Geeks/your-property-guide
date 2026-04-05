@@ -14,10 +14,10 @@ export async function generateMetadata({ searchParams }: AgentsPageProps): Promi
   const suburbName = suburb
     ? suburb.replace(/-[a-z]{2,3}-\d{4}$/, "").replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
     : null;
-  const title = suburbName ? `Real Estate Agents in ${suburbName}` : "Real Estate Agents in Moreton Bay";
+  const title = suburbName ? `Real Estate Agents in ${suburbName}` : "Find a Real Estate Agent";
   const description = suburbName
     ? `Find experienced real estate agents in ${suburbName}.`
-    : "Browse our team of experienced local real estate agents across the Moreton Bay region.";
+    : "Browse experienced local real estate agents across Australia.";
   return {
     title,
     description,
@@ -42,10 +42,10 @@ export default async function AgentsPage({ searchParams }: AgentsPageProps) {
 
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">
-          {suburbName ? `Real Estate Agents in ${suburbName}` : "Real Estate Agents in Moreton Bay"}
+          {suburbName ? `Real Estate Agents in ${suburbName}` : "Find a Real Estate Agent"}
         </h1>
         <p className="text-gray-500 mt-1">
-          {agents.length} agent{agents.length !== 1 ? "s" : ""}{suburbName ? ` serving ${suburbName}` : " serving the Moreton Bay region"}
+          {agents.length} agent{agents.length !== 1 ? "s" : ""}{suburbName ? ` serving ${suburbName}` : " across Australia"}
         </p>
       </div>
 

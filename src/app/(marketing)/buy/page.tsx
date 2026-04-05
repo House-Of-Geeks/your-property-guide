@@ -10,10 +10,10 @@ import { SITE_URL } from "@/lib/constants";
 import type { PropertyType } from "@/types";
 
 export const metadata: Metadata = {
-  title: "Buy Property in Moreton Bay",
-  description: "Browse houses, units, townhouses, and land for sale in Moreton Bay. Search by suburb, price, bedrooms, and more.",
+  title: "Buy Property in Australia",
+  description: "Browse houses, units, townhouses, and land for sale across Australia. Search by suburb, price, bedrooms, and more.",
   alternates: { canonical: `${SITE_URL}/buy` },
-  openGraph: { title: "Buy Property in Moreton Bay", description: "Browse houses, units, townhouses, and land for sale in Moreton Bay. Search by suburb, price, bedrooms, and more.", type: "website" },
+  openGraph: { title: "Buy Property in Australia", description: "Browse houses, units, townhouses, and land for sale across Australia. Search by suburb, price, bedrooms, and more.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
@@ -39,9 +39,9 @@ export default async function BuyPage({ searchParams }: BuyPageProps) {
       <Breadcrumbs items={[{ label: "Buy" }]} />
 
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Properties for Sale in Moreton Bay</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Properties for Sale</h1>
         <p className="text-gray-500 mt-1">
-          {properties.length} {properties.length === 1 ? "property" : "properties"} found in Moreton Bay
+          {properties.length} {properties.length === 1 ? "property" : "properties"} found
         </p>
       </div>
 

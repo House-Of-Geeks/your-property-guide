@@ -14,7 +14,7 @@ export async function SuburbSpotlight() {
         <div className="flex items-end justify-between mb-8">
           <div>
             <h2 className="text-3xl font-bold text-gray-900">Explore Suburbs</h2>
-            <p className="text-gray-500 mt-1">Discover the best of Moreton Bay</p>
+            <p className="text-gray-500 mt-1">Explore property markets across Australia</p>
           </div>
           <Link href="/suburbs" className="hidden sm:block">
             <Button variant="outline" size="sm">

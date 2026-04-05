@@ -16,10 +16,10 @@ function suburbDisplayName(slug: string): string {
 export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
   const { suburb } = await searchParams;
   const suburbName = suburb ? suburbDisplayName(suburb) : null;
-  const title = suburbName ? `House & Land Packages in ${suburbName}` : "House & Land Packages in Moreton Bay";
+  const title = suburbName ? `House & Land Packages in ${suburbName}` : "House & Land Packages";
   const description = suburbName
     ? `Browse new house and land packages in ${suburbName}.`
-    : "Browse house and land packages in the Moreton Bay region. New homes from top builders at competitive prices.";
+    : "Browse house and land packages across Australia. New homes from top builders at competitive prices.";
   return {
     title,
     description,
@@ -41,11 +41,11 @@ export default async function HouseAndLandPage({ searchParams }: PageProps) {
 
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">
-          {suburbName ? `House & Land Packages in ${suburbName}` : "House & Land Packages in Moreton Bay"}
+          {suburbName ? `House & Land Packages in ${suburbName}` : "House & Land Packages"}
         </h1>
         <p className="text-gray-500 mt-1">
           {packages.length} new home package{packages.length !== 1 ? "s" : ""} available
-          {suburbName ? ` in ${suburbName}` : " in the Moreton Bay region"}
+          {suburbName ? ` in ${suburbName}` : ""}
         </p>
       </div>
 

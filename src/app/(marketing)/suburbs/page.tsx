@@ -11,10 +11,10 @@ import { SITE_URL } from "@/lib/constants";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Explore Suburbs in Moreton Bay",
-  description: "Explore suburbs in the Moreton Bay region. View median prices, growth rates, schools, and available properties.",
+  title: "Explore Suburbs Across Australia",
+  description: "Explore suburbs across Australia. View median prices, growth rates, schools, and available properties.",
   alternates: { canonical: `${SITE_URL}/suburbs` },
-  openGraph: { title: "Explore Suburbs in Moreton Bay", description: "Explore suburbs in the Moreton Bay region. View median prices, growth rates, schools, and available properties.", type: "website" },
+  openGraph: { title: "Explore Suburbs Across Australia", description: "Explore suburbs across Australia. View median prices, growth rates, schools, and available properties.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
@@ -27,7 +27,7 @@ export default async function SuburbsPage() {
       <Breadcrumbs items={[{ label: "Suburbs" }]} />
 
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Explore Moreton Bay Suburbs</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Explore Australian Suburbs</h1>
         <p className="text-gray-500 mt-1">
           Discover property market data, schools, and lifestyle across {suburbs.length} suburbs
         </p>

@@ -16,10 +16,10 @@ function suburbDisplayName(slug: string): string {
 export async function generateMetadata({ searchParams }: AgenciesPageProps): Promise<Metadata> {
   const { suburb } = await searchParams;
   const suburbName = suburb ? suburbDisplayName(suburb) : null;
-  const title = suburbName ? `Real Estate Agencies in ${suburbName}` : "Real Estate Agencies in Moreton Bay";
+  const title = suburbName ? `Real Estate Agencies in ${suburbName}` : "Find a Real Estate Agency";
   const description = suburbName
     ? `Find real estate agencies in ${suburbName}.`
-    : "Find local real estate agencies in the Moreton Bay region. Compare agencies, view agent teams, and explore listings.";
+    : "Find local real estate agencies across Australia. Compare agencies, view agent teams, and explore listings.";
   return {
     title,
     description,
@@ -44,7 +44,7 @@ export default async function AgenciesPage({ searchParams }: AgenciesPageProps) 
           {suburbName ? `Real Estate Agencies in ${suburbName}` : "Real Estate Agencies"}
         </h1>
         <p className="text-gray-500 mt-1">
-          {suburbName ? `Agencies serving ${suburbName}` : "Local agencies serving the Moreton Bay region"}
+          {suburbName ? `Agencies serving ${suburbName}` : "Local agencies across Australia"}
         </p>
       </div>
 

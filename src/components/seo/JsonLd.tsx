@@ -21,10 +21,10 @@ export function OrganizationJsonLd() {
           url: SITE_URL,
           logo: `${SITE_URL}/og-image.jpg`,
           description:
-            "Find your next property in the Moreton Bay region. Browse houses, units, and land for sale and rent.",
+            "Australia's property search, made simple. Browse houses, units, and land for sale and rent across thousands of suburbs nationwide.",
           areaServed: {
-            "@type": "Place",
-            name: "Moreton Bay Region, Queensland, Australia",
+            "@type": "Country",
+            name: "Australia",
           },
           contactPoint: {
             "@type": "ContactPoint",

@@ -9,10 +9,10 @@ import { SITE_URL } from "@/lib/constants";
 import type { PropertyType } from "@/types";
 
 export const metadata: Metadata = {
-  title: "Rent Property in Moreton Bay",
-  description: "Find houses, units, and apartments for rent in Moreton Bay. Browse rental listings by suburb, price, and bedrooms.",
+  title: "Rent Property in Australia",
+  description: "Find houses, units, and apartments for rent across Australia. Browse rental listings by suburb, price, and bedrooms.",
   alternates: { canonical: `${SITE_URL}/rent` },
-  openGraph: { title: "Rent Property in Moreton Bay", description: "Find houses, units, and apartments for rent in Moreton Bay. Browse rental listings by suburb, price, and bedrooms.", type: "website" },
+  openGraph: { title: "Rent Property in Australia", description: "Find houses, units, and apartments for rent across Australia. Browse rental listings by suburb, price, and bedrooms.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
@@ -38,9 +38,9 @@ export default async function RentPage({ searchParams }: RentPageProps) {
       <Breadcrumbs items={[{ label: "Rent" }]} />
 
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Properties for Rent in Moreton Bay</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Properties for Rent</h1>
         <p className="text-gray-500 mt-1">
-          {properties.length} rental {properties.length === 1 ? "property" : "properties"} in Moreton Bay
+          {properties.length} rental {properties.length === 1 ? "property" : "properties"} available
         </p>
       </div>
 
