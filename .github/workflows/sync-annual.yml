@@ -44,3 +44,7 @@ jobs:
       - name: Sync crime stats (WA)
         run: npx tsx scripts/sync/run.ts crime-wa
         continue-on-error: true
+
+      - name: Sync ABS 2021 Census demographics
+        run: npx tsx scripts/sync/run.ts abs-census
+        continue-on-error: true

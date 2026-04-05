@@ -397,7 +397,8 @@ async function main() {
   // ── 7. Data Sources (sync registry) ───────────────────────────────────────
   console.log("Seeding data sources...");
   const dataSources = [
-    { id: "import-suburbs", label: "Suburb Stub Importer",           category: "suburbs", schedule: "quarterly", sourceUrl: "internal" },
+    { id: "import-suburbs", label: "Suburb Stub Importer",           category: "suburbs",      schedule: "quarterly", sourceUrl: "internal" },
+    { id: "abs-census",    label: "ABS 2021 Census (SAL)",           category: "demographics", schedule: "annual",    sourceUrl: "https://www.abs.gov.au/census/find-census-data/datapacks" },
     { id: "acara-schools", label: "ACARA School Profiles",          category: "schools", schedule: "annual",    sourceUrl: "https://www.acara.edu.au/contact-us/acara-data-access" },
     { id: "rental-vic",    label: "VIC Rental Report (DFFH)",        category: "rental",  schedule: "quarterly", sourceUrl: "https://discover.data.vic.gov.au/dataset/rental-report" },
     { id: "rental-nsw",    label: "NSW Rent and Sales Report",        category: "rental",  schedule: "quarterly", sourceUrl: "https://data.nsw.gov.au/data/dataset/rent-and-sales-report" },
