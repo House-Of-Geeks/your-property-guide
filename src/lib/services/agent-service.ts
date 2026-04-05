@@ -2,7 +2,7 @@ import type { Agent, Agency } from "@/types";
 import { db } from "@/lib/db";
 import type { Agent as DbAgent, Agency as DbAgency } from "@/generated/prisma/client";
 
-function toAgent(a: DbAgent): Agent {
+function toAgent(a: DbAgent & { agency?: { name: string; slug: string } | null }): Agent {
   return {
     id: a.id,
     slug: a.slug,
@@ -15,6 +15,8 @@ function toAgent(a: DbAgent): Agent {
     bio: a.bio,
     image: a.image,
     agencyId: a.agencyId,
+    agencyName: a.agency?.name,
+    agencySlug: a.agency?.slug,
     suburbs: a.suburbs,
     specialties: a.specialties,
     yearsExperience: a.yearsExperience,
@@ -51,13 +53,17 @@ function toAgency(a: DbAgency): Agency {
 export async function getAgents(suburbSlug?: string): Promise<Agent[]> {
   const rows = await db.agent.findMany({
     where: suburbSlug ? { suburbs: { has: suburbSlug } } : undefined,
+    include: { agency: { select: { name: true, slug: true } } },
     orderBy: { lastName: "asc" },
   });
   return rows.map(toAgent);
 }
 
 export async function getAgentBySlug(slug: string): Promise<Agent | null> {
-  const row = await db.agent.findUnique({ where: { slug } });
+  const row = await db.agent.findUnique({
+    where: { slug },
+    include: { agency: { select: { name: true, slug: true } } },
+  });
   return row ? toAgent(row) : null;
 }
 
@@ -72,7 +78,11 @@ export async function getFeaturedAgents(): Promise<Agent[]> {
 }
 
 export async function getAgentsByAgency(agencyId: string): Promise<Agent[]> {
-  const rows = await db.agent.findMany({ where: { agencyId } });
+  const rows = await db.agent.findMany({
+    where: { agencyId },
+    include: { agency: { select: { name: true, slug: true } } },
+    orderBy: { lastName: "asc" },
+  });
   return rows.map(toAgent);
 }
 

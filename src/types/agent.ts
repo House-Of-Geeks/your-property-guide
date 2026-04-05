@@ -10,6 +10,8 @@ export interface Agent {
   bio: string;
   image: string;
   agencyId: string;
+  agencyName?: string;
+  agencySlug?: string;
   suburbs: string[];
   specialties: string[];
   yearsExperience: number;

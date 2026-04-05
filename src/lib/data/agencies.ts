@@ -7,7 +7,7 @@ export const agencies: Agency[] = [
     name: "Thomson Property Group",
     logo: "/images/agencies/thomson-property-group.png",
     description:
-      "Thomson Property Group is a Margate-based real estate agency specialising in residential sales, property management, and commercial property across the Moreton Bay region. With a commitment to understanding clients' needs and developing tailored plans to achieve their goals, the Thomson family team delivers exceptional service for buyers, sellers, landlords, and tenants.",
+      "Thomson Property Group is a Margate-based real estate agency specialising in residential sales, property management, and commercial property across South East Queensland. With a commitment to understanding clients' needs and developing tailored plans to achieve their goals, the Thomson family team delivers exceptional service for buyers, sellers, landlords, and tenants.",
     phone: "0434 361 426",
     email: "info@thomsonpropertygroup.com.au",
     website: "https://www.thomsonpropertygroup.com.au",

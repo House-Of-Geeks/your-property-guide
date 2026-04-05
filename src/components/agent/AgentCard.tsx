@@ -26,7 +26,20 @@ export function AgentCard({ agent, showContact = true }: AgentCardProps) {
           <p className="font-semibold text-gray-900 group-hover:text-primary transition-colors">
             {agent.fullName}
           </p>
-          <p className="text-sm text-gray-500">{agent.title}</p>
+          <p className="text-sm text-gray-500">
+            {agent.title}
+            {agent.agencyName && agent.agencySlug && (
+              <>
+                {" · "}
+                <span
+                  className="text-primary hover:underline"
+                  onClick={(e) => { e.preventDefault(); window.location.href = `/agencies/${agent.agencySlug}`; }}
+                >
+                  {agent.agencyName}
+                </span>
+              </>
+            )}
+          </p>
           <div className="flex items-center gap-1 mt-1">
             <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
             <span className="text-sm text-gray-600">
