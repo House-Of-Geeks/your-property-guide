@@ -15,17 +15,19 @@ export function SuburbSearch() {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [open, setOpen] = useState(false);
+  const [noResults, setNoResults] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const fetchSuggestions = useCallback(async (q: string) => {
-    if (q.length < 2) { setSuggestions([]); setOpen(false); return; }
+    if (q.length < 2) { setSuggestions([]); setOpen(false); setNoResults(false); return; }
     const res = await fetch(`/api/suburbs/search?q=${encodeURIComponent(q)}`);
     const data: Suggestion[] = await res.json();
     setSuggestions(data);
-    setOpen(data.length > 0);
+    setNoResults(data.length === 0);
+    setOpen(true);
     setActiveIdx(-1);
   }, []);
 
@@ -107,21 +109,25 @@ export function SuburbSearch() {
           role="listbox"
           className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden"
         >
-          {suggestions.map((s, i) => (
-            <li
-              key={s.slug}
-              role="option"
-              aria-selected={i === activeIdx}
-              onMouseDown={(e) => { e.preventDefault(); navigate(s.slug); }}
-              onMouseEnter={() => setActiveIdx(i)}
-              className={`flex items-center justify-between px-4 py-2.5 cursor-pointer text-sm ${
-                i === activeIdx ? "bg-primary/10 text-primary" : "text-gray-700 hover:bg-gray-50"
-              }`}
-            >
-              <span className="font-medium">{s.name}</span>
-              <span className="text-gray-400 text-xs">{s.state} {s.postcode}</span>
-            </li>
-          ))}
+          {noResults ? (
+            <li className="px-4 py-3 text-sm text-gray-400 italic">No suburbs found</li>
+          ) : (
+            suggestions.map((s, i) => (
+              <li
+                key={s.slug}
+                role="option"
+                aria-selected={i === activeIdx}
+                onMouseDown={(e) => { e.preventDefault(); navigate(s.slug); }}
+                onMouseEnter={() => setActiveIdx(i)}
+                className={`flex items-center justify-between px-4 py-2.5 cursor-pointer text-sm ${
+                  i === activeIdx ? "bg-primary/10 text-primary" : "text-gray-700 hover:bg-gray-50"
+                }`}
+              >
+                <span className="font-medium">{s.name}</span>
+                <span className="text-gray-400 text-xs">{s.state} {s.postcode}</span>
+              </li>
+            ))
+          )}
         </ul>
       )}
     </div>
