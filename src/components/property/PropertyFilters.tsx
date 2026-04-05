@@ -3,7 +3,8 @@
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useCallback } from "react";
 import { Select } from "@/components/ui";
-import { SUBURBS, PROPERTY_TYPES, BEDROOM_OPTIONS, PRICE_RANGES_BUY, PRICE_RANGES_RENT, SORT_OPTIONS } from "@/lib/constants";
+import { SuburbAutocomplete, slugToSuburbLabel } from "@/components/search/SuburbAutocomplete";
+import { PROPERTY_TYPES, BEDROOM_OPTIONS, PRICE_RANGES_BUY, PRICE_RANGES_RENT, SORT_OPTIONS } from "@/lib/constants";
 import type { ListingType } from "@/types";
 
 interface PropertyFiltersProps {
@@ -30,18 +31,22 @@ export function PropertyFilters({ listingType }: PropertyFiltersProps) {
   );
 
   const priceRanges = listingType === "rent" ? PRICE_RANGES_RENT : PRICE_RANGES_BUY;
-  const suburbOptions = SUBURBS.map((s) => ({ value: s.slug, label: `${s.name} ${s.postcode}` }));
+  const currentSuburbSlug = searchParams.get("suburb") ?? "";
 
   return (
-    <div className="flex flex-wrap gap-3 items-end">
-      <div className="w-full sm:w-auto">
-        <Select
-          options={suburbOptions}
-          placeholder="All Suburbs"
-          value={searchParams.get("suburb") || ""}
-          onChange={(e) => updateFilter("suburb", e.target.value)}
+    <div className="flex flex-wrap gap-3 items-center">
+      {/* Suburb autocomplete — replaces the old hardcoded <Select> */}
+      <div className="w-full sm:w-64 bg-white border border-gray-200 rounded-xl">
+        <SuburbAutocomplete
+          key={currentSuburbSlug} // re-mount when slug changes to reset display
+          defaultSlug={currentSuburbSlug}
+          placeholder="All suburbs..."
+          showSchools={false}
+          onSelectLocation={(slug) => updateFilter("suburb", slug)}
+          onClear={() => updateFilter("suburb", "")}
         />
       </div>
+
       <div className="w-full sm:w-auto">
         <Select
           options={PROPERTY_TYPES.map((t) => ({ value: t.value, label: t.label }))}
