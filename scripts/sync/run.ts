@@ -21,12 +21,14 @@ import { run as syncCrimeQld }    from "./sources/crime-qld";
 import { run as syncCrimeSa }     from "./sources/crime-sa";
 import { run as syncCrimeWa }       from "./sources/crime-wa";
 import { run as importSuburbs }     from "./sources/import-suburbs";
+import { run as importSuburbsAll }  from "./sources/import-suburbs-all";
 import { run as absCensus }         from "./sources/abs-census";
 import { run as syncSalesVic }      from "./sources/sales-vic";
 import { run as syncSalesSa }       from "./sources/sales-sa";
 
 const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" | "annual" }> = {
-  "import-suburbs": { run: importSuburbs,    schedule: "quarterly" },
+  "import-suburbs":     { run: importSuburbs,    schedule: "quarterly" },
+  "import-suburbs-all": { run: importSuburbsAll, schedule: "annual"    },
   "abs-census":     { run: absCensus,        schedule: "annual"    },
   "acara-schools":  { run: syncAcaraSchools, schedule: "annual"    },
   "rental-vic":     { run: syncRentalVic,    schedule: "quarterly" },
