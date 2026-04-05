@@ -9,45 +9,41 @@ interface SuburbHeroProps {
 
 const GMAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? "";
 
-function staticMapUrl(suburb: Suburb): string {
-  const center = encodeURIComponent(`${suburb.name} ${suburb.state} ${suburb.postcode}`);
-  const marker = encodeURIComponent(`color:0x1a6b4a|${suburb.name} ${suburb.state} ${suburb.postcode}`);
-  return (
-    `https://maps.googleapis.com/maps/api/staticmap` +
-    `?center=${center}` +
-    `&zoom=14` +
-    `&size=1280x480` +
-    `&scale=2` +
-    `&maptype=roadmap` +
-    `&markers=${marker}` +
-    `&style=feature:poi|visibility:off` +
-    `&style=feature:transit|visibility:simplified` +
-    `&key=${GMAPS_KEY}`
-  );
-}
-
 export function SuburbHero({ suburb }: SuburbHeroProps) {
-  const mapSrc = GMAPS_KEY ? staticMapUrl(suburb) : suburb.heroImage;
+  const query = encodeURIComponent(`${suburb.name} ${suburb.state} ${suburb.postcode}`);
+  const embedUrl = GMAPS_KEY
+    ? `https://www.google.com/maps/embed/v1/place?key=${GMAPS_KEY}&q=${query}&zoom=14`
+    : null;
 
   return (
     <div className="relative">
-      <div className="relative h-64 sm:h-80 lg:h-96">
-        <Image
-          src={mapSrc}
-          alt={`Map of ${suburb.name} ${suburb.state}`}
-          fill
-          className="object-cover"
-          sizes="100vw"
-          priority
-          unoptimized={!!GMAPS_KEY}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-        <div className="absolute bottom-0 inset-x-0 p-6 sm:p-8 lg:p-12">
+      <div className="relative h-64 sm:h-80 lg:h-96 overflow-hidden">
+        {embedUrl ? (
+          <iframe
+            src={embedUrl}
+            className="absolute inset-0 w-full h-full border-0"
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title={`Map of ${suburb.name}`}
+          />
+        ) : (
+          <Image
+            src={suburb.heroImage}
+            alt={`${suburb.name} ${suburb.state}`}
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 inset-x-0 p-6 sm:p-8 lg:p-12 pointer-events-none">
           <div className="mx-auto max-w-7xl">
-            <p className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
+            <p className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white drop-shadow">
               {suburb.name}
             </p>
-            <p className="text-lg text-white/90 mt-2">
+            <p className="text-lg text-white/90 mt-2 drop-shadow">
               {suburb.state} {suburb.postcode} &middot; {suburb.region}
             </p>
           </div>
