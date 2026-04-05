@@ -40,4 +40,5 @@ export interface Agency {
   suburbs: string[];
   agentIds: string[];
   primaryColor?: string;
+  youtubeVideoId?: string;
 }

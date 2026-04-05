@@ -6,6 +6,7 @@ import { Phone, Mail, Globe, MapPin } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { AgencyJsonLd, BreadcrumbJsonLd } from "@/components/seo";
 import { PropertyCard } from "@/components/property/PropertyCard";
+import { AgencyContactForm } from "@/components/agency/AgencyContactForm";
 import { getAgencyBySlug, getAgentsByAgency } from "@/lib/services/agent-service";
 import { getPropertiesByAgency } from "@/lib/services/property-service";
 import { agencyTitle, absoluteUrl } from "@/lib/utils/seo";
@@ -238,6 +239,31 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
                   View all listings by {agency.name} →
                 </Link>
               </div>
+            </div>
+          </>
+        )}
+
+        {/* Contact form */}
+        <hr className="my-8 border-gray-200" />
+        <div>
+          <h2 className="text-xl font-bold text-gray-900">Contact {agency.name}</h2>
+          <div className="mt-6">
+            <AgencyContactForm agencyId={agency.id} agencyName={agency.name} />
+          </div>
+        </div>
+
+        {/* YouTube embed */}
+        {agency.youtubeVideoId && (
+          <>
+            <hr className="my-8 border-gray-200" />
+            <div className="aspect-video w-full rounded-xl overflow-hidden">
+              <iframe
+                src={`https://www.youtube.com/embed/${agency.youtubeVideoId}`}
+                title={`${agency.name} video`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+              />
             </div>
           </>
         )}

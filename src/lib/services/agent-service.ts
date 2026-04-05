@@ -47,6 +47,7 @@ function toAgency(a: DbAgency): Agency {
     suburbs: a.suburbs,
     agentIds: [],
     primaryColor: a.primaryColor ?? undefined,
+    youtubeVideoId: a.youtubeVideoId ?? undefined,
   };
 }
 
