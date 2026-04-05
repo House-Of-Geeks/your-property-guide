@@ -51,6 +51,10 @@ jobs:
         run: npx tsx scripts/sync/run.ts rental-sa
         continue-on-error: true
 
+      - name: Sync rental data (QLD — RTA)
+        run: npx tsx scripts/sync/run.ts rental-qld
+        continue-on-error: true
+
       - name: Sync crime stats (NSW — BOCSAR)
         run: npx tsx scripts/sync/run.ts crime-nsw
         continue-on-error: true
@@ -75,6 +79,22 @@ jobs:
         run: npx tsx scripts/sync/run.ts sales-sa
         continue-on-error: true
 
+      - name: Sync median house prices (NSW)
+        run: npx tsx scripts/sync/run.ts sales-nsw
+        continue-on-error: true
+
+      - name: Sync median house prices (QLD — census proxy, annual)
+        run: npx tsx scripts/sync/run.ts sales-qld
+        continue-on-error: true
+
+      - name: Sync median house prices (WA — census proxy, annual)
+        run: npx tsx scripts/sync/run.ts sales-wa
+        continue-on-error: true
+
       - name: Link suburb stubs and fix null slugs
         run: npx tsx scripts/sync/run.ts import-suburbs
+        continue-on-error: true
+
+      - name: Compute nearby suburbs from lat/lng
+        run: npx tsx scripts/sync/run.ts nearby-suburbs
         continue-on-error: true

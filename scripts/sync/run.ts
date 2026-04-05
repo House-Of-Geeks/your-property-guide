@@ -15,6 +15,7 @@ import { run as syncAcaraSchools } from "./sources/acara-schools";
 import { run as syncRentalVic }   from "./sources/rental-vic";
 import { run as syncRentalNsw }   from "./sources/rental-nsw";
 import { run as syncRentalSa }    from "./sources/rental-sa";
+import { run as syncRentalQld }   from "./sources/rental-qld";
 import { run as syncCrimeNsw }    from "./sources/crime-nsw";
 import { run as syncCrimeVic }    from "./sources/crime-vic";
 import { run as syncCrimeQld }    from "./sources/crime-qld";
@@ -25,6 +26,10 @@ import { run as importSuburbsAll }  from "./sources/import-suburbs-all";
 import { run as absCensus }         from "./sources/abs-census";
 import { run as syncSalesVic }      from "./sources/sales-vic";
 import { run as syncSalesSa }       from "./sources/sales-sa";
+import { run as syncSalesNsw }      from "./sources/sales-nsw";
+import { run as syncSalesQld }      from "./sources/sales-qld";
+import { run as syncSalesWa }       from "./sources/sales-wa";
+import { run as nearbySuburbs }     from "./sources/nearby-suburbs";
 
 const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" | "annual" }> = {
   "import-suburbs":     { run: importSuburbs,    schedule: "quarterly" },
@@ -34,6 +39,7 @@ const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" 
   "rental-vic":     { run: syncRentalVic,    schedule: "quarterly" },
   "rental-nsw":     { run: syncRentalNsw,    schedule: "quarterly" },
   "rental-sa":      { run: syncRentalSa,     schedule: "quarterly" },
+  "rental-qld":     { run: syncRentalQld,    schedule: "quarterly" },
   "crime-nsw":      { run: syncCrimeNsw,     schedule: "quarterly" },
   "crime-vic":      { run: syncCrimeVic,     schedule: "quarterly" },
   "crime-qld":      { run: syncCrimeQld,     schedule: "quarterly" },
@@ -41,6 +47,10 @@ const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" 
   "crime-wa":       { run: syncCrimeWa,      schedule: "annual"    },
   "sales-vic":      { run: syncSalesVic,     schedule: "quarterly" },
   "sales-sa":       { run: syncSalesSa,      schedule: "quarterly" },
+  "sales-nsw":      { run: syncSalesNsw,     schedule: "quarterly" },
+  "sales-qld":      { run: syncSalesQld,     schedule: "annual"    },
+  "sales-wa":       { run: syncSalesWa,      schedule: "annual"    },
+  "nearby-suburbs": { run: nearbySuburbs,    schedule: "annual"    },
 };
 
 async function main(): Promise<void> {
