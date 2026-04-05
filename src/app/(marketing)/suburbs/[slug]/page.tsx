@@ -50,7 +50,6 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
       <SuburbHero suburb={suburb} />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 space-y-12">
-        <Breadcrumbs items={[{ label: "Suburbs", href: "/suburbs" }, { label: suburb.name }]} />
 
         {/* About */}
         <section id="about" className="scroll-mt-16 max-w-3xl">

@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { Search, ChevronRight } from "lucide-react";
 import type { Suburb } from "@/types";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { TrendingUp, Clock, Users } from "lucide-react";
@@ -25,6 +27,45 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
 
   return (
     <>
+      {/* Breadcrumb + search bar */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-4">
+          {/* Breadcrumb */}
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-1 text-sm text-gray-500 flex-wrap">
+              <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
+              <li className="flex items-center gap-1">
+                <ChevronRight className="w-3.5 h-3.5" />
+                <Link href="/suburbs" className="hover:text-primary transition-colors">Suburb Profile</Link>
+              </li>
+              <li className="flex items-center gap-1">
+                <ChevronRight className="w-3.5 h-3.5" />
+                <span className="text-gray-900 font-medium">
+                  {suburb.name} {suburb.state} {suburb.postcode}
+                </span>
+              </li>
+            </ol>
+          </nav>
+
+          {/* Search box */}
+          <form action="/suburbs" method="get" className="hidden sm:flex items-center gap-0 flex-shrink-0">
+            <input
+              type="text"
+              name="q"
+              placeholder="Search by suburb or postcode"
+              className="w-64 lg:w-80 h-9 px-3 text-sm border border-gray-300 border-r-0 rounded-l-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+            />
+            <button
+              type="submit"
+              className="h-9 w-9 flex items-center justify-center bg-primary hover:bg-primary/90 text-white rounded-r-md transition-colors flex-shrink-0"
+              aria-label="Search"
+            >
+              <Search className="w-4 h-4" />
+            </button>
+          </form>
+        </div>
+      </div>
+
       {/* Satellite hero */}
       <div className="relative h-64 sm:h-80 lg:h-96 overflow-hidden bg-gray-900">
         {embedUrl ? (
