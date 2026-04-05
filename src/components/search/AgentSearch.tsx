@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Search, MapPin, Building2, X } from "lucide-react";
 import { Button } from "@/components/ui";
-import type { SuggestResponse, SuggestLocation, SuggestAgency } from "@/app/api/suggest/route";
+import type { SuggestResponse, SuggestLocation, SuggestAgency } from "@/types/suggest";
 
 export function AgentSearch() {
   const router = useRouter();

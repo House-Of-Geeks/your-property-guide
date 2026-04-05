@@ -1,34 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { makeSchoolSlug } from "@/lib/utils/school";
+import type { SuggestLocation, SuggestSchool, SuggestAgency, SuggestResponse } from "@/types/suggest";
 
-export interface SuggestLocation {
-  slug: string;
-  name: string;
-  state: string;
-  postcode: string;
-}
-
-export interface SuggestSchool {
-  slug: string;
-  name: string;
-  state: string;
-  postcode: string;
-  suburbName: string;
-}
-
-export interface SuggestAgency {
-  slug: string;
-  name: string;
-  suburb: string;
-  state: string;
-}
-
-export interface SuggestResponse {
-  locations: SuggestLocation[];
-  schools: SuggestSchool[];
-  agencies: SuggestAgency[];
-}
+export type { SuggestLocation, SuggestSchool, SuggestAgency, SuggestResponse };
 
 export async function GET(req: NextRequest) {
   const q    = req.nextUrl.searchParams.get("q")?.trim() ?? "";

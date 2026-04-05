@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { MapPin, GraduationCap, Search, X } from "lucide-react";
-import type { SuggestResponse, SuggestLocation, SuggestSchool } from "@/app/api/suggest/route";
+import type { SuggestResponse, SuggestLocation, SuggestSchool } from "@/types/suggest";
 
 /** Decode a suburb slug like "north-lakes-qld-4509" → "North Lakes, QLD 4509" */
 export function slugToSuburbLabel(slug: string): string {
