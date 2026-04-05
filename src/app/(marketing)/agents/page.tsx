@@ -45,7 +45,7 @@ export default async function AgentsPage({ searchParams }: AgentsPageProps) {
       <BreadcrumbJsonLd items={[{ name: "Find Agents", url: "/agents" }]} />
 
       {/* Hero */}
-      <div className="relative overflow-hidden gradient-brand">
+      <div className="relative gradient-brand">
         <div className="absolute inset-0 bg-[url('/images/hero-pattern.svg')] opacity-10" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight">
