@@ -19,6 +19,12 @@ export interface School {
   type: "primary" | "secondary" | "combined" | "special";
   sector: "government" | "catholic" | "independent";
   distance: number;
+  yearRange: string | null;
+  gender: "coed" | "girls" | "boys" | null;
+  website: string | null;
+  icsea: number | null;
+  enrolment: number | null;
+  acaraId: string | null;
 }
 
 export interface SuburbDataFreshness {

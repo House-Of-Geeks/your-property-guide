@@ -179,6 +179,10 @@ model Suburb {
   properties Property[]
   packages   HouseAndLandPackage[]
 
+  // Centroid (from postcode CSV — used for proximity queries)
+  lat Float?
+  lng Float?
+
   // Data provenance
   statsSource    String    @default("seed") // "seed" | source ID e.g. "rental-vic"
   statsUpdatedAt DateTime?
@@ -208,6 +212,8 @@ model School {
   icsea            Int?
   enrolment        Int?
   website          String?
+  yearRange        String?   // e.g. "Prep-6", "7-12", "R-6"
+  gender           String?   // "coed" | "girls" | "boys"
   updatedFromAcara DateTime?
 
   @@index([suburbId])

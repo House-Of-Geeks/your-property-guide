@@ -36,8 +36,9 @@ function toPackage(p: DbPackageWithImages): HouseAndLandPackage {
 
 const includeImages = { images: { orderBy: { sortOrder: "asc" as const } } };
 
-export async function getHouseAndLandPackages(): Promise<HouseAndLandPackage[]> {
+export async function getHouseAndLandPackages(suburbSlug?: string): Promise<HouseAndLandPackage[]> {
   const rows = await db.houseAndLandPackage.findMany({
+    where: suburbSlug ? { suburbSlug } : undefined,
     orderBy: { dateAdded: "desc" },
     include: includeImages,
   });

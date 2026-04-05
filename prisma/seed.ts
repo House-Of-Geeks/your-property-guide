@@ -403,6 +403,7 @@ async function main() {
     { id: "rental-vic",    label: "VIC Rental Report (DFFH)",        category: "rental",  schedule: "quarterly", sourceUrl: "https://discover.data.vic.gov.au/dataset/rental-report" },
     { id: "rental-nsw",    label: "NSW Rent and Sales Report",        category: "rental",  schedule: "quarterly", sourceUrl: "https://data.nsw.gov.au/data/dataset/rent-and-sales-report" },
     { id: "rental-sa",     label: "SA Private Rent Report",           category: "rental",  schedule: "quarterly", sourceUrl: "https://data.sa.gov.au/data/dataset/private-rent-report" },
+    { id: "rental-qld",   label: "QLD Median Rents (RTA)",           category: "rental",  schedule: "quarterly", sourceUrl: "https://www.rta.qld.gov.au/forms-resources/rta-quarterly-data/median-rents-quarterly-data" },
     { id: "crime-nsw",     label: "NSW Crime Stats (BOCSAR)",         category: "crime",   schedule: "quarterly", sourceUrl: "https://bocsar.nsw.gov.au/statistics-dashboards/open-datasets/criminal-offences-data.html" },
     { id: "crime-vic",     label: "VIC Crime Statistics Agency",      category: "crime",   schedule: "quarterly", sourceUrl: "https://www.crimestatistics.vic.gov.au/crime-statistics/latest-victorian-crime-data/download-data" },
     { id: "crime-qld",     label: "QLD Police Reported Offences",     category: "crime",   schedule: "quarterly", sourceUrl: "https://www.data.qld.gov.au/dataset/reported-offences-qld" },
@@ -410,7 +411,11 @@ async function main() {
     { id: "crime-wa",      label: "WA Police Crime Statistics",       category: "crime",   schedule: "annual",    sourceUrl: "https://www.police.wa.gov.au/Crime/CrimeStatistics" },
     { id: "sales-vic",          label: "VIC Property Sales Report",         category: "sales",   schedule: "quarterly", sourceUrl: "https://discover.data.vic.gov.au/dataset/victorian-property-sales-report-median-house-by-suburb" },
     { id: "sales-sa",           label: "SA Metro Median House Sales",       category: "sales",   schedule: "quarterly", sourceUrl: "https://data.sa.gov.au/data/dataset/0d447195-1158-4a3c-8cc7-0e333b87eb72" },
+    { id: "sales-nsw",          label: "NSW Property Sales Information",    category: "sales",   schedule: "quarterly", sourceUrl: "https://valuergeneral.nsw.gov.au/__psi/yearly/" },
+    { id: "sales-qld",          label: "QLD Property Prices (ABS Census 2021 proxy — no free sales data available)", category: "sales", schedule: "annual", sourceUrl: "https://www.abs.gov.au/census/find-census-data/datapacks" },
+    { id: "sales-wa",           label: "WA Property Prices (ABS Census 2021 proxy — Landgate data is paid)", category: "sales", schedule: "annual", sourceUrl: "https://www.abs.gov.au/census/find-census-data/datapacks" },
     { id: "import-suburbs-all", label: "National Suburb List (AU Postcodes)", category: "suburbs", schedule: "annual",    sourceUrl: "https://github.com/matthewproctor/australianpostcodes" },
+    { id: "nearby-suburbs",     label: "Nearby Suburbs (computed from lat/lng)", category: "suburbs", schedule: "annual", sourceUrl: "internal" },
   ];
   for (const ds of dataSources) {
     await prisma.dataSource.upsert({

@@ -8,6 +8,8 @@ import { getSuburbs } from "@/lib/services/suburb-service";
 import { formatPrice, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Explore Suburbs in Moreton Bay",
   description: "Explore suburbs in the Moreton Bay region. View median prices, growth rates, schools, and available properties.",

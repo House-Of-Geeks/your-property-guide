@@ -170,7 +170,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
         {/* Schools */}
         <section id="schools" className="scroll-mt-16">
-          <SuburbSchools schools={suburb.schools} />
+          <SuburbSchools suburbName={suburb.name} schools={suburb.schools} />
           <DataFreshnessNote label="School" asOf={null} source="ACARA" />
         </section>
 

@@ -1,122 +1,248 @@
 /**
  * ACARA Schools Sync
  *
- * Downloads the national school list from the ACARA data access portal via data.gov.au.
- * Upserts School records using acaraId as the stable unique key.
+ * Downloads two XLSX files directly from the ACARA data access portal:
+ *   - School Profile 2025: name, type, sector, year range, ICSEA, enrolments, URL
+ *   - School Location 2025: lat, lng
+ *
+ * Joined on ACARA SML ID. Suburbs matched in-memory (no per-row DB calls).
+ * Upserted in batches via raw SQL for speed.
  *
  * Data source: https://www.acara.edu.au/contact-us/acara-data-access
- * CKAN dataset: search data.gov.au for "ACARA school locations"
- *
- * To find the resource ID:
- *   curl "https://data.gov.au/api/3/action/package_search?q=acara+school+locations" | jq '.result.results[0].resources[0].id'
+ * License: CC BY 4.0
+ * Schedule: Annual (update URLs when new data releases)
  */
 import "dotenv/config";
-import Papa from "papaparse";
+import * as XLSX from "xlsx";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
-import { resolveSlug } from "../slug-matcher";
-import { getCkanResourceId } from "../ckan";
 
 const SOURCE_ID = "acara-schools";
-const CKAN_BASE = "https://data.gov.au";
-const PACKAGE_ID = "acara-school-locations-2018"; // verify/update annually at data.gov.au
 
-interface AcaraRow {
-  ACARA_SML_ID:      string;
-  SCHOOL_NAME:       string;
-  SCHOOL_TYPE:       string; // "Primary" | "Secondary" | "Combined" | "Special"
-  SCHOOL_SECTOR:     string; // "Government" | "Catholic" | "Independent"
-  STATE:             string;
-  SUBURB:            string;
-  POSTCODE:          string;
-  LATITUDE:          string;
-  LONGITUDE:         string;
-  ICSEA:             string;
-  TOTAL_ENROLMENTS:  string;
-  SCHOOL_URL:        string;
+const PROFILE_URL  = "https://dataandreporting.blob.core.windows.net/anrdataportal/Data-Access-Program/School%20Profile%202025.xlsx";
+const LOCATION_URL = "https://dataandreporting.blob.core.windows.net/anrdataportal/Data-Access-Program/School%20Location%202025.xlsx";
+
+interface ProfileRow {
+  "ACARA SML ID":     number | string;
+  "School Name":      string;
+  "Suburb":           string;
+  "State":            string;
+  "Postcode":         string | number;
+  "School Sector":    string;
+  "School Type":      string;
+  "School URL":       string;
+  "Year Range":       string;
+  "ICSEA":            number | string;
+  "Total Enrolments": number | string;
+  "Girls Enrolments": number | string;
+  "Boys Enrolments":  number | string;
 }
 
-function normaliseType(t: string): "primary" | "secondary" | "combined" | "special" {
-  const lower = t.toLowerCase();
-  if (lower.includes("primary"))   return "primary";
-  if (lower.includes("secondary")) return "secondary";
-  if (lower.includes("combined"))  return "combined";
+interface LocationRow {
+  "ACARA SML ID": number | string;
+  "Latitude":     number | string;
+  "Longitude":    number | string;
+}
+
+async function downloadXlsx(url: string): Promise<XLSX.WorkBook> {
+  log(SOURCE_ID, `downloading ${decodeURIComponent(url.split("/").pop() ?? url)}`);
+  const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0 (compatible; YourPropertyGuide/1.0)" } });
+  if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${url}`);
+  return XLSX.read(Buffer.from(await res.arrayBuffer()), { type: "buffer" });
+}
+
+function sheetRows<T>(wb: XLSX.WorkBook, sheetIndex = 1): T[] {
+  return XLSX.utils.sheet_to_json<T>(wb.Sheets[wb.SheetNames[sheetIndex]], { defval: "" });
+}
+
+function normaliseType(t: string): string {
+  const l = t.toLowerCase();
+  if (l.includes("primary"))   return "primary";
+  if (l.includes("secondary")) return "secondary";
+  if (l.includes("combined"))  return "combined";
   return "special";
 }
 
-function normaliseSector(s: string): "government" | "catholic" | "independent" {
-  const lower = s.toLowerCase();
-  if (lower.includes("catholic"))    return "catholic";
-  if (lower.includes("independent")) return "independent";
+function normaliseSector(s: string): string {
+  const l = s.toLowerCase();
+  if (l.includes("catholic"))    return "catholic";
+  if (l.includes("independent")) return "independent";
   return "government";
+}
+
+function deriveGender(girls: number | string, boys: number | string): string {
+  const g = typeof girls === "number" ? girls : parseInt(String(girls)) || 0;
+  const b = typeof boys  === "number" ? boys  : parseInt(String(boys))  || 0;
+  if (g > 0 && b === 0) return "girls";
+  if (b > 0 && g === 0) return "boys";
+  return "coed";
 }
 
 export async function run(): Promise<void> {
   await startSync(SOURCE_ID);
   try {
-    // Discover latest resource ID from CKAN package
-    const resourceId = await getCkanResourceId(PACKAGE_ID, CKAN_BASE, "CSV");
-    log(SOURCE_ID, `resource ID: ${resourceId}`);
+    // ── 1. Download both XLSXes in parallel ────────────────────────────────
+    const [profileWb, locationWb] = await Promise.all([
+      downloadXlsx(PROFILE_URL),
+      downloadXlsx(LOCATION_URL),
+    ]);
 
-    // Download the CSV
-    const url = `${CKAN_BASE}/api/3/action/datastore_search?resource_id=${resourceId}&limit=100000`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json() as { success: boolean; result: { records: AcaraRow[] } };
-    if (!json.success) throw new Error("CKAN error fetching ACARA data");
+    const profileRows  = sheetRows<ProfileRow>(profileWb);
+    const locationRows = sheetRows<LocationRow>(locationWb);
+    log(SOURCE_ID, `profile: ${profileRows.length} rows, location: ${locationRows.length} rows`);
 
-    const rows: AcaraRow[] = json.result.records;
-    log(SOURCE_ID, `fetched ${rows.length} schools`);
-
-    let count = 0;
-    let skipped = 0;
-
-    for (const row of rows) {
-      if (!row.ACARA_SML_ID) continue;
-
-      const suburbSlug = await resolveSlug(row.SUBURB, row.STATE, row.POSTCODE);
-      const suburbRow = suburbSlug
-        ? await prisma.suburb.findUnique({ where: { slug: suburbSlug }, select: { id: true } })
-        : null;
-
-      if (!suburbRow) {
-        // Suburb not in DB yet — skip the FK-required School insert but log it
-        skipped++;
-        continue;
-      }
-
-      await prisma.school.upsert({
-        where: { acaraId: row.ACARA_SML_ID },
-        create: {
-          name:     row.SCHOOL_NAME,
-          type:     normaliseType(row.SCHOOL_TYPE),
-          sector:   normaliseSector(row.SCHOOL_SECTOR),
-          distance: 0, // distance is suburb-relative, not in ACARA data
-          suburbId: suburbRow.id,
-          acaraId:  row.ACARA_SML_ID,
-          lat:      parseFloat(row.LATITUDE) || null,
-          lng:      parseFloat(row.LONGITUDE) || null,
-          icsea:    parseInt(row.ICSEA) || null,
-          enrolment: parseInt(row.TOTAL_ENROLMENTS) || null,
-          website:  row.SCHOOL_URL || null,
-          updatedFromAcara: new Date(),
-        },
-        update: {
-          name:     row.SCHOOL_NAME,
-          type:     normaliseType(row.SCHOOL_TYPE),
-          sector:   normaliseSector(row.SCHOOL_SECTOR),
-          lat:      parseFloat(row.LATITUDE) || null,
-          lng:      parseFloat(row.LONGITUDE) || null,
-          icsea:    parseInt(row.ICSEA) || null,
-          enrolment: parseInt(row.TOTAL_ENROLMENTS) || null,
-          website:  row.SCHOOL_URL || null,
-          updatedFromAcara: new Date(),
-        },
-      });
-      count++;
+    // ── 2. Build lat/lng lookup in memory ──────────────────────────────────
+    const latLng = new Map<string, { lat: number; lng: number }>();
+    for (const row of locationRows) {
+      const id  = String(row["ACARA SML ID"]).trim();
+      const lat = Number(row["Latitude"]);
+      const lng = Number(row["Longitude"]);
+      if (id && !isNaN(lat) && !isNaN(lng)) latLng.set(id, { lat, lng });
     }
 
-    log(SOURCE_ID, `inserted/updated ${count} schools, skipped ${skipped} (suburb not in DB)`);
+    // ── 3. Load ALL suburbs into memory once (1 DB call) ──────────────────
+    const allSuburbs = await prisma.suburb.findMany({
+      select: { id: true, name: true, state: true, postcode: true },
+    });
+    log(SOURCE_ID, `loaded ${allSuburbs.length} suburbs from DB`);
+
+    // Build lookup maps
+    const norm = (s: string) => s.trim().toLowerCase();
+
+    // name+state+postcode → id (exact match)
+    const exactMap = new Map<string, string>();
+    // postcode+state → [id] (fallback)
+    const postcodeMap = new Map<string, string[]>();
+
+    for (const s of allSuburbs) {
+      const key = `${norm(s.name)}|${norm(s.state)}|${s.postcode.trim()}`;
+      exactMap.set(key, s.id);
+
+      const pk = `${s.postcode.trim()}|${norm(s.state)}`;
+      const arr = postcodeMap.get(pk) ?? [];
+      arr.push(s.id);
+      postcodeMap.set(pk, arr);
+    }
+
+    function resolveSuburbId(name: string, state: string, postcode: string): string | null {
+      const key = `${norm(name)}|${norm(state)}|${postcode.trim()}`;
+      const exact = exactMap.get(key);
+      if (exact) return exact;
+      // Postcode+state fallback (only if unique)
+      const candidates = postcodeMap.get(`${postcode.trim()}|${norm(state)}`);
+      if (candidates?.length === 1) return candidates[0];
+      return null;
+    }
+
+    // ── 4. Build upsert payload in memory ─────────────────────────────────
+    interface SchoolRow {
+      acaraId:         string;
+      name:            string;
+      type:            string;
+      sector:          string;
+      distance:        number;
+      suburbId:        string;
+      lat:             number | null;
+      lng:             number | null;
+      icsea:           number | null;
+      enrolment:       number | null;
+      website:         string | null;
+      yearRange:       string | null;
+      gender:          string;
+      updatedFromAcara: Date;
+    }
+
+    const schools: SchoolRow[] = [];
+    let skipped = 0;
+
+    for (const row of profileRows) {
+      const acaraId = String(row["ACARA SML ID"]).trim();
+      if (!acaraId) continue;
+
+      const name     = String(row["School Name"]).trim();
+      const suburb   = String(row["Suburb"]).trim();
+      const state    = String(row["State"]).trim().toUpperCase();
+      const postcode = String(row["Postcode"]).trim();
+      if (!name || !suburb || !state) continue;
+
+      const suburbId = resolveSuburbId(suburb, state, postcode);
+      if (!suburbId) { skipped++; continue; }
+
+      const geo = latLng.get(acaraId);
+      schools.push({
+        acaraId,
+        name,
+        type:      normaliseType(String(row["School Type"])),
+        sector:    normaliseSector(String(row["School Sector"])),
+        distance:  0,
+        suburbId,
+        lat:       geo?.lat ?? null,
+        lng:       geo?.lng ?? null,
+        icsea:     Number(row["ICSEA"]) || null,
+        enrolment: Number(row["Total Enrolments"]) || null,
+        website:   String(row["School URL"]).trim() || null,
+        yearRange: String(row["Year Range"]).trim() || null,
+        gender:    deriveGender(row["Girls Enrolments"], row["Boys Enrolments"]),
+        updatedFromAcara: new Date(),
+      });
+    }
+
+    log(SOURCE_ID, `${schools.length} schools matched, ${skipped} skipped (suburb not in DB)`);
+
+    // ── 5. Bulk upsert via raw SQL in batches of 500 ──────────────────────
+    const CHUNK = 500;
+    let count = 0;
+
+    for (let i = 0; i < schools.length; i += CHUNK) {
+      const chunk = schools.slice(i, i + CHUNK);
+
+      // Use createMany with skipDuplicates=false won't update — use raw upsert
+      await prisma.$executeRaw`
+        INSERT INTO "School" (
+          id, "acaraId", name, type, sector, distance, "suburbId",
+          lat, lng, icsea, enrolment, website, "yearRange", gender, "updatedFromAcara"
+        )
+        SELECT
+          gen_random_uuid()::text,
+          u.acara_id, u.name, u.type, u.sector, u.distance::float8, u.suburb_id,
+          u.lat::float8, u.lng::float8, u.icsea::int, u.enrolment::int,
+          u.website, u.year_range, u.gender, u.updated_at
+        FROM UNNEST(
+          ${chunk.map((s) => s.acaraId)}::text[],
+          ${chunk.map((s) => s.name)}::text[],
+          ${chunk.map((s) => s.type)}::text[],
+          ${chunk.map((s) => s.sector)}::text[],
+          ${chunk.map(() => 0)}::float8[],
+          ${chunk.map((s) => s.suburbId)}::text[],
+          ${chunk.map((s) => s.lat)}::float8[],
+          ${chunk.map((s) => s.lng)}::float8[],
+          ${chunk.map((s) => s.icsea)}::int[],
+          ${chunk.map((s) => s.enrolment)}::int[],
+          ${chunk.map((s) => s.website)}::text[],
+          ${chunk.map((s) => s.yearRange)}::text[],
+          ${chunk.map((s) => s.gender)}::text[],
+          ${chunk.map((s) => s.updatedFromAcara)}::timestamptz[]
+        ) AS u(acara_id, name, type, sector, distance, suburb_id, lat, lng, icsea, enrolment, website, year_range, gender, updated_at)
+        ON CONFLICT ("acaraId") DO UPDATE SET
+          name             = EXCLUDED.name,
+          type             = EXCLUDED.type,
+          sector           = EXCLUDED.sector,
+          "suburbId"       = EXCLUDED."suburbId",
+          lat              = EXCLUDED.lat,
+          lng              = EXCLUDED.lng,
+          icsea            = EXCLUDED.icsea,
+          enrolment        = EXCLUDED.enrolment,
+          website          = EXCLUDED.website,
+          "yearRange"      = EXCLUDED."yearRange",
+          gender           = EXCLUDED.gender,
+          "updatedFromAcara" = EXCLUDED."updatedFromAcara"
+      `;
+
+      count += chunk.length;
+      log(SOURCE_ID, `  ${count}/${schools.length} schools upserted`);
+    }
+
+    log(SOURCE_ID, `done — ${count} schools upserted`);
     await finishSync(SOURCE_ID, count);
   } catch (err) {
     await failSync(SOURCE_ID, err);

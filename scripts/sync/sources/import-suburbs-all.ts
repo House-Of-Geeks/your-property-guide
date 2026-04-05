@@ -20,10 +20,12 @@ const CSV_URL     = "https://raw.githubusercontent.com/matthewproctor/australian
 const CHUNK       = 500;
 
 interface PostcodeRow {
-  postcode:  string;
-  locality:  string;
-  state:     string;
-  type:      string;
+  postcode:     string;
+  locality:     string;
+  state:        string;
+  type:         string;
+  Lat_precise:  string;
+  Long_precise: string;
 }
 
 function titleCase(s: string): string {
@@ -60,7 +62,7 @@ export async function run(): Promise<void> {
     log(SOURCE_ID, `parsed ${parsed.data.length} rows`);
 
     // Deduplicate by slug (locality+state+postcode) and only keep delivery areas
-    const toCreate = new Map<string, { name: string; state: string; postcode: string }>();
+    const toCreate = new Map<string, { name: string; state: string; postcode: string; lat: number | null; lng: number | null }>();
     for (const row of parsed.data) {
       if (row.type !== "Delivery Area") continue;
       const name     = titleCase(row.locality.trim());
@@ -68,7 +70,11 @@ export async function run(): Promise<void> {
       const postcode = row.postcode.trim();
       if (!name || !state || !postcode) continue;
       const slug = makeSlug(name, state, postcode);
-      if (!toCreate.has(slug)) toCreate.set(slug, { name, state, postcode });
+      if (!toCreate.has(slug)) {
+        const lat = parseFloat(row.Lat_precise);
+        const lng = parseFloat(row.Long_precise);
+        toCreate.set(slug, { name, state, postcode, lat: isNaN(lat) ? null : lat, lng: isNaN(lng) ? null : lng });
+      }
     }
     log(SOURCE_ID, `${toCreate.size} unique delivery area localities`);
 
@@ -80,7 +86,7 @@ export async function run(): Promise<void> {
 
     const newSuburbs = [...toCreate.entries()]
       .filter(([slug]) => !existingSlugs.has(slug))
-      .map(([slug, { name, state, postcode }]) => ({
+      .map(([slug, { name, state, postcode, lat, lng }]) => ({
         id:                   randomUUID(),
         slug,
         name,
@@ -107,6 +113,8 @@ export async function run(): Promise<void> {
         transportLinks:       [] as string[],
         nearbySuburbs:        [] as string[],
         statsSource:          "import-suburbs-all",
+        lat,
+        lng,
       }));
 
     log(SOURCE_ID, `creating ${newSuburbs.length} new suburb stubs`);
@@ -120,6 +128,38 @@ export async function run(): Promise<void> {
     }
 
     log(SOURCE_ID, `done — ${created} new suburbs created`);
+
+    // Backfill lat/lng for ALL existing suburbs (including pre-existing ones)
+    log(SOURCE_ID, `backfilling lat/lng for existing suburbs...`);
+    const allSlugsInDb = await prisma.suburb.findMany({
+      where: { lat: null },
+      select: { id: true, slug: true },
+    });
+    const slugToLatLng = new Map<string, { lat: number; lng: number }>();
+    for (const [slug, { lat, lng }] of toCreate.entries()) {
+      if (lat !== null && lng !== null) slugToLatLng.set(slug, { lat, lng });
+    }
+    const toUpdate = allSlugsInDb.filter((s) => slugToLatLng.has(s.slug));
+    if (toUpdate.length > 0) {
+      const CHUNK2 = 500;
+      let updated = 0;
+      for (let i = 0; i < toUpdate.length; i += CHUNK2) {
+        const chunk = toUpdate.slice(i, i + CHUNK2);
+        await prisma.$executeRaw`
+          UPDATE "Suburb" AS s
+          SET lat = u.lat::float8, lng = u.lng::float8
+          FROM UNNEST(
+            ${chunk.map((x) => x.id)}::text[],
+            ${chunk.map((x) => slugToLatLng.get(x.slug)!.lat)}::float8[],
+            ${chunk.map((x) => slugToLatLng.get(x.slug)!.lng)}::float8[]
+          ) AS u(id, lat, lng)
+          WHERE s.id = u.id
+        `;
+        updated += chunk.length;
+      }
+      log(SOURCE_ID, `backfilled lat/lng for ${updated} existing suburbs`);
+    }
+
     await finishSync(SOURCE_ID, created);
   } catch (err) {
     await failSync(SOURCE_ID, err);

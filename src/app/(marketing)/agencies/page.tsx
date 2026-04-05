@@ -5,16 +5,34 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { getAgencies } from "@/lib/services/agent-service";
 import { SITE_URL } from "@/lib/constants";
 
-export const metadata: Metadata = {
-  title: "Real Estate Agencies in Moreton Bay",
-  description: "Find local real estate agencies in the Moreton Bay region. Compare agencies, view agent teams, and explore listings.",
-  alternates: { canonical: `${SITE_URL}/agencies` },
-  openGraph: { title: "Real Estate Agencies in Moreton Bay", description: "Find local real estate agencies in the Moreton Bay region. Compare agencies, view agent teams, and explore listings.", type: "website" },
-  twitter: { card: "summary_large_image" },
-};
+interface AgenciesPageProps {
+  searchParams: Promise<Record<string, string | undefined>>;
+}
 
-export default async function AgenciesPage() {
-  const agencies = await getAgencies();
+function suburbDisplayName(slug: string): string {
+  return slug.replace(/-[a-z]{2,3}-\d{4}$/, "").replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+export async function generateMetadata({ searchParams }: AgenciesPageProps): Promise<Metadata> {
+  const { suburb } = await searchParams;
+  const suburbName = suburb ? suburbDisplayName(suburb) : null;
+  const title = suburbName ? `Real Estate Agencies in ${suburbName}` : "Real Estate Agencies in Moreton Bay";
+  const description = suburbName
+    ? `Find real estate agencies in ${suburbName}.`
+    : "Find local real estate agencies in the Moreton Bay region. Compare agencies, view agent teams, and explore listings.";
+  return {
+    title,
+    description,
+    alternates: { canonical: `${SITE_URL}/agencies${suburb ? `?suburb=${suburb}` : ""}` },
+    openGraph: { title, description, type: "website" },
+    twitter: { card: "summary_large_image" },
+  };
+}
+
+export default async function AgenciesPage({ searchParams }: AgenciesPageProps) {
+  const { suburb } = await searchParams;
+  const agencies = await getAgencies(suburb);
+  const suburbName = suburb ? suburbDisplayName(suburb) : null;
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
@@ -22,17 +40,23 @@ export default async function AgenciesPage() {
       <Breadcrumbs items={[{ label: "Agencies" }]} />
 
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Real Estate Agencies</h1>
+        <h1 className="text-3xl font-bold text-gray-900">
+          {suburbName ? `Real Estate Agencies in ${suburbName}` : "Real Estate Agencies"}
+        </h1>
         <p className="text-gray-500 mt-1">
-          Local agencies serving the Moreton Bay region
+          {suburbName ? `Agencies serving ${suburbName}` : "Local agencies serving the Moreton Bay region"}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {agencies.map((agency) => (
-          <AgencyCard key={agency.id} agency={agency} />
-        ))}
-      </div>
+      {agencies.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {agencies.map((agency) => (
+            <AgencyCard key={agency.id} agency={agency} />
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-500">No agencies found{suburbName ? ` for ${suburbName}` : ""}.</p>
+      )}
     </div>
   );
 }

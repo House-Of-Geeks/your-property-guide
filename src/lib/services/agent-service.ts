@@ -48,8 +48,11 @@ function toAgency(a: DbAgency): Agency {
   };
 }
 
-export async function getAgents(): Promise<Agent[]> {
-  const rows = await db.agent.findMany({ orderBy: { lastName: "asc" } });
+export async function getAgents(suburbSlug?: string): Promise<Agent[]> {
+  const rows = await db.agent.findMany({
+    where: suburbSlug ? { suburbs: { has: suburbSlug } } : undefined,
+    orderBy: { lastName: "asc" },
+  });
   return rows.map(toAgent);
 }
 
@@ -73,8 +76,11 @@ export async function getAgentsByAgency(agencyId: string): Promise<Agent[]> {
   return rows.map(toAgent);
 }
 
-export async function getAgencies(): Promise<Agency[]> {
-  const rows = await db.agency.findMany({ orderBy: { name: "asc" } });
+export async function getAgencies(suburbSlug?: string): Promise<Agency[]> {
+  const rows = await db.agency.findMany({
+    where: suburbSlug ? { suburbs: { has: suburbSlug } } : undefined,
+    orderBy: { name: "asc" },
+  });
   return rows.map(toAgency);
 }
 

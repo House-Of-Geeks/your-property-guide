@@ -2,11 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui";
-import { getSuburbs } from "@/lib/services/suburb-service";
+import { getFeaturedSuburbs } from "@/lib/services/suburb-service";
 import { formatPrice, formatPercentage } from "@/lib/utils/format";
 
 export async function SuburbSpotlight() {
-  const suburbs = await getSuburbs();
+  const suburbs = await getFeaturedSuburbs(6);
 
   return (
     <section className="py-16 bg-gray-50">
