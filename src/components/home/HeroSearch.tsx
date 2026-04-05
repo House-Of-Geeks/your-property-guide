@@ -41,7 +41,7 @@ export function HeroSearch() {
         {/* Headline */}
         <div className="text-center mb-10">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight">
-            Know your next move
+            Property search, made simple
           </h1>
           <p className="mt-4 text-lg sm:text-xl text-white/90 max-w-2xl mx-auto">
             Search properties for sale, rent, and exclusive off-market opportunities across Australia.
