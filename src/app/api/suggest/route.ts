@@ -67,7 +67,8 @@ export async function GET(req: NextRequest) {
         LEFT JOIN "Suburb" sub ON sub.id = s."suburbId"
         WHERE regexp_replace(lower(s.name), $$[']$$, '', 'g')
               LIKE '%' || regexp_replace(lower(${q}), $$[']$$, '', 'g') || '%'
-        LIMIT 5
+        ORDER BY CASE WHEN sub.state = 'QLD' THEN 0 ELSE 1 END, s.name
+        LIMIT 10
       `;
 
   const [locations, rawSchools] = await Promise.all([locationsPromise, schoolsPromise]);
