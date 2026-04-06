@@ -11,6 +11,9 @@ import { getPropertyBySlug } from "@/lib/services/property-service";
 import { getAgentById } from "@/lib/services/agent-service";
 import { propertyTitle, propertyDescription, absoluteUrl } from "@/lib/utils/seo";
 import { SITE_URL } from "@/lib/constants";
+import { auth } from "@/auth";
+import { isPropertySaved } from "@/lib/actions/dashboard";
+import { PropertyActions } from "@/components/property/PropertyActions";
 
 interface RentDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -41,7 +44,12 @@ export default async function RentDetailPage({ params }: RentDetailPageProps) {
   const property = await getPropertyBySlug(slug);
   if (!property) notFound();
 
-  const agent = await getAgentById(property.agentId);
+  const session = await auth();
+  const [agent, initialSaved] = await Promise.all([
+    getAgentById(property.agentId),
+    isPropertySaved(property.id),
+  ]);
+  const isLoggedIn = !!session?.user?.email;
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
@@ -64,12 +72,22 @@ export default async function RentDetailPage({ params }: RentDetailPageProps) {
           <PropertyGallery images={property.images} address={property.address.full} />
           <div>
             <Badge variant="accent">For Rent</Badge>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-2">
-              {property.address.full}
-            </h1>
-            <p className="text-xl font-semibold text-gray-700 mt-1">
-              {property.price.display}
-            </p>
+            <div className="flex items-start justify-between gap-4 mt-2">
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                  {property.address.full}
+                </h1>
+                <p className="text-xl font-semibold text-gray-700 mt-1">
+                  {property.price.display}
+                </p>
+              </div>
+              <PropertyActions
+                propertyId={property.id}
+                address={property.address.full}
+                initialSaved={initialSaved}
+                isLoggedIn={isLoggedIn}
+              />
+            </div>
           </div>
           <div className="flex items-center gap-6 py-4 border-y border-gray-200">
             <span className="flex items-center gap-2 text-gray-700"><Bed className="w-5 h-5" /><span className="text-sm font-medium">{property.features.bedrooms} Beds</span></span>

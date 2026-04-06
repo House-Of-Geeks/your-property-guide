@@ -304,6 +304,41 @@ export async function updateTeamAgent(agentId: string, formData: FormData) {
   return { success: true };
 }
 
+// ─── Saved properties ─────────────────────────────────────────────────────────
+
+export async function toggleSavedProperty(propertyId: string): Promise<{ saved: boolean }> {
+  const session = await auth();
+  if (!session?.user?.email) throw new Error("unauthenticated");
+
+  const user = await db.user.findUnique({ where: { email: session.user.email }, select: { id: true } });
+  if (!user) throw new Error("unauthenticated");
+
+  const existing = await db.savedProperty.findUnique({
+    where: { userId_propertyId: { userId: user.id, propertyId } },
+  });
+
+  if (existing) {
+    await db.savedProperty.delete({ where: { id: existing.id } });
+    return { saved: false };
+  } else {
+    await db.savedProperty.create({ data: { userId: user.id, propertyId } });
+    return { saved: true };
+  }
+}
+
+export async function isPropertySaved(propertyId: string): Promise<boolean> {
+  const session = await auth();
+  if (!session?.user?.email) return false;
+
+  const user = await db.user.findUnique({ where: { email: session.user.email }, select: { id: true } });
+  if (!user) return false;
+
+  const saved = await db.savedProperty.findUnique({
+    where: { userId_propertyId: { userId: user.id, propertyId } },
+  });
+  return !!saved;
+}
+
 // ─── Admin: set user role ─────────────────────────────────────────────────────
 
 export async function setUserRole(userId: string, role: string) {

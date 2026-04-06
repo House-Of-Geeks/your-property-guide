@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { headers } from "next/headers";
 import { db } from "@/lib/db";
+import { UserCircle } from "lucide-react";
 
 const FOOTER_COLUMNS = [
   {
@@ -80,12 +81,36 @@ async function getSuburbForFooter(slug: string) {
   });
 }
 
+async function getSuburbFromPropertySlug(propertySlug: string) {
+  const property = await db.property.findUnique({
+    where: { slug: propertySlug },
+    select: { suburb: { select: { name: true, slug: true, nearbySuburbs: true } } },
+  });
+  return property?.suburb ?? null;
+}
+
 function nearbyName(slug: string): string {
   return slug
     .replace(/-[a-z]{2,3}-\d{4}$/, "")
     .split("-")
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");
+}
+
+function AgentLoginPill() {
+  return (
+    <div className="border-b border-gray-100 bg-gray-50">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex justify-end">
+        <Link
+          href="/dashboard/login"
+          className="flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-gray-500 border border-gray-300 rounded-full hover:border-primary hover:text-primary transition-colors"
+        >
+          <UserCircle className="w-3.5 h-3.5" />
+          Agent Login
+        </Link>
+      </div>
+    </div>
+  );
 }
 
 function FooterBottom() {
@@ -125,6 +150,59 @@ function LinkCol({ heading, links }: { heading: string; links: { label: string; 
   );
 }
 
+function SuburbFooter({ name, slug, nearbySuburbs }: { name: string; slug: string; nearbySuburbs: string[] }) {
+  const nearby = nearbySuburbs.slice(0, 8);
+
+  const forSale = [
+    { label: `Houses for sale in ${name}`,         href: `/buy?suburb=${slug}&propertyType=house` },
+    { label: `Units for sale in ${name}`,          href: `/buy?suburb=${slug}&propertyType=unit` },
+    { label: `Townhouses for sale in ${name}`,     href: `/buy?suburb=${slug}&propertyType=townhouse` },
+    { label: `All properties for sale in ${name}`, href: `/suburbs/${slug}/buy` },
+  ];
+  const forRent = [
+    { label: `Houses for rent in ${name}`,  href: `/rent?suburb=${slug}&propertyType=house` },
+    { label: `Units for rent in ${name}`,   href: `/rent?suburb=${slug}&propertyType=unit` },
+    { label: `Townhouses for rent in ${name}`, href: `/rent?suburb=${slug}&propertyType=townhouse` },
+    { label: `All rentals in ${name}`,      href: `/suburbs/${slug}/rent` },
+  ];
+  const suburbLinks = [
+    { label: `${name} suburb profile`,          href: `/suburbs/${slug}` },
+    { label: `${name} real estate agents`,      href: `/agents?suburb=${slug}` },
+    { label: `${name} real estate agencies`,    href: `/real-estate-agencies?suburb=${slug}` },
+    { label: `House and Land in ${name}`,       href: `/house-and-land?suburb=${slug}` },
+    { label: `Schools in ${name}`,              href: `/suburbs/${slug}#schools` },
+    { label: "Home Price Guide",                href: "/price-guide" },
+    { label: "Privacy Policy",                  href: "/privacy" },
+    { label: "Get a free appraisal",            href: "/appraisal" },
+  ];
+
+  return (
+    <footer className="bg-white text-gray-700 border-t-4 border-t-primary">
+      <AgentLoginPill />
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
+          <LinkCol heading="For Sale"           links={forSale} />
+          <LinkCol heading="For Rent"           links={forRent} />
+          <LinkCol heading={name}               links={suburbLinks} />
+          <LinkCol
+            heading="Surrounding Suburbs"
+            links={
+              nearby.length > 0
+                ? nearby.map((s) => ({ label: nearbyName(s), href: `/suburbs/${s}` }))
+                : [
+                    { label: "Explore all suburbs", href: "/suburbs" },
+                    { label: "Buy property",        href: "/buy" },
+                    { label: "Rent property",       href: "/rent" },
+                    { label: "Find an agent",       href: "/agents" },
+                  ]
+            }
+          />
+        </div>
+        <FooterBottom />
+      </div>
+    </footer>
+  );
+}
 
 export async function Footer() {
   const h = await headers();
@@ -132,65 +210,26 @@ export async function Footer() {
 
   // Suburb profile page: /suburbs/{slug} (exact, not sub-routes)
   const suburbMatch = pathname.match(/^\/suburbs\/([^/]+)$/);
-
   if (suburbMatch) {
-    const slug = suburbMatch[1];
-    const suburb = await getSuburbForFooter(slug);
-
+    const suburb = await getSuburbForFooter(suburbMatch[1]);
     if (suburb) {
-      const { name, nearbySuburbs } = suburb;
-      const nearby = nearbySuburbs.slice(0, 6);
-
-      const forSale = [
-        { label: `Houses for sale in ${name}`,         href: `/buy?suburb=${slug}&propertyType=house` },
-        { label: `Units for sale in ${name}`,          href: `/buy?suburb=${slug}&propertyType=unit` },
-        { label: `All properties for sale in ${name}`, href: `/suburbs/${slug}/buy` },
-      ];
-      const forRent = [
-        { label: `Houses for rent in ${name}`,  href: `/rent?suburb=${slug}&propertyType=house` },
-        { label: `Units for rent in ${name}`,   href: `/rent?suburb=${slug}&propertyType=unit` },
-        { label: `All rentals in ${name}`,      href: `/suburbs/${slug}/rent` },
-      ];
-      const suburbLinks = [
-        { label: `${name} suburb profile`,          href: `/suburbs/${slug}` },
-        { label: `${name} real estate agents`,      href: `/agents?suburb=${slug}` },
-        { label: `${name} real estate agencies`,    href: `/real-estate-agencies?suburb=${slug}` },
-        { label: `House and Land in ${name}`,       href: `/house-and-land?suburb=${slug}` },
-        { label: `Schools in ${name}`,              href: `/suburbs/${slug}#schools` },
-        { label: "Get a free appraisal",            href: "/appraisal" },
-      ];
-
-      return (
-        <footer className="bg-white text-gray-700 border-t-4 border-t-primary">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
-              <LinkCol heading="For Sale"           links={forSale} />
-              <LinkCol heading="For Rent"           links={forRent} />
-              <LinkCol heading={name}               links={suburbLinks} />
-              <LinkCol
-                heading="Surrounding Suburbs"
-                links={
-                  nearby.length > 0
-                    ? nearby.map((s) => ({ label: nearbyName(s), href: `/suburbs/${s}` }))
-                    : [
-                        { label: "Explore all suburbs", href: "/suburbs" },
-                        { label: "Buy property",        href: "/buy" },
-                        { label: "Rent property",       href: "/rent" },
-                        { label: "Find an agent",       href: "/agents" },
-                      ]
-                }
-              />
-            </div>
-            <FooterBottom />
-          </div>
-        </footer>
-      );
+      return <SuburbFooter name={suburb.name} slug={suburb.slug} nearbySuburbs={suburb.nearbySuburbs} />;
     }
   }
 
-  // Default footer for all other pages — Domain-style national columns
+  // Property listing pages: /buy/{slug}, /rent/{slug}, /sold/{slug}
+  const propertyMatch = pathname.match(/^\/(buy|rent|sold)\/([^/]+)$/);
+  if (propertyMatch) {
+    const suburb = await getSuburbFromPropertySlug(propertyMatch[2]);
+    if (suburb) {
+      return <SuburbFooter name={suburb.name} slug={suburb.slug} nearbySuburbs={suburb.nearbySuburbs} />;
+    }
+  }
+
+  // Default footer for all other pages
   return (
     <footer className="bg-white text-gray-700 border-t border-gray-200">
+      <AgentLoginPill />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
           {FOOTER_COLUMNS.map((col) => (

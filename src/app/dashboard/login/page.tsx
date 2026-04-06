@@ -2,19 +2,24 @@ import type { Metadata } from "next";
 import { signIn } from "@/auth";
 import { Mail } from "lucide-react";
 
-export const metadata: Metadata = { title: "Agent Login" };
+export const metadata: Metadata = { title: "Sign In" };
 
-export default function LoginPage({
+export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: { error?: string; callbackUrl?: string };
+  searchParams: Promise<{ error?: string; callbackUrl?: string }>;
 }) {
+  const { error, callbackUrl } = await searchParams;
+  const isAgentLogin = !callbackUrl || callbackUrl.startsWith("/dashboard");
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl p-8">
         <div className="text-center mb-8">
           <p className="text-xs font-bold text-primary uppercase tracking-widest mb-2">Your Property Guide</p>
-          <h1 className="text-2xl font-bold text-gray-900">Agent Dashboard</h1>
+          <h1 className="text-2xl font-bold text-gray-900">
+            {isAgentLogin ? "Agent Dashboard" : "Save & track properties"}
+          </h1>
           <p className="text-sm text-gray-500 mt-1">Enter your email to receive a magic sign-in link</p>
         </div>
 
@@ -28,7 +33,7 @@ export default function LoginPage({
           }}
           className="space-y-4"
         >
-          <input type="hidden" name="callbackUrl" value={searchParams.callbackUrl ?? ""} />
+          <input type="hidden" name="callbackUrl" value={callbackUrl ?? ""} />
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Email address</label>
             <div className="relative">
@@ -44,7 +49,7 @@ export default function LoginPage({
             </div>
           </div>
 
-          {searchParams.error && (
+          {error && (
             <p className="text-sm text-red-500">Sign-in failed. Make sure you use your registered agent email.</p>
           )}
 
@@ -57,7 +62,9 @@ export default function LoginPage({
         </form>
 
         <p className="text-xs text-gray-400 text-center mt-6">
-          Only registered agents can access the dashboard. Contact support if you need access.
+          {isAgentLogin
+            ? "Agents: use your registered agency email to access the dashboard."
+            : "A link will be sent to your inbox — no password needed."}
         </p>
       </div>
     </div>

@@ -18,6 +18,9 @@ import { propertyTitle, propertyDescription, absoluteUrl } from "@/lib/utils/seo
 import { formatDate, formatPriceFull } from "@/lib/utils/format";
 import { db } from "@/lib/db";
 import { SITE_URL } from "@/lib/constants";
+import { auth } from "@/auth";
+import { isPropertySaved } from "@/lib/actions/dashboard";
+import { PropertyActions } from "@/components/property/PropertyActions";
 
 interface PropertyDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -49,7 +52,10 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
   const property = await getPropertyBySlug(slug);
   if (!property) notFound();
 
-  const [agent, coAgent, agency, suburbData, agencyListings] = await Promise.all([
+  const session = await auth();
+  const isLoggedIn = !!session?.user?.email;
+
+  const [agent, coAgent, agency, suburbData, agencyListings, initialSaved] = await Promise.all([
     getAgentById(property.agentId),
     property.coAgentId ? getAgentById(property.coAgentId) : Promise.resolve(null),
     getAgencyById(property.agencyId),
@@ -63,6 +69,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
       },
     }),
     getPropertiesByAgency(property.agencyId, 4),
+    isPropertySaved(property.id),
   ]);
 
   const otherListings = agencyListings.filter((p) => p.id !== property.id).slice(0, 3);
@@ -149,9 +156,17 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
 
             {/* Price + address + stats */}
             <div>
-              <p className="text-2xl sm:text-3xl font-bold text-gray-900">
-                {property.price.display}
-              </p>
+              <div className="flex items-start justify-between gap-4">
+                <p className="text-2xl sm:text-3xl font-bold text-gray-900">
+                  {property.price.display}
+                </p>
+                <PropertyActions
+                  propertyId={property.id}
+                  address={property.address.full}
+                  initialSaved={initialSaved}
+                  isLoggedIn={isLoggedIn}
+                />
+              </div>
               <h1 className="text-lg text-gray-700 mt-1">
                 {property.address.street},{" "}
                 <Link href={`/suburbs/${property.suburbSlug}`} className="hover:text-primary hover:underline">

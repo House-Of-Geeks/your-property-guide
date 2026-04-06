@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { Menu, X, Search, ChevronDown } from "lucide-react";
+import { Menu, X, Search, ChevronDown, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui";
 
 const NAV_LINKS = [
@@ -112,6 +112,13 @@ export function Header() {
                 Search
               </Button>
             </Link>
+            <Link
+              href="/dashboard/login"
+              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 border border-gray-300 rounded-full hover:border-primary hover:text-primary transition-colors"
+            >
+              <UserCircle className="w-4 h-4" />
+              Agent Login
+            </Link>
             <Link href="/appraisal" className="hidden md:block">
               <Button variant="gradient" size="sm">
                 Free Appraisal
@@ -160,7 +167,15 @@ export function Header() {
                 </Link>
               )
             )}
-            <div className="pt-4 border-t border-gray-200">
+            <div className="pt-4 border-t border-gray-200 space-y-2">
+              <Link
+                href="/dashboard/login"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-sm font-medium text-gray-600 border border-gray-300 rounded-full hover:border-primary hover:text-primary transition-colors"
+              >
+                <UserCircle className="w-4 h-4" />
+                Agent Login
+              </Link>
               <Link href="/appraisal" onClick={() => setMobileOpen(false)}>
                 <Button variant="gradient" size="lg" className="w-full">
                   Free Appraisal

@@ -11,16 +11,29 @@ datasource db {
 // Auth.js (NextAuth v5)
 // ---------------------------------------------------------------------------
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  role          String    @default("agent") // "agent" | "agency_admin" | "admin"
-  accounts      Account[]
-  sessions      Session[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id             String          @id @default(cuid())
+  name           String?
+  email          String          @unique
+  emailVerified  DateTime?
+  image          String?
+  role           String          @default("agent") // "agent" | "agency_admin" | "admin"
+  accounts       Account[]
+  sessions       Session[]
+  savedProperties SavedProperty[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model SavedProperty {
+  id         String   @id @default(cuid())
+  userId     String
+  propertyId String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, propertyId])
+  @@index([userId])
 }
 
 model Account {
@@ -177,10 +190,11 @@ model Property {
   isFeatured      Boolean   @default(false)
 
   images   Property_Image[]
-  agent    Agent    @relation("PropertyPrimaryAgent", fields: [agentId], references: [id])
-  coAgent  Agent?   @relation("PropertyCoAgent", fields: [coAgentId], references: [id])
-  agency   Agency   @relation(fields: [agencyId], references: [id])
-  suburb   Suburb   @relation(fields: [suburbSlug], references: [slug])
+  agent           Agent           @relation("PropertyPrimaryAgent", fields: [agentId], references: [id])
+  coAgent         Agent?          @relation("PropertyCoAgent", fields: [coAgentId], references: [id])
+  agency          Agency          @relation(fields: [agencyId], references: [id])
+  suburb          Suburb          @relation(fields: [suburbSlug], references: [slug])
+  savedByUsers    SavedProperty[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
