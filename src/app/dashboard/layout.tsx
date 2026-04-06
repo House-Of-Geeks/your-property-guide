@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { Home, User, Building2, LogOut } from "lucide-react";
+import { Home, User, Building2, LogOut, List, Users, PlusSquare } from "lucide-react";
 
 export const metadata: Metadata = {
   title: { default: "Dashboard", template: "%s | Your Property Guide" },
@@ -15,6 +15,19 @@ export default async function DashboardLayout({ children }: { children: React.Re
   // login and verify pages render without the shell
   if (!session) return <>{children}</>;
 
+  const role = (session.user as any).role as string | undefined;
+  const isAdmin = role === "agency_admin" || role === "admin";
+
+  const roleBadgeLabel =
+    role === "admin" ? "Admin" :
+    role === "agency_admin" ? "Agency Admin" :
+    "Agent";
+
+  const roleBadgeClass =
+    role === "admin" ? "bg-purple-100 text-purple-700" :
+    role === "agency_admin" ? "bg-blue-100 text-blue-700" :
+    "bg-gray-100 text-gray-600";
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
@@ -22,10 +35,23 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <div className="px-5 py-5 border-b border-gray-100">
           <Link href="/" className="text-sm font-bold text-primary">Your Property Guide</Link>
           <p className="text-xs text-gray-400 mt-0.5 truncate">{session.user?.email}</p>
+          <span className={`inline-block mt-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${roleBadgeClass}`}>
+            {roleBadgeLabel}
+          </span>
         </div>
         <nav className="flex-1 px-3 py-4 space-y-1">
           <NavLink href="/dashboard/profile" icon={<User className="w-4 h-4" />} label="My Profile" />
-          <NavLink href="/dashboard/agency" icon={<Building2 className="w-4 h-4" />} label="Agency" />
+          <NavLink
+            href="/dashboard/listings"
+            icon={<List className="w-4 h-4" />}
+            label={isAdmin ? "All Listings" : "My Listings"}
+          />
+          {isAdmin && (
+            <>
+              <NavLink href="/dashboard/agency" icon={<Building2 className="w-4 h-4" />} label="Agency Profile" />
+              <NavLink href="/dashboard/team" icon={<Users className="w-4 h-4" />} label="Our Team" />
+            </>
+          )}
           <NavLink href="/" icon={<Home className="w-4 h-4" />} label="View Site" />
         </nav>
         <div className="px-3 py-4 border-t border-gray-100">
@@ -39,7 +65,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
       {/* Main */}
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-3xl mx-auto px-6 py-10">{children}</div>
+        <div className="max-w-4xl mx-auto px-6 py-10">{children}</div>
       </main>
     </div>
   );
