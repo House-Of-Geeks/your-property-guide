@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Bed, Bath, Car, Ruler, MapPin } from "lucide-react";
+import { Bed, Bath, Car, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui";
 import { cn } from "@/lib/utils/cn";
 import type { Property } from "@/types";
@@ -145,21 +145,19 @@ function FeatureIcons({
   className?: string;
 }) {
   return (
-    <div className={cn("flex items-center gap-4 text-sm text-gray-600", className)}>
-      <span className="flex items-center gap-1">
-        <Bed className="w-4 h-4" /> {features.bedrooms}
+    <div className={cn("flex items-center gap-5 text-gray-700", className)}>
+      <span className="flex items-center gap-1.5 text-sm">
+        <Bed className="w-4 h-4 text-gray-400" />
+        <strong className="font-semibold">{features.bedrooms}</strong>
       </span>
-      <span className="flex items-center gap-1">
-        <Bath className="w-4 h-4" /> {features.bathrooms}
+      <span className="flex items-center gap-1.5 text-sm">
+        <Bath className="w-4 h-4 text-gray-400" />
+        <strong className="font-semibold">{features.bathrooms}</strong>
       </span>
-      <span className="flex items-center gap-1">
-        <Car className="w-4 h-4" /> {features.carSpaces}
+      <span className="flex items-center gap-1.5 text-sm">
+        <Car className="w-4 h-4 text-gray-400" />
+        <strong className="font-semibold">{features.carSpaces}</strong>
       </span>
-      {features.landSize && (
-        <span className="flex items-center gap-1">
-          <Ruler className="w-4 h-4" /> {features.landSize}m²
-        </span>
-      )}
     </div>
   );
 }
