@@ -123,6 +123,8 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
           images={property.images}
           address={property.address.full}
           inspectionTime={(property.inspectionTimes ?? [])[0]}
+          agentPhone={agent?.phone}
+          enquireHref="#enquire"
         />
       </div>
 
