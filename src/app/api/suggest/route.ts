@@ -65,8 +65,8 @@ export async function GET(req: NextRequest) {
                sub.postcode AS "suburbPostcode", sub.name AS "suburbName"
         FROM "School" s
         LEFT JOIN "Suburb" sub ON sub.id = s."suburbId"
-        WHERE regexp_replace(lower(s.name), '[''']', '', 'g')
-              LIKE '%' || regexp_replace(lower(${q}), '[''']', '', 'g') || '%'
+        WHERE regexp_replace(lower(s.name), $$[']$$, '', 'g')
+              LIKE '%' || regexp_replace(lower(${q}), $$[']$$, '', 'g') || '%'
         LIMIT 5
       `;
 
