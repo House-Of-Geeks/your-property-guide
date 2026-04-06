@@ -29,6 +29,10 @@ export function HeroSearch() {
   }
 
   function addLocation(loc: SelectedLocation) {
+    if (loc.type === "school") {
+      router.push(`/schools/${loc.slug}`);
+      return;
+    }
     setSelected((prev) => prev.find((s) => s.slug === loc.slug) ? prev : [...prev, loc]);
   }
 
