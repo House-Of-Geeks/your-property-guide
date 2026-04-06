@@ -16,7 +16,7 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
 
   if (variant === "list") {
     return (
-      <Link href={href} className="group block">
+      <Link href={href} className="block">
         <div className="flex gap-4 rounded-xl bg-white overflow-hidden shadow-card hover:shadow-card-hover transition-shadow border border-gray-100">
           <div className="relative w-72 flex-shrink-0">
             <Image
@@ -47,14 +47,14 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
 
   if (variant === "featured") {
     return (
-      <Link href={href} className="group block">
+      <Link href={href} className="block">
         <div className="rounded-xl bg-white shadow-card border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow">
           <div className="relative aspect-[4/3]">
             <Image
               src={images[0]?.url || "/images/placeholder.jpg"}
               alt={images[0]?.alt || address.full}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-cover transition-transform duration-300"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
             <StatusBadge status={status} listingType={listingType} />
@@ -80,7 +80,7 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
 
   // Grid variant (default)
   return (
-    <Link href={href} className="group block">
+    <Link href={href} className="block">
       <div className="rounded-2xl bg-white overflow-hidden shadow-card hover:shadow-card-hover transition-shadow duration-200">
         {/* Image with suburb overlay */}
         <div className="relative aspect-[4/3] overflow-hidden">
@@ -88,7 +88,7 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
             src={images[0]?.url || "/images/placeholder.jpg"}
             alt={images[0]?.alt || address.full}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            className="object-cover transition-transform duration-300"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
           <StatusBadge status={status} listingType={listingType} />
