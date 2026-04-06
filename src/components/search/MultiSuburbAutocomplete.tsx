@@ -41,6 +41,9 @@ export function MultiSuburbAutocomplete({
   const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const inputRef = useRef<HTMLInputElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  // Keep selected slugs in a ref so the fetch effect doesn't re-run on every selection
+  const selectedSlugsRef = useRef<Set<string>>(new Set());
+  selectedSlugsRef.current = new Set(selected.map((s) => s.slug));
 
   useEffect(() => {
     const q = query.trim();
@@ -55,10 +58,10 @@ export function MultiSuburbAutocomplete({
         const res = await fetch(`/api/suggest?q=${encodeURIComponent(q)}`);
         if (!res.ok) return;
         const data: SuggestResponse = await res.json();
-        // Filter out already-selected slugs
-        const selectedSlugs = new Set(selected.map((s) => s.slug));
-        data.locations = data.locations.filter((l) => !selectedSlugs.has(l.slug));
-        data.schools = data.schools.filter((s) => !selectedSlugs.has(s.slug));
+        // Filter out already-selected items using the ref (avoids stale closure)
+        const slugs = selectedSlugsRef.current;
+        data.locations = data.locations.filter((l) => !slugs.has(l.slug));
+        data.schools = data.schools.filter((s) => !slugs.has(s.slug));
         setResults(data);
         setOpen(data.locations.length > 0 || (showSchools && data.schools.length > 0));
         setActiveIdx(-1);
@@ -66,7 +69,7 @@ export function MultiSuburbAutocomplete({
         // ignore
       }
     }, 180);
-  }, [query, showSchools, selected]);
+  }, [query, showSchools]); // no `selected` dep — ref handles dedup without re-triggering
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -85,7 +88,7 @@ export function MultiSuburbAutocomplete({
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Backspace" && query === "" && selected.length > 0) {
+      if (e.key === "Backspace" && query === "" && selectedSlugsRef.current.size > 0) {
         onRemove(selected[selected.length - 1].slug);
         return;
       }
@@ -105,7 +108,7 @@ export function MultiSuburbAutocomplete({
         setOpen(false);
       }
     },
-    [open, activeIdx, allItems, query, selected] // eslint-disable-line react-hooks/exhaustive-deps
+    [open, activeIdx, allItems, query, selected, onRemove] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   function pickLocation(loc: SuggestLocation) {
