@@ -58,13 +58,13 @@ export async function GET(req: NextRequest) {
   const [locations, rawSchools] = await Promise.all([
     locationsPromise,
     isNumeric
-      ? Promise.resolve([] as { name: string; acaraId: string; suburb: { state: string; postcode: string; name: string } | null }[])
+      ? Promise.resolve([] as { name: string; acaraId: string; suburb: { slug: string; state: string; postcode: string; name: string } | null }[])
       : db.school.findMany({
           where: { name: { contains: q, mode: "insensitive" } },
           select: {
             name: true,
             acaraId: true,
-            suburb: { select: { state: true, postcode: true, name: true } },
+            suburb: { select: { slug: true, state: true, postcode: true, name: true } },
           },
           take: 3,
         }),
@@ -76,6 +76,7 @@ export async function GET(req: NextRequest) {
     state:      s.suburb?.state ?? "",
     postcode:   s.suburb?.postcode ?? "",
     suburbName: s.suburb?.name ?? "",
+    suburbSlug: s.suburb?.slug ?? "",
   }));
 
   return NextResponse.json<SuggestResponse>({ locations, schools, agencies: [] });

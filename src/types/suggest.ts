@@ -11,6 +11,7 @@ export interface SuggestSchool {
   state: string;
   postcode: string;
   suburbName: string;
+  suburbSlug: string;
 }
 
 export interface SuggestAgency {

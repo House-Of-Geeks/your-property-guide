@@ -2,26 +2,32 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { MapPin, GraduationCap, Search, X } from "lucide-react";
-import type { SuggestResponse, SuggestLocation } from "@/types/suggest";
+import type { SuggestResponse, SuggestLocation, SuggestSchool } from "@/types/suggest";
 
-export interface SelectedSuburb {
+export interface SelectedLocation {
+  /** For suburbs: the suburb slug. For schools: the school slug. */
   slug: string;
+  /** Display label shown in the pill */
   label: string;
+  /** "suburb" | "school" — controls pill icon and filter behaviour */
+  type: "suburb" | "school";
+  /** For school entries: the suburb slug used to filter properties */
+  suburbSlug?: string;
 }
 
 interface MultiSuburbAutocompleteProps {
   placeholder?: string;
   showSchools?: boolean;
-  selected: SelectedSuburb[];
-  onAdd: (suburb: SelectedSuburb) => void;
+  selected: SelectedLocation[];
+  onAdd: (location: SelectedLocation) => void;
   onRemove: (slug: string) => void;
   inputClassName?: string;
   size?: "default" | "lg";
 }
 
 export function MultiSuburbAutocomplete({
-  placeholder = "Try a suburb or postcode...",
-  showSchools = false,
+  placeholder = "Try a suburb, postcode or school...",
+  showSchools = true,
   selected,
   onAdd,
   onRemove,
@@ -34,7 +40,6 @@ export function MultiSuburbAutocomplete({
   const [activeIdx, setActiveIdx] = useState(-1);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const inputRef = useRef<HTMLInputElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -50,9 +55,10 @@ export function MultiSuburbAutocomplete({
         const res = await fetch(`/api/suggest?q=${encodeURIComponent(q)}`);
         if (!res.ok) return;
         const data: SuggestResponse = await res.json();
-        // Filter out already-selected suburbs
+        // Filter out already-selected slugs
         const selectedSlugs = new Set(selected.map((s) => s.slug));
         data.locations = data.locations.filter((l) => !selectedSlugs.has(l.slug));
+        data.schools = data.schools.filter((s) => !selectedSlugs.has(s.slug));
         setResults(data);
         setOpen(data.locations.length > 0 || (showSchools && data.schools.length > 0));
         setActiveIdx(-1);
@@ -94,6 +100,7 @@ export function MultiSuburbAutocomplete({
         e.preventDefault();
         const item = allItems[activeIdx];
         if (item.type === "location") pickLocation(item.data);
+        else pickSchool(item.data);
       } else if (e.key === "Escape") {
         setOpen(false);
       }
@@ -102,15 +109,27 @@ export function MultiSuburbAutocomplete({
   );
 
   function pickLocation(loc: SuggestLocation) {
-    const label = `${loc.name}, ${loc.state} ${loc.postcode}`;
-    onAdd({ slug: loc.slug, label });
+    onAdd({ slug: loc.slug, label: `${loc.name}, ${loc.state} ${loc.postcode}`, type: "suburb" });
     setQuery("");
     setOpen(false);
     setActiveIdx(-1);
     inputRef.current?.focus();
   }
 
-  const padClass = size === "lg" ? "px-5 py-3.5 text-base" : "px-4 py-3 text-sm";
+  function pickSchool(school: SuggestSchool) {
+    onAdd({
+      slug: school.slug,
+      label: school.name,
+      type: "school",
+      suburbSlug: school.suburbSlug,
+    });
+    setQuery("");
+    setOpen(false);
+    setActiveIdx(-1);
+    inputRef.current?.focus();
+  }
+
+  const padClass = size === "lg" ? "px-4 py-3 text-base" : "px-4 py-3 text-sm";
 
   return (
     <div ref={wrapperRef} className="relative w-full">
@@ -126,6 +145,10 @@ export function MultiSuburbAutocomplete({
             key={s.slug}
             className="inline-flex items-center gap-1 bg-primary/10 text-primary text-sm font-medium px-2.5 py-0.5 rounded-full"
           >
+            {s.type === "school"
+              ? <GraduationCap className="w-3 h-3 shrink-0" />
+              : <MapPin className="w-3 h-3 shrink-0" />
+            }
             {s.label}
             <button
               type="button"
@@ -143,25 +166,20 @@ export function MultiSuburbAutocomplete({
           ref={inputRef}
           type="text"
           value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-          }}
+          onChange={(e) => setQuery(e.target.value)}
           onFocus={() => {
-            if (results.locations.length > 0) setOpen(true);
+            if (results.locations.length > 0 || (showSchools && results.schools.length > 0)) setOpen(true);
           }}
           onKeyDown={handleKeyDown}
-          placeholder={selected.length === 0 ? placeholder : "Add another suburb..."}
+          placeholder={selected.length === 0 ? placeholder : "Add suburb or school..."}
           autoComplete="off"
-          className="flex-1 min-w-[120px] bg-transparent border-0 outline-none focus:ring-0 text-sm placeholder:text-gray-400"
+          className="flex-1 min-w-[140px] bg-transparent border-0 outline-none focus:ring-0 text-sm placeholder:text-gray-400"
         />
 
         {(selected.length > 0 || query) && (
           <button
             type="button"
-            onClick={() => {
-              setQuery("");
-              selected.forEach((s) => onRemove(s.slug));
-            }}
+            onClick={() => { setQuery(""); selected.forEach((s) => onRemove(s.slug)); }}
             className="text-gray-400 hover:text-gray-600 ml-1"
             aria-label="Clear all"
           >
@@ -171,15 +189,10 @@ export function MultiSuburbAutocomplete({
       </div>
 
       {open && allItems.length > 0 && (
-        <div
-          ref={dropdownRef}
-          className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden"
-        >
+        <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden">
           {results.locations.length > 0 && (
             <div>
-              <p className="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
-                Locations
-              </p>
+              <p className="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Locations</p>
               {results.locations.map((loc, i) => (
                 <button
                   key={loc.slug}
@@ -196,6 +209,33 @@ export function MultiSuburbAutocomplete({
                   </span>
                 </button>
               ))}
+            </div>
+          )}
+
+          {showSchools && results.schools.length > 0 && (
+            <div className={results.locations.length > 0 ? "border-t border-gray-100" : ""}>
+              <p className="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Schools</p>
+              {results.schools.map((school, i) => {
+                const idx = results.locations.length + i;
+                return (
+                  <button
+                    key={school.slug}
+                    type="button"
+                    onMouseDown={(e) => { e.preventDefault(); pickSchool(school); }}
+                    className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors ${
+                      activeIdx === idx ? "bg-primary/5 text-primary" : "text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    <GraduationCap className="w-4 h-4 text-gray-400 shrink-0" />
+                    <span>
+                      <span className="font-medium">{school.name}</span>
+                      {school.suburbName && (
+                        <span className="text-gray-500">, {school.suburbName}, {school.state}</span>
+                      )}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>

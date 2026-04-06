@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Search, SlidersHorizontal } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui";
-import { MultiSuburbAutocomplete, type SelectedSuburb } from "@/components/search/MultiSuburbAutocomplete";
+import { MultiSuburbAutocomplete, type SelectedLocation } from "@/components/search/MultiSuburbAutocomplete";
 import { PROPERTY_TYPES, BEDROOM_OPTIONS, PRICE_RANGES_BUY, PRICE_RANGES_RENT } from "@/lib/constants";
 
 const MODES = [
@@ -22,23 +22,25 @@ export function HeroSearch() {
   const [mode, setMode] = useState<Mode>("buy");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [filters, setFilters] = useState({ propertyType: "", minPrice: "", maxPrice: "", minBeds: "" });
-  const [selectedSuburbs, setSelectedSuburbs] = useState<SelectedSuburb[]>([]);
+  const [selected, setSelected] = useState<SelectedLocation[]>([]);
 
   function setFilter(key: keyof typeof filters, value: string) {
     setFilters((f) => ({ ...f, [key]: value }));
   }
 
-  function addSuburb(suburb: SelectedSuburb) {
-    setSelectedSuburbs((prev) => prev.find((s) => s.slug === suburb.slug) ? prev : [...prev, suburb]);
+  function addLocation(loc: SelectedLocation) {
+    setSelected((prev) => prev.find((s) => s.slug === loc.slug) ? prev : [...prev, loc]);
   }
 
-  function removeSuburb(slug: string) {
-    setSelectedSuburbs((prev) => prev.filter((s) => s.slug !== slug));
+  function removeLocation(slug: string) {
+    setSelected((prev) => prev.filter((s) => s.slug !== slug));
   }
 
   function handleSearch() {
     const params = new URLSearchParams();
-    if (selectedSuburbs.length > 0) params.set("suburb", selectedSuburbs.map((s) => s.slug).join(","));
+    // Resolve suburb slugs: suburbs use their own slug, schools use their suburbSlug
+    const suburbSlugs = selected.map((s) => s.type === "school" ? (s.suburbSlug ?? "") : s.slug).filter(Boolean);
+    if (suburbSlugs.length > 0) params.set("suburb", suburbSlugs.join(","));
     if (filters.propertyType) params.set("propertyType", filters.propertyType);
     if (filters.minPrice) params.set("minPrice", filters.minPrice);
     if (filters.maxPrice) params.set("maxPrice", filters.maxPrice);
@@ -101,12 +103,13 @@ export function HeroSearch() {
           <div className="flex items-center gap-2 p-2">
             <div className="flex-1 bg-gray-50 rounded-xl min-w-0">
               <MultiSuburbAutocomplete
-                placeholder="Try a suburb or postcode..."
+                placeholder="Try a suburb, postcode or school..."
+                showSchools
                 size="lg"
                 inputClassName="bg-gray-50"
-                selected={selectedSuburbs}
-                onAdd={addSuburb}
-                onRemove={removeSuburb}
+                selected={selected}
+                onAdd={addLocation}
+                onRemove={removeLocation}
               />
             </div>
             <button
