@@ -250,17 +250,17 @@ export default async function AgentProfilePage({ params }: AgentProfilePageProps
         </div>
 
         {/* ── Current Listings (FOR SALE / SOLD tabs) ───────────────── */}
-        {(activeListings.length > 0 || soldListings.length > 0) && (
-          <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
-              Current Listings
-            </h2>
-            <p className="text-sm text-gray-500 mb-4">
-              {agent.firstName} currently has {activeListings.length} propert{activeListings.length === 1 ? "y" : "ies"} for sale.
-            </p>
-            <AgentListingsTabs forSale={activeListings} sold={soldListings} />
-          </div>
-        )}
+        <div>
+          <h2 className="text-xl font-bold text-gray-900 mb-4">
+            Current Listings
+          </h2>
+          <p className="text-sm text-gray-500 mb-4">
+            {activeListings.length > 0
+              ? `${agent.firstName} currently has ${activeListings.length} propert${activeListings.length === 1 ? "y" : "ies"} for sale.`
+              : `${agent.firstName} has no current listings.`}
+          </p>
+          <AgentListingsTabs forSale={activeListings} sold={soldListings} />
+        </div>
       </div>
 
       {/* ── Contact section ────────────────────────────────────────── */}
