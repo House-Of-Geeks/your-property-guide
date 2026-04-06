@@ -107,6 +107,29 @@ export async function getAgencies(suburbSlug?: string): Promise<Agency[]> {
   return rows.map(toAgency);
 }
 
+/** Agencies serving OR physically based in a suburb slug like "margate-qld-4019" */
+export async function getAgenciesBySuburbSlug(suburbSlug: string): Promise<Agency[]> {
+  // Decode slug → addressSuburb + addressPostcode for the "based in" match
+  const parts = suburbSlug.split("-");
+  const postcode = parts[parts.length - 1];
+  const nameParts = parts.slice(0, -2);
+  const suburbName = nameParts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join(" ");
+
+  const rows = await db.agency.findMany({
+    where: {
+      OR: [
+        { suburbs: { has: suburbSlug } },
+        {
+          addressSuburb: { equals: suburbName, mode: "insensitive" },
+          addressPostcode: postcode,
+        },
+      ],
+    },
+    orderBy: { name: "asc" },
+  });
+  return rows.map(toAgency);
+}
+
 export async function getAgencyBySlug(slug: string): Promise<Agency | null> {
   const row = await db.agency.findUnique({ where: { slug } });
   return row ? toAgency(row) : null;

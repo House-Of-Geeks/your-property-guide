@@ -2,15 +2,29 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Phone, Mail, Globe, MapPin, ChevronRight } from "lucide-react";
+import { Phone, Mail, Globe, MapPin, ChevronRight, Building2 } from "lucide-react";
 import { AgencyJsonLd, BreadcrumbJsonLd } from "@/components/seo";
 import { PropertyCard } from "@/components/property/PropertyCard";
+import { AgencyCard } from "@/components/agent/AgencyCard";
 import { AgencyContactForm } from "@/components/agency/AgencyContactForm";
-import { getAgencyBySlug, getAgentsByAgency } from "@/lib/services/agent-service";
+import { getAgencyBySlug, getAgentsByAgency, getAgenciesBySuburbSlug } from "@/lib/services/agent-service";
 import { getPropertiesByAgency } from "@/lib/services/property-service";
 import { agencyTitle, absoluteUrl } from "@/lib/utils/seo";
 import { SITE_URL } from "@/lib/constants";
 import type { Agent, Agency } from "@/types";
+
+// suburb slugs end in "-[state2-3]-[postcode4]" e.g. "margate-qld-4019"
+function isSuburbSlug(slug: string) {
+  return /^[a-z][a-z-]+-[a-z]{2,3}-\d{4}$/.test(slug);
+}
+
+function parseSuburbSlug(slug: string) {
+  const parts = slug.split("-");
+  const postcode = parts[parts.length - 1];
+  const state = parts[parts.length - 2].toUpperCase();
+  const name = parts.slice(0, -2).map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join(" ");
+  return { name, state, postcode };
+}
 
 interface AgencyDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -18,6 +32,19 @@ interface AgencyDetailPageProps {
 
 export async function generateMetadata({ params }: AgencyDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
+
+  if (isSuburbSlug(slug)) {
+    const { name, state, postcode } = parseSuburbSlug(slug);
+    const title = `Real Estate Agencies in ${name}, ${state} ${postcode}`;
+    const description = `Find local real estate agencies serving ${name}, ${state} ${postcode}. Compare agencies, meet the team, and browse current listings.`;
+    return {
+      title,
+      description,
+      alternates: { canonical: `${SITE_URL}/agencies/${slug}` },
+      openGraph: { title, description, type: "website" },
+    };
+  }
+
   const agency = await getAgencyBySlug(slug);
   if (!agency) return { title: "Agency Not Found" };
   const title       = agency.metaTitle       ?? agencyTitle(agency);
@@ -116,6 +143,68 @@ function AgencyTeamCard({ agent, agency }: { agent: Agent; agency: Agency }) {
 
 export default async function AgencyDetailPage({ params }: AgencyDetailPageProps) {
   const { slug } = await params;
+
+  // ── Suburb listing page ──────────────────────────────────────────────────
+  if (isSuburbSlug(slug)) {
+    const { name, state, postcode } = parseSuburbSlug(slug);
+    const displayName = `${name}, ${state} ${postcode}`;
+    const agencies = await getAgenciesBySuburbSlug(slug);
+
+    return (
+      <div>
+        <BreadcrumbJsonLd
+          items={[
+            { name: "Real Estate Agencies", url: "/agencies" },
+            { name: displayName, url: `/agencies/${slug}` },
+          ]}
+        />
+
+        {/* Breadcrumbs */}
+        <div className="bg-white border-b border-gray-100">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-3">
+            <nav className="flex items-center gap-1.5 text-xs text-gray-500">
+              <Link href="/" className="hover:text-primary transition-colors">Home</Link>
+              <ChevronRight className="w-3 h-3 text-gray-300" />
+              <Link href="/agencies" className="hover:text-primary transition-colors">Real Estate Agencies</Link>
+              <ChevronRight className="w-3 h-3 text-gray-300" />
+              <span className="text-gray-700 font-medium">{displayName}</span>
+            </nav>
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Real Estate Agencies in {name}
+            </h1>
+            <p className="text-gray-500 mt-1">
+              {agencies.length > 0
+                ? `${agencies.length} agenc${agencies.length === 1 ? "y" : "ies"} serving ${displayName}`
+                : `No agencies found in ${displayName}`}
+            </p>
+          </div>
+
+          {agencies.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {agencies.map((agency) => (
+                <AgencyCard key={agency.id} agency={agency} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16 text-gray-400">
+              <Building2 className="w-12 h-12 mx-auto mb-4 opacity-30" />
+              <p className="text-lg">No agencies listed in {displayName} yet.</p>
+              <Link href="/agencies" className="mt-4 inline-block text-primary hover:underline text-sm">
+                Browse all agencies →
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // ── Agency profile page ──────────────────────────────────────────────────
   const agency = await getAgencyBySlug(slug);
   if (!agency) notFound();
 
