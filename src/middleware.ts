@@ -1,23 +1,13 @@
-import { auth } from "@/auth";
+import NextAuth from "next-auth";
+import { authConfig } from "@/auth.config";
 import { NextResponse } from "next/server";
 
+// Use only the Edge-compatible config here — no Prisma, no Node.js modules
+const { auth } = NextAuth(authConfig);
+
 export default auth((req) => {
-  const { pathname } = req.nextUrl;
   const headers = new Headers(req.headers);
-  headers.set("x-pathname", pathname);
-
-  // Protect /dashboard — allow login + verify pages through unauthenticated
-  if (
-    pathname.startsWith("/dashboard") &&
-    !pathname.startsWith("/dashboard/login") &&
-    !pathname.startsWith("/dashboard/verify") &&
-    !req.auth
-  ) {
-    const loginUrl = new URL("/dashboard/login", req.url);
-    loginUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(loginUrl);
-  }
-
+  headers.set("x-pathname", req.nextUrl.pathname);
   return NextResponse.next({ request: { headers } });
 });
 
