@@ -23,19 +23,26 @@ const PROFILE_URL  = "https://dataandreporting.blob.core.windows.net/anrdataport
 const LOCATION_URL = "https://dataandreporting.blob.core.windows.net/anrdataportal/Data-Access-Program/School%20Location%202025.xlsx";
 
 interface ProfileRow {
-  "ACARA SML ID":     number | string;
-  "School Name":      string;
-  "Suburb":           string;
-  "State":            string;
-  "Postcode":         string | number;
-  "School Sector":    string;
-  "School Type":      string;
-  "School URL":       string;
-  "Year Range":       string;
-  "ICSEA":            number | string;
-  "Total Enrolments": number | string;
-  "Girls Enrolments": number | string;
-  "Boys Enrolments":  number | string;
+  "ACARA SML ID":                       number | string;
+  "School Name":                        string;
+  "Suburb":                             string;
+  "State":                              string;
+  "Postcode":                           string | number;
+  "School Sector":                      string;
+  "School Type":                        string;
+  "School URL":                         string;
+  "Year Range":                         string;
+  "ICSEA":                              number | string;
+  "Total Enrolments":                   number | string;
+  "Girls Enrolments":                   number | string;
+  "Boys Enrolments":                    number | string;
+  "Indigenous Enrolments (%)":                    number | string;
+  "Language Background Other Than English - Yes (%)": number | string;
+  "Teaching Staff":                               number | string;
+  "Full Time Equivalent Teaching Staff":          number | string;
+  "Non-Teaching Staff":                           number | string;
+  "Full Time Equivalent Non-Teaching Staff":      number | string;
+  [key: string]: number | string; // allow extra columns
 }
 
 interface LocationRow {
@@ -136,20 +143,28 @@ export async function run(): Promise<void> {
 
     // ── 4. Build upsert payload in memory ─────────────────────────────────
     interface SchoolRow {
-      acaraId:         string;
-      name:            string;
-      type:            string;
-      sector:          string;
-      distance:        number;
-      suburbId:        string;
-      lat:             number | null;
-      lng:             number | null;
-      icsea:           number | null;
-      enrolment:       number | null;
-      website:         string | null;
-      yearRange:       string | null;
-      gender:          string;
-      updatedFromAcara: Date;
+      acaraId:             string;
+      name:                string;
+      type:                string;
+      sector:              string;
+      distance:            number;
+      suburbId:            string;
+      lat:                 number | null;
+      lng:                 number | null;
+      icsea:               number | null;
+      enrolment:           number | null;
+      boysEnrolment:       number | null;
+      girlsEnrolment:      number | null;
+      indigenousPct:       number | null;
+      lbotePct:            number | null;
+      teachingStaff:       number | null;
+      teachingStaffFte:    number | null;
+      nonTeachingStaff:    number | null;
+      nonTeachingStaffFte: number | null;
+      website:             string | null;
+      yearRange:           string | null;
+      gender:              string;
+      updatedFromAcara:    Date;
     }
 
     const schools: SchoolRow[] = [];
@@ -168,22 +183,33 @@ export async function run(): Promise<void> {
       const suburbId = resolveSuburbId(suburb, state, postcode);
       if (!suburbId) { skipped++; continue; }
 
-      const geo = latLng.get(acaraId);
+      const geo   = latLng.get(acaraId);
+      const num   = (v: number | string) => Number(v) || null;
+      const girls = row["Girls Enrolments"];
+      const boys  = row["Boys Enrolments"];
       schools.push({
         acaraId,
         name,
-        type:      normaliseType(String(row["School Type"])),
-        sector:    normaliseSector(String(row["School Sector"])),
-        distance:  0,
+        type:                normaliseType(String(row["School Type"])),
+        sector:              normaliseSector(String(row["School Sector"])),
+        distance:            0,
         suburbId,
-        lat:       geo?.lat ?? null,
-        lng:       geo?.lng ?? null,
-        icsea:     Number(row["ICSEA"]) || null,
-        enrolment: Number(row["Total Enrolments"]) || null,
-        website:   String(row["School URL"]).trim() || null,
-        yearRange: String(row["Year Range"]).trim() || null,
-        gender:    deriveGender(row["Girls Enrolments"], row["Boys Enrolments"]),
-        updatedFromAcara: new Date(),
+        lat:                 geo?.lat ?? null,
+        lng:                 geo?.lng ?? null,
+        icsea:               num(row["ICSEA"]),
+        enrolment:           num(row["Total Enrolments"]),
+        boysEnrolment:       num(boys),
+        girlsEnrolment:      num(girls),
+        indigenousPct:       num(row["Indigenous Enrolments (%)"]),
+        lbotePct:            num(row["Language Background Other Than English - Yes (%)"]),
+        teachingStaff:       num(row["Teaching Staff"]),
+        teachingStaffFte:    num(row["Full Time Equivalent Teaching Staff"]),
+        nonTeachingStaff:    num(row["Non-Teaching Staff"]),
+        nonTeachingStaffFte: num(row["Full Time Equivalent Non-Teaching Staff"]),
+        website:             String(row["School URL"]).trim() || null,
+        yearRange:           String(row["Year Range"]).trim() || null,
+        gender:              deriveGender(girls, boys),
+        updatedFromAcara:    new Date(),
       });
     }
 
@@ -200,12 +226,19 @@ export async function run(): Promise<void> {
       await prisma.$executeRaw`
         INSERT INTO "School" (
           id, "acaraId", name, type, sector, distance, "suburbId",
-          lat, lng, icsea, enrolment, website, "yearRange", gender, "updatedFromAcara"
+          lat, lng, icsea, enrolment, "boysEnrolment", "girlsEnrolment",
+          "indigenousPct", "lbotePct",
+          "teachingStaff", "teachingStaffFte", "nonTeachingStaff", "nonTeachingStaffFte",
+          website, "yearRange", gender, "updatedFromAcara"
         )
         SELECT
           gen_random_uuid()::text,
           u.acara_id, u.name, u.type, u.sector, u.distance::float8, u.suburb_id,
           u.lat::float8, u.lng::float8, u.icsea::int, u.enrolment::int,
+          u.boys::int, u.girls::int,
+          u.indigenous::float8, u.lbote::float8,
+          u.teaching::int, u.teaching_fte::float8,
+          u.non_teaching::int, u.non_teaching_fte::float8,
           u.website, u.year_range, u.gender, u.updated_at
         FROM UNNEST(
           ${chunk.map((s) => s.acaraId)}::text[],
@@ -218,24 +251,42 @@ export async function run(): Promise<void> {
           ${chunk.map((s) => s.lng)}::float8[],
           ${chunk.map((s) => s.icsea)}::int[],
           ${chunk.map((s) => s.enrolment)}::int[],
+          ${chunk.map((s) => s.boysEnrolment)}::int[],
+          ${chunk.map((s) => s.girlsEnrolment)}::int[],
+          ${chunk.map((s) => s.indigenousPct)}::float8[],
+          ${chunk.map((s) => s.lbotePct)}::float8[],
+          ${chunk.map((s) => s.teachingStaff)}::int[],
+          ${chunk.map((s) => s.teachingStaffFte)}::float8[],
+          ${chunk.map((s) => s.nonTeachingStaff)}::int[],
+          ${chunk.map((s) => s.nonTeachingStaffFte)}::float8[],
           ${chunk.map((s) => s.website)}::text[],
           ${chunk.map((s) => s.yearRange)}::text[],
           ${chunk.map((s) => s.gender)}::text[],
           ${chunk.map((s) => s.updatedFromAcara)}::timestamptz[]
-        ) AS u(acara_id, name, type, sector, distance, suburb_id, lat, lng, icsea, enrolment, website, year_range, gender, updated_at)
+        ) AS u(acara_id, name, type, sector, distance, suburb_id, lat, lng, icsea, enrolment,
+               boys, girls, indigenous, lbote, teaching, teaching_fte, non_teaching, non_teaching_fte,
+               website, year_range, gender, updated_at)
         ON CONFLICT ("acaraId") DO UPDATE SET
-          name             = EXCLUDED.name,
-          type             = EXCLUDED.type,
-          sector           = EXCLUDED.sector,
-          "suburbId"       = EXCLUDED."suburbId",
-          lat              = EXCLUDED.lat,
-          lng              = EXCLUDED.lng,
-          icsea            = EXCLUDED.icsea,
-          enrolment        = EXCLUDED.enrolment,
-          website          = EXCLUDED.website,
-          "yearRange"      = EXCLUDED."yearRange",
-          gender           = EXCLUDED.gender,
-          "updatedFromAcara" = EXCLUDED."updatedFromAcara"
+          name                  = EXCLUDED.name,
+          type                  = EXCLUDED.type,
+          sector                = EXCLUDED.sector,
+          "suburbId"            = EXCLUDED."suburbId",
+          lat                   = EXCLUDED.lat,
+          lng                   = EXCLUDED.lng,
+          icsea                 = EXCLUDED.icsea,
+          enrolment             = EXCLUDED.enrolment,
+          "boysEnrolment"       = EXCLUDED."boysEnrolment",
+          "girlsEnrolment"      = EXCLUDED."girlsEnrolment",
+          "indigenousPct"       = EXCLUDED."indigenousPct",
+          "lbotePct"            = EXCLUDED."lbotePct",
+          "teachingStaff"       = EXCLUDED."teachingStaff",
+          "teachingStaffFte"    = EXCLUDED."teachingStaffFte",
+          "nonTeachingStaff"    = EXCLUDED."nonTeachingStaff",
+          "nonTeachingStaffFte" = EXCLUDED."nonTeachingStaffFte",
+          website               = EXCLUDED.website,
+          "yearRange"           = EXCLUDED."yearRange",
+          gender                = EXCLUDED.gender,
+          "updatedFromAcara"    = EXCLUDED."updatedFromAcara"
       `;
 
       count += chunk.length;

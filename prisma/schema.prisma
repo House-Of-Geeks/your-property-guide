@@ -293,6 +293,14 @@ model School {
   lng              Float?
   icsea            Int?
   enrolment        Int?
+  boysEnrolment    Int?
+  girlsEnrolment   Int?
+  indigenousPct    Float?    // % of indigenous students
+  lbotePct         Float?    // % language background other than English
+  teachingStaff    Int?      // headcount
+  teachingStaffFte Float?
+  nonTeachingStaff    Int?
+  nonTeachingStaffFte Float?
   website          String?
   yearRange        String?   // e.g. "Prep-6", "7-12", "R-6"
   gender           String?   // "coed" | "girls" | "boys"

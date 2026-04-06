@@ -61,14 +61,23 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
     ? `https://www.google.com/maps/embed/v1/place?key=${GMAPS_KEY}&q=${encodeURIComponent(school.name)}&center=${school.lat},${school.lng}&zoom=14&maptype=satellite`
     : null;
 
-  const infoRows: { label: string; value: string }[] = [
-    { label: "Type",         value: typeLabel(school.type) },
-    { label: "Sector",       value: sectorLabel(school.sector) },
-    { label: "Year Range",   value: school.yearRange ?? "–" },
-    { label: "Gender",       value: genderLabel(school.gender) },
-    { label: "Enrolment",    value: school.enrolment ? school.enrolment.toLocaleString() : "–" },
-    { label: "ICSEA",        value: school.icsea ? school.icsea.toString() : "–" },
-    { label: "Suburb",       value: `${school.suburb.name}, ${school.suburb.state} ${school.suburb.postcode}` },
+  const tags = [
+    sectorLabel(school.sector),
+    typeLabel(school.type).replace(" School", "").replace(" College", ""),
+    school.yearRange,
+    genderLabel(school.gender) === "Co-educational" ? "Co-ed" : genderLabel(school.gender),
+  ].filter(Boolean) as string[];
+
+  const staffRows: { label: string; value: string }[] = [
+    { label: "Total student enrolments",               value: school.enrolment?.toLocaleString() ?? "–" },
+    { label: "Boys",                                   value: school.boysEnrolment?.toLocaleString() ?? "–" },
+    { label: "Girls",                                  value: school.girlsEnrolment?.toLocaleString() ?? "–" },
+    { label: "Indigenous students",                    value: school.indigenousPct != null ? `${school.indigenousPct}%` : "–" },
+    { label: "Language other than English",            value: school.lbotePct != null ? `${school.lbotePct}%` : "–" },
+    { label: "Teaching staff",                         value: school.teachingStaff?.toLocaleString() ?? "–" },
+    { label: "Full-time equivalent teaching staff",    value: school.teachingStaffFte?.toLocaleString() ?? "–" },
+    { label: "Non-teaching staff",                     value: school.nonTeachingStaff?.toLocaleString() ?? "–" },
+    { label: "Full-time equivalent non-teaching staff",value: school.nonTeachingStaffFte?.toLocaleString() ?? "–" },
   ];
 
   return (
@@ -125,40 +134,75 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
 
           {/* School info card */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl border border-gray-200 p-6 sticky top-4">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">School Details</h2>
-              <dl className="space-y-3">
-                {infoRows.map(({ label, value }) => (
-                  <div key={label} className="flex justify-between gap-4 text-sm">
-                    <dt className="text-gray-500 flex-shrink-0">{label}</dt>
-                    <dd className="font-medium text-gray-900 text-right">{value}</dd>
+            <div className="bg-white rounded-xl border border-gray-200 p-5 sticky top-4">
+              {/* Header */}
+              <div className="flex items-start justify-between mb-1">
+                <GraduationCap className="w-6 h-6 text-primary mt-0.5" />
+                {school.updatedFromAcara && (
+                  <span className="text-xs text-gray-400">
+                    Updated: {school.updatedFromAcara.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })}
+                  </span>
+                )}
+              </div>
+              <h2 className="text-base font-bold text-gray-900 mt-2">{school.name}</h2>
+              <p className="text-sm text-gray-500">{school.suburb.name}, {school.suburb.state}</p>
+
+              {/* Tags */}
+              <div className="flex flex-wrap gap-1.5 mt-3">
+                {tags.map((tag) => (
+                  <span key={tag} className="text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-700">{tag}</span>
+                ))}
+              </div>
+
+              <hr className="my-4 border-gray-100" />
+
+              {/* Staff & enrolment stats */}
+              <h3 className="text-sm font-semibold text-gray-900 mb-3">Students and school staff</h3>
+              <dl className="space-y-2.5">
+                {staffRows.map(({ label, value }) => (
+                  <div key={label} className="flex justify-between gap-3 text-sm">
+                    <dt className="text-gray-500 leading-snug">{label}</dt>
+                    <dd className="font-medium text-gray-900 shrink-0">{value}</dd>
                   </div>
                 ))}
               </dl>
 
-              {school.website && (
-                <a
-                  href={school.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-5 flex items-center justify-center gap-2 w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  School Website
-                </a>
+              {/* ICSEA */}
+              {school.icsea && (
+                <>
+                  <hr className="my-4 border-gray-100" />
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">ICSEA</span>
+                    <span className="font-medium text-gray-900">{school.icsea}</span>
+                  </div>
+                </>
               )}
 
-              {school.acaraId && (
-                <a
-                  href={`https://www.myschool.edu.au/school/${school.acaraId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2.5 flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
-                >
-                  <GraduationCap className="w-4 h-4" />
-                  View Catchment on MySchool
-                </a>
-              )}
+              {/* External links */}
+              <div className="mt-5 space-y-2">
+                {school.website && (
+                  <a href={school.website} target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80">
+                    <ExternalLink className="w-3.5 h-3.5" /> School website
+                  </a>
+                )}
+                {school.acaraId && (
+                  <>
+                    <a href={`https://www.myschool.edu.au/school/${school.acaraId}/naplan`} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80">
+                      <ExternalLink className="w-3.5 h-3.5" /> School NAPLAN results
+                    </a>
+                    <a href={`https://www.myschool.edu.au/school/${school.acaraId}`} target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80">
+                      <ExternalLink className="w-3.5 h-3.5" /> School ICSEA value
+                    </a>
+                  </>
+                )}
+              </div>
+
+              <p className="text-[11px] text-gray-400 mt-4 leading-snug">
+                Disclaimer: Always check directly with the local school to verify school catchment data.
+              </p>
             </div>
           </div>
 
