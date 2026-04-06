@@ -196,7 +196,6 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                 )}
                 <Badge>{property.propertyType}</Badge>
                 {property.status === "under-contract" && <Badge variant="warning">Under Contract</Badge>}
-                {property.isFeatured && <Badge variant="accent">Featured</Badge>}
               </div>
             </div>
 

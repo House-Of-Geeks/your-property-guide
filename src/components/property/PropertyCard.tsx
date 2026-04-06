@@ -37,7 +37,6 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
             <FeatureIcons features={features} className="mt-3" />
             <div className="mt-2 flex gap-2">
               <Badge>{propertyType}</Badge>
-              {property.isFeatured && <Badge variant="accent">Featured</Badge>}
             </div>
           </div>
         </div>
@@ -70,7 +69,6 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
             <FeatureIcons features={features} />
             <div className="mt-2 flex gap-2">
               <Badge>{propertyType}</Badge>
-              <Badge variant="accent">Featured</Badge>
             </div>
           </div>
         </div>
@@ -108,6 +106,7 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
       </div>
     </Link>
   );
+
 }
 
 function StatusBadge({ status, listingType }: { status: string; listingType: string }) {
