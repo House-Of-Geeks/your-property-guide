@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { Home, User, Building2, LogOut, List, Users, PlusSquare } from "lucide-react";
+import { Home, User, Building2, LogOut, List, Users, ShieldCheck } from "lucide-react";
 
 export const metadata: Metadata = {
   title: { default: "Dashboard", template: "%s | Your Property Guide" },
@@ -17,6 +17,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   const role = (session.user as any).role as string | undefined;
   const isAdmin = role === "agency_admin" || role === "admin";
+  const isSuperAdmin = role === "admin";
 
   const roleBadgeLabel =
     role === "admin" ? "Admin" :
@@ -51,6 +52,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
               <NavLink href="/dashboard/agency" icon={<Building2 className="w-4 h-4" />} label="Agency Profile" />
               <NavLink href="/dashboard/team" icon={<Users className="w-4 h-4" />} label="Our Team" />
             </>
+          )}
+          {isSuperAdmin && (
+            <div className="pt-2 mt-2 border-t border-gray-100">
+              <p className="px-3 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Admin</p>
+              <NavLink href="/dashboard/admin" icon={<ShieldCheck className="w-4 h-4" />} label="Site Overview" />
+              <NavLink href="/dashboard/admin/agencies" icon={<Building2 className="w-4 h-4" />} label="All Agencies" />
+              <NavLink href="/dashboard/admin/users" icon={<Users className="w-4 h-4" />} label="Users & Roles" />
+            </div>
           )}
           <NavLink href="/" icon={<Home className="w-4 h-4" />} label="View Site" />
         </nav>

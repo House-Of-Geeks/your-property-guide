@@ -303,3 +303,19 @@ export async function updateTeamAgent(agentId: string, formData: FormData) {
   revalidatePath(`/dashboard/team/${agentId}`);
   return { success: true };
 }
+
+// ─── Admin: set user role ─────────────────────────────────────────────────────
+
+export async function setUserRole(userId: string, role: string) {
+  const session = await auth();
+  if (!session?.user?.email) throw new Error("Not authenticated");
+  const caller = await db.user.findUnique({ where: { email: session.user.email }, select: { role: true } });
+  if (caller?.role !== "admin") throw new Error("Forbidden");
+
+  const validRoles = ["agent", "agency_admin", "admin"];
+  if (!validRoles.includes(role)) throw new Error("Invalid role");
+
+  await db.user.update({ where: { id: userId }, data: { role } });
+  revalidatePath("/dashboard/admin/users");
+  return { success: true };
+}

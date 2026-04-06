@@ -9,9 +9,22 @@ export interface AgentContext {
   role: Role;
 }
 
+export interface AdminContext {
+  role: "admin";
+  agent: Agent | null;
+  agency: Agency | null;
+}
+
+/** Returns the role for any logged-in user. Never throws. */
+export async function getUserRole(email: string): Promise<Role> {
+  const user = await db.user.findUnique({ where: { email }, select: { role: true } });
+  return (user?.role as Role) ?? "agent";
+}
+
 /**
- * Returns the agent + agency context for a given email, plus the role
- * from the User table. Throws if the email has no agent profile or agency.
+ * Returns agent + agency + role for a given email.
+ * Throws if no agent profile or no agency exists.
+ * For pure admins with no agent profile, use getAdminContext instead.
  */
 export async function getAgentContext(email: string): Promise<AgentContext> {
   const user = await db.user.findUnique({ where: { email } });
@@ -27,8 +40,21 @@ export async function getAgentContext(email: string): Promise<AgentContext> {
 }
 
 /**
- * Like getAgentContext but throws a 403-style error if the caller is not
- * agency_admin or admin.
+ * For admin users who may not have an agent profile.
+ * Throws if user is not admin.
+ */
+export async function getAdminContext(email: string): Promise<AdminContext> {
+  const role = await getUserRole(email);
+  if (role !== "admin") throw new Error("Forbidden: admin role required");
+
+  const agent = await db.agent.findUnique({ where: { email } }).catch(() => null);
+  const agency = agent ? await db.agency.findUnique({ where: { id: agent.agencyId } }).catch(() => null) : null;
+
+  return { role: "admin", agent: agent ?? null, agency: agency ?? null };
+}
+
+/**
+ * Like getAgentContext but throws if not agency_admin or admin.
  */
 export async function requireAgencyAdmin(
   email: string
