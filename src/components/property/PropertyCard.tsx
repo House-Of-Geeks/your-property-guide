@@ -81,9 +81,9 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
   // Grid variant (default)
   return (
     <Link href={href} className="group block">
-      <div className="rounded-2xl bg-white overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-200 hover:-translate-y-0.5">
+      <div className="rounded-2xl bg-white overflow-hidden shadow-card hover:shadow-card-hover transition-shadow duration-200">
         {/* Image with suburb overlay */}
-        <div className="relative aspect-[4/3]">
+        <div className="relative aspect-[4/3] overflow-hidden">
           <Image
             src={images[0]?.url || "/images/placeholder.jpg"}
             alt={images[0]?.alt || address.full}
@@ -92,7 +92,7 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
           <StatusBadge status={status} listingType={listingType} />
-          {/* Suburb + state overlaid bottom-left */}
+          {/* Suburb + state overlaid bottom-left — not scaled with image */}
           <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-10 pb-3 px-3">
             <p className="text-sm font-semibold text-white drop-shadow">
               {address.suburb} <span className="font-normal opacity-80">· {address.state}</span>
