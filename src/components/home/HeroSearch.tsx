@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui";
 import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
 
@@ -33,9 +34,16 @@ export function HeroSearch() {
 
   return (
     <div className="relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 gradient-brand opacity-95" />
-      <div className="absolute inset-0 bg-[url('/images/hero-pattern.svg')] opacity-10" />
+      {/* Background photo */}
+      <Image
+        src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1800&q=80"
+        alt="Australian home"
+        fill
+        className="object-cover object-center"
+        priority
+      />
+      {/* Brand colour overlay */}
+      <div className="absolute inset-0 gradient-brand opacity-85" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-36">
         {/* Headline */}
