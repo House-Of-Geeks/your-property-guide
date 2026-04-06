@@ -73,7 +73,7 @@ export default function LoginPage() {
       {/* ── Left panel ─────────────────────────────────────── */}
       <div className="w-full lg:w-[440px] flex flex-col justify-center px-10 py-12 bg-white shrink-0">
         <Link href="/" className="mb-10 inline-block">
-          <Image src="/images/YPG Logo.png" alt="Your Property Guide" width={140} height={50} className="h-10 w-auto" />
+          <Image src="/images/YPG Logo.png" alt="Your Property Guide" width={200} height={70} className="h-16 w-auto" />
         </Link>
 
         {/* ── Options screen ─── */}
