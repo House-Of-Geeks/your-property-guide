@@ -19,6 +19,10 @@ export interface Agent {
   reviewCount: number;
   averageRating: number;
   isFeatured?: boolean;
+  imageAlt?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  ogImage?: string;
 }
 
 export interface Agency {
@@ -46,4 +50,7 @@ export interface Agency {
   linkedinUrl?: string;
   youtubeUrl?: string;
   heroBg?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  ogImage?: string;
 }

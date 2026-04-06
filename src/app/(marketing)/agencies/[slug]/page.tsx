@@ -20,16 +20,14 @@ export async function generateMetadata({ params }: AgencyDetailPageProps): Promi
   const { slug } = await params;
   const agency = await getAgencyBySlug(slug);
   if (!agency) return { title: "Agency Not Found" };
+  const title       = agency.metaTitle       ?? agencyTitle(agency);
+  const description = agency.metaDescription ?? agency.description.slice(0, 155);
+  const image       = agency.ogImage         ?? absoluteUrl(agency.logo);
   return {
-    title: agencyTitle(agency),
-    description: agency.description,
+    title,
+    description,
     alternates: { canonical: `${SITE_URL}/agencies/${slug}` },
-    openGraph: {
-      title: agencyTitle(agency),
-      description: agency.description,
-      images: [{ url: absoluteUrl(agency.logo) }],
-      type: "website",
-    },
+    openGraph: { title, description, images: [{ url: image }], type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }

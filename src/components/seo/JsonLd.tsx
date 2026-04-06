@@ -91,22 +91,40 @@ export function PropertyJsonLd({ property }: { property: Property }) {
 }
 
 export function AgentJsonLd({ agent }: { agent: Agent }) {
+  const imageUrl = agent.image.startsWith("http") ? agent.image : `${SITE_URL}${agent.image}`;
   return (
     <JsonLdScript
       data={{
         "@context": "https://schema.org",
-        "@type": "RealEstateAgent",
+        "@type": ["Person", "RealEstateAgent"],
         name: agent.fullName,
+        givenName: agent.firstName,
+        familyName: agent.lastName,
+        jobTitle: agent.title,
         url: `${SITE_URL}/agents/${agent.slug}`,
-        image: `${SITE_URL}${agent.image}`,
+        image: {
+          "@type": "ImageObject",
+          url: imageUrl,
+          contentUrl: imageUrl,
+          name: agent.imageAlt ?? `${agent.fullName} - ${agent.title}`,
+        },
         telephone: agent.phone,
         email: agent.email,
         description: agent.bio,
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: agent.averageRating,
-          reviewCount: agent.reviewCount,
-        },
+        ...(agent.agencyName && {
+          worksFor: {
+            "@type": "RealEstateAgent",
+            name: agent.agencyName,
+            url: agent.agencySlug ? `${SITE_URL}/agencies/${agent.agencySlug}` : undefined,
+          },
+        }),
+        ...(agent.reviewCount > 0 && {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: agent.averageRating,
+            reviewCount: agent.reviewCount,
+          },
+        }),
       }}
     />
   );

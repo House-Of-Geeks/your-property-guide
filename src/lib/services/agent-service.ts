@@ -17,6 +17,10 @@ function toAgent(a: DbAgent & { agency?: { name: string; slug: string } | null }
     agencyId: a.agencyId,
     agencyName: a.agency?.name,
     agencySlug: a.agency?.slug,
+    imageAlt: a.imageAlt ?? undefined,
+    metaTitle: a.metaTitle ?? undefined,
+    metaDescription: a.metaDescription ?? undefined,
+    ogImage: a.ogImage ?? undefined,
     suburbs: a.suburbs,
     specialties: a.specialties,
     yearsExperience: a.yearsExperience,
@@ -53,6 +57,9 @@ function toAgency(a: DbAgency): Agency {
     linkedinUrl: a.linkedinUrl ?? undefined,
     youtubeUrl: a.youtubeUrl ?? undefined,
     heroBg: a.heroBg ?? undefined,
+    metaTitle: a.metaTitle ?? undefined,
+    metaDescription: a.metaDescription ?? undefined,
+    ogImage: a.ogImage ?? undefined,
   };
 }
 

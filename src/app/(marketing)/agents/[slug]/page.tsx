@@ -20,16 +20,14 @@ export async function generateMetadata({ params }: AgentProfilePageProps): Promi
   const { slug } = await params;
   const agent = await getAgentBySlug(slug);
   if (!agent) return { title: "Agent Not Found" };
+  const title       = agent.metaTitle       ?? agentTitle(agent);
+  const description = agent.metaDescription ?? agentDescription(agent);
+  const image       = agent.ogImage         ?? absoluteUrl(agent.image);
   return {
-    title: agentTitle(agent),
-    description: agentDescription(agent),
+    title,
+    description,
     alternates: { canonical: `${SITE_URL}/agents/${slug}` },
-    openGraph: {
-      title: agentTitle(agent),
-      description: agentDescription(agent),
-      images: [{ url: absoluteUrl(agent.image) }],
-      type: "website",
-    },
+    openGraph: { title, description, images: [{ url: image }], type: "profile" },
     twitter: { card: "summary_large_image" },
   };
 }
@@ -66,7 +64,11 @@ export default async function AgentProfilePage({ params }: AgentProfilePageProps
       {/* Profile header */}
       <div className="mt-6 flex flex-col sm:flex-row gap-6 items-start">
         <div className="relative w-32 h-32 rounded-2xl overflow-hidden flex-shrink-0">
-          <Image src={agent.image} alt={agent.fullName} fill className="object-cover" sizes="128px" />
+          <Image
+            src={agent.image}
+            alt={agent.imageAlt ?? `${agent.fullName} - ${agent.title}${agent.agencyName ? `, ${agent.agencyName}` : ""}`}
+            fill className="object-cover" sizes="128px"
+          />
         </div>
         <div className="flex-1">
           <h1 className="text-3xl font-bold text-gray-900">{agent.fullName}</h1>

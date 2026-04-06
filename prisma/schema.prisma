@@ -8,6 +8,54 @@ datasource db {
 }
 
 // ---------------------------------------------------------------------------
+// Auth.js (NextAuth v5)
+// ---------------------------------------------------------------------------
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  role          String    @default("agent") // "agent" | "agency_admin" | "admin"
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+  @@unique([identifier, token])
+}
+
+// ---------------------------------------------------------------------------
 // Agency
 // ---------------------------------------------------------------------------
 model Agency {
@@ -32,6 +80,10 @@ model Agency {
   linkedinUrl     String?
   youtubeUrl      String?
   heroBg          String?
+  // SEO metadata (editable in dashboard)
+  metaTitle       String?
+  metaDescription String?
+  ogImage         String?
 
   agents     Agent[]
   properties Property[]
@@ -52,9 +104,10 @@ model Agent {
   fullName        String
   title           String
   phone           String
-  email           String
+  email           String   @unique
   bio             String
   image           String
+  imageAlt        String?
   agencyId        String
   suburbs         String[]
   specialties     String[]
@@ -63,6 +116,10 @@ model Agent {
   reviewCount     Int      @default(0)
   averageRating   Float    @default(0)
   isFeatured      Boolean  @default(false)
+  // SEO metadata (editable in dashboard)
+  metaTitle       String?
+  metaDescription String?
+  ogImage         String?
 
   agency     Agency              @relation(fields: [agencyId], references: [id])
   properties Property[]
@@ -73,6 +130,7 @@ model Agent {
 
   @@index([agencyId])
   @@index([isFeatured])
+  @@index([email])
 }
 
 // ---------------------------------------------------------------------------
