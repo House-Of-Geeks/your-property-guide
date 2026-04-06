@@ -22,8 +22,8 @@ export default function LoginPage() {
 
   const callbackUrl =
     typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search).get("callbackUrl") || "/dashboard/profile"
-      : "/dashboard/profile";
+      ? new URLSearchParams(window.location.search).get("callbackUrl") || "/dashboard"
+      : "/dashboard";
 
   async function handleMagicLink(e: React.FormEvent) {
     e.preventDefault();

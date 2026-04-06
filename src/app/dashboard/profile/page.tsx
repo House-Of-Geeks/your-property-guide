@@ -21,6 +21,9 @@ export default async function ProfilePage() {
   });
 
   if (!row) {
+    // Admins don't have agent profiles — send them to the admin overview
+    if ((session.user as any).role === "admin") redirect("/dashboard/admin");
+
     return (
       <div className="text-center py-20">
         <h1 className="text-xl font-bold text-gray-900">No agent profile found</h1>
