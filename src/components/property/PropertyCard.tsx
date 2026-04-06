@@ -81,7 +81,8 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
   // Grid variant (default)
   return (
     <Link href={href} className="group block">
-      <div className="rounded-xl bg-white overflow-hidden shadow-card hover:shadow-card-hover transition-shadow border border-gray-100">
+      <div className="rounded-2xl bg-white overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-200 hover:-translate-y-0.5">
+        {/* Image with suburb overlay */}
         <div className="relative aspect-[4/3]">
           <Image
             src={images[0]?.url || "/images/placeholder.jpg"}
@@ -91,18 +92,18 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
           <StatusBadge status={status} listingType={listingType} />
-        </div>
-        <div className="p-4">
-          <p className="font-bold text-gray-900">{price.display}</p>
-          <p className="text-sm text-gray-600 mt-1 flex items-center gap-1 truncate">
-            <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
-            {address.full}
-          </p>
-          <FeatureIcons features={features} className="mt-3" />
-          <div className="mt-2 flex gap-2">
-            <Badge>{propertyType}</Badge>
-            {property.isFeatured && <Badge variant="accent">Featured</Badge>}
+          {/* Suburb + state overlaid bottom-left */}
+          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-10 pb-3 px-3">
+            <p className="text-sm font-semibold text-white drop-shadow">
+              {address.suburb} <span className="font-normal opacity-80">· {address.state}</span>
+            </p>
           </div>
+        </div>
+        {/* Card body */}
+        <div className="p-4">
+          <p className="font-bold text-gray-900 text-base">{price.display}</p>
+          <FeatureIcons features={features} className="mt-2" />
+          <p className="text-xs text-gray-400 mt-2 truncate">{address.street}</p>
         </div>
       </div>
     </Link>
