@@ -6,6 +6,8 @@ import { authConfig } from "./auth.config";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
+  // AUTH_SECRET must be set in Vercel env vars — this fallback is only for initial setup
+  secret: process.env.AUTH_SECRET ?? "change-me-set-AUTH_SECRET-in-vercel",
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
   providers: [
@@ -15,7 +17,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         port: 587,
         auth: {
           user: "apikey",
-          pass: process.env.SENDGRID_API_KEY ?? "",
+          pass: process.env.SENDGRID_API_KEY ?? "not-configured",
         },
       },
       from: process.env.EMAIL_FROM ?? "noreply@yourpropertyguide.com.au",
