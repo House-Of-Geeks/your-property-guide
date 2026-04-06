@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Bed, Bath, Car, Ruler, Calendar, MapPin, Phone, Mail, ChevronRight, Building2 } from "lucide-react";
+import { Bed, Bath, Car, Ruler, Calendar, MapPin, Phone, ChevronRight, Building2 } from "lucide-react";
 import { PropertyGallery } from "@/components/property/PropertyGallery";
 import { PropertyDescriptionExpand } from "@/components/property/PropertyDescriptionExpand";
 import { PropertyFAQs } from "@/components/property/PropertyFAQs";
 import { PropertySchoolTabs } from "@/components/property/PropertySchoolTabs";
 import { PropertyCard } from "@/components/property/PropertyCard";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
+import { PropertyEnquireModal } from "@/components/property/PropertyEnquireModal";
+import { RevealPhone } from "@/components/property/RevealPhone";
 import { Breadcrumbs } from "@/components/layout";
 import { PropertyJsonLd, BreadcrumbJsonLd } from "@/components/seo";
 import { Badge } from "@/components/ui";
@@ -302,128 +304,107 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
 
           {/* ── RIGHT: sticky sidebar ─────────────────────────────── */}
           <div className="hidden lg:block">
-            <div className="sticky top-24 space-y-4">
-
-              {/* Agent card */}
+            <div className="sticky top-24 mt-10">
               {agent && (
-                <div className="rounded-xl bg-white shadow-card border border-gray-100 p-5">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="relative w-14 h-14 rounded-full overflow-hidden flex-shrink-0">
-                      <Image
-                        src={agent.image}
-                        alt={agent.fullName}
-                        fill
-                        className="object-cover"
-                        sizes="56px"
-                      />
+                <div className="rounded-2xl bg-white shadow-card border border-gray-100 overflow-visible">
+                  {/* Top: agent photo (protruding) + agency logo */}
+                  <div className="relative px-5 pt-5">
+                    <div className="flex items-start justify-between">
+                      {/* Protruding agent photo */}
+                      <div className="relative -mt-10 flex-shrink-0">
+                        <div className="relative w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-md">
+                          <Image
+                            src={agent.image}
+                            alt={agent.fullName}
+                            fill
+                            className="object-cover"
+                            sizes="80px"
+                          />
+                        </div>
+                      </div>
+                      {/* Agency logo top-right */}
+                      {agency && (
+                        <Link href={`/real-estate-agencies/${agency.slug}`} className="flex-shrink-0 mt-1">
+                          <Image
+                            src={agency.logo}
+                            alt={agency.name}
+                            width={100}
+                            height={40}
+                            className="object-contain max-h-10"
+                          />
+                        </Link>
+                      )}
                     </div>
-                    <div className="min-w-0">
-                      <Link href={`/agents/${agent.slug}`} className="text-sm font-semibold text-gray-900 hover:text-primary">
+                    {/* Agent name + agency */}
+                    <div className="mt-3 pb-4 border-b border-gray-100">
+                      <Link href={`/agents/${agent.slug}`} className="font-bold text-gray-900 hover:text-primary text-base leading-tight block">
                         {agent.fullName}
                       </Link>
-                      <p className="text-xs text-gray-500 truncate">{agent.title}</p>
                       {agency && (
-                        <Link href={`/real-estate-agencies/${agency.slug}`} className="text-xs text-primary hover:underline truncate block">
+                        <Link href={`/real-estate-agencies/${agency.slug}`} className="text-sm text-gray-500 hover:text-primary">
                           {agency.name}
                         </Link>
                       )}
                     </div>
-                    {agency && (
-                      <Link href={`/real-estate-agencies/${agency.slug}`} className="flex-shrink-0 ml-auto">
-                        <Image
-                          src={agency.logo}
-                          alt={agency.name}
-                          width={64}
-                          height={32}
-                          className="object-contain max-h-8"
-                        />
-                      </Link>
-                    )}
                   </div>
 
-                  {/* Inspection times */}
-                  {(property.inspectionTimes ?? []).length > 0 && (
-                    <div className="mb-4 pb-4 border-b border-gray-100">
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                        Inspection Times
-                      </p>
-                      {(property.inspectionTimes ?? []).map((t, i) => (
-                        <div key={i} className="flex items-center gap-1.5 text-xs text-gray-700 mb-1">
-                          <Calendar className="w-3.5 h-3.5 text-primary flex-shrink-0" />
-                          {t}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Enquire button */}
-                  <a
-                    href="#enquire"
-                    className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors mb-2"
-                  >
-                    <Mail className="w-4 h-4" />
-                    Enquire
-                  </a>
-                  <a
-                    href={`tel:${agent.phone}`}
-                    className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:border-primary hover:text-primary transition-colors"
-                  >
-                    <Phone className="w-4 h-4" />
-                    {agent.phone}
-                  </a>
-
-                  {/* Property info */}
-                  <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
-                    <div className="flex justify-between text-xs text-gray-500">
-                      <span>Property type</span>
-                      <span className="font-medium text-gray-700 capitalize">{property.propertyType}</span>
-                    </div>
-                    {property.features.landSize && (
-                      <div className="flex justify-between text-xs text-gray-500">
-                        <span>Land size</span>
-                        <span className="font-medium text-gray-700">{property.features.landSize.toLocaleString()} m²</span>
+                  {/* Info rows (checkbox style) */}
+                  <div className="px-5 py-4 space-y-3 border-b border-gray-100">
+                    {[
+                      (property.inspectionTimes ?? []).length > 0
+                        ? `Inspection times (${(property.inspectionTimes ?? []).length})`
+                        : "Inspection times",
+                      "Rates and fees",
+                      `Property size${property.features.landSize ? ` — ${property.features.landSize.toLocaleString()} m²` : ""}`,
+                      `Price guide — ${property.price.display}`,
+                    ].map((label) => (
+                      <div key={label} className="flex items-center gap-3">
+                        <span className="w-4 h-4 flex-shrink-0 rounded border border-gray-300 bg-white" />
+                        <span className="text-sm text-gray-700">{label}</span>
                       </div>
-                    )}
-                    {property.features.buildingSize && (
-                      <div className="flex justify-between text-xs text-gray-500">
-                        <span>House size</span>
-                        <span className="font-medium text-gray-700">{property.features.buildingSize.toLocaleString()} m²</span>
-                      </div>
-                    )}
-                    <div className="flex justify-between text-xs text-gray-500">
-                      <span>Listed</span>
-                      <span className="font-medium text-gray-700">{formatDate(property.dateAdded)}</span>
-                    </div>
+                    ))}
+                  </div>
+
+                  {/* CTA buttons */}
+                  <div className="px-5 py-4 space-y-2.5">
+                    <PropertyEnquireModal
+                      propertyId={property.id}
+                      agentId={property.agentId}
+                      agencyId={property.agencyId}
+                      propertyAddress={property.address.full}
+                      agentFirstName={agent.firstName}
+                    />
+                    <RevealPhone
+                      phone={agent.phone}
+                      agentId={agent.id}
+                      propertyId={property.id}
+                    />
                   </div>
                 </div>
               )}
-
-              {/* Enquiry form */}
-              <div id="enquire" className="rounded-xl bg-white shadow-card border border-gray-100 p-5">
-                <h3 className="text-base font-bold text-gray-900 mb-4">Send Enquiry</h3>
-                <EnquiryForm
-                  propertyId={property.id}
-                  agentId={property.agentId}
-                  agencyId={property.agencyId}
-                  defaultMessage={`Hi, I'm interested in ${property.address.full}.`}
-                />
-              </div>
             </div>
           </div>
         </div>
 
-        {/* Mobile enquiry form */}
-        <div id="enquire" className="lg:hidden mt-10 rounded-xl bg-white shadow-card border border-gray-100 p-5">
-          <h3 className="text-base font-bold text-gray-900 mb-4">
-            Enquire About This Property
-          </h3>
-          <EnquiryForm
-            propertyId={property.id}
-            agentId={property.agentId}
-            agencyId={property.agencyId}
-            defaultMessage={`Hi, I'm interested in ${property.address.full}.`}
-          />
-        </div>
+        {/* Mobile enquiry CTA */}
+        {agent && (
+          <div className="lg:hidden mt-8 space-y-2.5">
+            <PropertyEnquireModal
+              propertyId={property.id}
+              agentId={property.agentId}
+              agencyId={property.agencyId}
+              propertyAddress={property.address.full}
+              agentFirstName={agent.firstName}
+            />
+            <a
+              href={`tel:${agent.phone}`}
+              className="flex items-center justify-center gap-2 w-full py-3 rounded-lg border border-gray-300 text-sm font-medium text-gray-700"
+            >
+              <Phone className="w-4 h-4" />
+              {agent.phone}
+            </a>
+          </div>
+        )}
       </div>
     </>
   );
