@@ -39,6 +39,7 @@ function toProperty(p: DbPropertyWithImages): Property {
       .sort((a, b) => a.sortOrder - b.sortOrder)
       .map((img) => ({ url: img.url, alt: img.alt, width: img.width, height: img.height })),
     agentId: p.agentId,
+    coAgentId: p.coAgentId ?? undefined,
     agencyId: p.agencyId,
     suburbSlug: p.suburbSlug,
     inspectionTimes: p.inspectionTimes,

@@ -2,15 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Bed, Bath, Car, Ruler, Calendar, MapPin, Phone, ChevronRight, Building2 } from "lucide-react";
+import { Bed, Bath, Car, Ruler, Calendar, MapPin, ChevronRight, Building2 } from "lucide-react";
 import { PropertyGallery } from "@/components/property/PropertyGallery";
 import { PropertyDescriptionExpand } from "@/components/property/PropertyDescriptionExpand";
 import { PropertyFAQs } from "@/components/property/PropertyFAQs";
 import { PropertySchoolTabs } from "@/components/property/PropertySchoolTabs";
 import { PropertyCard } from "@/components/property/PropertyCard";
-import { EnquiryForm } from "@/components/forms/EnquiryForm";
-import { PropertyEnquireModal } from "@/components/property/PropertyEnquireModal";
-import { RevealPhone } from "@/components/property/RevealPhone";
+import { AgentSidebarCard } from "@/components/property/AgentSidebarCard";
 import { Breadcrumbs } from "@/components/layout";
 import { PropertyJsonLd, BreadcrumbJsonLd } from "@/components/seo";
 import { Badge } from "@/components/ui";
@@ -51,8 +49,9 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
   const property = await getPropertyBySlug(slug);
   if (!property) notFound();
 
-  const [agent, agency, suburbData, agencyListings] = await Promise.all([
+  const [agent, coAgent, agency, suburbData, agencyListings] = await Promise.all([
     getAgentById(property.agentId),
+    property.coAgentId ? getAgentById(property.coAgentId) : Promise.resolve(null),
     getAgencyById(property.agencyId),
     db.suburb.findUnique({
       where: { slug: property.suburbSlug },
@@ -302,107 +301,40 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             </div>
           </div>
 
-          {/* ── RIGHT: sticky sidebar ─────────────────────────────── */}
+          {/* ── RIGHT: sticky sidebar (overlaps gallery) ────────────── */}
           <div className="hidden lg:block">
-            <div className="sticky top-24 mt-10">
+            <div className="sticky top-24 lg:-mt-48 relative z-10 px-2">
               {agent && (
-                <div className="rounded-2xl bg-white shadow-card border border-gray-100 overflow-visible">
-                  {/* Top: agent photo (protruding) + agency logo */}
-                  <div className="relative px-5 pt-5">
-                    <div className="flex items-start justify-between">
-                      {/* Protruding agent photo */}
-                      <div className="relative -mt-10 flex-shrink-0">
-                        <div className="relative w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-md">
-                          <Image
-                            src={agent.image}
-                            alt={agent.fullName}
-                            fill
-                            className="object-cover"
-                            sizes="80px"
-                          />
-                        </div>
-                      </div>
-                      {/* Agency logo top-right */}
-                      {agency && (
-                        <Link href={`/real-estate-agencies/${agency.slug}`} className="flex-shrink-0 mt-1">
-                          <Image
-                            src={agency.logo}
-                            alt={agency.name}
-                            width={100}
-                            height={40}
-                            className="object-contain max-h-10"
-                          />
-                        </Link>
-                      )}
-                    </div>
-                    {/* Agent name + agency */}
-                    <div className="mt-3 pb-4 border-b border-gray-100">
-                      <Link href={`/agents/${agent.slug}`} className="font-bold text-gray-900 hover:text-primary text-base leading-tight block">
-                        {agent.fullName}
-                      </Link>
-                      {agency && (
-                        <Link href={`/real-estate-agencies/${agency.slug}`} className="text-sm text-gray-500 hover:text-primary">
-                          {agency.name}
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Info rows (checkbox style) */}
-                  <div className="px-5 py-4 space-y-3 border-b border-gray-100">
-                    {[
-                      (property.inspectionTimes ?? []).length > 0
-                        ? `Inspection times (${(property.inspectionTimes ?? []).length})`
-                        : "Inspection times",
-                      "Rates and fees",
-                      `Property size${property.features.landSize ? ` — ${property.features.landSize.toLocaleString()} m²` : ""}`,
-                      `Price guide — ${property.price.display}`,
-                    ].map((label) => (
-                      <div key={label} className="flex items-center gap-3">
-                        <span className="w-4 h-4 flex-shrink-0 rounded border border-gray-300 bg-white" />
-                        <span className="text-sm text-gray-700">{label}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* CTA buttons */}
-                  <div className="px-5 py-4 space-y-2.5">
-                    <PropertyEnquireModal
-                      propertyId={property.id}
-                      agentId={property.agentId}
-                      agencyId={property.agencyId}
-                      propertyAddress={property.address.full}
-                      agentFirstName={agent.firstName}
-                    />
-                    <RevealPhone
-                      phone={agent.phone}
-                      agentId={agent.id}
-                      propertyId={property.id}
-                    />
-                  </div>
-                </div>
+                <AgentSidebarCard
+                  agents={[agent, ...(coAgent ? [coAgent] : [])]}
+                  agency={agency}
+                  propertyId={property.id}
+                  agencyId={property.agencyId}
+                  propertyAddress={property.address.full}
+                  inspectionTimes={property.inspectionTimes ?? []}
+                  landSize={property.features.landSize}
+                  buildingSize={property.features.buildingSize}
+                  priceDisplay={property.price.display}
+                />
               )}
             </div>
           </div>
         </div>
 
-        {/* Mobile enquiry CTA */}
+        {/* Mobile agent card */}
         {agent && (
-          <div className="lg:hidden mt-8 space-y-2.5">
-            <PropertyEnquireModal
+          <div className="lg:hidden mt-8">
+            <AgentSidebarCard
+              agents={[agent, ...(coAgent ? [coAgent] : [])]}
+              agency={agency}
               propertyId={property.id}
-              agentId={property.agentId}
               agencyId={property.agencyId}
               propertyAddress={property.address.full}
-              agentFirstName={agent.firstName}
+              inspectionTimes={property.inspectionTimes ?? []}
+              landSize={property.features.landSize}
+              buildingSize={property.features.buildingSize}
+              priceDisplay={property.price.display}
             />
-            <a
-              href={`tel:${agent.phone}`}
-              className="flex items-center justify-center gap-2 w-full py-3 rounded-lg border border-gray-300 text-sm font-medium text-gray-700"
-            >
-              <Phone className="w-4 h-4" />
-              {agent.phone}
-            </a>
           </div>
         )}
       </div>

@@ -50,6 +50,7 @@ export interface Property {
   description: string;
   images: PropertyImage[];
   agentId: string;
+  coAgentId?: string;
   agencyId: string;
   suburbSlug: string;
   inspectionTimes?: string[];

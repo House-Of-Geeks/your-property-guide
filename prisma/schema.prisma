@@ -121,9 +121,10 @@ model Agent {
   metaDescription String?
   ogImage         String?
 
-  agency     Agency              @relation(fields: [agencyId], references: [id])
-  properties Property[]
-  packages   HouseAndLandPackage[]
+  agency        Agency                @relation(fields: [agencyId], references: [id])
+  properties    Property[]            @relation("PropertyPrimaryAgent")
+  coProperties  Property[]            @relation("PropertyCoAgent")
+  packages      HouseAndLandPackage[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -164,6 +165,7 @@ model Property {
   buildingSize    Int?
   description     String
   agentId         String
+  coAgentId       String?
   agencyId        String
   suburbSlug      String
   inspectionTimes String[]
@@ -174,10 +176,11 @@ model Property {
   isOffMarket     Boolean   @default(false)
   isFeatured      Boolean   @default(false)
 
-  images Property_Image[]
-  agent  Agent    @relation(fields: [agentId], references: [id])
-  agency Agency   @relation(fields: [agencyId], references: [id])
-  suburb Suburb   @relation(fields: [suburbSlug], references: [slug])
+  images   Property_Image[]
+  agent    Agent    @relation("PropertyPrimaryAgent", fields: [agentId], references: [id])
+  coAgent  Agent?   @relation("PropertyCoAgent", fields: [coAgentId], references: [id])
+  agency   Agency   @relation(fields: [agencyId], references: [id])
+  suburb   Suburb   @relation(fields: [suburbSlug], references: [slug])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
