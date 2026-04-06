@@ -101,7 +101,7 @@ const sections: ResearchSection[] = [
         icon: <Building2 className="w-6 h-6" />,
         title: "Find an Agency",
         description: "Discover agencies operating in your area",
-        href: "/agencies",
+        href: "/real-estate-agencies",
       },
       {
         icon: <Star className="w-6 h-6" />,

@@ -56,7 +56,7 @@ export default async function AgencyDashboardPage() {
           </div>
         </div>
         <Link
-          href={`/agencies/${agency.slug}`}
+          href={`/real-estate-agencies/${agency.slug}`}
           target="_blank"
           className="flex items-center gap-1.5 text-sm text-primary hover:underline"
         >

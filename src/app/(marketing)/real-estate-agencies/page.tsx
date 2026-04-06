@@ -23,7 +23,7 @@ export async function generateMetadata({ searchParams }: AgenciesPageProps): Pro
   return {
     title,
     description,
-    alternates: { canonical: `${SITE_URL}/agencies${suburb ? `?suburb=${suburb}` : ""}` },
+    alternates: { canonical: `${SITE_URL}/real-estate-agencies${suburb ? `?suburb=${suburb}` : ""}` },
     openGraph: { title, description, type: "website" },
     twitter: { card: "summary_large_image" },
   };
@@ -36,7 +36,7 @@ export default async function AgenciesPage({ searchParams }: AgenciesPageProps) 
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-      <BreadcrumbJsonLd items={[{ name: "Agencies", url: "/agencies" }]} />
+      <BreadcrumbJsonLd items={[{ name: "Agencies", url: "/real-estate-agencies" }]} />
       <Breadcrumbs items={[{ label: "Agencies" }]} />
 
       <div className="mb-8">

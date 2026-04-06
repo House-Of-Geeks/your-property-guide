@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: AgencyDetailPageProps): Promi
     return {
       title,
       description,
-      alternates: { canonical: `${SITE_URL}/agencies/${slug}` },
+      alternates: { canonical: `${SITE_URL}/real-estate-agencies/${slug}` },
       openGraph: { title, description, type: "website" },
     };
   }
@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: AgencyDetailPageProps): Promi
   return {
     title,
     description,
-    alternates: { canonical: `${SITE_URL}/agencies/${slug}` },
+    alternates: { canonical: `${SITE_URL}/real-estate-agencies/${slug}` },
     openGraph: { title, description, images: [{ url: image }], type: "website" },
     twitter: { card: "summary_large_image" },
   };
@@ -154,8 +154,8 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
       <div>
         <BreadcrumbJsonLd
           items={[
-            { name: "Real Estate Agencies", url: "/agencies" },
-            { name: displayName, url: `/agencies/${slug}` },
+            { name: "Real Estate Agencies", url: "/real-estate-agencies" },
+            { name: displayName, url: `/real-estate-agencies/${slug}` },
           ]}
         />
 
@@ -165,7 +165,7 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
             <nav className="flex items-center gap-1.5 text-xs text-gray-500">
               <Link href="/" className="hover:text-primary transition-colors">Home</Link>
               <ChevronRight className="w-3 h-3 text-gray-300" />
-              <Link href="/agencies" className="hover:text-primary transition-colors">Real Estate Agencies</Link>
+              <Link href="/real-estate-agencies" className="hover:text-primary transition-colors">Real Estate Agencies</Link>
               <ChevronRight className="w-3 h-3 text-gray-300" />
               <span className="text-gray-700 font-medium">{displayName}</span>
             </nav>
@@ -194,7 +194,7 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
             <div className="text-center py-16 text-gray-400">
               <Building2 className="w-12 h-12 mx-auto mb-4 opacity-30" />
               <p className="text-lg">No agencies listed in {displayName} yet.</p>
-              <Link href="/agencies" className="mt-4 inline-block text-primary hover:underline text-sm">
+              <Link href="/real-estate-agencies" className="mt-4 inline-block text-primary hover:underline text-sm">
                 Browse all agencies →
               </Link>
             </div>
@@ -229,12 +229,12 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
       <AgencyJsonLd agency={agency} />
       <BreadcrumbJsonLd
         items={[
-          { name: "Real Estate Agencies", url: "/agencies" },
+          { name: "Real Estate Agencies", url: "/real-estate-agencies" },
           {
             name: agency.address.suburb,
-            url: `/agencies/${agency.address.suburb.toLowerCase().replace(/\s+/g, "-")}-${agency.address.state.toLowerCase()}-${agency.address.postcode}`,
+            url: `/real-estate-agencies/${agency.address.suburb.toLowerCase().replace(/\s+/g, "-")}-${agency.address.state.toLowerCase()}-${agency.address.postcode}`,
           },
-          { name: agency.name, url: `/agencies/${agency.slug}` },
+          { name: agency.name, url: `/real-estate-agencies/${agency.slug}` },
         ]}
       />
 
@@ -244,10 +244,10 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
           <nav className="flex items-center gap-1.5 text-xs text-gray-500">
             <Link href="/" className="hover:text-primary transition-colors">Home</Link>
             <ChevronRight className="w-3 h-3 text-gray-300" />
-            <Link href="/agencies" className="hover:text-primary transition-colors">Real Estate Agencies</Link>
+            <Link href="/real-estate-agencies" className="hover:text-primary transition-colors">Real Estate Agencies</Link>
             <ChevronRight className="w-3 h-3 text-gray-300" />
             <Link
-              href={`/agencies/${agency.address.suburb.toLowerCase().replace(/\s+/g, "-")}-${agency.address.state.toLowerCase()}-${agency.address.postcode}`}
+              href={`/real-estate-agencies/${agency.address.suburb.toLowerCase().replace(/\s+/g, "-")}-${agency.address.state.toLowerCase()}-${agency.address.postcode}`}
               className="hover:text-primary transition-colors"
             >
               {agency.address.suburb}

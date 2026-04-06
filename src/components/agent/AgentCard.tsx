@@ -35,7 +35,7 @@ export function AgentCard({ agent, showContact = true }: AgentCardProps) {
                 {" · "}
                 <span
                   className="text-primary hover:underline"
-                  onClick={(e) => { e.preventDefault(); window.location.href = `/agencies/${agent.agencySlug}`; }}
+                  onClick={(e) => { e.preventDefault(); window.location.href = `/real-estate-agencies/${agent.agencySlug}`; }}
                 >
                   {agent.agencyName}
                 </span>

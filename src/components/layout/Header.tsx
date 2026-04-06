@@ -34,7 +34,7 @@ const NAV_LINKS = [
     href: "#",
     children: [
       { label: "Find an Agent",   href: "/agents" },
-      { label: "Find an Agency",  href: "/agencies" },
+      { label: "Find an Agency",  href: "/real-estate-agencies" },
       { label: "Free Appraisal",  href: "/appraisal" },
     ],
   },

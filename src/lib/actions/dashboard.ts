@@ -99,6 +99,6 @@ export async function updateAgencyProfile(formData: FormData) {
     },
   });
 
-  revalidatePath(`/agencies/${agency.slug}`);
+  revalidatePath(`/real-estate-agencies/${agency.slug}`);
   return { success: true };
 }

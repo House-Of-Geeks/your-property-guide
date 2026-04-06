@@ -115,7 +115,7 @@ export function AgentJsonLd({ agent }: { agent: Agent }) {
           worksFor: {
             "@type": "RealEstateAgent",
             name: agent.agencyName,
-            url: agent.agencySlug ? `${SITE_URL}/agencies/${agent.agencySlug}` : undefined,
+            url: agent.agencySlug ? `${SITE_URL}/real-estate-agencies/${agent.agencySlug}` : undefined,
           },
         }),
         ...(agent.reviewCount > 0 && {
@@ -149,7 +149,7 @@ export function AgencyJsonLd({ agency }: { agency: Agency }) {
         "@context": "https://schema.org",
         "@type": "RealEstateAgent",
         name: agency.name,
-        url: `${SITE_URL}/agencies/${agency.slug}`,
+        url: `${SITE_URL}/real-estate-agencies/${agency.slug}`,
         logo: logoUrl,
         image: heroUrl,
         telephone: agency.phone,

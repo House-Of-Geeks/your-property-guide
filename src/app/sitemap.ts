@@ -9,7 +9,7 @@ import { SITE_URL } from "@/lib/constants";
 //   /house-and-land/sitemap.xml
 //   /suburbs/sitemap.xml
 //   /agents/sitemap.xml
-//   /agencies/sitemap.xml
+//   /real-estate-agencies/sitemap.xml
 //   /blog/sitemap.xml
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -22,7 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/off-market`,                    lastModified: new Date(), changeFrequency: "weekly",  priority: 0.7 },
     { url: `${SITE_URL}/suburbs`,                       lastModified: new Date(), changeFrequency: "weekly",  priority: 0.8 },
     { url: `${SITE_URL}/agents`,                        lastModified: new Date(), changeFrequency: "weekly",  priority: 0.7 },
-    { url: `${SITE_URL}/agencies`,                      lastModified: new Date(), changeFrequency: "weekly",  priority: 0.6 },
+    { url: `${SITE_URL}/real-estate-agencies`,                      lastModified: new Date(), changeFrequency: "weekly",  priority: 0.6 },
     { url: `${SITE_URL}/blog`,                          lastModified: new Date(), changeFrequency: "weekly",  priority: 0.7 },
     { url: `${SITE_URL}/stamp-duty-calculator`,         lastModified: new Date(), changeFrequency: "yearly",  priority: 0.6 },
     { url: `${SITE_URL}/appraisal`,                     lastModified: new Date(), changeFrequency: "yearly",  priority: 0.6 },

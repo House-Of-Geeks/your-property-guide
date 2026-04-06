@@ -9,7 +9,7 @@ interface AgencyCardProps {
 
 export function AgencyCard({ agency }: AgencyCardProps) {
   return (
-    <Link href={`/agencies/${agency.slug}`} className="group block">
+    <Link href={`/real-estate-agencies/${agency.slug}`} className="group block">
       <div className="p-6 rounded-xl border border-gray-200 bg-white hover:shadow-lg transition-shadow">
         <div className="flex items-center gap-4 mb-4">
           <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border border-gray-100">

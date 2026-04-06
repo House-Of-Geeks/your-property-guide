@@ -74,7 +74,7 @@ export function AgentSearch() {
 
   function pickAgency(agency: SuggestAgency) {
     setOpen(false);
-    router.push(`/agencies/${agency.slug}`);
+    router.push(`/real-estate-agencies/${agency.slug}`);
   }
 
   function handleSearch() {

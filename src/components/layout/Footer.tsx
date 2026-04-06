@@ -154,7 +154,7 @@ export async function Footer() {
       const suburbLinks = [
         { label: `${name} suburb profile`,          href: `/suburbs/${slug}` },
         { label: `${name} real estate agents`,      href: `/agents?suburb=${slug}` },
-        { label: `${name} real estate agencies`,    href: `/agencies?suburb=${slug}` },
+        { label: `${name} real estate agencies`,    href: `/real-estate-agencies?suburb=${slug}` },
         { label: `House and Land in ${name}`,       href: `/house-and-land?suburb=${slug}` },
         { label: `Schools in ${name}`,              href: `/suburbs/${slug}#schools` },
         { label: "Get a free appraisal",            href: "/appraisal" },
