@@ -17,7 +17,7 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
   if (variant === "list") {
     return (
       <Link href={href} className="group block">
-        <div className="flex gap-4 rounded-xl border border-gray-200 bg-white overflow-hidden hover:shadow-lg transition-shadow">
+        <div className="flex gap-4 rounded-xl bg-white overflow-hidden shadow-card hover:shadow-card-hover transition-shadow border border-gray-100">
           <div className="relative w-72 flex-shrink-0">
             <Image
               src={images[0]?.url || "/images/placeholder.jpg"}
@@ -48,7 +48,7 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
   if (variant === "featured") {
     return (
       <Link href={href} className="group block">
-        <div className="rounded-xl border border-gray-200 bg-white overflow-hidden hover:shadow-xl transition-shadow">
+        <div className="rounded-xl bg-white shadow-card border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow">
           <div className="relative aspect-[4/3]">
             <Image
               src={images[0]?.url || "/images/placeholder.jpg"}
@@ -81,7 +81,7 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
   // Grid variant (default)
   return (
     <Link href={href} className="group block">
-      <div className="rounded-xl border border-gray-200 bg-white overflow-hidden hover:shadow-lg transition-shadow">
+      <div className="rounded-xl bg-white overflow-hidden shadow-card hover:shadow-card-hover transition-shadow border border-gray-100">
         <div className="relative aspect-[4/3]">
           <Image
             src={images[0]?.url || "/images/placeholder.jpg"}

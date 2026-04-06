@@ -48,7 +48,7 @@ export default function AboutPage() {
             { icon: <TrendingUp className="w-6 h-6" />, title: "Market Data", desc: "Real-time suburb insights" },
             { icon: <Shield className="w-6 h-6" />, title: "Off-Market", desc: "Exclusive pre-market access" },
           ].map((item) => (
-            <div key={item.title} className="p-6 rounded-xl border border-gray-200 bg-white">
+            <div key={item.title} className="p-6 rounded-xl bg-white shadow-card border border-gray-100">
               <div className="w-10 h-10 rounded-lg gradient-brand text-white flex items-center justify-center mb-3">
                 {item.icon}
               </div>

@@ -12,7 +12,7 @@ export function OffMarketTeaser({ property }: OffMarketTeaserProps) {
   const { features, address, price } = property;
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+    <div className="rounded-xl bg-white shadow-card border border-gray-100 overflow-hidden">
       {/* Blurred image */}
       <div className="relative aspect-[4/3]">
         <Image

@@ -70,7 +70,7 @@ export default async function AgentsPage({ searchParams }: AgentsPageProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 mb-10">
             <Link
               href="/appraisal"
-              className="flex items-center gap-5 p-6 rounded-xl border border-gray-200 bg-white hover:shadow-md hover:border-primary/30 transition-all group"
+              className="flex items-center gap-5 p-6 rounded-xl bg-white shadow-card border border-gray-100 hover:shadow-md hover:border-primary/30 transition-all group"
             >
               <div className="w-14 h-14 rounded-xl gradient-brand text-white flex items-center justify-center shrink-0">
                 <Home className="w-7 h-7" />
@@ -84,7 +84,7 @@ export default async function AgentsPage({ searchParams }: AgentsPageProps) {
             </Link>
             <Link
               href="/sold"
-              className="flex items-center gap-5 p-6 rounded-xl border border-gray-200 bg-white hover:shadow-md hover:border-primary/30 transition-all group"
+              className="flex items-center gap-5 p-6 rounded-xl bg-white shadow-card border border-gray-100 hover:shadow-md hover:border-primary/30 transition-all group"
             >
               <div className="w-14 h-14 rounded-xl gradient-brand text-white flex items-center justify-center shrink-0">
                 <TrendingUp className="w-7 h-7" />

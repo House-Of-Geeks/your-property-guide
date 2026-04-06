@@ -179,7 +179,7 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
             {properties.length > 0 ? (
               <PropertyGrid properties={properties} />
             ) : (
-              <div className="rounded-xl border border-gray-200 bg-white p-8 text-center">
+              <div className="rounded-xl bg-white shadow-card border border-gray-100 p-8 text-center">
                 <p className="text-gray-500 text-sm">No active listings in this area right now.</p>
                 <Link
                   href={`/suburbs/${school.suburb.slug}`}

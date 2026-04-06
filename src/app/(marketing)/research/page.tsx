@@ -117,7 +117,7 @@ function Card({ card }: { card: ResearchCard }) {
   return (
     <Link
       href={card.href}
-      className="group flex flex-col gap-3 rounded-xl border border-gray-200 bg-white p-5 hover:shadow-lg hover:border-primary/30 transition-all"
+      className="group flex flex-col gap-3 rounded-xl bg-white shadow-card border border-gray-100 p-5 hover:shadow-lg hover:border-primary/30 transition-all"
     >
       <div className="inline-flex items-center justify-center w-11 h-11 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
         {card.icon}

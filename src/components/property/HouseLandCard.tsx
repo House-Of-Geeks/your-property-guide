@@ -11,7 +11,7 @@ interface HouseLandCardProps {
 export function HouseLandCard({ pkg }: HouseLandCardProps) {
   return (
     <Link href={`/house-and-land/${pkg.slug}`} className="group block">
-      <div className="rounded-xl border border-gray-200 bg-white overflow-hidden hover:shadow-lg transition-shadow">
+      <div className="rounded-xl bg-white shadow-card border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow">
         <div className="relative aspect-[4/3]">
           <Image
             src={pkg.images[0]?.url || "/images/placeholder.jpg"}

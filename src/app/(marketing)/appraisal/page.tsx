@@ -42,7 +42,7 @@ export default function AppraisalPage() {
           ))}
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-6 sm:p-8">
+        <div className="rounded-xl bg-white shadow-card border border-gray-100 p-6 sm:p-8">
           <AppraisalForm />
         </div>
       </div>

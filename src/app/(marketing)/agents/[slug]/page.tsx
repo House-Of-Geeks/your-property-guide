@@ -180,22 +180,22 @@ export default async function AgentProfilePage({ params }: AgentProfilePageProps
             {agent.firstName}&apos;s statistics
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="rounded-xl border border-gray-200 bg-white p-5 text-center">
+            <div className="rounded-xl bg-white shadow-card border border-gray-100 p-5 text-center">
               <p className="text-3xl font-bold text-primary">{agent.propertiesSold}</p>
               <p className="text-xs text-gray-500 mt-1">Total Sales</p>
             </div>
-            <div className="rounded-xl border border-gray-200 bg-white p-5 text-center">
+            <div className="rounded-xl bg-white shadow-card border border-gray-100 p-5 text-center">
               <p className="text-3xl font-bold text-primary">{agent.yearsExperience}</p>
               <p className="text-xs text-gray-500 mt-1">Years Experience</p>
             </div>
             {agent.reviewCount > 0 && (
-              <div className="rounded-xl border border-gray-200 bg-white p-5 text-center">
+              <div className="rounded-xl bg-white shadow-card border border-gray-100 p-5 text-center">
                 <p className="text-3xl font-bold text-primary">{agent.averageRating}</p>
                 <p className="text-xs text-gray-500 mt-1">Average Rating</p>
               </div>
             )}
             {agent.suburbs.length > 0 && (
-              <div className="rounded-xl border border-gray-200 bg-white p-5 text-center">
+              <div className="rounded-xl bg-white shadow-card border border-gray-100 p-5 text-center">
                 <p className="text-3xl font-bold text-primary">{agent.suburbs.length}</p>
                 <p className="text-xs text-gray-500 mt-1">Suburbs Covered</p>
               </div>
@@ -204,7 +204,7 @@ export default async function AgentProfilePage({ params }: AgentProfilePageProps
 
           {/* Suburbs covered */}
           {agent.suburbs.length > 0 && (
-            <div className="mt-6 rounded-xl border border-gray-200 bg-white p-5">
+            <div className="mt-6 rounded-xl bg-white shadow-card border border-gray-100 p-5">
               <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
                 <Building2 className="w-4 h-4 text-primary" /> Areas Covered
               </h3>

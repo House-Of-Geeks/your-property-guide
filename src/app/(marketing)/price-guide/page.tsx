@@ -162,7 +162,7 @@ export default async function PriceGuidePage({
       </p>
 
       {/* Desktop table */}
-      <div className="hidden sm:block overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+      <div className="hidden sm:block overflow-x-auto rounded-xl bg-white shadow-card border border-gray-100 shadow-sm">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
           <thead className="bg-gray-50">
             <tr>
@@ -252,7 +252,7 @@ export default async function PriceGuidePage({
           <Link
             key={suburb.slug}
             href={`/suburbs/${suburb.slug}`}
-            className="block rounded-xl border border-gray-200 bg-white p-4 hover:shadow-md transition-shadow"
+            className="block rounded-xl bg-white shadow-card border border-gray-100 p-4 hover:shadow-md transition-shadow"
           >
             <div className="flex items-start justify-between">
               <div>

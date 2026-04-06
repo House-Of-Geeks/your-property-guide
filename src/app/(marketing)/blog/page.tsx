@@ -35,7 +35,7 @@ export default async function BlogPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {posts.map((post) => (
           <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
-            <div className="rounded-xl border border-gray-200 bg-white overflow-hidden hover:shadow-lg transition-shadow">
+            <div className="rounded-xl bg-white shadow-card border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow">
               <div className="relative aspect-[16/10]">
                 <Image
                   src={post.coverImage}

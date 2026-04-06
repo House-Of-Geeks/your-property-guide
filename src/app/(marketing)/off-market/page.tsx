@@ -58,7 +58,7 @@ export default async function OffMarketPage() {
 
         {/* Register form */}
         <div>
-          <div className="rounded-xl border border-gray-200 bg-white p-6 sticky top-24">
+          <div className="rounded-xl bg-white shadow-card border border-gray-100 p-6 sticky top-24">
             <h3 className="text-lg font-bold text-gray-900 mb-2">Register for Access</h3>
             <p className="text-sm text-gray-500 mb-6">
               Tell us what you&apos;re looking for and we&apos;ll match you with off-market opportunities.

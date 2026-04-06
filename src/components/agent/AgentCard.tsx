@@ -14,7 +14,7 @@ interface AgentCardProps {
 export function AgentCard({ agent, showContact = true }: AgentCardProps) {
   return (
     <Link href={`/agents/${agent.slug}`} className="group block">
-      <div className="flex items-start gap-4 p-4 rounded-xl border border-gray-200 bg-white hover:shadow-lg transition-shadow">
+      <div className="flex items-start gap-4 p-4 rounded-xl bg-white shadow-card hover:shadow-card-hover transition-shadow border border-gray-100">
         <div className="relative w-16 h-16 flex-shrink-0 rounded-full overflow-hidden">
           <Image
             src={agent.image}

@@ -243,7 +243,7 @@ export function MortgageCalculator() {
       </div>
 
       {/* Results */}
-      <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+      <div className="rounded-xl bg-white shadow-card border border-gray-100 overflow-hidden">
         {/* Hero repayment */}
         <div className="gradient-brand p-6 text-white text-center">
           <p className="text-sm opacity-90">{FREQUENCY_LABELS[frequency]} Repayment</p>

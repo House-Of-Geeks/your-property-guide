@@ -77,7 +77,7 @@ export function StampDutyCalculator() {
 
         {/* Results */}
         {result && numericPrice > 0 && (
-          <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+          <div className="rounded-xl bg-white shadow-card border border-gray-100 overflow-hidden">
             <div className="gradient-brand p-6 text-white text-center">
               <p className="text-sm opacity-90">Total Stamp Duty</p>
               <p className="text-4xl font-bold mt-1">{formatPriceFull(result.totalDuty)}</p>

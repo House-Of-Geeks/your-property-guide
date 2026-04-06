@@ -306,7 +306,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
 
               {/* Agent card */}
               {agent && (
-                <div className="rounded-xl border border-gray-200 bg-white p-5">
+                <div className="rounded-xl bg-white shadow-card border border-gray-100 p-5">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="relative w-14 h-14 rounded-full overflow-hidden flex-shrink-0">
                       <Image
@@ -399,7 +399,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
               )}
 
               {/* Enquiry form */}
-              <div id="enquire" className="rounded-xl border border-gray-200 bg-white p-5">
+              <div id="enquire" className="rounded-xl bg-white shadow-card border border-gray-100 p-5">
                 <h3 className="text-base font-bold text-gray-900 mb-4">Send Enquiry</h3>
                 <EnquiryForm
                   propertyId={property.id}
@@ -413,7 +413,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
         </div>
 
         {/* Mobile enquiry form */}
-        <div id="enquire" className="lg:hidden mt-10 rounded-xl border border-gray-200 bg-white p-5">
+        <div id="enquire" className="lg:hidden mt-10 rounded-xl bg-white shadow-card border border-gray-100 p-5">
           <h3 className="text-base font-bold text-gray-900 mb-4">
             Enquire About This Property
           </h3>
@@ -431,7 +431,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
 
 function InsightStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 text-center">
+    <div className="rounded-xl bg-white shadow-card border border-gray-100 p-4 text-center">
       <p className="text-lg font-bold text-gray-900">{value}</p>
       <p className="text-xs text-gray-500 mt-0.5">{label}</p>
     </div>

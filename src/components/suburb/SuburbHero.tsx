@@ -154,7 +154,7 @@ function StatCard({
   icon: React.ReactNode;
 }) {
   return (
-    <div className="p-4 rounded-xl border border-gray-200 bg-white">
+    <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100">
       <div className="flex items-center gap-2 mb-2">
         {icon}
         <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">{label}</span>

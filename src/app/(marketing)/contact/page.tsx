@@ -23,24 +23,24 @@ export default function ContactPage() {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8">
-          <div className="p-4 rounded-xl border border-gray-200 bg-white text-center">
+          <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100 text-center">
             <MapPin className="w-6 h-6 text-primary mx-auto mb-2" />
             <p className="text-sm font-medium text-gray-900">Visit Us</p>
             <p className="text-xs text-gray-500 mt-1">Australia</p>
           </div>
-          <div className="p-4 rounded-xl border border-gray-200 bg-white text-center">
+          <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100 text-center">
             <Phone className="w-6 h-6 text-primary mx-auto mb-2" />
             <p className="text-sm font-medium text-gray-900">Call Us</p>
             <p className="text-xs text-gray-500 mt-1">07 3000 0000</p>
           </div>
-          <div className="p-4 rounded-xl border border-gray-200 bg-white text-center">
+          <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100 text-center">
             <Mail className="w-6 h-6 text-primary mx-auto mb-2" />
             <p className="text-sm font-medium text-gray-900">Email Us</p>
             <p className="text-xs text-gray-500 mt-1">hello@yourpropertyguide.com.au</p>
           </div>
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-6 sm:p-8">
+        <div className="rounded-xl bg-white shadow-card border border-gray-100 p-6 sm:p-8">
           <h2 className="text-xl font-bold text-gray-900 mb-4">Send Us a Message</h2>
           <EnquiryForm type="general-contact" />
         </div>

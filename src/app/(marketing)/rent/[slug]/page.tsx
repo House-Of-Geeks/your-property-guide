@@ -83,12 +83,12 @@ export default async function RentDetailPage({ params }: RentDetailPageProps) {
         </div>
         <div className="space-y-6">
           {agent && (
-            <div className="rounded-xl border border-gray-200 bg-white p-4">
+            <div className="rounded-xl bg-white shadow-card border border-gray-100 p-4">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Property Manager</h3>
               <AgentCardCompact agent={agent} />
             </div>
           )}
-          <div className="rounded-xl border border-gray-200 bg-white p-6">
+          <div className="rounded-xl bg-white shadow-card border border-gray-100 p-6">
             <h3 className="text-lg font-bold text-gray-900 mb-4">Enquire About This Rental</h3>
             <EnquiryForm
               propertyId={property.id}

@@ -63,25 +63,25 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           <SuburbStatsComponent suburb={suburb} />
 
           <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+            <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100">
               <p className="text-xs text-gray-500 uppercase tracking-wider">Weekly Rent (House)</p>
               <p className="text-xl font-bold text-gray-900 mt-1">
                 {suburb.stats.medianRentHouse ? `$${suburb.stats.medianRentHouse}/wk` : "–"}
               </p>
             </div>
-            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+            <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100">
               <p className="text-xs text-gray-500 uppercase tracking-wider">Weekly Rent (Unit)</p>
               <p className="text-xl font-bold text-gray-900 mt-1">
                 {suburb.stats.medianRentUnit ? `$${suburb.stats.medianRentUnit}/wk` : "–"}
               </p>
             </div>
-            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+            <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100">
               <p className="text-xs text-gray-500 uppercase tracking-wider">Owner Occupied</p>
               <p className="text-xl font-bold text-gray-900 mt-1">
                 {suburb.stats.ownerOccupied ? `${suburb.stats.ownerOccupied}%` : "–"}
               </p>
             </div>
-            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+            <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100">
               <p className="text-xs text-gray-500 uppercase tracking-wider">Renter Occupied</p>
               <p className="text-xl font-bold text-gray-900 mt-1">
                 {suburb.stats.renterOccupied ? `${suburb.stats.renterOccupied}%` : "–"}
@@ -99,25 +99,25 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         <section id="demographics" className="scroll-mt-16">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Demographics</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+            <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100">
               <p className="text-xs text-gray-500 uppercase tracking-wider">Population</p>
               <p className="text-xl font-bold text-gray-900 mt-1">
                 {suburb.stats.population ? suburb.stats.population.toLocaleString() : "–"}
               </p>
             </div>
-            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+            <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100">
               <p className="text-xs text-gray-500 uppercase tracking-wider">Median Age</p>
               <p className="text-xl font-bold text-gray-900 mt-1">
                 {suburb.stats.medianAge ? suburb.stats.medianAge : "–"}
               </p>
             </div>
-            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+            <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100">
               <p className="text-xs text-gray-500 uppercase tracking-wider">Family Households</p>
               <p className="text-xl font-bold text-gray-900 mt-1">
                 {suburb.stats.householdsFamily ? `${suburb.stats.householdsFamily}%` : "–"}
               </p>
             </div>
-            <div className="p-4 rounded-xl border border-gray-200 bg-white">
+            <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100">
               <p className="text-xs text-gray-500 uppercase tracking-wider">Lone Person</p>
               <p className="text-xl font-bold text-gray-900 mt-1">
                 {suburb.stats.householdsLonePerson ? `${suburb.stats.householdsLonePerson}%` : "–"}
