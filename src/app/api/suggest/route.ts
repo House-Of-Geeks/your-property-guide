@@ -55,28 +55,30 @@ export async function GET(req: NextRequest) {
   }
 
   // Default: locations + schools
-  const [locations, rawSchools] = await Promise.all([
-    locationsPromise,
-    isNumeric
-      ? Promise.resolve([] as { name: string; acaraId: string; suburb: { slug: string; state: string; postcode: string; name: string } | null }[])
-      : db.school.findMany({
-          where: { name: { contains: q, mode: "insensitive" } },
-          select: {
-            name: true,
-            acaraId: true,
-            suburb: { select: { slug: true, state: true, postcode: true, name: true } },
-          },
-          take: 3,
-        }),
-  ]);
+  // Raw query so we can normalize apostrophes on both sides (e.g. "st lukes" matches "St Luke's")
+  type RawSchool = { name: string; acaraId: string | null; suburbSlug: string | null; suburbState: string | null; suburbPostcode: string | null; suburbName: string | null };
+  const schoolsPromise: Promise<RawSchool[]> = isNumeric
+    ? Promise.resolve([])
+    : db.$queryRaw`
+        SELECT s.name, s."acaraId",
+               sub.slug AS "suburbSlug", sub.state AS "suburbState",
+               sub.postcode AS "suburbPostcode", sub.name AS "suburbName"
+        FROM "School" s
+        LEFT JOIN "Suburb" sub ON sub.id = s."suburbId"
+        WHERE regexp_replace(lower(s.name), '[''']', '', 'g')
+              LIKE '%' || regexp_replace(lower(${q}), '[''']', '', 'g') || '%'
+        LIMIT 5
+      `;
+
+  const [locations, rawSchools] = await Promise.all([locationsPromise, schoolsPromise]);
 
   const schools: SuggestSchool[] = rawSchools.map((s) => ({
     slug:       makeSchoolSlug(s.name, s.acaraId ?? ""),
     name:       s.name,
-    state:      s.suburb?.state ?? "",
-    postcode:   s.suburb?.postcode ?? "",
-    suburbName: s.suburb?.name ?? "",
-    suburbSlug: s.suburb?.slug ?? "",
+    state:      s.suburbState ?? "",
+    postcode:   s.suburbPostcode ?? "",
+    suburbName: s.suburbName ?? "",
+    suburbSlug: s.suburbSlug ?? "",
   }));
 
   return NextResponse.json<SuggestResponse>({ locations, schools, agencies: [] });
