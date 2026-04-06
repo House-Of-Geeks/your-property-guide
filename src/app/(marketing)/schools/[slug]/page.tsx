@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { ChevronRight, GraduationCap, ExternalLink } from "lucide-react";
 import { getSchoolBySlug } from "@/lib/services/school-service";
 import { getPropertiesBySuburb } from "@/lib/services/property-service";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
+import { SchoolListingControls } from "@/components/school/SchoolListingControls";
 import { SITE_URL } from "@/lib/constants";
 
 interface SchoolPageProps {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<Record<string, string | undefined>>;
 }
 
 const GMAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? "";
@@ -49,12 +52,22 @@ export async function generateMetadata({ params }: SchoolPageProps): Promise<Met
   };
 }
 
-export default async function SchoolPage({ params }: SchoolPageProps) {
+export default async function SchoolPage({ params, searchParams }: SchoolPageProps) {
   const { slug } = await params;
+  const { sort } = await searchParams;
   const school = await getSchoolBySlug(slug);
   if (!school) notFound();
 
-  const properties = await getPropertiesBySuburb(school.suburb.slug, 12);
+  let properties = await getPropertiesBySuburb(school.suburb.slug, 24);
+
+  // Sort in-memory
+  if (sort === "newest") {
+    properties = [...properties].sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
+  } else if (sort === "price-asc") {
+    properties = [...properties].sort((a, b) => (a.price.value ?? 0) - (b.price.value ?? 0));
+  } else if (sort === "price-desc") {
+    properties = [...properties].sort((a, b) => (b.price.value ?? 0) - (a.price.value ?? 0));
+  }
 
   // Street map (roadmap) — not satellite
   const mapSrc = school.lat && school.lng && GMAPS_KEY
@@ -102,15 +115,18 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-        {/* Page title */}
-        <h1 className="text-xl font-semibold text-gray-700 mb-6">
-          {properties.length} {properties.length === 1 ? "property" : "properties"} for sale near {school.name}
-        </h1>
-
         <div className="flex flex-col lg:flex-row gap-6">
 
           {/* ── Left: property listings ───────────────────────────────── */}
           <div className="flex-1 min-w-0">
+            <Suspense fallback={null}>
+              <SchoolListingControls
+                count={properties.length}
+                schoolName={school.name}
+                currentSort={sort ?? ""}
+              />
+            </Suspense>
+
             {properties.length > 0 ? (
               <PropertyGrid properties={properties} />
             ) : (
