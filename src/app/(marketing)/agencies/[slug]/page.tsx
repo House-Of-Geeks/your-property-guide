@@ -141,7 +141,10 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
       <BreadcrumbJsonLd
         items={[
           { name: "Real Estate Agencies", url: "/agencies" },
-          { name: agency.address.suburb, url: `/agencies?suburb=${agency.address.suburb.toLowerCase()}` },
+          {
+            name: agency.address.suburb,
+            url: `/agencies/${agency.address.suburb.toLowerCase().replace(/\s+/g, "-")}-${agency.address.state.toLowerCase()}-${agency.address.postcode}`,
+          },
           { name: agency.name, url: `/agencies/${agency.slug}` },
         ]}
       />
@@ -154,7 +157,12 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
             <ChevronRight className="w-3 h-3 text-gray-300" />
             <Link href="/agencies" className="hover:text-primary transition-colors">Real Estate Agencies</Link>
             <ChevronRight className="w-3 h-3 text-gray-300" />
-            <span className="text-gray-400">{agency.address.suburb}</span>
+            <Link
+              href={`/agencies/${agency.address.suburb.toLowerCase().replace(/\s+/g, "-")}-${agency.address.state.toLowerCase()}-${agency.address.postcode}`}
+              className="hover:text-primary transition-colors"
+            >
+              {agency.address.suburb}
+            </Link>
             <ChevronRight className="w-3 h-3 text-gray-300" />
             <span className="text-gray-700 font-medium">{agency.name}</span>
           </nav>

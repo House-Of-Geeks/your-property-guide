@@ -131,6 +131,18 @@ export function AgentJsonLd({ agent }: { agent: Agent }) {
 }
 
 export function AgencyJsonLd({ agency }: { agency: Agency }) {
+  // Convert slugs like "north-lakes-qld-4509" → "North Lakes"
+  const areaServed = agency.suburbs.map((slug) => {
+    const parts = slug.split("-");
+    const nameParts = parts.slice(0, -2);
+    return nameParts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join(" ");
+  });
+
+  const logoUrl = agency.logo.startsWith("http") ? agency.logo : `${SITE_URL}${agency.logo}`;
+  const heroUrl = agency.heroBg
+    ? agency.heroBg.startsWith("http") ? agency.heroBg : `${SITE_URL}${agency.heroBg}`
+    : logoUrl;
+
   return (
     <JsonLdScript
       data={{
@@ -138,18 +150,14 @@ export function AgencyJsonLd({ agency }: { agency: Agency }) {
         "@type": "RealEstateAgent",
         name: agency.name,
         url: `${SITE_URL}/agencies/${agency.slug}`,
-        image: `${SITE_URL}${agency.logo}`,
+        logo: logoUrl,
+        image: heroUrl,
         telephone: agency.phone,
         email: agency.email,
         description: agency.description,
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: agency.address.street,
-          addressLocality: agency.address.suburb,
-          addressRegion: agency.address.state,
-          postalCode: agency.address.postcode,
-          addressCountry: "AU",
-        },
+        address: `${agency.address.street}, ${agency.address.suburb} ${agency.address.state} ${agency.address.postcode}`,
+        ...(areaServed.length > 0 && { areaServed }),
+        ...(agency.website && { sameAs: [agency.website, agency.facebookUrl, agency.linkedinUrl, agency.instagramUrl, agency.youtubeUrl].filter(Boolean) }),
       }}
     />
   );
