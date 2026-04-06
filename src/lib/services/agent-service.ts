@@ -48,6 +48,11 @@ function toAgency(a: DbAgency): Agency {
     agentIds: [],
     primaryColor: a.primaryColor ?? undefined,
     youtubeVideoId: a.youtubeVideoId ?? undefined,
+    facebookUrl: a.facebookUrl ?? undefined,
+    instagramUrl: a.instagramUrl ?? undefined,
+    linkedinUrl: a.linkedinUrl ?? undefined,
+    youtubeUrl: a.youtubeUrl ?? undefined,
+    heroBg: a.heroBg ?? undefined,
   };
 }
 

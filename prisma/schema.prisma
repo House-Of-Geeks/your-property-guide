@@ -27,6 +27,11 @@ model Agency {
   suburbs         String[]
   primaryColor    String?
   youtubeVideoId  String?
+  facebookUrl     String?
+  instagramUrl    String?
+  linkedinUrl     String?
+  youtubeUrl      String?
+  heroBg          String?
 
   agents     Agent[]
   properties Property[]

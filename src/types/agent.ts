@@ -41,4 +41,9 @@ export interface Agency {
   agentIds: string[];
   primaryColor?: string;
   youtubeVideoId?: string;
+  facebookUrl?: string;
+  instagramUrl?: string;
+  linkedinUrl?: string;
+  youtubeUrl?: string;
+  heroBg?: string;
 }
