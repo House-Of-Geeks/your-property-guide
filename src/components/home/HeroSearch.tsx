@@ -2,10 +2,11 @@
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Search } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui";
 import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
+import { PROPERTY_TYPES, BEDROOM_OPTIONS, PRICE_RANGES_BUY, PRICE_RANGES_RENT } from "@/lib/constants";
 
 const MODES = [
   { value: "buy",            label: "Buy" },
@@ -19,18 +20,29 @@ type Mode = (typeof MODES)[number]["value"];
 export function HeroSearch() {
   const router = useRouter();
   const [mode, setMode] = useState<Mode>("buy");
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [filters, setFilters] = useState({ propertyType: "", minPrice: "", maxPrice: "", minBeds: "" });
   const selectedRef = useRef<{ slug: string; label: string } | null>(null);
-  // Keep a ref to the raw query string for keyword fallback
   const queryRef = useRef("");
+
+  function setFilter(key: keyof typeof filters, value: string) {
+    setFilters((f) => ({ ...f, [key]: value }));
+  }
 
   function handleSearch() {
     const sel = selectedRef.current;
-    if (sel?.slug) {
-      router.push(`/${mode}?suburb=${sel.slug}`);
-    } else {
-      router.push(`/${mode}`);
-    }
+    const params = new URLSearchParams();
+    if (sel?.slug) params.set("suburb", sel.slug);
+    if (filters.propertyType) params.set("propertyType", filters.propertyType);
+    if (filters.minPrice) params.set("minPrice", filters.minPrice);
+    if (filters.maxPrice) params.set("maxPrice", filters.maxPrice);
+    if (filters.minBeds) params.set("minBeds", filters.minBeds);
+    const qs = params.toString();
+    router.push(`/${mode}${qs ? `?${qs}` : ""}`);
   }
+
+  const priceRanges = mode === "rent" ? PRICE_RANGES_RENT : PRICE_RANGES_BUY;
+  const activeFilterCount = Object.values(filters).filter(Boolean).length;
 
   return (
     <div className="relative overflow-hidden">
@@ -95,6 +107,23 @@ export function HeroSearch() {
                 }}
               />
             </div>
+            <button
+              type="button"
+              onClick={() => setFiltersOpen((o) => !o)}
+              className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border rounded-xl transition-colors shrink-0 cursor-pointer ${
+                filtersOpen || activeFilterCount > 0
+                  ? "border-primary text-primary bg-primary/5"
+                  : "border-gray-300 text-gray-600 hover:border-gray-400"
+              }`}
+            >
+              <SlidersHorizontal className="w-4 h-4" />
+              Filters
+              {activeFilterCount > 0 && (
+                <span className="ml-0.5 w-4 h-4 rounded-full bg-primary text-white text-xs flex items-center justify-center font-bold">
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
             <Button
               onClick={handleSearch}
               variant="gradient"
@@ -105,6 +134,64 @@ export function HeroSearch() {
               Search
             </Button>
           </div>
+
+          {/* Filter panel */}
+          {filtersOpen && (
+            <div className="border-t border-gray-100 px-4 py-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Property Type</label>
+                <select
+                  value={filters.propertyType}
+                  onChange={(e) => setFilter("propertyType", e.target.value)}
+                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-primary"
+                >
+                  <option value="">Any</option>
+                  {PROPERTY_TYPES.map((t) => (
+                    <option key={t.value} value={t.value}>{t.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Min Price</label>
+                <select
+                  value={filters.minPrice}
+                  onChange={(e) => setFilter("minPrice", e.target.value)}
+                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-primary"
+                >
+                  <option value="">Any</option>
+                  {priceRanges.map((p) => (
+                    <option key={p.value} value={p.value}>{p.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Max Price</label>
+                <select
+                  value={filters.maxPrice}
+                  onChange={(e) => setFilter("maxPrice", e.target.value)}
+                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-primary"
+                >
+                  <option value="">Any</option>
+                  {priceRanges.map((p) => (
+                    <option key={p.value} value={p.value}>{p.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Bedrooms</label>
+                <select
+                  value={filters.minBeds}
+                  onChange={(e) => setFilter("minBeds", e.target.value)}
+                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-primary"
+                >
+                  <option value="">Any</option>
+                  {BEDROOM_OPTIONS.map((b) => (
+                    <option key={b.value} value={b.value}>{b.label}+ beds</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Quick suburb links */}
