@@ -204,15 +204,15 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
       </div>
 
       {/* Logo + CTA bar */}
-      <div className="bg-gray-900 border-b border-gray-800">
+      <div className="bg-white border-b border-gray-200 shadow-sm">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-[72px]">
-          <div className="relative h-10 w-40 bg-white rounded px-2">
-            <Image src={agency.logo} alt={agency.name} fill className="object-contain p-1.5" sizes="160px" />
+          <div className="relative h-10 w-40">
+            <Image src={agency.logo} alt={agency.name} fill className="object-contain object-left" sizes="160px" />
           </div>
           <div className="flex gap-3">
             <a
               href={`tel:${agency.phone}`}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/70 text-white text-sm font-medium hover:bg-white hover:text-gray-900 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:border-primary hover:text-primary transition-colors"
             >
               <Phone className="w-4 h-4" />
               Call
