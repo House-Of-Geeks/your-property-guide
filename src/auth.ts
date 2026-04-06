@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-import Resend from "next-auth/providers/resend";
+import Nodemailer from "next-auth/providers/nodemailer";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "@/lib/db";
 import { authConfig } from "./auth.config";
@@ -9,8 +9,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
   providers: [
-    Resend({
-      apiKey: process.env.RESEND_API_KEY,
+    Nodemailer({
+      server: {
+        host: "smtp.sendgrid.net",
+        port: 587,
+        auth: {
+          user: "apikey",
+          pass: process.env.SENDGRID_API_KEY ?? "",
+        },
+      },
       from: process.env.EMAIL_FROM ?? "noreply@yourpropertyguide.com.au",
     }),
   ],
