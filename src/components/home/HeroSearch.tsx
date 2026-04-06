@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, SlidersHorizontal } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui";
-import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
+import { MultiSuburbAutocomplete, type SelectedSuburb } from "@/components/search/MultiSuburbAutocomplete";
 import { PROPERTY_TYPES, BEDROOM_OPTIONS, PRICE_RANGES_BUY, PRICE_RANGES_RENT } from "@/lib/constants";
 
 const MODES = [
@@ -22,17 +22,23 @@ export function HeroSearch() {
   const [mode, setMode] = useState<Mode>("buy");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [filters, setFilters] = useState({ propertyType: "", minPrice: "", maxPrice: "", minBeds: "" });
-  const selectedRef = useRef<{ slug: string; label: string } | null>(null);
-  const queryRef = useRef("");
+  const [selectedSuburbs, setSelectedSuburbs] = useState<SelectedSuburb[]>([]);
 
   function setFilter(key: keyof typeof filters, value: string) {
     setFilters((f) => ({ ...f, [key]: value }));
   }
 
+  function addSuburb(suburb: SelectedSuburb) {
+    setSelectedSuburbs((prev) => prev.find((s) => s.slug === suburb.slug) ? prev : [...prev, suburb]);
+  }
+
+  function removeSuburb(slug: string) {
+    setSelectedSuburbs((prev) => prev.filter((s) => s.slug !== slug));
+  }
+
   function handleSearch() {
-    const sel = selectedRef.current;
     const params = new URLSearchParams();
-    if (sel?.slug) params.set("suburb", sel.slug);
+    if (selectedSuburbs.length > 0) params.set("suburb", selectedSuburbs.map((s) => s.slug).join(","));
     if (filters.propertyType) params.set("propertyType", filters.propertyType);
     if (filters.minPrice) params.set("minPrice", filters.minPrice);
     if (filters.maxPrice) params.set("maxPrice", filters.maxPrice);
@@ -93,18 +99,14 @@ export function HeroSearch() {
 
           {/* Input row */}
           <div className="flex items-center gap-2 p-2">
-            <div className="flex-1 bg-gray-50 rounded-xl">
-              <SuburbAutocomplete
-                placeholder="Try a suburb, postcode or school..."
-                showSchools
+            <div className="flex-1 bg-gray-50 rounded-xl min-w-0">
+              <MultiSuburbAutocomplete
+                placeholder="Try a suburb or postcode..."
                 size="lg"
                 inputClassName="bg-gray-50"
-                onSelectLocation={(slug, label) => {
-                  selectedRef.current = { slug, label };
-                }}
-                onClear={() => {
-                  selectedRef.current = null;
-                }}
+                selected={selectedSuburbs}
+                onAdd={addSuburb}
+                onRemove={removeSuburb}
               />
             </div>
             <button

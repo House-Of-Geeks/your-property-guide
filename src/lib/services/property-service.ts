@@ -58,7 +58,10 @@ export async function getProperties(params?: PropertySearchParams): Promise<Prop
   const where: Record<string, unknown> = {};
 
   if (params?.listingType) where.listingType = params.listingType;
-  if (params?.suburb) where.suburbSlug = params.suburb;
+  if (params?.suburb) {
+    const slugs = params.suburb.split(",").map((s) => s.trim()).filter(Boolean);
+    where.suburbSlug = slugs.length === 1 ? slugs[0] : { in: slugs };
+  }
   if (params?.propertyType) where.propertyType = params.propertyType;
   if (params?.minBeds) where.bedrooms = { gte: params.minBeds };
   if (params?.minPrice || params?.maxPrice) {
