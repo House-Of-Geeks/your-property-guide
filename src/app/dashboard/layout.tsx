@@ -3,6 +3,7 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { Home, User, Building2, LogOut, List, Users, ShieldCheck } from "lucide-react";
+import { signOut } from "@/auth";
 
 export const metadata: Metadata = {
   title: { default: "Dashboard", template: "%s | Your Property Guide" },
@@ -64,7 +65,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <NavLink href="/" icon={<Home className="w-4 h-4" />} label="View Site" />
         </nav>
         <div className="px-3 py-4 border-t border-gray-100">
-          <form action="/api/auth/signout" method="POST">
+          <form action={async () => {
+            "use server";
+            await signOut({ redirectTo: "/dashboard/login" });
+          }}>
             <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-50 transition-colors">
               <LogOut className="w-4 h-4" /> Sign out
             </button>
