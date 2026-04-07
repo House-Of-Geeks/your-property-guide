@@ -4,9 +4,10 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { ChevronRight, GraduationCap, ExternalLink } from "lucide-react";
 import { getSchoolBySlug } from "@/lib/services/school-service";
-import { getPropertiesBySuburb } from "@/lib/services/property-service";
+import { getProperties } from "@/lib/services/property-service";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { SchoolListingControls } from "@/components/school/SchoolListingControls";
+import { SchoolSearchBar } from "@/components/school/SchoolSearchBar";
 import { SITE_URL } from "@/lib/constants";
 
 interface SchoolPageProps {
@@ -54,11 +55,19 @@ export async function generateMetadata({ params }: SchoolPageProps): Promise<Met
 
 export default async function SchoolPage({ params, searchParams }: SchoolPageProps) {
   const { slug } = await params;
-  const { sort } = await searchParams;
+  const { sort, mode, minPrice, maxPrice, minBeds, propertyType } = await searchParams;
   const school = await getSchoolBySlug(slug);
   if (!school) notFound();
 
-  let properties = await getPropertiesBySuburb(school.suburb.slug, 24);
+  const listingType = (mode === "rent" ? "rent" : mode === "sold" ? "sold" : "buy") as "buy" | "rent" | "sold";
+  let properties = await getProperties({
+    listingType,
+    suburb: school.suburb.slug,
+    propertyType: propertyType as any,
+    minPrice: minPrice ? Number(minPrice) : undefined,
+    maxPrice: maxPrice ? Number(maxPrice) : undefined,
+    minBeds: minBeds ? Number(minBeds) : undefined,
+  });
 
   // Sort in-memory
   if (sort === "newest") {
@@ -95,6 +104,11 @@ export default async function SchoolPage({ params, searchParams }: SchoolPagePro
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Sticky search/filter bar */}
+      <Suspense fallback={null}>
+        <SchoolSearchBar schoolName={school.name} currentMode={listingType} />
+      </Suspense>
+
       {/* Breadcrumb */}
       <div className="bg-white border-b border-gray-200">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
