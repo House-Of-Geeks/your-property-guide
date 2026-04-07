@@ -19,13 +19,13 @@ export async function StatsBar() {
   ];
 
   return (
-    <div className="bg-[#1a0d1b]">
+    <div className="gradient-brand">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
           {stats.map(({ value, label }) => (
             <div key={label} className="text-center">
-              <p className="text-3xl font-bold gradient-brand-text">{value}</p>
-              <p className="text-sm text-white/50 mt-1">{label}</p>
+              <p className="text-3xl font-bold text-white">{value}</p>
+              <p className="text-sm text-white/70 mt-1">{label}</p>
             </div>
           ))}
         </div>

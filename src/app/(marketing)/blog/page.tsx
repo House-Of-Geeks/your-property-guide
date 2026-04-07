@@ -23,7 +23,7 @@ export default async function BlogPage() {
       <Breadcrumbs items={[{ label: "Blog" }]} />
 
       {/* Hero */}
-      <div className="rounded-2xl bg-gradient-to-br from-[#1a0d1b] to-[#3d1640] px-8 py-10 mb-10 mt-4">
+      <div className="rounded-2xl gradient-brand px-8 py-10 mb-10 mt-4">
         <span className="inline-block rounded-full bg-white/10 border border-white/20 px-3 py-1 text-xs font-semibold text-white/80 mb-3">
           Property Research Blog
         </span>

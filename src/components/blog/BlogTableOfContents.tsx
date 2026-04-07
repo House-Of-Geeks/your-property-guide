@@ -64,7 +64,7 @@ export function BlogTableOfContents({ toc }: Props) {
       </ul>
 
       {/* CTA */}
-      <div className="mt-6 rounded-xl bg-gradient-to-br from-[#682C69] to-[#DD3C70] p-4 text-white">
+      <div className="mt-6 rounded-xl gradient-brand p-4 text-white">
         <p className="text-sm font-semibold">Explore suburb data</p>
         <p className="text-xs mt-1 text-white/80">
           Median prices, growth trends, schools and more.

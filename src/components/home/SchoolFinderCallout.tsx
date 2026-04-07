@@ -10,7 +10,7 @@ const POINTS = [
 
 export function SchoolFinderCallout() {
   return (
-    <section className="py-20 bg-[#1a0d1b] overflow-hidden">
+    <section className="py-20 gradient-brand overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 
