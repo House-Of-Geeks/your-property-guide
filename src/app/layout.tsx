@@ -53,6 +53,13 @@ export default function RootLayout({
           __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","w5r5pytsib");`,
         }}
       />
+      <Script
+        id="quantcast"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `window._qevents=window._qevents||[];(function(){var e=document.createElement('script');e.src=(document.location.protocol=='https:'?'https://secure':'http://edge')+'.quantserve.com/quant.js';e.async=true;e.type='text/javascript';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(e,s);})();window._qevents.push({qacct:"p-0nXpAVdp8GeS5"});`,
+        }}
+      />
     </html>
   );
 }
