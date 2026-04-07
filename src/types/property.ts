@@ -71,6 +71,7 @@ export interface PropertySearchParams {
   minBeds?: number;
   maxBeds?: number;
   minBaths?: number;
+  minCars?: number;
   sort?: string;
   page?: number;
 }

@@ -1,0 +1,39 @@
+name: Data Sync — Hazard + Walkability + Climate (Annual)
+
+on:
+  schedule:
+    - cron: "0 4 1 4 *"   # 04:00 UTC on 1 April each year
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "Specific source ID to run (leave empty for all)"
+        required: false
+        default: ""
+
+jobs:
+  sync:
+    name: Sync hazard, walkability and climate
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npx prisma generate
+      - name: Sync flood hazard (GA AFRIP WFS)
+        run: npx tsx scripts/sync/run.ts hazard-flood
+        continue-on-error: true
+      - name: Sync bushfire hazard (state GeoJSON sources)
+        run: npx tsx scripts/sync/run.ts hazard-bushfire
+        continue-on-error: true
+      - name: Sync walkability scores (Overpass API)
+        run: npx tsx scripts/sync/run.ts walkability
+        continue-on-error: true
+      - name: Sync BOM climate averages
+        run: npx tsx scripts/sync/run.ts bom-climate
+        continue-on-error: true

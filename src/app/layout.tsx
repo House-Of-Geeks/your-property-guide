@@ -13,7 +13,7 @@ const geistSans = Geist({
 
 export const metadata: Metadata = {
   title: {
-    default: `${SITE_NAME} - Property Search, Made Simple`,
+    default: `${SITE_NAME} - Property Research, Made Simple`,
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "en_AU",
     url: SITE_URL,
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: `${SITE_NAME} - Property Search, Made Simple` }],
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: `${SITE_NAME} - Property Research, Made Simple` }],
   },
   twitter: {
     card: "summary_large_image",

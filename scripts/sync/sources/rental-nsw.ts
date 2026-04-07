@@ -184,7 +184,7 @@ export async function run(): Promise<void> {
 
     await prisma.suburb.updateMany({
       where: { state: "NSW" },
-      data:  { statsUpdatedAt: new Date(), statsSource: SOURCE_ID },
+      data:  { statsUpdatedAt: new Date(), statsSource: SOURCE_ID, rentalUpdatedAt: new Date() },
     });
 
     await finishSync(SOURCE_ID, count, parsed.periodDate);

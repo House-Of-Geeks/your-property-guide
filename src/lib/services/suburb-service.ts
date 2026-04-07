@@ -1,14 +1,19 @@
 import type { Suburb, SuburbDataFreshness } from "@/types";
 import { db } from "@/lib/db";
-import type { Suburb as DbSuburb, School as DbSchool } from "@/generated/prisma/client";
+import type { Suburb as DbSuburb, School as DbSchool, SuburbHazard as DbSuburbHazard, SuburbClimate as DbSuburbClimate } from "@/generated/prisma/client";
 
 type DbSuburbWithSchools = DbSuburb & { schools: DbSchool[] };
 
 const NO_FRESHNESS: SuburbDataFreshness = {
-  rentalAsOf:   null,
-  rentalSource: null,
-  crimeAsOf:    null,
-  crimeSource:  null,
+  rentalAsOf:      null,
+  rentalSource:    null,
+  crimeAsOf:       null,
+  crimeSource:     null,
+  salesAsOf:       null,
+  censusAsOf:      null,
+  hazardAsOf:      null,
+  walkabilityAsOf: null,
+  climateAsOf:     null,
 };
 
 async function fetchFreshness(slug: string): Promise<{
@@ -31,17 +36,40 @@ async function fetchFreshness(slug: string): Promise<{
 
   return {
     freshness: {
-      rentalAsOf:   rental?.periodDate ?? null,
-      rentalSource: rental?.source    ?? null,
-      crimeAsOf:    crime?.periodDate ?? null,
-      crimeSource:  crime?.source     ?? null,
+      rentalAsOf:      rental?.periodDate ?? null,
+      rentalSource:    rental?.source    ?? null,
+      crimeAsOf:       crime?.periodDate ?? null,
+      crimeSource:     crime?.source     ?? null,
+      // Denormalized fields — filled in by toSuburb() after the Suburb row is fetched
+      salesAsOf:       null,
+      censusAsOf:      null,
+      hazardAsOf:      null,
+      walkabilityAsOf: null,
+      climateAsOf:     null,
     },
     rentalRentHouse: rental?.medianRentHouse ?? null,
     rentalRentUnit:  rental?.medianRentUnit  ?? null,
   };
 }
 
-function toSuburb(s: DbSuburbWithSchools, freshness: SuburbDataFreshness, rentalRentHouse: number | null, rentalRentUnit: number | null): Suburb {
+function toSuburb(
+  s: DbSuburbWithSchools,
+  freshness: SuburbDataFreshness,
+  rentalRentHouse: number | null,
+  rentalRentUnit: number | null,
+  hazard: DbSuburbHazard | null,
+  climate: DbSuburbClimate | null,
+): Suburb {
+  // Merge denormalized *UpdatedAt fields into freshness
+  const mergedFreshness: SuburbDataFreshness = {
+    ...freshness,
+    salesAsOf:       s.salesUpdatedAt       ?? null,
+    censusAsOf:      s.censusUpdatedAt      ?? null,
+    hazardAsOf:      s.hazardUpdatedAt      ?? null,
+    walkabilityAsOf: s.walkabilityUpdatedAt ?? null,
+    climateAsOf:     s.climateUpdatedAt     ?? null,
+  };
+
   return {
     id:          s.id,
     slug:        s.slug,
@@ -66,6 +94,9 @@ function toSuburb(s: DbSuburbWithSchools, freshness: SuburbDataFreshness, rental
       renterOccupied:       s.renterOccupied,
       householdsFamily:     s.householdsFamily,
       householdsLonePerson: s.householdsLonePerson,
+      walkScore:    s.walkScore    ?? null,
+      transitScore: s.transitScore ?? null,
+      bikeScore:    s.bikeScore    ?? null,
     },
     schools: s.schools.map((sc) => ({
       name:      sc.name,
@@ -82,27 +113,30 @@ function toSuburb(s: DbSuburbWithSchools, freshness: SuburbDataFreshness, rental
     amenities:      s.amenities,
     transportLinks: s.transportLinks,
     nearbySuburbs:  s.nearbySuburbs,
-    dataFreshness:  freshness,
+    dataFreshness:  mergedFreshness,
+    hazard: hazard
+      ? {
+          floodClass:     hazard.floodClass     ?? null,
+          floodSource:    hazard.floodSource    ?? null,
+          bushfireRisk:   hazard.bushfireRisk   ?? null,
+          bushfireSource: hazard.bushfireSource ?? null,
+        }
+      : null,
+    climate:
+      climate && climate.bomStationId && climate.bomStationName && climate.distanceKm !== null
+        ? {
+            bomStationId:   climate.bomStationId,
+            bomStationName: climate.bomStationName,
+            distanceKm:     climate.distanceKm,
+            meanMaxTemp:    climate.meanMaxTemp    ?? [],
+            meanMinTemp:    climate.meanMinTemp    ?? [],
+            meanRainfall:   climate.meanRainfall   ?? [],
+            meanHumidity9am: climate.meanHumidity9am ?? [],
+            meanSunshineHrs: climate.meanSunshineHrs ?? [],
+            annualRainfallMm: climate.annualRainfallMm ?? null,
+          }
+        : null,
   };
-}
-
-const includeSchools = { schools: true };
-
-export async function getSuburbs(): Promise<Suburb[]> {
-  // No schools on listing pages — reduces payload significantly
-  const rows = await db.suburb.findMany({ orderBy: { name: "asc" }, include: { schools: false } });
-  return rows.map((s) => toSuburb({ ...s, schools: [] }, NO_FRESHNESS, null, null));
-}
-
-export async function getFeaturedSuburbs(limit = 6): Promise<Suburb[]> {
-  // Only suburbs with real data (population > 0) for the home page spotlight
-  const rows = await db.suburb.findMany({
-    where: { population: { gt: 0 } },
-    orderBy: { population: "desc" },
-    take: limit,
-    include: { schools: false },
-  });
-  return rows.map((s) => toSuburb({ ...s, schools: [] }, NO_FRESHNESS, null, null));
 }
 
 async function getNearbySchools(suburb: { id: string; lat: number | null; lng: number | null }): Promise<DbSchool[]> {
@@ -139,17 +173,40 @@ async function getNearbySchools(suburb: { id: string; lat: number | null; lng: n
   return [];
 }
 
+export async function getSuburbs(): Promise<Suburb[]> {
+  // No schools on listing pages — reduces payload significantly
+  const rows = await db.suburb.findMany({ orderBy: { name: "asc" }, include: { schools: false } });
+  return rows.map((s) => toSuburb({ ...s, schools: [] }, NO_FRESHNESS, null, null, null, null));
+}
+
+export async function getFeaturedSuburbs(limit = 6): Promise<Suburb[]> {
+  // Only suburbs with real data (population > 0) for the home page spotlight
+  const rows = await db.suburb.findMany({
+    where: { population: { gt: 0 } },
+    orderBy: { population: "desc" },
+    take: limit,
+    include: { schools: false },
+  });
+  return rows.map((s) => toSuburb({ ...s, schools: [] }, NO_FRESHNESS, null, null, null, null));
+}
+
 export async function getSuburbBySlug(slug: string): Promise<Suburb | null> {
-  const [row, { freshness, rentalRentHouse, rentalRentUnit }] = await Promise.all([
+  const [row, { freshness, rentalRentHouse, rentalRentUnit }, hazard, climate] = await Promise.all([
     db.suburb.findUnique({ where: { slug }, include: { schools: false } }),
     fetchFreshness(slug),
+    db.suburbHazard.findUnique({ where: { suburbSlug: slug } }),
+    db.suburbClimate.findUnique({ where: { suburbSlug: slug } }),
   ]);
   if (!row) return null;
   const schools = await getNearbySchools(row);
-  return toSuburb({ ...row, schools }, freshness, rentalRentHouse, rentalRentUnit);
+  return toSuburb({ ...row, schools }, freshness, rentalRentHouse, rentalRentUnit, hazard, climate);
 }
 
 export async function getAllSuburbSlugs(): Promise<string[]> {
   const rows = await db.suburb.findMany({ select: { slug: true } });
   return rows.map((r) => r.slug);
+}
+
+export async function getAllSuburbSlugsWithDates(): Promise<{ slug: string; updatedAt: Date }[]> {
+  return db.suburb.findMany({ select: { slug: true, updatedAt: true } });
 }

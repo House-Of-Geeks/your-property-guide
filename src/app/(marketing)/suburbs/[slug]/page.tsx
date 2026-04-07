@@ -4,6 +4,9 @@ import Link from "next/link";
 import { ArrowRight, MapPin, Bus, ShoppingBag } from "lucide-react";
 import { SuburbHero, SuburbStats as SuburbStatsComponent, DataFreshnessNote } from "@/components/suburb";
 import { SuburbSchools } from "@/components/suburb/SuburbSchools";
+import { SuburbWalkability } from "@/components/suburb/SuburbWalkability";
+import { SuburbHazard } from "@/components/suburb/SuburbHazard";
+import { SuburbClimate } from "@/components/suburb/SuburbClimate";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -124,7 +127,47 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
               </p>
             </div>
           </div>
+          <DataFreshnessNote
+            label="Demographics"
+            asOf={suburb.dataFreshness?.censusAsOf ?? null}
+            source="ABS 2021 Census"
+          />
         </section>
+
+        {/* Walkability */}
+        {suburb.stats.walkScore !== null && (
+          <section id="walkability" className="scroll-mt-16">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Walkability</h2>
+            <SuburbWalkability
+              walkScore={suburb.stats.walkScore}
+              transitScore={suburb.stats.transitScore}
+              bikeScore={suburb.stats.bikeScore}
+            />
+            <DataFreshnessNote
+              label="Walkability"
+              asOf={suburb.dataFreshness?.walkabilityAsOf ?? null}
+              source="OpenStreetMap"
+            />
+          </section>
+        )}
+
+        {/* Flood & Bushfire Risk */}
+        {suburb.hazard && (
+          <section id="hazard" className="scroll-mt-16">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Flood &amp; Bushfire Risk</h2>
+            <SuburbHazard
+              floodClass={suburb.hazard.floodClass}
+              bushfireRisk={suburb.hazard.bushfireRisk}
+              floodSource={suburb.hazard.floodSource}
+              bushfireSource={suburb.hazard.bushfireSource}
+            />
+            <DataFreshnessNote
+              label="Hazard"
+              asOf={suburb.dataFreshness?.hazardAsOf ?? null}
+              source="Geoscience Australia"
+            />
+          </section>
+        )}
 
         {/* Location */}
         <section id="location" className="scroll-mt-16">
@@ -172,6 +215,17 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         <section id="schools" className="scroll-mt-16">
           <SuburbSchools suburbName={suburb.name} schools={suburb.schools} />
           <DataFreshnessNote label="School" asOf={null} source="ACARA" />
+        </section>
+
+        {/* Climate */}
+        <section id="climate" className="scroll-mt-16">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Climate</h2>
+          <SuburbClimate climate={suburb.climate ?? null} />
+          <DataFreshnessNote
+            label="Climate"
+            asOf={suburb.dataFreshness?.climateAsOf ?? null}
+            source="Bureau of Meteorology"
+          />
         </section>
 
         {/* Properties in this suburb */}

@@ -15,8 +15,8 @@ export async function FeaturedListings() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">Featured Properties</h2>
-            <p className="text-gray-500 mt-1">Hand-picked listings from our local agents</p>
+            <h2 className="text-3xl font-bold text-gray-900">Properties for sale</h2>
+            <p className="text-gray-500 mt-1">Current listings across our covered areas</p>
           </div>
           <Link href="/buy" className="hidden sm:block">
             <Button variant="outline" size="sm">

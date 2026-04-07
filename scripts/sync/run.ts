@@ -30,6 +30,10 @@ import { run as syncSalesNsw }      from "./sources/sales-nsw";
 import { run as syncSalesQld }      from "./sources/sales-qld";
 import { run as syncSalesWa }       from "./sources/sales-wa";
 import { run as nearbySuburbs }     from "./sources/nearby-suburbs";
+import { run as hazardFlood }       from "./sources/hazard-flood";
+import { run as hazardBushfire }    from "./sources/hazard-bushfire";
+import { run as walkability }       from "./sources/walkability";
+import { run as bomClimate }        from "./sources/bom-climate";
 
 const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" | "annual" }> = {
   "import-suburbs":     { run: importSuburbs,    schedule: "quarterly" },
@@ -51,6 +55,10 @@ const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" 
   "sales-qld":      { run: syncSalesQld,     schedule: "annual"    },
   "sales-wa":       { run: syncSalesWa,      schedule: "annual"    },
   "nearby-suburbs": { run: nearbySuburbs,    schedule: "annual"    },
+  "hazard-flood":   { run: hazardFlood,     schedule: "annual"    },
+  "hazard-bushfire":{ run: hazardBushfire,  schedule: "annual"    },
+  "walkability":    { run: walkability,     schedule: "annual"    },
+  "bom-climate":    { run: bomClimate,      schedule: "annual"    },
 };
 
 async function main(): Promise<void> {

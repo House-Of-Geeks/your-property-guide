@@ -65,7 +65,13 @@ export default async function SuburbsPage() {
                     </p>
                   </div>
                 </div>
-                <p className="text-sm text-gray-600 mt-3 line-clamp-2">{suburb.description}</p>
+                {suburb.stats.walkScore != null && (
+                  <div className="mt-3 flex items-center gap-1.5">
+                    <span className="text-xs text-gray-500">Walk score:</span>
+                    <span className="text-xs font-semibold text-blue-700">{suburb.stats.walkScore}</span>
+                  </div>
+                )}
+                <p className="text-sm text-gray-600 mt-2 line-clamp-2">{suburb.description}</p>
               </div>
             </div>
           </Link>

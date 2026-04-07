@@ -159,6 +159,7 @@ export async function run(): Promise<void> {
           ...(row.yoyGrowth !== null ? { annualGrowthHouse: row.yoyGrowth } : {}),
           statsSource:       SOURCE_ID,
           statsUpdatedAt:    new Date(),
+          salesUpdatedAt:    new Date(),
         },
       });
       count++;

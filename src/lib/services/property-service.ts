@@ -62,8 +62,13 @@ export async function getProperties(params?: PropertySearchParams): Promise<Prop
     const slugs = params.suburb.split(",").map((s) => s.trim()).filter(Boolean);
     where.suburbSlug = slugs.length === 1 ? slugs[0] : { in: slugs };
   }
-  if (params?.propertyType) where.propertyType = params.propertyType;
+  if (params?.propertyType) {
+    const types = params.propertyType.split(",").map((t) => t.trim()).filter(Boolean);
+    where.propertyType = types.length === 1 ? types[0] : { in: types };
+  }
   if (params?.minBeds) where.bedrooms = { gte: params.minBeds };
+  if (params?.minBaths) where.bathrooms = { gte: params.minBaths };
+  if (params?.minCars) where.carSpaces = { gte: params.minCars };
   if (params?.minPrice || params?.maxPrice) {
     const isRent = params.listingType === "rent";
     const field = isRent ? "priceRentPerWeek" : "priceValue";

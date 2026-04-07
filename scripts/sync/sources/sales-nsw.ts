@@ -245,7 +245,8 @@ export async function run(): Promise<void> {
           "salesCountHouse"   = u.sales_count,
           "daysOnMarket"      = CASE WHEN u.days_on_mkt  IS NOT NULL THEN u.days_on_mkt  ELSE s."daysOnMarket"      END,
           "statsSource"       = 'sales-nsw',
-          "statsUpdatedAt"    = NOW()
+          "statsUpdatedAt"    = NOW(),
+          "salesUpdatedAt"    = NOW()
         FROM UNNEST(
           ${updates.map((u) => u.id)}::text[],
           ${updates.map((u) => u.medianHousePrice)}::int[],

@@ -119,7 +119,7 @@ export async function run(): Promise<void> {
 
     await prisma.suburb.updateMany({
       where: { state: "QLD" },
-      data: { statsUpdatedAt: new Date() },
+      data: { statsUpdatedAt: new Date(), crimeUpdatedAt: new Date() },
     });
 
     await finishSync(SOURCE_ID, count, latestDate);

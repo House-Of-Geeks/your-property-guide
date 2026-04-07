@@ -265,9 +265,21 @@ model Suburb {
   lat Float?
   lng Float?
 
-  // Data provenance
-  statsSource    String    @default("seed") // "seed" | source ID e.g. "rental-vic"
-  statsUpdatedAt DateTime?
+  // Data provenance — per-type last-updated timestamps
+  statsSource          String    @default("seed") // "seed" | source ID e.g. "rental-vic"
+  statsUpdatedAt       DateTime?
+  censusUpdatedAt      DateTime?
+  salesUpdatedAt       DateTime?
+  rentalUpdatedAt      DateTime?
+  crimeUpdatedAt       DateTime?
+  walkabilityUpdatedAt DateTime?
+  climateUpdatedAt     DateTime?
+  hazardUpdatedAt      DateTime?
+
+  // Walkability scores (0–100, from OSM Overpass)
+  walkScore    Int?
+  transitScore Int?
+  bikeScore    Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -457,4 +469,48 @@ model SuburbCrimeStat {
   @@index([suburbSlug])
   @@index([state, period])
   @@index([lga])
+}
+
+// ---------------------------------------------------------------------------
+// Suburb Hazard Info (flood + bushfire risk per suburb centroid)
+// ---------------------------------------------------------------------------
+model SuburbHazard {
+  id             String   @id @default(cuid())
+  suburbSlug     String   @unique
+  floodClass     String?  // "high" | "medium" | "low" | "floodway" | null
+  floodSource    String?  // e.g. "ga-afrip"
+  bushfireRisk   String?  // "high" | "medium" | "low" | null
+  bushfireSource String?  // e.g. "nsw-seed" | "vic-dpv"
+  assessedAt     DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([floodClass])
+  @@index([bushfireRisk])
+}
+
+// ---------------------------------------------------------------------------
+// Suburb Climate (BOM station averages mapped to suburb centroid)
+// ---------------------------------------------------------------------------
+model SuburbClimate {
+  id               String  @id @default(cuid())
+  suburbSlug       String  @unique
+  bomStationId     String
+  bomStationName   String
+  distanceKm       Float
+  // Monthly arrays (12 values, index 0 = Jan)
+  meanMaxTemp      Float[] // °C
+  meanMinTemp      Float[] // °C
+  meanRainfall     Float[] // mm
+  meanHumidity9am  Float[] // %
+  meanSunshineHrs  Float[] // hours/day
+  // Annual summaries
+  annualRainfallMm Float?
+  assessedAt       DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([bomStationId])
 }

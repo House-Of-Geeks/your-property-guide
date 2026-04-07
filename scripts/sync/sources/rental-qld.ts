@@ -273,6 +273,7 @@ export async function run(): Promise<void> {
           "medianRentHouse" = CASE WHEN u.rent_house IS NOT NULL THEN u.rent_house::int ELSE s."medianRentHouse" END,
           "medianRentUnit"  = CASE WHEN u.rent_unit  IS NOT NULL THEN u.rent_unit::int  ELSE s."medianRentUnit"  END,
           "statsUpdatedAt"  = NOW(),
+          "rentalUpdatedAt" = NOW(),
           "statsSource"     = ${SOURCE_ID}
         FROM UNNEST(
           ${suburbUpdates.map((u) => u.id)}::text[],

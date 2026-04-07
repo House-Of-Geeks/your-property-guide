@@ -191,6 +191,7 @@ export async function run(): Promise<void> {
           ...(medianUnit  ? { medianUnitPrice:  medianUnit  } : {}),
           statsSource:    SOURCE_ID,
           statsUpdatedAt: new Date(),
+          salesUpdatedAt: new Date(),
         },
       });
       count++;

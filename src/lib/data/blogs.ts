@@ -142,8 +142,7 @@ export const blogPosts: BlogPost[] = [
 </ul>
 
 <p>With rental demand continuing to outstrip supply and significant government investment in infrastructure, the Moreton Bay corridor is well-positioned for sustained growth. Investors who take a long-term view and select properties in well-connected, amenity-rich locations stand to benefit from both rental income and capital appreciation in the years ahead.</p>`,
-    coverImage:
-      "/images/blog/investment-property-guide-moreton-bay-corridor.jpg",
+    coverImage: "/images/blog/first-home-buyer-guide-moreton-bay-2025.jpg",
     author: {
       name: "David Thompson",
       image: "/images/agents/david-thompson.jpg",
@@ -183,8 +182,7 @@ export const blogPosts: BlogPost[] = [
 </ul>
 
 <p>Stamp duty can add a substantial amount to your property purchase, but with proper planning and awareness of available concessions, you can minimise its impact on your budget. Speak with your mortgage broker or conveyancer early in the buying process to ensure stamp duty is properly accounted for in your financial plan.</p>`,
-    coverImage:
-      "/images/blog/stamp-duty-queensland-what-you-need-to-know.jpg",
+    coverImage: "/images/blog/understanding-off-market-properties.jpg",
     author: {
       name: "Emma Richardson",
       image: "/images/agents/emma-richardson.jpg",
@@ -224,8 +222,7 @@ export const blogPosts: BlogPost[] = [
 </ul>
 
 <p>House and land packages can represent excellent value when approached with realistic expectations and thorough due diligence. The key is to look beyond the headline price, understand the full cost of completion, and work with reputable builders who deliver quality homes on time and on budget. For many buyers in the Moreton Bay Region, a well-chosen house and land package remains one of the smartest paths to homeownership.</p>`,
-    coverImage:
-      "/images/blog/house-and-land-packages-are-they-worth-it.jpg",
+    coverImage: "/images/blog/top-5-suburbs-families-moreton-bay.jpg",
     author: {
       name: "James Carter",
       image: "/images/agents/james-carter.jpg",
@@ -265,8 +262,7 @@ export const blogPosts: BlogPost[] = [
 </ul>
 
 <p>The Moreton Bay property market remains active, with strong buyer demand across most suburbs. By investing in presentation, working with an experienced local agent, and implementing a strategic marketing campaign, you can position your property to achieve the best possible result. Remember, the small upfront investment in preparation and marketing consistently delivers a substantial return at sale time.</p>`,
-    coverImage:
-      "/images/blog/selling-your-home-tips-for-maximum-value.jpg",
+    coverImage: "/images/blog/first-home-buyer-guide-moreton-bay-2025.jpg",
     author: {
       name: "David Thompson",
       image: "/images/agents/david-thompson.jpg",
@@ -306,8 +302,7 @@ export const blogPosts: BlogPost[] = [
 </ul>
 
 <p>Overall, the Moreton Bay property market is in a strong position heading into the second quarter of 2025. Buyers should expect continued competition for quality listings, particularly in premium suburbs like North Lakes and Narangba. For sellers, market conditions remain favourable with well-priced properties continuing to attract multiple offers. Investors looking for a combination of yield and growth will find the northern corridor increasingly difficult to overlook.</p>`,
-    coverImage:
-      "/images/blog/moreton-bay-property-market-update-q1-2025.jpg",
+    coverImage: "/images/blog/top-5-suburbs-families-moreton-bay.jpg",
     author: {
       name: "Emma Richardson",
       image: "/images/agents/emma-richardson.jpg",

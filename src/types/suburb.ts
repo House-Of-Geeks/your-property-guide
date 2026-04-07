@@ -12,6 +12,9 @@ export interface SuburbStats {
   renterOccupied: number;
   householdsFamily: number;
   householdsLonePerson: number;
+  walkScore: number | null;
+  transitScore: number | null;
+  bikeScore: number | null;
 }
 
 export interface School {
@@ -28,10 +31,15 @@ export interface School {
 }
 
 export interface SuburbDataFreshness {
-  rentalAsOf:    Date | null;
-  rentalSource:  string | null;
-  crimeAsOf:     Date | null;
-  crimeSource:   string | null;
+  rentalAsOf:      Date | null;
+  rentalSource:    string | null;
+  crimeAsOf:       Date | null;
+  crimeSource:     string | null;
+  salesAsOf:       Date | null;
+  censusAsOf:      Date | null;
+  hazardAsOf:      Date | null;
+  walkabilityAsOf: Date | null;
+  climateAsOf:     Date | null;
 }
 
 export interface Suburb {
@@ -49,4 +57,21 @@ export interface Suburb {
   transportLinks: string[];
   nearbySuburbs: string[];
   dataFreshness?: SuburbDataFreshness;
+  hazard?: {
+    floodClass: string | null;
+    floodSource: string | null;
+    bushfireRisk: string | null;
+    bushfireSource: string | null;
+  } | null;
+  climate?: {
+    bomStationId: string;
+    bomStationName: string;
+    distanceKm: number;
+    meanMaxTemp: number[];
+    meanMinTemp: number[];
+    meanRainfall: number[];
+    meanHumidity9am: number[];
+    meanSunshineHrs: number[];
+    annualRainfallMm: number | null;
+  } | null;
 }

@@ -253,7 +253,8 @@ export async function run(): Promise<void> {
         SET
           "medianHousePrice" = u.median_house,
           "statsSource"      = 'sales-wa',
-          "statsUpdatedAt"   = NOW()
+          "statsUpdatedAt"   = NOW(),
+          "salesUpdatedAt"   = NOW()
         FROM UNNEST(
           ${updates.map((u) => u.id)}::text[],
           ${updates.map((u) => u.medianHousePrice)}::int[]

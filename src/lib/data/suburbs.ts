@@ -25,6 +25,9 @@ export const suburbs: Suburb[] = [
       renterOccupied: 32,
       householdsFamily: 0,
       householdsLonePerson: 0,
+      walkScore: null,
+      transitScore: null,
+      bikeScore: null,
     },
     schools: [
       {
@@ -115,6 +118,9 @@ export const suburbs: Suburb[] = [
       renterOccupied: 42,
       householdsFamily: 0,
       householdsLonePerson: 0,
+      walkScore: null,
+      transitScore: null,
+      bikeScore: null,
     },
     schools: [
       {
@@ -205,6 +211,9 @@ export const suburbs: Suburb[] = [
       renterOccupied: 26,
       householdsFamily: 0,
       householdsLonePerson: 0,
+      walkScore: null,
+      transitScore: null,
+      bikeScore: null,
     },
     schools: [
       {
@@ -283,6 +292,9 @@ export const suburbs: Suburb[] = [
       renterOccupied: 38,
       householdsFamily: 0,
       householdsLonePerson: 0,
+      walkScore: null,
+      transitScore: null,
+      bikeScore: null,
     },
     schools: [
       {
@@ -373,6 +385,9 @@ export const suburbs: Suburb[] = [
       renterOccupied: 40,
       householdsFamily: 0,
       householdsLonePerson: 0,
+      walkScore: null,
+      transitScore: null,
+      bikeScore: null,
     },
     schools: [
       {
@@ -463,6 +478,9 @@ export const suburbs: Suburb[] = [
       renterOccupied: 28,
       householdsFamily: 0,
       householdsLonePerson: 0,
+      walkScore: null,
+      transitScore: null,
+      bikeScore: null,
     },
     schools: [
       {

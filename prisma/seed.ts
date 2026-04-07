@@ -416,6 +416,10 @@ async function main() {
     { id: "sales-wa",           label: "WA Property Prices (ABS Census 2021 proxy — Landgate data is paid)", category: "sales", schedule: "annual", sourceUrl: "https://www.abs.gov.au/census/find-census-data/datapacks" },
     { id: "import-suburbs-all", label: "National Suburb List (AU Postcodes)", category: "suburbs", schedule: "annual",    sourceUrl: "https://github.com/matthewproctor/australianpostcodes" },
     { id: "nearby-suburbs",     label: "Nearby Suburbs (computed from lat/lng)", category: "suburbs", schedule: "annual", sourceUrl: "internal" },
+    { id: "hazard-flood",    label: "Flood Hazard (GA AFRIP)",                  category: "hazard",      schedule: "annual", sourceUrl: "https://www.ga.gov.au/geoserver/ows" },
+    { id: "hazard-bushfire", label: "Bushfire Risk (State GeoJSON)",             category: "hazard",      schedule: "annual", sourceUrl: "https://data.gov.au" },
+    { id: "walkability",     label: "Walkability (OpenStreetMap Overpass)",      category: "walkability", schedule: "annual", sourceUrl: "https://overpass-api.de/api/interpreter" },
+    { id: "bom-climate",     label: "Climate Averages (BOM CDO)",                category: "climate",     schedule: "annual", sourceUrl: "http://www.bom.gov.au/climate/data/" },
   ];
   for (const ds of dataSources) {
     await prisma.dataSource.upsert({

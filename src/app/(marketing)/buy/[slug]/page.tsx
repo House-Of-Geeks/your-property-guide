@@ -55,7 +55,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
   const session = await auth();
   const isLoggedIn = !!session?.user?.email;
 
-  const [agent, coAgent, agency, suburbData, agencyListings, initialSaved] = await Promise.all([
+  const [agent, coAgent, agency, suburbData, suburbHazard, agencyListings, initialSaved] = await Promise.all([
     getAgentById(property.agentId),
     property.coAgentId ? getAgentById(property.coAgentId) : Promise.resolve(null),
     getAgencyById(property.agencyId),
@@ -68,6 +68,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
         },
       },
     }),
+    db.suburbHazard.findUnique({ where: { suburbSlug: property.suburbSlug } }),
     getPropertiesByAgency(property.agencyId, 4),
     isPropertySaved(property.id),
   ]);
@@ -280,6 +281,28 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                   <InsightStat label="Days on market" value={String(suburbData.daysOnMarket)} />
                   <InsightStat label="Median rent/wk" value={`$${suburbData.medianRentHouse}`} />
                 </div>
+
+                {/* Walkability + hazard badges */}
+                {(suburbData.walkScore != null || suburbHazard) && (
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {suburbData.walkScore != null && (
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 border border-blue-200 px-3 py-1 text-xs font-medium text-blue-700">
+                        Walk score: {suburbData.walkScore}
+                      </span>
+                    )}
+                    {suburbHazard?.floodClass && suburbHazard.floodClass !== "low" && (
+                      <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${suburbHazard.floodClass === "high" || suburbHazard.floodClass === "floodway" ? "bg-red-50 border-red-200 text-red-700" : "bg-amber-50 border-amber-200 text-amber-700"}`}>
+                        Flood: {suburbHazard.floodClass}
+                      </span>
+                    )}
+                    {suburbHazard?.bushfireRisk && suburbHazard.bushfireRisk !== "low" && (
+                      <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${suburbHazard.bushfireRisk === "high" ? "bg-red-50 border-red-200 text-red-700" : "bg-amber-50 border-amber-200 text-amber-700"}`}>
+                        Bushfire: {suburbHazard.bushfireRisk}
+                      </span>
+                    )}
+                  </div>
+                )}
+
                 <Link
                   href={`/suburbs/${property.suburbSlug}`}
                   className="inline-flex items-center gap-1 mt-4 text-sm text-primary hover:underline font-medium"

@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: SchoolPageProps): Promise<Met
 
 export default async function SchoolPage({ params, searchParams }: SchoolPageProps) {
   const { slug } = await params;
-  const { sort, mode, minPrice, maxPrice, minBeds, propertyType } = await searchParams;
+  const { sort, mode, minPrice, maxPrice, minBeds, minBaths, minCars, propertyType } = await searchParams;
   const school = await getSchoolBySlug(slug);
   if (!school) notFound();
 
@@ -67,6 +67,8 @@ export default async function SchoolPage({ params, searchParams }: SchoolPagePro
     minPrice: minPrice ? Number(minPrice) : undefined,
     maxPrice: maxPrice ? Number(maxPrice) : undefined,
     minBeds: minBeds ? Number(minBeds) : undefined,
+    minBaths: minBaths ? Number(minBaths) : undefined,
+    minCars: minCars ? Number(minCars) : undefined,
   });
 
   // Sort in-memory
