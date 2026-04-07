@@ -55,11 +55,11 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
-              src="/images/YPG Logo.png"
+              src="/images/Your-Property-Guide.png"
               alt="Your Property Guide"
-              width={160}
-              height={60}
-              className="h-12 w-auto"
+              width={240}
+              height={40}
+              className="h-8 w-auto"
               priority
             />
           </Link>

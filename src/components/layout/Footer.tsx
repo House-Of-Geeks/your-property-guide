@@ -118,7 +118,7 @@ function FooterBottom() {
     <div className="mt-12 pt-8 border-t border-gray-200">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <Link href="/" className="flex items-center">
-          <Image src="/images/YPG Logo.png" alt="Your Property Guide" width={130} height={50} className="h-10 w-auto" />
+          <Image src="/images/Your-Property-Guide.png" alt="Your Property Guide" width={200} height={32} className="h-8 w-auto" />
         </Link>
         <p className="text-sm text-gray-400">
           &copy; {new Date().getFullYear()} Your Property Guide. All rights reserved.
