@@ -29,8 +29,8 @@ export function BlogGrid({ posts, categories }: Props) {
             onClick={() => setActive(cat)}
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
               active === cat
-                ? "bg-primary text-white shadow-sm"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                ? "bg-black text-white"
+                : "bg-white text-gray-600 border border-[#e8e6e2] hover:border-gray-400 hover:text-black"
             }`}
           >
             {cat}

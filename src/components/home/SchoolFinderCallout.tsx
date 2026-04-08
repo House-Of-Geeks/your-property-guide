@@ -10,7 +10,7 @@ const POINTS = [
 
 export function SchoolFinderCallout() {
   return (
-    <section className="py-20 gradient-brand overflow-hidden">
+    <section className="py-20 bg-black overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 
@@ -37,7 +37,7 @@ export function SchoolFinderCallout() {
             <div className="mt-8">
               <Link
                 href="/schools"
-                className="inline-flex items-center gap-2 px-6 py-3 gradient-brand text-white text-sm font-semibold rounded-full hover:opacity-90 transition-opacity shadow-lg shadow-primary/30"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black text-sm font-semibold rounded-full hover:bg-gray-100 transition-colors"
               >
                 Browse all schools <ArrowRight className="w-4 h-4" />
               </Link>
@@ -49,7 +49,7 @@ export function SchoolFinderCallout() {
             <div className="bg-white rounded-2xl shadow-2xl shadow-black/30 overflow-hidden">
 
               {/* Card header */}
-              <div className="gradient-brand px-6 py-5 flex items-center gap-3">
+              <div className="bg-black px-6 py-5 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
                   <GraduationCap className="w-5 h-5 text-white" />
                 </div>

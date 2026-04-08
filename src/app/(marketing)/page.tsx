@@ -62,15 +62,15 @@ export default function HomePage() {
       {/* 8. Sell CTA */}
       <section className="py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="gradient-brand rounded-2xl p-8 sm:p-12 text-center">
+          <div className="bg-black rounded-2xl p-8 sm:p-12 text-center">
             <h2 className="text-3xl sm:text-4xl font-bold text-white">
               Thinking of selling?
             </h2>
-            <p className="text-lg text-white/90 mt-3 max-w-xl mx-auto">
+            <p className="text-lg text-white/70 mt-3 max-w-xl mx-auto">
               Get a free property appraisal from one of our experienced local agents. No obligation, just expert advice.
             </p>
             <Link href="/appraisal" className="inline-block mt-6">
-              <Button size="lg" className="bg-white text-primary hover:bg-gray-100">
+              <Button size="lg" variant="secondary" className="bg-white text-black hover:bg-gray-100">
                 Get free appraisal <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>

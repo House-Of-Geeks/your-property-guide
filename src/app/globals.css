@@ -2,8 +2,8 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-  --primary: #682C69;
+  --foreground: #000000;
+  --primary: #5c2d5e;
   --primary-light: #8B4A8C;
   --primary-lighter: #A96DAA;
   --primary-dark: #4E1F4F;
@@ -60,16 +60,13 @@ body {
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
 }
 
-/* Gradient utilities */
+/* Brand utilities — restrained accent only on primary CTA */
 .gradient-brand {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  background: #000000;
 }
 
 .gradient-brand-text {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #000000;
 }
 
 /* Off-market blur */

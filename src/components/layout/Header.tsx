@@ -72,7 +72,7 @@ export function Header() {
                   <button
                     onClick={() => toggle(link.label)}
                     onBlur={close}
-                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-black rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
                   >
                     {link.label}
                     <ChevronDown className="w-4 h-4" />
@@ -84,7 +84,7 @@ export function Header() {
                           key={child.href}
                           href={child.href}
                           onClick={() => setOpenMenu(null)}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
                         >
                           {child.label}
                         </Link>
@@ -96,7 +96,7 @@ export function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary rounded-lg hover:bg-gray-50 transition-colors"
+                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-black rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -114,7 +114,7 @@ export function Header() {
             </Link>
             <Link
               href="/dashboard/login"
-              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 border border-gray-300 rounded-full hover:border-primary hover:text-primary transition-colors"
+              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 border border-gray-300 rounded-full hover:border-primary hover:text-black transition-colors"
             >
               <UserCircle className="w-4 h-4" />
               Agent Login
@@ -150,7 +150,7 @@ export function Header() {
                       key={child.href}
                       href={child.href}
                       onClick={() => setMobileOpen(false)}
-                      className="block px-3 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg pl-6"
+                      className="block px-3 py-2 text-sm text-gray-700 hover:text-black hover:bg-gray-50 rounded-lg pl-6"
                     >
                       {child.label}
                     </Link>
@@ -161,7 +161,7 @@ export function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="block px-3 py-2 text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg"
+                  className="block px-3 py-2 text-sm font-medium text-gray-700 hover:text-black hover:bg-gray-50 rounded-lg"
                 >
                   {link.label}
                 </Link>
@@ -171,7 +171,7 @@ export function Header() {
               <Link
                 href="/dashboard/login"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-sm font-medium text-gray-600 border border-gray-300 rounded-full hover:border-primary hover:text-primary transition-colors"
+                className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-sm font-medium text-gray-600 border border-gray-300 rounded-full hover:border-primary hover:text-black transition-colors"
               >
                 <UserCircle className="w-4 h-4" />
                 Agent Login

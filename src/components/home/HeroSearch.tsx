@@ -66,8 +66,8 @@ export function HeroSearch() {
         className="object-cover object-center"
         priority
       />
-      {/* Brand colour overlay */}
-      <div className="absolute inset-0 gradient-brand opacity-85" />
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/65" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-36">
         {/* Headline */}
@@ -91,13 +91,13 @@ export function HeroSearch() {
                 onClick={() => setMode(m.value)}
                 className={`relative px-4 py-3 text-sm font-medium transition-colors cursor-pointer whitespace-nowrap ${
                   mode === m.value
-                    ? "text-primary"
-                    : "text-gray-500 hover:text-gray-800"
+                    ? "text-black"
+                    : "text-gray-400 hover:text-gray-700"
                 }`}
               >
                 {m.label}
                 {mode === m.value && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full" />
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-black rounded-t-full" />
                 )}
               </button>
             ))}
@@ -121,14 +121,14 @@ export function HeroSearch() {
               onClick={() => setFiltersOpen((o) => !o)}
               className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border rounded-xl transition-colors shrink-0 cursor-pointer ${
                 filtersOpen || activeFilterCount > 0
-                  ? "border-primary text-primary bg-primary/5"
-                  : "border-gray-300 text-gray-600 hover:border-gray-400"
+                  ? "border-black text-black bg-gray-100"
+                  : "border-gray-300 text-gray-600 hover:border-gray-900 hover:text-black"
               }`}
             >
               <SlidersHorizontal className="w-4 h-4" />
               Filters
               {activeFilterCount > 0 && (
-                <span className="ml-0.5 w-4 h-4 rounded-full bg-primary text-white text-xs flex items-center justify-center font-bold">
+                <span className="ml-0.5 w-4 h-4 rounded-full bg-black text-white text-xs flex items-center justify-center font-bold">
                   {activeFilterCount}
                 </span>
               )}
@@ -152,7 +152,7 @@ export function HeroSearch() {
                 <select
                   value={filters.propertyType}
                   onChange={(e) => setFilter("propertyType", e.target.value)}
-                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-primary"
+                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-black"
                 >
                   <option value="">Any</option>
                   {PROPERTY_TYPES.map((t) => (
@@ -165,7 +165,7 @@ export function HeroSearch() {
                 <select
                   value={filters.minPrice}
                   onChange={(e) => setFilter("minPrice", e.target.value)}
-                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-primary"
+                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-black"
                 >
                   <option value="">Any</option>
                   {priceRanges.map((p) => (
@@ -178,7 +178,7 @@ export function HeroSearch() {
                 <select
                   value={filters.maxPrice}
                   onChange={(e) => setFilter("maxPrice", e.target.value)}
-                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-primary"
+                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-black"
                 >
                   <option value="">Any</option>
                   {priceRanges.map((p) => (
@@ -191,7 +191,7 @@ export function HeroSearch() {
                 <select
                   value={filters.minBeds}
                   onChange={(e) => setFilter("minBeds", e.target.value)}
-                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-primary"
+                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-black"
                 >
                   <option value="">Any</option>
                   {BEDROOM_OPTIONS.map((b) => (

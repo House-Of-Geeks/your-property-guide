@@ -99,11 +99,11 @@ function nearbyName(slug: string): string {
 
 function AgentLoginPill() {
   return (
-    <div className="border-b border-gray-100 bg-gray-50">
+    <div className="border-b border-white/10 bg-white/5">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex justify-end">
         <Link
           href="/dashboard/login"
-          className="flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-gray-500 border border-gray-300 rounded-full hover:border-primary hover:text-primary transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-white/50 border border-white/20 rounded-full hover:border-white hover:text-white transition-colors"
         >
           <UserCircle className="w-3.5 h-3.5" />
           Agent Login
@@ -115,18 +115,18 @@ function AgentLoginPill() {
 
 function FooterBottom() {
   return (
-    <div className="mt-12 pt-8 border-t border-gray-200">
+    <div className="mt-12 pt-8 border-t border-white/10">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <Link href="/" className="flex items-center">
-          <Image src="/images/Your-Property-Guide.png" alt="Your Property Guide" width={200} height={32} className="h-8 w-auto" />
+          <Image src="/images/Your-Property-Guide.png" alt="Your Property Guide" width={200} height={32} className="h-8 w-auto invert" />
         </Link>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-white/30">
           &copy; {new Date().getFullYear()} Your Property Guide. All rights reserved.
         </p>
         <div className="flex gap-6">
-          <Link href="/privacy" className="text-sm text-gray-400 hover:text-primary transition-colors">Privacy</Link>
-          <Link href="/contact" className="text-sm text-gray-400 hover:text-primary transition-colors">Contact</Link>
-          <Link href="/sitemap.xml" className="text-sm text-gray-400 hover:text-primary transition-colors">Sitemap</Link>
+          <Link href="/privacy" className="text-sm text-white/40 hover:text-white transition-colors">Privacy</Link>
+          <Link href="/contact" className="text-sm text-white/40 hover:text-white transition-colors">Contact</Link>
+          <Link href="/sitemap.xml" className="text-sm text-white/40 hover:text-white transition-colors">Sitemap</Link>
         </div>
       </div>
     </div>
@@ -136,11 +136,11 @@ function FooterBottom() {
 function LinkCol({ heading, links }: { heading: string; links: { label: string; href: string }[] }) {
   return (
     <div>
-      <h3 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-3">{heading}</h3>
+      <h3 className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-3">{heading}</h3>
       <ul className="space-y-2">
         {links.map((l) => (
           <li key={l.href}>
-            <Link href={l.href} className="text-sm text-gray-500 hover:text-primary transition-colors leading-snug block">
+            <Link href={l.href} className="text-sm text-white/60 hover:text-white transition-colors leading-snug block">
               {l.label}
             </Link>
           </li>
@@ -177,7 +177,7 @@ function SuburbFooter({ name, slug, nearbySuburbs }: { name: string; slug: strin
   ];
 
   return (
-    <footer className="bg-white text-gray-700 border-t-4 border-t-primary">
+    <footer className="bg-[#0a0a0a] text-white border-t-4 border-t-white">
       <AgentLoginPill />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
@@ -228,7 +228,7 @@ export async function Footer() {
 
   // Default footer for all other pages
   return (
-    <footer className="bg-white text-gray-700 border-t border-gray-200">
+    <footer className="bg-[#0a0a0a] text-white border-t border-white/10">
       <AgentLoginPill />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
