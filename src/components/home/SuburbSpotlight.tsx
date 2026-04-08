@@ -1,17 +1,12 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui";
 import { getFeaturedSuburbs } from "@/lib/services/suburb-service";
 import { db } from "@/lib/db";
 import { formatPrice, formatPercentage } from "@/lib/utils/format";
 
-const MAP_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
-
-function staticMapUrl(name: string, state: string, postcode: string): string | null {
-  if (!MAP_KEY) return null;
-  const center = encodeURIComponent(`${name} ${state} ${postcode} Australia`);
-  return `https://maps.googleapis.com/maps/api/staticmap?center=${center}&zoom=13&size=640x400&scale=2&maptype=roadmap&key=${MAP_KEY}`;
-}
+const GMAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? "";
 
 export async function SuburbSpotlight() {
   const suburbs = await getFeaturedSuburbs(6);
@@ -35,21 +30,41 @@ export async function SuburbSpotlight() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {suburbs.map((suburb) => {
-            const mapUrl = staticMapUrl(suburb.name, suburb.state, suburb.postcode);
-            const imgSrc = mapUrl ?? suburb.heroImage;
+            const query = encodeURIComponent(`${suburb.name} ${suburb.state} ${suburb.postcode}`);
+            const embedUrl = GMAPS_KEY
+              ? `https://www.google.com/maps/embed/v1/place?key=${GMAPS_KEY}&q=${query}&zoom=13&maptype=satellite`
+              : null;
 
             return (
               <Link key={suburb.slug} href={`/suburbs/${suburb.slug}`} className="group block">
-                <div className="relative rounded-xl overflow-hidden">
-                  <div
-                    className="aspect-[16/10] bg-cover bg-center bg-gray-900 group-hover:scale-105 transition-transform duration-300"
-                    style={{ backgroundImage: `url(${imgSrc})` }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                <div className="relative rounded-xl overflow-hidden aspect-[16/10] bg-gray-900">
+
+                  {/* Map background */}
+                  {embedUrl ? (
+                    <iframe
+                      src={embedUrl}
+                      className="absolute inset-0 w-full h-full border-0 pointer-events-none"
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title={`Aerial map of ${suburb.name}`}
+                    />
+                  ) : (
+                    <Image
+                      src={suburb.heroImage}
+                      alt={suburb.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  )}
+
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+
                   {/* Top-right badges */}
-                  <div className="absolute top-3 right-3 flex flex-col items-end gap-1">
+                  <div className="absolute top-3 right-3 flex flex-col items-end gap-1 pointer-events-none">
                     {suburb.stats.walkScore != null && (
-                      <span className="rounded-full bg-white/20 backdrop-blur-sm border border-white/30 px-2 py-0.5 text-xs font-semibold text-white">
+                      <span className="rounded-full bg-black/50 backdrop-blur-sm border border-white/20 px-2 py-0.5 text-xs font-semibold text-white">
                         Walk {suburb.stats.walkScore}
                       </span>
                     )}
@@ -60,13 +75,15 @@ export async function SuburbSpotlight() {
                       const medium = h.floodClass === "medium" || h.bushfireRisk === "medium";
                       if (!risk && !medium) return null;
                       return (
-                        <span className={`rounded-full px-2 py-0.5 text-xs font-semibold text-white border backdrop-blur-sm ${risk ? "bg-black/60 border-white/30" : "bg-black/40 border-white/20"}`}>
+                        <span className="rounded-full px-2 py-0.5 text-xs font-semibold text-white border border-white/20 bg-black/50 backdrop-blur-sm">
                           {risk ? "High risk" : "Med risk"}
                         </span>
                       );
                     })()}
                   </div>
-                  <div className="absolute bottom-0 inset-x-0 p-4">
+
+                  {/* Text */}
+                  <div className="absolute bottom-0 inset-x-0 p-4 pointer-events-none">
                     <h3 className="text-xl font-bold text-white">{suburb.name}</h3>
                     <p className="text-sm text-white/70">{suburb.state} {suburb.postcode}</p>
                     <div className="flex items-center gap-4 mt-2 text-sm text-white/90">
