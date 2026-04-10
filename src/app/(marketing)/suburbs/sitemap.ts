@@ -2,9 +2,19 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants";
 import { getAllSuburbSlugsWithDates } from "@/lib/services/suburb-service";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+// 15,000 suburbs × 3 URLs = 45,000 per file — under Google's 50,000 limit
+const CHUNK_SIZE = 15_000;
+
+export async function generateSitemaps() {
   const suburbs = await getAllSuburbSlugsWithDates();
-  return suburbs.flatMap(({ slug, updatedAt }) => [
+  const count = Math.ceil(suburbs.length / CHUNK_SIZE);
+  return Array.from({ length: count }, (_, i) => ({ id: i }));
+}
+
+export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
+  const suburbs = await getAllSuburbSlugsWithDates();
+  const chunk = suburbs.slice(id * CHUNK_SIZE, (id + 1) * CHUNK_SIZE);
+  return chunk.flatMap(({ slug, updatedAt }) => [
     {
       url: `${SITE_URL}/suburbs/${slug}`,
       lastModified: updatedAt,

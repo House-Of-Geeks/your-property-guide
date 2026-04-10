@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Menu, X, Search, ChevronDown, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui";
 
@@ -44,9 +44,20 @@ const NAV_LINKS = [
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const navRef = useRef<HTMLElement>(null);
 
   const toggle = (label: string) => setOpenMenu((o) => (o === label ? null : label));
-  const close  = () => setTimeout(() => setOpenMenu(null), 150);
+
+  // Close dropdown when clicking outside the nav
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpenMenu(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
@@ -65,13 +76,12 @@ export function Header() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav ref={navRef} className="hidden lg:flex items-center gap-1">
             {NAV_LINKS.map((link) =>
               link.children ? (
                 <div key={link.label} className="relative">
                   <button
                     onClick={() => toggle(link.label)}
-                    onBlur={close}
                     className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 hover:text-black rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
                   >
                     {link.label}
