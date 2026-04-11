@@ -42,7 +42,7 @@ export const getAllRegions = cache(async (): Promise<RegionSummary[]> => {
   });
 
   return rows
-    .filter((r) => !SKIP_REGIONS.has(r.region))
+    .filter((r) => r.region && r.region.trim() !== "" && !SKIP_REGIONS.has(r.region))
     .map((r) => ({
       region: r.region,
       slug: slugify(r.region),

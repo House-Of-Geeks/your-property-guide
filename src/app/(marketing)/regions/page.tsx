@@ -5,6 +5,8 @@ import { Breadcrumbs } from "@/components/layout";
 import { getAllRegions } from "@/lib/services/region-service";
 import { SITE_URL } from "@/lib/constants";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Property Regions Across Australia",
   description:
