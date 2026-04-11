@@ -16,7 +16,7 @@ export function propertyDescription(property: Property): string {
 }
 
 export function suburbTitle(suburb: Suburb): string {
-  return `${suburb.name} Real Estate & Property Market ${suburb.state} ${suburb.postcode}`;
+  return `${suburb.name} Suburb Profile - Real Estate & Median House Price ${suburb.state} ${suburb.postcode}`;
 }
 
 export function suburbBuyTitle(suburb: Suburb): string {

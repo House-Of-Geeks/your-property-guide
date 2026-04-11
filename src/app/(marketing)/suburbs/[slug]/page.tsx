@@ -54,6 +54,27 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 space-y-12">
 
+        {/* Quick facts bar */}
+        <div className="flex flex-wrap gap-3 text-sm text-gray-600 border-b border-gray-100 pb-6 -mt-4">
+          <span className="font-medium text-gray-900">{suburb.name}</span>
+          <span>·</span>
+          <span>{suburb.state}</span>
+          <span>·</span>
+          <span>Postcode {suburb.postcode}</span>
+          {suburb.stats.population ? (
+            <>
+              <span>·</span>
+              <span>Population {suburb.stats.population.toLocaleString()}</span>
+            </>
+          ) : null}
+          {suburb.stats.medianHousePrice ? (
+            <>
+              <span>·</span>
+              <span>Median house price {formatPriceFull(suburb.stats.medianHousePrice)}</span>
+            </>
+          ) : null}
+        </div>
+
         {/* About */}
         <section id="about" className="scroll-mt-16 max-w-3xl">
           <h2 className="text-2xl font-bold text-gray-900 mb-3">Welcome to {suburb.name}</h2>
@@ -62,7 +83,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
         {/* Market */}
         <section id="market" className="scroll-mt-16">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Market Data</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Median House Price &amp; Market Stats</h2>
           <SuburbStatsComponent suburb={suburb} />
 
           <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
