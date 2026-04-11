@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/house-and-land`,               lastModified: new Date(), changeFrequency: "weekly",  priority: 0.8 },
     { url: `${SITE_URL}/off-market`,                   lastModified: new Date(), changeFrequency: "weekly",  priority: 0.7 },
     { url: `${SITE_URL}/suburbs`,                      lastModified: new Date(), changeFrequency: "weekly",  priority: 0.8 },
-    { url: `${SITE_URL}/regions/moreton-bay`,          lastModified: new Date(), changeFrequency: "weekly",  priority: 0.8 },
+    { url: `${SITE_URL}/regions`,                      lastModified: new Date(), changeFrequency: "weekly",  priority: 0.7 },
     { url: `${SITE_URL}/agents`,                       lastModified: new Date(), changeFrequency: "weekly",  priority: 0.7 },
     { url: `${SITE_URL}/real-estate-agencies`,         lastModified: new Date(), changeFrequency: "weekly",  priority: 0.6 },
     { url: `${SITE_URL}/blog`,                         lastModified: new Date(), changeFrequency: "weekly",  priority: 0.7 },

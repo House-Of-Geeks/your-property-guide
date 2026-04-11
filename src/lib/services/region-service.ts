@@ -1,36 +1,69 @@
 import { db } from "@/lib/db";
+import { cache } from "react";
 
-// Static region config — add new regions here as data is populated
-export const REGIONS: Record<string, {
-  name: string;
+// State-level values that are not real SA3 regions — filter these out
+const STATE_NAMES = new Set([
+  "Queensland", "New South Wales", "Victoria", "Western Australia",
+  "South Australia", "Tasmania", "Northern Territory", "Australian Capital Territory",
+]);
+
+const SKIP_REGIONS = new Set([
+  ...STATE_NAMES,
+  "No usual address",
+  "Migratory - Offshore - Shipping",
+  "Not Applicable",
+]);
+
+export function slugify(str: string): string {
+  return str
+    .toLowerCase()
+    .replace(/\s*-\s*/g, "-")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+export function slugToRegionName(slug: string, regions: { region: string; slug: string }[]): string | null {
+  return regions.find((r) => r.slug === slug)?.region ?? null;
+}
+
+export interface RegionSummary {
+  region: string;
+  slug: string;
   state: string;
-  dbRegion: string; // matches suburb.region field in DB
-  description: string;
-}> = {
-  "moreton-bay": {
-    name: "Moreton Bay",
-    state: "QLD",
-    dbRegion: "Moreton Bay",
-    description:
-      "Moreton Bay is one of Queensland's fastest-growing regions, stretching from Brisbane's northern suburbs to the Sunshine Coast. The region offers a mix of coastal communities, established family suburbs, and new growth areas, with strong infrastructure investment and competitive property prices compared to inner Brisbane.",
-  },
-};
-
-export type RegionConfig = (typeof REGIONS)[string] & { slug: string };
-
-export function getRegionConfig(slug: string): RegionConfig | null {
-  const config = REGIONS[slug];
-  if (!config) return null;
-  return { ...config, slug };
+  suburbCount: number;
 }
 
-export function getAllRegionSlugs(): string[] {
-  return Object.keys(REGIONS);
+// Cached for the duration of a request — avoids repeated DB hits on the same page render
+export const getAllRegions = cache(async (): Promise<RegionSummary[]> => {
+  const rows = await db.suburb.groupBy({
+    by: ["region", "state"],
+    _count: { slug: true },
+    orderBy: [{ state: "asc" }, { region: "asc" }],
+  });
+
+  return rows
+    .filter((r) => !SKIP_REGIONS.has(r.region))
+    .map((r) => ({
+      region: r.region,
+      slug: slugify(r.region),
+      state: r.state,
+      suburbCount: r._count.slug,
+    }));
+});
+
+export async function getRegionBySlug(slug: string): Promise<RegionSummary | null> {
+  const all = await getAllRegions();
+  return all.find((r) => r.slug === slug) ?? null;
 }
 
-export async function getRegionSuburbs(dbRegion: string) {
+export async function getAllRegionSlugs(): Promise<string[]> {
+  const all = await getAllRegions();
+  return all.map((r) => r.slug);
+}
+
+export async function getRegionSuburbs(region: string) {
   return db.suburb.findMany({
-    where: { region: dbRegion },
+    where: { region },
     select: {
       slug: true,
       name: true,
@@ -39,24 +72,19 @@ export async function getRegionSuburbs(dbRegion: string) {
       medianHousePrice: true,
       medianUnitPrice: true,
       annualGrowthHouse: true,
-      heroImage: true,
     },
     orderBy: { name: "asc" },
   });
 }
 
-export async function getRegionStats(dbRegion: string) {
+export async function getRegionStats(region: string) {
   const suburbs = await db.suburb.findMany({
-    where: { region: dbRegion },
-    select: {
-      medianHousePrice: true,
-      medianUnitPrice: true,
-      annualGrowthHouse: true,
-    },
+    where: { region },
+    select: { medianHousePrice: true, annualGrowthHouse: true },
   });
 
-  const prices = suburbs.map((s) => s.medianHousePrice).filter((p) => p > 0);
-  const growths = suburbs.map((s) => s.annualGrowthHouse).filter((g) => g !== null) as number[];
+  const prices  = suburbs.map((s) => s.medianHousePrice).filter((p) => p > 0);
+  const growths = suburbs.map((s) => s.annualGrowthHouse).filter((g) => g != null) as number[];
 
   return {
     suburbCount: suburbs.length,
