@@ -47,11 +47,11 @@ export default async function RegionPage({ params }: RegionPageProps) {
 
   const suburbSlugs = suburbs.map((s) => s.slug);
 
-  const properties = await getProperties({
+  const allProperties = await getProperties({
     suburb: suburbSlugs.join(","),
     listingType: "buy",
-    limit: 9,
   });
+  const properties = allProperties.slice(0, 9);
 
   return (
     <>
