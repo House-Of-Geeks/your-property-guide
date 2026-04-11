@@ -30,6 +30,7 @@ export async function generateMetadata({ params }: RentDetailPageProps): Promise
     description,
     alternates: { canonical: `${SITE_URL}/rent/${property.slug}` },
     openGraph: {
+      url: `${SITE_URL}/rent/${property.slug}`,
       title,
       description,
       images: [{ url: absoluteUrl(property.images[0]?.url ?? "") }],

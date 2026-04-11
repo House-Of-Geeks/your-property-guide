@@ -75,19 +75,11 @@ export async function generateMetadata({ searchParams }: SchoolsPageProps): Prom
     ? `Browse ${parts.join(", ")} schools across Australia. View catchment locations and nearby properties.`
     : "Browse 9,600+ schools across Australia. Filter by type, sector, and state. Click any school to view its catchment area and nearby properties.";
 
-  const canonicalParams = new URLSearchParams();
-  if (q) canonicalParams.set("q", q);
-  if (type) canonicalParams.set("type", type);
-  if (sector) canonicalParams.set("sector", sector);
-  if (state) canonicalParams.set("state", state);
-  const qs = canonicalParams.toString();
-  const canonical = `${SITE_URL}/schools${qs ? `?${qs}` : ""}`;
-
   return {
     title,
     description,
-    alternates: { canonical },
-    openGraph: { title, description, type: "website" },
+    alternates: { canonical: `${SITE_URL}/schools` },
+    openGraph: { url: `${SITE_URL}/schools`, title, description, type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }

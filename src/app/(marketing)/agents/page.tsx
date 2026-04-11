@@ -29,8 +29,8 @@ export async function generateMetadata({ searchParams }: AgentsPageProps): Promi
   return {
     title,
     description,
-    alternates: { canonical: `${SITE_URL}/agents${suburb ? `?suburb=${suburb}` : ""}` },
-    openGraph: { title, description, type: "website" },
+    alternates: { canonical: `${SITE_URL}/agents` },
+    openGraph: { url: `${SITE_URL}/agents`, title, description, type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }

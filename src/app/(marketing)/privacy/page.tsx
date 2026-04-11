@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: `Privacy Policy | ${SITE_NAME}`,
   description: "Your Property Guide privacy policy. Learn how we collect, use, and protect your personal information.",
+  alternates: { canonical: `${SITE_URL}/privacy` },
+  openGraph: { url: `${SITE_URL}/privacy`, title: "Privacy Policy", description: "Your Property Guide privacy policy. Learn how we collect, use, and protect your personal information.", type: "website" },
 };
 
 export default function PrivacyPage() {

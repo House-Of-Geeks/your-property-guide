@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     "Calculate your mortgage repayments, total interest, and see a full amortization breakdown. Free Australian mortgage calculator.",
   alternates: { canonical: `${SITE_URL}/mortgage-calculator` },
   openGraph: {
+    url: `${SITE_URL}/mortgage-calculator`,
     title: "Mortgage Repayment Calculator | Your Property Guide",
     description:
       "Calculate your mortgage repayments, total interest, and see a full amortization breakdown. Free Australian mortgage calculator.",

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: "Off-Market Properties",
   description: "Access exclusive off-market properties across Australia. Register to receive alerts for properties not listed on public portals.",
   alternates: { canonical: `${SITE_URL}/off-market` },
-  openGraph: { title: "Off-Market Properties", description: "Access exclusive off-market properties across Australia. Register to receive alerts for properties not listed on public portals.", type: "website" },
+  openGraph: { url: `${SITE_URL}/off-market`, title: "Off-Market Properties", description: "Access exclusive off-market properties across Australia. Register to receive alerts for properties not listed on public portals.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 

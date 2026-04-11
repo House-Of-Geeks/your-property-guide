@@ -24,6 +24,7 @@ export async function generateMetadata({ params }: HouseAndLandDetailPageProps):
     description,
     alternates: { canonical: `${SITE_URL}/house-and-land/${slug}` },
     openGraph: {
+      url: `${SITE_URL}/house-and-land/${slug}`,
       title: `${pkg.title} - House & Land`,
       description,
       type: "website",

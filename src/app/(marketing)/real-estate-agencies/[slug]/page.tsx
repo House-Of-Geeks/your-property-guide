@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: AgencyDetailPageProps): Promi
       title,
       description,
       alternates: { canonical: `${SITE_URL}/real-estate-agencies/${slug}` },
-      openGraph: { title, description, type: "website" },
+      openGraph: { url: `${SITE_URL}/real-estate-agencies/${slug}`, title, description, type: "website" },
     };
   }
 
@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: AgencyDetailPageProps): Promi
     title,
     description,
     alternates: { canonical: `${SITE_URL}/real-estate-agencies/${slug}` },
-    openGraph: { title, description, images: [{ url: image }], type: "website" },
+    openGraph: { url: `${SITE_URL}/real-estate-agencies/${slug}`, title, description, images: [{ url: image }], type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }

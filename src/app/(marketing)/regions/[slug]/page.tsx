@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: RegionPageProps): Promise<Met
     title,
     description,
     alternates: { canonical: `${SITE_URL}/regions/${slug}` },
-    openGraph: { title, description, type: "website" },
+    openGraph: { url: `${SITE_URL}/regions/${slug}`, title, description, type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }

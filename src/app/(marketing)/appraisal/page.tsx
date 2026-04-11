@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Free Property Appraisal",
   description: "Request a free property appraisal from a local real estate agent. No obligation, expert advice on your property's value.",
   alternates: { canonical: `${SITE_URL}/appraisal` },
-  openGraph: { title: "Free Property Appraisal", description: "Request a free property appraisal from a local real estate agent.", type: "website" },
+  openGraph: { url: `${SITE_URL}/appraisal`, title: "Free Property Appraisal", description: "Request a free property appraisal from a local real estate agent.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 

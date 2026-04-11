@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: suburbRentTitle(suburb),
     description: suburbRentDescription(suburb),
     alternates: { canonical: `${SITE_URL}/suburbs/${slug}/rent` },
-    openGraph: { title: suburbRentTitle(suburb), description: suburbRentDescription(suburb), type: "website" },
+    openGraph: { url: `${SITE_URL}/suburbs/${slug}/rent`, title: suburbRentTitle(suburb), description: suburbRentDescription(suburb), type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }

@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     "Browse real estate market data, median house prices, and properties for sale across every region in Australia.",
   alternates: { canonical: `${SITE_URL}/regions` },
   openGraph: {
+    url: `${SITE_URL}/regions`,
     title: "Property Regions Across Australia",
     description: "Browse real estate and suburb profiles across every Australian region.",
     type: "website",

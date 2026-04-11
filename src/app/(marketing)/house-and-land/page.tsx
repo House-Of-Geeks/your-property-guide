@@ -23,8 +23,8 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   return {
     title,
     description,
-    alternates: { canonical: `${SITE_URL}/house-and-land${suburb ? `?suburb=${suburb}` : ""}` },
-    openGraph: { title, description, type: "website" },
+    alternates: { canonical: `${SITE_URL}/house-and-land` },
+    openGraph: { url: `${SITE_URL}/house-and-land`, title, description, type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }

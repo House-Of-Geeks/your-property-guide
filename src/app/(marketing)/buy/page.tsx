@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "Buy Property in Australia",
   description: "Browse houses, units, townhouses, and land for sale across Australia. Search by suburb, price, bedrooms, and more.",
   alternates: { canonical: `${SITE_URL}/buy` },
-  openGraph: { title: "Buy Property in Australia", description: "Browse houses, units, townhouses, and land for sale across Australia. Search by suburb, price, bedrooms, and more.", type: "website" },
+  openGraph: { url: `${SITE_URL}/buy`, title: "Buy Property in Australia", description: "Browse houses, units, townhouses, and land for sale across Australia. Search by suburb, price, bedrooms, and more.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 

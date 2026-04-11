@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "QLD Stamp Duty Calculator 2025-2026",
   description: "Calculate stamp duty (transfer duty) on property purchases in Queensland. Includes first home buyer concessions and foreign buyer surcharges.",
   alternates: { canonical: `${SITE_URL}/stamp-duty-calculator` },
-  openGraph: { title: "QLD Stamp Duty Calculator 2025-2026", description: "Calculate stamp duty (transfer duty) on property purchases in Queensland.", type: "website" },
+  openGraph: { url: `${SITE_URL}/stamp-duty-calculator`, title: "QLD Stamp Duty Calculator 2025-2026", description: "Calculate stamp duty (transfer duty) on property purchases in Queensland.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 

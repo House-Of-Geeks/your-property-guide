@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "Rent Property in Australia",
   description: "Find houses, units, and apartments for rent across Australia. Browse rental listings by suburb, price, and bedrooms.",
   alternates: { canonical: `${SITE_URL}/rent` },
-  openGraph: { title: "Rent Property in Australia", description: "Find houses, units, and apartments for rent across Australia. Browse rental listings by suburb, price, and bedrooms.", type: "website" },
+  openGraph: { url: `${SITE_URL}/rent`, title: "Rent Property in Australia", description: "Find houses, units, and apartments for rent across Australia. Browse rental listings by suburb, price, and bedrooms.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 

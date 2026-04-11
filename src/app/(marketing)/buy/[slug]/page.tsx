@@ -38,6 +38,7 @@ export async function generateMetadata({ params }: PropertyDetailPageProps): Pro
     description,
     alternates: { canonical: `${SITE_URL}/buy/${property.slug}` },
     openGraph: {
+      url: `${SITE_URL}/buy/${property.slug}`,
       title,
       description,
       images: [{ url: absoluteUrl(property.images[0]?.url ?? "") }],

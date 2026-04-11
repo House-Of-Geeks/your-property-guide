@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
-import { SITE_NAME } from "@/lib/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { MapPin, Phone, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
   title: `Contact Us | ${SITE_NAME}`,
   description: "Get in touch with Your Property Guide. We're here to help with all your property needs across Australia.",
+  alternates: { canonical: `${SITE_URL}/contact` },
+  openGraph: { url: `${SITE_URL}/contact`, title: "Contact Us", description: "Get in touch with Your Property Guide. We're here to help with all your property needs across Australia.", type: "website" },
 };
 
 export default function ContactPage() {

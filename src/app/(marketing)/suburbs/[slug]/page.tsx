@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: SuburbDetailPageProps): Promi
     title: suburbTitle(suburb),
     description: suburbDescription(suburb),
     alternates: { canonical: `${SITE_URL}/suburbs/${slug}` },
-    openGraph: { title: suburbTitle(suburb), description: suburbDescription(suburb), type: "website" },
+    openGraph: { url: `${SITE_URL}/suburbs/${slug}`, title: suburbTitle(suburb), description: suburbDescription(suburb), type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }

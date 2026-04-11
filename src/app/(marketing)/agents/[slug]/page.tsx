@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: AgentProfilePageProps): Promi
     title,
     description,
     alternates: { canonical: `${SITE_URL}/agents/${slug}` },
-    openGraph: { title, description, images: [{ url: image }], type: "profile" },
+    openGraph: { url: `${SITE_URL}/agents/${slug}`, title, description, images: [{ url: image }], type: "profile" },
     twitter: { card: "summary_large_image" },
   };
 }

@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     "Compare median house and unit prices across Australian suburbs. Updated quarterly from official government data.",
   alternates: { canonical: `${SITE_URL}/price-guide` },
   openGraph: {
+    url: `${SITE_URL}/price-guide`,
     title: "Property Price Guide | Australian Suburb Median Prices",
     description:
       "Compare median house and unit prices across Australian suburbs. Updated quarterly from official government data.",

@@ -23,8 +23,8 @@ export async function generateMetadata({ searchParams }: AgenciesPageProps): Pro
   return {
     title,
     description,
-    alternates: { canonical: `${SITE_URL}/real-estate-agencies${suburb ? `?suburb=${suburb}` : ""}` },
-    openGraph: { title, description, type: "website" },
+    alternates: { canonical: `${SITE_URL}/real-estate-agencies` },
+    openGraph: { url: `${SITE_URL}/real-estate-agencies`, title, description, type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }

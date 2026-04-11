@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "About Us",
   description: "Your Property Guide is Australia's property search platform. Learn about our mission to connect buyers, sellers, and renters with trusted local agents.",
   alternates: { canonical: `${SITE_URL}/about` },
-  openGraph: { title: "About Us", description: "Your Property Guide is Australia's property search platform.", type: "website" },
+  openGraph: { url: `${SITE_URL}/about`, title: "About Us", description: "Your Property Guide is Australia's property search platform.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 

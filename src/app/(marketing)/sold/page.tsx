@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "Sold Properties in Australia",
   description: "View recently sold properties across Australia. Research sale prices and market trends across suburbs.",
   alternates: { canonical: `${SITE_URL}/sold` },
-  openGraph: { title: "Sold Properties in Australia", description: "View recently sold properties across Australia. Research sale prices and market trends across suburbs.", type: "website" },
+  openGraph: { url: `${SITE_URL}/sold`, title: "Sold Properties in Australia", description: "View recently sold properties across Australia. Research sale prices and market trends across suburbs.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 

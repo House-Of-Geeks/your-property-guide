@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     "Free property research tools for Australian buyers and investors. Price guides, calculators, suburb profiles, school catchments and more.",
   alternates: { canonical: `${SITE_URL}/research` },
   openGraph: {
+    url: `${SITE_URL}/research`,
     title: "Property Research Tools | Your Property Guide",
     description:
       "Free property research tools for Australian buyers and investors. Price guides, calculators, suburb profiles, school catchments and more.",

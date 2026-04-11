@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "Explore Suburbs Across Australia",
   description: "Explore suburbs across Australia. View median prices, growth rates, schools, and available properties.",
   alternates: { canonical: `${SITE_URL}/suburbs` },
-  openGraph: { title: "Explore Suburbs Across Australia", description: "Explore suburbs across Australia. View median prices, growth rates, schools, and available properties.", type: "website" },
+  openGraph: { url: `${SITE_URL}/suburbs`, title: "Explore Suburbs Across Australia", description: "Explore suburbs across Australia. View median prices, growth rates, schools, and available properties.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
