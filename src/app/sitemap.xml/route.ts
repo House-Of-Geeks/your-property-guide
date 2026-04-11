@@ -2,6 +2,7 @@ import { SITE_URL } from "@/lib/constants";
 
 const SITEMAPS = [
   `${SITE_URL}/pages/sitemap.xml`,
+  `${SITE_URL}/regions/sitemap.xml`,
   `${SITE_URL}/buy/sitemap.xml`,
   `${SITE_URL}/rent/sitemap.xml`,
   `${SITE_URL}/sold/sitemap.xml`,
