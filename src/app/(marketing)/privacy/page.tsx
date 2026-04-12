@@ -58,13 +58,13 @@ export default function PrivacyPage() {
         <h2>6. Your Rights</h2>
         <p>
           You have the right to access, correct, or delete your personal information. Contact us at
-          privacy@yourpropertyguide.com.au to make a request.
+          hello@yourpropertyguide.com.au to make a request.
         </p>
 
         <h2>7. Contact Us</h2>
         <p>
           If you have questions about this privacy policy, please contact us at{" "}
-          privacy@yourpropertyguide.com.au.
+          hello@yourpropertyguide.com.au.
         </p>
       </div>
     </div>
