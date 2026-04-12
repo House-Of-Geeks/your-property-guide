@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getProperties } from "@/lib/services/property-service";
 import { SITE_URL } from "@/lib/constants";
@@ -48,6 +48,14 @@ export default async function SuburbUnitsPage({ params }: Props) {
           { name: suburb.name, url: `/suburbs/${slug}` },
           { name: "Units for Sale", url: `/suburbs/${slug}/units` },
         ]}
+      />
+      <PlaceJsonLd
+        name={suburb.name}
+        url={"/suburbs/" + suburb.slug}
+        addressLocality={suburb.name}
+        addressRegion={suburb.state}
+        postalCode={suburb.postcode}
+
       />
       <Breadcrumbs
         items={[

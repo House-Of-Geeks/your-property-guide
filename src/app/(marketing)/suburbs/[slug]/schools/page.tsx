@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GraduationCap } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, PlaceJsonLd, ItemListJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { makeSchoolSlug } from "@/lib/utils/school";
 import { formatPriceFull } from "@/lib/utils/format";
@@ -79,6 +79,25 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
           { name: "Schools", url: `/suburbs/${slug}/schools` },
         ]}
       />
+      <PlaceJsonLd
+        name={suburb.name}
+        url={"/suburbs/" + suburb.slug}
+        addressLocality={suburb.name}
+        addressRegion={suburb.state}
+        postalCode={suburb.postcode}
+
+      />
+      {schools.length > 0 && (
+        <ItemListJsonLd
+          name={`Schools in ${suburb.name}, ${suburb.state}`}
+          description={`${schools.length} school${schools.length !== 1 ? "s" : ""} in ${suburb.name}`}
+          url={`/suburbs/${slug}/schools`}
+          items={schools.map((school) => ({
+            name: school.name,
+            url: school.acaraId ? `/schools/${makeSchoolSlug(school.name, school.acaraId)}` : `/suburbs/${slug}/schools`,
+          }))}
+        />
+      )}
 
       {/* Hero */}
       <div className="bg-white border-b border-gray-200">

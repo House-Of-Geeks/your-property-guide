@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MapPin, Home, TrendingUp, GraduationCap, Users } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { Badge } from "@/components/ui";
 import {
   getSuburbsByPostcode,
@@ -82,6 +82,12 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
           { name: "Postcodes", url: "/postcodes" },
           { name: `Postcode ${postcode}`, url: `/postcodes/${postcode}` },
         ]}
+      />
+      <PlaceJsonLd
+        name={`Postcode ${postcode}`}
+        url={`/postcodes/${postcode}`}
+        addressRegion={state}
+        postalCode={postcode}
       />
 
       {/* Hero */}

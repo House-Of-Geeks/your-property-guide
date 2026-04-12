@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { PropertyFilters } from "@/components/property/PropertyFilters";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getProperties } from "@/lib/services/property-service";
 import { suburbBuyTitle, suburbBuyDescription } from "@/lib/utils/seo";
@@ -55,6 +55,14 @@ export default async function SuburbBuyPage({ params, searchParams }: Props) {
           { name: suburb.name, url: `/suburbs/${slug}` },
           { name: "Buy", url: `/suburbs/${slug}/buy` },
         ]}
+      />
+      <PlaceJsonLd
+        name={suburb.name}
+        url={"/suburbs/" + suburb.slug}
+        addressLocality={suburb.name}
+        addressRegion={suburb.state}
+        postalCode={suburb.postcode}
+
       />
       <Breadcrumbs
         items={[

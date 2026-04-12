@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Home, TrendingUp, ArrowLeft, BarChart3 } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, PlaceJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { DataFreshnessNote } from "@/components/suburb";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getSuburbRentalHistory } from "@/lib/services/rental-service";
@@ -68,6 +68,20 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
           { name: suburb.name, url: `/suburbs/${slug}` },
           { name: "Rental Market", url: `/suburbs/${slug}/rental-market` },
         ]}
+      />
+      <PlaceJsonLd
+        name={suburb.name}
+        url={"/suburbs/" + suburb.slug}
+        addressLocality={suburb.name}
+        addressRegion={suburb.state}
+        postalCode={suburb.postcode}
+
+      />
+      <GuideArticleJsonLd
+        title={`${suburb.name} Rental Market | Rent Prices & Trends | Your Property Guide`}
+        description={`View rental price trends and history for ${suburb.name}, ${suburb.state}. Compare weekly rent for houses, units, and bedrooms.`}
+        url={`/suburbs/${slug}/rental-market`}
+        datePublished="2025-01-01"
       />
 
       {/* Hero */}

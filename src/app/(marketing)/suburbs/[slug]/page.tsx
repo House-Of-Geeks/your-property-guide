@@ -11,7 +11,7 @@ import { SuburbCrime } from "@/components/suburb/SuburbCrime";
 import { SuburbInvestment } from "@/components/suburb/SuburbInvestment";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { Badge, Button } from "@/components/ui";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getPropertiesBySuburb } from "@/lib/services/property-service";
@@ -54,6 +54,13 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           { name: "Suburbs", url: "/suburbs" },
           { name: suburb.name, url: `/suburbs/${suburb.slug}` },
         ]}
+      />
+      <PlaceJsonLd
+        name={suburb.name}
+        url={"/suburbs/" + suburb.slug}
+        addressLocality={suburb.name}
+        addressRegion={suburb.state}
+        postalCode={suburb.postcode}
       />
 
       <SuburbHero suburb={suburb} />
