@@ -148,6 +148,14 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             asOf={suburb.dataFreshness?.rentalAsOf ?? null}
             source={suburb.dataFreshness?.rentalSource ?? undefined}
           />
+          <div className="mt-3">
+            <Link
+              href={`/suburbs/${suburb.slug}/rental-market`}
+              className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+            >
+              Rental Market →
+            </Link>
+          </div>
         </section>
 
         {/* Investment Overview */}
