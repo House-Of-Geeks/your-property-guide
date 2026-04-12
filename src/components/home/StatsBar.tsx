@@ -1,20 +1,25 @@
 import { db } from "@/lib/db";
 
 async function getStats() {
-  const [suburbs, schools] = await Promise.all([
+  const [suburbs, schools, listings] = await Promise.all([
     db.suburb.count(),
     db.school.count(),
+    db.property.count({ where: { status: "active" } }),
   ]);
-  return { suburbs, schools };
+  return { suburbs, schools, listings };
 }
 
 export async function StatsBar() {
-  const { suburbs, schools } = await getStats();
+  const { suburbs, schools, listings } = await getStats();
+
+  const listingsLabel = listings >= 1000
+    ? `${(listings / 1000).toFixed(1)}k+`
+    : `${listings}+`;
 
   const stats = [
     { value: `${(suburbs / 1000).toFixed(0)}k+`, label: "suburbs profiled" },
     { value: `${(schools / 1000).toFixed(1)}k+`, label: "schools tracked" },
-    { value: "10+", label: "data points per suburb" },
+    { value: listingsLabel, label: "active listings" },
     { value: "Free", label: "no signup required" },
   ];
 
