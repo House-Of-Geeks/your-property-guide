@@ -15,6 +15,8 @@ import {
   RefreshCw,
   Receipt,
   Hash,
+  BookOpen,
+  BookText,
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -121,6 +123,23 @@ const sections: ResearchSection[] = [
         title: "Search Schools",
         description: "Find schools by suburb and view their catchment boundaries",
         href: "/schools",
+      },
+    ],
+  },
+  {
+    heading: "Guides & Reference",
+    cards: [
+      {
+        icon: <BookOpen className="w-6 h-6" />,
+        title: "Property Guides",
+        description: "In-depth guides for buyers, sellers and investors — from first home to portfolio",
+        href: "/guides",
+      },
+      {
+        icon: <BookText className="w-6 h-6" />,
+        title: "Property Glossary",
+        description: "Plain-English definitions for every term you'll encounter when buying or selling",
+        href: "/glossary",
       },
     ],
   },

@@ -5,32 +5,51 @@ import { useState, useEffect, useRef } from "react";
 import { Menu, X, Search, ChevronDown, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui";
 
-const NAV_LINKS = [
+interface NavChild {
+  label: string;
+  href: string;
+  group?: string;
+}
+
+interface NavLink {
+  label: string;
+  href: string;
+  children?: NavChild[];
+  twoCol?: boolean;
+}
+
+const NAV_LINKS: NavLink[] = [
   {
     label: "Find a Property",
     href: "#",
     children: [
-      { label: "Buy",         href: "/buy" },
-      { label: "Rent",        href: "/rent" },
-      { label: "Sold",        href: "/sold" },
-      { label: "Off-Market",  href: "/off-market" },
-      { label: "House & Land", href: "/house-and-land" },
+      { label: "Buy",               href: "/buy" },
+      { label: "Rent",              href: "/rent" },
+      { label: "Sold",              href: "/sold" },
+      { label: "Off-Market",        href: "/off-market" },
+      { label: "House & Land",      href: "/house-and-land" },
+      { label: "Browse by State",   href: "/states" },
+      { label: "Browse by Postcode", href: "/postcodes" },
     ],
   },
   {
     label: "Research",
     href: "#",
+    twoCol: true,
     children: [
-      { label: "Research Hub",              href: "/research" },
-      { label: "Suburb Profiles",           href: "/suburbs" },
-      { label: "Price Guide",               href: "/price-guide" },
-      { label: "Search by School",          href: "/schools" },
-      { label: "Mortgage Calculator",       href: "/mortgage-calculator" },
-      { label: "Stamp Duty Calculator",     href: "/stamp-duty-calculator" },
-      { label: "Borrowing Power",           href: "/borrowing-power-calculator" },
-      { label: "Rental Yield Calculator",   href: "/rental-yield-calculator" },
-      { label: "CGT Calculator",            href: "/cgt-calculator" },
-      { label: "Refinancing Calculator",    href: "/refinancing-calculator" },
+      { label: "Research Hub",              href: "/research",                    group: "Tools" },
+      { label: "Suburb Profiles",           href: "/suburbs",                     group: "Tools" },
+      { label: "Price Guide",               href: "/price-guide",                 group: "Tools" },
+      { label: "Search by School",          href: "/schools",                     group: "Tools" },
+      { label: "Best Suburbs",              href: "/best-suburbs",                group: "Tools" },
+      { label: "Mortgage Calculator",       href: "/mortgage-calculator",         group: "Tools" },
+      { label: "Stamp Duty Calculator",     href: "/stamp-duty-calculator",       group: "Tools" },
+      { label: "Borrowing Power",           href: "/borrowing-power-calculator",  group: "Tools" },
+      { label: "Rental Yield Calculator",   href: "/rental-yield-calculator",     group: "Tools" },
+      { label: "CGT Calculator",            href: "/cgt-calculator",              group: "Tools" },
+      { label: "Refinancing Calculator",    href: "/refinancing-calculator",      group: "Tools" },
+      { label: "Guides",                    href: "/guides",                      group: "Resources" },
+      { label: "Property Glossary",         href: "/glossary",                    group: "Resources" },
     ],
   },
   {
@@ -92,18 +111,45 @@ export function Header() {
                     <ChevronDown className="w-4 h-4" />
                   </button>
                   {openMenu === link.label && (
-                    <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
-                      {link.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          onClick={() => setOpenMenu(null)}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
-                        >
-                          {child.label}
-                        </Link>
-                      ))}
-                    </div>
+                    link.twoCol ? (
+                      <div className="absolute top-full left-0 mt-1 bg-white rounded-xl shadow-lg border border-gray-200 py-3 z-50 w-[440px]">
+                        <div className="grid grid-cols-2 gap-x-2">
+                          {["Tools", "Resources"].map((group) => {
+                            const groupItems = link.children!.filter((c) => c.group === group);
+                            return (
+                              <div key={group}>
+                                <p className="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                  {group}
+                                </p>
+                                {groupItems.map((child) => (
+                                  <Link
+                                    key={child.href}
+                                    href={child.href}
+                                    onClick={() => setOpenMenu(null)}
+                                    className="block px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
+                                  >
+                                    {child.label}
+                                  </Link>
+                                ))}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
+                        {link.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            onClick={() => setOpenMenu(null)}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )
                   )}
                 </div>
               ) : (

@@ -27,7 +27,7 @@ const TOPICS = [
     icon: BookOpen,
     title: "Buying Guides",
     description: "From first home buyers to investors. Practical guides written for the Australian market.",
-    href: "/blog",
+    href: "/guides",
     cta: "Read the guides",
   },
 ];

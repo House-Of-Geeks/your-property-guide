@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { getBlogPosts } from "@/lib/services/blog-service";
 import { BlogGrid } from "@/components/blog/BlogGrid";
 import { SITE_URL } from "@/lib/constants";
+import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Property Blog",
@@ -34,6 +36,14 @@ export default async function BlogPage() {
           Market trends, suburb analysis, buying tips and investment guides from our local property experts.
         </p>
         <p className="text-white/40 text-sm mt-3">{posts.length} articles</p>
+      </div>
+
+      {/* Guides callout */}
+      <div className="mb-8 flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-5 py-3 text-sm text-gray-600">
+        Looking for comprehensive property guides?{" "}
+        <Link href="/guides" className="inline-flex items-center gap-1 font-medium text-black hover:underline">
+          Browse our Property Guides <ArrowRight className="w-3.5 h-3.5" />
+        </Link>
       </div>
 
       <BlogGrid posts={posts} categories={categories} />
