@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { ChevronRight, GraduationCap, ExternalLink } from "lucide-react";
-import { getSchoolBySlug } from "@/lib/services/school-service";
+import { getSchoolBySlug, getSchoolsInSuburb, makeSchoolSlug } from "@/lib/services/school-service";
 import { getProperties } from "@/lib/services/property-service";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { SchoolListingControls } from "@/components/school/SchoolListingControls";
@@ -58,6 +58,9 @@ export default async function SchoolPage({ params, searchParams }: SchoolPagePro
   const { sort, mode, minPrice, maxPrice, minBeds, minBaths, minCars, propertyType } = await searchParams;
   const school = await getSchoolBySlug(slug);
   if (!school) notFound();
+
+  // Nearby schools in the same suburb for compare links
+  const nearbySchools = await getSchoolsInSuburb(school.suburbId, school.acaraId ?? undefined);
 
   const listingType = (mode === "rent" ? "rent" : mode === "sold" ? "sold" : "buy") as "buy" | "rent" | "sold";
   let properties = await getProperties({
@@ -242,6 +245,34 @@ export default async function SchoolPage({ params, searchParams }: SchoolPagePro
                 )}
               </div>
             </div>
+
+            {/* Compare this school */}
+            {school.acaraId && nearbySchools.length > 0 && (
+              <div className="bg-white rounded-xl border border-gray-200 p-5">
+                <h3 className="text-sm font-semibold text-gray-900 mb-3">Compare {school.name}</h3>
+                <ul className="space-y-2">
+                  {nearbySchools.map((other) => {
+                    if (!other.acaraId) return null;
+                    const otherSlug = makeSchoolSlug(other.name, other.acaraId);
+                    return (
+                      <li key={other.acaraId}>
+                        <Link
+                          href={`/schools/${slug}/vs/${otherSlug}`}
+                          className="flex items-center justify-between gap-2 text-sm text-gray-700 hover:text-primary transition-colors group"
+                        >
+                          <span className="truncate group-hover:underline">{other.name}</span>
+                          {other.icsea != null && (
+                            <span className="shrink-0 text-xs text-gray-400 tabular-nums">
+                              ICSEA {other.icsea}
+                            </span>
+                          )}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
 
             <p className="text-xs text-gray-400 px-1">© ACARA, licensed under CC BY 4.0.</p>
           </div>

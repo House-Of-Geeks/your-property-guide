@@ -16,7 +16,7 @@ export async function getSchoolBySlug(slug: string) {
 
   return db.school.findUnique({
     where: { acaraId },
-    include: { suburb: { select: { slug: true, name: true, state: true, postcode: true } } },
+    include: { suburb: { select: { slug: true, name: true, state: true, postcode: true, medianHousePrice: true } } },
   });
 }
 
@@ -90,4 +90,101 @@ export async function searchSchools(params: {
   ]);
 
   return { schools, total };
+}
+
+// ---------------------------------------------------------------------------
+// Schools by suburb id (for nearby-school comparisons on school detail page)
+// ---------------------------------------------------------------------------
+export interface NearbySchoolResult {
+  name: string;
+  acaraId: string | null;
+  icsea: number | null;
+  type: string;
+  sector: string;
+}
+
+export async function getSchoolsInSuburb(suburbId: string, excludeAcaraId?: string): Promise<NearbySchoolResult[]> {
+  return db.school.findMany({
+    where: {
+      suburbId,
+      ...(excludeAcaraId ? { NOT: { acaraId: excludeAcaraId } } : {}),
+    },
+    select: { name: true, acaraId: true, icsea: true, type: true, sector: true },
+    orderBy: { icsea: "desc" },
+    take: 5,
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Schools by region (via suburb slugs)
+// ---------------------------------------------------------------------------
+export interface RegionSchoolResult {
+  id: string;
+  name: string;
+  acaraId: string | null;
+  type: string;
+  sector: string;
+  yearRange: string | null;
+  gender: string | null;
+  icsea: number | null;
+  enrolment: number | null;
+  suburb: {
+    name: string;
+    slug: string;
+    state: string;
+    medianHousePrice: number;
+  };
+}
+
+export async function getSchoolsByRegion(suburbSlugs: string[]): Promise<RegionSchoolResult[]> {
+  if (suburbSlugs.length === 0) return [];
+
+  // Resolve suburb IDs from slugs
+  const suburbs = await db.suburb.findMany({
+    where: { slug: { in: suburbSlugs } },
+    select: { id: true, slug: true, name: true, state: true, medianHousePrice: true },
+  });
+
+  const suburbIds = suburbs.map((s) => s.id);
+  if (suburbIds.length === 0) return [];
+
+  const suburbMap = new Map(suburbs.map((s) => [s.id, s]));
+
+  const schools = await db.school.findMany({
+    where: { suburbId: { in: suburbIds } },
+    select: {
+      id: true,
+      name: true,
+      acaraId: true,
+      type: true,
+      sector: true,
+      yearRange: true,
+      gender: true,
+      icsea: true,
+      enrolment: true,
+      suburbId: true,
+    },
+    orderBy: { icsea: "desc" },
+  });
+
+  return schools.map((sc) => {
+    const sub = suburbMap.get(sc.suburbId);
+    return {
+      id: sc.id,
+      name: sc.name,
+      acaraId: sc.acaraId,
+      type: sc.type,
+      sector: sc.sector,
+      yearRange: sc.yearRange,
+      gender: sc.gender,
+      icsea: sc.icsea,
+      enrolment: sc.enrolment,
+      suburb: {
+        name: sub?.name ?? "",
+        slug: sub?.slug ?? "",
+        state: sub?.state ?? "",
+        medianHousePrice: sub?.medianHousePrice ?? 0,
+      },
+    };
+  });
 }

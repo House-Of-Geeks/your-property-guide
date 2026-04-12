@@ -81,6 +81,31 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           ) : null}
         </div>
 
+        {/* Compare widget */}
+        {suburb.nearbySuburbs.length > 0 && (
+          <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-card -mt-2">
+            <p className="text-sm font-medium text-gray-700 mb-3">
+              Compare {suburb.name} with another suburb:
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {suburb.nearbySuburbs.slice(0, 8).map((s) => {
+                const label = s
+                  .split("-")
+                  .slice(0, -2)
+                  .join(" ")
+                  .replace(/\w/g, (c) => c.toUpperCase());
+                return (
+                  <Link key={s} href={`/suburbs/${suburb.slug}/vs/${s}`}>
+                    <Badge variant="outline" className="cursor-pointer hover:border-primary hover:text-primary">
+                      {label}
+                    </Badge>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* About */}
         <section id="about" className="scroll-mt-16 max-w-3xl">
           <h2 className="text-2xl font-bold text-gray-900 mb-3">Welcome to {suburb.name}</h2>
@@ -271,6 +296,16 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         {/* Schools */}
         <section id="schools" className="scroll-mt-16">
           <SuburbSchools suburbName={suburb.name} schools={suburb.schools} />
+          {suburb.schools.length > 0 && (
+            <div className="mt-3">
+              <Link
+                href={`/suburbs/${suburb.slug}/schools`}
+                className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+              >
+                View all {suburb.schools.length} schools →
+              </Link>
+            </div>
+          )}
           <DataFreshnessNote label="School" asOf={null} source="ACARA" />
         </section>
 
