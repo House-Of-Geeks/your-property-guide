@@ -48,8 +48,11 @@ const NAV_LINKS: NavLink[] = [
       { label: "Rental Yield Calculator",   href: "/rental-yield-calculator",     group: "Tools" },
       { label: "CGT Calculator",            href: "/cgt-calculator",              group: "Tools" },
       { label: "Refinancing Calculator",    href: "/refinancing-calculator",      group: "Tools" },
+      { label: "Affordability Calculator",  href: "/affordability-calculator",    group: "Tools" },
       { label: "Guides",                    href: "/guides",                      group: "Resources" },
       { label: "Property Glossary",         href: "/glossary",                    group: "Resources" },
+      { label: "RBA Cash Rate",             href: "/rba-cash-rate",               group: "Resources" },
+      { label: "Market Reports",            href: "/market-reports",              group: "Resources" },
     ],
   },
   {

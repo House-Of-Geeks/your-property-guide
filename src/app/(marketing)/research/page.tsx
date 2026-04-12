@@ -17,6 +17,8 @@ import {
   Hash,
   BookOpen,
   BookText,
+  DollarSign,
+  TrendingDown,
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -89,6 +91,12 @@ const sections: ResearchSection[] = [
         description: "Find your break-even point and total savings when switching home loans",
         href: "/refinancing-calculator",
       },
+      {
+        icon: <DollarSign className="w-6 h-6" />,
+        title: "Affordability Calculator",
+        description: "Find out what property price you can afford based on your deposit and income",
+        href: "/affordability-calculator",
+      },
     ],
   },
   {
@@ -112,6 +120,18 @@ const sections: ResearchSection[] = [
         title: "Postcode Guide",
         description: "Browse properties, prices and suburb info by Australian postcode",
         href: "/postcodes",
+      },
+      {
+        icon: <BarChart2 className="w-6 h-6" />,
+        title: "State Market Reports",
+        description: "Median prices, growth trends and suburb rankings for every Australian state",
+        href: "/market-reports",
+      },
+      {
+        icon: <TrendingDown className="w-6 h-6" />,
+        title: "RBA Cash Rate History",
+        description: "Track every RBA rate decision and understand its impact on property prices",
+        href: "/rba-cash-rate",
       },
     ],
   },
