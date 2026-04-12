@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { getBlogPosts } from "@/lib/services/blog-service";
 import { BlogGrid } from "@/components/blog/BlogGrid";
 import { SITE_URL } from "@/lib/constants";
@@ -21,6 +21,11 @@ export default async function BlogPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+      <CollectionPageJsonLd
+        name="Property Blog"
+        description="Property news, tips, and insights for Australian buyers, sellers, and investors."
+        url="/blog"
+      />
       <BreadcrumbJsonLd items={[{ name: "Blog", url: "/blog" }]} />
       <Breadcrumbs items={[{ label: "Blog" }]} />
 

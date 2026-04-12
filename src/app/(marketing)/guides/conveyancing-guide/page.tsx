@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function ConveyancingGuidePage() {
           { name: "Guides", url: "/guides" },
           { name: "Conveyancing Guide", url: "/guides/conveyancing-guide" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Conveyancing in Australia: What It Is, What It Costs & How to Choose (2026)"
+        description="What does a conveyancer do? How much does conveyancing cost? When should you use a solicitor? Complete guide for Australian property buyers and sellers. Updated 2026."
+        url="/guides/conveyancing-guide"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

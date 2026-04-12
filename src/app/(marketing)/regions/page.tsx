@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { getAllRegions } from "@/lib/services/region-service";
 import { SITE_URL } from "@/lib/constants";
 
@@ -43,6 +44,12 @@ export default async function RegionsPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+      <CollectionPageJsonLd
+        name="Australian Regions"
+        description="Browse all Australian regions and their suburb profiles."
+        url="/regions"
+      />
+      <BreadcrumbJsonLd items={[{ name: "Regions", url: "/regions" }]} />
       <Breadcrumbs items={[{ label: "Regions" }]} />
 
       <div className="mt-6 mb-10">

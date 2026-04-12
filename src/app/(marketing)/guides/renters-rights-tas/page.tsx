@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function RentersRightsTasPage() {
           { name: "Guides", url: "/guides" },
           { name: "Renter's Rights Tasmania", url: "/guides/renters-rights-tas" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Renter's Rights in Tasmania: Complete Guide for Tenants (2026)"
+        description="Complete guide to tenant rights in Tasmania. Bond rules, rent increases (42 days notice, 12 months between), inspections, repairs, ending a tenancy, and how to resolve disputes through CBOS and the Magistrates Court. Updated 2026."
+        url="/guides/renters-rights-tas"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

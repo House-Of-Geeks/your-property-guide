@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { RentalYieldCalculator } from "@/components/calculators/RentalYieldCalculator";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, FAQPageJsonLd, WebApplicationJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -52,6 +52,11 @@ export default function RentalYieldCalculatorPage() {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
       <BreadcrumbJsonLd
         items={[{ name: "Rental Yield Calculator", url: "/rental-yield-calculator" }]}
+      />
+      <WebApplicationJsonLd
+        name="Rental Yield Calculator"
+        description="Calculate gross and net rental yield and weekly cash flow for investment properties."
+        url="/rental-yield-calculator"
       />
       <FAQPageJsonLd faqs={FAQS} />
       <Breadcrumbs items={[{ label: "Rental Yield Calculator" }]} />

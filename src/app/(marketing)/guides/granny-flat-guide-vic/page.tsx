@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function GrannyFlatGuideVICPage() {
           { name: "Guides", url: "/guides" },
           { name: "Granny Flat Guide Victoria", url: "/guides/granny-flat-guide-vic" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Granny Flat Guide Victoria: Rules, Costs & Approvals (2026)"
+        description="Building a secondary dwelling in Victoria? Learn about planning permits, council rules, costs, and what makes VIC different from NSW. Updated 2026."
+        url="/guides/granny-flat-guide-vic"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

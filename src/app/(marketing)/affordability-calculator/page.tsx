@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { AffordabilityCalculator } from "@/components/calculators/AffordabilityCalculator";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, FAQPageJsonLd, WebApplicationJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -52,6 +52,11 @@ export default function AffordabilityCalculatorPage() {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
       <BreadcrumbJsonLd
         items={[{ name: "Affordability Calculator", url: "/affordability-calculator" }]}
+      />
+      <WebApplicationJsonLd
+        name="Property Affordability Calculator"
+        description="Calculate how much property you can afford based on your deposit and borrowing power."
+        url="/affordability-calculator"
       />
       <FAQPageJsonLd faqs={FAQS} />
       <Breadcrumbs items={[{ label: "Affordability Calculator" }]} />

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function GrannyFlatGuideNSWPage() {
           { name: "Guides", url: "/guides" },
           { name: "Granny Flat Guide NSW", url: "/guides/granny-flat-guide-nsw" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Granny Flat Guide NSW: Rules, Costs & Rental Returns (2026)"
+        description="Everything you need to know about building a granny flat in NSW: complying development rules, costs, rental income, and how to maximise your return. Updated 2026."
+        url="/guides/granny-flat-guide-nsw"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

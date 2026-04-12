@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function RentersRightsSAPage() {
           { name: "Guides", url: "/guides" },
           { name: "Renter's Rights South Australia", url: "/guides/renters-rights-sa" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Renter's Rights in South Australia: Complete Guide (2026)"
+        description="SA tenant rights explained: bond, rent increases, repairs, entry rights, and ending a tenancy under the Residential Tenancies Act 1995. Updated 2026."
+        url="/guides/renters-rights-sa"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

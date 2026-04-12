@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { TrendingDown, TrendingUp, Minus, ArrowRight, Info } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -124,6 +124,12 @@ export default function RBACashRatePage() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
       <BreadcrumbJsonLd items={[{ name: "RBA Cash Rate", url: "/rba-cash-rate" }]} />
+      <GuideArticleJsonLd
+        title={`RBA Cash Rate History & Property Market Impact | ${SITE_NAME}`}
+        description="Track the RBA cash rate history and understand how interest rate changes affect Australian property prices. Updated with each RBA decision."
+        url="/rba-cash-rate"
+        datePublished="2026-01-01"
+      />
       <Breadcrumbs items={[{ label: "RBA Cash Rate" }]} />
 
       {/* Hero — Current Rate */}

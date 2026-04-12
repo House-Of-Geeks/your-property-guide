@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function FirstHomeBuyerNTPage() {
           { name: "Guides", url: "/guides" },
           { name: "First Home Buyer Guide NT", url: "/guides/first-home-buyer-nt" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="First Home Buyer Guide Northern Territory: Grants & Schemes (2026)"
+        description="First home buyer guide for the NT. $10,000 FHOG, First Home Owner Discount (up to $23,928.60 stamp duty relief), leasehold land considerations, and federal scheme caps for Darwin. Updated 2026."
+        url="/guides/first-home-buyer-nt"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function RentersRightsWAPage() {
           { name: "Guides", url: "/guides" },
           { name: "Renter's Rights Western Australia", url: "/guides/renters-rights-wa" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Renter's Rights in Western Australia: Complete Guide (2026)"
+        description="WA tenant rights explained: bond, rent increases, repairs, entry rights, and ending a tenancy under the Residential Tenancies Act 1987. Updated 2026."
+        url="/guides/renters-rights-wa"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

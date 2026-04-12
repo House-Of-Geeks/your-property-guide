@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Users, TrendingUp, DollarSign, Footprints, Shield, Home } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -74,6 +74,11 @@ const CATEGORIES = [
 export default function BestSuburbsHubPage() {
   return (
     <div className="min-h-screen bg-gray-50">
+      <CollectionPageJsonLd
+        name="Best Suburbs Australia"
+        description="Rankings of the best Australian suburbs by family-friendliness, growth, affordability, and more."
+        url="/best-suburbs"
+      />
       <BreadcrumbJsonLd items={[{ name: "Best Suburbs", url: "/best-suburbs" }]} />
 
       {/* Hero */}

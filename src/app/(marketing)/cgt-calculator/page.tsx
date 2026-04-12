@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { CGTCalculator } from "@/components/calculators/CGTCalculator";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, FAQPageJsonLd, WebApplicationJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -52,6 +52,11 @@ export default function CGTCalculatorPage() {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
       <BreadcrumbJsonLd
         items={[{ name: "CGT Calculator", url: "/cgt-calculator" }]}
+      />
+      <WebApplicationJsonLd
+        name="Capital Gains Tax Calculator"
+        description="Calculate Australian capital gains tax including the 50% CGT discount and main residence exemption."
+        url="/cgt-calculator"
       />
       <FAQPageJsonLd faqs={FAQS} />
       <Breadcrumbs items={[{ label: "CGT Calculator" }]} />

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function NegativeGearingAustraliaPage() {
           { name: "Guides", url: "/guides" },
           { name: "Negative Gearing in Australia", url: "/guides/negative-gearing-australia" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Negative Gearing in Australia: How It Works, Tax Benefits & Risks (2026)"
+        description="Comprehensive guide to negative gearing in Australia: how it works, what you can deduct, depreciation schedules, CGT interaction, risks, and current legislative status. Updated 2026."
+        url="/guides/negative-gearing-australia"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

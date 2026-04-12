@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MapPin, Home, TrendingUp } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { getAllStatesWithStats } from "@/lib/services/suburb-rankings-service";
 import { formatPrice } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
@@ -38,6 +38,11 @@ export default async function StatesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <CollectionPageJsonLd
+        name="Australian States & Territories"
+        description="Explore property markets across all Australian states and territories."
+        url="/states"
+      />
       <BreadcrumbJsonLd items={[{ name: "States", url: "/states" }]} />
 
       {/* Hero */}

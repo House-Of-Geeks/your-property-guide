@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -27,6 +27,12 @@ export default function FirstHomeBuyerNSWPage() {
           { name: "First Home Buyer Guide", url: "/guides/first-home-buyer-guide" },
           { name: "NSW", url: "/guides/first-home-buyer-nsw" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="First Home Buyer Guide NSW: Grants, Stamp Duty & Schemes (2026)"
+        description="NSW first home buyer guide: $10,000 FHOG for new homes, stamp duty exemption up to $800K, concession to $1M, federal schemes, and step-by-step NSW buying advice. Updated 2026."
+        url="/guides/first-home-buyer-nsw"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

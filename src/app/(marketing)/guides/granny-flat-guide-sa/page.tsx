@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function GrannyFlatGuideSAPage() {
           { name: "Guides", url: "/guides" },
           { name: "Granny Flat Guide SA", url: "/guides/granny-flat-guide-sa" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Granny Flat Guide South Australia: Rules, Costs & Planning (2026)"
+        description="Complete guide to building a granny flat (secondary dwelling) in South Australia. Planning and Design Code requirements, complying development, lot sizes, costs $100k–$180k, and PlanSA portal. Updated 2026."
+        url="/guides/granny-flat-guide-sa"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

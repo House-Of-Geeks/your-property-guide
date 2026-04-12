@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function RentersRightsNSWPage() {
           { name: "Guides", url: "/guides" },
           { name: "Renter's Rights NSW", url: "/guides/renters-rights-nsw" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Renter's Rights in NSW: Complete Guide for Tenants (2026)"
+        description="Everything NSW tenants need to know: bond rules, rent increases, repairs, entry rights, ending a tenancy, and how to resolve disputes. Updated for 2026."
+        url="/guides/renters-rights-nsw"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

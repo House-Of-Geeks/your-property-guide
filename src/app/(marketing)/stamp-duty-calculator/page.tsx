@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { StampDutyCalculator } from "@/components/calculators/StampDutyCalculator";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, FAQPageJsonLd, WebApplicationJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -51,6 +51,11 @@ export default function StampDutyCalculatorPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
       <BreadcrumbJsonLd items={[{ name: "Stamp Duty Calculator", url: "/stamp-duty-calculator" }]} />
+      <WebApplicationJsonLd
+        name="Stamp Duty Calculator Australia"
+        description="Calculate stamp duty costs across all Australian states and territories."
+        url="/stamp-duty-calculator"
+      />
       <FAQPageJsonLd faqs={FAQS} />
       <Breadcrumbs items={[{ label: "Stamp Duty Calculator" }]} />
 

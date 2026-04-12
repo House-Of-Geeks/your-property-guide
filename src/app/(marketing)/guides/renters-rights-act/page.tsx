@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function RentersRightsACTPage() {
           { name: "Guides", url: "/guides" },
           { name: "Renter's Rights ACT", url: "/guides/renters-rights-act" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Renter's Rights in the ACT: Complete Guide for Canberra Tenants (2026)"
+        description="Complete guide to tenant rights in the ACT. Bond rules, rent increases (8 weeks notice, 12 months between), no-grounds eviction protections, ACAT dispute resolution, and Canberra's strong tenant laws. Updated 2026."
+        url="/guides/renters-rights-act"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function GrannyFlatGuideQLDPage() {
           { name: "Guides", url: "/guides" },
           { name: "Granny Flat Guide Queensland", url: "/guides/granny-flat-guide-qld" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Granny Flat Guide Queensland: Rules, Costs & Investment Returns (2026)"
+        description="Building a secondary dwelling in Queensland? Learn about planning rules, Brisbane City Council requirements, costs, and rental returns. Updated 2026."
+        url="/guides/granny-flat-guide-qld"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

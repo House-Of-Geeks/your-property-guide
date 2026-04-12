@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { BlogGrid } from "@/components/blog/BlogGrid";
 import {
   getBlogPostsByCategory,
@@ -55,6 +55,10 @@ export default async function BlogCategoryPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+      <CollectionPageJsonLd
+        name={label + " Articles"}
+        url={"/blog/category/" + category}
+      />
       <BreadcrumbJsonLd
         items={[
           { name: "Blog", url: "/blog" },

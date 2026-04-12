@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function RentersRightsQLDPage() {
           { name: "Guides", url: "/guides" },
           { name: "Renter's Rights Queensland", url: "/guides/renters-rights-qld" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Renter's Rights in Queensland: Complete Guide (2026)"
+        description="Queensland tenant rights explained: bond, rent increases, repairs, entry, pets, and 2024 tenancy reforms. Includes RTA and QCAT dispute info. Updated 2026."
+        url="/guides/renters-rights-qld"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

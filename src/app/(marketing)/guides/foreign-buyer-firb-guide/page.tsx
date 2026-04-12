@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function ForeignBuyerFirbGuidePage() {
           { name: "Guides", url: "/guides" },
           { name: "Foreign Buyer FIRB Guide", url: "/guides/foreign-buyer-firb-guide" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Buying Property in Australia as a Foreign Buyer: Complete FIRB Guide (2026)"
+        description="Comprehensive guide to FIRB rules for foreign buyers in Australia. Covers who can buy, what types of property, application fees, state surcharges, and tax obligations."
+        url="/guides/foreign-buyer-firb-guide"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

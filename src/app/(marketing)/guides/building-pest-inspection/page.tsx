@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function BuildingPestInspectionPage() {
           { name: "Guides", url: "/guides" },
           { name: "Building & Pest Inspection Guide", url: "/guides/building-pest-inspection" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Building & Pest Inspection Guide: What to Expect and What to Look For (2026)"
+        description="Why you need a building and pest inspection, what's inspected, common defects found, how to read the report, and how to negotiate after. Updated 2026."
+        url="/guides/building-pest-inspection"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

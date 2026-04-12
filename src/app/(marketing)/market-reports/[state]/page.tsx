@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, TrendingUp, Home, DollarSign, Clock } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import {
   getStateMarketData,
@@ -151,6 +151,10 @@ export default async function StateMarketReportPage({
 
   const data = await getStateMarketData(state);
 
+  const stateName = getStateNameForReport(state);
+  const reportTitle = `${stateName} Property Market Report ${CURRENT_YEAR}`;
+  const reportDescription = `${stateName} property market data for ${CURRENT_YEAR} — median prices, annual growth, top suburbs and affordability rankings.`;
+
   const housePrice = data.avgMedianHousePrice
     ? formatPrice(data.avgMedianHousePrice)
     : "N/A";
@@ -167,6 +171,12 @@ export default async function StateMarketReportPage({
           { name: "Market Reports", url: "/market-reports" },
           { name: data.stateName, url: `/market-reports/${state}` },
         ]}
+      />
+      <GuideArticleJsonLd
+        title={reportTitle}
+        description={reportDescription}
+        url={"/market-reports/" + state}
+        datePublished="2026-01-01"
       />
       <Breadcrumbs
         items={[

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function RealEstateAgentFeesPage() {
           { name: "Guides", url: "/guides" },
           { name: "Real Estate Agent Fees Australia", url: "/guides/real-estate-agent-fees-australia" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Real Estate Agent Fees & Commission Rates in Australia (2026)"
+        description="What do real estate agents charge in Australia? Commission rates by state, what's included, marketing costs, and how to negotiate. Updated for 2026."
+        url="/guides/real-estate-agent-fees-australia"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

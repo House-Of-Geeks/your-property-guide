@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { BookOpen, Home, TrendingUp, Key, DollarSign, FileText } from "lucide-react";
 
@@ -165,6 +165,11 @@ const categories = [
 export default function GuidesHubPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+      <CollectionPageJsonLd
+        name="Property Guides"
+        description="Free Australian property guides covering buying, renting, investing, and more."
+        url="/guides"
+      />
       <BreadcrumbJsonLd items={[{ name: "Guides", url: "/guides" }]} />
       <Breadcrumbs items={[{ label: "Guides" }]} />
 

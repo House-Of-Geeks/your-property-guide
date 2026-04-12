@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function FirstHomeBuyerSAPage() {
           { name: "Guides", url: "/guides" },
           { name: "First Home Buyer Guide SA", url: "/guides/first-home-buyer-sa" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="First Home Buyer Guide South Australia: Grants, Stamp Duty & Schemes (2026)"
+        description="Complete guide for first home buyers in South Australia. FHOG $15,000, stamp duty rules, First Home Guarantee, HomeSeeker SA shared equity, and off-the-plan concessions. Updated 2026."
+        url="/guides/first-home-buyer-sa"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

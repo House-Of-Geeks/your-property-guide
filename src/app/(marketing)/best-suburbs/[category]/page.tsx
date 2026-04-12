@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, ItemListJsonLd } from "@/components/seo";
 import { getRankedSuburbs, type RankingCategory, type RankedSuburb } from "@/lib/services/suburb-rankings-service";
 import { formatPrice, formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
@@ -219,6 +219,15 @@ export default async function BestSuburbsCategoryPage({ params, searchParams }: 
           { name: "Best Suburbs", url: "/best-suburbs" },
           { name: config.title, url: `/best-suburbs/${category}` },
         ]}
+      />
+      <ItemListJsonLd
+        name={config.title}
+        url={"/best-suburbs/" + category}
+        items={suburbs.slice(0, 20).map((s) => ({
+          name: s.name,
+          url: "/suburbs/" + s.slug,
+          description: s.medianHousePrice ? formatPrice(s.medianHousePrice) : undefined,
+        }))}
       />
 
       {/* Hero */}

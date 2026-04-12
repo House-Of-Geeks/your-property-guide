@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function SMSFPropertyGuidePage() {
           { name: "Guides", url: "/guides" },
           { name: "SMSF Property Guide", url: "/guides/smsf-property-guide" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Buying Property in an SMSF: Complete Guide for 2026"
+        description="Complete guide to buying property in a self-managed super fund (SMSF). Sole purpose test, residential vs commercial rules, LRBA borrowing, bare trust structure, tax advantages, costs, and who it suits. Updated 2026."
+        url="/guides/smsf-property-guide"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

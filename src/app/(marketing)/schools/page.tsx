@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { GraduationCap, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { searchSchools } from "@/lib/services/school-service";
 import { makeSchoolSlug } from "@/lib/utils/school";
 import { SITE_URL } from "@/lib/constants";
@@ -115,6 +116,12 @@ export default async function SchoolsPage({ searchParams }: SchoolsPageProps) {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <CollectionPageJsonLd
+        name="Australian Schools"
+        description="Search and explore Australian schools with enrolment data and catchment information."
+        url="/schools"
+      />
+      <BreadcrumbJsonLd items={[{ name: "Schools", url: "/schools" }]} />
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { getAllPostcodesWithState } from "@/lib/services/postcode-service";
 import { SITE_URL } from "@/lib/constants";
 
@@ -48,6 +48,11 @@ export default async function PostcodesPage() {
 
   return (
     <>
+      <CollectionPageJsonLd
+        name="Browse by Postcode"
+        description="Browse Australian suburb and property data by postcode."
+        url="/postcodes"
+      />
       <BreadcrumbJsonLd items={[{ name: "Postcodes", url: "/postcodes" }]} />
 
       {/* Hero */}

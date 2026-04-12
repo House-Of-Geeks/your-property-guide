@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function LMIGuidePage() {
           { name: "Guides", url: "/guides" },
           { name: "Lenders Mortgage Insurance Guide", url: "/guides/lenders-mortgage-insurance-guide" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Lenders Mortgage Insurance (LMI): What It Is, What It Costs, and How to Avoid It (2026)"
+        description="Complete guide to Lenders Mortgage Insurance (LMI) in Australia. What LMI is, when it applies, how much it costs, who provides it (Helia and Arch), and how to avoid it through the First Home Guarantee, guarantor loans, or professional packages. Updated 2026."
+        url="/guides/lenders-mortgage-insurance-guide"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

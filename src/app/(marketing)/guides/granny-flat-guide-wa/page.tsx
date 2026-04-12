@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function GrannyFlatGuideWAPage() {
           { name: "Guides", url: "/guides" },
           { name: "Granny Flat Guide WA", url: "/guides/granny-flat-guide-wa" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Granny Flat Guide Western Australia: Rules, Costs & Approvals (2026)"
+        description="Complete guide to building a granny flat (ancillary dwelling) in Western Australia. R-Code requirements, lot sizes, building permit process, owner-occupier rules, costs $80k–$200k, and Perth rental demand. Updated 2026."
+        url="/guides/granny-flat-guide-wa"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

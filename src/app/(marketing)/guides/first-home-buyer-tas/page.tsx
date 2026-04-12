@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function FirstHomeBuyerTasPage() {
           { name: "Guides", url: "/guides" },
           { name: "First Home Buyer Guide Tasmania", url: "/guides/first-home-buyer-tas" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="First Home Buyer Guide Tasmania: Grants, Stamp Duty & Schemes (2026)"
+        description="First home buyer guide for Tasmania. FHOG $30,000, 50% stamp duty concession on established homes, First Home Guarantee price caps, and why Tasmania remains one of Australia's most affordable states. Updated 2026."
+        url="/guides/first-home-buyer-tas"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

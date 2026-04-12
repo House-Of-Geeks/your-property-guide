@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function PropertyAuctionGuidePage() {
           { name: "Guides", url: "/guides" },
           { name: "Property Auction Guide", url: "/guides/property-auction-guide" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Property Auction Guide: How to Bid and Win at Auction in Australia (2026)"
+        description="Everything you need to know about buying at auction in Australia: how auctions work, bidding strategies, registration, finance, and what to do if the property passes in. Updated 2026."
+        url="/guides/property-auction-guide"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

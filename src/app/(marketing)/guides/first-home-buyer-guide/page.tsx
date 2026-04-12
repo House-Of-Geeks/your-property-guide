@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function FirstHomeBuyerGuidePage() {
           { name: "Guides", url: "/guides" },
           { name: "First Home Buyer Guide", url: "/guides/first-home-buyer-guide" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="First Home Buyer Guide Australia: Grants, Schemes & Steps (2026)"
+        description="Complete guide for Australian first home buyers: federal grants and schemes (FHBG, Family Home Guarantee), state grants by state, stamp duty concessions, and step-by-step buying advice."
+        url="/guides/first-home-buyer-guide"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

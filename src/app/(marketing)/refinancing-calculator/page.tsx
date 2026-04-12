@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { RefinancingCalculator } from "@/components/calculators/RefinancingCalculator";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, FAQPageJsonLd, WebApplicationJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -52,6 +52,11 @@ export default function RefinancingCalculatorPage() {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
       <BreadcrumbJsonLd
         items={[{ name: "Refinancing Calculator", url: "/refinancing-calculator" }]}
+      />
+      <WebApplicationJsonLd
+        name="Refinancing Calculator"
+        description="Calculate savings from refinancing your home loan and your break-even point."
+        url="/refinancing-calculator"
       />
       <FAQPageJsonLd faqs={FAQS} />
       <Breadcrumbs items={[{ label: "Refinancing Calculator" }]} />

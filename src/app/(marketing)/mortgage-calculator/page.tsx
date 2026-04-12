@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { MortgageCalculator } from "@/components/calculators/MortgageCalculator";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, FAQPageJsonLd, WebApplicationJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -46,6 +46,11 @@ export default function MortgageCalculatorPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
       <BreadcrumbJsonLd items={[{ name: "Mortgage Calculator", url: "/mortgage-calculator" }]} />
+      <WebApplicationJsonLd
+        name="Mortgage Repayment Calculator"
+        description="Calculate Australian mortgage repayments, total interest, and full amortization schedule."
+        url="/mortgage-calculator"
+      />
       <FAQPageJsonLd faqs={FAQS} />
       <Breadcrumbs items={[{ label: "Mortgage Calculator" }]} />
 

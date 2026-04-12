@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function RentersRightsNTPage() {
           { name: "Guides", url: "/guides" },
           { name: "Renter's Rights NT", url: "/guides/renters-rights-nt" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Renter's Rights in the Northern Territory: Complete Guide (2026)"
+        description="Complete guide to tenant rights in the Northern Territory. Bond rules, rent increases (30 days notice), remote community housing, NTCAT dispute resolution, and key NT tenancy protections. Updated 2026."
+        url="/guides/renters-rights-nt"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

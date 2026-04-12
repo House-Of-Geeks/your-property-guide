@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function DownsizersGuidePage() {
           { name: "Guides", url: "/guides" },
           { name: "Downsizer's Guide", url: "/guides/downsizers-guide" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Downsizer's Guide to Property in Australia: Super Contributions & Concessions (2026)"
+        description="Complete guide for Australian property downsizers. Downsizer super contribution ($300k per person), stamp duty concessions, over-55 communities, retirement villages, CGT main residence exemption, and Centrelink implications. Updated 2026."
+        url="/guides/downsizers-guide"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

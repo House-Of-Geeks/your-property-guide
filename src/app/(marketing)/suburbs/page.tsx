@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { TrendingUp } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { getSuburbs } from "@/lib/services/suburb-service";
 import { formatPrice, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
@@ -23,6 +23,11 @@ export default async function SuburbsPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+      <CollectionPageJsonLd
+        name="Suburb Profiles"
+        description="Browse suburb profiles across Australia with median prices, school data, and local insights."
+        url="/suburbs"
+      />
       <BreadcrumbJsonLd items={[{ name: "Suburbs", url: "/suburbs" }]} />
       <Breadcrumbs items={[{ label: "Suburbs" }]} />
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function RentersRightsVICPage() {
           { name: "Guides", url: "/guides" },
           { name: "Renter's Rights Victoria", url: "/guides/renters-rights-vic" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Renter's Rights in Victoria: Complete Guide (2026)"
+        description="Victoria's renter rights explained: no-grounds evictions abolished, pet ownership, bond rules, rent increases, VCAT disputes. Updated for 2026."
+        url="/guides/renters-rights-vic"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

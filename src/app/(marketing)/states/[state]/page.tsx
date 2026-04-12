@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MapPin, Home, TrendingUp, GraduationCap, Building2 } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, PlaceJsonLd, ItemListJsonLd } from "@/components/seo";
 import {
   getStateStats,
   getStateRegions,
@@ -69,6 +69,16 @@ export default async function StatePage({ params }: StatePageProps) {
           { name: "States", url: "/states" },
           { name: stateName, url: `/states/${stateSlug}` },
         ]}
+      />
+      <PlaceJsonLd
+        name={stateName}
+        url={"/states/" + stateSlug}
+        addressRegion={upperState}
+      />
+      <ItemListJsonLd
+        name={"Top suburbs in " + stateName}
+        url={"/states/" + stateSlug}
+        items={topSuburbs.slice(0, 10).map((s) => ({ name: s.name, url: "/suburbs/" + s.slug }))}
       />
 
       {/* Hero */}

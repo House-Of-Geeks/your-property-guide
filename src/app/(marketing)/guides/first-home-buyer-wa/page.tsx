@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -27,6 +27,12 @@ export default function FirstHomeBuyerWAPage() {
           { name: "First Home Buyer Guide", url: "/guides/first-home-buyer-guide" },
           { name: "WA", url: "/guides/first-home-buyer-wa" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="First Home Buyer Guide WA: $10K Grant, Stamp Duty & Schemes (2026)"
+        description="Western Australia first home buyer guide: $10,000 FHOG for new homes under $750K, stamp duty exemption under $450K, concession to $600K, federal schemes. Updated 2026."
+        url="/guides/first-home-buyer-wa"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

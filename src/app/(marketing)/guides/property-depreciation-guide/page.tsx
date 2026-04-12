@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function PropertyDepreciationGuidePage() {
           { name: "Guides", url: "/guides" },
           { name: "Property Depreciation Guide", url: "/guides/property-depreciation-guide" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Property Depreciation: How Investors Maximise Tax Deductions (2026)"
+        description="Complete guide to property depreciation for Australian investors. Division 40 and Division 43, who can claim, the 2017 rules change, quantity surveyor reports, worked examples, and how to claim in your tax return. Updated 2026."
+        url="/guides/property-depreciation-guide"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

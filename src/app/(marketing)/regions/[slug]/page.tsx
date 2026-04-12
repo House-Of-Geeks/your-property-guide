@@ -4,7 +4,7 @@ import Link from "next/link";
 import { MapPin, TrendingUp, Home, Building2 } from "lucide-react";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, PlaceJsonLd, ItemListJsonLd } from "@/components/seo";
 import {
   getRegionBySlug,
   getRegionSuburbs,
@@ -68,6 +68,16 @@ export default async function RegionPage({ params }: RegionPageProps) {
           { name: "Regions", url: "/regions" },
           { name: region.region, url: `/regions/${slug}` },
         ]}
+      />
+      <PlaceJsonLd
+        name={region.region}
+        url={"/regions/" + slug}
+        addressRegion={region.state}
+      />
+      <ItemListJsonLd
+        name={"Suburbs in " + region.region}
+        url={"/regions/" + slug}
+        items={suburbs.slice(0, 20).map((s) => ({ name: s.name, url: "/suburbs/" + s.slug }))}
       />
 
       {/* Hero */}

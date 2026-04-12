@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function FixedVsVariableRateGuidePage() {
           { name: "Guides", url: "/guides" },
           { name: "Fixed vs Variable Rate Guide", url: "/guides/fixed-vs-variable-rate-guide" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="Fixed vs Variable Rate Home Loans: Which is Better in 2026?"
+        description="Complete guide to fixed vs variable rate home loans in Australia. Pros and cons of each, split loans, break costs explained, the RBA rate context for 2026, and the key questions to ask before fixing. Updated 2026."
+        url="/guides/fixed-vs-variable-rate-guide"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

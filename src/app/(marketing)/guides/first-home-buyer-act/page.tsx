@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -26,6 +26,12 @@ export default function FirstHomeBuyerACTPage() {
           { name: "Guides", url: "/guides" },
           { name: "First Home Buyer Guide ACT", url: "/guides/first-home-buyer-act" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="First Home Buyer Guide ACT: Schemes, Stamp Duty & Canberra Property (2026)"
+        description="First home buyer guide for the ACT. No FHOG — instead get full stamp duty waiver via the Home Buyer Concession Scheme, ACT Shared Equity scheme, $750,000 First Home Guarantee cap, and leasehold land explained. Updated 2026."
+        url="/guides/first-home-buyer-act"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -27,6 +27,12 @@ export default function FirstHomeBuyerQLDPage() {
           { name: "First Home Buyer Guide", url: "/guides/first-home-buyer-guide" },
           { name: "QLD", url: "/guides/first-home-buyer-qld" },
         ]}
+      />
+      <GuideArticleJsonLd
+        title="First Home Buyer Guide QLD: $30K Grant, Stamp Duty & Schemes (2026)"
+        description="Queensland first home buyer guide: $30,000 FHOG for new homes under $750K, stamp duty concession for homes under $550K, federal schemes, and QLD buying tips. Updated 2026."
+        url="/guides/first-home-buyer-qld"
+        datePublished="2026-04-01"
       />
       <Breadcrumbs
         items={[

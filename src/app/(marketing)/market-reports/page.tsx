@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BarChart2 } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -74,6 +74,11 @@ const STATES = [
 export default function MarketReportsHubPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+      <CollectionPageJsonLd
+        name="Property Market Reports"
+        description="Australian state property market reports with median prices and suburb rankings."
+        url="/market-reports"
+      />
       <BreadcrumbJsonLd items={[{ name: "Market Reports", url: "/market-reports" }]} />
       <Breadcrumbs items={[{ label: "Market Reports" }]} />
 
