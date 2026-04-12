@@ -9,6 +9,7 @@ import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { SchoolListingControls } from "@/components/school/SchoolListingControls";
 import { SchoolSearchBar } from "@/components/school/SchoolSearchBar";
 import { SITE_URL } from "@/lib/constants";
+import { BreadcrumbJsonLd, EducationalOrganizationJsonLd } from "@/components/seo";
 
 interface SchoolPageProps {
   params: Promise<{ slug: string }>;
@@ -108,7 +109,21 @@ export default async function SchoolPage({ params, searchParams }: SchoolPagePro
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Schools", url: "/schools" },
+          { name: school.name, url: `/schools/${slug}` },
+        ]}
+      />
+      <EducationalOrganizationJsonLd
+        name={school.name}
+        url={"/schools/" + slug}
+        address={{ suburb: school.suburb.name, state: school.suburb.state, postcode: school.suburb.postcode }}
+        educationalLevel={typeLabel(school.type)}
+        website={school.website ?? undefined}
+      />
+      <div className="min-h-screen bg-gray-50">
       {/* Sticky search/filter bar */}
       <Suspense fallback={null}>
         <SchoolSearchBar schoolName={school.name} currentMode={listingType} />
@@ -279,5 +294,6 @@ export default async function SchoolPage({ params, searchParams }: SchoolPagePro
         </div>
       </div>
     </div>
+    </>
   );
 }

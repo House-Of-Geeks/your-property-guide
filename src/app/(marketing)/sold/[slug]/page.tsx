@@ -4,7 +4,7 @@ import { Bed, Bath, Car, MapPin, Calendar } from "lucide-react";
 import { PropertyGallery } from "@/components/property/PropertyGallery";
 import { AgentSidebarCard } from "@/components/property/AgentSidebarCard";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, PropertyJsonLd } from "@/components/seo";
 import { Badge } from "@/components/ui";
 import { getPropertyBySlug } from "@/lib/services/property-service";
 import { getAgentById, getAgencyById } from "@/lib/services/agent-service";
@@ -58,6 +58,7 @@ export default async function SoldDetailPage({ params }: SoldDetailPageProps) {
           { name: property.address.street, url: `/sold/${property.slug}` },
         ]}
       />
+      <PropertyJsonLd property={property} />
       <Breadcrumbs
         items={[
           { label: "Sold", href: "/sold" },
