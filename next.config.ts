@@ -3,13 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async redirects() {
     return [
-      // www → non-www (canonical domain enforcement)
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "www.yourpropertyguide.com.au" }],
-        destination: "https://yourpropertyguide.com.au/:path*",
-        permanent: true,
-      },
       {
         source: "/agencies",
         destination: "/real-estate-agencies",
