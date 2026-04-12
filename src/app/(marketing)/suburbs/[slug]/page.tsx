@@ -7,12 +7,15 @@ import { SuburbSchools } from "@/components/suburb/SuburbSchools";
 import { SuburbWalkability } from "@/components/suburb/SuburbWalkability";
 import { SuburbHazard } from "@/components/suburb/SuburbHazard";
 import { SuburbClimate } from "@/components/suburb/SuburbClimate";
+import { SuburbCrime } from "@/components/suburb/SuburbCrime";
+import { SuburbInvestment } from "@/components/suburb/SuburbInvestment";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { Badge, Button } from "@/components/ui";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getPropertiesBySuburb } from "@/lib/services/property-service";
+import { getLatestSuburbCrime } from "@/lib/services/data-freshness";
 import { suburbTitle, suburbDescription } from "@/lib/utils/seo";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
@@ -39,7 +42,10 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) notFound();
 
-  const properties = await getPropertiesBySuburb(slug, 6);
+  const [properties, crimeStat] = await Promise.all([
+    getPropertiesBySuburb(slug, 6),
+    getLatestSuburbCrime(slug),
+  ]);
 
   return (
     <>
@@ -119,6 +125,14 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           />
         </section>
 
+        {/* Investment Overview */}
+        {(suburb.stats.medianHousePrice > 0 || suburb.stats.medianUnitPrice > 0) && (
+          <section id="investment" className="scroll-mt-16">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Investment Overview</h2>
+            <SuburbInvestment suburb={suburb} />
+          </section>
+        )}
+
         {/* Demographics */}
         <section id="demographics" className="scroll-mt-16">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Demographics</h2>
@@ -152,6 +166,28 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             label="Demographics"
             asOf={suburb.dataFreshness?.censusAsOf ?? null}
             source="ABS 2021 Census"
+          />
+        </section>
+
+        {/* Crime & Safety */}
+        <section id="crime" className="scroll-mt-16">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Crime &amp; Safety</h2>
+          <SuburbCrime
+            crimeStat={
+              crimeStat
+                ? {
+                    totalOffences: crimeStat.totalOffences,
+                    offenceBreakdown: crimeStat.offenceBreakdown,
+                    period: crimeStat.period,
+                    state: crimeStat.state,
+                  }
+                : null
+            }
+          />
+          <DataFreshnessNote
+            label="Crime"
+            asOf={suburb.dataFreshness?.crimeAsOf ?? null}
+            source="State Police Open Data"
           />
         </section>
 
@@ -256,7 +292,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
               <h2 className="text-2xl font-bold text-gray-900">
                 Properties in {suburb.name}
               </h2>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <Link href={`/suburbs/${suburb.slug}/buy`}>
                   <Button variant="outline" size="sm">
                     For Sale <ArrowRight className="w-4 h-4" />
@@ -265,6 +301,21 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 <Link href={`/suburbs/${suburb.slug}/rent`}>
                   <Button variant="outline" size="sm">
                     For Rent <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+                <Link href={`/suburbs/${suburb.slug}/houses`}>
+                  <Button variant="outline" size="sm">
+                    Houses
+                  </Button>
+                </Link>
+                <Link href={`/suburbs/${suburb.slug}/units`}>
+                  <Button variant="outline" size="sm">
+                    Units
+                  </Button>
+                </Link>
+                <Link href={`/suburbs/${suburb.slug}/townhouses`}>
+                  <Button variant="outline" size="sm">
+                    Townhouses
                   </Button>
                 </Link>
               </div>
