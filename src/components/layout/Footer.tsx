@@ -2,7 +2,23 @@ import Link from "next/link";
 import Image from "next/image";
 import { headers } from "next/headers";
 import { db } from "@/lib/db";
-import { UserCircle } from "lucide-react";
+import { UserCircle, Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
+
+const SOCIAL_LINKS = [
+  { label: "Facebook",  href: "#", icon: Facebook },
+  { label: "Instagram", href: "#", icon: Instagram },
+  { label: "LinkedIn",  href: "#", icon: Linkedin },
+  { label: "YouTube",   href: "#", icon: Youtube },
+  {
+    label: "X (Twitter)",
+    href: "#",
+    icon: ({ className }: { className?: string }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+      </svg>
+    ),
+  },
+];
 
 const FOOTER_COLUMNS = [
   {
@@ -125,13 +141,27 @@ function AgentLoginPill() {
 function FooterBottom() {
   return (
     <div className="mt-12 pt-8 border-t border-white/10">
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
         <Link href="/" className="flex items-center">
           <Image src="/images/Your-Property-Guide.png" alt="Your Property Guide" width={400} height={64} className="h-16 w-auto invert" />
         </Link>
-        <p className="text-sm text-white/30">
-          &copy; {new Date().getFullYear()} Your Property Guide. All rights reserved.
-        </p>
+        <div className="flex flex-col items-center gap-3">
+          <div className="flex gap-4">
+            {SOCIAL_LINKS.map(({ label, href, icon: Icon }) => (
+              <Link
+                key={label}
+                href={href}
+                aria-label={label}
+                className="text-white/40 hover:text-white transition-colors"
+              >
+                <Icon className="w-5 h-5" />
+              </Link>
+            ))}
+          </div>
+          <p className="text-sm text-white/30">
+            &copy; {new Date().getFullYear()} Your Property Guide. All rights reserved.
+          </p>
+        </div>
         <div className="flex gap-6">
           <Link href="/privacy" className="text-sm text-white/40 hover:text-white transition-colors">Privacy</Link>
           <Link href="/contact" className="text-sm text-white/40 hover:text-white transition-colors">Contact</Link>

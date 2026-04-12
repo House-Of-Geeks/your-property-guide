@@ -97,13 +97,25 @@ export async function getPropertyBySlug(slug: string): Promise<Property | null> 
 }
 
 export async function getFeaturedProperties(limit = 6): Promise<Property[]> {
-  const rows = await db.property.findMany({
-    where: { isFeatured: true, listingType: "buy" },
+  const featured = await db.property.findMany({
+    where: { isFeatured: true, listingType: "buy", status: "active" },
     orderBy: { dateAdded: "desc" },
     take: limit,
     include: includeImages,
   });
-  return rows.map(toProperty);
+  if (featured.length >= limit) return featured.map(toProperty);
+
+  const remaining = await db.property.findMany({
+    where: {
+      listingType: "buy",
+      status: "active",
+      id: { notIn: featured.map((p) => p.id) },
+    },
+    orderBy: { dateAdded: "desc" },
+    take: limit - featured.length,
+    include: includeImages,
+  });
+  return [...featured, ...remaining].map(toProperty);
 }
 
 export async function getPropertiesBySuburb(suburbSlug: string, limit?: number): Promise<Property[]> {
