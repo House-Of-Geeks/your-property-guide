@@ -6,4 +6,10 @@ export {
   ArticleJsonLd,
   BreadcrumbJsonLd,
   FAQPageJsonLd,
+  PlaceJsonLd,
+  EducationalOrganizationJsonLd,
+  WebApplicationJsonLd,
+  ItemListJsonLd,
+  CollectionPageJsonLd,
+  GuideArticleJsonLd,
 } from "./JsonLd";

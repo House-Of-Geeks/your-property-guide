@@ -234,3 +234,223 @@ export function FAQPageJsonLd({
     />
   );
 }
+
+export function PlaceJsonLd({
+  name,
+  description,
+  url,
+  addressLocality,
+  addressRegion,
+  postalCode,
+  latitude,
+  longitude,
+}: {
+  name: string;
+  description?: string;
+  url: string;
+  addressLocality?: string;
+  addressRegion?: string;
+  postalCode?: string;
+  latitude?: number;
+  longitude?: number;
+}) {
+  return (
+    <JsonLdScript
+      data={{
+        "@context": "https://schema.org",
+        "@type": "Place",
+        name,
+        ...(description && { description }),
+        url: `${SITE_URL}${url}`,
+        address: {
+          "@type": "PostalAddress",
+          ...(addressLocality && { addressLocality }),
+          ...(addressRegion && { addressRegion }),
+          ...(postalCode && { postalCode }),
+          addressCountry: "AU",
+        },
+        ...(latitude && longitude && {
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude,
+            longitude,
+          },
+        }),
+      }}
+    />
+  );
+}
+
+export function EducationalOrganizationJsonLd({
+  name,
+  description,
+  url,
+  address,
+  educationalLevel,
+  telephone,
+  website,
+}: {
+  name: string;
+  description?: string;
+  url: string;
+  address: { street?: string; suburb: string; state: string; postcode: string };
+  educationalLevel?: string;
+  telephone?: string;
+  website?: string;
+}) {
+  return (
+    <JsonLdScript
+      data={{
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        name,
+        ...(description && { description }),
+        url: `${SITE_URL}${url}`,
+        address: {
+          "@type": "PostalAddress",
+          ...(address.street && { streetAddress: address.street }),
+          addressLocality: address.suburb,
+          addressRegion: address.state,
+          postalCode: address.postcode,
+          addressCountry: "AU",
+        },
+        ...(educationalLevel && { educationalLevel }),
+        ...(telephone && { telephone }),
+        ...(website && { sameAs: [website] }),
+      }}
+    />
+  );
+}
+
+export function WebApplicationJsonLd({
+  name,
+  description,
+  url,
+  applicationCategory,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  applicationCategory?: string;
+}) {
+  return (
+    <JsonLdScript
+      data={{
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        name,
+        description,
+        url: `${SITE_URL}${url}`,
+        applicationCategory: applicationCategory ?? "FinanceApplication",
+        operatingSystem: "Web",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "AUD",
+        },
+        publisher: {
+          "@type": "Organization",
+          name: SITE_NAME,
+          url: SITE_URL,
+        },
+      }}
+    />
+  );
+}
+
+export function ItemListJsonLd({
+  name,
+  description,
+  url,
+  items,
+}: {
+  name: string;
+  description?: string;
+  url: string;
+  items: { name: string; url: string; description?: string }[];
+}) {
+  return (
+    <JsonLdScript
+      data={{
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name,
+        ...(description && { description }),
+        url: `${SITE_URL}${url}`,
+        numberOfItems: items.length,
+        itemListElement: items.map((item, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: item.name,
+          url: item.url.startsWith("http") ? item.url : `${SITE_URL}${item.url}`,
+          ...(item.description && { description: item.description }),
+        })),
+      }}
+    />
+  );
+}
+
+export function CollectionPageJsonLd({
+  name,
+  description,
+  url,
+}: {
+  name: string;
+  description?: string;
+  url: string;
+}) {
+  return (
+    <JsonLdScript
+      data={{
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name,
+        ...(description && { description }),
+        url: `${SITE_URL}${url}`,
+        publisher: {
+          "@type": "Organization",
+          name: SITE_NAME,
+          url: SITE_URL,
+        },
+      }}
+    />
+  );
+}
+
+export function GuideArticleJsonLd({
+  title,
+  description,
+  url,
+  datePublished,
+  dateModified,
+}: {
+  title: string;
+  description: string;
+  url: string;
+  datePublished: string;
+  dateModified?: string;
+}) {
+  return (
+    <JsonLdScript
+      data={{
+        "@context": "https://schema.org",
+        "@type": "Article",
+        headline: title,
+        description,
+        url: `${SITE_URL}${url}`,
+        datePublished,
+        dateModified: dateModified ?? datePublished,
+        author: {
+          "@type": "Organization",
+          name: SITE_NAME,
+          url: SITE_URL,
+        },
+        publisher: {
+          "@type": "Organization",
+          name: SITE_NAME,
+          url: SITE_URL,
+        },
+      }}
+    />
+  );
+}
