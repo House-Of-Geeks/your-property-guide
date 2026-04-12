@@ -5,28 +5,45 @@ import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "QLD Stamp Duty Calculator 2025-2026",
-  description: "Calculate stamp duty (transfer duty) on property purchases in Queensland. Includes first home buyer concessions and foreign buyer surcharges.",
+  title: "Stamp Duty Calculator 2025-2026 | All Australian States",
+  description:
+    "Calculate stamp duty on property purchases across all 8 Australian states and territories. Includes first home buyer concessions and foreign buyer surcharges. Updated for 2025-2026 rates.",
   alternates: { canonical: `${SITE_URL}/stamp-duty-calculator` },
-  openGraph: { url: `${SITE_URL}/stamp-duty-calculator`, title: "QLD Stamp Duty Calculator 2025-2026", description: "Calculate stamp duty (transfer duty) on property purchases in Queensland.", type: "website" },
+  openGraph: {
+    url: `${SITE_URL}/stamp-duty-calculator`,
+    title: "Stamp Duty Calculator 2025-2026 | All Australian States",
+    description:
+      "Calculate stamp duty on property purchases across all 8 Australian states and territories. Updated for 2025-2026 rates.",
+    type: "website",
+  },
   twitter: { card: "summary_large_image" },
 };
 
 const FAQS = [
   {
-    question: "How is stamp duty calculated in Queensland?",
+    question: "How is stamp duty calculated in Australia?",
     answer:
-      "Queensland transfer duty is calculated on a sliding scale based on the property purchase price. Rates range from 1.5% for properties under $75,000 up to 5.75% for properties over $1,000,000.",
+      "Stamp duty (also called transfer duty or conveyance duty) is calculated on a sliding scale based on the property purchase price. Each state and territory sets its own rates and brackets, so the amount varies significantly depending on where you buy.",
   },
   {
-    question: "Do first home buyers pay stamp duty in QLD?",
+    question: "Do first home buyers pay stamp duty?",
     answer:
-      "First home buyers in Queensland may be eligible for a stamp duty concession. Properties up to $700,000 receive a full concession, with a phased reduction for properties between $700,000 and $800,000.",
+      "Most states offer concessions or full exemptions for first home buyers. Queensland offers a full concession up to $700,000, NSW up to $800,000, VIC up to $600,000, and WA up to $450,000. The ACT has an income-tested exemption scheme. SA does not offer a stamp duty concession but has a separate First Home Owner Grant.",
   },
   {
     question: "What is the foreign buyer surcharge?",
     answer:
-      "Foreign buyers of residential property in Queensland pay an additional 8% surcharge on top of the standard transfer duty.",
+      "Foreign buyers of residential property pay an additional surcharge on top of standard duty. Rates are: NSW 8%, VIC 8%, QLD 8%, WA 7%, SA 7%, TAS 8%. The NT and ACT do not charge a foreign buyer surcharge.",
+  },
+  {
+    question: "When is stamp duty paid?",
+    answer:
+      "Stamp duty is typically due at settlement (when you take possession of the property). Your conveyancer or solicitor will arrange payment as part of the settlement process.",
+  },
+  {
+    question: "Is stamp duty tax deductible?",
+    answer:
+      "For investment properties, stamp duty forms part of the cost base of the asset and may reduce capital gains tax when you sell. It is not immediately deductible in the year of purchase. For owner-occupied homes, stamp duty is not deductible. Always consult a tax professional for your specific situation.",
   },
 ];
 
@@ -39,10 +56,11 @@ export default function StampDutyCalculatorPage() {
 
       <div className="text-center mb-10">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
-          QLD Stamp Duty Calculator
+          Stamp Duty Calculator
         </h1>
         <p className="text-gray-500 mt-2 max-w-xl mx-auto">
-          Estimate your transfer duty costs for property purchases in Queensland. Updated for 2025-2026 rates.
+          Estimate your stamp duty costs for property purchases across all Australian states and territories.
+          Select your state to see accurate 2025-2026 rates.
         </p>
       </div>
 
