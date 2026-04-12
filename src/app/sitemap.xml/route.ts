@@ -12,6 +12,9 @@ const SITEMAPS = [
   `${SITE_URL}/real-estate-agencies/sitemap.xml`,
   `${SITE_URL}/blog/sitemap.xml`,
   `${SITE_URL}/schools/sitemap.xml`,
+  `${SITE_URL}/postcodes/sitemap.xml`,
+  `${SITE_URL}/states/sitemap.xml`,
+  `${SITE_URL}/best-suburbs/sitemap.xml`,
 ];
 
 export function GET() {

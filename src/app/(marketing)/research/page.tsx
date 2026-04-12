@@ -10,6 +10,11 @@ import {
   Building2,
   Star,
   ArrowRight,
+  TrendingUp,
+  Home,
+  RefreshCw,
+  Receipt,
+  Hash,
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -44,7 +49,48 @@ interface ResearchSection {
 
 const sections: ResearchSection[] = [
   {
-    heading: "Market Data & Prices",
+    heading: "Calculators",
+    cards: [
+      {
+        icon: <Calculator className="w-6 h-6" />,
+        title: "Mortgage Calculator",
+        description: "Calculate your repayments and total interest over the loan term",
+        href: "/mortgage-calculator",
+      },
+      {
+        icon: <FileText className="w-6 h-6" />,
+        title: "Stamp Duty Calculator",
+        description: "Estimate stamp duty costs by state — including first home buyer concessions",
+        href: "/stamp-duty-calculator",
+      },
+      {
+        icon: <Home className="w-6 h-6" />,
+        title: "Borrowing Power Calculator",
+        description: "Find out how much you can borrow based on your income and expenses",
+        href: "/borrowing-power-calculator",
+      },
+      {
+        icon: <TrendingUp className="w-6 h-6" />,
+        title: "Rental Yield Calculator",
+        description: "Calculate gross and net rental yield on your investment property",
+        href: "/rental-yield-calculator",
+      },
+      {
+        icon: <Receipt className="w-6 h-6" />,
+        title: "CGT Calculator",
+        description: "Estimate capital gains tax on your property sale, including the 50% discount",
+        href: "/cgt-calculator",
+      },
+      {
+        icon: <RefreshCw className="w-6 h-6" />,
+        title: "Refinancing Calculator",
+        description: "Find your break-even point and total savings when switching home loans",
+        href: "/refinancing-calculator",
+      },
+    ],
+  },
+  {
+    heading: "Property Research",
     cards: [
       {
         icon: <BarChart2 className="w-6 h-6" />,
@@ -59,6 +105,12 @@ const sections: ResearchSection[] = [
           "Demographics, growth trends, schools and lifestyle data for every suburb",
         href: "/suburbs",
       },
+      {
+        icon: <Hash className="w-6 h-6" />,
+        title: "Postcode Guide",
+        description: "Browse properties, prices and suburb info by Australian postcode",
+        href: "/postcodes",
+      },
     ],
   },
   {
@@ -69,23 +121,6 @@ const sections: ResearchSection[] = [
         title: "Search Schools",
         description: "Find schools by suburb and view their catchment boundaries",
         href: "/schools",
-      },
-    ],
-  },
-  {
-    heading: "Calculators",
-    cards: [
-      {
-        icon: <Calculator className="w-6 h-6" />,
-        title: "Mortgage Calculator",
-        description: "Calculate your repayments and total interest over the loan term",
-        href: "/mortgage-calculator",
-      },
-      {
-        icon: <FileText className="w-6 h-6" />,
-        title: "Stamp Duty Calculator",
-        description: "Estimate stamp duty costs by state — including first home buyer concessions",
-        href: "/stamp-duty-calculator",
       },
     ],
   },

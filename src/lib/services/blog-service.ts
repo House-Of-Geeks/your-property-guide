@@ -34,6 +34,23 @@ export async function getAllBlogSlugs(): Promise<string[]> {
   return rows.map((r) => r.slug);
 }
 
+export async function getBlogPostsByCategory(category: string): Promise<BlogPost[]> {
+  const rows = await db.blogPost.findMany({
+    where: { category },
+    orderBy: { publishedAt: "desc" },
+  });
+  return rows.map(toBlogPost);
+}
+
+export async function getDistinctBlogCategories(): Promise<string[]> {
+  const rows = await db.blogPost.findMany({
+    select: { category: true },
+    distinct: ["category"],
+    orderBy: { category: "asc" },
+  });
+  return rows.map((r) => r.category);
+}
+
 export async function getRelatedPosts(slug: string, limit = 3): Promise<BlogPost[]> {
   const current = await db.blogPost.findUnique({ where: { slug }, select: { category: true } });
   const rows = await db.blogPost.findMany({
