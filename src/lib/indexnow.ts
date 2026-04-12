@@ -1,4 +1,4 @@
-const HOST = "yourpropertyguide.com.au";
+const HOST = "www.yourpropertyguide.com.au";
 const BING_ENDPOINT = "https://www.bing.com/indexnow";
 
 function getKey(): string {
