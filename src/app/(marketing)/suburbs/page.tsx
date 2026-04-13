@@ -16,15 +16,16 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+// Brand palette: black, primary purple (#5c2d5e), accent pink (#DD3C70), neutral gray
 const STATES = [
-  { code: "NSW", label: "New South Wales",    bg: "bg-blue-700",    text: "text-white" },
-  { code: "VIC", label: "Victoria",           bg: "bg-indigo-900",  text: "text-white" },
-  { code: "QLD", label: "Queensland",         bg: "bg-red-800",     text: "text-white" },
-  { code: "WA",  label: "Western Australia",  bg: "bg-yellow-500",  text: "text-black" },
-  { code: "SA",  label: "South Australia",    bg: "bg-red-600",     text: "text-white" },
-  { code: "TAS", label: "Tasmania",           bg: "bg-green-700",   text: "text-white" },
-  { code: "NT",  label: "Northern Territory", bg: "bg-orange-600",  text: "text-white" },
-  { code: "ACT", label: "ACT",                bg: "bg-sky-700",     text: "text-white" },
+  { code: "NSW", label: "New South Wales",    bg: "bg-black",           text: "text-white" },
+  { code: "VIC", label: "Victoria",           bg: "bg-[#5c2d5e]",       text: "text-white" },
+  { code: "QLD", label: "Queensland",         bg: "bg-[#DD3C70]",       text: "text-white" },
+  { code: "WA",  label: "Western Australia",  bg: "bg-black",           text: "text-white" },
+  { code: "SA",  label: "South Australia",    bg: "bg-[#5c2d5e]",       text: "text-white" },
+  { code: "TAS", label: "Tasmania",           bg: "bg-[#DD3C70]",       text: "text-white" },
+  { code: "NT",  label: "Northern Territory", bg: "bg-black",           text: "text-white" },
+  { code: "ACT", label: "ACT",                bg: "bg-[#5c2d5e]",       text: "text-white" },
 ];
 
 const STATE_MAP = Object.fromEntries(STATES.map((s) => [s.code, s]));
