@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Search } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { getSuburbs } from "@/lib/services/suburb-service";
 import { SITE_URL } from "@/lib/constants";
+import { SuburbsSearchBar } from "./SuburbsSearchBar";
 
 export const dynamic = "force-dynamic";
 
@@ -81,32 +81,7 @@ export default async function SuburbsPage({ searchParams }: PageProps) {
       </div>
 
       {/* Search + state filter */}
-      <form method="GET" action="/suburbs" className="flex gap-2 mb-3 max-w-3xl mx-auto">
-        {state && <input type="hidden" name="state" value={state} />}
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <input
-            type="text"
-            name="q"
-            defaultValue={q ?? ""}
-            placeholder="Search by suburb name or postcode…"
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-black bg-white"
-          />
-        </div>
-        <select
-          name="state"
-          defaultValue={state ?? ""}
-          className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:border-black bg-white"
-        >
-          <option value="">All States</option>
-          {STATES.map((s) => (
-            <option key={s.code} value={s.code}>{s.code} — {s.label}</option>
-          ))}
-        </select>
-        <button type="submit" className="px-5 py-2.5 bg-black text-white text-sm font-medium rounded-lg hover:bg-gray-900 transition-colors">
-          Search
-        </button>
-      </form>
+      <SuburbsSearchBar defaultQ={q} defaultState={state} />
 
       {/* Count */}
       <p className="text-sm text-gray-500 mb-5 max-w-3xl mx-auto">

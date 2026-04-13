@@ -183,7 +183,14 @@ export async function getSuburbs(opts?: {
 
   const where = {
     ...(state ? { state: state.toUpperCase() } : {}),
-    ...(search ? { name: { contains: search, mode: "insensitive" as const } } : {}),
+    ...(search
+      ? {
+          OR: [
+            { name:     { contains: search, mode: "insensitive" as const } },
+            { postcode: { contains: search, mode: "insensitive" as const } },
+          ],
+        }
+      : {}),
   };
 
   const [rows, total] = await Promise.all([
