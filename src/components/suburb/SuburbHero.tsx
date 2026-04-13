@@ -5,6 +5,7 @@ import { SuburbSearch } from "./SuburbSearch";
 import type { Suburb } from "@/types";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { TrendingUp, Clock, Users } from "lucide-react";
+import { fullLgaName } from "@/lib/utils/lga-names";
 
 interface SuburbHeroProps {
   suburb: Suburb;
@@ -84,7 +85,7 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
             {suburb.state} {suburb.postcode}
           </p>
           <p className="text-sm text-white/80 mt-1 drop-shadow">
-            {suburb.region}
+            {fullLgaName(suburb.region)}
           </p>
         </div>
       </div>
