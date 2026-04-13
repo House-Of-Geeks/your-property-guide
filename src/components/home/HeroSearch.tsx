@@ -9,11 +9,11 @@ import { MultiSuburbAutocomplete, type SelectedLocation } from "@/components/sea
 import { PROPERTY_TYPES, BEDROOM_OPTIONS, PRICE_RANGES_BUY, PRICE_RANGES_RENT } from "@/lib/constants";
 
 const MODES = [
+  { value: "research",       label: "Research" },
   { value: "buy",            label: "Buy" },
   { value: "rent",           label: "Rent" },
   { value: "house-and-land", label: "House & Land" },
   { value: "sold",           label: "Sold" },
-  { value: "research",       label: "Research" },
 ] as const;
 
 type Mode = (typeof MODES)[number]["value"];
@@ -29,7 +29,7 @@ const RESEARCH_QUICK_LINKS = [
 
 export function HeroSearch() {
   const router = useRouter();
-  const [mode, setMode] = useState<Mode>("buy");
+  const [mode, setMode] = useState<Mode>("research");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [filters, setFilters] = useState({ propertyType: "", minPrice: "", maxPrice: "", minBeds: "" });
   const [selected, setSelected] = useState<SelectedLocation[]>([]);
