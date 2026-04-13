@@ -49,7 +49,7 @@ function ScoreBar({ label, score, icon }: ScoreConfig) {
 export function SuburbWalkability({ walkScore, transitScore, bikeScore }: SuburbWalkabilityProps) {
   if (walkScore === null && transitScore === null && bikeScore === null) {
     return (
-      <p className="text-sm text-gray-400 italic py-2">
+      <p className="text-sm text-gray-500 italic py-2">
         Walkability data not yet available for this suburb.
       </p>
     );

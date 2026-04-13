@@ -78,7 +78,7 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
         <div className="absolute inset-0 bg-black/30 pointer-events-none" />
         {/* Centered suburb label */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-4 text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white drop-shadow-lg">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white drop-shadow-lg leading-tight">
             {suburb.name}
           </h1>
           <p className="text-xl font-medium text-white/95 mt-2 drop-shadow">

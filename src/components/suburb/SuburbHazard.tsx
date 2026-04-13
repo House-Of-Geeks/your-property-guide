@@ -40,7 +40,7 @@ export function SuburbHazard({ floodClass, bushfireRisk, floodSource, bushfireSo
 
   if (floodLevel === null && bushfireLevel === null) {
     return (
-      <p className="text-sm text-gray-400 italic py-2">
+      <p className="text-sm text-gray-500 italic py-2">
         No significant hazard data recorded for this suburb.
       </p>
     );

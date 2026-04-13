@@ -101,7 +101,7 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
         <div className="p-4">
           <p className="font-bold text-gray-900 text-base">{price.display}</p>
           <FeatureIcons features={features} className="mt-2" />
-          <p className="text-xs text-gray-400 mt-2 truncate">{address.street}</p>
+          <p className="text-xs text-gray-500 mt-2 truncate">{address.street}</p>
         </div>
       </div>
     </Link>

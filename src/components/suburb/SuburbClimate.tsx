@@ -9,7 +9,7 @@ const MONTH_LABELS = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"
 export function SuburbClimate({ climate }: SuburbClimateProps) {
   if (!climate) {
     return (
-      <p className="text-sm text-gray-400 italic py-2">
+      <p className="text-sm text-gray-500 italic py-2">
         Climate data not yet available for this suburb.
       </p>
     );

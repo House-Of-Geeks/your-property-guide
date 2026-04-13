@@ -85,7 +85,7 @@ export function SchoolFinderCallout() {
 
                 {/* Nearby listings */}
                 <div className="border-t border-gray-100 pt-3">
-                  <p className="text-xs font-medium text-gray-400 mb-2.5 uppercase tracking-wide">Nearby properties</p>
+                  <p className="text-xs font-medium text-gray-500 mb-2.5 uppercase tracking-wide">Nearby properties</p>
                   <div className="space-y-2">
                     {[
                       { address: "12 Redland Bay Rd, Capalaba", detail: "3 bed · 2 bath · $720k" },

@@ -58,11 +58,18 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  line-height: 1.625; /* leading-relaxed — more comfortable than Tailwind's default 1.5 */
 }
 
-/* Playfair Display on all headings */
+/* Playfair Display on all headings with appropriate leading */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display), Georgia, serif;
+}
+
+/* Tailwind's text-5xl / text-6xl set line-height:1 which is too tight for headings that may wrap.
+   Override to a minimum of 1.15 for all h1 elements. */
+h1 {
+  line-height: 1.15;
 }
 
 /* Brand utilities — restrained accent only on primary CTA */

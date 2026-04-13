@@ -28,7 +28,7 @@ export function SuburbCrime({ crimeStat }: SuburbCrimeProps) {
   if (!crimeStat) {
     return (
       <div className="bg-white rounded-2xl border border-gray-100 p-5">
-        <p className="text-sm text-gray-400 italic">
+        <p className="text-sm text-gray-500 italic">
           Crime data not available for this suburb.
         </p>
       </div>
@@ -78,7 +78,7 @@ export function SuburbCrime({ crimeStat }: SuburbCrimeProps) {
                     </span>
                     <span className="text-gray-500 tabular-nums">
                       {count.toLocaleString()}{" "}
-                      <span className="text-gray-400">
+                      <span className="text-gray-500">
                         ({pct.toFixed(1)}%)
                       </span>
                     </span>
@@ -96,10 +96,10 @@ export function SuburbCrime({ crimeStat }: SuburbCrimeProps) {
         )}
 
         <div className="mt-4 pt-4 border-t border-gray-50 space-y-1">
-          <p className="text-xs text-gray-400 italic">
+          <p className="text-xs text-gray-500 italic">
             Crime statistics are reported at LGA level and may cover a broader area than this suburb.
           </p>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-500">
             Source: State Police Open Data
           </p>
         </div>
