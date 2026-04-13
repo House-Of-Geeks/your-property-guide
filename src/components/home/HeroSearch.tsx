@@ -13,9 +13,19 @@ const MODES = [
   { value: "rent",           label: "Rent" },
   { value: "house-and-land", label: "House & Land" },
   { value: "sold",           label: "Sold" },
+  { value: "research",       label: "Research" },
 ] as const;
 
 type Mode = (typeof MODES)[number]["value"];
+
+const RESEARCH_QUICK_LINKS = [
+  { label: "Suburb profiles",   href: "/suburbs" },
+  { label: "School catchments", href: "/schools" },
+  { label: "Best suburbs",      href: "/best-suburbs" },
+  { label: "Market reports",    href: "/market-reports" },
+  { label: "Browse by postcode", href: "/postcodes" },
+  { label: "Browse by state",   href: "/states" },
+];
 
 export function HeroSearch() {
   const router = useRouter();
@@ -29,6 +39,12 @@ export function HeroSearch() {
   }
 
   function addLocation(loc: SelectedLocation) {
+    if (mode === "research") {
+      // In research mode — navigate directly to the profile page
+      if (loc.type === "school") router.push(`/schools/${loc.slug}`);
+      else router.push(`/suburbs/${loc.slug}`);
+      return;
+    }
     if (loc.type === "school") {
       router.push(`/schools/${loc.slug}`);
       return;
@@ -41,6 +57,16 @@ export function HeroSearch() {
   }
 
   function handleSearch() {
+    if (mode === "research") {
+      // Navigate to the first selected item's profile, or the suburbs index
+      if (selected.length > 0) {
+        const first = selected[0];
+        router.push(first.type === "school" ? `/schools/${first.slug}` : `/suburbs/${first.slug}`);
+      } else {
+        router.push("/suburbs");
+      }
+      return;
+    }
     const params = new URLSearchParams();
     // Resolve suburb slugs: suburbs use their own slug, schools use their suburbSlug
     const suburbSlugs = selected.map((s) => s.type === "school" ? (s.suburbSlug ?? "") : s.slug).filter(Boolean);
@@ -107,7 +133,7 @@ export function HeroSearch() {
           <div className="flex items-center gap-2 p-2">
             <div className="flex-1 bg-gray-50 rounded-xl min-w-0">
               <MultiSuburbAutocomplete
-                placeholder="Try a suburb, postcode or school..."
+                placeholder={mode === "research" ? "Search a suburb, postcode, school or region..." : "Try a suburb, postcode or school..."}
                 showSchools
                 size="lg"
                 inputClassName="bg-gray-50"
@@ -116,23 +142,25 @@ export function HeroSearch() {
                 onRemove={removeLocation}
               />
             </div>
-            <button
-              type="button"
-              onClick={() => setFiltersOpen((o) => !o)}
-              className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border rounded-xl transition-colors shrink-0 cursor-pointer ${
-                filtersOpen || activeFilterCount > 0
-                  ? "border-black text-black bg-gray-100"
-                  : "border-gray-300 text-gray-600 hover:border-gray-900 hover:text-black"
-              }`}
-            >
-              <SlidersHorizontal className="w-4 h-4" />
-              Filters
-              {activeFilterCount > 0 && (
-                <span className="ml-0.5 w-4 h-4 rounded-full bg-black text-white text-xs flex items-center justify-center font-bold">
-                  {activeFilterCount}
-                </span>
-              )}
-            </button>
+            {mode !== "research" && (
+              <button
+                type="button"
+                onClick={() => setFiltersOpen((o) => !o)}
+                className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border rounded-xl transition-colors shrink-0 cursor-pointer ${
+                  filtersOpen || activeFilterCount > 0
+                    ? "border-black text-black bg-gray-100"
+                    : "border-gray-300 text-gray-600 hover:border-gray-900 hover:text-black"
+                }`}
+              >
+                <SlidersHorizontal className="w-4 h-4" />
+                Filters
+                {activeFilterCount > 0 && (
+                  <span className="ml-0.5 w-4 h-4 rounded-full bg-black text-white text-xs flex items-center justify-center font-bold">
+                    {activeFilterCount}
+                  </span>
+                )}
+              </button>
+            )}
             <Button
               onClick={handleSearch}
               variant="gradient"
@@ -144,8 +172,8 @@ export function HeroSearch() {
             </Button>
           </div>
 
-          {/* Filter panel */}
-          {filtersOpen && (
+          {/* Filter panel — not shown in research mode */}
+          {filtersOpen && mode !== "research" && (
             <div className="border-t border-gray-100 px-4 py-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Property Type</label>
@@ -203,24 +231,36 @@ export function HeroSearch() {
           )}
         </div>
 
-        {/* Quick suburb links */}
+        {/* Quick links — suburb shortcuts in property modes, research categories in research mode */}
         <div className="mt-8 flex flex-wrap justify-center gap-2">
-          {[
-            { name: "Burpengary", slug: "burpengary-qld-4505" },
-            { name: "Caboolture", slug: "caboolture-qld-4510" },
-            { name: "Narangba",   slug: "narangba-qld-4504" },
-            { name: "Morayfield", slug: "morayfield-qld-4506" },
-            { name: "North Lakes", slug: "north-lakes-qld-4509" },
-            { name: "Deception Bay", slug: "deception-bay-qld-4508" },
-          ].map((s) => (
-            <a
-              key={s.slug}
-              href={`/suburbs/${s.slug}`}
-              className="text-sm text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition-colors"
-            >
-              {s.name}
-            </a>
-          ))}
+          {mode === "research" ? (
+            RESEARCH_QUICK_LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-sm text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition-colors"
+              >
+                {link.label}
+              </a>
+            ))
+          ) : (
+            [
+              { name: "Burpengary",    slug: "burpengary-qld-4505" },
+              { name: "Caboolture",    slug: "caboolture-qld-4510" },
+              { name: "Narangba",      slug: "narangba-qld-4504" },
+              { name: "Morayfield",    slug: "morayfield-qld-4506" },
+              { name: "North Lakes",   slug: "north-lakes-qld-4509" },
+              { name: "Deception Bay", slug: "deception-bay-qld-4508" },
+            ].map((s) => (
+              <a
+                key={s.slug}
+                href={`/suburbs/${s.slug}`}
+                className="text-sm text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition-colors"
+              >
+                {s.name}
+              </a>
+            ))
+          )}
         </div>
       </div>
     </div>
