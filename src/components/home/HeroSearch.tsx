@@ -86,8 +86,8 @@ export function HeroSearch() {
     <div className="relative overflow-hidden">
       {/* Background photo */}
       <Image
-        src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1800&q=80"
-        alt="Australian home"
+        src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Queenslander_style_house_in_Paddington%2C_Queensland%2C_2019.jpg"
+        alt="Queenslander home in Paddington, Brisbane"
         fill
         className="object-cover object-center"
         priority
