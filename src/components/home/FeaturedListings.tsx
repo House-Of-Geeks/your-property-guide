@@ -2,11 +2,10 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { PropertyCard } from "@/components/property/PropertyCard";
 import { Button } from "@/components/ui";
-import { getProperties } from "@/lib/services/property-service";
+import { getFeaturedProperties } from "@/lib/services/property-service";
 
 export async function FeaturedListings() {
-  const featured = await getProperties({ listingType: "buy" });
-  const displayProperties = featured.filter((p) => p.isFeatured).slice(0, 6);
+  const displayProperties = await getFeaturedProperties(6);
 
   if (displayProperties.length === 0) return null;
 
