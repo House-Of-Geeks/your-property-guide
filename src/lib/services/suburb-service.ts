@@ -173,10 +173,34 @@ async function getNearbySchools(suburb: { id: string; lat: number | null; lng: n
   return [];
 }
 
-export async function getSuburbs(): Promise<Suburb[]> {
-  // No schools on listing pages — reduces payload significantly
-  const rows = await db.suburb.findMany({ orderBy: { name: "asc" }, include: { schools: false } });
-  return rows.map((s) => toSuburb({ ...s, schools: [] }, NO_FRESHNESS, null, null, null, null));
+export async function getSuburbs(opts?: {
+  state?: string;
+  search?: string;
+  limit?: number;
+  offset?: number;
+}): Promise<{ suburbs: Suburb[]; total: number }> {
+  const { state, search, limit = 24, offset = 0 } = opts ?? {};
+
+  const where = {
+    ...(state ? { state: state.toUpperCase() } : {}),
+    ...(search ? { name: { contains: search, mode: "insensitive" as const } } : {}),
+  };
+
+  const [rows, total] = await Promise.all([
+    db.suburb.findMany({
+      where,
+      orderBy: [{ population: "desc" }, { name: "asc" }],
+      take: limit,
+      skip: offset,
+      include: { schools: false },
+    }),
+    db.suburb.count({ where }),
+  ]);
+
+  return {
+    suburbs: rows.map((s) => toSuburb({ ...s, schools: [] }, NO_FRESHNESS, null, null, null, null)),
+    total,
+  };
 }
 
 export async function getFeaturedSuburbs(limit = 6): Promise<Suburb[]> {
