@@ -131,6 +131,21 @@ const FOOTER_COLUMNS = [
       { label: "Privacy Policy",            href: "/privacy" },
     ],
   },
+  {
+    heading: "Our Network",
+    links: [
+      { label: "Your Caravan Guide",        href: "https://www.yourcaravanguide.com.au" },
+      { label: "Your Crypto Guide",         href: "https://www.yourcryptoguide.com.au" },
+      { label: "Your Finance Guide",        href: "https://www.yourfinanceguide.com.au" },
+      { label: "Your Lifestyle Guide",      href: "https://www.yourlifestyleguide.com.au" },
+      { label: "Your Motorbike Guide",      href: "https://www.yourmotorbikeguide.com.au" },
+      { label: "Need a Tradie",             href: "https://www.needatradie.com" },
+      { label: "Better Rate Mate",          href: "https://www.betterratemate.com" },
+      { label: "Why Solar",                 href: "https://www.whysolar.com.au" },
+      { label: "Conversation Verified Leads", href: "https://www.conversationverifiedleads.com" },
+      { label: "Questionable Digital",      href: "https://www.questionable.digital" },
+    ],
+  },
 ];
 
 async function getSuburbForFooter(slug: string) {
@@ -213,9 +228,15 @@ function LinkCol({ heading, links }: { heading: string; links: { label: string; 
       <ul className="space-y-2">
         {links.map((l) => (
           <li key={l.href}>
-            <Link href={l.href} className="text-sm text-white/60 hover:text-white transition-colors leading-snug block">
-              {l.label}
-            </Link>
+            {l.href.startsWith("http") ? (
+              <a href={l.href} target="_blank" rel="noopener noreferrer" className="text-sm text-white/60 hover:text-white transition-colors leading-snug block">
+                {l.label}
+              </a>
+            ) : (
+              <Link href={l.href} className="text-sm text-white/60 hover:text-white transition-colors leading-snug block">
+                {l.label}
+              </Link>
+            )}
           </li>
         ))}
       </ul>
@@ -304,7 +325,7 @@ export async function Footer() {
     <footer className="bg-[#0a0a0a] text-white border-t border-white/10">
       <AgentLoginPill />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8">
           {FOOTER_COLUMNS.map((col) => (
             <LinkCol key={col.heading} heading={col.heading} links={col.links} />
           ))}
