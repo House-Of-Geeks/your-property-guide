@@ -142,8 +142,6 @@ const FOOTER_COLUMNS = [
       { label: "Need a Tradie",             href: "https://www.needatradie.com" },
       { label: "Better Rate Mate",          href: "https://www.betterratemate.com" },
       { label: "Why Solar",                 href: "https://www.whysolar.com.au" },
-      { label: "Conversation Verified Leads", href: "https://www.conversationverifiedleads.com" },
-      { label: "Questionable Digital",      href: "https://www.questionable.digital" },
     ],
   },
 ];
