@@ -4,7 +4,6 @@ const SITEMAPS = [
   `${SITE_URL}/pages/sitemap.xml`,
   `${SITE_URL}/regions/sitemap.xml`,
   `${SITE_URL}/buy/sitemap.xml`,
-  `${SITE_URL}/rent/sitemap.xml`,
   `${SITE_URL}/sold/sitemap.xml`,
   `${SITE_URL}/house-and-land/sitemap.xml`,
   `${SITE_URL}/suburbs/sitemap.xml`,
