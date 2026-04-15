@@ -206,11 +206,12 @@ async function importListing(id: string, defaultListingType: "buy" | "sold") {
   const agentId      = detectAgent(bodyText);
   const propertyType = isUnit ? "unit" : "house";
 
-  // Slug — use listing ID when no street so suburb-only entries don't collide
+  // Slug — address + suburb + state + postcode (no agency name)
+  // Use listing ID suffix for suburb-only entries to avoid collisions
   const slugBase = addr.street
-    ? `${addr.street}-${addr.suburb}-${suburb.postcode}`
-    : `${addr.suburb}-${suburb.postcode}-${id}`;
-  const slug = slugify(`${slugBase}-thomson`);
+    ? `${addr.street}-${addr.suburb}-QLD-${suburb.postcode}`
+    : `${addr.suburb}-QLD-${suburb.postcode}-${id}`;
+  const slug = slugify(slugBase);
   const addressFull = addr.street
     ? `${addr.street}, ${addr.suburb} QLD ${suburb.postcode}`
     : `${addr.suburb} QLD ${suburb.postcode}`;

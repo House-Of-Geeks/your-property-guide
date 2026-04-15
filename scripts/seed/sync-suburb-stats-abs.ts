@@ -158,9 +158,12 @@ async function main() {
   };
 
   // 2. Load all suburbs from DB
-  const whereClause = stateArg
-    ? { state: stateArg.toUpperCase() }
-    : {};
+  // --resume: skip suburbs already synced (statsSource = SOURCE_LABEL)
+  const resume   = args.includes("--resume");
+  const whereClause = {
+    ...(stateArg ? { state: stateArg.toUpperCase() } : {}),
+    ...(resume   ? { NOT: { statsSource: SOURCE_LABEL } } : {}),
+  };
 
   const suburbs = await db.suburb.findMany({
     where: whereClause,
@@ -240,6 +243,11 @@ async function main() {
     updated++;
     if (updated % 500 === 0) {
       console.log(`  ✅ ${updated}/${suburbs.length} updated…`);
+    }
+    // Reconnect every 1000 writes to avoid Railway socket timeout
+    if (updated % 1000 === 0) {
+      await db.$disconnect();
+      await db.$connect();
     }
   }
 
