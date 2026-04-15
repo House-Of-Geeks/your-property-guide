@@ -9,7 +9,7 @@ function toTitleCase(s: string | null): string | null {
   return s.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
 }
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { PropertyCard } from "@/components/property/PropertyCard";
 import { db } from "@/lib/db";
 import { SITE_URL } from "@/lib/constants";
@@ -103,6 +103,14 @@ export default async function PropertyAddressPage({ params }: PageProps) {
 
   return (
     <>
+      <PlaceJsonLd
+        name={addressFullDisplay}
+        url={`/property/${slug}`}
+        addressLocality={localityDisplay}
+        addressRegion={address.state}
+        postalCode={address.postcode}
+        {...(mapLat && mapLng ? { latitude: mapLat, longitude: mapLng } : {})}
+      />
       <BreadcrumbJsonLd
         items={[
           { name: "Property Search", url: "/buy" },
