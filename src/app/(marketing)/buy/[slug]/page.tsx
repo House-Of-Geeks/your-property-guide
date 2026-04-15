@@ -305,12 +305,28 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                   </div>
                 )}
 
-                <Link
-                  href={`/suburbs/${property.suburbSlug}`}
-                  className="inline-flex items-center gap-1 mt-4 text-sm text-primary hover:underline font-medium"
-                >
-                  View suburb profile <ChevronRight className="w-4 h-4" />
-                </Link>
+                <div className="flex items-center justify-between mt-4 flex-wrap gap-2">
+                  <Link
+                    href={`/suburbs/${property.suburbSlug}`}
+                    className="inline-flex items-center gap-1 text-sm text-primary hover:underline font-medium"
+                  >
+                    View suburb profile <ChevronRight className="w-4 h-4" />
+                  </Link>
+                  <p className="text-xs text-gray-400">
+                    Source:{" "}
+                    <a
+                      href="https://www.abs.gov.au/census"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:underline"
+                    >
+                      ABS Census {suburbData.statsSource?.includes("2021") ? "2021" : ""}
+                    </a>
+                    {suburbData.statsUpdatedAt
+                      ? ` · updated ${new Date(suburbData.statsUpdatedAt).getFullYear()}`
+                      : ""}
+                  </p>
+                </div>
               </div>
             )}
 
