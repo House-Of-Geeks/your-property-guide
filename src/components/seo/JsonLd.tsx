@@ -239,6 +239,7 @@ export function PlaceJsonLd({
   name,
   description,
   url,
+  streetAddress,
   addressLocality,
   addressRegion,
   postalCode,
@@ -248,6 +249,7 @@ export function PlaceJsonLd({
   name: string;
   description?: string;
   url: string;
+  streetAddress?: string;
   addressLocality?: string;
   addressRegion?: string;
   postalCode?: string;
@@ -264,6 +266,7 @@ export function PlaceJsonLd({
         url: `${SITE_URL}${url}`,
         address: {
           "@type": "PostalAddress",
+          ...(streetAddress && { streetAddress }),
           ...(addressLocality && { addressLocality }),
           ...(addressRegion && { addressRegion }),
           ...(postalCode && { postalCode }),

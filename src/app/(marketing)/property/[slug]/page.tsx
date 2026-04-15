@@ -106,6 +106,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
       <PlaceJsonLd
         name={addressFullDisplay}
         url={`/property/${slug}`}
+        streetAddress={streetAddress}
         addressLocality={localityDisplay}
         addressRegion={address.state}
         postalCode={address.postcode}
