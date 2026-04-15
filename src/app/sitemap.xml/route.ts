@@ -7,6 +7,8 @@ const SITEMAPS = [
   `${SITE_URL}/sold/sitemap.xml`,
   `${SITE_URL}/house-and-land/sitemap.xml`,
   `${SITE_URL}/suburbs/sitemap.xml`,
+  `${SITE_URL}/suburbs/streets/sitemap.xml`,
+  `${SITE_URL}/property/sitemap.xml`,
   `${SITE_URL}/agents/sitemap.xml`,
   `${SITE_URL}/real-estate-agencies/sitemap.xml`,
   `${SITE_URL}/blog/sitemap.xml`,
