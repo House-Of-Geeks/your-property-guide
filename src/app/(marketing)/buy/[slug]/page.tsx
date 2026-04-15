@@ -21,12 +21,7 @@ import { SITE_URL } from "@/lib/constants";
 import { auth } from "@/auth";
 import { isPropertySaved } from "@/lib/actions/dashboard";
 import { PropertyActions } from "@/components/property/PropertyActions";
-import dynamic from "next/dynamic";
-
-const PropertyMap = dynamic(
-  () => import("@/components/property/PropertyMap").then((m) => m.PropertyMap),
-  { ssr: false }
-);
+import { PropertyMap } from "@/components/property/PropertyMap";
 
 interface PropertyDetailPageProps {
   params: Promise<{ slug: string }>;

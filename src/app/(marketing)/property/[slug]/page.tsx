@@ -13,12 +13,7 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { PropertyCard } from "@/components/property/PropertyCard";
 import { db } from "@/lib/db";
 import { SITE_URL } from "@/lib/constants";
-import dynamic from "next/dynamic";
-
-const PropertyMap = dynamic(
-  () => import("@/components/property/PropertyMap").then((m) => m.PropertyMap),
-  { ssr: false }
-);
+import { PropertyMap } from "@/components/property/PropertyMap";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
