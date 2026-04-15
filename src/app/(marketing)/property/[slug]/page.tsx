@@ -13,6 +13,7 @@ import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { PropertyCard } from "@/components/property/PropertyCard";
 import { db } from "@/lib/db";
 import { SITE_URL } from "@/lib/constants";
+import { streetSlug } from "@/lib/utils/slug";
 import { PropertyMap } from "@/components/property/PropertyMap";
 
 interface PageProps {
@@ -156,6 +157,14 @@ export default async function PropertyAddressPage({ params }: PageProps) {
               <span className="bg-gray-50 border border-gray-200 rounded-full px-3 py-1">
                 Parcel: {address.legalParcelId}
               </span>
+            )}
+            {address.suburbSlug && address.streetName && (
+              <Link
+                href={`/suburbs/${address.suburbSlug}/${streetSlug(address.streetName, address.streetType, address.streetSuffix)}`}
+                className="bg-gray-50 border border-gray-200 rounded-full px-3 py-1 hover:bg-gray-100 transition-colors"
+              >
+                All addresses on {toTitleCase(address.streetName)} {toTitleCase(address.streetType)} →
+              </Link>
             )}
             {suburb && (
               <Link

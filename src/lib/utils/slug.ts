@@ -25,3 +25,12 @@ export function agentSlug(firstName: string, lastName: string): string {
 export function agencySlug(name: string): string {
   return toSlug(name);
 }
+
+export function streetSlug(
+  streetName: string,
+  streetType: string | null,
+  streetSuffix: string | null,
+): string {
+  const parts = [streetName, streetType, streetSuffix].filter(Boolean).join(" ");
+  return toSlug(parts);
+}

@@ -16,6 +16,8 @@ import { Badge, Button } from "@/components/ui";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getPropertiesBySuburb } from "@/lib/services/property-service";
 import { getLatestSuburbCrime } from "@/lib/services/data-freshness";
+import { db } from "@/lib/db";
+import { streetSlug } from "@/lib/utils/slug";
 import { suburbTitle, suburbDescription } from "@/lib/utils/seo";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
@@ -42,9 +44,15 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) notFound();
 
-  const [properties, crimeStat] = await Promise.all([
+  const [properties, crimeStat, streets] = await Promise.all([
     getPropertiesBySuburb(slug, 6),
     getLatestSuburbCrime(slug),
+    db.propertyAddress.groupBy({
+      by: ["streetName", "streetType", "streetSuffix"],
+      where: { suburbSlug: slug },
+      _count: { id: true },
+      orderBy: { streetName: "asc" },
+    }),
   ]);
 
   return (
@@ -334,6 +342,32 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             source="Bureau of Meteorology"
           />
         </section>
+
+        {/* Streets in this suburb */}
+        {streets.length > 0 && (
+          <section id="streets" className="scroll-mt-16">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Streets in {suburb.name}</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+              {streets.map((s) => {
+                const nameDisplay = [s.streetName, s.streetType, s.streetSuffix]
+                  .filter(Boolean)
+                  .join(" ")
+                  .toLowerCase()
+                  .replace(/\b\w/g, (c) => c.toUpperCase());
+                const sSlug = streetSlug(s.streetName, s.streetType, s.streetSuffix);
+                return (
+                  <Link
+                    key={sSlug}
+                    href={`/suburbs/${suburb.slug}/${sSlug}`}
+                    className="text-sm text-primary hover:underline truncate px-1 py-0.5"
+                  >
+                    {nameDisplay}
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* Properties in this suburb */}
         {properties.length > 0 && (
