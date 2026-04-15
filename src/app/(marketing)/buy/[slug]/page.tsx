@@ -21,6 +21,12 @@ import { SITE_URL } from "@/lib/constants";
 import { auth } from "@/auth";
 import { isPropertySaved } from "@/lib/actions/dashboard";
 import { PropertyActions } from "@/components/property/PropertyActions";
+import dynamic from "next/dynamic";
+
+const PropertyMap = dynamic(
+  () => import("@/components/property/PropertyMap").then((m) => m.PropertyMap),
+  { ssr: false }
+);
 
 interface PropertyDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -77,12 +83,8 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
   const otherListings = agencyListings.filter((p) => p.id !== property.id).slice(0, 3);
 
   const mapAddress = encodeURIComponent(property.address.full);
-  // Build OSM embed URL from suburb centroid (no API key required)
-  const mapLat = suburbData?.lat;
-  const mapLng = suburbData?.lng;
-  const osmEmbedUrl = (mapLat && mapLng)
-    ? `https://www.openstreetmap.org/export/embed.html?bbox=${mapLng - 0.012},${mapLat - 0.009},${mapLng + 0.012},${mapLat + 0.009}&layer=mapnik&marker=${mapLat},${mapLng}`
-    : null;
+  const mapLat = suburbData?.lat ?? null;
+  const mapLng = suburbData?.lng ?? null;
 
   const schools = (suburbData?.schools ?? []).map((s) => ({
     id: s.id,
@@ -234,21 +236,14 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                 <MapPin className="w-3.5 h-3.5" />
                 {property.address.full}
               </p>
-              {osmEmbedUrl ? (
-                <div className="rounded-xl overflow-hidden border border-gray-200">
-                  <iframe
-                    src={osmEmbedUrl}
-                    width="100%"
-                    height="320"
-                    style={{ border: 0 }}
-                    loading="lazy"
-                    title={`Map of ${property.address.full}`}
-                  />
+              {mapLat && mapLng ? (
+                <div>
+                  <PropertyMap lat={mapLat} lng={mapLng} address={property.address.full} />
                   <a
                     href={`https://maps.google.com/?q=${mapAddress}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center py-2 text-xs text-gray-500 hover:text-primary bg-gray-50 border-t border-gray-200"
+                    className="inline-flex items-center gap-1 mt-2 text-xs text-gray-500 hover:text-primary"
                   >
                     Open in Google Maps →
                   </a>
