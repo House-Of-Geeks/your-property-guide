@@ -6,6 +6,7 @@
  */
 import { PrismaClient } from "../../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { put } from "@vercel/blob";
 import * as dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
@@ -58,10 +59,23 @@ function extractImages(html: string): string[] {
   const results: string[] = [];
   // Background images in style attrs
   for (const m of html.matchAll(/renet\.photos\/w\/\d+\/\d+\/images\/([^\s"'\\)]+)/g)) {
-    const url = `https://renet.photos/w/1200/${ACCOUNT_ID}/images/${m[1].replace(/_original/, "_original")}`;
+    const url = `https://renet.photos/w/1600/${ACCOUNT_ID}/images/${m[1].replace(/_original/, "_original")}`;
     if (!seen.has(url)) { seen.add(url); results.push(url); }
   }
   return results;
+}
+
+async function uploadImageToBlob(sourceUrl: string, pathname: string): Promise<string> {
+  const res = await fetch(sourceUrl, { headers: { "User-Agent": "Mozilla/5.0" } });
+  if (!res.ok) throw new Error(`Failed to fetch image ${sourceUrl}: ${res.status}`);
+  const buffer = await res.arrayBuffer();
+  const contentType = res.headers.get("content-type") ?? "image/jpeg";
+  const blob = await put(pathname, Buffer.from(buffer), {
+    access: "public",
+    contentType,
+    addRandomSuffix: false,
+  });
+  return blob.url;
 }
 
 function extractDescription(text: string): string {
@@ -173,8 +187,20 @@ async function importListing(id: string, defaultListingType: "buy" | "sold") {
   const propTitle = ogTitle ? (ogDesc ? `${ogTitle} - ${ogDesc}` : ogTitle) : `${addr.street}, ${addr.suburb}`;
   const description = extractDescription(bodyText);
 
-  // Images
-  const images = extractImages(html);
+  // Images — download from renet.photos and upload to Vercel Blob
+  const rawImageUrls = extractImages(html);
+  const images: string[] = [];
+  for (let i = 0; i < rawImageUrls.length; i++) {
+    try {
+      const ext = rawImageUrls[i].match(/\.(jpe?g|png|webp)(\?|$)/i)?.[1] ?? "jpg";
+      const blobPath = `images/properties/thomson-${id}/${i}.${ext}`;
+      const blobUrl = await uploadImageToBlob(rawImageUrls[i], blobPath);
+      images.push(blobUrl);
+    } catch (err) {
+      console.warn(`    ⚠ Failed to upload image ${i} for ${id}, using source URL:`, err);
+      images.push(rawImageUrls[i]);
+    }
+  }
 
   // Agent & property type
   const agentId      = detectAgent(bodyText);
@@ -209,8 +235,8 @@ async function importListing(id: string, defaultListingType: "buy" | "sold") {
         create: images.map((url, i) => ({
           url,
           alt:       `${addr.street}, ${addr.suburb} — photo ${i + 1}`,
-          width:     1200,
-          height:    800,
+          width:     1600,
+          height:    1067,
           sortOrder: i,
         })),
       },
@@ -245,8 +271,8 @@ async function importListing(id: string, defaultListingType: "buy" | "sold") {
         create: images.map((url, i) => ({
           url,
           alt:       `${addr.street}, ${addr.suburb} — photo ${i + 1}`,
-          width:     1200,
-          height:    800,
+          width:     1600,
+          height:    1067,
           sortOrder: i,
         })),
       },

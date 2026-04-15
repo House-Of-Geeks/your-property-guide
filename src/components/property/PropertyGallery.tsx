@@ -158,6 +158,7 @@ export function PropertyGallery({
                       fill
                       className="object-contain"
                       sizes="100vw"
+                      loading={i === 0 ? "eager" : "lazy"}
                     />
                   </div>
                 ))}

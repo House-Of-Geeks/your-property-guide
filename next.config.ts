@@ -22,7 +22,17 @@ const nextConfig: NextConfig = {
         hostname: "maps.googleapis.com",
         pathname: "/maps/api/staticmap**",
       },
-      // Allow any https image host (covers existing heroImage URLs)
+      // Vercel Blob — self-hosted property images
+      {
+        protocol: "https",
+        hostname: "*.public.blob.vercel-storage.com",
+      },
+      // renet.photos CDN — fallback for any images not yet migrated to Blob
+      {
+        protocol: "https",
+        hostname: "renet.photos",
+      },
+      // Allow any https image host (covers other agency/agent image URLs)
       {
         protocol: "https",
         hostname: "**",
