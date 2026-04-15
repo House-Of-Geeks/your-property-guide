@@ -1,0 +1,27 @@
+FROM node:22-slim
+
+# curl + unzip for G-NAF download and extraction
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm ci
+
+# Copy source files needed for the import script
+COPY prisma ./prisma
+COPY src ./src
+COPY scripts ./scripts
+COPY tsconfig.json ./
+COPY .env* ./
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# DATABASE_URL is injected by Railway from the linked PostgreSQL service.
+# The script uses --resume so completed states are skipped on re-deploy.
+CMD ["bash", "scripts/import-gnaf-all.sh", "--resume"]

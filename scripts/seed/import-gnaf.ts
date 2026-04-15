@@ -63,23 +63,7 @@ const SKIP_DOWNLOAD = args.includes("--skip-download");
 const SKIP_EXTRACT  = args.includes("--skip-extract");
 const LINK_ONLY     = args.includes("--link-suburbs");
 // --resume: skip states already recorded as complete in the progress file
-const RESUME        = args.includes("--resume");
-const PROGRESS_FILE = "/tmp/gnaf-progress.json";
-
-function loadProgress(): Set<string> {
-  try {
-    if (fs.existsSync(PROGRESS_FILE)) {
-      const data = JSON.parse(fs.readFileSync(PROGRESS_FILE, "utf8")) as string[];
-      return new Set(data);
-    }
-  } catch { /* ignore */ }
-  return new Set();
-}
-
-function markStateComplete(state: string, done: Set<string>): void {
-  done.add(state);
-  fs.writeFileSync(PROGRESS_FILE, JSON.stringify([...done]));
-}
+const RESUME = args.includes("--resume");
 
 const stateFilter: string | null =
   args.find((a) => a.startsWith("--state="))?.split("=")[1] ??
@@ -91,6 +75,36 @@ const stateFilter: string | null =
 // Prisma is used for linkSuburbs (ORM queries). Bulk inserts use raw pg + COPY.
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const db = new PrismaClient({ adapter });
+
+// Shared pg pool — used for COPY FROM STDIN and progress tracking.
+// Works both locally and on Railway (DATABASE_URL is injected as an env var there).
+const pgPool = new Pool({ connectionString: process.env.DATABASE_URL! });
+
+// ─── Progress tracking (DB-backed, survives Railway restarts) ─────────────────
+async function initProgressTable(): Promise<void> {
+  await pgPool.query(`
+    CREATE TABLE IF NOT EXISTS _gnaf_import_state (
+      state        TEXT PRIMARY KEY,
+      "completedAt" TIMESTAMPTZ NOT NULL DEFAULT now(),
+      "rowCount"   INTEGER NOT NULL DEFAULT 0
+    )
+  `);
+}
+
+async function loadProgress(): Promise<Set<string>> {
+  await initProgressTable();
+  const { rows } = await pgPool.query<{ state: string }>(`SELECT state FROM _gnaf_import_state`);
+  return new Set(rows.map((r) => r.state));
+}
+
+async function markStateComplete(state: string, rowCount: number): Promise<void> {
+  await pgPool.query(
+    `INSERT INTO _gnaf_import_state (state, "completedAt", "rowCount")
+     VALUES ($1, now(), $2)
+     ON CONFLICT (state) DO UPDATE SET "completedAt" = now(), "rowCount" = $2`,
+    [state, rowCount],
+  );
+}
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function slugify(s: string): string {
@@ -262,7 +276,7 @@ function findStateFiles(state: string): {
 }
 
 // ─── Per-state processing ─────────────────────────────────────────────────────
-async function processState(state: string): Promise<void> {
+async function processState(state: string): Promise<number> {
   console.log(`\n── ${state} ──`);
 
   const files = findStateFiles(state);
@@ -382,7 +396,6 @@ async function processState(state: string): Promise<void> {
     `"createdAt"`, `"updatedAt"`,
   ].join(", ");
 
-  const pgPool = new Pool({ connectionString: process.env.DATABASE_URL });
   const pgClient = await pgPool.connect();
   await pgClient.query(`
     CREATE TEMP TABLE _gnaf_temp (
@@ -529,10 +542,10 @@ async function processState(state: string): Promise<void> {
 
   await flushCopy();
   pgClient.release();
-  await pgPool.end();
 
   const elapsed = Math.round((Date.now() - stateStart) / 1000);
   console.log(`  ✅ ${state}: ${inserted.toLocaleString()} inserted, ${skipped.toLocaleString()} skipped — ${elapsed}s`);
+  return inserted;
 
   // Free memory
   localityMap.clear();
@@ -609,7 +622,7 @@ async function main() {
 
   // 2–3. Extract and process each state in sequence (then clean up) to conserve disk space
   const statesToProcess = stateFilter ? [stateFilter] : ALL_STATES;
-  const completedStates = RESUME ? loadProgress() : new Set<string>();
+  const completedStates = RESUME ? await loadProgress() : new Set<string>();
   for (const state of statesToProcess) {
     if (RESUME && completedStates.has(state)) {
       console.log(`\n── ${state}: already complete (--resume) ──`);
@@ -637,8 +650,8 @@ async function main() {
       }
     }
 
-    await processState(state);
-    markStateComplete(state, completedStates);
+    const rowCount = await processState(state);
+    await markStateComplete(state, rowCount);
 
     // Delete extracted files for this state to free disk space before next state
     if (!SKIP_EXTRACT) {
@@ -667,6 +680,7 @@ async function main() {
   console.log(`   Next update: Run again after next G-NAF quarterly release`);
 
   await db.$disconnect();
+  await pgPool.end();
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
