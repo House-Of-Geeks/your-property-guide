@@ -34,8 +34,12 @@
 import * as fs   from "fs";
 import * as path from "path";
 import * as readline from "readline";
+import { Readable } from "stream";
+import { pipeline } from "stream/promises";
 import { execSync, exec } from "child_process";
 import { promisify } from "util";
+import { Pool } from "pg";
+import { from as copyFrom } from "pg-copy-streams";
 import { PrismaClient } from "../../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import * as dotenv from "dotenv";
@@ -47,8 +51,7 @@ const execAsync = promisify(exec);
 const GNAF_ZIP_URL = "https://data.gov.au/data/dataset/19432f89-dc3a-4ef3-b943-5326ef1dbecc/resource/5be5278c-fe66-459e-845a-bea553f46b4b/download/g-naf_feb26_allstates_gda2020_psv_1022.zip";
 const GNAF_ZIP_PATH = "/tmp/gnaf.zip";
 const GNAF_DIR      = "/tmp/gnaf";
-const BATCH_SIZE    = 1000;        // ~20k params per insert — smaller batches reduce timeout risk
-const DB_RECONNECT_EVERY = 20_000; // rows processed — frequent reconnect avoids Railway idle timeout
+const COPY_BUFFER   = 50_000; // rows to accumulate before each COPY FROM STDIN call
 
 const ALL_STATES = ["ACT", "NSW", "NT", "OT", "QLD", "SA", "TAS", "VIC", "WA"];
 // OT = Other Territories (Jervis Bay, Christmas Island, Cocos Islands, Norfolk Island)
@@ -85,8 +88,9 @@ const stateFilter: string | null =
     : null);
 
 // ─── DB ───────────────────────────────────────────────────────────────────────
+// Prisma is used for linkSuburbs (ORM queries). Bulk inserts use raw pg + COPY.
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
-let db = new PrismaClient({ adapter });
+const db = new PrismaClient({ adapter });
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function slugify(s: string): string {
@@ -359,60 +363,81 @@ async function processState(state: string): Promise<void> {
     PRIMARY_SEC:   hdr["PRIMARY_SECONDARY"]      ?? 34,
   };
 
-  // Count total lines for ETA (fast — ~1s for 3.5M rows)
+  // Count total lines for ETA (~1s for 3.5M rows)
   const totalLines = parseInt(
     execSync(`wc -l < "${files.addressDetail}"`).toString().trim(),
     10,
   );
 
-  let batch: Parameters<typeof db.propertyAddress.createMany>[0]["data"] = [];
+  // ── PostgreSQL COPY FROM STDIN ──────────────────────────────────────────────
+  // 10–20× faster than batched INSERTs. Streams CSV into a temp table, then
+  // inserts with ON CONFLICT DO NOTHING to skip duplicates on re-runs.
+  const COPY_COLS = [
+    "id", "slug", `"addressFull"`, `"buildingName"`,
+    `"flatType"`, `"flatNumber"`, `"levelType"`, `"levelNumber"`,
+    `"numberFirst"`, `"numberLast"`,
+    `"streetName"`, `"streetType"`, `"streetSuffix"`,
+    "locality", "state", "postcode",
+    "lat", "lng", `"legalParcelId"`, "confidence",
+    `"createdAt"`, `"updatedAt"`,
+  ].join(", ");
+
+  const pgPool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const pgClient = await pgPool.connect();
+  await pgClient.query(`
+    CREATE TEMP TABLE _gnaf_temp (
+      id TEXT, slug TEXT, "addressFull" TEXT, "buildingName" TEXT,
+      "flatType" TEXT, "flatNumber" TEXT, "levelType" TEXT, "levelNumber" TEXT,
+      "numberFirst" TEXT, "numberLast" TEXT,
+      "streetName" TEXT, "streetType" TEXT, "streetSuffix" TEXT,
+      locality TEXT, state TEXT, postcode TEXT,
+      lat DOUBLE PRECISION, lng DOUBLE PRECISION,
+      "legalParcelId" TEXT, confidence INTEGER,
+      "createdAt" TIMESTAMPTZ, "updatedAt" TIMESTAMPTZ
+    )
+  `);
+
+  const now = new Date().toISOString();
+
+  /** Escape a single CSV field (RFC 4180 + PostgreSQL COPY rules) */
+  function csvVal(v: string | number | null | undefined): string {
+    if (v === null || v === undefined || v === "") return "";
+    const s = String(v);
+    if (s.includes('"') || s.includes(",") || s.includes("\n") || s.includes("\r")) {
+      return `"${s.replace(/"/g, '""')}"`;
+    }
+    return s;
+  }
+
+  let csvRows: string[] = [];
   let inserted = 0;
-  let skipped  = 0;
-  let processed = 0;
-  let totalRead = 0; // all rows read (inserted + skipped), for ETA
+  let skipped   = 0;
+  let totalRead = 0;
   const stateStart = Date.now();
 
-  const flush = async () => {
-    if (batch.length === 0) return;
-    const count = batch.length;
+  const flushCopy = async () => {
+    if (csvRows.length === 0) return;
+    const count = csvRows.length;
     if (!DRY_RUN) {
-      // Retry up to 3× on Railway SocketTimeout
-      let attempts = 0;
-      while (true) {
-        try {
-          await db.propertyAddress.createMany({ data: batch, skipDuplicates: true });
-          break;
-        } catch (err: unknown) {
-          const code = (err as { code?: string })?.code;
-          if ((code === "P1008" || code === "P1001") && attempts < 3) {
-            attempts++;
-            console.log(`    ⚠ DB timeout, reconnecting (attempt ${attempts})…`);
-            try { await db.$disconnect(); } catch { /* ignore */ }
-            db = new PrismaClient({ adapter });
-          } else {
-            throw err;
-          }
-        }
-      }
+      const ingestStream = pgClient.query(
+        copyFrom(`COPY _gnaf_temp (${COPY_COLS}) FROM STDIN WITH (FORMAT CSV, NULL '')`),
+      );
+      await pipeline(Readable.from(csvRows.join("")), ingestStream);
+      await pgClient.query(`
+        INSERT INTO "PropertyAddress" (${COPY_COLS})
+        SELECT ${COPY_COLS} FROM _gnaf_temp
+        ON CONFLICT (id) DO NOTHING
+      `);
+      await pgClient.query("TRUNCATE _gnaf_temp");
     }
-    inserted  += count;
-    processed += count;
-    batch = [];
+    inserted += count;
+    csvRows = [];
 
-    // Progress logging every 50k inserted rows
-    if (Math.floor((processed - count) / 50_000) < Math.floor(processed / 50_000)) {
-      const elapsedSec = (Date.now() - stateStart) / 1000;
-      const rps = Math.round(totalRead / elapsedSec);
-      const remaining = totalLines - totalRead;
-      const etaMin = rps > 0 ? Math.round(remaining / rps / 60) : 0;
-      const etaStr = etaMin > 0 ? `, ~${etaMin} min remaining` : " — almost done";
-      console.log(`    … ${inserted.toLocaleString()} inserted  (${rps.toLocaleString()}/s${etaStr})`);
-    }
-    // Reconnect every DB_RECONNECT_EVERY rows to avoid Railway socket timeout
-    if (Math.floor((processed - count) / DB_RECONNECT_EVERY) < Math.floor(processed / DB_RECONNECT_EVERY)) {
-      await db.$disconnect();
-      db = new PrismaClient({ adapter });
-    }
+    const elapsedSec = (Date.now() - stateStart) / 1000;
+    const rps        = Math.round(totalRead / elapsedSec);
+    const etaMin     = rps > 0 ? Math.round((totalLines - totalRead) / rps / 60) : 0;
+    const etaStr     = etaMin > 0 ? `, ~${etaMin} min remaining` : " — almost done";
+    console.log(`    … ${inserted.toLocaleString()} inserted  (${rps.toLocaleString()}/s${etaStr})`);
   };
 
   await streamPsvAsync(files.addressDetail, async (cols) => {
@@ -486,35 +511,28 @@ async function processState(state: string): Promise<void> {
       locality, state, postcode,
     );
 
-    batch.push({
-      id: pid,
-      slug,
-      addressFull,
-      buildingName,
-      flatType,
-      flatNumber: flatNumFull,
-      levelType,
-      levelNumber,
-      numberFirst,
-      numberLast,
-      streetName,
-      streetType,
-      streetSuffix,
-      locality,
-      state,
-      postcode,
-      lat: geo?.lat ?? null,
-      lng: geo?.lng ?? null,
-      legalParcelId: parcel,
-      confidence,
-    });
+    csvRows.push(
+      [
+        pid, slug, addressFull, buildingName,
+        flatType, flatNumFull, levelType, levelNumber,
+        numberFirst, numberLast,
+        streetName, streetType, streetSuffix,
+        locality, state, postcode,
+        geo?.lat ?? null, geo?.lng ?? null,
+        parcel, confidence,
+        now, now,
+      ].map(csvVal).join(",") + "\n",
+    );
 
-    if (batch.length >= BATCH_SIZE) await flush();
+    if (csvRows.length >= COPY_BUFFER) await flushCopy();
   });
 
-  await flush();
+  await flushCopy();
+  pgClient.release();
+  await pgPool.end();
 
-  console.log(`  ✅ ${state}: ${inserted.toLocaleString()} inserted, ${skipped.toLocaleString()} skipped (retired/alias/no-street)`);
+  const elapsed = Math.round((Date.now() - stateStart) / 1000);
+  console.log(`  ✅ ${state}: ${inserted.toLocaleString()} inserted, ${skipped.toLocaleString()} skipped — ${elapsed}s`);
 
   // Free memory
   localityMap.clear();
