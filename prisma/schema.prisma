@@ -397,6 +397,50 @@ model HouseAndLand_Image {
 }
 
 // ---------------------------------------------------------------------------
+// Property Address Registry (G-NAF national address file)
+// ---------------------------------------------------------------------------
+model PropertyAddress {
+  id           String  @id              // G-NAF ADDRESS_DETAIL_PID (e.g. "GAQLD429602765")
+  slug         String  @unique          // URL-safe: "14-42-main-street-brisbane-qld-4000"
+  addressFull  String                   // "14/42 Main St, Brisbane QLD 4000"
+
+  // Address components
+  buildingName String?
+  flatType     String?                  // "UNIT", "APT", "FLAT", "SHOP" etc.
+  flatNumber   String?                  // e.g. "14"
+  levelType    String?                  // "LEVEL", "FLOOR"
+  levelNumber  String?                  // e.g. "3"
+  numberFirst  String?                  // e.g. "42A"
+  numberLast   String?                  // if a range: "44"
+  streetName   String
+  streetType   String?                  // "STREET", "ROAD", "AVENUE" etc.
+  streetSuffix String?                  // "NORTH", "EAST" etc.
+
+  // Location
+  locality     String                   // suburb/locality name (from G-NAF)
+  state        String                   // "QLD", "NSW" etc.
+  postcode     String                   // "4000"
+  lat          Float?
+  lng          Float?
+
+  // Metadata
+  legalParcelId String?                 // lot/plan reference e.g. "3//SP123456"
+  confidence    Int     @default(0)     // G-NAF confidence: 0 (low) – 2 (high)
+
+  // Links (populated post-import)
+  suburbSlug    String?                 // FK to Suburb.slug (nullable — not all localities exist)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([state, postcode])
+  @@index([locality, state])
+  @@index([suburbSlug])
+  @@index([streetName, locality, state])
+  @@index([lat, lng])
+}
+
+// ---------------------------------------------------------------------------
 // Data Sync Registry
 // ---------------------------------------------------------------------------
 model DataSource {
