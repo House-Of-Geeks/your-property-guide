@@ -74,17 +74,44 @@ async function uploadImageToBlob(sourceUrl: string, pathname: string): Promise<s
     access: "public",
     contentType,
     addRandomSuffix: false,
+    allowOverwrite: true,
   });
   return blob.url;
 }
 
-function extractDescription(text: string): string {
-  // Body text arrives as innerText-style; description sits after the first heading line
-  // and before "Exclusive Agent" or "Thomson the family name"
-  const start = text.search(/\n\n[A-Z].{20,}/); // first paragraph after features
-  const end   = text.search(/Exclusive [Aa]gent|Thomson the family/);
-  if (start === -1 || end === -1 || end <= start) return text.slice(0, 1000).trim();
-  return text.slice(start, end).trim().slice(0, 5000);
+function extractDescription(html: string): string {
+  // Extract content from the .propertyDescription div in raw HTML
+  const classIdx = html.indexOf("propertyDescription");
+  if (classIdx !== -1) {
+    // Skip past the closing `>` of the opening div tag so we start inside the content
+    const openTagEnd = html.indexOf(">", classIdx) + 1;
+    const block = html.slice(openTagEnd);
+    // Walk forward counting nested <div> opens/closes to find matching </div>
+    let depth = 0, i = 0, endIdx = block.length;
+    while (i < block.length) {
+      if (block[i] === "<") {
+        if (/^<div/i.test(block.slice(i))) depth++;
+        else if (/^<\/div/i.test(block.slice(i))) {
+          depth--;
+          if (depth < 0) { endIdx = i; break; }
+        }
+      }
+      i++;
+    }
+    return block
+      .slice(0, endIdx)
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n\n")
+      .replace(/<[^>]+>/g, "")
+      .replace(/&amp;/g, "&").replace(/&nbsp;/g, " ").replace(/&#\d+;/g, "")
+      .replace(/\n{3,}/g, "\n\n")
+      // Strip agent footer lines
+      .replace(/\nExclusive [Aa]gent[\s\S]*/i, "")
+      .replace(/\nThomson the family[\s\S]*/i, "")
+      .trim()
+      .slice(0, 5000);
+  }
+  return "";
 }
 
 function parseFeatures(bodyText: string) {
@@ -109,16 +136,26 @@ function parseStatus(bodyText: string) {
   return "FOR SALE";
 }
 
-function parsePrice(bodyText: string, statusText: string) {
+function parsePrice(html: string, bodyText: string, statusText: string) {
+  // Dollar price in body text (for listings with an explicit asking price)
   const m = bodyText.match(/\$\s*([\d,]+(?:\.\d+)?)/);
   if (m) {
     const val = parseInt(m[1].replace(/,/g, ""));
-    // Sanity: must look like a property price (>= 100k)
     if (val >= 100_000) return { display: `$${m[1]}`, value: val };
   }
-  if (statusText === "COMING SOON")  return { display: "Coming Soon",    value: null };
-  if (statusText === "SOLD")         return { display: "Sold",           value: null };
-  return { display: "Open To Offers", value: null };
+  // Read the hidden price input — reliable signal from ReNet CMS
+  const hiddenMatch =
+    html.match(/name=["']extra_data\[price\]["'][^>]+value=["']([^"']+)["']/i) ||
+    html.match(/value=["']([^"']+)["'][^>]+name=["']extra_data\[price\]["']/i);
+  const hiddenPrice = hiddenMatch?.[1]?.trim() ?? "";
+  if (/^sold/i.test(hiddenPrice) || statusText === "SOLD")
+    return { display: "Sold", value: null };
+  if (/coming soon/i.test(hiddenPrice) || statusText === "COMING SOON")
+    return { display: "Coming Soon", value: null };
+  if (/open to offers/i.test(hiddenPrice) || statusText === "OPEN TO OFFERS")
+    return { display: "Open To Offers", value: null };
+  // Default for "CONTACT AGENT" and anything else
+  return { display: "Contact Agent", value: null };
 }
 
 function detectAgent(bodyText: string): string {
@@ -179,13 +216,13 @@ async function importListing(id: string, defaultListingType: "buy" | "sold") {
                     : "active";
 
   // Price
-  const price = parsePrice(bodyText, statusText);
+  const price = parsePrice(html, bodyText, statusText);
 
   // Title & description
   const ogTitle   = extractMeta(html, "og:title");
   const ogDesc    = extractMeta(html, "og:description");
   const propTitle = ogTitle ? (ogDesc ? `${ogTitle} - ${ogDesc}` : ogTitle) : `${addr.street}, ${addr.suburb}`;
-  const description = extractDescription(bodyText);
+  const description = extractDescription(html);
 
   // Images — download from renet.photos and upload to Vercel Blob
   const rawImageUrls = extractImages(html);

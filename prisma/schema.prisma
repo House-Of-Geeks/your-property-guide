@@ -443,6 +443,38 @@ model PropertyAddress {
 }
 
 // ---------------------------------------------------------------------------
+// Leads (enquiries from public-facing forms)
+// ---------------------------------------------------------------------------
+model Lead {
+  id               String   @id @default(cuid())
+  // "property-enquiry" | "appraisal-request" | "off-market-register" | "general-contact" | "house-and-land-enquiry"
+  type             String
+  firstName        String
+  lastName         String
+  email            String
+  phone            String
+  message          String?
+  propertyId       String?
+  agentId          String?
+  agencyId         String?
+  suburb           String?
+  source           String?
+  appraisalAddress String?
+  address          String?
+  propertyType     String?
+  bedrooms         String?
+  routedToAgent    String?  // resolved agent ID from lead-routing
+  routedReason     String?  // "direct-agent" | "listing-agent" | "suburb-coverage" | "round-robin"
+
+  createdAt DateTime @default(now())
+
+  @@index([type])
+  @@index([agencyId])
+  @@index([agentId])
+  @@index([createdAt])
+}
+
+// ---------------------------------------------------------------------------
 // Data Sync Registry
 // ---------------------------------------------------------------------------
 model DataSource {
