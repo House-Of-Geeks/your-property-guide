@@ -244,6 +244,7 @@ model Suburb {
   medianRentUnit    Int
   annualGrowthHouse Float
   annualGrowthUnit  Float
+  rentalAffordabilityIndex Int?    // SGS Economics RAI (100 = affordable benchmark; < 50 = extremely unaffordable)
   daysOnMarket      Int
   salesCountHouse   Int     @default(0)
   population        Int
@@ -271,6 +272,7 @@ model Suburb {
   censusUpdatedAt      DateTime?
   salesUpdatedAt       DateTime?
   rentalUpdatedAt      DateTime?
+  raiUpdatedAt         DateTime?
   crimeUpdatedAt       DateTime?
   walkabilityUpdatedAt DateTime?
   climateUpdatedAt     DateTime?

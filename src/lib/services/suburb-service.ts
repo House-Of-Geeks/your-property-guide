@@ -10,6 +10,7 @@ const NO_FRESHNESS: SuburbDataFreshness = {
   crimeAsOf:       null,
   crimeSource:     null,
   salesAsOf:       null,
+  salesSource:     null,
   censusAsOf:      null,
   hazardAsOf:      null,
   walkabilityAsOf: null,
@@ -42,6 +43,7 @@ async function fetchFreshness(slug: string): Promise<{
       crimeSource:     crime?.source     ?? null,
       // Denormalized fields — filled in by toSuburb() after the Suburb row is fetched
       salesAsOf:       null,
+      salesSource:     null,
       censusAsOf:      null,
       hazardAsOf:      null,
       walkabilityAsOf: null,
@@ -64,6 +66,7 @@ function toSuburb(
   const mergedFreshness: SuburbDataFreshness = {
     ...freshness,
     salesAsOf:       s.salesUpdatedAt       ?? null,
+    salesSource:     s.statsSource          ?? null,
     censusAsOf:      s.censusUpdatedAt      ?? null,
     hazardAsOf:      s.hazardUpdatedAt      ?? null,
     walkabilityAsOf: s.walkabilityUpdatedAt ?? null,

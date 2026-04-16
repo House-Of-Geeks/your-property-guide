@@ -30,7 +30,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
@@ -69,6 +69,10 @@ jobs:
 
       - name: Sync crime stats (SA)
         run: npx tsx scripts/sync/run.ts crime-sa
+        continue-on-error: true
+
+      - name: Sync crime stats (ACT)
+        run: npx tsx scripts/sync/run.ts crime-act
         continue-on-error: true
 
       - name: Sync median house prices (VIC)

@@ -1,4 +1,6 @@
 import { formatPriceFull } from "@/lib/utils/format";
+import { SourceTooltip } from "./SourceTooltip";
+import type { SuburbDataFreshness } from "@/types";
 
 interface InvestmentStats {
   medianHousePrice: number;
@@ -13,7 +15,10 @@ interface InvestmentStats {
 }
 
 interface SuburbInvestmentProps {
-  suburb: { stats: InvestmentStats };
+  suburb: {
+    stats: InvestmentStats;
+    dataFreshness?: SuburbDataFreshness;
+  };
 }
 
 function calcYield(rentPerWeek: number, price: number): string {
@@ -26,12 +31,17 @@ interface StatCardProps {
   label: string;
   value: string;
   sub?: string;
+  source?: string | null;
+  asOf?: Date | string | null;
 }
 
-function StatCard({ label, value, sub }: StatCardProps) {
+function StatCard({ label, value, sub, source, asOf }: StatCardProps) {
   return (
     <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100">
-      <p className="text-xs text-gray-500 uppercase tracking-wider">{label}</p>
+      <div className="flex items-center gap-1">
+        <p className="text-xs text-gray-500 uppercase tracking-wider flex-1">{label}</p>
+        <SourceTooltip source={source} asOf={asOf} />
+      </div>
       <p className="text-xl font-bold text-gray-900 mt-1">{value}</p>
       {sub && <p className="text-xs text-gray-400 mt-0.5">{sub}</p>}
     </div>
@@ -40,6 +50,7 @@ function StatCard({ label, value, sub }: StatCardProps) {
 
 export function SuburbInvestment({ suburb }: SuburbInvestmentProps) {
   const s = suburb.stats;
+  const f = suburb.dataFreshness;
 
   const houseYield = s.medianRentHouse && s.medianHousePrice
     ? calcYield(s.medianRentHouse, s.medianHousePrice)
@@ -71,6 +82,8 @@ export function SuburbInvestment({ suburb }: SuburbInvestmentProps) {
               ? `Based on ${formatPriceFull(s.medianHousePrice)} median`
               : undefined
           }
+          source={f?.salesSource ?? f?.rentalSource}
+          asOf={f?.salesAsOf ?? f?.rentalAsOf}
         />
         <StatCard
           label="Gross Yield (Unit)"
@@ -80,26 +93,36 @@ export function SuburbInvestment({ suburb }: SuburbInvestmentProps) {
               ? `Based on ${formatPriceFull(s.medianUnitPrice)} median`
               : undefined
           }
+          source={f?.salesSource ?? f?.rentalSource}
+          asOf={f?.salesAsOf ?? f?.rentalAsOf}
         />
         <StatCard
           label="Annual Growth (House)"
           value={houseGrowth}
           sub="Year-on-year capital growth"
+          source={f?.salesSource}
+          asOf={f?.salesAsOf}
         />
         <StatCard
           label="Annual Growth (Unit)"
           value={unitGrowth}
           sub="Year-on-year capital growth"
+          source={f?.salesSource}
+          asOf={f?.salesAsOf}
         />
         <StatCard
           label="Owner Occupancy"
           value={ownerOccupied}
           sub="Higher = more owner-occupier demand"
+          source="abs-census"
+          asOf={f?.censusAsOf}
         />
         <StatCard
           label="Days on Market"
           value={daysOnMarket}
           sub="Lower = higher buyer demand"
+          source={f?.salesSource}
+          asOf={f?.salesAsOf}
         />
       </div>
 

@@ -19,6 +19,7 @@ import Papa from "papaparse";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
 import { resolveSlug } from "../slug-matcher";
+import { batchUpsertCrime, type CrimeRecord } from "../crime-batch";
 
 const SOURCE_ID = "crime-nsw";
 const ZIP_URL =
@@ -64,9 +65,6 @@ export async function run(): Promise<void> {
     csvStream.push(csvBuffer);
     csvStream.push(null);
 
-    // We'll accumulate per-suburb totals for the most recent year
-    // First pass: determine most recent year from column headers
-    // Second approach: detect latest year from first header row dynamically during parse
     let latestYear: string | null = null;
     let monthCols: string[] = []; // column names matching the latest year
     let headerProcessed = false;
@@ -85,7 +83,6 @@ export async function run(): Promise<void> {
           // On first row, discover column names and determine latest year
           if (!headerProcessed) {
             const allCols = Object.keys(row);
-            // Find the most recent year across all month columns
             const years = new Set<string>();
             for (const col of allCols) {
               const parsed = parseColMonth(col);
@@ -130,32 +127,24 @@ export async function run(): Promise<void> {
     if (!latestYear) throw new Error("Could not determine latest year from BOCSAR CSV");
     log(SOURCE_ID, `processing year ${latestYear}, ${grouped.size} suburbs`);
 
-    let count = 0;
     const periodDate = new Date(`${latestYear}-01-01`);
+    const records: CrimeRecord[] = [];
 
     for (const [suburbName, data] of grouped) {
       const suburbSlug = await resolveSlug(suburbName, "NSW", "");
-
-      await prisma.suburbCrimeStat.upsert({
-        where: { suburbName_state_period_source: { suburbName, state: "NSW", period: latestYear, source: SOURCE_ID } },
-        create: {
-          suburbSlug,
-          suburbName,
-          state:            "NSW",
-          period:           latestYear,
-          periodDate,
-          totalOffences:    data.total,
-          offenceBreakdown: data.breakdown,
-          source: SOURCE_ID,
-        },
-        update: {
-          suburbSlug,
-          totalOffences:    data.total,
-          offenceBreakdown: data.breakdown,
-        },
+      records.push({
+        suburbSlug,
+        suburbName,
+        state:           "NSW",
+        period:          latestYear,
+        periodDate,
+        totalOffences:   data.total,
+        offenceBreakdown: data.breakdown,
+        source:          SOURCE_ID,
       });
-      count++;
     }
+
+    const count = await batchUpsertCrime(records);
 
     await prisma.suburb.updateMany({
       where: { state: "NSW" },

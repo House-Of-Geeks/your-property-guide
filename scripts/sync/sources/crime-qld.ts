@@ -7,6 +7,9 @@
  * Actual CSV columns: "LGA Name", "Month Year" (values like "JAN01"=Jan 2001,
  * "DEC24"=Dec 2024), then ~90 offence type columns.
  *
+ * NOTE: QLD only publishes LGA-level data — no suburb breakdown available.
+ * Records are stored with suburbSlug=null, lga=LGA name.
+ *
  * Data source: https://www.data.qld.gov.au/dataset/9b4436a7-e445-42f1-975b-1d516706fb2a
  * Direct CSV: https://open-crime-data.s3-ap-southeast-2.amazonaws.com/Crime%20Statistics/LGA_Reported_Offences_Number.csv
  * Schedule: Quarterly
@@ -15,6 +18,7 @@ import "dotenv/config";
 import Papa from "papaparse";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
+import { batchUpsertCrime, type CrimeRecord } from "../crime-batch";
 
 const SOURCE_ID = "crime-qld";
 const CSV_URL = "https://open-crime-data.s3-ap-southeast-2.amazonaws.com/Crime%20Statistics/LGA_Reported_Offences_Number.csv";
@@ -46,7 +50,7 @@ export async function run(): Promise<void> {
     const { data, meta } = Papa.parse<Record<string, string>>(text, { header: true, skipEmptyLines: true });
     log(SOURCE_ID, `parsed ${data.length} rows, columns: ${meta.fields?.slice(0, 5).join(", ")}...`);
 
-    const lgaCol      = meta.fields?.find((f) => f.toLowerCase().includes("lga")) ?? "LGA Name";
+    const lgaCol       = meta.fields?.find((f) => f.toLowerCase().includes("lga")) ?? "LGA Name";
     const monthYearCol = meta.fields?.find((f) => f.toLowerCase().includes("month")) ?? "Month Year";
 
     // Offence columns = everything except LGA and Month Year
@@ -86,43 +90,34 @@ export async function run(): Promise<void> {
     if (!latestYear) throw new Error("No year data found in QLD crime CSV");
     log(SOURCE_ID, `processing year ${latestYear} (${allYears.length} years in dataset)`);
 
-    let count = 0;
-    let latestDate: Date | undefined;
+    const periodDate = new Date(`${latestYear}-12-01`);
+    const records: CrimeRecord[] = [];
 
     for (const [key, data] of grouped) {
       const [lga, year] = key.split("|");
       if (year !== latestYear) continue;
 
-      const periodDate = new Date(`${year}-12-01`);
-      if (!latestDate || periodDate > latestDate) latestDate = periodDate;
-
-      await prisma.suburbCrimeStat.upsert({
-        where: { suburbName_state_period_source: { suburbName: lga, state: "QLD", period: year, source: SOURCE_ID } },
-        create: {
-          suburbSlug:       null,
-          suburbName:       lga,
-          lga,
-          state:            "QLD",
-          period:           year,
-          periodDate,
-          totalOffences:    data.total,
-          offenceBreakdown: data.breakdown,
-          source: SOURCE_ID,
-        },
-        update: {
-          totalOffences:    data.total,
-          offenceBreakdown: data.breakdown,
-        },
+      records.push({
+        suburbSlug:      null,
+        suburbName:      lga,
+        lga,
+        state:           "QLD",
+        period:          latestYear,
+        periodDate,
+        totalOffences:   data.total,
+        offenceBreakdown: data.breakdown,
+        source:          SOURCE_ID,
       });
-      count++;
     }
+
+    const count = await batchUpsertCrime(records);
 
     await prisma.suburb.updateMany({
       where: { state: "QLD" },
       data: { statsUpdatedAt: new Date(), crimeUpdatedAt: new Date() },
     });
 
-    await finishSync(SOURCE_ID, count, latestDate);
+    await finishSync(SOURCE_ID, count, periodDate);
   } catch (err) {
     await failSync(SOURCE_ID, err);
     throw err;

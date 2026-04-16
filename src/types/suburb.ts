@@ -36,6 +36,7 @@ export interface SuburbDataFreshness {
   crimeAsOf:       Date | null;
   crimeSource:     string | null;
   salesAsOf:       Date | null;
+  salesSource:     string | null;  // statsSource from Suburb row e.g. "sales-nsw", "sales-abs"
   censusAsOf:      Date | null;
   hazardAsOf:      Date | null;
   walkabilityAsOf: Date | null;

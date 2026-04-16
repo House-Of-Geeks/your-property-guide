@@ -1,3 +1,6 @@
+// Property sitemap pages are too large to pre-render at build time — serve dynamically
+export const dynamic = "force-dynamic";
+
 import { cache } from "react";
 import type { MetadataRoute } from "next";
 import { db } from "@/lib/db";

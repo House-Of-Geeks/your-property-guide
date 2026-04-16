@@ -28,7 +28,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
@@ -47,4 +47,12 @@ jobs:
 
       - name: Sync ABS 2021 Census demographics
         run: npx tsx scripts/sync/run.ts abs-census
+        continue-on-error: true
+
+      - name: Sync ABS SA2 median house + unit prices (QLD/WA/NT/TAS/ACT)
+        run: npx tsx scripts/sync/run.ts sales-abs
+        continue-on-error: true
+
+      - name: Sync rental affordability index (SGS Economics RAI by postcode)
+        run: npx tsx scripts/sync/run.ts housing-rai
         continue-on-error: true

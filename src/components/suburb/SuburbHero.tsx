@@ -6,6 +6,7 @@ import type { Suburb } from "@/types";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { TrendingUp, Clock, Users } from "lucide-react";
 import { fullLgaName } from "@/lib/utils/lga-names";
+import { SourceTooltip } from "./SourceTooltip";
 
 interface SuburbHeroProps {
   suburb: Suburb;
@@ -111,7 +112,7 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
 }
 
 export function SuburbStats({ suburb }: SuburbHeroProps) {
-  const { stats } = suburb;
+  const { stats, dataFreshness: f } = suburb;
   const na = "–";
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -120,24 +121,32 @@ export function SuburbStats({ suburb }: SuburbHeroProps) {
         value={stats.medianHousePrice ? formatPriceFull(stats.medianHousePrice) : na}
         subtext={stats.annualGrowthHouse ? `${formatPercentage(stats.annualGrowthHouse)} annual growth` : "Sales data pending"}
         icon={<TrendingUp className="w-5 h-5 text-primary" />}
+        source={f?.salesSource}
+        asOf={f?.salesAsOf}
       />
       <StatCard
         label="Median Unit Price"
         value={stats.medianUnitPrice ? formatPriceFull(stats.medianUnitPrice) : na}
         subtext={stats.annualGrowthUnit ? `${formatPercentage(stats.annualGrowthUnit)} annual growth` : "Sales data pending"}
         icon={<TrendingUp className="w-5 h-5 text-accent" />}
+        source={f?.salesSource}
+        asOf={f?.salesAsOf}
       />
       <StatCard
         label="Days on Market"
         value={stats.daysOnMarket ? `${stats.daysOnMarket}` : na}
         subtext="Average days to sell"
         icon={<Clock className="w-5 h-5 text-primary" />}
+        source={f?.salesSource}
+        asOf={f?.salesAsOf}
       />
       <StatCard
         label="Population"
         value={stats.population ? stats.population.toLocaleString() : na}
         subtext={stats.medianAge ? `Median age: ${stats.medianAge}` : "Census data pending"}
         icon={<Users className="w-5 h-5 text-accent" />}
+        source="abs-census"
+        asOf={f?.censusAsOf}
       />
     </div>
   );
@@ -148,17 +157,22 @@ function StatCard({
   value,
   subtext,
   icon,
+  source,
+  asOf,
 }: {
   label: string;
   value: string;
   subtext: string;
   icon: React.ReactNode;
+  source?: string | null;
+  asOf?: Date | string | null;
 }) {
   return (
     <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100">
       <div className="flex items-center gap-2 mb-2">
         {icon}
         <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">{label}</span>
+        <SourceTooltip source={source} asOf={asOf} />
       </div>
       <p className="text-2xl font-bold text-gray-900">{value}</p>
       <p className="text-xs text-gray-500 mt-1">{subtext}</p>

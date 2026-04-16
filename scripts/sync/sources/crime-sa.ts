@@ -15,6 +15,7 @@ import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
 import { resolveSlug } from "../slug-matcher";
 import { getCkanDownloadUrl } from "../ckan";
+import { batchUpsertCrime, type CrimeRecord } from "../crime-batch";
 
 const SOURCE_ID = "crime-sa";
 const CKAN_BASE = "https://data.sa.gov.au/data";
@@ -89,8 +90,8 @@ export async function run(): Promise<void> {
     if (!latestPeriod) throw new Error("No period data found in SA crime CSV");
     log(SOURCE_ID, `processing FY ${latestPeriod}`);
 
-    let count = 0;
     let latestDate: Date | undefined;
+    const records: CrimeRecord[] = [];
 
     for (const [key, data] of grouped) {
       if (data.period !== latestPeriod) continue;
@@ -98,27 +99,20 @@ export async function run(): Promise<void> {
       const suburbSlug = await resolveSlug(suburbName, "SA", postcode);
       if (!latestDate || data.date > latestDate) latestDate = data.date;
 
-      await prisma.suburbCrimeStat.upsert({
-        where: { suburbName_state_period_source: { suburbName, state: "SA", period: data.period, source: SOURCE_ID } },
-        create: {
-          suburbSlug,
-          suburbName,
-          postcode:         postcode || null,
-          state:            "SA",
-          period:           data.period,
-          periodDate:       data.date,
-          totalOffences:    data.total,
-          offenceBreakdown: data.breakdown,
-          source: SOURCE_ID,
-        },
-        update: {
-          suburbSlug,
-          totalOffences:    data.total,
-          offenceBreakdown: data.breakdown,
-        },
+      records.push({
+        suburbSlug,
+        suburbName,
+        postcode:         postcode || null,
+        state:            "SA",
+        period:           data.period,
+        periodDate:       data.date,
+        totalOffences:    data.total,
+        offenceBreakdown: data.breakdown,
+        source:           SOURCE_ID,
       });
-      count++;
     }
+
+    const count = await batchUpsertCrime(records);
 
     await prisma.suburb.updateMany({
       where: { state: "SA" },
