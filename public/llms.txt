@@ -1,0 +1,16 @@
+# Your Property Guide
+> Your Property Guide is an Australian property resource covering suburb profiles, market data, buying guides, selling tips, investment strategy, and property news. We help Australians make smarter property decisions.
+
+## About
+- [About Us](https://www.yourpropertyguide.com.au/about): Our mission to make Australian property research easier.
+- [Contact](https://www.yourpropertyguide.com.au/contact): Get in touch with our team.
+
+## Property Research
+- [Suburb Profiles](https://www.yourpropertyguide.com.au/suburbs): Median prices, demographics, schools, and growth data for Australian suburbs.
+- [Market Data](https://www.yourpropertyguide.com.au/market): Property market trends, auction results, and price movements.
+
+## Guides
+- [Buying a Home](https://www.yourpropertyguide.com.au/guides/buying): Step-by-step guides for first home buyers and upgraders.
+- [Selling Property](https://www.yourpropertyguide.com.au/guides/selling): How to sell your home for the best price.
+- [Property Investment](https://www.yourpropertyguide.com.au/guides/investing): Investment strategy, rental yields, and how to build a portfolio.
+- [Home Loans](https://www.yourpropertyguide.com.au/guides/home-loans): Mortgage guides, comparison tips, and borrowing capacity.

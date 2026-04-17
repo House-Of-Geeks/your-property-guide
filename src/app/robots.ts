@@ -9,13 +9,21 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: ["/api/", "/dashboard/", "/*.woff2", "/*.woff"],
       },
-      { userAgent: "GPTBot",        allow: "/" },
-      { userAgent: "ChatGPT-User",  allow: "/" },
+      // OpenAI
+      { userAgent: "GPTBot",          allow: "/" },
+      { userAgent: "OAI-SearchBot",   allow: "/" },
+      { userAgent: "ChatGPT-User",    allow: "/" },
+      // Anthropic
+      { userAgent: "ClaudeBot",       allow: "/" },
+      { userAgent: "Claude-SearchBot", allow: "/" },
+      { userAgent: "Claude-User",     allow: "/" },
+      // Google AI
       { userAgent: "Google-Extended", allow: "/" },
-      { userAgent: "ClaudeBot",     allow: "/" },
-      { userAgent: "anthropic-ai",  allow: "/" },
-      { userAgent: "PerplexityBot", allow: "/" },
-      { userAgent: "CCBot",         allow: "/" },
+      // Perplexity
+      { userAgent: "PerplexityBot",   allow: "/" },
+      { userAgent: "Perplexity-User", allow: "/" },
+      // Common Crawl
+      { userAgent: "CCBot",           allow: "/" },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
