@@ -6,7 +6,7 @@ import { searchSchools } from "@/lib/services/school-service";
 import { makeSchoolSlug } from "@/lib/utils/school";
 import { SITE_URL } from "@/lib/constants";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400;
 
 const PAGE_SIZE = 20;
 

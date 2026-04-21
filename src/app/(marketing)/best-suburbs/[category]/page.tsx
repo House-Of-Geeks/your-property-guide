@@ -7,7 +7,7 @@ import { getRankedSuburbs, type RankingCategory, type RankedSuburb } from "@/lib
 import { formatPrice, formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400;
 
 const VALID_CATEGORIES: RankingCategory[] = [
   "for-families",

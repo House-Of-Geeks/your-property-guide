@@ -6,7 +6,7 @@ import { getSuburbs } from "@/lib/services/suburb-service";
 import { SITE_URL } from "@/lib/constants";
 import { SuburbsSearchBar } from "./SuburbsSearchBar";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Browse All Australian Suburbs | Property Data & Profiles",
