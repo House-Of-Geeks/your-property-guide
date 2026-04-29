@@ -60,6 +60,8 @@ export function MultiSuburbAutocomplete({
         const res = await fetch(`/api/suggest?q=${encodeURIComponent(q)}`);
         if (!res.ok) return;
         const data: SuggestResponse = await res.json();
+        // Guard against API responses that predate the properties field
+        data.properties = data.properties ?? [];
         // Filter out already-selected items using the ref (avoids stale closure)
         const slugs = selectedSlugsRef.current;
         data.locations = data.locations.filter((l) => !slugs.has(l.slug));
@@ -86,7 +88,7 @@ export function MultiSuburbAutocomplete({
   const allItems = [
     ...results.locations.map((d) => ({ type: "location" as const, data: d })),
     ...(showSchools ? results.schools.map((d) => ({ type: "school" as const, data: d })) : []),
-    ...results.properties.map((d) => ({ type: "property" as const, data: d })),
+    ...(results.properties ?? []).map((d) => ({ type: "property" as const, data: d })),
   ];
 
   const handleKeyDown = useCallback(
@@ -182,7 +184,7 @@ export function MultiSuburbAutocomplete({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => {
-            if (results.locations.length > 0 || (showSchools && results.schools.length > 0)) setOpen(true);
+            if (results.locations.length > 0 || (showSchools && results.schools.length > 0) || (results.properties?.length ?? 0) > 0) setOpen(true);
           }}
           onKeyDown={handleKeyDown}
           placeholder={selected.length === 0 ? placeholder : "Add suburb or school..."}

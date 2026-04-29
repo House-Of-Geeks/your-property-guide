@@ -86,10 +86,12 @@ export async function GET(req: NextRequest) {
     const streetWord = tokens[1] ?? "";
 
     if (streetWord.length >= 2) {
+      // G-NAF stores street names in uppercase. Use startsWith (no leading wildcard)
+      // so Postgres can use the streetName index. Normalise input to uppercase.
       propertiesPromise = db.propertyAddress.findMany({
         where: {
           numberFirst: { startsWith: num },
-          streetName:  { contains: streetWord, mode: "insensitive" },
+          streetName:  { startsWith: streetWord.toUpperCase() },
         },
         select: { slug: true, addressFull: true, locality: true, state: true, postcode: true },
         orderBy: { locality: "asc" },
