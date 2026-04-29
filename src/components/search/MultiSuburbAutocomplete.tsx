@@ -50,7 +50,7 @@ export function MultiSuburbAutocomplete({
   useEffect(() => {
     const q = query.trim();
     if (q.length < 2) {
-      setResults({ locations: [], schools: [], agencies: [] });
+      setResults({ locations: [], schools: [], agencies: [], properties: [] });
       setOpen(false);
       return;
     }
