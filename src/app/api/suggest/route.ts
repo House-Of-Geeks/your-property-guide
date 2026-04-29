@@ -71,15 +71,32 @@ export async function GET(req: NextRequest) {
         LIMIT 10
       `;
 
-  // Property address search — only when query starts with a digit (street number)
+  // Property address search — triggered when query starts with a digit (street number).
+  // addressFull has commas ("21 SMITH ST, SUBURB NSW 2000") so we can't do a plain contains.
+  // Instead parse the number + street name from the query and search by component fields.
   const looksLikeAddress = /^\d/.test(q) && q.length >= 3;
-  const propertiesPromise = looksLikeAddress
-    ? db.propertyAddress.findMany({
-        where: { addressFull: { contains: q, mode: "insensitive" } },
+  let propertiesPromise: Promise<{ slug: string; addressFull: string; locality: string; state: string; postcode: string }[]> =
+    Promise.resolve([]);
+
+  if (looksLikeAddress) {
+    const tokens = q.trim().split(/\s+/);
+    // tokens[0] = street number (e.g. "21", "5A", "21/14")
+    // tokens[1] = first word of street name (most distinctive part)
+    const num        = tokens[0];
+    const streetWord = tokens[1] ?? "";
+
+    if (streetWord.length >= 2) {
+      propertiesPromise = db.propertyAddress.findMany({
+        where: {
+          numberFirst: { startsWith: num },
+          streetName:  { contains: streetWord, mode: "insensitive" },
+        },
         select: { slug: true, addressFull: true, locality: true, state: true, postcode: true },
+        orderBy: { locality: "asc" },
         take: 5,
-      })
-    : Promise.resolve([] as { slug: string; addressFull: string; locality: string | null; state: string; postcode: string }[]);
+      });
+    }
+  }
 
   const [locations, rawSchools, rawProperties] = await Promise.all([locationsPromise, schoolsPromise, propertiesPromise]);
 
@@ -94,8 +111,8 @@ export async function GET(req: NextRequest) {
 
   const properties: SuggestProperty[] = rawProperties.map((p) => ({
     slug:        p.slug,
-    addressFull: p.addressFull.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()),
-    locality:    (p.locality ?? "").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()),
+    addressFull: p.addressFull.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()).replace(/,\s*/g, ", "),
+    locality:    p.locality.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()),
     state:       p.state,
     postcode:    p.postcode,
   }));
