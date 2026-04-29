@@ -15,6 +15,7 @@ import { db } from "@/lib/db";
 import { SITE_URL } from "@/lib/constants";
 import { streetSlug } from "@/lib/utils/slug";
 import { PropertyMap } from "@/components/property/PropertyMap";
+import { PropertyInterestForm } from "@/components/property/PropertyInterestForm";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -258,18 +259,26 @@ export default async function PropertyAddressPage({ params }: PageProps) {
             )}
 
             {listings.length === 0 && (
-              <section className="rounded-2xl bg-gray-50 border border-gray-100 p-6 text-center">
-                <Home className="h-10 w-10 text-gray-300 mx-auto mb-3" />
-                <h2 className="text-base font-semibold text-gray-700 mb-1">No active listings</h2>
-                <p className="text-sm text-gray-500 mb-4">
-                  This property is not currently for sale or rent.
-                </p>
-                <Link
-                  href={`/buy?suburb=${localityDisplay}`}
-                  className="inline-flex items-center gap-1 text-sm text-primary font-medium hover:underline"
-                >
-                  View properties in {localityDisplay} <ChevronRight className="h-4 w-4" />
-                </Link>
+              <section className="space-y-4">
+                <div className="rounded-2xl bg-gray-50 border border-gray-100 p-4 flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <Home className="h-5 w-5 text-gray-300 flex-shrink-0" />
+                    <p className="text-sm text-gray-500">
+                      This property is not currently listed for sale or rent.
+                    </p>
+                  </div>
+                  <Link
+                    href={`/buy?suburb=${localityDisplay}`}
+                    className="flex-shrink-0 inline-flex items-center gap-1 text-sm text-primary font-medium hover:underline whitespace-nowrap"
+                  >
+                    Browse {localityDisplay} <ChevronRight className="h-4 w-4" />
+                  </Link>
+                </div>
+                <PropertyInterestForm
+                  address={addressFullDisplay}
+                  suburbName={localityDisplay}
+                  suburbSlug={address.suburbSlug ?? undefined}
+                />
               </section>
             )}
           </div>

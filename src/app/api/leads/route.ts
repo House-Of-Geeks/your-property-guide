@@ -13,6 +13,8 @@ const leadSchema = z.object({
     "off-market-register",
     "general-contact",
     "house-and-land-enquiry",
+    "suburb-alert",
+    "property-interest",
   ]),
   firstName: z.string().min(1),
   lastName: z.string().min(1),
@@ -54,6 +56,8 @@ function labelFor(type: string): string {
     case "off-market-register":    return "Off-Market Registration";
     case "house-and-land-enquiry": return "House & Land Enquiry";
     case "general-contact":        return "General Enquiry";
+    case "suburb-alert":           return "Suburb Property Alert";
+    case "property-interest":      return "Property Interest Registration";
     default:                       return "Property Enquiry";
   }
 }

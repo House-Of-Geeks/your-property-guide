@@ -4,3 +4,4 @@ export { DataFreshnessNote } from "./DataFreshnessNote";
 export { SuburbCrime } from "./SuburbCrime";
 export { SuburbInvestment } from "./SuburbInvestment";
 export { SourceTooltip, sourceLabel } from "./SourceTooltip";
+export { SuburbAlertWidget } from "./SuburbAlertWidget";

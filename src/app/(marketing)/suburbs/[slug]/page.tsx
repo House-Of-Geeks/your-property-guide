@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, MapPin, Bus, ShoppingBag } from "lucide-react";
-import { SuburbHero, SuburbStats as SuburbStatsComponent, DataFreshnessNote } from "@/components/suburb";
+import { SuburbHero, SuburbStats as SuburbStatsComponent, DataFreshnessNote, SuburbAlertWidget } from "@/components/suburb";
 import { SuburbSchools } from "@/components/suburb/SuburbSchools";
 import { SuburbWalkability } from "@/components/suburb/SuburbWalkability";
 import { SuburbHazard } from "@/components/suburb/SuburbHazard";
@@ -172,6 +172,9 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             </Link>
           </div>
         </section>
+
+        {/* Property Alert CTA */}
+        <SuburbAlertWidget suburbName={suburb.name} suburbSlug={suburb.slug} />
 
         {/* Investment Overview */}
         {(suburb.stats.medianHousePrice > 0 || suburb.stats.medianUnitPrice > 0) && (
