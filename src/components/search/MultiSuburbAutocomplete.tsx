@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { MapPin, GraduationCap, Search, X } from "lucide-react";
-import type { SuggestResponse, SuggestLocation, SuggestSchool } from "@/types/suggest";
+import { MapPin, GraduationCap, Search, X, Home } from "lucide-react";
+import { useRouter } from "next/navigation";
+import type { SuggestResponse, SuggestLocation, SuggestSchool, SuggestProperty } from "@/types/suggest";
 
 export interface SelectedLocation {
   /** For suburbs: the suburb slug. For schools: the school slug. */
@@ -34,8 +35,9 @@ export function MultiSuburbAutocomplete({
   inputClassName = "",
   size = "default",
 }: MultiSuburbAutocompleteProps) {
+  const router = useRouter();
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<SuggestResponse>({ locations: [], schools: [], agencies: [] });
+  const [results, setResults] = useState<SuggestResponse>({ locations: [], schools: [], agencies: [], properties: [] });
   const [open, setOpen] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -63,7 +65,7 @@ export function MultiSuburbAutocomplete({
         data.locations = data.locations.filter((l) => !slugs.has(l.slug));
         data.schools = data.schools.filter((s) => !slugs.has(s.slug));
         setResults(data);
-        setOpen(data.locations.length > 0 || (showSchools && data.schools.length > 0));
+        setOpen(data.locations.length > 0 || (showSchools && data.schools.length > 0) || data.properties.length > 0);
         setActiveIdx(-1);
       } catch {
         // ignore
@@ -84,6 +86,7 @@ export function MultiSuburbAutocomplete({
   const allItems = [
     ...results.locations.map((d) => ({ type: "location" as const, data: d })),
     ...(showSchools ? results.schools.map((d) => ({ type: "school" as const, data: d })) : []),
+    ...results.properties.map((d) => ({ type: "property" as const, data: d })),
   ];
 
   const handleKeyDown = useCallback(
@@ -103,7 +106,8 @@ export function MultiSuburbAutocomplete({
         e.preventDefault();
         const item = allItems[activeIdx];
         if (item.type === "location") pickLocation(item.data);
-        else pickSchool(item.data);
+        else if (item.type === "school") pickSchool(item.data);
+        else pickProperty(item.data);
       } else if (e.key === "Escape") {
         setOpen(false);
       }
@@ -130,6 +134,13 @@ export function MultiSuburbAutocomplete({
     setOpen(false);
     setActiveIdx(-1);
     inputRef.current?.focus();
+  }
+
+  function pickProperty(prop: SuggestProperty) {
+    setQuery("");
+    setOpen(false);
+    setActiveIdx(-1);
+    router.push(`/property/${prop.slug}`);
   }
 
   const padClass = size === "lg" ? "px-4 py-3 text-base" : "px-4 py-3 text-sm";
@@ -235,6 +246,31 @@ export function MultiSuburbAutocomplete({
                       {school.suburbName && (
                         <span className="text-gray-500">, {school.suburbName}, {school.state}</span>
                       )}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          {results.properties.length > 0 && (
+            <div className={results.locations.length > 0 || results.schools.length > 0 ? "border-t border-gray-100" : ""}>
+              <p className="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Properties</p>
+              {results.properties.map((prop, i) => {
+                const idx = results.locations.length + (showSchools ? results.schools.length : 0) + i;
+                return (
+                  <button
+                    key={prop.slug}
+                    type="button"
+                    onMouseDown={(e) => { e.preventDefault(); pickProperty(prop); }}
+                    className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors ${
+                      activeIdx === idx ? "bg-primary/5 text-primary" : "text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    <Home className="w-4 h-4 text-gray-400 shrink-0" />
+                    <span>
+                      <span className="font-medium">{prop.addressFull}</span>
+                      <span className="text-gray-500">, {prop.state} {prop.postcode}</span>
                     </span>
                   </button>
                 );

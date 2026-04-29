@@ -21,8 +21,17 @@ export interface SuggestAgency {
   state: string;
 }
 
+export interface SuggestProperty {
+  slug: string;
+  addressFull: string;
+  locality: string;
+  state: string;
+  postcode: string;
+}
+
 export interface SuggestResponse {
   locations: SuggestLocation[];
   schools: SuggestSchool[];
   agencies: SuggestAgency[];
+  properties: SuggestProperty[];
 }
