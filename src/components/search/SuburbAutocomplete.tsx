@@ -46,7 +46,7 @@ export function SuburbAutocomplete({
 }: SuburbAutocompleteProps) {
   const router = useRouter();
   const [query, setQuery] = useState(() => slugToSuburbLabel(defaultSlug));
-  const [results, setResults] = useState<SuggestResponse>({ locations: [], schools: [], agencies: [] });
+  const [results, setResults] = useState<SuggestResponse>({ locations: [], schools: [], agencies: [], properties: [] });
   const [open, setOpen] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -59,7 +59,7 @@ export function SuburbAutocomplete({
   useEffect(() => {
     const q = query.trim();
     if (q.length < 2) {
-      setResults({ locations: [], schools: [], agencies: [] });
+      setResults({ locations: [], schools: [], agencies: [], properties: [] });
       setOpen(false);
       return;
     }
@@ -147,7 +147,7 @@ export function SuburbAutocomplete({
   function handleClear() {
     setQuery("");
     selectedSlugRef.current = "";
-    setResults({ locations: [], schools: [], agencies: [] });
+    setResults({ locations: [], schools: [], agencies: [], properties: [] });
     setOpen(false);
     inputRef.current?.focus();
     onClear?.();

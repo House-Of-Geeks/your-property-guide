@@ -9,7 +9,7 @@ import type { SuggestResponse, SuggestLocation, SuggestAgency } from "@/types/su
 export function AgentSearch() {
   const router = useRouter();
   const [query, setQuery]       = useState("");
-  const [results, setResults]   = useState<SuggestResponse>({ locations: [], schools: [], agencies: [] });
+  const [results, setResults]   = useState<SuggestResponse>({ locations: [], schools: [], agencies: [], properties: [] });
   const [open, setOpen]         = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -19,7 +19,7 @@ export function AgentSearch() {
 
   useEffect(() => {
     if (query.length < 2) {
-      setResults({ locations: [], schools: [], agencies: [] });
+      setResults({ locations: [], schools: [], agencies: [], properties: [] });
       setOpen(false);
       return;
     }
