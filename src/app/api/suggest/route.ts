@@ -84,10 +84,12 @@ export async function GET(req: NextRequest) {
     // tokens[1] = first word of street name (most distinctive part)
     const num        = tokens[0];
     const streetWord = tokens[1] ?? "";
+    // Any remaining tokens may include suburb name — used for client-side re-ranking
+    const localityHint = tokens.slice(2).join(" ").toUpperCase();
 
     if (streetWord.length >= 2) {
       // G-NAF stores street names in uppercase. Use startsWith (no leading wildcard)
-      // so Postgres can use the streetName index. Normalise input to uppercase.
+      // so Postgres can use the text_pattern_ops index. Normalise input to uppercase.
       propertiesPromise = db.propertyAddress.findMany({
         where: {
           numberFirst: { startsWith: num },
@@ -95,7 +97,13 @@ export async function GET(req: NextRequest) {
         },
         select: { slug: true, addressFull: true, locality: true, state: true, postcode: true },
         orderBy: { locality: "asc" },
-        take: 5,
+        take: 10,
+      }).then((rows) => {
+        if (!localityHint) return rows.slice(0, 5);
+        // Rank results that match the locality hint (suburb/state in query) to the top
+        const matched   = rows.filter((r) => localityHint.includes(r.locality.toUpperCase()) || localityHint.includes(r.state.toUpperCase()));
+        const unmatched = rows.filter((r) => !localityHint.includes(r.locality.toUpperCase()) && !localityHint.includes(r.state.toUpperCase()));
+        return [...matched, ...unmatched].slice(0, 5);
       });
     }
   }

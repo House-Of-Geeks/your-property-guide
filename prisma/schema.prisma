@@ -440,6 +440,8 @@ model PropertyAddress {
   @@index([suburbSlug])
   @@index([streetName, locality, state])
   @@index([lat, lng])
+  // Note: PropertyAddress_streetName_numberFirst_tpo_idx exists in DB with text_pattern_ops
+  // for LIKE prefix queries (autocomplete). Created via raw SQL — not representable in Prisma schema.
 }
 
 // ---------------------------------------------------------------------------
