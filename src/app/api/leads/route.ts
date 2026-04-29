@@ -5,6 +5,7 @@ import { routeLead } from "@/lib/utils/lead-routing";
 import { db } from "@/lib/db";
 
 const NOTIFY_EMAIL = "andy@theandylife.com";
+const CC_EMAIL = "jos@profitgeeks.com.au";
 
 const leadSchema = z.object({
   type: z.enum([
@@ -170,6 +171,7 @@ export async function POST(request: Request) {
     await transporter.sendMail({
       from:    `"Your Property Guide" <${process.env.EMAIL_FROM ?? "noreply@yourpropertyguide.com.au"}>`,
       to:      NOTIFY_EMAIL,
+      cc:      CC_EMAIL,
       subject,
       html:    buildEmailHtml(lead, agentName, routing.reason),
     });
