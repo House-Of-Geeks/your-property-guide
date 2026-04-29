@@ -3,7 +3,9 @@ export type LeadType =
   | "appraisal-request"
   | "off-market-register"
   | "general-contact"
-  | "house-and-land-enquiry";
+  | "house-and-land-enquiry"
+  | "suburb-alert"
+  | "property-interest";
 
 export interface Lead {
   id?: string;
@@ -26,5 +28,8 @@ export interface Lead {
     minBeds?: number;
   };
   appraisalAddress?: string;
+  address?: string;
+  propertyType?: string;
+  bedrooms?: string;
   createdAt?: string;
 }
