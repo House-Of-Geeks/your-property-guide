@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button, Input, Select } from "@/components/ui";
 import { SUBURBS, PROPERTY_TYPES } from "@/lib/constants";
 import { CheckCircle } from "lucide-react";
@@ -26,6 +27,7 @@ type AppraisalFormData = z.infer<typeof appraisalSchema>;
 export function AppraisalForm() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
 
   const {
     register,
@@ -33,6 +35,10 @@ export function AppraisalForm() {
     formState: { errors, isSubmitting },
   } = useForm<AppraisalFormData>({
     resolver: zodResolver(appraisalSchema),
+    defaultValues: {
+      address: searchParams.get("address") ?? "",
+      suburb: searchParams.get("suburb") ?? "",
+    },
   });
 
   const onSubmit = async (data: AppraisalFormData) => {

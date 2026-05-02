@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { AppraisalForm } from "@/components/forms/AppraisalForm";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -43,7 +44,9 @@ export default function AppraisalPage() {
         </div>
 
         <div className="rounded-xl bg-white shadow-card border border-gray-100 p-6 sm:p-8">
-          <AppraisalForm />
+          <Suspense fallback={<div className="h-96" aria-busy="true" />}>
+            <AppraisalForm />
+          </Suspense>
         </div>
       </div>
     </div>

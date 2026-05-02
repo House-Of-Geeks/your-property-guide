@@ -17,7 +17,7 @@ model User {
   emailVerified   DateTime?
   image           String?
   role            String          @default("agent") // "agent" | "agency_admin" | "admin"
-  password        String?         // bcrypt hash — null for magic-link-only users
+  password        String? // bcrypt hash — null for magic-link-only users
   accounts        Account[]
   sessions        Session[]
   savedProperties SavedProperty[]
@@ -51,6 +51,7 @@ model Account {
   id_token          String?
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([provider, providerAccountId])
 }
 
@@ -66,6 +67,7 @@ model VerificationToken {
   identifier String
   token      String
   expires    DateTime
+
   @@unique([identifier, token])
 }
 
@@ -135,10 +137,10 @@ model Agent {
   metaDescription String?
   ogImage         String?
 
-  agency        Agency                @relation(fields: [agencyId], references: [id])
-  properties    Property[]            @relation("PropertyPrimaryAgent")
-  coProperties  Property[]            @relation("PropertyCoAgent")
-  packages      HouseAndLandPackage[]
+  agency       Agency                @relation(fields: [agencyId], references: [id])
+  properties   Property[]            @relation("PropertyPrimaryAgent")
+  coProperties Property[]            @relation("PropertyCoAgent")
+  packages     HouseAndLandPackage[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -152,50 +154,50 @@ model Agent {
 // Property
 // ---------------------------------------------------------------------------
 model Property {
-  id              String    @id
-  slug            String    @unique
+  id               String    @id
+  slug             String    @unique
   // listingType: "buy" | "rent" | "sold" | "off-market" | "house-and-land"
-  listingType     String
+  listingType      String
   // propertyType: "house" | "townhouse" | "apartment" | "unit" | "land" | "acreage" | "villa"
-  propertyType    String
+  propertyType     String
   // status: "active" | "under-contract" | "sold" | "off-market"
-  status          String
-  title           String
-  addressStreet   String
-  addressSuburb   String
-  addressState    String    @default("QLD")
-  addressPostcode String
-  addressFull     String
-  priceDisplay    String
-  priceValue      Int?
-  priceIsRange    Boolean   @default(false)
-  priceMin        Int?
-  priceMax        Int?
+  status           String
+  title            String
+  addressStreet    String
+  addressSuburb    String
+  addressState     String    @default("QLD")
+  addressPostcode  String
+  addressFull      String
+  priceDisplay     String
+  priceValue       Int?
+  priceIsRange     Boolean   @default(false)
+  priceMin         Int?
+  priceMax         Int?
   priceRentPerWeek Int?
-  bedrooms        Int
-  bathrooms       Int
-  carSpaces       Int
-  landSize        Int?
-  buildingSize    Int?
-  description     String
-  agentId         String
-  coAgentId       String?
-  agencyId        String
-  suburbSlug      String
-  inspectionTimes String[]
-  auctionDate     DateTime?
-  dateAdded       DateTime
-  dateSold        DateTime?
-  soldPrice       Int?
-  isOffMarket     Boolean   @default(false)
-  isFeatured      Boolean   @default(false)
+  bedrooms         Int
+  bathrooms        Int
+  carSpaces        Int
+  landSize         Int?
+  buildingSize     Int?
+  description      String
+  agentId          String
+  coAgentId        String?
+  agencyId         String
+  suburbSlug       String
+  inspectionTimes  String[]
+  auctionDate      DateTime?
+  dateAdded        DateTime
+  dateSold         DateTime?
+  soldPrice        Int?
+  isOffMarket      Boolean   @default(false)
+  isFeatured       Boolean   @default(false)
 
-  images   Property_Image[]
-  agent           Agent           @relation("PropertyPrimaryAgent", fields: [agentId], references: [id])
-  coAgent         Agent?          @relation("PropertyCoAgent", fields: [coAgentId], references: [id])
-  agency          Agency          @relation(fields: [agencyId], references: [id])
-  suburb          Suburb          @relation(fields: [suburbSlug], references: [slug])
-  savedByUsers    SavedProperty[]
+  images       Property_Image[]
+  agent        Agent            @relation("PropertyPrimaryAgent", fields: [agentId], references: [id])
+  coAgent      Agent?           @relation("PropertyCoAgent", fields: [coAgentId], references: [id])
+  agency       Agency           @relation(fields: [agencyId], references: [id])
+  suburb       Suburb           @relation(fields: [suburbSlug], references: [slug])
+  savedByUsers SavedProperty[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -229,34 +231,34 @@ model Property_Image {
 // Suburb
 // ---------------------------------------------------------------------------
 model Suburb {
-  id               String   @id
-  slug             String   @unique
-  name             String
-  postcode         String
-  state            String
-  region           String
-  description      String
-  heroImage        String
+  id                       String   @id
+  slug                     String   @unique
+  name                     String
+  postcode                 String
+  state                    String
+  region                   String
+  description              String
+  heroImage                String
   // Stats
-  medianHousePrice  Int
-  medianUnitPrice   Int
-  medianRentHouse   Int
-  medianRentUnit    Int
-  annualGrowthHouse Float
-  annualGrowthUnit  Float
-  rentalAffordabilityIndex Int?    // SGS Economics RAI (100 = affordable benchmark; < 50 = extremely unaffordable)
-  daysOnMarket      Int
-  salesCountHouse   Int     @default(0)
-  population        Int
-  medianAge         Int
-  ownerOccupied     Float
-  renterOccupied    Float
-  householdsFamily     Float @default(0)
-  householdsLonePerson Float @default(0)
+  medianHousePrice         Int
+  medianUnitPrice          Int
+  medianRentHouse          Int
+  medianRentUnit           Int
+  annualGrowthHouse        Float
+  annualGrowthUnit         Float
+  rentalAffordabilityIndex Int? // SGS Economics RAI (100 = affordable benchmark; < 50 = extremely unaffordable)
+  daysOnMarket             Int
+  salesCountHouse          Int      @default(0)
+  population               Int
+  medianAge                Int
+  ownerOccupied            Float
+  renterOccupied           Float
+  householdsFamily         Float    @default(0)
+  householdsLonePerson     Float    @default(0)
   // Arrays
-  amenities      String[]
-  transportLinks String[]
-  nearbySuburbs  String[]
+  amenities                String[]
+  transportLinks           String[]
+  nearbySuburbs            String[]
 
   schools    School[]
   properties Property[]
@@ -292,33 +294,33 @@ model Suburb {
 }
 
 model School {
-  id       String @id @default(cuid())
-  name     String
+  id                  String    @id @default(cuid())
+  name                String
   // type: "primary" | "secondary" | "combined" | "special"
-  type     String
+  type                String
   // sector: "government" | "catholic" | "independent"
-  sector   String
-  distance Float
-  suburbId String
-  suburb   Suburb @relation(fields: [suburbId], references: [id], onDelete: Cascade)
+  sector              String
+  distance            Float
+  suburbId            String
+  suburb              Suburb    @relation(fields: [suburbId], references: [id], onDelete: Cascade)
   // ACARA fields (populated by sync job)
-  acaraId          String?   @unique
-  lat              Float?
-  lng              Float?
-  icsea            Int?
-  enrolment        Int?
-  boysEnrolment    Int?
-  girlsEnrolment   Int?
-  indigenousPct    Float?    // % of indigenous students
-  lbotePct         Float?    // % language background other than English
-  teachingStaff    Int?      // headcount
-  teachingStaffFte Float?
+  acaraId             String?   @unique
+  lat                 Float?
+  lng                 Float?
+  icsea               Int?
+  enrolment           Int?
+  boysEnrolment       Int?
+  girlsEnrolment      Int?
+  indigenousPct       Float? // % of indigenous students
+  lbotePct            Float? // % language background other than English
+  teachingStaff       Int? // headcount
+  teachingStaffFte    Float?
   nonTeachingStaff    Int?
   nonTeachingStaffFte Float?
-  website          String?
-  yearRange        String?   // e.g. "Prep-6", "7-12", "R-6"
-  gender           String?   // "coed" | "girls" | "boys"
-  updatedFromAcara DateTime?
+  website             String?
+  yearRange           String? // e.g. "Prep-6", "7-12", "R-6"
+  gender              String? // "coed" | "girls" | "boys"
+  updatedFromAcara    DateTime?
 
   @@index([suburbId])
 }
@@ -374,9 +376,9 @@ model HouseAndLandPackage {
   dateAdded      DateTime
 
   images    HouseAndLand_Image[]
-  agent     Agent  @relation(fields: [agentId], references: [id])
-  agency    Agency @relation(fields: [agencyId], references: [id])
-  suburbRef Suburb @relation(fields: [suburbSlug], references: [slug])
+  agent     Agent                @relation(fields: [agentId], references: [id])
+  agency    Agency               @relation(fields: [agencyId], references: [id])
+  suburbRef Suburb               @relation(fields: [suburbSlug], references: [slug])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -402,53 +404,166 @@ model HouseAndLand_Image {
 // Property Address Registry (G-NAF national address file)
 // ---------------------------------------------------------------------------
 model PropertyAddress {
-  id           String  @id              // G-NAF ADDRESS_DETAIL_PID (e.g. "GAQLD429602765")
-  slug         String  @unique          // URL-safe: "14-42-main-street-brisbane-qld-4000"
-  addressFull  String                   // "14/42 Main St, Brisbane QLD 4000"
+  id          String @id // G-NAF ADDRESS_DETAIL_PID (e.g. "GAQLD429602765")
+  slug        String @unique // URL-safe: "14-42-main-street-brisbane-qld-4000"
+  addressFull String // "14/42 Main St, Brisbane QLD 4000"
 
   // Address components
   buildingName String?
-  flatType     String?                  // "UNIT", "APT", "FLAT", "SHOP" etc.
-  flatNumber   String?                  // e.g. "14"
-  levelType    String?                  // "LEVEL", "FLOOR"
-  levelNumber  String?                  // e.g. "3"
-  numberFirst  String?                  // e.g. "42A"
-  numberLast   String?                  // if a range: "44"
+  flatType     String? // "UNIT", "APT", "FLAT", "SHOP" etc.
+  flatNumber   String? // e.g. "14"
+  levelType    String? // "LEVEL", "FLOOR"
+  levelNumber  String? // e.g. "3"
+  numberFirst  String? // e.g. "42A"
+  numberLast   String? // if a range: "44"
   streetName   String
-  streetType   String?                  // "STREET", "ROAD", "AVENUE" etc.
-  streetSuffix String?                  // "NORTH", "EAST" etc.
+  streetType   String? // "STREET", "ROAD", "AVENUE" etc.
+  streetSuffix String? // "NORTH", "EAST" etc.
 
   // Location
-  locality     String                   // suburb/locality name (from G-NAF)
-  state        String                   // "QLD", "NSW" etc.
-  postcode     String                   // "4000"
-  lat          Float?
-  lng          Float?
+  locality String // suburb/locality name (from G-NAF)
+  state    String // "QLD", "NSW" etc.
+  postcode String // "4000"
+  lat      Float?
+  lng      Float?
 
   // Metadata
-  legalParcelId String?                 // lot/plan reference e.g. "3//SP123456"
-  confidence    Int     @default(0)     // G-NAF confidence: 0 (low) – 2 (high)
+  legalParcelId String? // lot/plan reference e.g. "3//SP123456"
+  confidence    Int     @default(0) // G-NAF confidence: 0 (low) – 2 (high)
 
   // Links (populated post-import)
-  suburbSlug    String?                 // FK to Suburb.slug (nullable — not all localities exist)
+  suburbSlug String? // FK to Suburb.slug (nullable — not all localities exist)
+
+  // Denormalised sales summary (populated by sales-{state}-rows ingest jobs)
+  // Newest contract date and price across all PropertySale rows joined via addressId.
+  // Updated by `UPDATE … FROM` post-ingest; never decremented.
+  lastSaleDate  DateTime?
+  lastSalePrice Int?
+  saleCount     Int       @default(0)
+
+  sales    PropertySale[]
+  overlays PropertyOverlay[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  // Note: PropertyAddress_streetName_numberFirst_tpo_idx exists in DB with text_pattern_ops
+  // for LIKE prefix queries (autocomplete). Created via raw SQL — not representable in Prisma schema.
 
   @@index([state, postcode])
   @@index([locality, state])
   @@index([suburbSlug])
   @@index([streetName, locality, state])
   @@index([lat, lng])
-  // Note: PropertyAddress_streetName_numberFirst_tpo_idx exists in DB with text_pattern_ops
-  // for LIKE prefix queries (autocomplete). Created via raw SQL — not representable in Prisma schema.
+  @@index([lastSaleDate])
+}
+
+// ---------------------------------------------------------------------------
+// Property Sales (per-transaction history from state Valuer-General feeds)
+// ---------------------------------------------------------------------------
+// Per-row sale record. One row per transaction event. Joined to PropertyAddress
+// (G-NAF) by post-ingest match SQL — addressId is null when the row's address
+// could not be resolved to a G-NAF entry (~15-30% of rows in practice).
+//
+// Source coverage at time of writing:
+//   - "vg-nsw"  NSW Valuer General PSI (free, CC BY 4.0, weekly)
+// Other states require commercial APM/Domain Insight licence.
+//
+// Idempotency: (source, sourceRowKey) is unique. Re-running the same year ZIP
+// is a no-op via ON CONFLICT DO NOTHING.
+//
+// Privacy: must NEVER store purchaser/vendor names or surface this data via
+// name-search UI — direct marketing is prohibited under every state licence.
+model PropertySale {
+  id String @id @default(cuid())
+
+  // Source row identity
+  source       String // "vg-nsw" | "qvas-qld" | etc.
+  sourceRowKey String // VG: "districtCode:propertyId:saleCounter"
+
+  // Address as printed in source (audit / display fallback)
+  rawHouseNumber String?
+  rawUnitNumber  String?
+  rawStreetName  String? // raw e.g. "MAIN ST"
+  rawLocality    String
+  rawPostcode    String
+  state          String // "NSW", "QLD", etc.
+
+  // G-NAF resolution (nullable — populated by post-ingest match SQL)
+  addressId       String? // → PropertyAddress.id (G-NAF PID)
+  matchConfidence String? // "exact" | "street-fallback" | null
+  address         PropertyAddress? @relation(fields: [addressId], references: [id], onDelete: SetNull)
+
+  // Run identity — all rows from one ingest run share one runId, so a run is
+  // undoable via: DELETE FROM "PropertySale" WHERE "runId" = '...'
+  runId String
+
+  // Sale facts
+  contractDate   DateTime
+  settlementDate DateTime?
+  price          Int // AUD whole dollars (consistent with existing code)
+
+  // Property facts (NSW VG provides these per row)
+  area           Float? // numeric value
+  areaType       String? // "M" (m²) | "H" (ha)
+  natureCode     String? // R = residence non-strata, V = vacant land, 3 = strata
+  zoning         String? // e.g. "R2"
+  primaryPurpose String? // e.g. "RESIDENCE", "VACANT LAND"
+  dealingNumber  String?
+
+  createdAt DateTime @default(now())
+
+  @@unique([source, sourceRowKey])
+  @@index([addressId])
+  @@index([state, rawPostcode, rawStreetName])
+  @@index([contractDate])
+  @@index([runId])
+}
+
+// ---------------------------------------------------------------------------
+// Property Overlay (parcel-level layers from state spatial feeds)
+// ---------------------------------------------------------------------------
+// Generic table for any per-property classification derived by point-in-polygon
+// against a state spatial dataset (zoning, flood, bushfire, heritage, etc.).
+// One row per (address, layer, source) triple — re-running ingest replaces the
+// row for that (address, layer, source).
+//
+// `kind` is the layer family ("zoning" | "flood" | "bushfire" | "heritage").
+// `code` is the short machine value ("R2", "BAL-12.5", "yes").
+// `label` is the human-readable label ("Low Density Residential").
+// `attrs` holds any extra fields (FSR, height, overlay name) as JSON.
+//
+// Privacy: never store owner/occupier names. These overlays are land-only.
+//
+// Idempotency: (addressId, kind, source) is unique. Each ingest run uses
+// runId so a single run is undoable: DELETE WHERE "runId" = '...'
+model PropertyOverlay {
+  id              String   @id @default(cuid())
+  addressId       String                        // → PropertyAddress.id (G-NAF PID)
+  kind            String                        // "zoning" | "flood" | "bushfire" | "heritage"
+  source          String                        // e.g. "nsw-epi-zoning"
+  code            String                        // e.g. "R2"
+  label           String?                       // e.g. "Low Density Residential"
+  attrs           Json?                         // additional structured fields
+  state           String                        // for fast per-state queries
+  runId           String                        // undo target
+
+  effectiveAt     DateTime?                     // when the overlay was assessed/published
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  address         PropertyAddress @relation(fields: [addressId], references: [id], onDelete: Cascade)
+
+  @@unique([addressId, kind, source])
+  @@index([addressId, kind])
+  @@index([kind, state])
+  @@index([runId])
 }
 
 // ---------------------------------------------------------------------------
 // Leads (enquiries from public-facing forms)
 // ---------------------------------------------------------------------------
 model Lead {
-  id               String   @id @default(cuid())
+  id               String  @id @default(cuid())
   // "property-enquiry" | "appraisal-request" | "off-market-register" | "general-contact" | "house-and-land-enquiry"
   type             String
   firstName        String
@@ -465,8 +580,8 @@ model Lead {
   address          String?
   propertyType     String?
   bedrooms         String?
-  routedToAgent    String?  // resolved agent ID from lead-routing
-  routedReason     String?  // "direct-agent" | "listing-agent" | "suburb-coverage" | "round-robin"
+  routedToAgent    String? // resolved agent ID from lead-routing
+  routedReason     String? // "direct-agent" | "listing-agent" | "suburb-coverage" | "round-robin"
 
   createdAt DateTime @default(now())
 
@@ -480,10 +595,10 @@ model Lead {
 // Data Sync Registry
 // ---------------------------------------------------------------------------
 model DataSource {
-  id            String    @id       // e.g. "rental-vic", "crime-nsw", "acara-schools"
+  id            String    @id // e.g. "rental-vic", "crime-nsw", "acara-schools"
   label         String
-  category      String              // "schools" | "rental" | "crime"
-  schedule      String              // "annual" | "quarterly" | "monthly"
+  category      String // "schools" | "rental" | "crime"
+  schedule      String // "annual" | "quarterly" | "monthly"
   sourceUrl     String
   lastFetchedAt DateTime?
   dataAsOf      DateTime?
@@ -503,11 +618,11 @@ model DataSource {
 // ---------------------------------------------------------------------------
 model SuburbRentalStat {
   id              String   @id @default(cuid())
-  suburbSlug      String?            // null until suburb exists in DB
+  suburbSlug      String? // null until suburb exists in DB
   suburbName      String
   postcode        String
   state           String
-  period          String             // e.g. "2024-Q3"
+  period          String // e.g. "2024-Q3"
   periodDate      DateTime
   medianRentHouse Int?
   medianRentUnit  Int?
@@ -515,7 +630,7 @@ model SuburbRentalStat {
   medianRent2Bed  Int?
   medianRent1Bed  Int?
   bondLodgements  Int?
-  source          String             // DataSource.id
+  source          String // DataSource.id
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -536,7 +651,7 @@ model SuburbCrimeStat {
   postcode         String?
   lga              String?
   state            String
-  period           String             // e.g. "2024"
+  period           String // e.g. "2024"
   periodDate       DateTime
   totalOffences    Int
   offenceBreakdown Json     @default("{}")
@@ -557,10 +672,10 @@ model SuburbCrimeStat {
 model SuburbHazard {
   id             String   @id @default(cuid())
   suburbSlug     String   @unique
-  floodClass     String?  // "high" | "medium" | "low" | "floodway" | null
-  floodSource    String?  // e.g. "ga-afrip"
-  bushfireRisk   String?  // "high" | "medium" | "low" | null
-  bushfireSource String?  // e.g. "nsw-seed" | "vic-dpv"
+  floodClass     String? // "high" | "medium" | "low" | "floodway" | null
+  floodSource    String? // e.g. "ga-afrip"
+  bushfireRisk   String? // "high" | "medium" | "low" | null
+  bushfireSource String? // e.g. "nsw-seed" | "vic-dpv"
   assessedAt     DateTime
 
   createdAt DateTime @default(now())
@@ -574,8 +689,8 @@ model SuburbHazard {
 // Suburb Climate (BOM station averages mapped to suburb centroid)
 // ---------------------------------------------------------------------------
 model SuburbClimate {
-  id               String  @id @default(cuid())
-  suburbSlug       String  @unique
+  id               String   @id @default(cuid())
+  suburbSlug       String   @unique
   bomStationId     String
   bomStationName   String
   distanceKm       Float

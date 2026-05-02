@@ -37,6 +37,18 @@ import { run as hazardFlood }       from "./sources/hazard-flood";
 import { run as hazardBushfire }    from "./sources/hazard-bushfire";
 import { run as walkability }       from "./sources/walkability";
 import { run as bomClimate }        from "./sources/bom-climate";
+import { run as zoningNsw }         from "./sources/zoning-nsw";
+import { run as zoningVic }         from "./sources/zoning-vic";
+import { run as zoningAct }         from "./sources/zoning-act";
+import { run as zoningTas }         from "./sources/zoning-tas";
+import { run as floodVic }          from "./sources/flood-vic";
+import { run as bushfireVic }       from "./sources/bushfire-vic";
+import { run as heritageVic }       from "./sources/heritage-vic";
+import { run as floodAct }          from "./sources/flood-act";
+import { run as bushfireAct }       from "./sources/bushfire-act";
+import { run as heritageAct }       from "./sources/heritage-act";
+import { run as heritageNsw }       from "./sources/heritage-nsw";
+import { run as heritageTas }       from "./sources/heritage-tas";
 
 const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" | "annual" }> = {
   "import-suburbs":     { run: importSuburbs,    schedule: "quarterly" },
@@ -65,6 +77,18 @@ const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" 
   "hazard-bushfire":{ run: hazardBushfire,  schedule: "annual"    },
   "walkability":    { run: walkability,     schedule: "annual"    },
   "bom-climate":    { run: bomClimate,      schedule: "annual"    },
+  "zoning-nsw":     { run: zoningNsw,       schedule: "quarterly" },
+  "zoning-vic":     { run: zoningVic,       schedule: "quarterly" },
+  "zoning-act":     { run: zoningAct,       schedule: "quarterly" },
+  "zoning-tas":     { run: zoningTas,       schedule: "quarterly" },
+  "flood-vic":      { run: floodVic,        schedule: "quarterly" },
+  "bushfire-vic":   { run: bushfireVic,     schedule: "quarterly" },
+  "heritage-vic":   { run: heritageVic,     schedule: "quarterly" },
+  "flood-act":      { run: floodAct,        schedule: "quarterly" },
+  "bushfire-act":   { run: bushfireAct,     schedule: "quarterly" },
+  "heritage-act":   { run: heritageAct,     schedule: "quarterly" },
+  "heritage-nsw":   { run: heritageNsw,     schedule: "quarterly" },
+  "heritage-tas":   { run: heritageTas,     schedule: "quarterly" },
 };
 
 async function main(): Promise<void> {
