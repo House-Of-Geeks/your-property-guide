@@ -638,6 +638,16 @@ export default async function PropertyAddressPage({ params }: PageProps) {
               const floodDetected    = floodLevel === "high" || floodLevel === "medium" || floodLevel === "floodway";
               const bushfireDetected = bushfireLevel === "high" || bushfireLevel === "medium";
 
+              // States where each layer's ingest has run. Used to distinguish
+              // "ingested but address didn't match" (Not detected) from "no
+              // ingest yet for this state" (No data).
+              const FLOOD_INGESTED    = new Set(["ACT", "VIC"]);
+              const BUSHFIRE_INGESTED = new Set(["ACT", "VIC"]);
+              const HERITAGE_INGESTED = new Set(["NSW", "VIC", "ACT", "TAS"]);
+              const stateHasFloodIngest    = FLOOD_INGESTED.has(address.state);
+              const stateHasBushfireIngest = BUSHFIRE_INGESTED.has(address.state);
+              const stateHasHeritageIngest = HERITAGE_INGESTED.has(address.state);
+
               const PORTAL: Record<string, { name: string; url: string }> = {
                 NSW: { name: "planningportal.nsw.gov.au",   url: "https://www.planningportal.nsw.gov.au" },
                 VIC: { name: "mapshare.vic.gov.au/vicplan", url: "https://mapshare.vic.gov.au/vicplan/" },
@@ -682,7 +692,9 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                         ? <PillDetected />
                         : hazard?.floodClass != null
                           ? (floodDetected ? <PillDetected /> : <PillNotDetected />)
-                          : <PillNoData />}
+                          : stateHasFloodIngest
+                            ? <PillNotDetected />
+                            : <PillNoData />}
                     </div>
 
                     {/* Bushfire — prefer parcel-level overlay over suburb-level */}
@@ -695,7 +707,9 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                         ? <PillDetected />
                         : hazard?.bushfireRisk != null
                           ? (bushfireDetected ? <PillDetected /> : <PillNotDetected />)
-                          : <PillNoData />}
+                          : stateHasBushfireIngest
+                            ? <PillNotDetected />
+                            : <PillNoData />}
                     </div>
 
                     {/* Heritage — parcel-level overlay only */}
@@ -706,7 +720,9 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                       </div>
                       {heritageOverlay
                         ? <PillDetected />
-                        : <PillNoData />}
+                        : stateHasHeritageIngest
+                          ? <PillNotDetected />
+                          : <PillNoData />}
                     </div>
                   </div>
 
