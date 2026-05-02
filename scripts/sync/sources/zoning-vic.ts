@@ -157,6 +157,7 @@ async function downloadPolygons(useCache: boolean): Promise<ZoningFeature[]> {
     }
 
     for (const f of resp.features) {
+      if (!f.geometry || !f.geometry.type) continue;
       const polys: number[][][][] = f.geometry.type === "Polygon"
         ? [f.geometry.coordinates as number[][][]]
         : (f.geometry.coordinates as number[][][][]);
