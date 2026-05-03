@@ -641,9 +641,9 @@ export default async function PropertyAddressPage({ params }: PageProps) {
               // States where each layer's ingest has run. Used to distinguish
               // "ingested but address didn't match" (Not detected) from "no
               // ingest yet for this state" (No data).
-              const FLOOD_INGESTED    = new Set(["ACT", "VIC"]);
-              const BUSHFIRE_INGESTED = new Set(["ACT", "VIC"]);
-              const HERITAGE_INGESTED = new Set(["NSW", "VIC", "ACT", "TAS"]);
+              const FLOOD_INGESTED    = new Set(["NSW", "VIC", "QLD", "ACT"]);
+              const BUSHFIRE_INGESTED = new Set(["NSW", "VIC", "WA", "TAS", "ACT"]);
+              const HERITAGE_INGESTED = new Set(["NSW", "VIC", "QLD", "ACT", "TAS"]);
               const stateHasFloodIngest    = FLOOD_INGESTED.has(address.state);
               const stateHasBushfireIngest = BUSHFIRE_INGESTED.has(address.state);
               const stateHasHeritageIngest = HERITAGE_INGESTED.has(address.state);

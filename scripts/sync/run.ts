@@ -49,6 +49,12 @@ import { run as bushfireAct }       from "./sources/bushfire-act";
 import { run as heritageAct }       from "./sources/heritage-act";
 import { run as heritageNsw }       from "./sources/heritage-nsw";
 import { run as heritageTas }       from "./sources/heritage-tas";
+import { run as floodNsw }          from "./sources/flood-nsw";
+import { run as bushfireNsw }       from "./sources/bushfire-nsw";
+import { run as heritageQld }       from "./sources/heritage-qld";
+import { run as floodQld }          from "./sources/flood-qld";
+import { run as bushfireWa }        from "./sources/bushfire-wa";
+import { run as bushfireTas }       from "./sources/bushfire-tas";
 
 const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" | "annual" }> = {
   "import-suburbs":     { run: importSuburbs,    schedule: "quarterly" },
@@ -89,6 +95,12 @@ const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" 
   "heritage-act":   { run: heritageAct,     schedule: "quarterly" },
   "heritage-nsw":   { run: heritageNsw,     schedule: "quarterly" },
   "heritage-tas":   { run: heritageTas,     schedule: "quarterly" },
+  "flood-nsw":      { run: floodNsw,        schedule: "quarterly" },
+  "bushfire-nsw":   { run: bushfireNsw,     schedule: "quarterly" },
+  "heritage-qld":   { run: heritageQld,     schedule: "quarterly" },
+  "flood-qld":      { run: floodQld,        schedule: "annual"    },
+  "bushfire-wa":    { run: bushfireWa,      schedule: "annual"    },
+  "bushfire-tas":   { run: bushfireTas,     schedule: "quarterly" },
 };
 
 async function main(): Promise<void> {
