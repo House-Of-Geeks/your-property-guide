@@ -28,6 +28,9 @@ function toTitleCase(s: string | null): string | null {
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { PropertyCard } from "@/components/property/PropertyCard";
+import { SuburbCrime } from "@/components/suburb/SuburbCrime";
+import { SuburbClimate } from "@/components/suburb/SuburbClimate";
+import { SuburbWalkability } from "@/components/suburb/SuburbWalkability";
 import { db } from "@/lib/db";
 import { SITE_URL } from "@/lib/constants";
 import { streetSlug } from "@/lib/utils/slug";
@@ -160,6 +163,39 @@ export default async function PropertyAddressPage({ params }: PageProps) {
   const hazard = address.suburbSlug
     ? await db.suburbHazard.findUnique({ where: { suburbSlug: address.suburbSlug } })
     : null;
+
+  // Suburb deep-dive data — crime, climate. Already ingested per-state on
+  // existing GitHub Actions schedules; we just surface them on the property
+  // page now instead of forcing users to bounce to /suburbs/[slug].
+  const [crimeStat, climate] = address.suburbSlug
+    ? await Promise.all([
+        db.suburbCrimeStat.findFirst({
+          where: { suburbSlug: address.suburbSlug },
+          orderBy: { periodDate: "desc" },
+          select: {
+            totalOffences: true,
+            offenceBreakdown: true,
+            period: true,
+            periodDate: true,
+            state: true,
+          },
+        }),
+        db.suburbClimate.findUnique({
+          where: { suburbSlug: address.suburbSlug },
+          select: {
+            bomStationId: true,
+            bomStationName: true,
+            distanceKm: true,
+            meanMaxTemp: true,
+            meanMinTemp: true,
+            meanRainfall: true,
+            meanHumidity9am: true,
+            meanSunshineHrs: true,
+            annualRainfallMm: true,
+          },
+        }),
+      ])
+    : [null, null];
 
   // Active listings at this address (loose match — same street + postcode + state)
   const listings = await db.property.findMany({
@@ -1053,29 +1089,62 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                       </div>
                     </div>
 
-                    {/* Walkability scores */}
-                    {(suburb.walkScore || suburb.transitScore || suburb.bikeScore) && (
-                      <div className="grid grid-cols-3 gap-3 mt-6 pt-5 border-t border-gray-100">
-                        {[
-                          { label: "Walk", score: suburb.walkScore },
-                          { label: "Transit", score: suburb.transitScore },
-                          { label: "Bike", score: suburb.bikeScore },
-                        ].map(({ label, score }) =>
-                          score ? (
-                            <div key={label} className="text-center">
-                              <p className="text-2xl font-bold text-gray-900 leading-none">{score}</p>
-                              <p className="text-[11px] text-gray-500 mt-1 uppercase tracking-wide font-medium">{label} score</p>
-                            </div>
-                          ) : null
-                        )}
-                      </div>
-                    )}
-
                     <p className="text-xs text-gray-400 mt-4">
                       Source: <a href="https://www.abs.gov.au/census" target="_blank" rel="noopener noreferrer" className="hover:underline">ABS Census 2021</a>
                     </p>
                   </div>
                 )}
+              </section>
+            )}
+
+            {/* WALKABILITY (OSM Overpass) */}
+            {suburb && (suburb.walkScore != null || suburb.transitScore != null || suburb.bikeScore != null) && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-1">Walkability</h2>
+                <p className="text-sm text-gray-500 mb-5">
+                  How easy it is to get around {suburb.name} on foot, by transit, or by bike.
+                </p>
+                <div className="rounded-2xl border border-gray-200 bg-white p-5 lg:p-6">
+                  <SuburbWalkability
+                    walkScore={suburb.walkScore}
+                    transitScore={suburb.transitScore}
+                    bikeScore={suburb.bikeScore}
+                  />
+                </div>
+                <p className="text-xs text-gray-400 mt-3">
+                  Derived from OpenStreetMap data via Overpass API.
+                </p>
+              </section>
+            )}
+
+            {/* CRIME (state crime statistics agencies) */}
+            {crimeStat && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-1">Crime statistics</h2>
+                <p className="text-sm text-gray-500 mb-5">
+                  Reported offences in {localityDisplay} for {crimeStat.period}.
+                </p>
+                <SuburbCrime
+                  crimeStat={{
+                    totalOffences: crimeStat.totalOffences,
+                    offenceBreakdown: crimeStat.offenceBreakdown,
+                    period: crimeStat.period,
+                    state: crimeStat.state,
+                  }}
+                />
+              </section>
+            )}
+
+            {/* CLIMATE (BOM station averages) */}
+            {climate && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-1">Climate</h2>
+                <p className="text-sm text-gray-500 mb-5">
+                  Long-term monthly averages from the nearest Bureau of Meteorology station.
+                </p>
+                <div className="rounded-2xl border border-gray-200 bg-white p-5 lg:p-6">
+                  <SuburbClimate climate={climate} />
+                </div>
               </section>
             )}
 

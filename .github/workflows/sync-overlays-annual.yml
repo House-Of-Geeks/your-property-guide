@@ -1,0 +1,147 @@
+name: Data Sync — Parcel overlays + School catchments (Annual)
+
+# Heavy point-in-polygon ingests against G-NAF. Each source matches every
+# G-NAF address in its state to the relevant polygon set, then writes one
+# PropertyOverlay row per match. Runs all 7 catchment sources (NSW, VIC,
+# QLD, ACT, TAS — primary + secondary where each state publishes them) and
+# the per-state zoning/flood/bushfire/heritage refresh.
+#
+# Schedule rationale: each state publishes catchments + planning overlays
+# on roughly an annual cadence. Running once a year matches the source
+# refresh cadence.
+#
+# Concurrency: each ingest holds a dedicated pg.Pool; jobs run sequentially
+# (continue-on-error) to avoid blowing past Railway connection limits.
+
+on:
+  schedule:
+    # 06:00 UTC on 15 April — after the hazard-walkability sync (1 April) so
+    # we don't double-load the DB. State catchment data typically refreshes
+    # in March.
+    - cron: "0 6 15 4 *"
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "Specific source ID to run (leave empty for all)"
+        required: false
+        default: ""
+
+jobs:
+  sync:
+    name: Sync parcel overlays + catchments
+    runs-on: ubuntu-latest
+    timeout-minutes: 720   # zoning-nsw alone can take 60+ minutes
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+      - run: npm ci
+      - run: npx prisma generate
+
+      # ── School catchments ──────────────────────────────────────────────
+      - name: NSW primary catchment
+        run: npx tsx scripts/sync/run.ts catchment-nsw-primary
+        continue-on-error: true
+      - name: NSW secondary catchment
+        run: npx tsx scripts/sync/run.ts catchment-nsw-secondary
+        continue-on-error: true
+      - name: VIC primary catchment (DET)
+        run: npx tsx scripts/sync/run.ts catchment-vic-primary
+        continue-on-error: true
+      - name: VIC secondary catchment (DET — Year 7)
+        run: npx tsx scripts/sync/run.ts catchment-vic-secondary
+        continue-on-error: true
+      - name: QLD primary catchment (DOE)
+        run: npx tsx scripts/sync/run.ts catchment-qld-primary
+        continue-on-error: true
+      - name: QLD secondary catchment (DOE — junior)
+        run: npx tsx scripts/sync/run.ts catchment-qld-secondary
+        continue-on-error: true
+      - name: ACT primary catchment (PEA)
+        run: npx tsx scripts/sync/run.ts catchment-act-primary
+        continue-on-error: true
+      - name: ACT secondary catchment (PEA)
+        run: npx tsx scripts/sync/run.ts catchment-act-secondary
+        continue-on-error: true
+      - name: TAS primary catchment (intake areas)
+        run: npx tsx scripts/sync/run.ts catchment-tas-primary
+        continue-on-error: true
+
+      # ── Land zoning ────────────────────────────────────────────────────
+      - name: NSW zoning
+        run: npx tsx scripts/sync/run.ts zoning-nsw
+        continue-on-error: true
+      - name: VIC zoning
+        run: npx tsx scripts/sync/run.ts zoning-vic
+        continue-on-error: true
+      - name: QLD zoning
+        run: npx tsx scripts/sync/run.ts zoning-qld
+        continue-on-error: true
+      - name: WA zoning
+        run: npx tsx scripts/sync/run.ts zoning-wa
+        continue-on-error: true
+      - name: SA zoning
+        run: npx tsx scripts/sync/run.ts zoning-sa
+        continue-on-error: true
+      - name: TAS zoning
+        run: npx tsx scripts/sync/run.ts zoning-tas
+        continue-on-error: true
+      - name: ACT zoning
+        run: npx tsx scripts/sync/run.ts zoning-act
+        continue-on-error: true
+
+      # ── Per-parcel hazards (parcel-level, not suburb-level) ────────────
+      - name: NSW flood
+        run: npx tsx scripts/sync/run.ts flood-nsw
+        continue-on-error: true
+      - name: VIC flood
+        run: npx tsx scripts/sync/run.ts flood-vic
+        continue-on-error: true
+      - name: QLD flood
+        run: npx tsx scripts/sync/run.ts flood-qld
+        continue-on-error: true
+      - name: WA flood
+        run: npx tsx scripts/sync/run.ts flood-wa
+        continue-on-error: true
+      - name: ACT flood
+        run: npx tsx scripts/sync/run.ts flood-act
+        continue-on-error: true
+      - name: NSW bushfire
+        run: npx tsx scripts/sync/run.ts bushfire-nsw
+        continue-on-error: true
+      - name: VIC bushfire
+        run: npx tsx scripts/sync/run.ts bushfire-vic
+        continue-on-error: true
+      - name: WA bushfire
+        run: npx tsx scripts/sync/run.ts bushfire-wa
+        continue-on-error: true
+      - name: TAS bushfire
+        run: npx tsx scripts/sync/run.ts bushfire-tas
+        continue-on-error: true
+      - name: ACT bushfire
+        run: npx tsx scripts/sync/run.ts bushfire-act
+        continue-on-error: true
+
+      # ── Heritage registers ─────────────────────────────────────────────
+      - name: NSW heritage
+        run: npx tsx scripts/sync/run.ts heritage-nsw
+        continue-on-error: true
+      - name: VIC heritage
+        run: npx tsx scripts/sync/run.ts heritage-vic
+        continue-on-error: true
+      - name: QLD heritage
+        run: npx tsx scripts/sync/run.ts heritage-qld
+        continue-on-error: true
+      - name: WA heritage
+        run: npx tsx scripts/sync/run.ts heritage-wa
+        continue-on-error: true
+      - name: TAS heritage
+        run: npx tsx scripts/sync/run.ts heritage-tas
+        continue-on-error: true
+      - name: ACT heritage
+        run: npx tsx scripts/sync/run.ts heritage-act
+        continue-on-error: true
