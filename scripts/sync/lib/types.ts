@@ -29,7 +29,7 @@ export interface CommonConfig {
   /** Source ID — must match a row in DataSource (e.g. "zoning-wa"). */
   sourceId: string;
   /** Overlay kind for the PropertyOverlay row. */
-  overlayKind: "zoning" | "flood" | "bushfire" | "heritage";
+  overlayKind: "zoning" | "flood" | "bushfire" | "heritage" | "catchment-primary" | "catchment-secondary";
   /** Overlay source short string (e.g. "wa-dplh-zones"). */
   overlaySource: string;
   /** Two-letter state code (NSW, VIC, QLD, WA, SA, TAS, ACT, NT). */

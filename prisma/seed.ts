@@ -423,6 +423,8 @@ async function main() {
     { id: "hazard-bushfire", label: "Bushfire Risk (State GeoJSON)",             category: "hazard",      schedule: "annual", sourceUrl: "https://data.gov.au" },
     { id: "walkability",     label: "Walkability (OpenStreetMap Overpass)",      category: "walkability", schedule: "annual", sourceUrl: "https://overpass-api.de/api/interpreter" },
     { id: "bom-climate",     label: "Climate Averages (BOM CDO)",                category: "climate",     schedule: "annual", sourceUrl: "http://www.bom.gov.au/climate/data/" },
+    { id: "catchment-nsw-primary",   label: "NSW School Catchments — Primary (DEC School Finder)",   category: "schools", schedule: "annual", sourceUrl: "https://schoolfinder.education.nsw.gov.au/" },
+    { id: "catchment-nsw-secondary", label: "NSW School Catchments — Secondary (DEC School Finder)", category: "schools", schedule: "annual", sourceUrl: "https://schoolfinder.education.nsw.gov.au/" },
   ];
   for (const ds of dataSources) {
     await prisma.dataSource.upsert({

@@ -60,6 +60,8 @@ import { run as heritageQld }       from "./sources/heritage-qld";
 import { run as floodQld }          from "./sources/flood-qld";
 import { run as bushfireWa }        from "./sources/bushfire-wa";
 import { run as bushfireTas }       from "./sources/bushfire-tas";
+import { run as catchmentNswPrimary }   from "./sources/catchment-nsw-primary";
+import { run as catchmentNswSecondary } from "./sources/catchment-nsw-secondary";
 
 const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" | "annual" }> = {
   "import-suburbs":     { run: importSuburbs,    schedule: "quarterly" },
@@ -111,6 +113,8 @@ const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" 
   "flood-qld":      { run: floodQld,        schedule: "annual"    },
   "bushfire-wa":    { run: bushfireWa,      schedule: "annual"    },
   "bushfire-tas":   { run: bushfireTas,     schedule: "quarterly" },
+  "catchment-nsw-primary":   { run: catchmentNswPrimary,   schedule: "annual" },
+  "catchment-nsw-secondary": { run: catchmentNswSecondary, schedule: "annual" },
 };
 
 async function main(): Promise<void> {
