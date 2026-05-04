@@ -6,9 +6,11 @@ interface PropertyMapProps {
   lat: number;
   lng: number;
   address: string;
+  height?: number;
+  className?: string;
 }
 
-export function PropertyMap({ lat, lng, address }: PropertyMapProps) {
+export function PropertyMap({ lat, lng, address, height = 320, className }: PropertyMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<unknown>(null);
 
@@ -64,8 +66,8 @@ export function PropertyMap({ lat, lng, address }: PropertyMapProps) {
       />
       <div
         ref={containerRef}
-        style={{ height: 320, width: "100%" }}
-        className="rounded-xl overflow-hidden border border-gray-200 z-0"
+        style={{ height, width: "100%" }}
+        className={className ?? "rounded-xl overflow-hidden border border-gray-200 z-0"}
       />
     </>
   );

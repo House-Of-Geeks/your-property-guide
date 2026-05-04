@@ -2,16 +2,22 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
+  Bath,
+  Bed,
+  Car,
   ChevronRight,
   Droplets,
   ExternalLink,
   FileText,
   Flame,
+  GraduationCap,
   HelpCircle,
   Home,
   Landmark,
   MapPin,
+  Maximize2,
   TrendingUp,
+  Users,
 } from "lucide-react";
 
 /** Title-case a G-NAF uppercase string: "MAIN STREET" → "Main Street" */
@@ -28,6 +34,8 @@ import { streetSlug } from "@/lib/utils/slug";
 import { formatDate, formatPrice, formatPriceFull } from "@/lib/utils/format";
 import { PropertyMap } from "@/components/property/PropertyMap";
 import { PropertyInterestForm } from "@/components/property/PropertyInterestForm";
+import { PropertyPriceChart } from "@/components/property/PropertyPriceChart";
+import { PropertyMobileCTA } from "@/components/property/PropertyMobileCTA";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -74,6 +82,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
     ? await db.suburb.findUnique({
         where: { slug: address.suburbSlug },
         select: {
+          id: true,
           slug: true,
           name: true,
           state: true,
@@ -83,8 +92,17 @@ export default async function PropertyAddressPage({ params }: PageProps) {
           medianRentHouse: true,
           medianRentUnit: true,
           annualGrowthHouse: true,
+          annualGrowthUnit: true,
+          daysOnMarket: true,
           population: true,
           medianAge: true,
+          ownerOccupied: true,
+          renterOccupied: true,
+          householdsFamily: true,
+          householdsLonePerson: true,
+          walkScore: true,
+          transitScore: true,
+          bikeScore: true,
           lat: true,
           lng: true,
           rentalUpdatedAt: true,
@@ -93,6 +111,50 @@ export default async function PropertyAddressPage({ params }: PageProps) {
         },
       })
     : null;
+
+  // Schools in this suburb (top 6 — government first by sector convention)
+  const schools = suburb
+    ? await db.school.findMany({
+        where: { suburbId: suburb.id },
+        select: {
+          id: true,
+          name: true,
+          type: true,
+          sector: true,
+          distance: true,
+          yearRange: true,
+          gender: true,
+          icsea: true,
+          enrolment: true,
+          acaraId: true,
+        },
+        orderBy: [{ sector: "asc" }, { distance: "asc" }],
+        take: 6,
+      })
+    : [];
+
+  // Recent nearby sales (same suburb, exclude this address, last 24 months)
+  const nearbySales = address.suburbSlug
+    ? await db.propertySale.findMany({
+        where: {
+          matchConfidence: "exact",
+          address: { suburbSlug: address.suburbSlug },
+          addressId: { not: address.id },
+          // eslint-disable-next-line react-hooks/purity -- server component, runs once per request
+          contractDate: { gt: new Date(Date.now() - 24 * 30 * 24 * 3600 * 1000) },
+        },
+        select: {
+          id: true,
+          price: true,
+          contractDate: true,
+          source: true,
+          natureCode: true,
+          address: { select: { addressFull: true, slug: true } },
+        },
+        orderBy: { contractDate: "desc" },
+        take: 6,
+      })
+    : [];
 
   const hazard = address.suburbSlug
     ? await db.suburbHazard.findUnique({ where: { suburbSlug: address.suburbSlug } })
@@ -233,22 +295,54 @@ export default async function PropertyAddressPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* HERO — interactive map with floating CTA */}
+      {/* HERO — taller map with floating value badge + CTA */}
       <div className="bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6">
           {mapLat && mapLng ? (
-            <div className="relative rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
-              <PropertyMap lat={mapLat} lng={mapLng} address={addressFullDisplay} />
+            <div className="relative rounded-3xl overflow-hidden border border-gray-200 shadow-sm">
+              <div className="hidden lg:block">
+                <PropertyMap lat={mapLat} lng={mapLng} address={addressFullDisplay} height={520} className="w-full h-full" />
+              </div>
+              <div className="lg:hidden">
+                <PropertyMap lat={mapLat} lng={mapLng} address={addressFullDisplay} height={340} className="w-full h-full" />
+              </div>
+
+              {/* subtle gradient overlays for legibility */}
+              <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/20 via-black/5 to-transparent z-[300] pointer-events-none" />
+
+              {/* top-left chip — building or parcel */}
+              {(buildingDisplay || address.legalParcelId) && (
+                <div className="absolute left-4 top-4 z-[400] inline-flex items-center gap-1.5 bg-white/95 backdrop-blur px-3 py-1.5 rounded-full border border-gray-200 shadow-sm text-xs font-medium text-gray-700">
+                  <Landmark className="h-3.5 w-3.5 text-primary" />
+                  {buildingDisplay ?? `Parcel ${address.legalParcelId}`}
+                </div>
+              )}
+
+              {/* bottom-right floating value badge */}
+              {valueRange && (
+                <a
+                  href="#value"
+                  className="absolute right-4 bottom-4 z-[400] hidden sm:flex flex-col items-end bg-white/97 backdrop-blur px-4 py-3 rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl transition-shadow group"
+                >
+                  <span className="text-[11px] uppercase tracking-wide text-gray-400 font-semibold">Estimated value</span>
+                  <span className="text-2xl font-bold text-gray-900 leading-none mt-0.5">{formatPrice(valueRange.mid)}</span>
+                  <span className="text-xs text-gray-500 mt-1">
+                    {formatPrice(valueRange.low)} – {formatPrice(valueRange.high)} <span className="text-primary group-hover:translate-x-0.5 inline-block transition-transform">→</span>
+                  </span>
+                </a>
+              )}
+
+              {/* bottom-left CTA */}
               <Link
                 href={appraisalHref}
-                className="absolute left-4 bottom-4 z-[400] inline-flex items-center gap-2 bg-white/95 backdrop-blur px-3.5 py-2 rounded-full border border-gray-200 shadow-md text-sm font-medium text-gray-800 hover:bg-white transition-colors"
+                className="absolute left-4 bottom-4 z-[400] inline-flex items-center gap-2 bg-white/97 backdrop-blur px-3.5 py-2 rounded-full border border-gray-200 shadow-md text-sm font-medium text-gray-800 hover:bg-white transition-colors"
               >
                 <FileText className="h-4 w-4 text-primary" />
-                Send the free property report
+                Free property report
               </Link>
             </div>
           ) : (
-            <div className="rounded-2xl bg-gray-50 border border-gray-200 h-72 flex items-center justify-center text-gray-400">
+            <div className="rounded-3xl bg-gray-50 border border-gray-200 h-72 flex items-center justify-center text-gray-400">
               <MapPin className="h-8 w-8 mr-2 opacity-30" />
               <span>Location not available</span>
             </div>
@@ -256,61 +350,93 @@ export default async function PropertyAddressPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* TITLE BAR */}
+      {/* TITLE STRIP */}
       <div className="bg-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 border-b border-gray-100">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
-            <div>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-7 border-b border-gray-100">
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+            <div className="min-w-0">
               {buildingDisplay && (
-                <p className="text-sm text-gray-500 mb-1">{buildingDisplay}</p>
+                <p className="text-sm text-gray-500 mb-1.5 font-medium uppercase tracking-wide">{buildingDisplay}</p>
               )}
-              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
-                {streetAddress},
+              <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-bold text-gray-900 tracking-tight leading-[1.1]">
+                {streetAddress}
               </h1>
-              <p className="text-lg text-gray-700 mt-1">
-                {localityDisplay} {address.state} {address.postcode}
+              <p className="text-lg text-gray-600 mt-2">
+                {localityDisplay}, {address.state} {address.postcode}
               </p>
-              <div className="flex flex-wrap items-center gap-3 mt-3 text-sm text-gray-600">
-                <span className="inline-flex items-center gap-1.5">
-                  <Home className="h-4 w-4 text-gray-400" /> {propertyTypeLabel}
+
+              {/* property snapshot — pills with circular icon backgrounds */}
+              <div className="flex flex-wrap items-center gap-2 mt-5">
+                <span className="inline-flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-full bg-gray-50 border border-gray-200 text-sm text-gray-800">
+                  <span className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Home className="h-3.5 w-3.5 text-primary" />
+                  </span>
+                  <span className="font-medium">{propertyTypeLabel}</span>
                 </span>
                 {featured && (
                   <>
-                    <span aria-hidden className="text-gray-300">•</span>
-                    <span>{featured.bedrooms} bed</span>
-                    <span aria-hidden className="text-gray-300">•</span>
-                    <span>{featured.bathrooms} bath</span>
-                    <span aria-hidden className="text-gray-300">•</span>
-                    <span>{featured.carSpaces} car</span>
+                    <span className="inline-flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-full bg-gray-50 border border-gray-200 text-sm text-gray-800">
+                      <span className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Bed className="h-3.5 w-3.5 text-primary" />
+                      </span>
+                      <span className="font-medium">{featured.bedrooms} <span className="text-gray-500 font-normal">bed</span></span>
+                    </span>
+                    <span className="inline-flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-full bg-gray-50 border border-gray-200 text-sm text-gray-800">
+                      <span className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Bath className="h-3.5 w-3.5 text-primary" />
+                      </span>
+                      <span className="font-medium">{featured.bathrooms} <span className="text-gray-500 font-normal">bath</span></span>
+                    </span>
+                    <span className="inline-flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-full bg-gray-50 border border-gray-200 text-sm text-gray-800">
+                      <span className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Car className="h-3.5 w-3.5 text-primary" />
+                      </span>
+                      <span className="font-medium">{featured.carSpaces} <span className="text-gray-500 font-normal">car</span></span>
+                    </span>
                     {featured.landSize && (
-                      <>
-                        <span aria-hidden className="text-gray-300">•</span>
-                        <span>{featured.landSize} m²</span>
-                      </>
+                      <span className="inline-flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-full bg-gray-50 border border-gray-200 text-sm text-gray-800">
+                        <span className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                          <Maximize2 className="h-3.5 w-3.5 text-primary" />
+                        </span>
+                        <span className="font-medium">{featured.landSize} <span className="text-gray-500 font-normal">m²</span></span>
+                      </span>
                     )}
                   </>
                 )}
-                {!featured && address.legalParcelId && (
-                  <>
-                    <span aria-hidden className="text-gray-300">•</span>
-                    <span>Parcel {address.legalParcelId}</span>
-                  </>
-                )}
               </div>
+
+              {/* last sold pill — VG sale takes priority */}
+              {(vgSales[0] || (hasRealSaleHistory && address.lastSalePrice)) && (
+                <div className="mt-3 inline-flex items-center gap-2 text-xs text-gray-600">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                  Last sold{" "}
+                  <strong className="text-gray-900 font-semibold">
+                    {vgSales[0]
+                      ? formatPriceFull(vgSales[0].price)
+                      : formatPriceFull(address.lastSalePrice!)}
+                  </strong>
+                  <span className="text-gray-400">·</span>
+                  <span>
+                    {vgSales[0]
+                      ? formatDate(vgSales[0].contractDate.toISOString())
+                      : new Date(address.lastSaleDate!).toLocaleDateString("en-AU", { month: "long", year: "numeric" })}
+                  </span>
+                </div>
+              )}
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 lg:items-end">
+            <div className="flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-stretch flex-shrink-0">
               <a
                 href="#track"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors shadow-sm"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors shadow-sm whitespace-nowrap"
               >
-                Is this your property? Track its value
+                Track this property&apos;s value
               </a>
               <Link
                 href={appraisalHref}
-                className="inline-flex items-center justify-center text-primary text-sm font-semibold hover:underline"
+                className="inline-flex items-center justify-center gap-1 px-5 py-3 rounded-full border-2 border-primary text-primary text-sm font-semibold hover:bg-primary/5 transition-colors whitespace-nowrap"
               >
-                Looking to sell? Get a free appraisal →
+                Get a free appraisal <ChevronRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
@@ -322,85 +448,106 @@ export default async function PropertyAddressPage({ params }: PageProps) {
           {/* MAIN COLUMN */}
           <div className="lg:col-span-2 space-y-12">
 
-            {/* PROPERTY VALUE + RENTAL ESTIMATE */}
+            {/* PROPERTY VALUE + RENTAL ESTIMATE — bold full-width panel */}
             {(valueRange || rentPerWeek) && (
-              <section>
+              <section id="value" className="scroll-mt-24">
                 <h2 className="text-2xl font-bold text-gray-900 mb-1">Property value</h2>
                 <p className="text-sm text-gray-500 mb-5">
                   Indicative estimate based on {suburb?.name ?? "this suburb"}&apos;s median —
                   not a formal valuation.
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Value card */}
-                  {valueRange && (
-                    <div className="rounded-2xl border border-gray-200 p-5 bg-white">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <p className="text-sm font-semibold text-gray-700">Property value</p>
-                          <p className="text-xs text-gray-400 mt-0.5">Updated {valuationUpdated ? formatDate(valuationUpdated.toISOString()) : "recently"}</p>
-                        </div>
-                        <HelpCircle className="h-4 w-4 text-gray-300" aria-hidden />
-                      </div>
-                      <div className="grid grid-cols-3 gap-2">
-                        <div>
-                          <p className="text-[11px] uppercase tracking-wide text-gray-400 font-medium">Low</p>
-                          <p className="text-lg font-semibold text-gray-700">{formatPrice(valueRange.low)}</p>
-                        </div>
-                        <div className="border-x border-gray-100 px-2">
-                          <p className="text-[11px] uppercase tracking-wide text-gray-400 font-medium">Mid</p>
-                          <p className="text-2xl font-bold text-gray-900">{formatPrice(valueRange.mid)}</p>
-                        </div>
-                        <div>
-                          <p className="text-[11px] uppercase tracking-wide text-gray-400 font-medium">High</p>
-                          <p className="text-lg font-semibold text-gray-700">{formatPrice(valueRange.high)}</p>
-                        </div>
-                      </div>
-                      <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full">
-                        <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
-                        Indicative accuracy
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Rental card */}
-                  {rentPerWeek && (
-                    <div className="rounded-2xl border border-gray-200 p-5 bg-white">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <p className="text-sm font-semibold text-gray-700">Rental estimate</p>
-                          <p className="text-xs text-gray-400 mt-0.5">Updated {rentalUpdated ? formatDate(rentalUpdated.toISOString()) : "recently"}</p>
-                        </div>
-                        <HelpCircle className="h-4 w-4 text-gray-300" aria-hidden />
-                      </div>
-                      <div className="flex items-baseline gap-3">
-                        <div>
-                          <p className="text-[11px] uppercase tracking-wide text-gray-400 font-medium">Per week</p>
-                          <p className="text-3xl font-bold text-gray-900">${rentPerWeek}</p>
-                        </div>
-                        {rentalYield && (
-                          <span className="inline-flex items-center gap-1 text-sm font-medium text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-1 rounded-full">
-                            <TrendingUp className="h-3.5 w-3.5" />
-                            {rentalYield.toFixed(1)}% rental yield
+                <div className="rounded-3xl border border-gray-200 bg-gradient-to-br from-white via-white to-primary/[0.03] overflow-hidden">
+                  <div className="grid grid-cols-1 lg:grid-cols-5 divide-y lg:divide-y-0 lg:divide-x divide-gray-100">
+                    {/* Big value column */}
+                    {valueRange && (
+                      <div className="lg:col-span-3 p-6 lg:p-7">
+                        <div className="flex items-center justify-between mb-2">
+                          <p className="text-xs uppercase tracking-wide font-semibold text-gray-500">Estimated value</p>
+                          <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                            <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+                            Indicative
                           </span>
-                        )}
-                      </div>
-                      <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full">
-                        <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
-                        Indicative accuracy
-                      </div>
-                    </div>
-                  )}
-                </div>
+                        </div>
+                        <p className="text-5xl lg:text-6xl font-bold text-gray-900 leading-none tracking-tight">
+                          {formatPrice(valueRange.mid)}
+                        </p>
 
-                <p className="text-xs text-gray-400 mt-3">
-                  These are estimates derived from suburb-level medians and should not be relied upon
-                  for any financial decisions. For a property-specific valuation, request a{" "}
-                  <Link href={appraisalHref} className="text-primary hover:underline">
-                    free appraisal
-                  </Link>
-                  .
+                        {/* low / high range visualization */}
+                        <div className="mt-5">
+                          <div className="relative h-2 bg-gray-100 rounded-full overflow-hidden">
+                            <div className="absolute inset-y-0 left-[15%] right-[15%] bg-gradient-to-r from-primary/40 via-primary to-primary/40 rounded-full" />
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-3.5 w-3.5 rounded-full bg-white border-2 border-primary shadow-sm" />
+                          </div>
+                          <div className="flex justify-between mt-2 text-xs">
+                            <div>
+                              <p className="text-[10px] uppercase tracking-wide text-gray-400 font-medium">Low</p>
+                              <p className="text-sm font-semibold text-gray-700">{formatPrice(valueRange.low)}</p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-[10px] uppercase tracking-wide text-gray-400 font-medium">High</p>
+                              <p className="text-sm font-semibold text-gray-700">{formatPrice(valueRange.high)}</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <p className="text-xs text-gray-400 mt-4">
+                          Updated {valuationUpdated ? formatDate(valuationUpdated.toISOString()) : "recently"}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Rental column */}
+                    {rentPerWeek && (
+                      <div className="lg:col-span-2 p-6 lg:p-7 bg-gray-50/40">
+                        <div className="flex items-center justify-between mb-2">
+                          <p className="text-xs uppercase tracking-wide font-semibold text-gray-500">Rental estimate</p>
+                          <HelpCircle className="h-4 w-4 text-gray-300" aria-hidden />
+                        </div>
+                        <p className="text-4xl lg:text-5xl font-bold text-gray-900 leading-none tracking-tight">
+                          ${rentPerWeek}
+                          <span className="text-base font-normal text-gray-500 ml-1">/wk</span>
+                        </p>
+                        {rentalYield && (
+                          <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 px-3 py-1.5 rounded-full">
+                            <TrendingUp className="h-4 w-4" />
+                            {rentalYield.toFixed(1)}% gross yield
+                          </div>
+                        )}
+                        <p className="text-xs text-gray-400 mt-4">
+                          Updated {rentalUpdated ? formatDate(rentalUpdated.toISOString()) : "recently"}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Footer row */}
+                  <div className="border-t border-gray-100 bg-white/60 px-6 py-3 flex flex-wrap items-center justify-between gap-3 text-xs text-gray-500">
+                    <span>
+                      Estimate based on {suburb?.name ?? "suburb"} medians — not a formal valuation.
+                    </span>
+                    <Link
+                      href={appraisalHref}
+                      className="inline-flex items-center gap-1 text-primary font-semibold hover:underline"
+                    >
+                      Get a property-specific appraisal <ChevronRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* SALE PRICE CHART */}
+            {vgSales.length >= 2 && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-1">Sale price growth</h2>
+                <p className="text-sm text-gray-500 mb-5">
+                  How this property&apos;s sale price has changed over time.
                 </p>
+                <PropertyPriceChart
+                  points={vgSales.map((s) => ({ date: s.contractDate, price: s.price }))}
+                  suburbMedian={suburb?.medianHousePrice ?? null}
+                />
               </section>
             )}
 
@@ -683,10 +830,12 @@ export default async function PropertyAddressPage({ params }: PageProps) {
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     {/* Flood — prefer parcel-level overlay over suburb-level */}
-                    <div className="rounded-2xl border border-gray-200 bg-white px-4 py-3 flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <Droplets className="h-5 w-5 text-blue-500 flex-shrink-0" />
-                        <span className="font-medium text-gray-900">Flood risk</span>
+                    <div className="rounded-2xl border border-gray-200 bg-white p-5">
+                      <div className="flex items-center gap-3 mb-3">
+                        <span className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center">
+                          <Droplets className="h-5 w-5 text-blue-500" />
+                        </span>
+                        <span className="font-semibold text-gray-900">Flood risk</span>
                       </div>
                       {floodOverlay
                         ? <PillDetected />
@@ -698,10 +847,12 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                     </div>
 
                     {/* Bushfire — prefer parcel-level overlay over suburb-level */}
-                    <div className="rounded-2xl border border-gray-200 bg-white px-4 py-3 flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <Flame className="h-5 w-5 text-orange-500 flex-shrink-0" />
-                        <span className="font-medium text-gray-900">Bushfire risk</span>
+                    <div className="rounded-2xl border border-gray-200 bg-white p-5">
+                      <div className="flex items-center gap-3 mb-3">
+                        <span className="h-10 w-10 rounded-full bg-orange-50 flex items-center justify-center">
+                          <Flame className="h-5 w-5 text-orange-500" />
+                        </span>
+                        <span className="font-semibold text-gray-900">Bushfire risk</span>
                       </div>
                       {bushfireOverlay
                         ? <PillDetected />
@@ -713,10 +864,12 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                     </div>
 
                     {/* Heritage — parcel-level overlay only */}
-                    <div className="rounded-2xl border border-gray-200 bg-white px-4 py-3 flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <Landmark className="h-5 w-5 text-stone-500 flex-shrink-0" />
-                        <span className="font-medium text-gray-900">Heritage zone</span>
+                    <div className="rounded-2xl border border-gray-200 bg-white p-5">
+                      <div className="flex items-center gap-3 mb-3">
+                        <span className="h-10 w-10 rounded-full bg-stone-50 flex items-center justify-center">
+                          <Landmark className="h-5 w-5 text-stone-500" />
+                        </span>
+                        <span className="font-semibold text-gray-900">Heritage zone</span>
                       </div>
                       {heritageOverlay
                         ? <PillDetected />
@@ -738,6 +891,192 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                 </section>
               );
             })()}
+
+            {/* SUBURB SNAPSHOT — stats + demographics */}
+            {suburb && (suburb.medianHousePrice > 0 || suburb.population > 0) && (
+              <section>
+                <div className="flex items-end justify-between mb-1">
+                  <h2 className="text-2xl font-bold text-gray-900">About {suburb.name}</h2>
+                  <Link href={`/suburbs/${suburb.slug}`} className="text-sm text-primary font-semibold hover:underline whitespace-nowrap">
+                    Full suburb profile →
+                  </Link>
+                </div>
+                <p className="text-sm text-gray-500 mb-5">
+                  Market and demographic snapshot for {suburb.name} {suburb.postcode}.
+                </p>
+
+                {/* 4-stat grid */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+                  {suburb.medianHousePrice > 0 && (
+                    <div className="rounded-2xl border border-gray-200 bg-white p-4">
+                      <p className="text-[11px] uppercase tracking-wide font-semibold text-gray-500">Median price</p>
+                      <p className="text-2xl font-bold text-gray-900 mt-1 leading-none">
+                        {formatPrice(suburb.medianHousePrice)}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1.5">Houses</p>
+                    </div>
+                  )}
+                  {suburb.annualGrowthHouse !== 0 && (
+                    <div className="rounded-2xl border border-gray-200 bg-white p-4">
+                      <p className="text-[11px] uppercase tracking-wide font-semibold text-gray-500">Annual growth</p>
+                      <p className={`text-2xl font-bold mt-1 leading-none ${suburb.annualGrowthHouse >= 0 ? "text-emerald-600" : "text-red-600"}`}>
+                        {suburb.annualGrowthHouse > 0 ? "+" : ""}{suburb.annualGrowthHouse.toFixed(1)}%
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1.5">12 months · houses</p>
+                    </div>
+                  )}
+                  {suburb.medianRentHouse > 0 && (
+                    <div className="rounded-2xl border border-gray-200 bg-white p-4">
+                      <p className="text-[11px] uppercase tracking-wide font-semibold text-gray-500">Median rent</p>
+                      <p className="text-2xl font-bold text-gray-900 mt-1 leading-none">
+                        ${suburb.medianRentHouse}<span className="text-sm font-normal text-gray-500">/wk</span>
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1.5">Houses</p>
+                    </div>
+                  )}
+                  {suburb.daysOnMarket > 0 && (
+                    <div className="rounded-2xl border border-gray-200 bg-white p-4">
+                      <p className="text-[11px] uppercase tracking-wide font-semibold text-gray-500">Days on market</p>
+                      <p className="text-2xl font-bold text-gray-900 mt-1 leading-none">
+                        {suburb.daysOnMarket}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1.5">Suburb avg</p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Demographics */}
+                {(suburb.population > 0 || suburb.ownerOccupied > 0) && (
+                  <div className="rounded-2xl border border-gray-200 bg-white p-5 lg:p-6">
+                    <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                      <Users className="h-4 w-4 text-primary" />
+                      Who lives here
+                    </h3>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      {/* Left: pop / age */}
+                      <div className="space-y-4">
+                        {suburb.population > 0 && (
+                          <div className="flex items-baseline gap-3">
+                            <span className="text-3xl font-bold text-gray-900 leading-none">{suburb.population.toLocaleString()}</span>
+                            <span className="text-sm text-gray-500">residents</span>
+                          </div>
+                        )}
+                        {suburb.medianAge > 0 && (
+                          <div className="flex items-baseline gap-3">
+                            <span className="text-3xl font-bold text-gray-900 leading-none">{suburb.medianAge}</span>
+                            <span className="text-sm text-gray-500">median age</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Right: tenure + household bars */}
+                      <div className="space-y-4">
+                        {(suburb.ownerOccupied > 0 || suburb.renterOccupied > 0) && (
+                          <div>
+                            <div className="flex justify-between text-xs font-medium text-gray-600 mb-1.5">
+                              <span>Owner-occupied <strong className="text-gray-900">{Math.round(suburb.ownerOccupied)}%</strong></span>
+                              <span>Renters <strong className="text-gray-900">{Math.round(suburb.renterOccupied)}%</strong></span>
+                            </div>
+                            <div className="flex h-2.5 rounded-full overflow-hidden bg-gray-100">
+                              <div className="bg-primary" style={{ width: `${suburb.ownerOccupied}%` }} />
+                              <div className="bg-primary-lighter" style={{ width: `${suburb.renterOccupied}%` }} />
+                            </div>
+                          </div>
+                        )}
+                        {(suburb.householdsFamily > 0 || suburb.householdsLonePerson > 0) && (
+                          <div>
+                            <div className="flex justify-between text-xs font-medium text-gray-600 mb-1.5">
+                              <span>Family <strong className="text-gray-900">{Math.round(suburb.householdsFamily)}%</strong></span>
+                              <span>Lone-person <strong className="text-gray-900">{Math.round(suburb.householdsLonePerson)}%</strong></span>
+                            </div>
+                            <div className="flex h-2.5 rounded-full overflow-hidden bg-gray-100">
+                              <div className="bg-emerald-500" style={{ width: `${suburb.householdsFamily}%` }} />
+                              <div className="bg-emerald-300" style={{ width: `${suburb.householdsLonePerson}%` }} />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Walkability scores */}
+                    {(suburb.walkScore || suburb.transitScore || suburb.bikeScore) && (
+                      <div className="grid grid-cols-3 gap-3 mt-6 pt-5 border-t border-gray-100">
+                        {[
+                          { label: "Walk", score: suburb.walkScore },
+                          { label: "Transit", score: suburb.transitScore },
+                          { label: "Bike", score: suburb.bikeScore },
+                        ].map(({ label, score }) =>
+                          score ? (
+                            <div key={label} className="text-center">
+                              <p className="text-2xl font-bold text-gray-900 leading-none">{score}</p>
+                              <p className="text-[11px] text-gray-500 mt-1 uppercase tracking-wide font-medium">{label} score</p>
+                            </div>
+                          ) : null
+                        )}
+                      </div>
+                    )}
+
+                    <p className="text-xs text-gray-400 mt-4">
+                      Source: <a href="https://www.abs.gov.au/census" target="_blank" rel="noopener noreferrer" className="hover:underline">ABS Census 2021</a>
+                    </p>
+                  </div>
+                )}
+              </section>
+            )}
+
+            {/* SCHOOLS NEARBY */}
+            {schools.length > 0 && (
+              <section>
+                <div className="flex items-end justify-between mb-1">
+                  <h2 className="text-2xl font-bold text-gray-900">Schools nearby</h2>
+                  {suburb && (
+                    <Link
+                      href={`/suburbs/${suburb.slug}/schools`}
+                      className="text-sm text-primary font-semibold hover:underline whitespace-nowrap"
+                    >
+                      View all schools →
+                    </Link>
+                  )}
+                </div>
+                <p className="text-sm text-gray-500 mb-5">
+                  Local schools serving {localityDisplay}.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {schools.map((s) => {
+                    const typeLabel =
+                      s.type === "primary" ? "Primary" :
+                      s.type === "secondary" ? "Secondary" :
+                      s.type === "combined" ? "Combined" : "Special";
+                    const sectorLabel =
+                      s.sector === "government" ? "Government" :
+                      s.sector === "catholic" ? "Catholic" : "Independent";
+                    return (
+                      <div key={s.id} className="rounded-2xl border border-gray-200 bg-white p-4 flex items-start gap-3">
+                        <span className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <GraduationCap className="h-5 w-5 text-primary" />
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-gray-900 truncate">{s.name}</p>
+                          <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                            <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-gray-900 text-white">{typeLabel}</span>
+                            <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 text-gray-700">{sectorLabel}</span>
+                            {s.yearRange && (
+                              <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 text-gray-700">{s.yearRange}</span>
+                            )}
+                          </div>
+                          <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-gray-500">
+                            <span>{s.distance.toFixed(1)} km away</span>
+                            {s.icsea && <span>· ICSEA {s.icsea}</span>}
+                            {s.enrolment && <span>· {s.enrolment.toLocaleString()} students</span>}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <p className="text-xs text-gray-400 mt-4">© ACARA, licensed under CC BY 4.0.</p>
+              </section>
+            )}
 
             {/* ACTIVE LISTINGS AT THIS ADDRESS */}
             {listings.length > 0 && (
@@ -790,6 +1129,56 @@ export default async function PropertyAddressPage({ params }: PageProps) {
               </section>
             )}
 
+            {/* RECENT NEARBY SALES */}
+            {nearbySales.length > 0 && (
+              <section>
+                <div className="flex items-end justify-between mb-1">
+                  <h2 className="text-2xl font-bold text-gray-900">Recent nearby sales</h2>
+                  {suburb && (
+                    <Link
+                      href={`/suburbs/${suburb.slug}/sold`}
+                      className="text-sm text-primary font-semibold hover:underline whitespace-nowrap"
+                    >
+                      View all sales →
+                    </Link>
+                  )}
+                </div>
+                <p className="text-sm text-gray-500 mb-5">
+                  Recent verified sales in {localityDisplay} (last 24 months).
+                </p>
+                <div className="rounded-2xl border border-gray-200 bg-white overflow-hidden">
+                  <ul className="divide-y divide-gray-100">
+                    {nearbySales.map((s) => (
+                      <li key={s.id} className="flex items-center justify-between gap-3 px-4 sm:px-5 py-3.5">
+                        <div className="min-w-0">
+                          <Link
+                            href={`/property/${s.address?.slug ?? ""}`}
+                            className="font-medium text-gray-900 hover:text-primary transition-colors truncate block"
+                          >
+                            {toTitleCase(s.address?.addressFull ?? "") ?? "—"}
+                          </Link>
+                          <p className="text-xs text-gray-500 mt-0.5">
+                            Sold {formatDate(s.contractDate.toISOString())}
+                            {s.natureCode === "V" && <span className="ml-2 px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 text-[10px] uppercase tracking-wide">Vacant land</span>}
+                            {s.natureCode === "3" && <span className="ml-2 px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 text-[10px] uppercase tracking-wide">Strata</span>}
+                          </p>
+                        </div>
+                        <span className="text-base font-semibold text-gray-900 whitespace-nowrap">
+                          {formatPriceFull(s.price)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {nearbySales.some((s) => s.source === "vg-nsw") && (
+                  <p className="text-xs text-gray-400 mt-3">
+                    Contains NSW Valuer General property sales information, licensed under{" "}
+                    <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" className="hover:underline">CC BY 4.0</a>.
+                  </p>
+                )}
+              </section>
+            )}
+
             {/* TRACK FORM */}
             <section id="track" className="scroll-mt-24">
               {listings.length === 0 && (
@@ -818,106 +1207,95 @@ export default async function PropertyAddressPage({ params }: PageProps) {
 
           {/* SIDEBAR */}
           <div className="space-y-6">
-            <div className="rounded-2xl border border-gray-200 p-5 space-y-3">
-              <h3 className="font-semibold text-gray-900">Property details</h3>
-              <dl className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <dt className="text-gray-500">Address</dt>
-                  <dd className="text-gray-900 text-right max-w-[180px]">{addressFullDisplay}</dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-gray-500">Suburb</dt>
-                  <dd className="text-gray-900">{localityDisplay}</dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-gray-500">State</dt>
-                  <dd className="text-gray-900">{address.state}</dd>
-                </div>
-                <div className="flex justify-between">
-                  <dt className="text-gray-500">Postcode</dt>
-                  <dd className="text-gray-900">{address.postcode}</dd>
-                </div>
-                {address.legalParcelId && (
-                  <div className="flex justify-between">
-                    <dt className="text-gray-500">Legal parcel</dt>
-                    <dd className="text-gray-900 font-mono text-xs">{address.legalParcelId}</dd>
-                  </div>
-                )}
-              </dl>
-
-              {mapLat && mapLng && (
-                <a
-                  href={`https://maps.google.com/?q=${encodeURIComponent(addressFullDisplay)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1 text-xs text-primary hover:underline pt-2 border-t border-gray-100"
+            <div className="lg:sticky lg:top-24 space-y-6">
+              {/* Sell-side CTA — primary brand colour */}
+              <div className="rounded-2xl bg-gradient-to-br from-primary to-primary-dark p-6 text-white shadow-sm">
+                <h3 className="font-bold text-lg leading-tight">Looking to sell?</h3>
+                <p className="text-sm text-white/85 mt-2 leading-relaxed">
+                  Get a free, no-obligation appraisal from a local agent who knows the {localityDisplay} market.
+                </p>
+                <Link
+                  href={appraisalHref}
+                  className="mt-4 inline-flex items-center justify-center gap-1 w-full px-4 py-2.5 rounded-full bg-white text-primary text-sm font-semibold hover:bg-gray-50 transition-colors"
                 >
-                  Open in Google Maps <ExternalLink className="h-3 w-3" />
-                </a>
-              )}
-            </div>
+                  Request a free appraisal <ChevronRight className="h-4 w-4" />
+                </Link>
+              </div>
 
-            {suburb && (
-              <div className="rounded-2xl border border-gray-200 p-5 space-y-3">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-gray-900">{suburb.name} snapshot</h3>
-                  <Link href={`/suburbs/${suburb.slug}`} className="text-xs text-primary hover:underline">
-                    Full profile →
-                  </Link>
-                </div>
+              {/* Property details */}
+              <div className="rounded-2xl border border-gray-200 bg-white p-5 space-y-3">
+                <h3 className="font-semibold text-gray-900">Property details</h3>
                 <dl className="space-y-2 text-sm">
-                  {suburb.medianHousePrice > 0 && (
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-gray-500">Address</dt>
+                    <dd className="text-gray-900 text-right max-w-[180px]">{addressFullDisplay}</dd>
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="text-gray-500">Suburb</dt>
+                    <dd className="text-gray-900">{localityDisplay}</dd>
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="text-gray-500">State</dt>
+                    <dd className="text-gray-900">{address.state}</dd>
+                  </div>
+                  <div className="flex justify-between">
+                    <dt className="text-gray-500">Postcode</dt>
+                    <dd className="text-gray-900">{address.postcode}</dd>
+                  </div>
+                  {address.legalParcelId && (
                     <div className="flex justify-between">
-                      <dt className="text-gray-500">Median house price</dt>
-                      <dd className="text-gray-900 font-medium">
-                        ${(suburb.medianHousePrice / 1000).toFixed(0)}k
-                      </dd>
+                      <dt className="text-gray-500">Legal parcel</dt>
+                      <dd className="text-gray-900 font-mono text-xs">{address.legalParcelId}</dd>
                     </div>
                   )}
-                  {suburb.medianRentHouse > 0 && (
-                    <div className="flex justify-between">
-                      <dt className="text-gray-500">Median rent / wk</dt>
-                      <dd className="text-gray-900 font-medium">${suburb.medianRentHouse}</dd>
-                    </div>
-                  )}
-                  {suburb.annualGrowthHouse !== 0 && (
-                    <div className="flex justify-between">
-                      <dt className="text-gray-500">Annual growth</dt>
-                      <dd className={`font-medium ${suburb.annualGrowthHouse >= 0 ? "text-green-600" : "text-red-600"}`}>
-                        {suburb.annualGrowthHouse > 0 ? "+" : ""}{suburb.annualGrowthHouse.toFixed(1)}%
-                      </dd>
-                    </div>
-                  )}
-                  {suburb.population > 0 && (
-                    <div className="flex justify-between">
-                      <dt className="text-gray-500">Population</dt>
-                      <dd className="text-gray-900">{suburb.population.toLocaleString()}</dd>
-                    </div>
+                  {featured && (
+                    <>
+                      <div className="flex justify-between pt-2 border-t border-gray-100">
+                        <dt className="text-gray-500">Property type</dt>
+                        <dd className="text-gray-900">{propertyTypeLabel}</dd>
+                      </div>
+                      <div className="flex justify-between">
+                        <dt className="text-gray-500">Bed / Bath / Car</dt>
+                        <dd className="text-gray-900">{featured.bedrooms} / {featured.bathrooms} / {featured.carSpaces}</dd>
+                      </div>
+                      {featured.landSize && (
+                        <div className="flex justify-between">
+                          <dt className="text-gray-500">Land size</dt>
+                          <dd className="text-gray-900">{featured.landSize} m²</dd>
+                        </div>
+                      )}
+                    </>
                   )}
                 </dl>
-                <p className="text-xs text-gray-400 pt-1">
-                  Source: <a href="https://www.abs.gov.au/census" target="_blank" rel="noopener noreferrer" className="hover:underline">ABS Census 2021</a>
+
+                {mapLat && mapLng && (
+                  <a
+                    href={`https://maps.google.com/?q=${encodeURIComponent(addressFullDisplay)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-xs text-primary hover:underline pt-3 border-t border-gray-100"
+                  >
+                    Open in Google Maps <ExternalLink className="h-3 w-3" />
+                  </a>
+                )}
+              </div>
+
+              {/* Address source attribution */}
+              <div className="rounded-2xl bg-gray-50 border border-gray-100 p-4 text-xs text-gray-500 space-y-1">
+                <p className="font-medium text-gray-600">Address data source</p>
+                <p>
+                  This address is sourced from G-NAF (Geocoded National Address File), Australia&apos;s
+                  authoritative geocoded address dataset, published by{" "}
+                  <a href="https://data.gov.au" target="_blank" rel="noopener noreferrer" className="hover:underline">data.gov.au</a>
+                  {" "}under Creative Commons Attribution 4.0.
                 </p>
               </div>
-            )}
-
-            <div className="rounded-2xl bg-gray-50 border border-gray-100 p-4 text-xs text-gray-500 space-y-1">
-              <p className="font-medium text-gray-600">Address data source</p>
-              <p>
-                This address is sourced from G-NAF (Geocoded National Address File), Australia&apos;s
-                authoritative geocoded address dataset.
-              </p>
-              <p>
-                Published by{" "}
-                <a href="https://data.gov.au" target="_blank" rel="noopener noreferrer" className="hover:underline">
-                  data.gov.au
-                </a>{" "}
-                under Creative Commons Attribution 4.0.
-              </p>
             </div>
           </div>
         </div>
       </div>
+
+      <PropertyMobileCTA appraisalHref={appraisalHref} />
     </>
   );
 }
