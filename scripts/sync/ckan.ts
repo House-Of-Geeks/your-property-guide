@@ -52,7 +52,7 @@ export async function fetchCkan<T>(
  * Get the package metadata from a CKAN portal, sorted by created date descending
  * (most recent resource first).
  */
-async function getCkanPackage(packageId: string, baseUrl: string): Promise<CkanResource[]> {
+export async function getCkanPackage(packageId: string, baseUrl: string): Promise<CkanResource[]> {
   const url = `${baseUrl}/api/3/action/package_show?id=${packageId}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`CKAN package HTTP ${res.status}: ${url}`);

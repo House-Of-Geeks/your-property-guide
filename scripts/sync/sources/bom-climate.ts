@@ -29,7 +29,6 @@
  * Schedule: Annual
  */
 import "dotenv/config";
-import Papa from "papaparse";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
 
@@ -40,12 +39,18 @@ const STATION_LIST_URL =
 
 const CDO_BASE = "http://www.bom.gov.au/jsp/ncc/cdio/weatherData/av";
 
+// BOM CDO obsCodes verified May 2026:
+//   36  → Mean Maximum Temperature
+//   38  → Mean Minimum Temperature
+//   139 → Mean monthly rainfall
+// Humidity (was 35) and sunshine hours (was 193) no longer return data on
+// the public CDO endpoint — left null and stored as empty arrays.
 const OBS_CODES = {
-  meanMaxTemp:     "122",
-  meanMinTemp:     "123",
+  meanMaxTemp:     "36",
+  meanMinTemp:     "38",
   meanRainfall:    "139",
-  meanHumidity9am: "35",
-  meanSunshineHrs: "193",
+  meanHumidity9am: null,
+  meanSunshineHrs: null,
 } as const;
 
 const MAX_STATION_DISTANCE_KM = 100;
@@ -117,7 +122,7 @@ function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): nu
 /** Fetch and parse the BOM station list text file. */
 async function fetchStationList(): Promise<BomStation[]> {
   const res = await fetch(STATION_LIST_URL, {
-    headers: { "User-Agent": "YourPropertyGuide/1.0 data-sync@yourpropertyguide.com.au" },
+    headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" },
     signal: AbortSignal.timeout(30_000),
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -159,8 +164,21 @@ function nearestStation(
   return best;
 }
 
-/** Fetch one BOM CDO CSV and return 12-element monthly averages.
- *  Averages the last 10 available years to smooth interannual variability.
+/** Fetch one BOM CDO page and return 12-element monthly normals.
+ *
+ *  BOM's CDO endpoint historically returned CSV under
+ *  `p_display_type=dataFile`. As of 2026 it returns an HTML page with the
+ *  computed climate normals embedded as JavaScript array literals, e.g.:
+ *
+ *    var mean = new Array("Mean","101.2","119.3", ... "77.1","1213.4");
+ *
+ *  The 13 numeric values are: Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep,
+ *  Oct, Nov, Dec, Annual. We extract the 12 monthly values directly and
+ *  ignore the annual (callers compute it from the months).
+ *
+ *  BOM publishes both `mean` (long-term, all available years) and `mean_30`
+ *  (most recent 30-year normal). We prefer `mean_30` when present since it
+ *  reflects current climatology; fall back to `mean` for short-record stations.
  */
 async function fetchMonthlyNormals(
   stationId: string,
@@ -171,7 +189,7 @@ async function fetchMonthlyNormals(
     `&p_startYear=&p_c=&p_stn_num=${stationId}`;
 
   const res = await fetch(url, {
-    headers: { "User-Agent": "YourPropertyGuide/1.0 data-sync@yourpropertyguide.com.au" },
+    headers: { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" },
     signal: AbortSignal.timeout(30_000),
   });
   if (!res.ok) {
@@ -179,68 +197,43 @@ async function fetchMonthlyNormals(
     throw new Error(`HTTP ${res.status}`);
   }
 
-  const text = await res.text();
-  if (!text || text.trim().length === 0) return null;
+  const html = await res.text();
+  if (!html || html.trim().length === 0) return null;
 
-  // Skip header lines that start with "Station"
-  const lines = text.split("\n").filter((l) => !l.trim().startsWith("Station"));
-  const csv = lines.join("\n");
-
-  const parsed = Papa.parse<Record<string, string>>(csv, {
-    header: true,
-    skipEmptyLines: true,
-  });
-
-  if (!parsed.data.length) return null;
-
-  // Find the column names: BOM uses "Jan", "Feb" ... "Dec", "Ann" or similar
-  const headers = Object.keys(parsed.data[0] ?? {});
-  const monthCols: string[] = MONTHS.map((m) => {
-    return headers.find((h) => h.trim().toLowerCase() === m.toLowerCase()) ?? "";
-  });
-  const yearCol  = headers.find((h) => /^year$/i.test(h.trim())) ?? headers[0];
-
-  // Collect rows with a valid year number, pick latest 10
-  interface YearRow { year: number; values: (number | null)[] }
-  const yearRows: YearRow[] = [];
-
-  for (const row of parsed.data) {
-    const yr = parseInt(String(row[yearCol] ?? "").replace(/\s/g, "")) || 0;
-    if (yr < 1900 || yr > 2100) continue;
-
-    const values = monthCols.map((col) => {
-      if (!col) return null;
-      const raw = String(row[col] ?? "").trim();
-      const v = parseFloat(raw);
-      return isNaN(v) ? null : v;
-    });
-
-    yearRows.push({ year: yr, values });
+  // Match either `var mean_30 = new Array("Mean", "1.2", ...);` or `var mean = ...`
+  // Capture the comma-separated quoted values after the leading label.
+  function extractArray(varName: string): number[] | null {
+    const re = new RegExp(`var\\s+${varName}\\s*=\\s*new\\s+Array\\(\\s*"[^"]*"((?:\\s*,\\s*"[^"]*")+)\\s*\\)`);
+    const m = html.match(re);
+    if (!m) return null;
+    const raw = m[1]
+      .split(",")
+      .map((s) => s.trim().replace(/^"|"$/g, ""))
+      .filter((s) => s.length > 0);
+    // Expect 13 values (12 months + annual). Take the first 12 for monthly.
+    if (raw.length < 12) return null;
+    const monthly: number[] = [];
+    for (let i = 0; i < 12; i++) {
+      const v = parseFloat(raw[i]);
+      monthly.push(isNaN(v) ? 0 : Math.round(v * 10) / 10);
+    }
+    return monthly;
   }
 
-  // Sort descending, take up to 10 most recent
-  yearRows.sort((a, b) => b.year - a.year);
-  const recent = yearRows.slice(0, 10);
-  if (recent.length === 0) return null;
-
-  // Average each month across available years
-  const avg: number[] = MONTHS.map((_, mi) => {
-    const vals = recent.map((r) => r.values[mi]).filter((v): v is number => v !== null);
-    if (!vals.length) return 0;
-    return Math.round((vals.reduce((a, b) => a + b, 0) / vals.length) * 10) / 10;
-  });
-
-  return avg;
+  // Prefer the 30-year normal where available; fall back to all-time mean.
+  return extractArray("mean_30") ?? extractArray("mean");
 }
 
 /** Fetch all climate variables for one station. Returns null if nothing could be fetched. */
 async function fetchStationClimate(stationId: string): Promise<ClimateNormals | null> {
+  const tryFetch = (code: string | null) =>
+    code ? fetchMonthlyNormals(stationId, code).catch(() => null) : Promise.resolve(null);
   const [maxTemp, minTemp, rainfall, humidity, sunshine] = await Promise.all([
-    fetchMonthlyNormals(stationId, OBS_CODES.meanMaxTemp).catch(() => null),
-    fetchMonthlyNormals(stationId, OBS_CODES.meanMinTemp).catch(() => null),
-    fetchMonthlyNormals(stationId, OBS_CODES.meanRainfall).catch(() => null),
-    fetchMonthlyNormals(stationId, OBS_CODES.meanHumidity9am).catch(() => null),
-    fetchMonthlyNormals(stationId, OBS_CODES.meanSunshineHrs).catch(() => null),
+    tryFetch(OBS_CODES.meanMaxTemp),
+    tryFetch(OBS_CODES.meanMinTemp),
+    tryFetch(OBS_CODES.meanRainfall),
+    tryFetch(OBS_CODES.meanHumidity9am),
+    tryFetch(OBS_CODES.meanSunshineHrs),
   ]);
 
   // Need at least temperature and rainfall to be useful

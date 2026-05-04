@@ -439,7 +439,7 @@ async function processState(state: string): Promise<number> {
       await pgClient.query(`
         INSERT INTO "PropertyAddress" (${COPY_COLS})
         SELECT ${COPY_COLS} FROM _gnaf_temp
-        ON CONFLICT (id) DO NOTHING
+        ON CONFLICT DO NOTHING
       `);
       await pgClient.query("TRUNCATE _gnaf_temp");
     }

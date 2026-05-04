@@ -1,0 +1,1844 @@
+{
+  "fixtures": [
+    {
+      "addressSlug": "8-sliprail-street-lawson-act-2617",
+      "kind": "bushfire",
+      "source": "act-sbmp-bpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Area (SBMP 2025",
+      "capturedAt": "2026-05-03T14:20:25.700Z"
+    },
+    {
+      "addressSlug": "unit-55-163-mortimer-lewis-drive-greenway-act-2900",
+      "kind": "bushfire",
+      "source": "act-sbmp-bpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Area (SBMP 2025",
+      "capturedAt": "2026-05-03T14:20:25.700Z"
+    },
+    {
+      "addressSlug": "unit-1903-120-eastern-valley-way-belconnen-act-2617",
+      "kind": "bushfire",
+      "source": "act-sbmp-bpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Area (SBMP 2025",
+      "capturedAt": "2026-05-03T14:20:25.700Z"
+    },
+    {
+      "addressSlug": "4-cilento-street-macgregor-act-2615",
+      "kind": "bushfire",
+      "source": "act-sbmp-bpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Area (SBMP 2025",
+      "capturedAt": "2026-05-03T14:20:25.700Z"
+    },
+    {
+      "addressSlug": "10-scottsdale-street-lyons-act-2606",
+      "kind": "bushfire",
+      "source": "act-sbmp-bpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Area (SBMP 2025",
+      "capturedAt": "2026-05-03T14:20:25.700Z"
+    },
+    {
+      "addressSlug": "104-kalgoorlie-crescent-fisher-act-2611",
+      "kind": "bushfire",
+      "source": "act-sbmp-bpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Area (SBMP 2025",
+      "capturedAt": "2026-05-03T14:20:25.700Z"
+    },
+    {
+      "addressSlug": "unit-3-2-springbett-street-kambah-act-2902",
+      "kind": "bushfire",
+      "source": "act-sbmp-bpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Area (SBMP 2025",
+      "capturedAt": "2026-05-03T14:20:25.700Z"
+    },
+    {
+      "addressSlug": "299-southern-cross-drive-holt-act-2615",
+      "kind": "bushfire",
+      "source": "act-sbmp-bpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Area (SBMP 2025",
+      "capturedAt": "2026-05-03T14:20:25.700Z"
+    },
+    {
+      "addressSlug": "7-mary-gillespie-avenue-gungahlin-act-2912",
+      "kind": "bushfire",
+      "source": "act-sbmp-bpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Area (SBMP 2025",
+      "capturedAt": "2026-05-03T14:20:25.700Z"
+    },
+    {
+      "addressSlug": "33-mission-street-amaroo-act-2914",
+      "kind": "bushfire",
+      "source": "act-sbmp-bpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Area (SBMP 2025",
+      "capturedAt": "2026-05-03T14:20:25.700Z"
+    },
+    {
+      "addressSlug": "49-51-goulburn-drive-sandy-hollow-nsw-2333",
+      "kind": "bushfire",
+      "source": "nsw-bfpl",
+      "expectedCode": "VC3",
+      "expectedLabelStartsWith": "Vegetation Category 3",
+      "capturedAt": "2026-05-03T14:20:31.261Z"
+    },
+    {
+      "addressSlug": "70-stringer-road-north-kellyville-nsw-2155",
+      "kind": "bushfire",
+      "source": "nsw-bfpl",
+      "expectedCode": "VB",
+      "expectedLabelStartsWith": "Vegetation Buffer",
+      "capturedAt": "2026-05-03T14:20:31.261Z"
+    },
+    {
+      "addressSlug": "484-west-gilmore-road-gilmore-nsw-2720",
+      "kind": "bushfire",
+      "source": "nsw-bfpl",
+      "expectedCode": "VC3",
+      "expectedLabelStartsWith": "Vegetation Category 3",
+      "capturedAt": "2026-05-03T14:20:31.261Z"
+    },
+    {
+      "addressSlug": "6-heritage-retreat-harrington-park-nsw-2567",
+      "kind": "bushfire",
+      "source": "nsw-bfpl",
+      "expectedCode": "VB",
+      "expectedLabelStartsWith": "Vegetation Buffer",
+      "capturedAt": "2026-05-03T14:20:31.261Z"
+    },
+    {
+      "addressSlug": "26-sugarloaf-road-bungendore-nsw-2621",
+      "kind": "bushfire",
+      "source": "nsw-bfpl",
+      "expectedCode": "VC3",
+      "expectedLabelStartsWith": "Vegetation Category 3",
+      "capturedAt": "2026-05-03T14:20:31.261Z"
+    },
+    {
+      "addressSlug": "67-jarrah-drive-wyoming-nsw-2250",
+      "kind": "bushfire",
+      "source": "nsw-bfpl",
+      "expectedCode": "VB",
+      "expectedLabelStartsWith": "Vegetation Buffer",
+      "capturedAt": "2026-05-03T14:20:31.261Z"
+    },
+    {
+      "addressSlug": "28-kinka-road-seal-rocks-nsw-2423",
+      "kind": "bushfire",
+      "source": "nsw-bfpl",
+      "expectedCode": "VB",
+      "expectedLabelStartsWith": "Vegetation Buffer",
+      "capturedAt": "2026-05-03T14:20:31.261Z"
+    },
+    {
+      "addressSlug": "13-kemp-street-abermain-nsw-2326",
+      "kind": "bushfire",
+      "source": "nsw-bfpl",
+      "expectedCode": "VB",
+      "expectedLabelStartsWith": "Vegetation Buffer",
+      "capturedAt": "2026-05-03T14:20:31.261Z"
+    },
+    {
+      "addressSlug": "15-menin-road-oakville-nsw-2765",
+      "kind": "bushfire",
+      "source": "nsw-bfpl",
+      "expectedCode": "VC3",
+      "expectedLabelStartsWith": "Vegetation Category 3",
+      "capturedAt": "2026-05-03T14:20:31.261Z"
+    },
+    {
+      "addressSlug": "233-youngs-road-wingham-nsw-2429",
+      "kind": "bushfire",
+      "source": "nsw-bfpl",
+      "expectedCode": "VC3",
+      "expectedLabelStartsWith": "Vegetation Category 3",
+      "capturedAt": "2026-05-03T14:20:31.261Z"
+    },
+    {
+      "addressSlug": "unit-53-14-celery-top-drive-kingston-tas-7050",
+      "kind": "bushfire",
+      "source": "tas-bushfire-overlay",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Areas",
+      "capturedAt": "2026-05-03T14:20:32.683Z"
+    },
+    {
+      "addressSlug": "140-cemetery-road-lunawanna-tas-7150",
+      "kind": "bushfire",
+      "source": "tas-bushfire-overlay",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Areas",
+      "capturedAt": "2026-05-03T14:20:32.683Z"
+    },
+    {
+      "addressSlug": "31-coolangatta-road-adventure-bay-tas-7150",
+      "kind": "bushfire",
+      "source": "tas-bushfire-overlay",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Areas",
+      "capturedAt": "2026-05-03T14:20:32.683Z"
+    },
+    {
+      "addressSlug": "134-van-morey-road-margate-tas-7054",
+      "kind": "bushfire",
+      "source": "tas-bushfire-overlay",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Areas",
+      "capturedAt": "2026-05-03T14:20:32.683Z"
+    },
+    {
+      "addressSlug": "57-harvey-road-alonnah-tas-7150",
+      "kind": "bushfire",
+      "source": "tas-bushfire-overlay",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Areas",
+      "capturedAt": "2026-05-03T14:20:32.683Z"
+    },
+    {
+      "addressSlug": "78-browns-road-kingston-tas-7050",
+      "kind": "bushfire",
+      "source": "tas-bushfire-overlay",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Areas",
+      "capturedAt": "2026-05-03T14:20:32.683Z"
+    },
+    {
+      "addressSlug": "58-matthew-flinders-drive-alonnah-tas-7150",
+      "kind": "bushfire",
+      "source": "tas-bushfire-overlay",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Areas",
+      "capturedAt": "2026-05-03T14:20:32.683Z"
+    },
+    {
+      "addressSlug": "155-fehres-road-margate-tas-7054",
+      "kind": "bushfire",
+      "source": "tas-bushfire-overlay",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Areas",
+      "capturedAt": "2026-05-03T14:20:32.683Z"
+    },
+    {
+      "addressSlug": "105-millhouses-road-longley-tas-7150",
+      "kind": "bushfire",
+      "source": "tas-bushfire-overlay",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Areas",
+      "capturedAt": "2026-05-03T14:20:32.683Z"
+    },
+    {
+      "addressSlug": "100-hackford-drive-kingston-tas-7050",
+      "kind": "bushfire",
+      "source": "tas-bushfire-overlay",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bushfire Prone Areas",
+      "capturedAt": "2026-05-03T14:20:32.683Z"
+    },
+    {
+      "addressSlug": "unit-2-12-back-porepunkah-road-bright-vic-3741",
+      "kind": "bushfire",
+      "source": "vic-vicmap-bushfire",
+      "expectedCode": "BMO",
+      "expectedLabelStartsWith": "BUSHFIRE MANAGEMENT OVERLAY",
+      "capturedAt": "2026-05-03T14:20:35.500Z"
+    },
+    {
+      "addressSlug": "7-oxford-street-shoreham-vic-3916",
+      "kind": "bushfire",
+      "source": "vic-vicmap-bushfire",
+      "expectedCode": "BMO",
+      "expectedLabelStartsWith": "BUSHFIRE MANAGEMENT OVERLAY",
+      "capturedAt": "2026-05-03T14:20:35.500Z"
+    },
+    {
+      "addressSlug": "135-leongatha-yarragon-road-leongatha-north-vic-3953",
+      "kind": "bushfire",
+      "source": "vic-vicmap-bushfire",
+      "expectedCode": "BMO",
+      "expectedLabelStartsWith": "BUSHFIRE MANAGEMENT OVERLAY",
+      "capturedAt": "2026-05-03T14:20:35.500Z"
+    },
+    {
+      "addressSlug": "20-lawrence-road-strathfieldsaye-vic-3551",
+      "kind": "bushfire",
+      "source": "vic-vicmap-bushfire",
+      "expectedCode": "BMO",
+      "expectedLabelStartsWith": "BUSHFIRE MANAGEMENT OVERLAY",
+      "capturedAt": "2026-05-03T14:20:35.500Z"
+    },
+    {
+      "addressSlug": "site-44-20-armytage-street-lorne-vic-3232",
+      "kind": "bushfire",
+      "source": "vic-vicmap-bushfire",
+      "expectedCode": "BMO",
+      "expectedLabelStartsWith": "BUSHFIRE MANAGEMENT OVERLAY",
+      "capturedAt": "2026-05-03T14:20:35.500Z"
+    },
+    {
+      "addressSlug": "17-ocean-view-parade-lakes-entrance-vic-3909",
+      "kind": "bushfire",
+      "source": "vic-vicmap-bushfire",
+      "expectedCode": "BMO",
+      "expectedLabelStartsWith": "BUSHFIRE MANAGEMENT OVERLAY",
+      "capturedAt": "2026-05-03T14:20:35.500Z"
+    },
+    {
+      "addressSlug": "8-barton-court-flora-hill-vic-3550",
+      "kind": "bushfire",
+      "source": "vic-vicmap-bushfire",
+      "expectedCode": "BMO",
+      "expectedLabelStartsWith": "BUSHFIRE MANAGEMENT OVERLAY",
+      "capturedAt": "2026-05-03T14:20:35.500Z"
+    },
+    {
+      "addressSlug": "1680-1682-burwood-highway-belgrave-vic-3160",
+      "kind": "bushfire",
+      "source": "vic-vicmap-bushfire",
+      "expectedCode": "BMO",
+      "expectedLabelStartsWith": "BUSHFIRE MANAGEMENT OVERLAY",
+      "capturedAt": "2026-05-03T14:20:35.500Z"
+    },
+    {
+      "addressSlug": "192-main-road-hepburn-vic-3461",
+      "kind": "bushfire",
+      "source": "vic-vicmap-bushfire",
+      "expectedCode": "BMO",
+      "expectedLabelStartsWith": "BUSHFIRE MANAGEMENT OVERLAY",
+      "capturedAt": "2026-05-03T14:20:35.500Z"
+    },
+    {
+      "addressSlug": "24-cumberland-street-linton-vic-3360",
+      "kind": "bushfire",
+      "source": "vic-vicmap-bushfire",
+      "expectedCode": "BMO",
+      "expectedLabelStartsWith": "BUSHFIRE MANAGEMENT OVERLAY",
+      "capturedAt": "2026-05-03T14:20:35.500Z"
+    },
+    {
+      "addressSlug": "4-wattlebird-loop-joondalup-wa-6027",
+      "kind": "bushfire",
+      "source": "wa-obrm-bfpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bush Fire Prone Area (designat",
+      "capturedAt": "2026-05-03T14:20:39.201Z"
+    },
+    {
+      "addressSlug": "unit-4-40-mccombe-avenue-samson-wa-6163",
+      "kind": "bushfire",
+      "source": "wa-obrm-bfpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bush Fire Prone Area (designat",
+      "capturedAt": "2026-05-03T14:20:39.201Z"
+    },
+    {
+      "addressSlug": "39-tambor-drive-exmouth-wa-6707",
+      "kind": "bushfire",
+      "source": "wa-obrm-bfpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bush Fire Prone Area (designat",
+      "capturedAt": "2026-05-03T14:20:39.201Z"
+    },
+    {
+      "addressSlug": "unit-2-1-crompton-road-rockingham-wa-6168",
+      "kind": "bushfire",
+      "source": "wa-obrm-bfpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bush Fire Prone Area (designat",
+      "capturedAt": "2026-05-03T14:20:39.201Z"
+    },
+    {
+      "addressSlug": "17-billing-place-mount-richon-wa-6112",
+      "kind": "bushfire",
+      "source": "wa-obrm-bfpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bush Fire Prone Area (designat",
+      "capturedAt": "2026-05-03T14:20:39.201Z"
+    },
+    {
+      "addressSlug": "6-fifth-avenue-shoalwater-wa-6169",
+      "kind": "bushfire",
+      "source": "wa-obrm-bfpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bush Fire Prone Area (designat",
+      "capturedAt": "2026-05-03T14:20:39.201Z"
+    },
+    {
+      "addressSlug": "12-ringtail-path-dawesville-wa-6211",
+      "kind": "bushfire",
+      "source": "wa-obrm-bfpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bush Fire Prone Area (designat",
+      "capturedAt": "2026-05-03T14:20:39.201Z"
+    },
+    {
+      "addressSlug": "32-pyrites-street-westonia-wa-6423",
+      "kind": "bushfire",
+      "source": "wa-obrm-bfpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bush Fire Prone Area (designat",
+      "capturedAt": "2026-05-03T14:20:39.201Z"
+    },
+    {
+      "addressSlug": "40-marriott-street-koorda-wa-6475",
+      "kind": "bushfire",
+      "source": "wa-obrm-bfpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bush Fire Prone Area (designat",
+      "capturedAt": "2026-05-03T14:20:39.201Z"
+    },
+    {
+      "addressSlug": "13-saltspray-road-singleton-wa-6175",
+      "kind": "bushfire",
+      "source": "wa-obrm-bfpa",
+      "expectedCode": "BPA",
+      "expectedLabelStartsWith": "Bush Fire Prone Area (designat",
+      "capturedAt": "2026-05-03T14:20:39.201Z"
+    },
+    {
+      "addressSlug": "154-mawson-place-mawson-act-2607",
+      "kind": "flood",
+      "source": "act-flood-extent",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled flood extent (1% AEP)",
+      "capturedAt": "2026-05-03T14:20:40.364Z"
+    },
+    {
+      "addressSlug": "20-university-avenue-acton-act-2601",
+      "kind": "flood",
+      "source": "act-flood-extent",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled flood extent (1% AEP)",
+      "capturedAt": "2026-05-03T14:20:40.364Z"
+    },
+    {
+      "addressSlug": "unit-105-50-de-burgh-street-lyneham-act-2602",
+      "kind": "flood",
+      "source": "act-flood-extent",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled flood extent (1% AEP)",
+      "capturedAt": "2026-05-03T14:20:40.364Z"
+    },
+    {
+      "addressSlug": "74-dickson-place-dickson-act-2602",
+      "kind": "flood",
+      "source": "act-flood-extent",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled flood extent (1% AEP)",
+      "capturedAt": "2026-05-03T14:20:40.364Z"
+    },
+    {
+      "addressSlug": "68-emu-bank-belconnen-act-2617",
+      "kind": "flood",
+      "source": "act-flood-extent",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled flood extent (1% AEP)",
+      "capturedAt": "2026-05-03T14:20:40.364Z"
+    },
+    {
+      "addressSlug": "unit-302-50-de-burgh-street-lyneham-act-2602",
+      "kind": "flood",
+      "source": "act-flood-extent",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled flood extent (1% AEP)",
+      "capturedAt": "2026-05-03T14:20:40.364Z"
+    },
+    {
+      "addressSlug": "unit-7-114-emu-bank-belconnen-act-2617",
+      "kind": "flood",
+      "source": "act-flood-extent",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled flood extent (1% AEP)",
+      "capturedAt": "2026-05-03T14:20:40.364Z"
+    },
+    {
+      "addressSlug": "81-emu-bank-belconnen-act-2617",
+      "kind": "flood",
+      "source": "act-flood-extent",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled flood extent (1% AEP)",
+      "capturedAt": "2026-05-03T14:20:40.364Z"
+    },
+    {
+      "addressSlug": "153-emu-bank-belconnen-act-2617",
+      "kind": "flood",
+      "source": "act-flood-extent",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled flood extent (1% AEP)",
+      "capturedAt": "2026-05-03T14:20:40.364Z"
+    },
+    {
+      "addressSlug": "178-coppins-crossing-road-molonglo-valley-act-2617",
+      "kind": "flood",
+      "source": "act-flood-extent",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled flood extent (1% AEP)",
+      "capturedAt": "2026-05-03T14:20:40.364Z"
+    },
+    {
+      "addressSlug": "688-south-arm-school-road-brushgrove-nsw-2460",
+      "kind": "flood",
+      "source": "nsw-flood-planning",
+      "expectedCode": "FPA",
+      "expectedLabelStartsWith": "Flood Planning Area",
+      "capturedAt": "2026-05-03T14:20:41.940Z"
+    },
+    {
+      "addressSlug": "504-yamba-road-maclean-nsw-2463",
+      "kind": "flood",
+      "source": "nsw-flood-planning",
+      "expectedCode": "FPA",
+      "expectedLabelStartsWith": "Flood Planning Area",
+      "capturedAt": "2026-05-03T14:20:41.940Z"
+    },
+    {
+      "addressSlug": "32-riverdale-court-grafton-nsw-2460",
+      "kind": "flood",
+      "source": "nsw-flood-planning",
+      "expectedCode": "FPA",
+      "expectedLabelStartsWith": "Flood Planning Area",
+      "capturedAt": "2026-05-03T14:20:41.940Z"
+    },
+    {
+      "addressSlug": "115-the-avenue-angus-nsw-2765",
+      "kind": "flood",
+      "source": "nsw-flood-planning",
+      "expectedCode": "FPMC",
+      "expectedLabelStartsWith": "Flood Prone and Major Creeks L",
+      "capturedAt": "2026-05-03T14:20:41.940Z"
+    },
+    {
+      "addressSlug": "35-riverstone-parade-riverstone-nsw-2765",
+      "kind": "flood",
+      "source": "nsw-flood-planning",
+      "expectedCode": "FPMC",
+      "expectedLabelStartsWith": "Flood Prone and Major Creeks L",
+      "capturedAt": "2026-05-03T14:20:41.940Z"
+    },
+    {
+      "addressSlug": "11-valiant-street-nirimba-fields-nsw-2763",
+      "kind": "flood",
+      "source": "nsw-flood-planning",
+      "expectedCode": "FPMC",
+      "expectedLabelStartsWith": "Flood Prone and Major Creeks L",
+      "capturedAt": "2026-05-03T14:20:41.940Z"
+    },
+    {
+      "addressSlug": "5-grenfell-street-forbes-nsw-2871",
+      "kind": "flood",
+      "source": "nsw-flood-planning",
+      "expectedCode": "FPA",
+      "expectedLabelStartsWith": "Flood Planning Area",
+      "capturedAt": "2026-05-03T14:20:41.940Z"
+    },
+    {
+      "addressSlug": "unit-2-5-pullen-close-grafton-nsw-2460",
+      "kind": "flood",
+      "source": "nsw-flood-planning",
+      "expectedCode": "FPA",
+      "expectedLabelStartsWith": "Flood Planning Area",
+      "capturedAt": "2026-05-03T14:20:41.940Z"
+    },
+    {
+      "addressSlug": "30-32-bong-bong-road-dapto-nsw-2530",
+      "kind": "flood",
+      "source": "nsw-flood-planning",
+      "expectedCode": "FPA",
+      "expectedLabelStartsWith": "Flood Planning Area",
+      "capturedAt": "2026-05-03T14:20:41.940Z"
+    },
+    {
+      "addressSlug": "5-burringbar-street-dapto-nsw-2530",
+      "kind": "flood",
+      "source": "nsw-flood-planning",
+      "expectedCode": "FPA",
+      "expectedLabelStartsWith": "Flood Planning Area",
+      "capturedAt": "2026-05-03T14:20:41.940Z"
+    },
+    {
+      "addressSlug": "2-foster-road-mount-sheridan-qld-4868",
+      "kind": "flood",
+      "source": "qld-floodcheck",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled 1% AEP riverine flood",
+      "capturedAt": "2026-05-03T14:20:47.922Z"
+    },
+    {
+      "addressSlug": "23-ocean-view-avenue-airlie-beach-qld-4802",
+      "kind": "flood",
+      "source": "qld-floodcheck",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled 1% AEP riverine flood",
+      "capturedAt": "2026-05-03T14:20:47.922Z"
+    },
+    {
+      "addressSlug": "208-woodbury-drive-south-kolan-qld-4670",
+      "kind": "flood",
+      "source": "qld-floodcheck",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled 1% AEP riverine flood",
+      "capturedAt": "2026-05-03T14:20:47.922Z"
+    },
+    {
+      "addressSlug": "5-cunningham-street-torquay-qld-4655",
+      "kind": "flood",
+      "source": "qld-floodcheck",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled 1% AEP riverine flood",
+      "capturedAt": "2026-05-03T14:20:47.922Z"
+    },
+    {
+      "addressSlug": "2-eric-street-yarraman-qld-4614",
+      "kind": "flood",
+      "source": "qld-floodcheck",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled 1% AEP riverine flood",
+      "capturedAt": "2026-05-03T14:20:47.922Z"
+    },
+    {
+      "addressSlug": "15-laurie-motti-parade-kirwan-qld-4817",
+      "kind": "flood",
+      "source": "qld-floodcheck",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled 1% AEP riverine flood",
+      "capturedAt": "2026-05-03T14:20:47.922Z"
+    },
+    {
+      "addressSlug": "47-carter-road-nambour-qld-4560",
+      "kind": "flood",
+      "source": "qld-floodcheck",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled 1% AEP riverine flood",
+      "capturedAt": "2026-05-03T14:20:47.922Z"
+    },
+    {
+      "addressSlug": "unit-1-9-webster-road-nambour-qld-4560",
+      "kind": "flood",
+      "source": "qld-floodcheck",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled 1% AEP riverine flood",
+      "capturedAt": "2026-05-03T14:20:47.922Z"
+    },
+    {
+      "addressSlug": "11-natalie-street-bargara-qld-4670",
+      "kind": "flood",
+      "source": "qld-floodcheck",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled 1% AEP riverine flood",
+      "capturedAt": "2026-05-03T14:20:47.922Z"
+    },
+    {
+      "addressSlug": "57-south-molle-boulevard-cannonvale-qld-4802",
+      "kind": "flood",
+      "source": "qld-floodcheck",
+      "expectedCode": "1% AEP",
+      "expectedLabelStartsWith": "Modelled 1% AEP riverine flood",
+      "capturedAt": "2026-05-03T14:20:47.922Z"
+    },
+    {
+      "addressSlug": "37-graham-avenue-mckinnon-vic-3204",
+      "kind": "flood",
+      "source": "vic-vicmap-flood",
+      "expectedCode": "SBO",
+      "expectedLabelStartsWith": "SPECIAL BUILDING OVERLAY",
+      "capturedAt": "2026-05-03T14:20:49.882Z"
+    },
+    {
+      "addressSlug": "59-limestone-drive-berwick-vic-3806",
+      "kind": "flood",
+      "source": "vic-vicmap-flood",
+      "expectedCode": "LSIO",
+      "expectedLabelStartsWith": "LAND SUBJECT TO INUNDATION OVE",
+      "capturedAt": "2026-05-03T14:20:49.882Z"
+    },
+    {
+      "addressSlug": "10-12-bond-street-mordialloc-vic-3195",
+      "kind": "flood",
+      "source": "vic-vicmap-flood",
+      "expectedCode": "LSIO",
+      "expectedLabelStartsWith": "LAND SUBJECT TO INUNDATION OVE",
+      "capturedAt": "2026-05-03T14:20:49.882Z"
+    },
+    {
+      "addressSlug": "131-lakefield-drive-golden-beach-vic-3851",
+      "kind": "flood",
+      "source": "vic-vicmap-flood",
+      "expectedCode": "LSIO",
+      "expectedLabelStartsWith": "LAND SUBJECT TO INUNDATION OVE",
+      "capturedAt": "2026-05-03T14:20:49.882Z"
+    },
+    {
+      "addressSlug": "unit-20-72-alfred-street-warragul-vic-3820",
+      "kind": "flood",
+      "source": "vic-vicmap-flood",
+      "expectedCode": "FO",
+      "expectedLabelStartsWith": "FLOODWAY OVERLAY",
+      "capturedAt": "2026-05-03T14:20:49.882Z"
+    },
+    {
+      "addressSlug": "44b-gladesville-drive-bentleigh-east-vic-3165",
+      "kind": "flood",
+      "source": "vic-vicmap-flood",
+      "expectedCode": "SBO",
+      "expectedLabelStartsWith": "SPECIAL BUILDING OVERLAY",
+      "capturedAt": "2026-05-03T14:20:49.882Z"
+    },
+    {
+      "addressSlug": "24-ronald-grove-millgrove-vic-3799",
+      "kind": "flood",
+      "source": "vic-vicmap-flood",
+      "expectedCode": "LSIO",
+      "expectedLabelStartsWith": "LAND SUBJECT TO INUNDATION OVE",
+      "capturedAt": "2026-05-03T14:20:49.882Z"
+    },
+    {
+      "addressSlug": "113-115-bridge-street-benalla-vic-3672",
+      "kind": "flood",
+      "source": "vic-vicmap-flood",
+      "expectedCode": "LSIO",
+      "expectedLabelStartsWith": "LAND SUBJECT TO INUNDATION OVE",
+      "capturedAt": "2026-05-03T14:20:49.882Z"
+    },
+    {
+      "addressSlug": "1-uplands-road-balwyn-north-vic-3104",
+      "kind": "flood",
+      "source": "vic-vicmap-flood",
+      "expectedCode": "SBO",
+      "expectedLabelStartsWith": "SPECIAL BUILDING OVERLAY",
+      "capturedAt": "2026-05-03T14:20:49.882Z"
+    },
+    {
+      "addressSlug": "8-gillies-street-rochester-vic-3561",
+      "kind": "flood",
+      "source": "vic-vicmap-flood",
+      "expectedCode": "LSIO",
+      "expectedLabelStartsWith": "LAND SUBJECT TO INUNDATION OVE",
+      "capturedAt": "2026-05-03T14:20:49.882Z"
+    },
+    {
+      "addressSlug": "27-salter-point-parade-salter-point-wa-6152",
+      "kind": "flood",
+      "source": "wa-dwer-floodplain",
+      "expectedCode": "Flood fringe",
+      "expectedLabelStartsWith": "Perth (Fremantle to Walyunga &",
+      "capturedAt": "2026-05-03T14:20:51.002Z"
+    },
+    {
+      "addressSlug": "240-avon-terrace-york-wa-6302",
+      "kind": "flood",
+      "source": "wa-dwer-floodplain",
+      "expectedCode": "Flood fringe",
+      "expectedLabelStartsWith": "York",
+      "capturedAt": "2026-05-03T14:20:51.002Z"
+    },
+    {
+      "addressSlug": "unit-29-2131-old-coast-road-bouvard-wa-6211",
+      "kind": "flood",
+      "source": "wa-dwer-floodplain",
+      "expectedCode": "Flood fringe",
+      "expectedLabelStartsWith": "Murray & Serpentine River to P",
+      "capturedAt": "2026-05-03T14:20:51.002Z"
+    },
+    {
+      "addressSlug": "60-bartram-street-beverley-wa-6304",
+      "kind": "flood",
+      "source": "wa-dwer-floodplain",
+      "expectedCode": "Flood fringe",
+      "expectedLabelStartsWith": "Beverley",
+      "capturedAt": "2026-05-03T14:20:51.002Z"
+    },
+    {
+      "addressSlug": "2-breakwater-grove-champion-lakes-wa-6111",
+      "kind": "flood",
+      "source": "wa-dwer-floodplain",
+      "expectedCode": "Flood fringe",
+      "expectedLabelStartsWith": "Perth (Fremantle to Walyunga &",
+      "capturedAt": "2026-05-03T14:20:51.002Z"
+    },
+    {
+      "addressSlug": "unit-3-76-moran-street-boulder-wa-6432",
+      "kind": "flood",
+      "source": "wa-dwer-floodplain",
+      "expectedCode": "Flood fringe",
+      "expectedLabelStartsWith": "Kalgoorlie",
+      "capturedAt": "2026-05-03T14:20:51.002Z"
+    },
+    {
+      "addressSlug": "unit-79-65-lloyd-avenue-ravenswood-wa-6208",
+      "kind": "flood",
+      "source": "wa-dwer-floodplain",
+      "expectedCode": "Floodway",
+      "expectedLabelStartsWith": "Murray & Serpentine River to P",
+      "capturedAt": "2026-05-03T14:20:51.002Z"
+    },
+    {
+      "addressSlug": "unit-9-6-peel-street-mandurah-wa-6210",
+      "kind": "flood",
+      "source": "wa-dwer-floodplain",
+      "expectedCode": "Flood fringe",
+      "expectedLabelStartsWith": "Murray & Serpentine River to P",
+      "capturedAt": "2026-05-03T14:20:51.002Z"
+    },
+    {
+      "addressSlug": "17-riverside-drive-furnissdale-wa-6209",
+      "kind": "flood",
+      "source": "wa-dwer-floodplain",
+      "expectedCode": "Flood fringe",
+      "expectedLabelStartsWith": "Murray & Serpentine River to P",
+      "capturedAt": "2026-05-03T14:20:51.002Z"
+    },
+    {
+      "addressSlug": "11-earls-way-south-yunderup-wa-6208",
+      "kind": "flood",
+      "source": "wa-dwer-floodplain",
+      "expectedCode": "Flood fringe",
+      "expectedLabelStartsWith": "Murray & Serpentine River to P",
+      "capturedAt": "2026-05-03T14:20:51.002Z"
+    },
+    {
+      "addressSlug": "unit-1-23-grant-crescent-griffith-act-2603",
+      "kind": "heritage",
+      "source": "act-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Blandfordia 5 Housing Precinct",
+      "capturedAt": "2026-05-03T14:20:52.129Z"
+    },
+    {
+      "addressSlug": "unit-3-18-20-brindabella-circuit-majura-act-2609",
+      "kind": "heritage",
+      "source": "act-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Aboriginal Places in the Distr",
+      "capturedAt": "2026-05-03T14:20:52.129Z"
+    },
+    {
+      "addressSlug": "unit-39-189-narrabundah-lane-symonston-act-2609",
+      "kind": "heritage",
+      "source": "act-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Aboriginal Recordings",
+      "capturedAt": "2026-05-03T14:20:52.129Z"
+    },
+    {
+      "addressSlug": "61-arthur-circle-red-hill-act-2603",
+      "kind": "heritage",
+      "source": "act-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Red Hill Precinct",
+      "capturedAt": "2026-05-03T14:20:52.129Z"
+    },
+    {
+      "addressSlug": "unit-107-9-cowper-street-ainslie-act-2602",
+      "kind": "heritage",
+      "source": "act-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "All Saints Church",
+      "capturedAt": "2026-05-03T14:20:52.129Z"
+    },
+    {
+      "addressSlug": "9-colebatch-place-curtin-act-2605",
+      "kind": "heritage",
+      "source": "act-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Curtin Radburn Residential Pre",
+      "capturedAt": "2026-05-03T14:20:52.129Z"
+    },
+    {
+      "addressSlug": "9-east-row-city-act-2601",
+      "kind": "heritage",
+      "source": "act-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Melbourne and Sydney Buildings",
+      "capturedAt": "2026-05-03T14:20:52.129Z"
+    },
+    {
+      "addressSlug": "unit-303-1-carden-street-denman-prospect-act-2611",
+      "kind": "heritage",
+      "source": "act-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Aboriginal Recordings",
+      "capturedAt": "2026-05-03T14:20:52.129Z"
+    },
+    {
+      "addressSlug": "72-limestone-avenue-ainslie-act-2602",
+      "kind": "heritage",
+      "source": "act-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Corroboree Park Housing Precin",
+      "capturedAt": "2026-05-03T14:20:52.129Z"
+    },
+    {
+      "addressSlug": "1-parnell-road-campbell-act-2612",
+      "kind": "heritage",
+      "source": "act-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Aboriginal Recordings",
+      "capturedAt": "2026-05-03T14:20:52.129Z"
+    },
+    {
+      "addressSlug": "24-goodhope-street-paddington-nsw-2021",
+      "kind": "heritage",
+      "source": "nsw-heritage-register",
+      "expectedCode": "Local",
+      "expectedLabelStartsWith": "Paddington",
+      "capturedAt": "2026-05-03T14:20:54.777Z"
+    },
+    {
+      "addressSlug": "unit-610e-310-330-oxford-street-bondi-junction-nsw-2022",
+      "kind": "heritage",
+      "source": "nsw-heritage-register",
+      "expectedCode": "Local",
+      "expectedLabelStartsWith": "Facade group only",
+      "capturedAt": "2026-05-03T14:20:54.778Z"
+    },
+    {
+      "addressSlug": "252-williams-street-broken-hill-nsw-2880",
+      "kind": "heritage",
+      "source": "nsw-heritage-register",
+      "expectedCode": "Local",
+      "expectedLabelStartsWith": "Oxide Street Heritage Conserva",
+      "capturedAt": "2026-05-03T14:20:54.778Z"
+    },
+    {
+      "addressSlug": "1-david-street-marrickville-nsw-2204",
+      "kind": "heritage",
+      "source": "nsw-heritage-register",
+      "expectedCode": "Local",
+      "expectedLabelStartsWith": "David Street Heritage Conserva",
+      "capturedAt": "2026-05-03T14:20:54.778Z"
+    },
+    {
+      "addressSlug": "unit-85-51-59-roslyn-gardens-elizabeth-bay-nsw-2011",
+      "kind": "heritage",
+      "source": "nsw-heritage-register",
+      "expectedCode": "Local",
+      "expectedLabelStartsWith": "Elizabeth and Rushcutters Bays",
+      "capturedAt": "2026-05-03T14:20:54.778Z"
+    },
+    {
+      "addressSlug": "unit-2c-144-dunning-avenue-rosebery-nsw-2018",
+      "kind": "heritage",
+      "source": "nsw-heritage-register",
+      "expectedCode": "Local",
+      "expectedLabelStartsWith": "Former industrial building 'Br",
+      "capturedAt": "2026-05-03T14:20:54.778Z"
+    },
+    {
+      "addressSlug": "unit-1-123-queen-street-berry-nsw-2535",
+      "kind": "heritage",
+      "source": "nsw-heritage-register",
+      "expectedCode": "Local",
+      "expectedLabelStartsWith": "Queen Street Heritage Conserva",
+      "capturedAt": "2026-05-03T14:20:54.778Z"
+    },
+    {
+      "addressSlug": "101-victoria-street-grafton-nsw-2460",
+      "kind": "heritage",
+      "source": "nsw-heritage-register",
+      "expectedCode": "Local",
+      "expectedLabelStartsWith": "Grafton",
+      "capturedAt": "2026-05-03T14:20:54.778Z"
+    },
+    {
+      "addressSlug": "2-unwins-bridge-road-st-peters-nsw-2044",
+      "kind": "heritage",
+      "source": "nsw-heritage-register",
+      "expectedCode": "Local",
+      "expectedLabelStartsWith": "Town and Country Hotel, includ",
+      "capturedAt": "2026-05-03T14:20:54.778Z"
+    },
+    {
+      "addressSlug": "shop-1-35-elizabeth-bay-road-elizabeth-bay-nsw-2011",
+      "kind": "heritage",
+      "source": "nsw-heritage-register",
+      "expectedCode": "Local",
+      "expectedLabelStartsWith": "Elizabeth and Rushcutters Bays",
+      "capturedAt": "2026-05-03T14:20:54.778Z"
+    },
+    {
+      "addressSlug": "unit-39-22-florence-street-teneriffe-qld-4005",
+      "kind": "heritage",
+      "source": "qld-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Winchcombe Carson Woolstores",
+      "capturedAt": "2026-05-03T14:20:55.861Z"
+    },
+    {
+      "addressSlug": "unit-521-53-57-esplanade-cairns-city-qld-4870",
+      "kind": "heritage",
+      "source": "qld-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Cairns Court House Complex",
+      "capturedAt": "2026-05-03T14:20:55.861Z"
+    },
+    {
+      "addressSlug": "95-edward-street-brisbane-city-qld-4000",
+      "kind": "heritage",
+      "source": "qld-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "93-103 Edward Street",
+      "capturedAt": "2026-05-03T14:20:55.861Z"
+    },
+    {
+      "addressSlug": "20-gordon-street-hawthorne-qld-4171",
+      "kind": "heritage",
+      "source": "qld-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Hawthorne Ferry Terminal & Har",
+      "capturedAt": "2026-05-03T14:20:55.861Z"
+    },
+    {
+      "addressSlug": "121-wickham-terrace-spring-hill-qld-4000",
+      "kind": "heritage",
+      "source": "qld-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Ballow Chambers",
+      "capturedAt": "2026-05-03T14:20:55.861Z"
+    },
+    {
+      "addressSlug": "unit-610-16-skyring-terrace-teneriffe-qld-4005",
+      "kind": "heritage",
+      "source": "qld-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Queensland Primary Producers N",
+      "capturedAt": "2026-05-03T14:20:55.861Z"
+    },
+    {
+      "addressSlug": "unit-406-53-57-esplanade-cairns-city-qld-4870",
+      "kind": "heritage",
+      "source": "qld-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Cairns Court House Complex",
+      "capturedAt": "2026-05-03T14:20:55.861Z"
+    },
+    {
+      "addressSlug": "225-253-black-jack-road-towers-hill-qld-4820",
+      "kind": "heritage",
+      "source": "qld-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Towers Hill",
+      "capturedAt": "2026-05-03T14:20:55.861Z"
+    },
+    {
+      "addressSlug": "232-234-flinders-street-townsville-city-qld-4810",
+      "kind": "heritage",
+      "source": "qld-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Aplin Brown & Company Building",
+      "capturedAt": "2026-05-03T14:20:55.861Z"
+    },
+    {
+      "addressSlug": "unit-516-53-57-esplanade-cairns-city-qld-4870",
+      "kind": "heritage",
+      "source": "qld-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Cairns Court House Complex",
+      "capturedAt": "2026-05-03T14:20:55.861Z"
+    },
+    {
+      "addressSlug": "13a-margaret-street-sandy-bay-tas-7005",
+      "kind": "heritage",
+      "source": "tas-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Ashfield (Stables)",
+      "capturedAt": "2026-05-03T14:20:56.942Z"
+    },
+    {
+      "addressSlug": "2-evans-street-hobart-tas-7000",
+      "kind": "heritage",
+      "source": "tas-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Hunter, Evans, Davey Street - ",
+      "capturedAt": "2026-05-03T14:20:56.942Z"
+    },
+    {
+      "addressSlug": "unit-1-63-salamanca-place-battery-point-tas-7004",
+      "kind": "heritage",
+      "source": "tas-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Warehouse",
+      "capturedAt": "2026-05-03T14:20:56.942Z"
+    },
+    {
+      "addressSlug": "6-webber-street-moonah-tas-7009",
+      "kind": "heritage",
+      "source": "tas-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "House",
+      "capturedAt": "2026-05-03T14:20:56.942Z"
+    },
+    {
+      "addressSlug": "unit-21-214-york-street-launceston-tas-7250",
+      "kind": "heritage",
+      "source": "tas-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Formerly the Union Brewery",
+      "capturedAt": "2026-05-03T14:20:56.942Z"
+    },
+    {
+      "addressSlug": "68-george-street-launceston-tas-7250",
+      "kind": "heritage",
+      "source": "tas-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Commercial Retail",
+      "capturedAt": "2026-05-03T14:20:56.942Z"
+    },
+    {
+      "addressSlug": "923-nubeena-road-premaydena-tas-7185",
+      "kind": "heritage",
+      "source": "tas-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Impression Bay Probation Stati",
+      "capturedAt": "2026-05-03T14:20:56.942Z"
+    },
+    {
+      "addressSlug": "unit-1-68-charles-street-launceston-tas-7250",
+      "kind": "heritage",
+      "source": "tas-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Commercial Retail",
+      "capturedAt": "2026-05-03T14:20:56.942Z"
+    },
+    {
+      "addressSlug": "3-percy-street-richmond-tas-7025",
+      "kind": "heritage",
+      "source": "tas-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Hollyhock",
+      "capturedAt": "2026-05-03T14:20:56.942Z"
+    },
+    {
+      "addressSlug": "57-colville-street-battery-point-tas-7004",
+      "kind": "heritage",
+      "source": "tas-heritage-register",
+      "expectedCode": "LISTED",
+      "expectedLabelStartsWith": "Gleason's Farmhouse",
+      "capturedAt": "2026-05-03T14:20:56.942Z"
+    },
+    {
+      "addressSlug": "cars-115-422-cardigan-street-carlton-vic-3053",
+      "kind": "heritage",
+      "source": "vic-vicmap-heritage",
+      "expectedCode": "HO1394",
+      "expectedLabelStartsWith": "HERITAGE OVERLAY (HO1394)",
+      "capturedAt": "2026-05-03T14:21:00.601Z"
+    },
+    {
+      "addressSlug": "9-los-angeles-court-ripponlea-vic-3185",
+      "kind": "heritage",
+      "source": "vic-vicmap-heritage",
+      "expectedCode": "HO7",
+      "expectedLabelStartsWith": "HERITAGE OVERLAY (HO7)",
+      "capturedAt": "2026-05-03T14:21:00.601Z"
+    },
+    {
+      "addressSlug": "3-new-street-kensington-vic-3031",
+      "kind": "heritage",
+      "source": "vic-vicmap-heritage",
+      "expectedCode": "HO9",
+      "expectedLabelStartsWith": "HERITAGE OVERLAY (HO9)",
+      "capturedAt": "2026-05-03T14:21:00.601Z"
+    },
+    {
+      "addressSlug": "unit-11-50-eastern-beach-road-geelong-vic-3220",
+      "kind": "heritage",
+      "source": "vic-vicmap-heritage",
+      "expectedCode": "HO1639",
+      "expectedLabelStartsWith": "HERITAGE OVERLAY (HO1639)",
+      "capturedAt": "2026-05-03T14:21:00.601Z"
+    },
+    {
+      "addressSlug": "330a-queens-parade-fitzroy-north-vic-3068",
+      "kind": "heritage",
+      "source": "vic-vicmap-heritage",
+      "expectedCode": "HO330",
+      "expectedLabelStartsWith": "HERITAGE OVERLAY (HO330)",
+      "capturedAt": "2026-05-03T14:21:00.601Z"
+    },
+    {
+      "addressSlug": "20-fawkner-street-south-yarra-vic-3141",
+      "kind": "heritage",
+      "source": "vic-vicmap-heritage",
+      "expectedCode": "HO131",
+      "expectedLabelStartsWith": "HERITAGE OVERLAY (HO131)",
+      "capturedAt": "2026-05-03T14:21:00.601Z"
+    },
+    {
+      "addressSlug": "17-boyd-crescent-coburg-north-vic-3058",
+      "kind": "heritage",
+      "source": "vic-vicmap-heritage",
+      "expectedCode": "HO124",
+      "expectedLabelStartsWith": "HERITAGE OVERLAY (HO124)",
+      "capturedAt": "2026-05-03T14:21:00.601Z"
+    },
+    {
+      "addressSlug": "unit-1509-668-bourke-street-melbourne-vic-3000",
+      "kind": "heritage",
+      "source": "vic-vicmap-heritage",
+      "expectedCode": "HO552",
+      "expectedLabelStartsWith": "HERITAGE OVERLAY (HO552)",
+      "capturedAt": "2026-05-03T14:21:00.601Z"
+    },
+    {
+      "addressSlug": "240-raymond-street-sale-vic-3850",
+      "kind": "heritage",
+      "source": "vic-vicmap-heritage",
+      "expectedCode": "HO86",
+      "expectedLabelStartsWith": "HERITAGE OVERLAY (HO86)",
+      "capturedAt": "2026-05-03T14:21:00.601Z"
+    },
+    {
+      "addressSlug": "unit-216-339-swanston-street-melbourne-vic-3000",
+      "kind": "heritage",
+      "source": "vic-vicmap-heritage",
+      "expectedCode": "HO1376",
+      "expectedLabelStartsWith": "HERITAGE OVERLAY (HO1376)",
+      "capturedAt": "2026-05-03T14:21:00.601Z"
+    },
+    {
+      "addressSlug": "unit-32-207-murray-street-perth-wa-6000",
+      "kind": "heritage",
+      "source": "wa-heritage-register",
+      "expectedCode": "State Register Place",
+      "expectedLabelStartsWith": "William & Wellington Street Pr",
+      "capturedAt": "2026-05-03T14:21:02.396Z"
+    },
+    {
+      "addressSlug": "31-smith-street-highgate-wa-6003",
+      "kind": "heritage",
+      "source": "wa-heritage-register",
+      "expectedCode": "State Register Place",
+      "expectedLabelStartsWith": "Serbian Orthodox Church of St.",
+      "capturedAt": "2026-05-03T14:21:02.396Z"
+    },
+    {
+      "addressSlug": "unit-n301-70-canning-beach-road-applecross-wa-6153",
+      "kind": "heritage",
+      "source": "wa-heritage-register",
+      "expectedCode": "State Register Place",
+      "expectedLabelStartsWith": "Raffles Hotel",
+      "capturedAt": "2026-05-03T14:21:02.396Z"
+    },
+    {
+      "addressSlug": "apt-2601-1-geoffrey-bolton-avenue-perth-wa-6000",
+      "kind": "heritage",
+      "source": "wa-heritage-register",
+      "expectedCode": "State Register Place",
+      "expectedLabelStartsWith": "Esplanade Reserve",
+      "capturedAt": "2026-05-03T14:21:02.396Z"
+    },
+    {
+      "addressSlug": "unit-5-26-market-street-guildford-wa-6055",
+      "kind": "heritage",
+      "source": "wa-heritage-register",
+      "expectedCode": "State Register Place",
+      "expectedLabelStartsWith": "Guildford Historic Town",
+      "capturedAt": "2026-05-03T14:21:02.396Z"
+    },
+    {
+      "addressSlug": "5b-martha-street-beaconsfield-wa-6162",
+      "kind": "heritage",
+      "source": "wa-heritage-register",
+      "expectedCode": "State Register Place",
+      "expectedLabelStartsWith": "South Fremantle Post Office (f",
+      "capturedAt": "2026-05-03T14:21:02.396Z"
+    },
+    {
+      "addressSlug": "32-high-street-fremantle-wa-6160",
+      "kind": "heritage",
+      "source": "wa-heritage-register",
+      "expectedCode": "Child of State Register Place",
+      "expectedLabelStartsWith": "FOTHERGILLS BUILDING, 32 HIGH ",
+      "capturedAt": "2026-05-03T14:21:02.396Z"
+    },
+    {
+      "addressSlug": "shop-27-700-hay-street-mall-perth-wa-6000",
+      "kind": "heritage",
+      "source": "wa-heritage-register",
+      "expectedCode": "State Register Place",
+      "expectedLabelStartsWith": "Piccadilly Theatre and Arcade",
+      "capturedAt": "2026-05-03T14:21:02.396Z"
+    },
+    {
+      "addressSlug": "unit-20-18-pakenham-street-fremantle-wa-6160",
+      "kind": "heritage",
+      "source": "wa-heritage-register",
+      "expectedCode": "Child of State Register Place",
+      "expectedLabelStartsWith": "Terminus Hotel (fmr)",
+      "capturedAt": "2026-05-03T14:21:02.396Z"
+    },
+    {
+      "addressSlug": "unit-2-37-walcott-street-broome-wa-6725",
+      "kind": "heritage",
+      "source": "wa-heritage-register",
+      "expectedCode": "State Register Place",
+      "expectedLabelStartsWith": "Maurice Lyon's House",
+      "capturedAt": "2026-05-03T14:21:02.396Z"
+    },
+    {
+      "addressSlug": "unit-5-60-port-jackson-circuit-phillip-act-2606",
+      "kind": "zoning",
+      "source": "act-tp-zoning",
+      "expectedCode": "RZ4",
+      "expectedLabelStartsWith": "MEDIUM DENSITY RESIDENTIAL",
+      "capturedAt": "2026-05-03T14:21:06.038Z"
+    },
+    {
+      "addressSlug": "unit-46-11-kerridge-street-kingston-act-2604",
+      "kind": "zoning",
+      "source": "act-tp-zoning",
+      "expectedCode": "CZ5",
+      "expectedLabelStartsWith": "MIXED USE",
+      "capturedAt": "2026-05-03T14:21:06.038Z"
+    },
+    {
+      "addressSlug": "10-mccombie-street-wanniassa-act-2903",
+      "kind": "zoning",
+      "source": "act-tp-zoning",
+      "expectedCode": "RZ1",
+      "expectedLabelStartsWith": "SUBURBAN",
+      "capturedAt": "2026-05-03T14:21:06.038Z"
+    },
+    {
+      "addressSlug": "29-mannheim-street-kambah-act-2902",
+      "kind": "zoning",
+      "source": "act-tp-zoning",
+      "expectedCode": "RZ1",
+      "expectedLabelStartsWith": "SUBURBAN",
+      "capturedAt": "2026-05-03T14:21:06.038Z"
+    },
+    {
+      "addressSlug": "9-volpato-street-forde-act-2914",
+      "kind": "zoning",
+      "source": "act-tp-zoning",
+      "expectedCode": "RZ1",
+      "expectedLabelStartsWith": "SUBURBAN",
+      "capturedAt": "2026-05-03T14:21:06.038Z"
+    },
+    {
+      "addressSlug": "unit-45-34-marcus-clarke-street-city-act-2601",
+      "kind": "zoning",
+      "source": "act-tp-zoning",
+      "expectedCode": "CZ1",
+      "expectedLabelStartsWith": "CORE ZONE",
+      "capturedAt": "2026-05-03T14:21:06.038Z"
+    },
+    {
+      "addressSlug": "unit-4-63-melba-street-downer-act-2602",
+      "kind": "zoning",
+      "source": "act-tp-zoning",
+      "expectedCode": "RZ2",
+      "expectedLabelStartsWith": "SUBURBAN CORE",
+      "capturedAt": "2026-05-03T14:21:06.038Z"
+    },
+    {
+      "addressSlug": "unit-1413-240-bunda-street-city-act-2601",
+      "kind": "zoning",
+      "source": "act-tp-zoning",
+      "expectedCode": "CZ1",
+      "expectedLabelStartsWith": "CORE ZONE",
+      "capturedAt": "2026-05-03T14:21:06.038Z"
+    },
+    {
+      "addressSlug": "unit-5a-35-port-jackson-circuit-phillip-act-2606",
+      "kind": "zoning",
+      "source": "act-tp-zoning",
+      "expectedCode": "RZ4",
+      "expectedLabelStartsWith": "MEDIUM DENSITY RESIDENTIAL",
+      "capturedAt": "2026-05-03T14:21:06.038Z"
+    },
+    {
+      "addressSlug": "9-salomons-place-ainslie-act-2602",
+      "kind": "zoning",
+      "source": "act-tp-zoning",
+      "expectedCode": "RZ1",
+      "expectedLabelStartsWith": "SUBURBAN",
+      "capturedAt": "2026-05-03T14:21:06.038Z"
+    },
+    {
+      "addressSlug": "se-7-19-29-martin-place-sydney-nsw-2000",
+      "kind": "zoning",
+      "source": "nsw-epi-zoning",
+      "expectedCode": "SP5",
+      "expectedLabelStartsWith": "Metropolitan Centre",
+      "capturedAt": "2026-05-03T14:21:38.134Z"
+    },
+    {
+      "addressSlug": "23-goolagong-street-north-nowra-nsw-2541",
+      "kind": "zoning",
+      "source": "nsw-epi-zoning",
+      "expectedCode": "R1",
+      "expectedLabelStartsWith": "General Residential",
+      "capturedAt": "2026-05-03T14:21:38.134Z"
+    },
+    {
+      "addressSlug": "19-central-road-avalon-beach-nsw-2107",
+      "kind": "zoning",
+      "source": "nsw-epi-zoning",
+      "expectedCode": "R2",
+      "expectedLabelStartsWith": "Low Density Residential",
+      "capturedAt": "2026-05-03T14:21:38.134Z"
+    },
+    {
+      "addressSlug": "2-ayre-close-the-pinnacles-nsw-2460",
+      "kind": "zoning",
+      "source": "nsw-epi-zoning",
+      "expectedCode": "RU2",
+      "expectedLabelStartsWith": "Rural Landscape",
+      "capturedAt": "2026-05-03T14:21:38.134Z"
+    },
+    {
+      "addressSlug": "unit-20-35-skennars-head-road-skennars-head-nsw-2478",
+      "kind": "zoning",
+      "source": "nsw-epi-zoning",
+      "expectedCode": "RU2",
+      "expectedLabelStartsWith": "Rural Landscape",
+      "capturedAt": "2026-05-03T14:21:38.134Z"
+    },
+    {
+      "addressSlug": "24a-acre-street-oran-park-nsw-2570",
+      "kind": "zoning",
+      "source": "nsw-epi-zoning",
+      "expectedCode": "R1",
+      "expectedLabelStartsWith": "General Residential",
+      "capturedAt": "2026-05-03T14:21:38.134Z"
+    },
+    {
+      "addressSlug": "17-lakkari-close-taree-nsw-2430",
+      "kind": "zoning",
+      "source": "nsw-epi-zoning",
+      "expectedCode": "R1",
+      "expectedLabelStartsWith": "General Residential",
+      "capturedAt": "2026-05-03T14:21:38.134Z"
+    },
+    {
+      "addressSlug": "201-pitt-street-waterloo-nsw-2017",
+      "kind": "zoning",
+      "source": "nsw-epi-zoning",
+      "expectedCode": "R1",
+      "expectedLabelStartsWith": "General Residential",
+      "capturedAt": "2026-05-03T14:21:38.134Z"
+    },
+    {
+      "addressSlug": "571a-the-bucketts-way-limeburners-creek-nsw-2324",
+      "kind": "zoning",
+      "source": "nsw-epi-zoning",
+      "expectedCode": "RU2",
+      "expectedLabelStartsWith": "Rural Landscape",
+      "capturedAt": "2026-05-03T14:21:38.134Z"
+    },
+    {
+      "addressSlug": "825-bourke-street-redfern-nsw-2016",
+      "kind": "zoning",
+      "source": "nsw-epi-zoning",
+      "expectedCode": "R1",
+      "expectedLabelStartsWith": "General Residential",
+      "capturedAt": "2026-05-03T14:21:38.134Z"
+    },
+    {
+      "addressSlug": "unit-4-33-highview-terrace-st-lucia-qld-4067",
+      "kind": "zoning",
+      "source": "qld-multi-lga",
+      "expectedCode": "LMR",
+      "expectedLabelStartsWith": "Low-medium density residential",
+      "capturedAt": "2026-05-03T14:21:43.740Z"
+    },
+    {
+      "addressSlug": "22-oxford-street-nundah-qld-4012",
+      "kind": "zoning",
+      "source": "qld-multi-lga",
+      "expectedCode": "CR",
+      "expectedLabelStartsWith": "Character residential (Charact",
+      "capturedAt": "2026-05-03T14:21:43.740Z"
+    },
+    {
+      "addressSlug": "7-michael-street-wynnum-west-qld-4178",
+      "kind": "zoning",
+      "source": "qld-multi-lga",
+      "expectedCode": "LDR",
+      "expectedLabelStartsWith": "Low density residential",
+      "capturedAt": "2026-05-03T14:21:43.740Z"
+    },
+    {
+      "addressSlug": "apt-4-69-cook-street-oxley-qld-4075",
+      "kind": "zoning",
+      "source": "qld-multi-lga",
+      "expectedCode": "LMR",
+      "expectedLabelStartsWith": "Low-medium density residential",
+      "capturedAt": "2026-05-03T14:21:43.740Z"
+    },
+    {
+      "addressSlug": "118a-forest-lake-boulevard-forest-lake-qld-4078",
+      "kind": "zoning",
+      "source": "qld-multi-lga",
+      "expectedCode": "LDR",
+      "expectedLabelStartsWith": "Low density residential",
+      "capturedAt": "2026-05-03T14:21:43.740Z"
+    },
+    {
+      "addressSlug": "42-azure-way-hope-island-qld-4212",
+      "kind": "zoning",
+      "source": "qld-multi-lga",
+      "expectedCode": "Medium density residential",
+      "expectedLabelStartsWith": "Medium density residential",
+      "capturedAt": "2026-05-03T14:21:43.740Z"
+    },
+    {
+      "addressSlug": "unit-1-190-apjohn-street-horseshoe-bay-qld-4819",
+      "kind": "zoning",
+      "source": "qld-multi-lga",
+      "expectedCode": "CON",
+      "expectedLabelStartsWith": "Conservation",
+      "capturedAt": "2026-05-03T14:21:43.740Z"
+    },
+    {
+      "addressSlug": "unit-12-71-thistle-street-lutwyche-qld-4030",
+      "kind": "zoning",
+      "source": "qld-multi-lga",
+      "expectedCode": "HDR",
+      "expectedLabelStartsWith": "High density residential (Up t",
+      "capturedAt": "2026-05-03T14:21:43.740Z"
+    },
+    {
+      "addressSlug": "unit-1-46-lambton-street-annerley-qld-4103",
+      "kind": "zoning",
+      "source": "qld-multi-lga",
+      "expectedCode": "LMR",
+      "expectedLabelStartsWith": "Low-medium density residential",
+      "capturedAt": "2026-05-03T14:21:43.740Z"
+    },
+    {
+      "addressSlug": "5-saint-georges-court-carrara-qld-4211",
+      "kind": "zoning",
+      "source": "qld-multi-lga",
+      "expectedCode": "Low density residential",
+      "expectedLabelStartsWith": "Low density residential",
+      "capturedAt": "2026-05-03T14:21:43.740Z"
+    },
+    {
+      "addressSlug": "211-locks-road-napperby-sa-5540",
+      "kind": "zoning",
+      "source": "sa-pdcode-zones",
+      "expectedCode": "Ru",
+      "expectedLabelStartsWith": "Rural",
+      "capturedAt": "2026-05-03T14:21:48.696Z"
+    },
+    {
+      "addressSlug": "13-macdonnell-street-naracoorte-sa-5271",
+      "kind": "zoning",
+      "source": "sa-pdcode-zones",
+      "expectedCode": "N",
+      "expectedLabelStartsWith": "Neighbourhood",
+      "capturedAt": "2026-05-03T14:21:48.696Z"
+    },
+    {
+      "addressSlug": "4-ridgeway-avenue-enfield-sa-5085",
+      "kind": "zoning",
+      "source": "sa-pdcode-zones",
+      "expectedCode": "GN",
+      "expectedLabelStartsWith": "General Neighbourhood",
+      "capturedAt": "2026-05-03T14:21:48.696Z"
+    },
+    {
+      "addressSlug": "unit-3-6-martin-street-northfield-sa-5085",
+      "kind": "zoning",
+      "source": "sa-pdcode-zones",
+      "expectedCode": "GN",
+      "expectedLabelStartsWith": "General Neighbourhood",
+      "capturedAt": "2026-05-03T14:21:48.696Z"
+    },
+    {
+      "addressSlug": "6-gawler-road-two-wells-sa-5501",
+      "kind": "zoning",
+      "source": "sa-pdcode-zones",
+      "expectedCode": "TMS",
+      "expectedLabelStartsWith": "Township Main Street",
+      "capturedAt": "2026-05-03T14:21:48.696Z"
+    },
+    {
+      "addressSlug": "1069-south-road-melrose-park-sa-5039",
+      "kind": "zoning",
+      "source": "sa-pdcode-zones",
+      "expectedCode": "SE",
+      "expectedLabelStartsWith": "Strategic Employment",
+      "capturedAt": "2026-05-03T14:21:48.696Z"
+    },
+    {
+      "addressSlug": "17-toorak-drive-blakeview-sa-5114",
+      "kind": "zoning",
+      "source": "sa-pdcode-zones",
+      "expectedCode": "GN",
+      "expectedLabelStartsWith": "General Neighbourhood",
+      "capturedAt": "2026-05-03T14:21:48.696Z"
+    },
+    {
+      "addressSlug": "unit-2-29-ormond-avenue-daw-park-sa-5041",
+      "kind": "zoning",
+      "source": "sa-pdcode-zones",
+      "expectedCode": "SN",
+      "expectedLabelStartsWith": "Suburban Neighbourhood",
+      "capturedAt": "2026-05-03T14:21:48.696Z"
+    },
+    {
+      "addressSlug": "4-feltus-street-port-lincoln-sa-5606",
+      "kind": "zoning",
+      "source": "sa-pdcode-zones",
+      "expectedCode": "SN",
+      "expectedLabelStartsWith": "Suburban Neighbourhood",
+      "capturedAt": "2026-05-03T14:21:48.696Z"
+    },
+    {
+      "addressSlug": "26-ridgefield-avenue-paradise-sa-5075",
+      "kind": "zoning",
+      "source": "sa-pdcode-zones",
+      "expectedCode": "GN",
+      "expectedLabelStartsWith": "General Neighbourhood",
+      "capturedAt": "2026-05-03T14:21:48.696Z"
+    },
+    {
+      "addressSlug": "6-maud-street-west-ulverstone-tas-7315",
+      "kind": "zoning",
+      "source": "tas-tps-zoning",
+      "expectedCode": "General Residential",
+      "expectedLabelStartsWith": "General Residential",
+      "capturedAt": "2026-05-03T14:21:52.913Z"
+    },
+    {
+      "addressSlug": "696-oppenheims-road-harford-tas-7307",
+      "kind": "zoning",
+      "source": "tas-tps-zoning",
+      "expectedCode": "Agriculture",
+      "expectedLabelStartsWith": "Agriculture",
+      "capturedAt": "2026-05-03T14:21:52.913Z"
+    },
+    {
+      "addressSlug": "unit-3-47a-george-town-road-newnham-tas-7248",
+      "kind": "zoning",
+      "source": "tas-tps-zoning",
+      "expectedCode": "General Residential",
+      "expectedLabelStartsWith": "General Residential",
+      "capturedAt": "2026-05-03T14:21:52.913Z"
+    },
+    {
+      "addressSlug": "66-reibey-street-ulverstone-tas-7315",
+      "kind": "zoning",
+      "source": "tas-tps-zoning",
+      "expectedCode": "General Business",
+      "expectedLabelStartsWith": "General Business",
+      "capturedAt": "2026-05-03T14:21:52.913Z"
+    },
+    {
+      "addressSlug": "7-coolangatta-street-lindisfarne-tas-7015",
+      "kind": "zoning",
+      "source": "tas-tps-zoning",
+      "expectedCode": "General Residential",
+      "expectedLabelStartsWith": "General Residential",
+      "capturedAt": "2026-05-03T14:21:52.913Z"
+    },
+    {
+      "addressSlug": "unit-17-6-flowers-court-newstead-tas-7250",
+      "kind": "zoning",
+      "source": "tas-tps-zoning",
+      "expectedCode": "Community Purpose",
+      "expectedLabelStartsWith": "Community Purpose",
+      "capturedAt": "2026-05-03T14:21:52.913Z"
+    },
+    {
+      "addressSlug": "2-lucinda-parade-lutana-tas-7009",
+      "kind": "zoning",
+      "source": "tas-tps-zoning",
+      "expectedCode": "General Residential",
+      "expectedLabelStartsWith": "General Residential",
+      "capturedAt": "2026-05-03T14:21:52.913Z"
+    },
+    {
+      "addressSlug": "62-dilston-road-dilston-tas-7252",
+      "kind": "zoning",
+      "source": "tas-tps-zoning",
+      "expectedCode": "Rural Living",
+      "expectedLabelStartsWith": "Rural Living",
+      "capturedAt": "2026-05-03T14:21:52.913Z"
+    },
+    {
+      "addressSlug": "46-henslowes-road-ulverstone-tas-7315",
+      "kind": "zoning",
+      "source": "tas-tps-zoning",
+      "expectedCode": "General Residential",
+      "expectedLabelStartsWith": "General Residential",
+      "capturedAt": "2026-05-03T14:21:52.913Z"
+    },
+    {
+      "addressSlug": "2-layete-street-dodges-ferry-tas-7173",
+      "kind": "zoning",
+      "source": "tas-tps-zoning",
+      "expectedCode": "Low Density Residential",
+      "expectedLabelStartsWith": "Low Density Residential",
+      "capturedAt": "2026-05-03T14:21:52.913Z"
+    },
+    {
+      "addressSlug": "18-cremello-street-armstrong-creek-vic-3217",
+      "kind": "zoning",
+      "source": "vic-vicmap-zoning",
+      "expectedCode": "UGZ2",
+      "expectedLabelStartsWith": "URBAN GROWTH ZONE - SCHEDULE 2",
+      "capturedAt": "2026-05-03T14:22:11.619Z"
+    },
+    {
+      "addressSlug": "16-mountfield-road-mitcham-vic-3132",
+      "kind": "zoning",
+      "source": "vic-vicmap-zoning",
+      "expectedCode": "NRZ4",
+      "expectedLabelStartsWith": "NEIGHBOURHOOD RESIDENTIAL ZONE",
+      "capturedAt": "2026-05-03T14:22:11.619Z"
+    },
+    {
+      "addressSlug": "unit-6-96-aitken-street-williamstown-vic-3016",
+      "kind": "zoning",
+      "source": "vic-vicmap-zoning",
+      "expectedCode": "NRZ4",
+      "expectedLabelStartsWith": "NEIGHBOURHOOD RESIDENTIAL ZONE",
+      "capturedAt": "2026-05-03T14:22:11.619Z"
+    },
+    {
+      "addressSlug": "12-clydesdale-walk-aintree-vic-3336",
+      "kind": "zoning",
+      "source": "vic-vicmap-zoning",
+      "expectedCode": "UGZ4",
+      "expectedLabelStartsWith": "URBAN GROWTH ZONE - SCHEDULE 4",
+      "capturedAt": "2026-05-03T14:22:11.619Z"
+    },
+    {
+      "addressSlug": "unit-109-5-harmony-chase-clyde-north-vic-3978",
+      "kind": "zoning",
+      "source": "vic-vicmap-zoning",
+      "expectedCode": "UGZ2",
+      "expectedLabelStartsWith": "URBAN GROWTH ZONE - SCHEDULE 2",
+      "capturedAt": "2026-05-03T14:22:11.619Z"
+    },
+    {
+      "addressSlug": "46-patriot-crescent-smythes-creek-vic-3351",
+      "kind": "zoning",
+      "source": "vic-vicmap-zoning",
+      "expectedCode": "UGZ2",
+      "expectedLabelStartsWith": "URBAN GROWTH ZONE - SCHEDULE 2",
+      "capturedAt": "2026-05-03T14:22:11.619Z"
+    },
+    {
+      "addressSlug": "unit-707-15-caravel-lane-docklands-vic-3008",
+      "kind": "zoning",
+      "source": "vic-vicmap-zoning",
+      "expectedCode": "DZ6",
+      "expectedLabelStartsWith": "DOCKLANDS ZONE - SCHEDULE 6",
+      "capturedAt": "2026-05-03T14:22:11.619Z"
+    },
+    {
+      "addressSlug": "23a-alexandra-road-ringwood-east-vic-3135",
+      "kind": "zoning",
+      "source": "vic-vicmap-zoning",
+      "expectedCode": "GRZ1",
+      "expectedLabelStartsWith": "GENERAL RESIDENTIAL ZONE - SCH",
+      "capturedAt": "2026-05-03T14:22:11.619Z"
+    },
+    {
+      "addressSlug": "913-917-macarthur-street-lake-wendouree-vic-3350",
+      "kind": "zoning",
+      "source": "vic-vicmap-zoning",
+      "expectedCode": "MUZ",
+      "expectedLabelStartsWith": "MIXED USE ZONE",
+      "capturedAt": "2026-05-03T14:22:11.619Z"
+    },
+    {
+      "addressSlug": "unit-11-115-alma-road-st-kilda-east-vic-3183",
+      "kind": "zoning",
+      "source": "vic-vicmap-zoning",
+      "expectedCode": "GRZ1",
+      "expectedLabelStartsWith": "GENERAL RESIDENTIAL ZONE - SCH",
+      "capturedAt": "2026-05-03T14:22:11.619Z"
+    },
+    {
+      "addressSlug": "57-palmerston-crescent-tapping-wa-6065",
+      "kind": "zoning",
+      "source": "wa-dplh-zones",
+      "expectedCode": "Residential",
+      "expectedLabelStartsWith": "Residential",
+      "capturedAt": "2026-05-03T14:22:17.631Z"
+    },
+    {
+      "addressSlug": "66-bourbon-street-hamilton-hill-wa-6163",
+      "kind": "zoning",
+      "source": "wa-dplh-zones",
+      "expectedCode": "Residential",
+      "expectedLabelStartsWith": "Residential",
+      "capturedAt": "2026-05-03T14:22:17.631Z"
+    },
+    {
+      "addressSlug": "40-norwood-road-rivervale-wa-6103",
+      "kind": "zoning",
+      "source": "wa-dplh-zones",
+      "expectedCode": "Residential (R20 density unless otherwise shown)",
+      "expectedLabelStartsWith": "Residential (R20 density unles",
+      "capturedAt": "2026-05-03T14:22:17.631Z"
+    },
+    {
+      "addressSlug": "45-river-view-terrace-mount-pleasant-wa-6153",
+      "kind": "zoning",
+      "source": "wa-dplh-zones",
+      "expectedCode": "Residential",
+      "expectedLabelStartsWith": "Residential",
+      "capturedAt": "2026-05-03T14:22:17.631Z"
+    },
+    {
+      "addressSlug": "45-axford-street-como-wa-6152",
+      "kind": "zoning",
+      "source": "wa-dplh-zones",
+      "expectedCode": "Residential",
+      "expectedLabelStartsWith": "Residential",
+      "capturedAt": "2026-05-03T14:22:17.631Z"
+    },
+    {
+      "addressSlug": "13-kambany-way-halls-head-wa-6210",
+      "kind": "zoning",
+      "source": "wa-dplh-zones",
+      "expectedCode": "Residential",
+      "expectedLabelStartsWith": "Residential",
+      "capturedAt": "2026-05-03T14:22:17.631Z"
+    },
+    {
+      "addressSlug": "110a-hardy-road-bayswater-wa-6053",
+      "kind": "zoning",
+      "source": "wa-dplh-zones",
+      "expectedCode": "Medium and high density residential",
+      "expectedLabelStartsWith": "Medium and high density reside",
+      "capturedAt": "2026-05-03T14:22:17.631Z"
+    },
+    {
+      "addressSlug": "222-mayfield-drive-brabham-wa-6055",
+      "kind": "zoning",
+      "source": "wa-dplh-zones",
+      "expectedCode": "Special use",
+      "expectedLabelStartsWith": "Special use",
+      "capturedAt": "2026-05-03T14:22:17.631Z"
+    },
+    {
+      "addressSlug": "16-potter-street-huntingdale-wa-6110",
+      "kind": "zoning",
+      "source": "wa-dplh-zones",
+      "expectedCode": "Residential",
+      "expectedLabelStartsWith": "Residential",
+      "capturedAt": "2026-05-03T14:22:17.631Z"
+    },
+    {
+      "addressSlug": "33-ten-seldam-circle-winthrop-wa-6150",
+      "kind": "zoning",
+      "source": "wa-dplh-zones",
+      "expectedCode": "Residential",
+      "expectedLabelStartsWith": "Residential",
+      "capturedAt": "2026-05-03T14:22:17.631Z"
+    }
+  ]
+}

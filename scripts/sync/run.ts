@@ -41,6 +41,11 @@ import { run as zoningNsw }         from "./sources/zoning-nsw";
 import { run as zoningVic }         from "./sources/zoning-vic";
 import { run as zoningAct }         from "./sources/zoning-act";
 import { run as zoningTas }         from "./sources/zoning-tas";
+import { run as zoningSa }          from "./sources/zoning-sa";
+import { run as zoningQld }         from "./sources/zoning-qld";
+import { run as zoningWa }          from "./sources/zoning-wa";
+import { run as heritageWa }        from "./sources/heritage-wa";
+import { run as floodWa }           from "./sources/flood-wa";
 import { run as floodVic }          from "./sources/flood-vic";
 import { run as bushfireVic }       from "./sources/bushfire-vic";
 import { run as heritageVic }       from "./sources/heritage-vic";
@@ -87,6 +92,11 @@ const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" 
   "zoning-vic":     { run: zoningVic,       schedule: "quarterly" },
   "zoning-act":     { run: zoningAct,       schedule: "quarterly" },
   "zoning-tas":     { run: zoningTas,       schedule: "quarterly" },
+  "zoning-sa":      { run: zoningSa,        schedule: "quarterly" },
+  "zoning-qld":     { run: zoningQld,       schedule: "quarterly" },
+  "zoning-wa":      { run: zoningWa,        schedule: "quarterly" },
+  "heritage-wa":    { run: heritageWa,      schedule: "quarterly" },
+  "flood-wa":       { run: floodWa,         schedule: "quarterly" },
   "flood-vic":      { run: floodVic,        schedule: "quarterly" },
   "bushfire-vic":   { run: bushfireVic,     schedule: "quarterly" },
   "heritage-vic":   { run: heritageVic,     schedule: "quarterly" },

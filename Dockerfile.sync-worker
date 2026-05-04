@@ -1,0 +1,26 @@
+FROM node:22-slim
+
+# curl + ca-certs for ArcGIS / CKAN downloads
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Prisma schema needed before npm ci so postinstall (prisma generate) succeeds
+COPY prisma ./prisma
+COPY prisma.config.ts ./
+
+# Install deps (postinstall runs prisma generate)
+COPY package*.json ./
+RUN npm ci
+
+# Source files needed by tsx at runtime
+COPY src ./src
+COPY scripts ./scripts
+COPY tsconfig.json ./
+
+# Idle sleep — jobs are triggered via `railway ssh` or scheduled separately.
+# DATABASE_URL + NODE_OPTIONS are injected from Railway service env vars.
+CMD ["node", "-e", "console.log('sync-worker ready — run jobs via railway ssh'); setInterval(()=>{}, 1<<30)"]
