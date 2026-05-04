@@ -62,6 +62,13 @@ import { run as bushfireWa }        from "./sources/bushfire-wa";
 import { run as bushfireTas }       from "./sources/bushfire-tas";
 import { run as catchmentNswPrimary }   from "./sources/catchment-nsw-primary";
 import { run as catchmentNswSecondary } from "./sources/catchment-nsw-secondary";
+import { run as catchmentVicPrimary }   from "./sources/catchment-vic-primary";
+import { run as catchmentVicSecondary } from "./sources/catchment-vic-secondary";
+import { run as catchmentQldPrimary }   from "./sources/catchment-qld-primary";
+import { run as catchmentQldSecondary } from "./sources/catchment-qld-secondary";
+import { run as catchmentActPrimary }   from "./sources/catchment-act-primary";
+import { run as catchmentActSecondary } from "./sources/catchment-act-secondary";
+import { run as catchmentTasPrimary }   from "./sources/catchment-tas-primary";
 
 const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" | "annual" }> = {
   "import-suburbs":     { run: importSuburbs,    schedule: "quarterly" },
@@ -115,6 +122,13 @@ const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" 
   "bushfire-tas":   { run: bushfireTas,     schedule: "quarterly" },
   "catchment-nsw-primary":   { run: catchmentNswPrimary,   schedule: "annual" },
   "catchment-nsw-secondary": { run: catchmentNswSecondary, schedule: "annual" },
+  "catchment-vic-primary":   { run: catchmentVicPrimary,   schedule: "annual" },
+  "catchment-vic-secondary": { run: catchmentVicSecondary, schedule: "annual" },
+  "catchment-qld-primary":   { run: catchmentQldPrimary,   schedule: "annual" },
+  "catchment-qld-secondary": { run: catchmentQldSecondary, schedule: "annual" },
+  "catchment-act-primary":   { run: catchmentActPrimary,   schedule: "annual" },
+  "catchment-act-secondary": { run: catchmentActSecondary, schedule: "annual" },
+  "catchment-tas-primary":   { run: catchmentTasPrimary,   schedule: "annual" },
 };
 
 async function main(): Promise<void> {

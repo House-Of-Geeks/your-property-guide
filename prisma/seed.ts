@@ -425,6 +425,13 @@ async function main() {
     { id: "bom-climate",     label: "Climate Averages (BOM CDO)",                category: "climate",     schedule: "annual", sourceUrl: "http://www.bom.gov.au/climate/data/" },
     { id: "catchment-nsw-primary",   label: "NSW School Catchments — Primary (DEC School Finder)",   category: "schools", schedule: "annual", sourceUrl: "https://schoolfinder.education.nsw.gov.au/" },
     { id: "catchment-nsw-secondary", label: "NSW School Catchments — Secondary (DEC School Finder)", category: "schools", schedule: "annual", sourceUrl: "https://schoolfinder.education.nsw.gov.au/" },
+    { id: "catchment-vic-primary",   label: "VIC School Zones — Primary (DET)",                   category: "schools", schedule: "annual", sourceUrl: "https://discover.data.vic.gov.au/dataset/victorian-government-school-zones-2026" },
+    { id: "catchment-vic-secondary", label: "VIC School Zones — Secondary Year 7 (DET)",          category: "schools", schedule: "annual", sourceUrl: "https://discover.data.vic.gov.au/dataset/victorian-government-school-zones-2026" },
+    { id: "catchment-qld-primary",   label: "QLD State School Catchments — Primary (DOE)",         category: "schools", schedule: "annual", sourceUrl: "https://spatial-gis.information.qld.gov.au/" },
+    { id: "catchment-qld-secondary", label: "QLD State School Catchments — Junior Secondary (DOE)", category: "schools", schedule: "annual", sourceUrl: "https://spatial-gis.information.qld.gov.au/" },
+    { id: "catchment-act-primary",   label: "ACT Priority Enrolment Areas — Primary",              category: "schools", schedule: "annual", sourceUrl: "https://www.actmapi.act.gov.au/" },
+    { id: "catchment-act-secondary", label: "ACT Priority Enrolment Areas — High School",          category: "schools", schedule: "annual", sourceUrl: "https://www.actmapi.act.gov.au/" },
+    { id: "catchment-tas-primary",   label: "TAS DoE Primary School Intake Areas",                 category: "schools", schedule: "annual", sourceUrl: "https://www.thelist.tas.gov.au/" },
   ];
   for (const ds of dataSources) {
     await prisma.dataSource.upsert({
