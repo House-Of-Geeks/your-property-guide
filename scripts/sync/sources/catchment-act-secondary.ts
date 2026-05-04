@@ -18,8 +18,8 @@ const config: ArcGisPaginatedConfig = {
   minAddressCount: 100_000,
   endpoint: "https://services1.arcgis.com/E5n4f1VY84i0xSjy/arcgis/rest/services/ACTGOV_Priority_Enrolment_Areas_2026/FeatureServer/2",
   outFields: "SCHOOL_NAME,YEAR_LEVEL,TYPE,DESCRIPTION,WEBSITE,LAST_UPDATE",
-  // Secondary years: 7-10 (Canberra high schools)
-  where: "YEAR_LEVEL = '7-10' OR YEAR_LEVEL LIKE '7-%'",
+  // High schools (years 7–10). Colleges (11–12) are open enrolment, skip.
+  where: "TYPE = 'High'",
   pickCode:  (p) => s(p.SCHOOL_NAME),
   pickLabel: (p) => s(p.SCHOOL_NAME),
   pickAttrs: (p) => ({

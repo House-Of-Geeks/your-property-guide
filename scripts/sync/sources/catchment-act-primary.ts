@@ -27,8 +27,9 @@ const config: ArcGisPaginatedConfig = {
   minAddressCount: 100_000,
   endpoint: "https://services1.arcgis.com/E5n4f1VY84i0xSjy/arcgis/rest/services/ACTGOV_Priority_Enrolment_Areas_2026/FeatureServer/2",
   outFields: "SCHOOL_NAME,YEAR_LEVEL,TYPE,DESCRIPTION,WEBSITE,LAST_UPDATE",
-  // Primary years: K-6, P-6 (both notations seen in ACT data)
-  where: "YEAR_LEVEL LIKE 'K-%' OR YEAR_LEVEL LIKE 'P-%' OR YEAR_LEVEL = 'K-6' OR YEAR_LEVEL = 'P-6'",
+  // Filter by TYPE — much cleaner than year-level patterns. ACT data shows
+  // 60+ primary polygons across mixed YEAR_LEVEL formats (P-6, K-6, 3-6, P-2).
+  where: "TYPE = 'Primary'",
   pickCode:  (p) => s(p.SCHOOL_NAME),
   pickLabel: (p) => s(p.SCHOOL_NAME),
   pickAttrs: (p) => ({
