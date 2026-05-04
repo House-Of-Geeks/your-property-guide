@@ -214,6 +214,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
       price: true,
       source: true,
       natureCode: true,
+      primaryPurpose: true,
     },
     orderBy: { contractDate: "desc" },
     take: 12,
@@ -249,7 +250,41 @@ export default async function PropertyAddressPage({ params }: PageProps) {
 
   // Pick a representative listing to enrich the header (beds/baths/type)
   const featured = listings[0];
-  const propertyTypeLabel = (featured ? toTitleCase(featured.propertyType) : null) ?? "House";
+
+  // Derive a dwelling type label from the most authoritative signal we have.
+  // Order: active listing > G-NAF flatType > VG natureCode/primaryPurpose >
+  // apt-block heuristic. Returns null when we genuinely don't know — caller
+  // hides the chip rather than guessing.
+  const propertyTypeLabel: string | null = (() => {
+    if (featured?.propertyType) return toTitleCase(featured.propertyType);
+
+    const flatType = address.flatType?.toUpperCase().trim();
+    if (flatType) {
+      // G-NAF flat type codes — map common ones to readable labels
+      if (flatType === "UNIT" || flatType === "U") return "Unit";
+      if (flatType === "APARTMENT" || flatType === "APT") return "Apartment";
+      if (flatType === "FLAT") return "Flat";
+      if (flatType === "TOWNHOUSE" || flatType === "TNHS") return "Townhouse";
+      if (flatType === "VILLA") return "Villa";
+      if (flatType === "DUPLEX") return "Duplex";
+      if (flatType === "STUDIO") return "Studio";
+      if (flatType === "PENTHOUSE") return "Penthouse";
+      if (flatType === "SHOP") return "Shop";
+      if (flatType === "OFFICE") return "Office";
+      return toTitleCase(flatType);
+    }
+
+    const latestSale = vgSales[0];
+    if (latestSale?.natureCode === "V") return "Vacant land";
+    if (latestSale?.primaryPurpose?.toUpperCase().includes("VACANT")) return "Vacant land";
+    if (latestSale?.natureCode === "3") return "Strata unit";
+    if (latestSale?.natureCode === "R") return "House";
+
+    const isLikelyAptBlockEarly = (address.saleCount ?? 0) > 20 && !address.flatNumber;
+    if (isLikelyAptBlockEarly) return "Apartment block";
+
+    return null;
+  })();
 
   // Indicative valuation from suburb median
   const valueRange = suburb ? indicativePriceRange(suburb.medianHousePrice) : null;
@@ -367,12 +402,14 @@ export default async function PropertyAddressPage({ params }: PageProps) {
 
               {/* property snapshot — pills with circular icon backgrounds */}
               <div className="flex flex-wrap items-center gap-2 mt-5">
-                <span className="inline-flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-full bg-gray-50 border border-gray-200 text-sm text-gray-800">
-                  <span className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Home className="h-3.5 w-3.5 text-primary" />
+                {propertyTypeLabel && (
+                  <span className="inline-flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-full bg-gray-50 border border-gray-200 text-sm text-gray-800">
+                    <span className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Home className="h-3.5 w-3.5 text-primary" />
+                    </span>
+                    <span className="font-medium">{propertyTypeLabel}</span>
                   </span>
-                  <span className="font-medium">{propertyTypeLabel}</span>
-                </span>
+                )}
                 {featured && (
                   <>
                     <span className="inline-flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-full bg-gray-50 border border-gray-200 text-sm text-gray-800">
@@ -556,7 +593,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
               <h2 className="text-2xl font-bold text-gray-900 mb-3">About the property</h2>
               <div className="prose prose-sm max-w-none text-gray-700 space-y-3">
                 <p>
-                  {addressFullDisplay} is a {propertyTypeLabel.toLowerCase()} in {localityDisplay},{" "}
+                  {addressFullDisplay} is{propertyTypeLabel ? ` a ${propertyTypeLabel.toLowerCase()}` : " a property"} in {localityDisplay},{" "}
                   {address.state} {address.postcode}
                   {hasRealSaleHistory && address.lastSalePrice ? (
                     <>
@@ -1248,12 +1285,14 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                       <dd className="text-gray-900 font-mono text-xs">{address.legalParcelId}</dd>
                     </div>
                   )}
+                  {propertyTypeLabel && (
+                    <div className="flex justify-between pt-2 border-t border-gray-100">
+                      <dt className="text-gray-500">Property type</dt>
+                      <dd className="text-gray-900">{propertyTypeLabel}</dd>
+                    </div>
+                  )}
                   {featured && (
                     <>
-                      <div className="flex justify-between pt-2 border-t border-gray-100">
-                        <dt className="text-gray-500">Property type</dt>
-                        <dd className="text-gray-900">{propertyTypeLabel}</dd>
-                      </div>
                       <div className="flex justify-between">
                         <dt className="text-gray-500">Bed / Bath / Car</dt>
                         <dd className="text-gray-900">{featured.bedrooms} / {featured.bathrooms} / {featured.carSpaces}</dd>
