@@ -1,3 +1,6 @@
+// Serve dynamically — the build-time prerender exhausts DB connections
+export const dynamic = "force-dynamic";
+
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants";
 import { getAllAgentSlugs } from "@/lib/services/agent-service";
