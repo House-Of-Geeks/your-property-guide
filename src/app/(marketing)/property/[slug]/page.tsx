@@ -31,6 +31,7 @@ import { PropertyCard } from "@/components/property/PropertyCard";
 import { db } from "@/lib/db";
 import { SITE_URL } from "@/lib/constants";
 import { streetSlug } from "@/lib/utils/slug";
+import { makeSchoolSlug } from "@/lib/utils/school";
 import { formatDate, formatPrice, formatPriceFull } from "@/lib/utils/format";
 import { PropertyMap } from "@/components/property/PropertyMap";
 import { PropertyInterestForm } from "@/components/property/PropertyInterestForm";
@@ -202,6 +203,23 @@ export default async function PropertyAddressPage({ params }: PageProps) {
   const floodOverlay    = overlays.find((o) => o.kind === "flood");
   const bushfireOverlay = overlays.find((o) => o.kind === "bushfire");
   const heritageOverlay = overlays.find((o) => o.kind === "heritage");
+  const primaryCatchmentOverlay   = overlays.find((o) => o.kind === "catchment-primary");
+  const secondaryCatchmentOverlay = overlays.find((o) => o.kind === "catchment-secondary");
+
+  // Resolve overlay's school_code / school_name to a row in the School table
+  // so we can link straight to the school detail page when available.
+  const catchmentSchoolNames = [primaryCatchmentOverlay, secondaryCatchmentOverlay]
+    .map((o) => (o?.attrs as { schoolName?: string } | null)?.schoolName ?? o?.label)
+    .filter((n): n is string => !!n);
+  const catchmentSchools = catchmentSchoolNames.length > 0
+    ? await db.school.findMany({
+        where: {
+          name: { in: catchmentSchoolNames, mode: "insensitive" },
+          suburb: { state: "NSW" },
+        },
+        select: { id: true, name: true, acaraId: true, type: true, sector: true, distance: true, yearRange: true, icsea: true },
+      })
+    : [];
 
   // Authoritative sale history from state Valuer-General feeds (VG NSW etc.)
   // Only "exact" matches — street-fallback rows aren't this address specifically.
@@ -1058,6 +1076,88 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                     </p>
                   </div>
                 )}
+              </section>
+            )}
+
+            {/* GOVERNMENT SCHOOL CATCHMENT (NSW only for now) */}
+            {(primaryCatchmentOverlay || secondaryCatchmentOverlay) && (
+              <section>
+                <h2 className="text-2xl font-bold text-gray-900 mb-1">Government school catchment</h2>
+                <p className="text-sm text-gray-500 mb-5">
+                  Public schools this address is zoned for. Always confirm directly with the
+                  school before relying on this — boundaries can change year to year.
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    { overlay: primaryCatchmentOverlay,   level: "Primary"   },
+                    { overlay: secondaryCatchmentOverlay, level: "Secondary" },
+                  ].map(({ overlay, level }) => {
+                    if (!overlay) return null;
+                    const attrs = overlay.attrs as {
+                      schoolName?: string;
+                      schoolType?: string;
+                      calendarYear?: number;
+                    } | null;
+                    const schoolName = attrs?.schoolName ?? overlay.label ?? "Unknown school";
+                    const matched = catchmentSchools.find(
+                      (s) => s.name.toLowerCase() === schoolName.toLowerCase(),
+                    );
+                    const schoolHref = matched?.acaraId
+                      ? `/schools/${makeSchoolSlug(matched.name, matched.acaraId)}`
+                      : null;
+
+                    const inner = (
+                      <div className="rounded-2xl border border-gray-200 bg-white p-5 h-full transition-colors hover:border-primary/40 hover:shadow-sm">
+                        <div className="flex items-start gap-3">
+                          <span className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                            <GraduationCap className="h-5 w-5 text-primary" />
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-[11px] uppercase tracking-wide text-gray-500 font-semibold">
+                              {level} catchment
+                            </p>
+                            <p className="font-semibold text-gray-900 mt-0.5 leading-snug">
+                              {schoolName}
+                            </p>
+                            <div className="flex flex-wrap items-center gap-1.5 mt-2 text-xs text-gray-500">
+                              {attrs?.schoolType && (
+                                <span className="px-2 py-0.5 rounded bg-gray-100 text-gray-700">{attrs.schoolType}</span>
+                              )}
+                              {matched?.icsea && <span>ICSEA {matched.icsea}</span>}
+                              {matched?.yearRange && <span>· {matched.yearRange}</span>}
+                            </div>
+                            {schoolHref && (
+                              <p className="text-xs text-primary font-semibold mt-3">
+                                View school details →
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                    return schoolHref ? (
+                      <Link key={level} href={schoolHref} className="block">
+                        {inner}
+                      </Link>
+                    ) : (
+                      <div key={level}>{inner}</div>
+                    );
+                  })}
+                </div>
+
+                <p className="text-xs text-gray-400 mt-4">
+                  Catchment polygons sourced from{" "}
+                  <a
+                    href="https://schoolfinder.education.nsw.gov.au/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline"
+                  >
+                    NSW Department of Education School Finder
+                  </a>
+                  {" "}(Centre for Education Statistics and Evaluation).
+                </p>
               </section>
             )}
 
