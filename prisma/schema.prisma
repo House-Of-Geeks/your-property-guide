@@ -642,6 +642,35 @@ model SuburbRentalStat {
 }
 
 // ---------------------------------------------------------------------------
+// Suburb Sales Stats (time series — one row per suburb per period per source)
+// Aggregate medians from state Valuer-General time-series datasets.
+// ---------------------------------------------------------------------------
+model SuburbSalesStat {
+  id            String   @id @default(cuid())
+  suburbSlug    String?
+  suburbName    String
+  postcode      String
+  state         String
+  period        String // "2023" annual or "2025-Q4" quarterly
+  periodDate    DateTime
+  medianHouse   Int?
+  medianUnit    Int?
+  medianVacant  Int?
+  saleCountHouse Int?
+  saleCountUnit  Int?
+  saleCountVacant Int?
+  source        String // DataSource.id
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([suburbName, postcode, state, period, source])
+  @@index([suburbSlug])
+  @@index([state, period])
+  @@index([postcode])
+}
+
+// ---------------------------------------------------------------------------
 // Suburb Crime Stats (time series — one row per suburb per year per source)
 // ---------------------------------------------------------------------------
 model SuburbCrimeStat {
