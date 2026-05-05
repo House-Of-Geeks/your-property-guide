@@ -90,6 +90,10 @@ const COL_PURPOSE       = 18;
 const COL_DEALING       = 23;
 
 const MIN_PRICE = 50_000;
+// Pre-2001 NSW VG records occasionally contain corrupted prices that overflow
+// INT4. Cap at $500M — any genuine residential sale will fit, and bad rows
+// with values like "500000500000" get filtered out instead of crashing the COPY.
+const MAX_PRICE = 500_000_000;
 
 // ─── CLI ────────────────────────────────────────────────────────────────────
 
@@ -136,10 +140,22 @@ function median(nums: number[]): number | null {
 }
 
 function parseDate(s: string): Date | null {
-  if (!s || s.length < 8) return null;
-  const y = parseInt(s.slice(0, 4), 10);
-  const m = parseInt(s.slice(4, 6), 10) - 1;
-  const d = parseInt(s.slice(6, 8), 10);
+  if (!s) return null;
+  const trimmed = s.trim();
+  let y: number, m: number, d: number;
+  // Pre-2001 NSW VG "ARCHIVE_SALES" files use dd/mm/yyyy; 2001+ files use yyyymmdd.
+  if (trimmed.includes("/")) {
+    const parts = trimmed.split("/");
+    if (parts.length !== 3) return null;
+    d = parseInt(parts[0], 10);
+    m = parseInt(parts[1], 10) - 1;
+    y = parseInt(parts[2], 10);
+  } else {
+    if (trimmed.length < 8) return null;
+    y = parseInt(trimmed.slice(0, 4), 10);
+    m = parseInt(trimmed.slice(4, 6), 10) - 1;
+    d = parseInt(trimmed.slice(6, 8), 10);
+  }
   const dt = new Date(Date.UTC(y, m, d));
   return isNaN(dt.getTime()) ? null : dt;
 }
@@ -189,6 +205,22 @@ interface ParseResult {
   rows:      SaleRow[];
 }
 
+// Pre-2001 NSW VG "ARCHIVE_SALES" record layout (columns shifted because the
+// old format inserts a "source" field at index 2 and has no settle date /
+// sale counter / unit / dealing fields).
+const OLD_COL_SOURCE       = 2;
+const OLD_COL_PROPERTY_ID  = 3;
+const OLD_COL_HOUSE_NUMBER = 6;
+const OLD_COL_STREET_NAME  = 7;
+const OLD_COL_SUBURB       = 8;
+const OLD_COL_POSTCODE     = 9;
+const OLD_COL_DATE         = 10; // dd/mm/yyyy
+const OLD_COL_PRICE        = 11;
+const OLD_COL_AREA         = 13;
+const OLD_COL_AREA_TYPE    = 14;
+const OLD_COL_ZONING       = 16;
+const OLD_COL_NATURE       = 17;
+
 function parseDat(text: string, year: number, acc: ParseResult, captureRows: boolean, rowLimit: number | null): number {
   let count = 0;
   for (const line of text.split(/\r?\n/)) {
@@ -197,22 +229,29 @@ function parseDat(text: string, year: number, acc: ParseResult, captureRows: boo
     const cols = line.split(";");
     if (cols.length < 18) continue;
 
-    const price = parseInt(cols[COL_PRICE]?.replace(/,/g, "") ?? "", 10);
-    if (!price || price < MIN_PRICE) continue;
+    // Detect format: old format has dd/mm/yyyy at col 10; new format has a postcode (4 digits).
+    const isOldFormat = /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(cols[OLD_COL_DATE]?.trim() ?? "");
 
-    const contractDate = parseDate(cols[COL_DATE]?.trim() ?? "");
+    const cDateRaw = isOldFormat ? cols[OLD_COL_DATE] : cols[COL_DATE];
+    const priceRaw = isOldFormat ? cols[OLD_COL_PRICE] : cols[COL_PRICE];
+
+    const price = parseInt(priceRaw?.replace(/,/g, "") ?? "", 10);
+    if (!price || price < MIN_PRICE || price > MAX_PRICE) continue;
+
+    const contractDate = parseDate(cDateRaw?.trim() ?? "");
     if (!contractDate || contractDate.getUTCFullYear() !== year) continue;
 
-    const suburb   = cols[COL_SUBURB]?.trim();
-    const postcode = cols[COL_POSTCODE]?.trim();
+    const suburb   = (isOldFormat ? cols[OLD_COL_SUBURB]   : cols[COL_SUBURB])?.trim();
+    const postcode = (isOldFormat ? cols[OLD_COL_POSTCODE] : cols[COL_POSTCODE])?.trim();
     if (!suburb || !postcode) continue;
 
-    const settleDate = parseDate(cols[COL_SETTLE]?.trim() ?? "");
+    const settleDate = isOldFormat ? null : parseDate(cols[COL_SETTLE]?.trim() ?? "");
     const daysDiff   = settleDate ? Math.round((settleDate.getTime() - contractDate.getTime()) / 86_400_000) : null;
-    const nature     = cols[COL_NATURE]?.trim().toUpperCase() ?? "";
+    const nature     = (isOldFormat ? cols[OLD_COL_NATURE] : cols[COL_NATURE])?.trim().toUpperCase() ?? "";
 
     // ── Aggregate path: only "R" (non-strata residence) for backwards compat ──
-    if (nature === "R") {
+    // Skip old-format aggregate — its nature codes don't map to R/V/3.
+    if (!isOldFormat && nature === "R") {
       const key = `${suburb}|${postcode}`;
       let entry = acc.aggregate.prices.get(key);
       if (!entry) { entry = { prices: [], days: [] }; acc.aggregate.prices.set(key, entry); }
@@ -223,27 +262,31 @@ function parseDat(text: string, year: number, acc: ParseResult, captureRows: boo
     // ── Row path: capture all valid rows regardless of nature code ──
     if (captureRows && (rowLimit == null || acc.rows.length < rowLimit)) {
       const district = cols[COL_DISTRICT]?.trim() ?? "";
-      const propId   = cols[COL_PROPERTY_ID]?.trim() ?? "";
-      const saleCtr  = cols[COL_SALE_COUNTER]?.trim() ?? "";
+      const propId   = (isOldFormat ? cols[OLD_COL_PROPERTY_ID] : cols[COL_PROPERTY_ID])?.trim() ?? "";
+      // Old format has no sale counter; use contract date as the third key
+      // component so multiple sales of the same property remain distinct.
+      const saleCtr  = isOldFormat
+        ? `OLD-${contractDate.toISOString().slice(0, 10)}`
+        : (cols[COL_SALE_COUNTER]?.trim() ?? "");
       if (district && propId) {
-        const areaRaw = cols[COL_AREA]?.trim() ?? "";
+        const areaRaw = (isOldFormat ? cols[OLD_COL_AREA] : cols[COL_AREA])?.trim() ?? "";
         const area    = areaRaw ? parseFloat(areaRaw) : null;
         acc.rows.push({
           sourceRowKey:   `${district}:${propId}:${saleCtr}`,
-          rawHouseNumber: cols[COL_HOUSE_NUMBER]?.trim() || null,
-          rawUnitNumber:  cols[COL_UNIT_NUMBER]?.trim()  || null,
-          rawStreetName:  cols[COL_STREET_NAME]?.trim()  || null,
+          rawHouseNumber: (isOldFormat ? cols[OLD_COL_HOUSE_NUMBER] : cols[COL_HOUSE_NUMBER])?.trim() || null,
+          rawUnitNumber:  isOldFormat ? null : (cols[COL_UNIT_NUMBER]?.trim() || null),
+          rawStreetName:  (isOldFormat ? cols[OLD_COL_STREET_NAME] : cols[COL_STREET_NAME])?.trim() || null,
           rawLocality:    suburb,
           rawPostcode:    postcode,
           contractDate,
           settlementDate: settleDate,
           price,
           area:           area && !isNaN(area) ? area : null,
-          areaType:       cols[COL_AREA_TYPE]?.trim() || null,
+          areaType:       (isOldFormat ? cols[OLD_COL_AREA_TYPE] : cols[COL_AREA_TYPE])?.trim() || null,
           natureCode:     nature || null,
-          zoning:         cols[COL_ZONING]?.trim()    || null,
-          primaryPurpose: cols[COL_PURPOSE]?.trim()   || null,
-          dealingNumber:  cols[COL_DEALING]?.trim()   || null,
+          zoning:         (isOldFormat ? cols[OLD_COL_ZONING] : cols[COL_ZONING])?.trim() || null,
+          primaryPurpose: isOldFormat ? null : (cols[COL_PURPOSE]?.trim() || null),
+          dealingNumber:  isOldFormat ? null : (cols[COL_DEALING]?.trim() || null),
         });
       }
     }
@@ -277,31 +320,59 @@ async function loadYear(year: number, opts: CliOptions): Promise<ParseResult> {
   const buf = await fetchYearZip(year, opts.useCache);
   const outerZip = new AdmZip(buf);
   const outerEntries = outerZip.getEntries();
-  log(SOURCE_ID, `${year}: ${outerEntries.length} weekly ZIPs in outer archive`);
+
+  // VG NSW changed bulk distribution layout around 2017:
+  //   - Newer years (≈2018+): outer archive contains weekly inner ZIPs, each containing DATs.
+  //   - Older years (≈1990–2017): outer archive contains DATs directly (no inner ZIP).
+  // Detect by file extension and handle either way.
+  const innerZipEntries = outerEntries.filter((e) => e.entryName.toLowerCase().endsWith(".zip"));
+  const directDatEntries = outerEntries.filter((e) => e.entryName.toUpperCase().endsWith(".DAT"));
+
+  const layout: "weekly-zip" | "flat-dat" =
+    innerZipEntries.length > directDatEntries.length ? "weekly-zip" : "flat-dat";
+
+  log(
+    SOURCE_ID,
+    `${year}: ${layout === "weekly-zip" ? `${innerZipEntries.length} weekly ZIPs` : `${directDatEntries.length} DAT files`} in outer archive (${layout} layout)`,
+  );
 
   const acc: ParseResult = {
     aggregate: { prices: new Map() },
     rows:      [],
   };
   let recordCount = 0;
-  let weekCount   = 0;
+  let processed   = 0;
   const captureRows = !opts.skipRows;
+  const totalUnits = layout === "weekly-zip" ? innerZipEntries.length : directDatEntries.length;
+  const unitLabel  = layout === "weekly-zip" ? "weeks" : "files";
 
-  for (const outerEntry of outerEntries) {
-    if (!outerEntry.entryName.toLowerCase().endsWith(".zip")) continue;
-    const innerBuf = outerZip.readFile(outerEntry);
-    if (!innerBuf) continue;
-    const innerZip = new AdmZip(innerBuf);
-    for (const innerEntry of innerZip.getEntries()) {
-      if (!innerEntry.entryName.toUpperCase().endsWith(".DAT")) continue;
-      const text = innerZip.readAsText(innerEntry, "utf8");
-      recordCount += parseDat(text, year, acc, captureRows, opts.limit);
+  if (layout === "weekly-zip") {
+    for (const outerEntry of innerZipEntries) {
+      const innerBuf = outerZip.readFile(outerEntry);
+      if (!innerBuf) continue;
+      const innerZip = new AdmZip(innerBuf);
+      for (const innerEntry of innerZip.getEntries()) {
+        if (!innerEntry.entryName.toUpperCase().endsWith(".DAT")) continue;
+        const text = innerZip.readAsText(innerEntry, "utf8");
+        recordCount += parseDat(text, year, acc, captureRows, opts.limit);
+      }
+      processed++;
+      if (processed % 10 === 0) log(SOURCE_ID, `  ${year}: ${processed}/${totalUnits} ${unitLabel}, ${recordCount} valid rows so far`);
+      if (opts.limit != null && acc.rows.length >= opts.limit) {
+        log(SOURCE_ID, `  ${year}: row limit ${opts.limit} reached, stopping early`);
+        break;
+      }
     }
-    weekCount++;
-    if (weekCount % 10 === 0) log(SOURCE_ID, `  ${year}: ${weekCount}/${outerEntries.length} weeks, ${recordCount} valid rows so far`);
-    if (opts.limit != null && acc.rows.length >= opts.limit) {
-      log(SOURCE_ID, `  ${year}: row limit ${opts.limit} reached, stopping early`);
-      break;
+  } else {
+    for (const outerEntry of directDatEntries) {
+      const text = outerZip.readAsText(outerEntry, "utf8");
+      recordCount += parseDat(text, year, acc, captureRows, opts.limit);
+      processed++;
+      if (processed % 200 === 0) log(SOURCE_ID, `  ${year}: ${processed}/${totalUnits} ${unitLabel}, ${recordCount} valid rows so far`);
+      if (opts.limit != null && acc.rows.length >= opts.limit) {
+        log(SOURCE_ID, `  ${year}: row limit ${opts.limit} reached, stopping early`);
+        break;
+      }
     }
   }
 

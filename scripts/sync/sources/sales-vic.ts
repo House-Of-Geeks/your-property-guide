@@ -58,19 +58,33 @@ async function getLatestResource(packageId: string): Promise<LatestResource> {
   return { url: latest.url, periodEnd: latest.period_end ?? "" };
 }
 
-async function downloadXls(url: string): Promise<Buffer> {
-  // land.vic.gov.au uses Cloudflare — must send browser-style headers
+async function tryFetch(url: string): Promise<Buffer | null> {
   const res = await fetch(url, {
     headers: {
       "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
       "Referer":    "https://www.land.vic.gov.au/",
       "Accept":     "application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,*/*",
     },
+    redirect: "follow",
   });
-  if (!res.ok) throw new Error(`HTTP ${res.status} downloading VIC XLS`);
+  if (!res.ok) return null;
   const ct = res.headers.get("content-type") ?? "";
-  if (ct.includes("text/html")) throw new Error(`Got HTML instead of XLS — Cloudflare block?`);
+  if (ct.includes("text/html")) return null;
   return Buffer.from(await res.arrayBuffer());
+}
+
+async function downloadXls(url: string): Promise<Buffer> {
+  // land.vic.gov.au is behind Cloudflare which now serves a JS challenge to
+  // server-side fetches. Fall back to the latest Wayback Machine snapshot,
+  // which mirrors the file as a real XLS.
+  const direct = await tryFetch(url);
+  if (direct) return direct;
+  log(SOURCE_ID, `direct fetch blocked, falling back to web.archive.org`);
+
+  const wayback = await tryFetch(`https://web.archive.org/web/2025/${url}`);
+  if (wayback) return wayback;
+
+  throw new Error(`Both direct and Wayback Machine fetches failed for ${url}`);
 }
 
 /** Parse the multi-row header to find the most recent quarter column index and period string. */
