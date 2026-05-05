@@ -11,8 +11,10 @@
  * Catalog page: https://discover.data.vic.gov.au/dataset/victorian-government-school-zones-2026
  *
  * Field mapping:
- *   School_No   → overlay.code   (DET school number)
+ *   ENTITY_CODE → overlay.code   (VIC DET school number, integer)
  *   School_Name → overlay.label
+ *   Campus_Name → attrs.campusName
+ *   Year_Level  → attrs.yearLevel
  */
 import { runOverlayIngest } from "../lib/runner";
 import { s } from "../lib/types";
@@ -27,12 +29,14 @@ const config: GeoJsonBulkConfig = {
   minAddressCount: 1_000_000,
   url: "https://www.education.vic.gov.au/Documents/about/research/datavic/dv418_DataVic_School_Zones_2026_MAR26.zip",
   geojsonInZipPath: ["Primary_Integrated_2026.geojson"],
-  pickCode:  (p) => s(p.School_No) ?? s(p.school_no),
-  pickLabel: (p) => s(p.School_Name) ?? s(p.school_name),
+  pickCode:  (p) => s(p.ENTITY_CODE),
+  pickLabel: (p) => s(p.School_Name),
   pickAttrs: (p) => ({
-    schoolName: s(p.School_Name) ?? s(p.school_name),
-    schoolType: "Primary School",
-    calendarYear: 2026,
+    schoolName:   s(p.School_Name),
+    campusName:   s(p.Campus_Name),
+    schoolType:   "Primary School",
+    yearLevel:    s(p.Year_Level),
+    calendarYear: typeof p.Boundary_Year === "number" ? p.Boundary_Year : 2026,
   }),
 };
 
