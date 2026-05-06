@@ -7,6 +7,10 @@ import { BlogGrid } from "@/components/blog/BlogGrid";
 import { SITE_URL } from "@/lib/constants";
 import { ArrowRight } from "lucide-react";
 
+// Page body queries the DB; render on every request (no build-time prerender,
+// no stale cache). Add HTTP caching at the edge later if traffic warrants it.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Property Blog",
   description: "Expert property insights, market updates, and buying guides from across Australia.",

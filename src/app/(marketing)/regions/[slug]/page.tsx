@@ -22,6 +22,9 @@ interface RegionPageProps {
 export const dynamicParams = true; // allow slugs not in generateStaticParams to SSR
 
 export async function generateStaticParams() {
+  // Skip prerender at build time — DB isn't reachable during `next build`.
+  // Pages render on-demand via dynamicParams=true.
+  if (process.env.NEXT_PHASE === "phase-production-build") return [];
   const slugs = await getAllRegionSlugs();
   return slugs.map((slug) => ({ slug }));
 }

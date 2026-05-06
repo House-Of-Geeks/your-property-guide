@@ -1,5 +1,7 @@
-// Property sitemap pages are too large to pre-render at build time — serve dynamically
-export const dynamic = "force-dynamic";
+// Property sitemap pages are too large to pre-render at build time — render on demand
+// and cache for a day. Crawlers re-fetching the index don't need fresher than that, and
+// `force-dynamic` was running the full count + paginated query on every single hit.
+export const revalidate = 86400;
 
 import { cache } from "react";
 import type { MetadataRoute } from "next";
@@ -35,11 +37,15 @@ const getSitemapIndex = cache(async (): Promise<SitemapEntry[]> => {
 });
 
 export async function generateSitemaps() {
+  // Skip at build time — DB isn't reachable during `next build`. At runtime the
+  // first crawler hit will populate the index for the `revalidate` window.
+  if (process.env.NEXT_PHASE === "phase-production-build") return [{ id: 0 }];
   const index = await getSitemapIndex();
   return index.map((_, id) => ({ id }));
 }
 
 export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
+  if (process.env.NEXT_PHASE === "phase-production-build") return [];
   const index = await getSitemapIndex();
   const entry = index[id];
   if (!entry) return [];

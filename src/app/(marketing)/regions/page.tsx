@@ -6,7 +6,8 @@ import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { getAllRegions } from "@/lib/services/region-service";
 import { SITE_URL } from "@/lib/constants";
 
-export const revalidate = 86400;
+// Page body queries the DB; render on every request to avoid build-time DB hits.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Property Regions Across Australia",

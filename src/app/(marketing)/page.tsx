@@ -13,6 +13,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui";
 import { ArrowRight } from "lucide-react";
 
+// Homepage embeds StatsBar / SuburbSpotlight / FeaturedListings which all hit
+// the DB. Render on every request — no build-time DB.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: `${SITE_NAME} - Property Research, Made Simple`,
   description: SITE_DESCRIPTION,

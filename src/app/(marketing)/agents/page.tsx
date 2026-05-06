@@ -8,6 +8,10 @@ import { getAgents } from "@/lib/services/agent-service";
 import { SITE_URL } from "@/lib/constants";
 import { Home, TrendingUp } from "lucide-react";
 
+// Page body queries the DB; render on every request (no build-time prerender,
+// no stale cache). Add HTTP caching at the edge later if traffic warrants it.
+export const dynamic = "force-dynamic";
+
 interface AgentsPageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }

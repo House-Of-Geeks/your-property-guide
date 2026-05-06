@@ -6,7 +6,8 @@ import { searchSchools } from "@/lib/services/school-service";
 import { makeSchoolSlug } from "@/lib/utils/school";
 import { SITE_URL } from "@/lib/constants";
 
-export const revalidate = 86400;
+// Page body queries the DB; render on every request to avoid build-time DB hits.
+export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 20;
 

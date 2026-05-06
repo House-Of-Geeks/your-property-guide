@@ -21,6 +21,9 @@ function formatCategoryLabel(slug: string): string {
 }
 
 export async function generateStaticParams() {
+  // Skip prerender at build time — DB isn't reachable during `next build`.
+  // Pages render on-demand via dynamicParams=true (App Router default).
+  if (process.env.NEXT_PHASE === "phase-production-build") return [];
   const categories = await getDistinctBlogCategories();
   return categories.map((category) => ({ category }));
 }
