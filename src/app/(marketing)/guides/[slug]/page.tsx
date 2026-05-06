@@ -26,9 +26,9 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
   return {
     title: blogTitle(post),
     description: post.excerpt,
-    alternates: { canonical: `${SITE_URL}/blog/${slug}` },
+    alternates: { canonical: `${SITE_URL}/guides/${slug}` },
     openGraph: {
-      url: `${SITE_URL}/blog/${slug}`,
+      url: `${SITE_URL}/guides/${slug}`,
       title: post.title,
       description: post.excerpt,
       type: "article",
@@ -46,28 +46,28 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
   const relatedPosts = await getRelatedPosts(slug, 3);
   const { html: processedContent, toc } = processContent(post.content);
-  const postUrl = `${SITE_URL}/blog/${slug}`;
+  const postUrl = `${SITE_URL}/guides/${slug}`;
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
       <ArticleJsonLd post={post} />
       <BreadcrumbJsonLd
         items={[
-          { name: "Blog", url: "/blog" },
-          { name: post.title, url: `/blog/${post.slug}` },
+          { name: "Guides", url: "/guides" },
+          { name: post.title, url: `/guides/${post.slug}` },
         ]}
       />
-      <Breadcrumbs items={[{ label: "Blog", href: "/blog" }, { label: post.title }]} />
+      <Breadcrumbs items={[{ label: "Guides", href: "/guides" }, { label: post.title }]} />
 
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-10 items-start">
 
         {/* ── Article column ── */}
         <article>
           <Link
-            href="/blog"
+            href="/guides"
             className="text-sm font-sans text-ink-muted hover:text-primary flex items-center gap-1.5 mb-5 transition-colors"
           >
-            <ArrowLeft className="w-3.5 h-3.5" /> Back to blog
+            <ArrowLeft className="w-3.5 h-3.5" /> Back to guides
           </Link>
 
           <Badge variant="primary">{post.category}</Badge>
@@ -131,10 +131,10 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           <div className="mt-8 pt-6 border-t border-line flex items-center justify-between flex-wrap gap-3">
             <BlogShareButtons title={post.title} url={postUrl} />
             <Link
-              href="/blog"
+              href="/guides"
               className="text-sm font-sans font-medium text-ink hover:text-primary border-b border-line-strong hover:border-primary pb-0.5 inline-flex items-center gap-1"
             >
-              More articles <ArrowRight className="w-3.5 h-3.5" />
+              More guides <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
@@ -172,7 +172,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {relatedPosts.map((rp) => (
-              <Link key={rp.slug} href={`/blog/${rp.slug}`} className="group">
+              <Link key={rp.slug} href={`/guides/${rp.slug}`} className="group">
                 <div className="relative aspect-[16/10] rounded-2xl overflow-hidden mb-3 border border-line">
                   <Image
                     src={rp.coverImage}

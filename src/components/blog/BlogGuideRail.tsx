@@ -50,7 +50,7 @@ const RAIL_BY_BLOG_SLUG: Record<string, RailGuide[]> = {
     { href: "/find-your-suburb",                             title: "Find your suburb (4-question quiz)", description: "Get six suburbs scored against your priorities." },
   ],
   "moreton-bay-property-market-update-q1-2025": [
-    { href: "/blog/brisbane-property-market-2026",           title: "Brisbane property market 2026",     description: "The macro outlook for SEQ in the year ahead." },
+    { href: "/guides/brisbane-property-market-2026",         title: "Brisbane property market 2026",     description: "The macro outlook for SEQ in the year ahead." },
     { href: "/market-reports/qld",                           title: "Queensland market report",          description: "Median prices, growth, and suburb rankings." },
     { href: "/guides/best-time-to-buy-property-australia",   title: "Best time to buy in Australia",     description: "Seasonal patterns and the rate cycle." },
   ],

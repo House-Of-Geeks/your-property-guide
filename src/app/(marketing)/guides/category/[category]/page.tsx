@@ -36,9 +36,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${label} Articles | Property Blog | ${SITE_NAME}`,
     description: `Browse all ${label} articles and guides from the ${SITE_NAME} property research blog.`,
-    alternates: { canonical: `${SITE_URL}/blog/category/${category}` },
+    alternates: { canonical: `${SITE_URL}/guides/category/${category}` },
     openGraph: {
-      url: `${SITE_URL}/blog/category/${category}`,
+      url: `${SITE_URL}/guides/category/${category}`,
       title: `${label} Articles | Property Blog | ${SITE_NAME}`,
       description: `Browse all ${label} articles and guides from the ${SITE_NAME} property research blog.`,
       type: "website",
@@ -62,17 +62,17 @@ export default async function BlogCategoryPage({ params }: Props) {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
       <CollectionPageJsonLd
         name={label + " Articles"}
-        url={"/blog/category/" + category}
+        url={"/guides/category/" + category}
       />
       <BreadcrumbJsonLd
         items={[
-          { name: "Blog", url: "/blog" },
-          { name: label, url: `/blog/category/${category}` },
+          { name: "Guides", url: "/guides" },
+          { name: label, url: `/guides/category/${category}` },
         ]}
       />
       <Breadcrumbs
         items={[
-          { label: "Blog", href: "/blog" },
+          { label: "Guides", href: "/guides" },
           { label },
         ]}
       />

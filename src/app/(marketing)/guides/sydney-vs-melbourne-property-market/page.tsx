@@ -99,11 +99,11 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Sydney Property Market 2026", href: "/blog/sydney-property-market-2026", description: "Detailed outlook, suburb hotspots, and the macro picture for Sydney." },
-  { title: "Melbourne Property Market 2026", href: "/blog/melbourne-property-market-2026", description: "Same treatment for Melbourne — affordability, growth pockets, what to watch." },
-  { title: "Brisbane Property Market 2026", href: "/blog/brisbane-property-market-2026", description: "The leading capital city for growth in recent years." },
-  { title: "How to Buy Property Interstate", href: "/blog/how-to-buy-property-interstate-australia-2026", description: "Practical workflow for buying outside your home state." },
-  { title: "Rentvesting Guide", href: "/blog/rentvesting-australia-state-by-state-guide-2026", description: "Rent where you live, invest where the numbers work — by state." },
+  { title: "Sydney Property Market 2026", href: "/guides/sydney-property-market-2026", description: "Detailed outlook, suburb hotspots, and the macro picture for Sydney." },
+  { title: "Melbourne Property Market 2026", href: "/guides/melbourne-property-market-2026", description: "Same treatment for Melbourne — affordability, growth pockets, what to watch." },
+  { title: "Brisbane Property Market 2026", href: "/guides/brisbane-property-market-2026", description: "The leading capital city for growth in recent years." },
+  { title: "How to Buy Property Interstate", href: "/guides/how-to-buy-property-interstate-australia-2026", description: "Practical workflow for buying outside your home state." },
+  { title: "Rentvesting Guide", href: "/guides/rentvesting-australia-state-by-state-guide-2026", description: "Rent where you live, invest where the numbers work — by state." },
 ];
 
 export default function SydneyVsMelbourneGuide() {
@@ -191,7 +191,7 @@ export default function SydneyVsMelbourneGuide() {
       <p>
         Both states offer generous concessions, but the price points differ.
         See our{" "}
-        <a href="/blog/first-home-buyer-schemes-by-state-australia-2026">
+        <a href="/guides/first-home-buyer-schemes-by-state-australia-2026">
           state-by-state schemes guide
         </a>{" "}
         for current thresholds. Use the{" "}
@@ -261,7 +261,7 @@ export default function SydneyVsMelbourneGuide() {
         </li>
         <li>
           If you're considering Brisbane as a third option, read our{" "}
-          <a href="/blog/brisbane-property-market-2026">Brisbane 2026 outlook</a>.
+          <a href="/guides/brisbane-property-market-2026">Brisbane 2026 outlook</a>.
         </li>
       </ol>
     </GuideArticleLayout>

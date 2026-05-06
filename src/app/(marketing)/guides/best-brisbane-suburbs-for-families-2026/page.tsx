@@ -97,9 +97,9 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Brisbane Property Market 2026", href: "/blog/brisbane-property-market-2026", description: "Macro outlook for the Brisbane market — supply, demand, and the SEQ growth corridor." },
+  { title: "Brisbane Property Market 2026", href: "/guides/brisbane-property-market-2026", description: "Macro outlook for the Brisbane market — supply, demand, and the SEQ growth corridor." },
   { title: "Best Suburbs Australia: For Families", href: "/best-suburbs/for-families", description: "Our ranked list of family-friendliest suburbs nationally." },
-  { title: "Top 5 Suburbs for Families in Moreton Bay", href: "/blog/top-5-suburbs-families-moreton-bay", description: "If you'd consider just north of Brisbane, the Moreton Bay corridor is one of SEQ's strongest family pockets." },
+  { title: "Top 5 Suburbs for Families in Moreton Bay", href: "/guides/top-5-suburbs-families-moreton-bay", description: "If you'd consider just north of Brisbane, the Moreton Bay corridor is one of SEQ's strongest family pockets." },
   { title: "Stamp Duty Calculator", href: "/stamp-duty-calculator", description: "Estimate Queensland stamp duty for your shortlisted properties." },
   { title: "Free Property Appraisal", href: "/appraisal", description: "Already own in Brisbane and considering a family upgrade? Start with a current appraisal." },
 ];
@@ -313,7 +313,7 @@ export default function BestBrisbaneFamilySuburbsGuide() {
         </li>
         <li>
           Read our{" "}
-          <a href="/blog/brisbane-property-market-2026">Brisbane 2026 outlook</a>{" "}
+          <a href="/guides/brisbane-property-market-2026">Brisbane 2026 outlook</a>{" "}
           for the macro context.
         </li>
       </ol>

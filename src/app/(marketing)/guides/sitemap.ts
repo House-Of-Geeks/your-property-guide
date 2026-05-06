@@ -1,8 +1,13 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants";
+import { getBlogSitemapEntries } from "@/lib/services/blog-service";
 
-// Hardcoded list of all guide slugs. New guides should be added here when
-// they're published so they show up in the sitemap immediately.
+// On-demand ISR — DB blog post slugs are merged with static guides on the
+// first crawler hit and cached for 24h.
+export const revalidate = 86400;
+
+// Hardcoded list of static guide slugs. New static guides should be added
+// here when they're published so they show up in the sitemap immediately.
 const GUIDE_SLUGS = [
   // First-home / process
   "first-home-buyer-guide",
@@ -58,11 +63,29 @@ const GUIDE_SLUGS = [
   "renters-rights-act",
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  return GUIDE_SLUGS.map((slug) => ({
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const staticEntries = GUIDE_SLUGS.map((slug) => ({
     url: `${SITE_URL}/guides/${slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
+
+  // Skip DB fetch at build time — runtime DB isn't reachable. Static entries
+  // ship in the build; DB-backed posts populate on the first crawler hit
+  // within the revalidate window.
+  if (process.env.NEXT_PHASE === "phase-production-build") {
+    return staticEntries;
+  }
+
+  const dbPosts = await getBlogSitemapEntries();
+  return [
+    ...staticEntries,
+    ...dbPosts.map((post) => ({
+      url: `${SITE_URL}/guides/${post.slug}`,
+      lastModified: post.updatedAt ?? post.publishedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    })),
+  ];
 }

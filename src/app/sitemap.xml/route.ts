@@ -11,7 +11,7 @@ const SITEMAPS = [
   `${SITE_URL}/property/sitemap.xml`,
   `${SITE_URL}/agents/sitemap.xml`,
   `${SITE_URL}/real-estate-agencies/sitemap.xml`,
-  `${SITE_URL}/blog/sitemap.xml`,
+  `${SITE_URL}/guides/sitemap.xml`,
   `${SITE_URL}/schools/sitemap.xml`,
   `${SITE_URL}/postcodes/sitemap.xml`,
   `${SITE_URL}/states/sitemap.xml`,

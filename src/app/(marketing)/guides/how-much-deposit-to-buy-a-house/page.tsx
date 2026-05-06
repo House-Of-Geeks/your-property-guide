@@ -102,7 +102,7 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "First Home Buyer Schemes by State (2026)", href: "/blog/first-home-buyer-schemes-by-state-australia-2026", description: "Every grant, exemption, and concession by state, in plain English." },
+  { title: "First Home Buyer Schemes by State (2026)", href: "/guides/first-home-buyer-schemes-by-state-australia-2026", description: "Every grant, exemption, and concession by state, in plain English." },
   { title: "Stamp Duty Calculator", href: "/stamp-duty-calculator", description: "Estimate stamp duty for your state, including first home buyer concessions." },
   { title: "Borrowing Power Calculator", href: "/borrowing-power-calculator", description: "Find out what you can borrow on top of your deposit." },
   { title: "Lenders Mortgage Insurance Guide", href: "/guides/lenders-mortgage-insurance-guide", description: "How LMI is calculated and when it's worth paying." },
@@ -255,7 +255,7 @@ export default function HowMuchDepositGuidePage() {
 
       <p>
         Our blog post on{" "}
-        <a href="/blog/first-home-buyer-schemes-by-state-australia-2026">
+        <a href="/guides/first-home-buyer-schemes-by-state-australia-2026">
           first home buyer schemes by state
         </a>{" "}
         covers state grants and stamp duty exemptions on top of these federal schemes.

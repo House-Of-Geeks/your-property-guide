@@ -28,7 +28,7 @@ export async function LatestGuides() {
           </div>
           <div className="lg:col-span-4 lg:col-start-9 flex items-end justify-end">
             <Link
-              href="/blog"
+              href="/guides"
               className="inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-primary transition-colors border-b border-line-strong hover:border-primary pb-0.5"
             >
               All guides <ArrowRight className="w-4 h-4" />
@@ -39,7 +39,7 @@ export async function LatestGuides() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
           {/* Featured article — spans 3 cols */}
           <Link
-            href={`/blog/${featured.slug}`}
+            href={`/guides/${featured.slug}`}
             className="group lg:col-span-3 block bg-surface-raised rounded-2xl overflow-hidden border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200"
           >
             {featured.coverImage ? (
@@ -83,7 +83,7 @@ export async function LatestGuides() {
             {rest.map((post) => (
               <Link
                 key={post.slug}
-                href={`/blog/${post.slug}`}
+                href={`/guides/${post.slug}`}
                 className="group flex-1 block bg-surface-raised rounded-2xl overflow-hidden border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200 flex flex-col"
               >
                 {post.coverImage && (

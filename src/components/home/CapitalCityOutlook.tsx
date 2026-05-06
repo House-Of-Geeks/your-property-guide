@@ -51,7 +51,7 @@ export async function CapitalCityOutlook() {
           {found.map(({ city, state, post }) => (
             <Link
               key={post.slug}
-              href={`/blog/${post.slug}`}
+              href={`/guides/${post.slug}`}
               className="group flex flex-col rounded-2xl border border-line bg-surface-warm overflow-hidden hover:border-primary/40 hover:shadow-md transition-all"
             >
               {post.coverImage ? (

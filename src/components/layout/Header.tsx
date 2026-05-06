@@ -82,7 +82,7 @@ const NAV_LINKS: NavLink[] = [
       { label: "About Your Property Guide", href: "/about" },
       { label: "Why we're free",            href: "/about" },
       { label: "Find an expert",            href: "/find-an-expert" },
-      { label: "Blog",                      href: "/blog" },
+      { label: "Guides",                    href: "/guides" },
       { label: "Contact",                   href: "/contact" },
     ],
   },

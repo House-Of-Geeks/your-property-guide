@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
         destination: "/real-estate-agencies/:slug*",
         permanent: true,
       },
+      // Blog content moved into the unified /guides hub. Preserves SEO + any
+      // external links (e.g. RSS subscribers, partner sites).
+      { source: "/blog",          destination: "/guides",          permanent: true },
+      { source: "/blog/:path*",   destination: "/guides/:path*",   permanent: true },
       // Property slug migration: removed agency suffix, added state code
       { source: "/buy/28-spearmint-street-griffin-4503-thomson",         destination: "/buy/28-spearmint-street-griffin-qld-4503",          permanent: true },
       { source: "/buy/dakabin-4503-thomson",                             destination: "/buy/dakabin-qld-4503-21611295",                     permanent: true },

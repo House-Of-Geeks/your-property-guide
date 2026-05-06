@@ -101,7 +101,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Negative Gearing Australia", href: "/guides/negative-gearing-australia", description: "How negative gearing works and when each property type benefits more." },
   { title: "Property Depreciation Guide", href: "/guides/property-depreciation-guide", description: "Depreciation deductions are bigger on newer apartments — here's how they work." },
   { title: "Rental Yield Calculator", href: "/rental-yield-calculator", description: "Compare gross and net yield on your shortlisted properties side by side." },
-  { title: "Investment Property Guide for the Moreton Bay Corridor", href: "/blog/investment-property-guide-moreton-bay-corridor", description: "A worked-up regional case study — useful pattern for any growth corridor." },
+  { title: "Investment Property Guide for the Moreton Bay Corridor", href: "/guides/investment-property-guide-moreton-bay-corridor", description: "A worked-up regional case study — useful pattern for any growth corridor." },
   { title: "SMSF Property Guide", href: "/guides/smsf-property-guide", description: "If you're considering buying inside super, what changes." },
 ];
 

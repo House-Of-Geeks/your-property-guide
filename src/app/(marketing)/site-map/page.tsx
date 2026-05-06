@@ -71,7 +71,7 @@ const SECTIONS: Section[] = [
     links: [
       { label: "All tools (overview)",       href: "/tools" },
       { label: "Property insights hub",      href: "/insights" },
-      { label: "RSS feed",                   href: "/blog/feed.xml" },
+      { label: "RSS feed",                   href: "/guides/feed.xml" },
       { label: "Mortgage calculator",        href: "/mortgage-calculator" },
       { label: "Stamp duty calculator",      href: "/stamp-duty-calculator" },
       { label: "Borrowing power calculator", href: "/borrowing-power-calculator" },

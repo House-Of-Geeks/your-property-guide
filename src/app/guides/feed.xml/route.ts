@@ -34,7 +34,7 @@ export async function GET() {
 
   const items = sorted
     .map((p) => {
-      const url = `${SITE_URL}/blog/${p.slug}`;
+      const url = `${SITE_URL}/guides/${p.slug}`;
       const cover = p.coverImage
         ? p.coverImage.startsWith("http")
           ? p.coverImage
@@ -56,7 +56,7 @@ export async function GET() {
     })
     .join("");
 
-  const feedUrl = `${SITE_URL}/blog/feed.xml`;
+  const feedUrl = `${SITE_URL}/guides/feed.xml`;
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"
      xmlns:content="http://purl.org/rss/1.0/modules/content/"
@@ -64,7 +64,7 @@ export async function GET() {
      xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>${cdata(`${SITE_NAME} — Insights`)}</title>
-    <link>${xmlEscape(SITE_URL)}/blog</link>
+    <link>${xmlEscape(SITE_URL)}/guides</link>
     <description>${cdata("Australian property market analysis, capital city outlooks, RBA decisions, and data refreshes.")}</description>
     <language>en-au</language>
     <lastBuildDate>${latestPubDate}</lastBuildDate>

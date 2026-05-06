@@ -44,7 +44,7 @@ export function BlogGrid({ posts, categories }: Props) {
 
       {/* Featured post */}
       {featured && (
-        <Link href={`/blog/${featured.slug}`} className="group block mb-10">
+        <Link href={`/guides/${featured.slug}`} className="group block mb-10">
           <div className="rounded-2xl overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow bg-white grid grid-cols-1 lg:grid-cols-2">
             <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[280px]">
               <Image
@@ -86,7 +86,7 @@ export function BlogGrid({ posts, categories }: Props) {
       {rest.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {rest.map((post) => (
-            <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
+            <Link key={post.slug} href={`/guides/${post.slug}`} className="group block">
               <div className="rounded-xl bg-white border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
                 <div className="relative aspect-[16/10]">
                   <Image

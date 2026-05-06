@@ -122,7 +122,7 @@ export default async function InsightsPage() {
                 </h2>
               </div>
               <Link
-                href="/blog"
+                href="/guides"
                 className="hidden sm:inline-flex items-center gap-1.5 font-sans text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
               >
                 All articles
@@ -134,7 +134,7 @@ export default async function InsightsPage() {
               {featuredPosts.map((p) => (
                 <Link
                   key={p.slug}
-                  href={`/blog/${p.slug}`}
+                  href={`/guides/${p.slug}`}
                   className="group flex flex-col rounded-2xl border border-line bg-surface-warm overflow-hidden hover:border-primary/40 hover:shadow-md transition-all"
                 >
                   {p.coverImage && (
@@ -179,7 +179,7 @@ export default async function InsightsPage() {
               {recentPosts.map((p) => (
                 <li key={p.slug}>
                   <Link
-                    href={`/blog/${p.slug}`}
+                    href={`/guides/${p.slug}`}
                     className="group grid grid-cols-[80px_1fr] sm:grid-cols-[120px_1fr] gap-4 rounded-2xl border border-line bg-surface-raised p-4 hover:border-primary/40 hover:shadow-md transition-all"
                   >
                     {p.coverImage ? (
@@ -219,7 +219,7 @@ export default async function InsightsPage() {
 
             <div className="mt-6">
               <Link
-                href="/blog"
+                href="/guides"
                 className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
               >
                 Browse all articles
