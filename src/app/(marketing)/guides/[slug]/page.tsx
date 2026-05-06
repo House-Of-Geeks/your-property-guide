@@ -22,7 +22,17 @@ interface BlogDetailPageProps {
 // ISR — DB-backed posts cache for 24h after first render. Static guide
 // folders at /guides/<name>/page.tsx still take precedence; this dynamic
 // segment only catches slugs without a matching folder.
+//
+// generateStaticParams returning [] is required to enable on-demand ISR
+// for fully-dynamic [slug] routes — without it, Next.js treats the route
+// as opt-out of ISR even with revalidate set. dynamicParams = true (the
+// default) lets unknown slugs render + cache on first hit.
 export const revalidate = 86400;
+export const dynamicParams = true;
+
+export function generateStaticParams() {
+  return [];
+}
 
 export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
