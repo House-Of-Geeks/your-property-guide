@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Suspense } from "react";
-import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { PropertyFilters } from "@/components/property/PropertyFilters";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
-import { getProperties } from "@/lib/services/property-service";
 import { SITE_URL } from "@/lib/constants";
-import type { PropertyType } from "@/types";
+import { RentResults } from "./Results";
 
-// ISR — DB-querying services have build-phase guards, so we cache for 24h
-// instead of running a function on every visit.
+// ISR — page shell caches as static. searchParams reads are isolated to
+// the RentResults Suspense child below so the parent stays in the CDN cache.
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
@@ -25,23 +23,11 @@ interface RentPageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-export default async function RentPage({ searchParams }: RentPageProps) {
-  const params = await searchParams;
-  const properties = await getProperties({
-    listingType: "rent",
-    suburb: params.suburb,
-    propertyType: params.propertyType as PropertyType | undefined,
-    minPrice: params.minPrice ? Number(params.minPrice) : undefined,
-    maxPrice: params.maxPrice ? Number(params.maxPrice) : undefined,
-    minBeds: params.minBeds ? Number(params.minBeds) : undefined,
-    sort: params.sort,
-  });
-
+export default function RentPage({ searchParams }: RentPageProps) {
   return (
     <>
       <BreadcrumbJsonLd items={[{ name: "Rent", url: "/rent" }]} />
 
-      {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
         <Image
           src="/images/illustrations/contour.svg"
@@ -55,10 +41,6 @@ export default async function RentPage({ searchParams }: RentPageProps) {
           <div className="mb-8">
             <Breadcrumbs items={[{ label: "Rent" }]} />
           </div>
-
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
-            {properties.length.toLocaleString()} rental {properties.length === 1 ? "property" : "properties"}
-          </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
             Properties for rent, <span className="italic text-primary">around Australia</span>.
           </h1>
@@ -76,7 +58,9 @@ export default async function RentPage({ searchParams }: RentPageProps) {
           </Suspense>
         </div>
 
-        <PropertyGrid properties={properties} />
+        <Suspense fallback={null}>
+          <RentResults searchParams={searchParams} />
+        </Suspense>
       </div>
     </>
   );

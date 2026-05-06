@@ -1,18 +1,15 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Suspense } from "react";
-import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { PropertyFilters } from "@/components/property/PropertyFilters";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
-import { getProperties } from "@/lib/services/property-service";
 import { SITE_URL } from "@/lib/constants";
-import type { PropertyType } from "@/types";
+import { BuyResults } from "./Results";
 
-// ISR — DB-querying services have build-phase guards, so we cache for 24h
-// instead of running a function on every visit. Filter pages with
-// searchParams will still dynamically render per-request; revalidate is
-// the cache hint for the un-filtered base path.
+// ISR — page shell caches as static. searchParams reads are isolated to
+// the BuyResults Suspense child below so the parent stays in the CDN cache
+// while only the dynamic results chunk re-renders per filter combination.
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
@@ -27,23 +24,11 @@ interface BuyPageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-export default async function BuyPage({ searchParams }: BuyPageProps) {
-  const params = await searchParams;
-  const properties = await getProperties({
-    listingType: "buy",
-    suburb: params.suburb,
-    propertyType: params.propertyType as PropertyType | undefined,
-    minPrice: params.minPrice ? Number(params.minPrice) : undefined,
-    maxPrice: params.maxPrice ? Number(params.maxPrice) : undefined,
-    minBeds: params.minBeds ? Number(params.minBeds) : undefined,
-    sort: params.sort,
-  });
-
+export default function BuyPage({ searchParams }: BuyPageProps) {
   return (
     <>
       <BreadcrumbJsonLd items={[{ name: "Buy", url: "/buy" }]} />
 
-      {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
         <Image
           src="/images/illustrations/contour.svg"
@@ -57,10 +42,6 @@ export default async function BuyPage({ searchParams }: BuyPageProps) {
           <div className="mb-8">
             <Breadcrumbs items={[{ label: "Buy" }]} />
           </div>
-
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
-            {properties.length.toLocaleString()} {properties.length === 1 ? "property" : "properties"} for sale
-          </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
             Properties for sale, <span className="italic text-primary">across Australia</span>.
           </h1>
@@ -78,7 +59,9 @@ export default async function BuyPage({ searchParams }: BuyPageProps) {
           </Suspense>
         </div>
 
-        <PropertyGrid properties={properties} />
+        <Suspense fallback={null}>
+          <BuyResults searchParams={searchParams} />
+        </Suspense>
       </div>
     </>
   );
