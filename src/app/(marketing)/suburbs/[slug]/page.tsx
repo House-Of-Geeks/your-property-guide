@@ -25,7 +25,7 @@ import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { Badge, Button } from "@/components/ui";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getPropertiesBySuburb } from "@/lib/services/property-service";
-import { getLatestSuburbCrime } from "@/lib/services/data-freshness";
+import { getSuburbCrimeWithLgaFallback } from "@/lib/services/data-freshness";
 import { db } from "@/lib/db";
 import { streetSlug } from "@/lib/utils/slug";
 import { suburbTitle, suburbDescription } from "@/lib/utils/seo";
@@ -70,7 +70,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
   const [properties, crimeStat, streets] = await Promise.all([
     getPropertiesBySuburb(slug, 6),
-    getLatestSuburbCrime(slug),
+    getSuburbCrimeWithLgaFallback(slug, suburb.state, suburb.region),
     db.propertyAddress.groupBy({
       by: ["streetName", "streetType", "streetSuffix"],
       where: { suburbSlug: slug },
@@ -328,6 +328,8 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                     offenceBreakdown: crimeStat.offenceBreakdown,
                     period: crimeStat.period,
                     state: crimeStat.state,
+                    geoLevel: crimeStat.geoLevel,
+                    lgaName: crimeStat.lgaName,
                   }
                 : null
             }
@@ -335,7 +337,9 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           <DataFreshnessNote
             label="Crime"
             asOf={suburb.dataFreshness?.crimeAsOf ?? null}
-            source="State Police Open Data"
+            source={crimeStat?.geoLevel === "lga"
+              ? `State Police Open Data — ${crimeStat.lgaName} (LGA-wide)`
+              : "State Police Open Data"}
           />
         </section>
 

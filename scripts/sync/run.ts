@@ -22,6 +22,7 @@ import { run as syncCrimeQld }    from "./sources/crime-qld";
 import { run as syncCrimeSa }     from "./sources/crime-sa";
 import { run as syncCrimeWa }       from "./sources/crime-wa";
 import { run as syncCrimeAct }      from "./sources/crime-act";
+import { run as syncCrimeNt }       from "./sources/crime-nt";
 import { run as syncSalesAbs }      from "./sources/sales-abs";
 import { run as syncHousingRai }    from "./sources/housing-rai";
 import { run as importSuburbs }     from "./sources/import-suburbs";
@@ -87,6 +88,7 @@ const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" 
   "crime-sa":       { run: syncCrimeSa,      schedule: "quarterly" },
   "crime-wa":       { run: syncCrimeWa,      schedule: "annual"    },
   "crime-act":      { run: syncCrimeAct,     schedule: "quarterly" },
+  "crime-nt":       { run: syncCrimeNt,      schedule: "quarterly" },
   "sales-abs":      { run: syncSalesAbs,     schedule: "annual"    },
   "housing-rai":    { run: syncHousingRai,   schedule: "annual"    },
   "sales-vic":             { run: syncSalesVic,     schedule: "quarterly" },
