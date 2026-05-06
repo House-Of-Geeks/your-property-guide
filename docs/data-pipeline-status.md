@@ -42,10 +42,31 @@ Per commit `16ddec9`, four cron services run on Railway production:
 
 ## Open TODOs (data side)
 
-### High value
-1. **WA crime URL** — find new wa.gov.au URL since Oct 2024 migration. Set `WA_CRIME_EXCEL_URL` env var; existing `crime-wa.ts` will then work.
-2. **Hazard sync investigation** — `hazard-flood` and `hazard-bushfire` run with `status=ok` but write 0 rows to `SuburbHazard`. Likely a query/parsing/insert bug. Without this, suburb risk badges (flood, bushfire) never display.
-3. **Run `walkability` once** — manually kick off the Railway cron service or wait until Apr 1 2027. Without it `walkScore` / `transitScore` / `bikeScore` fields are all null on every suburb page.
+### High value — confirmed broken upstream sources
+
+#### `hazard-flood` — GA AFRIP retired the polygon WFS
+- Old URL `https://www.ga.gov.au/geoserver/ows?service=WFS&typeName=AFRIP:FHZ_Level_1` → 404.
+- AFRIP migrated to ArcGIS Online (item `40a5a6f713724c44994406bf6369cd17`, REST: `https://services-ap1.arcgis.com/ypkPEy1AmwPKGNNv/arcgis/rest/services/flood_study_summary_3ce61/FeatureServer`).
+- New service has **POINT-only flood-study metadata**, NOT polygon flood-hazard zones. The original `FHZ_Level_1` data is no longer published.
+- **Fix**: rewrite `hazard-flood.ts` to either (a) aggregate per-suburb risk from `PropertyOverlay` rows already populated by `flood-nsw/vic/qld/wa/act` ingests, or (b) query each state's flood feature service directly (different endpoint per state).
+
+#### `hazard-bushfire` — 4 of 5 state URLs stale
+| State | Status | Replacement candidate |
+|---|---|---|
+| NSW | ✅ 200 OK | (current URL works — script needs deeper debug for why 0 rows) |
+| VIC | ❌ "Feature type unknown" | `discover.data.vic.gov.au/dataset/designated-bushfire-prone-area-bpa` |
+| QLD | ❌ "Service not found" | `data.qld.gov.au/dataset/bushfire-prone-area-queensland-series` (multiple regional resources) |
+| SA | ❌ 404 | `https://www.dptiapps.com.au/dataportal/BushfireProtectionAreas_geojson.zip` |
+| WA | ❌ HTML page | Hunt on `data.wa.gov.au` |
+
+#### `crime-wa` — no suburb-level data published
+WA Police migrated to wa.gov.au Oct 2024 and never republished suburb-level data. Power BI only covers districts. Third-party aggregators (Burb Score, OpenStats, Red Suburbs) repackage scraped data with no API. Practical options: (a) accept gap, (b) contact WA Police, (c) scrape Power BI (fragile).
+
+#### `crime-tas` — PDF only
+Tasmania Police only publishes annual Crime Statistics Supplements as PDFs. No structured CSV/XLSX/JSON. Would need ~half-day dev to add a `pdfplumber`-based parser if worth doing.
+
+### Medium value
+1. **`walkability` first run** — kicked off in this session; ~5 hours due to Overpass throttling. Will continue running after session ends.
 
 ### Medium value
 4. **TAS crime** — only published as PDF annual reports. Would need PDF parsing (likely several hours of dev to do reliably). May not be worth it.
