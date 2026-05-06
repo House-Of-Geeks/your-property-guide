@@ -250,7 +250,7 @@ export function RentalYieldCalculator() {
       <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
         <h2 className="text-lg font-semibold text-gray-900">
           Loan Details{" "}
-          <span className="text-sm font-normal text-gray-400">(optional — for cash flow)</span>
+          <span className="text-sm font-normal text-gray-400">(optional, for cash flow)</span>
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <NumberInput

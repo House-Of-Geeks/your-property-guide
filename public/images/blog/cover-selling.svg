@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none" role="img" aria-label="Selling property article cover" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="cs-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7f6f4"/>
+      <stop offset="100%" stop-color="#A96DAA" stop-opacity="0.22"/>
+    </linearGradient>
+    <linearGradient id="cs-house" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#374151"/>
+      <stop offset="100%" stop-color="#1f2937"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#cs-bg)"/>
+
+  <!-- Soft accent glow upper-left -->
+  <circle cx="200" cy="100" r="200" fill="#DD3C70" opacity="0.10"/>
+  <circle cx="200" cy="100" r="130" fill="#DD3C70" opacity="0.14"/>
+
+  <!-- Distant treeline -->
+  <g opacity="0.18">
+    <ellipse cx="120" cy="380" rx="120" ry="28" fill="#5c2d5e"/>
+    <ellipse cx="700" cy="380" rx="140" ry="26" fill="#5c2d5e"/>
+  </g>
+
+  <!-- Distant rear roofline -->
+  <path d="M 470 360 L 600 250 L 730 360 Z" fill="#5c2d5e" opacity="0.28"/>
+
+  <!-- Main house -->
+  <path d="M 240 290 L 440 130 L 640 290 L 640 410 L 240 410 Z" fill="url(#cs-house)"/>
+  <path d="M 220 290 L 440 122 L 660 290" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Chimney with sloped bottom + smoke wisp -->
+  <polygon points="568,140 590,140 590,232 568,212" fill="#1f2937"/>
+  <rect x="563" y="132" width="32" height="9" fill="#1f2937"/>
+  <path d="M 580 132 Q 572 102, 580 80 Q 590 56, 580 38" stroke="#5c2d5e" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.45"/>
+
+  <!-- Door (closed, primary aubergine for selling) -->
+  <path d="M 408 310 L 408 410 L 472 410 L 472 310 Q 472 302, 464 302 L 416 302 Q 408 302, 408 310 Z" fill="#5c2d5e"/>
+  <circle cx="462" cy="370" r="4" fill="#f7f6f4"/>
+
+  <!-- Steps -->
+  <rect x="400" y="408" width="80" height="6" fill="#5c2d5e" opacity="0.7"/>
+
+  <!-- Left window -->
+  <g>
+    <rect x="280" y="298" width="64" height="64" fill="#f7f6f4"/>
+    <rect x="280" y="298" width="64" height="64" fill="#FBBF77" opacity="0.30"/>
+    <line x1="312" y1="298" x2="312" y2="362" stroke="#1f2937" stroke-width="2.4"/>
+    <line x1="280" y1="330" x2="344" y2="330" stroke="#1f2937" stroke-width="2.4"/>
+    <rect x="280" y="298" width="64" height="64" stroke="#1f2937" stroke-width="3" fill="none"/>
+    <rect x="274" y="362" width="76" height="6" fill="#1f2937"/>
+  </g>
+
+  <!-- Right window -->
+  <g>
+    <rect x="544" y="298" width="64" height="64" fill="#f7f6f4"/>
+    <rect x="544" y="298" width="64" height="64" fill="#FBBF77" opacity="0.30"/>
+    <line x1="576" y1="298" x2="576" y2="362" stroke="#1f2937" stroke-width="2.4"/>
+    <line x1="544" y1="330" x2="608" y2="330" stroke="#1f2937" stroke-width="2.4"/>
+    <rect x="544" y="298" width="64" height="64" stroke="#1f2937" stroke-width="3" fill="none"/>
+    <rect x="538" y="362" width="76" height="6" fill="#1f2937"/>
+  </g>
+
+  <!-- Big "FOR SALE" sign in foreground left -->
+  <g transform="translate(70, 230)">
+    <!-- Post -->
+    <rect x="64" y="0" width="6" height="180" fill="#1f2937"/>
+    <!-- Sign panel -->
+    <g transform="rotate(-3 80 70)">
+      <rect x="0" y="0" width="160" height="120" rx="6" fill="#f7f6f4" stroke="#1f2937" stroke-width="3"/>
+      <rect x="0" y="0" width="160" height="32" rx="6" fill="#5c2d5e"/>
+      <rect x="0" y="14" width="160" height="18" fill="#5c2d5e"/>
+      <text x="80" y="22" text-anchor="middle" font-family="Georgia, serif" font-size="16" font-style="italic" fill="#f7f6f4">For Sale</text>
+      <!-- Photo area -->
+      <rect x="10" y="42" width="92" height="64" fill="#A96DAA" opacity="0.45" rx="2"/>
+      <!-- Lines for agent info -->
+      <line x1="108" y1="50" x2="148" y2="50" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+      <line x1="108" y1="62" x2="148" y2="62" stroke="#1f2937" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+      <line x1="108" y1="74" x2="138" y2="74" stroke="#1f2937" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+      <line x1="108" y1="86" x2="148" y2="86" stroke="#1f2937" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+      <line x1="108" y1="98" x2="142" y2="98" stroke="#1f2937" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+    </g>
+  </g>
+
+  <!-- Ground -->
+  <line x1="0" y1="412" x2="800" y2="412" stroke="#1f2937" stroke-width="2" opacity="0.6"/>
+</svg>

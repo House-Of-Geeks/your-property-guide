@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, TrendingUp } from "lucide-react";
-import { Button } from "@/components/ui";
 import { getFeaturedSuburbs } from "@/lib/services/suburb-service";
 import { db } from "@/lib/db";
 import { formatPrice, formatPercentage } from "@/lib/utils/format";
@@ -15,18 +14,30 @@ export async function SuburbSpotlight() {
   const hazardMap = Object.fromEntries(hazards.map((h) => [h.suburbSlug, h]));
 
   return (
-    <section className="py-16 bg-white border-t border-[#e8e6e2]">
+    <section className="py-16 sm:py-20 bg-surface-raised border-t border-line">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between mb-8">
-          <div>
-            <h2 className="text-3xl font-bold text-black">Explore suburb data</h2>
-            <p className="text-gray-500 mt-1">Median prices, growth trends and local insights</p>
+        <div className="grid lg:grid-cols-12 gap-8 mb-10">
+          <div className="lg:col-span-7">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg bg-surface-warm border border-line-warm flex items-center justify-center shrink-0">
+                <img src="/images/icons/map.svg" alt="" width={24} height={24} className="w-6 h-6" aria-hidden="true" />
+              </div>
+              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle">
+                Explore suburb data
+              </p>
+            </div>
+            <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
+              Six suburbs <span className="italic text-primary">worth a look</span>.
+            </h2>
           </div>
-          <Link href="/suburbs" className="hidden sm:block">
-            <Button variant="outline" size="sm">
-              All Suburbs <ArrowRight className="w-4 h-4" />
-            </Button>
-          </Link>
+          <div className="lg:col-span-4 lg:col-start-9 flex items-end justify-end">
+            <Link
+              href="/suburbs"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-primary transition-colors border-b border-line-strong hover:border-primary pb-0.5"
+            >
+              All suburbs <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {suburbs.map((suburb) => {

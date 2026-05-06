@@ -1,389 +1,346 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
-import { SITE_URL, SITE_NAME } from "@/lib/constants";
+import {
+  GuideArticleLayout,
+  Callout,
+  type GuideFrontmatter,
+  type GuideTOCEntry,
+  type FaqItem,
+  type RelatedGuide,
+} from "@/components/guide";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { guideOgImages } from "@/lib/og/helpers";
+
+const FRONTMATTER: GuideFrontmatter = {
+  title: "Renter's Rights in the Northern Territory: Complete Guide (2026)",
+  description:
+    "NT tenant rights: bond rules, rent increases (30 days notice), tropical-climate urgent repairs, remote community housing, and NTCAT dispute resolution.",
+  slug: "renters-rights-nt",
+  publishedAt: "2026-04-01",
+  updatedAt: "2026-04-15",
+  readingTimeMinutes: 9,
+  author: { name: "Your Property Guide editorial", role: "Australian property research" },
+  reviewedBy: { name: "Andy McMaster", role: "Editor" },
+};
 
 export const metadata: Metadata = {
-  title: `Renter's Rights in the Northern Territory: Complete Guide (2026) | ${SITE_NAME}`,
-  description:
-    "Complete guide to tenant rights in the Northern Territory. Bond rules, rent increases (30 days notice), remote community housing, NTCAT dispute resolution, and key NT tenancy protections. Updated 2026.",
-  alternates: { canonical: `${SITE_URL}/guides/renters-rights-nt` },
+  title: `${FRONTMATTER.title} | ${SITE_NAME}`,
+  description: FRONTMATTER.description,
+  alternates: { canonical: `${SITE_URL}/guides/${FRONTMATTER.slug}` },
   openGraph: {
-    url: `${SITE_URL}/guides/renters-rights-nt`,
-    title: "Renter's Rights in the Northern Territory: Complete Guide (2026)",
-    description:
-      "Complete guide to tenant rights in the Northern Territory. Bond rules, rent increases (30 days notice), remote community housing, NTCAT dispute resolution, and key NT tenancy protections. Updated 2026.",
+    url: `${SITE_URL}/guides/${FRONTMATTER.slug}`,
+    title: FRONTMATTER.title,
+    description: FRONTMATTER.description,
     type: "article",
+    publishedTime: FRONTMATTER.publishedAt,
+    modifiedTime: FRONTMATTER.updatedAt,
+    images: guideOgImages({
+      slug: FRONTMATTER.slug,
+      title: FRONTMATTER.title,
+      description: FRONTMATTER.description,
+      persona: FRONTMATTER.persona,
+    }),
   },
 };
 
+const TLDR = [
+  "Maximum bond is 4 weeks rent. Lodged with NT Consumer Affairs within 7 days of receipt.",
+  "Rent increases on periodic tenancies require 30 days written notice. Unlike NSW, VIC, TAS, the NT does NOT have a 12-month minimum between increases.",
+  "Air conditioning breakdown is an urgent repair in the NT, particularly during the wet season or extreme heat.",
+  "Periodic tenancy notice: 14 days from tenant, 42 days from landlord (no grounds), 14 days from either side with grounds.",
+  "Disputes go to the NT Civil and Administrative Tribunal (NTCAT), accessible without legal representation for most matters.",
+  "Remote Aboriginal community housing operates under different frameworks. Contact NAAJA or CAALAS for specialist advice.",
+];
+
+const TOC: GuideTOCEntry[] = [
+  { id: "rta",            label: "Residential Tenancies Act 1999 (NT)" },
+  { id: "lease-types",    label: "Lease types" },
+  { id: "bond",           label: "Bond rules" },
+  { id: "rent-increases", label: "Rent increases" },
+  { id: "inspections",    label: "Routine inspections" },
+  { id: "repairs",        label: "Repairs and maintenance" },
+  { id: "ending-tenancy", label: "Ending a tenancy" },
+  { id: "remote-housing", label: "Remote community housing" },
+  { id: "disputes",       label: "Resolving disputes via NTCAT" },
+  { id: "resources",      label: "Resources and contacts" },
+];
+
+const FAQS: FaqItem[] = [
+  {
+    question: "Can my landlord raise my rent every month in the NT?",
+    answer:
+      "Theoretically yes, in a periodic tenancy. The NT requires 30 days written notice but doesn't impose a statutory 12-month minimum between increases (unlike NSW, VIC, and TAS). If you're facing frequent increases, you can negotiate, accept, or give 14 days notice to vacate. Contact NT Consumer Affairs if you suspect retaliation.",
+  },
+  {
+    question: "Is air conditioning a 'right' in NT rentals?",
+    answer:
+      "Where AC is installed and provided as part of the property, breakdown is treated as an urgent repair, particularly during the wet season or extreme heat. Tropical conditions make AC essential for habitability in many properties. Always notify the landlord in writing of any AC failure.",
+  },
+  {
+    question: "How does remote community housing differ?",
+    answer:
+      "Remote Aboriginal communities often have housing managed by the NT Housing Authority or under specific land tenure arrangements (Aboriginal freehold, statutory rights), not standard freehold or Crown Lease. Different rules and rent scales apply. Contact NAAJA (North Australian Aboriginal Justice Agency) or CAALAS for specialist legal advice in remote contexts.",
+  },
+  {
+    question: "How much bond can be charged in the NT?",
+    answer:
+      "Maximum 4 weeks rent for most circumstances. Special cases like pet bonds may allow more. The bond must be lodged with NT Consumer Affairs within 7 days of the landlord receiving it, and you should get a receipt confirming lodgement.",
+  },
+  {
+    question: "Can I break my fixed-term lease early?",
+    answer:
+      "Yes, but typically you'll be liable for rent until a new tenant is found, plus reasonable re-letting costs. Exemptions apply for family violence, loss of employment, or the property becoming uninhabitable. Get advice from NT Consumer Affairs before vacating early.",
+  },
+  {
+    question: "What does NTCAT handle?",
+    answer:
+      "Bond disputes, rent increase challenges, repair orders, unlawful entry complaints, termination disputes, and compensation claims. Applications can be lodged online or in person. Fees are modest and the process is designed for self-representation. Try to resolve the dispute directly first; NTCAT will want to see evidence of attempts at informal resolution.",
+  },
+];
+
+const RELATED: RelatedGuide[] = [
+  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "Compare NT to NSW where 12-month rent-increase minimum applies." },
+  { title: "Renter's Rights in Victoria", href: "/guides/renters-rights-vic", description: "VIC's 2021 reforms abolished no-grounds evictions." },
+  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD's 2024 reforms toward grounds-based evictions." },
+  { title: "Renter's Rights in WA",       href: "/guides/renters-rights-wa",  description: "WA's Residential Tenancies Act and no dedicated tribunal." },
+  { title: "First Home Buyer Guide NT",   href: "/guides/first-home-buyer-nt", description: "When you're ready to stop renting and buy your first home." },
+];
+
 export default function RentersRightsNTPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-      <BreadcrumbJsonLd
-        items={[
-          { name: "Guides", url: "/guides" },
-          { name: "Renter's Rights NT", url: "/guides/renters-rights-nt" },
-        ]}
-      />
-      <GuideArticleJsonLd
-        title="Renter's Rights in the Northern Territory: Complete Guide (2026)"
-        description="Complete guide to tenant rights in the Northern Territory. Bond rules, rent increases (30 days notice), remote community housing, NTCAT dispute resolution, and key NT tenancy protections. Updated 2026."
-        url="/guides/renters-rights-nt"
-        datePublished="2026-04-01"
-      />
-      <Breadcrumbs
-        items={[
-          { label: "Guides", href: "/guides" },
-          { label: "Renter's Rights NT" },
-        ]}
-      />
+    <GuideArticleLayout
+      frontmatter={FRONTMATTER}
+      tldr={TLDR}
+      toc={TOC}
+      faqs={FAQS}
+      related={RELATED}
+    >
+      <Callout variant="warning" title="Not legal advice">
+        <p>
+          This guide is general information only, not legal advice. NT tenancy
+          law, particularly remote community housing, can be complex. Verify
+          current rules with{" "}
+          <a href="https://www.consumeraffairs.nt.gov.au" target="_blank" rel="noopener noreferrer">
+            NT Consumer Affairs
+          </a>{" "}
+          or seek legal advice before taking action.
+        </p>
+      </Callout>
 
-      <div className="max-w-3xl mx-auto">
-        <p className="text-sm text-gray-500 mb-2">Last updated: April 2026 · 9 min read</p>
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">
-          Renter&apos;s Rights in the Northern Territory: Complete Guide (2026)
-        </h1>
+      <h2 id="rta">The Residential Tenancies Act 1999 (NT)</h2>
+      <p className="lead">
+        Residential tenancies in the NT are governed by the Residential
+        Tenancies Act 1999 (NT). It sets out the rights and obligations of
+        tenants and landlords from the signing of a tenancy agreement through
+        to bond refunds and termination.
+      </p>
+      <p>
+        The Act is administered by NT Consumer Affairs, a division of the
+        Department of the Attorney-General and Justice. NT Consumer Affairs
+        provides information, investigates complaints, and assists with dispute
+        resolution.
+      </p>
+      <p>
+        Applies to most private residential tenancies in the NT, including
+        Darwin urban properties, Alice Springs rentals, and regional centres.
+        Government-owned housing and remote community housing may have
+        different provisions, see the remote housing section below.
+      </p>
 
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-8 text-sm text-amber-800">
-          <strong>Legal disclaimer:</strong> This guide provides general information only and is
-          not legal advice. NT tenancy law — particularly regarding remote community housing —
-          can be complex and subject to change. Always verify current rules with NT Consumer
-          Affairs (consumeraffairs.nt.gov.au) or seek legal advice before taking action.
-        </div>
+      <h2 id="lease-types">Lease types</h2>
+      <ul>
+        <li>
+          <strong>Fixed term:</strong> Agreed start and end dates. Neither
+          party can end without grounds during the term (limited exceptions
+          such as family violence). Rent can't be increased unless the increase
+          is specified in the agreement.
+        </li>
+        <li>
+          <strong>Periodic:</strong> Ongoing tenancy with no fixed end date,
+          often created when a fixed term lease expires and isn't renewed.
+          Either party can end it with appropriate notice.
+        </li>
+      </ul>
+      <p>
+        All NT residential tenancy agreements must be in writing. The landlord
+        must provide a copy of the signed agreement to the tenant within 14
+        days. Verbal agreements are not sufficient.
+      </p>
 
-        <div className="bg-gray-50 rounded-xl p-4 mb-8 border border-gray-200">
-          <p className="text-sm font-semibold text-gray-700 mb-2">In this guide</p>
-          <ul className="space-y-1 text-sm text-primary">
-            <li><a href="#rta" className="hover:underline">The Residential Tenancies Act 1999 (NT)</a></li>
-            <li><a href="#lease-types" className="hover:underline">Lease types</a></li>
-            <li><a href="#bond" className="hover:underline">Bond rules</a></li>
-            <li><a href="#rent-increases" className="hover:underline">Rent increases</a></li>
-            <li><a href="#inspections" className="hover:underline">Routine inspections</a></li>
-            <li><a href="#repairs" className="hover:underline">Repairs and maintenance</a></li>
-            <li><a href="#ending-tenancy" className="hover:underline">Ending a tenancy</a></li>
-            <li><a href="#remote-housing" className="hover:underline">Remote community housing</a></li>
-            <li><a href="#disputes" className="hover:underline">Resolving disputes: NTCAT</a></li>
-            <li><a href="#resources" className="hover:underline">Resources and contacts</a></li>
-          </ul>
-        </div>
+      <h2 id="bond">Bond rules</h2>
+      <ul>
+        <li><strong>Maximum bond:</strong> 4 weeks rent. Special circumstances (e.g. pet bond) may allow more.</li>
+        <li><strong>Lodgement:</strong> Must be lodged with NT Consumer Affairs within 7 days of receipt. You should receive a confirmation receipt.</li>
+        <li><strong>Condition report:</strong> Complete a thorough ingoing condition report at the start. Critical for protecting against unfair bond deductions.</li>
+        <li><strong>Refund:</strong> The full bond must be refunded if the property is in the same condition as on move-in (allowing fair wear and tear). Deductions must be for legitimate repairs or cleaning.</li>
+      </ul>
+      <p>
+        Disputes about bond deductions are handled by NTCAT. Both parties can
+        apply for a hearing.
+      </p>
 
-        <div className="prose prose-gray max-w-none">
+      <h2 id="rent-increases">Rent increases</h2>
+      <ul>
+        <li><strong>Notice required:</strong> At least 30 days written notice before any rent increase</li>
+        <li>
+          <strong>No minimum period between increases:</strong> Unlike NSW,
+          VIC, and TAS, the NT does not specify a minimum period between
+          increases for periodic tenancies. Landlords can technically increase
+          every 30 days on a periodic tenancy with proper notice.
+        </li>
+        <li><strong>Fixed term:</strong> Rent can't be increased unless the agreement specifies the amount or method</li>
+      </ul>
+      <p>
+        No rent caps. If you're in a periodic tenancy and facing frequent
+        increases, your options are to negotiate, accept, or give 14 days
+        notice to vacate. Contact NT Consumer Affairs if you believe the
+        increase is retaliatory.
+      </p>
 
-          <h2 id="rta" className="text-2xl font-bold text-gray-900 mt-8 mb-4">The Residential Tenancies Act 1999 (NT)</h2>
-          <p className="text-gray-600 mb-4">
-            Residential tenancies in the Northern Territory are governed by the{" "}
-            <strong>Residential Tenancies Act 1999 (NT)</strong>. This Act sets out the rights and
-            obligations of both tenants and landlords, from the signing of a tenancy agreement
-            through to bond refunds and the termination of a lease.
-          </p>
-          <p className="text-gray-600 mb-4">
-            The Act is administered by <strong>NT Consumer Affairs</strong>, a division of the
-            Department of the Attorney-General and Justice. NT Consumer Affairs can provide
-            information, investigate complaints, and assist with dispute resolution.
-          </p>
-          <p className="text-gray-600 mb-4">
-            The Act applies to most private residential tenancies in the NT, including Darwin
-            urban properties, Alice Springs rentals, and regional centres. However, government-owned
-            housing (managed by the NT Housing Authority) and remote community housing may have
-            different provisions — see the remote housing section below.
-          </p>
+      <h2 id="inspections">Routine inspections</h2>
+      <ul>
+        <li><strong>Notice required:</strong> Reasonable written notice, the standard is at least 24 hours</li>
+        <li><strong>Frequency:</strong> Inspections must not be conducted excessively. Quarterly is generally accepted as reasonable; monthly would likely be considered excessive.</li>
+        <li><strong>Emergency:</strong> Genuine emergencies (flood, gas leak, structural failure) allow no-notice entry.</li>
+      </ul>
+      <p>
+        If inspections happen too frequently or without proper notice, document
+        each occurrence and contact NT Consumer Affairs.
+      </p>
 
-          <h2 id="lease-types" className="text-2xl font-bold text-gray-900 mt-8 mb-4">Lease Types</h2>
-          <p className="text-gray-600 mb-4">
-            The NT Residential Tenancies Act recognises two main types of tenancy:
-          </p>
-          <ul className="list-disc list-inside text-gray-600 mb-4 space-y-2">
-            <li>
-              <strong>Fixed term tenancy:</strong> A tenancy with an agreed start and end date.
-              During the fixed term, neither party can end the agreement without grounds (except
-              in limited circumstances such as family violence). The landlord cannot increase
-              rent during a fixed term unless the increase is specified in the agreement.
-            </li>
-            <li>
-              <strong>Periodic tenancy:</strong> An ongoing tenancy with no fixed end date,
-              often created when a fixed term lease expires and is not renewed. Either party
-              can end a periodic tenancy with appropriate notice.
-            </li>
-          </ul>
-          <p className="text-gray-600 mb-4">
-            All residential tenancy agreements in the NT must be in writing. The landlord must
-            provide a copy of the signed agreement to the tenant within 14 days. A verbal
-            agreement is not sufficient for a formal residential tenancy.
-          </p>
+      <h2 id="repairs">Repairs and maintenance</h2>
+      <p>
+        The landlord has a legal duty to maintain the property in a reasonable
+        state of repair. Repairs are categorised as urgent or general.
+      </p>
 
-          <h2 id="bond" className="text-2xl font-bold text-gray-900 mt-8 mb-4">Bond Rules</h2>
-          <p className="text-gray-600 mb-4">
-            In the NT, a bond may be collected at the start of a tenancy as a security deposit.
-          </p>
-          <ul className="list-disc list-inside text-gray-600 mb-4 space-y-2">
-            <li>
-              <strong>Maximum bond:</strong> 4 weeks rent. A landlord cannot legally charge more
-              unless special circumstances apply (e.g. pet bond in some cases).
-            </li>
-            <li>
-              <strong>Lodgement:</strong> The landlord must lodge the bond with{" "}
-              <strong>NT Consumer Affairs</strong> within 7 days of receiving it. You should
-              receive a receipt confirming lodgement.
-            </li>
-            <li>
-              <strong>Condition report:</strong> Complete a thorough ingoing condition report at
-              the start of the tenancy. This is critical — it establishes the baseline condition
-              of the property and protects you against unfair bond deductions at the end.
-            </li>
-            <li>
-              <strong>Bond refund:</strong> At the end of the tenancy, the bond must be refunded
-              in full if the property is in the same condition as when you moved in, allowing for
-              fair wear and tear. If the landlord makes deductions, they must be for legitimate
-              repairs or cleaning only.
-            </li>
-          </ul>
-          <p className="text-gray-600 mb-4">
-            Disputes about bond deductions are handled by the{" "}
-            <strong>NT Civil and Administrative Tribunal (NTCAT)</strong>. Both parties can apply
-            for a hearing to resolve the dispute.
-          </p>
+      <h3>Urgent repairs</h3>
+      <p>
+        Urgent repairs make the property uninhabitable, unsafe, or affect an
+        essential service. The landlord must arrange these as soon as possible.
+        In Darwin's tropical climate, urgent repairs also include:
+      </p>
+      <ul>
+        <li>Air conditioning breakdown (during wet season or extreme heat)</li>
+        <li>Water supply failure</li>
+        <li>Gas or electrical faults</li>
+        <li>Burst water pipe or serious leak</li>
+        <li>Cyclone or storm damage</li>
+        <li>Broken roof or flooding</li>
+      </ul>
+      <p>
+        Always notify the landlord of urgent repairs in writing. If they fail
+        to act, you may be able to arrange repairs and seek reimbursement, but
+        get advice from NT Consumer Affairs first.
+      </p>
 
-          <h2 id="rent-increases" className="text-2xl font-bold text-gray-900 mt-8 mb-4">Rent Increases</h2>
-          <p className="text-gray-600 mb-4">
-            The NT has relatively straightforward rules around rent increases compared to some
-            other states:
-          </p>
-          <ul className="list-disc list-inside text-gray-600 mb-4 space-y-2">
-            <li>
-              <strong>Notice required:</strong> The landlord must give at least{" "}
-              <strong>30 days written notice</strong> before a rent increase takes effect.
-            </li>
-            <li>
-              <strong>No minimum period between increases:</strong> Unlike NSW, Victoria, and
-              Tasmania, the NT <em>does not</em> specify a minimum period between rent increases
-              for periodic tenancies. Landlords can technically increase rent every 30 days on
-              a periodic tenancy, provided proper notice is given each time.
-            </li>
-            <li>
-              <strong>Fixed term:</strong> Rent cannot be increased during a fixed-term tenancy
-              unless the tenancy agreement specifically provides for an increase and specifies
-              the amount or method of calculation.
-            </li>
-          </ul>
-          <p className="text-gray-600 mb-4">
-            There are no rent caps in the NT. If you are in a periodic tenancy and facing frequent
-            rent increases, your options are to negotiate, accept, or give 14 days notice to vacate.
-            Contact NT Consumer Affairs if you believe the increase is retaliatory.
-          </p>
+      <h3>General (non-urgent) repairs</h3>
+      <p>
+        Submit a written request and allow a reasonable time. Keep copies of
+        all correspondence. If repairs aren't completed within a reasonable
+        period, apply to NTCAT for a repair order.
+      </p>
 
-          <h2 id="inspections" className="text-2xl font-bold text-gray-900 mt-8 mb-4">Routine Inspections</h2>
-          <p className="text-gray-600 mb-4">
-            Landlords have the right to inspect the rental property, but must do so in a way that
-            does not unreasonably interfere with the tenant&apos;s quiet enjoyment.
-          </p>
-          <ul className="list-disc list-inside text-gray-600 mb-4 space-y-2">
-            <li>
-              <strong>Notice required:</strong> Reasonable written notice must be given before
-              a routine inspection. The standard is considered to be at least 24 hours.
-            </li>
-            <li>
-              <strong>Frequency:</strong> Inspections must not be conducted excessively. The
-              Act requires a &quot;reasonable&quot; approach — regular monthly inspections would likely
-              be considered unreasonable; quarterly inspections are generally accepted as
-              reasonable.
-            </li>
-            <li>
-              <strong>Emergency:</strong> In a genuine emergency (flood, gas leak, structural
-              failure), the landlord or their agent may enter without notice.
-            </li>
-          </ul>
-          <p className="text-gray-600 mb-4">
-            If you feel inspections are occurring too frequently or without proper notice, document
-            each occurrence and contact NT Consumer Affairs.
-          </p>
+      <h2 id="ending-tenancy">Ending a tenancy</h2>
+      <table>
+        <thead>
+          <tr><th>Situation</th><th>Tenant notice</th><th>Landlord notice</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Periodic, no grounds</td><td>14 days</td><td>42 days</td></tr>
+          <tr><td>Periodic, with grounds (breach)</td><td>14 days</td><td>14 days</td></tr>
+          <tr><td>Fixed term, end of term</td><td>Per agreement</td><td>Per agreement</td></tr>
+        </tbody>
+      </table>
+      <p>
+        <strong>Breaking a fixed-term lease early</strong> can result in
+        financial penalties: typically rent until a new tenant is found, plus
+        re-letting costs. Exemptions: family violence, loss of employment, or
+        the property becoming uninhabitable.
+      </p>
 
-          <h2 id="repairs" className="text-2xl font-bold text-gray-900 mt-8 mb-4">Repairs and Maintenance</h2>
-          <p className="text-gray-600 mb-4">
-            The landlord has a legal duty to maintain the property in a reasonable state of repair
-            throughout the tenancy. Repairs in the NT are categorised as urgent or general.
-          </p>
+      <h2 id="remote-housing">Remote community housing</h2>
+      <p>
+        The NT has a unique housing challenge: a significant proportion of the
+        population lives in remote Aboriginal communities, where housing
+        arrangements often differ substantially from standard residential
+        tenancies.
+      </p>
+      <ul>
+        <li>
+          <strong>Government-managed housing:</strong> Many remote homes are
+          managed by the NT Housing Authority (formerly Territory Housing).
+          Different rules, rent scales, and obligations apply.
+        </li>
+        <li>
+          <strong>Land tenure:</strong> Often Aboriginal freehold or other
+          statutory land rights frameworks, not standard freehold or Crown
+          Lease.
+        </li>
+        <li>
+          <strong>SIHIP and successor programs:</strong> Past and current
+          remote housing programs have created complex tenancy arrangements
+          that may not be fully covered by the standard Act.
+        </li>
+        <li>
+          <strong>Cultural considerations:</strong> Housing officers and
+          community legal centres operating in remote NT have specialist
+          knowledge of the unique circumstances.
+        </li>
+      </ul>
+      <p>
+        If you're renting in a remote NT community, contact the North Australian
+        Aboriginal Justice Agency (NAAJA) or Central Australian Aboriginal Legal
+        Aid Service (CAALAS) for specialist advice.
+      </p>
 
-          <h3 className="text-lg font-semibold text-gray-900 mt-4 mb-2">Urgent repairs</h3>
-          <p className="text-gray-600 mb-4">
-            Urgent repairs are those that make the property uninhabitable, unsafe, or that involve
-            an essential service. The landlord must arrange urgent repairs as soon as possible.
-            In Darwin&apos;s tropical climate, urgent repairs also include:
-          </p>
-          <ul className="list-disc list-inside text-gray-600 mb-4 space-y-1 text-sm">
-            <li>Air conditioning breakdown (particularly during the wet season or extreme heat)</li>
-            <li>Water supply failure</li>
-            <li>Gas or electrical faults</li>
-            <li>Burst water pipe or serious leak</li>
-            <li>Cyclone damage or storm damage</li>
-            <li>Broken roof or flooding</li>
-          </ul>
-          <p className="text-gray-600 mb-4">
-            Always notify the landlord of urgent repairs in writing. If the landlord fails to act,
-            you may be able to arrange repairs and seek reimbursement — but get legal advice from
-            NT Consumer Affairs before doing so.
-          </p>
+      <h2 id="disputes">Resolving disputes, NTCAT</h2>
+      <p>
+        The NT Civil and Administrative Tribunal (NTCAT) is the primary body
+        for residential tenancy disputes in the NT. NTCAT handles:
+      </p>
+      <ul>
+        <li>Bond disputes</li>
+        <li>Rent increase challenges</li>
+        <li>Repair order applications</li>
+        <li>Unlawful entry complaints</li>
+        <li>Termination disputes</li>
+        <li>Compensation claims</li>
+      </ul>
+      <p>
+        Applications can be lodged online or in person. Fees are modest and the
+        process is designed for self-representation. For significant disputes,
+        seek advice from NT Consumer Affairs or a community legal centre.
+      </p>
+      <p>
+        Before applying to NTCAT, attempt direct resolution with your landlord
+        or agent and document all communications, NTCAT will want to see
+        evidence of attempts at informal resolution.
+      </p>
 
-          <h3 className="text-lg font-semibold text-gray-900 mt-4 mb-2">General (non-urgent) repairs</h3>
-          <p className="text-gray-600 mb-4">
-            For non-urgent repairs, submit a written request and allow a reasonable time for the
-            landlord to respond and arrange the work. Keep copies of all correspondence. If repairs
-            are not completed within a reasonable period, you can apply to NTCAT for a repair order.
-          </p>
-
-          <h2 id="ending-tenancy" className="text-2xl font-bold text-gray-900 mt-8 mb-4">Ending a Tenancy</h2>
-          <p className="text-gray-600 mb-4">
-            Notice periods in the NT for ending a tenancy:
-          </p>
-
-          <div className="overflow-x-auto mb-6">
-            <table className="w-full text-sm border-collapse">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="text-left p-3 font-semibold text-gray-700 border border-gray-200">Situation</th>
-                  <th className="text-left p-3 font-semibold text-gray-700 border border-gray-200">Tenant notice</th>
-                  <th className="text-left p-3 font-semibold text-gray-700 border border-gray-200">Landlord notice</th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-600">
-                <tr>
-                  <td className="p-3 border border-gray-200">Periodic tenancy — no grounds</td>
-                  <td className="p-3 border border-gray-200">14 days</td>
-                  <td className="p-3 border border-gray-200">42 days</td>
-                </tr>
-                <tr className="bg-gray-50">
-                  <td className="p-3 border border-gray-200">Periodic tenancy — with grounds (breach)</td>
-                  <td className="p-3 border border-gray-200">14 days</td>
-                  <td className="p-3 border border-gray-200">14 days</td>
-                </tr>
-                <tr>
-                  <td className="p-3 border border-gray-200">Fixed term — end of term</td>
-                  <td className="p-3 border border-gray-200">Per agreement</td>
-                  <td className="p-3 border border-gray-200">Per agreement</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <p className="text-gray-600 mb-4">
-            <strong>Breaking a fixed-term lease</strong> early can result in financial penalties —
-            typically rent until a new tenant is found, plus re-letting costs. Exemptions apply in
-            circumstances including family violence, loss of employment, or the property becoming
-            uninhabitable.
-          </p>
-
-          <h2 id="remote-housing" className="text-2xl font-bold text-gray-900 mt-8 mb-4">Remote Community Housing</h2>
-          <p className="text-gray-600 mb-4">
-            The NT has a unique housing challenge: a significant proportion of the population lives
-            in remote Aboriginal communities, where housing arrangements often differ substantially
-            from standard residential tenancies.
-          </p>
-          <p className="text-gray-600 mb-4">
-            Key differences in remote community housing:
-          </p>
-          <ul className="list-disc list-inside text-gray-600 mb-4 space-y-2">
-            <li>
-              <strong>Government-managed housing:</strong> Many remote community homes are managed
-              by the NT Housing Authority (formerly Territory Housing). Different rules, rent scales,
-              and obligations apply
-            </li>
-            <li>
-              <strong>Land tenure:</strong> Remote community land often operates under Aboriginal
-              freehold or other statutory land rights frameworks — not standard freehold or Crown
-              Lease tenure
-            </li>
-            <li>
-              <strong>SIHIP and subsequent programs:</strong> Past and current government housing
-              programs in remote areas have created complex tenancy arrangements that may not be
-              fully covered by the standard Residential Tenancies Act
-            </li>
-            <li>
-              <strong>Cultural considerations:</strong> Housing officers and community legal centres
-              operating in remote NT have specialist knowledge of the unique circumstances
-            </li>
-          </ul>
-          <p className="text-gray-600 mb-4">
-            If you are renting in a remote NT community, contact the{" "}
-            <strong>North Australian Aboriginal Justice Agency (NAAJA)</strong> or{" "}
-            <strong>Central Australian Aboriginal Legal Aid Service (CAALAS)</strong> for
-            specialist advice.
-          </p>
-
-          <h2 id="disputes" className="text-2xl font-bold text-gray-900 mt-8 mb-4">Resolving Disputes: NTCAT</h2>
-          <p className="text-gray-600 mb-4">
-            The <strong>NT Civil and Administrative Tribunal (NTCAT)</strong> is the primary body
-            for resolving residential tenancy disputes in the NT. NTCAT handles:
-          </p>
-          <ul className="list-disc list-inside text-gray-600 mb-4 space-y-1">
-            <li>Bond disputes</li>
-            <li>Rent increase challenges</li>
-            <li>Repair order applications</li>
-            <li>Unlawful entry complaints</li>
-            <li>Termination disputes</li>
-            <li>Compensation claims</li>
-          </ul>
-          <p className="text-gray-600 mb-4">
-            Applications can be lodged online or in person. Fees are modest and the process is
-            designed to be accessible without legal representation. However, for significant
-            disputes, it may be worth seeking legal advice from NT Consumer Affairs or a community
-            legal centre.
-          </p>
-          <p className="text-gray-600 mb-4">
-            Before applying to NTCAT, attempt to resolve the dispute directly with your landlord
-            or agent. Document all communications. NTCAT will want to see evidence that you have
-            tried to resolve the issue informally.
-          </p>
-
-          <h2 id="resources" className="text-2xl font-bold text-gray-900 mt-8 mb-4">Resources and Contacts</h2>
-          <ul className="list-disc list-inside text-gray-600 mb-4 space-y-2">
-            <li>
-              <strong>NT Consumer Affairs</strong> — Official tenancy regulator:{" "}
-              <a href="https://www.consumeraffairs.nt.gov.au" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">consumeraffairs.nt.gov.au</a>
-            </li>
-            <li>
-              <strong>NT Civil and Administrative Tribunal (NTCAT)</strong> — Dispute resolution:{" "}
-              <a href="https://www.ntcat.nt.gov.au" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">ntcat.nt.gov.au</a>
-            </li>
-            <li>
-              <strong>North Australian Aboriginal Justice Agency (NAAJA)</strong> — Legal aid for remote and Aboriginal communities:{" "}
-              <a href="https://www.naaja.org.au" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">naaja.org.au</a>
-            </li>
-            <li>
-              <strong>NT Legal Aid Commission</strong> — Free legal advice:{" "}
-              <a href="https://www.ntlac.nt.gov.au" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">ntlac.nt.gov.au</a>
-            </li>
-            <li>
-              <strong>NT Housing</strong> — Government housing information:{" "}
-              <a href="https://www.housing.nt.gov.au" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">housing.nt.gov.au</a>
-            </li>
-          </ul>
-
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mt-8">
-            <p className="text-sm text-blue-800">
-              <strong>Renting in Darwin or the NT?</strong> Browse{" "}
-              <Link href="/rent" className="underline hover:text-blue-900">NT rental properties</Link>{" "}
-              or use our{" "}
-              <Link href="/rental-yield-calculator" className="underline hover:text-blue-900">rental yield calculator</Link>{" "}
-              to understand the market.
-            </p>
-          </div>
-
-          <div className="mt-8 pt-6 border-t border-gray-200">
-            <p className="text-sm text-gray-500 font-semibold mb-2">Related guides</p>
-            <ul className="text-sm space-y-1">
-              <li><Link href="/guides/renters-rights-nsw" className="text-primary hover:underline">Renter&apos;s Rights in NSW</Link></li>
-              <li><Link href="/guides/renters-rights-vic" className="text-primary hover:underline">Renter&apos;s Rights in Victoria</Link></li>
-              <li><Link href="/guides/renters-rights-qld" className="text-primary hover:underline">Renter&apos;s Rights in Queensland</Link></li>
-              <li><Link href="/guides/renters-rights-wa" className="text-primary hover:underline">Renter&apos;s Rights in Western Australia</Link></li>
-              <li><Link href="/guides/renters-rights-sa" className="text-primary hover:underline">Renter&apos;s Rights in South Australia</Link></li>
-              <li><Link href="/guides/renters-rights-tas" className="text-primary hover:underline">Renter&apos;s Rights in Tasmania</Link></li>
-              <li><Link href="/guides/renters-rights-act" className="text-primary hover:underline">Renter&apos;s Rights in the ACT</Link></li>
-              <li><Link href="/guides/first-home-buyer-nt" className="text-primary hover:underline">First Home Buyer Guide Northern Territory</Link></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+      <h2 id="resources">Resources and contacts</h2>
+      <ul>
+        <li>
+          <strong>NT Consumer Affairs</strong>, official tenancy regulator:{" "}
+          <a href="https://www.consumeraffairs.nt.gov.au" target="_blank" rel="noopener noreferrer">consumeraffairs.nt.gov.au</a>
+        </li>
+        <li>
+          <strong>NT Civil and Administrative Tribunal (NTCAT)</strong>, dispute resolution:{" "}
+          <a href="https://www.ntcat.nt.gov.au" target="_blank" rel="noopener noreferrer">ntcat.nt.gov.au</a>
+        </li>
+        <li>
+          <strong>North Australian Aboriginal Justice Agency (NAAJA)</strong>, legal aid for remote and Aboriginal communities:{" "}
+          <a href="https://www.naaja.org.au" target="_blank" rel="noopener noreferrer">naaja.org.au</a>
+        </li>
+        <li>
+          <strong>NT Legal Aid Commission</strong>, free legal advice:{" "}
+          <a href="https://www.ntlac.nt.gov.au" target="_blank" rel="noopener noreferrer">ntlac.nt.gov.au</a>
+        </li>
+        <li>
+          <strong>NT Housing</strong>, government housing information:{" "}
+          <a href="https://www.housing.nt.gov.au" target="_blank" rel="noopener noreferrer">housing.nt.gov.au</a>
+        </li>
+      </ul>
+    </GuideArticleLayout>
   );
 }

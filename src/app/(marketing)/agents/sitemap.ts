@@ -1,5 +1,6 @@
-// Serve dynamically — the build-time prerender exhausts DB connections
-export const dynamic = "force-dynamic";
+// Build-time prerender exhausts DB connections, so we serve via on-demand
+// ISR instead of force-dynamic. Each crawler hit is a cache HIT for 24h.
+export const revalidate = 86400;
 
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants";

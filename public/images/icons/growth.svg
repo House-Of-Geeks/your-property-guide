@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-label="Growth">
+  <!-- Three ascending bars -->
+  <rect x="3"  y="14" width="4" height="7"  rx="0.6" fill="#374151"/>
+  <rect x="10" y="10" width="4" height="11" rx="0.6" fill="#374151"/>
+  <rect x="17" y="6"  width="4" height="15" rx="0.6" fill="#DD3C70"/>
+  <!-- Trend arrow tip on the tallest bar -->
+  <path d="M15 5 L19 2 L23 5" stroke="#DD3C70" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

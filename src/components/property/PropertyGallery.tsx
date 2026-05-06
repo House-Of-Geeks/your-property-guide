@@ -61,8 +61,8 @@ export function PropertyGallery({
 
   if (images.length === 0) {
     return (
-      <div className="w-full aspect-[16/7] bg-gray-200 flex items-center justify-center">
-        <p className="text-gray-400">No images available</p>
+      <div className="w-full aspect-[16/7] bg-surface-warm border border-line-warm flex items-center justify-center">
+        <p className="font-sans text-sm text-ink-subtle">No images available</p>
       </div>
     );
   }
@@ -71,7 +71,7 @@ export function PropertyGallery({
     <>
       {/* ── Hero image ──────────────────────────────────────────── */}
       <div
-        className="relative w-full aspect-[16/7] sm:aspect-[16/6] cursor-pointer overflow-hidden bg-gray-900"
+        className="relative w-full aspect-[16/7] sm:aspect-[16/6] cursor-pointer overflow-hidden bg-surface-inverse"
         onClick={() => openLightbox(0)}
       >
         <Image
@@ -83,21 +83,21 @@ export function PropertyGallery({
           priority
         />
 
-        {/* Inspect badge — top left */}
+        {/* Inspect badge, top left */}
         {inspectionTime && (
-          <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-white/95 text-gray-900 text-xs font-semibold px-3 py-1.5 rounded-lg shadow-md">
-            <Calendar className="w-3.5 h-3.5 text-primary" />
+          <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-surface-raised/95 text-ink text-xs font-sans font-semibold px-3 py-1.5 rounded-lg shadow-md backdrop-blur-sm">
+            <Calendar className="w-3.5 h-3.5 text-cta" aria-hidden="true" />
             Inspect {inspectionTime}
           </div>
         )}
 
-        {/* Photos pill — bottom left */}
+        {/* Photos pill, bottom left */}
         <div className="absolute bottom-4 left-4">
           <button
             onClick={(e) => { e.stopPropagation(); openLightbox(0); }}
-            className="flex items-center gap-1.5 bg-white/95 hover:bg-white text-gray-900 text-xs font-semibold px-3 py-1.5 rounded-lg shadow-md transition-colors"
+            className="flex items-center gap-1.5 bg-surface-raised/95 hover:bg-surface-raised text-ink text-xs font-sans font-semibold px-3 py-1.5 rounded-lg shadow-md backdrop-blur-sm transition-colors"
           >
-            <Camera className="w-3.5 h-3.5" />
+            <Camera className="w-3.5 h-3.5" aria-hidden="true" />
             Photos {images.length}
           </button>
         </div>
@@ -222,11 +222,11 @@ function MediaTab({
 }) {
   return (
     <div
-      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-colors ${
         disabled
           ? "text-white/30 cursor-default"
           : active
-          ? "bg-white text-gray-900"
+          ? "bg-white text-ink"
           : "text-white hover:bg-white/10 cursor-pointer"
       }`}
     >

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
@@ -10,9 +11,9 @@ export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Browse All Australian Suburbs | Property Data & Profiles",
-  description: "Search every Australian suburb for property market data, median prices, school catchments, and local insights.",
+  description: "Search every Australian suburb for property market data, median prices, school catchments, climate, walkability, and local insights.",
   alternates: { canonical: `${SITE_URL}/suburbs` },
-  openGraph: { url: `${SITE_URL}/suburbs`, title: "Browse All Australian Suburbs", description: "Search every Australian suburb for property market data, median prices, school catchments, and local insights.", type: "website" },
+  openGraph: { url: `${SITE_URL}/suburbs`, title: "Browse All Australian Suburbs", description: "Search every Australian suburb for property market data.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
@@ -66,93 +67,195 @@ export default async function SuburbsPage({ searchParams }: PageProps) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+    <>
       <CollectionPageJsonLd
         name="Browse All Australian Suburbs"
         description="Search every Australian suburb for property market data, median prices, school catchments, and local insights."
         url="/suburbs"
       />
       <BreadcrumbJsonLd items={[{ name: "Suburbs", url: "/suburbs" }]} />
-      <Breadcrumbs items={[{ label: "Suburbs" }]} />
 
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Browse All Suburbs</h1>
-        <p className="text-gray-500 mt-2">Search Australian suburbs for property data, school catchments, and local insights.</p>
-      </div>
+      {/* Editorial hero */}
+      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
+        <Image
+          src="/images/illustrations/contour.svg"
+          alt=""
+          width={1200}
+          height={800}
+          aria-hidden="true"
+          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
+        />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
+          <div className="mb-8">
+            <Breadcrumbs items={[{ label: "Suburbs" }]} />
+          </div>
 
-      {/* Search + state filter */}
-      <SuburbsSearchBar defaultQ={q} defaultState={state} />
+          <div className="grid lg:grid-cols-12 gap-10 items-center">
+            <div className="lg:col-span-7">
+              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+                {total.toLocaleString()} suburbs covered
+              </p>
+              <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6">
+                Australian suburbs, <span className="italic text-primary">data and all</span>.
+              </h1>
+              <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-xl">
+                Median prices, growth, schools, walk score, climate, hazard and
+                crime. Sourced and dated. No paywall, no sign-up, no email gate.
+              </p>
+            </div>
 
-      {/* Count */}
-      <p className="text-sm text-gray-500 mb-5 max-w-3xl mx-auto">
-        Showing {suburbs.length.toLocaleString()} of {total.toLocaleString()} suburbs
-        {state && ` in ${STATE_MAP[state]?.label ?? state}`}
-        {q && ` matching "${q}"`}
-      </p>
+            <div className="lg:col-span-5">
+              <div className="rounded-2xl border border-line-warm bg-surface-raised shadow-card overflow-hidden">
+                <Image
+                  src="/images/illustrations/suburb-data.svg"
+                  alt=""
+                  width={320}
+                  height={220}
+                  className="w-full h-auto"
+                  priority
+                />
+              </div>
+            </div>
+          </div>
 
-      {/* Suburb grid */}
-      {suburbs.length === 0 ? (
-        <div className="text-center py-16 text-gray-400">
-          <p className="text-lg font-medium">No suburbs found</p>
-          <Link href="/suburbs" className="mt-2 inline-block text-sm text-black underline">Clear filters</Link>
+          {/* Stat anchor row, the headline data categories */}
+          <div className="mt-12 flex flex-wrap gap-x-10 gap-y-6">
+            <div className="flex items-start gap-3">
+              <img src="/images/icons/median.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
+              <div>
+                <p className="font-display text-2xl text-ink leading-none mb-1">Median</p>
+                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">house &amp; unit prices</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <img src="/images/icons/growth.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
+              <div>
+                <p className="font-display text-2xl text-ink leading-none mb-1">12mo</p>
+                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">growth &amp; trend</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <img src="/images/icons/schools.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
+              <div>
+                <p className="font-display text-2xl text-ink leading-none mb-1">Schools</p>
+                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">primary &amp; secondary</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <img src="/images/icons/walkability.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
+              <div>
+                <p className="font-display text-2xl text-ink leading-none mb-1">Walk</p>
+                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">score &amp; transit</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <img src="/images/icons/hazard.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
+              <div>
+                <p className="font-display text-2xl text-ink leading-none mb-1">Risk</p>
+                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">flood, bushfire, crime</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <img src="/images/icons/climate.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
+              <div>
+                <p className="font-display text-2xl text-ink leading-none mb-1">Climate</p>
+                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">temp, rain, sun</p>
+              </div>
+            </div>
+          </div>
         </div>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-px bg-gray-100 border border-gray-100 rounded-xl overflow-hidden mb-6">
-          {suburbs.map((suburb) => {
-            const stateInfo = STATE_MAP[suburb.state];
-            return (
-              <Link
-                key={suburb.slug}
-                href={`/suburbs/${suburb.slug}`}
-                className="bg-white hover:bg-gray-50 transition-colors px-3 py-3 group"
-              >
-                <div className="flex items-start justify-between gap-1 mb-0.5">
-                  <span className="text-sm font-medium text-gray-900 group-hover:text-black leading-tight line-clamp-2">
-                    {suburb.name}
-                  </span>
-                  {stateInfo && (
-                    <span className={`shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded ${stateInfo.bg} ${stateInfo.text}`}>
-                      {suburb.state}
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-gray-400">{suburb.postcode}</p>
-              </Link>
-            );
-          })}
-        </div>
-      )}
+      </section>
 
-      {/* Load More */}
-      {hasMore && (
-        <div className="text-center mb-12">
-          <Link
-            href={loadMoreUrl()}
-            className="inline-flex items-center gap-2 px-6 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:border-black hover:text-black transition-colors"
-          >
-            Load More ↓
-          </Link>
-        </div>
-      )}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+        {/* Search + state filter */}
+        <SuburbsSearchBar defaultQ={q} defaultState={state} />
 
-      {/* Browse by State */}
-      <div className="border-t border-gray-100 pt-10">
-        <h2 className="text-xl font-bold text-gray-900 mb-5">Browse by State</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {STATES.map((s) => (
+        {/* Count */}
+        <p className="text-sm text-ink-muted mb-5 max-w-3xl mx-auto">
+          Showing {suburbs.length.toLocaleString()} of {total.toLocaleString()} suburbs
+          {state && ` in ${STATE_MAP[state]?.label ?? state}`}
+          {q && ` matching "${q}"`}
+        </p>
+
+        {/* Suburb grid */}
+        {suburbs.length === 0 ? (
+          <div className="rounded-2xl border border-line-warm bg-surface-warm p-12 text-center max-w-2xl mx-auto">
+            <Image
+              src="/images/illustrations/data-empty.svg"
+              alt=""
+              width={320}
+              height={220}
+              className="w-56 h-auto mx-auto mb-4"
+            />
+            <p className="font-display text-xl text-ink mb-2">No suburbs found</p>
+            <p className="font-sans text-sm text-ink-muted mb-4">
+              Try a different state or clear your search to see everything.
+            </p>
             <Link
-              key={s.code}
-              href={filterUrl(s.code)}
-              className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl hover:border-black transition-colors group"
+              href="/suburbs"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-cta hover:text-cta-hover"
             >
-              <span className={`text-xs font-bold px-2 py-1 rounded ${s.bg} ${s.text} shrink-0`}>
-                {s.code}
-              </span>
-              <span className="text-sm font-medium text-gray-700 group-hover:text-black">{s.label}</span>
+              Clear filters
             </Link>
-          ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-px bg-line border border-line rounded-xl overflow-hidden mb-6">
+            {suburbs.map((suburb) => {
+              const stateInfo = STATE_MAP[suburb.state];
+              return (
+                <Link
+                  key={suburb.slug}
+                  href={`/suburbs/${suburb.slug}`}
+                  className="bg-surface-raised hover:bg-surface-warm transition-colors px-3 py-3 group"
+                >
+                  <div className="flex items-start justify-between gap-1 mb-0.5">
+                    <span className="text-sm font-medium text-ink group-hover:text-primary leading-tight line-clamp-2">
+                      {suburb.name}
+                    </span>
+                    {stateInfo && (
+                      <span className={`shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded ${stateInfo.bg} ${stateInfo.text}`}>
+                        {suburb.state}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-ink-subtle">{suburb.postcode}</p>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Load More */}
+        {hasMore && (
+          <div className="text-center mb-12">
+            <Link
+              href={loadMoreUrl()}
+              className="inline-flex items-center gap-2 px-6 py-3 border border-line-strong rounded-lg text-sm font-medium text-ink hover:border-ink hover:bg-surface-warm transition-colors"
+            >
+              Load More ↓
+            </Link>
+          </div>
+        )}
+
+        {/* Browse by State */}
+        <div className="border-t border-line pt-10">
+          <h2 className="font-display text-2xl text-ink mb-5">Browse by State</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {STATES.map((s) => (
+              <Link
+                key={s.code}
+                href={filterUrl(s.code)}
+                className="flex items-center gap-3 p-4 border border-line rounded-xl hover:border-ink hover:bg-surface-warm transition-colors group"
+              >
+                <span className={`text-xs font-bold px-2 py-1 rounded ${s.bg} ${s.text} shrink-0`}>
+                  {s.code}
+                </span>
+                <span className="text-sm font-medium text-ink-muted group-hover:text-ink">{s.label}</span>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Users, TrendingUp, DollarSign, Footprints, Shield, Home } from "lucide-react";
+import Image from "next/image";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
@@ -26,54 +26,48 @@ const CATEGORIES = [
     title: "Best for Families",
     description:
       "Top suburbs with the highest-rated schools (by ICSEA) and high proportions of family households.",
-    icon: Users,
-    colour: "bg-blue-50 text-blue-600",
+    icon: "/images/icons/people.svg",
   },
   {
     slug: "highest-growth",
     title: "Highest Growth",
     description:
-      "Suburbs with the strongest annual house price growth — ideal for capital-gain focused buyers.",
-    icon: TrendingUp,
-    colour: "bg-green-50 text-green-600",
+      "Suburbs with the strongest annual house price growth, ideal for capital-gain focused buyers.",
+    icon: "/images/icons/growth.svg",
   },
   {
     slug: "most-affordable",
     title: "Most Affordable",
     description:
-      "Suburbs with the lowest median house prices — great entry points into the property market.",
-    icon: DollarSign,
-    colour: "bg-yellow-50 text-yellow-600",
+      "Suburbs with the lowest median house prices, great entry points into the property market.",
+    icon: "/images/icons/median.svg",
   },
   {
     slug: "most-walkable",
     title: "Most Walkable",
     description:
-      "Suburbs with the highest walk scores — perfect for those who love living close to shops, cafes, and transport.",
-    icon: Footprints,
-    colour: "bg-purple-50 text-purple-600",
+      "Suburbs with the highest walk scores, perfect for those who love living close to shops, cafes, and transport.",
+    icon: "/images/icons/walkability.svg",
   },
   {
     slug: "lowest-flood-risk",
     title: "Lowest Flood Risk",
     description:
-      "Suburbs assessed as low flood risk or with no hazard record — peace of mind for homeowners.",
-    icon: Shield,
-    colour: "bg-teal-50 text-teal-600",
+      "Suburbs assessed as low flood risk or with no hazard record, peace of mind for homeowners.",
+    icon: "/images/icons/hazard.svg",
   },
   {
     slug: "best-rental-yield",
     title: "Best Rental Yield",
     description:
-      "Suburbs with the highest gross rental yields — top picks for investment property buyers.",
-    icon: Home,
-    colour: "bg-orange-50 text-orange-600",
+      "Suburbs with the highest gross rental yields, top picks for investment property buyers.",
+    icon: "/images/icons/yield.svg",
   },
 ];
 
 export default function BestSuburbsHubPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
       <CollectionPageJsonLd
         name="Best Suburbs Australia"
         description="Rankings of the best Australian suburbs by family-friendliness, growth, affordability, and more."
@@ -81,52 +75,67 @@ export default function BestSuburbsHubPage() {
       />
       <BreadcrumbJsonLd items={[{ name: "Best Suburbs", url: "/best-suburbs" }]} />
 
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-primary/10 to-white border-b border-gray-100">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-          <Breadcrumbs items={[{ label: "Best Suburbs" }]} />
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-4">
-            Best Suburbs in Australia
+      {/* Editorial hero */}
+      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
+        <Image
+          src="/images/illustrations/contour.svg"
+          alt=""
+          width={1200}
+          height={800}
+          aria-hidden="true"
+          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
+        />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
+          <div className="mb-8">
+            <Breadcrumbs items={[{ label: "Best Suburbs" }]} />
+          </div>
+
+          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+            Six ranked lists
+          </p>
+          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
+            The best suburbs, <span className="italic text-primary">by what matters to you</span>.
           </h1>
-          <p className="text-lg text-gray-600 mt-3 max-w-2xl">
-            Explore ranked suburb lists across Australia — filtered by what matters most to you,
-            from top schools and affordability to rental yield and flood safety.
+          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
+            Six curated rankings across schools, growth, affordability, walkability,
+            flood safety, and rental yield. Real public data, no marketing spin.
           </p>
         </div>
-      </div>
+      </section>
 
       {/* Category cards */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {CATEGORIES.map(({ slug, title, description, icon: Icon, colour }) => (
+          {CATEGORIES.map(({ slug, title, description, icon }) => (
             <Link
               key={slug}
               href={`/best-suburbs/${slug}`}
-              className="group rounded-2xl border border-gray-200 bg-white p-6 hover:border-primary hover:shadow-lg transition-all"
+              className="group rounded-2xl border border-line bg-surface-raised p-6 hover:border-primary/40 hover:shadow-md transition-all"
             >
-              <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${colour} mb-4`}>
-                <Icon className="w-6 h-6" />
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-surface-warm border border-line mb-4">
+                <Image src={icon} alt="" width={32} height={32} aria-hidden="true" />
               </div>
-              <h2 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors mb-2">
+              <h2 className="font-display text-xl text-ink group-hover:text-primary transition-colors mb-2 leading-tight">
                 {title}
               </h2>
-              <p className="text-sm text-gray-500 leading-relaxed mb-4">{description}</p>
-              <span className="text-sm font-semibold text-primary group-hover:underline">
-                Browse →
+              <p className="font-sans text-sm text-ink-muted leading-relaxed mb-5">{description}</p>
+              <span className="font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors">
+                Browse rankings →
               </span>
             </Link>
           ))}
         </div>
 
-        {/* Info note */}
-        <div className="mt-12 rounded-xl border border-blue-100 bg-blue-50 p-5 text-sm text-blue-800">
+        {/* Methodology note */}
+        <div className="mt-12 rounded-2xl border border-line bg-surface-warm p-6 text-sm font-sans text-ink-muted leading-relaxed">
+          <p className="text-xs uppercase tracking-[0.25em] text-ink-subtle mb-2">Methodology</p>
           <p>
-            Rankings are based on publicly available data including ACARA school scores, ABS Census
+            Rankings are built from publicly available data, ACARA school scores, ABS Census
             demographics, Geoscience Australia flood risk assessments, and OpenStreetMap walkability
-            data. Updated periodically.
+            indicators. Updated periodically.
           </p>
         </div>
       </div>
-    </div>
+    </>
   );
 }

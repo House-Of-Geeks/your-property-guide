@@ -34,6 +34,13 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
+    // AVIF first (better compression than WebP, broad 2024+ browser support),
+    // then WebP as fallback for older clients. Saves significant bandwidth on
+    // property listing photos and blog covers.
+    formats: ["image/avif", "image/webp"],
+    // Cache optimized images for 30 days. Property/suburb photos rarely change
+    // and the optimizer is the second-biggest invocation source after pages.
+    minimumCacheTTL: 2_592_000,
     remotePatterns: [
       {
         protocol: "https",
@@ -50,11 +57,16 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "renet.photos",
       },
-      // Allow any https image host (covers other agency/agent image URLs)
-      {
-        protocol: "https",
-        hostname: "**",
-      },
+      // Known external agent / agency / blog image sources. Allowlist only,
+      // wildcards on /_next/image expose the optimizer to abuse. If a new
+      // agency comes with images on a new host, add it here.
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "i.realestate.com.au" },
+      { protocol: "https", hostname: "rimh2.domainstatic.com.au" },
+      { protocol: "https", hostname: "*.realestateview.com.au" },
+      { protocol: "https", hostname: "*.realtair.com" },
+      { protocol: "https", hostname: "*.amazonaws.com" },
+      { protocol: "https", hostname: "*.cloudfront.net" },
     ],
   },
 };

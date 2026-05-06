@@ -2,14 +2,13 @@
 
 import { useState, useTransition, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { Share2, Star, Mail, Copy, MoreHorizontal, X, Check } from "lucide-react";
 import { toggleSavedProperty } from "@/lib/actions/dashboard";
 
 interface PropertyActionsProps {
   propertyId: string;
   address: string;
-  initialSaved: boolean;
-  isLoggedIn: boolean;
 }
 
 function ShareModal({ address, onClose }: { address: string; onClose: () => void }) {
@@ -89,7 +88,7 @@ function ShareModal({ address, onClose }: { address: string; onClose: () => void
             onClick={shareFacebook}
             className="flex items-center gap-4 w-full py-4 text-sm font-medium text-gray-800 hover:text-primary transition-colors"
           >
-            {/* Facebook "f" icon — inline SVG, not in lucide */}
+            {/* Facebook "f" icon, inline SVG, not in lucide */}
             <svg className="w-5 h-5 text-gray-500" viewBox="0 0 24 24" fill="currentColor">
               <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
             </svg>
@@ -117,8 +116,27 @@ function ShareModal({ address, onClose }: { address: string; onClose: () => void
   );
 }
 
-export function PropertyActions({ propertyId, address, initialSaved, isLoggedIn }: PropertyActionsProps) {
-  const [saved, setSaved] = useState(initialSaved);
+export function PropertyActions({ propertyId, address }: PropertyActionsProps) {
+  const { data: session, status } = useSession();
+  const isLoggedIn = !!session?.user;
+
+  // Fetch saved state client-side after hydration. Keeping this off the
+  // server render is what allows the property detail pages to stay CDN-
+  // cacheable. Anonymous visitors never hit this endpoint (we skip when
+  // session status resolves to "unauthenticated").
+  const [saved, setSaved] = useState(false);
+  useEffect(() => {
+    if (status !== "authenticated") return;
+    let cancelled = false;
+    fetch(`/api/properties/${propertyId}/saved`)
+      .then((r) => (r.ok ? r.json() : { saved: false }))
+      .then((data: { saved: boolean }) => {
+        if (!cancelled) setSaved(Boolean(data.saved));
+      })
+      .catch(() => { /* non-fatal */ });
+    return () => { cancelled = true; };
+  }, [propertyId, status]);
+
   const [shareOpen, setShareOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();

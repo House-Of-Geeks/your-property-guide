@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none" role="presentation" aria-hidden="true">
+  <!-- Abstract suburban street grid. Used as a low-opacity decorative
+       background overlay. Tileable by setting background-repeat. -->
+  <defs>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <!-- Major streets -->
+      <line x1="0" y1="0" x2="80" y2="0" stroke="#111827" stroke-width="0.6"/>
+      <line x1="0" y1="0" x2="0" y2="80" stroke="#111827" stroke-width="0.6"/>
+      <!-- Minor street -->
+      <line x1="40" y1="0" x2="40" y2="80" stroke="#111827" stroke-width="0.3" stroke-dasharray="2 4"/>
+      <line x1="0" y1="40" x2="80" y2="40" stroke="#111827" stroke-width="0.3" stroke-dasharray="2 4"/>
+      <!-- Block markers (faint dots at intersections) -->
+      <circle cx="0" cy="0" r="1.2" fill="#5c2d5e"/>
+      <circle cx="80" cy="0" r="1.2" fill="#5c2d5e"/>
+      <circle cx="0" cy="80" r="1.2" fill="#5c2d5e"/>
+      <circle cx="80" cy="80" r="1.2" fill="#5c2d5e"/>
+    </pattern>
+  </defs>
+  <rect width="400" height="400" fill="url(#grid)"/>
+</svg>

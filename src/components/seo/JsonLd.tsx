@@ -49,7 +49,7 @@ export function OrganizationJsonLd() {
             "@type": "SearchAction",
             target: {
               "@type": "EntryPoint",
-              urlTemplate: `${SITE_URL}/buy?suburb={search_term_string}`,
+              urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
             },
             "query-input": "required name=search_term_string",
           },
@@ -114,8 +114,15 @@ export function AgentJsonLd({ agent }: { agent: Agent }) {
         ...(agent.agencyName && {
           worksFor: {
             "@type": "RealEstateAgent",
+            // If we have the slug, reference the canonical agency entity by @id
+            // so Google can join the agent to the existing agency record.
+            ...(agent.agencySlug
+              ? { "@id": `${SITE_URL}/real-estate-agencies/${agent.agencySlug}` }
+              : {}),
             name: agent.agencyName,
-            url: agent.agencySlug ? `${SITE_URL}/real-estate-agencies/${agent.agencySlug}` : undefined,
+            ...(agent.agencySlug && {
+              url: `${SITE_URL}/real-estate-agencies/${agent.agencySlug}`,
+            }),
           },
         }),
         ...(agent.reviewCount > 0 && {
@@ -135,7 +142,10 @@ export function AgencyJsonLd({ agency }: { agency: Agency }) {
   const areaServed = agency.suburbs.map((slug) => {
     const parts = slug.split("-");
     const nameParts = parts.slice(0, -2);
-    return nameParts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join(" ");
+    return {
+      "@type": "Place" as const,
+      name: nameParts.map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join(" "),
+    };
   });
 
   const logoUrl = agency.logo.startsWith("http") ? agency.logo : `${SITE_URL}${agency.logo}`;
@@ -143,21 +153,41 @@ export function AgencyJsonLd({ agency }: { agency: Agency }) {
     ? agency.heroBg.startsWith("http") ? agency.heroBg : `${SITE_URL}${agency.heroBg}`
     : logoUrl;
 
+  // Build sameAs from social URLs, filtering out empty values
+  const sameAs = [
+    agency.website,
+    agency.facebookUrl,
+    agency.linkedinUrl,
+    agency.instagramUrl,
+    agency.youtubeUrl,
+  ].filter((u): u is string => Boolean(u));
+
   return (
     <JsonLdScript
       data={{
         "@context": "https://schema.org",
         "@type": "RealEstateAgent",
+        "@id": `${SITE_URL}/real-estate-agencies/${agency.slug}`,
         name: agency.name,
         url: `${SITE_URL}/real-estate-agencies/${agency.slug}`,
-        logo: logoUrl,
+        logo: {
+          "@type": "ImageObject",
+          url: logoUrl,
+        },
         image: heroUrl,
         telephone: agency.phone,
         email: agency.email,
         description: agency.description,
-        address: `${agency.address.street}, ${agency.address.suburb} ${agency.address.state} ${agency.address.postcode}`,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: agency.address.street,
+          addressLocality: agency.address.suburb,
+          addressRegion: agency.address.state,
+          postalCode: agency.address.postcode,
+          addressCountry: "AU",
+        },
         ...(areaServed.length > 0 && { areaServed }),
-        ...(agency.website && { sameAs: [agency.website, agency.facebookUrl, agency.linkedinUrl, agency.instagramUrl, agency.youtubeUrl].filter(Boolean) }),
+        ...(sameAs.length > 0 && { sameAs }),
       }}
     />
   );
@@ -426,13 +456,32 @@ export function GuideArticleJsonLd({
   url,
   datePublished,
   dateModified,
+  author,
+  reviewedBy,
 }: {
   title: string;
   description: string;
   url: string;
   datePublished: string;
   dateModified?: string;
+  author?: { name: string; role?: string };
+  reviewedBy?: { name: string; role?: string };
 }) {
+  // Use a Person entity when an author name is provided so Google can attribute
+  // the article correctly for E-E-A-T. Fall back to the org for older callers.
+  const authorEntity = author
+    ? {
+        "@type": "Person" as const,
+        name: author.name,
+        ...(author.role && { jobTitle: author.role }),
+        url: `${SITE_URL}/about`,
+      }
+    : {
+        "@type": "Organization" as const,
+        name: SITE_NAME,
+        url: SITE_URL,
+      };
+
   return (
     <JsonLdScript
       data={{
@@ -443,16 +492,100 @@ export function GuideArticleJsonLd({
         url: `${SITE_URL}${url}`,
         datePublished,
         dateModified: dateModified ?? datePublished,
-        author: {
-          "@type": "Organization",
-          name: SITE_NAME,
-          url: SITE_URL,
-        },
+        author: authorEntity,
+        ...(reviewedBy && {
+          reviewedBy: {
+            "@type": "Person",
+            name: reviewedBy.name,
+            ...(reviewedBy.role && { jobTitle: reviewedBy.role }),
+            url: `${SITE_URL}/about`,
+          },
+        }),
         publisher: {
           "@type": "Organization",
           name: SITE_NAME,
           url: SITE_URL,
+          logo: {
+            "@type": "ImageObject",
+            url: `${SITE_URL}/og-image.jpg`,
+          },
         },
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": `${SITE_URL}${url}`,
+        },
+      }}
+    />
+  );
+}
+
+// DefinedTerm schema — one per glossary entry. Helps Google surface a
+// definition rich-result for "what is X" queries.
+export function DefinedTermJsonLd({
+  term,
+  description,
+  url,
+  inDefinedTermSet,
+}: {
+  term: string;
+  description: string;
+  url: string;
+  inDefinedTermSet?: string;
+}) {
+  return (
+    <JsonLdScript
+      data={{
+        "@context": "https://schema.org",
+        "@type": "DefinedTerm",
+        name: term,
+        description,
+        url: `${SITE_URL}${url}`,
+        inDefinedTermSet: inDefinedTermSet ?? `${SITE_URL}/glossary`,
+      }}
+    />
+  );
+}
+
+// HowTo schema for procedural guides. Pass an array of step labels and
+// optional descriptions to surface step rich-results in Google.
+export function HowToJsonLd({
+  name,
+  description,
+  url,
+  steps,
+  totalTime,
+  estimatedCost,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  steps: { name: string; text?: string; url?: string }[];
+  totalTime?: string; // ISO-8601 duration, e.g. "PT30M" or "P3M"
+  estimatedCost?: { currency: string; value: string };
+}) {
+  return (
+    <JsonLdScript
+      data={{
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        name,
+        description,
+        url: `${SITE_URL}${url}`,
+        ...(totalTime && { totalTime }),
+        ...(estimatedCost && {
+          estimatedCost: {
+            "@type": "MonetaryAmount",
+            currency: estimatedCost.currency,
+            value: estimatedCost.value,
+          },
+        }),
+        step: steps.map((s, i) => ({
+          "@type": "HowToStep",
+          position: i + 1,
+          name: s.name,
+          ...(s.text && { text: s.text }),
+          ...(s.url && { url: `${SITE_URL}${s.url}` }),
+        })),
       }}
     />
   );

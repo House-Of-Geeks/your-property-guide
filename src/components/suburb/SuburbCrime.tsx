@@ -27,8 +27,8 @@ function parseBreakdown(raw: unknown): Record<string, number> {
 export function SuburbCrime({ crimeStat }: SuburbCrimeProps) {
   if (!crimeStat) {
     return (
-      <div className="bg-white rounded-2xl border border-gray-100 p-5">
-        <p className="text-sm text-gray-500 italic">
+      <div className="bg-surface-raised rounded-2xl border border-line p-5">
+        <p className="text-sm font-sans text-ink-muted italic">
           Crime data not available for this suburb.
         </p>
       </div>
@@ -46,25 +46,24 @@ export function SuburbCrime({ crimeStat }: SuburbCrimeProps) {
 
   return (
     <div className="space-y-4">
-      {/* Summary card */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+      <div className="bg-surface-raised rounded-2xl border border-line p-5">
         <div className="flex items-center gap-2 mb-4">
-          <ShieldCheck className="w-5 h-5 text-blue-500 flex-shrink-0" />
-          <span className="font-semibold text-gray-800">Offence Summary</span>
+          <ShieldCheck className="w-5 h-5 text-info flex-shrink-0" />
+          <span className="font-display text-base text-ink">Offence Summary</span>
         </div>
 
-        <div className="mb-4">
-          <p className="text-3xl font-bold text-gray-900">
+        <div className="mb-5">
+          <p className="font-display text-3xl text-ink leading-none">
             {total.toLocaleString()}
           </p>
-          <p className="text-sm text-gray-500 mt-0.5">
+          <p className="text-sm font-sans text-ink-muted mt-2">
             total offences in {crimeStat.period}
           </p>
         </div>
 
         {topCategories.length > 0 && (
           <div className="space-y-3">
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle">
               Top offence categories
             </p>
             {topCategories.map(([category, count]) => {
@@ -72,20 +71,20 @@ export function SuburbCrime({ crimeStat }: SuburbCrimeProps) {
               const barWidth = maxCount > 0 ? (count / maxCount) * 100 : 0;
               return (
                 <div key={category}>
-                  <div className="flex items-center justify-between text-sm mb-1">
-                    <span className="text-gray-700 capitalize">
+                  <div className="flex items-center justify-between text-sm font-sans mb-1">
+                    <span className="text-ink capitalize">
                       {category.replace(/_/g, " ")}
                     </span>
-                    <span className="text-gray-500 tabular-nums">
+                    <span className="text-ink-muted tabular-nums">
                       {count.toLocaleString()}{" "}
-                      <span className="text-gray-500">
+                      <span className="text-ink-subtle">
                         ({pct.toFixed(1)}%)
                       </span>
                     </span>
                   </div>
-                  <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-surface-warm rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-blue-400 rounded-full"
+                      className="h-full bg-primary-light rounded-full"
                       style={{ width: `${barWidth}%` }}
                     />
                   </div>
@@ -95,11 +94,11 @@ export function SuburbCrime({ crimeStat }: SuburbCrimeProps) {
           </div>
         )}
 
-        <div className="mt-4 pt-4 border-t border-gray-50 space-y-1">
-          <p className="text-xs text-gray-500 italic">
+        <div className="mt-5 pt-4 border-t border-line space-y-1">
+          <p className="text-xs font-sans text-ink-subtle italic">
             Crime statistics are reported at LGA level and may cover a broader area than this suburb.
           </p>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs font-sans text-ink-subtle">
             Source: State Police Open Data
           </p>
         </div>

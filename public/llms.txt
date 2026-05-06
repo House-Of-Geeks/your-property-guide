@@ -1,16 +1,100 @@
 # Your Property Guide
-> Your Property Guide is an Australian property resource covering suburb profiles, market data, buying guides, selling tips, investment strategy, and property news. We help Australians make smarter property decisions.
 
-## About
-- [About Us](https://www.yourpropertyguide.com.au/about): Our mission to make Australian property research easier.
-- [Contact](https://www.yourpropertyguide.com.au/contact): Get in touch with our team.
+> Your Property Guide is an Australian property research website. We publish suburb profiles, market data, calculators, plain-English guides, and side-by-side comparisons for buyers, sellers, investors, and renters across every Australian state and territory. Every figure on the site is sourced and dated; every guide carries an editor byline. No paywall, no email gate, no sign-up.
 
-## Property Research
-- [Suburb Profiles](https://www.yourpropertyguide.com.au/suburbs): Median prices, demographics, schools, and growth data for Australian suburbs.
-- [Market Data](https://www.yourpropertyguide.com.au/market): Property market trends, auction results, and price movements.
+## What you'll find
 
-## Guides
-- [Buying a Home](https://www.yourpropertyguide.com.au/guides/buying): Step-by-step guides for first home buyers and upgraders.
-- [Selling Property](https://www.yourpropertyguide.com.au/guides/selling): How to sell your home for the best price.
-- [Property Investment](https://www.yourpropertyguide.com.au/guides/investing): Investment strategy, rental yields, and how to build a portfolio.
-- [Home Loans](https://www.yourpropertyguide.com.au/guides/home-loans): Mortgage guides, comparison tips, and borrowing capacity.
+Your Property Guide covers four broad categories of content:
+1. **Live data** — suburb profiles, school catchments, hazard maps, climate, and demographics for every Australian suburb
+2. **Tools** — calculators, a 4-question suburb match quiz, a side-by-side suburb comparison tool
+3. **Editorial guides** — 50+ in-depth guides on buying, selling, investing, and renting in Australia
+4. **Capital city outlooks** — quarterly market reads for Sydney, Melbourne, Brisbane, Perth, Adelaide, Hobart, Canberra, and Darwin
+
+## Tools
+
+- [Find Your Suburb (4-question quiz)](https://www.yourpropertyguide.com.au/find-your-suburb): Scoring engine that matches Australian suburbs to your priorities, budget, and stage. 30-second match.
+- [Compare Suburbs](https://www.yourpropertyguide.com.au/compare): Pick any two suburbs and line them up side by side — median, growth, schools, walkability, hazard.
+- [All tools index](https://www.yourpropertyguide.com.au/tools): The full catalogue of free calculators, quizzes, and lookups.
+- [Mortgage calculator](https://www.yourpropertyguide.com.au/mortgage-calculator): Repayments, total interest, amortisation.
+- [Stamp duty calculator](https://www.yourpropertyguide.com.au/stamp-duty-calculator): State-by-state stamp duty including first home buyer concessions.
+- [Borrowing power calculator](https://www.yourpropertyguide.com.au/borrowing-power-calculator): What lenders will let you borrow.
+- [Affordability calculator](https://www.yourpropertyguide.com.au/affordability-calculator): What price you can afford.
+- [Rental yield calculator](https://www.yourpropertyguide.com.au/rental-yield-calculator): Gross and net yield on a candidate investment.
+- [CGT calculator](https://www.yourpropertyguide.com.au/cgt-calculator): Capital gains tax on property sales including the 50% discount.
+- [Refinancing calculator](https://www.yourpropertyguide.com.au/refinancing-calculator): Break-even on switching home loans.
+
+## Suburb &amp; market data
+
+- [All suburbs](https://www.yourpropertyguide.com.au/suburbs): Search 9,000+ Australian suburbs.
+- [Best suburbs rankings](https://www.yourpropertyguide.com.au/best-suburbs): Six ranked lists across schools, growth, affordability, walkability, hazards, and rental yield. State-level permutations available at /best-suburbs/[category]/[state].
+- [Browse by state](https://www.yourpropertyguide.com.au/states): NSW, VIC, QLD, WA, SA, TAS, NT, ACT.
+- [Browse by region](https://www.yourpropertyguide.com.au/regions): Every Australian region grouped by state.
+- [Browse by postcode](https://www.yourpropertyguide.com.au/postcodes): Every Australian postcode.
+- [Suburb price guide](https://www.yourpropertyguide.com.au/price-guide): Compare median house and unit prices across all suburbs.
+- [Market reports](https://www.yourpropertyguide.com.au/market-reports): State-by-state quarterly property market reports.
+- [RBA cash rate history](https://www.yourpropertyguide.com.au/rba-cash-rate): Every RBA cash rate decision and its impact on property prices.
+- [Schools](https://www.yourpropertyguide.com.au/schools): 9,600+ Australian schools with catchments and ICSEA scores.
+
+## High-value guides for buyers
+
+- [How much deposit do you need to buy a house?](https://www.yourpropertyguide.com.au/guides/how-much-deposit-to-buy-a-house): 5%, 10%, 20% — what each tier unlocks, plus LMI, schemes, FHSS.
+- [How long does it take to buy a house in Australia?](https://www.yourpropertyguide.com.au/guides/how-long-does-it-take-to-buy-a-house-australia): Realistic 12-20 week timeline with state-by-state settlement.
+- [Cooling-off period by state](https://www.yourpropertyguide.com.au/guides/cooling-off-period-by-state-australia): How long you have to pull out, state by state.
+- [10 first home buyer mistakes to avoid](https://www.yourpropertyguide.com.au/guides/first-home-buyer-mistakes-to-avoid): The expensive errors, ranked, with the fix for each.
+- [Best time to buy property in Australia](https://www.yourpropertyguide.com.au/guides/best-time-to-buy-property-australia): Seasonal patterns, the rate cycle, why timing rarely wins.
+- [How to buy property in Australia](https://www.yourpropertyguide.com.au/guides/buying-property-australia): The complete step-by-step buyer's playbook.
+- [First home buyer guides by state](https://www.yourpropertyguide.com.au/guides/first-home-buyer-guide): Federal schemes, FHOG by state, stamp duty concessions.
+- [Building &amp; pest inspection guide](https://www.yourpropertyguide.com.au/guides/building-pest-inspection): What to inspect and when.
+- [Conveyancing in Australia](https://www.yourpropertyguide.com.au/guides/conveyancing-guide): What conveyancers do, what they cost.
+- [Property auction guide](https://www.yourpropertyguide.com.au/guides/property-auction-guide): How auctions actually run.
+
+## Guides for sellers and movers
+
+- [How to choose a selling agent](https://www.yourpropertyguide.com.au/guides/how-to-choose-a-selling-agent): Interview process, the appraisal-price trap, the listing agreement.
+- [Real estate agent fees in Australia](https://www.yourpropertyguide.com.au/guides/real-estate-agent-fees-australia): Commission rates by state, marketing costs, what's negotiable.
+- [Sell first or buy first?](https://www.yourpropertyguide.com.au/guides/sell-first-or-buy-first): Decision tree across the three options, with worked examples.
+- [Bridging loans Australia](https://www.yourpropertyguide.com.au/guides/bridging-loans-guide): Peak debt, end debt, capitalised interest.
+- [Downsizers guide](https://www.yourpropertyguide.com.au/guides/downsizers-guide): When to downsize, super contribution rules.
+
+## Guides for investors
+
+- [House vs apartment investment](https://www.yourpropertyguide.com.au/guides/house-vs-apartment-investment-australia): Capital growth vs cash flow with a 20-year worked example.
+- [Sydney vs Melbourne property market](https://www.yourpropertyguide.com.au/guides/sydney-vs-melbourne-property-market): Side-by-side comparison.
+- [Buyer's agent cost in Australia](https://www.yourpropertyguide.com.au/guides/buyers-agent-cost-australia): Fees by service tier and city.
+- [Property management fees Australia](https://www.yourpropertyguide.com.au/guides/property-management-fees-australia): All 8 fee types and the all-in cost.
+- [Negative gearing in Australia](https://www.yourpropertyguide.com.au/guides/negative-gearing-australia): How it works and when it fits.
+- [Property depreciation guide](https://www.yourpropertyguide.com.au/guides/property-depreciation-guide): Capital works vs plant &amp; equipment.
+- [SMSF property investment](https://www.yourpropertyguide.com.au/guides/smsf-property-guide): Buying property inside super.
+- [Granny flat guides by state](https://www.yourpropertyguide.com.au/guides): NSW, VIC, QLD, SA, WA — economics and rules.
+
+## Guides for renters
+
+- [Renter's rights by state](https://www.yourpropertyguide.com.au/guides): Bond, rent increases, repairs, entry, ending a tenancy. Available for NSW, VIC, QLD, SA, WA, TAS, NT, ACT.
+
+## Reference
+
+- [Property glossary (A-Z)](https://www.yourpropertyguide.com.au/glossary): Plain-English definitions of every Australian property term — 99 entries with individual pages at /glossary/[term].
+
+## Insights and news
+
+- [Insights hub](https://www.yourpropertyguide.com.au/insights): Latest market analysis, capital city outlooks, RBA decisions, data refreshes.
+- [Blog](https://www.yourpropertyguide.com.au/blog): All articles.
+- [RSS feed](https://www.yourpropertyguide.com.au/blog/feed.xml): Subscribe to the editorial feed.
+
+## Trust and methodology
+
+- [About](https://www.yourpropertyguide.com.au/about): Who we are, how we work, how we make money.
+- [Methodology](https://www.yourpropertyguide.com.au/methodology): How we source and update every dataset, with named sources and refresh cadence.
+- [Our data (live counts)](https://www.yourpropertyguide.com.au/data): Live counts of every dataset behind the site, with sources.
+- [Privacy](https://www.yourpropertyguide.com.au/privacy): Privacy policy.
+
+## Data sources (authoritative)
+
+- ABS — Australian Bureau of Statistics. Demographics, household composition, income.
+- ACARA — Australian Curriculum, Assessment and Reporting Authority. School data, ICSEA, year ranges.
+- BoM — Bureau of Meteorology. Mean rainfall and temperature data.
+- Geoscience Australia — Flood hazard mapping and bushfire risk.
+- State Valuer-General offices (NSW, VIC, QLD, WA, SA, TAS, ACT, NT) — Median prices, sales records.
+- RBA — Reserve Bank of Australia. Cash rate history.
+- Australia Post — Postcode and locality boundaries.
+- OpenStreetMap — Walkability and transit metrics.

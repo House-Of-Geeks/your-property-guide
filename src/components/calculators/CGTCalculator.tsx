@@ -453,7 +453,7 @@ export function CGTCalculator() {
           <div className="flex items-start gap-2 text-xs text-gray-500 bg-gray-50 p-3 rounded-lg">
             <Info className="w-4 h-4 flex-shrink-0 mt-0.5" />
             <p>
-              This is an estimate only. CGT calculations can be complex — factors such as
+              This is an estimate only. CGT calculations can be complex, factors such as
               capital improvements, depreciation recapture, and individual circumstances may
               affect your liability. Consult a registered tax adviser for your specific
               situation.

@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" fill="none" role="img" aria-label="First home buyer illustration">
+  <!-- Soft sky wash for depth -->
+  <defs>
+    <linearGradient id="fh-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7f6f4" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#EDA3BB" stop-opacity="0.18"/>
+    </linearGradient>
+    <linearGradient id="fh-house" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#374151"/>
+      <stop offset="100%" stop-color="#1f2937"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="80" width="320" height="115" fill="url(#fh-sky)"/>
+
+  <!-- Distant treeline (soft depth) -->
+  <g opacity="0.18">
+    <ellipse cx="40" cy="170" rx="42" ry="14" fill="#5c2d5e"/>
+    <ellipse cx="285" cy="170" rx="48" ry="12" fill="#5c2d5e"/>
+  </g>
+
+  <!-- Distant rear roofline -->
+  <path d="M30 165 L78 120 L126 165 Z" fill="#5c2d5e" opacity="0.28"/>
+
+  <!-- Main house silhouette -->
+  <path d="M82 132 L160 68 L238 132 L238 188 L82 188 Z" fill="url(#fh-house)"/>
+
+  <!-- Roof trim line -->
+  <path d="M74 132 L160 64 L246 132" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Chimney: vertical sides, sloped bottom seated on the roof line -->
+  <polygon points="200,72 213,72 213,110 200,99" fill="#1f2937"/>
+  <!-- Cap, sits flush above chimney top -->
+  <rect x="197" y="68" width="19" height="5" fill="#1f2937"/>
+
+  <!-- Door, front-and-centre, accent magenta -->
+  <path d="M144 148 L144 188 L172 188 L172 148 Q172 144 168 144 L148 144 Q144 144 144 148 Z" fill="#DD3C70"/>
+  <circle cx="166" cy="170" r="1.6" fill="#f7f6f4"/>
+
+  <!-- Steps -->
+  <rect x="140" y="186" width="36" height="3" fill="#5c2d5e" opacity="0.7"/>
+  <rect x="138" y="189" width="40" height="3" fill="#5c2d5e" opacity="0.5"/>
+
+  <!-- Left window with mullions and warm interior glow -->
+  <g>
+    <rect x="98" y="142" width="30" height="30" fill="#f7f6f4"/>
+    <rect x="98" y="142" width="30" height="30" fill="#FBBF77" opacity="0.35"/>
+    <line x1="113" y1="142" x2="113" y2="172" stroke="#1f2937" stroke-width="1.2"/>
+    <line x1="98" y1="157" x2="128" y2="157" stroke="#1f2937" stroke-width="1.2"/>
+    <rect x="98" y="142" width="30" height="30" stroke="#1f2937" stroke-width="1.5" fill="none"/>
+    <!-- Sill -->
+    <rect x="95" y="172" width="36" height="3" fill="#1f2937"/>
+  </g>
+
+  <!-- Right window mirror of left -->
+  <g>
+    <rect x="192" y="142" width="30" height="30" fill="#f7f6f4"/>
+    <rect x="192" y="142" width="30" height="30" fill="#FBBF77" opacity="0.35"/>
+    <line x1="207" y1="142" x2="207" y2="172" stroke="#1f2937" stroke-width="1.2"/>
+    <line x1="192" y1="157" x2="222" y2="157" stroke="#1f2937" stroke-width="1.2"/>
+    <rect x="192" y="142" width="30" height="30" stroke="#1f2937" stroke-width="1.5" fill="none"/>
+    <rect x="189" y="172" width="36" height="3" fill="#1f2937"/>
+  </g>
+
+  <!-- Small front shrub, breaks the symmetry -->
+  <g opacity="0.85">
+    <ellipse cx="116" cy="186" rx="8" ry="6" fill="#5c2d5e" opacity="0.6"/>
+    <ellipse cx="124" cy="184" rx="6" ry="5" fill="#5c2d5e" opacity="0.5"/>
+  </g>
+
+  <!-- Floating welcome key (motif), top-left -->
+  <g transform="translate(36, 108)" stroke="#5c2d5e" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.75">
+    <circle cx="9" cy="9" r="6.5"/>
+    <line x1="15.5" y1="9" x2="38" y2="9"/>
+    <line x1="30" y1="9" x2="30" y2="14"/>
+    <line x1="36" y1="9" x2="36" y2="13"/>
+  </g>
+
+  <!-- Subtle ground line -->
+  <line x1="0" y1="190" x2="320" y2="190" stroke="#1f2937" stroke-width="1.2"/>
+</svg>

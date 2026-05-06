@@ -1,7 +1,13 @@
 export { SuburbHero, SuburbStats } from "./SuburbHero";
+export { SuburbSnapshot } from "./SuburbSnapshot";
+export { SuburbSubrouteHeader, getSuburbListingTabs } from "./SuburbSubrouteHeader";
+export type { SuburbSubrouteTab, SuburbListingTab } from "./SuburbSubrouteHeader";
+export { SectionDivider } from "./SectionDivider";
 export { SuburbSchools } from "./SuburbSchools";
 export { DataFreshnessNote } from "./DataFreshnessNote";
 export { SuburbCrime } from "./SuburbCrime";
 export { SuburbInvestment } from "./SuburbInvestment";
 export { SourceTooltip, sourceLabel } from "./SourceTooltip";
 export { SuburbAlertWidget } from "./SuburbAlertWidget";
+export { SuburbContextualLinks } from "./SuburbContextualLinks";
+export { SuburbPriceTrend } from "./SuburbPriceTrend";

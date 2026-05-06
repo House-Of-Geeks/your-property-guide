@@ -1,8 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { headers } from "next/headers";
-import { db } from "@/lib/db";
 import { UserCircle, Phone } from "lucide-react";
+import { NewsletterForm as NewsletterFormFooter } from "@/components/newsletter/NewsletterForm";
 
 type SvgProps = { className?: string };
 
@@ -114,7 +113,10 @@ const FOOTER_COLUMNS = [
       { label: "Suburb Profiles",           href: "/suburbs" },
       { label: "Price Guide",               href: "/price-guide" },
       { label: "Search by School",          href: "/schools" },
+      { label: "All Tools",                 href: "/tools" },
       { label: "Best Suburbs",              href: "/best-suburbs" },
+      { label: "Find Your Suburb (Quiz)",   href: "/find-your-suburb" },
+      { label: "Compare Suburbs",           href: "/compare" },
       { label: "Market Reports",            href: "/market-reports" },
       { label: "Browse by State",           href: "/states" },
       { label: "Browse by Postcode",        href: "/postcodes" },
@@ -124,9 +126,14 @@ const FOOTER_COLUMNS = [
       { label: "Affordability Calculator",  href: "/affordability-calculator" },
       { label: "RBA Cash Rate",             href: "/rba-cash-rate" },
       { label: "Free Appraisal",            href: "/appraisal" },
-      { label: "Find an Agent",             href: "/agents" },
       { label: "Blog",                      href: "/blog" },
+      { label: "Insights",                  href: "/insights" },
+      { label: "RSS Feed",                  href: "/blog/feed.xml" },
       { label: "About",                     href: "/about" },
+      { label: "Methodology",               href: "/methodology" },
+      { label: "Our Data (live counts)",    href: "/data" },
+      { label: "Data updates / changelog",  href: "/data-updates" },
+      { label: "Site Map",                  href: "/site-map" },
       { label: "Contact",                   href: "/contact" },
       { label: "Privacy Policy",            href: "/privacy" },
     ],
@@ -145,21 +152,6 @@ const FOOTER_COLUMNS = [
     ],
   },
 ];
-
-async function getSuburbForFooter(slug: string) {
-  return db.suburb.findUnique({
-    where: { slug },
-    select: { name: true, slug: true, nearbySuburbs: true },
-  });
-}
-
-async function getSuburbFromPropertySlug(propertySlug: string) {
-  const property = await db.property.findUnique({
-    where: { slug: propertySlug },
-    select: { suburb: { select: { name: true, slug: true, nearbySuburbs: true } } },
-  });
-  return property?.suburb ?? null;
-}
 
 function nearbyName(slug: string): string {
   return slug
@@ -269,8 +261,6 @@ function SuburbFooter({ name, slug, nearbySuburbs }: { name: string; slug: strin
   ];
   const suburbLinks = [
     { label: `${name} suburb profile`,          href: `/suburbs/${slug}` },
-    { label: `${name} real estate agents`,      href: `/agents?suburb=${slug}` },
-    { label: `${name} real estate agencies`,    href: `/real-estate-agencies?suburb=${slug}` },
     { label: `House and Land in ${name}`,       href: `/house-and-land?suburb=${slug}` },
     { label: `Schools in ${name}`,              href: `/suburbs/${slug}#schools` },
     { label: "Home Price Guide",                href: "/price-guide" },
@@ -295,7 +285,7 @@ function SuburbFooter({ name, slug, nearbySuburbs }: { name: string; slug: strin
                     { label: "Explore all suburbs", href: "/suburbs" },
                     { label: "Buy property",        href: "/buy" },
                     { label: "Rent property",       href: "/rent" },
-                    { label: "Find an agent",       href: "/agents" },
+                    { label: "Free appraisal",      href: "/appraisal" },
                   ]
             }
           />
@@ -306,32 +296,20 @@ function SuburbFooter({ name, slug, nearbySuburbs }: { name: string; slug: strin
   );
 }
 
-export async function Footer() {
-  const h = await headers();
-  const pathname = h.get("x-pathname") ?? "";
-
-  // Suburb profile page: /suburbs/{slug} (exact, not sub-routes)
-  const suburbMatch = pathname.match(/^\/suburbs\/([^/]+)$/);
-  if (suburbMatch) {
-    const suburb = await getSuburbForFooter(suburbMatch[1]);
-    if (suburb) {
-      return <SuburbFooter name={suburb.name} slug={suburb.slug} nearbySuburbs={suburb.nearbySuburbs} />;
-    }
-  }
-
-  // Property listing pages: /buy/{slug}, /rent/{slug}, /sold/{slug}
-  const propertyMatch = pathname.match(/^\/(buy|rent|sold)\/([^/]+)$/);
-  if (propertyMatch) {
-    const suburb = await getSuburbFromPropertySlug(propertyMatch[2]);
-    if (suburb) {
-      return <SuburbFooter name={suburb.name} slug={suburb.slug} nearbySuburbs={suburb.nearbySuburbs} />;
-    }
-  }
-
-  // Default footer for all other pages
+// Pure component, no headers() / cookies() / DB calls. Reading request-time
+// APIs from the shared marketing layout opted every page into dynamic
+// rendering and prevented CDN caching. The previous "suburb-aware" Footer
+// variant on /suburbs/{slug} and /buy|/rent|/sold/{slug} has been retired,
+// the suburb-context links it provided are already rendered in the page
+// body via the suburb page's own components (`SuburbContextualLinks`,
+// nearby-suburb chips, etc.). Pages that genuinely need a different footer
+// can import `SuburbFooter` directly and replace `<Footer />` for that
+// route group.
+export function Footer() {
   return (
     <footer className="bg-[#0a0a0a] text-white border-t border-white/10">
       <AgentLoginPill />
+      <NewsletterBand />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8">
           {FOOTER_COLUMNS.map((col) => (
@@ -341,5 +319,33 @@ export async function Footer() {
         <FooterBottom />
       </div>
     </footer>
+  );
+}
+
+// Newsletter capture band — single email field with editorial framing.
+// Renders above the link grid in the dark footer.
+function NewsletterBand() {
+  return (
+    <section className="border-b border-white/10">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+        <div className="grid lg:grid-cols-12 gap-8 items-end">
+          <div className="lg:col-span-6">
+            <p className="text-xs font-sans uppercase tracking-[0.25em] text-white/40 mb-3">
+              The quarterly read
+            </p>
+            <h2 className="font-display text-2xl sm:text-3xl text-white leading-tight">
+              Get the next market read in your inbox.
+            </h2>
+            <p className="mt-2 font-sans text-sm text-white/60 leading-relaxed max-w-md">
+              One email a quarter, no more. Capital city outlooks, RBA changes,
+              and the data updates worth knowing about.
+            </p>
+          </div>
+          <div className="lg:col-span-6">
+            <NewsletterFormFooter />
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

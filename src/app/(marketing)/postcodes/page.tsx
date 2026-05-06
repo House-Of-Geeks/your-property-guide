@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { getAllPostcodesWithState } from "@/lib/services/postcode-service";
@@ -55,29 +56,44 @@ export default async function PostcodesPage() {
       />
       <BreadcrumbJsonLd items={[{ name: "Postcodes", url: "/postcodes" }]} />
 
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-primary/10 to-white border-b border-gray-100">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-          <Breadcrumbs items={[{ label: "Postcodes" }]} />
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-4">
-            Browse by Postcode
+      {/* Editorial hero */}
+      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
+        <Image
+          src="/images/illustrations/contour.svg"
+          alt=""
+          width={1200}
+          height={800}
+          aria-hidden="true"
+          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
+        />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
+          <div className="mb-8">
+            <Breadcrumbs items={[{ label: "Postcodes" }]} />
+          </div>
+
+          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+            {postcodes.length.toLocaleString()} postcodes
+          </p>
+          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
+            Browse by <span className="italic text-primary">postcode</span>.
           </h1>
-          <p className="text-lg text-gray-600 mt-3 max-w-2xl">
-            Find property data, suburb profiles and market statistics for any Australian postcode.
+          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
+            Property data, suburb profiles, and market statistics for every Australian postcode,
+            grouped by state.
           </p>
         </div>
-      </div>
+      </section>
 
       {/* Postcode directory */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-12">
         {sortedStates.map((state) => {
           const codes = byState.get(state) ?? [];
           const stateLabel = STATE_LABELS[state] ?? state;
           return (
             <section key={state}>
-              <h2 className="text-xl font-bold text-gray-900 mb-4">
+              <h2 className="font-display text-2xl text-ink mb-5 pb-2 border-b border-line">
                 {stateLabel}{" "}
-                <span className="text-sm font-normal text-gray-400">
+                <span className="text-sm font-sans font-normal text-ink-subtle">
                   ({codes.length} postcode{codes.length !== 1 ? "s" : ""})
                 </span>
               </h2>
@@ -86,7 +102,7 @@ export default async function PostcodesPage() {
                   <Link
                     key={postcode}
                     href={`/postcodes/${postcode}`}
-                    className="inline-flex items-center rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:border-primary hover:text-primary transition-colors shadow-sm"
+                    className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors"
                   >
                     {postcode}
                   </Link>

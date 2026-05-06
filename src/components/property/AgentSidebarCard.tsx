@@ -49,14 +49,14 @@ export function AgentSidebarCard({
         <>
           <button
             onClick={() => setIdx((i) => (i - 1 + agents.length) % agents.length)}
-            className="absolute -left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white shadow-card border border-gray-100 flex items-center justify-center text-gray-600 hover:text-primary transition-colors"
+            className="absolute -left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-surface-raised border border-line shadow-card flex items-center justify-center text-ink-muted hover:text-primary hover:border-ink transition-colors"
             aria-label="Previous agent"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={() => setIdx((i) => (i + 1) % agents.length)}
-            className="absolute -right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white shadow-card border border-gray-100 flex items-center justify-center text-gray-600 hover:text-primary transition-colors"
+            className="absolute -right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-surface-raised border border-line shadow-card flex items-center justify-center text-ink-muted hover:text-primary hover:border-ink transition-colors"
             aria-label="Next agent"
           >
             <ChevronRight className="w-5 h-5" />
@@ -64,13 +64,13 @@ export function AgentSidebarCard({
         </>
       )}
 
-      <div className="rounded-2xl bg-white shadow-card border border-gray-100 overflow-visible">
+      <div className="rounded-2xl bg-surface-raised border border-line shadow-card overflow-visible">
         {/* Top: agent photo (protruding) + agency logo */}
         <div className="relative px-5 pt-5">
           <div className="flex items-start justify-between">
             {/* Protruding agent photo */}
             <div className="relative -mt-12 flex-shrink-0">
-              <div className="relative w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-md">
+              <div className="relative w-20 h-20 rounded-full overflow-hidden border-4 border-surface-raised shadow-md">
                 <Image
                   src={agent.image}
                   alt={agent.fullName}
@@ -95,15 +95,15 @@ export function AgentSidebarCard({
           </div>
 
           {/* Agent name + agency */}
-          <div className="mt-3 pb-4 border-b border-gray-100">
+          <div className="mt-3 pb-4 border-b border-line">
             <Link
               href={`/agents/${agent.slug}`}
-              className="font-bold text-gray-900 hover:text-primary text-base leading-tight block transition-colors"
+              className="font-display text-base text-ink hover:text-primary leading-tight block transition-colors"
             >
               {agent.fullName}
             </Link>
             {agency && (
-              <Link href={`/real-estate-agencies/${agency.slug}`} className="text-sm text-gray-500 hover:text-primary">
+              <Link href={`/real-estate-agencies/${agency.slug}`} className="text-sm font-sans text-ink-muted hover:text-primary mt-1 block">
                 {agency.name}
               </Link>
             )}
@@ -114,7 +114,7 @@ export function AgentSidebarCard({
                   <button
                     key={i}
                     onClick={() => setIdx(i)}
-                    className={`w-1.5 h-1.5 rounded-full transition-colors ${i === idx ? "bg-primary" : "bg-gray-300"}`}
+                    className={`w-1.5 h-1.5 rounded-full transition-colors ${i === idx ? "bg-cta" : "bg-line-strong"}`}
                     aria-label={`Agent ${i + 1}`}
                   />
                 ))}
@@ -124,20 +124,20 @@ export function AgentSidebarCard({
         </div>
 
         {/* Info rows */}
-        <div className="px-5 py-4 space-y-3 border-b border-gray-100">
+        <div className="px-5 py-4 space-y-3 border-b border-line">
           {[
             inspectionTimes.length > 0
               ? `Inspection times (${inspectionTimes.length})`
               : "Inspection times",
             "Rates and fees",
             landSize
-              ? `Property size — ${landSize.toLocaleString()} m²`
+              ? `Property size, ${landSize.toLocaleString()} m²`
               : "Property size",
-            `Price guide — ${priceDisplay}`,
+            `Price guide, ${priceDisplay}`,
           ].map((label) => (
             <div key={label} className="flex items-center gap-3">
-              <span className="w-4 h-4 flex-shrink-0 rounded border border-gray-300 bg-white" />
-              <span className="text-sm text-gray-700">{label}</span>
+              <span className="w-4 h-4 flex-shrink-0 rounded border border-line-strong bg-surface-raised" />
+              <span className="text-sm font-sans text-ink-muted">{label}</span>
             </div>
           ))}
         </div>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-label="Median price">
+  <!-- House silhouette -->
+  <path d="M12 3 L21 11 L21 20 L3 20 L3 11 Z" fill="#374151" stroke="#1f2937" stroke-width="0.8" stroke-linejoin="round"/>
+  <!-- Door, accent -->
+  <rect x="10" y="14" width="4" height="6" fill="#DD3C70"/>
+  <!-- Window -->
+  <rect x="5.5" y="13" width="3" height="3" fill="#f7f6f4"/>
+  <rect x="15.5" y="13" width="3" height="3" fill="#f7f6f4"/>
+  <!-- Price tick under -->
+  <line x1="3" y1="22.4" x2="21" y2="22.4" stroke="#DD3C70" stroke-width="1.4" stroke-linecap="round"/>
+</svg>

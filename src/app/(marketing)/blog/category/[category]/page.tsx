@@ -20,6 +20,8 @@ function formatCategoryLabel(slug: string): string {
     .join(" ");
 }
 
+export const revalidate = 86400; // cache as ISR for 24h, regen on demand
+
 export async function generateStaticParams() {
   const categories = await getDistinctBlogCategories();
   return categories.map((category) => ({ category }));

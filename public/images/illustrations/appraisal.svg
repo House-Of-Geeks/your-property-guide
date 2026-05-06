@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" fill="none" role="img" aria-label="Property appraisal illustration">
+  <defs>
+    <linearGradient id="ap-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7f6f4" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#FBBF77" stop-opacity="0.16"/>
+    </linearGradient>
+    <linearGradient id="ap-house" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#374151"/>
+      <stop offset="100%" stop-color="#1f2937"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="60" width="320" height="135" fill="url(#ap-bg)"/>
+
+  <!-- Property card, base layer -->
+  <g transform="translate(28, 36)">
+    <rect x="0" y="0" width="184" height="148" rx="6" fill="#f7f6f4" stroke="#1f2937" stroke-width="1.5"/>
+
+    <!-- Card image area: simplified house -->
+    <rect x="0" y="0" width="184" height="86" rx="6" fill="#FBBF77" opacity="0.20"/>
+    <g transform="translate(28, 14)">
+      <path d="M16 60 L64 22 L112 60 L112 86 L16 86 Z" fill="url(#ap-house)"/>
+      <path d="M10 60 L64 18 L118 60" stroke="#1f2937" stroke-width="1.5"/>
+      <rect x="56" y="68" width="16" height="18" fill="#DD3C70"/>
+      <rect x="32" y="64" width="14" height="14" fill="#f7f6f4" stroke="#1f2937" stroke-width="1"/>
+      <rect x="82" y="64" width="14" height="14" fill="#f7f6f4" stroke="#1f2937" stroke-width="1"/>
+    </g>
+
+    <!-- Address line -->
+    <line x1="14" y1="100" x2="124" y2="100" stroke="#1f2937" stroke-width="1.4"/>
+    <line x1="14" y1="110" x2="98" y2="110" stroke="#1f2937" stroke-width="1.2" opacity="0.55"/>
+
+    <!-- Bed/bath/car icons -->
+    <g transform="translate(14, 122)" stroke="#5c2d5e" stroke-width="1.4" fill="none" opacity="0.85">
+      <rect x="0" y="6" width="14" height="8" rx="2"/>
+      <line x1="2" y1="14" x2="2" y2="18"/>
+      <line x1="12" y1="14" x2="12" y2="18"/>
+    </g>
+    <text x="34" y="135" font-family="Georgia, serif" font-size="10" fill="#1f2937" opacity="0.75">3 · 2 · 1</text>
+
+    <!-- Price tag, accent corner -->
+    <g transform="translate(126, 116)">
+      <rect x="0" y="0" width="48" height="22" rx="3" fill="#DD3C70"/>
+      <text x="24" y="15" text-anchor="middle" font-family="Georgia, serif" font-size="11" font-style="italic" fill="#f7f6f4">$ price</text>
+    </g>
+  </g>
+
+  <!-- Magnifying glass, foreground -->
+  <g transform="translate(186, 86)" stroke="#5c2d5e" stroke-width="3" fill="none" stroke-linecap="round">
+    <circle cx="42" cy="42" r="42" fill="#f7f6f4" stroke="#5c2d5e"/>
+    <circle cx="42" cy="42" r="42" stroke-opacity="1"/>
+    <line x1="74" y1="74" x2="98" y2="98" stroke-width="6"/>
+    <!-- Lens highlight -->
+    <path d="M 22 26 Q 32 14, 50 18" opacity="0.5"/>
+    <!-- Inside lens: tiny rising chart -->
+    <g stroke="#DD3C70" stroke-width="2.5" fill="none">
+      <path d="M 22 56 L 34 46 L 46 50 L 62 32"/>
+    </g>
+  </g>
+
+  <!-- Subtle ground -->
+  <line x1="0" y1="206" x2="320" y2="206" stroke="#1f2937" stroke-width="1" opacity="0.6"/>
+</svg>

@@ -98,7 +98,7 @@ function computeAffordability(
   }
   maxBorrow = Math.max(0, Math.round(maxBorrow));
 
-  // Buying costs estimate (5% of purchase price — approximation)
+  // Buying costs estimate (5% of purchase price, approximation)
   // For maxFromBorrowing we use a simplified approach
   const maxFromBorrowing = Math.round(maxBorrow + savings * 0.93);
 
@@ -321,8 +321,8 @@ export function AffordabilityCalculator() {
             </p>
             <p className="text-sm opacity-80 mt-2">
               {result.constraint === "deposit"
-                ? "Deposit-limited — increase savings to buy more"
-                : "Serviceability-limited — borrow more with higher income"}
+                ? "Deposit-limited, increase savings to buy more"
+                : "Serviceability-limited, borrow more with higher income"}
             </p>
           </div>
 
@@ -353,7 +353,7 @@ export function AffordabilityCalculator() {
             <StatCard
               label="LMI Cost"
               value={result.lmiCost > 0 ? fmt(result.lmiCost) : "None"}
-              sub={result.lmiCost > 0 ? "lender's mortgage insurance" : "20%+ deposit — LMI waived"}
+              sub={result.lmiCost > 0 ? "lender's mortgage insurance" : "20%+ deposit, LMI waived"}
             />
           </div>
 

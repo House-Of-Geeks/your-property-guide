@@ -95,21 +95,21 @@ export function RefinancingCalculator() {
       icon: <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />,
       bg: "bg-green-50 border-green-200",
       text: "text-green-800",
-      message: "Likely worth refinancing — you'll recoup costs in under 2 years.",
+      message: "Likely worth refinancing, you'll recoup costs in under 2 years.",
     },
     maybe: {
       icon: <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />,
       bg: "bg-amber-50 border-amber-200",
       text: "text-amber-800",
       message:
-        "Consider carefully — break-even is 2–4 years. Factor in your plans to keep this loan.",
+        "Consider carefully, break-even is 2 to 4 years. Factor in your plans to keep this loan.",
     },
     no: {
       icon: <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />,
       bg: "bg-red-50 border-red-200",
       text: "text-red-800",
       message:
-        "May not be worthwhile — break-even exceeds 4 years. Consider negotiating a rate reduction instead.",
+        "May not be worthwhile, break-even exceeds 4 years. Consider negotiating a rate reduction instead.",
     },
     negative: {
       icon: <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />,
@@ -377,7 +377,7 @@ export function RefinancingCalculator() {
             <Info className="w-4 h-4 flex-shrink-0 mt-0.5" />
             <p>
               This calculator provides estimates only. Actual savings depend on your specific
-              loan terms. Fees shown are indicative — confirm costs with your lender.
+              loan terms. Fees shown are indicative, confirm costs with your lender.
               Consider seeking independent financial advice before refinancing.
             </p>
           </div>

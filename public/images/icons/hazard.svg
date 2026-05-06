@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-label="Hazard risk">
+  <!-- Shield silhouette -->
+  <path d="M12 3 L20 6 L20 12.5 Q20 18, 12 22 Q4 18, 4 12.5 L4 6 Z" fill="#374151" stroke="#1f2937" stroke-width="0.8" stroke-linejoin="round"/>
+  <!-- Inner accent stroke -->
+  <path d="M12 5.6 L17.6 7.6 L17.6 12.4 Q17.6 16.4, 12 19.4 Q6.4 16.4, 6.4 12.4 L6.4 7.6 Z" stroke="#DD3C70" stroke-width="1.1" fill="none" stroke-linejoin="round"/>
+  <!-- Centre tick -->
+  <path d="M9 12.2 L11 14 L15 9.8" stroke="#f7f6f4" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

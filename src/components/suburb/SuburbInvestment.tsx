@@ -37,13 +37,13 @@ interface StatCardProps {
 
 function StatCard({ label, value, sub, source, asOf }: StatCardProps) {
   return (
-    <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100">
+    <div className="p-5 rounded-xl bg-surface-raised border border-line">
       <div className="flex items-center gap-1">
-        <p className="text-xs text-gray-500 uppercase tracking-wider flex-1">{label}</p>
+        <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle flex-1">{label}</p>
         <SourceTooltip source={source} asOf={asOf} />
       </div>
-      <p className="text-xl font-bold text-gray-900 mt-1">{value}</p>
-      {sub && <p className="text-xs text-gray-400 mt-0.5">{sub}</p>}
+      <p className="font-display text-2xl text-ink leading-none mt-2">{value}</p>
+      {sub && <p className="text-xs text-ink-muted mt-2 leading-snug">{sub}</p>}
     </div>
   );
 }
@@ -126,9 +126,12 @@ export function SuburbInvestment({ suburb }: SuburbInvestmentProps) {
         />
       </div>
 
-      <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
-        <p className="text-xs text-blue-700">
-          <span className="font-semibold">Gross rental yield</span> is annual rent divided by purchase price, before expenses. It does not account for vacancy rates, management fees, maintenance, or financing costs. Use this as a starting point for further research.
+      <div className="rounded-xl border border-line-warm bg-surface-warm p-4">
+        <p className="text-xs font-sans text-ink-muted leading-relaxed">
+          <span className="font-semibold text-ink">Gross rental yield</span> is annual rent divided
+          by purchase price, before expenses. It does not account for vacancy
+          rates, management fees, maintenance, or financing costs. Use this as
+          a starting point for further research.
         </p>
       </div>
     </div>

@@ -1,3 +1,6 @@
+// On-demand ISR keeps each crawler hit a 24h cache HIT instead of dynamic.
+export const revalidate = 86400;
+
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants";
 import { getAllRegions } from "@/lib/services/region-service";

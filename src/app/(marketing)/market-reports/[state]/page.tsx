@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, TrendingUp, Home, DollarSign, Clock } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
@@ -11,6 +12,7 @@ import {
   type SuburbMarketRow,
 } from "@/lib/services/market-report-service";
 import { formatPrice, formatPriceFull } from "@/lib/utils/format";
+import { STATE_COMMENTARY } from "@/lib/data/state-commentary";
 
 const STATE_SLUGS = ["qld", "nsw", "vic", "wa", "sa", "tas", "nt", "act"] as const;
 type StateSlug = (typeof STATE_SLUGS)[number];
@@ -20,6 +22,8 @@ const CURRENT_YEAR = 2026;
 function isValidState(slug: string): slug is StateSlug {
   return (STATE_SLUGS as readonly string[]).includes(slug);
 }
+
+export const revalidate = 86400; // cache as ISR for 24h, regen on demand
 
 export function generateStaticParams() {
   return STATE_SLUGS.map((state) => ({ state }));
@@ -34,7 +38,7 @@ export async function generateMetadata({
   if (!isValidState(state)) return {};
   const stateName = getStateNameForReport(state);
   const title = `${stateName} Property Market Report ${CURRENT_YEAR} | Your Property Guide`;
-  const description = `${stateName} property market data for ${CURRENT_YEAR} — median prices, annual growth, top suburbs and affordability rankings.`;
+  const description = `${stateName} property market data for ${CURRENT_YEAR}, median prices, annual growth, top suburbs and affordability rankings, sourced from state revenue offices.`;
   return {
     title,
     description,
@@ -43,31 +47,30 @@ export async function generateMetadata({
       url: `${SITE_URL}/market-reports/${state}`,
       title,
       description,
-      type: "website",
+      type: "article",
     },
     twitter: { card: "summary_large_image" },
   };
 }
 
-function StatCard({
-  icon,
-  label,
-  value,
-  sub,
-}: {
+interface StatCardProps {
   icon: React.ReactNode;
   label: string;
   value: string;
   sub?: string;
-}) {
+}
+
+function StatCard({ icon, label, value, sub }: StatCardProps) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5">
-      <div className="flex items-center gap-2 mb-2">
-        <div className="text-primary">{icon}</div>
-        <p className="text-sm text-gray-500">{label}</p>
+    <div className="rounded-2xl border border-line bg-surface-raised p-6">
+      <div className="flex items-center gap-2 mb-3 text-ink-subtle">
+        {icon}
+        <p className="text-xs font-sans uppercase tracking-[0.2em]">{label}</p>
       </div>
-      <p className="text-2xl font-bold text-gray-900">{value}</p>
-      {sub && <p className="text-xs text-gray-400 mt-0.5">{sub}</p>}
+      <p className="font-display text-3xl text-ink leading-none">{value}</p>
+      {sub && (
+        <p className="mt-2 text-xs font-sans text-ink-subtle">{sub}</p>
+      )}
     </div>
   );
 }
@@ -83,48 +86,58 @@ function SuburbTable({
 }) {
   if (rows.length === 0) return null;
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-      <div className="px-5 py-4 border-b border-gray-200">
-        <h3 className="font-semibold text-gray-900">{heading}</h3>
-      </div>
-      <div className="overflow-x-auto">
+    <section>
+      <h3 className="font-display text-2xl text-ink mb-4 leading-tight">
+        {heading}
+      </h3>
+      <div className="overflow-x-auto rounded-2xl border border-line bg-surface-raised">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gray-50 text-gray-500 text-xs font-medium uppercase tracking-wide">
-              <th className="px-4 py-3 text-left">Suburb</th>
-              <th className="px-4 py-3 text-right">Median Price</th>
+            <tr className="bg-surface-warm border-b border-line">
+              <th className="px-4 py-3 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide w-10">#</th>
+              <th className="px-4 py-3 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide">Suburb</th>
+              <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">Median price</th>
               {showGrowth && (
-                <th className="px-4 py-3 text-right">Annual Growth</th>
+                <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">Annual growth</th>
               )}
+              <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">Profile</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
-            {rows.map((row) => (
-              <tr key={row.slug} className="hover:bg-gray-50 transition-colors">
+          <tbody className="divide-y divide-line">
+            {rows.map((row, i) => (
+              <tr
+                key={row.slug}
+                className="hover:bg-surface-warm/60 transition-colors"
+              >
+                <td className="px-4 py-3 font-sans text-ink-subtle tabular-nums">{i + 1}</td>
                 <td className="px-4 py-3">
                   <Link
                     href={`/suburbs/${row.slug}`}
-                    className="font-medium text-primary hover:underline"
+                    className="font-sans font-medium text-ink hover:text-primary transition-colors"
                   >
                     {row.name}
                   </Link>
-                  <span className="text-gray-400 text-xs ml-1">{row.postcode}</span>
+                  <span className="text-xs font-sans text-ink-subtle ml-1.5">
+                    {row.postcode}
+                  </span>
                 </td>
-                <td className="px-4 py-3 text-right text-gray-900 font-medium">
-                  {row.medianHousePrice > 0
-                    ? formatPriceFull(row.medianHousePrice)
-                    : "—"}
+                <td className="px-4 py-3 text-right tabular-nums">
+                  <span className="font-display text-base text-ink">
+                    {row.medianHousePrice > 0
+                      ? formatPriceFull(row.medianHousePrice)
+                      : "—"}
+                  </span>
                 </td>
                 {showGrowth && (
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-4 py-3 text-right tabular-nums">
                     <span
-                      className={
+                      className={`font-display text-base ${
                         row.annualGrowthHouse > 0
-                          ? "text-green-700 font-medium"
+                          ? "text-emerald-700"
                           : row.annualGrowthHouse < 0
-                          ? "text-red-600 font-medium"
-                          : "text-gray-400"
-                      }
+                            ? "text-red-700"
+                            : "text-ink-subtle"
+                      }`}
                     >
                       {row.annualGrowthHouse !== 0
                         ? `${row.annualGrowthHouse > 0 ? "+" : ""}${row.annualGrowthHouse.toFixed(1)}%`
@@ -132,12 +145,20 @@ function SuburbTable({
                     </span>
                   </td>
                 )}
+                <td className="px-4 py-3 text-right">
+                  <Link
+                    href={`/suburbs/${row.slug}`}
+                    className="font-sans text-xs font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors whitespace-nowrap"
+                  >
+                    View →
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -150,22 +171,19 @@ export default async function StateMarketReportPage({
   if (!isValidState(state)) notFound();
 
   const data = await getStateMarketData(state);
-
+  const upperState = state.toUpperCase();
   const stateName = getStateNameForReport(state);
   const reportTitle = `${stateName} Property Market Report ${CURRENT_YEAR}`;
-  const reportDescription = `${stateName} property market data for ${CURRENT_YEAR} — median prices, annual growth, top suburbs and affordability rankings.`;
+  const reportDescription = `${stateName} property market data for ${CURRENT_YEAR}, median prices, annual growth, top suburbs and affordability rankings.`;
 
-  const housePrice = data.avgMedianHousePrice
-    ? formatPrice(data.avgMedianHousePrice)
-    : "N/A";
-  const unitPrice = data.avgMedianUnitPrice
-    ? formatPrice(data.avgMedianUnitPrice)
-    : "N/A";
+  const housePrice = data.avgMedianHousePrice ? formatPrice(data.avgMedianHousePrice) : "N/A";
+  const unitPrice = data.avgMedianUnitPrice ? formatPrice(data.avgMedianUnitPrice) : "N/A";
   const growth = data.avgAnnualGrowth != null ? `${data.avgAnnualGrowth}%` : "N/A";
   const dom = data.avgDaysOnMarket != null ? `${data.avgDaysOnMarket} days` : "N/A";
+  const commentary = STATE_COMMENTARY[upperState];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+    <>
       <BreadcrumbJsonLd
         items={[
           { name: "Market Reports", url: "/market-reports" },
@@ -175,107 +193,195 @@ export default async function StateMarketReportPage({
       <GuideArticleJsonLd
         title={reportTitle}
         description={reportDescription}
-        url={"/market-reports/" + state}
+        url={`/market-reports/${state}`}
         datePublished="2026-01-01"
       />
-      <Breadcrumbs
-        items={[
-          { label: "Market Reports", href: "/market-reports" },
-          { label: data.stateName },
-        ]}
-      />
 
-      {/* Hero */}
-      <div className="gradient-brand rounded-2xl p-8 text-white mb-8">
-        <p className="text-sm opacity-80 mb-1">Property Market Report</p>
-        <h1 className="text-3xl sm:text-4xl font-bold mb-1">{data.stateName}</h1>
-        <p className="text-base opacity-90 mb-4">Q1 {CURRENT_YEAR}</p>
-        <div className="flex flex-wrap gap-6 text-sm">
-          <div>
-            <p className="opacity-70">Avg Median House Price</p>
-            <p className="text-2xl font-bold">{housePrice}</p>
+      {/* Editorial hero */}
+      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
+        <Image
+          src="/images/illustrations/contour.svg"
+          alt=""
+          width={1200}
+          height={800}
+          aria-hidden="true"
+          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
+        />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
+          <div className="mb-8">
+            <Breadcrumbs
+              items={[
+                { label: "Market Reports", href: "/market-reports" },
+                { label: data.stateName },
+              ]}
+            />
           </div>
-          <div>
-            <p className="opacity-70">Avg Annual Growth</p>
-            <p className="text-2xl font-bold">{growth}</p>
-          </div>
-          <div>
-            <p className="opacity-70">Suburbs Tracked</p>
-            <p className="text-2xl font-bold">{data.totalSuburbsWithData.toLocaleString()}</p>
+
+          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+            Q1 {CURRENT_YEAR} &middot; {data.totalSuburbsWithData.toLocaleString()} suburbs tracked
+          </p>
+          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
+            {data.stateName} property market, <span className="italic text-primary">{CURRENT_YEAR}</span>.
+          </h1>
+          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
+            Median prices, annual growth, days on market, and the state&rsquo;s
+            top suburbs by growth, affordability and price, sourced from
+            state revenue offices.
+          </p>
+        </div>
+      </section>
+
+      {/* Stat anchor row */}
+      <section className="bg-surface-raised border-b border-line">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <StatCard
+              icon={<Home className="w-4 h-4" />}
+              label="Avg median house"
+              value={housePrice}
+              sub="across tracked suburbs"
+            />
+            <StatCard
+              icon={<DollarSign className="w-4 h-4" />}
+              label="Avg median unit"
+              value={unitPrice}
+              sub="across tracked suburbs"
+            />
+            <StatCard
+              icon={<TrendingUp className="w-4 h-4" />}
+              label="Avg annual growth"
+              value={growth}
+              sub="house prices, last 12 months"
+            />
+            <StatCard
+              icon={<Clock className="w-4 h-4" />}
+              label="Avg days on market"
+              value={dom}
+              sub="time to sell"
+            />
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Stats grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatCard
-          icon={<Home className="w-5 h-5" />}
-          label="Avg Median House Price"
-          value={housePrice}
-          sub="across tracked suburbs"
-        />
-        <StatCard
-          icon={<DollarSign className="w-5 h-5" />}
-          label="Avg Median Unit Price"
-          value={unitPrice}
-          sub="across tracked suburbs"
-        />
-        <StatCard
-          icon={<TrendingUp className="w-5 h-5" />}
-          label="Avg Annual Growth"
-          value={growth}
-          sub="house price growth"
-        />
-        <StatCard
-          icon={<Clock className="w-5 h-5" />}
-          label="Avg Days on Market"
-          value={dom}
-          sub="time to sell"
-        />
-      </div>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+        {/* State commentary */}
+        {commentary && (
+          <section className="grid lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-7">
+              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+                State of the market
+              </p>
+              <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-4">
+                {data.stateName} in {CURRENT_YEAR}.
+              </h2>
+              <div className="prose-ypg prose-ypg-tight">
+                <p>{commentary.marketContext}</p>
+              </div>
+            </div>
+            <aside className="lg:col-span-5 space-y-4">
+              <div className="rounded-2xl border border-line bg-surface-warm p-5">
+                <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                  Buyer tip — {upperState}
+                </p>
+                <p className="font-sans text-sm text-ink leading-relaxed">
+                  {commentary.buyerTip}
+                </p>
+              </div>
+              <div className="rounded-2xl border border-line bg-surface-warm p-5">
+                <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                  Watch out — {upperState}
+                </p>
+                <p className="font-sans text-sm text-ink leading-relaxed">
+                  {commentary.watchOut}
+                </p>
+              </div>
+            </aside>
+          </section>
+        )}
 
-      {/* Tables */}
-      <div className="space-y-6 mb-8">
+        {/* Tables */}
         <SuburbTable
-          heading="Top 10 Suburbs by Annual Growth"
+          heading={`Top ${data.topByGrowth.length} ${data.stateName} suburbs by annual growth`}
           rows={data.topByGrowth}
           showGrowth
         />
         <SuburbTable
-          heading="Top 10 Most Affordable Suburbs"
+          heading={`${data.stateName}'s most affordable suburbs`}
           rows={data.topMostAffordable}
           showGrowth
         />
         <SuburbTable
-          heading="Top 10 Highest Median Price Suburbs"
+          heading={`${data.stateName}'s highest median prices`}
           rows={data.topByMedianPrice}
-          showGrowth={false}
         />
-      </div>
 
-      {/* Data note */}
-      <p className="text-xs text-gray-400 mb-6">
-        Market data sourced from state revenue offices and property sales data. Updated quarterly.
-        Median prices and growth figures are calculated from available suburb-level data and may
-        not reflect the full market.
-      </p>
-
-      {/* CTA */}
-      <div className="bg-primary/5 rounded-xl border border-primary/20 p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <p className="font-semibold text-gray-900">Search properties for sale in {data.stateName}</p>
-          <p className="text-sm text-gray-500 mt-0.5">
-            Browse listings across all suburbs in {data.stateName}
+        {/* Cross-link to other state reports */}
+        <section className="rounded-2xl border border-line bg-surface-warm p-6">
+          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+            Other state reports
           </p>
-        </div>
-        <Link
-          href={`/buy?state=${state}`}
-          className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors flex-shrink-0"
-        >
-          Browse {data.stateName} listings
-          <ArrowRight className="w-4 h-4" />
-        </Link>
+          <div className="flex flex-wrap gap-2">
+            {STATE_SLUGS.filter((s) => s !== state).map((s) => (
+              <Link
+                key={s}
+                href={`/market-reports/${s}`}
+                className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors"
+              >
+                {getStateNameForReport(s)}
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* Source note */}
+        <section className="rounded-2xl border border-line bg-surface-warm p-5 text-sm font-sans text-ink-muted">
+          <p className="text-xs uppercase tracking-[0.25em] text-ink-subtle mb-2">
+            Data source
+          </p>
+          <p className="leading-relaxed">
+            Market data sourced from state revenue offices and property sales
+            records. Updated quarterly. Median prices and growth figures are
+            calculated from available suburb-level data and may not reflect the
+            full market.{" "}
+            <Link
+              href="/methodology#median-prices"
+              className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+            >
+              Full methodology →
+            </Link>
+          </p>
+        </section>
+
+        {/* CTA strip */}
+        <section className="rounded-2xl border border-primary/20 bg-primary/5 p-6 sm:p-8 grid lg:grid-cols-12 gap-6 items-center">
+          <div className="lg:col-span-7">
+            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+              Ready to act on the data?
+            </p>
+            <h3 className="font-display text-2xl text-ink leading-tight">
+              Search {data.stateName} properties for sale.
+            </h3>
+            <p className="mt-2 font-sans text-sm text-ink-muted">
+              Browse listings across all suburbs in {data.stateName}.
+            </p>
+          </div>
+          <div className="lg:col-span-5 flex flex-wrap gap-3 lg:justify-end">
+            <Link
+              href={`/buy?state=${state}`}
+              className="inline-flex items-center gap-2 bg-cta text-white px-5 py-3 rounded-lg text-sm font-sans font-medium hover:bg-cta-hover transition-colors"
+            >
+              Browse {upperState} listings
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href={`/best-suburbs/highest-growth/${state}`}
+              className="inline-flex items-center gap-2 border border-line bg-surface-raised text-ink px-5 py-3 rounded-lg text-sm font-sans font-medium hover:border-primary/40 hover:text-primary transition-colors"
+            >
+              {upperState} growth ranking
+            </Link>
+          </div>
+        </section>
       </div>
-    </div>
+    </>
   );
 }

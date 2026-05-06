@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { MapPin } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
@@ -43,55 +44,76 @@ export default async function RegionsPage() {
   }, {});
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+    <>
       <CollectionPageJsonLd
         name="Australian Regions"
         description="Browse all Australian regions and their suburb profiles."
         url="/regions"
       />
       <BreadcrumbJsonLd items={[{ name: "Regions", url: "/regions" }]} />
-      <Breadcrumbs items={[{ label: "Regions" }]} />
 
-      <div className="mt-6 mb-10">
-        <h1 className="text-3xl font-bold text-gray-900">Australian Property Regions</h1>
-        <p className="text-gray-500 mt-2">
-          Browse median house prices, market trends, and suburb profiles across{" "}
-          {regions.length} regions nationwide.
-        </p>
-      </div>
+      {/* Editorial hero */}
+      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
+        <Image
+          src="/images/illustrations/contour.svg"
+          alt=""
+          width={1200}
+          height={800}
+          aria-hidden="true"
+          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
+        />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
+          <div className="mb-8">
+            <Breadcrumbs items={[{ label: "Regions" }]} />
+          </div>
 
-      <div className="space-y-12">
-        {STATE_ORDER.map((state) => {
-          const stateRegions = byState[state];
-          if (!stateRegions?.length) return null;
-          return (
-            <section key={state}>
-              <h2 className="text-xl font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">
-                {STATE_NAMES[state]}
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                {stateRegions.map((region) => (
-                  <Link
-                    key={region.slug}
-                    href={`/regions/${region.slug}`}
-                    className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3 hover:border-primary hover:shadow-sm transition-all group"
-                  >
-                    <div className="flex items-center gap-2 min-w-0">
-                      <MapPin className="w-3.5 h-3.5 text-gray-400 flex-shrink-0 group-hover:text-primary transition-colors" />
-                      <span className="text-sm font-medium text-gray-800 group-hover:text-primary transition-colors truncate">
-                        {region.region}
+          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+            {regions.length} regions nationwide
+          </p>
+          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
+            Property regions, <span className="italic text-primary">coast to coast</span>.
+          </h1>
+          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
+            Median house prices, market trends, and suburb profiles grouped by region,
+            from the Sunshine Coast to the South West.
+          </p>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+        <div className="space-y-12">
+          {STATE_ORDER.map((state) => {
+            const stateRegions = byState[state];
+            if (!stateRegions?.length) return null;
+            return (
+              <section key={state}>
+                <h2 className="font-display text-2xl text-ink mb-5 pb-2 border-b border-line">
+                  {STATE_NAMES[state]}
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                  {stateRegions.map((region) => (
+                    <Link
+                      key={region.slug}
+                      href={`/regions/${region.slug}`}
+                      className="flex items-center justify-between rounded-xl border border-line bg-surface-raised px-4 py-3 hover:border-primary/40 hover:shadow-sm transition-all group"
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <MapPin className="w-3.5 h-3.5 text-ink-subtle flex-shrink-0 group-hover:text-primary transition-colors" />
+                        <span className="font-sans text-sm font-medium text-ink group-hover:text-primary transition-colors truncate">
+                          {region.region}
+                        </span>
+                      </div>
+                      <span className="font-sans text-xs text-ink-subtle flex-shrink-0 ml-2">
+                        {region.suburbCount}
                       </span>
-                    </div>
-                    <span className="text-xs text-gray-400 flex-shrink-0 ml-2">
-                      {region.suburbCount}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          );
-        })}
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

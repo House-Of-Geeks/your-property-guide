@@ -54,6 +54,11 @@ function toProperty(p: DbPropertyWithImages): Property {
 
 const includeImages = { images: { orderBy: { sortOrder: "asc" as const } } };
 
+// Default page size for listing pages. Capped to keep payload sane and to
+// stop accidental table scans if a caller forgets to filter. Pass `take` in
+// PropertySearchParams to override (or set to a very large number for "all").
+const DEFAULT_LISTING_TAKE = 60;
+
 export async function getProperties(params?: PropertySearchParams): Promise<Property[]> {
   const where: Record<string, unknown> = {};
 
@@ -87,7 +92,16 @@ export async function getProperties(params?: PropertySearchParams): Promise<Prop
     }
   })();
 
-  const rows = await db.property.findMany({ where, orderBy, include: includeImages });
+  const take = params?.take ?? DEFAULT_LISTING_TAKE;
+  const skip = params?.page && params.page > 1 ? (params.page - 1) * take : undefined;
+
+  const rows = await db.property.findMany({
+    where,
+    orderBy,
+    include: includeImages,
+    take,
+    ...(skip ? { skip } : {}),
+  });
   return rows.map(toProperty);
 }
 
@@ -138,19 +152,21 @@ export async function getPropertiesByAgency(agencyId: string, limit = 6): Promis
   return rows.map(toProperty);
 }
 
-export async function getPropertiesByAgent(agentId: string): Promise<Property[]> {
+export async function getPropertiesByAgent(agentId: string, limit = 60): Promise<Property[]> {
   const rows = await db.property.findMany({
     where: { agentId },
     orderBy: { dateAdded: "desc" },
+    take: limit,
     include: includeImages,
   });
   return rows.map(toProperty);
 }
 
-export async function getOffMarketProperties(): Promise<Property[]> {
+export async function getOffMarketProperties(limit = 60): Promise<Property[]> {
   const rows = await db.property.findMany({
     where: { OR: [{ isOffMarket: true }, { listingType: "off-market" }] },
     orderBy: { dateAdded: "desc" },
+    take: limit,
     include: includeImages,
   });
   return rows.map(toProperty);
@@ -159,4 +175,21 @@ export async function getOffMarketProperties(): Promise<Property[]> {
 export async function getAllPropertySlugs(): Promise<string[]> {
   const rows = await db.property.findMany({ select: { slug: true } });
   return rows.map((r) => r.slug);
+}
+
+export type PropertySitemapEntry = {
+  slug: string;
+  dateAdded: Date;
+  dateSold: Date | null;
+  isFeatured: boolean;
+};
+
+export async function getPropertySitemapEntries(
+  listingType: ListingType,
+): Promise<PropertySitemapEntry[]> {
+  return db.property.findMany({
+    where: { listingType },
+    select: { slug: true, dateAdded: true, dateSold: true, isFeatured: true },
+    orderBy: { dateAdded: "desc" },
+  });
 }

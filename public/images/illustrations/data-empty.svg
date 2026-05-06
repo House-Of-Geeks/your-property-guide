@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" fill="none" role="img" aria-label="No results illustration">
+  <defs>
+    <linearGradient id="de-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7f6f4" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#EDA3BB" stop-opacity="0.16"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="60" width="320" height="135" fill="url(#de-bg)"/>
+
+  <!-- Empty box / shelf -->
+  <g transform="translate(80, 70)">
+    <!-- Outer box outline -->
+    <path d="M 0 80 L 80 30 L 160 80 L 160 130 L 0 130 Z" fill="#f7f6f4" stroke="#1f2937" stroke-width="1.8"/>
+    <!-- Top crease -->
+    <line x1="0" y1="80" x2="160" y2="80" stroke="#1f2937" stroke-width="1.5"/>
+    <line x1="80" y1="30" x2="80" y2="80" stroke="#1f2937" stroke-width="1" opacity="0.4" stroke-dasharray="3 3"/>
+
+    <!-- Empty interior wash -->
+    <rect x="2" y="82" width="156" height="46" fill="#5c2d5e" opacity="0.10"/>
+
+    <!-- Magnifying glass over the empty box -->
+    <g transform="translate(46, 48)" stroke="#5c2d5e" stroke-width="2.4" fill="none" stroke-linecap="round">
+      <circle cx="22" cy="22" r="22" fill="#f7f6f4"/>
+      <line x1="38" y1="38" x2="56" y2="56" stroke-width="4"/>
+      <!-- Lens highlight -->
+      <path d="M 10 14 Q 18 6, 30 8" opacity="0.5"/>
+      <!-- "?" inside lens -->
+      <path d="M 16 18 Q 16 12, 22 12 Q 28 12, 28 18 Q 28 22, 22 24 L 22 28" stroke-width="2.5"/>
+      <circle cx="22" cy="32" r="1.4" fill="#5c2d5e" stroke="none"/>
+    </g>
+  </g>
+
+  <!-- Floating dots, gentle -->
+  <g fill="#5c2d5e" opacity="0.35">
+    <circle cx="40" cy="60" r="2.5"/>
+    <circle cx="56" cy="80" r="1.8"/>
+    <circle cx="280" cy="64" r="2.5"/>
+    <circle cx="266" cy="86" r="1.8"/>
+  </g>
+
+  <!-- Subtle ground -->
+  <line x1="0" y1="206" x2="320" y2="206" stroke="#1f2937" stroke-width="1" opacity="0.6"/>
+</svg>

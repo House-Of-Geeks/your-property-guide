@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cache } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
@@ -45,9 +46,15 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+// Memoize per-request so generateMetadata + the page itself share a single
+// roundtrip instead of issuing the same lookup twice.
+const getAddress = cache((slug: string) =>
+  db.propertyAddress.findUnique({ where: { slug } }),
+);
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const address = await db.propertyAddress.findUnique({ where: { slug } });
+  const address = await getAddress(slug);
   if (!address) return { title: "Property Not Found" };
 
   const addressDisplay = address.addressFull.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
@@ -79,7 +86,7 @@ function indicativePriceRange(median: number) {
 export default async function PropertyAddressPage({ params }: PageProps) {
   const { slug } = await params;
 
-  const address = await db.propertyAddress.findUnique({ where: { slug } });
+  const address = await getAddress(slug);
   if (!address) notFound();
 
   const suburb = address.suburbSlug

@@ -19,6 +19,8 @@ interface StatePageProps {
   params: Promise<{ state: string }>;
 }
 
+export const revalidate = 86400; // cache as ISR for 24h, regen on demand
+
 export async function generateStaticParams() {
   return VALID_STATES.map((state) => ({ state }));
 }

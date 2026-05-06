@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { MapPin, Home, TrendingUp } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
@@ -22,22 +23,11 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
-const STATE_FLAGS: Record<string, string> = {
-  QLD: "🦎",
-  NSW: "🦁",
-  VIC: "🌿",
-  WA: "🌊",
-  SA: "🌺",
-  TAS: "🍎",
-  NT: "⭐",
-  ACT: "🏛️",
-};
-
 export default async function StatesPage() {
   const states = await getAllStatesWithStats();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
       <CollectionPageJsonLd
         name="Australian States & Territories"
         description="Explore property markets across all Australian states and territories."
@@ -45,19 +35,33 @@ export default async function StatesPage() {
       />
       <BreadcrumbJsonLd items={[{ name: "States", url: "/states" }]} />
 
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-primary/10 to-white border-b border-gray-100">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-          <Breadcrumbs items={[{ label: "States" }]} />
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-4">
-            Australian States Property Guide
+      {/* Editorial hero */}
+      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
+        <Image
+          src="/images/illustrations/contour.svg"
+          alt=""
+          width={1200}
+          height={800}
+          aria-hidden="true"
+          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
+        />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
+          <div className="mb-8">
+            <Breadcrumbs items={[{ label: "States" }]} />
+          </div>
+
+          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+            All 8 states &amp; territories
+          </p>
+          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
+            Australia, <span className="italic text-primary">one state at a time</span>.
           </h1>
-          <p className="text-lg text-gray-600 mt-3 max-w-2xl">
-            Explore property markets, suburb profiles, schools, and local data across all 8
-            Australian states and territories.
+          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
+            Suburb profiles, median prices, growth trends, and local market data for
+            every state and territory.
           </p>
         </div>
-      </div>
+      </section>
 
       {/* State cards */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
@@ -66,28 +70,31 @@ export default async function StatesPage() {
             <Link
               key={state.state}
               href={`/states/${state.state.toLowerCase()}`}
-              className="group rounded-2xl border border-gray-200 bg-white p-6 hover:border-primary hover:shadow-lg transition-all"
+              className="group rounded-2xl border border-line bg-surface-raised p-6 hover:border-primary/40 hover:shadow-md transition-all"
             >
-              <div className="text-3xl mb-3">{STATE_FLAGS[state.state] ?? "📍"}</div>
-              <h2 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors">
+              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+                {state.state}
+              </p>
+              <h2 className="font-display text-xl text-ink group-hover:text-primary transition-colors mb-5 leading-tight">
                 {state.stateName}
               </h2>
-              <p className="text-xs text-gray-400 uppercase tracking-wider mb-4">{state.state}</p>
 
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <MapPin className="w-4 h-4 text-gray-400 shrink-0" />
+              <div className="space-y-2.5">
+                <div className="flex items-center gap-2 text-sm font-sans text-ink-muted">
+                  <MapPin className="w-4 h-4 text-ink-subtle shrink-0" />
                   <span>
-                    <strong className="text-gray-900">{state.suburbCount.toLocaleString()}</strong>{" "}
+                    <strong className="text-ink font-display text-base">
+                      {state.suburbCount.toLocaleString()}
+                    </strong>{" "}
                     suburbs
                   </span>
                 </div>
                 {state.avgMedianHousePrice && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Home className="w-4 h-4 text-gray-400 shrink-0" />
+                  <div className="flex items-center gap-2 text-sm font-sans text-ink-muted">
+                    <Home className="w-4 h-4 text-ink-subtle shrink-0" />
                     <span>
                       Avg{" "}
-                      <strong className="text-gray-900">
+                      <strong className="text-ink font-display text-base">
                         {formatPrice(state.avgMedianHousePrice)}
                       </strong>{" "}
                       median
@@ -95,12 +102,14 @@ export default async function StatesPage() {
                   </div>
                 )}
                 {state.avgAnnualGrowth != null && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <TrendingUp className="w-4 h-4 text-gray-400 shrink-0" />
+                  <div className="flex items-center gap-2 text-sm font-sans text-ink-muted">
+                    <TrendingUp className="w-4 h-4 text-ink-subtle shrink-0" />
                     <span>
                       <strong
                         className={
-                          state.avgAnnualGrowth >= 0 ? "text-green-700" : "text-red-600"
+                          state.avgAnnualGrowth >= 0
+                            ? "text-emerald-700 font-display text-base"
+                            : "text-red-700 font-display text-base"
                         }
                       >
                         {state.avgAnnualGrowth >= 0 ? "+" : ""}
@@ -112,13 +121,13 @@ export default async function StatesPage() {
                 )}
               </div>
 
-              <p className="text-sm font-semibold text-primary mt-5 group-hover:underline">
+              <p className="font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors mt-5 inline-block">
                 Explore {state.state} →
               </p>
             </Link>
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 }

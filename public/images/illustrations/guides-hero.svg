@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" fill="none" role="img" aria-label="Property guides illustration">
+  <defs>
+    <linearGradient id="g-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7f6f4" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#EDA3BB" stop-opacity="0.18"/>
+    </linearGradient>
+    <linearGradient id="g-cover" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5c2d5e"/>
+      <stop offset="100%" stop-color="#4E1F4F"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="60" width="320" height="135" fill="url(#g-bg)"/>
+
+  <!-- Open book, base -->
+  <g transform="translate(40, 70)">
+    <!-- Left page -->
+    <path d="M0 30 Q 5 16, 18 16 L 118 16 L 118 130 L 18 130 Q 5 130, 0 116 Z" fill="#f7f6f4" stroke="#1f2937" stroke-width="1.5"/>
+    <!-- Right page -->
+    <path d="M118 16 L 218 16 Q 231 16, 236 30 L 236 116 Q 231 130, 218 130 L 118 130 Z" fill="#f7f6f4" stroke="#1f2937" stroke-width="1.5"/>
+    <!-- Spine -->
+    <path d="M118 16 L 118 130" stroke="#1f2937" stroke-width="1.5"/>
+
+    <!-- Left page content lines -->
+    <g stroke="#1f2937" stroke-width="1.2" stroke-linecap="round">
+      <line x1="20" y1="34" x2="98" y2="34" opacity="0.8"/>
+      <line x1="20" y1="44" x2="110" y2="44" opacity="0.55"/>
+      <line x1="20" y1="54" x2="106" y2="54" opacity="0.55"/>
+      <line x1="20" y1="64" x2="112" y2="64" opacity="0.55"/>
+      <line x1="20" y1="74" x2="86" y2="74" opacity="0.55"/>
+    </g>
+    <!-- Pull-quote block on left -->
+    <rect x="20" y="86" width="92" height="32" fill="#FBBF77" opacity="0.30" rx="2"/>
+    <line x1="22" y1="86" x2="22" y2="118" stroke="#DD3C70" stroke-width="2.5"/>
+    <line x1="30" y1="98" x2="100" y2="98" stroke="#1f2937" stroke-width="1.2" opacity="0.8"/>
+    <line x1="30" y1="106" x2="92" y2="106" stroke="#1f2937" stroke-width="1.2" opacity="0.8"/>
+
+    <!-- Right page heading bar -->
+    <rect x="128" y="34" width="86" height="6" rx="1" fill="#5c2d5e"/>
+    <g stroke="#1f2937" stroke-width="1.2" stroke-linecap="round">
+      <line x1="128" y1="50" x2="220" y2="50" opacity="0.55"/>
+      <line x1="128" y1="60" x2="216" y2="60" opacity="0.55"/>
+      <line x1="128" y1="70" x2="220" y2="70" opacity="0.55"/>
+      <line x1="128" y1="80" x2="200" y2="80" opacity="0.55"/>
+      <line x1="128" y1="90" x2="216" y2="90" opacity="0.55"/>
+      <line x1="128" y1="100" x2="184" y2="100" opacity="0.55"/>
+      <line x1="128" y1="110" x2="218" y2="110" opacity="0.55"/>
+    </g>
+  </g>
+
+  <!-- Bookmark ribbon, accent -->
+  <path d="M186 86 L186 142 L194 134 L202 142 L202 86 Z" fill="#DD3C70"/>
+
+  <!-- Reading glasses, top-right -->
+  <g transform="translate(220, 30)" stroke="#5c2d5e" stroke-width="2.2" fill="none" opacity="0.85">
+    <circle cx="14" cy="14" r="11"/>
+    <circle cx="46" cy="14" r="11"/>
+    <line x1="25" y1="14" x2="35" y2="14"/>
+    <line x1="3" y1="14" x2="-6" y2="22" stroke-linecap="round"/>
+    <line x1="57" y1="14" x2="66" y2="22" stroke-linecap="round"/>
+  </g>
+
+  <!-- Subtle ground line -->
+  <line x1="0" y1="206" x2="320" y2="206" stroke="#1f2937" stroke-width="1" opacity="0.6"/>
+</svg>

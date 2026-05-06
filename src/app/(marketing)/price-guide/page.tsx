@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { TrendingUp, TrendingDown, Clock, Info } from "lucide-react";
+import Image from "next/image";
+import { TrendingUp, TrendingDown, Clock } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { db } from "@/lib/db";
@@ -95,32 +96,50 @@ export default async function PriceGuidePage({
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+    <>
       <BreadcrumbJsonLd items={[{ name: "Price Guide", url: "/price-guide" }]} />
-      <Breadcrumbs items={[{ label: "Price Guide" }]} />
 
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">
-          Property Price Guide
-        </h1>
-        <p className="text-gray-500 mt-1">
-          Median house and unit prices across Australian suburbs
-        </p>
-      </div>
+      {/* Editorial hero */}
+      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
+        <Image
+          src="/images/illustrations/contour.svg"
+          alt=""
+          width={1200}
+          height={800}
+          aria-hidden="true"
+          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
+        />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
+          <div className="mb-8">
+            <Breadcrumbs items={[{ label: "Price Guide" }]} />
+          </div>
 
+          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+            {total.toLocaleString()} suburbs &middot; updated quarterly
+          </p>
+          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
+            Median prices, <span className="italic text-primary">side by side</span>.
+          </h1>
+          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
+            Filter and compare median house and unit prices across every Australian suburb,
+            with annual growth and days on market.
+          </p>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
       {/* Filters */}
       <form method="GET" action="/price-guide" className="mb-6 flex flex-wrap gap-3 items-center">
         {/* State filter */}
         <div className="flex items-center gap-2">
-          <label htmlFor="state-select" className="text-sm font-medium text-gray-700 whitespace-nowrap">
+          <label htmlFor="state-select" className="text-sm font-sans font-medium text-ink whitespace-nowrap">
             State
           </label>
           <select
             id="state-select"
             name="state"
             defaultValue={state ?? ""}
-            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            className="rounded-lg border border-line bg-surface-raised px-3 py-2 text-sm font-sans text-ink focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           >
             <option value="">All States</option>
             {STATES.map((s) => (
@@ -133,14 +152,14 @@ export default async function PriceGuidePage({
 
         {/* Sort filter */}
         <div className="flex items-center gap-2">
-          <label htmlFor="sort-select" className="text-sm font-medium text-gray-700 whitespace-nowrap">
+          <label htmlFor="sort-select" className="text-sm font-sans font-medium text-ink whitespace-nowrap">
             Sort by
           </label>
           <select
             id="sort-select"
             name="sort"
             defaultValue={sort}
-            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            className="rounded-lg border border-line bg-surface-raised px-3 py-2 text-sm font-sans text-ink focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           >
             <option value="price-desc">Highest Price</option>
             <option value="price-asc">Lowest Price</option>
@@ -150,74 +169,74 @@ export default async function PriceGuidePage({
 
         <button
           type="submit"
-          className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-colors"
+          className="rounded-lg bg-cta px-4 py-2 text-sm font-sans font-medium text-white hover:bg-cta/90 transition-colors"
         >
           Apply
         </button>
       </form>
 
       {/* Results summary */}
-      <p className="text-sm text-gray-500 mb-4">
+      <p className="text-sm font-sans text-ink-muted mb-4">
         Showing {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, total)} of{" "}
         {total.toLocaleString()} suburbs
       </p>
 
       {/* Desktop table */}
-      <div className="hidden sm:block overflow-x-auto rounded-xl bg-white shadow-card border border-gray-100 shadow-sm">
-        <table className="min-w-full divide-y divide-gray-200 text-sm">
-          <thead className="bg-gray-50">
+      <div className="hidden sm:block overflow-x-auto rounded-2xl bg-surface-raised border border-line">
+        <table className="min-w-full divide-y divide-line text-sm">
+          <thead className="bg-surface-warm">
             <tr>
-              <th className="px-4 py-3 text-left font-semibold text-gray-700">
+              <th className="px-4 py-3 text-left font-sans font-medium text-ink uppercase tracking-wider text-xs">
                 Suburb
               </th>
-              <th className="px-4 py-3 text-left font-semibold text-gray-700">
+              <th className="px-4 py-3 text-left font-sans font-medium text-ink uppercase tracking-wider text-xs">
                 State
               </th>
-              <th className="px-4 py-3 text-left font-semibold text-gray-700">
+              <th className="px-4 py-3 text-left font-sans font-medium text-ink uppercase tracking-wider text-xs">
                 Postcode
               </th>
-              <th className="px-4 py-3 text-right font-semibold text-gray-700">
+              <th className="px-4 py-3 text-right font-sans font-medium text-ink uppercase tracking-wider text-xs">
                 Median House
               </th>
-              <th className="px-4 py-3 text-right font-semibold text-gray-700">
+              <th className="px-4 py-3 text-right font-sans font-medium text-ink uppercase tracking-wider text-xs">
                 Median Unit
               </th>
-              <th className="px-4 py-3 text-right font-semibold text-gray-700">
+              <th className="px-4 py-3 text-right font-sans font-medium text-ink uppercase tracking-wider text-xs">
                 Annual Growth
               </th>
-              <th className="px-4 py-3 text-right font-semibold text-gray-700">
+              <th className="px-4 py-3 text-right font-sans font-medium text-ink uppercase tracking-wider text-xs">
                 Days on Market
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-line">
             {suburbs.map((suburb) => (
-              <tr key={suburb.slug} className="hover:bg-gray-50 transition-colors">
+              <tr key={suburb.slug} className="hover:bg-surface-warm/50 transition-colors">
                 <td className="px-4 py-3 font-medium">
                   <Link
                     href={`/suburbs/${suburb.slug}`}
-                    className="text-primary hover:underline"
+                    className="font-sans text-ink border-b border-line-strong hover:border-primary hover:text-primary transition-colors pb-0.5"
                   >
                     {suburb.name}
                   </Link>
                 </td>
-                <td className="px-4 py-3 text-gray-600">{suburb.state}</td>
-                <td className="px-4 py-3 text-gray-600">{suburb.postcode}</td>
-                <td className="px-4 py-3 text-right font-semibold text-gray-900">
+                <td className="px-4 py-3 font-sans text-ink-muted">{suburb.state}</td>
+                <td className="px-4 py-3 font-sans text-ink-muted">{suburb.postcode}</td>
+                <td className="px-4 py-3 text-right font-display text-ink">
                   {formatPrice(suburb.medianHousePrice)}
                 </td>
-                <td className="px-4 py-3 text-right text-gray-700">
+                <td className="px-4 py-3 text-right font-sans text-ink-muted">
                   {suburb.medianUnitPrice > 0
                     ? formatPrice(suburb.medianUnitPrice)
-                    : <span className="text-gray-400">—</span>}
+                    : <span className="text-ink-subtle">—</span>}
                 </td>
                 <td className="px-4 py-3 text-right">
                   {suburb.annualGrowthHouse !== 0 ? (
                     <span
                       className={`inline-flex items-center gap-1 font-medium ${
                         suburb.annualGrowthHouse >= 0
-                          ? "text-green-600"
-                          : "text-red-500"
+                          ? "text-emerald-700"
+                          : "text-red-700"
                       }`}
                     >
                       {suburb.annualGrowthHouse >= 0 ? (
@@ -228,17 +247,17 @@ export default async function PriceGuidePage({
                       {formatPercentage(suburb.annualGrowthHouse)}
                     </span>
                   ) : (
-                    <span className="text-gray-400">—</span>
+                    <span className="text-ink-subtle">—</span>
                   )}
                 </td>
-                <td className="px-4 py-3 text-right text-gray-600">
+                <td className="px-4 py-3 text-right font-sans text-ink-muted">
                   {suburb.daysOnMarket > 0 ? (
                     <span className="inline-flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5 text-gray-400" />
+                      <Clock className="w-3.5 h-3.5 text-ink-subtle" />
                       {suburb.daysOnMarket}d
                     </span>
                   ) : (
-                    <span className="text-gray-400">—</span>
+                    <span className="text-ink-subtle">—</span>
                   )}
                 </td>
               </tr>
@@ -253,21 +272,21 @@ export default async function PriceGuidePage({
           <Link
             key={suburb.slug}
             href={`/suburbs/${suburb.slug}`}
-            className="block rounded-xl bg-white shadow-card border border-gray-100 p-4 hover:shadow-md transition-shadow"
+            className="block rounded-2xl bg-surface-raised border border-line p-4 hover:border-primary/40 hover:shadow-md transition-all"
           >
             <div className="flex items-start justify-between">
               <div>
-                <p className="font-semibold text-gray-900">{suburb.name}</p>
-                <p className="text-xs text-gray-500 mt-0.5">
+                <p className="font-display text-lg text-ink leading-tight">{suburb.name}</p>
+                <p className="text-xs font-sans text-ink-subtle mt-0.5">
                   {suburb.state} {suburb.postcode}
                 </p>
               </div>
               {suburb.annualGrowthHouse !== 0 && (
                 <span
-                  className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                  className={`text-xs font-medium px-2 py-0.5 rounded-full font-sans ${
                     suburb.annualGrowthHouse >= 0
-                      ? "bg-green-50 text-green-700"
-                      : "bg-red-50 text-red-600"
+                      ? "bg-emerald-50 text-emerald-700"
+                      : "bg-red-50 text-red-700"
                   }`}
                 >
                   {formatPercentage(suburb.annualGrowthHouse)}
@@ -276,23 +295,23 @@ export default async function PriceGuidePage({
             </div>
             <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
               <div>
-                <p className="text-xs text-gray-500">House</p>
-                <p className="font-semibold text-gray-900">
+                <p className="text-xs font-sans text-ink-subtle">House</p>
+                <p className="font-display text-base text-ink">
                   {formatPrice(suburb.medianHousePrice)}
                 </p>
               </div>
               {suburb.medianUnitPrice > 0 && (
                 <div>
-                  <p className="text-xs text-gray-500">Unit</p>
-                  <p className="font-semibold text-gray-900">
+                  <p className="text-xs font-sans text-ink-subtle">Unit</p>
+                  <p className="font-display text-base text-ink">
                     {formatPrice(suburb.medianUnitPrice)}
                   </p>
                 </div>
               )}
               {suburb.daysOnMarket > 0 && (
                 <div>
-                  <p className="text-xs text-gray-500">Days on Market</p>
-                  <p className="font-semibold text-gray-900">
+                  <p className="text-xs font-sans text-ink-subtle">Days on Market</p>
+                  <p className="font-display text-base text-ink">
                     {suburb.daysOnMarket}d
                   </p>
                 </div>
@@ -304,9 +323,9 @@ export default async function PriceGuidePage({
 
       {/* Empty state */}
       {suburbs.length === 0 && (
-        <div className="text-center py-16 text-gray-500">
-          <p className="text-lg font-medium">No suburbs found</p>
-          <p className="mt-1 text-sm">Try adjusting your filters.</p>
+        <div className="text-center py-16">
+          <p className="font-display text-xl text-ink">No suburbs found</p>
+          <p className="mt-1 text-sm font-sans text-ink-muted">Try adjusting your filters.</p>
         </div>
       )}
 
@@ -319,18 +338,18 @@ export default async function PriceGuidePage({
           {page > 1 && (
             <Link
               href={buildUrl({ state, sort, page: page - 1 })}
-              className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              className="rounded-lg border border-line px-3 py-2 text-sm font-sans text-ink-muted hover:bg-surface-warm transition-colors"
             >
               Previous
             </Link>
           )}
-          <span className="text-sm text-gray-600">
+          <span className="text-sm font-sans text-ink-muted">
             Page {page} of {totalPages}
           </span>
           {page < totalPages && (
             <Link
               href={buildUrl({ state, sort, page: page + 1 })}
-              className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              className="rounded-lg border border-line px-3 py-2 text-sm font-sans text-ink-muted hover:bg-surface-warm transition-colors"
             >
               Next
             </Link>
@@ -339,12 +358,11 @@ export default async function PriceGuidePage({
       )}
 
       {/* Data source note */}
-      <div className="mt-8 flex items-start gap-2 rounded-xl border border-blue-100 bg-blue-50 p-4 text-sm text-blue-800">
-        <Info className="w-4 h-4 mt-0.5 shrink-0 text-blue-500" />
-        <p>
-          Data sourced from state government Valuer-General offices. Updated quarterly.
-        </p>
+      <div className="mt-8 rounded-2xl border border-line bg-surface-warm p-5 text-sm font-sans text-ink-muted">
+        <p className="text-xs uppercase tracking-[0.25em] text-ink-subtle mb-1.5">Data source</p>
+        <p>Data sourced from state government Valuer-General offices. Updated quarterly.</p>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

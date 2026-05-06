@@ -1,5 +1,7 @@
-// Streets sitemap pages are too large to pre-render at build time — serve dynamically
-export const dynamic = "force-dynamic";
+// Sitemap pages are too large to pre-render at build time, so we serve via
+// on-demand ISR instead of force-dynamic. Each crawler hit is a cache HIT
+// for 24h, the heavy Postgres aggregation runs at most once per day.
+export const revalidate = 86400;
 
 import { cache } from "react";
 import type { MetadataRoute } from "next";

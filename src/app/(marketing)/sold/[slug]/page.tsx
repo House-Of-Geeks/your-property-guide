@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Bed, Bath, Car, MapPin, Calendar } from "lucide-react";
+import { Bed, Bath, Car, Calendar } from "lucide-react";
 import { PropertyGallery } from "@/components/property/PropertyGallery";
 import { AgentSidebarCard } from "@/components/property/AgentSidebarCard";
 import { Breadcrumbs } from "@/components/layout";
@@ -10,8 +10,6 @@ import { getPropertyBySlug } from "@/lib/services/property-service";
 import { getAgentById, getAgencyById } from "@/lib/services/agent-service";
 import { formatPriceFull, formatDate } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
-import { auth } from "@/auth";
-import { isPropertySaved } from "@/lib/actions/dashboard";
 import { PropertyActions } from "@/components/property/PropertyActions";
 
 interface SoldDetailPageProps {
@@ -41,13 +39,11 @@ export default async function SoldDetailPage({ params }: SoldDetailPageProps) {
   const property = await getPropertyBySlug(slug);
   if (!property) notFound();
 
-  const session = await auth();
-  const isLoggedIn = !!session?.user?.email;
-
-  const [agent, agency, initialSaved] = await Promise.all([
+  // No auth() / isPropertySaved() here, kept off-server to keep this page
+  // CDN-cacheable. PropertyActions fetches saved status client-side.
+  const [agent, agency] = await Promise.all([
     property.agentId ? getAgentById(property.agentId) : Promise.resolve(null),
     property.agencyId ? getAgencyById(property.agencyId) : Promise.resolve(null),
-    isPropertySaved(property.id),
   ]);
 
   return (
@@ -74,38 +70,45 @@ export default async function SoldDetailPage({ params }: SoldDetailPageProps) {
           <div className="lg:col-span-2 space-y-6">
             <div>
               <Badge variant="success">Sold</Badge>
-              <div className="flex items-start justify-between gap-4 mt-2">
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              <div className="flex items-start justify-between gap-4 mt-3">
+                <h1 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
                   {property.address.full}
                 </h1>
                 <PropertyActions
                   propertyId={property.id}
                   address={property.address.full}
-                  initialSaved={initialSaved}
-                  isLoggedIn={isLoggedIn}
                 />
               </div>
               {property.soldPrice && (
-                <p className="text-xl font-semibold text-gray-700 flex items-center gap-1 mt-1">
-                  <MapPin className="w-5 h-5" /> {formatPriceFull(property.soldPrice)}
+                <p className="font-display text-xl text-primary mt-2">
+                  {formatPriceFull(property.soldPrice)}
                 </p>
               )}
               {property.dateSold && (
-                <p className="text-sm text-gray-500 flex items-center gap-1 mt-2">
-                  <Calendar className="w-4 h-4" /> Sold {formatDate(property.dateSold)}
+                <p className="text-sm font-sans text-ink-subtle flex items-center gap-1.5 mt-2">
+                  <Calendar className="w-4 h-4" aria-hidden="true" /> Sold {formatDate(property.dateSold)}
                 </p>
               )}
             </div>
 
-            <div className="flex items-center gap-6 py-4 border-y border-gray-200">
-              <span className="flex items-center gap-2 text-gray-700"><Bed className="w-5 h-5" /> {property.features.bedrooms} Beds</span>
-              <span className="flex items-center gap-2 text-gray-700"><Bath className="w-5 h-5" /> {property.features.bathrooms} Baths</span>
-              <span className="flex items-center gap-2 text-gray-700"><Car className="w-5 h-5" /> {property.features.carSpaces} Cars</span>
+            <div className="flex items-center gap-6 py-4 border-y border-line">
+              <span className="flex items-center gap-2 text-ink-muted">
+                <Bed className="w-5 h-5 text-ink-subtle" aria-hidden="true" />
+                <span className="text-sm font-sans"><strong className="font-semibold text-ink">{property.features.bedrooms}</strong> Beds</span>
+              </span>
+              <span className="flex items-center gap-2 text-ink-muted">
+                <Bath className="w-5 h-5 text-ink-subtle" aria-hidden="true" />
+                <span className="text-sm font-sans"><strong className="font-semibold text-ink">{property.features.bathrooms}</strong> Baths</span>
+              </span>
+              <span className="flex items-center gap-2 text-ink-muted">
+                <Car className="w-5 h-5 text-ink-subtle" aria-hidden="true" />
+                <span className="text-sm font-sans"><strong className="font-semibold text-ink">{property.features.carSpaces}</strong> Cars</span>
+              </span>
             </div>
 
             <div>
-              <h2 className="text-xl font-bold text-gray-900 mb-3">About This Property</h2>
-              <p className="text-gray-600 leading-relaxed whitespace-pre-line">{property.description}</p>
+              <h2 className="font-display text-xl text-ink leading-tight mb-3">About this property</h2>
+              <p className="font-sans text-base text-ink-muted leading-relaxed whitespace-pre-line">{property.description}</p>
             </div>
 
             {/* Mobile agent card */}

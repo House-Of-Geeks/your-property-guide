@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" fill="none" role="img" aria-label="Upgrading or downsizing illustration">
+  <defs>
+    <linearGradient id="up-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7f6f4" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#FBBF77" stop-opacity="0.18"/>
+    </linearGradient>
+    <linearGradient id="up-house" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#374151"/>
+      <stop offset="100%" stop-color="#1f2937"/>
+    </linearGradient>
+    <!-- Auto-orienting arrowhead, sized to the stroke -->
+    <marker id="up-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 12 6 L 0 12 Z" fill="#DD3C70"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="80" width="320" height="115" fill="url(#up-sky)"/>
+
+  <!-- Distant treeline -->
+  <g opacity="0.18">
+    <ellipse cx="155" cy="172" rx="50" ry="11" fill="#5c2d5e"/>
+  </g>
+
+  <!-- Smaller starter house, left -->
+  <g>
+    <path d="M28 152 L70 118 L112 152 L112 188 L28 188 Z" fill="url(#up-house)"/>
+    <path d="M22 152 L70 115 L118 152" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+    <!-- Door -->
+    <path d="M62 168 L62 188 L82 188 L82 168 Q82 165 79 165 L65 165 Q62 165 62 168 Z" fill="#5c2d5e"/>
+    <!-- Window with glow -->
+    <rect x="38" y="160" width="16" height="16" fill="#f7f6f4"/>
+    <rect x="38" y="160" width="16" height="16" fill="#FBBF77" opacity="0.30"/>
+    <line x1="46" y1="160" x2="46" y2="176" stroke="#1f2937" stroke-width="1"/>
+    <line x1="38" y1="168" x2="54" y2="168" stroke="#1f2937" stroke-width="1"/>
+    <rect x="38" y="160" width="16" height="16" stroke="#1f2937" stroke-width="1.2" fill="none"/>
+    <!-- Caption tick -->
+    <text x="70" y="206" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-style="italic" fill="#5c2d5e" opacity="0.75">starter</text>
+  </g>
+
+  <!-- Smooth arc from above the starter house to the larger house roof; arrowhead auto-orients -->
+  <path
+    d="M 100 96 Q 158 32, 222 78"
+    stroke="#DD3C70"
+    stroke-width="2.4"
+    fill="none"
+    stroke-linecap="round"
+    marker-end="url(#up-arrow)"
+  />
+  <!-- Tiny dotted trail behind the arc, for editorial flavour -->
+  <path
+    d="M 80 110 Q 140 50, 215 78"
+    stroke="#DD3C70"
+    stroke-width="1.2"
+    stroke-dasharray="1 5"
+    stroke-linecap="round"
+    fill="none"
+    opacity="0.45"
+  />
+
+  <!-- Larger forever house, right -->
+  <g>
+    <path d="M178 130 L246 70 L314 130 L314 188 L178 188 Z" fill="url(#up-house)"/>
+    <path d="M170 130 L246 65 L320 130" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+    <!-- Chimney: vertical sides, sloped bottom seated on the roof slope -->
+    <polygon points="278,73 291,73 291,104 278,93" fill="#1f2937"/>
+    <!-- Cap, sits flush above chimney top -->
+    <rect x="275" y="69" width="19" height="5" fill="#1f2937"/>
+    <!-- Door, accent magenta on the upgrade -->
+    <path d="M232 148 L232 188 L262 188 L262 148 Q262 145 259 145 L235 145 Q232 145 232 148 Z" fill="#DD3C70"/>
+    <circle cx="256" cy="170" r="1.6" fill="#f7f6f4"/>
+    <!-- Steps -->
+    <rect x="228" y="186" width="38" height="3" fill="#5c2d5e" opacity="0.7"/>
+    <!-- Left window -->
+    <g>
+      <rect x="194" y="142" width="28" height="28" fill="#f7f6f4"/>
+      <rect x="194" y="142" width="28" height="28" fill="#FBBF77" opacity="0.30"/>
+      <line x1="208" y1="142" x2="208" y2="170" stroke="#1f2937" stroke-width="1.2"/>
+      <line x1="194" y1="156" x2="222" y2="156" stroke="#1f2937" stroke-width="1.2"/>
+      <rect x="194" y="142" width="28" height="28" stroke="#1f2937" stroke-width="1.5" fill="none"/>
+    </g>
+    <!-- Right window -->
+    <g>
+      <rect x="278" y="142" width="28" height="28" fill="#f7f6f4"/>
+      <rect x="278" y="142" width="28" height="28" fill="#FBBF77" opacity="0.30"/>
+      <line x1="292" y1="142" x2="292" y2="170" stroke="#1f2937" stroke-width="1.2"/>
+      <line x1="278" y1="156" x2="306" y2="156" stroke="#1f2937" stroke-width="1.2"/>
+      <rect x="278" y="142" width="28" height="28" stroke="#1f2937" stroke-width="1.5" fill="none"/>
+    </g>
+    <!-- Caption -->
+    <text x="246" y="206" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-style="italic" fill="#5c2d5e" opacity="0.75">next chapter</text>
+  </g>
+
+  <!-- Subtle ground line -->
+  <line x1="0" y1="190" x2="320" y2="190" stroke="#1f2937" stroke-width="1.2"/>
+</svg>

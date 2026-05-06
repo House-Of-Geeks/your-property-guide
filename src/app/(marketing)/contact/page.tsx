@@ -1,52 +1,149 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import { Phone, Mail, Clock } from "lucide-react";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
-import { MapPin, Phone, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: `Contact Us | ${SITE_NAME}`,
-  description: "Get in touch with Your Property Guide. We're here to help with all your property needs across Australia.",
+  title: `Contact ${SITE_NAME}`,
+  description: "Get in touch with Your Property Guide. We read every message ourselves and reply within one business day.",
   alternates: { canonical: `${SITE_URL}/contact` },
-  openGraph: { url: `${SITE_URL}/contact`, title: "Contact Us", description: "Get in touch with Your Property Guide. We're here to help with all your property needs across Australia.", type: "website" },
+  openGraph: { url: `${SITE_URL}/contact`, title: `Contact ${SITE_NAME}`, description: "Get in touch with Your Property Guide.", type: "website" },
 };
+
+const CONTACTS = [
+  {
+    icon: Phone,
+    label: "Call",
+    primary: "+61 433 405 530",
+    body: "Australian business hours, Monday to Friday.",
+    href: "tel:+61433405530",
+  },
+  {
+    icon: Mail,
+    label: "Email",
+    primary: "andy@theandylife.com",
+    body: "Goes straight to the founder. Reply within one business day.",
+    href: "mailto:andy@theandylife.com",
+  },
+  {
+    icon: Clock,
+    label: "Response time",
+    primary: "One business day",
+    body: "No bots, no auto-routing. We read every message ourselves.",
+  },
+];
 
 export default function ContactPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+    <>
       <BreadcrumbJsonLd items={[{ name: "Contact", url: "/contact" }]} />
-      <Breadcrumbs items={[{ label: "Contact" }]} />
 
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900">Contact Us</h1>
-        <p className="text-gray-500 mt-2">
-          Have a question? We&apos;d love to hear from you.
-        </p>
+      {/* Editorial hero */}
+      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
+        <Image
+          src="/images/illustrations/contour.svg"
+          alt=""
+          width={1200}
+          height={800}
+          aria-hidden="true"
+          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
+        />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
+          <div className="mb-8">
+            <Breadcrumbs items={[{ label: "Contact" }]} />
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8">
-          <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100 text-center">
-            <MapPin className="w-6 h-6 text-primary mx-auto mb-2" />
-            <p className="text-sm font-medium text-gray-900">Visit Us</p>
-            <p className="text-xs text-gray-500 mt-1">Australia</p>
-          </div>
-          <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100 text-center">
-            <Phone className="w-6 h-6 text-primary mx-auto mb-2" />
-            <p className="text-sm font-medium text-gray-900">Call Us</p>
-            <p className="text-xs text-gray-500 mt-1">07 3000 0000</p>
-          </div>
-          <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100 text-center">
-            <Mail className="w-6 h-6 text-primary mx-auto mb-2" />
-            <p className="text-sm font-medium text-gray-900">Email Us</p>
-            <p className="text-xs text-gray-500 mt-1">hello@yourpropertyguide.com.au</p>
+          <div className="grid lg:grid-cols-12 gap-10 items-center">
+            <div className="lg:col-span-7">
+              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+                Get in touch
+              </p>
+              <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6">
+                We read every message <span className="italic text-primary">ourselves</span>.
+              </h1>
+              <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-xl">
+                Question about a suburb? Spotted something off in our data?
+                Want to partner? Drop us a line, we&rsquo;ll respond within one
+                business day.
+              </p>
+            </div>
+            <div className="lg:col-span-5">
+              <div className="rounded-2xl border border-line-warm bg-surface-raised shadow-card overflow-hidden">
+                <Image
+                  src="/images/illustrations/expert-match.svg"
+                  alt=""
+                  width={320}
+                  height={220}
+                  className="w-full h-auto"
+                  priority
+                />
+              </div>
+            </div>
           </div>
         </div>
+      </section>
 
-        <div className="rounded-xl bg-white shadow-card border border-gray-100 p-6 sm:p-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Send Us a Message</h2>
-          <EnquiryForm type="general-contact" />
+      {/* Contact methods */}
+      <section className="bg-surface-raised">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
+            {CONTACTS.map((c) => {
+              const Icon = c.icon;
+              const inner = (
+                <div className="rounded-2xl border border-line bg-surface-raised p-6 sm:p-7 h-full hover:border-ink hover:shadow-card transition-all">
+                  <div className="w-10 h-10 rounded-lg bg-surface-warm border border-line-warm flex items-center justify-center mb-4">
+                    <Icon className="w-5 h-5 text-cta" aria-hidden="true" />
+                  </div>
+                  <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-2">{c.label}</p>
+                  <p className="font-display text-lg text-ink leading-tight mb-2">{c.primary}</p>
+                  <p className="font-sans text-sm text-ink-muted leading-relaxed">{c.body}</p>
+                </div>
+              );
+              return c.href ? (
+                <a key={c.label} href={c.href} className="block">
+                  {inner}
+                </a>
+              ) : (
+                <div key={c.label}>{inner}</div>
+              );
+            })}
+          </div>
+
+          {/* Form */}
+          <div className="max-w-3xl mx-auto">
+            <div className="mb-8">
+              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+                Or send a message
+              </p>
+              <h2 className="font-display text-ink leading-tight tracking-tight text-2xl sm:text-3xl">
+                We&rsquo;ll get back to you.
+              </h2>
+            </div>
+
+            <div className="rounded-2xl border border-line bg-surface-raised shadow-card p-6 sm:p-8">
+              <EnquiryForm type="general-contact" />
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
+
+      {/* Honest note */}
+      <section className="bg-surface-warm border-t border-line-warm">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 text-center">
+          <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">
+            Honest note
+          </p>
+          <p className="font-sans text-base text-ink-muted leading-relaxed">
+            We&rsquo;re a small team. Messages from buyers, sellers and renters
+            get the same priority as messages from agents and partners. If you
+            don&rsquo;t hear back within one business day, the email got lost,
+            try again or call.
+          </p>
+        </div>
+      </section>
+    </>
   );
 }

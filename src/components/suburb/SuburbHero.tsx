@@ -4,7 +4,6 @@ import { ChevronRight } from "lucide-react";
 import { SuburbSearch } from "./SuburbSearch";
 import type { Suburb } from "@/types";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
-import { TrendingUp, Clock, Users } from "lucide-react";
 import { fullLgaName } from "@/lib/utils/lga-names";
 import { SourceTooltip } from "./SourceTooltip";
 
@@ -31,19 +30,19 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
   return (
     <>
       {/* Breadcrumb + search bar */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-surface-raised border-b border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-4">
           {/* Breadcrumb */}
           <nav aria-label="Breadcrumb">
-            <ol className="flex items-center gap-1 text-sm text-gray-500 flex-wrap">
+            <ol className="flex items-center gap-1 text-sm font-sans text-ink-subtle flex-wrap">
               <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
               <li className="flex items-center gap-1">
                 <ChevronRight className="w-3.5 h-3.5" />
-                <Link href="/suburbs" className="hover:text-primary transition-colors">Suburb Profile</Link>
+                <Link href="/suburbs" className="hover:text-primary transition-colors">Suburbs</Link>
               </li>
               <li className="flex items-center gap-1">
                 <ChevronRight className="w-3.5 h-3.5" />
-                <span className="text-gray-900 font-medium">
+                <span className="text-ink font-medium">
                   {suburb.name} {suburb.state} {suburb.postcode}
                 </span>
               </li>
@@ -75,31 +74,37 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
             priority
           />
         )}
-        {/* Subtle dark overlay for text legibility */}
-        <div className="absolute inset-0 bg-black/30 pointer-events-none" />
-        {/* Centered suburb label */}
+        {/* Editorial gradient overlay for text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/15 to-black/55 pointer-events-none" />
+        {/* Editorial suburb label with Playfair display */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-4 text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white drop-shadow-lg leading-tight">
-            {suburb.name}
-          </h1>
-          <p className="text-xl font-medium text-white/95 mt-2 drop-shadow">
-            {suburb.state} {suburb.postcode}
-          </p>
-          <p className="text-sm text-white/80 mt-1 drop-shadow">
+          <p className="text-xs font-sans uppercase tracking-[0.3em] text-white/70 mb-3 drop-shadow">
             {fullLgaName(suburb.region)}
           </p>
+          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-white drop-shadow-lg leading-[1.05] tracking-tight">
+            <span className="italic">{suburb.name}</span>
+          </h1>
+          <div className="mt-4 inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
+            <span className="text-sm font-sans font-medium tracking-wide text-white">
+              {suburb.state}
+            </span>
+            <span className="w-px h-3 bg-white/30" />
+            <span className="text-sm font-sans tracking-wide text-white/80">
+              {suburb.postcode}
+            </span>
+          </div>
         </div>
       </div>
 
       {/* Tab navigation bar */}
-      <nav className="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm">
+      <nav className="sticky top-0 z-30 bg-surface-raised border-b border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex gap-0 overflow-x-auto scrollbar-none">
             {TAB_LINKS.map((tab) => (
               <a
                 key={tab.href}
                 href={tab.href}
-                className="flex-shrink-0 px-5 py-4 text-sm font-semibold uppercase tracking-wider text-gray-500 hover:text-gray-900 border-b-2 border-transparent hover:border-primary transition-colors"
+                className="flex-shrink-0 px-5 py-4 text-xs font-sans uppercase tracking-[0.2em] text-ink-muted hover:text-ink border-b-2 border-transparent hover:border-cta transition-colors"
               >
                 {tab.label}
               </a>
@@ -120,7 +125,7 @@ export function SuburbStats({ suburb }: SuburbHeroProps) {
         label="Median House Price"
         value={stats.medianHousePrice ? formatPriceFull(stats.medianHousePrice) : na}
         subtext={stats.annualGrowthHouse ? `${formatPercentage(stats.annualGrowthHouse)} annual growth` : "Sales data pending"}
-        icon={<TrendingUp className="w-5 h-5 text-primary" />}
+        icon="/images/icons/median.svg"
         source={f?.salesSource}
         asOf={f?.salesAsOf}
       />
@@ -128,7 +133,7 @@ export function SuburbStats({ suburb }: SuburbHeroProps) {
         label="Median Unit Price"
         value={stats.medianUnitPrice ? formatPriceFull(stats.medianUnitPrice) : na}
         subtext={stats.annualGrowthUnit ? `${formatPercentage(stats.annualGrowthUnit)} annual growth` : "Sales data pending"}
-        icon={<TrendingUp className="w-5 h-5 text-accent" />}
+        icon="/images/icons/yield.svg"
         source={f?.salesSource}
         asOf={f?.salesAsOf}
       />
@@ -136,7 +141,7 @@ export function SuburbStats({ suburb }: SuburbHeroProps) {
         label="Days on Market"
         value={stats.daysOnMarket ? `${stats.daysOnMarket}` : na}
         subtext="Average days to sell"
-        icon={<Clock className="w-5 h-5 text-primary" />}
+        icon="/images/icons/growth.svg"
         source={f?.salesSource}
         asOf={f?.salesAsOf}
       />
@@ -144,7 +149,7 @@ export function SuburbStats({ suburb }: SuburbHeroProps) {
         label="Population"
         value={stats.population ? stats.population.toLocaleString() : na}
         subtext={stats.medianAge ? `Median age: ${stats.medianAge}` : "Census data pending"}
-        icon={<Users className="w-5 h-5 text-accent" />}
+        icon="/images/icons/people.svg"
         source="abs-census"
         asOf={f?.censusAsOf}
       />
@@ -163,19 +168,19 @@ function StatCard({
   label: string;
   value: string;
   subtext: string;
-  icon: React.ReactNode;
+  icon: string;
   source?: string | null;
   asOf?: Date | string | null;
 }) {
   return (
-    <div className="p-4 rounded-xl bg-white shadow-card border border-gray-100">
+    <div className="p-5 rounded-xl bg-surface-raised border border-line">
       <div className="flex items-center gap-2 mb-2">
-        {icon}
-        <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">{label}</span>
+        <Image src={icon} alt="" width={20} height={20} className="w-5 h-5" aria-hidden="true" />
+        <span className="text-xs font-sans font-medium text-ink-subtle uppercase tracking-wider">{label}</span>
         <SourceTooltip source={source} asOf={asOf} />
       </div>
-      <p className="text-2xl font-bold text-gray-900">{value}</p>
-      <p className="text-xs text-gray-500 mt-1">{subtext}</p>
+      <p className="font-display text-3xl text-ink leading-none mt-2">{value}</p>
+      <p className="text-xs font-sans text-ink-muted mt-2">{subtext}</p>
     </div>
   );
 }

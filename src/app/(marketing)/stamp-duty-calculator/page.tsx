@@ -1,25 +1,35 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { StampDutyCalculator } from "@/components/calculators/StampDutyCalculator";
-import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd, FAQPageJsonLd, WebApplicationJsonLd } from "@/components/seo";
-import { SITE_URL } from "@/lib/constants";
+import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
+import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
+
+const FRONTMATTER: CalculatorPageFrontmatter = {
+  title: "Stamp Duty Calculator",
+  description:
+    "Estimate stamp duty across all eight Australian states and territories. Includes first home buyer concessions and foreign buyer surcharges. Updated for 2025/26 rates.",
+  slug: "stamp-duty-calculator",
+  schemaName: "Stamp Duty Calculator Australia",
+  schemaDescription: "Calculate stamp duty costs across all Australian states and territories.",
+  updatedAt: "2026-04-15",
+  persona: "first-home",
+};
 
 export const metadata: Metadata = {
-  title: "Stamp Duty Calculator 2025-2026 | All Australian States",
-  description:
-    "Calculate stamp duty on property purchases across all 8 Australian states and territories. Includes first home buyer concessions and foreign buyer surcharges. Updated for 2025-2026 rates.",
-  alternates: { canonical: `${SITE_URL}/stamp-duty-calculator` },
+  title: `${FRONTMATTER.title} 2025-2026 | All Australian States | ${SITE_NAME}`,
+  description: FRONTMATTER.description,
+  alternates: { canonical: `${SITE_URL}/${FRONTMATTER.slug}` },
   openGraph: {
-    url: `${SITE_URL}/stamp-duty-calculator`,
-    title: "Stamp Duty Calculator 2025-2026 | All Australian States",
-    description:
-      "Calculate stamp duty on property purchases across all 8 Australian states and territories. Updated for 2025-2026 rates.",
+    url: `${SITE_URL}/${FRONTMATTER.slug}`,
+    title: `${FRONTMATTER.title} 2025-2026 | All Australian States`,
+    description: FRONTMATTER.description,
     type: "website",
   },
   twitter: { card: "summary_large_image" },
 };
 
-const FAQS = [
+const FAQS: FaqItem[] = [
   {
     question: "How is stamp duty calculated in Australia?",
     answer:
@@ -45,46 +55,106 @@ const FAQS = [
     answer:
       "For investment properties, stamp duty forms part of the cost base of the asset and may reduce capital gains tax when you sell. It is not immediately deductible in the year of purchase. For owner-occupied homes, stamp duty is not deductible. Always consult a tax professional for your specific situation.",
   },
+  {
+    question: "Can I include stamp duty in my home loan?",
+    answer:
+      "Sometimes. Lenders can lend against the contract price plus an allowance for stamp duty (and other settlement costs) up to a maximum LVR (loan-to-value ratio). If you have a smaller deposit, you may need to cover stamp duty in cash on top of the deposit, or accept a higher LVR (and likely LMI). A broker can model both scenarios for your situation.",
+  },
+];
+
+const RELATED: RelatedGuide[] = [
+  { title: "First Home Buyer Guide",   href: "/guides/first-home-buyer-guide", description: "How federal schemes, state grants, and stamp duty concessions stack." },
+  { title: "Borrowing Power Calculator", href: "/borrowing-power-calculator", description: "What you can borrow once you know what you'll pay in duty." },
+  { title: "Conveyancing Guide",       href: "/guides/conveyancing-guide",     description: "Who handles stamp duty payment at settlement." },
+  { title: "First Home Buyer NSW",     href: "/guides/first-home-buyer-nsw",   description: "NSW concessions and thresholds in detail." },
+  { title: "First Home Buyer VIC",     href: "/guides/first-home-buyer-vic",   description: "Victoria's stamp duty exemption explained." },
+  { title: "First Home Buyer QLD",     href: "/guides/first-home-buyer-qld",   description: "Queensland's first home concession in full." },
 ];
 
 export default function StampDutyCalculatorPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-      <BreadcrumbJsonLd items={[{ name: "Stamp Duty Calculator", url: "/stamp-duty-calculator" }]} />
-      <WebApplicationJsonLd
-        name="Stamp Duty Calculator Australia"
-        description="Calculate stamp duty costs across all Australian states and territories."
-        url="/stamp-duty-calculator"
-      />
-      <FAQPageJsonLd faqs={FAQS} />
-      <Breadcrumbs items={[{ label: "Stamp Duty Calculator" }]} />
+    <CalculatorPageLayout
+      frontmatter={FRONTMATTER}
+      calculator={<StampDutyCalculator />}
+      faqs={FAQS}
+      related={RELATED}
+      explainer={
+        <>
+          <h2>What stamp duty actually is</h2>
+          <p>
+            Stamp duty (officially called <em>transfer duty</em> or <em>conveyance duty</em> in
+            most states) is a state government tax on property transfers. It&rsquo;s
+            charged on the contract price of the property and is paid by the buyer
+            at settlement.
+          </p>
+          <p>
+            It&rsquo;s the single largest upfront cost most buyers face after the deposit.
+            On a typical capital-city purchase it usually lands somewhere between
+            $20,000 and $60,000 of unavoidable cash, before concessions.
+          </p>
 
-      <div className="text-center mb-10">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
-          Stamp Duty Calculator
-        </h1>
-        <p className="text-gray-500 mt-2 max-w-xl mx-auto">
-          Estimate your stamp duty costs for property purchases across all Australian states and territories.
-          Select your state to see accurate 2025-2026 rates.
-        </p>
-      </div>
+          <KeyFigure
+            value="$20k–$60k+"
+            label="What unconcessioned stamp duty typically costs on a capital-city purchase, before any first-home or owner-occupier discount."
+            context="Estimate, varies by state and price"
+          />
 
-      <StampDutyCalculator />
+          <h2>How rates differ across states</h2>
+          <p>
+            Every state and territory sets its own duty schedule. A $700,000
+            purchase can attract noticeably different duty in NSW, Victoria, and
+            Queensland. The calculator above runs the current schedule for each.
+          </p>
+          <p>
+            Three things make the biggest difference between states:
+          </p>
+          <ul>
+            <li><strong>Whether you&rsquo;re a first home buyer.</strong> Most states give first home buyers either a full or partial exemption below a threshold.</li>
+            <li><strong>Whether you&rsquo;re buying as an owner-occupier or investor.</strong> Owner-occupier discounts exist in several states.</li>
+            <li><strong>Whether you&rsquo;re a foreign buyer.</strong> A surcharge of 7% to 8% applies in most states on top of standard duty.</li>
+          </ul>
 
-      {/* FAQs */}
-      <div className="max-w-2xl mx-auto mt-16">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-          Frequently Asked Questions
-        </h2>
-        <div className="space-y-6">
-          {FAQS.map((faq, i) => (
-            <div key={i}>
-              <h3 className="font-semibold text-gray-900">{faq.question}</h3>
-              <p className="text-gray-600 mt-1">{faq.answer}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
+          <h2>First home buyer concessions in plain English</h2>
+          <p>
+            For state-by-state detail, see our state-specific first home buyer
+            guides:{" "}
+            <Link href="/guides/first-home-buyer-nsw">NSW</Link>,{" "}
+            <Link href="/guides/first-home-buyer-vic">VIC</Link>,{" "}
+            <Link href="/guides/first-home-buyer-qld">QLD</Link>,{" "}
+            <Link href="/guides/first-home-buyer-wa">WA</Link>.
+          </p>
+          <p>
+            Each state has a price threshold below which duty is fully exempt or
+            heavily reduced for eligible first home buyers, and usually a
+            concessional band above that where duty scales back to the full rate.
+            <strong> Even one dollar over the cap removes the concession entirely</strong>,
+            so when you&rsquo;re negotiating near a threshold, the maths matters.
+          </p>
+
+          <Callout variant="warning" title="Verify before you settle">
+            <p>
+              State duty schedules and concessions change. Confirm the current
+              rates with your state revenue office or your conveyancer before
+              relying on any specific figure. Concessions also have eligibility
+              tests, you must usually occupy the property as your principal
+              residence within a set window after settlement.
+            </p>
+          </Callout>
+
+          <h2>What this calculator doesn&rsquo;t cover</h2>
+          <ul>
+            <li>Mortgage registration fee and transfer fee (small, but real, add a few hundred dollars per state).</li>
+            <li>Discretionary trust or company purchases (different duty treatment in some states).</li>
+            <li>Off-the-plan stamp duty concessions where they apply (VIC notably).</li>
+            <li>Concessional duty for older buyers / pensioners (varies by state).</li>
+          </ul>
+          <p>
+            For a complete settlement-cost breakdown, your conveyancer is the
+            right person to ask. We have a free <Link href="/find-an-expert">expert match</Link>{" "}
+            if you want help finding one.
+          </p>
+        </>
+      }
+    />
   );
 }

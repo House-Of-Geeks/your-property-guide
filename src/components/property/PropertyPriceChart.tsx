@@ -42,7 +42,7 @@ export function PropertyPriceChart({ points, suburbMedian }: PropertyPriceChartP
   const cagr = yearsSpan > 0.5 ? (Math.pow(last.price / first.price, 1 / yearsSpan) - 1) * 100 : null;
   const isUp = last.price >= first.price;
 
-  // y-axis tick values — 3 ticks
+  // y-axis tick values, 3 ticks
   const ticks = [minY, (minY + maxY) / 2, maxY];
 
   return (

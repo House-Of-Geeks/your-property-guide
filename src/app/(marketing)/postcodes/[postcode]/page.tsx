@@ -18,6 +18,7 @@ interface PostcodePageProps {
 }
 
 export const dynamicParams = true;
+export const revalidate = 86400; // cache as ISR for 24h, regen on demand
 
 export async function generateStaticParams() {
   const postcodes = await getAllPostcodes();

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Lock, Eye, Bell, Shield } from "lucide-react";
+import Image from "next/image";
 import { OffMarketTeaser } from "@/components/property/OffMarketTeaser";
 import { OffMarketRegisterForm } from "@/components/forms/OffMarketRegisterForm";
 import { Breadcrumbs } from "@/components/layout";
@@ -19,66 +19,92 @@ export default async function OffMarketPage() {
   const offMarketProperties = await getOffMarketProperties();
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+    <>
       <BreadcrumbJsonLd items={[{ name: "Off-Market", url: "/off-market" }]} />
-      <Breadcrumbs items={[{ label: "Off-Market" }]} />
 
-      {/* Hero */}
-      <div className="gradient-brand rounded-2xl p-8 sm:p-12 text-white mb-10">
-        <div className="max-w-2xl">
-          <div className="flex items-center gap-2 mb-4">
-            <Lock className="w-6 h-6" />
-            <span className="text-sm font-medium uppercase tracking-wider">Exclusive Access</span>
+      {/* Editorial hero */}
+      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
+        <Image
+          src="/images/illustrations/contour.svg"
+          alt=""
+          width={1200}
+          height={800}
+          aria-hidden="true"
+          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
+        />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
+          <div className="mb-8">
+            <Breadcrumbs items={[{ label: "Off-Market" }]} />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold">Off-Market Properties</h1>
-          <p className="text-lg text-white/90 mt-3">
-            Get first access to properties before they hit the open market. Our agents have exclusive listings
-            that you won&apos;t find on realestate.com.au or Domain.
+
+          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+            {offMarketProperties.length} current {offMarketProperties.length === 1 ? "listing" : "listings"}
           </p>
-          <div className="flex flex-wrap gap-6 mt-6">
-            <Stat icon={<Eye className="w-5 h-5" />} value={offMarketProperties.length} label="Off-market listings" />
-            <Stat icon={<Bell className="w-5 h-5" />} value="Instant" label="Email alerts" />
-            <Stat icon={<Shield className="w-5 h-5" />} value="Free" label="No obligation" />
+          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
+            Properties <span className="italic text-primary">before they hit the market</span>.
+          </h1>
+          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
+            Off-market opportunities not listed on realestate.com.au or Domain.
+            Register your brief and our agents will match you privately.
+          </p>
+
+          {/* Stat row */}
+          <div className="mt-8 flex flex-wrap gap-x-10 gap-y-4 border-t border-line pt-6 max-w-2xl">
+            <div>
+              <p className="font-display text-2xl text-ink leading-none">
+                {offMarketProperties.length}
+              </p>
+              <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mt-1.5">
+                live listings
+              </p>
+            </div>
+            <div>
+              <p className="font-display text-2xl text-ink leading-none">Instant</p>
+              <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mt-1.5">
+                email alerts
+              </p>
+            </div>
+            <div>
+              <p className="font-display text-2xl text-ink leading-none">Free</p>
+              <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mt-1.5">
+                no obligation
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          {/* Teasers */}
+          <div className="lg:col-span-2">
+            <h2 className="font-display text-2xl text-ink mb-6 pb-2 border-b border-line">
+              Current off-market listings
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {offMarketProperties.map((property) => (
+                <OffMarketTeaser key={property.id} property={property} />
+              ))}
+            </div>
+          </div>
+
+          {/* Register form */}
+          <div>
+            <div className="rounded-2xl bg-surface-raised border border-line p-6 sticky top-24">
+              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+                Private brief
+              </p>
+              <h3 className="font-display text-xl text-ink mb-2 leading-tight">
+                Register for access
+              </h3>
+              <p className="font-sans text-sm text-ink-muted mb-6">
+                Tell us what you&apos;re looking for and we&apos;ll match you with off-market opportunities.
+              </p>
+              <OffMarketRegisterForm />
+            </div>
           </div>
         </div>
       </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        {/* Teasers */}
-        <div className="lg:col-span-2">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Current Off-Market Listings ({offMarketProperties.length})
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {offMarketProperties.map((property) => (
-              <OffMarketTeaser key={property.id} property={property} />
-            ))}
-          </div>
-        </div>
-
-        {/* Register form */}
-        <div>
-          <div className="rounded-xl bg-white shadow-card border border-gray-100 p-6 sticky top-24">
-            <h3 className="text-lg font-bold text-gray-900 mb-2">Register for Access</h3>
-            <p className="text-sm text-gray-500 mb-6">
-              Tell us what you&apos;re looking for and we&apos;ll match you with off-market opportunities.
-            </p>
-            <OffMarketRegisterForm />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Stat({ icon, value, label }: { icon: React.ReactNode; value: string | number; label: string }) {
-  return (
-    <div className="flex items-center gap-2">
-      {icon}
-      <div>
-        <p className="font-bold text-lg">{value}</p>
-        <p className="text-xs text-white/80">{label}</p>
-      </div>
-    </div>
+    </>
   );
 }

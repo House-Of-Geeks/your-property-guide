@@ -1,3 +1,5 @@
+import { linkGlossaryTerms } from "./glossary-linker";
+
 export interface TocItem {
   id: string;
   text: string;
@@ -5,14 +7,28 @@ export interface TocItem {
 }
 
 /**
- * Adds `id` attributes to h2/h3 tags in an HTML string and returns the modified
- * HTML alongside a list of TOC items for the sticky sidebar.
+ * Process raw blog HTML into render-ready content.
+ *
+ * - Adds `id` attributes to h2/h3 tags + extracts the table-of-contents
+ * - Auto-links the first occurrence of each glossary term to /glossary/[slug]
+ *   (skips already-linked text, headings, code blocks)
+ *
+ * Returns the modified HTML alongside a list of TOC items for the sticky
+ * sidebar.
  */
 export function processContent(html: string): { html: string; toc: TocItem[] } {
   const toc: TocItem[] = [];
   const usedIds = new Set<string>();
 
-  const processed = html.replace(
+  // Pass 1: auto-link glossary terms in the body content. Done first so the
+  // anchor tags we add are present when we run the heading-id pass below
+  // (the heading pass skips text already inside <a> tags via the skip-tag
+  // logic in linkGlossaryTerms — but linking after heading-id would leave
+  // them un-skipped).
+  const linked = linkGlossaryTerms(html);
+
+  // Pass 2: assign deterministic IDs to h2/h3 for the TOC
+  const processed = linked.replace(
     /<h([23])([^>]*)>([\s\S]*?)<\/h\1>/gi,
     (_match, level, attrs, inner) => {
       const text = inner.replace(/<[^>]+>/g, "").trim();

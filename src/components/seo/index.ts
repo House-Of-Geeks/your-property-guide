@@ -12,4 +12,6 @@ export {
   ItemListJsonLd,
   CollectionPageJsonLd,
   GuideArticleJsonLd,
+  HowToJsonLd,
+  DefinedTermJsonLd,
 } from "./JsonLd";

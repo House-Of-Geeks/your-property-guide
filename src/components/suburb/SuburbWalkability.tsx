@@ -14,25 +14,25 @@ interface ScoreConfig {
 }
 
 function scoreColour(score: number): { text: string; bar: string } {
-  if (score >= 70) return { text: "text-green-600",  bar: "bg-green-500" };
-  if (score >= 40) return { text: "text-amber-600",  bar: "bg-amber-500" };
-  return              { text: "text-red-600",    bar: "bg-red-400" };
+  if (score >= 70) return { text: "text-success", bar: "bg-success" };
+  if (score >= 40) return { text: "text-warning", bar: "bg-warning" };
+  return              { text: "text-danger",  bar: "bg-danger" };
 }
 
 function ScoreBar({ label, score, icon }: ScoreConfig) {
   const colours = score !== null ? scoreColour(score) : null;
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 p-5 flex flex-col gap-3">
-      <div className="flex items-center gap-2 text-gray-600">
+    <div className="bg-surface-raised rounded-2xl border border-line p-5 flex flex-col gap-3">
+      <div className="flex items-center gap-2 text-ink-muted">
         {icon}
-        <span className="text-sm font-medium">{label}</span>
+        <span className="text-xs font-sans uppercase tracking-wider text-ink-subtle">{label}</span>
       </div>
 
       {score !== null && colours ? (
         <>
-          <p className={`text-4xl font-bold leading-none ${colours.text}`}>{score}</p>
-          <div className="h-1.5 w-full rounded-full bg-gray-100 overflow-hidden">
+          <p className={`font-display text-4xl leading-none ${colours.text}`}>{score}</p>
+          <div className="h-1.5 w-full rounded-full bg-surface-warm overflow-hidden">
             <div
               className={`h-full rounded-full ${colours.bar}`}
               style={{ width: `${score}%` }}
@@ -40,7 +40,7 @@ function ScoreBar({ label, score, icon }: ScoreConfig) {
           </div>
         </>
       ) : (
-        <p className="text-2xl font-bold text-gray-300">–</p>
+        <p className="font-display text-3xl text-ink-subtle">–</p>
       )}
     </div>
   );
@@ -49,7 +49,7 @@ function ScoreBar({ label, score, icon }: ScoreConfig) {
 export function SuburbWalkability({ walkScore, transitScore, bikeScore }: SuburbWalkabilityProps) {
   if (walkScore === null && transitScore === null && bikeScore === null) {
     return (
-      <p className="text-sm text-gray-500 italic py-2">
+      <p className="text-sm font-sans text-ink-muted italic py-2">
         Walkability data not yet available for this suburb.
       </p>
     );
@@ -74,7 +74,7 @@ export function SuburbWalkability({ walkScore, transitScore, bikeScore }: Suburb
           icon={<Bike className="w-5 h-5" />}
         />
       </div>
-      <p className="text-xs text-gray-400">
+      <p className="text-xs font-sans text-ink-subtle">
         Scores calculated from OpenStreetMap data (ODbL)
       </p>
     </div>

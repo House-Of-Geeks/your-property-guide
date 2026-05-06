@@ -54,11 +54,72 @@
   --font-display: var(--font-display);
 }
 
+/* ── Semantic tokens, additive, non-breaking ──────────────────────
+   Built on top of the existing primary/accent/gray ramps so existing
+   utilities keep rendering identically. Prefer these names in new code
+   (bg-surface-raised, text-ink-muted, border-line); existing components
+   migrate opportunistically. */
+
+:root {
+  /* Ink, text-colour roles */
+  --ink:        var(--gray-900);
+  --ink-muted:  var(--gray-600);
+  --ink-subtle: var(--gray-400);
+
+  /* Surface, background roles */
+  --surface:         var(--background);
+  --surface-raised:  #ffffff;
+  --surface-sunken:  var(--gray-50);
+  --surface-inverse: #0a0a0a; /* matches existing Footer bg */
+
+  /* Warm-neutral surface family, for editorial and tile backgrounds.
+     Tokenises the hex literals currently inlined in
+     home/ResearchTopics and home/SuburbSpotlight. */
+  --surface-warm:        #f7f6f4;
+  --surface-warm-sunken: #f0efec;
+
+  /* Lines, borders and dividers */
+  --line:        var(--gray-200);
+  --line-strong: var(--gray-300);
+  --line-warm:   #e8e6e2;
+
+  /* Semantic state colours, accessible on white at AA */
+  --success: #157f3c;
+  --warning: #b95b00;
+  --danger:  #b42233;
+  --info:    var(--primary);
+
+  /* CTA, distinct from --primary so heroes can layer purple-on-magenta */
+  --cta:       var(--accent);
+  --cta-hover: var(--accent-dark);
+}
+
+@theme inline {
+  --color-ink:                var(--ink);
+  --color-ink-muted:          var(--ink-muted);
+  --color-ink-subtle:         var(--ink-subtle);
+  --color-surface:            var(--surface);
+  --color-surface-raised:     var(--surface-raised);
+  --color-surface-sunken:     var(--surface-sunken);
+  --color-surface-inverse:    var(--surface-inverse);
+  --color-surface-warm:       var(--surface-warm);
+  --color-surface-warm-sunken: var(--surface-warm-sunken);
+  --color-line:               var(--line);
+  --color-line-strong:        var(--line-strong);
+  --color-line-warm:          var(--line-warm);
+  --color-success:            var(--success);
+  --color-warning:            var(--warning);
+  --color-danger:             var(--danger);
+  --color-info:               var(--info);
+  --color-cta:                var(--cta);
+  --color-cta-hover:          var(--cta-hover);
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
-  line-height: 1.625; /* leading-relaxed — more comfortable than Tailwind's default 1.5 */
+  line-height: 1.625; /* leading-relaxed, more comfortable than Tailwind's default 1.5 */
 }
 
 /* Playfair Display on all headings with appropriate leading */
@@ -72,7 +133,7 @@ h1 {
   line-height: 1.15;
 }
 
-/* Brand utilities — restrained accent only on primary CTA */
+/* Brand utilities, restrained accent only on primary CTA */
 .gradient-brand {
   background: #000000;
 }
@@ -97,4 +158,213 @@ html {
 *:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
+}
+
+/* ── Article body styling: .prose-ypg ───────────────────────────────
+   Token-driven editorial prose for guide / blog content. Brand-aligned
+   Playfair display headings, comfortable line-height, restrained tables.
+   Apply via: <div className="prose-ypg">…</div> */
+
+.prose-ypg {
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-size: 1.0625rem; /* 17px */
+  line-height: 1.7;
+  max-width: 70ch;
+}
+
+.prose-ypg p {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  color: var(--ink-muted);
+}
+
+.prose-ypg p:first-child { margin-top: 0; }
+.prose-ypg p:last-child { margin-bottom: 0; }
+
+/* Tighter variant for definition / sidebar / commentary blocks where the
+   default article spacing is too breezy. Used on glossary term pages and the
+   commentary band on /best-suburbs/[category]/[state] pages. */
+.prose-ypg-tight {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.prose-ypg-tight p {
+  margin-top: 0.85em;
+  margin-bottom: 0.85em;
+}
+
+/* Auto-linked glossary terms inside blog/article body. Subtle dotted
+   underline distinguishes from regular author-added <a> tags so readers
+   can see "this is a definition cross-link" at a glance. */
+.glossary-link {
+  color: var(--ink);
+  border-bottom: 1px dotted var(--ink-subtle);
+  padding-bottom: 1px;
+  text-decoration: none;
+  transition: border-color 120ms ease, color 120ms ease;
+}
+.glossary-link:hover {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.prose-ypg h2 {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 2rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin-top: 2.75em;
+  margin-bottom: 0.75em;
+  scroll-margin-top: 6rem;
+}
+
+.prose-ypg h3 {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.375rem;
+  line-height: 1.25;
+  color: var(--ink);
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+  scroll-margin-top: 6rem;
+}
+
+.prose-ypg h4 {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.125rem;
+  line-height: 1.3;
+  color: var(--ink);
+  margin-top: 1.75em;
+  margin-bottom: 0.5em;
+}
+
+.prose-ypg a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--line-strong);
+  transition: text-decoration-color 0.15s;
+}
+.prose-ypg a:hover {
+  text-decoration-color: var(--primary);
+}
+
+.prose-ypg strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.prose-ypg ul, .prose-ypg ol {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+  padding-left: 1.5em;
+  color: var(--ink-muted);
+}
+
+.prose-ypg ul { list-style: none; }
+.prose-ypg ul > li {
+  position: relative;
+  padding-left: 1.5em;
+  margin-top: 0.6em;
+}
+.prose-ypg ul > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 0.5em;
+  height: 1px;
+  background: var(--cta);
+}
+
+.prose-ypg ol { list-style: none; counter-reset: ol-counter; }
+.prose-ypg ol > li {
+  position: relative;
+  padding-left: 2em;
+  margin-top: 0.6em;
+  counter-increment: ol-counter;
+}
+.prose-ypg ol > li::before {
+  content: counter(ol-counter, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  color: var(--cta);
+  font-size: 1em;
+}
+
+.prose-ypg blockquote {
+  border-left: 3px solid var(--cta);
+  padding: 0.25em 0 0.25em 1.5em;
+  margin: 2em 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  font-size: 1.25em;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.prose-ypg code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  background: var(--surface-sunken);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+
+.prose-ypg hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 3em 0;
+}
+
+/* Tables */
+.prose-ypg table {
+  width: 100%;
+  margin: 2em 0;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.prose-ypg thead {
+  border-bottom: 1.5px solid var(--ink);
+}
+.prose-ypg th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 0.75em 1em;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.prose-ypg td {
+  padding: 0.85em 1em;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-muted);
+  vertical-align: top;
+}
+.prose-ypg tbody tr:hover {
+  background: var(--surface-warm);
+}
+
+/* Article images */
+.prose-ypg img {
+  border-radius: 12px;
+  margin: 2em 0;
+}
+
+/* The lead paragraph (first paragraph after the H1 in body) gets larger,
+   editorial styling. Apply with className="lead" on the first paragraph. */
+.prose-ypg .lead {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--ink);
+  font-weight: 400;
 }

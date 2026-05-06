@@ -45,6 +45,13 @@ export const metadata: Metadata = {
       "msvalidate.01": "91FC5FBF642A9F3DDC20E517CFAE11E9",
     },
   },
+  alternates: {
+    types: {
+      "application/rss+xml": [
+        { url: `${SITE_URL}/blog/feed.xml`, title: `${SITE_NAME} blog RSS` },
+      ],
+    },
+  },
 };
 
 export default function RootLayout({
@@ -57,6 +64,29 @@ export default function RootLayout({
       lang="en"
       className={`${playfair.variable} ${jakarta.variable} h-full antialiased`}
     >
+      <head>
+        {/* Preconnect to high-priority third-party origins. dns-prefetch is a
+            cheaper fallback for older browsers / bots that don't support
+            preconnect. Order matters — preconnect is tried first. */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+        {/* Vercel image CDN — used for property listing images. */}
+        <link rel="dns-prefetch" href="https://vbsxnixtsgnnyozjrsp1.public.blob.vercel-storage.com" />
+
+        {/* Image hosts referenced in blog cover photos. */}
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+
+        {/* Analytics — async loaded after paint, but DNS warmup helps. */}
+        <link rel="dns-prefetch" href="https://www.clarity.ms" />
+        <link rel="dns-prefetch" href="https://secure.quantserve.com" />
+
+        {/* Theme colour for the address bar on mobile browsers, matches our
+            warm-cream surface. */}
+        <meta name="theme-color" content="#f7f6f4" />
+      </head>
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>
       </body>

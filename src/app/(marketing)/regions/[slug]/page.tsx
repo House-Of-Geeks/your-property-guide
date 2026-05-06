@@ -20,6 +20,7 @@ interface RegionPageProps {
 }
 
 export const dynamicParams = true; // allow slugs not in generateStaticParams to SSR
+export const revalidate = 86400; // cache as ISR for 24h, regen on demand
 
 export async function generateStaticParams() {
   const slugs = await getAllRegionSlugs();

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Bed, Bath, Car, Ruler, Package, CheckCircle } from "lucide-react";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
 import { Breadcrumbs } from "@/components/layout";
+import { BreadcrumbJsonLd } from "@/components/seo";
 import { Badge } from "@/components/ui";
 import { getHouseAndLandBySlug } from "@/lib/services/house-and-land-service";
 import { getAgentById } from "@/lib/services/agent-service";
@@ -42,6 +43,12 @@ export default async function HouseAndLandDetailPage({ params }: HouseAndLandDet
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "House & Land", url: "/house-and-land" },
+          { name: pkg.title, url: `/house-and-land/${slug}` },
+        ]}
+      />
       <Breadcrumbs
         items={[
           { label: "House & Land", href: "/house-and-land" },

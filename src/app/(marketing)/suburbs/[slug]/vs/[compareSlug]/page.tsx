@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Home, TrendingUp } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
-import { Badge, Button } from "@/components/ui";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
@@ -15,6 +15,29 @@ interface ComparePageProps {
 }
 
 export const dynamicParams = true;
+export const revalidate = 86400; // cache as ISR for 24h, regen on demand
+
+// Pre-render hand-curated popular comparisons at build time so the most-searched
+// suburb-vs-suburb queries ship as static HTML. Other combinations are
+// rendered on-demand and cached.
+const POPULAR_COMPARISONS: { slug: string; compareSlug: string }[] = [
+  // NSW
+  { slug: "bondi-nsw-2026",         compareSlug: "coogee-nsw-2034" },
+  { slug: "newtown-nsw-2042",       compareSlug: "surry-hills-nsw-2010" },
+  { slug: "manly-nsw-2095",         compareSlug: "mosman-nsw-2088" },
+  // VIC
+  { slug: "richmond-vic-3121",      compareSlug: "fitzroy-vic-3065" },
+  { slug: "toorak-vic-3142",        compareSlug: "brighton-vic-3186" },
+  { slug: "carlton-vic-3053",       compareSlug: "south-yarra-vic-3141" },
+  // QLD
+  { slug: "new-farm-qld-4005",      compareSlug: "teneriffe-qld-4005" },
+  { slug: "paddington-qld-4064",    compareSlug: "ashgrove-qld-4060" },
+  { slug: "bulimba-qld-4171",       compareSlug: "hawthorne-qld-4171" },
+];
+
+export async function generateStaticParams() {
+  return POPULAR_COMPARISONS;
+}
 
 export async function generateMetadata({ params }: ComparePageProps): Promise<Metadata> {
   const { slug, compareSlug } = await params;
@@ -24,8 +47,18 @@ export async function generateMetadata({ params }: ComparePageProps): Promise<Me
   ]);
   if (!suburbA || !suburbB) return { title: "Suburb Not Found" };
 
-  const title = `${suburbA.name} vs ${suburbB.name}: Which is Better? | Your Property Guide`;
-  const description = `Compare ${suburbA.name} and ${suburbB.name} side by side. Median house prices: ${suburbA.stats.medianHousePrice > 0 ? formatPriceFull(suburbA.stats.medianHousePrice) : "–"} vs ${suburbB.stats.medianHousePrice > 0 ? formatPriceFull(suburbB.stats.medianHousePrice) : "–"}. See schools, walkability, flood risk, climate and more.`;
+  const title = `${suburbA.name} vs ${suburbB.name}: Side-by-Side Suburb Comparison | Your Property Guide`;
+  const description = `Compare ${suburbA.name} and ${suburbB.name} suburb-to-suburb. Median house prices: ${suburbA.stats.medianHousePrice > 0 ? formatPriceFull(suburbA.stats.medianHousePrice) : "–"} vs ${suburbB.stats.medianHousePrice > 0 ? formatPriceFull(suburbB.stats.medianHousePrice) : "–"}. Schools, walkability, flood risk, climate, and more.`;
+
+  // Build a custom OG via the guide handler — it accepts arbitrary title/desc
+  const ogTitle = `${suburbA.name} vs ${suburbB.name}`;
+  const ogDesc = `Median, growth, schools, walkability and risk side by side.`;
+  const ogParams = new URLSearchParams({
+    title: ogTitle,
+    desc: ogDesc,
+    persona: "Compare suburbs",
+  });
+  const ogImage = `${SITE_URL}/api/og/guide/${slug}-vs-${compareSlug}?${ogParams.toString()}`;
 
   return {
     title,
@@ -36,6 +69,7 @@ export async function generateMetadata({ params }: ComparePageProps): Promise<Me
       title,
       description,
       type: "website",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: `${suburbA.name} vs ${suburbB.name}` }],
     },
     twitter: { card: "summary_large_image" },
   };
@@ -45,9 +79,21 @@ export async function generateMetadata({ params }: ComparePageProps): Promise<Me
 
 type Winner = "a" | "b" | "tie" | "none";
 
-function winnerClass(side: "a" | "b", winner: Winner) {
-  if (winner === "none" || winner === "tie") return "";
-  return winner === side ? "bg-green-50 text-green-800 font-semibold" : "";
+function rowSideClass(side: "a" | "b", winner: Winner): string {
+  if (winner === "none" || winner === "tie") return "text-ink";
+  if (winner === side) return "text-emerald-700 font-semibold";
+  return "text-ink-muted";
+}
+
+function rowDot(side: "a" | "b", winner: Winner): React.ReactNode {
+  if (winner === "none" || winner === "tie") return null;
+  if (winner !== side) return null;
+  return (
+    <span
+      className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-600 mr-1.5 align-middle"
+      aria-label="Better on this metric"
+    />
+  );
 }
 
 function floodRiskScore(cls: string | null | undefined): number {
@@ -63,10 +109,10 @@ function bushfireRiskScore(risk: string | null | undefined): number {
 }
 
 function avgIcsea(schools: Suburb["schools"]): number | null {
-  const with_icsea = schools.filter((s) => s.icsea !== null);
-  if (with_icsea.length === 0) return null;
+  const withIcsea = schools.filter((s) => s.icsea !== null);
+  if (withIcsea.length === 0) return null;
   return Math.round(
-    with_icsea.reduce((sum, s) => sum + (s.icsea ?? 0), 0) / with_icsea.length
+    withIcsea.reduce((sum, s) => sum + (s.icsea ?? 0), 0) / withIcsea.length
   );
 }
 
@@ -103,33 +149,34 @@ function CompareRow({
   winner: Winner;
 }) {
   return (
-    <div className="grid grid-cols-3 gap-2 py-3 border-b border-gray-100 last:border-b-0 items-center text-sm">
-      <div
-        className={`rounded-lg px-3 py-2 text-center ${winnerClass("a", winner)}`}
-      >
+    <div className="grid grid-cols-12 gap-4 py-3 border-b border-line last:border-b-0 items-baseline text-sm font-sans">
+      <div className={`col-span-4 sm:col-span-4 text-right tabular-nums ${rowSideClass("a", winner)}`}>
+        {rowDot("a", winner)}
         {valA}
       </div>
-      <div className="text-center text-xs text-gray-500 font-medium uppercase tracking-wide px-1">
+      <div className="col-span-4 sm:col-span-4 text-center text-xs uppercase tracking-[0.2em] text-ink-subtle">
         {label}
       </div>
-      <div
-        className={`rounded-lg px-3 py-2 text-center ${winnerClass("b", winner)}`}
-      >
+      <div className={`col-span-4 sm:col-span-4 text-left tabular-nums ${rowSideClass("b", winner)}`}>
+        {rowDot("b", winner)}
         {valB}
       </div>
     </div>
   );
 }
 
-function SectionHeader({ title }: { title: string }) {
+function CompareSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="grid grid-cols-3 gap-2 pt-2">
-      <div className="col-span-3">
-        <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mt-4 mb-1 pl-1">
-          {title}
-        </p>
-      </div>
-    </div>
+    <section className="rounded-2xl border border-line bg-surface-raised p-6 sm:p-8">
+      <h2 className="font-display text-xl text-ink mb-2">{title}</h2>
+      <div className="border-t border-line">{children}</div>
+    </section>
   );
 }
 
@@ -161,11 +208,28 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
   const suburbAName = suburbA.name;
   const suburbBName = suburbB.name;
 
-  function cmp(vA: number | null | undefined, vB: number | null | undefined, higherIsBetter = true): Winner {
+  function cmp(
+    vA: number | null | undefined,
+    vB: number | null | undefined,
+    higherIsBetter = true,
+  ): Winner {
     if (vA == null || vB == null) return "none";
     if (vA === vB) return "tie";
     return higherIsBetter ? (vA > vB ? "a" : "b") : (vA < vB ? "a" : "b");
   }
+
+  // High-level synopsis. We score each suburb on 4 broad categories so the
+  // article-style intro tells a story, not just numbers.
+  const aWins =
+    Number(cmp(a.medianHousePrice || null, b.medianHousePrice || null, false) === "a") +
+    Number(cmp(a.annualGrowthHouse, b.annualGrowthHouse, true) === "a") +
+    Number(cmp(a.walkScore, b.walkScore, true) === "a") +
+    Number(cmp(icseaA, icseaB, true) === "a");
+  const bWins =
+    Number(cmp(a.medianHousePrice || null, b.medianHousePrice || null, false) === "b") +
+    Number(cmp(a.annualGrowthHouse, b.annualGrowthHouse, true) === "b") +
+    Number(cmp(a.walkScore, b.walkScore, true) === "b") +
+    Number(cmp(icseaA, icseaB, true) === "b");
 
   return (
     <>
@@ -177,92 +241,121 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
         ]}
       />
 
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-primary/10 to-white border-b border-gray-100">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-          <Breadcrumbs
-            items={[
-              { label: "Suburbs", href: "/suburbs" },
-              { label: suburbAName, href: `/suburbs/${slug}` },
-              { label: `vs ${suburbBName}` },
-            ]}
-          />
+      {/* Editorial hero */}
+      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
+        <Image
+          src="/images/illustrations/contour.svg"
+          alt=""
+          width={1200}
+          height={800}
+          aria-hidden="true"
+          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
+        />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
+          <div className="mb-8">
+            <Breadcrumbs
+              items={[
+                { label: "Suburbs", href: "/suburbs" },
+                { label: suburbAName, href: `/suburbs/${slug}` },
+                { label: `vs ${suburbBName}` },
+              ]}
+            />
+          </div>
 
-          <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 mt-4">
-            {suburbAName} vs {suburbBName}
+          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+            Side-by-side suburb comparison
+          </p>
+          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-4xl">
+            {suburbAName} <span className="italic text-primary">vs</span> {suburbBName}.
           </h1>
-          <p className="text-gray-500 mt-2 text-sm">Side-by-side suburb comparison</p>
+          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-3xl">
+            {a.medianHousePrice > 0 && b.medianHousePrice > 0 ? (
+              <>
+                Comparing two suburbs with median house prices of{" "}
+                <strong className="text-ink">{formatPriceFull(a.medianHousePrice)}</strong>{" "}
+                and{" "}
+                <strong className="text-ink">{formatPriceFull(b.medianHousePrice)}</strong>.
+              </>
+            ) : (
+              <>Suburb-to-suburb comparison across price, growth, lifestyle, schools and risk.</>
+            )}
+            {aWins > bWins && (
+              <> {suburbAName} edges out on more headline metrics in this comparison.</>
+            )}
+            {bWins > aWins && (
+              <> {suburbBName} edges out on more headline metrics in this comparison.</>
+            )}
+          </p>
 
-          {/* Two-column suburb headers */}
-          <div className="grid grid-cols-2 gap-4 mt-8">
-            <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-card">
-              <div className="flex items-center gap-2 mb-1">
-                <Home className="w-4 h-4 text-primary" />
-                <span className="font-bold text-gray-900 text-lg">{suburbAName}</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <Badge variant="outline">{suburbA.state}</Badge>
-                <Badge variant="outline">Postcode {suburbA.postcode}</Badge>
-              </div>
-              {a.medianHousePrice > 0 && (
-                <p className="mt-3 text-sm text-gray-600">
-                  Median house:{" "}
-                  <span className="font-semibold text-gray-900">
-                    {formatPriceFull(a.medianHousePrice)}
-                  </span>
+          {/* Two suburb header cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10">
+            {[
+              { suburb: suburbA, slug: slug, stats: a },
+              { suburb: suburbB, slug: compareSlug, stats: b },
+            ].map(({ suburb, slug: s, stats }) => (
+              <Link
+                key={s}
+                href={`/suburbs/${s}`}
+                className="rounded-2xl border border-line bg-surface-raised p-5 hover:border-primary/40 hover:shadow-md transition-all group"
+              >
+                <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-1">
+                  {suburb.state} &middot; {suburb.postcode}
                 </p>
-              )}
-            </div>
-
-            <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-card">
-              <div className="flex items-center gap-2 mb-1">
-                <Home className="w-4 h-4 text-primary" />
-                <span className="font-bold text-gray-900 text-lg">{suburbBName}</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <Badge variant="outline">{suburbB.state}</Badge>
-                <Badge variant="outline">Postcode {suburbB.postcode}</Badge>
-              </div>
-              {b.medianHousePrice > 0 && (
-                <p className="mt-3 text-sm text-gray-600">
-                  Median house:{" "}
-                  <span className="font-semibold text-gray-900">
-                    {formatPriceFull(b.medianHousePrice)}
-                  </span>
-                </p>
-              )}
-            </div>
+                <h2 className="font-display text-2xl text-ink group-hover:text-primary transition-colors leading-tight">
+                  {suburb.name}
+                </h2>
+                {stats.medianHousePrice > 0 && (
+                  <p className="mt-3 font-sans text-sm text-ink-muted">
+                    Median house{" "}
+                    <span className="font-display text-base text-ink">
+                      {formatPriceFull(stats.medianHousePrice)}
+                    </span>
+                  </p>
+                )}
+                {stats.annualGrowthHouse != null && (
+                  <p className="mt-1 font-sans text-sm text-ink-muted">
+                    Growth{" "}
+                    <span
+                      className={`font-display text-base ${stats.annualGrowthHouse >= 0 ? "text-emerald-700" : "text-red-700"}`}
+                    >
+                      {stats.annualGrowthHouse >= 0 ? "+" : ""}
+                      {stats.annualGrowthHouse.toFixed(1)}%
+                    </span>
+                  </p>
+                )}
+              </Link>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Main comparison */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 space-y-10">
-
-        {/* Column labels */}
-        <div className="grid grid-cols-3 gap-2 text-center text-sm font-bold text-gray-900 border-b border-gray-200 pb-3 sticky top-0 bg-white z-10 pt-2">
-          <div>{suburbAName}</div>
-          <div className="text-xs text-gray-400 uppercase tracking-widest font-medium self-center">Metric</div>
-          <div>{suburbBName}</div>
+      {/* Comparison */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+        {/* Sticky column legend */}
+        <div className="grid grid-cols-12 gap-4 text-center text-sm font-sans border-b border-line pb-3 sticky top-0 bg-surface-warm/95 backdrop-blur z-10 pt-3 -mx-4 px-4">
+          <div className="col-span-4 text-right font-display text-base text-ink truncate">
+            {suburbAName}
+          </div>
+          <div className="col-span-4 text-xs text-ink-subtle uppercase tracking-[0.2em] self-center">
+            Metric
+          </div>
+          <div className="col-span-4 text-left font-display text-base text-ink truncate">
+            {suburbBName}
+          </div>
         </div>
 
-        {/* Price & Market */}
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-card">
-          <h2 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-primary" /> Price &amp; Market
-          </h2>
-          <SectionHeader title="" />
+        <CompareSection title="Price &amp; Market">
           <CompareRow
-            label="Median house price"
+            label="Median house"
             valA={a.medianHousePrice > 0 ? formatPriceFull(a.medianHousePrice) : "–"}
             valB={b.medianHousePrice > 0 ? formatPriceFull(b.medianHousePrice) : "–"}
-            winner={cmp(a.medianHousePrice || null, b.medianHousePrice || null, true)}
+            winner={cmp(a.medianHousePrice || null, b.medianHousePrice || null, false)}
           />
           <CompareRow
-            label="Median unit price"
+            label="Median unit"
             valA={a.medianUnitPrice > 0 ? formatPriceFull(a.medianUnitPrice) : "–"}
             valB={b.medianUnitPrice > 0 ? formatPriceFull(b.medianUnitPrice) : "–"}
-            winner={cmp(a.medianUnitPrice || null, b.medianUnitPrice || null, true)}
+            winner={cmp(a.medianUnitPrice || null, b.medianUnitPrice || null, false)}
           />
           <CompareRow
             label="Annual growth (house)"
@@ -276,19 +369,17 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
             valB={b.daysOnMarket > 0 ? `${b.daysOnMarket} days` : "–"}
             winner={cmp(a.daysOnMarket || null, b.daysOnMarket || null, false)}
           />
-        </div>
+        </CompareSection>
 
-        {/* Rental */}
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-card">
-          <h2 className="text-lg font-bold text-gray-900 mb-2">Rental</h2>
+        <CompareSection title="Rental">
           <CompareRow
-            label="Rent (house/wk)"
+            label="Rent (house / wk)"
             valA={a.medianRentHouse > 0 ? `$${a.medianRentHouse}/wk` : "–"}
             valB={b.medianRentHouse > 0 ? `$${b.medianRentHouse}/wk` : "–"}
             winner="none"
           />
           <CompareRow
-            label="Rent (unit/wk)"
+            label="Rent (unit / wk)"
             valA={a.medianRentUnit > 0 ? `$${a.medianRentUnit}/wk` : "–"}
             valB={b.medianRentUnit > 0 ? `$${b.medianRentUnit}/wk` : "–"}
             winner="none"
@@ -305,11 +396,9 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
             valB={b.renterOccupied > 0 ? `${b.renterOccupied.toFixed(1)}%` : "–"}
             winner="none"
           />
-        </div>
+        </CompareSection>
 
-        {/* Lifestyle */}
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-card">
-          <h2 className="text-lg font-bold text-gray-900 mb-2">Lifestyle</h2>
+        <CompareSection title="Lifestyle &amp; Demographics">
           <CompareRow
             label="Walk score"
             valA={fmtScore(a.walkScore)}
@@ -340,11 +429,9 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
             valB={b.medianAge > 0 ? String(b.medianAge) : "–"}
             winner="none"
           />
-        </div>
+        </CompareSection>
 
-        {/* Risk */}
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-card">
-          <h2 className="text-lg font-bold text-gray-900 mb-2">Risk</h2>
+        <CompareSection title="Risk &amp; Hazard">
           <CompareRow
             label="Flood class"
             valA={fmtFlood(suburbA.hazard?.floodClass)}
@@ -365,11 +452,9 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
                 : "none"
             }
           />
-        </div>
+        </CompareSection>
 
-        {/* Schools */}
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-card">
-          <h2 className="text-lg font-bold text-gray-900 mb-2">Schools</h2>
+        <CompareSection title="Schools">
           <CompareRow
             label="Schools nearby"
             valA={String(schoolCountA)}
@@ -382,19 +467,17 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
             valB={icseaB !== null ? String(icseaB) : "–"}
             winner={cmp(icseaA, icseaB, true)}
           />
-        </div>
+        </CompareSection>
 
-        {/* Climate */}
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-card">
-          <h2 className="text-lg font-bold text-gray-900 mb-2">Climate</h2>
+        <CompareSection title="Climate">
           <CompareRow
-            label="Annual rainfall (mm)"
+            label="Annual rainfall"
             valA={suburbA.climate?.annualRainfallMm != null ? `${Math.round(suburbA.climate.annualRainfallMm)} mm` : "–"}
             valB={suburbB.climate?.annualRainfallMm != null ? `${Math.round(suburbB.climate.annualRainfallMm)} mm` : "–"}
             winner="none"
           />
           <CompareRow
-            label="Mean max temp (Jan)"
+            label="Mean max (Jan)"
             valA={
               suburbA.climate?.meanMaxTemp?.[0] != null
                 ? `${fmtFloat(suburbA.climate.meanMaxTemp[0])}°C`
@@ -407,37 +490,46 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
             }
             winner="none"
           />
-        </div>
+        </CompareSection>
 
         {/* Legend */}
-        <p className="text-xs text-gray-400 text-center">
-          Green highlight = better value for that metric. Higher growth, lower risk, higher walkability = better.
+        <p className="text-xs font-sans text-ink-subtle text-center">
+          Green dot = better on that metric (lower price, higher growth, higher walkability,
+          lower risk).
         </p>
 
         {/* CTA buttons */}
-        <div className="grid grid-cols-2 gap-4 pt-4">
-          <Link href={`/suburbs/${slug}`}>
-            <Button variant="outline" size="lg" className="w-full">
-              Explore {suburbAName} <ArrowRight className="w-4 h-4" />
-            </Button>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+          <Link
+            href={`/suburbs/${slug}`}
+            className="group flex items-center justify-between rounded-2xl border border-line bg-surface-raised px-6 py-4 hover:border-primary/40 hover:shadow-md transition-all"
+          >
+            <span className="font-display text-lg text-ink group-hover:text-primary transition-colors">
+              Full {suburbAName} profile
+            </span>
+            <ArrowRight className="w-4 h-4 text-ink-subtle group-hover:text-primary transition-colors" />
           </Link>
-          <Link href={`/suburbs/${compareSlug}`}>
-            <Button variant="outline" size="lg" className="w-full">
-              Explore {suburbBName} <ArrowRight className="w-4 h-4" />
-            </Button>
+          <Link
+            href={`/suburbs/${compareSlug}`}
+            className="group flex items-center justify-between rounded-2xl border border-line bg-surface-raised px-6 py-4 hover:border-primary/40 hover:shadow-md transition-all"
+          >
+            <span className="font-display text-lg text-ink group-hover:text-primary transition-colors">
+              Full {suburbBName} profile
+            </span>
+            <ArrowRight className="w-4 h-4 text-ink-subtle group-hover:text-primary transition-colors" />
           </Link>
         </div>
 
         {/* Compare with more */}
         {suburbA.nearbySuburbs.length > 0 && (
-          <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-card">
-            <p className="text-sm font-medium text-gray-700 mb-3">
-              Compare {suburbAName} with another suburb:
+          <div className="rounded-2xl border border-line bg-surface-warm p-6">
+            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-4">
+              Compare {suburbAName} against another suburb
             </p>
             <div className="flex flex-wrap gap-2">
               {suburbA.nearbySuburbs
                 .filter((s) => s !== compareSlug)
-                .slice(0, 8)
+                .slice(0, 12)
                 .map((s) => {
                   const label = s
                     .split("-")
@@ -445,14 +537,25 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
                     .join(" ")
                     .replace(/\b\w/g, (c) => c.toUpperCase());
                   return (
-                    <Link key={s} href={`/suburbs/${slug}/vs/${s}`}>
-                      <Badge variant="outline" className="cursor-pointer hover:border-primary hover:text-primary">
-                        {label}
-                      </Badge>
+                    <Link
+                      key={s}
+                      href={`/suburbs/${slug}/vs/${s}`}
+                      className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors"
+                    >
+                      vs {label}
                     </Link>
                   );
                 })}
             </div>
+            <p className="mt-5 text-sm font-sans text-ink-muted">
+              Or{" "}
+              <Link
+                href="/compare"
+                className="font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+              >
+                compare any two suburbs nationally →
+              </Link>
+            </p>
           </div>
         )}
       </div>

@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { Suspense } from "react";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { PropertyFilters } from "@/components/property/PropertyFilters";
-import { Breadcrumbs } from "@/components/layout";
+import { SuburbSubrouteHeader, getSuburbListingTabs } from "@/components/suburb";
+import { ExpertCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getProperties } from "@/lib/services/property-service";
 import { suburbBuyTitle, suburbBuyDescription } from "@/lib/utils/seo";
 import { SITE_URL } from "@/lib/constants";
 import type { PropertyType } from "@/types";
-import { Suspense } from "react";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -26,7 +25,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: suburbBuyTitle(suburb),
     description: suburbBuyDescription(suburb),
     alternates: { canonical: `${SITE_URL}/suburbs/${slug}/buy` },
-    openGraph: { url: `${SITE_URL}/suburbs/${slug}/buy`, title: suburbBuyTitle(suburb), description: suburbBuyDescription(suburb), type: "website" },
+    openGraph: {
+      url: `${SITE_URL}/suburbs/${slug}/buy`,
+      title: suburbBuyTitle(suburb),
+      description: suburbBuyDescription(suburb),
+      type: "website",
+    },
     twitter: { card: "summary_large_image" },
   };
 }
@@ -46,61 +50,50 @@ export default async function SuburbBuyPage({ params, searchParams }: Props) {
     minBeds: sp.minBeds ? Number(sp.minBeds) : undefined,
     sort: sp.sort,
   });
+  const count = properties.length;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+    <>
       <BreadcrumbJsonLd
         items={[
           { name: "Suburbs", url: "/suburbs" },
           { name: suburb.name, url: `/suburbs/${slug}` },
-          { name: "Buy", url: `/suburbs/${slug}/buy` },
+          { name: "For sale", url: `/suburbs/${slug}/buy` },
         ]}
       />
       <PlaceJsonLd
         name={suburb.name}
-        url={"/suburbs/" + suburb.slug}
+        url={`/suburbs/${suburb.slug}`}
         addressLocality={suburb.name}
         addressRegion={suburb.state}
         postalCode={suburb.postcode}
-
-      />
-      <Breadcrumbs
-        items={[
-          { label: "Suburbs", href: "/suburbs" },
-          { label: suburb.name, href: `/suburbs/${slug}` },
-          { label: "Buy" },
-        ]}
       />
 
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">
-          Houses for Sale in {suburb.name}
-        </h1>
-        <p className="text-gray-500 mt-1">
-          {properties.length} {properties.length === 1 ? "property" : "properties"} for sale in {suburb.name}, {suburb.state} {suburb.postcode}
-        </p>
-      </div>
+      <SuburbSubrouteHeader
+        suburb={suburb}
+        eyebrow="Listings in"
+        title={<>Properties <span className="italic text-primary">for sale</span></>}
+        subtitle={`${count} ${count === 1 ? "property" : "properties"} on the market in ${suburb.name}, ${suburb.state} ${suburb.postcode}.`}
+        breadcrumbLeaf="For sale"
+        tabs={getSuburbListingTabs(slug, "buy")}
+      />
 
-      <div className="mb-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-8">
         <Suspense fallback={null}>
           <PropertyFilters listingType="buy" />
         </Suspense>
+        <PropertyGrid
+          properties={properties}
+          emptyMessage={`No properties for sale in ${suburb.name} right now. Check back soon, or browse rentals or recently sold listings using the tabs above.`}
+        />
       </div>
 
-      <PropertyGrid
-        properties={properties}
-        emptyMessage={`No properties for sale in ${suburb.name} at the moment. Check back soon.`}
+      <ExpertCTA
+        headline="Looking at this suburb? Talk to a buyer's agent who knows it."
+        body="A buyer's agent can run private inspections, vet the contract and negotiate on your behalf. Free for buyers, no commitment."
+        ctaLabel="See how matching works"
+        href="/find-an-expert"
       />
-
-      <div className="mt-8">
-        <Link
-          href={`/suburbs/${slug}`}
-          className="inline-flex items-center gap-2 text-primary hover:underline text-sm"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to {suburb.name} suburb profile
-        </Link>
-      </div>
-    </div>
+    </>
   );
 }

@@ -85,7 +85,7 @@ export function SuburbSearch() {
           onKeyDown={handleKeyDown}
           onFocus={() => suggestions.length > 0 && setOpen(true)}
           placeholder="Search by suburb or postcode"
-          className="w-64 lg:w-80 h-9 px-3 text-sm border border-gray-300 border-r-0 rounded-l-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+          className="w-64 lg:w-80 h-9 px-3 text-sm font-sans bg-surface-raised border border-line-strong border-r-0 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-ink-subtle"
           autoComplete="off"
           role="combobox"
           aria-expanded={open}
@@ -97,7 +97,7 @@ export function SuburbSearch() {
             if (activeIdx >= 0 && suggestions[activeIdx]) navigate(suggestions[activeIdx].slug);
             else if (suggestions.length > 0) navigate(suggestions[0].slug);
           }}
-          className="h-9 w-9 flex items-center justify-center bg-primary hover:bg-primary/90 text-white rounded-r-md transition-colors flex-shrink-0"
+          className="h-9 w-9 flex items-center justify-center bg-ink hover:bg-primary text-white rounded-r-lg transition-colors flex-shrink-0"
           aria-label="Search"
         >
           <Search className="w-4 h-4" />
@@ -107,10 +107,10 @@ export function SuburbSearch() {
       {open && (
         <ul
           role="listbox"
-          className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden"
+          className="absolute top-full left-0 right-0 mt-1 bg-surface-raised border border-line rounded-xl shadow-card-hover z-50 overflow-hidden"
         >
           {noResults ? (
-            <li className="px-4 py-3 text-sm text-gray-400 italic">No suburbs found</li>
+            <li className="px-4 py-3 text-sm font-sans text-ink-subtle italic">No suburbs found</li>
           ) : (
             suggestions.map((s, i) => (
               <li
@@ -119,12 +119,12 @@ export function SuburbSearch() {
                 aria-selected={i === activeIdx}
                 onMouseDown={(e) => { e.preventDefault(); navigate(s.slug); }}
                 onMouseEnter={() => setActiveIdx(i)}
-                className={`flex items-center justify-between px-4 py-2.5 cursor-pointer text-sm ${
-                  i === activeIdx ? "bg-primary/10 text-primary" : "text-gray-700 hover:bg-gray-50"
+                className={`flex items-center justify-between px-4 py-2.5 cursor-pointer text-sm font-sans transition-colors ${
+                  i === activeIdx ? "bg-surface-warm text-ink" : "text-ink-muted hover:bg-surface-warm hover:text-ink"
                 }`}
               >
                 <span className="font-medium">{s.name}</span>
-                <span className="text-gray-400 text-xs">{s.state} {s.postcode}</span>
+                <span className="text-ink-subtle text-xs">{s.state} {s.postcode}</span>
               </li>
             ))
           )}

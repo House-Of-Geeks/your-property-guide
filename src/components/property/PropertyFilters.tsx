@@ -35,7 +35,7 @@ export function PropertyFilters({ listingType }: PropertyFiltersProps) {
 
   return (
     <div className="flex flex-wrap gap-3 items-center">
-      {/* Suburb autocomplete — replaces the old hardcoded <Select> */}
+      {/* Suburb autocomplete, replaces the old hardcoded <Select> */}
       <div className="w-full sm:w-64 bg-white border border-gray-200 rounded-xl">
         <SuburbAutocomplete
           key={currentSuburbSlug} // re-mount when slug changes to reset display

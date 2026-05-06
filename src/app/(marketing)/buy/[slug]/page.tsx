@@ -18,8 +18,6 @@ import { propertyTitle, propertyDescription, absoluteUrl } from "@/lib/utils/seo
 import { formatDate, formatPriceFull } from "@/lib/utils/format";
 import { db } from "@/lib/db";
 import { SITE_URL } from "@/lib/constants";
-import { auth } from "@/auth";
-import { isPropertySaved } from "@/lib/actions/dashboard";
 import { PropertyActions } from "@/components/property/PropertyActions";
 import { PropertyMap } from "@/components/property/PropertyMap";
 
@@ -54,10 +52,10 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
   const property = await getPropertyBySlug(slug);
   if (!property) notFound();
 
-  const session = await auth();
-  const isLoggedIn = !!session?.user?.email;
-
-  const [agent, coAgent, agency, suburbData, suburbHazard, agencyListings, initialSaved] = await Promise.all([
+  // No auth() / isPropertySaved() here. Reading session cookies on a public
+  // detail page forces dynamic rendering and prevents CDN caching.
+  // PropertyActions fetches saved status client-side after hydration.
+  const [agent, coAgent, agency, suburbData, suburbHazard, agencyListings] = await Promise.all([
     getAgentById(property.agentId),
     property.coAgentId ? getAgentById(property.coAgentId) : Promise.resolve(null),
     getAgencyById(property.agencyId),
@@ -72,7 +70,6 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
     }),
     db.suburbHazard.findUnique({ where: { suburbSlug: property.suburbSlug } }),
     getPropertiesByAgency(property.agencyId, 4),
-    isPropertySaved(property.id),
   ]);
 
   const otherListings = agencyListings.filter((p) => p.id !== property.id).slice(0, 3);
@@ -138,7 +135,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
       </div>
 
       {/* ── Breadcrumbs ────────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 border-b border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 border-b border-line">
         <Breadcrumbs
           items={[
             { label: "Buy", href: "/buy" },
@@ -158,41 +155,39 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             {/* Price + address + stats */}
             <div>
               <div className="flex items-start justify-between gap-4">
-                <p className="text-2xl sm:text-3xl font-bold text-gray-900">
+                <p className="font-display text-3xl sm:text-4xl text-ink leading-tight">
                   {property.price.display}
                 </p>
                 <PropertyActions
                   propertyId={property.id}
                   address={property.address.full}
-                  initialSaved={initialSaved}
-                  isLoggedIn={isLoggedIn}
                 />
               </div>
-              <h1 className="text-lg text-gray-700 mt-1">
+              <h1 className="font-sans text-base text-ink-muted mt-2">
                 {property.address.street},{" "}
-                <Link href={`/suburbs/${property.suburbSlug}`} className="hover:text-primary hover:underline">
+                <Link href={`/suburbs/${property.suburbSlug}`} className="text-ink hover:text-primary hover:underline">
                   {property.address.suburb}
                 </Link>{" "}
                 {property.address.state} {property.address.postcode}
               </h1>
 
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3 text-gray-700">
-                <span className="flex items-center gap-1.5 text-sm">
-                  <Bed className="w-4 h-4 text-gray-400" />
-                  <strong>{property.features.bedrooms}</strong>
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-4 text-ink-muted">
+                <span className="flex items-center gap-1.5 text-sm font-sans">
+                  <Bed className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
+                  <strong className="font-semibold text-ink">{property.features.bedrooms}</strong>
                 </span>
-                <span className="flex items-center gap-1.5 text-sm">
-                  <Bath className="w-4 h-4 text-gray-400" />
-                  <strong>{property.features.bathrooms}</strong>
+                <span className="flex items-center gap-1.5 text-sm font-sans">
+                  <Bath className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
+                  <strong className="font-semibold text-ink">{property.features.bathrooms}</strong>
                 </span>
-                <span className="flex items-center gap-1.5 text-sm">
-                  <Car className="w-4 h-4 text-gray-400" />
-                  <strong>{property.features.carSpaces}</strong>
+                <span className="flex items-center gap-1.5 text-sm font-sans">
+                  <Car className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
+                  <strong className="font-semibold text-ink">{property.features.carSpaces}</strong>
                 </span>
                 {property.features.landSize && (
-                  <span className="flex items-center gap-1.5 text-sm">
-                    <Ruler className="w-4 h-4 text-gray-400" />
-                    <strong>{property.features.landSize.toLocaleString()} m²</strong>
+                  <span className="flex items-center gap-1.5 text-sm font-sans">
+                    <Ruler className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
+                    <strong className="font-semibold text-ink">{property.features.landSize.toLocaleString()} m²</strong>
                   </span>
                 )}
                 <Badge>{property.propertyType}</Badge>
@@ -202,8 +197,8 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
 
             {/* ── Property Description ─────────────────────────── */}
             <div>
-              <h2 className="text-lg font-bold text-gray-900 mb-3">Property Description</h2>
-              <p className="text-xs text-gray-400 mb-3">
+              <h2 className="font-display text-xl text-ink leading-tight mb-2">Property description</h2>
+              <p className="text-xs font-sans text-ink-subtle mb-4">
                 {agency?.name ?? ""} &nbsp;·&nbsp; Listed {formatDate(property.dateAdded)}
               </p>
               <PropertyDescriptionExpand description={property.description} />
@@ -212,11 +207,11 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             {/* ── Inspection Times (mobile only) ───────────────── */}
             {(property.inspectionTimes ?? []).length > 0 && (
               <div className="lg:hidden">
-                <h2 className="text-lg font-bold text-gray-900 mb-3">Inspection Times</h2>
+                <h2 className="font-display text-xl text-ink leading-tight mb-3">Inspection times</h2>
                 <div className="space-y-2">
                   {(property.inspectionTimes ?? []).map((t, i) => (
-                    <div key={i} className="flex items-center gap-2 text-sm text-gray-700 border border-gray-200 rounded-lg px-4 py-3">
-                      <Calendar className="w-4 h-4 text-primary flex-shrink-0" />
+                    <div key={i} className="flex items-center gap-2 text-sm font-sans text-ink-muted border border-line rounded-lg px-4 py-3">
+                      <Calendar className="w-4 h-4 text-cta flex-shrink-0" aria-hidden="true" />
                       {t}
                     </div>
                   ))}
@@ -226,9 +221,9 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
 
             {/* ── Map ──────────────────────────────────────────── */}
             <div>
-              <h2 className="text-lg font-bold text-gray-900 mb-3">Location</h2>
-              <p className="text-sm text-gray-500 flex items-center gap-1 mb-3">
-                <MapPin className="w-3.5 h-3.5" />
+              <h2 className="font-display text-xl text-ink leading-tight mb-3">Location</h2>
+              <p className="text-sm font-sans text-ink-muted flex items-center gap-1.5 mb-3">
+                <MapPin className="w-3.5 h-3.5 text-ink-subtle" aria-hidden="true" />
                 {property.address.full}
               </p>
               {mapLat && mapLng ? (
@@ -238,7 +233,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                     href={`https://maps.google.com/?q=${mapAddress}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 mt-2 text-xs text-gray-500 hover:text-primary"
+                    className="inline-flex items-center gap-1 mt-3 text-xs font-sans text-ink-subtle hover:text-primary"
                   >
                     Open in Google Maps →
                   </a>
@@ -248,7 +243,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                   href={`https://maps.google.com/?q=${mapAddress}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center h-32 rounded-xl border border-gray-200 bg-gray-50 text-sm text-primary hover:bg-gray-100"
+                  className="flex items-center justify-center h-32 rounded-xl border border-line bg-surface-warm text-sm font-sans text-primary hover:bg-surface-warm-sunken"
                 >
                   View on Google Maps →
                 </a>
@@ -258,10 +253,10 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             {/* ── School Catchment ─────────────────────────────── */}
             {schools.length > 0 && (
               <div>
-                <h2 className="text-lg font-bold text-gray-900 mb-1">
-                  School Catchment Zones for {property.address.suburb}
+                <h2 className="font-display text-xl text-ink leading-tight mb-1">
+                  School catchment zones for {property.address.suburb}
                 </h2>
-                <p className="text-xs text-gray-400 mb-4">Schools near this property</p>
+                <p className="text-xs font-sans text-ink-subtle mb-4">Schools near this property</p>
                 <PropertySchoolTabs schools={schools} />
               </div>
             )}
@@ -269,7 +264,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             {/* ── Suburb Insights ───────────────────────────────── */}
             {suburbData && (
               <div>
-                <h2 className="text-lg font-bold text-gray-900 mb-4">
+                <h2 className="font-display text-xl text-ink leading-tight mb-4">
                   Insights for {property.features.bedrooms}-bedroom homes in {property.address.suburb}
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -283,31 +278,31 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                 {(suburbData.walkScore != null || suburbHazard) && (
                   <div className="flex flex-wrap gap-2 mt-4">
                     {suburbData.walkScore != null && (
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 border border-blue-200 px-3 py-1 text-xs font-medium text-blue-700">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-info/10 border border-info/30 px-3 py-1 text-xs font-sans font-medium text-info">
                         Walk score: {suburbData.walkScore}
                       </span>
                     )}
                     {suburbHazard?.floodClass && suburbHazard.floodClass !== "low" && (
-                      <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${suburbHazard.floodClass === "high" || suburbHazard.floodClass === "floodway" ? "bg-red-50 border-red-200 text-red-700" : "bg-amber-50 border-amber-200 text-amber-700"}`}>
+                      <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-sans font-medium ${suburbHazard.floodClass === "high" || suburbHazard.floodClass === "floodway" ? "bg-danger/10 border-danger/30 text-danger" : "bg-warning/10 border-warning/30 text-warning"}`}>
                         Flood: {suburbHazard.floodClass}
                       </span>
                     )}
                     {suburbHazard?.bushfireRisk && suburbHazard.bushfireRisk !== "low" && (
-                      <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${suburbHazard.bushfireRisk === "high" ? "bg-red-50 border-red-200 text-red-700" : "bg-amber-50 border-amber-200 text-amber-700"}`}>
+                      <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-sans font-medium ${suburbHazard.bushfireRisk === "high" ? "bg-danger/10 border-danger/30 text-danger" : "bg-warning/10 border-warning/30 text-warning"}`}>
                         Bushfire: {suburbHazard.bushfireRisk}
                       </span>
                     )}
                   </div>
                 )}
 
-                <div className="flex items-center justify-between mt-4 flex-wrap gap-2">
+                <div className="flex items-center justify-between mt-5 flex-wrap gap-2">
                   <Link
                     href={`/suburbs/${property.suburbSlug}`}
-                    className="inline-flex items-center gap-1 text-sm text-primary hover:underline font-medium"
+                    className="inline-flex items-center gap-1 text-sm font-sans font-medium text-ink hover:text-primary border-b border-line-strong hover:border-primary pb-0.5"
                   >
                     View suburb profile <ChevronRight className="w-4 h-4" />
                   </Link>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs font-sans text-ink-subtle">
                     Source:{" "}
                     <a
                       href="https://www.abs.gov.au/census"
@@ -328,10 +323,10 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             {/* ── Other properties from this agency ─────────────── */}
             {otherListings.length > 0 && (
               <div>
-                <h2 className="text-lg font-bold text-gray-900 mb-1">
+                <h2 className="font-display text-xl text-ink leading-tight mb-1">
                   Other properties for sale from {agency?.name}
                 </h2>
-                <p className="text-sm text-gray-500 mb-4">
+                <p className="text-sm font-sans text-ink-muted mb-4">
                   {agency?.name} is currently selling {agencyListings.length} properties.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -344,7 +339,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
 
             {/* ── Property FAQs ─────────────────────────────────── */}
             <div>
-              <h2 className="text-lg font-bold text-gray-900 mb-4">
+              <h2 className="font-display text-xl text-ink leading-tight mb-4">
                 Property FAQs
               </h2>
               <PropertyFAQs faqs={faqs} />
@@ -394,9 +389,9 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
 
 function InsightStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl bg-white shadow-card border border-gray-100 p-4 text-center">
-      <p className="text-lg font-bold text-gray-900">{value}</p>
-      <p className="text-xs text-gray-500 mt-0.5">{label}</p>
+    <div className="rounded-xl bg-surface-raised border border-line p-4 text-center">
+      <p className="font-display text-xl text-ink leading-tight">{value}</p>
+      <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mt-2">{label}</p>
     </div>
   );
 }

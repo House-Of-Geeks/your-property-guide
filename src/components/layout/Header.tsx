@@ -2,8 +2,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import { Menu, X, Search, ChevronDown, UserCircle } from "lucide-react";
-import { Button } from "@/components/ui";
+import { Menu, X, ChevronDown, UserCircle, Search } from "lucide-react";
+
+// Education-first nav per Andy's 2026-05-05 direction. No aggressive CTA in
+// the RHS, no buyer-funnel-shaped headlines. Five top-level items: Suburbs
+// (data), Guides (education), Tools (calculators), For you (personas), About
+// (trust). Lead-capture pages live as sub-links of About, not at the top.
 
 interface NavChild {
   label: string;
@@ -15,56 +19,73 @@ interface NavLink {
   label: string;
   href: string;
   children?: NavChild[];
-  twoCol?: boolean;
+  layout?: "list" | "grouped" | "mega";
 }
 
 const NAV_LINKS: NavLink[] = [
   {
-    label: "Find a Property",
-    href: "#",
+    label: "Suburbs",
+    href: "/suburbs",
+    layout: "mega",
     children: [
-      { label: "Buy",               href: "/buy" },
-      { label: "Rent",              href: "/rent" },
-      { label: "Sold",              href: "/sold" },
-      { label: "Off-Market",        href: "/off-market" },
-      { label: "House & Land",      href: "/house-and-land" },
-      { label: "Browse by State",   href: "/states" },
-      { label: "Browse by Postcode", href: "/postcodes" },
+      { label: "Suburb profiles",     href: "/suburbs",       group: "Research" },
+      { label: "Best suburbs",        href: "/best-suburbs",  group: "Research" },
+      { label: "Browse by state",     href: "/states",        group: "Research" },
+      { label: "Browse by postcode",  href: "/postcodes",     group: "Research" },
+      { label: "Browse by region",    href: "/regions",       group: "Research" },
+      { label: "Houses for sale",     href: "/buy",           group: "Listings" },
+      { label: "Properties for rent", href: "/rent",          group: "Listings" },
+      { label: "Recently sold",       href: "/sold",          group: "Listings" },
+      { label: "Off-market",          href: "/off-market",    group: "Listings" },
+      { label: "House and land",      href: "/house-and-land", group: "Listings" },
     ],
   },
   {
-    label: "Research",
+    label: "Guides",
+    href: "/guides",
+  },
+  {
+    label: "Tools",
     href: "#",
-    twoCol: true,
+    layout: "grouped",
     children: [
-      { label: "Research Hub",              href: "/research",                    group: "Tools" },
-      { label: "Suburb Profiles",           href: "/suburbs",                     group: "Tools" },
-      { label: "Price Guide",               href: "/price-guide",                 group: "Tools" },
-      { label: "Search by School",          href: "/schools",                     group: "Tools" },
-      { label: "Best Suburbs",              href: "/best-suburbs",                group: "Tools" },
-      { label: "Mortgage Calculator",       href: "/mortgage-calculator",         group: "Tools" },
-      { label: "Stamp Duty Calculator",     href: "/stamp-duty-calculator",       group: "Tools" },
-      { label: "Borrowing Power",           href: "/borrowing-power-calculator",  group: "Tools" },
-      { label: "Rental Yield Calculator",   href: "/rental-yield-calculator",     group: "Tools" },
-      { label: "CGT Calculator",            href: "/cgt-calculator",              group: "Tools" },
-      { label: "Refinancing Calculator",    href: "/refinancing-calculator",      group: "Tools" },
-      { label: "Affordability Calculator",  href: "/affordability-calculator",    group: "Tools" },
-      { label: "Guides",                    href: "/guides",                      group: "Resources" },
-      { label: "Property Glossary",         href: "/glossary",                    group: "Resources" },
-      { label: "RBA Cash Rate",             href: "/rba-cash-rate",               group: "Resources" },
-      { label: "Market Reports",            href: "/market-reports",              group: "Resources" },
+      { label: "Borrowing power",       href: "/borrowing-power-calculator", group: "Calculators" },
+      { label: "Mortgage repayments",   href: "/mortgage-calculator",        group: "Calculators" },
+      { label: "Affordability",         href: "/affordability-calculator",   group: "Calculators" },
+      { label: "Stamp duty",            href: "/stamp-duty-calculator",      group: "Calculators" },
+      { label: "Rental yield",          href: "/rental-yield-calculator",    group: "Calculators" },
+      { label: "CGT",                   href: "/cgt-calculator",             group: "Calculators" },
+      { label: "Refinancing",           href: "/refinancing-calculator",     group: "Calculators" },
+      { label: "Property glossary",     href: "/glossary",                   group: "Reference" },
+      { label: "RBA cash rate",         href: "/rba-cash-rate",              group: "Reference" },
+      { label: "Market reports",        href: "/market-reports",             group: "Reference" },
+      { label: "Price guide",           href: "/price-guide",                group: "Reference" },
+      { label: "Search by school",      href: "/schools",                    group: "Reference" },
     ],
   },
   {
-    label: "Find Agents",
+    label: "For you",
     href: "#",
+    layout: "list",
     children: [
-      { label: "Find an Agent",   href: "/agents" },
-      { label: "Find an Agency",  href: "/real-estate-agencies" },
-      { label: "Free Appraisal",  href: "/appraisal" },
+      { label: "Buying my first home",  href: "/first-home-buyers" },
+      { label: "Selling my home",       href: "/selling" },
+      { label: "Upgrading or downsizing", href: "/upgrading" },
+      { label: "Investing in property", href: "/investing" },
     ],
   },
-  { label: "Blog", href: "/blog" },
+  {
+    label: "About",
+    href: "/about",
+    layout: "list",
+    children: [
+      { label: "About Your Property Guide", href: "/about" },
+      { label: "Why we're free",            href: "/about" },
+      { label: "Find an expert",            href: "/find-an-expert" },
+      { label: "Blog",                      href: "/blog" },
+      { label: "Contact",                   href: "/contact" },
+    ],
+  },
 ];
 
 export function Header() {
@@ -74,7 +95,6 @@ export function Header() {
 
   const toggle = (label: string) => setOpenMenu((o) => (o === label ? null : label));
 
-  // Close dropdown when clicking outside the nav
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (navRef.current && !navRef.current.contains(e.target as Node)) {
@@ -86,72 +106,42 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-black border-b border-white/10">
+    <header className="sticky top-0 z-50 bg-surface-inverse border-b border-white/10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
+        <div className="flex h-20 items-center justify-between gap-4">
+          <Link href="/" className="flex items-center shrink-0">
             <Image
               src="/images/Your-Property-Guide.png"
               alt="Your Property Guide"
               width={480}
               height={80}
-              className="h-16 w-auto invert"
+              className="h-14 w-auto invert"
+              style={{ width: "auto" }}
               priority
             />
           </Link>
 
-          {/* Desktop Nav */}
           <nav ref={navRef} className="hidden lg:flex items-center gap-1">
             {NAV_LINKS.map((link) =>
               link.children ? (
                 <div key={link.label} className="relative">
                   <button
                     onClick={() => toggle(link.label)}
+                    aria-expanded={openMenu === link.label}
+                    aria-haspopup="menu"
                     className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-white/80 hover:text-white rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
                   >
                     {link.label}
-                    <ChevronDown className="w-4 h-4" />
+                    <ChevronDown className={`w-4 h-4 transition-transform ${openMenu === link.label ? "rotate-180" : ""}`} />
                   </button>
+
                   {openMenu === link.label && (
-                    link.twoCol ? (
-                      <div className="absolute top-full left-0 mt-1 bg-white rounded-xl shadow-lg border border-gray-200 py-3 z-50 w-[440px]">
-                        <div className="grid grid-cols-2 gap-x-2">
-                          {["Tools", "Resources"].map((group) => {
-                            const groupItems = link.children!.filter((c) => c.group === group);
-                            return (
-                              <div key={group}>
-                                <p className="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                                  {group}
-                                </p>
-                                {groupItems.map((child) => (
-                                  <Link
-                                    key={child.href}
-                                    href={child.href}
-                                    onClick={() => setOpenMenu(null)}
-                                    className="block px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
-                                  >
-                                    {child.label}
-                                  </Link>
-                                ))}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
+                    link.layout === "mega" ? (
+                      <MegaMenu link={link} onClose={() => setOpenMenu(null)} />
+                    ) : link.layout === "grouped" ? (
+                      <GroupedMenu link={link} onClose={() => setOpenMenu(null)} />
                     ) : (
-                      <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
-                        {link.children.map((child) => (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            onClick={() => setOpenMenu(null)}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black"
-                          >
-                            {child.label}
-                          </Link>
-                        ))}
-                      </div>
+                      <ListMenu link={link} onClose={() => setOpenMenu(null)} />
                     )
                   )}
                 </div>
@@ -167,30 +157,28 @@ export function Header() {
             )}
           </nav>
 
-          {/* Right side */}
-          <div className="flex items-center gap-2">
-            <Link href="/buy" className="hidden sm:flex">
-              <Button variant="ghost" size="sm" className="text-white/80 hover:text-white hover:bg-white/10">
-                <Search className="w-4 h-4" />
-                Search
-              </Button>
+          {/* RHS, quiet utilities only. No magenta CTA. */}
+          <div className="flex items-center gap-2 shrink-0">
+            <Link
+              href="/search"
+              aria-label="Search the site"
+              title="Search suburbs, schools, guides &amp; glossary"
+              className="hidden md:flex p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+            >
+              <Search className="w-5 h-5" />
             </Link>
             <Link
               href="/dashboard/login"
-              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white/70 border border-white/20 rounded-full hover:border-white hover:text-white transition-colors"
+              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white/60 border border-white/15 rounded-full hover:border-white hover:text-white transition-colors"
             >
-              <UserCircle className="w-4 h-4" />
-              Agent Login
-            </Link>
-            <Link href="/appraisal" className="hidden md:block">
-              <Button variant="secondary" size="sm" className="bg-white text-black hover:bg-gray-100">
-                Free Appraisal
-              </Button>
+              <UserCircle className="w-3.5 h-3.5" />
+              Agent login
             </Link>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="lg:hidden p-2 text-white/80 hover:bg-white/10 rounded-lg cursor-pointer"
               aria-label="Toggle menu"
+              aria-expanded={mobileOpen}
             >
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -200,7 +188,7 @@ export function Header() {
 
       {/* Mobile Nav */}
       {mobileOpen && (
-        <div className="lg:hidden border-t border-white/10 bg-black">
+        <div className="lg:hidden border-t border-white/10 bg-surface-inverse max-h-[calc(100vh-5rem)] overflow-y-auto">
           <nav className="mx-auto max-w-7xl px-4 py-4 space-y-1">
             {NAV_LINKS.map((link) =>
               link.children ? (
@@ -210,7 +198,7 @@ export function Header() {
                   </p>
                   {link.children.map((child) => (
                     <Link
-                      key={child.href}
+                      key={`${child.href}-${child.label}`}
                       href={child.href}
                       onClick={() => setMobileOpen(false)}
                       className="block px-3 py-2 text-sm text-white/70 hover:text-white hover:bg-white/10 rounded-lg pl-6"
@@ -230,24 +218,100 @@ export function Header() {
                 </Link>
               )
             )}
-            <div className="pt-4 border-t border-white/10 space-y-2">
+            <div className="pt-4 mt-2 border-t border-white/10">
               <Link
                 href="/dashboard/login"
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-sm font-medium text-white/70 border border-white/20 rounded-full hover:border-white hover:text-white transition-colors"
               >
                 <UserCircle className="w-4 h-4" />
-                Agent Login
-              </Link>
-              <Link href="/appraisal" onClick={() => setMobileOpen(false)}>
-                <Button variant="secondary" size="lg" className="w-full bg-white text-black hover:bg-gray-100">
-                  Free Appraisal
-                </Button>
+                Agent login
               </Link>
             </div>
           </nav>
         </div>
       )}
     </header>
+  );
+}
+
+function MegaMenu({ link, onClose }: { link: NavLink; onClose: () => void }) {
+  const groups = Array.from(new Set(link.children!.map((c) => c.group ?? "")));
+  return (
+    <div className="absolute top-full left-0 mt-1 bg-surface-raised rounded-xl shadow-card border border-line py-3 z-50 w-[520px]">
+      <div className="grid grid-cols-2 gap-x-2">
+        {groups.map((group) => {
+          const items = link.children!.filter((c) => (c.group ?? "") === group);
+          return (
+            <div key={group}>
+              {group && (
+                <p className="px-4 py-1 text-xs font-semibold text-ink-subtle uppercase tracking-wider">
+                  {group}
+                </p>
+              )}
+              {items.map((child) => (
+                <Link
+                  key={child.href}
+                  href={child.href}
+                  onClick={onClose}
+                  className="block px-4 py-1.5 text-sm text-ink-muted hover:bg-surface-sunken hover:text-ink"
+                >
+                  {child.label}
+                </Link>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function GroupedMenu({ link, onClose }: { link: NavLink; onClose: () => void }) {
+  const groups = Array.from(new Set(link.children!.map((c) => c.group ?? "")));
+  return (
+    <div className="absolute top-full left-0 mt-1 bg-surface-raised rounded-xl shadow-card border border-line py-3 z-50 w-[440px]">
+      <div className="grid grid-cols-2 gap-x-2">
+        {groups.map((group) => {
+          const items = link.children!.filter((c) => (c.group ?? "") === group);
+          return (
+            <div key={group}>
+              {group && (
+                <p className="px-4 py-1 text-xs font-semibold text-ink-subtle uppercase tracking-wider">
+                  {group}
+                </p>
+              )}
+              {items.map((child) => (
+                <Link
+                  key={child.href}
+                  href={child.href}
+                  onClick={onClose}
+                  className="block px-4 py-1.5 text-sm text-ink-muted hover:bg-surface-sunken hover:text-ink"
+                >
+                  {child.label}
+                </Link>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ListMenu({ link, onClose }: { link: NavLink; onClose: () => void }) {
+  return (
+    <div className="absolute top-full left-0 mt-1 w-64 bg-surface-raised rounded-xl shadow-card border border-line py-2 z-50">
+      {link.children!.map((child) => (
+        <Link
+          key={`${child.href}-${child.label}`}
+          href={child.href}
+          onClick={onClose}
+          className="block px-4 py-2 text-sm text-ink-muted hover:bg-surface-sunken hover:text-ink"
+        >
+          {child.label}
+        </Link>
+      ))}
+    </div>
   );
 }

@@ -74,4 +74,5 @@ export interface PropertySearchParams {
   minCars?: number;
   sort?: string;
   page?: number;
+  take?: number;
 }

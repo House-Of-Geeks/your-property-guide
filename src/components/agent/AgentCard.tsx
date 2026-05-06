@@ -14,8 +14,8 @@ interface AgentCardProps {
 export function AgentCard({ agent, showContact = true }: AgentCardProps) {
   return (
     <Link href={`/agents/${agent.slug}`} className="group block">
-      <div className="flex items-start gap-4 p-4 rounded-xl bg-white shadow-card hover:shadow-card-hover transition-shadow border border-gray-100">
-        <div className="relative w-16 h-16 flex-shrink-0 rounded-full overflow-hidden">
+      <div className="flex items-start gap-4 p-5 rounded-2xl bg-surface-raised border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200">
+        <div className="relative w-16 h-16 flex-shrink-0 rounded-full overflow-hidden border border-line-warm">
           <Image
             src={agent.image}
             alt={agent.fullName}
@@ -25,10 +25,10 @@ export function AgentCard({ agent, showContact = true }: AgentCardProps) {
           />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="font-semibold text-gray-900 group-hover:text-primary transition-colors">
+          <p className="font-display text-lg text-ink leading-tight group-hover:text-primary transition-colors">
             {agent.fullName}
           </p>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm font-sans text-ink-muted mt-1">
             {agent.title}
             {agent.agencyName && agent.agencySlug && (
               <>
@@ -42,26 +42,26 @@ export function AgentCard({ agent, showContact = true }: AgentCardProps) {
               </>
             )}
           </p>
-          <div className="flex items-center gap-1 mt-1">
-            <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-            <span className="text-sm text-gray-600">
-              {agent.averageRating} ({agent.reviewCount} reviews)
+          <div className="flex items-center gap-1 mt-2">
+            <Star className="w-3.5 h-3.5 text-cta fill-cta" />
+            <span className="text-sm font-sans text-ink-muted">
+              {agent.averageRating} <span className="text-ink-subtle">({agent.reviewCount} reviews)</span>
             </span>
           </div>
           {showContact && (
-            <div className="flex items-center gap-3 mt-2 text-sm text-gray-500">
-              <span className="flex items-center gap-1">
-                <Phone className="w-3.5 h-3.5" />
+            <div className="flex items-center gap-4 mt-3 text-sm font-sans text-ink-muted">
+              <span className="flex items-center gap-1.5">
+                <Phone className="w-3.5 h-3.5 text-ink-subtle" aria-hidden="true" />
                 {agent.phone}
               </span>
-              <span className="flex items-center gap-1">
-                <Mail className="w-3.5 h-3.5" />
+              <span className="flex items-center gap-1.5">
+                <Mail className="w-3.5 h-3.5 text-ink-subtle" aria-hidden="true" />
                 Email
               </span>
             </div>
           )}
           {agent.isFeatured && (
-            <Badge variant="accent" className="mt-2">Featured Agent</Badge>
+            <Badge variant="accent" className="mt-3">Featured Agent</Badge>
           )}
         </div>
       </div>
@@ -72,7 +72,7 @@ export function AgentCard({ agent, showContact = true }: AgentCardProps) {
 export function AgentCardCompact({ agent }: { agent: Agent }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="relative w-10 h-10 flex-shrink-0 rounded-full overflow-hidden">
+      <div className="relative w-10 h-10 flex-shrink-0 rounded-full overflow-hidden border border-line-warm">
         <Image
           src={agent.image}
           alt={agent.fullName}
@@ -82,10 +82,10 @@ export function AgentCardCompact({ agent }: { agent: Agent }) {
         />
       </div>
       <div>
-        <Link href={`/agents/${agent.slug}`} className="text-sm font-medium text-gray-900 hover:text-primary">
+        <Link href={`/agents/${agent.slug}`} className="text-sm font-sans font-medium text-ink hover:text-primary">
           {agent.fullName}
         </Link>
-        <p className="text-xs text-gray-500">{agent.phone}</p>
+        <p className="text-xs font-sans text-ink-subtle">{agent.phone}</p>
       </div>
     </div>
   );

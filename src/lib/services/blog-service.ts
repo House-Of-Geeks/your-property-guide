@@ -19,8 +19,11 @@ function toBlogPost(p: DbBlogPost): BlogPost {
   };
 }
 
-export async function getBlogPosts(): Promise<BlogPost[]> {
-  const rows = await db.blogPost.findMany({ orderBy: { publishedAt: "desc" } });
+export async function getBlogPosts(limit = 100): Promise<BlogPost[]> {
+  const rows = await db.blogPost.findMany({
+    orderBy: { publishedAt: "desc" },
+    take: limit,
+  });
   return rows.map(toBlogPost);
 }
 
@@ -34,10 +37,20 @@ export async function getAllBlogSlugs(): Promise<string[]> {
   return rows.map((r) => r.slug);
 }
 
-export async function getBlogPostsByCategory(category: string): Promise<BlogPost[]> {
+export async function getBlogSitemapEntries(): Promise<
+  { slug: string; publishedAt: Date; updatedAt: Date | null }[]
+> {
+  return db.blogPost.findMany({
+    select: { slug: true, publishedAt: true, updatedAt: true },
+    orderBy: { publishedAt: "desc" },
+  });
+}
+
+export async function getBlogPostsByCategory(category: string, limit = 100): Promise<BlogPost[]> {
   const rows = await db.blogPost.findMany({
     where: { category },
     orderBy: { publishedAt: "desc" },
+    take: limit,
   });
   return rows.map(toBlogPost);
 }

@@ -17,25 +17,25 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
   if (variant === "list") {
     return (
       <Link href={href} className="block">
-        <div className="flex gap-4 rounded-xl bg-white overflow-hidden shadow-card hover:shadow-card-hover transition-shadow border border-gray-100">
+        <div className="flex gap-4 rounded-xl bg-surface-raised overflow-hidden border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200">
           <div className="group relative w-72 flex-shrink-0 overflow-hidden">
             <Image
               src={images[0]?.url || "/images/placeholder.jpg"}
               alt={images[0]?.alt || address.full}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
               sizes="288px"
             />
             <StatusBadge status={status} listingType={listingType} />
           </div>
-          <div className="flex-1 p-4">
-            <p className="text-lg font-bold text-gray-900">{price.display}</p>
-            <p className="text-sm text-gray-600 mt-1 flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5" />
+          <div className="flex-1 p-5">
+            <p className="font-display text-xl text-ink leading-tight">{price.display}</p>
+            <p className="text-sm font-sans text-ink-muted mt-2 flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5 text-ink-subtle" aria-hidden="true" />
               {address.full}
             </p>
             <FeatureIcons features={features} className="mt-3" />
-            <div className="mt-2 flex gap-2">
+            <div className="mt-3 flex gap-2">
               <Badge>{propertyType}</Badge>
             </div>
           </div>
@@ -47,27 +47,27 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
   if (variant === "featured") {
     return (
       <Link href={href} className="block">
-        <div className="rounded-xl bg-white shadow-card border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow">
+        <div className="rounded-2xl bg-surface-raised border border-line overflow-hidden hover:border-ink hover:shadow-card-hover transition-all duration-200">
           <div className="group relative aspect-[4/3] overflow-hidden">
             <Image
               src={images[0]?.url || "/images/placeholder.jpg"}
               alt={images[0]?.alt || address.full}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
             <StatusBadge status={status} listingType={listingType} />
-            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-              <p className="text-xl font-bold text-white">{price.display}</p>
-              <p className="text-sm text-white/90 flex items-center gap-1">
-                <MapPin className="w-3.5 h-3.5" />
+            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-ink/70 via-ink/15 to-transparent p-5">
+              <p className="font-display text-2xl text-white leading-tight">{price.display}</p>
+              <p className="text-sm font-sans text-white/85 flex items-center gap-1.5 mt-1">
+                <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
                 {address.full}
               </p>
             </div>
           </div>
-          <div className="p-4">
+          <div className="p-5">
             <FeatureIcons features={features} />
-            <div className="mt-2 flex gap-2">
+            <div className="mt-3 flex gap-2">
               <Badge>{propertyType}</Badge>
             </div>
           </div>
@@ -79,34 +79,33 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
   // Grid variant (default)
   return (
     <Link href={href} className="block">
-      <div className="rounded-2xl bg-white overflow-hidden shadow-card hover:shadow-card-hover transition-shadow duration-200">
+      <div className="rounded-2xl bg-surface-raised overflow-hidden border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200 flex flex-col h-full">
         {/* Image with suburb overlay */}
         <div className="group relative aspect-[4/3] overflow-hidden">
           <Image
             src={images[0]?.url || "/images/placeholder.jpg"}
             alt={images[0]?.alt || address.full}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
           <StatusBadge status={status} listingType={listingType} />
-          {/* Suburb + state overlaid bottom-left — not scaled with image */}
-          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pt-10 pb-3 px-3">
-            <p className="text-sm font-semibold text-white drop-shadow">
+          {/* Suburb + state overlaid bottom-left */}
+          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-ink/70 via-ink/15 to-transparent pt-10 pb-3 px-4">
+            <p className="text-sm font-sans font-medium text-white drop-shadow">
               {address.suburb} <span className="font-normal opacity-80">· {address.state}</span>
             </p>
           </div>
         </div>
         {/* Card body */}
-        <div className="p-4">
-          <p className="font-bold text-gray-900 text-base">{price.display}</p>
-          <FeatureIcons features={features} className="mt-2" />
-          <p className="text-xs text-gray-500 mt-2 truncate">{address.street}</p>
+        <div className="p-5 flex-1 flex flex-col">
+          <p className="font-display text-xl text-ink leading-tight">{price.display}</p>
+          <FeatureIcons features={features} className="mt-3" />
+          <p className="text-xs font-sans text-ink-subtle mt-3 truncate">{address.street}</p>
         </div>
       </div>
     </Link>
   );
-
 }
 
 function StatusBadge({ status, listingType }: { status: string; listingType: string }) {
@@ -144,18 +143,18 @@ function FeatureIcons({
   className?: string;
 }) {
   return (
-    <div className={cn("flex items-center gap-5 text-gray-700", className)}>
-      <span className="flex items-center gap-1.5 text-sm">
-        <Bed className="w-4 h-4 text-gray-400" />
-        <strong className="font-semibold">{features.bedrooms}</strong>
+    <div className={cn("flex items-center gap-5 text-ink-muted", className)}>
+      <span className="flex items-center gap-1.5 text-sm font-sans">
+        <Bed className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
+        <strong className="font-semibold text-ink">{features.bedrooms}</strong>
       </span>
-      <span className="flex items-center gap-1.5 text-sm">
-        <Bath className="w-4 h-4 text-gray-400" />
-        <strong className="font-semibold">{features.bathrooms}</strong>
+      <span className="flex items-center gap-1.5 text-sm font-sans">
+        <Bath className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
+        <strong className="font-semibold text-ink">{features.bathrooms}</strong>
       </span>
-      <span className="flex items-center gap-1.5 text-sm">
-        <Car className="w-4 h-4 text-gray-400" />
-        <strong className="font-semibold">{features.carSpaces}</strong>
+      <span className="flex items-center gap-1.5 text-sm font-sans">
+        <Car className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
+        <strong className="font-semibold text-ink">{features.carSpaces}</strong>
       </span>
     </div>
   );

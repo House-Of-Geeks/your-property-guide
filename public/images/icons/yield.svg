@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-label="Rental yield">
+  <!-- Donut ring -->
+  <circle cx="12" cy="12" r="8.5" stroke="#374151" stroke-width="2.6" fill="none"/>
+  <!-- Accent wedge — magenta arc covering ~30% -->
+  <path d="M 12 3.5 A 8.5 8.5 0 0 1 20.5 12" stroke="#DD3C70" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <!-- Centre percent -->
+  <text x="12" y="15.6" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-style="italic" fill="#1f2937">%</text>
+</svg>

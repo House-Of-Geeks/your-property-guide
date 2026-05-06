@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" fill="none" role="img" aria-label="Suburb data illustration">
+  <defs>
+    <linearGradient id="sb-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7f6f4" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#A96DAA" stop-opacity="0.16"/>
+    </linearGradient>
+    <pattern id="sb-grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#5c2d5e" stroke-width="0.6" opacity="0.30"/>
+    </pattern>
+  </defs>
+
+  <rect x="0" y="60" width="320" height="135" fill="url(#sb-bg)"/>
+
+  <!-- Map card -->
+  <g transform="translate(28, 36)">
+    <rect x="0" y="0" width="218" height="148" rx="6" fill="#f7f6f4" stroke="#1f2937" stroke-width="1.5"/>
+    <rect x="0" y="0" width="218" height="148" rx="6" fill="url(#sb-grid)"/>
+
+    <!-- Streets, curving -->
+    <g stroke="#5c2d5e" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.55">
+      <path d="M 0 50 Q 60 60, 90 100 T 218 130"/>
+      <path d="M 30 0 Q 50 40, 90 60 T 160 30 T 218 70"/>
+      <path d="M 60 148 Q 80 110, 130 100 T 218 90"/>
+    </g>
+
+    <!-- Park / green space block -->
+    <rect x="156" y="92" width="50" height="40" rx="2" fill="#5c2d5e" opacity="0.18"/>
+
+    <!-- Suburb pin, primary -->
+    <g transform="translate(86, 64)">
+      <path d="M 0 0 C -10 0, -16 -8, -16 -18 C -16 -28, -10 -34, 0 -34 C 10 -34, 16 -28, 16 -18 C 16 -8, 10 0, 0 0 Z" fill="#DD3C70"/>
+      <circle cx="0" cy="-18" r="5" fill="#f7f6f4"/>
+    </g>
+  </g>
+
+  <!-- Data card, foreground bottom-right -->
+  <g transform="translate(176, 110)">
+    <rect x="0" y="0" width="124" height="86" rx="6" fill="#f7f6f4" stroke="#1f2937" stroke-width="1.5"/>
+    <!-- Label -->
+    <text x="12" y="20" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#5c2d5e" opacity="0.85">median house</text>
+    <!-- Big number -->
+    <text x="12" y="48" font-family="Georgia, serif" font-size="22" fill="#1f2937">$1.24M</text>
+    <!-- Trend pill -->
+    <g transform="translate(12, 60)">
+      <rect x="-2" y="0" width="50" height="16" rx="8" fill="#DD3C70" opacity="0.18"/>
+      <path d="M 6 11 L 12 5 L 18 9 L 28 3" stroke="#DD3C70" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <text x="34" y="12" font-family="Georgia, serif" font-size="10" font-style="italic" fill="#5c2d5e">+8.2%</text>
+    </g>
+    <!-- Sub-line -->
+    <g stroke="#1f2937" stroke-width="1" stroke-linecap="round" opacity="0.4">
+      <line x1="62" y1="62" x2="112" y2="62"/>
+      <line x1="62" y1="70" x2="100" y2="70"/>
+    </g>
+  </g>
+
+  <!-- Subtle ground -->
+  <line x1="0" y1="206" x2="320" y2="206" stroke="#1f2937" stroke-width="1" opacity="0.6"/>
+</svg>

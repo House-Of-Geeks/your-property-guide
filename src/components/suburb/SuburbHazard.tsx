@@ -40,7 +40,7 @@ export function SuburbHazard({ floodClass, bushfireRisk, floodSource, bushfireSo
 
   if (floodLevel === null && bushfireLevel === null) {
     return (
-      <p className="text-sm text-gray-500 italic py-2">
+      <p className="text-sm font-sans text-ink-muted italic py-2">
         No significant hazard data recorded for this suburb.
       </p>
     );
@@ -54,35 +54,35 @@ export function SuburbHazard({ floodClass, bushfireRisk, floodSource, bushfireSo
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
         {/* Flood card */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <div className="bg-surface-raised rounded-2xl border border-line p-5">
           <div className="flex items-center gap-2 mb-3">
-            <Droplets className="w-5 h-5 text-blue-500 flex-shrink-0" />
-            <span className="font-semibold text-gray-800">Flood Risk</span>
+            <Droplets className="w-5 h-5 text-info flex-shrink-0" />
+            <span className="font-display text-base text-ink">Flood Risk</span>
           </div>
           <span className={`inline-block text-sm font-medium px-3 py-1 rounded-full ${floodBadge.className}`}>
             {floodLevel ? (floodClass ?? floodBadge.label) : floodBadge.label}
           </span>
           {floodSource && (
-            <p className="mt-2 text-xs text-gray-400">{floodSource}</p>
+            <p className="mt-3 text-xs font-sans text-ink-subtle">{floodSource}</p>
           )}
         </div>
 
         {/* Bushfire card */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <div className="bg-surface-raised rounded-2xl border border-line p-5">
           <div className="flex items-center gap-2 mb-3">
-            <Flame className="w-5 h-5 text-orange-500 flex-shrink-0" />
-            <span className="font-semibold text-gray-800">Bushfire Risk</span>
+            <Flame className="w-5 h-5 text-warning flex-shrink-0" />
+            <span className="font-display text-base text-ink">Bushfire Risk</span>
           </div>
           <span className={`inline-block text-sm font-medium px-3 py-1 rounded-full ${bushfireBadge.className}`}>
             {bushfireLevel ? (bushfireRisk ?? bushfireBadge.label) : bushfireBadge.label}
           </span>
           {bushfireSource && (
-            <p className="mt-2 text-xs text-gray-400">{bushfireSource}</p>
+            <p className="mt-3 text-xs font-sans text-ink-subtle">{bushfireSource}</p>
           )}
         </div>
 
       </div>
-      <p className="text-xs text-gray-400 italic">
+      <p className="text-xs font-sans text-ink-subtle italic">
         Risk levels are indicative. Always check with local council.
       </p>
     </div>

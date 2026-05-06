@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-label="Walkability">
+  <!-- Back footprint, primary -->
+  <g transform="translate(2, 4)">
+    <ellipse cx="3.5" cy="6" rx="2.4" ry="3.4" fill="#374151"/>
+    <ellipse cx="2"   cy="11" rx="0.9" ry="1.2" fill="#374151"/>
+    <ellipse cx="4"   cy="11.4" rx="0.9" ry="1.2" fill="#374151"/>
+    <ellipse cx="5.7" cy="11.2" rx="0.9" ry="1.2" fill="#374151"/>
+  </g>
+  <!-- Front footprint, accent -->
+  <g transform="translate(13, 9)">
+    <ellipse cx="3.5" cy="6" rx="2.4" ry="3.4" fill="#DD3C70"/>
+    <ellipse cx="2"   cy="11" rx="0.9" ry="1.2" fill="#DD3C70"/>
+    <ellipse cx="4"   cy="11.4" rx="0.9" ry="1.2" fill="#DD3C70"/>
+    <ellipse cx="5.7" cy="11.2" rx="0.9" ry="1.2" fill="#DD3C70"/>
+  </g>
+</svg>

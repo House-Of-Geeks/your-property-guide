@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-label="Map">
+  <!-- Map pin silhouette -->
+  <path d="M12 2 C 7.6 2, 4 5.6, 4 10 C 4 16, 12 22, 12 22 C 12 22, 20 16, 20 10 C 20 5.6, 16.4 2, 12 2 Z" fill="#374151" stroke="#1f2937" stroke-width="0.8"/>
+  <!-- Inner circle, accent -->
+  <circle cx="12" cy="10" r="3.4" fill="#DD3C70"/>
+  <!-- Centre highlight -->
+  <circle cx="12" cy="10" r="1.2" fill="#f7f6f4"/>
+</svg>

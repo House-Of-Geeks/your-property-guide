@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" fill="none" role="presentation" aria-hidden="true">
+  <!-- Abstract topographic contour lines. Place behind hero copy at low
+       opacity for an editorial / cartographic feel. Centred on a hill so
+       it reads as a place. -->
+  <g stroke="#5c2d5e" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="300" cy="200" rx="40"  ry="20" stroke-width="0.8"/>
+    <ellipse cx="298" cy="202" rx="70"  ry="38" stroke-width="0.7"/>
+    <ellipse cx="295" cy="204" rx="105" ry="58" stroke-width="0.6"/>
+    <ellipse cx="290" cy="206" rx="145" ry="82" stroke-width="0.55"/>
+    <ellipse cx="285" cy="208" rx="190" ry="108" stroke-width="0.5"/>
+    <ellipse cx="280" cy="210" rx="240" ry="138" stroke-width="0.45"/>
+    <ellipse cx="275" cy="212" rx="295" ry="172" stroke-width="0.4"/>
+  </g>
+  <!-- Faint accent ridge -->
+  <ellipse cx="300" cy="200" rx="40"  ry="20" stroke="#DD3C70" stroke-width="0.8" fill="none" opacity="0.6"/>
+</svg>

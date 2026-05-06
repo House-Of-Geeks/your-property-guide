@@ -36,10 +36,14 @@ function toPackage(p: DbPackageWithImages): HouseAndLandPackage {
 
 const includeImages = { images: { orderBy: { sortOrder: "asc" as const } } };
 
-export async function getHouseAndLandPackages(suburbSlug?: string): Promise<HouseAndLandPackage[]> {
+export async function getHouseAndLandPackages(
+  suburbSlug?: string,
+  limit = 60,
+): Promise<HouseAndLandPackage[]> {
   const rows = await db.houseAndLandPackage.findMany({
     where: suburbSlug ? { suburbSlug } : undefined,
     orderBy: { dateAdded: "desc" },
+    take: limit,
     include: includeImages,
   });
   return rows.map(toPackage);

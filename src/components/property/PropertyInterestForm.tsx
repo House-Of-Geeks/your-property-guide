@@ -72,7 +72,7 @@ export function PropertyInterestForm({ address, suburbName, suburbSlug }: Props)
         <div>
           <h2 className="text-base font-semibold text-gray-900">Track this property</h2>
           <p className="text-sm text-gray-500 mt-0.5">
-            Not currently listed — we&apos;ll notify you the moment it or something similar hits the market.
+            Not currently listed, we&apos;ll notify you the moment it or something similar hits the market.
           </p>
         </div>
       </div>

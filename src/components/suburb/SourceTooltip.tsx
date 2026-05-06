@@ -14,12 +14,12 @@ const SOURCE_LABELS: Record<string, string> = {
   "sales-wa":   "ABS Census 2021 (estimated)",
   "seed":       "Estimated (seed data)",
   // Rental
-  "rental-vic": "RTBA — Residential Tenancies Bond Authority (VIC)",
+  "rental-vic": "RTBA, Residential Tenancies Bond Authority (VIC)",
   "rental-nsw": "NSW Fair Trading",
   "rental-sa":  "Consumer and Business Services SA",
   "rental-qld": "QLD Government (RTA)",
   // Crime
-  "crime-nsw":  "BOCSAR — NSW Bureau of Crime Statistics",
+  "crime-nsw":  "BOCSAR, NSW Bureau of Crime Statistics",
   "crime-vic":  "Crime Statistics Agency VIC",
   "crime-sa":   "SA Police",
   "crime-qld":  "Queensland Police Service (LGA-level)",
@@ -47,7 +47,7 @@ interface SourceTooltipProps {
 
 /**
  * Small ℹ icon that reveals data provenance on hover.
- * Pure CSS — works in Server Components.
+ * Pure CSS, works in Server Components.
  */
 export function SourceTooltip({ source, asOf }: SourceTooltipProps) {
   if (!source) return null;

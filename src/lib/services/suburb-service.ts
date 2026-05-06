@@ -142,6 +142,57 @@ function toSuburb(
   };
 }
 
+// Cached at module scope so we only pay the "does this column exist" probe
+// once per server process. true = use ST_DWithin path. false = fall back to
+// haversine. null = not probed yet.
+let schoolGeomAvailable: boolean | null = null;
+
+async function nearbySchoolsPostGIS(
+  lat: number,
+  lng: number,
+  radiusKm: number,
+): Promise<DbSchool[]> {
+  // ST_DWithin on geography(Point, 4326) takes a radius in METERS and uses
+  // the GIST index. KNN ordering (geom <-> point) also uses the index.
+  const radiusM = radiusKm * 1000;
+  return db.$queryRaw<DbSchool[]>`
+    SELECT s.*
+    FROM "School" s
+    WHERE s.geom IS NOT NULL
+      AND ST_DWithin(
+        s.geom,
+        ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)::geography,
+        ${radiusM}
+      )
+    ORDER BY s.geom <-> ST_SetSRID(ST_MakePoint(${lng}, ${lat}), 4326)::geography
+    LIMIT 20
+  `;
+}
+
+async function nearbySchoolsHaversine(
+  lat: number,
+  lng: number,
+  radiusKm: number,
+): Promise<DbSchool[]> {
+  return db.$queryRaw<DbSchool[]>`
+    SELECT s.*,
+      (6371 * acos(
+        cos(radians(${lat})) * cos(radians(s.lat)) *
+        cos(radians(s.lng) - radians(${lng})) +
+        sin(radians(${lat})) * sin(radians(s.lat))
+      )) AS dist_km
+    FROM "School" s
+    WHERE s.lat IS NOT NULL AND s.lng IS NOT NULL
+      AND (6371 * acos(
+        cos(radians(${lat})) * cos(radians(s.lat)) *
+        cos(radians(s.lng) - radians(${lng})) +
+        sin(radians(${lat})) * sin(radians(s.lat))
+      )) <= ${radiusKm}
+    ORDER BY dist_km ASC
+    LIMIT 20
+  `;
+}
+
 async function getNearbySchools(suburb: { id: string; lat: number | null; lng: number | null }): Promise<DbSchool[]> {
   if (!suburb.lat || !suburb.lng) {
     return db.school.findMany({ where: { suburbId: suburb.id } });
@@ -149,29 +200,35 @@ async function getNearbySchools(suburb: { id: string; lat: number | null; lng: n
   const lat = suburb.lat;
   const lng = suburb.lng;
 
-  // Try progressively larger radii until we have enough schools
+  // Try progressively larger radii until we have enough schools. We prefer
+  // the PostGIS path (uses GIST index) but fall back to haversine if the
+  // geom column doesn't exist yet — keeps deploys safe both before AND after
+  // scripts/postgis/2026-05-add-school-geom.sql is run.
   for (const radiusKm of [10, 20, 40]) {
-    const schools = await db.$queryRaw<DbSchool[]>`
-      SELECT s.*,
-        (6371 * acos(
-          cos(radians(${lat})) * cos(radians(s.lat)) *
-          cos(radians(s.lng) - radians(${lng})) +
-          sin(radians(${lat})) * sin(radians(s.lat))
-        )) AS dist_km
-      FROM "School" s
-      WHERE s.lat IS NOT NULL AND s.lng IS NOT NULL
-        AND (6371 * acos(
-          cos(radians(${lat})) * cos(radians(s.lat)) *
-          cos(radians(s.lng) - radians(${lng})) +
-          sin(radians(${lat})) * sin(radians(s.lat))
-        )) <= ${radiusKm}
-      ORDER BY dist_km ASC
-      LIMIT 20
-    `;
-    // Stop expanding if we have at least one primary AND one secondary (or 5+ total)
+    let schools: DbSchool[];
+    if (schoolGeomAvailable === false) {
+      schools = await nearbySchoolsHaversine(lat, lng, radiusKm);
+    } else {
+      try {
+        schools = await nearbySchoolsPostGIS(lat, lng, radiusKm);
+        schoolGeomAvailable = true;
+      } catch (err) {
+        // Most likely "column geom does not exist" (42703) before the migration runs.
+        if (schoolGeomAvailable === null) {
+          schoolGeomAvailable = false;
+          console.warn(
+            "[suburb-service] School.geom not available, falling back to haversine. " +
+            "Run scripts/postgis/2026-05-add-school-geom.sql to enable PostGIS path.",
+            err,
+          );
+        }
+        schools = await nearbySchoolsHaversine(lat, lng, radiusKm);
+      }
+    }
+
     const hasSecondary = schools.some((s) => s.type === "secondary" || s.type === "combined");
     if (schools.length >= 5 || (schools.length >= 2 && hasSecondary)) return schools;
-    if (radiusKm === 40) return schools; // last attempt, return whatever we have
+    if (radiusKm === 40) return schools;
   }
   return [];
 }
