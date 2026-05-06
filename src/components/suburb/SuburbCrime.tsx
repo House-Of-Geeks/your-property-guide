@@ -57,22 +57,29 @@ export function SuburbCrime({ crimeStat }: SuburbCrimeProps) {
         </div>
 
         <div className="mb-5">
+          {crimeStat.geoLevel === "lga" && (
+            <div className="mb-4 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2.5 text-sm font-sans text-amber-900">
+              <p className="font-medium mb-1">
+                LGA-wide data, not suburb-specific
+              </p>
+              <p className="text-xs leading-relaxed">
+                {crimeStat.state} Police only publishes crime statistics at the
+                local government area / region level. The numbers below cover
+                the entire <strong>{crimeStat.lgaName ?? "LGA"}</strong>, which
+                may include suburbs with very different crime profiles.
+                Quieter residential pockets within the LGA likely have lower
+                rates than the total suggests; busier areas may have higher.
+              </p>
+            </div>
+          )}
           <p className="font-display text-3xl text-ink leading-none">
             {total.toLocaleString()}
           </p>
           <p className="text-sm font-sans text-ink-muted mt-2">
-            total offences in {crimeStat.period}
-            {crimeStat.geoLevel === "lga" && crimeStat.lgaName && (
-              <> across the {crimeStat.lgaName}</>
-            )}
+            {crimeStat.geoLevel === "lga"
+              ? <>total offences in {crimeStat.period} across the {crimeStat.lgaName} LGA</>
+              : <>total offences in {crimeStat.period}</>}
           </p>
-          {crimeStat.geoLevel === "lga" && (
-            <p className="text-xs font-sans text-ink-subtle mt-2 italic">
-              {crimeStat.state} Police only publishes crime statistics at LGA
-              level. The numbers above cover the whole {crimeStat.lgaName ?? "LGA"},
-              not just this suburb.
-            </p>
-          )}
         </div>
 
         {topCategories.length > 0 && (

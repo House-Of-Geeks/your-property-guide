@@ -12,8 +12,10 @@
  *   transitScore = min(100, transitCount × 10)
  *   bikeScore    = min(100, cyclewayCount × 5)
  *
- * Requests are throttled to ≤ 1 per second (Overpass fair-use policy).
- * Results are bulk-written to Suburb via a single SQL UNNEST statement.
+ * Throttling: 3s between requests, exponential backoff to 60s on HTTP 429.
+ * Resumability: skips suburbs whose `walkabilityUpdatedAt` is set so a
+ * killed run can be restarted without redoing finished work. Each suburb
+ * commits as it succeeds (no big bulk write at the end).
  *
  * Data source: https://overpass-api.de/api/interpreter
  * Schedule: Annual
@@ -25,7 +27,12 @@ import { startSync, finishSync, failSync, log } from "../logger";
 const SOURCE_ID = "walkability";
 const OVERPASS_URL = "https://overpass-api.de/api/interpreter";
 const USER_AGENT = "YourPropertyGuide/1.0 data-sync@yourpropertyguide.com.au";
-const REQUEST_DELAY_MS = 1_000; // 1 req/s
+const BASE_DELAY_MS = 3_000; // 3 s between requests — Overpass fair-use is "<1 req/s" but
+                              // their public instance throttles aggressively at 1 req/s.
+const MAX_DELAY_MS = 60_000;  // backoff ceiling on 429s
+// Refresh suburbs whose walkability data is older than this. Set to 365 days
+// so the annual cron re-scores everyone; resume keeps work below this age.
+const STALE_AFTER_MS = 365 * 24 * 60 * 60 * 1_000;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -64,24 +71,42 @@ interface ScoreRow {
 
 async function fetchScores(
   lat: number,
-  lng: number
+  lng: number,
+  retries = 4,
 ): Promise<{ walkScore: number; transitScore: number; bikeScore: number }> {
   const query = buildQuery(lat, lng);
 
-  const res = await fetch(OVERPASS_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "User-Agent": USER_AGENT,
-    },
-    body: `data=${encodeURIComponent(query)}`,
-    signal: AbortSignal.timeout(45_000),
-  });
+  let lastErr: Error | undefined;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    const res = await fetch(OVERPASS_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": USER_AGENT,
+      },
+      body: `data=${encodeURIComponent(query)}`,
+      signal: AbortSignal.timeout(45_000),
+    });
 
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    // 429 / 504 — back off and retry. Anything else 4xx — surface immediately.
+    if (res.status === 429 || res.status === 504 || res.status === 502 || res.status === 503) {
+      lastErr = new Error(`HTTP ${res.status}`);
+      const backoff = Math.min(MAX_DELAY_MS, BASE_DELAY_MS * Math.pow(2, attempt));
+      await sleep(backoff);
+      continue;
+    }
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-  const data = (await res.json()) as OverpassResponse;
-  const elements = data.elements ?? [];
+    const data = (await res.json()) as OverpassResponse;
+    const elements = data.elements ?? [];
+    return computeScores(elements);
+  }
+  throw lastErr ?? new Error("retries exhausted");
+}
+
+function computeScores(elements: OverpassElement[]): {
+  walkScore: number; transitScore: number; bikeScore: number;
+} {
 
   let amenityCount = 0;
   let cyclewayCount = 0;
@@ -108,14 +133,32 @@ async function fetchScores(
 export async function run(): Promise<void> {
   await startSync(SOURCE_ID);
   try {
+    // Resume support: only process suburbs that have never been scored OR
+    // whose data is older than STALE_AFTER_MS. A killed-and-restarted run
+    // picks up where it left off; the annual cron re-scores everyone.
+    const staleThreshold = new Date(Date.now() - STALE_AFTER_MS);
     const suburbs = await prisma.suburb.findMany({
-      where: { lat: { not: null }, lng: { not: null } },
+      where: {
+        lat: { not: null },
+        lng: { not: null },
+        OR: [
+          { walkabilityUpdatedAt: null },
+          { walkabilityUpdatedAt: { lt: staleThreshold } },
+        ],
+      },
       select: { id: true, slug: true, lat: true, lng: true },
     });
 
-    log(SOURCE_ID, `processing ${suburbs.length} suburbs`);
+    const totalSuburbs = await prisma.suburb.count({
+      where: { lat: { not: null }, lng: { not: null } },
+    });
+    log(
+      SOURCE_ID,
+      `${suburbs.length} suburbs need scoring (${totalSuburbs - suburbs.length} already fresh, will skip)`,
+    );
 
-    const rows: ScoreRow[] = [];
+    let succeeded = 0;
+    let failed = 0;
     let processed = 0;
 
     for (const suburb of suburbs) {
@@ -124,42 +167,32 @@ export async function run(): Promise<void> {
 
       try {
         const scores = await fetchScores(lat, lng);
-        rows.push({ id: suburb.id, ...scores });
+        // Per-suburb commit so partial runs survive interruption.
+        await prisma.suburb.update({
+          where: { id: suburb.id },
+          data: {
+            walkScore: scores.walkScore,
+            transitScore: scores.transitScore,
+            bikeScore: scores.bikeScore,
+            walkabilityUpdatedAt: new Date(),
+          },
+        });
+        succeeded++;
       } catch (err) {
         log(SOURCE_ID, `warn: ${suburb.slug} overpass failed — ${(err as Error).message}`);
+        failed++;
       }
 
       processed++;
       if (processed % 50 === 0) {
-        log(SOURCE_ID, `progress: ${processed} / ${suburbs.length}`);
+        log(SOURCE_ID, `progress: ${processed} / ${suburbs.length} (ok=${succeeded}, failed=${failed})`);
       }
 
-      // Throttle: 1 request per second
-      await sleep(REQUEST_DELAY_MS);
+      await sleep(BASE_DELAY_MS);
     }
 
-    // Bulk write via UNNEST — single round-trip
-    if (rows.length > 0) {
-      const now = new Date();
-      await prisma.$executeRaw`
-        UPDATE "Suburb" AS s
-        SET
-          "walkScore"            = u.walk_score::int,
-          "transitScore"         = u.transit_score::int,
-          "bikeScore"            = u.bike_score::int,
-          "walkabilityUpdatedAt" = ${now}
-        FROM UNNEST(
-          ${rows.map((r) => r.id)}::text[],
-          ${rows.map((r) => r.walkScore)}::int[],
-          ${rows.map((r) => r.transitScore)}::int[],
-          ${rows.map((r) => r.bikeScore)}::int[]
-        ) AS u(id, walk_score, transit_score, bike_score)
-        WHERE s.id = u.id
-      `;
-      log(SOURCE_ID, `bulk-updated ${rows.length} suburbs`);
-    }
-
-    await finishSync(SOURCE_ID, rows.length);
+    log(SOURCE_ID, `done: scored ${succeeded}, failed ${failed} of ${suburbs.length}`);
+    await finishSync(SOURCE_ID, succeeded);
   } catch (err) {
     await failSync(SOURCE_ID, err);
     throw err;
