@@ -21,8 +21,11 @@ import { startSync, finishSync, failSync, log } from "../logger";
 import { batchUpsertCrime, type CrimeRecord } from "../crime-batch";
 
 const SOURCE_ID = "crime-nt";
+// CKAN package_search uses Solr q syntax. Quote the phrase to avoid the
+// individual tokens matching unrelated datasets (e.g. "School Suspensions
+// by Region" was the top match for the unquoted form).
 const CKAN_SEARCH_URL =
-  "https://data.nt.gov.au/api/3/action/package_search?q=current-nt-crime-statistics&sort=metadata_modified+desc&rows=1";
+  'https://data.nt.gov.au/api/3/action/package_search?q=title:"NT+Crime+Statistics"&sort=metadata_modified+desc&rows=5';
 
 interface CkanResource {
   id: string;
@@ -41,8 +44,16 @@ async function findLatestCsvUrl(): Promise<string> {
   const res = await fetch(CKAN_SEARCH_URL);
   if (!res.ok) throw new Error(`CKAN API HTTP ${res.status}`);
   const json = (await res.json()) as { result: { results: CkanPackage[] } };
-  const pkg = json.result.results[0];
-  if (!pkg) throw new Error("No NT crime dataset found in CKAN response");
+  // CKAN's relevance ranking can include datasets whose titles loosely
+  // match the search terms — filter explicitly to packages whose title
+  // starts with "NT Crime Statistics" or "Current - NT Crime Statistics".
+  const pkg = json.result.results.find((p) =>
+    /\bnt\s+crime\s+statistics\b/i.test(p.title),
+  );
+  if (!pkg) {
+    const titles = json.result.results.map((p) => p.title).join(" | ");
+    throw new Error(`No NT Crime Statistics dataset matched. Got: ${titles}`);
+  }
   const csv = pkg.resources.find((r) => r.format.toUpperCase() === "CSV");
   if (!csv) throw new Error(`No CSV resource on ${pkg.title}`);
   log(SOURCE_ID, `latest dataset: ${pkg.title}`);
