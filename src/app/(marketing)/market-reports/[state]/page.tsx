@@ -26,6 +26,9 @@ function isValidState(slug: string): slug is StateSlug {
 export const revalidate = 86400; // cache as ISR for 24h, regen on demand
 
 export function generateStaticParams() {
+  // Skip prerender at build time — page body queries the Suburb table and the
+  // DB isn't reachable during `next build`. Pages render on-demand at runtime.
+  if (process.env.NEXT_PHASE === "phase-production-build") return [];
   return STATE_SLUGS.map((state) => ({ state }));
 }
 

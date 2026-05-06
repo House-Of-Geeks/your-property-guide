@@ -1,8 +1,9 @@
 name: Data Sync — Hazard + Walkability + Climate (Annual)
 
 on:
-  schedule:
-    - cron: "0 4 1 4 *"   # 04:00 UTC on 1 April each year
+  #   schedule:
+  #     - cron: "0 4 1 4 *"   # 04:00 UTC on 1 April each year
+
   workflow_dispatch:
     inputs:
       source:

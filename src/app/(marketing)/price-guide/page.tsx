@@ -8,7 +8,8 @@ import { db } from "@/lib/db";
 import { formatPrice, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
-export const revalidate = 86400;
+// Page body queries the DB; render on every request to avoid build-time DB hits.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Property Price Guide | Australian Suburb Median Prices",

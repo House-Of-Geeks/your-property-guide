@@ -7,6 +7,8 @@ import { SITE_URL } from "@/lib/constants";
 import { getBlogSitemapEntries } from "@/lib/services/blog-service";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Skip at build time — runtime DB isn't reachable during `next build`.
+  if (process.env.NEXT_PHASE === "phase-production-build") return [];
   const entries = await getBlogSitemapEntries();
   return entries.map((post) => ({
     url: `${SITE_URL}/blog/${post.slug}`,

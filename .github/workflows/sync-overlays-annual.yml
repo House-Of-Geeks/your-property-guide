@@ -14,11 +14,12 @@ name: Data Sync — Parcel overlays + School catchments (Annual)
 # (continue-on-error) to avoid blowing past Railway connection limits.
 
 on:
-  schedule:
-    # 06:00 UTC on 15 April — after the hazard-walkability sync (1 April) so
-    # we don't double-load the DB. State catchment data typically refreshes
-    # in March.
-    - cron: "0 6 15 4 *"
+  #   schedule:
+  #     # 06:00 UTC on 15 April — after the hazard-walkability sync (1 April) so
+  #     # we don't double-load the DB. State catchment data typically refreshes
+  #     # in March.
+  #     - cron: "0 6 15 4 *"
+
   workflow_dispatch:
     inputs:
       source:

@@ -23,12 +23,16 @@ const getTotalStreets = cache(async (): Promise<number> => {
 });
 
 export async function generateSitemaps() {
+  // Skip at build time — DB isn't reachable during `next build`. At runtime the
+  // first crawler hit will populate this for the `revalidate` window.
+  if (process.env.NEXT_PHASE === "phase-production-build") return [{ id: 0 }];
   const total = await getTotalStreets();
   const pages = Math.ceil(total / PAGE_SIZE);
   return Array.from({ length: pages }, (_, id) => ({ id }));
 }
 
 export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
+  if (process.env.NEXT_PHASE === "phase-production-build") return [];
   const streets = await db.$queryRaw<{
     suburbSlug: string;
     streetName: string;

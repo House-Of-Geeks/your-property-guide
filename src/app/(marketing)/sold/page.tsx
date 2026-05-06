@@ -9,6 +9,10 @@ import { getProperties } from "@/lib/services/property-service";
 import { SITE_URL } from "@/lib/constants";
 import type { PropertyType } from "@/types";
 
+// Page body queries the DB; render on every request (no build-time prerender,
+// no stale cache). Add HTTP caching at the edge later if traffic warrants it.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Sold Properties in Australia",
   description: "View recently sold properties across Australia. Research sale prices and market trends across suburbs.",

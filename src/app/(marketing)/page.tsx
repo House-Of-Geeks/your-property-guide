@@ -13,6 +13,10 @@ import { OrganizationJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 import { HomeSuburbSearch } from "./HomeSuburbSearch";
 
+// Homepage embeds StatsBar / SuburbSpotlight / FeaturedListings which all hit
+// the DB. Render on every request — no build-time DB.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: `${SITE_NAME} - Property Research, Made Simple`,
   description: SITE_DESCRIPTION,

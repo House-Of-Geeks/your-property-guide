@@ -7,6 +7,8 @@ import { SITE_URL } from "@/lib/constants";
 import { getPropertySitemapEntries } from "@/lib/services/property-service";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Skip at build time — runtime DB isn't reachable during `next build`.
+  if (process.env.NEXT_PHASE === "phase-production-build") return [];
   const entries = await getPropertySitemapEntries("buy");
   return entries.map((p) => ({
     url: `${SITE_URL}/buy/${p.slug}`,

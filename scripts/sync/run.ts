@@ -28,7 +28,9 @@ import { run as importSuburbs }     from "./sources/import-suburbs";
 import { run as importSuburbsAll }  from "./sources/import-suburbs-all";
 import { run as absCensus }         from "./sources/abs-census";
 import { run as syncSalesVic }      from "./sources/sales-vic";
+import { run as syncSalesVicHist }  from "./sources/sales-vic-historical";
 import { run as syncSalesSa }       from "./sources/sales-sa";
+import { run as syncSalesSaHist }   from "./sources/sales-sa-historical";
 import { run as syncSalesNsw }      from "./sources/sales-nsw";
 import { run as syncSalesQld }      from "./sources/sales-qld";
 import { run as syncSalesWa }       from "./sources/sales-wa";
@@ -87,8 +89,10 @@ const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" 
   "crime-act":      { run: syncCrimeAct,     schedule: "quarterly" },
   "sales-abs":      { run: syncSalesAbs,     schedule: "annual"    },
   "housing-rai":    { run: syncHousingRai,   schedule: "annual"    },
-  "sales-vic":      { run: syncSalesVic,     schedule: "quarterly" },
-  "sales-sa":       { run: syncSalesSa,      schedule: "quarterly" },
+  "sales-vic":             { run: syncSalesVic,     schedule: "quarterly" },
+  "sales-vic-historical":  { run: syncSalesVicHist, schedule: "annual"    },
+  "sales-sa":              { run: syncSalesSa,      schedule: "quarterly" },
+  "sales-sa-historical":   { run: syncSalesSaHist,  schedule: "quarterly" },
   "sales-nsw":      { run: syncSalesNsw,     schedule: "quarterly" },
   "sales-qld":      { run: syncSalesQld,     schedule: "annual"    },
   "sales-wa":       { run: syncSalesWa,      schedule: "annual"    },
