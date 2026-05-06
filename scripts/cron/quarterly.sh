@@ -20,6 +20,7 @@ run crime-vic
 run crime-qld
 run crime-sa
 run crime-act
+run crime-nt
 
 # Sales (current quarter)
 run sales-vic
