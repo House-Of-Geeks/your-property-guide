@@ -1,9 +1,10 @@
 name: Data Sync — Quarterly (rental + crime)
 
 on:
-  schedule:
-    # 02:00 UTC on the 1st of January, April, July, October
-    - cron: "0 2 1 1,4,7,10 *"
+  #   schedule:
+  #     # 02:00 UTC on the 1st of January, April, July, October
+  #     - cron: "0 2 1 1,4,7,10 *"
+
   workflow_dispatch:
     inputs:
       source:

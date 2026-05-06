@@ -1,9 +1,10 @@
 name: Data Sync — Annual (schools + WA crime)
 
 on:
-  schedule:
-    # 03:00 UTC on 15 March (ACARA data typically released Feb/Mar each year)
-    - cron: "0 3 15 3 *"
+  #   schedule:
+  #     # 03:00 UTC on 15 March (ACARA data typically released Feb/Mar each year)
+  #     - cron: "0 3 15 3 *"
+
   workflow_dispatch:
     inputs:
       source:
