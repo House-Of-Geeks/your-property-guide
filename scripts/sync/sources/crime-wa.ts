@@ -1,98 +1,112 @@
 /**
  * WA Crime Stats Sync (WA Police Force)
  *
- * Downloads suburb-level crime data from the WA Police crime statistics Excel.
- * Filters to the most recent year in the data before upserting.
+ * Downloads the time-series XLSX from wa.gov.au and aggregates by Police
+ * District for the most recent financial year. WA Police migrated their
+ * publication in Oct 2024 — the new XLSX no longer carries suburb-level
+ * data; only district + region levels are published.
  *
- * Data source: https://www.police.wa.gov.au/Crime/CrimeStatistics
- * Schedule: Annual
+ * Records are stored with suburbSlug=null + lga="<District> District"
+ * so they can be picked up by the LGA-fallback rendering on suburb pages
+ * once a WA-LGA → WA-Police-District mapping is added (open follow-up).
  *
- * Update WA_CRIME_EXCEL_URL in GitHub secrets when a new release is published.
+ * Data source page: https://www.wa.gov.au/organisation/western-australia-police-force/crime-statistics
+ * XLSX direct URL:  https://www.wa.gov.au/media/48429/download?inline (15 MB)
+ * Schedule:         Annual
  */
 import "dotenv/config";
 import * as XLSX from "xlsx";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
-import { resolveSlug } from "../slug-matcher";
 import { batchUpsertCrime, type CrimeRecord } from "../crime-batch";
 
 const SOURCE_ID = "crime-wa";
-// NOTE: WA Police migrated to wa.gov.au in Oct 2024 and have not republished
-// the suburb-level XLSX. Set WA_CRIME_EXCEL_URL when they do.
-// Check: https://www.wa.gov.au/organisation/western-australia-police-force/crime-statistics
-const EXCEL_URL = process.env.WA_CRIME_EXCEL_URL ?? "";
+// Allow override via env var if WA Police migrate again.
+const XLSX_URL =
+  process.env.WA_CRIME_EXCEL_URL ??
+  "https://www.wa.gov.au/media/48429/download?inline";
 
-interface WaCrimeRow {
-  Suburb:     string;
-  Year:       string;
+interface WaDataRow {
+  "Website Region":         string; // e.g. "ARMADALE DISTRICT"
+  WAPOL_Hierarchy_Lvl1:     string; // e.g. "Murder"
+  WAPOL_Hierarchy_Lvl2:     string; // e.g. "Homicide"
+  Year:                     string; // e.g. "2024-25"
+  Count:                    number | string;
   [key: string]: string | number;
+}
+
+/** "ARMADALE DISTRICT" → "Armadale" (drop the trailing word, title-case) */
+function normaliseDistrictLabel(raw: string): string {
+  return raw
+    .trim()
+    .toLowerCase()
+    .replace(/\s+district$|\s+region$/i, "")
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+    .trim();
 }
 
 export async function run(): Promise<void> {
   await startSync(SOURCE_ID);
   try {
-    if (!EXCEL_URL) {
-      // WA suburb-level data was removed in Oct 2024 when police.wa.gov.au migrated.
-      // Set WA_CRIME_EXCEL_URL env var when a new URL is found.
-      log(SOURCE_ID, "WA_CRIME_EXCEL_URL not set — WA suburb crime data unavailable (see script for details)");
-      await finishSync(SOURCE_ID, 0);
-      return;
-    }
-    log(SOURCE_ID, `downloading from ${EXCEL_URL}`);
-    const res = await fetch(EXCEL_URL);
-    if (!res.ok) throw new Error(`HTTP ${res.status} fetching WA crime Excel`);
-    const contentType = res.headers.get("content-type") ?? "";
-    if (!contentType.includes("spreadsheet") && !contentType.includes("octet-stream") && !contentType.includes("openxmlformats")) {
-      throw new Error(`Unexpected content-type "${contentType}" — URL may have moved. Update WA_CRIME_EXCEL_URL.`);
-    }
+    log(SOURCE_ID, `downloading from ${XLSX_URL}`);
+    const res = await fetch(XLSX_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status} fetching WA crime XLSX`);
 
     const buffer = Buffer.from(await res.arrayBuffer());
     const wb = XLSX.read(buffer, { type: "buffer" });
-    const ws = wb.Sheets[wb.SheetNames[0]];
-    const rows = XLSX.utils.sheet_to_json<WaCrimeRow>(ws, { defval: "" });
+    const ws = wb.Sheets["Data"];
+    if (!ws) throw new Error(`"Data" sheet missing in WA crime XLSX. Sheets: ${wb.SheetNames.join(", ")}`);
+    const rows = XLSX.utils.sheet_to_json<WaDataRow>(ws, { defval: "" });
     log(SOURCE_ID, `parsed ${rows.length} rows`);
 
-    // Find the most recent year in the data
+    // Latest financial-year string in the data, e.g. "2024-25". Sort by start year.
     const yearSet = new Set<string>();
     for (const row of rows) {
       const y = String(row.Year ?? "").trim();
-      if (/^\d{4}$/.test(y)) yearSet.add(y);
+      if (/^\d{4}-\d{2}$/.test(y)) yearSet.add(y);
     }
-    const latestYear = [...yearSet].sort().at(-1);
-    if (!latestYear) throw new Error("No year found in WA crime data");
-    log(SOURCE_ID, `processing year ${latestYear}`);
+    const sortedYears = [...yearSet].sort((a, b) => parseInt(a.slice(0, 4)) - parseInt(b.slice(0, 4)));
+    const latestYear = sortedYears.at(-1);
+    if (!latestYear) throw new Error("No FY year found in WA crime data");
+    log(SOURCE_ID, `processing year ${latestYear} (${sortedYears.length} years in dataset)`);
 
-    const periodDate = new Date(`${latestYear}-01-01`);
-    const records: CrimeRecord[] = [];
-
+    // Group by (district + year), sum counts, breakdown by Lvl1 offence.
+    const grouped = new Map<string, { total: number; breakdown: Record<string, number> }>();
     for (const row of rows) {
-      const suburbName = String(row.Suburb ?? "").trim();
+      const district = String(row["Website Region"] ?? "").trim();
       const year = String(row.Year ?? "").trim();
-      if (!suburbName || year !== latestYear) continue;
+      if (year !== latestYear || !district) continue;
+      // Skip aggregate rows ("Western Australia", "Metropolitan Region",
+      // "Regional WA Region") — keep the District-level granularity only.
+      if (!/district$/i.test(district)) continue;
 
-      const suburbSlug = await resolveSlug(suburbName, "WA", "");
+      const lvl1 = String(row.WAPOL_Hierarchy_Lvl1 ?? "").trim() || "Other";
+      const count = typeof row.Count === "number" ? row.Count : parseInt(String(row.Count ?? "0"), 10) || 0;
+      if (count <= 0) continue;
 
-      // Sum all numeric columns as total
-      let total = 0;
-      const breakdown: Record<string, number> = {};
-      for (const [k, v] of Object.entries(row)) {
-        if (["Suburb", "Year"].includes(k)) continue;
-        const n = parseInt(String(v));
-        if (!isNaN(n) && n > 0) {
-          total += n;
-          breakdown[k] = n;
-        }
-      }
+      const existing = grouped.get(district) ?? { total: 0, breakdown: {} };
+      existing.total += count;
+      existing.breakdown[lvl1] = (existing.breakdown[lvl1] ?? 0) + count;
+      grouped.set(district, existing);
+    }
 
+    // FY-end date: "2024-25" → 2025-06-30
+    const fyEndYear = parseInt(latestYear.slice(0, 4)) + 1;
+    const periodDate = new Date(`${fyEndYear}-06-30`);
+
+    const records: CrimeRecord[] = [];
+    for (const [district, agg] of grouped) {
+      const label = normaliseDistrictLabel(district);
       records.push({
-        suburbSlug,
-        suburbName,
-        state:           "WA",
-        period:          latestYear,
+        suburbSlug:       null,
+        suburbName:       label,
+        lga:              label,
+        state:            "WA",
+        period:           latestYear,
         periodDate,
-        totalOffences:   total,
-        offenceBreakdown: breakdown,
-        source:          SOURCE_ID,
+        totalOffences:    agg.total,
+        offenceBreakdown: agg.breakdown,
+        source:           SOURCE_ID,
       });
     }
 
@@ -100,9 +114,10 @@ export async function run(): Promise<void> {
 
     await prisma.suburb.updateMany({
       where: { state: "WA" },
-      data: { crimeUpdatedAt: new Date() },
+      data: { statsUpdatedAt: new Date(), crimeUpdatedAt: new Date() },
     });
 
+    log(SOURCE_ID, `wrote ${count} district-level rows for FY ${latestYear}`);
     await finishSync(SOURCE_ID, count, periodDate);
   } catch (err) {
     await failSync(SOURCE_ID, err);
