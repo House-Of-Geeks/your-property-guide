@@ -7,8 +7,10 @@ import { getSuburbs } from "@/lib/services/suburb-service";
 import { SITE_URL } from "@/lib/constants";
 import { SuburbsSearchBar } from "./SuburbsSearchBar";
 
-// Page body queries the DB; render on every request to avoid build-time DB hits.
-export const dynamic = "force-dynamic";
+// ISR — DB-querying services have build-phase guards, so we cache for 24h
+// instead of running a function on every visit. Filter pages with
+// searchParams will still dynamically render per-request.
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Browse All Australian Suburbs | Property Data & Profiles",

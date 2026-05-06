@@ -6,9 +6,9 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { getAgencies } from "@/lib/services/agent-service";
 import { SITE_URL } from "@/lib/constants";
 
-// Page body queries the DB; render on every request (no build-time prerender,
-// no stale cache). Add HTTP caching at the edge later if traffic warrants it.
-export const dynamic = "force-dynamic";
+// ISR — DB-querying services have build-phase guards, so we cache for 24h
+// instead of running a function on every visit.
+export const revalidate = 86400;
 
 interface AgenciesPageProps {
   searchParams: Promise<Record<string, string | undefined>>;

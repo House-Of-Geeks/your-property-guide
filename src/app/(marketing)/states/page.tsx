@@ -8,9 +8,9 @@ import { getAllStatesWithStats } from "@/lib/services/suburb-rankings-service";
 import { formatPrice } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
-// Page body queries the DB; render on every request (no build-time prerender,
-// no stale cache). Add HTTP caching at the edge later if traffic warrants it.
-export const dynamic = "force-dynamic";
+// ISR — DB-querying services have build-phase guards, so we cache for 24h
+// instead of running a function on every visit.
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Australian States Property Guide | Your Property Guide",

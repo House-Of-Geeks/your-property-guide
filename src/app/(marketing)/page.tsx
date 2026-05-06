@@ -13,9 +13,10 @@ import { OrganizationJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 import { HomeSuburbSearch } from "./HomeSuburbSearch";
 
-// Homepage embeds StatsBar / SuburbSpotlight / FeaturedListings which all hit
-// the DB. Render on every request — no build-time DB.
-export const dynamic = "force-dynamic";
+// ISR — DB-querying services have build-phase guards, so we cache for 24h
+// instead of running a function on every visit. Was force-dynamic; that
+// poisoned cache-control for the entire site.
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: `${SITE_NAME} - Property Research, Made Simple`,

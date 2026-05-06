@@ -9,7 +9,7 @@ import { makeSchoolSlug } from "@/lib/utils/school";
 import { SITE_URL } from "@/lib/constants";
 
 // Page body queries the DB; render on every request to avoid build-time DB hits.
-export const dynamic = "force-dynamic";
+export const revalidate = 86400;
 
 const PAGE_SIZE = 20;
 

@@ -8,8 +8,9 @@ import { db } from "@/lib/db";
 import { formatPrice, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
-// Page body queries the DB; render on every request to avoid build-time DB hits.
-export const dynamic = "force-dynamic";
+// ISR — DB-querying services have build-phase guards, so we cache for 24h
+// instead of running a function on every visit.
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Property Price Guide | Australian Suburb Median Prices",

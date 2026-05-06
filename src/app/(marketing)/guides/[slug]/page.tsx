@@ -19,6 +19,11 @@ interface BlogDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
+// ISR — DB-backed posts cache for 24h after first render. Static guide
+// folders at /guides/<name>/page.tsx still take precedence; this dynamic
+// segment only catches slugs without a matching folder.
+export const revalidate = 86400;
+
 export async function generateMetadata({ params }: BlogDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getBlogPostBySlug(slug);
