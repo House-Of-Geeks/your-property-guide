@@ -1,4 +1,4 @@
-# Data Pipeline Status — 2026-05-06
+# Data Pipeline Status — 2026-05-07
 
 A snapshot of which sync sources are populated on production
 (`Postgres-PostGIS` / `nozomi.proxy.rlwy.net:27903`), what's broken,
@@ -33,10 +33,10 @@ Per commit `16ddec9`, four cron services run on Railway production:
 | `crime-nsw/vic/sa/act` | 50-71% suburb-level | Working. |
 | `crime-qld` | 0% suburb-level / 78 LGA-level rows | LGA-only by design (QLD Police only publishes by LGA). UI now has LGA-fallback rendering (ships in `4a5be06`). |
 | `crime-nt` | NEW — running first time this session | Region-level (Darwin / Palmerston / Alice Springs / Katherine / Tennant Creek / Nhulunbuy / NT Balance). Same LGA-fallback rendering applies. |
-| `crime-wa` | 0% — **DISABLED** | WA Police migrated to wa.gov.au in Oct 2024 and never republished suburb XLSX. **TODO:** find current URL → set `WA_CRIME_EXCEL_URL` Vercel env var → run. See `crime-wa.ts` script comment. |
-| `hazard-flood` | 0 rows in `SuburbHazard` | Cron-scheduled for Apr 1 (annual). Ran on May 2 with 0 records — likely WFS query issue or filter excluding everything. **TODO:** investigate or rerun manually. |
-| `hazard-bushfire` | 0 rows in `SuburbHazard` | Same as flood — runs OK status but produces 0 records. **TODO:** investigate. |
-| `walkability` | 0 / 18,000 suburbs | Hits Overpass API at 1 req/sec (rate limit) — full run takes ~5 hours. Should run via Railway cron (annual). **TODO:** verify it actually completes via cron next April; consider splitting into chunks if needed. |
+| `crime-wa` | 15 District-level rows (FY 2025-26) | **REWRITTEN** in `c9a1b27` to ingest the post-migration district XLSX. Mandurah district top with 14,595 offences. **GAP**: WA suburb `region` field carries LGA names that don't match Police district names — needs an LGA→District mapping in `data-freshness.ts` for display. |
+| `hazard-flood` | 0 rows in `SuburbHazard` | **BROKEN UPSTREAM**: GA AFRIP retired the polygon WFS — only point metadata exists at the new ArcGIS endpoint. Script needs full rewrite to either aggregate from `PropertyOverlay` (data already in DB) or query each state's flood feature service. |
+| `hazard-bushfire` | 0 rows in `SuburbHazard` | **BROKEN UPSTREAM**: 4 of 5 state URLs stale (VIC GeoServer typeName changed, QLD service moved, SA UUID changed, WA HTML page). NSW URL still works but somehow produces 0 rows — needs deeper debug. Replacement candidates per state listed below. |
+| `walkability` | 0 / 18,000 suburbs | Script optimised in `9c8676c` — 3s delay, 429/504 backoff, per-suburb commit, resume support. Should now complete reliably via cron. Ran out of time this session because the in-flight Railway run is using older build. |
 | `flood-*` / `bushfire-*` / `heritage-*` / `zoning-*` (per state) | varies | Property-level overlays (`PropertyOverlay` table). Run annually via `sync-cron-annual-overlays`. |
 | `catchment-*` (per state) | varies | School catchment overlays. Some states (TAS-secondary, WA, NT, SA) have no source. |
 
