@@ -1,0 +1,27 @@
+FROM node:22-slim
+
+# curl + ca-certs for ArcGIS / CKAN downloads; bash for cron shell scripts.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    ca-certificates \
+    bash \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Prisma schema needed before npm ci so postinstall (prisma generate) succeeds.
+COPY prisma ./prisma
+COPY prisma.config.ts ./
+
+COPY package*.json ./
+RUN npm ci
+
+# Source files needed by tsx at runtime.
+COPY src ./src
+COPY scripts ./scripts
+COPY tsconfig.json ./
+
+# Each cron service overrides this via Railway's startCommand
+# (e.g. "bash scripts/cron/quarterly.sh"). Default falls back to a no-op so a
+# misconfigured service exits cleanly instead of hanging.
+CMD ["bash", "-c", "echo 'sync-cron container — set startCommand on the service'; exit 0"]
