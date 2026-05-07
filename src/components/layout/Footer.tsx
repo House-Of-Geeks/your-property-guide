@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { UserCircle, Phone } from "lucide-react";
+import { UserCircle } from "lucide-react";
 import { NewsletterForm as NewsletterFormFooter } from "@/components/newsletter/NewsletterForm";
 
 type SvgProps = { className?: string };
@@ -186,13 +186,6 @@ function FooterBottom() {
             <Image src="/images/Your-Property-Guide.png" alt="Your Property Guide" width={400} height={64} className="h-16 w-auto invert" />
           </Link>
           <p className="text-sm text-white/50">Australia&apos;s trusted property research platform</p>
-          <a
-            href="tel:+61433405530"
-            className="flex items-center gap-2 text-white/70 hover:text-white transition-colors"
-          >
-            <Phone className="w-4 h-4" />
-            <span className="text-sm font-medium">+61 433 405 530</span>
-          </a>
         </div>
         <div className="flex flex-col items-center gap-3">
           <div className="flex gap-4">
