@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
-import { TrustStrip } from "@/components/journey";
+import { MatchAgentEmbed, TrustStrip } from "@/components/journey";
 import { SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -129,7 +130,7 @@ export default function FindAnExpertPage() {
               </p>
               <div className="flex flex-wrap gap-3 mb-10">
                 <Link
-                  href="/#match"
+                  href="#match"
                   className="inline-flex items-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors"
                 >
                   Get connected <ArrowRight className="w-4 h-4" />
@@ -205,7 +206,8 @@ export default function FindAnExpertPage() {
                   ))}
                 </ul>
                 <Link
-                  href={`/?intent=${lane.intent}#match`}
+                  href={`/find-an-expert?intent=${lane.intent}#match`}
+                  scroll={true}
                   className="inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors"
                 >
                   {lane.cta} <ArrowRight className="w-4 h-4" />
@@ -243,7 +245,7 @@ export default function FindAnExpertPage() {
           </div>
           <div className="mt-12">
             <Link
-              href="/#match"
+              href="#match"
               className="inline-flex items-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors"
             >
               Get connected <ArrowRight className="w-4 h-4" />
@@ -251,6 +253,13 @@ export default function FindAnExpertPage() {
           </div>
         </div>
       </section>
+
+      {/* Embedded match engine — same component as the homepage. Lane
+          buttons above push ?intent=... which re-keys this embed so the
+          form opens at the right step. */}
+      <Suspense fallback={null}>
+        <MatchAgentEmbed />
+      </Suspense>
 
       {/* Why we're free */}
       <section className="py-16">

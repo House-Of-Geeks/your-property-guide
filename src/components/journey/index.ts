@@ -3,4 +3,5 @@ export { PersonaHubLayout } from "./PersonaHubLayout";
 export { ExpertCTA } from "./ExpertCTA";
 export { TrustStrip } from "./TrustStrip";
 export { MatchAgent } from "./MatchAgent";
+export { MatchAgentEmbed } from "./MatchAgentEmbed";
 export { StickyMatchCTA } from "./StickyMatchCTA";
