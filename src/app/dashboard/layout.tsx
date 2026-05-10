@@ -25,18 +25,23 @@ export default async function DashboardLayout({ children }: { children: React.Re
     role === "agency_admin" ? "Agency Admin" :
     "Agent";
 
+  // Role badges aligned to the warm-cream brand: primary terracotta tints for
+  // the super-admin and agency-admin roles, neutral warm for plain agents.
   const roleBadgeClass =
-    role === "admin" ? "bg-purple-100 text-purple-700" :
-    role === "agency_admin" ? "bg-blue-100 text-blue-700" :
-    "bg-gray-100 text-gray-600";
+    role === "admin"        ? "bg-primary/10 text-primary" :
+    role === "agency_admin" ? "bg-cta/10 text-cta-hover" :
+                              "bg-surface-warm-sunken text-ink-muted border border-line-warm";
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-surface flex">
       {/* Sidebar */}
-      <aside className="w-56 bg-white border-r border-gray-200 flex flex-col shrink-0">
-        <div className="px-5 py-5 border-b border-gray-100">
-          <Link href="/" className="text-sm font-bold text-primary">Your Property Guide</Link>
-          <p className="text-xs text-gray-400 mt-0.5 truncate">{session.user?.email}</p>
+      <aside className="w-56 bg-surface-raised border-r border-line flex flex-col shrink-0">
+        <div className="px-5 py-5 border-b border-line">
+          <Link href="/" className="inline-flex items-center gap-2">
+            <span className="inline-flex w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true" />
+            <span className="font-display text-ink text-base tracking-tight leading-none">Your Property Guide</span>
+          </Link>
+          <p className="text-xs text-ink-subtle mt-2 truncate">{session.user?.email}</p>
           <span className={`inline-block mt-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${roleBadgeClass}`}>
             {roleBadgeLabel}
           </span>
@@ -55,8 +60,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
             </>
           )}
           {isSuperAdmin && (
-            <div className="pt-2 mt-2 border-t border-gray-100">
-              <p className="px-3 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Admin</p>
+            <div className="pt-2 mt-2 border-t border-line">
+              <p className="px-3 pb-1 text-xs font-semibold text-ink-subtle uppercase tracking-wider">Admin</p>
               <NavLink href="/dashboard/admin" icon={<ShieldCheck className="w-4 h-4" />} label="Site Overview" />
               <NavLink href="/dashboard/admin/agencies" icon={<Building2 className="w-4 h-4" />} label="All Agencies" />
               <NavLink href="/dashboard/admin/users" icon={<Users className="w-4 h-4" />} label="Users & Roles" />
@@ -64,12 +69,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
           )}
           <NavLink href="/" icon={<Home className="w-4 h-4" />} label="View Site" />
         </nav>
-        <div className="px-3 py-4 border-t border-gray-100">
+        <div className="px-3 py-4 border-t border-line">
           <form action={async () => {
             "use server";
             await signOut({ redirectTo: "/dashboard/login" });
           }}>
-            <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-500 hover:text-gray-900 rounded-lg hover:bg-gray-50 transition-colors">
+            <button className="w-full flex items-center gap-2 px-3 py-2 text-sm text-ink-muted hover:text-ink rounded-lg hover:bg-surface-warm transition-colors">
               <LogOut className="w-4 h-4" /> Sign out
             </button>
           </form>
@@ -88,7 +93,7 @@ function NavLink({ href, icon, label }: { href: string; icon: React.ReactNode; l
   return (
     <Link
       href={href}
-      className="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-600 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+      className="flex items-center gap-2.5 px-3 py-2 text-sm text-ink-muted hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
     >
       {icon}
       {label}

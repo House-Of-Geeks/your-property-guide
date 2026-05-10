@@ -9,10 +9,12 @@ const ROLES = [
   { value: "admin",        label: "Admin" },
 ];
 
+// Aligned with /dashboard/layout.tsx and /dashboard/admin/page.tsx badges
+// so role colour-coding is consistent across the portal.
 const BADGE: Record<string, string> = {
-  admin:        "bg-purple-100 text-purple-700",
-  agency_admin: "bg-blue-100 text-blue-700",
-  agent:        "bg-gray-100 text-gray-600",
+  admin:        "bg-primary/10 text-primary",
+  agency_admin: "bg-cta/10 text-cta-hover",
+  agent:        "bg-surface-warm-sunken text-ink-muted border border-line-warm",
 };
 
 export function UserRoleSelect({ userId, currentRole }: { userId: string; currentRole: string }) {
@@ -37,13 +39,13 @@ export function UserRoleSelect({ userId, currentRole }: { userId: string; curren
         value={role}
         onChange={handleChange}
         disabled={isPending}
-        className="text-xs rounded-lg border border-gray-300 px-2 py-1.5 focus:border-primary focus:ring-1 focus:ring-primary outline-none disabled:opacity-50"
+        className={`text-xs rounded-lg border px-2 py-1.5 focus:border-primary focus:ring-1 focus:ring-primary outline-none disabled:opacity-50 ${BADGE[role] ?? BADGE.agent}`}
       >
         {ROLES.map((r) => (
           <option key={r.value} value={r.value}>{r.label}</option>
         ))}
       </select>
-      {saved && <span className="text-xs text-green-600 font-medium">Saved</span>}
+      {saved && <span className="text-xs text-success font-medium">Saved</span>}
     </div>
   );
 }

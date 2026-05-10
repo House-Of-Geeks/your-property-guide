@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { PropertyFilters } from "@/components/property/PropertyFilters";
 import { SuburbSubrouteHeader, getSuburbListingTabs } from "@/components/suburb";
-import { ExpertCTA } from "@/components/journey";
+import { ExpertCTA, StickyMatchCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getProperties } from "@/lib/services/property-service";
@@ -93,6 +93,13 @@ export default async function SuburbBuyPage({ params, searchParams }: Props) {
         body={`Whether it's a buyer's agent for inspections and negotiation, a broker for finance, or someone else entirely &mdash; we'll connect you with the right specialist for your situation in ${suburb.name}. Free for buyers, no commitment.`}
         ctaLabel="Get connected"
         href={`/?suburb=${slug}&intent=buying#match`}
+      />
+
+      <StickyMatchCTA
+        suburb={slug}
+        intent="buying"
+        label={`${suburb.name} — get connected`}
+        dismissKey={`suburb:${slug}`}
       />
     </>
   );

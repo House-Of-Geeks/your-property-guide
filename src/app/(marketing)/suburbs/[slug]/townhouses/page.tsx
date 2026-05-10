@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { SuburbSubrouteHeader, getSuburbListingTabs } from "@/components/suburb";
+import { StickyMatchCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getProperties } from "@/lib/services/property-service";
@@ -70,6 +71,13 @@ export default async function SuburbTownhousesPage({ params }: Props) {
           emptyMessage={`No townhouse listings in ${suburb.name} right now. Try the other listing types above.`}
         />
       </div>
+
+      <StickyMatchCTA
+        suburb={slug}
+        intent="buying"
+        label={`${suburb.name} — get connected`}
+        dismissKey={`suburb:${slug}`}
+      />
     </>
   );
 }

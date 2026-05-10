@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Calendar, Clock, User, ShieldCheck } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { ExpertCTA } from "@/components/journey";
+import { ExpertCTA, StickyMatchCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { ReadingProgressBar } from "./ReadingProgressBar";
 import { GuideTOC, type GuideTOCEntry } from "./GuideTOC";
@@ -50,6 +50,16 @@ export function GuideArticleLayout({
   const illustration = heroIllustration ?? persona?.illustration ?? null;
   const updatedAt = frontmatter.updatedAt ?? frontmatter.publishedAt;
   const reading = frontmatter.readingTimeMinutes;
+
+  // Map the guide's persona onto a MatchAgent intent so the sticky CTA
+  // pre-fills the form when the reader clicks through. Guides without a
+  // persona (e.g. general explainers) skip the sticky entirely — see below.
+  const stickyIntent: "buying" | "selling" | "investing" | undefined =
+    frontmatter.persona === "first-home" ? "buying" :
+    frontmatter.persona === "upgrading"  ? "buying" :
+    frontmatter.persona === "selling"    ? "selling" :
+    frontmatter.persona === "investing"  ? "investing" :
+                                            undefined;
 
   const guideUrl = `/guides/${frontmatter.slug}`;
   const breadcrumbItems = [
@@ -242,6 +252,17 @@ export function GuideArticleLayout({
           </div>
         </div>
       </article>
+
+      {/* Floating "Get connected" pill for guide readers. Only renders when
+          the guide has a persona — general explainers (no persona) skip the
+          sticky to keep them quiet. Per-guide dismiss key. */}
+      {persona && stickyIntent && (
+        <StickyMatchCTA
+          intent={stickyIntent}
+          label="Get connected"
+          dismissKey={`guide:${frontmatter.slug}`}
+        />
+      )}
     </>
   );
 }

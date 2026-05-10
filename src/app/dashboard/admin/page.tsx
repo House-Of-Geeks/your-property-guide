@@ -101,6 +101,9 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 function RoleBadge({ role }: { role: string }) {
-  const cls = role === "admin" ? "bg-purple-100 text-purple-700" : role === "agency_admin" ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-600";
+  const cls =
+    role === "admin"        ? "bg-primary/10 text-primary" :
+    role === "agency_admin" ? "bg-cta/10 text-cta-hover" :
+                              "bg-surface-warm-sunken text-ink-muted border border-line-warm";
   return <span className={`text-xs font-medium px-2 py-0.5 rounded-full whitespace-nowrap ${cls}`}>{role}</span>;
 }

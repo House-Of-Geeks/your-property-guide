@@ -68,43 +68,50 @@ export default function LoginPage() {
     }
   }
 
+  // Shared input class so all four screens stay consistent.
+  const inputClass =
+    "w-full pl-9 pr-3 py-3 border border-line-strong bg-surface-raised rounded-lg text-sm text-ink placeholder:text-ink-subtle focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors";
+
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-surface">
       {/* ── Left panel ─────────────────────────────────────── */}
-      <div className="w-full lg:w-[440px] flex flex-col justify-center px-10 py-12 bg-white shrink-0">
-        <Link href="/" className="mb-10 inline-block">
-          <Image src="/images/YPG Logo.png" alt="Your Property Guide" width={200} height={70} className="h-16 w-auto" />
+      <div className="w-full lg:w-[440px] flex flex-col justify-center px-10 py-12 bg-surface-raised shrink-0">
+        <Link href="/" className="mb-10 inline-flex items-center gap-3">
+          <span className="inline-flex w-2 h-2 rounded-full bg-accent" aria-hidden="true" />
+          <span className="font-display text-ink text-2xl tracking-tight leading-none">Your Property Guide</span>
         </Link>
 
         {/* ── Options screen ─── */}
         {mode === "options" && (
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">Log in to Your Property Guide</h1>
-            <p className="text-sm text-gray-500 mb-6">
-              By logging in, I agree to the{" "}
+            <h1 className="font-display text-3xl text-ink leading-tight tracking-tight mb-2">
+              Agent &amp; partner login.
+            </h1>
+            <p className="text-sm text-ink-muted mb-6 leading-relaxed">
+              By logging in, you agree to the{" "}
               <Link href="/terms" className="text-primary hover:underline">Terms of use</Link>
               {" "}and{" "}
-              <Link href="/privacy" className="text-primary hover:underline">Privacy policy</Link>
+              <Link href="/privacy" className="text-primary hover:underline">Privacy policy</Link>.
             </p>
 
             <div className="space-y-3">
               <button
                 onClick={() => setMode("magic")}
-                className="w-full flex items-center gap-3 px-4 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center gap-3 px-4 py-3 border border-line-strong rounded-lg text-sm font-medium text-ink hover:border-ink hover:bg-surface-warm transition-colors"
               >
-                <Mail className="w-5 h-5 text-gray-500" />
+                <Mail className="w-5 h-5 text-ink-muted" />
                 Continue with email link
               </button>
               <button
                 onClick={() => setMode("password")}
-                className="w-full flex items-center gap-3 px-4 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center gap-3 px-4 py-3 border border-line-strong rounded-lg text-sm font-medium text-ink hover:border-ink hover:bg-surface-warm transition-colors"
               >
-                <Lock className="w-5 h-5 text-gray-500" />
+                <Lock className="w-5 h-5 text-ink-muted" />
                 Continue with password
               </button>
             </div>
 
-            <p className="text-sm text-center mt-6 text-gray-600">
+            <p className="text-sm text-center mt-6 text-ink-muted">
               Don&apos;t have an account?{" "}
               <button onClick={() => setMode("register")} className="text-primary font-semibold hover:underline">
                 Sign up
@@ -116,33 +123,33 @@ export default function LoginPage() {
         {/* ── Magic link screen ─── */}
         {mode === "magic" && (
           <div>
-            <button onClick={() => { setMode("options"); setError(""); setMagicSent(false); }} className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 mb-6">
+            <button onClick={() => { setMode("options"); setError(""); setMagicSent(false); }} className="flex items-center gap-1.5 text-sm text-ink-muted hover:text-ink mb-6 transition-colors">
               <ArrowLeft className="w-4 h-4" /> Back
             </button>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">Continue with email link</h1>
-            <p className="text-sm text-gray-500 mb-6">We&apos;ll send a magic sign-in link to your inbox.</p>
+            <h1 className="font-display text-3xl text-ink leading-tight tracking-tight mb-2">Continue with email link</h1>
+            <p className="text-sm text-ink-muted mb-6 leading-relaxed">We&apos;ll send a magic sign-in link to your inbox.</p>
 
             {magicSent ? (
               <div className="text-center py-6">
-                <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Mail className="w-7 h-7 text-primary" />
+                <div className="w-14 h-14 bg-cta text-white rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Mail className="w-7 h-7" />
                 </div>
-                <p className="font-semibold text-gray-900">Check your inbox</p>
-                <p className="text-sm text-gray-500 mt-1">Link sent to <strong>{email}</strong></p>
+                <p className="font-display text-xl text-ink">Check your inbox</p>
+                <p className="text-sm text-ink-muted mt-2">Link sent to <strong className="text-ink">{email}</strong></p>
               </div>
             ) : (
               <form onSubmit={handleMagicLink} className="space-y-4">
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-subtle" />
                   <input
                     type="email" required value={email} onChange={e => setEmail(e.target.value)}
                     placeholder="Email address" autoComplete="email"
-                    className="w-full pl-9 pr-3 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    className={inputClass}
                   />
                 </div>
-                {error && <p className="text-sm text-red-500">{error}</p>}
+                {error && <p className="text-sm text-danger">{error}</p>}
                 <button type="submit" disabled={loading}
-                  className="w-full py-3 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50">
+                  className="w-full py-3 bg-cta text-white text-sm font-semibold rounded-lg hover:bg-cta-hover transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
                   {loading ? "Sending…" : "Send magic link"}
                 </button>
               </form>
@@ -153,40 +160,40 @@ export default function LoginPage() {
         {/* ── Password screen ─── */}
         {mode === "password" && (
           <div>
-            <button onClick={() => { setMode("options"); setError(""); }} className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 mb-6">
+            <button onClick={() => { setMode("options"); setError(""); }} className="flex items-center gap-1.5 text-sm text-ink-muted hover:text-ink mb-6 transition-colors">
               <ArrowLeft className="w-4 h-4" /> Back
             </button>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">Sign in with password</h1>
-            <p className="text-sm text-gray-500 mb-6">Enter your email and password to continue.</p>
+            <h1 className="font-display text-3xl text-ink leading-tight tracking-tight mb-2">Sign in with password</h1>
+            <p className="text-sm text-ink-muted mb-6 leading-relaxed">Enter your email and password to continue.</p>
 
             <form onSubmit={handlePassword} className="space-y-4">
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-subtle" />
                 <input
                   type="email" required value={email} onChange={e => setEmail(e.target.value)}
                   placeholder="Email address" autoComplete="email"
-                  className="w-full pl-9 pr-3 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  className={inputClass}
                 />
               </div>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-subtle" />
                 <input
                   type={showPass ? "text" : "password"} required value={password} onChange={e => setPassword(e.target.value)}
                   placeholder="Password" autoComplete="current-password"
-                  className="w-full pl-9 pr-10 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  className={`${inputClass} pr-10`}
                 />
-                <button type="button" onClick={() => setShowPass(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <button type="button" onClick={() => setShowPass(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-subtle hover:text-ink">
                   {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
+              {error && <p className="text-sm text-danger">{error}</p>}
               <button type="submit" disabled={loading}
-                className="w-full py-3 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50">
+                className="w-full py-3 bg-cta text-white text-sm font-semibold rounded-lg hover:bg-cta-hover transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
                 {loading ? "Signing in…" : "Sign in"}
               </button>
             </form>
 
-            <p className="text-sm text-center mt-4 text-gray-600">
+            <p className="text-sm text-center mt-4 text-ink-muted">
               Don&apos;t have an account?{" "}
               <button onClick={() => { setMode("register"); setError(""); }} className="text-primary font-semibold hover:underline">
                 Sign up
@@ -198,48 +205,48 @@ export default function LoginPage() {
         {/* ── Register screen ─── */}
         {mode === "register" && (
           <div>
-            <button onClick={() => { setMode("options"); setError(""); }} className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 mb-6">
+            <button onClick={() => { setMode("options"); setError(""); }} className="flex items-center gap-1.5 text-sm text-ink-muted hover:text-ink mb-6 transition-colors">
               <ArrowLeft className="w-4 h-4" /> Back
             </button>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">Create an account</h1>
-            <p className="text-sm text-gray-500 mb-6">Save properties and track your search.</p>
+            <h1 className="font-display text-3xl text-ink leading-tight tracking-tight mb-2">Create an account</h1>
+            <p className="text-sm text-ink-muted mb-6 leading-relaxed">Save properties and track your search.</p>
 
             <form onSubmit={handleRegister} className="space-y-4">
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-subtle" />
                 <input
                   type="text" value={name} onChange={e => setName(e.target.value)}
                   placeholder="Full name (optional)"
-                  className="w-full pl-9 pr-3 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  className={inputClass}
                 />
               </div>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-subtle" />
                 <input
                   type="email" required value={email} onChange={e => setEmail(e.target.value)}
                   placeholder="Email address" autoComplete="email"
-                  className="w-full pl-9 pr-3 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  className={inputClass}
                 />
               </div>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-subtle" />
                 <input
                   type={showPass ? "text" : "password"} required value={password} onChange={e => setPassword(e.target.value)}
                   placeholder="Create a password" autoComplete="new-password" minLength={8}
-                  className="w-full pl-9 pr-10 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  className={`${inputClass} pr-10`}
                 />
-                <button type="button" onClick={() => setShowPass(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <button type="button" onClick={() => setShowPass(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-subtle hover:text-ink">
                   {showPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
+              {error && <p className="text-sm text-danger">{error}</p>}
               <button type="submit" disabled={loading}
-                className="w-full py-3 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50">
+                className="w-full py-3 bg-cta text-white text-sm font-semibold rounded-lg hover:bg-cta-hover transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
                 {loading ? "Creating account…" : "Create account"}
               </button>
             </form>
 
-            <p className="text-sm text-center mt-4 text-gray-600">
+            <p className="text-sm text-center mt-4 text-ink-muted">
               Already have an account?{" "}
               <button onClick={() => { setMode("password"); setError(""); }} className="text-primary font-semibold hover:underline">
                 Sign in
@@ -258,10 +265,10 @@ export default function LoginPage() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-transparent" />
         <div className="absolute bottom-8 left-8 right-8">
-          <p className="text-white text-lg font-semibold drop-shadow">Find your next home</p>
-          <p className="text-white/80 text-sm">Australia&apos;s local property guide</p>
+          <p className="font-display text-white text-2xl tracking-tight drop-shadow">Find your next home</p>
+          <p className="text-white/80 text-sm mt-1">Australia&rsquo;s plain-English property guide</p>
         </div>
       </div>
     </div>
