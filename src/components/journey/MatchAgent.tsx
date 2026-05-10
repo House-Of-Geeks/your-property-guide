@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { ArrowRight, ArrowLeft, Check } from "lucide-react";
-import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
+import { SuburbAutocomplete, slugToSuburbLabel } from "@/components/search/SuburbAutocomplete";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 
 type Intent =
@@ -49,16 +50,40 @@ const TIMEFRAMES: TimeframeOption[] = [
 const labelForIntent = (id: Intent) => INTENTS.find((i) => i.id === id)?.label ?? "";
 const labelForTimeframe = (id: Timeframe) => TIMEFRAMES.find((t) => t.id === id)?.label ?? "";
 
+const isIntent = (v: string | null): v is Intent =>
+  v !== null && INTENTS.some((opt) => opt.id === v);
+
 /**
  * MatchAgent — homepage lead engine.
  * Three single-question screens (intent / suburb / timeframe) → compact contact form.
  * Mirrors the conversion pattern that's working on Your Finance Guide.
+ *
+ * Pre-fills via URL params so suburb pages and other entry points can deep-link:
+ *   /?suburb={slug}#match           → suburb pre-filled, ask intent first
+ *   /?intent={id}#match             → intent pre-filled, ask suburb next
+ *   /?suburb={slug}&intent={id}#match → both pre-filled, jump to timeframe
+ *
+ * Because this component reads useSearchParams, the page that hosts it must
+ * wrap it in <Suspense> (the homepage already does this, see app/(marketing)/page.tsx).
  */
 export function MatchAgent() {
-  const [step, setStep] = useState(0);
-  const [intent, setIntent] = useState<Intent | null>(null);
-  const [suburbSlug, setSuburbSlug] = useState<string | null>(null);
-  const [suburbLabel, setSuburbLabel] = useState<string | null>(null);
+  const params = useSearchParams();
+
+  // Pre-fill from URL params. Slug is enough to derive a label for display.
+  const initialSuburbSlug = params.get("suburb");
+  const initialSuburbLabel = initialSuburbSlug ? slugToSuburbLabel(initialSuburbSlug) : null;
+  const intentParam = params.get("intent");
+  const initialIntent: Intent | null = isIntent(intentParam) ? intentParam : null;
+
+  // Skip steps that are already filled. With suburb+intent pre-set we land
+  // straight on the timeframe question; with one set we skip just that step.
+  const initialStep =
+    initialIntent && initialSuburbSlug ? 2 : initialIntent ? 1 : 0;
+
+  const [step, setStep] = useState(initialStep);
+  const [intent, setIntent] = useState<Intent | null>(initialIntent);
+  const [suburbSlug, setSuburbSlug] = useState<string | null>(initialSuburbSlug);
+  const [suburbLabel, setSuburbLabel] = useState<string | null>(initialSuburbLabel);
   const [timeframe, setTimeframe] = useState<Timeframe | null>(null);
 
   const [firstName, setFirstName] = useState("");
@@ -200,7 +225,9 @@ export function MatchAgent() {
                           key={opt.id}
                           onClick={() => {
                             setIntent(opt.id);
-                            setStep(1);
+                            // If suburb is already pre-filled (deep-link from a
+                            // suburb page), skip the suburb step.
+                            setStep(suburbSlug ? 2 : 1);
                           }}
                           className={`text-left rounded-xl border px-4 py-4 transition-all cursor-pointer ${
                             active

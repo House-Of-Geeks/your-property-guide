@@ -89,10 +89,10 @@ export default async function SuburbBuyPage({ params, searchParams }: Props) {
       </div>
 
       <ExpertCTA
-        headline="Looking at this suburb? Talk to a buyer's agent who knows it."
-        body="A buyer's agent can run private inspections, vet the contract and negotiate on your behalf. Free for buyers, no commitment."
-        ctaLabel="See how matching works"
-        href="/find-an-expert"
+        headline={`Looking at ${suburb.name}? We'll find the right person.`}
+        body={`Whether it's a buyer's agent for inspections and negotiation, a broker for finance, or someone else entirely &mdash; we'll connect you with the right specialist for your situation in ${suburb.name}. Free for buyers, no commitment.`}
+        ctaLabel="Get connected"
+        href={`/?suburb=${slug}&intent=buying#match`}
       />
     </>
   );

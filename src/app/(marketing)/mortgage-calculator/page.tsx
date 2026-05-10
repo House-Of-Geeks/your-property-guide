@@ -150,8 +150,8 @@ export default function MortgageCalculatorPage() {
           </ul>
           <p>
             For a precise quote on your specific situation, a mortgage broker can
-            compare 30+ lenders for you in one process. We have a free{" "}
-            <Link href="/find-an-expert">expert match</Link> if you want help.
+            compare 30+ lenders for you in one process.{" "}
+            <Link href="/?intent=buying#match">Get connected</Link> if you want a free intro to one.
           </p>
         </>
       }

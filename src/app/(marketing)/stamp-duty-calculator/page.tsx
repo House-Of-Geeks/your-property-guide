@@ -149,9 +149,9 @@ export default function StampDutyCalculatorPage() {
             <li>Concessional duty for older buyers / pensioners (varies by state).</li>
           </ul>
           <p>
-            For a complete settlement-cost breakdown, your conveyancer is the
-            right person to ask. We have a free <Link href="/find-an-expert">expert match</Link>{" "}
-            if you want help finding one.
+            For a complete settlement-cost breakdown, a conveyancer is the
+            right person to ask. <Link href="/?intent=buying#match">Get connected</Link>{" "}
+            if you want a free intro to one.
           </p>
         </>
       }

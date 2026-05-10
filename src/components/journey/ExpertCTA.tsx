@@ -21,9 +21,9 @@ interface ExpertCTAProps {
 
 const DEFAULT = {
   headline: "Want one-on-one help?",
-  body: "If you've done the reading and want a real human to talk it through, we'll match you with a vetted broker or buyer's agent. No commitment, free for buyers.",
-  ctaLabel: "See how matching works",
-  href: "/find-an-expert",
+  body: "If you've done the reading and want a real human to talk it through, we'll find the right specialist for your situation — agent, broker, accountant, conveyancer, whoever fits. No commitment, free for buyers and sellers.",
+  ctaLabel: "Get connected",
+  href: "/#match",
 };
 
 export function ExpertCTA({

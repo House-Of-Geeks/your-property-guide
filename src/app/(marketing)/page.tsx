@@ -293,8 +293,12 @@ export default function HomePage() {
         <LatestGuides />
       </Suspense>
 
-      {/* 6.5 — Match engine: dark editorial section, the homepage lead trap */}
-      <MatchAgent />
+      {/* 6.5 — Match engine: dark editorial section, the homepage lead trap.
+              Wrapped in Suspense because MatchAgent reads useSearchParams
+              for ?suburb=/?intent= deep-links from suburb pages. */}
+      <Suspense fallback={null}>
+        <MatchAgent />
+      </Suspense>
 
       {/* 7. Why we're free, editorial closer with decorative contour */}
       <section className="relative bg-surface-sunken border-t border-line overflow-hidden">

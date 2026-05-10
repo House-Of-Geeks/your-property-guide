@@ -571,12 +571,14 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         </section>
       </div>
 
-      {/* Soft expert CTA at the very bottom */}
+      {/* Soft expert CTA at the very bottom — deep-links to homepage #match
+          with the suburb pre-filled, so visitors land directly in the lead
+          engine with one less click. */}
       <ExpertCTA
-        headline="Want a real human to help you read this suburb?"
-        body="If you&rsquo;ve looked at the numbers and want a buyer&rsquo;s agent or mortgage broker who knows the area, we can match you with one. Free for buyers, no commitment."
-        ctaLabel="See how matching works"
-        href="/find-an-expert"
+        headline={`Want a real human to help with ${suburb.name}?`}
+        body="If you&rsquo;ve looked at the numbers and want someone to talk it through &mdash; an agent, broker, accountant, conveyancer, whoever fits your situation &mdash; we&rsquo;ll find the right person. Free, no commitment."
+        ctaLabel="Get connected"
+        href={`/?suburb=${slug}#match`}
       />
     </>
   );

@@ -175,8 +175,8 @@ export default function BorrowingPowerCalculatorPage() {
           </ul>
           <p>
             For any of those, run the basic numbers here, then verify with a broker
-            or a participating lender. We have a free <Link href="/find-an-expert">expert match</Link>{" "}
-            if you want to talk it through.
+            or a participating lender. <Link href="/?intent=buying#match">Get connected</Link>{" "}
+            if you want a free intro to one.
           </p>
         </>
       }
