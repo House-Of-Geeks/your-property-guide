@@ -174,13 +174,25 @@ export async function POST(request: Request) {
     // — no CC. Per Andy 2026-05-10. Other lead types keep the standard CC list.
     const isMatchRequest = lead.type === "match-request";
 
-    await transporter.sendMail({
-      from:    `"Your Property Guide" <${process.env.EMAIL_FROM ?? "noreply@yourpropertyguide.com.au"}>`,
-      to:      NOTIFY_EMAIL,
-      cc:      isMatchRequest ? undefined : CC_EMAIL,
-      subject,
-      html:    buildEmailHtml(lead, agentName, routing.reason),
-    });
+    // Email is best-effort. The lead is already persisted to the DB above; if SMTP
+    // is down or the API key is rotated, we still want the user to see "submitted",
+    // not "error", and we want the lead row not to be lost. Errors get logged so
+    // they're visible in Vercel logs and can be alerted on.
+    try {
+      await transporter.sendMail({
+        from:    `"Your Property Guide" <${process.env.EMAIL_FROM ?? "noreply@yourpropertyguide.com.au"}>`,
+        to:      NOTIFY_EMAIL,
+        cc:      isMatchRequest ? undefined : CC_EMAIL,
+        subject,
+        html:    buildEmailHtml(lead, agentName, routing.reason),
+      });
+    } catch (mailErr) {
+      console.error("Lead notification email failed (lead saved to DB):", {
+        leadId: saved.id,
+        type: lead.type,
+        error: mailErr instanceof Error ? mailErr.message : String(mailErr),
+      });
+    }
 
     return NextResponse.json({
       success: true,
