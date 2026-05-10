@@ -564,12 +564,15 @@ model PropertyOverlay {
 // ---------------------------------------------------------------------------
 model Lead {
   id               String  @id @default(cuid())
-  // "property-enquiry" | "appraisal-request" | "off-market-register" | "general-contact" | "house-and-land-enquiry"
+  // "property-enquiry" | "appraisal-request" | "off-market-register" | "general-contact" | "house-and-land-enquiry" | "match-request"
   type             String
   firstName        String
-  lastName         String
+  lastName         String?
   email            String
-  phone            String
+  // Phone is optional — match-request flow only requires email so the
+  // contact step has minimal friction. Older lead types still pass phone
+  // (UI requires it on the heavier forms). 2026-05-10.
+  phone            String?
   message          String?
   propertyId       String?
   agentId          String?

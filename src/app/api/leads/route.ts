@@ -19,9 +19,9 @@ const leadSchema = z.object({
     "match-request",
   ]),
   firstName: z.string().min(1),
-  lastName: z.string().min(1),
+  lastName: z.string().min(1).optional(),
   email: z.string().email(),
-  phone: z.string().min(8),
+  phone: z.string().min(8).optional(),
   message: z.string().optional(),
   propertyId: z.string().optional(),
   agentId: z.string().optional(),
@@ -67,10 +67,11 @@ function labelFor(type: string): string {
 
 function buildEmailHtml(lead: z.infer<typeof leadSchema>, agentName: string | null, routedReason: string): string {
   const typeLabel = labelFor(lead.type);
+  const fullName = lead.lastName ? `${lead.firstName} ${lead.lastName}` : lead.firstName;
   const rows = [
-    ["Name",    `${lead.firstName} ${lead.lastName}`],
+    ["Name",    fullName],
     ["Email",   `<a href="mailto:${lead.email}">${lead.email}</a>`],
-    ["Phone",   lead.phone],
+    lead.phone            && ["Phone",             lead.phone],
     lead.message          && ["Message",          lead.message],
     lead.propertyId       && ["Property ID",       lead.propertyId],
     lead.suburb           && ["Suburb",            lead.suburb],

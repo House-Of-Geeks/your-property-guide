@@ -12,9 +12,9 @@ export interface Lead {
   id?: string;
   type: LeadType;
   firstName: string;
-  lastName: string;
+  lastName?: string;
   email: string;
-  phone: string;
+  phone?: string;
   message?: string;
   propertyId?: string;
   agentId?: string;

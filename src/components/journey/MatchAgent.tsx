@@ -121,15 +121,17 @@ export function MatchAgent() {
         `Timeframe: ${labelForTimeframe(timeframe)}`,
       ].join(" · ");
 
+      const trimmedLast = lastName.trim();
+      const trimmedPhone = phone.trim();
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           type: "match-request",
           firstName: firstName.trim(),
-          lastName: lastName.trim(),
+          lastName: trimmedLast || undefined,
           email: email.trim(),
-          phone: phone.trim(),
+          phone: trimmedPhone || undefined,
           message,
           suburb: suburbSlug ?? undefined,
           source: "homepage-match",
@@ -344,38 +346,34 @@ export function MatchAgent() {
                     No commitment, no comparison spam.
                   </p>
                   <form onSubmit={onSubmit} className="space-y-3">
-                    <div className="grid grid-cols-2 gap-3">
-                      <input
-                        type="text"
-                        required
-                        placeholder="First name"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
-                      />
-                      <input
-                        type="text"
-                        required
-                        placeholder="Last name"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
-                      />
-                    </div>
+                    <input
+                      type="text"
+                      required
+                      placeholder="First name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
+                    />
                     <input
                       type="email"
                       required
-                      placeholder="Email address"
+                      placeholder="Email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
                     />
                     <input
                       type="tel"
-                      required
-                      placeholder="Mobile"
+                      placeholder="Mobile (optional)"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
+                      className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Last name (optional)"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
                       className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
                     />
                     {error && (
