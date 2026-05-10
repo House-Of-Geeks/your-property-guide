@@ -9,19 +9,30 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createClient() {
-  // Connection-pool sizing for Vercel serverless:
-  // - Each function instance handles one request at a time, so max=1 is enough.
-  // - With Postgres max_connections=100 and tens of warm instances under load,
-  //   any larger `max` exhausts the upstream pool (P2037 TooManyConnections).
+  // Connection-pool sizing splits by phase:
+  //
+  // - Runtime (Vercel serverless): each function instance handles one request
+  //   at a time; 1 connection per instance is enough and reuses across warm
+  //   requests via globalForPrisma. Default `max: 10` was the cause of the
+  //   P2037 TooManyConnections outage — under load Vercel spawned many warm
+  //   instances and 10 × instances exhausted Postgres' 100-connection limit.
+  //
+  // - Build (`next build` prerender): pages issue several DB queries in
+  //   parallel inside a single render via `Promise.all`. Capping at 1
+  //   serialises them all and times out the 5s connection wait. Build runs in
+  //   a single container with 3 worker processes, so 10 × 3 = 30 connections
+  //   total is safe.
+  //
   // - idleTimeoutMillis releases unused connections so warm-but-idle instances
   //   don't squat on a slot indefinitely.
   // - connectionTimeoutMillis fails fast instead of hanging the request when
   //   the upstream pool is exhausted.
+  const isBuild = process.env.NEXT_PHASE === "phase-production-build";
   const adapter = new PrismaPg({
     connectionString: process.env.DATABASE_URL!,
-    max: 1,
+    max: isBuild ? 10 : 2,
     idleTimeoutMillis: 30_000,
-    connectionTimeoutMillis: 5_000,
+    connectionTimeoutMillis: isBuild ? 30_000 : 5_000,
   });
   return new PrismaClient({ adapter });
 }
