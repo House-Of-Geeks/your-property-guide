@@ -20,7 +20,7 @@ import { SuburbInvestment } from "@/components/suburb/SuburbInvestment";
 import { SuburbContextualLinks } from "@/components/suburb/SuburbContextualLinks";
 import { SuburbPriceTrend } from "@/components/suburb/SuburbPriceTrend";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
-import { ExpertCTA } from "@/components/journey";
+import { ExpertCTA, StickyMatchCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { Badge, Button } from "@/components/ui";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
@@ -579,6 +579,15 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         body="If you&rsquo;ve looked at the numbers and want someone to talk it through &mdash; an agent, broker, accountant, conveyancer, whoever fits your situation &mdash; we&rsquo;ll find the right person. Free, no commitment."
         ctaLabel="Get connected"
         href={`/?suburb=${slug}#match`}
+      />
+
+      {/* Floating "Get connected" pill — slides up once the user scrolls
+          past 30% of the page. Pre-fills the suburb on click. Dismissible
+          per session. Sits above the mobile bottom nav. */}
+      <StickyMatchCTA
+        suburb={slug}
+        label={`${suburb.name} — get connected`}
+        dismissKey={`suburb:${slug}`}
       />
     </>
   );

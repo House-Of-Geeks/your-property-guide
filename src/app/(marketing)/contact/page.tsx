@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Phone, Mail, Clock } from "lucide-react";
+import Link from "next/link";
+import { Phone, Mail, Clock, ArrowRight } from "lucide-react";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -121,6 +122,28 @@ export default function ContactPage() {
               <h2 className="font-display text-ink leading-tight tracking-tight text-2xl sm:text-3xl">
                 We&rsquo;ll get back to you.
               </h2>
+            </div>
+
+            {/* Cross-link for specialist enquiries — keep the general
+                contact form for everything else, but offer the match flow
+                up-front so the right enquiries land in the right bucket. */}
+            <div className="mb-8 rounded-2xl border border-line-warm bg-surface-warm p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4">
+              <div className="flex-1">
+                <p className="text-xs font-sans uppercase tracking-[0.2em] text-cta mb-1.5">
+                  Looking for a specialist?
+                </p>
+                <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
+                  If you want to be connected with an agent, broker, accountant or
+                  conveyancer for your situation, our match flow will get you there in
+                  three quick questions &mdash; faster than a free-form message.
+                </p>
+              </div>
+              <Link
+                href="/#match"
+                className="shrink-0 inline-flex items-center justify-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-5 py-2.5 text-sm transition-colors whitespace-nowrap"
+              >
+                Get connected <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
 
             <div className="rounded-2xl border border-line bg-surface-raised shadow-card p-6 sm:p-8">
