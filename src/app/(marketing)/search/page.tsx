@@ -5,7 +5,7 @@ import { ArrowRight, MapPin, GraduationCap, BookOpen, FileText, Search as Search
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { unifiedSearch } from "@/lib/services/search-service";
-import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
+import { JumpToSuburb } from "@/components/search/JumpToSuburb";
 import { formatPrice } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
@@ -131,11 +131,7 @@ function EmptyState() {
         <h2 className="font-display text-2xl text-ink leading-tight mb-4">
           Or jump straight to a suburb.
         </h2>
-        <SuburbAutocomplete
-          placeholder="Try Bondi, Newtown, or 4006"
-          onSelectLocation={() => {}}
-          size="lg"
-        />
+        <JumpToSuburb placeholder="Try Bondi, Newtown, or 4006" size="lg" />
         <p className="mt-3 font-sans text-sm text-ink-muted">
           Pick a suburb to see its profile. Or use the full-text search above
           to find suburbs, schools, guides, and glossary terms.

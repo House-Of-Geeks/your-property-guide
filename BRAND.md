@@ -52,7 +52,7 @@ All tokens live in `src/app/globals.css` as CSS custom properties on `:root`, ex
 
 YPG and YFG now share the same palette source: warm off-white background, warm near-black ink, muted terracotta accent. This was a deliberate revert from the purple/magenta direction (logged 2026-05-10). The shared palette signals the network relationship and lets editorial assets be ported between sites.
 
-What still distinguishes YPG from YFG: **content** (suburb data, property research) and **conversion offer** (one match with a vetted local agent vs. one match with a vetted broker). The visual is intentionally aligned.
+What still distinguishes YPG from YFG: **content** (suburb data, property research) and **the network of specialists we match into**. YFG matches into a broker / planner / insurance network; YPG matches into a network that includes buyer's agents, listing agents, brokers, conveyancers and property accountants — because property situations don't always fit one specialist type. The visual is intentionally aligned.
 
 ---
 
@@ -98,7 +98,7 @@ Tailwind defaults (4px base, default radius scale).
 
 | Surface | Recommended radius |
 |---|---|
-| Buttons | `rounded-lg` (8px) — standard | `rounded-full` for pill CTAs and header "Get matched" |
+| Buttons | `rounded-lg` (8px) — standard | `rounded-full` for pill CTAs and header "Get connected" |
 | Pills (badges, tags) | `rounded-full` |
 | Cards | `rounded-xl` (12px) |
 | Modals / large surfaces | `rounded-2xl` (16px) |
@@ -155,14 +155,16 @@ The PNG logo at `/public/images/Your-Property-Guide.png` is no longer in use and
 
 **The homepage is built around one lead engine: `MatchAgent`** ([`src/components/journey/MatchAgent.tsx`](src/components/journey/MatchAgent.tsx)). It mirrors YFG's `Match` pattern (3 single-question screens → compact contact form) for property:
 
-1. **Intent:** Buying / Selling / Investing / Just researching
+1. **Intent:** Buying / Selling / Investing / Refinancing / Something else / Just researching
 2. **Suburb:** SuburbAutocomplete, with "skip — not sure yet" escape
 3. **Timeframe:** Just looking / Within 3 months / Right now
 4. **Contact:** First name, last name, email, mobile
 
-The section sits anchored at `#match` on the homepage, between "Latest guides" and "Why we're free." Hero CTAs and the header "Get matched" pill all anchor here. POSTs to `/api/leads` with `type: "match-request"`.
+The section sits anchored at `#match` on the homepage, between "Latest guides" and "Why we're free." Hero CTAs and the header "Get connected" pill all anchor here. POSTs to `/api/leads` with `type: "match-request"`.
 
-**Why this pattern works:** by step 4 the user has already invested 3 clicks of commitment; the form feels like the *finish* of a process, not the start. This is the YFG-proven structure.
+**Why "right person", not "right agent":** property situations don't always reduce to buyer/seller/investor. People come in with inheritance, divorce, downsizing, refinance, or "I'm just trying to figure out what I'm doing" — and the right specialist for them is sometimes a broker, sometimes a property accountant, sometimes a conveyancer, sometimes an agent. The framing is intentionally agnostic; routing logic decides which specialist type the lead lands with.
+
+**Why the progressive pattern works:** by step 4 the user has already invested 3 clicks of commitment; the form feels like the *finish* of a process, not the start. This is the YFG-proven structure.
 
 ---
 
@@ -186,10 +188,10 @@ Lives on `/about` and is linkable from every lead-form fine print.
 > Free, ungated, never paywalled. Median, growth, schools, walkability, climate, hazard, crime — all the numbers we'd want for our own move. Listings and agent matches sit *inside* that research, not on top of it.
 
 ### 2. Every match is a real match
-> One agent, vetted for the suburb you asked about. Not three competing quotes, not a bidding war for your enquiry. If the right person isn't in our network for your suburb yet, we'll say so.
+> One specialist, vetted and the right fit for your situation — agent, broker, accountant, conveyancer, whoever fits. Not three competing quotes, not a bidding war for your enquiry. If the right person isn't in our network for you yet, we'll say so.
 
-### 3. We earn from agents, not from you
-> Buyers and sellers pay nothing. Agents pay us a referral fee only after they've done engaged work — not for a click, not for an enquiry. We disclose this on every match.
+### 3. We earn from the specialist, not from you
+> Buyers, sellers and anyone using us pay nothing. Specialists pay us a referral fee only after they've done engaged work — not for a click, not for an enquiry. We disclose this on every match.
 
 ### 4. Tell us when we're wrong
 > Suburb data updates monthly; if a school's catchment, a median, or a growth figure looks off to you, flag it and we'll fix it within a week.
@@ -212,7 +214,7 @@ Lives on `/about` and is linkable from every lead-form fine print.
 
 // CTA — terracotta pill
 <button className="rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3">
-  Get matched with a local agent
+  Get connected
 </button>
 
 // Editorial tile (warm cream)

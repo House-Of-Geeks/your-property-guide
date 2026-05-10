@@ -5,7 +5,13 @@ import { ArrowRight, ArrowLeft, Check } from "lucide-react";
 import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 
-type Intent = "buying" | "selling" | "investing" | "researching";
+type Intent =
+  | "buying"
+  | "selling"
+  | "investing"
+  | "refinancing"
+  | "something-else"
+  | "researching";
 type Timeframe = "looking" | "soon" | "now";
 
 interface IntentOption {
@@ -20,11 +26,18 @@ interface TimeframeOption {
   sub: string;
 }
 
+// Broad intent set — property situations are messier than buy/sell/invest.
+// "Something else" exists so people in unique situations (divorce, inheritance,
+// estate, downsizing, planning ahead) feel covered. The right "person" we
+// match them with depends on the intent — could be a buyer's agent, a
+// listing agent, a broker, a property accountant, or a conveyancer.
 const INTENTS: IntentOption[] = [
-  { id: "buying",      label: "Buying",         sub: "First or next home" },
-  { id: "selling",     label: "Selling",        sub: "Need an appraisal" },
-  { id: "investing",   label: "Investing",      sub: "Build a portfolio" },
-  { id: "researching", label: "Just researching", sub: "Want to understand the market" },
+  { id: "buying",         label: "Buying",         sub: "First or next home" },
+  { id: "selling",        label: "Selling",        sub: "Get an appraisal or plan" },
+  { id: "investing",      label: "Investing",      sub: "Build or expand a portfolio" },
+  { id: "refinancing",    label: "Refinancing",    sub: "Lower my rate or restructure" },
+  { id: "something-else", label: "Something else", sub: "Inheritance, divorce, downsizing, planning" },
+  { id: "researching",    label: "Just researching", sub: "Understanding the market" },
 ];
 
 const TIMEFRAMES: TimeframeOption[] = [
@@ -134,14 +147,15 @@ export function MatchAgent() {
               the right person.
             </h2>
             <p className="text-base sm:text-lg text-white/70 leading-relaxed max-w-md mb-10">
-              Three quick questions. We&rsquo;ll match you with one vetted local agent
-              whose patch is your suburb. Free, no comparison spam, and you decide
-              whether to take it any further.
+              Three quick questions. We&rsquo;ll point you to the one specialist
+              who fits your situation &mdash; agent, broker, property accountant,
+              conveyancer, whoever&rsquo;s right. Free, no comparison spam, and you
+              decide whether to take it any further.
             </p>
             <div className="grid grid-cols-2 gap-x-6 gap-y-6 max-w-md">
               {[
                 ["01", "You answer 3 quick questions"],
-                ["02", "We pick the best-fit local agent"],
+                ["02", "We pick the best-fit specialist"],
                 ["03", "They reach out within 24 hours"],
                 ["04", "You decide whether to proceed"],
               ].map(([n, t]) => (
@@ -176,7 +190,7 @@ export function MatchAgent() {
               {step === 0 && !submitted && (
                 <div>
                   <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
-                    What are you working on?
+                    What&rsquo;s your situation?
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {INTENTS.map((opt) => {
@@ -251,7 +265,7 @@ export function MatchAgent() {
               {step === 2 && !submitted && (
                 <div>
                   <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
-                    When are you looking to move?
+                    What&rsquo;s the timing?
                   </h3>
                   <div className="flex flex-col gap-3">
                     {TIMEFRAMES.map((opt) => {
@@ -299,7 +313,7 @@ export function MatchAgent() {
                     Pop your details in and we&rsquo;ll make the introduction.
                   </h3>
                   <p className="text-sm text-ink-muted leading-relaxed mb-5">
-                    You&rsquo;ll get an email confirmation with the agent&rsquo;s profile before they reach out.
+                    You&rsquo;ll get an email confirmation with their profile before they reach out.
                     No commitment, no comparison spam.
                   </p>
                   <form onSubmit={onSubmit} className="space-y-3">
@@ -373,7 +387,7 @@ export function MatchAgent() {
                   </h3>
                   <p className="text-sm text-ink-muted leading-relaxed mb-6">
                     Look out for an email at <strong className="text-ink">{email}</strong> within
-                    one business day with your agent&rsquo;s profile and a way to book a call.
+                    one business day with their profile and a way to book a call.
                   </p>
                   <button
                     onClick={reset}

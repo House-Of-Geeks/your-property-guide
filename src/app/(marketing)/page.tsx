@@ -84,7 +84,7 @@ export default function HomePage() {
               href="#match"
               className="inline-flex items-center gap-2 rounded-full border border-line-strong text-ink hover:border-ink px-6 py-3 text-sm font-medium transition-colors"
             >
-              Or get matched with a local agent
+              Or get connected
             </Link>
           </div>
 
