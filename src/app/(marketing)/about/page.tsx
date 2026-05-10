@@ -151,10 +151,10 @@ export default function AboutPage() {
           </h2>
           <div className="prose-ypg">
             <p>
-              When you&rsquo;re ready to talk to a buyer&rsquo;s agent or
-              mortgage broker, we&rsquo;ll match you with someone we&rsquo;d
-              use ourselves. They pay us a referral fee only when matched work
-              goes ahead.
+              When you&rsquo;re ready to talk to a specialist &mdash; agent, broker,
+              property accountant, conveyancer, whoever fits your situation
+              &mdash; we&rsquo;ll match you with someone we&rsquo;d use ourselves.
+              They pay us a referral fee only when matched work goes ahead.
             </p>
             <p>
               We disclose this on every match. We don&rsquo;t sell your data.
@@ -162,14 +162,21 @@ export default function AboutPage() {
               ourselves. And the data, guides, calculators and suburb profiles
               stay free regardless.
             </p>
-            <p>
-              <Link
-                href="/find-an-expert"
-                className="inline-flex items-center gap-1.5 text-ink hover:text-primary border-b border-line-strong hover:border-primary pb-0.5 font-medium"
-              >
-                See how the matching works <ArrowRight className="w-4 h-4" />
-              </Link>
-            </p>
+          </div>
+
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <Link
+              href="/#match"
+              className="inline-flex items-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors"
+            >
+              Get connected <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/find-an-expert"
+              className="inline-flex items-center gap-1.5 text-ink-muted hover:text-ink border-b border-line-strong hover:border-ink pb-0.5 text-sm font-medium"
+            >
+              Or read how matching works
+            </Link>
           </div>
         </div>
       </section>

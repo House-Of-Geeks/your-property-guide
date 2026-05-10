@@ -228,7 +228,18 @@ export default function FindAnExpertPage() {
         </div>
       </section>
 
-      {/* How matching works */}
+      {/* Embedded match engine — same component as the homepage. Lane
+          buttons above push ?intent=... which re-keys this embed so the
+          form opens at the right step. Placed here (immediately after the
+          lanes) so a lane click on mobile lands the user right on the
+          form rather than scrolling past two more sections of copy. */}
+      <Suspense fallback={null}>
+        <MatchAgentEmbed />
+      </Suspense>
+
+      {/* How matching works — sits below the form as supporting copy for
+          anyone who scrolled past the form without engaging. The CTA here
+          still anchors to #match (scrolls up to the form). */}
       <section className="py-16 bg-surface-sunken">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-12 max-w-2xl">
@@ -253,13 +264,6 @@ export default function FindAnExpertPage() {
           </div>
         </div>
       </section>
-
-      {/* Embedded match engine — same component as the homepage. Lane
-          buttons above push ?intent=... which re-keys this embed so the
-          form opens at the right step. */}
-      <Suspense fallback={null}>
-        <MatchAgentEmbed />
-      </Suspense>
 
       {/* Why we're free */}
       <section className="py-16">
