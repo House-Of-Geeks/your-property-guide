@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { UserCircle } from "lucide-react";
 import { NewsletterForm as NewsletterFormFooter } from "@/components/newsletter/NewsletterForm";
 
@@ -182,10 +181,11 @@ function FooterBottom() {
     <div className="mt-12 pt-8 border-t border-white/10">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
         <div className="flex flex-col items-center sm:items-start gap-3">
-          <Link href="/" className="flex items-center">
-            <Image src="/images/Your-Property-Guide.png" alt="Your Property Guide" width={400} height={64} className="h-16 w-auto invert" />
+          <Link href="/" className="flex items-center gap-3">
+            <span className="inline-flex items-center justify-center w-2 h-2 rounded-full bg-accent" aria-hidden="true" />
+            <span className="font-display text-white text-2xl tracking-tight leading-none">Your Property Guide</span>
           </Link>
-          <p className="text-sm text-white/50">Australia&apos;s trusted property research platform</p>
+          <p className="text-sm text-white/50">Australia&apos;s plain-English property guide</p>
         </div>
         <div className="flex flex-col items-center gap-3">
           <div className="flex gap-4">
@@ -262,7 +262,7 @@ function SuburbFooter({ name, slug, nearbySuburbs }: { name: string; slug: strin
   ];
 
   return (
-    <footer className="bg-[#0a0a0a] text-white border-t-4 border-t-white">
+    <footer className="bg-surface-inverse text-white border-t-4 border-t-white">
       <AgentLoginPill />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
@@ -300,7 +300,7 @@ function SuburbFooter({ name, slug, nearbySuburbs }: { name: string; slug: strin
 // route group.
 export function Footer() {
   return (
-    <footer className="bg-[#0a0a0a] text-white border-t border-white/10">
+    <footer className="bg-surface-inverse text-white border-t border-white/10">
       <AgentLoginPill />
       <NewsletterBand />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">

@@ -1,0 +1,392 @@
+"use client";
+
+import { useState } from "react";
+import { ArrowRight, ArrowLeft, Check } from "lucide-react";
+import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
+import { clarityEvent, clarityTag } from "@/lib/clarity";
+
+type Intent = "buying" | "selling" | "investing" | "researching";
+type Timeframe = "looking" | "soon" | "now";
+
+interface IntentOption {
+  id: Intent;
+  label: string;
+  sub: string;
+}
+
+interface TimeframeOption {
+  id: Timeframe;
+  label: string;
+  sub: string;
+}
+
+const INTENTS: IntentOption[] = [
+  { id: "buying",      label: "Buying",         sub: "First or next home" },
+  { id: "selling",     label: "Selling",        sub: "Need an appraisal" },
+  { id: "investing",   label: "Investing",      sub: "Build a portfolio" },
+  { id: "researching", label: "Just researching", sub: "Want to understand the market" },
+];
+
+const TIMEFRAMES: TimeframeOption[] = [
+  { id: "looking", label: "Just looking",    sub: "No deadline yet" },
+  { id: "soon",    label: "Within 3 months", sub: "Ready to take action" },
+  { id: "now",     label: "Right now",       sub: "I have a deadline" },
+];
+
+const labelForIntent = (id: Intent) => INTENTS.find((i) => i.id === id)?.label ?? "";
+const labelForTimeframe = (id: Timeframe) => TIMEFRAMES.find((t) => t.id === id)?.label ?? "";
+
+/**
+ * MatchAgent — homepage lead engine.
+ * Three single-question screens (intent / suburb / timeframe) → compact contact form.
+ * Mirrors the conversion pattern that's working on Your Finance Guide.
+ */
+export function MatchAgent() {
+  const [step, setStep] = useState(0);
+  const [intent, setIntent] = useState<Intent | null>(null);
+  const [suburbSlug, setSuburbSlug] = useState<string | null>(null);
+  const [suburbLabel, setSuburbLabel] = useState<string | null>(null);
+  const [timeframe, setTimeframe] = useState<Timeframe | null>(null);
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const reset = () => {
+    setStep(0);
+    setIntent(null);
+    setSuburbSlug(null);
+    setSuburbLabel(null);
+    setTimeframe(null);
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPhone("");
+    setSubmitted(false);
+    setError(null);
+  };
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!intent || !timeframe) return;
+    setError(null);
+    setSubmitting(true);
+    try {
+      const message = [
+        `Intent: ${labelForIntent(intent)}`,
+        `Suburb: ${suburbLabel ?? "Not specified"}`,
+        `Timeframe: ${labelForTimeframe(timeframe)}`,
+      ].join(" · ");
+
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "match-request",
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          message,
+          suburb: suburbSlug ?? undefined,
+          source: "homepage-match",
+        }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.error ?? "Submit failed");
+      }
+      clarityEvent("match_request_submitted");
+      clarityTag("match_intent", intent);
+      clarityTag("match_timeframe", timeframe);
+      if (suburbSlug) clarityTag("match_suburb", suburbSlug);
+      setSubmitted(true);
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const stepTotal = 4;
+  const stepIndex = Math.min(step, stepTotal - 1);
+
+  return (
+    <section
+      id="match"
+      className="bg-surface-inverse text-white scroll-mt-24"
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          {/* Left — pitch */}
+          <div className="lg:col-span-5">
+            <p className="text-xs uppercase tracking-[0.18em] text-cta mb-5">
+              When you&rsquo;re ready
+            </p>
+            <h2 className="font-display text-white leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6">
+              Tell us your situation.{" "}
+              <span className="italic font-light text-cta">We&rsquo;ll find</span>{" "}
+              the right person.
+            </h2>
+            <p className="text-base sm:text-lg text-white/70 leading-relaxed max-w-md mb-10">
+              Three quick questions. We&rsquo;ll match you with one vetted local agent
+              whose patch is your suburb. Free, no comparison spam, and you decide
+              whether to take it any further.
+            </p>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-6 max-w-md">
+              {[
+                ["01", "You answer 3 quick questions"],
+                ["02", "We pick the best-fit local agent"],
+                ["03", "They reach out within 24 hours"],
+                ["04", "You decide whether to proceed"],
+              ].map(([n, t]) => (
+                <div key={n} className="border-t border-white/15 pt-4">
+                  <p className="text-[11px] uppercase tracking-[0.14em] text-cta mb-1.5">{n}</p>
+                  <p className="text-sm text-white/85 leading-snug">{t}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right — form panel */}
+          <div className="lg:col-span-7 lg:col-start-6">
+            <div className="bg-surface-warm text-ink rounded-2xl p-8 sm:p-10 shadow-2xl">
+              {/* Progress bar */}
+              <div className="flex items-center gap-2 mb-8">
+                {[0, 1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className="flex-1 h-[3px] rounded-full transition-colors duration-300"
+                    style={{
+                      background: i <= stepIndex ? "var(--cta)" : "var(--line)",
+                    }}
+                  />
+                ))}
+                <p className="ml-2 text-[11px] font-medium uppercase tracking-wider text-ink-subtle whitespace-nowrap">
+                  {Math.min(step + 1, stepTotal)} / {stepTotal}
+                </p>
+              </div>
+
+              {/* Step 0 — Intent */}
+              {step === 0 && !submitted && (
+                <div>
+                  <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
+                    What are you working on?
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {INTENTS.map((opt) => {
+                      const active = intent === opt.id;
+                      return (
+                        <button
+                          key={opt.id}
+                          onClick={() => {
+                            setIntent(opt.id);
+                            setStep(1);
+                          }}
+                          className={`text-left rounded-xl border px-4 py-4 transition-all cursor-pointer ${
+                            active
+                              ? "bg-ink text-white border-ink"
+                              : "bg-surface-raised text-ink border-line hover:border-line-strong"
+                          }`}
+                        >
+                          <p className="text-sm font-semibold mb-1">{opt.label}</p>
+                          <p className={`text-xs ${active ? "text-white/65" : "text-ink-subtle"}`}>
+                            {opt.sub}
+                          </p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Step 1 — Suburb */}
+              {step === 1 && !submitted && (
+                <div>
+                  <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-2">
+                    Which suburb?
+                  </h3>
+                  <p className="text-sm text-ink-muted mb-5">
+                    Pick the suburb you&rsquo;re focused on, or skip if you&rsquo;re still narrowing it down.
+                  </p>
+                  <SuburbAutocomplete
+                    placeholder="e.g. Burpengary, 4505, North Lakes"
+                    onSelectLocation={(slug, label) => {
+                      setSuburbSlug(slug);
+                      setSuburbLabel(label);
+                      setStep(2);
+                    }}
+                    onClear={() => {
+                      setSuburbSlug(null);
+                      setSuburbLabel(null);
+                    }}
+                  />
+                  <div className="mt-4 flex items-center justify-between">
+                    <button
+                      onClick={() => setStep(0)}
+                      className="inline-flex items-center gap-1.5 text-xs text-ink-subtle hover:text-ink transition-colors cursor-pointer"
+                    >
+                      <ArrowLeft className="w-3.5 h-3.5" /> Back
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSuburbSlug(null);
+                        setSuburbLabel("Not sure yet");
+                        setStep(2);
+                      }}
+                      className="text-xs text-ink-muted hover:text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink transition-colors cursor-pointer"
+                    >
+                      Skip — not sure yet →
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 2 — Timeframe */}
+              {step === 2 && !submitted && (
+                <div>
+                  <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
+                    When are you looking to move?
+                  </h3>
+                  <div className="flex flex-col gap-3">
+                    {TIMEFRAMES.map((opt) => {
+                      const active = timeframe === opt.id;
+                      return (
+                        <button
+                          key={opt.id}
+                          onClick={() => {
+                            setTimeframe(opt.id);
+                            setStep(3);
+                          }}
+                          className={`flex items-center justify-between rounded-xl border px-5 py-4 transition-all cursor-pointer ${
+                            active
+                              ? "bg-ink text-white border-ink"
+                              : "bg-surface-raised text-ink border-line hover:border-line-strong"
+                          }`}
+                        >
+                          <div className="text-left">
+                            <p className="text-sm font-semibold mb-1">{opt.label}</p>
+                            <p className={`text-xs ${active ? "text-white/65" : "text-ink-subtle"}`}>
+                              {opt.sub}
+                            </p>
+                          </div>
+                          <ArrowRight className={`w-4 h-4 ${active ? "text-white/70" : "text-ink-subtle"}`} />
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <button
+                    onClick={() => setStep(1)}
+                    className="mt-4 inline-flex items-center gap-1.5 text-xs text-ink-subtle hover:text-ink transition-colors cursor-pointer"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" /> Back
+                  </button>
+                </div>
+              )}
+
+              {/* Step 3 — Contact */}
+              {step === 3 && !submitted && (
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-3">
+                    We&rsquo;ve got the right person for you
+                  </p>
+                  <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-3">
+                    Pop your details in and we&rsquo;ll make the introduction.
+                  </h3>
+                  <p className="text-sm text-ink-muted leading-relaxed mb-5">
+                    You&rsquo;ll get an email confirmation with the agent&rsquo;s profile before they reach out.
+                    No commitment, no comparison spam.
+                  </p>
+                  <form onSubmit={onSubmit} className="space-y-3">
+                    <div className="grid grid-cols-2 gap-3">
+                      <input
+                        type="text"
+                        required
+                        placeholder="First name"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
+                      />
+                      <input
+                        type="text"
+                        required
+                        placeholder="Last name"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
+                      />
+                    </div>
+                    <input
+                      type="email"
+                      required
+                      placeholder="Email address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
+                    />
+                    <input
+                      type="tel"
+                      required
+                      placeholder="Mobile"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
+                    />
+                    {error && (
+                      <p className="text-sm text-danger">{error}</p>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3.5 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                    >
+                      {submitting ? "Sending…" : "Send my introduction"}
+                      {!submitting && <ArrowRight className="w-4 h-4" />}
+                    </button>
+                    <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
+                      Free, no commitment. We&rsquo;ll never sell your details. Read our{" "}
+                      <a href="/privacy" className="underline underline-offset-2 hover:text-ink">privacy policy</a>.
+                    </p>
+                  </form>
+                  <button
+                    onClick={() => setStep(2)}
+                    className="mt-4 inline-flex items-center gap-1.5 text-xs text-ink-subtle hover:text-ink transition-colors cursor-pointer"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" /> Back
+                  </button>
+                </div>
+              )}
+
+              {/* Confirmation */}
+              {submitted && (
+                <div className="py-4">
+                  <div className="w-14 h-14 rounded-full bg-cta text-white grid place-items-center mb-5">
+                    <Check className="w-7 h-7" strokeWidth={2.5} />
+                  </div>
+                  <h3 className="font-display text-3xl text-ink leading-tight tracking-tight mb-3">
+                    On its way.
+                  </h3>
+                  <p className="text-sm text-ink-muted leading-relaxed mb-6">
+                    Look out for an email at <strong className="text-ink">{email}</strong> within
+                    one business day with your agent&rsquo;s profile and a way to book a call.
+                  </p>
+                  <button
+                    onClick={reset}
+                    className="text-xs text-ink-muted hover:text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink transition-colors cursor-pointer"
+                  >
+                    Start over →
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

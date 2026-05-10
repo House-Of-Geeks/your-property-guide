@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { Menu, X, ChevronDown, UserCircle, Search } from "lucide-react";
 
@@ -106,19 +105,14 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-surface-inverse border-b border-white/10">
+    <header className="sticky top-0 z-50 bg-surface/95 backdrop-blur border-b border-line">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between gap-4">
-          <Link href="/" className="flex items-center shrink-0">
-            <Image
-              src="/images/Your-Property-Guide.png"
-              alt="Your Property Guide"
-              width={480}
-              height={80}
-              className="h-14 w-auto invert"
-              style={{ width: "auto" }}
-              priority
-            />
+          <Link href="/" className="flex items-center gap-3 shrink-0">
+            <span className="inline-flex items-center justify-center w-2 h-2 rounded-full bg-accent" aria-hidden="true" />
+            <span className="font-display text-ink text-xl sm:text-[22px] tracking-tight leading-none">
+              Your Property Guide
+            </span>
           </Link>
 
           <nav ref={navRef} className="hidden lg:flex items-center gap-1">
@@ -129,7 +123,7 @@ export function Header() {
                     onClick={() => toggle(link.label)}
                     aria-expanded={openMenu === link.label}
                     aria-haspopup="menu"
-                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-white/80 hover:text-white rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-ink-muted hover:text-ink rounded-lg hover:bg-surface-warm transition-colors cursor-pointer"
                   >
                     {link.label}
                     <ChevronDown className={`w-4 h-4 transition-transform ${openMenu === link.label ? "rotate-180" : ""}`} />
@@ -149,7 +143,7 @@ export function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="px-3 py-2 text-sm font-medium text-white/80 hover:text-white rounded-lg hover:bg-white/10 transition-colors"
+                  className="px-3 py-2 text-sm font-medium text-ink-muted hover:text-ink rounded-lg hover:bg-surface-warm transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -157,26 +151,32 @@ export function Header() {
             )}
           </nav>
 
-          {/* RHS, quiet utilities only. No magenta CTA. */}
+          {/* RHS — search, agent login, primary "Get matched" CTA */}
           <div className="flex items-center gap-2 shrink-0">
             <Link
               href="/search"
               aria-label="Search the site"
               title="Search suburbs, schools, guides &amp; glossary"
-              className="hidden md:flex p-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+              className="hidden md:flex p-2 text-ink-muted hover:text-ink hover:bg-surface-warm rounded-lg transition-colors"
             >
               <Search className="w-5 h-5" />
             </Link>
             <Link
               href="/dashboard/login"
-              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white/60 border border-white/15 rounded-full hover:border-white hover:text-white transition-colors"
+              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-ink-muted border border-line rounded-full hover:border-ink hover:text-ink transition-colors"
             >
               <UserCircle className="w-3.5 h-3.5" />
               Agent login
             </Link>
+            <Link
+              href="/#match"
+              className="hidden md:inline-flex items-center gap-1.5 rounded-full bg-cta hover:bg-cta-hover text-white px-4 py-2 text-xs font-semibold transition-colors"
+            >
+              Get matched
+            </Link>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden p-2 text-white/80 hover:bg-white/10 rounded-lg cursor-pointer"
+              className="lg:hidden p-2 text-ink-muted hover:text-ink hover:bg-surface-warm rounded-lg cursor-pointer"
               aria-label="Toggle menu"
               aria-expanded={mobileOpen}
             >
@@ -188,12 +188,12 @@ export function Header() {
 
       {/* Mobile Nav */}
       {mobileOpen && (
-        <div className="lg:hidden border-t border-white/10 bg-surface-inverse max-h-[calc(100vh-5rem)] overflow-y-auto">
+        <div className="lg:hidden border-t border-line bg-surface max-h-[calc(100vh-5rem)] overflow-y-auto">
           <nav className="mx-auto max-w-7xl px-4 py-4 space-y-1">
             {NAV_LINKS.map((link) =>
               link.children ? (
                 <div key={link.label}>
-                  <p className="px-3 py-2 text-xs font-semibold text-white/40 uppercase tracking-wider">
+                  <p className="px-3 py-2 text-xs font-semibold text-ink-subtle uppercase tracking-wider">
                     {link.label}
                   </p>
                   {link.children.map((child) => (
@@ -201,7 +201,7 @@ export function Header() {
                       key={`${child.href}-${child.label}`}
                       href={child.href}
                       onClick={() => setMobileOpen(false)}
-                      className="block px-3 py-2 text-sm text-white/70 hover:text-white hover:bg-white/10 rounded-lg pl-6"
+                      className="block px-3 py-2 text-sm text-ink-muted hover:text-ink hover:bg-surface-warm rounded-lg pl-6"
                     >
                       {child.label}
                     </Link>
@@ -212,17 +212,24 @@ export function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="block px-3 py-2 text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 rounded-lg"
+                  className="block px-3 py-2 text-sm font-medium text-ink-muted hover:text-ink hover:bg-surface-warm rounded-lg"
                 >
                   {link.label}
                 </Link>
               )
             )}
-            <div className="pt-4 mt-2 border-t border-white/10">
+            <div className="pt-4 mt-2 border-t border-line space-y-2">
+              <Link
+                href="/#match"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-sm font-semibold text-white bg-cta hover:bg-cta-hover rounded-full transition-colors"
+              >
+                Get matched with an agent
+              </Link>
               <Link
                 href="/dashboard/login"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-sm font-medium text-white/70 border border-white/20 rounded-full hover:border-white hover:text-white transition-colors"
+                className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-sm font-medium text-ink-muted border border-line rounded-full hover:border-ink hover:text-ink transition-colors"
               >
                 <UserCircle className="w-4 h-4" />
                 Agent login

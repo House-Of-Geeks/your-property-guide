@@ -1,257 +1,225 @@
-# BRAND.md, Your Property Guide design system
+# BRAND.md — Your Property Guide
 
-**Status:** Phase 2 baseline. Tokens additive. Component palette unchanged this phase. Visual evolution lands in Phase 3.
+**Status:** v3 (2026-05-10). Visually reskinned to align with sister brand Your Finance Guide (YFG). Previous purple/magenta + Playfair direction was reverted because conversion data showed the differentiated visual identity wasn't paying off in leads. YPG now adopts YFG's warm-cream + terracotta editorial system, plus YFG's progressive lead-form pattern.
 
-**Operating principle (the hook):** *"Suburb first. Property second. Agent third."*
-**Hero rewrite of YFG's "Learn the money stuff first…":** *"Know the suburb. Then make the move."*
-
-YPG is a sister brand to **Your Finance Guide** but carries only the philosophy across, not the visual skin. YFG is editorial-warm, sans-only, orange/teal accent. YPG is editorial-premium, serif-headed, purple/magenta. Both honour: education first, single match, transparent referral economics.
+**Operating principle:** *"Suburb first. Property second. Agent third."*
+**Hero line:** *"Free property research, written for normal people."*
 
 ---
 
 ## 1. Colour
 
-All tokens live in `src/app/globals.css` as CSS custom properties on `:root`, exposed to Tailwind v4 utilities via `@theme inline`. **There is no `tailwind.config` file**, v4 reads tokens from CSS.
+All tokens live in `src/app/globals.css` as CSS custom properties on `:root`, exposed to Tailwind v4 utilities via `@theme inline`. **There is no `tailwind.config` file** — v4 reads tokens from CSS.
 
-### 1a. Brand ramps (already in place)
+### 1a. Brand ramps
 
-| Token | Hex | Role |
+| Token | Value | Role |
 |---|---|---|
-| `--primary` | `#5c2d5e` | Brand core, deep purple. Identity-defining. Use sparingly (focus rings, brand marks, key affordances). |
-| `--primary-light` / `-lighter` | `#8B4A8C` / `#A96DAA` | Hover and inactive states for primary surfaces. |
-| `--primary-dark` / `-darker` | `#4E1F4F` / `#351438` | Pressed and high-emphasis states. |
-| `--accent` | `#DD3C70` | Magenta, the **CTA colour**. Used on conversion-critical buttons. |
-| `--accent-light` / `-lighter` | `#E5638F` / `#EDA3BB` | Accent backgrounds, hover. |
-| `--accent-dark` / `-darker` | `#C42B5C` / `#9E1F48` | Pressed, contrast layouts. |
-| `--gray-50…900` | Tailwind's grey ramp | Re-declared as CSS vars for consistent theming. |
+| `--background` | `oklch(0.975 0.012 80)` | Warm off-white page surface |
+| `--foreground` | `oklch(0.18 0.015 60)` | Warm near-black ink |
+| `--primary` | `oklch(0.46 0.14 40)` | Terracotta deep — editorial italic accent, focus rings |
+| `--primary-light` | `oklch(0.58 0.14 42)` | Terracotta mid |
+| `--primary-lighter` | `oklch(0.74 0.10 45)` | Terracotta soft |
+| `--primary-dark` / `darker` | `oklch(0.42 / 0.36 0.13 38–40)` | Pressed states |
+| `--accent` / `--cta` | `oklch(0.58 0.14 42)` | Terracotta — CTA buttons |
+| `--accent-dark` / `--cta-hover` | `oklch(0.46 0.14 40)` | CTA hover/pressed |
+| `--gray-50…900` | Warmed neutral ramp | Greyscale, slightly warm-tinted to harmonise |
 
-**Why purple+magenta and not the brief's terracotta/teal/sandstone:** purple/magenta is the most YPG-distinct thing in the codebase. It reads as place-evoking premium without going generic-fintech. Decision logged in [project memory](~/.claude/projects/-Volumes-AM--BAU--Your-Property-Guide/memory/project_ypg_phase2_brand_decisions.md). Re-litigate if needed.
-
-### 1b. Semantic tokens (added in Phase 2)
-
-These are additive, they map onto the existing ramps so nothing visual changes today, but new components should consume the semantic name (`text-ink-muted`) rather than the literal (`text-gray-600`). Migration of existing components is opportunistic.
+### 1b. Semantic tokens
 
 | Token | Maps to | Use |
 |---|---|---|
-| `--ink` | `--gray-900` | Primary text. |
-| `--ink-muted` | `--gray-600` | Secondary text, captions on white. |
-| `--ink-subtle` | `--gray-400` | Tertiary text, placeholder, disabled. |
-| `--surface` | `--background` | Default page background. |
-| `--surface-raised` | `#ffffff` | Cards, modals, dropdowns. |
-| `--surface-sunken` | `--gray-50` | Inset blocks, footnotes, code. |
-| `--surface-inverse` | `#0a0a0a` | Dark sections (matches Footer + Header). |
-| `--surface-warm` | `#f7f6f4` | Editorial / tile backgrounds. **Tokenises hex literals already inlined in `home/ResearchTopics.tsx` and `home/SuburbSpotlight.tsx`.** |
-| `--surface-warm-sunken` | `#f0efec` | Nested tile within warm surface. |
-| `--line` | `--gray-200` | Default borders, dividers. |
-| `--line-strong` | `--gray-300` | Higher-contrast borders. |
-| `--line-warm` | `#e8e6e2` | Borders on warm-surface tiles. |
-| `--success` | `#157f3c` | Confirmations, "indexed", "for sale". |
-| `--warning` | `#b95b00` | "Off-market", "low data confidence". |
-| `--danger` | `#b42233` | Validation errors, destructive actions. |
-| `--info` | `--primary` | Informational callouts. Reuses primary purple deliberately, info messages should feel branded, not stock blue. |
-| `--cta` | `--accent` | The conversion magenta. Use on "Book free appraisal", "Match me with…", lead-form submit. |
-| `--cta-hover` | `--accent-dark` | CTA hover state. |
+| `--ink` | `--gray-900` | Primary text |
+| `--ink-muted` | `--gray-600` | Secondary text, captions |
+| `--ink-subtle` | `--gray-400` | Tertiary text, placeholder |
+| `--surface` | `--background` | Default page background |
+| `--surface-raised` | `oklch(0.99 0.006 80)` | Cards, modals (paper-white) |
+| `--surface-sunken` | `--gray-50` | Inset blocks, footnotes |
+| `--surface-inverse` | `oklch(0.18 0.015 60)` | Dark ink sections (Footer, MatchAgent) |
+| `--surface-warm` | `oklch(0.95 0.018 75)` | Editorial tile backgrounds |
+| `--surface-warm-sunken` | `oklch(0.92 0.022 75)` | Nested tile within warm surface |
+| `--line` | `oklch(0.86 0.018 70)` | Default borders |
+| `--line-strong` | `oklch(0.78 0.020 70)` | Higher-contrast borders, input borders |
+| `--line-warm` | `oklch(0.91 0.015 75)` | Borders on warm-surface tiles |
+| `--success` | `#157f3c` | "For sale", "indexed" |
+| `--warning` | `#b95b00` | "Off-market", "low data confidence" |
+| `--danger` | `#b42233` | Validation errors |
+| `--cta` | `--accent` | Conversion buttons — terracotta |
 
-**Tailwind utility names** generated from the tokens above: `bg-ink`, `text-ink-muted`, `text-ink-subtle`, `bg-surface`, `bg-surface-raised`, `bg-surface-sunken`, `bg-surface-inverse`, `bg-surface-warm`, `bg-surface-warm-sunken`, `border-line`, `border-line-strong`, `border-line-warm`, `bg-success`/`text-success`, `bg-warning`, `bg-danger`, `bg-info`, `bg-cta`, `bg-cta-hover` (and analogous `text-`, `border-`, `ring-` variants).
+**Tailwind utility names** generated from these: `bg-ink`, `text-ink-muted`, `text-ink-subtle`, `bg-surface`, `bg-surface-raised`, `bg-surface-sunken`, `bg-surface-inverse`, `bg-surface-warm`, `bg-surface-warm-sunken`, `border-line`, `border-line-strong`, `border-line-warm`, `bg-success`/`text-success`, `bg-warning`, `bg-danger`, `bg-cta`, `bg-cta-hover` (and analogous `text-`, `border-`, `ring-` variants).
 
-### 1c. Accessibility contrast
+### 1c. Sister-brand alignment
 
-All token pairings tested for WCAG AA on white surface (≥ 4.5:1 for body text):
+YPG and YFG now share the same palette source: warm off-white background, warm near-black ink, muted terracotta accent. This was a deliberate revert from the purple/magenta direction (logged 2026-05-10). The shared palette signals the network relationship and lets editorial assets be ported between sites.
 
-| Pairing | Ratio | Use |
-|---|---|---|
-| `--ink` on white | 17.7:1 | Body, headings (AAA) |
-| `--ink-muted` on white | 6.3:1 | Captions, secondary text (AAA) |
-| `--ink-subtle` on white | 3.4:1 | **Decorative only**, fails AA for body. Never use for actionable text. |
-| `--primary` on white | 9.4:1 | Primary on light surface (AAA) |
-| `--accent` (CTA) on white | 4.6:1 | Just-above AA. Acceptable for ≥14px bold buttons; ensure CTA buttons hit min size. |
-| `--success` on white | 5.2:1 | AA |
-| `--warning` on white | 5.0:1 | AA |
-| `--danger` on white | 5.4:1 | AA |
-| White on `--primary` | 9.4:1 | AAA |
-| White on `--cta` (`--accent`) | 4.6:1 | AA, fine for button labels; don't use for body text on accent backgrounds. |
+What still distinguishes YPG from YFG: **content** (suburb data, property research) and **conversion offer** (one match with a vetted local agent vs. one match with a vetted broker). The visual is intentionally aligned.
 
 ---
 
 ## 2. Typography
 
-**Loaded once in `src/app/layout.tsx` via `next/font/google`.** No FOUT, `display: swap`, hosted by Vercel's CDN.
+**Loaded once in `src/app/layout.tsx` via `next/font/google`.**
 
-| Role | Family | Variable | Weights loaded |
+| Role | Family | Variable | Weights / styles |
 |---|---|---|---|
-| Display / headings | **Playfair Display** | `--font-display` | 400 / 500 / 600 / 700 |
-| Body / UI | **Plus Jakarta Sans** | `--font-sans` | 300 / 400 / 500 / 600 / 700 |
+| Display / headings | **Fraunces** | `--font-display` | 300 / 400 / 500 / 600 + italic |
+| Body / UI | **Manrope** | `--font-sans` | 300 / 400 / 500 / 600 / 700 |
 
 Applied globally in `globals.css`:
-- `body { font-family: var(--font-sans), system-ui, -apple-system, sans-serif; line-height: 1.625; }`
+- `body { font-family: var(--font-sans), system-ui, sans-serif; line-height: 1.625; }`
 - `h1..h6 { font-family: var(--font-display), Georgia, serif; }`
-- `h1 { line-height: 1.15; }` (overrides Tailwind's tight `text-5xl/6xl` defaults).
+- `h1 { line-height: 1.15; }` (overrides Tailwind's tight `text-5xl/6xl` defaults)
 
-**Why these two and not a swap to YFG-style sans-only:** Playfair gives YPG editorial-premium gravitas without the cost of a custom display face; Plus Jakarta is highly readable and pairs cleanly. The existing `font-preview` page (now removed in favour of `/design-system`) compared three options, this is the chosen Option B.
+**Why Fraunces + Manrope:** matches YFG. Fraunces is a variable serif with light italic that gives the YFG-style "italic emphasis" treatment in headlines (`<span className="italic font-light text-primary">…</span>` in hero copy). Manrope reads cleanly at 14–18px and pairs well at body weight.
 
 ### 2a. Type scale
 
-YPG uses Tailwind's default modular scale; codify which utility belongs to which role rather than redefining the scale.
-
-| Role | Tailwind utility | Px (mobile / desktop) | When to use |
+| Role | Tailwind utility | Px | When |
 |---|---|---|---|
-| Display | `text-5xl` to `text-7xl` | 48 / 60 / 72 | Hero only. |
-| H1 | `text-4xl sm:text-5xl` | 36 / 48 | Page hero headline. |
-| H2 | `text-3xl sm:text-4xl` | 30 / 36 | Section headings. |
-| H3 | `text-2xl` | 24 | Sub-section headings. |
-| H4 | `text-xl` | 20 | Card titles, emphasis. |
-| Body large | `text-lg` | 18 | Hero subtitles, lead paragraphs. |
-| Body | `text-base` | 16 | Default, **never go below**. |
-| Caption / meta | `text-sm` | 14 | Captions, labels, metadata. |
-| Eyebrow | `text-xs uppercase tracking-wider` | 12 | Section eyebrows. |
+| Display | `text-5xl` to `text-7xl` | 48 / 60 / 72 | Hero only |
+| H1 | `text-4xl sm:text-5xl` | 36 / 48 | Page hero headline |
+| H2 | `text-3xl sm:text-4xl` | 30 / 36 | Section headings |
+| H3 | `text-2xl` | 24 | Sub-section headings |
+| H4 | `text-xl` | 20 | Card titles |
+| Body large | `text-lg` | 18 | Hero subtitle, lead paragraphs |
+| Body | `text-base` | 16 | Default — never go below |
+| Caption / meta | `text-sm` | 14 | Captions, labels |
+| Eyebrow | `text-xs uppercase tracking-[0.18em]` | 12 | Section eyebrows, "When you're ready" labels |
 
-**Body line-height is 1.625 (`leading-relaxed`) globally.** Don't tighten body without good reason. Headings get tighter ratios via the global `h1` rule and Tailwind's `leading-tight` / `leading-none` utilities.
+**Italic emphasis.** YFG signature: serif italic at light weight (300) used inside headlines for one or two emphasised words, in `--primary` (terracotta deep). Example: `Tell us your situation. <span className="italic font-light text-cta">We'll find</span> the right person.` Use sparingly — once per headline at most.
 
-**Max measure:** prose blocks should cap at `max-w-[70ch]` for readability per the brief. Apply on long-form guide content; not needed in card grids.
+**Max measure:** prose blocks cap at `max-w-[70ch]`.
 
 ---
 
 ## 3. Spacing & radius
 
-YPG uses **Tailwind's default spacing scale (4px base)** and **default radius scale**. We don't redefine. Document the canonical pairings:
+Tailwind defaults (4px base, default radius scale).
 
 | Surface | Recommended radius |
 |---|---|
-| Buttons | `rounded-lg` (8px), current `Button` baseline. |
-| Pills (badges, tags, "Free Appraisal" header CTA) | `rounded-full`. |
-| Cards | `rounded-xl` (12px), current `Card` baseline. |
-| Modals / large surfaces | `rounded-2xl` (16px). |
-| Hero / wrapper sections | `rounded-2xl` to `rounded-3xl` (16–24px). |
-| Inputs | `rounded-lg` (8px), matches buttons. |
+| Buttons | `rounded-lg` (8px) — standard | `rounded-full` for pill CTAs and header "Get matched" |
+| Pills (badges, tags) | `rounded-full` |
+| Cards | `rounded-xl` (12px) |
+| Modals / large surfaces | `rounded-2xl` (16px) |
+| Hero / wrapper sections | `rounded-2xl` to `rounded-3xl` |
+| Inputs | `rounded-lg` (8px) |
 
-**The brief warns against hyper-rounded fintech pills everywhere.** Reserve `rounded-full` for genuinely pill-shaped UI (badges, segmented controls, tag clouds, the header CTA). Cards stay at `rounded-xl`, not `rounded-3xl`.
-
-**Spacing rhythm:** Tailwind defaults (4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96). Section padding on the marketing site standardises on `py-16` to `py-24` between blocks; container max-width is `max-w-7xl` with `px-4 sm:px-6 lg:px-8`.
+Section padding standardises on `py-16` to `py-24`. Container max-width is `max-w-7xl` with `px-4 sm:px-6 lg:px-8`.
 
 ---
 
 ## 4. Shadows
 
-Two custom shadow tokens defined in `globals.css → @theme inline`:
-
 | Token | Value | Use |
 |---|---|---|
-| `--shadow-card` (`shadow-card`) | `0 1px 4px 0 rgb(0 0 0 / 0.08), 0 8px 24px 0 rgb(0 0 0 / 0.10)` | Default card resting state. |
-| `--shadow-card-hover` (`shadow-card-hover`) | `0 4px 12px 0 rgb(0 0 0 / 0.10), 0 20px 48px 0 rgb(0 0 0 / 0.14)` | Card on hover. |
-
-Don't introduce additional shadow tokens unless a use case proves them. For inputs, focus rings, and modals, use Tailwind's defaults (`shadow-sm`, `shadow-lg`) sparingly.
+| `shadow-card` | `0 1px 4px / 0 8px 24px` | Card resting |
+| `shadow-card-hover` | `0 4px 12px / 0 20px 48px` | Card hover |
+| `shadow-2xl` (Tailwind default) | — | MatchAgent form panel only |
 
 ---
 
 ## 5. Iconography
 
-Use **`lucide-react`** (already a dependency, `^1.0.1`). Already used by `Header`, `Button`, `Footer`. Don't introduce a second icon library.
-
-Default icon size: `w-4 h-4` (16px) inline with `text-sm`, `w-5 h-5` (20px) inline with body. Always pair with semantic copy or `aria-label`, never icon-only buttons without a label.
+**`lucide-react`** (already a dependency). Default `w-4 h-4` inline with `text-sm`, `w-5 h-5` inline with body. Always pair with semantic copy or `aria-label`.
 
 ---
 
 ## 6. Imagery direction
 
-Per brief §3:
-
-- **Real Australian property and place imagery.** No stock-photo finance handshakes; no AI-generated property shots without disclosure.
-- Prefer photography that shows **context** (street, suburb, light) over interior shots only. Suburb pages benefit from streetscape; property pages need room shots.
-- Standardise aspect ratios:
-  - Hero: `3/2` (landscape, full-width).
-  - Card thumb: `4/3`.
-  - Inline content: `16/9`.
-- Apply a subtle warm grade for editorial consistency; document the actual filter values when the imagery library is set up.
-- Always use `next/image` with explicit `width`/`height` (or `fill` with sized parent), `sizes` attribute, and `priority` only on above-the-fold hero. Lazy below the fold.
-
-`next.config.ts` already permits Vercel Blob, `renet.photos`, and `**` for any HTTPS image source, no config changes needed.
+- Real Australian property and place imagery. No stock-photo finance handshakes; no AI-generated property shots without disclosure.
+- Prefer streetscape and context over interior-only.
+- Aspect ratios: hero `3/2`, card thumb `4/3`, inline `16/9`.
+- `next/image` always with explicit `width`/`height` (or `fill` with sized parent), `sizes`, `priority` only above-the-fold.
 
 ---
 
-## 7. Component library, current state
+## 7. Logo
 
-These are the existing primitives in `src/components/ui/`. Phase 2 documents them as-is. Phase 3 will rebuild against tokens + add `StageIndicator`, `StagePicker`, `ExpertCTA`, `LeadForm`, `Callout`, `Checklist`, `Comparison`, `MiniCalc`, `TrustStrip`, `Disclosure`.
+**Wordmark only, no separate mark.** Rendered as live HTML in [`Header.tsx`](src/components/layout/Header.tsx) and [`Footer.tsx`](src/components/layout/Footer.tsx):
 
-| Component | File | Variants | Token consumption |
-|---|---|---|---|
-| `Button` | `ui/Button.tsx` | primary / secondary / outline / ghost / accent / gradient + sm/md/lg + isLoading | **Currently bg-black, not token-driven.** All five "branded" variants resolve to black-on-white. Phase 3: rebind `accent`/`gradient` to `bg-cta`, primary to `bg-ink` (or keep black, call to make). |
-| `Card` | `ui/Card.tsx` | default + `hover` prop | Uses `shadow-card` and `shadow-card-hover` (correct). Border `border-gray-100` should migrate to `border-line`. |
-| `Badge` | `ui/Badge.tsx` | default / primary / accent / success / warning / outline | **Variants don't yet use semantic tokens**, `success`/`warning` both render grey. Phase 3 fix. |
-| `Input` | `ui/Input.tsx` | text input + label + error | `focus:ring-primary` ✅ already token-driven. Border still `border-gray-300` → migrate to `border-line-strong`. |
-| `Select` | `ui/Select.tsx` | select + label + error + options | Same as Input. |
-| `Skeleton` | `ui/Skeleton.tsx` | base + `PropertyCardSkeleton` | `animate-pulse` only. |
+```tsx
+<span className="inline-flex items-center justify-center w-2 h-2 rounded-full bg-accent" aria-hidden />
+<span className="font-display text-ink text-xl tracking-tight leading-none">
+  Your Property Guide
+</span>
+```
 
-**Phase 3 component build-out** (per brief §7):
-`StageIndicator`, `StagePicker`, `StatCard`, `Callout` (info/warning/success/tip), `Checklist` (interactive, persists to localStorage), `Comparison`, `MiniCalc`, `ExpertCTA` (stage-aware, `partnerType` prop), `LeadForm` (multi-step, used by both BA + broker pages), `TrustStrip`, `Disclosure`, `ArticleHero`, `SuburbHero`. The brief's `SuburbAutocomplete` already exists in `components/search/`.
+The 8px terracotta dot before the wordmark is the brand's only "mark" — it visually echoes the YFG `★` rating dot and the terracotta accent across the design. Footer uses `text-2xl` and white type; header uses `text-xl` and ink.
+
+The PNG logo at `/public/images/Your-Property-Guide.png` is no longer in use and can be retired.
 
 ---
 
-## 8. Tone of voice
+## 8. Conversion flow
 
-Codified per brief §9. Enforced via spot-check during Phase 6.
+**The homepage is built around one lead engine: `MatchAgent`** ([`src/components/journey/MatchAgent.tsx`](src/components/journey/MatchAgent.tsx)). It mirrors YFG's `Match` pattern (3 single-question screens → compact contact form) for property:
 
-- **Australian English.** "Suburb" not "neighborhood". "Pre-approval" not "pre-qual". "Conveyancer" exists.
+1. **Intent:** Buying / Selling / Investing / Just researching
+2. **Suburb:** SuburbAutocomplete, with "skip — not sure yet" escape
+3. **Timeframe:** Just looking / Within 3 months / Right now
+4. **Contact:** First name, last name, email, mobile
+
+The section sits anchored at `#match` on the homepage, between "Latest guides" and "Why we're free." Hero CTAs and the header "Get matched" pill all anchor here. POSTs to `/api/leads` with `type: "match-request"`.
+
+**Why this pattern works:** by step 4 the user has already invested 3 clicks of commitment; the form feels like the *finish* of a process, not the start. This is the YFG-proven structure.
+
+---
+
+## 9. Tone of voice
+
+- **Australian English.** "Suburb" not "neighborhood". "Pre-approval" not "pre-qual".
 - **Plain English, year-9 reading level.** Tooltips for technical terms.
-- **Active voice. Short sentences.** Banned phrases: "embark on your property journey", "unlock your dream home".
+- **Active voice. Short sentences.** Banned: "embark on your property journey", "unlock your dream home".
 - **Never use "obviously", "simply", or "just"** before an instruction.
 - **Numbers always include unit and as-of date.**
-- **Disclaimers are real, specific, and at the bottom of the relevant block**, not legalese dumped in the footer.
-- **Hook discipline:** every long-form page should pass the test *"does this honour suburb-first?"* If it pushes a property or agent before the user has researched the suburb, rework.
+- **Disclaimers are real, specific, and at the bottom of the relevant block.**
+- **Hook discipline:** every long-form page passes the test *"does this honour suburb-first?"*
 
 ---
 
-## 9. The charter (4 principles), DRAFT
+## 10. The charter (4 principles)
 
-Property-economics rewrite of YFG's *Education is the product / No paid placements / One match, not five / Tell us when we're wrong*. Lives on `/why-were-free` (brief §6.6) and is linkable from every lead-form fine print.
-
-**Draft, needs Andy sign-off before shipping.**
+Lives on `/about` and is linkable from every lead-form fine print.
 
 ### 1. The suburb data is the product
-> Free, ungated, never paywalled. Median, growth, schools, walkability, climate, hazard, crime, all the numbers we'd want for our own move. Listings and agent matches sit *inside* that research, not on top of it.
-
-*(YFG equivalent: "Education is the product." YPG version honours the same idea but names what *the product* actually is for property buyers, suburb truth, not finance education.)*
+> Free, ungated, never paywalled. Median, growth, schools, walkability, climate, hazard, crime — all the numbers we'd want for our own move. Listings and agent matches sit *inside* that research, not on top of it.
 
 ### 2. Every match is a real match
 > One agent, vetted for the suburb you asked about. Not three competing quotes, not a bidding war for your enquiry. If the right person isn't in our network for your suburb yet, we'll say so.
 
-*(YFG equivalent: "One match, not five." Property version is harder because OpenAgent / LocalAgentFinder run multi-quote auctions, naming the difference is the trust move.)*
-
 ### 3. We earn from agents, not from you
-> Buyers and sellers pay nothing. Agents pay us a referral fee only after they've done engaged work, not for a click, not for an enquiry. We disclose this on every match.
-
-*(YFG equivalent: "No paid placements." YPG version cannot honestly claim *no* paid placements because featured listings exist on the site, instead, name the *referral economics* directly. If featured-listing revenue grows, this clause becomes "we mark every paid placement clearly".)*
+> Buyers and sellers pay nothing. Agents pay us a referral fee only after they've done engaged work — not for a click, not for an enquiry. We disclose this on every match.
 
 ### 4. Tell us when we're wrong
-> Suburb data updates monthly; if a school's catchment, a median, or a growth figure looks off to you, flag it and we'll fix it within a week. Editorial integrity is the whole brand, if we're wrong, we want to know first.
-
-*(YFG equivalent verbatim. Translates directly because data integrity is YPG's defining trust claim.)*
-
-**Footer compliance strip** that sits below the charter on every page that hosts a lead form:
-- Real Estate licensing per state where applicable (we operate as an information service, not as agents, confirm exact wording with legal before launch).
-- ABN, registered business name, complaints process URL, privacy URL.
-- "We are not a real estate agent. We connect buyers and sellers with vetted agents in our network and earn a referral fee only when matched work is engaged."
+> Suburb data updates monthly; if a school's catchment, a median, or a growth figure looks off to you, flag it and we'll fix it within a week.
 
 ---
 
-## 10. Tokens at a glance, paste into a new component
+## 11. Tokens at a glance, paste into a new component
 
 ```tsx
-// Headings
-<h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight">…</h2>
+// Headings — Fraunces, with optional italic emphasis
+<h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight">
+  Tell us your situation. <span className="italic font-light text-cta">We'll find</span> the right person.
+</h2>
 
-// Body
+// Body — Manrope
 <p className="text-base text-ink-muted leading-relaxed max-w-[70ch]">…</p>
 
 // Card
 <div className="rounded-xl border border-line bg-surface-raised shadow-card p-6">…</div>
 
-// CTA
-<button className="rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3">
-  Match me with a buyer's agent
+// CTA — terracotta pill
+<button className="rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3">
+  Get matched with a local agent
 </button>
 
-// Editorial tile (warm)
+// Editorial tile (warm cream)
 <div className="rounded-xl border border-line-warm bg-surface-warm p-8">…</div>
+
+// Eyebrow
+<p className="text-xs uppercase tracking-[0.18em] text-cta">When you're ready</p>
 
 // Inline status
 <span className="text-success text-sm font-medium">For sale</span>
@@ -260,19 +228,17 @@ Property-economics rewrite of YFG's *Education is the product / No paid placemen
 
 ---
 
-## 11. What lives where
+## 12. What lives where
 
 | Concern | File |
 |---|---|
-| Token declarations | `src/app/globals.css` |
-| Font loading | `src/app/layout.tsx` |
+| Token declarations | [`src/app/globals.css`](src/app/globals.css) |
+| Font loading | [`src/app/layout.tsx`](src/app/layout.tsx) |
 | Live preview | `/design-system` route |
+| Lead engine | [`src/components/journey/MatchAgent.tsx`](src/components/journey/MatchAgent.tsx) |
 | Brand reference (this doc) | `BRAND.md` (root) |
 | Sister-site recon | `BRAND-ANALYSIS.md` (root) |
-| Repo inventory | `REPO-MAP.md` (root) |
-| Strategic SEO context | `~/Desktop/YourPropertyGuide/SEO-RANKING-ADVICE.md` (Andy's notes) |
-| Working brief | `~/Desktop/YourPropertyGuide -- Working/claude-code-prompt-design-ux.md` |
 
 ---
 
-*End of BRAND.md. Phase 2 establishes the language; Phases 3-6 use it.*
+*End of BRAND.md v3.*

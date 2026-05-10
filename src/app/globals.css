@@ -1,28 +1,46 @@
 @import "tailwindcss";
 
+/* ──────────────────────────────────────────────────────────────────
+   Editorial palette — warm cream + terracotta
+   Sister-brand alignment with Your Finance Guide; the previous
+   purple/magenta scheme was deliberately swapped on 2026-05-10
+   because it wasn't converting. Token *names* are unchanged so
+   every component using `bg-primary`, `text-cta`, etc. cascades
+   into the new look.
+   ────────────────────────────────────────────────────────────── */
+
 :root {
-  --background: #ffffff;
-  --foreground: #000000;
-  --primary: #5c2d5e;
-  --primary-light: #8B4A8C;
-  --primary-lighter: #A96DAA;
-  --primary-dark: #4E1F4F;
-  --primary-darker: #351438;
-  --accent: #DD3C70;
-  --accent-light: #E5638F;
-  --accent-lighter: #EDA3BB;
-  --accent-dark: #C42B5C;
-  --accent-darker: #9E1F48;
-  --gray-50: #f9fafb;
-  --gray-100: #f3f4f6;
-  --gray-200: #e5e7eb;
-  --gray-300: #d1d5db;
-  --gray-400: #9ca3af;
-  --gray-500: #6b7280;
-  --gray-600: #4b5563;
-  --gray-700: #374151;
-  --gray-800: #1f2937;
-  --gray-900: #111827;
+  /* Warm editorial surfaces */
+  --background: oklch(0.975 0.012 80);   /* warm off-white */
+  --foreground: oklch(0.18 0.015 60);    /* warm near-black ink */
+
+  /* Primary = terracotta deep (used for editorial italic accents,
+     focus rings, brand marks). Was purple. */
+  --primary:         oklch(0.46 0.14 40);
+  --primary-light:   oklch(0.58 0.14 42);
+  --primary-lighter: oklch(0.74 0.10 45);
+  --primary-dark:    oklch(0.42 0.13 40);
+  --primary-darker:  oklch(0.36 0.13 38);
+
+  /* Accent = terracotta mid (CTA buttons, eyebrows, highlights).
+     Was magenta. */
+  --accent:          oklch(0.58 0.14 42);
+  --accent-light:    oklch(0.74 0.10 45);
+  --accent-lighter:  oklch(0.92 0.05 55);
+  --accent-dark:     oklch(0.46 0.14 40);
+  --accent-darker:   oklch(0.36 0.13 38);
+
+  /* Greyscale, warmed slightly to harmonise with the cream surfaces */
+  --gray-50:  oklch(0.96 0.008 75);
+  --gray-100: oklch(0.94 0.010 75);
+  --gray-200: oklch(0.89 0.012 70);
+  --gray-300: oklch(0.82 0.015 70);
+  --gray-400: oklch(0.66 0.020 65);
+  --gray-500: oklch(0.52 0.022 62);
+  --gray-600: oklch(0.42 0.020 60);
+  --gray-700: oklch(0.32 0.018 60);
+  --gray-800: oklch(0.24 0.016 60);
+  --gray-900: oklch(0.18 0.015 60);
 }
 
 @theme inline {
@@ -68,20 +86,18 @@
 
   /* Surface, background roles */
   --surface:         var(--background);
-  --surface-raised:  #ffffff;
+  --surface-raised:  oklch(0.99 0.006 80);    /* paper-white card surface */
   --surface-sunken:  var(--gray-50);
-  --surface-inverse: #0a0a0a; /* matches existing Footer bg */
+  --surface-inverse: oklch(0.18 0.015 60);    /* warm dark ink section */
 
-  /* Warm-neutral surface family, for editorial and tile backgrounds.
-     Tokenises the hex literals currently inlined in
-     home/ResearchTopics and home/SuburbSpotlight. */
-  --surface-warm:        #f7f6f4;
-  --surface-warm-sunken: #f0efec;
+  /* Warm-neutral surface family, for editorial and tile backgrounds. */
+  --surface-warm:        oklch(0.95 0.018 75);
+  --surface-warm-sunken: oklch(0.92 0.022 75);
 
   /* Lines, borders and dividers */
-  --line:        var(--gray-200);
-  --line-strong: var(--gray-300);
-  --line-warm:   #e8e6e2;
+  --line:        oklch(0.86 0.018 70);
+  --line-strong: oklch(0.78 0.020 70);
+  --line-warm:   oklch(0.91 0.015 75);
 
   /* Semantic state colours, accessible on white at AA */
   --success: #157f3c;
@@ -133,13 +149,13 @@ h1 {
   line-height: 1.15;
 }
 
-/* Brand utilities, restrained accent only on primary CTA */
+/* Brand utilities — terracotta gradient panel for calculator results & CTAs */
 .gradient-brand {
-  background: #000000;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
 }
 
 .gradient-brand-text {
-  color: #000000;
+  color: var(--accent-dark);
 }
 
 /* Off-market blur */

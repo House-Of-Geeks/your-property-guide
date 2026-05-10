@@ -11,11 +11,10 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary:   "bg-ink text-white hover:bg-black",
-  secondary: "bg-surface-sunken text-ink hover:bg-gray-200",
+  primary:   "bg-ink text-white hover:bg-primary-darker",
+  secondary: "bg-surface-sunken text-ink hover:bg-surface-warm-sunken",
   outline:   "border border-line-strong text-ink-muted hover:bg-surface-sunken hover:border-ink hover:text-ink",
   ghost:     "text-ink-muted hover:bg-surface-sunken hover:text-ink",
-  // Conversion CTAs — magenta
   accent:    "bg-cta text-white hover:bg-cta-hover",
   gradient:  "bg-cta text-white hover:bg-cta-hover",
 };

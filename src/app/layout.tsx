@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
+import { Fraunces, Manrope } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 import { Providers } from "@/components/analytics/Providers";
 
-// Display / heading font — editorial, high-contrast, premium
-const playfair = Playfair_Display({
+// Display / heading font — Fraunces, the YFG editorial serif. Light weights only,
+// matching the YFG hero treatment (weight 400 + light italic 300).
+const fraunces = Fraunces({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
-// UI / body font — contemporary, clean, highly readable
-const jakarta = Plus_Jakarta_Sans({
+// UI / body font — Manrope, paired with Fraunces on YFG. Clean modern sans.
+const manrope = Manrope({
   variable: "--font-sans",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -62,7 +64,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${jakarta.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${manrope.variable} h-full antialiased`}
     >
       <head>
         {/* Preconnect to high-priority third-party origins. dns-prefetch is a
@@ -84,8 +86,8 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://secure.quantserve.com" />
 
         {/* Theme colour for the address bar on mobile browsers, matches our
-            warm-cream surface. */}
-        <meta name="theme-color" content="#f7f6f4" />
+            warm-cream surface (oklch 0.975 0.012 80 ≈ #f9f6f1). */}
+        <meta name="theme-color" content="#f9f6f1" />
       </head>
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>

@@ -34,7 +34,7 @@ const TOPICS = [
 
 export function ResearchTopics() {
   return (
-    <section className="py-16 bg-[#f7f6f4]">
+    <section className="py-16 bg-surface-warm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         <div className="max-w-2xl mb-12">
@@ -51,13 +51,13 @@ export function ResearchTopics() {
               <Link
                 key={topic.title}
                 href={topic.href}
-                className="group relative block bg-white rounded-2xl border border-[#e8e6e2] overflow-hidden hover:shadow-lg hover:border-gray-400 transition-all duration-200"
+                className="group relative block bg-surface-raised rounded-2xl border border-line-warm overflow-hidden hover:shadow-lg hover:border-line-strong transition-all duration-200"
               >
                 {/* Black top strip */}
                 <div className="h-1 w-full bg-black" />
 
                 <div className="p-6">
-                  <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 bg-[#f0efec] text-gray-700">
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 bg-surface-warm-sunken text-ink-muted">
                     <Icon className="w-5 h-5" />
                   </div>
                   <h3 className="font-semibold text-black text-base mb-2">{topic.title}</h3>

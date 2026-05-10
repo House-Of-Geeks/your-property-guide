@@ -16,6 +16,7 @@ const leadSchema = z.object({
     "house-and-land-enquiry",
     "suburb-alert",
     "property-interest",
+    "match-request",
   ]),
   firstName: z.string().min(1),
   lastName: z.string().min(1),
@@ -59,6 +60,7 @@ function labelFor(type: string): string {
     case "general-contact":        return "General Enquiry";
     case "suburb-alert":           return "Suburb Property Alert";
     case "property-interest":      return "Property Interest Registration";
+    case "match-request":          return "Match Request (homepage)";
     default:                       return "Property Enquiry";
   }
 }
@@ -168,10 +170,14 @@ export async function POST(request: Request) {
     const typeLabel = labelFor(lead.type);
     const subject   = `${typeLabel} — ${lead.firstName} ${lead.lastName}`;
 
+    // Match-request leads (the homepage MatchAgent flow) go ONLY to andy@theandylife.com
+    // — no CC. Per Andy 2026-05-10. Other lead types keep the standard CC list.
+    const isMatchRequest = lead.type === "match-request";
+
     await transporter.sendMail({
       from:    `"Your Property Guide" <${process.env.EMAIL_FROM ?? "noreply@yourpropertyguide.com.au"}>`,
       to:      NOTIFY_EMAIL,
-      cc:      CC_EMAIL,
+      cc:      isMatchRequest ? undefined : CC_EMAIL,
       subject,
       html:    buildEmailHtml(lead, agentName, routing.reason),
     });

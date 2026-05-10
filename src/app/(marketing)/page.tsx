@@ -8,7 +8,7 @@ import { SuburbSpotlight } from "@/components/home/SuburbSpotlight";
 import { LatestGuides } from "@/components/home/LatestGuides";
 import { CapitalCityOutlook } from "@/components/home/CapitalCityOutlook";
 import { NewsletterForm } from "@/components/newsletter/NewsletterForm";
-import { PersonaPicker, TrustStrip } from "@/components/journey";
+import { MatchAgent, PersonaPicker, TrustStrip } from "@/components/journey";
 import { OrganizationJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 import { HomeSuburbSearch } from "./HomeSuburbSearch";
@@ -71,6 +71,22 @@ export default function HomePage() {
             Suburb data, plain-English guides, and free calculators. Pick where you fit and we&rsquo;ll
             point you at the bits that matter, no sign-up, no pushy CTAs, no agenda.
           </p>
+
+          {/* Hero CTAs — primary "start researching", secondary anchors to #match */}
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/suburbs"
+              className="inline-flex items-center gap-2 rounded-full bg-ink text-white hover:bg-primary px-6 py-3 text-sm font-medium transition-colors"
+            >
+              Start researching <span aria-hidden="true">→</span>
+            </Link>
+            <Link
+              href="#match"
+              className="inline-flex items-center gap-2 rounded-full border border-line-strong text-ink hover:border-ink px-6 py-3 text-sm font-medium transition-colors"
+            >
+              Or get matched with a local agent
+            </Link>
+          </div>
 
           {/* Stat anchor row */}
           <div className="mt-12 flex flex-wrap gap-x-10 gap-y-6">
@@ -276,6 +292,9 @@ export default function HomePage() {
       <Suspense fallback={null}>
         <LatestGuides />
       </Suspense>
+
+      {/* 6.5 — Match engine: dark editorial section, the homepage lead trap */}
+      <MatchAgent />
 
       {/* 7. Why we're free, editorial closer with decorative contour */}
       <section className="relative bg-surface-sunken border-t border-line overflow-hidden">
