@@ -59,32 +59,34 @@ export default function HomePage() {
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32">
           <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-6">
-            Australia&rsquo;s plain-English property guide
+            Independent property research
           </p>
 
           <h1 className="font-display text-ink leading-[1.05] tracking-tight mb-8 max-w-5xl text-5xl sm:text-6xl lg:text-7xl">
-            Free property research,{" "}
-            <span className="italic text-primary">written for normal people.</span>
+            Your biggest purchase{" "}
+            <span className="italic text-primary">shouldn&rsquo;t be your worst decision.</span>
           </h1>
 
           <p className="font-sans text-lg sm:text-xl text-ink-muted leading-relaxed max-w-2xl">
-            Suburb data, plain-English guides, and free calculators. Pick where you fit and we&rsquo;ll
-            point you at the bits that matter, no sign-up, no pushy CTAs, no agenda.
+            Independent suburb data, plain-English guides, and the right person on your side.
+            Free, no comparison spam.
           </p>
 
-          {/* Hero CTAs — primary "start researching", secondary anchors to #match */}
+          {/* Hero CTAs — primary points at the match flow (the conversion goal),
+              secondary at suburb research. Flipped from the original which led
+              visitors AWAY from the lead form into a research dead-end. */}
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="/suburbs"
+              href="#match"
               className="inline-flex items-center gap-2 rounded-full bg-ink text-white hover:bg-primary px-6 py-3 text-sm font-medium transition-colors"
             >
-              Start researching <span aria-hidden="true">→</span>
+              Match me with a specialist <span aria-hidden="true">→</span>
             </Link>
             <Link
-              href="#match"
+              href="/suburbs"
               className="inline-flex items-center gap-2 rounded-full border border-line-strong text-ink hover:border-ink px-6 py-3 text-sm font-medium transition-colors"
             >
-              Or get connected
+              Browse suburb data
             </Link>
           </div>
 
