@@ -1,14 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import { X, User, Mail, Phone, MapPin, MessageSquare } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { X, User, Mail, Phone, MessageSquare, Loader2, CheckCircle2 } from "lucide-react";
+import { clarityEvent, clarityTag } from "@/lib/clarity";
 
 const ENQUIRY_TYPES = [
   "Inspection times",
   "Rates and fees",
   "Property size",
   "Price guide",
-];
+] as const;
+export type EnquiryType = (typeof ENQUIRY_TYPES)[number];
 
 interface PropertyEnquireModalProps {
   propertyId: string;
@@ -18,28 +20,57 @@ interface PropertyEnquireModalProps {
   agentFirstName: string;
 }
 
-interface Props extends PropertyEnquireModalProps {
+interface DialogProps extends PropertyEnquireModalProps {
   open: boolean;
   onClose: () => void;
+  initialSelected?: readonly EnquiryType[];
 }
 
-function Modal({ open, onClose, propertyId, agentId, agencyId, propertyAddress, agentFirstName }: Props) {
-  const [selected, setSelected] = useState<string[]>([]);
+/**
+ * The modal dialog itself, with form state. Exported so callers (e.g. the
+ * sidebar info-rows) can drive `open` + `initialSelected` from outside.
+ */
+export function PropertyEnquireDialog({
+  open,
+  onClose,
+  initialSelected,
+  propertyId,
+  agentId,
+  agencyId,
+  propertyAddress,
+  agentFirstName,
+}: DialogProps) {
+  const [selected, setSelected] = useState<EnquiryType[]>(initialSelected ? [...initialSelected] : []);
   const [message, setMessage] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [postcode, setPostcode] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const successRef = useRef<HTMLDivElement | null>(null);
 
-  const toggle = (t: string) =>
+  // Re-sync the initial selection each time the dialog opens. Without this,
+  // closing the modal and opening it again from a different info-row would
+  // keep the old selection.
+  useEffect(() => {
+    if (open) setSelected(initialSelected ? [...initialSelected] : []);
+  }, [open, initialSelected]);
+
+  // When the success state appears, scroll it into view so the user can't
+  // miss it. The Craig-Darr-5×-in-66-seconds pattern was almost certainly
+  // someone not realising their submission went through.
+  useEffect(() => {
+    if (submitted) successRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [submitted]);
+
+  const toggle = (t: EnquiryType) =>
     setSelected((prev) => prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading || submitted) return; // double-submit guard
     setLoading(true);
     setError(null);
     try {
@@ -54,13 +85,15 @@ function Modal({ open, onClose, propertyId, agentId, agencyId, propertyAddress, 
             message,
           ].filter(Boolean).join("\n\n"),
           propertyId, agentId, agencyId,
-          source: "website",
+          source: "property-enquire-modal",
         }),
       });
       if (!res.ok) throw new Error("Failed");
+      clarityEvent("contact_us");
+      clarityTag("enquiry_type", "property_enquiry");
       setSubmitted(true);
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError("Something went wrong. Please try again, or call the agent directly.");
     } finally {
       setLoading(false);
     }
@@ -85,19 +118,20 @@ function Modal({ open, onClose, propertyId, agentId, agencyId, propertyAddress, 
         </button>
 
         {submitted ? (
-          <div className="p-10 text-center">
-            <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-              <Mail className="w-7 h-7 text-green-600" />
+          <div ref={successRef} className="p-10 text-center">
+            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+              <CheckCircle2 className="w-9 h-9 text-green-600" />
             </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Enquiry sent!</h2>
-            <p className="text-gray-500 text-sm">
-              {agentFirstName} will be in touch with you shortly.
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Enquiry sent</h2>
+            <p className="text-gray-600 text-sm max-w-sm mx-auto">
+              {agentFirstName} will be in touch shortly — usually within one
+              business day. Check your inbox for a confirmation.
             </p>
             <button
               onClick={onClose}
               className="mt-6 px-6 py-2.5 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors"
             >
-              Close
+              Done
             </button>
           </div>
         ) : (
@@ -164,7 +198,6 @@ function Modal({ open, onClose, propertyId, agentId, agencyId, propertyAddress, 
                   { icon: <User className="w-4 h-4" />, placeholder: "Last name *", value: lastName, onChange: setLastName, required: true },
                   { icon: <Mail className="w-4 h-4" />, placeholder: "Email *", type: "email", value: email, onChange: setEmail, required: true },
                   { icon: <Phone className="w-4 h-4" />, placeholder: "Phone (optional)", type: "tel", value: phone, onChange: setPhone },
-                  { icon: <MapPin className="w-4 h-4" />, placeholder: "Postcode *", value: postcode, onChange: setPostcode, required: true },
                 ] as Array<{ icon: React.ReactNode; placeholder: string; type?: string; value: string; onChange: (v: string) => void; required?: boolean }>).map((f) => (
                   <div key={f.placeholder} className="relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{f.icon}</span>
@@ -184,9 +217,16 @@ function Modal({ open, onClose, propertyId, agentId, agencyId, propertyAddress, 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 rounded-lg bg-primary text-white font-semibold text-sm hover:bg-primary/90 transition-colors disabled:opacity-50 mt-2"
+                  className="w-full py-3 rounded-lg bg-primary text-white font-semibold text-sm hover:bg-primary/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2 inline-flex items-center justify-center gap-2"
                 >
-                  {loading ? "Sending…" : "Request Details"}
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Sending your enquiry…
+                    </>
+                  ) : (
+                    "Send enquiry"
+                  )}
                 </button>
               </div>
             </div>
@@ -204,7 +244,12 @@ function Modal({ open, onClose, propertyId, agentId, agencyId, propertyAddress, 
   );
 }
 
-// Exported trigger + modal combo
+/**
+ * The "Enquire" trigger button + dialog, owned together. Use this when you
+ * just want the default button-opens-modal flow. For driving open state from
+ * elsewhere (e.g. the sidebar info-rows opening pre-checked), use
+ * `PropertyEnquireDialog` directly.
+ */
 export function PropertyEnquireModal(props: PropertyEnquireModalProps) {
   const [open, setOpen] = useState(false);
   return (
@@ -216,7 +261,7 @@ export function PropertyEnquireModal(props: PropertyEnquireModalProps) {
         <Mail className="w-4 h-4" />
         Enquire
       </button>
-      <Modal {...props} open={open} onClose={() => setOpen(false)} />
+      <PropertyEnquireDialog {...props} open={open} onClose={() => setOpen(false)} />
     </>
   );
 }

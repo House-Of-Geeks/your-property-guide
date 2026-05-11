@@ -4,7 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { PropertyEnquireModal } from "./PropertyEnquireModal";
+import { Mail } from "lucide-react";
+import { PropertyEnquireDialog, type EnquiryType } from "./PropertyEnquireModal";
 import { RevealPhone } from "./RevealPhone";
 import type { Agent, Agency } from "@/types";
 
@@ -33,10 +34,34 @@ export function AgentSidebarCard({
 }: AgentSidebarCardProps) {
   const [idx, setIdx] = useState(0);
   const [hovered, setHovered] = useState(false);
+  const [enquireOpen, setEnquireOpen] = useState(false);
+  const [enquireSelected, setEnquireSelected] = useState<EnquiryType[]>([]);
   const agent = agents[idx];
   const hasMultiple = agents.length > 1;
 
   if (!agent) return null;
+
+  // Each info-row button opens the enquire modal pre-checked with that topic,
+  // so the row is actual UI rather than a faux-checkbox label.
+  const openEnquire = (preset: EnquiryType[] = []) => {
+    setEnquireSelected(preset);
+    setEnquireOpen(true);
+  };
+
+  const infoRows: Array<{ key: EnquiryType; label: string }> = [
+    {
+      key: "Inspection times",
+      label: inspectionTimes.length > 0
+        ? `Inspection times (${inspectionTimes.length})`
+        : "Inspection times",
+    },
+    { key: "Rates and fees", label: "Rates and fees" },
+    {
+      key: "Property size",
+      label: landSize ? `Property size, ${landSize.toLocaleString()} m²` : "Property size",
+    },
+    { key: "Price guide", label: `Price guide, ${priceDisplay}` },
+  ];
 
   return (
     <div
@@ -123,34 +148,32 @@ export function AgentSidebarCard({
           </div>
         </div>
 
-        {/* Info rows */}
-        <div className="px-5 py-4 space-y-3 border-b border-line">
-          {[
-            inspectionTimes.length > 0
-              ? `Inspection times (${inspectionTimes.length})`
-              : "Inspection times",
-            "Rates and fees",
-            landSize
-              ? `Property size, ${landSize.toLocaleString()} m²`
-              : "Property size",
-            `Price guide, ${priceDisplay}`,
-          ].map((label) => (
-            <div key={label} className="flex items-center gap-3">
-              <span className="w-4 h-4 flex-shrink-0 rounded border border-line-strong bg-surface-raised" />
-              <span className="text-sm font-sans text-ink-muted">{label}</span>
-            </div>
+        {/* Info rows — each click opens the enquire modal pre-checked for
+            that topic. Previously these were faux-checkbox labels that did
+            nothing; visitors who tried to click bounced. */}
+        <div className="px-5 py-1 border-b border-line">
+          {infoRows.map((row) => (
+            <button
+              key={row.key}
+              type="button"
+              onClick={() => openEnquire([row.key])}
+              className="w-full flex items-center gap-3 py-3 -mx-2 px-2 rounded-lg text-left hover:bg-surface-sunken transition-colors group cursor-pointer"
+            >
+              <span className="w-4 h-4 flex-shrink-0 rounded border border-line-strong bg-surface-raised group-hover:border-primary transition-colors" />
+              <span className="text-sm font-sans text-ink-muted group-hover:text-ink transition-colors">{row.label}</span>
+            </button>
           ))}
         </div>
 
         {/* CTA buttons */}
         <div className="px-5 py-4 space-y-2.5">
-          <PropertyEnquireModal
-            propertyId={propertyId}
-            agentId={agent.id}
-            agencyId={agencyId}
-            propertyAddress={propertyAddress}
-            agentFirstName={agent.firstName}
-          />
+          <button
+            onClick={() => openEnquire([])}
+            className="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors"
+          >
+            <Mail className="w-4 h-4" />
+            Enquire
+          </button>
           <RevealPhone
             phone={agent.phone}
             agentId={agent.id}
@@ -158,6 +181,17 @@ export function AgentSidebarCard({
           />
         </div>
       </div>
+
+      <PropertyEnquireDialog
+        open={enquireOpen}
+        onClose={() => setEnquireOpen(false)}
+        initialSelected={enquireSelected}
+        propertyId={propertyId}
+        agentId={agent.id}
+        agencyId={agencyId}
+        propertyAddress={propertyAddress}
+        agentFirstName={agent.firstName}
+      />
     </div>
   );
 }

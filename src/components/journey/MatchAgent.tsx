@@ -65,15 +65,34 @@ const isIntent = (v: string | null): v is Intent =>
  *
  * Because this component reads useSearchParams, the page that hosts it must
  * wrap it in <Suspense> (the homepage already does this, see app/(marketing)/page.tsx).
+ *
+ * Props override URL params — useful when rendering the form inside a drawer
+ * (StickyMatchCTA on suburb/property pages) where the page's URL doesn't
+ * carry the suburb/intent.
  */
-export function MatchAgent() {
+interface MatchAgentProps {
+  initialSuburbSlug?: string | null;
+  initialIntent?: Intent | null;
+  /** Hide the marketing pitch column — useful inside a drawer. */
+  compact?: boolean;
+  /** Override the source string sent to /api/leads (for attribution). */
+  source?: string;
+}
+
+export function MatchAgent({
+  initialSuburbSlug: propSuburbSlug,
+  initialIntent: propIntent,
+  compact = false,
+  source = "homepage-match",
+}: MatchAgentProps = {}) {
   const params = useSearchParams();
 
-  // Pre-fill from URL params. Slug is enough to derive a label for display.
-  const initialSuburbSlug = params.get("suburb");
+  // Pre-fill: props win over URL params. Slug is enough to derive a label.
+  const initialSuburbSlug = propSuburbSlug ?? params.get("suburb");
   const initialSuburbLabel = initialSuburbSlug ? slugToSuburbLabel(initialSuburbSlug) : null;
-  const intentParam = params.get("intent");
-  const initialIntent: Intent | null = isIntent(intentParam) ? intentParam : null;
+  const urlIntent = params.get("intent");
+  const initialIntent: Intent | null =
+    propIntent ?? (isIntent(urlIntent) ? urlIntent : null);
 
   // Skip steps that are already filled. With suburb+intent pre-set we land
   // straight on the timeframe question; with one set we skip just that step.
@@ -134,7 +153,7 @@ export function MatchAgent() {
           phone: trimmedPhone || undefined,
           message,
           suburb: suburbSlug ?? undefined,
-          source: "homepage-match",
+          source,
         }),
       });
       if (!res.ok) {
@@ -159,11 +178,12 @@ export function MatchAgent() {
   return (
     <section
       id="match"
-      className="bg-surface-inverse text-white scroll-mt-24"
+      className={compact ? "" : "bg-surface-inverse text-white scroll-mt-24"}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-          {/* Left — pitch */}
+      <div className={compact ? "" : "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28"}>
+        <div className={compact ? "" : "grid lg:grid-cols-12 gap-10 lg:gap-16 items-start"}>
+          {/* Left — pitch (hidden in compact/drawer mode) */}
+          {!compact && (
           <div className="lg:col-span-5">
             <p className="text-xs uppercase tracking-[0.18em] text-cta mb-5">
               When you&rsquo;re ready
@@ -193,10 +213,11 @@ export function MatchAgent() {
               ))}
             </div>
           </div>
+          )}
 
           {/* Right — form panel */}
-          <div className="lg:col-span-7 lg:col-start-6">
-            <div className="bg-surface-warm text-ink rounded-2xl p-8 sm:p-10 shadow-2xl">
+          <div className={compact ? "" : "lg:col-span-7 lg:col-start-6"}>
+            <div className={compact ? "text-ink" : "bg-surface-warm text-ink rounded-2xl p-8 sm:p-10 shadow-2xl"}>
               {/* Progress bar */}
               <div className="flex items-center gap-2 mb-8">
                 {[0, 1, 2, 3].map((i) => (

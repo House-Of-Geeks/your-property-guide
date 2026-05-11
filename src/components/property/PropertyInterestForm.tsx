@@ -124,12 +124,11 @@ export function PropertyInterestForm({ address, suburbName, suburbSlug }: Props)
         </div>
         <div>
           <label htmlFor="pi-phone" className="block text-xs font-medium text-gray-600 mb-1">
-            Phone <span className="text-red-500">*</span>
+            Phone <span className="text-gray-400 font-normal">(optional)</span>
           </label>
           <input
             id="pi-phone"
             type="tel"
-            required
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="04XX XXX XXX"
