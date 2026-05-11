@@ -5,3 +5,4 @@ export { TrustStrip } from "./TrustStrip";
 export { MatchAgent } from "./MatchAgent";
 export { MatchAgentEmbed } from "./MatchAgentEmbed";
 export { StickyMatchCTA } from "./StickyMatchCTA";
+export { MatchDrawer } from "./MatchDrawer";

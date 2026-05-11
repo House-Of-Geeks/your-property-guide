@@ -10,6 +10,7 @@ import {
   SectionDivider,
   DataFreshnessNote,
   SuburbAlertWidget,
+  SuburbFAQ,
 } from "@/components/suburb";
 import { SuburbSchools } from "@/components/suburb/SuburbSchools";
 import { SuburbWalkability } from "@/components/suburb/SuburbWalkability";
@@ -532,6 +533,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             <PropertyGrid properties={properties} />
           </section>
         )}
+
+        {/* Long-tail FAQ — answers the "people also ask" queries Google
+            surfaces for "[suburb] real estate / suburb / postcode / rent".
+            Emits FAQPage JSON-LD so answers can appear directly in SERP. */}
+        <SuburbFAQ suburb={suburb} />
 
         {/* Contextual cross-links: listings, suburb info, guides, nearby */}
         <SuburbContextualLinks

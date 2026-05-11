@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { SuburbSearch } from "./SuburbSearch";
+import { SuburbMatchButton } from "./SuburbMatchButton";
 import type { Suburb } from "@/types";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { fullLgaName } from "@/lib/utils/lga-names";
@@ -92,6 +93,12 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
             <span className="text-sm font-sans tracking-wide text-white/80">
               {suburb.postcode}
             </span>
+          </div>
+
+          {/* Above-the-fold match CTA — visitors researching this suburb are
+              mid-decision; give them the option to act before they scroll. */}
+          <div className="mt-6 pointer-events-none">
+            <SuburbMatchButton suburbSlug={suburb.slug} suburbName={suburb.name} />
           </div>
         </div>
       </div>
