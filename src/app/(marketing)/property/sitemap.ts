@@ -57,7 +57,12 @@ export default async function sitemap({ id }: { id: number }): Promise<MetadataR
     select: { slug: true, updatedAt: true },
     skip: page * PAGE_SIZE,
     take: PAGE_SIZE,
-    orderBy: { id: "asc" },
+    // Order by suburbSlug so crawlers receive URLs clustered by suburb.
+    // Most crawlers process the sitemap roughly in order, which means
+    // properties in the same suburb get hit close together in time —
+    // letting the suburb-data cache (see property-page-suburb-cache.ts)
+    // serve cached answers instead of re-querying the DB per property.
+    orderBy: [{ suburbSlug: "asc" }, { id: "asc" }],
   });
 
   return addresses.map((a) => ({

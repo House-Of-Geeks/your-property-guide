@@ -33,6 +33,7 @@ import { SuburbCrime } from "@/components/suburb/SuburbCrime";
 import { SuburbClimate } from "@/components/suburb/SuburbClimate";
 import { SuburbWalkability } from "@/components/suburb/SuburbWalkability";
 import { db } from "@/lib/db";
+import { getPropertyPageSuburbData } from "@/lib/services/property-page-suburb-cache";
 import { SITE_URL } from "@/lib/constants";
 import { streetSlug } from "@/lib/utils/slug";
 import { makeSchoolSlug } from "@/lib/utils/school";
@@ -102,120 +103,23 @@ export default async function PropertyAddressPage({ params }: PageProps) {
   const address = await getAddress(slug);
   if (!address) notFound();
 
-  const suburb = address.suburbSlug
-    ? await db.suburb.findUnique({
-        where: { slug: address.suburbSlug },
-        select: {
-          id: true,
-          slug: true,
-          name: true,
-          state: true,
-          postcode: true,
-          medianHousePrice: true,
-          medianUnitPrice: true,
-          medianRentHouse: true,
-          medianRentUnit: true,
-          annualGrowthHouse: true,
-          annualGrowthUnit: true,
-          daysOnMarket: true,
-          population: true,
-          medianAge: true,
-          ownerOccupied: true,
-          renterOccupied: true,
-          householdsFamily: true,
-          householdsLonePerson: true,
-          walkScore: true,
-          transitScore: true,
-          bikeScore: true,
-          lat: true,
-          lng: true,
-          rentalUpdatedAt: true,
-          salesUpdatedAt: true,
-          hazardUpdatedAt: true,
-        },
-      })
+  // All six suburb-scoped lookups (suburb stats, schools, hazard, crime,
+  // climate, recent sales pool) are bundled and cached by suburbSlug — see
+  // property-page-suburb-cache.ts. Every property in the same suburb shares
+  // the same answer, so caching here cuts ~6 of the page's ~12 Prisma calls
+  // down to a single cache lookup once the suburb is warm.
+  const suburbData = address.suburbSlug
+    ? await getPropertyPageSuburbData(address.suburbSlug)
     : null;
-
-  // Schools in this suburb (top 6 — government first by sector convention)
-  const schools = suburb
-    ? await db.school.findMany({
-        where: { suburbId: suburb.id },
-        select: {
-          id: true,
-          name: true,
-          type: true,
-          sector: true,
-          distance: true,
-          yearRange: true,
-          gender: true,
-          icsea: true,
-          enrolment: true,
-          acaraId: true,
-        },
-        orderBy: [{ sector: "asc" }, { distance: "asc" }],
-        take: 6,
-      })
-    : [];
-
-  // Recent nearby sales (same suburb, exclude this address, last 24 months)
-  const nearbySales = address.suburbSlug
-    ? await db.propertySale.findMany({
-        where: {
-          matchConfidence: "exact",
-          address: { suburbSlug: address.suburbSlug },
-          addressId: { not: address.id },
-          // eslint-disable-next-line react-hooks/purity -- server component, runs once per request
-          contractDate: { gt: new Date(Date.now() - 24 * 30 * 24 * 3600 * 1000) },
-        },
-        select: {
-          id: true,
-          price: true,
-          contractDate: true,
-          source: true,
-          natureCode: true,
-          address: { select: { addressFull: true, slug: true } },
-        },
-        orderBy: { contractDate: "desc" },
-        take: 6,
-      })
-    : [];
-
-  const hazard = address.suburbSlug
-    ? await db.suburbHazard.findUnique({ where: { suburbSlug: address.suburbSlug } })
-    : null;
-
-  // Suburb deep-dive data — crime, climate. Already ingested per-state on
-  // existing GitHub Actions schedules; we just surface them on the property
-  // page now instead of forcing users to bounce to /suburbs/[slug].
-  const [crimeStat, climate] = address.suburbSlug
-    ? await Promise.all([
-        db.suburbCrimeStat.findFirst({
-          where: { suburbSlug: address.suburbSlug },
-          orderBy: { periodDate: "desc" },
-          select: {
-            totalOffences: true,
-            offenceBreakdown: true,
-            period: true,
-            periodDate: true,
-            state: true,
-          },
-        }),
-        db.suburbClimate.findUnique({
-          where: { suburbSlug: address.suburbSlug },
-          select: {
-            bomStationId: true,
-            bomStationName: true,
-            distanceKm: true,
-            meanMaxTemp: true,
-            meanMinTemp: true,
-            meanRainfall: true,
-            meanHumidity9am: true,
-            meanSunshineHrs: true,
-            annualRainfallMm: true,
-          },
-        }),
-      ])
-    : [null, null];
+  const suburb = suburbData?.suburb ?? null;
+  const schools = suburbData?.schools ?? [];
+  const hazard = suburbData?.hazard ?? null;
+  const crimeStat = suburbData?.crimeStat ?? null;
+  const climate = suburbData?.climate ?? null;
+  // Exclude this address from the cached pool before slicing to 6.
+  const nearbySales = (suburbData?.nearbySalesPool ?? [])
+    .filter((s) => s.address?.slug !== slug)
+    .slice(0, 6);
 
   // Active listings at this address (loose match — same street + postcode + state)
   const listings = await db.property.findMany({
