@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
+import { SuburbMatchButton } from "./SuburbMatchButton";
 
 export interface SuburbSubrouteTab {
   label: string;
@@ -97,7 +98,15 @@ export function SuburbSubrouteHeader({
               </p>
             )}
           </div>
-          <div className="lg:col-span-3 lg:text-right">
+          <div className="lg:col-span-3 lg:text-right space-y-3">
+            {/* Above-the-fold match CTA. Same button as the main suburb-page
+                hero — opens the MatchDrawer pre-filled with this suburb's
+                slug. Visitors landing on a listings sub-page from Google
+                ("[suburb] houses for sale" etc.) are mid-decision; give
+                them a one-click path to a specialist. */}
+            <div className="lg:flex lg:justify-end">
+              <SuburbMatchButton suburbSlug={suburb.slug} suburbName={suburb.name} />
+            </div>
             <Link
               href={`/suburbs/${suburb.slug}`}
               className="inline-flex items-center gap-1 text-sm font-medium text-ink hover:text-primary transition-colors"
