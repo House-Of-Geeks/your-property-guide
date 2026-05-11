@@ -4,6 +4,8 @@
  */
 import { PrismaClient } from "../../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { execSync } from "node:child_process";
+import * as path from "node:path";
 import * as dotenv from "dotenv";
 dotenv.config({ path: ".env" });
 
@@ -33,4 +35,11 @@ async function main() {
 
 main()
   .catch((e) => { console.error(e); process.exit(1); })
-  .finally(() => db.$disconnect());
+  .finally(async () => {
+    await db.$disconnect();
+    // Verify the write produced renderable URLs. Exits non-zero if any
+    // image column references a host that isn't in next.config.ts
+    // remotePatterns — the exact bug this script was guilty of in April.
+    const auditScript = path.resolve(__dirname, "..", "audit-image-urls.ts");
+    execSync(`npx tsx "${auditScript}"`, { stdio: "inherit" });
+  });
