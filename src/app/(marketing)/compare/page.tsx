@@ -3,7 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
-import { getTopSuburbsByState } from "@/lib/services/suburb-rankings-service";
+import {
+  getTopSuburbsByState,
+  getTopComparisonPairsByState,
+  getStateName,
+  type ComparisonPair,
+} from "@/lib/services/suburb-rankings-service";
 import { SITE_URL } from "@/lib/constants";
 import { CompareForm } from "./CompareForm";
 
@@ -42,6 +47,8 @@ const POPULAR_PAIRS: { aSlug: string; bSlug: string; aName: string; bName: strin
   { aSlug: "bulimba-qld-4171",       bSlug: "hawthorne-qld-4171",     aName: "Bulimba",     bName: "Hawthorne",     subtitle: "Brisbane riverside" },
 ];
 
+const ALL_STATES = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"];
+
 export default async function ComparePage() {
   // Pull a small set of popular suburbs from each big state for the
   // "popular suburbs" rail at the bottom. Each one becomes a sortable starting
@@ -51,6 +58,18 @@ export default async function ComparePage() {
     getTopSuburbsByState("VIC", 8),
     getTopSuburbsByState("QLD", 8),
   ]);
+
+  // Top auto-generated comparison pairs per state — fills the SEO gap
+  // for WA / SA / TAS / NT / ACT that the hand-curated POPULAR_PAIRS
+  // doesn't cover, and gives Google many more pages to crawl.
+  const pairsByState = await Promise.all(
+    ALL_STATES.map(async (state) => ({
+      state,
+      stateName: getStateName(state),
+      pairs: await getTopComparisonPairsByState(state, 8),
+    })),
+  );
+  const pairsWithData = pairsByState.filter((s) => s.pairs.length > 0);
 
   return (
     <>
@@ -128,6 +147,53 @@ export default async function ComparePage() {
                   Compare →
                 </p>
               </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Top comparisons by state — auto-generated from data so every
+          state (incl. WA / SA / TAS / NT / ACT) gets coverage, not just
+          the hand-curated pairs above. Each link goes to a real
+          comparison page rendered by /suburbs/[slug]/vs/[compareSlug]. */}
+      <section className="bg-surface-warm border-b border-line">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
+          <div className="mb-8">
+            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              By state
+            </p>
+            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
+              Top comparisons in every state.
+            </h2>
+            <p className="mt-2 font-sans text-sm text-ink-muted max-w-2xl">
+              Sourced from the most populous suburbs in each state and the
+              neighbours people compare them with — see how they line up on
+              price, growth, schools, walkability and risk.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {pairsWithData.map(({ state, stateName, pairs }) => (
+              <div key={state}>
+                <h3 className="font-display text-lg text-ink mb-4 pb-2 border-b border-line">
+                  {stateName}
+                </h3>
+                <ul className="space-y-2">
+                  {pairs.map((p: ComparisonPair) => (
+                    <li key={`${p.aSlug}-${p.bSlug}`}>
+                      <Link
+                        href={`/suburbs/${p.aSlug}/vs/${p.bSlug}`}
+                        className="group inline-flex items-center gap-2 text-sm font-sans text-ink-muted hover:text-primary transition-colors"
+                      >
+                        <span className="text-ink font-medium">{p.aName}</span>
+                        <span className="italic text-ink-subtle">vs</span>
+                        <span className="text-ink font-medium">{p.bName}</span>
+                        <span className="text-ink-subtle text-xs">→</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
           </div>
         </div>

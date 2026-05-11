@@ -16,6 +16,7 @@ const SITEMAPS = [
   `${SITE_URL}/postcodes/sitemap.xml`,
   `${SITE_URL}/states/sitemap.xml`,
   `${SITE_URL}/best-suburbs/sitemap.xml`,
+  `${SITE_URL}/compare/sitemap.xml`,
 ];
 
 export function GET() {

@@ -416,3 +416,70 @@ export async function getAllStatesWithStats(): Promise<StateStats[]> {
   const states = Object.keys(STATE_NAMES);
   return Promise.all(states.map((s) => getStateStats(s)));
 }
+
+export interface ComparisonPair {
+  aSlug: string;
+  aName: string;
+  bSlug: string;
+  bName: string;
+  state: string;
+  postcode: string;
+}
+
+/**
+ * Top suburb-vs-suburb comparison pairs for a given state, used by the
+ * /compare hub and by the compare sitemap to surface real comparisons
+ * for SEO. Pairs are seeded from the populous suburbs in the state +
+ * their nearby suburbs, deduplicated lexicographically so we don't emit
+ * both "A vs B" and "B vs A".
+ *
+ * Only suburbs that actually exist in the DB are returned — the
+ * nearbySuburbs array can include slugs that haven't been imported yet.
+ */
+export async function getTopComparisonPairsByState(
+  state: string,
+  limit = 12,
+): Promise<ComparisonPair[]> {
+  const upperState = state.toUpperCase();
+  const tops = await db.suburb.findMany({
+    where: { state: upperState, population: { gt: 0 } },
+    select: { slug: true, name: true, postcode: true, nearbySuburbs: true },
+    orderBy: { population: "desc" },
+    take: Math.max(limit, 40), // need a buffer for dedup + missing-neighbour filtering
+  });
+
+  // Collect all neighbour slugs referenced, then check which exist
+  const candidateNeighbourSlugs = new Set<string>();
+  for (const s of tops) for (const n of s.nearbySuburbs) candidateNeighbourSlugs.add(n);
+
+  const existingNeighbours = await db.suburb.findMany({
+    where: { slug: { in: Array.from(candidateNeighbourSlugs) } },
+    select: { slug: true, name: true, postcode: true },
+  });
+  const neighbourMap = new Map(existingNeighbours.map((s) => [s.slug, s]));
+
+  const seen = new Set<string>();
+  const pairs: ComparisonPair[] = [];
+
+  for (const a of tops) {
+    for (const bSlug of a.nearbySuburbs) {
+      const b = neighbourMap.get(bSlug);
+      if (!b) continue;
+      // Canonical key — lexicographic — so we only emit each pair once
+      const key = [a.slug, b.slug].sort().join("|");
+      if (seen.has(key)) continue;
+      seen.add(key);
+      // Emit in the order they appear (a is the more-populous suburb, which
+      // makes "A vs B" read naturally e.g. "Sydney vs Bondi")
+      pairs.push({
+        aSlug: a.slug, aName: a.name,
+        bSlug: b.slug, bName: b.name,
+        state: upperState,
+        postcode: a.postcode,
+      });
+      if (pairs.length >= limit) return pairs;
+    }
+  }
+
+  return pairs;
+}
