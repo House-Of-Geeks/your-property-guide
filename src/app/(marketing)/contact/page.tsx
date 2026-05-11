@@ -5,7 +5,7 @@ import { Phone, Mail, Clock, ArrowRight } from "lucide-react";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { SITE_NAME, SITE_URL, CONTACT_PHONE_E164, CONTACT_PHONE_DISPLAY } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: `Contact ${SITE_NAME}`,
@@ -18,9 +18,9 @@ const CONTACTS = [
   {
     icon: Phone,
     label: "Call",
-    primary: "+61 433 405 530",
+    primary: CONTACT_PHONE_DISPLAY,
     body: "Australian business hours, Monday to Friday.",
-    href: "tel:+61433405530",
+    href: `tel:${CONTACT_PHONE_E164}`,
   },
   {
     icon: Mail,

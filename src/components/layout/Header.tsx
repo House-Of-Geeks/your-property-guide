@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { Menu, X, ChevronDown, UserCircle, Search } from "lucide-react";
+import { Menu, X, ChevronDown, UserCircle, Search, Phone } from "lucide-react";
+import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164 } from "@/lib/constants";
 
 // Education-first nav per Andy's 2026-05-05 direction. No aggressive CTA in
 // the RHS, no buyer-funnel-shaped headlines. Five top-level items: Suburbs
@@ -168,6 +169,17 @@ export function Header() {
               <UserCircle className="w-3.5 h-3.5" />
               Agent login
             </Link>
+            {/* Phone CTA — fastest "I want to talk now" path for visitors
+                who prefer voice over filling a form. Visible from md up; on
+                mobile the click-to-call lives in the mobile menu. */}
+            <a
+              href={`tel:${CONTACT_PHONE_E164}`}
+              className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-ink hover:text-primary transition-colors"
+              aria-label={`Call ${CONTACT_PHONE_DISPLAY}`}
+            >
+              <Phone className="w-3.5 h-3.5" />
+              {CONTACT_PHONE_DISPLAY}
+            </a>
             <Link
               href="/#match"
               className="hidden md:inline-flex items-center gap-1.5 rounded-full bg-cta hover:bg-cta-hover text-white px-4 py-2 text-xs font-semibold transition-colors"
@@ -226,6 +238,15 @@ export function Header() {
               >
                 Get connected
               </Link>
+              <a
+                href={`tel:${CONTACT_PHONE_E164}`}
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-sm font-semibold text-ink border border-ink rounded-full hover:bg-ink hover:text-white transition-colors"
+                aria-label={`Call ${CONTACT_PHONE_DISPLAY}`}
+              >
+                <Phone className="w-4 h-4" />
+                Call {CONTACT_PHONE_DISPLAY}
+              </a>
               <Link
                 href="/dashboard/login"
                 onClick={() => setMobileOpen(false)}
