@@ -6,3 +6,4 @@ export { MatchAgent } from "./MatchAgent";
 export { MatchAgentEmbed } from "./MatchAgentEmbed";
 export { StickyMatchCTA } from "./StickyMatchCTA";
 export { MatchDrawer } from "./MatchDrawer";
+export { SpecialistShowcase } from "./SpecialistShowcase";

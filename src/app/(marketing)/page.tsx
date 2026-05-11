@@ -8,7 +8,7 @@ import { SuburbSpotlight } from "@/components/home/SuburbSpotlight";
 import { LatestGuides } from "@/components/home/LatestGuides";
 import { CapitalCityOutlook } from "@/components/home/CapitalCityOutlook";
 import { NewsletterForm } from "@/components/newsletter/NewsletterForm";
-import { MatchAgent, PersonaPicker, TrustStrip } from "@/components/journey";
+import { MatchAgent, PersonaPicker, SpecialistShowcase, TrustStrip } from "@/components/journey";
 import { OrganizationJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 import { HomeSuburbSearch } from "./HomeSuburbSearch";
@@ -294,6 +294,14 @@ export default function HomePage() {
       <Suspense fallback={null}>
         <LatestGuides />
       </Suspense>
+
+      {/* 6.4 — Real specialists you could be matched with. Honest social
+              proof immediately before the match engine, so visitors see
+              actual faces before deciding to fill the form. */}
+      <SpecialistShowcase
+        heading="Real specialists. No comparison spam."
+        subhead="A handful of the agents, brokers and conveyancers you could be matched with — pulled live, not a stock-photo directory."
+      />
 
       {/* 6.5 — Match engine: dark editorial section, the homepage lead trap.
               Wrapped in Suspense because MatchAgent reads useSearchParams

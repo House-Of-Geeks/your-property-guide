@@ -86,8 +86,35 @@ export async function getAgentById(id: string): Promise<Agent | null> {
 }
 
 export async function getFeaturedAgents(): Promise<Agent[]> {
-  const rows = await db.agent.findMany({ where: { isFeatured: true } });
+  const rows = await db.agent.findMany({
+    where: { isFeatured: true },
+    include: { agency: { select: { name: true, slug: true } } },
+  });
   return rows.map(toAgent);
+}
+
+/**
+ * Showcase agents for the social-proof block on /find-an-expert and the
+ * match drawer. Prefers featured agents; falls back to the first N agents
+ * by lastName when no featured flag is set so the block never renders empty.
+ */
+export async function getShowcaseAgents(limit = 6): Promise<Agent[]> {
+  const featured = await db.agent.findMany({
+    where: { isFeatured: true },
+    include: { agency: { select: { name: true, slug: true } } },
+    take: limit,
+    orderBy: { lastName: "asc" },
+  });
+  if (featured.length >= limit) return featured.map(toAgent);
+
+  // Top-up with non-featured agents to fill the showcase
+  const filler = await db.agent.findMany({
+    where: { isFeatured: false },
+    include: { agency: { select: { name: true, slug: true } } },
+    take: limit - featured.length,
+    orderBy: { lastName: "asc" },
+  });
+  return [...featured, ...filler].map(toAgent);
 }
 
 export async function getAgentsByAgency(agencyId: string): Promise<Agent[]> {

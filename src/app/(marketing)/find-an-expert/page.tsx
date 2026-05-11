@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
-import { MatchAgentEmbed, TrustStrip } from "@/components/journey";
+import { MatchAgentEmbed, SpecialistShowcase, TrustStrip } from "@/components/journey";
 import { SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -236,6 +236,12 @@ export default function FindAnExpertPage() {
       <Suspense fallback={null}>
         <MatchAgentEmbed />
       </Suspense>
+
+      {/* Real specialists — honest social proof. Visitors who scroll past
+          the form without engaging see actual people they could be matched
+          with, not a faceless promise. Empty-safe: silently renders nothing
+          if no agents are in the DB. */}
+      <SpecialistShowcase />
 
       {/* How matching works — sits below the form as supporting copy for
           anyone who scrolled past the form without engaging. The CTA here
