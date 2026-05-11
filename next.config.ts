@@ -45,32 +45,26 @@ const nextConfig: NextConfig = {
     // Cache optimized images for 30 days. Property/suburb photos rarely change
     // and the optimizer is the second-biggest invocation source after pages.
     minimumCacheTTL: 2_592_000,
+    // Allowlist intentionally tight. Each entry is a host that visitors'
+    // /_next/image requests can ask Vercel to fetch and transform — every
+    // wildcard is an open door for someone to drive up the bill by asking
+    // for transforms of arbitrary images on that domain.
+    //
+    // Verified against production Property_Image data on 2026-05-11:
+    // ~98% Vercel Blob, ~2% Unsplash editorial, zero traffic on the old
+    // agency-feed wildcards. Removed: `maps.googleapis.com`,
+    // `i.realestate.com.au`, `rimh2.domainstatic.com.au`,
+    // `*.realestateview.com.au`, `*.realtair.com`, `*.amazonaws.com`,
+    // `*.cloudfront.net`. None of them were referenced anywhere in the
+    // codebase or DB. Add specific hosts (not wildcards) when a new feed
+    // genuinely needs them.
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "maps.googleapis.com",
-        pathname: "/maps/api/staticmap**",
-      },
       // Vercel Blob — self-hosted property images
-      {
-        protocol: "https",
-        hostname: "*.public.blob.vercel-storage.com",
-      },
-      // renet.photos CDN — fallback for any images not yet migrated to Blob
-      {
-        protocol: "https",
-        hostname: "renet.photos",
-      },
-      // Known external agent / agency / blog image sources. Allowlist only,
-      // wildcards on /_next/image expose the optimizer to abuse. If a new
-      // agency comes with images on a new host, add it here.
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
+      // Unsplash — editorial / blog cover images
       { protocol: "https", hostname: "images.unsplash.com" },
-      { protocol: "https", hostname: "i.realestate.com.au" },
-      { protocol: "https", hostname: "rimh2.domainstatic.com.au" },
-      { protocol: "https", hostname: "*.realestateview.com.au" },
-      { protocol: "https", hostname: "*.realtair.com" },
-      { protocol: "https", hostname: "*.amazonaws.com" },
-      { protocol: "https", hostname: "*.cloudfront.net" },
+      // renet.photos CDN — documented legacy fallback for any unmigrated images
+      { protocol: "https", hostname: "renet.photos" },
     ],
   },
 };

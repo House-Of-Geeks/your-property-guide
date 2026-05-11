@@ -17,6 +17,13 @@ interface Props {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
+// ISR — listings refresh once a day via the sync worker. Pages that take
+// `searchParams` (filters / pagination) are still cached by Next per
+// unique URL variant; the no-filter SEO crawl path is the one that gets
+// hammered, and now lands as a CDN hit.
+export const revalidate = 86400;
+export const dynamicParams = true;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const suburb = await getSuburbBySlug(slug);

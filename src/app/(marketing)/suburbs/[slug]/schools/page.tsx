@@ -14,6 +14,9 @@ interface SuburbSchoolsPageProps {
   params: Promise<{ slug: string }>;
 }
 
+export const revalidate = 86400;
+export const dynamicParams = true;
+
 function icseaColour(icsea: number | null): string {
   if (icsea == null) return "text-ink-subtle";
   if (icsea >= 1100) return "text-success font-semibold";

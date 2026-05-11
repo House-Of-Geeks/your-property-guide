@@ -37,6 +37,14 @@ interface SuburbDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
+// ISR — suburb profiles aggregate several services (suburb + properties +
+// crime + climate + walkability). Was rendering full SSR per request,
+// burning function-GB-hours under crawl traffic. Suburb data only changes
+// when the sync worker refreshes (monthly-ish), so 24h revalidate is
+// extremely generous and still cuts function compute by ~99%.
+export const revalidate = 86400;
+export const dynamicParams = true;
+
 export async function generateMetadata({ params }: SuburbDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const suburb = await getSuburbBySlug(slug);

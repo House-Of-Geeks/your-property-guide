@@ -46,6 +46,16 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+// ISR — property listing pages were rendering full SSR on every request
+// (~12 Prisma calls each), causing the bulk of Vercel function-GB-hours
+// under bot crawls. Property data is refreshed once a day by the Railway
+// sync worker, so a 24h revalidate aligns with the data-freshness budget
+// and turns ~99% of requests into CDN cache hits.
+// `dynamicParams = true` because there are 50k+ slugs — we generate on
+// demand rather than pre-rendering them all at build time.
+export const revalidate = 86400;
+export const dynamicParams = true;
+
 // Memoize per-request so generateMetadata + the page itself share a single
 // roundtrip instead of issuing the same lookup twice.
 const getAddress = cache((slug: string) =>

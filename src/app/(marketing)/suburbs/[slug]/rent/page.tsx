@@ -17,6 +17,9 @@ interface Props {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
+export const revalidate = 86400;
+export const dynamicParams = true;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const suburb = await getSuburbBySlug(slug);

@@ -17,6 +17,9 @@ interface RentDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
+export const revalidate = 86400;
+export const dynamicParams = true;
+
 export async function generateMetadata({ params }: RentDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const property = await getPropertyBySlug(slug);

@@ -12,6 +12,12 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+// ISR — see /suburbs/[slug]/page.tsx for context. Listing tabs refresh
+// with property data; 24h cache + on-demand slug generation is the right
+// trade.
+export const revalidate = 86400;
+export const dynamicParams = true;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const suburb = await getSuburbBySlug(slug);

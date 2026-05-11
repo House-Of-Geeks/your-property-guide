@@ -16,6 +16,11 @@ interface SoldDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
+// Sold listings never change after sale — could revalidate weekly, but
+// 24h matches the rest of the property pages for operational consistency.
+export const revalidate = 86400;
+export const dynamicParams = true;
+
 export async function generateMetadata({ params }: SoldDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const property = await getPropertyBySlug(slug);
