@@ -37,12 +37,15 @@ export async function LatestGuides() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
-          {/* Featured article — spans 3 cols */}
+          {/* Featured article — spans 3 cols. Image up top, editorial
+              body (category + title + excerpt + meta) underneath so the
+              card actually fills its share of the grid-row instead of
+              leaving an empty band below a 16:9 image. */}
           <Link
             href={`/guides/${featured.slug}`}
-            className="group lg:col-span-3 block bg-surface-raised rounded-2xl overflow-hidden border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200"
+            className="group lg:col-span-3 block bg-surface-raised rounded-2xl overflow-hidden border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200 flex flex-col"
           >
-            {featured.coverImage ? (
+            {featured.coverImage && (
               <div className="relative aspect-[16/9] overflow-hidden">
                 <Image
                   src={featured.coverImage}
@@ -52,30 +55,31 @@ export async function LatestGuides() {
                   sizes="(max-width: 1024px) 100vw, 60vw"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
-                <div className="absolute bottom-0 inset-x-0 p-6 sm:p-7">
-                  <span className="inline-block text-xs font-sans font-medium uppercase tracking-wider px-3 py-1 rounded-full bg-surface-raised/20 text-white backdrop-blur-sm mb-3">
-                    {featured.category}
-                  </span>
-                  <h3 className="font-display text-2xl sm:text-3xl text-white leading-tight">
-                    {featured.title}
-                  </h3>
-                  {featured.readingTime && (
-                    <span className="inline-flex items-center gap-1.5 text-sm text-white/80 mt-3 font-sans">
-                      <Clock className="w-3.5 h-3.5" /> {featured.readingTime} min read
-                    </span>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <div className="p-7 sm:p-8">
-                <span className="inline-block text-xs font-sans font-medium uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary/10 text-primary mb-4">
-                  {featured.category}
-                </span>
-                <h3 className="font-display text-2xl text-ink leading-tight mb-3">{featured.title}</h3>
-                <p className="font-sans text-sm text-ink-muted leading-relaxed line-clamp-3">{featured.excerpt}</p>
               </div>
             )}
+            <div className="p-6 sm:p-7 flex-1 flex flex-col">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-xs font-sans font-medium uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary/10 text-primary">
+                  {featured.category}
+                </span>
+                {featured.readingTime && (
+                  <span className="inline-flex items-center gap-1.5 text-xs text-ink-subtle font-sans">
+                    <Clock className="w-3.5 h-3.5" /> {featured.readingTime} min read
+                  </span>
+                )}
+              </div>
+              <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight group-hover:text-primary transition-colors">
+                {featured.title}
+              </h3>
+              {featured.excerpt && (
+                <p className="mt-3 font-sans text-base text-ink-muted leading-relaxed line-clamp-3">
+                  {featured.excerpt}
+                </p>
+              )}
+              <span className="mt-auto pt-4 inline-flex items-center gap-1.5 text-sm font-medium text-ink group-hover:text-primary transition-colors">
+                Read guide <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+              </span>
+            </div>
           </Link>
 
           {/* Two smaller articles — stacked */}

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
-import { Menu, X, ChevronDown, UserCircle, Search, Phone } from "lucide-react";
+import { Menu, X, ChevronDown, UserCircle, Search, Phone, Key } from "lucide-react";
 import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164 } from "@/lib/constants";
 
 // Education-first nav per Andy's 2026-05-05 direction. No aggressive CTA in
@@ -109,8 +109,8 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-surface/95 backdrop-blur border-b border-line">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-3 shrink-0">
-            <span className="inline-flex items-center justify-center w-2 h-2 rounded-full bg-accent" aria-hidden="true" />
+          <Link href="/" className="flex items-center gap-2.5 shrink-0">
+            <Key className="w-5 h-5 text-accent shrink-0" aria-hidden="true" strokeWidth={2.25} />
             <span className="font-display text-ink text-xl sm:text-[22px] tracking-tight leading-none">
               Your Property Guide
             </span>

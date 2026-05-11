@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { UserCircle } from "lucide-react";
+import { UserCircle, Key } from "lucide-react";
 import { NewsletterForm as NewsletterFormFooter } from "@/components/newsletter/NewsletterForm";
 
 type SvgProps = { className?: string };
@@ -181,8 +181,8 @@ function FooterBottom() {
     <div className="mt-12 pt-8 border-t border-white/10">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
         <div className="flex flex-col items-center sm:items-start gap-3">
-          <Link href="/" className="flex items-center gap-3">
-            <span className="inline-flex items-center justify-center w-2 h-2 rounded-full bg-accent" aria-hidden="true" />
+          <Link href="/" className="flex items-center gap-2.5">
+            <Key className="w-6 h-6 text-accent shrink-0" aria-hidden="true" strokeWidth={2.25} />
             <span className="font-display text-white text-2xl tracking-tight leading-none">Your Property Guide</span>
           </Link>
           <p className="text-sm text-white/50">Australia&apos;s plain-English property guide</p>
