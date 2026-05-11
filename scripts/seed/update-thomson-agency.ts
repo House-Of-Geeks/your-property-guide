@@ -14,12 +14,12 @@ async function main() {
   const result = await db.agency.updateMany({
     where: { slug: "thomson-property-group" },
     data: {
-      logo:         "https://www.thomsonpropertygroup.com.au/_assets/7958/images/coffs.png",
+      logo:         "/images/agencies/thomson-property-group.png",
       facebookUrl:  "https://www.facebook.com/ThomsonPropertyGroup/",
       instagramUrl: "https://www.instagram.com/thomsonpropertygroup/",
       youtubeUrl:   "https://www.youtube.com/channel/UC2p_T0ixrxmGz1s_dlZ3Omw",
       linkedinUrl:  "https://www.linkedin.com/company/thomson-property-group",
-      heroBg:       "https://renet.photos/10049013/images/432172/slider1.jpg",
+      heroBg:       "/images/agencies/thomson-hero.jpg",
     },
   });
 
