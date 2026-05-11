@@ -23,6 +23,7 @@ interface Props {
 // hammered, and now lands as a CDN hit.
 export const revalidate = 86400;
 export const dynamicParams = true;
+export function generateStaticParams() { return []; }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;

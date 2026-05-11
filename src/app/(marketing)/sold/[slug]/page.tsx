@@ -20,6 +20,7 @@ interface SoldDetailPageProps {
 // 24h matches the rest of the property pages for operational consistency.
 export const revalidate = 86400;
 export const dynamicParams = true;
+export function generateStaticParams() { return []; }
 
 export async function generateMetadata({ params }: SoldDetailPageProps): Promise<Metadata> {
   const { slug } = await params;

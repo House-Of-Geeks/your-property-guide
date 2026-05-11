@@ -29,6 +29,7 @@ interface PropertyDetailPageProps {
 // full rationale; same fix applied to the listing-type roots.
 export const revalidate = 86400;
 export const dynamicParams = true;
+export function generateStaticParams() { return []; }
 
 export async function generateMetadata({ params }: PropertyDetailPageProps): Promise<Metadata> {
   const { slug } = await params;

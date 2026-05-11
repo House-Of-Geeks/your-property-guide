@@ -19,6 +19,7 @@ interface RentDetailPageProps {
 
 export const revalidate = 86400;
 export const dynamicParams = true;
+export function generateStaticParams() { return []; }
 
 export async function generateMetadata({ params }: RentDetailPageProps): Promise<Metadata> {
   const { slug } = await params;

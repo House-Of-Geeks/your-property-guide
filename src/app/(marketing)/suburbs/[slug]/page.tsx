@@ -42,8 +42,11 @@ interface SuburbDetailPageProps {
 // burning function-GB-hours under crawl traffic. Suburb data only changes
 // when the sync worker refreshes (monthly-ish), so 24h revalidate is
 // extremely generous and still cuts function compute by ~99%.
+// See /property/[slug]/page.tsx for why generateStaticParams returning []
+// is required to actually enable ISR on Next 16 dynamic routes.
 export const revalidate = 86400;
 export const dynamicParams = true;
+export function generateStaticParams() { return []; }
 
 export async function generateMetadata({ params }: SuburbDetailPageProps): Promise<Metadata> {
   const { slug } = await params;

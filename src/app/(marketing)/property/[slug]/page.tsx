@@ -51,10 +51,13 @@ interface PageProps {
 // under bot crawls. Property data is refreshed once a day by the Railway
 // sync worker, so a 24h revalidate aligns with the data-freshness budget
 // and turns ~99% of requests into CDN cache hits.
-// `dynamicParams = true` because there are 50k+ slugs — we generate on
-// demand rather than pre-rendering them all at build time.
+// `generateStaticParams` returning [] + `dynamicParams = true` is the
+// required pattern in Next 16 to enable on-demand ISR for fully-dynamic
+// [slug] routes — without the empty-array generateStaticParams, Next
+// treats the route as opt-out of ISR even when `revalidate` is set.
 export const revalidate = 86400;
 export const dynamicParams = true;
+export function generateStaticParams() { return []; }
 
 // Memoize per-request so generateMetadata + the page itself share a single
 // roundtrip instead of issuing the same lookup twice.
