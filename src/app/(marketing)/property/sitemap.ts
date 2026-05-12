@@ -1,10 +1,12 @@
-// Sitemap pages are too large to pre-render at build time, so we serve via
-// on-demand ISR instead of force-dynamic. Each crawler hit is a cache HIT
-// for 24h, the heavy Postgres aggregation runs at most once per day.
-export const revalidate = 86400;
+// force-dynamic + unstable_cache — sitemap.ts files are cached as static
+// by default in Next 16; combined with the build-phase-empty guard, that
+// baked an empty sitemap that never regenerated. force-dynamic guarantees
+// runtime execution; unstable_cache keeps the heavy DB aggregation to once
+// per day per cache key. See /suburbs/sitemap.ts for the original diagnosis.
+export const dynamic = "force-dynamic";
 
-import { cache } from "react";
 import type { MetadataRoute } from "next";
+import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import { SITE_URL } from "@/lib/constants";
 
@@ -15,60 +17,67 @@ const STATE_ORDER = ["ACT", "NSW", "NT", "OT", "QLD", "SA", "TAS", "VIC", "WA"];
 
 type SitemapEntry = { state: string; page: number };
 
-const getSitemapIndex = cache(async (): Promise<SitemapEntry[]> => {
-  const counts = await db.$queryRaw<{ state: string; cnt: bigint }[]>`
-    SELECT state, COUNT(*) AS cnt
-    FROM "PropertyAddress"
-    WHERE "suburbSlug" IS NOT NULL
-    GROUP BY state
-  `;
-  const countMap = new Map(counts.map((r) => [r.state, Number(r.cnt)]));
+// 24h-cached lookup of how the property sitemaps paginate. Used both by
+// generateSitemaps (to enumerate IDs) and the default function (to map
+// id → state+page).
+const getSitemapIndex = unstable_cache(
+  async (): Promise<SitemapEntry[]> => {
+    const counts = await db.$queryRaw<{ state: string; cnt: bigint }[]>`
+      SELECT state, COUNT(*) AS cnt
+      FROM "PropertyAddress"
+      WHERE "suburbSlug" IS NOT NULL
+      GROUP BY state
+    `;
+    const countMap = new Map(counts.map((r) => [r.state, Number(r.cnt)]));
 
-  const index: SitemapEntry[] = [];
-  for (const state of STATE_ORDER) {
-    const count = countMap.get(state) ?? 0;
-    if (count === 0) continue;
-    const pages = Math.ceil(count / PAGE_SIZE);
-    for (let page = 0; page < pages; page++) {
-      index.push({ state, page });
+    const index: SitemapEntry[] = [];
+    for (const state of STATE_ORDER) {
+      const count = countMap.get(state) ?? 0;
+      if (count === 0) continue;
+      const pages = Math.ceil(count / PAGE_SIZE);
+      for (let page = 0; page < pages; page++) {
+        index.push({ state, page });
+      }
     }
-  }
-  return index;
-});
+    return index;
+  },
+  ["sitemap-property-index:v1"],
+  { revalidate: 86400, tags: ["sitemap-property"] },
+);
+
+const getPagedEntries = unstable_cache(
+  async (state: string, page: number): Promise<MetadataRoute.Sitemap> => {
+    const addresses = await db.propertyAddress.findMany({
+      where: { state, suburbSlug: { not: null } },
+      select: { slug: true, updatedAt: true },
+      skip: page * PAGE_SIZE,
+      take: PAGE_SIZE,
+      // Order by suburbSlug so crawlers receive URLs clustered by suburb.
+      // Most crawlers process the sitemap roughly in order, letting the
+      // suburb-data cache (property-page-suburb-cache.ts) serve cached
+      // answers instead of re-querying the DB per property.
+      orderBy: [{ suburbSlug: "asc" }, { id: "asc" }],
+    });
+
+    return addresses.map((a) => ({
+      url: `${SITE_URL}/property/${a.slug}`,
+      lastModified: a.updatedAt,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    }));
+  },
+  ["sitemap-property-page:v1"],
+  { revalidate: 86400, tags: ["sitemap-property"] },
+);
 
 export async function generateSitemaps() {
-  // Skip at build time — DB isn't reachable during `next build`. At runtime the
-  // first crawler hit will populate the index for the `revalidate` window.
-  if (process.env.NEXT_PHASE === "phase-production-build") return [{ id: 0 }];
   const index = await getSitemapIndex();
   return index.map((_, id) => ({ id }));
 }
 
 export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
-  if (process.env.NEXT_PHASE === "phase-production-build") return [];
   const index = await getSitemapIndex();
   const entry = index[id];
   if (!entry) return [];
-
-  const { state, page } = entry;
-
-  const addresses = await db.propertyAddress.findMany({
-    where: { state, suburbSlug: { not: null } },
-    select: { slug: true, updatedAt: true },
-    skip: page * PAGE_SIZE,
-    take: PAGE_SIZE,
-    // Order by suburbSlug so crawlers receive URLs clustered by suburb.
-    // Most crawlers process the sitemap roughly in order, which means
-    // properties in the same suburb get hit close together in time —
-    // letting the suburb-data cache (see property-page-suburb-cache.ts)
-    // serve cached answers instead of re-querying the DB per property.
-    orderBy: [{ suburbSlug: "asc" }, { id: "asc" }],
-  });
-
-  return addresses.map((a) => ({
-    url: `${SITE_URL}/property/${a.slug}`,
-    lastModified: a.updatedAt,
-    changeFrequency: "monthly" as const,
-    priority: 0.5,
-  }));
+  return getPagedEntries(entry.state, entry.page);
 }

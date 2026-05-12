@@ -1,20 +1,25 @@
-// Build-time prerender exhausts DB connections, so we serve via on-demand
-// ISR instead of force-dynamic. Each crawler hit is a cache HIT for 24h.
-export const revalidate = 86400;
+// force-dynamic + unstable_cache — see /suburbs/sitemap.ts.
+export const dynamic = "force-dynamic";
 
 import type { MetadataRoute } from "next";
+import { unstable_cache } from "next/cache";
 import { SITE_URL } from "@/lib/constants";
 import { getAllAgencySlugs } from "@/lib/services/agent-service";
 
+const getEntries = unstable_cache(
+  async (): Promise<MetadataRoute.Sitemap> => {
+    const slugs = await getAllAgencySlugs();
+    return slugs.map((slug) => ({
+      url: `${SITE_URL}/real-estate-agencies/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.5,
+    }));
+  },
+  ["sitemap-agencies:v1"],
+  { revalidate: 86400, tags: ["sitemap-agencies"] },
+);
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Skip at build time — runtime DB isn't reachable during `next build` and
-  // the `revalidate` window will populate this on the first crawler hit.
-  if (process.env.NEXT_PHASE === "phase-production-build") return [];
-  const slugs = await getAllAgencySlugs();
-  return slugs.map((slug) => ({
-    url: `${SITE_URL}/real-estate-agencies/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly" as const,
-    priority: 0.5,
-  }));
+  return getEntries();
 }

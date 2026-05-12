@@ -1,19 +1,25 @@
-// On-demand ISR keeps each crawler hit a 24h cache HIT. Lean projection
-// (slug + dateSold/dateAdded) avoids pulling full Property rows + images.
-export const revalidate = 86400;
+// force-dynamic + unstable_cache — see /suburbs/sitemap.ts.
+export const dynamic = "force-dynamic";
 
 import type { MetadataRoute } from "next";
+import { unstable_cache } from "next/cache";
 import { SITE_URL } from "@/lib/constants";
 import { getPropertySitemapEntries } from "@/lib/services/property-service";
 
+const getEntries = unstable_cache(
+  async (): Promise<MetadataRoute.Sitemap> => {
+    const entries = await getPropertySitemapEntries("sold");
+    return entries.map((p) => ({
+      url: `${SITE_URL}/sold/${p.slug}`,
+      lastModified: p.dateSold ?? p.dateAdded,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }));
+  },
+  ["sitemap-sold:v1"],
+  { revalidate: 86400, tags: ["sitemap-sold"] },
+);
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Skip at build time — runtime DB isn't reachable during `next build`.
-  if (process.env.NEXT_PHASE === "phase-production-build") return [];
-  const entries = await getPropertySitemapEntries("sold");
-  return entries.map((p) => ({
-    url: `${SITE_URL}/sold/${p.slug}`,
-    lastModified: p.dateSold ?? p.dateAdded,
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
+  return getEntries();
 }

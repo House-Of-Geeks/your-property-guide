@@ -1,54 +1,60 @@
-// Sitemap pages are too large to pre-render at build time, so we serve via
-// on-demand ISR instead of force-dynamic. Each crawler hit is a cache HIT
-// for 24h, the heavy Postgres aggregation runs at most once per day.
-export const revalidate = 86400;
+// force-dynamic + unstable_cache — see /suburbs/sitemap.ts.
+export const dynamic = "force-dynamic";
 
-import { cache } from "react";
 import type { MetadataRoute } from "next";
+import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import { SITE_URL } from "@/lib/constants";
 import { streetSlug } from "@/lib/utils/slug";
 
 const PAGE_SIZE = 50_000;
 
-const getTotalStreets = cache(async (): Promise<number> => {
-  const result = await db.$queryRaw<{ cnt: bigint }[]>`
-    SELECT COUNT(*) AS cnt FROM (
+const getTotalStreets = unstable_cache(
+  async (): Promise<number> => {
+    const result = await db.$queryRaw<{ cnt: bigint }[]>`
+      SELECT COUNT(*) AS cnt FROM (
+        SELECT DISTINCT "suburbSlug", "streetName", "streetType", "streetSuffix"
+        FROM "PropertyAddress"
+        WHERE "suburbSlug" IS NOT NULL AND "streetName" IS NOT NULL
+      ) t
+    `;
+    return Number(result[0]?.cnt ?? 0);
+  },
+  ["sitemap-streets-total:v1"],
+  { revalidate: 86400, tags: ["sitemap-streets"] },
+);
+
+const getPagedEntries = unstable_cache(
+  async (id: number): Promise<MetadataRoute.Sitemap> => {
+    const streets = await db.$queryRaw<{
+      suburbSlug: string;
+      streetName: string;
+      streetType: string | null;
+      streetSuffix: string | null;
+    }[]>`
       SELECT DISTINCT "suburbSlug", "streetName", "streetType", "streetSuffix"
       FROM "PropertyAddress"
       WHERE "suburbSlug" IS NOT NULL AND "streetName" IS NOT NULL
-    ) t
-  `;
-  return Number(result[0]?.cnt ?? 0);
-});
+      ORDER BY "suburbSlug", "streetName"
+      LIMIT ${PAGE_SIZE} OFFSET ${id * PAGE_SIZE}
+    `;
+
+    return streets.map((s) => ({
+      url: `${SITE_URL}/suburbs/${s.suburbSlug}/${streetSlug(s.streetName, s.streetType, s.streetSuffix)}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.4,
+    }));
+  },
+  ["sitemap-streets-page:v1"],
+  { revalidate: 86400, tags: ["sitemap-streets"] },
+);
 
 export async function generateSitemaps() {
-  // Skip at build time — DB isn't reachable during `next build`. At runtime the
-  // first crawler hit will populate this for the `revalidate` window.
-  if (process.env.NEXT_PHASE === "phase-production-build") return [{ id: 0 }];
   const total = await getTotalStreets();
   const pages = Math.ceil(total / PAGE_SIZE);
   return Array.from({ length: pages }, (_, id) => ({ id }));
 }
 
 export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
-  if (process.env.NEXT_PHASE === "phase-production-build") return [];
-  const streets = await db.$queryRaw<{
-    suburbSlug: string;
-    streetName: string;
-    streetType: string | null;
-    streetSuffix: string | null;
-  }[]>`
-    SELECT DISTINCT "suburbSlug", "streetName", "streetType", "streetSuffix"
-    FROM "PropertyAddress"
-    WHERE "suburbSlug" IS NOT NULL AND "streetName" IS NOT NULL
-    ORDER BY "suburbSlug", "streetName"
-    LIMIT ${PAGE_SIZE} OFFSET ${id * PAGE_SIZE}
-  `;
-
-  return streets.map((s) => ({
-    url: `${SITE_URL}/suburbs/${s.suburbSlug}/${streetSlug(s.streetName, s.streetType, s.streetSuffix)}`,
-    changeFrequency: "monthly" as const,
-    priority: 0.4,
-  }));
+  return getPagedEntries(id);
 }
