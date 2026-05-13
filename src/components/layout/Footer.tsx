@@ -315,7 +315,7 @@ export function Footer() {
   );
 }
 
-// Newsletter capture band — single email field with editorial framing.
+// Newsletter capture band, single email field with editorial framing.
 // Renders above the link grid in the dark footer.
 function NewsletterBand() {
   return (

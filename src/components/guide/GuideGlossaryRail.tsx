@@ -25,7 +25,7 @@ function stripHtml(html: string): string {
  * to the dedicated /glossary/[term] page so guides become entry points to the
  * 99-term glossary network.
  *
- * Authors pass the slug list explicitly — terms must already exist in
+ * Authors pass the slug list explicitly, terms must already exist in
  * `lib/data/glossary.ts`. Missing slugs are silently dropped.
  */
 export function GuideGlossaryRail({

@@ -208,7 +208,7 @@ export default function RentersRightsSAPage() {
         <tbody>
           <tr><td>Fixed term, end of term</td><td>28 days</td><td>28 days</td></tr>
           <tr><td>Periodic, no grounds</td><td>21 days</td><td>90 days</td></tr>
-          <tr><td>Periodic, significant breach</td><td>—</td><td>14 to 30 days (depending on breach)</td></tr>
+          <tr><td>Periodic, significant breach</td><td>-</td><td>14 to 30 days (depending on breach)</td></tr>
         </tbody>
       </table>
       <p>

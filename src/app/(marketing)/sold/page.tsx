@@ -7,7 +7,7 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { SoldResults } from "./Results";
 
-// ISR — page shell caches as static. searchParams reads are isolated to
+// ISR, page shell caches as static. searchParams reads are isolated to
 // the SoldResults Suspense child below so the parent stays in the CDN cache.
 export const revalidate = 86400;
 

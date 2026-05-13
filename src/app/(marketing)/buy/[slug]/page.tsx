@@ -25,7 +25,7 @@ interface PropertyDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
-// ISR — property detail pages. See /property/[slug]/page.tsx for the
+// ISR, property detail pages. See /property/[slug]/page.tsx for the
 // full rationale; same fix applied to the listing-type roots.
 export const revalidate = 86400;
 export const dynamicParams = true;

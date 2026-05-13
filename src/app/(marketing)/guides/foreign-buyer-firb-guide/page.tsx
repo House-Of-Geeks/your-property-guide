@@ -119,7 +119,7 @@ export default function ForeignBuyerFIRBGuidePage() {
         steps={[
           { name: "Determine your eligibility category", text: "Temporary residents, foreign non-residents, and Australian citizens overseas have different FIRB rules and surcharges." },
           { name: "Apply to FIRB before signing a contract", text: "FIRB approval is required before contracts exchange. Standard processing time: 30 days. Application fee scales with property price." },
-          { name: "Pay the FIRB application fee", text: "Tiered by property price — for a $1M property, around $14,000+. Non-refundable even if FIRB declines." },
+          { name: "Pay the FIRB application fee", text: "Tiered by property price, for a $1M property, around $14,000+. Non-refundable even if FIRB declines." },
           { name: "Sign contract subject to FIRB approval", text: "Most foreign buyer contracts include a FIRB-approval clause that lets you rescind if FIRB declines." },
           { name: "Pay state foreign buyer stamp duty surcharge", text: "On top of standard stamp duty, foreign buyers pay an additional 7-8% in most states. NSW: 8%. VIC: 8%. QLD: 7%." },
           { name: "Settle as a normal Australian property purchase", text: "Once FIRB approval is granted and contracts are unconditional, settlement proceeds the same as any other purchase." },

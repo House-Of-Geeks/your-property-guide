@@ -84,7 +84,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How does HomeSeeker SA shared equity work?",
     answer:
-      "The state government co-invests in your home in exchange for a proportional equity share. You don't pay rent on the government's share. You can buy out the government's share over time. Income and property value thresholds apply, and rounds open and close periodically — confirm current availability with the SA Housing Authority before relying on it.",
+      "The state government co-invests in your home in exchange for a proportional equity share. You don't pay rent on the government's share. You can buy out the government's share over time. Income and property value thresholds apply, and rounds open and close periodically, confirm current availability with the SA Housing Authority before relying on it.",
   },
   {
     question: "What's the cooling-off period in SA?",

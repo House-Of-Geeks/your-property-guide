@@ -53,7 +53,7 @@ export interface SearchResults {
 const GUIDE_INDEX: { slug: string; title: string; description: string }[] = [
   { slug: "buying-property-australia",                title: "How to buy property in Australia",                  description: "Step-by-step from deposit to settlement." },
   { slug: "first-home-buyer-guide",                   title: "First Home Buyer Guide (National)",                 description: "Federal schemes, FHOG by state, stamp duty concessions." },
-  { slug: "how-much-deposit-to-buy-a-house",          title: "How much deposit do you need to buy a house?",      description: "5%, 10%, 20% — what each tier unlocks, plus FHSS." },
+  { slug: "how-much-deposit-to-buy-a-house",          title: "How much deposit do you need to buy a house?",      description: "5%, 10%, 20%, what each tier unlocks, plus FHSS." },
   { slug: "first-home-buyer-mistakes-to-avoid",       title: "10 first home buyer mistakes to avoid",             description: "The expensive errors, ranked, with the fix for each." },
   { slug: "best-time-to-buy-property-australia",      title: "Best time to buy property in Australia",            description: "Seasonal patterns, the rate cycle, why timing rarely wins." },
   { slug: "how-long-does-it-take-to-buy-a-house-australia", title: "How long does it take to buy a house?",       description: "Realistic 12-20 week timeline with state settlement times." },
@@ -101,7 +101,7 @@ function previewFromGlossary(t: GlossaryTerm): string {
 }
 
 /**
- * Unified site search — takes a query string and returns categorised
+ * Unified site search, takes a query string and returns categorised
  * results across suburbs, schools, glossary terms, and guides. Used by the
  * /search page.
  *
@@ -139,7 +139,7 @@ export async function unifiedSearch(query: string): Promise<SearchResults> {
     take: 12,
   });
 
-  // Schools — only fire if not pure numeric (postcode-only doesn't search schools usefully)
+  // Schools, only fire if not pure numeric (postcode-only doesn't search schools usefully)
   type RawSchool = {
     name: string;
     acaraId: string | null;
@@ -181,7 +181,7 @@ export async function unifiedSearch(query: string): Promise<SearchResults> {
       state: s.suburb.state,
     }));
 
-  // Glossary — synchronous, in-memory
+  // Glossary, synchronous, in-memory
   const glossary: SearchResultGlossary[] = GLOSSARY_TERMS
     .filter((t) => t.term.toLowerCase().includes(lower) || t.html.toLowerCase().includes(lower))
     .slice(0, 8)
@@ -192,7 +192,7 @@ export async function unifiedSearch(query: string): Promise<SearchResults> {
       preview: previewFromGlossary(t),
     }));
 
-  // Guides — synchronous, in-memory
+  // Guides, synchronous, in-memory
   const guides: SearchResultGuide[] = GUIDE_INDEX
     .filter((g) =>
       g.title.toLowerCase().includes(lower) ||

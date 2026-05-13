@@ -7,7 +7,7 @@ import { AgentSearch } from "@/components/search/AgentSearch";
 import { SITE_URL } from "@/lib/constants";
 import { AgentsResults } from "./Results";
 
-// ISR — page shell caches as static. searchParams reads are isolated to
+// ISR, page shell caches as static. searchParams reads are isolated to
 // the AgentsResults Suspense child below so the parent stays in the CDN
 // cache. Filter-aware metadata was previously dynamic; now static for cache.
 export const revalidate = 86400;

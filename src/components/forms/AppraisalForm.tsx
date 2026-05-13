@@ -12,7 +12,7 @@ import { clarityEvent, clarityTag } from "@/lib/clarity";
 
 // Free-appraisal request form. The user is on /appraisal explicitly asking
 // for a property valuation, so intent is implicit. The address is the only
-// extra-required field beyond contact info — we genuinely need it to deliver
+// extra-required field beyond contact info, we genuinely need it to deliver
 // the appraisal. Everything else is optional and labelled as such.
 const appraisalSchema = z.object({
   firstName: z.string().min(1, "First name is required"),

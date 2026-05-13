@@ -6,7 +6,7 @@ import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { SuburbsResults } from "./Results";
 
-// ISR — page shell caches as static. searchParams reads are isolated to
+// ISR, page shell caches as static. searchParams reads are isolated to
 // the SuburbsResults Suspense child below so the parent stays in the CDN
 // cache while only the dynamic results chunk re-renders per state/query.
 export const revalidate = 86400;

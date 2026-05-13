@@ -361,7 +361,7 @@ const LGA_MAP: Record<string, string> = {
   "Canberra":            "City of Canberra",
 };
 
-/** State names — these should pass through unchanged (not LGA names) */
+/** State names, these should pass through unchanged (not LGA names) */
 const STATE_NAMES = new Set([
   "Queensland",
   "New South Wales",

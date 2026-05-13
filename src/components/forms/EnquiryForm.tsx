@@ -10,7 +10,7 @@ import { clarityEvent, clarityTag } from "@/lib/clarity";
 
 // Property-page enquiry form. Required fields kept to the minimum that's
 // genuinely needed to follow up: a name and an email. Phone and last name
-// are optional — leads with just an email still close. The user is already
+// are optional, leads with just an email still close. The user is already
 // on a specific property page, so "what are you working on" doesn't apply
 // here; intent is implicit.
 const enquirySchema = z.object({

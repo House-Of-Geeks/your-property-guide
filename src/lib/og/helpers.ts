@@ -4,7 +4,7 @@ interface GuideOgInput {
   slug: string;
   title: string;
   description: string;
-  /** Persona id e.g. "first-home" — capitalised on the OG card */
+  /** Persona id e.g. "first-home", capitalised on the OG card */
   persona?: string;
 }
 

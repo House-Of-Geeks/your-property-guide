@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ──────────────────────────────────────────────────────────────────
-   Editorial palette — warm cream + terracotta
+   Editorial palette, warm cream + terracotta
    Sister-brand alignment with Your Finance Guide; the previous
    purple/magenta scheme was deliberately swapped on 2026-05-10
    because it wasn't converting. Token *names* are unchanged so
@@ -149,7 +149,7 @@ h1 {
   line-height: 1.15;
 }
 
-/* Brand utilities — terracotta gradient panel for calculator results & CTAs */
+/* Brand utilities, terracotta gradient panel for calculator results & CTAs */
 .gradient-brand {
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
 }

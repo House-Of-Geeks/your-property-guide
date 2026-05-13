@@ -7,9 +7,9 @@ import { MatchAgentEmbed, SpecialistShowcase, TrustStrip } from "@/components/jo
 import { SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Find your expert — agent, broker, or specialist | ${SITE_NAME}`,
+  title: `Find your expert, agent, broker, or specialist | ${SITE_NAME}`,
   description:
-    "Get connected with one vetted specialist for your property situation — agent, broker, accountant, conveyancer, whoever fits. Free for buyers and sellers, no commitment.",
+    "Get connected with one vetted specialist for your property situation, agent, broker, accountant, conveyancer, whoever fits. Free for buyers and sellers, no commitment.",
 };
 
 // Editorial hub explaining how the match flow works. The actual lead engine
@@ -37,20 +37,20 @@ const LANES: Lane[] = [
       "You're going to opens this weekend",
       "You've found the place and need to bid Saturday",
     ],
-    cta: "Get connected — buying",
+    cta: "Get connected, buying",
   },
   {
     intent: "selling",
     eyebrow: "Selling",
     headline: "When you want an appraisal or a real selling plan.",
     body:
-      "A listing agent who actually knows your suburb — recent sales, what buyers are paying, the right campaign for your property. Not the agent who knocks on the door with a flyer; the one who's selling in your street.",
+      "A listing agent who actually knows your suburb, recent sales, what buyers are paying, the right campaign for your property. Not the agent who knocks on the door with a flyer; the one who's selling in your street.",
     fits: [
       "You want an honest appraisal before you commit",
       "You're weighing private sale vs auction",
       "You're moving and need to plan the timing",
     ],
-    cta: "Get connected — selling",
+    cta: "Get connected, selling",
   },
   {
     intent: "refinancing",
@@ -63,20 +63,20 @@ const LANES: Lane[] = [
       "You need pre-approval before you bid",
       "Your rate hasn't been reviewed in over a year",
     ],
-    cta: "Get connected — refinancing",
+    cta: "Get connected, refinancing",
   },
   {
     intent: "something-else",
     eyebrow: "Something else",
     headline: "Inheritance, divorce, downsizing, or planning ahead.",
     body:
-      "Property situations don't always reduce to buy/sell/invest. We work with property accountants, conveyancers, family lawyers and estate planners — and we'll point you at the right one for your situation, not the closest one to a sale.",
+      "Property situations don't always reduce to buy/sell/invest. We work with property accountants, conveyancers, family lawyers and estate planners, and we'll point you at the right one for your situation, not the closest one to a sale.",
     fits: [
       "You've inherited a property and don't know where to start",
       "You're separating and need to deal with a shared property",
       "You're downsizing and want to plan the order of moves",
     ],
-    cta: "Get connected — something else",
+    cta: "Get connected, something else",
   },
 ];
 
@@ -169,7 +169,7 @@ export default function FindAnExpertPage() {
         </div>
       </section>
 
-      {/* Lanes — four situations */}
+      {/* Lanes, four situations */}
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 max-w-2xl">
@@ -228,7 +228,7 @@ export default function FindAnExpertPage() {
         </div>
       </section>
 
-      {/* Embedded match engine — same component as the homepage. Lane
+      {/* Embedded match engine, same component as the homepage. Lane
           buttons above push ?intent=... which re-keys this embed so the
           form opens at the right step. Placed here (immediately after the
           lanes) so a lane click on mobile lands the user right on the
@@ -237,13 +237,13 @@ export default function FindAnExpertPage() {
         <MatchAgentEmbed />
       </Suspense>
 
-      {/* Real specialists — honest social proof. Visitors who scroll past
+      {/* Real specialists, honest social proof. Visitors who scroll past
           the form without engaging see actual people they could be matched
           with, not a faceless promise. Empty-safe: silently renders nothing
           if no agents are in the DB. */}
       <SpecialistShowcase />
 
-      {/* How matching works — sits below the form as supporting copy for
+      {/* How matching works, sits below the form as supporting copy for
           anyone who scrolled past the form without engaging. The CTA here
           still anchors to #match (scrolls up to the form). */}
       <section className="py-16 bg-surface-sunken">

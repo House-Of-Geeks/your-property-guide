@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
   try {
     body = (await request.json()) as SyncBody;
   } catch {
-    // empty body is fine — use defaults
+    // empty body is fine, use defaults
   }
   const doPrune = body.prune === true;
   const doIndexNow = body.indexnow !== false; // default true

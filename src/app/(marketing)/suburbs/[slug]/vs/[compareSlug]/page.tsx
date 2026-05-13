@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: ComparePageProps): Promise<Me
   const title = `${suburbA.name} vs ${suburbB.name}: Side-by-Side Suburb Comparison | Your Property Guide`;
   const description = `Compare ${suburbA.name} and ${suburbB.name} suburb-to-suburb. Median house prices: ${suburbA.stats.medianHousePrice > 0 ? formatPriceFull(suburbA.stats.medianHousePrice) : "–"} vs ${suburbB.stats.medianHousePrice > 0 ? formatPriceFull(suburbB.stats.medianHousePrice) : "–"}. Schools, walkability, flood risk, climate, and more.`;
 
-  // Build a custom OG via the guide handler — it accepts arbitrary title/desc
+  // Build a custom OG via the guide handler, it accepts arbitrary title/desc
   const ogTitle = `${suburbA.name} vs ${suburbB.name}`;
   const ogDesc = `Median, growth, schools, walkability and risk side by side.`;
   const ogParams = new URLSearchParams({

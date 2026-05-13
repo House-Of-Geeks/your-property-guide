@@ -1,4 +1,4 @@
-// force-dynamic + unstable_cache — see /suburbs/sitemap.ts for why the
+// force-dynamic + unstable_cache, see /suburbs/sitemap.ts for why the
 // previous `revalidate` + build-phase-guard pattern was baking empty
 // sitemaps that never regenerated.
 export const dynamic = "force-dynamic";

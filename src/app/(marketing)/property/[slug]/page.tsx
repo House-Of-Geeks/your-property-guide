@@ -47,14 +47,14 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-// ISR — property listing pages were rendering full SSR on every request
+// ISR, property listing pages were rendering full SSR on every request
 // (~12 Prisma calls each), causing the bulk of Vercel function-GB-hours
 // under bot crawls. Property data is refreshed once a day by the Railway
 // sync worker, so a 24h revalidate aligns with the data-freshness budget
 // and turns ~99% of requests into CDN cache hits.
 // `generateStaticParams` returning [] + `dynamicParams = true` is the
 // required pattern in Next 16 to enable on-demand ISR for fully-dynamic
-// [slug] routes — without the empty-array generateStaticParams, Next
+// [slug] routes, without the empty-array generateStaticParams, Next
 // treats the route as opt-out of ISR even when `revalidate` is set.
 export const revalidate = 86400;
 export const dynamicParams = true;
@@ -72,7 +72,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!address) return { title: "Property Not Found" };
 
   const addressDisplay = address.addressFull.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
-  const title = `${addressDisplay} — Property Profile`;
+  const title = `${addressDisplay}, Property Profile`;
   const description = `View property details, listing history, suburb stats, and nearby properties for ${addressDisplay}.`;
   return {
     title,
@@ -85,7 +85,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 /**
  * Indicative price range from suburb median. Suburb median ± 15% gives a
- * conservative LOW/MID/HIGH band — clearly labelled "indicative" since we
+ * conservative LOW/MID/HIGH band, clearly labelled "indicative" since we
  * don't run an AVM yet.
  */
 function indicativePriceRange(median: number) {
@@ -104,7 +104,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
   if (!address) notFound();
 
   // All six suburb-scoped lookups (suburb stats, schools, hazard, crime,
-  // climate, recent sales pool) are bundled and cached by suburbSlug — see
+  // climate, recent sales pool) are bundled and cached by suburbSlug, see
   // property-page-suburb-cache.ts. Every property in the same suburb shares
   // the same answer, so caching here cuts ~6 of the page's ~12 Prisma calls
   // down to a single cache lookup once the suburb is warm.
@@ -121,7 +121,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
     .filter((s) => s.address?.slug !== slug)
     .slice(0, 6);
 
-  // Active listings at this address (loose match — same street + postcode + state)
+  // Active listings at this address (loose match, same street + postcode + state)
   const listings = await db.property.findMany({
     where: {
       addressStreet: { contains: address.streetName ?? "", mode: "insensitive" },
@@ -182,7 +182,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
     : [];
 
   // Authoritative sale history from state Valuer-General feeds (VG NSW etc.)
-  // Only "exact" matches — street-fallback rows aren't this address specifically.
+  // Only "exact" matches, street-fallback rows aren't this address specifically.
   const vgSales = await db.propertySale.findMany({
     where: { addressId: address.id, matchConfidence: "exact" },
     select: {
@@ -231,14 +231,14 @@ export default async function PropertyAddressPage({ params }: PageProps) {
 
   // Derive a dwelling type label from the most authoritative signal we have.
   // Order: active listing > G-NAF flatType > VG natureCode/primaryPurpose >
-  // apt-block heuristic. Returns null when we genuinely don't know — caller
+  // apt-block heuristic. Returns null when we genuinely don't know, caller
   // hides the chip rather than guessing.
   const propertyTypeLabel: string | null = (() => {
     if (featured?.propertyType) return toTitleCase(featured.propertyType);
 
     const flatType = address.flatType?.toUpperCase().trim();
     if (flatType) {
-      // G-NAF flat type codes — map common ones to readable labels
+      // G-NAF flat type codes, map common ones to readable labels
       if (flatType === "UNIT" || flatType === "U") return "Unit";
       if (flatType === "APARTMENT" || flatType === "APT") return "Apartment";
       if (flatType === "FLAT") return "Flat";
@@ -308,7 +308,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* HERO — taller map with floating value badge + CTA */}
+      {/* HERO, taller map with floating value badge + CTA */}
       <div className="bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6">
           {mapLat && mapLng ? (
@@ -323,7 +323,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
               {/* subtle gradient overlays for legibility */}
               <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/20 via-black/5 to-transparent z-[300] pointer-events-none" />
 
-              {/* top-left chip — building or parcel */}
+              {/* top-left chip, building or parcel */}
               {(buildingDisplay || address.legalParcelId) && (
                 <div className="absolute left-4 top-4 z-[400] inline-flex items-center gap-1.5 bg-white/95 backdrop-blur px-3 py-1.5 rounded-full border border-gray-200 shadow-sm text-xs font-medium text-gray-700">
                   <Landmark className="h-3.5 w-3.5 text-primary" />
@@ -378,7 +378,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                 {localityDisplay}, {address.state} {address.postcode}
               </p>
 
-              {/* property snapshot — pills with circular icon backgrounds */}
+              {/* property snapshot, pills with circular icon backgrounds */}
               <div className="flex flex-wrap items-center gap-2 mt-5">
                 {propertyTypeLabel && (
                   <span className="inline-flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-full bg-gray-50 border border-gray-200 text-sm text-gray-800">
@@ -420,7 +420,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                 )}
               </div>
 
-              {/* last sold pill — VG sale takes priority */}
+              {/* last sold pill, VG sale takes priority */}
               {(vgSales[0] || (hasRealSaleHistory && address.lastSalePrice)) && (
                 <div className="mt-3 inline-flex items-center gap-2 text-xs text-gray-600">
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
@@ -463,12 +463,12 @@ export default async function PropertyAddressPage({ params }: PageProps) {
           {/* MAIN COLUMN */}
           <div className="lg:col-span-2 space-y-12">
 
-            {/* PROPERTY VALUE + RENTAL ESTIMATE — bold full-width panel */}
+            {/* PROPERTY VALUE + RENTAL ESTIMATE, bold full-width panel */}
             {(valueRange || rentPerWeek) && (
               <section id="value" className="scroll-mt-24">
                 <h2 className="text-2xl font-bold text-gray-900 mb-1">Property value</h2>
                 <p className="text-sm text-gray-500 mb-5">
-                  Indicative estimate based on {suburb?.name ?? "this suburb"}&apos;s median —
+                  Indicative estimate based on {suburb?.name ?? "this suburb"}&apos;s median -
                   not a formal valuation.
                 </p>
 
@@ -539,7 +539,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                   {/* Footer row */}
                   <div className="border-t border-gray-100 bg-white/60 px-6 py-3 flex flex-wrap items-center justify-between gap-3 text-xs text-gray-500">
                     <span>
-                      Estimate based on {suburb?.name ?? "suburb"} medians — not a formal valuation.
+                      Estimate based on {suburb?.name ?? "suburb"} medians, not a formal valuation.
                     </span>
                     <Link
                       href={appraisalHref}
@@ -575,13 +575,13 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                   {address.state} {address.postcode}
                   {hasRealSaleHistory && address.lastSalePrice ? (
                     <>
-                      {" "}— last sold for{" "}
+                      {" "}- last sold for{" "}
                       <strong>{formatPriceFull(address.lastSalePrice)}</strong>
                       {" "}in {new Date(address.lastSaleDate!).toLocaleDateString("en-AU", { month: "long", year: "numeric" })}.
                     </>
                   ) : valueRange ? (
                     <>
-                      {" "}— estimated to be worth around{" "}
+                      {" "}- estimated to be worth around{" "}
                       <strong>{formatPrice(valueRange.mid)}</strong>, with an indicative range of{" "}
                       {formatPrice(valueRange.low)}–{formatPrice(valueRange.high)} based on suburb medians.
                     </>
@@ -593,7 +593,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                   <p className="text-gray-600">
                     This address is part of a residential complex with{" "}
                     <strong>{address.saleCount}+ recorded sales</strong> across multiple units.
-                    Individual unit prices vary — see history below for the full record.
+                    Individual unit prices vary, see history below for the full record.
                   </p>
                 )}
                 {!hasRealSaleHistory && soldHistory[0]?.dateSold && (
@@ -711,7 +711,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                               Listed for {p.listingType}
                             </span>
                             <span className="text-sm font-semibold text-gray-900">
-                              {p.priceDisplay ?? "—"}
+                              {p.priceDisplay ?? "-"}
                             </span>
                             <span className="text-xs text-gray-500">
                               · {formatDate(p.dateAdded.toISOString())}
@@ -733,7 +733,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                 </div>
               )}
 
-              {/* NSW VG attribution — required by licence when displaying VG sales */}
+              {/* NSW VG attribution, required by licence when displaying VG sales */}
               {vgSales.some((s) => s.source === "vg-nsw") && (
                 <p className="text-xs text-gray-400 mt-4">
                   Contains property sales information provided under licence from the NSW Valuer
@@ -754,9 +754,9 @@ export default async function PropertyAddressPage({ params }: PageProps) {
             {zoningOverlay && (() => {
               const ATTRIBUTIONS: Record<string, string> = {
                 "nsw-epi-zoning":    "NSW Department of Planning, Housing and Infrastructure (CC BY 4.0)",
-                "vic-vicmap-zoning": "State of Victoria, Department of Transport and Planning — Vicmap Planning (CC BY 4.0)",
+                "vic-vicmap-zoning": "State of Victoria, Department of Transport and Planning, Vicmap Planning (CC BY 4.0)",
                 "act-tp-zoning":     "ACT Government Geospatial Data Catalogue, ACTmapi (CC BY 4.0)",
-                "tas-tps-zoning":    "Tasmanian Government — LIST OpenData (CC BY 3.0 AU)",
+                "tas-tps-zoning":    "Tasmanian Government, LIST OpenData (CC BY 3.0 AU)",
               };
               const attribution = ATTRIBUTIONS[zoningOverlay.source] ?? `${zoningOverlay.source} (CC BY)`;
               const a = zoningOverlay.attrs as {
@@ -786,14 +786,14 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                       <p className="text-xs text-gray-500 mt-2">Under {scheme}{locality ? ` (${locality})` : ""}</p>
                     )}
                     <p className="text-xs text-gray-400 mt-3">
-                      Indicative — confirm permitted uses with local council before relying on this.
+                      Indicative, confirm permitted uses with local council before relying on this.
                     </p>
                   </div>
                 </section>
               );
             })()}
 
-            {/* PERILS AND ZONES — 3-card row */}
+            {/* PERILS AND ZONES, 3-card row */}
             {(() => {
               const floodLevel    = hazard?.floodClass?.toLowerCase().trim() ?? null;
               const bushfireLevel = hazard?.bushfireRisk?.toLowerCase().trim() ?? null;
@@ -844,7 +844,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                   <p className="text-sm text-gray-500 mb-5">Local area overlays that may impact this property.</p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {/* Flood — prefer parcel-level overlay over suburb-level */}
+                    {/* Flood, prefer parcel-level overlay over suburb-level */}
                     <div className="rounded-2xl border border-gray-200 bg-white p-5">
                       <div className="flex items-center gap-3 mb-3">
                         <span className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center">
@@ -861,7 +861,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                             : <PillNoData />}
                     </div>
 
-                    {/* Bushfire — prefer parcel-level overlay over suburb-level */}
+                    {/* Bushfire, prefer parcel-level overlay over suburb-level */}
                     <div className="rounded-2xl border border-gray-200 bg-white p-5">
                       <div className="flex items-center gap-3 mb-3">
                         <span className="h-10 w-10 rounded-full bg-orange-50 flex items-center justify-center">
@@ -878,7 +878,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                             : <PillNoData />}
                     </div>
 
-                    {/* Heritage — parcel-level overlay only */}
+                    {/* Heritage, parcel-level overlay only */}
                     <div className="rounded-2xl border border-gray-200 bg-white p-5">
                       <div className="flex items-center gap-3 mb-3">
                         <span className="h-10 w-10 rounded-full bg-stone-50 flex items-center justify-center">
@@ -907,7 +907,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
               );
             })()}
 
-            {/* SUBURB SNAPSHOT — stats + demographics */}
+            {/* SUBURB SNAPSHOT, stats + demographics */}
             {suburb && (suburb.medianHousePrice > 0 || suburb.population > 0) && (
               <section>
                 <div className="flex items-end justify-between mb-1">
@@ -1078,7 +1078,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                 <h2 className="text-2xl font-bold text-gray-900 mb-1">Government school catchment</h2>
                 <p className="text-sm text-gray-500 mb-5">
                   Public schools this address is zoned for. Always confirm directly with the
-                  school before relying on this — boundaries can change year to year.
+                  school before relying on this, boundaries can change year to year.
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1285,7 +1285,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
                             href={`/property/${s.address?.slug ?? ""}`}
                             className="font-medium text-gray-900 hover:text-primary transition-colors truncate block"
                           >
-                            {toTitleCase(s.address?.addressFull ?? "") ?? "—"}
+                            {toTitleCase(s.address?.addressFull ?? "") ?? "-"}
                           </Link>
                           <p className="text-xs text-gray-500 mt-0.5">
                             Sold {formatDate(s.contractDate.toISOString())}
@@ -1338,7 +1338,7 @@ export default async function PropertyAddressPage({ params }: PageProps) {
           {/* SIDEBAR */}
           <div className="space-y-6">
             <div className="lg:sticky lg:top-24 space-y-6">
-              {/* Sell-side CTA — primary brand colour */}
+              {/* Sell-side CTA, primary brand colour */}
               <div className="rounded-2xl bg-gradient-to-br from-primary to-primary-dark p-6 text-white shadow-sm">
                 <h3 className="font-bold text-lg leading-tight">Looking to sell?</h3>
                 <p className="text-sm text-white/85 mt-2 leading-relaxed">

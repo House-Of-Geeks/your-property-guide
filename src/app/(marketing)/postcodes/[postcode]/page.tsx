@@ -21,7 +21,7 @@ export const dynamicParams = true;
 export const revalidate = 86400; // cache as ISR for 24h, regen on demand
 
 export async function generateStaticParams() {
-  // Skip prerender at build time — DB isn't reachable during `next build`.
+  // Skip prerender at build time, DB isn't reachable during `next build`.
   // Pages render on-demand via dynamicParams=true.
   if (process.env.NEXT_PHASE === "phase-production-build") return [];
   const postcodes = await getAllPostcodes();

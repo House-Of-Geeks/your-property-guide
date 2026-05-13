@@ -7,7 +7,7 @@ interface CrimeStat {
   state: string;
   /** "suburb" = exact match for this suburb; "lga" = LGA-wide fallback. */
   geoLevel?: "suburb" | "lga";
-  /** Set when geoLevel is "lga" — name of the LGA the data covers. */
+  /** Set when geoLevel is "lga", name of the LGA the data covers. */
   lgaName?: string;
 }
 

@@ -12,7 +12,7 @@ import { db } from "@/lib/db";
 // its data is refreshed.
 
 const REVALIDATE_SECONDS = 86_400;
-// Pool size for "recent sales in this suburb" — page filters out the
+// Pool size for "recent sales in this suburb", page filters out the
 // current property and slices to 6, so a small buffer is enough.
 const NEARBY_SALES_POOL_SIZE = 12;
 const NEARBY_SALES_WINDOW_MS = 24 * 30 * 24 * 3600 * 1000;
@@ -190,7 +190,7 @@ async function fetchBundle(suburbSlug: string) {
         annualRainfallMm: true,
       },
     }),
-    // Recent sales pool — we fetch a small buffer instead of the page's
+    // Recent sales pool, we fetch a small buffer instead of the page's
     // final list so the cache entry doesn't depend on the current address.
     // The page filters out its own address and slices to 6.
     db.propertySale.findMany({

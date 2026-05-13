@@ -48,7 +48,7 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "Winter (June–August) is historically the softest selling season in Australia. Less stock, less competition, and motivated sellers can mean better buyer leverage.",
-  "Spring (September–November) is the busiest market — more stock to choose from, but also more buyers competing.",
+  "Spring (September–November) is the busiest market, more stock to choose from, but also more buyers competing.",
   "Christmas / New Year (mid-December to late January) is a quiet pocket where serious sellers hold deals together with little buyer competition.",
   "Rate cycles matter more than seasons. Cuts increase borrowing capacity (and prices); hikes do the opposite.",
   "For owner-occupiers, the best time is when your finances are ready and you'll hold for at least 5 to 7 years. Trying to time the bottom rarely beats just buying when you can.",
@@ -79,7 +79,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Is there a worst time to buy property in Australia?",
     answer:
-      "Not really, in terms of price. But buying just before a known rate hike, or buying without pre-approval in a rapidly tightening lending environment, can leave you settling at a higher rate than you modelled. The worst-time risk isn't the season — it's buying without the financing locked in.",
+      "Not really, in terms of price. But buying just before a known rate hike, or buying without pre-approval in a rapidly tightening lending environment, can leave you settling at a higher rate than you modelled. The worst-time risk isn't the season, it's buying without the financing locked in.",
   },
   {
     question: "Does the property market follow election cycles?",
@@ -94,14 +94,14 @@ const FAQS: FaqItem[] = [
   {
     question: "Should first home buyers wait for grant rounds?",
     answer:
-      "Yes, if you're using a Home Guarantee Scheme place. Place allocations reset twice a year (1 July and 1 January). Waiting a few weeks for a fresh round is often worth it. For state grants and stamp duty concessions, eligibility is usually based on contract date — check your state's rules before delaying.",
+      "Yes, if you're using a Home Guarantee Scheme place. Place allocations reset twice a year (1 July and 1 January). Waiting a few weeks for a fresh round is often worth it. For state grants and stamp duty concessions, eligibility is usually based on contract date, check your state's rules before delaying.",
   },
 ];
 
 const RELATED: RelatedGuide[] = [
   { title: "RBA Cash Rate History", href: "/rba-cash-rate", description: "Track every RBA decision and how rates affect property prices." },
   { title: "How Much Deposit Do You Need?", href: "/guides/how-much-deposit-to-buy-a-house", description: "Get your deposit right before timing matters at all." },
-  { title: "Property Auction Guide", href: "/guides/property-auction-guide", description: "Auctions cluster in spring — here's how to navigate them." },
+  { title: "Property Auction Guide", href: "/guides/property-auction-guide", description: "Auctions cluster in spring, here's how to navigate them." },
   { title: "Borrowing Power Calculator", href: "/borrowing-power-calculator", description: "Run your numbers at today's rates to see what you can buy now." },
   { title: "Sydney vs Melbourne Property Market", href: "/guides/sydney-vs-melbourne-property-market", description: "City-level differences that interact with seasonality." },
 ];
@@ -133,7 +133,7 @@ export default function BestTimeToBuyGuide() {
         conditions are met.
       </p>
       <p>
-        For investors, timing matters slightly more — buying near the start
+        For investors, timing matters slightly more, buying near the start
         of a rate-cutting cycle gives you a tailwind for both price growth
         and refinancing. But even then, the suburb selection and entry price
         matter far more than the month you bought.
@@ -165,7 +165,7 @@ export default function BestTimeToBuyGuide() {
         September and October.
       </p>
       <p>
-        <strong>Buyer advantage:</strong> Maximum choice — usually 2 to 3 times
+        <strong>Buyer advantage:</strong> Maximum choice, usually 2 to 3 times
         the listings of winter months.
       </p>
       <p>
@@ -207,7 +207,7 @@ export default function BestTimeToBuyGuide() {
       <ul>
         <li><strong>Cutting cycle, early stage:</strong> Best time to buy. Borrowing capacity rises before prices fully respond, giving you a window of 1 to 3 quarters of relative affordability.</li>
         <li><strong>Cutting cycle, late stage:</strong> Prices have caught up. Still good for owner-occupiers, less of a clear edge for investors.</li>
-        <li><strong>Hiking cycle, early stage:</strong> Borrowing capacity tightens but prices haven&rsquo;t fallen yet. The hardest combination — wait if you can.</li>
+        <li><strong>Hiking cycle, early stage:</strong> Borrowing capacity tightens but prices haven&rsquo;t fallen yet. The hardest combination, wait if you can.</li>
         <li><strong>Hiking cycle, late stage:</strong> Prices have softened, sellers are motivated. A genuine buyer&rsquo;s market.</li>
       </ul>
       <p>
@@ -221,15 +221,15 @@ export default function BestTimeToBuyGuide() {
         the right time is:
       </p>
       <ul>
-        <li><strong>Just settled into a stable job?</strong> Build 3 to 6 months of income proof before applying for finance — lenders want consistency.</li>
+        <li><strong>Just settled into a stable job?</strong> Build 3 to 6 months of income proof before applying for finance, lenders want consistency.</li>
         <li><strong>About to start a family?</strong> Buy with the family configuration in mind. Moving with a 6-month-old is a different proposition to moving without kids.</li>
-        <li><strong>Considering a job change?</strong> Wait until you&rsquo;ve passed probation in the new role — most lenders won&rsquo;t consider income on probation.</li>
+        <li><strong>Considering a job change?</strong> Wait until you&rsquo;ve passed probation in the new role, most lenders won&rsquo;t consider income on probation.</li>
         <li><strong>Have an inheritance coming?</strong> Don&rsquo;t time around it; the timing is unpredictable. Plan around your current resources and treat it as upside if it lands.</li>
       </ul>
 
       <h2 id="auction-vs-private">Auction vs private treaty timing</h2>
       <p>
-        Auctions are heavily seasonal — Saturday auction clearance rates spike
+        Auctions are heavily seasonal, Saturday auction clearance rates spike
         during the spring selling season and drop in winter. Private treaty
         works year-round.
       </p>

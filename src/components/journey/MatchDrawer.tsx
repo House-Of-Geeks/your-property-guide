@@ -28,7 +28,7 @@ interface MatchDrawerProps {
  * "Match me" button (e.g. above-the-fold on suburb pages).
  *
  * Keeping this separate from any specific trigger button means callers
- * own their own button styling — the drawer is the only shared piece.
+ * own their own button styling, the drawer is the only shared piece.
  */
 export function MatchDrawer({
   open,
@@ -37,7 +37,7 @@ export function MatchDrawer({
   intent,
   source = "match-drawer",
   heading = "Tell us your situation",
-  subhead = "Three quick questions and we’ll match you with the right specialist — usually within one business day.",
+  subhead = "Three quick questions and we’ll match you with the right specialist, usually within one business day.",
 }: MatchDrawerProps) {
   // Lock body scroll while open
   useEffect(() => {

@@ -200,7 +200,7 @@ const ALL_NEXT_STEPS: Record<string, NextStepLink> = {
   "guide-deposit":                 { label: "How much deposit do I need?",  description: "5%, 10%, 20%, plus government schemes and FHSS.",            href: "/guides/how-much-deposit-to-buy-a-house", icon: "/images/icons/guide.svg" },
   "guide-buying":                  { label: "How to buy property in Australia", description: "Step-by-step from deposit to settlement.",               href: "/guides/buying-property-australia", icon: "/images/icons/guide.svg" },
   "guide-bridging":                { label: "Bridging loans",               description: "Peak debt, end debt, and when bridging is the right call.", href: "/guides/bridging-loans-guide",   icon: "/images/icons/guide.svg" },
-  "guide-house-vs-apartment":      { label: "House vs apartment",           description: "Capital growth vs cash flow — a 20-year worked example.",    href: "/guides/house-vs-apartment-investment-australia", icon: "/images/icons/guide.svg" },
+  "guide-house-vs-apartment":      { label: "House vs apartment",           description: "Capital growth vs cash flow, a 20-year worked example.",    href: "/guides/house-vs-apartment-investment-australia", icon: "/images/icons/guide.svg" },
   "guide-negative-gearing":        { label: "Negative gearing",             description: "How it works and whether it fits your strategy.",            href: "/guides/negative-gearing-australia", icon: "/images/icons/guide.svg" },
   "best-suburbs":                  { label: "Best suburbs by category",     description: "Schools, growth, affordability, walkability, yield.",        href: "/best-suburbs",                  icon: "/images/icons/map.svg" },
 };

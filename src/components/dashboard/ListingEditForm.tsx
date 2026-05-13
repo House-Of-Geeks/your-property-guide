@@ -136,7 +136,7 @@ export function ListingEditForm({ property, agents, isAdmin }: Props) {
           <div>
             <label className={labelClass}>Co-agent <span className="text-gray-400 font-normal">optional</span></label>
             <select name="coAgentId" defaultValue={property.coAgentId ?? ""} className={inputClass}>
-              <option value="">— No co-agent —</option>
+              <option value="">- No co-agent -</option>
               {agents.map((a) => (
                 <option key={a.id} value={a.id}>{a.fullName}</option>
               ))}

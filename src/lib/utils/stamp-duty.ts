@@ -257,7 +257,7 @@ function calcSA(
   const notes: string[] = [];
 
   if (isFirstHome) {
-    notes.push("SA does not offer a stamp duty concession for first home buyers. A separate First Home Owner Grant may be available — visit revenue.sa.gov.au for details.");
+    notes.push("SA does not offer a stamp duty concession for first home buyers. A separate First Home Owner Grant may be available, visit revenue.sa.gov.au for details.");
   }
 
   const foreignSurcharge = isForeign ? price * 0.07 : 0;
@@ -389,7 +389,7 @@ function calcACT(
   const notes: string[] = [];
 
   if (isFirstHome) {
-    notes.push("ACT Home Buyer Concession Scheme may provide a full duty exemption for eligible first home buyers with household income below the threshold. This is income-tested — visit act.gov.au for eligibility details.");
+    notes.push("ACT Home Buyer Concession Scheme may provide a full duty exemption for eligible first home buyers with household income below the threshold. This is income-tested, visit act.gov.au for eligibility details.");
   }
 
   // ACT has no foreign buyer surcharge

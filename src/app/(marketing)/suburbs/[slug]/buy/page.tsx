@@ -17,7 +17,7 @@ interface Props {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-// ISR — listings refresh once a day via the sync worker. Pages that take
+// ISR, listings refresh once a day via the sync worker. Pages that take
 // `searchParams` (filters / pagination) are still cached by Next per
 // unique URL variant; the no-filter SEO crawl path is the one that gets
 // hammered, and now lands as a CDN hit.
@@ -106,7 +106,7 @@ export default async function SuburbBuyPage({ params, searchParams }: Props) {
       <StickyMatchCTA
         suburb={slug}
         intent="buying"
-        label={`${suburb.name} — get connected`}
+        label={`${suburb.name}, get connected`}
         dismissKey={`suburb:${slug}`}
       />
     </>

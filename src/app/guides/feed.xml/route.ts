@@ -63,7 +63,7 @@ export async function GET() {
      xmlns:dc="http://purl.org/dc/elements/1.1/"
      xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${cdata(`${SITE_NAME} — Insights`)}</title>
+    <title>${cdata(`${SITE_NAME}, Insights`)}</title>
     <link>${xmlEscape(SITE_URL)}/guides</link>
     <description>${cdata("Australian property market analysis, capital city outlooks, RBA decisions, and data refreshes.")}</description>
     <language>en-au</language>

@@ -81,7 +81,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How long is the standard settlement period?",
     answer:
-      "30 days is standard in NSW and ACT. 30 to 60 days is typical in Victoria and Queensland. 30 to 90 days is common in WA, SA, TAS, and NT. The settlement date is negotiable as part of the contract — sellers often prefer longer (more time to find their next home), buyers often prefer shorter.",
+      "30 days is standard in NSW and ACT. 30 to 60 days is typical in Victoria and Queensland. 30 to 90 days is common in WA, SA, TAS, and NT. The settlement date is negotiable as part of the contract, sellers often prefer longer (more time to find their next home), buyers often prefer shorter.",
   },
   {
     question: "How long does pre-approval take?",
@@ -96,13 +96,13 @@ const FAQS: FaqItem[] = [
   {
     question: "What slows down the process the most?",
     answer:
-      "The property search is the wildcard — it can take a weekend or six months. After that, the most common delays are finance issues (a low valuation triggering a top-up, or HEM-driven serviceability cuts), building inspection findings that trigger renegotiation, and conveyancer or bank closures over Christmas/New Year and Easter.",
+      "The property search is the wildcard, it can take a weekend or six months. After that, the most common delays are finance issues (a low valuation triggering a top-up, or HEM-driven serviceability cuts), building inspection findings that trigger renegotiation, and conveyancer or bank closures over Christmas/New Year and Easter.",
   },
 ];
 
 const RELATED: RelatedGuide[] = [
   { title: "Buying Property in Australia", href: "/guides/buying-property-australia", description: "The full step-by-step buyer's playbook." },
-  { title: "How Much Deposit Do You Need?", href: "/guides/how-much-deposit-to-buy-a-house", description: "5%, 10%, 20% — what each tier unlocks, plus schemes." },
+  { title: "How Much Deposit Do You Need?", href: "/guides/how-much-deposit-to-buy-a-house", description: "5%, 10%, 20%, what each tier unlocks, plus schemes." },
   { title: "Cooling-Off Period by State", href: "/guides/cooling-off-period-by-state-australia", description: "Your right to rescind a contract, state by state." },
   { title: "Building & Pest Inspection", href: "/guides/building-pest-inspection", description: "When to inspect and what the report should cover." },
   { title: "Conveyancing in Australia", href: "/guides/conveyancing-guide", description: "What your conveyancer actually does, and how to pick one." },
@@ -119,7 +119,7 @@ export default function HowLongBuyHouseGuide() {
         steps={[
           { name: "Get ready", text: "Save deposit, clean up credit, get income documentation in order. 2 to 6 weeks of preparation, but can be done in parallel with the next steps." },
           { name: "Pre-approval", text: "Apply for conditional finance approval through a lender or broker. Typically 1 to 2 weeks." },
-          { name: "Property search", text: "Inspect, shortlist, and negotiate. The big wildcard — anywhere from 1 weekend to 6 months." },
+          { name: "Property search", text: "Inspect, shortlist, and negotiate. The big wildcard, anywhere from 1 weekend to 6 months." },
           { name: "Offer and contract exchange", text: "Make an offer or attend auction, then sign the contract. 1 to 2 weeks." },
           { name: "Cooling-off and due diligence", text: "Building & pest, contract review, finance unconditional. 3 to 5 business days in most states." },
           { name: "Settlement", text: "Final payment, title transfer, key handover. Typically 30 to 90 days from contract exchange." },
@@ -146,7 +146,7 @@ export default function HowLongBuyHouseGuide() {
         From the day you start the pre-approval process to the day you receive
         the keys, expect <strong>12 to 20 weeks</strong> for a typical
         Australian property purchase. The search itself is the biggest
-        variable — finance and contracts are relatively predictable.
+        variable, finance and contracts are relatively predictable.
       </p>
 
       <KeyFigure
@@ -163,7 +163,7 @@ export default function HowLongBuyHouseGuide() {
         <li>Final deposit savings (or confirm gift / inheritance is in your account for the genuine-savings rule)</li>
         <li>Pull your credit report; resolve any defaults or late marks</li>
         <li>Reduce credit card limits to the actual amount you use (limits, not balances, count against borrowing power)</li>
-        <li>Stabilise income — if you&rsquo;re changing jobs, finish probation first</li>
+        <li>Stabilise income, if you&rsquo;re changing jobs, finish probation first</li>
         <li>Gather: 3 months of payslips, 3 months of bank statements, ID, current liabilities, super statements</li>
       </ul>
       <p>
@@ -223,7 +223,7 @@ export default function HowLongBuyHouseGuide() {
         have a short cooling-off window after exchange to commission building
         and pest inspections, get unconditional finance approval, and review
         the contract carefully. WA and Tasmania don&rsquo;t have a statutory
-        cooling-off — protections are negotiated as contract conditions
+        cooling-off, protections are negotiated as contract conditions
         instead.
       </p>
       <p>

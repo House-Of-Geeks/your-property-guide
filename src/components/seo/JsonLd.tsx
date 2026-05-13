@@ -524,7 +524,7 @@ export function GuideArticleJsonLd({
   );
 }
 
-// DefinedTerm schema — one per glossary entry. Helps Google surface a
+// DefinedTerm schema, one per glossary entry. Helps Google surface a
 // definition rich-result for "what is X" queries.
 export function DefinedTermJsonLd({
   term,

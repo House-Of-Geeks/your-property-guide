@@ -134,11 +134,11 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
         </div>
       </section>
 
-      {/* Quiz form — GET so the result URL is shareable + crawlable */}
+      {/* Quiz form, GET so the result URL is shareable + crawlable */}
       <section className="bg-surface-raised border-b border-line">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12">
           <form method="GET" action="/find-your-suburb" className="space-y-10">
-            {/* Q1 — Priority */}
+            {/* Q1, Priority */}
             <fieldset>
               <legend className="block font-display text-xl text-ink mb-1">
                 1. What matters most?
@@ -174,13 +174,13 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
               </div>
             </fieldset>
 
-            {/* Q2 — Budget */}
+            {/* Q2, Budget */}
             <fieldset>
               <legend className="block font-display text-xl text-ink mb-1">
                 2. What&rsquo;s your budget for the median home?
               </legend>
               <p className="font-sans text-sm text-ink-muted mb-4">
-                Approximate is fine — we&rsquo;ll give partial credit on either side.
+                Approximate is fine, we&rsquo;ll give partial credit on either side.
               </p>
               <div className="flex flex-wrap gap-2">
                 {BUDGETS.map((b) => (
@@ -205,7 +205,7 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
               </div>
             </fieldset>
 
-            {/* Q3 — Stage */}
+            {/* Q3, Stage */}
             <fieldset>
               <legend className="block font-display text-xl text-ink mb-1">
                 3. What stage are you at?
@@ -236,7 +236,7 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
               </div>
             </fieldset>
 
-            {/* Q4 — State */}
+            {/* Q4, State */}
             <fieldset>
               <legend className="block font-display text-xl text-ink mb-1">
                 4. Which state?

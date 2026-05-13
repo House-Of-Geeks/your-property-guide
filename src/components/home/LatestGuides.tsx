@@ -37,7 +37,7 @@ export async function LatestGuides() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
-          {/* Featured article — spans 3 cols. Image up top, editorial
+          {/* Featured article, spans 3 cols. Image up top, editorial
               body (category + title + excerpt + meta) underneath so the
               card actually fills its share of the grid-row instead of
               leaving an empty band below a 16:9 image. */}
@@ -81,7 +81,7 @@ export async function LatestGuides() {
             </div>
           </Link>
 
-          {/* Two smaller articles — stacked */}
+          {/* Two smaller articles, stacked */}
           <div className="lg:col-span-2 flex flex-col gap-5">
             {rest.map((post) => (
               <Link

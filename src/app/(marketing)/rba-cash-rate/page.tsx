@@ -114,7 +114,7 @@ function ChangeCell({ change }: { change: number }) {
       <span className="text-green-600 font-medium">{change.toFixed(2)}%</span>
     );
   }
-  return <span className="text-gray-400">—</span>;
+  return <span className="text-gray-400">-</span>;
 }
 
 export default function RBACashRatePage() {
@@ -132,7 +132,7 @@ export default function RBACashRatePage() {
       />
       <Breadcrumbs items={[{ label: "RBA Cash Rate" }]} />
 
-      {/* Hero — Current Rate */}
+      {/* Hero, Current Rate */}
       <div className="text-center mb-12">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
           RBA Cash Rate History &amp; Property Market Impact
@@ -151,11 +151,11 @@ export default function RBACashRatePage() {
             {currentRate.rate.toFixed(2)}%
           </p>
           <p className="text-base opacity-90">
-            As of {formatRateDate(currentRate.date)} — {currentRate.note}
+            As of {formatRateDate(currentRate.date)}, {currentRate.note}
           </p>
           <div className="mt-4 inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-2 text-sm">
             <TrendingDown className="w-4 h-4" />
-            Cut by 0.25% in February 2025 — first cut since November 2020
+            Cut by 0.25% in February 2025, first cut since November 2020
           </div>
         </div>
       </div>
@@ -228,7 +228,7 @@ export default function RBACashRatePage() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
-                Borrowing capacity falls — buyers qualify for smaller loans
+                Borrowing capacity falls, buyers qualify for smaller loans
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
@@ -252,7 +252,7 @@ export default function RBACashRatePage() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-1 w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
-                Borrowing capacity increases — buyers qualify for larger loans
+                Borrowing capacity increases, buyers qualify for larger loans
               </li>
               <li className="flex items-start gap-2">
                 <span className="mt-1 w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0" />
@@ -283,7 +283,7 @@ export default function RBACashRatePage() {
           </h2>
           <p className="text-gray-700 text-sm mb-4">
             A 0.25% rate change on a $600,000 loan changes monthly repayments by approximately{" "}
-            <strong>$90/month</strong> — or around $1,080 per year. Over a full hiking cycle of
+            <strong>$90/month</strong>: or around $1,080 per year. Over a full hiking cycle of
             4.25% (May 2022 to November 2023), monthly repayments on a $600,000 loan increased
             by around $1,500/month.
           </p>

@@ -14,7 +14,7 @@ interface Props {
 
 // Server-side cover renderer. Resolves the post's coverImage against the
 // list of files actually present in /public/images/blog and falls back to
-// a branded generated cover if missing. Server-only — for client
+// a branded generated cover if missing. Server-only, for client
 // components (BlogGrid), let the parent pre-resolve and use
 // BlogCoverFallback directly.
 export function BlogCover({ slug, title, category, coverImage, sizes, priority, className }: Props) {

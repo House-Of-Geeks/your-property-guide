@@ -3,7 +3,7 @@ import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { renderOgImage, OG_BRAND } from "@/lib/og/render";
 import { formatPrice } from "@/lib/utils/format";
 
-// Suburb OG image is data-driven — we look up the suburb so the card has real
+// Suburb OG image is data-driven, we look up the suburb so the card has real
 // median price + growth + state. This means it can't run on the edge (Prisma
 // doesn't run there yet) but the static-page layer will revalidate it.
 export const dynamic = "force-static";

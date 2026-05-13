@@ -38,7 +38,7 @@ interface SuburbDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
-// ISR — suburb profiles aggregate several services (suburb + properties +
+// ISR, suburb profiles aggregate several services (suburb + properties +
 // crime + climate + walkability). Was rendering full SSR per request,
 // burning function-GB-hours under crawl traffic. Suburb data only changes
 // when the sync worker refreshes (monthly-ish), so 24h revalidate is
@@ -114,7 +114,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
 
-        {/* About — editorial lead with decorative contour */}
+        {/* About, editorial lead with decorative contour */}
         <section id="about" className="scroll-mt-16 relative">
           <Image
             src="/images/illustrations/contour.svg"
@@ -184,7 +184,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           </section>
         )}
 
-        {/* Market — asymmetric lead-stat + supporting grid */}
+        {/* Market, asymmetric lead-stat + supporting grid */}
         <section id="market" className="scroll-mt-16">
           <div className="grid lg:grid-cols-12 gap-8">
             {/* Lead stat */}
@@ -350,7 +350,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             label="Crime"
             asOf={suburb.dataFreshness?.crimeAsOf ?? null}
             source={crimeStat?.geoLevel === "lga"
-              ? `State Police Open Data — ${crimeStat.lgaName} (LGA-wide)`
+              ? `State Police Open Data, ${crimeStat.lgaName} (LGA-wide)`
               : "State Police Open Data"}
           />
         </section>
@@ -534,7 +534,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           </section>
         )}
 
-        {/* Long-tail FAQ — answers the "people also ask" queries Google
+        {/* Long-tail FAQ, answers the "people also ask" queries Google
             surfaces for "[suburb] real estate / suburb / postcode / rent".
             Emits FAQPage JSON-LD so answers can appear directly in SERP. */}
         <SuburbFAQ suburb={suburb} />
@@ -588,7 +588,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         </section>
       </div>
 
-      {/* Soft expert CTA at the very bottom — deep-links to homepage #match
+      {/* Soft expert CTA at the very bottom, deep-links to homepage #match
           with the suburb pre-filled, so visitors land directly in the lead
           engine with one less click. */}
       <ExpertCTA
@@ -598,12 +598,12 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         href={`/?suburb=${slug}#match`}
       />
 
-      {/* Floating "Get connected" pill — slides up once the user scrolls
+      {/* Floating "Get connected" pill, slides up once the user scrolls
           past 30% of the page. Pre-fills the suburb on click. Dismissible
           per session. Sits above the mobile bottom nav. */}
       <StickyMatchCTA
         suburb={slug}
-        label={`${suburb.name} — get connected`}
+        label={`${suburb.name}, get connected`}
         dismissKey={`suburb:${slug}`}
       />
     </>

@@ -6,7 +6,7 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { getAgencies } from "@/lib/services/agent-service";
 import { SITE_URL } from "@/lib/constants";
 
-// ISR — DB-querying services have build-phase guards, so we cache for 24h
+// ISR, DB-querying services have build-phase guards, so we cache for 24h
 // instead of running a function on every visit.
 export const revalidate = 86400;
 

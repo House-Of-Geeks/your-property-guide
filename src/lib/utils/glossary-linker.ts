@@ -5,7 +5,7 @@ import { GLOSSARY_TERMS } from "@/lib/data/glossary";
 // generate it once at module load.
 //
 // Terms with very common single words (e.g. "appraisal", "settlement",
-// "vendor", "auction") are deliberately excluded — they appear too often in
+// "vendor", "auction") are deliberately excluded, they appear too often in
 // general writing for sensible auto-linking. Authors who want those linked
 // can use <GlossaryLink> manually.
 const COMMON_WORDS = new Set([
@@ -89,7 +89,7 @@ export function linkGlossaryTerms(html: string): string {
       if (tagMatch) {
         const name = tagMatch[1].toLowerCase();
         if (tok.startsWith("</")) {
-          // Closing tag — pop most recent matching open
+          // Closing tag, pop most recent matching open
           const idx = tagStack.lastIndexOf(name);
           if (idx >= 0) tagStack.splice(idx, 1);
         } else if (!tok.endsWith("/>")) {
@@ -101,7 +101,7 @@ export function linkGlossaryTerms(html: string): string {
       continue;
     }
 
-    // Text run — skip if we're inside a skip-tag
+    // Text run, skip if we're inside a skip-tag
     const inSkipTag = tagStack.some((t) => SKIP_TAGS.has(t));
     if (inSkipTag) {
       parts.push(tok);

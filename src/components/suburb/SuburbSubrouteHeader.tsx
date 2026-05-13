@@ -100,7 +100,7 @@ export function SuburbSubrouteHeader({
           </div>
           <div className="lg:col-span-3 lg:text-right space-y-3">
             {/* Above-the-fold match CTA. Same button as the main suburb-page
-                hero — opens the MatchDrawer pre-filled with this suburb's
+                hero, opens the MatchDrawer pre-filled with this suburb's
                 slug. Visitors landing on a listings sub-page from Google
                 ("[suburb] houses for sale" etc.) are mid-decision; give
                 them a one-click path to a specialist. */}

@@ -23,7 +23,7 @@ export function processContent(html: string): { html: string; toc: TocItem[] } {
   // Pass 1: auto-link glossary terms in the body content. Done first so the
   // anchor tags we add are present when we run the heading-id pass below
   // (the heading pass skips text already inside <a> tags via the skip-tag
-  // logic in linkGlossaryTerms — but linking after heading-id would leave
+  // logic in linkGlossaryTerms, but linking after heading-id would leave
   // them un-skipped).
   const linked = linkGlossaryTerms(html);
 

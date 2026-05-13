@@ -47,7 +47,7 @@ export const metadata: Metadata = {
 const TLDR = [
   "Houses tend to deliver stronger long-term capital growth (land appreciates, buildings depreciate) but lower rental yields than apartments.",
   "Apartments typically deliver higher gross yields (4% to 5.5%) compared to houses (2.5% to 4%), but body corporate fees and slower growth eat into the advantage.",
-  "Over a 20-year hold, capital city houses have historically out-grown apartments by 1% to 2% annually — that compounds to a meaningful wealth gap.",
+  "Over a 20-year hold, capital city houses have historically out-grown apartments by 1% to 2% annually, that compounds to a meaningful wealth gap.",
   "Apartments win on cash flow (higher yield, lower entry price) and effort (no garden, no roof). Houses win on long-term capital growth and renovation upside.",
   "The right answer depends on your goal: cash flow now (apartment), wealth in 15 to 20 years (house), or somewhere in between (townhouse, dual-key, regional house).",
 ];
@@ -68,22 +68,22 @@ const FAQS: FaqItem[] = [
   {
     question: "Do houses always outperform apartments?",
     answer:
-      "Not always — apartments in genuinely supply-constrained inner-ring suburbs (think Sydney's Lower North Shore or inner Melbourne) can match house growth. But across broader capital city markets and over 15 to 20 year horizons, separate houses on land have historically delivered 1% to 2% higher annual growth than units.",
+      "Not always, apartments in genuinely supply-constrained inner-ring suburbs (think Sydney's Lower North Shore or inner Melbourne) can match house growth. But across broader capital city markets and over 15 to 20 year horizons, separate houses on land have historically delivered 1% to 2% higher annual growth than units.",
   },
   {
     question: "What's the typical rental yield difference?",
     answer:
-      "Capital city apartments commonly yield 4% to 5.5% gross. Houses in the same areas typically yield 2.5% to 4%. The yield gap reflects price-to-rent ratios — houses cost more per dollar of rent because the land has speculative value beyond its rental income.",
+      "Capital city apartments commonly yield 4% to 5.5% gross. Houses in the same areas typically yield 2.5% to 4%. The yield gap reflects price-to-rent ratios, houses cost more per dollar of rent because the land has speculative value beyond its rental income.",
   },
   {
     question: "Are body corporate fees a deal-breaker on apartments?",
     answer:
-      "They're a real cost ($2,500 to $8,000+ per year, more for buildings with pools, lifts, gyms) but they cover building insurance, exterior maintenance, and shared facilities you'd have to fund yourself in a house. Net cash flow on a well-managed building can still be positive. Look at the sinking fund and recent special levies before buying — those tell you the building's true health.",
+      "They're a real cost ($2,500 to $8,000+ per year, more for buildings with pools, lifts, gyms) but they cover building insurance, exterior maintenance, and shared facilities you'd have to fund yourself in a house. Net cash flow on a well-managed building can still be positive. Look at the sinking fund and recent special levies before buying, those tell you the building's true health.",
   },
   {
     question: "What about townhouses?",
     answer:
-      "Townhouses are a popular middle ground: ground-floor entry, small garden, modest body corporate, share of land. Growth has been intermediate between houses and apartments in most capital city markets — closer to houses than apartments in Brisbane and Adelaide, closer to apartments in Sydney and Melbourne.",
+      "Townhouses are a popular middle ground: ground-floor entry, small garden, modest body corporate, share of land. Growth has been intermediate between houses and apartments in most capital city markets, closer to houses than apartments in Brisbane and Adelaide, closer to apartments in Sydney and Melbourne.",
   },
   {
     question: "Are off-the-plan apartments a good investment?",
@@ -99,9 +99,9 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "Negative Gearing Australia", href: "/guides/negative-gearing-australia", description: "How negative gearing works and when each property type benefits more." },
-  { title: "Property Depreciation Guide", href: "/guides/property-depreciation-guide", description: "Depreciation deductions are bigger on newer apartments — here's how they work." },
+  { title: "Property Depreciation Guide", href: "/guides/property-depreciation-guide", description: "Depreciation deductions are bigger on newer apartments, here's how they work." },
   { title: "Rental Yield Calculator", href: "/rental-yield-calculator", description: "Compare gross and net yield on your shortlisted properties side by side." },
-  { title: "Investment Property Guide for the Moreton Bay Corridor", href: "/guides/investment-property-guide-moreton-bay-corridor", description: "A worked-up regional case study — useful pattern for any growth corridor." },
+  { title: "Investment Property Guide for the Moreton Bay Corridor", href: "/guides/investment-property-guide-moreton-bay-corridor", description: "A worked-up regional case study, useful pattern for any growth corridor." },
   { title: "SMSF Property Guide", href: "/guides/smsf-property-guide", description: "If you're considering buying inside super, what changes." },
 ];
 
@@ -117,8 +117,8 @@ export default function HouseVsApartmentInvestmentGuide() {
       <Callout variant="info" title="There's no universal winner">
         <p>
           Over a long enough horizon, separate houses on land usually deliver
-          more capital growth. Over a shorter horizon — or if you need positive
-          cash flow today — apartments often win. We'll show the trade-off in
+          more capital growth. Over a shorter horizon, or if you need positive
+          cash flow today, apartments often win. We'll show the trade-off in
           numbers below.
         </p>
       </Callout>
@@ -221,7 +221,7 @@ export default function HouseVsApartmentInvestmentGuide() {
       <Callout variant="warning" title="The model has limits">
         <p>
           These are illustrative rates of growth, not guarantees. The 6%
-          assumption isn't universal — apartments in genuinely supply-constrained
+          assumption isn't universal, apartments in genuinely supply-constrained
           areas can match or beat houses, and houses in oversupplied outer
           estates can underperform apartments. Use suburb-level data on{" "}
           <a href="/best-suburbs/highest-growth">our growth rankings</a> rather
@@ -232,7 +232,7 @@ export default function HouseVsApartmentInvestmentGuide() {
       <h2 id="case-house">The case for a house</h2>
       <ul>
         <li>Higher long-term capital growth (the wealth-building case)</li>
-        <li>Renovation upside — you can add value through extensions, kitchen, bathroom</li>
+        <li>Renovation upside, you can add value through extensions, kitchen, bathroom</li>
         <li>Subdivision or granny flat potential on larger blocks</li>
         <li>No body corporate, no surprise levies</li>
         <li>Easier to attract long-term family tenants</li>
@@ -241,7 +241,7 @@ export default function HouseVsApartmentInvestmentGuide() {
       <h2 id="case-apartment">The case for an apartment</h2>
       <ul>
         <li>Higher rental yield, easier to be cash-flow positive earlier</li>
-        <li>Lower entry price — often $200K to $400K cheaper than a comparable house</li>
+        <li>Lower entry price, often $200K to $400K cheaper than a comparable house</li>
         <li>Building insurance and external maintenance shared</li>
         <li>Easier to manage (especially interstate or overseas investors)</li>
         <li>Better access to inner-ring suburbs with strong rental demand</li>

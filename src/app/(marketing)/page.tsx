@@ -14,7 +14,7 @@ import { OrganizationJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 import { HomeSuburbSearch } from "./HomeSuburbSearch";
 
-// ISR — DB-querying services have build-phase guards, so we cache for 24h
+// ISR, DB-querying services have build-phase guards, so we cache for 24h
 // instead of running a function on every visit. Was force-dynamic; that
 // poisoned cache-control for the entire site.
 export const revalidate = 86400;
@@ -73,7 +73,7 @@ export default function HomePage() {
             Free, no comparison spam.
           </p>
 
-          {/* Hero CTAs — primary points at the match flow (the conversion goal),
+          {/* Hero CTAs, primary points at the match flow (the conversion goal),
               secondary at suburb research. Flipped from the original which led
               visitors AWAY from the lead form into a research dead-end. */}
           <div className="mt-8 flex flex-wrap gap-3">
@@ -179,7 +179,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3.5 — New tools rail (quiz + compare + all tools) */}
+      {/* 3.5, New tools rail (quiz + compare + all tools) */}
       <section className="bg-surface-raised border-b border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid lg:grid-cols-12 gap-8 mb-10">
@@ -210,7 +210,7 @@ export default function HomePage() {
                 Find your suburb in 4 questions
               </h3>
               <p className="font-sans text-sm text-ink-muted leading-relaxed mb-4 flex-1">
-                Tell us what matters and your budget — we&rsquo;ll surface six suburbs scored against your priorities.
+                Tell us what matters and your budget, we&rsquo;ll surface six suburbs scored against your priorities.
               </p>
               <span className="font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
                 Take the quiz →
@@ -226,7 +226,7 @@ export default function HomePage() {
                 Compare two suburbs side by side
               </h3>
               <p className="font-sans text-sm text-ink-muted leading-relaxed mb-4 flex-1">
-                Pick any two Australian suburbs and line them up — median, growth, schools, walkability, risk.
+                Pick any two Australian suburbs and line them up, median, growth, schools, walkability, risk.
               </p>
               <span className="font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
                 Open the tool →
@@ -242,7 +242,7 @@ export default function HomePage() {
                 Every calculator and tool
               </h3>
               <p className="font-sans text-sm text-ink-muted leading-relaxed mb-4 flex-1">
-                Mortgage, stamp duty, borrowing power, rental yield, CGT, refinancing, and more — in one editorial index.
+                Mortgage, stamp duty, borrowing power, rental yield, CGT, refinancing, and more, in one editorial index.
               </p>
               <span className="font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
                 Browse tools →
@@ -262,12 +262,12 @@ export default function HomePage() {
         <SuburbSpotlight />
       </Suspense>
 
-      {/* 5.5 — Capital city outlook editorial rail */}
+      {/* 5.5, Capital city outlook editorial rail */}
       <Suspense fallback={null}>
         <CapitalCityOutlook />
       </Suspense>
 
-      {/* 5.7 — Newsletter band: editorial mid-page capture */}
+      {/* 5.7, Newsletter band: editorial mid-page capture */}
       <section className="bg-surface-warm border-y border-line-warm">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
           <div className="grid lg:grid-cols-12 gap-8 items-end">
@@ -291,7 +291,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5.9 — Latest news. Time-sensitive policy / budget / market moves;
+      {/* 5.9, Latest news. Time-sensitive policy / budget / market moves;
               sits ahead of the evergreen guides block so visitors see what's
               fresh first. Renders nothing if there are no News-category posts. */}
       <Suspense fallback={null}>
@@ -303,7 +303,7 @@ export default function HomePage() {
         <LatestGuides />
       </Suspense>
 
-      {/* 6.5 — Match engine: dark editorial section, the homepage lead trap.
+      {/* 6.5, Match engine: dark editorial section, the homepage lead trap.
               Wrapped in Suspense because MatchAgent reads useSearchParams
               for ?suburb=/?intent= deep-links from suburb pages. */}
       <Suspense fallback={null}>

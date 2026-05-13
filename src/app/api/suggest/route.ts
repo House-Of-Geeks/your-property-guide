@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
 
   const isNumeric = /^\d+$/.test(q);
 
-  // Locations — always included
+  // Locations, always included
   const locationsPromise = db.suburb.findMany({
     where: isNumeric
       ? { postcode: { startsWith: q } }
@@ -71,7 +71,7 @@ export async function GET(req: NextRequest) {
         LIMIT 10
       `;
 
-  // Property address search — triggered when query starts with a digit (street number).
+  // Property address search, triggered when query starts with a digit (street number).
   // addressFull has commas ("21 SMITH ST, SUBURB NSW 2000") so we can't do a plain contains.
   // Instead parse the number + street name from the query and search by component fields.
   const looksLikeAddress = /^\d/.test(q) && q.length >= 3;
@@ -84,7 +84,7 @@ export async function GET(req: NextRequest) {
     // tokens[1] = first word of street name (most distinctive part)
     const num        = tokens[0];
     const streetWord = tokens[1] ?? "";
-    // Any remaining tokens may include suburb name — used for client-side re-ranking
+    // Any remaining tokens may include suburb name, used for client-side re-ranking
     const localityHint = tokens.slice(2).join(" ").toUpperCase();
 
     if (streetWord.length >= 2) {

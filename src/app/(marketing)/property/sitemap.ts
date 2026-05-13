@@ -1,4 +1,4 @@
-// force-dynamic + unstable_cache — sitemap.ts files are cached as static
+// force-dynamic + unstable_cache, sitemap.ts files are cached as static
 // by default in Next 16; combined with the build-phase-empty guard, that
 // baked an empty sitemap that never regenerated. force-dynamic guarantees
 // runtime execution; unstable_cache keeps the heavy DB aggregation to once
@@ -12,7 +12,7 @@ import { SITE_URL } from "@/lib/constants";
 
 const PAGE_SIZE = 50_000;
 
-// Deterministic state order — never change this or IDs will shift
+// Deterministic state order, never change this or IDs will shift
 const STATE_ORDER = ["ACT", "NSW", "NT", "OT", "QLD", "SA", "TAS", "VIC", "WA"];
 
 type SitemapEntry = { state: string; page: number };

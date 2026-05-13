@@ -5,7 +5,7 @@ import { ArrowRight, Check } from "lucide-react";
 import { subscribeToNewsletter } from "./actions";
 
 interface NewsletterFormProps {
-  /** Footer | inline | hero — controls the layout and dark/light treatment */
+  /** Footer | inline | hero, controls the layout and dark/light treatment */
   variant?: "footer" | "inline";
 }
 
@@ -44,7 +44,7 @@ export function NewsletterForm({ variant = "footer" }: NewsletterFormProps) {
     return (
       <div className={`flex items-center gap-2 ${isFooter ? "text-white/80" : "text-emerald-700"} font-sans text-sm`}>
         <Check className="w-4 h-4 shrink-0" aria-hidden="true" />
-        Thanks — you&rsquo;re subscribed. We&rsquo;ll send the next quarterly update.
+        Thanks, you&rsquo;re subscribed. We&rsquo;ll send the next quarterly update.
       </div>
     );
   }

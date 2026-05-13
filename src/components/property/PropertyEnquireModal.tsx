@@ -124,7 +124,7 @@ export function PropertyEnquireDialog({
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Enquiry sent</h2>
             <p className="text-gray-600 text-sm max-w-sm mx-auto">
-              {agentFirstName} will be in touch shortly — usually within one
+              {agentFirstName} will be in touch shortly, usually within one
               business day. Check your inbox for a confirmation.
             </p>
             <button

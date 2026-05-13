@@ -7,13 +7,13 @@ export type BudgetTier = "under-500k" | "500k-800k" | "800k-1.2m" | "1.2m-2m" | 
 export type LifestyleStage = "first-home" | "young-family" | "established-family" | "downsizer" | "investor";
 
 export interface QuizAnswers {
-  /** Top priority — drives the strongest weight in scoring */
+  /** Top priority, drives the strongest weight in scoring */
   priority: Priority;
   /** State filter, "any" widens to all states */
   state: string | "any";
   /** Approximate budget range */
   budget: BudgetTier;
-  /** Lifestyle stage — adjusts secondary weights */
+  /** Lifestyle stage, adjusts secondary weights */
   stage: LifestyleStage;
 }
 
@@ -61,7 +61,7 @@ function withinBudget(price: number, tier: BudgetTier): number {
   if (price >= lo && price <= hi) return 1;
   if (price < lo) {
     const ratio = price / lo;
-    return clamp01(ratio); // cheaper than tier — still partial credit
+    return clamp01(ratio); // cheaper than tier, still partial credit
   }
   // price > hi
   const overshoot = price - hi;

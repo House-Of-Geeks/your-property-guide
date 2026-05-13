@@ -126,7 +126,7 @@ export function SuburbsSearchBar({ defaultQ = "", defaultState = "" }: Props) {
       >
         <option value="">All States</option>
         {STATES.map((s) => (
-          <option key={s.code} value={s.code}>{s.code} — {s.label}</option>
+          <option key={s.code} value={s.code}>{s.code}, {s.label}</option>
         ))}
       </select>
 

@@ -13,7 +13,7 @@ const CAPITAL_CITIES = [
 /**
  * "2026 capital city outlooks" rail for the home page. Pulls the four
  * capital-city market posts and renders them as image-led editorial cards.
- * If a post is missing we silently drop it — the rail still renders with the
+ * If a post is missing we silently drop it, the rail still renders with the
  * remaining cities.
  */
 export async function CapitalCityOutlook() {

@@ -12,13 +12,13 @@ export const revalidate = 3600; // refresh hourly
 export const metadata: Metadata = {
   title: "Our Data, Sources &amp; Live Numbers | Your Property Guide",
   description:
-    "How much data sits behind every page on Your Property Guide — live counts of suburbs, schools, properties, hazards, and the named source behind each.",
+    "How much data sits behind every page on Your Property Guide, live counts of suburbs, schools, properties, hazards, and the named source behind each.",
   alternates: { canonical: `${SITE_URL}/data` },
   openGraph: {
     url: `${SITE_URL}/data`,
     title: "Our Data, Sources & Live Numbers",
     description:
-      "Live counts of every dataset behind Your Property Guide — sourced and dated.",
+      "Live counts of every dataset behind Your Property Guide, sourced and dated.",
     type: "article",
   },
   twitter: { card: "summary_large_image" },
@@ -291,7 +291,7 @@ export default async function DataPage() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 {[
                   { title: "Sourced",   body: "Every figure on the site cites the body that publishes it." },
-                  { title: "Dated",     body: "Every figure carries the as-of date — surface it and we'll show you in a tooltip on the suburb page." },
+                  { title: "Dated",     body: "Every figure carries the as-of date, surface it and we'll show you in a tooltip on the suburb page." },
                   { title: "Free",      body: "No paywall, no email gate. The data is the product, and it stays free." },
                 ].map((c) => (
                   <div key={c.title}>

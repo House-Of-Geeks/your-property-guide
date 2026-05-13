@@ -2,10 +2,10 @@
 // Add a new entry at the top of the array when a refresh ships.
 //
 // Categories:
-//   data        — a measurable refresh (price data, schools, hazard, climate)
-//   guide       — a new or major-update guide
-//   tool        — a new or major-update tool / calculator
-//   correction  — a correction logged after a reader flagged an issue
+//   data       , a measurable refresh (price data, schools, hazard, climate)
+//   guide      , a new or major-update guide
+//   tool       , a new or major-update tool / calculator
+//   correction , a correction logged after a reader flagged an issue
 
 export type UpdateKind = "data" | "guide" | "tool" | "correction";
 
@@ -55,7 +55,7 @@ export const DATA_UPDATES: DataUpdate[] = [
   {
     date: "2026-04-15",
     kind: "data",
-    title: "Q1 2026 median price refresh — 9,400+ suburbs",
+    title: "Q1 2026 median price refresh, 9,400+ suburbs",
     description:
       "Quarterly refresh of state Valuer-General medians and growth across every Australian suburb.",
     href: "/methodology#median-prices",
@@ -63,7 +63,7 @@ export const DATA_UPDATES: DataUpdate[] = [
   {
     date: "2026-04-02",
     kind: "data",
-    title: "ACARA 2025 school data import — 9,612 schools",
+    title: "ACARA 2025 school data import, 9,612 schools",
     description:
       "Annual ACARA school release imported with year ranges, sector, ICSEA, and enrolment figures.",
     href: "/methodology#schools",
@@ -79,7 +79,7 @@ export const DATA_UPDATES: DataUpdate[] = [
   {
     date: "2026-03-12",
     kind: "data",
-    title: "Geoscience Australia flood map refresh — SEQ + Northern Rivers",
+    title: "Geoscience Australia flood map refresh, SEQ + Northern Rivers",
     description:
       "Updated flood class data for South-East Queensland and the Northern Rivers region following 2025 events.",
     href: "/methodology#hazard",

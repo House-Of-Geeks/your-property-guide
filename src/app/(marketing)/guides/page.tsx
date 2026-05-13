@@ -44,7 +44,7 @@ const SECTIONS: GuideSection[] = [
     icon: "/images/icons/guide.svg",
     guides: [
       { title: "First Home Buyer Guide (National)",        href: "/guides/first-home-buyer-guide", readTime: "10 min", description: "Federal schemes, FHOG by state, stamp duty concessions and step-by-step buying." },
-      { title: "How Much Deposit to Buy a House?",          href: "/guides/how-much-deposit-to-buy-a-house", readTime: "9 min", description: "5%, 10%, 20% — what each tier unlocks, plus LMI, schemes, and FHSS." },
+      { title: "How Much Deposit to Buy a House?",          href: "/guides/how-much-deposit-to-buy-a-house", readTime: "9 min", description: "5%, 10%, 20%, what each tier unlocks, plus LMI, schemes, and FHSS." },
       { title: "10 First Home Buyer Mistakes to Avoid",     href: "/guides/first-home-buyer-mistakes-to-avoid", readTime: "9 min", description: "The expensive errors, ranked, with the simple fix for each." },
       { title: "Best Time to Buy Property in Australia",    href: "/guides/best-time-to-buy-property-australia", readTime: "8 min", description: "Seasonal patterns, the rate cycle, and why timing the market rarely wins." },
       { title: "How Long Does It Take to Buy a House?",     href: "/guides/how-long-does-it-take-to-buy-a-house-australia", readTime: "8 min", description: "Realistic 12 to 20 week timeline, stage by stage, with state settlement times." },

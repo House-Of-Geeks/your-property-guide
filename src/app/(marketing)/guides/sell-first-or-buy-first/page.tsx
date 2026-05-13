@@ -118,7 +118,7 @@ export default function SellFirstOrBuyFirstPage() {
           { name: "Get appraisals on your existing home", text: "Three written appraisals from local agents to set a realistic baseline value." },
           { name: "Get pre-approval for the bridging or end-debt loan", text: "Tells you what financial flexibility you have under each option.", url: "/borrowing-power-calculator" },
           { name: "Assess the market direction", text: "Rising market favours buying first; soft market favours selling first." },
-          { name: "Pick your option", text: "Sell first, subject-to-sale offer, or bridging finance — based on cost, risk and timing fit." },
+          { name: "Pick your option", text: "Sell first, subject-to-sale offer, or bridging finance, based on cost, risk and timing fit." },
           { name: "Line up the supporting cast", text: "Conveyancer, broker, and buyer's agent or selling agent before you commit either way.", url: "/find-an-expert" },
           { name: "Execute and coordinate", text: "Run the two transactions in lockstep through to settlement." },
         ]}

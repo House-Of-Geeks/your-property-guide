@@ -119,7 +119,7 @@ export default function ConveyancingGuidePage() {
         steps={[
           { name: "Pick conveyancer or solicitor", text: "Conveyancer for standard transactions, solicitor for complex ones (deceased estates, foreign buyers, structural disputes)." },
           { name: "Get three quotes", text: "Compare fees, inclusions, and turnaround time. Cheapest is rarely best." },
-          { name: "Engage early — before you find a property", text: "Saves a week of vendor-recommended-conveyancer faff later." },
+          { name: "Engage early, before you find a property", text: "Saves a week of vendor-recommended-conveyancer faff later." },
           { name: "Sign engagement and provide details", text: "ID, financing details, and any specific concerns about the property." },
           { name: "Conveyancer runs searches and reviews contract", text: "Title, planning, council rates, and any easements or covenants." },
           { name: "Settlement coordination", text: "Conveyancer arranges PEXA settlement and the discharge of any existing mortgage." },
@@ -359,7 +359,7 @@ export default function ConveyancingGuidePage() {
       </p>
 
       <p>
-        Speaking of settlement-day costs — your conveyancer will arrange
+        Speaking of settlement-day costs, your conveyancer will arrange
         payment of stamp duty alongside the loan settlement. Estimate it now:
       </p>
       <MiniStampDutyEmbed />

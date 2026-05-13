@@ -270,7 +270,7 @@ export default function BridgingLoansGuidePage() {
       </p>
 
       <p>
-        And don&rsquo;t forget the second-biggest cost on the new purchase —
+        And don&rsquo;t forget the second-biggest cost on the new purchase -
         stamp duty:
       </p>
       <MiniStampDutyEmbed />

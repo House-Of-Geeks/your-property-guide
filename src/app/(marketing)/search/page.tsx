@@ -79,7 +79,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             )}
           </h1>
 
-          {/* Search box at top — submits via GET so URL is bookmarkable */}
+          {/* Search box at top, submits via GET so URL is bookmarkable */}
           <form method="GET" action="/search" className="mt-6 max-w-2xl">
             <label htmlFor="search-q" className="sr-only">Search</label>
             <div className="flex gap-2">
@@ -148,25 +148,25 @@ function EmptyState() {
           <li className="flex gap-3 items-start">
             <MapPin className="w-4 h-4 text-ink-subtle mt-1 shrink-0" />
             <span>
-              <strong>Suburbs &amp; postcodes</strong> — every Australian suburb with median, growth, schools, walk score and hazard.
+              <strong>Suburbs &amp; postcodes</strong>: every Australian suburb with median, growth, schools, walk score and hazard.
             </span>
           </li>
           <li className="flex gap-3 items-start">
             <GraduationCap className="w-4 h-4 text-ink-subtle mt-1 shrink-0" />
             <span>
-              <strong>Schools</strong> — 9,600+ government, Catholic, and independent schools with catchments and ICSEA.
+              <strong>Schools</strong>: 9,600+ government, Catholic, and independent schools with catchments and ICSEA.
             </span>
           </li>
           <li className="flex gap-3 items-start">
             <FileText className="w-4 h-4 text-ink-subtle mt-1 shrink-0" />
             <span>
-              <strong>Guides</strong> — 50+ in-depth guides for buying, selling, investing, and renting.
+              <strong>Guides</strong>: 50+ in-depth guides for buying, selling, investing, and renting.
             </span>
           </li>
           <li className="flex gap-3 items-start">
             <BookOpen className="w-4 h-4 text-ink-subtle mt-1 shrink-0" />
             <span>
-              <strong>Glossary terms</strong> — 99 plain-English definitions of property terms.
+              <strong>Glossary terms</strong>: 99 plain-English definitions of property terms.
             </span>
           </li>
         </ul>

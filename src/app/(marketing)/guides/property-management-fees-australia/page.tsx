@@ -48,7 +48,7 @@ const TLDR = [
   "The headline management fee in Australia is typically 5% to 10% of weekly rent collected, with most capital cities sitting at 6% to 8%.",
   "On top of management, expect a letting fee (1 to 2 weeks rent), lease renewal fee ($150 to $300), routine inspection fee ($50 to $100 each), and admin charges.",
   "All-in, plan for 9% to 14% of annual rent going to property management once everything is added up.",
-  "Cheaper isn't always better — a 5% manager who chases rent late and lets vacancies stretch out costs more than an 8% manager who keeps the property tenanted and well-maintained.",
+  "Cheaper isn't always better, a 5% manager who chases rent late and lets vacancies stretch out costs more than an 8% manager who keeps the property tenanted and well-maintained.",
   "The biggest savings come from negotiating out the small charges (statement fees, monthly admin) and asking for a discount on multiple-property portfolios, not from cutting the headline rate.",
 ];
 
@@ -72,7 +72,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Is the property management fee tax deductible?",
     answer:
-      "Yes. Property management fees are fully deductible against rental income in the same financial year for an investment property. The same applies to letting fees, lease renewal fees, inspection charges, and most ancillary admin fees — they're all costs of producing rental income.",
+      "Yes. Property management fees are fully deductible against rental income in the same financial year for an investment property. The same applies to letting fees, lease renewal fees, inspection charges, and most ancillary admin fees, they're all costs of producing rental income.",
   },
   {
     question: "Can I negotiate the property management fee?",
@@ -82,7 +82,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What's a letting fee?",
     answer:
-      "A one-off charge when the manager finds and signs a new tenant — typically 1 to 2 weeks of rent. It covers advertising, applicant screening, contract preparation, and the ingoing inspection. You pay it each time tenants change, so high-turnover properties incur it more often.",
+      "A one-off charge when the manager finds and signs a new tenant, typically 1 to 2 weeks of rent. It covers advertising, applicant screening, contract preparation, and the ingoing inspection. You pay it each time tenants change, so high-turnover properties incur it more often.",
   },
   {
     question: "How often should I get routine inspections?",
@@ -92,7 +92,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I switch property managers mid-tenancy?",
     answer:
-      "Yes. The management agreement usually has a 30 to 60 day termination clause. You provide written notice; the outgoing manager hands over keys, files, and the bond authority transfer. The tenancy itself continues unchanged — the tenant's obligations don't reset.",
+      "Yes. The management agreement usually has a 30 to 60 day termination clause. You provide written notice; the outgoing manager hands over keys, files, and the bond authority transfer. The tenancy itself continues unchanged, the tenant's obligations don't reset.",
   },
 ];
 
@@ -184,7 +184,7 @@ export default function PropertyManagementFeesGuide() {
 
       <h3>8. End-of-management fee</h3>
       <p>
-        Some agreements include a fee to switch managers — often 1 to 2
+        Some agreements include a fee to switch managers, often 1 to 2
         weeks of rent or a flat $200 to $500. Read the termination clause
         before signing.
       </p>
@@ -234,7 +234,7 @@ export default function PropertyManagementFeesGuide() {
         <li><strong>Statement fees and admin:</strong> Almost always droppable.</li>
         <li><strong>Routine inspection fee:</strong> Sometimes droppable to 2 free / year.</li>
         <li><strong>Letting fee:</strong> Hardest to negotiate, but worth a try if you sign a 12-month exclusive agreement.</li>
-        <li><strong>End-of-management fee:</strong> Push hard to remove this — it locks you in.</li>
+        <li><strong>End-of-management fee:</strong> Push hard to remove this, it locks you in.</li>
       </ul>
 
       <Callout variant="warning" title="Get the full fee schedule in writing">
@@ -287,7 +287,7 @@ export default function PropertyManagementFeesGuide() {
           the all-in cost (not just management %) to model true net yield.
         </li>
         <li>
-          Read the management agreement&rsquo;s termination clause carefully —
+          Read the management agreement&rsquo;s termination clause carefully -
           remove any fees for switching managers before signing.
         </li>
       </ol>

@@ -24,7 +24,7 @@ export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = 
       {
         question: "What is ICSEA and why does it matter?",
         answer:
-          "ICSEA (Index of Community Socio-Educational Advantage) is ACARA's measure of the educational backgrounds of students at a school, used as a proxy for school resourcing and outcomes. Higher ICSEA generally correlates with stronger NAPLAN performance and higher senior-year retention. We use it because it's published consistently across all Australian schools — but it's not a direct quality measure, so always verify with site visits and NAPLAN data.",
+          "ICSEA (Index of Community Socio-Educational Advantage) is ACARA's measure of the educational backgrounds of students at a school, used as a proxy for school resourcing and outcomes. Higher ICSEA generally correlates with stronger NAPLAN performance and higher senior-year retention. We use it because it's published consistently across all Australian schools, but it's not a direct quality measure, so always verify with site visits and NAPLAN data.",
       },
       {
         question: "Why don't you rank by NAPLAN scores directly?",
@@ -40,7 +40,7 @@ export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = 
   },
   "highest-growth": {
     intro:
-      "Capital growth is the long-term wealth driver in property — and the gap between top-quartile and bottom-quartile suburbs is enormous. A suburb growing at 8% annually doubles in 9 years; one at 3% takes 24. We rank by 12-month annual house-price growth, with the caveat that recent growth doesn't perfectly predict the next decade.",
+      "Capital growth is the long-term wealth driver in property, and the gap between top-quartile and bottom-quartile suburbs is enormous. A suburb growing at 8% annually doubles in 9 years; one at 3% takes 24. We rank by 12-month annual house-price growth, with the caveat that recent growth doesn't perfectly predict the next decade.",
     methodology:
       "Annual growth is sourced from state Valuer-General data and cross-checked against ABS quarterly indicators. We require a non-zero medianHousePrice and exclude suburbs with too few sales for a meaningful median (typically under 12 sales over the period).",
     bestFor:
@@ -49,7 +49,7 @@ export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = 
       {
         question: "Does last year's growth predict next year's?",
         answer:
-          "Weakly. Top-performing suburbs over rolling 12-month windows tend to revert toward state averages over 5-10 year horizons. The more durable predictors are population growth, infrastructure investment, supply constraint, and yield — not headline growth in the previous year. Use this ranking as a starting point, not a verdict.",
+          "Weakly. Top-performing suburbs over rolling 12-month windows tend to revert toward state averages over 5-10 year horizons. The more durable predictors are population growth, infrastructure investment, supply constraint, and yield, not headline growth in the previous year. Use this ranking as a starting point, not a verdict.",
       },
       {
         question: "Why are some growth numbers so high?",
@@ -65,7 +65,7 @@ export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = 
   },
   "most-affordable": {
     intro:
-      "'Most affordable' here means lowest median house price — the entry-level suburbs in each state. Affordability isn't the same as good value: a $400K outer-fringe suburb with stagnant population growth and weak infrastructure can be a worse buy than a $700K middle-ring suburb with structural demand. Use this list as a starting point for further research, not a final shortlist.",
+      "'Most affordable' here means lowest median house price, the entry-level suburbs in each state. Affordability isn't the same as good value: a $400K outer-fringe suburb with stagnant population growth and weak infrastructure can be a worse buy than a $700K middle-ring suburb with structural demand. Use this list as a starting point for further research, not a final shortlist.",
     methodology:
       "Sorted by median house price ascending, with a $100K minimum to exclude very small localities and data anomalies. State Valuer-General data, refreshed quarterly.",
     bestFor:
@@ -90,26 +90,26 @@ export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = 
   },
   "most-walkable": {
     intro:
-      "Walkability isn't just about cafes — well-connected suburbs with high walk scores tend to retain value better in downturns and attract a wider buyer pool when sold. The walk-score-driven ranking favours inner-ring suburbs with mixed-use streets, transport, and dense neighbourhood retail.",
+      "Walkability isn't just about cafes, well-connected suburbs with high walk scores tend to retain value better in downturns and attract a wider buyer pool when sold. The walk-score-driven ranking favours inner-ring suburbs with mixed-use streets, transport, and dense neighbourhood retail.",
     methodology:
-      "Walk score is computed from OpenStreetMap data — counts of nearby amenities, transit stops, and pedestrian-friendly infrastructure within typical walking distance of the suburb centroid. Refreshed quarterly. Higher is better; 90+ is exceptional.",
+      "Walk score is computed from OpenStreetMap data, counts of nearby amenities, transit stops, and pedestrian-friendly infrastructure within typical walking distance of the suburb centroid. Refreshed quarterly. Higher is better; 90+ is exceptional.",
     bestFor:
       "Apartment buyers; downsizers who want to walk to local shops; renters of investment properties (walkability is a tenant-demand multiplier); car-free or one-car households.",
     faqs: [
       {
         question: "Are walkable suburbs always more expensive?",
         answer:
-          "Generally yes — walkability is priced into median values, particularly for apartments and townhouses. The exception is some emerging inner-ring suburbs whose walkability has improved through new transit infrastructure but where prices haven't caught up yet.",
+          "Generally yes, walkability is priced into median values, particularly for apartments and townhouses. The exception is some emerging inner-ring suburbs whose walkability has improved through new transit infrastructure but where prices haven't caught up yet.",
       },
       {
         question: "Does walkability drive rental yield?",
         answer:
-          "It drives rental demand and vacancy rates more than absolute yield. Highly walkable suburbs typically have lower vacancy and shorter days-on-market when re-letting — both reduce the effective vacancy cost on a rental investment.",
+          "It drives rental demand and vacancy rates more than absolute yield. Highly walkable suburbs typically have lower vacancy and shorter days-on-market when re-letting, both reduce the effective vacancy cost on a rental investment.",
       },
       {
         question: "How does walkability differ from transit score?",
         answer:
-          "Walk score measures access to amenities on foot. Transit score measures public transport access. The two correlate but aren't identical — some apartment-heavy suburbs have moderate walk scores but exceptional transit, and vice versa.",
+          "Walk score measures access to amenities on foot. Transit score measures public transport access. The two correlate but aren't identical, some apartment-heavy suburbs have moderate walk scores but exceptional transit, and vice versa.",
       },
     ],
   },
@@ -124,12 +124,12 @@ export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = 
       {
         question: "Does 'low flood risk' mean a property won't flood?",
         answer:
-          "No — 'low risk' is a probabilistic classification, not a guarantee. Properties in low-risk zones can still flood in extreme events (1-in-500 year, freak storms). What 'low risk' does mean is that mainstream lenders and insurers will treat the property as standard rather than carrying a special premium or exclusion.",
+          "No, 'low risk' is a probabilistic classification, not a guarantee. Properties in low-risk zones can still flood in extreme events (1-in-500 year, freak storms). What 'low risk' does mean is that mainstream lenders and insurers will treat the property as standard rather than carrying a special premium or exclusion.",
       },
       {
         question: "What's a 'floodway' versus a flood-prone zone?",
         answer:
-          "A floodway is land that channels water during a flood event — building in a floodway is highly restricted because the water flow itself is dangerous, not just the standing water. A flood-prone zone is land that's expected to be inundated but not part of the active flow. Floodways are the highest-risk classification and many lenders will decline mortgages on stock in them.",
+          "A floodway is land that channels water during a flood event, building in a floodway is highly restricted because the water flow itself is dangerous, not just the standing water. A flood-prone zone is land that's expected to be inundated but not part of the active flow. Floodways are the highest-risk classification and many lenders will decline mortgages on stock in them.",
       },
       {
         question: "How localised is flood risk?",
@@ -140,7 +140,7 @@ export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = 
   },
   "best-rental-yield": {
     intro:
-      "Gross rental yield is rent income as a percentage of property value — the headline cashflow metric for an investment property. Higher yield generally means stronger near-term cashflow but often correlates with lower capital growth, so this ranking is a starting point for cashflow-focused investors rather than long-term wealth-building.",
+      "Gross rental yield is rent income as a percentage of property value, the headline cashflow metric for an investment property. Higher yield generally means stronger near-term cashflow but often correlates with lower capital growth, so this ranking is a starting point for cashflow-focused investors rather than long-term wealth-building.",
     methodology:
       "Gross yield = (median weekly rent × 52) ÷ median house price × 100. Sourced from REIA quarterly indicators and state Valuer-General data. Excluded suburbs with insufficient rental data or median prices below the credible threshold.",
     bestFor:

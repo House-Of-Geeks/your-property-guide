@@ -11,7 +11,7 @@ import { MatchAgent } from "./MatchAgent";
  * ?intent=buying) actually re-initialise the form to that intent.
  *
  * On the homepage where there's no in-page nav between params, the same
- * pattern is a no-op (the key never changes during the session) — so it's
+ * pattern is a no-op (the key never changes during the session), so it's
  * safe to use everywhere MatchAgent is embedded.
  */
 export function MatchAgentEmbed() {

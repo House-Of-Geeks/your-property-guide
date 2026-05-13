@@ -121,7 +121,7 @@ export default function PropertyAuctionGuidePage() {
         description="The seven-step process for buying property at auction in Australia."
         url={`/guides/${FRONTMATTER.slug}`}
         steps={[
-          { name: "Get unconditional pre-approval before auction day", text: "Auction contracts are binding immediately — no cooling-off applies.", url: "/borrowing-power-calculator" },
+          { name: "Get unconditional pre-approval before auction day", text: "Auction contracts are binding immediately, no cooling-off applies.", url: "/borrowing-power-calculator" },
           { name: "Commission building, pest, and strata reports before auction", text: "All due diligence must happen before bidding. Cheaper to skip an auction than buy a lemon." },
           { name: "Get the contract reviewed by your conveyancer", text: "Special conditions and inclusions are negotiated before the auction, not after." },
           { name: "Set your absolute maximum and your opening bid", text: "Maximum is your walk-away. Opening bid is below it but signals you're serious." },

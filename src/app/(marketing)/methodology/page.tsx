@@ -49,7 +49,7 @@ const SOURCES: DataSource[] = [
   {
     id: "demographics",
     label: "Demographics & household composition",
-    source: "Australian Bureau of Statistics — Census 2021",
+    source: "Australian Bureau of Statistics, Census 2021",
     cadence: "Census refresh (5-yearly)",
     description:
       "Population, median age, ownership rate, household composition, and language data are all sourced from the most recent ABS Census. We re-import on each Census release.",
@@ -70,7 +70,7 @@ const SOURCES: DataSource[] = [
     source: "OpenStreetMap-derived metrics",
     cadence: "Re-computed quarterly",
     description:
-      "Walk, transit, and bike scores are computed from OpenStreetMap network data — counts of nearby amenities, transit stops, and bike infrastructure within walking distance of the suburb centroid.",
+      "Walk, transit, and bike scores are computed from OpenStreetMap network data, counts of nearby amenities, transit stops, and bike infrastructure within walking distance of the suburb centroid.",
     link: { label: "OpenStreetMap", href: "https://www.openstreetmap.org/" },
   },
   {

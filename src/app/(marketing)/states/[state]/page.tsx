@@ -22,7 +22,7 @@ interface StatePageProps {
 export const revalidate = 86400; // cache as ISR for 24h, regen on demand
 
 export async function generateStaticParams() {
-  // Skip prerender at build time — page body queries the DB. Pages render
+  // Skip prerender at build time, page body queries the DB. Pages render
   // on-demand at runtime once params are seen.
   if (process.env.NEXT_PHASE === "phase-production-build") return [];
   return VALID_STATES.map((state) => ({ state }));

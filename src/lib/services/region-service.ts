@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { cache } from "react";
 
-// State-level values that are not real SA3 regions — filter these out
+// State-level values that are not real SA3 regions, filter these out
 const STATE_NAMES = new Set([
   "Queensland", "New South Wales", "Victoria", "Western Australia",
   "South Australia", "Tasmania", "Northern Territory", "Australian Capital Territory",
@@ -33,7 +33,7 @@ export interface RegionSummary {
   suburbCount: number;
 }
 
-// Cached for the duration of a request — avoids repeated DB hits on the same page render
+// Cached for the duration of a request, avoids repeated DB hits on the same page render
 export const getAllRegions = cache(async (): Promise<RegionSummary[]> => {
   const rows = await db.suburb.groupBy({
     by: ["region", "state"],

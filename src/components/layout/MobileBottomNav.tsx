@@ -17,7 +17,7 @@ const ITEMS = [
  * have a way into a tool from any page.
  *
  * Hidden on:
- * - Tablet+ (sm: breakpoint and above) — desktop has the header
+ * - Tablet+ (sm: breakpoint and above), desktop has the header
  * - Inside the bottom nav's own destination pages, since the same option is
  *   already prominent on the page (avoids redundancy).
  *

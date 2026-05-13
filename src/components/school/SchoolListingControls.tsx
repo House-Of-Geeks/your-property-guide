@@ -64,7 +64,7 @@ export function SchoolListingControls({ count, schoolName, currentSort }: Props)
 
       {/* Sort row */}
       <div className="flex items-center justify-between">
-        <div /> {/* spacer — could add "Create alert" here later */}
+        <div /> {/* spacer, could add "Create alert" here later */}
         <div className="relative">
           <button
             type="button"

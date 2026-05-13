@@ -256,7 +256,7 @@ export default function LoginPage() {
         )}
       </div>
 
-      {/* ── Right panel — lifestyle photo ──────────────────── */}
+      {/* ── Right panel, lifestyle photo ──────────────────── */}
       <div className="hidden lg:block flex-1 relative">
         <Image
           src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1400&q=80"

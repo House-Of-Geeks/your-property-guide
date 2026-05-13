@@ -2,8 +2,8 @@ import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import { SITE_URL } from "@/lib/constants";
 
-// Next 16's generateSitemaps emits URLs at /{path}/sitemap/{id}.xml — not
-// /{path}/sitemap.xml — so the root sitemap-index needs to enumerate each
+// Next 16's generateSitemaps emits URLs at /{path}/sitemap/{id}.xml, not
+// /{path}/sitemap.xml, so the root sitemap-index needs to enumerate each
 // {id} explicitly. Cached for 24h so the count queries don't run on every
 // crawler hit.
 
@@ -46,7 +46,7 @@ const getStreetsSitemapCount = unstable_cache(
   { revalidate: 86400, tags: ["sitemap-streets"] },
 );
 
-// Single-page sitemaps — Next emits these directly at /{path}/sitemap.xml.
+// Single-page sitemaps, Next emits these directly at /{path}/sitemap.xml.
 // (Most are now force-dynamic + unstable_cache; see each file's comment.)
 const SINGLE_PAGE_SITEMAPS = [
   `${SITE_URL}/pages/sitemap.xml`,

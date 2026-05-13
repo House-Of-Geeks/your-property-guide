@@ -47,10 +47,10 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "Sydney's median house price sits around $1.6M to $1.7M, roughly 50% higher than Melbourne's $1.0M to $1.1M.",
-  "Melbourne offers stronger gross rental yields (3.5% to 4.2%) than Sydney (2.5% to 3.2%) — meaningful for cash-flow-focused investors.",
+  "Melbourne offers stronger gross rental yields (3.5% to 4.2%) than Sydney (2.5% to 3.2%), meaningful for cash-flow-focused investors.",
   "Long-run capital growth has been similar (5% to 6% annual nominal), but Sydney has had sharper cyclical peaks and Melbourne deeper troughs.",
   "Affordability heavily favours Melbourne: same income borrows about 50% more property, and stamp duty thresholds are kinder for first home buyers.",
-  "Both cities still offer pockets of value — outer Sydney corridors, Melbourne's western and northern growth areas, regional fringes accessible by V/Line or NSW TrainLink.",
+  "Both cities still offer pockets of value, outer Sydney corridors, Melbourne's western and northern growth areas, regional fringes accessible by V/Line or NSW TrainLink.",
 ];
 
 const TOC: GuideTOCEntry[] = [
@@ -79,7 +79,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Where are rental yields higher?",
     answer:
-      "Melbourne, comfortably. Same property type and same outer-middle ring suburb typically yields 0.7% to 1.2% higher gross in Melbourne than in Sydney — because Melbourne prices have grown less aggressively than rents over the last decade.",
+      "Melbourne, comfortably. Same property type and same outer-middle ring suburb typically yields 0.7% to 1.2% higher gross in Melbourne than in Sydney, because Melbourne prices have grown less aggressively than rents over the last decade.",
   },
   {
     question: "Which city has better stamp duty for first home buyers?",
@@ -89,7 +89,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What about Brisbane as an alternative?",
     answer:
-      "Brisbane has been the standout performer of the last 5 to 7 years, with capital growth above both Sydney and Melbourne and yields closer to Melbourne's. The trade-off is depth of market — Brisbane's job market and population are smaller, so demand can soften faster in a downturn. We cover this in our Brisbane Property Market 2026 outlook.",
+      "Brisbane has been the standout performer of the last 5 to 7 years, with capital growth above both Sydney and Melbourne and yields closer to Melbourne's. The trade-off is depth of market, Brisbane's job market and population are smaller, so demand can soften faster in a downturn. We cover this in our Brisbane Property Market 2026 outlook.",
   },
   {
     question: "Are interstate investments worth the hassle?",
@@ -100,10 +100,10 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "Sydney Property Market 2026", href: "/guides/sydney-property-market-2026", description: "Detailed outlook, suburb hotspots, and the macro picture for Sydney." },
-  { title: "Melbourne Property Market 2026", href: "/guides/melbourne-property-market-2026", description: "Same treatment for Melbourne — affordability, growth pockets, what to watch." },
+  { title: "Melbourne Property Market 2026", href: "/guides/melbourne-property-market-2026", description: "Same treatment for Melbourne, affordability, growth pockets, what to watch." },
   { title: "Brisbane Property Market 2026", href: "/guides/brisbane-property-market-2026", description: "The leading capital city for growth in recent years." },
   { title: "How to Buy Property Interstate", href: "/guides/how-to-buy-property-interstate-australia-2026", description: "Practical workflow for buying outside your home state." },
-  { title: "Rentvesting Guide", href: "/guides/rentvesting-australia-state-by-state-guide-2026", description: "Rent where you live, invest where the numbers work — by state." },
+  { title: "Rentvesting Guide", href: "/guides/rentvesting-australia-state-by-state-guide-2026", description: "Rent where you live, invest where the numbers work, by state." },
 ];
 
 export default function SydneyVsMelbourneGuide() {
@@ -119,7 +119,7 @@ export default function SydneyVsMelbourneGuide() {
         <p>
           Both cities have produced wealth for property owners over the long
           run. The interesting question isn't which is "better" but which fits
-          your strategy — cash flow, capital growth, or affordability.
+          your strategy, cash flow, capital growth, or affordability.
         </p>
       </Callout>
 
@@ -150,13 +150,13 @@ export default function SydneyVsMelbourneGuide() {
       <p>
         Both cities have delivered 5% to 6% annual nominal growth on
         established houses over rolling 20-year windows. Sydney has been
-        higher beta — bigger peaks (2013 to 2017, 2020 to 2022) and sharper
+        higher beta, bigger peaks (2013 to 2017, 2020 to 2022) and sharper
         corrections. Melbourne has been lower beta with deeper periods of
         flat or declining prices (2018 to 2019, 2022 to 2023).
       </p>
       <p>
         For investors, that volatility difference matters less than people
-        think over a 10 to 20 year hold — both markets average out to similar
+        think over a 10 to 20 year hold, both markets average out to similar
         end-points. For owner-occupiers planning to upgrade, sequence-of-returns
         risk is real: a Sydney house you bought in 2017 was worth less three
         years later. A Melbourne house bought in the same year was about flat.
@@ -171,7 +171,7 @@ export default function SydneyVsMelbourneGuide() {
       <p>
         For an investor, that 0.7% to 1.2% yield gap means meaningful cash
         flow at year one. On a $1M Melbourne house, a 4% gross yield is
-        $40,000 in rent. On a $1.5M Sydney house, a 3% yield is $45,000 — but
+        $40,000 in rent. On a $1.5M Sydney house, a 3% yield is $45,000, but
         the Sydney loan is 50% larger, so net cash flow can sit $10,000 to
         $20,000 worse despite the higher rent.
       </p>
@@ -218,7 +218,7 @@ export default function SydneyVsMelbourneGuide() {
         For owner-occupiers, this is where personal preference dominates. Both
         cities have world-class education, dining, sport, and beaches/coast.
         Sydney's geography (harbour, beaches, national parks) is more
-        constrained — that's both a price-driver and a lifestyle premium.
+        constrained, that's both a price-driver and a lifestyle premium.
         Melbourne's grid is flatter and more navigable, with stronger public
         transport in many inner suburbs.
       </p>
@@ -234,14 +234,14 @@ export default function SydneyVsMelbourneGuide() {
       <h2 id="case-melbourne">When Melbourne makes more sense</h2>
       <ul>
         <li>You're an investor focused on near-term cash flow.</li>
-        <li>You're a first home buyer at $600K to $900K — Melbourne unlocks a house, Sydney unlocks an apartment.</li>
+        <li>You're a first home buyer at $600K to $900K, Melbourne unlocks a house, Sydney unlocks an apartment.</li>
         <li>You want lower volatility through cycles.</li>
         <li>You value access to AFL, food culture, and a more navigable street grid.</li>
       </ul>
 
       <GuideNewsletterCallout
         title="Get the next capital city read straight to your inbox"
-        subtitle="We'll send a market update each quarter — Sydney, Melbourne, Brisbane and beyond. One email, no spam."
+        subtitle="We'll send a market update each quarter, Sydney, Melbourne, Brisbane and beyond. One email, no spam."
       />
 
       <h2 id="next-steps">Next steps</h2>

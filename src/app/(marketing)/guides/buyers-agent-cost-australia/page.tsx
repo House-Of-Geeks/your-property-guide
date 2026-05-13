@@ -47,7 +47,7 @@ export const metadata: Metadata = {
 const TLDR = [
   "Buyer's agent fees in Australia typically range from $8,000 to $25,000 for a full-service engagement, depending on price point and market.",
   "Two pricing models dominate: a fixed fee (often $10,000 to $18,000 in capital cities) or a percentage of the purchase price (1.5% to 3%).",
-  "Auction bidding only services are cheaper — typically $500 to $1,500 per auction.",
+  "Auction bidding only services are cheaper, typically $500 to $1,500 per auction.",
   "On a $1.5M Sydney purchase, a buyer's agent at 2% costs $30,000. The decision is whether they save you that much in price negotiation, off-market access, or research time.",
   "Best fit: investors buying interstate, time-poor professionals, and first-time buyers in tightly contested markets. Less obvious value if you've already bought in your suburb before.",
 ];
@@ -72,7 +72,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Do buyer's agents save money on the purchase price?",
     answer:
-      "Sometimes, but not always. A skilled buyer's agent who knows the suburb can identify when the asking price is inflated and negotiate harder than an emotional buyer would. On a hot auction property, however, the ceiling is set by the highest bidder — your agent can't conjure a discount that the market won't give. The bigger value is often time saved and off-market access, not price.",
+      "Sometimes, but not always. A skilled buyer's agent who knows the suburb can identify when the asking price is inflated and negotiate harder than an emotional buyer would. On a hot auction property, however, the ceiling is set by the highest bidder, your agent can't conjure a discount that the market won't give. The bigger value is often time saved and off-market access, not price.",
   },
   {
     question: "Is the fee tax deductible?",
@@ -87,12 +87,12 @@ const FAQS: FaqItem[] = [
   {
     question: "Are buyer's agents licensed?",
     answer:
-      "Yes. Each state has a real estate or property licensing regime — for example, NSW requires a Class 1 or Class 2 Real Estate Licence (Stock and Station). Always check the licence number on your state's licensing register before signing an engagement letter.",
+      "Yes. Each state has a real estate or property licensing regime, for example, NSW requires a Class 1 or Class 2 Real Estate Licence (Stock and Station). Always check the licence number on your state's licensing register before signing an engagement letter.",
   },
   {
     question: "Do they have to be exclusive?",
     answer:
-      "Most engagements are exclusive — you can't shop the same brief to multiple agents. Some firms offer a non-exclusive arrangement at a higher fee. Read the engagement letter carefully for the exclusivity clause and the term length (commonly 6 months).",
+      "Most engagements are exclusive, you can't shop the same brief to multiple agents. Some firms offer a non-exclusive arrangement at a higher fee. Read the engagement letter carefully for the exclusivity clause and the term length (commonly 6 months).",
   },
 ];
 
@@ -100,7 +100,7 @@ const RELATED: RelatedGuide[] = [
   { title: "How to Choose a Selling Agent", href: "/guides/how-to-choose-a-selling-agent", description: "On the other side of the deal: picking the agent who lists your existing home." },
   { title: "Property Auction Guide", href: "/guides/property-auction-guide", description: "If you're heading to auction with or without a buyer's agent, here's the playbook." },
   { title: "Real Estate Agent Fees in Australia", href: "/guides/real-estate-agent-fees-australia", description: "Selling agent commissions across every state, side-by-side." },
-  { title: "Off-Market Properties", href: "/off-market", description: "Properties before they hit Domain or realestate.com.au — what buyer's agents access on your behalf." },
+  { title: "Off-Market Properties", href: "/off-market", description: "Properties before they hit Domain or realestate.com.au, what buyer's agents access on your behalf." },
   { title: "Find an Expert", href: "/find-an-expert", description: "Browse buyer's agents and brokers we've vetted." },
 ];
 
@@ -117,7 +117,7 @@ export default function BuyersAgentCostGuide() {
         <p>
           A selling agent is paid by the vendor and acts in their interest. A
           buyer's agent is paid by you and acts in yours. Different role,
-          different fee structure, different incentives — don't confuse the two.
+          different fee structure, different incentives, don't confuse the two.
         </p>
       </Callout>
 
@@ -126,7 +126,7 @@ export default function BuyersAgentCostGuide() {
         A full-service buyer's agent runs the purchase from brief to settlement:
         suburb research, shortlisting, due diligence, contract review,
         negotiation, and (often) bidding at auction. A bidding-only service is
-        narrower — they show up on auction day and bid to your maximum.
+        narrower, they show up on auction day and bid to your maximum.
       </p>
 
       <ul>
@@ -207,7 +207,7 @@ export default function BuyersAgentCostGuide() {
       <h3>Weaker fit</h3>
       <ul>
         <li>You've already bought in this suburb before and know the comps cold.</li>
-        <li>The market is soft and stock is plentiful — negotiation leverage already favours buyers.</li>
+        <li>The market is soft and stock is plentiful, negotiation leverage already favours buyers.</li>
         <li>You're buying near the bottom of the market ($400K to $600K) where the fixed fee swallows a large slice of your savings.</li>
       </ul>
 
@@ -246,7 +246,7 @@ export default function BuyersAgentCostGuide() {
       <h2 id="next-steps">Next steps</h2>
       <ol>
         <li>
-          Decide which service tier fits — bidding-only is often enough if you
+          Decide which service tier fits, bidding-only is often enough if you
           already know the suburb.
         </li>
         <li>

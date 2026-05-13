@@ -148,7 +148,7 @@ export function AgentSidebarCard({
           </div>
         </div>
 
-        {/* Info rows — each click opens the enquire modal pre-checked for
+        {/* Info rows, each click opens the enquire modal pre-checked for
             that topic. Previously these were faux-checkbox labels that did
             nothing; visitors who tried to click bounced. */}
         <div className="px-5 py-1 border-b border-line">

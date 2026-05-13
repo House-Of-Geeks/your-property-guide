@@ -152,7 +152,7 @@ export function Header() {
             )}
           </nav>
 
-          {/* RHS — search, agent login, primary "Get matched" CTA */}
+          {/* RHS, search, agent login, primary "Get matched" CTA */}
           <div className="flex items-center gap-2 shrink-0">
             <Link
               href="/search"
@@ -169,7 +169,7 @@ export function Header() {
               <UserCircle className="w-3.5 h-3.5" />
               Agent login
             </Link>
-            {/* Phone CTA — fastest "I want to talk now" path for visitors
+            {/* Phone CTA, fastest "I want to talk now" path for visitors
                 who prefer voice over filling a form. Visible from md up; on
                 mobile the click-to-call lives in the mobile menu. */}
             <a

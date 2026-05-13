@@ -1,7 +1,7 @@
 import type { NextAuthConfig } from "next-auth";
 
 /**
- * Edge-compatible auth config — no Node.js imports (no Prisma, no bcrypt etc.)
+ * Edge-compatible auth config, no Node.js imports (no Prisma, no bcrypt etc.)
  * Used by middleware. The full config with PrismaAdapter lives in auth.ts.
  */
 export const authConfig = {

@@ -21,7 +21,7 @@ export async function AgentsResults({ searchParams }: AgentsResultsProps) {
 
   return (
     <>
-      {/* Cross-link cards — only when not filtered */}
+      {/* Cross-link cards, only when not filtered */}
       {!suburbName && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
           <Link

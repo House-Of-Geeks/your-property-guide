@@ -1,10 +1,10 @@
 // Surfaces suburb-vs-suburb comparison URLs so Google can discover the
 // long-tail comparison pages at scale. Pairs are pulled from
-// getTopComparisonPairsByState — top populous suburbs × their nearby
-// suburbs, deduped lexicographically — so the sitemap reflects real
+// getTopComparisonPairsByState, top populous suburbs × their nearby
+// suburbs, deduped lexicographically, so the sitemap reflects real
 // comparison intent rather than every possible pair.
 //
-// force-dynamic + unstable_cache — see /suburbs/sitemap.ts.
+// force-dynamic + unstable_cache, see /suburbs/sitemap.ts.
 export const dynamic = "force-dynamic";
 
 import type { MetadataRoute } from "next";

@@ -10,7 +10,7 @@ export interface SelectedLocation {
   slug: string;
   /** Display label shown in the pill */
   label: string;
-  /** "suburb" | "school" — controls pill icon and filter behaviour */
+  /** "suburb" | "school", controls pill icon and filter behaviour */
   type: "suburb" | "school";
   /** For school entries: the suburb slug used to filter properties */
   suburbSlug?: string;
@@ -73,7 +73,7 @@ export function MultiSuburbAutocomplete({
         // ignore
       }
     }, 180);
-  }, [query, showSchools]); // no `selected` dep — ref handles dedup without re-triggering
+  }, [query, showSchools]); // no `selected` dep, ref handles dedup without re-triggering
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {

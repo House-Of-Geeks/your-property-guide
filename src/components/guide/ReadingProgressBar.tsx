@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
  *
  * Tracks scroll position relative to the document height (with viewport
  * accounting) and fills a primary-coloured bar across the top. Subtle, fast,
- * passive listener. SSR-safe — renders empty markup on the server, then
+ * passive listener. SSR-safe, renders empty markup on the server, then
  * hydrates with the live value.
  */
 export function ReadingProgressBar() {

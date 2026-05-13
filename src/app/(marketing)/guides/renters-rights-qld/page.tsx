@@ -236,7 +236,7 @@ export default function RentersRightsQLDPage() {
         <tbody>
           <tr><td>End of fixed term</td><td>2 weeks (14 days)</td><td>Must have valid reason (post-2024)</td></tr>
           <tr><td>Periodic, no grounds (pre-2024 rules)</td><td>2 weeks</td><td>2 months (transitional)</td></tr>
-          <tr><td>With grounds (e.g. serious breach)</td><td>—</td><td>1 month (or as specified)</td></tr>
+          <tr><td>With grounds (e.g. serious breach)</td><td>-</td><td>1 month (or as specified)</td></tr>
         </tbody>
       </table>
       <p>

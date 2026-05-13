@@ -20,12 +20,12 @@ function formatPriceShort(n: number): string {
  *
  * The trend is derived from the current median house price compounded
  * backward at the suburb's current annual growth rate. We show this as
- * "trajectory at this growth rate", not "historical sales" — labelled
+ * "trajectory at this growth rate", not "historical sales", labelled
  * honestly so readers understand it's a derived projection, not raw
  * sale-by-sale history.
  *
  * Renders inline in the suburb hero/snapshot area. Pure SVG, no chart
- * library — keeps the bundle clean and the render server-side.
+ * library, keeps the bundle clean and the render server-side.
  */
 export function SuburbPriceTrend({
   medianHousePrice,

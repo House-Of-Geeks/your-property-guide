@@ -325,7 +325,7 @@ export default function AboutPage() {
               <div className="sm:col-span-8" itemProp="description">
                 <p className="font-sans text-base text-ink-muted leading-relaxed">
                   Ellie leads our market and suburb research. Her background is
-                  in property data journalism — pulling apart Valuer-General
+                  in property data journalism, pulling apart Valuer-General
                   releases, ABS data, and listing-portal aggregates to find the
                   story behind the median.
                 </p>
@@ -338,7 +338,7 @@ export default function AboutPage() {
                 </p>
                 <p className="font-sans text-base text-ink-muted leading-relaxed mt-4">
                   Ellie&rsquo;s priority is making sure the data on Your
-                  Property Guide is current, comparable, and useful — not just
+                  Property Guide is current, comparable, and useful, not just
                   pretty.
                 </p>
                 <link itemProp="url" href={`${SITE_URL}/about#ellie-johnston`} />

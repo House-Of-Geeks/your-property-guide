@@ -11,7 +11,7 @@ interface SuburbMatchButtonProps {
 
 /**
  * Above-the-fold match CTA on suburb pages. Lives inside SuburbHero so
- * visitors see it without scrolling — most suburb-page visitors are
+ * visitors see it without scrolling, most suburb-page visitors are
  * mid-decision, and the original sticky-on-scroll CTA missed them if
  * they bounced before scrolling.
  *

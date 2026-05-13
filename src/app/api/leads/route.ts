@@ -93,7 +93,7 @@ function buildEmailHtml(lead: z.infer<typeof leadSchema>, agentName: string | nu
 
   return `<!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>${typeLabel} — Your Property Guide</title></head>
+<head><meta charset="UTF-8"><title>${typeLabel}, Your Property Guide</title></head>
 <body style="margin:0;padding:24px;background:#f3f4f6;font-family:system-ui,sans-serif;">
   <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);">
     <div style="background:#1a3a5c;padding:20px 24px;">
@@ -141,7 +141,7 @@ export async function POST(request: Request) {
       });
       agentName = agent?.fullName ?? null;
     } catch {
-      // non-fatal — routing info is nice-to-have in the email
+      // non-fatal, routing info is nice-to-have in the email
     }
 
     // Save to database
@@ -169,10 +169,10 @@ export async function POST(request: Request) {
 
     // Send notification email
     const typeLabel = labelFor(lead.type);
-    const subject   = `${typeLabel} — ${lead.firstName} ${lead.lastName}`;
+    const subject   = `${typeLabel}, ${lead.firstName} ${lead.lastName}`;
 
     // Match-request leads (the homepage MatchAgent flow) go ONLY to andy@theandylife.com
-    // — no CC. Per Andy 2026-05-10. Other lead types keep the standard CC list.
+    //, no CC. Per Andy 2026-05-10. Other lead types keep the standard CC list.
     const isMatchRequest = lead.type === "match-request";
 
     // Email is best-effort. The lead is already persisted to the DB above; if SMTP

@@ -72,17 +72,17 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I buy a house with no deposit in Australia?",
     answer:
-      "Effectively no. The lowest you can go without a guarantor is 5% (with LMI). With a parental guarantor, some lenders will fund 100% of the purchase price, secured against equity in the parent's home. This works but the guarantor is liable if you default — it's a serious commitment for the family member providing the guarantee.",
+      "Effectively no. The lowest you can go without a guarantor is 5% (with LMI). With a parental guarantor, some lenders will fund 100% of the purchase price, secured against equity in the parent's home. This works but the guarantor is liable if you default, it's a serious commitment for the family member providing the guarantee.",
   },
   {
     question: "Is a 5% deposit enough?",
     answer:
-      "Mathematically yes — most banks accept it. Practically, expect to pay $15,000 to $25,000 in LMI on a $600,000 to $700,000 loan. The Home Guarantee Scheme avoids LMI on a 5% deposit but has property price caps and an income test. If you qualify, it's usually the cheapest path in.",
+      "Mathematically yes, most banks accept it. Practically, expect to pay $15,000 to $25,000 in LMI on a $600,000 to $700,000 loan. The Home Guarantee Scheme avoids LMI on a 5% deposit but has property price caps and an income test. If you qualify, it's usually the cheapest path in.",
   },
   {
     question: "How much deposit for a $500,000 house?",
     answer:
-      "5% is $25,000 (with LMI), 10% is $50,000, and 20% is $100,000. Add stamp duty (varies by state — about $18,000 in NSW for a non-first-home buyer), conveyancing ($1,500 to $3,000), building/pest inspection ($600 to $1,000), and lender fees ($600 to $1,200). Total cash to settle a 20% deposit purchase: roughly $120,000 to $125,000.",
+      "5% is $25,000 (with LMI), 10% is $50,000, and 20% is $100,000. Add stamp duty (varies by state, about $18,000 in NSW for a non-first-home buyer), conveyancing ($1,500 to $3,000), building/pest inspection ($600 to $1,000), and lender fees ($600 to $1,200). Total cash to settle a 20% deposit purchase: roughly $120,000 to $125,000.",
   },
   {
     question: "Can I use my super for a house deposit?",
@@ -92,7 +92,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What counts as genuine savings?",
     answer:
-      "Money held in your own bank account for at least 3 months — typically 5% of the purchase price. Shares, term deposits, and rent paid (with a clean rental ledger) often count. Cash gifts and inheritance usually don't, but some lenders will accept them if held for 3+ months.",
+      "Money held in your own bank account for at least 3 months, typically 5% of the purchase price. Shares, term deposits, and rent paid (with a clean rental ledger) often count. Cash gifts and inheritance usually don't, but some lenders will accept them if held for 3+ months.",
   },
   {
     question: "Does the Home Guarantee Scheme have a deadline?",
@@ -263,7 +263,7 @@ export default function HowMuchDepositGuidePage() {
 
       <h2 id="genuine-savings">Genuine savings rule</h2>
       <p>
-        Most lenders require 5% of the purchase price to be "genuine savings" —
+        Most lenders require 5% of the purchase price to be "genuine savings" -
         money you've held in your own name for at least 3 months. The point is
         to demonstrate you can budget consistently. Gifts and inheritance often
         don't count toward this 5%, though some lenders will accept them after
@@ -285,7 +285,7 @@ export default function HowMuchDepositGuidePage() {
         <p>
           The withdrawal application takes about 25 business days from the
           first request to funds in your bank account. Don't request the
-          withdrawal until you have a signed contract — once requested, the
+          withdrawal until you have a signed contract, once requested, the
           funds must be used for a home or returned (with tax penalties).
         </p>
       </Callout>

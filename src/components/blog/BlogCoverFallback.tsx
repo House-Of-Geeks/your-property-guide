@@ -5,7 +5,7 @@ interface Props {
   className?: string;
 }
 
-// Universal (server/client-safe) fallback cover. No filesystem access — just
+// Universal (server/client-safe) fallback cover. No filesystem access, just
 // deterministic CSS-rendered cover art derived from slug + title + category.
 //
 // Used by BlogCover (server) when no real image file is present, and by

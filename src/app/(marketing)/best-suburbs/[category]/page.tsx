@@ -23,7 +23,7 @@ const VALID_CATEGORIES: RankingCategory[] = [
 ];
 
 export async function generateStaticParams() {
-  // Skip prerender at build time — page body queries the DB.
+  // Skip prerender at build time, page body queries the DB.
   if (process.env.NEXT_PHASE === "phase-production-build") return [];
   return VALID_CATEGORIES.map((category) => ({ category }));
 }

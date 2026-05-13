@@ -2,7 +2,7 @@ import { Sparkles } from "lucide-react";
 import { NewsletterForm } from "@/components/newsletter/NewsletterForm";
 
 interface GuideNewsletterCalloutProps {
-  /** Heading override — defaults to a stage-agnostic prompt */
+  /** Heading override, defaults to a stage-agnostic prompt */
   title?: string;
   /** Optional sub-line */
   subtitle?: string;

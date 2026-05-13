@@ -259,7 +259,7 @@ export function BestSuburbsListing({
       </section>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-        {/* Editorial commentary band — what this ranking is and how to use it */}
+        {/* Editorial commentary band, what this ranking is and how to use it */}
         <section className="mb-10 grid lg:grid-cols-12 gap-8">
           <div className="lg:col-span-7">
             <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
@@ -283,7 +283,7 @@ export function BestSuburbsListing({
               <>
                 <div className="rounded-2xl border border-line bg-surface-warm p-5">
                   <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
-                    Buyer tip — {state}
+                    Buyer tip, {state}
                   </p>
                   <p className="font-sans text-sm text-ink leading-relaxed">
                     {stateCommentary.buyerTip}
@@ -291,7 +291,7 @@ export function BestSuburbsListing({
                 </div>
                 <div className="rounded-2xl border border-line bg-surface-warm p-5">
                   <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
-                    Watch out — {state}
+                    Watch out, {state}
                   </p>
                   <p className="font-sans text-sm text-ink leading-relaxed">
                     {stateCommentary.watchOut}
@@ -458,7 +458,7 @@ export function BestSuburbsListing({
           </>
         )}
 
-        {/* FAQ section — emits FAQPage schema for rich-results */}
+        {/* FAQ section, emits FAQPage schema for rich-results */}
         <section className="mt-14 grid lg:grid-cols-12 gap-8">
           <div className="lg:col-span-4">
             <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">

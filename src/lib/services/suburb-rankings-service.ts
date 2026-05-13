@@ -188,7 +188,7 @@ export async function getRankedSuburbs(
       };
 
       // Fetch suburbs with no hazard record (use NOT IN via $queryRawUnsafe or use a different approach)
-      // Prisma doesn't support "has no related record" without a relation — use raw approach
+      // Prisma doesn't support "has no related record" without a relation, use raw approach
       const stateClause = state ? `AND s.state = '${state.replace(/'/g, "''")}'` : "";
 
       type SlugRow = { slug: string };
@@ -433,7 +433,7 @@ export interface ComparisonPair {
  * their nearby suburbs, deduplicated lexicographically so we don't emit
  * both "A vs B" and "B vs A".
  *
- * Only suburbs that actually exist in the DB are returned — the
+ * Only suburbs that actually exist in the DB are returned, the
  * nearbySuburbs array can include slugs that haven't been imported yet.
  */
 export async function getTopComparisonPairsByState(
@@ -465,7 +465,7 @@ export async function getTopComparisonPairsByState(
     for (const bSlug of a.nearbySuburbs) {
       const b = neighbourMap.get(bSlug);
       if (!b) continue;
-      // Canonical key — lexicographic — so we only emit each pair once
+      // Canonical key, lexicographic, so we only emit each pair once
       const key = [a.slug, b.slug].sort().join("|");
       if (seen.has(key)) continue;
       seen.add(key);

@@ -44,7 +44,7 @@ export async function LatestNews() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-          {/* Lead story — spans 7 columns */}
+          {/* Lead story, spans 7 columns */}
           <Link
             href={`/guides/${lead.slug}`}
             className="group lg:col-span-7 block bg-surface-warm rounded-2xl overflow-hidden border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200 flex flex-col"
@@ -91,7 +91,7 @@ export async function LatestNews() {
             </div>
           </Link>
 
-          {/* Stacked secondary stories — span 5 columns */}
+          {/* Stacked secondary stories, span 5 columns */}
           <div className="lg:col-span-5 flex flex-col gap-5">
             {rest.map((post) => (
               <Link

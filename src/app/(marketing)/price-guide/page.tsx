@@ -8,7 +8,7 @@ import { db } from "@/lib/db";
 import { formatPrice, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
-// ISR — DB-querying services have build-phase guards, so we cache for 24h
+// ISR, DB-querying services have build-phase guards, so we cache for 24h
 // instead of running a function on every visit.
 export const revalidate = 86400;
 
@@ -230,7 +230,7 @@ export default async function PriceGuidePage({
                 <td className="px-4 py-3 text-right font-sans text-ink-muted">
                   {suburb.medianUnitPrice > 0
                     ? formatPrice(suburb.medianUnitPrice)
-                    : <span className="text-ink-subtle">—</span>}
+                    : <span className="text-ink-subtle">-</span>}
                 </td>
                 <td className="px-4 py-3 text-right">
                   {suburb.annualGrowthHouse !== 0 ? (
@@ -249,7 +249,7 @@ export default async function PriceGuidePage({
                       {formatPercentage(suburb.annualGrowthHouse)}
                     </span>
                   ) : (
-                    <span className="text-ink-subtle">—</span>
+                    <span className="text-ink-subtle">-</span>
                   )}
                 </td>
                 <td className="px-4 py-3 text-right font-sans text-ink-muted">
@@ -259,7 +259,7 @@ export default async function PriceGuidePage({
                       {suburb.daysOnMarket}d
                     </span>
                   ) : (
-                    <span className="text-ink-subtle">—</span>
+                    <span className="text-ink-subtle">-</span>
                   )}
                 </td>
               </tr>

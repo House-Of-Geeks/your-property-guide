@@ -16,7 +16,7 @@ const RAIL_BY_BLOG_SLUG: Record<string, RailGuide[]> = {
   // First-home / SEQ blog cluster
   "first-home-buyer-guide-moreton-bay-2025": [
     { href: "/guides/first-home-buyer-qld",                  title: "First Home Buyer Guide, QLD",       description: "$30K FHOG, transfer-duty concession, REIQ contract." },
-    { href: "/guides/how-much-deposit-to-buy-a-house",       title: "How much deposit do you need?",     description: "5%, 10%, 20% — what each tier unlocks, plus FHSS." },
+    { href: "/guides/how-much-deposit-to-buy-a-house",       title: "How much deposit do you need?",     description: "5%, 10%, 20%, what each tier unlocks, plus FHSS." },
     { href: "/guides/first-home-buyer-mistakes-to-avoid",    title: "10 first home buyer mistakes",      description: "The expensive errors, ranked, with the fix for each." },
   ],
   "stamp-duty-queensland-what-you-need-to-know": [
@@ -128,11 +128,11 @@ const RAIL_BY_BLOG_SLUG: Record<string, RailGuide[]> = {
   ],
 };
 
-// Default fallback — used if the blog slug isn't mapped above. Picks the
+// Default fallback, used if the blog slug isn't mapped above. Picks the
 // most universally-relevant guides.
 const DEFAULT_RAIL: RailGuide[] = [
   { href: "/guides/buying-property-australia",         title: "How to buy property in Australia",   description: "Step-by-step from deposit to settlement." },
-  { href: "/guides/how-much-deposit-to-buy-a-house",   title: "How much deposit do you need?",      description: "5%, 10%, 20% — what each tier unlocks." },
+  { href: "/guides/how-much-deposit-to-buy-a-house",   title: "How much deposit do you need?",      description: "5%, 10%, 20%, what each tier unlocks." },
   { href: "/find-your-suburb",                         title: "Find your suburb (quiz)",            description: "4 questions, 6 matched suburbs." },
 ];
 

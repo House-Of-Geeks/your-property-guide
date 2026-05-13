@@ -40,7 +40,7 @@ export function HeroSearch() {
 
   function addLocation(loc: SelectedLocation) {
     if (mode === "research") {
-      // In research mode — navigate directly to the profile page
+      // In research mode, navigate directly to the profile page
       if (loc.type === "school") router.push(`/schools/${loc.slug}`);
       else router.push(`/suburbs/${loc.slug}`);
       return;
@@ -172,7 +172,7 @@ export function HeroSearch() {
             </Button>
           </div>
 
-          {/* Filter panel — not shown in research mode */}
+          {/* Filter panel, not shown in research mode */}
           {filtersOpen && mode !== "research" && (
             <div className="border-t border-gray-100 px-4 py-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div>
@@ -231,7 +231,7 @@ export function HeroSearch() {
           )}
         </div>
 
-        {/* Quick links — suburb shortcuts in property modes, research categories in research mode */}
+        {/* Quick links, suburb shortcuts in property modes, research categories in research mode */}
         <div className="mt-8 flex flex-wrap justify-center gap-2">
           {mode === "research" ? (
             RESEARCH_QUICK_LINKS.map((link) => (

@@ -213,7 +213,7 @@ export default function RentersRightsWAPage() {
         <tbody>
           <tr><td>Fixed term, end of term</td><td>30 days</td><td>30 days</td></tr>
           <tr><td>Periodic, no grounds</td><td>21 days</td><td>60 days</td></tr>
-          <tr><td>Periodic, significant breach</td><td>—</td><td>7 to 14 days (varies)</td></tr>
+          <tr><td>Periodic, significant breach</td><td>-</td><td>7 to 14 days (varies)</td></tr>
         </tbody>
       </table>
       <p>

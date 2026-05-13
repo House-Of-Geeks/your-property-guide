@@ -1,4 +1,4 @@
-// force-dynamic + unstable_cache — see /suburbs/sitemap.ts.
+// force-dynamic + unstable_cache, see /suburbs/sitemap.ts.
 export const dynamic = "force-dynamic";
 
 import type { MetadataRoute } from "next";

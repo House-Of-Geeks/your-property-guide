@@ -24,7 +24,7 @@ function formatCategoryLabel(slug: string): string {
 export const revalidate = 86400; // cache as ISR for 24h, regen on demand
 
 export async function generateStaticParams() {
-  // Skip prerender at build time — DB isn't reachable during `next build`.
+  // Skip prerender at build time, DB isn't reachable during `next build`.
   // Pages render on-demand via dynamicParams=true (App Router default).
   if (process.env.NEXT_PHASE === "phase-production-build") return [];
   const categories = await getDistinctBlogCategories();
@@ -58,7 +58,7 @@ export default async function BlogCategoryPage({ params }: Props) {
   if (posts.length === 0) notFound();
 
   // Pre-resolve cover paths on the server so BlogGrid (client) doesn't need
-  // filesystem access. Missing files become "" — BlogGrid renders the
+  // filesystem access. Missing files become "", BlogGrid renders the
   // BlogCoverFallback in that case.
   const resolvedPosts = posts.map((p) => ({
     ...p,

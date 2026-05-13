@@ -5,7 +5,7 @@ import "./globals.css";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 import { Providers } from "@/components/analytics/Providers";
 
-// Display / heading font — Fraunces, the YFG editorial serif. Light weights only,
+// Display / heading font, Fraunces, the YFG editorial serif. Light weights only,
 // matching the YFG hero treatment (weight 400 + light italic 300).
 const fraunces = Fraunces({
   variable: "--font-display",
@@ -15,7 +15,7 @@ const fraunces = Fraunces({
   display: "swap",
 });
 
-// UI / body font — Manrope, paired with Fraunces on YFG. Clean modern sans.
+// UI / body font, Manrope, paired with Fraunces on YFG. Clean modern sans.
 const manrope = Manrope({
   variable: "--font-sans",
   subsets: ["latin"],
@@ -69,19 +69,19 @@ export default function RootLayout({
       <head>
         {/* Preconnect to high-priority third-party origins. dns-prefetch is a
             cheaper fallback for older browsers / bots that don't support
-            preconnect. Order matters — preconnect is tried first. */}
+            preconnect. Order matters, preconnect is tried first. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
 
-        {/* Vercel image CDN — used for property listing images. */}
+        {/* Vercel image CDN, used for property listing images. */}
         <link rel="dns-prefetch" href="https://vbsxnixtsgnnyozjrsp1.public.blob.vercel-storage.com" />
 
         {/* Image hosts referenced in blog cover photos. */}
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
 
-        {/* Analytics — async loaded after paint, but DNS warmup helps. */}
+        {/* Analytics, async loaded after paint, but DNS warmup helps. */}
         <link rel="dns-prefetch" href="https://www.clarity.ms" />
         <link rel="dns-prefetch" href="https://secure.quantserve.com" />
 

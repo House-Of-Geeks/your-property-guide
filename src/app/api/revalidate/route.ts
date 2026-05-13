@@ -9,7 +9,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 // after a DB edit (e.g. agency logo fix) without waiting for the route's
 // `revalidate` window or redeploying.
 //
-// Reuses INDEXNOW_KEY for auth — already provisioned and serves a similar
+// Reuses INDEXNOW_KEY for auth, already provisioned and serves a similar
 // "trusted admin tooling" role.
 export async function POST(request: NextRequest) {
   const key = process.env.INDEXNOW_KEY;

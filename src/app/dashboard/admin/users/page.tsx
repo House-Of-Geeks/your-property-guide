@@ -39,7 +39,7 @@ export default async function AdminUsersPage() {
             {users.map((u) => (
               <tr key={u.id} className="hover:bg-gray-50 transition-colors">
                 <td className="px-4 py-3 font-medium text-gray-900">{u.email}</td>
-                <td className="px-4 py-3 text-gray-500">{u.name ?? "—"}</td>
+                <td className="px-4 py-3 text-gray-500">{u.name ?? "-"}</td>
                 <td className="px-4 py-3 text-gray-500">
                   {new Date(u.createdAt).toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" })}
                 </td>

@@ -41,7 +41,7 @@ async function fetchFreshness(slug: string): Promise<{
       rentalSource:    rental?.source    ?? null,
       crimeAsOf:       crime?.periodDate ?? null,
       crimeSource:     crime?.source     ?? null,
-      // Denormalized fields — filled in by toSuburb() after the Suburb row is fetched
+      // Denormalized fields, filled in by toSuburb() after the Suburb row is fetched
       salesAsOf:       null,
       salesSource:     null,
       censusAsOf:      null,
@@ -202,7 +202,7 @@ async function getNearbySchools(suburb: { id: string; lat: number | null; lng: n
 
   // Try progressively larger radii until we have enough schools. We prefer
   // the PostGIS path (uses GIST index) but fall back to haversine if the
-  // geom column doesn't exist yet — keeps deploys safe both before AND after
+  // geom column doesn't exist yet, keeps deploys safe both before AND after
   // scripts/postgis/2026-05-add-school-geom.sql is run.
   for (const radiusKm of [10, 20, 40]) {
     let schools: DbSchool[];

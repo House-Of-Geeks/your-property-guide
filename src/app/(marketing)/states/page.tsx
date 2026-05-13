@@ -8,7 +8,7 @@ import { getAllStatesWithStats } from "@/lib/services/suburb-rankings-service";
 import { formatPrice } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
-// ISR — DB-querying services have build-phase guards, so we cache for 24h
+// ISR, DB-querying services have build-phase guards, so we cache for 24h
 // instead of running a function on every visit.
 export const revalidate = 86400;
 

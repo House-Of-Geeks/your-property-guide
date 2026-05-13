@@ -4,7 +4,7 @@ import { GLOSSARY_TERMS } from "@/lib/data/glossary";
 interface GlossaryLinkProps {
   /** The glossary term slug, e.g. "bridging-finance". Must exist in lib/data/glossary.ts. */
   term: string;
-  /** Display text — defaults to the slug's own term name */
+  /** Display text, defaults to the slug's own term name */
   children?: React.ReactNode;
   /** Optional title override for the tooltip */
   title?: string;
@@ -15,7 +15,7 @@ interface GlossaryLinkProps {
  * style as the auto-linker (so manual and auto links look consistent).
  *
  * If the slug doesn't exist in the glossary data we fall back to plain text
- * — fail-safe so a typo doesn't break a guide page render.
+ *, fail-safe so a typo doesn't break a guide page render.
  */
 export function GlossaryLink({ term, children, title }: GlossaryLinkProps) {
   const entry = GLOSSARY_TERMS.find((t) => t.slug === term);

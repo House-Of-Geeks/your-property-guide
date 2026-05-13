@@ -5,6 +5,6 @@ export const SITE_DESCRIPTION =
 export const SITE_TAGLINE = "Australia's property guide";
 export const DEFAULT_OG_IMAGE = "/og-image.jpg";
 
-/** Site contact phone — used in tel: links + display formatting. */
+/** Site contact phone, used in tel: links + display formatting. */
 export const CONTACT_PHONE_E164    = "+61455221921";       // for tel: hrefs
 export const CONTACT_PHONE_DISPLAY = "0455 221 921";       // human-readable

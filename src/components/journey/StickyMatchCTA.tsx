@@ -12,14 +12,14 @@ interface StickyMatchCTAProps {
   /** Headline. Defaults to a suburb-aware version when `suburb` is set. */
   label?: string;
   /**
-   * Unique key per page/context. Determines sessionStorage dismissal scope —
+   * Unique key per page/context. Determines sessionStorage dismissal scope -
    * dismissing on one suburb shouldn't suppress the CTA on another.
    * Defaults to `${intent}|${suburb}` or "default".
    */
   dismissKey?: string;
   /**
    * Scroll threshold (% of document height) before the CTA appears.
-   * Default 0.30 — wait until the user has actually read some of the page.
+   * Default 0.30, wait until the user has actually read some of the page.
    */
   showAfterRatio?: number;
 }
@@ -30,7 +30,7 @@ interface StickyMatchCTAProps {
  * bottom-right on desktop. Dismissible per session.
  *
  * Clicking opens MatchDrawer with the page's suburb/intent pre-filled. The
- * OLD behaviour navigated to `/?suburb=...#match` — visitors lost their
+ * OLD behaviour navigated to `/?suburb=...#match`, visitors lost their
  * page context and never came back.
  */
 export function StickyMatchCTA({
@@ -80,7 +80,7 @@ export function StickyMatchCTA({
 
   if (dismissed) return null;
 
-  const display = label ?? (suburb ? "Get connected — local specialist" : "Get connected");
+  const display = label ?? (suburb ? "Get connected, local specialist" : "Get connected");
 
   return (
     <>

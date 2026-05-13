@@ -238,7 +238,7 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
         ]}
       />
 
-      {/* Breadcrumbs — above hero on white bg */}
+      {/* Breadcrumbs, above hero on white bg */}
       <div className="bg-white border-b border-gray-100">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-3">
           <nav className="flex items-center gap-1.5 text-xs text-gray-500">

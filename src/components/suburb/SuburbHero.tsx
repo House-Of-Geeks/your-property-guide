@@ -95,7 +95,7 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
             </span>
           </div>
 
-          {/* Above-the-fold match CTA — visitors researching this suburb are
+          {/* Above-the-fold match CTA, visitors researching this suburb are
               mid-decision; give them the option to act before they scroll. */}
           <div className="mt-6 pointer-events-none">
             <SuburbMatchButton suburbSlug={suburb.slug} suburbName={suburb.name} />

@@ -84,7 +84,7 @@ export default async function SchoolPage({ params, searchParams }: SchoolPagePro
     properties = [...properties].sort((a, b) => (b.price.value ?? 0) - (a.price.value ?? 0));
   }
 
-  // Street map (roadmap) — not satellite
+  // Street map (roadmap), not satellite
   const mapSrc = school.lat && school.lng && GMAPS_KEY
     ? `https://www.google.com/maps/embed/v1/place?key=${GMAPS_KEY}&q=${encodeURIComponent(school.name)}&center=${school.lat},${school.lng}&zoom=13&maptype=roadmap`
     : null;

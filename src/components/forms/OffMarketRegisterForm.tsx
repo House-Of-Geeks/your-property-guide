@@ -12,7 +12,7 @@ import { clarityEvent, clarityTag } from "@/lib/clarity";
 // Off-market alert signup. The user's already on /off-market explicitly
 // asking for alerts, so we keep the criteria fields but trim required
 // contact info to firstName + email + suburb. Last name and phone are
-// optional — alerts are email-driven.
+// optional, alerts are email-driven.
 const offMarketSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().optional(),

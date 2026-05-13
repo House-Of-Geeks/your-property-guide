@@ -14,7 +14,7 @@ function createClient() {
   // - Runtime (Vercel serverless): each function instance handles one request
   //   at a time; 1 connection per instance is enough and reuses across warm
   //   requests via globalForPrisma. Default `max: 10` was the cause of the
-  //   P2037 TooManyConnections outage — under load Vercel spawned many warm
+  //   P2037 TooManyConnections outage, under load Vercel spawned many warm
   //   instances and 10 × instances exhausted Postgres' 100-connection limit.
   //
   // - Build (`next build` prerender): pages issue several DB queries in
@@ -39,7 +39,7 @@ function createClient() {
 
 export const db = globalForPrisma.prisma ?? createClient();
 
-// Always set the global — not just in development.
+// Always set the global, not just in development.
 // Each Vercel function instance gets its own globalThis, so this is safe.
 // It ensures warm invocations reuse the same client (and its connection pool)
 // rather than opening fresh connections on every request.

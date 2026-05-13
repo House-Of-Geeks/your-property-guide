@@ -48,7 +48,7 @@ const TLDR = [
   "The best family suburbs in Brisbane balance four things: well-rated schools (ICSEA 1050+), short commute to the CBD or major employer hubs, parks and walkability, and a median house price you can actually finance.",
   "Established middle-ring favourites: Wilston, Wavell Heights, Chelmer, Kenmore, Holland Park West.",
   "Outer-ring growth corridors with strong school catchments: Cleveland, Carindale, Bridgeman Downs, Springfield Lakes.",
-  "Inner south for walkable family living: Annerley, Tarragindi, Greenslopes — close to top secondary schools and the South East Busway.",
+  "Inner south for walkable family living: Annerley, Tarragindi, Greenslopes, close to top secondary schools and the South East Busway.",
   "Avoid common pitfalls: don't lock yourself out of catchment for the high school you actually want, and check flood overlays before signing anywhere along the Brisbane River or Norman Creek.",
 ];
 
@@ -72,12 +72,12 @@ const FAQS: FaqItem[] = [
   {
     question: "Which Brisbane suburb has the best schools?",
     answer:
-      "By ICSEA score, the strongest state primary schools cluster around Indooroopilly, Ironside, Brisbane Central, Sunnybank Hills, and parts of the inner north (Wilston, Newmarket). For state secondary schools, Indooroopilly State High and Brisbane State High Schools dominate, but their catchments are tightly drawn — verify your specific address before assuming entry.",
+      "By ICSEA score, the strongest state primary schools cluster around Indooroopilly, Ironside, Brisbane Central, Sunnybank Hills, and parts of the inner north (Wilston, Newmarket). For state secondary schools, Indooroopilly State High and Brisbane State High Schools dominate, but their catchments are tightly drawn, verify your specific address before assuming entry.",
   },
   {
     question: "How does flood risk vary across Brisbane?",
     answer:
-      "Flood exposure is highly localised. The 2011 and 2022 floods affected specific creek systems and Brisbane River frontage — Norman Creek (Coorparoo, Greenslopes), Bulimba Creek, parts of Rocklea, Graceville, and lower Chelmer. Nearby streets above the flood line were unaffected. Always check the Brisbane City Council Flood Awareness Map for the specific property address before bidding.",
+      "Flood exposure is highly localised. The 2011 and 2022 floods affected specific creek systems and Brisbane River frontage, Norman Creek (Coorparoo, Greenslopes), Bulimba Creek, parts of Rocklea, Graceville, and lower Chelmer. Nearby streets above the flood line were unaffected. Always check the Brisbane City Council Flood Awareness Map for the specific property address before bidding.",
   },
   {
     question: "What's the typical commute time?",
@@ -92,12 +92,12 @@ const FAQS: FaqItem[] = [
   {
     question: "How do I check school catchment boundaries?",
     answer:
-      "The Queensland Department of Education runs an online catchment finder. Enter the property address; the tool returns the in-catchment primary and secondary state schools. Always verify before exchanging contracts — boundaries shift periodically and a street that was \"in\" five years ago may now be \"out\".",
+      "The Queensland Department of Education runs an online catchment finder. Enter the property address; the tool returns the in-catchment primary and secondary state schools. Always verify before exchanging contracts, boundaries shift periodically and a street that was \"in\" five years ago may now be \"out\".",
   },
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Brisbane Property Market 2026", href: "/guides/brisbane-property-market-2026", description: "Macro outlook for the Brisbane market — supply, demand, and the SEQ growth corridor." },
+  { title: "Brisbane Property Market 2026", href: "/guides/brisbane-property-market-2026", description: "Macro outlook for the Brisbane market, supply, demand, and the SEQ growth corridor." },
   { title: "Best Suburbs Australia: For Families", href: "/best-suburbs/for-families", description: "Our ranked list of family-friendliest suburbs nationally." },
   { title: "Top 5 Suburbs for Families in Moreton Bay", href: "/guides/top-5-suburbs-families-moreton-bay", description: "If you'd consider just north of Brisbane, the Moreton Bay corridor is one of SEQ's strongest family pockets." },
   { title: "Stamp Duty Calculator", href: "/stamp-duty-calculator", description: "Estimate Queensland stamp duty for your shortlisted properties." },
@@ -137,7 +137,7 @@ export default function BestBrisbaneFamilySuburbsGuide() {
       <p>
         Tree-lined streets, character Queenslanders, walking distance to
         Wilston State School and a short bus or train ride to the CBD. Premium
-        pricing — median house around $1.4M to $1.6M — but some of Brisbane's
+        pricing, median house around $1.4M to $1.6M, but some of Brisbane's
         most consistent family demand.
       </p>
 
@@ -153,7 +153,7 @@ export default function BestBrisbaneFamilySuburbsGuide() {
       <p>
         Western suburbs prestige pocket on the river. Sherwood State School
         catchment and proximity to private schools. Pay attention to flood
-        overlays on the riverside streets — the higher streets above
+        overlays on the riverside streets, the higher streets above
         Honour Avenue are above the 2011 line.
       </p>
 
@@ -177,7 +177,7 @@ export default function BestBrisbaneFamilySuburbsGuide() {
       <p>
         Master-planned community with new schools (state and private), Orion
         Springfield town centre, train line into the CBD. Median house $700K
-        to $850K — a meaningful step down from middle-ring prices.
+        to $850K, a meaningful step down from middle-ring prices.
       </p>
 
       <h3>Cleveland (4163)</h3>
@@ -189,7 +189,7 @@ export default function BestBrisbaneFamilySuburbsGuide() {
 
       <h3>Carindale (4152)</h3>
       <p>
-        Already established but worth flagging — Westfield Carindale, multiple
+        Already established but worth flagging, Westfield Carindale, multiple
         parks, the Carindale State School and Whites Hill State College
         catchment. Median house around $1.2M.
       </p>
@@ -230,7 +230,7 @@ export default function BestBrisbaneFamilySuburbsGuide() {
 
       <h2 id="schools">School catchment strategy</h2>
       <p>
-        State school catchments in Queensland are strict — your address
+        State school catchments in Queensland are strict, your address
         determines your enrolment right. Three rules of thumb:
       </p>
       <ol>
@@ -263,7 +263,7 @@ export default function BestBrisbaneFamilySuburbsGuide() {
           Flood Awareness Map.
         </li>
         <li>
-          Check insurance availability and premium quote — a property the
+          Check insurance availability and premium quote, a property the
           insurer won't cover (or quotes $8,000+/year) is a red flag.
         </li>
         <li>

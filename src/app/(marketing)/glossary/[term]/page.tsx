@@ -74,12 +74,12 @@ export async function generateMetadata({ params }: TermPageProps): Promise<Metad
   const meta = plain.length > 160 ? `${plain.slice(0, 157)}…` : plain;
 
   return {
-    title: `${entry.term} — Australian Property Glossary | ${SITE_NAME}`,
+    title: `${entry.term}, Australian Property Glossary | ${SITE_NAME}`,
     description: meta,
     alternates: { canonical: `${SITE_URL}/glossary/${entry.slug}` },
     openGraph: {
       url: `${SITE_URL}/glossary/${entry.slug}`,
-      title: `${entry.term} — Australian property definition`,
+      title: `${entry.term}, Australian property definition`,
       description: meta,
       type: "article",
     },
@@ -221,7 +221,7 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
               </nav>
             </div>
 
-            {/* Sidebar — nearby terms + back to A-Z */}
+            {/* Sidebar, nearby terms + back to A-Z */}
             <aside className="lg:col-span-4">
               <div className="lg:sticky lg:top-24 space-y-8">
                 <Link

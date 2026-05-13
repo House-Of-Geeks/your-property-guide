@@ -13,7 +13,7 @@ import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "10 First Home Buyer Mistakes to Avoid (and How to Fix Them) — Australia 2026",
+  title: "10 First Home Buyer Mistakes to Avoid (and How to Fix Them), Australia 2026",
   description:
     "The 10 most expensive mistakes Australian first home buyers make in 2026, from over-stretching on a deposit to skipping building inspections. Each mistake explained with the simple fix.",
   slug: "first-home-buyer-mistakes-to-avoid",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "The most common mistake isn't the one buyers worry about. It's not skipping a building inspection — most do those. It's underestimating the all-in cash needed at settlement.",
+  "The most common mistake isn't the one buyers worry about. It's not skipping a building inspection, most do those. It's underestimating the all-in cash needed at settlement.",
   "Pre-approval expires in 90 days, but most buyers don't realise the lender can re-assess if your financial situation changes meaningfully.",
   "Auctions skip cooling-off in every state. Showing up to bid without a building report and unconditional finance is the single fastest way to ruin yourself financially.",
   "Stretching to the absolute borrowing maximum leaves no buffer. A 0.5% rate move can flip a comfortable mortgage into mortgage stress.",
@@ -77,7 +77,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I lose my deposit if I pull out of a contract?",
     answer:
-      "Within the cooling-off period (3 to 5 business days in most states for private treaty), you forfeit a small penalty (0.2% to 0.25% of the price) and get the rest of the deposit back. After cooling-off ends, the deposit is at risk. At auction, there's no cooling-off — the deposit is at risk from the moment the hammer falls.",
+      "Within the cooling-off period (3 to 5 business days in most states for private treaty), you forfeit a small penalty (0.2% to 0.25% of the price) and get the rest of the deposit back. After cooling-off ends, the deposit is at risk. At auction, there's no cooling-off, the deposit is at risk from the moment the hammer falls.",
   },
   {
     question: "How much should I borrow as a first home buyer?",
@@ -92,7 +92,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What's the biggest mistake at auction?",
     answer:
-      "Going in without unconditional finance. At auction, the contract is binding immediately and there's no cooling-off. If your finance falls through after auction (because the bank's valuation comes in below your purchase price, for example), you've still bought the house — and may forfeit your deposit if you can't settle.",
+      "Going in without unconditional finance. At auction, the contract is binding immediately and there's no cooling-off. If your finance falls through after auction (because the bank's valuation comes in below your purchase price, for example), you've still bought the house, and may forfeit your deposit if you can't settle.",
   },
   {
     question: "Is it a mistake to buy at the top of the market?",
@@ -103,7 +103,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide (National)", href: "/guides/first-home-buyer-guide", description: "The complete first-home-buyer playbook with state-by-state schemes." },
-  { title: "How Much Deposit Do You Need?", href: "/guides/how-much-deposit-to-buy-a-house", description: "5%, 10%, 20% — the full picture including all-in cash needed." },
+  { title: "How Much Deposit Do You Need?", href: "/guides/how-much-deposit-to-buy-a-house", description: "5%, 10%, 20%, the full picture including all-in cash needed." },
   { title: "Building & Pest Inspection", href: "/guides/building-pest-inspection", description: "What inspections cover, what they don't, and when to commission." },
   { title: "Cooling-Off Period by State", href: "/guides/cooling-off-period-by-state-australia", description: "Your right to rescind, state by state, and when it doesn't apply." },
   { title: "Property Auction Guide", href: "/guides/property-auction-guide", description: "How to bid, when to walk away, and the pre-auction homework." },
@@ -178,7 +178,7 @@ export default function FirstHomeBuyerMistakesGuide() {
       <p>
         <strong>The mistake:</strong> You attend an auction with pre-approval,
         win at $50K above the bank&rsquo;s valuation, and your finance gets
-        cut back. You&rsquo;re bound by the contract with no cooling-off — and
+        cut back. You&rsquo;re bound by the contract with no cooling-off, and
         no funding gap solution.
       </p>
       <p>
@@ -204,7 +204,7 @@ export default function FirstHomeBuyerMistakesGuide() {
       <h2 id="address-blindspot">6. Buying on suburb reputation, not address-level data</h2>
       <p>
         <strong>The mistake:</strong> &ldquo;This suburb has good schools&rdquo;
-        — but your specific address is in a different school catchment, or
+       , but your specific address is in a different school catchment, or
         the block backs onto a flood-prone creek you didn&rsquo;t notice.
       </p>
       <p>
@@ -258,7 +258,7 @@ export default function FirstHomeBuyerMistakesGuide() {
       </p>
       <p>
         <strong>The fix:</strong> Be polite but professional. The selling
-        agent is paid by the vendor and works for the vendor — they have a
+        agent is paid by the vendor and works for the vendor, they have a
         legal obligation to extract the best price for the seller. Never
         share your top number, your urgency, or your fall-back plan.
       </p>

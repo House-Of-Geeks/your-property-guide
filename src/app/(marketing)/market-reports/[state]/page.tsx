@@ -26,7 +26,7 @@ function isValidState(slug: string): slug is StateSlug {
 export const revalidate = 86400; // cache as ISR for 24h, regen on demand
 
 export function generateStaticParams() {
-  // Skip prerender at build time — page body queries the Suburb table and the
+  // Skip prerender at build time, page body queries the Suburb table and the
   // DB isn't reachable during `next build`. Pages render on-demand at runtime.
   if (process.env.NEXT_PHASE === "phase-production-build") return [];
   return STATE_SLUGS.map((state) => ({ state }));
@@ -128,7 +128,7 @@ function SuburbTable({
                   <span className="font-display text-base text-ink">
                     {row.medianHousePrice > 0
                       ? formatPriceFull(row.medianHousePrice)
-                      : "—"}
+                      : "-"}
                   </span>
                 </td>
                 {showGrowth && (
@@ -144,7 +144,7 @@ function SuburbTable({
                     >
                       {row.annualGrowthHouse !== 0
                         ? `${row.annualGrowthHouse > 0 ? "+" : ""}${row.annualGrowthHouse.toFixed(1)}%`
-                        : "—"}
+                        : "-"}
                     </span>
                   </td>
                 )}
@@ -284,7 +284,7 @@ export default async function StateMarketReportPage({
             <aside className="lg:col-span-5 space-y-4">
               <div className="rounded-2xl border border-line bg-surface-warm p-5">
                 <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
-                  Buyer tip — {upperState}
+                  Buyer tip, {upperState}
                 </p>
                 <p className="font-sans text-sm text-ink leading-relaxed">
                   {commentary.buyerTip}
@@ -292,7 +292,7 @@ export default async function StateMarketReportPage({
               </div>
               <div className="rounded-2xl border border-line bg-surface-warm p-5">
                 <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
-                  Watch out — {upperState}
+                  Watch out, {upperState}
                 </p>
                 <p className="font-sans text-sm text-ink leading-relaxed">
                   {commentary.watchOut}

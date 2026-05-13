@@ -30,7 +30,7 @@ function initialsFor(name: string): string {
 
 // Show the headshot if it exists, otherwise fall back to a branded initials
 // disc. We treat the "/images/agents/<name>.jpg" placeholders as not-yet-real
-// — image presence is signalled by an explicit non-default path. Since all
+//, image presence is signalled by an explicit non-default path. Since all
 // current bylines point at agent JPGs that may not exist, the simplest rule
 // is to always render initials until a deliberate image override is added.
 const USE_IMAGE_BYDEFAULT = false;

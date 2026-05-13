@@ -36,7 +36,7 @@ export const agents: Agent[] = [
     title: "Senior Property Manager",
     phone: "0421 992 381",
     email: "dylan@thomsonpropertygroup.com.au",
-    bio: "Dylan Thomson is the Senior Property Manager at Thomson Property Group, bringing strong communication skills, responsive customer service, and exceptional organisational ability to every aspect of property management. Dylan handles the daily operations of the managed portfolio — from establishing rental rates through thorough market surveys to coordinating maintenance, managing tenant relationships, and keeping landlords informed every step of the way. His hands-on approach and local market knowledge make him the go-to person for investors seeking stress-free property management.",
+    bio: "Dylan Thomson is the Senior Property Manager at Thomson Property Group, bringing strong communication skills, responsive customer service, and exceptional organisational ability to every aspect of property management. Dylan handles the daily operations of the managed portfolio, from establishing rental rates through thorough market surveys to coordinating maintenance, managing tenant relationships, and keeping landlords informed every step of the way. His hands-on approach and local market knowledge make him the go-to person for investors seeking stress-free property management.",
     image: "/images/agents/dylan-thomson.jpg",
     agencyId: "agency-1",
     suburbs: [
@@ -62,7 +62,7 @@ export const agents: Agent[] = [
     title: "Sales Executive",
     phone: "0437 944 875",
     email: "hannah@thomsonpropertygroup.com.au",
-    bio: "Hannah Thomson is a naturally outgoing, astute and motivated Sales Executive at Thomson Property Group. Her excellent communication skills and ability to build genuine rapport with clients — from individual homeowners to industry professionals — set her apart in the market. Hannah is focused on delivering positive outcomes and outstanding results for every client she works with, combining a personable approach with sharp negotiation skills to guide buyers and sellers through the process with confidence.",
+    bio: "Hannah Thomson is a naturally outgoing, astute and motivated Sales Executive at Thomson Property Group. Her excellent communication skills and ability to build genuine rapport with clients, from individual homeowners to industry professionals, set her apart in the market. Hannah is focused on delivering positive outcomes and outstanding results for every client she works with, combining a personable approach with sharp negotiation skills to guide buyers and sellers through the process with confidence.",
     image: "/images/agents/hannah-thomson.jpg",
     agencyId: "agency-1",
     suburbs: [

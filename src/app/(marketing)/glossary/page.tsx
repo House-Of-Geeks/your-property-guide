@@ -79,13 +79,13 @@ export default function GlossaryPage() {
               A home loan where the interest rate can change over the life of the loan, typically
               in line with market rates or an index set by the lender. In Australia, this is more
               commonly called a <em>variable rate loan</em>. Your repayments can go up or down when
-              the rate changes — for example, when the RBA changes the cash rate.
+              the rate changes, for example, when the RBA changes the cash rate.
             </dd>
 
             <dt className="font-display text-lg text-ink leading-tight mt-2"><Link href="/glossary/appraisal" className="hover:text-primary transition-colors">Appraisal</Link></dt>
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
               An estimate of a property&apos;s market value, usually provided by a real estate agent or
-              registered valuer. An agent&apos;s appraisal is typically free and informal — it&apos;s used to
+              registered valuer. An agent&apos;s appraisal is typically free and informal, it&apos;s used to
               guide pricing for sale. A formal valuation (by a registered valuer) is used by lenders
               to assess how much they will lend.
             </dd>
@@ -102,7 +102,7 @@ export default function GlossaryPage() {
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
               A method of selling property where registered bidders compete publicly for the property.
               The property is sold to the highest bidder, provided they meet or exceed the vendor&apos;s
-              reserve price. In Australia, buying at auction is unconditional — there is no cooling-off
+              reserve price. In Australia, buying at auction is unconditional, there is no cooling-off
               period and no subject-to-finance clause.
             </dd>
 
@@ -193,7 +193,7 @@ export default function GlossaryPage() {
             <dt className="font-display text-lg text-ink leading-tight mt-2"><Link href="/glossary/capital-gains-tax-cgt" className="hover:text-primary transition-colors">Capital Gains Tax (CGT)</Link></dt>
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
               A tax on the profit made from selling a capital asset (including investment properties).
-              In Australia, CGT is part of income tax — the gain is added to your taxable income in
+              In Australia, CGT is part of income tax, the gain is added to your taxable income in
               the year of sale. Properties held for more than 12 months receive a 50% CGT discount.
               Your primary residence (principal place of residence) is generally exempt from CGT.
             </dd>
@@ -353,7 +353,7 @@ export default function GlossaryPage() {
 
             <dt className="font-display text-lg text-ink leading-tight mt-2"><Link href="/glossary/dual-occupancy" className="hover:text-primary transition-colors">Dual Occupancy</Link></dt>
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
-              A property that contains two separate dwellings on the same lot — either attached
+              A property that contains two separate dwellings on the same lot, either attached
               (e.g. duplex) or detached (e.g. house plus granny flat). Dual occupancy can be an
               effective strategy for generating rental income. Approval requirements vary by state
               and council.
@@ -376,7 +376,7 @@ export default function GlossaryPage() {
             <dt className="font-display text-lg text-ink leading-tight mt-2"><Link href="/glossary/encumbrance" className="hover:text-primary transition-colors">Encumbrance</Link></dt>
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
               Any right, interest, or liability attached to a property that may limit the owner&apos;s
-              use or reduce its value — such as a mortgage, caveat, easement, or restrictive covenant.
+              use or reduce its value, such as a mortgage, caveat, easement, or restrictive covenant.
               A full title search before purchase will reveal all encumbrances.
             </dd>
 
@@ -392,7 +392,7 @@ export default function GlossaryPage() {
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
               The point at which both vendor and buyer sign (and exchange) identical copies of the
               contract of sale, making the agreement legally binding. The buyer typically pays the
-              deposit at exchange. In NSW, exchange is the critical milestone — the cooling-off period
+              deposit at exchange. In NSW, exchange is the critical milestone, the cooling-off period
               (if any) starts from exchange.
             </dd>
 
@@ -436,7 +436,7 @@ export default function GlossaryPage() {
 
             <dt className="font-display text-lg text-ink leading-tight mt-2"><Link href="/glossary/freehold" className="hover:text-primary transition-colors">Freehold</Link></dt>
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
-              The most common form of property ownership in Australia — outright ownership of the
+              The most common form of property ownership in Australia, outright ownership of the
               land and any buildings on it, with no time limit. Contrast with leasehold (common in
               the ACT, where residential land is leased from the government for 99 years).
             </dd>
@@ -459,7 +459,7 @@ export default function GlossaryPage() {
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
               When a vendor accepts a higher offer from a different buyer after verbally agreeing to
               sell to someone else, but before contracts have been exchanged. Gazumping is legal in
-              most Australian states because verbal agreements are not binding — only a signed contract
+              most Australian states because verbal agreements are not binding, only a signed contract
               of sale creates a legal obligation. It is most common in NSW in competitive markets.
             </dd>
 
@@ -517,7 +517,7 @@ export default function GlossaryPage() {
           <dl>
             <dt className="font-display text-lg text-ink leading-tight mt-2"><Link href="/glossary/icsea" className="hover:text-primary transition-colors">ICSEA</Link></dt>
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
-              Index of Community Socio-Educational Advantage — a score used by ACARA to indicate
+              Index of Community Socio-Educational Advantage, a score used by ACARA to indicate
               the socio-educational background of a school&apos;s student population. The average ICSEA
               score is 1,000. Scores above 1,000 indicate a higher-than-average advantaged student
               population; below 1,000 indicates disadvantage. Used by parents comparing schools and
@@ -549,7 +549,7 @@ export default function GlossaryPage() {
             <dt className="font-display text-lg text-ink leading-tight mt-2"><Link href="/glossary/joint-tenants-vs-tenants-in-common" className="hover:text-primary transition-colors">Joint Tenants (vs Tenants in Common)</Link></dt>
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
               Two ways to co-own property. <em>Joint tenants</em> each own 100% of the property
-              together — if one owner dies, their share automatically passes to the surviving owner(s)
+              together, if one owner dies, their share automatically passes to the surviving owner(s)
               (right of survivorship). Commonly used by married couples. <em>Tenants in common</em>
               each own a defined share (e.g. 50/50 or 70/30), which can be passed through a will.
               Commonly used by business partners or unmarried couples.
@@ -566,7 +566,7 @@ export default function GlossaryPage() {
               An annual state government tax on the total unimproved value of land you own above a
               threshold. Your principal place of residence is generally exempt. Investment properties
               are subject to land tax, and the rates vary significantly by state. Land tax can
-              materially affect the economics of property investment — factor it into your analysis.
+              materially affect the economics of property investment, factor it into your analysis.
             </dd>
 
             <dt className="font-display text-lg text-ink leading-tight mt-2"><Link href="/glossary/land-transfer-duty" className="hover:text-primary transition-colors">Land Transfer Duty</Link></dt>
@@ -578,7 +578,7 @@ export default function GlossaryPage() {
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
               Insurance that protects the lender (not the borrower) if the borrower defaults and
               the property is sold for less than the outstanding loan. Required when the loan-to-value
-              ratio (LVR) exceeds 80%. LMI can cost tens of thousands of dollars — it is usually
+              ratio (LVR) exceeds 80%. LMI can cost tens of thousands of dollars, it is usually
               added to the loan. Some lenders waive LMI for professionals (e.g. doctors, lawyers)
               or for government-backed schemes.
             </dd>
@@ -602,7 +602,7 @@ export default function GlossaryPage() {
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
               The ratio of a loan amount to the value of the property being purchased, expressed as
               a percentage. If you borrow $640,000 to buy an $800,000 property, your LVR is 80%.
-              Lenders use LVR to assess risk — loans above 80% LVR typically require LMI. Lower LVR
+              Lenders use LVR to assess risk, loans above 80% LVR typically require LMI. Lower LVR
               means lower risk for the lender and often access to better rates.
             </dd>
           </dl>
@@ -622,7 +622,7 @@ export default function GlossaryPage() {
 
             <dt className="font-display text-lg text-ink leading-tight mt-2"><Link href="/glossary/mortgage" className="hover:text-primary transition-colors">Mortgage</Link></dt>
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
-              A loan secured against real estate. The property serves as security — if the borrower
+              A loan secured against real estate. The property serves as security, if the borrower
               defaults, the lender can sell the property to recover the debt. In Australia, most home
               loans are structured as principal and interest mortgages repaid over 25–30 years. The
               mortgage is registered on the property&apos;s title.
@@ -668,7 +668,7 @@ export default function GlossaryPage() {
 
             <dt className="font-display text-lg text-ink leading-tight mt-2"><Link href="/glossary/non-conforming-loan" className="hover:text-primary transition-colors">Non-Conforming Loan</Link></dt>
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
-              A home loan provided to borrowers who do not meet standard lending criteria — for
+              A home loan provided to borrowers who do not meet standard lending criteria, for
               example, those with bad credit, irregular income, or high LVR. Non-conforming loans
               typically carry higher interest rates than standard loans to compensate for the higher
               risk. Also called &quot;low doc&quot; or &quot;specialist&quot; loans in some contexts.
@@ -713,7 +713,7 @@ export default function GlossaryPage() {
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
               An assessment by a lender indicating how much they would be willing to lend you,
               subject to satisfactory valuation and verification of your information. Pre-approval
-              is not a guarantee of finance — it is conditional. It is valid for a set period
+              is not a guarantee of finance, it is conditional. It is valid for a set period
               (typically 3–6 months) and gives you confidence when making offers or bidding at auction.
             </dd>
 
@@ -761,7 +761,7 @@ export default function GlossaryPage() {
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
               A professional who estimates and manages the costs of construction and building works.
               For investment properties, a quantity surveyor prepares a <em>tax depreciation
-              schedule</em> — a report itemising the depreciation claimable on the building and its
+              schedule</em>, a report itemising the depreciation claimable on the building and its
               fixtures. This schedule is submitted with your tax return each year to claim the
               deductions. A good QS can save investors thousands in tax annually.
             </dd>
@@ -782,7 +782,7 @@ export default function GlossaryPage() {
 
             <dt className="font-display text-lg text-ink leading-tight mt-2"><Link href="/glossary/refinancing" className="hover:text-primary transition-colors">Refinancing</Link></dt>
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
-              The process of replacing an existing mortgage with a new one — either with the same
+              The process of replacing an existing mortgage with a new one, either with the same
               lender or a different one. People refinance to access a lower interest rate, release
               equity, consolidate debt, or change loan features. Refinancing may involve discharge
               fees and establishment fees for the new loan.
@@ -808,7 +808,7 @@ export default function GlossaryPage() {
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
               An easement granting the right to pass over another person&apos;s land. For example, a
               shared driveway that provides access to a neighbouring property. Rights of way appear
-              on the title and must be disclosed in a sale — they cannot be removed without the
+              on the title and must be disclosed in a sale, they cannot be removed without the
               benefit holder&apos;s agreement.
             </dd>
           </dl>
@@ -831,7 +831,7 @@ export default function GlossaryPage() {
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
               A lender&apos;s assessment of whether a borrower can afford to repay a loan. Lenders assess
               income, expenses, existing debts, and apply a serviceability buffer (currently 3% above
-              the loan rate). Your borrowing capacity is largely determined by serviceability — even
+              the loan rate). Your borrowing capacity is largely determined by serviceability, even
               if you have a large deposit, a lender won&apos;t lend you more than you can service.
             </dd>
 
@@ -847,7 +847,7 @@ export default function GlossaryPage() {
             <dt className="font-display text-lg text-ink leading-tight mt-2"><Link href="/glossary/stamp-duty-transfer-duty" className="hover:text-primary transition-colors">Stamp Duty (Transfer Duty)</Link></dt>
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
               A state government tax payable by property buyers on the purchase price. Rates vary
-              significantly by state and property value — it can represent a major upfront cost
+              significantly by state and property value, it can represent a major upfront cost
               (e.g. $30,000–$50,000+ on a $1M property in NSW). First home buyers may be eligible
               for exemptions or concessions. Use our{" "}
               <a href="/stamp-duty-calculator" className="text-primary hover:underline">stamp duty calculator</a>{" "}
@@ -902,7 +902,7 @@ export default function GlossaryPage() {
           <dl>
             <dt className="font-display text-lg text-ink leading-tight mt-2"><Link href="/glossary/unconditional-contract" className="hover:text-primary transition-colors">Unconditional Contract</Link></dt>
             <dd className="font-sans text-ink-muted leading-relaxed mb-4">
-              A contract of sale with no outstanding conditions — both parties are legally bound to
+              A contract of sale with no outstanding conditions, both parties are legally bound to
               complete the transaction. Auction purchases are unconditional from the moment the hammer
               falls. Private sale contracts become unconditional once all conditions (such as finance
               and building inspection) are satisfied or waived.
@@ -926,7 +926,7 @@ export default function GlossaryPage() {
               A formal assessment of a property&apos;s market value by a licensed property valuer.
               Banks commission valuations before approving a mortgage to ensure the property
               provides adequate security. Bank valuations are often conservative and may come in
-              below the contract price — which can affect borrowing capacity.
+              below the contract price, which can affect borrowing capacity.
             </dd>
 
             <dt className="font-display text-lg text-ink leading-tight mt-2"><Link href="/glossary/variable-rate" className="hover:text-primary transition-colors">Variable Rate</Link></dt>
@@ -984,7 +984,7 @@ export default function GlossaryPage() {
               The classification of land by local government that determines what can be built or
               done on it. Common residential zones include low density (single houses), medium density
               (townhouses, small apartments), and high density (apartment buildings). Zoning directly
-              affects what you can build on a block and its development potential — always check the
+              affects what you can build on a block and its development potential, always check the
               zoning before purchasing land for development.
             </dd>
           </dl>

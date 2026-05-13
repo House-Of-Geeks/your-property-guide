@@ -21,7 +21,7 @@ export default async function ProfilePage() {
   });
 
   if (!row) {
-    // Admins don't have agent profiles — send them to the admin overview
+    // Admins don't have agent profiles, send them to the admin overview
     if ((session.user as any).role === "admin") redirect("/dashboard/admin");
 
     return (

@@ -17,13 +17,13 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Compare Suburbs Side by Side | Your Property Guide",
   description:
-    "Compare any two Australian suburbs head to head — median prices, growth, schools, walkability, and risk. Free, fast, no sign-up.",
+    "Compare any two Australian suburbs head to head, median prices, growth, schools, walkability, and risk. Free, fast, no sign-up.",
   alternates: { canonical: `${SITE_URL}/compare` },
   openGraph: {
     url: `${SITE_URL}/compare`,
     title: "Compare Suburbs Side by Side",
     description:
-      "Compare any two Australian suburbs head to head — median prices, growth, schools, walkability and risk.",
+      "Compare any two Australian suburbs head to head, median prices, growth, schools, walkability and risk.",
     type: "website",
   },
   twitter: { card: "summary_large_image" },
@@ -59,7 +59,7 @@ export default async function ComparePage() {
     getTopSuburbsByState("QLD", 8),
   ]);
 
-  // Top auto-generated comparison pairs per state — fills the SEO gap
+  // Top auto-generated comparison pairs per state, fills the SEO gap
   // for WA / SA / TAS / NT / ACT that the hand-curated POPULAR_PAIRS
   // doesn't cover, and gives Google many more pages to crawl.
   const pairsByState = await Promise.all(
@@ -152,7 +152,7 @@ export default async function ComparePage() {
         </div>
       </section>
 
-      {/* Top comparisons by state — auto-generated from data so every
+      {/* Top comparisons by state, auto-generated from data so every
           state (incl. WA / SA / TAS / NT / ACT) gets coverage, not just
           the hand-curated pairs above. Each link goes to a real
           comparison page rendered by /suburbs/[slug]/vs/[compareSlug]. */}
@@ -167,7 +167,7 @@ export default async function ComparePage() {
             </h2>
             <p className="mt-2 font-sans text-sm text-ink-muted max-w-2xl">
               Sourced from the most populous suburbs in each state and the
-              neighbours people compare them with — see how they line up on
+              neighbours people compare them with, see how they line up on
               price, growth, schools, walkability and risk.
             </p>
           </div>
@@ -199,7 +199,7 @@ export default async function ComparePage() {
         </div>
       </section>
 
-      {/* By state — populous suburbs as starting points */}
+      {/* By state, populous suburbs as starting points */}
       <section className="bg-surface-warm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
           <div className="mb-8">

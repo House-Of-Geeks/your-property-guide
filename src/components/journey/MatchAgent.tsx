@@ -27,10 +27,10 @@ interface TimeframeOption {
   sub: string;
 }
 
-// Broad intent set — property situations are messier than buy/sell/invest.
+// Broad intent set, property situations are messier than buy/sell/invest.
 // "Something else" exists so people in unique situations (divorce, inheritance,
 // estate, downsizing, planning ahead) feel covered. The right "person" we
-// match them with depends on the intent — could be a buyer's agent, a
+// match them with depends on the intent, could be a buyer's agent, a
 // listing agent, a broker, a property accountant, or a conveyancer.
 const INTENTS: IntentOption[] = [
   { id: "buying",         label: "Buying",         sub: "First or next home" },
@@ -54,7 +54,7 @@ const isIntent = (v: string | null): v is Intent =>
   v !== null && INTENTS.some((opt) => opt.id === v);
 
 /**
- * MatchAgent — homepage lead engine.
+ * MatchAgent, homepage lead engine.
  * Three single-question screens (intent / suburb / timeframe) → compact contact form.
  * Mirrors the conversion pattern that's working on Your Finance Guide.
  *
@@ -66,14 +66,14 @@ const isIntent = (v: string | null): v is Intent =>
  * Because this component reads useSearchParams, the page that hosts it must
  * wrap it in <Suspense> (the homepage already does this, see app/(marketing)/page.tsx).
  *
- * Props override URL params — useful when rendering the form inside a drawer
+ * Props override URL params, useful when rendering the form inside a drawer
  * (StickyMatchCTA on suburb/property pages) where the page's URL doesn't
  * carry the suburb/intent.
  */
 interface MatchAgentProps {
   initialSuburbSlug?: string | null;
   initialIntent?: Intent | null;
-  /** Hide the marketing pitch column — useful inside a drawer. */
+  /** Hide the marketing pitch column, useful inside a drawer. */
   compact?: boolean;
   /** Override the source string sent to /api/leads (for attribution). */
   source?: string;
@@ -182,7 +182,7 @@ export function MatchAgent({
     >
       <div className={compact ? "" : "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28"}>
         <div className={compact ? "" : "grid lg:grid-cols-12 gap-10 lg:gap-16 items-start"}>
-          {/* Left — pitch (hidden in compact/drawer mode) */}
+          {/* Left, pitch (hidden in compact/drawer mode) */}
           {!compact && (
           <div className="lg:col-span-5">
             <p className="text-xs uppercase tracking-[0.18em] text-cta mb-5">
@@ -215,7 +215,7 @@ export function MatchAgent({
           </div>
           )}
 
-          {/* Right — form panel */}
+          {/* Right, form panel */}
           <div className={compact ? "" : "lg:col-span-7 lg:col-start-6"}>
             <div className={compact ? "text-ink" : "bg-surface-warm text-ink rounded-2xl p-8 sm:p-10 shadow-2xl"}>
               {/* Progress bar */}
@@ -234,7 +234,7 @@ export function MatchAgent({
                 </p>
               </div>
 
-              {/* Step 0 — Intent */}
+              {/* Step 0, Intent */}
               {step === 0 && !submitted && (
                 <div>
                   <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
@@ -269,7 +269,7 @@ export function MatchAgent({
                 </div>
               )}
 
-              {/* Step 1 — Suburb */}
+              {/* Step 1, Suburb */}
               {step === 1 && !submitted && (
                 <div>
                   <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-2">
@@ -305,13 +305,13 @@ export function MatchAgent({
                       }}
                       className="text-xs text-ink-muted hover:text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink transition-colors cursor-pointer"
                     >
-                      Skip — not sure yet →
+                      Skip, not sure yet →
                     </button>
                   </div>
                 </div>
               )}
 
-              {/* Step 2 — Timeframe */}
+              {/* Step 2, Timeframe */}
               {step === 2 && !submitted && (
                 <div>
                   <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
@@ -353,7 +353,7 @@ export function MatchAgent({
                 </div>
               )}
 
-              {/* Step 3 — Contact */}
+              {/* Step 3, Contact */}
               {step === 3 && !submitted && (
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-3">

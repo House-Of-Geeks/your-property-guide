@@ -14,7 +14,7 @@ interface SpecialistShowcaseProps {
 }
 
 /**
- * Honest social proof — shows the real specialists a visitor could be
+ * Honest social proof, shows the real specialists a visitor could be
  * matched with, pulled live from the DB. We don't fabricate testimonials;
  * we just put faces and names on what is otherwise an abstract promise.
  *
@@ -25,7 +25,7 @@ export async function SpecialistShowcase({
   variant = "full",
   limit,
   heading = "Real specialists. Real Australians.",
-  subhead = "These are the people you could be matched with — agents, brokers, conveyancers. Not a faceless directory.",
+  subhead = "These are the people you could be matched with, agents, brokers, conveyancers. Not a faceless directory.",
 }: SpecialistShowcaseProps) {
   const finalLimit = limit ?? (variant === "compact" ? 3 : 6);
   const agents = await getShowcaseAgents(finalLimit);
@@ -43,7 +43,7 @@ export async function SpecialistShowcase({
               <div
                 key={a.id}
                 className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-surface-warm bg-surface-sunken"
-                title={`${a.fullName}${a.agencyName ? ` — ${a.agencyName}` : ""}`}
+                title={`${a.fullName}${a.agencyName ? `, ${a.agencyName}` : ""}`}
               >
                 <Image
                   src={a.image}
@@ -56,7 +56,7 @@ export async function SpecialistShowcase({
             ))}
           </div>
           <p className="text-sm text-ink-muted leading-tight">
-            {agents.map((a) => a.firstName).join(", ")} and others —{" "}
+            {agents.map((a) => a.firstName).join(", ")} and others -{" "}
             <span className="text-ink">we&rsquo;ll match the one who fits.</span>
           </p>
         </div>

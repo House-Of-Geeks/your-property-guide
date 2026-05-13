@@ -13,7 +13,7 @@ interface SuburbFAQProps {
  * actually known. Emits FAQPage JSON-LD so Google can surface answers
  * directly in SERP (and answer voice queries).
  *
- * Question selection is biased toward what real searchers ask — based on
+ * Question selection is biased toward what real searchers ask, based on
  * "people also ask" queries for "[suburb] real estate / suburb / postcode"
  * pattern across AU.
  */
@@ -38,7 +38,7 @@ export function SuburbFAQ({ suburb }: SuburbFAQProps) {
     });
   }
 
-  // Postcode — almost always present, useful for voice search
+  // Postcode, almost always present, useful for voice search
   faqs.push({
     question: `What is the ${sn} postcode?`,
     answer: `${sn} is in the ${suburb.postcode} postcode, in ${suburb.state}${region ? `, in the ${region} region` : ""}.`,
@@ -64,7 +64,7 @@ export function SuburbFAQ({ suburb }: SuburbFAQProps) {
     });
   }
 
-  // Walkability — only describe if scores exist
+  // Walkability, only describe if scores exist
   const ws = suburb.stats.walkScore;
   if (ws != null) {
     const ts = suburb.stats.transitScore;
@@ -80,7 +80,7 @@ export function SuburbFAQ({ suburb }: SuburbFAQProps) {
     const extra = extras.length ? ` ${extras.join(", ")}.` : "";
     faqs.push({
       question: `How walkable is ${sn}?`,
-      answer: `${sn} has a Walk Score of ${ws} out of 100 — ${descriptor}.${extra}`,
+      answer: `${sn} has a Walk Score of ${ws} out of 100, ${descriptor}.${extra}`,
     });
   }
 

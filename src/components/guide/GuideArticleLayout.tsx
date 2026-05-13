@@ -53,7 +53,7 @@ export function GuideArticleLayout({
 
   // Map the guide's persona onto a MatchAgent intent so the sticky CTA
   // pre-fills the form when the reader clicks through. Guides without a
-  // persona (e.g. general explainers) skip the sticky entirely — see below.
+  // persona (e.g. general explainers) skip the sticky entirely, see below.
   const stickyIntent: "buying" | "selling" | "investing" | undefined =
     frontmatter.persona === "first-home" ? "buying" :
     frontmatter.persona === "upgrading"  ? "buying" :
@@ -183,7 +183,7 @@ export function GuideArticleLayout({
       <article className="bg-surface-raised">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <div className="grid lg:grid-cols-12 gap-12">
-            {/* Sidebar — sticky TOC + meta on desktop, hidden on mobile (TOC renders inline below) */}
+            {/* Sidebar, sticky TOC + meta on desktop, hidden on mobile (TOC renders inline below) */}
             <aside className="hidden lg:block lg:col-span-3 lg:order-2">
               <div className="sticky top-28 space-y-8">
                 <GuideTOC entries={toc} variant="sidebar" />
@@ -254,7 +254,7 @@ export function GuideArticleLayout({
       </article>
 
       {/* Floating "Get connected" pill for guide readers. Only renders when
-          the guide has a persona — general explainers (no persona) skip the
+          the guide has a persona, general explainers (no persona) skip the
           sticky to keep them quiet. Per-guide dismiss key. */}
       {persona && stickyIntent && (
         <StickyMatchCTA

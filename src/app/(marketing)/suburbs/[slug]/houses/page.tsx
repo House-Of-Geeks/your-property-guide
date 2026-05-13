@@ -12,7 +12,7 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-// ISR — see /suburbs/[slug]/page.tsx for context. Listing tabs refresh
+// ISR, see /suburbs/[slug]/page.tsx for context. Listing tabs refresh
 // with property data; 24h cache + on-demand slug generation is the right
 // trade.
 export const revalidate = 86400;
@@ -82,7 +82,7 @@ export default async function SuburbHousesPage({ params }: Props) {
       <StickyMatchCTA
         suburb={slug}
         intent="buying"
-        label={`${suburb.name} — get connected`}
+        label={`${suburb.name}, get connected`}
         dismissKey={`suburb:${slug}`}
       />
     </>

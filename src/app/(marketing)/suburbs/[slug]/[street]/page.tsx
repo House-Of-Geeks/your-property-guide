@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const streetDisplay = toTitleCase(
     [match.streetName, match.streetType, match.streetSuffix].filter(Boolean).join(" "),
   );
-  const title = `${streetDisplay}, ${suburb.name} ${suburb.postcode} — Properties`;
+  const title = `${streetDisplay}, ${suburb.name} ${suburb.postcode}, Properties`;
   const description = `Browse all ${match._count.id} properties on ${streetDisplay} in ${suburb.name}, ${suburb.state} ${suburb.postcode}. View addresses, active listings, and suburb stats.`;
   const url = `${SITE_URL}/suburbs/${slug}/${streetParam}`;
 

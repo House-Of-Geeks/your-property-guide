@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants";
 import { getBlogSitemapEntries } from "@/lib/services/blog-service";
 
-// On-demand ISR — DB blog post slugs are merged with static guides on the
+// On-demand ISR, DB blog post slugs are merged with static guides on the
 // first crawler hit and cached for 24h.
 export const revalidate = 86400;
 
@@ -71,7 +71,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  // Skip DB fetch at build time — runtime DB isn't reachable. Static entries
+  // Skip DB fetch at build time, runtime DB isn't reachable. Static entries
   // ship in the build; DB-backed posts populate on the first crawler hit
   // within the revalidate window.
   if (process.env.NEXT_PHASE === "phase-production-build") {

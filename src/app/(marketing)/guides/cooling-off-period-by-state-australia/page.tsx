@@ -46,9 +46,9 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Cooling-off periods let a buyer rescind a private treaty contract within a defined window after exchange — typically 3 to 5 business days.",
+  "Cooling-off periods let a buyer rescind a private treaty contract within a defined window after exchange, typically 3 to 5 business days.",
   "Auction purchases have no cooling-off in any state. Once the hammer drops, the contract is binding immediately.",
-  "Withdrawing during cooling-off costs you a small penalty — typically 0.2% to 0.25% of the purchase price (e.g. $1,500 on a $700K home in NSW).",
+  "Withdrawing during cooling-off costs you a small penalty, typically 0.2% to 0.25% of the purchase price (e.g. $1,500 on a $700K home in NSW).",
   "Queensland, NSW, Victoria, and SA have cooling-off rights for private treaty buyers. Western Australia and Tasmania do not have a statutory cooling-off period.",
   "You can waive cooling-off (NSW: with a Section 66W certificate). Sellers often request this to firm up the deal.",
 ];
@@ -67,7 +67,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can a seller pull out during my cooling-off period?",
     answer:
-      "Generally no — the cooling-off right belongs to the buyer, not the seller. Once contracts are exchanged, the seller is bound. The exception is rare: certain conditional terms in the contract may allow the seller to terminate.",
+      "Generally no, the cooling-off right belongs to the buyer, not the seller. Once contracts are exchanged, the seller is bound. The exception is rare: certain conditional terms in the contract may allow the seller to terminate.",
   },
   {
     question: "Do I get my deposit back if I pull out?",
@@ -77,7 +77,7 @@ const FAQS: FaqItem[] = [
   {
     question: "When does the cooling-off clock start?",
     answer:
-      "It starts the day contracts are exchanged (when both parties have signed and the contracts are dated). The end date is calculated in business days, not calendar days — Saturdays, Sundays, and public holidays don't count.",
+      "It starts the day contracts are exchanged (when both parties have signed and the contracts are dated). The end date is calculated in business days, not calendar days, Saturdays, Sundays, and public holidays don't count.",
   },
   {
     question: "Can I extend the cooling-off period?",
@@ -99,7 +99,7 @@ const FAQS: FaqItem[] = [
 const RELATED: RelatedGuide[] = [
   { title: "Conveyancing Guide", href: "/guides/conveyancing-guide", description: "What your conveyancer or solicitor does between offer and settlement." },
   { title: "Building & Pest Inspection", href: "/guides/building-pest-inspection", description: "What to look for and when to commission the report." },
-  { title: "Property Auction Guide", href: "/guides/property-auction-guide", description: "Auctions skip cooling-off entirely — the playbook for buying at one." },
+  { title: "Property Auction Guide", href: "/guides/property-auction-guide", description: "Auctions skip cooling-off entirely, the playbook for buying at one." },
   { title: "Buying Property in Australia", href: "/guides/buying-property-australia", description: "End-to-end overview of the Australian buying process." },
   { title: "Stamp Duty Calculator", href: "/stamp-duty-calculator", description: "Estimate your stamp duty before signing the contract." },
 ];
@@ -117,7 +117,7 @@ export default function CoolingOffPeriodByStateGuide() {
         <p>
           The cooling-off period exists to give buyers a chance to commission
           inspections, finalise finance, and re-read the contract carefully.
-          It's not a "test drive" — pulling out costs a small penalty and
+          It's not a "test drive", pulling out costs a small penalty and
           burns trust with the seller and agent.
         </p>
       </Callout>
@@ -161,7 +161,7 @@ export default function CoolingOffPeriodByStateGuide() {
       <p>
         <strong>2 clear business days</strong> after the buyer receives a
         signed copy of the contract (and the prescribed Form 1 vendor's
-        statement). No penalty for rescission in SA — full deposit refund.
+        statement). No penalty for rescission in SA, full deposit refund.
       </p>
 
       <h3>Australian Capital Territory</h3>
@@ -173,7 +173,7 @@ export default function CoolingOffPeriodByStateGuide() {
       <h3>Northern Territory</h3>
       <p>
         <strong>4 business days</strong> for residential property. No statutory
-        penalty in the NT — though forfeiture terms can be written into the
+        penalty in the NT, though forfeiture terms can be written into the
         contract.
       </p>
 
@@ -197,7 +197,7 @@ export default function CoolingOffPeriodByStateGuide() {
         context="0 days at auction in any state, 0 days for any private treaty purchase in WA or Tasmania."
       />
 
-      <h2 id="auction">Auction has no cooling-off — anywhere</h2>
+      <h2 id="auction">Auction has no cooling-off, anywhere</h2>
       <p>
         When the hammer falls at a public auction, the contract is binding
         immediately and unconditionally. There's no cooling-off in any
@@ -217,14 +217,14 @@ export default function CoolingOffPeriodByStateGuide() {
 
       <h2 id="waiving">Waiving cooling-off</h2>
       <p>
-        Sellers often ask the buyer to waive cooling-off to firm up the deal —
+        Sellers often ask the buyer to waive cooling-off to firm up the deal -
         especially in hot markets or when there are competing offers.
         Waiving is legally enforceable but strips your protection.
       </p>
       <p>
         In NSW, waiving is done via a Section 66W certificate signed by the
         buyer's solicitor or conveyancer. Don't sign one until you've completed
-        building &amp; pest inspections and unconditional finance approval —
+        building &amp; pest inspections and unconditional finance approval -
         otherwise you've taken on the same risks as an auction buyer with none
         of the auction discipline.
       </p>
@@ -271,7 +271,7 @@ export default function CoolingOffPeriodByStateGuide() {
 
       <GuideSuburbSearch
         title="Researching a specific suburb before signing?"
-        subtitle="Pull median, growth, schools, walkability and hazard for any suburb you're considering — all on one page."
+        subtitle="Pull median, growth, schools, walkability and hazard for any suburb you're considering, all on one page."
       />
 
       <h2 id="next-steps">Next steps</h2>

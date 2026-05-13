@@ -21,7 +21,7 @@ export const blogPosts: BlogPost[] = [
 <li>Research the suburb thoroughly, including future development plans and infrastructure projects</li>
 <li>Engage a local buyer's agent who understands the Moreton Bay market</li>
 <li>Factor in additional costs such as building inspections, conveyancing, and moving expenses</li>
-<li>Don't rush the process — take time to attend open homes and understand what you truly need</li>
+<li>Don't rush the process, take time to attend open homes and understand what you truly need</li>
 </ul>
 
 <p>The Moreton Bay Region continues to experience population growth and infrastructure investment, making 2025 an excellent time to secure your first property. With the right preparation and professional guidance, owning your first home in this thriving corridor is well within reach.</p>`,
@@ -47,22 +47,22 @@ export const blogPosts: BlogPost[] = [
     title: "Top 5 Suburbs for Families in Moreton Bay",
     excerpt:
       "Discover the best family-friendly suburbs in the Moreton Bay Region, featuring excellent schools, parks, and community facilities.",
-    content: `<p>Choosing the right suburb for your family is about more than just finding a house — it's about finding a community. The Moreton Bay Region offers a diverse range of family-friendly suburbs, each with its own unique character and appeal. Whether you prioritise top schools, green spaces, or community activities, there's a suburb in the northern corridor that ticks all the boxes.</p>
+    content: `<p>Choosing the right suburb for your family is about more than just finding a house, it's about finding a community. The Moreton Bay Region offers a diverse range of family-friendly suburbs, each with its own unique character and appeal. Whether you prioritise top schools, green spaces, or community activities, there's a suburb in the northern corridor that ticks all the boxes.</p>
 
-<h2>1. North Lakes — The Complete Package</h2>
+<h2>1. North Lakes, The Complete Package</h2>
 <p>North Lakes consistently ranks as one of Queensland's most liveable suburbs, and it's easy to see why. This master-planned community boasts North Lakes State College and The Lakes College, extensive parkland networks, and Westfield North Lakes for all your shopping needs. With modern homes, wide streets, and a vibrant town centre, North Lakes is the gold standard for family living in Moreton Bay. The suburb also benefits from excellent bus connectivity and proximity to the Bruce Highway for commuters.</p>
 
-<h2>2. Narangba — Leafy and Peaceful</h2>
+<h2>2. Narangba, Leafy and Peaceful</h2>
 <p>For families seeking a quieter, more spacious lifestyle, Narangba delivers beautifully. Known for its larger blocks and tree-lined streets, Narangba offers a semi-rural feel without compromising on convenience. Narangba Valley State High School and Narangba State School are well-regarded, and the suburb features a network of walking trails and parks including the popular Jinker Track. Its train station provides a direct line to Brisbane CBD.</p>
 
-<h2>3. Burpengary — Growing and Affordable</h2>
+<h2>3. Burpengary, Growing and Affordable</h2>
 <p>Burpengary strikes an excellent balance between affordability and lifestyle. With a strong mix of established homes and newer estates, families benefit from schools like Burpengary State Secondary College and Good Shepherd Catholic Primary School. The Burpengary Aquatic Centre, creek-side parklands, and local shopping plaza ensure families have everything they need close to home. The suburb's ongoing development means new facilities and amenities are continually being added.</p>
 
-<h2>4. Morayfield — Convenience Central</h2>
+<h2>4. Morayfield, Convenience Central</h2>
 <p>Morayfield's major drawcard is its unmatched convenience. Home to one of the region's largest shopping centres, a new health precinct, and well-connected public transport, Morayfield makes daily family life effortless. Schools like St Eugene College and Morayfield State High School serve the growing community well, while the Morayfield Sport and Events Centre provides year-round activities for children and adults alike.</p>
 
-<h2>5. Deception Bay — Bayside Living</h2>
-<p>Deception Bay offers something the other suburbs can't — waterfront living at an affordable price. The foreshore parklands are a favourite for family picnics and evening walks, and the bay itself provides fishing, kayaking, and boating opportunities. With improving infrastructure and a strong community spirit, Deception Bay is a hidden gem for families who want a coastal lifestyle without the coastal price tag.</p>`,
+<h2>5. Deception Bay, Bayside Living</h2>
+<p>Deception Bay offers something the other suburbs can't, waterfront living at an affordable price. The foreshore parklands are a favourite for family picnics and evening walks, and the bay itself provides fishing, kayaking, and boating opportunities. With improving infrastructure and a strong community spirit, Deception Bay is a hidden gem for families who want a coastal lifestyle without the coastal price tag.</p>`,
     coverImage: "/images/blog/cover-top-5-suburbs-families-moreton-bay.jpg",
     author: {
       name: "Bec Ramirez",
@@ -86,13 +86,13 @@ export const blogPosts: BlogPost[] = [
     title: "Understanding Off-Market Properties",
     excerpt:
       "Learn what off-market properties are, how to find them, and why they can be a smart strategy for buyers in a competitive market.",
-    content: `<p>In today's competitive Moreton Bay property market, savvy buyers are increasingly looking beyond the traditional listing portals to gain an edge. Off-market properties — homes that are for sale but not publicly advertised on platforms like realestate.com.au or Domain — represent a significant portion of property transactions. Understanding how to access these hidden opportunities can be the difference between missing out and securing your dream home.</p>
+    content: `<p>In today's competitive Moreton Bay property market, savvy buyers are increasingly looking beyond the traditional listing portals to gain an edge. Off-market properties, homes that are for sale but not publicly advertised on platforms like realestate.com.au or Domain, represent a significant portion of property transactions. Understanding how to access these hidden opportunities can be the difference between missing out and securing your dream home.</p>
 
 <h2>What Are Off-Market Properties?</h2>
 <p>Off-market properties are homes where the owner has decided to sell but has chosen not to publicly list or advertise the property. There are many reasons sellers opt for this approach: they may want to test the market without committing to a full campaign, maintain privacy, avoid the disruption of open homes, or simply prefer a more discreet transaction. In the Moreton Bay Region, off-market sales are particularly common among established homeowners who have strong relationships with local agents.</p>
 
 <h2>How to Access Off-Market Opportunities</h2>
-<p>The most effective way to find off-market properties is by building strong relationships with local real estate agents who specialise in your target suburbs. Agents often know of properties that are about to come to market or sellers who would consider offers without a public campaign. Registering with a buyer's agent is another powerful strategy, as they maintain extensive networks and are often the first to hear about new opportunities. You can also let your network know you're actively looking — word of mouth still plays a significant role in property transactions.</p>
+<p>The most effective way to find off-market properties is by building strong relationships with local real estate agents who specialise in your target suburbs. Agents often know of properties that are about to come to market or sellers who would consider offers without a public campaign. Registering with a buyer's agent is another powerful strategy, as they maintain extensive networks and are often the first to hear about new opportunities. You can also let your network know you're actively looking, word of mouth still plays a significant role in property transactions.</p>
 
 <h2>Advantages and Considerations</h2>
 <ul>
@@ -130,11 +130,11 @@ export const blogPosts: BlogPost[] = [
 <p>Several factors are driving investor interest in the Moreton Bay Region. The area is experiencing population growth of approximately 2.5% annually, well above the national average, creating sustained demand for rental properties. Major infrastructure projects including the Bruce Highway upgrade, the Moreton Bay Rail Link extension, and new health and education facilities are adding long-term value to the region. Additionally, the Queensland Government's Southeast Queensland City Deal is directing billions of dollars in investment into the corridor over the coming decade.</p>
 
 <h2>Best Suburbs for Investment</h2>
-<p>Caboolture and Morayfield offer some of the highest rental yields in the region, with gross yields of 4.2% to 4.5% for houses — well above the Brisbane average. For investors prioritising capital growth, North Lakes and Narangba have demonstrated consistent annual appreciation of 6% to 7%, driven by strong demand from owner-occupiers. Deception Bay and Burpengary sit in a sweet spot, offering a balance of yield and growth that appeals to investors seeking total return performance.</p>
+<p>Caboolture and Morayfield offer some of the highest rental yields in the region, with gross yields of 4.2% to 4.5% for houses, well above the Brisbane average. For investors prioritising capital growth, North Lakes and Narangba have demonstrated consistent annual appreciation of 6% to 7%, driven by strong demand from owner-occupiers. Deception Bay and Burpengary sit in a sweet spot, offering a balance of yield and growth that appeals to investors seeking total return performance.</p>
 
 <h2>Key Considerations for Investors</h2>
 <ul>
-<li>Research vacancy rates — the Moreton Bay Region currently maintains low vacancy rates of 1.0% to 1.5%, indicating strong rental demand</li>
+<li>Research vacancy rates, the Moreton Bay Region currently maintains low vacancy rates of 1.0% to 1.5%, indicating strong rental demand</li>
 <li>Consider the tenant demographic: families tend to stay longer and maintain properties better than transient renters</li>
 <li>Factor in property management costs, insurance, council rates, and maintenance when calculating your net return</li>
 <li>Look for properties near train stations and major amenities, as these consistently outperform more isolated locations</li>
@@ -164,7 +164,7 @@ export const blogPosts: BlogPost[] = [
     title: "Stamp Duty in Queensland: What You Need to Know",
     excerpt:
       "A clear breakdown of Queensland stamp duty rates, concessions, and exemptions to help you budget for your property purchase.",
-    content: `<p>Stamp duty — officially known as transfer duty in Queensland — is one of the most significant costs associated with purchasing property, yet it's often the expense that catches buyers off guard. Understanding how stamp duty is calculated, what concessions are available, and how to factor it into your budget can save you thousands of dollars and prevent last-minute financial stress. Here's everything you need to know about stamp duty in Queensland for 2025.</p>
+    content: `<p>Stamp duty, officially known as transfer duty in Queensland, is one of the most significant costs associated with purchasing property, yet it's often the expense that catches buyers off guard. Understanding how stamp duty is calculated, what concessions are available, and how to factor it into your budget can save you thousands of dollars and prevent last-minute financial stress. Here's everything you need to know about stamp duty in Queensland for 2025.</p>
 
 <h2>How Is Stamp Duty Calculated?</h2>
 <p>Queensland stamp duty is calculated on a sliding scale based on the purchase price or market value of the property, whichever is higher. For a typical Moreton Bay house purchase of $650,000, the stamp duty would be approximately $14,175. The rate increases progressively: properties up to $350,000 attract lower rates, while properties above $1 million face the highest marginal rates. It's important to note that stamp duty is paid at settlement, so it needs to be factored into your available funds alongside your deposit and other settlement costs.</p>
@@ -175,7 +175,7 @@ export const blogPosts: BlogPost[] = [
 <h2>Budgeting Tips</h2>
 <ul>
 <li>Use the Queensland Government's online transfer duty estimator to calculate your expected stamp duty before making an offer</li>
-<li>Remember that stamp duty is payable within 30 days of settlement — your conveyancer typically handles this</li>
+<li>Remember that stamp duty is payable within 30 days of settlement, your conveyancer typically handles this</li>
 <li>Factor stamp duty into your total purchase budget alongside legal fees, inspections, and moving costs</li>
 <li>If you're a first home buyer, check your eligibility for concessions early in the process</li>
 <li>Consider that vacant land attracts different duty rates compared to established properties</li>
@@ -210,7 +210,7 @@ export const blogPosts: BlogPost[] = [
 <p>House and land packages offer several compelling benefits. For first home buyers, they can be combined with the Queensland First Home Owner Grant of $30,000, significantly reducing the upfront cost. New builds come with structural warranties and builder guarantees, meaning fewer maintenance surprises in the early years. You'll also benefit from modern energy-efficient designs, contemporary floor plans, and the ability to customise finishes and layouts. From an investment perspective, depreciation benefits on new properties can provide meaningful tax advantages for investors.</p>
 
 <h2>The Potential Downsides</h2>
-<p>However, house and land packages aren't without their drawbacks. The base price advertised often excludes essential items like fencing, landscaping, driveway extensions, and upgraded fixtures, which can add $30,000 to $60,000 to the final cost. Build times typically range from 6 to 12 months, during which you may need to continue paying rent elsewhere. Land sizes in newer estates tend to be smaller than established suburbs — often 300 to 450 square metres compared to 600+ square metres in older areas. There's also the consideration that newer estates may lack mature trees, established communities, and nearby amenities during the early stages of development.</p>
+<p>However, house and land packages aren't without their drawbacks. The base price advertised often excludes essential items like fencing, landscaping, driveway extensions, and upgraded fixtures, which can add $30,000 to $60,000 to the final cost. Build times typically range from 6 to 12 months, during which you may need to continue paying rent elsewhere. Land sizes in newer estates tend to be smaller than established suburbs, often 300 to 450 square metres compared to 600+ square metres in older areas. There's also the consideration that newer estates may lack mature trees, established communities, and nearby amenities during the early stages of development.</p>
 
 <h2>What to Look For</h2>
 <ul>
@@ -247,14 +247,14 @@ export const blogPosts: BlogPost[] = [
     content: `<p>Selling your home is a significant financial decision, and in the Moreton Bay property market, the difference between a well-prepared sale and a hasty listing can be tens of thousands of dollars. Whether you're upsizing, downsizing, or relocating, taking the time to prepare your property and develop a strategic marketing plan will help you achieve the maximum sale price. Here are the most effective strategies our agents recommend.</p>
 
 <h2>Presentation Is Everything</h2>
-<p>First impressions matter enormously in real estate. Start with the exterior — ensure your lawn is manicured, garden beds are mulched, and the front entrance is inviting. A fresh coat of paint on the front door and a clean driveway can dramatically improve street appeal. Inside, declutter every room, deep clean all surfaces, and consider professional styling if your budget allows. Properties that are professionally styled consistently sell for 5% to 10% more than unstaged equivalents. Pay particular attention to kitchens and bathrooms, as these rooms have the greatest influence on buyer perception.</p>
+<p>First impressions matter enormously in real estate. Start with the exterior, ensure your lawn is manicured, garden beds are mulched, and the front entrance is inviting. A fresh coat of paint on the front door and a clean driveway can dramatically improve street appeal. Inside, declutter every room, deep clean all surfaces, and consider professional styling if your budget allows. Properties that are professionally styled consistently sell for 5% to 10% more than unstaged equivalents. Pay particular attention to kitchens and bathrooms, as these rooms have the greatest influence on buyer perception.</p>
 
 <h2>Pricing Strategy</h2>
 <p>Setting the right price from day one is critical. Overpricing your property can lead to extended days on market, which ultimately results in a lower sale price as buyers perceive the listing as stale. Work with your agent to analyse recent comparable sales in your suburb and set a price guide that attracts genuine buyer interest while leaving room for competitive offers. In the current Moreton Bay market, well-priced properties are typically receiving multiple offers within the first two weeks of listing, creating the competitive tension that drives prices above expectations.</p>
 
 <h2>Marketing That Works</h2>
 <ul>
-<li>Invest in professional photography and videography — over 90% of buyers start their search online, and quality imagery is essential</li>
+<li>Invest in professional photography and videography, over 90% of buyers start their search online, and quality imagery is essential</li>
 <li>Ensure your property is listed on all major portals including realestate.com.au, Domain, and local platforms</li>
 <li>Leverage social media marketing to reach active and passive buyers in targeted demographics</li>
 <li>Consider twilight photography for properties with outdoor entertaining areas or pools</li>
@@ -290,7 +290,7 @@ export const blogPosts: BlogPost[] = [
 <p>North Lakes remains the standout performer with a median house price of $785,000, reflecting 7.2% annual growth driven by strong demand from owner-occupiers and limited available stock. Narangba has also delivered impressive results, with its median reaching $720,000 on the back of 6.1% growth. At the more affordable end of the market, Caboolture ($575,000) and Deception Bay ($580,000) continue to attract first home buyers and investors, with annual growth rates of 4.5% and 5.5% respectively. Morayfield and Burpengary sit in the middle ground, offering solid growth potential with medians of $600,000 and $650,000.</p>
 
 <h2>Rental Market Snapshot</h2>
-<p>The rental market across Moreton Bay remains exceptionally tight, with vacancy rates sitting at just 1.1% across the region — well below the 2.5% threshold considered a balanced market. This has driven significant rental price increases, with median weekly rents for houses rising 8% to 12% over the past 12 months. North Lakes leads with a median house rent of $630 per week, while Caboolture offers the region's most affordable rental options at $480 per week. Investor interest is growing as yields in suburbs like Caboolture and Morayfield reach 4.2% to 4.5% gross, offering compelling returns compared to inner-city alternatives.</p>
+<p>The rental market across Moreton Bay remains exceptionally tight, with vacancy rates sitting at just 1.1% across the region, well below the 2.5% threshold considered a balanced market. This has driven significant rental price increases, with median weekly rents for houses rising 8% to 12% over the past 12 months. North Lakes leads with a median house rent of $630 per week, while Caboolture offers the region's most affordable rental options at $480 per week. Investor interest is growing as yields in suburbs like Caboolture and Morayfield reach 4.2% to 4.5% gross, offering compelling returns compared to inner-city alternatives.</p>
 
 <h2>Market Outlook</h2>
 <ul>
@@ -351,7 +351,7 @@ export const blogPosts: BlogPost[] = [
 <li>First home buyer competition for the $800K to $1.1M segment will be intense, particularly with the FHBG cap at $900K in Sydney metro</li>
 </ul>
 
-<p>The Sydney market in 2026 rewards patience and preparation. Buyers serious about competing should have pre-approval secured, conveyancer engaged, and be willing to act when the right property surfaces. Sellers benefit from a market still tilted in their favour for well-presented, fairly-priced listings — but conditioning buyers above market with inflated price guides is increasingly likely to extend campaigns rather than capture the upside.</p>`,
+<p>The Sydney market in 2026 rewards patience and preparation. Buyers serious about competing should have pre-approval secured, conveyancer engaged, and be willing to act when the right property surfaces. Sellers benefit from a market still tilted in their favour for well-presented, fairly-priced listings, but conditioning buyers above market with inflated price guides is increasingly likely to extend campaigns rather than capture the upside.</p>`,
     coverImage: "/images/blog/cover-sydney-property-market-2026.jpg",
     author: { name: "Ellie Johnston", image: "/images/agents/ellie-johnston.jpg" },
     category: "Market Update",
@@ -369,10 +369,10 @@ export const blogPosts: BlogPost[] = [
     content: `<p>Melbourne entered 2026 in a different place than Sydney. After a softer 2024 and a tepid 2025, the market is finding its feet but the recovery is uneven. Some segments are performing strongly, others are still working through oversupply, and regional Victoria is offering real value for buyers willing to look beyond metro. Here's a clear read on Melbourne and Victoria as 2026 unfolds.</p>
 
 <h2>Where the median sits</h2>
-<p>Greater Melbourne's median house price sits around $1.05M in mid-2026, up a modest 2.3% year-on-year, with units largely flat at $620K. The headline numbers undersell what's actually happening at suburb level — performance varies sharply between inner, middle and outer rings. Days on market metro-wide average 38 to 45, with auction clearance hovering in the low 60s. Compared to Sydney, Melbourne is the more buyer-friendly capital in 2026.</p>
+<p>Greater Melbourne's median house price sits around $1.05M in mid-2026, up a modest 2.3% year-on-year, with units largely flat at $620K. The headline numbers undersell what's actually happening at suburb level, performance varies sharply between inner, middle and outer rings. Days on market metro-wide average 38 to 45, with auction clearance hovering in the low 60s. Compared to Sydney, Melbourne is the more buyer-friendly capital in 2026.</p>
 
 <h2>Where Melbourne is firming</h2>
-<p>The middle ring (10 to 20km from CBD) is doing the heavy lifting. Brunswick, Coburg, Northcote and Preston in the north, Footscray and Yarraville in the west, and Glen Iris, Hughesdale and Murrumbeena in the southeast are all seeing median growth above the metro average, supported by good schools, public transport, and active café and retail strips. Inner Melbourne is split — apartments in the CBD and Docklands remain soft, but townhouses and small-block houses in Carlton, Fitzroy and Richmond are at or near 2022 peaks.</p>
+<p>The middle ring (10 to 20km from CBD) is doing the heavy lifting. Brunswick, Coburg, Northcote and Preston in the north, Footscray and Yarraville in the west, and Glen Iris, Hughesdale and Murrumbeena in the southeast are all seeing median growth above the metro average, supported by good schools, public transport, and active café and retail strips. Inner Melbourne is split, apartments in the CBD and Docklands remain soft, but townhouses and small-block houses in Carlton, Fitzroy and Richmond are at or near 2022 peaks.</p>
 
 <h2>Where the slow recovery still lingers</h2>
 <p>Melbourne's outer growth corridors still have absorption work to do. Lots of new stock through Werribee, Tarneit, Cranbourne East and Mernda has kept prices restrained even as rental demand has pushed up sharply. For investors, this is a yield play more than a growth play through 2026. Apartment-heavy suburbs near the CBD (Southbank, Docklands) continue to underperform, with median apartment prices still below 2022 peaks.</p>
@@ -389,7 +389,7 @@ export const blogPosts: BlogPost[] = [
 <li>Regional centres benefit from continued remote-work uptake and infrastructure spending</li>
 </ul>
 
-<p>Melbourne in 2026 is a market for selective buyers. The headline growth is modest, but the right suburb in the middle ring or a well-chosen regional town can outperform meaningfully. For sellers, getting the price guide right at listing has never been more important — Melbourne buyers are sceptical of inflated quotes and willing to wait.</p>`,
+<p>Melbourne in 2026 is a market for selective buyers. The headline growth is modest, but the right suburb in the middle ring or a well-chosen regional town can outperform meaningfully. For sellers, getting the price guide right at listing has never been more important, Melbourne buyers are sceptical of inflated quotes and willing to wait.</p>`,
     coverImage: "/images/blog/cover-melbourne-property-market-2026.jpg",
     author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
     category: "Market Update",
@@ -416,7 +416,7 @@ export const blogPosts: BlogPost[] = [
 <p>Outer Brisbane and the Moreton Bay corridor still offer genuine entry points for first home buyers. Caboolture, Morayfield, Logan, Ipswich and Redbank continue to provide $600K to $750K options with infrastructure spending and population inflow supporting medium-term capital growth. The Sunshine Coast hinterland (Beerwah, Glasshouse Mountains, Maleny) and Gold Coast hinterland (Ormeau, Pimpama) offer lifestyle-led options with house medians under $850K.</p>
 
 <h2>The rental story</h2>
-<p>Brisbane's rental market remains the tightest of Australia's capital cities. Vacancy sits at 0.8% as of Q1 2026, with weekly rents up 7 to 10% on the year. The pressure has pushed yields back up despite price growth — gross yields in 4.0 to 4.8% are achievable in middle and outer suburbs. For investors, Brisbane continues to offer the best combination of yield, growth and infrastructure tailwind of any Australian capital.</p>
+<p>Brisbane's rental market remains the tightest of Australia's capital cities. Vacancy sits at 0.8% as of Q1 2026, with weekly rents up 7 to 10% on the year. The pressure has pushed yields back up despite price growth, gross yields in 4.0 to 4.8% are achievable in middle and outer suburbs. For investors, Brisbane continues to offer the best combination of yield, growth and infrastructure tailwind of any Australian capital.</p>
 
 <h2>The Olympics factor</h2>
 <p>The 2032 Olympics is now close enough that infrastructure spending is concrete and visible. Cross River Rail is operating, new stations are reshaping commute patterns, and venue construction is underway. Suburbs benefiting most include Albion (Athletes Village area), Woolloongabba, Kelvin Grove and Kangaroo Point. Investors looking at a 6 to 8 year horizon are increasingly active in these locations.</p>
@@ -445,10 +445,10 @@ export const blogPosts: BlogPost[] = [
     title: "Perth Property Market 2026: After the Boom, Where to Now?",
     excerpt:
       "Perth was Australia's hottest capital city through 2023 to 2025. As 2026 unfolds, the runaway growth is moderating but the structural supports remain. Here's what's actually happening in WA's property market.",
-    content: `<p>Perth has had four extraordinary years. From the depths of 2020 lows to 2025's peak, median house prices roughly doubled in many suburbs. As 2026 unfolds, that pace is finally moderating — but moderation isn't reversal. The structural supports for Perth's market (mining wages, population inflows, supply constraints) remain in place. The market is firmer than headlines suggest, but buyers entering in 2026 should be more selective than at any point in the last three years.</p>
+    content: `<p>Perth has had four extraordinary years. From the depths of 2020 lows to 2025's peak, median house prices roughly doubled in many suburbs. As 2026 unfolds, that pace is finally moderating, but moderation isn't reversal. The structural supports for Perth's market (mining wages, population inflows, supply constraints) remain in place. The market is firmer than headlines suggest, but buyers entering in 2026 should be more selective than at any point in the last three years.</p>
 
 <h2>Where the median sits</h2>
-<p>Greater Perth's median house price has reached around $810K in mid-2026, up about 6.2% year-on-year — meaningful growth but well below the 18 to 22% annual jumps seen in 2023 and 2024. Units sit around $480K. Days on market average 22 to 28, still tight. Vacancy rates remain under 1%, supporting strong rental demand. Stock levels are improving but supply still lags demand in most suburbs.</p>
+<p>Greater Perth's median house price has reached around $810K in mid-2026, up about 6.2% year-on-year, meaningful growth but well below the 18 to 22% annual jumps seen in 2023 and 2024. Units sit around $480K. Days on market average 22 to 28, still tight. Vacancy rates remain under 1%, supporting strong rental demand. Stock levels are improving but supply still lags demand in most suburbs.</p>
 
 <h2>Where Perth is still tight</h2>
 <p>Inner Perth (Subiaco, Mount Lawley, Leederville, North Perth) and the western suburbs corridor (Cottesloe, Mosman Park, Claremont) remain extremely tight. House medians in these established blue-chip areas have pushed past the levels last seen in 2014, supported by mining-sector wealth and limited new supply. Coastal suburbs through Scarborough, Trigg, City Beach and Cottesloe continue to attract premium buyers.</p>
@@ -457,7 +457,7 @@ export const blogPosts: BlogPost[] = [
 <p>Outer Perth growth corridors (Northern: Joondalup, Wanneroo, Yanchep; Southern: Rockingham, Mandurah, Armadale) saw the steepest growth in 2023 and 2024. In 2026, these areas are still positive but the pace has slowed to 4 to 7% annually. New estate land pipeline is coming online, which should further moderate price growth in greenfield estates over 2026 and 2027.</p>
 
 <h2>The rental dynamic</h2>
-<p>Perth's rental market remains the tightest in WA's history. Vacancy at 0.7% in Q1 2026, with median weekly rents up 9 to 12% on the year. The combination of mining-sector demand, interstate migration, and limited new construction has pushed yields back up to 5 to 6.5% gross in outer suburbs — the highest in any Australian capital. Investors who entered Perth in 2020 to 2022 are now sitting on substantial capital gains plus strong yields.</p>
+<p>Perth's rental market remains the tightest in WA's history. Vacancy at 0.7% in Q1 2026, with median weekly rents up 9 to 12% on the year. The combination of mining-sector demand, interstate migration, and limited new construction has pushed yields back up to 5 to 6.5% gross in outer suburbs, the highest in any Australian capital. Investors who entered Perth in 2020 to 2022 are now sitting on substantial capital gains plus strong yields.</p>
 
 <h2>Regional WA</h2>
 <p>Regional WA continues to perform on a lag from Perth. Bunbury, Geraldton and Kalgoorlie are seeing solid demand, with house medians in the $400K to $550K range and yields above 5%. Margaret River and the southwest wine country continue to attract lifestyle buyers, with premium prices reflecting the regional appeal.</p>
@@ -527,7 +527,7 @@ export const blogPosts: BlogPost[] = [
     title: "Hobart and Tasmania Property Market 2026: Steady After the Boom",
     excerpt:
       "Tasmania had a wild ride from 2018 to 2022, then took a breather. In 2026, the market is steady and the fundamentals are still in place. Here's the honest read on Hobart, Launceston and the regional centres.",
-    content: `<p>Tasmania's property market had one of Australia's most dramatic five-year runs from 2018 to 2022, with median prices in Hobart roughly doubling. The 2023 to 2025 period was a flat-to-down breather as the market digested those gains. In 2026, the market is steady — modest positive growth, healthy rental demand, and no signs of the kind of correction some commentators were predicting in 2023.</p>
+    content: `<p>Tasmania's property market had one of Australia's most dramatic five-year runs from 2018 to 2022, with median prices in Hobart roughly doubling. The 2023 to 2025 period was a flat-to-down breather as the market digested those gains. In 2026, the market is steady, modest positive growth, healthy rental demand, and no signs of the kind of correction some commentators were predicting in 2023.</p>
 
 <h2>Where the median sits</h2>
 <p>Hobart's median house price has reached around $730K in mid-2026, up around 3.2% year-on-year. Units sit at $530K. Days on market average 32 to 40, indicating a balanced market. Tasmania remains the most affordable mainland-equivalent state for owner-occupiers, while still offering meaningful capital growth potential.</p>
@@ -659,7 +659,7 @@ export const blogPosts: BlogPost[] = [
     title: "The Cheapest Suburbs to Buy a House in Australia 2026",
     excerpt:
       "Where can you still buy a house in Australia for under $500K in 2026? More places than you'd think. A state-by-state look at the genuine value plays, plus what to actually check before you buy.",
-    content: `<p>Australian housing affordability dominates the news in 2026, but the headline median prices hide significant variation. Across every state, there are still suburbs where the median house price sits under $500,000 — many under $400,000. The question for buyers is which of those represent genuine value (where prices reflect a viable lifestyle) versus which are cheap for reasons that won't change.</p>
+    content: `<p>Australian housing affordability dominates the news in 2026, but the headline median prices hide significant variation. Across every state, there are still suburbs where the median house price sits under $500,000, many under $400,000. The question for buyers is which of those represent genuine value (where prices reflect a viable lifestyle) versus which are cheap for reasons that won't change.</p>
 
 <p>This guide covers the cheapest suburbs to buy a house in Australia in 2026, organised by state, with an honest take on what each location offers and what to check before committing.</p>
 
@@ -694,7 +694,7 @@ export const blogPosts: BlogPost[] = [
 <li><strong>Buyer agent or local expert.</strong> Cheap doesn't mean low-effort. The cheaper end of the market often requires more local knowledge to navigate</li>
 </ul>
 
-<p>Cheap suburbs in 2026 are still findable across every state. The question isn't whether you can buy a house under $500,000 in Australia — you can — but whether the right one for your situation exists at that price. Use suburb data, check the fundamentals, and make sure the price reflects opportunity rather than risk.</p>`,
+<p>Cheap suburbs in 2026 are still findable across every state. The question isn't whether you can buy a house under $500,000 in Australia, you can, but whether the right one for your situation exists at that price. Use suburb data, check the fundamentals, and make sure the price reflects opportunity rather than risk.</p>`,
     coverImage: "/images/blog/cover-cheapest-suburbs-buy-house-australia-2026.jpg",
     author: { name: "Bec Ramirez", image: "/images/agents/bec-ramirez.jpg" },
     category: "Buying Guide",
@@ -717,7 +717,7 @@ export const blogPosts: BlogPost[] = [
 <p>Newcastle remains Australia's most consistent regional performer. The combination of port and mining infrastructure, education (University of Newcastle), healthcare expansion, and Sydney commute ability has supported sustained price growth. House medians in Newcastle CBD around $980K, with surrounding suburbs like Mayfield, Hamilton South and Adamstown in the $750K to $900K range. Yields are 3.5 to 4.5% gross. The Hunter Valley wine region adds lifestyle appeal that supports premium pricing in towns like Pokolbin and Lovedale.</p>
 
 <h2>Geelong (VIC)</h2>
-<p>Geelong has had a wild ride since 2020 — strong growth then a flat 2024 — and 2026 sees the market steadying with renewed interest. House median around $730K, supported by Melbourne commuter demand, Avalon Airport expansion, and ongoing waterfront precinct development. Yields of 3.5 to 4% gross. The Surf Coast (Torquay, Anglesea) commands premium pricing for lifestyle buyers.</p>
+<p>Geelong has had a wild ride since 2020, strong growth then a flat 2024, and 2026 sees the market steadying with renewed interest. House median around $730K, supported by Melbourne commuter demand, Avalon Airport expansion, and ongoing waterfront precinct development. Yields of 3.5 to 4% gross. The Surf Coast (Torquay, Anglesea) commands premium pricing for lifestyle buyers.</p>
 
 <h2>Sunshine Coast and Hinterland (QLD)</h2>
 <p>The Sunshine Coast has been one of Australia's standout markets for a decade and 2026 sees that pattern continue. Maroochydore, Mooloolaba and Buderim sit at $1.0M to $1.4M house medians with continued strong demand. The hinterland (Maleny, Montville, Eumundi) offers premium lifestyle pricing. Solid 3.5 to 4.5% gross yields with strong rental demand from tourism and lifestyle migration.</p>
@@ -742,7 +742,7 @@ export const blogPosts: BlogPost[] = [
 
 <h2>What makes a great regional investment in 2026</h2>
 <ul>
-<li><strong>Diverse economic base.</strong> Single-industry towns are riskier — look for at least 3 to 4 major employment drivers</li>
+<li><strong>Diverse economic base.</strong> Single-industry towns are riskier, look for at least 3 to 4 major employment drivers</li>
 <li><strong>Population growth above 1.5% annually.</strong> Reliable population inflow drives both rental demand and capital growth</li>
 <li><strong>Infrastructure pipeline.</strong> New hospitals, university expansions, transport upgrades all signal sustained demand</li>
 <li><strong>Strong rental fundamentals.</strong> Vacancy under 2% and yields above 4.5% gross provide the cash-flow margin to weather cycles</li>
@@ -750,7 +750,7 @@ export const blogPosts: BlogPost[] = [
 <li><strong>Local market knowledge.</strong> Regional markets reward local expertise. A buyer's agent who knows the town is often essential</li>
 </ul>
 
-<p>Regional investing in 2026 is no longer a fringe strategy. The best regional towns offer better yields, comparable infrastructure investment, and increasingly competitive lifestyle propositions versus capital cities. The right regional investment can deliver capital city-like growth with materially better cash flow — but the wrong one can stagnate. Do the work, know the town, and verify the fundamentals before committing.</p>`,
+<p>Regional investing in 2026 is no longer a fringe strategy. The best regional towns offer better yields, comparable infrastructure investment, and increasingly competitive lifestyle propositions versus capital cities. The right regional investment can deliver capital city-like growth with materially better cash flow, but the wrong one can stagnate. Do the work, know the town, and verify the fundamentals before committing.</p>`,
     coverImage: "/images/blog/cover-best-regional-towns-invest-australia-2026.jpg",
     author: { name: "Ellie Johnston", image: "/images/agents/ellie-johnston.jpg" },
     category: "Investment",
@@ -765,17 +765,17 @@ export const blogPosts: BlogPost[] = [
     title: "Rentvesting in Australia 2026: The State-by-State Strategy Guide",
     excerpt:
       "Rentvesting (renting where you live, investing where the numbers work) is one of the most underused strategies in Australian property. Here's how it works, who it suits, and the best target markets in each state in 2026.",
-    content: `<p>Rentvesting is a strategy where you rent in the suburb you want to live in (often inner-city, near work, near family) while investing in property elsewhere where the numbers work better — typically more affordable suburbs with stronger yields and growth fundamentals. It's particularly powerful for younger buyers priced out of their preferred owner-occupier suburb, but valuable across many life stages.</p>
+    content: `<p>Rentvesting is a strategy where you rent in the suburb you want to live in (often inner-city, near work, near family) while investing in property elsewhere where the numbers work better, typically more affordable suburbs with stronger yields and growth fundamentals. It's particularly powerful for younger buyers priced out of their preferred owner-occupier suburb, but valuable across many life stages.</p>
 
 <p>In 2026, with capital city affordability stretched and yields strong in regional and outer-metro markets, rentvesting deserves serious consideration. This guide covers how it works, who it suits, the tax implications, and the best rentvesting target markets in each state.</p>
 
 <h2>How rentvesting works</h2>
-<p>The mechanics are straightforward. Instead of buying the home you live in, you rent that home and use your borrowing capacity to buy investment property somewhere more affordable. The investment property generates rental income (which offsets the holding costs) and you continue building wealth through capital growth and tax-effective debt. You also retain flexibility — your job, family, lifestyle can all change without the friction of selling and re-buying your principal residence.</p>
+<p>The mechanics are straightforward. Instead of buying the home you live in, you rent that home and use your borrowing capacity to buy investment property somewhere more affordable. The investment property generates rental income (which offsets the holding costs) and you continue building wealth through capital growth and tax-effective debt. You also retain flexibility, your job, family, lifestyle can all change without the friction of selling and re-buying your principal residence.</p>
 
 <h2>The financial case</h2>
 <p>The financial case for rentvesting hinges on a few key principles:</p>
 <ul>
-<li><strong>Rent is often cheaper than the equivalent mortgage in inner-city or premium suburbs.</strong> A $1.5M Sydney inner-west house might rent for $900 to $1,100/week — far less than the mortgage on $1.2M of debt</li>
+<li><strong>Rent is often cheaper than the equivalent mortgage in inner-city or premium suburbs.</strong> A $1.5M Sydney inner-west house might rent for $900 to $1,100/week, far less than the mortgage on $1.2M of debt</li>
 <li><strong>Investment debt is tax-deductible.</strong> Interest, depreciation, and operating costs are all deductible against rental income (and can offset other income via negative gearing if applicable)</li>
 <li><strong>You can buy in higher-yield markets.</strong> A $600K outer-Brisbane investment property generating $560/week rent (4.8% gross yield) may produce stronger long-term returns than a $1.5M owner-occupier purchase in inner Melbourne</li>
 <li><strong>You retain flexibility.</strong> Career changes, relationship changes, lifestyle changes don't require selling your home</li>
@@ -835,7 +835,7 @@ export const blogPosts: BlogPost[] = [
 <li>Don't over-extend. Investment property still needs cash flow margin to weather rate moves</li>
 </ol>
 
-<p>Rentvesting in 2026 is one of Australia's most underused property strategies. For the right buyer in the right circumstances, it offers a genuine third path between renting and buying your own home — and one that often produces better long-run wealth outcomes than either alone.</p>`,
+<p>Rentvesting in 2026 is one of Australia's most underused property strategies. For the right buyer in the right circumstances, it offers a genuine third path between renting and buying your own home, and one that often produces better long-run wealth outcomes than either alone.</p>`,
     coverImage: "/images/blog/cover-rentvesting-australia-state-by-state-guide-2026.jpg",
     author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
     category: "Investment",
@@ -913,7 +913,7 @@ export const blogPosts: BlogPost[] = [
 <li><strong>NT interstate buyers:</strong> Land tenure is genuinely complex; engage NT specialists from day one</li>
 </ul>
 
-<p>Interstate buying done well opens up Australia-wide opportunity that local buyers can't always match. Done poorly, it's a recipe for expensive surprises. The work upfront — conveyancer, broker, buyer's agent, inspections — pays for itself many times over.</p>`,
+<p>Interstate buying done well opens up Australia-wide opportunity that local buyers can't always match. Done poorly, it's a recipe for expensive surprises. The work upfront, conveyancer, broker, buyer's agent, inspections, pays for itself many times over.</p>`,
     coverImage: "/images/blog/cover-how-to-buy-property-interstate-australia-2026.jpg",
     author: { name: "Bec Ramirez", image: "/images/agents/bec-ramirez.jpg" },
     category: "Buying Guide",
@@ -928,13 +928,13 @@ export const blogPosts: BlogPost[] = [
     title: "Australia's Fastest-Growing Suburbs in 2026",
     excerpt:
       "Where in Australia are property prices growing fastest in 2026? A look at the standout-performing suburbs in each state, what's driving them, and whether the growth is durable.",
-    content: `<p>Year-over-year price growth varies enormously across Australian suburbs. Some areas are growing at 12 to 15% annually while neighbouring suburbs are flat or down. Understanding what's driving the growth — infrastructure, population, investment, or speculation — is the difference between catching a structural trend and buying late into a heated market. This guide covers Australia's fastest-growing suburbs in 2026 by state, with an honest read on whether each story is durable.</p>
+    content: `<p>Year-over-year price growth varies enormously across Australian suburbs. Some areas are growing at 12 to 15% annually while neighbouring suburbs are flat or down. Understanding what's driving the growth, infrastructure, population, investment, or speculation, is the difference between catching a structural trend and buying late into a heated market. This guide covers Australia's fastest-growing suburbs in 2026 by state, with an honest read on whether each story is durable.</p>
 
 <h2>NSW: Western Sydney corridor</h2>
 <p>The standout NSW growth story is Sydney's outer-southwest corridor. <strong>Oran Park, Leppington, Austral and Edmondson Park</strong> are seeing 9 to 12% annual growth, supported by the Western Sydney Airport (operational from late 2026), the M12 motorway, and the South West Rail Link. These are infrastructure-driven moves that should be durable through 2027–28. <strong>Marsden Park and Schofields</strong> in the northwest are also delivering 8 to 10% growth on similar drivers.</p>
 
 <h2>VIC: Geelong fringe and Ballarat</h2>
-<p>Victoria's fastest-growing suburbs are now in Geelong's outer ring (<strong>Armstrong Creek, Charlemont, Lara</strong>) and Ballarat's growth corridor (<strong>Lucas, Alfredton, Smythes Creek</strong>) — all at 7 to 10% annually. The story is regional infrastructure (Geelong Ring Road, Ballarat West Health Service expansion) and accelerated remote-work-driven population inflow. Inner Melbourne suburbs aren't on the fastest-growth list, but middle-ring is firming again.</p>
+<p>Victoria's fastest-growing suburbs are now in Geelong's outer ring (<strong>Armstrong Creek, Charlemont, Lara</strong>) and Ballarat's growth corridor (<strong>Lucas, Alfredton, Smythes Creek</strong>), all at 7 to 10% annually. The story is regional infrastructure (Geelong Ring Road, Ballarat West Health Service expansion) and accelerated remote-work-driven population inflow. Inner Melbourne suburbs aren't on the fastest-growth list, but middle-ring is firming again.</p>
 
 <h2>QLD: Brisbane Olympics corridor and Sunshine Coast</h2>
 <p>Brisbane's Olympics-adjacent suburbs lead Queensland's growth charts. <strong>Albion, Woolloongabba, Kangaroo Point and Kelvin Grove</strong> are seeing 8 to 11% annual growth as venue construction and Athletes Village development progress. The Sunshine Coast's <strong>Birtinya, Maroochydore CBD, Caloundra West</strong> are at 9 to 12%, supported by population inflow and infrastructure including the Sunshine Coast University Hospital expansion. Outer Brisbane's <strong>Caboolture, Logan and Ipswich corridors</strong> remain on solid 7 to 9% growth tracks.</p>
@@ -957,7 +957,7 @@ export const blogPosts: BlogPost[] = [
 <h2>What makes the growth durable vs. speculative</h2>
 <p>Not all fast-growing suburbs are created equal. The durable growth stories share several characteristics:</p>
 <ul>
-<li><strong>Infrastructure pipeline.</strong> Roads, rail, hospitals, schools — visible spending that improves utility</li>
+<li><strong>Infrastructure pipeline.</strong> Roads, rail, hospitals, schools, visible spending that improves utility</li>
 <li><strong>Population inflow.</strong> Sustained demographic shift, not a one-off COVID spike</li>
 <li><strong>Employment growth.</strong> New jobs, not just new residents</li>
 <li><strong>Affordability gradient.</strong> Cheaper than nearby established suburbs creates absorption demand</li>
@@ -982,7 +982,7 @@ export const blogPosts: BlogPost[] = [
 <li>Consider buying earlier in the next cycle rather than late in the current one</li>
 </ol>
 
-<p>The fastest-growing suburbs in 2026 reflect Australia's structural shifts: infrastructure-driven outer-metro growth, regional centre maturation, and lifestyle-led migration. Most of these stories should run another 2 to 4 years. But "fastest-growing now" doesn't always mean "best to buy today" — late entrants often pay for someone else's earlier insight.</p>`,
+<p>The fastest-growing suburbs in 2026 reflect Australia's structural shifts: infrastructure-driven outer-metro growth, regional centre maturation, and lifestyle-led migration. Most of these stories should run another 2 to 4 years. But "fastest-growing now" doesn't always mean "best to buy today", late entrants often pay for someone else's earlier insight.</p>`,
     coverImage: "/images/blog/cover-australia-fastest-growing-suburbs-2026.jpg",
     author: { name: "Ellie Johnston", image: "/images/agents/ellie-johnston.jpg" },
     category: "Investment",
@@ -996,7 +996,7 @@ export const blogPosts: BlogPost[] = [
     slug: "first-home-buyer-schemes-by-state-australia-2026",
     title: "First Home Buyer Schemes by State: The Complete 2026 Guide",
     excerpt:
-      "Every Australian state and territory has its own first home buyer schemes — and stacking them with the federal options can save eligible buyers $30,000 to $60,000+. Here's the complete state-by-state breakdown for 2026.",
+      "Every Australian state and territory has its own first home buyer schemes, and stacking them with the federal options can save eligible buyers $30,000 to $60,000+. Here's the complete state-by-state breakdown for 2026.",
     content: `<p>First home buying in Australia in 2026 is more government-supported than ever. Federal schemes administered through Housing Australia (formerly NHFIC) layer with state grants, stamp duty concessions, and shared-equity programs to create a complex but powerful support system. Eligible buyers stacking the right combination can save $30,000 to $60,000 or more compared to a standard purchase.</p>
 
 <p>The challenge is that the schemes have different eligibility rules, price caps, and deadlines. This guide covers the complete picture state by state, including how to combine schemes for maximum benefit.</p>
@@ -1064,7 +1064,7 @@ export const blogPosts: BlogPost[] = [
 <ul>
 <li><strong>FHOG:</strong> $30,000 for new homes (one of Australia's most generous)</li>
 <li><strong>Stamp duty:</strong> 50% concession on established homes up to $600,000</li>
-<li>Note: New home OR established home concession — not both on the same property</li>
+<li>Note: New home OR established home concession, not both on the same property</li>
 </ul>
 <p>Maximum savings stacking: ~$35,000 on a new home, ~$10,000 to $12,000 on an established home of $500K to $600K.</p>
 
@@ -1073,7 +1073,7 @@ export const blogPosts: BlogPost[] = [
 <li><strong>No FHOG.</strong> Replaced with the Home Buyer Concession Scheme</li>
 <li><strong>Home Buyer Concession Scheme (HBCS):</strong> Full stamp duty waiver for eligible FHBs (new and established). Income and property value thresholds apply</li>
 <li><strong>ACT Shared Equity Scheme:</strong> Government takes equity in property; income and asset limits apply</li>
-<li><strong>Land Rent Scheme:</strong> Unique to ACT — lease the land, finance only the build</li>
+<li><strong>Land Rent Scheme:</strong> Unique to ACT, lease the land, finance only the build</li>
 </ul>
 <p>Maximum savings stacking: ~$25,000 to $30,000 on a $700K home (HBCS waiver alone). The ACT scheme is one of the most generous when measured by total dollar value, given Canberra's high prices.</p>
 
@@ -1098,13 +1098,13 @@ export const blogPosts: BlogPost[] = [
 <h2>Common mistakes</h2>
 <ul>
 <li><strong>Not knowing which schemes you're eligible for.</strong> The interaction between federal and state schemes is complex</li>
-<li><strong>Going over the price cap.</strong> The most expensive mistake — a dollar over and the entire benefit disappears</li>
+<li><strong>Going over the price cap.</strong> The most expensive mistake, a dollar over and the entire benefit disappears</li>
 <li><strong>Buying established when only new qualifies for FHOG.</strong> Most state FHOGs are new-only</li>
 <li><strong>Missing the FHSSS opportunity.</strong> The tax saving is real and often underused</li>
 <li><strong>Not getting pre-approval before bidding.</strong> Auction or competitive offer scenarios require pre-approval secured</li>
 </ul>
 
-<p>First home buying in Australia in 2026 is more government-supported than at any point in the country's history, but the support is fragmented across federal, state and territory schemes. The reward for working through the rules properly is substantial — for buyers eligible for the maximum stack, $40,000 to $60,000 in benefits is achievable. The cost of getting it wrong is equally substantial — exceeding a price cap by even a small amount can wipe out the entire benefit. Take the time, get advice, and make the system work for you.</p>`,
+<p>First home buying in Australia in 2026 is more government-supported than at any point in the country's history, but the support is fragmented across federal, state and territory schemes. The reward for working through the rules properly is substantial, for buyers eligible for the maximum stack, $40,000 to $60,000 in benefits is achievable. The cost of getting it wrong is equally substantial, exceeding a price cap by even a small amount can wipe out the entire benefit. Take the time, get advice, and make the system work for you.</p>`,
     coverImage: "/images/blog/cover-first-home-buyer-schemes-by-state-australia-2026.jpg",
     author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
     category: "Buying Guide",

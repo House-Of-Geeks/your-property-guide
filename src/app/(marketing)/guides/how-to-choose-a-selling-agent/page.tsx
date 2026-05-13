@@ -121,7 +121,7 @@ export default function HowToChooseSellingAgentPage() {
           { name: "Verify each agent's licence", text: "Each Australian state has a real estate licensing register. Check the licence number is current and the agent has no recent disciplinary actions." },
           { name: "Review their last 6 months of sold listings", text: "Days on market, sale-vs-asking price, and clearance rate tell you more than any sales pitch." },
           { name: "Negotiate the commission", text: "Standard residential commission is 1.5% to 3% depending on state and price. Higher prices and more straightforward sales attract lower rates." },
-          { name: "Read the listing agreement carefully", text: "Exclusive agency vs sole agency vs auction agreement — terms matter. Read the cancellation clause and the marketing budget commitment." },
+          { name: "Read the listing agreement carefully", text: "Exclusive agency vs sole agency vs auction agreement, terms matter. Read the cancellation clause and the marketing budget commitment." },
           { name: "Agree on a marketing campaign", text: "Photography, copywriting, signboards, online listings, print, brochures. Marketing typically runs $3K to $15K depending on property and strategy." },
           { name: "Set a realistic reserve and start price", text: "The agent's appraisal is a guide, not gospel. Reserve too high = no buyers; reserve too low = leaves money on the table." },
         ]}

@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: SchoolVsPageProps): Promise<M
   if (!schoolA || !schoolB) return { title: "School Not Found" };
 
   const title = `${schoolA.name} vs ${schoolB.name} | School Comparison | Your Property Guide`;
-  const description = `Compare ${schoolA.name} and ${schoolB.name} — ICSEA scores, enrolment, demographics, and nearby property prices.`;
+  const description = `Compare ${schoolA.name} and ${schoolB.name}, ICSEA scores, enrolment, demographics, and nearby property prices.`;
   const canonical = `${SITE_URL}/schools/${slug}/vs/${compareSlug}`;
 
   return {
@@ -120,7 +120,7 @@ function buildRows(schoolA: School, schoolB: School): CompareRowProps[] {
     winner: null,
   });
 
-  // ICSEA score — higher is better
+  // ICSEA score, higher is better
   let icseaWinner: "A" | "B" | null = null;
   if (schoolA.icsea != null && schoolB.icsea != null) {
     if (schoolA.icsea > schoolB.icsea) icseaWinner = "A";
@@ -175,7 +175,7 @@ function buildRows(schoolA: School, schoolB: School): CompareRowProps[] {
     winner: null,
   });
 
-  // Student:teacher ratio — lower is better but we just display, no winner
+  // Student:teacher ratio, lower is better but we just display, no winner
   const ratioA =
     schoolA.enrolment != null && schoolA.teachingStaff != null && schoolA.teachingStaff > 0
       ? (schoolA.enrolment / schoolA.teachingStaff).toFixed(1)

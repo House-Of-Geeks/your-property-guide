@@ -28,7 +28,7 @@ export async function submitToIndexNow(urls: string[]): Promise<{ submitted: num
 
     if (!res.ok) {
       const text = await res.text();
-      throw new Error(`IndexNow submission failed: HTTP ${res.status} — ${text}`);
+      throw new Error(`IndexNow submission failed: HTTP ${res.status}, ${text}`);
     }
   }
 
