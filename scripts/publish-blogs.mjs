@@ -103,10 +103,11 @@ console.log(`✓ synced in ${elapsed}s`);
 console.log(`  source: ${c.sourceTotal} posts`);
 console.log(`  created: ${c.created}${c.created > 0 ? ` (${data.created.join(", ")})` : ""}`);
 console.log(`  updated: ${c.updated}`);
+if (typeof c.unchanged === "number") console.log(`  unchanged: ${c.unchanged}`);
 if (c.orphanedInDb > 0) {
   console.log(`  orphaned in DB: ${c.orphanedInDb} (${data.orphaned.join(", ")})`);
   if (c.pruned > 0) console.log(`  pruned: ${c.pruned}`);
-  else console.log(`     ↳ pass --prune to delete these`);
+  else console.log(`     -> pass --prune to delete these`);
 }
 console.log(`  revalidated: ${data.revalidated.length} path${data.revalidated.length === 1 ? "" : "s"}`);
 if (data.indexnow?.submitted) {
