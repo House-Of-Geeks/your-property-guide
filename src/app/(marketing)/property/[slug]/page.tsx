@@ -66,37 +66,6 @@ const getAddress = cache((slug: string) =>
   db.propertyAddress.findUnique({ where: { slug } }),
 );
 
-// Cheap data-presence probe used by generateMetadata to decide whether the
-// address has any first-party content worth indexing. We check for a sale
-// record or a matching active/sold listing — overlay (zoning) data was
-// initially included but turned out to cover ~95% of addresses, so it's
-// useless as an "is this page worth indexing" signal. Sales mean unique
-// transactional content; listings mean active inventory. The probe is
-// two `findFirst` calls in parallel, indexed on addressId — ~10-30ms.
-//
-// React `cache()` ensures we only run this once per request — the page
-// body re-uses the same in-flight promise rather than firing the queries
-// again. So this adds a probe to generateMetadata without adding work to
-// the page render.
-const getAddressDataSignals = cache(async (address: { id: string; streetName: string | null; postcode: string; state: string }) => {
-  const [sale, listing] = await Promise.all([
-    db.propertySale.findFirst({ where: { addressId: address.id }, select: { id: true } }),
-    db.property.findFirst({
-      where: {
-        addressStreet: { contains: address.streetName ?? "", mode: "insensitive" },
-        addressPostcode: address.postcode,
-        addressState: address.state,
-      },
-      select: { id: true },
-    }),
-  ]);
-  return {
-    hasSale: !!sale,
-    hasListing: !!listing,
-    hasAnyData: !!(sale || listing),
-  };
-});
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const address = await getAddress(slug);
@@ -106,14 +75,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const title = `${addressDisplay}, Property Profile`;
   const description = `View property details, listing history, suburb stats, and nearby properties for ${addressDisplay}.`;
 
-  // ~15.6M G-NAF addresses are exposed under this route, but only a sliver
-  // have any first-party data (listings, sale history, or parcel overlays).
-  // Returning noindex for the empty ones tells Google these aren't worth
-  // crawling, so the bot traffic that's currently burning function-hours
-  // on cold renders should fall off over weeks. Users who land directly
-  // still get the page rendered (with suburb context); we just stop
-  // soliciting search traffic for them.
-  const signals = await getAddressDataSignals(address);
+  // ~15.6M G-NAF addresses are exposed under this route but only ~5.5%
+  // have sale records (verified: 858K of 15.56M). The denormalised
+  // `saleCount` column on PropertyAddress is maintained by the sync
+  // workers post-ingest. Reading it from the already-fetched address
+  // row costs zero extra DB roundtrips, and gives us a fast yes/no for:
+  //   1. Should Google index this page? (noindex when saleCount=0)
+  //   2. Should the page fire its expensive listing/sold/sale queries
+  //      below? (skip them when saleCount=0; they'd be empty anyway)
+  //
+  // Trade-off: 9,126 rows where saleCount=0 but PropertySale records
+  // exist (~1% sync-worker drift) will be noindex'd until the next
+  // ingest run brings saleCount back into sync. Acceptable.
+  const hasSales = (address.saleCount ?? 0) > 0;
 
   return {
     title,
@@ -121,7 +95,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     alternates: { canonical: `${SITE_URL}/property/${slug}` },
     openGraph: { url: `${SITE_URL}/property/${slug}`, title, description, type: "website" },
     twitter: { card: "summary_large_image" },
-    robots: signals.hasAnyData
+    robots: hasSales
       ? undefined
       : { index: false, follow: true, googleBot: { index: false, follow: true } },
   };
@@ -147,16 +121,21 @@ export default async function PropertyAddressPage({ params }: PageProps) {
   const address = await getAddress(slug);
   if (!address) notFound();
 
-  // All address-scoped lookups fire in parallel. Previously they ran
-  // sequentially after the address lookup, stacking 5 round-trips of
-  // network latency per cold render (~250-400ms per page on top of compute).
-  // None of them depend on each other except catchmentSchools, which still
-  // resolves after the overlay query lands. On the dominant case (G-NAF
-  // addresses with no listings/sales/overlays) every query returns an empty
-  // array quickly, but parallelising the latency saves ~80% of waiting time.
-  const [suburbData, listings, soldHistory, overlays, vgSales] = await Promise.all([
-    address.suburbSlug ? getPropertyPageSuburbData(address.suburbSlug) : Promise.resolve(null),
+  // Sale-bearing addresses get the full data fetch. The ~94% of G-NAF
+  // addresses with `saleCount = 0` only need suburb context + overlays;
+  // the three listing/sold/VG-sale queries would all return empty anyway,
+  // so skipping them eliminates ~3 DB round-trips and the associated
+  // function-second-per-render cost on the dominant cold-render path.
+  //
+  // Net effect: cold render on a thin address goes from 5 queries to 2.
+  // Combined with the noindex signal in generateMetadata, this is the
+  // single biggest function-duration cut on /property/[slug].
+  const hasSales = (address.saleCount ?? 0) > 0;
 
+  // Extract listings queries as functions so we can produce correctly-typed
+  // empty fallbacks via Awaited<ReturnType<...>>. Inline ternaries lose the
+  // shape of the `include: { images }` clause.
+  const fetchListings = () =>
     db.property.findMany({
       where: {
         addressStreet: { contains: address.streetName ?? "", mode: "insensitive" },
@@ -166,8 +145,8 @@ export default async function PropertyAddressPage({ params }: PageProps) {
       include: { images: { orderBy: { sortOrder: "asc" }, take: 1 } },
       orderBy: { dateAdded: "desc" },
       take: 6,
-    }),
-
+    });
+  const fetchSoldHistory = () =>
     db.property.findMany({
       where: {
         addressStreet: { contains: address.streetName ?? "", mode: "insensitive" },
@@ -186,13 +165,8 @@ export default async function PropertyAddressPage({ params }: PageProps) {
       },
       orderBy: { dateSold: "desc" },
       take: 8,
-    }),
-
-    db.propertyOverlay.findMany({
-      where: { addressId: address.id },
-      select: { kind: true, source: true, code: true, label: true, attrs: true },
-    }),
-
+    });
+  const fetchVgSales = () =>
     db.propertySale.findMany({
       where: { addressId: address.id, matchConfidence: "exact" },
       select: {
@@ -206,7 +180,17 @@ export default async function PropertyAddressPage({ params }: PageProps) {
       },
       orderBy: { contractDate: "desc" },
       take: 12,
+    });
+
+  const [suburbData, listings, soldHistory, overlays, vgSales] = await Promise.all([
+    address.suburbSlug ? getPropertyPageSuburbData(address.suburbSlug) : Promise.resolve(null),
+    hasSales ? fetchListings() : Promise.resolve<Awaited<ReturnType<typeof fetchListings>>>([]),
+    hasSales ? fetchSoldHistory() : Promise.resolve<Awaited<ReturnType<typeof fetchSoldHistory>>>([]),
+    db.propertyOverlay.findMany({
+      where: { addressId: address.id },
+      select: { kind: true, source: true, code: true, label: true, attrs: true },
     }),
+    hasSales ? fetchVgSales() : Promise.resolve<Awaited<ReturnType<typeof fetchVgSales>>>([]),
   ]);
 
   const suburb = suburbData?.suburb ?? null;

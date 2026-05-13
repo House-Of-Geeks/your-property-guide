@@ -17,20 +17,24 @@ const STATE_ORDER = ["ACT", "NSW", "NT", "OT", "QLD", "SA", "TAS", "VIC", "WA"];
 
 type SitemapEntry = { state: string; page: number };
 
-// Sitemap only emits addresses with at least one PropertySale record. The
-// full G-NAF table has ~15.6M rows but only ~858K (5.5%) have sales,
-// which is the meaningful "this address has unique content worth
-// indexing" signal. Overlay (zoning) data covers ~95% of addresses so
-// is too widespread to differentiate.
+// Sitemap only emits addresses with at least one PropertySale, signalled
+// by the denormalised `saleCount` column on PropertyAddress (maintained
+// by sales-{state} sync workers post-ingest). Of ~15.6M G-NAF rows, only
+// ~858K (5.5%) have sale records — the rest get noindex'd at the page
+// level (see /property/[slug]/page.tsx generateMetadata).
 //
-// The property page itself ships `noindex` for the same addresses
-// (see generateMetadata in [slug]/page.tsx), so sitemap + meta tag
-// both tell Google the same thing.
+// Using the denormalised column instead of an EXISTS subquery means the
+// sitemap regeneration is a simple indexed column scan rather than a
+// JOIN against an 800K-row child table. Same set of addresses, faster
+// build.
 //
-// Cache key bumped to :v3 so the old cached index is invalidated.
+// Trade-off: a ~1% sync-worker drift exists (9,126 addresses with
+// PropertySale records but saleCount=0). Those drop from the sitemap
+// until the next ingest run brings saleCount back into sync. Acceptable.
+//
+// Cache key bumped to :v4 so the old cached index is invalidated.
 const ADDRESS_WITH_DATA_FILTER = `
-  ("suburbSlug" IS NOT NULL)
-  AND EXISTS (SELECT 1 FROM "PropertySale" ps WHERE ps."addressId" = "PropertyAddress".id)
+  ("suburbSlug" IS NOT NULL) AND ("saleCount" > 0)
 `;
 
 // 24h-cached lookup of how the property sitemaps paginate. Used both by
@@ -41,8 +45,7 @@ const getSitemapIndex = unstable_cache(
     const counts = await db.$queryRaw<{ state: string; cnt: bigint }[]>`
       SELECT state, COUNT(*) AS cnt
       FROM "PropertyAddress"
-      WHERE "suburbSlug" IS NOT NULL
-        AND EXISTS (SELECT 1 FROM "PropertySale" ps WHERE ps."addressId" = "PropertyAddress".id)
+      WHERE "suburbSlug" IS NOT NULL AND "saleCount" > 0
       GROUP BY state
     `;
     const countMap = new Map(counts.map((r) => [r.state, Number(r.cnt)]));
@@ -58,7 +61,7 @@ const getSitemapIndex = unstable_cache(
     }
     return index;
   },
-  ["sitemap-property-index:v3"],
+  ["sitemap-property-index:v4"],
   { revalidate: 86400, tags: ["sitemap-property"] },
 );
 
@@ -87,7 +90,7 @@ const getPagedEntries = unstable_cache(
       priority: 0.5,
     }));
   },
-  ["sitemap-property-page:v3"],
+  ["sitemap-property-page:v4"],
   { revalidate: 86400, tags: ["sitemap-property"] },
 );
 
