@@ -14,6 +14,15 @@ interface PageProps {
   params: Promise<{ slug: string; street: string }>;
 }
 
+// ISR. Street pages were rendering on every request (Vercel reported 0%
+// cache hit rate over the billing period) because no revalidate was set
+// at the route level, so each crawl was a full DB-heavy cold render.
+// Street data only changes when the sync worker refreshes the address
+// table, so a 24h window is more than safe.
+export const revalidate = 86400;
+export const dynamicParams = true;
+export function generateStaticParams() { return []; }
+
 function toTitleCase(s: string | null | undefined): string {
   if (!s) return "";
   return s.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());

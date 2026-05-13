@@ -103,62 +103,77 @@ export default async function PropertyAddressPage({ params }: PageProps) {
   const address = await getAddress(slug);
   if (!address) notFound();
 
-  // All six suburb-scoped lookups (suburb stats, schools, hazard, crime,
-  // climate, recent sales pool) are bundled and cached by suburbSlug, see
-  // property-page-suburb-cache.ts. Every property in the same suburb shares
-  // the same answer, so caching here cuts ~6 of the page's ~12 Prisma calls
-  // down to a single cache lookup once the suburb is warm.
-  const suburbData = address.suburbSlug
-    ? await getPropertyPageSuburbData(address.suburbSlug)
-    : null;
+  // All address-scoped lookups fire in parallel. Previously they ran
+  // sequentially after the address lookup, stacking 5 round-trips of
+  // network latency per cold render (~250-400ms per page on top of compute).
+  // None of them depend on each other except catchmentSchools, which still
+  // resolves after the overlay query lands. On the dominant case (G-NAF
+  // addresses with no listings/sales/overlays) every query returns an empty
+  // array quickly, but parallelising the latency saves ~80% of waiting time.
+  const [suburbData, listings, soldHistory, overlays, vgSales] = await Promise.all([
+    address.suburbSlug ? getPropertyPageSuburbData(address.suburbSlug) : Promise.resolve(null),
+
+    db.property.findMany({
+      where: {
+        addressStreet: { contains: address.streetName ?? "", mode: "insensitive" },
+        addressPostcode: address.postcode,
+        addressState: address.state,
+      },
+      include: { images: { orderBy: { sortOrder: "asc" }, take: 1 } },
+      orderBy: { dateAdded: "desc" },
+      take: 6,
+    }),
+
+    db.property.findMany({
+      where: {
+        addressStreet: { contains: address.streetName ?? "", mode: "insensitive" },
+        addressPostcode: address.postcode,
+        addressState: address.state,
+        dateSold: { not: null },
+      },
+      select: {
+        id: true,
+        slug: true,
+        dateSold: true,
+        soldPrice: true,
+        priceDisplay: true,
+        listingType: true,
+        addressFull: true,
+      },
+      orderBy: { dateSold: "desc" },
+      take: 8,
+    }),
+
+    db.propertyOverlay.findMany({
+      where: { addressId: address.id },
+      select: { kind: true, source: true, code: true, label: true, attrs: true },
+    }),
+
+    db.propertySale.findMany({
+      where: { addressId: address.id, matchConfidence: "exact" },
+      select: {
+        id: true,
+        contractDate: true,
+        settlementDate: true,
+        price: true,
+        source: true,
+        natureCode: true,
+        primaryPurpose: true,
+      },
+      orderBy: { contractDate: "desc" },
+      take: 12,
+    }),
+  ]);
+
   const suburb = suburbData?.suburb ?? null;
   const schools = suburbData?.schools ?? [];
   const hazard = suburbData?.hazard ?? null;
   const crimeStat = suburbData?.crimeStat ?? null;
   const climate = suburbData?.climate ?? null;
-  // Exclude this address from the cached pool before slicing to 6.
   const nearbySales = (suburbData?.nearbySalesPool ?? [])
     .filter((s) => s.address?.slug !== slug)
     .slice(0, 6);
 
-  // Active listings at this address (loose match, same street + postcode + state)
-  const listings = await db.property.findMany({
-    where: {
-      addressStreet: { contains: address.streetName ?? "", mode: "insensitive" },
-      addressPostcode: address.postcode,
-      addressState: address.state,
-    },
-    include: { images: { orderBy: { sortOrder: "asc" }, take: 1 } },
-    orderBy: { dateAdded: "desc" },
-    take: 6,
-  });
-
-  // Sold history at this address (any listingType, has dateSold)
-  const soldHistory = await db.property.findMany({
-    where: {
-      addressStreet: { contains: address.streetName ?? "", mode: "insensitive" },
-      addressPostcode: address.postcode,
-      addressState: address.state,
-      dateSold: { not: null },
-    },
-    select: {
-      id: true,
-      slug: true,
-      dateSold: true,
-      soldPrice: true,
-      priceDisplay: true,
-      listingType: true,
-      addressFull: true,
-    },
-    orderBy: { dateSold: "desc" },
-    take: 8,
-  });
-
-  // Parcel-level overlay layers (zoning, flood, bushfire, heritage, etc.)
-  const overlays = await db.propertyOverlay.findMany({
-    where: { addressId: address.id },
-    select: { kind: true, source: true, code: true, label: true, attrs: true },
-  });
   const zoningOverlay   = overlays.find((o) => o.kind === "zoning");
   const floodOverlay    = overlays.find((o) => o.kind === "flood");
   const bushfireOverlay = overlays.find((o) => o.kind === "bushfire");
@@ -166,8 +181,8 @@ export default async function PropertyAddressPage({ params }: PageProps) {
   const primaryCatchmentOverlay   = overlays.find((o) => o.kind === "catchment-primary");
   const secondaryCatchmentOverlay = overlays.find((o) => o.kind === "catchment-secondary");
 
-  // Resolve overlay's school_code / school_name to a row in the School table
-  // so we can link straight to the school detail page when available.
+  // Catchment schools depend on the overlay query, so it stays sequential.
+  // No-op when there are no catchment overlays (the dominant case).
   const catchmentSchoolNames = [primaryCatchmentOverlay, secondaryCatchmentOverlay]
     .map((o) => (o?.attrs as { schoolName?: string } | null)?.schoolName ?? o?.label)
     .filter((n): n is string => !!n);
@@ -180,23 +195,6 @@ export default async function PropertyAddressPage({ params }: PageProps) {
         select: { id: true, name: true, acaraId: true, type: true, sector: true, distance: true, yearRange: true, icsea: true },
       })
     : [];
-
-  // Authoritative sale history from state Valuer-General feeds (VG NSW etc.)
-  // Only "exact" matches, street-fallback rows aren't this address specifically.
-  const vgSales = await db.propertySale.findMany({
-    where: { addressId: address.id, matchConfidence: "exact" },
-    select: {
-      id: true,
-      contractDate: true,
-      settlementDate: true,
-      price: true,
-      source: true,
-      natureCode: true,
-      primaryPurpose: true,
-    },
-    orderBy: { contractDate: "desc" },
-    take: 12,
-  });
 
   // Heuristic: addresses with many recorded sales are unit blocks where the
   // "last sale price" represents one unit and isn't useful as a property value.
