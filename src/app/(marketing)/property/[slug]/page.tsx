@@ -67,18 +67,20 @@ const getAddress = cache((slug: string) =>
 );
 
 // Cheap data-presence probe used by generateMetadata to decide whether the
-// address has any first-party content worth indexing. Three indexed
-// findFirst calls in parallel, ~10-30ms total on the empty case (which is
-// the dominant case across ~15.6M G-NAF rows).
+// address has any first-party content worth indexing. We check for a sale
+// record or a matching active/sold listing — overlay (zoning) data was
+// initially included but turned out to cover ~95% of addresses, so it's
+// useless as an "is this page worth indexing" signal. Sales mean unique
+// transactional content; listings mean active inventory. The probe is
+// two `findFirst` calls in parallel, indexed on addressId — ~10-30ms.
 //
 // React `cache()` ensures we only run this once per request — the page
 // body re-uses the same in-flight promise rather than firing the queries
 // again. So this adds a probe to generateMetadata without adding work to
 // the page render.
 const getAddressDataSignals = cache(async (address: { id: string; streetName: string | null; postcode: string; state: string }) => {
-  const [overlay, sale, listing] = await Promise.all([
-    db.propertyOverlay.findFirst({ where: { addressId: address.id }, select: { id: true } }),
-    db.propertySale.findFirst({ where: { addressId: address.id, matchConfidence: "exact" }, select: { id: true } }),
+  const [sale, listing] = await Promise.all([
+    db.propertySale.findFirst({ where: { addressId: address.id }, select: { id: true } }),
     db.property.findFirst({
       where: {
         addressStreet: { contains: address.streetName ?? "", mode: "insensitive" },
@@ -89,10 +91,9 @@ const getAddressDataSignals = cache(async (address: { id: string; streetName: st
     }),
   ]);
   return {
-    hasOverlay: !!overlay,
     hasSale: !!sale,
     hasListing: !!listing,
-    hasAnyData: !!(overlay || sale || listing),
+    hasAnyData: !!(sale || listing),
   };
 });
 

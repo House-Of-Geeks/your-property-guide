@@ -17,23 +17,20 @@ const STATE_ORDER = ["ACT", "NSW", "NT", "OT", "QLD", "SA", "TAS", "VIC", "WA"];
 
 type SitemapEntry = { state: string; page: number };
 
-// Sitemap only emits addresses that have at least one first-party data
-// signal (parcel overlay, exact-match VG sale, or an active listing on the
-// same street/postcode). The full G-NAF table has ~15.6M rows but only a
-// tiny fraction have data worth indexing; emitting the rest just invites
-// crawler traffic that pays full function-duration cost for an effectively
-// empty page. The property page itself ships `noindex` for the same
-// addresses (see generateMetadata in [slug]/page.tsx), so the two signals
-// reinforce each other.
+// Sitemap only emits addresses with at least one PropertySale record. The
+// full G-NAF table has ~15.6M rows but only ~858K (5.5%) have sales,
+// which is the meaningful "this address has unique content worth
+// indexing" signal. Overlay (zoning) data covers ~95% of addresses so
+// is too widespread to differentiate.
 //
-// Cache key bumped to :v2 so the old cached index (with the full 15M set)
-// is invalidated and rebuilt on next request.
+// The property page itself ships `noindex` for the same addresses
+// (see generateMetadata in [slug]/page.tsx), so sitemap + meta tag
+// both tell Google the same thing.
+//
+// Cache key bumped to :v3 so the old cached index is invalidated.
 const ADDRESS_WITH_DATA_FILTER = `
   ("suburbSlug" IS NOT NULL)
-  AND (
-    EXISTS (SELECT 1 FROM "PropertyOverlay" po WHERE po."addressId" = "PropertyAddress".id)
-    OR EXISTS (SELECT 1 FROM "PropertySale" ps WHERE ps."addressId" = "PropertyAddress".id AND ps."matchConfidence" = 'exact')
-  )
+  AND EXISTS (SELECT 1 FROM "PropertySale" ps WHERE ps."addressId" = "PropertyAddress".id)
 `;
 
 // 24h-cached lookup of how the property sitemaps paginate. Used both by
@@ -45,10 +42,7 @@ const getSitemapIndex = unstable_cache(
       SELECT state, COUNT(*) AS cnt
       FROM "PropertyAddress"
       WHERE "suburbSlug" IS NOT NULL
-        AND (
-          EXISTS (SELECT 1 FROM "PropertyOverlay" po WHERE po."addressId" = "PropertyAddress".id)
-          OR EXISTS (SELECT 1 FROM "PropertySale" ps WHERE ps."addressId" = "PropertyAddress".id AND ps."matchConfidence" = 'exact')
-        )
+        AND EXISTS (SELECT 1 FROM "PropertySale" ps WHERE ps."addressId" = "PropertyAddress".id)
       GROUP BY state
     `;
     const countMap = new Map(counts.map((r) => [r.state, Number(r.cnt)]));
@@ -64,7 +58,7 @@ const getSitemapIndex = unstable_cache(
     }
     return index;
   },
-  ["sitemap-property-index:v2"],
+  ["sitemap-property-index:v3"],
   { revalidate: 86400, tags: ["sitemap-property"] },
 );
 
@@ -93,7 +87,7 @@ const getPagedEntries = unstable_cache(
       priority: 0.5,
     }));
   },
-  ["sitemap-property-page:v2"],
+  ["sitemap-property-page:v3"],
   { revalidate: 86400, tags: ["sitemap-property"] },
 );
 
