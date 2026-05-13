@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Clock, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui";
+import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
 import type { BlogPost } from "@/types";
 import { formatDate } from "@/lib/utils/format";
 
@@ -66,9 +67,7 @@ export function BlogGrid({ posts, categories }: Props) {
               <p className="text-gray-500 mt-3 line-clamp-3">{featured.excerpt}</p>
               <div className="flex items-center gap-3 mt-4 text-xs text-gray-400">
                 <div className="flex items-center gap-1.5">
-                  <div className="w-6 h-6 rounded-full overflow-hidden relative flex-shrink-0">
-                    <Image src={featured.author.image} alt={featured.author.name} fill className="object-cover" sizes="24px" />
-                  </div>
+                  <AuthorAvatar name={featured.author.name} image={featured.author.image} size={24} />
                   <span className="font-medium text-gray-600">{featured.author.name}</span>
                 </div>
                 <span>{formatDate(featured.publishedAt)}</span>

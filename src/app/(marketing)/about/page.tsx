@@ -202,52 +202,147 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="space-y-5">
+            {/* Andy */}
             <article
-              className="rounded-2xl border border-line bg-surface-raised p-7"
+              id="andy-mcmaster"
+              className="rounded-2xl border border-line bg-surface-raised p-7 sm:p-9 grid sm:grid-cols-12 gap-6 scroll-mt-24"
               itemScope
               itemType="https://schema.org/Person"
             >
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
-                Editor
-              </p>
-              <h3 className="font-display text-2xl text-ink leading-tight" itemProp="name">
-                Andy McMaster
-              </h3>
-              <p className="text-sm font-sans text-ink-muted mt-1" itemProp="jobTitle">
-                Editor &amp; co-founder
-              </p>
-              <p className="font-sans text-sm text-ink-muted leading-relaxed mt-4" itemProp="description">
-                Andy runs editorial. Background in product and brand for finance
-                and property businesses, including building yourfinanceguide.com.au.
-                He commissions, edits, and signs off every guide before it
-                publishes.
-              </p>
-              <link itemProp="url" href={`${SITE_URL}/about`} />
-              <meta itemProp="email" content="andy@theandylife.com" />
+              <div className="sm:col-span-4">
+                <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+                  Editor &amp; co-founder
+                </p>
+                <h3 className="font-display text-2xl text-ink leading-tight" itemProp="name">
+                  Andy McMaster
+                </h3>
+                <p className="text-sm font-sans text-ink-muted mt-1" itemProp="jobTitle">
+                  Editor &amp; co-founder
+                </p>
+                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mt-4">
+                  Writes about
+                </p>
+                <p className="font-sans text-sm text-ink leading-relaxed mt-1">
+                  Editorial direction, methodology, scheme &amp; policy commentary
+                </p>
+              </div>
+              <div className="sm:col-span-8" itemProp="description">
+                <p className="font-sans text-base text-ink-muted leading-relaxed">
+                  Andy runs editorial at Your Property Guide. His background is in
+                  product and brand for Australian finance and property
+                  businesses, including building yourfinanceguide.com.au and
+                  several adjacent consumer-finance research sites. He
+                  commissions every guide on the site, edits the copy, and signs
+                  off before anything publishes.
+                </p>
+                <p className="font-sans text-base text-ink-muted leading-relaxed mt-4">
+                  Andy&rsquo;s job is to keep the editorial line honest:
+                  education first, no pushy CTAs, every figure sourced and
+                  dated. If you spot something on the site that doesn&rsquo;t
+                  meet that standard, his inbox is the right place to flag it.
+                </p>
+                <link itemProp="url" href={`${SITE_URL}/about#andy-mcmaster`} />
+                <meta itemProp="email" content="andy@theandylife.com" />
+              </div>
             </article>
 
+            {/* Bec */}
             <article
-              className="rounded-2xl border border-line bg-surface-raised p-7"
+              id="bec-ramirez"
+              className="rounded-2xl border border-line bg-surface-raised p-7 sm:p-9 grid sm:grid-cols-12 gap-6 scroll-mt-24"
               itemScope
-              itemType="https://schema.org/Organization"
+              itemType="https://schema.org/Person"
             >
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
-                Editorial team
-              </p>
-              <h3 className="font-display text-2xl text-ink leading-tight" itemProp="name">
-                {SITE_NAME} editorial
-              </h3>
-              <p className="text-sm font-sans text-ink-muted mt-1">
-                Australian property research
-              </p>
-              <p className="font-sans text-sm text-ink-muted leading-relaxed mt-4" itemProp="description">
-                Our editorial team writes the in-depth guides. Backgrounds across
-                buyer&rsquo;s advocacy, mortgage broking and consumer finance
-                journalism. Every figure cites a source, every guide carries an
-                updated date, and the editor reviews before publishing.
-              </p>
-              <link itemProp="url" href={SITE_URL} />
+              <div className="sm:col-span-4">
+                <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+                  Senior writer
+                </p>
+                <h3 className="font-display text-2xl text-ink leading-tight" itemProp="name">
+                  Bec Ramirez
+                </h3>
+                <p className="text-sm font-sans text-ink-muted mt-1" itemProp="jobTitle">
+                  Property &amp; finance writer
+                </p>
+                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mt-4">
+                  Writes about
+                </p>
+                <p className="font-sans text-sm text-ink leading-relaxed mt-1">
+                  Property tax, lending, investment strategy, federal &amp;
+                  state policy
+                </p>
+              </div>
+              <div className="sm:col-span-8" itemProp="description">
+                <p className="font-sans text-base text-ink-muted leading-relaxed">
+                  Bec is our senior writer on the tax, lending and investment
+                  side of property. She came to Your Property Guide from a
+                  mortgage broking background, where she spent several years
+                  walking first home buyers and seasoned investors through the
+                  mechanics of structuring, serviceability and tax-efficient
+                  ownership.
+                </p>
+                <p className="font-sans text-base text-ink-muted leading-relaxed mt-4">
+                  On the site she covers negative gearing, capital gains tax,
+                  depreciation, SMSF property, foreign buyer rules, and the
+                  federal and state policy changes that move the market.
+                  She&rsquo;s the writer behind most of our budget coverage and
+                  the calculators that underpin it.
+                </p>
+                <p className="font-sans text-base text-ink-muted leading-relaxed mt-4">
+                  Her brief is to translate complex tax and lending detail into
+                  plain English without losing the nuance that actually changes
+                  the numbers on a deal.
+                </p>
+                <link itemProp="url" href={`${SITE_URL}/about#bec-ramirez`} />
+              </div>
+            </article>
+
+            {/* Ellie */}
+            <article
+              id="ellie-johnston"
+              className="rounded-2xl border border-line bg-surface-raised p-7 sm:p-9 grid sm:grid-cols-12 gap-6 scroll-mt-24"
+              itemScope
+              itemType="https://schema.org/Person"
+            >
+              <div className="sm:col-span-4">
+                <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+                  Senior writer
+                </p>
+                <h3 className="font-display text-2xl text-ink leading-tight" itemProp="name">
+                  Ellie Johnston
+                </h3>
+                <p className="text-sm font-sans text-ink-muted mt-1" itemProp="jobTitle">
+                  Market &amp; suburb research
+                </p>
+                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mt-4">
+                  Writes about
+                </p>
+                <p className="font-sans text-sm text-ink leading-relaxed mt-1">
+                  Capital-city market updates, suburb profiles, state buying
+                  guides, regional research
+                </p>
+              </div>
+              <div className="sm:col-span-8" itemProp="description">
+                <p className="font-sans text-base text-ink-muted leading-relaxed">
+                  Ellie leads our market and suburb research. Her background is
+                  in property data journalism — pulling apart Valuer-General
+                  releases, ABS data, and listing-portal aggregates to find the
+                  story behind the median.
+                </p>
+                <p className="font-sans text-base text-ink-muted leading-relaxed mt-4">
+                  She writes the capital-city market updates, state-by-state
+                  buying guides, regional research and most of the suburb
+                  profiles on the site. Every figure she publishes carries a
+                  source and an as-of date, and her drafts get reviewed by the
+                  editor before they go live.
+                </p>
+                <p className="font-sans text-base text-ink-muted leading-relaxed mt-4">
+                  Ellie&rsquo;s priority is making sure the data on Your
+                  Property Guide is current, comparable, and useful — not just
+                  pretty.
+                </p>
+                <link itemProp="url" href={`${SITE_URL}/about#ellie-johnston`} />
+              </div>
             </article>
           </div>
         </div>

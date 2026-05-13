@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui";
 import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
 import { BlogShareButtons } from "@/components/blog/BlogShareButtons";
 import { BlogGuideRail } from "@/components/blog/BlogGuideRail";
+import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
 import { getBlogPostBySlug, getRelatedPosts } from "@/lib/services/blog-service";
 import { processContent } from "@/lib/utils/blog-toc";
 import { blogTitle, absoluteUrl } from "@/lib/utils/seo";
@@ -96,9 +97,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           {/* Author + meta row */}
           <div className="flex flex-wrap items-center justify-between gap-4 mt-6 py-4 border-y border-line">
             <div className="flex items-center gap-3">
-              <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-line-warm">
-                <Image src={post.author.image} alt={post.author.name} fill className="object-cover" sizes="40px" />
-              </div>
+              <AuthorAvatar name={post.author.name} image={post.author.image} size={40} />
               <div>
                 <p className="text-sm font-sans font-semibold text-ink">{post.author.name}</p>
                 <p className="text-xs font-sans text-ink-subtle flex items-center gap-2 mt-0.5">
@@ -155,9 +154,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
           {/* Author box */}
           <div className="mt-10 rounded-2xl bg-surface-warm border border-line-warm p-6 flex gap-4">
-            <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0 border border-line-warm">
-              <Image src={post.author.image} alt={post.author.name} fill className="object-cover" sizes="64px" />
-            </div>
+            <AuthorAvatar name={post.author.name} image={post.author.image} size={64} />
             <div>
               <p className="font-display text-lg text-ink leading-tight">{post.author.name}</p>
               <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mt-1">Property expert</p>

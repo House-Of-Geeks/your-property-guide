@@ -27,8 +27,8 @@ export const blogPosts: BlogPost[] = [
 <p>The Moreton Bay Region continues to experience population growth and infrastructure investment, making 2025 an excellent time to secure your first property. With the right preparation and professional guidance, owning your first home in this thriving corridor is well within reach.</p>`,
     coverImage: "/images/blog/cover-first-home-buyer-guide-moreton-bay-2025.jpg",
     author: {
-      name: "Sarah Mitchell",
-      image: "/images/agents/sarah-mitchell.jpg",
+      name: "Andy McMaster",
+      image: "/images/agents/andy-mcmaster.jpg",
     },
     category: "Buying Guide",
     tags: [
@@ -65,8 +65,8 @@ export const blogPosts: BlogPost[] = [
 <p>Deception Bay offers something the other suburbs can't — waterfront living at an affordable price. The foreshore parklands are a favourite for family picnics and evening walks, and the bay itself provides fishing, kayaking, and boating opportunities. With improving infrastructure and a strong community spirit, Deception Bay is a hidden gem for families who want a coastal lifestyle without the coastal price tag.</p>`,
     coverImage: "/images/blog/cover-top-5-suburbs-families-moreton-bay.jpg",
     author: {
-      name: "James Carter",
-      image: "/images/agents/james-carter.jpg",
+      name: "Bec Ramirez",
+      image: "/images/agents/bec-ramirez.jpg",
     },
     category: "Suburb Guide",
     tags: [
@@ -105,8 +105,8 @@ export const blogPosts: BlogPost[] = [
 <p>While off-market properties offer clear advantages, it's important to still conduct thorough due diligence. Ensure you obtain independent valuations, complete building and pest inspections, and engage a qualified conveyancer. Working with a trusted local agent who understands the Moreton Bay market is the best way to navigate off-market opportunities with confidence.</p>`,
     coverImage: "/images/blog/cover-understanding-off-market-properties.jpg",
     author: {
-      name: "Sarah Mitchell",
-      image: "/images/agents/sarah-mitchell.jpg",
+      name: "Ellie Johnston",
+      image: "/images/agents/ellie-johnston.jpg",
     },
     category: "Buying Guide",
     tags: [
@@ -144,8 +144,8 @@ export const blogPosts: BlogPost[] = [
 <p>With rental demand continuing to outstrip supply and significant government investment in infrastructure, the Moreton Bay corridor is well-positioned for sustained growth. Investors who take a long-term view and select properties in well-connected, amenity-rich locations stand to benefit from both rental income and capital appreciation in the years ahead.</p>`,
     coverImage: "/images/blog/cover-investment-property-guide-moreton-bay-corridor.jpg",
     author: {
-      name: "David Thompson",
-      image: "/images/agents/david-thompson.jpg",
+      name: "Andy McMaster",
+      image: "/images/agents/andy-mcmaster.jpg",
     },
     category: "Investment",
     tags: [
@@ -184,8 +184,8 @@ export const blogPosts: BlogPost[] = [
 <p>Stamp duty can add a substantial amount to your property purchase, but with proper planning and awareness of available concessions, you can minimise its impact on your budget. Speak with your mortgage broker or conveyancer early in the buying process to ensure stamp duty is properly accounted for in your financial plan.</p>`,
     coverImage: "/images/blog/cover-stamp-duty-queensland-what-you-need-to-know.jpg",
     author: {
-      name: "Emma Richardson",
-      image: "/images/agents/emma-richardson.jpg",
+      name: "Bec Ramirez",
+      image: "/images/agents/bec-ramirez.jpg",
     },
     category: "Buying Guide",
     tags: [
@@ -224,8 +224,8 @@ export const blogPosts: BlogPost[] = [
 <p>House and land packages can represent excellent value when approached with realistic expectations and thorough due diligence. The key is to look beyond the headline price, understand the full cost of completion, and work with reputable builders who deliver quality homes on time and on budget. For many buyers in the Moreton Bay Region, a well-chosen house and land package remains one of the smartest paths to homeownership.</p>`,
     coverImage: "/images/blog/cover-house-and-land-packages-are-they-worth-it.jpg",
     author: {
-      name: "James Carter",
-      image: "/images/agents/james-carter.jpg",
+      name: "Ellie Johnston",
+      image: "/images/agents/ellie-johnston.jpg",
     },
     category: "Buying Guide",
     tags: [
@@ -264,8 +264,8 @@ export const blogPosts: BlogPost[] = [
 <p>The Moreton Bay property market remains active, with strong buyer demand across most suburbs. By investing in presentation, working with an experienced local agent, and implementing a strategic marketing campaign, you can position your property to achieve the best possible result. Remember, the small upfront investment in preparation and marketing consistently delivers a substantial return at sale time.</p>`,
     coverImage: "/images/blog/cover-selling-your-home-tips-for-maximum-value.jpg",
     author: {
-      name: "David Thompson",
-      image: "/images/agents/david-thompson.jpg",
+      name: "Andy McMaster",
+      image: "/images/agents/andy-mcmaster.jpg",
     },
     category: "Selling",
     tags: [
@@ -304,8 +304,8 @@ export const blogPosts: BlogPost[] = [
 <p>Overall, the Moreton Bay property market is in a strong position heading into the second quarter of 2025. Buyers should expect continued competition for quality listings, particularly in premium suburbs like North Lakes and Narangba. For sellers, market conditions remain favourable with well-priced properties continuing to attract multiple offers. Investors looking for a combination of yield and growth will find the northern corridor increasingly difficult to overlook.</p>`,
     coverImage: "/images/blog/cover-moreton-bay-property-market-update-q1-2025.jpg",
     author: {
-      name: "Emma Richardson",
-      image: "/images/agents/emma-richardson.jpg",
+      name: "Bec Ramirez",
+      image: "/images/agents/bec-ramirez.jpg",
     },
     category: "Market Update",
     tags: [
@@ -353,7 +353,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>The Sydney market in 2026 rewards patience and preparation. Buyers serious about competing should have pre-approval secured, conveyancer engaged, and be willing to act when the right property surfaces. Sellers benefit from a market still tilted in their favour for well-presented, fairly-priced listings — but conditioning buyers above market with inflated price guides is increasingly likely to extend campaigns rather than capture the upside.</p>`,
     coverImage: "/images/blog/cover-sydney-property-market-2026.jpg",
-    author: { name: "Emma Richardson", image: "/images/agents/emma-richardson.jpg" },
+    author: { name: "Ellie Johnston", image: "/images/agents/ellie-johnston.jpg" },
     category: "Market Update",
     tags: ["sydney", "nsw", "market update", "2026", "property prices"],
     publishedAt: "2026-05-06",
@@ -391,7 +391,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Melbourne in 2026 is a market for selective buyers. The headline growth is modest, but the right suburb in the middle ring or a well-chosen regional town can outperform meaningfully. For sellers, getting the price guide right at listing has never been more important — Melbourne buyers are sceptical of inflated quotes and willing to wait.</p>`,
     coverImage: "/images/blog/cover-melbourne-property-market-2026.jpg",
-    author: { name: "James Carter", image: "/images/agents/james-carter.jpg" },
+    author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
     category: "Market Update",
     tags: ["melbourne", "victoria", "market update", "2026", "regional victoria"],
     publishedAt: "2026-05-06",
@@ -432,7 +432,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Brisbane in 2026 isn't the runaway growth story of 2022, but it remains the most balanced market in Australia for buyers and investors. The combination of relative affordability, strong rental yields, infrastructure investment, and population inflow makes it the market hardest to argue against on fundamentals.</p>`,
     coverImage: "/images/blog/cover-brisbane-property-market-2026.jpg",
-    author: { name: "David Thompson", image: "/images/agents/david-thompson.jpg" },
+    author: { name: "Bec Ramirez", image: "/images/agents/bec-ramirez.jpg" },
     category: "Market Update",
     tags: ["brisbane", "queensland", "market update", "2026", "olympics"],
     publishedAt: "2026-05-06",
@@ -473,7 +473,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Perth in 2026 is a more selective market than 2024 was. Buyers chasing the kind of returns delivered through 2023 are looking in the rear-view mirror. But for owner-occupiers and patient investors, Perth's combination of yield, lifestyle and structural supports continues to make it one of Australia's most defensible markets.</p>`,
     coverImage: "/images/blog/cover-perth-property-market-2026.jpg",
-    author: { name: "Sarah Mitchell", image: "/images/agents/sarah-mitchell.jpg" },
+    author: { name: "Ellie Johnston", image: "/images/agents/ellie-johnston.jpg" },
     category: "Market Update",
     tags: ["perth", "western australia", "market update", "2026", "wa property"],
     publishedAt: "2026-05-06",
@@ -514,7 +514,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Adelaide in 2026 isn't a market for thrill-seekers. It's a market for buyers who value steady compounding, strong yields, and low volatility. Five-year holders in Adelaide's middle and inner suburbs have done very well; those buying in 2026 with a similar horizon should expect more of the same.</p>`,
     coverImage: "/images/blog/cover-adelaide-property-market-2026.jpg",
-    author: { name: "Emma Richardson", image: "/images/agents/emma-richardson.jpg" },
+    author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
     category: "Market Update",
     tags: ["adelaide", "south australia", "market update", "2026", "property prices"],
     publishedAt: "2026-05-06",
@@ -555,7 +555,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Tasmania in 2026 isn't the high-growth headline story it was five years ago, but it remains one of Australia's best-balanced markets. Lower entry prices, strong rental demand, and the lifestyle appeal that drove the 2018–22 boom haven't gone away. For owner-occupiers and patient investors with a 5 to 10 year horizon, the case is still compelling.</p>`,
     coverImage: "/images/blog/cover-hobart-tasmania-property-market-2026.jpg",
-    author: { name: "James Carter", image: "/images/agents/james-carter.jpg" },
+    author: { name: "Bec Ramirez", image: "/images/agents/bec-ramirez.jpg" },
     category: "Market Update",
     tags: ["hobart", "tasmania", "market update", "2026", "launceston"],
     publishedAt: "2026-05-06",
@@ -599,7 +599,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Canberra in 2026 is a market for buyers who value quality, school catchment, and stable employment-driven demand. It rarely produces explosive growth, but rarely has the dramatic falls of more speculative markets. For long-term holders, the case remains intact.</p>`,
     coverImage: "/images/blog/cover-canberra-act-property-market-2026.jpg",
-    author: { name: "David Thompson", image: "/images/agents/david-thompson.jpg" },
+    author: { name: "Ellie Johnston", image: "/images/agents/ellie-johnston.jpg" },
     category: "Market Update",
     tags: ["canberra", "act", "market update", "2026", "leasehold"],
     publishedAt: "2026-05-06",
@@ -643,7 +643,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>The NT in 2026 is not a market for casual interstate investors. The leasehold complexities, climate considerations, and historical volatility all require local expertise. But for owner-occupiers and patient investors with NT context, the combination of strong yields, lower entry prices, and the most generous total first home buyer benefit package in Australia makes a compelling case.</p>`,
     coverImage: "/images/blog/cover-darwin-nt-property-market-2026.jpg",
-    author: { name: "Sarah Mitchell", image: "/images/agents/sarah-mitchell.jpg" },
+    author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
     category: "Market Update",
     tags: ["darwin", "northern territory", "nt", "market update", "2026"],
     publishedAt: "2026-05-06",
@@ -696,7 +696,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Cheap suburbs in 2026 are still findable across every state. The question isn't whether you can buy a house under $500,000 in Australia — you can — but whether the right one for your situation exists at that price. Use suburb data, check the fundamentals, and make sure the price reflects opportunity rather than risk.</p>`,
     coverImage: "/images/blog/cover-cheapest-suburbs-buy-house-australia-2026.jpg",
-    author: { name: "James Carter", image: "/images/agents/james-carter.jpg" },
+    author: { name: "Bec Ramirez", image: "/images/agents/bec-ramirez.jpg" },
     category: "Buying Guide",
     tags: ["cheapest suburbs", "affordable property", "2026", "australia", "regional"],
     publishedAt: "2026-05-06",
@@ -752,7 +752,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Regional investing in 2026 is no longer a fringe strategy. The best regional towns offer better yields, comparable infrastructure investment, and increasingly competitive lifestyle propositions versus capital cities. The right regional investment can deliver capital city-like growth with materially better cash flow — but the wrong one can stagnate. Do the work, know the town, and verify the fundamentals before committing.</p>`,
     coverImage: "/images/blog/cover-best-regional-towns-invest-australia-2026.jpg",
-    author: { name: "David Thompson", image: "/images/agents/david-thompson.jpg" },
+    author: { name: "Ellie Johnston", image: "/images/agents/ellie-johnston.jpg" },
     category: "Investment",
     tags: ["regional", "investment", "2026", "australia", "rental yield"],
     publishedAt: "2026-05-06",
@@ -837,7 +837,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Rentvesting in 2026 is one of Australia's most underused property strategies. For the right buyer in the right circumstances, it offers a genuine third path between renting and buying your own home — and one that often produces better long-run wealth outcomes than either alone.</p>`,
     coverImage: "/images/blog/cover-rentvesting-australia-state-by-state-guide-2026.jpg",
-    author: { name: "Emma Richardson", image: "/images/agents/emma-richardson.jpg" },
+    author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
     category: "Investment",
     tags: ["rentvesting", "investment", "strategy", "2026", "australia"],
     publishedAt: "2026-05-06",
@@ -915,7 +915,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>Interstate buying done well opens up Australia-wide opportunity that local buyers can't always match. Done poorly, it's a recipe for expensive surprises. The work upfront — conveyancer, broker, buyer's agent, inspections — pays for itself many times over.</p>`,
     coverImage: "/images/blog/cover-how-to-buy-property-interstate-australia-2026.jpg",
-    author: { name: "Sarah Mitchell", image: "/images/agents/sarah-mitchell.jpg" },
+    author: { name: "Bec Ramirez", image: "/images/agents/bec-ramirez.jpg" },
     category: "Buying Guide",
     tags: ["interstate", "buying property", "2026", "australia", "stamp duty"],
     publishedAt: "2026-05-06",
@@ -984,7 +984,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>The fastest-growing suburbs in 2026 reflect Australia's structural shifts: infrastructure-driven outer-metro growth, regional centre maturation, and lifestyle-led migration. Most of these stories should run another 2 to 4 years. But "fastest-growing now" doesn't always mean "best to buy today" — late entrants often pay for someone else's earlier insight.</p>`,
     coverImage: "/images/blog/cover-australia-fastest-growing-suburbs-2026.jpg",
-    author: { name: "James Carter", image: "/images/agents/james-carter.jpg" },
+    author: { name: "Ellie Johnston", image: "/images/agents/ellie-johnston.jpg" },
     category: "Investment",
     tags: ["fastest growing suburbs", "2026", "investment", "australia", "growth"],
     publishedAt: "2026-05-06",
@@ -1106,10 +1106,383 @@ export const blogPosts: BlogPost[] = [
 
 <p>First home buying in Australia in 2026 is more government-supported than at any point in the country's history, but the support is fragmented across federal, state and territory schemes. The reward for working through the rules properly is substantial — for buyers eligible for the maximum stack, $40,000 to $60,000 in benefits is achievable. The cost of getting it wrong is equally substantial — exceeding a price cap by even a small amount can wipe out the entire benefit. Take the time, get advice, and make the system work for you.</p>`,
     coverImage: "/images/blog/cover-first-home-buyer-schemes-by-state-australia-2026.jpg",
-    author: { name: "Sarah Mitchell", image: "/images/agents/sarah-mitchell.jpg" },
+    author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
     category: "Buying Guide",
     tags: ["first home buyer", "schemes", "fhog", "stamp duty", "2026"],
     publishedAt: "2026-05-06",
     readingTime: 12,
+  },
+
+  {
+    id: "blog-federal-budget-2026-property",
+    slug: "federal-budget-2026-property",
+    title: "Federal Budget 2026: What It Means for Australian Property",
+    excerpt:
+      "Treasurer Jim Chalmers handed down the 2026-27 federal budget on 12 May 2026, with the biggest changes to property tax in a generation. Negative gearing is being limited to new builds, the 50% CGT discount is being scrapped, and $6.3 billion is going into housing-enabling infrastructure. Here's what every owner, investor, renter and first home buyer needs to know.",
+    content: `<p>The 2026-27 federal budget, handed down by Treasurer Jim Chalmers on the evening of 12 May 2026, contains the most significant overhaul of Australian property tax in over thirty years. After months of speculation and a broken pre-election promise on negative gearing, the government has moved decisively on the demand side of the housing market while also injecting billions into supply. The combined effect will reshape how Australians buy, invest and rent for at least the next decade.</p>
+
+<p>This is the plain-English guide to what's in the budget for property, when it takes effect, who is grandfathered, and what it actually means for your situation — whether you're a first home buyer, a current owner, an investor, or a tenant.</p>
+
+<h2>The headline changes at a glance</h2>
+<ul>
+<li><strong>Negative gearing limited to new builds</strong> from 1 July 2027 — established residential investment properties purchased after 7:30pm AEST on 12 May 2026 will no longer be eligible for negative gearing against salary income</li>
+<li><strong>50% CGT discount replaced</strong> with cost base indexation plus a 30% minimum tax on net capital gains for residential investment property</li>
+<li><strong>New homes exempt</strong> from both the negative gearing and CGT changes — a deliberate incentive to direct investor capital into new supply</li>
+<li><strong>Existing investors grandfathered</strong> — anyone who owns a residential investment property on 12 May 2026 keeps their current tax treatment for that property</li>
+<li><strong>$6.3 billion total for housing-enabling infrastructure</strong> — water, sewer, roads and power to unlock up to 65,000 new homes over the decade</li>
+<li><strong>Housing Australia Future Fund</strong> continues progressing toward 40,000 social and affordable homes</li>
+<li><strong>Dwelling price growth forecast revised down</strong> to 3% in 2026 (from 5%), with Treasury expecting a modest cooling effect from the tax changes</li>
+</ul>
+
+<h2>What's actually changing on negative gearing</h2>
+<p>Negative gearing — the ability to deduct net rental losses against salary and other income — has been a fixture of Australian property investment since the 1980s. From 1 July 2027, it will only apply to <em>new builds</em>. For established residential investment properties purchased after 7:30pm AEST on Tuesday 12 May 2026, any rental loss will only be deductible against other property income, not against salary.</p>
+<p>The grandfathering is critical. If you owned the investment property on budget night, nothing changes for that property. If you buy an established property the day after the budget, you fall under the new rules. The cut-off is precise — to the minute — to prevent a rush of last-minute purchases.</p>
+<p>What this means in practice: investors weighing an established three-bedroom rental in an outer suburb will get a different answer in 2026 than they would have in 2025. The same property, with the same rent, will produce a worse after-tax cashflow position for any new buyer. Investors who want to keep the negative gearing benefit can still do so — but only by buying new builds.</p>
+
+<h2>What's actually changing on capital gains tax</h2>
+<p>The 50% CGT discount, which has applied to assets held longer than 12 months since 1999, is being replaced for residential investment property. Two changes work together:</p>
+<ul>
+<li><strong>Cost base indexation</strong> returns. Instead of paying tax on half the nominal gain, investors will pay on the real (inflation-adjusted) gain. For long-held properties this is roughly tax-neutral. For shorter holds in low-inflation periods, it's worse.</li>
+<li><strong>A 30% minimum tax</strong> on net capital gains from residential investment property. Even if your marginal rate is below 30%, that's the floor for residential property gains.</li>
+</ul>
+<p>New homes are exempt — a property that was a new build when first acquired by the investor keeps the old 50% discount treatment. Like negative gearing, existing properties owned on 12 May 2026 are fully grandfathered.</p>
+
+<h2>What it means if you're a homeowner (not an investor)</h2>
+<p>If you own your principal place of residence and don't have an investment property, the budget changes almost nothing for you directly. The main residence CGT exemption is untouched. What may move is the value of your home, indirectly, through changes in investor demand. Treasury's revised forecast — 3% national dwelling price growth in 2026, down from 5% — suggests they expect a mild cooling effect rather than a crash.</p>
+<p>Owner-occupier suburbs, particularly family-suited middle-ring areas, are likely to be less affected than investor-heavy markets like inner-city units in Sydney and Melbourne, where any cooling will be more pronounced.</p>
+
+<h2>What it means if you're a property investor</h2>
+<p>The most important rule for current investors: <em>existing properties are protected</em>. Any property you owned on 12 May 2026 keeps negative gearing eligibility against salary income, and keeps the 50% CGT discount on sale. There is no requirement to sell, restructure or do anything immediately.</p>
+<p>For investors considering future purchases, the calculation is different:</p>
+<ul>
+<li>An established rental loses both negative gearing against salary and the 50% CGT discount. The after-tax case for that purchase is materially worse</li>
+<li>A new build keeps both benefits — and now competes for investor demand with fewer alternatives</li>
+<li>Yield matters more than capital growth in the new regime. Cashflow-positive properties become disproportionately attractive</li>
+<li>Geographic mix may shift. Markets dominated by new estate land (outer Brisbane, southwest Sydney, north-west Melbourne, Perth corridors) become structurally more attractive for new investors</li>
+</ul>
+
+<h2>What it means if you're a first home buyer</h2>
+<p>First home buyer schemes are unchanged. The First Home Guarantee, First Home Super Saver Scheme, state First Home Owner Grants and stamp duty concessions all remain in place. The 5% deposit scheme continues. Help to Buy — the federal shared equity scheme — also continues.</p>
+<p>What changes for first home buyers is the competitive environment. With investor demand for established properties expected to cool, owner-occupiers should face less direct competition at the auction line for the kinds of properties typically targeted by both groups — established 2-3 bedroom houses in middle-ring suburbs and units in established blocks. This is a quiet but meaningful tailwind for first home buyers in 2026.</p>
+<p>One area to watch carefully: new build pricing. With investors pushed toward new supply, new-home asking prices could firm at the same time owner-occupier new-build buyers are competing for the same stock. Anyone targeting house and land or off-the-plan in 2026 should expect more competition from investors.</p>
+
+<h2>What it means if you're renting</h2>
+<p>Treasury modelling suggests the rental impact will be small — under $2 per week increase on average for households paying the current median rent. The argument from critics is louder: if investor demand softens, supply of rental stock could tighten further over time, pushing rents up.</p>
+<p>The counter-argument from Treasury and supporters: the tax changes are designed to redirect investor capital from existing stock to new builds, which adds to total housing supply over time. Either way, the immediate impact for current tenants on existing leases is zero. The medium-term effect will depend on whether the housing-enabling infrastructure investment delivers the 65,000 additional homes Treasury is forecasting.</p>
+
+<h2>The $6.3 billion supply package</h2>
+<p>Often overlooked beneath the tax changes is a substantial supply-side commitment. The federal government is putting $6.3 billion into housing-enabling infrastructure — the water, sewer, roads, electricity connections and rail/transport links that have to exist before homes can be built on greenfield and brownfield sites. The package is designed to unlock up to 65,000 additional homes over the next decade.</p>
+<p>This adds to existing commitments:</p>
+<ul>
+<li><strong>Housing Australia Future Fund</strong> — 40,000 new social and affordable homes by 2029, with 279 projects committed to date</li>
+<li><strong>Social Housing Accelerator</strong> — continuing rollout of state and territory-managed projects</li>
+<li><strong>National Housing Accord</strong> — the original 1.2 million homes by mid-2029 target, which now appears more achievable with the supply funding lift</li>
+</ul>
+
+<h2>Migration and demand</h2>
+<p>The budget acknowledges the housing-demand link with population growth. With Australia's population set to grow by another one million people, the government has signalled tighter migration settings — but stopped short of a dramatic cut. Net overseas migration is forecast to ease but stay above the long-run average. The implication: demand pressure on housing remains a structural feature even with the new supply package.</p>
+
+<h2>Winners and losers in property</h2>
+<p>This budget creates real winners and losers within the property market:</p>
+<h3>Winners</h3>
+<ul>
+<li><strong>Owner-occupiers and first home buyers</strong> — less investor competition for established stock</li>
+<li><strong>Existing investors</strong> — fully grandfathered and now own scarce assets in a smaller future pool</li>
+<li><strong>New-build investors</strong> — concentrate in a segment that keeps both negative gearing and the CGT discount</li>
+<li><strong>Developers of medium-density and new-estate housing</strong> — investor demand shifts toward their stock</li>
+<li><strong>States and territories with active land release programs</strong> — infrastructure funding goes further</li>
+</ul>
+<h3>Losers</h3>
+<ul>
+<li><strong>New investors targeting established residential properties</strong> — worse after-tax economics, especially for negatively-geared positions</li>
+<li><strong>Inner-city established unit markets</strong> — heavily reliant on investor demand</li>
+<li><strong>Investors planning to use property capital gains for retirement</strong> — the indexation + 30% minimum tax combination is materially less favourable than the 50% discount for many investors</li>
+</ul>
+
+<h2>What to do next</h2>
+<p>If you own investment property, do nothing in haste. Your existing properties are grandfathered. The instinct to sell quickly to lock in the old CGT discount usually creates more cost (transaction costs, retraining a portfolio, transaction-related CGT itself) than it saves. Speak to your accountant before making any structural moves.</p>
+<p>If you're considering buying an investment property, the calculation has changed but not necessarily for the worse. New builds remain favourably treated and have additional structural support. The investor case for outer-corridor house and land in Brisbane, southwest Sydney, north-west Melbourne and Perth growth corridors is arguably stronger now than before the budget.</p>
+<p>If you're a first home buyer, this is one of the better budgets you'll see in your buying lifetime. Schemes are intact, investor competition is easing, and the supply package will start to deliver additional stock from late 2026 onward. The window to use the existing schemes well is wide open.</p>
+
+<h2>The political and economic context</h2>
+<p>The negative gearing change breaks a clear pre-election commitment, and the government has acknowledged that. Treasurer Chalmers has framed the move as a structural reform that prioritises young Australians being able to buy, even at political cost. Whatever your view on the politics, the policy is now law from budget night — and the cut-off times are locked. The economic effects will play out over years, not weeks.</p>
+
+<p>For Your Property Guide's view: this is a sober, structurally significant set of changes that will reward investors who think long-term and buyers who understand the new incentive landscape. We'll be updating our suburb data, calculators (negative gearing, CGT, rental yield) and state buying guides over the coming weeks to reflect the new rules. The fundamentals of property — location, supply, demand, and rental yield — haven't changed. The tax wrapper around them has.</p>`,
+    coverImage: "/images/blog/cover-federal-budget-2026-property.jpg",
+    author: { name: "Bec Ramirez", image: "/images/agents/bec-ramirez.jpg" },
+    category: "News",
+    tags: [
+      "federal budget 2026",
+      "negative gearing",
+      "capital gains tax",
+      "housing policy",
+      "first home buyer",
+      "property investors",
+      "2026",
+    ],
+    publishedAt: "2026-05-13",
+    readingTime: 14,
+  },
+
+  {
+    id: "blog-negative-gearing-changes-2026-budget",
+    slug: "negative-gearing-changes-2026-budget",
+    title: "Negative Gearing Changes 2026: What Every Property Investor Needs to Know",
+    excerpt:
+      "The 2026-27 federal budget restricts negative gearing to new builds from 1 July 2027 for properties purchased after 7:30pm on budget night. Existing investors are grandfathered. Here's exactly what's changing, who is affected, and what it means for your strategy.",
+    content: `<p>The federal budget handed down on 12 May 2026 contained the most significant change to negative gearing since the rules were last touched in the late 1980s. From 1 July 2027, negative gearing for residential investment property will be limited to new builds only — but only for properties purchased after 7:30pm AEST on budget night. Everything else is grandfathered.</p>
+
+<p>This article unpacks exactly what's changing, the timing rules that matter, who is and isn't affected, and what investors should actually do with the information.</p>
+
+<h2>Negative gearing in plain English</h2>
+<p>Negative gearing happens when the costs of owning an investment property — interest, council rates, insurance, repairs, depreciation — are higher than the rental income. The "loss" can currently be deducted against your salary and other income, reducing the total tax you pay. For high-income earners on the 37% or 45% marginal rate, the tax saving from negative gearing has historically been substantial.</p>
+<p>Approximately 1.1 million Australians currently negatively gear an investment property, claiming roughly $11 billion in net rental losses annually against their other income. The system has been a structural feature of Australian property investment for nearly four decades.</p>
+
+<h2>What's actually changing on 1 July 2027</h2>
+<p>From 1 July 2027, residential investment property losses will only be deductible against <em>other property income</em> — not against salary, business or other income — for properties purchased after the cut-off time. Losses can be carried forward indefinitely to be used against future property profits or against the capital gain when the property is sold.</p>
+<p>Two key carve-outs:</p>
+<ul>
+<li><strong>New builds are exempt.</strong> If the property is a new home (newly constructed, never previously occupied for residential purposes) at the time you buy it, it retains full negative gearing eligibility under the old rules</li>
+<li><strong>Existing properties are grandfathered.</strong> Any residential investment property you owned on 12 May 2026 keeps the old negative gearing treatment, regardless of when it was bought</li>
+</ul>
+
+<h2>The 7:30pm cut-off — why it matters</h2>
+<p>The precise cut-off is 7:30pm AEST on Tuesday 12 May 2026 — the moment the Treasurer began his budget speech. Contract date is what counts. If you signed a contract to purchase an established residential investment property before that moment, you're grandfathered. If you signed after, you're under the new rules.</p>
+<p>Settlement date doesn't change this. A property you contracted to buy on 10 May 2026 but only settled on 1 June 2026 is grandfathered. A property you contracted to buy at 8pm on 12 May 2026 falls under the new rules even if you'd been negotiating for weeks beforehand. Speak to your conveyancer if you have any contract straddling the date.</p>
+
+<h2>Who is affected and who isn't</h2>
+<h3>Not affected</h3>
+<ul>
+<li>Anyone who owned a residential investment property on 12 May 2026 — your existing properties keep their existing treatment for life</li>
+<li>Investors in commercial property, industrial property, retail property — the change is for residential only</li>
+<li>Owner-occupiers — your principal place of residence has nothing to do with negative gearing</li>
+<li>Investors who only buy new builds going forward — full negative gearing remains available</li>
+</ul>
+<h3>Affected</h3>
+<ul>
+<li>Investors who purchase established residential property after the cut-off date — losses no longer offset salary income</li>
+<li>Investors who contract for property settlements before but buy further established properties after — the new properties only fall under the new rules</li>
+<li>SMSF investors purchasing new residential property within their fund — same rules apply</li>
+</ul>
+
+<h2>What "new build" actually means</h2>
+<p>For the purposes of the exemption, a "new build" is a residential dwelling that has not previously been sold as a residential premises and has not been previously occupied for residential purposes. In practical terms this captures:</p>
+<ul>
+<li>Off-the-plan apartments purchased before completion</li>
+<li>House and land packages where the home is newly constructed</li>
+<li>Newly built spec homes from a builder that have not been lived in</li>
+<li>Substantially renovated homes meeting the ATO's "substantial renovation" definition (rarely simple to qualify)</li>
+</ul>
+<p>It does not include a 6-month-old house someone has lived in, or a property that was previously rented as a residence and is being on-sold. The definition is essentially the same one the ATO already uses for GST on new residential property — so accountants and developers are familiar with it.</p>
+
+<h2>The investment implications</h2>
+<p>The shift in incentives is significant. For new investors entering the market after budget night, the relative attractiveness of property segments changes:</p>
+<h3>Existing established property — the after-tax case weakens</h3>
+<p>The classic negatively-geared 1990s townhouse or 1980s unit, purchased to generate a modest yield with capital growth and tax savings, becomes less attractive on an after-tax basis. The same gross cashflow position produces a worse net result because rental losses no longer reduce your salary tax. Many established residential investments shift from negatively geared to neutrally or positively geared (with no benefit beyond the cash return) under the new rules.</p>
+<h3>New builds — the after-tax case strengthens (relatively)</h3>
+<p>A new house and land package, off-the-plan apartment, or newly-built townhouse keeps full negative gearing eligibility. With investor demand redirecting toward new supply, the new-build segment becomes structurally more attractive. The combination of full negative gearing, full CGT discount (new homes are exempt from those changes too), and depreciation makes the after-tax case for new builds materially better than established for most investor profiles.</p>
+<h3>Cashflow-positive established property — the same as before, or slightly better</h3>
+<p>Investors targeting yield rather than capital growth — typically in regional Australia, outer suburbs, or specialised stock like NDIS housing or rooming houses — see no material change. The properties were positively geared anyway, so the negative gearing rules were never doing the heavy lifting in their returns.</p>
+
+<h2>What about existing investors who buy more property later?</h2>
+<p>Critical point: the grandfathering applies to specific properties, not to specific investors. If you own three rentals on 12 May 2026, those three are grandfathered for life. If you buy a fourth established property in 2027, the new property is under the new rules. Losses on property #4 cannot be deducted against your salary.</p>
+<p>But losses on property #4 <em>can</em> be deducted against rental income from properties #1, #2 and #3 (subject to general loss-quarantining rules). The new regime requires rental losses to flow within the property silo, not into salary income. For portfolio investors with multiple properties, this softens but does not eliminate the impact.</p>
+
+<h2>Should you sell to lock in the old rules?</h2>
+<p>This is the question every accountant is being asked. The answer in almost every case: <strong>no, do not sell to "lock in" the grandfathering</strong>. The reasoning:</p>
+<ul>
+<li>Grandfathering applies to the property as long as you own it — you don't need to do anything to preserve it</li>
+<li>Selling generates a capital gains tax event right now, which crystallises tax you may have deferred indefinitely</li>
+<li>Transaction costs of selling and buying again are usually 5 to 8% of property value (agent fees, marketing, stamp duty on the new purchase, conveyancing, etc.) — far more than the marginal annual benefit</li>
+<li>Once you sell, you can't buy back into the same property treatment</li>
+</ul>
+<p>There may be specific situations — significant portfolio rebalancing, retirement planning, family transfers — where selling makes sense for non-tax reasons. The new rules don't change those calculations meaningfully.</p>
+
+<h2>Should you buy now (before 7:30pm 12 May 2026 has long passed)?</h2>
+<p>The cut-off has already passed for contracts dated 13 May 2026 onward. Anyone reading this is now under the new rules for any new established residential purchase. The question becomes: given the new regime, does the investment still make sense?</p>
+<p>For many investors, the answer is still yes — but the analysis is different:</p>
+<ul>
+<li><strong>Run the numbers without negative gearing.</strong> Assume zero salary deduction benefit. Does the property still meet your return target on cashflow + capital growth alone?</li>
+<li><strong>Consider yield-focused locations.</strong> Brisbane, Perth, Adelaide and regional markets with 4%+ gross yields work better in the new regime than 2% inner-Sydney yields</li>
+<li><strong>Look harder at new builds.</strong> The tax wrapper is more favourable, and developers know investor capital is flowing toward them — be careful on pricing</li>
+<li><strong>Talk to a mortgage broker about lending impacts.</strong> Without negative gearing, serviceability buffers may calculate differently</li>
+</ul>
+
+<h2>What the changes don't touch</h2>
+<p>Several things remain unchanged that investors often expect would be touched by negative gearing reform:</p>
+<ul>
+<li><strong>Depreciation rules</strong> — division 40 (plant and equipment) and division 43 (building) depreciation remain available as before</li>
+<li><strong>Interest deductibility itself</strong> — interest on investment property loans is still fully deductible against rental income. The change is only about what happens with the leftover loss</li>
+<li><strong>Loss carry-forward</strong> — losses you can't use against salary are not lost. They carry forward indefinitely to be used against future rental income or, ultimately, against the capital gain when you sell</li>
+<li><strong>Trust and company structures</strong> — these were never subject to "personal" negative gearing anyway. Investment property held in a unit trust or company has always been on a different regime</li>
+</ul>
+
+<h2>The political reality</h2>
+<p>This is a clear break of a pre-election commitment, and the government has been honest about that. The framing is that the housing affordability problem has worsened enough that the original commitment was no longer tenable. Whatever your view on the politics, the policy is now law from budget night and the timing rules are locked. Future political changes — including potential repeal or further modification under a different government — are possible but speculative. Plan for the rules as they are now.</p>
+
+<h2>Practical next steps for current investors</h2>
+<ol>
+<li><strong>Don't panic-sell.</strong> Your existing properties are protected. The grandfathering is permanent for as long as you hold the property</li>
+<li><strong>Update your records.</strong> Confirm with your accountant that each property's purchase date and contract date are documented clearly — this matters if there's ever a question about which regime applies</li>
+<li><strong>Review your strategy for future purchases.</strong> The new regime favours yield over loss-driven returns, and new builds over established. Adjust accordingly</li>
+<li><strong>Talk to your accountant before the 2026-27 financial year close.</strong> There may be ways to bring forward maintenance, repairs or depreciation reviews to maximise current-year deductions while the old rules still apply to all property types</li>
+<li><strong>Use our <a href="/tools/negative-gearing-calculator">negative gearing calculator</a></strong> with and without the new rules to see how the change affects your specific portfolio</li>
+</ol>
+
+<p>The negative gearing changes are real, structural, and significant — but they don't break the case for property investment in Australia. They reshape it. Investors who think carefully about location, yield, supply incentives and tax positioning under the new regime can still build sustainable property portfolios. The strategy needs to be sharper than it was, but the opportunity remains.</p>`,
+    coverImage: "/images/blog/cover-negative-gearing-changes-2026-budget.jpg",
+    author: { name: "Ellie Johnston", image: "/images/agents/ellie-johnston.jpg" },
+    category: "News",
+    tags: [
+      "negative gearing",
+      "federal budget 2026",
+      "property investors",
+      "tax",
+      "investment property",
+      "2026",
+    ],
+    publishedAt: "2026-05-13",
+    readingTime: 13,
+  },
+
+  {
+    id: "blog-cgt-changes-2026-budget",
+    slug: "cgt-changes-2026-budget",
+    title: "Capital Gains Tax on Property: How the 2026 Budget Changes the Rules",
+    excerpt:
+      "The 2026-27 federal budget scraps the 50% CGT discount on residential investment property, replacing it with cost base indexation and a 30% minimum tax on net gains. New builds and existing properties owned on 12 May 2026 are exempt. Here's how the new system works and what it means for your portfolio.",
+    content: `<p>For 26 years, Australian investors selling property held longer than 12 months have paid capital gains tax on only half the nominal gain. The 50% CGT discount, introduced in 1999, has been one of the most generous tax provisions in the system. The 2026-27 federal budget has changed it. For residential investment property purchased after 7:30pm AEST on 12 May 2026, the 50% discount is gone — replaced with cost base indexation and a new 30% minimum tax on net capital gains.</p>
+
+<p>This article walks through exactly how the new CGT system works for residential property, who is affected, the worked examples that show what the new tax bill actually looks like, and what investors should do with the information.</p>
+
+<h2>How the old 50% CGT discount worked</h2>
+<p>Under the old rules (and still applying to all property owned on 12 May 2026 and all new builds), capital gains tax on residential investment property worked like this:</p>
+<ol>
+<li>You sell the property. The capital gain is the sale price minus your cost base (purchase price + costs + improvements)</li>
+<li>If you held the property longer than 12 months, you reduce the gain by 50% — only half the nominal gain is included in your assessable income</li>
+<li>The remaining half is taxed at your marginal tax rate, ranging from 0% to 45% (plus Medicare)</li>
+</ol>
+<p>For a high-income earner on the 45% marginal rate, a $400,000 gain meant $200,000 included as assessable income and roughly $90,000 of tax — an effective tax rate of 22.5% on the full gain. The 50% discount made long-held property exceptionally tax-efficient.</p>
+
+<h2>The new system in three parts</h2>
+<p>The replacement system has three moving parts:</p>
+<h3>1. Cost base indexation returns</h3>
+<p>Before the 1999 reforms, capital gains were calculated on the real (inflation-adjusted) gain. The 2026 budget brings indexation back for residential investment property. Your cost base — purchase price, stamp duty, legal costs, improvements — is indexed to CPI from the date of each cost item. Only the real gain above inflation is taxable.</p>
+<h3>2. 30% minimum tax on net capital gains</h3>
+<p>Net capital gains from residential investment property are subject to a minimum 30% tax rate. If your marginal rate is below 30% (someone on a low income or retiree with limited other income), the floor is 30%. If your marginal rate is above 30%, you pay your marginal rate.</p>
+<h3>3. New builds keep the 50% discount</h3>
+<p>Properties that were new builds at the time the investor acquired them retain the old 50% CGT discount treatment. This is symmetric with the negative gearing change — investors are being pushed toward funding new supply, with both negative gearing and the full CGT discount remaining available for that segment.</p>
+
+<h2>Worked example: long-held established property</h2>
+<p>Let's compare a hypothetical sale under old vs new rules.</p>
+<p><strong>Property:</strong> Established 3-bedroom house purchased in 2026 for $700,000 (after budget night, so under new rules). Sold in 2041 for $1,300,000. Holding period 15 years. CPI cumulative over 15 years: assume 45% (3% per year average).</p>
+<p><strong>Under old rules (if grandfathered):</strong></p>
+<ul>
+<li>Nominal gain = $600,000</li>
+<li>50% discount applies: assessable gain = $300,000</li>
+<li>At 45% marginal rate: tax = $135,000</li>
+<li>Effective tax rate on gain: 22.5%</li>
+</ul>
+<p><strong>Under new rules:</strong></p>
+<ul>
+<li>Indexed cost base: $700,000 × 1.45 = $1,015,000</li>
+<li>Real (indexed) gain = $1,300,000 − $1,015,000 = $285,000</li>
+<li>At 45% marginal rate: tax = $128,250</li>
+<li>Effective tax rate on real gain: 45%; on nominal gain: 21.4%</li>
+</ul>
+<p>For this long-held, moderate-growth property in an inflationary period, the two regimes deliver almost identical outcomes. Indexation does the work that the 50% discount used to do, just via a different mechanism.</p>
+
+<h2>Worked example: shorter-held, faster-growth property</h2>
+<p><strong>Property:</strong> Inner-city apartment bought for $800,000 in 2027, sold for $1,200,000 in 2032. Holding 5 years. CPI cumulative over 5 years: assume 14% (2.6% per year).</p>
+<p><strong>Under old rules:</strong></p>
+<ul>
+<li>Nominal gain = $400,000</li>
+<li>50% discount: assessable gain = $200,000</li>
+<li>At 37% marginal rate: tax = $74,000</li>
+</ul>
+<p><strong>Under new rules:</strong></p>
+<ul>
+<li>Indexed cost base: $800,000 × 1.14 = $912,000</li>
+<li>Real gain = $1,200,000 − $912,000 = $288,000</li>
+<li>At 37% marginal rate: tax = $106,560</li>
+</ul>
+<p>For this shorter-held, faster-growth property, the new system collects roughly 44% more tax than the old. Indexation is less generous than a flat 50% discount when real gains are strong.</p>
+
+<h2>Worked example: low-income retiree selling</h2>
+<p><strong>Property:</strong> Investment unit bought for $300,000 in 2027, sold for $500,000 in 2037 by a retiree with $25,000 other taxable income. CPI cumulative over 10 years: assume 28%.</p>
+<p><strong>Under old rules:</strong></p>
+<ul>
+<li>Nominal gain = $200,000</li>
+<li>50% discount: assessable gain = $100,000</li>
+<li>Marginal rate at $125k total income: 30% (mostly 32.5% bracket plus Medicare)</li>
+<li>Tax: roughly $30,000</li>
+</ul>
+<p><strong>Under new rules:</strong></p>
+<ul>
+<li>Indexed cost base: $300,000 × 1.28 = $384,000</li>
+<li>Real gain = $500,000 − $384,000 = $116,000</li>
+<li>Marginal rate calculation would suggest mid-20% but the 30% floor applies</li>
+<li>Tax: $34,800</li>
+</ul>
+<p>For lower-income investors and retirees, the 30% minimum tax bites where their marginal rate would otherwise have been lower. This is the demographic where the new system is most clearly worse than the old.</p>
+
+<h2>Who is grandfathered (the critical detail)</h2>
+<p>Identical to the negative gearing change, the CGT change uses 12 May 2026 as the cut-off:</p>
+<ul>
+<li>Any residential investment property you owned on 12 May 2026 keeps the 50% CGT discount when you sell, regardless of when that sale occurs</li>
+<li>Properties contracted to be purchased before 7:30pm AEST 12 May 2026 are grandfathered, even if settlement happens later</li>
+<li>Properties contracted after that time are under the new rules</li>
+<li>New builds purchased after the cut-off are exempt from the new rules and keep the 50% discount</li>
+</ul>
+
+<h2>What's exempt from the changes</h2>
+<ul>
+<li><strong>Main residence</strong> — the principal place of residence CGT exemption is untouched. Owner-occupier homes remain CGT-free on sale</li>
+<li><strong>Commercial property</strong> — only residential is affected. Commercial, industrial, retail and rural CGT treatment is unchanged</li>
+<li><strong>Pre-CGT assets</strong> — anything acquired before 20 September 1985 remains CGT-free</li>
+<li><strong>Shares, managed funds, crypto</strong> — these continue under the existing 50% CGT discount system</li>
+<li><strong>Property held in superannuation</strong> — SMSF residential property in pension phase continues to be tax-free; accumulation phase rules update separately</li>
+</ul>
+
+<h2>What this means for investor strategy</h2>
+<p>The combined effect of CGT and negative gearing changes is to shift the relative economics of property investment:</p>
+<ul>
+<li><strong>Hold periods matter more.</strong> Indexation works better the longer you hold. Short-term flipping is less attractive than it was</li>
+<li><strong>Cashflow matters more than capital growth.</strong> Without negative gearing offsets, yield-driven properties have a structural advantage</li>
+<li><strong>New builds dominate the after-tax case for new entries.</strong> Both negative gearing and the 50% CGT discount remain in place for new builds</li>
+<li><strong>Spousal and entity structuring becomes more important.</strong> Holding property in lower-income hands becomes less effective because the 30% minimum tax sets a floor</li>
+<li><strong>Existing properties become genuinely scarce assets.</strong> An older investor portfolio with grandfathered properties has access to tax treatment that new investors can't replicate. This may push up prices for established investor-grade property over time as supply shrinks</li>
+</ul>
+
+<h2>Practical next steps</h2>
+<ol>
+<li><strong>Document everything for grandfathered properties.</strong> Confirm purchase contract dates, settlement dates, and cost base records are clean for every property owned on 12 May 2026. Talk to your accountant about whether any depreciation schedules need updating</li>
+<li><strong>Reconsider hold-and-sell timing for grandfathered property.</strong> Selling a grandfathered property to buy a replacement under new rules destroys the grandfathered status. The bias toward holding existing properties strengthens</li>
+<li><strong>Run scenarios on future purchases.</strong> Use the new CGT calculation alongside cashflow analysis. The new rules don't kill the case for property investment — they sharpen what works and what doesn't</li>
+<li><strong>Consider new-build segments seriously.</strong> The tax wrapper now favours them materially. House and land in Brisbane and Perth growth corridors, off-the-plan apartments in well-located new developments, and new townhouse stock are the segments that benefit most</li>
+<li><strong>Use our <a href="/tools/cgt-calculator">CGT calculator</a></strong> to model your specific situation under both old and new rules</li>
+</ol>
+
+<h2>What about transitional rules?</h2>
+<p>The legislation as proposed includes a transitional treatment for properties under contract on budget night. If you signed a contract to purchase before 7:30pm 12 May 2026 but had not yet settled, you fall under the old rules. Any modification of the contract after that time may bring the property under the new rules — particularly if the modification changes the purchase price or other material terms. Get legal advice if your situation is borderline.</p>
+<p>The new rules apply to sales (CGT events) from 1 July 2026 onward, but only to properties first acquired after the budget-night cut-off. Anyone selling a grandfathered property after 1 July 2026 still uses the old 50% discount.</p>
+
+<h2>The bigger picture</h2>
+<p>The CGT change, on its own, is not as dramatic as the headlines suggest. Cost base indexation roughly approximates a 50% discount over normal Australian inflation cycles for long-held property. The 30% minimum tax mainly affects lower-income investors and retirees. For most middle-and-higher-income investors holding for the long term, the difference is moderate.</p>
+<p>The combined impact with the negative gearing change is what shifts the investment landscape. Together, they redirect the next generation of investor capital toward new supply and reward yield-focused, long-hold strategies. Australian property remains a viable, often excellent investment — but the rules of the game have changed. Investors who adapt their approach to the new incentive structure will continue to do well. Those who rely on strategies that worked under the old rules without adjustment will not.</p>`,
+    coverImage: "/images/blog/cover-cgt-changes-2026-budget.jpg",
+    author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
+    category: "News",
+    tags: [
+      "capital gains tax",
+      "cgt",
+      "federal budget 2026",
+      "property investors",
+      "tax",
+      "investment property",
+      "2026",
+    ],
+    publishedAt: "2026-05-13",
+    readingTime: 14,
   },
 ];
