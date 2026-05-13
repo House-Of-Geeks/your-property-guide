@@ -17,7 +17,8 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
     "sync": "tsx scripts/sync/run.ts",
-    "audit:images": "tsx scripts/audit-image-urls.ts"
+    "audit:images": "tsx scripts/audit-image-urls.ts",
+    "publish:blogs": "node scripts/publish-blogs.mjs"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
