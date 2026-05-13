@@ -108,11 +108,11 @@ async function safeQuery<T>(label: string, fallback: T, fn: () => Promise<T>): P
   try {
     return await fn();
   } catch (err) {
+    const code = (err as { code?: string } | null)?.code;
     const msg = err instanceof Error ? err.message : String(err);
-    if (/relation .* does not exist|table .* not found|P2021/i.test(msg)) {
+    if (code === "P2021" || /relation .* does not exist|table .* (not found|does not exist)/i.test(msg)) {
       return fallback;
     }
-    // Re-throw anything else — DB outage, query error, etc. should surface.
     console.error(`[best-deal-service] ${label} failed:`, msg);
     throw err;
   }
