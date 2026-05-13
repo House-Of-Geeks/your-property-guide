@@ -66,6 +66,36 @@ const getAddress = cache((slug: string) =>
   db.propertyAddress.findUnique({ where: { slug } }),
 );
 
+// Cheap data-presence probe used by generateMetadata to decide whether the
+// address has any first-party content worth indexing. Three indexed
+// findFirst calls in parallel, ~10-30ms total on the empty case (which is
+// the dominant case across ~15.6M G-NAF rows).
+//
+// React `cache()` ensures we only run this once per request — the page
+// body re-uses the same in-flight promise rather than firing the queries
+// again. So this adds a probe to generateMetadata without adding work to
+// the page render.
+const getAddressDataSignals = cache(async (address: { id: string; streetName: string | null; postcode: string; state: string }) => {
+  const [overlay, sale, listing] = await Promise.all([
+    db.propertyOverlay.findFirst({ where: { addressId: address.id }, select: { id: true } }),
+    db.propertySale.findFirst({ where: { addressId: address.id, matchConfidence: "exact" }, select: { id: true } }),
+    db.property.findFirst({
+      where: {
+        addressStreet: { contains: address.streetName ?? "", mode: "insensitive" },
+        addressPostcode: address.postcode,
+        addressState: address.state,
+      },
+      select: { id: true },
+    }),
+  ]);
+  return {
+    hasOverlay: !!overlay,
+    hasSale: !!sale,
+    hasListing: !!listing,
+    hasAnyData: !!(overlay || sale || listing),
+  };
+});
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const address = await getAddress(slug);
@@ -74,12 +104,25 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const addressDisplay = address.addressFull.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
   const title = `${addressDisplay}, Property Profile`;
   const description = `View property details, listing history, suburb stats, and nearby properties for ${addressDisplay}.`;
+
+  // ~15.6M G-NAF addresses are exposed under this route, but only a sliver
+  // have any first-party data (listings, sale history, or parcel overlays).
+  // Returning noindex for the empty ones tells Google these aren't worth
+  // crawling, so the bot traffic that's currently burning function-hours
+  // on cold renders should fall off over weeks. Users who land directly
+  // still get the page rendered (with suburb context); we just stop
+  // soliciting search traffic for them.
+  const signals = await getAddressDataSignals(address);
+
   return {
     title,
     description,
     alternates: { canonical: `${SITE_URL}/property/${slug}` },
     openGraph: { url: `${SITE_URL}/property/${slug}`, title, description, type: "website" },
     twitter: { card: "summary_large_image" },
+    robots: signals.hasAnyData
+      ? undefined
+      : { index: false, follow: true, googleBot: { index: false, follow: true } },
   };
 }
 

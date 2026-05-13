@@ -17,6 +17,25 @@ const STATE_ORDER = ["ACT", "NSW", "NT", "OT", "QLD", "SA", "TAS", "VIC", "WA"];
 
 type SitemapEntry = { state: string; page: number };
 
+// Sitemap only emits addresses that have at least one first-party data
+// signal (parcel overlay, exact-match VG sale, or an active listing on the
+// same street/postcode). The full G-NAF table has ~15.6M rows but only a
+// tiny fraction have data worth indexing; emitting the rest just invites
+// crawler traffic that pays full function-duration cost for an effectively
+// empty page. The property page itself ships `noindex` for the same
+// addresses (see generateMetadata in [slug]/page.tsx), so the two signals
+// reinforce each other.
+//
+// Cache key bumped to :v2 so the old cached index (with the full 15M set)
+// is invalidated and rebuilt on next request.
+const ADDRESS_WITH_DATA_FILTER = `
+  ("suburbSlug" IS NOT NULL)
+  AND (
+    EXISTS (SELECT 1 FROM "PropertyOverlay" po WHERE po."addressId" = "PropertyAddress".id)
+    OR EXISTS (SELECT 1 FROM "PropertySale" ps WHERE ps."addressId" = "PropertyAddress".id AND ps."matchConfidence" = 'exact')
+  )
+`;
+
 // 24h-cached lookup of how the property sitemaps paginate. Used both by
 // generateSitemaps (to enumerate IDs) and the default function (to map
 // id → state+page).
@@ -26,6 +45,10 @@ const getSitemapIndex = unstable_cache(
       SELECT state, COUNT(*) AS cnt
       FROM "PropertyAddress"
       WHERE "suburbSlug" IS NOT NULL
+        AND (
+          EXISTS (SELECT 1 FROM "PropertyOverlay" po WHERE po."addressId" = "PropertyAddress".id)
+          OR EXISTS (SELECT 1 FROM "PropertySale" ps WHERE ps."addressId" = "PropertyAddress".id AND ps."matchConfidence" = 'exact')
+        )
       GROUP BY state
     `;
     const countMap = new Map(counts.map((r) => [r.state, Number(r.cnt)]));
@@ -41,32 +64,36 @@ const getSitemapIndex = unstable_cache(
     }
     return index;
   },
-  ["sitemap-property-index:v1"],
+  ["sitemap-property-index:v2"],
   { revalidate: 86400, tags: ["sitemap-property"] },
 );
 
+// Raw SQL paged fetch with the same data-signal filter as the index. Kept
+// as a $queryRaw so the WHERE clause stays in lockstep with the counts.
 const getPagedEntries = unstable_cache(
   async (state: string, page: number): Promise<MetadataRoute.Sitemap> => {
-    const addresses = await db.propertyAddress.findMany({
-      where: { state, suburbSlug: { not: null } },
-      select: { slug: true, updatedAt: true },
-      skip: page * PAGE_SIZE,
-      take: PAGE_SIZE,
-      // Order by suburbSlug so crawlers receive URLs clustered by suburb.
-      // Most crawlers process the sitemap roughly in order, letting the
-      // suburb-data cache (property-page-suburb-cache.ts) serve cached
-      // answers instead of re-querying the DB per property.
-      orderBy: [{ suburbSlug: "asc" }, { id: "asc" }],
-    });
-
-    return addresses.map((a) => ({
+    const offset = page * PAGE_SIZE;
+    const rows = await db.$queryRawUnsafe<{ slug: string; updatedAt: Date }[]>(
+      `
+        SELECT slug, "updatedAt"
+        FROM "PropertyAddress"
+        WHERE state = $1
+          AND ${ADDRESS_WITH_DATA_FILTER}
+        ORDER BY "suburbSlug" ASC, id ASC
+        LIMIT $2 OFFSET $3
+      `,
+      state,
+      PAGE_SIZE,
+      offset,
+    );
+    return rows.map((a) => ({
       url: `${SITE_URL}/property/${a.slug}`,
       lastModified: a.updatedAt,
       changeFrequency: "monthly" as const,
       priority: 0.5,
     }));
   },
-  ["sitemap-property-page:v1"],
+  ["sitemap-property-page:v2"],
   { revalidate: 86400, tags: ["sitemap-property"] },
 );
 

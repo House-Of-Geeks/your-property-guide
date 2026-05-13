@@ -60,20 +60,25 @@ export default async function SchoolPage({ params, searchParams }: SchoolPagePro
   const school = await getSchoolBySlug(slug);
   if (!school) notFound();
 
-  // Nearby schools in the same suburb for compare links
-  const nearbySchools = await getSchoolsInSuburb(school.suburbId, school.acaraId ?? undefined);
-
   const listingType = (mode === "rent" ? "rent" : mode === "sold" ? "sold" : "buy") as "buy" | "rent" | "sold";
-  let properties = await getProperties({
-    listingType,
-    suburb: school.suburb.slug,
-    propertyType: propertyType as any,
-    minPrice: minPrice ? Number(minPrice) : undefined,
-    maxPrice: maxPrice ? Number(maxPrice) : undefined,
-    minBeds: minBeds ? Number(minBeds) : undefined,
-    minBaths: minBaths ? Number(minBaths) : undefined,
-    minCars: minCars ? Number(minCars) : undefined,
-  });
+
+  // Both queries only need data from `school`, neither depends on the other,
+  // so they run concurrently to save a DB round-trip of latency per render.
+  // searchParams keeps the route dynamic; this is purely a per-render speedup.
+  const [nearbySchools, propertiesResult] = await Promise.all([
+    getSchoolsInSuburb(school.suburbId, school.acaraId ?? undefined),
+    getProperties({
+      listingType,
+      suburb: school.suburb.slug,
+      propertyType: propertyType as any,
+      minPrice: minPrice ? Number(minPrice) : undefined,
+      maxPrice: maxPrice ? Number(maxPrice) : undefined,
+      minBeds: minBeds ? Number(minBeds) : undefined,
+      minBaths: minBaths ? Number(minBaths) : undefined,
+      minCars: minCars ? Number(minCars) : undefined,
+    }),
+  ]);
+  let properties = propertiesResult;
 
   // Sort in-memory
   if (sort === "newest") {
