@@ -4,6 +4,7 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
+  MatchCTA,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -331,6 +332,8 @@ export default function FixedVsVariableRateGuidePage() {
           where breaking a fixed loan is essentially free.
         </p>
       </Callout>
+
+      <MatchCTA kind="mortgage-broker" />
 
       <h2 id="questions">Questions to ask before fixing your rate</h2>
       <p>Before committing to a fixed rate, consider:</p>

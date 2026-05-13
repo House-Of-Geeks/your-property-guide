@@ -8,10 +8,10 @@ import { TrustStrip } from "@/components/journey";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `About ${SITE_NAME}`,
-  description: "What we are, what we won't do, and how we make money. Plain English from the people building Your Property Guide.",
+  title: `About ${SITE_NAME} — Australia's property reference`,
+  description: "Our charter, ownership, editorial standards and correction policy. What we publish, who writes it, and how we make money. Plain English from the people behind Your Property Guide.",
   alternates: { canonical: `${SITE_URL}/about` },
-  openGraph: { url: `${SITE_URL}/about`, title: `About ${SITE_NAME}`, description: "What we are, what we won't do, and how we make money.", type: "website" },
+  openGraph: { url: `${SITE_URL}/about`, title: `About ${SITE_NAME}`, description: "Our charter, ownership, editorial standards and correction policy.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
@@ -60,14 +60,16 @@ export default function AboutPage() {
           </div>
 
           <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
-            About {SITE_NAME}
+            Australia&rsquo;s property reference
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-4xl">
-            We&rsquo;re building the property research tool we&rsquo;d want our <span className="italic text-primary">own family to use</span>.
+            The property reference we&rsquo;d want our <span className="italic text-primary">own family to use</span>.
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            Free suburb data, plain-English guides, and free calculators.
-            Education first. No sign-up gate, no pushy CTAs, no agenda.
+            Plain-English guides for every angle of Australian property, suburb-by-suburb
+            data on every Australian suburb, calculators for every number that matters,
+            and one vetted specialist when you&rsquo;re ready. Education first. No sign-up
+            gate, no pushy CTAs, no agenda.
           </p>
         </div>
       </section>
@@ -177,6 +179,66 @@ export default function AboutPage() {
             >
               Or read how matching works
             </Link>
+          </div>
+
+          {/* Ownership & funding — explicit anchor for the JSON-LD
+              ownershipFundingInfo policy URL. Plain-English ownership
+              statement for E-E-A-T trust signals. */}
+          <div id="ownership-funding" className="mt-12 pt-10 border-t border-line scroll-mt-24">
+            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              Ownership &amp; funding
+            </p>
+            <h3 className="font-display text-2xl text-ink leading-tight mb-4">
+              Who owns Your Property Guide, and where the money comes from.
+            </h3>
+            <div className="prose-ypg">
+              <p>
+                Your Property Guide is owned and operated by Profit Geeks
+                Pty Ltd, an Australian-registered private company. We&rsquo;re
+                independently funded &mdash; no venture capital, no media-group
+                ownership, no real estate franchise or aggregator behind the
+                scenes.
+              </p>
+              <p>
+                100% of our revenue comes from referral fees paid by partner
+                agents, brokers, conveyancers and accountants <em>only</em>{" "}
+                when matched work goes ahead. No advertising. No paid placements
+                in editorial. No fees from any party we wouldn&rsquo;t
+                recommend to our own family. Partner relationships are
+                disclosed on every introduction and on every Best Deal
+                listing.
+              </p>
+            </div>
+          </div>
+
+          {/* Coverage & inclusivity — anchor for diversityPolicy and
+              missionCoveragePrioritiesPolicy. Plain statement of who we
+              cover and how we decide what to publish. */}
+          <div id="coverage" className="mt-10 pt-10 border-t border-line scroll-mt-24">
+            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              Coverage &amp; inclusivity
+            </p>
+            <h3 className="font-display text-2xl text-ink leading-tight mb-4">
+              Who we write for, and how we decide what to publish.
+            </h3>
+            <div className="prose-ypg">
+              <p>
+                We write for every Australian engaging with residential
+                property &mdash; first home buyers, upgraders, downsizers,
+                sellers, investors, renovators and renters. Every guide is
+                tested for plain-English accessibility (no jargon left
+                unexplained), and we&rsquo;re explicit when advice differs by
+                state, by age, by income, or by family situation.
+              </p>
+              <p>
+                Our editorial priorities are set by reader search demand
+                (what Australians are actually looking up) and topic
+                under-coverage in existing Australian property media
+                (questions buyers ask their broker and don&rsquo;t find
+                published anywhere). Our editor reviews coverage gaps
+                quarterly and commissions new guides against them.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -348,7 +410,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Editorial methodology */}
+      {/* Editorial methodology — anchor referenced by JSON-LD
+          publishingPrinciples + ethicsPolicy URLs. */}
       <section id="methodology" className="bg-surface-raised scroll-mt-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16">
           <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
@@ -359,29 +422,69 @@ export default function AboutPage() {
           </h2>
           <div className="prose-ypg">
             <p>
-              Every guide goes through the same three steps: a writer drafts
-              against a published outline, a domain reviewer (broker, agent, or
-              accountant depending on topic) sanity-checks the technical claims,
-              and the editor signs off on plain-English clarity.
+              Every guide goes through the same three steps: a named writer
+              drafts against a published outline, a domain reviewer (broker,
+              agent, accountant or conveyancer depending on topic)
+              sanity-checks the technical claims, and the editor signs off on
+              plain-English clarity. Drafts are not published until all three
+              steps are complete and signed off.
             </p>
             <p>
               <strong>Sources.</strong> Suburb data is sourced from state
               Valuer-General offices, ABS Census, Geoscience Australia,
-              OpenStreetMap, the Bureau of Meteorology, ACARA, and state police
-              open data. Every figure on a suburb page carries a tooltip showing
-              the source and the as-of date.
+              OpenStreetMap, the Bureau of Meteorology, ACARA, state police
+              open data, and state planning portals. Every figure on a suburb
+              page carries a tooltip showing the source and the as-of date.
+              Guides cite primary sources (ATO rulings, state legislation,
+              APRA/ASIC regulatory guidance, MFAA / HIA / Master Builders
+              industry data) and never opinion blogs.
+            </p>
+            <p>
+              <strong>AI usage.</strong> We don&rsquo;t publish AI-generated
+              copy. AI may be used for research summarisation and outline
+              drafting by the editor, but every word that ships through our
+              site is written and edited by named humans.
             </p>
             <p>
               <strong>Updates.</strong> Guides are reviewed at least annually,
               and immediately after any material law or scheme change (state
-              budget changes, Home Guarantee Scheme rounds, RBA rate decisions).
-              Each guide shows the published date and the last-updated date.
+              budget changes, Home Guarantee Scheme rounds, RBA rate
+              decisions, ATO determinations). Each guide shows the published
+              date and the last-reviewed date in the byline.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Corrections policy — explicit anchor for actionableFeedbackPolicy
+          JSON-LD URL. Sits alongside methodology so a corrections claim has
+          its own findable section. */}
+      <section id="corrections" className="bg-surface-warm border-t border-line-warm scroll-mt-16">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16">
+          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+            Corrections &amp; feedback
+          </p>
+          <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl mb-6">
+            If something&rsquo;s wrong, we want to know.
+          </h2>
+          <div className="prose-ypg">
             <p>
-              <strong>Corrections.</strong> If you spot anything inaccurate,
-              email <a href="mailto:andy@theandylife.com">andy@theandylife.com</a>{" "}
-              and we&rsquo;ll fix it within a week. We log corrections in the
-              guide footer.
+              If you spot a factual error, a stale figure, or a number that
+              doesn&rsquo;t match its source, email{" "}
+              <a href="mailto:andy@theandylife.com">andy@theandylife.com</a>.
+              The editor reads every correction request and we commit to:
+            </p>
+            <ul>
+              <li><strong>Within 48 hours:</strong> acknowledgement of the report and an honest first read of whether we agree.</li>
+              <li><strong>Within 7 days:</strong> a correction live on the page if we agree, or a written explanation if we don&rsquo;t.</li>
+              <li><strong>On the page:</strong> material corrections are noted in the guide footer with the date and a short description of what changed.</li>
+              <li><strong>No retaliation:</strong> if you flag a correction we don&rsquo;t end up making, we&rsquo;ll still update the public last-reviewed date so other readers know the page has been re-checked.</li>
+            </ul>
+            <p>
+              For broader feedback &mdash; topics we should cover, gaps in our
+              guides, suggestions for the data &mdash;{" "}
+              <Link href="/contact">use our contact form</Link>{" "}
+              or email the editor directly.
             </p>
           </div>
         </div>

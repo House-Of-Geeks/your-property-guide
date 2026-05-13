@@ -21,6 +21,7 @@ model User {
   accounts        Account[]
   sessions        Session[]
   savedProperties SavedProperty[]
+  reviewedDeals   BestDeal[]      @relation("BestDealReviewer")
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 }
@@ -141,6 +142,7 @@ model Agent {
   properties   Property[]            @relation("PropertyPrimaryAgent")
   coProperties Property[]            @relation("PropertyCoAgent")
   packages     HouseAndLandPackage[]
+  bestDeals    BestDeal[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -263,6 +265,7 @@ model Suburb {
   schools    School[]
   properties Property[]
   packages   HouseAndLandPackage[]
+  bestDeals  BestDeal[]
 
   // Centroid (from postcode CSV — used for proximity queries)
   lat Float?
@@ -592,6 +595,96 @@ model Lead {
   @@index([agencyId])
   @@index([agentId])
   @@index([createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// Best Deal (partner-submitted, staff-moderated featured property)
+//
+// Vetted partner agents submit a small number of high-value "Best Deal"
+// properties. Every deal is reviewed by staff before going live. Surfaces
+// on /best-deals, on persona hubs, and as a single-card slot inside
+// relevant guides. We are paid by the partner agent only when matched
+// work goes ahead — buyers never pay.
+// ---------------------------------------------------------------------------
+model BestDeal {
+  id String @id @default(cuid())
+
+  // Submitter
+  partnerAgentId String
+
+  // Lifecycle status:
+  //   "draft"          — agent is still editing, not submitted
+  //   "pending_review" — submitted, awaiting staff approval
+  //   "live"           — approved, publicly visible
+  //   "expired"        — past expiresAt; cron flips this nightly
+  //   "rejected"       — staff declined; rejectionReason explains why
+  status String @default("draft")
+
+  // Listing basics
+  title    String
+  headline String // 1-line pitch shown on cards
+  pitch    String // 2-3 sentence "why this is a good deal" body, agent's own words
+
+  // propertyType: "house" | "apartment" | "townhouse" | "land" | "commercial"
+  propertyType String
+  suburbSlug   String // FK to Suburb.slug
+  state        String
+  postcode     String
+  bedrooms     Int?
+  bathrooms    Int?
+  carSpaces    Int?
+  landArea     Int? // m²
+  buildArea    Int? // m²
+
+  // Price guidance — either a range, a free-text guide ("Offers over $X"),
+  // or both. Cards render priceText if present, else format the range.
+  priceMin  Int?
+  priceMax  Int?
+  priceText String?
+
+  // Media
+  heroImage          String
+  gallery            String[] @default([])
+  floorplanUrl       String?
+  externalListingUrl String? // optional outbound link to agent's own listing
+
+  // Targeting — which audience segments this deal fits. Drives contextual
+  // filtering on persona hubs and in-guide slots.
+  // Values from: "first-home" | "investor" | "downsizer" | "upgrader" | "renovator"
+  dealTypes String[] @default([])
+  tags      String[] @default([]) // free-form: "sub-median", "high-yield", "auction-this-weekend", etc.
+
+  // Lifecycle dates
+  publishAt DateTime?
+  expiresAt DateTime // default 30 days; agent can request shorter
+  lastReviewedBy  String? // FK to User.id (staff)
+  lastReviewedAt  DateTime?
+  rejectionReason String?
+
+  // Compliance — partner disclosure rendered with every public surface.
+  // agentCommissionDisclosed gates publication; rejection reason
+  // includes this if not affirmed at submit time.
+  disclosureText           String
+  agentCommissionDisclosed Boolean @default(false)
+
+  // Lightweight engagement tracking (full analytics live in GA4)
+  viewCount  Int @default(0)
+  clickCount Int @default(0)
+
+  partnerAgent Agent  @relation(fields: [partnerAgentId], references: [id])
+  suburb       Suburb @relation(fields: [suburbSlug], references: [slug])
+  reviewedBy   User?  @relation("BestDealReviewer", fields: [lastReviewedBy], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Indexes drive the public-listing query (status + publishAt), the
+  // per-suburb / per-state filters, the partner agent's dashboard, and
+  // the nightly expiry cron.
+  @@index([status, publishAt])
+  @@index([state, suburbSlug])
+  @@index([partnerAgentId])
+  @@index([expiresAt])
 }
 
 // ---------------------------------------------------------------------------

@@ -1,4 +1,5 @@
 export {
+  JsonLd,
   OrganizationJsonLd,
   PropertyJsonLd,
   AgentJsonLd,

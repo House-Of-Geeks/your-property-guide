@@ -18,6 +18,7 @@
     "db:studio": "prisma studio",
     "sync": "tsx scripts/sync/run.ts",
     "audit:images": "tsx scripts/audit-image-urls.ts",
+    "seo:audit": "tsx scripts/seo/audit.ts",
     "publish:blogs": "node scripts/publish-blogs.mjs"
   },
   "prisma": {

@@ -4,6 +4,7 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
+  MatchCTA,
   GuideGlossaryRail,
   type GuideFrontmatter,
   type GuideTOCEntry,
@@ -354,6 +355,8 @@ export default function NegativeGearingPage() {
         investment strategy that remains viable even if the tax benefits were
         reduced. Do not invest solely on the basis of tax deductions.
       </p>
+
+      <MatchCTA kind="accountant" />
 
       <h2 id="tax-return">Tax return obligations</h2>
       <p>If you own a rental property, you must:</p>

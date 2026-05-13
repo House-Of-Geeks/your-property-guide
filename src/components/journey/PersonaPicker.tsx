@@ -29,7 +29,7 @@ export function PersonaPicker({ className, highlightActive = true, variant = "gr
     return (
       <div className={className}>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {PERSONAS.map((p) => {
+          {PERSONAS.filter((p) => p.featuredOnHomepage).map((p) => {
             const isActive = highlightActive && isHydrated && currentPersona === p.id;
             return (
               <button

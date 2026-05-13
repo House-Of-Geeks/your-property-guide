@@ -13,6 +13,7 @@ const PERSONA_LABEL: Record<string, string> = {
   "selling":    "Selling your home",
   "upgrading":  "Moving home",
   "investing":  "Investor",
+  "renovating": "Renovating",
   "renters":    "Renters",
 };
 

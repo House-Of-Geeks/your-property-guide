@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
+  MatchCTA,
   MiniStampDutyEmbed,
   type GuideFrontmatter,
   type GuideTOCEntry,
@@ -287,6 +287,8 @@ export default function ConveyancingGuidePage() {
           favours engaging a professional.
         </li>
       </ul>
+
+      <MatchCTA kind="conveyancer" />
 
       <h2 id="red-flags">Red flags in contracts</h2>
       <p>A good conveyancer will flag these issues, but it helps to know what to watch for:</p>

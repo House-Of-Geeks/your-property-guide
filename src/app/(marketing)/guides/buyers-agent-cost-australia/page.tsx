@@ -3,6 +3,7 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
+  MatchCTA,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -116,14 +117,14 @@ export default function BuyersAgentCostGuide() {
       <Callout variant="info" title="Buyer's agents work for you, not the seller">
         <p>
           A selling agent is paid by the vendor and acts in their interest. A
-          buyer's agent is paid by you and acts in yours. Different role,
-          different fee structure, different incentives, don't confuse the two.
+          buyer&rsquo;s agent is paid by you and acts in yours. Different role,
+          different fee structure, different incentives, don&rsquo;t confuse the two.
         </p>
       </Callout>
 
-      <h2 id="what-they-do">What buyer's agents actually do</h2>
+      <h2 id="what-they-do">What buyer&rsquo;s agents actually do</h2>
       <p className="lead">
-        A full-service buyer's agent runs the purchase from brief to settlement:
+        A full-service buyer&rsquo;s agent runs the purchase from brief to settlement:
         suburb research, shortlisting, due diligence, contract review,
         negotiation, and (often) bidding at auction. A bidding-only service is
         narrower, they show up on auction day and bid to your maximum.
@@ -157,7 +158,7 @@ export default function BuyersAgentCostGuide() {
       <p>
         Some firms set fixed fees in price brackets, e.g. $12,000 up to $1.2M,
         $16,000 from $1.2M to $1.8M. Cleaner than a flat percentage and avoids
-        the "incentive to overpay" problem.
+        the &ldquo;incentive to overpay&rdquo; problem.
       </p>
 
       <h3>Bidding only</h3>
@@ -176,7 +177,7 @@ export default function BuyersAgentCostGuide() {
       <h2 id="by-service">Cost by service tier</h2>
       <ul>
         <li><strong>Auction bidding only:</strong> $500 to $1,500 per auction</li>
-        <li><strong>Negotiation only (you've found the property):</strong> $2,000 to $5,000</li>
+        <li><strong>Negotiation only (you&rsquo;ve found the property):</strong> $2,000 to $5,000</li>
         <li><strong>Shortlist + inspect (no negotiation):</strong> $5,000 to $9,000</li>
         <li><strong>Full search to settlement:</strong> $10,000 to $25,000+</li>
         <li><strong>Premium / prestige:</strong> 2% to 3% of purchase price</li>
@@ -194,51 +195,53 @@ export default function BuyersAgentCostGuide() {
         <li><strong>Regional / interstate:</strong> Add 10% to 25% if the agent is travelling or working outside their home market.</li>
       </ul>
 
-      <h2 id="is-it-worth-it">When a buyer's agent is worth it</h2>
+      <h2 id="is-it-worth-it">When a buyer&rsquo;s agent is worth it</h2>
 
       <h3>Strong fit</h3>
       <ul>
-        <li>You're buying interstate and don't know the local market.</li>
-        <li>You're a time-poor professional and the search itself is the bottleneck.</li>
-        <li>You're an investor where access to off-market stock matters.</li>
-        <li>You've lost two or three auctions and need professional bidding to break the streak.</li>
+        <li>You&rsquo;re buying interstate and don&rsquo;t know the local market.</li>
+        <li>You&rsquo;re a time-poor professional and the search itself is the bottleneck.</li>
+        <li>You&rsquo;re an investor where access to off-market stock matters.</li>
+        <li>You&rsquo;ve lost two or three auctions and need professional bidding to break the streak.</li>
       </ul>
 
       <h3>Weaker fit</h3>
       <ul>
-        <li>You've already bought in this suburb before and know the comps cold.</li>
+        <li>You&rsquo;ve already bought in this suburb before and know the comps cold.</li>
         <li>The market is soft and stock is plentiful, negotiation leverage already favours buyers.</li>
-        <li>You're buying near the bottom of the market ($400K to $600K) where the fixed fee swallows a large slice of your savings.</li>
+        <li>You&rsquo;re buying near the bottom of the market ($400K to $600K) where the fixed fee swallows a large slice of your savings.</li>
       </ul>
 
       <Callout variant="warning" title="Watch for hidden referrals">
         <p>
-          Some "free" buyer's agents are paid by selling agents or developers
+          Some &ldquo;free&rdquo; buyer&rsquo;s agents are paid by selling agents or developers
           for steering buyers their way. The fee feels free to you but you may
           end up looking only at properties from a narrow seller pool. Read the
           engagement letter for any third-party commissions.
         </p>
       </Callout>
 
+      <MatchCTA kind="buyers-agent" />
+
       <h2 id="what-to-ask">What to ask before signing</h2>
       <ol>
-        <li>What's your fee, and is it fixed, percentage, or capped?</li>
-        <li>What's included in the fee (inspections, reports, contract review)?</li>
+        <li>What&rsquo;s your fee, and is it fixed, percentage, or capped?</li>
+        <li>What&rsquo;s included in the fee (inspections, reports, contract review)?</li>
         <li>How many properties have you transacted in my target suburb in the last 12 months?</li>
         <li>Are you taking any commission from selling agents or developers? If so, on which properties?</li>
-        <li>What's the engagement term, and what happens if I withdraw?</li>
+        <li>What&rsquo;s the engagement term, and what happens if I withdraw?</li>
         <li>Will you bid at auction, and is that included or extra?</li>
         <li>Can I see your three most recent client outcomes (price paid vs comparable sales)?</li>
       </ol>
 
-      <h2 id="vs-selling-agent">Buyer's agent vs selling agent</h2>
+      <h2 id="vs-selling-agent">Buyer&rsquo;s agent vs selling agent</h2>
       <p>
-        A selling agent (what most people just call "the agent") is hired by
-        the vendor to market and sell their property. They're paid commission
+        A selling agent (what most people just call &ldquo;the agent&rdquo;) is hired by
+        the vendor to market and sell their property. They&rsquo;re paid commission
         when the property sells, on a contract usually capped at 6 to 12 weeks.
       </p>
       <p>
-        A buyer's agent is hired by you, the buyer. They get paid whether you
+        A buyer&rsquo;s agent is hired by you, the buyer. They get paid whether you
         buy or not (depending on the engagement structure), and have a fiduciary
         obligation to you. The two roles never act for the same client at once.
       </p>
@@ -254,7 +257,7 @@ export default function BuyersAgentCostGuide() {
           recent transactions.
         </li>
         <li>
-          Cross-check their licence number on your state's real estate licensing
+          Cross-check their licence number on your state&rsquo;s real estate licensing
           register.
         </li>
         <li>

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { makeSchoolSlug } from "@/lib/utils/school";
-import type { SuggestLocation, SuggestSchool, SuggestAgency, SuggestProperty, SuggestResponse } from "@/types/suggest";
+import type { SuggestLocation, SuggestSchool, SuggestAgency, SuggestResponse } from "@/types/suggest";
 
 export type { SuggestLocation, SuggestSchool, SuggestAgency, SuggestResponse };
 
@@ -71,44 +71,11 @@ export async function GET(req: NextRequest) {
         LIMIT 10
       `;
 
-  // Property address search, triggered when query starts with a digit (street number).
-  // addressFull has commas ("21 SMITH ST, SUBURB NSW 2000") so we can't do a plain contains.
-  // Instead parse the number + street name from the query and search by component fields.
-  const looksLikeAddress = /^\d/.test(q) && q.length >= 3;
-  let propertiesPromise: Promise<{ slug: string; addressFull: string; locality: string; state: string; postcode: string }[]> =
-    Promise.resolve([]);
+  // The per-address GNAF profile route was removed (we don't pursue
+  // single-address traffic). Returning addresses here would just produce
+  // suggestions that 410 on click, so the address branch is gone.
 
-  if (looksLikeAddress) {
-    const tokens = q.trim().split(/\s+/);
-    // tokens[0] = street number (e.g. "21", "5A", "21/14")
-    // tokens[1] = first word of street name (most distinctive part)
-    const num        = tokens[0];
-    const streetWord = tokens[1] ?? "";
-    // Any remaining tokens may include suburb name, used for client-side re-ranking
-    const localityHint = tokens.slice(2).join(" ").toUpperCase();
-
-    if (streetWord.length >= 2) {
-      // G-NAF stores street names in uppercase. Use startsWith (no leading wildcard)
-      // so Postgres can use the text_pattern_ops index. Normalise input to uppercase.
-      propertiesPromise = db.propertyAddress.findMany({
-        where: {
-          numberFirst: { startsWith: num },
-          streetName:  { startsWith: streetWord.toUpperCase() },
-        },
-        select: { slug: true, addressFull: true, locality: true, state: true, postcode: true },
-        orderBy: { locality: "asc" },
-        take: 10,
-      }).then((rows) => {
-        if (!localityHint) return rows.slice(0, 5);
-        // Rank results that match the locality hint (suburb/state in query) to the top
-        const matched   = rows.filter((r) => localityHint.includes(r.locality.toUpperCase()) || localityHint.includes(r.state.toUpperCase()));
-        const unmatched = rows.filter((r) => !localityHint.includes(r.locality.toUpperCase()) && !localityHint.includes(r.state.toUpperCase()));
-        return [...matched, ...unmatched].slice(0, 5);
-      });
-    }
-  }
-
-  const [locations, rawSchools, rawProperties] = await Promise.all([locationsPromise, schoolsPromise, propertiesPromise]);
+  const [locations, rawSchools] = await Promise.all([locationsPromise, schoolsPromise]);
 
   const schools: SuggestSchool[] = rawSchools.map((s) => ({
     slug:       makeSchoolSlug(s.name, s.acaraId ?? ""),
@@ -119,13 +86,5 @@ export async function GET(req: NextRequest) {
     suburbSlug: s.suburbSlug ?? "",
   }));
 
-  const properties: SuggestProperty[] = rawProperties.map((p) => ({
-    slug:        p.slug,
-    addressFull: p.addressFull.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()).replace(/,\s*/g, ", "),
-    locality:    p.locality.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()),
-    state:       p.state,
-    postcode:    p.postcode,
-  }));
-
-  return NextResponse.json<SuggestResponse>({ locations, schools, agencies: [], properties });
+  return NextResponse.json<SuggestResponse>({ locations, schools, agencies: [], properties: [] });
 }

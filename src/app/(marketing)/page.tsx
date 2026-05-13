@@ -3,28 +3,27 @@ import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { StatsBar } from "@/components/home/StatsBar";
-import { SuburbSpotlight } from "@/components/home/SuburbSpotlight";
 import { LatestGuides } from "@/components/home/LatestGuides";
 import { LatestNews } from "@/components/home/LatestNews";
 import { CapitalCityOutlook } from "@/components/home/CapitalCityOutlook";
 import { NewsletterForm } from "@/components/newsletter/NewsletterForm";
 import { MatchAgent, PersonaPicker, TrustStrip } from "@/components/journey";
+import { BestDealsRail } from "@/components/best-deal";
 import { OrganizationJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 import { HomeSuburbSearch } from "./HomeSuburbSearch";
 
-// ISR, DB-querying services have build-phase guards, so we cache for 24h
-// instead of running a function on every visit. Was force-dynamic; that
-// poisoned cache-control for the entire site.
+// ISR — services have build-phase guards, so we cache for 24h instead of
+// running a function on every visit. Was force-dynamic; that poisoned
+// cache-control for the entire site.
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: `${SITE_NAME} - Property Research, Made Simple`,
+  title: `${SITE_NAME} — Property in Australia, explained.`,
   description: SITE_DESCRIPTION,
   alternates: { canonical: SITE_URL },
   openGraph: {
-    title: `${SITE_NAME} - Property Research, Made Simple`,
+    title: `${SITE_NAME} — Property in Australia, explained.`,
     description: SITE_DESCRIPTION,
     type: "website",
   },
@@ -36,10 +35,11 @@ export default function HomePage() {
     <>
       <OrganizationJsonLd />
 
-      {/* 1. Editorial hero. Identity first; persona picker lives in its own
-          section below so the hero can breathe. */}
+      {/* 1. Editorial hero — education-first, authority-led. Removed the
+            old "Your biggest purchase shouldn't be your worst decision"
+            headline in favour of a positioning that frames us as the
+            reference Australians come to BEFORE they make a property move. */}
       <section className="relative bg-surface-warm overflow-hidden border-b border-line">
-        {/* Decorative contour layer (cartographic feel, low opacity) */}
         <Image
           src="/images/illustrations/contour.svg"
           alt=""
@@ -48,7 +48,6 @@ export default function HomePage() {
           aria-hidden="true"
           className="absolute -right-40 -top-20 w-[1200px] max-w-none opacity-[0.18] pointer-events-none select-none"
         />
-        {/* Decorative street-grid layer in lower left */}
         <Image
           src="/images/illustrations/street-grid.svg"
           alt=""
@@ -60,78 +59,79 @@ export default function HomePage() {
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32">
           <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-6">
-            Independent property research
+            Australia&rsquo;s property reference
           </p>
 
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight mb-8 max-w-5xl text-5xl sm:text-6xl lg:text-7xl">
-            Your biggest purchase{" "}
-            <span className="italic text-primary">shouldn&rsquo;t be your worst decision.</span>
+          <h1 className="font-display text-ink leading-[1.02] tracking-tight mb-8 max-w-5xl text-5xl sm:text-6xl lg:text-7xl">
+            Property in Australia,{" "}
+            <span className="italic text-primary">explained.</span>
           </h1>
 
           <p className="font-sans text-lg sm:text-xl text-ink-muted leading-relaxed max-w-2xl">
-            Independent suburb data, plain-English guides, and the right person on your side.
-            Free, no comparison spam.
+            Plain-English guides for buying, selling, renovating, investing and renting.
+            Suburb-level data on every Australian suburb. One vetted specialist when
+            you&rsquo;re ready. Free, no email gate &mdash; and the first place to read
+            before you make a move.
           </p>
 
-          {/* Hero CTAs, primary points at the match flow (the conversion goal),
-              secondary at suburb research. Flipped from the original which led
-              visitors AWAY from the lead form into a research dead-end. */}
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="#match"
+              href="#personas"
               className="inline-flex items-center gap-2 rounded-full bg-ink text-white hover:bg-primary px-6 py-3 text-sm font-medium transition-colors"
             >
-              Match me with a specialist <span aria-hidden="true">→</span>
+              Start with my situation <span aria-hidden="true">→</span>
             </Link>
             <Link
-              href="/suburbs"
+              href="/guides"
               className="inline-flex items-center gap-2 rounded-full border border-line-strong text-ink hover:border-ink px-6 py-3 text-sm font-medium transition-colors"
             >
-              Browse suburb data
+              Browse the guides
             </Link>
           </div>
 
-          {/* Stat anchor row */}
+          {/* Authority anchor row — published guides, suburbs covered, years,
+                free. Stats lean into editorial breadth rather than data-portal
+                vibes; sets the AI-citation framing (we publish, we don't list). */}
           <div className="mt-12 flex flex-wrap gap-x-10 gap-y-6">
             <div className="flex items-start gap-3">
-              <img src="/images/icons/median.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
+              <Image src="/images/icons/guide.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">60+</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">data points per suburb</p>
+                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">in-depth guides published</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <img src="/images/icons/schools.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
+              <Image src="/images/icons/map.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
+              <div>
+                <p className="font-display text-2xl text-ink leading-none mb-1">9,700+</p>
+                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">Australian suburbs covered</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <Image src="/images/icons/calculator.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">8</p>
                 <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">states &amp; territories</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <img src="/images/icons/calculator.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
-              <div>
-                <p className="font-display text-2xl text-ink leading-none mb-1">38</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">guides &amp; calculators</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <img src="/images/icons/yield.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
+              <Image src="/images/icons/yield.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">$0</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">free, no sign-up</p>
+                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">no paywall, no email gate</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. Persona picker. The IA spine. */}
-      <section className="bg-surface-raised border-b border-line">
+      {/* 2. Persona picker — the IA spine. Hero CTA scrolls here. */}
+      <section id="personas" className="bg-surface-raised border-b border-line scroll-mt-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="grid lg:grid-cols-12 gap-8 mb-10 sm:mb-12">
             <div className="lg:col-span-5">
               <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-4">
-                What brings you here?
+                Where are you in your property journey?
               </p>
               <h2 className="font-display text-ink leading-tight tracking-tight text-4xl sm:text-5xl">
                 Pick your starting point.
@@ -139,8 +139,9 @@ export default function HomePage() {
             </div>
             <div className="lg:col-span-6 lg:col-start-7 flex items-end">
               <p className="font-sans text-base sm:text-lg text-ink-muted leading-relaxed">
-                Every page on the site is built around one of four people. Tell us which one is you and
-                we&rsquo;ll surface the calculators, guides and data you actually need, not the rest.
+                Every page on the site is built around one of four people. Tell us which
+                one is you and we&rsquo;ll surface the guides, calculators and data you
+                actually need — not the rest.
               </p>
             </div>
           </div>
@@ -149,37 +150,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. Suburb search band, editorial split layout */}
-      <section className="relative bg-surface-warm border-b border-line-warm overflow-hidden">
-        <Image
-          src="/images/illustrations/street-grid.svg"
-          alt=""
-          width={400}
-          height={400}
-          aria-hidden="true"
-          className="absolute -right-12 -top-12 w-[360px] opacity-[0.12] pointer-events-none select-none"
-        />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid lg:grid-cols-12 gap-8 items-end">
-            <div className="lg:col-span-5">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
-                Or just look one up
-              </p>
-              <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl mb-3">
-                Search any Australian suburb.
-              </h2>
-              <p className="font-sans text-base text-ink-muted leading-relaxed">
-                Median, growth, schools, walk score, climate. Free, no sign-up, no email gate.
-              </p>
-            </div>
-            <div className="lg:col-span-7">
-              <HomeSuburbSearch />
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* 3. Featured guides — moved here from below LatestNews where it was
+            redundant. Single-instance now: news first (fresh), guides second
+            (evergreen authority). */}
+      <Suspense fallback={null}>
+        <LatestGuides />
+      </Suspense>
 
-      {/* 3.5, New tools rail (quiz + compare + all tools) */}
+      {/* 4. Tools rail (quiz + compare + all tools) */}
       <section className="bg-surface-raised border-b border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid lg:grid-cols-12 gap-8 mb-10">
@@ -252,22 +230,61 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. Real numbers (existing StatsBar) */}
+      {/* 5. Best Deals rail — vetted partner properties. Framed as "when
+            you're ready" rather than as a listings portal. Renders nothing
+            if no live deals exist (no empty rail). */}
       <Suspense fallback={null}>
-        <StatsBar />
+        <BestDealsRail
+          eyebrow="When you're ready to act"
+          heading="Featured opportunities from our vetted partners."
+          body="A small, hand-picked set of properties from partner agents we'd happily put a family member in front of. Each one reviewed by us before going live, and the partner only pays us if matched work goes ahead."
+        />
       </Suspense>
 
-      {/* 5. Suburb spotlight (existing) */}
-      <Suspense fallback={null}>
-        <SuburbSpotlight />
-      </Suspense>
+      {/* 6. Suburb explorer — kept but demoted from the prior near-top
+            position. We still want the suburb tool discoverable, but we
+            shouldn't lead with it (it reads as data-portal positioning). */}
+      <section className="relative bg-surface-warm border-y border-line-warm overflow-hidden">
+        <Image
+          src="/images/illustrations/street-grid.svg"
+          alt=""
+          width={400}
+          height={400}
+          aria-hidden="true"
+          className="absolute -right-12 -top-12 w-[360px] opacity-[0.12] pointer-events-none select-none"
+        />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+          <div className="grid lg:grid-cols-12 gap-8 items-end">
+            <div className="lg:col-span-5">
+              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+                Researching a specific suburb?
+              </p>
+              <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl mb-3">
+                Look it up.
+              </h2>
+              <p className="font-sans text-base text-ink-muted leading-relaxed">
+                Median, growth, schools, walk score, climate, crime. Every Australian
+                suburb. Free, no sign-up, no email gate.
+              </p>
+            </div>
+            <div className="lg:col-span-7">
+              <HomeSuburbSearch />
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* 5.5, Capital city outlook editorial rail */}
+      {/* 7. Capital city outlook — quarterly authoritative read. */}
       <Suspense fallback={null}>
         <CapitalCityOutlook />
       </Suspense>
 
-      {/* 5.7, Newsletter band: editorial mid-page capture */}
+      {/* 8. Latest news — what just changed in property and policy. */}
+      <Suspense fallback={null}>
+        <LatestNews />
+      </Suspense>
+
+      {/* 9. Newsletter band */}
       <section className="bg-surface-warm border-y border-line-warm">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
           <div className="grid lg:grid-cols-12 gap-8 items-end">
@@ -291,26 +308,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5.9, Latest news. Time-sensitive policy / budget / market moves;
-              sits ahead of the evergreen guides block so visitors see what's
-              fresh first. Renders nothing if there are no News-category posts. */}
-      <Suspense fallback={null}>
-        <LatestNews />
-      </Suspense>
-
-      {/* 6. Latest guides (existing) */}
-      <Suspense fallback={null}>
-        <LatestGuides />
-      </Suspense>
-
-      {/* 6.5, Match engine: dark editorial section, the homepage lead trap.
-              Wrapped in Suspense because MatchAgent reads useSearchParams
-              for ?suburb=/?intent= deep-links from suburb pages. */}
+      {/* 10. Match engine — the conversion surface. Reframed eyebrow makes
+              clear this is the "talk to a person" path, not lead capture. */}
       <Suspense fallback={null}>
         <MatchAgent />
       </Suspense>
 
-      {/* 7. Why we're free, editorial closer with decorative contour */}
+      {/* 11. Why we're free — charter. Trust moat. */}
       <section className="relative bg-surface-sunken border-t border-line overflow-hidden">
         <Image
           src="/images/illustrations/contour.svg"
@@ -330,7 +334,7 @@ export default function HomePage() {
             </h2>
             <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-3xl mx-auto">
               Suburb data, guides and calculators are funded by partner agents and brokers, who pay
-              us only when matched work goes ahead.
+              us only when matched work goes ahead. No paywall, no resale, every match disclosed.
             </p>
           </div>
 

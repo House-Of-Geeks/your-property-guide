@@ -27,8 +27,6 @@ import { Badge, Button } from "@/components/ui";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getPropertiesBySuburb } from "@/lib/services/property-service";
 import { getSuburbCrimeWithLgaFallback } from "@/lib/services/data-freshness";
-import { db } from "@/lib/db";
-import { streetSlug } from "@/lib/utils/slug";
 import { suburbTitle, suburbDescription } from "@/lib/utils/seo";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
@@ -80,15 +78,9 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) notFound();
 
-  const [properties, crimeStat, streets] = await Promise.all([
+  const [properties, crimeStat] = await Promise.all([
     getPropertiesBySuburb(slug, 6),
     getSuburbCrimeWithLgaFallback(slug, suburb.state, suburb.region),
-    db.propertyAddress.groupBy({
-      by: ["streetName", "streetType", "streetSuffix"],
-      where: { suburbSlug: slug },
-      _count: { id: true },
-      orderBy: { streetName: "asc" },
-    }),
   ]);
 
   return (
@@ -487,19 +479,6 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           />
         </section>
 
-        {/* Streets, with alphabet jump-bar */}
-        {streets.length > 0 && (
-          <section id="streets" className="scroll-mt-16">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
-              Browse
-            </p>
-            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-              Streets in {suburb.name}.
-            </h2>
-            <StreetsList suburbSlug={suburb.slug} streets={streets} />
-          </section>
-        )}
-
         {/* Properties */}
         {properties.length > 0 && (
           <section className="scroll-mt-16">
@@ -619,67 +598,3 @@ function MetricCard({ label, value }: { label: string; value: string }) {
   );
 }
 
-interface StreetGroup {
-  streetName: string;
-  streetType: string | null;
-  streetSuffix: string | null;
-}
-
-function StreetsList({ suburbSlug, streets }: { suburbSlug: string; streets: StreetGroup[] }) {
-  // Group streets alphabetically by first letter so users can scan
-  const grouped = new Map<string, { name: string; sSlug: string }[]>();
-  for (const s of streets) {
-    const display = [s.streetName, s.streetType, s.streetSuffix]
-      .filter(Boolean)
-      .join(" ")
-      .toLowerCase()
-      .replace(/\b\w/g, (c) => c.toUpperCase());
-    const letter = (s.streetName?.[0] ?? "#").toUpperCase();
-    const sSlug = streetSlug(s.streetName, s.streetType, s.streetSuffix);
-    const arr = grouped.get(letter) ?? [];
-    arr.push({ name: display, sSlug });
-    grouped.set(letter, arr);
-  }
-  const letters = Array.from(grouped.keys()).sort();
-
-  return (
-    <>
-      {/* Alphabet jump bar */}
-      <div className="flex flex-wrap items-center gap-1 mb-6 pb-4 border-b border-line">
-        <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mr-3">
-          Jump to
-        </p>
-        {letters.map((l) => (
-          <a
-            key={l}
-            href={`#streets-${l}`}
-            className="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-display text-ink hover:bg-surface-warm hover:text-primary transition-colors"
-          >
-            {l}
-          </a>
-        ))}
-      </div>
-      <div className="space-y-6">
-        {letters.map((l) => {
-          const items = grouped.get(l)!;
-          return (
-            <div key={l} id={`streets-${l}`} className="grid lg:grid-cols-12 gap-4 scroll-mt-16">
-              <p className="lg:col-span-1 font-display italic text-cta text-3xl leading-none">{l}</p>
-              <div className="lg:col-span-11 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-1.5">
-                {items.map((item) => (
-                  <Link
-                    key={item.sSlug}
-                    href={`/suburbs/${suburbSlug}/${item.sSlug}`}
-                    className="text-sm text-ink-muted hover:text-ink truncate py-1"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </>
-  );
-}

@@ -4,6 +4,7 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
+  MatchCTA,
   MiniStampDutyEmbed,
   GuideSuburbSearch,
   GuideGlossaryRail,
@@ -326,6 +327,8 @@ export default function BuyingPropertyAustraliaPage() {
         See our <Link href="/guides/property-auction-guide">Property Auction Guide</Link>{" "}
         for the full mechanics.
       </p>
+
+      <MatchCTA kind="buyers-agent" />
 
       <h2 id="step-7-inspection">Step 7: Building and pest inspection, why it&rsquo;s essential</h2>
       <p>

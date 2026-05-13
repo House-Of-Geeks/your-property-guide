@@ -4,6 +4,7 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
+  MatchCTA,
   MiniStampDutyEmbed,
   type GuideFrontmatter,
   type GuideTOCEntry,
@@ -324,6 +325,8 @@ export default function FirstHomeBuyerGuidePage() {
         licenced (check ASIC&rsquo;s register) and ask them to explain how they are
         compensated to understand any potential bias.
       </p>
+
+      <MatchCTA kind="mortgage-broker" />
 
       <h2 id="state-guides">State-specific first home buyer guides</h2>
       <p>For state-specific detail on grants, concessions, and the buying process:</p>

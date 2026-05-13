@@ -12,8 +12,12 @@ export { GuideNewsletterCallout } from "./GuideNewsletterCallout";
 export { GuideGlossaryRail } from "./GuideGlossaryRail";
 export { GlossaryLink } from "./GlossaryLink";
 export { ReadingProgressBar } from "./ReadingProgressBar";
+export { MatchCTA } from "./MatchCTA";
+export { Sources } from "./Sources";
 
 export type { GuideFrontmatter } from "./GuideArticleLayout";
 export type { GuideTOCEntry } from "./GuideTOC";
 export type { FaqItem } from "./Faq";
 export type { RelatedGuide } from "./RelatedGuides";
+export type { MatchCTAKind } from "./MatchCTA";
+export type { SourceItem } from "./Sources";

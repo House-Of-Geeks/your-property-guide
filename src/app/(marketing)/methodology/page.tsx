@@ -6,13 +6,13 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Methodology &amp; Data Sources | ${SITE_NAME}`,
+  title: `Methodology & data sources | ${SITE_NAME}`,
   description:
     "How Your Property Guide sources, validates, and updates suburb data, school catchments, climate records, hazard maps, and crime statistics. Every source named and dated.",
   alternates: { canonical: `${SITE_URL}/methodology` },
   openGraph: {
     url: `${SITE_URL}/methodology`,
-    title: `Methodology &amp; Data Sources | ${SITE_NAME}`,
+    title: `Methodology & data sources | ${SITE_NAME}`,
     description: "Sources, refresh cadence, and editorial process behind every figure on the site.",
     type: "article",
   },

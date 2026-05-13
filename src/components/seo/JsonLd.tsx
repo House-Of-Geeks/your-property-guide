@@ -1,5 +1,5 @@
 import type { Property, Agent, Agency, BlogPost, Suburb } from "@/types";
-import { SITE_URL, SITE_NAME } from "@/lib/constants";
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION_LONG, SITE_KNOWS_ABOUT } from "@/lib/constants";
 import { resolveBlogCoverPath } from "@/lib/utils/blog-cover";
 
 function JsonLdScript({ data }: { data: Record<string, unknown> }) {
@@ -11,22 +11,53 @@ function JsonLdScript({ data }: { data: Record<string, unknown> }) {
   );
 }
 
+// Generic JSON-LD renderer for one-off schema types that don't yet have
+// a dedicated wrapper. Prefer the typed wrappers below when one fits.
+export function JsonLd({ data }: { data: Record<string, unknown> }) {
+  return <JsonLdScript data={data} />;
+}
+
 export function OrganizationJsonLd() {
   return (
     <>
       <JsonLdScript
         data={{
           "@context": "https://schema.org",
-          "@type": "Organization",
+          // Combined types: NewsMediaOrganization (signals we publish original
+          // editorial) + Organization. AI search engines (Bing Copilot,
+          // Perplexity, ChatGPT search) bias toward citing organisations they
+          // can classify as authoritative publishers rather than commerce
+          // sites. `knowsAbout` enumerates the property topics we cover so
+          // retrieval-grade systems can match queries to our expertise.
+          "@type": ["Organization", "NewsMediaOrganization"],
+          "@id": `${SITE_URL}#organization`,
           name: SITE_NAME,
+          alternateName: "YPG",
           url: SITE_URL,
-          logo: `${SITE_URL}/og-image.jpg`,
-          description:
-            "Australia's property search, made simple. Browse houses, units, and land for sale and rent across thousands of suburbs nationwide.",
+          logo: {
+            "@type": "ImageObject",
+            url: `${SITE_URL}/og-image.jpg`,
+            width: 1200,
+            height: 630,
+          },
+          image: `${SITE_URL}/og-image.jpg`,
+          description: SITE_DESCRIPTION_LONG,
+          knowsAbout: SITE_KNOWS_ABOUT,
+          knowsLanguage: ["en-AU", "en"],
           areaServed: {
             "@type": "Country",
             name: "Australia",
           },
+          // Editorial policy signals — these are the trust hooks Google's
+          // Helpful Content System and AI rankers look for. Each links to a
+          // live page on the site (about / methodology / privacy).
+          publishingPrinciples: `${SITE_URL}/about`,
+          ethicsPolicy: `${SITE_URL}/about`,
+          actionableFeedbackPolicy: `${SITE_URL}/contact`,
+          masthead: `${SITE_URL}/about`,
+          diversityPolicy: `${SITE_URL}/about`,
+          ownershipFundingInfo: `${SITE_URL}/about`,
+          missionCoveragePrioritiesPolicy: `${SITE_URL}/about`,
           contactPoint: {
             "@type": "ContactPoint",
             contactType: "customer support",
@@ -44,13 +75,21 @@ export function OrganizationJsonLd() {
         data={{
           "@context": "https://schema.org",
           "@type": "WebSite",
+          "@id": `${SITE_URL}#website`,
           name: SITE_NAME,
+          alternateName: "YPG",
           url: SITE_URL,
+          description: SITE_DESCRIPTION_LONG,
+          inLanguage: "en-AU",
+          publisher: { "@id": `${SITE_URL}#organization` },
+          // Internal site search is suburb-led on YPG, not listing-led —
+          // points retrieval engines at the suburb directory rather than a
+          // listings search box.
           potentialAction: {
             "@type": "SearchAction",
             target: {
               "@type": "EntryPoint",
-              urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
+              urlTemplate: `${SITE_URL}/suburbs?q={search_term_string}`,
             },
             "query-input": "required name=search_term_string",
           },

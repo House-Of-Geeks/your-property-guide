@@ -4,6 +4,7 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
+  MatchCTA,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -335,6 +336,8 @@ export default function LMIGuidePage() {
         Eligibility requirements vary by lender, check with your mortgage broker
         for current options.
       </p>
+
+      <MatchCTA kind="mortgage-broker" />
 
       <h2 id="is-it-worth-it">Is paying LMI ever worth it?</h2>
       <p>
