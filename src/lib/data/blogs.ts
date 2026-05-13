@@ -1207,7 +1207,9 @@ export const blogPosts: BlogPost[] = [
 <h2>The political and economic context</h2>
 <p>The negative gearing change breaks a clear pre-election commitment, and the government has acknowledged that. Treasurer Chalmers has framed the move as a structural reform that prioritises young Australians being able to buy, even at political cost. Whatever your view on the politics, the policy is now law from budget night, and the cut-off times are locked. The economic effects will play out over years, not weeks.</p>
 
-<p>For Your Property Guide's view: this is a sober, structurally significant set of changes that will reward investors who think long-term and buyers who understand the new incentive landscape. We'll be updating our suburb data, calculators (negative gearing, CGT, rental yield) and state buying guides over the coming weeks to reflect the new rules. The fundamentals of property, location, supply, demand, and rental yield, haven't changed. The tax wrapper around them has.</p>`,
+<p>For Your Property Guide's view: this is a sober, structurally significant set of changes that will reward investors who think long-term and buyers who understand the new incentive landscape. We'll be updating our suburb data, calculators (negative gearing, CGT, rental yield) and state buying guides over the coming weeks to reflect the new rules. The fundamentals of property, location, supply, demand, and rental yield, haven't changed. The tax wrapper around them has.</p>
+
+<p style="font-size:0.75rem;color:#7A7A8E;font-style:italic;margin-top:2rem">Cover photo: Chris Olszewski, CC BY-SA 4.0, via Wikimedia Commons.</p>`,
     coverImage: "/images/blog/cover-federal-budget-2026-property.jpg",
     author: { name: "Bec Ramirez", image: "/images/agents/bec-ramirez.jpg" },
     category: "News",
@@ -1329,7 +1331,9 @@ export const blogPosts: BlogPost[] = [
 <li><strong>Use our <a href="/tools/negative-gearing-calculator">negative gearing calculator</a></strong> with and without the new rules to see how the change affects your specific portfolio</li>
 </ol>
 
-<p>The negative gearing changes are real, structural, and significant, but they don't break the case for property investment in Australia. They reshape it. Investors who think carefully about location, yield, supply incentives and tax positioning under the new regime can still build sustainable property portfolios. The strategy needs to be sharper than it was, but the opportunity remains.</p>`,
+<p>The negative gearing changes are real, structural, and significant, but they don't break the case for property investment in Australia. They reshape it. Investors who think carefully about location, yield, supply incentives and tax positioning under the new regime can still build sustainable property portfolios. The strategy needs to be sharper than it was, but the opportunity remains.</p>
+
+<p style="font-size:0.75rem;color:#7A7A8E;font-style:italic;margin-top:2rem">Cover photo: sv1ambo, CC BY 2.0, via Wikimedia Commons.</p>`,
     coverImage: "/images/blog/cover-negative-gearing-changes-2026-budget.jpg",
     author: { name: "Ellie Johnston", image: "/images/agents/ellie-johnston.jpg" },
     category: "News",
@@ -1469,7 +1473,9 @@ export const blogPosts: BlogPost[] = [
 
 <h2>The bigger picture</h2>
 <p>The CGT change, on its own, is not as dramatic as the headlines suggest. Cost base indexation roughly approximates a 50% discount over normal Australian inflation cycles for long-held property. The 30% minimum tax mainly affects lower-income investors and retirees. For most middle-and-higher-income investors holding for the long term, the difference is moderate.</p>
-<p>The combined impact with the negative gearing change is what shifts the investment landscape. Together, they redirect the next generation of investor capital toward new supply and reward yield-focused, long-hold strategies. Australian property remains a viable, often excellent investment, but the rules of the game have changed. Investors who adapt their approach to the new incentive structure will continue to do well. Those who rely on strategies that worked under the old rules without adjustment will not.</p>`,
+<p>The combined impact with the negative gearing change is what shifts the investment landscape. Together, they redirect the next generation of investor capital toward new supply and reward yield-focused, long-hold strategies. Australian property remains a viable, often excellent investment, but the rules of the game have changed. Investors who adapt their approach to the new incentive structure will continue to do well. Those who rely on strategies that worked under the old rules without adjustment will not.</p>
+
+<p style="font-size:0.75rem;color:#7A7A8E;font-style:italic;margin-top:2rem">Cover photo: Chris Olszewski, CC BY-SA 4.0, via Wikimedia Commons.</p>`,
     coverImage: "/images/blog/cover-cgt-changes-2026-budget.jpg",
     author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
     category: "News",
