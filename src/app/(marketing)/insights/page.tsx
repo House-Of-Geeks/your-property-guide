@@ -9,7 +9,7 @@ import { formatDate } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 import { getRecentUpdates } from "@/lib/data/data-updates";
 
-export const revalidate = 3600; // refresh hourly
+export const revalidate = 86400; // daily. Page lists blog posts + data updates, neither change hourly.
 
 export const metadata: Metadata = {
   title: "Australian Property Insights, Latest News, Analysis &amp; Updates | Your Property Guide",

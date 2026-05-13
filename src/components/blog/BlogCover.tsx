@@ -20,11 +20,18 @@ interface Props {
 export function BlogCover({ slug, title, category, coverImage, sizes, priority, className }: Props) {
   const realPath = resolveBlogCoverPath(coverImage);
   if (realPath) {
+    // Local /images/blog/* covers are already pre-sized (1600x900, ~400KB).
+    // Skipping next/image optimisation here means each thumbnail render
+    // serves the original JPG straight from the edge CDN instead of paying
+    // for a function invocation per device-width variant. Edge cache + the
+    // long Cache-Control header in next.config.ts headers() keeps repeat
+    // hits near-free.
     return (
       <Image
         src={realPath}
         alt={title}
         fill
+        unoptimized
         className={`object-cover ${className ?? ""}`}
         sizes={sizes}
         priority={priority}

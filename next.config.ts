@@ -1,6 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Edge-cache static blog covers aggressively. They live in /public so are
+  // immutable per deploy; a 1-year immutable header lets visitors and the
+  // CDN keep them out of "fast origin transfer" billing after first hit.
+  async headers() {
+    return [
+      {
+        source: "/images/blog/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
       {

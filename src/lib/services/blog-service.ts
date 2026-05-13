@@ -1,75 +1,56 @@
 import type { BlogPost } from "@/types";
-import { db } from "@/lib/db";
-import type { BlogPost as DbBlogPost } from "@/generated/prisma/client";
+import { blogPosts } from "@/lib/data/blogs";
 
-function toBlogPost(p: DbBlogPost): BlogPost {
-  return {
-    id: p.id,
-    slug: p.slug,
-    title: p.title,
-    excerpt: p.excerpt,
-    content: p.content,
-    coverImage: p.coverImage,
-    author: { name: p.authorName, image: p.authorImage },
-    category: p.category,
-    tags: p.tags,
-    publishedAt: p.publishedAt.toISOString(),
-    updatedAt: p.updatedAt?.toISOString(),
-    readingTime: p.readingTime,
-  };
+// Blog posts are authored in src/lib/data/blogs.ts and shipped in the
+// deploy bundle. We used to mirror this to the DB and read it back at
+// request time, which cost a DB round-trip on every blog-touching page
+// render. Since the source array is already in-memory at runtime, reading
+// directly from it is faster, free of function-duration cost, and removes
+// connection-pool pressure on Postgres.
+//
+// All exports keep their original async signatures so callers don't change.
+// The sync-blogs admin endpoint still writes to the DB for any external
+// consumer that wants the data there, but the site itself no longer reads
+// from it.
+
+function byPublishedDesc(a: BlogPost, b: BlogPost): number {
+  return b.publishedAt.localeCompare(a.publishedAt);
 }
 
+const SORTED = [...blogPosts].sort(byPublishedDesc);
+
 export async function getBlogPosts(limit = 100): Promise<BlogPost[]> {
-  const rows = await db.blogPost.findMany({
-    orderBy: { publishedAt: "desc" },
-    take: limit,
-  });
-  return rows.map(toBlogPost);
+  return SORTED.slice(0, limit);
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
-  const row = await db.blogPost.findUnique({ where: { slug } });
-  return row ? toBlogPost(row) : null;
+  return SORTED.find((p) => p.slug === slug) ?? null;
 }
 
 export async function getAllBlogSlugs(): Promise<string[]> {
-  const rows = await db.blogPost.findMany({ select: { slug: true } });
-  return rows.map((r) => r.slug);
+  return SORTED.map((p) => p.slug);
 }
 
 export async function getBlogSitemapEntries(): Promise<
   { slug: string; publishedAt: Date; updatedAt: Date | null }[]
 > {
-  return db.blogPost.findMany({
-    select: { slug: true, publishedAt: true, updatedAt: true },
-    orderBy: { publishedAt: "desc" },
-  });
+  return SORTED.map((p) => ({
+    slug: p.slug,
+    publishedAt: new Date(p.publishedAt),
+    updatedAt: p.updatedAt ? new Date(p.updatedAt) : null,
+  }));
 }
 
 export async function getBlogPostsByCategory(category: string, limit = 100): Promise<BlogPost[]> {
-  const rows = await db.blogPost.findMany({
-    where: { category },
-    orderBy: { publishedAt: "desc" },
-    take: limit,
-  });
-  return rows.map(toBlogPost);
+  return SORTED.filter((p) => p.category === category).slice(0, limit);
 }
 
 export async function getDistinctBlogCategories(): Promise<string[]> {
-  const rows = await db.blogPost.findMany({
-    select: { category: true },
-    distinct: ["category"],
-    orderBy: { category: "asc" },
-  });
-  return rows.map((r) => r.category);
+  return [...new Set(SORTED.map((p) => p.category))].sort();
 }
 
 export async function getRelatedPosts(slug: string, limit = 3): Promise<BlogPost[]> {
-  const current = await db.blogPost.findUnique({ where: { slug }, select: { category: true } });
-  const rows = await db.blogPost.findMany({
-    where: { slug: { not: slug }, ...(current ? { category: current.category } : {}) },
-    orderBy: { publishedAt: "desc" },
-    take: limit,
-  });
-  return rows.map(toBlogPost);
+  const current = SORTED.find((p) => p.slug === slug);
+  if (!current) return [];
+  return SORTED.filter((p) => p.slug !== slug && p.category === current.category).slice(0, limit);
 }
