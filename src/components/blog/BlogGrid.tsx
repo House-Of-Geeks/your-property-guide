@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Clock, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
+import { BlogCoverFallback } from "@/components/blog/BlogCoverFallback";
 import type { BlogPost } from "@/types";
 import { formatDate } from "@/lib/utils/format";
 
@@ -48,15 +49,24 @@ export function BlogGrid({ posts, categories }: Props) {
         <Link href={`/guides/${featured.slug}`} className="group block mb-10">
           <div className="rounded-2xl overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow bg-white grid grid-cols-1 lg:grid-cols-2">
             <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[280px]">
-              <Image
-                src={featured.coverImage}
-                alt={featured.title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                priority
-              />
-              <div className="absolute top-3 left-3">
+              {featured.coverImage ? (
+                <Image
+                  src={featured.coverImage}
+                  alt={featured.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
+                />
+              ) : (
+                <BlogCoverFallback
+                  slug={featured.slug}
+                  title={featured.title}
+                  category={featured.category}
+                  className="group-hover:scale-105 transition-transform duration-500"
+                />
+              )}
+              <div className="absolute top-3 left-3 z-10">
                 <Badge variant="primary">{featured.category}</Badge>
               </div>
             </div>
@@ -88,14 +98,23 @@ export function BlogGrid({ posts, categories }: Props) {
             <Link key={post.slug} href={`/guides/${post.slug}`} className="group block">
               <div className="rounded-xl bg-white border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
                 <div className="relative aspect-[16/10]">
-                  <Image
-                    src={post.coverImage}
-                    alt={post.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  <div className="absolute top-2 left-2">
+                  {post.coverImage ? (
+                    <Image
+                      src={post.coverImage}
+                      alt={post.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  ) : (
+                    <BlogCoverFallback
+                      slug={post.slug}
+                      title={post.title}
+                      category={post.category}
+                      className="group-hover:scale-105 transition-transform duration-300"
+                    />
+                  )}
+                  <div className="absolute top-2 left-2 z-10">
                     <Badge variant="primary">{post.category}</Badge>
                   </div>
                 </div>

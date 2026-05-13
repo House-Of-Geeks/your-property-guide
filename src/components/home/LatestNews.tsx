@@ -1,8 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, Clock } from "lucide-react";
 import { getBlogPostsByCategory } from "@/lib/services/blog-service";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
+import { BlogCover } from "@/components/blog/BlogCover";
 import { formatDate } from "@/lib/utils/format";
 
 const NEWS_CATEGORY = "News";
@@ -49,17 +49,16 @@ export async function LatestNews() {
             href={`/guides/${lead.slug}`}
             className="group lg:col-span-7 block bg-surface-warm rounded-2xl overflow-hidden border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200 flex flex-col"
           >
-            {lead.coverImage && (
-              <div className="relative aspect-[16/9] overflow-hidden bg-surface-warm-sunken">
-                <Image
-                  src={lead.coverImage}
-                  alt={lead.title}
-                  fill
-                  className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                  sizes="(max-width: 1024px) 100vw, 60vw"
-                />
-              </div>
-            )}
+            <div className="relative aspect-[16/9] overflow-hidden bg-surface-warm-sunken">
+              <BlogCover
+                slug={lead.slug}
+                title={lead.title}
+                category={lead.category}
+                coverImage={lead.coverImage}
+                sizes="(max-width: 1024px) 100vw, 60vw"
+                className="group-hover:scale-[1.03] transition-transform duration-500"
+              />
+            </div>
             <div className="p-6 sm:p-8 flex-1 flex flex-col">
               <div className="flex items-center gap-3 mb-3 text-xs font-sans uppercase tracking-[0.18em] text-ink-subtle">
                 <span className="font-semibold text-primary">News</span>
@@ -100,17 +99,16 @@ export async function LatestNews() {
                 href={`/guides/${post.slug}`}
                 className="group flex-1 flex bg-surface-warm rounded-2xl overflow-hidden border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200"
               >
-                {post.coverImage && (
-                  <div className="relative w-32 sm:w-40 shrink-0 bg-surface-warm-sunken">
-                    <Image
-                      src={post.coverImage}
-                      alt={post.title}
-                      fill
-                      className="object-cover group-hover:scale-[1.04] transition-transform duration-500"
-                      sizes="160px"
-                    />
-                  </div>
-                )}
+                <div className="relative w-32 sm:w-40 shrink-0 bg-surface-warm-sunken">
+                  <BlogCover
+                    slug={post.slug}
+                    title={post.title}
+                    category={post.category}
+                    coverImage={post.coverImage}
+                    sizes="160px"
+                    className="group-hover:scale-[1.04] transition-transform duration-500"
+                  />
+                </div>
                 <div className="p-4 sm:p-5 flex flex-col flex-1 min-w-0">
                   <div className="flex items-center gap-2 text-[11px] font-sans uppercase tracking-[0.18em] text-ink-subtle mb-2">
                     <span className="font-semibold text-primary">News</span>

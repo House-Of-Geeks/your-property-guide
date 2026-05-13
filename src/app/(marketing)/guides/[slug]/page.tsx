@@ -9,8 +9,10 @@ import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
 import { BlogShareButtons } from "@/components/blog/BlogShareButtons";
 import { BlogGuideRail } from "@/components/blog/BlogGuideRail";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
+import { BlogCover } from "@/components/blog/BlogCover";
 import { getBlogPostBySlug, getRelatedPosts } from "@/lib/services/blog-service";
 import { processContent } from "@/lib/utils/blog-toc";
+import { resolveBlogCoverPath } from "@/lib/utils/blog-cover";
 import { blogTitle, absoluteUrl } from "@/lib/utils/seo";
 import { formatDate } from "@/lib/utils/format";
 import { Clock, ArrowLeft, ArrowRight } from "lucide-react";
@@ -39,6 +41,12 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
   const { slug } = await params;
   const post = await getBlogPostBySlug(slug);
   if (!post) return { title: "Post Not Found" };
+  // Fall back to the dynamic OG renderer when the post has no real cover
+  // file, so social cards always have something brand-consistent to show.
+  const realCover = resolveBlogCoverPath(post.coverImage);
+  const ogImage = realCover
+    ? absoluteUrl(realCover)
+    : `${SITE_URL}/api/og/guide/${slug}?title=${encodeURIComponent(post.title)}&desc=${encodeURIComponent(post.excerpt)}&persona=${encodeURIComponent(post.category)}`;
   return {
     title: blogTitle(post),
     description: post.excerpt,
@@ -48,7 +56,7 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
       title: post.title,
       description: post.excerpt,
       type: "article",
-      images: [{ url: absoluteUrl(post.coverImage) }],
+      images: [{ url: ogImage }],
       publishedTime: post.publishedAt,
     },
     twitter: { card: "summary_large_image" },
@@ -113,11 +121,11 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
           {/* Hero image */}
           <div className="relative aspect-[16/9] rounded-2xl overflow-hidden mt-6 border border-line">
-            <Image
-              src={post.coverImage}
-              alt={post.title}
-              fill
-              className="object-cover"
+            <BlogCover
+              slug={post.slug}
+              title={post.title}
+              category={post.category}
+              coverImage={post.coverImage}
               sizes="(max-width: 768px) 100vw, 800px"
               priority
             />

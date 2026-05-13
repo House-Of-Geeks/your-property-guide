@@ -7,6 +7,7 @@ import {
   getBlogPostsByCategory,
   getDistinctBlogCategories,
 } from "@/lib/services/blog-service";
+import { resolveBlogCoverPath } from "@/lib/utils/blog-cover";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 interface Props {
@@ -56,6 +57,14 @@ export default async function BlogCategoryPage({ params }: Props) {
 
   if (posts.length === 0) notFound();
 
+  // Pre-resolve cover paths on the server so BlogGrid (client) doesn't need
+  // filesystem access. Missing files become "" — BlogGrid renders the
+  // BlogCoverFallback in that case.
+  const resolvedPosts = posts.map((p) => ({
+    ...p,
+    coverImage: resolveBlogCoverPath(p.coverImage) ?? "",
+  }));
+
   const label = formatCategoryLabel(category);
 
   return (
@@ -89,7 +98,7 @@ export default async function BlogCategoryPage({ params }: Props) {
         <p className="text-white/40 text-sm mt-3">{posts.length} articles</p>
       </div>
 
-      <BlogGrid posts={posts} categories={allCategories} />
+      <BlogGrid posts={resolvedPosts} categories={allCategories} />
     </div>
   );
 }

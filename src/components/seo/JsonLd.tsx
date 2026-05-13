@@ -1,5 +1,6 @@
 import type { Property, Agent, Agency, BlogPost, Suburb } from "@/types";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
+import { resolveBlogCoverPath } from "@/lib/utils/blog-cover";
 
 function JsonLdScript({ data }: { data: Record<string, unknown> }) {
   return (
@@ -194,6 +195,10 @@ export function AgencyJsonLd({ agency }: { agency: Agency }) {
 }
 
 export function ArticleJsonLd({ post }: { post: BlogPost }) {
+  const realCover = resolveBlogCoverPath(post.coverImage);
+  const image = realCover
+    ? `${SITE_URL}${realCover}`
+    : `${SITE_URL}/api/og/guide/${post.slug}?title=${encodeURIComponent(post.title)}&desc=${encodeURIComponent(post.excerpt)}&persona=${encodeURIComponent(post.category)}`;
   return (
     <JsonLdScript
       data={{
@@ -201,7 +206,7 @@ export function ArticleJsonLd({ post }: { post: BlogPost }) {
         "@type": "Article",
         headline: post.title,
         description: post.excerpt,
-        image: `${SITE_URL}${post.coverImage}`,
+        image,
         datePublished: post.publishedAt,
         dateModified: post.updatedAt || post.publishedAt,
         author: {

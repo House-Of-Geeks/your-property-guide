@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, Clock } from "lucide-react";
 import { getBlogPosts } from "@/lib/services/blog-service";
+import { BlogCover } from "@/components/blog/BlogCover";
 
 export async function LatestGuides() {
   const posts = await getBlogPosts();
@@ -45,18 +45,17 @@ export async function LatestGuides() {
             href={`/guides/${featured.slug}`}
             className="group lg:col-span-3 block bg-surface-raised rounded-2xl overflow-hidden border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200 flex flex-col"
           >
-            {featured.coverImage && (
-              <div className="relative aspect-[16/9] overflow-hidden">
-                <Image
-                  src={featured.coverImage}
-                  alt={featured.title}
-                  fill
-                  className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                  sizes="(max-width: 1024px) 100vw, 60vw"
-                  priority
-                />
-              </div>
-            )}
+            <div className="relative aspect-[16/9] overflow-hidden">
+              <BlogCover
+                slug={featured.slug}
+                title={featured.title}
+                category={featured.category}
+                coverImage={featured.coverImage}
+                sizes="(max-width: 1024px) 100vw, 60vw"
+                priority
+                className="group-hover:scale-[1.03] transition-transform duration-500"
+              />
+            </div>
             <div className="p-6 sm:p-7 flex-1 flex flex-col">
               <div className="flex items-center gap-3 mb-3">
                 <span className="text-xs font-sans font-medium uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary/10 text-primary">
@@ -90,17 +89,16 @@ export async function LatestGuides() {
                 href={`/guides/${post.slug}`}
                 className="group flex-1 block bg-surface-raised rounded-2xl overflow-hidden border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200 flex flex-col"
               >
-                {post.coverImage && (
-                  <div className="relative aspect-[16/7] overflow-hidden">
-                    <Image
-                      src={post.coverImage}
-                      alt={post.title}
-                      fill
-                      className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                      sizes="(max-width: 1024px) 100vw, 40vw"
-                    />
-                  </div>
-                )}
+                <div className="relative aspect-[16/7] overflow-hidden">
+                  <BlogCover
+                    slug={post.slug}
+                    title={post.title}
+                    category={post.category}
+                    coverImage={post.coverImage}
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                    className="group-hover:scale-[1.03] transition-transform duration-500"
+                  />
+                </div>
                 <div className="p-5 flex flex-col flex-1">
                   <div className="flex items-center gap-3 mb-2">
                     <span className="text-xs font-sans font-medium uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary/10 text-primary">
