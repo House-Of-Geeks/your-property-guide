@@ -36,21 +36,28 @@ export default function GlossaryPage() {
           aria-hidden="true"
           className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
         />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-20 sm:pb-24">
+          <div className="mb-10">
             <Breadcrumbs items={[{ label: "Property Glossary" }]} />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
-            80+ terms, plain English
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            The property <span className="italic text-primary">A to Z</span>.
+          <div className="flex items-center gap-4 mb-10">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              80+ terms
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              Property glossary
+            </span>
+          </div>
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
+            The property{" "}
+            <span className="italic font-light text-primary">A to Z</span>.
           </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
+          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
             Plain English definitions for the Australian property and real
-            estate terms you&rsquo;ll meet, whether you&rsquo;re buying, selling, investing,
-            or renting.
+            estate terms you&rsquo;ll meet, whether you&rsquo;re buying, selling,
+            investing or renting.
           </p>
         </div>
       </section>

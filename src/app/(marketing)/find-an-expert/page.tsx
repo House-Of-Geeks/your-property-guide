@@ -117,16 +117,25 @@ export default function FindAnExpertPage() {
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="grid lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-7">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
-                How matching works
-              </p>
-              <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6">
-                Tell us your situation. <span className="italic text-primary">We&rsquo;ll find</span> the right person.
+              <div className="flex items-center gap-4 mb-10">
+                <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                  How matching works
+                </span>
+                <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+                <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+                  The match
+                </span>
+              </div>
+              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">
+                Tell us your situation.{" "}
+                <span className="italic font-light text-primary">We&rsquo;ll find</span>{" "}
+                the right person.
               </h1>
-              <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl mb-8">
-                Property situations are messier than buyer-or-seller. We match you with one vetted
-                specialist for your situation, whether that&rsquo;s an agent, broker, accountant
-                or conveyancer. Free for buyers and sellers, no commitment, no comparison spam.
+              <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-2xl mb-10">
+                Property situations are messier than buyer-or-seller. We match
+                you with one vetted specialist for your situation, whether
+                that&rsquo;s an agent, broker, accountant or conveyancer. Free
+                for buyers and sellers, no commitment, no comparison spam.
               </p>
               <div className="flex flex-wrap gap-3 mb-10">
                 <Link

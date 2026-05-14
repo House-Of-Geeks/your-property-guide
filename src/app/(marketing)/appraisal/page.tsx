@@ -43,13 +43,20 @@ export default function AppraisalPage() {
 
           <div className="grid lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-7">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
-                Free, no obligation
-              </p>
-              <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6">
-                What is your home <span className="italic text-primary">actually worth?</span>
+              <div className="flex items-center gap-4 mb-10">
+                <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                  Free, no obligation
+                </span>
+                <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+                <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+                  Property appraisal
+                </span>
+              </div>
+              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">
+                What is your home{" "}
+                <span className="italic font-light text-primary">actually worth</span>?
               </h1>
-              <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-xl">
+              <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-xl">
                 Get an honest appraisal from a vetted local agent. No call
                 centre, no auto-routing, no commitment to list with them. The
                 same number we&rsquo;d ask for ourselves before deciding to sell.

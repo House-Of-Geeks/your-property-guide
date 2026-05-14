@@ -134,8 +134,8 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
           aria-hidden="true"
           className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
         />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-16 sm:pb-20">
+          <div className="mb-10">
             <Breadcrumbs
               items={[
                 { label: "Glossary", href: "/glossary" },
@@ -144,11 +144,18 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
             />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
-            Property glossary
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-4">
-            What is <span className="italic text-primary">{entry.term}</span>?
+          <div className="flex items-center gap-4 mb-10">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              Glossary
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              {entry.category.replace(/-/g, " ")}
+            </span>
+          </div>
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-4 max-w-[18ch] font-medium">
+            What is{" "}
+            <span className="italic font-light text-primary">{entry.term}</span>?
           </h1>
         </div>
       </section>

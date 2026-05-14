@@ -48,6 +48,13 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
+    // hreflang signals regional targeting. We publish for Australian
+    // English readers and the x-default fallback points back to the AU site
+    // so any non-AU traffic still resolves to the canonical edition.
+    languages: {
+      "en-AU": SITE_URL,
+      "x-default": SITE_URL,
+    },
     types: {
       "application/rss+xml": [
         { url: `${SITE_URL}/guides/feed.xml`, title: `${SITE_NAME} guides RSS` },

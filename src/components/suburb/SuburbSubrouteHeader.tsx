@@ -73,8 +73,8 @@ export function SuburbSubrouteHeader({
         className="absolute -right-32 -top-32 w-[1000px] max-w-none opacity-[0.10] pointer-events-none select-none"
       />
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-10 sm:pb-12">
-        <div className="mb-6">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
+        <div className="mb-8">
           <Breadcrumbs
             items={[
               { label: "Suburbs", href: "/suburbs" },
@@ -86,14 +86,20 @@ export function SuburbSubrouteHeader({
 
         <div className="grid lg:grid-cols-12 gap-6 items-end">
           <div className="lg:col-span-9">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
-              {eyebrow} <span className="text-ink-muted">{suburb.name}</span>
-            </p>
-            <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl">
+            <div className="flex items-center gap-4 mb-6 flex-wrap">
+              <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                {eyebrow}
+              </span>
+              <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+              <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+                {suburb.name} {suburb.state} {suburb.postcode}
+              </span>
+            </div>
+            <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-medium max-w-[20ch]">
               {title}
             </h1>
             {subtitle && (
-              <p className="font-sans text-base sm:text-lg text-ink-muted leading-relaxed max-w-2xl mt-4">
+              <p className="font-display font-light text-lg sm:text-xl text-ink leading-snug max-w-2xl mt-5">
                 {subtitle}
               </p>
             )}
