@@ -357,15 +357,25 @@ export default function HomePage() {
           aria-hidden="true"
           className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[1200px] max-w-none opacity-[0.15] pointer-events-none select-none"
         />
-        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center mb-12">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-4">
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-24 sm:py-28">
+          {/* Magazine-style section masthead, centred to match the charter
+              treatment */}
+          <div className="flex items-center justify-center gap-4 mb-12">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              No. 05
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
               Why we&rsquo;re free
-            </p>
-            <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl mb-6">
-              Buyers and sellers pay nothing. <span className="italic text-primary">Ever.</span>
+            </span>
+          </div>
+
+          <div className="text-center mb-14">
+            <h2 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-4xl mx-auto font-medium">
+              Buyers and sellers pay nothing.{" "}
+              <span className="italic font-light text-primary">Ever</span>.
             </h2>
-            <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-3xl mx-auto">
+            <p className="font-display font-light text-xl sm:text-2xl text-ink leading-snug max-w-3xl mx-auto">
               Suburb data, guides and calculators are funded by partner agents and brokers, who pay
               us only when matched work goes ahead. No paywall, no resale, every match disclosed.
             </p>

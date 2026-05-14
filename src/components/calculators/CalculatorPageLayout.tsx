@@ -52,7 +52,10 @@ export function CalculatorPageLayout({
         url={pageUrl}
       />
 
-      {/* Editorial hero */}
+      {/* Editorial hero. Magazine masthead with persona department slug
+          and "Free calculator" date marker, display-scale H1, serif
+          standfirst. Illustration column dropped: calculators read as
+          authoritative tools when the title owns the page. */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
         <Image
           src="/images/illustrations/contour.svg"
@@ -62,52 +65,50 @@ export function CalculatorPageLayout({
           aria-hidden="true"
           className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
         />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-14 sm:pb-20">
+          <div className="mb-10">
             <Breadcrumbs items={[{ label: frontmatter.title }]} />
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-8">
-              {persona && (
-                <Link
-                  href={persona.hubPath}
-                  className="inline-flex items-center gap-2 text-xs font-sans uppercase tracking-[0.2em] text-cta hover:text-cta-hover mb-5"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-cta"></span>
-                  For {persona.cardLabel.toLowerCase()}
-                </Link>
-              )}
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-4 inline-flex items-center gap-2">
-                <CalculatorIcon className="w-3.5 h-3.5" aria-hidden="true" />
-                Free calculator
-              </p>
-              <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-5">
-                {frontmatter.title}
-              </h1>
-              <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl mb-6">
-                {frontmatter.description}
-              </p>
-              <div className="flex items-center gap-2 font-sans text-sm text-ink-subtle">
-                <Calendar className="w-4 h-4" aria-hidden="true" />
-                Updated <FormattedDate iso={frontmatter.updatedAt} />
-                <span className="text-ink-subtle">·</span>
-                <span>Free, no sign-up</span>
-              </div>
-            </div>
+          {/* Magazine masthead: persona department + hairline + tool slug */}
+          <div className="flex items-center gap-4 mb-10">
+            {persona ? (
+              <Link
+                href={persona.hubPath}
+                className="font-display italic text-primary hover:text-cta-hover text-base sm:text-lg leading-none transition-colors"
+              >
+                For {persona.cardLabel.toLowerCase()}
+              </Link>
+            ) : (
+              <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                Free tool
+              </span>
+            )}
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
+              <CalculatorIcon className="w-3 h-3" aria-hidden="true" />
+              Free calculator
+            </span>
+          </div>
 
-            <div className="hidden lg:block lg:col-span-4">
-              <div className="rounded-2xl border border-line-warm bg-surface-raised shadow-card overflow-hidden">
-                <Image
-                  src="/images/illustrations/calc-hero.svg"
-                  alt=""
-                  width={320}
-                  height={220}
-                  className="w-full h-auto"
-                  priority
-                />
-              </div>
-            </div>
+          {/* Display-scale H1 */}
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-medium">
+            {frontmatter.title}
+          </h1>
+
+          {/* Standfirst */}
+          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-8">
+            {frontmatter.description}
+          </p>
+
+          {/* Updated dateline */}
+          <div className="pt-5 border-t border-line flex flex-wrap items-center gap-x-5 gap-y-2 font-sans text-sm text-ink-muted">
+            <span className="inline-flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
+              Updated <FormattedDate iso={frontmatter.updatedAt} />
+            </span>
+            <span className="text-ink-subtle">·</span>
+            <span>Free, no sign-up</span>
           </div>
         </div>
       </section>

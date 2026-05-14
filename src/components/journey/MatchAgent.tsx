@@ -185,19 +185,25 @@ export function MatchAgent({
           {/* Left, pitch (hidden in compact/drawer mode) */}
           {!compact && (
           <div className="lg:col-span-5">
-            <p className="text-xs uppercase tracking-[0.18em] text-cta mb-5">
-              When you&rsquo;re ready
-            </p>
-            <h2 className="font-display text-white leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6">
+            {/* Magazine masthead in dark mode */}
+            <div className="flex items-center gap-4 mb-10">
+              <span className="font-display italic text-cta text-base sm:text-lg leading-none">
+                When you&rsquo;re ready
+              </span>
+              <span className="w-12 h-px bg-white/20" aria-hidden="true" />
+              <span className="text-[11px] uppercase tracking-[0.32em] text-white/60 font-sans font-medium">
+                The match
+              </span>
+            </div>
+            <h2 className="font-display text-white leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">
               Tell us your situation.{" "}
               <span className="italic font-light text-cta">We&rsquo;ll find</span>{" "}
               the right person.
             </h2>
-            <p className="text-base sm:text-lg text-white/70 leading-relaxed max-w-md mb-10">
+            <p className="font-display font-light text-xl sm:text-2xl text-white/80 leading-snug max-w-md mb-12">
               Three quick questions. We&rsquo;ll point you to one specialist
               who fits your situation, whether that&rsquo;s an agent, broker,
-              property accountant or conveyancer. Free, no comparison spam,
-              and you decide whether to take it any further.
+              property accountant or conveyancer.
             </p>
             <div className="grid grid-cols-2 gap-x-6 gap-y-6 max-w-md">
               {[
@@ -207,7 +213,7 @@ export function MatchAgent({
                 ["04", "You decide whether to proceed"],
               ].map(([n, t]) => (
                 <div key={n} className="border-t border-white/15 pt-4">
-                  <p className="text-[11px] uppercase tracking-[0.14em] text-cta mb-1.5">{n}</p>
+                  <p className="font-display italic text-cta text-base mb-1.5 tabular-nums">{n}</p>
                   <p className="text-sm text-white/85 leading-snug">{t}</p>
                 </div>
               ))}

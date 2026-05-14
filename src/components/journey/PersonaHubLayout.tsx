@@ -22,7 +22,10 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
 
   return (
     <>
-      {/* Editorial hero with illustration */}
+      {/* Editorial hero. Magazine masthead with numbered persona slug,
+          display-scale H1 with italic emphasis on the persona noun, serif
+          standfirst. Illustration column dropped: hub pages read as
+          authoritative editorial when the headline owns the page. */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
         <Image
           src="/images/illustrations/contour.svg"
@@ -33,51 +36,55 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
           className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.12] pointer-events-none select-none"
         />
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-          <div className="grid lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-7 order-2 lg:order-1">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
-                Your Property Guide for
-              </p>
-              <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6">
-                {persona.hubHeading}
-              </h1>
-              <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-xl">
-                {persona.hubLede}
-              </p>
-            </div>
-            <div className="lg:col-span-5 order-1 lg:order-2">
-              <div className="rounded-2xl border border-line-warm bg-surface-raised shadow-card overflow-hidden">
-                <Image
-                  src={persona.illustration}
-                  alt=""
-                  width={320}
-                  height={220}
-                  className="w-full h-auto"
-                  priority
-                />
-              </div>
-            </div>
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-20 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-32">
+          {/* Magazine masthead: italic persona ordinal + hairline + label */}
+          <div className="flex items-center gap-4 mb-12">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              No. {String(persona.order).padStart(2, "0")}
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              Your Property Guide for
+            </span>
           </div>
+
+          {/* Display-scale H1. Persona heading owns the page */}
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
+            {persona.hubHeading}
+          </h1>
+
+          {/* Standfirst */}
+          <p className="font-display font-light text-xl sm:text-2xl lg:text-3xl text-ink leading-[1.25] max-w-3xl">
+            {persona.hubLede}
+          </p>
         </div>
       </section>
 
       {/* Three starting points */}
-      <section className="py-16 sm:py-20 bg-surface-raised">
+      <section className="py-20 sm:py-24 bg-surface-raised">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-8 mb-10">
-            <div className="lg:col-span-5">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
-                Start here
-              </p>
-              <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
-                Three places worth your first ten minutes.
+          {/* Magazine-style section masthead */}
+          <div className="flex items-center gap-4 mb-10">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              Start here
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              Three first reads
+            </span>
+          </div>
+
+          <div className="grid lg:grid-cols-12 gap-x-8 gap-y-6 mb-14">
+            <div className="lg:col-span-7">
+              <h2 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl font-medium">
+                Three places worth your{" "}
+                <span className="italic font-light text-primary">first ten minutes</span>.
               </h2>
             </div>
-            <div className="lg:col-span-6 lg:col-start-7 flex items-end">
-              <p className="font-sans text-base text-ink-muted leading-relaxed">
-                Real pages on the site, not lead-capture forms. If they answer your question, great.
-                If not, the rest of the hub is below.
+            <div className="lg:col-span-5 lg:col-start-8 flex items-end">
+              <p className="font-display font-light text-lg sm:text-xl text-ink leading-snug max-w-md">
+                Real pages on the site, not lead-capture forms. If they answer
+                your question, great. If not, the rest of the hub is below.
               </p>
             </div>
           </div>

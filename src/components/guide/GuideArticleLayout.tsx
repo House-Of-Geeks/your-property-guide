@@ -27,9 +27,6 @@ export interface GuideFrontmatter {
 
 interface GuideArticleLayoutProps {
   frontmatter: GuideFrontmatter;
-  // Optional opening illustration. Defaults to the persona illustration when
-  // a persona is set.
-  heroIllustration?: string;
   tldr: readonly string[];
   toc: readonly GuideTOCEntry[];
   faqs?: readonly FaqItem[];
@@ -39,7 +36,6 @@ interface GuideArticleLayoutProps {
 
 export function GuideArticleLayout({
   frontmatter,
-  heroIllustration,
   tldr,
   toc,
   faqs = [],
@@ -47,7 +43,6 @@ export function GuideArticleLayout({
   children,
 }: GuideArticleLayoutProps) {
   const persona = frontmatter.persona ? PERSONA_BY_ID[frontmatter.persona] : null;
-  const illustration = heroIllustration ?? persona?.illustration ?? null;
   const updatedAt = frontmatter.updatedAt ?? frontmatter.publishedAt;
   const reading = frontmatter.readingTimeMinutes;
 
@@ -85,7 +80,10 @@ export function GuideArticleLayout({
         reviewedBy={frontmatter.reviewedBy}
       />
 
-      {/* Editorial hero */}
+      {/* Editorial hero. Magazine-style masthead with persona department
+          slug, display-scale H1, serif standfirst, hairline-separated
+          byline. Illustration column dropped: guides read as authoritative
+          editorial when the headline owns the page. */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
         <Image
           src="/images/illustrations/contour.svg"
@@ -95,85 +93,72 @@ export function GuideArticleLayout({
           aria-hidden="true"
           className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
         />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-14 sm:pb-20 lg:pb-24">
+          <div className="mb-10">
             <Breadcrumbs items={breadcrumbItems} />
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-8 items-center">
-            <div className={illustration ? "lg:col-span-8" : "lg:col-span-12"}>
-              {/* Top eyebrow row: persona + last-reviewed badge */}
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-5">
-                {persona && (
-                  <Link
-                    href={persona.hubPath}
-                    className="inline-flex items-center gap-2 text-xs font-sans uppercase tracking-[0.2em] text-cta hover:text-cta-hover"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-cta"></span>
-                    For {persona.cardLabel.toLowerCase()}
-                  </Link>
-                )}
-                {persona && (
-                  <span className="text-ink-subtle hidden sm:inline">·</span>
-                )}
-                <span
-                  className="inline-flex items-center gap-1.5 rounded-full border border-line-warm bg-surface-raised px-2.5 py-1 text-[11px] font-sans uppercase tracking-[0.18em] text-ink-muted"
-                  title={`Last reviewed by ${frontmatter.reviewedBy?.name ?? frontmatter.author.name}`}
-                >
-                  <ShieldCheck className="w-3 h-3 text-emerald-700" aria-hidden="true" />
-                  Last reviewed <FormattedDate iso={updatedAt} />
-                </span>
-              </div>
-              <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-                {frontmatter.title}
-              </h1>
-              <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl mb-8">
-                {frontmatter.description}
-              </p>
+          {/* Editorial masthead: persona department + hairline + dated slug */}
+          <div className="flex items-center gap-4 mb-10">
+            {persona ? (
+              <Link
+                href={persona.hubPath}
+                className="font-display italic text-primary hover:text-cta-hover text-base sm:text-lg leading-none transition-colors"
+              >
+                For {persona.cardLabel.toLowerCase()}
+              </Link>
+            ) : (
+              <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                The reading list
+              </span>
+            )}
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
+              <ShieldCheck className="w-3 h-3 text-emerald-700" aria-hidden="true" />
+              Reviewed <FormattedDate iso={updatedAt} />
+            </span>
+          </div>
 
-              {/* Byline strip */}
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 font-sans text-sm text-ink-muted">
-                <span className="inline-flex items-center gap-2">
-                  <User className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
-                  Written by <span className="text-ink font-medium">{frontmatter.author.name}</span>
-                  {frontmatter.author.role && (
-                    <span className="text-ink-subtle">, {frontmatter.author.role}</span>
-                  )}
-                </span>
-                {frontmatter.reviewedBy && (
-                  <span className="inline-flex items-center gap-2">
-                    Reviewed by <span className="text-ink font-medium">{frontmatter.reviewedBy.name}</span>
-                    {frontmatter.reviewedBy.role && (
-                      <span className="text-ink-subtle">, {frontmatter.reviewedBy.role}</span>
-                    )}
-                  </span>
-                )}
-                <span className="inline-flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
-                  Updated <FormattedDate iso={updatedAt} />
-                </span>
-                {reading && (
-                  <span className="inline-flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
-                    {reading} min read
-                  </span>
-                )}
-              </div>
-            </div>
+          {/* Display-scale H1. text-7xl/lg:8xl for editorial weight */}
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-medium">
+            {frontmatter.title}
+          </h1>
 
-            {illustration && (
-              <div className="lg:col-span-4">
-                <div className="rounded-2xl border border-line-warm bg-surface-raised shadow-card overflow-hidden">
-                  <Image
-                    src={illustration}
-                    alt=""
-                    width={320}
-                    height={220}
-                    className="w-full h-auto"
-                    priority
-                  />
-                </div>
-              </div>
+          {/* Standfirst in serif light for editorial colour */}
+          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10">
+            {frontmatter.description}
+          </p>
+
+          {/* Byline strip with hairline rule above. Cleaner typographic
+              hierarchy. */}
+          <div className="pt-6 border-t border-line flex flex-wrap items-center gap-x-6 gap-y-2 font-sans text-sm text-ink-muted">
+            <span className="inline-flex items-center gap-2">
+              <User className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
+              By <span className="text-ink font-medium">{frontmatter.author.name}</span>
+              {frontmatter.author.role && (
+                <span className="text-ink-subtle">, {frontmatter.author.role}</span>
+              )}
+            </span>
+            {frontmatter.reviewedBy && (
+              <span className="inline-flex items-center gap-2">
+                <span className="text-ink-subtle">·</span>
+                Reviewed by <span className="text-ink font-medium">{frontmatter.reviewedBy.name}</span>
+                {frontmatter.reviewedBy.role && (
+                  <span className="text-ink-subtle">, {frontmatter.reviewedBy.role}</span>
+                )}
+              </span>
+            )}
+            <span className="inline-flex items-center gap-2">
+              <span className="text-ink-subtle">·</span>
+              <Calendar className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
+              Updated <FormattedDate iso={updatedAt} />
+            </span>
+            {reading && (
+              <span className="inline-flex items-center gap-2">
+                <span className="text-ink-subtle">·</span>
+                <Clock className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
+                {reading} min read
+              </span>
             )}
           </div>
         </div>
