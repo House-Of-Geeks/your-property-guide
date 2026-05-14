@@ -88,22 +88,29 @@ export default async function InsightsPage() {
           aria-hidden="true"
           className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
         />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-20 sm:pb-24">
+          <div className="mb-10">
             <Breadcrumbs items={[{ label: "Insights" }]} />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5 inline-flex items-center gap-2">
-            <TrendingUp className="w-3.5 h-3.5" aria-hidden="true" />
-            Updated {formatDate(new Date().toISOString())}
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Australian property, <span className="italic text-primary">explained</span>.
+          <div className="flex items-center gap-4 mb-10">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              Insights
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
+              <TrendingUp className="w-3 h-3" aria-hidden="true" />
+              Updated {formatDate(new Date().toISOString())}
+            </span>
+          </div>
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
+            Australian property,{" "}
+            <span className="italic font-light text-primary">explained</span>.
           </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
+          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
             Capital city market reads, RBA decisions, suburb data refreshes,
-            and the guides our readers are turning to right now. Sourced
-            and dated.
+            and the guides our readers are turning to right now. Sourced and
+            dated.
           </p>
         </div>
       </section>

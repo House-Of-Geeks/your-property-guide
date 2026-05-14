@@ -27,14 +27,23 @@ export async function CapitalCityOutlook() {
 
   return (
     <section className="bg-surface-raised border-y border-line">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-        <div className="grid lg:grid-cols-12 gap-8 mb-10">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+        {/* Magazine-style masthead */}
+        <div className="flex items-center gap-4 mb-10">
+          <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            2026 outlooks
+          </span>
+          <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+          <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            Capital cities
+          </span>
+        </div>
+
+        <div className="grid lg:grid-cols-12 gap-x-8 gap-y-6 mb-12">
           <div className="lg:col-span-7">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
-              2026 capital city outlooks
-            </p>
-            <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
-              Each major market, <span className="italic text-primary">read fresh</span>.
+            <h2 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl font-medium">
+              Each major market,{" "}
+              <span className="italic font-light text-primary">read fresh</span>.
             </h2>
           </div>
           <div className="lg:col-span-4 lg:col-start-9 flex items-end justify-end">

@@ -45,14 +45,22 @@ export default function AgentsPage({ searchParams }: AgentsPageProps) {
 
           <div className="grid lg:grid-cols-[1fr_auto] gap-8 items-end">
             <div>
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
-                Local agent network
-              </p>
-              <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-                Find your <span className="italic text-primary">local agent</span>.
+              <div className="flex items-center gap-4 mb-10">
+                <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                  Local agent network
+                </span>
+                <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+                <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+                  Vetted directory
+                </span>
+              </div>
+              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 max-w-[20ch] font-medium">
+                Find your{" "}
+                <span className="italic font-light text-primary">local agent</span>.
               </h1>
-              <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl mb-6">
-                Browse trusted local real estate agents across Australia. Search by suburb to see who knows your area.
+              <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-2xl mb-8">
+                Browse trusted local real estate agents across Australia.
+                Search by suburb to see who knows your area.
               </p>
               <div className="max-w-xl">
                 <AgentSearch />
