@@ -194,10 +194,10 @@ export function MatchAgent({
               the right person.
             </h2>
             <p className="text-base sm:text-lg text-white/70 leading-relaxed max-w-md mb-10">
-              Three quick questions. We&rsquo;ll point you to the one specialist
-              who fits your situation &mdash; agent, broker, property accountant,
-              conveyancer, whoever&rsquo;s right. Free, no comparison spam, and you
-              decide whether to take it any further.
+              Three quick questions. We&rsquo;ll point you to one specialist
+              who fits your situation, whether that&rsquo;s an agent, broker,
+              property accountant or conveyancer. Free, no comparison spam,
+              and you decide whether to take it any further.
             </p>
             <div className="grid grid-cols-2 gap-x-6 gap-y-6 max-w-md">
               {[

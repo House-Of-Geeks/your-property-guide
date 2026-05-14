@@ -18,11 +18,11 @@ import { HomeSuburbSearch } from "./HomeSuburbSearch";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: `${SITE_NAME} — Property in Australia, explained.`,
+  title: `${SITE_NAME}: Property in Australia, explained.`,
   description: SITE_DESCRIPTION,
   alternates: { canonical: SITE_URL },
   openGraph: {
-    title: `${SITE_NAME} — Property in Australia, explained.`,
+    title: `${SITE_NAME}: Property in Australia, explained.`,
     description: SITE_DESCRIPTION,
     type: "website",
   },
@@ -67,10 +67,10 @@ export default function HomePage() {
           </h1>
 
           <p className="font-sans text-lg sm:text-xl text-ink-muted leading-relaxed max-w-2xl">
-            Plain-English guides for buying, selling, renovating, investing and renting.
-            Suburb-level data on every Australian suburb. One vetted specialist when
-            you&rsquo;re ready. Free, no email gate &mdash; and the first place to read
-            before you make a move.
+            Plain-English guides on buying, selling, investing, renovating and renting.
+            Suburb data on every postcode in the country. One vetted specialist when
+            you&rsquo;re ready to act. No paywall, no email gate, no fluff. The place
+            to read first.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -96,14 +96,14 @@ export default function HomePage() {
               <Image src="/images/icons/guide.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">60+</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">in-depth guides published</p>
+                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">published guides</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <Image src="/images/icons/map.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">9,700+</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">Australian suburbs covered</p>
+                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">suburbs covered</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -117,7 +117,7 @@ export default function HomePage() {
               <Image src="/images/icons/yield.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">$0</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">no paywall, no email gate</p>
+                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">no paywall, ever</p>
               </div>
             </div>
           </div>
@@ -138,9 +138,9 @@ export default function HomePage() {
             </div>
             <div className="lg:col-span-6 lg:col-start-7 flex items-end">
               <p className="font-sans text-base sm:text-lg text-ink-muted leading-relaxed">
-                Every page on the site is built around one of five people. Tell us which
-                one is you and we&rsquo;ll surface the guides, calculators and data you
-                actually need — not the rest.
+                Every page on this site is built around one of five people. Tell us
+                which one is you. We&rsquo;ll surface the guides, calculators and
+                data that fit your situation, and skip the rest.
               </p>
             </div>
           </div>
@@ -168,9 +168,8 @@ export default function HomePage() {
             </div>
             <div className="lg:col-span-6 lg:col-start-7 flex items-end">
               <p className="font-sans text-base text-ink-muted leading-relaxed">
-                Three free tools that surface a real next step in 30 seconds, no
-                sign-up. Take the match quiz, compare two suburbs, or browse
-                every calculator.
+                Three free tools, no sign-up. Take the match quiz, compare two
+                suburbs side by side, or open the calculator you need.
               </p>
             </div>
           </div>
@@ -185,7 +184,7 @@ export default function HomePage() {
                 Find your suburb in 4 questions
               </h3>
               <p className="font-sans text-sm text-ink-muted leading-relaxed mb-4 flex-1">
-                Tell us what matters and your budget, we&rsquo;ll surface six suburbs scored against your priorities.
+                Tell us what matters and your budget. We&rsquo;ll score six suburbs against your priorities.
               </p>
               <span className="font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
                 Take the quiz →
@@ -217,7 +216,7 @@ export default function HomePage() {
                 Every calculator and tool
               </h3>
               <p className="font-sans text-sm text-ink-muted leading-relaxed mb-4 flex-1">
-                Mortgage, stamp duty, borrowing power, rental yield, CGT, refinancing, and more, in one editorial index.
+                Mortgage, stamp duty, borrowing power, rental yield, CGT, refinancing. Every calculator we publish, in one index.
               </p>
               <span className="font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
                 Browse tools →
@@ -234,7 +233,7 @@ export default function HomePage() {
         <BestDealsRail
           eyebrow="When you're ready to act"
           heading="Featured opportunities from our vetted partners."
-          body="A small, hand-picked set of properties from partner agents we'd happily put a family member in front of. Each one reviewed by us before going live, and the partner only pays us if matched work goes ahead."
+          body="A small, considered set of properties from partner agents we'd happily put a family member in front of. We review every one before it goes live. The partner pays us only if work goes ahead."
         />
       </Suspense>
 
