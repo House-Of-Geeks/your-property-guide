@@ -89,21 +89,36 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
         <article>
           <Link
             href="/guides"
-            className="text-sm font-sans text-ink-muted hover:text-primary flex items-center gap-1.5 mb-5 transition-colors"
+            className="text-sm font-sans text-ink-muted hover:text-primary flex items-center gap-1.5 mb-8 transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" /> Back to guides
           </Link>
 
-          <Badge variant="primary">{post.category}</Badge>
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-ink mt-3 leading-tight tracking-tight">
+          {/* Magazine-style masthead: italic category + hairline + dated slug */}
+          <div className="flex items-center gap-4 mb-8">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              {post.category}
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              {formatDate(post.publishedAt)}
+            </span>
+          </div>
+
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-medium">
             {post.title}
           </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed mt-4">
+          {/* Standfirst marked data-speakable-summary so voice assistants
+              pick up this paragraph alongside the H1. */}
+          <p
+            data-speakable-summary
+            className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10"
+          >
             {post.excerpt}
           </p>
 
-          {/* Author + meta row */}
-          <div className="flex flex-wrap items-center justify-between gap-4 mt-6 py-4 border-y border-line">
+          {/* Author + meta row with hairline above */}
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-5 pb-5 border-y border-line">
             <div className="flex items-center gap-3">
               <AuthorAvatar name={post.author.name} image={post.author.image} size={40} />
               <div>
@@ -183,12 +198,15 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
       {/* Related posts */}
       {relatedPosts.length > 0 && (
-        <div className="mt-16 pt-8 border-t border-line max-w-4xl">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
-            Keep reading
-          </p>
-          <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-6">
-            Related articles
+        <div className="mt-16 pt-10 border-t border-line max-w-4xl">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="font-display italic text-primary text-base leading-none">
+              Keep reading
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+          </div>
+          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-8 font-medium">
+            Related <span className="italic font-light text-primary">articles</span>.
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {relatedPosts.map((rp) => (

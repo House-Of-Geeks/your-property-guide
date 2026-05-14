@@ -279,12 +279,31 @@ export function ArticleJsonLd({ post }: { post: BlogPost }) {
         author: {
           "@type": "Person",
           name: post.author.name,
+          url: `${SITE_URL}/about`,
         },
         publisher: {
           "@type": "Organization",
+          "@id": `${SITE_URL}#organization`,
           name: SITE_NAME,
           url: SITE_URL,
+          logo: {
+            "@type": "ImageObject",
+            url: `${SITE_URL}/og-image.jpg`,
+          },
         },
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": `${SITE_URL}/guides/${post.slug}`,
+        },
+        // Voice-search hook. Same speakable pattern as GuideArticle so AI
+        // assistants pick the canonical spoken summary for news articles
+        // too.
+        speakable: {
+          "@type": "SpeakableSpecification",
+          cssSelector: ["h1", "[data-speakable-summary]"],
+        },
+        inLanguage: "en-AU",
+        isAccessibleForFree: true,
       }}
     />
   );
@@ -362,7 +381,11 @@ export function PlaceJsonLd({
     <JsonLdScript
       data={{
         "@context": "https://schema.org",
-        "@type": "Place",
+        // Combined Place + AdministrativeArea types so AI search engines
+        // can classify the entity as a real suburb-level administrative
+        // boundary rather than a generic Place node. Maps better to query
+        // intent for "what is X suburb like" or "is X a good suburb".
+        "@type": ["Place", "AdministrativeArea"],
         name,
         ...(description && { description }),
         url: `${SITE_URL}${url}`,
@@ -374,6 +397,16 @@ export function PlaceJsonLd({
           ...(postalCode && { postalCode }),
           addressCountry: "AU",
         },
+        ...(addressRegion && {
+          containedInPlace: {
+            "@type": "AdministrativeArea",
+            name: addressRegion,
+            containedInPlace: {
+              "@type": "Country",
+              name: "Australia",
+            },
+          },
+        }),
         ...(latitude && longitude && {
           geo: {
             "@type": "GeoCoordinates",

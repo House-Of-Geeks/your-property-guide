@@ -85,18 +85,28 @@ export default function BestSuburbsHubPage() {
           aria-hidden="true"
           className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
         />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-20 sm:pb-24">
+          <div className="mb-10">
             <Breadcrumbs items={[{ label: "Best Suburbs" }]} />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
-            Six ranked lists
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            The best suburbs, <span className="italic text-primary">by what matters to you</span>.
+          {/* Magazine masthead */}
+          <div className="flex items-center gap-4 mb-10">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              Six ranked lists
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              Best suburbs
+            </span>
+          </div>
+
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
+            The best suburbs, by{" "}
+            <span className="italic font-light text-primary">what matters</span>{" "}
+            to you.
           </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
+          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
             Six rankings across schools, growth, affordability, walkability,
             flood safety and rental yield. Built on real public data, with no
             marketing spin.

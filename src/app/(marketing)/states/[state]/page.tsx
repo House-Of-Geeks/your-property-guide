@@ -86,55 +86,81 @@ export default async function StatePage({ params }: StatePageProps) {
         items={topSuburbs.slice(0, 10).map((s) => ({ name: s.name, url: "/suburbs/" + s.slug }))}
       />
 
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-primary/10 to-white border-b border-gray-100">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-          <Breadcrumbs
-            items={[
-              { label: "States", href: "/states" },
-              { label: stateName },
-            ]}
-          />
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mt-4">
-            {stateName} Property Market
+      {/* Editorial hero. Magazine masthead + display-scale H1 + hairline
+          stats row, matching the homepage and persona-hub language. */}
+      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-16 sm:pb-20">
+          <div className="mb-10">
+            <Breadcrumbs
+              items={[
+                { label: "States", href: "/states" },
+                { label: stateName },
+              ]}
+            />
+          </div>
+
+          {/* Magazine masthead */}
+          <div className="flex items-center gap-4 mb-10">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              State profile
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              Australia&rsquo;s property reference
+            </span>
+          </div>
+
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
+            {stateName}{" "}
+            <span className="italic font-light text-primary">property</span>,
+            mapped.
           </h1>
-          <p className="text-lg text-gray-600 mt-3 max-w-2xl">
-            Explore suburb profiles, school data, and property market insights across {stateName}.
+          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl mb-12">
+            Suburb profiles, school data, and property market insights across{" "}
+            {stateName}. Free, ungated, sourced and dated.
           </p>
 
-          {/* Key stats */}
-          <div className="flex flex-wrap gap-6 mt-8">
-            <div className="flex items-center gap-2 text-sm">
-              <MapPin className="w-4 h-4 text-primary" />
-              <span className="font-semibold text-gray-900">{stats.suburbCount.toLocaleString()}</span>
-              <span className="text-gray-500">suburbs</span>
+          {/* Hairline-divided stats row */}
+          <div className="border-y border-line grid grid-cols-2 sm:grid-cols-3">
+            <div className="py-6 sm:py-7 pr-4 sm:pr-6">
+              <p className="font-display text-4xl sm:text-5xl text-ink leading-none mb-2.5 tracking-tight">
+                {stats.suburbCount.toLocaleString()}
+              </p>
+              <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
+                <MapPin className="w-3 h-3" aria-hidden="true" />
+                Suburbs covered
+              </p>
             </div>
             {stats.avgMedianHousePrice && (
-              <div className="flex items-center gap-2 text-sm">
-                <Home className="w-4 h-4 text-primary" />
-                <span className="font-semibold text-gray-900">
+              <div className="py-6 sm:py-7 px-4 sm:px-6 border-l border-line">
+                <p className="font-display text-4xl sm:text-5xl text-ink leading-none mb-2.5 tracking-tight">
                   {formatPriceFull(stats.avgMedianHousePrice)}
-                </span>
-                <span className="text-gray-500">avg median house price</span>
+                </p>
+                <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
+                  <Home className="w-3 h-3" aria-hidden="true" />
+                  Avg median house
+                </p>
               </div>
             )}
             {stats.avgAnnualGrowth != null && (
-              <div className="flex items-center gap-2 text-sm">
-                <TrendingUp className="w-4 h-4 text-primary" />
-                <span
-                  className={`font-semibold ${
-                    stats.avgAnnualGrowth >= 0 ? "text-green-700" : "text-red-600"
+              <div className="py-6 sm:py-7 px-4 sm:px-6 border-l border-line border-t sm:border-t-0">
+                <p
+                  className={`font-display text-4xl sm:text-5xl leading-none mb-2.5 tracking-tight ${
+                    stats.avgAnnualGrowth >= 0 ? "text-ink" : "text-danger"
                   }`}
                 >
                   {stats.avgAnnualGrowth >= 0 ? "+" : ""}
                   {stats.avgAnnualGrowth}%
-                </span>
-                <span className="text-gray-500">avg annual growth</span>
+                </p>
+                <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
+                  <TrendingUp className="w-3 h-3" aria-hidden="true" />
+                  Avg annual growth
+                </p>
               </div>
             )}
           </div>
         </div>
-      </div>
+      </section>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 space-y-14">
 
