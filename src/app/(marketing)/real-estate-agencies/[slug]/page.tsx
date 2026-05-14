@@ -268,7 +268,12 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
         ) : null}
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4 gap-3">
-          <h1 className="text-3xl sm:text-4xl font-bold drop-shadow-lg">{agency.name}</h1>
+          <p className="font-display italic text-white/80 text-sm sm:text-base leading-none mb-1">
+            Local agency
+          </p>
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl drop-shadow-lg leading-[1.02] tracking-tight font-medium">
+            {agency.name}
+          </h1>
           <p className="flex items-center gap-1.5 text-white/80 text-sm">
             <MapPin className="w-4 h-4 flex-shrink-0" />
             {agency.address.full}

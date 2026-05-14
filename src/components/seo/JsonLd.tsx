@@ -414,6 +414,13 @@ export function PlaceJsonLd({
             longitude,
           },
         }),
+        // Voice-search hook. The suburb FAQ block on the page is marked
+        // data-speakable-summary; assistants can pick the most-asked
+        // questions for spoken answers.
+        speakable: {
+          "@type": "SpeakableSpecification",
+          cssSelector: ["h1", "[data-speakable-summary]"],
+        },
       }}
     />
   );

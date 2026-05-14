@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, MapPin } from "lucide-react";
 import { ExpertCTA } from "./ExpertCTA";
+import { BreadcrumbJsonLd } from "@/components/seo";
 import { PERSONAS, getPersonaById, type PersonaId } from "@/lib/constants/journey";
 
 interface PersonaHubLayoutProps {
@@ -22,6 +23,8 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
 
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: persona.hubHeading, url: persona.hubPath }]} />
+
       {/* Editorial hero. Magazine masthead with numbered persona slug,
           display-scale H1 with italic emphasis on the persona noun, serif
           standfirst. Illustration column dropped: hub pages read as

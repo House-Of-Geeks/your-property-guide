@@ -262,19 +262,27 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
             />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
-            Side-by-side suburb comparison
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-4xl">
-            {suburbAName} <span className="italic text-primary">vs</span> {suburbBName}.
+          <div className="flex items-center gap-4 mb-10">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              Side by side
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              Suburb comparison
+            </span>
+          </div>
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[20ch] font-medium">
+            {suburbAName}{" "}
+            <span className="italic font-light text-primary">vs</span>{" "}
+            {suburbBName}.
           </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-3xl">
+          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
             {a.medianHousePrice > 0 && b.medianHousePrice > 0 ? (
               <>
                 Comparing two suburbs with median house prices of{" "}
-                <strong className="text-ink">{formatPriceFull(a.medianHousePrice)}</strong>{" "}
+                <strong className="text-ink font-medium">{formatPriceFull(a.medianHousePrice)}</strong>{" "}
                 and{" "}
-                <strong className="text-ink">{formatPriceFull(b.medianHousePrice)}</strong>.
+                <strong className="text-ink font-medium">{formatPriceFull(b.medianHousePrice)}</strong>.
               </>
             ) : (
               <>Suburb-to-suburb comparison across price, growth, lifestyle, schools and risk.</>

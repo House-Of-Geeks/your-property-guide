@@ -113,15 +113,18 @@ export function SuburbFAQ({ suburb }: SuburbFAQProps) {
       <section id="faq" className="scroll-mt-16">
         <div className="grid lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-4">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+            <p className="font-display italic text-primary text-base mb-3 leading-none">
               Frequently asked
             </p>
-            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight">
-              About <span className="italic text-primary">{sn}</span>.
+            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight font-medium">
+              About <span className="italic font-light text-primary">{sn}</span>.
             </h2>
           </div>
           <div className="lg:col-span-8">
-            <dl className="divide-y divide-line border-y border-line">
+            {/* Mark each Q+A as data-speakable-summary so voice search
+                assistants pick up the suburb's most-asked questions as
+                spoken answers. Pairs with the FAQPage JSON-LD above. */}
+            <dl className="divide-y divide-line border-y border-line" data-speakable-summary>
               {faqs.map((faq) => (
                 <div key={faq.question} className="py-5">
                   <dt className="font-display text-lg text-ink leading-snug mb-2">{faq.question}</dt>

@@ -125,16 +125,22 @@ export default async function BestDealDetailPage({ params }: PageProps) {
                 </div>
               )}
 
-              <div className="flex flex-wrap gap-2 mb-5">
-                {deal.dealTypes.map((t) => (
-                  <Badge key={t} variant="outline">{t.replace("-", " ")}</Badge>
-                ))}
+              <div className="flex items-center gap-4 mb-8 flex-wrap">
+                <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                  Featured deal
+                </span>
+                <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+                <div className="flex flex-wrap gap-2">
+                  {deal.dealTypes.map((t) => (
+                    <Badge key={t} variant="outline">{t.replace("-", " ")}</Badge>
+                  ))}
+                </div>
               </div>
 
-              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-ink leading-[1.1] tracking-tight mb-4">
+              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 font-medium">
                 {deal.title}
               </h1>
-              <p className="font-sans text-lg text-ink-muted leading-relaxed mb-6">
+              <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-8">
                 {deal.headline}
               </p>
 

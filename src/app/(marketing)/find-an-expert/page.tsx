@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 import { MatchAgentEmbed, SpecialistShowcase, TrustStrip } from "@/components/journey";
+import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -104,6 +105,8 @@ const HOW_IT_WORKS = [
 export default function FindAnExpertPage() {
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Find an expert", url: "/find-an-expert" }]} />
+
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
         <Image
