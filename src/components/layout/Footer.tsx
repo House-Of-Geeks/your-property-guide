@@ -165,11 +165,19 @@ function FooterBottom() {
     <div className="mt-12 pt-8 border-t border-white/10">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
         <div className="flex flex-col items-center sm:items-start gap-3">
-          <Link href="/" className="flex items-center gap-2.5">
+          <Link href="/" className="flex items-center gap-3">
             <Key className="w-6 h-6 text-accent shrink-0" aria-hidden="true" strokeWidth={2.25} />
-            <span className="font-display text-white text-2xl tracking-tight leading-none">Your Property Guide</span>
+            <div className="flex flex-col leading-none">
+              <span className="font-display text-white text-2xl tracking-tight leading-none">Your Property Guide</span>
+              <span className="font-display italic text-accent text-[11px] tracking-tight leading-none mt-1.5">
+                Australia&rsquo;s property reference
+              </span>
+            </div>
           </Link>
-          <p className="text-sm text-white/50">Australia&rsquo;s property reference. Property, explained.</p>
+          <p className="text-sm text-white/50 max-w-xs leading-relaxed">
+            Independent property research, ungated and written for people, not
+            portals. Published from Brisbane, Australia.
+          </p>
         </div>
         <div className="flex flex-col items-center gap-3">
           <div className="flex gap-4">
@@ -304,21 +312,28 @@ export function Footer() {
 function NewsletterBand() {
   return (
     <section className="border-b border-white/10">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid lg:grid-cols-12 gap-8 items-end">
-          <div className="lg:col-span-6">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-white/40 mb-3">
-              The quarterly read
-            </p>
-            <h2 className="font-display text-2xl sm:text-3xl text-white leading-tight">
-              Get the next market read in your inbox.
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid lg:grid-cols-12 gap-x-10 gap-y-8 items-end">
+          <div className="lg:col-span-7">
+            <div className="flex items-center gap-4 mb-6">
+              <span className="font-display italic text-accent text-base leading-none">
+                The quarterly read
+              </span>
+              <span className="w-12 h-px bg-white/25" aria-hidden="true" />
+              <span className="text-[11px] uppercase tracking-[0.32em] text-white/50 font-sans font-medium">
+                Editor&rsquo;s note
+              </span>
+            </div>
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-white leading-[0.98] tracking-tight font-medium">
+              Get the next market read in your{" "}
+              <span className="italic font-light text-accent">inbox</span>.
             </h2>
-            <p className="mt-2 font-sans text-sm text-white/60 leading-relaxed max-w-md">
+            <p className="mt-4 font-display font-light text-lg sm:text-xl text-white/70 leading-snug max-w-lg">
               One email a quarter, no more. Capital city outlooks, RBA changes,
               and the data updates worth knowing about.
             </p>
           </div>
-          <div className="lg:col-span-6">
+          <div className="lg:col-span-5">
             <NewsletterFormFooter />
           </div>
         </div>

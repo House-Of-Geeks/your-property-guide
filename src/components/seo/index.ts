@@ -15,4 +15,5 @@ export {
   GuideArticleJsonLd,
   HowToJsonLd,
   DefinedTermJsonLd,
+  PersonJsonLd,
 } from "./JsonLd";

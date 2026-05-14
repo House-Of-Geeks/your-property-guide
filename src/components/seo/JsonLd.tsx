@@ -48,7 +48,30 @@ export function OrganizationJsonLd() {
             "@type": "Country",
             name: "Australia",
           },
-          // Editorial policy signals — these are the trust hooks Google's
+          // Founder Person entity for E-E-A-T. Google's quality raters and
+          // AI search engines weight named-author publishers higher than
+          // anonymous ones; explicitly linking the org to a real person via
+          // founder + employee strengthens the editorial-publisher signal.
+          founder: {
+            "@type": "Person",
+            "@id": `${SITE_URL}/about#andy-mcmaster`,
+            name: "Andy McMaster",
+            jobTitle: "Editor",
+            worksFor: { "@id": `${SITE_URL}#organization` },
+            url: `${SITE_URL}/about`,
+            sameAs: [
+              "https://www.linkedin.com/in/andymcmaster",
+            ],
+          },
+          employee: [
+            {
+              "@type": "Person",
+              "@id": `${SITE_URL}/about#andy-mcmaster`,
+              name: "Andy McMaster",
+              jobTitle: "Editor",
+            },
+          ],
+          // Editorial policy signals. These are the trust hooks Google's
           // Helpful Content System and AI rankers look for. Each links to a
           // live page on the site (about / methodology / privacy).
           publishingPrinciples: `${SITE_URL}/about`,
@@ -58,6 +81,11 @@ export function OrganizationJsonLd() {
           diversityPolicy: `${SITE_URL}/about`,
           ownershipFundingInfo: `${SITE_URL}/about`,
           missionCoveragePrioritiesPolicy: `${SITE_URL}/about`,
+          foundingDate: "2024",
+          foundingLocation: {
+            "@type": "Place",
+            name: "Brisbane, Australia",
+          },
           contactPoint: {
             "@type": "ContactPoint",
             contactType: "customer support",
@@ -558,6 +586,55 @@ export function GuideArticleJsonLd({
           "@type": "WebPage",
           "@id": `${SITE_URL}${url}`,
         },
+        // Speakable schema points AI voice assistants (Google Assistant,
+        // Alexa, Siri Reading Mode) at the H1 + standfirst as the canonical
+        // spoken summary of the article. The conventional shape uses CSS
+        // selectors matching the guide layout's hero block.
+        speakable: {
+          "@type": "SpeakableSpecification",
+          cssSelector: ["h1", "[data-speakable-summary]"],
+        },
+        inLanguage: "en-AU",
+        isAccessibleForFree: true,
+      }}
+    />
+  );
+}
+
+// Person schema for an editor or contributor profile. Emitted on /about so
+// the @id pointed at by Organization.founder + Article.author resolves to a
+// concrete entity Google can attribute. Boosts E-E-A-T because it links
+// every author byline back to a real Person record with a job title and
+// known affiliation.
+export function PersonJsonLd({
+  id,
+  name,
+  jobTitle,
+  bio,
+  image,
+  sameAs,
+}: {
+  id: string;                 // fragment used in @id, e.g. "andy-mcmaster"
+  name: string;
+  jobTitle?: string;
+  bio?: string;
+  image?: string;             // absolute or site-relative
+  sameAs?: string[];
+}) {
+  const imageUrl = image && (image.startsWith("http") ? image : `${SITE_URL}${image}`);
+  return (
+    <JsonLdScript
+      data={{
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": `${SITE_URL}/about#${id}`,
+        name,
+        ...(jobTitle && { jobTitle }),
+        ...(bio && { description: bio }),
+        ...(imageUrl && { image: imageUrl }),
+        url: `${SITE_URL}/about#${id}`,
+        worksFor: { "@id": `${SITE_URL}#organization` },
+        ...(sameAs && sameAs.length > 0 && { sameAs }),
       }}
     />
   );

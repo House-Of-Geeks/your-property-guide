@@ -124,8 +124,14 @@ export function GuideArticleLayout({
             {frontmatter.title}
           </h1>
 
-          {/* Standfirst in serif light for editorial colour */}
-          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10">
+          {/* Standfirst in serif light for editorial colour. Marked
+              data-speakable-summary so voice assistants (Google Assistant,
+              Siri Reading Mode) pick up this paragraph as the canonical
+              spoken summary alongside the H1. */}
+          <p
+            data-speakable-summary
+            className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10"
+          >
             {frontmatter.description}
           </p>
 

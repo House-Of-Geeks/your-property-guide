@@ -110,11 +110,16 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-surface/95 backdrop-blur border-b border-line">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-2.5 shrink-0">
+          <Link href="/" className="group flex items-center gap-3 shrink-0">
             <Key className="w-5 h-5 text-accent shrink-0" aria-hidden="true" strokeWidth={2.25} />
-            <span className="font-display text-ink text-xl sm:text-[22px] tracking-tight leading-none">
-              Your Property Guide
-            </span>
+            <div className="flex flex-col leading-none">
+              <span className="font-display text-ink text-xl sm:text-[22px] tracking-tight leading-none">
+                Your Property Guide
+              </span>
+              <span className="hidden sm:block font-display italic text-primary text-[11px] tracking-tight leading-none mt-1">
+                Australia&rsquo;s property reference
+              </span>
+            </div>
           </Link>
 
           <nav ref={navRef} className="hidden lg:flex items-center gap-1">
