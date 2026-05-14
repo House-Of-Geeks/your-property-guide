@@ -133,15 +133,21 @@ export async function LatestGuides() {
           </div>
         </div>
 
-        {/* Cornerstone evergreen guides. Six highest-value pages surfaced
-            directly from the homepage so Google sees them as priority
-            internal-link targets. Compact text cards (no images) to keep
-            visual weight low. */}
-        <div className="mt-12 pt-10 border-t border-line-warm">
-          <div className="flex items-end justify-between gap-4 mb-6">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle">
-              The guides our readers open first
-            </p>
+        {/* Cornerstone evergreen guides. Magazine-style numbered list. Six
+            highest-value pages surfaced from the homepage so Google sees
+            them as priority internal-link targets. Big serif numerals on
+            the left read as an editorial "best of" column rather than a
+            SaaS feature grid. */}
+        <div className="mt-14 pt-10 border-t border-line-warm">
+          <div className="flex items-end justify-between gap-4 mb-8">
+            <div>
+              <p className="font-display italic text-primary text-lg leading-none mb-2">
+                Editor&rsquo;s reading list
+              </p>
+              <p className="text-[11px] uppercase tracking-[0.24em] text-ink-subtle font-sans font-medium">
+                Six guides our readers open first
+              </p>
+            </div>
             <Link
               href="/guides"
               className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-primary transition-colors border-b border-line-strong hover:border-primary pb-0.5"
@@ -149,25 +155,28 @@ export async function LatestGuides() {
               Every guide <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {CORNERSTONE.map((g) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10">
+            {CORNERSTONE.map((g, i) => (
               <Link
                 key={g.href}
                 href={g.href}
-                className="group flex items-center gap-4 rounded-xl border border-line bg-surface-raised hover:border-ink hover:shadow-card transition-all p-4"
+                className="group flex items-start gap-5 py-6 border-b border-line hover:border-ink transition-colors"
               >
+                <span className="font-display text-4xl sm:text-5xl text-ink-subtle group-hover:text-primary transition-colors leading-none mt-0.5 tabular-nums">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[11px] font-sans uppercase tracking-[0.18em] text-cta mb-1.5">
+                  <p className="text-[10px] sm:text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-2 font-medium">
                     {g.audience}
                   </p>
-                  <p className="font-display text-base text-ink leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                  <p className="font-display text-lg sm:text-xl text-ink leading-[1.2] group-hover:text-primary transition-colors">
                     {g.title}
                   </p>
-                  <p className="mt-1.5 inline-flex items-center gap-1 text-xs text-ink-subtle font-sans">
+                  <p className="mt-2 inline-flex items-center gap-1 text-xs text-ink-subtle font-sans">
                     <Clock className="w-3 h-3" /> {g.minutes} min read
                   </p>
                 </div>
-                <ArrowRight className="w-4 h-4 text-ink-subtle group-hover:text-primary transition-colors shrink-0" />
+                <ArrowRight className="w-4 h-4 text-ink-subtle group-hover:text-primary transition-colors mt-2 shrink-0" />
               </Link>
             ))}
           </div>

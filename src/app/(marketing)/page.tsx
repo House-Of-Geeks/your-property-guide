@@ -34,10 +34,9 @@ export default function HomePage() {
     <>
       <OrganizationJsonLd />
 
-      {/* 1. Editorial hero — education-first, authority-led. Removed the
-            old "Your biggest purchase shouldn't be your worst decision"
-            headline in favour of a positioning that frames us as the
-            reference Australians come to BEFORE they make a property move. */}
+      {/* 1. Editorial hero. Pushed to editorial scale + magazine-style
+            department slug, hairline-divided stats, single primary CTA
+            with the secondary action as an underlined link. */}
       <section className="relative bg-surface-warm overflow-hidden border-b border-line">
         <Image
           src="/images/illustrations/contour.svg"
@@ -56,91 +55,116 @@ export default function HomePage() {
           className="absolute -left-12 -bottom-12 w-[420px] opacity-[0.10] pointer-events-none select-none"
         />
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-6">
-            Australia&rsquo;s property reference
-          </p>
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:pt-20 sm:pb-28 lg:pt-24 lg:pb-32">
+          {/* Editorial slug: italic number + hairline + department label.
+              Reads as the masthead of a magazine column, not a SaaS hero. */}
+          <div className="flex items-center gap-4 mb-12 sm:mb-16">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              No. 01
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              Australia&rsquo;s property reference
+            </span>
+          </div>
 
-          <h1 className="font-display text-ink leading-[1.02] tracking-tight mb-8 max-w-5xl text-5xl sm:text-6xl lg:text-7xl">
-            Property in Australia,{" "}
-            <span className="italic text-primary">explained.</span>
+          {/* Display H1 at editorial scale. Italic emphasis on "Australia"
+              pushes the brand pattern harder than the previous "explained"
+              treatment, and lifts the country word as a citation hook. */}
+          <h1 className="font-display text-ink tracking-tight mb-12 max-w-[18ch] text-6xl sm:text-7xl lg:text-[112px] xl:text-[128px] leading-[0.95] font-medium">
+            Property in{" "}
+            <span className="italic font-light text-primary">Australia</span>,
+            explained.
           </h1>
 
-          <p className="font-sans text-lg sm:text-xl text-ink-muted leading-relaxed max-w-2xl">
-            Plain-English guides on buying, selling, investing, renovating and renting.
-            Suburb data on every postcode in the country. One vetted specialist when
-            you&rsquo;re ready to act. No paywall, no email gate, no fluff. The place
-            to read first.
+          {/* Standfirst. Serif body at display weight reads like a magazine
+              lede, not a SaaS subheadline. Narrower measure for editorial
+              colour. */}
+          <p className="font-display text-2xl sm:text-3xl text-ink leading-[1.25] max-w-3xl mb-12 font-light">
+            The plain-English reference for every Australian engaging with
+            property. Buying, selling, investing, renovating, renting. Free,
+            ungated, and the first place to read before you make a move.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          {/* CTA + supporting link. Single pill button keeps conversion
+              focus; the secondary action is an underlined editorial
+              cross-reference instead of a second pill. */}
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4 mb-16">
             <Link
               href="#personas"
-              className="inline-flex items-center gap-2 rounded-full bg-ink text-white hover:bg-primary px-6 py-3 text-sm font-medium transition-colors"
+              className="inline-flex items-center gap-2 rounded-full bg-ink text-white hover:bg-primary px-7 py-3.5 text-sm font-medium transition-colors"
             >
               Start with my situation <span aria-hidden="true">→</span>
             </Link>
             <Link
               href="/guides"
-              className="inline-flex items-center gap-2 rounded-full border border-line-strong text-ink hover:border-ink px-6 py-3 text-sm font-medium transition-colors"
+              className="inline-flex items-center gap-1.5 text-ink hover:text-primary font-medium text-sm border-b border-line-strong hover:border-primary pb-1 transition-colors"
             >
-              Browse the guides
+              Or browse all 60+ guides
             </Link>
           </div>
 
-          {/* Authority anchor row — published guides, suburbs covered, years,
-                free. Stats lean into editorial breadth rather than data-portal
-                vibes; sets the AI-citation framing (we publish, we don't list). */}
-          <div className="mt-12 flex flex-wrap gap-x-10 gap-y-6">
-            <div className="flex items-start gap-3">
-              <Image src="/images/icons/guide.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
-              <div>
-                <p className="font-display text-2xl text-ink leading-none mb-1">60+</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">published guides</p>
+          {/* Editorial stat row. Hairline-divided columns, no icons, big
+              serif numbers and small uppercase labels. Reads as a magazine
+              masthead summary, not a feature grid. */}
+          <div className="border-y border-line grid grid-cols-2 sm:grid-cols-4">
+            {[
+              { value: "60+",     label: "Published guides" },
+              { value: "9,700+",  label: "Suburbs covered" },
+              { value: "8",       label: "States & territories" },
+              { value: "$0",      label: "No paywall, ever" },
+            ].map((s, i) => (
+              <div
+                key={s.label}
+                className={[
+                  "py-6 sm:py-7 px-4 sm:px-6",
+                  i === 0 ? "pl-0" : "",
+                  // Vertical hairline between cells. Mobile (2-col): cells 1 + 3. Desktop (4-col): cells 1, 2, 3.
+                  i === 1 || i === 3 ? "border-l border-line" : "",
+                  i === 2 ? "sm:border-l sm:border-line" : "",
+                  // Horizontal hairline between mobile rows. Cells 2 + 3 only.
+                  i >= 2 ? "border-t sm:border-t-0 border-line" : "",
+                ].filter(Boolean).join(" ")}
+              >
+                <p className="font-display text-4xl sm:text-5xl text-ink leading-none mb-2.5 tracking-tight">
+                  {s.value}
+                </p>
+                <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-ink-subtle font-sans font-medium">
+                  {s.label}
+                </p>
               </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Image src="/images/icons/map.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
-              <div>
-                <p className="font-display text-2xl text-ink leading-none mb-1">9,700+</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">suburbs covered</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Image src="/images/icons/calculator.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
-              <div>
-                <p className="font-display text-2xl text-ink leading-none mb-1">8</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">states &amp; territories</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Image src="/images/icons/yield.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
-              <div>
-                <p className="font-display text-2xl text-ink leading-none mb-1">$0</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">no paywall, ever</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* 2. Persona picker — the IA spine. Hero CTA scrolls here. */}
+      {/* 2. Persona picker. The IA spine. Hero CTA scrolls here. Editorial
+            header with hairline rule + dated department slug. */}
       <section id="personas" className="bg-surface-raised border-b border-line scroll-mt-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-          <div className="grid lg:grid-cols-12 gap-8 mb-10 sm:mb-12">
-            <div className="lg:col-span-5">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-4">
-                Where are you up to?
-              </p>
-              <h2 className="font-display text-ink leading-tight tracking-tight text-4xl sm:text-5xl">
-                Pick your starting point.
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+          {/* Magazine-style section masthead */}
+          <div className="flex items-center gap-4 mb-12">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              No. 02
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              Where are you up to?
+            </span>
+          </div>
+
+          <div className="grid lg:grid-cols-12 gap-x-8 gap-y-6 mb-14 sm:mb-16">
+            <div className="lg:col-span-7">
+              <h2 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl font-medium">
+                Pick your{" "}
+                <span className="italic font-light text-primary">starting point</span>.
               </h2>
             </div>
-            <div className="lg:col-span-6 lg:col-start-7 flex items-end">
-              <p className="font-sans text-base sm:text-lg text-ink-muted leading-relaxed">
-                Every page on this site is built around one of five people. Tell us
-                which one is you. We&rsquo;ll surface the guides, calculators and
-                data that fit your situation, and skip the rest.
+            <div className="lg:col-span-5 lg:col-start-8 flex items-end">
+              <p className="font-display text-xl sm:text-2xl text-ink leading-snug font-light max-w-md">
+                Every page on this site is built around one of five people. Tell
+                us which one is you and we&rsquo;ll show you only the guides,
+                calculators and data that fit your situation.
               </p>
             </div>
           </div>
@@ -156,18 +180,27 @@ export default function HomePage() {
 
       {/* 4. Tools rail (quiz + compare + all tools) */}
       <section className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid lg:grid-cols-12 gap-8 mb-10">
-            <div className="lg:col-span-5">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
-                Don&rsquo;t know where to start?
-              </p>
-              <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
-                Try a tool.
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
+          {/* Magazine-style section masthead */}
+          <div className="flex items-center gap-4 mb-10">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              No. 03
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              Try a tool
+            </span>
+          </div>
+
+          <div className="grid lg:grid-cols-12 gap-x-8 gap-y-6 mb-12">
+            <div className="lg:col-span-7">
+              <h2 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl font-medium">
+                Don&rsquo;t know where to{" "}
+                <span className="italic font-light text-primary">start</span>?
               </h2>
             </div>
-            <div className="lg:col-span-6 lg:col-start-7 flex items-end">
-              <p className="font-sans text-base text-ink-muted leading-relaxed">
+            <div className="lg:col-span-5 lg:col-start-8 flex items-end">
+              <p className="font-display text-lg sm:text-xl text-ink leading-snug font-light max-w-md">
                 Three free tools, no sign-up. Take the match quiz, compare two
                 suburbs side by side, or open the calculator you need.
               </p>
@@ -249,18 +282,27 @@ export default function HomePage() {
           aria-hidden="true"
           className="absolute -right-12 -top-12 w-[360px] opacity-[0.12] pointer-events-none select-none"
         />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid lg:grid-cols-12 gap-8 items-end">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
+          {/* Magazine-style section masthead */}
+          <div className="flex items-center gap-4 mb-10">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              No. 04
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              Researching a specific suburb?
+            </span>
+          </div>
+
+          <div className="grid lg:grid-cols-12 gap-x-8 gap-y-8 items-end">
             <div className="lg:col-span-5">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
-                Researching a specific suburb?
-              </p>
-              <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl mb-3">
-                Look it up.
+              <h2 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-4 font-medium">
+                Look it{" "}
+                <span className="italic font-light text-primary">up</span>.
               </h2>
-              <p className="font-sans text-base text-ink-muted leading-relaxed">
-                Median, growth, schools, walk score, climate, crime. Every Australian
-                suburb. Free, no sign-up, no email gate.
+              <p className="font-display text-lg sm:text-xl text-ink leading-snug font-light max-w-md">
+                Median, growth, schools, walk score, climate, crime. Every
+                Australian suburb. Free, no sign-up, no email gate.
               </p>
             </div>
             <div className="lg:col-span-7">

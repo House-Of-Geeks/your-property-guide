@@ -63,7 +63,7 @@ export function PersonaPicker({ className, highlightActive = true, variant = "gr
   return (
     <div className={className}>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
-        {PERSONAS.map((p) => {
+        {PERSONAS.map((p, i) => {
           const isActive = highlightActive && isHydrated && currentPersona === p.id;
           return (
             <button
@@ -75,30 +75,37 @@ export function PersonaPicker({ className, highlightActive = true, variant = "gr
                 group text-left rounded-2xl border overflow-hidden transition-all cursor-pointer
                 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary
                 ${isActive
-                  ? "border-ink bg-surface-raised shadow-card-hover"
-                  : "border-line bg-surface-raised hover:border-ink hover:shadow-card-hover"}
+                  ? "border-ink bg-surface-warm shadow-card-hover"
+                  : "border-line bg-surface-warm hover:border-ink hover:shadow-card-hover"}
               `}
             >
-              {/* Illustration band */}
-              <div className="aspect-[16/9] bg-surface-warm border-b border-line-warm relative overflow-hidden">
+              {/* Illustration band with editorial numeral overlay. The
+                  numeral sits in the top-left, the illustration is right-
+                  aligned and trimmed, giving each card a magazine-cover
+                  layout instead of a centered SaaS card. */}
+              <div className="aspect-[16/9] bg-surface-raised border-b border-line-warm relative overflow-hidden">
+                <span className="absolute top-4 left-5 font-display italic text-primary text-xl leading-none tabular-nums z-10">
+                  No. {String(i + 1).padStart(2, "0")}
+                </span>
                 <Image
                   src={p.illustration}
                   alt=""
                   width={320}
                   height={220}
-                  className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-[1.03]"
+                  className="w-full h-full object-contain p-4 pl-16 transition-transform duration-500 group-hover:scale-[1.03]"
                 />
               </div>
 
-              {/* Copy */}
+              {/* Copy. Display heading for editorial weight; arrow CTA uses
+                  the underlined cross-reference pattern from the hero. */}
               <div className="p-6 sm:p-7">
-                <h3 className="text-2xl font-display text-ink leading-tight mb-2">
+                <h3 className="text-2xl sm:text-3xl font-display text-ink leading-[1.1] mb-3 tracking-tight">
                   {p.cardLabel}
                 </h3>
-                <p className="font-sans text-base text-ink-muted leading-relaxed mb-4">
+                <p className="font-sans text-base text-ink-muted leading-relaxed mb-5">
                   {p.cardBlurb}
                 </p>
-                <span className="inline-flex items-center gap-1 text-sm font-medium text-ink">
+                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors">
                   {isActive ? "Continue reading" : "Open the guide"}
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </span>
