@@ -132,7 +132,7 @@ export default function BorrowingPowerCalculatorPage() {
             Banks count the <strong>full limit</strong> of every credit card you hold,
             not just what you owe. A $20,000 unused card can shave $80,000 to
             $100,000 off your borrowing capacity. Cancelling cards you don&rsquo;t use
-            is often the highest-leverage move you can make before applying.
+            is often the single biggest thing you can do before applying.
           </p>
           <h3>Existing debts and HECS</h3>
           <p>

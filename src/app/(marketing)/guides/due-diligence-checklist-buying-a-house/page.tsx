@@ -50,10 +50,10 @@ export const metadata: Metadata = {
 const TLDR = [
   "Due diligence is everything you check before signing a contract (or, for auctions, before bidding). Skipping it can cost tens or hundreds of thousands of dollars and there's no path back once the contract is unconditional.",
   "Three layers: the property itself (building, pest, structural), the legal stack (title, contract, zoning), and the price (comparable sales, market conditions).",
-  "Building and pest inspection: $400–$800. Strata report (units): $250–$400. Conveyancer review: $800–$2,000. Total due diligence cost: typically $1,500–$3,500 — money well spent.",
+  "Building and pest inspection: $400–$800. Strata report (units): $250–$400. Conveyancer review: $800–$2,000. Total due diligence cost: typically $1,500–$3,500. Money well spent.",
   "Pre-auction: you have to do due diligence before bidding because auction contracts are unconditional. Private treaty: most due diligence happens during the cooling-off period.",
   "Red flags to walk away from: unapproved structural work, illegal building modifications, body corporate funding problems, contaminated land, asbestos in poor condition, easements that affect what you can build.",
-  "Don't rely solely on the seller's disclosure or the agent's representations. Both are subject to bias and can be incomplete — get independent professional reports.",
+  "Don't rely solely on the seller's disclosure or the agent's representations. Both are subject to bias and can be incomplete. Get independent professional reports.",
 ];
 
 const TOC: GuideTOCEntry[] = [
@@ -73,22 +73,22 @@ const FAQS: FaqItem[] = [
   {
     question: "What does due diligence mean when buying a house?",
     answer:
-      "Due diligence is the investigation a buyer does before signing a contract — checking the physical condition of the property (building and pest), reviewing the legal documents (contract, title, planning), and verifying the price against comparable sales. The goal is to surface anything that would change your decision or your price, before you're contractually committed. Skipping due diligence is one of the most expensive mistakes in property — defects you discover post-settlement are yours to fix.",
+      "Due diligence is the investigation a buyer does before signing a contract: checking the physical condition of the property (building and pest), reviewing the legal documents (contract, title, planning), and verifying the price against comparable sales. The goal is to surface anything that would change your decision or your price, before you're contractually committed. Skipping due diligence is one of the most expensive mistakes in property. Defects you discover post-settlement are yours to fix.",
   },
   {
     question: "How much does due diligence cost?",
     answer:
-      "Typical residential due diligence for a single property: building and pest inspection $400–$800, strata report (units) $250–$400, conveyancer review of the contract $800–$2,000, optional surveyor for boundary disputes $1,000–$3,000. Total commonly $1,500–$3,500. Add a few hundred for a second opinion on big structural concerns. The cost is meaningful but small relative to the purchase — and you'd pay multiples of it to fix a problem you missed.",
+      "Typical residential due diligence for a single property: building and pest inspection $400–$800, strata report (units) $250–$400, conveyancer review of the contract $800–$2,000, optional surveyor for boundary disputes $1,000–$3,000. Total commonly $1,500–$3,500. Add a few hundred for a second opinion on big structural concerns. The cost is meaningful but small relative to the purchase, and you'd pay multiples of it to fix a problem you missed.",
   },
   {
     question: "When should I do due diligence?",
     answer:
-      "Before signing a contract. For private treaty purchases, you can typically negotiate the contract subject to building and pest inspection and finance, then do the checks during the cooling-off period (varies by state — 3 to 14 days). For auctions, you must do everything before auction day because the contract is unconditional from the fall of the hammer. This means paying for inspections on properties you might not win — frustrating but unavoidable in active auction markets.",
+      "Before signing a contract. For private treaty purchases, you can typically negotiate the contract subject to building and pest inspection and finance, then do the checks during the cooling-off period (varies by state, 3 to 14 days). For auctions, you must do everything before auction day because the contract is unconditional from the fall of the hammer. This means paying for inspections on properties you might not win. Frustrating but unavoidable in active auction markets.",
   },
   {
     question: "Do I really need a building and pest inspection?",
     answer:
-      "Yes, on virtually every house purchase. The cost is $400–$800; the alternative is buying a property with hidden termite damage, structural problems, leaking roof, or asbestos issues that can cost $20,000–$100,000+ to remediate. The exception: brand-new builds with current builder warranties and clear engineer sign-off — even then, an independent inspection is cheap insurance. For units and apartments, a building inspection is less important (most issues are common-property concerns covered by the strata report) but pest inspection still has value on ground-floor units.",
+      "Yes, on virtually every house purchase. The cost is $400–$800; the alternative is buying a property with hidden termite damage, structural problems, leaking roof, or asbestos issues that can cost $20,000–$100,000+ to remediate. The exception: brand-new builds with current builder warranties and clear engineer sign-off. Even then, an independent inspection is cheap insurance. For units and apartments, a building inspection is less important (most issues are common-property concerns covered by the strata report) but pest inspection still has value on ground-floor units.",
   },
   {
     question: "What's a strata report and do I need one?",
@@ -101,14 +101,14 @@ const FAQS: FaqItem[] = [
       "Read it carefully but don't rely on it as your only check. State-mandated disclosure documents (Section 32 in VIC, seller disclosure in QLD from August 2025, contract with annexures in NSW) require certain disclosures but each state's regime has gaps. Sellers must disclose specific matters but aren't required to flag every defect, and \"buyer beware\" still applies to most physical condition issues. Your conveyancer reads the disclosure for what's wrong with it as much as what's in it.",
   },
   {
-    question: "What if the property is sold 'as is' — can I still do due diligence?",
+    question: "What if the property is sold 'as is', can I still do due diligence?",
     answer:
-      "Yes. \"As is\" means the seller isn't fixing anything before settlement — it doesn't prevent your due diligence. Auctions are effectively \"as is\" because there's no contract negotiation; you do all your due diligence pre-auction, then bid (or don't) with full knowledge. Deceased estates are often sold as is to clear estate quickly. The price typically reflects this — but you still want the inspections, because the discount you get may or may not cover the actual cost of work needed.",
+      "Yes. \"As is\" means the seller isn't fixing anything before settlement. It doesn't prevent your due diligence. Auctions are effectively \"as is\" because there's no contract negotiation; you do all your due diligence pre-auction, then bid (or don't) with full knowledge. Deceased estates are often sold as is to clear estate quickly. The price typically reflects this, but you still want the inspections, because the discount you get may or may not cover the actual cost of work needed.",
   },
   {
     question: "Can I get out of a contract if due diligence reveals problems?",
     answer:
-      "Depends on the contract structure. Auction contracts are unconditional from the hammer — you can't withdraw, period. Private treaty contracts can be made subject to building and pest, finance, and other conditions; if those conditions aren't met, you can walk with deposit refunded (or partial refund depending on state and contract wording). The cooling-off period (3–5 days in NSW, 3 days in VIC, 5 days in QLD private treaty) lets you withdraw for any reason with a small penalty (typically 0.25% of price in NSW, 0.2% in VIC). Read your specific contract carefully.",
+      "Depends on the contract structure. Auction contracts are unconditional from the hammer; you can't withdraw, period. Private treaty contracts can be made subject to building and pest, finance, and other conditions; if those conditions aren't met, you can walk with deposit refunded (or partial refund depending on state and contract wording). The cooling-off period (3–5 days in NSW, 3 days in VIC, 5 days in QLD private treaty) lets you withdraw for any reason with a small penalty (typically 0.25% of price in NSW, 0.2% in VIC). Read your specific contract carefully.",
   },
 ];
 
@@ -134,7 +134,7 @@ export default function DueDiligenceChecklistPage() {
         <p>
           Work through it section by section before you make any offer or
           bid. Don&rsquo;t skip steps even on a property you&rsquo;re
-          excited about — emotional bias is the single biggest enemy of
+          excited about. Emotional bias is the single biggest enemy of
           good property decisions, and a checklist is the cheapest way to
           fight it.
         </p>
@@ -185,7 +185,7 @@ export default function DueDiligenceChecklistPage() {
         anything else. This means all due diligence must happen{" "}
         <em>before</em> you bid. In active auction markets you&rsquo;ll
         often pay for inspections on multiple properties you don&rsquo;t
-        win — frustrating, but the alternative (skipping due diligence to
+        win. Frustrating, but the alternative (skipping due diligence to
         save money on losing bids) is much worse.
       </p>
       <h3>Off-market</h3>
@@ -203,12 +203,12 @@ export default function DueDiligenceChecklistPage() {
         <li><strong>Building inspection</strong>: licensed inspector reviews structure, roof, foundations, walls, electrical, plumbing, drainage, weatherproofing. Cost $300–$600 for a typical 3-bed house, more for larger or older properties.</li>
         <li><strong>Pest inspection</strong>: licensed pest controller checks for termite activity, termite damage, borers, rodents. Often bundled with building inspection ($400–$800 combined). Critical for any timber-frame Australian home, particularly QLD, NSW north coast, parts of VIC.</li>
         <li><strong>Asbestos assessment</strong> for properties built before 1990. Asbestos in good condition isn&rsquo;t necessarily a deal-breaker, but you need to know what&rsquo;s there.</li>
-        <li><strong>Pool inspection</strong> (where applicable): cost $250–$500. Pool issues are expensive — leaking liners, structural damage, non-compliant fences all cost five figures to fix.</li>
+        <li><strong>Pool inspection</strong> (where applicable): cost $250–$500. Pool issues are expensive: leaking liners, structural damage, non-compliant fences all cost five figures to fix.</li>
         <li><strong>Septic system check</strong> for rural properties: $300–$600. Failing septic systems require replacement at $10,000–$30,000+.</li>
         <li><strong>Independent valuation</strong> (optional but useful): a registered valuer gives an independent opinion of market value, particularly useful if you&rsquo;re negotiating against a real-estate-agent appraisal. Cost: $400–$800.</li>
       </ul>
       <p>
-        Read the inspection report yourself — don&rsquo;t just rely on the
+        Read the inspection report yourself. Don&rsquo;t just rely on the
         inspector&rsquo;s verbal summary. Cross-reference any flagged
         issues against repair cost estimates from a licensed builder before
         deciding to proceed, renegotiate, or walk.
@@ -238,7 +238,7 @@ export default function DueDiligenceChecklistPage() {
         <li><strong>Encumbrance check</strong>: any caveats, easements, restrictive covenants, mortgages, or unpaid rates registered against the title. Easements (right-of-way over your land for utilities or neighbour access) can materially affect what you can build on the property.</li>
         <li><strong>Zoning verification</strong>: confirms the property is zoned for residential use and that any future plans (extending, building a granny flat, converting to dual occupancy) are at least possible.</li>
         <li><strong>Planning history</strong>: was the existing structure built with council approval? Unapproved structural work creates a financial liability for the buyer that the seller often doesn&rsquo;t disclose.</li>
-        <li><strong>Contract terms review</strong>: special conditions, settlement period, deposit, inclusions list, vendor warranties. Many contracts have boilerplate that disadvantages buyers — your conveyancer flags any clauses you should negotiate.</li>
+        <li><strong>Contract terms review</strong>: special conditions, settlement period, deposit, inclusions list, vendor warranties. Many contracts have boilerplate that disadvantages buyers; your conveyancer flags any clauses you should negotiate.</li>
         <li><strong>Property certificates</strong>: rates certificate (outstanding rates), water certificate, land tax certificate. Outstanding rates at settlement are typically apportioned between seller and buyer.</li>
         <li><strong>Section 32 (VIC) / Seller Disclosure (QLD from August 2025) / Contract annexures (NSW) review</strong>: state-mandated seller disclosure documents. Your conveyancer reads them for both what&rsquo;s in them and what&rsquo;s suspiciously absent.</li>
         <li><strong>Special characteristics check</strong>: heritage listing, bushfire-prone-land mapping, flood mapping, contamination notations, mine subsidence districts.</li>
@@ -255,7 +255,7 @@ export default function DueDiligenceChecklistPage() {
         <li><strong>Comparable sales (last 90 days)</strong>: pull every sale in the suburb from realestate.com.au, domain.com.au, or a paid comparable-sales database. Filter to similar property type, similar bedrooms/bathrooms, similar land size. Adjust each comparable up or down for differences. The resulting range is your honest price expectation.</li>
         <li><strong>Suburb price trend</strong>: is the suburb&rsquo;s median price rising or falling? Days on market trending up or down? Both should inform your offer.</li>
         <li><strong>Per-square-metre check</strong> (units especially): comparing $/m² across recent sales in the same building or comparable buildings normalises across different unit sizes.</li>
-        <li><strong>Cost of repairs/upgrades</strong>: if the inspection flags work, get a builder estimate of the cost. Subtract from your offer price if you&rsquo;re proceeding.</li>
+        <li><strong>Cost of repairs or upgrades</strong>: if the inspection flags work, get a builder estimate of the cost. Subtract from your offer price if you&rsquo;re proceeding.</li>
         <li><strong>Independent valuation</strong> (optional): a registered valuer&rsquo;s opinion as a sanity check.</li>
       </ul>
       <p>
@@ -270,12 +270,12 @@ export default function DueDiligenceChecklistPage() {
         diligence:
       </p>
       <ul>
-        <li><strong>Strata report</strong> (as discussed in FAQ above) — non-negotiable.</li>
+        <li><strong>Strata report</strong> (as discussed in FAQ above): non-negotiable.</li>
         <li><strong>Recent body corporate financials</strong>: sinking fund balance, current administration fund, special levies in the last 3 years, planned major works.</li>
         <li><strong>Insurance coverage</strong>: building, public liability, voluntary insurance. Underinsured buildings expose owners to top-up levies after major incidents.</li>
         <li><strong>Owners corporation / strata bylaws</strong>: pet rules, short-term rental restrictions (Airbnb), renovation approval rules, balcony rules, smoking rules.</li>
         <li><strong>Litigation history and disputes</strong>: ongoing or recent legal disputes can mean special levies. Defects claims against builders for newer buildings are common and material.</li>
-        <li><strong>Capital works plan</strong> for the next 10 years — what major works are planned, when, and how funded.</li>
+        <li><strong>Capital works plan</strong> for the next 10 years: what major works are planned, when, and how funded.</li>
         <li><strong>Unit utilisation</strong>: percentage owner-occupied vs investor-tenanted. High investor ratios (60%+) often correlate with poorer building maintenance and more transient tenant issues.</li>
       </ul>
 
@@ -284,7 +284,7 @@ export default function DueDiligenceChecklistPage() {
         <li><strong>Water source</strong>: town water, bore, tank, or river. Reliability and quality testing.</li>
         <li><strong>Septic system</strong> (no town sewer): age, condition, recent maintenance records.</li>
         <li><strong>Power supply</strong>: connected, solar with battery, off-grid. Upgrade costs if any.</li>
-        <li><strong>Bushfire zone</strong>: BAL rating (Bushfire Attack Level) — properties in BAL-FZ and BAL-40 zones have stringent and expensive building requirements.</li>
+        <li><strong>Bushfire zone</strong>: BAL rating (Bushfire Attack Level). Properties in BAL-FZ and BAL-40 zones have stringent and expensive building requirements.</li>
         <li><strong>Flood zone</strong>: check council flood maps. Even partial flood exposure significantly affects insurance cost and resale.</li>
         <li><strong>Access</strong>: confirm legal access road (some rural properties have informal track access that isn&rsquo;t legally guaranteed).</li>
         <li><strong>Mining and resource leases</strong>: in some states, mining leases override surface rights. Affects QLD coal regions especially.</li>
@@ -307,11 +307,11 @@ export default function DueDiligenceChecklistPage() {
         Some findings should end your interest immediately:
       </p>
       <ul>
-        <li><strong>Unapproved structural work.</strong> A second storey, granny flat, deck, or major renovation done without council approval is your problem post-settlement. Cost to legalise (often involving demolition + reapproval) can be $30,000–$200,000+.</li>
+        <li><strong>Unapproved structural work.</strong> A second storey, granny flat, deck, or major renovation done without council approval is your problem post-settlement. Cost to legalise (often involving demolition plus reapproval) can be $30,000–$200,000+.</li>
         <li><strong>Significant active termite damage</strong> not yet remediated. Remediation cost depends on extent.</li>
         <li><strong>Structural movement / cracking</strong> requiring engineering remediation.</li>
-        <li><strong>Asbestos in poor condition</strong> in occupied areas — friable asbestos remediation is $20,000–$80,000+ and Class A licensed work.</li>
-        <li><strong>Body corporate funding crisis</strong>: empty sinking fund + planned major works ahead = special levy ahead.</li>
+        <li><strong>Asbestos in poor condition</strong> in occupied areas. Friable asbestos remediation is $20,000–$80,000+ and Class A licensed work.</li>
+        <li><strong>Body corporate funding crisis</strong>: empty sinking fund plus planned major works ahead means a special levy ahead.</li>
         <li><strong>Contamination on the title</strong>: former industrial site, fuel station, dry cleaner, or noted in EPA records. Affects insurability, financability, future remediation cost.</li>
         <li><strong>Easements affecting buildability</strong>: a sewer easement crossing the part of the block where you wanted to extend.</li>
         <li><strong>Heritage listing</strong> you didn&rsquo;t know about: limits what you can change. Not necessarily a deal-breaker but should be priced in.</li>
@@ -334,7 +334,7 @@ export default function DueDiligenceChecklistPage() {
         <li>☐ Drove the suburb at night and on weekends</li>
         <li>☐ Checked council planning maps (zoning, future development, flood, bushfire)</li>
         <li>☐ Checked the agent&rsquo;s recent sold listings for over/underquoting patterns</li>
-        <li>☐ Walked the boundaries — confirmed with fence lines and title plan</li>
+        <li>☐ Walked the boundaries, confirmed with fence lines and title plan</li>
         <li>☐ Checked NBN, mobile coverage, public transport practicalities</li>
         <li>☐ Checked schools, hospitals, supermarkets (if relevant)</li>
         <li>☐ Insurance quote obtained (factor into ongoing cost)</li>
@@ -348,7 +348,7 @@ export default function DueDiligenceChecklistPage() {
       </ul>
       <h3>Pre-settlement</h3>
       <ul>
-        <li>☐ Pre-settlement inspection — confirms property in contracted condition, all inclusions present</li>
+        <li>☐ Pre-settlement inspection, confirms property in contracted condition, all inclusions present</li>
         <li>☐ Final settlement figures from conveyancer (rates apportionment, etc.)</li>
         <li>☐ Funds ready to clear</li>
         <li>☐ Utilities arranged from settlement date (electricity, gas, water, internet)</li>
@@ -362,8 +362,8 @@ export default function DueDiligenceChecklistPage() {
 
       <Sources items={[
         "Australian Securities and Investments Commission, MoneySmart guide to buying a home (current 2025).",
-        "Australian Standard 4349.1, Inspection of buildings — Pre-purchase inspections (most recent revision).",
-        "Australian Standard 3660.2, Termite management — In and around existing buildings (current).",
+        "Australian Standard 4349.1, Inspection of buildings, Pre-purchase inspections (most recent revision).",
+        "Australian Standard 3660.2, Termite management in and around existing buildings (current).",
         "State-by-state cooling-off period legislation (Property Stock and Business Agents Act 2002 NSW; Sale of Land Act 1962 VIC; Property Occupations Act 2014 QLD; equivalents in other states).",
         "Queensland Government, seller-disclosure regime (Property Law Act 2023, effective 1 August 2025).",
       ]} />

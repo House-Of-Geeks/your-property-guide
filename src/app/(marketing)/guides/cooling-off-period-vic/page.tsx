@@ -51,9 +51,9 @@ const TLDR = [
   "Victorian residential cooling-off period is 3 clear business days from the date you sign the contract.",
   "If you withdraw during cooling-off, the seller can keep the lesser of $100 or 0.2% of the purchase price (so $2,000 on a $1M property).",
   "Cooling-off doesn't apply to: auction purchases, purchases within 3 clear business days before or after a publicly advertised auction, sales within 3 days of withdrawal from auction (passed-in), or sales to estate agents and bodies corporate. There are also some exclusions for industrial/business property.",
-  "To withdraw, give written notice to the seller or seller's agent before the cooling-off period ends — don't rely on verbal or last-minute notice.",
+  "To withdraw, give written notice to the seller or seller's agent before the cooling-off period ends. Don't rely on verbal or last-minute notice.",
   "Cooling-off is independent of subject-to-finance conditions, which can give you a longer withdrawal window in private treaty sales.",
-  "Section 32 vendor statement issues that exist at the time of contract can support contract rescission under the Sale of Land Act even outside cooling-off — talk to your conveyancer.",
+  "Section 32 vendor statement issues that exist at the time of contract can support contract rescission under the Sale of Land Act even outside cooling-off. Talk to your conveyancer.",
 ];
 
 const TOC: GuideTOCEntry[] = [
@@ -71,22 +71,22 @@ const FAQS: FaqItem[] = [
   {
     question: "What is the cooling-off period in Victoria?",
     answer:
-      "Victorian residential buyers have 3 clear business days from the date the contract is signed (by both buyer and seller) to withdraw without needing to give any reason. The cooling-off period is granted by section 31 of the Sale of Land Act 1962 (Vic). \"Clear business days\" means the day you sign and the day you withdraw are not counted — only the full business days in between.",
+      "Victorian residential buyers have 3 clear business days from the date the contract is signed (by both buyer and seller) to withdraw without needing to give any reason. The cooling-off period is granted by section 31 of the Sale of Land Act 1962 (Vic). \"Clear business days\" means the day you sign and the day you withdraw are not counted, only the full business days in between.",
   },
   {
     question: "Does cooling-off apply to auction purchases in Victoria?",
     answer:
-      "No. Cooling-off does not apply if you bought at a publicly advertised auction. It also doesn't apply if you bought within 3 clear business days before or after the scheduled auction (because those purchases are considered auction-equivalent — sellers shouldn't be able to lose auction protections through last-minute private negotiation). Auction contracts are unconditional from the fall of the hammer; you can't withdraw.",
+      "No. Cooling-off does not apply if you bought at a publicly advertised auction. It also doesn't apply if you bought within 3 clear business days before or after the scheduled auction (because those purchases are considered auction-equivalent, and sellers shouldn't be able to lose auction protections through last-minute private negotiation). Auction contracts are unconditional from the fall of the hammer; you can't withdraw.",
   },
   {
     question: "What does it cost to withdraw during cooling-off?",
     answer:
-      "The seller can retain the lesser of $100 or 0.2% of the purchase price. On a $500,000 property that's $1,000; on a $1.5M property that's $3,000. The rest of any deposit you've paid must be refunded. The seller cannot pursue other damages provided you've withdrawn within the cooling-off period — the 0.2%/$100 penalty is the full and final cost.",
+      "The seller can retain the lesser of $100 or 0.2% of the purchase price. On a $500,000 property that's $1,000; on a $1.5M property that's $3,000. The rest of any deposit you've paid must be refunded. The seller cannot pursue other damages provided you've withdrawn within the cooling-off period. The 0.2%/$100 penalty is the full and final cost.",
   },
   {
     question: "How do I withdraw during the cooling-off period?",
     answer:
-      "Give written notice to either the seller or the seller's estate agent, before the cooling-off period ends. Email is generally accepted but the safer practice is a signed letter delivered by hand or sent via registered post — and confirmed by email. Don't leave it to the last day; if the notice doesn't reach the seller/agent before the 3-business-day window expires, the contract becomes binding and you've lost the right. Your conveyancer or solicitor handles this for you — give them notice as soon as you decide to withdraw.",
+      "Give written notice to either the seller or the seller's estate agent, before the cooling-off period ends. Email is generally accepted but the safer practice is a signed letter delivered by hand or sent via registered post, and confirmed by email. Don't leave it to the last day; if the notice doesn't reach the seller/agent before the 3-business-day window expires, the contract becomes binding and you've lost the right. Your conveyancer or solicitor handles this for you. Give them notice as soon as you decide to withdraw.",
   },
   {
     question: "Can I extend the cooling-off period?",
@@ -96,15 +96,15 @@ const FAQS: FaqItem[] = [
   {
     question: "What if I find a problem with the Section 32 after cooling-off ends?",
     answer:
-      "Section 32 issues are a separate matter from cooling-off. Under the Sale of Land Act 1962 (Vic) section 32K, if the seller has failed to disclose certain matters that they were legally required to include in the vendor statement, you may have a right to rescind the contract entirely — without the 0.2% penalty — at any time before settlement. Examples: undisclosed encumbrances, planning matters, building permits, owners corporation issues. This is rescission territory; engage your conveyancer immediately if you suspect a Section 32 issue.",
+      "Section 32 issues are a separate matter from cooling-off. Under the Sale of Land Act 1962 (Vic) section 32K, if the seller has failed to disclose certain matters that they were legally required to include in the vendor statement, you may have a right to rescind the contract entirely (without the 0.2% penalty) at any time before settlement. Examples: undisclosed encumbrances, planning matters, building permits, owners corporation issues. This is rescission territory; engage your conveyancer immediately if you suspect a Section 32 issue.",
   },
 ];
 
 const RELATED: RelatedGuide[] = [
   { title: "Cooling-Off Period by State (national)",  href: "/guides/cooling-off-period-by-state-australia",  description: "Comparison across all Australian states and territories." },
   { title: "Conveyancing Guide",                       href: "/guides/conveyancing-guide",                     description: "What your conveyancer does for you, in Victoria specifically." },
-  { title: "Property Auction Guide",                   href: "/guides/property-auction-guide",                 description: "Auction-specific contract behaviour — why no cooling-off applies." },
-  { title: "Due Diligence Checklist",                  href: "/guides/due-diligence-checklist-buying-a-house", description: "What to check before signing — the better path than relying on cooling-off." },
+  { title: "Property Auction Guide",                   href: "/guides/property-auction-guide",                 description: "Auction-specific contract behaviour: why no cooling-off applies." },
+  { title: "Due Diligence Checklist",                  href: "/guides/due-diligence-checklist-buying-a-house", description: "What to check before signing, the better path than relying on cooling-off." },
   { title: "Buying Property in Australia",             href: "/guides/buying-property-australia",              description: "The full national playbook for buyers." },
 ];
 
@@ -180,7 +180,7 @@ export default function CoolingOffPeriodVicPage() {
       <p>
         Residential private-treaty sales not falling into the above
         categories DO have cooling-off rights. The most common buyer
-        scenario where cooling-off doesn&rsquo;t apply is auction — and
+        scenario where cooling-off doesn&rsquo;t apply is auction, and
         auction is also where buyers most need protection, which is why
         thorough pre-auction due diligence matters.
       </p>
@@ -208,7 +208,7 @@ export default function CoolingOffPeriodVicPage() {
       <ul>
         <li><strong>Written notice only.</strong> Phone calls and verbal statements don&rsquo;t count. Notice can be email or letter.</li>
         <li><strong>Belt and braces.</strong> Best practice: signed letter delivered by hand (with photo evidence) AND email AND registered post.</li>
-        <li><strong>Send to the seller or seller&rsquo;s estate agent</strong> — either is sufficient under the Act, but going via the agent is the easier path because they&rsquo;ll have a process for it.</li>
+        <li><strong>Send to the seller or seller&rsquo;s estate agent</strong>. Either is sufficient under the Act, but going via the agent is the easier path because they&rsquo;ll have a process for it.</li>
         <li><strong>Don&rsquo;t leave it to the last day.</strong> If the agent is out of office on Thursday afternoon and your email goes unread until Friday, you&rsquo;ve missed the window.</li>
         <li><strong>Your conveyancer handles this.</strong> Tell your conveyancer immediately when you decide to withdraw; they&rsquo;ll send formal notice on the day they receive instructions.</li>
       </ul>
@@ -217,7 +217,7 @@ export default function CoolingOffPeriodVicPage() {
         <p>
           The 3-business-day cooling-off period is strictly enforced.
           Notice that arrives one business hour late is too late. Don&rsquo;t
-          rely on the seller&rsquo;s good will — if they receive your
+          rely on the seller&rsquo;s good will. If they receive your
           notice on day 4, they&rsquo;re entitled to hold you to the
           contract.
         </p>
@@ -228,7 +228,7 @@ export default function CoolingOffPeriodVicPage() {
         Auction contracts are unconditional from the fall of the hammer.
         There is no cooling-off period and no path to renegotiate or
         withdraw. The exclusion extends 3 business days either side of the
-        auction date for purchases of the same property — so you
+        auction date for purchases of the same property, so you
         can&rsquo;t escape auction terms by negotiating a private sale on
         the auction-day-minus-1 either.
       </p>
@@ -246,8 +246,8 @@ export default function CoolingOffPeriodVicPage() {
       <h3>Section 32 deficiencies</h3>
       <p>
         Under section 32K of the Sale of Land Act 1962, a buyer may rescind
-        the contract — at any time before settlement, without the
-        cooling-off penalty — if the seller failed to disclose certain
+        the contract (at any time before settlement, without the
+        cooling-off penalty) if the seller failed to disclose certain
         matters in the Section 32 vendor statement that they were legally
         required to include. Examples: undisclosed encumbrances, planning
         matters, building permits, owners corporation issues, GAIC
@@ -265,7 +265,7 @@ export default function CoolingOffPeriodVicPage() {
         conditions: subject to finance, subject to building and pest,
         subject to sale of buyer&rsquo;s existing property. If these
         conditions aren&rsquo;t satisfied by the dates specified, the
-        contract terminates and your deposit is refunded — without the
+        contract terminates and your deposit is refunded, without the
         0.2% penalty. These are an alternative to (or in addition to)
         cooling-off and often give a longer, less penalised withdrawal
         path.
@@ -277,20 +277,20 @@ export default function CoolingOffPeriodVicPage() {
         <li><strong>Have your conveyancer review the contract and Section 32 the day after you sign</strong>, leaving you 2 business days to act on anything they flag.</li>
         <li><strong>Have a final discussion with your broker</strong> about whether your finance pre-approval is solid for this specific property.</li>
         <li><strong>If you&rsquo;re withdrawing, decide by end of day 2</strong> so day 3 is for executing the notice, not deciding.</li>
-        <li><strong>Always use written notice</strong>. Email + signed letter + registered post. Photograph or scan the proof of delivery.</li>
+        <li><strong>Always use written notice</strong>. Email, signed letter, and registered post. Photograph or scan the proof of delivery.</li>
         <li><strong>Check the contract for any waiver of cooling-off</strong> the seller might have included. Some contracts (rarely) ask buyers to waive cooling-off; don&rsquo;t sign that without legal advice.</li>
       </ul>
 
       <MatchCTA
         kind="conveyancer"
-        lead="Victorian Section 32 statements are dense. A conveyancer reads them carefully — you want them on board before, not after, you sign."
+        lead="Victorian Section 32 statements are dense. A conveyancer reads them carefully. You want them on board before, not after, you sign."
       />
 
       <Sources items={[
-        { label: "Sale of Land Act 1962 (Vic), section 31 — cooling-off rights" },
-        { label: "Sale of Land Act 1962 (Vic), section 32 — vendor statement requirements" },
-        { label: "Sale of Land Act 1962 (Vic), section 32K — rescission rights" },
-        "Consumer Affairs Victoria, \"Buying a home — cooling off period\" (current 2025).",
+        { label: "Sale of Land Act 1962 (Vic), section 31: cooling-off rights" },
+        { label: "Sale of Land Act 1962 (Vic), section 32: vendor statement requirements" },
+        { label: "Sale of Land Act 1962 (Vic), section 32K: rescission rights" },
+        "Consumer Affairs Victoria, \"Buying a home, cooling off period\" (current 2025).",
         "Law Institute of Victoria, residential conveyancing standards (current).",
       ]} />
     </GuideArticleLayout>

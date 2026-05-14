@@ -14,9 +14,9 @@ interface PageProps {
 const PAGE_PATH = "/best-deals";
 
 export const metadata: Metadata = {
-  title: `Best Deals — featured partner properties | ${SITE_NAME}`,
+  title: `Best Deals: featured partner properties | ${SITE_NAME}`,
   description:
-    "A small, hand-picked set of partner-agent properties worth a closer look. Every deal is reviewed by us before it goes live. Free to browse — buyers never pay.",
+    "A small, considered set of partner-agent properties worth a closer look. We review every deal before it goes live. Free to browse, and buyers never pay.",
   alternates: { canonical: `${SITE_URL}${PAGE_PATH}` },
 };
 
@@ -66,8 +66,8 @@ export default async function BestDealsPage({ searchParams }: PageProps) {
     <>
       <BreadcrumbJsonLd items={[{ name: "Best Deals", url: PAGE_PATH }]} />
       <CollectionPageJsonLd
-        name="Best Deals — featured partner properties"
-        description="Vetted partner-agent properties hand-picked because they're a strong opportunity right now."
+        name="Best Deals: featured partner properties"
+        description="A small, considered set of vetted partner-agent properties we think are worth a closer look right now."
         url={PAGE_PATH}
       />
 
@@ -78,7 +78,7 @@ export default async function BestDealsPage({ searchParams }: PageProps) {
             From our partners
           </p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-ink leading-[1.05] tracking-tight max-w-3xl mb-5">
-            Featured opportunities, hand-picked.
+            Featured opportunities, reviewed first.
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             A small, deliberately limited set of partner-agent properties we think are worth a closer
@@ -175,7 +175,7 @@ function EmptyState({ hasFilters }: { hasFilters: boolean }) {
       <p className="font-sans text-base text-ink-muted leading-relaxed max-w-xl mx-auto mb-6">
         {hasFilters
           ? "Try clearing a filter, or browse the full list."
-          : "We keep the queue small and deliberate — partner agents submit, we review, and only the strongest deals go live. Check back soon."}
+          : "We keep the queue small and deliberate. Partner agents submit, we review, and only the strongest deals go live. Check back soon."}
       </p>
       <div className="flex flex-wrap items-center justify-center gap-3">
         {hasFilters && (

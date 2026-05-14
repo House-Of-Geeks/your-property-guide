@@ -160,7 +160,7 @@ function EmptyState() {
           <li className="flex gap-3 items-start">
             <FileText className="w-4 h-4 text-ink-subtle mt-1 shrink-0" />
             <span>
-              <strong>Guides</strong>: 50+ in-depth guides for buying, selling, investing, and renting.
+              <strong>Guides</strong>: 60+ guides on buying, selling, investing and renting.
             </span>
           </li>
           <li className="flex gap-3 items-start">

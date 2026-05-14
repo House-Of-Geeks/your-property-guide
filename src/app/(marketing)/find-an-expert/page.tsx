@@ -125,8 +125,8 @@ export default function FindAnExpertPage() {
               </h1>
               <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl mb-8">
                 Property situations are messier than buyer-or-seller. We match you with one vetted
-                specialist for your situation &mdash; agent, broker, accountant, conveyancer, whoever
-                fits. Free for buyers and sellers, no commitment, no comparison spam.
+                specialist for your situation, whether that&rsquo;s an agent, broker, accountant
+                or conveyancer. Free for buyers and sellers, no commitment, no comparison spam.
               </p>
               <div className="flex flex-wrap gap-3 mb-10">
                 <Link

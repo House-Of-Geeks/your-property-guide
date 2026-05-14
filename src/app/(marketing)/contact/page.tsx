@@ -135,7 +135,7 @@ export default function ContactPage() {
                 <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
                   If you want to be connected with an agent, broker, accountant or
                   conveyancer for your situation, our match flow will get you there in
-                  three quick questions &mdash; faster than a free-form message.
+                  three quick questions, faster than a free-form message.
                 </p>
               </div>
               <Link

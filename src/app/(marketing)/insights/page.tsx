@@ -102,7 +102,7 @@ export default async function InsightsPage() {
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             Capital city market reads, RBA decisions, suburb data refreshes,
-            and the in-depth guides our readers are using right now. Sourced
+            and the guides our readers are turning to right now. Sourced
             and dated.
           </p>
         </div>

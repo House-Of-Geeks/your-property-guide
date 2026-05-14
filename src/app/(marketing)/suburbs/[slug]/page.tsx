@@ -572,7 +572,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           engine with one less click. */}
       <ExpertCTA
         headline={`Want a real human to help with ${suburb.name}?`}
-        body="If you&rsquo;ve looked at the numbers and want someone to talk it through &mdash; an agent, broker, accountant, conveyancer, whoever fits your situation &mdash; we&rsquo;ll find the right person. Free, no commitment."
+        body="If you&rsquo;ve looked at the numbers and want someone to talk it through, whether that&rsquo;s an agent, broker, accountant or conveyancer, we&rsquo;ll find the right person for your situation. Free, no commitment."
         ctaLabel="Get connected"
         href={`/?suburb=${slug}#match`}
       />

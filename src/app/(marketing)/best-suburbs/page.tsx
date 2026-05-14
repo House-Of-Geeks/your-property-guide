@@ -97,8 +97,9 @@ export default function BestSuburbsHubPage() {
             The best suburbs, <span className="italic text-primary">by what matters to you</span>.
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            Six curated rankings across schools, growth, affordability, walkability,
-            flood safety, and rental yield. Real public data, no marketing spin.
+            Six rankings across schools, growth, affordability, walkability,
+            flood safety and rental yield. Built on real public data, with no
+            marketing spin.
           </p>
         </div>
       </section>

@@ -3,6 +3,20 @@ import { ArrowRight, Clock } from "lucide-react";
 import { getBlogPosts } from "@/lib/services/blog-service";
 import { BlogCover } from "@/components/blog/BlogCover";
 
+// Cornerstone evergreen guides surfaced directly from the homepage so the
+// site's deepest, highest-value pages get internal-link juice straight from
+// the top of the funnel. Each line is one Google query the page should rank
+// for. Update sparingly: every change here re-prioritises which evergreen
+// content the homepage signals to Google + AI search.
+const CORNERSTONE = [
+  { title: "How to buy property in Australia",  href: "/guides/buying-property-australia",          minutes: 15, audience: "First home buyer" },
+  { title: "How much deposit do I really need", href: "/guides/how-much-deposit-to-buy-a-house",    minutes: 9,  audience: "First home buyer" },
+  { title: "How to sell a house in Australia",  href: "/guides/how-to-sell-a-house-australia",      minutes: 14, audience: "Seller" },
+  { title: "Rentvesting, the full playbook",    href: "/guides/rentvesting-australia",              minutes: 12, audience: "Investor" },
+  { title: "Negative gearing, explained",       href: "/guides/negative-gearing-australia",         minutes: 10, audience: "Investor" },
+  { title: "Renovation costs in 2026",          href: "/guides/renovation-cost-australia-2026",     minutes: 13, audience: "Renovator" },
+] as const;
+
 export async function LatestGuides() {
   const posts = await getBlogPosts();
   const [featured, ...rest] = posts.slice(0, 3);
@@ -114,6 +128,46 @@ export async function LatestGuides() {
                     {post.title}
                   </h3>
                 </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Cornerstone evergreen guides. Six highest-value pages surfaced
+            directly from the homepage so Google sees them as priority
+            internal-link targets. Compact text cards (no images) to keep
+            visual weight low. */}
+        <div className="mt-12 pt-10 border-t border-line-warm">
+          <div className="flex items-end justify-between gap-4 mb-6">
+            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle">
+              The guides our readers open first
+            </p>
+            <Link
+              href="/guides"
+              className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-primary transition-colors border-b border-line-strong hover:border-primary pb-0.5"
+            >
+              Every guide <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {CORNERSTONE.map((g) => (
+              <Link
+                key={g.href}
+                href={g.href}
+                className="group flex items-center gap-4 rounded-xl border border-line bg-surface-raised hover:border-ink hover:shadow-card transition-all p-4"
+              >
+                <div className="flex-1 min-w-0">
+                  <p className="text-[11px] font-sans uppercase tracking-[0.18em] text-cta mb-1.5">
+                    {g.audience}
+                  </p>
+                  <p className="font-display text-base text-ink leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                    {g.title}
+                  </p>
+                  <p className="mt-1.5 inline-flex items-center gap-1 text-xs text-ink-subtle font-sans">
+                    <Clock className="w-3 h-3" /> {g.minutes} min read
+                  </p>
+                </div>
+                <ArrowRight className="w-4 h-4 text-ink-subtle group-hover:text-primary transition-colors shrink-0" />
               </Link>
             ))}
           </div>

@@ -49,12 +49,12 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Mortgage brokers are paid by lenders (upfront commission ~0.65% of loan amount + trail of ~0.15% per year) and have a legal Best Interests Duty (BID) to act in the borrower's interest. Their service is free to you.",
+  "Mortgage brokers are paid by lenders (upfront commission ~0.65% of loan amount plus trail of ~0.15% per year) and have a legal Best Interests Duty (BID) to act in the borrower's interest. Their service is free to you.",
   "Around 74% of new home loans in Australia are now written through brokers (MFAA 2025 data). The market has shifted hard against direct-to-bank applications.",
   "Interview at least two brokers. Compare their lender panel size, how they explain BID, the quality of their borrowing-capacity assessment, and whether they push you toward any particular lender.",
   "Red flags: tiny lender panel (under 20), pushes one specific lender every time, can't explain BID clearly, vague on their commission structure, pressures you to sign before you've compared options.",
   "Bring three documents to your first meeting: payslips (last two), bank statements (last three months), and ID. A good broker will give you a real borrowing-capacity range within an hour.",
-  "A great broker shaves 0.10–0.40% off your rate vs. walking into your own bank — over a 30-year loan, that's $30,000–$120,000 in saved interest on a $600,000 mortgage.",
+  "A great broker shaves 0.10–0.40% off your rate vs. walking into your own bank. Over a 30-year loan, that's $30,000–$120,000 in saved interest on a $600,000 mortgage.",
 ];
 
 const TOC: GuideTOCEntry[] = [
@@ -67,34 +67,34 @@ const TOC: GuideTOCEntry[] = [
   { id: "red-flags",           label: "Red flags worth walking away from" },
   { id: "documents",           label: "What documents to bring" },
   { id: "specialist-brokers",  label: "When to use a specialist broker" },
-  { id: "after-settlement",    label: "After settlement — staying in touch" },
+  { id: "after-settlement",    label: "After settlement: staying in touch" },
 ];
 
 const FAQS: FaqItem[] = [
   {
     question: "Is using a mortgage broker free?",
     answer:
-      "Yes, to you. Brokers are paid by the lender once your loan settles — typically an upfront commission of around 0.65% of the loan amount and an ongoing trail commission of around 0.15% per year while the loan is active. You pay nothing directly to the broker. Some brokers charge a fee for service in specialist situations (very small loans, complex SMSF lending, commercial), but standard residential broking is free to the borrower.",
+      "Yes, to you. Brokers are paid by the lender once your loan settles, typically an upfront commission of around 0.65% of the loan amount and an ongoing trail commission of around 0.15% per year while the loan is active. You pay nothing directly to the broker. Some brokers charge a fee for service in specialist situations (very small loans, SMSF lending, commercial), but standard residential broking is free to the borrower.",
   },
   {
     question: "What is Best Interests Duty (BID)?",
     answer:
-      "Best Interests Duty is a legal obligation that took effect on 1 January 2021 requiring mortgage brokers to act in the best interests of the borrower (not the lender, and not themselves). In practice it means brokers must consider multiple loan options, recommend the loan that best suits your circumstances, document why they recommended what they did, and avoid conflicts of interest. ASIC enforces BID and has issued fines for breaches. Ask your broker how they apply BID in their process — they should be able to walk you through it clearly.",
+      "Best Interests Duty is a legal obligation that took effect on 1 January 2021 requiring mortgage brokers to act in the best interests of the borrower (not the lender, and not themselves). In practice it means brokers must consider multiple loan options, recommend the loan that best suits your circumstances, document why they recommended what they did, and avoid conflicts of interest. ASIC enforces BID and has issued fines for breaches. Ask your broker how they apply BID in their process; they should be able to walk you through it clearly.",
   },
   {
     question: "What's the difference between a broker and going direct to a bank?",
     answer:
-      "Going direct: you talk to one lender, they only show you their own products. You're locked into whatever rates and policies they have right now. Going via a broker: they show you 30+ lenders simultaneously, compare rates and features, and identify lenders whose credit policies actually suit your situation (this matters more than headline rate — different lenders treat self-employed income, casual employment, bonuses, and existing debt very differently). For most borrowers, the broker route delivers a better rate, better fit, and less wasted time.",
+      "Going direct: you talk to one lender, they only show you their own products. You're locked into whatever rates and policies they have right now. Going via a broker: they show you 30+ lenders simultaneously, compare rates and features, and identify lenders whose credit policies actually suit your situation (this matters more than headline rate, because different lenders treat self-employed income, casual employment, bonuses, and existing debt very differently). For most borrowers, the broker route delivers a better rate, better fit, and less wasted time.",
   },
   {
     question: "Will a broker get me a better rate than my bank?",
     answer:
-      "Usually yes — by 0.10 to 0.40 percentage points on average, sometimes more. Banks routinely offer brokers wholesale-channel pricing that's better than their public advertised rate, particularly for new business. Banks also typically reserve their best discretionary discounts for new customers, so even your existing bank often offers a better rate to a broker-introduced application than to you walking into the branch. The bigger win is loan fit — a broker matches your profile to a lender whose policy says yes, instead of multiple rejections at lenders whose policy says no.",
+      "Usually yes, by 0.10 to 0.40 percentage points on average, sometimes more. Banks routinely offer brokers wholesale-channel pricing that's better than their public advertised rate, particularly for new business. Banks also typically reserve their best discretionary discounts for new customers, so even your existing bank often offers a better rate to a broker-introduced application than to you walking into the branch. The bigger win is loan fit: a broker matches your profile to a lender whose policy says yes, instead of multiple rejections at lenders whose policy says no.",
   },
   {
     question: "How many lenders should a broker have on their panel?",
     answer:
-      "30 to 60 is typical for an established broker. Anything below 20 is a yellow flag — it suggests either an inexperienced broker or one tied to a small aggregator that hasn't built breadth. Anything over 80 is uncommon and not necessarily better; the marginal lenders are usually niche products you don't need. Quality of the panel matters more than raw count — does it include the big four, mid-tier banks (Macquarie, ING, Bendigo, BOQ, Suncorp, AMP), credit unions, and non-bank lenders (Pepper Money, Liberty, Resimac, Bluestone) for non-standard income?",
+      "30 to 60 is typical for an established broker. Anything below 20 is a yellow flag; it suggests either an inexperienced broker or one tied to a small aggregator that hasn't built breadth. Anything over 80 is uncommon and not necessarily better; the marginal lenders are usually niche products you don't need. Quality of the panel matters more than raw count: does it include the big four, mid-tier banks (Macquarie, ING, Bendigo, BOQ, Suncorp, AMP), credit unions, and non-bank lenders (Pepper Money, Liberty, Resimac, Bluestone) for non-standard income?",
   },
   {
     question: "Are all mortgage brokers regulated the same way?",
@@ -104,12 +104,12 @@ const FAQS: FaqItem[] = [
   {
     question: "Can a mortgage broker help if I'm self-employed?",
     answer:
-      "Yes — this is one of the strongest cases for using a broker. Self-employed lending policies vary enormously between lenders. The major banks typically require two years of tax returns and complete BAS statements, while specialist lenders (alt-doc lenders like Pepper, Liberty, Resimac) accept self-certified income, BAS-only verification, or accountant declarations. A good broker knows which lenders will say yes to your situation without wasting your time at the wrong lenders. Same logic applies for casual employees, contractors, recent migrants, retirees, and anyone with non-standard income.",
+      "Yes, and this is one of the strongest cases for using a broker. Self-employed lending policies vary enormously between lenders. The major banks typically require two years of tax returns and complete BAS statements, while specialist lenders (alt-doc lenders like Pepper, Liberty, Resimac) accept self-certified income, BAS-only verification, or accountant declarations. A good broker knows which lenders will say yes to your situation without wasting your time at the wrong lenders. Same logic applies for casual employees, contractors, recent migrants, retirees, and anyone with non-standard income.",
   },
   {
     question: "Should I use the broker my real estate agent recommends?",
     answer:
-      "Be cautious. Real estate agent referrals are a legitimate source of brokers, and many quality brokers build their business this way. But the referral relationship can introduce conflicts — the agent wants the deal to close fast and may favour brokers who push borrowers through aggressive lenders rather than the right-fit one. Treat the agent's recommendation as one option and always interview at least one other broker for comparison. The same applies to broker referrals from any non-finance source: useful starting point, never the only option you consider.",
+      "Be cautious. Real estate agent referrals are a legitimate source of brokers, and many quality brokers build their business this way. But the referral relationship can introduce conflicts. The agent wants the deal to close fast and may favour brokers who push borrowers through aggressive lenders rather than the right-fit one. Treat the agent's recommendation as one option and always interview at least one other broker for comparison. The same applies to broker referrals from any non-finance source: useful starting point, never the only option you consider.",
   },
 ];
 
@@ -129,7 +129,7 @@ export default function HowToChooseMortgageBrokerPage() {
         description="The seven-step process for selecting and engaging a mortgage broker for a home loan in Australia."
         url={`/guides/${FRONTMATTER.slug}`}
         steps={[
-          { name: "Get clear on what you need", text: "First home, refinance, investment property, construction, complex income — different brokers have different specialisations." },
+          { name: "Get clear on what you need", text: "First home, refinance, investment property, construction, complex income. Different brokers have different specialisations." },
           { name: "Shortlist 3 to 4 brokers", text: "Referrals from people whose financial judgement you trust, MFAA/FBAA find-a-broker tools, or vetted-broker matching services. Verify each broker's ACL on the ASIC register." },
           { name: "Run an initial 30-minute call with each", text: "Talk through your situation, ask their typical lender mix, ask them to explain Best Interests Duty in their own words." },
           { name: "Compare lender panels and process", text: "How many lenders, big four exposure, mid-tier and non-bank coverage, how they document their BID compliance." },
@@ -221,7 +221,7 @@ export default function HowToChooseMortgageBrokerPage() {
       <ul>
         <li>Consider multiple loan options before recommending one.</li>
         <li>Compare those options on the criteria that matter to <em>you</em> (rate, features, fees, settlement speed, etc.).</li>
-        <li>Recommend the option that best meets your needs — not the one paying highest commission.</li>
+        <li>Recommend the option that best meets your needs, not the one paying highest commission.</li>
         <li>Document the reasoning in a credit proposal document you receive in writing.</li>
         <li>Avoid conflicts of interest and disclose any that exist.</li>
       </ul>
@@ -275,7 +275,7 @@ export default function HowToChooseMortgageBrokerPage() {
       <ul>
         <li><strong>Referrals from people whose financial judgement you trust.</strong> Friends, family, your accountant, your conveyancer. The single best source.</li>
         <li><strong>MFAA and FBAA &quot;find a broker&quot; directories.</strong> Both industry associations list accredited members. Filter by suburb and specialisation.</li>
-        <li><strong>Vetted-broker matching services.</strong> Services that screen brokers on track record, lender panel, and complaints history before referring you. Faster than DIY-sourcing if you don&rsquo;t have a personal referral. (We run one — see <Link href="/find-an-expert">Find an expert</Link>.)</li>
+        <li><strong>Vetted-broker matching services.</strong> Services that screen brokers on track record, lender panel, and complaints history before referring you. Faster than DIY-sourcing if you don&rsquo;t have a personal referral. (We run one: see <Link href="/find-an-expert">Find an expert</Link>.)</li>
       </ul>
       <p>
         Avoid: brokers who cold-call you, brokers from comparison-site
@@ -320,7 +320,7 @@ export default function HowToChooseMortgageBrokerPage() {
       <h3>Process and communication</h3>
       <ul>
         <li>What documents will you need from me to give a real borrowing-capacity range?</li>
-        <li>How will we communicate during the application — email, phone, app?</li>
+        <li>How will we communicate during the application: email, phone, app?</li>
         <li>If a lender comes back with conditions or queries, how quickly will I hear?</li>
         <li>Do you handle the lender follow-up or do I?</li>
       </ul>
@@ -328,7 +328,7 @@ export default function HowToChooseMortgageBrokerPage() {
       <ul>
         <li>What commission will you receive on my loan?</li>
         <li>Are there any fees I&rsquo;ll be charged?</li>
-        <li>What happens if the loan doesn&rsquo;t settle — does anything come back to me?</li>
+        <li>What happens if the loan doesn&rsquo;t settle: does anything come back to me?</li>
       </ul>
       <p>
         A confident, specific broker gives you clean answers to all of these
@@ -355,7 +355,7 @@ export default function HowToChooseMortgageBrokerPage() {
         A productive first meeting needs three things from you:
       </p>
       <ul>
-        <li><strong>Two recent payslips</strong> (or two years of tax returns + last BAS for self-employed).</li>
+        <li><strong>Two recent payslips</strong> (or two years of tax returns plus last BAS for self-employed).</li>
         <li><strong>Three months of bank statements</strong> from your everyday account and any savings.</li>
         <li><strong>Photo ID</strong> (driver&rsquo;s licence or passport).</li>
       </ul>
@@ -382,7 +382,7 @@ export default function HowToChooseMortgageBrokerPage() {
         <li><strong>Bridging finance</strong>: short-term loans to buy a new property before selling the existing one. Specialised products, specialised pricing.</li>
       </ul>
 
-      <h2 id="after-settlement">After settlement — staying in touch</h2>
+      <h2 id="after-settlement">After settlement: staying in touch</h2>
       <p>
         A good broker doesn&rsquo;t disappear after the loan settles. The
         trail commission they receive is partly compensation for ongoing
@@ -403,14 +403,14 @@ export default function HowToChooseMortgageBrokerPage() {
 
       <MatchCTA
         kind="mortgage-broker"
-        lead="Want a broker we've already vetted on track record, lender panel and complaints history? We match you with one that fits — free, no commitment."
+        lead="Want a broker we've already vetted on track record, lender panel and complaints history? We match you with one that fits. Free, no commitment."
         ctaLabel="Match me with a broker"
       />
 
       <Sources items={[
         "Mortgage and Finance Association of Australia (MFAA), \"Industry Intelligence Service\", latest 2024–2025 quarterly reports.",
         "ASIC Regulatory Guide 273, Mortgage brokers: Best interests duty (December 2020).",
-        "National Consumer Credit Protection Act 2009 (Cth), Schedule 1 — National Credit Code.",
+        "National Consumer Credit Protection Act 2009 (Cth), Schedule 1, National Credit Code.",
         "Royal Commission into Misconduct in the Banking, Superannuation and Financial Services Industry, Final Report (Hayne 2019), and the subsequent implementation roadmap.",
         "Australian Financial Complaints Authority (AFCA), public determinations database for broker-related disputes.",
       ]} />

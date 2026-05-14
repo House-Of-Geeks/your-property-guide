@@ -29,7 +29,7 @@ export async function BestDealsRail({
   state,
   heading = "Featured opportunities",
   eyebrow = "From our partners",
-  body = "A small number of vetted partner properties, hand-picked because they're a strong opportunity right now. Every deal is reviewed before it goes live.",
+  body = "A small set of vetted partner properties we think are worth a closer look right now. We review every deal before it goes live.",
   limit = 6,
   className,
 }: BestDealsRailProps) {

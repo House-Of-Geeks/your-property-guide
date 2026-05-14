@@ -112,7 +112,7 @@ export const PERSONAS: readonly Persona[] = [
     hubLede: "Renovation costs in 2026, how to finance the work, how to find a builder you can trust, and which jobs actually return the money at sale. Free, ungated, plain English.",
     illustration: "/images/illustrations/guides-hero.svg",
     startingPoints: [
-      { label: "Renovation cost guide 2026", href: "/guides/renovation-cost-australia-2026", description: "Kitchens, bathrooms, second storeys and full renovations — what they actually cost.", icon: "/images/icons/calculator.svg" },
+      { label: "Renovation cost guide 2026", href: "/guides/renovation-cost-australia-2026", description: "Kitchens, bathrooms, second storeys and full renovations. What they actually cost.", icon: "/images/icons/calculator.svg" },
       { label: "Borrowing power calculator", href: "/borrowing-power-calculator", description: "What your numbers look like before you talk to a broker about renovation finance.", icon: "/images/icons/yield.svg" },
       { label: "Browse property guides", href: "/guides", description: "Every guide we publish: buying, selling, investing, financing.", icon: "/images/icons/guide.svg" },
     ],

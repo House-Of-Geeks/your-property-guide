@@ -51,7 +51,7 @@ const TLDR = [
   "Rentvesting means renting where you want to live (often inner-city, premium suburbs) and buying an investment property where the numbers work (often outer-ring, regional, or growth corridors).",
   "It's a financial play, not a lifestyle compromise. Done right, you build property equity sooner than waiting for a deposit on your dream owner-occupier home.",
   "Key trade-off: buying an investment property as your first property generally disqualifies you from the First Home Owner Grant in most states (it's reinstated in some if you owner-occupy later), and you may lose access to the First Home Guarantee Scheme. Run those numbers carefully.",
-  "Negative gearing applies — rental losses (after depreciation and interest) reduce your taxable income. Capital gains tax applies on sale, with the 50% discount after 12 months.",
+  "Negative gearing applies. Rental losses (after depreciation and interest) reduce your taxable income. Capital gains tax applies on sale, with the 50% discount after 12 months.",
   "The maths only stack up if you can find an investment-grade property: yield ≥ 4.5% gross, manageable holding cost, and a defensible growth thesis. Random outer-suburb purchases often underperform.",
   "Rentvesting suits people whose dream-suburb price tag is years away on their current trajectory, who want property exposure now, and who are comfortable being a landlord.",
 ];
@@ -59,13 +59,13 @@ const TLDR = [
 const TOC: GuideTOCEntry[] = [
   { id: "what-it-is",           label: "What rentvesting is" },
   { id: "who-it-suits",          label: "Who rentvesting suits" },
-  { id: "the-maths",             label: "The maths — does it actually work?" },
+  { id: "the-maths",             label: "The maths: does it actually work?" },
   { id: "fhog-trap",             label: "The first home buyer scheme trade-off" },
   { id: "negative-gearing",      label: "Negative gearing and tax position" },
   { id: "finding-property",      label: "Finding an investment-grade property" },
   { id: "finance",               label: "Finance for an investment loan" },
   { id: "landlord-realities",    label: "Landlord realities" },
-  { id: "exit",                  label: "When you exit — selling or transitioning" },
+  { id: "exit",                  label: "When you exit: selling or transitioning" },
   { id: "common-mistakes",       label: "Common rentvesting mistakes" },
 ];
 
@@ -78,7 +78,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Is rentvesting better than buying a home to live in?",
     answer:
-      "It depends entirely on your numbers and your goals. Rentvesting builds equity faster if your target lifestyle suburb is significantly more expensive than your investment-grade purchase suburb (e.g. renting in inner Sydney, buying in regional QLD). It's worse if your target owner-occupier home is achievable within 12–24 months — the first home owner schemes, stamp duty concessions, and main residence CGT exemption are valuable enough to outweigh the rentvesting upside.",
+      "It depends entirely on your numbers and your goals. Rentvesting builds equity faster if your target lifestyle suburb is significantly more expensive than your investment-grade purchase suburb (e.g. renting in inner Sydney, buying in regional QLD). It's worse if your target owner-occupier home is achievable within 12–24 months. The first home owner schemes, stamp duty concessions, and main residence CGT exemption are valuable enough to outweigh the rentvesting upside.",
   },
   {
     question: "Can I use the First Home Guarantee on a rentvesting purchase?",
@@ -88,7 +88,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Will I still get the first home owner grant later if I rentvest first?",
     answer:
-      "In most states, no. Most state first home owner grants require you to have never owned residential property in Australia. Once you've bought any property, even an investment, you're no longer a 'first home buyer' for grant purposes. Some specific schemes (e.g. parts of the First Home Super Saver scheme) may still be accessible — check the specific eligibility rules for each scheme. The general rule: rentvesting forfeits first-home-buyer status going forward.",
+      "In most states, no. Most state first home owner grants require you to have never owned residential property in Australia. Once you've bought any property, even an investment, you're no longer a 'first home buyer' for grant purposes. Some specific schemes (e.g. parts of the First Home Super Saver scheme) may still be accessible, so check the specific eligibility rules for each scheme. The general rule: rentvesting forfeits first-home-buyer status going forward.",
   },
   {
     question: "How much deposit do I need for a rentvesting purchase?",
@@ -98,24 +98,24 @@ const FAQS: FaqItem[] = [
   {
     question: "Is negative gearing worth it?",
     answer:
-      "Negative gearing isn't a strategy — it's a consequence of buying a property whose total deductible expenses (interest, depreciation, council rates, agent fees, insurance, repairs) exceed the rent received. The tax benefit is that the loss reduces your taxable income, which at the top marginal rate saves you 47c per dollar of loss. But you're still spending real money out of pocket each year. Negative gearing makes sense when expected capital growth more than covers the holding cost; it's destructive if growth doesn't materialise. Run the worst-case numbers.",
+      "Negative gearing isn't a strategy. It's a consequence of buying a property whose total deductible expenses (interest, depreciation, council rates, agent fees, insurance, repairs) exceed the rent received. The tax benefit is that the loss reduces your taxable income, which at the top marginal rate saves you 47c per dollar of loss. But you're still spending real money out of pocket each year. Negative gearing makes sense when expected capital growth more than covers the holding cost; it's destructive if growth doesn't materialise. Run the worst-case numbers.",
   },
   {
     question: "What's the typical yield I should target for an investment property?",
     answer:
-      "Gross rental yield of 4.5–5.5% is workable in most metro and regional markets. Below 4% gross yield typically means you're paying for capital growth at the expense of current cash flow — fine if the growth thesis is solid, painful if it isn't. Above 6% gross is increasingly common in regional Australia and some outer-metro corridors but check the population growth, infrastructure pipeline, and major-employer concentration before assuming it'll sustain. Net yield (after expenses) is usually 60–75% of gross yield depending on body corporate fees and management costs.",
+      "Gross rental yield of 4.5–5.5% is workable in most metro and regional markets. Below 4% gross yield typically means you're paying for capital growth at the expense of current cash flow. Fine if the growth thesis is solid, painful if it isn't. Above 6% gross is increasingly common in regional Australia and some outer-metro corridors but check the population growth, infrastructure pipeline, and major-employer concentration before assuming it'll sustain. Net yield (after expenses) is usually 60–75% of gross yield depending on body corporate fees and management costs.",
   },
   {
     question: "Should I use a buyer's agent for a rentvesting purchase?",
     answer:
-      "Strongly worth considering. The single biggest rentvesting mistake is buying the wrong property in the wrong suburb — most rentvesters live somewhere different from where they're buying, so local knowledge is limited and emotional bias (buying somewhere that feels familiar from holidays, for example) creeps in. A buyer's agent who specialises in investment property in your target market does the legwork, knows the comparable sales, can spot a dud, and can negotiate hard because they're not emotionally invested. Fee is typically 1.5–2.5% of purchase price; on a $500,000 property that's $7,500–$12,500.",
+      "Strongly worth considering. The single biggest rentvesting mistake is buying the wrong property in the wrong suburb. Most rentvesters live somewhere different from where they're buying, so local knowledge is limited and emotional bias (buying somewhere that feels familiar from holidays, for example) creeps in. A buyer's agent who specialises in investment property in your target market does the legwork, knows the comparable sales, can spot a dud, and can negotiate hard because they're not emotionally invested. Fee is typically 1.5–2.5% of purchase price; on a $500,000 property that's $7,500–$12,500.",
   },
 ];
 
 const RELATED: RelatedGuide[] = [
   { title: "Negative Gearing in Australia",       href: "/guides/negative-gearing-australia",       description: "How negative gearing works mechanically, what you can claim, and when it makes sense." },
   { title: "Property Depreciation Guide",          href: "/guides/property-depreciation-guide",      description: "The often-overlooked deduction that turns paper losses into real cash flow." },
-  { title: "How to Choose a Mortgage Broker",      href: "/guides/how-to-choose-a-mortgage-broker",  description: "Investment loans have different credit criteria — a broker matters more." },
+  { title: "How to Choose a Mortgage Broker",      href: "/guides/how-to-choose-a-mortgage-broker",  description: "Investment loans have different credit criteria, so a broker matters more." },
   { title: "Buyer's Agent Cost Guide",             href: "/guides/buyers-agent-cost-australia",      description: "What buyer's agents charge and when their fee pays for itself." },
   { title: "Best Suburbs for Investors",           href: "/best-suburbs",                            description: "Ranked by yield, growth, and demand across Australia." },
   { title: "Rental Yield Calculator",              href: "/rental-yield-calculator",                  description: "Run the gross and net yield on any property in two minutes." },
@@ -135,7 +135,7 @@ export default function RentvestingAustraliaPage() {
           It&rsquo;s a practical breakdown of rentvesting maths, scheme
           trade-offs, and the day-to-day reality. It&rsquo;s not personal
           financial advice. Talk to an accountant and a broker before
-          committing — the right structure depends on your income, your
+          committing. The right structure depends on your income, your
           existing assets, and your goals.
         </p>
       </Callout>
@@ -144,8 +144,8 @@ export default function RentvestingAustraliaPage() {
       <p className="lead">
         Rentvesting is a strategy where you rent your home and buy a
         separate property as an investment. You pay rent in the suburb you
-        want to live in, and the property you own — somewhere more
-        affordable, with better yield, in a market with growth potential —
+        want to live in, and the property you own (somewhere more
+        affordable, with better yield, in a market with growth potential)
         is rented to a tenant who covers a chunk of your mortgage. The
         Australian property market makes this strategy work well in two
         situations: (a) your lifestyle suburb is materially more expensive
@@ -171,18 +171,18 @@ export default function RentvestingAustraliaPage() {
         <li>Your target lifestyle suburb is materially more expensive than what you can afford to buy now (1.5×+).</li>
         <li>You&rsquo;re locked into a specific city for work but happy to invest interstate.</li>
         <li>You have stable income to ride out vacancies and interest-rate increases.</li>
-        <li>You&rsquo;re comfortable being a landlord — managing a property manager, dealing with maintenance calls, accepting tenant turnover risk.</li>
+        <li>You&rsquo;re comfortable being a landlord: managing a property manager, dealing with maintenance calls, accepting tenant turnover risk.</li>
         <li>You can wait 7+ years before transitioning to owner-occupier (because of forfeited scheme access).</li>
       </ul>
       <p><strong>Poor fit:</strong></p>
       <ul>
         <li>You&rsquo;re within 12–24 months of being able to buy in your target suburb. The First Home Owner Grant, stamp duty concession, and main residence CGT exemption tip the maths back the other way.</li>
-        <li>Your income is variable enough that a tenant vacancy + interest rate increase would create cash flow stress.</li>
+        <li>Your income is variable enough that a tenant vacancy plus interest rate increase would create cash flow stress.</li>
         <li>You hate the idea of being a landlord, or you&rsquo;re not interested in monitoring the property market.</li>
-        <li>You have a clear plan to start a family and buy in the next 3 years — the disruption of selling the investment to free up the deposit can be expensive.</li>
+        <li>You have a clear plan to start a family and buy in the next 3 years. The disruption of selling the investment to free up the deposit can be expensive.</li>
       </ul>
 
-      <h2 id="the-maths">The maths — does it actually work?</h2>
+      <h2 id="the-maths">The maths: does it actually work?</h2>
       <p>
         The honest answer is: it depends on the spread between your
         lifestyle suburb&rsquo;s price and your investment suburb&rsquo;s
@@ -194,16 +194,16 @@ export default function RentvestingAustraliaPage() {
         Pays $850/week rent in a 1-bedroom apartment in Surry Hills. Wants to
         buy eventually but the comparable owner-occupier purchase price for
         that apartment is $950,000. To buy as owner-occupier, Sam needs
-        ~$200,000 cash (deposit + costs + buffer). On current trajectory,
+        ~$200,000 cash (deposit plus costs plus buffer). On current trajectory,
         that&rsquo;s about 5 years of saving aggressively.
       </p>
       <p>
         <strong>Rentvesting path:</strong> Sam buys a $500,000 investment
-        property in Beenleigh, Queensland — a 3-bedroom house yielding 5.2%
+        property in Beenleigh, Queensland, a 3-bedroom house yielding 5.2%
         gross ($26,000 annual rent). Deposit required: 20% = $100,000. Plus
         ~$25,000 for stamp duty (no concession), conveyancing, building and
         pest, loan setup. Total cash needed: ~$125,000. Sam can do this in
-        about 3 years on current trajectory — 2 years sooner than the
+        about 3 years on current trajectory, 2 years sooner than the
         owner-occupier path.
       </p>
       <p>
@@ -223,7 +223,7 @@ export default function RentvestingAustraliaPage() {
       <p>
         So the property is roughly cash-flow neutral after tax. Sam still
         pays $44,200/year in rent on the Surry Hills apartment, but the
-        investment is paying for itself. The bet is on capital growth — if
+        investment is paying for itself. The bet is on capital growth. If
         Beenleigh grows 4% annually for the next 7 years, the property is
         worth $658,000 vs $500,000 purchase, a $158,000 paper gain (less
         50% CGT discount if held over 12 months).
@@ -239,7 +239,7 @@ export default function RentvestingAustraliaPage() {
         <p>
           The 4%-annual-growth assumption above is generous and not
           guaranteed. If Beenleigh grows 1.5% annually instead, Sam&rsquo;s
-          gain over 7 years is $55,000 — less than the cash spent on
+          gain over 7 years is $55,000, less than the cash spent on
           renting plus the holding costs. Rentvesting is a leveraged bet on
           growth; if the growth doesn&rsquo;t come, you&rsquo;d have been
           better off saving for the owner-occupier purchase. Pick your
@@ -291,12 +291,12 @@ export default function RentvestingAustraliaPage() {
         <li><strong>Council rates, water rates, body corporate fees.</strong></li>
         <li><strong>Landlord insurance</strong>.</li>
         <li><strong>Repairs and maintenance</strong> (immediate deduction; improvements are depreciated).</li>
-        <li><strong>Depreciation</strong> — capital works (2.5%/year for 40 years on the building) and plant & equipment (specific schedule by item).</li>
+        <li><strong>Depreciation</strong>: capital works (2.5%/year for 40 years on the building) and plant & equipment (specific schedule by item).</li>
         <li><strong>Accountant fees</strong>, legal fees, advertising for tenants, travel costs (limited).</li>
       </ul>
       <p>
         At a 39c or 47c marginal rate, the tax saving on negative gearing is
-        material — but never large enough that it makes a loss-making
+        material, but never large enough that it makes a loss-making
         property profitable on its own. Read our <Link href="/guides/negative-gearing-australia">negative gearing guide</Link> for the
         mechanics, and our <Link href="/guides/property-depreciation-guide">depreciation guide</Link> for the often-missed
         deduction that can turn a cash-flow loss into a paper loss while you
@@ -337,7 +337,7 @@ export default function RentvestingAustraliaPage() {
         <li><strong>Higher LMI cost.</strong> Investment LMI premiums are typically 10–20% higher than owner-occupier LMI for the same LVR.</li>
         <li><strong>Stricter serviceability.</strong> Lenders apply a higher assessment rate buffer to investment loans, partially because rental income is haircut by 70–80% for serviceability purposes.</li>
         <li><strong>Interest-only is harder to get</strong> than it used to be. APRA tightening over 2017–2024 limited interest-only investment lending; you&rsquo;ll typically need a clear repayment strategy. Many investors still use 3–5 year interest-only periods to maximise tax efficiency.</li>
-        <li><strong>Cross-collateralisation risk.</strong> Some lenders try to cross-collateralise the investment loan with your existing assets. Push back — keep loans uncrossed where possible.</li>
+        <li><strong>Cross-collateralisation risk.</strong> Some lenders try to cross-collateralise the investment loan with your existing assets. Push back and keep loans uncrossed where possible.</li>
       </ul>
       <p>
         A broker who specialises in investment lending earns their fee on a
@@ -360,14 +360,14 @@ export default function RentvestingAustraliaPage() {
         <li><strong>Legislation changes.</strong> Tenancy laws across all states have been tightening in favour of tenants (minimum standards, end-of-lease protections, rent rise limits in some states). Stay informed.</li>
       </ul>
 
-      <h2 id="exit">When you exit — selling or transitioning</h2>
+      <h2 id="exit">When you exit: selling or transitioning</h2>
       <p>
         Most rentvesters exit one of three ways:
       </p>
       <ul>
-        <li><strong>Sell the investment, use the proceeds for an owner-occupier.</strong> Most common path. CGT applies on the gain (50% discount after 12 months), and you forfeit grant eligibility on the next purchase. Time the sale carefully for tax — selling in a low-income year reduces the CGT bill.</li>
+        <li><strong>Sell the investment, use the proceeds for an owner-occupier.</strong> Most common path. CGT applies on the gain (50% discount after 12 months), and you forfeit grant eligibility on the next purchase. Time the sale carefully for tax: selling in a low-income year reduces the CGT bill.</li>
         <li><strong>Move into the investment property and convert to PPOR (principal place of residence).</strong> This restarts the main-residence exemption from the move-in date. Useful if you&rsquo;re relocating to that area anyway. Note: any pre-move-in CGT liability stays on the books until eventual sale.</li>
-        <li><strong>Keep both — buy a second property as owner-occupier later.</strong> Requires meaningful income growth or a partner&rsquo;s borrowing capacity. Best long-term outcome if it&rsquo;s achievable: rental income from the first property partly funds the second mortgage.</li>
+        <li><strong>Keep both, buy a second property as owner-occupier later.</strong> Requires meaningful income growth or a partner&rsquo;s borrowing capacity. Best long-term outcome if it&rsquo;s achievable: rental income from the first property partly funds the second mortgage.</li>
       </ul>
 
       <h2 id="common-mistakes">Common rentvesting mistakes</h2>
@@ -387,7 +387,7 @@ export default function RentvestingAustraliaPage() {
       />
 
       <Sources items={[
-        "Australian Taxation Office, \"Rental properties — claiming expenses\" (current 2025).",
+        "Australian Taxation Office, \"Rental properties, claiming expenses\" (current 2025).",
         "Australian Prudential Regulation Authority (APRA), Investment-loan macroprudential guidance and serviceability buffers, 2024–2025.",
         "Australian Bureau of Statistics, Lending Indicators (housing finance commitments, investor share).",
         "State-by-state First Home Owner Grant eligibility schedules (NSW, VIC, QLD, WA, SA, ACT, NT, TAS), current as at 2026.",

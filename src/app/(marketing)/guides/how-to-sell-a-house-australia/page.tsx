@@ -50,10 +50,10 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "Selling a house in Australia typically takes 8 to 12 weeks from listing to settlement, with the campaign itself running 4 to 6 weeks.",
-  "The single biggest factor in your sale price is the agent you pick — interview at least three who actually sell in your suburb.",
+  "The single biggest factor in your sale price is the agent you pick. Interview at least three who actually sell in your suburb.",
   "Auction works best for properties with broad appeal in active markets; private treaty suits unique homes, quieter markets, or sellers who want price certainty.",
   "Total selling costs are typically 2.5% to 4% of sale price (agent commission, marketing, conveyancing, capital gains where applicable).",
-  "The legal stack varies by state — VIC needs a Section 32, NSW a contract with prescribed documents, QLD a disclosure statement from 2025. Get your conveyancer engaged before the agent.",
+  "The legal stack varies by state. VIC needs a Section 32, NSW a contract with prescribed documents, QLD a disclosure statement from 2025. Get your conveyancer engaged before the agent.",
   "Cosmetic presentation (cleaning, decluttering, styling) returns 3 to 10× its cost. Structural fixes rarely pay for themselves at sale.",
 ];
 
@@ -80,37 +80,37 @@ const FAQS: FaqItem[] = [
   {
     question: "Do I need a conveyancer or solicitor to sell?",
     answer:
-      "Yes. Every Australian state legally requires the seller to provide a contract of sale (called a Section 32 in Victoria, a disclosure statement in Queensland from 2025, and a contract with prescribed annexures in NSW). A conveyancer or solicitor prepares these documents, handles searches, manages the deposit and settlement, and protects you from contract risks. Engage them before you list, not after — the contract has to be ready when the agent starts marketing.",
+      "Yes. Every Australian state legally requires the seller to provide a contract of sale (called a Section 32 in Victoria, a disclosure statement in Queensland from 2025, and a contract with prescribed annexures in NSW). A conveyancer or solicitor prepares these documents, handles searches, manages the deposit and settlement, and protects you from contract risks. Engage them before you list, not after. The contract has to be ready when the agent starts marketing.",
   },
   {
     question: "Should I sell or rent out my house?",
     answer:
-      "Run both numbers. Selling gives you a capital lump sum (taxed if it's an investment property — see capital gains below). Renting gives you ongoing income but also ongoing landlord responsibility, vacancy risk, maintenance costs, and management fees. The standard test: if your equity is producing less than 4 to 5% gross yield as a rental, the sale proceeds invested elsewhere typically outperform. The exception is a property in a high-growth corridor where you expect significant capital appreciation in the next three to five years.",
+      "Run both numbers. Selling gives you a capital lump sum (taxed if it's an investment property, see capital gains below). Renting gives you ongoing income but also ongoing landlord responsibility, vacancy risk, maintenance costs, and management fees. The standard test: if your equity is producing less than 4 to 5% gross yield as a rental, the sale proceeds invested elsewhere typically outperform. The exception is a property in a high-growth corridor where you expect significant capital appreciation in the next three to five years.",
   },
   {
     question: "How much does it cost to sell a house in Australia?",
     answer:
-      "Total selling costs run 2.5% to 4% of the sale price. The components: agent commission (1.5% to 3% plus GST), marketing (typically $3,000 to $10,000, occasionally up to $20,000 for premium campaigns), conveyancing ($800 to $2,500), discharge of mortgage fees ($300 to $700), and any pre-sale repairs or styling. Capital gains tax can be a much larger cost if the property was an investment — see the tax section.",
+      "Total selling costs run 2.5% to 4% of the sale price. The components: agent commission (1.5% to 3% plus GST), marketing (typically $3,000 to $10,000, occasionally up to $20,000 for premium campaigns), conveyancing ($800 to $2,500), discharge of mortgage fees ($300 to $700), and any pre-sale repairs or styling. Capital gains tax can be a much larger cost if the property was an investment, see the tax section.",
   },
   {
     question: "Can I sell my house without an agent?",
     answer:
-      "Yes — it's legal in every state, and \"for sale by owner\" (FSBO) services exist that list your property on realestate.com.au and domain.com.au for a flat fee. The maths only works if you would have paid an agent who couldn't lift the sale price by more than the fee. In practice, experienced agents in active suburbs typically achieve 5 to 15% higher sale prices than FSBO sellers because they manage the buyer pool, negotiate harder, and present the property professionally. FSBO works best for straightforward properties in hot markets where the price is essentially the median.",
+      "Yes. It's legal in every state, and \"for sale by owner\" (FSBO) services exist that list your property on realestate.com.au and domain.com.au for a flat fee. The maths only works if you would have paid an agent who couldn't lift the sale price by more than the fee. In practice, experienced agents in active suburbs typically achieve 5 to 15% higher sale prices than FSBO sellers because they manage the buyer pool, negotiate harder, and present the property professionally. FSBO works best for straightforward properties in hot markets where the price is essentially the median.",
   },
   {
     question: "Should I sell first or buy first?",
     answer:
-      "Most sellers should sell first — it gives you a known budget, removes the bridging-finance trap, and means you negotiate from strength. The exception is if your local market is extremely tight on the buy side and you'd struggle to find a replacement home in a normal timeframe. In that case, buy first with a long settlement (typically 90 days, sometimes longer), or use a bridging loan. We cover this in detail in our sell-first-or-buy-first guide.",
+      "Most sellers should sell first. It gives you a known budget, removes the bridging-finance trap, and means you negotiate from strength. The exception is if your local market is extremely tight on the buy side and you'd struggle to find a replacement home in a normal timeframe. In that case, buy first with a long settlement (typically 90 days, sometimes longer), or use a bridging loan. We cover this in detail in our sell-first-or-buy-first guide.",
   },
   {
     question: "Will I pay capital gains tax when I sell?",
     answer:
-      "Not on your principal place of residence (the main residence exemption, full or partial depending on how long you lived there and whether you ever rented it out). Investment properties trigger CGT on the gain — generally the sale price minus the cost base, with a 50% discount if held for over twelve months. Off-the-plan, deceased estate, and joint-ownership cases get complex; talk to an accountant before you list if any of those apply. We have a full capital-gains-tax guide.",
+      "Not on your principal place of residence (the main residence exemption, full or partial depending on how long you lived there and whether you ever rented it out). Investment properties trigger CGT on the gain, generally the sale price minus the cost base, with a 50% discount if held for over twelve months. Off-the-plan, deceased estate, and joint-ownership cases get complex; talk to an accountant before you list if any of those apply. We have a full capital-gains-tax guide.",
   },
   {
     question: "Do I have to disclose problems with the property?",
     answer:
-      "It varies by state, but the safe answer is yes. NSW and VIC require disclosure of certain encumbrances, planning matters, and zoning issues but not all defects — buyers are expected to do their own building and pest. QLD's new seller disclosure regime (from 1 August 2025) is much broader and requires sellers to provide a prescribed disclosure statement with title, encumbrance, and certain physical-condition information. Across all states, deliberately concealing a known major defect (subsidence, asbestos, illegal building work) exposes you to a rescission claim and damages even after settlement.",
+      "It varies by state, but the safe answer is yes. NSW and VIC require disclosure of certain encumbrances, planning matters, and zoning issues but not all defects. Buyers are expected to do their own building and pest. QLD's new seller disclosure regime (from 1 August 2025) is much broader and requires sellers to provide a prescribed disclosure statement with title, encumbrance, and certain physical-condition information. Across all states, deliberately concealing a known major defect (subsidence, asbestos, illegal building work) exposes you to a rescission claim and damages even after settlement.",
   },
 ];
 
@@ -155,7 +155,7 @@ export default function HowToSellAHouseAustraliaPage() {
         <p>
           This guide covers every step from deciding to sell through to
           settlement day. If you want to skip ahead, the deepest detail is in
-          the agent-choice and pricing sections — those are where most sale
+          the agent-choice and pricing sections. Those are where most sale
           prices are won or lost.
         </p>
       </Callout>
@@ -180,7 +180,7 @@ export default function HowToSellAHouseAustraliaPage() {
       <p>
         Seasonally, spring is the peak listing window in most of Australia
         because gardens look their best and there&rsquo;s typically more buyer
-        activity. But that means more competing stock — a well-presented
+        activity. But that means more competing stock. A well-presented
         property listed in late autumn often achieves a stronger result
         because the buyer pool isn&rsquo;t spoilt for choice. The right time is
         the time that matches your circumstances, not a date on the calendar.
@@ -199,7 +199,7 @@ export default function HowToSellAHouseAustraliaPage() {
         <li><strong>Mortgage discharge</strong>: $300 to $700 in lender fees.</li>
         <li><strong>Pre-sale prep</strong>: cleaning $300 to $800, decluttering / removalist for staging $500 to $2,000, styling $3,000 to $8,000 for a 6-week campaign, minor repairs as needed.</li>
         <li><strong>Auction fees</strong> (if auctioning): $400 to $800 for the auctioneer, often bundled into commission.</li>
-        <li><strong>Capital gains tax</strong>: only on investment properties — see the tax section.</li>
+        <li><strong>Capital gains tax</strong>: only on investment properties (see the tax section).</li>
       </ul>
 
       <KeyFigure
@@ -213,7 +213,7 @@ export default function HowToSellAHouseAustraliaPage() {
         Spend money on presentation, not renovation. The data is consistent:
         cosmetic work (cleaning, decluttering, paint, styling) typically
         returns 3 to 10× its cost. Structural work (new kitchen, bathroom
-        renovation, extensions) rarely returns its cost at sale — you&rsquo;re
+        renovation, extensions) rarely returns its cost at sale. You&rsquo;re
         better off pricing the property as-is and letting the buyer choose
         their own finish.
       </p>
@@ -230,7 +230,7 @@ export default function HowToSellAHouseAustraliaPage() {
       </ol>
       <p>
         What <em>not</em> to do: don&rsquo;t renovate the kitchen or bathroom
-        before selling. The cost recovery is poor — the buyer who pays for
+        before selling. The cost recovery is poor. The buyer who pays for
         renovation prefers to choose their own finishes anyway. Read our
         renovation cost guide if you&rsquo;re considering it.
       </p>
@@ -249,13 +249,13 @@ export default function HowToSellAHouseAustraliaPage() {
       <p>
         The agent you pick will probably have more influence on your sale
         price than anything else you do. Cover the full process in our
-        dedicated guide — <Link href="/guides/how-to-choose-a-selling-agent">how to choose a selling agent</Link>.
+        dedicated guide: <Link href="/guides/how-to-choose-a-selling-agent">how to choose a selling agent</Link>.
         The short version:
       </p>
       <ul>
         <li>Interview at least three agents who genuinely sell in your suburb (check their recent sold listings on realestate.com.au and domain.com.au).</li>
         <li>Demand comparable sales evidence for any appraisal price. Last 90 days, same suburb, similar property type.</li>
-        <li>Watch for the &quot;over-quote, then condition you down&quot; play — agents who quote 10%+ above the others without supporting evidence are using it as a sales tactic.</li>
+        <li>Watch for the &quot;over-quote, then condition you down&quot; play. Agents who quote 10%+ above the others without supporting evidence are using it as a sales tactic.</li>
         <li>Negotiate commission, but don&rsquo;t pick on price alone. A 0.3% commission saving on $1M is $3,000. A 2% lift in sale price is $20,000. Pick the agent who&rsquo;ll get you the higher price, then negotiate the fee.</li>
         <li>Read the listing agreement carefully: exclusive period, marketing commitment, tail clause length, termination terms.</li>
       </ul>
@@ -268,7 +268,7 @@ export default function HowToSellAHouseAustraliaPage() {
       </p>
       <h3>Auction</h3>
       <p>
-        Best for properties with broad market appeal in active markets —
+        Best for properties with broad market appeal in active markets:
         sub-median homes in popular suburbs, period houses with character,
         anything where competition is plausible. The campaign is short (three
         to four weeks of marketing then auction day), the buyer pool is
@@ -279,7 +279,7 @@ export default function HowToSellAHouseAustraliaPage() {
         Auction works less well in quieter markets, for unique properties
         where buyer demand is narrow, or when the local clearance rate is
         below 55%. If the property is passed in on auction day, you&rsquo;ve
-        signalled to subsequent buyers that demand was thin — that often
+        signalled to subsequent buyers that demand was thin, and that often
         depresses the eventual sale price.
       </p>
       <h3>Private treaty</h3>
@@ -289,7 +289,7 @@ export default function HowToSellAHouseAustraliaPage() {
         runs four to six weeks (or longer), the price is publicly listed, and
         the buyer makes a written offer subject to negotiation. Contracts can
         be conditional on finance, building and pest, and other due-diligence
-        items — which both expands your buyer pool and introduces post-contract
+        items. This both expands your buyer pool and introduces post-contract
         risk if those conditions aren&rsquo;t met.
       </p>
       <h3>Other methods</h3>
@@ -302,7 +302,7 @@ export default function HowToSellAHouseAustraliaPage() {
       </p>
       <p>
         <strong>Off-market</strong> sales happen entirely without a public
-        listing — agents shop the property to their database. Suits sellers
+        listing: agents shop the property to their database. Suits sellers
         who want discretion (and who don&rsquo;t mind the smaller buyer pool).
         See our <Link href="/off-market">off-market property page</Link>.
       </p>
@@ -343,7 +343,7 @@ export default function HowToSellAHouseAustraliaPage() {
       <p>
         For higher-end properties ($2M+), expect $10,000 to $25,000 with
         broader print spend, premium tiered online listings, drone, and full
-        video tour. Match the campaign to the price point — overspending on a
+        video tour. Match the campaign to the price point. Overspending on a
         sub-$800K property rarely returns the cost.
       </p>
 
@@ -380,7 +380,7 @@ export default function HowToSellAHouseAustraliaPage() {
       <p>
         A clean offer at $880K can be worth more than a $900K offer subject
         to finance, building and pest, and sale of the buyer&rsquo;s existing
-        home. Your agent should be guiding you through this — push back if
+        home. Your agent should be guiding you through this. Push back if
         they fixate on the headline number.
       </p>
 
@@ -398,14 +398,14 @@ export default function HowToSellAHouseAustraliaPage() {
       <ul>
         <li>The buyer typically does a pre-settlement inspection that morning. Make sure the property is in the contracted condition.</li>
         <li>Leave instruction manuals, warranties, keys (all of them), garage remotes, alarm codes, and any chattels included in the sale.</li>
-        <li>Read the meter and notify utilities — water, electricity, gas, internet — that you&rsquo;ve sold and want the account closed or transferred.</li>
+        <li>Read the meter and notify utilities (water, electricity, gas, internet) that you&rsquo;ve sold and want the account closed or transferred.</li>
         <li>Funds typically clear within minutes of settlement. Your conveyancer will pay out your existing mortgage and transfer the balance to your nominated account.</li>
       </ul>
 
       <h2 id="tax">Capital gains tax</h2>
       <p>
         If the property was your principal place of residence the whole time
-        you owned it, no CGT applies — the main residence exemption covers the
+        you owned it, no CGT applies. The main residence exemption covers the
         full gain. If it was ever rented out, or it was an investment
         property, CGT applies on the portion of ownership where it wasn&rsquo;t
         your main residence.
@@ -415,11 +415,11 @@ export default function HowToSellAHouseAustraliaPage() {
         price + buying costs + capital improvements)</strong> = the gross
         gain. Held for more than 12 months as an Australian resident? You get
         a 50% discount on the gain before adding it to your taxable income for
-        the year. The tax bill can be material — on a $300K gain, an
+        the year. The tax bill can be material: on a $300K gain, an
         individual in the 37% bracket pays around $55K after the 50% discount.
       </p>
       <p>
-        Get tailored advice from an accountant before you list if any of
+        Get advice from an accountant before you list if any of
         these apply: investment property, ever rented out, deceased estate,
         co-ownership change, off-the-plan settlement, or a property where
         you&rsquo;ve claimed depreciation. Our <Link href="/cgt-calculator">CGT calculator</Link> gives you a

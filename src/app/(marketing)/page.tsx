@@ -130,7 +130,7 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-12 gap-8 mb-10 sm:mb-12">
             <div className="lg:col-span-5">
               <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-4">
-                Where are you in your property journey?
+                Where are you up to?
               </p>
               <h2 className="font-display text-ink leading-tight tracking-tight text-4xl sm:text-5xl">
                 Pick your starting point.

@@ -147,9 +147,9 @@ export default function RefinancingCalculatorPage() {
             <li>It doesn&rsquo;t factor in cashback offers, add manually if applicable.</li>
           </ul>
           <p>
-            For a complete refinancing analysis tailored to your situation, a
-            mortgage broker can compare the actual policies and packages of 30+
-            lenders. <Link href="/?intent=refinancing#match">Get connected</Link> if
+            For a full refinancing analysis on your specific loan, a mortgage
+            broker can compare the actual policies and packages of 30+ lenders.
+            <Link href="/?intent=refinancing#match">Get connected</Link> if
             you want a free intro to one.
           </p>
         </>

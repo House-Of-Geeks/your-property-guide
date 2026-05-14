@@ -49,9 +49,9 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "Picking the wrong builder is the single biggest cost-overrun and project-failure risk in any renovation or new build. Slow down here.",
-  "Every Australian state has a licensing register — confirm your shortlisted builders hold a current licence + current home warranty insurance (called domestic building insurance in VIC, statutory warranty in QLD) BEFORE you sign anything.",
+  "Every Australian state has a licensing register. Confirm your shortlisted builders hold a current licence plus current home warranty insurance (called domestic building insurance in VIC, statutory warranty in QLD) BEFORE you sign anything.",
   "Get three written quotes with itemised line items. A quote that's just a single total figure isn't enough to compare or contract on.",
-  "Don't pick on price alone. The cheapest quote almost always becomes the most expensive job — through variations, slow progress, or post-failure remediation.",
+  "Don't pick on price alone. The cheapest quote almost always becomes the most expensive job, through variations, slow progress, or post-failure remediation.",
   "Builder insolvencies in 2023–24 hit thousands of Australian homeowners. Check the company's solvency, recent project history, and home warranty insurer's site before contracting.",
   "Fixed-price suits straightforward jobs with clear scope. Cost-plus suits complex work where scope evolves and you trust the builder. Get advice on which fits your project.",
 ];
@@ -64,7 +64,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "interview",         label: "Interviewing builders" },
   { id: "references",        label: "Checking references and recent jobs" },
   { id: "quotes",            label: "Getting comparable quotes" },
-  { id: "contract",          label: "The contract — what to look for" },
+  { id: "contract",          label: "The contract: what to look for" },
   { id: "red-flags",         label: "Red flags worth walking away from" },
   { id: "after-engagement",  label: "Once you've engaged" },
 ];
@@ -78,12 +78,12 @@ const FAQS: FaqItem[] = [
   {
     question: "What is home warranty insurance and do I need it?",
     answer:
-      "Home warranty insurance (called domestic building insurance in VIC, statutory warranty in QLD, Home Building Compensation Fund in NSW) is a state-mandated insurance that protects you if the builder dies, disappears, becomes insolvent, or fails to complete the job. It's required for residential building work above a state-defined threshold (typically $20,000–$30,000+). The builder pays for the policy and provides you with a certificate before work starts. NEVER pay a deposit before receiving the home warranty insurance certificate for your specific project. Builders who can't get insurance generally can't be insured — which usually means past disputes or solvency issues.",
+      "Home warranty insurance (called domestic building insurance in VIC, statutory warranty in QLD, Home Building Compensation Fund in NSW) is a state-mandated insurance that protects you if the builder dies, disappears, becomes insolvent, or fails to complete the job. It's required for residential building work above a state-defined threshold (typically $20,000–$30,000+). The builder pays for the policy and provides you with a certificate before work starts. NEVER pay a deposit before receiving the home warranty insurance certificate for your specific project. Builders who can't get insurance generally can't be insured, which usually means past disputes or solvency issues.",
   },
   {
     question: "How many builder quotes should I get?",
     answer:
-      "Three is the right number. One quote gives you no benchmark. Two quotes — if they're very different — leave you uncertain about which is the outlier. Three gives you a defensible range and lets you see how each builder approaches scope, risk, and pricing. Over four is diminishing returns: it takes the builders' time (which is reflected in pricing) and your time to evaluate.",
+      "Three is the right number. One quote gives you no benchmark. Two quotes, if they're very different, leave you uncertain about which is the outlier. Three gives you a defensible range and lets you see how each builder approaches scope, risk, and pricing. Over four is diminishing returns: it takes the builders' time (which is reflected in pricing) and your time to evaluate.",
   },
   {
     question: "What's the difference between a project home builder and a custom builder?",
@@ -98,22 +98,22 @@ const FAQS: FaqItem[] = [
   {
     question: "Should I use a project management company instead of going directly to a builder?",
     answer:
-      "For larger or more complex projects, yes — a project manager (sometimes called a building consultant or owner's representative) works for you, not the builder. They manage the tender process, contract administration, variations, and quality control. Cost: typically 4–8% of total project value, or a fixed fee. Worth it for projects over $400,000 or anything with serious heritage, structural, or planning complexity. For straightforward renovations under $200,000, it's usually overkill.",
+      "For larger or more complex projects, yes. A project manager (sometimes called a building consultant or owner's representative) works for you, not the builder. They manage the tender process, contract administration, variations, and quality control. Cost: typically 4 to 8% of total project value, or a fixed fee. Worth it for projects over $400,000 or anything with serious heritage, structural, or planning complexity. For straightforward renovations under $200,000, it's usually overkill.",
   },
   {
     question: "What's a Quantity Surveyor and do I need one?",
     answer:
-      "A Quantity Surveyor (QS) is a cost expert who can prepare independent cost plans, review builder quotes line-by-line for accuracy, value-engineer the design to reduce cost without losing function, and prepare tender packages that make builder quotes directly comparable. Cost: $1,500–$5,000+ for a residential project depending on scope. Worth it for any new build, major extension, or complex renovation — the cost is small relative to what they can save you by catching pricing irregularities or proposing alternative materials.",
+      "A Quantity Surveyor (QS) is a cost expert who can prepare independent cost plans, review builder quotes line-by-line for accuracy, value-engineer the design to reduce cost without losing function, and prepare tender packages that make builder quotes directly comparable. Cost: $1,500–$5,000+ for a residential project depending on scope. Worth it for any new build, major extension, or detailed renovation. The cost is small relative to what they can save you by catching pricing irregularities or proposing alternative materials.",
   },
   {
     question: "How do I check if a builder is financially stable?",
     answer:
-      "Three checks: (1) ASIC company search ($9) for the operating entity — current registration, director history, any recent insolvencies. (2) State-by-state home warranty insurance database — some states publish builders' insurance status. If your shortlisted builder can't currently get insurance, that's a major red flag. (3) Recent project history — call past clients from the last 12 months and ask specifically about whether the builder was always paid on time, used the same trade base throughout, and finished within scope. A builder who relies on each new project's deposit to finish the previous one is the canonical insolvency setup.",
+      "Three checks: (1) ASIC company search ($9) for the operating entity (current registration, director history, any recent insolvencies). (2) State-by-state home warranty insurance database. Some states publish builders' insurance status. If your shortlisted builder can't currently get insurance, that's a major red flag. (3) Recent project history. Call past clients from the last 12 months and ask specifically about whether the builder was always paid on time, used the same trade base throughout, and finished within scope. A builder who relies on each new project's deposit to finish the previous one is the canonical insolvency setup.",
   },
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Renovation Cost in Australia 2026",     href: "/guides/renovation-cost-australia-2026",   description: "Real-world renovation costs by type — kitchens, bathrooms, full renos, extensions." },
+  { title: "Renovation Cost in Australia 2026",     href: "/guides/renovation-cost-australia-2026",   description: "Real-world renovation costs by type: kitchens, bathrooms, full renos, extensions." },
   { title: "Fixed vs Variable Rate Loans",           href: "/guides/fixed-vs-variable-rate-guide",     description: "The fixed-vs-variable framing applies to building contracts too." },
   { title: "Granny Flat Guides by State",            href: "/guides/granny-flat-guide-nsw",            description: "Builder considerations specific to granny flat / secondary dwelling work." },
   { title: "How to Choose a Mortgage Broker",        href: "/guides/how-to-choose-a-mortgage-broker",  description: "Renovation/construction finance needs a broker who specialises in it." },
@@ -160,7 +160,7 @@ export default function HowToFindABuilderAustraliaPage() {
         budget, communicates clearly, fixes defects without argument, and
         runs a clean site. The wrong builder runs over budget by 30–60%,
         slips schedule by months, leaves a trail of disputes and unfinished
-        scope, and — in worst case — disappears mid-project, leaving you
+        scope, and in the worst case disappears mid-project, leaving you
         with a half-built house and a home warranty claim.
       </p>
       <p>
@@ -197,7 +197,7 @@ export default function HowToFindABuilderAustraliaPage() {
         Build times are longer. Suits architect-designed homes, complex
         renovations, heritage work, and anyone with strong preferences on
         design and quality. Pick custom when you genuinely care about the
-        details — paying custom-builder prices for project-home detailing
+        details. Paying custom-builder prices for project-home detailing
         is a waste.
       </p>
       <h3>Renovation specialists</h3>
@@ -228,10 +228,10 @@ export default function HowToFindABuilderAustraliaPage() {
         <li><strong>Personal referrals</strong> from friends or neighbours who&rsquo;ve recently completed similar work. The single best source.</li>
         <li><strong>Drive your neighbourhood and note recent build/reno signs.</strong> Find homes that look like the standard you want and identify who built them.</li>
         <li><strong>Industry associations</strong>: Housing Industry Association (HIA) and Master Builders Australia (MBA) each publish member directories. Filter for builders specialising in your work type and operating in your suburb.</li>
-        <li><strong>State licensing register search</strong> — most states let you search by suburb / work category.</li>
-        <li><strong>Online directories with reviews</strong> (Houzz, Hipages, ServiceSeeking) — useful for initial pool but treat reviews with skepticism (incentivised reviews, builder responses to negative ones).</li>
-        <li><strong>Project completion lists from local councils</strong> — some councils publish completed certificates of occupancy with builder names.</li>
-        <li><strong>Architects and designers</strong> — if you&rsquo;re using one, they&rsquo;ll have lists of builders they&rsquo;ve worked well with on similar budgets.</li>
+        <li><strong>State licensing register search</strong>. Most states let you search by suburb or work category.</li>
+        <li><strong>Online directories with reviews</strong> (Houzz, Hipages, ServiceSeeking). Useful for initial pool but treat reviews with skepticism (incentivised reviews, builder responses to negative ones).</li>
+        <li><strong>Project completion lists from local councils</strong>. Some councils publish completed certificates of occupancy with builder names.</li>
+        <li><strong>Architects and designers</strong>. If you&rsquo;re using one, they&rsquo;ll have lists of builders they&rsquo;ve worked well with on similar budgets.</li>
       </ul>
       <p>
         Aim for 6–10 names from multiple sources. Narrow to 3–4 for
@@ -248,8 +248,8 @@ export default function HowToFindABuilderAustraliaPage() {
         <li><strong>Licensed individual</strong>: the named builder on the licence must hold the qualification, not just be on a corporate licence.</li>
         <li><strong>No active disciplinary proceedings</strong>. Most state registers note these.</li>
         <li><strong>Current home warranty insurance eligibility</strong>. If a builder can&rsquo;t get insurance, their past behaviour usually explains why. Walk.</li>
-        <li><strong>ABN and ACN check</strong> via abr.business.gov.au and asic.gov.au — confirm the company you&rsquo;re contracting with is the same as the one on the licence and the insurance.</li>
-        <li><strong>Recent insolvencies in the group</strong>: look for phoenixed companies — builders who&rsquo;ve liquidated and reopened under a new name. Director searches at ASIC show this pattern.</li>
+        <li><strong>ABN and ACN check</strong> via abr.business.gov.au and asic.gov.au. Confirm the company you&rsquo;re contracting with is the same as the one on the licence and the insurance.</li>
+        <li><strong>Recent insolvencies in the group</strong>: look for phoenixed companies, builders who&rsquo;ve liquidated and reopened under a new name. Director searches at ASIC show this pattern.</li>
       </ul>
 
       <h2 id="interview">Interviewing builders</h2>
@@ -263,16 +263,16 @@ export default function HowToFindABuilderAustraliaPage() {
         <li>How long have you been operating, and how many residential projects do you complete per year?</li>
         <li>How many staff do you employ directly? How many are subcontractors?</li>
         <li>How many projects are you running concurrently right now? When could you start mine?</li>
-        <li>Do you specialise in any particular work type — renovations, extensions, new builds, heritage?</li>
+        <li>Do you specialise in any particular work type: renovations, extensions, new builds, heritage?</li>
         <li>What&rsquo;s your typical project value range?</li>
       </ul>
       <h3>Process</h3>
       <ul>
-        <li>How do you handle quotes — fixed-price, cost-plus, or do you adjust based on project type?</li>
-        <li>Walk me through your typical site management — supervisor visits, trade scheduling, weekly client updates.</li>
+        <li>How do you handle quotes: fixed-price, cost-plus, or do you adjust based on project type?</li>
+        <li>Walk me through your typical site management: supervisor visits, trade scheduling, weekly client updates.</li>
         <li>How do you handle variations? Specifically: pricing of variations, written approval process, schedule impact.</li>
-        <li>Defects liability period — how long, and what&rsquo;s your process for fixing post-handover issues?</li>
-        <li>What insurance do you carry beyond home warranty — public liability, worker&rsquo;s comp, project-specific?</li>
+        <li>Defects liability period: how long, and what&rsquo;s your process for fixing post-handover issues?</li>
+        <li>What insurance do you carry beyond home warranty: public liability, worker&rsquo;s comp, project-specific?</li>
         <li>How do you handle disputes if we disagree on something?</li>
       </ul>
       <h3>Specific to my project</h3>
@@ -303,10 +303,10 @@ export default function HowToFindABuilderAustraliaPage() {
         <li>How did the defects liability period go? Did they fix things promptly?</li>
         <li>Would you use them again? Honestly?</li>
         <li>Did you ever have to chase trades or subcontractors directly?</li>
-        <li>How did they handle the surprises — what came out of the walls during demolition, etc.?</li>
+        <li>How did they handle the surprises (what came out of the walls during demolition, etc.)?</li>
       </ul>
       <p>
-        Visit at least one completed job per builder if you can — the
+        Visit at least one completed job per builder if you can. The
         photos are always flattering and the workmanship is harder to
         assess in person.
       </p>
@@ -321,11 +321,11 @@ export default function HowToFindABuilderAustraliaPage() {
         A quote should include:
       </p>
       <ul>
-        <li><strong>Itemised line items</strong> — slab, frame, roof, lockup, fit-out, etc. Not a single total.</li>
+        <li><strong>Itemised line items</strong>: slab, frame, roof, lockup, fit-out, etc. Not a single total.</li>
         <li><strong>Inclusions list</strong>: brand-specific allowances for fittings, fixtures, appliances, finishes.</li>
         <li><strong>Exclusions list</strong>: things specifically NOT included (landscaping, fencing, driveway, window furnishings, etc.).</li>
-        <li><strong>Provisional sums and PC items</strong>: line items where the exact cost isn&rsquo;t known yet (tiles selection, kitchen joinery design, etc.) — these become variations later.</li>
-        <li><strong>Payment schedule</strong>: deposit + 5–7 progress payments tied to specific milestones.</li>
+        <li><strong>Provisional sums and PC items</strong>: line items where the exact cost isn&rsquo;t known yet (tiles selection, kitchen joinery design, etc.). These become variations later.</li>
+        <li><strong>Payment schedule</strong>: deposit plus 5 to 7 progress payments tied to specific milestones.</li>
         <li><strong>Schedule</strong>: estimated start and end dates.</li>
         <li><strong>Validity period</strong>: typically 30–90 days.</li>
       </ul>
@@ -340,7 +340,7 @@ export default function HowToFindABuilderAustraliaPage() {
         </p>
       </Callout>
 
-      <h2 id="contract">The contract — what to look for</h2>
+      <h2 id="contract">The contract: what to look for</h2>
       <p>
         Use a state-standard contract. HIA and Master Builders both publish
         standard contracts widely accepted by lenders and recognised by
@@ -354,7 +354,7 @@ export default function HowToFindABuilderAustraliaPage() {
         <li><strong>Variation pricing</strong>: how is the cost of variations determined? Look for a published margin (e.g. cost + 15%) rather than &quot;at builder&rsquo;s discretion&quot;.</li>
         <li><strong>Variation approval process</strong>: variations should require written approval BEFORE work is done. Avoid contracts where the builder can do variations and bill later.</li>
         <li><strong>Defects liability period</strong>: typically 12 months in most states. Read what the builder commits to fix during that period and how response times work.</li>
-        <li><strong>Liquidated damages</strong>: penalty per day the project runs over the contracted completion date. Standard is $50–$200/day for residential — ensure it&rsquo;s present.</li>
+        <li><strong>Liquidated damages</strong>: penalty per day the project runs over the contracted completion date. Standard is $50–$200/day for residential, so ensure it&rsquo;s present.</li>
         <li><strong>Payment schedule</strong>: stages should match real construction milestones (slab, frame, lockup, fit-out, completion). Front-loaded payment schedules (large deposit, then trickle) are a solvency red flag.</li>
         <li><strong>Provisional sums + PC items</strong>: every one of these is a future variation. The more there are, the more uncertain the final price.</li>
         <li><strong>Dispute resolution</strong>: the standard contracts include a dispute-resolution process. Make sure it&rsquo;s there.</li>
@@ -366,10 +366,10 @@ export default function HowToFindABuilderAustraliaPage() {
         <li><strong>Can&rsquo;t produce current home warranty insurance for similar projects.</strong> Walk.</li>
         <li><strong>Asks for cash payments or unusually large deposit</strong> (more than 5–10% of contract value, depending on state regulations).</li>
         <li><strong>Refuses to provide written quote</strong> or refuses to itemise.</li>
-        <li><strong>Pressures you to sign quickly</strong> — &quot;prices going up next week&quot;, &quot;I have a slot this month only&quot;.</li>
-        <li><strong>Recent insolvencies in the group</strong> — including a different ABN, different company name, but same directors or address.</li>
+        <li><strong>Pressures you to sign quickly</strong>: &quot;prices going up next week&quot;, &quot;I have a slot this month only&quot;.</li>
+        <li><strong>Recent insolvencies in the group</strong>, including a different ABN, different company name, but same directors or address.</li>
         <li><strong>References reluctant to talk</strong> or you can&rsquo;t reach the supplied references.</li>
-        <li><strong>No site supervisor named</strong> in the contract — you&rsquo;ll spend the project chasing trades directly.</li>
+        <li><strong>No site supervisor named</strong> in the contract. You&rsquo;ll spend the project chasing trades directly.</li>
         <li><strong>Quote significantly low</strong> compared to the other two (15%+ below).</li>
         <li><strong>Refuses HIA or Master Builders standard contract</strong>, insists on custom contract.</li>
         <li><strong>Recent disputes or proceedings</strong> visible on the state licensing register.</li>
@@ -382,7 +382,7 @@ export default function HowToFindABuilderAustraliaPage() {
       </p>
       <ul>
         <li><strong>Get the home warranty insurance certificate</strong> for your specific project BEFORE paying any deposit.</li>
-        <li><strong>Confirm site insurance</strong> — public liability, contractor&rsquo;s all-risk, etc.</li>
+        <li><strong>Confirm site insurance</strong>: public liability, contractor&rsquo;s all-risk, etc.</li>
         <li><strong>Set up a weekly site walk</strong> with the supervisor. Bring a notebook. Photograph everything.</li>
         <li><strong>Document variations in writing</strong> the moment they&rsquo;re discussed. Never agree to a variation verbally.</li>
         <li><strong>Don&rsquo;t pay the next progress payment</strong> until you (or your project manager) have verified the previous stage is genuinely complete to a deductive standard.</li>
@@ -399,7 +399,7 @@ export default function HowToFindABuilderAustraliaPage() {
         "Housing Industry Association, HIA standard residential building contracts (current).",
         "Master Builders Australia, MBA standard contracts and 2024–2025 industry insolvency reports.",
         "State-by-state building licensing bodies: NSW Fair Trading, VBA Victoria, QBCC Queensland, Building Commission WA, CBS South Australia, CBOS Tasmania.",
-        "National Construction Code 2025 — applicable to all new and substantially renovated residential building work.",
+        "National Construction Code 2025, applicable to all new and substantially renovated residential building work.",
         "Australian Securities and Investments Commission, ASIC company search and director-history register (asic.gov.au).",
       ]} />
     </GuideArticleLayout>

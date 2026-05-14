@@ -8,7 +8,7 @@ import { TrustStrip } from "@/components/journey";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `About ${SITE_NAME} — Australia's property reference`,
+  title: `About ${SITE_NAME}: Australia's property reference`,
   description: "Our charter, ownership, editorial standards and correction policy. What we publish, who writes it, and how we make money. Plain English from the people behind Your Property Guide.",
   alternates: { canonical: `${SITE_URL}/about` },
   openGraph: { url: `${SITE_URL}/about`, title: `About ${SITE_NAME}`, description: "Our charter, ownership, editorial standards and correction policy.", type: "website" },
@@ -153,10 +153,10 @@ export default function AboutPage() {
           </h2>
           <div className="prose-ypg">
             <p>
-              When you&rsquo;re ready to talk to a specialist &mdash; agent, broker,
-              property accountant, conveyancer, whoever fits your situation
-              &mdash; we&rsquo;ll match you with someone we&rsquo;d use ourselves.
-              They pay us a referral fee only when matched work goes ahead.
+              When you&rsquo;re ready to talk to a specialist, whether that&rsquo;s
+              an agent, broker, property accountant or conveyancer, we&rsquo;ll
+              match you with someone we&rsquo;d use ourselves. They pay us a
+              referral fee only when matched work goes ahead.
             </p>
             <p>
               We disclose this on every match. We don&rsquo;t sell your data.
@@ -195,7 +195,7 @@ export default function AboutPage() {
               <p>
                 Your Property Guide is owned and operated by Profit Geeks
                 Pty Ltd, an Australian-registered private company. We&rsquo;re
-                independently funded &mdash; no venture capital, no media-group
+                independently funded. No venture capital, no media-group
                 ownership, no real estate franchise or aggregator behind the
                 scenes.
               </p>
@@ -224,7 +224,7 @@ export default function AboutPage() {
             <div className="prose-ypg">
               <p>
                 We write for every Australian engaging with residential
-                property &mdash; first home buyers, upgraders, downsizers,
+                property. First home buyers, upgraders, downsizers,
                 sellers, investors, renovators and renters. Every guide is
                 tested for plain-English accessibility (no jargon left
                 unexplained), and we&rsquo;re explicit when advice differs by
@@ -481,8 +481,8 @@ export default function AboutPage() {
               <li><strong>No retaliation:</strong> if you flag a correction we don&rsquo;t end up making, we&rsquo;ll still update the public last-reviewed date so other readers know the page has been re-checked.</li>
             </ul>
             <p>
-              For broader feedback &mdash; topics we should cover, gaps in our
-              guides, suggestions for the data &mdash;{" "}
+              For broader feedback, topics we should cover, gaps in our
+              guides or suggestions for the data,{" "}
               <Link href="/contact">use our contact form</Link>{" "}
               or email the editor directly.
             </p>

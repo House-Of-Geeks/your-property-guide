@@ -50,10 +50,10 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "Home loan pre-approval (a.k.a. \"conditional approval\") is a lender's indication of how much they'll lend you, subject to property valuation and final document checks. It's not a guaranteed loan.",
-  "Pre-approval typically lasts 3 months and most lenders allow one extension. Hard credit enquiries (which pre-approvals create) ding your credit file slightly — don't apply to multiple lenders at once.",
+  "Pre-approval typically lasts 3 months and most lenders allow one extension. Hard credit enquiries (which pre-approvals create) ding your credit file slightly. Don't apply to multiple lenders at once.",
   "Pre-approval is not legally binding on either side. The lender can decline at formal approval if your situation changes; you can walk away with no penalty.",
-  "Get pre-approval BEFORE you start serious property searching — agents and auctioneers take pre-approved buyers more seriously, and you avoid bidding on a property you can't fund.",
-  "Documents needed: 2 recent payslips, 3 months of bank statements, ID, list of existing debts, and (for self-employed) 2 years of tax returns + last BAS.",
+  "Get pre-approval BEFORE you start serious property searching. Agents and auctioneers take pre-approved buyers more seriously, and you avoid bidding on a property you can't fund.",
+  "Documents needed: 2 recent payslips, 3 months of bank statements, ID, list of existing debts, and (for self-employed) 2 years of tax returns plus last BAS.",
   "Pre-approval ≠ full approval. After your offer is accepted, the lender does a property valuation and a final document check before issuing the formal/unconditional approval.",
 ];
 
@@ -74,7 +74,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What is home loan pre-approval in Australia?",
     answer:
-      "Pre-approval (also called conditional approval) is a written indication from a lender of how much they're willing to lend you and at what rate, based on the financial information you've provided. It's the formal version of borrowing-capacity assessment — the lender has checked your credit file, verified your income and expenses, and stress-tested serviceability. It's not a loan offer and not legally binding, but it's the credential agents and auctioneers expect from serious buyers.",
+      "Pre-approval (also called conditional approval) is a written indication from a lender of how much they're willing to lend you and at what rate, based on the financial information you've provided. It's the formal version of borrowing-capacity assessment: the lender has checked your credit file, verified your income and expenses, and stress-tested serviceability. It's not a loan offer and not legally binding, but it's the credential agents and auctioneers expect from serious buyers.",
   },
   {
     question: "Is pre-approval a guarantee of a loan?",
@@ -89,17 +89,17 @@ const FAQS: FaqItem[] = [
   {
     question: "Does pre-approval hurt my credit score?",
     answer:
-      "Slightly. A pre-approval application creates a hard credit enquiry on your file, which can lower your credit score by a few points. Multiple applications in a short window have a compounding effect — credit-reporting agencies treat them as a signal of financial stress. Don't apply to multiple lenders for pre-approval at once. Either go via a broker (one application, multiple lender shopping) or pick a single lender carefully before applying.",
+      "Slightly. A pre-approval application creates a hard credit enquiry on your file, which can lower your credit score by a few points. Multiple applications in a short window have a compounding effect: credit-reporting agencies treat them as a signal of financial stress. Don't apply to multiple lenders for pre-approval at once. Either go via a broker (one application, multiple lender shopping) or pick a single lender carefully before applying.",
   },
   {
     question: "What's the difference between pre-qualification and pre-approval?",
     answer:
-      "Pre-qualification is a borrowing-power estimate based on self-reported financial information, with no credit check or document verification. It's basically a calculator output — useful for your own planning, but it carries zero weight with agents or auctioneers. Pre-approval is the formal version: full application, credit check, income verification, lender's underwriting team review, and a written letter you can show to agents. Always go for full pre-approval before you start serious property searching.",
+      "Pre-qualification is a borrowing-power estimate based on self-reported financial information, with no credit check or document verification. It's basically a calculator output. Useful for your own planning, but it carries zero weight with agents or auctioneers. Pre-approval is the formal version: full application, credit check, income verification, lender's underwriting team review, and a written letter you can show to agents. Always go for full pre-approval before you start serious property searching.",
   },
   {
     question: "Can I bid at an auction with only pre-approval?",
     answer:
-      "Yes, and it's the norm. Pre-approval is what agents and auctioneers expect from serious bidders. But understand the risk: an auction contract is unconditional — you can't make it subject to finance. If you win the auction and the lender's valuation comes in below the contract price (or your situation changes), you could be on the hook to settle or lose your deposit. Mitigate by: getting a Lender's Mortgage Insurance buffer in your pre-approval, doing your own informal valuation against comparable sales before bidding, and not bidding above the price your pre-approval comfortably covers.",
+      "Yes, and it's the norm. Pre-approval is what agents and auctioneers expect from serious bidders. But understand the risk: an auction contract is unconditional, you can't make it subject to finance. If you win the auction and the lender's valuation comes in below the contract price (or your situation changes), you could be on the hook to settle or lose your deposit. Mitigate by: getting a Lender's Mortgage Insurance buffer in your pre-approval, doing your own informal valuation against comparable sales before bidding, and not bidding above the price your pre-approval comfortably covers.",
   },
   {
     question: "Can I get pre-approved if I'm self-employed?",
@@ -109,7 +109,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Should I get pre-approval before talking to an agent?",
     answer:
-      "Yes. Walking into an open home with a written pre-approval moves you up the agent's priority list — you're a buyer they can close. Without it, agents (correctly) treat you as a tyre-kicker until you can demonstrate finance is sorted. Once you've found the property, the agent will want a copy of your pre-approval letter as part of any serious negotiation.",
+      "Yes. Walking into an open home with a written pre-approval moves you up the agent's priority list. You're a buyer they can close. Without it, agents (correctly) treat you as a tyre-kicker until you can demonstrate finance is sorted. Once you've found the property, the agent will want a copy of your pre-approval letter as part of any serious negotiation.",
   },
 ];
 
@@ -149,7 +149,7 @@ export default function HomeLoanPreApprovalAustraliaPage() {
         <p>
           A pre-approval letter tells agents and auctioneers you&rsquo;re a
           serious, financed buyer. It does <em>not</em> mean the loan will
-          definitely settle — the lender still values the property and does
+          definitely settle. The lender still values the property and does
           a final document check after your offer is accepted. Understand
           this before you bid at auction.
         </p>
@@ -191,7 +191,7 @@ export default function HomeLoanPreApprovalAustraliaPage() {
       <p>
         Some lenders issue pre-approvals based on automated scoring without
         a human underwriter review. These are faster (sometimes same-day)
-        but considered less reliable — the lender can still decline at
+        but considered less reliable. The lender can still decline at
         formal approval if any underlying assumption was wrong. Workable for
         straightforward PAYG income; risky for anyone complex.
       </p>
@@ -216,7 +216,7 @@ export default function HomeLoanPreApprovalAustraliaPage() {
       </p>
       <ul>
         <li><strong>Credibility with agents.</strong> Selling agents have wasted years on buyers who couldn&rsquo;t finance their offers. A pre-approval letter signals you can close, and agents prioritise you on follow-ups and pre-auction offers.</li>
-        <li><strong>Real budget clarity.</strong> Pre-approval forces the lender to test your actual numbers against their actual policy. The result is more reliable than a calculator output, and it&rsquo;ll often differ — sometimes you&rsquo;re approved for more than expected, sometimes less.</li>
+        <li><strong>Real budget clarity.</strong> Pre-approval forces the lender to test your actual numbers against their actual policy. The result is more reliable than a calculator output, and it&rsquo;ll often differ. Sometimes you&rsquo;re approved for more than expected, sometimes less.</li>
         <li><strong>Auction protection.</strong> Auction contracts are unconditional. Without pre-approval, you&rsquo;re bidding speculatively. With pre-approval, you have a defensible upper-limit you can bid to.</li>
       </ul>
       <p>
@@ -234,13 +234,13 @@ export default function HomeLoanPreApprovalAustraliaPage() {
         The path:
       </p>
       <ol>
-        <li><strong>Decide on broker vs direct.</strong> A broker submits one application across 30+ lenders and picks the right fit for your situation. Going direct ties you to one lender&rsquo;s policy. For 80% of borrowers, broker is the better path — particularly anyone self-employed, with multiple income sources, or with any complexity.</li>
+        <li><strong>Decide on broker vs direct.</strong> A broker submits one application across 30+ lenders and picks the right fit for your situation. Going direct ties you to one lender&rsquo;s policy. For 80% of borrowers, broker is the better path, particularly anyone self-employed, with multiple income sources, or with any complexity.</li>
         <li><strong>Choose your lender (if going direct) or your broker.</strong> If broker, see our <Link href="/guides/how-to-choose-a-mortgage-broker">how to choose a mortgage broker</Link> guide for the criteria.</li>
         <li><strong>Run an informal borrowing-power assessment</strong> with the lender or broker to confirm you&rsquo;re shopping in the right price bracket before formal application.</li>
         <li><strong>Gather documents</strong> (see next section).</li>
         <li><strong>Submit the application.</strong> Most brokers and lenders now accept document upload via a portal.</li>
-        <li><strong>Respond to lender queries promptly.</strong> Most pre-approvals come back with one or two clarification requests from the lender — incomplete bank statements, an unexplained large deposit, a missing payslip. Respond within 24 hours to keep the file moving.</li>
-        <li><strong>Receive your pre-approval letter.</strong> Read it carefully — the conditions matter.</li>
+        <li><strong>Respond to lender queries promptly.</strong> Most pre-approvals come back with one or two clarification requests from the lender: incomplete bank statements, an unexplained large deposit, a missing payslip. Respond within 24 hours to keep the file moving.</li>
+        <li><strong>Receive your pre-approval letter.</strong> Read it carefully. The conditions matter.</li>
       </ol>
 
       <h2 id="documents">Documents you&rsquo;ll need</h2>
@@ -253,7 +253,7 @@ export default function HomeLoanPreApprovalAustraliaPage() {
         <li><strong>3 months of bank statements</strong> for any savings or offset accounts.</li>
         <li><strong>Photo ID</strong>: driver&rsquo;s licence and/or passport.</li>
         <li><strong>List of existing debts</strong>: credit cards (limit + balance), personal loans, HECS/HELP, car loans, BNPL accounts.</li>
-        <li><strong>List of regular monthly expenses</strong> — most lenders use HEM (Household Expenditure Measure) as a baseline; some require detailed expense reporting.</li>
+        <li><strong>List of regular monthly expenses</strong>. Most lenders use HEM (Household Expenditure Measure) as a baseline; some require detailed expense reporting.</li>
         <li><strong>Rental income evidence</strong> if you own existing investment property: rental statements from a property manager.</li>
       </ul>
       <p>
@@ -275,8 +275,8 @@ export default function HomeLoanPreApprovalAustraliaPage() {
         can be returned same-day but apply to a narrower borrower set.
       </p>
       <p>
-        Brokers track lender SLAs daily — some lenders are slower than
-        others by 3–5 days at any given time. If timing matters (e.g.
+        Brokers track lender SLAs daily; some lenders are slower than
+        others by 3 to 5 days at any given time. If timing matters (e.g.
         you&rsquo;re trying to bid at an auction in two weeks), tell the
         broker upfront and they&rsquo;ll prioritise faster lenders.
       </p>
@@ -311,7 +311,7 @@ export default function HomeLoanPreApprovalAustraliaPage() {
         <li>Don&rsquo;t apply to multiple lenders simultaneously.</li>
         <li>Use a broker to shop multiple lenders with one application.</li>
         <li>Don&rsquo;t apply for a credit card, BNPL account, or personal loan in the 6 months before a pre-approval application.</li>
-        <li>If you&rsquo;re declined by one lender, fix the issue before applying elsewhere — a second decline within weeks of the first compounds the damage.</li>
+        <li>If you&rsquo;re declined by one lender, fix the issue before applying elsewhere. A second decline within weeks of the first compounds the damage.</li>
       </ul>
 
       <Callout variant="warning" title="The 'apply everywhere' trap">
@@ -334,11 +334,11 @@ export default function HomeLoanPreApprovalAustraliaPage() {
         &quot;unconditional&quot; or &quot;full&quot; approval). The steps:
       </p>
       <ol>
-        <li><strong>Lender valuation of the specific property.</strong> The lender orders a valuation (typically a desktop or a full inspection depending on lender and property type). If the valuation comes in below the contract price, your loan amount may be reduced — you&rsquo;d need to top up the deposit or renegotiate the contract.</li>
+        <li><strong>Lender valuation of the specific property.</strong> The lender orders a valuation (typically a desktop or a full inspection depending on lender and property type). If the valuation comes in below the contract price, your loan amount may be reduced. You&rsquo;d need to top up the deposit or renegotiate the contract.</li>
         <li><strong>Final document check.</strong> The lender re-verifies your income (latest payslip), confirms no material change in your situation, and checks the property is acceptable security.</li>
         <li><strong>Formal approval issued.</strong> The lender confirms the loan amount, rate, and terms in writing. You sign the loan offer.</li>
         <li><strong>Property contract goes unconditional.</strong> If your contract was subject to finance, this is the moment that condition is satisfied. Auction contracts skip this step (they&rsquo;re unconditional from the start).</li>
-        <li><strong>Settlement preparation.</strong> Your conveyancer + the lender coordinate the settlement date.</li>
+        <li><strong>Settlement preparation.</strong> Your conveyancer and the lender coordinate the settlement date.</li>
         <li><strong>Settlement.</strong> Funds clear, title transfers, mortgage is registered, keys change hands.</li>
       </ol>
 
@@ -349,7 +349,7 @@ export default function HomeLoanPreApprovalAustraliaPage() {
         <li><strong>Changing financial position mid-process.</strong> Buying a car on finance, taking out a personal loan, or switching jobs between pre-approval and formal approval can collapse the loan.</li>
         <li><strong>Letting pre-approval expire mid-purchase.</strong> Track the validity date and request an extension well before it lapses.</li>
         <li><strong>Trusting the pre-approval amount as a hard ceiling for what you should bid.</strong> The pre-approval covers a price; smart bidding stops 5–10% below it to leave room for negotiation costs, building inspection findings, and lender valuation risk.</li>
-        <li><strong>Not reading the conditions.</strong> Pre-approval letters spell out what the lender expects — property type, location, your financial position. Read the fine print.</li>
+        <li><strong>Not reading the conditions.</strong> Pre-approval letters spell out what the lender expects: property type, location, your financial position. Read the fine print.</li>
         <li><strong>Pre-qualification confusion.</strong> A pre-qualification letter looks like a pre-approval but carries none of the weight. Always get full pre-approval before serious property searching.</li>
       </ul>
 

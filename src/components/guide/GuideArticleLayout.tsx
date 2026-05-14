@@ -242,7 +242,7 @@ export function GuideArticleLayout({
                 <ExpertCTA
                   variant="inline"
                   headline="Want one-on-one help with this stage?"
-                  body="If you&rsquo;ve done the reading and want a real human to talk it through, we&rsquo;ll find the right specialist for your situation &mdash; agent, broker, accountant, conveyancer, whoever fits. Free, no commitment."
+                  body="If you&rsquo;ve done the reading and want a real human to talk it through, we&rsquo;ll find the right specialist for your situation, whether that&rsquo;s an agent, broker, accountant or conveyancer. Free, no commitment."
                 />
               )}
 

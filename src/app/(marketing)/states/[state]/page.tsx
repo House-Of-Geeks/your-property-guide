@@ -267,7 +267,7 @@ export default async function StatePage({ params }: StatePageProps) {
             Ranked Suburb Lists for {stateName}
           </h2>
           <p className="text-sm text-gray-500 mb-4">
-            Explore curated suburb rankings filtered to {stateName}.
+            Suburb rankings filtered to {stateName}.
           </p>
           <div className="flex flex-wrap gap-2">
             {[
