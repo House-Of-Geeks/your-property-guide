@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { LatestGuides } from "@/components/home/LatestGuides";
-import { LatestNews } from "@/components/home/LatestNews";
 import { CapitalCityOutlook } from "@/components/home/CapitalCityOutlook";
 import { NewsletterForm } from "@/components/newsletter/NewsletterForm";
 import { MatchAgent, PersonaPicker, TrustStrip } from "@/components/journey";
@@ -139,7 +138,7 @@ export default function HomePage() {
             </div>
             <div className="lg:col-span-6 lg:col-start-7 flex items-end">
               <p className="font-sans text-base sm:text-lg text-ink-muted leading-relaxed">
-                Every page on the site is built around one of four people. Tell us which
+                Every page on the site is built around one of five people. Tell us which
                 one is you and we&rsquo;ll surface the guides, calculators and data you
                 actually need — not the rest.
               </p>
@@ -150,9 +149,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3. Featured guides — moved here from below LatestNews where it was
-            redundant. Single-instance now: news first (fresh), guides second
-            (evergreen authority). */}
+      {/* 3. Featured guides */}
       <Suspense fallback={null}>
         <LatestGuides />
       </Suspense>
@@ -279,12 +276,7 @@ export default function HomePage() {
         <CapitalCityOutlook />
       </Suspense>
 
-      {/* 8. Latest news — what just changed in property and policy. */}
-      <Suspense fallback={null}>
-        <LatestNews />
-      </Suspense>
-
-      {/* 9. Newsletter band */}
+      {/* 8. Newsletter band */}
       <section className="bg-surface-warm border-y border-line-warm">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
           <div className="grid lg:grid-cols-12 gap-8 items-end">
