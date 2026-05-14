@@ -90,6 +90,7 @@ export function HeroSearch() {
         alt="Queenslander home in Paddington, Brisbane"
         fill
         className="object-cover object-center"
+        sizes="100vw"
         priority
       />
       {/* Dark overlay */}

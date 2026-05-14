@@ -198,7 +198,8 @@ export default function HomeLoanPreApprovalAustraliaPage() {
       <h3>Pre-qualification (not actually pre-approval)</h3>
       <p>
         Often offered by online lenders or comparison sites. Pre-qualification
-        is a borrowing-power estimate based on self-reported information,
+        is a{" "}
+        <Link href="/borrowing-power-calculator">borrowing-power</Link> estimate based on self-reported information,
         with no credit check or document verification. It carries no weight
         with agents and isn&rsquo;t a substitute for real pre-approval.
         Useful only for your own internal planning.

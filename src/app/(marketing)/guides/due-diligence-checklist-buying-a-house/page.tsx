@@ -172,7 +172,8 @@ export default function DueDiligenceChecklistPage() {
       <p>
         You can typically include the property contract as subject to
         building and pest inspection and subject to finance. Once your
-        offer is accepted, you have the cooling-off period (3–14 days
+        offer is accepted, you have the{" "}
+        <Link href="/guides/cooling-off-period-by-state-australia">cooling-off period</Link> (3–14 days
         depending on state and contract) plus any subject-to deadlines to
         complete due diligence. If the inspections reveal serious issues or
         finance falls through, you can withdraw with deposit refunded (or
@@ -229,7 +230,7 @@ export default function DueDiligenceChecklistPage() {
 
       <h2 id="legal-stack">Legal and contract checks</h2>
       <p>
-        Your conveyancer or solicitor runs the legal due diligence. You
+        Your <Link href="/guides/conveyancing-guide">conveyancer</Link> or solicitor runs the legal due diligence. You
         engage them <strong>before</strong> the offer or bid, not after.
         Their job:
       </p>

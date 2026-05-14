@@ -231,8 +231,9 @@ export default function HowToSellAHouseAustraliaPage() {
       <p>
         What <em>not</em> to do: don&rsquo;t renovate the kitchen or bathroom
         before selling. The cost recovery is poor. The buyer who pays for
-        renovation prefers to choose their own finishes anyway. Read our
-        renovation cost guide if you&rsquo;re considering it.
+        renovation prefers to choose their own finishes anyway. Read our{" "}
+        <Link href="/guides/renovation-cost-australia-2026">renovation cost guide</Link>{" "}
+        if you&rsquo;re considering it.
       </p>
 
       <Callout variant="warning" title="The over-improvement trap">
@@ -358,7 +359,9 @@ export default function HowToSellAHouseAustraliaPage() {
         <li><strong>WA, SA, TAS, ACT, NT:</strong> Each has its own contract form and disclosure regime. Your conveyancer will know the local requirements.</li>
       </ul>
       <p>
-        Engage your conveyancer <em>before</em> you list the property. The
+        Engage your{" "}
+        <Link href="/guides/conveyancing-guide">conveyancer</Link> <em>before</em>{" "}
+        you list the property. The
         contract has to be ready when the agent starts marketing, especially
         for auction (where the buyer signs an unconditional contract on
         auction day).

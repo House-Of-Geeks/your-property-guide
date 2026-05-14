@@ -220,7 +220,9 @@ export default function BuyingPropertyAustraliaPage() {
         picture.
       </p>
       <p>
-        Getting a formal pre-approval (also called conditional approval) from a
+        Getting a formal{" "}
+        <Link href="/guides/home-loan-pre-approval-australia">pre-approval</Link>{" "}
+        (also called conditional approval) from a
         lender gives you a realistic budget and signals to agents that
         you&rsquo;re a serious buyer. Pre-approvals typically last 90 days and
         can be renewed. Pre-approval is not a guarantee of final approval, it
@@ -228,7 +230,9 @@ export default function BuyingPropertyAustraliaPage() {
         your circumstances not changing.
       </p>
       <p>
-        Consider using a mortgage broker. A good broker has access to dozens of
+        Consider using a{" "}
+        <Link href="/guides/how-to-choose-a-mortgage-broker">mortgage broker</Link>.
+        A good broker has access to dozens of
         lenders and can often find better rates than you&rsquo;d find going
         direct. Their service is typically free to you, they receive commission
         from the lender.
@@ -305,12 +309,14 @@ export default function BuyingPropertyAustraliaPage() {
         Negotiations are normal, first offers are rarely accepted at face value.
       </p>
       <p>
-        Before making an offer, do your due diligence: review the contract
+        Before making an offer, do your{" "}
+        <Link href="/guides/due-diligence-checklist-buying-a-house">due diligence</Link>:
+        review the contract
         (have your conveyancer check it), arrange pre-approval, and if possible
         get a building inspection done before you exchange. In Queensland,
         building inspections are often done before signing due to the contract
-        format; in NSW and VIC, they&rsquo;re typically done during the
-        cooling-off period.
+        format; in NSW and VIC, they&rsquo;re typically done during the{" "}
+        <Link href="/guides/cooling-off-period-by-state-australia">cooling-off period</Link>.
       </p>
 
       <h3>Buying at auction</h3>

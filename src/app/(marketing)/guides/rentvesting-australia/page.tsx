@@ -249,9 +249,10 @@ export default function RentvestingAustraliaPage() {
 
       <h2 id="fhog-trap">The first home buyer scheme trade-off</h2>
       <p>
-        Australian first home buyer schemes are valuable. In NSW, VIC, QLD,
+        Australian <Link href="/guides/first-home-buyer-guide">first home buyer</Link> schemes are valuable. In NSW, VIC, QLD,
         WA, SA, ACT, NT and TAS, schemes for first-time owner-occupiers
-        include grants ($10,000–$30,000 for new builds), stamp duty
+        include grants ($10,000–$30,000 for new builds),{" "}
+        <Link href="/stamp-duty-calculator">stamp duty</Link>{" "}
         concessions (full or partial waiver up to a threshold), and access
         to the First Home Guarantee (5% deposit, no LMI). Across these,
         first home owner-occupiers typically save $20,000–$60,000+ in cash
@@ -340,7 +341,7 @@ export default function RentvestingAustraliaPage() {
         <li><strong>Cross-collateralisation risk.</strong> Some lenders try to cross-collateralise the investment loan with your existing assets. Push back and keep loans uncrossed where possible.</li>
       </ul>
       <p>
-        A broker who specialises in investment lending earns their fee on a
+        A <Link href="/guides/how-to-choose-a-mortgage-broker">broker</Link> who specialises in investment lending earns their fee on a
         rentvesting purchase. The lender choice, the loan structure
         (offset, interest-only, fixed-vs-variable split), and the LMI
         decision all materially affect your numbers. Generic bank
@@ -365,7 +366,7 @@ export default function RentvestingAustraliaPage() {
         Most rentvesters exit one of three ways:
       </p>
       <ul>
-        <li><strong>Sell the investment, use the proceeds for an owner-occupier.</strong> Most common path. CGT applies on the gain (50% discount after 12 months), and you forfeit grant eligibility on the next purchase. Time the sale carefully for tax: selling in a low-income year reduces the CGT bill.</li>
+        <li><strong>Sell the investment, use the proceeds for an owner-occupier.</strong> Most common path. <Link href="/cgt-calculator">CGT</Link> applies on the gain (50% discount after 12 months), and you forfeit grant eligibility on the next purchase. Time the sale carefully for tax: selling in a low-income year reduces the CGT bill.</li>
         <li><strong>Move into the investment property and convert to PPOR (principal place of residence).</strong> This restarts the main-residence exemption from the move-in date. Useful if you&rsquo;re relocating to that area anyway. Note: any pre-move-in CGT liability stays on the books until eventual sale.</li>
         <li><strong>Keep both, buy a second property as owner-occupier later.</strong> Requires meaningful income growth or a partner&rsquo;s borrowing capacity. Best long-term outcome if it&rsquo;s achievable: rental income from the first property partly funds the second mortgage.</li>
       </ul>

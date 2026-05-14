@@ -155,7 +155,8 @@ export default function RenovationCostAustralia2026Page() {
       </p>
       <ul>
         <li><strong>Materials</strong> are back to single-digit annual inflation. Timber, steel and tiles have stabilised; the 2022–23 shortages are behind us.</li>
-        <li><strong>Labour</strong> remains the binding constraint. Construction trades shortages haven&rsquo;t eased: apprenticeships dropped in the late 2010s and the pipeline is still thin. Expect 6 to 12 week waits to engage a quality builder for anything substantial.</li>
+        <li><strong>Labour</strong> remains the binding constraint. Construction trades shortages haven&rsquo;t eased: apprenticeships dropped in the late 2010s and the pipeline is still thin. Expect 6 to 12 week waits to engage a{" "}
+        <Link href="/guides/how-to-find-a-builder-australia">quality builder</Link> for anything substantial.</li>
         <li><strong>Energy efficiency</strong> requirements (NCC 2025) now mandate higher insulation, glazing performance, and air-tightness on new and substantially renovated work. Real cost: 3–8% added to most renovation budgets but partially offset by lower energy bills.</li>
         <li><strong>Builder failures</strong> in 2023–24 (multiple high-profile insolvencies, especially in NSW and VIC) have driven up insurance costs and made owner-builders and small renovators more cautious. Always check builder solvency and home warranty insurance before signing.</li>
       </ul>

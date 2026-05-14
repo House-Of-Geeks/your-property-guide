@@ -228,7 +228,7 @@ export default function NegativeGearingPage() {
       <h2 id="not-deductible">What is NOT deductible?</h2>
       <ul>
         <li><strong>Capital improvements.</strong> Adding a new deck, extending a room, or installing a new kitchen are capital improvements, not repairs. They are added to the property&rsquo;s cost base for CGT purposes, not deducted immediately.</li>
-        <li><strong>Purchase costs.</strong> Stamp duty, conveyancing fees, and purchase-related legal fees are capital costs that form part of the cost base, not immediately deductible.</li>
+        <li><strong>Purchase costs.</strong> <Link href="/stamp-duty-calculator">Stamp duty</Link>, <Link href="/guides/conveyancing-guide">conveyancing</Link> fees, and purchase-related legal fees are capital costs that form part of the cost base, not immediately deductible.</li>
         <li><strong>Principal loan repayments.</strong></li>
         <li><strong>Personal use portion.</strong> If you use the property yourself for any period, you must apportion expenses, only the rental income period is deductible.</li>
         <li><strong>Rental losses when not genuinely available for rent.</strong> You must be actively trying to rent the property at market rent for deductions to apply.</li>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -155,8 +156,8 @@ export default function HowToFindABuilderAustraliaPage() {
 
       <h2 id="why-it-matters">Why builder choice matters</h2>
       <p className="lead">
-        Builder selection is the single highest-leverage decision in any
-        renovation or new build. The right builder delivers on time, on
+        Builder selection is the single highest-leverage decision in any{" "}
+        <Link href="/guides/renovation-cost-australia-2026">renovation</Link> or new build. The right builder delivers on time, on
         budget, communicates clearly, fixes defects without argument, and
         runs a clean site. The wrong builder runs over budget by 30–60%,
         slips schedule by months, leaves a trail of disputes and unfinished
