@@ -197,6 +197,7 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
                 <Image
                   src={p.illustration}
                   alt=""
+                  aria-hidden="true"
                   width={48}
                   height={32}
                   className="w-12 h-8 object-contain"

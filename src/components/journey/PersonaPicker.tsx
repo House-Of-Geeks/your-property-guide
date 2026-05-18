@@ -46,7 +46,7 @@ export function PersonaPicker({ className, highlightActive = true, variant = "gr
               >
                 <Image
                   src={p.illustration}
-                  alt=""
+                  alt={`Illustration for ${p.cardLabel}`}
                   width={320}
                   height={220}
                   className="w-full h-auto mb-2"
@@ -89,7 +89,7 @@ export function PersonaPicker({ className, highlightActive = true, variant = "gr
                 </span>
                 <Image
                   src={p.illustration}
-                  alt=""
+                  alt={`Illustration for ${p.cardLabel}`}
                   width={320}
                   height={220}
                   className="w-full h-full object-contain p-4 pl-16 transition-transform duration-500 group-hover:scale-[1.03]"

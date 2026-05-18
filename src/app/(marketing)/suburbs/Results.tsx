@@ -66,6 +66,7 @@ export async function SuburbsResults({ searchParams }: SuburbsResultsProps) {
           <Image
             src="/images/illustrations/data-empty.svg"
             alt=""
+            aria-hidden="true"
             width={320}
             height={220}
             className="w-56 h-auto mx-auto mb-4"

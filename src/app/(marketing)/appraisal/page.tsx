@@ -77,6 +77,7 @@ export default function AppraisalPage() {
                 <Image
                   src="/images/illustrations/appraisal.svg"
                   alt=""
+                  aria-hidden="true"
                   width={320}
                   height={220}
                   className="w-full h-auto"

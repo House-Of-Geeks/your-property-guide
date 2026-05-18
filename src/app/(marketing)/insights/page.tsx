@@ -148,7 +148,7 @@ export default async function InsightsPage() {
                     <div className="relative aspect-[16/10] overflow-hidden bg-surface-warm-sunken">
                       <Image
                         src={p.coverImage}
-                        alt=""
+                        alt={`Cover image for ${p.title}`}
                         fill
                         sizes="(max-width: 768px) 50vw, 25vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-700"

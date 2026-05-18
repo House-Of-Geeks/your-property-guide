@@ -52,6 +52,7 @@ const SECTIONS: GuideSection[] = [
       { title: "Best Brisbane Suburbs for Families 2026",   href: "/guides/best-brisbane-suburbs-for-families-2026", readTime: "10 min", description: "Inner-ring, middle-ring, and outer growth corridors picked for school quality and lifestyle." },
       { title: "How to Buy Property in Australia",          href: "/guides/buying-property-australia", readTime: "15 min", description: "Complete step-by-step from saving your deposit to settlement." },
       { title: "How to Negotiate Property Price",           href: "/guides/how-to-negotiate-property-price-australia", readTime: "13 min", description: "Opening offers, counter-offer logic, walk-away triggers and the mistakes that cost buyers money." },
+      { title: "What Happens on Settlement Day",            href: "/guides/settlement-day-australia", readTime: "12 min", description: "Plain-English walkthrough of PEXA settlement, final inspection, funds flow, delays and state-by-state notes." },
       { title: "First Home Buyer Guide, NSW",               href: "/guides/first-home-buyer-nsw", readTime: "7 min",  description: "$10K FHOG, stamp duty exemption to $800K, FHB choice." },
       { title: "First Home Buyer Guide, VIC",               href: "/guides/first-home-buyer-vic", readTime: "7 min",  description: "$10K metro / $20K regional FHOG, stamp duty to $600K." },
       { title: "First Home Buyer Guide, QLD",               href: "/guides/first-home-buyer-qld", readTime: "7 min",  description: "$30K FHOG, transfer-duty concession, REIQ contract." },
@@ -184,6 +185,7 @@ export default function GuidesHubPage() {
                 <Image
                   src="/images/illustrations/guides-hero.svg"
                   alt=""
+                  aria-hidden="true"
                   width={320}
                   height={220}
                   className="w-full h-auto"

@@ -264,7 +264,7 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
         style={{ background: agency.primaryColor ? `${agency.primaryColor}` : "#1B3A5C" }}
       >
         {agency.heroBg ? (
-          <Image src={agency.heroBg} alt="" fill className="object-cover" priority sizes="100vw" />
+          <Image src={agency.heroBg} alt={`${agency.name} office`} fill className="object-cover" priority sizes="100vw" />
         ) : null}
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4 gap-3">

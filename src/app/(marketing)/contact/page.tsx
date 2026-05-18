@@ -76,6 +76,7 @@ export default function ContactPage() {
                 <Image
                   src="/images/illustrations/expert-match.svg"
                   alt=""
+                  aria-hidden="true"
                   width={320}
                   height={220}
                   className="w-full h-auto"

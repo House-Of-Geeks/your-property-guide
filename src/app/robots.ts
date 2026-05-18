@@ -24,6 +24,16 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "Perplexity-User", allow: "/" },
       // Common Crawl
       { userAgent: "CCBot",           allow: "/" },
+      // Microsoft Bing — explicit allows for Bing's primary indexer
+      // (bingbot), the preview crawler that builds SERP cards
+      // (BingPreview), the Bing Ads crawler (adidxbot), and the legacy
+      // MSN bot. Wildcard rules cover them too, but listing them
+      // explicitly signals welcome and improves Bing Webmaster Tools'
+      // confidence score for crawl access.
+      { userAgent: "bingbot",         allow: "/" },
+      { userAgent: "BingPreview",     allow: "/" },
+      { userAgent: "adidxbot",        allow: "/" },
+      { userAgent: "msnbot",          allow: "/" },
 
       // SEO data scrapers — blocked entirely. They crawl deep and
       // aggressively across the address-detail pages but only feed

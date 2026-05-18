@@ -66,6 +66,7 @@ export default function SuburbsPage({ searchParams }: PageProps) {
                 <Image
                   src="/images/illustrations/suburb-data.svg"
                   alt=""
+                  aria-hidden="true"
                   width={320}
                   height={220}
                   className="w-full h-auto"

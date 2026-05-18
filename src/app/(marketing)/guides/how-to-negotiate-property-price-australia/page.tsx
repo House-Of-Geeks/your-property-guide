@@ -5,6 +5,7 @@ import {
   Callout,
   KeyFigure,
   MatchCTA,
+  GuideNewsletterCallout,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -394,6 +395,11 @@ export default function HowToNegotiatePropertyPricePage() {
           the market; ask early in the campaign.
         </p>
       </Callout>
+
+      <GuideNewsletterCallout
+        title="Want the next negotiation playbook in your inbox?"
+        subtitle="One quarterly email on the Australian property market, RBA rate moves and the data updates that change how a negotiation should run. No spam."
+      />
 
       <h2 id="walk-away">Setting your walk-away price (and using it)</h2>
       <p>
