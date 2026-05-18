@@ -14,6 +14,8 @@ export { GlossaryLink } from "./GlossaryLink";
 export { ReadingProgressBar } from "./ReadingProgressBar";
 export { MatchCTA } from "./MatchCTA";
 export { Sources } from "./Sources";
+export { PullQuote } from "./PullQuote";
+export { EditorNote } from "./EditorNote";
 
 export type { GuideFrontmatter } from "./GuideArticleLayout";
 export type { GuideTOCEntry } from "./GuideTOC";

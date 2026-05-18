@@ -6,6 +6,8 @@ import {
   KeyFigure,
   MatchCTA,
   GuideNewsletterCallout,
+  EditorNote,
+  PullQuote,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -153,6 +155,17 @@ export default function HowToNegotiatePropertyPricePage() {
         </p>
       </Callout>
 
+      <EditorNote>
+        <p>
+          I&rsquo;ve sat on both sides of dozens of Australian property
+          deals. The single most expensive sentence I&rsquo;ve heard a
+          buyer say to a selling agent is &ldquo;we&rsquo;ve seen 30
+          places and this is exactly what we&rsquo;ve been looking
+          for.&rdquo; Every word of this guide is built around stopping
+          you from saying it.
+        </p>
+      </EditorNote>
+
       <h2 id="principles">Negotiation principles for Australian property</h2>
       <p className="lead">
         Negotiating the price on a property in Australia is mostly preparation
@@ -240,6 +253,10 @@ export default function HowToNegotiatePropertyPricePage() {
         label="Typical buyer's-agent saving on a $900K purchase"
         context="1.5 to 4 per cent on price"
       />
+
+      <PullQuote attribution="Andy McMaster, Editor">
+        Buyers who can&rsquo;t walk away pay more for the same house.
+      </PullQuote>
 
       <h2 id="opening-offer">Your opening offer: number, format and timing</h2>
       <p>

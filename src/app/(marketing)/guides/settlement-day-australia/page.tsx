@@ -6,6 +6,8 @@ import {
   KeyFigure,
   MatchCTA,
   GuideNewsletterCallout,
+  EditorNote,
+  PullQuote,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -151,6 +153,17 @@ export default function SettlementDayAustraliaPage() {
           solicitor in the state where the property is located.
         </p>
       </Callout>
+
+      <EditorNote>
+        <p>
+          Settlement day is the part of buying a home almost nobody
+          prepares for. You spent six months on inspections, finance and
+          contract review; the actual transfer of ownership happens in 90
+          minutes on a Tuesday afternoon, electronically, without you in
+          the room. This guide walks through exactly what is happening
+          while you wait for the keys.
+        </p>
+      </EditorNote>
 
       <h2 id="overview">Overview: what settlement actually is</h2>
       <p className="lead">
@@ -307,6 +320,12 @@ export default function SettlementDayAustraliaPage() {
           negotiate a settlement adjustment.
         </p>
       </Callout>
+
+      <PullQuote attribution="Andy McMaster, Editor">
+        Catch a missing dishwasher before settlement clears and the
+        vendor adjusts the price. Catch it after, and you&rsquo;re in
+        court.
+      </PullQuote>
 
       <h2 id="funds-flow">The funds flow on settlement day</h2>
       <p>

@@ -81,9 +81,10 @@ export default function HomePage() {
               lede, not a SaaS subheadline. Narrower measure for editorial
               colour. */}
           <p className="font-display text-2xl sm:text-3xl text-ink leading-[1.25] max-w-3xl mb-12 font-light">
-            The plain-English reference for every Australian engaging with
-            property. Buying, selling, investing, renovating, renting. Free,
-            ungated, and the first place to read before you make a move.
+            Australia&rsquo;s biggest financial decision deserves better
+            than a portal. Sixty plain-English guides, every suburb in the
+            country, every calculator that matters. Free, ungated, written
+            for people, not portals.
           </p>
 
           {/* CTA + supporting link. Single pill button keeps conversion
@@ -94,13 +95,13 @@ export default function HomePage() {
               href="#personas"
               className="inline-flex items-center gap-2 rounded-full bg-ink text-white hover:bg-primary px-7 py-3.5 text-sm font-medium transition-colors"
             >
-              Start with my situation <span aria-hidden="true">→</span>
+              Find what fits my situation <span aria-hidden="true">→</span>
             </Link>
             <Link
               href="/guides"
               className="inline-flex items-center gap-1.5 text-ink hover:text-primary font-medium text-sm border-b border-line-strong hover:border-primary pb-1 transition-colors"
             >
-              Or browse all 60+ guides
+              Or read the 60+ guides
             </Link>
           </div>
 
