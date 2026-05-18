@@ -10,10 +10,12 @@ import {
   GuideGlossaryRail,
   EditorNote,
   PullQuote,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
   type RelatedGuide,
+  type SourceItem,
 } from "@/components/guide";
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
@@ -503,7 +505,19 @@ export default function BuyingPropertyAustraliaPage() {
           "lenders-mortgage-insurance-lmi",
         ]}
       />
+
+      <Sources items={BUYING_PROPERTY_SOURCES} />
     </GuideArticleLayout>
     </>
   );
 }
+
+const BUYING_PROPERTY_SOURCES: readonly SourceItem[] = [
+  { label: "ASIC's Moneysmart: Buying a home", href: "https://moneysmart.gov.au/home-loans/buying-a-home", note: "Used for deposit, LMI and contract-process framing" },
+  { label: "APRA: Residential mortgage lending serviceability buffer", href: "https://www.apra.gov.au/", note: "3% serviceability buffer referenced in Step 1" },
+  { label: "NHFIC (Housing Australia): First Home Guarantee eligibility", href: "https://www.housingaustralia.gov.au/", note: "Federal scheme deposit thresholds" },
+  { label: "PEXA: Electronic conveyancing", href: "https://www.pexa.com.au/", note: "Settlement workflow described in Step 10" },
+  { label: "NSW Fair Trading, Consumer Affairs Victoria, QLD Office of Fair Trading", note: "State cooling-off periods and contract rules cited in Step 9" },
+  { label: "Australian Bureau of Statistics: Lending Indicators", href: "https://www.abs.gov.au/statistics/economy/finance/lending-indicators", note: "Housing finance commitments for market-condition context" },
+  { label: "Australian Taxation Office: Capital improvements and main residence records", href: "https://www.ato.gov.au/", note: "Record-keeping and CGT references in after-settlement" },
+];

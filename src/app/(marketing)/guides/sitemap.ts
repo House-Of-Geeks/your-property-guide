@@ -34,6 +34,7 @@ const GUIDE_SLUGS = [
   "how-to-negotiate-property-price-australia",
   "settlement-day-australia",
   "capital-growth-vs-cash-flow-australia",
+  "offset-accounts-explained-australia",
   "best-brisbane-suburbs-for-families-2026",
   // Selling
   "how-to-choose-a-selling-agent",

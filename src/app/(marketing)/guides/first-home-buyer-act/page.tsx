@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
+  EditorNote,
   KeyFigure,
   type GuideFrontmatter,
   type GuideTOCEntry,
@@ -137,6 +138,20 @@ export default function FirstHomeBuyerACTPage() {
           or a licensed ACT conveyancer.
         </p>
       </Callout>
+
+      <EditorNote>
+        <p>
+          The ACT is the one jurisdiction with no FHOG, and most buyers
+          read that as &ldquo;less generous.&rdquo; It isn&rsquo;t. The
+          Home Buyer Concession Scheme delivers a full stamp duty waiver
+          which on a $700K Canberra home is worth roughly $27K, well
+          ahead of any state grant. The thing that actually catches
+          Canberra buyers off guard is leasehold land. Every block is a
+          99-year Crown Lease. For owner-occupier purchases it behaves
+          like freehold, but make sure your conveyancer is ACT-licensed
+          and knows the change-of-use rules.
+        </p>
+      </EditorNote>
 
       <h2 id="no-fhog">No FHOG in the ACT, here's what you get instead</h2>
       <p className="lead">

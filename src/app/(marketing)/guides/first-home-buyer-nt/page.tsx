@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
+  EditorNote,
   KeyFigure,
   type GuideFrontmatter,
   type GuideTOCEntry,
@@ -135,6 +136,20 @@ export default function FirstHomeBuyerNTPage() {
           and engage a qualified NT conveyancer.
         </p>
       </Callout>
+
+      <EditorNote>
+        <p>
+          The NT combines a $10K FHOG with a stamp duty discount worth
+          up to $23,928.60 on both new and established homes. Stacked,
+          that&rsquo;s one of the bigger combined benefits in the
+          country by dollar value. The Territory&rsquo;s real trap is
+          land tenure. A meaningful share of NT land is leasehold, and
+          properties on community land or in remote areas have
+          conveyancing and financing quirks no east-coast lender or
+          solicitor will spot. Hire an NT-licensed conveyancer before
+          you offer on anything outside established Darwin suburbs.
+        </p>
+      </EditorNote>
 
       <h2 id="fhog">First Home Owner Grant, Northern Territory</h2>
       <p className="lead">

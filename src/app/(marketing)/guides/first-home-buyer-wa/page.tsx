@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
+  EditorNote,
   KeyFigure,
   type GuideFrontmatter,
   type GuideTOCEntry,
@@ -128,6 +129,18 @@ export default function FirstHomeBuyerWAPage() {
           before signing a contract.
         </p>
       </Callout>
+
+      <EditorNote>
+        <p>
+          WA is the only state with its own government-backed lender,
+          Keystart, and that&rsquo;s the lever first home buyers here
+          underuse. A 2% deposit with no LMI changes the maths in a way
+          the cash grant alone can&rsquo;t. The other thing to know
+          early: WA has no statutory cooling-off period on residential
+          private treaty sales. Get your building inspection, finance
+          check and contract review done before you sign, not after.
+        </p>
+      </EditorNote>
 
       <h2 id="fhog-wa">First Home Owner Grant WA</h2>
       <p className="lead">

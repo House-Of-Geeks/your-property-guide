@@ -121,9 +121,23 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           {/* Author + meta row with hairline above */}
           <div className="flex flex-wrap items-center justify-between gap-4 pt-5 pb-5 border-y border-line">
             <div className="flex items-center gap-3">
-              <AuthorAvatar name={post.author.name} image={post.author.image} size={40} />
+              <Link
+                href="/about#andy-mcmaster"
+                aria-label={`About ${post.author.name}`}
+                className="block shrink-0"
+              >
+                <AuthorAvatar name={post.author.name} image={post.author.image} size={40} />
+              </Link>
               <div>
-                <p className="text-sm font-sans font-semibold text-ink">{post.author.name}</p>
+                <p className="text-sm font-sans text-ink-muted">
+                  By{" "}
+                  <Link
+                    href="/about#andy-mcmaster"
+                    className="font-semibold text-ink hover:text-primary border-b border-transparent hover:border-primary transition-colors"
+                  >
+                    {post.author.name}
+                  </Link>
+                </p>
                 <p className="text-xs font-sans text-ink-subtle flex items-center gap-2 mt-0.5">
                   <span>{formatDate(post.publishedAt)}</span>
                   <span className="flex items-center gap-1">

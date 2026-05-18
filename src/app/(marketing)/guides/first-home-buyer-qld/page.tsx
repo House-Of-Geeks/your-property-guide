@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
+  EditorNote,
   KeyFigure,
   type GuideFrontmatter,
   type GuideTOCEntry,
@@ -124,6 +125,19 @@ export default function FirstHomeBuyerQLDPage() {
           or a licensed conveyancer before signing a contract.
         </p>
       </Callout>
+
+      <EditorNote>
+        <p>
+          Queensland is the state where the FHOG actually moves the
+          needle. At $30,000 on a new home, it&rsquo;s three times what
+          NSW or VIC pay, and on a sub-$550K purchase the transfer-duty
+          concession stacks neatly on top. The trap I see most: buyers
+          assume the QLD contract works like NSW with a cooling-off
+          they&rsquo;ll lean on. The REIQ contract is built around
+          subject-to clauses instead. Negotiate the conditions in,
+          don&rsquo;t plan to wriggle out later.
+        </p>
+      </EditorNote>
 
       <h2 id="fhog-qld">$30,000 First Home Owner Grant QLD</h2>
       <p className="lead">

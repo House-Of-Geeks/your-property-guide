@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
+  EditorNote,
   KeyFigure,
   type GuideFrontmatter,
   type GuideTOCEntry,
@@ -135,6 +136,19 @@ export default function FirstHomeBuyerTasPage() {
           before signing a contract.
         </p>
       </Callout>
+
+      <EditorNote>
+        <p>
+          Tasmania pays $30K on a new home or a 50% duty concession on
+          an established one, and most buyers I&rsquo;ve seen here pick
+          wrong on the maths. The grant is bigger up front, but on a
+          sub-$500K established home the duty concession plus the lower
+          purchase price often nets out better. The other Tasmanian
+          quirk: the First Home Guarantee uses a single $600K cap with
+          no metro/regional split, which actually works in your favour
+          across most of the state.
+        </p>
+      </EditorNote>
 
       <h2 id="fhog">First Home Owner Grant, Tasmania</h2>
       <p className="lead">

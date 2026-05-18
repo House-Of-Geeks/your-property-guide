@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
+  EditorNote,
   KeyFigure,
   type GuideFrontmatter,
   type GuideTOCEntry,
@@ -124,6 +125,18 @@ export default function FirstHomeBuyerNSWPage() {
           or a licensed conveyancer before signing a contract.
         </p>
       </Callout>
+
+      <EditorNote>
+        <p>
+          The single biggest thing buyers misread in NSW is the gap
+          between the $10,000 FHOG (new homes only, $750K cap) and the
+          stamp duty exemption (any home, $800K cap). Most first home
+          buyers I talk to here qualify for the duty exemption on an
+          established home and never get near the grant. That&rsquo;s the
+          much larger saving. Worry about the duty rules first, the
+          grant second.
+        </p>
+      </EditorNote>
 
       <h2 id="fhog-nsw">First Home Owner Grant NSW</h2>
       <p className="lead">

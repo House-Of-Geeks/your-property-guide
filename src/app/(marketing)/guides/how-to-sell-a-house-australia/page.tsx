@@ -12,6 +12,7 @@ import {
   type GuideTOCEntry,
   type FaqItem,
   type RelatedGuide,
+  type SourceItem,
 } from "@/components/guide";
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
@@ -453,13 +454,18 @@ export default function HowToSellAHouseAustraliaPage() {
         lead="If the property was ever rented, the CGT bill can be five figures. Worth a 20-minute call with a property-tax accountant before you list."
       />
 
-      <Sources items={[
-        "Australian Securities and Investments Commission, real-estate licensing and underquoting laws (state-by-state, 2024–2026).",
-        "CoreLogic and PropTrack monthly market reports for days-on-market and clearance-rate ranges cited in this guide.",
-        { label: "Australian Taxation Office, \"CGT and the main residence exemption\"", note: "current" },
-        "Queensland Government, seller-disclosure regime (Property Law Act 2023 commencement 1 August 2025).",
-      ]} />
+      <Sources items={SELLING_HOUSE_SOURCES} />
     </GuideArticleLayout>
     </>
   );
 }
+
+const SELLING_HOUSE_SOURCES: readonly SourceItem[] = [
+  { label: "ATO: CGT and the main residence exemption", href: "https://www.ato.gov.au/individuals-and-families/investments-and-assets/capital-gains-tax/property-and-capital-gains-tax", note: "Main residence rules and 50% discount cited in the tax section" },
+  { label: "NSW Fair Trading: Real estate agents and underquoting", href: "https://www.fairtrading.nsw.gov.au/", note: "NSW agent obligations and underquoting enforcement" },
+  { label: "Consumer Affairs Victoria: Section 32 vendor statements", href: "https://www.consumer.vic.gov.au/", note: "VIC pre-listing disclosure requirements" },
+  { label: "Queensland Government: Property Law Act 2023 seller disclosure regime", href: "https://www.qld.gov.au/law/laws-regulated-industries-and-accountability/queensland-laws-and-regulations", note: "QLD disclosure statement commenced 1 August 2025" },
+  { label: "CoreLogic Australia: Auction clearance rates and days-on-market", href: "https://www.corelogic.com.au/", note: "Market-condition benchmarks throughout the guide" },
+  { label: "PEXA: Settlement and electronic conveyancing", href: "https://www.pexa.com.au/", note: "Settlement-day process described in section 10" },
+  { label: "REIA: Australian Property Market Report", note: "Quarterly, used for national context on agent commission and marketing budgets" },
+];

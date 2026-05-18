@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
+  EditorNote,
   KeyFigure,
   type GuideFrontmatter,
   type GuideTOCEntry,
@@ -124,6 +125,18 @@ export default function FirstHomeBuyerVICPage() {
           or a licensed conveyancer before signing a contract.
         </p>
       </Callout>
+
+      <EditorNote>
+        <p>
+          Two Victorian quirks catch buyers out every week. The first:
+          the regional FHOG is double the metro grant ($20K vs $10K),
+          but only on new builds in eligible regional postcodes. The
+          second: the stamp duty exemption stops dead at $600K with a
+          taper to $750K, and Melbourne medians don&rsquo;t play nicely
+          with that ceiling. Check your contract price against both
+          ceilings before you sign, not after.
+        </p>
+      </EditorNote>
 
       <h2 id="fhog-vic">First Home Owner Grant VIC</h2>
       <p className="lead">

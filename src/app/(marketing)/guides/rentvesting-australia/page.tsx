@@ -12,6 +12,7 @@ import {
   type GuideTOCEntry,
   type FaqItem,
   type RelatedGuide,
+  type SourceItem,
 } from "@/components/guide";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
@@ -406,13 +407,16 @@ export default function RentvestingAustraliaPage() {
         lead="Rentvesting is a tax + structuring decision as much as a property one. A 30-minute call with a property accountant before you commit is worth its weight in gold."
       />
 
-      <Sources items={[
-        "Australian Taxation Office, \"Rental properties, claiming expenses\" (current 2025).",
-        "Australian Prudential Regulation Authority (APRA), Investment-loan macroprudential guidance and serviceability buffers, 2024–2025.",
-        "Australian Bureau of Statistics, Lending Indicators (housing finance commitments, investor share).",
-        "State-by-state First Home Owner Grant eligibility schedules (NSW, VIC, QLD, WA, SA, ACT, NT, TAS), current as at 2026.",
-        "CoreLogic and PropTrack quarterly rental and capital-growth indices, 2024–2026.",
-      ]} />
+      <Sources items={RENTVESTING_SOURCES} />
     </GuideArticleLayout>
   );
 }
+
+const RENTVESTING_SOURCES: readonly SourceItem[] = [
+  { label: "ATO: Rental properties, claiming expenses", href: "https://www.ato.gov.au/individuals-and-families/investments-and-assets/residential-rental-properties", note: "Deductible expense list and depreciation rules" },
+  { label: "APRA: Investment lending macroprudential guidance", href: "https://www.apra.gov.au/", note: "Serviceability buffer and investor-loan policy referenced in finance section" },
+  { label: "ABS: Lending Indicators", href: "https://www.abs.gov.au/statistics/economy/finance/lending-indicators", note: "Investor share of housing finance commitments" },
+  { label: "NHFIC (Housing Australia): First Home Guarantee eligibility", href: "https://www.housingaustralia.gov.au/", note: "Owner-occupier requirement that disqualifies rentvesting purchases" },
+  { label: "State First Home Owner Grant schedules (NSW, VIC, QLD, WA, SA, ACT, NT, TAS)", note: "Used for first-home-buyer scheme trade-off analysis" },
+  { label: "CoreLogic Australia: Home Value Index methodology", href: "https://www.corelogic.com.au/our-data/methodology", note: "Capital-growth and yield benchmarks" },
+];

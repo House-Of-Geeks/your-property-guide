@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
+  EditorNote,
   KeyFigure,
   type GuideFrontmatter,
   type GuideTOCEntry,
@@ -135,6 +136,19 @@ export default function FirstHomeBuyerSAPage() {
           or a licensed mortgage broker before signing a contract.
         </p>
       </Callout>
+
+      <EditorNote>
+        <p>
+          South Australia is the odd one out on stamp duty. There is no
+          general first-home-buyer exemption or concession on established
+          homes, which most buyers from the east coast assume exists.
+          Plan on paying full duty unless you&rsquo;re buying new or
+          off-the-plan. The $15K FHOG is the main FHB-specific lever
+          here, and the off-the-plan concession quietly does more
+          financial work than it gets credit for. Run the duty number on
+          a calculator before you set your savings target.
+        </p>
+      </EditorNote>
 
       <h2 id="fhog">First Home Owner Grant, South Australia</h2>
       <p className="lead">

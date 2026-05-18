@@ -12,6 +12,7 @@ import {
   type GuideTOCEntry,
   type FaqItem,
   type RelatedGuide,
+  type SourceItem,
 } from "@/components/guide";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
@@ -381,13 +382,17 @@ export default function DueDiligenceChecklistPage() {
         lead="If due diligence feels overwhelming or you don't trust your own bias on a particular property, a buyer's agent handles all of this professionally and gets you a stronger price."
       />
 
-      <Sources items={[
-        "Australian Securities and Investments Commission, MoneySmart guide to buying a home (current 2025).",
-        "Australian Standard 4349.1, Inspection of buildings, Pre-purchase inspections (most recent revision).",
-        "Australian Standard 3660.2, Termite management in and around existing buildings (current).",
-        "State-by-state cooling-off period legislation (Property Stock and Business Agents Act 2002 NSW; Sale of Land Act 1962 VIC; Property Occupations Act 2014 QLD; equivalents in other states).",
-        "Queensland Government, seller-disclosure regime (Property Law Act 2023, effective 1 August 2025).",
-      ]} />
+      <Sources items={DUE_DILIGENCE_SOURCES} />
     </GuideArticleLayout>
   );
 }
+
+const DUE_DILIGENCE_SOURCES: readonly SourceItem[] = [
+  { label: "ASIC's Moneysmart: Buying a home", href: "https://moneysmart.gov.au/home-loans/buying-a-home", note: "Pre-purchase checks and contract framing" },
+  { label: "NSW Fair Trading: Property contracts and cooling-off", href: "https://www.fairtrading.nsw.gov.au/", note: "Property Stock and Business Agents Act 2002 (NSW) cooling-off rules" },
+  { label: "Consumer Affairs Victoria: Section 32 vendor statements", href: "https://www.consumer.vic.gov.au/", note: "VIC Sale of Land Act 1962 disclosure obligations" },
+  { label: "Queensland Government: Property Law Act 2023 seller disclosure", href: "https://www.qld.gov.au/", note: "QLD disclosure statement regime from 1 August 2025" },
+  { label: "Australian Standard AS 4349.1: Pre-purchase inspections of buildings", note: "Industry standard cited in the building-inspection section" },
+  { label: "PEXA: Electronic settlement", href: "https://www.pexa.com.au/", note: "Settlement workflow for the pre-settlement checklist" },
+  { label: "REBAA: Real Estate Buyer's Agents Association of Australia", href: "https://www.rebaa.com.au/", note: "Buyer's-agent practice standards referenced in the closing CTA" },
+];

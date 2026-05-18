@@ -12,6 +12,7 @@ import {
   type GuideTOCEntry,
   type FaqItem,
   type RelatedGuide,
+  type SourceItem,
 } from "@/components/guide";
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
@@ -380,14 +381,17 @@ export default function HomeLoanPreApprovalAustraliaPage() {
         lead="Pre-approval is the moment lender choice locks in. Talk to a broker who can put your application in front of the right lender first time."
       />
 
-      <Sources items={[
-        "Australian Securities and Investments Commission, MoneySmart guide to home loans and pre-approval (current 2025).",
-        "ASIC Regulatory Guide 209, Credit licensing: Responsible lending conduct (most recent revision).",
-        "Australian Prudential Regulation Authority, residential lending serviceability buffer guidance (3.0% buffer in force, 2024–2026).",
-        "Mortgage and Finance Association of Australia, broker market-share and approval-time tracking, 2024–2025.",
-        { label: "Office of the Australian Information Commissioner, credit reporting and enquiries on your credit file", note: "current" },
-      ]} />
+      <Sources items={PRE_APPROVAL_SOURCES} />
     </GuideArticleLayout>
     </>
   );
 }
+
+const PRE_APPROVAL_SOURCES: readonly SourceItem[] = [
+  { label: "ASIC's Moneysmart: Applying for a home loan", href: "https://moneysmart.gov.au/home-loans/applying-for-a-home-loan", note: "Plain-English pre-approval and application steps" },
+  { label: "ASIC Regulatory Guide 209: Credit licensing, responsible lending conduct", href: "https://asic.gov.au/regulatory-resources/find-a-document/regulatory-guides/rg-209-credit-licensing-responsible-lending-conduct/", note: "Lender obligations behind income and expense verification" },
+  { label: "APRA: Residential mortgage lending serviceability buffer", href: "https://www.apra.gov.au/", note: "3% buffer in force, referenced in serviceability framing" },
+  { label: "MFAA: Mortgage and Finance Association of Australia industry data", href: "https://www.mfaa.com.au/", note: "Broker market share and lender SLA tracking" },
+  { label: "Office of the Australian Information Commissioner: Credit reporting", href: "https://www.oaic.gov.au/privacy/your-privacy-rights/credit-reporting", note: "Hard-enquiry mechanics described in the credit-impact section" },
+  { label: "NHFIC (Housing Australia): First Home Guarantee", href: "https://www.housingaustralia.gov.au/", note: "Federal-scheme deposit and LMI rules referenced for first-home buyers" },
+];
