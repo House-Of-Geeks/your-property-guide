@@ -9,6 +9,7 @@ import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
 import { BlogShareButtons } from "@/components/blog/BlogShareButtons";
 import { BlogGuideRail } from "@/components/blog/BlogGuideRail";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
+import { AuthorBylineCard } from "@/components/guide";
 import { BlogCover } from "@/components/blog/BlogCover";
 import { getBlogPostBySlug, getRelatedPosts } from "@/lib/services/blog-service";
 import { processContent } from "@/lib/utils/blog-toc";
@@ -175,17 +176,16 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             </Link>
           </div>
 
-          {/* Author box */}
-          <div className="mt-10 rounded-2xl bg-surface-warm border border-line-warm p-6 flex gap-4">
-            <AuthorAvatar name={post.author.name} image={post.author.image} size={64} />
-            <div>
-              <p className="font-display text-lg text-ink leading-tight">{post.author.name}</p>
-              <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mt-1">Property expert</p>
-              <p className="text-sm font-sans text-ink-muted mt-2 leading-relaxed">
-                Our team of local property experts researches and writes guides to help Australians make confident property decisions.
-              </p>
-            </div>
-          </div>
+          {/* Author byline footer. Matches the AuthorBylineCard used on
+              all 58 guide pages so news posts carry the same E-E-A-T
+              attribution: portrait, role, last-updated date, link to
+              /about. */}
+          <AuthorBylineCard
+            authorName={post.author.name}
+            authorRole="Property writer"
+            authorImage={post.author.image}
+            lastReviewed={post.updatedAt ?? post.publishedAt}
+          />
         </article>
 
         {/* ── Sticky sidebar ── */}

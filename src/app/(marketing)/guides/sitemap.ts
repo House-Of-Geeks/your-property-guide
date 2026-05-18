@@ -33,6 +33,7 @@ const GUIDE_SLUGS = [
   "cooling-off-period-by-state-australia",
   "how-to-negotiate-property-price-australia",
   "settlement-day-australia",
+  "capital-growth-vs-cash-flow-australia",
   "best-brisbane-suburbs-for-families-2026",
   // Selling
   "how-to-choose-a-selling-agent",

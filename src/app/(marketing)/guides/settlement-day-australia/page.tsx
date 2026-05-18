@@ -8,10 +8,12 @@ import {
   GuideNewsletterCallout,
   EditorNote,
   PullQuote,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
   type RelatedGuide,
+  type SourceItem,
 } from "@/components/guide";
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
@@ -494,7 +496,18 @@ export default function SettlementDayAustraliaPage() {
       </p>
 
       <MatchCTA kind="buyers-agent" />
+
+      <Sources items={SETTLEMENT_SOURCES} />
     </GuideArticleLayout>
     </>
   );
 }
+
+const SETTLEMENT_SOURCES: readonly SourceItem[] = [
+  { label: "PEXA: How electronic settlement works", href: "https://www.pexa.com.au/", note: "Workspace mechanics, party roles, settlement flow" },
+  { label: "Australian Registrars' National Electronic Conveyancing Council (ARNECC)", href: "https://www.arnecc.gov.au/", note: "Model Operating Requirements for electronic conveyancing nationally" },
+  { label: "NSW Land Registry Services: e-Conveyancing", href: "https://www.nswlrs.com.au/", note: "NSW-specific settlement and title transfer rules" },
+  { label: "Land Use Victoria: Standard property transfer process", href: "https://www.land.vic.gov.au/", note: "VIC settlement timelines and risk-transfer at settlement" },
+  { label: "Titles Queensland: Settlement on a property purchase", href: "https://www.titles.qld.gov.au/", note: "REIQ contract conditions and QLD-specific final-inspection convention" },
+  { label: "Australian Banking Association: Mortgage discharge and settlement procedures", note: "Lender obligations on funds release timing" },
+];

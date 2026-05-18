@@ -8,10 +8,12 @@ import {
   GuideNewsletterCallout,
   EditorNote,
   PullQuote,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
   type RelatedGuide,
+  type SourceItem,
 } from "@/components/guide";
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
@@ -550,7 +552,18 @@ export default function HowToNegotiatePropertyPricePage() {
       </p>
 
       <MatchCTA kind="buyers-agent" />
+
+      <Sources items={NEGOTIATION_SOURCES} />
     </GuideArticleLayout>
     </>
   );
 }
+
+const NEGOTIATION_SOURCES: readonly SourceItem[] = [
+  { label: "Real Estate Institute of Australia: Australian Property Market Report", note: "Quarterly, used for comparable-sales context and market-condition framing" },
+  { label: "CoreLogic Australia: Daily Home Value Index methodology", href: "https://www.corelogic.com.au/our-data/methodology", note: "Suburb-level median sale price benchmarks referenced throughout" },
+  { label: "NSW Fair Trading: Real estate agents' obligations to vendors and buyers", href: "https://www.fairtrading.nsw.gov.au/", note: "Legal obligation to present all genuine offers" },
+  { label: "Consumer Affairs Victoria: Buying a home", href: "https://www.consumer.vic.gov.au/housing/buying-and-selling-property/buying-a-home", note: "Cooling-off periods, conditions and contract law in Victoria" },
+  { label: "Queensland Office of Fair Trading: REIQ standard contract conditions", href: "https://www.qld.gov.au/law/fair-trading", note: "QLD-specific contract and cooling-off rules" },
+  { label: "Real Estate Buyer's Agents Association of Australia: Member fee benchmarks", note: "Used for typical buyer's-agent fee ranges and savings benchmarks" },
+];
