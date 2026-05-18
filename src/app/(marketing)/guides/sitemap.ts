@@ -31,6 +31,7 @@ const GUIDE_SLUGS = [
   "best-time-to-buy-property-australia",
   "how-long-does-it-take-to-buy-a-house-australia",
   "cooling-off-period-by-state-australia",
+  "how-to-negotiate-property-price-australia",
   "best-brisbane-suburbs-for-families-2026",
   // Selling
   "how-to-choose-a-selling-agent",

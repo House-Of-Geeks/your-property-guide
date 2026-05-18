@@ -51,6 +51,7 @@ const SECTIONS: GuideSection[] = [
       { title: "Cooling-Off Period by State",               href: "/guides/cooling-off-period-by-state-australia", readTime: "7 min", description: "How long you have to pull out of a private treaty contract, state by state." },
       { title: "Best Brisbane Suburbs for Families 2026",   href: "/guides/best-brisbane-suburbs-for-families-2026", readTime: "10 min", description: "Inner-ring, middle-ring, and outer growth corridors picked for school quality and lifestyle." },
       { title: "How to Buy Property in Australia",          href: "/guides/buying-property-australia", readTime: "15 min", description: "Complete step-by-step from saving your deposit to settlement." },
+      { title: "How to Negotiate Property Price",           href: "/guides/how-to-negotiate-property-price-australia", readTime: "13 min", description: "Opening offers, counter-offer logic, walk-away triggers and the mistakes that cost buyers money." },
       { title: "First Home Buyer Guide, NSW",               href: "/guides/first-home-buyer-nsw", readTime: "7 min",  description: "$10K FHOG, stamp duty exemption to $800K, FHB choice." },
       { title: "First Home Buyer Guide, VIC",               href: "/guides/first-home-buyer-vic", readTime: "7 min",  description: "$10K metro / $20K regional FHOG, stamp duty to $600K." },
       { title: "First Home Buyer Guide, QLD",               href: "/guides/first-home-buyer-qld", readTime: "7 min",  description: "$30K FHOG, transfer-duty concession, REIQ contract." },
