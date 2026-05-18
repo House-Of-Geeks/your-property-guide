@@ -2,12 +2,66 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, MapPin } from "lucide-react";
 import { ExpertCTA } from "./ExpertCTA";
+import { EditorNote } from "@/components/guide";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { PERSONAS, getPersonaById, type PersonaId } from "@/lib/constants/journey";
 
 interface PersonaHubLayoutProps {
   personaId: PersonaId;
 }
+
+// Per-persona editor's notes shown under the hero standfirst. Andy's
+// first-person voice on what this hub is really about. Sets the editorial
+// tone before the three-starting-points grid loads.
+const PERSONA_EDITOR_NOTE: Record<PersonaId, React.ReactNode> = {
+  "first-home": (
+    <p>
+      First home buying in Australia is mostly fear of paperwork. Schemes
+      change every state border; LMI sounds expensive (and usually is);
+      the cooling-off window has different teeth in NSW than in WA. This
+      hub is built to take each of those off your list, in the order they
+      come up in a real purchase.
+    </p>
+  ),
+  "selling": (
+    <p>
+      The seller&rsquo;s mistake I see most often is overpaying on
+      marketing and underpaying on agent choice. The campaign is what
+      you can see, so it feels controllable. The negotiation that
+      actually sets your sale price happens after the open homes,
+      privately, and the right agent is worth more than every
+      glossy brochure combined.
+    </p>
+  ),
+  "upgrading": (
+    <p>
+      Upgrading or downsizing means two transactions need to talk to
+      each other. Sell first, buy first, or use bridging finance: each
+      has a different shape of risk, and the right call depends on
+      your equity position, your timing, and how patient your next
+      mortgage will be. The maths matters more than the marketing
+      story you hear at open homes.
+    </p>
+  ),
+  "investing": (
+    <p>
+      Investor-grade property is decided on three numbers: yield,
+      growth thesis, and holding cost. Most &ldquo;hot suburb&rdquo;
+      tips fail at least one of them. The guides and tools in this
+      hub are the same numbers a buyer&rsquo;s agent would run for a
+      $20,000 fee, free.
+    </p>
+  ),
+  "renovating": (
+    <p>
+      Renovation costs in Australia have moved hard since 2023.
+      Quoting a kitchen at 2019 prices is how owners blow budgets
+      before the first wall comes down. This hub puts current-market
+      cost ranges, finance options, builder selection and
+      return-on-renovation guidance in one place.
+    </p>
+  ),
+};
 
 // Shared layout for all four persona hubs (/first-home-buyers, /selling,
 // /upgrading, /investing). Editorial, education-first. Each hub leads with
@@ -60,6 +114,14 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
           <p className="font-display font-light text-xl sm:text-2xl lg:text-3xl text-ink leading-[1.25] max-w-3xl">
             {persona.hubLede}
           </p>
+
+          {/* Editor's note: per-persona first-person framing. Sets the
+              editorial voice before the three-starting-points grid. */}
+          <div className="max-w-3xl mt-10">
+            <EditorNote>
+              {PERSONA_EDITOR_NOTE[personaId]}
+            </EditorNote>
+          </div>
         </div>
       </section>
 

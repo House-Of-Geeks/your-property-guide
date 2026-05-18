@@ -9,6 +9,7 @@ import { GuideTOC, type GuideTOCEntry } from "./GuideTOC";
 import { Tldr } from "./Tldr";
 import { Faq, type FaqItem } from "./Faq";
 import { RelatedGuides, type RelatedGuide } from "./RelatedGuides";
+import { AuthorBylineCard } from "./AuthorBylineCard";
 import { PERSONA_BY_ID, type PersonaId } from "@/lib/constants/journey";
 
 export interface GuideFrontmatter {
@@ -239,6 +240,17 @@ export function GuideArticleLayout({
 
               <Faq items={faqs} />
               <RelatedGuides items={related} />
+
+              {/* Author byline footer. E-E-A-T signal for Google + Bing: a
+                  named author with portrait, role and link to /about
+                  appears on every guide. */}
+              <AuthorBylineCard
+                authorName={frontmatter.author.name}
+                authorRole={frontmatter.author.role}
+                reviewerName={frontmatter.reviewedBy?.name}
+                reviewerRole={frontmatter.reviewedBy?.role}
+                lastReviewed={updatedAt}
+              />
             </div>
           </div>
         </div>

@@ -3,8 +3,10 @@ import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
+  EditorNote,
   KeyFigure,
   MatchCTA,
+  PullQuote,
   Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
@@ -140,6 +142,18 @@ export default function DueDiligenceChecklistPage() {
         </p>
       </Callout>
 
+      <EditorNote>
+        <p>
+          Checklists exist because buyers skip the boring bits, and the
+          boring bits are always the ones that hurt later. Every regretful
+          purchase I&rsquo;ve seen in the last decade comes back to a
+          single skipped step: the strata report nobody pulled, the
+          easement nobody asked about, the second opinion on the cracked
+          slab nobody bothered to get. None of it is glamorous. All of it
+          is cheap relative to the bill if you guess wrong.
+        </p>
+      </EditorNote>
+
       <h2 id="what-it-is">What due diligence is</h2>
       <p className="lead">
         Due diligence is everything you investigate before committing to
@@ -246,6 +260,12 @@ export default function DueDiligenceChecklistPage() {
       </ul>
 
       <MatchCTA kind="conveyancer" />
+
+      <PullQuote attribution="Andy McMaster, Editor">
+        The cheap check that saves the most money is the one most buyers
+        skip. A $350 strata report has talked more friends of mine out of
+        bad apartments than every glossy contract review put together.
+      </PullQuote>
 
       <h2 id="price-checks">Price and market checks</h2>
       <p>

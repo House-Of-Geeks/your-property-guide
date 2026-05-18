@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import {
   GuideArticleLayout,
   Callout,
+  EditorNote,
   KeyFigure,
   MatchCTA,
   MiniStampDutyEmbed,
+  PullQuote,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -140,6 +142,19 @@ export default function ConveyancingGuidePage() {
           state for your specific transaction.
         </p>
       </Callout>
+
+      <EditorNote>
+        <p>
+          Most buyers have no real idea what their conveyancer actually
+          does, which is exactly why they pay too much and get too little.
+          A conveyancer is not a paperwork-shuffler. They are the person
+          who reads the contract for what isn&rsquo;t in it, who pulls the
+          searches you didn&rsquo;t know to ask for, and who keeps your
+          deposit safe when something goes sideways at the eleventh hour.
+          Pick yours like you&rsquo;d pick a surgeon, not like you&rsquo;d
+          pick a parking spot.
+        </p>
+      </EditorNote>
 
       <h2 id="what-is">What conveyancing is</h2>
       <p className="lead">
@@ -289,6 +304,13 @@ export default function ConveyancingGuidePage() {
       </ul>
 
       <MatchCTA kind="conveyancer" />
+
+      <PullQuote attribution="Andy McMaster, Editor">
+        A conveyancer&rsquo;s real value is the one phone call they make
+        that you never see. The clause they negotiated out, the search
+        they paid for that flagged the easement, the lender they chased
+        on a Friday so your settlement landed on Monday.
+      </PullQuote>
 
       <h2 id="red-flags">Red flags in contracts</h2>
       <p>A good conveyancer will flag these issues, but it helps to know what to watch for:</p>

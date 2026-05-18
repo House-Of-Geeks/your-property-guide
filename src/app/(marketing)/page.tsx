@@ -377,8 +377,10 @@ export default function HomePage() {
               <span className="italic font-light text-primary">Ever</span>.
             </h2>
             <p className="font-display font-light text-xl sm:text-2xl text-ink leading-snug max-w-3xl mx-auto">
-              Suburb data, guides and calculators are funded by partner agents and brokers, who pay
-              us only when matched work goes ahead. No paywall, no resale, every match disclosed.
+              Every guide, calculator and suburb profile on this site is free.
+              Partner agents and brokers pay us only when matched work goes
+              ahead. No paywall, no email gate, no data resale, and every
+              match is disclosed up front.
             </p>
           </div>
 
@@ -386,10 +388,10 @@ export default function HomePage() {
             variant="rich"
             className="mb-10"
             items={[
-              { lead: "No paywall.", body: "Every page is free, and stays that way. No login, no email gate." },
-              { lead: "No data resale.", body: "We don't sell or trade your details to anyone." },
-              { lead: "Disclosed on every match.", body: "If a partner pays us when you choose to work with them, you'll see it." },
-              { lead: "Vetted partners only.", body: "We don't take referral fees from anyone we wouldn't use ourselves." },
+              { lead: "No paywall.",             body: "Every page is free, and it stays that way. No login, no email gate." },
+              { lead: "No data resale.",         body: "Your contact details never go anywhere except to the one specialist you choose." },
+              { lead: "Disclosed on every match.", body: "If a partner pays us when you work with them, you see that disclosure before you decide." },
+              { lead: "Vetted partners only.",   body: "We don't take referral fees from anyone we wouldn't put our own family in front of." },
             ]}
           />
 

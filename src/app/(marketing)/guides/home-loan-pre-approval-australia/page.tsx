@@ -3,8 +3,10 @@ import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
+  EditorNote,
   KeyFigure,
   MatchCTA,
+  PullQuote,
   Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
@@ -155,6 +157,19 @@ export default function HomeLoanPreApprovalAustraliaPage() {
         </p>
       </Callout>
 
+      <EditorNote>
+        <p>
+          Pre-approval is the most over-trusted piece of paper in
+          Australian property. It says a lender thinks you can probably
+          borrow this amount, on the day they assessed you, against a
+          property they haven&rsquo;t valued yet. That is genuinely useful,
+          and not at all the same as a loan. The gap between conditional
+          and unconditional approval is where the real money lives, and
+          most buyers don&rsquo;t learn the difference until a valuation
+          comes in light.
+        </p>
+      </EditorNote>
+
       <h2 id="what-it-is">What pre-approval is</h2>
       <p className="lead">
         Pre-approval (formally called &quot;conditional approval&quot;) is a
@@ -281,6 +296,12 @@ export default function HomeLoanPreApprovalAustraliaPage() {
         you&rsquo;re trying to bid at an auction in two weeks), tell the
         broker upfront and they&rsquo;ll prioritise faster lenders.
       </p>
+
+      <PullQuote attribution="Andy McMaster, Editor">
+        An unconditional pre-approval is the single strongest negotiating
+        signal you can put in front of a vendor. Conditional is a polite
+        maybe. Unconditional is money on the table.
+      </PullQuote>
 
       <h2 id="validity">How long pre-approval lasts</h2>
       <p>

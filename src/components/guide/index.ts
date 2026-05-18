@@ -16,6 +16,7 @@ export { MatchCTA } from "./MatchCTA";
 export { Sources } from "./Sources";
 export { PullQuote } from "./PullQuote";
 export { EditorNote } from "./EditorNote";
+export { AuthorBylineCard } from "./AuthorBylineCard";
 
 export type { GuideFrontmatter } from "./GuideArticleLayout";
 export type { GuideTOCEntry } from "./GuideTOC";

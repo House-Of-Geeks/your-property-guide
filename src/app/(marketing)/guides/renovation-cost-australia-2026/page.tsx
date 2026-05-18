@@ -3,8 +3,10 @@ import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
+  EditorNote,
   KeyFigure,
   MatchCTA,
+  PullQuote,
   Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
@@ -140,6 +142,18 @@ export default function RenovationCostAustralia2026Page() {
           complexity, and your finish choices.
         </p>
       </Callout>
+
+      <EditorNote>
+        <p>
+          Quoting at 2019 prices is how owners blow their budget before
+          the first wall comes down. The renovation market reset in 2022
+          and stayed reset. If your mental anchor for what a kitchen
+          should cost was set during the Block era, throw it out. Build
+          your budget from current quotes on real jobs, add a serious
+          contingency, and make sure you can fund the upper end of that
+          range without selling shares to do it.
+        </p>
+      </EditorNote>
 
       <h2 id="why-costs-rose">Why costs rose, and what&rsquo;s stabilised</h2>
       <p className="lead">
@@ -307,6 +321,12 @@ export default function RenovationCostAustralia2026Page() {
         <li><strong>New build (custom architect-designed)</strong>: $3,500–$6,000/m². A 220m² home lands at $750,000–$1.3M.</li>
         <li><strong>Renting elsewhere during the build</strong>: 8–14 months of rent, factor it in.</li>
       </ul>
+
+      <PullQuote attribution="Andy McMaster, Editor">
+        Every renovation budget that comes in on quote was over-budgeted
+        on day one. The good builders know this. The good owners budget
+        for it.
+      </PullQuote>
 
       <h2 id="pre-construction">Pre-construction costs</h2>
       <p>

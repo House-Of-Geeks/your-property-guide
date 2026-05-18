@@ -3,8 +3,10 @@ import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
+  EditorNote,
   KeyFigure,
   MatchCTA,
+  PullQuote,
   Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
@@ -155,6 +157,20 @@ export default function HowToChooseMortgageBrokerPage() {
         </p>
       </Callout>
 
+      <EditorNote>
+        <p>
+          The broker market is mostly fine. The licensing is solid, Best
+          Interests Duty has teeth, and the standards body has cleaned up
+          the obvious incentive problems. What still varies wildly is
+          whose credit policy each broker actually knows. The small print
+          that makes a broker worth using over a banker is the broker who
+          can tell you, off the top of their head, which lender will
+          accept your bonus income at 80% and which one won&rsquo;t. That
+          is not a Google search. That is sitting on a panel and writing
+          loans every week.
+        </p>
+      </EditorNote>
+
       <h2 id="what-broker-does">What a mortgage broker actually does</h2>
       <p className="lead">
         A mortgage broker is a licensed credit professional who shops your
@@ -292,6 +308,12 @@ export default function HowToChooseMortgageBrokerPage() {
         Confirm: current ACL or Credit Representative status, MFAA or FBAA
         membership, no current disciplinary action.
       </p>
+
+      <PullQuote attribution="Andy McMaster, Editor">
+        The right broker has placed your exact loan five times this year.
+        Anything else is theory, and theory is what gets your application
+        declined.
+      </PullQuote>
 
       <h2 id="interview">What to ask in the meeting</h2>
       <p>
