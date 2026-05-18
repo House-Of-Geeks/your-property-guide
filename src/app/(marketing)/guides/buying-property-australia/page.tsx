@@ -8,6 +8,8 @@ import {
   MiniStampDutyEmbed,
   GuideSuburbSearch,
   GuideGlossaryRail,
+  EditorNote,
+  PullQuote,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -150,6 +152,17 @@ export default function BuyingPropertyAustraliaPage() {
           state.
         </p>
       </Callout>
+
+      <EditorNote>
+        <p>
+          Most first-home buyers I&rsquo;ve worked with were never afraid
+          of the deposit. They were afraid of the bits in between: what a
+          cooling-off period actually does, who calls who on settlement
+          day, whether a building inspector will spot the cracked slab.
+          This guide is the answer to those questions, in the order they
+          show up.
+        </p>
+      </EditorNote>
 
       <h2 id="overview">Why buying property in Australia is complex but manageable</h2>
       <p className="lead">
@@ -335,6 +348,11 @@ export default function BuyingPropertyAustraliaPage() {
       </p>
 
       <MatchCTA kind="buyers-agent" />
+
+      <PullQuote attribution="Andy McMaster, Editor">
+        Skipping the building inspection to save $600 is the
+        single most expensive shortcut in Australian property.
+      </PullQuote>
 
       <h2 id="step-7-inspection">Step 7: Building and pest inspection, why it&rsquo;s essential</h2>
       <p>

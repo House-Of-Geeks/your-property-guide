@@ -6,6 +6,8 @@ import {
   KeyFigure,
   MatchCTA,
   Sources,
+  EditorNote,
+  PullQuote,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -160,6 +162,17 @@ export default function HowToSellAHouseAustraliaPage() {
         </p>
       </Callout>
 
+      <EditorNote>
+        <p>
+          Most sellers I&rsquo;ve seen overpay on marketing and underpay
+          on agent choice. The campaign budget is what you can see, so
+          it feels controllable. The agent&rsquo;s real skill is the
+          quiet negotiation that happens after the open homes, which is
+          where every dollar of your eventual sale price actually lives.
+          Read the agent-choice section before you read anything else.
+        </p>
+      </EditorNote>
+
       <h2 id="when-to-sell">When is the right time to sell?</h2>
       <p className="lead">
         Three questions matter more than the season: where the local market is
@@ -245,6 +258,12 @@ export default function HowToSellAHouseAustraliaPage() {
           decide.
         </p>
       </Callout>
+
+      <PullQuote attribution="Andy McMaster, Editor">
+        The agent who appraises your home highest is rarely the one
+        who sells it for the most. They&rsquo;re just the one who
+        wanted the listing.
+      </PullQuote>
 
       <h2 id="choosing-agent">Choosing an agent</h2>
       <p>

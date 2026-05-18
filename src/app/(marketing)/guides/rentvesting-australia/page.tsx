@@ -6,6 +6,8 @@ import {
   KeyFigure,
   MatchCTA,
   Sources,
+  EditorNote,
+  PullQuote,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -140,6 +142,17 @@ export default function RentvestingAustraliaPage() {
         </p>
       </Callout>
 
+      <EditorNote>
+        <p>
+          Rentvesting is the strategy most often pitched as a hack and
+          executed as a mistake. Done well, it builds equity faster than
+          waiting for a deposit on a dream owner-occupier home. Done
+          badly, it forfeits first-home-buyer concessions and saddles
+          you with a cash-flow drain. The difference is the maths,
+          worked properly, before you sign anything.
+        </p>
+      </EditorNote>
+
       <h2 id="what-it-is">What rentvesting is</h2>
       <p className="lead">
         Rentvesting is a strategy where you rent your home and buy a
@@ -246,6 +259,12 @@ export default function RentvestingAustraliaPage() {
           investment suburb deliberately.
         </p>
       </Callout>
+
+      <PullQuote attribution="Andy McMaster, Editor">
+        Rentvesting forfeits first-home-buyer status going forward.
+        That trade-off only makes sense if your dream suburb is
+        years away on your current trajectory.
+      </PullQuote>
 
       <h2 id="fhog-trap">The first home buyer scheme trade-off</h2>
       <p>
