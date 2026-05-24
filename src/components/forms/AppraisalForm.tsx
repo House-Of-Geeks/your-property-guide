@@ -9,20 +9,19 @@ import { Input, Select } from "@/components/ui";
 import { SUBURBS, PROPERTY_TYPES } from "@/lib/constants";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 
-// Free-appraisal request form. The user is on /appraisal explicitly asking
-// for a property valuation, so intent is implicit. The address is the only
-// extra-required field beyond contact info, we genuinely need it to deliver
-// the appraisal. Everything else is optional and labelled as such.
+// Free-appraisal request form. Visitor is on /appraisal explicitly asking
+// for a valuation, so intent is implicit. Trimmed from the original 9
+// fields to 6 (3 required, 3 optional but in-line) — lastName and message
+// removed because they were friction with no measurable lead-quality lift;
+// the agent can ask either in their follow-up call.
 const appraisalSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().optional(),
   email: z.string().email("Valid email is required"),
   phone: z.string().optional(),
   address: z.string().min(5, "Property address is required"),
   suburb: z.string().min(1, "Suburb is required"),
   propertyType: z.string().optional(),
   bedrooms: z.string().optional(),
-  message: z.string().optional(),
   // Honeypot — must remain empty. Real users never see this field.
   website: z.string().optional(),
 });
@@ -66,7 +65,6 @@ export function AppraisalForm() {
         body: JSON.stringify({
           type: "appraisal-request",
           firstName: data.firstName.trim(),
-          lastName: data.lastName?.trim() || undefined,
           email: data.email.trim(),
           phone: data.phone?.trim() || undefined,
           address: data.address.trim(),
@@ -74,7 +72,6 @@ export function AppraisalForm() {
           suburb: data.suburb,
           propertyType: data.propertyType || undefined,
           bedrooms: data.bedrooms || undefined,
-          message: data.message?.trim() || undefined,
           website: data.website ?? "",
           source: "website",
         }),
@@ -95,25 +92,28 @@ export function AppraisalForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} onFocus={markStart} className="space-y-4">
-      {/* Honeypot: visually hidden, off-screen, aria-hidden. Real users
-          never see or tab to it; bots autofill any 'website' field. */}
+      {/* Honeypot: visually hidden, off-screen, aria-hidden. */}
       <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
         <label htmlFor="appraisal-website">Website</label>
         <input id="appraisal-website" type="text" tabIndex={-1} autoComplete="off" {...register("website")} />
       </div>
-      <Input
-        id="appraisal-firstName"
-        label="First name"
-        error={errors.firstName?.message}
-        {...register("firstName")}
-      />
-      <Input
-        id="appraisal-email"
-        label="Email"
-        type="email"
-        error={errors.email?.message}
-        {...register("email")}
-      />
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Input
+          id="appraisal-firstName"
+          label="First name"
+          error={errors.firstName?.message}
+          {...register("firstName")}
+        />
+        <Input
+          id="appraisal-email"
+          label="Email"
+          type="email"
+          error={errors.email?.message}
+          {...register("email")}
+        />
+      </div>
+
       <Input
         id="appraisal-phone"
         label="Mobile (optional)"
@@ -121,22 +121,14 @@ export function AppraisalForm() {
         placeholder="04XX XXX XXX"
         {...register("phone")}
       />
-      <Input
-        id="appraisal-lastName"
-        label="Last name (optional)"
-        {...register("lastName")}
-      />
 
-      <div className="pt-2 border-t border-line">
-        <p className="text-xs uppercase tracking-wider text-ink-subtle mb-3 mt-4">About the property</p>
-        <Input
-          id="appraisal-address"
-          label="Property address"
-          placeholder="e.g. 15 Smith Street"
-          error={errors.address?.message}
-          {...register("address")}
-        />
-      </div>
+      <Input
+        id="appraisal-address"
+        label="Property address"
+        placeholder="e.g. 15 Smith Street"
+        error={errors.address?.message}
+        {...register("address")}
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Select
@@ -149,14 +141,14 @@ export function AppraisalForm() {
         />
         <Select
           id="appraisal-propertyType"
-          label="Type (optional)"
+          label="Type"
           options={PROPERTY_TYPES.map((t) => ({ value: t.value, label: t.label }))}
-          placeholder="Type"
+          placeholder="Any"
           {...register("propertyType")}
         />
         <Select
           id="appraisal-bedrooms"
-          label="Bedrooms (optional)"
+          label="Beds"
           options={[
             { value: "1", label: "1" },
             { value: "2", label: "2" },
@@ -164,21 +156,8 @@ export function AppraisalForm() {
             { value: "4", label: "4" },
             { value: "5+", label: "5+" },
           ]}
-          placeholder="Beds"
+          placeholder="Any"
           {...register("bedrooms")}
-        />
-      </div>
-
-      <div>
-        <label htmlFor="appraisal-message" className="block text-sm font-medium text-ink-muted mb-1">
-          Anything else? (optional)
-        </label>
-        <textarea
-          id="appraisal-message"
-          rows={3}
-          placeholder="Renovations, timing, things the agent should know..."
-          className="w-full rounded-lg border border-line-strong bg-surface-raised px-3 py-2 text-sm text-ink placeholder:text-ink-subtle focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors resize-none"
-          {...register("message")}
         />
       </div>
 
@@ -186,13 +165,14 @@ export function AppraisalForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3.5 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+        className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-ink font-semibold px-6 py-3.5 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
       >
-        {isSubmitting ? "Sending…" : "Request free appraisal"}
+        {isSubmitting ? "Sending…" : "Get my free appraisal"}
+        {!isSubmitting && <span aria-hidden="true">→</span>}
       </button>
       <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
-        Free, no commitment. We&rsquo;ll never sell your details. Read our{" "}
-        <a href="/privacy" className="underline underline-offset-2 hover:text-ink">privacy policy</a>.
+        Free, no commitment. One vetted local agent. We&rsquo;ll never sell your details.{" "}
+        <a href="/privacy" className="underline underline-offset-2 hover:text-ink">Privacy policy</a>.
       </p>
     </form>
   );

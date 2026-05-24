@@ -28,7 +28,7 @@ export function SuburbMatchButton({ suburbSlug, suburbName }: SuburbMatchButtonP
         className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-cta text-ink shadow-lg px-5 py-2.5 text-sm font-semibold hover:bg-cta-hover transition-colors cursor-pointer"
       >
         <span className="inline-flex items-center justify-center w-1.5 h-1.5 rounded-full bg-ink shrink-0" aria-hidden="true" />
-        Get matched with a {suburbName} specialist
+        Talk to a {suburbName} specialist
         <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
       </button>
 
@@ -38,7 +38,7 @@ export function SuburbMatchButton({ suburbSlug, suburbName }: SuburbMatchButtonP
         suburb={suburbSlug}
         source="suburb-hero-cta"
         heading={`Find your ${suburbName} specialist`}
-        subhead="Three quick questions and we’ll match you with an agent, broker, or accountant who knows the area. Free, no commitment."
+        subhead="Buying, selling, or researching? Three quick questions and we match you with one vetted local expert. Free, no commitment."
       />
     </>
   );

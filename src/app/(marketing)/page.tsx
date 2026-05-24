@@ -87,37 +87,37 @@ export default function HomePage() {
             for people, not portals.
           </p>
 
-          {/* Three calibrated paths from the hero:
-                Primary (pill, dark): for the largest cohort, the
-                  educational-first visitor who's still narrowing situation.
-                Secondary (underlined link): for the reader who wants the
-                  raw guides.
-                Tertiary (small text): for the high-intent visitor who
-                  already knows what they need. Without this, ready-to-talk
-                  visitors had no fast path off the homepage. */}
-          <div className="flex flex-wrap items-center gap-x-8 gap-y-4 mb-3">
+          {/* Conversion-focused hero CTAs. The previous "Find what fits my
+              situation" pill was vague and merely scrolled to the persona
+              picker below. Property visitors arrive with an intent (sell,
+              buy, refinance, research) — give them two intent-matched
+              destinations as primary actions. Education path remains as
+              an underlined tertiary link. */}
+          <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3 sm:gap-4 mb-4">
             <Link
-              href="#personas"
-              className="inline-flex items-center gap-2 rounded-full bg-ink text-white hover:bg-primary px-7 py-3.5 text-sm font-medium transition-colors"
+              href="/appraisal"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-ink px-7 py-3.5 text-sm font-semibold transition-colors"
             >
-              Find what fits my situation <span aria-hidden="true">→</span>
+              Get a free appraisal <span aria-hidden="true">→</span>
             </Link>
-            <Link
-              href="/guides"
-              className="inline-flex items-center gap-1.5 text-ink hover:text-primary font-medium text-sm border-b border-line-strong hover:border-primary pb-1 transition-colors"
-            >
-              Or read the 60+ guides
-            </Link>
-          </div>
-          <p className="text-sm text-ink-subtle mb-16">
-            Already know what you need?{" "}
             <Link
               href="/find-an-expert"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-ink text-white hover:bg-primary px-7 py-3.5 text-sm font-medium transition-colors"
+            >
+              Talk to a specialist <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+          <p className="text-sm text-ink-subtle mb-16 flex flex-wrap items-center gap-x-4 gap-y-1">
+            <span className="inline-flex items-center gap-1.5">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
+              One match, never five. Free for buyers and sellers.
+            </span>
+            <Link
+              href="#personas"
               className="text-ink hover:text-primary border-b border-line-strong hover:border-primary pb-0.5 font-medium transition-colors"
             >
-              Talk to a vetted specialist
+              Or pick your starting point
             </Link>
-            .
           </p>
 
           {/* Editorial stat row. Hairline-divided columns, no icons, big

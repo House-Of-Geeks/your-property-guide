@@ -171,9 +171,15 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug }: Props) {
           )}
         </button>
 
-        <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
-          Free, no commitment. We&rsquo;ll never sell your details. Read our{" "}
-          <a href="/privacy" className="underline underline-offset-2 hover:text-ink">privacy policy</a>.
+        <p className="text-[11px] text-ink-subtle leading-relaxed pt-1 flex flex-wrap items-center gap-x-2">
+          <span className="inline-flex items-center gap-1">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
+            Reply within 1 business day
+          </span>
+          <span aria-hidden="true">·</span>
+          <span>No commitment to list</span>
+          <span aria-hidden="true">·</span>
+          <a href="/privacy" className="underline underline-offset-2 hover:text-ink">Privacy</a>
         </p>
       </form>
     </div>
