@@ -125,41 +125,80 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
 
 export function SuburbStats({ suburb }: SuburbHeroProps) {
   const { stats, dataFreshness: f } = suburb;
-  const na = "–";
+  // Only render tiles backed by real data. No "Sales data pending" / dash
+  // placeholders — empty tiles erode trust faster than a shorter strip does.
+  const tiles: Array<{
+    label: string;
+    value: string;
+    subtext?: string;
+    icon: string;
+    source?: string | null;
+    asOf?: Date | string | null;
+  }> = [];
+
+  if (stats.medianHousePrice) {
+    tiles.push({
+      label: "Median House Price",
+      value: formatPriceFull(stats.medianHousePrice),
+      subtext: stats.annualGrowthHouse ? `${formatPercentage(stats.annualGrowthHouse)} annual growth` : undefined,
+      icon: "/images/icons/median.svg",
+      source: f?.salesSource,
+      asOf: f?.salesAsOf,
+    });
+  }
+  if (stats.medianUnitPrice) {
+    tiles.push({
+      label: "Median Unit Price",
+      value: formatPriceFull(stats.medianUnitPrice),
+      subtext: stats.annualGrowthUnit ? `${formatPercentage(stats.annualGrowthUnit)} annual growth` : undefined,
+      icon: "/images/icons/yield.svg",
+      source: f?.salesSource,
+      asOf: f?.salesAsOf,
+    });
+  }
+  if (stats.daysOnMarket) {
+    tiles.push({
+      label: "Days on Market",
+      value: String(stats.daysOnMarket),
+      subtext: "Average days to sell",
+      icon: "/images/icons/growth.svg",
+      source: f?.salesSource,
+      asOf: f?.salesAsOf,
+    });
+  }
+  if (stats.population) {
+    tiles.push({
+      label: "Population",
+      value: stats.population.toLocaleString(),
+      subtext: stats.medianAge ? `Median age: ${stats.medianAge}` : undefined,
+      icon: "/images/icons/people.svg",
+      source: "abs-census",
+      asOf: f?.censusAsOf,
+    });
+  }
+
+  if (tiles.length === 0) return null;
+
+  // Tailwind needs explicit class names at build time; map count → grid.
+  const cols =
+    tiles.length === 1 ? "grid-cols-1" :
+    tiles.length === 2 ? "grid-cols-1 sm:grid-cols-2" :
+    tiles.length === 3 ? "grid-cols-1 sm:grid-cols-3" :
+    "grid-cols-2 sm:grid-cols-4";
+
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-      <StatCard
-        label="Median House Price"
-        value={stats.medianHousePrice ? formatPriceFull(stats.medianHousePrice) : na}
-        subtext={stats.annualGrowthHouse ? `${formatPercentage(stats.annualGrowthHouse)} annual growth` : "Sales data pending"}
-        icon="/images/icons/median.svg"
-        source={f?.salesSource}
-        asOf={f?.salesAsOf}
-      />
-      <StatCard
-        label="Median Unit Price"
-        value={stats.medianUnitPrice ? formatPriceFull(stats.medianUnitPrice) : na}
-        subtext={stats.annualGrowthUnit ? `${formatPercentage(stats.annualGrowthUnit)} annual growth` : "Sales data pending"}
-        icon="/images/icons/yield.svg"
-        source={f?.salesSource}
-        asOf={f?.salesAsOf}
-      />
-      <StatCard
-        label="Days on Market"
-        value={stats.daysOnMarket ? `${stats.daysOnMarket}` : na}
-        subtext="Average days to sell"
-        icon="/images/icons/growth.svg"
-        source={f?.salesSource}
-        asOf={f?.salesAsOf}
-      />
-      <StatCard
-        label="Population"
-        value={stats.population ? stats.population.toLocaleString() : na}
-        subtext={stats.medianAge ? `Median age: ${stats.medianAge}` : "Census data pending"}
-        icon="/images/icons/people.svg"
-        source="abs-census"
-        asOf={f?.censusAsOf}
-      />
+    <div className={`grid ${cols} gap-4`}>
+      {tiles.map((t) => (
+        <StatCard
+          key={t.label}
+          label={t.label}
+          value={t.value}
+          subtext={t.subtext}
+          icon={t.icon}
+          source={t.source}
+          asOf={t.asOf}
+        />
+      ))}
     </div>
   );
 }
@@ -174,7 +213,7 @@ function StatCard({
 }: {
   label: string;
   value: string;
-  subtext: string;
+  subtext?: string;
   icon: string;
   source?: string | null;
   asOf?: Date | string | null;
@@ -187,7 +226,7 @@ function StatCard({
         <SourceTooltip source={source} asOf={asOf} />
       </div>
       <p className="font-display text-3xl text-ink leading-none mt-2">{value}</p>
-      <p className="text-xs font-sans text-ink-muted mt-2">{subtext}</p>
+      {subtext && <p className="text-xs font-sans text-ink-muted mt-2">{subtext}</p>}
     </div>
   );
 }

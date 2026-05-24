@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { ArrowRight, ArrowLeft, Check } from "lucide-react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { ArrowRight, ArrowLeft } from "lucide-react";
 import { SuburbAutocomplete, slugToSuburbLabel } from "@/components/search/SuburbAutocomplete";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 
@@ -86,6 +86,7 @@ export function MatchAgent({
   source = "homepage-match",
 }: MatchAgentProps = {}) {
   const params = useSearchParams();
+  const router = useRouter();
 
   // Pre-fill: props win over URL params. Slug is enough to derive a label.
   const initialSuburbSlug = propSuburbSlug ?? params.get("suburb");
@@ -109,23 +110,19 @@ export function MatchAgent({
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [website, setWebsite] = useState(""); // honeypot, must stay empty
 
   const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasStarted, setHasStarted] = useState(false);
 
-  const reset = () => {
-    setStep(0);
-    setIntent(null);
-    setSuburbSlug(null);
-    setSuburbLabel(null);
-    setTimeframe(null);
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPhone("");
-    setSubmitted(false);
-    setError(null);
+  // Mark the funnel as started on first step transition out of the intent
+  // chooser. Lets us measure "saw the form" vs "engaged with it" gap.
+  const markStart = () => {
+    if (hasStarted) return;
+    setHasStarted(true);
+    clarityEvent("form_start");
+    clarityTag("form_name", "match-agent");
   };
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -154,6 +151,7 @@ export function MatchAgent({
           message,
           suburb: suburbSlug ?? undefined,
           source,
+          website,
         }),
       });
       if (!res.ok) {
@@ -164,7 +162,11 @@ export function MatchAgent({
       clarityTag("match_intent", intent);
       clarityTag("match_timeframe", timeframe);
       if (suburbSlug) clarityTag("match_suburb", suburbSlug);
-      setSubmitted(true);
+      // Hand off to the thank-you page. The ConversionTracker there fires
+      // the canonical `lead_conversion` event for this funnel.
+      const qs = new URLSearchParams({ intent });
+      if (suburbSlug) qs.set("suburb", suburbSlug);
+      router.push(`/get-connected/thanks?${qs.toString()}`);
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -241,7 +243,7 @@ export function MatchAgent({
               </div>
 
               {/* Step 0, Intent */}
-              {step === 0 && !submitted && (
+              {step === 0 && (
                 <div>
                   <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
                     What&rsquo;s your situation?
@@ -253,6 +255,7 @@ export function MatchAgent({
                         <button
                           key={opt.id}
                           onClick={() => {
+                            markStart();
                             setIntent(opt.id);
                             // If suburb is already pre-filled (deep-link from a
                             // suburb page), skip the suburb step.
@@ -276,7 +279,7 @@ export function MatchAgent({
               )}
 
               {/* Step 1, Suburb */}
-              {step === 1 && !submitted && (
+              {step === 1 && (
                 <div>
                   <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-2">
                     Which suburb?
@@ -318,7 +321,7 @@ export function MatchAgent({
               )}
 
               {/* Step 2, Timeframe */}
-              {step === 2 && !submitted && (
+              {step === 2 && (
                 <div>
                   <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
                     What&rsquo;s the timing?
@@ -360,7 +363,7 @@ export function MatchAgent({
               )}
 
               {/* Step 3, Contact */}
-              {step === 3 && !submitted && (
+              {step === 3 && (
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-3">
                     We&rsquo;ve got the right person for you
@@ -373,6 +376,18 @@ export function MatchAgent({
                     No commitment, no comparison spam.
                   </p>
                   <form onSubmit={onSubmit} className="space-y-3">
+                    {/* Honeypot: visually hidden, off-screen, aria-hidden. */}
+                    <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+                      <label htmlFor="match-website">Website</label>
+                      <input
+                        id="match-website"
+                        type="text"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        value={website}
+                        onChange={(e) => setWebsite(e.target.value)}
+                      />
+                    </div>
                     <input
                       type="text"
                       required
@@ -428,27 +443,6 @@ export function MatchAgent({
                 </div>
               )}
 
-              {/* Confirmation */}
-              {submitted && (
-                <div className="py-4">
-                  <div className="w-14 h-14 rounded-full bg-cta text-white grid place-items-center mb-5">
-                    <Check className="w-7 h-7" strokeWidth={2.5} />
-                  </div>
-                  <h3 className="font-display text-3xl text-ink leading-tight tracking-tight mb-3">
-                    On its way.
-                  </h3>
-                  <p className="text-sm text-ink-muted leading-relaxed mb-6">
-                    Look out for an email at <strong className="text-ink">{email}</strong> within
-                    one business day with their profile and a way to book a call.
-                  </p>
-                  <button
-                    onClick={reset}
-                    className="text-xs text-ink-muted hover:text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink transition-colors cursor-pointer"
-                  >
-                    Start over →
-                  </button>
-                </div>
-              )}
             </div>
           </div>
         </div>

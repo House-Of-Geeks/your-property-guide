@@ -40,7 +40,7 @@ Your Property Guide covers four broad categories of content:
 
 ## Suburb &amp; market data
 
-- [All suburbs](https://www.yourpropertyguide.com.au/suburbs): Search 9,000+ Australian suburbs.
+- [All suburbs](https://www.yourpropertyguide.com.au/suburbs): Search 9,600+ Australian suburbs.
 - [Best suburbs rankings](https://www.yourpropertyguide.com.au/best-suburbs): Six ranked lists across schools, growth, affordability, walkability, hazards, and rental yield. State-level permutations available at /best-suburbs/[category]/[state].
 - [Browse by state](https://www.yourpropertyguide.com.au/states): NSW, VIC, QLD, WA, SA, TAS, NT, ACT.
 - [Browse by region](https://www.yourpropertyguide.com.au/regions): Every Australian region grouped by state.

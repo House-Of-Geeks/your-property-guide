@@ -234,7 +234,7 @@ export default async function BestDealDetailPage({ params }: PageProps) {
                   )}
 
                   <Link
-                    href={`/?intent=buying#match`}
+                    href={`/find-an-expert?intent=buying`}
                     className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-ink text-surface-raised hover:bg-primary font-medium px-5 py-3 transition-colors"
                   >
                     Get connected{deal.agent ? ` with ${deal.agent.fullName.split(" ")[0]}` : ""}

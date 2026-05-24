@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Phone } from "lucide-react";
+import { clarityEvent, clarityTag } from "@/lib/clarity";
 
 interface RevealPhoneProps {
   phone: string;
@@ -16,22 +17,15 @@ export function RevealPhone({ phone, agentId, propertyId, className }: RevealPho
   // Show first 6 digits, obscure the rest: "0412 34·····"
   const preview = phone.replace(/\s/g, "").slice(0, 6).replace(/(\d{4})(\d{2})/, "$1 $2") + "···";
 
-  const handleReveal = async () => {
+  const handleReveal = () => {
     setRevealed(true);
-    // Fire-and-forget tracking event
-    try {
-      await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "phone-reveal",
-          agentId,
-          propertyId,
-          source: "website",
-          firstName: "", lastName: "", email: "", phone: "",
-        }),
-      });
-    } catch { /* non-critical */ }
+    // Pure tracking — Clarity instead of writing a Lead row. The previous
+    // implementation POSTed to /api/leads with type "phone-reveal" which
+    // wasn't in the schema enum and empty firstName/email failed validation,
+    // so every reveal silently 400'd. We never actually captured this.
+    clarityEvent("phone_reveal");
+    if (agentId) clarityTag("phone_reveal_agent", agentId);
+    if (propertyId) clarityTag("phone_reveal_property", propertyId);
   };
 
   if (revealed) {

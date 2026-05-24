@@ -187,7 +187,7 @@ export function Header() {
               {CONTACT_PHONE_DISPLAY}
             </a>
             <Link
-              href="/#match"
+              href="/find-an-expert"
               className="hidden md:inline-flex items-center gap-1.5 rounded-full bg-cta hover:bg-cta-hover text-white px-4 py-2 text-xs font-semibold transition-colors"
             >
               Get connected
@@ -238,7 +238,7 @@ export function Header() {
             )}
             <div className="pt-4 mt-2 border-t border-line space-y-2">
               <Link
-                href="/#match"
+                href="/find-an-expert"
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-sm font-semibold text-white bg-cta hover:bg-cta-hover rounded-full transition-colors"
               >

@@ -7,6 +7,11 @@ import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 
+// Form lives in the hero's right column (above the fold on desktop, second
+// position on mobile after the headline) so visitors arrive on a page that
+// renders the conversion action immediately. Previous layout buried the
+// form below a 7xl headline + illustration which capped completion rates.
+
 export const metadata: Metadata = {
   title: "Free Property Appraisal",
   description: "Request a free property appraisal from a vetted local real estate agent. No obligation, response within one business day.",
@@ -41,9 +46,9 @@ export default function AppraisalPage() {
             <Breadcrumbs items={[{ label: "Free Appraisal" }]} />
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-7">
-              <div className="flex items-center gap-4 mb-10">
+          <div className="grid lg:grid-cols-12 gap-10 items-start">
+            <div className="lg:col-span-6">
+              <div className="flex items-center gap-4 mb-8">
                 <span className="font-display italic text-primary text-base sm:text-lg leading-none">
                   Free, no obligation
                 </span>
@@ -52,74 +57,53 @@ export default function AppraisalPage() {
                   Property appraisal
                 </span>
               </div>
-              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">
+              <h1 className="font-display text-ink leading-[1.02] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 font-medium">
                 What is your home{" "}
                 <span className="italic font-light text-primary">actually worth</span>?
               </h1>
-              <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-xl">
-                Get an honest appraisal from a vetted local agent. No call
-                centre, no auto-routing, no commitment to list with them. The
-                same number we&rsquo;d ask for ourselves before deciding to sell.
+              <p className="font-display font-light text-lg sm:text-xl text-ink leading-[1.3] max-w-xl mb-8">
+                An honest appraisal from a vetted local agent. No call centre,
+                no auto-routing, no commitment to list with them.
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 font-sans text-sm text-ink-muted">
+              <div className="flex flex-col gap-3 font-sans text-sm text-ink-muted">
                 {TRUST_POINTS.map((p) => (
                   <span key={p} className="inline-flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-cta" aria-hidden="true" />
+                    <CheckCircle className="w-4 h-4 text-cta shrink-0" aria-hidden="true" />
                     {p}
                   </span>
                 ))}
               </div>
             </div>
 
-            <div className="lg:col-span-5">
-              <div className="rounded-2xl border border-line-warm bg-surface-raised shadow-card overflow-hidden">
-                <Image
-                  src="/images/illustrations/appraisal.svg"
-                  alt=""
-                  aria-hidden="true"
-                  width={320}
-                  height={220}
-                  className="w-full h-auto"
-                  priority
-                />
+            <div className="lg:col-span-6">
+              <div className="rounded-2xl border border-line bg-surface-raised shadow-card p-6 sm:p-8">
+                <p className="text-xs font-sans uppercase tracking-[0.22em] text-ink-subtle mb-2">
+                  Tell us about the property
+                </p>
+                <h2 className="font-display text-ink leading-tight tracking-tight text-xl sm:text-2xl mb-5">
+                  Two minutes, then we take it from there.
+                </h2>
+                <Suspense fallback={<div className="h-96" aria-busy="true" />}>
+                  <AppraisalForm />
+                </Suspense>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Form section */}
-      <section className="bg-surface-raised">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="mb-8">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
-              Tell us about the property
-            </p>
-            <h2 className="font-display text-ink leading-tight tracking-tight text-2xl sm:text-3xl">
-              Two minutes, then we take it from there.
-            </h2>
-          </div>
-
-          <div className="rounded-2xl border border-line bg-surface-raised shadow-card p-6 sm:p-8">
-            <Suspense fallback={<div className="h-96" aria-busy="true" />}>
-              <AppraisalForm />
-            </Suspense>
-          </div>
-        </div>
-      </section>
-
-      {/* Honest note */}
+      {/* Trust note */}
       <section className="bg-surface-warm border-t border-line-warm">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 text-center">
           <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">
-            Honest note
+            How matching works
           </p>
           <p className="font-sans text-base text-ink-muted leading-relaxed">
-            We&rsquo;re still building out our agent network. Until your suburb
-            has a vetted match, we&rsquo;ll personally read your enquiry and
-            connect you with someone we&rsquo;d use ourselves, usually within
-            one business day. No bots, no auto-routing.
+            Every appraisal request is read and matched personally by our team.
+            We pick one local agent who actually sells in your area, no call
+            centre, no auto-routing, no comparison spam. You&rsquo;ll hear from
+            them within one business day.
           </p>
         </div>
       </section>

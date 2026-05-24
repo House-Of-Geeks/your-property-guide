@@ -25,6 +25,7 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
     enquiryType: "",
     message: "",
     postcode: "",
+    website: "", // honeypot, must stay empty
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -50,6 +51,7 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
           phone: form.phone || "0000000000",
           message: `Enquiry type: ${form.enquiryType || "General"}\nPostcode: ${form.postcode}\n\n${form.message}`,
           agencyId,
+          website: form.website,
           source: "agency-page",
         }),
       });
@@ -75,6 +77,18 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Honeypot: visually hidden, off-screen, aria-hidden. */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+        <label htmlFor="agency-contact-website">Website</label>
+        <input
+          id="agency-contact-website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={form.website}
+          onChange={(e) => set("website", e.target.value)}
+        />
+      </div>
       {/* Contact details */}
       <div>
         <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Contact Details</p>

@@ -10,11 +10,11 @@ export const dynamic = "force-dynamic";
 import type { MetadataRoute } from "next";
 import { unstable_cache } from "next/cache";
 import { SITE_URL } from "@/lib/constants";
-import { getAllSuburbSlugsWithDates } from "@/lib/services/suburb-service";
+import { getIndexableSuburbSlugsWithDates } from "@/lib/services/suburb-service";
 
 const getEntries = unstable_cache(
   async (): Promise<MetadataRoute.Sitemap> => {
-    const suburbs = await getAllSuburbSlugsWithDates();
+    const suburbs = await getIndexableSuburbSlugsWithDates();
     return suburbs.map(({ slug, updatedAt }) => ({
       url: `${SITE_URL}/suburbs/${slug}`,
       lastModified: updatedAt,

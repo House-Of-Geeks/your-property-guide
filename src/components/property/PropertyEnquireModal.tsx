@@ -46,6 +46,7 @@ export function PropertyEnquireDialog({
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [website, setWebsite] = useState(""); // honeypot, must stay empty
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -85,6 +86,7 @@ export function PropertyEnquireDialog({
             message,
           ].filter(Boolean).join("\n\n"),
           propertyId, agentId, agencyId,
+          website,
           source: "property-enquire-modal",
         }),
       });
@@ -136,6 +138,18 @@ export function PropertyEnquireDialog({
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-6 sm:p-8">
+            {/* Honeypot: visually hidden, off-screen, aria-hidden. */}
+            <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+              <label htmlFor="property-enquire-website">Website</label>
+              <input
+                id="property-enquire-website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+              />
+            </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Ask about this property</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

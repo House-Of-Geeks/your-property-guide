@@ -14,6 +14,7 @@ export function SuburbAlertWidget({ suburbName, suburbSlug }: Props) {
   const [lastName, setLastName]   = useState("");
   const [email, setEmail]         = useState("");
   const [phone, setPhone]         = useState("");
+  const [website, setWebsite]     = useState(""); // honeypot, must stay empty
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading]     = useState(false);
   const [error, setError]         = useState<string | null>(null);
@@ -34,6 +35,7 @@ export function SuburbAlertWidget({ suburbName, suburbSlug }: Props) {
           phone,
           suburb: suburbName,
           source: `suburb-page-${suburbSlug}`,
+          website,
         }),
       });
       if (!res.ok) throw new Error("Failed");
@@ -80,6 +82,18 @@ export function SuburbAlertWidget({ suburbName, suburbSlug }: Props) {
       {/* Form */}
       <div className="bg-white px-6 py-5">
         <form onSubmit={handleSubmit} className="space-y-3">
+          {/* Honeypot: visually hidden, off-screen, aria-hidden. */}
+          <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+            <label htmlFor="alert-website">Website</label>
+            <input
+              id="alert-website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              value={website}
+              onChange={(e) => setWebsite(e.target.value)}
+            />
+          </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label htmlFor="alert-firstName" className="block text-xs font-medium text-gray-600 mb-1">

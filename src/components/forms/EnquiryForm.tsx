@@ -19,6 +19,8 @@ const enquirySchema = z.object({
   email: z.string().email("Valid email is required"),
   phone: z.string().optional(),
   message: z.string().optional(),
+  // Honeypot — must remain empty. Real users never see this field.
+  website: z.string().optional(),
 });
 
 type EnquiryFormData = z.infer<typeof enquirySchema>;
@@ -66,6 +68,7 @@ export function EnquiryForm({
           propertyId,
           agentId,
           agencyId,
+          website: data.website ?? "",
           source: "website",
         }),
       });
@@ -95,6 +98,11 @@ export function EnquiryForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {/* Honeypot: visually hidden, off-screen, aria-hidden. */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+        <label htmlFor="enquiry-website">Website</label>
+        <input id="enquiry-website" type="text" tabIndex={-1} autoComplete="off" {...register("website")} />
+      </div>
       <Input
         id="enquiry-firstName"
         label="First name"

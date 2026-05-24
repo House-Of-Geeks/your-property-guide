@@ -12,6 +12,7 @@ import {
   SuburbAlertWidget,
   SuburbFAQ,
 } from "@/components/suburb";
+import { SuburbAppraisalCTA } from "@/components/suburb/SuburbAppraisalCTA";
 import { SuburbSchools } from "@/components/suburb/SuburbSchools";
 import { SuburbWalkability } from "@/components/suburb/SuburbWalkability";
 import { SuburbHazard } from "@/components/suburb/SuburbHazard";
@@ -47,14 +48,27 @@ export const revalidate = 86400;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
 
+// A suburb is "thin" when we have neither price data nor population — the
+// page is mostly empty modules. We let it remain reachable (direct URL +
+// internal links still work) but block search engines from indexing it
+// until real data lands, so search quality signals don't degrade.
+function isThinSuburb(s: Awaited<ReturnType<typeof getSuburbBySlug>>): boolean {
+  if (!s) return false;
+  const hasPrices = !!s.stats.medianHousePrice || !!s.stats.medianUnitPrice;
+  const hasPopulation = !!s.stats.population;
+  return !hasPrices && !hasPopulation;
+}
+
 export async function generateMetadata({ params }: SuburbDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) return { title: "Suburb Not Found" };
+  const thin = isThinSuburb(suburb);
   return {
     title: suburbTitle(suburb),
     description: suburbDescription(suburb),
     alternates: { canonical: `${SITE_URL}/suburbs/${slug}` },
+    robots: thin ? { index: false, follow: true } : undefined,
     openGraph: {
       url: `${SITE_URL}/suburbs/${slug}`,
       title: suburbTitle(suburb),
@@ -251,17 +265,16 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
         <SectionDivider />
 
-        {/* Suburb alerts band, decorative warm tile */}
+        {/* High-intent seller capture. Primary conversion CTA on the suburb
+            page, lead-magnet for the appraisal flow. */}
+        <section>
+          <SuburbAppraisalCTA suburbName={suburb.name} suburbSlug={suburb.slug} />
+        </section>
+
+        {/* Secondary capture for visitors who aren't selling. Smaller
+            footprint, lower visual weight. */}
         <section className="relative rounded-2xl border border-line-warm bg-surface-warm overflow-hidden">
-          <Image
-            src="/images/illustrations/contour.svg"
-            alt=""
-            width={1200}
-            height={800}
-            aria-hidden="true"
-            className="absolute -right-32 -top-32 w-[900px] max-w-none opacity-[0.10] pointer-events-none select-none"
-          />
-          <div className="relative px-6 sm:px-8 py-8 sm:py-10">
+          <div className="relative px-6 sm:px-8 py-6 sm:py-7">
             <SuburbAlertWidget suburbName={suburb.name} suburbSlug={suburb.slug} />
           </div>
         </section>
@@ -316,36 +329,36 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
         <SectionDivider />
 
-        {/* Crime */}
-        <section id="crime" className="scroll-mt-16">
-          <p className="font-display italic text-primary text-base mb-3 leading-none">
-            Safety
-          </p>
-          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-            Crime and safety.
-          </h2>
-          <SuburbCrime
-            crimeStat={
-              crimeStat
-                ? {
-                    totalOffences: crimeStat.totalOffences,
-                    offenceBreakdown: crimeStat.offenceBreakdown,
-                    period: crimeStat.period,
-                    state: crimeStat.state,
-                    geoLevel: crimeStat.geoLevel,
-                    lgaName: crimeStat.lgaName,
-                  }
-                : null
-            }
-          />
-          <DataFreshnessNote
-            label="Crime"
-            asOf={suburb.dataFreshness?.crimeAsOf ?? null}
-            source={crimeStat?.geoLevel === "lga"
-              ? `State Police Open Data, ${crimeStat.lgaName} (LGA-wide)`
-              : "State Police Open Data"}
-          />
-        </section>
+        {/* Crime — only renders when we have actual crime stats. Empty
+            modules erode trust, so we omit rather than show "data not
+            available". */}
+        {crimeStat && (
+          <section id="crime" className="scroll-mt-16">
+            <p className="font-display italic text-primary text-base mb-3 leading-none">
+              Safety
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
+              Crime and safety.
+            </h2>
+            <SuburbCrime
+              crimeStat={{
+                totalOffences: crimeStat.totalOffences,
+                offenceBreakdown: crimeStat.offenceBreakdown,
+                period: crimeStat.period,
+                state: crimeStat.state,
+                geoLevel: crimeStat.geoLevel,
+                lgaName: crimeStat.lgaName,
+              }}
+            />
+            <DataFreshnessNote
+              label="Crime"
+              asOf={suburb.dataFreshness?.crimeAsOf ?? null}
+              source={crimeStat.geoLevel === "lga"
+                ? `State Police Open Data, ${crimeStat.lgaName} (LGA-wide)`
+                : "State Police Open Data"}
+            />
+          </section>
+        )}
 
         {/* Walkability */}
         {suburb.stats.walkScore !== null && (
@@ -463,21 +476,23 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           <DataFreshnessNote label="School" asOf={null} source="ACARA" />
         </section>
 
-        {/* Climate */}
-        <section id="climate" className="scroll-mt-16">
-          <p className="font-display italic text-primary text-base mb-3 leading-none">
-            Climate
-          </p>
-          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-            Weather year-round.
-          </h2>
-          <SuburbClimate climate={suburb.climate ?? null} />
-          <DataFreshnessNote
-            label="Climate"
-            asOf={suburb.dataFreshness?.climateAsOf ?? null}
-            source="Bureau of Meteorology"
-          />
-        </section>
+        {/* Climate — only renders when BoM data is attached to the suburb. */}
+        {suburb.climate && (
+          <section id="climate" className="scroll-mt-16">
+            <p className="font-display italic text-primary text-base mb-3 leading-none">
+              Climate
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
+              Weather year-round.
+            </h2>
+            <SuburbClimate climate={suburb.climate} />
+            <DataFreshnessNote
+              label="Climate"
+              asOf={suburb.dataFreshness?.climateAsOf ?? null}
+              source="Bureau of Meteorology"
+            />
+          </section>
+        )}
 
         {/* Properties */}
         {properties.length > 0 && (
@@ -567,14 +582,14 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         </section>
       </div>
 
-      {/* Soft expert CTA at the very bottom, deep-links to homepage #match
-          with the suburb pre-filled, so visitors land directly in the lead
-          engine with one less click. */}
+      {/* Soft expert CTA at the very bottom. Deep-links to /find-an-expert
+          with the suburb pre-filled so visitors land directly in the lead
+          engine on a contextually-relevant page (not the homepage anchor). */}
       <ExpertCTA
         headline={`Want a real human to help with ${suburb.name}?`}
         body="If you&rsquo;ve looked at the numbers and want someone to talk it through, whether that&rsquo;s an agent, broker, accountant or conveyancer, we&rsquo;ll find the right person for your situation. Free, no commitment."
         ctaLabel="Get connected"
-        href={`/?suburb=${slug}#match`}
+        href={`/find-an-expert?suburb=${slug}`}
       />
 
       {/* Floating "Get connected" pill, slides up once the user scrolls

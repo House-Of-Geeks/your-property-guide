@@ -186,16 +186,16 @@ export default function AboutPage() {
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
-              href="/#match"
+              href="/find-an-expert"
               className="inline-flex items-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors"
             >
               Get connected <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
-              href="/find-an-expert"
+              href="/methodology"
               className="inline-flex items-center gap-1.5 text-ink-muted hover:text-ink border-b border-line-strong hover:border-ink pb-0.5 text-sm font-medium"
             >
-              Or read how matching works
+              Or read our methodology
             </Link>
           </div>
 

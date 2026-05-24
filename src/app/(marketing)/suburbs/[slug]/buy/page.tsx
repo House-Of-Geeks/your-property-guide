@@ -100,7 +100,7 @@ export default async function SuburbBuyPage({ params, searchParams }: Props) {
         headline={`Looking at ${suburb.name}? We'll find the right person.`}
         body={`Whether it's a buyer's agent for inspections and negotiation, a broker for finance, or someone else entirely, we'll connect you with the right specialist for your situation in ${suburb.name}. Free for buyers, no commitment.`}
         ctaLabel="Get connected"
-        href={`/?suburb=${slug}&intent=buying#match`}
+        href={`/find-an-expert?intent=buying&suburb=${slug}`}
       />
 
       <StickyMatchCTA

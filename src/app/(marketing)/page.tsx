@@ -87,10 +87,15 @@ export default function HomePage() {
             for people, not portals.
           </p>
 
-          {/* CTA + supporting link. Single pill button keeps conversion
-              focus; the secondary action is an underlined editorial
-              cross-reference instead of a second pill. */}
-          <div className="flex flex-wrap items-center gap-x-8 gap-y-4 mb-16">
+          {/* Three calibrated paths from the hero:
+                Primary (pill, dark): for the largest cohort, the
+                  educational-first visitor who's still narrowing situation.
+                Secondary (underlined link): for the reader who wants the
+                  raw guides.
+                Tertiary (small text): for the high-intent visitor who
+                  already knows what they need. Without this, ready-to-talk
+                  visitors had no fast path off the homepage. */}
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4 mb-3">
             <Link
               href="#personas"
               className="inline-flex items-center gap-2 rounded-full bg-ink text-white hover:bg-primary px-7 py-3.5 text-sm font-medium transition-colors"
@@ -104,6 +109,16 @@ export default function HomePage() {
               Or read the 60+ guides
             </Link>
           </div>
+          <p className="text-sm text-ink-subtle mb-16">
+            Already know what you need?{" "}
+            <Link
+              href="/find-an-expert"
+              className="text-ink hover:text-primary border-b border-line-strong hover:border-primary pb-0.5 font-medium transition-colors"
+            >
+              Talk to a vetted specialist
+            </Link>
+            .
+          </p>
 
           {/* Editorial stat row. Hairline-divided columns, no icons, big
               serif numbers and small uppercase labels. Reads as a magazine
@@ -111,7 +126,7 @@ export default function HomePage() {
           <div className="border-y border-line grid grid-cols-2 sm:grid-cols-4">
             {[
               { value: "60+",     label: "Published guides" },
-              { value: "9,700+",  label: "Suburbs covered" },
+              { value: "9,600+",  label: "Suburbs covered" },
               { value: "8",       label: "States & territories" },
               { value: "$0",      label: "No paywall, ever" },
             ].map((s, i) => (

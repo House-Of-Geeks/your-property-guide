@@ -18,51 +18,66 @@ interface SnapshotStat {
   icon: string;
 }
 
+// Only tiles with a real underlying value are returned. Missing data
+// produces no tile rather than a "Sales data pending" or "–" placeholder.
+// Trust on the largest traffic surface dies when visitors see five empty
+// boxes; a shorter complete-looking band is the better outcome.
 function buildStats(suburb: Suburb): SnapshotStat[] {
   const stats = suburb.stats;
-  const dash = "–";
+  const out: SnapshotStat[] = [];
 
-  return [
-    {
+  if (stats.medianHousePrice) {
+    out.push({
       label: "Median house",
-      value: stats.medianHousePrice ? formatPriceFull(stats.medianHousePrice) : dash,
-      detail: stats.annualGrowthHouse
-        ? `${formatPercentage(stats.annualGrowthHouse)} year on year`
-        : "Sales data pending",
+      value: formatPriceFull(stats.medianHousePrice),
+      detail: stats.annualGrowthHouse ? `${formatPercentage(stats.annualGrowthHouse)} year on year` : undefined,
       icon: "/images/icons/median.svg",
-    },
-    {
+    });
+  }
+  if (stats.medianUnitPrice) {
+    out.push({
       label: "Median unit",
-      value: stats.medianUnitPrice ? formatPriceFull(stats.medianUnitPrice) : dash,
-      detail: stats.annualGrowthUnit
-        ? `${formatPercentage(stats.annualGrowthUnit)} year on year`
-        : "Sales data pending",
+      value: formatPriceFull(stats.medianUnitPrice),
+      detail: stats.annualGrowthUnit ? `${formatPercentage(stats.annualGrowthUnit)} year on year` : undefined,
       icon: "/images/icons/yield.svg",
-    },
-    {
+    });
+  }
+  if (stats.daysOnMarket) {
+    out.push({
       label: "Days on market",
-      value: stats.daysOnMarket ? String(stats.daysOnMarket) : dash,
+      value: String(stats.daysOnMarket),
       detail: "Average to sell",
       icon: "/images/icons/growth.svg",
-    },
-    {
+    });
+  }
+  if (stats.walkScore !== null && stats.walkScore !== undefined) {
+    out.push({
       label: "Walk score",
-      value: stats.walkScore !== null && stats.walkScore !== undefined
-        ? String(stats.walkScore)
-        : dash,
-      detail: stats.walkScore !== null && stats.walkScore !== undefined
-        ? walkLabel(stats.walkScore)
-        : "Not yet scored",
+      value: String(stats.walkScore),
+      detail: walkLabel(stats.walkScore),
       icon: "/images/icons/walkability.svg",
-    },
-    {
+    });
+  }
+  if (stats.population) {
+    out.push({
       label: "Population",
-      value: stats.population ? abbrevPopulation(stats.population) : dash,
-      detail: stats.medianAge ? `Median age ${stats.medianAge}` : "Census data pending",
+      value: abbrevPopulation(stats.population),
+      detail: stats.medianAge ? `Median age ${stats.medianAge}` : undefined,
       icon: "/images/icons/people.svg",
-    },
-  ];
+    });
+  }
+  return out;
 }
+
+// Map of tile count → grid column class. Tailwind needs explicit class
+// strings at build time so we can't `grid-cols-${n}` dynamically.
+const GRID_COLS: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-1 sm:grid-cols-2",
+  3: "grid-cols-1 sm:grid-cols-3",
+  4: "grid-cols-2 sm:grid-cols-4",
+  5: "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5",
+};
 
 function abbrevPopulation(n: number): string {
   if (n >= 100000) return `${(n / 1000).toFixed(0)}k`;
@@ -80,6 +95,8 @@ function walkLabel(score: number): string {
 
 export function SuburbSnapshot({ suburb }: SuburbSnapshotProps) {
   const stats = buildStats(suburb);
+  if (stats.length === 0) return null;
+  const colsClass = GRID_COLS[stats.length] ?? GRID_COLS[5];
   return (
     <section
       aria-label={`${suburb.name} snapshot`}
@@ -89,7 +106,7 @@ export function SuburbSnapshot({ suburb }: SuburbSnapshotProps) {
         <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-6">
           {suburb.name} at a glance
         </p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-y-6 lg:gap-y-0">
+        <div className={`grid ${colsClass} gap-y-6 lg:gap-y-0`}>
           {stats.map((s, i) => (
             <div
               key={s.label}

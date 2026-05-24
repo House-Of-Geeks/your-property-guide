@@ -301,3 +301,20 @@ export async function getAllSuburbSlugs(): Promise<string[]> {
 export async function getAllSuburbSlugsWithDates(): Promise<{ slug: string; updatedAt: Date }[]> {
   return db.suburb.findMany({ select: { slug: true, updatedAt: true } });
 }
+
+// Sitemap-eligible suburbs only. Excludes thin pages (no price data AND
+// no population) which we noindex on the page itself — keeping them out
+// of the sitemap is the matching SEO hygiene step. Crawl budget on a
+// 9,600-page property site should go to pages with real content.
+export async function getIndexableSuburbSlugsWithDates(): Promise<{ slug: string; updatedAt: Date }[]> {
+  return db.suburb.findMany({
+    where: {
+      OR: [
+        { medianHousePrice: { gt: 0 } },
+        { medianUnitPrice: { gt: 0 } },
+        { population: { gt: 0 } },
+      ],
+    },
+    select: { slug: true, updatedAt: true },
+  });
+}

@@ -150,7 +150,7 @@ export default function StampDutyCalculatorPage() {
           </ul>
           <p>
             For a complete settlement-cost breakdown, a conveyancer is the
-            right person to ask. <Link href="/?intent=buying#match">Get connected</Link>{" "}
+            right person to ask. <Link href="/find-an-expert?intent=buying">Get connected</Link>{" "}
             if you want a free intro to one.
           </p>
         </>

@@ -15,6 +15,7 @@ export function PropertyInterestForm({ address, suburbName, suburbSlug }: Props)
   const [lastName, setLastName]   = useState("");
   const [email, setEmail]         = useState("");
   const [phone, setPhone]         = useState("");
+  const [website, setWebsite]     = useState(""); // honeypot, must stay empty
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading]     = useState(false);
   const [error, setError]         = useState<string | null>(null);
@@ -36,6 +37,7 @@ export function PropertyInterestForm({ address, suburbName, suburbSlug }: Props)
           address,
           suburb: suburbName,
           message: `Registered interest in: ${address}`,
+          website,
           source: "property-page",
         }),
       });
@@ -78,6 +80,18 @@ export function PropertyInterestForm({ address, suburbName, suburbSlug }: Props)
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-3">
+        {/* Honeypot: visually hidden, off-screen, aria-hidden. */}
+        <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+          <label htmlFor="pi-website">Website</label>
+          <input
+            id="pi-website"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+          />
+        </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label htmlFor="pi-firstName" className="block text-xs font-medium text-gray-600 mb-1">

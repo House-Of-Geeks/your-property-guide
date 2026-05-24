@@ -4,10 +4,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Input, Select } from "@/components/ui";
 import { SUBURBS, PROPERTY_TYPES } from "@/lib/constants";
-import { CheckCircle } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 
 // Free-appraisal request form. The user is on /appraisal explicitly asking
@@ -24,14 +23,27 @@ const appraisalSchema = z.object({
   propertyType: z.string().optional(),
   bedrooms: z.string().optional(),
   message: z.string().optional(),
+  // Honeypot — must remain empty. Real users never see this field.
+  website: z.string().optional(),
 });
 
 type AppraisalFormData = z.infer<typeof appraisalSchema>;
 
 export function AppraisalForm() {
-  const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasStarted, setHasStarted] = useState(false);
   const searchParams = useSearchParams();
+  const router = useRouter();
+
+  // Fires on first interaction with any field. Lets us separate "people who
+  // saw the form" (Clarity page view) from "people who engaged with it"
+  // (form_start) in the funnel — the gap between the two reveals friction.
+  const markStart = () => {
+    if (hasStarted) return;
+    setHasStarted(true);
+    clarityEvent("form_start");
+    clarityTag("form_name", "appraisal");
+  };
 
   const {
     register,
@@ -63,6 +75,7 @@ export function AppraisalForm() {
           propertyType: data.propertyType || undefined,
           bedrooms: data.bedrooms || undefined,
           message: data.message?.trim() || undefined,
+          website: data.website ?? "",
           source: "website",
         }),
       });
@@ -70,29 +83,24 @@ export function AppraisalForm() {
       clarityEvent("request_quote");
       clarityTag("appraisal_suburb", data.suburb);
       if (data.propertyType) clarityTag("appraisal_property_type", data.propertyType);
-      setSubmitted(true);
+      // Hand off to the thank-you page. The ConversionTracker there fires
+      // the canonical `lead_conversion` event so this funnel is measurable
+      // separately from the request_quote event we just fired.
+      const params = new URLSearchParams({ suburb: data.suburb });
+      router.push(`/appraisal/thanks?${params.toString()}`);
     } catch {
       setError("Something went wrong. Please try again.");
     }
   };
 
-  if (submitted) {
-    return (
-      <div className="text-center py-12">
-        <div className="w-14 h-14 rounded-full bg-cta text-white grid place-items-center mx-auto mb-4">
-          <CheckCircle className="w-7 h-7" />
-        </div>
-        <h3 className="font-display text-2xl text-ink leading-tight">Request received.</h3>
-        <p className="text-ink-muted mt-3 max-w-md mx-auto leading-relaxed">
-          A local agent will be in touch within one business day to arrange your free appraisal.
-          No commitment until you decide to take it further.
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} onFocus={markStart} className="space-y-4">
+      {/* Honeypot: visually hidden, off-screen, aria-hidden. Real users
+          never see or tab to it; bots autofill any 'website' field. */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+        <label htmlFor="appraisal-website">Website</label>
+        <input id="appraisal-website" type="text" tabIndex={-1} autoComplete="off" {...register("website")} />
+      </div>
       <Input
         id="appraisal-firstName"
         label="First name"

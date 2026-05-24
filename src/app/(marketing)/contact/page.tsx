@@ -140,7 +140,7 @@ export default function ContactPage() {
                 </p>
               </div>
               <Link
-                href="/#match"
+                href="/find-an-expert"
                 className="shrink-0 inline-flex items-center justify-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-5 py-2.5 text-sm transition-colors whitespace-nowrap"
               >
                 Get connected <ArrowRight className="w-4 h-4" />

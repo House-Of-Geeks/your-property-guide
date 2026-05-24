@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
-import { MatchAgentEmbed, SpecialistShowcase, TrustStrip } from "@/components/journey";
+import { MatchAgentEmbed, TrustStrip } from "@/components/journey";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_NAME } from "@/lib/constants";
 
@@ -230,12 +230,12 @@ export default function FindAnExpertPage() {
           </div>
 
           <div className="mt-12 rounded-2xl border border-line-warm bg-surface-warm p-8 max-w-3xl mx-auto text-center">
-            <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-2">Honest note</p>
+            <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-2">How matching works</p>
             <p className="font-sans text-base text-ink-muted leading-relaxed">
-              We&rsquo;re still building out our specialist network across all four lanes.
-              Until your suburb has a vetted match, we&rsquo;ll personally read your enquiry and
-              connect you with someone we&rsquo;d use ourselves, usually within one business day.
-              No bots, no auto-routing.
+              Every enquiry is read and matched personally by our team. We pick
+              one vetted specialist for your situation, no call centre, no
+              auto-routing, no comparison spam. You&rsquo;ll hear from them
+              within one business day.
             </p>
           </div>
         </div>
@@ -249,12 +249,6 @@ export default function FindAnExpertPage() {
       <Suspense fallback={null}>
         <MatchAgentEmbed />
       </Suspense>
-
-      {/* Real specialists, honest social proof. Visitors who scroll past
-          the form without engaging see actual people they could be matched
-          with, not a faceless promise. Empty-safe: silently renders nothing
-          if no agents are in the DB. */}
-      <SpecialistShowcase />
 
       {/* How matching works, sits below the form as supporting copy for
           anyone who scrolled past the form without engaging. The CTA here

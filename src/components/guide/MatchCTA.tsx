@@ -74,7 +74,18 @@ export function MatchCTA({ kind, lead, ctaLabel, intent, href }: MatchCTAProps) 
   const resolvedLead     = lead     ?? defaults?.lead     ?? "Want one-on-one help with this stage?";
   const resolvedLabel    = ctaLabel ?? defaults?.ctaLabel ?? "Get connected";
   const resolvedIntent   = intent   ?? defaults?.intent;
-  const resolvedHref     = href     ?? (resolvedIntent ? `/?intent=${resolvedIntent}#match` : "/#match");
+  // Selling intent goes to /appraisal (a dedicated appraisal form, higher
+  // conversion); every other intent goes to /find-an-expert (which embeds
+  // the MatchAgent and pre-fills from ?intent). We deliberately stopped
+  // routing to the homepage anchor — context-relevant landing pages convert
+  // better and anchor scrolls don't fire conversion events.
+  const resolvedHref =
+    href ??
+    (resolvedIntent === "selling"
+      ? `/appraisal?intent=selling`
+      : resolvedIntent
+        ? `/find-an-expert?intent=${resolvedIntent}`
+        : `/find-an-expert`);
 
   return (
     <aside className="my-8 rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-7">

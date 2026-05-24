@@ -23,6 +23,8 @@ const offMarketSchema = z.object({
   minPrice: z.string().optional(),
   maxPrice: z.string().optional(),
   minBeds: z.string().optional(),
+  // Honeypot — must remain empty. Real users never see this field.
+  website: z.string().optional(),
 });
 
 type OffMarketFormData = z.infer<typeof offMarketSchema>;
@@ -59,6 +61,7 @@ export function OffMarketRegisterForm() {
             maxPrice: data.maxPrice ? Number(data.maxPrice) : undefined,
             minBeds: data.minBeds ? Number(data.minBeds) : undefined,
           },
+          website: data.website ?? "",
           source: "website",
         }),
       });
@@ -89,6 +92,11 @@ export function OffMarketRegisterForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {/* Honeypot field — visually hidden, off-screen, aria-hidden. */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+        <label htmlFor="offmarket-website">Website</label>
+        <input id="offmarket-website" type="text" tabIndex={-1} autoComplete="off" {...register("website")} />
+      </div>
       <Input
         id="offmarket-firstName"
         label="First name"
