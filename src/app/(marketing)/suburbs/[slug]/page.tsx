@@ -42,6 +42,11 @@ import {
   buildSellerView,
   isAutoStubDescription,
 } from "@/lib/suburb-narrative";
+import {
+  hasReliablePrice,
+  PENDING_PRICE_LABEL,
+  PENDING_PRICE_NOTE,
+} from "@/lib/suburb-data-quality";
 
 interface SuburbDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -119,6 +124,9 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
   const investorView = buildInvestorView(suburb);
   const buyerView = buildBuyerView(suburb);
   const sellerView = buildSellerView(suburb);
+  // Whether we trust this suburb's median enough to print it as fact.
+  // Drives the main price card display and the unit-price callout.
+  const priceTrusted = hasReliablePrice(suburb);
 
   return (
     <>
@@ -257,15 +265,40 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 The price of a home here.
               </h2>
               <div className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3 inline-flex items-center gap-2">
-                  <TrendingUp className="w-3.5 h-3.5 text-cta" /> Median house price
-                </p>
-                <p className="font-display text-5xl sm:text-6xl text-ink leading-none tracking-tight">
-                  {suburb.stats.medianHousePrice
-                    ? formatPriceFull(suburb.stats.medianHousePrice)
-                    : "Pending"}
-                </p>
-                {suburb.stats.annualGrowthHouse !== null && suburb.stats.annualGrowthHouse !== undefined && (
+                {priceTrusted ? (
+                  <>
+                    <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3 inline-flex items-center gap-2">
+                      <TrendingUp className="w-3.5 h-3.5 text-cta" /> Median house price
+                    </p>
+                    <p className="font-display text-5xl sm:text-6xl text-ink leading-none tracking-tight">
+                      {formatPriceFull(suburb.stats.medianHousePrice)}
+                    </p>
+                  </>
+                ) : (
+                  // Unreliable source (currently QLD/WA census-mortgage
+                  // proxy). Don't publish the back-calculated fiction
+                  // as a "median". Show an honest pending state with a
+                  // link to the methodology page.
+                  <>
+                    <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3 inline-flex items-center gap-2">
+                      <TrendingUp className="w-3.5 h-3.5 text-cta" /> Median house price
+                    </p>
+                    <p className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight">
+                      {PENDING_PRICE_LABEL}
+                    </p>
+                    <p className="font-sans text-sm text-ink-muted mt-3 leading-relaxed">
+                      {PENDING_PRICE_NOTE}{" "}
+                      <Link
+                        href="/methodology"
+                        className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                      >
+                        How we source data
+                      </Link>
+                      .
+                    </p>
+                  </>
+                )}
+                {priceTrusted && suburb.stats.annualGrowthHouse !== null && suburb.stats.annualGrowthHouse !== undefined && (
                   <p className="font-sans text-base text-ink-muted mt-4 leading-relaxed">
                     <span className={`font-medium ${suburb.stats.annualGrowthHouse >= 0 ? "text-success" : "text-danger"}`}>
                       {formatPercentage(suburb.stats.annualGrowthHouse)}

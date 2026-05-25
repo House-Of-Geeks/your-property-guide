@@ -7,31 +7,29 @@
 //     stateful infrastructure
 //
 // Curated list, not random across all 9,600 suburbs, so the spotlight
-// always lands on a recognisable name with good data. Add/remove slugs
-// here to tune the rotation.
+// always lands on a recognisable name with good data.
+//
+// CURRENTLY NSW + VIC ONLY. QLD/WA suburbs were removed in 2026-05
+// because their underlying price data comes from a 2021 census-mortgage
+// proxy that's wildly inaccurate at the suburb level (see
+// scripts/sync/sources/sales-qld.ts for the methodology). SA + NT + TAS
+// + ACT use ABS annual SA2 data which is real but a year stale —
+// acceptable for the spotlight if we expand the list later. For now,
+// rotate only suburbs whose sales feed publishes current real prices.
 
 export const SPOTLIGHT_SLUGS: readonly string[] = [
-  // NSW
+  // NSW — Valuer General, every actual transaction
   "bondi-nsw-2026",
   "newtown-nsw-2042",
   "manly-nsw-2095",
   "mosman-nsw-2088",
   "surry-hills-nsw-2010",
-  // VIC
+  // VIC — Dept of Transport quarterly suburb medians
   "toorak-vic-3142",
   "richmond-vic-3121",
   "fitzroy-vic-3065",
   "brighton-vic-3186",
   "south-yarra-vic-3141",
-  // QLD
-  "new-farm-qld-4005",
-  "teneriffe-qld-4005",
-  "paddington-qld-4064",
-  "surfers-paradise-qld-4217",
-  // WA / SA
-  "cottesloe-wa-6011",
-  "subiaco-wa-6008",
-  "norwood-sa-5067",
 ];
 
 /**

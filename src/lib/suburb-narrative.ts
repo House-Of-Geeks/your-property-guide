@@ -11,6 +11,7 @@
 // same templates.
 
 import type { Suburb } from "@/types";
+import { hasReliablePrice } from "./suburb-data-quality";
 
 // ─── State-level reference baselines ──────────────────────────────────
 // Indicative all-suburb medians per state, as of 2026.  Used for
@@ -138,6 +139,11 @@ export function buildIntro(suburb: Suburb): string[] {
   const s = suburb.stats;
   const baseline = baselineFor(suburb.state);
   const stateName = baseline.fullName;
+  // Only make price claims for suburbs where the underlying data is
+  // trustworthy (NSW/VIC/SA real sales feeds, or ABS annual SA2). For
+  // suburbs backed by the census-mortgage proxy we suppress the
+  // price+growth sentences entirely rather than publish fiction.
+  const priceOk = hasReliablePrice(suburb);
 
   // Sentence 1: location anchor.
   const region = suburb.region && suburb.region !== suburb.state ? `${suburb.region} region of ${stateName}` : stateName;
@@ -145,15 +151,17 @@ export function buildIntro(suburb: Suburb): string[] {
   para1Parts.push(`${suburb.name} (${suburb.postcode}) sits in the ${region}.`);
 
   // Sentence 2: market position vs state median.
-  if (s.medianHousePrice > 0) {
+  if (priceOk) {
     const cmp = priceComparePhrase(s.medianHousePrice, baseline.medianHousePrice);
     para1Parts.push(
       `The median house here is ${formatPricePrecise(s.medianHousePrice)}, ${cmp.phrase} the ${stateName} median of around ${formatPrice(baseline.medianHousePrice)}.`,
     );
   }
 
-  // Sentence 3: growth signal vs state baseline.
-  if (s.annualGrowthHouse !== 0) {
+  // Sentence 3: growth signal vs state baseline. Skipped when price
+  // confidence is low — if we don't trust the median, we can't trust
+  // the growth percentage either (it's derived from the same proxy).
+  if (priceOk && s.annualGrowthHouse !== 0) {
     const gap = s.annualGrowthHouse - baseline.annualGrowth;
     const vsState =
       gap >= 3   ? "well clear of"
@@ -187,7 +195,9 @@ export function buildIntro(suburb: Suburb): string[] {
       para2Parts.push(`Daily life is ${w.phrase}: most residents drive to work, school and the shops.`);
     }
   }
-  if (s.daysOnMarket > 0) {
+  // Days-on-market is also derived from the sales feed, so it's only
+  // trustworthy when the price source is trustworthy.
+  if (priceOk && s.daysOnMarket > 0) {
     const slowerOrFaster = s.daysOnMarket < baseline.daysOnMarket ? "faster than" : s.daysOnMarket > baseline.daysOnMarket ? "slower than" : "in line with";
     para2Parts.push(
       `Listings here typically sell in ${s.daysOnMarket} days, ${slowerOrFaster} the ${stateName} average of ${baseline.daysOnMarket}.`,
@@ -202,6 +212,9 @@ export function buildIntro(suburb: Suburb): string[] {
 /** Short interpretive paragraph for the "Market" section. */
 export function buildMarketSummary(suburb: Suburb): string {
   const s = suburb.stats;
+  // Skip the entire market interpretation when the price source is
+  // unreliable — every sentence in this function leans on price.
+  if (!hasReliablePrice(suburb)) return "";
   if (s.medianHousePrice <= 0) return "";
   const baseline = baselineFor(suburb.state);
   const cmp = priceComparePhrase(s.medianHousePrice, baseline.medianHousePrice);
@@ -332,6 +345,9 @@ export function buildLifestyleSummary(suburb: Suburb): string[] {
 /** Investor-angle paragraph for the "For investors" section. */
 export function buildInvestorView(suburb: Suburb): string {
   const s = suburb.stats;
+  // Yield calculation needs a trustworthy price. Skip entirely when
+  // the price source is unreliable rather than computing a fake yield.
+  if (!hasReliablePrice(suburb)) return "";
   if (s.medianHousePrice <= 0 || s.medianRentHouse <= 0) return "";
 
   const houseYield = calcGrossYield(s.medianRentHouse, s.medianHousePrice);
@@ -356,6 +372,7 @@ export function buildInvestorView(suburb: Suburb): string {
 /** Short buyer angle: affordability, schools, deposit. */
 export function buildBuyerView(suburb: Suburb): string {
   const s = suburb.stats;
+  if (!hasReliablePrice(suburb)) return "";
   if (s.medianHousePrice <= 0) return "";
   const baseline = baselineFor(suburb.state);
   const cmp = priceComparePhrase(s.medianHousePrice, baseline.medianHousePrice);
@@ -376,6 +393,7 @@ export function buildBuyerView(suburb: Suburb): string {
 /** Short seller angle: market temperature. */
 export function buildSellerView(suburb: Suburb): string {
   const s = suburb.stats;
+  if (!hasReliablePrice(suburb)) return "";
   if (s.medianHousePrice <= 0) return "";
   const baseline = baselineFor(suburb.state);
 

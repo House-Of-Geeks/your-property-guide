@@ -1,5 +1,6 @@
 import type { Property, Agent, Agency, BlogPost, Suburb } from "@/types";
 import { SITE_URL } from "@/lib/constants";
+import { hasReliablePrice } from "@/lib/suburb-data-quality";
 
 export function absoluteUrl(path: string): string {
   return `${SITE_URL}${path}`;
@@ -41,7 +42,13 @@ export function suburbRentDescription(suburb: Suburb): string {
 export function suburbDescription(suburb: Suburb): string {
   // Leads with "Free suburb profile" so the description matches the way
   // people actually search ("free property report" runs 1,000/mo).
-  return `Free suburb profile for ${suburb.name}, ${suburb.state} ${suburb.postcode}. Median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}, growth, schools, walkability, crime and current listings. No sign-up.`;
+  // Only publishes the median when we trust it — for low-confidence
+  // suburbs (QLD/WA fallback) we skip the dollar figure rather than
+  // print fiction in the SERP snippet.
+  if (hasReliablePrice(suburb)) {
+    return `Free suburb profile for ${suburb.name}, ${suburb.state} ${suburb.postcode}. Median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}, growth, schools, walkability, crime and current listings. No sign-up.`;
+  }
+  return `Free suburb profile for ${suburb.name}, ${suburb.state} ${suburb.postcode}. Schools, walkability, climate, crime, demographics and current listings. No sign-up.`;
 }
 
 export function agentTitle(agent: Agent): string {

@@ -1,6 +1,7 @@
 import type { Suburb, SuburbDataFreshness } from "@/types";
 import { db } from "@/lib/db";
 import type { Suburb as DbSuburb, School as DbSchool, SuburbHazard as DbSuburbHazard, SuburbClimate as DbSuburbClimate } from "@/generated/prisma/client";
+import { classifyPriceConfidence } from "@/lib/suburb-data-quality";
 
 type DbSuburbWithSchools = DbSuburb & { schools: DbSchool[] };
 
@@ -73,6 +74,19 @@ function toSuburb(
     climateAsOf:     s.climateUpdatedAt     ?? null,
   };
 
+  // Data-quality gate. If the sales source for this suburb is one we
+  // distrust (currently the QLD/WA census-mortgage proxy — see
+  // src/lib/suburb-data-quality.ts), zero out the price-derived
+  // fields at the boundary so no downstream component publishes
+  // fiction as fact. Rental, demographics, walkability, climate,
+  // schools, hazard all come from independent sources and are kept.
+  const priceUnreliable = classifyPriceConfidence(mergedFreshness) === "unreliable";
+  const medianHousePrice  = priceUnreliable ? 0 : s.medianHousePrice;
+  const medianUnitPrice   = priceUnreliable ? 0 : s.medianUnitPrice;
+  const annualGrowthHouse = priceUnreliable ? 0 : s.annualGrowthHouse;
+  const annualGrowthUnit  = priceUnreliable ? 0 : s.annualGrowthUnit;
+  const daysOnMarket      = priceUnreliable ? 0 : s.daysOnMarket;
+
   return {
     id:          s.id,
     slug:        s.slug,
@@ -83,14 +97,14 @@ function toSuburb(
     description: s.description,
     heroImage:   s.heroImage,
     stats: {
-      medianHousePrice:  s.medianHousePrice,
-      medianUnitPrice:   s.medianUnitPrice,
+      medianHousePrice,
+      medianUnitPrice,
       // Use synced rental data if available, otherwise fall back to seed value
       medianRentHouse:   rentalRentHouse ?? s.medianRentHouse,
       medianRentUnit:    rentalRentUnit  ?? s.medianRentUnit,
-      annualGrowthHouse: s.annualGrowthHouse,
-      annualGrowthUnit:  s.annualGrowthUnit,
-      daysOnMarket:      s.daysOnMarket,
+      annualGrowthHouse,
+      annualGrowthUnit,
+      daysOnMarket,
       population:        s.population,
       medianAge:         s.medianAge,
       ownerOccupied:        s.ownerOccupied,

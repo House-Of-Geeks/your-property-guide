@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { pickSpotlightSlug } from "@/lib/suburb-spotlight";
 import { formatPriceFull } from "@/lib/utils/format";
+import { hasReliablePrice } from "@/lib/suburb-data-quality";
 
 // Hero spotlight: a real suburb's data rendered as a magazine
 // "fact box" on the right side of the homepage hero. The point is
@@ -21,6 +22,12 @@ export async function SpotlightSuburbCard() {
   const s = suburb.stats;
   const growthSign = (s.annualGrowthHouse ?? 0) >= 0 ? "+" : "";
   const growthClass = (s.annualGrowthHouse ?? 0) >= 0 ? "text-emerald-700" : "text-red-700";
+
+  // Defensive: even though SPOTLIGHT_SLUGS is curated to NSW/VIC, guard
+  // against any future addition that turns out to have unreliable
+  // price data. If price isn't trustworthy, render the spotlight
+  // without the price+growth rows rather than publishing fiction.
+  const showPrice = hasReliablePrice(suburb);
 
   const profileHref = `/suburbs/${slug}`;
 
@@ -76,7 +83,7 @@ export async function SpotlightSuburbCard() {
         </p>
 
         <dl className="border-t border-line">
-          {s.medianHousePrice > 0 && (
+          {showPrice && s.medianHousePrice > 0 && (
             <div className="flex items-baseline justify-between py-3 border-b border-line">
               <dt className="text-[11px] uppercase tracking-[0.2em] text-ink-subtle font-sans font-medium">
                 Median house
@@ -86,7 +93,7 @@ export async function SpotlightSuburbCard() {
               </dd>
             </div>
           )}
-          {s.annualGrowthHouse !== null && s.annualGrowthHouse !== 0 && (
+          {showPrice && s.annualGrowthHouse !== null && s.annualGrowthHouse !== 0 && (
             <div className="flex items-baseline justify-between py-3 border-b border-line">
               <dt className="text-[11px] uppercase tracking-[0.2em] text-ink-subtle font-sans font-medium">
                 12-month growth

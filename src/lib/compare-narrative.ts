@@ -11,6 +11,7 @@
 // cleanly under the existing 24h ISR on the compare route.
 
 import type { Suburb } from "@/types";
+import { hasReliablePrice } from "./suburb-data-quality";
 
 // ─── Formatters ───────────────────────────────────────────────────────
 
@@ -60,9 +61,17 @@ function namePair(a: Suburb, b: Suburb) {
   return { aName: a.name, bName: b.name };
 }
 
+// Whether we can make any price-based comparison at all. Both sides
+// must have reliable price data; otherwise the gap is meaningless.
+function priceComparableBoth(a: Suburb, b: Suburb): boolean {
+  return hasReliablePrice(a) && hasReliablePrice(b);
+}
+
 // Cheaper-of returns the cheaper suburb and the % gap, used to drive
-// "Suburb X is N% cheaper" sentences. Returns null if data is missing.
+// "Suburb X is N% cheaper" sentences. Returns null if data is missing
+// or either suburb's price is unreliable.
 function cheaperOf(a: Suburb, b: Suburb): { cheaper: "a" | "b"; gap: number } | null {
+  if (!priceComparableBoth(a, b)) return null;
   const pa = a.stats.medianHousePrice;
   const pb = b.stats.medianHousePrice;
   if (!pa || !pb || pa === pb) return null;
@@ -71,8 +80,10 @@ function cheaperOf(a: Suburb, b: Suburb): { cheaper: "a" | "b"; gap: number } | 
 }
 
 // Higher-growth returns the stronger-growth suburb and the gap in
-// percentage points. Returns null if growth values are equal/missing.
+// percentage points. Growth is derived from the same sales feed as
+// price, so we require reliable data on both sides.
 function higherGrowth(a: Suburb, b: Suburb): { faster: "a" | "b"; gap: number } | null {
+  if (!priceComparableBoth(a, b)) return null;
   const ga = a.stats.annualGrowthHouse;
   const gb = b.stats.annualGrowthHouse;
   if (ga == null || gb == null || ga === gb) return null;
@@ -80,6 +91,7 @@ function higherGrowth(a: Suburb, b: Suburb): { faster: "a" | "b"; gap: number } 
 }
 
 function fasterToSell(a: Suburb, b: Suburb): { faster: "a" | "b"; aDom: number; bDom: number } | null {
+  if (!priceComparableBoth(a, b)) return null;
   const da = a.stats.daysOnMarket;
   const db = b.stats.daysOnMarket;
   if (!da || !db || da === db) return null;
@@ -87,6 +99,7 @@ function fasterToSell(a: Suburb, b: Suburb): { faster: "a" | "b"; aDom: number; 
 }
 
 function higherYield(a: Suburb, b: Suburb): { better: "a" | "b"; aY: number; bY: number } | null {
+  if (!priceComparableBoth(a, b)) return null;
   const ya = calcGrossYield(a.stats.medianRentHouse, a.stats.medianHousePrice);
   const yb = calcGrossYield(b.stats.medianRentHouse, b.stats.medianHousePrice);
   if (!ya || !yb || ya === yb) return null;
@@ -190,16 +203,18 @@ export function buildCompareVerdicts(a: Suburb, b: Suburb): CompareVerdicts {
   const { aName, bName } = namePair(a, b);
 
   // For buyers (especially first home buyers): price + days on market.
+  // Only quote dollar figures when both suburbs have reliable price
+  // data; otherwise route to the "verify on the profiles" fallback.
   let forBuyers = "";
   const cheap = cheaperOf(a, b);
   if (cheap) {
     const cheaperName = cheap.cheaper === "a" ? aName : bName;
     const cheaperPrice = cheap.cheaper === "a" ? a.stats.medianHousePrice : b.stats.medianHousePrice;
     forBuyers = `${cheaperName} is the lower entry point at ${formatPricePrecise(cheaperPrice)} median, ${cheap.gap.toFixed(0)}% below the other suburb. For first home buyers, that translates to a smaller deposit and lower stamp duty bill.`;
-  } else if (a.stats.medianHousePrice > 0 && b.stats.medianHousePrice > 0) {
+  } else if (hasReliablePrice(a) && hasReliablePrice(b) && a.stats.medianHousePrice > 0 && b.stats.medianHousePrice > 0) {
     forBuyers = `The two suburbs land at similar price points (${formatPricePrecise(a.stats.medianHousePrice)} vs ${formatPricePrecise(b.stats.medianHousePrice)}), so the buying decision usually comes down to lifestyle fit rather than affordability.`;
   } else {
-    forBuyers = `Price data is incomplete for one or both suburbs. Check the individual profiles for the latest medians before comparing affordability.`;
+    forBuyers = `We don't yet have verified suburb-level medians for one or both of these suburbs. Check the individual profiles for the data we do publish, and the methodology page for how we source it.`;
   }
 
   // For investors: yield + growth.
@@ -360,14 +375,16 @@ export function buildCompareNarrative(a: Suburb, b: Suburb): CompareNarrative {
 }
 
 // Build a meta description from the comparison without giving up the
-// site's positioning. Used by the route's generateMetadata.
+// site's positioning. Used by the route's generateMetadata. Only
+// surfaces price/growth claims when BOTH suburbs have reliable
+// underlying data; otherwise falls back to a generic description.
 export function buildCompareMetaDescription(a: Suburb, b: Suburb): string {
   const parts: string[] = [];
   const cheap = cheaperOf(a, b);
   if (cheap) {
     const cheaperName = cheap.cheaper === "a" ? a.name : b.name;
     parts.push(`${cheaperName} is roughly ${cheap.gap.toFixed(0)}% cheaper`);
-  } else if (a.stats.medianHousePrice > 0 && b.stats.medianHousePrice > 0) {
+  } else if (hasReliablePrice(a) && hasReliablePrice(b) && a.stats.medianHousePrice > 0 && b.stats.medianHousePrice > 0) {
     parts.push(`Medians ${formatPrice(a.stats.medianHousePrice)} vs ${formatPrice(b.stats.medianHousePrice)}`);
   }
   const g = higherGrowth(a, b);
@@ -376,5 +393,5 @@ export function buildCompareMetaDescription(a: Suburb, b: Suburb): string {
     parts.push(`${fName} runs ${g.gap.toFixed(1)} points ahead on 12-month growth`);
   }
   const head = parts.length > 0 ? parts.join(", ") + ". " : "";
-  return `${head}Compare ${a.name} and ${b.name} side-by-side: median price, growth, schools, walkability, climate, risk. Free, no sign-up.`;
+  return `${head}Compare ${a.name} and ${b.name} side-by-side: schools, walkability, climate, risk and more. Free, no sign-up.`;
 }
