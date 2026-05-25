@@ -16,14 +16,17 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   persona: "first-home",
 };
 
+const META_TITLE = "Property Affordability Calculator: How Much Can I Spend?";
+const META_DESCRIPTION = "Free Australian property affordability calculator. Combines borrowing power, deposit, stamp duty and buying costs into the price you can actually afford. No sign-up.";
+
 export const metadata: Metadata = {
-  title: `${FRONTMATTER.title} | How Much Can I Spend? | ${SITE_NAME}`,
-  description: FRONTMATTER.description,
+  title: META_TITLE,
+  description: META_DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/${FRONTMATTER.slug}` },
   openGraph: {
     url: `${SITE_URL}/${FRONTMATTER.slug}`,
-    title: `${FRONTMATTER.title} | ${SITE_NAME}`,
-    description: FRONTMATTER.description,
+    title: META_TITLE,
+    description: META_DESCRIPTION,
     type: "website",
   },
   twitter: { card: "summary_large_image" },

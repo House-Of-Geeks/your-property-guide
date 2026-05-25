@@ -16,14 +16,19 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   persona: "first-home",
 };
 
+// Stamp duty is a 74k/mo AU query — the highest-volume calculator query
+// on the site. Title leans into year + state coverage to win the snippet.
+const META_TITLE = "Stamp Duty Calculator 2026: All Australian States";
+const META_DESCRIPTION = "Free stamp duty calculator for all eight Australian states and territories. Includes first home buyer concessions and foreign buyer surcharges, updated for 2025/26 rates. No sign-up.";
+
 export const metadata: Metadata = {
-  title: `${FRONTMATTER.title} 2025-2026 | All Australian States | ${SITE_NAME}`,
-  description: FRONTMATTER.description,
+  title: META_TITLE,
+  description: META_DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/${FRONTMATTER.slug}` },
   openGraph: {
     url: `${SITE_URL}/${FRONTMATTER.slug}`,
-    title: `${FRONTMATTER.title} 2025-2026 | All Australian States`,
-    description: FRONTMATTER.description,
+    title: META_TITLE,
+    description: META_DESCRIPTION,
     type: "website",
   },
   twitter: { card: "summary_large_image" },

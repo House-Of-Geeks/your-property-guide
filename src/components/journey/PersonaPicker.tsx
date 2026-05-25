@@ -11,9 +11,12 @@ interface PersonaPickerProps {
   // When true, reads localStorage to highlight the persona the user previously
   // chose. Default true; set false on hub pages where we already know context.
   highlightActive?: boolean;
-  // Layout variant. "grid" is the homepage 2x2 with full illustrations.
-  // "compact" is a horizontal row with smaller iconography for use elsewhere.
-  variant?: "grid" | "compact";
+  // Layout variant.
+  //   "grid"    — 2-up cards with full illustrations (used on persona hubs)
+  //   "compact" — small grid with thumbnails (used in narrow contexts)
+  //   "rail"    — editorial list: numeral · thumb · label · blurb · arrow.
+  //               Used on the homepage; dense, scannable, brand-on.
+  variant?: "grid" | "compact" | "rail";
 }
 
 export function PersonaPicker({ className, highlightActive = true, variant = "grid" }: PersonaPickerProps) {
@@ -23,6 +26,58 @@ export function PersonaPicker({ className, highlightActive = true, variant = "gr
   function handlePick(id: PersonaId, hubPath: string) {
     setPersona(id);
     router.push(hubPath);
+  }
+
+  if (variant === "rail") {
+    return (
+      <div className={className}>
+        <ul className="border-t border-line">
+          {PERSONAS.map((p, i) => {
+            const isActive = highlightActive && isHydrated && currentPersona === p.id;
+            return (
+              <li key={p.id} className="border-b border-line">
+                <button
+                  type="button"
+                  onClick={() => handlePick(p.id, p.hubPath)}
+                  aria-label={`${p.cardLabel}. ${p.cardBlurb}`}
+                  className={`
+                    group w-full flex items-center gap-4 sm:gap-6 py-4 sm:py-5 px-2 -mx-2 text-left transition-colors cursor-pointer
+                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary
+                    ${isActive ? "bg-surface-warm" : "hover:bg-surface-warm"}
+                  `}
+                >
+                  <span className="font-display italic text-primary text-base sm:text-lg tabular-nums leading-none w-8 sm:w-10 shrink-0">
+                    0{i + 1}
+                  </span>
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg bg-surface-raised border border-line-warm shrink-0 overflow-hidden flex items-center justify-center">
+                    <Image
+                      src={p.illustration}
+                      alt=""
+                      width={64}
+                      height={64}
+                      className="w-full h-full object-contain p-1.5"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-display text-lg sm:text-xl lg:text-2xl text-ink leading-tight tracking-tight">
+                      {p.cardLabel}
+                    </h3>
+                    <p className="font-sans text-sm text-ink-muted leading-snug mt-1 line-clamp-1 sm:line-clamp-2 lg:line-clamp-1">
+                      {p.cardBlurb}
+                    </p>
+                  </div>
+                  <span className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-ink-subtle group-hover:text-primary transition-colors shrink-0">
+                    {isActive ? "Continue" : "Open"}
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                  <ArrowRight className="sm:hidden w-5 h-5 text-ink-subtle group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0" />
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
   }
 
   if (variant === "compact") {

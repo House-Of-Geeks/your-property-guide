@@ -16,14 +16,17 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   persona: "upgrading",
 };
 
+const META_TITLE = "Refinancing Calculator Australia 2026: Should I Refinance?";
+const META_DESCRIPTION = "Free Australian refinancing calculator. Work out monthly savings, break-even point and lifetime interest saved before you switch home loans. No sign-up.";
+
 export const metadata: Metadata = {
-  title: `${FRONTMATTER.title} | Break-Even Analysis | ${SITE_NAME}`,
-  description: FRONTMATTER.description,
+  title: META_TITLE,
+  description: META_DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/${FRONTMATTER.slug}` },
   openGraph: {
     url: `${SITE_URL}/${FRONTMATTER.slug}`,
-    title: `${FRONTMATTER.title} | Break-Even Analysis | ${SITE_NAME}`,
-    description: FRONTMATTER.description,
+    title: META_TITLE,
+    description: META_DESCRIPTION,
     type: "website",
   },
   twitter: { card: "summary_large_image" },

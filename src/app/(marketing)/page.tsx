@@ -5,7 +5,6 @@ import Link from "next/link";
 
 import { LatestGuides } from "@/components/home/LatestGuides";
 import { CapitalCityOutlook } from "@/components/home/CapitalCityOutlook";
-import { NewsletterForm } from "@/components/newsletter/NewsletterForm";
 import { MatchAgent, PersonaPicker, TrustStrip } from "@/components/journey";
 import { BestDealsRail } from "@/components/best-deal";
 import { OrganizationJsonLd } from "@/components/seo";
@@ -18,11 +17,11 @@ import { HomeSuburbSearch } from "./HomeSuburbSearch";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: `${SITE_NAME}: Property in Australia, explained.`,
+  title: `Suburb profiles, property calculators & guides`,
   description: SITE_DESCRIPTION,
   alternates: { canonical: SITE_URL },
   openGraph: {
-    title: `${SITE_NAME}: Property in Australia, explained.`,
+    title: `Suburb profiles, property calculators & guides`,
     description: SITE_DESCRIPTION,
     type: "website",
   },
@@ -34,9 +33,11 @@ export default function HomePage() {
     <>
       <OrganizationJsonLd />
 
-      {/* 1. Editorial hero. Pushed to editorial scale + magazine-style
-            department slug, hairline-divided stats, single primary CTA
-            with the secondary action as an underlined link. */}
+      {/* 1. Hero. Three jobs named, search front and centre. Built off
+            real AU search demand: "property value" / "stamp duty calculator"
+            / "how much can I borrow" / "suburb profile" all dwarf the
+            "research" framing we used to lead with. The suburb search box
+            in-hero is the visual proof of what the site does. */}
       <section className="relative bg-surface-warm overflow-hidden border-b border-line">
         <Image
           src="/images/illustrations/contour.svg"
@@ -55,90 +56,103 @@ export default function HomePage() {
           className="absolute -left-12 -bottom-12 w-[420px] opacity-[0.10] pointer-events-none select-none"
         />
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:pt-20 sm:pb-28 lg:pt-24 lg:pb-32">
-          {/* Editorial slug: italic number + hairline + department label.
-              Reads as the masthead of a magazine column, not a SaaS hero. */}
-          <div className="flex items-center gap-4 mb-12 sm:mb-16">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:pt-20 sm:pb-24 lg:pt-24 lg:pb-28">
+          <div className="flex items-center gap-4 mb-10 sm:mb-12">
             <span className="font-display italic text-primary text-base sm:text-lg leading-none">
               No. 01
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
             <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              Australia&rsquo;s property reference
+              Free property research for Australia
             </span>
           </div>
 
-          {/* Display H1 at editorial scale. Italic emphasis on "Australia"
-              pushes the brand pattern harder than the previous "explained"
-              treatment, and lifts the country word as a citation hook. */}
-          <h1 className="font-display text-ink tracking-tight mb-12 max-w-[18ch] text-6xl sm:text-7xl lg:text-[112px] xl:text-[128px] leading-[0.95] font-medium">
-            Property in{" "}
-            <span className="italic font-light text-primary">Australia</span>,
-            explained.
+          {/* H1 ends with a closing-table verb ("sign") to put the reader
+              at the moment the page is here to prevent — committing
+              without the data. Italic emphasis lands on "both" so the
+              two-pillar promise is the loudest word. */}
+          <h1 className="font-display text-ink tracking-tight mb-10 max-w-[20ch] text-5xl sm:text-6xl lg:text-[96px] xl:text-[112px] leading-[0.98] font-medium">
+            Know the suburb. Run the numbers. Don&rsquo;t sign until you have{" "}
+            <span className="italic font-light text-primary">both</span>.
           </h1>
 
-          {/* Standfirst. Serif body at display weight reads like a magazine
-              lede, not a SaaS subheadline. Narrower measure for editorial
-              colour. */}
-          <p className="font-display text-2xl sm:text-3xl text-ink leading-[1.25] max-w-3xl mb-12 font-light">
-            Australia&rsquo;s biggest financial decision deserves better
-            than a portal. Sixty plain-English guides, every suburb in the
-            country, every calculator that matters. Free, ungated, written
-            for people, not portals.
+          {/* Subhead now leads with specific time-claims (5 seconds, 2
+              minutes) and anchors the value against the buyer's-agent
+              comparison, the most common paid alternative. Outcome-first,
+              feature-second. */}
+          <p className="font-display text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10 font-light">
+            Look up any suburb in 5 seconds. Run the numbers in 2 minutes.
+            The kind of research a buyer&rsquo;s agent does, for every
+            Australian suburb. Free, no sign-up.
           </p>
 
-          {/* Conversion-focused hero CTAs. The previous "Find what fits my
-              situation" pill was vague and merely scrolled to the persona
-              picker below. Property visitors arrive with an intent (sell,
-              buy, refinance, research) — give them two intent-matched
-              destinations as primary actions. Education path remains as
-              an underlined tertiary link. */}
-          <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3 sm:gap-4 mb-4">
-            <Link
-              href="/appraisal"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-ink px-7 py-3.5 text-sm font-semibold transition-colors"
-            >
-              Get a free appraisal <span aria-hidden="true">→</span>
-            </Link>
-            <Link
-              href="/find-an-expert"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-ink text-white hover:bg-primary px-7 py-3.5 text-sm font-medium transition-colors"
-            >
-              Talk to a specialist <span aria-hidden="true">→</span>
-            </Link>
+          {/* Primary action: suburb search box in the hero. This is the
+              demo. The instant a visitor types and sees suggestions, the
+              entire site clicks into place. */}
+          <div className="max-w-2xl mb-5">
+            <p className="text-[11px] uppercase tracking-[0.25em] text-ink-subtle font-sans font-medium mb-3">
+              Start with a suburb
+            </p>
+            <HomeSuburbSearch />
+            <p className="mt-3 text-sm text-ink-subtle">
+              Try{" "}
+              <Link href="/suburbs/bondi-nsw-2026" className="text-ink underline decoration-line-strong underline-offset-2 hover:decoration-primary hover:text-primary transition-colors">
+                Bondi
+              </Link>
+              ,{" "}
+              <Link href="/suburbs/toorak-vic-3142" className="text-ink underline decoration-line-strong underline-offset-2 hover:decoration-primary hover:text-primary transition-colors">
+                Toorak
+              </Link>
+              , or{" "}
+              <Link href="/suburbs/surfers-paradise-qld-4217" className="text-ink underline decoration-line-strong underline-offset-2 hover:decoration-primary hover:text-primary transition-colors">
+                Surfers Paradise
+              </Link>
+              .
+            </p>
           </div>
-          <p className="text-sm text-ink-subtle mb-16 flex flex-wrap items-center gap-x-4 gap-y-1">
-            <span className="inline-flex items-center gap-1.5">
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
-              One match, never five. Free for buyers and sellers.
-            </span>
-            <Link
-              href="#personas"
-              className="text-ink hover:text-primary border-b border-line-strong hover:border-primary pb-0.5 font-medium transition-colors"
-            >
-              Or pick your starting point
-            </Link>
-          </p>
 
-          {/* Editorial stat row. Hairline-divided columns, no icons, big
-              serif numbers and small uppercase labels. Reads as a magazine
-              masthead summary, not a feature grid. */}
+          {/* Secondary action: calculator chips. Stamp duty alone is 74k
+              AU searches/month; borrowing power is 14.8k. These chips give
+              visitors who arrived for "the numbers" a one-tap path. */}
+          <div className="mb-12">
+            <p className="text-[11px] uppercase tracking-[0.25em] text-ink-subtle font-sans font-medium mb-3">
+              Or jump to a calculator
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: "Stamp duty",       href: "/stamp-duty-calculator" },
+                { label: "Borrowing power",  href: "/borrowing-power-calculator" },
+                { label: "Mortgage",         href: "/mortgage-calculator" },
+                { label: "Rental yield",     href: "/rental-yield-calculator" },
+                { label: "First home buyer", href: "/first-home-buyers" },
+              ].map((c) => (
+                <Link
+                  key={c.href}
+                  href={c.href}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-surface px-4 py-2 text-sm font-medium text-ink hover:border-primary hover:text-primary hover:bg-surface-warm transition-colors"
+                >
+                  {c.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Stats row. Labels rewritten in the three-job vocabulary so they
+              read as proof for the H1, not generic feature counts. */}
           <div className="border-y border-line grid grid-cols-2 sm:grid-cols-4">
             {[
-              { value: "60+",     label: "Published guides" },
-              { value: "9,600+",  label: "Suburbs covered" },
-              { value: "8",       label: "States & territories" },
-              { value: "$0",      label: "No paywall, ever" },
+              { value: "9,600+", label: "Suburbs to look up" },
+              { value: "30+",    label: "Calculators and tools" },
+              { value: "60+",    label: "Plain-English guides" },
+              { value: "$0",     label: "Free, no sign-up" },
             ].map((s, i) => (
               <div
                 key={s.label}
                 className={[
                   "py-6 sm:py-7 px-4 sm:px-6",
                   i === 0 ? "pl-0" : "",
-                  // Vertical hairline between cells. Mobile (2-col): cells 1 + 3. Desktop (4-col): cells 1, 2, 3.
                   i === 1 || i === 3 ? "border-l border-line" : "",
                   i === 2 ? "sm:border-l sm:border-line" : "",
-                  // Horizontal hairline between mobile rows. Cells 2 + 3 only.
                   i >= 2 ? "border-t sm:border-t-0 border-line" : "",
                 ].filter(Boolean).join(" ")}
               >
@@ -154,12 +168,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. Persona picker. The IA spine. Hero CTA scrolls here. Editorial
-            header with hairline rule + dated department slug. */}
+      {/* 2. Persona picker. The IA spine. Reworked from a 2,100px feature
+            grid into a dense editorial list. Numeral + thumb + label + brief
+            + arrow per row, hairline-divided. Reads as a contents page, not
+            a SaaS feature grid. */}
       <section id="personas" className="bg-surface-raised border-b border-line scroll-mt-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
-          {/* Magazine-style section masthead */}
-          <div className="flex items-center gap-4 mb-12">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+          {/* Compressed masthead. Eyebrow + single-row H2 + brief sub on
+              one line at lg+. No more 2-col display layout. */}
+          <div className="flex items-center gap-4 mb-6">
             <span className="font-display italic text-primary text-base sm:text-lg leading-none">
               No. 02
             </span>
@@ -169,23 +186,18 @@ export default function HomePage() {
             </span>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-x-8 gap-y-6 mb-14 sm:mb-16">
-            <div className="lg:col-span-7">
-              <h2 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl font-medium">
-                Pick your{" "}
-                <span className="italic font-light text-primary">starting point</span>.
-              </h2>
-            </div>
-            <div className="lg:col-span-5 lg:col-start-8 flex items-end">
-              <p className="font-display text-xl sm:text-2xl text-ink leading-snug font-light max-w-md">
-                Every page on this site is built around one of five people. Tell
-                us which one is you and we&rsquo;ll show you only the guides,
-                calculators and data that fit your situation.
-              </p>
-            </div>
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 lg:gap-8 mb-8 sm:mb-10">
+            <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium">
+              Pick your{" "}
+              <span className="italic font-light text-primary whitespace-nowrap">starting point</span>.
+            </h2>
+            <p className="font-sans text-sm sm:text-base text-ink-muted leading-relaxed max-w-md">
+              Five paths. Each one is a guide built around one person, with
+              the calculators and suburb data that fit their situation.
+            </p>
           </div>
 
-          <PersonaPicker />
+          <PersonaPicker variant="rail" />
         </div>
       </section>
 
@@ -194,176 +206,93 @@ export default function HomePage() {
         <LatestGuides />
       </Suspense>
 
-      {/* 4. Tools rail (quiz + compare + all tools) */}
+      {/* 4. Tools rail. Trimmed from 3 cards to 2 — "All tools" duplicated
+            the calculator chips already in the hero. Reframed from the
+            slightly negative "Don't know where to start?" into a positive
+            invitation to deepen the research one notch. */}
       <section className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
-          {/* Magazine-style section masthead */}
-          <div className="flex items-center gap-4 mb-10">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+          <div className="flex items-center gap-4 mb-6">
             <span className="font-display italic text-primary text-base sm:text-lg leading-none">
               No. 03
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
             <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              Try a tool
+              Go a level deeper
             </span>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-x-8 gap-y-6 mb-12">
-            <div className="lg:col-span-7">
-              <h2 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl font-medium">
-                Don&rsquo;t know where to{" "}
-                <span className="italic font-light text-primary">start</span>?
-              </h2>
-            </div>
-            <div className="lg:col-span-5 lg:col-start-8 flex items-end">
-              <p className="font-display text-lg sm:text-xl text-ink leading-snug font-light max-w-md">
-                Three free tools, no sign-up. Take the match quiz, compare two
-                suburbs side by side, or open the calculator you need.
-              </p>
-            </div>
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 lg:gap-8 mb-8 sm:mb-10">
+            <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium">
+              Build your{" "}
+              <span className="italic font-light text-primary whitespace-nowrap">short list</span>.
+            </h2>
+            <p className="font-sans text-sm sm:text-base text-ink-muted leading-relaxed max-w-md">
+              Two free tools that go past the headline numbers. Take the
+              4-question quiz, or line up any two suburbs side by side.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <Link
               href="/find-your-suburb"
-              className="group flex flex-col rounded-2xl border-2 border-primary/15 bg-surface-warm p-7 hover:border-primary/40 hover:shadow-md transition-all"
+              className="group flex flex-col rounded-2xl border-2 border-primary/20 bg-surface-warm p-7 hover:border-primary/50 hover:shadow-md transition-all"
             >
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-cta mb-3">Quiz</p>
-              <h3 className="font-display text-2xl text-ink group-hover:text-primary transition-colors leading-tight mb-3">
+              <p className="text-xs font-sans uppercase tracking-[0.25em] text-cta mb-3">Quiz · 2 minutes</p>
+              <h3 className="font-display text-2xl sm:text-3xl text-ink group-hover:text-primary transition-colors leading-tight mb-3 tracking-tight">
                 Find your suburb in 4 questions
               </h3>
-              <p className="font-sans text-sm text-ink-muted leading-relaxed mb-4 flex-1">
-                Tell us what matters and your budget. We&rsquo;ll score six suburbs against your priorities.
+              <p className="font-sans text-sm text-ink-muted leading-relaxed mb-5 flex-1">
+                Tell us what matters and what you can spend. We score six
+                Australian suburbs against your priorities.
               </p>
               <span className="font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
-                Take the quiz →
+                Find my suburb (2 min) →
               </span>
             </Link>
 
             <Link
               href="/compare"
-              className="group flex flex-col rounded-2xl border-2 border-primary/15 bg-surface-warm p-7 hover:border-primary/40 hover:shadow-md transition-all"
+              className="group flex flex-col rounded-2xl border-2 border-primary/20 bg-surface-warm p-7 hover:border-primary/50 hover:shadow-md transition-all"
             >
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-cta mb-3">Tool</p>
-              <h3 className="font-display text-2xl text-ink group-hover:text-primary transition-colors leading-tight mb-3">
-                Compare two suburbs side by side
+              <p className="text-xs font-sans uppercase tracking-[0.25em] text-cta mb-3">Tool · Side by side</p>
+              <h3 className="font-display text-2xl sm:text-3xl text-ink group-hover:text-primary transition-colors leading-tight mb-3 tracking-tight">
+                Compare two suburbs head to head
               </h3>
-              <p className="font-sans text-sm text-ink-muted leading-relaxed mb-4 flex-1">
-                Pick any two Australian suburbs and line them up, median, growth, schools, walkability, risk.
+              <p className="font-sans text-sm text-ink-muted leading-relaxed mb-5 flex-1">
+                Pick any two Australian suburbs and line them up: median,
+                growth, schools, walkability, climate, crime.
               </p>
               <span className="font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
-                Open the tool →
-              </span>
-            </Link>
-
-            <Link
-              href="/tools"
-              className="group flex flex-col rounded-2xl border border-line bg-surface-warm p-7 hover:border-primary/40 hover:shadow-md transition-all"
-            >
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">All tools</p>
-              <h3 className="font-display text-2xl text-ink group-hover:text-primary transition-colors leading-tight mb-3">
-                Every calculator and tool
-              </h3>
-              <p className="font-sans text-sm text-ink-muted leading-relaxed mb-4 flex-1">
-                Mortgage, stamp duty, borrowing power, rental yield, CGT, refinancing. Every calculator we publish, in one index.
-              </p>
-              <span className="font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
-                Browse tools →
+                Pick two suburbs →
               </span>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 5. Best Deals rail — vetted partner properties. Framed as "when
-            you're ready" rather than as a listings portal. Renders nothing
-            if no live deals exist (no empty rail). */}
-      <Suspense fallback={null}>
-        <BestDealsRail
-          eyebrow="When you're ready to act"
-          heading="Featured opportunities from our vetted partners."
-          body="A small, considered set of properties from partner agents we'd happily put a family member in front of. We review every one before it goes live. The partner pays us only if work goes ahead."
-        />
-      </Suspense>
-
-      {/* 6. Suburb explorer — kept but demoted from the prior near-top
-            position. We still want the suburb tool discoverable, but we
-            shouldn't lead with it (it reads as data-portal positioning). */}
-      <section className="relative bg-surface-warm border-y border-line-warm overflow-hidden">
-        <Image
-          src="/images/illustrations/street-grid.svg"
-          alt=""
-          width={400}
-          height={400}
-          aria-hidden="true"
-          className="absolute -right-12 -top-12 w-[360px] opacity-[0.12] pointer-events-none select-none"
-        />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
-          {/* Magazine-style section masthead */}
-          <div className="flex items-center gap-4 mb-10">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
-              No. 04
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              Researching a specific suburb?
-            </span>
-          </div>
-
-          <div className="grid lg:grid-cols-12 gap-x-8 gap-y-8 items-end">
-            <div className="lg:col-span-5">
-              <h2 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-4 font-medium">
-                Look it{" "}
-                <span className="italic font-light text-primary">up</span>.
-              </h2>
-              <p className="font-display text-lg sm:text-xl text-ink leading-snug font-light max-w-md">
-                Median, growth, schools, walk score, climate, crime. Every
-                Australian suburb. Free, no sign-up, no email gate.
-              </p>
-            </div>
-            <div className="lg:col-span-7">
-              <HomeSuburbSearch />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Capital city outlook — quarterly authoritative read. */}
+      {/* 5. Capital city outlook — quarterly authoritative read. Moved up
+            so editorial authority is stacked together (Guides → Outlook)
+            before any commercial surface. */}
       <Suspense fallback={null}>
         <CapitalCityOutlook />
       </Suspense>
 
-      {/* 8. Newsletter band */}
-      <section className="bg-surface-warm border-y border-line-warm">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
-          <div className="grid lg:grid-cols-12 gap-8 items-end">
-            <div className="lg:col-span-7">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
-                The quarterly read
-              </p>
-              <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
-                Get the next market read in your <span className="italic text-primary">inbox</span>.
-              </h2>
-              <p className="mt-3 font-sans text-base text-ink-muted leading-relaxed max-w-md">
-                One email a quarter. Capital city outlooks, RBA changes, and
-                the data updates worth knowing about. No spam, unsubscribe
-                anytime.
-              </p>
-            </div>
-            <div className="lg:col-span-5">
-              <NewsletterForm variant="inline" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 10. Match engine — the conversion surface. Reframed eyebrow makes
-              clear this is the "talk to a person" path, not lead capture. */}
+      {/* 6. Best Deals rail. Reframed away from listings-portal language
+            into specialist-introduction language so it doesn't conflict
+            with the hero's "no email gate" positioning. Renders nothing
+            if no live deals exist (no empty rail). */}
       <Suspense fallback={null}>
-        <MatchAgent />
+        <BestDealsRail
+          eyebrow="When you're ready to act"
+          heading="A short list, hand-picked by our editors."
+          body="A small, considered set of properties from partner agents we'd happily put a family member in front of. We review every one before it goes live. You never pay us — partner agents do, and only if work goes ahead."
+        />
       </Suspense>
 
-      {/* 11. Why we're free — charter. Trust moat. */}
+      {/* 7. Why we're free — trust charter. Moved ABOVE MatchAgent so
+            visitors read the charter (no paywall, no resale, every match
+            disclosed) before being asked to share their situation. */}
       <section className="relative bg-surface-sunken border-t border-line overflow-hidden">
         <Image
           src="/images/illustrations/contour.svg"
@@ -373,40 +302,63 @@ export default function HomePage() {
           aria-hidden="true"
           className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[1200px] max-w-none opacity-[0.15] pointer-events-none select-none"
         />
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-24 sm:py-28">
-          {/* Magazine-style section masthead, centred to match the charter
-              treatment */}
-          <div className="flex items-center justify-center gap-4 mb-12">
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+          <div className="flex items-center justify-center gap-4 mb-10">
             <span className="font-display italic text-primary text-base sm:text-lg leading-none">
-              No. 05
+              No. 04
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
             <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              Why we&rsquo;re free
+              What it costs you
             </span>
           </div>
 
-          <div className="text-center mb-14">
-            <h2 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-4xl mx-auto font-medium">
+          <div className="text-center mb-10 sm:mb-12">
+            <h2 className="font-display text-ink leading-[1.0] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-4xl mx-auto font-medium">
               Buyers and sellers pay nothing.{" "}
               <span className="italic font-light text-primary">Ever</span>.
             </h2>
-            <p className="font-display font-light text-xl sm:text-2xl text-ink leading-snug max-w-3xl mx-auto">
-              Every guide, calculator and suburb profile on this site is free.
-              Partner agents and brokers pay us only when matched work goes
-              ahead. No paywall, no email gate, no data resale, and every
-              match is disclosed up front.
+            <p className="font-display font-light text-lg sm:text-xl text-ink leading-snug max-w-2xl mx-auto">
+              Not the guides. Not the calculators. Not the suburb data. Not
+              the introduction to a specialist. Partner agents and brokers
+              pay us only when matched work goes ahead.
             </p>
+          </div>
+
+          {/* Value stack. Hormozi-style: name every free thing in one
+              place so the visitor can see the asymmetry between what they
+              get and what they're asked to give up (nothing). */}
+          <div className="mb-12 max-w-3xl mx-auto">
+            <p className="text-center text-[11px] uppercase tracking-[0.25em] text-ink-subtle font-sans font-medium mb-5">
+              What you get, for $0
+            </p>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 font-sans text-sm text-ink">
+              {[
+                "9,600+ suburb profiles (median, growth, schools, crime)",
+                "7 property calculators (stamp duty, mortgage, borrowing power)",
+                "60+ plain-English guides for buyers and sellers",
+                "Side-by-side compare for any two Australian suburbs",
+                "4-question suburb-match quiz",
+                "One vetted specialist introduction (when you want it)",
+                "Quarterly market read in your inbox",
+                "Free property appraisal (sellers)",
+              ].map((line) => (
+                <li key={line} className="flex items-start gap-2.5 py-1">
+                  <span className="text-cta leading-6 shrink-0" aria-hidden="true">✓</span>
+                  <span className="leading-6">{line}</span>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <TrustStrip
             variant="rich"
             className="mb-10"
             items={[
-              { lead: "No paywall.",             body: "Every page is free, and it stays that way. No login, no email gate." },
-              { lead: "No data resale.",         body: "Your contact details never go anywhere except to the one specialist you choose." },
+              { lead: "No paywall.",               body: "Every page is free, and it stays that way. No login, no email gate." },
+              { lead: "No data resale, ever.",     body: "Your contact details only go to the one specialist you choose. We don't sell, share, or build profiles." },
+              { lead: "Walk away anytime.",        body: "If you don't reply to the match, there's no follow-up. No calls, no nagging emails, no second specialist." },
               { lead: "Disclosed on every match.", body: "If a partner pays us when you work with them, you see that disclosure before you decide." },
-              { lead: "Vetted partners only.",   body: "We don't take referral fees from anyone we wouldn't put our own family in front of." },
             ]}
           />
 
@@ -420,6 +372,15 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* 8. Match engine — the lead-capture surface. Now follows the trust
+            charter so the visitor reads "no paywall / no resale / every
+            match disclosed" before they hand over their situation. The
+            soft newsletter fallback for non-converters lives in the global
+            footer ("The quarterly read"), so no duplicate band here. */}
+      <Suspense fallback={null}>
+        <MatchAgent />
+      </Suspense>
     </>
   );
 }

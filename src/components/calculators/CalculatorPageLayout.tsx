@@ -154,12 +154,19 @@ export function CalculatorPageLayout({
                 {explainer}
               </div>
 
-              {persona && (
+              {/* Funnel exit. Every calculator gets one. When the calculator
+                  has a persona (finance-related), use the broker-specific
+                  framing; otherwise fall back to the generic "right
+                  specialist for your situation" copy which covers brokers,
+                  accountants and conveyancers. */}
+              {persona ? (
                 <ExpertCTA
                   variant="inline"
                   headline="Want a real broker to run the numbers properly?"
                   body="Calculator estimates are a starting point. A mortgage broker can compare 30+ lender policies and tell you what you&rsquo;ll actually be approved for. Free for buyers, no commitment."
                 />
+              ) : (
+                <ExpertCTA variant="inline" />
               )}
 
               <Faq items={faqs} title="Common questions" />

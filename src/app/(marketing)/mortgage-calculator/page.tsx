@@ -16,14 +16,20 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   persona: "first-home",
 };
 
+// Title and description tuned for the search intent that brings traffic
+// here ("mortgage calculator", "home loan repayments"), not just the
+// product name. H1 (FRONTMATTER.title) stays clean.
+const META_TITLE = "Australian Mortgage Calculator 2026: Repayments & Interest";
+const META_DESCRIPTION = "Free Australian mortgage calculator. Estimate weekly, fortnightly or monthly home-loan repayments, total interest paid, and view a full amortisation schedule. No sign-up.";
+
 export const metadata: Metadata = {
-  title: `${FRONTMATTER.title} | ${SITE_NAME}`,
-  description: FRONTMATTER.description,
+  title: META_TITLE,
+  description: META_DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/${FRONTMATTER.slug}` },
   openGraph: {
     url: `${SITE_URL}/${FRONTMATTER.slug}`,
-    title: `${FRONTMATTER.title} | ${SITE_NAME}`,
-    description: FRONTMATTER.description,
+    title: META_TITLE,
+    description: META_DESCRIPTION,
     type: "website",
   },
   twitter: { card: "summary_large_image" },

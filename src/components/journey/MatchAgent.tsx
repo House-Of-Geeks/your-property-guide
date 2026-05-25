@@ -203,16 +203,16 @@ export function MatchAgent({
               the right person.
             </h2>
             <p className="font-display font-light text-xl sm:text-2xl text-white/80 leading-snug max-w-md mb-12">
-              Three quick questions. We&rsquo;ll point you to one specialist
-              who fits your situation, whether that&rsquo;s an agent, broker,
-              property accountant or conveyancer.
+              Three questions. One specialist (agent, broker, accountant or
+              conveyancer). 24-hour response. Free for buyers and sellers,
+              no commitment.
             </p>
             <div className="grid grid-cols-2 gap-x-6 gap-y-6 max-w-md">
               {[
-                ["01", "You answer 3 quick questions"],
-                ["02", "We pick the best-fit specialist"],
+                ["01", "You answer 3 questions (60 seconds)"],
+                ["02", "We pick ONE specialist, not five"],
                 ["03", "They reach out within 24 hours"],
-                ["04", "You decide whether to proceed"],
+                ["04", "You decide. Walk away anytime, no follow-up."],
               ].map(([n, t]) => (
                 <div key={n} className="border-t border-white/15 pt-4">
                   <p className="font-display italic text-cta text-base mb-1.5 tabular-nums">{n}</p>

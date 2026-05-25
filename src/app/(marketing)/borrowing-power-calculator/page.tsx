@@ -16,14 +16,19 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   persona: "first-home",
 };
 
+// Title tuned for the 14,800/mo "how much can I borrow" query, which is
+// the dominant search intent for this page. H1 stays clean.
+const META_TITLE = "How Much Can I Borrow? Borrowing Power Calculator Australia";
+const META_DESCRIPTION = "Free Australian borrowing power calculator. Estimate how much a bank will lend you for a home loan, based on your income, expenses and the APRA 3% buffer. No sign-up.";
+
 export const metadata: Metadata = {
-  title: `${FRONTMATTER.title} | ${SITE_NAME}`,
-  description: FRONTMATTER.description,
+  title: META_TITLE,
+  description: META_DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/${FRONTMATTER.slug}` },
   openGraph: {
     url: `${SITE_URL}/${FRONTMATTER.slug}`,
-    title: `${FRONTMATTER.title} | ${SITE_NAME}`,
-    description: FRONTMATTER.description,
+    title: META_TITLE,
+    description: META_DESCRIPTION,
     type: "website",
   },
   twitter: { card: "summary_large_image" },

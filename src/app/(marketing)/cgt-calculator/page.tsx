@@ -16,14 +16,17 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   persona: "investing",
 };
 
+const META_TITLE = "CGT Calculator for Australian Property: 50% Discount Included";
+const META_DESCRIPTION = "Free capital gains tax calculator for Australian investment property. Includes the 50% CGT discount, main residence exemption and partial exemption. No sign-up.";
+
 export const metadata: Metadata = {
-  title: `${FRONTMATTER.title} for Property | ${SITE_NAME}`,
-  description: FRONTMATTER.description,
+  title: META_TITLE,
+  description: META_DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/${FRONTMATTER.slug}` },
   openGraph: {
     url: `${SITE_URL}/${FRONTMATTER.slug}`,
-    title: `${FRONTMATTER.title} for Property | ${SITE_NAME}`,
-    description: FRONTMATTER.description,
+    title: META_TITLE,
+    description: META_DESCRIPTION,
     type: "website",
   },
   twitter: { card: "summary_large_image" },

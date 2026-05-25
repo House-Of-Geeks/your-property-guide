@@ -16,7 +16,10 @@ export function propertyDescription(property: Property): string {
 }
 
 export function suburbTitle(suburb: Suburb): string {
-  return `${suburb.name} Suburb Profile - Real Estate & Median House Price ${suburb.state} ${suburb.postcode}`;
+  // Front-loads the suburb identifier (what people search), then names the
+  // three highest-volume intents: "suburb profile" (2,400/mo), "median
+  // house price" (1,000/mo), and a year marker for freshness.
+  return `${suburb.name}, ${suburb.state} ${suburb.postcode}: Suburb Profile, Median Price & 2026 Market Data`;
 }
 
 export function suburbBuyTitle(suburb: Suburb): string {
@@ -36,7 +39,9 @@ export function suburbRentDescription(suburb: Suburb): string {
 }
 
 export function suburbDescription(suburb: Suburb): string {
-  return `Explore properties for sale and rent in ${suburb.name} ${suburb.postcode}. Median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}. View market stats, schools, and listings.`;
+  // Leads with "Free suburb profile" so the description matches the way
+  // people actually search ("free property report" runs 1,000/mo).
+  return `Free suburb profile for ${suburb.name}, ${suburb.state} ${suburb.postcode}. Median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}, growth, schools, walkability, crime and current listings. No sign-up.`;
 }
 
 export function agentTitle(agent: Agent): string {

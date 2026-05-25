@@ -16,14 +16,17 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   persona: "investing",
 };
 
+const META_TITLE = "Rental Yield Calculator Australia: Gross & Net Yield";
+const META_DESCRIPTION = "Free Australian rental yield calculator. Get gross and net yield, weekly cash flow and a full picture that includes purchase costs and ongoing expenses. No sign-up.";
+
 export const metadata: Metadata = {
-  title: `${FRONTMATTER.title} | ${SITE_NAME}`,
-  description: FRONTMATTER.description,
+  title: META_TITLE,
+  description: META_DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/${FRONTMATTER.slug}` },
   openGraph: {
     url: `${SITE_URL}/${FRONTMATTER.slug}`,
-    title: `${FRONTMATTER.title} | ${SITE_NAME}`,
-    description: FRONTMATTER.description,
+    title: META_TITLE,
+    description: META_DESCRIPTION,
     type: "website",
   },
   twitter: { card: "summary_large_image" },
