@@ -63,7 +63,7 @@ export default function HomePage() {
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
             <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              Free property research for Australia
+              Property research without the portal
             </span>
           </div>
 
@@ -76,22 +76,25 @@ export default function HomePage() {
             <span className="italic font-light text-primary">both</span>.
           </h1>
 
-          {/* Subhead now leads with specific time-claims (5 seconds, 2
-              minutes) and anchors the value against the buyer's-agent
-              comparison, the most common paid alternative. Outcome-first,
-              feature-second. */}
+          {/* Subhead stacks the SPECIFIC data points behind the two
+              time-claims, so the visitor knows exactly what they get
+              when they search. "5 seconds / median, growth, schools..."
+              is a Hormozi-style value stack inside an Ogilvy-style
+              specific promise. */}
           <p className="font-display text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10 font-light">
-            Look up any suburb in 5 seconds. Run the numbers in 2 minutes.
-            The kind of research a buyer&rsquo;s agent does, for every
-            Australian suburb. Free, no sign-up.
+            Look up any suburb in 5 seconds, see median, growth, rent,
+            schools, walkability, climate and risk. Run the numbers in 2
+            minutes, stamp duty, deposit, repayment, yield. The kind of
+            research a buyer&rsquo;s agent does, free.
           </p>
 
-          {/* Primary action: suburb search box in the hero. This is the
-              demo. The instant a visitor types and sees suggestions, the
-              entire site clicks into place. */}
+          {/* Primary action: suburb search box in the hero. Label echoes
+              the H1's first verb ("Know the suburb"), so the eye runs
+              H1 -> label -> input -> sample suburbs in one motion.
+              Cohesion lifts CTR on the search input. */}
           <div className="max-w-2xl mb-5">
             <p className="text-[11px] uppercase tracking-[0.25em] text-ink-subtle font-sans font-medium mb-3">
-              Start with a suburb
+              Know the suburb
             </p>
             <HomeSuburbSearch />
             <p className="mt-3 text-sm text-ink-subtle">
@@ -109,11 +112,11 @@ export default function HomePage() {
               </Link>
               .
             </p>
-            {/* Trust strip directly under the search input. Stacks the
-                three honest differentiators in one line: scale (9,600+),
-                independence (no portal), zero friction (no login).
-                Lands in the moment of first interaction, where it's
-                most useful. */}
+            {/* Trust strip directly under the search input. Four
+                honest one-word differentiators in editorial caps:
+                scale, independence, freshness, friction. Stacks more
+                proof in the same vertical space, lands at the moment
+                of first interaction. */}
             <p className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-sans font-medium">
               <span className="inline-flex items-center gap-1.5">
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
@@ -122,16 +125,19 @@ export default function HomePage() {
               <span aria-hidden="true">·</span>
               <span>Independent, no portal ties</span>
               <span aria-hidden="true">·</span>
-              <span>No login required</span>
+              <span>Updated weekly</span>
+              <span aria-hidden="true">·</span>
+              <span>No login, no paywall</span>
             </p>
           </div>
 
           {/* Secondary action: calculator chips. Stamp duty alone is 74k
-              AU searches/month; borrowing power is 14.8k. These chips give
-              visitors who arrived for "the numbers" a one-tap path. */}
+              AU searches/month; borrowing power is 14.8k. Label echoes
+              the H1's second verb ("Run the numbers"), so the visitor
+              eye runs H1 -> action labels in one motion. */}
           <div className="mb-12">
             <p className="text-[11px] uppercase tracking-[0.25em] text-ink-subtle font-sans font-medium mb-3">
-              Or jump to a calculator
+              Run the numbers
             </p>
             <div className="flex flex-wrap gap-2">
               {[
