@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import { LatestGuides } from "@/components/home/LatestGuides";
 import { CapitalCityOutlook } from "@/components/home/CapitalCityOutlook";
+import { SpotlightSuburbCard } from "@/components/home/SpotlightSuburbCard";
 import { MatchAgent, PersonaPicker, TrustStrip } from "@/components/journey";
 import { BestDealsRail } from "@/components/best-deal";
 import { OrganizationJsonLd } from "@/components/seo";
@@ -56,7 +57,10 @@ export default function HomePage() {
           className="absolute -left-12 -bottom-12 w-[420px] opacity-[0.10] pointer-events-none select-none"
         />
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:pt-20 sm:pb-24 lg:pt-24 lg:pb-28">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
+          {/* Eyebrow runs full-width above the 2-column split, so the
+              positioning line sits at the top of the page like a
+              magazine masthead. */}
           <div className="flex items-center gap-4 mb-10 sm:mb-12">
             <span className="font-display italic text-primary text-base sm:text-lg leading-none">
               No. 01
@@ -67,94 +71,107 @@ export default function HomePage() {
             </span>
           </div>
 
-          {/* H1 ends with a closing-table verb ("sign") to put the reader
-              at the moment the page is here to prevent — committing
-              without the data. Italic emphasis lands on "both" so the
-              two-pillar promise is the loudest word. */}
-          <h1 className="font-display text-ink tracking-tight mb-10 max-w-[20ch] text-5xl sm:text-6xl lg:text-[96px] xl:text-[112px] leading-[0.98] font-medium">
-            Know the suburb. Run the numbers. Don&rsquo;t sign until you have{" "}
-            <span className="italic font-light text-primary">both</span>.
-          </h1>
+          {/* 2-column hero on desktop. Left: copy + actions. Right:
+              today's spotlight suburb card (real data, rotates daily).
+              Show, don't tell: the visitor sees the actual depth of a
+              suburb profile before they've typed a single character.
+              On mobile, single column with the spotlight after the
+              actions so the primary CTA (search) stays at the top. */}
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start mb-10 lg:mb-12">
+            {/* Left column: H1 + sub + actions */}
+            <div className="lg:col-span-7">
+              {/* H1 sized down from the previous full-width version
+                  (lg:text-[96px]/xl:[112px]) so the 2-column layout
+                  reads as balanced rather than top-heavy. The
+                  closing-table verb "sign" and italic "both" still
+                  carry the rhetorical weight. */}
+              <h1 className="font-display text-ink tracking-tight mb-8 text-5xl sm:text-6xl lg:text-[72px] xl:text-[84px] leading-[0.98] font-medium">
+                Know the suburb. Run the numbers. Don&rsquo;t sign until you have{" "}
+                <span className="italic font-light text-primary">both</span>.
+              </h1>
 
-          {/* Subhead stacks the SPECIFIC data points behind the two
-              time-claims, so the visitor knows exactly what they get
-              when they search. "5 seconds / median, growth, schools..."
-              is a Hormozi-style value stack inside an Ogilvy-style
-              specific promise. */}
-          <p className="font-display text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10 font-light">
-            Look up any suburb in 5 seconds, see median, growth, rent,
-            schools, walkability, climate and risk. Run the numbers in 2
-            minutes, stamp duty, deposit, repayment, yield. The kind of
-            research a buyer&rsquo;s agent does, free.
-          </p>
+              {/* Sub tightened back from the wordy comma-soup version.
+                  Two clean time claims + the buyer's-agent anchor +
+                  the "free" punch. The specifics now live in the
+                  spotlight card on the right, so the sub doesn't have
+                  to carry them in prose. */}
+              <p className="font-display text-xl sm:text-2xl text-ink leading-[1.3] mb-8 font-light">
+                Look up any suburb in 5 seconds. Run the numbers in 2
+                minutes. The kind of research a buyer&rsquo;s agent does,
+                for every Australian suburb. Free, no sign-up.
+              </p>
 
-          {/* Primary action: suburb search box in the hero. Label echoes
-              the H1's first verb ("Know the suburb"), so the eye runs
-              H1 -> label -> input -> sample suburbs in one motion.
-              Cohesion lifts CTR on the search input. */}
-          <div className="max-w-2xl mb-5">
-            <p className="text-[11px] uppercase tracking-[0.25em] text-ink-subtle font-sans font-medium mb-3">
-              Know the suburb
-            </p>
-            <HomeSuburbSearch />
-            <p className="mt-3 text-sm text-ink-subtle">
-              Try{" "}
-              <Link href="/suburbs/bondi-nsw-2026" className="text-ink underline decoration-line-strong underline-offset-2 hover:decoration-primary hover:text-primary transition-colors">
-                Bondi
-              </Link>
-              ,{" "}
-              <Link href="/suburbs/toorak-vic-3142" className="text-ink underline decoration-line-strong underline-offset-2 hover:decoration-primary hover:text-primary transition-colors">
-                Toorak
-              </Link>
-              , or{" "}
-              <Link href="/suburbs/surfers-paradise-qld-4217" className="text-ink underline decoration-line-strong underline-offset-2 hover:decoration-primary hover:text-primary transition-colors">
-                Surfers Paradise
-              </Link>
-              .
-            </p>
-            {/* Trust strip directly under the search input. Four
-                honest one-word differentiators in editorial caps:
-                scale, independence, freshness, friction. Stacks more
-                proof in the same vertical space, lands at the moment
-                of first interaction. */}
-            <p className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-sans font-medium">
-              <span className="inline-flex items-center gap-1.5">
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
-                9,600+ suburbs
-              </span>
-              <span aria-hidden="true">·</span>
-              <span>Independent, no portal ties</span>
-              <span aria-hidden="true">·</span>
-              <span>Updated weekly</span>
-              <span aria-hidden="true">·</span>
-              <span>No login, no paywall</span>
-            </p>
-          </div>
+              {/* Primary action: suburb search box. Label echoes the
+                  H1's first verb. */}
+              <div className="mb-6">
+                <p className="text-[11px] uppercase tracking-[0.25em] text-ink-subtle font-sans font-medium mb-3">
+                  Know the suburb
+                </p>
+                <HomeSuburbSearch />
+                <p className="mt-3 text-sm text-ink-subtle">
+                  Try{" "}
+                  <Link href="/suburbs/bondi-nsw-2026" className="text-ink underline decoration-line-strong underline-offset-2 hover:decoration-primary hover:text-primary transition-colors">
+                    Bondi
+                  </Link>
+                  ,{" "}
+                  <Link href="/suburbs/toorak-vic-3142" className="text-ink underline decoration-line-strong underline-offset-2 hover:decoration-primary hover:text-primary transition-colors">
+                    Toorak
+                  </Link>
+                  , or{" "}
+                  <Link href="/suburbs/surfers-paradise-qld-4217" className="text-ink underline decoration-line-strong underline-offset-2 hover:decoration-primary hover:text-primary transition-colors">
+                    Surfers Paradise
+                  </Link>
+                  .
+                </p>
+              </div>
 
-          {/* Secondary action: calculator chips. Stamp duty alone is 74k
-              AU searches/month; borrowing power is 14.8k. Label echoes
-              the H1's second verb ("Run the numbers"), so the visitor
-              eye runs H1 -> action labels in one motion. */}
-          <div className="mb-12">
-            <p className="text-[11px] uppercase tracking-[0.25em] text-ink-subtle font-sans font-medium mb-3">
-              Run the numbers
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {[
-                { label: "Stamp duty",       href: "/stamp-duty-calculator" },
-                { label: "Borrowing power",  href: "/borrowing-power-calculator" },
-                { label: "Mortgage",         href: "/mortgage-calculator" },
-                { label: "Rental yield",     href: "/rental-yield-calculator" },
-                { label: "First home buyer", href: "/first-home-buyers" },
-              ].map((c) => (
-                <Link
-                  key={c.href}
-                  href={c.href}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-surface px-4 py-2 text-sm font-medium text-ink hover:border-primary hover:text-primary hover:bg-surface-warm transition-colors"
-                >
-                  {c.label}
-                </Link>
-              ))}
+              {/* Secondary action: calculator chips. Label echoes the
+                  H1's second verb. */}
+              <div className="mb-5">
+                <p className="text-[11px] uppercase tracking-[0.25em] text-ink-subtle font-sans font-medium mb-3">
+                  Run the numbers
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { label: "Stamp duty",       href: "/stamp-duty-calculator" },
+                    { label: "Borrowing power",  href: "/borrowing-power-calculator" },
+                    { label: "Mortgage",         href: "/mortgage-calculator" },
+                    { label: "Rental yield",     href: "/rental-yield-calculator" },
+                    { label: "First home buyer", href: "/first-home-buyers" },
+                  ].map((c) => (
+                    <Link
+                      key={c.href}
+                      href={c.href}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-surface px-4 py-2 text-sm font-medium text-ink hover:border-primary hover:text-primary hover:bg-surface-warm transition-colors"
+                    >
+                      {c.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Trust strip — four micro-proof points in editorial caps. */}
+              <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-sans font-medium">
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
+                  9,600+ suburbs
+                </span>
+                <span aria-hidden="true">·</span>
+                <span>Independent, no portal ties</span>
+                <span aria-hidden="true">·</span>
+                <span>Updated weekly</span>
+                <span aria-hidden="true">·</span>
+                <span>No login, no paywall</span>
+              </p>
+            </div>
+
+            {/* Right column: today's spotlight suburb card. Visual
+                proof of what the visitor gets when they search.
+                Rotates daily via pickSpotlightSlug. */}
+            <div className="lg:col-span-5 lg:sticky lg:top-24 order-last lg:order-none">
+              <Suspense fallback={null}>
+                <SpotlightSuburbCard />
+              </Suspense>
             </div>
           </div>
 
