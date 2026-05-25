@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
+import { Faq } from "@/components/guide";
+import { MatchAgent, StickyMatchCTA } from "@/components/journey";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
+import {
+  buildCompareNarrative,
+  buildCompareMetaDescription,
+} from "@/lib/compare-narrative";
 import type { Suburb } from "@/types";
 
 interface ComparePageProps {
@@ -47,8 +54,13 @@ export async function generateMetadata({ params }: ComparePageProps): Promise<Me
   ]);
   if (!suburbA || !suburbB) return { title: "Suburb Not Found" };
 
-  const title = `${suburbA.name} vs ${suburbB.name}: Side-by-Side Suburb Comparison | Your Property Guide`;
-  const description = `Compare ${suburbA.name} and ${suburbB.name} suburb-to-suburb. Median house prices: ${suburbA.stats.medianHousePrice > 0 ? formatPriceFull(suburbA.stats.medianHousePrice) : "–"} vs ${suburbB.stats.medianHousePrice > 0 ? formatPriceFull(suburbB.stats.medianHousePrice) : "–"}. Schools, walkability, flood risk, climate, and more.`;
+  // Title: front-load the suburb names (what people search) and the
+  // year for freshness. Root layout template appends the brand, so we
+  // don't suffix it here (avoids the "| YPG | YPG" duplication).
+  const title = `${suburbA.name} vs ${suburbB.name}: Property Prices, Schools & Market Data 2026`;
+  // Description built from the actual data, so each pair's description
+  // is unique and informative — much better than a static template.
+  const description = buildCompareMetaDescription(suburbA, suburbB);
 
   // Build a custom OG via the guide handler, it accepts arbitrary title/desc
   const ogTitle = `${suburbA.name} vs ${suburbB.name}`;
@@ -208,6 +220,12 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
   const suburbAName = suburbA.name;
   const suburbBName = suburbB.name;
 
+  // Algorithmic narrative. Generates 2-paragraph intro, three persona
+  // verdicts (buyers/investors/families), and 5-7 dynamic FAQs based
+  // on the data gaps between the two suburbs. Deterministic, caches
+  // cleanly under the 24h ISR.
+  const narrative = buildCompareNarrative(suburbA, suburbB);
+
   function cmp(
     vA: number | null | undefined,
     vB: number | null | undefined,
@@ -294,6 +312,19 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
               <> {suburbBName} edges out on more headline metrics in this comparison.</>
             )}
           </p>
+
+          {/* Algorithmic comparative narrative. Two paragraphs that
+              read like a property column lede — anchored to the actual
+              gaps in the data, not generic "compare two suburbs" copy. */}
+          {narrative.intro.length > 0 && (
+            <div className="mt-8 space-y-4 max-w-3xl">
+              {narrative.intro.map((para, i) => (
+                <p key={i} className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7]">
+                  {para}
+                </p>
+              ))}
+            </div>
+          )}
 
           {/* Two suburb header cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10">
@@ -528,6 +559,68 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
           </Link>
         </div>
 
+        {/* Persona verdicts. Three short reads — "for buyers / for
+            investors / for families" — that interpret the comparison
+            in plain English. The page now answers "which suburb makes
+            sense for me?" not just "what are the numbers?". */}
+        <section className="pt-4">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              The take
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              Which suburb suits which buyer
+            </span>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-4">
+            <div className="rounded-2xl border border-line bg-surface-raised p-6">
+              <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-3">
+                For buyers
+              </p>
+              <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
+                {narrative.verdicts.forBuyers}
+              </p>
+            </div>
+            <div className="rounded-2xl border border-line bg-surface-raised p-6">
+              <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-3">
+                For investors
+              </p>
+              <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
+                {narrative.verdicts.forInvestors}
+              </p>
+            </div>
+            <div className="rounded-2xl border border-line bg-surface-raised p-6">
+              <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-3">
+                For families
+              </p>
+              <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
+                {narrative.verdicts.forFamilies}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ. Dynamic per-pair questions, FAQPage schema attached for
+            rich-snippet eligibility on SERPs that often surface the
+            "X vs Y" query pattern. */}
+        {narrative.faqs.length > 0 && (
+          <section className="pt-8">
+            <div className="flex items-center gap-4 mb-6">
+              <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                Common questions
+              </span>
+              <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+              <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+                {suburbAName} vs {suburbBName}
+              </span>
+            </div>
+            <div className="max-w-3xl">
+              <Faq items={narrative.faqs} />
+            </div>
+          </section>
+        )}
+
         {/* Compare with more */}
         {suburbA.nearbySuburbs.length > 0 && (
           <div className="rounded-2xl border border-line bg-surface-warm p-6">
@@ -567,6 +660,23 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
           </div>
         )}
       </div>
+
+      {/* MatchAgent — visitors who got this far are evaluating two
+          options and likely high-intent. Drop the lead form right
+          where the decision is being made. Intent defaults to buying
+          since most comparison traffic is purchase-led. */}
+      <Suspense fallback={null}>
+        <MatchAgent initialIntent="buying" />
+      </Suspense>
+
+      {/* Persistent sticky CTA — slides in once the visitor has
+          scrolled past 30% of the comparison. Suburb-aware label
+          uses the first suburb so the bar feels contextual. */}
+      <StickyMatchCTA
+        suburb={slug}
+        intent="buying"
+        dismissKey={`compare:${slug}-vs-${compareSlug}`}
+      />
     </>
   );
 }
