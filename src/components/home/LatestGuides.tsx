@@ -37,7 +37,7 @@ export async function LatestGuides() {
               </p>
             </div>
             <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
-              Research and <span className="italic text-primary">guides</span>.
+              Plain-English <span className="italic text-primary">guides</span>.
             </h2>
           </div>
           <div className="lg:col-span-4 lg:col-start-9 flex items-end justify-end">

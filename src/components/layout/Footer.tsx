@@ -170,13 +170,14 @@ function FooterBottom() {
             <div className="flex flex-col leading-none">
               <span className="font-display text-white text-2xl tracking-tight leading-none">Your Property Guide</span>
               <span className="font-display italic text-accent text-[11px] tracking-tight leading-none mt-1.5">
-                Australia&rsquo;s property reference
+                Plain-English Australian property
               </span>
             </div>
           </Link>
           <p className="text-sm text-white/50 max-w-xs leading-relaxed">
-            Independent property research, ungated and written for people, not
-            portals. Published from Brisbane, Australia.
+            Plain-English Australian property education. Once you know
+            what&rsquo;s actually happening, you make better choices.
+            Published from Brisbane, Australia.
           </p>
         </div>
         <div className="flex flex-col items-center gap-3">

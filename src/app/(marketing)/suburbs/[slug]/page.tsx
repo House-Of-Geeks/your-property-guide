@@ -167,10 +167,10 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           <div className="grid lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-3">
               <p className="font-display italic text-primary text-base mb-3 leading-none">
-                About
+                The brief
               </p>
               <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight">
-                Welcome to <span className="italic text-primary">{suburb.name}</span>.
+                What to know about <span className="italic text-primary">{suburb.name}</span>.
               </h2>
             </div>
             <div className="lg:col-span-8 lg:col-start-5 space-y-5">

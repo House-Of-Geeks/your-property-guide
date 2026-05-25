@@ -240,8 +240,9 @@ export default function HomePage() {
               <span className="italic font-light text-primary whitespace-nowrap">starting point</span>.
             </h2>
             <p className="font-sans text-sm sm:text-base text-ink-muted leading-relaxed max-w-md">
-              Five paths. Each one is a guide built around one person, with
-              the calculators and suburb data that fit their situation.
+              Five plain-English guides, each written for one person, with
+              the calculators, suburb profiles and explainers that fit the
+              decisions they&rsquo;re actually making.
             </p>
           </div>
 

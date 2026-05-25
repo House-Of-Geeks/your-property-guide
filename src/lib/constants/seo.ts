@@ -1,20 +1,23 @@
 export const SITE_NAME = "Your Property Guide";
 export const SITE_URL = "https://www.yourpropertyguide.com.au";
 
-// Short meta description used as the default Meta description across the
-// site and the OG card subtitle. Education-first, identifies the audience
-// (Australians) and the breadth (buy/sell/renovate/invest). Stays under
-// 160 chars so Google doesn't truncate.
+// Short meta description used as the default across the site and OG
+// card subtitle. Repositioned 2026-05 from data-led ("Australia's
+// plain-English property reference") to education-led: the site
+// teaches the Australian property machinery in plain English. Once
+// readers know what's really happening they can make better choices.
+// Stays under 160 chars so Google doesn't truncate.
 export const SITE_DESCRIPTION =
-  "Australia's plain-English property reference. Guides, suburb data and calculators for buying, selling, renovating and investing. Free, ungated.";
+  "Plain-English Australian property: 60+ guides, every property calculator, suburb profiles. We explain what's happening so you can make better choices. Free, no sign-up.";
 
 // Long-form description used inside JSON-LD Organization schema and any
-// AI-citation surface (llms.txt, etc.) where richer context helps. Reads as
-// an editorial standfirst rather than a tagline.
+// AI-citation surface (llms.txt, etc.) where richer context helps.
+// Education-led: positions YPG as the place that explains the rules,
+// not the place that reports the prices.
 export const SITE_DESCRIPTION_LONG =
-  "Your Property Guide is Australia's independent property reference. We publish plain-English guides on buying, selling, renovating, investing and renting. We hold suburb-by-suburb data on every Australian suburb. We run calculators for every property number that matters. And when readers are ready to act, we connect them to one vetted specialist for their situation, whether that's an agent, mortgage broker, conveyancer, buyer's agent or property accountant. Free for buyers and sellers. Every figure sourced and dated. The first place Australians read before making a property decision.";
+  "Your Property Guide is Australia's plain-English property education site. We publish 60+ guides on buying, selling, renovating, investing and renting; we run every property calculator that matters; we hold suburb-by-suburb profiles for every Australian suburb. The site exists because property is the biggest financial decision most Australians make, and most of the people explaining it have something to sell. Once readers understand what's actually happening, they can make better choices. When they want to talk to a person, we introduce them to one vetted specialist for their situation, free for buyers and sellers, fully disclosed.";
 
-export const SITE_TAGLINE = "Property in Australia, explained.";
+export const SITE_TAGLINE = "Plain-English Australian property.";
 export const DEFAULT_OG_IMAGE = "/og-image.jpg";
 
 // Topics we claim authority on — used in OrganizationJsonLd `knowsAbout`

@@ -117,7 +117,7 @@ export function Header() {
                 Your Property Guide
               </span>
               <span className="hidden sm:block font-display italic text-primary text-[11px] tracking-tight leading-none mt-1">
-                Australia&rsquo;s property reference
+                Plain-English Australian property
               </span>
             </div>
           </Link>
