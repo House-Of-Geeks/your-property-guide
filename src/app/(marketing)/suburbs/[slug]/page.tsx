@@ -232,6 +232,60 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           </section>
         )}
 
+        {/* What it's like to live here — lifestyle narrative woven from
+            walkability + climate + schools. Education-led reposition
+            (2026-05): the page now leads with HOW it feels to live
+            here before talking about price. The market data is still
+            here, just no longer the headline. Only renders when we
+            have at least one supporting data point. */}
+        {lifestyleSummary.length > 0 && (
+          <section id="lifestyle" className="scroll-mt-16">
+            <p className="font-display italic text-primary text-base mb-3 leading-none">
+              Day to day
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
+              What it&rsquo;s like to live here.
+            </h2>
+            <div className="space-y-5 max-w-3xl">
+              {lifestyleSummary.map((para, i) => (
+                <p key={i} className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7]">
+                  {para}
+                </p>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Demographics — moved up so "who lives here" is established
+            before the market section gets into price. Census data is
+            independent of the sales feed, so always reliable. */}
+        <section id="demographics" className="scroll-mt-16">
+          <p className="font-display italic text-primary text-base mb-3 leading-none">
+            Who lives here
+          </p>
+          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
+            Demographics.
+          </h2>
+          {demographicsSummary && (
+            <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-3xl mb-8">
+              {demographicsSummary}
+            </p>
+          )}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <MetricCard label="Population"          value={suburb.stats.population        ? suburb.stats.population.toLocaleString()      : "–"} />
+            <MetricCard label="Median age"          value={suburb.stats.medianAge          ? String(suburb.stats.medianAge)                : "–"} />
+            <MetricCard label="Family households"   value={suburb.stats.householdsFamily   ? `${suburb.stats.householdsFamily}%`           : "–"} />
+            <MetricCard label="Lone person"         value={suburb.stats.householdsLonePerson ? `${suburb.stats.householdsLonePerson}%`     : "–"} />
+          </div>
+          <DataFreshnessNote
+            label="Demographics"
+            asOf={suburb.dataFreshness?.censusAsOf ?? null}
+            source="ABS 2021 Census"
+          />
+        </section>
+
+        <SectionDivider />
+
         {/* Market, asymmetric lead-stat + supporting grid */}
         <section id="market" className="scroll-mt-16">
           {marketSummary && (
@@ -398,56 +452,6 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             </div>
           </section>
         )}
-
-        {/* Demographics */}
-        <section id="demographics" className="scroll-mt-16">
-          <p className="font-display italic text-primary text-base mb-3 leading-none">
-            Who lives here
-          </p>
-          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-            Demographics.
-          </h2>
-          {demographicsSummary && (
-            <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-3xl mb-8">
-              {demographicsSummary}
-            </p>
-          )}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <MetricCard label="Population"          value={suburb.stats.population        ? suburb.stats.population.toLocaleString()      : "–"} />
-            <MetricCard label="Median age"          value={suburb.stats.medianAge          ? String(suburb.stats.medianAge)                : "–"} />
-            <MetricCard label="Family households"   value={suburb.stats.householdsFamily   ? `${suburb.stats.householdsFamily}%`           : "–"} />
-            <MetricCard label="Lone person"         value={suburb.stats.householdsLonePerson ? `${suburb.stats.householdsLonePerson}%`     : "–"} />
-          </div>
-          <DataFreshnessNote
-            label="Demographics"
-            asOf={suburb.dataFreshness?.censusAsOf ?? null}
-            source="ABS 2021 Census"
-          />
-        </section>
-
-        {/* What it's like to live here — lifestyle narrative woven from
-            walkability + climate + schools. Only renders when we have
-            at least one of those data points (otherwise we'd be writing
-            air). */}
-        {lifestyleSummary.length > 0 && (
-          <section id="lifestyle" className="scroll-mt-16">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">
-              Day to day
-            </p>
-            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-              What it&rsquo;s like to live here.
-            </h2>
-            <div className="space-y-5 max-w-3xl">
-              {lifestyleSummary.map((para, i) => (
-                <p key={i} className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7]">
-                  {para}
-                </p>
-              ))}
-            </div>
-          </section>
-        )}
-
-        <SectionDivider />
 
         {/* Crime — only renders when we have actual crime stats. Empty
             modules erode trust, so we omit rather than show "data not

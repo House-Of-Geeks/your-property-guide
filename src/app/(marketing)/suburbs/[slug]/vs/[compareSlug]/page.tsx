@@ -370,6 +370,77 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
 
       {/* Comparison */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+        {/* Persona verdicts — moved ABOVE the stat tables in the
+            2026-05 education-led reposition. The page now leads with
+            "which suburb suits which buyer" (interpretation) and
+            "common questions" (FAQ) before getting into the data
+            tables. Education first, data as supporting evidence. */}
+        <section>
+          <div className="flex items-center gap-4 mb-6">
+            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              The take
+            </span>
+            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              Which suburb suits which buyer
+            </span>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-4">
+            <div className="rounded-2xl border border-line bg-surface-raised p-6">
+              <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-3">
+                For buyers
+              </p>
+              <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
+                {narrative.verdicts.forBuyers}
+              </p>
+            </div>
+            <div className="rounded-2xl border border-line bg-surface-raised p-6">
+              <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-3">
+                For investors
+              </p>
+              <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
+                {narrative.verdicts.forInvestors}
+              </p>
+            </div>
+            <div className="rounded-2xl border border-line bg-surface-raised p-6">
+              <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-3">
+                For families
+              </p>
+              <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
+                {narrative.verdicts.forFamilies}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ also moved up. Dynamic per-pair questions, FAQPage
+            schema attached for rich-snippet eligibility on the
+            "X vs Y" SERPs. */}
+        {narrative.faqs.length > 0 && (
+          <section>
+            <div className="flex items-center gap-4 mb-6">
+              <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                Common questions
+              </span>
+              <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+              <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+                {suburbAName} vs {suburbBName}
+              </span>
+            </div>
+            <div className="max-w-3xl">
+              <Faq items={narrative.faqs} />
+            </div>
+          </section>
+        )}
+
+        {/* Stat tables. Now framed as supporting evidence for the
+            verdict above, not the headline. Eyebrow makes that clear. */}
+        <div className="pt-4 border-t border-line">
+          <p className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium mb-3">
+            The numbers behind the take
+          </p>
+        </div>
+
         {/* Sticky column legend */}
         <div className="grid grid-cols-12 gap-4 text-center text-sm font-sans border-b border-line pb-3 sticky top-0 bg-surface-warm/95 backdrop-blur z-10 pt-3 -mx-4 px-4">
           <div className="col-span-4 text-right font-display text-base text-ink truncate">
@@ -558,68 +629,6 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
             <ArrowRight className="w-4 h-4 text-ink-subtle group-hover:text-primary transition-colors" />
           </Link>
         </div>
-
-        {/* Persona verdicts. Three short reads — "for buyers / for
-            investors / for families" — that interpret the comparison
-            in plain English. The page now answers "which suburb makes
-            sense for me?" not just "what are the numbers?". */}
-        <section className="pt-4">
-          <div className="flex items-center gap-4 mb-6">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
-              The take
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              Which suburb suits which buyer
-            </span>
-          </div>
-          <div className="grid sm:grid-cols-3 gap-4">
-            <div className="rounded-2xl border border-line bg-surface-raised p-6">
-              <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-3">
-                For buyers
-              </p>
-              <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
-                {narrative.verdicts.forBuyers}
-              </p>
-            </div>
-            <div className="rounded-2xl border border-line bg-surface-raised p-6">
-              <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-3">
-                For investors
-              </p>
-              <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
-                {narrative.verdicts.forInvestors}
-              </p>
-            </div>
-            <div className="rounded-2xl border border-line bg-surface-raised p-6">
-              <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-3">
-                For families
-              </p>
-              <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
-                {narrative.verdicts.forFamilies}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ. Dynamic per-pair questions, FAQPage schema attached for
-            rich-snippet eligibility on SERPs that often surface the
-            "X vs Y" query pattern. */}
-        {narrative.faqs.length > 0 && (
-          <section className="pt-8">
-            <div className="flex items-center gap-4 mb-6">
-              <span className="font-display italic text-primary text-base sm:text-lg leading-none">
-                Common questions
-              </span>
-              <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-              <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-                {suburbAName} vs {suburbBName}
-              </span>
-            </div>
-            <div className="max-w-3xl">
-              <Faq items={narrative.faqs} />
-            </div>
-          </section>
-        )}
 
         {/* Compare with more */}
         {suburbA.nearbySuburbs.length > 0 && (

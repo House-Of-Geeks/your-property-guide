@@ -8,10 +8,13 @@ import { TrustStrip } from "@/components/journey";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `About ${SITE_NAME}: Australia's property reference`,
-  description: "Our charter, ownership, editorial standards and correction policy. What we publish, who writes it, and how we make money. Plain English from the people behind Your Property Guide.",
+  // Aligned with the education-led repositioning (2026-05). The about
+  // page is the canonical "why we exist" — and the answer is now
+  // education, not reference.
+  title: `About ${SITE_NAME}: plain-English Australian property education`,
+  description: "Why this site exists, who writes it, how we stay independent, and how we make money. Property in plain English so Australians can make better decisions, not pushed to a form.",
   alternates: { canonical: `${SITE_URL}/about` },
-  openGraph: { url: `${SITE_URL}/about`, title: `About ${SITE_NAME}`, description: "Our charter, ownership, editorial standards and correction policy.", type: "website" },
+  openGraph: { url: `${SITE_URL}/about`, title: `About ${SITE_NAME}`, description: "Why this site exists, who writes it, how we stay independent, and how we make money.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
@@ -74,20 +77,21 @@ export default function AboutPage() {
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
             <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              Australia&rsquo;s property reference
+              Plain-English Australian property
             </span>
           </div>
 
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
-            The reference we&rsquo;d want our{" "}
-            <span className="italic font-light text-primary">own family</span>{" "}
-            to use.
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[20ch] font-medium">
+            Once you know what&rsquo;s actually happening, you make{" "}
+            <span className="italic font-light text-primary">better choices</span>.
           </h1>
           <p className="font-display font-light text-xl sm:text-2xl lg:text-3xl text-ink leading-[1.25] max-w-3xl">
-            Plain-English guides for every angle of Australian property,
-            suburb-by-suburb data on every Australian suburb, calculators for
-            every number that matters, and one vetted specialist when you&rsquo;re
-            ready. Education first. No sign-up gate, no pushy CTAs, no agenda.
+            Property is the biggest financial decision most Australians ever
+            make. Most of the people explaining it have something to sell. We
+            wrote this site because that&rsquo;s a problem. Sixty plain-English
+            guides, every property calculator, suburb profiles for every
+            suburb in Australia, and one vetted specialist when you&rsquo;re
+            ready. Education first. No sign-up, no agenda.
           </p>
         </div>
       </section>
