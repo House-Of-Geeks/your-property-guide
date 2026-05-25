@@ -326,12 +326,13 @@ function NewsletterBand() {
               </span>
             </div>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-white leading-[0.98] tracking-tight font-medium">
-              Get the next market read in your{" "}
+              Plain-English property, in your{" "}
               <span className="italic font-light text-accent">inbox</span>.
             </h2>
             <p className="mt-4 font-display font-light text-lg sm:text-xl text-white/70 leading-snug max-w-lg">
-              One email a quarter, no more. Capital city outlooks, RBA changes,
-              and the data updates worth knowing about.
+              One email a quarter, no more. New guides, scheme and policy
+              changes that actually matter, and the explainers worth your
+              time.
             </p>
           </div>
           <div className="lg:col-span-5">

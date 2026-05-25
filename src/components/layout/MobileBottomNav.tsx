@@ -2,13 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Sparkles, Layers, Wrench, Search } from "lucide-react";
+import { BookOpen, Sparkles, Layers, Wrench } from "lucide-react";
 
+// Mobile bottom nav: 4 highest-leverage destinations. Reordered
+// 2026-05 to put Guides first, aligned with the education-led
+// positioning (Guides is the site's primary value, education is what
+// we own). Search dropped — the header search icon already covers it.
 const ITEMS = [
+  { href: "/guides",           label: "Guides",   icon: BookOpen, matchPrefix: "/guides" },
   { href: "/find-your-suburb", label: "Quiz",     icon: Sparkles, matchPrefix: "/find-your-suburb" },
   { href: "/compare",          label: "Compare",  icon: Layers,   matchPrefix: "/compare" },
   { href: "/tools",            label: "Tools",    icon: Wrench,   matchPrefix: "/tools" },
-  { href: "/search",           label: "Search",   icon: Search,   matchPrefix: "/search" },
 ] as const;
 
 /**

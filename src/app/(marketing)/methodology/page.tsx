@@ -6,14 +6,18 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Methodology & data sources | ${SITE_NAME}`,
+  // Title aligned with the education-led positioning. The methodology
+  // page is where the brand promise (plain-English education backed
+  // by named sources) gets shown rather than told. Root template
+  // appends the brand.
+  title: "How we source the data, and what we don't claim to know",
   description:
-    "How Your Property Guide sources, validates, and updates suburb data, school catchments, climate records, hazard maps, and crime statistics. Every source named and dated.",
+    "Every figure on Your Property Guide is sourced, dated, and replaceable when we get better data. Here's where each one comes from, how often it refreshes, and the gaps we're honest about.",
   alternates: { canonical: `${SITE_URL}/methodology` },
   openGraph: {
     url: `${SITE_URL}/methodology`,
-    title: `Methodology & data sources | ${SITE_NAME}`,
-    description: "Sources, refresh cadence, and editorial process behind every figure on the site.",
+    title: "How we source the data, and what we don't claim to know",
+    description: "Every figure on Your Property Guide is sourced, dated, and replaceable when we get better data.",
     type: "article",
   },
   twitter: { card: "summary_large_image" },
@@ -32,10 +36,10 @@ const SOURCES: DataSource[] = [
   {
     id: "median-prices",
     label: "Median house & unit prices",
-    source: "State Valuer-General offices, Australian Bureau of Statistics",
-    cadence: "Quarterly",
+    source: "NSW Valuer General, VIC Dept of Transport, SA Govt open data, ABS",
+    cadence: "Quarterly (NSW/VIC/SA real sales); annual (ABS for other states)",
     description:
-      "Headline median prices and annual growth come from each state's Valuer-General office. Where multiple sources disagree, we cite the most recent one. ABS is used as cross-validation.",
+      "NSW medians come from every actual transaction recorded by the NSW Valuer General. VIC medians come from the Department of Transport's quarterly suburb-level publication. SA Metro Adelaide medians come from data.sa.gov.au. QLD and WA don't publish free bulk sale-price data, and the ABS annual SA2-level medians for those states are a year stale — so for many QLD/WA suburbs the page shows \"Verified median pending\" rather than publish a number we don't trust. We're working on a data partner; in the meantime, treat the state-level figures as the guide.",
     link: { label: "ABS property statistics", href: "https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation" },
   },
   {
@@ -147,15 +151,16 @@ export default function MethodologyPage() {
               Sources, dated
             </span>
           </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
-            How we source,{" "}
-            <span className="italic font-light text-primary">verify</span>, and
-            update.
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[22ch] font-medium">
+            How we source the data, and what we{" "}
+            <span className="italic font-light text-primary">don&rsquo;t</span>{" "}
+            claim to know.
           </h1>
           <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            Every figure on the site carries a source and an as-of date. This
-            page documents where each data type comes from, how often we
-            refresh, and how to flag anything that looks off.
+            Every figure on the site carries a source and an as-of date.
+            Where we don&rsquo;t have a source we trust, we say so rather than
+            publish a guess. This page documents where each data type comes
+            from, how often we refresh, and the gaps we&rsquo;re honest about.
           </p>
           <p className="mt-6">
             <Link

@@ -22,7 +22,16 @@ interface NavLink {
   layout?: "list" | "grouped" | "mega";
 }
 
+// Nav order reflects the education-led positioning (2026-05 pivot).
+// Guides first — the site's primary value is plain-English property
+// education. Suburbs second (data is supporting context, not the
+// headline). Tools (calculators) third. Persona hubs fourth. About
+// last. Mobile nav inherits the same order.
 const NAV_LINKS: NavLink[] = [
+  {
+    label: "Guides",
+    href: "/guides",
+  },
   {
     label: "Suburbs",
     href: "/suburbs",
@@ -37,10 +46,6 @@ const NAV_LINKS: NavLink[] = [
       { label: "Browse by region",        href: "/regions",        group: "Browse" },
       { label: "Search by school",        href: "/schools",        group: "Browse" },
     ],
-  },
-  {
-    label: "Guides",
-    href: "/guides",
   },
   {
     label: "Tools",
