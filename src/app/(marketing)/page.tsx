@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { LatestGuides } from "@/components/home/LatestGuides";
 import { CapitalCityOutlook } from "@/components/home/CapitalCityOutlook";
-import { SpotlightSuburbCard } from "@/components/home/SpotlightSuburbCard";
+import { SpotlightGuideCard } from "@/components/home/SpotlightGuideCard";
 import { MatchAgent, PersonaPicker, TrustStrip } from "@/components/journey";
 import { BestDealsRail } from "@/components/best-deal";
 import { OrganizationJsonLd } from "@/components/seo";
@@ -17,13 +17,19 @@ import { HomeSuburbSearch } from "./HomeSuburbSearch";
 // cache-control for the entire site.
 export const revalidate = 86400;
 
+// Metadata title aligned with the education-led positioning. Leads
+// with "plain-English guides" — the differentiator — then the scope
+// (calculators, suburb profiles). Brand appended by root template.
+const META_TITLE = "Plain-English Australian property guides, calculators & suburb profiles";
+const META_DESCRIPTION = "Sixty plain-English guides on Australian property: schemes, stamp duty, finance, settlement, investing, renovating. Every calculator. Suburb profiles. Free, no sign-up.";
+
 export const metadata: Metadata = {
-  title: `Suburb profiles, property calculators & guides`,
-  description: SITE_DESCRIPTION,
+  title: META_TITLE,
+  description: META_DESCRIPTION,
   alternates: { canonical: SITE_URL },
   openGraph: {
-    title: `Suburb profiles, property calculators & guides`,
-    description: SITE_DESCRIPTION,
+    title: META_TITLE,
+    description: META_DESCRIPTION,
     type: "website",
   },
   twitter: { card: "summary_large_image" },
@@ -58,16 +64,17 @@ export default function HomePage() {
         />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
-          {/* Eyebrow runs full-width above the 2-column split, so the
-              positioning line sits at the top of the page like a
-              magazine masthead. */}
+          {/* Eyebrow: positions the site as education-led, not
+              data-led. The brand competes on plain-English explanation
+              of the Australian property machinery, not on real-time
+              data feeds (which the portals own and we can't afford). */}
           <div className="flex items-center gap-4 mb-10 sm:mb-12">
             <span className="font-display italic text-primary text-base sm:text-lg leading-none">
               No. 01
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
             <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              Property research without the portal
+              Australian property, in plain English
             </span>
           </div>
 
@@ -80,25 +87,23 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start mb-10 lg:mb-12">
             {/* Left column: H1 + sub + actions */}
             <div className="lg:col-span-7">
-              {/* H1 sized down from the previous full-width version
-                  (lg:text-[96px]/xl:[112px]) so the 2-column layout
-                  reads as balanced rather than top-heavy. The
-                  closing-table verb "sign" and italic "both" still
-                  carry the rhetorical weight. */}
+              {/* H1: three questions every property visitor needs
+                  answered. "What to skip" is the contrarian last
+                  beat — implies we'll tell you what NOT to do, not
+                  just what to do (counter-portal). Italic emphasis
+                  lands on "skip" as the loudest word. */}
               <h1 className="font-display text-ink tracking-tight mb-8 text-5xl sm:text-6xl lg:text-[72px] xl:text-[84px] leading-[0.98] font-medium">
-                Know the suburb. Run the numbers. Don&rsquo;t sign until you have{" "}
-                <span className="italic font-light text-primary">both</span>.
+                What to ask. What to sign. What to{" "}
+                <span className="italic font-light text-primary">skip</span>.
               </h1>
 
-              {/* Sub tightened back from the wordy comma-soup version.
-                  Two clean time claims + the buyer's-agent anchor +
-                  the "free" punch. The specifics now live in the
-                  spotlight card on the right, so the sub doesn't have
-                  to carry them in prose. */}
+              {/* Sub names the scope (60+ guides, every calculator)
+                  and the positioning (written for buyers and sellers,
+                  not portals). Education-first, not data-first. */}
               <p className="font-display text-xl sm:text-2xl text-ink leading-[1.3] mb-8 font-light">
-                Look up any suburb in 5 seconds. Run the numbers in 2
-                minutes. The kind of research a buyer&rsquo;s agent does,
-                for every Australian suburb. Free, no sign-up.
+                Sixty plain-English guides. Every property calculator.
+                Written for buyers and sellers, not portals. Free, no
+                sign-up.
               </p>
 
               {/* Primary action: suburb search box. Label echoes the
@@ -150,38 +155,43 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Trust strip — four micro-proof points in editorial caps. */}
+              {/* Trust strip — four micro-proof points in editorial
+                  caps. Leads with guide count to reinforce the
+                  education positioning. */}
               <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-sans font-medium">
                 <span className="inline-flex items-center gap-1.5">
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
-                  9,600+ suburbs
+                  60+ guides
                 </span>
                 <span aria-hidden="true">·</span>
                 <span>Independent, no portal ties</span>
                 <span aria-hidden="true">·</span>
-                <span>Updated weekly</span>
+                <span>Plain-English, no jargon</span>
                 <span aria-hidden="true">·</span>
                 <span>No login, no paywall</span>
               </p>
             </div>
 
-            {/* Right column: today's spotlight suburb card. Visual
-                proof of what the visitor gets when they search.
-                Rotates daily via pickSpotlightSlug. */}
+            {/* Right column: today's featured guide. Magazine-style
+                "today's read" — tells the visitor at a glance what
+                the site is for (plain-English explainers). Rotates
+                daily via pickSpotlightGuideSlug. */}
             <div className="lg:col-span-5 lg:sticky lg:top-24 order-last lg:order-none">
               <Suspense fallback={null}>
-                <SpotlightSuburbCard />
+                <SpotlightGuideCard />
               </Suspense>
             </div>
           </div>
 
-          {/* Stats row. Labels rewritten in the three-job vocabulary so they
-              read as proof for the H1, not generic feature counts. */}
+          {/* Stats row. Reordered to lead with guides (the education
+              positioning) instead of suburbs. Calculators second,
+              suburbs third, free fourth. The order signals what the
+              site IS to anyone who only reads the stats. */}
           <div className="border-y border-line grid grid-cols-2 sm:grid-cols-4">
             {[
-              { value: "9,600+", label: "Suburbs to look up" },
-              { value: "30+",    label: "Calculators and tools" },
               { value: "60+",    label: "Plain-English guides" },
+              { value: "30+",    label: "Calculators and tools" },
+              { value: "9,600+", label: "Suburb profiles" },
               { value: "$0",     label: "Free, no sign-up" },
             ].map((s, i) => (
               <div
