@@ -32,6 +32,16 @@ import { suburbTitle, suburbDescription } from "@/lib/utils/seo";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 import { buildSuburbOgImageUrl } from "@/lib/og/helpers";
+import {
+  buildIntro,
+  buildMarketSummary,
+  buildDemographicsSummary,
+  buildLifestyleSummary,
+  buildInvestorView,
+  buildBuyerView,
+  buildSellerView,
+  isAutoStubDescription,
+} from "@/lib/suburb-narrative";
 
 interface SuburbDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -97,6 +107,19 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
     getSuburbCrimeWithLgaFallback(slug, suburb.state, suburb.region),
   ]);
 
+  // Algorithmic narrative. Turns the structured suburb data into reading
+  // copy that is unique per suburb (because the data is unique per
+  // suburb) without any LLM call. Replaces the thin "X is a suburb in Y"
+  // stub that the importer writes for most rows.
+  const stubDescription = isAutoStubDescription(suburb.description, suburb.name);
+  const intro = buildIntro(suburb);
+  const marketSummary = buildMarketSummary(suburb);
+  const demographicsSummary = buildDemographicsSummary(suburb);
+  const lifestyleSummary = buildLifestyleSummary(suburb);
+  const investorView = buildInvestorView(suburb);
+  const buyerView = buildBuyerView(suburb);
+  const sellerView = buildSellerView(suburb);
+
   return (
     <>
       <BreadcrumbJsonLd
@@ -120,7 +143,10 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
 
-        {/* About, editorial lead with decorative contour */}
+        {/* About, editorial lead with decorative contour.
+            Renders curated description if present; otherwise a multi-
+            paragraph algorithmic narrative built from the suburb's real
+            data (median, growth, demographics, walkability, climate). */}
         <section id="about" className="scroll-mt-16 relative">
           <Image
             src="/images/illustrations/contour.svg"
@@ -139,10 +165,18 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 Welcome to <span className="italic text-primary">{suburb.name}</span>.
               </h2>
             </div>
-            <div className="lg:col-span-8 lg:col-start-5">
-              <p className="font-sans text-lg sm:text-xl text-ink leading-[1.65] max-w-[60ch]">
-                {suburb.description}
-              </p>
+            <div className="lg:col-span-8 lg:col-start-5 space-y-5">
+              {stubDescription
+                ? intro.map((para, i) => (
+                    <p key={i} className="font-sans text-lg sm:text-xl text-ink leading-[1.65] max-w-[65ch]">
+                      {para}
+                    </p>
+                  ))
+                : (
+                  <p className="font-sans text-lg sm:text-xl text-ink leading-[1.65] max-w-[65ch]">
+                    {suburb.description}
+                  </p>
+                )}
             </div>
           </div>
         </section>
@@ -192,6 +226,27 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
         {/* Market, asymmetric lead-stat + supporting grid */}
         <section id="market" className="scroll-mt-16">
+          {marketSummary && (
+            <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-3xl mb-8">
+              {marketSummary}
+            </p>
+          )}
+          {(buyerView || sellerView) && (
+            <div className="grid sm:grid-cols-2 gap-4 mb-10">
+              {buyerView && (
+                <div className="rounded-xl border border-line bg-surface-raised p-5">
+                  <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-2">For buyers</p>
+                  <p className="font-sans text-sm text-ink leading-relaxed">{buyerView}</p>
+                </div>
+              )}
+              {sellerView && (
+                <div className="rounded-xl border border-line bg-surface-raised p-5">
+                  <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-2">For sellers</p>
+                  <p className="font-sans text-sm text-ink leading-relaxed">{sellerView}</p>
+                </div>
+              )}
+            </div>
+          )}
           <div className="grid lg:grid-cols-12 gap-8">
             {/* Lead stat */}
             <div className="lg:col-span-5">
@@ -288,6 +343,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
               Investment overview.
             </h2>
+            {investorView && (
+              <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-3xl mb-8">
+                {investorView}
+              </p>
+            )}
             <div className="grid lg:grid-cols-12 gap-6 mb-6">
               <div className="lg:col-span-7">
                 <SuburbInvestment suburb={suburb} />
@@ -314,6 +374,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
             Demographics.
           </h2>
+          {demographicsSummary && (
+            <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-3xl mb-8">
+              {demographicsSummary}
+            </p>
+          )}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <MetricCard label="Population"          value={suburb.stats.population        ? suburb.stats.population.toLocaleString()      : "–"} />
             <MetricCard label="Median age"          value={suburb.stats.medianAge          ? String(suburb.stats.medianAge)                : "–"} />
@@ -326,6 +391,28 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             source="ABS 2021 Census"
           />
         </section>
+
+        {/* What it's like to live here — lifestyle narrative woven from
+            walkability + climate + schools. Only renders when we have
+            at least one of those data points (otherwise we'd be writing
+            air). */}
+        {lifestyleSummary.length > 0 && (
+          <section id="lifestyle" className="scroll-mt-16">
+            <p className="font-display italic text-primary text-base mb-3 leading-none">
+              Day to day
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
+              What it&rsquo;s like to live here.
+            </h2>
+            <div className="space-y-5 max-w-3xl">
+              {lifestyleSummary.map((para, i) => (
+                <p key={i} className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7]">
+                  {para}
+                </p>
+              ))}
+            </div>
+          </section>
+        )}
 
         <SectionDivider />
 
