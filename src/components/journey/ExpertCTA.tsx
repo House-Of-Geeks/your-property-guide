@@ -19,10 +19,14 @@ interface ExpertCTAProps {
   className?: string;
 }
 
+// Hormozi-style defaults: name the outcome ("one specialist"), the
+// time ("24 hours"), and the cost ("free"). Avoids the generic
+// "Get connected" verb that doesn't tell the visitor what happens
+// when they click.
 const DEFAULT = {
   headline: "Want one-on-one help?",
-  body: "If you've done the reading and want a real human to talk it through, we'll find the right specialist for your situation, agent, broker, accountant, conveyancer, whoever fits. No commitment, free for buyers and sellers.",
-  ctaLabel: "Get connected",
+  body: "If you've done the reading and want a real human to talk it through, we'll find the right specialist for your situation, agent, broker, accountant, conveyancer, whoever fits. ONE specialist, not five. Response within 24 hours. Free for buyers and sellers, no commitment.",
+  ctaLabel: "Get matched in 24 hours",
   href: "/find-an-expert",
 };
 

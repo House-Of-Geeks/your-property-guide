@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Calculator as CalculatorIcon, ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { ExpertCTA } from "@/components/journey";
+import { ExpertCTA, StickyMatchCTA } from "@/components/journey";
 import { Faq, type FaqItem, RelatedGuides, type RelatedGuide } from "@/components/guide";
 import { BreadcrumbJsonLd, WebApplicationJsonLd } from "@/components/seo";
 import { PERSONA_BY_ID, type PersonaId } from "@/lib/constants/journey";
@@ -175,6 +175,23 @@ export function CalculatorPageLayout({
           </div>
         </div>
       </section>
+
+      {/* Persistent sticky CTA on calculator pages — visitor has
+          engaged enough to scroll past the calculator widget, give
+          them a one-tap path to a specialist. Intent maps from the
+          calculator's persona. */}
+      <StickyMatchCTA
+        intent={
+          frontmatter.persona === "first-home" || frontmatter.persona === "upgrading"
+            ? "buying"
+            : frontmatter.persona === "investing"
+            ? "investing"
+            : frontmatter.persona === "selling"
+            ? "selling"
+            : undefined
+        }
+        dismissKey={`calc:${frontmatter.slug}`}
+      />
     </>
   );
 }

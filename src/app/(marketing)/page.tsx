@@ -109,6 +109,21 @@ export default function HomePage() {
               </Link>
               .
             </p>
+            {/* Trust strip directly under the search input. Stacks the
+                three honest differentiators in one line: scale (9,600+),
+                independence (no portal), zero friction (no login).
+                Lands in the moment of first interaction, where it's
+                most useful. */}
+            <p className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-sans font-medium">
+              <span className="inline-flex items-center gap-1.5">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
+                9,600+ suburbs
+              </span>
+              <span aria-hidden="true">·</span>
+              <span>Independent, no portal ties</span>
+              <span aria-hidden="true">·</span>
+              <span>No login required</span>
+            </p>
           </div>
 
           {/* Secondary action: calculator chips. Stamp duty alone is 74k

@@ -190,7 +190,7 @@ export function Header() {
               href="/find-an-expert"
               className="hidden md:inline-flex items-center gap-1.5 rounded-full bg-cta hover:bg-cta-hover text-white px-4 py-2 text-xs font-semibold transition-colors"
             >
-              Get connected
+              Get matched, free
             </Link>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -242,7 +242,7 @@ export function Header() {
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-sm font-semibold text-white bg-cta hover:bg-cta-hover rounded-full transition-colors"
               >
-                Get connected
+                Get matched, free
               </Link>
               <a
                 href={`tel:${CONTACT_PHONE_E164}`}

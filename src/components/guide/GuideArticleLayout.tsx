@@ -256,13 +256,14 @@ export function GuideArticleLayout({
         </div>
       </article>
 
-      {/* Floating "Get connected" pill for guide readers. Only renders when
-          the guide has a persona, general explainers (no persona) skip the
-          sticky to keep them quiet. Per-guide dismiss key. */}
+      {/* Floating sticky CTA for guide readers. Only renders when the
+          guide has a persona, general explainers (no persona) skip the
+          sticky to keep them quiet. Per-guide dismiss key. Label uses
+          the StickyMatchCTA default ("Get matched in 24 hours") which
+          names the outcome and the time, not the throwaway verb. */}
       {persona && stickyIntent && (
         <StickyMatchCTA
           intent={stickyIntent}
-          label="Get connected"
           dismissKey={`guide:${frontmatter.slug}`}
         />
       )}

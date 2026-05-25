@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { ArrowRight, MapPin, Calculator } from "lucide-react";
 import { ExpertCTA } from "./ExpertCTA";
 import { MatchAgent } from "./MatchAgent";
+import { StickyMatchCTA } from "./StickyMatchCTA";
 import { EditorNote, Faq } from "@/components/guide";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { PERSONAS, getPersonaById, type PersonaId } from "@/lib/constants/journey";
@@ -366,6 +367,14 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
       {/* Soft expert CTA as a fallback for visitors who scrolled past
           the MatchAgent without engaging. */}
       <ExpertCTA />
+
+      {/* Persistent sticky CTA — slides up once visitor has scrolled
+          past the hero. Opens MatchDrawer inline so they don't lose
+          their place on the page. Intent pre-filled per persona. */}
+      <StickyMatchCTA
+        intent={content?.matchIntent}
+        dismissKey={`hub:${personaId}`}
+      />
 
       {/* Other personas */}
       <section className="py-12 border-t border-line bg-surface-raised">

@@ -80,7 +80,11 @@ export function StickyMatchCTA({
 
   if (dismissed) return null;
 
-  const display = label ?? (suburb ? "Get connected, local specialist" : "Get connected");
+  // Suburb-aware variant uses the suburb in the label so the visitor
+  // sees the floating CTA as a continuation of where they already are.
+  // Generic variant uses the outcome verb + time-bound claim, not
+  // the throwaway "Get connected".
+  const display = label ?? (suburb ? "Get matched, local specialist" : "Get matched in 24 hours");
 
   return (
     <>
