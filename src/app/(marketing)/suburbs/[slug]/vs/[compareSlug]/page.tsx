@@ -22,7 +22,10 @@ interface ComparePageProps {
 }
 
 export const dynamicParams = true;
-export const revalidate = 86400; // cache as ISR for 24h, regen on demand
+// 7d ISR — the comparison narrative is generated from suburb data
+// that refreshes weekly via the sync worker. 24h was overkill and
+// burned function invocations on a ~50,000-URL compare surface.
+export const revalidate = 604800;
 
 // Pre-render hand-curated popular comparisons at build time so the most-searched
 // suburb-vs-suburb queries ship as static HTML. Other combinations are

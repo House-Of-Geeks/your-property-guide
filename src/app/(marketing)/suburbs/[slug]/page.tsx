@@ -59,7 +59,12 @@ interface SuburbDetailPageProps {
 // extremely generous and still cuts function compute by ~99%.
 // See /property/[slug]/page.tsx for why generateStaticParams returning []
 // is required to actually enable ISR on Next 16 dynamic routes.
-export const revalidate = 86400;
+// Suburb data refreshes weekly via the sync worker (rental, sales,
+// hazard, climate, schools, walkability). 24h was overkill and was
+// the primary driver of function-invocation cost on first crawl +
+// revalidation. 7d cuts re-revalidations by ~85% with no content
+// freshness impact.
+export const revalidate = 604800;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
 

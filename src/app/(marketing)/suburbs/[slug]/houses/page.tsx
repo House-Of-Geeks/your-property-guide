@@ -12,10 +12,9 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-// ISR, see /suburbs/[slug]/page.tsx for context. Listing tabs refresh
-// with property data; 24h cache + on-demand slug generation is the right
-// trade.
-export const revalidate = 86400;
+// 7d ISR — suburb data refreshes weekly via the sync worker. See
+// /suburbs/[slug]/page.tsx for cost rationale.
+export const revalidate = 604800;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
 

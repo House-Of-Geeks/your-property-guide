@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { Suburb, SuburbDataFreshness } from "@/types";
 import { db } from "@/lib/db";
 import type { Suburb as DbSuburb, School as DbSchool, SuburbHazard as DbSuburbHazard, SuburbClimate as DbSuburbClimate } from "@/generated/prisma/client";
@@ -295,7 +296,12 @@ export async function getFeaturedSuburbs(limit = 6): Promise<Suburb[]> {
   return rows.map((s) => toSuburb({ ...s, schools: [] }, NO_FRESHNESS, null, null, null, null));
 }
 
-export async function getSuburbBySlug(slug: string): Promise<Suburb | null> {
+// Wrapped in React's cache() so multiple calls for the same slug
+// within a single render pass (e.g. generateMetadata + the page
+// handler) share one DB round trip. Cuts suburb-page DB hits in half
+// at zero risk — cache is per-request, so different requests still
+// see fresh ISR-revalidated data.
+export const getSuburbBySlug = cache(async (slug: string): Promise<Suburb | null> => {
   const [row, { freshness, rentalRentHouse, rentalRentUnit }, hazard, climate] = await Promise.all([
     db.suburb.findUnique({ where: { slug }, include: { schools: false } }),
     fetchFreshness(slug),
@@ -305,7 +311,7 @@ export async function getSuburbBySlug(slug: string): Promise<Suburb | null> {
   if (!row) return null;
   const schools = await getNearbySchools(row);
   return toSuburb({ ...row, schools }, freshness, rentalRentHouse, rentalRentUnit, hazard, climate);
-}
+});
 
 export async function getAllSuburbSlugs(): Promise<string[]> {
   const rows = await db.suburb.findMany({ select: { slug: true } });

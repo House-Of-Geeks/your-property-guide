@@ -17,7 +17,8 @@ interface Props {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-export const revalidate = 86400;
+// 7d ISR. See /suburbs/[slug]/page.tsx.
+export const revalidate = 604800;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
 
