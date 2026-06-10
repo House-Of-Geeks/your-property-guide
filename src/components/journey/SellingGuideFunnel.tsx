@@ -207,7 +207,7 @@ export function SellingGuideFunnel({
           {Array.from({ length: stepTotal }, (_, i) => (
             <div
               key={i}
-              className="flex-1 h-[3px] rounded-full transition-colors duration-300"
+              className="flex-1 h-[3px] rounded-full transition-all duration-500"
               style={{ background: i <= stepIndex ? "var(--cta)" : "var(--line)" }}
             />
           ))}
@@ -216,6 +216,10 @@ export function SellingGuideFunnel({
           </p>
         </div>
       )}
+
+      {/* Keyed wrapper: remounts on every step change so each question
+          rises in (see .step-in in globals.css). */}
+      <div key={step} className="step-in">
 
       {/* Step 0, suburb */}
       {step === 0 && (
@@ -560,6 +564,8 @@ export function SellingGuideFunnel({
           {backButton(6)}
         </div>
       )}
+
+      </div>
 
       {/* Persistent answer recap under the active question, light-touch
           reassurance that their inputs are shaping the guide. */}

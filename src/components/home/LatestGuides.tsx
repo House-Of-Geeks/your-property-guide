@@ -59,7 +59,7 @@ export async function LatestGuides() {
             href={`/guides/${featured.slug}`}
             className="group lg:col-span-3 block bg-surface-raised rounded-2xl overflow-hidden border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200 flex flex-col"
           >
-            <div className="relative aspect-[16/9] overflow-hidden">
+            <div className="media-warm relative aspect-[16/9] overflow-hidden">
               <BlogCover
                 slug={featured.slug}
                 title={featured.title}
@@ -103,7 +103,7 @@ export async function LatestGuides() {
                 href={`/guides/${post.slug}`}
                 className="group flex-1 block bg-surface-raised rounded-2xl overflow-hidden border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200 flex flex-col"
               >
-                <div className="relative aspect-[16/7] overflow-hidden">
+                <div className="media-warm relative aspect-[16/7] overflow-hidden">
                   <BlogCover
                     slug={post.slug}
                     title={post.title}

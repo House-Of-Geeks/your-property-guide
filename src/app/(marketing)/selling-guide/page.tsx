@@ -290,19 +290,34 @@ export default function SellingGuidePage() {
             ))}
           </div>
 
-          <div className="mt-12 rounded-2xl border border-line bg-surface-warm p-6 sm:p-8 text-center">
-            <p className="font-display text-xl sm:text-2xl text-ink mb-4">
-              Ready when you are.
-            </p>
-            <a
-              href="#get-the-guide"
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-8 py-3.5 text-sm transition-colors"
-            >
-              Get the free guide
-            </a>
-            <p className="mt-3 text-xs text-ink-subtle">
-              60 seconds, personalised to your suburb.
-            </p>
+          {/* Page closer: the night suburb, lights on, one last door back
+              into the funnel. Ends the page on the brand's strongest
+              visual note instead of a beige box. */}
+          <div className="mt-12 relative rounded-2xl overflow-hidden bg-surface-inverse text-center shadow-2xl">
+            <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+              <Image
+                src="/images/hero/suburb-night.jpg"
+                alt=""
+                fill
+                sizes="(min-width: 768px) 768px, 100vw"
+                className="object-cover object-bottom opacity-90"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-20% via-surface-inverse/70 via-50% to-surface-inverse/10" />
+            </div>
+            <div className="relative px-6 sm:px-10 pt-10 pb-24 sm:pb-28">
+              <p className="font-display text-2xl sm:text-3xl text-white mb-2 tracking-tight">
+                Ready when you are.
+              </p>
+              <p className="mb-6 text-sm text-white/65">
+                60 seconds, personalised to your suburb, free.
+              </p>
+              <a
+                href="#get-the-guide"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-semibold px-8 py-3.5 text-sm transition-colors shadow-lg"
+              >
+                Get the free guide
+              </a>
+            </div>
           </div>
         </div>
       </section>

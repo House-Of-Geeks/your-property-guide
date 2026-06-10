@@ -138,7 +138,7 @@ export function PersonaPicker({ className, highlightActive = true, variant = "gr
                   numeral sits in the top-left, the illustration is right-
                   aligned and trimmed, giving each card a magazine-cover
                   layout instead of a centered SaaS card. */}
-              <div className="aspect-[16/9] bg-surface-raised border-b border-line-warm relative overflow-hidden">
+              <div className="media-warm aspect-[16/9] bg-surface-raised border-b border-line-warm relative overflow-hidden">
                 <span className="absolute top-4 left-5 font-display italic text-primary text-xl leading-none tabular-nums z-10">
                   No. {String(i + 1).padStart(2, "0")}
                 </span>

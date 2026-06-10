@@ -64,7 +64,7 @@ export async function CapitalCityOutlook() {
               className="group flex flex-col rounded-2xl border border-line bg-surface-warm overflow-hidden hover:border-primary/40 hover:shadow-md transition-all"
             >
               {post.coverImage ? (
-                <div className="relative aspect-[4/3] overflow-hidden bg-surface-warm-sunken">
+                <div className="media-warm relative aspect-[4/3] overflow-hidden bg-surface-warm-sunken">
                   <Image
                     src={post.coverImage}
                     alt={`${city} property market outlook`}
