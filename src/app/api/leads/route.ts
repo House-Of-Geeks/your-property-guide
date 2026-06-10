@@ -228,10 +228,13 @@ export async function POST(request: Request) {
     // 2. Transactional confirmation to the submitter. Best-effort. Never
     //    blocks the success response. If it fails the user already saw
     //    the in-page confirmation; admin notification carries the data.
+    //    replyTo routes "reply to this email" responses (the HOT email's
+    //    P.S. fast-track line) to a monitored inbox instead of noreply@.
     try {
       const { subject: confirmSubject } = confirmationCopy(lead);
       await sendMail({
         to: lead.email,
+        replyTo: ANDY_EMAIL,
         subject: confirmSubject,
         html: buildConfirmationHtml(lead),
       });

@@ -24,11 +24,11 @@ interface PageProps {
 const SCORE_COPY: Record<string, { headline: string; body: string }> = {
   hot: {
     headline: "Your guide is ready. One more thing.",
-    body: "Since you're planning to sell soon, we'll be in touch shortly about a free appraisal from a top local agent. No obligation, and nothing goes to any agent until you say so.",
+    body: "Selling within three months means pricing, presentation and agent choice are all still open, and all three are worth money. Read chapter 3 tonight, it takes ten minutes. We'll be in touch shortly about a free appraisal so you walk into every agent conversation already knowing your numbers. Nothing goes to anyone until you say so.",
   },
   warm: {
     headline: "Your guide is ready.",
-    body: "You've got a few months up your sleeve, which is the best position to be in. Start with chapter 3 (the real cost of selling) and chapter 5 (choosing your agent). When you're closer, we can line up a free appraisal.",
+    body: "Three to six months out is the sweet spot: enough time to prepare properly, and preparation is where the money is. Start with chapter 3 (the real cost of selling) and chapter 5 (the 10 agent questions). When you're closer, one click lines up a free appraisal.",
   },
   cold: {
     headline: "Your guide is ready.",

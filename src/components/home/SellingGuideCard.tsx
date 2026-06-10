@@ -36,7 +36,7 @@ export function SellingGuideCard() {
               The Complete Guide to Selling Your Property
             </p>
             <p className="mt-2 font-sans text-xs text-white/60 leading-relaxed">
-              Ten chapters. Every state. No filler.
+              Ten chapters that routinely save sellers thousands.
             </p>
           </div>
         </div>
@@ -45,9 +45,9 @@ export function SellingGuideCard() {
       <div className="px-7 py-6">
         <ul className="space-y-2 mb-5">
           {[
-            "Agent commission and costs, state by state",
-            "The 10 questions to ask every agent",
-            "Auction vs private treaty, honestly compared",
+            "The 10 questions that expose an average agent",
+            "Fee negotiation worth $1,700 to $3,400",
+            "Presentation that returns 3 to 10x its cost",
             "Printable 12-week selling checklist",
           ].map((line) => (
             <li key={line} className="flex items-start gap-2.5 font-sans text-sm text-ink leading-snug">

@@ -6,183 +6,460 @@
 <style>
   @page { size: A4; margin: 18mm 16mm; }
 
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   html, body { margin: 0; padding: 0; }
 
   body {
     font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 10.5pt;
-    line-height: 1.55;
-    color: #1f1d1a;
-    background: #ffffff;
+    line-height: 1.6;
+    color: #251c14;
+    background: #fefbf7;
   }
 
   h1, h2, h3, .serif { font-family: Georgia, "Times New Roman", serif; font-weight: normal; }
 
   p { margin: 0 0 8pt 0; }
   ul, ol { margin: 4pt 0 10pt 0; padding-left: 16pt; }
-  li { margin-bottom: 3pt; }
-  strong { font-weight: 600; }
+  li { margin-bottom: 3.5pt; }
+  li::marker { color: #bd592f; }
+  strong { font-weight: 600; color: #17100b; }
 
   /* ---------- Page structure ---------- */
   .page { page-break-before: always; }
 
   /* ---------- Cover ---------- */
-  .cover { text-align: left; padding-top: 30mm; }
+  /* Decorative contours and glow are painted as background layers rather than
+     positioned elements: overflow/clip on fragmented blocks triggers a Chromium
+     print bug that paints ghost fragments on preceding pages. */
+  .cover {
+    height: 260mm;
+    background-image:
+      radial-gradient(circle at 102% 6%, transparent 0 58mm, rgba(255, 221, 198, 0.07) 58mm 58.4mm, transparent 58.4mm),
+      radial-gradient(circle at 102% 6%, transparent 0 86mm, rgba(255, 221, 198, 0.07) 86mm 86.4mm, transparent 86.4mm),
+      radial-gradient(circle at 102% 6%, transparent 0 116mm, rgba(255, 221, 198, 0.07) 116mm 116.4mm, transparent 116.4mm),
+      radial-gradient(circle at 100% 100%, rgba(189, 89, 47, 0.32) 0, rgba(189, 89, 47, 0) 95mm);
+    background-color: #17100b;
+    border-radius: 4mm;
+    color: #fefbf7;
+    position: relative;
+    padding: 13mm 13mm 11mm;
+    display: flex;
+    flex-direction: column;
+  }
+  .cover-rule { height: 2.2pt; background: #bd592f; margin-bottom: 7mm; }
   .masthead {
-    font-family: Georgia, serif;
-    font-size: 13pt;
-    letter-spacing: 0.28em;
+    font-size: 12pt;
+    letter-spacing: 0.42em;
     text-transform: uppercase;
-    color: #8F4A25;
-    border-top: 2pt solid #8F4A25;
-    border-bottom: 0.5pt solid #DDD5C8;
-    padding: 8pt 0;
-    margin-bottom: 38mm;
+    color: #ffddc6;
+    font-weight: 600;
+    margin: 0;
+    border: none;
+    padding: 0;
   }
+  .cover-title-block { margin-top: 34mm; }
   .cover h1 {
-    font-size: 34pt;
-    line-height: 1.18;
-    margin: 0 0 14pt 0;
-    color: #1f1d1a;
-    max-width: 150mm;
+    font-size: 37pt;
+    line-height: 1.12;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: #fefbf7;
+    margin: 0;
+    max-width: 168mm;
   }
+  .cover h1 em { font-style: italic; color: #e8a075; }
   .cover .edition {
     font-family: Georgia, serif;
     font-style: italic;
-    font-size: 14pt;
-    color: #8F4A25;
-    margin-bottom: 6pt;
+    font-size: 16pt;
+    color: #bd592f;
+    margin: 9mm 0 0 0;
   }
   .cover .cover-sub {
-    font-size: 11pt;
-    color: #5a544b;
-    max-width: 130mm;
-    margin-bottom: 40mm;
+    font-size: 11.5pt;
+    line-height: 1.65;
+    color: rgba(254, 251, 247, 0.72);
+    max-width: 120mm;
+    margin: 7mm 0 0 0;
   }
-  .cover .cover-url {
-    font-family: Georgia, serif;
-    font-size: 12pt;
-    color: #1f1d1a;
-    border-top: 0.5pt solid #DDD5C8;
-    padding-top: 10pt;
-    letter-spacing: 0.06em;
+  .cover-spacer { flex: 1; }
+  .cover-foot {
+    border-top: 1px solid rgba(254, 251, 247, 0.18);
+    padding-top: 6mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .cover-foot .site { font-family: Georgia, serif; font-size: 13pt; color: rgba(254, 251, 247, 0.85); }
+  .cover-foot .free {
+    font-size: 8.5pt;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #ffddc6;
+    font-weight: 600;
   }
 
   /* ---------- Contents ---------- */
-  .toc h1 { font-size: 24pt; margin: 0 0 4pt 0; }
-  .toc .toc-rule { border: none; border-top: 2pt solid #8F4A25; width: 36pt; margin: 0 0 18pt 0; }
-  .toc-item { display: flex; align-items: baseline; padding: 7pt 0; border-bottom: 0.5pt solid #DDD5C8; }
+  .toc h1 { font-size: 30pt; color: #17100b; margin: 0 0 4pt 0; }
+  .toc .toc-rule { border: none; border-top: 2.5pt solid #bd592f; width: 34pt; margin: 0 0 14pt 0; }
+  .toc-item {
+    display: grid;
+    grid-template-columns: 20mm 1fr;
+    align-items: start;
+    padding: 8.5pt 0;
+    border-bottom: 0.6pt solid #d9cfc5;
+  }
   .toc-num {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 23pt;
+    line-height: 0.95;
+    color: #bd592f;
+    width: auto;
+  }
+  .toc-title {
+    grid-column: 2;
+    grid-row: 1;
     font-family: Georgia, serif;
     font-size: 13pt;
-    color: #8F4A25;
-    width: 28pt;
-    flex: 0 0 28pt;
+    line-height: 1.3;
+    color: #17100b;
   }
-  .toc-title { font-family: Georgia, serif; font-size: 12pt; }
-  .toc-desc { font-size: 9pt; color: #6c655a; margin-left: auto; text-align: right; max-width: 70mm; padding-left: 12pt; }
+  .toc-desc {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 8.5pt;
+    color: #564b42;
+    margin: 2pt 0 0 0;
+    padding: 0;
+    text-align: left;
+    max-width: none;
+  }
 
-  /* ---------- Chapter openers ---------- */
+  /* ---------- Chapter openers: dark ink band ---------- */
+  .ch-head {
+    background-image:
+      radial-gradient(circle at 90% -30%, transparent 0 62mm, rgba(255, 221, 198, 0.09) 62mm 62.4mm, transparent 62.4mm),
+      radial-gradient(circle at 90% -30%, transparent 0 78mm, rgba(255, 221, 198, 0.06) 78mm 78.4mm, transparent 78.4mm),
+      radial-gradient(circle at 102% 110%, rgba(189, 89, 47, 0.30) 0, rgba(189, 89, 47, 0) 60mm);
+    background-color: #17100b;
+    border-radius: 4mm;
+    min-height: 100mm;
+    padding: 12mm;
+    margin-bottom: 9mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border-bottom: none;
+    break-inside: avoid;
+  }
   .ch-num {
     font-family: Georgia, serif;
-    font-size: 44pt;
-    line-height: 1;
-    color: #8F4A25;
-    margin-bottom: 4pt;
+    font-style: italic;
+    font-size: 95pt;
+    line-height: 0.8;
+    color: #bd592f;
+    margin-bottom: 8mm;
   }
-  .ch-title { font-size: 26pt; line-height: 1.2; margin: 0 0 8pt 0; }
+  .ch-title {
+    font-size: 27pt;
+    line-height: 1.15;
+    font-weight: 500;
+    color: #fefbf7;
+    margin: 0 0 5mm 0;
+    max-width: 152mm;
+  }
   .standfirst {
     font-family: Georgia, serif;
     font-style: italic;
-    font-size: 12pt;
-    color: #5a544b;
-    margin: 0 0 6pt 0;
-    max-width: 155mm;
+    font-size: 11.5pt;
+    line-height: 1.55;
+    color: rgba(255, 221, 198, 0.88);
+    margin: 0;
+    max-width: 140mm;
   }
-  .ch-head { border-bottom: 0.5pt solid #DDD5C8; padding-bottom: 10pt; margin-bottom: 14pt; }
 
   h2 {
-    font-size: 14.5pt;
+    font-size: 15pt;
+    color: #17100b;
     margin: 16pt 0 6pt 0;
-    padding-top: 8pt;
-    border-top: 2pt solid #8F4A25;
     display: block;
     break-after: avoid;
   }
-  h3 { font-size: 11.5pt; margin: 12pt 0 4pt 0; font-weight: 600; break-after: avoid; }
+  h2::before {
+    content: "";
+    display: block;
+    width: 24pt;
+    border-top: 2.5pt solid #bd592f;
+    margin-bottom: 5pt;
+  }
+  h3 { font-size: 12pt; margin: 12pt 0 4pt 0; font-weight: 600; color: #17100b; break-after: avoid; }
 
   /* ---------- Tables ---------- */
+  /* Tables break naturally across pages (thead repeats). Do not add
+     break-inside: avoid here: pushing a whole table to the next page makes
+     Chromium paint a stretched background ghost in the leftover space. */
   table {
     width: 100%;
     border-collapse: collapse;
     font-size: 9.5pt;
-    margin: 8pt 0 12pt 0;
+    margin: 9pt 0 13pt 0;
   }
   th {
-    background: #F5F0E8;
-    color: #8F4A25;
-    font-family: Georgia, serif;
+    background: #17100b;
+    color: #f6ede2;
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 7.8pt;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
     text-align: left;
-    padding: 6pt 8pt;
-    border-bottom: 1pt solid #8F4A25;
+    padding: 7pt 9pt;
+    border: none;
     vertical-align: bottom;
   }
   td {
-    padding: 6pt 8pt;
-    border-bottom: 0.5pt solid #DDD5C8;
+    padding: 7pt 9pt;
+    border: none;
     vertical-align: top;
   }
+  tbody tr:nth-child(even) td { background: #f6ede2; }
   tr { break-inside: avoid; }
-  table { break-inside: auto; }
   .num { text-align: right; white-space: nowrap; }
-  .total-row td { font-weight: 600; border-top: 1pt solid #8F4A25; border-bottom: none; }
+  .total-row td {
+    font-weight: 700;
+    color: #953407;
+    background: #ffddc6;
+    border-top: 1.5pt solid #bd592f;
+  }
+
+  /* ---------- 12-week timeline (chapter 10) ---------- */
+  table.timeline { font-size: 9.3pt; }
+  .timeline tbody tr:nth-child(even) td { background: transparent; }
+  .timeline td { border-bottom: 0.6pt solid #d9cfc5; padding: 8pt 9pt; }
+  .timeline td:first-child {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 11pt;
+    line-height: 1.25;
+    color: #bd592f;
+    border-right: 1.2pt solid rgba(189, 89, 47, 0.45);
+    padding-right: 8pt;
+  }
+  .timeline td:first-child strong { font-weight: normal; color: #bd592f; font-size: 12.5pt; }
+  .timeline td:last-child { text-align: center; font-size: 11pt; color: #953407; }
+
+  /* ---------- Stat callouts ---------- */
+  .stat {
+    background: #f6ede2;
+    border: 0.6pt solid #d9cfc5;
+    border-left: 4pt solid #bd592f;
+    border-radius: 0 2mm 2mm 0;
+    padding: 12pt 15pt 10pt;
+    margin: 13pt 0;
+    break-inside: avoid;
+  }
+  .stat-num {
+    font-family: Georgia, serif;
+    font-size: 42pt;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: #bd592f;
+    margin-bottom: 5pt;
+  }
+  .stat-label {
+    font-size: 8pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    line-height: 1.6;
+    color: #564b42;
+  }
+
+  /* ---------- Pull quotes ---------- */
+  .pull {
+    margin: 16pt 2mm;
+    padding: 10pt 2mm 12pt 15mm;
+    border-top: 1pt solid #bd592f;
+    border-bottom: 1pt solid #bd592f;
+    position: relative;
+    break-inside: avoid;
+  }
+  .pull::before {
+    content: "\201C";
+    position: absolute;
+    left: 0;
+    top: 6pt;
+    font-family: Georgia, serif;
+    font-size: 44pt;
+    line-height: 1;
+    color: #bd592f;
+  }
+  .pull p {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 19.5pt;
+    line-height: 1.4;
+    color: #17100b;
+    margin: 0;
+  }
 
   /* ---------- Callout boxes ---------- */
   .box {
-    background: #F5F0E8;
-    border-left: 3pt solid #8F4A25;
-    padding: 10pt 14pt;
-    margin: 12pt 0;
+    background: #f6ede2;
+    border-left: 3pt solid #bd592f;
+    border-radius: 0 2mm 2mm 0;
+    padding: 11pt 14pt;
+    margin: 13pt 0;
     break-inside: avoid;
   }
   .box-title {
-    font-family: Georgia, serif;
-    font-size: 11pt;
-    color: #8F4A25;
-    font-weight: 600;
-    margin-bottom: 4pt;
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #953407;
+    margin-bottom: 5pt;
   }
   .box p:last-child, .box ol:last-child, .box ul:last-child { margin-bottom: 0; }
   .box ol li { margin-bottom: 6pt; }
 
+  /* ---------- The 10-questions card (chapter 5) ---------- */
+  .q-card {
+    background-image:
+      radial-gradient(circle at 92% -22%, transparent 0 58mm, rgba(255, 221, 198, 0.08) 58mm 58.4mm, transparent 58.4mm),
+      radial-gradient(circle at 92% -22%, transparent 0 72mm, rgba(255, 221, 198, 0.05) 72mm 72.4mm, transparent 72.4mm),
+      radial-gradient(circle at 102% 105%, rgba(189, 89, 47, 0.26) 0, rgba(189, 89, 47, 0) 55mm);
+    background-color: #17100b;
+    border-left: none;
+    border-radius: 4mm;
+    padding: 11mm 10mm 10mm;
+    color: #f6ede2;
+  }
+  .q-card .box-title {
+    font-family: Georgia, serif;
+    font-size: 19pt;
+    font-weight: normal;
+    letter-spacing: 0;
+    text-transform: none;
+    color: #fefbf7;
+    margin-bottom: 7mm;
+  }
+  .q-card .box-title::before {
+    content: "";
+    display: block;
+    width: 26pt;
+    border-top: 2.5pt solid #bd592f;
+    margin-bottom: 6pt;
+  }
+  .q-card ol {
+    list-style: none;
+    counter-reset: q;
+    margin: 0;
+    padding: 0;
+  }
+  .q-card ol li {
+    counter-increment: q;
+    position: relative;
+    padding: 0 0 0 13mm;
+    margin: 0 0 8pt 0;
+    font-size: 9.3pt;
+    line-height: 1.5;
+    color: rgba(254, 251, 247, 0.62);
+  }
+  .q-card ol li::before {
+    content: counter(q, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 1pt;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 14pt;
+    line-height: 1;
+    color: #bd592f;
+  }
+  .q-card ol li strong { display: block; color: #fefbf7; font-weight: 600; margin-bottom: 1pt; }
+
   /* ---------- Footer line ---------- */
   .foot {
-    margin-top: 16pt;
+    margin-top: 18pt;
     padding-top: 6pt;
-    border-top: 0.5pt solid #DDD5C8;
-    font-size: 7.5pt;
+    border-top: 0.6pt solid #d9cfc5;
+    font-size: 6.8pt;
     color: #8a8276;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    break-before: avoid;
   }
 
-  /* ---------- Back page ---------- */
-  .backpage { padding-top: 25mm; }
-  .backpage h2 { border-top: none; padding-top: 0; }
+  /* ---------- Back page: full-height ink plate ---------- */
+  .backpage {
+    height: 260mm;
+    background-image:
+      radial-gradient(circle at -2% 6%, transparent 0 58mm, rgba(255, 221, 198, 0.07) 58mm 58.4mm, transparent 58.4mm),
+      radial-gradient(circle at -2% 6%, transparent 0 86mm, rgba(255, 221, 198, 0.07) 86mm 86.4mm, transparent 86.4mm),
+      radial-gradient(circle at -2% 6%, transparent 0 116mm, rgba(255, 221, 198, 0.07) 116mm 116.4mm, transparent 116.4mm),
+      radial-gradient(circle at 0% 100%, rgba(189, 89, 47, 0.32) 0, rgba(189, 89, 47, 0) 95mm);
+    background-color: #17100b;
+    border-radius: 4mm;
+    color: #fefbf7;
+    padding: 14mm 13mm 12mm;
+    display: flex;
+    flex-direction: column;
+  }
+  .back-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .backpage h2 { color: #fefbf7; font-size: 19pt; margin: 0 0 6mm 0; }
+  .backpage h2::before { width: 26pt; border-top: 2.5pt solid #bd592f; margin-bottom: 6pt; }
+  .backpage p { color: rgba(254, 251, 247, 0.78); max-width: 152mm; }
+  .backpage p strong { color: #ffddc6; }
+  .back-spacer { flex: 1; }
+  .back-site { font-family: Georgia, serif; font-size: 25pt; color: #ffddc6; margin: 0 0 8mm 0; }
+  .disc-label {
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 221, 198, 0.7);
+    margin: 0 0 4pt 0;
+  }
+  .backpage .fineprint { font-size: 7.8pt; line-height: 1.55; color: rgba(254, 251, 247, 0.45); max-width: 165mm; }
+  .back-foot {
+    border-top: 1px solid rgba(254, 251, 247, 0.18);
+    padding-top: 5mm;
+    margin-top: 8mm;
+  }
   .fineprint { font-size: 8.5pt; color: #6c655a; line-height: 1.5; }
-  .back-rule { border: none; border-top: 2pt solid #8F4A25; width: 36pt; margin: 0 0 14pt 0; }
 </style>
 </head>
 <body>
 
 <!-- ==================== COVER ==================== -->
 <section class="cover">
-  <div class="masthead">Your Property Guide</div>
-  <h1>The Complete Guide to Selling Your Property in&nbsp;Australia</h1>
-  <div class="edition">2026 Edition</div>
-  <p class="cover-sub">What it really costs, how agents really work, and how to run a sale on your terms. Ten chapters of plain-English advice for every state and territory.</p>
-  <div class="cover-url">yourpropertyguide.com.au</div>
+  <div class="cover-top">
+    <div class="cover-rule"></div>
+    <div class="masthead">Your Property Guide</div>
+  </div>
+
+  <div class="cover-title-block">
+    <h1>The Complete Guide to <em>Selling</em> Your Property in&nbsp;Australia</h1>
+    <div class="edition">2026 Edition</div>
+    <p class="cover-sub">What it really costs, how agents really work, and how to run a sale on your terms. Ten chapters of plain-English advice for every state and territory.</p>
+  </div>
+
+  <div class="cover-spacer"></div>
+
+  <div class="cover-foot">
+    <span class="site">yourpropertyguide.com.au</span>
+    <span class="free">Free · 10 Chapters</span>
+  </div>
 </section>
 
 <!-- ==================== CONTENTS ==================== -->
@@ -222,6 +499,11 @@
   </ul>
   <p>You can pull all four from the big portals’ suburb profile pages, your state’s valuer-general data, or simply by watching what sells near you for six weeks. If an agent quotes these numbers without being asked, that’s a point in their favour.</p>
 
+  <div class="stat">
+    <div class="stat-num">60 days</div>
+    <div class="stat-label">Past this many days on market, buyers are in charge</div>
+  </div>
+
   <h2>Seasonality: spring is crowded for a reason</h2>
   <p>Australian listings peak in spring. September to November typically brings the year’s biggest wave of new stock, with a second, smaller surge in late February and March once everyone is back from holidays. Winter and the December-January stretch are the quiet months.</p>
   <p>Spring’s reputation is partly self-fulfilling: gardens look better, buyers are active, and everyone has been told spring is the time to sell. The catch is that everyone else got the same memo. A well-presented home in August or early February often faces half the competition it would in October, in front of buyers who have been starved of stock for months.</p>
@@ -232,6 +514,11 @@
   <p><strong>Selling first</strong> gives you a known budget, a stronger negotiating position as a cash-ready buyer, and no risk of carrying two mortgages. The cost is uncertainty about where you’ll live: you may need to rent, store furniture, or negotiate a long settlement or leaseback. In a rising market you can also find your sale proceeds buying less by the time you purchase.</p>
   <p><strong>Buying first</strong> means you move once and you know exactly where you’re going. The risk is the other way: if your sale takes longer or lands lower than expected, you’re funding two properties and negotiating your sale under time pressure, which buyers and their agents can smell. In a falling or slow market, buying first is the more dangerous order of operations.</p>
   <p>A rough rule: in a hot market with thin stock, buying first is more defensible because your own sale is the easy part. In a soft market, sell first and rent if you must. Paying three months’ rent is cheaper than knocking $40,000 off your price because settlement is looming.</p>
+
+  <aside class="pull">
+    <p>Paying three months’ rent is cheaper than knocking $40,000 off your price because settlement is looming.</p>
+  </aside>
+
   <p><strong>Bridging finance, briefly.</strong> A bridging loan covers the gap when you buy before you sell. The lender takes security over both properties, charges interest (often capitalised, meaning it compounds onto the loan) on the combined “peak debt”, and typically expects the old property sold within 6 to 12 months. It works, but it is not cheap, and the clock pressure it creates is exactly the pressure that produces discounted sales. Get the numbers modelled by a broker before you rely on it, and treat it as a backstop rather than a plan.</p>
 
   <div class="box">
@@ -253,6 +540,11 @@
   <h2>Appraisal, valuation, estimate: not the same thing</h2>
   <p><strong>An agent appraisal</strong> is a free market opinion from someone who wants your listing. It’s usually informed by genuine local knowledge, but it is a sales document, not a neutral assessment. It carries no legal weight.</p>
   <p><strong>A bank valuation</strong> is a formal assessment by an independent certified valuer, ordered by a lender to protect the lender. Valuers are deliberately conservative because their job is to estimate what the bank would recover in a forced sale. Bank valuations commonly land 5 to 10 per cent below what a well-run campaign achieves. If a buyer’s bank valuation comes in low, their loan can shrink, which is why “subject to finance” offers sometimes fall over even when the buyer is keen.</p>
+
+  <div class="stat">
+    <div class="stat-num">5 to 10%</div>
+    <div class="stat-label">How far bank valuations commonly land below a well-run campaign</div>
+  </div>
   <p><strong>Online estimates</strong> (the automated numbers on the major portals and bank apps) are statistical models fed by past sales data. For a standard house in a suburb with plenty of recent sales, they can be within a few per cent. For renovated, unusual, rural or recently quiet markets, they can miss by 10 to 20 per cent in either direction. Most platforms publish a confidence band with the number. Read it. A “$910,000 estimate” with a band of $780,000 to $1,040,000 is telling you, politely, that it doesn’t know.</p>
   <p>The order of reliability for an owner-occupier sale, from least to most useful: online estimate, bank valuation, a well-evidenced agent appraisal, and finally the only number that actually matters, which is what a buyer signs for.</p>
 
@@ -280,6 +572,10 @@
   </ol>
   <p>You will not be as accurate as a good local agent. You don’t need to be. You need to be accurate enough to recognise flattery when it’s holding a clipboard.</p>
 
+  <aside class="pull">
+    <p>You need to be accurate enough to recognise flattery when it’s holding a clipboard.</p>
+  </aside>
+
   <p class="foot">yourpropertyguide.com.au · The Complete Guide to Selling Your Property in Australia</p>
 </section>
 
@@ -295,7 +591,7 @@
   <p>Commission is the big one, and it is entirely negotiable. There are no set rates anywhere in Australia. As a rule, commission runs lower where prices are high and competition between agencies is fierce (inner Sydney and Melbourne) and higher where prices are lower or markets are thin (regional and remote areas). The figures below are typical ranges as at mid-2026; your suburb will have its own going rate, which any agent will tell you if asked directly.</p>
 
   <table>
-    <tr><th>State / territory</th><th>Typical commission range</th><th>Notes</th></tr>
+    <thead><tr><th>State / territory</th><th>Typical commission range</th><th>Notes</th></tr></thead>
     <tr><td>NSW</td><td class="num">1.8% - 2.5% (Sydney)<br>2.5% - 3.5% (regional)</td><td>Among the lowest metro rates in the country</td></tr>
     <tr><td>Victoria</td><td class="num">1.6% - 2.5% (Melbourne)<br>2.5% - 3.5% (regional)</td><td>Heavy agency competition keeps Melbourne rates down</td></tr>
     <tr><td>Queensland</td><td class="num">2.0% - 3.0% (SEQ)<br>2.5% - 3.5% (regional)</td><td>The old capped rate is long gone; everything is negotiable</td></tr>
@@ -311,7 +607,7 @@
   <h2>Marketing: $2,000 to $10,000</h2>
   <p>Marketing is almost always paid by you, on top of commission, and usually upfront or at settlement regardless of whether the property sells. A typical metro campaign:</p>
   <table>
-    <tr><th>Item</th><th>Typical cost</th></tr>
+    <thead><tr><th>Item</th><th>Typical cost</th></tr></thead>
     <tr><td>Portal listing (realestate.com.au and/or Domain, premium tier)</td><td class="num">$1,500 - $5,000+</td></tr>
     <tr><td>Professional photography (day, plus twilight shots)</td><td class="num">$300 - $800</td></tr>
     <tr><td>Floorplan</td><td class="num">$150 - $350</td></tr>
@@ -344,7 +640,7 @@
   <h2>Worked example: an $850,000 sale</h2>
   <p>Owner-occupied house in suburban Brisbane, sold by private treaty with a mid-range campaign and partial staging:</p>
   <table>
-    <tr><th>Cost item</th><th>Amount</th></tr>
+    <thead><tr><th>Cost item</th><th>Amount</th></tr></thead>
     <tr><td>Agent commission at 2.5% incl. GST</td><td class="num">$21,250</td></tr>
     <tr><td>Marketing campaign (portal premium, photos, floorplan, board, copy)</td><td class="num">$4,300</td></tr>
     <tr><td>Conveyancing, including disclosure documents</td><td class="num">$1,400</td></tr>
@@ -353,6 +649,12 @@
     <tr><td>Lender discharge fee plus registration</td><td class="num">$550</td></tr>
     <tr class="total-row"><td>Total cost of sale</td><td class="num">$32,900</td></tr>
   </table>
+
+  <div class="stat">
+    <div class="stat-num">$32,900</div>
+    <div class="stat-label">The full cost of selling in the worked $850,000 example</div>
+  </div>
+
   <p>That’s about 3.9 per cent of the sale price, with no CGT because it’s a main residence. The same property as an investment held nine years with a $300,000 gross gain could add a tax bill in the tens of thousands depending on the owner’s income, which is why investors should price the tax before they price the campaign.</p>
 
   <p class="foot">yourpropertyguide.com.au · The Complete Guide to Selling Your Property in Australia</p>
@@ -376,8 +678,17 @@
     <li><strong>Fix the small broken things.</strong> Dripping taps, sticky doors, cracked switch plates, the gate that doesn’t latch. Each one whispers “what else haven’t they maintained?”</li>
   </ul>
 
+  <aside class="pull">
+    <p>Buyers form their offer range on the footpath.</p>
+  </aside>
+
   <h2>Money pits</h2>
   <p>Big renovations done specifically for sale rarely pay. A $60,000 kitchen might add $40,000 to the price; the buyer would rather have chosen their own benchtop. Pools, full bathroom gut-jobs, extensions and structural work almost never recover their cost on a pre-sale timeline, and they delay your campaign by months. The rule: renovate to live, present to sell. If a room is genuinely dated, it is usually cheaper to price it honestly than to rebuild it for a stranger’s taste.</p>
+
+  <div class="stat">
+    <div class="stat-num">$40,000</div>
+    <div class="stat-label">What a $60,000 pre-sale kitchen might add to the price</div>
+  </div>
 
   <h2>Decluttering is free and worth more than most renovations</h2>
   <p>Half-empty cupboards read as ample storage. Full ones read as “this house is too small”, even to buyers with twice your stuff. Clear benchtops, thin out furniture so rooms breathe, take down the family photo wall (buyers need to imagine their own life in the frame), and hire a storage unit for a month if you must. It costs $150 to $400 and is the best presentation spend per dollar available.</p>
@@ -419,7 +730,7 @@
   </ul>
   <p>Interview at least three agents. Not to triangulate the price (though it helps), but because agents behave differently when they know they’re in a contest. You’ll also hear three marketing plans and quickly learn which parts are boilerplate.</p>
 
-  <div class="box">
+  <div class="box q-card">
     <div class="box-title">The 10 questions to ask every agent</div>
     <ol>
       <li><strong>What have you personally sold within a kilometre of here in the past six months, and for how much?</strong> Names and numbers, not “we’re very active in the area”.</li>
@@ -459,6 +770,11 @@
     <li><strong>South Australia:</strong> residential sales agency agreements are capped at 90 days, renewable.</li>
     <li><strong>WA, Tasmania, NT, ACT:</strong> no general statutory cooling-off on agency agreements, and term caps vary or don’t exist, so negotiate the term and exit clause yourself. Anywhere in Australia, an agent who insists on more than 90 days exclusive for a standard home is protecting themselves, not you.</li>
   </ul>
+
+  <div class="stat">
+    <div class="stat-num">90 days</div>
+    <div class="stat-label">The longest exclusive agency term worth signing on a standard home</div>
+  </div>
   <p>Finally, read the commission trigger clause. You can owe commission if a buyer the agent introduced purchases after the agreement ends. That’s fair protection against being cut out, but check the tail period (60 to 90 days is reasonable; open-ended is not) and that “introduced” is defined.</p>
 
   <p class="foot">yourpropertyguide.com.au · The Complete Guide to Selling Your Property in Australia</p>
@@ -481,11 +797,20 @@
 
   <h2>Private treaty</h2>
   <p><strong>How it works:</strong> you list at an advertised price (or range), buyers make offers, you negotiate. Around eight in ten Australian sales happen this way.</p>
+
+  <div class="stat">
+    <div class="stat-num">8 in 10</div>
+    <div class="stat-label">Australian sales that happen by private treaty</div>
+  </div>
   <p><strong>The case for:</strong> control and reach. You can negotiate terms as well as price, accept conditional offers from the biggest possible buyer pool, take your time, and quietly adjust strategy without a public verdict. Costs are lower and the process suits every market, hot or cold.</p>
   <p><strong>The case against:</strong> no deadline means buyers can stall, and the first advertised price does most of the work; get it wrong and you’ll be cutting it publicly three weeks later (Chapter 7’s first-two-weeks rule). Buyers also get cooling-off periods in most states, so a “sold” sticker can come unstuck.</p>
 
   <h2>Off-market</h2>
   <p>An off-market sale skips public advertising: the agent shops your property to their buyer database. The pitch is privacy, no campaign costs and a fast result. The reality check: price discovery needs exposure, and an off-market sale by definition has the least. You’re selling into one agent’s contact list, and the buyer knows there’s no visible competition. Genuine off-market premiums exist but are rare; quiet discounts are common. Off-market suits sellers who value privacy or speed over the last dollar, genuinely unique properties with a known shortlist of buyers, and as a pre-campaign test run (“we’ll quietly offer it for two weeks before launch”). If an agent leads with an off-market buyer who is ready to pay strong money right now, ask the obvious question: strong compared with what? Without a campaign, neither of you knows.</p>
+
+  <aside class="pull">
+    <p>Without a campaign, neither of you knows.</p>
+  </aside>
 
   <div class="box">
     <div class="box-title">Watch for</div>
@@ -516,12 +841,22 @@
     <li><strong>Video and drone.</strong> Worth it for properties where land, position or flow is the story (acreage, waterfront, view corridors, big blocks). For a standard suburban house, a good photo set and floorplan do the job, and the video budget is better spent on the portal tier.</li>
   </ul>
 
+  <div class="stat">
+    <div class="stat-num">$250</div>
+    <div class="stat-label">Arguably the highest-value marketing spend: the floorplan</div>
+  </div>
+
   <h2>Open homes versus private inspections</h2>
   <p>Open homes are efficient: every interested buyer through in 30 minutes, and a crowded open creates useful competitive anxiety (“who were all those people?”). Private inspections suit tenanted properties, prestige homes and security-conscious sellers, and they give the agent longer with each genuine buyer. Most good campaigns run both: scheduled Saturday opens plus midweek privates for the serious. One practical note: ask your agent for written feedback after every open, including the count of groups through and any contract requests. The pattern across the first three opens is your campaign’s vital signs.</p>
 
   <h2>The first-two-weeks rule</h2>
   <p>A new listing gets its biggest audience in its first two weeks, because every buyer with a saved search is notified the day it goes live. These are also your best buyers: the ones who’ve inspected twenty homes, missed out twice, and know exactly what your property is worth. If your price is right, they act fast.</p>
   <p>Miss that window with an ambitious price and the listing starts to age in public. Buyers can see days on market and price cuts, and both read as weakness. The longer it sits, the more every enquiry begins with “what’s wrong with it?” and every offer arrives discounted accordingly.</p>
+
+  <aside class="pull">
+    <p>Launch at the price you’d accept, not the price you’d love.</p>
+  </aside>
+
   <p>The strategic consequence is blunt: <strong>launch at the price you’d accept, not the price you’d love.</strong> The fantasy number doesn’t function as a free option; it actively burns your best fortnight. If you and your agent disagree on price, resolve it before launch, not via a public reduction in week four. And if the first two weeks bring solid traffic but no offers, that’s not bad luck, it’s the market’s answer. Reprice decisively in week three rather than bleeding 1 per cent a month until spring.</p>
 
   <p class="foot">yourpropertyguide.com.au · The Complete Guide to Selling Your Property in Australia</p>
@@ -552,7 +887,7 @@
   <p>In most states, a private-treaty buyer of residential property can withdraw within a statutory cooling-off period for a small penalty or none. No state gives cooling-off rights to buyers at auction. Sellers get no cooling-off anywhere (on the sale contract; NSW gives you one business day on the agency agreement, per Chapter 5).</p>
 
   <table>
-    <tr><th>State / territory</th><th>Buyer cooling-off</th><th>Penalty if buyer withdraws</th></tr>
+    <thead><tr><th>State / territory</th><th>Buyer cooling-off</th><th>Penalty if buyer withdraws</th></tr></thead>
     <tr><td>NSW</td><td>5 business days (10 for off-the-plan)</td><td>0.25% of purchase price</td></tr>
     <tr><td>Victoria</td><td>3 business days</td><td>$100 or 0.2%, whichever is greater</td></tr>
     <tr><td>Queensland</td><td>5 business days</td><td>Up to 0.25%</td></tr>
@@ -576,7 +911,16 @@
     <li><strong>Feedback conditioning.</strong> A steady drip of underwhelming “market feedback” softening you up for a price cut or a marginal offer. The cure is the data you agreed at launch: groups through, repeat visits, contract requests. If the numbers say the campaign is healthy, the feedback chorus deserves scepticism.</li>
     <li><strong>The split-the-difference reflex.</strong> “You’re at $865,000, they’re at $845,000, let’s do $855,000” feels fair and costs you $10,000 in one sentence. Counter at $862,000 instead; meeting in the middle is a habit, not a law.</li>
   </ul>
+
+  <div class="stat">
+    <div class="stat-num">$10,000</div>
+    <div class="stat-label">What one split-the-difference sentence can cost you</div>
+  </div>
   <p>Your standing defences: set your genuine floor (in writing, to yourself) before the campaign starts, require all offers in writing, and remember the agent’s incentive arithmetic. On a 2.5 per cent commission, the agent’s share of a $10,000 price improvement is $250, but a collapsed deal costs them everything. Agents are structurally biased toward “done” over “best”. A good one resists the bias. The agreement you signed in Chapter 5 was your bet on which kind you hired.</p>
+
+  <aside class="pull">
+    <p>Agents are structurally biased toward “done” over “best”.</p>
+  </aside>
 
   <p class="foot">yourpropertyguide.com.au · The Complete Guide to Selling Your Property in Australia</p>
 </section>
@@ -603,6 +947,11 @@
 
   <h2>Settlement: the 30-to-90-day quiet stretch</h2>
   <p>Settlement is the date the money moves and the title transfers, negotiated in the contract. Common defaults: around 30 days in Queensland, 42 days (six weeks) in NSW and Victoria, with 30 to 90 days the practical range nationally. Longer settlements are a legitimate negotiating chip if you need time to secure your next home.</p>
+
+  <div class="stat">
+    <div class="stat-num">42 days</div>
+    <div class="stat-label">The default settlement period in NSW and Victoria</div>
+  </div>
   <p>Between exchange and settlement, your side’s job list is short but strict: your conveyancer responds to requisitions and prepares the transfer, your lender gets the discharge of mortgage moving (start this immediately; lenders routinely take two to three weeks), and you keep the property insured until settlement and in the same condition as at sale. The buyer is entitled to a <strong>pre-settlement inspection</strong>, usually in the final week, to confirm exactly that, including that any contractually included items (dishwasher, curtains, the shed contents you promised) are present and working.</p>
   <p><strong>On settlement day</strong>, almost everything happens electronically through PEXA or a similar platform, attended by the conveyancers and lenders rather than you. In sequence: the buyer’s funds are drawn, your mortgage is paid out and discharged, rates and water are adjusted between the parties to the day, transfer documents are lodged, and the balance lands in your nominated account, usually that afternoon. The agent, on written authority, releases the keys to the buyer and deducts their commission and any unpaid marketing from the deposit they’ve been holding in trust, remitting the remainder to you. Then it’s done: no signing ceremony, no handshake, typically just a phone call from your conveyancer and a settlement statement by email. Keep that statement and the contract with your tax records, permanently if the property was ever income-producing.</p>
 
@@ -622,8 +971,8 @@
     <p class="standfirst">Print this page. The weeks count down to exchange, with settlement following four to six weeks later. Adjust for your state’s paperwork lead times.</p>
   </div>
 
-  <table>
-    <tr><th style="width:18%">When</th><th>What to do</th><th style="width:8%">Done</th></tr>
+  <table class="timeline">
+    <thead><tr><th style="width:18%">When</th><th>What to do</th><th style="width:8%">Done</th></tr></thead>
     <tr>
       <td><strong>Week 12</strong></td>
       <td>Research your suburb: pull six months of comparable sold prices, days on market and current competition. Build your own price range (Chapter 2). Start decluttering, one room a week. Book a skip if you’re honest with yourself.</td>
@@ -698,21 +1047,35 @@
 
   <p>Twelve weeks is comfortable, not generous. Sellers in NSW, Victoria, Queensland and the ACT should guard the paperwork weeks especially: a contract or disclosure pack that isn’t ready is the most common reason launch dates slip, and slipped launches miss the photography weather, the portal weekend, and occasionally the market.</p>
 
+  <div class="stat">
+    <div class="stat-num">12 weeks</div>
+    <div class="stat-label">Comfortable, not generous: research to exchange</div>
+  </div>
+
   <p class="foot">yourpropertyguide.com.au · The Complete Guide to Selling Your Property in Australia</p>
 </section>
 
 <!-- ==================== BACK PAGE ==================== -->
 <section class="backpage page">
-  <hr class="back-rule">
-  <h2 class="serif">About Your Property Guide</h2>
-  <p>Your Property Guide is plain-English property education for Australians. No listings, no lead-selling to agents, no breathless market commentary. Just clear explanations of how buying, selling and owning property actually works in this country, written to be useful rather than exciting.</p>
-  <p>You’ll find free guides like this one, calculators and suburb profiles at <strong>yourpropertyguide.com.au</strong>.</p>
+  <div class="back-content">
+    <div class="cover-rule"></div>
 
-  <h2 class="serif">Disclaimer</h2>
-  <p class="fineprint">This guide is general information only. It is not financial, legal or tax advice, and it doesn’t take your personal circumstances into account. Costs, commission rates, legal requirements and timeframes are typical ranges as at mid-2026; they vary by state, suburb and situation, and they change. Before acting on anything in this guide, verify the current rules for your state and get advice from a licensed conveyancer or solicitor, a registered tax agent, and other qualified professionals as your situation requires. While care has been taken in preparing this guide, no warranty is given as to its accuracy or completeness, and no liability is accepted for any loss arising from reliance on it.</p>
+    <h2 class="serif" style="margin-top:14mm;">About Your Property Guide</h2>
+    <p>Your Property Guide is plain-English property education for Australians. No listings, no lead-selling to agents, no breathless market commentary. Just clear explanations of how buying, selling and owning property actually works in this country, written to be useful rather than exciting.</p>
+    <p>You’ll find free guides like this one, calculators and suburb profiles at <strong>yourpropertyguide.com.au</strong>.</p>
 
-  <p class="fineprint" style="margin-top:14pt;">© Profit Geeks 2026. All rights reserved.<br>
-  yourpropertyguide.com.au · The Complete Guide to Selling Your Property in Australia · 2026 Edition</p>
+    <div class="back-spacer"></div>
+
+    <p class="back-site">yourpropertyguide.com.au</p>
+
+    <p class="disc-label">Disclaimer</p>
+    <p class="fineprint">This guide is general information only. It is not financial, legal or tax advice, and it doesn’t take your personal circumstances into account. Costs, commission rates, legal requirements and timeframes are typical ranges as at mid-2026; they vary by state, suburb and situation, and they change. Before acting on anything in this guide, verify the current rules for your state and get advice from a licensed conveyancer or solicitor, a registered tax agent, and other qualified professionals as your situation requires. While care has been taken in preparing this guide, no warranty is given as to its accuracy or completeness, and no liability is accepted for any loss arising from reliance on it.</p>
+
+    <div class="back-foot">
+      <p class="fineprint" style="margin:0;">© Profit Geeks 2026. All rights reserved.<br>
+      yourpropertyguide.com.au · The Complete Guide to Selling Your Property in Australia · 2026 Edition</p>
+    </div>
+  </div>
 </section>
 
 </body>

@@ -21,6 +21,9 @@ export interface SendMailOptions {
   subject: string;
   html: string;
   from?: string;
+  /** Where replies land. Customer-facing sends set this so "reply to this
+      email" is a real call to action instead of a bounce. */
+  replyTo?: string;
 }
 
 // Thin wrapper around transporter.sendMail. Caller is expected to
@@ -31,6 +34,7 @@ export async function sendMail(opts: SendMailOptions): Promise<void> {
     from: opts.from ?? DEFAULT_FROM,
     to: opts.to,
     cc: opts.cc,
+    replyTo: opts.replyTo,
     subject: opts.subject,
     html: opts.html,
   });

@@ -12,7 +12,7 @@ import { StickyGuideBar } from "./StickyGuideBar";
 
 const META_TITLE = "Free guide to selling your property in Australia (2026)";
 const META_DESCRIPTION =
-  "The complete guide to selling your home: what it really costs, agent fees by state, auction vs private treaty, and a 12-week selling checklist. Free PDF, personalised to your suburb.";
+  "The agent you pick is a $20,000 decision. This free guide shows you how to pick well: real selling costs by state, fee negotiation, and the 10 questions that expose an average agent. Personalised to your suburb.";
 
 export const metadata: Metadata = {
   title: META_TITLE,
@@ -45,6 +45,11 @@ const CHAPTERS = [
 ];
 
 const FAQS = [
+  {
+    question: "How does a free guide save me money?",
+    answer:
+      "Three ways, all covered with real numbers. Agent selection: the gap between a strong and average agent on a typical sale runs five figures, and chapter 5 gives you the 10 questions that reveal which one you're talking to. Fee negotiation: commission is negotiable in every state, and 0.2 to 0.4 percent off a typical sale is $1,700 to $3,400. Preparation: the right pre-sale fixes return 3 to 10 times their cost, and chapter 4 tells you which ones they are.",
+  },
   {
     question: "Is the selling guide really free?",
     answer:
@@ -92,16 +97,17 @@ export default function SellingGuidePage() {
               </div>
 
               <h1 className="rise rise-d1 font-display text-ink tracking-tight mb-6 text-4xl sm:text-5xl lg:text-6xl leading-[1.02] font-medium">
-                Selling your home? Read this{" "}
-                <span className="italic font-light text-primary">before</span>{" "}
-                you sign anything.
+                The agent you pick is a{" "}
+                <span className="italic font-light text-primary">$20,000</span>{" "}
+                decision.
               </h1>
 
               <p className="rise rise-d2 font-display text-lg sm:text-xl text-ink leading-[1.35] mb-8 font-light">
-                The complete guide to selling property in Australia. What it
-                really costs, how agents price your home, the questions that
-                catch bad agents out, and a week-by-week plan to settlement.
-                Personalised to your suburb, free, in your inbox in 60 seconds.
+                On a typical sale, the gap between a strong agent and an
+                average one runs five figures. This free guide shows you how
+                to tell them apart, what selling really costs, and where to
+                claw thousands back. Ten chapters, personalised to your
+                suburb, in your inbox in 60 seconds.
               </p>
 
               <div className="rise rise-d3 flex items-start gap-6 mb-8">
@@ -115,10 +121,10 @@ export default function SellingGuidePage() {
                 />
                 <ul className="space-y-3 pt-1">
                   {[
-                    "Agent commission and selling costs, state by state",
-                    "The 10 questions that separate great agents from average ones",
-                    "Auction vs private treaty: which suits your property",
-                    "A printable 12-week selling timeline checklist",
+                    "The 10 questions that expose an average agent before you sign",
+                    "Fee negotiation that typically saves $1,700 to $3,400",
+                    "Presentation moves that return 3 to 10 times their cost",
+                    "The 60-day trap that quietly discounts stale listings",
                   ].map((line) => (
                     <li key={line} className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-cta shrink-0 mt-0.5" aria-hidden="true" />
@@ -149,6 +155,32 @@ export default function SellingGuidePage() {
               </Suspense>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* The money band. Three numbers, all drawn from the guide's own
+          content, that answer "why is a free PDF worth my email address"
+          in the reader's units: dollars. */}
+      <section className="band-glow bg-surface-inverse text-white border-b border-line">
+        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+          <p className="text-[11px] uppercase tracking-[0.32em] text-white/50 font-sans font-medium mb-10 text-center">
+            What the right moves are worth
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
+            {[
+              ["$20,000+", "the typical gap between a strong agent and an average one on a mid-market sale"],
+              ["3 to 10x", "what smart, cheap presentation returns at sale time, while big renovations rarely break even"],
+              ["$1,700 to $3,400", "what negotiating 0.2 to 0.4 percent off commission saves on a typical sale"],
+            ].map(([n, label]) => (
+              <div key={n} className="text-center sm:text-left">
+                <p className="font-display italic text-cta text-4xl sm:text-5xl leading-none mb-3 tracking-tight">{n}</p>
+                <p className="font-sans text-sm text-white/70 leading-relaxed">{label}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-10 text-center text-xs text-white/40 font-sans">
+            Figures are typical ranges from the guide, chapters 3 to 5. Your sale will vary. That is exactly why chapter 2 exists.
+          </p>
         </div>
       </section>
 

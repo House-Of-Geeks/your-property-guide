@@ -46,22 +46,26 @@ export default function HomePage() {
             "research" framing we used to lead with. The suburb search box
             in-hero is the visual proof of what the site does. */}
       <section className="relative bg-surface-warm overflow-hidden border-b border-line">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-20 w-[1200px] max-w-none opacity-[0.28] pointer-events-none select-none"
-        />
-        <Image
-          src="/images/illustrations/street-grid.svg"
-          alt=""
-          width={400}
-          height={400}
-          aria-hidden="true"
-          className="absolute -left-12 -bottom-12 w-[420px] opacity-[0.10] pointer-events-none select-none"
-        />
+        {/* Hero artwork: commissioned editorial illustration of an
+            Australian suburb at golden hour, in the exact brand palette
+            (terracotta roofs, ink linework, cream sky with survey
+            contours). Anchored bottom-right; the cream washes keep the
+            headline zone quiet and let the suburb emerge under and
+            around the guide card. */}
+        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+          <Image
+            src="/images/hero/suburb-dusk.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-right-bottom opacity-[0.9]"
+          />
+          {/* Left wash: solid cream under the headline, dissolving right */}
+          <div className="absolute inset-0 bg-gradient-to-r from-surface-warm from-25% via-surface-warm/80 via-55% to-surface-warm/10" />
+          {/* Top wash: keeps the eyebrow + headline rows clean */}
+          <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-12% via-surface-warm/55 via-45% to-transparent" />
+        </div>
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
           {/* Eyebrow: positions the site as education-led, not
@@ -186,7 +190,7 @@ export default function HomePage() {
               positioning) instead of suburbs. Calculators second,
               suburbs third, free fourth. The order signals what the
               site IS to anyone who only reads the stats. */}
-          <div className="border-y border-line grid grid-cols-2 sm:grid-cols-4">
+          <div className="border-y border-line grid grid-cols-2 sm:grid-cols-4 bg-surface-warm/60 backdrop-blur-[2px] rounded-sm">
             {[
               { value: "60+",    label: "Plain-English guides" },
               { value: "30+",    label: "Calculators and tools" },
@@ -447,9 +451,9 @@ export default function HomePage() {
                 your property.
               </h2>
               <p className="font-display font-light text-xl sm:text-2xl text-white/80 leading-snug max-w-md mb-12">
-                What it really costs. How agents price your home. The
-                questions that catch bad agents out. A 12-week plan to
-                settlement. Personalised to your suburb, free.
+                Selling costs 3 to 5 percent of your price. The right
+                moves claw thousands of it back. Ten chapters that show
+                you how, personalised to your suburb, free.
               </p>
               <div className="grid grid-cols-2 gap-x-6 gap-y-6 max-w-md">
                 {[

@@ -1,4 +1,4 @@
-import { EMAIL_COLORS, emailLayout, emailButton, emailButtonOutline, emailCoverHero } from "@/lib/email-theme";
+import { EMAIL_COLORS, emailLayout, emailButton, emailCoverHero } from "@/lib/email-theme";
 
 // Lead email rendering + scoring, extracted from /api/leads so it can be
 // unit-tested and previewed without booting the route (which imports the
@@ -137,18 +137,23 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
   switch (lead.type) {
     case "guide-download": {
       const score = scoreGuideLead(lead);
+      // Score-aware momentum copy. The job of this paragraph is to give
+      // the reader ONE thing to do tonight and one reason to believe it
+      // is worth money, in their situation, not generic reassurance.
       const next =
         score === "HOT"
-          ? "You mentioned you're planning to sell soon. We'll be in touch shortly to offer a free appraisal from a top local agent. No obligation, and your details stay private until you say otherwise."
+          ? "You said you're selling within three months. That's the window where the right moves still pay: pricing, presentation and agent choice are all open. Tonight, read chapter 3, it takes ten minutes and tells you where every dollar of your 3 to 5 percent selling cost goes. This week, put a real number on your place: we'll line up a free appraisal with a top local agent, so you walk into every conversation knowing exactly what it's worth. Nothing leaves our hands until you say so."
           : score === "WARM"
-            ? "When you're closer to listing, we can connect you with up to three top local agents for a free appraisal. No obligation, and we'll check in closer to the time."
-            : "Take your time with it. When you're ready to compare agents or get a free appraisal, we're here.";
+            ? "Three to six months out is the sweet spot. You have time to prepare properly, and preparation is where the money is: sellers who fix the right things and interview three agents routinely walk away with thousands more. Start with chapter 3 (the costs) and chapter 5 (the agent questions). When you're closer, one click lines up a free appraisal."
+            : score === "DO-NOT-CONTACT"
+              ? "Since you're already listed, skip straight to chapter 7 (marketing that sells) and chapter 8 (offers and negotiation), the two chapters that matter mid-campaign. And as promised, your details stay with us and go to no one."
+              : "No deadline means you get to do this the smart way. Chapter 1 shows you how to read your market and pick your moment. Keep the guide handy. The numbers in it will still be true when you're ready.";
       return {
-        subject: "Your free property selling guide",
+        subject: "Your selling guide + the $20,000 question",
         intro: `Thanks ${lead.firstName}. Your copy is ready, all ten chapters, personalised pointers included.`,
         next,
         cta: { label: "Download your guide (PDF)", url: GUIDE_PDF_URL },
-        preheader: "All 10 chapters are ready to download. Start with what selling really costs in your state.",
+        preheader: "Ten chapters that pay for themselves. Start with the 10 questions that expose an average agent.",
       };
     }
     case "appraisal-request":
@@ -198,29 +203,31 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
   }
 }
 
-// Chapter highlights shown only in the guide-delivery email. Keeps the
-// email useful on its own and seeds the chapters the reader should open
-// first (the costs and agent-selection chapters are the two that move
-// vendors toward an appraisal).
+// Value strip shown only in the guide-delivery email. Each line pairs a
+// chapter with the money it touches, using only numbers that appear in
+// the guide itself. This is the part of the email that earns the open.
 function guideHighlightsHtml(): string {
   const C = EMAIL_COLORS;
   const items = [
-    ["Ch 3", "The real cost of selling, state by state"],
-    ["Ch 5", "The 10 questions to ask every agent before you sign"],
-    ["Ch 10", "Your printable 12-week selling timeline"],
+    ["Ch 5", "The $20,000 question", "The 10 questions that expose an average agent before you sign anything"],
+    ["Ch 3", "Where the 3 to 5% goes", "Every selling cost, state by state, and which ones are negotiable"],
+    ["Ch 4", "The 3 to 10x rule", "The cheap preparation that outperforms every renovation at sale time"],
   ]
     .map(
-      ([n, t]) =>
+      ([n, headline, t]) =>
         `<tr>
-          <td style="padding:6px 12px 6px 16px;font-weight:600;white-space:nowrap;color:${C.terracottaDark};font-size:13px;">${n}</td>
-          <td style="padding:6px 16px 6px 0;color:${C.inkMuted};font-size:13px;">${t}</td>
+          <td style="padding:10px 12px 10px 16px;white-space:nowrap;vertical-align:top;font-family:Georgia,serif;font-style:italic;color:${C.terracotta};font-size:15px;">${n}</td>
+          <td style="padding:10px 16px 10px 0;border-bottom:1px solid ${C.line};">
+            <p style="margin:0;font-size:13.5px;font-weight:600;color:${C.ink};">${headline}</p>
+            <p style="margin:2px 0 0;font-size:12.5px;line-height:1.5;color:${C.inkMuted};">${t}</p>
+          </td>
         </tr>`,
     )
     .join("");
   return `
-      <div style="margin:0 0 18px;background:${C.cream};border:1px solid ${C.line};border-radius:8px;overflow:hidden;">
-        <p style="margin:0;padding:10px 16px 4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:${C.inkSubtle};">Start with these</p>
-        <table style="width:100%;border-collapse:collapse;margin-bottom:6px;">${items}</table>
+      <div style="margin:0 0 18px;background:${C.cream};border:1px solid ${C.line};border-radius:10px;overflow:hidden;">
+        <p style="margin:0;padding:12px 16px 2px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:${C.terracottaDark};">Where the money is</p>
+        <table style="width:100%;border-collapse:collapse;margin-bottom:8px;">${items}</table>
       </div>`;
 }
 
@@ -236,19 +243,24 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
     const appraisalPanel =
       score === "HOT" || score === "WARM"
         ? `
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0 0;background:${C.cream};border:1px solid ${C.line};border-radius:10px;">
-        <tr><td style="padding:18px 20px;">
-          <p style="margin:0 0 4px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:${C.terracottaDark};">While it's fresh</p>
-          <p style="margin:0 0 12px;font-size:14px;line-height:1.55;color:${C.inkMuted};">Want real numbers for your place, not medians? A free appraisal from a top local agent takes 30 minutes and puts a defensible price range on your property. No obligation, no listing agreement.</p>
-          ${emailButtonOutline("Book a free appraisal", APPRAISAL_URL)}
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0 0;background:${C.ink};border-radius:10px;">
+        <tr><td style="padding:20px 22px;">
+          <p style="margin:0 0 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:${C.apricot};">Put a number on it</p>
+          <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">Medians tell you about the suburb. An appraisal tells you about <em style="color:#ffffff;font-style:normal;font-weight:600;">your place</em>: a defensible price range, the comparable sales behind it, and what to fix first. Thirty minutes with a top local agent, free, no listing agreement, and you control who contacts you.</p>
+          ${emailButton("Book my free appraisal", APPRAISAL_URL)}
         </td></tr>
       </table>`
+        : "";
+
+    const psLine =
+      score === "HOT"
+        ? `<p style="margin:18px 0 0;font-size:13.5px;line-height:1.6;color:${C.inkMuted};"><strong style="color:${C.ink};">P.S.</strong> In a hurry? Reply to this email with your street address and the word <strong style="color:${C.terracottaDark};">appraisal</strong> and we'll fast-track it today.</p>`
         : "";
 
     return emailLayout({
       preheader,
       body: `
-      ${emailCoverHero(GUIDE_COVER_URL, `Your guide is ready, ${lead.firstName}.`, "Ten chapters, no filler. Free, and yours to keep.")}
+      ${emailCoverHero(GUIDE_COVER_URL, `Your guide is ready, ${lead.firstName}.`, "Ten chapters that routinely save sellers thousands. Free, and yours to keep.")}
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
         <tr><td align="center" style="padding:26px 28px 6px;">
           ${emailButton("Download your guide (PDF)", GUIDE_PDF_URL)}
@@ -256,8 +268,9 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
         </td></tr>
         <tr><td style="padding:18px 28px 26px;">
           ${guideHighlightsHtml()}
-          <p style="margin:0;font-size:14px;line-height:1.6;color:${C.ink};">${next}</p>
+          <p style="margin:0;font-size:14px;line-height:1.65;color:${C.ink};">${next}</p>
           ${appraisalPanel}
+          ${psLine}
           <p style="margin:22px 0 0;font-size:14px;line-height:1.5;color:${C.inkMuted};">Happy reading,<br/><span style="font-family:Georgia,serif;font-style:italic;font-size:15px;color:${C.ink};">The team at Your Property Guide</span></p>
           <p style="margin:18px 0 0;font-size:12px;color:${C.inkSubtle};line-height:1.55;">If you didn't request this guide, you can ignore this email.</p>
         </td></tr>
