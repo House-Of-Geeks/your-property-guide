@@ -13,6 +13,7 @@ import {
   SuburbFAQ,
 } from "@/components/suburb";
 import { SuburbAppraisalCTA } from "@/components/suburb/SuburbAppraisalCTA";
+import { SuburbSellingGuideCTA } from "@/components/suburb/SuburbSellingGuideCTA";
 import { SuburbSchools } from "@/components/suburb/SuburbSchools";
 import { SuburbWalkability } from "@/components/suburb/SuburbWalkability";
 import { SuburbHazard } from "@/components/suburb/SuburbHazard";
@@ -418,6 +419,14 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           <SuburbAppraisalCTA suburbName={suburb.name} suburbSlug={suburb.slug} />
         </section>
 
+        {/* Earlier-stage sellers: the appraisal form above captures vendors
+            ready to talk to an agent today; this captures the bigger group
+            still months out. Deep-links the guide funnel with suburb
+            pre-answered. */}
+        <section>
+          <SuburbSellingGuideCTA suburbName={suburb.name} suburbSlug={suburb.slug} />
+        </section>
+
         {/* Secondary capture for visitors who aren't selling. Smaller
             footprint, lower visual weight. */}
         <section className="relative rounded-2xl border border-line-warm bg-surface-warm overflow-hidden">
@@ -711,22 +720,22 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         </section>
       </div>
 
-      {/* Soft expert CTA at the very bottom. Deep-links to /find-an-expert
-          with the suburb pre-filled so visitors land directly in the lead
-          engine on a contextually-relevant page (not the homepage anchor). */}
+      {/* Soft guide CTA at the very bottom. Deep-links the funnel with
+          the suburb pre-answered so visitors land directly in the lead
+          engine on a contextually-relevant page. */}
       <ExpertCTA
-        headline={`Want a real human to help with ${suburb.name}?`}
-        body="If you&rsquo;ve looked at the numbers and want someone to talk it through, whether that&rsquo;s an agent, broker, accountant or conveyancer, we&rsquo;ll find the right person for your situation. Free, no commitment."
-        ctaLabel="Get connected"
-        href={`/find-an-expert?suburb=${slug}`}
+        headline={`Thinking about selling in ${suburb.name}?`}
+        body={`The complete selling guide, personalised to ${suburb.name}: what it really costs, how agents price homes here, and a 12-week plan to settlement. Free PDF, 60 seconds.`}
+        ctaLabel="Get the free selling guide"
+        href={`/selling-guide?suburb=${slug}`}
       />
 
-      {/* Floating "Get connected" pill, slides up once the user scrolls
-          past 30% of the page. Pre-fills the suburb on click. Dismissible
-          per session. Sits above the mobile bottom nav. */}
+      {/* Floating guide pill, slides up once the user scrolls past 30%
+          of the page. Pre-fills the suburb on click. Dismissible per
+          session. Sits above the mobile bottom nav. */}
       <StickyMatchCTA
         suburb={slug}
-        label={`${suburb.name}, get connected`}
+        label={`Selling in ${suburb.name}? Free guide`}
         dismissKey={`suburb:${slug}`}
       />
     </>

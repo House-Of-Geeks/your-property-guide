@@ -116,6 +116,52 @@ describe("POST /api/leads", () => {
     expect(subjects.some((s: string) => s.startsWith("ALERT: Lead notification failed"))).toBe(true);
   });
 
+  it("guide-download lead is scored, subject-prefixed and serialised into message", async () => {
+    const res = await POST(
+      makeRequest({
+        type: "guide-download",
+        firstName: "Sarah",
+        email: "sarah@example.com",
+        suburb: "burpengary-qld-4505",
+        propertyType: "house",
+        bedrooms: "4",
+        sellingTimeframe: "0-3-months",
+        agentStatus: "comparing",
+        motivation: "Downsizing",
+        priceExpectation: "$750k to $1m",
+        marketingConsent: true,
+        source: "selling-guide-page",
+      }),
+    );
+    expect(res.status).toBe(200);
+
+    // Score lands in the admin subject for inbox-level triage.
+    const adminCall = sendMailMock.mock.calls.map((c) => c[0]).find((c) => c.to === "andy@theandylife.com");
+    expect(adminCall.subject).toContain("[HOT]");
+    expect(adminCall.subject).toContain("burpengary-qld-4505");
+
+    // Qualification answers + consent snapshot persist in message (the
+    // Lead table has no dedicated columns for them).
+    const saved = dbLeadCreate.mock.calls[0][0].data;
+    expect(saved.message).toContain("Score: HOT");
+    expect(saved.message).toContain("Timeframe: Within 3 months");
+    expect(saved.message).toContain("Marketing consent: yes");
+    expect(saved.message).toContain("disclosure shown");
+  });
+
+  it("rejects a guide-download with an invalid timeframe enum", async () => {
+    const res = await POST(
+      makeRequest({
+        type: "guide-download",
+        firstName: "Sarah",
+        email: "sarah@example.com",
+        sellingTimeframe: "next-week",
+      }),
+    );
+    expect(res.status).toBe(400);
+    expect(dbLeadCreate).not.toHaveBeenCalled();
+  });
+
   it("confirmation-email failure does not block the success response", async () => {
     sendMailMock.mockResolvedValueOnce(undefined); // notify ok
     sendMailMock.mockImplementationOnce(async () => { throw new Error("user mailbox bounced"); });

@@ -423,11 +423,7 @@ export default function HowToChooseMortgageBrokerPage() {
         single transaction.
       </p>
 
-      <MatchCTA
-        kind="mortgage-broker"
-        lead="Want a broker we've already vetted on track record, lender panel and complaints history? We match you with one that fits. Free, no commitment."
-        ctaLabel="Match me with a broker"
-      />
+      <MatchCTA kind="mortgage-broker" />
 
       <Sources items={[
         "Mortgage and Finance Association of Australia (MFAA), \"Industry Intelligence Service\", latest 2024–2025 quarterly reports.",

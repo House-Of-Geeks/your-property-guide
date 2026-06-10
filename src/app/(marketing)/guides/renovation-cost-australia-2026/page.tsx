@@ -435,11 +435,7 @@ export default function RenovationCostAustralia2026Page() {
         signing.
       </p>
 
-      <MatchCTA
-        kind="mortgage-broker"
-        lead="Renovation finance is where a good broker earns their fee. Most lenders price construction differently, drawdown rules vary, LVR caps are stricter."
-        ctaLabel="Talk to a renovation broker"
-      />
+      <MatchCTA kind="mortgage-broker" />
 
       <Sources items={[
         "Housing Industry Association (HIA), \"Renovations Roundup\" quarterly tracking, 2024–2026 metro Australia.",

@@ -102,6 +102,8 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
+  { title: "Free Selling Guide (PDF)",            href: "/selling-guide",                           description: "The 10 agent interview questions and nine more chapters as a free PDF, personalised to your suburb." },
+  { title: "Commission Calculator",               href: "/real-estate-commission-calculator",       description: "What an agent costs on your sale price, by state." },
   { title: "Real Estate Agent Fees in Australia", href: "/guides/real-estate-agent-fees-australia", description: "Detailed breakdown of commission structures across states." },
   { title: "Property Auction Guide",              href: "/guides/property-auction-guide",            description: "How auctions actually run, and what to expect from your agent on auction day." },
   { title: "Free Property Appraisal",             href: "/appraisal",                                description: "An independent appraisal from a vetted local agent, no commitment." },

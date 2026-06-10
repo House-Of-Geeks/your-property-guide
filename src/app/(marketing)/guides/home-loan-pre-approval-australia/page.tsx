@@ -376,10 +376,7 @@ export default function HomeLoanPreApprovalAustraliaPage() {
         <li><strong>Pre-qualification confusion.</strong> A pre-qualification letter looks like a pre-approval but carries none of the weight. Always get full pre-approval before serious property searching.</li>
       </ul>
 
-      <MatchCTA
-        kind="mortgage-broker"
-        lead="Pre-approval is the moment lender choice locks in. Talk to a broker who can put your application in front of the right lender first time."
-      />
+      <MatchCTA kind="mortgage-broker" />
 
       <Sources items={PRE_APPROVAL_SOURCES} />
     </GuideArticleLayout>

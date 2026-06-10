@@ -5,11 +5,11 @@ import Link from "next/link";
 
 import { LatestGuides } from "@/components/home/LatestGuides";
 import { CapitalCityOutlook } from "@/components/home/CapitalCityOutlook";
-import { SpotlightGuideCard } from "@/components/home/SpotlightGuideCard";
-import { MatchAgent, PersonaPicker, TrustStrip } from "@/components/journey";
+import { SellingGuideCard } from "@/components/home/SellingGuideCard";
+import { PersonaPicker, SellingGuideFunnel, TrustStrip } from "@/components/journey";
 import { BestDealsRail } from "@/components/best-deal";
 import { OrganizationJsonLd } from "@/components/seo";
-import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 import { HomeSuburbSearch } from "./HomeSuburbSearch";
 
 // ISR — services have build-phase guards, so we cache for 24h instead of
@@ -52,7 +52,7 @@ export default function HomePage() {
           width={1200}
           height={800}
           aria-hidden="true"
-          className="absolute -right-40 -top-20 w-[1200px] max-w-none opacity-[0.18] pointer-events-none select-none"
+          className="absolute -right-40 -top-20 w-[1200px] max-w-none opacity-[0.28] pointer-events-none select-none"
         />
         <Image
           src="/images/illustrations/street-grid.svg"
@@ -68,7 +68,7 @@ export default function HomePage() {
               data-led. The brand competes on plain-English explanation
               of the Australian property machinery, not on real-time
               data feeds (which the portals own and we can't afford). */}
-          <div className="flex items-center gap-4 mb-10 sm:mb-12">
+          <div className="rise flex items-center gap-4 mb-10 sm:mb-12">
             <span className="font-display italic text-primary text-base sm:text-lg leading-none">
               No. 01
             </span>
@@ -92,7 +92,7 @@ export default function HomePage() {
                   beat — implies we'll tell you what NOT to do, not
                   just what to do (counter-portal). Italic emphasis
                   lands on "skip" as the loudest word. */}
-              <h1 className="font-display text-ink tracking-tight mb-8 text-5xl sm:text-6xl lg:text-[72px] xl:text-[84px] leading-[0.98] font-medium">
+              <h1 className="rise rise-d1 font-display text-ink tracking-tight mb-8 text-5xl sm:text-6xl lg:text-[72px] xl:text-[84px] leading-[0.98] font-medium">
                 What to ask. What to sign. What to{" "}
                 <span className="italic font-light text-primary">skip</span>.
               </h1>
@@ -100,7 +100,7 @@ export default function HomePage() {
               {/* Sub names the scope (60+ guides, every calculator)
                   and the positioning (written for buyers and sellers,
                   not portals). Education-first, not data-first. */}
-              <p className="font-display text-xl sm:text-2xl text-ink leading-[1.3] mb-8 font-light">
+              <p className="rise rise-d2 font-display text-xl sm:text-2xl text-ink leading-[1.3] mb-8 font-light">
                 Sixty plain-English guides. Every property calculator.
                 Written for buyers and sellers, not portals. Free, no
                 sign-up.
@@ -108,7 +108,7 @@ export default function HomePage() {
 
               {/* Primary action: suburb search box. Label echoes the
                   H1's first verb. */}
-              <div className="mb-6">
+              <div className="rise rise-d3 mb-6">
                 <p className="text-[11px] uppercase tracking-[0.25em] text-ink-subtle font-sans font-medium mb-3">
                   Know the suburb
                 </p>
@@ -132,16 +132,16 @@ export default function HomePage() {
 
               {/* Secondary action: calculator chips. Label echoes the
                   H1's second verb. */}
-              <div className="mb-5">
+              <div className="rise rise-d4 mb-5">
                 <p className="text-[11px] uppercase tracking-[0.25em] text-ink-subtle font-sans font-medium mb-3">
                   Run the numbers
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {[
+                    { label: "Selling costs",    href: "/real-estate-commission-calculator" },
                     { label: "Stamp duty",       href: "/stamp-duty-calculator" },
                     { label: "Borrowing power",  href: "/borrowing-power-calculator" },
                     { label: "Mortgage",         href: "/mortgage-calculator" },
-                    { label: "Rental yield",     href: "/rental-yield-calculator" },
                     { label: "First home buyer", href: "/first-home-buyers" },
                   ].map((c) => (
                     <Link
@@ -172,14 +172,13 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Right column: today's featured guide. Magazine-style
-                "today's read" — tells the visitor at a glance what
-                the site is for (plain-English explainers). Rotates
-                daily via pickSpotlightGuideSlug. */}
-            <div className="lg:col-span-5 lg:sticky lg:top-24 order-last lg:order-none">
-              <Suspense fallback={null}>
-                <SpotlightGuideCard />
-              </Suspense>
+            {/* Right column: the selling-guide lead magnet. The hero's
+                right column is the most valuable surface on the site, so
+                it sells the one asset that captures and qualifies
+                vendors. Education spotlight lives on in LatestGuides
+                below. */}
+            <div className="rise rise-d2 lg:col-span-5 lg:sticky lg:top-24 order-last lg:order-none">
+              <SellingGuideCard />
             </div>
           </div>
 
@@ -285,7 +284,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <Link
               href="/find-your-suburb"
-              className="group flex flex-col rounded-2xl border-2 border-primary/20 bg-surface-warm p-7 hover:border-primary/50 hover:shadow-md transition-all"
+              className="card-lift group flex flex-col rounded-2xl border-2 border-primary/20 bg-surface-warm p-7 hover:border-primary/50"
             >
               <p className="text-xs font-sans uppercase tracking-[0.25em] text-cta mb-3">Quiz · 2 minutes</p>
               <h3 className="font-display text-2xl sm:text-3xl text-ink group-hover:text-primary transition-colors leading-tight mb-3 tracking-tight">
@@ -302,7 +301,7 @@ export default function HomePage() {
 
             <Link
               href="/compare"
-              className="group flex flex-col rounded-2xl border-2 border-primary/20 bg-surface-warm p-7 hover:border-primary/50 hover:shadow-md transition-all"
+              className="card-lift group flex flex-col rounded-2xl border-2 border-primary/20 bg-surface-warm p-7 hover:border-primary/50"
             >
               <p className="text-xs font-sans uppercase tracking-[0.25em] text-cta mb-3">Tool · Side by side</p>
               <h3 className="font-display text-2xl sm:text-3xl text-ink group-hover:text-primary transition-colors leading-tight mb-3 tracking-tight">
@@ -383,12 +382,12 @@ export default function HomePage() {
             </p>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 font-sans text-sm text-ink">
               {[
+                "The complete selling guide, a real PDF, suburb-personalised",
                 "9,600+ suburb profiles (median, growth, schools, crime)",
-                "7 property calculators (stamp duty, mortgage, borrowing power)",
+                "8 property calculators (commission, stamp duty, mortgage)",
                 "60+ plain-English guides for buyers and sellers",
                 "Side-by-side compare for any two Australian suburbs",
                 "4-question suburb-match quiz",
-                "One vetted specialist introduction (when you want it)",
                 "Quarterly market read in your inbox",
                 "Free property appraisal (sellers)",
               ].map((line) => (
@@ -404,10 +403,10 @@ export default function HomePage() {
             variant="rich"
             className="mb-10"
             items={[
-              { lead: "No paywall.",               body: "Every page is free, and it stays that way. No login, no email gate." },
-              { lead: "No data resale, ever.",     body: "Your contact details only go to the one specialist you choose. We don't sell, share, or build profiles." },
-              { lead: "Walk away anytime.",        body: "If you don't reply to the match, there's no follow-up. No calls, no nagging emails, no second specialist." },
-              { lead: "Disclosed on every match.", body: "If a partner pays us when you work with them, you see that disclosure before you decide." },
+              { lead: "No paywall.",               body: "Every guide, calculator and suburb profile is free, and it stays that way. No login to read." },
+              { lead: "No data resale, ever.",     body: "Your details go only to the specialists you ask us to connect you with, capped at three. Never sold, never blasted to a list." },
+              { lead: "Walk away anytime.",        body: "Every introduction is no-obligation, and unsubscribing takes one click. No nagging calls." },
+              { lead: "Disclosed on every match.", body: "Partner agents pay us when an introduction leads to work. You never pay, and we say so up front, every time." },
             ]}
           />
 
@@ -422,14 +421,60 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 8. Match engine — the lead-capture surface. Now follows the trust
-            charter so the visitor reads "no paywall / no resale / every
-            match disclosed" before they hand over their situation. The
-            soft newsletter fallback for non-converters lives in the global
-            footer ("The quarterly read"), so no duplicate band here. */}
-      <Suspense fallback={null}>
-        <MatchAgent />
-      </Suspense>
+      {/* 8. Guide funnel — the lead-capture surface. Follows the trust
+            charter so the visitor reads "no paywall / no resale" before
+            being asked anything. Embeds the same qualification funnel as
+            /selling-guide so homepage visitors convert without a page
+            hop. The soft newsletter fallback for non-converters lives in
+            the global footer ("The quarterly read"). */}
+      <section id="guide" className="band-glow bg-surface-inverse text-white scroll-mt-24">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+            {/* Left, pitch */}
+            <div className="lg:col-span-5">
+              <div className="flex items-center gap-4 mb-10">
+                <span className="font-display italic text-cta text-base sm:text-lg leading-none">
+                  Free PDF
+                </span>
+                <span className="w-12 h-px bg-white/20" aria-hidden="true" />
+                <span className="text-[11px] uppercase tracking-[0.32em] text-white/60 font-sans font-medium">
+                  2026 edition
+                </span>
+              </div>
+              <h2 className="font-display text-white leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">
+                The complete guide to{" "}
+                <span className="italic font-light text-cta">selling</span>{" "}
+                your property.
+              </h2>
+              <p className="font-display font-light text-xl sm:text-2xl text-white/80 leading-snug max-w-md mb-12">
+                What it really costs. How agents price your home. The
+                questions that catch bad agents out. A 12-week plan to
+                settlement. Personalised to your suburb, free.
+              </p>
+              <div className="grid grid-cols-2 gap-x-6 gap-y-6 max-w-md">
+                {[
+                  ["01", "Answer 7 quick questions (60 seconds)"],
+                  ["02", "We personalise the guide to your suburb"],
+                  ["03", "Download instantly, plus a copy by email"],
+                  ["04", "Selling soon? A free local appraisal if you want one."],
+                ].map(([n, t]) => (
+                  <div key={n} className="border-t border-white/15 pt-4">
+                    <p className="font-display italic text-cta text-base mb-1.5 tabular-nums">{n}</p>
+                    <p className="text-sm text-white/85 leading-snug">{t}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right, the funnel itself */}
+            <div className="lg:col-span-7 lg:col-start-6">
+              <Suspense fallback={null}>
+                <SellingGuideFunnel source="homepage-guide" />
+              </Suspense>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

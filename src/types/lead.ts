@@ -6,7 +6,8 @@ export type LeadType =
   | "house-and-land-enquiry"
   | "suburb-alert"
   | "property-interest"
-  | "match-request";
+  | "match-request"
+  | "guide-download";
 
 export interface Lead {
   id?: string;

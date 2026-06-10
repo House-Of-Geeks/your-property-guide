@@ -118,6 +118,8 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
+  { title: "Free Selling Guide (PDF)",            href: "/selling-guide",                             description: "This guide and nine more chapters as a free PDF, personalised to your suburb." },
+  { title: "Commission Calculator",               href: "/real-estate-commission-calculator",         description: "What an agent costs on your sale price, by state." },
   { title: "How to Choose a Selling Agent",       href: "/guides/how-to-choose-a-selling-agent",      description: "The interview process, the appraisal-price trap, and what to negotiate in the listing agreement." },
   { title: "Real Estate Agent Fees in Australia", href: "/guides/real-estate-agent-fees-australia",   description: "Commission ranges by state, marketing budgets, and what's negotiable." },
   { title: "Property Auction Guide",              href: "/guides/property-auction-guide",             description: "How auctions actually run from a seller's perspective." },
@@ -449,10 +451,7 @@ export default function HowToSellAHouseAustraliaPage() {
         rough estimate.
       </p>
 
-      <MatchCTA
-        kind="accountant"
-        lead="If the property was ever rented, the CGT bill can be five figures. Worth a 20-minute call with a property-tax accountant before you list."
-      />
+      <MatchCTA kind="accountant" />
 
       <Sources items={SELLING_HOUSE_SOURCES} />
     </GuideArticleLayout>

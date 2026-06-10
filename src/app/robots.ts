@@ -7,7 +7,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/dashboard/", "/*.woff2", "/*.woff"],
+        // /downloads/ holds the gated lead-magnet PDFs; keeping them out
+        // of the index keeps the /selling-guide funnel as the front door.
+        disallow: ["/api/", "/dashboard/", "/downloads/", "/*.woff2", "/*.woff"],
       },
       // OpenAI
       { userAgent: "GPTBot",          allow: "/" },

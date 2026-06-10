@@ -81,7 +81,7 @@ export default async function SuburbHousesPage({ params }: Props) {
       <StickyMatchCTA
         suburb={slug}
         intent="buying"
-        label={`${suburb.name}, get connected`}
+        label={`Selling in ${suburb.name}? Free guide`}
         dismissKey={`suburb:${slug}`}
       />
     </>

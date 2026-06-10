@@ -52,6 +52,7 @@ const NAV_LINKS: NavLink[] = [
     href: "#",
     layout: "grouped",
     children: [
+      { label: "Agent commission",      href: "/real-estate-commission-calculator", group: "Calculators" },
       { label: "Borrowing power",       href: "/borrowing-power-calculator", group: "Calculators" },
       { label: "Mortgage repayments",   href: "/mortgage-calculator",        group: "Calculators" },
       { label: "Affordability",         href: "/affordability-calculator",   group: "Calculators" },
@@ -71,6 +72,7 @@ const NAV_LINKS: NavLink[] = [
     href: "#",
     layout: "list",
     children: [
+      { label: "Free selling guide (PDF)", href: "/selling-guide" },
       { label: "Buying my first home",  href: "/first-home-buyers" },
       { label: "Selling my home",       href: "/selling" },
       { label: "Upgrading or downsizing", href: "/upgrading" },
@@ -163,7 +165,7 @@ export function Header() {
             )}
           </nav>
 
-          {/* RHS, search, agent login, primary "Get matched" CTA */}
+          {/* RHS, search, agent login, primary guide CTA */}
           <div className="flex items-center gap-2 shrink-0">
             <Link
               href="/search"
@@ -192,10 +194,10 @@ export function Header() {
               {CONTACT_PHONE_DISPLAY}
             </a>
             <Link
-              href="/find-an-expert"
+              href="/selling-guide"
               className="hidden md:inline-flex items-center gap-1.5 rounded-full bg-cta hover:bg-cta-hover text-white px-4 py-2 text-xs font-semibold transition-colors"
             >
-              Get matched, free
+              Free selling guide
             </Link>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -243,11 +245,11 @@ export function Header() {
             )}
             <div className="pt-4 mt-2 border-t border-line space-y-2">
               <Link
-                href="/find-an-expert"
+                href="/selling-guide"
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-sm font-semibold text-white bg-cta hover:bg-cta-hover rounded-full transition-colors"
               >
-                Get matched, free
+                Free selling guide
               </Link>
               <a
                 href={`tel:${CONTACT_PHONE_E164}`}

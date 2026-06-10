@@ -391,10 +391,7 @@ export default function HowToFindABuilderAustraliaPage() {
         <li><strong>Keep a paper trail</strong> through the defects liability period. Photos, dates, requests, responses.</li>
       </ul>
 
-      <MatchCTA
-        kind="mortgage-broker"
-        lead="Construction loans drawdown to milestones. The right broker structures the loan so your progress payments don't blow up the project."
-      />
+      <MatchCTA kind="mortgage-broker" />
 
       <Sources items={[
         "Housing Industry Association, HIA standard residential building contracts (current).",

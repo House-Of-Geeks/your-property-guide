@@ -1,17 +1,19 @@
 import { ImageResponse } from "next/og";
 
 // Brand tokens duplicated here as raw hex so OG rendering doesn't depend on
-// the Tailwind/CSS pipeline. Keep in sync with src/app/globals.css.
+// the Tailwind/CSS pipeline. These are the sRGB renderings of the warm
+// oklch tokens in src/app/globals.css (same set as src/lib/email-theme.ts).
+// Keep in sync if the palette changes.
 export const OG_BRAND = {
-  primary: "#5c2d5e",
-  primaryDark: "#4E1F4F",
-  accent: "#DD3C70",
-  ink: "#0F0F1A",
-  inkMuted: "#3D3D52",
-  inkSubtle: "#7A7A8E",
-  surfaceWarm: "#f7f6f4",
-  surfaceCard: "#ffffff",
-  line: "#E4E0D9",
+  primary: "#953407",
+  primaryDark: "#842c02",
+  accent: "#bd592f",
+  ink: "#17100b",
+  inkMuted: "#564b42",
+  inkSubtle: "#9b9086",
+  surfaceWarm: "#f6ede2",
+  surfaceCard: "#fefbf7",
+  line: "#d9cfc5",
 } as const;
 
 export const OG_SIZE = { width: 1200, height: 630 } as const;

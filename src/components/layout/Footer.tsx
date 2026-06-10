@@ -62,6 +62,7 @@ const FOOTER_COLUMNS = [
     heading: "Learn",
     links: [
       { label: "Browse all guides",        href: "/guides" },
+      { label: "Free selling guide (PDF)", href: "/selling-guide" },
       { label: "First home buyers",        href: "/first-home-buyers" },
       { label: "Selling your home",        href: "/selling" },
       { label: "Investing in property",    href: "/investing" },
@@ -74,6 +75,7 @@ const FOOTER_COLUMNS = [
     heading: "Tools",
     links: [
       { label: "All calculators",          href: "/tools" },
+      { label: "Agent commission",         href: "/real-estate-commission-calculator" },
       { label: "Find your suburb (quiz)",  href: "/find-your-suburb" },
       { label: "Compare two suburbs",      href: "/compare" },
       { label: "Mortgage calculator",      href: "/mortgage-calculator" },
@@ -104,6 +106,7 @@ const FOOTER_COLUMNS = [
       { label: "Best Deals",               href: "/best-deals" },
       { label: "Find an expert",           href: "/find-an-expert" },
       { label: "Free property appraisal",  href: "/appraisal" },
+      { label: "For agents",               href: "/for-agents" },
     ],
   },
   {
@@ -255,7 +258,7 @@ function SuburbFooter({ name, slug, nearbySuburbs }: { name: string; slug: strin
   ];
 
   return (
-    <footer className="bg-surface-inverse text-white border-t-4 border-t-white">
+    <footer className="band-glow bg-surface-inverse text-white border-t-4 border-t-white">
       <AgentLoginPill />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
@@ -293,7 +296,7 @@ function SuburbFooter({ name, slug, nearbySuburbs }: { name: string; slug: strin
 // route group.
 export function Footer() {
   return (
-    <footer className="bg-surface-inverse text-white border-t border-white/10">
+    <footer className="band-glow bg-surface-inverse text-white border-t border-white/10">
       <AgentLoginPill />
       <NewsletterBand />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">

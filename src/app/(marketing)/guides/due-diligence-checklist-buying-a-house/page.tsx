@@ -377,10 +377,7 @@ export default function DueDiligenceChecklistPage() {
         <li>☐ Change of address paperwork started (banks, employer, electoral roll, etc.)</li>
       </ul>
 
-      <MatchCTA
-        kind="buyers-agent"
-        lead="If due diligence feels overwhelming or you don't trust your own bias on a particular property, a buyer's agent handles all of this professionally and gets you a stronger price."
-      />
+      <MatchCTA kind="buyers-agent" />
 
       <Sources items={DUE_DILIGENCE_SOURCES} />
     </GuideArticleLayout>

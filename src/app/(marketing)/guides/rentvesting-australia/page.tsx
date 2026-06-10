@@ -402,10 +402,7 @@ export default function RentvestingAustraliaPage() {
         <li><strong>Forgetting the lifestyle suburb&rsquo;s growth.</strong> If the suburb you actually want to live in grows faster than the suburb you bought, you&rsquo;re further from your owner-occupier purchase, not closer.</li>
       </ul>
 
-      <MatchCTA
-        kind="accountant"
-        lead="Rentvesting is a tax + structuring decision as much as a property one. A 30-minute call with a property accountant before you commit is worth its weight in gold."
-      />
+      <MatchCTA kind="accountant" />
 
       <Sources items={RENTVESTING_SOURCES} />
     </GuideArticleLayout>

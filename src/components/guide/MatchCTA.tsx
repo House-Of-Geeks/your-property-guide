@@ -1,14 +1,17 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-// In-content match CTA. Sits inline mid-article at natural decision points
+// In-content guide CTA. Sits inline mid-article at natural decision points
 // (after the "How to interview agents" section in a selling guide, after
 // the "How much will I borrow" section in a finance guide, etc.). Visually
 // distinct enough to be a CTA, restrained enough not to feel like an
 // interstitial ad.
 //
-// `kind` picks the default copy + the deep-link intent. Authors can
-// override any individual piece via the explicit props.
+// Since the June 2026 lead-gen pivot every kind pushes the selling-guide
+// funnel (the site's single conversion point) with a contextual lead, so
+// a buyer reading the LMI guide and a vendor reading the agent-fees guide
+// each get a line that makes sense where they are. `kind` picks the copy;
+// authors can override any piece via the explicit props.
 
 export type MatchCTAKind =
   | "selling-agent"
@@ -18,81 +21,58 @@ export type MatchCTAKind =
   | "builder"
   | "accountant";
 
-// Each kind maps to: an intent (matches MatchAgent's Intent union, used to
-// pre-fill the match flow), a one-line lead and a button label.
-const KIND_DEFAULTS: Record<
-  MatchCTAKind,
-  { intent: string; lead: string; ctaLabel: string }
-> = {
+const KIND_DEFAULTS: Record<MatchCTAKind, { lead: string; ctaLabel: string }> = {
   "selling-agent": {
-    intent:   "selling",
-    lead:     "Want to compare three vetted selling agents who actually sell in your suburb?",
-    ctaLabel: "Match me with a selling agent",
+    lead:     "Choosing an agent soon? The free selling guide has the 10 questions that catch bad agents out, plus fee benchmarks for your state.",
+    ctaLabel: "Get the free selling guide",
   },
   "mortgage-broker": {
-    intent:   "refinancing",
-    lead:     "Want to talk to a mortgage broker about your situation? They work with 30+ lenders, not one bank.",
-    ctaLabel: "Talk to a mortgage broker",
+    lead:     "Upgrading or refinancing around a sale? The free selling guide covers the sell side: costs, timing, and selling and buying at the same time.",
+    ctaLabel: "Get the free selling guide",
   },
   "buyers-agent": {
-    intent:   "buying",
-    lead:     "Want a buyer's agent who knows this market and works for you, not the seller?",
-    ctaLabel: "Match me with a buyer's agent",
+    lead:     "Most buyers have a property to sell first. The free selling guide covers costs, agent selection and a 12-week plan for the sale side of your move.",
+    ctaLabel: "Get the free selling guide",
   },
   conveyancer: {
-    intent:   "something-else",
-    lead:     "Want a conveyancer in your state who'll handle this end to end?",
-    ctaLabel: "Find a conveyancer",
+    lead:     "Selling as well? The free guide walks through contracts, vendor disclosure and settlement, state by state.",
+    ctaLabel: "Get the free selling guide",
   },
   builder: {
-    intent:   "something-else",
-    lead:     "Want to talk to a builder or quantity surveyor about this project?",
-    ctaLabel: "Talk to a builder",
+    lead:     "Renovating before a sale? Chapter 4 of the free selling guide covers which fixes pay for themselves and which never do.",
+    ctaLabel: "Get the free selling guide",
   },
   accountant: {
-    intent:   "something-else",
-    lead:     "Want a property-tax accountant who'll model the numbers before you commit?",
-    ctaLabel: "Talk to an accountant",
+    lead:     "Selling an investment property? The free guide covers CGT, the real costs of selling, and timing the exit.",
+    ctaLabel: "Get the free selling guide",
   },
 };
 
 interface MatchCTAProps {
-  /** Picks default copy + intent. Required unless every field below is overridden. */
+  /** Picks default copy. Required unless every field below is overridden. */
   kind?: MatchCTAKind;
   /** Override the lead copy. */
   lead?: string;
   /** Override the button label. */
   ctaLabel?: string;
-  /** Override the deep-link intent. Defaults to the kind's intent. */
+  /** Legacy prop, no longer used for routing. Kept so old call sites compile. */
   intent?: string;
-  /** Override the destination href entirely (skips the intent param). */
+  /** Override the destination href entirely. */
   href?: string;
 }
 
-export function MatchCTA({ kind, lead, ctaLabel, intent, href }: MatchCTAProps) {
+export function MatchCTA({ kind, lead, ctaLabel, href }: MatchCTAProps) {
   const defaults = kind ? KIND_DEFAULTS[kind] : null;
-  const resolvedLead     = lead     ?? defaults?.lead     ?? "Want one-on-one help with this stage?";
-  const resolvedLabel    = ctaLabel ?? defaults?.ctaLabel ?? "Get connected";
-  const resolvedIntent   = intent   ?? defaults?.intent;
-  // Selling intent goes to /appraisal (a dedicated appraisal form, higher
-  // conversion); every other intent goes to /find-an-expert (which embeds
-  // the MatchAgent and pre-fills from ?intent). We deliberately stopped
-  // routing to the homepage anchor — context-relevant landing pages convert
-  // better and anchor scrolls don't fire conversion events.
-  const resolvedHref =
-    href ??
-    (resolvedIntent === "selling"
-      ? `/appraisal?intent=selling`
-      : resolvedIntent
-        ? `/find-an-expert?intent=${resolvedIntent}`
-        : `/find-an-expert`);
+  const resolvedLead  = lead     ?? defaults?.lead     ?? "Want the complete picture before your next step?";
+  const resolvedLabel = ctaLabel ?? defaults?.ctaLabel ?? "Get the free selling guide";
+  const resolvedHref  = href ?? "/selling-guide";
 
   return (
     <aside className="my-8 rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-7">
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <div className="flex-1">
           <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-ink-subtle mb-2">
-            Talk to a person
+            Free guide · 2026 edition
           </p>
           <p className="font-sans text-base text-ink leading-snug">
             {resolvedLead}
@@ -107,7 +87,7 @@ export function MatchCTA({ kind, lead, ctaLabel, intent, href }: MatchCTAProps) 
         </Link>
       </div>
       <p className="text-[11px] font-sans text-ink-subtle mt-3 leading-relaxed">
-        Free for buyers and sellers. We&rsquo;re paid by the specialist if work goes ahead, never by you.
+        Free PDF, personalised to your suburb. 60 seconds, no card, no catch.
       </p>
     </aside>
   );

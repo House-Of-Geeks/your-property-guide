@@ -5,4 +5,5 @@ export { RentalYieldCalculator } from "./RentalYieldCalculator";
 export { CGTCalculator } from "./CGTCalculator";
 export { RefinancingCalculator } from "./RefinancingCalculator";
 export { AffordabilityCalculator } from "./AffordabilityCalculator";
+export { CommissionCalculator } from "./CommissionCalculator";
 export { CalculatorPageLayout, type CalculatorPageFrontmatter } from "./CalculatorPageLayout";

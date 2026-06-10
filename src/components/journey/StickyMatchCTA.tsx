@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { ArrowRight, X } from "lucide-react";
-import { MatchDrawer } from "./MatchDrawer";
 
 interface StickyMatchCTAProps {
-  /** Optional suburb slug to pre-fill the match flow. */
+  /** Optional suburb slug to pre-fill the guide funnel. */
   suburb?: string;
-  /** Optional intent to pre-fill (buying / selling / refinancing / etc.). */
+  /** Legacy prop, kept so existing call sites don't break. Only scopes dismissal. */
   intent?: string;
-  /** Headline. Defaults to a suburb-aware version when `suburb` is set. */
+  /** Headline. Defaults to the guide CTA. */
   label?: string;
   /**
    * Unique key per page/context. Determines sessionStorage dismissal scope -
@@ -25,13 +25,13 @@ interface StickyMatchCTAProps {
 }
 
 /**
- * Floating "Get connected" pill that slides up once the user has scrolled
- * into the page. Sits above the mobile bottom nav on small screens, floats
- * bottom-right on desktop. Dismissible per session.
+ * Floating pill that slides up once the user has scrolled into the page.
+ * Sits above the mobile bottom nav on small screens, floats bottom-right
+ * on desktop. Dismissible per session.
  *
- * Clicking opens MatchDrawer with the page's suburb/intent pre-filled. The
- * OLD behaviour navigated to `/?suburb=...#match`, visitors lost their
- * page context and never came back.
+ * Since the June 2026 lead-gen pivot this pushes the selling-guide funnel
+ * (the site's single conversion point) instead of opening the old match
+ * drawer. Suburb context deep-links the funnel with step 1 pre-answered.
  */
 export function StickyMatchCTA({
   suburb,
@@ -42,7 +42,6 @@ export function StickyMatchCTA({
 }: StickyMatchCTAProps) {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const storageKey = `stickyMatchCTA:dismiss:${dismissKey ?? `${intent ?? "any"}|${suburb ?? "any"}`}`;
 
@@ -80,51 +79,37 @@ export function StickyMatchCTA({
 
   if (dismissed) return null;
 
-  // Suburb-aware variant uses the suburb in the label so the visitor
-  // sees the floating CTA as a continuation of where they already are.
-  // Generic variant uses the outcome verb + time-bound claim, not
-  // the throwaway "Get connected".
-  const display = label ?? (suburb ? "Get matched, local specialist" : "Get matched in 24 hours");
+  const display = label ?? "Get the free selling guide";
+  const href = suburb ? `/selling-guide?suburb=${suburb}` : "/selling-guide";
 
   return (
-    <>
-      <div
-        aria-hidden={!visible}
-        className={`fixed z-30 inset-x-0 bottom-16 sm:bottom-6 sm:inset-x-auto sm:right-6 px-4 sm:px-0 pointer-events-none transition-all duration-300 ${
-          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}
-      >
-        <div className="pointer-events-auto inline-flex items-stretch gap-0 mx-auto sm:mx-0 rounded-full bg-ink text-white shadow-2xl border border-white/10 overflow-hidden max-w-full">
-          <button
-            type="button"
-            onClick={() => setDrawerOpen(true)}
-            className="inline-flex items-center gap-2 pl-5 pr-4 py-3 text-sm font-medium hover:bg-primary-darker transition-colors min-w-0 cursor-pointer"
-          >
-            <span className="inline-flex items-center justify-center w-1.5 h-1.5 rounded-full bg-cta shrink-0" aria-hidden="true" />
-            <span className="truncate">{display}</span>
-            <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setDismissed(true);
-              try { sessionStorage.setItem(storageKey, "1"); } catch { /* ignore */ }
-            }}
-            aria-label="Dismiss"
-            className="pl-2 pr-3 py-3 text-white/60 hover:text-white border-l border-white/10 transition-colors cursor-pointer"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
+    <div
+      aria-hidden={!visible}
+      className={`fixed z-30 inset-x-0 bottom-16 sm:bottom-6 sm:inset-x-auto sm:right-6 px-4 sm:px-0 pointer-events-none transition-all duration-300 ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      }`}
+    >
+      <div className="pointer-events-auto inline-flex items-stretch gap-0 mx-auto sm:mx-0 rounded-full bg-ink text-white shadow-2xl border border-white/10 overflow-hidden max-w-full">
+        <Link
+          href={href}
+          className="inline-flex items-center gap-2 pl-5 pr-4 py-3 text-sm font-medium hover:bg-primary-darker transition-colors min-w-0"
+        >
+          <span className="inline-flex items-center justify-center w-1.5 h-1.5 rounded-full bg-cta shrink-0" aria-hidden="true" />
+          <span className="truncate">{display}</span>
+          <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+        </Link>
+        <button
+          type="button"
+          onClick={() => {
+            setDismissed(true);
+            try { sessionStorage.setItem(storageKey, "1"); } catch { /* ignore */ }
+          }}
+          aria-label="Dismiss"
+          className="pl-2 pr-3 py-3 text-white/60 hover:text-white border-l border-white/10 transition-colors cursor-pointer"
+        >
+          <X className="w-4 h-4" />
+        </button>
       </div>
-
-      <MatchDrawer
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-        suburb={suburb}
-        intent={intent}
-        source="sticky-cta-drawer"
-      />
-    </>
+    </div>
   );
 }

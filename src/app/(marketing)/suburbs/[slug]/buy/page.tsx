@@ -97,16 +97,16 @@ export default async function SuburbBuyPage({ params, searchParams }: Props) {
       </div>
 
       <ExpertCTA
-        headline={`Looking at ${suburb.name}? We'll find the right person.`}
-        body={`Whether it's a buyer's agent for inspections and negotiation, a broker for finance, or someone else entirely, we'll connect you with the right specialist for your situation in ${suburb.name}. Free for buyers, no commitment.`}
-        ctaLabel="Get connected"
-        href={`/find-an-expert?intent=buying&suburb=${slug}`}
+        headline={`Buying in ${suburb.name}? Most buyers are sellers too.`}
+        body={`If there's a property to sell before you move, the free selling guide covers what it costs, how to choose an agent, and a 12-week plan, personalised to your suburb. Free PDF, 60 seconds.`}
+        ctaLabel="Get the free selling guide"
+        href={`/selling-guide?suburb=${slug}`}
       />
 
       <StickyMatchCTA
         suburb={slug}
         intent="buying"
-        label={`${suburb.name}, get connected`}
+        label={`Selling in ${suburb.name}? Free guide`}
         dismissKey={`suburb:${slug}`}
       />
     </>

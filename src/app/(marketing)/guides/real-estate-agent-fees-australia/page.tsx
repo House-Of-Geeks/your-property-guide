@@ -100,6 +100,8 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
+  { title: "Free selling guide (PDF)",       href: "/selling-guide",                        description: "Costs, agent selection and a 12-week selling plan, personalised to your suburb." },
+  { title: "Commission calculator",          href: "/real-estate-commission-calculator",    description: "What an agent costs on your sale price, by state." },
   { title: "How to Choose a Selling Agent",  href: "/guides/how-to-choose-a-selling-agent", description: "Pick the right agent first, then negotiate the fee." },
   { title: "Sell First or Buy First?",       href: "/guides/sell-first-or-buy-first",       description: "If you're upgrading, the decision tree before you sell." },
   { title: "Free appraisal",                 href: "/appraisal",                            description: "Get a real-world appraisal from a local agent. No commitment." },
@@ -176,6 +178,19 @@ export default function RealEstateAgentFeesPage() {
           <tr><td><strong>ACT</strong></td><td>1.5% to 2.5%</td><td>~2.0%</td></tr>
         </tbody>
       </table>
+
+      <Callout variant="info" title="Run your own numbers">
+        <p>
+          Our{" "}
+          <a href="/real-estate-commission-calculator">commission calculator</a>{" "}
+          turns these percentages into dollars on your sale price, including
+          marketing and conveyancing. And if you&rsquo;re comparing agents now,
+          the{" "}
+          <a href="/selling-guide">free selling guide</a> includes the 10
+          questions to ask every agent before you sign, plus the fee
+          negotiation tactics that actually work.
+        </p>
+      </Callout>
 
       <Callout variant="info" title="High-value properties achieve lower rates">
         <p>

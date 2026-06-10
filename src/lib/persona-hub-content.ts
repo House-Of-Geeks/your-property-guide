@@ -151,6 +151,8 @@ const SELLING: PersonaHubContent = {
   calculatorsBlurb:
     "Run the seller-side numbers before you sign anything.",
   calculators: [
+    { label: "Free selling guide (PDF)",     href: "/selling-guide",              blurb: "The complete 10-chapter selling guide: costs, agent selection, and a 12-week plan. Personalised to your suburb." },
+    { label: "Commission calculator",        href: "/real-estate-commission-calculator", blurb: "What an agent costs on your sale price, with typical rates by state." },
     { label: "Free property appraisal",      href: "/appraisal",                  blurb: "Independent estimate from a vetted local agent, free, one business day." },
     { label: "Capital gains tax calculator", href: "/cgt-calculator",             blurb: "Estimate CGT on an investment property sale, including the 50% discount and main residence exemption." },
     { label: "Stamp duty (for your next home)", href: "/stamp-duty-calculator",   blurb: "What you'll pay on the upgrade or downsize, by state." },

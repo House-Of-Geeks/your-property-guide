@@ -5,8 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 
 interface ConversionTrackerProps {
-  /** Identifies the funnel — appraisal form vs match-an-expert flow. */
-  flow: "appraisal" | "get-connected";
+  /** Identifies the funnel — appraisal form, match-an-expert, or selling-guide download. */
+  flow: "appraisal" | "get-connected" | "selling-guide";
 }
 
 // Fires once on mount when a thank-you page renders. Single source of
@@ -20,8 +20,10 @@ export function ConversionTracker({ flow }: ConversionTrackerProps) {
     clarityTag("conversion_flow", flow);
     const intent = params.get("intent");
     const suburb = params.get("suburb");
+    const score = params.get("score");
     if (intent) clarityTag("conversion_intent", intent);
     if (suburb) clarityTag("conversion_suburb", suburb);
+    if (score) clarityTag("conversion_score", score);
   }, [flow, params]);
 
   return null;

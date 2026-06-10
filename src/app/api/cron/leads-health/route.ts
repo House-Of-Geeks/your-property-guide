@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { sendMail, ANDY_EMAIL } from "@/lib/email";
+import { EMAIL_COLORS, emailLayout } from "@/lib/email-theme";
 
 // GET /api/cron/leads-health
 // Triggered by Vercel Cron (see vercel.json). Counts lead submissions in
@@ -14,26 +15,22 @@ import { sendMail, ANDY_EMAIL } from "@/lib/email";
 export const dynamic = "force-dynamic";
 
 function buildZeroFloorHtml(windowHours: number): string {
-  return `<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"></head>
-<body style="margin:0;padding:24px;background:#fff5f5;font-family:system-ui,sans-serif;">
-  <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #fecaca;border-radius:8px;overflow:hidden;">
-    <div style="background:#7f1d1d;padding:16px 20px;">
-      <p style="margin:0;color:#fff;font-size:13px;font-weight:600;">No leads in the last ${windowHours}h</p>
-    </div>
-    <div style="padding:18px 20px;font-size:14px;color:#111827;line-height:1.55;">
+  const C = EMAIL_COLORS;
+  return emailLayout({
+    variant: "alert",
+    eyebrow: `No leads in the last ${windowHours}h`,
+    body: `
+    <div style="padding:18px 24px;font-size:14px;color:${C.ink};line-height:1.55;">
       <p style="margin:0 0 12px;">The daily lead-health check ran and found <strong>zero leads</strong> in the database for the last ${windowHours} hours.</p>
       <p style="margin:0 0 12px;">This may be normal on a quiet day, or it may indicate a broken form, a rotated SendGrid key, or a deploy regression. Worth a quick sanity check.</p>
-      <p style="margin:0;font-size:13px;color:#6b7280;">Things to verify:</p>
-      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:#374151;">
+      <p style="margin:0;font-size:13px;color:${C.inkSubtle};">Things to verify:</p>
+      <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:${C.inkMuted};">
         <li>Submit a test enquiry on yourpropertyguide.com.au</li>
         <li>Check Vercel logs for /api/leads errors</li>
         <li>Confirm SENDGRID_API_KEY is still valid in Vercel env</li>
       </ul>
-    </div>
-  </div>
-</body>
-</html>`;
+    </div>`,
+  });
 }
 
 export async function GET(request: NextRequest) {

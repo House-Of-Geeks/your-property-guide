@@ -230,13 +230,7 @@ export function GuideArticleLayout({
                 {children}
               </div>
 
-              {persona && (
-                <ExpertCTA
-                  variant="inline"
-                  headline="Want one-on-one help with this stage?"
-                  body="If you&rsquo;ve done the reading and want a real human to talk it through, we&rsquo;ll find the right specialist for your situation, whether that&rsquo;s an agent, broker, accountant or conveyancer. Free, no commitment."
-                />
-              )}
+              {persona && <ExpertCTA variant="inline" />}
 
               <Faq items={faqs} />
               <RelatedGuides items={related} />
@@ -259,8 +253,8 @@ export function GuideArticleLayout({
       {/* Floating sticky CTA for guide readers. Only renders when the
           guide has a persona, general explainers (no persona) skip the
           sticky to keep them quiet. Per-guide dismiss key. Label uses
-          the StickyMatchCTA default ("Get matched in 24 hours") which
-          names the outcome and the time, not the throwaway verb. */}
+          the StickyMatchCTA default ("Get the free selling guide"),
+          the site's single conversion point. */}
       {persona && stickyIntent && (
         <StickyMatchCTA
           intent={stickyIntent}

@@ -281,10 +281,7 @@ export default function CoolingOffPeriodVicPage() {
         <li><strong>Check the contract for any waiver of cooling-off</strong> the seller might have included. Some contracts (rarely) ask buyers to waive cooling-off; don&rsquo;t sign that without legal advice.</li>
       </ul>
 
-      <MatchCTA
-        kind="conveyancer"
-        lead="Victorian Section 32 statements are dense. A conveyancer reads them carefully. You want them on board before, not after, you sign."
-      />
+      <MatchCTA kind="conveyancer" />
 
       <Sources items={[
         { label: "Sale of Land Act 1962 (Vic), section 31: cooling-off rights" },

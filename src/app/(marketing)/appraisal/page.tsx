@@ -105,6 +105,13 @@ export default function AppraisalPage() {
             centre, no auto-routing, no comparison spam. You&rsquo;ll hear from
             them within one business day.
           </p>
+          <p className="mt-5 font-sans text-sm text-ink-muted">
+            Not ready for an appraisal yet? Start with the{" "}
+            <a href="/selling-guide" className="text-ink underline decoration-line-strong underline-offset-2 hover:text-primary transition-colors">
+              free guide to selling your property
+            </a>
+            , personalised to your suburb.
+          </p>
         </div>
       </section>
     </>
