@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui";
 import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
 import { BlogShareButtons } from "@/components/blog/BlogShareButtons";
 import { BlogGuideRail } from "@/components/blog/BlogGuideRail";
+import { ExpertCTA } from "@/components/journey";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
 import { AuthorBylineCard } from "@/components/guide";
 import { BlogCover } from "@/components/blog/BlogCover";
@@ -166,6 +167,10 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             className="mt-8 prose-ypg"
             dangerouslySetInnerHTML={{ __html: processedContent }}
           />
+
+          {/* Guide funnel exit. Every news/blog post points at the
+              site's single conversion point. */}
+          <ExpertCTA variant="inline" />
 
           {/* "Read next" rail of relevant guides, internal-link booster */}
           <BlogGuideRail blogSlug={post.slug} />

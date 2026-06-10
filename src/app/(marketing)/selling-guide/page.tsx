@@ -5,7 +5,7 @@ import Link from "next/link";
 import { BookOpen, CheckCircle2, Clock, ShieldCheck } from "lucide-react";
 
 import { SellingGuideFunnel } from "@/components/journey";
-import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { StickyGuideBar } from "./StickyGuideBar";
@@ -79,6 +79,34 @@ export default function SellingGuidePage() {
         items={[{ name: "Free Selling Guide", url: "/selling-guide" }]}
       />
       <FAQPageJsonLd faqs={FAQS} />
+      {/* The guide itself as a structured entity: free, downloadable,
+          published by the site. Helps search and AI surfaces cite the
+          guide as a real work rather than a landing page. */}
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "DigitalDocument",
+          name: "The Complete Guide to Selling Your Property in Australia (2026 Edition)",
+          description: META_DESCRIPTION,
+          url: `${SITE_URL}/selling-guide`,
+          image: `${SITE_URL}/images/guide/selling-guide-cover.png`,
+          encodingFormat: "application/pdf",
+          isAccessibleForFree: true,
+          inLanguage: "en-AU",
+          datePublished: "2026-06-10",
+          publisher: {
+            "@type": "Organization",
+            name: "Your Property Guide",
+            url: SITE_URL,
+          },
+          about: [
+            "Selling property in Australia",
+            "Real estate agent fees and commission",
+            "Auction vs private treaty",
+            "Property settlement and conveyancing",
+          ],
+        }}
+      />
 
       {/* Hero: pitch left, funnel right. The funnel card is the point of
           the page; everything else exists to earn the first tap. */}
@@ -92,6 +120,7 @@ export default function SellingGuidePage() {
             src="/images/hero/suburb-dusk.jpg"
             alt=""
             fill
+            priority
             sizes="100vw"
             className="object-cover object-right-bottom opacity-[0.55]"
           />
