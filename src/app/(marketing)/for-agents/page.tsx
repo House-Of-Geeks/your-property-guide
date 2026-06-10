@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Zap, Users, ShieldCheck, BadgeCheck } from "lucide-react";
 
@@ -34,6 +35,20 @@ export default function ForAgentsPage() {
 
       {/* Hero */}
       <section className="relative bg-surface-warm overflow-hidden border-b border-line">
+        {/* Aerial cadastral artwork: agents think in territory, so the
+            backdrop is their patch from above. Washed back hard so the
+            pitch and the form stay legible. */}
+        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+          <Image
+            src="/images/art/suburb-aerial.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover object-center opacity-[0.38]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-surface-warm from-35% via-surface-warm/80 to-surface-warm/30" />
+          <div className="absolute inset-0 bg-gradient-to-b from-surface-warm/70 to-surface-warm/20" />
+        </div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-16 sm:pb-20">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
             <div className="lg:col-span-7">

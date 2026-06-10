@@ -53,8 +53,21 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
         <ConversionTracker flow="selling-guide" />
       </Suspense>
 
-      <section className="bg-surface-warm border-b border-line">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
+      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
+        {/* The Queenslander artwork grounds the moment: you did the
+            right thing, here's home. Washed back so the download card
+            stays the hero. */}
+        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+          <Image
+            src="/images/art/queenslander.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover object-bottom opacity-[0.32]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-30% via-surface-warm/80 to-surface-warm/35" />
+        </div>
+        <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
           <div className="w-14 h-14 rounded-full bg-cta text-white grid place-items-center mx-auto mb-6">
             <CheckCircle className="w-7 h-7" aria-hidden="true" />
           </div>

@@ -199,7 +199,7 @@ export function SellingGuideFunnel({
   const sharesWithAgents = agentStatus !== "already-listed";
 
   return (
-    <div className="bg-surface-warm text-ink rounded-2xl p-6 sm:p-8 shadow-2xl border border-line">
+    <div className="bg-surface-warm text-ink rounded-2xl p-6 sm:p-8 shadow-2xl border border-line border-t-[3px] border-t-cta">
       {/* Progress. Hidden on the opening question (a bar on screen one
           costs conversions); from step 2 it shows already-earned progress. */}
       {step > 0 && (

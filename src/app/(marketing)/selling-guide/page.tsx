@@ -83,6 +83,21 @@ export default function SellingGuidePage() {
       {/* Hero: pitch left, funnel right. The funnel card is the point of
           the page; everything else exists to earn the first tap. */}
       <section id="get-the-guide" className="relative bg-surface-warm overflow-hidden border-b border-line scroll-mt-16">
+        {/* Same commissioned suburb artwork as the homepage, run quieter
+            (the cover image and funnel card carry the visual weight
+            here). Keeps the two highest-traffic entries feeling like one
+            publication. */}
+        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+          <Image
+            src="/images/hero/suburb-dusk.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover object-right-bottom opacity-[0.55]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-surface-warm from-30% via-surface-warm/85 via-60% to-surface-warm/25" />
+          <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-15% via-surface-warm/60 via-50% to-surface-warm/10" />
+        </div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-16 sm:pb-20">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
             <div className="lg:col-span-6">
@@ -162,6 +177,17 @@ export default function SellingGuidePage() {
           content, that answer "why is a free PDF worth my email address"
           in the reader's units: dollars. */}
       <section className="band-glow bg-surface-inverse text-white border-b border-line">
+        {/* Lamplit night rooflines along the band's bottom edge. */}
+        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+          <Image
+            src="/images/hero/suburb-night.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover object-bottom opacity-60"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-30% via-surface-inverse/75 via-60% to-surface-inverse/20" />
+        </div>
         <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
           <p className="text-[11px] uppercase tracking-[0.32em] text-white/50 font-sans font-medium mb-10 text-center">
             What the right moves are worth
