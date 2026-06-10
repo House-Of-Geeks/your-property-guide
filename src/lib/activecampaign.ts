@@ -20,6 +20,7 @@ const LIST_NAME = "YPG Property Sellers";
 
 const FIELD_TITLES = {
   suburb:           "YPG Suburb",
+  suburbName:       "YPG Suburb Name",
   propertyType:     "YPG Property Type",
   bedrooms:         "YPG Bedrooms",
   sellingTimeframe: "YPG Selling Timeframe",
@@ -29,6 +30,18 @@ const FIELD_TITLES = {
   leadScore:        "YPG Lead Score",
   leadSource:       "YPG Lead Source",
 } as const;
+
+/**
+ * "burpengary-qld-4505" -> "Burpengary QLD 4505". The slug field stays
+ * as-is for building URLs in templates (%YPG_SUBURB%); this pretty
+ * variant (%YPG_SUBURB_NAME%) is what email copy uses.
+ */
+export function prettySuburbName(slug: string): string {
+  const m = slug.match(/^(.*)-([a-z]{2,3})-(\d{4})$/);
+  if (!m) return slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  const name = m[1].replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  return `${name} ${m[2].toUpperCase()} ${m[3]}`;
+}
 
 const REQUEST_TIMEOUT_MS = 8_000;
 
@@ -70,6 +83,7 @@ export function buildAcTags(lead: LeadEmailData, score: LeadScore): string[] {
 export function buildAcFieldValues(lead: LeadEmailData, score: LeadScore): Record<keyof typeof FIELD_TITLES, string> {
   return {
     suburb:           lead.suburb ?? "",
+    suburbName:       lead.suburb ? prettySuburbName(lead.suburb) : "",
     propertyType:     lead.propertyType ?? "",
     bedrooms:         lead.bedrooms ?? "",
     sellingTimeframe: lead.sellingTimeframe ? (TIMEFRAME_LABELS[lead.sellingTimeframe] ?? lead.sellingTimeframe) : "",

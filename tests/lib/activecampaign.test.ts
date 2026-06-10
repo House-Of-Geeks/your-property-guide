@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildAcTags, buildAcFieldValues } from "@/lib/activecampaign";
+import { buildAcTags, buildAcFieldValues, prettySuburbName } from "@/lib/activecampaign";
 import type { LeadEmailData } from "@/lib/lead-emails";
 
 const lead = (overrides: Partial<LeadEmailData> = {}): LeadEmailData => ({
@@ -42,12 +42,21 @@ describe("buildAcTags", () => {
   });
 });
 
+describe("prettySuburbName", () => {
+  it("turns slugs into display names", () => {
+    expect(prettySuburbName("burpengary-qld-4505")).toBe("Burpengary QLD 4505");
+    expect(prettySuburbName("surfers-paradise-qld-4217")).toBe("Surfers Paradise QLD 4217");
+    expect(prettySuburbName("not-a-standard-slug")).toBe("Not A Standard Slug");
+  });
+});
+
 describe("buildAcFieldValues", () => {
   it("maps qualification answers to human-readable field values", () => {
     const v = buildAcFieldValues(lead(), "HOT");
     expect(v.sellingTimeframe).toBe("Within 3 months");
     expect(v.agentStatus).toBe("Comparing agents now");
     expect(v.suburb).toBe("burpengary-qld-4505");
+    expect(v.suburbName).toBe("Burpengary QLD 4505");
     expect(v.leadScore).toBe("HOT");
     expect(v.leadSource).toBe("selling-guide-page");
   });

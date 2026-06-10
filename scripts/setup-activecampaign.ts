@@ -30,6 +30,7 @@ const LIST_NAME = "YPG Property Sellers";
 
 const FIELDS = [
   "YPG Suburb",
+  "YPG Suburb Name",
   "YPG Property Type",
   "YPG Bedrooms",
   "YPG Selling Timeframe",

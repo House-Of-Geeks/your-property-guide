@@ -59,12 +59,19 @@ export default function HomePage() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-right-bottom opacity-[0.9]"
+            className="object-cover object-right-bottom"
           />
           {/* Left wash: solid cream under the headline, dissolving right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-surface-warm from-25% via-surface-warm/80 via-55% to-surface-warm/10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-surface-warm from-20% via-surface-warm/70 via-50% to-transparent" />
           {/* Top wash: keeps the eyebrow + headline rows clean */}
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-12% via-surface-warm/55 via-45% to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-8% via-surface-warm/45 via-40% to-transparent" />
+          {/* Golden-hour sun: a soft warm disc low in the sky where the
+              art's horizon haze sits, ties the cream sky to the band-glow
+              language used in the dark sections. */}
+          <div
+            className="absolute right-[8%] top-[18%] w-[420px] h-[420px] rounded-full opacity-70"
+            style={{ background: "radial-gradient(circle, oklch(0.85 0.07 55 / 0.55) 0%, transparent 65%)" }}
+          />
         </div>
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
@@ -98,7 +105,26 @@ export default function HomePage() {
                   lands on "skip" as the loudest word. */}
               <h1 className="rise rise-d1 font-display text-ink tracking-tight mb-8 text-5xl sm:text-6xl lg:text-[72px] xl:text-[84px] leading-[0.98] font-medium">
                 What to ask. What to sign. What to{" "}
-                <span className="italic font-light text-primary">skip</span>.
+                <span className="u-draw relative inline-block italic font-light text-primary">
+                  skip
+                  {/* Hand-drawn underline, draws in after the entrance */}
+                  <svg
+                    className="absolute left-[-2%] right-0 bottom-[-0.12em] w-[104%] h-[0.22em]"
+                    viewBox="0 0 120 12"
+                    fill="none"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M3 8.5C24 4.5 50 3.5 73 5c18 1.2 32 3 44 4.5"
+                      stroke="var(--cta)"
+                      strokeWidth="3.2"
+                      strokeLinecap="round"
+                      pathLength="1"
+                    />
+                  </svg>
+                </span>
+                .
               </h1>
 
               {/* Sub names the scope (60+ guides, every calculator)

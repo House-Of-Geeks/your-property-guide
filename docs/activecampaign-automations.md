@@ -1,6 +1,25 @@
 # ActiveCampaign — YPG Seller Automations
 
-**Status:** the sync is live in code. Every guide-download lead is upserted into the House of Geeks AC account with custom fields, tags, and (consent-gated) list subscription. What remains is clicking the four automations together in the AC UI, because AC's public API can't create automation workflows. This doc is the complete blueprint, including the email copy.
+**Status:** the sync is live in code, and every automation email now exists as a **designed, ready-to-paste HTML template** in `emails/activecampaign/` (regenerate with `npx tsx scripts/ac-emails/build.ts`). What remains is clicking the four automations together in the AC UI, because AC's public API can't create automation workflows.
+
+## Ready-made templates (paste, don't build)
+
+In AC, when an automation step says "Send an email": create the email → choose the **Custom HTML** editor → paste the file contents → set the subject line from the table below. Each template already contains the preheader, personalisation tags (`%FIRSTNAME%`, `%YPG_SUBURB_NAME%` for copy, `%YPG_SUBURB%` for URLs), artwork hosted on the live domain, and the required `%SENDER-INFO%` / `%UNSUBSCRIBELINK%` footer.
+
+| File | Automation step | Subject |
+|---|---|---|
+| `hot-1-appraisal.html` | HOT push, 1h after tag | What's your place actually worth? |
+| `hot-2-60-day-window.html` | HOT push, day 3 | The 60-day trap (and how to never see it) |
+| `warm-1-costs.html` | WARM, day 2 | Where the 3 to 5% goes |
+| `warm-2-negotiation.html` | WARM, day 5 | Most sellers never ask. You will. |
+| `warm-3-preparation.html` | WARM, day 9 | The $3,000 weekend |
+| `warm-4-method.html` | WARM, day 14 | Auction or private treaty for %YPG_SUBURB_NAME%? |
+| `warm-5-appraisal-traps.html` | WARM, day 21 | How to read an agent's appraisal |
+| `warm-6-ready.html` | WARM, day 30 | Ready to put a number on it? |
+| `monthly-market-read.html` | Monthly campaign template (edit the two marked blocks each month) | Your market this month |
+| `reengage-still-thinking.html` | Re-engagement, 90 days cold | Still thinking of selling? |
+
+Note: `%YPG_SUBURB_NAME%` (pretty, e.g. "Burpengary QLD 4505") is filled by the sync for every lead from 2026-06-10 onward; contacts synced before then have only the slug field until they next come through the funnel.
 
 ## What the sync writes (already working)
 
