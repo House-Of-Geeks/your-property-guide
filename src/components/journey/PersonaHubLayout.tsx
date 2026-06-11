@@ -369,7 +369,7 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
       <section id="guide" className="band-glow bg-surface-inverse text-white scroll-mt-24">
         <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
           <Image
-            src="/images/hero/suburb-night.jpg"
+            src="/images/hero/suburb-night-v2.jpg"
             alt=""
             fill
             sizes="100vw"
@@ -385,7 +385,7 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
                   Free PDF
                 </span>
                 <span className="w-12 h-px bg-white/20" aria-hidden="true" />
-                <span className="text-[11px] uppercase tracking-[0.32em] text-white/60 font-sans font-medium">
+                <span className="text-[11px] uppercase tracking-[0.32em] text-white/75 font-sans font-medium">
                   2026 edition
                 </span>
               </div>
@@ -396,7 +396,7 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
                   <>The complete guide to <span className="italic font-light text-cta">selling</span> your property.</>
                 )}
               </h2>
-              <p className="font-display font-light text-xl sm:text-2xl text-white/80 leading-snug max-w-md">
+              <p className="font-display font-light text-xl sm:text-2xl text-white/88 leading-snug max-w-md">
                 {isBuyingHub
                   ? "Ten chapters written for the buyer you actually are. Schemes, finance, inspections, the offer. Free, personalised, 60 seconds."
                   : "Selling costs 3 to 5 percent of your price. The right moves claw thousands of it back. Ten chapters, personalised to your suburb, free."}

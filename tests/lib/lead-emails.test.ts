@@ -96,7 +96,7 @@ describe("buying-guide confirmation email", () => {
   });
 
   it("admin email surfaces buyer persona, finance and budget", () => {
-    const html = buildAdminEmailHtml(buyerLead());
+    const html = buildAdminEmailHtml(buyerLead(), null, "round-robin");
     expect(html).toContain("First home buyer");
     expect(html).toContain("Pre-approved");
     expect(html).toContain("$750k to $1m");

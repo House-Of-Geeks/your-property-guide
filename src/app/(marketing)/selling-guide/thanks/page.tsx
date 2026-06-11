@@ -98,7 +98,7 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
               <Download className="w-5 h-5" aria-hidden="true" />
               Download your guide (PDF)
             </a>
-            <p className="mt-3 text-xs text-white/55">
+            <p className="mt-3 text-xs text-white/72">
               We&rsquo;ve also emailed you the link, so it&rsquo;s there
               whenever you need it.
             </p>

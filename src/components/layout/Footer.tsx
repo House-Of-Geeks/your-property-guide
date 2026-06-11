@@ -155,7 +155,7 @@ function AgentLoginPill() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex justify-end">
         <Link
           href="/dashboard/login"
-          className="flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-white/50 border border-white/20 rounded-full hover:border-white hover:text-white transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-white/70 border border-white/20 rounded-full hover:border-white hover:text-white transition-colors"
         >
           <UserCircle className="w-3.5 h-3.5" />
           Agent Login
@@ -179,7 +179,7 @@ function FooterBottom() {
               </span>
             </div>
           </Link>
-          <p className="text-sm text-white/50 max-w-xs leading-relaxed">
+          <p className="text-sm text-white/70 max-w-xs leading-relaxed">
             Plain-English Australian property education. Once you know
             what&rsquo;s actually happening, you make better choices.
             Published from Brisbane, Australia.
@@ -220,11 +220,11 @@ function LinkCol({ heading, links }: { heading: string; links: { label: string; 
         {links.map((l) => (
           <li key={l.href}>
             {l.href.startsWith("http") ? (
-              <a href={l.href} target="_blank" rel="noopener noreferrer" className="text-sm text-white/60 hover:text-white transition-colors leading-snug block">
+              <a href={l.href} target="_blank" rel="noopener noreferrer" className="text-sm text-white/75 hover:text-white transition-colors leading-snug block">
                 {l.label}
               </a>
             ) : (
-              <Link href={l.href} className="text-sm text-white/60 hover:text-white transition-colors leading-snug block">
+              <Link href={l.href} className="text-sm text-white/75 hover:text-white transition-colors leading-snug block">
                 {l.label}
               </Link>
             )}
@@ -322,7 +322,7 @@ function NewsletterBand() {
           newsletter ask, same signature as the hero and the guide band. */}
       <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
         <Image
-          src="/images/hero/suburb-night.jpg"
+          src="/images/hero/suburb-night-v2.jpg"
           alt=""
           fill
           sizes="100vw"
@@ -338,7 +338,7 @@ function NewsletterBand() {
                 The quarterly read
               </span>
               <span className="w-12 h-px bg-white/25" aria-hidden="true" />
-              <span className="text-[11px] uppercase tracking-[0.32em] text-white/50 font-sans font-medium">
+              <span className="text-[11px] uppercase tracking-[0.32em] text-white/70 font-sans font-medium">
                 Editor&rsquo;s note
               </span>
             </div>

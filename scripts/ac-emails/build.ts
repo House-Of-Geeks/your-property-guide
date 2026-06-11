@@ -17,7 +17,7 @@ import { EMAIL_COLORS as C } from "../../src/lib/email-theme";
 const SITE = "https://www.yourpropertyguide.com.au";
 const ART = {
   cover:        `${SITE}/images/guide/selling-guide-cover-email.jpg`,
-  night:        `${SITE}/images/hero/suburb-night.jpg`,
+  night:        `${SITE}/images/hero/suburb-night-v2.jpg`,
   queenslander: `${SITE}/images/art/queenslander.jpg`,
   aerial:       `${SITE}/images/art/suburb-aerial.jpg`,
 };

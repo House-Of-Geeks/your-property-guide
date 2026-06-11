@@ -208,19 +208,9 @@ export default function BuyingGuidePage() {
       </section>
 
       {/* The money band, buyer numbers, all drawn from the guide. */}
-      <section className="band-glow bg-surface-inverse text-white border-b border-line">
-        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-          <Image
-            src="/images/hero/suburb-night.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-bottom opacity-60"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-30% via-surface-inverse/75 via-60% to-surface-inverse/20" />
-        </div>
-        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
-          <p className="text-[11px] uppercase tracking-[0.32em] text-white/50 font-sans font-medium mb-10 text-center">
+      <section className="bg-accent-lighter border-y border-line-warm">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+          <p className="text-[11px] uppercase tracking-[0.32em] text-primary-dark font-sans font-semibold mb-10 text-center">
             What knowing the game is worth
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
@@ -230,12 +220,12 @@ export default function BuyingGuidePage() {
               ["5 to 10%", "how far auction price guides routinely run under the final result, decoded in chapter 6"],
             ].map(([n, label]) => (
               <div key={n} className="text-center sm:text-left">
-                <p className="font-display italic text-cta text-4xl sm:text-5xl leading-none mb-3 tracking-tight">{n}</p>
-                <p className="font-sans text-sm text-white/70 leading-relaxed">{label}</p>
+                <p className="font-display italic text-primary-dark text-4xl sm:text-5xl leading-none mb-3 tracking-tight">{n}</p>
+                <p className="font-sans text-sm text-ink-muted leading-relaxed">{label}</p>
               </div>
             ))}
           </div>
-          <p className="mt-10 text-center text-xs text-white/40 font-sans">
+          <p className="mt-10 text-center text-xs text-ink-subtle font-sans">
             Figures are typical ranges from the guide. Your purchase will vary. That is exactly why chapter 2 exists.
           </p>
         </div>
@@ -299,7 +289,7 @@ export default function BuyingGuidePage() {
           <div className="mt-12 relative rounded-2xl overflow-hidden bg-surface-inverse text-center shadow-2xl">
             <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
               <Image
-                src="/images/hero/suburb-night.jpg"
+                src="/images/hero/suburb-night-v2.jpg"
                 alt=""
                 fill
                 sizes="(min-width: 768px) 768px, 100vw"
@@ -311,7 +301,7 @@ export default function BuyingGuidePage() {
               <p className="font-display text-2xl sm:text-3xl text-white mb-2 tracking-tight">
                 Buy it once. Buy it well.
               </p>
-              <p className="mb-6 text-sm text-white/65">
+              <p className="mb-6 text-sm text-white/78">
                 60 seconds, matched to your situation, free.
               </p>
               <a

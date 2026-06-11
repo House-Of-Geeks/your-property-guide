@@ -225,20 +225,9 @@ export default function SellingGuidePage() {
       {/* The money band. Three numbers, all drawn from the guide's own
           content, that answer "why is a free PDF worth my email address"
           in the reader's units: dollars. */}
-      <section className="band-glow bg-surface-inverse text-white border-b border-line">
-        {/* Lamplit night rooflines along the band's bottom edge. */}
-        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-          <Image
-            src="/images/hero/suburb-night.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-bottom opacity-60"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-30% via-surface-inverse/75 via-60% to-surface-inverse/20" />
-        </div>
-        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
-          <p className="text-[11px] uppercase tracking-[0.32em] text-white/50 font-sans font-medium mb-10 text-center">
+      <section className="bg-accent-lighter border-y border-line-warm">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+          <p className="text-[11px] uppercase tracking-[0.32em] text-primary-dark font-sans font-semibold mb-10 text-center">
             What the right moves are worth
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
@@ -248,12 +237,12 @@ export default function SellingGuidePage() {
               ["$1,700 to $3,400", "what negotiating 0.2 to 0.4 percent off commission saves on a typical sale"],
             ].map(([n, label]) => (
               <div key={n} className="text-center sm:text-left">
-                <p className="font-display italic text-cta text-4xl sm:text-5xl leading-none mb-3 tracking-tight">{n}</p>
-                <p className="font-sans text-sm text-white/70 leading-relaxed">{label}</p>
+                <p className="font-display italic text-primary-dark text-4xl sm:text-5xl leading-none mb-3 tracking-tight">{n}</p>
+                <p className="font-sans text-sm text-ink-muted leading-relaxed">{label}</p>
               </div>
             ))}
           </div>
-          <p className="mt-10 text-center text-xs text-white/40 font-sans">
+          <p className="mt-10 text-center text-xs text-ink-subtle font-sans">
             Figures are typical ranges from the guide, chapters 3 to 5. Your sale will vary. That is exactly why chapter 2 exists.
           </p>
         </div>
@@ -345,7 +334,7 @@ export default function SellingGuidePage() {
           <div className="mt-12 relative rounded-2xl overflow-hidden bg-surface-inverse text-center shadow-2xl">
             <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
               <Image
-                src="/images/hero/suburb-night.jpg"
+                src="/images/hero/suburb-night-v2.jpg"
                 alt=""
                 fill
                 sizes="(min-width: 768px) 768px, 100vw"
@@ -357,7 +346,7 @@ export default function SellingGuidePage() {
               <p className="font-display text-2xl sm:text-3xl text-white mb-2 tracking-tight">
                 Ready when you are.
               </p>
-              <p className="mb-6 text-sm text-white/65">
+              <p className="mb-6 text-sm text-white/78">
                 60 seconds, personalised to your suburb, free.
               </p>
               <a
@@ -366,9 +355,9 @@ export default function SellingGuidePage() {
               >
                 Get the free guide
               </a>
-              <p className="mt-5 text-xs text-white/55">
+              <p className="mt-5 text-xs text-white/72">
                 Buying, not selling?{" "}
-                <Link href="/buying-guide" className="text-white/85 hover:text-white underline underline-offset-4 transition-colors">
+                <Link href="/buying-guide" className="text-white/92 hover:text-white underline underline-offset-4 transition-colors">
                   There&rsquo;s a buying guide too
                 </Link>
               </p>

@@ -342,7 +342,7 @@ export function SellingGuideFunnel({
               >
                 <div className="text-left">
                   <p className="text-sm font-semibold">{opt.label}</p>
-                  <p className={`text-xs ${timeframe === opt.id ? "text-white/65" : "text-ink-subtle"}`}>
+                  <p className={`text-xs ${timeframe === opt.id ? "text-white/78" : "text-ink-subtle"}`}>
                     {opt.sub}
                   </p>
                 </div>
@@ -380,7 +380,7 @@ export function SellingGuideFunnel({
               >
                 <div className="text-left">
                   <p className="text-sm font-semibold">{opt.label}</p>
-                  <p className={`text-xs ${agentStatus === opt.id ? "text-white/65" : "text-ink-subtle"}`}>
+                  <p className={`text-xs ${agentStatus === opt.id ? "text-white/78" : "text-ink-subtle"}`}>
                     {opt.sub}
                   </p>
                 </div>

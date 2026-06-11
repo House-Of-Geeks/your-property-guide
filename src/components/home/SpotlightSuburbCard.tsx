@@ -66,7 +66,7 @@ export async function SpotlightSuburbCard() {
               Spotlight
             </p>
           </div>
-          <span className="font-display italic text-white/60 text-sm tabular-nums">
+          <span className="font-display italic text-white/75 text-sm tabular-nums">
             {suburb.state} {suburb.postcode}
           </span>
         </div>

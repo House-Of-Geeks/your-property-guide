@@ -29,13 +29,13 @@ export function SellingGuideCard() {
             priority
           />
           <div className="pb-1">
-            <p className="text-[10px] uppercase tracking-[0.26em] text-white/50 font-sans font-medium mb-2">
+            <p className="text-[10px] uppercase tracking-[0.26em] text-white/70 font-sans font-medium mb-2">
               2026 edition
             </p>
             <p className="font-display text-white text-xl sm:text-[22px] leading-[1.18] tracking-tight">
               The Complete Guide to Selling Your Property
             </p>
-            <p className="mt-2 font-sans text-xs text-white/60 leading-relaxed">
+            <p className="mt-2 font-sans text-xs text-white/75 leading-relaxed">
               Ten chapters that routinely save sellers thousands.
             </p>
           </div>

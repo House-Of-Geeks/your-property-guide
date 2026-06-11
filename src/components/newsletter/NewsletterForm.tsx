@@ -83,7 +83,7 @@ export function NewsletterForm({ variant = "footer" }: NewsletterFormProps) {
           {!isPending && <ArrowRight className="w-4 h-4" />}
         </button>
       </div>
-      <p className={`text-xs font-sans ${isFooter ? "text-white/50" : "text-ink-subtle"}`}>
+      <p className={`text-xs font-sans ${isFooter ? "text-white/70" : "text-ink-subtle"}`}>
         Quarterly market updates only. No spam. Unsubscribe anytime.
       </p>
       {status === "err" && errorMessage && (

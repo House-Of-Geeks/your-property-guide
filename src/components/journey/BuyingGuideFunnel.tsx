@@ -278,7 +278,7 @@ export function BuyingGuideFunnel({
                 className={optionClass(persona === opt.id)}
               >
                 <p className="text-sm font-semibold mb-1">{opt.label}</p>
-                <p className={`text-xs ${persona === opt.id ? "text-white/65" : "text-ink-subtle"}`}>{opt.sub}</p>
+                <p className={`text-xs ${persona === opt.id ? "text-white/78" : "text-ink-subtle"}`}>{opt.sub}</p>
               </button>
             ))}
           </div>
@@ -363,7 +363,7 @@ export function BuyingGuideFunnel({
               >
                 <div className="text-left">
                   <p className="text-sm font-semibold">{opt.label}</p>
-                  <p className={`text-xs ${timeframe === opt.id ? "text-white/65" : "text-ink-subtle"}`}>{opt.sub}</p>
+                  <p className={`text-xs ${timeframe === opt.id ? "text-white/78" : "text-ink-subtle"}`}>{opt.sub}</p>
                 </div>
                 <ArrowRight className={`w-4 h-4 shrink-0 ${timeframe === opt.id ? "text-white/70" : "text-ink-subtle"}`} />
               </button>
@@ -399,7 +399,7 @@ export function BuyingGuideFunnel({
               >
                 <div className="text-left">
                   <p className="text-sm font-semibold">{opt.label}</p>
-                  <p className={`text-xs ${finance === opt.id ? "text-white/65" : "text-ink-subtle"}`}>{opt.sub}</p>
+                  <p className={`text-xs ${finance === opt.id ? "text-white/78" : "text-ink-subtle"}`}>{opt.sub}</p>
                 </div>
                 <ArrowRight className={`w-4 h-4 shrink-0 ${finance === opt.id ? "text-white/70" : "text-ink-subtle"}`} />
               </button>

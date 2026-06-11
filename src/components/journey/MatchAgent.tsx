@@ -193,7 +193,7 @@ export function MatchAgent({
                 When you&rsquo;re ready
               </span>
               <span className="w-12 h-px bg-white/20" aria-hidden="true" />
-              <span className="text-[11px] uppercase tracking-[0.32em] text-white/60 font-sans font-medium">
+              <span className="text-[11px] uppercase tracking-[0.32em] text-white/75 font-sans font-medium">
                 The match
               </span>
             </div>
@@ -268,7 +268,7 @@ export function MatchAgent({
                           }`}
                         >
                           <p className="text-sm font-semibold mb-1">{opt.label}</p>
-                          <p className={`text-xs ${active ? "text-white/65" : "text-ink-subtle"}`}>
+                          <p className={`text-xs ${active ? "text-white/78" : "text-ink-subtle"}`}>
                             {opt.sub}
                           </p>
                         </button>
@@ -344,7 +344,7 @@ export function MatchAgent({
                         >
                           <div className="text-left">
                             <p className="text-sm font-semibold mb-1">{opt.label}</p>
-                            <p className={`text-xs ${active ? "text-white/65" : "text-ink-subtle"}`}>
+                            <p className={`text-xs ${active ? "text-white/78" : "text-ink-subtle"}`}>
                               {opt.sub}
                             </p>
                           </div>

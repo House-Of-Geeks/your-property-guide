@@ -52,27 +52,27 @@ export default function HomePage() {
             field, exactly like the guide cover and the OG card. */}
         <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
           <Image
-            src="/images/hero/suburb-night.jpg"
+            src="/images/hero/suburb-night-v2.jpg"
             alt=""
             fill
             priority
             sizes="100vw"
             className="object-cover object-bottom opacity-95"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-22% via-surface-inverse/85 via-58% to-surface-inverse/5" />
+          <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-34% via-surface-inverse/90 via-62% to-surface-inverse/10" />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-14 sm:pt-14 sm:pb-16 lg:pt-16 lg:pb-20">
           {/* Eyebrow: positions the site as education-led, not
               data-led. The brand competes on plain-English explanation
               of the Australian property machinery, not on real-time
               data feeds (which the portals own and we can't afford). */}
-          <div className="rise flex items-center gap-4 mb-10 sm:mb-12">
+          <div className="rise flex items-center gap-4 mb-8 sm:mb-10">
             <span className="font-display italic text-cta text-base sm:text-lg leading-none">
               No. 01
             </span>
             <span className="w-12 h-px bg-white/25" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-white/60 font-sans font-medium">
+            <span className="text-[11px] uppercase tracking-[0.32em] text-white/75 font-sans font-medium">
               Australian property, in plain English
             </span>
           </div>
@@ -118,7 +118,7 @@ export default function HomePage() {
               {/* Sub names the scope (60+ guides, every calculator)
                   and the positioning (written for buyers and sellers,
                   not portals). Education-first, not data-first. */}
-              <p className="rise rise-d2 font-display text-xl sm:text-2xl text-white/85 leading-[1.3] mb-8 font-light">
+              <p className="rise rise-d2 font-display text-xl sm:text-2xl text-white/92 leading-[1.3] mb-8 font-light">
                 Sixty plain-English guides. Every property calculator.
                 Written for buyers and sellers, not portals. Free, no
                 sign-up.
@@ -127,11 +127,11 @@ export default function HomePage() {
               {/* Primary action: suburb search box. Label echoes the
                   H1's first verb. */}
               <div className="rise rise-d3 mb-6">
-                <p className="text-[11px] uppercase tracking-[0.25em] text-white/50 font-sans font-medium mb-3">
+                <p className="text-[11px] uppercase tracking-[0.25em] text-white/70 font-sans font-medium mb-3">
                   Know the suburb
                 </p>
                 <HomeSuburbSearch />
-                <p className="mt-3 text-sm text-white/55">
+                <p className="mt-3 text-sm text-white/72">
                   Try{" "}
                   <Link href="/suburbs/bondi-nsw-2026" className="text-white/90 underline decoration-white/30 underline-offset-2 hover:decoration-cta hover:text-accent-lighter transition-colors">
                     Bondi
@@ -151,7 +151,7 @@ export default function HomePage() {
               {/* Secondary action: calculator chips. Label echoes the
                   H1's second verb. */}
               <div className="rise rise-d4 mb-5">
-                <p className="text-[11px] uppercase tracking-[0.25em] text-white/50 font-sans font-medium mb-3">
+                <p className="text-[11px] uppercase tracking-[0.25em] text-white/70 font-sans font-medium mb-3">
                   Run the numbers
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -176,7 +176,7 @@ export default function HomePage() {
               {/* Trust strip — four micro-proof points in editorial
                   caps. Leads with guide count to reinforce the
                   education positioning. */}
-              <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.18em] text-white/55 font-sans font-medium">
+              <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.18em] text-white/72 font-sans font-medium">
                 <span className="inline-flex items-center gap-1.5">
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
                   60+ guides
@@ -224,7 +224,7 @@ export default function HomePage() {
                 <p className="font-display text-4xl sm:text-5xl text-white leading-none mb-2.5 tracking-tight">
                   {s.value}
                 </p>
-                <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-white/50 font-sans font-medium">
+                <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-white/70 font-sans font-medium">
                   {s.label}
                 </p>
               </div>
@@ -467,7 +467,7 @@ export default function HomePage() {
             the band's own colour, so it reads as one continuous scene. */}
         <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
           <Image
-            src="/images/hero/suburb-night.jpg"
+            src="/images/hero/suburb-night-v2.jpg"
             alt=""
             fill
             sizes="100vw"
@@ -484,7 +484,7 @@ export default function HomePage() {
                   No. 07
                 </span>
                 <span className="w-12 h-px bg-white/20" aria-hidden="true" />
-                <span className="text-[11px] uppercase tracking-[0.32em] text-white/60 font-sans font-medium">
+                <span className="text-[11px] uppercase tracking-[0.32em] text-white/75 font-sans font-medium">
                   Free PDF · 2026 edition
                 </span>
               </div>
@@ -493,7 +493,7 @@ export default function HomePage() {
                 <span className="italic font-light text-cta">selling</span>{" "}
                 your property.
               </h2>
-              <p className="font-display font-light text-xl sm:text-2xl text-white/80 leading-snug max-w-md mb-12">
+              <p className="font-display font-light text-xl sm:text-2xl text-white/88 leading-snug max-w-md mb-12">
                 Selling costs 3 to 5 percent of your price. The right
                 moves claw thousands of it back. Ten chapters that show
                 you how, personalised to your suburb, free.
@@ -507,11 +507,11 @@ export default function HomePage() {
                 ].map(([n, t]) => (
                   <div key={n} className="border-t border-white/15 pt-4">
                     <p className="font-display italic text-cta text-base mb-1.5 tabular-nums">{n}</p>
-                    <p className="text-sm text-white/85 leading-snug">{t}</p>
+                    <p className="text-sm text-white/92 leading-snug">{t}</p>
                   </div>
                 ))}
               </div>
-              <p className="mt-10 text-sm text-white/60">
+              <p className="mt-10 text-sm text-white/75">
                 Buying, not selling?{" "}
                 <Link href="/buying-guide" className="text-cta hover:text-white underline underline-offset-4 decoration-cta/50 transition-colors">
                   Get the free buying guide

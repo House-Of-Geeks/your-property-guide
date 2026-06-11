@@ -58,7 +58,7 @@ export async function SpotlightGuideCard() {
             </p>
           </div>
           {readingTime && (
-            <span className="font-sans text-white/60 text-xs uppercase tracking-[0.22em] inline-flex items-center gap-1.5">
+            <span className="font-sans text-white/75 text-xs uppercase tracking-[0.22em] inline-flex items-center gap-1.5">
               <Clock className="w-3 h-3" aria-hidden="true" />
               {readingTime}
             </span>

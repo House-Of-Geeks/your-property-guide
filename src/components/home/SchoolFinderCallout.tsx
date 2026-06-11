@@ -23,7 +23,7 @@ export function SchoolFinderCallout() {
             <h2 className="text-3xl sm:text-4xl font-bold text-white leading-tight">
               Find homes near<br className="hidden sm:block" /> the right school
             </h2>
-            <p className="text-white/60 mt-4 text-lg leading-relaxed">
+            <p className="text-white/75 mt-4 text-lg leading-relaxed">
               School catchment boundaries matter. Research any school in Australia, view enrolment statistics, and browse properties within the catchment zone. All in one place.
             </p>
             <ul className="mt-6 space-y-3">

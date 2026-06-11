@@ -77,7 +77,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug }: Props) {
           <div className="flex-shrink-0 w-9 h-9 rounded-full bg-cta text-ink grid place-items-center">
             <Home className="w-4.5 h-4.5" />
           </div>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-white/65 font-medium">
+          <p className="text-[11px] uppercase tracking-[0.18em] text-white/78 font-medium">
             Free appraisal
           </p>
         </div>

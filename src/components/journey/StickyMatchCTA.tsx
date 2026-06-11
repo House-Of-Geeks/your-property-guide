@@ -109,7 +109,7 @@ export function StickyMatchCTA({
             try { sessionStorage.setItem(storageKey, "1"); } catch { /* ignore */ }
           }}
           aria-label="Dismiss"
-          className="pl-2 pr-3 py-3 text-white/60 hover:text-white border-l border-white/10 transition-colors cursor-pointer"
+          className="pl-2 pr-3 py-3 text-white/75 hover:text-white border-l border-white/10 transition-colors cursor-pointer"
         >
           <X className="w-4 h-4" />
         </button>
