@@ -46,6 +46,10 @@
 @theme inline {
   --shadow-card: 0 1px 4px 0 rgb(0 0 0 / 0.08), 0 8px 24px 0 rgb(0 0 0 / 0.10);
   --shadow-card-hover: 0 4px 12px 0 rgb(0 0 0 / 0.10), 0 20px 48px 0 rgb(0 0 0 / 0.14);
+  --shadow-card-hover-warm: 0 4px 12px oklch(0.46 0.14 40 / 0.10), 0 20px 48px oklch(0.46 0.14 40 / 0.16);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-back-out: cubic-bezier(0.34, 1.56, 0.64, 1);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
@@ -193,9 +197,9 @@ h1 {
   pointer-events: none;
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
+/* Smooth scrolling (motion-gated; reduced-motion users get instant jumps) */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
 }
 
 /* Focus styles for accessibility */
@@ -215,13 +219,13 @@ html {
    ────────────────────────────────────────────────────────────────── */
 
 .card-lift {
-  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1),
+  transition: transform 260ms var(--ease-out-quint),
+              box-shadow 260ms var(--ease-out-quint),
               border-color 200ms ease;
 }
 .card-lift:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-card-hover);
+  box-shadow: var(--shadow-card-hover-warm);
 }
 
 /* Dark band atmosphere: a terracotta glow low-right, the same
@@ -244,12 +248,13 @@ html {
   to   { opacity: 1; transform: translateY(0); }
 }
 .rise {
-  animation: ypg-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: ypg-rise 700ms var(--ease-out-quint) both;
 }
 .rise-d1 { animation-delay: 90ms; }
 .rise-d2 { animation-delay: 180ms; }
 .rise-d3 { animation-delay: 280ms; }
 .rise-d4 { animation-delay: 380ms; }
+.rise-d5 { animation-delay: 480ms; }
 
 /* Warm media treatment: pulls every photograph toward the brand's
    golden-hour palette so stock photography stops fighting the
@@ -274,11 +279,22 @@ html {
 /* Step transition for the funnel: each question rises in as it mounts.
    Faster than the hero entrance, no delay, one beat. */
 .step-in {
-  animation: ypg-rise 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: ypg-rise 280ms var(--ease-out-quint) both;
 }
-@media (prefers-reduced-motion: reduce) {
-  .step-in { animation: none; }
-}
+
+/* Directional funnel steps: forward slides in from the right, back from
+   the left, so the stepper reads as movement through a sequence. */
+@keyframes ypg-step-fwd  { from { opacity: 0; transform: translateX(28px); } }
+@keyframes ypg-step-back { from { opacity: 0; transform: translateX(-28px); } }
+.step-in-fwd  { animation: ypg-step-fwd 320ms var(--ease-out-quint) both; }
+.step-in-back { animation: ypg-step-back 320ms var(--ease-out-quint) both; }
+
+/* Funnel selection feedback: a quick press on the chosen card and a
+   popped check, played during the 220ms confirm beat before advancing. */
+@keyframes ypg-opt-confirm { 50% { transform: scale(0.97); } }
+.opt-confirm { animation: ypg-opt-confirm 200ms var(--ease-out-quint) 1; }
+@keyframes ypg-check-pop { from { opacity: 0; transform: scale(0.4); } }
+.check-pop { animation: ypg-check-pop 180ms var(--ease-back-out) both; }
 
 /* Hand-drawn underline that draws itself in beneath a headline word.
    Usage: wrap the word in .u-draw and include the SVG (see homepage
@@ -289,13 +305,116 @@ html {
 .u-draw svg path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  animation: ypg-draw 900ms cubic-bezier(0.65, 0, 0.35, 1) 950ms forwards;
+  animation: ypg-draw 900ms var(--ease-in-out-cubic) 950ms forwards;
 }
 
+/* ── Scroll-reveal system ─────────────────────────────────────────
+   html[data-motion] is set pre-paint by an inline script in the root
+   layout ONLY when the user has no reduced-motion preference and JS is
+   running, so bots, no-JS visitors and reduced-motion users all get a
+   fully visible page with zero animation. MotionObserver flips
+   data-reveal / data-reveal-group to "in" on intersection.
+   data-reveal-group staggers its direct children at 70ms intervals. */
+html[data-motion] [data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 650ms var(--ease-out-quint), transform 650ms var(--ease-out-quint);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+html[data-motion] [data-reveal="in"] { opacity: 1; transform: none; }
+
+html[data-motion] [data-reveal-group] > * {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 550ms var(--ease-out-quint), transform 550ms var(--ease-out-quint);
+}
+html[data-motion] [data-reveal-group="in"] > * { opacity: 1; transform: none; }
+html[data-motion] [data-reveal-group="in"] > :nth-child(2) { transition-delay: 70ms; }
+html[data-motion] [data-reveal-group="in"] > :nth-child(3) { transition-delay: 140ms; }
+html[data-motion] [data-reveal-group="in"] > :nth-child(4) { transition-delay: 210ms; }
+html[data-motion] [data-reveal-group="in"] > :nth-child(5) { transition-delay: 280ms; }
+html[data-motion] [data-reveal-group="in"] > :nth-child(6) { transition-delay: 350ms; }
+html[data-motion] [data-reveal-group="in"] > :nth-child(7) { transition-delay: 420ms; }
+html[data-motion] [data-reveal-group="in"] > :nth-child(n+8) { transition-delay: 490ms; }
+
+/* Masthead hairline draws from the numeral toward the eyebrow label. */
+html[data-motion] .rule-draw {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 700ms var(--ease-out-quint) 120ms;
+}
+html[data-motion] [data-reveal="in"] .rule-draw,
+html[data-motion] [data-reveal-group="in"] .rule-draw { transform: scaleX(1); }
+
+/* Scroll-triggered hand-drawn underline (same SVG as .u-draw, but the
+   stroke draws when the section reveals rather than on page load). */
+html[data-motion] .u-draw-scroll svg path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+html[data-motion] [data-reveal="in"] .u-draw-scroll svg path,
+html[data-motion] [data-reveal-group="in"] .u-draw-scroll svg path {
+  animation: ypg-draw 800ms var(--ease-in-out-cubic) 200ms forwards;
+}
+
+/* Tactile press for conversion clicks. */
+.press { transition: transform 180ms var(--ease-out-quint); }
+.press:active { transform: scale(0.98); }
+
+/* Hero artwork settles to rest while the copy rises. */
+@keyframes ypg-hero-settle { from { transform: scale(1.06); } to { transform: scale(1); } }
+.hero-settle { animation: ypg-hero-settle 2400ms var(--ease-out-quint) both; }
+
+/* Guide cover lands like a physical object: rises and rights itself
+   to its resting -2deg tilt. */
+@keyframes ypg-cover-settle {
+  from { opacity: 0; transform: translateY(18px) rotate(-5deg); }
+  to   { opacity: 1; transform: translateY(0) rotate(-2deg); }
+}
+.cover-settle { animation: ypg-cover-settle 800ms var(--ease-out-quint) 380ms both; }
+
+/* Thanks-page check badge pop. */
+@keyframes ypg-pop {
+  0%   { opacity: 0; transform: scale(0.4); }
+  70%  { transform: scale(1.06); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.pop-in { animation: ypg-pop 500ms var(--ease-back-out) both; }
+
+/* Anchor-arrival pulse: when smooth scroll lands on #get-the-guide the
+   funnel card rings once so the eye knows where it was sent. */
+@keyframes ypg-ping {
+  from { box-shadow: 0 0 0 0 oklch(0.58 0.14 42 / 0.4); }
+  to   { box-shadow: 0 0 0 12px transparent; }
+}
+html[data-motion] #get-the-guide:target [data-funnel-card] {
+  animation: ypg-ping 900ms var(--ease-out-quint) 1;
+}
+
+/* Sticky pill entrance: rises with a slight overshoot, once. */
+@keyframes ypg-pill-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.96); }
+  70%  { transform: translateY(-2px) scale(1.005); }
+  to   { opacity: 1; transform: none; }
+}
+.pill-in { animation: ypg-pill-in 420ms var(--ease-out-quint) both; }
+
+/* One authoritative reduced-motion reset for the whole motion system.
+   The data-motion gate already excludes these users from the reveal
+   system; this block covers mid-session OS toggles and the load-time
+   animations that don't run through the gate. */
 @media (prefers-reduced-motion: reduce) {
-  .rise, .rise-d1, .rise-d2, .rise-d3, .rise-d4 { animation: none; }
+  .rise, .rise-d1, .rise-d2, .rise-d3, .rise-d4, .rise-d5,
+  .step-in, .step-in-fwd, .step-in-back, .opt-confirm, .check-pop,
+  .hero-settle, .cover-settle, .pop-in, .pill-in { animation: none; }
   .card-lift, .card-lift:hover { transition: none; transform: none; }
-  .u-draw svg path { animation: none; stroke-dashoffset: 0; }
+  .u-draw svg path, .u-draw-scroll svg path { animation: none; stroke-dashoffset: 0; }
+  .press, .press:active { transition: none; transform: none; }
+  [data-reveal], [data-reveal-group] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 /* Warm minimal scrollbar (WebKit + Firefox). */

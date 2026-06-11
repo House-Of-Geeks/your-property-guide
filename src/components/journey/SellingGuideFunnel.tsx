@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { ArrowRight, ArrowLeft } from "lucide-react";
+import { ArrowRight, ArrowLeft, Check } from "lucide-react";
 import { SuburbAutocomplete, slugToSuburbLabel } from "@/components/search/SuburbAutocomplete";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 
@@ -116,14 +116,39 @@ export function SellingGuideFunnel({
   const [website, setWebsite] = useState(""); // honeypot, must stay empty
 
   const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
+  // Locks the option grid during the confirm beat between tap and advance.
+  const [isAdvancing, setIsAdvancing] = useState(false);
+  // Drives step-in-fwd vs step-in-back on the keyed step wrapper.
+  const direction = useRef<"fwd" | "back">("fwd");
 
   const markStart = () => {
     if (hasStarted) return;
     setHasStarted(true);
     clarityEvent("form_start");
     clarityTag("form_name", "selling-guide");
+  };
+
+  const reducedMotion = () =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Single-tap options: paint the selection, hold a brief confirm beat,
+  // then advance. The beat is skipped under reduced motion.
+  const advanceTo = (to: number) => {
+    setIsAdvancing(true);
+    window.setTimeout(() => {
+      direction.current = "fwd";
+      setStep(to);
+      setIsAdvancing(false);
+    }, reducedMotion() ? 0 : 220);
+  };
+
+  // Forward moves with no card to confirm (suburb select, skip links).
+  const goForward = (to: number) => {
+    direction.current = "fwd";
+    setStep(to);
   };
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -162,7 +187,11 @@ export function SellingGuideFunnel({
       if (suburbSlug) clarityTag("guide_suburb", suburbSlug);
       const qs = new URLSearchParams({ score: displayScore(timeframe, agentStatus) });
       if (suburbSlug) qs.set("suburb", suburbSlug);
-      router.push(`/selling-guide/thanks?${qs.toString()}`);
+      // Success beat: the button confirms before the route changes.
+      setSubmitted(true);
+      window.setTimeout(() => {
+        router.push(`/selling-guide/thanks?${qs.toString()}`);
+      }, reducedMotion() ? 0 : 600);
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -176,16 +205,25 @@ export function SellingGuideFunnel({
   // Shared option-button styling. Tactile: options rise a hair on hover
   // and press down on click, so every step feels like a physical choice.
   const optionClass = (active: boolean) =>
-    `text-left rounded-xl border px-4 py-3.5 transition-all duration-200 cursor-pointer active:scale-[0.985] active:translate-y-0 ${
+    `relative text-left rounded-xl border px-4 py-3.5 transition-all duration-200 cursor-pointer press active:translate-y-0 ${
       active
         ? "bg-ink text-white border-ink"
         : "bg-surface-raised text-ink border-line hover:border-line-strong hover:-translate-y-0.5 hover:shadow-md"
-    }`;
+    }${active && isAdvancing ? " opt-confirm" : ""}`;
+
+  // Tick on the just-selected card during the confirm beat.
+  const confirmCheck = (active: boolean) =>
+    active && isAdvancing ? (
+      <Check className="check-pop absolute top-2 right-2 w-4 h-4" aria-hidden="true" />
+    ) : null;
 
   const backButton = (to: number) => (
     <button
       type="button"
-      onClick={() => setStep(to)}
+      onClick={() => {
+        direction.current = "back";
+        setStep(to);
+      }}
       className="mt-4 inline-flex items-center gap-1.5 text-xs text-ink-subtle hover:text-ink transition-colors cursor-pointer"
     >
       <ArrowLeft className="w-3.5 h-3.5" /> Back
@@ -199,17 +237,23 @@ export function SellingGuideFunnel({
   const sharesWithAgents = agentStatus !== "already-listed";
 
   return (
-    <div className="bg-surface-warm text-ink rounded-2xl p-6 sm:p-8 shadow-2xl border border-line border-t-[3px] border-t-cta">
+    <div data-funnel-card className="bg-surface-warm text-ink rounded-2xl p-6 sm:p-8 shadow-2xl border border-line border-t-[3px] border-t-cta">
       {/* Progress. Hidden on the opening question (a bar on screen one
-          costs conversions); from step 2 it shows already-earned progress. */}
+          costs conversions); from step 2 it shows already-earned progress.
+          Each segment is a track with a fill that sweeps in from the left;
+          the newest segment waits a beat so the step lands first. */}
       {step > 0 && (
         <div className="flex items-center gap-2 mb-7">
           {Array.from({ length: stepTotal }, (_, i) => (
-            <div
-              key={i}
-              className="flex-1 h-[3px] rounded-full transition-all duration-500"
-              style={{ background: i <= stepIndex ? "var(--cta)" : "var(--line)" }}
-            />
+            <div key={i} className="flex-1 h-[3px] rounded-full bg-line overflow-hidden">
+              <span
+                className="block h-full bg-cta origin-left transition-transform duration-[450ms] ease-[var(--ease-out-quint)]"
+                style={{
+                  transform: i <= stepIndex ? "scaleX(1)" : "scaleX(0)",
+                  transitionDelay: i === stepIndex ? "120ms" : "0ms",
+                }}
+              />
+            </div>
           ))}
           <p className="ml-2 text-[11px] font-medium uppercase tracking-wider text-ink-subtle whitespace-nowrap">
             {Math.min(step + 1, stepTotal)} / {stepTotal}
@@ -218,8 +262,9 @@ export function SellingGuideFunnel({
       )}
 
       {/* Keyed wrapper: remounts on every step change so each question
-          rises in (see .step-in in globals.css). */}
-      <div key={step} className="step-in">
+          slides in from the direction of travel (see .step-in-fwd /
+          .step-in-back in globals.css). */}
+      <div key={step} className={direction.current === "back" ? "step-in-back" : "step-in-fwd"}>
 
       {/* Step 0, suburb */}
       {step === 0 && (
@@ -240,7 +285,7 @@ export function SellingGuideFunnel({
               markStart();
               setSuburbSlug(slug);
               setSuburbLabel(label);
-              setStep(1);
+              goForward(1);
             }}
             onClear={() => {
               setSuburbSlug(null);
@@ -254,7 +299,7 @@ export function SellingGuideFunnel({
                 markStart();
                 setSuburbSlug(null);
                 setSuburbLabel(null);
-                setStep(1);
+                goForward(1);
               }}
               className="text-xs text-ink-muted hover:text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink transition-colors cursor-pointer"
             >
@@ -270,7 +315,7 @@ export function SellingGuideFunnel({
           <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
             What type of property{suburbLabel ? ` in ${suburbLabel}` : ""}?
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className={`grid grid-cols-1 sm:grid-cols-2 gap-3 ${isAdvancing ? "pointer-events-none" : ""}`}>
             {PROPERTY_TYPES.map((opt) => (
               <button
                 key={opt.id}
@@ -278,11 +323,12 @@ export function SellingGuideFunnel({
                 onClick={() => {
                   markStart();
                   setPropertyType(opt.id);
-                  setStep(2);
+                  advanceTo(2);
                 }}
                 className={optionClass(propertyType === opt.id)}
               >
                 <p className="text-sm font-semibold">{opt.label}</p>
+                {confirmCheck(propertyType === opt.id)}
               </button>
             ))}
           </div>
@@ -296,22 +342,25 @@ export function SellingGuideFunnel({
           <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
             How many bedrooms?
           </h3>
-          <div className="grid grid-cols-5 gap-2">
+          <div className={`grid grid-cols-5 gap-2 ${isAdvancing ? "pointer-events-none" : ""}`}>
             {BEDROOMS.map((b) => (
               <button
                 key={b}
                 type="button"
                 onClick={() => {
                   setBedrooms(b);
-                  setStep(3);
+                  advanceTo(3);
                 }}
-                className={`rounded-xl border py-4 text-center text-sm font-semibold transition-all duration-200 cursor-pointer active:scale-[0.97] ${
+                className={`relative rounded-xl border py-4 text-center text-sm font-semibold transition-all duration-200 cursor-pointer press ${
                   bedrooms === b
                     ? "bg-ink text-white border-ink"
                     : "bg-surface-raised text-ink border-line hover:border-line-strong hover:-translate-y-0.5 hover:shadow-md"
-                }`}
+                }${bedrooms === b && isAdvancing ? " opt-confirm" : ""}`}
               >
                 {b}
+                {bedrooms === b && isAdvancing && (
+                  <Check className="check-pop absolute top-1 right-1 w-3.5 h-3.5" aria-hidden="true" />
+                )}
               </button>
             ))}
           </div>
@@ -325,20 +374,20 @@ export function SellingGuideFunnel({
           <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
             When are you thinking of selling?
           </h3>
-          <div className="flex flex-col gap-2.5">
+          <div className={`flex flex-col gap-2.5 ${isAdvancing ? "pointer-events-none" : ""}`}>
             {TIMEFRAMES.map((opt) => (
               <button
                 key={opt.id}
                 type="button"
                 onClick={() => {
                   setTimeframe(opt.id);
-                  setStep(4);
+                  advanceTo(4);
                 }}
-                className={`flex items-center justify-between rounded-xl border px-5 py-3.5 transition-all duration-200 cursor-pointer active:scale-[0.985] active:translate-y-0 ${
+                className={`relative flex items-center justify-between rounded-xl border px-5 py-3.5 transition-all duration-200 cursor-pointer press active:translate-y-0 ${
                   timeframe === opt.id
                     ? "bg-ink text-white border-ink"
                     : "bg-surface-raised text-ink border-line hover:border-line-strong hover:-translate-y-0.5 hover:shadow-md"
-                }`}
+                }${timeframe === opt.id && isAdvancing ? " opt-confirm" : ""}`}
               >
                 <div className="text-left">
                   <p className="text-sm font-semibold">{opt.label}</p>
@@ -347,6 +396,7 @@ export function SellingGuideFunnel({
                   </p>
                 </div>
                 <ArrowRight className={`w-4 h-4 shrink-0 ${timeframe === opt.id ? "text-white/70" : "text-ink-subtle"}`} />
+                {confirmCheck(timeframe === opt.id)}
               </button>
             ))}
           </div>
@@ -363,20 +413,20 @@ export function SellingGuideFunnel({
           <p className="text-sm text-ink-muted mb-5">
             No wrong answer. It changes which chapters we point you to first.
           </p>
-          <div className="flex flex-col gap-2.5">
+          <div className={`flex flex-col gap-2.5 ${isAdvancing ? "pointer-events-none" : ""}`}>
             {AGENT_STATUSES.map((opt) => (
               <button
                 key={opt.id}
                 type="button"
                 onClick={() => {
                   setAgentStatus(opt.id);
-                  setStep(5);
+                  advanceTo(5);
                 }}
-                className={`flex items-center justify-between rounded-xl border px-5 py-3.5 transition-all duration-200 cursor-pointer active:scale-[0.985] active:translate-y-0 ${
+                className={`relative flex items-center justify-between rounded-xl border px-5 py-3.5 transition-all duration-200 cursor-pointer press active:translate-y-0 ${
                   agentStatus === opt.id
                     ? "bg-ink text-white border-ink"
                     : "bg-surface-raised text-ink border-line hover:border-line-strong hover:-translate-y-0.5 hover:shadow-md"
-                }`}
+                }${agentStatus === opt.id && isAdvancing ? " opt-confirm" : ""}`}
               >
                 <div className="text-left">
                   <p className="text-sm font-semibold">{opt.label}</p>
@@ -385,6 +435,7 @@ export function SellingGuideFunnel({
                   </p>
                 </div>
                 <ArrowRight className={`w-4 h-4 shrink-0 ${agentStatus === opt.id ? "text-white/70" : "text-ink-subtle"}`} />
+                {confirmCheck(agentStatus === opt.id)}
               </button>
             ))}
           </div>
@@ -398,18 +449,19 @@ export function SellingGuideFunnel({
           <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
             What&rsquo;s prompting the move?
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className={`grid grid-cols-1 sm:grid-cols-2 gap-3 ${isAdvancing ? "pointer-events-none" : ""}`}>
             {MOTIVATIONS.map((m) => (
               <button
                 key={m}
                 type="button"
                 onClick={() => {
                   setMotivation(m);
-                  setStep(6);
+                  advanceTo(6);
                 }}
                 className={optionClass(motivation === m)}
               >
                 <p className="text-sm font-semibold">{m}</p>
+                {confirmCheck(motivation === m)}
               </button>
             ))}
           </div>
@@ -419,7 +471,7 @@ export function SellingGuideFunnel({
               type="button"
               onClick={() => {
                 setMotivation(null);
-                setStep(6);
+                goForward(6);
               }}
               className="mt-4 text-xs text-ink-muted hover:text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink transition-colors cursor-pointer"
             >
@@ -439,18 +491,19 @@ export function SellingGuideFunnel({
             A ballpark is fine. It helps us point you at the right fee and
             cost benchmarks.
           </p>
-          <div className="grid grid-cols-2 gap-2.5">
+          <div className={`grid grid-cols-2 gap-2.5 ${isAdvancing ? "pointer-events-none" : ""}`}>
             {PRICE_BRACKETS.map((p) => (
               <button
                 key={p}
                 type="button"
                 onClick={() => {
                   setPriceExpectation(p);
-                  setStep(7);
+                  advanceTo(7);
                 }}
                 className={optionClass(priceExpectation === p)}
               >
                 <p className="text-sm font-semibold">{p}</p>
+                {confirmCheck(priceExpectation === p)}
               </button>
             ))}
           </div>
@@ -461,13 +514,13 @@ export function SellingGuideFunnel({
       {/* Step 7, contact (PII last) */}
       {step === 7 && (
         <div>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-3">
+          <p className="rise text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-3">
             Your guide is ready
           </p>
-          <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-3">
+          <h3 className="rise rise-d1 font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-3">
             Where should we send it?
           </h3>
-          <form onSubmit={onSubmit} className="space-y-3">
+          <form onSubmit={onSubmit} className="rise rise-d2 space-y-3">
             {/* Honeypot: visually hidden, off-screen, aria-hidden. */}
             <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
               <label htmlFor="guide-website">Website</label>
@@ -486,7 +539,7 @@ export function SellingGuideFunnel({
               placeholder="First name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
+              className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
             />
             <input
               type="email"
@@ -494,7 +547,7 @@ export function SellingGuideFunnel({
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
+              className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
             />
             <div>
               <input
@@ -502,7 +555,7 @@ export function SellingGuideFunnel({
                 placeholder="Mobile (optional)"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
+                className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
               />
               {sharesWithAgents && timeframe === "0-3-months" && (
                 <p className="mt-1.5 text-[11px] text-ink-subtle leading-relaxed">
@@ -529,11 +582,25 @@ export function SellingGuideFunnel({
 
             <button
               type="submit"
-              disabled={submitting}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3.5 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              disabled={submitting || submitted}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3.5 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer press"
             >
-              {submitting ? "Sending…" : "Get my free guide"}
-              {!submitting && <ArrowRight className="w-4 h-4" />}
+              {submitted ? (
+                <>
+                  <Check className="check-pop w-4 h-4" aria-hidden="true" />
+                  On its way
+                </>
+              ) : submitting ? (
+                <>
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true" />
+                  Sending…
+                </>
+              ) : (
+                <>
+                  Get my free guide
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
             </button>
 
             {/* Collection statement. The agent-sharing disclosure sits at

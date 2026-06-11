@@ -58,32 +58,58 @@ export default async function BuyingGuideThanksPage({ searchParams }: PageProps)
           <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-30% via-surface-warm/80 to-surface-warm/35" />
         </div>
         <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
-          <div className="w-14 h-14 rounded-full bg-cta text-white grid place-items-center mx-auto mb-6">
-            <CheckCircle className="w-7 h-7" aria-hidden="true" />
+          <div className="relative w-14 h-14 mx-auto mb-6">
+            {/* Confetti burst: ypg-rise played in reverse (fade out while
+                travelling) inside rotated, scaled anchors so each dot flies
+                outward from the badge rim as it pops. Base opacity-0 keeps
+                the dots gone whenever the animation is off (reduced motion
+                sets .rise to animation: none). */}
+            {[
+              { pos: "left-1/2 top-0", dir: "rotate-180 scale-[2]", tone: "bg-cta" },
+              { pos: "left-[86%] top-[14%]", dir: "rotate-[225deg] scale-[1.8]", tone: "bg-accent-lighter" },
+              { pos: "left-[14%] top-[14%]", dir: "rotate-[135deg] scale-[2.3]", tone: "bg-accent-lighter" },
+              { pos: "left-full top-1/2", dir: "rotate-[270deg] scale-[1.7]", tone: "bg-cta" },
+              { pos: "left-[14%] top-[86%]", dir: "rotate-45 scale-[2]", tone: "bg-cta" },
+            ].map((dot) => (
+              <span key={dot.pos} aria-hidden="true" className={`absolute ${dot.pos} ${dot.dir}`}>
+                <span
+                  className={`rise block w-0.5 h-0.5 rounded-full opacity-0 ${dot.tone}`}
+                  style={{
+                    animationDirection: "reverse",
+                    animationFillMode: "forwards",
+                    animationDuration: "650ms",
+                    animationDelay: "250ms",
+                  }}
+                />
+              </span>
+            ))}
+            <div className="pop-in w-14 h-14 rounded-full bg-cta text-white grid place-items-center">
+              <CheckCircle className="w-7 h-7" aria-hidden="true" />
+            </div>
           </div>
 
-          <h1 className="font-display text-ink tracking-tight text-3xl sm:text-4xl lg:text-5xl leading-[1.05] font-medium mb-4">
+          <h1 className="rise rise-d1 font-display text-ink tracking-tight text-3xl sm:text-4xl lg:text-5xl leading-[1.05] font-medium mb-4">
             {copy.headline}
           </h1>
-          <p className="font-sans text-base text-ink-muted leading-relaxed max-w-xl mx-auto mb-10">
+          <p className="rise rise-d2 font-sans text-base text-ink-muted leading-relaxed max-w-xl mx-auto mb-10">
             {copy.body}
           </p>
 
-          <div className="mx-auto max-w-lg rounded-2xl bg-surface-inverse px-8 pt-8 pb-7 shadow-2xl">
+          <div className="rise rise-d3 mx-auto max-w-lg rounded-2xl bg-surface-inverse px-8 pt-8 pb-7 shadow-2xl">
             <Image
               src="/images/guide/buying-guide-cover.png"
               alt="The Complete Guide to Buying Property in Australia, 2026 edition"
               width={190}
               height={269}
               priority
-              className="mx-auto w-[160px] sm:w-[190px] h-auto rounded-md shadow-[0_22px_48px_rgba(0,0,0,0.5)]"
+              className="cover-settle mx-auto w-[160px] sm:w-[190px] h-auto rounded-md shadow-[0_22px_48px_rgba(0,0,0,0.5)]"
             />
             <a
               href={GUIDE_PDF_PATH}
               download
-              className="mt-7 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-8 py-4 text-base transition-colors"
+              className="group press mt-7 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-8 py-4 text-base transition-[transform,translate,box-shadow,background-color] duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(189,89,47,0.35)] active:translate-y-0"
             >
-              <Download className="w-5 h-5" aria-hidden="true" />
+              <Download className="w-5 h-5 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
               Download your guide (PDF)
             </a>
             <p className="mt-3 text-xs text-white/72">
@@ -99,7 +125,7 @@ export default async function BuyingGuideThanksPage({ searchParams }: PageProps)
           <h2 className="font-display text-ink tracking-tight text-2xl sm:text-3xl font-medium mb-8 text-center">
             While you&rsquo;re here
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div data-reveal-group className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               {
                 href: "/borrowing-power-calculator",
@@ -126,7 +152,7 @@ export default async function BuyingGuideThanksPage({ searchParams }: PageProps)
                   {card.label}
                 </p>
                 <p className="font-sans text-xs text-ink-subtle leading-relaxed mb-3 flex-1">{card.sub}</p>
-                <ArrowRight className="w-4 h-4 text-ink-subtle group-hover:text-primary transition-colors" aria-hidden="true" />
+                <ArrowRight className="w-4 h-4 text-ink-subtle group-hover:text-primary group-hover:translate-x-1 transition-[transform,translate,color] duration-200" aria-hidden="true" />
               </Link>
             ))}
           </div>

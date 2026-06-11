@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
+import { Suspense, type CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BookOpen, CheckCircle2, Clock, ShieldCheck } from "lucide-react";
 
+import { FaqAccordion } from "@/components/guide";
 import { BuyingGuideFunnel } from "@/components/journey";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
@@ -129,7 +130,25 @@ export default function BuyingGuidePage() {
 
               <h1 className="rise rise-d1 font-display text-ink tracking-tight mb-6 text-4xl sm:text-5xl lg:text-6xl leading-[1.02] font-medium">
                 Overpaying is the default.{" "}
-                <span className="italic font-light text-primary">This</span>{" "}
+                <span className="u-draw relative inline-block italic font-light text-primary">
+                  This
+                  {/* Hand-drawn underline, draws in after the entrance */}
+                  <svg
+                    className="absolute left-[-2%] right-0 bottom-[-0.12em] w-[104%] h-[0.22em]"
+                    viewBox="0 0 120 12"
+                    fill="none"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M3 8.5C24 4.5 50 3.5 73 5c18 1.2 32 3 44 4.5"
+                      stroke="var(--cta)"
+                      strokeWidth="3.2"
+                      strokeLinecap="round"
+                      pathLength="1"
+                    />
+                  </svg>
+                </span>{" "}
                 is the fix.
               </h1>
 
@@ -141,23 +160,34 @@ export default function BuyingGuidePage() {
                 plays you. Free, in your inbox in 60 seconds.
               </p>
 
-              <div className="rise rise-d3 flex items-start gap-6 mb-8">
-                <Image
-                  src="/images/guide/buying-guide-cover.png"
-                  alt="The Complete Guide to Buying Property in Australia, 2026 edition"
-                  width={168}
-                  height={238}
-                  priority
-                  className="hidden sm:block w-[150px] lg:w-[168px] h-auto rounded-md shadow-[0_24px_48px_rgba(23,16,11,0.35)] -rotate-2 shrink-0"
-                />
+              <div className="flex items-start gap-6 mb-8">
+                {/* cover-settle owns the resting -2deg tilt, so no static
+                    rotate here (the two would compound to -4deg). */}
+                <a
+                  href="#get-the-guide"
+                  className="cover-settle shrink-0 transition-transform duration-300 ease-[var(--ease-out-quint)] hover:rotate-0 hover:-translate-y-1"
+                >
+                  <Image
+                    src="/images/guide/buying-guide-cover.png"
+                    alt="The Complete Guide to Buying Property in Australia, 2026 edition"
+                    width={168}
+                    height={238}
+                    priority
+                    className="block w-[96px] sm:w-[150px] lg:w-[168px] h-auto rounded-md shadow-[0_24px_48px_rgba(23,16,11,0.35)]"
+                  />
+                </a>
                 <ul className="space-y-3 pt-1">
                   {[
                     "2026 schemes state by state, worth tens of thousands",
                     "What lenders will actually approve, buffer included",
                     "Underquoting and auction psychology, decoded",
                     "A printable 12-week buying timeline",
-                  ].map((line) => (
-                    <li key={line} className="flex items-start gap-3">
+                  ].map((line, i) => (
+                    <li
+                      key={line}
+                      className="rise flex items-start gap-3"
+                      style={{ animationDelay: `${280 + i * 70}ms` }}
+                    >
                       <CheckCircle2 className="w-5 h-5 text-cta shrink-0 mt-0.5" aria-hidden="true" />
                       <span className="font-sans text-sm sm:text-base text-ink leading-relaxed">{line}</span>
                     </li>
@@ -181,9 +211,14 @@ export default function BuyingGuidePage() {
             </div>
 
             <div className="rise rise-d2 lg:col-span-6 lg:sticky lg:top-24">
-              <Suspense fallback={<div className="text-sm text-ink-muted">Loading…</div>}>
-                <BuyingGuideFunnel source="buying-guide-page" />
-              </Suspense>
+              {/* data-funnel-card drives the #get-the-guide:target ping
+                  (the buying funnel card doesn't carry it internally).
+                  rounded-2xl keeps the ping ring on the card's corners. */}
+              <div data-funnel-card className="rounded-2xl">
+                <Suspense fallback={<div className="text-sm text-ink-muted">Loading…</div>}>
+                  <BuyingGuideFunnel source="buying-guide-page" />
+                </Suspense>
+              </div>
 
               <div className="mt-5 rounded-2xl border border-line bg-surface-raised/80 backdrop-blur-[2px] px-6 py-5">
                 <p className="text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-sans font-medium mb-4">
@@ -194,8 +229,12 @@ export default function BuyingGuidePage() {
                     ["01", "Answer six quick questions, about 60 seconds"],
                     ["02", "Download instantly, plus a copy lands in your inbox"],
                     ["03", "We point you at the chapters for your situation"],
-                  ].map(([n, t]) => (
-                    <li key={n} className="flex items-baseline gap-3">
+                  ].map(([n, t], i) => (
+                    <li
+                      key={n}
+                      className="rise flex items-baseline gap-3"
+                      style={{ animationDelay: `${280 + i * 70}ms` }}
+                    >
                       <span className="font-display italic text-cta text-base tabular-nums shrink-0">{n}</span>
                       <span className="font-sans text-sm text-ink-muted leading-snug">{t}</span>
                     </li>
@@ -213,13 +252,14 @@ export default function BuyingGuidePage() {
           <p className="text-[11px] uppercase tracking-[0.32em] text-primary-dark font-sans font-semibold mb-10 text-center">
             What knowing the game is worth
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
+          <div data-reveal-group className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
             {[
               ["5%", "the deposit that skips lenders mortgage insurance entirely under the 2026 federal scheme, if you know to use it"],
-              ["Tens of thousands", "what first home schemes and duty concessions are worth, state by state, chapter 3"],
+              ["$10k to $50k+", "what first home buyer schemes and duty concessions are worth, state by state, chapter 3"],
               ["5 to 10%", "how far auction price guides routinely run under the final result, decoded in chapter 6"],
             ].map(([n, label]) => (
               <div key={n} className="text-center sm:text-left">
+                <span className="block h-px w-10 bg-primary-dark/40 rule-draw mb-4 mx-auto sm:mx-0" aria-hidden="true" />
                 <p className="font-display italic text-primary-dark text-4xl sm:text-5xl leading-none mb-3 tracking-tight">{n}</p>
                 <p className="font-sans text-sm text-ink-muted leading-relaxed">{label}</p>
               </div>
@@ -244,16 +284,17 @@ export default function BuyingGuidePage() {
             </span>
           </div>
 
-          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl font-medium mb-10">
+          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium mb-10">
             Ten chapters, four buyers, no filler.
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-0">
+          {/* CSS columns so chapters 01-05 read down the left column. */}
+          <div data-reveal-group className="sm:columns-2 sm:gap-x-10">
             {CHAPTERS.map((c) => (
-              <div key={c.n} className="flex items-start gap-4 border-t border-line py-4">
-                <span className="font-display italic text-primary text-base tabular-nums leading-6">{c.n}</span>
+              <div key={c.n} className="group flex items-start gap-4 border-t border-line py-4 break-inside-avoid transition-colors duration-200">
+                <span className="font-display italic text-primary text-base tabular-nums leading-6 transition-all duration-200 group-hover:translate-x-[3px] group-hover:text-primary-dark">{c.n}</span>
                 <div>
-                  <p className="font-sans text-sm font-semibold text-ink leading-6">{c.title}</p>
+                  <p className="font-sans text-sm font-semibold text-ink leading-6 transition-colors group-hover:text-primary">{c.title}</p>
                   <p className="font-sans text-xs text-ink-subtle leading-relaxed">{c.sub}</p>
                 </div>
               </div>
@@ -273,20 +314,13 @@ export default function BuyingGuidePage() {
       {/* FAQ */}
       <section className="bg-surface-warm">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-14 pb-14 sm:pt-16 sm:pb-16">
-          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl font-medium mb-10">
+          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium mb-10">
             Questions buyers ask us.
           </h2>
-          <div className="space-y-8">
-            {FAQS.map((f) => (
-              <div key={f.question} className="border-t border-line pt-5">
-                <h3 className="font-sans text-base font-semibold text-ink mb-2">{f.question}</h3>
-                <p className="font-sans text-sm text-ink-muted leading-relaxed">{f.answer}</p>
-              </div>
-            ))}
-          </div>
+          <FaqAccordion items={FAQS} />
 
           {/* Page closer: same night-suburb treatment as the selling guide */}
-          <div className="mt-12 relative rounded-2xl overflow-hidden bg-surface-inverse text-center shadow-2xl">
+          <div className="band-glow mt-12 relative rounded-2xl overflow-hidden bg-surface-inverse text-center shadow-2xl">
             <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
               <Image
                 src="/images/hero/suburb-night-v2.jpg"
@@ -298,18 +332,32 @@ export default function BuyingGuidePage() {
               <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-20% via-surface-inverse/70 via-50% to-surface-inverse/10" />
             </div>
             <div className="relative px-6 sm:px-10 pt-10 pb-24 sm:pb-28">
-              <p className="font-display text-2xl sm:text-3xl text-white mb-2 tracking-tight">
+              <p data-reveal className="font-display text-2xl sm:text-3xl text-white mb-2 tracking-tight">
                 Buy it once. Buy it well.
               </p>
-              <p className="mb-6 text-sm text-white/78">
+              <p
+                data-reveal
+                style={{ "--reveal-delay": "90ms" } as CSSProperties}
+                className="mb-6 text-sm text-white/78"
+              >
                 60 seconds, matched to your situation, free.
               </p>
-              <a
-                href="#get-the-guide"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-semibold px-8 py-3.5 text-sm transition-colors shadow-lg"
-              >
-                Get the free guide
-              </a>
+              {/* data-reveal lives on the wrapper so the CTA's own hover
+                  transition isn't overridden by the reveal transition. */}
+              <div data-reveal style={{ "--reveal-delay": "180ms" } as CSSProperties}>
+                <a
+                  href="#get-the-guide"
+                  className="press inline-flex items-center justify-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-semibold px-8 py-3.5 text-sm transition-[transform,translate,background-color,box-shadow] duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+                >
+                  Get the free guide
+                </a>
+              </div>
+              <p className="mt-5 text-xs text-white/72">
+                Selling, not buying?{" "}
+                <Link href="/selling-guide" className="text-white/92 hover:text-white underline underline-offset-4 transition-colors">
+                  There&rsquo;s a selling guide too
+                </Link>
+              </p>
             </div>
           </div>
         </div>

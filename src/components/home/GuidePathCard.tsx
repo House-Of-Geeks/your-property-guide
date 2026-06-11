@@ -54,7 +54,13 @@ export function GuidePathCard() {
     <div className="rounded-2xl border border-line bg-surface-raised overflow-hidden shadow-card">
       {/* Path toggle: the fork in the road, phrased as the visitor's
           own situation rather than our product names. */}
-      <div className="grid grid-cols-2 border-b border-line" role="tablist" aria-label="Choose your guide">
+      <div className="relative grid grid-cols-2 border-b border-line" role="tablist" aria-label="Choose your guide">
+        {/* Sliding pill behind the tabs; buttons stay transparent above it */}
+        <span
+          aria-hidden="true"
+          className="absolute inset-y-0 left-0 w-1/2 bg-cta transition-transform duration-[250ms] ease-[var(--ease-out-quint)]"
+          style={{ transform: path === "buying" ? "translateX(100%)" : "translateX(0)" }}
+        />
         {(["selling", "buying"] as const).map((key) => (
           <button
             key={key}
@@ -62,10 +68,8 @@ export function GuidePathCard() {
             aria-selected={path === key}
             onClick={() => setPath(key)}
             className={[
-              "py-3.5 text-sm font-sans font-semibold transition-colors cursor-pointer",
-              path === key
-                ? "bg-cta text-white"
-                : "bg-surface-warm text-ink-muted hover:text-ink",
+              "relative z-10 bg-transparent py-3.5 text-sm font-sans font-semibold transition-colors duration-200 cursor-pointer",
+              path === key ? "text-white" : "text-ink-muted hover:text-ink",
             ].join(" ")}
           >
             {key === "selling" ? "I’m selling" : "I’m buying"}
@@ -74,21 +78,34 @@ export function GuidePathCard() {
       </div>
 
       {/* Cover band */}
-      <div className="relative bg-surface-inverse px-7 pt-8 pb-7">
+      <div className="group relative bg-surface-inverse px-7 pt-8 pb-7">
         <div className="absolute top-6 right-6">
           <span className="inline-flex items-center rounded-full bg-cta text-white text-[10px] font-sans font-semibold uppercase tracking-wider px-3 py-1">
             Free PDF
           </span>
         </div>
         <div className="flex items-end gap-5">
-          <Image
-            src={p.cover}
-            alt={p.coverAlt}
-            width={150}
-            height={212}
-            className="w-[124px] sm:w-[150px] h-auto rounded-md shadow-[0_18px_40px_rgba(0,0,0,0.5)] -rotate-1"
-            priority
-          />
+          {/* Both covers stay mounted (stacked in one grid cell) so the first
+              toggle crossfades instead of popping while the second image loads.
+              Hover transform lives on the wrapper so it can't collide with the
+              opacity transition on the images. */}
+          <div className="grid shrink-0 transition-transform duration-[400ms] group-hover:-rotate-1 group-hover:-translate-y-1">
+            {(["selling", "buying"] as const).map((key) => (
+              <Image
+                key={key}
+                src={PATHS[key].cover}
+                alt={PATHS[key].coverAlt}
+                aria-hidden={path !== key}
+                width={150}
+                height={212}
+                className={[
+                  "col-start-1 row-start-1 w-[124px] sm:w-[150px] h-auto rounded-md shadow-[0_18px_40px_rgba(0,0,0,0.5)] -rotate-1 transition-opacity duration-300",
+                  path === key ? "" : "opacity-0 pointer-events-none",
+                ].join(" ")}
+                priority
+              />
+            ))}
+          </div>
           <div className="pb-1">
             <p className="text-[10px] uppercase tracking-[0.26em] text-white/70 font-sans font-medium mb-2">
               2026 edition
@@ -103,10 +120,15 @@ export function GuidePathCard() {
         </div>
       </div>
 
-      <div className="px-7 py-6">
+      {/* Re-keyed on toggle so the bullets and CTA step in for each path */}
+      <div key={path} className="px-7 py-6 step-in">
         <ul className="space-y-2 mb-5">
-          {p.bullets.map((line) => (
-            <li key={line} className="flex items-start gap-2.5 font-sans text-sm text-ink leading-snug">
+          {p.bullets.map((line, i) => (
+            <li
+              key={line}
+              className="step-in flex items-start gap-2.5 font-sans text-sm text-ink leading-snug"
+              style={{ animationDelay: `${i * 50}ms` }}
+            >
               <span className="text-cta leading-5 shrink-0" aria-hidden="true">✓</span>
               {line}
             </li>
@@ -115,10 +137,10 @@ export function GuidePathCard() {
 
         <Link
           href={p.href}
-          className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3.5 text-sm transition-colors"
+          className="group press w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3.5 text-sm transition-colors"
         >
           Get the free guide
-          <ArrowRight className="w-4 h-4" aria-hidden="true" />
+          <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
         </Link>
         <p className="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-ink-subtle">
           <BookOpen className="w-3.5 h-3.5" aria-hidden="true" />

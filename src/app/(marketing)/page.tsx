@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
+import { StatNumber } from "@/components/motion/StatNumber";
 
 import { LatestGuides } from "@/components/home/LatestGuides";
 import { CapitalCityOutlook } from "@/components/home/CapitalCityOutlook";
@@ -57,7 +60,7 @@ export default function HomePage() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-bottom opacity-95"
+            className="hero-settle object-cover object-bottom opacity-95"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-34% via-surface-inverse/90 via-62% to-surface-inverse/10" />
         </div>
@@ -72,7 +75,7 @@ export default function HomePage() {
               No. 01
             </span>
             <span className="w-12 h-px bg-white/25" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-white/75 font-sans font-medium">
+            <span className="text-[11px] uppercase tracking-[0.32em] text-white/70 font-sans font-medium">
               Australian property, in plain English
             </span>
           </div>
@@ -118,7 +121,7 @@ export default function HomePage() {
               {/* Sub names the scope (60+ guides, every calculator)
                   and the positioning (written for buyers and sellers,
                   not portals). Education-first, not data-first. */}
-              <p className="rise rise-d2 font-display text-xl sm:text-2xl text-white/92 leading-[1.3] mb-8 font-light">
+              <p className="rise rise-d2 font-display text-xl sm:text-2xl text-white/90 leading-[1.3] mb-8 font-light">
                 Sixty plain-English guides. Every property calculator.
                 Written for buyers and sellers, not portals. Free, no
                 sign-up.
@@ -131,7 +134,7 @@ export default function HomePage() {
                   Know the suburb
                 </p>
                 <HomeSuburbSearch />
-                <p className="mt-3 text-sm text-white/72">
+                <p className="mt-3 text-sm text-white/90">
                   Try{" "}
                   <Link href="/suburbs/bondi-nsw-2026" className="text-white/90 underline decoration-white/30 underline-offset-2 hover:decoration-cta hover:text-accent-lighter transition-colors">
                     Bondi
@@ -165,7 +168,7 @@ export default function HomePage() {
                     <Link
                       key={c.href}
                       href={c.href}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/5 px-4 py-2 text-sm font-medium text-white hover:border-cta hover:text-accent-lighter hover:bg-white/10 transition-colors"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/5 px-4 py-2 text-sm font-medium text-white hover:border-cta hover:text-accent-lighter hover:bg-white/10 motion-safe:hover:-translate-y-0.5 active:translate-y-0 transition-[color,background-color,border-color,transform] duration-200"
                     >
                       {c.label}
                     </Link>
@@ -176,7 +179,7 @@ export default function HomePage() {
               {/* Trust strip — four micro-proof points in editorial
                   caps. Leads with guide count to reinforce the
                   education positioning. */}
-              <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.18em] text-white/72 font-sans font-medium">
+              <p className="rise rise-d4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.18em] text-white/70 font-sans font-medium">
                 <span className="inline-flex items-center gap-1.5">
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
                   60+ guides
@@ -203,7 +206,7 @@ export default function HomePage() {
               positioning) instead of suburbs. Calculators second,
               suburbs third, free fourth. The order signals what the
               site IS to anyone who only reads the stats. */}
-          <div className="border-y border-white/15 grid grid-cols-2 sm:grid-cols-4 bg-surface-inverse/55 backdrop-blur-[3px] rounded-sm">
+          <div className="rise rise-d5 border-y border-white/15 grid grid-cols-2 sm:grid-cols-4 bg-surface-inverse/55 backdrop-blur-[3px] rounded-xl">
             {[
               { value: "60+",    label: "Plain-English guides" },
               { value: "30+",    label: "Calculators and tools" },
@@ -214,14 +217,14 @@ export default function HomePage() {
                 key={s.label}
                 className={[
                   "py-6 sm:py-7 px-4 sm:px-6",
-                  i === 0 ? "pl-0" : "",
                   i === 1 || i === 3 ? "border-l border-white/15" : "",
                   i === 2 ? "sm:border-l sm:border-white/15" : "",
                   i >= 2 ? "border-t sm:border-t-0 border-white/15" : "",
                 ].filter(Boolean).join(" ")}
               >
                 <p className="font-display text-4xl sm:text-5xl text-white leading-none mb-2.5 tracking-tight">
-                  {s.value}
+                  {/* "$0" stays static; a count-up from $0 to $0 reads as a glitch */}
+                  {s.value === "$0" ? s.value : <StatNumber value={s.value} />}
                 </p>
                 <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-white/70 font-sans font-medium">
                   {s.label}
@@ -240,17 +243,17 @@ export default function HomePage() {
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-20 pb-14 sm:pt-24 sm:pb-16">
           {/* Compressed masthead. Eyebrow + single-row H2 + brief sub on
               one line at lg+. No more 2-col display layout. */}
-          <div className="flex items-center gap-4 mb-6">
+          <div data-reveal className="flex items-center gap-4 mb-6">
             <span className="font-display italic text-primary text-base sm:text-lg leading-none">
               No. 02
             </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="rule-draw w-12 h-px bg-line-strong" aria-hidden="true" />
             <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
               Where are you up to?
             </span>
           </div>
 
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 lg:gap-8 mb-8 sm:mb-10">
+          <div data-reveal className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 lg:gap-8 mb-8 sm:mb-10">
             <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium">
               Pick your{" "}
               <span className="italic font-light text-primary whitespace-nowrap">starting point</span>.
@@ -277,17 +280,17 @@ export default function HomePage() {
             invitation to deepen the research one notch. */}
       <section className="bg-surface-raised border-b border-line">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-20 pb-14 sm:pt-24 sm:pb-16">
-          <div className="flex items-center gap-4 mb-6">
+          <div data-reveal className="flex items-center gap-4 mb-6">
             <span className="font-display italic text-primary text-base sm:text-lg leading-none">
               No. 04
             </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+            <span className="rule-draw w-12 h-px bg-line-strong" aria-hidden="true" />
             <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
               Go a level deeper
             </span>
           </div>
 
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 lg:gap-8 mb-8 sm:mb-10">
+          <div data-reveal className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 lg:gap-8 mb-8 sm:mb-10">
             <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium">
               Build your{" "}
               <span className="italic font-light text-primary whitespace-nowrap">short list</span>.
@@ -298,10 +301,10 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div data-reveal-group className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <Link
               href="/find-your-suburb"
-              className="card-lift group flex flex-col rounded-2xl border-2 border-primary/20 bg-surface-warm p-7 hover:border-primary/50"
+              className="card-lift group flex flex-col rounded-2xl border border-line-warm shadow-card bg-surface-warm p-7 hover:border-primary/40"
             >
               <p className="text-xs font-sans uppercase tracking-[0.25em] text-cta mb-3">Quiz · 2 minutes</p>
               <h3 className="font-display text-2xl sm:text-3xl text-ink group-hover:text-primary transition-colors leading-tight mb-3 tracking-tight">
@@ -311,14 +314,15 @@ export default function HomePage() {
                 Tell us what matters and what you can spend. We score six
                 Australian suburbs against your priorities.
               </p>
-              <span className="font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
-                Find my suburb (2 min) →
+              <span className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
+                Find my suburb (2 min)
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
               </span>
             </Link>
 
             <Link
               href="/compare"
-              className="card-lift group relative overflow-hidden flex flex-col rounded-2xl border-2 border-primary/20 bg-surface-warm p-7 hover:border-primary/50"
+              className="card-lift group relative overflow-hidden flex flex-col rounded-2xl border border-line-warm shadow-card bg-surface-warm p-7 hover:border-primary/40"
             >
               {/* Aerial cadastral artwork: comparing suburbs is comparing
                   territory. Faded right edge, content stays legible. */}
@@ -328,7 +332,7 @@ export default function HomePage() {
                   alt=""
                   fill
                   sizes="(min-width: 640px) 30vw, 60vw"
-                  className="object-cover object-center opacity-60"
+                  className="object-cover object-center opacity-60 transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-surface-warm via-surface-warm/70 to-surface-warm/20" />
               </div>
@@ -340,8 +344,9 @@ export default function HomePage() {
                 Pick any two Australian suburbs and line them up: median,
                 growth, schools, walkability, climate, crime.
               </p>
-              <span className="relative font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
-                Pick two suburbs →
+              <span className="relative inline-flex items-center gap-1.5 font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
+                Pick two suburbs
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
               </span>
             </Link>
           </div>

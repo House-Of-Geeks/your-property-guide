@@ -82,33 +82,42 @@ export function GuideBandSwitcher() {
           ))}
         </div>
 
-        <h2 className="font-display text-white leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">
-          {c.headlineLead}{" "}
-          <span className="italic font-light text-cta">{c.headlineAccent}</span>{" "}
-          {c.headlineTail}
-        </h2>
-        <p className="font-display font-light text-xl sm:text-2xl text-white/88 leading-snug max-w-md mb-12">
-          {c.pitch}
-        </p>
-        <div className="grid grid-cols-2 gap-x-6 gap-y-6 max-w-md">
-          {c.steps.map(([n, t]) => (
-            <div key={n} className="border-t border-white/15 pt-4">
-              <p className="font-display italic text-cta text-base mb-1.5 tabular-nums">{n}</p>
-              <p className="text-sm text-white/92 leading-snug">{t}</p>
-            </div>
-          ))}
+        {/* Re-keyed on toggle so the pitch steps in for each path */}
+        <div key={path} className="step-in">
+          <h2 className="font-display text-white leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">
+            {c.headlineLead}{" "}
+            <span className="italic font-light text-cta">{c.headlineAccent}</span>{" "}
+            {c.headlineTail}
+          </h2>
+          <p className="font-display font-light text-xl sm:text-2xl text-white/88 leading-snug max-w-md mb-12">
+            {c.pitch}
+          </p>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-6 max-w-md">
+            {c.steps.map(([n, t], i) => (
+              <div
+                key={n}
+                className="step-in border-t border-white/15 pt-4"
+                style={{ animationDelay: `${i * 70}ms` }}
+              >
+                <p className="font-display italic text-cta text-base mb-1.5 tabular-nums">{n}</p>
+                <p className="text-sm text-white/92 leading-snug">{t}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Right, the matching funnel */}
       <div className="lg:col-span-7 lg:col-start-6">
-        <Suspense fallback={null}>
-          {path === "selling" ? (
-            <SellingGuideFunnel source="homepage-guide" />
-          ) : (
-            <BuyingGuideFunnel source="homepage-guide" />
-          )}
-        </Suspense>
+        <div key={path} className="step-in">
+          <Suspense fallback={null}>
+            {path === "selling" ? (
+              <SellingGuideFunnel source="homepage-guide" />
+            ) : (
+              <BuyingGuideFunnel source="homepage-guide" />
+            )}
+          </Suspense>
+        </div>
       </div>
     </div>
   );

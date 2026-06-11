@@ -72,6 +72,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
+      suppressHydrationWarning
       lang="en"
       className={`${fraunces.variable} ${manrope.variable} h-full antialiased`}
     >
@@ -99,6 +100,15 @@ export default function RootLayout({
         <meta name="theme-color" content="#f9f6f1" />
       </head>
       <body className="min-h-full flex flex-col">
+        {/* Pre-paint motion gate: reveal styles only apply under
+            html[data-motion], so no-JS, bots and reduced-motion users
+            always see a fully visible page. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.setAttribute('data-motion','')}catch(e){}",
+          }}
+        />
         <Providers>{children}</Providers>
       </body>
       <Script

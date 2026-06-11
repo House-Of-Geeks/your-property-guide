@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
+import { Suspense, type CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BookOpen, CheckCircle2, Clock, ShieldCheck } from "lucide-react";
 
+import { FaqAccordion } from "@/components/guide";
 import { SellingGuideFunnel } from "@/components/journey";
+import { StatNumber } from "@/components/motion/StatNumber";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
@@ -142,7 +144,25 @@ export default function SellingGuidePage() {
 
               <h1 className="rise rise-d1 font-display text-ink tracking-tight mb-6 text-4xl sm:text-5xl lg:text-6xl leading-[1.02] font-medium">
                 The agent you pick is a{" "}
-                <span className="italic font-light text-primary">$20,000</span>{" "}
+                <span className="u-draw relative inline-block italic font-light text-primary">
+                  $20,000
+                  {/* Hand-drawn underline, draws in after the entrance */}
+                  <svg
+                    className="absolute left-[-2%] right-0 bottom-[-0.12em] w-[104%] h-[0.22em]"
+                    viewBox="0 0 120 12"
+                    fill="none"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M3 8.5C24 4.5 50 3.5 73 5c18 1.2 32 3 44 4.5"
+                      stroke="var(--cta)"
+                      strokeWidth="3.2"
+                      strokeLinecap="round"
+                      pathLength="1"
+                    />
+                  </svg>
+                </span>{" "}
                 decision.
               </h1>
 
@@ -154,23 +174,34 @@ export default function SellingGuidePage() {
                 suburb, in your inbox in 60 seconds.
               </p>
 
-              <div className="rise rise-d3 flex items-start gap-6 mb-8">
-                <Image
-                  src="/images/guide/selling-guide-cover.png"
-                  alt="The Complete Guide to Selling Your Property in Australia, 2026 edition"
-                  width={168}
-                  height={238}
-                  priority
-                  className="hidden sm:block w-[150px] lg:w-[168px] h-auto rounded-md shadow-[0_24px_48px_rgba(23,16,11,0.35)] -rotate-2 shrink-0"
-                />
+              <div className="flex items-start gap-6 mb-8">
+                {/* cover-settle owns the resting -2deg tilt, so no static
+                    rotate here (the two would compound to -4deg). */}
+                <a
+                  href="#get-the-guide"
+                  className="cover-settle shrink-0 transition-transform duration-300 ease-[var(--ease-out-quint)] hover:rotate-0 hover:-translate-y-1"
+                >
+                  <Image
+                    src="/images/guide/selling-guide-cover.png"
+                    alt="The Complete Guide to Selling Your Property in Australia, 2026 edition"
+                    width={168}
+                    height={238}
+                    priority
+                    className="block w-[96px] sm:w-[150px] lg:w-[168px] h-auto rounded-md shadow-[0_24px_48px_rgba(23,16,11,0.35)]"
+                  />
+                </a>
                 <ul className="space-y-3 pt-1">
                   {[
                     "The 10 questions that expose an average agent before you sign",
                     "Fee negotiation that typically saves $1,700 to $3,400",
                     "Presentation moves that return 3 to 10 times their cost",
                     "The 60-day trap that quietly discounts stale listings",
-                  ].map((line) => (
-                    <li key={line} className="flex items-start gap-3">
+                  ].map((line, i) => (
+                    <li
+                      key={line}
+                      className="rise flex items-start gap-3"
+                      style={{ animationDelay: `${280 + i * 70}ms` }}
+                    >
                       <CheckCircle2 className="w-5 h-5 text-cta shrink-0 mt-0.5" aria-hidden="true" />
                       <span className="font-sans text-sm sm:text-base text-ink leading-relaxed">{line}</span>
                     </li>
@@ -209,8 +240,12 @@ export default function SellingGuidePage() {
                     ["01", "Answer seven quick questions, about 60 seconds"],
                     ["02", "Download instantly, plus a copy lands in your inbox"],
                     ["03", "Selling soon? A free local appraisal, only if you want one"],
-                  ].map(([n, t]) => (
-                    <li key={n} className="flex items-baseline gap-3">
+                  ].map(([n, t], i) => (
+                    <li
+                      key={n}
+                      className="rise flex items-baseline gap-3"
+                      style={{ animationDelay: `${280 + i * 70}ms` }}
+                    >
                       <span className="font-display italic text-cta text-base tabular-nums shrink-0">{n}</span>
                       <span className="font-sans text-sm text-ink-muted leading-snug">{t}</span>
                     </li>
@@ -230,14 +265,17 @@ export default function SellingGuidePage() {
           <p className="text-[11px] uppercase tracking-[0.32em] text-primary-dark font-sans font-semibold mb-10 text-center">
             What the right moves are worth
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
+          <div data-reveal-group className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
             {[
               ["$20,000+", "the typical gap between a strong agent and an average one on a mid-market sale"],
               ["3 to 10x", "what smart, cheap presentation returns at sale time, while big renovations rarely break even"],
               ["$1,700 to $3,400", "what negotiating 0.2 to 0.4 percent off commission saves on a typical sale"],
             ].map(([n, label]) => (
               <div key={n} className="text-center sm:text-left">
-                <p className="font-display italic text-primary-dark text-4xl sm:text-5xl leading-none mb-3 tracking-tight">{n}</p>
+                <span className="block h-px w-10 bg-primary-dark/40 rule-draw mb-4 mx-auto sm:mx-0" aria-hidden="true" />
+                <p className="font-display italic text-primary-dark text-4xl sm:text-5xl leading-none mb-3 tracking-tight">
+                  {n === "$20,000+" ? <StatNumber value={n} /> : n}
+                </p>
                 <p className="font-sans text-sm text-ink-muted leading-relaxed">{label}</p>
               </div>
             ))}
@@ -263,16 +301,17 @@ export default function SellingGuidePage() {
             </span>
           </div>
 
-          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl font-medium mb-10">
+          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium mb-10">
             Ten chapters, no filler.
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-0">
+          {/* CSS columns so chapters 01-05 read down the left column. */}
+          <div data-reveal-group className="sm:columns-2 sm:gap-x-10">
             {CHAPTERS.map((c) => (
-              <div key={c.n} className="flex items-start gap-4 border-t border-line py-4">
-                <span className="font-display italic text-primary text-base tabular-nums leading-6">{c.n}</span>
+              <div key={c.n} className="group flex items-start gap-4 border-t border-line py-4 break-inside-avoid transition-colors duration-200">
+                <span className="font-display italic text-primary text-base tabular-nums leading-6 transition-all duration-200 group-hover:translate-x-[3px] group-hover:text-primary-dark">{c.n}</span>
                 <div>
-                  <p className="font-sans text-sm font-semibold text-ink leading-6">{c.title}</p>
+                  <p className="font-sans text-sm font-semibold text-ink leading-6 transition-colors group-hover:text-primary">{c.title}</p>
                   <p className="font-sans text-xs text-ink-subtle leading-relaxed">{c.sub}</p>
                 </div>
               </div>
@@ -294,7 +333,7 @@ export default function SellingGuidePage() {
           leaves open. */}
       <section className="bg-surface-sunken border-b border-line">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
-          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl font-medium mb-6 max-w-2xl">
+          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium mb-6 max-w-2xl">
             Why it&rsquo;s free, in plain English.
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl">
@@ -316,22 +355,15 @@ export default function SellingGuidePage() {
       {/* FAQ. Mirrors the FAQPageJsonLd above. */}
       <section className="bg-surface-raised">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
-          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl font-medium mb-10">
+          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium mb-10">
             Questions sellers ask us.
           </h2>
-          <div className="space-y-8">
-            {FAQS.map((f) => (
-              <div key={f.question} className="border-t border-line pt-5">
-                <h3 className="font-sans text-base font-semibold text-ink mb-2">{f.question}</h3>
-                <p className="font-sans text-sm text-ink-muted leading-relaxed">{f.answer}</p>
-              </div>
-            ))}
-          </div>
+          <FaqAccordion items={FAQS} />
 
           {/* Page closer: the night suburb, lights on, one last door back
               into the funnel. Ends the page on the brand's strongest
               visual note instead of a beige box. */}
-          <div className="mt-12 relative rounded-2xl overflow-hidden bg-surface-inverse text-center shadow-2xl">
+          <div className="band-glow mt-12 relative rounded-2xl overflow-hidden bg-surface-inverse text-center shadow-2xl">
             <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
               <Image
                 src="/images/hero/suburb-night-v2.jpg"
@@ -343,18 +375,26 @@ export default function SellingGuidePage() {
               <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-20% via-surface-inverse/70 via-50% to-surface-inverse/10" />
             </div>
             <div className="relative px-6 sm:px-10 pt-10 pb-24 sm:pb-28">
-              <p className="font-display text-2xl sm:text-3xl text-white mb-2 tracking-tight">
+              <p data-reveal className="font-display text-2xl sm:text-3xl text-white mb-2 tracking-tight">
                 Ready when you are.
               </p>
-              <p className="mb-6 text-sm text-white/78">
+              <p
+                data-reveal
+                style={{ "--reveal-delay": "90ms" } as CSSProperties}
+                className="mb-6 text-sm text-white/78"
+              >
                 60 seconds, personalised to your suburb, free.
               </p>
-              <a
-                href="#get-the-guide"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-semibold px-8 py-3.5 text-sm transition-colors shadow-lg"
-              >
-                Get the free guide
-              </a>
+              {/* data-reveal lives on the wrapper so the CTA's own hover
+                  transition isn't overridden by the reveal transition. */}
+              <div data-reveal style={{ "--reveal-delay": "180ms" } as CSSProperties}>
+                <a
+                  href="#get-the-guide"
+                  className="press inline-flex items-center justify-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-semibold px-8 py-3.5 text-sm transition-[transform,translate,background-color,box-shadow] duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+                >
+                  Get the free guide
+                </a>
+              </div>
               <p className="mt-5 text-xs text-white/72">
                 Buying, not selling?{" "}
                 <Link href="/buying-guide" className="text-white/92 hover:text-white underline underline-offset-4 transition-colors">

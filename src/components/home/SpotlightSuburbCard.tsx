@@ -35,7 +35,7 @@ export async function SpotlightSuburbCard() {
     <Link
       href={profileHref}
       aria-label={`Today's spotlight: ${suburb.name}, ${suburb.state} ${suburb.postcode}. Open full suburb profile.`}
-      className="group block rounded-2xl border border-line bg-surface-raised shadow-card overflow-hidden hover:shadow-card-hover hover:border-line-strong transition-all"
+      className="group card-lift block rounded-2xl border border-line bg-surface-raised shadow-card overflow-hidden hover:border-line-strong"
     >
       {/* Editorial decorative band. Subtle contour SVG instead of a
           hero image so the card works for any suburb in the rotation
@@ -82,7 +82,7 @@ export async function SpotlightSuburbCard() {
           {suburb.region ? `${suburb.region}, ${suburb.state}` : suburb.state}
         </p>
 
-        <dl className="border-t border-line">
+        <dl data-reveal-group className="border-t border-line">
           {showPrice && s.medianHousePrice > 0 && (
             <div className="flex items-baseline justify-between py-3 border-b border-line">
               <dt className="text-[11px] uppercase tracking-[0.2em] text-ink-subtle font-sans font-medium">

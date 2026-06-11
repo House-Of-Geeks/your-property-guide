@@ -89,16 +89,31 @@ export function StickyMatchCTA({
   return (
     <div
       aria-hidden={!visible}
-      className={`fixed z-30 inset-x-0 bottom-16 sm:bottom-6 sm:inset-x-auto sm:right-6 px-4 sm:px-0 pointer-events-none transition-all duration-300 ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      // pill-in only while visible so the overshoot entrance replays on
+      // each appearance; hiding falls back to the plain opacity transition.
+      className={`fixed z-30 inset-x-0 bottom-16 sm:bottom-6 sm:inset-x-auto sm:right-6 px-4 sm:px-0 pointer-events-none transition-[opacity,transform,visibility] duration-300 ${
+        visible ? "visible opacity-100 translate-y-0 pill-in" : "invisible opacity-0 translate-y-4"
       }`}
     >
-      <div className="pointer-events-auto inline-flex items-stretch gap-0 mx-auto sm:mx-0 rounded-full bg-ink text-white shadow-2xl border border-white/10 overflow-hidden max-w-full">
+      {/* pointer-events follow visibility: a hidden aria-hidden pill must
+          not intercept taps or take focus. */}
+      <div
+        className={`inline-flex items-stretch gap-0 mx-auto sm:mx-0 rounded-full bg-ink text-white shadow-2xl border border-white/10 overflow-hidden max-w-full hover:-translate-y-0.5 transition-transform duration-200 ${
+          visible ? "pointer-events-auto" : "pointer-events-none"
+        }`}
+      >
         <Link
           href={href}
           className="inline-flex items-center gap-2 pl-5 pr-4 py-3 text-sm font-medium hover:bg-primary-darker transition-colors min-w-0"
         >
-          <span className="inline-flex items-center justify-center w-1.5 h-1.5 rounded-full bg-cta shrink-0" aria-hidden="true" />
+          <span className="relative inline-flex w-1.5 h-1.5 shrink-0" aria-hidden="true">
+            <span
+              className="absolute inline-flex h-full w-full rounded-full bg-cta opacity-75 animate-ping"
+              style={{ animationIterationCount: 2 }}
+              aria-hidden="true"
+            />
+            <span className="inline-flex items-center justify-center w-1.5 h-1.5 rounded-full bg-cta shrink-0" aria-hidden="true" />
+          </span>
           <span className="truncate">{display}</span>
           <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
         </Link>

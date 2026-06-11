@@ -25,7 +25,7 @@ export async function SpotlightGuideCard() {
     <Link
       href={href}
       aria-label={`Today's read: ${post.title}. Open the guide.`}
-      className="group block rounded-2xl border border-line bg-surface-raised shadow-card overflow-hidden hover:shadow-card-hover hover:border-line-strong transition-all"
+      className="group card-lift block rounded-2xl border border-line bg-surface-raised shadow-card overflow-hidden hover:border-line-strong"
     >
       {/* Editorial dark band, same visual language as the suburb
           spotlight we replaced. Decorative contour + grid SVGs only,

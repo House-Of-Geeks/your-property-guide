@@ -147,7 +147,7 @@ export function Header() {
                     onClick={() => toggle(link.label)}
                     aria-expanded={openMenu === link.label}
                     aria-haspopup="menu"
-                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-ink-muted hover:text-ink rounded-lg hover:bg-surface-warm transition-colors cursor-pointer"
+                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium whitespace-nowrap text-ink-muted hover:text-ink rounded-lg hover:bg-surface-warm transition-colors cursor-pointer"
                   >
                     {link.label}
                     <ChevronDown className={`w-4 h-4 transition-transform ${openMenu === link.label ? "rotate-180" : ""}`} />
@@ -167,7 +167,7 @@ export function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="px-3 py-2 text-sm font-medium text-ink-muted hover:text-ink rounded-lg hover:bg-surface-warm transition-colors"
+                  className="px-3 py-2 text-sm font-medium whitespace-nowrap text-ink-muted hover:text-ink rounded-lg hover:bg-surface-warm transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -187,9 +187,9 @@ export function Header() {
             </Link>
             <Link
               href="/dashboard/login"
-              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-ink-muted border border-line rounded-full hover:border-ink hover:text-ink transition-colors"
+              className="hidden md:flex items-center gap-1.5 text-xs font-medium whitespace-nowrap text-ink-subtle hover:text-ink transition-colors"
             >
-              <UserCircle className="w-3.5 h-3.5" />
+              <UserCircle className="w-4 h-4" />
               Agent login
             </Link>
             {/* Phone CTA, fastest "I want to talk now" path for visitors
@@ -197,7 +197,7 @@ export function Header() {
                 mobile the click-to-call lives in the mobile menu. */}
             <a
               href={`tel:${CONTACT_PHONE_E164}`}
-              className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-ink hover:text-primary transition-colors"
+              className="hidden xl:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-ink hover:text-primary transition-colors"
               aria-label={`Call ${CONTACT_PHONE_DISPLAY}`}
             >
               <Phone className="w-3.5 h-3.5" />
@@ -205,7 +205,7 @@ export function Header() {
             </a>
             <Link
               href={guideHref}
-              className="hidden md:inline-flex items-center gap-1.5 rounded-full bg-cta hover:bg-cta-hover text-white px-4 py-2 text-xs font-semibold transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 rounded-full bg-cta hover:bg-cta-hover text-white px-4 py-2 text-sm font-semibold whitespace-nowrap transition-colors"
             >
               {guideLabel}
             </Link>

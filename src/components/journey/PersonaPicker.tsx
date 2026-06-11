@@ -31,7 +31,7 @@ export function PersonaPicker({ className, highlightActive = true, variant = "gr
   if (variant === "rail") {
     return (
       <div className={className}>
-        <ul className="border-t border-line">
+        <ul data-reveal-group className="border-t border-line">
           {PERSONAS.map((p, i) => {
             const isActive = highlightActive && isHydrated && currentPersona === p.id;
             return (

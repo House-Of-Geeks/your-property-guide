@@ -1,4 +1,5 @@
 import { Header } from "@/components/layout/Header";
+import { MotionObserver } from "@/components/motion/MotionObserver";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 
@@ -9,6 +10,7 @@ export default function MarketingLayout({
 }) {
   return (
     <>
+      <MotionObserver />
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />

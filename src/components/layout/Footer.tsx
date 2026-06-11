@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { UserCircle, Key } from "lucide-react";
+import { Key } from "lucide-react";
 import { NewsletterForm as NewsletterFormFooter } from "@/components/newsletter/NewsletterForm";
 
 type SvgProps = { className?: string };
@@ -126,20 +126,49 @@ const FOOTER_COLUMNS = [
       { label: "Privacy policy",           href: "/privacy" },
     ],
   },
-  {
-    heading: "Our Network",
-    links: [
-      { label: "Your Caravan Guide",       href: "https://www.yourcaravanguide.com.au" },
-      { label: "Your Crypto Guide",        href: "https://www.yourcryptoguide.com.au" },
-      { label: "Your Finance Guide",       href: "https://www.yourfinanceguide.com.au" },
-      { label: "Your Lifestyle Guide",     href: "https://www.yourlifestyleguide.com.au" },
-      { label: "Your Motorbike Guide",     href: "https://www.yourmotorbikeguide.com.au" },
-      { label: "Need a Tradie",            href: "https://www.needatradie.com" },
-      { label: "Better Rate Mate",         href: "https://www.betterratemate.com" },
-      { label: "Why Solar",                href: "https://www.whysolar.com.au" },
-    ],
-  },
 ];
+
+// Cross-promo network links. Rendered as a single inline row rather than a
+// full column so the link grid stays focused on this site's own content.
+const NETWORK_LINKS = [
+  { label: "Your Caravan Guide",   href: "https://www.yourcaravanguide.com.au" },
+  { label: "Your Crypto Guide",    href: "https://www.yourcryptoguide.com.au" },
+  { label: "Your Finance Guide",   href: "https://www.yourfinanceguide.com.au" },
+  { label: "Your Lifestyle Guide", href: "https://www.yourlifestyleguide.com.au" },
+  { label: "Your Motorbike Guide", href: "https://www.yourmotorbikeguide.com.au" },
+  { label: "Need a Tradie",        href: "https://www.needatradie.com" },
+  { label: "Better Rate Mate",     href: "https://www.betterratemate.com" },
+  { label: "Why Solar",            href: "https://www.whysolar.com.au" },
+];
+
+function NetworkRow() {
+  return (
+    <div className="mt-10">
+      <p className="text-[11px] font-semibold text-white/60 uppercase tracking-wider mb-2">
+        More from Profit Geeks
+      </p>
+      <p className="text-xs leading-relaxed">
+        {NETWORK_LINKS.map((l, i) => (
+          <span key={l.href}>
+            {i > 0 && (
+              <span className="mx-2 text-white/55" aria-hidden="true">
+                &middot;
+              </span>
+            )}
+            <a
+              href={l.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/55 hover:text-white/80 transition-colors whitespace-nowrap"
+            >
+              {l.label}
+            </a>
+          </span>
+        ))}
+      </p>
+    </div>
+  );
+}
 
 function nearbyName(slug: string): string {
   return slug
@@ -147,22 +176,6 @@ function nearbyName(slug: string): string {
     .split("-")
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");
-}
-
-function AgentLoginPill() {
-  return (
-    <div className="border-b border-white/10 bg-white/5">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex justify-end">
-        <Link
-          href="/dashboard/login"
-          className="flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-white/70 border border-white/20 rounded-full hover:border-white hover:text-white transition-colors"
-        >
-          <UserCircle className="w-3.5 h-3.5" />
-          Agent Login
-        </Link>
-      </div>
-    </div>
-  );
 }
 
 function FooterBottom() {
@@ -192,20 +205,21 @@ function FooterBottom() {
                 key={label}
                 href={href}
                 aria-label={label}
-                className="text-white/40 hover:text-white transition-colors"
+                className="text-white/55 hover:text-white transition-colors"
               >
                 <Icon className="w-5 h-5" />
               </Link>
             ))}
           </div>
-          <p className="text-sm text-white/30">
+          <p className="text-sm text-white/50">
             &copy; {new Date().getFullYear()} Your Property Guide. All rights reserved.
           </p>
         </div>
         <div className="flex gap-6">
-          <Link href="/privacy" className="text-sm text-white/40 hover:text-white transition-colors">Privacy</Link>
-          <Link href="/contact" className="text-sm text-white/40 hover:text-white transition-colors">Contact</Link>
-          <Link href="/sitemap.xml" className="text-sm text-white/40 hover:text-white transition-colors">Sitemap</Link>
+          <Link href="/privacy" className="text-sm text-white/55 hover:text-white transition-colors">Privacy</Link>
+          <Link href="/contact" className="text-sm text-white/55 hover:text-white transition-colors">Contact</Link>
+          <Link href="/sitemap.xml" className="text-sm text-white/55 hover:text-white transition-colors">Sitemap</Link>
+          <Link href="/dashboard/login" className="text-sm text-white/55 hover:text-white transition-colors">Agent login</Link>
         </div>
       </div>
     </div>
@@ -215,7 +229,7 @@ function FooterBottom() {
 function LinkCol({ heading, links }: { heading: string; links: { label: string; href: string }[] }) {
   return (
     <div>
-      <h3 className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-3">{heading}</h3>
+      <h3 className="text-xs font-semibold text-white/60 uppercase tracking-wider mb-3">{heading}</h3>
       <ul className="space-y-2">
         {links.map((l) => (
           <li key={l.href}>
@@ -261,7 +275,6 @@ function SuburbFooter({ name, slug, nearbySuburbs }: { name: string; slug: strin
 
   return (
     <footer className="band-glow bg-surface-inverse text-white border-t-4 border-t-white">
-      <AgentLoginPill />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
           <LinkCol heading="For Sale"           links={forSale} />
@@ -299,14 +312,14 @@ function SuburbFooter({ name, slug, nearbySuburbs }: { name: string; slug: strin
 export function Footer() {
   return (
     <footer className="band-glow bg-surface-inverse text-white border-t border-white/10">
-      <AgentLoginPill />
       <NewsletterBand />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
           {FOOTER_COLUMNS.map((col) => (
             <LinkCol key={col.heading} heading={col.heading} links={col.links} />
           ))}
         </div>
+        <NetworkRow />
         <FooterBottom />
       </div>
     </footer>
