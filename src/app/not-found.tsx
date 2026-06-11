@@ -1,10 +1,23 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <div className="bg-surface-warm min-h-[80vh] flex items-center">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 w-full">
+    <div className="relative bg-surface-warm min-h-[80vh] flex items-center overflow-hidden">
+      {/* Wrong street, right neighbourhood. */}
+      <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+        <Image
+          src="/images/art/queenslander.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover object-right-bottom opacity-[0.4]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-surface-warm from-35% via-surface-warm/85 via-65% to-surface-warm/25" />
+        <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-15% via-surface-warm/60 to-surface-warm/15" />
+      </div>
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 w-full">
         <div className="flex items-center gap-4 mb-10">
           <span className="font-display italic text-primary text-base sm:text-lg leading-none">
             404
@@ -32,12 +45,12 @@ export default function NotFound() {
             { label: "Look up a suburb",        href: "/suburbs",     blurb: "Median, schools, walk score, crime. Every Australian suburb." },
             { label: "Tools and calculators",   href: "/tools",       blurb: "Mortgage, stamp duty, borrowing power, yield, CGT." },
             { label: "First home buyers",       href: "/first-home-buyers", blurb: "Schemes by state, deposit basics, the questions to ask." },
-            { label: "Talk to a specialist",    href: "/#match",      blurb: "Three quick questions, we find the right person." },
+            { label: "Free selling guide",      href: "/selling-guide", blurb: "Ten chapters that routinely save sellers thousands. Free PDF." },
           ].map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className="group flex flex-col rounded-2xl border border-line bg-surface-raised hover:border-ink hover:shadow-card transition-all p-5"
+              className="card-lift group flex flex-col rounded-2xl border border-line bg-surface-raised/90 backdrop-blur-[2px] hover:border-ink p-5"
             >
               <p className="font-display text-lg text-ink leading-tight group-hover:text-primary transition-colors mb-2">
                 {l.label}

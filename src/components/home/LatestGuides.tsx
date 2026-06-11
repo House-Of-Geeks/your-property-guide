@@ -24,7 +24,7 @@ export async function LatestGuides() {
   if (!featured) return null;
 
   return (
-    <section className="py-20 sm:py-24 bg-surface-warm border-y border-line-warm">
+    <section className="pt-20 pb-14 sm:pt-24 sm:pb-16 bg-surface-warm border-y border-line-warm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4 mb-6">
           <span className="font-display italic text-primary text-base sm:text-lg leading-none">

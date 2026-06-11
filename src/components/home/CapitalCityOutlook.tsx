@@ -26,8 +26,8 @@ export async function CapitalCityOutlook() {
   if (found.length === 0) return null;
 
   return (
-    <section className="bg-surface-raised border-y border-line">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+    <section className="bg-surface-warm border-y border-line-warm">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-14 sm:pt-24 sm:pb-16">
         {/* Magazine-style masthead */}
         <div className="flex items-center gap-4 mb-10">
           <span className="font-display italic text-primary text-base sm:text-lg leading-none">

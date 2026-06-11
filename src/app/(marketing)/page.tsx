@@ -238,7 +238,7 @@ export default function HomePage() {
             + arrow per row, hairline-divided. Reads as a contents page, not
             a SaaS feature grid. */}
       <section id="personas" className="bg-surface-raised border-b border-line scroll-mt-16">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-20 pb-14 sm:pt-24 sm:pb-16">
           {/* Compressed masthead. Eyebrow + single-row H2 + brief sub on
               one line at lg+. No more 2-col display layout. */}
           <div className="flex items-center gap-4 mb-6">
@@ -277,7 +277,7 @@ export default function HomePage() {
             slightly negative "Don't know where to start?" into a positive
             invitation to deepen the research one notch. */}
       <section className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-20 pb-14 sm:pt-24 sm:pb-16">
           <div className="flex items-center gap-4 mb-6">
             <span className="font-display italic text-primary text-base sm:text-lg leading-none">
               No. 04
@@ -384,7 +384,7 @@ export default function HomePage() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-surface-sunken from-5% via-surface-sunken/70 via-45% to-surface-sunken/25" />
         </div>
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-20 pb-14 sm:pt-24 sm:pb-16">
           <div className="flex items-center justify-center gap-4 mb-10">
             <span className="font-display italic text-primary text-base sm:text-lg leading-none">
               No. 06

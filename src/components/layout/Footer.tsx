@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { UserCircle, Key } from "lucide-react";
 import { NewsletterForm as NewsletterFormFooter } from "@/components/newsletter/NewsletterForm";
@@ -315,8 +316,20 @@ export function Footer() {
 // Renders above the link grid in the dark footer.
 function NewsletterBand() {
   return (
-    <section className="border-b border-white/10">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+    <section className="relative border-b border-white/10 overflow-hidden">
+      {/* The night suburb closes every page: lamplit rooflines under the
+          newsletter ask, same signature as the hero and the guide band. */}
+      <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+        <Image
+          src="/images/hero/suburb-night.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover object-bottom opacity-45"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-25% via-surface-inverse/80 via-60% to-surface-inverse/25" />
+      </div>
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid lg:grid-cols-12 gap-x-10 gap-y-8 items-end">
           <div className="lg:col-span-7">
             <div className="flex items-center gap-4 mb-6">
