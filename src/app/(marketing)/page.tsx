@@ -6,7 +6,7 @@ import Link from "next/link";
 import { LatestGuides } from "@/components/home/LatestGuides";
 import { CapitalCityOutlook } from "@/components/home/CapitalCityOutlook";
 import { SellingGuideCard } from "@/components/home/SellingGuideCard";
-import { PersonaPicker, SellingGuideFunnel, TrustStrip } from "@/components/journey";
+import { PersonaPicker, SellingGuideFunnel } from "@/components/journey";
 import { BestDealsRail } from "@/components/best-deal";
 import { OrganizationJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
@@ -368,99 +368,11 @@ export default function HomePage() {
         />
       </Suspense>
 
-      {/* 7. Why we're free — trust charter. Moved ABOVE MatchAgent so
-            visitors read the charter (no paywall, no resale, every match
-            disclosed) before being asked to share their situation. */}
-      <section className="relative bg-surface-sunken border-t border-line overflow-hidden">
-        {/* The golden-hour suburb rests faintly along the charter's base:
-            the promise ("you pay nothing") sits over the homes it's about. */}
-        <div className="absolute inset-x-0 bottom-0 h-[55%] pointer-events-none select-none" aria-hidden="true">
-          <Image
-            src="/images/hero/suburb-dusk.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-bottom opacity-[0.3]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-sunken from-5% via-surface-sunken/70 via-45% to-surface-sunken/25" />
-        </div>
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-20 pb-14 sm:pt-24 sm:pb-16">
-          <div className="flex items-center justify-center gap-4 mb-10">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
-              No. 06
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              What it costs you
-            </span>
-          </div>
-
-          <div className="text-center mb-10 sm:mb-12">
-            <h2 className="font-display text-ink leading-[1.0] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-4xl mx-auto font-medium">
-              Buyers and sellers pay nothing.{" "}
-              <span className="italic font-light text-primary">Ever</span>.
-            </h2>
-            <p className="font-display font-light text-lg sm:text-xl text-ink leading-snug max-w-2xl mx-auto">
-              Not the guides. Not the calculators. Not the suburb data. Not
-              the introduction to a specialist. Partner agents and brokers
-              pay us only when matched work goes ahead.
-            </p>
-          </div>
-
-          {/* Value stack. Hormozi-style: name every free thing in one
-              place so the visitor can see the asymmetry between what they
-              get and what they're asked to give up (nothing). */}
-          <div className="mb-12 max-w-3xl mx-auto">
-            <p className="text-center text-[11px] uppercase tracking-[0.25em] text-ink-subtle font-sans font-medium mb-5">
-              What you get, for $0
-            </p>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 font-sans text-sm text-ink">
-              {[
-                "The complete selling guide, a real PDF, suburb-personalised",
-                "9,600+ suburb profiles (median, growth, schools, crime)",
-                "8 property calculators (commission, stamp duty, mortgage)",
-                "60+ plain-English guides for buyers and sellers",
-                "Side-by-side compare for any two Australian suburbs",
-                "4-question suburb-match quiz",
-                "Quarterly market read in your inbox",
-                "Free property appraisal (sellers)",
-              ].map((line) => (
-                <li key={line} className="flex items-start gap-2.5 py-1">
-                  <span className="text-cta leading-6 shrink-0" aria-hidden="true">✓</span>
-                  <span className="leading-6">{line}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <TrustStrip
-            variant="rich"
-            className="mb-10"
-            items={[
-              { lead: "No paywall.",               body: "Every guide, calculator and suburb profile is free, and it stays that way. No login to read." },
-              { lead: "No data resale, ever.",     body: "Your details go only to the specialists you ask us to connect you with, capped at three. Never sold, never blasted to a list." },
-              { lead: "Walk away anytime.",        body: "Every introduction is no-obligation, and unsubscribing takes one click. No nagging calls." },
-              { lead: "Disclosed on every match.", body: "Partner agents pay us when an introduction leads to work. You never pay, and we say so up front, every time." },
-            ]}
-          />
-
-          <div className="text-center">
-            <Link
-              href="/about"
-              className="inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-primary transition-colors border-b border-line-strong hover:border-primary pb-0.5"
-            >
-              Read the full charter
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 8. Guide funnel — the lead-capture surface. Follows the trust
-            charter so the visitor reads "no paywall / no resale" before
-            being asked anything. Embeds the same qualification funnel as
-            /selling-guide so homepage visitors convert without a page
-            hop. The soft newsletter fallback for non-converters lives in
-            the global footer ("The quarterly read"). */}
+      {/* 7. Guide funnel — the lead-capture surface and the page's
+            close. Embeds the same qualification funnel as /selling-guide
+            so homepage visitors convert without a page hop. The soft
+            newsletter fallback for non-converters lives in the global
+            footer ("The quarterly read"). */}
       <section id="guide" className="band-glow bg-surface-inverse text-white scroll-mt-24">
         {/* Night variant of the commissioned suburb artwork: lamplit
             rooflines along the bottom of the band. The art's ink sky is
@@ -481,7 +393,7 @@ export default function HomePage() {
             <div className="lg:col-span-5">
               <div className="flex items-center gap-4 mb-10">
                 <span className="font-display italic text-cta text-base sm:text-lg leading-none">
-                  No. 07
+                  No. 06
                 </span>
                 <span className="w-12 h-px bg-white/20" aria-hidden="true" />
                 <span className="text-[11px] uppercase tracking-[0.32em] text-white/75 font-sans font-medium">
