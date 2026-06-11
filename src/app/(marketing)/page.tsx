@@ -5,8 +5,8 @@ import Link from "next/link";
 
 import { LatestGuides } from "@/components/home/LatestGuides";
 import { CapitalCityOutlook } from "@/components/home/CapitalCityOutlook";
-import { SellingGuideCard } from "@/components/home/SellingGuideCard";
-import { PersonaPicker, SellingGuideFunnel } from "@/components/journey";
+import { GuidePathCard } from "@/components/home/GuidePathCard";
+import { PersonaPicker, GuideBandSwitcher } from "@/components/journey";
 import { BestDealsRail } from "@/components/best-deal";
 import { OrganizationJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
@@ -190,13 +190,12 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Right column: the selling-guide lead magnet. The hero's
-                right column is the most valuable surface on the site, so
-                it sells the one asset that captures and qualifies
-                vendors. Education spotlight lives on in LatestGuides
-                below. */}
+            {/* Right column: the guide lead magnets behind a
+                selling/buying toggle. The hero's right column is the
+                most valuable surface on the site, so it sells the assets
+                that capture and qualify both sides. */}
             <div className="rise rise-d2 lg:col-span-5 lg:sticky lg:top-24 order-last lg:order-none">
-              <SellingGuideCard />
+              <GuidePathCard />
             </div>
           </div>
 
@@ -388,56 +387,7 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-30% via-surface-inverse/85 via-68% to-surface-inverse/15" />
         </div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-          <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-            {/* Left, pitch */}
-            <div className="lg:col-span-5">
-              <div className="flex items-center gap-4 mb-10">
-                <span className="font-display italic text-cta text-base sm:text-lg leading-none">
-                  No. 06
-                </span>
-                <span className="w-12 h-px bg-white/20" aria-hidden="true" />
-                <span className="text-[11px] uppercase tracking-[0.32em] text-white/75 font-sans font-medium">
-                  Free PDF · 2026 edition
-                </span>
-              </div>
-              <h2 className="font-display text-white leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">
-                The complete guide to{" "}
-                <span className="italic font-light text-cta">selling</span>{" "}
-                your property.
-              </h2>
-              <p className="font-display font-light text-xl sm:text-2xl text-white/88 leading-snug max-w-md mb-12">
-                Selling costs 3 to 5 percent of your price. The right
-                moves claw thousands of it back. Ten chapters that show
-                you how, personalised to your suburb, free.
-              </p>
-              <div className="grid grid-cols-2 gap-x-6 gap-y-6 max-w-md">
-                {[
-                  ["01", "Answer 7 quick questions (60 seconds)"],
-                  ["02", "We personalise the guide to your suburb"],
-                  ["03", "Download instantly, plus a copy by email"],
-                  ["04", "Selling soon? A free local appraisal if you want one."],
-                ].map(([n, t]) => (
-                  <div key={n} className="border-t border-white/15 pt-4">
-                    <p className="font-display italic text-cta text-base mb-1.5 tabular-nums">{n}</p>
-                    <p className="text-sm text-white/92 leading-snug">{t}</p>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-10 text-sm text-white/75">
-                Buying, not selling?{" "}
-                <Link href="/buying-guide" className="text-cta hover:text-white underline underline-offset-4 decoration-cta/50 transition-colors">
-                  Get the free buying guide
-                </Link>
-              </p>
-            </div>
-
-            {/* Right, the funnel itself */}
-            <div className="lg:col-span-7 lg:col-start-6">
-              <Suspense fallback={null}>
-                <SellingGuideFunnel source="homepage-guide" />
-              </Suspense>
-            </div>
-          </div>
+          <GuideBandSwitcher />
         </div>
       </section>
     </>

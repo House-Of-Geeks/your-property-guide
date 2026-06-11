@@ -24,7 +24,7 @@ Note: `%YPG_SUBURB_NAME%` (pretty, e.g. "Burpengary QLD 4505") is filled by the 
 ## What the sync writes (already working)
 
 - **List:** `YPG Property Sellers` (id 6). Contacts are subscribed ONLY when they ticked the marketing-consent checkbox.
-- **Buyers:** buying-guide leads land on `YPG Property Buyers` (id 7) instead, with fields YPG Guide Type / YPG Buyer Persona / YPG Finance Status / YPG Budget and tags `ypg-buyer`, `ypg-persona-{first-home|upgrading|investing|downsizing}`, `ypg-finance-{pre-approved|talking-to-lenders|not-started|cash}`. The automations below are seller automations; clone the welcome + re-engagement pair for buyers when buyer volume justifies it (segment by `ypg-persona-*` for the persona-specific chapter pointers).
+- **Buyers:** buying-guide leads land on `YPG Property Buyers` (id 7) instead, with fields YPG Guide Type / YPG Buyer Persona / YPG Finance Status / YPG Budget and tags `ypg-buyer`, `ypg-persona-{first-home|upgrading|investing|downsizing}`, `ypg-finance-{pre-approved|talking-to-lenders|not-started|cash}`. Automations 1-4 below are the seller suite; automations 5-8 are the buyer mirror. Ready-to-paste buyer templates live in `emails/activecampaign/buyer-*.html`.
 - **Custom fields:** YPG Suburb, Property Type, Bedrooms, Selling Timeframe, Agent Status, Motivation, Price Expectation, Lead Score, Lead Source.
 - **Tags:** `ypg-seller`, `ypg-score-{hot|warm|cold|do-not-contact}`, `ypg-timeframe-{...}`, `ypg-agent-{...}`, `ypg-consented` / `ypg-no-consent`.
 
@@ -185,6 +185,43 @@ One email a month, sent as a campaign to the segment rather than a fixed automat
 ## Automation 4 — re-engagement (quarterly)
 
 **Trigger:** no opens or clicks in 90 days. Three emails over two weeks: "Still thinking of selling?" / best-of guide content / "Want us to stop emailing?" with a one-click preference. No engagement after that: unsubscribe them automatically. Keeps the list clean and deliverability high.
+
+
+---
+
+## Automation 5 — BUYER HOT: the strong-seat push
+
+**Trigger:** tag `ypg-score-hot` added AND has tag `ypg-buyer`. **Conditions:** has `ypg-consented`, on the YPG Property Buyers list (id 7). Seller automations 1-4 must keep their "on YPG Property Sellers list" condition so the two suites never cross.
+
+| Step | Timing | Action |
+|---|---|---|
+| 1 | Wait 1 hour | (the site's transactional guide email lands first) |
+| 2 | Send `buyer-hot-1-strong-seat.html` | offer-strategy push, reply hook for listing links |
+| 3 | Wait 2 days | exit if goal "replied or clicked" met |
+| 4 | Send `buyer-hot-2-preapproval-clock.html` | 90-day pre-approval urgency, 12-week timeline |
+
+## Automation 6 — BUYER WARM: the six-email education drip
+
+**Trigger:** tag `ypg-score-warm` added AND has tag `ypg-buyer`. **Conditions:** `ypg-consented`, Buyers list. Re-score on intent: clicking the broker / find-an-expert link adds `ypg-score-hot` (AC link action), pulling them into Automation 5.
+
+| Day | Template | The one idea |
+|---|---|---|
+| 2 | `buyer-warm-1-real-budget.html` | the +3% lender buffer; borrowing power calculator CTA |
+| 5 | `buyer-warm-2-schemes.html` | 2026 schemes worth tens of thousands; guide ch 3 |
+| 9 | `buyer-warm-3-underquoting.html` | price guides run 5-10% under; comparable-sales method |
+| 14 | `buyer-warm-4-suburb-homework.html` | buy the suburb first; compare tool + quiz |
+| 21 | `buyer-warm-5-inspection.html` | $600 building and pest vs $60k repairs; guide ch 5 |
+| 30 | `buyer-warm-6-ready.html` | broker introduction via /find-an-expert |
+
+Persona note: `ypg-persona-first-home` contacts get the most value from `buyer-warm-2-schemes`; if volume justifies it later, split day 5 by persona tag (investors: yield/lending angle from guide ch 8).
+
+## Automation 7 — BUYER COLD / long-range: monthly read
+
+Same rhythm as Automation 3, sent to the Buyers-list segment with `buyer-monthly-market-read.html` as the campaign template. The soft CTA is the borrowing power calculator rather than the appraisal.
+
+## Automation 8 — BUYER re-engagement (quarterly)
+
+Mirror of Automation 4 using `buyer-reengage-still-looking.html`. No engagement after the sequence: automatic unsubscribe.
 
 ---
 

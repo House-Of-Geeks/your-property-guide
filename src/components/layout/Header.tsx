@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown, UserCircle, Search, Phone, Key } from "lucide-react";
 import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164 } from "@/lib/constants";
 
@@ -97,10 +98,18 @@ const NAV_LINKS: NavLink[] = [
   },
 ];
 
+// Buyer-context routes show the buying-guide CTA; everywhere else the
+// selling guide leads (it's the revenue side).
+const BUYER_PATHS = ["/buying-guide", "/first-home-buyers", "/investing", "/upgrading", "/buy"];
+
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
+  const pathname = usePathname();
+  const buyerContext = BUYER_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"));
+  const guideHref = buyerContext ? "/buying-guide" : "/selling-guide";
+  const guideLabel = buyerContext ? "Free buying guide" : "Free selling guide";
 
   const toggle = (label: string) => setOpenMenu((o) => (o === label ? null : label));
 
@@ -195,10 +204,10 @@ export function Header() {
               {CONTACT_PHONE_DISPLAY}
             </a>
             <Link
-              href="/selling-guide"
+              href={guideHref}
               className="hidden md:inline-flex items-center gap-1.5 rounded-full bg-cta hover:bg-cta-hover text-white px-4 py-2 text-xs font-semibold transition-colors"
             >
-              Free selling guide
+              {guideLabel}
             </Link>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -246,11 +255,11 @@ export function Header() {
             )}
             <div className="pt-4 mt-2 border-t border-line space-y-2">
               <Link
-                href="/selling-guide"
+                href={guideHref}
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-center gap-1.5 w-full px-4 py-2.5 text-sm font-semibold text-white bg-cta hover:bg-cta-hover rounded-full transition-colors"
               >
-                Free selling guide
+                {guideLabel}
               </Link>
               <a
                 href={`tel:${CONTACT_PHONE_E164}`}

@@ -17,6 +17,7 @@ import { EMAIL_COLORS as C } from "../../src/lib/email-theme";
 const SITE = "https://www.yourpropertyguide.com.au";
 const ART = {
   cover:        `${SITE}/images/guide/selling-guide-cover-email.jpg`,
+  buyerCover:   `${SITE}/images/guide/buying-guide-cover-email.jpg`,
   night:        `${SITE}/images/hero/suburb-night-v2.jpg`,
   queenslander: `${SITE}/images/art/queenslander.jpg`,
   aerial:       `${SITE}/images/art/suburb-aerial.jpg`,
@@ -90,6 +91,8 @@ interface AcEmail {
   preheader: string;
   hero: string;
   body: string;
+  /** Varies the compliance footer; defaults to seller. */
+  audience?: "seller" | "buyer";
 }
 
 function shell(e: AcEmail): string {
@@ -114,7 +117,7 @@ function shell(e: AcEmail): string {
         ${e.body}
         <tr>
           <td style="padding:18px 40px;background:${C.cream};border-top:1px solid ${C.line};">
-            <p style="margin:0 0 6px;font-size:12px;line-height:1.6;color:${C.inkSubtle};font-family:${FONT_SANS};">You're receiving this because you downloaded the free selling guide from <a href="${SITE}" style="color:${C.terracottaDark};">yourpropertyguide.com.au</a> and asked for selling tips and market updates.</p>
+            <p style="margin:0 0 6px;font-size:12px;line-height:1.6;color:${C.inkSubtle};font-family:${FONT_SANS};">You're receiving this because you downloaded the free ${e.audience === "buyer" ? "buying" : "selling"} guide from <a href="${SITE}" style="color:${C.terracottaDark};">yourpropertyguide.com.au</a> and asked for ${e.audience === "buyer" ? "buying" : "selling"} tips and market updates.</p>
             <p style="margin:0 0 6px;font-size:12px;line-height:1.6;color:${C.inkSubtle};font-family:${FONT_SANS};">%SENDER-INFO%</p>
             <p style="margin:0;font-size:12px;line-height:1.6;color:${C.inkSubtle};font-family:${FONT_SANS};"><a href="%UNSUBSCRIBELINK%" style="color:${C.terracottaDark};">Unsubscribe</a> any time, one click, actioned immediately.</p>
           </td>
@@ -320,6 +323,201 @@ const EMAILS: AcEmail[] = [
         "And if you're actually closer than you were? That's the best email we get all week:",
       ],
       { label: "Book a free appraisal", url: APPRAISAL },
+    ),
+  },
+  // ----- buyer suite ---------------------------------------------------------
+  {
+    file: "buyer-hot-1-strong-seat.html",
+    automation: "BUYER HOT push · 1 hour after tag",
+    subject: "You're in the strongest seat a buyer can hold",
+    preheader: "Finance sorted and buying soon. Two chapters tonight and you'll negotiate like you've done this before.",
+    audience: "buyer",
+    hero: artHero(
+      ART.queenslander,
+      `Finance sorted. Timeline set.<br/>Now don't <em style="font-style:italic;color:${C.terracottaDark};">show your hand</em>.`,
+      undefined,
+      "cream",
+    ),
+    body: bodyBlock(
+      [
+        "Hi %FIRSTNAME%,",
+        "Pre-approved and buying inside three months puts you ahead of most of the room at every open home. The only way to lose that edge is to let the selling side see it.",
+        "So two chapters tonight: chapter 6 decodes every script an agent will run on you, from the price guide to the \"other interested party\". Chapter 7 is the offer itself: what to put in writing, which conditions protect you, and when walking away is the strongest bid you can make.",
+        "Everything an agent learns about your budget and your deadline gets used. Read those two chapters before you say another word at an inspection.",
+      ],
+      { label: "Open my buying guide", url: `${SITE}/downloads/your-property-guide-buying-property-australia.pdf` },
+      "Found a place already? Reply with the listing link and we'll tell you what we'd check first.",
+    ),
+  },
+  {
+    file: "buyer-hot-2-preapproval-clock.html",
+    automation: "BUYER HOT push · day 3",
+    subject: "Your pre-approval has a use-by date",
+    preheader: "Most expire in about 90 days. A 12-week plan turns the deadline into an advantage.",
+    audience: "buyer",
+    hero: statHero("90 days", "The life of a typical pre-approval", "The clock is not the enemy. Shopping without a plan is."),
+    body: bodyBlock(
+      [
+        "Hi %FIRSTNAME%,",
+        "Most pre-approvals expire after about 90 days, and re-applying means fresh paperwork and a fresh credit check. That's not a reason to rush a purchase. It is a reason to run a plan.",
+        "Chapter 10 of your guide is a printable 12-week timeline: when to lock the shortlist, when to order building and pest, when the conveyancer reviews the contract, and what happens between offer and keys.",
+        "Print it, stick it on the fridge, and the deadline starts working for you instead of against you.",
+      ],
+      { label: "Get the 12-week timeline", url: `${SITE}/downloads/your-property-guide-buying-property-australia.pdf` },
+    ),
+  },
+  {
+    file: "buyer-warm-1-real-budget.html",
+    automation: "BUYER WARM nurture · day 2",
+    subject: "What you can really spend (it isn't the bank's number)",
+    preheader: "Lenders test your loan at 3% above the real rate. Run your true number in 30 seconds.",
+    audience: "buyer",
+    hero: statHero("+3%", "The buffer lenders add to your rate before saying yes", "Your real budget is what passes the stress test, not the calculator headline."),
+    body: bodyBlock(
+      [
+        "Hi %FIRSTNAME%,",
+        "When a lender assesses you, they don't test the loan at today's rate. They add a buffer, around 3 percent, and check you'd still cope. That's the gap between the number a portal calculator shows you and the number a bank will actually write.",
+        "Chapter 2 of your guide walks through the whole equation: the buffer, the deposit tiers, lenders mortgage insurance, and the upfront costs nobody budgets for.",
+        "For your own number, the borrowing power calculator applies the buffer properly:",
+      ],
+      { label: "Run my real budget", url: `${SITE}/borrowing-power-calculator` },
+    ),
+  },
+  {
+    file: "buyer-warm-2-schemes.html",
+    automation: "BUYER WARM nurture · day 5",
+    subject: "The schemes worth tens of thousands (2026 edition)",
+    preheader: "5% deposit with no LMI, shared equity, super savings, state grants. Most buyers use none of them.",
+    audience: "buyer",
+    hero: statHero("5%", "The deposit that skips LMI under the 2026 federal scheme", "The money is sitting there. Most buyers never claim it."),
+    body: bodyBlock(
+      [
+        "Hi %FIRSTNAME%,",
+        "Since October 2025 the federal 5% Deposit Scheme has no income test and no place caps, just city price caps ($1.5m in Sydney, $1m in Brisbane, $950k in Melbourne). Used well it skips lenders mortgage insurance entirely, which is worth $15,000 to $30,000 on a typical purchase.",
+        "Stack the state schemes on top, first home owner grants, stamp duty concessions, the First Home Super Saver scheme, and the total runs to tens of thousands. Upgrading or investing? Chapter 3 flags which concessions still apply to you, because a few do.",
+        "The full 2026 table, state by state, is in chapter 3 of your guide:",
+      ],
+      { label: "See what I qualify for", url: `${SITE}/downloads/your-property-guide-buying-property-australia.pdf` },
+    ),
+  },
+  {
+    file: "buyer-warm-3-underquoting.html",
+    automation: "BUYER WARM nurture · day 9",
+    subject: "The price guide is not the price",
+    preheader: "Auction guides routinely finish 5 to 10% over. Here's how to read the real number.",
+    audience: "buyer",
+    hero: statHero("5–10%", "How far auction results routinely run past the guide", "The guide price is marketing. The comparable sales are evidence."),
+    body: bodyBlock(
+      [
+        "Hi %FIRSTNAME%,",
+        "A price guide's job is to get bodies through the door, and underquoting rules still leave plenty of room. The defence is the same one professionals use: ignore the guide, pull the three most comparable sales from the last 90 days, and price the property yourself before you fall in love with it.",
+        "Chapter 6 of your guide shows the method step by step, plus the auction-day psychology: why the first bid matters, what a vendor bid means, and when a pass-in is your moment.",
+        "Your suburb's recent sales and days on market are free on the site, any suburb, any time.",
+      ],
+      { label: "Decode the price guide", url: `${SITE}/downloads/your-property-guide-buying-property-australia.pdf` },
+    ),
+  },
+  {
+    file: "buyer-warm-4-suburb-homework.html",
+    automation: "BUYER WARM nurture · day 14",
+    subject: "Shortlisting suburbs? Let the data argue.",
+    preheader: "Median, growth, schools, walkability, hazards. Line up any two suburbs side by side, free.",
+    audience: "buyer",
+    hero: artHero(
+      ART.night,
+      "Buy the suburb first.<br/>The house second.",
+      "Growth, schools, hazard maps and the numbers that drive them.",
+    ),
+    body: bodyBlock(
+      [
+        "Hi %FIRSTNAME%,",
+        "The dearest mistake in property isn't paying 2 percent too much for the right house. It's buying the wrong suburb. The house you can renovate; the street you can't move.",
+        "Chapter 4 of your guide lists the data that actually predicts liveability and growth: school catchments, days on market, owner-occupier ratios, hazard overlays. All of it is free on the site for 9,600+ suburbs.",
+        "Two tools do the heavy lifting: the 4-question suburb quiz scores six matches for you, and the compare tool lines any two suburbs up side by side.",
+      ],
+      { label: "Compare my shortlist", url: `${SITE}/compare` },
+      `Already set on %YPG_SUBURB_NAME%? The live numbers are here: <a href="${SITE}/suburbs/%YPG_SUBURB%" style="color:#953407;">your suburb page</a>.`,
+    ),
+  },
+  {
+    file: "buyer-warm-5-inspection.html",
+    automation: "BUYER WARM nurture · day 21",
+    subject: "The $600 that saves $60,000",
+    preheader: "Building and pest is the cheapest insurance in property. Skipping it is the dearest saving.",
+    audience: "buyer",
+    hero: statHero("$600", "What a building and pest inspection costs, roughly", "The only people who skip it are the ones who haven't been burned yet."),
+    body: bodyBlock(
+      [
+        "Hi %FIRSTNAME%,",
+        "Structural movement, termites, water ingress, dodgy rewiring: the expensive problems are exactly the ones a 30-minute walkthrough won't show you. A building and pest report costs a few hundred dollars and routinely surfaces five-figure repairs before they become your repairs.",
+        "Chapter 5 of your guide covers the professional inspection method: what to check yourself in 30 minutes, when to order the formal report, what strata records to pull for units, and the findings that should reprice the deal versus the ones that should kill it.",
+        "Read it before your next Saturday of opens.",
+      ],
+      { label: "Inspect like a professional", url: `${SITE}/downloads/your-property-guide-buying-property-australia.pdf` },
+    ),
+  },
+  {
+    file: "buyer-warm-6-ready.html",
+    automation: "BUYER WARM nurture · day 30",
+    subject: "Ready to get serious about it?",
+    preheader: "A month with the guide means you'll see through the scripts most buyers fall for.",
+    audience: "buyer",
+    hero: artHero(
+      ART.buyerCover,
+      "You've done the reading. Time to line up your numbers.",
+    ),
+    body: bodyBlock(
+      [
+        "Hi %FIRSTNAME%,",
+        "You've had the guide for a month. By now you know what you can really spend, which schemes apply to you, and what the selling side's scripts sound like. That puts you ahead of most buyers at any open home.",
+        "The next move is finance. If you haven't started, a good mortgage broker costs you nothing, is paid by the lender, and routinely finds approvals the bank branch can't. We can introduce you to one we'd actually use.",
+        "Not there yet? No problem. The tools and the monthly read aren't going anywhere.",
+      ],
+      { label: "Find a vetted broker", url: `${SITE}/find-an-expert` },
+    ),
+  },
+  {
+    file: "buyer-monthly-market-read.html",
+    automation: "BUYER COLD / long-range · monthly campaign template",
+    subject: "Your market this month",
+    preheader: "What moved in your patch, in plain English. Two minutes.",
+    audience: "buyer",
+    hero: artHero(
+      ART.night,
+      "The two-minute market read.",
+      "EDIT EACH MONTH: one line on what actually changed.",
+    ),
+    body: bodyBlock(
+      [
+        "Hi %FIRSTNAME%,",
+        "[EDIT: 2-3 sentences on the month: rates decision, clearance trend, listing volumes. Plain English, one idea per sentence, no jargon.]",
+        "[EDIT: one buyer-relevant observation, e.g. stock levels shifting, days on market lengthening = negotiating room.]",
+        "Your suburb's live numbers are always here:",
+      ],
+      { label: "See the %YPG_SUBURB_NAME% market", url: SUBURB_URL },
+      "Getting close? The borrowing power calculator applies the lender buffer properly: <a href=\"" + `${SITE}/borrowing-power-calculator` + "\" style=\"color:#953407;\">run your number</a>.",
+    ),
+  },
+  {
+    file: "buyer-reengage-still-looking.html",
+    automation: "BUYER re-engagement · 90 days no engagement",
+    subject: "Still on the hunt?",
+    preheader: "One click tells us whether to keep these coming.",
+    audience: "buyer",
+    hero: artHero(
+      ART.queenslander,
+      "Plans change. Inboxes shouldn't suffer for it.",
+      undefined,
+      "cream",
+    ),
+    body: bodyBlock(
+      [
+        "Hi %FIRSTNAME%,",
+        "A while back you grabbed our buying guide. If the right place is still out there somewhere, the guide, the calculators and the suburb data will be here when you need them.",
+        "If life went a different way, no hard feelings, the unsubscribe link below works instantly and we won't take it personally.",
+        "And if you're actually closer than you were? Start with your real budget:",
+      ],
+      { label: "Run my borrowing power", url: `${SITE}/borrowing-power-calculator` },
     ),
   },
 ];

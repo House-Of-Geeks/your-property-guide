@@ -32,6 +32,16 @@ const SUBJECTS: Record<string, string> = {
   "warm-6-ready.html": "Ready to put a number on it?",
   "monthly-market-read.html": "Your market this month",
   "reengage-still-thinking.html": "Still thinking of selling?",
+  "buyer-hot-1-strong-seat.html": "You're in the strongest seat a buyer can hold",
+  "buyer-hot-2-preapproval-clock.html": "Your pre-approval has a use-by date",
+  "buyer-warm-1-real-budget.html": "What you can really spend (it isn't the bank's number)",
+  "buyer-warm-2-schemes.html": "The schemes worth tens of thousands (2026 edition)",
+  "buyer-warm-3-underquoting.html": "The price guide is not the price",
+  "buyer-warm-4-suburb-homework.html": "Shortlisting suburbs? Let the data argue.",
+  "buyer-warm-5-inspection.html": "The $600 that saves $60,000",
+  "buyer-warm-6-ready.html": "Ready to get serious about it?",
+  "buyer-monthly-market-read.html": "Your market this month (buyer edition)",
+  "buyer-reengage-still-looking.html": "Still on the hunt?",
 };
 
 const SUBSTITUTIONS: [string, string][] = [
@@ -44,7 +54,7 @@ const SUBSTITUTIONS: [string, string][] = [
 
 async function main() {
   const dir = "emails/activecampaign";
-  const files = readdirSync(dir).filter((f) => f.endsWith(".html"));
+  const files = readdirSync(dir).filter((f) => f.endsWith(".html") && (process.env.ONLY_PREFIX ? f.startsWith(process.env.ONLY_PREFIX) : true));
   let n = 0;
   for (const file of files) {
     let html = readFileSync(`${dir}/${file}`, "utf8");
