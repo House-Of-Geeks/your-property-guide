@@ -72,6 +72,7 @@ const NAV_LINKS: NavLink[] = [
     href: "#",
     layout: "list",
     children: [
+      { label: "Free buying guide (PDF)",  href: "/buying-guide" },
       { label: "Free selling guide (PDF)", href: "/selling-guide" },
       { label: "Buying my first home",  href: "/first-home-buyers" },
       { label: "Selling my home",       href: "/selling" },

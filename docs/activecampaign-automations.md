@@ -24,6 +24,7 @@ Note: `%YPG_SUBURB_NAME%` (pretty, e.g. "Burpengary QLD 4505") is filled by the 
 ## What the sync writes (already working)
 
 - **List:** `YPG Property Sellers` (id 6). Contacts are subscribed ONLY when they ticked the marketing-consent checkbox.
+- **Buyers:** buying-guide leads land on `YPG Property Buyers` (id 7) instead, with fields YPG Guide Type / YPG Buyer Persona / YPG Finance Status / YPG Budget and tags `ypg-buyer`, `ypg-persona-{first-home|upgrading|investing|downsizing}`, `ypg-finance-{pre-approved|talking-to-lenders|not-started|cash}`. The automations below are seller automations; clone the welcome + re-engagement pair for buyers when buyer volume justifies it (segment by `ypg-persona-*` for the persona-specific chapter pointers).
 - **Custom fields:** YPG Suburb, Property Type, Bedrooms, Selling Timeframe, Agent Status, Motivation, Price Expectation, Lead Score, Lead Source.
 - **Tags:** `ypg-seller`, `ypg-score-{hot|warm|cold|do-not-contact}`, `ypg-timeframe-{...}`, `ypg-agent-{...}`, `ypg-consented` / `ypg-no-consent`.
 

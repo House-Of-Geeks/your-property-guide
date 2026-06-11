@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Guide cover art</title>
+<style>
+  /* Renders the selling-guide cover as a standalone visual asset.
+     Screenshot at 720x1018 (A4 ratio) with --force-device-scale-factor=2
+     for retina. Palette mirrors the site tokens (see email-theme.ts). */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 720px; height: 1018px; }
+  body {
+    background: #17100b;
+    color: #fefbf7;
+    font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Subtle topographic-style contour rings, echoes the site's contour motif */
+  .contour {
+    position: absolute;
+    border: 1px solid rgba(255, 221, 198, 0.07);
+    border-radius: 50%;
+  }
+  /* Warm glow bottom right */
+  .glow {
+    position: absolute;
+    right: -180px;
+    bottom: -180px;
+    width: 560px;
+    height: 560px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(189,89,47,0.32) 0%, rgba(189,89,47,0.0) 70%);
+  }
+  .inner {
+    position: relative;
+    height: 100%;
+    padding: 64px 60px 56px;
+    display: flex;
+    flex-direction: column;
+  }
+  .rule { height: 2px; background: #bd592f; width: 100%; margin-bottom: 22px; }
+  .masthead {
+    font-size: 19px;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: #ffddc6;
+    font-weight: 600;
+  }
+  .masthead-sub {
+    margin-top: 10px;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(254,251,247,0.45);
+    font-weight: 500;
+  }
+  .title-block { margin-top: 150px; }
+  .title {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 64px;
+    line-height: 1.08;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    color: #fefbf7;
+    max-width: 560px;
+  }
+  .title em { font-style: italic; color: #e8a075; }
+  .edition {
+    margin-top: 30px;
+    display: inline-block;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 24px;
+    color: #bd592f;
+  }
+  .standfirst {
+    margin-top: 26px;
+    font-size: 17px;
+    line-height: 1.6;
+    color: rgba(254,251,247,0.72);
+    max-width: 440px;
+  }
+  .spacer { flex: 1; }
+  .chapters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 28px;
+    margin-bottom: 40px;
+  }
+  .chapter {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    font-size: 13.5px;
+    color: rgba(254,251,247,0.62);
+  }
+  .chapter b {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: #bd592f;
+    font-size: 14px;
+  }
+  .foot {
+    border-top: 1px solid rgba(254,251,247,0.18);
+    padding-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .foot .site {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    color: rgba(254,251,247,0.85);
+  }
+  .foot .free {
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #ffddc6;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+  <div class="contour" style="width:900px;height:900px;right:-420px;top:-300px;"></div>
+  <div class="contour" style="width:700px;height:700px;right:-320px;top:-200px;"></div>
+  <div class="contour" style="width:500px;height:500px;right:-220px;top:-100px;"></div>
+  <div class="glow"></div>
+
+  <div class="inner">
+    <div>
+      <div class="rule"></div>
+      <p class="masthead">Your Property Guide</p>
+      <p class="masthead-sub">Australian property, in plain English</p>
+    </div>
+
+    <div class="title-block">
+      <h1 class="title">The Complete Guide to <em>Buying</em> Property in Australia</h1>
+      <p class="edition">2026 Edition</p>
+      <p class="standfirst">What it really costs, how the game is played, and how to buy well. First home, next home, or investment.</p>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="chapters">
+      <p class="chapter"><b>01</b> Which buyer are you?</p>
+      <p class="chapter"><b>06</b> How sellers play you</p>
+      <p class="chapter"><b>02</b> What you can really spend</p>
+      <p class="chapter"><b>07</b> Making the offer</p>
+      <p class="chapter"><b>03</b> Schemes, state by state</p>
+      <p class="chapter"><b>10</b> The 12-week timeline</p>
+    </div>
+
+    <div class="foot">
+      <p class="site">yourpropertyguide.com.au</p>
+      <p class="free">Free · 10 chapters</p>
+    </div>
+  </div>
+</body>
+</html>

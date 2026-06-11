@@ -1,4 +1,4 @@
-import { type LeadEmailData, type LeadScore, scoreGuideLead, TIMEFRAME_LABELS, AGENT_STATUS_LABELS } from "@/lib/lead-emails";
+import { type LeadEmailData, type LeadScore, scoreGuideLead, TIMEFRAME_LABELS, AGENT_STATUS_LABELS, BUYER_PERSONA_LABELS, FINANCE_STATUS_LABELS } from "@/lib/lead-emails";
 
 // ActiveCampaign lead sync. Pushes qualified guide-download leads into the
 // House of Geeks AC account so nurture automations can run against them.
@@ -17,6 +17,7 @@ import { type LeadEmailData, type LeadScore, scoreGuideLead, TIMEFRAME_LABELS, A
 //   Setup script: scripts/setup-activecampaign.ts
 
 const LIST_NAME = "YPG Property Sellers";
+const BUYER_LIST_NAME = "YPG Property Buyers";
 
 const FIELD_TITLES = {
   suburb:           "YPG Suburb",
@@ -29,6 +30,10 @@ const FIELD_TITLES = {
   priceExpectation: "YPG Price Expectation",
   leadScore:        "YPG Lead Score",
   leadSource:       "YPG Lead Source",
+  guideType:        "YPG Guide Type",
+  buyerPersona:     "YPG Buyer Persona",
+  financeStatus:    "YPG Finance Status",
+  budget:           "YPG Budget",
 } as const;
 
 /**
@@ -72,9 +77,12 @@ async function acFetch(path: string, init?: RequestInit): Promise<Record<string,
 
 /** Tags applied to every synced lead. Lowercase, namespaced, automation-friendly. */
 export function buildAcTags(lead: LeadEmailData, score: LeadScore): string[] {
-  const tags = ["ypg-seller", `ypg-score-${score.toLowerCase()}`];
+  const buying = lead.guideType === "buying";
+  const tags = [buying ? "ypg-buyer" : "ypg-seller", `ypg-score-${score.toLowerCase()}`];
   if (lead.sellingTimeframe) tags.push(`ypg-timeframe-${lead.sellingTimeframe}`);
-  if (lead.agentStatus) tags.push(`ypg-agent-${lead.agentStatus}`);
+  if (buying && lead.buyerPersona) tags.push(`ypg-persona-${lead.buyerPersona}`);
+  if (buying && lead.financeStatus) tags.push(`ypg-finance-${lead.financeStatus}`);
+  if (!buying && lead.agentStatus) tags.push(`ypg-agent-${lead.agentStatus}`);
   tags.push(lead.marketingConsent ? "ypg-consented" : "ypg-no-consent");
   return tags;
 }
@@ -92,25 +100,31 @@ export function buildAcFieldValues(lead: LeadEmailData, score: LeadScore): Recor
     priceExpectation: lead.priceExpectation ?? "",
     leadScore:        score,
     leadSource:       lead.source ?? "",
+    guideType:        lead.guideType === "buying" ? "Buying" : "Selling",
+    buyerPersona:     lead.buyerPersona ? (BUYER_PERSONA_LABELS[lead.buyerPersona] ?? lead.buyerPersona) : "",
+    financeStatus:    lead.financeStatus ? (FINANCE_STATUS_LABELS[lead.financeStatus] ?? lead.financeStatus) : "",
+    budget:           lead.budget ?? "",
   };
 }
 
 // ----- Runtime ID resolution (cached per warm instance) --------------------
 
-let listIdPromise: Promise<string> | null = null;
 let fieldIdsPromise: Promise<Map<string, string>> | null = null;
 const tagIdCache = new Map<string, string>();
+const listIdPromises = new Map<string, Promise<string>>();
 
-async function resolveListId(): Promise<string> {
-  listIdPromise ??= (async () => {
-    const body = await acFetch(`/lists?limit=100`);
-    const lists = (body.lists ?? []) as { id: string; name: string }[];
-    const match = lists.find((l) => l.name === LIST_NAME);
-    if (!match) throw new Error(`AC list "${LIST_NAME}" not found. Run scripts/setup-activecampaign.ts`);
-    return match.id;
-  })();
-  return listIdPromise.catch((e) => {
-    listIdPromise = null; // don't cache failures
+async function resolveListId(name: string): Promise<string> {
+  if (!listIdPromises.has(name)) {
+    listIdPromises.set(name, (async () => {
+      const body = await acFetch(`/lists?limit=100`);
+      const lists = (body.lists ?? []) as { id: string; name: string }[];
+      const match = lists.find((l) => l.name === name);
+      if (!match) throw new Error(`AC list "${name}" not found. Run scripts/setup-activecampaign.ts`);
+      return match.id;
+    })());
+  }
+  return listIdPromises.get(name)!.catch((e) => {
+    listIdPromises.delete(name); // don't cache failures
     throw e;
   });
 }
@@ -194,9 +208,10 @@ export async function syncGuideLeadToActiveCampaign(lead: LeadEmailData): Promis
     ),
   );
 
-  // 3. List subscription, only with express consent (Spam Act).
+  // 3. List subscription, only with express consent (Spam Act). Buyers
+  //    and sellers live on separate lists so automations stay clean.
   if (lead.marketingConsent) {
-    const listId = await resolveListId();
+    const listId = await resolveListId(lead.guideType === "buying" ? BUYER_LIST_NAME : LIST_NAME);
     await acFetch(`/contactLists`, {
       method: "POST",
       body: JSON.stringify({ contactList: { list: listId, contact: contactId, status: 1 } }),

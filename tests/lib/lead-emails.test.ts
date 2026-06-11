@@ -45,6 +45,64 @@ describe("scoreGuideLead", () => {
   });
 });
 
+const buyerLead = (overrides: Partial<LeadEmailData> = {}): LeadEmailData => ({
+  type: "guide-download",
+  guideType: "buying",
+  firstName: "Sam",
+  email: "sam@example.com",
+  suburb: "burpengary-qld-4505",
+  buyerPersona: "first-home",
+  financeStatus: "pre-approved",
+  budget: "$750k to $1m",
+  sellingTimeframe: "0-3-months",
+  marketingConsent: false,
+  ...overrides,
+});
+
+describe("scoreGuideLead (buying)", () => {
+  it("buying soon with finance sorted is HOT", () => {
+    expect(scoreGuideLead(buyerLead())).toBe("HOT");
+    expect(scoreGuideLead(buyerLead({ financeStatus: "cash" }))).toBe("HOT");
+  });
+
+  it("buying soon without finance is only WARM", () => {
+    expect(scoreGuideLead(buyerLead({ financeStatus: "talking-to-lenders" }))).toBe("WARM");
+    expect(scoreGuideLead(buyerLead({ financeStatus: "not-started" }))).toBe("WARM");
+  });
+
+  it("3-6 months is WARM regardless of finance", () => {
+    expect(scoreGuideLead(buyerLead({ sellingTimeframe: "3-6-months", financeStatus: "cash" }))).toBe("WARM");
+  });
+
+  it("longer timeframes and researchers are COLD", () => {
+    expect(scoreGuideLead(buyerLead({ sellingTimeframe: "6-12-months" }))).toBe("COLD");
+    expect(scoreGuideLead(buyerLead({ sellingTimeframe: "researching", financeStatus: "cash" }))).toBe("COLD");
+  });
+});
+
+describe("buying-guide confirmation email", () => {
+  it("uses buying subject and links the buying PDF, not the selling one", () => {
+    const copy = confirmationCopy(buyerLead());
+    expect(copy.subject).toContain("buying guide");
+    const html = buildConfirmationHtml(buyerLead());
+    expect(html).toContain("buying-property-australia.pdf");
+    expect(html).not.toContain("selling-property-australia.pdf");
+  });
+
+  it("points buyers at the borrowing power calculator instead of the appraisal", () => {
+    const html = buildConfirmationHtml(buyerLead());
+    expect(html).toContain("/borrowing-power-calculator");
+    expect(html).not.toContain("/appraisal");
+  });
+
+  it("admin email surfaces buyer persona, finance and budget", () => {
+    const html = buildAdminEmailHtml(buyerLead());
+    expect(html).toContain("First home buyer");
+    expect(html).toContain("Pre-approved");
+    expect(html).toContain("$750k to $1m");
+  });
+});
+
 describe("guide-download confirmation copy", () => {
   it("delivers the PDF download CTA with the value-led subject and preheader", () => {
     const copy = confirmationCopy(guideLead());

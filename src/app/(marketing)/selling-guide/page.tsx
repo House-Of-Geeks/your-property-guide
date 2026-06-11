@@ -366,6 +366,12 @@ export default function SellingGuidePage() {
               >
                 Get the free guide
               </a>
+              <p className="mt-5 text-xs text-white/55">
+                Buying, not selling?{" "}
+                <Link href="/buying-guide" className="text-white/85 hover:text-white underline underline-offset-4 transition-colors">
+                  There&rsquo;s a buying guide too
+                </Link>
+              </p>
             </div>
           </div>
         </div>

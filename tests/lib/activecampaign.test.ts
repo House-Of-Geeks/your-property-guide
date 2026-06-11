@@ -42,6 +42,20 @@ describe("buildAcTags", () => {
   });
 });
 
+describe("buildAcTags (buying)", () => {
+  it("tags buyers with persona and finance, not seller tags", () => {
+    const tags = buildAcTags(
+      lead({ guideType: "buying", buyerPersona: "first-home", financeStatus: "pre-approved" }),
+      "HOT",
+    );
+    expect(tags).toContain("ypg-buyer");
+    expect(tags).toContain("ypg-persona-first-home");
+    expect(tags).toContain("ypg-finance-pre-approved");
+    expect(tags).not.toContain("ypg-seller");
+    expect(tags).not.toContain("ypg-agent-comparing");
+  });
+});
+
 describe("prettySuburbName", () => {
   it("turns slugs into display names", () => {
     expect(prettySuburbName("burpengary-qld-4505")).toBe("Burpengary QLD 4505");

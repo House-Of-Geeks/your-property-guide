@@ -27,6 +27,7 @@ async function api(path: string, init?: RequestInit) {
 
 // Must match LIST_NAME / FIELD_TITLES in src/lib/activecampaign.ts.
 const LIST_NAME = "YPG Property Sellers";
+const BUYER_LIST = "YPG Property Buyers";
 
 const FIELDS = [
   "YPG Suburb",
@@ -39,6 +40,10 @@ const FIELDS = [
   "YPG Price Expectation",
   "YPG Lead Score",
   "YPG Lead Source",
+  "YPG Guide Type",
+  "YPG Buyer Persona",
+  "YPG Finance Status",
+  "YPG Budget",
 ];
 
 async function main() {
@@ -62,6 +67,28 @@ async function main() {
     });
     list = created.list;
     console.log(`Created list: ${LIST_NAME} (id ${list.id})`);
+  }
+
+  // 1b. Buyer list
+  const lists2 = await api(`/lists?limit=100`);
+  let buyerList = (lists2.lists ?? []).find((l: { name: string }) => l.name === BUYER_LIST);
+  if (buyerList) {
+    console.log(`List exists: ${BUYER_LIST} (id ${buyerList.id})`);
+  } else {
+    const created = await api(`/lists`, {
+      method: "POST",
+      body: JSON.stringify({
+        list: {
+          name: BUYER_LIST,
+          stringid: "ypg-property-buyers",
+          sender_url: "https://www.yourpropertyguide.com.au",
+          sender_reminder:
+            "You're receiving this because you downloaded the free Your Property Guide buying guide and opted in to buying tips and market updates.",
+        },
+      }),
+    });
+    buyerList = created.list;
+    console.log(`Created list: ${BUYER_LIST} (id ${buyerList.id})`);
   }
 
   // 2. Custom fields (+ make them available to all lists via relid 0)

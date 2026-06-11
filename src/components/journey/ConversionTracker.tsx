@@ -5,8 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 
 interface ConversionTrackerProps {
-  /** Identifies the funnel — appraisal form, match-an-expert, or selling-guide download. */
-  flow: "appraisal" | "get-connected" | "selling-guide";
+  /** Identifies the funnel — appraisal form, match-an-expert, or a guide download. */
+  flow: "appraisal" | "get-connected" | "selling-guide" | "buying-guide";
 }
 
 // Fires once on mount when a thank-you page renders. Single source of

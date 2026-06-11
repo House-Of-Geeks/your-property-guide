@@ -11,6 +11,8 @@ interface StickyMatchCTAProps {
   intent?: string;
   /** Headline. Defaults to the guide CTA. */
   label?: string;
+  /** Destination override; defaults to the selling-guide funnel. */
+  href?: string;
   /**
    * Unique key per page/context. Determines sessionStorage dismissal scope -
    * dismissing on one suburb shouldn't suppress the CTA on another.
@@ -37,6 +39,7 @@ export function StickyMatchCTA({
   suburb,
   intent,
   label,
+  href: hrefProp,
   dismissKey,
   showAfterRatio = 0.3,
 }: StickyMatchCTAProps) {
@@ -80,7 +83,8 @@ export function StickyMatchCTA({
   if (dismissed) return null;
 
   const display = label ?? "Get the free selling guide";
-  const href = suburb ? `/selling-guide?suburb=${suburb}` : "/selling-guide";
+  const base = hrefProp ?? "/selling-guide";
+  const href = suburb ? `${base}?suburb=${suburb}` : base;
 
   return (
     <div

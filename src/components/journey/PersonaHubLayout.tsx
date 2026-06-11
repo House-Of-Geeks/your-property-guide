@@ -2,8 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Suspense } from "react";
 import { ArrowRight, MapPin, Calculator } from "lucide-react";
-import { ExpertCTA } from "./ExpertCTA";
-import { MatchAgent } from "./MatchAgent";
+import { SellingGuideFunnel } from "./SellingGuideFunnel";
+import { BuyingGuideFunnel } from "./BuyingGuideFunnel";
 import { StickyMatchCTA } from "./StickyMatchCTA";
 import { EditorNote, Faq } from "@/components/guide";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -96,6 +96,7 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
 
   const otherPersonas = PERSONAS.filter((p) => p.id !== personaId);
   const content = PERSONA_HUB_CONTENT[personaId];
+  const isBuyingHub = personaId === "first-home" || personaId === "upgrading" || personaId === "investing";
 
   return (
     <>
@@ -361,23 +362,65 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
         </section>
       )}
 
-      {/* MatchAgent — the lead-capture surface. Same dark band as the
-          homepage, anchored at #match so the existing pre-fill params
-          work. Persona-specific intent is set via initialIntent so the
-          stepper opens on the right step for this visitor. */}
-      <Suspense fallback={null}>
-        <MatchAgent initialIntent={content?.matchIntent} />
-      </Suspense>
-
-      {/* Soft expert CTA as a fallback for visitors who scrolled past
-          the MatchAgent without engaging. */}
-      <ExpertCTA />
+      {/* Guide funnel band — the lead-capture surface. Buying-side
+          personas (first home, upgrading, investing) get the buying
+          guide; selling and renovating get the selling guide. Same dark
+          night-suburb band as the homepage finale. */}
+      <section id="guide" className="band-glow bg-surface-inverse text-white scroll-mt-24">
+        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+          <Image
+            src="/images/hero/suburb-night.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover object-bottom opacity-80"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-30% via-surface-inverse/85 via-68% to-surface-inverse/15" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+            <div className="lg:col-span-5">
+              <div className="flex items-center gap-4 mb-10">
+                <span className="font-display italic text-cta text-base sm:text-lg leading-none">
+                  Free PDF
+                </span>
+                <span className="w-12 h-px bg-white/20" aria-hidden="true" />
+                <span className="text-[11px] uppercase tracking-[0.32em] text-white/60 font-sans font-medium">
+                  2026 edition
+                </span>
+              </div>
+              <h2 className="font-display text-white leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-8 font-medium">
+                {isBuyingHub ? (
+                  <>The complete guide to <span className="italic font-light text-cta">buying</span> property.</>
+                ) : (
+                  <>The complete guide to <span className="italic font-light text-cta">selling</span> your property.</>
+                )}
+              </h2>
+              <p className="font-display font-light text-xl sm:text-2xl text-white/80 leading-snug max-w-md">
+                {isBuyingHub
+                  ? "Ten chapters written for the buyer you actually are. Schemes, finance, inspections, the offer. Free, personalised, 60 seconds."
+                  : "Selling costs 3 to 5 percent of your price. The right moves claw thousands of it back. Ten chapters, personalised to your suburb, free."}
+              </p>
+            </div>
+            <div className="lg:col-span-7 lg:col-start-6">
+              <Suspense fallback={null}>
+                {isBuyingHub ? (
+                  <BuyingGuideFunnel source={`hub-${personaId}`} />
+                ) : (
+                  <SellingGuideFunnel source={`hub-${personaId}`} />
+                )}
+              </Suspense>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Persistent sticky CTA — slides up once visitor has scrolled
-          past the hero. Opens MatchDrawer inline so they don't lose
-          their place on the page. Intent pre-filled per persona. */}
+          past the hero. Deep-links the right guide funnel. */}
       <StickyMatchCTA
         intent={content?.matchIntent}
+        label={isBuyingHub ? "Get the free buying guide" : "Get the free selling guide"}
+        href={isBuyingHub ? "/buying-guide" : "/selling-guide"}
         dismissKey={`hub:${personaId}`}
       />
 

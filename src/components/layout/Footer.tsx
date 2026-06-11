@@ -63,6 +63,7 @@ const FOOTER_COLUMNS = [
     heading: "Learn",
     links: [
       { label: "Browse all guides",        href: "/guides" },
+      { label: "Free buying guide (PDF)",  href: "/buying-guide" },
       { label: "Free selling guide (PDF)", href: "/selling-guide" },
       { label: "First home buyers",        href: "/first-home-buyers" },
       { label: "Selling your home",        href: "/selling" },

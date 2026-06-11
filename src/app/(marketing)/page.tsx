@@ -511,6 +511,12 @@ export default function HomePage() {
                   </div>
                 ))}
               </div>
+              <p className="mt-10 text-sm text-white/60">
+                Buying, not selling?{" "}
+                <Link href="/buying-guide" className="text-cta hover:text-white underline underline-offset-4 decoration-cta/50 transition-colors">
+                  Get the free buying guide
+                </Link>
+              </p>
             </div>
 
             {/* Right, the funnel itself */}

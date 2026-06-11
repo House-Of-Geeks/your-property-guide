@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<title>The Complete Guide to Buying Property in Australia (2026 Edition) | Your Property Guide</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.6;
+    color: #251c14;
+    background: #fefbf7;
+  }
+
+  h1, h2, h3, .serif { font-family: Georgia, "Times New Roman", serif; font-weight: normal; }
+
+  p { margin: 0 0 8pt 0; }
+  ul, ol { margin: 4pt 0 10pt 0; padding-left: 16pt; }
+  li { margin-bottom: 3.5pt; }
+  li::marker { color: #bd592f; }
+  strong { font-weight: 600; color: #17100b; }
+
+  /* ---------- Page structure ---------- */
+  .page { page-break-before: always; }
+
+  /* ---------- Cover ---------- */
+  /* Decorative contours and glow are painted as background layers rather than
+     positioned elements: overflow/clip on fragmented blocks triggers a Chromium
+     print bug that paints ghost fragments on preceding pages. */
+  .cover {
+    height: 260mm;
+    background-image:
+      radial-gradient(circle at 102% 6%, transparent 0 58mm, rgba(255, 221, 198, 0.07) 58mm 58.4mm, transparent 58.4mm),
+      radial-gradient(circle at 102% 6%, transparent 0 86mm, rgba(255, 221, 198, 0.07) 86mm 86.4mm, transparent 86.4mm),
+      radial-gradient(circle at 102% 6%, transparent 0 116mm, rgba(255, 221, 198, 0.07) 116mm 116.4mm, transparent 116.4mm),
+      radial-gradient(circle at 100% 100%, rgba(189, 89, 47, 0.32) 0, rgba(189, 89, 47, 0) 95mm);
+    background-color: #17100b;
+    border-radius: 4mm;
+    color: #fefbf7;
+    position: relative;
+    padding: 13mm 13mm 11mm;
+    display: flex;
+    flex-direction: column;
+  }
+  .cover-rule { height: 2.2pt; background: #bd592f; margin-bottom: 7mm; }
+  .masthead {
+    font-size: 12pt;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: #ffddc6;
+    font-weight: 600;
+    margin: 0;
+    border: none;
+    padding: 0;
+  }
+  .cover-title-block { margin-top: 34mm; }
+  .cover h1 {
+    font-size: 37pt;
+    line-height: 1.12;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: #fefbf7;
+    margin: 0;
+    max-width: 168mm;
+  }
+  .cover h1 em { font-style: italic; color: #e8a075; }
+  .cover .edition {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 16pt;
+    color: #bd592f;
+    margin: 9mm 0 0 0;
+  }
+  .cover .cover-sub {
+    font-size: 11.5pt;
+    line-height: 1.65;
+    color: rgba(254, 251, 247, 0.72);
+    max-width: 120mm;
+    margin: 7mm 0 0 0;
+  }
+  .cover-spacer { flex: 1; }
+  .cover-foot {
+    border-top: 1px solid rgba(254, 251, 247, 0.18);
+    padding-top: 6mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .cover-foot .site { font-family: Georgia, serif; font-size: 13pt; color: rgba(254, 251, 247, 0.85); }
+  .cover-foot .free {
+    font-size: 8.5pt;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #ffddc6;
+    font-weight: 600;
+  }
+
+  /* ---------- Contents ---------- */
+  .toc h1 { font-size: 30pt; color: #17100b; margin: 0 0 4pt 0; }
+  .toc .toc-rule { border: none; border-top: 2.5pt solid #bd592f; width: 34pt; margin: 0 0 14pt 0; }
+  .toc-item {
+    display: grid;
+    grid-template-columns: 20mm 1fr;
+    align-items: start;
+    padding: 8.5pt 0;
+    border-bottom: 0.6pt solid #d9cfc5;
+  }
+  .toc-num {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 23pt;
+    line-height: 0.95;
+    color: #bd592f;
+    width: auto;
+  }
+  .toc-title {
+    grid-column: 2;
+    grid-row: 1;
+    font-family: Georgia, serif;
+    font-size: 13pt;
+    line-height: 1.3;
+    color: #17100b;
+  }
+  .toc-desc {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 8.5pt;
+    color: #564b42;
+    margin: 2pt 0 0 0;
+    padding: 0;
+    text-align: left;
+    max-width: none;
+  }
+
+  /* ---------- Chapter openers: dark ink band ---------- */
+  .ch-head {
+    background-image:
+      radial-gradient(circle at 90% -30%, transparent 0 62mm, rgba(255, 221, 198, 0.09) 62mm 62.4mm, transparent 62.4mm),
+      radial-gradient(circle at 90% -30%, transparent 0 78mm, rgba(255, 221, 198, 0.06) 78mm 78.4mm, transparent 78.4mm),
+      radial-gradient(circle at 102% 110%, rgba(189, 89, 47, 0.30) 0, rgba(189, 89, 47, 0) 60mm);
+    background-color: #17100b;
+    border-radius: 4mm;
+    min-height: 100mm;
+    padding: 12mm;
+    margin-bottom: 9mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    border-bottom: none;
+    break-inside: avoid;
+  }
+  .ch-num {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 95pt;
+    line-height: 0.8;
+    color: #bd592f;
+    margin-bottom: 8mm;
+  }
+  .ch-title {
+    font-size: 27pt;
+    line-height: 1.15;
+    font-weight: 500;
+    color: #fefbf7;
+    margin: 0 0 5mm 0;
+    max-width: 152mm;
+  }
+  .standfirst {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 11.5pt;
+    line-height: 1.55;
+    color: rgba(255, 221, 198, 0.88);
+    margin: 0;
+    max-width: 140mm;
+  }
+
+  h2 {
+    font-size: 15pt;
+    color: #17100b;
+    margin: 16pt 0 6pt 0;
+    display: block;
+    break-after: avoid;
+  }
+  h2::before {
+    content: "";
+    display: block;
+    width: 24pt;
+    border-top: 2.5pt solid #bd592f;
+    margin-bottom: 5pt;
+  }
+  h3 { font-size: 12pt; margin: 12pt 0 4pt 0; font-weight: 600; color: #17100b; break-after: avoid; }
+
+  /* ---------- Tables ---------- */
+  /* Tables break naturally across pages (thead repeats). Do not add
+     break-inside: avoid here: pushing a whole table to the next page makes
+     Chromium paint a stretched background ghost in the leftover space. */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    margin: 9pt 0 13pt 0;
+  }
+  th {
+    background: #17100b;
+    color: #f6ede2;
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 7.8pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    text-align: left;
+    padding: 7pt 9pt;
+    border: none;
+    vertical-align: bottom;
+  }
+  td {
+    padding: 7pt 9pt;
+    border: none;
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even) td { background: #f6ede2; }
+  tr { break-inside: avoid; }
+  .num { text-align: right; white-space: nowrap; }
+  .total-row td {
+    font-weight: 700;
+    color: #953407;
+    background: #ffddc6;
+    border-top: 1.5pt solid #bd592f;
+  }
+
+  /* ---------- 12-week timeline (chapter 10) ---------- */
+  table.timeline { font-size: 9.3pt; }
+  .timeline tbody tr:nth-child(even) td { background: transparent; }
+  .timeline td { border-bottom: 0.6pt solid #d9cfc5; padding: 8pt 9pt; }
+  .timeline td:first-child {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 11pt;
+    line-height: 1.25;
+    color: #bd592f;
+    border-right: 1.2pt solid rgba(189, 89, 47, 0.45);
+    padding-right: 8pt;
+  }
+  .timeline td:first-child strong { font-weight: normal; color: #bd592f; font-size: 12.5pt; }
+  .timeline td:last-child { text-align: center; font-size: 11pt; color: #953407; }
+
+  /* ---------- Stat callouts ---------- */
+  .stat {
+    background: #f6ede2;
+    border: 0.6pt solid #d9cfc5;
+    border-left: 4pt solid #bd592f;
+    border-radius: 0 2mm 2mm 0;
+    padding: 12pt 15pt 10pt;
+    margin: 13pt 0;
+    break-inside: avoid;
+  }
+  .stat-num {
+    font-family: Georgia, serif;
+    font-size: 42pt;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: #bd592f;
+    margin-bottom: 5pt;
+  }
+  .stat-label {
+    font-size: 8pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    line-height: 1.6;
+    color: #564b42;
+  }
+
+  /* ---------- Pull quotes ---------- */
+  .pull {
+    margin: 16pt 2mm;
+    padding: 10pt 2mm 12pt 15mm;
+    border-top: 1pt solid #bd592f;
+    border-bottom: 1pt solid #bd592f;
+    position: relative;
+    break-inside: avoid;
+  }
+  .pull::before {
+    content: "\201C";
+    position: absolute;
+    left: 0;
+    top: 6pt;
+    font-family: Georgia, serif;
+    font-size: 44pt;
+    line-height: 1;
+    color: #bd592f;
+  }
+  .pull p {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 19.5pt;
+    line-height: 1.4;
+    color: #17100b;
+    margin: 0;
+  }
+
+  /* ---------- Callout boxes ---------- */
+  .box {
+    background: #f6ede2;
+    border-left: 3pt solid #bd592f;
+    border-radius: 0 2mm 2mm 0;
+    padding: 11pt 14pt;
+    margin: 13pt 0;
+    break-inside: avoid;
+  }
+  .box-title {
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #953407;
+    margin-bottom: 5pt;
+  }
+  .box p:last-child, .box ol:last-child, .box ul:last-child { margin-bottom: 0; }
+  .box ol li { margin-bottom: 6pt; }
+
+  /* ---------- The 10-checks card (chapter 5) ---------- */
+  .q-card {
+    background-image:
+      radial-gradient(circle at 92% -22%, transparent 0 58mm, rgba(255, 221, 198, 0.08) 58mm 58.4mm, transparent 58.4mm),
+      radial-gradient(circle at 92% -22%, transparent 0 72mm, rgba(255, 221, 198, 0.05) 72mm 72.4mm, transparent 72.4mm),
+      radial-gradient(circle at 102% 105%, rgba(189, 89, 47, 0.26) 0, rgba(189, 89, 47, 0) 55mm);
+    background-color: #17100b;
+    border-left: none;
+    border-radius: 4mm;
+    padding: 11mm 10mm 10mm;
+    color: #f6ede2;
+  }
+  .q-card .box-title {
+    font-family: Georgia, serif;
+    font-size: 19pt;
+    font-weight: normal;
+    letter-spacing: 0;
+    text-transform: none;
+    color: #fefbf7;
+    margin-bottom: 7mm;
+  }
+  .q-card .box-title::before {
+    content: "";
+    display: block;
+    width: 26pt;
+    border-top: 2.5pt solid #bd592f;
+    margin-bottom: 6pt;
+  }
+  .q-card ol {
+    list-style: none;
+    counter-reset: q;
+    margin: 0;
+    padding: 0;
+  }
+  .q-card ol li {
+    counter-increment: q;
+    position: relative;
+    padding: 0 0 0 13mm;
+    margin: 0 0 8pt 0;
+    font-size: 9.3pt;
+    line-height: 1.5;
+    color: rgba(254, 251, 247, 0.62);
+  }
+  .q-card ol li::before {
+    content: counter(q, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 1pt;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 14pt;
+    line-height: 1;
+    color: #bd592f;
+  }
+  .q-card ol li strong { display: block; color: #fefbf7; font-weight: 600; margin-bottom: 1pt; }
+
+  /* ---------- Footer line ---------- */
+  .foot {
+    margin-top: 18pt;
+    padding-top: 6pt;
+    border-top: 0.6pt solid #d9cfc5;
+    font-size: 6.8pt;
+    color: #8a8276;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    break-before: avoid;
+  }
+
+  /* ---------- Back page: full-height ink plate ---------- */
+  .backpage {
+    height: 260mm;
+    background-image:
+      radial-gradient(circle at -2% 6%, transparent 0 58mm, rgba(255, 221, 198, 0.07) 58mm 58.4mm, transparent 58.4mm),
+      radial-gradient(circle at -2% 6%, transparent 0 86mm, rgba(255, 221, 198, 0.07) 86mm 86.4mm, transparent 86.4mm),
+      radial-gradient(circle at -2% 6%, transparent 0 116mm, rgba(255, 221, 198, 0.07) 116mm 116.4mm, transparent 116.4mm),
+      radial-gradient(circle at 0% 100%, rgba(189, 89, 47, 0.32) 0, rgba(189, 89, 47, 0) 95mm);
+    background-color: #17100b;
+    border-radius: 4mm;
+    color: #fefbf7;
+    padding: 14mm 13mm 12mm;
+    display: flex;
+    flex-direction: column;
+  }
+  .back-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .backpage h2 { color: #fefbf7; font-size: 19pt; margin: 0 0 6mm 0; }
+  .backpage h2::before { width: 26pt; border-top: 2.5pt solid #bd592f; margin-bottom: 6pt; }
+  .backpage p { color: rgba(254, 251, 247, 0.78); max-width: 152mm; }
+  .backpage p strong { color: #ffddc6; }
+  .back-spacer { flex: 1; }
+  .back-site { font-family: Georgia, serif; font-size: 25pt; color: #ffddc6; margin: 0 0 8mm 0; }
+  .disc-label {
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 221, 198, 0.7);
+    margin: 0 0 4pt 0;
+  }
+  .backpage .fineprint { font-size: 7.8pt; line-height: 1.55; color: rgba(254, 251, 247, 0.45); max-width: 165mm; }
+  .back-foot {
+    border-top: 1px solid rgba(254, 251, 247, 0.18);
+    padding-top: 5mm;
+    margin-top: 8mm;
+  }
+  .fineprint { font-size: 8.5pt; color: #6c655a; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<!-- ==================== COVER ==================== -->
+<section class="cover">
+  <div class="cover-top">
+    <div class="cover-rule"></div>
+    <div class="masthead">Your Property Guide</div>
+  </div>
+
+  <div class="cover-title-block">
+    <h1>The Complete Guide to <em>Buying</em> Property in&nbsp;Australia</h1>
+    <div class="edition">2026 Edition</div>
+    <p class="cover-sub">What it really costs, how the game is played, and how to buy well, whether it’s your first home, your next one, or an investment.</p>
+  </div>
+
+  <div class="cover-spacer"></div>
+
+  <div class="cover-foot">
+    <span class="site">yourpropertyguide.com.au</span>
+    <span class="free">Free · 10 Chapters</span>
+  </div>
+</section>
+
+<!-- ==================== CONTENTS ==================== -->
+<section class="toc page">
+  <h1>Contents</h1>
+  <hr class="toc-rule">
+  <div class="toc-item"><span class="toc-num">01</span><span class="toc-title">Which buyer are you?</span><span class="toc-desc">Four buyers, four playbooks, and the mistake each one makes most</span></div>
+  <div class="toc-item"><span class="toc-num">02</span><span class="toc-title">What you can actually spend</span><span class="toc-desc">Borrowing power, deposits, LMI and the upfront costs nobody budgets for</span></div>
+  <div class="toc-item"><span class="toc-num">03</span><span class="toc-title">First home buyer schemes, state by state</span><span class="toc-desc">The 5% deposit scheme, Help to Buy, grants and stamp duty relief in every state</span></div>
+  <div class="toc-item"><span class="toc-num">04</span><span class="toc-title">Finding the right suburb</span><span class="toc-desc">The data that matters, the noise that doesn’t, and the lenses for each buyer</span></div>
+  <div class="toc-item"><span class="toc-num">05</span><span class="toc-title">Inspecting like a professional</span><span class="toc-desc">The 30-minute checklist, reports worth paying for, and the red flags that cost five figures</span></div>
+  <div class="toc-item"><span class="toc-num">06</span><span class="toc-title">How the selling side plays you</span><span class="toc-desc">Underquoting decoded, auction psychology and the scripts every buyer hears</span></div>
+  <div class="toc-item"><span class="toc-num">07</span><span class="toc-title">Making the offer</span><span class="toc-desc">Private treaty tactics, the conditions that protect you, and how to bid at auction</span></div>
+  <div class="toc-item"><span class="toc-num">08</span><span class="toc-title">Finance from pre-approval to unconditional</span><span class="toc-desc">Pre-approval realities, valuation shortfalls and investor lending differences</span></div>
+  <div class="toc-item"><span class="toc-num">09</span><span class="toc-title">Contracts to keys</span><span class="toc-desc">Conveyancing, cooling-off by state, settlement and the final inspection</span></div>
+  <div class="toc-item"><span class="toc-num">10</span><span class="toc-title">Your 12-week buying timeline</span><span class="toc-desc">A week-by-week checklist from pre-approval to settlement day</span></div>
+</section>
+
+<!-- ==================== CHAPTER 1 ==================== -->
+<section class="chapter page">
+  <div class="ch-head">
+    <div class="ch-num">01</div>
+    <h1 class="ch-title">Which buyer are you?</h1>
+    <p class="standfirst">Everyone shops in the same market, but a first home buyer and a downsizer are playing different games with different rules. Know your game before you start.</p>
+  </div>
+
+  <p>Most buying advice is written as if every buyer were the same person: a couple in their early thirties buying a house to live in. In practice, Australian buyers split into four broad camps, and the right move for one is often the wrong move for another. This guide is built around that fact. Chapters 2 to 10 carry labelled callouts (First Home, Upgrader, Investor, Downsizer) wherever the advice diverges. Find your label and read those boxes first.</p>
+
+  <h2>The first home buyer</h2>
+  <p>Your defining constraints are the deposit and the clock: prices in most capitals grow faster than most people can save. Your defining advantages are government support worth tens of thousands of dollars (Chapter 3 is yours) and total flexibility, because you have nothing to sell. Your job is to get a foothold in a sound suburb at a price the numbers support, not to find a forever home on a first-home budget.</p>
+  <p><strong>The mistake you’ll be tempted by:</strong> falling in love. Agents can see it from the kerb, and an emotionally committed buyer with no purchase history is the easiest negotiation in real estate. Decide your walk-away number before inspecting, not during the auction.</p>
+
+  <h2>The upgrader</h2>
+  <p>You’re running two transactions in the same market, which is the part most upgraders underweight. If prices move, they move on your sale and your purchase at once, so the gap between the two properties matters more than either price alone. Your equity is your superpower; the sell-first-or-buy-first question is your hardest call, and Chapter 7 and our companion selling guide cover it.</p>
+  <p><strong>The mistake you’ll be tempted by:</strong> buying before you’ve tested what your current home is actually worth. An optimistic appraisal on the sale side plus an emotional purchase on the buy side is how families end up with bridging debt they never budgeted for.</p>
+
+  <h2>The investor</h2>
+  <p>You’re not buying a home, you’re buying a stream of rent and a claim on future growth, and the property doesn’t need to suit you at all. Your decisions should run on yield, vacancy rates, land value and tax position. Lenders treat you differently too: higher rates, sharper scrutiny of rental income, different loan structures (Chapter 8).</p>
+  <p><strong>The mistake you’ll be tempted by:</strong> buying where you live because you know it. Familiarity is not analysis. The suburb you drive through daily is rarely the best-performing asset available for your budget, and self-managing a property two streets away turns an investment into a part-time job.</p>
+
+  <h2>The downsizer</h2>
+  <p>You’re likely selling a large family home and buying something smaller, often with cash left over. You hold the strongest negotiating position of the four: no finance clause, flexible settlement, decades of market experience. Your risks are different: strata quality, lift access, proximity to services, and the gap between the home you picture and the one you’ll want in ten years. Superannuation rules also give you a dedicated lever (Chapter 3).</p>
+  <p><strong>The mistake you’ll be tempted by:</strong> buying for the life you’re leaving. The four-bedroom “downsize” with a guest wing for grandchildren who visit twice a year costs you exactly the windfall you downsized to collect.</p>
+
+  <h2>One number every persona shares</h2>
+  <p>Buying and later selling a property consumes roughly 7 to 10 per cent of its value in transaction costs: stamp duty, conveyancing, inspections, agent commission and marketing on the way out. That round trip is why short holds rarely pay. Whichever buyer you are, buy something you can comfortably hold for at least five to seven years, because the costs of changing your mind are brutal.</p>
+
+  <div class="stat">
+    <div class="stat-num">7 to 10%</div>
+    <div class="stat-label">Of a property’s value consumed by a full buy-sell round trip</div>
+  </div>
+
+  <aside class="pull">
+    <p>The market doesn’t care which buyer you are. Your playbook should.</p>
+  </aside>
+
+  <div class="box">
+    <div class="box-title">Watch for</div>
+    <p>Persona creep. First home buyers talking themselves into “investment-grade” apartments they don’t want to live in, investors keeping a dud because they once slept there, downsizers buying bigger. The moment your reasons stop matching your situation, stop and re-read this chapter.</p>
+  </div>
+
+  <p class="foot">yourpropertyguide.com.au · The Complete Guide to Buying Property in Australia</p>
+</section>
+
+<!-- ==================== CHAPTER 2 ==================== -->
+<section class="chapter page">
+  <div class="ch-head">
+    <div class="ch-num">02</div>
+    <h1 class="ch-title">What you can actually spend</h1>
+    <p class="standfirst">Two numbers get confused at the start of every purchase: what the bank will lend you, and what you should spend. They are rarely the same number.</p>
+  </div>
+
+  <h2>Borrowing power, and the buffer behind it</h2>
+  <p>Lenders work out your borrowing power from income, expenses, existing debts and the loan you’re asking for. Then they apply the rule that surprises most buyers: under APRA’s serviceability standard, banks must assess you as if your interest rate were <strong>3 percentage points higher</strong> than the rate you’ll actually pay. If your loan is offered at 5.9 per cent, you’re assessed at 8.9 per cent. APRA reviewed the buffer again in 2026 and held it at 3 points, so plan around it.</p>
+
+  <div class="stat">
+    <div class="stat-num">3 points</div>
+    <div class="stat-label">The APRA serviceability buffer added to your rate when banks assess you</div>
+  </div>
+  <p>Three things quietly shrink borrowing power: credit card limits (lenders assess the full limit, not the balance, so cancel or cut cards you don’t use), HELP/HECS repayments, and any existing loans including car finance and buy-now-pay-later accounts. Three months of clean bank statements before applying is worth real money.</p>
+  <p>Whatever number the bank produces, it is a ceiling, not a target. The bank is testing whether you can repay under stress; it is not testing whether you can repay under stress <em>and</em> have a life. Set your own budget from your real spending, then borrow less than you’re offered. Nobody has ever regretted a 10 per cent buffer of their own.</p>
+
+  <aside class="pull">
+    <p>The bank’s number is a ceiling, not a target.</p>
+  </aside>
+
+  <h2>Deposits: 5, 10 or 20 per cent</h2>
+  <p>Your deposit sets your loan-to-value ratio (LVR), and your LVR decides whether you pay <strong>lenders mortgage insurance</strong>. LMI protects the lender if you default; you pay the premium, and it buys you nothing. It applies once your LVR goes above 80 per cent, it scales steeply with the loan size and LVR, and most borrowers capitalise it onto the loan, which means paying interest on it for 30 years. Typical premiums on a $750,000 purchase, as at mid-2026:</p>
+
+  <table>
+    <thead><tr><th>Deposit</th><th>LVR</th><th>Typical LMI premium</th></tr></thead>
+    <tr><td>20% ($150,000)</td><td>80%</td><td class="num">$0</td></tr>
+    <tr><td>15% ($112,500)</td><td>85%</td><td class="num">$4,000 - $8,000</td></tr>
+    <tr><td>10% ($75,000)</td><td>90%</td><td class="num">$11,000 - $17,000</td></tr>
+    <tr><td>5% ($37,500)</td><td>95%</td><td class="num">$22,000 - $33,000</td></tr>
+  </table>
+  <p>Premiums vary by lender and insurer, so treat these as ranges, but the shape is universal: the last 5 per cent of deposit you didn’t save is the most expensive money in the deal. The big exception is the federal 5% Deposit Scheme, which lets eligible first home buyers skip LMI entirely; Chapter 3 covers it. A small number of professions (medicine, law, accounting at certain income levels) can also get LMI waived at 90 per cent LVR; ask a broker if that might be you.</p>
+
+  <h2>The upfront costs beyond the deposit</h2>
+  <p>The deposit is the headline, but settlement day has a supporting cast. Budget for all of it before you bid on anything:</p>
+  <ul>
+    <li><strong>Stamp duty (transfer duty).</strong> The big one: a state tax on the purchase, scaled to the price. On a $750,000 established home it ranges from roughly $20,000 to $40,000 for a non-first-home buyer depending on the state. First home buyer concessions can cut it to zero (Chapter 3).</li>
+    <li><strong>Conveyancing and searches: $800 to $2,500.</strong> Contract reviews, title and council searches, settlement. Engage someone before you make an offer, not after.</li>
+    <li><strong>Building and pest inspection: $400 to $800</strong> per property you get serious about. Strata report for units: $250 to $400. Budget for two or three of these across a campaign; reports on homes you don’t buy are the cheapest insurance in this guide.</li>
+    <li><strong>Government registration fees:</strong> mortgage registration and transfer fees, typically $200 to $500 combined depending on the state.</li>
+    <li><strong>Loan costs:</strong> application or settlement fees, $0 to $800 depending on the lender.</li>
+    <li><strong>Moving, connections, immediate repairs:</strong> $1,000 to $3,000 for most households. More if you’re buying appliances or window coverings, which new builds often lack.</li>
+  </ul>
+
+  <h2>Worked example: a $750,000 purchase</h2>
+  <p>An established house in NSW, bought two ways. Same property, very different cheques:</p>
+  <table>
+    <thead><tr><th>Upfront cost</th><th>First home buyer<br>(5% Deposit Scheme)</th><th>Upgrader<br>(20% deposit)</th></tr></thead>
+    <tr><td>Deposit</td><td class="num">$37,500</td><td class="num">$150,000</td></tr>
+    <tr><td>Stamp duty (typical NSW rate)</td><td class="num">$0 (exempt under $800,000)</td><td class="num">$29,000</td></tr>
+    <tr><td>Lenders mortgage insurance</td><td class="num">$0 (government guarantee)</td><td class="num">$0 (LVR 80%)</td></tr>
+    <tr><td>Conveyancing and searches</td><td class="num">$1,800</td><td class="num">$1,800</td></tr>
+    <tr><td>Building and pest inspection</td><td class="num">$600</td><td class="num">$600</td></tr>
+    <tr><td>Transfer and mortgage registration</td><td class="num">$340</td><td class="num">$340</td></tr>
+    <tr><td>Moving and connections</td><td class="num">$1,200</td><td class="num">$1,200</td></tr>
+    <tr class="total-row"><td>Total cash needed at settlement</td><td class="num">$41,440</td><td class="num">$182,940</td></tr>
+  </table>
+
+  <div class="stat">
+    <div class="stat-num">$29,000</div>
+    <div class="stat-label">Typical stamp duty on a $750,000 established home in NSW without a concession</div>
+  </div>
+  <p>The first home buyer gets in for a quarter of the upfront cash, but borrows $712,500 against $750,000 of property. A 5 per cent price dip puts that loan underwater on paper. Cheap entry is real; so is thin equity. Both columns are honest, and neither is free.</p>
+
+  <div class="box">
+    <div class="box-title">Investor</div>
+    <p>No first home concessions apply to you, so price stamp duty at the full rate, and in some states watch for surcharges (foreign-owner duty doesn’t apply to citizens, but investor land tax will likely apply every year you hold). The good news: stamp duty, borrowing costs and your paid LMI all join the property’s cost base or deductions. Keep every receipt from day one.</p>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Downsizer</div>
+    <p>If you’re buying from sale proceeds with no loan, the buffer and LMI sections don’t apply, but resist the urge to commit every dollar of the sale to the purchase. Keep a renovation and contingency fund outside the deal, and read Chapter 3 on the downsizer superannuation contribution before you decide where the leftover money lives.</p>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Watch for</div>
+    <p>Spending to your pre-approval because the number felt like permission. Pre-approval is calibrated to the bank’s risk, not your plans. The buyers who get into trouble are rarely the ones the bank rejected; they’re the ones the bank approved at the limit in a rising rate year.</p>
+  </div>
+
+  <p class="foot">yourpropertyguide.com.au · The Complete Guide to Buying Property in Australia</p>
+</section>
+
+<!-- ==================== CHAPTER 3 ==================== -->
+<section class="chapter page">
+  <div class="ch-head">
+    <div class="ch-num">03</div>
+    <h1 class="ch-title">First home buyer schemes, state by state</h1>
+    <p class="standfirst">The support on offer in 2026 is the most generous in a generation, and the most confusing. Here is the federal layer, the state layer, and who gets what.</p>
+  </div>
+
+  <h2>The federal 5% Deposit Scheme</h2>
+  <p>The headline program, formerly the Home Guarantee Scheme, was overhauled on 1 October 2025 and renamed the Australian Government 5% Deposit Scheme. The deal: you buy with a 5 per cent deposit, the government guarantees the portion of the loan above 80 per cent, and you pay <strong>no lenders mortgage insurance</strong>. On a 95 per cent loan that saves roughly $22,000 to $33,000 on a $750,000 purchase (Chapter 2’s table).</p>
+  <p>The October 2025 reforms removed the two biggest barriers: there is <strong>no longer any cap on places</strong> (the old 35,000-a-year lottery is gone) and <strong>no income test</strong>. Property price caps still apply and were raised substantially: $1.5 million for Sydney and the major NSW centres, $950,000 for Melbourne and Geelong, $1 million for Brisbane and South East Queensland’s centres, $900,000 for Adelaide, $850,000 for Perth, with lower caps outside the capitals. You must live in the home, prior property ownership rules apply, and you apply through a participating lender, not the government. One honest caveat: a guarantee is not a discount. You still borrow 95 per cent, and the repayments that come with it.</p>
+
+  <div class="stat">
+    <div class="stat-num">$1.5m</div>
+    <div class="stat-label">The 5% Deposit Scheme price cap for Sydney from 1 October 2025, up from $900,000</div>
+  </div>
+
+  <h2>Help to Buy: the government as co-owner</h2>
+  <p>Help to Buy is the federal shared equity scheme, launched in December 2025. The Commonwealth contributes up to 40 per cent of the price of a new home (30 per cent for an established one) in exchange for an equity stake, and you can enter with a 2 per cent deposit. It is income-tested ($100,000 for singles, $160,000 for couples and single parents), capped at 10,000 places a year, and runs through participating lenders, initially Commonwealth Bank and Bank Australia, with more joining through 2026. City price caps apply (Sydney $1.3 million, Melbourne $950,000, Brisbane $1 million, with lower caps in the smaller capitals and regions). You repay the government’s share when you sell, or buy it back in stages; the government’s slice of your capital growth goes with it. For buyers locked out by repayments rather than deposit, it’s the most powerful lever on this page. Read the equity mechanics carefully before signing.</p>
+
+  <h2>The First Home Super Saver scheme</h2>
+  <p>FHSS lets you make voluntary super contributions (up to $15,000 a year, $50,000 in total per person) and later withdraw them, plus deemed earnings, for a first home deposit. Because contributions can go in pre-tax at 15 per cent instead of your marginal rate, a couple can put $100,000 of deposit savings through super and come out thousands ahead of a bank account. The catches: paperwork order matters (request your determination from the ATO <strong>before</strong> you sign a contract), release takes weeks, and only voluntary contributions count, never the compulsory employer kind.</p>
+
+  <h2>State grants and stamp duty relief</h2>
+  <p>States stack their own help on top: a First Home Owner Grant (cash, almost always for new builds only) and stamp duty exemptions or concessions. Settings as at mid-2026:</p>
+
+  <table>
+    <thead><tr><th>State</th><th>First home owner grant</th><th>Stamp duty for first home buyers</th></tr></thead>
+    <tr><td>NSW</td><td>$10,000, new homes to $600,000 (or $750,000 building a new one)</td><td>Exempt to $800,000, concession to $1m, new or established</td></tr>
+    <tr><td>VIC</td><td>$10,000, new homes to $750,000</td><td>Exempt to $600,000, concession to $750,000</td></tr>
+    <tr><td>QLD</td><td>$30,000, new homes, contracts to 30 June 2026</td><td>New homes exempt with no price cap (from May 2025); established exempt to $700,000, partial to $800,000</td></tr>
+    <tr><td>WA</td><td>$10,000, new homes (regional price caps apply)</td><td>Exempt to $500,000; concession to $700,000 metro, $750,000 regional. A rise to $600,000 / $800,000 was in the May 2026 budget</td></tr>
+    <tr><td>SA</td><td>$15,000, new homes, no price cap</td><td>New homes and land: abolished, no cap. Established homes: no relief</td></tr>
+    <tr><td>TAS</td><td>$10,000 to $30,000 depending on contract date; confirm current setting</td><td>Established homes exempt to $750,000 for contracts to 30 June 2026</td></tr>
+    <tr><td>ACT</td><td>No grant; concession scheme instead</td><td>Full exemption to $1,020,000, income-tested. The 2026-27 budget announced duty abolished for all first home buyers</td></tr>
+    <tr><td>NT</td><td>$50,000 HomeGrown Territory grant, new homes, to 30 September 2026</td><td>No general first home duty concession; the grant does the heavy lifting</td></tr>
+  </table>
+  <p>Three patterns worth seeing. First, the grants chase <strong>new builds</strong>: governments want construction, so the cash goes to house-and-land and off-the-plan buyers. Second, the duty relief increasingly covers <strong>established homes</strong> too, which is where most first home buyers actually shop. Third, every scheme has eligibility fine print (residence periods, citizenship, prior ownership), and the dollar settings above change with budgets. Verify your state’s current numbers with its revenue office before you sign anything; the table is a map, not a contract.</p>
+
+  <div class="box">
+    <div class="box-title">Upgrader</div>
+    <p>None of this chapter applies to your purchase: the schemes are strictly first-home. Two exceptions worth knowing. If your household includes someone who has genuinely never owned (a new partner, for instance), buying in their name alone can retain eligibility, with real legal and lending trade-offs that need advice. And your stamp duty bill is full freight, so weigh renovation against moving: extending costs no duty at all.</p>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Investor</div>
+    <p>Every scheme on this page requires you to live in the property, so none of them fund a pure investment. The bigger trap runs the other way: buying an investment property <em>first</em> usually extinguishes your future first-home eligibility in most schemes. If you’re young and choosing between rentvesting and waiting to buy a home, price in what you’re giving up: on the numbers above, it can exceed $50,000.</p>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Downsizer</div>
+    <p>Your scheme lives in superannuation: the downsizer contribution lets each member of a couple move up to $300,000 from the sale of a home owned ten years or more into super, outside the normal caps, from age 55. That’s up to $600,000 of sale proceeds moved into a concessionally taxed environment. Get financial advice on timing, because it interacts with pension means tests.</p>
+  </div>
+
+  <p class="foot">yourpropertyguide.com.au · The Complete Guide to Buying Property in Australia</p>
+</section>
+
+<!-- ==================== CHAPTER 4 ==================== -->
+<section class="chapter page">
+  <div class="ch-head">
+    <div class="ch-num">04</div>
+    <h1 class="ch-title">Finding the right suburb</h1>
+    <p class="standfirst">Suburb choice does more for your result than anything you’ll negotiate later. Most buyers spend more time choosing the fridge.</p>
+  </div>
+
+  <h2>The data that matters (and the noise that doesn’t)</h2>
+  <p>Suburb medians make headlines and mislead buyers. A median jumps when a few expensive homes sell and slumps when a unit block settles; it tells you what sold, not what anything is worth. The numbers that actually describe a market are the same four sellers should watch, read from your side of the table:</p>
+  <ul>
+    <li><strong>Days on market.</strong> Under 30 days, sellers have the leverage and you’ll need to move fast and clean. Past 60, the leverage is yours.</li>
+    <li><strong>Auction clearance rates</strong> in auction cities. Sustained clearance above 65 per cent means crowds and overshooting guides; below 55, passed-in properties and negotiable vendors.</li>
+    <li><strong>Total listings.</strong> Rising stock month on month means more choice and softer prices. Falling stock means the opposite, whatever the headlines say.</li>
+    <li><strong>Vendor discounting.</strong> The average gap between asking and sale price. A wide gap is a market where asking prices are fiction; calibrate your offers accordingly.</li>
+  </ul>
+  <p>All four are free on the portals’ suburb pages. An hour with them beats a month of weekend drive-bys.</p>
+
+  <h2>Growth signals worth trusting</h2>
+  <p>Nobody reliably picks the next boom suburb, but the ingredients of growth are not mysterious:</p>
+  <ul>
+    <li><strong>Population pressure.</strong> People arriving faster than dwellings are built. State population projections and building approval counts are both public.</li>
+    <li><strong>Infrastructure that is funded, not promised.</strong> A train line under construction moves prices; a corridor study does not. Check the project’s status, not the press release.</li>
+    <li><strong>Land share of value.</strong> Land appreciates; buildings depreciate. A house where land is 60 to 70 per cent of the value has more growth engine than an apartment where it’s 10 per cent.</li>
+    <li><strong>The ripple effect.</strong> Suburbs bordering an expensive one inherit its priced-out buyers. If the neighbour has run hard and yours hasn’t, the gap usually closes.</li>
+    <li><strong>Supply constraint.</strong> Water, hills, heritage overlays and built-out streets limit new stock. Growth corridors with unlimited flat land must share their growth with every new estate.</li>
+  </ul>
+
+  <h2>School catchments: the boundary is the price</h2>
+  <p>Sought-after public school catchments carry measurable premiums; buyers routinely pay 5 to 10 per cent more for an address inside the zone, and agents price accordingly. Two cautions. Check the <strong>official</strong> catchment map on the education department’s site, not the agent’s flyer, because “close to” and “zoned for” are different products. And remember boundaries get redrawn; a premium paid for a zone is a premium that can be rezoned away.</p>
+
+  <div class="stat">
+    <div class="stat-num">5 to 10%</div>
+    <div class="stat-label">The premium buyers routinely pay inside sought-after school catchments</div>
+  </div>
+
+  <aside class="pull">
+    <p>Buy the suburb’s trajectory, not its brochure.</p>
+  </aside>
+
+  <div class="box">
+    <div class="box-title">First home</div>
+    <p>When the budget forces a compromise, compromise in this order: dwelling first, position second, suburb last. A dated kitchen is fixable; a flight path is not. The modest house on a good street in a rising suburb beats the renovated one backing the arterial road, every time, and the market knows it even when your heart doesn’t.</p>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Investor</div>
+    <p>Decide the yield-versus-growth balance before you shortlist. Gross yield is annual rent over price; net yield, after rates, insurance, management and maintenance, typically lands 1 to 1.5 points lower, and strata fees drag it further. High-yield regional markets carry vacancy and single-industry risk; low-yield blue chip costs you cash flow every month while you wait for growth. Check the vacancy rate (under 2 per cent is tight) and what fraction of the suburb is renters: a deep rental market protects you between tenants.</p>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Downsizer</div>
+    <p>Audit amenity on foot, not on the map: chemist, GP, supermarket, cafe, transport, all within a comfortable walk, plus a lift if you’re above the first floor and level entry everywhere. Then audit the building as hard as the apartment: strata fees, the capital works fund balance, and the last two years of meeting minutes (Chapter 5). You’re choosing the committee and the maintenance plan as much as the floorplan.</p>
+  </div>
+
+  <p class="foot">yourpropertyguide.com.au · The Complete Guide to Buying Property in Australia</p>
+</section>
+
+<!-- ==================== CHAPTER 5 ==================== -->
+<section class="chapter page">
+  <div class="ch-head">
+    <div class="ch-num">05</div>
+    <h1 class="ch-title">Inspecting like a professional</h1>
+    <p class="standfirst">An open home is staged to be glanced at. Thirty disciplined minutes see through most of it, and the right $600 report sees through the rest.</p>
+  </div>
+
+  <p>Professional buyers walk a property looking for reasons to say no. Amateurs walk it imagining their furniture. Both notice the light and the layout; only one of them checks under the sink. The discipline below costs nothing and routinely saves five figures.</p>
+
+  <div class="box q-card">
+    <div class="box-title">The 30-minute inspection: 10 checks</div>
+    <ol>
+      <li><strong>Walk the outside first.</strong> Cracks in brickwork wider than a couple of millimetres, especially stepped cracks above windows. Check where the ground drains: water running toward the house is a structural problem on layaway.</li>
+      <li><strong>Look up at every ceiling.</strong> Stains, fresh patches of paint in one spot, sagging plaster. A roof leak repainted last week is still a roof leak.</li>
+      <li><strong>Open and close every door and window.</strong> Sticking and uneven gaps can mean movement in the frame or footings, not humidity.</li>
+      <li><strong>Smell every room, especially wet areas.</strong> Mould and damp announce themselves; so does the air freshener hiding them. Closed windows on a mild day are a tell.</li>
+      <li><strong>Run the taps and flush the toilets.</strong> Water pressure, drainage speed, hot water delay. Look under sinks for swollen cabinetry and fresh silicone.</li>
+      <li><strong>Check the switchboard.</strong> Old ceramic fuses mean rewiring money. Note the hot water system’s age plate while you’re there; ten years is a countdown.</li>
+      <li><strong>Press the bathroom floor and tap the tiles.</strong> Movement, drummy tiles or spongy floors near showers point to waterproofing failure, one of the costliest defects in any home.</li>
+      <li><strong>Inspect the subfloor and ceiling cavity access.</strong> You may only manage a glance, but a torch into the subfloor reveals damp, piers and past termite treatment plugs faster than any brochure.</li>
+      <li><strong>Audit what the photos avoided.</strong> Wide-angle listing shots skip the neighbouring block, the power lines, the slope. Whatever wasn’t photographed is your first question.</li>
+      <li><strong>Walk the street at a different hour.</strong> Friday 5.30pm tells you about traffic and parking; Saturday 11am told you nothing. Talk to a neighbour: nobody reviews a street more honestly.</li>
+    </ol>
+  </div>
+
+  <h2>Building and pest: the best $600 in the deal</h2>
+  <p>A combined building and pest inspection ($400 to $800) is a visual, non-invasive assessment by a licensed inspector: structure, roof, subfloor, moisture readings, termite evidence. Commission your own, attend in person, and ring the inspector afterwards; the ten-minute phone call is franker than the written report, which is drafted with lawyers in mind. Read the whole document, not the summary, and remember what it is not: inspectors don’t open walls, move furniture or test appliances, so “no visible evidence” means exactly that.</p>
+  <p>Don’t skip the report on new builds or renovated homes; fresh paint hides more than old wallpaper ever did. And treat the seller’s own report, if offered, as a starting point rather than a substitute. It may be accurate, but the inspector was answering to the other side.</p>
+
+  <h2>Units: the strata report is the building’s diary</h2>
+  <p>For apartments and townhouses, the strata (body corporate) records search, $250 to $400, matters as much as the building report. You’re looking for: the <strong>capital works (sinking) fund balance</strong> against the building’s age and size; any <strong>special levies</strong> struck or flagged; meeting minutes mentioning water ingress, concrete spalling, combustible cladding or defect disputes with the builder; insurance currency; and the ratio of owner-occupiers to renters. A healthy building has boring minutes and a fat fund. A $400,000 unit above a $40,000-per-lot remediation problem is not a bargain at any discount.</p>
+
+  <h2>The red flags that cost five figures</h2>
+  <p>Some defects are negotiating points; some are exits. The expensive ones cluster in five families: <strong>water</strong> (failed waterproofing, rising damp, poor drainage; bathroom rebuilds start around $15,000), <strong>structure</strong> (underpinning and restumping commonly run $15,000 to $40,000), <strong>termites</strong> (active infestation plus structural repair regularly exceeds $20,000), <strong>roofing</strong> (full replacement $15,000 to $30,000), and <strong>old services</strong> (rewiring or replumbing a whole house, $10,000 to $25,000 each). None of these is automatically a deal-killer; all of them are deal-repricers, and the seller knows it the moment your report does.</p>
+
+  <div class="stat">
+    <div class="stat-num">$20,000+</div>
+    <div class="stat-label">What active termite damage plus structural repair regularly costs</div>
+  </div>
+
+  <h2>When to walk</h2>
+  <p>Walk when the defect is structural and unquantified (no engineer’s report, no fixed price), when the seller blocks reasonable inspection access, when the strata minutes show a defect dispute with no funded plan, or when fixing the problem would cost more than the discount you can realistically negotiate. There is always another property. Nobody believes that during the campaign; everybody knows it a year later.</p>
+
+  <aside class="pull">
+    <p>Every defect found before exchange is a discount. Every one found after is a bill.</p>
+  </aside>
+
+  <div class="box">
+    <div class="box-title">First home</div>
+    <p>The reports are where stretched budgets cut corners, and it’s exactly backwards: you have the least spare cash to absorb a surprise, so you can least afford to skip the $600 that prevents one. Budget for reports on two or three properties across your search. Losing $600 on a house someone outbids you for stings; finding the restumping job after settlement ruins you.</p>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Investor</div>
+    <p>Read the report twice: once for risk, once for leverage and tax. Documented defects are your negotiation evidence (Chapter 7), and the capital works you do after settlement feed your depreciation schedule. But weigh repair downtime honestly: every week the property can’t be tenanted is yield you quoted to yourself and won’t receive.</p>
+  </div>
+
+  <p class="foot">yourpropertyguide.com.au · The Complete Guide to Buying Property in Australia</p>
+</section>
+
+<!-- ==================== CHAPTER 6 ==================== -->
+<section class="chapter page">
+  <div class="ch-head">
+    <div class="ch-num">06</div>
+    <h1 class="ch-title">How the selling side plays you</h1>
+    <p class="standfirst">The agent at the open home is charming, helpful and entirely employed by the other side. Decode the playbook and it loses most of its power.</p>
+  </div>
+
+  <p>Start with the structural fact every buyer should tattoo somewhere visible: <strong>the agent works for the seller</strong>. Their legal duty and their commission both point the other way. None of what follows makes agents villains; it makes them professionals running a campaign. You’re not the client. You’re the market.</p>
+
+  <h2>Price guides and underquoting, decoded</h2>
+  <p>A price guide is a marketing instrument, not a valuation. Quoting low pulls a bigger crowd, and a bigger crowd makes a better auction, so guides in hot auction markets routinely finish 10 per cent or more below the result. The states have rules (in NSW the advertised guide can’t sit below the agent’s written estimate in the agency agreement; in Victoria every listing needs a Statement of Information with an indicative price backed by three comparable sales), but enforcement chases the worst cases, not the everyday stretch.</p>
+  <p>Your defence is to build your own number and treat the guide as a starting rumour. Pull the three comparables from the Statement of Information or ask the agent directly which sales support the guide, then check what those properties actually sold for. If the guide can’t survive contact with its own evidence, price the property yourself: recent settled sales of genuinely similar homes within a kilometre, adjusted for land, condition and street. Chapter 2 of our selling guide describes exactly how sellers and agents build the real number; buyers should build the same one.</p>
+  <p>Watch the guide’s behaviour during the campaign too. A guide that creeps upward mid-campaign (“buyer feedback has been strong”) is telling you the crowd is real. A guide that holds while open-home numbers thin is telling you the opposite, whatever the agent says on Saturday.</p>
+
+  <h2>The scripts, translated</h2>
+  <ul>
+    <li><strong>“What’s your budget?”</strong> The most profitable question in real estate, for the other side. Answer with a range bottomed at your hoped-for price, or deflect: “depends on the property”. Never name your ceiling.</li>
+    <li><strong>“We have another very interested buyer.”</strong> Possibly true, impossible to verify, and deployed precisely because of that. Respond to evidence (a contract issued, a building report ordered), not adjectives.</li>
+    <li><strong>“The vendor would consider offers around $X.”</strong> Fishing. The number is an anchor set above the vendor’s floor. Counter with your evidence, not their anchor.</li>
+    <li><strong>“Make your best and final offer.”</strong> Sometimes a genuine multiple-offer process, sometimes pressure theatre. Ask how offers will be presented and whether the process is in writing. A real process survives the question.</li>
+    <li><strong>“It will be sold by the weekend.”</strong> Maybe. Properties reappear after “sold by the weekend” more often than agents advertise. If it does sell, the next one won’t be the last good house in Australia.</li>
+  </ul>
+  <p>One more quiet mechanism: everything you tell any agent goes into a database and follows you. Your budget, your urgency, your divorce, your lease ending in March. Be polite, be engaged, and be boring.</p>
+
+  <aside class="pull">
+    <p>You’re not the client. You’re the market.</p>
+  </aside>
+
+  <h2>Auction psychology, from the buyer’s side</h2>
+  <p>Auctions are engineered environments: the crowd supplies social proof, the auctioneer supplies momentum, and the contract supplies finality (no cooling-off, anywhere, ever; Chapter 7). The craft is in small things: opening “vendor bids” to start the climb, calling for raises in $5,000 steps so increments feel trivial against the price of a house, and the long theatrical pause before “passing in” that flushes out one more bid. Knowing the machinery doesn’t make you immune, which is why your limit gets set at home, in writing, before you register (Chapter 7 covers bidding tactics).</p>
+
+  <h2>Days on market: your leverage, published daily</h2>
+  <p>Sellers watch their listing age with rising dread, and you can watch it too: listing date, price-cut history and previous campaigns are all visible on the portals or a sixty-second search. A fresh listing in week one or two has a confident vendor and rarely negotiates hard. The same listing at day 70, after one price cut and a relisted campaign, has a vendor whose agent is now conditioning <em>them</em>, not you. That is the moment conditional offers, longer settlements and sharper prices get accepted.</p>
+
+  <div class="stat">
+    <div class="stat-num">60 days</div>
+    <div class="stat-label">Past this many days on market, the negotiating leverage is yours</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">First home</div>
+    <p>Urgency scripts are aimed at you, because fear of missing out is strongest in buyers who’ve missed out before. Two rules hold the line: never reveal your pre-approval amount (it is your ceiling, and they will find it), and never make a same-day offer you hadn’t planned that morning. Any property that punishes a single night’s sleep was going to punish you eventually.</p>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Investor</div>
+    <p>Your advantage is that none of the emotional machinery works on a spreadsheet. Use it openly: tell the agent you’re a numbers buyer with finance arranged, ask for the rental appraisal and outgoings up front, and make offers that expire. Agents triage buyers constantly; the unemotional one with clean terms often beats a higher, flakier offer.</p>
+  </div>
+
+  <p class="foot">yourpropertyguide.com.au · The Complete Guide to Buying Property in Australia</p>
+</section>
+
+<!-- ==================== CHAPTER 7 ==================== -->
+<section class="chapter page">
+  <div class="ch-head">
+    <div class="ch-num">07</div>
+    <h1 class="ch-title">Making the offer</h1>
+    <p class="standfirst">Price gets the attention, but offers are packages: price, conditions, deposit, settlement. The buyers who win pleasant deals negotiate all four.</p>
+  </div>
+
+  <h2>Private treaty: the negotiation</h2>
+  <p>Before you offer, you need three numbers written down: your evidence-based value (from comparable settled sales, not the guide), your opening offer, and your genuine walk-away. The discipline isn’t the arithmetic; it’s refusing to revise the walk-away mid-negotiation because the kitchen was nice.</p>
+  <p>Open below your value but inside credibility: roughly 5 per cent under in a balanced market, more if the listing is stale (Chapter 6), less in a hot one. Lowball offers 15 per cent under don’t anchor anything; they just teach the agent to stop calling you. Put the offer <strong>in writing</strong> with your conditions, your deposit and your settlement terms stated, give it an expiry (48 to 72 hours keeps a process honest), and justify the number with two or three comparable sales. An offer with reasons is harder to dismiss than a number on its own.</p>
+  <p>Expect the counter, and mind the oldest trap in the book: split-the-difference. “You’re at $720,000, they’re at $740,000, let’s do $730,000” costs you $10,000 in one agreeable sentence. Counter smaller, slower and with reasons. And use terms as currency: a settlement date that suits the vendor, a bigger deposit, a shorter finance period. Terms regularly buy what cash can’t.</p>
+
+  <h2>The conditions that protect you</h2>
+  <ul>
+    <li><strong>Subject to finance.</strong> Your right to exit, deposit intact, if your loan isn’t formally approved within a stated period (14 to 21 days is standard). Pre-approval does not make this clause redundant: final approval depends on the bank valuing <em>this property</em> (Chapter 8). Waive it only with unconditional approval in writing.</li>
+    <li><strong>Subject to building and pest.</strong> Your exit, or in practice your renegotiation lever, if the inspection finds material defects. In hot markets buyers waive it to look strong; that is exactly the market where a desperate seller’s defects are hiding behind fresh paint.</li>
+    <li><strong>Subject to sale</strong> of your own property: the weakest condition you can attach, and many sellers won’t take it. If you need it, you’re usually better selling first (Chapter 1’s upgrader problem).</li>
+  </ul>
+  <p>In some states conditions are standard contract furniture (Queensland’s standard contract has finance and building-and-pest clauses built in); in NSW and Victoria they’re negotiated specially. Your conveyancer inserts them <strong>before</strong> you sign, which is why they’re engaged in week one, not after the handshake.</p>
+
+  <h2>Deposits and exchange</h2>
+  <p>The deposit (10 per cent by convention, 5 per cent commonly negotiated) is paid when contracts are exchanged and held in trust, almost always the agent’s trust account, until settlement. It is not extra money; it’s the first slice of your purchase price. Exchange is the moment the deal binds both sides, and in NSW and the ACT there’s a gap between the handshake and exchange in which you can be <strong>gazumped</strong>: the seller can legally take a better offer until contracts are exchanged. The defence is speed: contract reviewed early, deposit ready, pressure on for a fast exchange. In cooling-off states you can sign quickly and let the cooling-off period (Chapter 9’s table) do the protecting; withdrawing inside it costs 0.25 per cent of the price in NSW, a fair premium for locking the door behind you.</p>
+
+  <h2>Auction strategy: decided beforehand, executed coldly</h2>
+  <p>Everything about auctions flows from one legal fact: <strong>the winning bid is unconditional, and there is no cooling-off at auction in any Australian state or territory</strong>. No finance clause, no inspection clause, deposit due on the spot. In Victoria the exclusion extends to private sales within three clear business days either side of a publicly advertised auction. So every protection has to happen before the hammer: contract reviewed by your conveyancer, building and pest done, strata report read, finance formally approved with the bank’s valuation completed, deposit cheque or transfer arranged.</p>
+
+  <div class="stat">
+    <div class="stat-num">0 days</div>
+    <div class="stat-label">Cooling-off after the hammer falls, in every state and territory</div>
+  </div>
+  <p>On the day, tactics matter less than folklore says, but they’re not nothing:</p>
+  <ul>
+    <li><strong>Set your limit in writing before you leave home</strong>, an odd number ($861,500 beats $860,000, because limits cluster at round numbers and yours clears the cluster).</li>
+    <li><strong>Bid clearly and without hesitation.</strong> Projecting calm certainty discourages marginal bidders. Whether you open early or wait, bid like someone who intends to win.</li>
+    <li><strong>Control the increments.</strong> You can offer less than the auctioneer calls; slowing $10,000 steps to $2,500 late in the contest drains momentum and smokes out stretched bidders.</li>
+    <li><strong>Know the pass-in rules.</strong> If bidding stalls below reserve, the highest bidder usually earns the first (and sometimes exclusive) right to negotiate immediately afterwards. Being that bidder at a low number is a strong place to stand; brief yourself on your negotiation floor before the auction, not in the huddle.</li>
+    <li><strong>Vendor bids must be announced</strong> by the auctioneer. Hearing one late in the contest tells you the real bidding hasn’t reached reserve. That is information; use it.</li>
+  </ul>
+
+  <aside class="pull">
+    <p>An auction limit set in the moment is not a limit.</p>
+  </aside>
+
+  <div class="box">
+    <div class="box-title">First home</div>
+    <p>Your pre-auction bill is real: a contract review, a building and pest report and possibly a strata search on a property you may not win, multiplied by every auction you attempt. Budget for it, and use it as a filter: if you wouldn’t spend $800 preparing, you don’t want the property at auction prices. Some buyers split costs by negotiating report access with other bidders; fine, but read the assignment terms.</p>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Downsizer</div>
+    <p>You are often the strongest buyer in the room and the least inclined to say so. Say so. No finance condition, flexible settlement, rent-back offered if the vendor needs time: that package routinely beats higher offers from conditional buyers. Make the agent repeat your terms to the vendor by putting them in the written offer, not the conversation.</p>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Watch for</div>
+    <p>Pre-auction offers solicited by the agent (“the vendor will sell before Saturday for the right number”). Sometimes genuine, often a device to set a floor under the auction using your money. If you offer pre-auction, make it strong enough to actually end the campaign, with a short fuse, and be ready for it to be shopped around. A weak pre-auction offer is just a donation of information.</p>
+  </div>
+
+  <p class="foot">yourpropertyguide.com.au · The Complete Guide to Buying Property in Australia</p>
+</section>
+
+<!-- ==================== CHAPTER 8 ==================== -->
+<section class="chapter page">
+  <div class="ch-head">
+    <div class="ch-num">08</div>
+    <h1 class="ch-title">Finance from pre-approval to unconditional</h1>
+    <p class="standfirst">Pre-approval feels like a green light. It’s a strong maybe with an expiry date, and the distance between the two is where purchases fall over.</p>
+  </div>
+
+  <h2>What pre-approval is, and isn’t</h2>
+  <p>Pre-approval (conditional approval) is a lender’s in-principle agreement to lend you up to a stated amount, subject to conditions, always including a valuation of whatever property you eventually buy. Get it before you shop seriously: it fixes your real budget, marks you as a credible buyer, and finds problems while they’re fixable. But know its limits. Some “pre-approvals” are system-generated in minutes without a human reading your documents; ask whether yours was <strong>fully assessed by a credit officer</strong>, because the unassessed kind collapses at the worst moment. And it typically <strong>expires after about 90 days</strong>. Renewing is usually straightforward, but it’s a fresh assessment: if rates have risen or your circumstances changed, the number can come back smaller.</p>
+
+  <div class="stat">
+    <div class="stat-num">90 days</div>
+    <div class="stat-label">The typical life of a pre-approval before it expires and must be reassessed</div>
+  </div>
+  <p>Between pre-approval and final approval, live like the application is still open, because it is: don’t change jobs if avoidable, don’t take on new debt or raise card limits, don’t make patterns of unexplained spending, and don’t lodge applications with multiple lenders for sport, since every hard enquiry lands on your credit file.</p>
+
+  <h2>Valuation shortfalls: the quiet deal-killer</h2>
+  <p>Final approval hinges on the lender’s valuation of the specific property. Banks lend against the <strong>lower</strong> of price and valuation, so if you contract at $800,000 and the valuer says $760,000, your 80 per cent loan just shrank by $32,000, and the gap comes from your pocket. Shortfalls cluster in fast-moving markets (valuations look backward at settled sales; you bid forward), off-the-plan purchases, and unusual properties with thin comparables.</p>
+  <p>If it happens: ask the broker to <strong>challenge the valuation</strong> with better comparables (it sometimes works), order a valuation through a second lender (valuers differ more than banks admit), renegotiate the price with the valuation as evidence, or exit under your finance clause. Every one of those options is better than the fifth, which is finding the gap on a credit card. If you bought at auction with no finance clause, the gap is simply yours; re-read Chapter 7’s pre-auction checklist.</p>
+
+  <aside class="pull">
+    <p>Banks lend against the lower of price and valuation. The gap is yours.</p>
+  </aside>
+
+  <h2>Investor lending: a different counter</h2>
+  <p>Investment loans run on harsher settings than owner-occupier loans, and pricing your purchase on owner-occupier assumptions is a rookie error:</p>
+  <ul>
+    <li><strong>Rates run higher</strong>, typically 0.2 to 0.6 percentage points above comparable owner-occupier loans, with interest-only versions higher again.</li>
+    <li><strong>Interest-only periods</strong> (commonly five years) maximise deductible interest and cash flow, but you’re assessed on your ability to repay principal over the <em>remaining</em> term, which cuts borrowing power, and the repayment jump at the end of the IO period is real.</li>
+    <li><strong>Rental income gets shaded:</strong> most lenders count only about 80 per cent of expected rent, to allow for vacancy and costs, and then add their own estimates of expenses on top. Your spreadsheet says the rent covers the loan; the bank’s says otherwise, and the bank votes.</li>
+  </ul>
+  <p>Structure matters more for investors than anyone: loan splits, offset placement, and keeping investment debt cleanly separate from private debt all have tax consequences. Get the structure advice <em>before</em> settlement; restructuring afterwards ranges from expensive to impossible.</p>
+
+  <h2>Broker or direct?</h2>
+  <p>Roughly three in four new Australian home loans are now written through mortgage brokers, and the logic is plain: one application, dozens of lenders, and the broker is paid commission by the lender rather than by you. Brokers also carry a legal <strong>best interests duty</strong> to you; a bank’s own lending staff carry no such duty and can only ever offer that bank’s products. The counterweights: a broker’s panel doesn’t include every lender, commission structures can subtly favour some products, and a mediocre broker is worse than a good bank banker. Going direct can win when you have a strong existing banking relationship or a lender outside broker panels. Whichever path, compare at least two offers, and ask the broker straight: “Which lenders pay you most, and is one of them this recommendation?” Good ones answer without blinking.</p>
+
+  <div class="box">
+    <div class="box-title">First home</div>
+    <p>The 5% Deposit Scheme and Help to Buy run through participating lenders only, and not every bank participates, so scheme eligibility narrows your lender list before rate shopping starts. A broker who writes scheme loans weekly will know which lenders are fast, which price scheme loans competitively, and which drown applicants in paperwork. Ask specifically about scheme experience when choosing one.</p>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Upgrader</div>
+    <p>Don’t default to your current lender out of loyalty; the refinance market prices loyalty at zero. But beware <strong>cross-collateralisation</strong>: letting one bank secure the new loan against both your old and new homes ties the properties together, complicates your sale and hands the bank all the leverage. Keep the loans clean and separate, even if it means more paperwork during the changeover.</p>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Downsizer</div>
+    <p>If you need a loan at all (to bridge between buying and selling, or to top up), expect age to enter the assessment: lenders must see a credible exit strategy for any loan extending past retirement income. Bridging finance works but compounds interest on the combined debt, so get it modelled before you commit, and treat a long settlement on your purchase (Chapter 7) as the cheaper alternative it usually is.</p>
+  </div>
+
+  <p class="foot">yourpropertyguide.com.au · The Complete Guide to Buying Property in Australia</p>
+</section>
+
+<!-- ==================== CHAPTER 9 ==================== -->
+<section class="chapter page">
+  <div class="ch-head">
+    <div class="ch-num">09</div>
+    <h1 class="ch-title">Contracts to keys</h1>
+    <p class="standfirst">The weeks between signing and settlement are dull when everything goes right. Here is what your conveyancer does, what you must do, and the one inspection that still matters.</p>
+  </div>
+
+  <h2>Conveyancing: hire early, use properly</h2>
+  <p>A conveyancer or property solicitor ($800 to $2,500 for a standard purchase) reviews the contract, runs the searches, manages conditions and deadlines, and executes settlement. The single most valuable thing they do costs the least: the <strong>pre-signing contract review</strong>, often $200 to $400 if charged separately. It catches the special condition that waives your rights, the easement through the backyard, the sunset clause in the off-the-plan contract, the inclusions list missing the dishwasher you shook hands over. Engage them in week one of your search and send every contract you get serious about. Solicitors over conveyancers when anything is non-standard: trusts or SMSF purchases, off-the-plan, disputes, or anything involving the word “unusual” from your own conveyancer. (In Queensland, conveyancing is done by solicitors as standard practice; in WA, settlement agents are the local equivalent.)</p>
+
+  <h2>Cooling-off: your exit window, state by state</h2>
+  <p>In most states, a buyer who signs a private treaty contract for residential property gets a short statutory window to withdraw, for a small penalty or none. It exists so a rushed signature isn’t a life sentence; it is not a free option to keep shopping. It never applies to auction purchases, and it can be waived (in NSW via a section 66W certificate from your solicitor) or shortened by agreement.</p>
+
+  <table>
+    <thead><tr><th>State / territory</th><th>Buyer cooling-off period</th><th>Cost to withdraw</th></tr></thead>
+    <tr><td>NSW</td><td>5 business days (10 for off-the-plan)</td><td>0.25% of purchase price</td></tr>
+    <tr><td>Victoria</td><td>3 business days</td><td>$100 or 0.2%, whichever is greater</td></tr>
+    <tr><td>Queensland</td><td>5 business days</td><td>Up to 0.25%</td></tr>
+    <tr><td>South Australia</td><td>2 clear business days (runs from Form 1 service if later)</td><td>Deposit above $100 refunded</td></tr>
+    <tr><td>Western Australia</td><td>None (unless written into the contract)</td><td>n/a</td></tr>
+    <tr><td>Tasmania</td><td>None (unless written into the contract)</td><td>n/a</td></tr>
+    <tr><td>ACT</td><td>5 business days</td><td>0.25% of purchase price</td></tr>
+    <tr><td>Northern Territory</td><td>4 business days</td><td>None; deposit refunded in full</td></tr>
+  </table>
+  <p>In WA and Tasmania there is no statutory window at all, so every protection must be a written condition in the contract before you sign. Treat the table as the default and confirm current rules when you sign; these settings get amended.</p>
+
+  <h2>Exchange to settlement: the quiet checklist</h2>
+  <p>Settlement is negotiated in the contract: around 30 days is common in Queensland, 42 days (six weeks) the default in NSW and Victoria, with 30 to 90 days the practical national range. Between exchange and settlement day:</p>
+
+  <div class="stat">
+    <div class="stat-num">42 days</div>
+    <div class="stat-label">The default settlement period in NSW and Victoria; about 30 in Queensland</div>
+  </div>
+  <ul>
+    <li><strong>Get finance to unconditional</strong> inside the clause period, in writing, and have your conveyancer confirm it to the other side. Silence past the deadline puts your deposit at risk.</li>
+    <li><strong>Insure the building from exchange.</strong> In Queensland, risk formally passes to the buyer shortly after signing; elsewhere it generally stays with the seller until settlement, but the cheapest certainty in this list is simply holding cover from exchange everywhere. Strata buildings carry their own insurance; you insure contents.</li>
+    <li><strong>Sign and return everything fast.</strong> Transfer documents, your lender’s loan pack, identity verification. The most common cause of delayed settlements is paperwork sitting in someone’s inbox, and in most states the party who can’t settle on time pays penalty interest.</li>
+    <li><strong>Book the practical life admin:</strong> removalists, utility connections for settlement day, mail redirection, and your state revenue office concession paperwork if you’re claiming one (your conveyancer usually lodges duty and concessions for you).</li>
+  </ul>
+
+  <h2>The final inspection: use it</h2>
+  <p>You’re entitled to a pre-settlement inspection, usually in the final week, booked through the agent. You’re confirming the property is in the same condition as at sale and every contractual inclusion is present and working: light fittings, dishwasher, curtains, pool equipment, the shed contents you negotiated. Run taps, test appliances, open every door. If something’s wrong, don’t accept the keys-and-promises version; call your conveyancer the same day. The remedies (a settlement adjustment, money held in retention, or a short delay) all work vastly better <em>before</em> the money moves. After settlement, you’re chasing a stranger for a favour.</p>
+
+  <aside class="pull">
+    <p>Settlement day is boring when everyone has done their job. Aim for boring.</p>
+  </aside>
+
+  <h2>Settlement day</h2>
+  <p>Almost everything happens electronically through PEXA or an equivalent platform, attended by the conveyancers and lenders rather than you. In sequence: your lender draws down the loan, your funds and theirs settle against the seller’s mortgage discharge, stamp duty is paid, rates and water are adjusted to the day, the transfer is lodged and the title moves. Your conveyancer phones you, the agent releases the keys, and the property is yours, usually by mid-afternoon. Keep the settlement statement and contract permanently; if the property ever produces income, your accountant will want them decades from now.</p>
+
+  <div class="box">
+    <div class="box-title">Investor</div>
+    <p>If the property comes with a tenant, the lease survives settlement and so do its terms; you inherit the rent, the bond and the condition report, so have your conveyancer verify all three before settlement. Appoint your property manager before settlement day, and order a <strong>tax depreciation schedule</strong> (around $600 to $800, itself deductible) immediately after it. Rent is apportioned at settlement like rates, so check the adjustment statement.</p>
+  </div>
+
+  <div class="box">
+    <div class="box-title">First home</div>
+    <p>Your concessions get actioned here: the conveyancer lodges the stamp duty exemption paperwork, and any grant for a new build is typically paid through your lender at settlement. Most schemes then require you to <strong>move in within 12 months and live there for a minimum period</strong> (commonly 6 to 12 months, varying by state and scheme). Renting it out early can mean repaying the lot, plus penalties. Diarise the dates.</p>
+  </div>
+
+  <p class="foot">yourpropertyguide.com.au · The Complete Guide to Buying Property in Australia</p>
+</section>
+
+<!-- ==================== CHAPTER 10 ==================== -->
+<section class="chapter page">
+  <div class="ch-head">
+    <div class="ch-num">10</div>
+    <h1 class="ch-title">Your 12-week buying timeline</h1>
+    <p class="standfirst">Print this page. Twelve weeks from first broker call to exchange is realistic for a prepared buyer, with settlement following four to six weeks later.</p>
+  </div>
+
+  <table class="timeline">
+    <thead><tr><th style="width:18%">When</th><th>What to do</th><th style="width:8%">Done</th></tr></thead>
+    <tr>
+      <td><strong>Week 12</strong></td>
+      <td>Set your real budget from your own spending, not a calculator. Pull three months of statements, cancel unused credit cards, stop the buy-now-pay-later. Pick your persona from Chapter 1 and write down what you’re actually buying and why.</td>
+      <td>☐</td>
+    </tr>
+    <tr>
+      <td><strong>Week 11</strong></td>
+      <td>Talk to a broker (or two lenders direct). Check your scheme eligibility (Chapter 3) and confirm which lenders participate. Lodge your pre-approval application, fully assessed, not the instant kind. First home buyers using FHSS: request your ATO determination now.</td>
+      <td>☐</td>
+    </tr>
+    <tr>
+      <td><strong>Week 10</strong></td>
+      <td>Engage your conveyancer or solicitor. Shortlist three to five suburbs using the data in Chapter 4: days on market, listings, clearance, discounting. Set up portal alerts for your brief, including “sold” alerts to track real prices.</td>
+      <td>☐</td>
+    </tr>
+    <tr>
+      <td><strong>Week 9</strong></td>
+      <td>Pre-approval in hand. Start inspecting, two to four properties a weekend, to calibrate your eye. Track every shortlisted property’s guide against its eventual result; the gap is your suburb’s quoting habit, and you’ll use it in every negotiation.</td>
+      <td>☐</td>
+    </tr>
+    <tr>
+      <td><strong>Week 8</strong></td>
+      <td>Keep inspecting and recording. Walk your shortlisted streets at different hours. Practise the Chapter 5 checklist until it’s automatic. Refine the brief: what you thought you wanted and what you keep walking into are rarely the same property.</td>
+      <td>☐</td>
+    </tr>
+    <tr>
+      <td><strong>Week 7</strong></td>
+      <td>Serious candidates emerge. Request contracts, send them to your conveyancer for review, and build your comparable-sales file for each. Decide your evidence-based value before asking the agent anything that reveals yours.</td>
+      <td>☐</td>
+    </tr>
+    <tr>
+      <td><strong>Week 6</strong></td>
+      <td>Order building and pest (and strata search for units) on the front-runner. Ring the inspector after reading the report. Re-confirm your pre-approval is current and covers this property type and postcode; some lenders restrict both.</td>
+      <td>☐</td>
+    </tr>
+    <tr>
+      <td><strong>Week 5</strong></td>
+      <td>Make your written offer with conditions, deposit, settlement terms and an expiry (Chapter 7). Auction buyers: contract reviewed, reports done, finance formally approved, limit set in writing. Negotiate from your file, not the guide.</td>
+      <td>☐</td>
+    </tr>
+    <tr>
+      <td><strong>Week 4</strong></td>
+      <td>Agree terms and exchange contracts. Pay the deposit into the trust account. Cooling-off runs if your state has one (Chapter 9). Notify your lender the moment contracts exchange so the valuation and formal approval start immediately.</td>
+      <td>☐</td>
+    </tr>
+    <tr>
+      <td><strong>Week 3</strong></td>
+      <td>Finance goes unconditional inside the clause period; chase it daily near the deadline. Insure the building from exchange. If the valuation falls short, work the Chapter 8 playbook before the clause expires, not after.</td>
+      <td>☐</td>
+    </tr>
+    <tr>
+      <td><strong>Week 2</strong></td>
+      <td>Conveyancer prepares transfer and settlement figures. Sign and return your loan documents the day they arrive. Book removalists and utility connections for settlement day. First home buyers: confirm duty concession paperwork is lodged.</td>
+      <td>☐</td>
+    </tr>
+    <tr>
+      <td><strong>Week 1</strong></td>
+      <td>Final inspection through the agent: same condition, every inclusion present and working. Report problems to your conveyancer the same day. Confirm settlement time, key handover and your cleared funds position.</td>
+      <td>☐</td>
+    </tr>
+    <tr>
+      <td><strong>Settlement day</strong></td>
+      <td>Settlement completes electronically; duty paid, title transferred, balance drawn from your lender. The agent releases the keys, usually mid-afternoon. Keep the settlement statement and contract permanently. Change the locks tonight; you have no idea who has keys.</td>
+      <td>☐</td>
+    </tr>
+  </table>
+
+  <p>The twelve weeks compress or stretch with your market: hot suburbs can demand a bid in your first fortnight of looking, and slow ones reward another month of patience. The order, though, barely changes. Finance before shopping, evidence before offers, reports before signatures.</p>
+
+  <div class="stat">
+    <div class="stat-num">12 weeks</div>
+    <div class="stat-label">First broker call to exchange, for a prepared buyer</div>
+  </div>
+
+  <div class="box">
+    <div class="box-title">Persona footnotes</div>
+    <p><strong>First home:</strong> add two to four weeks at the front for scheme paperwork and FHSS release; both move at government speed. <strong>Upgrader:</strong> run our 12-week selling timeline in parallel, offset so your sale exchanges first, and negotiate long settlements on both sides to make the bridge. <strong>Investor:</strong> add property manager selection in week 2 and the depreciation schedule at settlement; skip the street-walking, double the spreadsheet time. <strong>Downsizer:</strong> let the timeline stretch; your strength is that you don’t have to buy this one, and long settlements are yours to offer or demand.</p>
+  </div>
+
+  <p class="foot">yourpropertyguide.com.au · The Complete Guide to Buying Property in Australia</p>
+</section>
+
+<!-- ==================== BACK PAGE ==================== -->
+<section class="backpage page">
+  <div class="back-content">
+    <div class="cover-rule"></div>
+
+    <h2 class="serif" style="margin-top:14mm;">About Your Property Guide</h2>
+    <p>Your Property Guide is plain-English property education for Australians. No listings, no lead-selling to agents, no breathless market commentary. Just clear explanations of how buying, selling and owning property actually works in this country, written to be useful rather than exciting.</p>
+    <p>You’ll find free guides like this one, including our companion guide to selling, plus calculators and suburb profiles at <strong>yourpropertyguide.com.au</strong>.</p>
+
+    <div class="back-spacer"></div>
+
+    <p class="back-site">yourpropertyguide.com.au</p>
+
+    <p class="disc-label">Disclaimer</p>
+    <p class="fineprint">This guide is general information only. It is not financial, legal or tax advice, and it doesn’t take your personal circumstances into account. Costs, scheme settings, grant amounts, price caps, legal requirements and timeframes are typical figures as at mid-2026; they vary by state, suburb and situation, and they change with budgets and legislation. Before acting on anything in this guide, verify the current rules for your state with the relevant revenue office and Housing Australia, and get advice from a licensed mortgage broker or adviser, a licensed conveyancer or solicitor, a registered tax agent, and other qualified professionals as your situation requires. While care has been taken in preparing this guide, no warranty is given as to its accuracy or completeness, and no liability is accepted for any loss arising from reliance on it.</p>
+
+    <div class="back-foot">
+      <p class="fineprint" style="margin:0;">© Profit Geeks 2026. All rights reserved.<br>
+      yourpropertyguide.com.au · The Complete Guide to Buying Property in Australia · 2026 Edition</p>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

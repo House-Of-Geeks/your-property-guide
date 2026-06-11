@@ -62,6 +62,13 @@ const leadSchema = z.object({
   motivation: z.string().max(60).optional(),
   priceExpectation: z.string().max(40).optional(),
   marketingConsent: z.boolean().optional(),
+  // Buying-guide funnel fields. guideType discriminates which guide a
+  // guide-download lead came from; selling is the default for
+  // backward compatibility.
+  guideType: z.enum(["selling", "buying"]).optional(),
+  buyerPersona: z.enum(["first-home", "upgrading", "investing", "downsizing"]).optional(),
+  financeStatus: z.enum(["pre-approved", "talking-to-lenders", "not-started", "cash"]).optional(),
+  budget: z.string().max(40).optional(),
   // Honeypot. Real users never see/fill this field (visually hidden,
   // aria-hidden, tabindex=-1). Bots autofill it. If populated, we silently
   // 200 the request without persisting or notifying — don't tip them off.
@@ -128,6 +135,10 @@ export async function POST(request: Request) {
       const score = scoreGuideLead(lead);
       persistedMessage = [
         `Score: ${score}`,
+        lead.guideType === "buying" && `Guide: buying`,
+        lead.buyerPersona && `Persona: ${lead.buyerPersona}`,
+        lead.financeStatus && `Finance: ${lead.financeStatus}`,
+        lead.budget && `Budget: ${lead.budget}`,
         lead.sellingTimeframe && `Timeframe: ${TIMEFRAME_LABELS[lead.sellingTimeframe] ?? lead.sellingTimeframe}`,
         lead.agentStatus && `Agent status: ${AGENT_STATUS_LABELS[lead.agentStatus] ?? lead.agentStatus}`,
         lead.motivation && `Motivation: ${lead.motivation}`,
@@ -179,7 +190,7 @@ export async function POST(request: Request) {
       }
     }
 
-    const typeLabel = labelFor(lead.type);
+    const typeLabel = labelFor(lead.type, lead.guideType);
     // Score prefix on guide leads so a HOT vendor is visible from the
     // inbox list without opening the email. Speed-to-lead is the whole
     // game: an appraisal-ready vendor contacted inside 24h converts at

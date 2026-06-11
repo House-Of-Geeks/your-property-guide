@@ -8,3 +8,4 @@ export { StickyMatchCTA } from "./StickyMatchCTA";
 export { MatchDrawer } from "./MatchDrawer";
 export { SpecialistShowcase } from "./SpecialistShowcase";
 export { SellingGuideFunnel } from "./SellingGuideFunnel";
+export { BuyingGuideFunnel } from "./BuyingGuideFunnel";
