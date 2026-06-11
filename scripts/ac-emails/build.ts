@@ -34,15 +34,25 @@ function button(label: string, url: string): string {
     </td></tr></table>`;
 }
 
-/** Full-width artwork hero on ink: image bleeds to the card edges, serif headline below. */
-function artHero(img: string, headline: string, sub?: string): string {
+/**
+ * Full-width artwork hero: image bleeds to the card edges with the serif
+ * headline beneath. tone="ink" for night/cover art (dark field), tone
+ * ="cream" for golden-hour art whose own sky is cream, so the artwork
+ * and the headline panel read as one continuous field instead of a
+ * picture in a dark frame.
+ */
+function artHero(img: string, headline: string, sub?: string, tone: "ink" | "cream" = "ink"): string {
+  const bg = tone === "ink" ? C.ink : C.cream;
+  const fg = tone === "ink" ? "#ffffff" : C.ink;
+  const fgSub = tone === "ink" ? "rgba(254,251,247,0.75)" : C.inkMuted;
+  const border = tone === "ink" ? "" : `border-bottom:1px solid ${C.line};`;
   return `
-  <tr><td style="background:${C.ink};">
+  <tr><td style="background:${bg};">
     <img src="${img}" width="600" alt="" style="display:block;width:100%;height:auto;" />
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-      <td align="center" style="padding:26px 40px 30px;background:${C.ink};">
-        <h1 style="margin:0;color:#ffffff;font-size:27px;line-height:1.22;font-weight:500;font-family:${FONT_SERIF};letter-spacing:-0.2px;">${headline}</h1>
-        ${sub ? `<p style="margin:12px 0 0;color:rgba(254,251,247,0.75);font-size:14.5px;line-height:1.6;font-family:${FONT_SANS};">${sub}</p>` : ""}
+      <td align="center" style="padding:26px 40px 30px;background:${bg};${border}">
+        <h1 style="margin:0;color:${fg};font-size:27px;line-height:1.22;font-weight:500;font-family:${FONT_SERIF};letter-spacing:-0.2px;">${headline}</h1>
+        ${sub ? `<p style="margin:12px 0 0;color:${fgSub};font-size:14.5px;line-height:1.6;font-family:${FONT_SANS};">${sub}</p>` : ""}
       </td></tr></table>
   </td></tr>`;
 }
@@ -132,7 +142,9 @@ const EMAILS: AcEmail[] = [
     preheader: "A 30-minute walkthrough beats every online estimate. Free, no listing agreement, no obligation.",
     hero: artHero(
       ART.queenslander,
-      `Medians describe the suburb.<br/>An appraisal describes <em style="font-style:italic;color:${C.apricot};">your place</em>.`,
+      `Medians describe the suburb.<br/>An appraisal describes <em style="font-style:italic;color:${C.terracottaDark};">your place</em>.`,
+      undefined,
+      "cream",
     ),
     body: bodyBlock(
       [
@@ -255,6 +267,8 @@ const EMAILS: AcEmail[] = [
     hero: artHero(
       ART.queenslander,
       "You've done the reading. Time for your numbers.",
+      undefined,
+      "cream",
     ),
     body: bodyBlock(
       [
@@ -295,6 +309,8 @@ const EMAILS: AcEmail[] = [
     hero: artHero(
       ART.queenslander,
       "Plans change. Inboxes shouldn't suffer for it.",
+      undefined,
+      "cream",
     ),
     body: bodyBlock(
       [

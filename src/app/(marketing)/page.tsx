@@ -250,7 +250,7 @@ export default function HomePage() {
             + arrow per row, hairline-divided. Reads as a contents page, not
             a SaaS feature grid. */}
       <section id="personas" className="bg-surface-raised border-b border-line scroll-mt-16">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
           {/* Compressed masthead. Eyebrow + single-row H2 + brief sub on
               one line at lg+. No more 2-col display layout. */}
           <div className="flex items-center gap-4 mb-6">
@@ -289,10 +289,10 @@ export default function HomePage() {
             slightly negative "Don't know where to start?" into a positive
             invitation to deepen the research one notch. */}
       <section className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
           <div className="flex items-center gap-4 mb-6">
             <span className="font-display italic text-primary text-base sm:text-lg leading-none">
-              No. 03
+              No. 04
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
             <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
@@ -383,7 +383,7 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
           <div className="flex items-center justify-center gap-4 mb-10">
             <span className="font-display italic text-primary text-base sm:text-lg leading-none">
-              No. 04
+              No. 06
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
             <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
@@ -477,11 +477,11 @@ export default function HomePage() {
             <div className="lg:col-span-5">
               <div className="flex items-center gap-4 mb-10">
                 <span className="font-display italic text-cta text-base sm:text-lg leading-none">
-                  Free PDF
+                  No. 07
                 </span>
                 <span className="w-12 h-px bg-white/20" aria-hidden="true" />
                 <span className="text-[11px] uppercase tracking-[0.32em] text-white/60 font-sans font-medium">
-                  2026 edition
+                  Free PDF · 2026 edition
                 </span>
               </div>
               <h2 className="font-display text-white leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">

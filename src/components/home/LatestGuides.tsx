@@ -24,19 +24,20 @@ export async function LatestGuides() {
   if (!featured) return null;
 
   return (
-    <section className="py-16 sm:py-20 bg-surface-warm border-y border-line-warm">
+    <section className="py-20 sm:py-24 bg-surface-warm border-y border-line-warm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-4 mb-6">
+          <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            No. 03
+          </span>
+          <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+          <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            Fresh off the desk
+          </span>
+        </div>
         <div className="grid lg:grid-cols-12 gap-8 mb-10">
           <div className="lg:col-span-7">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-lg bg-surface-raised border border-line-warm flex items-center justify-center shrink-0">
-                <img src="/images/icons/guide.svg" alt="" width={24} height={24} className="w-6 h-6" aria-hidden="true" />
-              </div>
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle">
-                Latest from the editorial desk
-              </p>
-            </div>
-            <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
+            <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium">
               Plain-English <span className="italic text-primary">guides</span>.
             </h2>
           </div>

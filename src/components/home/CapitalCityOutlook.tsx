@@ -31,11 +31,11 @@ export async function CapitalCityOutlook() {
         {/* Magazine-style masthead */}
         <div className="flex items-center gap-4 mb-10">
           <span className="font-display italic text-primary text-base sm:text-lg leading-none">
-            2026 outlooks
+            No. 05
           </span>
           <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
           <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-            Capital cities
+            Capital cities · 2026 outlooks
           </span>
         </div>
 
