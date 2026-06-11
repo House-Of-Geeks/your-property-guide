@@ -319,17 +319,29 @@ export default function HomePage() {
 
             <Link
               href="/compare"
-              className="card-lift group flex flex-col rounded-2xl border-2 border-primary/20 bg-surface-warm p-7 hover:border-primary/50"
+              className="card-lift group relative overflow-hidden flex flex-col rounded-2xl border-2 border-primary/20 bg-surface-warm p-7 hover:border-primary/50"
             >
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-cta mb-3">Tool · Side by side</p>
-              <h3 className="font-display text-2xl sm:text-3xl text-ink group-hover:text-primary transition-colors leading-tight mb-3 tracking-tight">
+              {/* Aerial cadastral artwork: comparing suburbs is comparing
+                  territory. Faded right edge, content stays legible. */}
+              <div className="absolute inset-y-0 right-0 w-[55%] pointer-events-none select-none" aria-hidden="true">
+                <Image
+                  src="/images/art/suburb-aerial.jpg"
+                  alt=""
+                  fill
+                  sizes="(min-width: 640px) 30vw, 60vw"
+                  className="object-cover object-center opacity-60"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-surface-warm via-surface-warm/70 to-surface-warm/20" />
+              </div>
+              <p className="relative text-xs font-sans uppercase tracking-[0.25em] text-cta mb-3">Tool · Side by side</p>
+              <h3 className="relative font-display text-2xl sm:text-3xl text-ink group-hover:text-primary transition-colors leading-tight mb-3 tracking-tight">
                 Compare two suburbs head to head
               </h3>
-              <p className="font-sans text-sm text-ink-muted leading-relaxed mb-5 flex-1">
+              <p className="relative font-sans text-sm text-ink-muted leading-relaxed mb-5 flex-1">
                 Pick any two Australian suburbs and line them up: median,
                 growth, schools, walkability, climate, crime.
               </p>
-              <span className="font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
+              <span className="relative font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
                 Pick two suburbs →
               </span>
             </Link>
@@ -360,14 +372,18 @@ export default function HomePage() {
             visitors read the charter (no paywall, no resale, every match
             disclosed) before being asked to share their situation. */}
       <section className="relative bg-surface-sunken border-t border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[1200px] max-w-none opacity-[0.15] pointer-events-none select-none"
-        />
+        {/* The golden-hour suburb rests faintly along the charter's base:
+            the promise ("you pay nothing") sits over the homes it's about. */}
+        <div className="absolute inset-x-0 bottom-0 h-[55%] pointer-events-none select-none" aria-hidden="true">
+          <Image
+            src="/images/hero/suburb-dusk.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover object-bottom opacity-[0.3]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-surface-sunken from-5% via-surface-sunken/70 via-45% to-surface-sunken/25" />
+        </div>
         <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
           <div className="flex items-center justify-center gap-4 mb-10">
             <span className="font-display italic text-primary text-base sm:text-lg leading-none">
