@@ -197,6 +197,26 @@ export default function SellingGuidePage() {
               <Suspense fallback={<div className="text-sm text-ink-muted">Loading…</div>}>
                 <SellingGuideFunnel source="selling-guide-page" />
               </Suspense>
+
+              {/* Fills the column under the funnel card (the left pitch
+                  runs taller) with the path ahead instead of dead space. */}
+              <div className="mt-5 rounded-2xl border border-line bg-surface-raised/80 backdrop-blur-[2px] px-6 py-5">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-sans font-medium mb-4">
+                  What happens next
+                </p>
+                <ol className="space-y-3">
+                  {[
+                    ["01", "Answer seven quick questions, about 60 seconds"],
+                    ["02", "Download instantly, plus a copy lands in your inbox"],
+                    ["03", "Selling soon? A free local appraisal, only if you want one"],
+                  ].map(([n, t]) => (
+                    <li key={n} className="flex items-baseline gap-3">
+                      <span className="font-display italic text-cta text-base tabular-nums shrink-0">{n}</span>
+                      <span className="font-sans text-sm text-ink-muted leading-snug">{t}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
           </div>
         </div>

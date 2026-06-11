@@ -45,33 +45,21 @@ export default function HomePage() {
             / "how much can I borrow" / "suburb profile" all dwarf the
             "research" framing we used to lead with. The suburb search box
             in-hero is the visual proof of what the site does. */}
-      <section className="relative bg-surface-warm overflow-hidden border-b border-line">
-        {/* Hero artwork: commissioned editorial illustration of an
-            Australian suburb at golden hour, in the exact brand palette
-            (terracotta roofs, ink linework, cream sky with survey
-            contours). Anchored bottom-right; the cream washes keep the
-            headline zone quiet and let the suburb emerge under and
-            around the guide card. */}
+      <section className="band-glow relative bg-surface-inverse text-white overflow-hidden border-b border-white/10">
+        {/* The cover of the issue: the commissioned night suburb, lights
+            on, rises along the hero's lower edge. Ink sky in the art is
+            the section's own colour so the scene and the page are one
+            field, exactly like the guide cover and the OG card. */}
         <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
           <Image
-            src="/images/hero/suburb-dusk.jpg"
+            src="/images/hero/suburb-night.jpg"
             alt=""
             fill
             priority
             sizes="100vw"
-            className="object-cover object-right-bottom"
+            className="object-cover object-bottom opacity-95"
           />
-          {/* Left wash: solid cream under the headline, dissolving right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-surface-warm from-20% via-surface-warm/70 via-50% to-transparent" />
-          {/* Top wash: keeps the eyebrow + headline rows clean */}
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-8% via-surface-warm/45 via-40% to-transparent" />
-          {/* Golden-hour sun: a soft warm disc low in the sky where the
-              art's horizon haze sits, ties the cream sky to the band-glow
-              language used in the dark sections. */}
-          <div
-            className="absolute right-[8%] top-[18%] w-[420px] h-[420px] rounded-full opacity-70"
-            style={{ background: "radial-gradient(circle, oklch(0.85 0.07 55 / 0.55) 0%, transparent 65%)" }}
-          />
+          <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-22% via-surface-inverse/85 via-58% to-surface-inverse/5" />
         </div>
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-16 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
@@ -80,11 +68,11 @@ export default function HomePage() {
               of the Australian property machinery, not on real-time
               data feeds (which the portals own and we can't afford). */}
           <div className="rise flex items-center gap-4 mb-10 sm:mb-12">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="font-display italic text-cta text-base sm:text-lg leading-none">
               No. 01
             </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="w-12 h-px bg-white/25" aria-hidden="true" />
+            <span className="text-[11px] uppercase tracking-[0.32em] text-white/60 font-sans font-medium">
               Australian property, in plain English
             </span>
           </div>
@@ -103,9 +91,9 @@ export default function HomePage() {
                   beat — implies we'll tell you what NOT to do, not
                   just what to do (counter-portal). Italic emphasis
                   lands on "skip" as the loudest word. */}
-              <h1 className="rise rise-d1 font-display text-ink tracking-tight mb-8 text-5xl sm:text-6xl lg:text-[72px] xl:text-[84px] leading-[0.98] font-medium">
+              <h1 className="rise rise-d1 font-display text-white tracking-tight mb-8 text-5xl sm:text-6xl lg:text-[72px] xl:text-[84px] leading-[0.98] font-medium">
                 What to ask. What to sign. What to{" "}
-                <span className="u-draw relative inline-block italic font-light text-primary">
+                <span className="u-draw relative inline-block italic font-light text-accent-lighter">
                   skip
                   {/* Hand-drawn underline, draws in after the entrance */}
                   <svg
@@ -130,7 +118,7 @@ export default function HomePage() {
               {/* Sub names the scope (60+ guides, every calculator)
                   and the positioning (written for buyers and sellers,
                   not portals). Education-first, not data-first. */}
-              <p className="rise rise-d2 font-display text-xl sm:text-2xl text-ink leading-[1.3] mb-8 font-light">
+              <p className="rise rise-d2 font-display text-xl sm:text-2xl text-white/85 leading-[1.3] mb-8 font-light">
                 Sixty plain-English guides. Every property calculator.
                 Written for buyers and sellers, not portals. Free, no
                 sign-up.
@@ -139,21 +127,21 @@ export default function HomePage() {
               {/* Primary action: suburb search box. Label echoes the
                   H1's first verb. */}
               <div className="rise rise-d3 mb-6">
-                <p className="text-[11px] uppercase tracking-[0.25em] text-ink-subtle font-sans font-medium mb-3">
+                <p className="text-[11px] uppercase tracking-[0.25em] text-white/50 font-sans font-medium mb-3">
                   Know the suburb
                 </p>
                 <HomeSuburbSearch />
-                <p className="mt-3 text-sm text-ink-subtle">
+                <p className="mt-3 text-sm text-white/55">
                   Try{" "}
-                  <Link href="/suburbs/bondi-nsw-2026" className="text-ink underline decoration-line-strong underline-offset-2 hover:decoration-primary hover:text-primary transition-colors">
+                  <Link href="/suburbs/bondi-nsw-2026" className="text-white/90 underline decoration-white/30 underline-offset-2 hover:decoration-cta hover:text-accent-lighter transition-colors">
                     Bondi
                   </Link>
                   ,{" "}
-                  <Link href="/suburbs/toorak-vic-3142" className="text-ink underline decoration-line-strong underline-offset-2 hover:decoration-primary hover:text-primary transition-colors">
+                  <Link href="/suburbs/toorak-vic-3142" className="text-white/90 underline decoration-white/30 underline-offset-2 hover:decoration-cta hover:text-accent-lighter transition-colors">
                     Toorak
                   </Link>
                   , or{" "}
-                  <Link href="/suburbs/surfers-paradise-qld-4217" className="text-ink underline decoration-line-strong underline-offset-2 hover:decoration-primary hover:text-primary transition-colors">
+                  <Link href="/suburbs/surfers-paradise-qld-4217" className="text-white/90 underline decoration-white/30 underline-offset-2 hover:decoration-cta hover:text-accent-lighter transition-colors">
                     Surfers Paradise
                   </Link>
                   .
@@ -163,7 +151,7 @@ export default function HomePage() {
               {/* Secondary action: calculator chips. Label echoes the
                   H1's second verb. */}
               <div className="rise rise-d4 mb-5">
-                <p className="text-[11px] uppercase tracking-[0.25em] text-ink-subtle font-sans font-medium mb-3">
+                <p className="text-[11px] uppercase tracking-[0.25em] text-white/50 font-sans font-medium mb-3">
                   Run the numbers
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -177,7 +165,7 @@ export default function HomePage() {
                     <Link
                       key={c.href}
                       href={c.href}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-surface px-4 py-2 text-sm font-medium text-ink hover:border-primary hover:text-primary hover:bg-surface-warm transition-colors"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/5 px-4 py-2 text-sm font-medium text-white hover:border-cta hover:text-accent-lighter hover:bg-white/10 transition-colors"
                     >
                       {c.label}
                     </Link>
@@ -188,7 +176,7 @@ export default function HomePage() {
               {/* Trust strip — four micro-proof points in editorial
                   caps. Leads with guide count to reinforce the
                   education positioning. */}
-              <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-sans font-medium">
+              <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.18em] text-white/55 font-sans font-medium">
                 <span className="inline-flex items-center gap-1.5">
                   <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
                   60+ guides
@@ -216,7 +204,7 @@ export default function HomePage() {
               positioning) instead of suburbs. Calculators second,
               suburbs third, free fourth. The order signals what the
               site IS to anyone who only reads the stats. */}
-          <div className="border-y border-line grid grid-cols-2 sm:grid-cols-4 bg-surface-warm/60 backdrop-blur-[2px] rounded-sm">
+          <div className="border-y border-white/15 grid grid-cols-2 sm:grid-cols-4 bg-surface-inverse/55 backdrop-blur-[3px] rounded-sm">
             {[
               { value: "60+",    label: "Plain-English guides" },
               { value: "30+",    label: "Calculators and tools" },
@@ -228,15 +216,15 @@ export default function HomePage() {
                 className={[
                   "py-6 sm:py-7 px-4 sm:px-6",
                   i === 0 ? "pl-0" : "",
-                  i === 1 || i === 3 ? "border-l border-line" : "",
-                  i === 2 ? "sm:border-l sm:border-line" : "",
-                  i >= 2 ? "border-t sm:border-t-0 border-line" : "",
+                  i === 1 || i === 3 ? "border-l border-white/15" : "",
+                  i === 2 ? "sm:border-l sm:border-white/15" : "",
+                  i >= 2 ? "border-t sm:border-t-0 border-white/15" : "",
                 ].filter(Boolean).join(" ")}
               >
-                <p className="font-display text-4xl sm:text-5xl text-ink leading-none mb-2.5 tracking-tight">
+                <p className="font-display text-4xl sm:text-5xl text-white leading-none mb-2.5 tracking-tight">
                   {s.value}
                 </p>
-                <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-ink-subtle font-sans font-medium">
+                <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-white/50 font-sans font-medium">
                   {s.label}
                 </p>
               </div>
