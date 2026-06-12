@@ -12,6 +12,16 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
+      // ActiveCampaign email templates, fetched cross-origin by the AC
+      // admin UI during automation assembly (see docs/activecampaign-
+      // automations.md). Marketing copy only, safe to serve publicly.
+      {
+        source: "/ac-templates/:path*",
+        headers: [
+          { key: "Access-Control-Allow-Origin", value: "*" },
+          { key: "X-Robots-Tag", value: "noindex" },
+        ],
+      },
     ];
   },
   async redirects() {
