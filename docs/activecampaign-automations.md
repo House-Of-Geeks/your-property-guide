@@ -1,6 +1,27 @@
 # ActiveCampaign — YPG Seller Automations
 
-**Status:** the sync is live in code, and every automation email now exists as a **designed, ready-to-paste HTML template** in `emails/activecampaign/` (regenerate with `npx tsx scripts/ac-emails/build.ts`). What remains is clicking the four automations together in the AC UI, because AC's public API can't create automation workflows.
+**BUILD STATUS (2026-06-12, built live in the AC UI):**
+- ✅ **YPG Seller HOT — appraisal push** (Automation, builder/5): COMPLETE. Trigger `ypg-score-hot` + `ypg-consented` + `ypg-seller`, NOT `ypg-agent-already-listed`. Wait 1h → HOT 1 (appraisal) → wait 2d → HOT 2 (60-day window). Both emails carry the branded HTML templates. Status: inactive (draft) — flip to Active to go live.
+- ✅ **YPG Buyer HOT — strong-seat push** (builder/6): COMPLETE. Trigger `ypg-score-hot` + `ypg-consented` + `ypg-buyer`. Wait 1h → buyer HOT 1 (strong seat) → wait 2d → buyer HOT 2 (pre-approval clock). Inactive.
+- 🔶 **YPG Seller WARM — nurture drip** (builder/7): 4 of 6 emails built. Trigger `ypg-score-warm` + `ypg-consented` + `ypg-seller` + NOT already-listed. Wait 1h → WARM 1 (costs) → 2d → WARM 2 (negotiation) → 4d → WARM 3 (prep) → 5d → WARM 4 (method). REMAINING: wait 7d → WARM 5 (appraisal-traps), wait 9d → WARM 6 (ready).
+- ⬜ **YPG Buyer WARM**: not built. Fast path: in the Automations list, use the row dropdown → **Copy** on "YPG Seller WARM", rename, change the trigger tag's `ypg-seller` condition to `ypg-buyer`, then update the 6 copied messages via the API (below) with the `buyer-warm-*.html` templates.
+- ⬜ **Re-engagement (seller + buyer)**: not built. Lower priority; trigger is "no opens/clicks in 90 days" (a campaign/segment trigger, not a tag), so it is set up differently from the above.
+
+## How the emails were loaded (the fast, reliable method)
+
+The 20 templates are hosted at `https://www.yourpropertyguide.com.au/ac-templates/<file>.html` (CORS-enabled, noindex). AC's message **HTML, subject, preheader and name are editable via the API** — no need to fight the editor:
+
+```bash
+curl -X PUT "$ACTIVECAMPAIGN_API_URL/api/3/messages/<MESSAGE_ID>" \
+  -H "Api-Token: $ACTIVECAMPAIGN_API_KEY" -H "Content-Type: application/json" \
+  -d '{"message":{"subject":"…","preheader_text":"…","name":"…","html":"<full template html>"}}'
+```
+
+So the workflow to finish a sequence is: (1) in the UI, add the Send-email nodes (any blank HTML-builder draft) and the Wait steps to get the structure; (2) find the new message IDs via `GET /api/3/messages?limit=100`; (3) PUT each one with the matching template. Copying an existing automation clones the structure AND the message drafts, so a buyer mirror only needs a trigger-tag swap plus PUTs.
+
+From-identity on every email: **Andy from Your Property Guide `<info@yourpropertyguide.com.au>`**, reply-to the same (the domain is AC-verified). Tags created live: `ypg-score-warm/cold/do-not-contact`, `ypg-agent-already-listed/not-started` (ids 27-31).
+
+---
 
 ## Ready-made templates (paste, don't build)
 
