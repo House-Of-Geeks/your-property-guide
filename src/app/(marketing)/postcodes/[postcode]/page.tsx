@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MapPin, Home, TrendingUp, GraduationCap, Users } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, PlaceJsonLd, FAQPageJsonLd } from "@/components/seo";
 import { Badge } from "@/components/ui";
 import {
   getSuburbsByPostcode,
@@ -37,12 +37,23 @@ export async function generateMetadata({ params }: PostcodePageProps): Promise<M
   const suburbNames = suburbs.map((s) => s.name).slice(0, 3).join(", ");
   const stats = await getPostcodeStats(postcode);
 
-  const title = `Postcode ${postcode} Property Guide | Your Property Guide`;
-  const description = `Postcode ${postcode} covers ${suburbs.length} suburb${suburbs.length !== 1 ? "s" : ""} in ${state}: ${suburbNames}. ${
+  // Reverse-lookup intent: Search Console shows "{number} postcode" queries
+  // (e.g. "2761 postcode") ranking ~pos 9 with no clicks. Lead the title and
+  // description with the suburb answer so the SERP resolves "what suburb is
+  // postcode X". The brand suffix is appended once by the root title template
+  // (%s | Your Property Guide), so it must NOT be repeated here — the old
+  // hard-coded suffix produced a double brand.
+  const moreCount = suburbs.length - 1;
+  const title = `Postcode ${postcode} (${state}): ${suburbs[0].name}${
+    moreCount > 0 ? ` + ${moreCount} Suburb${moreCount !== 1 ? "s" : ""}` : ""
+  }, Median Price`;
+  const description = `Postcode ${postcode} is ${suburbNames}${
+    suburbs.length > 3 ? ` and ${suburbs.length - 3} more` : ""
+  } in ${state}. ${
     stats.avgMedianHousePrice
-      ? `Average median house price ${formatPriceFull(stats.avgMedianHousePrice)}.`
+      ? `Average median house price ${formatPriceFull(stats.avgMedianHousePrice)}. `
       : ""
-  } Browse suburb profiles, schools and property data.`;
+  }Browse suburb profiles, schools and property data.`;
 
   return {
     title,
@@ -70,6 +81,29 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
 
   const state = suburbs[0].state;
 
+  // Names string + reverse-lookup FAQ. "{number} postcode" / "what suburb is
+  // postcode X" are high-intent queries the postcode pages already rank for
+  // (~pos 9); a direct answer block plus FAQPage schema gives Google a clean
+  // snippet to lift them onto page one.
+  const namesAll = suburbs.map((s) => s.name).join(", ");
+  const namesShort =
+    suburbs.length > 4
+      ? `${suburbs.slice(0, 4).map((s) => s.name).join(", ")} and ${suburbs.length - 4} more`
+      : namesAll;
+  const postcodeFaqs = [
+    {
+      question: `What suburb is postcode ${postcode}?`,
+      answer:
+        suburbs.length === 1
+          ? `Postcode ${postcode} is ${suburbs[0].name}, ${state}.`
+          : `Postcode ${postcode} covers ${suburbs.length} suburbs in ${state}: ${namesAll}.`,
+    },
+    {
+      question: `What state is postcode ${postcode} in?`,
+      answer: `Postcode ${postcode} is in ${state}, Australia.`,
+    },
+  ];
+
   // Flatten all schools across suburbs in this postcode
   const allSchools = suburbs.flatMap((suburb) =>
     suburb.schools.map((school) => ({
@@ -93,6 +127,7 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
         addressRegion={state}
         postalCode={postcode}
       />
+      <FAQPageJsonLd faqs={postcodeFaqs} />
 
       {/* Hero */}
       <div className="bg-gradient-to-br from-primary/10 to-white border-b border-gray-100">
@@ -111,8 +146,9 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
             <Badge variant="default">{state}</Badge>
           </div>
           <p className="text-lg text-gray-600 mt-3 max-w-2xl">
-            Property data, schools and market statistics for all suburbs in postcode {postcode},{" "}
-            {state}.
+            Postcode {postcode} is in {state} and covers{" "}
+            {suburbs.length === 1 ? "the suburb of" : `${suburbs.length} suburbs:`} {namesShort}.
+            Browse profiles, median prices, schools and property data for each below.
           </p>
 
           {/* Aggregate stats */}
@@ -312,6 +348,23 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
             </div>
           </section>
         )}
+
+        {/* Reverse-lookup FAQ. Visible Q&A backs the FAQPage schema above so
+            Google can surface a direct answer for "what suburb is postcode X"
+            and "what state is postcode X in". */}
+        <section className="pt-4">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Postcode {postcode} questions
+          </h2>
+          <dl className="divide-y divide-gray-100 border-t border-gray-100">
+            {postcodeFaqs.map((faq) => (
+              <div key={faq.question} className="py-5">
+                <dt className="text-lg font-semibold text-gray-900 mb-2">{faq.question}</dt>
+                <dd className="text-gray-600 leading-relaxed">{faq.answer}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
 
         {/* Back to postcodes */}
         <div className="pt-4 border-t border-gray-100">

@@ -17,10 +17,14 @@ export function propertyDescription(property: Property): string {
 }
 
 export function suburbTitle(suburb: Suburb): string {
-  // Front-loads the suburb identifier (what people search), then names the
-  // three highest-volume intents: "suburb profile" (2,400/mo), "median
-  // house price" (1,000/mo), and a year marker for freshness.
-  return `${suburb.name}, ${suburb.state} ${suburb.postcode}: Suburb Profile, Median Price & 2026 Market Data`;
+  // Front-loads "{Suburb} Postcode {XXXX}" because Search Console shows the
+  // single biggest unclicked cluster is "{suburb} postcode" lookups (these
+  // pages rank ~pos 10 but the old title never said the word "postcode", so
+  // searchers scanned past it). This title now serves three intents at once:
+  // "{suburb} postcode", "{suburb} suburb profile" and "{suburb} median
+  // price". The ` | Your Property Guide` brand suffix is appended by the
+  // root title template, so this stays short enough to survive truncation.
+  return `${suburb.name} Postcode ${suburb.postcode} (${suburb.state}) — Suburb Profile & Median Price`;
 }
 
 export function suburbBuyTitle(suburb: Suburb): string {
@@ -40,15 +44,17 @@ export function suburbRentDescription(suburb: Suburb): string {
 }
 
 export function suburbDescription(suburb: Suburb): string {
-  // Leads with "Free suburb profile" so the description matches the way
-  // people actually search ("free property report" runs 1,000/mo).
-  // Only publishes the median when we trust it — for low-confidence
-  // suburbs (QLD/WA fallback) we skip the dollar figure rather than
-  // print fiction in the SERP snippet.
+  // Leads with the direct postcode answer ("…'s postcode is XXXX") so the
+  // SERP snippet resolves the "{suburb} postcode" query without a click and
+  // is eligible for the featured snippet, then carries the profile/price
+  // intent. Only publishes the median when we trust it — for low-confidence
+  // suburbs (QLD/WA fallback) we skip the dollar figure rather than print
+  // fiction in the SERP snippet.
+  const lead = `${suburb.name}, ${suburb.state}'s postcode is ${suburb.postcode}.`;
   if (hasReliablePrice(suburb)) {
-    return `Free suburb profile for ${suburb.name}, ${suburb.state} ${suburb.postcode}. Median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}, growth, schools, walkability, crime and current listings. No sign-up.`;
+    return `${lead} Free suburb profile with the median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}, growth, schools, walkability, crime and current listings. No sign-up.`;
   }
-  return `Free suburb profile for ${suburb.name}, ${suburb.state} ${suburb.postcode}. Schools, walkability, climate, crime, demographics and current listings. No sign-up.`;
+  return `${lead} Free suburb profile: schools, walkability, climate, crime, demographics and current listings. No sign-up.`;
 }
 
 export function agentTitle(agent: Agent): string {
