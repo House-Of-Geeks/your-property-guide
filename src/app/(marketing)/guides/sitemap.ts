@@ -62,9 +62,19 @@ const GUIDE_SLUGS = [
   // Selling
   "how-to-sell-a-house-australia",
   "cost-of-selling-a-house-australia",
+  "best-time-to-sell-a-house-australia",
   "how-to-choose-a-selling-agent",
   "how-much-is-my-house-worth-australia",
   "real-estate-agent-fees-australia",
+  // Real estate commission by state
+  "real-estate-commission-nsw",
+  "real-estate-commission-vic",
+  "real-estate-commission-qld",
+  "real-estate-commission-wa",
+  "real-estate-commission-sa",
+  "real-estate-commission-tas",
+  "real-estate-commission-nt",
+  "real-estate-commission-act",
   // Upgrading / moving
   "sell-first-or-buy-first",
   "bridging-loans-guide",

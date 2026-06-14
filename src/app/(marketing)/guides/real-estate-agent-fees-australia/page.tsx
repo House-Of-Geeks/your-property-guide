@@ -168,16 +168,29 @@ export default function RealEstateAgentFeesPage() {
           </tr>
         </thead>
         <tbody>
-          <tr><td><strong>NSW</strong></td><td>1.5% to 3.0%</td><td>~2.0%</td></tr>
-          <tr><td><strong>VIC</strong></td><td>1.6% to 2.5%</td><td>~2.0%</td></tr>
-          <tr><td><strong>QLD</strong></td><td>2.0% to 3.5%</td><td>~2.5%</td></tr>
-          <tr><td><strong>WA</strong></td><td>2.5% to 3.5%</td><td>~3.0%</td></tr>
-          <tr><td><strong>SA</strong></td><td>1.5% to 2.5%</td><td>~2.0%</td></tr>
-          <tr><td><strong>TAS</strong></td><td>2.0% to 3.0%</td><td>~2.5%</td></tr>
-          <tr><td><strong>NT</strong></td><td>2.5% to 4.0%</td><td>~3.0%</td></tr>
-          <tr><td><strong>ACT</strong></td><td>1.5% to 2.5%</td><td>~2.0%</td></tr>
+          <tr><td><Link href="/guides/real-estate-commission-nsw"><strong>NSW</strong></Link></td><td>1.8% to 2.5%</td><td>~2.0%</td></tr>
+          <tr><td><Link href="/guides/real-estate-commission-vic"><strong>VIC</strong></Link></td><td>1.6% to 2.5%</td><td>~2.0%</td></tr>
+          <tr><td><Link href="/guides/real-estate-commission-qld"><strong>QLD</strong></Link></td><td>2.3% to 2.9%</td><td>~2.5%</td></tr>
+          <tr><td><Link href="/guides/real-estate-commission-wa"><strong>WA</strong></Link></td><td>2.0% to 2.8%</td><td>~2.4%</td></tr>
+          <tr><td><Link href="/guides/real-estate-commission-sa"><strong>SA</strong></Link></td><td>1.8% to 2.75%</td><td>~2.0%</td></tr>
+          <tr><td><Link href="/guides/real-estate-commission-tas"><strong>TAS</strong></Link></td><td>2.5% to 3.25%</td><td>~2.9%</td></tr>
+          <tr><td><Link href="/guides/real-estate-commission-nt"><strong>NT</strong></Link></td><td>2.4% to 2.7%</td><td>~2.5%</td></tr>
+          <tr><td><Link href="/guides/real-estate-commission-act"><strong>ACT</strong></Link></td><td>1.8% to 2.25%</td><td>~2.1%</td></tr>
         </tbody>
       </table>
+
+      <p>
+        For the full rates, worked dollar examples and negotiation tips in your
+        state, see the dedicated guide:{" "}
+        <Link href="/guides/real-estate-commission-nsw">NSW</Link>,{" "}
+        <Link href="/guides/real-estate-commission-vic">VIC</Link>,{" "}
+        <Link href="/guides/real-estate-commission-qld">QLD</Link>,{" "}
+        <Link href="/guides/real-estate-commission-wa">WA</Link>,{" "}
+        <Link href="/guides/real-estate-commission-sa">SA</Link>,{" "}
+        <Link href="/guides/real-estate-commission-tas">TAS</Link>,{" "}
+        <Link href="/guides/real-estate-commission-nt">NT</Link>,{" "}
+        <Link href="/guides/real-estate-commission-act">ACT</Link>.
+      </p>
 
       <Callout variant="info" title="Run your own numbers">
         <p>

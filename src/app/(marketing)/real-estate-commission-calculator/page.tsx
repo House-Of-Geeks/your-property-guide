@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CommissionCalculator } from "@/components/calculators/CommissionCalculator";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
 import { type FaqItem, type RelatedGuide } from "@/components/guide";
@@ -99,14 +100,14 @@ export default function CommissionCalculatorPage() {
             are fighting for each listing.
           </p>
           <ul>
-            <li><strong>NSW:</strong> 1.8% to 2.5%, Sydney metro often under 2%</li>
-            <li><strong>VIC:</strong> 1.6% to 2.5%, Melbourne metro the cheapest market in the country</li>
-            <li><strong>QLD:</strong> 2.3% to 2.9%</li>
-            <li><strong>SA:</strong> 1.8% to 2.75%</li>
-            <li><strong>WA:</strong> 2% to 2.8%</li>
-            <li><strong>TAS:</strong> 2.5% to 3.25%, the highest typical rates in Australia</li>
-            <li><strong>NT:</strong> 2.4% to 2.7%</li>
-            <li><strong>ACT:</strong> 1.8% to 2.25%</li>
+            <li><Link href="/guides/real-estate-commission-nsw"><strong>NSW:</strong></Link> 1.8% to 2.5%, Sydney metro often under 2%</li>
+            <li><Link href="/guides/real-estate-commission-vic"><strong>VIC:</strong></Link> 1.6% to 2.5%, Melbourne metro the cheapest market in the country</li>
+            <li><Link href="/guides/real-estate-commission-qld"><strong>QLD:</strong></Link> 2.3% to 2.9%</li>
+            <li><Link href="/guides/real-estate-commission-sa"><strong>SA:</strong></Link> 1.8% to 2.75%</li>
+            <li><Link href="/guides/real-estate-commission-wa"><strong>WA:</strong></Link> 2% to 2.8%</li>
+            <li><Link href="/guides/real-estate-commission-tas"><strong>TAS:</strong></Link> 2.5% to 3.25%, the highest typical rates in Australia</li>
+            <li><Link href="/guides/real-estate-commission-nt"><strong>NT:</strong></Link> 2.4% to 2.7%</li>
+            <li><Link href="/guides/real-estate-commission-act"><strong>ACT:</strong></Link> 1.8% to 2.25%</li>
           </ul>
 
           <h3>Commission is not the number that matters most</h3>
