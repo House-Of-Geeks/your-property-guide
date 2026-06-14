@@ -20,9 +20,15 @@ function formatMoney(n: number): string {
 //
 // Renders inside .prose-ypg blocks but resets prose styles inside the form so
 // the inputs don't pick up article typography.
-export function MiniStampDutyEmbed() {
-  const [state, setState] = useState<AustralianState>("NSW");
-  const [price, setPrice] = useState<number>(700_000);
+export function MiniStampDutyEmbed({
+  defaultState = "NSW",
+  defaultPrice = 700_000,
+}: {
+  defaultState?: AustralianState;
+  defaultPrice?: number;
+} = {}) {
+  const [state, setState] = useState<AustralianState>(defaultState);
+  const [price, setPrice] = useState<number>(defaultPrice);
   const [isFirstHomeBuyer, setIsFirstHomeBuyer] = useState(false);
 
   const result = useMemo(

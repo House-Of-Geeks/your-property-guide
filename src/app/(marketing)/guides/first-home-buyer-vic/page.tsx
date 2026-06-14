@@ -100,6 +100,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide (national)", href: "/guides/first-home-buyer-guide", description: "Federal schemes, FHOG by state, stamp duty concessions and step-by-step process." },
+  { title: "Stamp Duty VIC",         href: "/guides/stamp-duty-vic",          description: "Victorian land transfer duty, worked examples and the $600K first home exemption." },
   { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",          description: "Estimate your VIC stamp duty in seconds." },
   { title: "Conveyancing in Australia",         href: "/guides/conveyancing-guide",      description: "What conveyancers do, what they cost, and what to ask." },
   { title: "Lenders Mortgage Insurance",        href: "/guides/lenders-mortgage-insurance-guide", description: "What LMI costs and the schemes that waive it." },

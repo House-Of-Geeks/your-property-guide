@@ -101,6 +101,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide (national)", href: "/guides/first-home-buyer-guide", description: "Federal schemes, FHOG by state, stamp duty concessions and step-by-step process." },
+  { title: "Stamp Duty TAS",         href: "/guides/stamp-duty-tas",          description: "Tasmanian duty, the 50% first home concession and worked examples." },
   { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",          description: "Estimate your Tasmanian duty (with or without the concession)." },
   { title: "Building & Pest Inspection",        href: "/guides/building-pest-inspection",description: "Why pre-contract inspections matter, especially on older Tasmanian homes." },
   { title: "Conveyancing in Australia",         href: "/guides/conveyancing-guide",      description: "What conveyancers do, what they cost, and what to ask." },

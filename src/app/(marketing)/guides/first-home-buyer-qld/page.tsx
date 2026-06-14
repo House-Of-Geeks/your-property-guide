@@ -100,6 +100,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide (national)", href: "/guides/first-home-buyer-guide", description: "Federal schemes, FHOG by state, stamp duty concessions and step-by-step process." },
+  { title: "Stamp Duty QLD",         href: "/guides/stamp-duty-qld",          description: "Queensland transfer duty, the 2024 first home concession and worked examples." },
   { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",          description: "Estimate your QLD transfer duty in seconds." },
   { title: "Building & Pest Inspection",        href: "/guides/building-pest-inspection",description: "What to expect from QLD's contract conditions on inspections." },
   { title: "Conveyancing in Australia",         href: "/guides/conveyancing-guide",      description: "What conveyancers do, what they cost, and what to ask." },

@@ -101,6 +101,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide (national)", href: "/guides/first-home-buyer-guide", description: "Federal schemes, FHOG by state, and step-by-step process." },
+  { title: "Stamp Duty NT",          href: "/guides/stamp-duty-nt",          description: "Northern Territory conveyance duty, worked examples and the $10K FHOG." },
   { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",          description: "Estimate NT stamp duty (with or without the First Home Owner Discount)." },
   { title: "Building & Pest Inspection",        href: "/guides/building-pest-inspection",description: "Cyclone-zone construction and tropical-climate inspection priorities." },
   { title: "Conveyancing in Australia",         href: "/guides/conveyancing-guide",      description: "What conveyancers do, what they cost, and what to ask." },

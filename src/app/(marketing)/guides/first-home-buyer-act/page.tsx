@@ -103,6 +103,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide (national)", href: "/guides/first-home-buyer-guide", description: "Federal schemes, FHOG by state, stamp duty concessions and step-by-step process." },
+  { title: "Stamp Duty ACT",         href: "/guides/stamp-duty-act",          description: "ACT duty rates and the income-tested Home Buyer Concession Scheme." },
   { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",          description: "Estimate ACT conveyance duty (with or without the HBCS waiver)." },
   { title: "Conveyancing in Australia",         href: "/guides/conveyancing-guide",      description: "What conveyancers do, what they cost, and what to ask in the ACT." },
   { title: "Lenders Mortgage Insurance",        href: "/guides/lenders-mortgage-insurance-guide", description: "What LMI costs and the schemes that waive it." },

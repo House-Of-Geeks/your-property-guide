@@ -3,7 +3,7 @@ import Link from "next/link";
 import { StampDutyCalculator } from "@/components/calculators/StampDutyCalculator";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
 import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Stamp Duty Calculator",
@@ -109,6 +109,18 @@ export default function StampDutyCalculatorPage() {
             Every state and territory sets its own duty schedule. A $700,000
             purchase can attract noticeably different duty in NSW, Victoria, and
             Queensland. The calculator above runs the current schedule for each.
+          </p>
+          <p>
+            For the full rates, worked examples and first home buyer rules in
+            your state, see the dedicated guide:{" "}
+            <Link href="/guides/stamp-duty-nsw">NSW</Link>,{" "}
+            <Link href="/guides/stamp-duty-vic">VIC</Link>,{" "}
+            <Link href="/guides/stamp-duty-qld">QLD</Link>,{" "}
+            <Link href="/guides/stamp-duty-wa">WA</Link>,{" "}
+            <Link href="/guides/stamp-duty-sa">SA</Link>,{" "}
+            <Link href="/guides/stamp-duty-tas">TAS</Link>,{" "}
+            <Link href="/guides/stamp-duty-nt">NT</Link>,{" "}
+            <Link href="/guides/stamp-duty-act">ACT</Link>.
           </p>
           <p>
             Three things make the biggest difference between states:

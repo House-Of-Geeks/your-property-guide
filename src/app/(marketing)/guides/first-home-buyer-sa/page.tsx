@@ -101,6 +101,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide (national)", href: "/guides/first-home-buyer-guide", description: "Federal schemes, FHOG by state, and step-by-step buying process." },
+  { title: "Stamp Duty SA",          href: "/guides/stamp-duty-sa",          description: "South Australian rates, worked examples and the new-home first home exemption." },
   { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",          description: "Estimate your SA conveyance duty in seconds." },
   { title: "Conveyancing in Australia",         href: "/guides/conveyancing-guide",      description: "What conveyancers do, what they cost, and what to ask." },
   { title: "Lenders Mortgage Insurance",        href: "/guides/lenders-mortgage-insurance-guide", description: "What LMI costs and the schemes that waive it." },

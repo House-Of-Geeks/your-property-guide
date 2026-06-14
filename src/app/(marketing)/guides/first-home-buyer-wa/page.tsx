@@ -100,6 +100,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide (national)", href: "/guides/first-home-buyer-guide", description: "Federal schemes, FHOG by state, stamp duty concessions and step-by-step process." },
+  { title: "Stamp Duty WA",          href: "/guides/stamp-duty-wa",          description: "WA transfer duty rates, the first home owner rate and worked examples." },
   { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",          description: "Estimate your WA transfer duty in seconds." },
   { title: "Conveyancing in Australia",         href: "/guides/conveyancing-guide",      description: "What conveyancers do, what they cost, and what to ask." },
   { title: "Building & Pest Inspection",        href: "/guides/building-pest-inspection",description: "Why pre-contract inspections matter even more in WA." },

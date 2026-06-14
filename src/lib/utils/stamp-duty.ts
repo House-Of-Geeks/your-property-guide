@@ -334,14 +334,17 @@ function calcNT(
   let transferDuty: number;
 
   if (price <= 525_000) {
+    // NT conveyance duty formula: D = 0.06571441·V² + 15V, where V = value/1000.
+    // Result is in dollars. (At $525,000 this resolves to 4.95% of value, so the
+    // formula and the flat-rate band below are continuous at the boundary.)
     const V = price / 1000;
-    transferDuty = (0.06571441 * V * V + 15 * V) * 0.01;
+    transferDuty = 0.06571441 * V * V + 15 * V;
   } else if (price <= 3_000_000) {
-    transferDuty = 28_928 + (price - 525_000) * 0.0495;
+    // Flat 4.95% of the total dutiable value above the threshold.
+    transferDuty = price * 0.0495;
   } else {
-    // Cap at top bracket for display
-    transferDuty = 28_928 + (3_000_000 - 525_000) * 0.0495;
-    notes.push("For properties over $3,000,000 in the NT, please contact the NT Revenue Office for an exact calculation.");
+    // Flat 5.95% of the total dutiable value over $3,000,000.
+    transferDuty = price * 0.0595;
   }
 
   if (isFirstHome) {

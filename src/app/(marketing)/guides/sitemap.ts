@@ -36,6 +36,15 @@ const GUIDE_SLUGS = [
   "capital-growth-vs-cash-flow-australia",
   "offset-accounts-explained-australia",
   "best-brisbane-suburbs-for-families-2026",
+  // Costs / stamp duty by state
+  "stamp-duty-nsw",
+  "stamp-duty-vic",
+  "stamp-duty-qld",
+  "stamp-duty-wa",
+  "stamp-duty-sa",
+  "stamp-duty-tas",
+  "stamp-duty-nt",
+  "stamp-duty-act",
   // Selling
   "how-to-choose-a-selling-agent",
   "how-much-is-my-house-worth-australia",
