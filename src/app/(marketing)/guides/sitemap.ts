@@ -45,7 +45,23 @@ const GUIDE_SLUGS = [
   "stamp-duty-tas",
   "stamp-duty-nt",
   "stamp-duty-act",
+  // Process, finance & building (were missing from sitemap)
+  "home-loan-pre-approval-australia",
+  "how-to-choose-a-mortgage-broker",
+  "due-diligence-checklist-buying-a-house",
+  "how-to-find-a-builder-australia",
+  "cooling-off-period-vic",
+  "renovation-cost-australia-2026",
+  "rentvesting-australia",
+  // First-home schemes & borrowing power
+  "how-much-can-i-borrow-australia",
+  "help-to-buy-scheme-australia",
+  "first-home-super-saver-scheme",
+  "first-home-guarantee",
+  "first-home-owner-grant-australia",
   // Selling
+  "how-to-sell-a-house-australia",
+  "cost-of-selling-a-house-australia",
   "how-to-choose-a-selling-agent",
   "how-much-is-my-house-worth-australia",
   "real-estate-agent-fees-australia",
