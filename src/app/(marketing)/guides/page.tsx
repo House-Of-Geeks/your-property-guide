@@ -8,7 +8,9 @@ import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { PERSONA_BY_ID } from "@/lib/constants/journey";
 
 export const metadata: Metadata = {
-  title: `Property Guides | ${SITE_NAME}`,
+  // Brand suffix is appended once by the root title template (%s | SITE_NAME);
+  // the page title must not repeat it (was double-branded in the SERP).
+  title: "Property Guides for Buyers and Sellers",
   description:
     "Free Australian property guides covering buying, investing, renting, selling, and moving. Plain-English, ungated, updated for 2026.",
   alternates: { canonical: `${SITE_URL}/guides` },
@@ -26,6 +28,7 @@ interface Guide {
   description: string;
   href: string;
   readTime: string;
+  pillar?: boolean;
 }
 
 interface GuideSection {
@@ -43,6 +46,7 @@ const SECTIONS: GuideSection[] = [
     blurb: "Schemes, deposits, LMI, and the buying process. Start with the national guide, then drill into your state.",
     icon: "/images/icons/guide.svg",
     guides: [
+      { title: "How to Buy Property in Australia",          href: "/guides/buying-property-australia", readTime: "15 min", description: "Complete step-by-step from saving your deposit to settlement.", pillar: true },
       { title: "First Home Buyer Guide (National)",        href: "/guides/first-home-buyer-guide", readTime: "10 min", description: "Federal schemes, FHOG by state, stamp duty concessions and step-by-step buying." },
       { title: "How Much Deposit to Buy a House?",          href: "/guides/how-much-deposit-to-buy-a-house", readTime: "9 min", description: "5%, 10%, 20%, what each tier unlocks, plus LMI, schemes, and FHSS." },
       { title: "10 First Home Buyer Mistakes to Avoid",     href: "/guides/first-home-buyer-mistakes-to-avoid", readTime: "9 min", description: "The expensive errors, ranked, with the simple fix for each." },
@@ -50,7 +54,6 @@ const SECTIONS: GuideSection[] = [
       { title: "How Long Does It Take to Buy a House?",     href: "/guides/how-long-does-it-take-to-buy-a-house-australia", readTime: "8 min", description: "Realistic 12 to 20 week timeline, stage by stage, with state settlement times." },
       { title: "Cooling-Off Period by State",               href: "/guides/cooling-off-period-by-state-australia", readTime: "7 min", description: "How long you have to pull out of a private treaty contract, state by state." },
       { title: "Best Brisbane Suburbs for Families 2026",   href: "/guides/best-brisbane-suburbs-for-families-2026", readTime: "10 min", description: "Inner-ring, middle-ring, and outer growth corridors picked for school quality and lifestyle." },
-      { title: "How to Buy Property in Australia",          href: "/guides/buying-property-australia", readTime: "15 min", description: "Complete step-by-step from saving your deposit to settlement." },
       { title: "How to Negotiate Property Price",           href: "/guides/how-to-negotiate-property-price-australia", readTime: "13 min", description: "Opening offers, counter-offer logic, walk-away triggers and the mistakes that cost buyers money." },
       { title: "What Happens on Settlement Day",            href: "/guides/settlement-day-australia", readTime: "12 min", description: "Plain-English walkthrough of PEXA settlement, final inspection, funds flow, delays and state-by-state notes." },
       { title: "Capital Growth vs Cash Flow",               href: "/guides/capital-growth-vs-cash-flow-australia", readTime: "14 min", description: "The investor decision that gets oversimplified into one sentence. How the trade-off actually works on real Australian property." },
@@ -77,6 +80,8 @@ const SECTIONS: GuideSection[] = [
     blurb: "Picking an agent, the auction process, and how the agent fee structure actually works.",
     icon: "/images/icons/broker.svg",
     guides: [
+      { title: "How to Sell a House in Australia",           href: "/guides/how-to-sell-a-house-australia", readTime: "14 min", description: "The full sale process from appraisal to settlement, with timing, costs, and the decisions that move the price.", pillar: true },
+      { title: "How Much Is My House Worth?",               href: "/guides/how-much-is-my-house-worth-australia", readTime: "10 min", description: "Appraisal vs bank valuation vs online estimate, why they differ, and how to get an accurate figure." },
       { title: "How to Choose a Selling Agent",             href: "/guides/how-to-choose-a-selling-agent", readTime: "9 min", description: "Interview process, the appraisal-price trap, fees, and the listing agreement." },
       { title: "Real Estate Agent Fees in Australia",       href: "/guides/real-estate-agent-fees-australia", readTime: "8 min", description: "Commission rates by state, marketing costs, and what's negotiable." },
       { title: "Property Auction Guide",                    href: "/guides/property-auction-guide", readTime: "10 min", description: "What to expect on auction day from the seller's side." },
@@ -139,6 +144,12 @@ const PERSONA_LINKS = [
   { id: "selling",    href: PERSONA_BY_ID["selling"].hubPath,    label: PERSONA_BY_ID["selling"].cardLabel },
   { id: "upgrading",  href: PERSONA_BY_ID["upgrading"].hubPath,  label: PERSONA_BY_ID["upgrading"].cardLabel },
   { id: "investing",  href: PERSONA_BY_ID["investing"].hubPath,  label: PERSONA_BY_ID["investing"].cardLabel },
+];
+
+const TOOLS = [
+  { title: "Real Estate Commission Calculator", href: "/real-estate-commission-calculator", description: "Work out what an agent's commission costs you on your sale price, state by state." },
+  { title: "Borrowing Power Calculator",        href: "/borrowing-power-calculator",        description: "Estimate how much a lender will let you borrow based on income and expenses." },
+  { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",             description: "Estimate your stamp duty and first home buyer concessions in under a minute." },
 ];
 
 export default function GuidesHubPage() {
@@ -266,6 +277,11 @@ export default function GuidesHubPage() {
                     href={guide.href}
                     className="group rounded-2xl border border-line bg-surface-raised hover:border-ink hover:shadow-card-hover p-6 transition-all flex flex-col"
                   >
+                    {guide.pillar && (
+                      <p className="text-xs font-sans uppercase tracking-[0.2em] text-primary mb-2">
+                        Start here
+                      </p>
+                    )}
                     <h3 className="font-display text-lg text-ink leading-tight mb-3">
                       {guide.title}
                     </h3>
@@ -288,6 +304,48 @@ export default function GuidesHubPage() {
           ))}
         </div>
       </article>
+
+      {/* Calculators & tools */}
+      <section className="bg-surface-warm border-t border-line-warm">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="grid lg:grid-cols-12 gap-8 mb-8">
+            <div className="lg:col-span-5">
+              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+                Run the numbers
+              </p>
+              <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
+                Calculators &amp; tools
+              </h2>
+            </div>
+            <div className="lg:col-span-6 lg:col-start-7 flex items-end">
+              <p className="font-sans text-base text-ink-muted leading-relaxed">
+                Free calculators to size up the costs before you commit. No sign-up, instant results.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {TOOLS.map((tool) => (
+              <Link
+                key={tool.href}
+                href={tool.href}
+                className="group rounded-2xl border border-line bg-surface-raised hover:border-ink hover:shadow-card-hover p-6 transition-all flex flex-col"
+              >
+                <h3 className="font-display text-lg text-ink leading-tight mb-3">
+                  {tool.title}
+                </h3>
+                <p className="font-sans text-sm text-ink-muted leading-relaxed flex-1 mb-4">
+                  {tool.description}
+                </p>
+                <span className="inline-flex items-center gap-1 text-sm font-medium text-ink self-start">
+                  Open tool
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Disclaimer */}
       <section className="bg-surface-warm border-t border-line-warm">

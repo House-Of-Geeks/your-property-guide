@@ -14,6 +14,7 @@ import {
 } from "@/components/suburb";
 import { SuburbAppraisalCTA } from "@/components/suburb/SuburbAppraisalCTA";
 import { SuburbSellingGuideCTA } from "@/components/suburb/SuburbSellingGuideCTA";
+import { SuburbBuyingGuideCTA } from "@/components/suburb/SuburbBuyingGuideCTA";
 import { SuburbSchools } from "@/components/suburb/SuburbSchools";
 import { SuburbWalkability } from "@/components/suburb/SuburbWalkability";
 import { SuburbHazard } from "@/components/suburb/SuburbHazard";
@@ -180,6 +181,16 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
               </h2>
             </div>
             <div className="lg:col-span-8 lg:col-start-5 space-y-5">
+              {/* Above-the-fold plain-language answer to the page's primary
+                  query, so the median is stated as a sentence (not just a
+                  stat tile) high on the page for both readers and AI answer
+                  engines. Only printed when we trust the median. */}
+              {priceTrusted && (
+                <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[65ch]">
+                  The median house price in {suburb.name} is{" "}
+                  <span className="font-medium text-ink">{formatPriceFull(suburb.stats.medianHousePrice)}</span>.
+                </p>
+              )}
               {stubDescription
                 ? intro.map((para, i) => (
                     <p key={i} className="font-sans text-lg sm:text-xl text-ink leading-[1.65] max-w-[65ch]">
@@ -305,12 +316,28 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 <div className="rounded-xl border border-line bg-surface-raised p-5">
                   <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-2">For buyers</p>
                   <p className="font-sans text-sm text-ink leading-relaxed">{buyerView}</p>
+                  <p className="font-sans text-sm mt-3">
+                    <Link
+                      href="/borrowing-power-calculator"
+                      className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                    >
+                      See what you can borrow
+                    </Link>
+                  </p>
                 </div>
               )}
               {sellerView && (
                 <div className="rounded-xl border border-line bg-surface-raised p-5">
                   <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-2">For sellers</p>
                   <p className="font-sans text-sm text-ink leading-relaxed">{sellerView}</p>
+                  <p className="font-sans text-sm mt-3">
+                    <Link
+                      href="/real-estate-commission-calculator"
+                      className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                    >
+                      Work out your selling costs
+                    </Link>
+                  </p>
                 </div>
               )}
             </div>
@@ -419,12 +446,13 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           <SuburbAppraisalCTA suburbName={suburb.name} suburbSlug={suburb.slug} />
         </section>
 
-        {/* Earlier-stage sellers: the appraisal form above captures vendors
-            ready to talk to an agent today; this captures the bigger group
-            still months out. Deep-links the guide funnel with suburb
-            pre-answered. */}
-        <section>
+        {/* Earlier-stage buyers and sellers, side by side. The appraisal
+            form above captures vendors ready to talk to an agent today;
+            these two capture the bigger group still researching. Each
+            deep-links its guide funnel with the suburb pre-answered. */}
+        <section className="grid sm:grid-cols-2 gap-4 sm:gap-6">
           <SuburbSellingGuideCTA suburbName={suburb.name} suburbSlug={suburb.slug} />
+          <SuburbBuyingGuideCTA suburbName={suburb.name} suburbSlug={suburb.slug} />
         </section>
 
         {/* Secondary capture for visitors who aren't selling. Smaller
@@ -730,12 +758,22 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         href={`/selling-guide?suburb=${slug}`}
       />
 
+      {/* Buyer-side fallback for the bottom CTA, which is seller-framed. */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 -mt-6 text-center">
+        <Link
+          href={`/buying-guide?suburb=${slug}`}
+          className="font-sans text-sm text-ink-muted border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+        >
+          Buying instead? Get the free buying guide.
+        </Link>
+      </div>
+
       {/* Floating guide pill, slides up once the user scrolls past 30%
           of the page. Pre-fills the suburb on click. Dismissible per
           session. Sits above the mobile bottom nav. */}
       <StickyMatchCTA
         suburb={slug}
-        label={`Selling in ${suburb.name}? Free guide`}
+        label={`Buying or selling in ${suburb.name}? Free guide`}
         dismissKey={`suburb:${slug}`}
       />
     </>

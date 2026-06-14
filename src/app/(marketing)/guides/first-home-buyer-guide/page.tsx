@@ -11,7 +11,7 @@ import {
   type FaqItem,
   type RelatedGuide,
 } from "@/components/guide";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 
 const FRONTMATTER: GuideFrontmatter = {
@@ -28,7 +28,7 @@ const FRONTMATTER: GuideFrontmatter = {
 };
 
 export const metadata: Metadata = {
-  title: `${FRONTMATTER.title} | ${SITE_NAME}`,
+  title: FRONTMATTER.title,
   description: FRONTMATTER.description,
   alternates: { canonical: `${SITE_URL}/guides/${FRONTMATTER.slug}` },
   openGraph: {
@@ -143,8 +143,12 @@ export default function FirstHomeBuyerGuidePage() {
         guides for{" "}
         <Link href="/guides/first-home-buyer-nsw">NSW</Link>,{" "}
         <Link href="/guides/first-home-buyer-vic">VIC</Link>,{" "}
-        <Link href="/guides/first-home-buyer-qld">QLD</Link>, and{" "}
-        <Link href="/guides/first-home-buyer-wa">WA</Link>.
+        <Link href="/guides/first-home-buyer-qld">QLD</Link>,{" "}
+        <Link href="/guides/first-home-buyer-wa">WA</Link>,{" "}
+        <Link href="/guides/first-home-buyer-sa">SA</Link>,{" "}
+        <Link href="/guides/first-home-buyer-tas">TAS</Link>,{" "}
+        <Link href="/guides/first-home-buyer-nt">NT</Link>, and{" "}
+        <Link href="/guides/first-home-buyer-act">ACT</Link>.
       </p>
 
       <KeyFigure
@@ -335,6 +339,10 @@ export default function FirstHomeBuyerGuidePage() {
         <li><Link href="/guides/first-home-buyer-vic">First Home Buyer Guide, Victoria</Link></li>
         <li><Link href="/guides/first-home-buyer-qld">First Home Buyer Guide, Queensland</Link></li>
         <li><Link href="/guides/first-home-buyer-wa">First Home Buyer Guide, Western Australia</Link></li>
+        <li><Link href="/guides/first-home-buyer-sa">First Home Buyer Guide, South Australia</Link></li>
+        <li><Link href="/guides/first-home-buyer-tas">First Home Buyer Guide, Tasmania</Link></li>
+        <li><Link href="/guides/first-home-buyer-nt">First Home Buyer Guide, Northern Territory</Link></li>
+        <li><Link href="/guides/first-home-buyer-act">First Home Buyer Guide, Australian Capital Territory</Link></li>
       </ul>
     </GuideArticleLayout>
   );

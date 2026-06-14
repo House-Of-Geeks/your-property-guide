@@ -38,6 +38,7 @@ const GUIDE_SLUGS = [
   "best-brisbane-suburbs-for-families-2026",
   // Selling
   "how-to-choose-a-selling-agent",
+  "how-much-is-my-house-worth-australia",
   "real-estate-agent-fees-australia",
   // Upgrading / moving
   "sell-first-or-buy-first",
@@ -72,7 +73,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${SITE_URL}/guides/${slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
-    priority: 0.7,
+    priority: 0.8,
   }));
 
   // Skip DB fetch at build time, runtime DB isn't reachable. Static entries

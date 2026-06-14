@@ -16,7 +16,7 @@ import {
   type SourceItem,
 } from "@/components/guide";
 import { HowToJsonLd } from "@/components/seo";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 
 const FRONTMATTER: GuideFrontmatter = {
@@ -33,7 +33,7 @@ const FRONTMATTER: GuideFrontmatter = {
 };
 
 export const metadata: Metadata = {
-  title: `${FRONTMATTER.title} | ${SITE_NAME}`,
+  title: FRONTMATTER.title,
   description: FRONTMATTER.description,
   alternates: { canonical: `${SITE_URL}/guides/${FRONTMATTER.slug}` },
   openGraph: {

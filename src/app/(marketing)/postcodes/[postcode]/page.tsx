@@ -194,6 +194,24 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
               </div>
             )}
           </div>
+
+          {/* Buyer / seller funnel entry. Routes the postcode page's human
+              traffic into the transactional guides, pre-filled to the lead
+              suburb in this postcode. */}
+          <div className="flex flex-wrap gap-3 mt-8">
+            <Link
+              href={`/selling-guide?suburb=${suburbs[0].slug}`}
+              className="inline-flex items-center gap-2 bg-primary text-white text-sm font-semibold rounded-lg px-5 py-2.5 hover:bg-primary/90 transition-colors w-fit"
+            >
+              Get the free selling guide
+            </Link>
+            <Link
+              href={`/buying-guide?suburb=${suburbs[0].slug}`}
+              className="inline-flex items-center gap-2 bg-white border border-primary text-primary text-sm font-semibold rounded-lg px-5 py-2.5 hover:bg-primary/5 transition-colors w-fit"
+            >
+              Get the free buying guide
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -348,6 +366,60 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
             </div>
           </section>
         )}
+
+        {/* Buying / selling resource block. Sends postcode-page authority and
+            readers into the transactional guides and calculators rather than
+            leaving them on a reference page. */}
+        <section className="rounded-2xl border border-gray-100 bg-gray-50 p-6 sm:p-8">
+          <p className="text-[11px] uppercase tracking-[0.22em] text-gray-400 font-medium mb-1">
+            Thinking of a move in {state}?
+          </p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Buying or selling in {state}?
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div>
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">Buying</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <Link href="/guides/first-home-buyer-guide" className="text-gray-700 hover:text-primary hover:underline">
+                    First home buyer guide
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/guides/how-much-deposit-to-buy-a-house" className="text-gray-700 hover:text-primary hover:underline">
+                    How much deposit you need
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/stamp-duty-calculator" className="text-gray-700 hover:text-primary hover:underline">
+                    Stamp duty calculator
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">Selling</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <Link href="/guides/how-to-sell-a-house-australia" className="text-gray-700 hover:text-primary hover:underline">
+                    How to sell a house
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/guides/real-estate-agent-fees-australia" className="text-gray-700 hover:text-primary hover:underline">
+                    Real estate agent fees
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/real-estate-commission-calculator" className="text-gray-700 hover:text-primary hover:underline">
+                    Commission calculator
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
 
         {/* Reverse-lookup FAQ. Visible Q&A backs the FAQPage schema above so
             Google can surface a direct answer for "what suburb is postcode X"

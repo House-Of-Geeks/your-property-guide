@@ -216,7 +216,7 @@ export default async function AgentProfilePage({ params }: AgentProfilePageProps
                   return (
                     <Link
                       key={s}
-                      href={`/real-estate-agencies/${s}`}
+                      href={`/suburbs/${s}`}
                       className="text-sm text-gray-700 hover:text-primary hover:underline"
                     >
                       {name}

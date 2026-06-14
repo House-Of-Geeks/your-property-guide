@@ -12,7 +12,7 @@ const getEntries = unstable_cache(
     return postcodes.map((postcode) => ({
       url: `${SITE_URL}/postcodes/${postcode}`,
       changeFrequency: "monthly" as const,
-      priority: 0.6,
+      priority: 0.4,
     }));
   },
   ["sitemap-postcodes:v1"],

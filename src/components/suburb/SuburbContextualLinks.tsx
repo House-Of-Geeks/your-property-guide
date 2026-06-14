@@ -18,43 +18,46 @@ function nearbyName(slug: string): string {
     .join(" ");
 }
 
-// Map state code → state-specific guides we have today.
-function guidesForState(state: string | undefined): { label: string; href: string }[] {
-  const stateLower = (state ?? "").toLowerCase();
-  const links: { label: string; href: string }[] = [
-    { label: "How much deposit do I need?", href: "/guides/how-much-deposit-to-buy-a-house" },
+// Evergreen guide + calculator links for the lead-gen surface, split into
+// buying and selling intent. State label personalises the two state-aware
+// rows; the destinations are the canonical national guides.
+function buyingLinksForState(state: string | undefined): { label: string; href: string }[] {
+  const stateUpper = (state ?? "").toUpperCase();
+  const firstHome = stateUpper
+    ? `First home buyer guide, ${stateUpper}`
+    : "First home buyer guide";
+  return [
+    { label: firstHome, href: "/guides/first-home-buyer-guide" },
+    { label: "How much deposit to buy a house", href: "/guides/how-much-deposit-to-buy-a-house" },
     { label: "Buying property in Australia", href: "/guides/buying-property-australia" },
+    { label: "Borrowing power calculator", href: "/borrowing-power-calculator" },
+    { label: "Stamp duty calculator", href: "/stamp-duty-calculator" },
   ];
+}
 
-  if (["nsw", "vic", "qld", "wa", "sa", "tas", "nt", "act"].includes(stateLower)) {
-    links.unshift({
-      label: `First home buyer guide, ${stateLower.toUpperCase()}`,
-      href: `/guides/first-home-buyer-${stateLower}`,
-    });
-  }
-  if (["nsw", "vic", "qld", "sa", "wa"].includes(stateLower)) {
-    links.push({
-      label: `Granny flat guide, ${stateLower.toUpperCase()}`,
-      href: `/guides/granny-flat-guide-${stateLower}`,
-    });
-  }
-  if (["nsw", "vic", "qld", "sa", "wa", "tas", "nt", "act"].includes(stateLower)) {
-    links.push({
-      label: `Renter's rights, ${stateLower.toUpperCase()}`,
-      href: `/guides/renters-rights-${stateLower}`,
-    });
-  }
-  return links.slice(0, 5);
+function sellingLinksForState(state: string | undefined): { label: string; href: string }[] {
+  const stateUpper = (state ?? "").toUpperCase();
+  const agentFees = stateUpper
+    ? `Real estate agent fees, ${stateUpper}`
+    : "Real estate agent fees";
+  return [
+    { label: "How to sell a house in Australia", href: "/guides/how-to-sell-a-house-australia" },
+    { label: agentFees, href: "/guides/real-estate-agent-fees-australia" },
+    { label: "Sell first or buy first?", href: "/guides/sell-first-or-buy-first" },
+    { label: "Commission calculator", href: "/real-estate-commission-calculator" },
+    { label: "Free property appraisal", href: "/appraisal" },
+  ];
 }
 
 export function SuburbContextualLinks({ suburb }: SuburbContextualLinksProps) {
   const { name, slug, state, nearbySuburbs } = suburb;
   const nearby = nearbySuburbs.slice(0, 6);
-  const guideLinks = guidesForState(state);
+  const buyingLinks = buyingLinksForState(state);
+  const sellingLinks = sellingLinksForState(state);
 
   return (
     <div className="border-t border-line mt-16 pt-10">
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8">
 
         {/* For Sale */}
         <div>
@@ -112,11 +115,25 @@ export function SuburbContextualLinks({ suburb }: SuburbContextualLinksProps) {
           </ul>
         </div>
 
-        {/* Guides */}
+        {/* Buying */}
         <div>
-          <h3 className="text-xs font-sans font-medium text-ink uppercase tracking-[0.2em] mb-3">Guides</h3>
+          <h3 className="text-xs font-sans font-medium text-ink uppercase tracking-[0.2em] mb-3">Buying</h3>
           <ul className="space-y-2">
-            {guideLinks.map((l) => (
+            {buyingLinks.map((l) => (
+              <li key={l.href}>
+                <Link href={l.href} className="font-sans text-sm text-ink-muted hover:text-primary transition-colors leading-snug block">
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Selling */}
+        <div>
+          <h3 className="text-xs font-sans font-medium text-ink uppercase tracking-[0.2em] mb-3">Selling</h3>
+          <ul className="space-y-2">
+            {sellingLinks.map((l) => (
               <li key={l.href}>
                 <Link href={l.href} className="font-sans text-sm text-ink-muted hover:text-primary transition-colors leading-snug block">
                   {l.label}
