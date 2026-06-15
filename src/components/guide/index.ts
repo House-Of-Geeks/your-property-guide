@@ -8,6 +8,7 @@ export { FaqAccordion } from "./FaqAccordion";
 export { RelatedGuides } from "./RelatedGuides";
 export { SectionDivider } from "./SectionDivider";
 export { MiniStampDutyEmbed } from "./MiniStampDutyEmbed";
+export { MiniBorrowingPowerEmbed } from "./MiniBorrowingPowerEmbed";
 export { GuideSuburbSearch } from "./GuideSuburbSearch";
 export { GuideNewsletterCallout } from "./GuideNewsletterCallout";
 export { GuideGlossaryRail } from "./GuideGlossaryRail";

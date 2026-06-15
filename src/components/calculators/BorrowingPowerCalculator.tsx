@@ -3,78 +3,7 @@
 import { useState, useMemo } from "react";
 import { DollarSign, Info, Users, TrendingUp } from "lucide-react";
 import { formatPriceFull } from "@/lib/utils/format";
-
-// HEM base by number of dependants (monthly, $)
-const HEM_BASE: Record<number, number> = {
-  0: 2_000,
-  1: 2_500,
-  2: 3_000,
-  3: 3_500,
-};
-const HEM_MAX_DEPENDANTS = 4;
-const HEM_4PLUS = 4_000;
-
-function getHEM(dependants: number): number {
-  if (dependants >= HEM_MAX_DEPENDANTS) return HEM_4PLUS;
-  return HEM_BASE[dependants] ?? HEM_4PLUS;
-}
-
-interface BorrowingResult {
-  maxLoan: number;
-  estimatedPurchasePrice: number;
-  monthlyRepayment: number;
-  monthlyNetIncome: number;
-  hemUsed: number;
-  availableForRepayments: number;
-}
-
-function computeBorrowingPower(
-  income1: number,
-  income2: number,
-  monthlyExpenses: number,
-  dependants: number,
-  existingDebts: number,
-  assessmentRate: number,
-  termYears: number
-): BorrowingResult | null {
-  const grossAnnual = income1 + income2;
-  if (grossAnnual <= 0) return null;
-
-  const netAnnual = grossAnnual * 0.72;
-  const monthlyNetIncome = netAnnual / 12;
-
-  const hemBase = getHEM(dependants);
-  const hemUsed = Math.max(monthlyExpenses, hemBase);
-
-  const availableForRepayments = monthlyNetIncome - hemUsed - existingDebts;
-  if (availableForRepayments <= 0) return null;
-
-  const maxMonthlyRepayment = availableForRepayments * 0.85;
-
-  const r = assessmentRate / 100 / 12;
-  const n = termYears * 12;
-
-  let maxLoan: number;
-  if (r === 0) {
-    maxLoan = maxMonthlyRepayment * n;
-  } else {
-    const factor = (Math.pow(1 + r, n) - 1) / (r * Math.pow(1 + r, n));
-    maxLoan = maxMonthlyRepayment * factor;
-  }
-
-  maxLoan = Math.max(0, maxLoan);
-  const estimatedPurchasePrice = maxLoan / 0.8; // assumes 20% deposit
-  const monthlyRepayment = maxMonthlyRepayment;
-
-  return {
-    maxLoan: Math.round(maxLoan),
-    estimatedPurchasePrice: Math.round(estimatedPurchasePrice),
-    monthlyRepayment: Math.round(monthlyRepayment),
-    monthlyNetIncome: Math.round(monthlyNetIncome),
-    hemUsed: Math.round(hemUsed),
-    availableForRepayments: Math.round(availableForRepayments),
-  };
-}
+import { computeBorrowingPower, getHEM } from "@/lib/utils/borrowing-power";
 
 export function BorrowingPowerCalculator() {
   const [income1, setIncome1] = useState(100_000);

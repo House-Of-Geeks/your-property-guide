@@ -5,6 +5,7 @@ import {
   Callout,
   KeyFigure,
   MatchCTA,
+  MiniBorrowingPowerEmbed,
   Sources,
   EditorNote,
   PullQuote,
@@ -304,6 +305,13 @@ export default function HowMuchCanIBorrowAustraliaPage() {
         income. These are indicative only. Your real figure depends on your living
         expenses, dependants, existing debts, deposit, the interest rate and the
         serviceability buffer, and it will differ between lenders.
+      </p>
+
+      <MiniBorrowingPowerEmbed />
+
+      <p>
+        Prefer a glance? The table below shows roughly how capacity scales with
+        income, assuming minimal other debt and a standard deposit.
       </p>
 
       <table>
