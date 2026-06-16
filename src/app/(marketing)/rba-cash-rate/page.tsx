@@ -28,6 +28,16 @@ interface RateEntry {
 }
 
 const rateHistory: RateEntry[] = [
+  { date: "2026-06-16", rate: 4.35, change: 0,     note: "Hold" },
+  { date: "2026-05-05", rate: 4.35, change: 0.25,  note: "Hike" },
+  { date: "2026-03-17", rate: 4.10, change: 0.25,  note: "Hike" },
+  { date: "2026-02-03", rate: 3.85, change: 0.25,  note: "Hike" },
+  { date: "2025-12-09", rate: 3.60, change: 0,     note: "Hold" },
+  { date: "2025-11-04", rate: 3.60, change: 0,     note: "Hold" },
+  { date: "2025-09-30", rate: 3.60, change: 0,     note: "Hold" },
+  { date: "2025-08-12", rate: 3.60, change: -0.25, note: "Cut" },
+  { date: "2025-07-08", rate: 3.85, change: 0,     note: "Hold" },
+  { date: "2025-05-20", rate: 3.85, change: -0.25, note: "Cut" },
   { date: "2025-04-01", rate: 4.10, change: 0,     note: "Hold" },
   { date: "2025-02-18", rate: 4.10, change: -0.25, note: "Cut" },
   { date: "2024-12-10", rate: 4.35, change: 0,     note: "Hold" },
@@ -60,14 +70,10 @@ const rateHistory: RateEntry[] = [
 ];
 
 const upcomingMeetings2026 = [
-  { dates: "17–18 February", decision: "Feb 18" },
-  { dates: "1 April",        decision: "Apr 1" },
-  { dates: "19–20 May",      decision: "May 20" },
-  { dates: "7–8 July",       decision: "Jul 8" },
-  { dates: "18–19 August",   decision: "Aug 19" },
-  { dates: "29–30 September",decision: "Sep 30" },
-  { dates: "3–4 November",   decision: "Nov 4" },
-  { dates: "9 December",     decision: "Dec 9" },
+  { dates: "10–11 August",    decision: "Aug 11" },
+  { dates: "28–29 September", decision: "Sep 29" },
+  { dates: "2–3 November",    decision: "Nov 3" },
+  { dates: "7–8 December",    decision: "Dec 8" },
 ];
 
 function formatRateDate(dateStr: string): string {
@@ -129,6 +135,7 @@ export default function RBACashRatePage() {
         description="Track the RBA cash rate history and understand how interest rate changes affect Australian property prices. Updated with each RBA decision."
         url="/rba-cash-rate"
         datePublished="2026-01-01"
+        dateModified="2026-06-16"
       />
       <Breadcrumbs items={[{ label: "RBA Cash Rate" }]} />
 
@@ -154,8 +161,8 @@ export default function RBACashRatePage() {
             As of {formatRateDate(currentRate.date)}, {currentRate.note}
           </p>
           <div className="mt-4 inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-2 text-sm">
-            <TrendingDown className="w-4 h-4" />
-            Cut by 0.25% in February 2025, first cut since November 2020
+            <Minus className="w-4 h-4" />
+            Held at 4.35% on 16 June 2026 after three consecutive hikes this year
           </div>
         </div>
       </div>
@@ -300,7 +307,7 @@ export default function RBACashRatePage() {
       {/* 2026 Meeting dates */}
       <div className="max-w-4xl mx-auto mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          2026 RBA Meeting Dates
+          Remaining 2026 RBA Meeting Dates
         </h2>
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
           <div className="overflow-x-auto">

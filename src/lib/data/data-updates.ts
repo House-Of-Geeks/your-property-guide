@@ -21,6 +21,14 @@ export interface DataUpdate {
 
 export const DATA_UPDATES: DataUpdate[] = [
   {
+    date: "2026-06-16",
+    kind: "data",
+    title: "June 2026 RBA decision: cash rate held at 4.35%",
+    description:
+      "The RBA held the cash rate at 4.35% on 16 June, pausing after three consecutive hikes this year. The cash rate tracker and our news analysis are updated with the decision.",
+    href: "/rba-cash-rate",
+  },
+  {
     date: "2026-05-06",
     kind: "data",
     title: "Live counts dashboard launched",
