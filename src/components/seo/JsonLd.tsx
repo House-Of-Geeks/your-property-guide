@@ -270,7 +270,9 @@ export function ArticleJsonLd({ post }: { post: BlogPost }) {
     <JsonLdScript
       data={{
         "@context": "https://schema.org",
-        "@type": "Article",
+        // Timely "News" posts emit NewsArticle for Top Stories / Google News
+        // eligibility; evergreen guides stay as Article.
+        "@type": post.category === "News" ? "NewsArticle" : "Article",
         headline: post.title,
         description: post.excerpt,
         image,

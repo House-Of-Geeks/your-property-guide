@@ -167,6 +167,17 @@ export default function RBACashRatePage() {
         </div>
       </div>
 
+      {/* Link to latest decision analysis */}
+      <div className="max-w-4xl mx-auto -mt-6 mb-10 text-center">
+        <Link
+          href="/guides/rba-cash-rate-june-2026-what-it-means-for-buyers"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+        >
+          Read our full analysis of the June 2026 decision
+          <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
+
       {/* Rate history table */}
       <div className="max-w-4xl mx-auto mb-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Rate Decision History</h2>
