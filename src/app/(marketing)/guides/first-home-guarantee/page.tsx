@@ -17,10 +17,10 @@ import { guideOgImages } from "@/lib/og/helpers";
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Guarantee 2026: Buy With a 5% Deposit, No LMI",
   description:
-    "How the First Home Guarantee (FHBG) lets eligible first home buyers purchase with a 5% deposit and no Lenders Mortgage Insurance. Income limits, price caps, the Regional and Family Home Guarantees, and how it stacks with the FHOG.",
+    "How the Australian Government 5% Deposit Scheme (the expanded First Home Guarantee) lets eligible first home buyers purchase with a 5% deposit and no Lenders Mortgage Insurance. The 2025 expansion, price caps, the Family Home Guarantee, and how it stacks with the FHOG.",
   slug: "first-home-guarantee",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-06-14",
+  updatedAt: "2026-06-16",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -48,18 +48,18 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "The First Home Guarantee (FHBG) lets eligible first home buyers purchase with a 5% deposit, while the government guarantees the gap so you skip Lenders Mortgage Insurance.",
-  "Places are limited each financial year and released across the FHBG and the Regional First Home Buyer Guarantee, so they can run out before year end.",
-  "Income limits are $125,000 a year for singles and $200,000 a year for couples, based on combined taxable income from the previous financial year.",
-  "Property price caps apply and differ by capital city and region. Check Housing Australia for the exact cap in your location, because one dollar over disqualifies the purchase.",
-  "The Family Home Guarantee is a related scheme that lets eligible single parents and guardians buy with a 2% deposit, even if they have owned a home before.",
-  "The FHBG can stack with a state First Home Owner Grant and a first home buyer stamp duty concession, which is where the big savings add up.",
+  "The First Home Guarantee lets eligible first home buyers purchase with a 5% deposit, while the government guarantees the gap so you skip Lenders Mortgage Insurance.",
+  "In late 2025 the scheme was expanded and renamed the Australian Government 5% Deposit Scheme. The expansion removed the income caps and the annual limit on places, and lifted the property price caps.",
+  "There is no longer an income test, and places are now uncapped, so eligibility no longer depends on how much you earn or how early in the year you apply.",
+  "Property price caps still apply and were increased. In NSW capital cities and regional centres the cap rose to $1.5 million. Caps differ by state and region, so check Housing Australia for the exact cap in your location.",
+  "The Family Home Guarantee is a related scheme that lets eligible single parents and guardians buy with a 2% deposit, even if they have owned a home before. Confirm the current detail with Housing Australia.",
+  "The scheme can stack with a state First Home Owner Grant and a first home buyer stamp duty concession, which is where the big savings add up.",
 ];
 
 const TOC: GuideTOCEntry[] = [
   { id: "what-it-is",      label: "What the First Home Guarantee is" },
   { id: "how-it-works",    label: "How the 5% deposit and no LMI works" },
-  { id: "eligibility",     label: "Income limits and price caps" },
+  { id: "eligibility",     label: "Eligibility and price caps" },
   { id: "related",         label: "Regional and Family Home Guarantees" },
   { id: "stacking",        label: "Stacking with the FHOG and stamp duty" },
   { id: "applying",        label: "How to apply" },
@@ -69,12 +69,12 @@ const FAQS: FaqItem[] = [
   {
     question: "What is the First Home Guarantee?",
     answer:
-      "The First Home Guarantee (FHBG), previously the First Home Loan Deposit Scheme, is a federal scheme run through Housing Australia. It lets eligible first home buyers purchase a home with as little as a 5% deposit. The government guarantees the rest of the deposit a lender would normally want, so you avoid paying Lenders Mortgage Insurance. It does not give you cash and it does not lend you money. It sits behind your loan as a guarantee, which is what removes the LMI cost.",
+      "The First Home Guarantee is a federal scheme run through Housing Australia. In late 2025 it was expanded and renamed the Australian Government 5% Deposit Scheme, and it is now open to all eligible first home buyers. It lets eligible first home buyers purchase a home with as little as a 5% deposit. The government guarantees the rest of the deposit a lender would normally want, so you avoid paying Lenders Mortgage Insurance. It does not give you cash and it does not lend you money. It sits behind your loan as a guarantee, which is what removes the LMI cost.",
   },
   {
-    question: "What are the income limits for the First Home Guarantee?",
+    question: "Are there income limits for the First Home Guarantee?",
     answer:
-      "$125,000 a year for a single applicant and $200,000 a year for a couple, based on combined taxable income from the previous financial year. The Family Home Guarantee uses the $125,000 limit for the single parent or guardian. These thresholds are reviewed by the government, so confirm the current figures with Housing Australia before you rely on them.",
+      "No. The late-2025 expansion removed the income caps, so there is no longer an income test. The scheme used to limit applicants to set income thresholds, but those were scrapped when it was opened to all eligible first home buyers and renamed the Australian Government 5% Deposit Scheme. Eligibility now turns on being a first home buyer who meets the core rules and buys under the property price cap, not on how much you earn. Confirm the current rules with Housing Australia before you rely on them.",
   },
   {
     question: "Can you use the First Home Guarantee with the First Home Owner Grant?",
@@ -84,17 +84,17 @@ const FAQS: FaqItem[] = [
   {
     question: "What is the Family Home Guarantee?",
     answer:
-      "The Family Home Guarantee is a related federal scheme for eligible single parents and single legal guardians with at least one dependent child. It allows a purchase with a 2% deposit and no LMI. Unlike the First Home Guarantee, you do not have to be a first home buyer. You can use it even if you have owned property before, as long as you do not currently own a home. Income and price cap rules apply, so verify the current detail with Housing Australia.",
+      "The Family Home Guarantee is a related federal scheme for eligible single parents and single legal guardians with at least one dependent child. It allows a purchase with a 2% deposit and no LMI. Unlike the First Home Guarantee, you do not have to be a first home buyer. You can use it even if you have owned property before, as long as you do not currently own a home. Eligibility and price cap detail can change, so verify the current rules with Housing Australia.",
   },
   {
     question: "How do you apply for the First Home Guarantee?",
     answer:
-      "You apply through a participating lender, not directly with the government. Most major banks and many smaller lenders take part. You can go direct to a lender or use a mortgage broker, who can tell you which lenders still have places left, since they are released in limited numbers each financial year. The guarantee is assessed as part of your normal home loan application. There is no separate government form for the guarantee itself.",
+      "You apply through a participating lender, not directly with the government. Most major banks and many smaller lenders take part. You can go direct to a lender or use a mortgage broker, who can compare lenders and structure the loan to use the guarantee. The guarantee is assessed as part of your normal home loan application. There is no separate government form for the guarantee itself.",
   },
   {
     question: "How many First Home Guarantee places are there each year?",
     answer:
-      "Places are capped and released each financial year, and they are shared with the Regional First Home Buyer Guarantee. Because the number is limited, places can be taken up well before the end of the year. If the scheme is central to your plan, get your finance and lender sorted early in the financial year and ask the lender or broker whether places are still available. Confirm the current allocation on the Housing Australia website.",
+      "Places are now uncapped. The late-2025 expansion removed the annual limit on the number of places, so there is no longer a fixed allocation that can run out partway through the year. You no longer need to rush in early to secure a place. As long as you are an eligible first home buyer and buy under the property price cap, you can apply through a participating lender at any time. Confirm the current rules on the Housing Australia website.",
   },
 ];
 
@@ -118,8 +118,10 @@ export default function FirstHomeGuaranteePage() {
     >
       <Callout variant="warning" title="Verify current figures before you rely on them">
         <p>
-          Income limits, property price caps and the number of places change. Always
-          confirm the current rules with{" "}
+          In late 2025 the scheme was expanded and renamed the Australian Government 5%
+          Deposit Scheme. The income caps and the limit on the number of places were
+          removed, and the property price caps were lifted. Property price caps still
+          apply and can change, so always confirm the current rules with{" "}
           <a href="https://www.housingaustralia.gov.au" target="_blank" rel="noopener noreferrer">
             Housing Australia
           </a>{" "}
@@ -133,17 +135,24 @@ export default function FirstHomeGuaranteePage() {
           money in your pocket. It&rsquo;s a guarantee sitting behind your loan
           that removes the LMI bill. The real saving is the LMI you don&rsquo;t
           pay, plus the years you don&rsquo;t spend saving the extra 15% of
-          deposit. Get your lender lined up early in the financial year, because
-          the places are finite and they go.
+          deposit. Since the late-2025 expansion there&rsquo;s no income test and
+          no limit on places, so the focus shifts to buying under the price cap
+          and making sure the larger loan suits your budget.
         </p>
       </EditorNote>
 
       <h2 id="what-it-is">What the First Home Guarantee is</h2>
       <p className="lead">
-        The First Home Guarantee (FHBG), formerly the First Home Loan Deposit
-        Scheme, is a federal scheme run through Housing Australia. It lets eligible
-        first home buyers purchase with as little as a 5% deposit, with the
-        government guaranteeing the rest so you avoid Lenders Mortgage Insurance.
+        The First Home Guarantee is a federal scheme run through Housing Australia.
+        It lets eligible first home buyers purchase with as little as a 5% deposit,
+        with the government guaranteeing the rest so you avoid Lenders Mortgage
+        Insurance.
+      </p>
+      <p>
+        In late 2025 the scheme was expanded and renamed the Australian Government
+        5% Deposit Scheme. The expansion removed the income caps and the annual
+        limit on places, and lifted the property price caps, so it is now open to
+        all eligible first home buyers rather than a set number each year.
       </p>
       <p>
         The scheme does not hand you cash and it does not lend you anything. It
@@ -188,16 +197,16 @@ export default function FirstHomeGuaranteePage() {
         help you sense-check both sides.
       </p>
 
-      <h2 id="eligibility">Income limits and price caps</h2>
+      <h2 id="eligibility">Eligibility and price caps</h2>
       <p>
-        Two limits decide whether you can use the scheme: how much you earn, and how
-        much the property costs.
+        Since the late-2025 expansion there is no income test, so the main things
+        that decide whether you can use the scheme are who you are and how much the
+        property costs.
       </p>
       <ul>
         <li>
-          <strong>Income limits:</strong> $125,000 a year for a single applicant and
-          $200,000 a year for a couple, based on combined taxable income from the
-          previous financial year.
+          <strong>No income test:</strong> The income caps were removed when the
+          scheme was expanded, so eligibility no longer depends on how much you earn.
         </li>
         <li>
           <strong>Who qualifies:</strong> Australian citizens or permanent residents
@@ -209,10 +218,14 @@ export default function FirstHomeGuaranteePage() {
           property. The scheme is not for investment purchases.
         </li>
         <li>
-          <strong>Property price caps:</strong> These differ by capital city and
-          region, and they change. Capital city caps are higher than regional caps.
-          Check the cap for your exact location on the Housing Australia website
-          before you make an offer.
+          <strong>At least a 5% deposit:</strong> You bring a deposit of 5% or more
+          and the government guarantees the shortfall, which is what removes the LMI.
+        </li>
+        <li>
+          <strong>Property price caps:</strong> These still apply and were increased
+          in the expansion. In NSW capital cities and regional centres the cap rose to
+          $1.5 million. Caps differ by state and region, so check the cap for your
+          exact location on the Housing Australia website before you make an offer.
         </li>
       </ul>
 
@@ -227,17 +240,17 @@ export default function FirstHomeGuaranteePage() {
 
       <h2 id="related">Regional and Family Home Guarantees</h2>
       <p>
-        The First Home Guarantee sits alongside two related schemes that work the
-        same way but target different buyers.
+        Two related schemes sit alongside the First Home Guarantee, though the
+        regional pathway changed in the 2025 expansion.
       </p>
 
       <h3>Regional First Home Buyer Guarantee</h3>
       <p>
-        Same structure as the FHBG, but for buyers purchasing in regional Australia.
-        You generally need to have lived in the regional area, or an adjacent area,
-        for at least 12 months continuously before buying. It uses the same 5%
-        deposit and the same income limits, with regional price caps. Its places are
-        shared with the FHBG allocation, so the same early-bird advice applies.
+        The separate regional guarantee was effectively absorbed into the expanded,
+        uncapped scheme. Because the First Home Guarantee is now open to all eligible
+        first home buyers with no income test and no limit on places, there is no
+        longer a separate regional allocation to compete for. Regional buyers use the
+        same scheme, with the property price cap that applies to their location.
       </p>
 
       <h3>Family Home Guarantee</h3>
@@ -246,15 +259,14 @@ export default function FirstHomeGuaranteePage() {
         one dependent child. It allows a purchase with a{" "}
         <strong>2% deposit</strong> and no LMI. The key difference is that you do not
         have to be a first home buyer. You can use it even if you have owned property
-        before, as long as you do not currently own a home. The income limit applies
-        to the single parent or guardian, and property price caps apply as for the
-        FHBG.
+        before, as long as you do not currently own a home. Eligibility and price cap
+        detail can change, so verify the current rules with Housing Australia.
       </p>
 
       <KeyFigure
         value="2% deposit"
         label="What an eligible single parent or guardian needs under the Family Home Guarantee, even if they have owned a home before."
-        context="Subject to income and price cap rules"
+        context="Verify current eligibility with Housing Australia"
       />
 
       <p>
@@ -309,14 +321,13 @@ export default function FirstHomeGuaranteePage() {
       </p>
       <ol>
         <li>
-          <strong>Check your eligibility</strong> against the income limits, the
-          first home buyer rules, and the price cap for your location on the Housing
-          Australia website.
+          <strong>Check your eligibility</strong> against the first home buyer rules
+          and the price cap for your location on the Housing Australia website. There
+          is no income test since the 2025 expansion.
         </li>
         <li>
           <strong>Choose a participating lender,</strong> or use a mortgage broker
-          who can compare lenders and tell you which still have places left this
-          financial year.
+          who can compare lenders and structure the loan to use the guarantee.
         </li>
         <li>
           <strong>Get pre-approval</strong> that specifies you&rsquo;re using the
@@ -333,10 +344,12 @@ export default function FirstHomeGuaranteePage() {
         </li>
       </ol>
       <p>
-        Because places are limited and shared with the Regional First Home Buyer
-        Guarantee, get your finance organised early in the financial year rather than
-        leaving it until you have found a property. For the full picture across every
-        scheme, grant and concession, read the{" "}
+        Places are now uncapped, so you no longer need to race to secure one early in
+        the financial year. Worth knowing too: because the scheme is now demand-side
+        and open to all eligible first home buyers, it has been linked to upward
+        pressure on first home buyer prices, so buy on the fundamentals rather than
+        stretching to the cap. For the full picture across every scheme, grant and
+        concession, read the{" "}
         <Link href="/guides/first-home-buyer-guide">national First Home Buyer Guide</Link>.
       </p>
 

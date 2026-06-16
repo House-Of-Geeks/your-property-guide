@@ -2,6 +2,243 @@ import type { BlogPost } from "@/types";
 
 export const blogPosts: BlogPost[] = [
   {
+    id: "blog-rba-cash-rate-june-2026",
+    slug: "rba-cash-rate-june-2026-what-it-means-for-buyers",
+    title: "RBA Cash Rate at 4.35%: What the June 2026 Decision Means for Buyers",
+    excerpt:
+      "The RBA cash rate sits at 4.35% after three straight hikes in 2026, fully reversing last year's cuts. The Board hands down its next call today at 2:30pm AEST, and the major banks are split on a hold versus another rise. Here is what it means for what you can borrow.",
+    content: `<p>The Reserve Bank meets again today, 16 June 2026, with its decision due at 2:30pm AEST. After a run of rate rises this year, every Australian looking to buy a home is watching closely, because the cash rate feeds almost directly into mortgage rates and, through that, into how much a lender will let you borrow.</p>
+
+<p>Here is where things stand, why the RBA has been moving the way it has, what the major banks expect from today's meeting, and what all of it means for your borrowing power if you are house hunting right now.</p>
+
+<h2>Where the cash rate sits today</h2>
+<p>The official cash rate is 4.35%. The Board set it there on 5 May 2026, when it raised rates by 25 basis points, a 0.25 percentage point increase, on an 8-1 vote. That May move was the third consecutive hike of 2026, following increases in February and March. Taken together, the three 2026 hikes have fully reversed the rate cuts the RBA delivered through 2025. In other words, borrowers are back to where they were before last year's easing, with rates climbing rather than falling.</p>
+
+<h2>Why the RBA has been hiking</h2>
+<p>The driver is inflation. Price growth picked up materially in the second half of 2025 and reached 4.6% in the year to March 2026, well above the level the Board is comfortable with. A large part of the recent pressure has come from outside Australia. Conflict in the Middle East has pushed fuel and related commodity prices sharply higher, and that flows through to the cost of almost everything that has to be moved or made.</p>
+
+<p>On top of that, short-term inflation expectations have risen, which the RBA treats as a warning sign because expectations can become self-fulfilling. When households and businesses expect higher prices, they behave in ways that help produce them. The Board has said the risks to inflation remain tilted to the upside, which is central bank language for "we are more worried about prices going higher than lower." That stance is why the recent meetings have leaned towards tightening rather than waiting.</p>
+
+<h2>What the banks expect from today's meeting</h2>
+<p>The outcome of today's decision has not been announced, and the forecasts are genuinely split. ANZ, CBA and NAB expect the Board to hold the cash rate at 4.35% this time, on the view that the three recent hikes need time to work their way through household budgets and spending before the RBA adds any more. Westpac takes the other side, forecasting a further increase to 4.60%.</p>
+
+<p>Both camps are reading the same data and reaching different conclusions, which tells you how finely balanced the call is. A hold would signal the Board thinks it has done enough for now. A further rise would signal it is not yet convinced inflation is back under control. Until 2:30pm AEST, neither is confirmed, so it is worth planning for either outcome rather than assuming one.</p>
+
+<h2>Why this matters for what you can borrow</h2>
+<p>This is where the cash rate stops being an abstract number and starts affecting your deposit-to-keys plan. When a lender assesses your home loan application, it does not test your repayments at the rate you would actually pay. It tests them at roughly your real rate plus a 3% serviceability buffer. The buffer exists to make sure you could still meet repayments if rates rose, so the higher the actual rate climbs, the higher the assessed rate climbs with it, and the smaller the loan you qualify for.</p>
+
+<p>The effect is direct. Every 25 basis point move in the cash rate changes borrowing capacity by thousands of dollars for a typical buyer. Three hikes in a row, as we have seen in 2026, compound that into a meaningful reduction in the maximum a household can borrow compared with a year ago. If you were pre-approved during the 2025 easing cycle and have not bought yet, the figure you were quoted may no longer reflect what a lender will offer today.</p>
+
+<p>If you want to see how this works for your own income and expenses, our <a href="/guides/how-much-can-i-borrow-australia">borrowing power explainer</a> walks through the serviceability test step by step and includes an interactive estimate. When you are ready to put your own numbers in, the full <a href="/borrowing-power-calculator">borrowing power calculator</a> will give you a figure you can take to a lender or broker.</p>
+
+<h2>Fixed or variable in a rising-rate environment</h2>
+<p>One question almost every buyer asks when rates are moving is whether to lock in a fixed rate or stay variable. There is no single right answer, because it depends on how much certainty you want, how long you plan to hold the loan, and your own read on where rates go from here. A fixed rate gives you a known repayment for the fixed period, which can help budgeting when rates are volatile. A variable rate moves with the market, which works in your favour if rates fall and against you if they rise. Our <a href="/guides/fixed-vs-variable-rate-guide">fixed versus variable rate guide</a> breaks down the trade-offs so you can decide based on your own situation rather than the headline of the day.</p>
+
+<h2>What it means for you</h2>
+<p>The cash rate at 4.35%, after three rises this year, means borrowing capacity is tighter than it was during the 2025 cuts, and today's decision could tighten it further or hold it steady. The practical takeaways for buyers:</p>
+
+<ul>
+<li><strong>Re-check your numbers.</strong> If your pre-approval is more than a few months old, the maximum you can borrow has likely changed. Refresh it before you make an offer.</li>
+<li><strong>Build in headroom.</strong> Because lenders already test you at your rate plus a 3% buffer, you have some protection built in, but do not stretch to your absolute maximum when the Board's bias is towards higher rates.</li>
+<li><strong>Decide on rate type deliberately.</strong> Use the fixed versus variable guide to make a considered call rather than reacting to a single meeting.</li>
+<li><strong>First home buyers, know your supports.</strong> Tighter borrowing power makes grants, schemes and the right strategy more important, not less.</li>
+</ul>
+
+<p>If you are buying your first home, start with our <a href="/guides/first-home-buyer-guide">first home buyer guide</a>, then run your figures through the <a href="/borrowing-power-calculator">borrowing power calculator</a> so the number you take to the bank reflects today's rates, not last year's. Whatever the RBA announces at 2:30pm, the buyers who do best are the ones who know their real borrowing limit before they walk into an open home.</p>`,
+    coverImage: "/images/blog/cover-rba-cash-rate-june-2026-what-it-means-for-buyers.jpg",
+    author: {
+      name: "Andy McMaster",
+      image: "/images/agents/andy-mcmaster.jpg",
+    },
+    category: "News",
+    tags: [
+      "rba",
+      "cash rate",
+      "interest rates",
+      "borrowing power",
+      "home loans",
+      "first home buyer",
+      "inflation",
+      "2026",
+    ],
+    publishedAt: "2026-06-16",
+    readingTime: 7,
+  },
+  {
+    id: "blog-market-update-mid-2026-sydney-melbourne-cool",
+    slug: "australian-property-prices-mid-2026-sydney-melbourne-cool",
+    title: "Sydney and Melbourne Cool as Rate Hikes Bite: Mid-2026 Property Market Update",
+    excerpt:
+      "Cotality data shows Sydney and Melbourne are about five months into an early downturn in dwelling values as the 2026 rate hikes squeeze borrowing capacity. Perth, Brisbane and Adelaide have led growth over five years. Here is what the cooling means for buyers and sellers.",
+    content: `<p>The mid-2026 property picture has shifted, and the change is clearest in the two biggest capitals. According to Cotality, the property data firm formerly known as CoreLogic, Sydney and Melbourne are now about five months into the early phase of a downturn in dwelling values. Higher interest rates are at the centre of it, with the 2026 rate hikes trimming how much buyers can borrow and, in turn, what they can pay.</p>
+
+<p>The cooling is not limited to the two largest cities. Cotality reports that growth is also slowing across the mid-sized capitals. For buyers who have spent the past few years feeling priced out, a softer market is worth understanding properly, because it changes both the timing and the strategy of a purchase or a sale.</p>
+
+<h2>What the Cotality Numbers Show</h2>
+<p>Cotality's read is that Sydney and Melbourne have moved past the peak and into the early stages of a downturn, with the slide tied closely to tighter borrowing capacity. When the cost of money rises, the maximum loan a household can service falls, and that ceiling feeds directly into offers and clearance rates. The result is gentle downward pressure on values rather than a sudden drop, which is typical of the early phase of a cooling cycle.</p>
+
+<p>It helps to keep the longer run in view. Over the past five years the combined capital cities Home Value Index has risen 33.7%, according to Cotality. So even with values easing now, the market sits well above where it was five years ago. A few months of softening does not erase years of gains, and that is an important frame for anyone deciding whether to buy or sell this year.</p>
+
+<h2>The Smaller Capitals Have Done the Heavy Lifting</h2>
+<p>The headline national figure hides a wide spread between cities. Cotality data shows Perth, Brisbane and Adelaide have each grown roughly 80% to 90% over the same five years, far outpacing Sydney and Melbourne. These mid-sized and smaller capitals also carried stronger momentum into 2026, which is part of why the slowdown is showing up first and most clearly in the two largest markets.</p>
+
+<p>For buyers, this matters because a single national average can be misleading. The right question is what is happening in your suburb and your price bracket, not what the country is doing on aggregate. Local medians and recent sales tell a far more useful story than a national index. Our <a href="/suburbs">suburb profiles and medians</a> are a practical place to check how your target area is tracking rather than relying on a national headline.</p>
+
+<h2>How Big Is the Australian Housing Market</h2>
+<p>To put the scale in context, the total value of Australian residential real estate was about $12.6 trillion at the end of April 2026, according to Cotality. It remains the largest store of household wealth in the country by a wide margin. That sheer size is one reason cooling cycles in property tend to play out slowly. Values move, but a market this large rarely turns on a dime.</p>
+
+<h2>What a Softer Market Means for Buyers</h2>
+<p>When prices ease, the window for buyers widens. There is more stock to consider, less of the auction-day frenzy that defined recent years, and more room to negotiate on price and conditions. The trade-off is that higher rates have lifted the cost of carrying a loan, so the savings on the purchase price need to be weighed against repayments.</p>
+<p>A few sensible moves in this kind of market:</p>
+<ul>
+<li>Get a clear, current sense of borrowing capacity before you start, since that figure has moved with the 2026 rate changes.</li>
+<li>Research the specific suburb and property type rather than trusting a national average, because the spread between cities is large.</li>
+<li>Build in time for inspections and due diligence, which a calmer market actually allows.</li>
+<li>Treat advertised prices with healthy scepticism and lean on recent comparable sales.</li>
+</ul>
+
+<h2>What a Softer Market Means for Sellers</h2>
+<p>Sellers are not locked out of a cooling market, but the playbook changes. When growth slows, pricing has to be realistic and grounded in what comparable homes are actually fetching, not what they might have fetched a year ago. Overpricing in a softer market tends to mean a longer time on market and a weaker eventual result.</p>
+<p>That makes an accurate starting figure more valuable than ever. If you are weighing up a sale, our guide on <a href="/guides/how-much-is-my-house-worth-australia">how much your house is worth</a> walks through the inputs that matter, and a <a href="/appraisal">free local appraisal</a> gives you a figure grounded in nearby sales rather than guesswork. Timing is the other lever: our guide on the <a href="/guides/best-time-to-sell-a-house-australia">best time to sell a house in Australia</a> covers how to think about seasons and conditions, while the <a href="/guides/cost-of-selling-a-house-australia">cost of selling a house</a> guide sets out the agent fees, marketing and other expenses to factor into your net result.</p>
+
+<h2>What It Means for You</h2>
+<p>The mid-2026 market is two-speed. Sydney and Melbourne are in the early phase of a downturn as rate hikes bite, while the smaller capitals are coming off much stronger five-year growth and now slowing too. None of that changes the basics. Buyers benefit from a calmer market with more room to move, and sellers do best when they price to current evidence rather than past peaks.</p>
+<p>The single most useful step in a shifting market is knowing what your property is actually worth right now. Start with a <a href="/appraisal">free local appraisal</a> so your next decision, whether buying or selling, is built on a real number rather than a national headline.</p>`,
+    coverImage: "/images/blog/cover-australian-property-prices-mid-2026-sydney-melbourne-cool.jpg",
+    author: {
+      name: "Bec Ramirez",
+      image: "/images/agents/bec-ramirez.jpg",
+    },
+    category: "Market Update",
+    tags: [
+      "market update",
+      "property prices",
+      "sydney",
+      "melbourne",
+      "interest rates",
+      "cotality",
+      "selling",
+      "home values",
+    ],
+    publishedAt: "2026-06-16",
+    readingTime: 7,
+  },
+  {
+    id: "blog-5pc-deposit-scheme-all-fhbs",
+    slug: "5-percent-deposit-scheme-now-open-all-first-home-buyers",
+    title: "The 5% Deposit Scheme Is Now Open to Every First Home Buyer",
+    excerpt:
+      "The federal First Home Guarantee has been expanded and renamed the Australian Government 5% Deposit Scheme. It is now open to all first home buyers with no income caps, no annual limit on places, and higher property price caps. Here is what changed and the price effect to weigh before you buy.",
+    content: `<p>For years the federal First Home Guarantee came with a long list of gates. You had to fit under an income cap, beat thousands of other applicants to a limited number of places each year, and find a home below a modest price ceiling. From late 2025 most of those gates are gone.</p>
+
+<p>The scheme was expanded and renamed the Australian Government 5% Deposit Scheme, and it is now open to every first home buyer who meets the basic eligibility rules. That is a meaningful shift, and it changes the calculation for anyone who has been saving towards a deposit. It also comes with a price-side warning worth understanding before you sign anything.</p>
+
+<h2>What actually changed</h2>
+<p>Three of the old limits have been lifted at once. There are no longer any income caps, so a buyer's salary no longer rules them in or out. The annual cap on places has been removed, meaning there are now unlimited spots rather than a fixed allocation that ran out partway through the year. And the property price caps have been raised, so more homes in more suburbs now fall within reach of the scheme. In NSW capital cities and regional centres, the price cap rose to $1.5 million.</p>
+
+<p>The core mechanic is unchanged. An eligible first home buyer can purchase with a deposit of just 5%, and the government guarantees the rest of the deposit shortfall. Because of that guarantee, the buyer avoids paying Lenders Mortgage Insurance, which lenders normally charge when a deposit is below 20%. For a full breakdown of how the guarantee works and who qualifies, our <a href="/guides/first-home-guarantee">First Home Guarantee guide</a> walks through the eligibility detail.</p>
+
+<h2>Why skipping LMI matters</h2>
+<p>LMI is a cost that catches a lot of first home buyers by surprise. It protects the lender, not you, and it can run into many thousands of dollars depending on the loan size and deposit. Avoiding it is one of the biggest financial advantages the scheme offers. If you are unsure what LMI is or how it is calculated, our <a href="/guides/lenders-mortgage-insurance-guide">guide to Lenders Mortgage Insurance</a> explains the mechanics and when it normally applies.</p>
+
+<p>Getting into a home with a 5% deposit rather than 20% also changes the timeline. A smaller deposit means less time saving and an earlier entry into the market. To see what a 5% deposit looks like against the price you are targeting, our guide on <a href="/guides/how-much-deposit-to-buy-a-house">how much deposit you need to buy a house</a> sets out the numbers and the other upfront costs to budget for.</p>
+
+<h2>The price effect to weigh</h2>
+<p>There is a genuine trade-off here, and it is worth understanding rather than glossing over. When you make it easier for more buyers to enter the market at the same time, you add demand, and added demand tends to push prices up.</p>
+
+<p>The Insurance Council of Australia has estimated the expansion could push prices up to 10% higher in the first year in the markets that first home buyers favour, and between 3.5% and 6.6% higher nationally. Economists who study housing have made a broader point: demand-side measures like deposit schemes generally lift prices, and the structural fix for affordability is increasing housing supply rather than subsidising demand. In plain terms, helping more people buy without building more homes can feed back into the very prices buyers are trying to get ahead of.</p>
+
+<p>None of that means the scheme is a bad deal for an individual buyer. It means you should enter with your eyes open. If a chunk of the benefit you gain from a smaller deposit is offset by paying a higher price, that is a real consideration when you decide how much to offer and where.</p>
+
+<h2>Stacking it with other support</h2>
+<p>The 5% Deposit Scheme does not replace the other help available to first home buyers. In most cases you can still combine it with state First Home Owner Grants and stamp duty concessions, which can together make a sizeable difference to your upfront costs. The rules and amounts vary by state and by whether you are buying new or established, so check what applies where you are buying.</p>
+
+<p>Our <a href="/guides/first-home-owner-grant-australia">First Home Owner Grant guide</a> covers the state-by-state grants, and the broader <a href="/guides/first-home-buyer-guide">first home buyer guide</a> pulls the whole process together, from saving and pre-approval through to settlement.</p>
+
+<h2>What it means for you</h2>
+<p>The expanded scheme removes the income cap, the limit on places, and a good deal of the price-cap restriction that kept buyers out before. For a lot of first home buyers, that turns the 5% deposit pathway from something they might qualify for into something they almost certainly can use.</p>
+
+<p>The smart move is to pair the opportunity with a clear-eyed view of the price effect. Work out what you can genuinely borrow first, then decide what you are willing to pay in a market where demand has just been given a nudge. Run the numbers with our <a href="/borrowing-power-calculator">borrowing power calculator</a> so you know your real ceiling before you start making offers.</p>`,
+    coverImage: "/images/blog/cover-5-percent-deposit-scheme-now-open-all-first-home-buyers.jpg",
+    author: {
+      name: "Ellie Johnston",
+      image: "/images/agents/ellie-johnston.jpg",
+    },
+    category: "News",
+    tags: [
+      "first home buyer",
+      "5% deposit scheme",
+      "first home guarantee",
+      "lenders mortgage insurance",
+      "government grants",
+      "housing affordability",
+      "property prices",
+      "home loans",
+    ],
+    publishedAt: "2026-06-16",
+    readingTime: 7,
+  },
+  {
+    id: "blog-rental-vacancy-rises-2026",
+    slug: "rental-vacancy-rate-rises-1-2-percent-2026",
+    title: "Rental Vacancies Tick Up to 1.2%: Is the Squeeze Finally Easing?",
+    excerpt:
+      "SQM Research says the national rental vacancy rate rose to 1.2% in April 2026, the first increase in a year after a long, brutally tight market. It is a possible turning point, but at 1.2% the market still heavily favours landlords and rents remain near record highs.",
+    content: `<p>After a year of relentless competition for rentals, there is finally a number worth pausing on. According to SQM Research, the national residential rental vacancy rate rose to 1.2% in April 2026, up from 1.0% in March. It was the first rise in 12 months, and it may signal a turning point in one of the tightest rental markets Australia has seen.</p>
+
+<p>Before anyone breaks out the champagne, some perspective. A vacancy rate of around 3% is generally considered a balanced market, where renters and landlords have roughly equal bargaining power. At 1.2%, we are nowhere near that. The market is still very tight and still heavily favours landlords. What changed in April is direction, not destination.</p>
+
+<h2>Why one decimal point matters</h2>
+<p>Vacancy rates move slowly, so a shift from 1.0% to 1.2% is meaningful even though it sounds tiny. For most of the past year the figure had been grinding lower or holding flat, with renters competing hard for a shrinking pool of available homes. A rise, even a modest one, suggests slightly more properties are sitting available rather than being snapped up the moment they list.</p>
+
+<p>SQM Research frames this as a possible turning point rather than a confirmed trend. One month does not make a recovery, and the rate could just as easily tighten again. But after 12 months of bad news for renters, a single month of loosening is at least a change worth watching.</p>
+
+<h2>Rents have not got the memo</h2>
+<p>Here is the catch. The small lift in vacancies has not broken rent growth. Rents are still sitting near record levels. Domain's 2026 forecast has Sydney median asking house rents reaching about $815 per week, up roughly 4% on late 2025, while unit rents are tipped to hit about $792 per week, up roughly 5%.</p>
+
+<p>So even as a few more homes become available, asking rents keep climbing. That tells you how deep the shortage runs. It takes a lot more than a 0.2 percentage point move in vacancy to reverse the kind of rent rises tenants have absorbed over the past couple of years. For renters, the squeeze is easing at the margins, not in the wallet, at least not yet.</p>
+
+<h2>What might be driving the loosening</h2>
+<p>A few things could be behind the small shift, and none of them point to a sudden flood of supply.</p>
+<ul>
+<li><strong>Renters becoming buyers.</strong> The expanded 5% deposit scheme has pulled some long-term renters into home ownership. Every renter who buys is one less household competing for a lease, which gently eases pressure on the rental pool.</li>
+<li><strong>Slower demand.</strong> Population growth and rental demand appear to be cooling off the extreme pace of recent years. Fewer new renters chasing the same stock means landlords face slightly less of a queue at inspections.</li>
+<li><strong>Peak tightness passing.</strong> Investors still see strong yields, so there is no sign of a sell-off. But the very peak of the squeeze may be behind us, even if conditions stay landlord-friendly for a while.</li>
+</ul>
+
+<h2>What it means if you are renting</h2>
+<p>Do not expect rents to fall. The honest read is that you may find slightly more choice at inspections and marginally less competition, but asking rents are still rising in the major capitals. If you are negotiating a renewal or hunting for a new place, it is worth knowing exactly where you stand. Our guide to <a href="/guides/renters-rights-nsw">renters' rights in NSW</a> covers what landlords can and cannot do on rent increases, notice periods and bond, so you are not negotiating blind.</p>
+
+<h2>What it means if you are an investor</h2>
+<p>For landlords and would-be investors, the picture is still favourable. Yields remain strong and vacancies remain very low, which means rental income is reliable and tenants are easy to find. The April figure is a nudge to watch the trend rather than a reason to change course.</p>
+
+<p>If you are weighing up whether to buy where you can afford and rent where you want to live, our <a href="/guides/rentvesting-australia">rentvesting guide</a> walks through how that strategy works in a tight rental market. Anyone running the numbers on an investment property should also factor in the ongoing costs, and our breakdown of <a href="/guides/property-management-fees-australia">property management fees in Australia</a> shows what a managing agent typically charges. For the tax side, our explainer on <a href="/guides/negative-gearing-australia">negative gearing</a> covers how rental losses interact with your income.</p>
+
+<h2>The takeaway</h2>
+<p>The rental vacancy rate rising to 1.2% in April 2026 is the first genuinely encouraging data point for renters in a year. It is a possible turning point, but it is only the first sign of loosening, not relief. The market is still very tight, it still favours landlords, and rents are still climbing toward fresh records. The smart move is to watch whether this becomes a trend over the next few months rather than a one-off blip.</p>
+
+<p>Whichever side of the lease you are on, local conditions matter more than the national average. Compare vacancy, rents and demand where you actually live or invest by browsing our <a href="/suburbs">suburb profiles</a>, and make your next move on the numbers rather than the headlines.</p>`,
+    coverImage: "/images/blog/cover-rental-vacancy-rate-rises-1-2-percent-2026.jpg",
+    author: {
+      name: "Andy McMaster",
+      image: "/images/agents/andy-mcmaster.jpg",
+    },
+    category: "Market Update",
+    tags: [
+      "rental market",
+      "vacancy rate",
+      "sqm research",
+      "rent prices",
+      "renters",
+      "property investment",
+      "domain forecast",
+      "rentvesting",
+    ],
+    publishedAt: "2026-06-16",
+    readingTime: 7,
+  },
+
+  {
     id: "blog-first-home-buyer-guide",
     slug: "first-home-buyer-guide-moreton-bay-2025",
     title: "First Home Buyer Guide: Moreton Bay Region 2025",
