@@ -2,9 +2,12 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants";
 import { getBlogSitemapEntries } from "@/lib/services/blog-service";
 
-// On-demand ISR, DB blog post slugs are merged with static guides on the
-// first crawler hit and cached for 24h.
-export const revalidate = 86400;
+// Force-dynamic so DB blog/news slugs are always merged at request time.
+// Build-time DB is unreachable (static guides ship in the build), and the
+// prior ISR approach left the build-time static-only version cached at the
+// edge, so DB-backed posts never surfaced in the sitemap. Sitemaps are
+// fetched infrequently, so the per-request DB query is negligible.
+export const dynamic = "force-dynamic";
 
 // Hardcoded list of static guide slugs. New static guides should be added
 // here when they're published so they show up in the sitemap immediately.
