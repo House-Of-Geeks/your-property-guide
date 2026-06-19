@@ -33,7 +33,13 @@ export async function BestDealsRail({
   limit = 6,
   className,
 }: BestDealsRailProps) {
-  const deals = await getContextualBestDeals({ dealType, state, limit });
+  // Skip the DB during `next build` (Railway proxy drops build-time
+  // connections); this rail is in a Suspense fallback={null} and ISR fills it
+  // with real deals on first request.
+  const deals =
+    process.env.NEXT_PHASE === "phase-production-build"
+      ? ([] as Awaited<ReturnType<typeof getContextualBestDeals>>)
+      : await getContextualBestDeals({ dealType, state, limit });
   if (deals.length === 0) return null;
 
   return (

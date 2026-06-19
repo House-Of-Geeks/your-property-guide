@@ -68,7 +68,11 @@ function createClient() {
   // runtime (where a request can fail fast and be retried by the client/ISR).
   // NB: a model-level Prisma `$extends` retry does NOT catch raw queries, which
   // is why the failing /best-suburbs/* path slipped through earlier.
-  const maxRetries = isBuild ? 5 : 2;
+  // Retry hard at build (one drop kills the whole deploy and the proxy can stay
+  // bad for several seconds at a time); the capped backoff rides out a bad
+  // window of up to ~20s. Runtime stays light — a request can fail fast and be
+  // retried by the client/ISR.
+  const maxRetries = isBuild ? 12 : 2;
   const runQuery = pool.query.bind(pool) as (...a: unknown[]) => unknown;
   (pool as unknown as { query: unknown }).query = (...qargs: unknown[]) => {
     // Callback form (last arg is a function): defer to the original.
@@ -79,7 +83,7 @@ function createClient() {
           return await runQuery(...qargs);
         } catch (err) {
           if (attempt >= maxRetries || !isTransientConnectionError(err)) throw err;
-          await sleep(150 * 2 ** attempt); // 150, 300, 600, 1200, 2400ms
+          await sleep(Math.min(150 * 2 ** attempt, 2000)); // 150,300,600,1200,2000,2000…
         }
       }
     })();
