@@ -53,11 +53,18 @@ export default async function ComparePage() {
   // Pull a small set of popular suburbs from each big state for the
   // "popular suburbs" rail at the bottom. Each one becomes a sortable starting
   // point for a fresh comparison.
-  const [topNSW, topVIC, topQLD] = await Promise.all([
-    getTopSuburbsByState("NSW", 8),
-    getTopSuburbsByState("VIC", 8),
-    getTopSuburbsByState("QLD", 8),
-  ]);
+  // Skip the DB at build (Railway proxy drops build-time connections); ISR
+  // (revalidate above) fills real data on first request. Empty renders cleanly
+  // — every rail below maps over arrays and the by-state list drops empties.
+  const isBuild = process.env.NEXT_PHASE === "phase-production-build";
+
+  const [topNSW, topVIC, topQLD] = isBuild
+    ? ([[], [], []] as Awaited<ReturnType<typeof getTopSuburbsByState>>[])
+    : await Promise.all([
+        getTopSuburbsByState("NSW", 8),
+        getTopSuburbsByState("VIC", 8),
+        getTopSuburbsByState("QLD", 8),
+      ]);
 
   // Top auto-generated comparison pairs per state, fills the SEO gap
   // for WA / SA / TAS / NT / ACT that the hand-curated POPULAR_PAIRS
@@ -66,7 +73,9 @@ export default async function ComparePage() {
     ALL_STATES.map(async (state) => ({
       state,
       stateName: getStateName(state),
-      pairs: await getTopComparisonPairsByState(state, 8),
+      pairs: isBuild
+        ? ([] as Awaited<ReturnType<typeof getTopComparisonPairsByState>>)
+        : await getTopComparisonPairsByState(state, 8),
     })),
   );
   const pairsWithData = pairsByState.filter((s) => s.pairs.length > 0);

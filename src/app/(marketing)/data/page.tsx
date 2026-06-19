@@ -85,7 +85,26 @@ async function getCounts() {
 }
 
 export default async function DataPage() {
-  const c = await getCounts();
+  // Skip the DB at build (Railway proxy drops build-time connections); ISR
+  // (revalidate above) fills real counts on first request. Empty renders
+  // cleanly — every count below is zero-safe via formatCount/String.
+  const c =
+    process.env.NEXT_PHASE === "phase-production-build"
+      ? ({
+          suburbs: 0,
+          schools: 0,
+          propertiesActive: 0,
+          propertiesSold: 0,
+          propertyAddresses: 0,
+          propertySales: 0,
+          hazards: 0,
+          climates: 0,
+          agents: 0,
+          agencies: 0,
+          blogPosts: 0,
+          houseAndLand: 0,
+        } satisfies Awaited<ReturnType<typeof getCounts>>)
+      : await getCounts();
   const totalGuides = 50; // hand-tracked; matches the guides hub
   const totalGlossary = GLOSSARY_TERMS.length;
 

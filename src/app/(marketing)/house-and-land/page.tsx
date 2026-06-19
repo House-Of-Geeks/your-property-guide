@@ -36,7 +36,13 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 
 export default async function HouseAndLandPage({ searchParams }: PageProps) {
   const { suburb } = await searchParams;
-  const packages = await getHouseAndLandPackages(suburb);
+  // Skip the DB at build (Railway proxy drops build-time connections); ISR
+  // (revalidate above) fills real data on first request. Empty renders cleanly
+  // — the page shows a "No packages found" empty state below.
+  const packages =
+    process.env.NEXT_PHASE === "phase-production-build"
+      ? ([] as Awaited<ReturnType<typeof getHouseAndLandPackages>>)
+      : await getHouseAndLandPackages(suburb);
   const suburbName = suburb ? suburbDisplayName(suburb) : null;
 
   return (

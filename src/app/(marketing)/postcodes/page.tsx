@@ -38,7 +38,13 @@ const STATE_LABELS: Record<string, string> = {
 };
 
 export default async function PostcodesPage() {
-  const postcodes = await getAllPostcodesWithState();
+  // Skip the DB at build (Railway proxy drops build-time connections); ISR
+  // (revalidate above) fills real data on first request. Empty renders cleanly
+  // — the grouping below drops empty states.
+  const postcodes =
+    process.env.NEXT_PHASE === "phase-production-build"
+      ? ([] as Awaited<ReturnType<typeof getAllPostcodesWithState>>)
+      : await getAllPostcodesWithState();
 
   // Group by state
   const byState = new Map<string, string[]>();

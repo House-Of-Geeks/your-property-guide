@@ -36,7 +36,13 @@ export async function generateMetadata({ searchParams }: AgenciesPageProps): Pro
 
 export default async function AgenciesPage({ searchParams }: AgenciesPageProps) {
   const { suburb } = await searchParams;
-  const agencies = await getAgencies(suburb);
+  // Skip the DB at build (Railway proxy drops build-time connections); ISR
+  // (revalidate above) fills real data on first request. Empty renders cleanly
+  // — the grid below shows a "no agencies found" fallback.
+  const agencies =
+    process.env.NEXT_PHASE === "phase-production-build"
+      ? ([] as Awaited<ReturnType<typeof getAgencies>>)
+      : await getAgencies(suburb);
   const suburbName = suburb ? suburbDisplayName(suburb) : null;
 
   return (

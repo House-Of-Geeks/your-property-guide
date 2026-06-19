@@ -58,7 +58,13 @@ export default async function BestDealsPage({ searchParams }: PageProps) {
     ...(isAudience(audience)  ? { dealType: audience } : {}),
     limit: 60,
   };
-  const deals = await getLiveBestDeals(filters);
+  // Skip the DB at build (Railway proxy drops build-time connections); ISR
+  // (revalidate above) fills real data on first request. Empty renders cleanly
+  // — the EmptyState below handles a zero-deal result.
+  const deals =
+    process.env.NEXT_PHASE === "phase-production-build"
+      ? ([] as Awaited<ReturnType<typeof getLiveBestDeals>>)
+      : await getLiveBestDeals(filters);
 
   const hasFilters = Boolean(state || type || audience);
 

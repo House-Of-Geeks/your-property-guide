@@ -75,7 +75,10 @@ export default async function PriceGuidePage({
     ...(state ? { state } : {}),
   };
 
-  const [suburbs, total] = await Promise.all([
+  // Skip the DB at build (Railway proxy drops build-time connections); ISR
+  // (revalidate above) fills real data on first request. Empty renders cleanly
+  // — pagination math clamps and the "No suburbs found" empty state covers it.
+  const findManyQuery = () =>
     db.suburb.findMany({
       where,
       orderBy: buildOrderBy(sort),
@@ -91,9 +94,12 @@ export default async function PriceGuidePage({
       },
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
-    }),
-    db.suburb.count({ where }),
-  ]);
+    });
+
+  const [suburbs, total] =
+    process.env.NEXT_PHASE === "phase-production-build"
+      ? ([[], 0] as [Awaited<ReturnType<typeof findManyQuery>>, number])
+      : await Promise.all([findManyQuery(), db.suburb.count({ where })]);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 

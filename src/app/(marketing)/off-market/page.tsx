@@ -20,7 +20,13 @@ export const metadata: Metadata = {
 };
 
 export default async function OffMarketPage() {
-  const offMarketProperties = await getOffMarketProperties();
+  // Skip the DB at build (Railway proxy drops build-time connections); ISR
+  // (revalidate above) fills real data on first request. Empty renders cleanly
+  // — the counts read 0 and the teaser grid maps over nothing.
+  const offMarketProperties =
+    process.env.NEXT_PHASE === "phase-production-build"
+      ? ([] as Awaited<ReturnType<typeof getOffMarketProperties>>)
+      : await getOffMarketProperties();
 
   return (
     <>
