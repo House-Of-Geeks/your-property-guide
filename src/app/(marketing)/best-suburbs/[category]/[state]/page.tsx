@@ -23,10 +23,14 @@ const VALID_CATEGORIES: RankingCategory[] = [
   "best-rental-yield",
 ];
 
-// Pre-render every category × state combination at build time so they ship as
-// static HTML for crawlers. 6 × 8 = 48 SEO permutations targeting long-tail
-// queries like "highest growth suburbs Queensland".
+// These 48 category × state SEO permutations are generated on-demand (ISR)
+// rather than at build. Each one runs the DB-heavy getRankedSuburbs query, and
+// prerendering all of them in a burst is what the Railway connection proxy
+// drops under, failing the whole build. dynamicParams (default true) + the
+// revalidate above render + cache each on first request instead. (The same
+// NEXT_PHASE guard is used across the other DB-backed routes.)
 export async function generateStaticParams() {
+  if (process.env.NEXT_PHASE === "phase-production-build") return [];
   const out: { category: string; state: string }[] = [];
   for (const category of VALID_CATEGORIES) {
     for (const state of STATES) {

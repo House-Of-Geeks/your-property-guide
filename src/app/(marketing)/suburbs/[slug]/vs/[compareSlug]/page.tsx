@@ -46,6 +46,10 @@ const POPULAR_COMPARISONS: { slug: string; compareSlug: string }[] = [
 ];
 
 export async function generateStaticParams() {
+  // On-demand at build (the page queries the DB per comparison; prerendering
+  // these during the build burst is unreliable against the Railway proxy).
+  // dynamicParams + revalidate above render + cache each on first request.
+  if (process.env.NEXT_PHASE === "phase-production-build") return [];
   return POPULAR_COMPARISONS;
 }
 

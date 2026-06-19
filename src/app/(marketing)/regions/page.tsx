@@ -36,7 +36,13 @@ const STATE_NAMES: Record<string, string> = {
 };
 
 export default async function RegionsPage() {
-  const regions = await getAllRegions();
+  // Skip the DB at build (Railway proxy drops build-time connections); ISR
+  // (revalidate above) fills real data on first request. Empty renders cleanly
+  // — the grouping below drops empty states.
+  const regions =
+    process.env.NEXT_PHASE === "phase-production-build"
+      ? ([] as Awaited<ReturnType<typeof getAllRegions>>)
+      : await getAllRegions();
 
   // Group by state
   const byState = STATE_ORDER.reduce<Record<string, typeof regions>>((acc, state) => {
