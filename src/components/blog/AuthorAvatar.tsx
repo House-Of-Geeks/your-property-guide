@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 
 interface Props {
   name: string;
@@ -28,25 +31,31 @@ function initialsFor(name: string): string {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-// Show the headshot if it exists, otherwise fall back to a branded initials
-// disc. We treat the "/images/agents/<name>.jpg" placeholders as not-yet-real
-//, image presence is signalled by an explicit non-default path. Since all
-// current bylines point at agent JPGs that may not exist, the simplest rule
-// is to always render initials until a deliberate image override is added.
-const USE_IMAGE_BYDEFAULT = false;
-
+// Render the headshot when one is supplied, and fall back to a branded
+// initials disc if the image is missing or fails to load. This is
+// self-healing: a byline whose JPG hasn't been added yet simply shows
+// initials instead of a broken image, and starts showing the photo the
+// moment the file lands — no per-author config needed.
 export function AuthorAvatar({ name, image, size = 40, className = "" }: Props) {
+  const [failed, setFailed] = useState(false);
   const { bg, fg } = paletteFor(name);
   const initials = initialsFor(name);
   const fontSize = Math.round(size * 0.4);
 
-  if (USE_IMAGE_BYDEFAULT && image) {
+  if (image && !failed) {
     return (
       <div
         className={`relative rounded-full overflow-hidden flex-shrink-0 border border-line-warm ${className}`}
         style={{ width: size, height: size }}
       >
-        <Image src={image} alt={name} fill className="object-cover" sizes={`${size}px`} />
+        <Image
+          src={image}
+          alt={name}
+          fill
+          className="object-cover"
+          sizes={`${size}px`}
+          onError={() => setFailed(true)}
+        />
       </div>
     );
   }
