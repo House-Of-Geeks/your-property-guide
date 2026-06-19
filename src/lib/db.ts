@@ -5,8 +5,31 @@ import { PrismaPg } from "@prisma/adapter-pg";
 // same function instance. Always reuse the singleton to avoid opening a new
 // connection pool on every warm request.
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
+  prisma: ReturnType<typeof createClient> | undefined;
 };
+
+// The Railway connection proxy intermittently drops a pooled connection
+// mid-query. During `next build` this is fatal: prerendering 22 DB-backed
+// routes fires a burst of hundreds of queries, and a single dropped
+// connection ("Connection terminated unexpectedly" / P1017 "Server has closed
+// the connection") aborts the whole build. Because the connection is closed
+// server-side, the query never committed, so re-issuing it on a fresh pooled
+// connection is safe. We retry only these transient connection errors.
+function isTransientConnectionError(err: unknown): boolean {
+  const e = err as { code?: string; message?: string };
+  if (e?.code === "P1017") return true; // Server has closed the connection
+  const msg = (e?.message ?? "").toLowerCase();
+  return (
+    msg.includes("connection terminated") ||
+    msg.includes("server has closed the connection") ||
+    msg.includes("connection closed") ||
+    msg.includes("connection is closed") ||
+    msg.includes("connection ended") ||
+    msg.includes("econnreset")
+  );
+}
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 function createClient() {
   // Connection-pool sizing splits by phase:
@@ -34,7 +57,26 @@ function createClient() {
     idleTimeoutMillis: 30_000,
     connectionTimeoutMillis: isBuild ? 30_000 : 5_000,
   });
-  return new PrismaClient({ adapter });
+
+  // Retry transient connection drops with exponential backoff. pg evicts the
+  // dead socket and hands out a fresh connection on the retry. We retry harder
+  // during the build (where one drop kills the whole run) than at runtime
+  // (where a request can fail fast and be retried by the client/ISR).
+  const maxRetries = isBuild ? 5 : 2;
+  return new PrismaClient({ adapter }).$extends({
+    query: {
+      async $allOperations({ args, query }) {
+        for (let attempt = 0; ; attempt++) {
+          try {
+            return await query(args);
+          } catch (err) {
+            if (attempt >= maxRetries || !isTransientConnectionError(err)) throw err;
+            await sleep(150 * 2 ** attempt); // 150, 300, 600, 1200, 2400ms
+          }
+        }
+      },
+    },
+  });
 }
 
 export const db = globalForPrisma.prisma ?? createClient();
