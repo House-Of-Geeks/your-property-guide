@@ -1,11 +1,12 @@
 import { PrismaClient } from "@/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 
 // In Vercel serverless, globalThis persists across warm invocations of the
 // same function instance. Always reuse the singleton to avoid opening a new
 // connection pool on every warm request.
 const globalForPrisma = globalThis as unknown as {
-  prisma: ReturnType<typeof createClient> | undefined;
+  prisma: PrismaClient | undefined;
 };
 
 // The Railway connection proxy intermittently drops a pooled connection
@@ -51,32 +52,43 @@ function createClient() {
   // - connectionTimeoutMillis fails fast instead of hanging the request when
   //   the upstream pool is exhausted.
   const isBuild = process.env.NEXT_PHASE === "phase-production-build";
-  const adapter = new PrismaPg({
+  const pool = new Pool({
     connectionString: process.env.DATABASE_URL!,
     max: isBuild ? 10 : 2,
     idleTimeoutMillis: 30_000,
     connectionTimeoutMillis: isBuild ? 30_000 : 5_000,
   });
 
-  // Retry transient connection drops with exponential backoff. pg evicts the
-  // dead socket and hands out a fresh connection on the retry. We retry harder
-  // during the build (where one drop kills the whole run) than at runtime
-  // (where a request can fail fast and be retried by the client/ISR).
+  // Retry transient connection drops at the POOL level. The Prisma pg adapter
+  // runs every non-transaction query — model finders AND raw $queryRawUnsafe
+  // (used by the suburb-rankings service the build prerenders) — through
+  // pool.query, so wrapping it here covers them all. node-postgres evicts the
+  // dead socket on failure, so the retry runs on a fresh connection. We retry
+  // harder during the build (where one drop kills the whole run) than at
+  // runtime (where a request can fail fast and be retried by the client/ISR).
+  // NB: a model-level Prisma `$extends` retry does NOT catch raw queries, which
+  // is why the failing /best-suburbs/* path slipped through earlier.
   const maxRetries = isBuild ? 5 : 2;
-  return new PrismaClient({ adapter }).$extends({
-    query: {
-      async $allOperations({ args, query }) {
-        for (let attempt = 0; ; attempt++) {
-          try {
-            return await query(args);
-          } catch (err) {
-            if (attempt >= maxRetries || !isTransientConnectionError(err)) throw err;
-            await sleep(150 * 2 ** attempt); // 150, 300, 600, 1200, 2400ms
-          }
+  const runQuery = pool.query.bind(pool) as (...a: unknown[]) => unknown;
+  (pool as unknown as { query: unknown }).query = (...qargs: unknown[]) => {
+    // Callback form (last arg is a function): defer to the original.
+    if (typeof qargs[qargs.length - 1] === "function") return runQuery(...qargs);
+    return (async () => {
+      for (let attempt = 0; ; attempt++) {
+        try {
+          return await runQuery(...qargs);
+        } catch (err) {
+          if (attempt >= maxRetries || !isTransientConnectionError(err)) throw err;
+          await sleep(150 * 2 ** attempt); // 150, 300, 600, 1200, 2400ms
         }
-      },
-    },
-  });
+      }
+    })();
+  };
+
+  // Cast: @prisma/adapter-pg bundles its own nested @types/pg, so our pg.Pool
+  // is structurally identical but nominally distinct from the type it expects.
+  const adapter = new PrismaPg(pool as unknown as ConstructorParameters<typeof PrismaPg>[0]);
+  return new PrismaClient({ adapter });
 }
 
 export const db = globalForPrisma.prisma ?? createClient();
