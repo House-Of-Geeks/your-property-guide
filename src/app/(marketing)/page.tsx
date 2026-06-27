@@ -7,6 +7,7 @@ import { ArrowRight } from "lucide-react";
 import { StatNumber } from "@/components/motion/StatNumber";
 
 import { LatestGuides } from "@/components/home/LatestGuides";
+import { LatestNewsCallout } from "@/components/home/LatestNewsCallout";
 import { CapitalCityOutlook } from "@/components/home/CapitalCityOutlook";
 import { GuidePathCard } from "@/components/home/GuidePathCard";
 import { PersonaPicker, GuideBandSwitcher } from "@/components/journey";
@@ -234,6 +235,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Latest-news callout. Compact, always-current strip surfacing the
+          newest News post high on the page, above the persona spine. */}
+      <LatestNewsCallout />
 
       {/* 2. Persona picker. The IA spine. Reworked from a 2,100px feature
             grid into a dense editorial list. Numeral + thumb + label + brief

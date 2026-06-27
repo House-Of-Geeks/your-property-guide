@@ -2,6 +2,74 @@ import type { BlogPost } from "@/types";
 
 export const blogPosts: BlogPost[] = [
   {
+    id: "blog-australian-rents-record-highs-mid-2026",
+    slug: "australian-rents-record-highs-mid-2026",
+    title: "Rents climb toward record highs as vacancies stay tight",
+    excerpt: "National advertised rents are up about 7.8% over the year and forecast to hit record highs in every capital city in 2026, as vacancy holds at 1.2%. Here is what tight, rising rents mean for renters, investors and first home buyers.",
+    content: `<p>Advertised rents across Australia are pushing back toward record territory, with national asking rents now sitting about <strong>7.8% higher than a year ago</strong>. The pace of monthly gains has been steady rather than dramatic, running at roughly 0.4% to 0.6% in recent months, but the cumulative effect is a rental market that keeps getting more expensive for tenants and tighter for everyone trying to find a place.</p>
+
+<p>This is a story about rent <strong>prices</strong>, not just empty homes. While the vacancy picture remains exceptionally tight, the headline now is cost. One widely cited measure puts annual national rent growth at around 5.9%, the largest annual increase since about September 2024. Domain has forecast that rents will reach record highs in every capital city across 2026. For renters, that means continued budget pressure. For investors and would-be buyers, it reshapes the maths in ways worth understanding now.</p>
+
+<h2>What the numbers are showing</h2>
+
+<p>The direction of travel is clear. National advertised rents are up roughly 7.8% over the year, and the monthly gains, while modest at 0.4% to 0.6%, have not stalled. Melbourne has been a standout recently, with asking rents rising about 0.7% in the month to the end of May, more than double the national average for that month.</p>
+
+<p>Underpinning all of this is a chronically tight supply of rentals. The national residential vacancy rate held at <strong>1.2% in May 2026</strong>, and every capital city is sitting below 2%, which is very tight by any historical standard. A balanced rental market is usually considered to be around 3%, so today's conditions leave tenants with little room to negotiate and few alternatives if a lease ends.</p>
+
+<h2>Why rents keep climbing</h2>
+
+<p>Three forces are driving the squeeze. First, vacancy is very low, so demand for each available property is intense. Second, rental demand remains strong across the capital cities. Third, and perhaps most importantly for the years ahead, new supply is limited. This ties directly to the recent slump in building approvals and completions. Fewer homes being approved and finished today means fewer rentals reaching the market tomorrow, which keeps upward pressure on rents even when wages and household budgets are stretched.</p>
+
+<p>That supply story matters because it is slow to reverse. Even if approvals recover, it takes years for new dwellings to be built, tenanted and absorbed into the market. In the meantime, the gap between the number of people needing homes and the number of homes available continues to favour higher rents.</p>
+
+<h2>What it means for renters</h2>
+
+<p>If you are renting, the most useful thing you can do is understand your position before your next lease decision. Knowing your rights helps you respond calmly to rent increases and renewals rather than feeling pressured. Our guide to <a href="/guides/renters-rights-nsw">renters' rights in NSW</a> is a good starting point for tenants in that state, and the principles around notice periods, rent increases and bond are worth knowing wherever you live.</p>
+
+<p>Lease timing also matters. Negotiating or renewing during quieter periods, and giving yourself plenty of runway before a lease ends, can reduce the risk of being caught in a competitive scramble. And with rents rising this fast, the <strong>rent-versus-buy question</strong> is becoming more relevant for many households. If your rent keeps climbing while you save, it is worth running the numbers on what you could borrow. A quick check with our <a href="/borrowing-power-calculator">borrowing power calculator</a> can show whether buying is closer than you think.</p>
+
+<h2>What it means for investors</h2>
+
+<p>For property investors, tight conditions are a double-edged sword. Very low vacancy and rising rents support both income and yields, which is encouraging on paper. You can sense-check the income side of a potential purchase using our <a href="/rental-yield-calculator">rental yield calculator</a>, and compare how different areas stack up by browsing <a href="/suburbs">suburb data</a>.</p>
+
+<p>The other side of the ledger needs equal attention. Higher mortgage rates and holding costs can erode the benefit of stronger rents, so it pays to model the full picture rather than the gross yield alone. Ongoing costs such as <a href="/guides/property-management-fees-australia">property management fees</a> add up, and the tax treatment of any shortfall matters too. Our explainer on <a href="/guides/negative-gearing-australia">negative gearing in Australia</a> walks through how losses can be treated, while a <a href="/guides/rentvesting-australia">rentvesting</a> approach may suit those who want to invest where the numbers work while renting where they want to live.</p>
+
+<h2>What it means for first home buyers</h2>
+
+<p>Fast-rising rents change the calculation for first home buyers in two ways. They make saving a deposit harder, because more of each pay packet goes to a landlord. But they also strengthen the case for buying, because the cost of staying a renter is climbing rather than holding steady. When rent is forecast to hit record highs across every capital city, the comparison between paying off your own mortgage and paying someone else's becomes more pointed.</p>
+
+<p>The right answer depends entirely on your numbers, your timeline and where you want to live. Working through the steps methodically helps, and our <a href="/guides/first-home-buyer-guide">first home buyer guide</a> covers deposits, costs and the buying process in plain English so you can decide with clear eyes rather than in a rush.</p>
+
+<h2>What it means for you</h2>
+
+<ul>
+<li><strong>Renters:</strong> learn your rights and plan your lease timing early, because a 1.2% vacancy rate leaves little room to negotiate at the last minute.</li>
+<li><strong>Renters weighing a move:</strong> with rents up about 7.8% over the year, it is worth checking your <a href="/borrowing-power-calculator">borrowing power</a> to see whether buying is now within reach.</li>
+<li><strong>Investors:</strong> tight vacancy supports rents and yields, but model higher mortgage rates and holding costs in full before committing.</li>
+<li><strong>First home buyers:</strong> record-high rents shift the rent-versus-buy maths, so run your own deposit and repayment numbers rather than relying on rules of thumb.</li>
+<li><strong>Everyone:</strong> limited new supply, tied to weak building approvals and completions, suggests these tight conditions will not ease quickly.</li>
+</ul>`,
+    coverImage: "/images/blog/cover-australian-rents-record-highs-mid-2026.jpg",
+    author: { name: "Bec Ramirez", image: "/images/agents/bec-ramirez.jpg" },
+    category: "News",
+    tags: ["rent prices","rental market","vacancy rate","renters","property investors","first home buyers","housing supply","rent vs buy"],
+    publishedAt: "2026-06-22",
+    readingTime: 7,
+  },
+  {
+    id: "blog-nsw-building-reforms-prefab-modular-2026",
+    slug: "nsw-building-reforms-prefab-modular-2026",
+    title: "NSW bets on prefab and modular homes to build faster",
+    excerpt: "New South Wales is rewriting its building rules to recognise prefab and modular homes in law, aiming to lift housing completions and deliver faster, potentially cheaper new homes. Here is what the changes mean for buyers and builders.",
+    content: `<p>The New South Wales Government is moving to speed up how homes get built, and at the centre of the plan is a type of construction that has long sat in a legal grey zone. Under the Building (Approvals and Practitioners) Bill 2026, introduced to NSW Parliament in May 2026, prefabricated and modular buildings would be formally recognised in law for the first time. The Bill also folds what the sector calls Modern Methods of Construction, or MMC, into the standard approvals system.</p><p>It is a quietly significant shift. For years, factory-built homes have been treated as an exception rather than a normal way to deliver housing. By writing prefab and modular into the rule book, the state is signalling that these methods are meant to be part of mainstream home building, not a niche workaround. For anyone weighing up a new home, a house-and-land package, or building from scratch, it is worth understanding what is changing and why.</p><h2>What "prefab" and "modular" actually mean</h2><p>The language can sound technical, so here is the plain version. Prefabricated construction means parts of a building are made in a factory and then transported to the site, rather than being built piece by piece out in the open. That can be anything from pre-made wall panels and roof trusses through to bathroom pods that arrive fully fitted.</p><p>Modular construction takes this further. Whole sections of a home, called modules, are built in a controlled factory setting, complete with wiring, plumbing and finishes, then craned into place and joined together on site. Because the factory work and the site preparation can happen at the same time, the overall timeline can shrink. Modern Methods of Construction is the umbrella term covering these factory-based and digital approaches, as opposed to traditional construction where almost everything is done on site.</p><h2>The case for going faster</h2><p>The reason governments are paying attention comes down to numbers. The Commonwealth Productivity Commission estimates that MMC, meaning modular and prefab approaches, can cut overall build costs by up to 20 per cent and be up to 50 per cent faster than traditional construction. Those are upper-end figures rather than guarantees, but they explain the interest. Faster builds and lower costs are exactly what is needed when housing completions have been lagging the national targets.</p><p>The 2026-27 NSW Budget, handed down on 23 June 2026, puts money behind the idea. It backs the reforms with planning changes, support for prefabrication, and a concentrated infrastructure spend in Western Sydney. That includes investment in a facility for prefab, modular and digital construction, signalling that the state wants the capacity to actually produce these homes at scale, not just permit them.</p><h2>More than just speed: quality and confidence</h2><p>Speed is only half the story. The same Bill tightens the rules around the people who sign off on building work. It introduces stronger penalties for certifiers, clarifies conflict-of-interest rules so it is clearer when a certifier should step back, and improves dispute resolution for people living in occupied apartment buildings.</p><p>These quality measures matter because confidence in new builds has taken knocks in recent years, particularly around apartments. If buyers are going to trust new homes, including ones built using newer methods, the people checking the work need to be independent and accountable. The certifier reforms are aimed squarely at lifting that confidence. If you are buying off the plan or considering a newly built home, it is still sensible to do your own due diligence, including a <a href="/guides/building-pest-inspection">building and pest inspection</a> where it applies, and to understand the <a href="/guides/buying-property-australia">process of buying property in Australia</a> before you commit.</p><h2>What this could mean for new homes</h2><p>None of this changes the market overnight. Bills take time to pass and take effect, and factories take time to ramp up. But the direction is clear. Over time, recognising prefab and modular in law, combined with streamlined approvals and dedicated manufacturing capacity, is designed to lift the number of homes completed each year.</p><p>For first home buyers in particular, that is the part to watch. More homes finished, sooner, can ease some of the pressure that has made getting in so hard. If you are at the start of that journey, the <a href="/guides/first-home-buyer-nsw">first home buyer guide for NSW</a> and the broader <a href="/guides/first-home-buyer-guide">first home buyer guide</a> are useful starting points. If you are leaning towards building, our overview of <a href="/house-and-land">house-and-land options</a> and the guide on <a href="/guides/how-to-find-a-builder-australia">how to find a builder in Australia</a> can help you weigh up your choices and ask the right questions.</p><h2>What it means for you</h2><ul><li><strong>Prefab and modular are going mainstream.</strong> NSW is recognising factory-built homes in law for the first time, so expect them to appear more often among new-build and house-and-land options over time.</li><li><strong>Faster, potentially cheaper homes are the goal.</strong> The Productivity Commission estimates these methods can be up to 50 per cent faster and cut overall build costs by up to 20 per cent, though real-world results will vary.</li><li><strong>Quality safeguards are part of the package.</strong> Tougher certifier penalties, clearer conflict-of-interest rules and better apartment dispute resolution are designed to lift confidence in new builds.</li><li><strong>Western Sydney is a focus.</strong> The 2026-27 Budget includes investment in a facility for prefab, modular and digital construction, so supply may grow fastest in that region. It can be worth researching <a href="/suburbs">specific suburbs</a> if you are considering a new home there.</li><li><strong>Do your homework regardless of method.</strong> Whether a home is built traditionally or in a factory, the usual checks still apply. Compare builders, understand the contract, and budget realistically, including for any later <a href="/guides/renovation-cost-australia-2026">renovation costs</a>.</li></ul>`,
+    coverImage: "/images/blog/cover-nsw-building-reforms-prefab-modular-2026.jpg",
+    author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
+    category: "News",
+    tags: ["NSW property","prefab homes","modular construction","first home buyers","housing policy","new builds","house and land","building approvals"],
+    publishedAt: "2026-06-23",
+    readingTime: 7,
+  },
+  {
     id: "blog-auction-clearance-rates-slump-2026",
     slug: "auction-clearance-rates-slump-2026",
     title: "Auction clearance rates slump to 47%, the weakest result since 2020",
