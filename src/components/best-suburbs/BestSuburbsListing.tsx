@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, ItemListJsonLd, FAQPageJsonLd } from "@/components/seo";
+import { ExpertCTA } from "@/components/journey";
 import {
   type RankingCategory,
   type RankedSuburb,
@@ -515,6 +516,15 @@ export function BestSuburbsListing({
           </div>
         </div>
       </div>
+
+      {/* Buyer funnel exit, shared by the national and per-state ranking
+          routes. Readers here are shortlisting where to buy next. */}
+      <ExpertCTA
+        headline="Shortlisted a suburb? Buy it well."
+        body="The complete buying guide: what you can actually spend, the 2026 schemes for your state, how the selling side plays you, and a 12-week plan from pre-approval to keys. Free PDF, in your inbox in 60 seconds."
+        ctaLabel="Get the free buying guide"
+        href="/buying-guide"
+      />
     </>
   );
 }

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Home, TrendingUp, BarChart3, ArrowRight } from "lucide-react";
 import { SuburbSubrouteHeader, getSuburbListingTabs, DataFreshnessNote } from "@/components/suburb";
+import { ExpertCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getSuburbRentalHistory } from "@/lib/services/rental-service";
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: RentalMarketPageProps): Promi
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) return { title: "Suburb Not Found" };
 
-  const title = `${suburb.name} Rental Market | Rent Prices & Trends | ${SITE_NAME}`;
+  const title = `${suburb.name} Rental Market | Rent Prices & Trends`;
   const description = `View rental price trends and history for ${suburb.name}, ${suburb.state}. Compare weekly rent for houses, units, and bedrooms.`;
   const canonical = `${SITE_URL}/suburbs/${slug}/rental-market`;
 
@@ -26,7 +27,8 @@ export async function generateMetadata({ params }: RentalMarketPageProps): Promi
     title,
     description,
     alternates: { canonical },
-    openGraph: { url: canonical, title, description, type: "website" },
+    // og titles don't get the root title.template — brand them explicitly
+    openGraph: { url: canonical, title: `${title} | ${SITE_NAME}`, description, type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }
@@ -247,6 +249,16 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
           </>
         )}
       </div>
+
+      {/* Readers here carry investor/landlord intent, so the selling- and
+          buying-guide funnels are the wrong offer. Deep-link the
+          expert-match form with the investing intent pre-answered. */}
+      <ExpertCTA
+        headline={`Thinking about investing in ${suburb.name}?`}
+        body={`Gross yield is only half the picture. Get matched with a local expert who knows vacancy, tenant demand and what actually rents in ${suburb.name}. Free, no obligation.`}
+        ctaLabel="Talk to an investment expert"
+        href="/find-an-expert?intent=investing#match"
+      />
     </>
   );
 }

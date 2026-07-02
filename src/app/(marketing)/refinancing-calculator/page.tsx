@@ -3,7 +3,7 @@ import Link from "next/link";
 import { RefinancingCalculator } from "@/components/calculators/RefinancingCalculator";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
 import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Refinancing Calculator",
@@ -81,6 +81,7 @@ export default function RefinancingCalculatorPage() {
       calculator={<RefinancingCalculator />}
       faqs={FAQS}
       related={RELATED}
+      intent="buying"
       explainer={
         <>
           <h2>Should you refinance your home loan?</h2>

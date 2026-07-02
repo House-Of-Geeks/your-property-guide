@@ -7,7 +7,7 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { unifiedSearch } from "@/lib/services/search-service";
 import { JumpToSuburb } from "@/components/search/JumpToSuburb";
 import { formatPrice } from "@/lib/utils/format";
-import { SITE_URL } from "@/lib/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 interface SearchPageProps {
   searchParams: Promise<{ q?: string }>;
@@ -19,7 +19,7 @@ export async function generateMetadata({
   const { q } = await searchParams;
   const query = q?.trim() ?? "";
   const title = query
-    ? `Search results for "${query}" | Your Property Guide`
+    ? `Search results for "${query}"`
     : "Search Your Property Guide";
   const description = query
     ? `Suburbs, schools, guides and glossary terms matching "${query}". Free property research from Your Property Guide.`
@@ -33,7 +33,9 @@ export async function generateMetadata({
     robots: query ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: {
       url: `${SITE_URL}/search`,
-      title,
+      // og titles don't get the root title.template — brand them explicitly
+      // (the no-query title already ends with the site name, so skip it there)
+      title: query ? `${title} | ${SITE_NAME}` : title,
       description,
       type: "website",
     },

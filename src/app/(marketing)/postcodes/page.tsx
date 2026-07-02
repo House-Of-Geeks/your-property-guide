@@ -11,7 +11,7 @@ import { SITE_URL } from "@/lib/constants";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Australian Postcode Property Guide | Your Property Guide",
+  title: "Australian Postcode Property Guide",
   description:
     "Browse Australian property data by postcode. Find suburb profiles, median house prices, schools and market statistics for every postcode.",
   alternates: { canonical: `${SITE_URL}/postcodes` },

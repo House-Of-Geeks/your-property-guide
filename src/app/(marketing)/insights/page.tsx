@@ -12,7 +12,7 @@ import { getRecentUpdates } from "@/lib/data/data-updates";
 export const revalidate = 86400; // daily. Page lists blog posts + data updates, neither change hourly.
 
 export const metadata: Metadata = {
-  title: "Australian Property Insights, Latest News, Analysis &amp; Updates | Your Property Guide",
+  title: "Australian Property Insights, Latest News, Analysis & Updates",
   description:
     "The latest property market analysis, capital city updates, RBA cash rate moves, and data refreshes from Your Property Guide. Updated weekly.",
   alternates: { canonical: `${SITE_URL}/insights` },

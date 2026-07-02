@@ -6,7 +6,7 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Property Research Tools | Your Property Guide",
+  title: "Property Research Tools",
   description:
     "Free property research tools for Australian buyers and investors. Price guides, calculators, suburb profiles, school catchments and more.",
   alternates: { canonical: `${SITE_URL}/research` },

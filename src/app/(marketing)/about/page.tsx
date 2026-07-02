@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd, OrganizationJsonLd, PersonJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, PersonJsonLd } from "@/components/seo";
 import { TrustStrip } from "@/components/journey";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
@@ -44,7 +44,6 @@ const PRINCIPLES = [
 export default function AboutPage() {
   return (
     <>
-      <OrganizationJsonLd />
       <BreadcrumbJsonLd items={[{ name: "About", url: "/about" }]} />
       <PersonJsonLd
         id="andy-mcmaster"

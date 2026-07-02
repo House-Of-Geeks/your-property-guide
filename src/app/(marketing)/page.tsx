@@ -12,7 +12,6 @@ import { CapitalCityOutlook } from "@/components/home/CapitalCityOutlook";
 import { GuidePathCard } from "@/components/home/GuidePathCard";
 import { PersonaPicker, GuideBandSwitcher } from "@/components/journey";
 import { BestDealsRail } from "@/components/best-deal";
-import { OrganizationJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { HomeSuburbSearch } from "./HomeSuburbSearch";
 
@@ -42,8 +41,6 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <OrganizationJsonLd />
-
       {/* 1. Hero. Three jobs named, search front and centre. Built off
             real AU search demand: "property value" / "stamp duty calculator"
             / "how much can I borrow" / "suburb profile" all dwarf the

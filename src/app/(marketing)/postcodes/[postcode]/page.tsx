@@ -38,15 +38,20 @@ export async function generateMetadata({ params }: PostcodePageProps): Promise<M
   const stats = await getPostcodeStats(postcode);
 
   // Reverse-lookup intent: Search Console shows "{number} postcode" queries
-  // (e.g. "2761 postcode") ranking ~pos 9 with no clicks. Lead the title and
-  // description with the suburb answer so the SERP resolves "what suburb is
-  // postcode X". The brand suffix is appended once by the root title template
-  // (%s | Your Property Guide), so it must NOT be repeated here — the old
-  // hard-coded suffix produced a double brand.
-  const moreCount = suburbs.length - 1;
-  const title = `Postcode ${postcode} (${state}): ${suburbs[0].name}${
-    moreCount > 0 ? ` + ${moreCount} Suburb${moreCount !== 1 ? "s" : ""}` : ""
-  }, Median Price`;
+  // (e.g. "2761 postcode") ranking ~pos 9 with no clicks, and ranking data
+  // shows these pages only surface when the query also names a suburb
+  // ("postcode hallam victoria") — so the suburb names must be in the
+  // title, not just a count. Three names when they fit the ~60-char SERP
+  // budget, otherwise two. The brand suffix is appended once by the root
+  // title template (%s | Your Property Guide), so it must NOT be repeated
+  // here — the old hard-coded suffix produced a double brand.
+  const buildTitle = (count: number) => {
+    const names = suburbs.slice(0, count).map((s) => s.name).join(", ");
+    const more = suburbs.length > count ? " & more" : "";
+    return `${postcode} Postcode — ${names}${more} (${state})`;
+  };
+  const threeNameTitle = buildTitle(3);
+  const title = threeNameTitle.length <= 60 ? threeNameTitle : buildTitle(2);
   const description = `Postcode ${postcode} is ${suburbNames}${
     suburbs.length > 3 ? ` and ${suburbs.length - 3} more` : ""
   } in ${state}. ${

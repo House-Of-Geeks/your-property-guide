@@ -16,7 +16,7 @@ import { formatPrice } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Find Your Suburb: A 30-Second Australian Property Quiz | Your Property Guide",
+  title: "Find Your Suburb: A 30-Second Australian Property Quiz",
   description:
     "Answer four questions and we'll match you with five Australian suburbs that fit your budget, priorities, and lifestyle. Free, free of sign-up, instant results.",
   alternates: { canonical: `${SITE_URL}/find-your-suburb` },

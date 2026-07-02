@@ -4,7 +4,7 @@ import {
   getRankedSuburbs,
   type RankingCategory,
 } from "@/lib/services/suburb-rankings-service";
-import { SITE_URL } from "@/lib/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import {
   BestSuburbsListing,
   CATEGORY_CONFIG,
@@ -65,7 +65,7 @@ export async function generateMetadata({
   const config = CATEGORY_CONFIG[category];
   const stateName = STATE_NAME[upperState];
 
-  const title = `${config.title.replace(" Suburbs", "")} suburbs in ${stateName} (${upperState}) | Your Property Guide`;
+  const title = `${config.title.replace(" Suburbs", "")} suburbs in ${stateName} (${upperState})`;
   const description = `${config.description} Filtered to ${stateName} suburbs only.`;
 
   const canonical = `${SITE_URL}/best-suburbs/${category}/${state.toLowerCase()}`;
@@ -76,7 +76,8 @@ export async function generateMetadata({
     alternates: { canonical },
     openGraph: {
       url: canonical,
-      title,
+      // og titles don't get the root title.template — brand them explicitly
+      title: `${title} | ${SITE_NAME}`,
       description,
       type: "website",
     },

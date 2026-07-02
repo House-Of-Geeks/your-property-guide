@@ -6,7 +6,7 @@ import { SellingGuideFunnel } from "./SellingGuideFunnel";
 import { BuyingGuideFunnel } from "./BuyingGuideFunnel";
 import { StickyMatchCTA } from "./StickyMatchCTA";
 import { EditorNote, Faq } from "@/components/guide";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { PERSONAS, getPersonaById, type PersonaId } from "@/lib/constants/journey";
 import { PERSONA_HUB_CONTENT } from "@/lib/persona-hub-content";
 
@@ -127,6 +127,19 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
   return (
     <>
       <BreadcrumbJsonLd items={[{ name: persona.hubHeading, url: persona.hubPath }]} />
+      {/* Persona hubs are curated guide collections; the starting-points
+          list is the collection's mainEntity so the hub is classified as
+          a CollectionPage rather than a generic landing page. */}
+      <CollectionPageJsonLd
+        name={persona.hubHeading}
+        description={persona.hubLede}
+        url={persona.hubPath}
+        items={persona.startingPoints.map((sp) => ({
+          name: sp.label,
+          url: sp.href,
+          description: sp.description,
+        }))}
+      />
 
       {/* Editorial hero. Magazine masthead with numbered persona slug,
           display-scale H1 with italic emphasis on the persona noun, serif

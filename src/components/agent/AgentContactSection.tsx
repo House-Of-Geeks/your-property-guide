@@ -3,14 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
-
-const ENQUIRY_TYPES = [
-  { value: "sell-appraisal", label: "Selling my property & appraisals" },
-  { value: "leasing", label: "Leasing my property" },
-  { value: "buy", label: "Buying a property" },
-  { value: "rent", label: "Renting a property" },
-  { value: "general", label: "I have a general enquiry" },
-];
+import { AGENT_ENQUIRY_TYPES } from "./enquiry-types";
 
 interface AgentContactSectionProps {
   agentId: string;
@@ -32,6 +25,7 @@ export function AgentContactSection({
   agentTitle,
 }: AgentContactSectionProps) {
   const [selected, setSelected] = useState<string | null>(null);
+  const topic = AGENT_ENQUIRY_TYPES.find((t) => t.value === selected);
 
   return (
     <section className="bg-gray-50 py-12">
@@ -54,7 +48,7 @@ export function AgentContactSection({
         {/* Enquiry type selector */}
         {!selected ? (
           <div className="space-y-3">
-            {ENQUIRY_TYPES.map((t) => (
+            {AGENT_ENQUIRY_TYPES.map((t) => (
               <button
                 key={t.value}
                 onClick={() => setSelected(t.value)}
@@ -73,13 +67,19 @@ export function AgentContactSection({
               ← Back
             </button>
             <p className="text-sm font-medium text-gray-700 mb-4">
-              {ENQUIRY_TYPES.find((t) => t.value === selected)?.label}
+              {topic?.label}
             </p>
             <EnquiryForm
               agentId={agentId}
               agencyId={agencyId}
-              type={selected}
-              defaultMessage={`Hi ${agentFirstName}, I'd like to get in touch about ${ENQUIRY_TYPES.find((t) => t.value === selected)?.label.toLowerCase()}.`}
+              type={topic?.apiType ?? "general-contact"}
+              source={`agent-profile-${selected}`}
+              // Every topic except a general question is answered by this
+              // agent picking up the phone, even though most map onto the
+              // "general-contact" API type (which alone would make phone
+              // optional).
+              requirePhone={selected !== "general"}
+              defaultMessage={`Hi ${agentFirstName}, I'd like to get in touch about ${topic?.label.toLowerCase()}.`}
             />
           </div>
         )}

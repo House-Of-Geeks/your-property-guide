@@ -1,4 +1,4 @@
-import type { Property, Agent, Agency, BlogPost, Suburb } from "@/types";
+import type { Property, Agent, Agency, BlogPost, Suburb, HouseAndLandPackage } from "@/types";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION_LONG, SITE_KNOWS_ABOUT } from "@/lib/constants";
 import { resolveBlogCoverPath } from "@/lib/utils/blog-cover";
 
@@ -150,6 +150,45 @@ export function PropertyJsonLd({ property }: { property: Property }) {
           offers: {
             "@type": "Offer",
             price: property.price.value,
+            priceCurrency: "AUD",
+          },
+        }),
+      }}
+    />
+  );
+}
+
+// RealEstateListing for house-and-land packages. Narrow sibling of
+// PropertyJsonLd: packages carry estate/builder data instead of a street
+// address, so state and postcode are recovered from the suburb slug
+// ("north-lakes-qld-4509") the same way AgencyJsonLd derives areaServed.
+export function HouseAndLandJsonLd({ pkg }: { pkg: HouseAndLandPackage }) {
+  const slugParts = pkg.suburbSlug.split("-");
+  const postalCode = slugParts[slugParts.length - 1] ?? "";
+  const addressRegion = (slugParts[slugParts.length - 2] ?? "").toUpperCase();
+  return (
+    <JsonLdScript
+      data={{
+        "@context": "https://schema.org",
+        "@type": "RealEstateListing",
+        name: pkg.title,
+        description: pkg.description,
+        url: `${SITE_URL}/house-and-land/${pkg.slug}`,
+        datePosted: pkg.dateAdded,
+        image: pkg.images.map((img) =>
+          img.url.startsWith("http") ? img.url : `${SITE_URL}${img.url}`,
+        ),
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: pkg.suburb,
+          ...(addressRegion && { addressRegion }),
+          ...(postalCode && { postalCode }),
+          addressCountry: "AU",
+        },
+        ...(pkg.price.value && {
+          offers: {
+            "@type": "Offer",
+            price: pkg.price.value,
             priceCurrency: "AUD",
           },
         }),
@@ -541,10 +580,12 @@ export function CollectionPageJsonLd({
   name,
   description,
   url,
+  items,
 }: {
   name: string;
   description?: string;
   url: string;
+  items?: { name: string; url: string; description?: string }[];
 }) {
   return (
     <JsonLdScript
@@ -554,6 +595,22 @@ export function CollectionPageJsonLd({
         name,
         ...(description && { description }),
         url: `${SITE_URL}${url}`,
+        // Curated collections (persona hubs) list their member guides as
+        // the page's mainEntity so search engines can tie the hub to the
+        // specific guides it curates, not just classify it as a listing page.
+        ...(items && items.length > 0 && {
+          mainEntity: {
+            "@type": "ItemList",
+            numberOfItems: items.length,
+            itemListElement: items.map((item, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: item.name,
+              url: item.url.startsWith("http") ? item.url : `${SITE_URL}${item.url}`,
+              ...(item.description && { description: item.description }),
+            })),
+          },
+        }),
         publisher: {
           "@type": "Organization",
           name: SITE_NAME,

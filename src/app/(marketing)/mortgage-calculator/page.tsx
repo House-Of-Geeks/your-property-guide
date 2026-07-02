@@ -84,6 +84,7 @@ export default function MortgageCalculatorPage() {
       calculator={<MortgageCalculator />}
       faqs={FAQS}
       related={RELATED}
+      intent="buying"
       explainer={
         <>
           <h2>What you&rsquo;re actually paying for</h2>

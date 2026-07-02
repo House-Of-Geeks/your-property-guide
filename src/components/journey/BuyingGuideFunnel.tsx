@@ -5,6 +5,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { ArrowRight, ArrowLeft, Check } from "lucide-react";
 import { SuburbAutocomplete, slugToSuburbLabel } from "@/components/search/SuburbAutocomplete";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
+import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
+import { ENRICH_LEAD_STORAGE_KEY } from "@/components/forms/ThanksPhoneAsk";
 
 // ----- Option sets ---------------------------------------------------------
 // Question order is fixed by conversion research, lowest-friction first,
@@ -108,6 +110,7 @@ export function BuyingGuideFunnel({
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState<string | null>(null);
   const [marketingConsent, setMarketingConsent] = useState(false);
   const [website, setWebsite] = useState(""); // honeypot, must stay empty
 
@@ -150,6 +153,14 @@ export function BuyingGuideFunnel({
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!timeframe || !persona) return;
+    // Phone stays optional (the download is the conversion) but a typed
+    // number must be dialable — otherwise the server rejects it and the
+    // user only sees a generic error.
+    if (phone.trim() && !isValidPhone(phone)) {
+      setPhoneError(PHONE_ERROR);
+      return;
+    }
+    setPhoneError(null);
     setError(null);
     setSubmitting(true);
     try {
@@ -177,6 +188,7 @@ export function BuyingGuideFunnel({
         const body = await res.json().catch(() => null);
         throw new Error(body?.error ?? "Submit failed");
       }
+      const saved: { id?: string } | null = await res.json().catch(() => null);
       clarityEvent("guide_download_submitted");
       clarityTag("guide_type", "buying");
       clarityTag("guide_timeframe", timeframe);
@@ -184,6 +196,19 @@ export function BuyingGuideFunnel({
       if (suburbSlug) clarityTag("guide_suburb", suburbSlug);
       const qs = new URLSearchParams({ score: displayScore(timeframe, finance) });
       if (suburbSlug) qs.set("suburb", suburbSlug);
+      // No mobile left? Hand the lead id to the thanks page (via
+      // sessionStorage, never the URL — the id is the enrich endpoint's
+      // bearer credential and URLs leak into history/analytics) so its
+      // "add your mobile" follow-up can enrich this lead in place.
+      try {
+        if (!phone.trim() && saved?.id) {
+          sessionStorage.setItem(ENRICH_LEAD_STORAGE_KEY, saved.id);
+        } else {
+          sessionStorage.removeItem(ENRICH_LEAD_STORAGE_KEY);
+        }
+      } catch {
+        // Storage blocked — the thanks page just skips the phone ask.
+      }
       // Success beat: the button confirms before the route changes.
       setSubmitted(true);
       window.setTimeout(() => {
@@ -485,6 +510,7 @@ export function BuyingGuideFunnel({
               type="text"
               required
               placeholder="First name"
+              autoComplete="given-name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
@@ -493,17 +519,38 @@ export function BuyingGuideFunnel({
               type="email"
               required
               placeholder="Email"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
             />
-            <input
-              type="tel"
-              placeholder="Mobile (optional)"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
-            />
+            <div>
+              <input
+                type="tel"
+                placeholder="Mobile (optional)"
+                autoComplete="tel"
+                inputMode="tel"
+                value={phone}
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                  if (phoneError) setPhoneError(null);
+                }}
+                aria-invalid={phoneError ? true : undefined}
+                className={`w-full rounded-lg border bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:ring-[3px] outline-none transition-[border-color,box-shadow] duration-200 ${
+                  phoneError
+                    ? "border-danger focus:border-danger focus:ring-danger/15"
+                    : "border-line focus:border-cta focus:ring-cta/15"
+                }`}
+              />
+              {phoneError ? (
+                <p className="mt-1.5 text-xs text-danger">{phoneError}</p>
+              ) : timeframe === "0-3-months" ? (
+                <p className="mt-1.5 text-[11px] text-ink-subtle leading-relaxed">
+                  Add your mobile if you&rsquo;d like a quick call to plan your
+                  next steps — buying help only, never selling agents.
+                </p>
+              ) : null}
+            </div>
 
             <label className="flex items-start gap-2.5 pt-1 cursor-pointer">
               <input

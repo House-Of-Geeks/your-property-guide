@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle, Download, ArrowRight } from "lucide-react";
 import { ConversionTracker } from "@/components/journey/ConversionTracker";
+import { ThanksPhoneAsk } from "@/components/forms/ThanksPhoneAsk";
 
 export const metadata: Metadata = {
   title: "Your selling guide is ready",
@@ -15,8 +16,21 @@ export const metadata: Metadata = {
 const GUIDE_PDF_PATH = "/downloads/your-property-guide-selling-a-home-australia.pdf";
 
 interface PageProps {
-  searchParams: Promise<{ score?: string; suburb?: string }>;
+  // Next 16 can deliver repeated params as arrays — normalise before use.
+  searchParams: Promise<{ score?: string | string[]; suburb?: string | string[]; }>;
 }
+
+// Post-download phone ask, keyed to lead temperature. The funnel leaves a
+// lead id in sessionStorage only when no mobile was captured, so the ask
+// renders exactly for the leads we can still upgrade (ThanksPhoneAsk
+// handles that check client-side). "listed" is excluded — those vendors
+// were promised no agent contact, so an appraisal-callback ask breaks
+// the collection statement they just read.
+const PHONE_PROMPT: Record<string, string> = {
+  hot: "Want your free appraisal sooner? Add your mobile and a top local agent will call within one business day.",
+  warm: "Add your mobile and we’ll give you a quick call when it’s the right time to start comparing agents.",
+  cold: "Prefer to talk it through when the time comes? Add your mobile and we’ll check in — no pressure, no spam.",
+};
 
 // Next-step copy keyed to the lead temperature the funnel computed.
 // HOT sellers get told an agent callback is coming (matching the
@@ -41,8 +55,11 @@ const SCORE_COPY: Record<string, { headline: string; body: string }> = {
 };
 
 export default async function SellingGuideThanksPage({ searchParams }: PageProps) {
-  const { score, suburb } = await searchParams;
+  const { score: scoreParam, suburb: suburbParam } = await searchParams;
+  const score = typeof scoreParam === "string" ? scoreParam : undefined;
+  const suburb = typeof suburbParam === "string" ? suburbParam : undefined;
   const copy = SCORE_COPY[score ?? ""] ?? SCORE_COPY.cold;
+  const phonePrompt = score !== "listed" ? (PHONE_PROMPT[score ?? ""] ?? PHONE_PROMPT.cold) : null;
   const suburbLabel = suburb
     ? suburb.replace(/-[a-z]{2,3}-\d{4}$/, "").replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
     : null;
@@ -129,6 +146,10 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
               whenever you need it.
             </p>
           </div>
+
+          {phonePrompt && (
+            <ThanksPhoneAsk source="selling-guide-thanks" prompt={phonePrompt} />
+          )}
         </div>
       </section>
 

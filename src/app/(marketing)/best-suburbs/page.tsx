@@ -6,7 +6,7 @@ import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Best Suburbs in Australia | Your Property Guide",
+  title: "Best Suburbs in Australia",
   description:
     "Discover the best Australian suburbs ranked by schools, growth, affordability, walkability, flood risk, and rental yield. Find your perfect suburb.",
   alternates: { canonical: `${SITE_URL}/best-suburbs` },

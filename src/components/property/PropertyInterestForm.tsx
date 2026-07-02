@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Bookmark, CheckCircle, Loader2 } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
+import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
 
 interface Props {
   address: string;
@@ -15,6 +16,7 @@ export function PropertyInterestForm({ address, suburbName, suburbSlug }: Props)
   const [lastName, setLastName]   = useState("");
   const [email, setEmail]         = useState("");
   const [phone, setPhone]         = useState("");
+  const [phoneError, setPhoneError] = useState<string | null>(null);
   const [website, setWebsite]     = useState(""); // honeypot, must stay empty
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading]     = useState(false);
@@ -22,6 +24,13 @@ export function PropertyInterestForm({ address, suburbName, suburbSlug }: Props)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Optional, but a typed number must be dialable. (An empty string
+    // here used to fail the API's min-length check and 400 the signup.)
+    if (phone.trim() && !isValidPhone(phone)) {
+      setPhoneError(PHONE_ERROR);
+      return;
+    }
+    setPhoneError(null);
     setLoading(true);
     setError(null);
     try {
@@ -30,10 +39,10 @@ export function PropertyInterestForm({ address, suburbName, suburbSlug }: Props)
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           type: "property-interest",
-          firstName,
-          lastName,
-          email,
-          phone,
+          firstName: firstName.trim(),
+          lastName: lastName.trim() || undefined,
+          email: email.trim(),
+          phone: phone.trim() || undefined,
           address,
           suburb: suburbName,
           message: `Registered interest in: ${address}`,
@@ -101,6 +110,7 @@ export function PropertyInterestForm({ address, suburbName, suburbSlug }: Props)
               id="pi-firstName"
               type="text"
               required
+              autoComplete="given-name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder="Jane"
@@ -115,6 +125,7 @@ export function PropertyInterestForm({ address, suburbName, suburbSlug }: Props)
               id="pi-lastName"
               type="text"
               required
+              autoComplete="family-name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               placeholder="Smith"
@@ -130,6 +141,7 @@ export function PropertyInterestForm({ address, suburbName, suburbSlug }: Props)
             id="pi-email"
             type="email"
             required
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="jane@example.com"
@@ -138,16 +150,27 @@ export function PropertyInterestForm({ address, suburbName, suburbSlug }: Props)
         </div>
         <div>
           <label htmlFor="pi-phone" className="block text-xs font-medium text-gray-600 mb-1">
-            Phone <span className="text-gray-400 font-normal">(optional)</span>
+            Mobile <span className="text-gray-400 font-normal">(optional — get a call first if it lists)</span>
           </label>
           <input
             id="pi-phone"
             type="tel"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => {
+              setPhone(e.target.value);
+              if (phoneError) setPhoneError(null);
+            }}
             placeholder="04XX XXX XXX"
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
+            autoComplete="tel"
+            inputMode="tel"
+            aria-invalid={phoneError ? true : undefined}
+            className={`w-full rounded-lg border px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:ring-1 outline-none transition-colors ${
+              phoneError
+                ? "border-red-400 focus:border-red-400 focus:ring-red-400"
+                : "border-gray-300 focus:border-primary focus:ring-primary"
+            }`}
           />
+          {phoneError && <p className="mt-1 text-xs text-red-500">{phoneError}</p>}
         </div>
 
         {error && <p className="text-sm text-red-500">{error}</p>}

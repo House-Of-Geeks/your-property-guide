@@ -6,7 +6,7 @@ import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { getRegionBySlug, getRegionSuburbs } from "@/lib/services/region-service";
 import { getSchoolsByRegion, makeSchoolSlug } from "@/lib/services/school-service";
-import { SITE_URL } from "@/lib/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 interface RegionSchoolsPageProps {
   params: Promise<{ slug: string }>;
@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: RegionSchoolsPageProps): Prom
   const region = await getRegionBySlug(slug);
   if (!region) return { title: "Region Not Found" };
 
-  const title = `Schools in ${region.region}, ${region.state} | Ranked by ICSEA | Your Property Guide`;
+  const title = `Schools in ${region.region}, ${region.state} | Ranked by ICSEA`;
   const description = `Browse the top schools in ${region.region}, ${region.state}. Compare ICSEA scores, school types, and nearby property prices across all suburbs.`;
   const canonical = `${SITE_URL}/regions/${slug}/schools`;
 
@@ -45,7 +45,8 @@ export async function generateMetadata({ params }: RegionSchoolsPageProps): Prom
     title,
     description,
     alternates: { canonical },
-    openGraph: { url: canonical, title, description, type: "website" },
+    // og titles don't get the root title.template — brand them explicitly
+    openGraph: { url: canonical, title: `${title} | ${SITE_NAME}`, description, type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }

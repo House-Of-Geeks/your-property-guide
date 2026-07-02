@@ -117,10 +117,25 @@ export const BUYING_GUIDE_COVER_URL = "https://www.yourpropertyguide.com.au/imag
 const APPRAISAL_URL = "https://www.yourpropertyguide.com.au/appraisal";
 const BORROWING_URL = "https://www.yourpropertyguide.com.au/borrowing-power-calculator";
 
+// Lead fields are attacker-controlled free text (any bot can POST
+// /api/leads). Escape them before they land inside an email template:
+// injected markup in the internal notification reads as phishing, and
+// the confirmation email would reflect it back to any address the
+// attacker typed in. Server-generated values (labelFor, scores, routing
+// reasons, our own URLs) stay unescaped.
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 export function buildAdminEmailHtml(lead: LeadEmailData, agentName: string | null, routedReason: string): string {
   const C = EMAIL_COLORS;
   const typeLabel = labelFor(lead.type, lead.guideType);
-  const fullName = lead.lastName ? `${lead.firstName} ${lead.lastName}` : lead.firstName;
+  const fullName = escapeHtml(lead.lastName ? `${lead.firstName} ${lead.lastName}` : lead.firstName);
+  const email = escapeHtml(lead.email);
   const score = lead.type === "guide-download" ? scoreGuideLead(lead) : null;
   // Score colour stays functional (urgency signal), not brand: red for
   // HOT, amber for WARM, warm grey for the rest.
@@ -128,25 +143,25 @@ export function buildAdminEmailHtml(lead: LeadEmailData, agentName: string | nul
   const rows = [
     score && ["Lead score", `<strong style="color:${scoreColor};">${score}</strong>`],
     ["Name",    fullName],
-    ["Email",   `<a href="mailto:${lead.email}" style="color:${C.terracottaDark};">${lead.email}</a>`],
-    lead.phone            && ["Phone",             lead.phone],
-    lead.buyerPersona     && ["Buyer type",        BUYER_PERSONA_LABELS[lead.buyerPersona] ?? lead.buyerPersona],
-    lead.sellingTimeframe && [lead.guideType === "buying" ? "Buying timeframe" : "Selling timeframe", TIMEFRAME_LABELS[lead.sellingTimeframe] ?? lead.sellingTimeframe],
-    lead.financeStatus    && ["Finance",           FINANCE_STATUS_LABELS[lead.financeStatus] ?? lead.financeStatus],
-    lead.budget           && ["Budget",            lead.budget],
-    lead.agentStatus      && ["Agent status",      AGENT_STATUS_LABELS[lead.agentStatus] ?? lead.agentStatus],
-    lead.motivation       && ["Reason for selling", lead.motivation],
-    lead.priceExpectation && ["Price expectation", lead.priceExpectation],
+    ["Email",   `<a href="mailto:${email}" style="color:${C.terracottaDark};">${email}</a>`],
+    lead.phone            && ["Phone",             escapeHtml(lead.phone)],
+    lead.buyerPersona     && ["Buyer type",        BUYER_PERSONA_LABELS[lead.buyerPersona] ?? escapeHtml(lead.buyerPersona)],
+    lead.sellingTimeframe && [lead.guideType === "buying" ? "Buying timeframe" : "Selling timeframe", TIMEFRAME_LABELS[lead.sellingTimeframe] ?? escapeHtml(lead.sellingTimeframe)],
+    lead.financeStatus    && ["Finance",           FINANCE_STATUS_LABELS[lead.financeStatus] ?? escapeHtml(lead.financeStatus)],
+    lead.budget           && ["Budget",            escapeHtml(lead.budget)],
+    lead.agentStatus      && ["Agent status",      AGENT_STATUS_LABELS[lead.agentStatus] ?? escapeHtml(lead.agentStatus)],
+    lead.motivation       && ["Reason for selling", escapeHtml(lead.motivation)],
+    lead.priceExpectation && ["Price expectation", escapeHtml(lead.priceExpectation)],
     lead.marketingConsent !== undefined && ["Marketing consent", lead.marketingConsent ? "Yes (opted in)" : "No"],
-    lead.message          && ["Message",          lead.message],
-    lead.propertyId       && ["Property ID",       lead.propertyId],
-    lead.suburb           && ["Suburb",            lead.suburb],
-    lead.appraisalAddress && ["Appraisal address", lead.appraisalAddress],
-    lead.address          && ["Address",           lead.address],
-    lead.propertyType     && ["Property type",     lead.propertyType],
-    lead.bedrooms         && ["Bedrooms",          lead.bedrooms],
+    lead.message          && ["Message",          escapeHtml(lead.message)],
+    lead.propertyId       && ["Property ID",       escapeHtml(lead.propertyId)],
+    lead.suburb           && ["Suburb",            escapeHtml(lead.suburb)],
+    lead.appraisalAddress && ["Appraisal address", escapeHtml(lead.appraisalAddress)],
+    lead.address          && ["Address",           escapeHtml(lead.address)],
+    lead.propertyType     && ["Property type",     escapeHtml(lead.propertyType)],
+    lead.bedrooms         && ["Bedrooms",          escapeHtml(lead.bedrooms)],
     agentName             && ["Routed to",         `${agentName} (${routedReason})`],
-    lead.source           && ["Source",            lead.source],
+    lead.source           && ["Source",            escapeHtml(lead.source)],
   ]
     .filter((r): r is [string, string] => Array.isArray(r))
     .map(([label, value]) =>
@@ -170,8 +185,12 @@ export function buildAdminEmailHtml(lead: LeadEmailData, agentName: string | nul
 // Subject line + intro for the user-facing confirmation, by lead type.
 // Plain, direct copy. No em dashes. No "we're excited" / AI-sounding phrasing.
 export function confirmationCopy(lead: LeadEmailData): { subject: string; intro: string; next: string; cta?: { label: string; url: string }; preheader?: string } {
-  const suburb = lead.suburb ? lead.suburb : "your area";
-  const addr = lead.appraisalAddress || lead.address;
+  // intro/next render inside HTML emails, so client-controlled fields are
+  // escaped here. Subjects are plain-text headers and keep the raw values.
+  const firstName = escapeHtml(lead.firstName);
+  const suburb = lead.suburb ? escapeHtml(lead.suburb) : "your area";
+  const rawAddr = lead.appraisalAddress || lead.address;
+  const addr = rawAddr && escapeHtml(rawAddr);
   switch (lead.type) {
     case "guide-download": {
       const score = scoreGuideLead(lead);
@@ -184,7 +203,7 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
               : "Buying well starts long before the inspections. Chapter 1 works out which buyer you are and the playbook that follows. Keep the guide handy, the numbers will still be true when you're ready.";
         return {
           subject: "Your buying guide + what you can really spend",
-          intro: `Thanks ${lead.firstName}. Your copy is ready, all ten chapters, matched to your situation.`,
+          intro: `Thanks ${firstName}. Your copy is ready, all ten chapters, matched to your situation.`,
           next,
           cta: { label: "Download your guide (PDF)", url: BUYING_GUIDE_PDF_URL },
           preheader: "Ten chapters before you sign anything. Start with what you can actually spend.",
@@ -203,7 +222,7 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
               : "No deadline means you get to do this the smart way. Chapter 1 shows you how to read your market and pick your moment. Keep the guide handy. The numbers in it will still be true when you're ready.";
       return {
         subject: "Your selling guide + the $20,000 question",
-        intro: `Thanks ${lead.firstName}. Your copy is ready, all ten chapters, personalised pointers included.`,
+        intro: `Thanks ${firstName}. Your copy is ready, all ten chapters, personalised pointers included.`,
         next,
         cta: { label: "Download your guide (PDF)", url: GUIDE_PDF_URL },
         preheader: "Ten chapters that pay for themselves. Start with the 10 questions that expose an average agent.",
@@ -212,45 +231,45 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
     case "appraisal-request":
       return {
         subject: "Your appraisal request is in",
-        intro: `Thanks ${lead.firstName}. We've received your free appraisal request${addr ? ` for ${addr}` : ""}.`,
+        intro: `Thanks ${firstName}. We've received your free appraisal request${addr ? ` for ${addr}` : ""}.`,
         next: "A local agent will be in touch within one business day to arrange the appraisal. No commitment until you decide to take it further.",
       };
     case "match-request":
       return {
         subject: "We're matching you with a specialist",
-        intro: `Thanks ${lead.firstName}. Your request is in.`,
+        intro: `Thanks ${firstName}. Your request is in.`,
         next: `We'll match you with one vetted specialist for ${suburb}. Expect an email with their profile within one business day, before they reach out.`,
       };
     case "suburb-alert":
       return {
         subject: `You're on the alert list for ${lead.suburb || "your suburb"}`,
-        intro: `Thanks ${lead.firstName}. You're now on the property alert list for ${lead.suburb || "your suburb"}.`,
+        intro: `Thanks ${firstName}. You're now on the property alert list for ${lead.suburb ? escapeHtml(lead.suburb) : "your suburb"}.`,
         next: "We'll email you when new listings hit the market. One email per match, no roundup spam. Unsubscribe anytime.",
       };
     case "off-market-register":
       return {
         subject: "You're registered for off-market alerts",
-        intro: `Thanks ${lead.firstName}. You're registered for off-market alerts in ${suburb}.`,
+        intro: `Thanks ${firstName}. You're registered for off-market alerts in ${suburb}.`,
         next: "We'll email you matching properties as they come in. One email per match.",
       };
     case "house-and-land-enquiry":
       return {
         subject: "Your house & land enquiry is in",
-        intro: `Thanks ${lead.firstName}. We've received your enquiry.`,
+        intro: `Thanks ${firstName}. We've received your enquiry.`,
         next: "A specialist will be in touch within one business day with the details and next steps.",
       };
     case "property-enquiry":
     case "property-interest":
       return {
         subject: "We've received your enquiry",
-        intro: `Thanks ${lead.firstName}. Your enquiry is in.`,
+        intro: `Thanks ${firstName}. Your enquiry is in.`,
         next: "The listing agent will be in touch within one business day.",
       };
     case "general-contact":
     default:
       return {
         subject: "We've received your message",
-        intro: `Thanks ${lead.firstName}. Your message is in.`,
+        intro: `Thanks ${firstName}. Your message is in.`,
         next: "We'll get back to you within one business day.",
       };
   }
@@ -352,7 +371,7 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
     return emailLayout({
       preheader,
       body: `
-      ${emailCoverHero(buying ? BUYING_GUIDE_COVER_URL : GUIDE_COVER_URL, `Your guide is ready, ${lead.firstName}.`, buying ? "Ten chapters that keep buyers from overpaying. Free, and yours to keep." : "Ten chapters that routinely save sellers thousands. Free, and yours to keep.")}
+      ${emailCoverHero(buying ? BUYING_GUIDE_COVER_URL : GUIDE_COVER_URL, `Your guide is ready, ${escapeHtml(lead.firstName)}.`, buying ? "Ten chapters that keep buyers from overpaying. Free, and yours to keep." : "Ten chapters that routinely save sellers thousands. Free, and yours to keep.")}
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
         <tr><td align="center" style="padding:26px 28px 6px;">
           ${emailButton("Download your guide (PDF)", buying ? BUYING_GUIDE_PDF_URL : GUIDE_PDF_URL)}
@@ -385,8 +404,11 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
 
 export function buildFailureAlertHtml(leadId: string, lead: LeadEmailData, mailErr: unknown): string {
   const C = EMAIL_COLORS;
-  const errMsg = mailErr instanceof Error ? mailErr.message : String(mailErr);
-  const fullName = lead.lastName ? `${lead.firstName} ${lead.lastName}` : lead.firstName;
+  // SMTP errors often echo the submitted (attacker-controlled) address,
+  // so the message gets escaped along with the lead fields.
+  const errMsg = escapeHtml(mailErr instanceof Error ? mailErr.message : String(mailErr));
+  const fullName = escapeHtml(lead.lastName ? `${lead.firstName} ${lead.lastName}` : lead.firstName);
+  const email = escapeHtml(lead.email);
   return emailLayout({
     variant: "alert",
     eyebrow: "Lead notification failed",
@@ -397,12 +419,44 @@ export function buildFailureAlertHtml(leadId: string, lead: LeadEmailData, mailE
         <li><strong>Lead ID:</strong> ${leadId}</li>
         <li><strong>Type:</strong> ${labelFor(lead.type)}</li>
         <li><strong>Name:</strong> ${fullName}</li>
-        <li><strong>Email:</strong> <a href="mailto:${lead.email}" style="color:${C.terracottaDark};">${lead.email}</a></li>
-        ${lead.phone ? `<li><strong>Phone:</strong> ${lead.phone}</li>` : ""}
-        ${lead.suburb ? `<li><strong>Suburb:</strong> ${lead.suburb}</li>` : ""}
-        ${lead.source ? `<li><strong>Source:</strong> ${lead.source}</li>` : ""}
+        <li><strong>Email:</strong> <a href="mailto:${email}" style="color:${C.terracottaDark};">${email}</a></li>
+        ${lead.phone ? `<li><strong>Phone:</strong> ${escapeHtml(lead.phone)}</li>` : ""}
+        ${lead.suburb ? `<li><strong>Suburb:</strong> ${escapeHtml(lead.suburb)}</li>` : ""}
+        ${lead.source ? `<li><strong>Source:</strong> ${escapeHtml(lead.source)}</li>` : ""}
       </ul>
       <p style="margin:14px 0 0;color:#b91c1c;font-size:13px;"><strong>SMTP error:</strong> ${errMsg}</p>
+    </div>`,
+  });
+}
+
+/**
+ * Sent to the team when a lead adds their phone number after the fact
+ * (the post-submit "add your mobile" step on thanks pages / inline
+ * confirmations). A lead growing a phone number is a buying signal —
+ * surface it like a fresh lead, not a footnote.
+ */
+export function buildPhoneAddedHtml(
+  lead: { id: string; type: string; firstName: string; lastName: string | null; email: string; suburb: string | null; source: string | null },
+  phone: string,
+): string {
+  const C = EMAIL_COLORS;
+  const fullName = escapeHtml(lead.lastName ? `${lead.firstName} ${lead.lastName}` : lead.firstName);
+  const email = escapeHtml(lead.email);
+  return emailLayout({
+    eyebrow: "Lead upgraded",
+    title: `${fullName} added a phone number`,
+    body: `
+    <div style="padding:18px 24px;font-size:14px;color:${C.ink};line-height:1.55;">
+      <p style="margin:0 0 12px;">An existing lead just added their mobile — they want the call. Worth moving to the top of the follow-up list.</p>
+      <ul style="margin:0;padding-left:18px;">
+        <li><strong>Phone:</strong> <a href="tel:${phone}" style="color:${C.terracottaDark};">${phone}</a></li>
+        <li><strong>Name:</strong> ${fullName}</li>
+        <li><strong>Email:</strong> <a href="mailto:${email}" style="color:${C.terracottaDark};">${email}</a></li>
+        <li><strong>Original lead:</strong> ${labelFor(lead.type)}</li>
+        ${lead.suburb ? `<li><strong>Suburb:</strong> ${escapeHtml(lead.suburb)}</li>` : ""}
+        ${lead.source ? `<li><strong>Source:</strong> ${escapeHtml(lead.source)}</li>` : ""}
+        <li><strong>Lead ID:</strong> ${lead.id}</li>
+      </ul>
     </div>`,
   });
 }

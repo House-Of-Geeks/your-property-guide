@@ -572,9 +572,11 @@ model Lead {
   firstName        String
   lastName         String?
   email            String
-  // Phone is optional — match-request flow only requires email so the
-  // contact step has minimal friction. Older lead types still pass phone
-  // (UI requires it on the heavier forms). 2026-05-10.
+  // Phone stays nullable in the DB but the UI now requires it wherever the
+  // lead's next step is a call (match-request, appraisal, property
+  // enquiries); email-first funnels (guide downloads, off-market, general
+  // contact) keep it optional and harvest it post-submit via
+  // /api/leads/enrich. Stored normalised (see lib/utils/phone). 2026-07-02.
   phone            String?
   message          String?
   propertyId       String?

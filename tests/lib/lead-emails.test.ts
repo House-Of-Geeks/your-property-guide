@@ -4,6 +4,7 @@ import {
   confirmationCopy,
   buildAdminEmailHtml,
   buildConfirmationHtml,
+  buildFailureAlertHtml,
   GUIDE_PDF_URL,
   type LeadEmailData,
 } from "@/lib/lead-emails";
@@ -168,5 +169,69 @@ describe("email branding", () => {
     });
     expect(html).not.toContain(GUIDE_PDF_URL);
     expect(html).not.toContain("Where the money is");
+  });
+});
+
+// Lead fields arrive from an open POST endpoint, so anything the submitter
+// typed must render as text, never as markup, in every email we build.
+describe("HTML escaping of lead fields", () => {
+  const hostile = guideLead({
+    firstName: `<img src="https://evil.example/beacon">Sarah`,
+    lastName: `O'Brien <b>CEO</b>`,
+    email: `sarah@example.com"><script>alert(1)</script>`,
+    message: `Click <a href="https://evil.example/phish">here</a> to verify`,
+    suburb: `Burpengary <i>QLD</i>`,
+    source: `google" onmouseover="steal()`,
+    motivation: `1 > 0 & "downsizing"`,
+  });
+
+  it("admin email renders injected markup as text", () => {
+    const html = buildAdminEmailHtml(hostile, "Jane Agent", "suburb-coverage");
+    expect(html).not.toContain('<img src="https://evil.example');
+    expect(html).not.toContain("<script>");
+    expect(html).not.toContain('<a href="https://evil.example/phish">');
+    expect(html).toContain("&lt;script&gt;");
+    expect(html).toContain("&lt;img src=&quot;https://evil.example/beacon&quot;&gt;Sarah");
+  });
+
+  it("guide confirmation escapes the first name in the hero headline", () => {
+    const html = buildConfirmationHtml(hostile);
+    expect(html).not.toContain('<img src="https://evil.example');
+    expect(html).toContain("Your guide is ready, &lt;img");
+  });
+
+  it("plain confirmation escapes name, suburb and address in the copy", () => {
+    const html = buildConfirmationHtml({
+      type: "appraisal-request",
+      firstName: `<b>Sam</b>`,
+      email: "sam@example.com",
+      appraisalAddress: `12 <script>x</script> St`,
+    });
+    expect(html).not.toContain("<b>Sam</b>");
+    expect(html).not.toContain("<script>");
+    expect(html).toContain("Thanks &lt;b&gt;Sam&lt;/b&gt;.");
+    expect(html).toContain("12 &lt;script&gt;x&lt;/script&gt; St");
+  });
+
+  it("subjects stay raw text — they are mail headers, not HTML", () => {
+    const copy = confirmationCopy({
+      type: "suburb-alert",
+      firstName: "Sam",
+      email: "sam@example.com",
+      suburb: "Bray Park & District",
+    });
+    expect(copy.subject).toContain("Bray Park & District");
+    expect(copy.intro).toContain("Bray Park &amp; District");
+  });
+
+  it("failure alert escapes lead fields and the SMTP error message", () => {
+    const html = buildFailureAlertHtml(
+      "lead_123",
+      hostile,
+      new Error(`550 rejected recipient <sarah@example.com"><script>x</script>>`),
+    );
+    expect(html).not.toContain("<script>");
+    expect(html).toContain("&lt;script&gt;");
+    expect(html).toContain("550 rejected recipient &lt;");
   });
 });

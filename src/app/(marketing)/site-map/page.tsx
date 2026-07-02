@@ -6,7 +6,7 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Site Map | Your Property Guide",
+  title: "Site Map",
   description:
     "Browse every section of Your Property Guide on a single page. Listings, suburb data, calculators, guides, and tools.",
   alternates: { canonical: `${SITE_URL}/site-map` },

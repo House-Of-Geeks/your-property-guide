@@ -2,6 +2,7 @@ export {
   JsonLd,
   OrganizationJsonLd,
   PropertyJsonLd,
+  HouseAndLandJsonLd,
   AgentJsonLd,
   AgencyJsonLd,
   ArticleJsonLd,

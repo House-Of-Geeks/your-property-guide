@@ -4,7 +4,7 @@ import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { BestDealCard } from "@/components/best-deal";
 import { getLiveBestDeals } from "@/lib/services/best-deal-service";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 import type { DealAudience, DealPropertyType } from "@/types/best-deal";
 
 interface PageProps {
@@ -14,7 +14,7 @@ interface PageProps {
 const PAGE_PATH = "/best-deals";
 
 export const metadata: Metadata = {
-  title: `Best Deals: featured partner properties | ${SITE_NAME}`,
+  title: "Best Deals: featured partner properties",
   description:
     "A small, considered set of partner-agent properties worth a closer look. We review every deal before it goes live. Free to browse, and buyers never pay.",
   alternates: { canonical: `${SITE_URL}${PAGE_PATH}` },

@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { Faq } from "@/components/guide";
 import { MatchAgent, StickyMatchCTA } from "@/components/journey";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
@@ -264,6 +264,24 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
           { name: suburbAName, url: `/suburbs/${slug}` },
           { name: `vs ${suburbBName}`, url: `/suburbs/${slug}/vs/${compareSlug}` },
         ]}
+      />
+      {/* Place nodes for both suburbs, matching the entities emitted on
+          each suburb's own profile page so Google can connect this
+          comparison to both suburb records. FAQPage schema is already
+          emitted by the <Faq> block below. */}
+      <PlaceJsonLd
+        name={suburbA.name}
+        url={"/suburbs/" + slug}
+        addressLocality={suburbA.name}
+        addressRegion={suburbA.state}
+        postalCode={suburbA.postcode}
+      />
+      <PlaceJsonLd
+        name={suburbB.name}
+        url={"/suburbs/" + compareSlug}
+        addressLocality={suburbB.name}
+        addressRegion={suburbB.state}
+        postalCode={suburbB.postcode}
       />
 
       {/* Editorial hero */}

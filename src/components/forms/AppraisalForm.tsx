@@ -8,16 +8,20 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Input, Select } from "@/components/ui";
 import { SUBURBS, PROPERTY_TYPES } from "@/lib/constants";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
+import { requiredPhoneSchema } from "@/lib/utils/phone";
 
 // Free-appraisal request form. Visitor is on /appraisal explicitly asking
 // for a valuation, so intent is implicit. Trimmed from the original 9
 // fields to 6 (3 required, 3 optional but in-line) — lastName and message
 // removed because they were friction with no measurable lead-quality lift;
 // the agent can ask either in their follow-up call.
+// Phone is required here: an appraisal only happens once an agent calls
+// to arrange the walk-through, so a number IS the deliverable. The field
+// copy says exactly that, which keeps the ask feeling fair.
 const appraisalSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   email: z.string().email("Valid email is required"),
-  phone: z.string().optional(),
+  phone: requiredPhoneSchema("Mobile is required so your agent can arrange the appraisal"),
   address: z.string().min(5, "Property address is required"),
   suburb: z.string().min(1, "Suburb is required"),
   propertyType: z.string().optional(),
@@ -102,6 +106,7 @@ export function AppraisalForm() {
         <Input
           id="appraisal-firstName"
           label="First name"
+          autoComplete="given-name"
           error={errors.firstName?.message}
           {...register("firstName")}
         />
@@ -109,18 +114,27 @@ export function AppraisalForm() {
           id="appraisal-email"
           label="Email"
           type="email"
+          autoComplete="email"
           error={errors.email?.message}
           {...register("email")}
         />
       </div>
 
-      <Input
-        id="appraisal-phone"
-        label="Mobile (optional)"
-        type="tel"
-        placeholder="04XX XXX XXX"
-        {...register("phone")}
-      />
+      <div>
+        <Input
+          id="appraisal-phone"
+          label="Mobile"
+          type="tel"
+          placeholder="04XX XXX XXX"
+          autoComplete="tel"
+          inputMode="tel"
+          error={errors.phone?.message}
+          {...register("phone")}
+        />
+        <p className="mt-1 text-[11px] text-ink-subtle leading-relaxed">
+          Your agent calls this number once to arrange the appraisal — nothing else.
+        </p>
+      </div>
 
       <Input
         id="appraisal-address"

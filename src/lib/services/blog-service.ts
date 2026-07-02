@@ -41,8 +41,26 @@ export async function getBlogSitemapEntries(): Promise<
   }));
 }
 
+// Canonical URL segment for a category: "Buying Guide" -> "buying-guide".
+// Category pages, the sitemap, and internal links all use this form; the
+// stored labels keep their display casing.
+export function categoryToSlug(label: string): string {
+  let decoded = label;
+  try {
+    // Route params arrive still percent-encoded ("Buying%20Guide").
+    decoded = decodeURIComponent(label);
+  } catch {
+    // Malformed escape (stray "%") — slug the raw string instead.
+  }
+  return decoded.trim().toLowerCase().replace(/[\s_]+/g, "-");
+}
+
+// `category` accepts either the canonical slug ("buying-guide") or a raw
+// label in any casing ("Buying Guide", "news") — both sides are normalised
+// so legacy label URLs keep resolving.
 export async function getBlogPostsByCategory(category: string, limit = 100): Promise<BlogPost[]> {
-  return SORTED.filter((p) => p.category === category).slice(0, limit);
+  const slug = categoryToSlug(category);
+  return SORTED.filter((p) => categoryToSlug(p.category) === slug).slice(0, limit);
 }
 
 export async function getDistinctBlogCategories(): Promise<string[]> {
@@ -52,5 +70,15 @@ export async function getDistinctBlogCategories(): Promise<string[]> {
 export async function getRelatedPosts(slug: string, limit = 3): Promise<BlogPost[]> {
   const current = SORTED.find((p) => p.slug === slug);
   if (!current) return [];
-  return SORTED.filter((p) => p.slug !== slug && p.category === current.category).slice(0, limit);
+  const sameCategory = SORTED.filter(
+    (p) => p.slug !== slug && p.category === current.category,
+  ).slice(0, limit);
+  if (sameCategory.length >= limit) return sameCategory;
+  // Single-post categories (e.g. Selling, Suburb Guide) would otherwise
+  // return nothing and drop the related-posts internal-link block, so pad
+  // the remaining slots with the most recent posts from other categories.
+  const filler = SORTED.filter(
+    (p) => p.slug !== slug && p.category !== current.category,
+  ).slice(0, limit - sameCategory.length);
+  return [...sameCategory, ...filler];
 }

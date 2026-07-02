@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { blogPosts } from "@/lib/data/blogs";
+import { categoryToSlug } from "@/lib/services/blog-service";
 import { submitToIndexNow } from "@/lib/indexnow";
 import { SITE_URL } from "@/lib/constants";
 
@@ -159,7 +160,9 @@ export async function POST(request: NextRequest) {
   const revalidated: string[] = [];
   if (doRevalidate && (created.length > 0 || updated.length > 0 || pruned.length > 0)) {
     const paths = new Set<string>(["/", "/guides", "/insights"]);
-    for (const c of changedCategories) paths.add(`/guides/category/${c}`);
+    // Category pages render at the slug path; raw-label URLs are 308
+    // redirects and never cache content, so only the slug needs busting.
+    for (const c of changedCategories) paths.add(`/guides/category/${categoryToSlug(c)}`);
     for (const slug of [...created, ...updated, ...pruned]) paths.add(`/guides/${slug}`);
     for (const p of paths) {
       revalidatePath(p);

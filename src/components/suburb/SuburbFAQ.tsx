@@ -2,6 +2,7 @@ import { FAQPageJsonLd } from "@/components/seo";
 import type { Suburb } from "@/types";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { fullLgaName } from "@/lib/utils/lga-names";
+import { hasReliablePrice } from "@/lib/suburb-data-quality";
 
 interface SuburbFAQProps {
   suburb: Suburb;
@@ -22,8 +23,11 @@ export function SuburbFAQ({ suburb }: SuburbFAQProps) {
   const sn = suburb.name;
   const region = fullLgaName(suburb.region);
 
-  // Median house price + growth
-  if (suburb.stats.medianHousePrice) {
+  // Median house price + growth. Same trust gate as the rest of the
+  // page: QLD/WA census-mortgage proxy medians must not be published
+  // as fact here — this block feeds FAQPage JSON-LD, so a wrong figure
+  // would surface directly in SERP snippets.
+  if (hasReliablePrice(suburb)) {
     const growth =
       suburb.stats.annualGrowthHouse != null
         ? ` Annual growth is ${formatPercentage(suburb.stats.annualGrowthHouse)}.`
@@ -101,7 +105,9 @@ export function SuburbFAQ({ suburb }: SuburbFAQProps) {
     const age = suburb.stats.medianAge ? ` The median age is ${suburb.stats.medianAge}.` : "";
     faqs.push({
       question: `What is the population of ${sn}?`,
-      answer: `${sn} has approximately ${suburb.stats.population.toLocaleString()} residents.${age}`,
+      // Leads with the query phrase so the crawlable answer sentence
+      // matches "population of {suburb}" searches verbatim.
+      answer: `The population of ${sn} is approximately ${suburb.stats.population.toLocaleString()} (2021 Census).${age}`,
     });
   }
 

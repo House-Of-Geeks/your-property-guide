@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { X, User, Mail, Phone, MessageSquare, Loader2, CheckCircle2 } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
+import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
 
 const ENQUIRY_TYPES = [
   "Inspection times",
@@ -46,6 +47,7 @@ export function PropertyEnquireDialog({
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState<string | null>(null);
   const [website, setWebsite] = useState(""); // honeypot, must stay empty
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -72,6 +74,14 @@ export function PropertyEnquireDialog({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading || submitted) return; // double-submit guard
+    // Required + sanity-checked: this lead lands with the listing agent,
+    // whose follow-up is a call. (Also: an empty string here used to fail
+    // the API's min-length check and 400 the whole enquiry.)
+    if (!isValidPhone(phone)) {
+      setPhoneError(PHONE_ERROR);
+      return;
+    }
+    setPhoneError(null);
     setLoading(true);
     setError(null);
     try {
@@ -79,12 +89,15 @@ export function PropertyEnquireDialog({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          firstName, lastName, email, phone,
+          firstName: firstName.trim(),
+          lastName: lastName.trim() || undefined,
+          email: email.trim(),
+          phone: phone.trim(),
           type: "property-enquiry",
           message: [
             selected.length ? `Enquiring about: ${selected.join(", ")}` : "",
             message,
-          ].filter(Boolean).join("\n\n"),
+          ].filter(Boolean).join("\n\n") || undefined,
           propertyId, agentId, agencyId,
           website,
           source: "property-enquire-modal",
@@ -208,23 +221,34 @@ export function PropertyEnquireDialog({
                   My Contact Details
                 </p>
                 {([
-                  { icon: <User className="w-4 h-4" />, placeholder: "First name *", value: firstName, onChange: setFirstName, required: true },
-                  { icon: <User className="w-4 h-4" />, placeholder: "Last name *", value: lastName, onChange: setLastName, required: true },
-                  { icon: <Mail className="w-4 h-4" />, placeholder: "Email *", type: "email", value: email, onChange: setEmail, required: true },
-                  { icon: <Phone className="w-4 h-4" />, placeholder: "Phone (optional)", type: "tel", value: phone, onChange: setPhone },
-                ] as Array<{ icon: React.ReactNode; placeholder: string; type?: string; value: string; onChange: (v: string) => void; required?: boolean }>).map((f) => (
+                  { icon: <User className="w-4 h-4" />, placeholder: "First name *", value: firstName, onChange: setFirstName, required: true, autoComplete: "given-name" },
+                  { icon: <User className="w-4 h-4" />, placeholder: "Last name *", value: lastName, onChange: setLastName, required: true, autoComplete: "family-name" },
+                  { icon: <Mail className="w-4 h-4" />, placeholder: "Email *", type: "email", value: email, onChange: setEmail, required: true, autoComplete: "email" },
+                  { icon: <Phone className="w-4 h-4" />, placeholder: "Mobile *", type: "tel", value: phone, onChange: setPhone, required: true, autoComplete: "tel" },
+                ] as Array<{ icon: React.ReactNode; placeholder: string; type?: string; value: string; onChange: (v: string) => void; required?: boolean; autoComplete?: string }>).map((f) => (
                   <div key={f.placeholder} className="relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{f.icon}</span>
                     <input
                       type={f.type ?? "text"}
                       placeholder={f.placeholder}
                       value={f.value}
-                      onChange={(e) => f.onChange(e.target.value)}
+                      onChange={(e) => {
+                        f.onChange(e.target.value);
+                        if (f.type === "tel" && phoneError) setPhoneError(null);
+                      }}
                       required={f.required}
-                      className="w-full pl-9 pr-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
+                      autoComplete={f.autoComplete}
+                      inputMode={f.type === "tel" ? "tel" : undefined}
+                      aria-invalid={f.type === "tel" && phoneError ? true : undefined}
+                      className={`w-full pl-9 pr-3 py-2.5 text-sm border rounded-lg focus:ring-1 outline-none transition-colors ${
+                        f.type === "tel" && phoneError
+                          ? "border-red-400 focus:border-red-400 focus:ring-red-400"
+                          : "border-gray-300 focus:border-primary focus:ring-primary"
+                      }`}
                     />
                   </div>
                 ))}
+                {phoneError && <p className="text-xs text-red-500">{phoneError}</p>}
 
                 {error && <p className="text-sm text-red-500">{error}</p>}
 
@@ -248,7 +272,7 @@ export function PropertyEnquireDialog({
             {/* Footer */}
             <p className="mt-6 text-xs text-gray-400 leading-relaxed">
               By submitting your enquiry, you agree to our{" "}
-              <a href="/privacy-policy" className="text-primary hover:underline">Privacy Policy</a>.
+              <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>.
               Your online safety is important to us.
             </p>
           </form>

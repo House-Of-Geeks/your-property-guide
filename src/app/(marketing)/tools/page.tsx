@@ -7,13 +7,13 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Free Australian Property Tools, Quizzes &amp; Calculators | Your Property Guide",
+  title: "Free Australian Property Tools, Quizzes & Calculators",
   description:
     "All our free property tools in one place: 7 calculators, the suburb match quiz, the suburb comparison tool, and the suburb finder. No sign-up.",
   alternates: { canonical: `${SITE_URL}/tools` },
   openGraph: {
     url: `${SITE_URL}/tools`,
-    title: "Free Australian Property Tools, Quizzes &amp; Calculators",
+    title: "Free Australian Property Tools, Quizzes & Calculators",
     description:
       "All our free property tools in one place: calculators, the suburb match quiz, the comparison tool.",
     type: "website",

@@ -8,6 +8,8 @@ import { Input, Select } from "@/components/ui";
 import { SUBURBS, PROPERTY_TYPES, PRICE_RANGES_BUY, BEDROOM_OPTIONS } from "@/lib/constants";
 import { CheckCircle, Lock } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
+import { optionalPhoneSchema } from "@/lib/utils/phone";
+import { PhoneFollowUp } from "./PhoneFollowUp";
 
 // Off-market alert signup. The user's already on /off-market explicitly
 // asking for alerts, so we keep the criteria fields but trim required
@@ -17,7 +19,7 @@ const offMarketSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().optional(),
   email: z.string().email("Valid email is required"),
-  phone: z.string().optional(),
+  phone: optionalPhoneSchema,
   suburbs: z.string().min(1, "Pick at least one suburb"),
   propertyType: z.string().optional(),
   minPrice: z.string().optional(),
@@ -30,7 +32,7 @@ const offMarketSchema = z.object({
 type OffMarketFormData = z.infer<typeof offMarketSchema>;
 
 export function OffMarketRegisterForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState<{ leadId: string | null; hadPhone: boolean } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const {
@@ -66,10 +68,11 @@ export function OffMarketRegisterForm() {
         }),
       });
       if (!res.ok) throw new Error("Failed to register");
+      const bodyJson: { id?: string } | null = await res.json().catch(() => null);
       clarityEvent("sign_up");
       clarityTag("signup_type", "off_market_alert");
       clarityTag("signup_suburb", data.suburbs);
-      setSubmitted(true);
+      setSubmitted({ leadId: bodyJson?.id ?? null, hadPhone: Boolean(data.phone?.trim()) });
     } catch {
       setError("Something went wrong. Please try again.");
     }
@@ -86,6 +89,15 @@ export function OffMarketRegisterForm() {
           We&rsquo;ll email you off-market properties matching your criteria as they come in.
           One email per match, no roundup spam. Unsubscribe anytime.
         </p>
+        {!submitted.hadPhone && submitted.leadId && (
+          <div className="mt-6 max-w-md mx-auto text-left">
+            <PhoneFollowUp
+              leadId={submitted.leadId}
+              source="off-market-register"
+              prompt="Off-market moves fast — add your mobile to get a call before the email goes out."
+            />
+          </div>
+        )}
       </div>
     );
   }
@@ -100,6 +112,7 @@ export function OffMarketRegisterForm() {
       <Input
         id="offmarket-firstName"
         label="First name"
+        autoComplete="given-name"
         error={errors.firstName?.message}
         {...register("firstName")}
       />
@@ -107,14 +120,18 @@ export function OffMarketRegisterForm() {
         id="offmarket-email"
         label="Email"
         type="email"
+        autoComplete="email"
         error={errors.email?.message}
         {...register("email")}
       />
       <Input
         id="offmarket-phone"
-        label="Mobile (optional)"
+        label="Mobile (optional — get a call before the email alert)"
         type="tel"
         placeholder="04XX XXX XXX"
+        autoComplete="tel"
+        inputMode="tel"
+        error={errors.phone?.message}
         {...register("phone")}
       />
       <Input

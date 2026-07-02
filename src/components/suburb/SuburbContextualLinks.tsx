@@ -63,9 +63,14 @@ export function SuburbContextualLinks({ suburb }: SuburbContextualLinksProps) {
         <div>
           <h3 className="text-xs font-sans font-medium text-ink uppercase tracking-[0.2em] mb-3">For Sale</h3>
           <ul className="space-y-2">
+            {/* Canonical static sub-pages, not /buy?suburb=… query-param
+                URLs — query-param variants split link equity and aren't
+                the indexed canonical for these property-type queries. */}
             {[
-              { label: `Houses for sale in ${name}`,    href: `/buy?suburb=${slug}&propertyType=house` },
-              { label: `Units for sale in ${name}`,     href: `/buy?suburb=${slug}&propertyType=unit` },
+              { label: `Houses for sale in ${name}`,     href: `/suburbs/${slug}/houses` },
+              { label: `Units for sale in ${name}`,      href: `/suburbs/${slug}/units` },
+              { label: `Townhouses for sale in ${name}`, href: `/suburbs/${slug}/townhouses` },
+              { label: `Land for sale in ${name}`,       href: `/suburbs/${slug}/land` },
               { label: `All properties for sale in ${name}`, href: `/suburbs/${slug}/buy` },
             ].map((l) => (
               <li key={l.href}>

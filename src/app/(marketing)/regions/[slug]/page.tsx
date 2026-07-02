@@ -4,6 +4,7 @@ import Link from "next/link";
 import { MapPin, TrendingUp, Home, Building2 } from "lucide-react";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { Breadcrumbs } from "@/components/layout";
+import { GuidePairCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd, ItemListJsonLd } from "@/components/seo";
 import {
   getRegionBySlug,
@@ -207,6 +208,11 @@ export default async function RegionPage({ params }: RegionPageProps) {
             ))}
           </div>
         </section>
+
+        {/* Buyer / seller funnel entry. Pre-fills the guides with the
+            region's lead suburb so visitors land in the lead engine on a
+            relevant page. */}
+        <GuidePairCTA placeName={region.region} suburbSlug={suburbs[0]?.slug} />
 
       </div>
     </>

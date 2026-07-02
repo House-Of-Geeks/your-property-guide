@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Calendar, Clock, User, ShieldCheck } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { ExpertCTA, StickyMatchCTA } from "@/components/journey";
+import { BUYING_GUIDE_CTA, ExpertCTA, StickyMatchCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { ReadingProgressBar } from "./ReadingProgressBar";
 import { GuideTOC, type GuideTOCEntry } from "./GuideTOC";
@@ -56,6 +56,12 @@ export function GuideArticleLayout({
     frontmatter.persona === "selling"    ? "selling" :
     frontmatter.persona === "investing"  ? "investing" :
                                             undefined;
+
+  // Buyer-persona guides must not pitch the selling guide — a first-home
+  // buyer reading "how much deposit do I need" has nothing to sell. Route
+  // them to the buying-guide funnel; every other persona keeps the
+  // selling-guide default (the site's primary conversion point).
+  const buyerFunnel = stickyIntent === "buying" ? BUYING_GUIDE_CTA : undefined;
 
   const guideUrl = `/guides/${frontmatter.slug}`;
   const breadcrumbItems = [
@@ -230,7 +236,16 @@ export function GuideArticleLayout({
                 {children}
               </div>
 
-              {persona && <ExpertCTA variant="inline" />}
+              {/* undefined props fall through to ExpertCTA's selling
+                  defaults, so only buyer personas are overridden. */}
+              {persona && (
+                <ExpertCTA
+                  variant="inline"
+                  body={buyerFunnel?.body}
+                  ctaLabel={buyerFunnel?.ctaLabel}
+                  href={buyerFunnel?.href}
+                />
+              )}
 
               <Faq items={faqs} />
               <RelatedGuides items={related} />
@@ -252,12 +267,14 @@ export function GuideArticleLayout({
 
       {/* Floating sticky CTA for guide readers. Only renders when the
           guide has a persona, general explainers (no persona) skip the
-          sticky to keep them quiet. Per-guide dismiss key. Label uses
-          the StickyMatchCTA default ("Get the free selling guide"),
-          the site's single conversion point. */}
+          sticky to keep them quiet. Per-guide dismiss key. Buyer personas
+          get the buying-guide funnel; everyone else falls through to the
+          StickyMatchCTA default ("Get the free selling guide"). */}
       {persona && stickyIntent && (
         <StickyMatchCTA
           intent={stickyIntent}
+          href={buyerFunnel?.href}
+          label={buyerFunnel?.ctaLabel}
           dismissKey={`guide:${frontmatter.slug}`}
         />
       )}

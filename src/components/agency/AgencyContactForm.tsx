@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { User, Phone, Mail } from "lucide-react";
+import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
 
 const ENQUIRY_TYPES = [
   "Selling my property and appraisals",
@@ -27,6 +28,7 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
     postcode: "",
     website: "", // honeypot, must stay empty
   });
+  const [phoneError, setPhoneError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -37,6 +39,13 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    // Optional, but a typed number must be dialable — otherwise the API
+    // rejects the whole enquiry with a generic error.
+    if (form.phone.trim() && !isValidPhone(form.phone)) {
+      setPhoneError(PHONE_ERROR);
+      return;
+    }
+    setPhoneError("");
     setSubmitting(true);
     setError("");
     try {
@@ -45,10 +54,10 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           type: "general-contact",
-          firstName: form.firstName,
-          lastName: form.lastName,
-          email: form.email,
-          phone: form.phone || "0000000000",
+          firstName: form.firstName.trim(),
+          lastName: form.lastName.trim() || undefined,
+          email: form.email.trim(),
+          phone: form.phone.trim() || undefined,
           message: `Enquiry type: ${form.enquiryType || "General"}\nPostcode: ${form.postcode}\n\n${form.message}`,
           agencyId,
           website: form.website,
@@ -102,6 +111,7 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
               <input
                 required
                 type="text"
+                autoComplete="given-name"
                 value={form.firstName}
                 onChange={(e) => set("firstName", e.target.value)}
                 className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
@@ -117,6 +127,7 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
               <input
                 required
                 type="text"
+                autoComplete="family-name"
                 value={form.lastName}
                 onChange={(e) => set("lastName", e.target.value)}
                 className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
@@ -124,16 +135,25 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Mobile</label>
             <div className="relative">
               <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="tel"
+                autoComplete="tel"
+                inputMode="tel"
                 value={form.phone}
-                onChange={(e) => set("phone", e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                onChange={(e) => {
+                  set("phone", e.target.value);
+                  if (phoneError) setPhoneError("");
+                }}
+                aria-invalid={phoneError ? true : undefined}
+                className={`w-full pl-9 pr-3 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 ${
+                  phoneError ? "border-red-400 focus:ring-red-400" : "border-gray-300 focus:ring-primary"
+                }`}
               />
             </div>
+            {phoneError && <p className="mt-1 text-xs text-red-500">{phoneError}</p>}
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -144,6 +164,7 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
               <input
                 required
                 type="email"
+                autoComplete="email"
                 value={form.email}
                 onChange={(e) => set("email", e.target.value)}
                 className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"

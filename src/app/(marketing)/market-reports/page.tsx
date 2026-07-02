@@ -6,7 +6,7 @@ import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Australian Property Market Reports | ${SITE_NAME}`,
+  title: "Australian Property Market Reports",
   description:
     "State-by-state Australian property market reports with median prices, growth trends, and suburb rankings. Updated quarterly.",
   alternates: { canonical: `${SITE_URL}/market-reports` },

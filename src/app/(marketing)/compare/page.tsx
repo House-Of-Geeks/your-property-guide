@@ -15,7 +15,7 @@ import { CompareForm } from "./CompareForm";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Compare Suburbs Side by Side | Your Property Guide",
+  title: "Compare Suburbs Side by Side",
   description:
     "Compare any two Australian suburbs head to head, median prices, growth, schools, walkability, and risk. Free, fast, no sign-up.",
   alternates: { canonical: `${SITE_URL}/compare` },

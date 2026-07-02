@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { id } = await params;
   const deal = await getBestDealById(id);
   if (!deal) return { title: "Deal not found" };
-  const title = `${deal.title} | ${SITE_NAME} Best Deals`;
+  const title = `${deal.title} | Best Deals`;
   const description = deal.headline;
   const url = `${SITE_URL}/best-deals/${id}`;
   return {
@@ -30,7 +30,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     alternates: { canonical: url },
     openGraph: {
       url,
-      title,
+      // og titles don't get the root title.template — brand them explicitly
+      title: `${title} | ${SITE_NAME}`,
       description,
       type: "website",
       images: [{ url: deal.heroImage, alt: deal.title }],

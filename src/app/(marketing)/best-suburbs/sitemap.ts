@@ -12,18 +12,18 @@ const CATEGORIES = [
 
 const STATES = ["nsw", "vic", "qld", "wa", "sa", "tas", "nt", "act"];
 
+// No lastModified: it used to be `new Date()` on every request, which makes
+// lastmod meaningless to crawlers. Omit the field rather than fake it.
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: `${SITE_URL}/best-suburbs`,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
     },
     // National-level category pages
     ...CATEGORIES.map((cat) => ({
       url: `${SITE_URL}/best-suburbs/${cat}`,
-      lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: 0.7,
     })),
@@ -31,7 +31,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...CATEGORIES.flatMap((cat) =>
       STATES.map((state) => ({
         url: `${SITE_URL}/best-suburbs/${cat}/${state}`,
-        lastModified: new Date(),
         changeFrequency: "weekly" as const,
         priority: 0.6,
       })),

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { BlogGrid } from "@/components/blog/BlogGrid";
 import {
+  categoryToSlug,
   getBlogPostsByCategory,
   getDistinctBlogCategories,
 } from "@/lib/services/blog-service";
@@ -28,18 +29,22 @@ export async function generateStaticParams() {
   // Pages render on-demand via dynamicParams=true (App Router default).
   if (process.env.NEXT_PHASE === "phase-production-build") return [];
   const categories = await getDistinctBlogCategories();
-  return categories.map((category) => ({ category }));
+  return categories.map((category) => ({ category: categoryToSlug(category) }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params;
-  const label = formatCategoryLabel(category);
+  const slug = categoryToSlug(category);
+  // Use the stored label for display; fall back to title-casing the slug so
+  // metadata still renders for unknown categories (the page 404s anyway).
+  const [post] = await getBlogPostsByCategory(category, 1);
+  const label = post?.category ?? formatCategoryLabel(slug);
   return {
-    title: `${label} Articles | Property Blog | ${SITE_NAME}`,
+    title: `${label} Articles | Property Blog`,
     description: `Browse all ${label} articles and guides from the ${SITE_NAME} property research blog.`,
-    alternates: { canonical: `${SITE_URL}/guides/category/${category}` },
+    alternates: { canonical: `${SITE_URL}/guides/category/${slug}` },
     openGraph: {
-      url: `${SITE_URL}/guides/category/${category}`,
+      url: `${SITE_URL}/guides/category/${slug}`,
       title: `${label} Articles | Property Blog | ${SITE_NAME}`,
       description: `Browse all ${label} articles and guides from the ${SITE_NAME} property research blog.`,
       type: "website",
@@ -50,8 +55,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogCategoryPage({ params }: Props) {
   const { category } = await params;
+  const slug = categoryToSlug(category);
+  // Raw-label URLs ("/guides/category/News", ".../Buying%20Guide") used to be
+  // the advertised form, so they may still be indexed or bookmarked. Send
+  // them to the canonical slug URL so only one form accumulates ranking.
+  if (category !== slug) permanentRedirect(`/guides/category/${slug}`);
+
   const [posts, allCategories] = await Promise.all([
-    getBlogPostsByCategory(category),
+    getBlogPostsByCategory(slug),
     getDistinctBlogCategories(),
   ]);
 
@@ -65,18 +76,19 @@ export default async function BlogCategoryPage({ params }: Props) {
     coverImage: resolveBlogCoverPath(p.coverImage) ?? "",
   }));
 
-  const label = formatCategoryLabel(category);
+  // posts is non-empty here, so the stored label is always available.
+  const label = posts[0].category;
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
       <CollectionPageJsonLd
         name={label + " Articles"}
-        url={"/guides/category/" + category}
+        url={"/guides/category/" + slug}
       />
       <BreadcrumbJsonLd
         items={[
           { name: "Guides", url: "/guides" },
-          { name: label, url: `/guides/category/${category}` },
+          { name: label, url: `/guides/category/${slug}` },
         ]}
       />
       <Breadcrumbs

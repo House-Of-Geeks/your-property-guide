@@ -181,10 +181,16 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
               </h2>
             </div>
             <div className="lg:col-span-8 lg:col-start-5 space-y-5">
-              {/* Above-the-fold plain-language answer to the page's primary
-                  query, so the median is stated as a sentence (not just a
-                  stat tile) high on the page for both readers and AI answer
-                  engines. Only printed when we trust the median. */}
+              {/* Above-the-fold plain-language answers to the page's two
+                  primary queries ("{suburb} postcode", "median house price
+                  {suburb}"), stated as sentences (not just stat tiles) high
+                  on the page for both readers and AI answer engines. The
+                  postcode is always known; the median is only printed when
+                  we trust it. */}
+              <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[65ch]">
+                The postcode for {suburb.name} is{" "}
+                <span className="font-medium text-ink">{suburb.postcode}</span> ({suburb.state}).
+              </p>
               {priceTrusted && (
                 <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[65ch]">
                   The median house price in {suburb.name} is{" "}

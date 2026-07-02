@@ -3,11 +3,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GraduationCap, ArrowRight } from "lucide-react";
 import { SuburbSubrouteHeader } from "@/components/suburb";
+import { ExpertCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd, ItemListJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { makeSchoolSlug } from "@/lib/utils/school";
 import { formatPriceFull } from "@/lib/utils/format";
-import { SITE_URL, SITE_NAME } from "@/lib/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import type { School } from "@/types";
 
 interface SuburbSchoolsPageProps {
@@ -45,7 +46,7 @@ export async function generateMetadata({ params }: SuburbSchoolsPageProps): Prom
   if (!suburb) return { title: "Suburb Not Found" };
 
   const schools = suburb.schools;
-  const title = `Schools in ${suburb.name}, ${suburb.state} | Ranked by ICSEA | ${SITE_NAME}`;
+  const title = `Schools in ${suburb.name}, ${suburb.state} | Ranked by ICSEA`;
   const description = `Browse all ${schools.length} schools in ${suburb.name}. Compare ICSEA scores, school types, and nearby property prices.`;
   const canonical = `${SITE_URL}/suburbs/${slug}/schools`;
 
@@ -53,7 +54,8 @@ export async function generateMetadata({ params }: SuburbSchoolsPageProps): Prom
     title,
     description,
     alternates: { canonical },
-    openGraph: { url: canonical, title, description, type: "website" },
+    // og titles don't get the root title.template — brand them explicitly
+    openGraph: { url: canonical, title: `${title} | ${SITE_NAME}`, description, type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }
@@ -285,6 +287,15 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
           School data licensed from ACARA under CC BY 4.0.
         </p>
       </div>
+
+      {/* School researchers are family buyers. Deep-links the buying-guide
+          funnel with the suburb pre-answered. */}
+      <ExpertCTA
+        headline={`Moving to ${suburb.name} for the schools?`}
+        body={`The complete buying guide, personalised to ${suburb.name}: what you can really spend, 2026 schemes state by state, and how not to overpay. Free PDF, 60 seconds.`}
+        ctaLabel="Get the free buying guide"
+        href={`/buying-guide?suburb=${slug}`}
+      />
     </>
   );
 }

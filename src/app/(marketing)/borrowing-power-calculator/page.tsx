@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BorrowingPowerCalculator } from "@/components/calculators/BorrowingPowerCalculator";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
 import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Borrowing Power Calculator",
@@ -83,6 +83,7 @@ export default function BorrowingPowerCalculatorPage() {
       calculator={<BorrowingPowerCalculator />}
       faqs={FAQS}
       related={RELATED}
+      intent="buying"
       explainer={
         <>
           <h2>How banks assess your borrowing capacity</h2>

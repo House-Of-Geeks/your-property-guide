@@ -19,6 +19,7 @@ vi.mock("@/lib/db", () => ({
 vi.mock("@/lib/email", () => ({
   sendMail: sendMailMock,
   ANDY_EMAIL: "andy@theandylife.com",
+  LEADS_CC_EMAIL: "leads-cc@example.com",
   transporter: {},
   DEFAULT_FROM: "test-from",
 }));
@@ -28,6 +29,7 @@ vi.mock("@/lib/utils/lead-routing", () => ({
 }));
 
 import { POST } from "@/app/api/leads/route";
+import { AGENT_ENQUIRY_TYPES } from "@/components/agent/enquiry-types";
 
 function makeRequest(body: unknown, headers: Record<string, string> = {}): Request {
   return new Request("https://example.com/api/leads", {
@@ -168,6 +170,109 @@ describe("POST /api/leads", () => {
 
     const res = await POST(makeRequest(baseLead));
     expect(res.status).toBe(200);
+    expect(dbLeadCreate).toHaveBeenCalledTimes(1);
+  });
+});
+
+// Each case mirrors the exact JSON a client form posts (JSON.stringify drops
+// undefined keys, same as the browser). If a form and the schema drift apart
+// again, it fails here instead of 400-ing real leads in production.
+describe("client payload contracts", () => {
+  it("agent-profile page: every enquiry topic maps to a type the schema accepts", async () => {
+    for (const topic of AGENT_ENQUIRY_TYPES) {
+      const res = await POST(
+        makeRequest({
+          type: topic.apiType,
+          firstName: "Jane",
+          email: "jane@example.com",
+          phone: "0400111222",
+          message: `Hi Andy, I'd like to get in touch about ${topic.label.toLowerCase()}.`,
+          agentId: "agent-1",
+          agencyId: "agency-1",
+          website: "",
+          source: `agent-profile-${topic.value}`,
+        }),
+      );
+      expect(res.status, `topic "${topic.value}" posts type "${topic.apiType}"`).toBe(200);
+    }
+  });
+
+  it("property enquire modal payload is accepted", async () => {
+    const res = await POST(
+      makeRequest({
+        firstName: "Jane",
+        lastName: "Citizen",
+        email: "jane@example.com",
+        phone: "0400111222",
+        type: "property-enquiry",
+        message: "Enquiring about: Price guide",
+        propertyId: "prop-1",
+        agentId: "agent-1",
+        agencyId: "agency-1",
+        website: "",
+        source: "property-enquire-modal",
+      }),
+    );
+    expect(res.status).toBe(200);
+  });
+
+  it("property interest form with blank optional phone is accepted", async () => {
+    const res = await POST(
+      makeRequest({
+        type: "property-interest",
+        firstName: "Jane",
+        lastName: "Citizen",
+        email: "jane@example.com",
+        // blank phone field posts as undefined (dropped), never ""
+        address: "1 Test St, Testville",
+        suburb: "Testville",
+        message: "Registered interest in: 1 Test St, Testville",
+        website: "",
+        source: "property-page",
+      }),
+    );
+    expect(res.status).toBe(200);
+  });
+
+  it("suburb alert widget payload is accepted", async () => {
+    const res = await POST(
+      makeRequest({
+        type: "suburb-alert",
+        firstName: "Jane",
+        lastName: "Citizen",
+        email: "jane@example.com",
+        phone: "0400111222",
+        suburb: "burpengary-qld-4505",
+        source: "suburb-page-burpengary-qld-4505",
+        website: "",
+      }),
+    );
+    expect(res.status).toBe(200);
+  });
+
+  it("agency contact form with blank optional phone is accepted", async () => {
+    const res = await POST(
+      makeRequest({
+        type: "general-contact",
+        firstName: "Jane",
+        lastName: "Citizen",
+        email: "jane@example.com",
+        message: "Enquiry type: General\nPostcode: 4505\n\nHello",
+        agencyId: "agency-1",
+        website: "",
+        source: "agency-page",
+      }),
+    );
+    expect(res.status).toBe(200);
+  });
+
+  it("blank phone collapses to undefined server-side; empty-string lastName still rejects", async () => {
+    // The schema preprocesses "" → undefined for phone (never bounce a lead
+    // over the phone field), but other min(1) fields treat "" as invalid —
+    // clients must send undefined, not "", for blank optional fields.
+    expect((await POST(makeRequest({ ...baseLead, phone: "" }))).status).toBe(200);
+    expect(dbLeadCreate.mock.calls[0][0].data.phone).toBeUndefined();
+    expect((await POST(makeRequest({ ...baseLead, lastName: "" }))).status).toBe(400);
     expect(dbLeadCreate).toHaveBeenCalledTimes(1);
   });
 });

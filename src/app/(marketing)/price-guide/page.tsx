@@ -4,6 +4,7 @@ import Image from "next/image";
 import { TrendingUp, TrendingDown, Clock } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
+import { ExpertCTA } from "@/components/journey";
 import { db } from "@/lib/db";
 import { formatPrice, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
@@ -377,6 +378,24 @@ export default async function PriceGuidePage({
         <p className="text-xs uppercase tracking-[0.25em] text-ink-subtle mb-1.5">Data source</p>
         <p>Data sourced from state government Valuer-General offices. Updated quarterly.</p>
       </div>
+      </div>
+
+      {/* Seller-valuation funnel exit. Price-guide readers are asking "what
+          are homes worth" — the appraisal answers it for their own place,
+          with the selling guide as the softer fallback below. */}
+      <ExpertCTA
+        headline="Wondering what your own place is worth?"
+        body="Medians tell you the suburb; an appraisal tells you your home. Get a free, no-obligation property appraisal from a top local agent, based on recent sales in your street."
+        ctaLabel="Get a free property appraisal"
+        href="/appraisal"
+      />
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 -mt-6 text-center">
+        <Link
+          href="/selling-guide"
+          className="font-sans text-sm text-ink-muted border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+        >
+          Not ready for an agent yet? Get the free selling guide.
+        </Link>
       </div>
     </>
   );

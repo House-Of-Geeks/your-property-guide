@@ -3,10 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Property Glossary: A-Z of Australian Real Estate Terms | ${SITE_NAME}`,
+  title: "Property Glossary: A-Z of Australian Real Estate Terms",
   description:
     "Complete glossary of Australian property and real estate terms. Plain English definitions for buyers, sellers, investors and renters.",
   alternates: { canonical: `${SITE_URL}/glossary` },
@@ -1003,9 +1003,9 @@ export default function GlossaryPage() {
             </p>
             <p className="font-sans text-sm text-ink-muted leading-relaxed">
               Explore our{" "}
-              <a href="/guides" className="text-ink hover:text-primary border-b border-line-strong hover:border-primary pb-0.5 inline-flex items-center gap-1">
+              <Link href="/guides" className="text-ink hover:text-primary border-b border-line-strong hover:border-primary pb-0.5 inline-flex items-center gap-1">
                 guides
-              </a>{" "}
+              </Link>{" "}
               covering buying, renting, investing, and selling property in Australia.
             </p>
           </div>

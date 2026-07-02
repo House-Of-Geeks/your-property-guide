@@ -436,7 +436,15 @@ export function AffordabilityCalculator() {
               <p>
                 This calculator provides estimates only and does not constitute financial or legal advice.
                 Stamp duty and buying costs vary by state, property type, and buyer status.
-                Speak with a mortgage broker and conveyancer for personalised figures.
+                Speak with a{" "}
+                {/* Broker intros run through the refinancing lane on /find-an-expert */}
+                <Link
+                  href="/find-an-expert?intent=refinancing"
+                  className="text-primary underline hover:no-underline"
+                >
+                  mortgage broker
+                </Link>{" "}
+                and conveyancer for personalised figures.
               </p>
             </div>
           </div>

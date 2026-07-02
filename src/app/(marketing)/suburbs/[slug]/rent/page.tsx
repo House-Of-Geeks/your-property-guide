@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
@@ -91,6 +92,26 @@ export default async function SuburbRentPage({ params, searchParams }: Props) {
           properties={properties}
           emptyMessage={`No rentals listed in ${suburb.name} right now. Check back soon, or browse the rental-market data using the tabs above.`}
         />
+      </div>
+
+      {/* Renters here are often next year's buyers. Deep-links the
+          buying-guide funnel with the suburb pre-answered. */}
+      <ExpertCTA
+        headline={`Renting in ${suburb.name} for now, buying later?`}
+        body={`The complete buying guide, personalised to ${suburb.name}: what you can really spend, 2026 schemes state by state, and how not to overpay. Free PDF, 60 seconds.`}
+        ctaLabel="Get the free buying guide"
+        href={`/buying-guide?suburb=${slug}`}
+      />
+
+      {/* Landlord fallback for the bottom CTA, which is renter-framed.
+          Owners research their suburb's rent listings too. */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 -mt-6 text-center">
+        <Link
+          href="/appraisal"
+          className="font-sans text-sm text-ink-muted border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+        >
+          Own a rental here? Get a free appraisal.
+        </Link>
       </div>
     </>
   );

@@ -5,10 +5,11 @@ import { notFound } from "next/navigation";
 import { ChevronRight, GraduationCap, ExternalLink } from "lucide-react";
 import { getSchoolBySlug, getSchoolsInSuburb, makeSchoolSlug } from "@/lib/services/school-service";
 import { getProperties } from "@/lib/services/property-service";
+import type { PropertyType } from "@/types/property";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { SchoolListingControls } from "@/components/school/SchoolListingControls";
 import { SchoolSearchBar } from "@/components/school/SchoolSearchBar";
-import { SITE_URL } from "@/lib/constants";
+import { PROPERTY_TYPES, SITE_URL } from "@/lib/constants";
 import { BreadcrumbJsonLd, EducationalOrganizationJsonLd } from "@/components/seo";
 
 interface SchoolPageProps {
@@ -17,6 +18,12 @@ interface SchoolPageProps {
 }
 
 const GMAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? "";
+
+// Derived from the canonical PROPERTY_TYPES list (whose values are exactly
+// the PropertyType union) so a new type can't silently go missing here.
+const PROPERTY_TYPE_VALUES: ReadonlySet<string> = new Set(
+  PROPERTY_TYPES.map((t) => t.value),
+);
 
 function typeLabel(type: string) {
   if (type === "primary") return "Primary";
@@ -62,6 +69,14 @@ export default async function SchoolPage({ params, searchParams }: SchoolPagePro
 
   const listingType = (mode === "rent" ? "rent" : mode === "sold" ? "sold" : "buy") as "buy" | "rent" | "sold";
 
+  // URL params are arbitrary strings; only pass a propertyType the filter
+  // actually understands so a mistyped/hostile param can't leak into the
+  // query as a nonsense filter.
+  const safePropertyType =
+    propertyType !== undefined && PROPERTY_TYPE_VALUES.has(propertyType)
+      ? (propertyType as PropertyType)
+      : undefined;
+
   // Both queries only need data from `school`, neither depends on the other,
   // so they run concurrently to save a DB round-trip of latency per render.
   // searchParams keeps the route dynamic; this is purely a per-render speedup.
@@ -70,7 +85,7 @@ export default async function SchoolPage({ params, searchParams }: SchoolPagePro
     getProperties({
       listingType,
       suburb: school.suburb.slug,
-      propertyType: propertyType as any,
+      propertyType: safePropertyType,
       minPrice: minPrice ? Number(minPrice) : undefined,
       maxPrice: maxPrice ? Number(maxPrice) : undefined,
       minBeds: minBeds ? Number(minBeds) : undefined,
@@ -296,6 +311,25 @@ export default async function SchoolPage({ params, searchParams }: SchoolPagePro
 
             <p className="text-xs text-gray-400 px-1">© ACARA, licensed under CC BY 4.0.</p>
           </div>
+        </div>
+
+        {/* Buyer funnel exit. School-profile visitors are researching a
+            catchment to buy into — deep-link the guide to this suburb. */}
+        <div className="mt-8 bg-white rounded-xl border border-gray-200 p-6 sm:p-8 text-center">
+          <h2 className="text-lg font-bold text-gray-900 mb-1.5">
+            Buying near {school.name}?
+          </h2>
+          <p className="text-sm text-gray-500 max-w-xl mx-auto mb-4">
+            The free buying guide, personalised to {school.suburb.name}: how school
+            catchments affect prices, what you can actually spend, and how not to
+            overpay. In your inbox in 60 seconds.
+          </p>
+          <Link
+            href={`/buying-guide?suburb=${school.suburb.slug}`}
+            className="inline-flex items-center gap-2 bg-primary text-white text-sm font-semibold rounded-lg px-5 py-2.5 hover:bg-primary/90 transition-colors"
+          >
+            Get the free buying guide
+          </Link>
         </div>
       </div>
     </div>

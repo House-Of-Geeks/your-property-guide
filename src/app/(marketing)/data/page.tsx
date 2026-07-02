@@ -10,7 +10,7 @@ import { SITE_URL } from "@/lib/constants";
 export const revalidate = 3600; // refresh hourly
 
 export const metadata: Metadata = {
-  title: "Our Data, Sources &amp; Live Numbers | Your Property Guide",
+  title: "Our Data, Sources &amp; Live Numbers",
   description:
     "How much data sits behind every page on Your Property Guide, live counts of suburbs, schools, properties, hazards, and the named source behind each.",
   alternates: { canonical: `${SITE_URL}/data` },

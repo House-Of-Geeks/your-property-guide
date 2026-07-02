@@ -5,7 +5,8 @@ import Image from "next/image";
 import { ArrowRight, TrendingUp, Home, DollarSign, Clock } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
-import { SITE_URL } from "@/lib/constants";
+import { ExpertCTA } from "@/components/journey";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import {
   getStateMarketData,
   getStateNameForReport,
@@ -40,7 +41,7 @@ export async function generateMetadata({
   const { state } = await params;
   if (!isValidState(state)) return {};
   const stateName = getStateNameForReport(state);
-  const title = `${stateName} Property Market Report ${CURRENT_YEAR} | Your Property Guide`;
+  const title = `${stateName} Property Market Report ${CURRENT_YEAR}`;
   const description = `${stateName} property market data for ${CURRENT_YEAR}, median prices, annual growth, top suburbs and affordability rankings, sourced from state revenue offices.`;
   return {
     title,
@@ -48,7 +49,8 @@ export async function generateMetadata({
     alternates: { canonical: `${SITE_URL}/market-reports/${state}` },
     openGraph: {
       url: `${SITE_URL}/market-reports/${state}`,
-      title,
+      // og titles don't get the root title.template — brand them explicitly
+      title: `${title} | ${SITE_NAME}`,
       description,
       type: "article",
     },
@@ -385,6 +387,15 @@ export default async function StateMarketReportPage({
           </div>
         </section>
       </div>
+
+      {/* Seller funnel exit. Readers of a state market report are gauging
+          whether it's a good time to sell — route them into the guide. */}
+      <ExpertCTA
+        headline={`Thinking about selling in ${data.stateName}?`}
+        body="The complete guide to selling in today's market: what it really costs, how agents price your home, the 10 questions that catch bad agents out, and a 12-week plan to settlement. Free PDF, in your inbox in 60 seconds."
+        ctaLabel="Get the free selling guide"
+        href="/selling-guide"
+      />
     </>
   );
 }

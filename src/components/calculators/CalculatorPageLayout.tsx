@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Calculator as CalculatorIcon, ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { ExpertCTA, StickyMatchCTA } from "@/components/journey";
+import { BUYING_GUIDE_CTA, ExpertCTA, StickyMatchCTA } from "@/components/journey";
 import { Faq, type FaqItem, RelatedGuides, type RelatedGuide } from "@/components/guide";
 import { BreadcrumbJsonLd, WebApplicationJsonLd } from "@/components/seo";
 import { PERSONA_BY_ID, type PersonaId } from "@/lib/constants/journey";
@@ -31,6 +31,10 @@ interface CalculatorPageLayoutProps {
   faqs?: readonly FaqItem[];
   // Related calculators / guides for internal linking.
   related?: readonly RelatedGuide[];
+  // Which guide funnel the lead CTAs push. Buyer-finance calculators
+  // (mortgage, borrowing power, etc.) serve people buying or refinancing,
+  // so the seller-framed default would be an intent mismatch for them.
+  intent?: "selling" | "buying";
 }
 
 export function CalculatorPageLayout({
@@ -39,6 +43,7 @@ export function CalculatorPageLayout({
   explainer,
   faqs = [],
   related = [],
+  intent = "selling",
 }: CalculatorPageLayoutProps) {
   const persona = frontmatter.persona ? PERSONA_BY_ID[frontmatter.persona] : null;
   const pageUrl = `/${frontmatter.slug}`;
@@ -154,10 +159,14 @@ export function CalculatorPageLayout({
                 {explainer}
               </div>
 
-              {/* Funnel exit. Every calculator pushes the selling guide,
-                  the site's single conversion point since the June 2026
-                  lead-gen pivot. */}
-              <ExpertCTA variant="inline" />
+              {/* Funnel exit. Seller-economics calculators push the selling
+                  guide (the original conversion point of the June 2026
+                  lead-gen pivot); buyer-finance calculators push the buying
+                  guide so the offer matches the visitor's intent. */}
+              <ExpertCTA
+                variant="inline"
+                {...(intent === "buying" ? BUYING_GUIDE_CTA : {})}
+              />
 
               <Faq items={faqs} title="Common questions" />
               <RelatedGuides items={related} title="Keep reading" />
@@ -169,7 +178,8 @@ export function CalculatorPageLayout({
       {/* Persistent sticky CTA on calculator pages — visitor has
           engaged enough to scroll past the calculator widget, give
           them a one-tap path to a specialist. Intent maps from the
-          calculator's persona. */}
+          calculator's persona; buyer-finance calculators deep-link
+          the buying-guide funnel instead of the selling default. */}
       <StickyMatchCTA
         intent={
           frontmatter.persona === "first-home" || frontmatter.persona === "upgrading"
@@ -180,6 +190,8 @@ export function CalculatorPageLayout({
             ? "selling"
             : undefined
         }
+        label={intent === "buying" ? "Get the free buying guide" : undefined}
+        href={intent === "buying" ? "/buying-guide" : undefined}
         dismissKey={`calc:${frontmatter.slug}`}
       />
     </>

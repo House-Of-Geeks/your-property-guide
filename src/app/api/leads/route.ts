@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { routeLead } from "@/lib/utils/lead-routing";
 import { db } from "@/lib/db";
-import { sendMail, ANDY_EMAIL } from "@/lib/email";
+import { sendMail, ANDY_EMAIL, LEADS_CC_EMAIL } from "@/lib/email";
 import {
   scoreGuideLead,
   labelFor,
@@ -15,9 +15,10 @@ import {
 } from "@/lib/lead-emails";
 import { syncGuideLeadToActiveCampaign } from "@/lib/activecampaign";
 import { checkRateLimit, ipKeyFromRequest } from "@/lib/rate-limit";
+import { normalizePhone } from "@/lib/utils/phone";
 
 const NOTIFY_EMAIL = ANDY_EMAIL;
-const CC_EMAIL = "jos@profitgeeks.com.au";
+const CC_EMAIL = LEADS_CC_EMAIL;
 
 const leadSchema = z.object({
   type: z.enum([
@@ -34,7 +35,17 @@ const leadSchema = z.object({
   firstName: z.string().min(1),
   lastName: z.string().min(1).optional(),
   email: z.string().email(),
-  phone: z.string().min(8).optional(),
+  // Blank/whitespace phones collapse to undefined instead of failing the
+  // min-length check — several older client builds posted phone: "" and
+  // every such enquiry 400'd. Never bounce a lead over the phone field.
+  // min(6), not min(8): the client validator (isValidPhone) accepts
+  // 6-digit 13-series business numbers, and server-valid must stay a
+  // superset of client-valid or required-phone forms dead-end with a
+  // generic error on numbers the field just accepted.
+  phone: z.preprocess(
+    (v) => (typeof v === "string" ? v.trim() || undefined : v),
+    z.string().min(6).optional(),
+  ),
   message: z.string().optional(),
   propertyId: z.string().optional(),
   agentId: z.string().optional(),
@@ -153,13 +164,18 @@ export async function POST(request: Request) {
 
     // Save to database (canonical record). Everything after this is
     // best-effort relative to the lead being captured.
+    // Canonicalise the phone ("+61 412-345 678" → "0412345678") so agents
+    // can dial straight from the email/DB. If it doesn't normalise, keep
+    // the raw string — a lead with an odd-looking number beats no lead.
+    const storedPhone = lead.phone ? (normalizePhone(lead.phone) ?? lead.phone.trim()) : undefined;
+
     const saved = await db.lead.create({
       data: {
         type:             lead.type,
         firstName:        lead.firstName,
         lastName:         lead.lastName,
         email:            lead.email,
-        phone:            lead.phone,
+        phone:            storedPhone,
         message:          persistedMessage,
         propertyId:       lead.propertyId,
         agentId:          lead.agentId,

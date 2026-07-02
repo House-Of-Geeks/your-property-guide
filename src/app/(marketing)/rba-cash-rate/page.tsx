@@ -6,7 +6,7 @@ import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `RBA Cash Rate History & Property Market Impact | ${SITE_NAME}`,
+  title: "RBA Cash Rate History & Property Market Impact",
   description:
     "Track the RBA cash rate history and understand how interest rate changes affect Australian property prices. Updated with each RBA decision.",
   alternates: { canonical: `${SITE_URL}/rba-cash-rate` },
@@ -353,6 +353,36 @@ export default function RBACashRatePage() {
               </a>{" "}
               for confirmed meeting dates.
             </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Refinance funnel exit. Rate-watchers checking this page after each
+          decision are the site's highest-intent refinance audience. */}
+      <div className="max-w-4xl mx-auto mb-12">
+        <div className="bg-primary/5 rounded-xl border border-primary/20 p-6">
+          <h2 className="text-xl font-bold text-gray-900 mb-2">
+            Is Your Rate Still Competitive?
+          </h2>
+          <p className="text-gray-700 text-sm mb-4">
+            Every hold or hike widens the gap between the sharpest new-customer rates and
+            what existing borrowers pay. A broker can compare your current loan against
+            30+ lenders for free.
+          </p>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+            <Link
+              href="/find-an-expert?intent=refinancing"
+              className="inline-flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+            >
+              Talk to a mortgage broker about your rate
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/refinancing-calculator"
+              className="text-sm font-medium text-primary hover:underline"
+            >
+              Or estimate your savings first
+            </Link>
           </div>
         </div>
       </div>

@@ -13,7 +13,7 @@ import { SITE_URL } from "@/lib/constants";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Australian States Property Guide | Your Property Guide",
+  title: "Australian States Property Guide",
   description:
     "Explore property markets across all Australian states and territories. Suburb data, median prices, and local insights for QLD, NSW, VIC, WA, SA, TAS, NT, and ACT.",
   alternates: { canonical: `${SITE_URL}/states` },

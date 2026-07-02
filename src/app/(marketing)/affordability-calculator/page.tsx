@@ -81,6 +81,7 @@ export default function AffordabilityCalculatorPage() {
       calculator={<AffordabilityCalculator />}
       faqs={FAQS}
       related={RELATED}
+      intent="buying"
       explainer={
         <>
           <h2>Two limits, the lower one wins</h2>

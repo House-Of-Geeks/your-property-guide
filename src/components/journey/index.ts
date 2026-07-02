@@ -1,6 +1,7 @@
 export { PersonaPicker } from "./PersonaPicker";
 export { PersonaHubLayout } from "./PersonaHubLayout";
-export { ExpertCTA } from "./ExpertCTA";
+export { ExpertCTA, BUYING_GUIDE_CTA } from "./ExpertCTA";
+export { GuidePairCTA } from "./GuidePairCTA";
 export { TrustStrip } from "./TrustStrip";
 export { MatchAgent } from "./MatchAgent";
 export { MatchAgentEmbed } from "./MatchAgentEmbed";

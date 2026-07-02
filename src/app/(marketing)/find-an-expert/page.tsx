@@ -5,10 +5,9 @@ import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 import { MatchAgentEmbed, TrustStrip } from "@/components/journey";
 import { BreadcrumbJsonLd } from "@/components/seo";
-import { SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: `Find your expert, agent, broker, or specialist | ${SITE_NAME}`,
+  title: "Find your expert, agent, broker, or specialist",
   description:
     "Get connected with one vetted specialist for your property situation, agent, broker, accountant, conveyancer, whoever fits. Free for buyers and sellers, no commitment.",
 };

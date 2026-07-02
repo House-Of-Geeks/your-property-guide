@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -7,6 +5,10 @@ import { ArrowRight } from "lucide-react";
 // (guides, suburb pages) for readers who want one-on-one help after they've
 // finished reading. Never used as a primary page CTA. Never auto-injected
 // above the fold. The brand promise is education first.
+//
+// Deliberately NOT "use client": the component is pure markup, and server
+// layouts read the copy constants below — exports of a client module can't
+// be dotted into from a server component.
 
 interface ExpertCTAProps {
   // Visual variant. "card" for end-of-content, "inline" for mid-article.
@@ -27,6 +29,18 @@ const DEFAULT = {
   body: "The complete guide to selling property in Australia: what it really costs, how agents price your home, the 10 questions that catch bad agents out, and a 12-week plan to settlement. Free PDF, personalised to your suburb, in your inbox in 60 seconds.",
   ctaLabel: "Get the free selling guide",
   href: "/selling-guide",
+};
+
+// Buyer-intent override set for call sites whose audience is buying, not
+// selling (buyer-persona guides, buyer-finance calculators) — pitching the
+// selling guide there would be an intent mismatch. Mirrors the selling
+// defaults' structure: name the outcome, the time (60 seconds), the cost
+// (free). Copy drawn from the /buying-guide chapter list.
+export const BUYING_GUIDE_CTA = {
+  headline: "Take the full guide with you.",
+  body: "The complete guide to buying property in Australia: what you can really spend, the 2026 schemes state by state, how not to overpay, and how the selling side plays you. Free PDF, personalised to your situation, in your inbox in 60 seconds.",
+  ctaLabel: "Get the free buying guide",
+  href: "/buying-guide",
 };
 
 export function ExpertCTA({

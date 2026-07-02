@@ -3,9 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight, GraduationCap } from "lucide-react";
 import { getSchoolBySlug } from "@/lib/services/school-service";
-import { BreadcrumbJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, EducationalOrganizationJsonLd } from "@/components/seo";
 import { formatPriceFull } from "@/lib/utils/format";
-import { SITE_URL } from "@/lib/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 interface SchoolVsPageProps {
   params: Promise<{ slug: string; compareSlug: string }>;
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: SchoolVsPageProps): Promise<M
   ]);
   if (!schoolA || !schoolB) return { title: "School Not Found" };
 
-  const title = `${schoolA.name} vs ${schoolB.name} | School Comparison | Your Property Guide`;
+  const title = `${schoolA.name} vs ${schoolB.name} | School Comparison`;
   const description = `Compare ${schoolA.name} and ${schoolB.name}, ICSEA scores, enrolment, demographics, and nearby property prices.`;
   const canonical = `${SITE_URL}/schools/${slug}/vs/${compareSlug}`;
 
@@ -46,7 +46,8 @@ export async function generateMetadata({ params }: SchoolVsPageProps): Promise<M
     title,
     description,
     alternates: { canonical },
-    openGraph: { url: canonical, title, description, type: "website" },
+    // og titles don't get the root title.template — brand them explicitly
+    openGraph: { url: canonical, title: `${title} | ${SITE_NAME}`, description, type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }
@@ -237,6 +238,23 @@ export default async function SchoolVsPage({ params }: SchoolVsPageProps) {
           { name: schoolA.name, url: `/schools/${slug}` },
           { name: `vs ${schoolB.name}`, url: `/schools/${slug}/vs/${compareSlug}` },
         ]}
+      />
+      {/* EducationalOrganization nodes for both schools, pointing at each
+          school's own profile URL so this comparison joins to the same
+          entities Google already knows from /schools/[slug]. */}
+      <EducationalOrganizationJsonLd
+        name={schoolA.name}
+        url={"/schools/" + slug}
+        address={{ suburb: schoolA.suburb.name, state: schoolA.suburb.state, postcode: schoolA.suburb.postcode }}
+        educationalLevel={typeLabel(schoolA.type)}
+        website={schoolA.website ?? undefined}
+      />
+      <EducationalOrganizationJsonLd
+        name={schoolB.name}
+        url={"/schools/" + compareSlug}
+        address={{ suburb: schoolB.suburb.name, state: schoolB.suburb.state, postcode: schoolB.suburb.postcode }}
+        educationalLevel={typeLabel(schoolB.type)}
+        website={schoolB.website ?? undefined}
       />
 
       {/* Breadcrumb */}

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
+import { ExpertCTA } from "@/components/journey";
 import { SITE_URL } from "@/lib/constants";
 import { SchoolsResults } from "./Results";
 
@@ -12,7 +13,7 @@ import { SchoolsResults } from "./Results";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Find a School | Browse 9,600+ Australian Schools | Your Property Guide",
+  title: "Find a School | Browse 9,600+ Australian Schools",
   description: "Browse 9,600+ schools across Australia. Filter by type, sector, and state. Click any school to view its catchment area and nearby properties.",
   alternates: { canonical: `${SITE_URL}/schools` },
   openGraph: { url: `${SITE_URL}/schools`, title: "Find a School | Browse 9,600+ Australian Schools", description: "Browse 9,600+ schools across Australia. Filter by type, sector, and state.", type: "website" },
@@ -76,6 +77,15 @@ export default function SchoolsPage({ searchParams }: SchoolsPageProps) {
           School data sourced from ACARA, licensed under CC BY 4.0.
         </p>
       </div>
+
+      {/* Buyer funnel exit. Catchment researchers are family buyers — the
+          buying guide is the natural next step after shortlisting schools. */}
+      <ExpertCTA
+        headline="Found the right school? Now find the house."
+        body="The complete buying guide for families: how school catchments affect prices, what you can actually spend, the 2026 schemes for your state, and how not to overpay. Free PDF, in your inbox in 60 seconds."
+        ctaLabel="Get the free buying guide"
+        href="/buying-guide"
+      />
     </>
   );
 }

@@ -6,7 +6,7 @@ import { ArrowRight, ArrowLeft } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, DefinedTermJsonLd } from "@/components/seo";
 import { GLOSSARY_TERMS, getGlossaryTerm } from "@/lib/data/glossary";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 
 export const dynamicParams = false;
 
@@ -74,7 +74,7 @@ export async function generateMetadata({ params }: TermPageProps): Promise<Metad
   const meta = plain.length > 160 ? `${plain.slice(0, 157)}…` : plain;
 
   return {
-    title: `${entry.term}, Australian Property Glossary | ${SITE_NAME}`,
+    title: `${entry.term}, Australian Property Glossary`,
     description: meta,
     alternates: { canonical: `${SITE_URL}/glossary/${entry.slug}` },
     openGraph: {

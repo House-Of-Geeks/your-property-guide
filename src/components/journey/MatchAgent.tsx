@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { SuburbAutocomplete, slugToSuburbLabel } from "@/components/search/SuburbAutocomplete";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
+import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
 
 type Intent =
   | "buying"
@@ -14,6 +15,17 @@ type Intent =
   | "something-else"
   | "researching";
 type Timeframe = "looking" | "soon" | "now";
+type ContactPref = "call" | "text" | "email";
+
+// Giving people a say in HOW they're contacted lowers the anxiety of
+// handing over a mobile number — the number is required (a match without
+// a reachable phone is worth little to the specialist), so the preference
+// chips are the pressure valve.
+const CONTACT_PREFS: { id: ContactPref; label: string }[] = [
+  { id: "call",  label: "Call me" },
+  { id: "text",  label: "Text first" },
+  { id: "email", label: "Email first" },
+];
 
 interface IntentOption {
   id: Intent;
@@ -110,6 +122,8 @@ export function MatchAgent({
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [contactPref, setContactPref] = useState<ContactPref>("call");
   const [website, setWebsite] = useState(""); // honeypot, must stay empty
 
   const [submitting, setSubmitting] = useState(false);
@@ -128,6 +142,14 @@ export function MatchAgent({
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!intent || !timeframe) return;
+    // Phone is required and sanity-checked client-side. The API stays
+    // lenient (never reject a lead over a phone format) — this gate is
+    // purely so the specialist gets a number they can actually dial.
+    if (!isValidPhone(phone)) {
+      setPhoneError(PHONE_ERROR);
+      return;
+    }
+    setPhoneError(null);
     setError(null);
     setSubmitting(true);
     try {
@@ -135,10 +157,10 @@ export function MatchAgent({
         `Intent: ${labelForIntent(intent)}`,
         `Suburb: ${suburbLabel ?? "Not specified"}`,
         `Timeframe: ${labelForTimeframe(timeframe)}`,
+        `Preferred contact: ${CONTACT_PREFS.find((p) => p.id === contactPref)?.label ?? contactPref}`,
       ].join(" · ");
 
       const trimmedLast = lastName.trim();
-      const trimmedPhone = phone.trim();
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -147,7 +169,7 @@ export function MatchAgent({
           firstName: firstName.trim(),
           lastName: trimmedLast || undefined,
           email: email.trim(),
-          phone: trimmedPhone || undefined,
+          phone: phone.trim(),
           message,
           suburb: suburbSlug ?? undefined,
           source,
@@ -161,6 +183,7 @@ export function MatchAgent({
       clarityEvent("match_request_submitted");
       clarityTag("match_intent", intent);
       clarityTag("match_timeframe", timeframe);
+      clarityTag("match_contact_pref", contactPref);
       if (suburbSlug) clarityTag("match_suburb", suburbSlug);
       // Hand off to the thank-you page. The ConversionTracker there fires
       // the canonical `lead_conversion` event for this funnel.
@@ -392,32 +415,80 @@ export function MatchAgent({
                       type="text"
                       required
                       placeholder="First name"
+                      autoComplete="given-name"
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                       className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
                     />
+                    <div>
+                      <input
+                        type="tel"
+                        required
+                        placeholder="Mobile"
+                        autoComplete="tel"
+                        inputMode="tel"
+                        value={phone}
+                        onChange={(e) => {
+                          setPhone(e.target.value);
+                          if (phoneError) setPhoneError(null);
+                        }}
+                        aria-invalid={phoneError ? true : undefined}
+                        className={`w-full rounded-lg border bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:ring-2 outline-none transition-colors ${
+                          phoneError
+                            ? "border-danger focus:border-danger focus:ring-danger/20"
+                            : "border-line focus:border-cta focus:ring-cta/20"
+                        }`}
+                      />
+                      {phoneError ? (
+                        <p className="mt-1 text-xs text-danger">{phoneError}</p>
+                      ) : (
+                        <p className="mt-1 text-[11px] text-ink-subtle leading-relaxed">
+                          Only your matched specialist gets this — one intro, never marketing calls.
+                        </p>
+                      )}
+                    </div>
                     <input
                       type="email"
                       required
                       placeholder="Email"
+                      autoComplete="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
                     />
                     <input
-                      type="tel"
-                      placeholder="Mobile (optional)"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
-                    />
-                    <input
                       type="text"
                       placeholder="Last name (optional)"
+                      autoComplete="family-name"
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
                       className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
                     />
+                    <div className="flex items-center gap-2 pt-1">
+                      <span className="text-[11px] uppercase tracking-wider text-ink-subtle font-medium whitespace-nowrap">
+                        Reach me by
+                      </span>
+                      <div className="flex gap-1.5">
+                        {CONTACT_PREFS.map((p) => {
+                          const active = contactPref === p.id;
+                          return (
+                            <button
+                              key={p.id}
+                              type="button"
+                              onClick={() => setContactPref(p.id)}
+                              aria-pressed={active}
+                              className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
+                                active
+                                  ? "bg-ink text-white border-ink"
+                                  : "bg-surface-raised text-ink-muted border-line hover:border-line-strong"
+                              }`}
+                            >
+                              {p.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
                     {error && (
                       <p className="text-sm text-danger">{error}</p>
                     )}

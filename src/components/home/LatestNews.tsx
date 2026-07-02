@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Clock } from "lucide-react";
-import { getBlogPostsByCategory } from "@/lib/services/blog-service";
+import { categoryToSlug, getBlogPostsByCategory } from "@/lib/services/blog-service";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
 import { BlogCover } from "@/components/blog/BlogCover";
 import { formatDate } from "@/lib/utils/format";
@@ -36,7 +36,7 @@ export async function LatestNews() {
             </p>
           </div>
           <Link
-            href={`/guides/category/${NEWS_CATEGORY}`}
+            href={`/guides/category/${categoryToSlug(NEWS_CATEGORY)}`}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-primary transition-colors border-b border-line-strong hover:border-primary pb-0.5"
           >
             All news <ArrowRight className="w-4 h-4" />

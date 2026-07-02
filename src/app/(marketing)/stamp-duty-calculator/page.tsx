@@ -83,6 +83,7 @@ export default function StampDutyCalculatorPage() {
       calculator={<StampDutyCalculator />}
       faqs={FAQS}
       related={RELATED}
+      intent="buying"
       explainer={
         <>
           <h2>What stamp duty actually is</h2>

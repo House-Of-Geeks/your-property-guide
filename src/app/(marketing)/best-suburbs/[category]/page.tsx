@@ -4,7 +4,7 @@ import {
   getRankedSuburbs,
   type RankingCategory,
 } from "@/lib/services/suburb-rankings-service";
-import { SITE_URL } from "@/lib/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import {
   BestSuburbsListing,
   CATEGORY_CONFIG,
@@ -49,7 +49,7 @@ export async function generateMetadata({
   const stateSuffix = upperState && (STATES as readonly string[]).includes(upperState)
     ? ` in ${upperState}`
     : " in Australia";
-  const title = `${config.title}${stateSuffix} | Your Property Guide`;
+  const title = `${config.title}${stateSuffix}`;
 
   return {
     title,
@@ -59,7 +59,8 @@ export async function generateMetadata({
     alternates: { canonical: `${SITE_URL}/best-suburbs/${category}` },
     openGraph: {
       url: `${SITE_URL}/best-suburbs/${category}`,
-      title,
+      // og titles don't get the root title.template — brand them explicitly
+      title: `${title} | ${SITE_NAME}`,
       description: config.description,
       type: "website",
     },

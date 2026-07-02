@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MapPin, Home, TrendingUp, GraduationCap, Building2 } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
+import { GuidePairCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd, ItemListJsonLd } from "@/components/seo";
 import {
   getStateStats,
@@ -11,7 +12,7 @@ import {
   getStateName,
 } from "@/lib/services/suburb-rankings-service";
 import { formatPrice, formatPriceFull, formatPercentage } from "@/lib/utils/format";
-import { SITE_URL } from "@/lib/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 const VALID_STATES = ["qld", "nsw", "vic", "wa", "sa", "tas", "nt", "act"];
 
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: StatePageProps): Promise<Meta
   if (!VALID_STATES.includes(state.toLowerCase())) return { title: "Not Found" };
 
   const stateName = getStateName(state.toUpperCase());
-  const title = `${stateName} Property Market | Suburbs, Schools & Data | Your Property Guide`;
+  const title = `${stateName} Property Market | Suburbs, Schools & Data`;
   const description = `Explore the ${stateName} property market. Browse suburb profiles, median house prices, school data, and local insights across ${stateName}.`;
 
   return {
@@ -42,7 +43,8 @@ export async function generateMetadata({ params }: StatePageProps): Promise<Meta
     alternates: { canonical: `${SITE_URL}/states/${state.toLowerCase()}` },
     openGraph: {
       url: `${SITE_URL}/states/${state.toLowerCase()}`,
-      title,
+      // og titles don't get the root title.template — brand them explicitly.
+      title: `${title} | ${SITE_NAME}`,
       description,
       type: "website",
     },
@@ -314,6 +316,11 @@ export default async function StatePage({ params }: StatePageProps) {
             ))}
           </div>
         </section>
+
+        {/* Buyer / seller funnel entry. A whole state is too broad for a
+            suburb deep-link, so no suburbSlug: the guides open with the
+            suburb step unanswered. */}
+        <GuidePairCTA placeName={stateName} />
       </div>
     </div>
   );

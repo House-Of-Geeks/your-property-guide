@@ -14,6 +14,9 @@ export const transporter = nodemailer.createTransport({
 
 export const DEFAULT_FROM = `"Your Property Guide" <${process.env.EMAIL_FROM ?? "noreply@yourpropertyguide.com.au"}>`;
 export const ANDY_EMAIL = "andy@theandylife.com";
+// Standard CC on lead notifications. Match-request leads skip it (per
+// Andy 2026-05-10) — both /api/leads and /api/leads/enrich apply that rule.
+export const LEADS_CC_EMAIL = "jos@profitgeeks.com.au";
 
 export interface SendMailOptions {
   to: string;

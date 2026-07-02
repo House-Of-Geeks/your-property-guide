@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Link from "next/link";
 import { DollarSign, Info, Users, TrendingUp } from "lucide-react";
 import { formatPriceFull } from "@/lib/utils/format";
 import { computeBorrowingPower, getHEM } from "@/lib/utils/borrowing-power";
@@ -208,8 +209,15 @@ export function BorrowingPowerCalculator() {
               <Info className="w-4 h-4 flex-shrink-0 mt-0.5" />
               <p>
                 This is an estimate only. Actual borrowing capacity depends on your specific
-                financial situation, lender policies, and current interest rates. Speak with a
-                mortgage broker for a personalised assessment.
+                financial situation, lender policies, and current interest rates. Speak with a{" "}
+                {/* Broker intros run through the refinancing lane on /find-an-expert */}
+                <Link
+                  href="/find-an-expert?intent=refinancing"
+                  className="text-primary underline hover:no-underline"
+                >
+                  mortgage broker
+                </Link>{" "}
+                for a personalised assessment.
               </p>
             </div>
           </div>

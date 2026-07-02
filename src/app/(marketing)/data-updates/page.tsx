@@ -9,7 +9,7 @@ import { formatDate } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Data Updates &amp; Changelog | Your Property Guide",
+  title: "Data Updates & Changelog",
   description:
     "Every significant data refresh, guide release, tool launch, and correction logged with date and source. Full transparency on what changed and when.",
   alternates: { canonical: `${SITE_URL}/data-updates` },
