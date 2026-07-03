@@ -31,9 +31,19 @@ export const metadata: Metadata = {
 };
 
 export default async function PropertyMarketHubPage() {
-  const markets = await Promise.all(
-    CAPITAL_CITIES.map(async (city) => ({ city, market: await getCityMarket(city) })),
-  );
+  // Build must stay DB-free (see 460c601): this static route prerenders at
+  // `next build`, and an unguarded fetch here failed a deploy the moment
+  // the DB was busy. Empty renders cleanly ("—" cards); ISR (revalidate
+  // above) fills real data on first request.
+  const markets =
+    process.env.NEXT_PHASE === "phase-production-build"
+      ? CAPITAL_CITIES.map((city) => ({
+          city,
+          market: null as Awaited<ReturnType<typeof getCityMarket>> | null,
+        }))
+      : await Promise.all(
+          CAPITAL_CITIES.map(async (city) => ({ city, market: await getCityMarket(city) })),
+        );
 
   return (
     <>
@@ -72,11 +82,11 @@ export default async function PropertyMarketHubPage() {
                 {city.name}
               </h2>
               <p className="font-display text-xl text-ink mt-4">
-                {market.medianHousePrice ? formatPrice(market.medianHousePrice) : "—"}
+                {market?.medianHousePrice ? formatPrice(market.medianHousePrice) : "—"}
               </p>
               <p className="text-xs font-sans text-ink-subtle mt-1">
                 median house price
-                {market.medianAnnualGrowth != null && (
+                {market != null && market.medianAnnualGrowth != null && (
                   <>
                     {" · "}
                     <span className={market.medianAnnualGrowth >= 0 ? "text-emerald-700" : "text-red-700"}>
