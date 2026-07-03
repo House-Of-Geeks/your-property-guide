@@ -37,6 +37,9 @@ const INCLUDE_CHILDREN = [
   "states",
   "best-suburbs",
   "compare",
+  "glossary",
+  "market-reports",
+  "property-market",
 ];
 
 const SKIP_CHILDREN = ["property"];
