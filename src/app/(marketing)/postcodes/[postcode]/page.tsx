@@ -69,6 +69,9 @@ export async function generateMetadata({ params }: PostcodePageProps): Promise<M
       title,
       description,
       type: "website",
+      // Page-level openGraph replaces the root default wholesale, so the
+      // image must be restated or the page ships with no og:image at all.
+      images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: title }],
     },
     twitter: { card: "summary_large_image" },
   };

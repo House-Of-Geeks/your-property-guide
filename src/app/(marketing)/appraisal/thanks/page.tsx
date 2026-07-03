@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { CheckCircle, ArrowRight } from "lucide-react";
 import { ConversionTracker } from "@/components/journey/ConversionTracker";
+import { ThanksPhoneAsk } from "@/components/forms/ThanksPhoneAsk";
 
 export const metadata: Metadata = {
   title: "Appraisal request received",
@@ -40,6 +41,13 @@ export default async function AppraisalThanksPage({ searchParams }: PageProps) {
             Look for a confirmation in your inbox in the next few minutes, and a call
             or email from a local agent within one business day.
           </p>
+          {/* Renders only when the submitting form left a lead id in
+              sessionStorage (phone-less appraisal requests, e.g. the
+              suburb-page inline CTA). */}
+          <ThanksPhoneAsk
+            source="appraisal-thanks"
+            prompt="Appraisals move fastest over the phone — add your mobile and the agent will call you first."
+          />
         </div>
       </section>
 

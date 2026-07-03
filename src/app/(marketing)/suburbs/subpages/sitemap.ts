@@ -6,8 +6,13 @@
 export const dynamic = "force-dynamic";
 
 import type { MetadataRoute } from "next";
+import { unstable_cache } from "next/cache";
 import { SITE_URL } from "@/lib/constants";
 import { getIndexableSuburbsForSitemaps } from "@/lib/sitemap-data";
+import {
+  getSuburbListingInventory,
+  type SuburbListingInventoryRow,
+} from "@/lib/services/property-service";
 
 // Suburb intent sub-pages (/suburbs/[slug]/houses etc.). Split into one
 // sitemap per type: ~15k indexable suburbs × 8 types would overflow the
@@ -30,6 +35,32 @@ export async function generateSitemaps() {
   return SUBPAGE_TYPES.map((id) => ({ id }));
 }
 
+// The six listing types render empty shells for suburbs with no matching
+// stock (and those pages noindex themselves — see e.g. [slug]/buy/page.tsx),
+// so submitting them would burn crawl budget on ~17,908 near-identical empty
+// pages per type. Each predicate mirrors the getProperties() filter its page
+// runs. schools + rental-market are absent here on purpose: they carry real
+// data for every suburb and stay in the sitemap unconditionally.
+const LISTING_TYPE_FILTERS: Partial<
+  Record<(typeof SUBPAGE_TYPES)[number], (row: SuburbListingInventoryRow) => boolean>
+> = {
+  houses:       (r) => r.listingType === "buy" && r.propertyType === "house",
+  units:        (r) => r.listingType === "buy" && r.propertyType === "unit",
+  townhouses:   (r) => r.listingType === "buy" && r.propertyType === "townhouse",
+  land:         (r) => r.listingType === "buy" && r.propertyType === "land",
+  buy:          (r) => r.listingType === "buy",
+  rent:         (r) => r.listingType === "rent",
+};
+
+// force-dynamic (above) means every crawler hit reaches this file, so the
+// inventory groupBy is deduped through unstable_cache like the suburb list —
+// one small query per day shared across the six listing-type sitemaps.
+const getCachedListingInventory = unstable_cache(
+  async () => getSuburbListingInventory(),
+  ["sitemap-suburb-listing-inventory:v1"],
+  { revalidate: 86400, tags: ["sitemap-suburbs"] },
+);
+
 export default async function sitemap(props: {
   id: Promise<string>;
 }): Promise<MetadataRoute.Sitemap> {
@@ -38,7 +69,15 @@ export default async function sitemap(props: {
   // so reject ids outside the known types rather than emitting junk URLs.
   if (!(SUBPAGE_TYPES as readonly string[]).includes(type)) return [];
 
-  const suburbs = await getIndexableSuburbsForSitemaps();
+  let suburbs = await getIndexableSuburbsForSitemaps();
+
+  const filter = LISTING_TYPE_FILTERS[type as (typeof SUBPAGE_TYPES)[number]];
+  if (filter) {
+    const inventory = await getCachedListingInventory();
+    const withStock = new Set(inventory.filter(filter).map((r) => r.suburbSlug));
+    suburbs = suburbs.filter(({ slug }) => withStock.has(slug));
+  }
+
   return suburbs.map(({ slug, updatedAt }) => ({
     url: `${SITE_URL}/suburbs/${slug}/${type}`,
     lastModified: updatedAt,

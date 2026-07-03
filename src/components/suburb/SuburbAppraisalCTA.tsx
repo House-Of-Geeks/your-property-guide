@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Home, ArrowRight, Loader2 } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
+import { ENRICH_LEAD_STORAGE_KEY } from "@/components/forms/ThanksPhoneAsk";
 
 interface Props {
   suburbName: string;
@@ -18,7 +19,8 @@ interface Props {
  * the moment of highest intent ("what's my home worth in this suburb?").
  *
  * Form is intentionally minimal: first name + email + property address.
- * Phone is optional and lives on /appraisal/thanks if the agent needs it.
+ * Phone is collected post-submit on /appraisal/thanks via ThanksPhoneAsk +
+ * /api/leads/enrich (the lead id is handed over in sessionStorage below).
  * Suburb is implicit from the page context, no second guess required.
  */
 export function SuburbAppraisalCTA({ suburbName, suburbSlug }: Props) {
@@ -59,9 +61,22 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug }: Props) {
         }),
       });
       if (!res.ok) throw new Error("Failed");
+      const saved = (await res.json().catch(() => null)) as { id?: string } | null;
       clarityEvent("request_quote");
       clarityTag("appraisal_suburb", suburbSlug);
       clarityTag("appraisal_source", "suburb-inline");
+      // This form is deliberately phone-less, so every lead needs the
+      // thanks-page follow-up. Hand the lead id over in sessionStorage
+      // (it's the enrich bearer credential — never in the URL).
+      try {
+        if (saved?.id) {
+          sessionStorage.setItem(ENRICH_LEAD_STORAGE_KEY, saved.id);
+        } else {
+          sessionStorage.removeItem(ENRICH_LEAD_STORAGE_KEY);
+        }
+      } catch {
+        // Storage blocked — the thanks page just skips the phone ask.
+      }
       const qs = new URLSearchParams({ suburb: suburbSlug });
       router.push(`/appraisal/thanks?${qs.toString()}`);
     } catch {

@@ -2,7 +2,7 @@ import { cache } from "react";
 import type { Suburb, SuburbDataFreshness } from "@/types";
 import { db } from "@/lib/db";
 import type { Suburb as DbSuburb, School as DbSchool, SuburbHazard as DbSuburbHazard, SuburbClimate as DbSuburbClimate } from "@/generated/prisma/client";
-import { classifyPriceConfidence } from "@/lib/suburb-data-quality";
+import { classifyPriceConfidence, isPlausibleAnnualGrowth } from "@/lib/suburb-data-quality";
 
 type DbSuburbWithSchools = DbSuburb & { schools: DbSchool[] };
 
@@ -84,8 +84,13 @@ function toSuburb(
   const priceUnreliable = classifyPriceConfidence(mergedFreshness) === "unreliable";
   const medianHousePrice  = priceUnreliable ? 0 : s.medianHousePrice;
   const medianUnitPrice   = priceUnreliable ? 0 : s.medianUnitPrice;
-  const annualGrowthHouse = priceUnreliable ? 0 : s.annualGrowthHouse;
-  const annualGrowthUnit  = priceUnreliable ? 0 : s.annualGrowthUnit;
+  // Growth additionally passes a plausibility clamp: even trusted feeds
+  // produce ±40% "growth" on thin-sales suburbs, and 0 is the codebase's
+  // "unknown, don't print" convention for these fields.
+  const annualGrowthHouse =
+    priceUnreliable || !isPlausibleAnnualGrowth(s.annualGrowthHouse) ? 0 : s.annualGrowthHouse;
+  const annualGrowthUnit  =
+    priceUnreliable || !isPlausibleAnnualGrowth(s.annualGrowthUnit) ? 0 : s.annualGrowthUnit;
   const daysOnMarket      = priceUnreliable ? 0 : s.daysOnMarket;
 
   return {

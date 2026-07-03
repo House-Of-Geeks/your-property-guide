@@ -8,9 +8,10 @@ import { SuburbSubrouteHeader, getSuburbListingTabs } from "@/components/suburb"
 import { ExpertCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
-import { getProperties } from "@/lib/services/property-service";
+import { getProperties, countProperties } from "@/lib/services/property-service";
 import { suburbRentTitle, suburbRentDescription } from "@/lib/utils/seo";
 import { SITE_URL } from "@/lib/constants";
+import { buildSuburbOgImageUrl } from "@/lib/og/helpers";
 import type { PropertyType } from "@/types";
 
 interface Props {
@@ -27,15 +28,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) return { title: "Suburb Not Found" };
+  // Zero-stock shells stay reachable but are noindexed until inventory
+  // lands — same reasoning as the isThinSuburb gate on the profile page.
+  const listingCount = await countProperties({ listingType: "rent", suburb: slug });
   return {
     title: suburbRentTitle(suburb),
     description: suburbRentDescription(suburb),
     alternates: { canonical: `${SITE_URL}/suburbs/${slug}/rent` },
+    robots: listingCount === 0 ? { index: false, follow: true } : undefined,
     openGraph: {
       url: `${SITE_URL}/suburbs/${slug}/rent`,
       title: suburbRentTitle(suburb),
       description: suburbRentDescription(suburb),
       type: "website",
+      // Page-level openGraph replaces the root default wholesale, so the
+      // suburb OG card has to be re-attached or shares render imageless.
+      images: [
+        {
+          url: buildSuburbOgImageUrl(slug),
+          width: 1200,
+          height: 630,
+          alt: `${suburb.name}, ${suburb.state} ${suburb.postcode} suburb profile`,
+        },
+      ],
     },
     twitter: { card: "summary_large_image" },
   };

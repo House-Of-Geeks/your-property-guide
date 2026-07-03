@@ -64,6 +64,37 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
     ? suburb.replace(/-[a-z]{2,3}-\d{4}$/, "").replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
     : null;
 
+  // Cross-sell cards. The appraisal card leads because HOT sellers were
+  // just told "we'll be in touch about a free appraisal" — this lets them
+  // book it themselves instead of waiting on us. Listed vendors were
+  // promised no agent contact, so they don't get the appraisal ask.
+  const crossSells = [
+    ...(score !== "listed"
+      ? [
+          {
+            href: suburb ? `/appraisal?suburb=${suburb}` : "/appraisal",
+            label: "Book your free appraisal now",
+            sub: "A top local agent values your home — free, no obligation",
+          },
+        ]
+      : []),
+    {
+      href: "/real-estate-commission-calculator",
+      label: "Commission calculator",
+      sub: "See what an agent would cost on your sale price",
+    },
+    {
+      href: suburb ? `/suburbs/${suburb}` : "/suburbs",
+      label: suburbLabel ? `${suburbLabel} profile` : "Your suburb profile",
+      sub: "Median prices, growth and days on market",
+    },
+    {
+      href: "/guides/real-estate-agent-fees-australia",
+      label: "Agent fees explained",
+      sub: "Average commission rates, state by state",
+    },
+  ];
+
   return (
     <>
       <Suspense fallback={null}>
@@ -158,24 +189,11 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
           <h2 className="font-display text-ink tracking-tight text-2xl sm:text-3xl font-medium mb-8 text-center">
             While you&rsquo;re here
           </h2>
-          <div data-reveal-group className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {[
-              {
-                href: "/real-estate-commission-calculator",
-                label: "Commission calculator",
-                sub: "See what an agent would cost on your sale price",
-              },
-              {
-                href: suburb ? `/suburbs/${suburb}` : "/suburbs",
-                label: suburbLabel ? `${suburbLabel} profile` : "Your suburb profile",
-                sub: "Median prices, growth and days on market",
-              },
-              {
-                href: "/guides/real-estate-agent-fees-australia",
-                label: "Agent fees explained",
-                sub: "Average commission rates, state by state",
-              },
-            ].map((card) => (
+          <div
+            data-reveal-group
+            className={`grid grid-cols-1 gap-4 ${crossSells.length === 4 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}
+          >
+            {crossSells.map((card) => (
               <Link
                 key={card.href}
                 href={card.href}

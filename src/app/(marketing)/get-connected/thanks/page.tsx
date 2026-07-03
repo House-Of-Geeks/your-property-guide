@@ -47,7 +47,36 @@ export default async function GetConnectedThanksPage({ searchParams }: PageProps
     headline: "We're finding the right specialist.",
     what: "Someone vetted for your situation, your suburb, and your timing. You'll hear from them within one business day.",
   };
-  const suburbLabel = suburb ? suburb.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) : null;
+  // The suburb param is a full slug ("bondi-nsw-2026") — strip the
+  // state-postcode suffix before titlecasing so copy reads "Bondi".
+  const suburbLabel = suburb
+    ? suburb.replace(/-[a-z]{2,3}-\d{4}$/, "").replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
+    : null;
+
+  // Cross-sell cards for the wait: the suburb they told us about, the
+  // commission calculator (most match requests are sale-adjacent), and
+  // the guides library.
+  const crossSells = [
+    ...(suburb
+      ? [
+          {
+            href: `/suburbs/${suburb}`,
+            label: `${suburbLabel} profile`,
+            sub: "Median prices, growth and days on market",
+          },
+        ]
+      : []),
+    {
+      href: "/real-estate-commission-calculator",
+      label: "Commission calculator",
+      sub: "See what an agent would cost on your sale price",
+    },
+    {
+      href: "/guides",
+      label: "Browse the guides",
+      sub: "Plain-English guides to buying, selling and investing",
+    },
+  ];
 
   return (
     <>
@@ -108,17 +137,23 @@ export default async function GetConnectedThanksPage({ searchParams }: PageProps
             </li>
           </ol>
 
-          <div className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8 text-center">
-            <p className="font-sans text-base text-ink mb-4">
-              While you wait, brush up with our guides.
-            </p>
-            <Link
-              href="/guides"
-              className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface-raised text-ink hover:border-ink font-medium px-5 py-2.5 transition-colors text-sm"
-            >
-              Browse the guides
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+          <p className="text-xs font-sans uppercase tracking-[0.22em] text-ink-subtle mb-4">
+            While you wait
+          </p>
+          <div className={`grid grid-cols-1 gap-4 ${crossSells.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
+            {crossSells.map((card) => (
+              <Link
+                key={card.href}
+                href={card.href}
+                className="group flex flex-col rounded-2xl border border-line-warm bg-surface-warm p-5 hover:border-primary/50 transition-colors"
+              >
+                <p className="font-sans text-sm font-semibold text-ink group-hover:text-primary transition-colors mb-1.5">
+                  {card.label}
+                </p>
+                <p className="font-sans text-xs text-ink-subtle leading-relaxed mb-3 flex-1">{card.sub}</p>
+                <ArrowRight className="w-4 h-4 text-ink-subtle group-hover:text-primary group-hover:translate-x-1 transition-[transform,translate,color] duration-200" aria-hidden="true" />
+              </Link>
+            ))}
           </div>
         </div>
       </section>

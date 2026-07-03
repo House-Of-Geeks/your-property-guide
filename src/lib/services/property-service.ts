@@ -105,6 +105,47 @@ export async function getProperties(params?: PropertySearchParams): Promise<Prop
   return rows.map(toProperty);
 }
 
+// Cheap existence probe for the suburb listing sub-pages. generateMetadata
+// needs to know whether a suburb has ANY matching stock (so empty shells can
+// be noindexed) without pulling full rows + images the way getProperties does.
+export async function countProperties(params: {
+  listingType: ListingType;
+  suburb: string;
+  propertyType?: string;
+}): Promise<number> {
+  return db.property.count({
+    where: {
+      listingType: params.listingType,
+      suburbSlug: params.suburb,
+      ...(params.propertyType ? { propertyType: params.propertyType } : {}),
+    },
+  });
+}
+
+export type SuburbListingInventoryRow = {
+  suburbSlug: string;
+  listingType: string;
+  propertyType: string;
+};
+
+// Which (suburb, listingType, propertyType) combinations actually have
+// listings, in one groupBy over the (tiny) Property table. The suburb
+// sub-page sitemap uses this to submit only listing URLs with real stock —
+// ~17,908 suburbs makes any per-suburb query shape a non-starter.
+export async function getSuburbListingInventory(): Promise<SuburbListingInventoryRow[]> {
+  // Assigned to a local before returning: Prisma's groupBy generics infer
+  // from the contextual return type, and the declared Promise<Row[]> above
+  // otherwise leaks into the parameter type and fails the build's check.
+  const rows = await db.property.groupBy({
+    by: ["suburbSlug", "listingType", "propertyType"],
+  });
+  return rows.map((r) => ({
+    suburbSlug: r.suburbSlug,
+    listingType: r.listingType,
+    propertyType: r.propertyType,
+  }));
+}
+
 export async function getPropertyBySlug(slug: string): Promise<Property | null> {
   const row = await db.property.findUnique({ where: { slug }, include: includeImages });
   return row ? toProperty(row) : null;

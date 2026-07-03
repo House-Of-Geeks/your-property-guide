@@ -5,8 +5,9 @@ import { SuburbSubrouteHeader, getSuburbListingTabs } from "@/components/suburb"
 import { StickyMatchCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
-import { getProperties } from "@/lib/services/property-service";
+import { getProperties, countProperties } from "@/lib/services/property-service";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { buildSuburbOgImageUrl } from "@/lib/og/helpers";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -23,12 +24,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!suburb) return { title: "Suburb Not Found" };
   const title = `Land for Sale in ${suburb.name}, ${suburb.state}`;
   const description = `Browse land for sale in ${suburb.name} ${suburb.postcode}. View all land listings, sizes, and prices.`;
+  // Zero-stock shells stay reachable but are noindexed until inventory
+  // lands — same reasoning as the isThinSuburb gate on the profile page.
+  const listingCount = await countProperties({ listingType: "buy", suburb: slug, propertyType: "land" });
   return {
     title,
     description,
     alternates: { canonical: `${SITE_URL}/suburbs/${slug}/land` },
-    // og titles don't get the root title.template — brand them explicitly
-    openGraph: { url: `${SITE_URL}/suburbs/${slug}/land`, title: `${title} | ${SITE_NAME}`, description, type: "website" },
+    robots: listingCount === 0 ? { index: false, follow: true } : undefined,
+    openGraph: {
+      url: `${SITE_URL}/suburbs/${slug}/land`,
+      // og titles don't get the root title.template — brand them explicitly
+      title: `${title} | ${SITE_NAME}`,
+      description,
+      type: "website",
+      // Page-level openGraph replaces the root default wholesale, so the
+      // suburb OG card has to be re-attached or shares render imageless.
+      images: [
+        {
+          url: buildSuburbOgImageUrl(slug),
+          width: 1200,
+          height: 630,
+          alt: `${suburb.name}, ${suburb.state} ${suburb.postcode} suburb profile`,
+        },
+      ],
+    },
     twitter: { card: "summary_large_image" },
   };
 }

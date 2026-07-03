@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Bell, CheckCircle, Loader2 } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
+import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
 
 interface Props {
   suburbName: string;
@@ -21,6 +22,13 @@ export function SuburbAlertWidget({ suburbName, suburbSlug }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Phone is an optional enrichment on this email-first signup — but if
+    // one was entered it must be dialable, and junk must fail HERE rather
+    // than as an opaque 400 from the server that costs the lead.
+    if (phone.trim() && !isValidPhone(phone)) {
+      setError(PHONE_ERROR);
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
@@ -111,12 +119,11 @@ export function SuburbAlertWidget({ suburbName, suburbSlug }: Props) {
             </div>
             <div>
               <label htmlFor="alert-lastName" className="block text-xs font-medium text-gray-600 mb-1">
-                Last name <span className="text-red-500">*</span>
+                Last name
               </label>
               <input
                 id="alert-lastName"
                 type="text"
-                required
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Smith"
@@ -141,14 +148,16 @@ export function SuburbAlertWidget({ suburbName, suburbSlug }: Props) {
             </div>
             <div>
               <label htmlFor="alert-phone" className="block text-xs font-medium text-gray-600 mb-1">
-                Phone <span className="text-red-500">*</span>
+                Phone <span className="text-gray-400 font-normal">(optional)</span>
               </label>
               <input
                 id="alert-phone"
                 type="tel"
-                required
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                  if (error) setError(null);
+                }}
                 placeholder="04XX XXX XXX"
                 className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
               />

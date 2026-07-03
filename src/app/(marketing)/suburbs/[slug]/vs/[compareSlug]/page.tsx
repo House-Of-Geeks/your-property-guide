@@ -79,12 +79,19 @@ export async function generateMetadata({ params }: ComparePageProps): Promise<Me
   });
   const ogImage = `${SITE_URL}/api/og/guide/${slug}-vs-${compareSlug}?${ogParams.toString()}`;
 
+  // /A/vs/B and /B/vs/A render the same comparison, so both directions
+  // canonicalise to the lexicographic ordering of the pair — the same
+  // `.sort()` rule the compare sitemap dedupes with — instead of each
+  // direction self-canonicalising and splitting the pair's signals.
+  const [pairA, pairB] = [slug, compareSlug].sort();
+  const canonicalUrl = `${SITE_URL}/suburbs/${pairA}/vs/${pairB}`;
+
   return {
     title,
     description,
-    alternates: { canonical: `${SITE_URL}/suburbs/${slug}/vs/${compareSlug}` },
+    alternates: { canonical: canonicalUrl },
     openGraph: {
-      url: `${SITE_URL}/suburbs/${slug}/vs/${compareSlug}`,
+      url: canonicalUrl,
       title,
       description,
       type: "website",

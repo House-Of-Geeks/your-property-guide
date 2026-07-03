@@ -31,14 +31,21 @@ const RELIABLE_SOURCES = new Set<string>([
   "sales-abs",   // ABS SA2 — annual but real
 ]);
 
-/** Sources we explicitly distrust. */
-const UNRELIABLE_SOURCES = new Set<string>([
-  "sales-qld",   // Census-mortgage proxy. Wildly wrong.
-  "sales-wa",    // Same census-mortgage proxy.
-  "seed",        // Placeholder initial value.
-]);
+// Everything else is distrusted, notably: "sales-qld" / "sales-wa"
+// (census-mortgage proxy, wildly wrong), "seed" (placeholder), and any
+// unknown source string.
 
 export type PriceConfidence = "reliable" | "unreliable";
+
+/**
+ * Raw-source variant of the gate for callers that read `statsSource`
+ * straight off the Suburb row (aggregations like postcode stats) instead
+ * of going through the Suburb type. Unknown sources are unreliable —
+ * the safer default.
+ */
+export function isReliableSalesSource(source: string | null | undefined): boolean {
+  return RELIABLE_SOURCES.has(source ?? "");
+}
 
 /**
  * Classify a suburb's price confidence based on the salesSource on its
@@ -48,12 +55,7 @@ export type PriceConfidence = "reliable" | "unreliable";
 export function classifyPriceConfidence(
   freshness: SuburbDataFreshness | null | undefined,
 ): PriceConfidence {
-  const src = freshness?.salesSource ?? "";
-  if (RELIABLE_SOURCES.has(src)) return "reliable";
-  if (UNRELIABLE_SOURCES.has(src)) return "unreliable";
-  // Default unknown sources to unreliable. We can flip individual
-  // sources to reliable as we verify their quality.
-  return "unreliable";
+  return isReliableSalesSource(freshness?.salesSource) ? "reliable" : "unreliable";
 }
 
 /**
@@ -74,6 +76,20 @@ export function reliableMedianHousePrice(
   suburb: Pick<Suburb, "stats" | "dataFreshness">,
 ): number | null {
   return hasReliablePrice(suburb) ? suburb.stats.medianHousePrice : null;
+}
+
+/**
+ * Suburb-level annual growth beyond this magnitude is almost always a
+ * small-sample or house/unit-mix artifact (e.g. "-41.8%" printed on a
+ * suburb with a handful of sales), not a real market move. Treat such
+ * figures as unknown rather than publishing them into answer text and
+ * FAQPage JSON-LD.
+ */
+export const MAX_PLAUSIBLE_ANNUAL_GROWTH = 25;
+
+export function isPlausibleAnnualGrowth(growth: number | null | undefined): boolean {
+  if (growth == null) return false;
+  return Math.abs(growth) <= MAX_PLAUSIBLE_ANNUAL_GROWTH;
 }
 
 /**
