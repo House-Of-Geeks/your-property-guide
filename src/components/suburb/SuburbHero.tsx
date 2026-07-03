@@ -90,9 +90,15 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
               {suburb.state}
             </span>
             <span className="w-px h-3 bg-white/30" />
-            <span className="text-sm font-sans tracking-wide text-white/80">
+            {/* Links the suburb to its postcode page (the parent container
+                is pointer-events-none, so re-enable on the link itself). */}
+            <Link
+              href={`/postcodes/${suburb.postcode}`}
+              title={`All suburbs in postcode ${suburb.postcode}`}
+              className="pointer-events-auto text-sm font-sans tracking-wide text-white/80 hover:text-white underline-offset-4 hover:underline transition-colors"
+            >
               {suburb.postcode}
-            </span>
+            </Link>
           </div>
 
           {/* Above-the-fold match CTA, visitors researching this suburb are

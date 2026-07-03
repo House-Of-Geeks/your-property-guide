@@ -34,6 +34,7 @@ import { suburbTitle, suburbDescription } from "@/lib/utils/seo";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 import { buildSuburbOgImageUrl } from "@/lib/og/helpers";
+import { capitalCityFor } from "@/lib/utils/metro";
 import {
   buildIntro,
   buildMarketSummary,
@@ -134,6 +135,9 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
   // Whether we trust this suburb's median enough to print it as fact.
   // Drives the main price card display and the unit-price callout.
   const priceTrusted = hasReliablePrice(suburb);
+  // Greater-capital classification (postcode-range based) for the
+  // "{suburb}, {city}" answer phrasing and the city market-page link.
+  const capitalCity = capitalCityFor(suburb.state, suburb.postcode);
 
   return (
     <>
@@ -189,7 +193,23 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                   we trust it. */}
               <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[65ch]">
                 The postcode for {suburb.name} is{" "}
-                <span className="font-medium text-ink">{suburb.postcode}</span> ({suburb.state}).
+                <span className="font-medium text-ink">{suburb.postcode}</span> ({suburb.state})
+                {/* "{suburb} {city}" phrasing for the navigational cluster
+                    ("sunnybank brisbane") competitor profiles win on. */}
+                {capitalCity ? (
+                  <>
+                    , part of Greater{" "}
+                    <Link
+                      href={`/property-market/${capitalCity.slug}`}
+                      className="font-medium text-ink underline-offset-4 hover:underline"
+                    >
+                      {capitalCity.name}
+                    </Link>
+                    .
+                  </>
+                ) : (
+                  "."
+                )}
               </p>
               {priceTrusted && (
                 <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[65ch]">
@@ -711,6 +731,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             name: suburb.name,
             slug: suburb.slug,
             state: suburb.state,
+            postcode: suburb.postcode,
             nearbySuburbs: suburb.nearbySuburbs,
           }}
         />

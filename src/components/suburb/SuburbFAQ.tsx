@@ -3,6 +3,7 @@ import type { Suburb } from "@/types";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { fullLgaName } from "@/lib/utils/lga-names";
 import { hasReliablePrice } from "@/lib/suburb-data-quality";
+import { capitalCityFor } from "@/lib/utils/metro";
 
 interface SuburbFAQProps {
   suburb: Suburb;
@@ -28,8 +29,11 @@ export function SuburbFAQ({ suburb }: SuburbFAQProps) {
   // as fact here — this block feeds FAQPage JSON-LD, so a wrong figure
   // would surface directly in SERP snippets.
   if (hasReliablePrice(suburb)) {
+    // Truthy check on purpose: 0 is the service layer's "unknown /
+    // implausible, don't print" sentinel for growth — `!= null` was
+    // rendering "Annual growth is 0.0%" for those suburbs.
     const growth =
-      suburb.stats.annualGrowthHouse != null
+      suburb.stats.annualGrowthHouse
         ? ` Annual growth is ${formatPercentage(suburb.stats.annualGrowthHouse)}.`
         : "";
     const unit =
@@ -46,6 +50,18 @@ export function SuburbFAQ({ suburb }: SuburbFAQProps) {
   faqs.push({
     question: `What is the ${sn} postcode?`,
     answer: `${sn} is in the ${suburb.postcode} postcode, in ${suburb.state}${region ? `, in the ${region} region` : ""}.`,
+  });
+
+  // "Where is {suburb}?" — targets the huge "{suburb} {city}" navigational
+  // cluster (e.g. "sunnybank brisbane") that competitor suburb profiles
+  // rank top-10 for. Metro classification comes from postcode ranges, so
+  // it's phrased at greater-city granularity, never street-level claims.
+  const capital = capitalCityFor(suburb.state, suburb.postcode);
+  faqs.push({
+    question: `Where is ${sn}?`,
+    answer: capital
+      ? `${sn} is a suburb of ${capital.name}, in ${suburb.state} ${suburb.postcode}. It is part of the Greater ${capital.name} area${region ? `, in the ${region} region` : ""}.`
+      : `${sn} is a regional suburb in ${suburb.state}, postcode ${suburb.postcode}${region ? `, in the ${region} region` : ""}.`,
   });
 
   // Median rent

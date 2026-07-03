@@ -1,6 +1,7 @@
 import type { Property, Agent, Agency, BlogPost, Suburb } from "@/types";
 import { SITE_URL } from "@/lib/constants";
 import { hasReliablePrice } from "@/lib/suburb-data-quality";
+import { capitalCityFor } from "@/lib/utils/metro";
 
 export function absoluteUrl(path: string): string {
   return `${SITE_URL}${path}`;
@@ -28,7 +29,10 @@ export function suburbTitle(suburb: Suburb): string {
 }
 
 export function suburbBuyTitle(suburb: Suburb): string {
-  return `Houses for Sale in ${suburb.name} ${suburb.state} ${suburb.postcode}`;
+  // "Property", not "Houses": /buy lists every property type, and "Houses
+  // for Sale in {name}" is the /houses sub-page's title — sharing it made
+  // the two pages compete for the same query.
+  return `Property for Sale in ${suburb.name}, ${suburb.state} ${suburb.postcode}`;
 }
 
 export function suburbRentTitle(suburb: Suburb): string {
@@ -36,7 +40,7 @@ export function suburbRentTitle(suburb: Suburb): string {
 }
 
 export function suburbBuyDescription(suburb: Suburb): string {
-  return `Browse properties for sale in ${suburb.name} ${suburb.postcode}. Median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}. View listings and enquire today.`;
+  return `Browse all property for sale in ${suburb.name} ${suburb.postcode} — houses, units, townhouses and land. Median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}. View listings and enquire today.`;
 }
 
 export function suburbRentDescription(suburb: Suburb): string {
@@ -70,16 +74,21 @@ export function suburbDescription(suburb: Suburb): string {
   // fiction in the SERP snippet.
   const alias = directionalAlias(suburb.name);
   const aka = alias ? ` (also known as ${alias})` : "";
-  const lead = `${suburb.name}${aka}, ${suburb.state}'s postcode is ${suburb.postcode}.`;
+  // "{suburb} {city}" navigational queries ("sunnybank brisbane") dwarf the
+  // postcode cluster in volume; the city name otherwise never appears in
+  // the snippet, so metro suburbs carry it right after the postcode answer.
+  const capital = capitalCityFor(suburb.state, suburb.postcode);
+  const cityPhrase = capital ? `, in Greater ${capital.name}` : "";
+  const lead = `${suburb.name}${aka}, ${suburb.state}'s postcode is ${suburb.postcode}${cityPhrase}.`;
   const reliable = hasReliablePrice(suburb);
   const tail = reliable
     ? `Free suburb profile with the median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}, growth, schools, walkability, crime and current listings. No sign-up.`
     : `Free suburb profile: schools, walkability, climate, crime, demographics and current listings. No sign-up.`;
   const full = `${lead} ${tail}`;
-  // ~160 chars is the SERP truncation budget. The alias earns its keep more
-  // than the trailing feature list does, so when it pushes the description
-  // over budget we shorten the tail rather than drop the alias.
-  if (!alias || full.length <= 160) return full;
+  // ~160 chars is the SERP truncation budget. The alias and city phrase earn
+  // their keep more than the trailing feature list does, so when they push
+  // the description over budget we shorten the tail rather than drop them.
+  if ((!alias && !capital) || full.length <= 160) return full;
   const shortTail = reliable
     ? `Median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}, growth, schools and crime. No sign-up.`
     : `Suburb profile: schools, walkability, crime and demographics. No sign-up.`;

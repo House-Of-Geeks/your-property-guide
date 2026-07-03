@@ -28,6 +28,7 @@ const SINGLE_PAGE_SITEMAPS = [
   `${SITE_URL}/compare/sitemap.xml`,
   `${SITE_URL}/glossary/sitemap.xml`,
   `${SITE_URL}/market-reports/sitemap.xml`,
+  `${SITE_URL}/property-market/sitemap.xml`,
 ];
 
 // Paginated via generateSitemaps: suburbs/subpages/sitemap.ts splits the

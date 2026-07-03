@@ -5,6 +5,7 @@ interface SuburbContextualLinksProps {
     name: string;
     slug: string;
     state?: string;
+    postcode?: string;
     nearbySuburbs: string[];
   };
 }
@@ -50,7 +51,7 @@ function sellingLinksForState(state: string | undefined): { label: string; href:
 }
 
 export function SuburbContextualLinks({ suburb }: SuburbContextualLinksProps) {
-  const { name, slug, state, nearbySuburbs } = suburb;
+  const { name, slug, state, postcode, nearbySuburbs } = suburb;
   const nearby = nearbySuburbs.slice(0, 6);
   const buyingLinks = buyingLinksForState(state);
   const sellingLinks = sellingLinksForState(state);
@@ -108,6 +109,12 @@ export function SuburbContextualLinks({ suburb }: SuburbContextualLinksProps) {
               { label: `${name} suburb profile`,  href: `/suburbs/${slug}` },
               { label: `Schools in ${name}`,      href: `/suburbs/${slug}#schools` },
               { label: `Market data for ${name}`, href: `/suburbs/${slug}#market` },
+              // Postcode pages rank for "{suburb} postcode" queries but had
+              // zero inlinks from their member suburbs — this row gives every
+              // postcode page contextual internal equity from its suburbs.
+              ...(postcode
+                ? [{ label: `All suburbs in ${postcode}`, href: `/postcodes/${postcode}` }]
+                : []),
               { label: "Find a local agent",      href: `/agents?suburb=${slug}` },
               { label: "Get a free appraisal",   href: `/appraisal` },
             ].map((l) => (
