@@ -29,8 +29,16 @@ import { resolveSlug } from "../slug-matcher";
 
 const SOURCE_ID = "sales-abs";
 
-// States we update with ABS data (those without a dedicated free state source)
-const TARGET_STATES = new Set(["QLD", "WA", "NT", "TAS", "ACT"]);
+// States we update with ABS data (those without a dedicated free state
+// source). NSW added 2026-07-03: the assumption behind excluding it was a
+// dedicated Valuer General source ("sales-nsw") that was never actually
+// built, so NSW suburbs sat on untrusted seed values forever — the
+// data-quality gate suppressed every NSW median (and blanked the Sydney
+// /property-market page). ABS SA2 medians are annual but real, and
+// suburb-data-quality.ts already trusts "sales-abs". Swap NSW back out
+// if/when a true VG source lands. VIC/SA stay excluded: their dedicated
+// quarterly sources are better and must not be overwritten.
+const TARGET_STATES = new Set(["NSW", "QLD", "WA", "NT", "TAS", "ACT"]);
 
 // SA2 code first digit → state abbreviation (ASGS 2021)
 const SA2_STATE: Record<string, string> = {
