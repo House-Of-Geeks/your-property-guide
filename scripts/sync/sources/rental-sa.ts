@@ -96,9 +96,11 @@ export async function run(): Promise<void> {
       count++;
     }
 
+    // statsSource is sales provenance — rental must not stamp it (see
+    // rental-nsw.ts, same fix 2026-07-03).
     await prisma.suburb.updateMany({
       where: { state: "SA" },
-      data: { statsUpdatedAt: new Date(), statsSource: SOURCE_ID, rentalUpdatedAt: new Date() },
+      data: { statsUpdatedAt: new Date(), rentalUpdatedAt: new Date() },
     });
 
     await finishSync(SOURCE_ID, count, periodDate);

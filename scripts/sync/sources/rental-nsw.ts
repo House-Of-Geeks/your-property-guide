@@ -182,9 +182,13 @@ export async function run(): Promise<void> {
       count++;
     }
 
+    // NB: statsSource is the SALES provenance field (the data-quality gate
+    // keys off it) — a rental sync must never stamp it. Doing so blanket-
+    // clobbered every NSW suburb's sales label weekly and suppressed all
+    // NSW medians. Fixed 2026-07-03.
     await prisma.suburb.updateMany({
       where: { state: "NSW" },
-      data:  { statsUpdatedAt: new Date(), statsSource: SOURCE_ID, rentalUpdatedAt: new Date() },
+      data:  { statsUpdatedAt: new Date(), rentalUpdatedAt: new Date() },
     });
 
     await finishSync(SOURCE_ID, count, parsed.periodDate);
