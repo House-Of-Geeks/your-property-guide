@@ -48,6 +48,7 @@ Your Property Guide covers four broad categories of content:
 - [Browse by postcode](https://www.yourpropertyguide.com.au/postcodes): Every Australian postcode.
 - [Suburb price guide](https://www.yourpropertyguide.com.au/price-guide): Compare median house and unit prices across all suburbs.
 - [Market reports](https://www.yourpropertyguide.com.au/market-reports): State-by-state quarterly property market reports.
+- [Capital-city property markets](https://www.yourpropertyguide.com.au/property-market): Median house prices, growth and suburb rankings for Sydney, Melbourne, Brisbane, Perth, Adelaide, Hobart, Canberra and Darwin, at /property-market/[city].
 - [RBA cash rate history](https://www.yourpropertyguide.com.au/rba-cash-rate): Every RBA cash rate decision and its impact on property prices.
 - [Schools](https://www.yourpropertyguide.com.au/schools): 9,600+ Australian schools with catchments and ICSEA scores.
 
@@ -70,6 +71,12 @@ Your Property Guide covers four broad categories of content:
 - [The Complete Guide to Selling Your Property in Australia (free PDF)](https://www.yourpropertyguide.com.au/selling-guide): 10-chapter selling guide covering costs by state, agent selection, auction vs private treaty, legals, and a 12-week timeline. Free download, personalised to the reader's suburb.
 - [How to choose a selling agent](https://www.yourpropertyguide.com.au/guides/how-to-choose-a-selling-agent): Interview process, the appraisal-price trap, the listing agreement.
 - [Real estate agent fees in Australia](https://www.yourpropertyguide.com.au/guides/real-estate-agent-fees-australia): Commission rates by state, marketing costs, what's negotiable.
+- [How to prepare for a property appraisal](https://www.yourpropertyguide.com.au/guides/how-to-prepare-for-a-property-appraisal): What agents assess, paperwork to have ready, pre-appraisal checklist.
+- [Questions to ask a real estate agent](https://www.yourpropertyguide.com.au/guides/questions-to-ask-a-real-estate-agent): The 20+ questions that separate a great agent from a good talker.
+- [Auction vs private treaty](https://www.yourpropertyguide.com.au/guides/auction-vs-private-treaty): How each method works, cost differences, and a decision framework.
+- [Home staging costs in Australia](https://www.yourpropertyguide.com.au/guides/home-staging-cost-australia): Full and partial styling costs by city, and when staging isn't worth it.
+- [What to fix before selling](https://www.yourpropertyguide.com.au/guides/what-to-fix-before-selling-a-house): Repairs that return money vs renovations that don't.
+- [How to negotiate agent commission](https://www.yourpropertyguide.com.au/guides/how-to-negotiate-real-estate-agent-commission): What's negotiable, tiered structures, scripts for the conversation.
 - [Sell first or buy first?](https://www.yourpropertyguide.com.au/guides/sell-first-or-buy-first): Decision tree across the three options, with worked examples.
 - [Bridging loans Australia](https://www.yourpropertyguide.com.au/guides/bridging-loans-guide): Peak debt, end debt, capitalised interest.
 - [Downsizers guide](https://www.yourpropertyguide.com.au/guides/downsizers-guide): When to downsize, super contribution rules.

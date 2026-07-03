@@ -2,6 +2,65 @@ import type { BlogPost } from "@/types";
 
 export const blogPosts: BlogPost[] = [
   {
+    id: "blog-winter-property-market-wrap-july-2026",
+    slug: "winter-property-market-wrap-july-2026",
+    title: "Winter market wrap: a quiet July, and why spring sellers should start now",
+    excerpt: "Australia's property market has settled into its winter lull, with clearance rates under 50%, auction volumes thinning and no RBA decision until 11 August. For anyone planning a spring sale, the quiet weeks between now and September are the preparation window.",
+    content: `<p>Australia's property market has settled into its winter rhythm. Auction volumes are thinning, clearance rates are sitting below half, and because the Reserve Bank does not meet in July, the next cash rate decision will not arrive until <strong>11 August</strong>. After a first half of the year dominated by three rate rises and cooling buyer demand, the market has gone quiet.</p>
+
+<p>Quiet is not the same as unimportant. The first day of spring is a little over eight weeks away, and the September to November selling season is traditionally the busiest of the year. Preparing a home for market takes longer than most sellers expect, which means the decisions that shape a spring result get made in July, not September. Here is where the market sits at mid-year, and how to use the lull if a spring sale is on your radar.</p>
+
+<h2>Where the market sits at mid-year</h2>
+
+<p>The cash rate is at <strong>4.35%</strong> after increases in February, March and May, which together fully reversed the cuts of 2025. The Reserve Bank held in June, and with no July meeting on the calendar, borrowers get a genuine breather until 11 August. The big banks remain split on what comes next: ANZ, CBA and NAB judge the cash rate has likely peaked, while Westpac still sees room for further increases if inflation stays hot. You can follow every move on our <a href="/rba-cash-rate">RBA cash rate tracker</a>.</p>
+
+<p>Those higher rates have clearly cooled demand. The national preliminary auction clearance rate recently slipped to <strong>47.4%</strong>, the weakest reading since April 2020, and scheduled auction volumes have eased below 1,500 as winter sets in. Meanwhile the rental market remains stubbornly tight, with national vacancy at <strong>1.2%</strong> and advertised rents up about 7.8% over the year. In short: buyers have regained negotiating power on the sales side, while renters are still doing it tough.</p>
+
+<h2>The winter lull is real, and it cuts both ways</h2>
+
+<p>Winter is traditionally one of the quietest stretches of the property calendar, alongside the Christmas holidays. Fewer homes are listed, open home crowds shrink, and campaigns stretch out. This year the seasonal slowdown is amplified by the rate rises, which have trimmed what buyers can borrow and made them more deliberate.</p>
+
+<p>But a thin market is not automatically a bad one to sell in. The buyers who brave July inspections tend to be serious, and with fewer competing listings, a well-presented home can stand out in a way it never would in a crowded spring. As our guide to the <a href="/guides/best-time-to-sell-a-house-australia">best time to sell a house in Australia</a> puts it, a prepared home in a quiet season beats an unprepared one in a busy season, every time. If you need to sell now, the playbook is presentation, the right agent and realistic pricing, not waiting for a better month.</p>
+
+<h2>Spring is closer than it feels</h2>
+
+<p>For everyone else, the calendar maths matters. Spring officially starts on 1 September, and listings historically build through September into October and November as sellers chase the biggest buyer audience of the year. What catches people out is how much has to happen before a campaign can launch.</p>
+
+<p>Working backwards from a September listing: professional photography is usually shot a week or two before the campaign goes live. Styling, decluttering and any painting, repairs or garden work sit before that, and trades and stylists get busier as spring approaches. Before any of that starts, you need to choose an agent, and before you can choose well, you need a clear-eyed view of what your home is worth. Each step is quick on its own. Stacked together, they comfortably fill the eight or so weeks between now and the season opener.</p>
+
+<h2>A working-backwards plan for a spring sale</h2>
+
+<ul>
+<li><strong>Now: get your number.</strong> Start with a <a href="/appraisal">free property appraisal</a> so your plans rest on today's evidence rather than a guess or an old estimate. Our guide on <a href="/guides/how-much-is-my-house-worth-australia">how much your house is worth</a> explains how to read the appraisal and the comparable sales behind it.</li>
+<li><strong>Mid-July: shortlist and choose your agent.</strong> Interview two or three agents who genuinely sell in your suburb and compare their track records, campaign plans and fees. Our guide on <a href="/guides/how-to-choose-a-selling-agent">how to choose a selling agent</a> covers the questions worth asking.</li>
+<li><strong>Late July and August: repairs, presentation, styling.</strong> Knock over the honest-to-do list first, the dripping tap, the scuffed walls, the tired front entrance, then declutter and book styling if you are using it. Budget for all of it with our breakdown of the <a href="/guides/cost-of-selling-a-house-australia">cost of selling a house</a>.</li>
+<li><strong>Late August: photography and campaign launch.</strong> With the home ready, shoot the photos and let your agent build the campaign so you list into the September market rather than scrambling to catch it.</li>
+</ul>
+
+<p>None of this locks you in. An appraisal and an agent conversation in July cost you nothing and commit you to nothing, but they turn a vague spring intention into a real plan with dates attached. Our <a href="/selling-guide">selling guide</a> walks the full journey from first appraisal to settlement if you want the complete picture.</p>
+
+<h2>Buying through the quiet patch</h2>
+
+<p>For buyers, winter's thinner competition is an opening. With the national clearance rate under 50%, more properties are passing in and more vendors are open to negotiation, including strong offers made before auction day. The trade-off is less choice, and the certainty that competition picks up again once spring stock arrives.</p>
+
+<p>Queensland first home buyers should note one change that landed this week: the boosted <strong>$30,000 First Home Owner Grant</strong> for new homes ended on 30 June 2026, and contracts signed from 1 July receive the standard <strong>$15,000</strong>. The state's zero transfer duty for first home buyers on new homes and vacant land is ongoing and unaffected. Wherever you are buying, three rate rises this year mean your borrowing capacity has likely changed, so run your numbers through the <a href="/borrowing-power-calculator">borrowing power calculator</a> before you make an offer.</p>
+
+<h2>What it means for you</h2>
+
+<ul>
+<li><strong>Spring sellers: start now.</strong> The 1 September season opener is a little over eight weeks away, and appraisals, agent selection, repairs and styling fill that window quickly. Begin with a <a href="/appraisal">free appraisal</a> this month.</li>
+<li><strong>Sellers who cannot wait:</strong> quiet-season buyers are serious and competing stock is thin. Presentation and evidence-based pricing matter more than the month, and our <a href="/selling-guide">selling guide</a> covers both.</li>
+<li><strong>Buyers:</strong> a sub-50% clearance rate means real negotiating room this winter, especially via pre-auction offers, but expect more competition once spring listings build.</li>
+<li><strong>Everyone watching rates:</strong> there is no RBA decision in July. The next one lands on 11 August, so the settings you see today are the settings you plan around.</li>
+</ul>`,
+    coverImage: "/images/blog/cover-winter-property-market-wrap-july-2026.jpg",
+    author: { name: "Bec Ramirez", image: "/images/agents/bec-ramirez.jpg" },
+    category: "Market Update",
+    tags: ["winter property market","spring selling season","selling a house","property appraisal","auction clearance rates","interest rates","first home buyers","2026"],
+    publishedAt: "2026-07-03",
+    readingTime: 7,
+  },
+  {
     id: "blog-australian-rents-record-highs-mid-2026",
     slug: "australian-rents-record-highs-mid-2026",
     title: "Rents climb toward record highs as vacancies stay tight",
@@ -640,27 +699,29 @@ export const blogPosts: BlogPost[] = [
   {
     id: "blog-stamp-duty-queensland",
     slug: "stamp-duty-queensland-what-you-need-to-know",
-    title: "Stamp Duty in Queensland: What You Need to Know",
+    title: "Stamp Duty in Queensland: What You Need to Know in 2026",
     excerpt:
-      "A clear breakdown of Queensland stamp duty rates, concessions, and exemptions to help you budget for your property purchase.",
-    content: `<p>Stamp duty, officially known as transfer duty in Queensland, is one of the most significant costs associated with purchasing property, yet it's often the expense that catches buyers off guard. Understanding how stamp duty is calculated, what concessions are available, and how to factor it into your budget can save you thousands of dollars and prevent last-minute financial stress. Here's everything you need to know about stamp duty in Queensland for 2025.</p>
+      "Queensland transfer duty at a glance for 2026: what a standard buyer pays, where first home buyers pay $0, and where to get an exact figure for your purchase.",
+    content: `<p><em>Editor's note (July 2026): this article was originally published in October 2024 and has been updated. Queensland's transfer duty concessions have changed since then, so the figures below reflect the current rules. For the full rates table, worked examples and eligibility detail, see our dedicated <a href="/guides/stamp-duty-qld">Queensland stamp duty guide</a>.</em></p>
 
-<h2>How Is Stamp Duty Calculated?</h2>
-<p>Queensland stamp duty is calculated on a sliding scale based on the purchase price or market value of the property, whichever is higher. For a typical Moreton Bay house purchase of $650,000, the stamp duty would be approximately $14,175. The rate increases progressively: properties up to $350,000 attract lower rates, while properties above $1 million face the highest marginal rates. It's important to note that stamp duty is paid at settlement, so it needs to be factored into your available funds alongside your deposit and other settlement costs.</p>
+<p>Stamp duty, officially called transfer duty in Queensland, is the biggest upfront government cost in a property purchase after your deposit, and it is still the expense that catches buyers off guard. Here is the current picture in brief, and where to go for the full detail.</p>
 
-<h2>Concessions and Exemptions</h2>
-<p>Queensland offers several stamp duty concessions that can significantly reduce the amount you pay. First home buyers purchasing a property valued at up to $700,000 may be eligible for a full stamp duty concession, saving up to $17,350. A partial concession applies for properties valued between $700,000 and $800,000. Additionally, the home concession rate applies to any buyer who intends to use the property as their principal place of residence, reducing the duty compared to the standard investment rate. Foreign buyers should be aware that an additional 8% surcharge applies to their purchases.</p>
+<h2>What a standard buyer pays</h2>
+<p>Queensland transfer duty is tiered, so each slice of the price is taxed at its own rate. For a standard owner-occupier, that works out to about <strong>$22,275 on a $650,000 home</strong> and about <strong>$38,025 on a $1,000,000 home</strong>. The duty is normally settled at or before settlement, so it needs to be ready alongside your deposit and conveyancing costs. For an exact figure on your price, use our <a href="/stamp-duty-calculator">stamp duty calculator</a>.</p>
 
-<h2>Budgeting Tips</h2>
+<h2>Where first home buyers pay $0</h2>
+<p>Eligible first home buyers get a full concession on established homes up to <strong>$700,000</strong>, meaning they pay no transfer duty at all at or below that price. The concession phases out between $700,000 and $800,000, and above $800,000 standard duty applies with no first home discount. That cliff matters: an eligible buyer at $700,000 pays nothing, while one at $800,000 pays the full $29,025.</p>
+
+<p>Buying or building new is even more generous. Since 1 May 2025, eligible first home buyers pay <strong>zero transfer duty on new homes and on vacant land</strong>, and the new-home concession has no price cap. A separate first home vacant land concession also applies up to $500,000 under the general rules. Our <a href="/guides/first-home-buyer-qld">Queensland first home buyer guide</a> walks through eligibility and how these stack with the First Home Owner Grant.</p>
+
+<h2>Other points worth knowing</h2>
 <ul>
-<li>Use the Queensland Government's online transfer duty estimator to calculate your expected stamp duty before making an offer</li>
-<li>Remember that stamp duty is payable within 30 days of settlement, your conveyancer typically handles this</li>
-<li>Factor stamp duty into your total purchase budget alongside legal fees, inspections, and moving costs</li>
-<li>If you're a first home buyer, check your eligibility for concessions early in the process</li>
-<li>Consider that vacant land attracts different duty rates compared to established properties</li>
+<li><strong>Foreign buyers pay a surcharge.</strong> An additional 8% foreign acquirer duty applies on top of standard transfer duty.</li>
+<li><strong>The buyer pays, not the seller,</strong> and your conveyancer normally calculates and arranges payment as part of settlement.</li>
+<li><strong>Rates and thresholds change.</strong> Confirm current figures with the Queensland Revenue Office or your conveyancer before you rely on any number.</li>
 </ul>
 
-<p>Stamp duty can add a substantial amount to your property purchase, but with proper planning and awareness of available concessions, you can minimise its impact on your budget. Speak with your mortgage broker or conveyancer early in the buying process to ensure stamp duty is properly accounted for in your financial plan.</p>`,
+<p>For the full rates table, worked examples across price points and the fine print on concessions, head to our complete <a href="/guides/stamp-duty-qld">Queensland stamp duty guide</a>, then run your own numbers through the <a href="/stamp-duty-calculator">calculator</a> so your cash-to-buy figure is right before you make an offer.</p>`,
     coverImage: "/images/blog/cover-stamp-duty-queensland-what-you-need-to-know.jpg",
     author: {
       name: "Bec Ramirez",
@@ -675,7 +736,8 @@ export const blogPosts: BlogPost[] = [
       "property costs",
     ],
     publishedAt: "2024-10-05",
-    readingTime: 5,
+    updatedAt: "2026-07-03",
+    readingTime: 3,
   },
   {
     id: "blog-house-and-land-packages",

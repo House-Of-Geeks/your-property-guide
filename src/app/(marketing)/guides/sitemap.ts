@@ -69,6 +69,12 @@ const GUIDE_SLUGS = [
   "how-to-choose-a-selling-agent",
   "how-much-is-my-house-worth-australia",
   "real-estate-agent-fees-australia",
+  "how-to-prepare-for-a-property-appraisal",
+  "questions-to-ask-a-real-estate-agent",
+  "auction-vs-private-treaty",
+  "home-staging-cost-australia",
+  "what-to-fix-before-selling-a-house",
+  "how-to-negotiate-real-estate-agent-commission",
   // Real estate commission by state
   "real-estate-commission-nsw",
   "real-estate-commission-vic",

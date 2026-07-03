@@ -22,7 +22,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "The First Home Owner Grant is a state grant, not federal. See FHOG amounts, price caps and eligibility for every state and territory, plus links to each state's detailed guide.",
   slug: "first-home-owner-grant-australia",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-06-14",
+  updatedAt: "2026-07-03",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
 const TLDR = [
   "The First Home Owner Grant (FHOG) is a state and territory grant, not a federal scheme. Each state runs its own version with its own amount, price cap and rules.",
   "The grant generally applies to new homes only: newly built, off-the-plan, or substantially renovated properties. Established homes do not qualify in most states.",
-  "Amounts range from no flat grant in the ACT, through $10,000 in NSW, WA and NT, up to $30,000 for new builds in Queensland and Tasmania.",
+  "Amounts range from no flat grant in the ACT, through $10,000 in NSW, WA and NT, to $15,000 in Queensland and SA. Queensland's boosted $30,000 grant ended for contracts signed after 30 June 2026.",
   "Price caps vary by state and apply to the contract price. Even a dollar over the cap can disqualify the whole grant, so plan well under.",
   "The FHOG usually stacks with first home buyer stamp duty concessions and federal schemes like the First Home Guarantee, which can save eligible buyers tens of thousands.",
   "Scheme rules, amounts and caps change. Verify the current figure with your state revenue office before you sign anything.",
@@ -76,7 +76,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How much is the First Home Owner Grant in NSW, Queensland and Victoria?",
     answer:
-      "NSW pays $10,000 on eligible new homes. Queensland pays up to $30,000 for new builds, though that boosted amount steps down over time, so check the current figure with the Queensland Revenue Office. Victoria pays $10,000 for new homes in metropolitan areas and $20,000 for new homes in regional Victoria. All three apply to new homes only and carry their own price caps, so confirm the current amount and cap with the relevant state revenue office before you rely on it.",
+      "NSW pays $10,000 on eligible new homes. Queensland pays $15,000 for new builds; its boosted $30,000 grant only applied to contracts signed between 20 November 2023 and 30 June 2026, so contracts from 1 July 2026 receive $15,000. Victoria pays $10,000 for new homes in metropolitan areas and $20,000 for new homes in regional Victoria. All three apply to new homes only and carry their own price caps, so confirm the current amount and cap with the relevant state revenue office before you rely on it.",
   },
   {
     question: "Can you get the FHOG on an established home?",
@@ -133,8 +133,8 @@ export default function FirstHomeOwnerGrantAustraliaPage() {
           The most common mix-up we see is treating the First Home Owner Grant as
           one national payment. It isn&rsquo;t. It&rsquo;s eight different grants
           run by eight different governments, and the gap between them is large:
-          the same buyer might get nothing in the ACT and $30,000 over the
-          border. The grant also gets confused with the federal First Home
+          the same buyer might get nothing in the ACT and $15,000 or more over
+          the border. The grant also gets confused with the federal First Home
           Guarantee, which is a separate thing entirely. Sort out which state
           you&rsquo;re buying in first, then read that state&rsquo;s rules.
         </p>
@@ -156,8 +156,8 @@ export default function FirstHomeOwnerGrantAustraliaPage() {
       </p>
 
       <KeyFigure
-        value="$0–$30k"
-        label="The FHOG ranges from no flat grant in the ACT up to $30,000 for new builds in Queensland and Tasmania."
+        value="$0–$20k"
+        label="The FHOG ranges from no flat grant in the ACT up to $20,000 for new builds in regional Victoria. Queensland's boosted $30,000 grant reverted to $15,000 for contracts signed from 1 July 2026."
         context="State grant, new homes only, amounts and caps change"
       />
 
@@ -193,7 +193,7 @@ export default function FirstHomeOwnerGrantAustraliaPage() {
           </tr>
           <tr>
             <td><strong>QLD</strong></td>
-            <td>Up to $30,000 (steps down, check current)</td>
+            <td>$15,000 ($30,000 for contracts signed 20 Nov 2023 – 30 Jun 2026)</td>
             <td>New builds</td>
             <td><Link href="/guides/first-home-buyer-qld">QLD guide</Link></td>
           </tr>
@@ -230,13 +230,14 @@ export default function FirstHomeOwnerGrantAustraliaPage() {
         </tbody>
       </table>
 
-      <Callout variant="info" title="Queensland and Tasmania can step down">
+      <Callout variant="info" title="Queensland's boost ended on 30 June 2026">
         <p>
-          Both Queensland and Tasmania have offered boosted grants of up to
-          $30,000 for new builds, but these higher amounts are tied to set time
-          windows and revert to lower figures. If you are buying in either state,
-          confirm the exact amount that applies to your contract date with the
-          state revenue office.
+          Queensland&rsquo;s boosted $30,000 grant applied to eligible contracts
+          signed between 20 November 2023 and 30 June 2026. Contracts signed
+          from 1 July 2026 receive $15,000. Tasmania&rsquo;s boosted $30,000
+          grant was also tied to a set window, so if you are buying in either
+          state, confirm the exact amount that applies to your contract date
+          with the state revenue office.
         </p>
       </Callout>
 
