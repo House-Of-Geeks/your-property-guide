@@ -21,9 +21,11 @@ import { HomeSuburbSearch } from "./HomeSuburbSearch";
 export const revalidate = 86400;
 
 // Metadata title aligned with the education-led positioning. Leads
-// with "plain-English guides" — the differentiator — then the scope
-// (calculators, suburb profiles). Brand appended by root template.
-const META_TITLE = "Plain-English Australian property guides, calculators & suburb profiles";
+// with "plain-English guides" — the differentiator — then the scope.
+// Brand appended by root template. Calculators moved to the description:
+// with the brand suffix the old title ran 93 chars and SERPs truncated
+// mid-word (Lighthouse title_too_long).
+const META_TITLE = "Plain-English Australian property guides & suburb profiles";
 const META_DESCRIPTION = "Sixty plain-English guides on Australian property: schemes, stamp duty, finance, settlement, investing, renovating. Every calculator. Suburb profiles. Free, no sign-up.";
 
 export const metadata: Metadata = {
