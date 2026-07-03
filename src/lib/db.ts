@@ -26,7 +26,14 @@ function isTransientConnectionError(err: unknown): boolean {
     msg.includes("connection closed") ||
     msg.includes("connection is closed") ||
     msg.includes("connection ended") ||
-    msg.includes("econnreset")
+    msg.includes("econnreset") ||
+    // Postgres turning away a new client ("sorry, too many clients
+    // already") during a crawl burst. Another instance usually frees a
+    // slot within the backoff window, so a retry converts a 500 into a
+    // slow 200. Seen 2026-07-03 when an IndexNow submission pointed a
+    // crawl wave at a fresh deploy's cold ISR caches.
+    msg.includes("too many clients already") ||
+    msg.includes("too many database connections")
   );
 }
 
@@ -54,8 +61,16 @@ function createClient() {
   const isBuild = process.env.NEXT_PHASE === "phase-production-build";
   const pool = new Pool({
     connectionString: process.env.DATABASE_URL!,
-    max: isBuild ? 10 : 2,
-    idleTimeoutMillis: 30_000,
+    // Runtime max dropped 2 → 1 (2026-07-03): a crawl wave over cold ISR
+    // caches spawns 100+ concurrent instances, and 2 × instances blew
+    // through Postgres' connection ceiling (P2037) even after the earlier
+    // 10 → 2 fix. One request per instance means queries inside a render's
+    // Promise.all serialise on the single connection — tens of ms each, no
+    // approach to the 5s acquisition timeout.
+    max: isBuild ? 10 : 1,
+    // Idle instances must hand their slot back quickly once a burst moves
+    // on; 30s of squatting per instance was a third of the ceiling gone.
+    idleTimeoutMillis: isBuild ? 30_000 : 10_000,
     connectionTimeoutMillis: isBuild ? 30_000 : 5_000,
   });
 
