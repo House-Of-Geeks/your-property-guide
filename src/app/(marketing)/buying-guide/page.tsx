@@ -213,8 +213,12 @@ export default function BuyingGuidePage() {
             <div className="rise rise-d2 lg:col-span-6 lg:sticky lg:top-24">
               {/* data-funnel-card drives the #get-the-guide:target ping
                   (the buying funnel card doesn't carry it internally).
-                  rounded-2xl keeps the ping ring on the card's corners. */}
-              <div data-funnel-card className="rounded-2xl">
+                  rounded-2xl keeps the ping ring on the card's corners.
+                  relative z-10: the suburb autocomplete's dropdown must
+                  paint OVER the backdrop-blur card below — a later sibling
+                  with its own stacking context that otherwise buries the
+                  suggestion list (same fix as the selling page). */}
+              <div data-funnel-card className="relative z-10 rounded-2xl">
                 <Suspense fallback={<div className="text-sm text-ink-muted">Loading…</div>}>
                   <BuyingGuideFunnel source="buying-guide-page" />
                 </Suspense>

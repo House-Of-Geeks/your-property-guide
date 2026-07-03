@@ -225,9 +225,16 @@ export default function SellingGuidePage() {
             </div>
 
             <div className="rise rise-d2 lg:col-span-6 lg:sticky lg:top-24">
-              <Suspense fallback={<div className="text-sm text-ink-muted">Loading…</div>}>
-                <SellingGuideFunnel source="selling-guide-page" />
-              </Suspense>
+              {/* relative z-10: the suburb autocomplete's dropdown must
+                  paint OVER the backdrop-blur card below — that card is a
+                  later sibling with its own stacking context (backdrop
+                  filters create one), so without an explicit z the DOM
+                  order buried the suggestion list under it. */}
+              <div className="relative z-10">
+                <Suspense fallback={<div className="text-sm text-ink-muted">Loading…</div>}>
+                  <SellingGuideFunnel source="selling-guide-page" />
+                </Suspense>
+              </div>
 
               {/* Fills the column under the funnel card (the left pitch
                   runs taller) with the path ahead instead of dead space. */}
