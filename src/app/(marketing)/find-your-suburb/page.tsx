@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
+import { ExpertCTA, BUYING_GUIDE_CTA } from "@/components/journey";
 import {
   findMatchingSuburbs,
   priorityLabel,
@@ -438,6 +439,10 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
           </div>
         </section>
       )}
+
+      {/* Funnel exit: quiz-takers just told us their criteria — highest
+          buyer intent on the site outside the funnels themselves. */}
+      <ExpertCTA {...BUYING_GUIDE_CTA} />
     </>
   );
 }

@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
+import { ExpertCTA, BUYING_GUIDE_CTA } from "@/components/journey";
 import {
   getTopSuburbsByState,
   getTopComparisonPairsByState,
@@ -292,6 +293,10 @@ export default async function ComparePage() {
           </div>
         </div>
       </section>
+
+      {/* Funnel exit: comparison shoppers are deep-research buyers — the
+          tool previously dead-ended with no path to a lead form. */}
+      <ExpertCTA {...BUYING_GUIDE_CTA} />
     </>
   );
 }

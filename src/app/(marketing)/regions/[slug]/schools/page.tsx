@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { GraduationCap } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
+import { ExpertCTA, BUYING_GUIDE_CTA } from "@/components/journey";
 import { getRegionBySlug, getRegionSuburbs } from "@/lib/services/region-service";
 import { getSchoolsByRegion, makeSchoolSlug } from "@/lib/services/school-service";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
@@ -291,6 +292,10 @@ export default async function RegionSchoolsPage({ params }: RegionSchoolsPagePro
 
         <p className="text-xs text-gray-400 mt-6 px-1">© ACARA, licensed under CC BY 4.0.</p>
       </div>
+
+      {/* Funnel exit: families researching schools by region are buyers
+          mid-shortlist — this template had no path to a lead form. */}
+      <ExpertCTA {...BUYING_GUIDE_CTA} />
     </div>
   );
 }
