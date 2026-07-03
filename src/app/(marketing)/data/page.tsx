@@ -158,7 +158,7 @@ export default async function DataPage() {
     {
       heading: "People",
       rows: [
-        { value: formatCount(c.agents),   label: "Real estate agents", source: "State licensing registers",       context: "Active agents with listing and sales history.", href: "/agents" },
+        { value: formatCount(c.agents),   label: "Real estate agents", source: "State licensing registers",       context: "Active agents with listing and sales history.", href: "/find-an-expert" },
         { value: formatCount(c.agencies), label: "Real estate agencies", source: "State licensing registers",     context: "Agencies operating across Australia.", href: "/real-estate-agencies" },
       ],
     },

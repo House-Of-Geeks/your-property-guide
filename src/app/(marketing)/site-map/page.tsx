@@ -127,8 +127,8 @@ const SECTIONS: Section[] = [
     links: [
       { label: "Find an expert",        href: "/find-an-expert" },
       { label: "Get a free appraisal",  href: "/appraisal" },
-      { label: "Browse local agents",   href: "/agents" },
-      { label: "Browse local agencies", href: "/real-estate-agencies" },
+      // Agent/agency directory rows removed while the directory is paused
+      // (placeholder profiles only) per Andy, 2026-07-03.
     ],
   },
   {

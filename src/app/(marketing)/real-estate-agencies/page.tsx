@@ -26,6 +26,9 @@ export async function generateMetadata({ searchParams }: AgenciesPageProps): Pro
     ? `Find real estate agencies in ${suburbName}.`
     : "Find local real estate agencies across Australia. Compare agencies, view agent teams, and explore listings.";
   return {
+    // Directory paused (placeholder profiles only) per Andy, 2026-07-03 —
+    // pages stay reachable but out of the index until real agents load.
+    robots: { index: false, follow: true },
     title,
     description,
     alternates: { canonical: `${SITE_URL}/real-estate-agencies` },

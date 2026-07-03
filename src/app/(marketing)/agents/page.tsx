@@ -14,6 +14,9 @@ export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Find a Real Estate Agent",
+    // Directory paused (placeholder profiles only) per Andy, 2026-07-03 —
+    // pages stay reachable but out of the index until real agents load.
+    robots: { index: false, follow: true },
   description: "Browse experienced local real estate agents across Australia.",
   alternates: { canonical: `${SITE_URL}/agents` },
   openGraph: { url: `${SITE_URL}/agents`, title: "Find a Real Estate Agent", description: "Browse experienced local real estate agents across Australia.", type: "website" },

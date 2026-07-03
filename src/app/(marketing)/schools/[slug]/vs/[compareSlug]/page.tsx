@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ChevronRight, GraduationCap } from "lucide-react";
 import { getSchoolBySlug } from "@/lib/services/school-service";
 import { BreadcrumbJsonLd, EducationalOrganizationJsonLd } from "@/components/seo";
+import { ExpertCTA, BUYING_GUIDE_CTA } from "@/components/journey";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
@@ -416,6 +417,10 @@ export default async function SchoolVsPage({ params }: SchoolVsPageProps) {
 
         <p className="text-xs text-gray-400 mt-6 px-1">© ACARA, licensed under CC BY 4.0.</p>
       </div>
+
+      {/* Funnel exit: school comparisons are high buyer intent (families
+          shortlisting where to move) but had no path to a lead form. */}
+      <ExpertCTA {...BUYING_GUIDE_CTA} />
     </div>
   );
 }

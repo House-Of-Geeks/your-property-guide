@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, DefinedTermJsonLd } from "@/components/seo";
+import { ExpertCTA, BUYING_GUIDE_CTA } from "@/components/journey";
 import { GLOSSARY_TERMS, getGlossaryTerm } from "@/lib/data/glossary";
 import { SITE_URL } from "@/lib/constants";
 
@@ -280,6 +281,10 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
           </div>
         </div>
       </article>
+
+      {/* Funnel exit: glossary terms were sitemapped in 9aa8e65 and were
+          the last growing template with no path to a lead form. */}
+      <ExpertCTA {...BUYING_GUIDE_CTA} />
     </>
   );
 }

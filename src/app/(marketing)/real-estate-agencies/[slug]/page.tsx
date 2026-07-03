@@ -57,6 +57,9 @@ export async function generateMetadata({ params }: AgencyDetailPageProps): Promi
   const description = agency.metaDescription ?? agency.description.slice(0, 155);
   const image       = agency.ogImage         ?? absoluteUrl(agency.logo);
   return {
+    // Directory paused (placeholder profiles only) per Andy, 2026-07-03 —
+    // pages stay reachable but out of the index until real agents load.
+    robots: { index: false, follow: true },
     title,
     description,
     alternates: { canonical: `${SITE_URL}/real-estate-agencies/${slug}` },

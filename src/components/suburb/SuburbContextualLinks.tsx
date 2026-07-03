@@ -115,7 +115,10 @@ export function SuburbContextualLinks({ suburb }: SuburbContextualLinksProps) {
               ...(postcode
                 ? [{ label: `All suburbs in ${postcode}`, href: `/postcodes/${postcode}` }]
                 : []),
-              { label: "Find a local agent",      href: `/agents?suburb=${slug}` },
+              // Points at the match funnel, not /agents — the agent
+              // directory is paused (placeholder profiles only) per Andy,
+              // 2026-07-03, and the funnel converts better anyway.
+              { label: "Find a local expert",     href: `/find-an-expert?suburb=${slug}` },
               { label: "Get a free appraisal",   href: `/appraisal` },
             ].map((l) => (
               <li key={l.href}>

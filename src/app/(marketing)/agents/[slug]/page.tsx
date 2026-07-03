@@ -24,6 +24,9 @@ export async function generateMetadata({ params }: AgentProfilePageProps): Promi
   const description = agent.metaDescription ?? agentDescription(agent);
   const image       = agent.ogImage         ?? absoluteUrl(agent.image);
   return {
+    // Directory paused (placeholder profiles only) per Andy, 2026-07-03 —
+    // pages stay reachable but out of the index until real agents load.
+    robots: { index: false, follow: true },
     title,
     description,
     alternates: { canonical: `${SITE_URL}/agents/${slug}` },

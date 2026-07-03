@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { Zap, Users, ShieldCheck, BadgeCheck } from "lucide-react";
 
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -138,11 +137,7 @@ export default function ForAgentsPage() {
           </div>
 
           <p className="mt-10 text-sm text-ink-muted max-w-2xl">
-            We also run{" "}
-            <Link href="/agents" className="text-ink underline decoration-line-strong underline-offset-2 hover:text-primary hover:decoration-primary transition-colors">
-              agent profiles
-            </Link>{" "}
-            across the site. Partner agents appear on the suburb pages their
+            We also run agent profiles across the site. Partner agents appear on the suburb pages their
             patch covers, which is where sellers are already reading.
           </p>
         </div>

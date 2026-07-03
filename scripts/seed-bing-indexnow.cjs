@@ -29,8 +29,6 @@ const INCLUDE_CHILDREN = [
   "house-and-land",
   "suburbs",
   "suburbs/streets",
-  "agents",
-  "real-estate-agencies",
   "guides",
   "schools",
   "postcodes",
