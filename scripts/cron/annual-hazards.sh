@@ -11,4 +11,9 @@ run hazard-bushfire
 run walkability
 run bom-climate
 
+# Tell IndexNow-participating engines which suburb/postcode pages changed
+# this run (non-fatal; skips itself if INDEXNOW_KEY is unset).
+echo "::: indexnow-ping :::"
+npx tsx scripts/sync/indexnow-ping.ts 48 || echo "!!! indexnow-ping failed (non-fatal)"
+
 echo "annual hazards run finished"
