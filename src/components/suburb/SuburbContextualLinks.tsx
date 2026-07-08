@@ -36,14 +36,21 @@ function buyingLinksForState(state: string | undefined): { label: string; href: 
   ];
 }
 
+// States with a dedicated commission guide at /guides/real-estate-commission-{slug}.
+const COMMISSION_GUIDE_STATES = new Set(["nsw", "vic", "qld", "wa", "sa", "tas", "act", "nt"]);
+
 function sellingLinksForState(state: string | undefined): { label: string; href: string }[] {
   const stateUpper = (state ?? "").toUpperCase();
-  const agentFees = stateUpper
-    ? `Real estate agent fees, ${stateUpper}`
-    : "Real estate agent fees";
+  const stateSlug = stateUpper.toLowerCase();
+  // The state-labelled anchor should land on the state commission page, not
+  // the national hub — the suburb template is the only surface that can give
+  // the eight state pages contextual, state-partitioned internal links.
+  const agentFees = COMMISSION_GUIDE_STATES.has(stateSlug)
+    ? { label: `Real estate agent fees, ${stateUpper}`, href: `/guides/real-estate-commission-${stateSlug}` }
+    : { label: "Real estate agent fees", href: "/guides/real-estate-agent-fees-australia" };
   return [
     { label: "How to sell a house in Australia", href: "/guides/how-to-sell-a-house-australia" },
-    { label: agentFees, href: "/guides/real-estate-agent-fees-australia" },
+    agentFees,
     { label: "Sell first or buy first?", href: "/guides/sell-first-or-buy-first" },
     { label: "Commission calculator", href: "/real-estate-commission-calculator" },
     { label: "Free property appraisal", href: "/appraisal" },
