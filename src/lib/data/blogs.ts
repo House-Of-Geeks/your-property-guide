@@ -2,6 +2,218 @@ import type { BlogPost } from "@/types";
 
 export const blogPosts: BlogPost[] = [
   {
+    id: "blog-market-wrap-late-july-2026",
+    slug: "property-market-wrap-late-july-2026-spring-outlook",
+    title: "Late-July wrap: Tuesday's inflation number, the August rate call, and the first buyer's-market spring in years",
+    excerpt: "The June-quarter inflation figures land on 29 July and the RBA decides on 11 August — the two dates that will set the tone for spring. With clearance rates around 50%, more stock on market and every major bank trimming its forecasts, spring 2026 is shaping up as a season that rewards preparation over momentum.",
+    content: `<p>Two dates now sit between the winter market and the spring selling season. On <strong>Tuesday 29 July</strong>, the Australian Bureau of Statistics releases the June-quarter inflation figures. On <strong>11 August</strong>, the Reserve Bank hands down its next cash rate decision — the first since it held at <strong>4.35%</strong> in June, and the last before spring listings start building in earnest. What happens between those two dates will shape the market that September sellers and buyers walk into.</p>
+
+<p>Here is where things stand in late July, what the forecasters are saying about the second half, and how to use the five weeks left before the season opens on 1 September.</p>
+
+<h2>The rate picture: one number decides August</h2>
+
+<p>The Reserve Bank held the cash rate at 4.35% at its June meeting — a unanimous decision — after lifting it three times this year, in February, March and May. But the Board kept the door explicitly open to going again if inflation stays hot, and the June statement noted it was still prepared to raise the cash rate further if required.</p>
+
+<p>That is why Tuesday's number matters so much. The monthly reading for May had headline inflation at <strong>4.0%</strong> and the trimmed mean at <strong>3.6%</strong> — both well above the RBA's 2 to 3% target band. The June-quarter release on 29 July is the last major inflation read before the August decision, and the banks are split on what it will produce: <strong>CBA, NAB and ANZ all expect the cash rate to hold from here</strong>, while <strong>Westpac still pencils in one more increase, most likely in August</strong>. A survey of economists published by Aussie in early July found 55% expect at least one more hike this year, and of those, most nominate August. Follow the decision on our <a href="/rba-cash-rate">RBA cash rate tracker</a>.</p>
+
+<p>For borrowers, the practical move is the same whichever way August goes: know your current numbers. Three hikes this year have trimmed borrowing capacity by more than most people realise, so run the <a href="/borrowing-power-calculator">borrowing power calculator</a> before you plan around a figure from summer.</p>
+
+<h2>The market: soft, stocked, and negotiable</h2>
+
+<p>Winter has confirmed the shift that started in autumn. According to Cotality, national home values fell <strong>0.4% in June</strong> — the largest monthly fall since December 2022 — and the auction market has now spent almost two months with clearance rates around or below 50%, the weakest sustained stretch since 2018. Vendor discounting has widened to a median <strong>3.6%</strong>, and total listings across the capitals are running about <strong>7.7% higher than a year ago</strong>.</p>
+
+<p>Two details matter for anyone planning a sale. First, vendors are quietly changing how they sell: auctions' share of new listings has fallen from about 45% late last year to just over 30%, as more sellers opt for private treaty campaigns with room to negotiate. Second, buyers who show up are serious — sales volumes are down about 16% on a year ago, but homes are still selling when the price reflects today's evidence rather than January's. Our guides on <a href="/guides/auction-vs-private-treaty">auction versus private treaty</a> and <a href="/guides/how-much-is-my-house-worth-australia">what your house is really worth</a> cover both decisions in detail.</p>
+
+<h2>What the forecasters see for spring and beyond</h2>
+
+<p>Every major bank has trimmed its outlook for the rest of 2026. CBA now expects national prices to be roughly <strong>flat across 2026</strong>, and its economists estimate the federal tax changes will shave a little under 5% off prices over time as investor demand adjusts. NAB's Housing Monitor sees capital-city prices ending the year about <strong>2% lower</strong>, with the weakness concentrated in Sydney and Melbourne. Domain's forecast for the year to June 2027 has Sydney houses falling <strong>3% to 7%</strong> and Melbourne <strong>4% to 8%</strong>, while <strong>Brisbane, Adelaide and Perth keep rising</strong> — a reminder that "the market" is really eight different markets. Check your own city's live figures on our <a href="/property-market">capital city market pages</a>.</p>
+
+<p>Consumer expectations have adjusted too: the Westpac–Melbourne Institute house price expectations index fell to a three-year low in July, with fewer than half of consumers now expecting prices to rise — the first time since March 2023. None of this points to a crash; Cotality's own read is a "gradual drift lower" rather than a sharp correction. But it does mean spring 2026 will open as the most buyer-friendly spring since 2019.</p>
+
+<h2>Selling this spring: the countdown is on</h2>
+
+<p>Spring officially opens in a little over five weeks, and the traditional September–November season rewards sellers who arrive prepared. In a market where buyers have choice, presentation, pricing evidence and agent selection do the heavy lifting — and all three get decided in the weeks before a campaign launches, not during it.</p>
+
+<p>Work backwards from the listing weekend you want: starting the preparation now puts a campaign live in mid-September; starting in late August targets the peak October audience; late September is the last comfortable start for a pre-Christmas result. Our free <a href="/selling-guide">selling guide</a> now comes with a printable <strong>Spring 2026 selling countdown</strong> — the 12-week checklist with exact start dates for a September, October or November listing — and the smartest first tick on it is a <a href="/appraisal">free appraisal</a>, so every decision that follows rests on today's evidence rather than a hopeful number.</p>
+
+<h2>Buying through the shift</h2>
+
+<p>For buyers, the leverage is real but not unlimited. Clearance rates near 50% mean pre-auction offers get entertained, price guides are negotiable, and passed-in properties come back to the table. The trade-off: spring will bring more competition as the season's stock and buyers arrive together, and if August delivers a hold — or the first hint of future cuts — sentiment can turn quickly. If you are ready, winter's last weeks are a genuine window; our guide on <a href="/guides/how-to-negotiate-property-price-australia">negotiating a property price</a> covers how to press the advantage without overplaying it.</p>
+
+<h2>What it means for you</h2>
+
+<ul>
+<li><strong>Watch 29 July, then 11 August.</strong> The June-quarter CPI is the last big input before the RBA's spring-setting decision. CBA, NAB and ANZ expect a hold; Westpac tips one more hike.</li>
+<li><strong>Spring sellers: start now.</strong> Preparation fills the five weeks to 1 September quickly. Begin with a <a href="/appraisal">free appraisal</a> and the spring countdown checklist in our <a href="/selling-guide">selling guide</a>.</li>
+<li><strong>Price to the market you are in.</strong> Values fell 0.4% nationally in June, discounting is at 3.6%, and listings are up. Evidence-based pricing beats optimism in this market.</li>
+<li><strong>Buyers: use the window.</strong> Sub-50% clearance rates mean negotiating room now, with more competition likely once spring stock and any rate relief arrive.</li>
+<li><strong>Everyone: re-run your numbers.</strong> Three hikes this year have moved borrowing capacity; the <a href="/borrowing-power-calculator">borrowing power calculator</a> takes two minutes.</li>
+</ul>`,
+    coverImage: "/images/blog/cover-property-market-wrap-late-july-2026.jpg",
+    author: { name: "Bec Ramirez", image: "/images/agents/bec-ramirez.jpg" },
+    category: "Market Update",
+    tags: ["property market","RBA cash rate","inflation","spring selling season","auction clearance rates","price forecasts","selling a house","buying property","2026"],
+    publishedAt: "2026-07-24",
+    readingTime: 7,
+  },
+  {
+    id: "blog-home-values-biggest-fall-june-2026",
+    slug: "home-values-biggest-monthly-fall-june-2026",
+    title: "Home values post their biggest monthly fall since 2022 — and the market has split in two",
+    excerpt: "National home values fell 0.4% in June, the largest monthly drop since December 2022, with Sydney down 3.2% for the quarter while Perth, Brisbane and Darwin kept climbing. Here is what the mid-year data says about where the market is heading, city by city.",
+    content: `<p>Australia's housing downturn has deepened. National home values fell <strong>0.4% in June</strong> — the largest monthly decline since December 2022 — taking the quarterly fall to 0.7%, according to property data group Cotality (formerly CoreLogic). The national index is now confirmed to have peaked in <strong>March 2026</strong>, and the mid-July data shows the softening carrying into winter, with vendor discounting widening and clearance rates stuck around the 50% mark.</p>
+
+<p>But the national number hides the real story: Australia is running two housing markets at once. The big south-eastern capitals are falling — Sydney is down <strong>3.2% for the quarter</strong> and 3.7% from its January peak — while Perth, Brisbane, Darwin and Hobart are still rising. Here is the city-by-city picture, and what it means whether you are buying, selling or holding.</p>
+
+<h2>The June numbers, city by city</h2>
+
+<table>
+<thead><tr><th>City</th><th>June</th><th>Quarter</th><th>Annual</th><th>Median value</th></tr></thead>
+<tbody>
+<tr><td><a href="/property-market/sydney">Sydney</a></td><td>−1.2%</td><td>−3.2%</td><td>+0.3%</td><td>$1,265,608</td></tr>
+<tr><td><a href="/property-market/melbourne">Melbourne</a></td><td>−1.0%</td><td>−2.6%</td><td>−0.9%</td><td>$808,486</td></tr>
+<tr><td><a href="/property-market/brisbane">Brisbane</a></td><td>+0.3%</td><td>+1.3%</td><td>+17.4%</td><td>$1,118,306</td></tr>
+<tr><td><a href="/property-market/adelaide">Adelaide</a></td><td>0.0%</td><td>+1.3%</td><td>+11.6%</td><td>$945,868</td></tr>
+<tr><td><a href="/property-market/perth">Perth</a></td><td>+0.7%</td><td>+2.0%</td><td>+23.9%</td><td>$1,046,551</td></tr>
+<tr><td><a href="/property-market/hobart">Hobart</a></td><td>+0.6%</td><td>+1.4%</td><td>+9.3%</td><td>$752,760</td></tr>
+<tr><td><a href="/property-market/darwin">Darwin</a></td><td>+1.4%</td><td>+5.0%</td><td>+19.8%</td><td>$638,187</td></tr>
+<tr><td><a href="/property-market/canberra">Canberra</a></td><td>−0.6%</td><td>−1.3%</td><td>+2.9%</td><td>$885,254</td></tr>
+</tbody>
+</table>
+
+<p><em>Source: Cotality Home Value Index, June 2026. National median $937,722; national annual growth +7.3%.</em></p>
+
+<p>The gap is stark. Perth has now risen almost 24% in a year and Brisbane more than 17%, while Melbourne's annual growth has turned negative and Sydney's has all but flattened. Darwin — the smallest capital market — was June's strongest performer at +1.4% for the month and +5.0% for the quarter. Even the direction of revisions tells the story: Cotality revised its May figures down most sharply in the very cities that had been running hottest, which its research director Tim Lawless described as the mark of "a market that is changing rapidly."</p>
+
+<h2>Why demand is thinning</h2>
+
+<p>Three forces are pressing on prices at once. Interest rates have risen three times this year, taking the cash rate to 4.35% and cutting what buyers can borrow. Affordability was already stretched before those hikes. And the federal budget's investor tax changes — now law — have added a new note of caution to the investor segment. As Lawless put it: "Even before interest rates rose by seventy-five basis points, we were seeing affordability hurdles weighing on buyer demand. Higher cost-of-living pressures, deeply pessimistic sentiment and a further dampening of demand via property taxation changes announced in the federal budget are all contributing."</p>
+
+<p>The demand slowdown is visible in volumes, not just prices. Capital-city home sales over the three months to June were about <strong>16% lower than a year earlier</strong> and 14.5% below the five-year average. Meanwhile the supply side has loosened: total capital-city listings are about <strong>7.7% higher than a year ago</strong>, the median vendor discount has widened to <strong>3.6%</strong>, and auctions' share of new listings has fallen from roughly 45% late last year to just over 30% as vendors switch to private treaty. Fewer buyers, more stock, deeper discounts: that is what a buyer's market looks like on paper.</p>
+
+<h2>What it means for buyers</h2>
+
+<p>Buyer leverage is the strongest it has been in years, especially in Sydney, Melbourne and Canberra where values are actually falling. Negotiating room is real: with a 3.6% median discount, the asking price is a starting point, not a floor. Pre-auction offers are being entertained, and passed-in properties frequently return as negotiable private sales.</p>
+
+<p>The discipline is knowing your suburb, because citywide averages are doing a lot of lying right now. A falling Sydney still contains rising pockets, and a booming Perth contains cooling ones. Check the verified median, growth and days-on-market for any suburb you are watching on our <a href="/suburbs">suburb profiles</a>, and read the city-level trend on the <a href="/property-market">capital city market pages</a>. Then set your ceiling with the <a href="/borrowing-power-calculator">borrowing power calculator</a> before you negotiate, not after.</p>
+
+<h2>What it means for sellers</h2>
+
+<p>If you are selling in a falling market, the evidence is blunt: overpricing costs more than it used to. Stale listings attract discounts, and the first fortnight of a campaign — when buyer attention peaks — is too valuable to waste testing a hopeful number. Price to the most recent comparable sales, present the property properly, and choose an agent who can show you their negotiation results in this exact market. Start with a <a href="/appraisal">free appraisal</a> to ground your expectations, and our <a href="/selling-guide">selling guide</a> covers the rest — including whether auction or private treaty suits current conditions in your suburb.</p>
+
+<p>If you are in Brisbane, Adelaide, Perth, Hobart or Darwin, conditions remain genuinely strong — but the pace is slowing even there. Brisbane averaged 1.9% monthly growth in the March quarter and just 0.3% in June; Perth slowed from 2.5% to 0.7%. Momentum sellers who assume last summer's pace will meet them in spring are the ones most likely to overprice.</p>
+
+<h2>What it means for you</h2>
+
+<ul>
+<li><strong>The peak is in:</strong> nationally, values topped out in March 2026 and have drifted 0.7% lower since. Cotality's base case is a gradual decline, not a crash.</li>
+<li><strong>It is two markets:</strong> Sydney, Melbourne and Canberra are falling; Perth, Brisbane, Darwin, Hobart and Adelaide are still rising, but more slowly each month.</li>
+<li><strong>Buyers:</strong> negotiate off the evidence — sales are down 16%, stock is up, and the median vendor discount is 3.6%.</li>
+<li><strong>Sellers:</strong> the first two weeks of your campaign are worth the most; price to current comparables from day one. Begin with a <a href="/appraisal">free appraisal</a>.</li>
+<li><strong>Everyone:</strong> suburb data beats city averages. Verify the number for your street's market on our <a href="/suburbs">suburb profiles</a> before you act on a headline.</li>
+</ul>`,
+    coverImage: "/images/blog/cover-home-values-biggest-monthly-fall-june-2026.jpg",
+    author: { name: "Bec Ramirez", image: "/images/agents/bec-ramirez.jpg" },
+    category: "News",
+    tags: ["home values","Cotality","property prices","Sydney","Melbourne","Perth","Brisbane","housing downturn","buyers market","2026"],
+    publishedAt: "2026-07-24",
+    readingTime: 7,
+  },
+  {
+    id: "blog-negative-gearing-cgt-now-law-2026",
+    slug: "negative-gearing-cgt-changes-now-law-2026",
+    title: "Negative gearing and CGT reform is now law: what changes on 1 July 2027, and what to do before then",
+    excerpt: "Parliament passed the federal budget's investor tax package on 25 June, and the ATO has confirmed the measures are law. Negative gearing narrows to new builds, the 50% CGT discount is replaced with indexation, and a late amendment bans new SMSF property borrowing. Here is the full picture and the 11-month runway.",
+    content: `<p>The biggest change to property investment taxation in a generation is no longer a proposal. On <strong>25 June 2026</strong>, the federal parliament passed the budget's investor tax package — through the lower house 98 votes to 39, and through the Senate with Greens support — and the Australian Tax Office has since confirmed the measures are now law. The start date is <strong>1 July 2027</strong>, which gives investors, would-be investors and sellers roughly eleven months to understand their position and act deliberately rather than react late.</p>
+
+<p>We covered the proposals in detail when the budget landed — see our explainers on the <a href="/guides/negative-gearing-changes-2026-budget">negative gearing changes</a> and the <a href="/guides/cgt-changes-2026-budget">CGT changes</a> — but now that the legislation is settled, here is exactly what was passed, including one late amendment that surprised the industry.</p>
+
+<h2>What becomes law on 1 July 2027</h2>
+
+<ul>
+<li><strong>Negative gearing narrows to new builds.</strong> From 1 July 2027, rental losses on newly purchased established investment properties can no longer be deducted against wages or other income. Losses are instead quarantined: they carry forward against future rental income or the eventual capital gain. Investors who buy or build <strong>new</strong> dwellings keep full negative gearing.</li>
+<li><strong>Existing investors are grandfathered.</strong> Properties held at 7:30pm AEST on 12 May 2026 — budget night — keep the old negative gearing treatment. The change applies to purchases after that time, and only bites from July 2027.</li>
+<li><strong>The 50% CGT discount is replaced.</strong> For gains accruing after 1 July 2027, the flat 50% discount gives way to indexation of the cost base (so you are only taxed on real, above-inflation gains) plus a 30% minimum rate on those gains. New-build investors can choose whichever treatment suits them.</li>
+<li><strong>New SMSF property borrowing is banned.</strong> A Senate amendment ends new limited-recourse borrowing arrangements for residential property in self-managed super funds, effective 45 days after royal assent. Existing SMSF loans are grandfathered. If an SMSF purchase was in your plans, this closes the borrowed-money version of it — our <a href="/guides/smsf-property-guide">SMSF property guide</a> covers what remains possible.</li>
+</ul>
+
+<h2>What it does to the market</h2>
+
+<p>The honest answer is that nobody knows precisely, but the early signals are visible. CBA's economists estimate the package will lower national prices by <strong>a little under 5% over time</strong> as investor demand adjusts, and they expect investor lending to roughly halve this year from its late-2025 peak. Cotality's June data already shows investor caution contributing to the broader demand slowdown — and its research director Tim Lawless notes the flip side: gross rental yields have climbed to their highest since late 2025, and "higher yields might help motivate investors into the established housing market without the crutch of negative gearing."</p>
+
+<p>There are second-order effects to watch too. The new-build carve-out is designed to push investor capital toward new supply, which over time adds rental stock — but in the near term, some analysts expect fewer investors in the established market to mean fewer rentals exactly when vacancy is already around 1.3%. And an analysis from the University of Western Australia argues the indexation method could actually favour some long-hold, modest-growth investors over the old discount. The distributional effects will take years to settle.</p>
+
+<h2>If you already own an investment property</h2>
+
+<p>Your negative gearing treatment is unchanged — grandfathering protects properties held on budget night. The CGT change still matters, though: gains accruing after 1 July 2027 fall under the new rules, so the timing of any planned sale now interacts with the transition. Selling is a bigger decision than tax alone, but if a sale was already on your horizon, it is worth modelling both sides of the boundary with a registered tax agent. Our guides on <a href="/guides/negative-gearing-australia">how negative gearing works</a> and <a href="/guides/property-depreciation-guide">property depreciation</a> cover the current rules, and the <a href="/rental-yield-calculator">rental yield calculator</a> helps you sense-check what your property earns against what it could sell for.</p>
+
+<h2>If you were planning to invest</h2>
+
+<p>The decision tree has genuinely changed. Buying an established property after budget night means quarantined losses from July 2027 — so the numbers need to work closer to cash-flow-neutral, which pushes attention toward higher-yield suburbs and toward new builds, where both negative gearing and the choice of CGT treatment survive. That is exactly the behaviour the policy intends, and it is why comparing <a href="/guides/capital-growth-vs-cash-flow-australia">capital growth against cash flow</a> matters more now than it did a year ago. Rising yields help: with rents still climbing and prices soft, the income side of the equation is the strongest it has been in years, though only a small fraction of suburbs are cash-flow positive at today's mortgage rates.</p>
+
+<h2>What it means for you</h2>
+
+<ul>
+<li><strong>Existing investors:</strong> nothing changes for your negative gearing; the CGT transition on 1 July 2027 is the date to plan around with your accountant.</li>
+<li><strong>Buying established from here:</strong> assume quarantined losses from July 2027 — run the numbers on yield, not tax savings. Start with the <a href="/rental-yield-calculator">rental yield calculator</a>.</li>
+<li><strong>Considering a new build:</strong> the carve-out makes new property the tax-favoured path, and it stacks with state incentives aimed at the same goal.</li>
+<li><strong>SMSF plans:</strong> new borrowing inside super closes 45 days after assent. Existing arrangements stand. Get advice before restructuring anything.</li>
+<li><strong>Sellers:</strong> more investor stock may come to market around the transition; if you are selling an investment property, our <a href="/guides/cost-of-selling-a-house-australia">cost of selling guide</a> and a <a href="/appraisal">free appraisal</a> are the starting points.</li>
+</ul>
+
+<p><em>This article is general information, not tax advice. The new rules interact with individual circumstances in ways that genuinely require a registered tax agent or financial adviser.</em></p>`,
+    coverImage: "/images/blog/cover-negative-gearing-cgt-now-law-2026.jpg",
+    author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
+    category: "News",
+    tags: ["negative gearing","capital gains tax","property investment","tax reform","SMSF","new builds","federal budget","rental yields","2026"],
+    publishedAt: "2026-07-24",
+    readingTime: 7,
+  },
+  {
+    id: "blog-qld-30000-grant-locked-in-2026",
+    slug: "queensland-30000-grant-locked-in-help-to-buy-expands",
+    title: "Queensland keeps the $30,000 grant, and Help to Buy just opened to more buyers",
+    excerpt: "The step-down never came: Queensland's 2026-27 Budget locked the $30,000 First Home Owner Grant in for another four years and made zero stamp duty on new homes permanent. Add the federal Help to Buy expansion from 1 July and winter has quietly been a very good season for first home buyers.",
+    content: `<p>Six weeks ago, Queensland first home buyers were racing a deadline. The state's boosted <strong>$30,000 First Home Owner Grant</strong> was scheduled to halve to $15,000 for contracts signed from 1 July 2026, and we <a href="/guides/queensland-30000-first-home-grant-closing-june-2026">covered the countdown</a> as buyers scrambled to sign in time.</p>
+
+<p>The deadline never arrived. In the <strong>2026-27 Queensland Budget</strong>, handed down on 23 June, the government locked the $30,000 grant in for <strong>another four years</strong> — and made the state's zero transfer duty for first home buyers on new homes <strong>permanent</strong>. The Queensland Revenue Office now simply lists $30,000 for eligible contracts signed from 20 November 2023, with no end date published. Anyone who rushed a contract in June lost nothing; anyone who missed the date lost nothing either. And it caps a winter in which the supports for first home buyers quietly got better across the country.</p>
+
+<h2>What Queensland locked in</h2>
+
+<ul>
+<li><strong>$30,000 First Home Owner Grant</strong> for new homes (buying or building) valued under $750,000 — extended four years in the Budget, roughly a $72 million commitment. It remains the largest first home grant in the country, tied with Tasmania's.</li>
+<li><strong>Zero transfer duty for first home buyers on new homes, permanently.</strong> The concession, in place since 1 May 2025 with no price cap, has already saved more than 3,500 buyers over $66 million between them. On established homes, the full concession still applies up to $700,000, phasing out at $800,000.</li>
+<li><strong>Supply money behind it:</strong> the Budget doubled the Residential Activation Fund to $1 billion and committed $5.73 billion over four years to social housing — the pipeline that determines whether grants meet homes to spend them on.</li>
+</ul>
+
+<p>Stacked together, an eligible Queensland buyer on a new build can now collect the $30,000 grant <em>and</em> pay zero stamp duty — support that routinely clears $50,000 on a typical purchase. Our <a href="/guides/first-home-buyer-qld">Queensland first home buyer guide</a> walks through eligibility for both, and the <a href="/stamp-duty-calculator">stamp duty calculator</a> shows what the duty concession is worth at your price point.</p>
+
+<h2>Help to Buy opened wider on 1 July</h2>
+
+<p>The federal government's shared-equity scheme also grew this winter. From <strong>1 July 2026</strong>, Help to Buy's income caps rose to <strong>$103,000 for singles</strong> and <strong>$165,000 for joint applicants and single parents</strong>, with <strong>10,000 new places</strong> released for the 2026-27 year. The mechanics are unchanged: the government contributes up to 40% of the price on a new home (30% on an existing one), you buy with as little as a 2% deposit, and you can buy the government's share out over time.</p>
+
+<p>Housing Australia's own numbers show the scheme has moved well past the pilot stage — more than 7,200 applications since its December launch, with around 4,800 households settled or house-hunting, a median deposit of just $30,000, and 86% of participants first home buyers. Shared equity is not for everyone: the government shares your capital growth in proportion to its stake, which is a real cost in a rising market. Our <a href="/guides/help-to-buy-scheme-australia">Help to Buy guide</a> works through the trade-off honestly, and our explainer on the <a href="/guides/first-home-guarantee">5% Deposit Scheme</a> — which has no income test at all since its late-2025 expansion — covers the alternative where you keep 100% of the home.</p>
+
+<h2>NSW moved too, more quietly</h2>
+
+<p>The NSW Budget, handed down the same day as Queensland's, left its first home buyer settings steady — duty exemption to $800,000 and concessions to $1 million, worth about $20,400 to the average eligible buyer, plus a $10,000 payment for new-home purchases. The state's housing effort went to the supply side instead: abolishing the 9% foreign purchaser surcharge for large build-to-rent and retirement projects, topping up its pre-sale finance guarantee for community housing, and $5.2 billion of enabling water infrastructure in Western Sydney. Buyers won't feel those this spring, but they are aimed at the shortage that sits underneath every affordability number. See the <a href="/guides/first-home-buyer-nsw">NSW first home buyer guide</a> for the current settings.</p>
+
+<h2>What it means for you</h2>
+
+<ul>
+<li><strong>Queensland buyers:</strong> the $30,000 grant plus zero duty on new builds is locked in — no deadline pressure, so take the time to buy well. Start with the <a href="/guides/first-home-buyer-qld">QLD guide</a>.</li>
+<li><strong>If you signed in June to beat the deadline:</strong> you lost nothing — the grant amount is the same either side of 1 July.</li>
+<li><strong>Middle-income buyers everywhere:</strong> Help to Buy's higher caps ($103k single / $165k joint) bring a lot more people into shared-equity range. Compare it against the <a href="/guides/first-home-guarantee">5% Deposit Scheme</a> before choosing — the ownership outcomes differ sharply.</li>
+<li><strong>Timing the market matters less than knowing your numbers:</strong> with values soft and rates possibly at their peak, run the <a href="/borrowing-power-calculator">borrowing power calculator</a> and see what the supports are worth stacked together in your state via our <a href="/guides/first-home-buyer-schemes-by-state-australia-2026">state-by-state schemes guide</a>.</li>
+</ul>`,
+    coverImage: "/images/blog/cover-queensland-30000-grant-locked-in-help-to-buy-expands.jpg",
+    author: { name: "Ellie Johnston", image: "/images/agents/ellie-johnston.jpg" },
+    category: "News",
+    tags: ["first home owner grant","queensland","help to buy","first home buyer","stamp duty","shared equity","state budget","housing policy","2026"],
+    publishedAt: "2026-07-24",
+    readingTime: 6,
+  },
+  {
     id: "blog-cheapest-suburbs-australian-capitals-winter-2026",
     slug: "cheapest-suburbs-australian-capitals-winter-2026",
     title: "The cheapest suburbs in every Australian capital city, ranked (Winter 2026 report)",
@@ -236,7 +448,7 @@ export const blogPosts: BlogPost[] = [
 
 <p>For buyers, winter's thinner competition is an opening. With the national clearance rate under 50%, more properties are passing in and more vendors are open to negotiation, including strong offers made before auction day. The trade-off is less choice, and the certainty that competition picks up again once spring stock arrives.</p>
 
-<p>Queensland first home buyers should note one change that landed this week: the boosted <strong>$30,000 First Home Owner Grant</strong> for new homes ended on 30 June 2026, and contracts signed from 1 July receive the standard <strong>$15,000</strong>. The state's zero transfer duty for first home buyers on new homes and vacant land is ongoing and unaffected. Wherever you are buying, three rate rises this year mean your borrowing capacity has likely changed, so run your numbers through the <a href="/borrowing-power-calculator">borrowing power calculator</a> before you make an offer.</p>
+<p>Queensland first home buyers got good news in the 2026-27 State Budget: the boosted <strong>$30,000 First Home Owner Grant</strong> for new homes, which had been scheduled to halve on 1 July 2026, was <strong>locked in for another four years</strong>, and the state's zero transfer duty for first home buyers on new homes was made permanent. Wherever you are buying, three rate rises this year mean your borrowing capacity has likely changed, so run your numbers through the <a href="/borrowing-power-calculator">borrowing power calculator</a> before you make an offer.</p>
 
 <h2>What it means for you</h2>
 
@@ -450,8 +662,10 @@ export const blogPosts: BlogPost[] = [
     id: "blog-queensland-30000-first-home-grant-closing-june-2026",
     slug: "queensland-30000-first-home-grant-closing-june-2026",
     title: "Queensland's $30,000 First Home Owner Grant for New Homes Closes 30 June",
-    excerpt: "Queensland's boosted $30,000 First Home Owner Grant for new homes ends on 30 June 2026, after which it reverts to $15,000. To lock in the extra $15,000 you need an eligible signed contract by that date, which is now only days away.",
-    content: `<p>If you are buying or building your first home in Queensland, a window is about to close. The state's boosted <strong>$30,000 First Home Owner Grant</strong> for new homes ends on 30 June 2026. From 1 July 2026 the grant drops back to its previous level of $15,000. That is a difference of $15,000 in support, and the only way to lock in the higher amount is to have an eligible signed contract in place by 30 June.</p>
+    excerpt: "Update: it didn't close. Days after this article ran, the 2026-27 Queensland Budget locked the $30,000 grant in for another four years. The original deadline story is below, with the update up top.",
+    content: `<p><em><strong>Update (July 2026):</strong> the deadline this article covered never arrived. On 23 June 2026, the 2026-27 Queensland Budget locked the boosted $30,000 First Home Owner Grant in for another four years, and made the zero transfer duty for first home buyers on new homes permanent. The Queensland Revenue Office confirms $30,000 for eligible contracts signed from 20 November 2023, with no end date currently published. See our full coverage of <a href="/guides/first-home-buyer-qld">Queensland's first home buyer support</a>. The original article follows as published.</em></p>
+
+<p>If you are buying or building your first home in Queensland, a window is about to close. The state's boosted <strong>$30,000 First Home Owner Grant</strong> for new homes ends on 30 June 2026. From 1 July 2026 the grant drops back to its previous level of $15,000. That is a difference of $15,000 in support, and the only way to lock in the higher amount is to have an eligible signed contract in place by 30 June.</p>
 
 <p>With that deadline now only days away, this is one of those rare moments where timing genuinely matters. The good news is that Queensland's biggest first home buyer benefit, zero transfer duty on new homes, is separate and ongoing. So even buyers who cannot meet the grant deadline still have plenty of support to work with. Here is what is changing, who it applies to, and what to do if you are close to buying.</p>
 
@@ -493,6 +707,7 @@ export const blogPosts: BlogPost[] = [
     category: "News",
     tags: ["first home owner grant","queensland","first home buyer","stamp duty","new homes","first home guarantee","property grants","2026"],
     publishedAt: "2026-06-24",
+    updatedAt: "2026-07-24",
     readingTime: 5,
   },
   {
@@ -735,27 +950,29 @@ export const blogPosts: BlogPost[] = [
   {
     id: "blog-first-home-buyer-guide",
     slug: "first-home-buyer-guide-moreton-bay-2025",
-    title: "First Home Buyer Guide: Moreton Bay Region 2025",
+    title: "First Home Buyer Guide: Moreton Bay Region",
     excerpt:
       "Everything you need to know about buying your first home in the Moreton Bay Region, from government grants to the best suburbs for first-time buyers.",
-    content: `<p>Buying your first home is one of the most exciting milestones in life, and the Moreton Bay Region offers some of the best opportunities for first home buyers in southeast Queensland. With median house prices significantly lower than Brisbane's inner suburbs, areas like Caboolture, Morayfield, and Burpengary provide excellent entry points into the property market without sacrificing lifestyle or connectivity.</p>
+    content: `<p><em>Editor's note (July 2026): this article was originally published in January 2025 and has been updated. Queensland's first home buyer incentives changed on 1 July 2026, so the figures below reflect the current rules. For full eligibility detail, see our <a href="/guides/first-home-buyer-qld">Queensland first home buyer guide</a>.</em></p>
+
+<p>Buying your first home is one of the most exciting milestones in life, and the Moreton Bay Region offers some of the best opportunities for first home buyers in southeast Queensland. With median house prices significantly lower than Brisbane's inner suburbs, areas like <a href="/suburbs/caboolture-qld-4510">Caboolture</a>, <a href="/suburbs/morayfield-qld-4506">Morayfield</a>, and <a href="/suburbs/burpengary-qld-4505">Burpengary</a> provide excellent entry points into the property market without sacrificing lifestyle or connectivity.</p>
 
 <h2>Government Grants and Incentives</h2>
-<p>Queensland first home buyers can access several generous incentives in 2025. The Queensland First Home Owner Grant provides $30,000 for new builds valued under $750,000, while the First Home Guarantee scheme allows eligible buyers to purchase with as little as a 5% deposit without paying Lenders Mortgage Insurance. Additionally, first home buyers may be eligible for stamp duty concessions on properties valued under $700,000, potentially saving thousands of dollars at settlement.</p>
+<p>Queensland first home buyers have never had more support. The Queensland <strong>First Home Owner Grant is $30,000</strong> for new builds valued under $750,000 — it was due to halve on 1 July 2026, but the 2026-27 State Budget locked it in for another four years. On transfer duty it gets better: eligible first home buyers pay <strong>zero transfer duty on new homes and vacant land</strong> (no price cap on the new-home concession, now permanent), and a full concession applies on established homes up to <strong>$700,000</strong>, phasing out at $800,000. The federal <a href="/guides/first-home-guarantee">5% Deposit Scheme</a> also lets eligible buyers purchase without paying Lenders Mortgage Insurance. Run your own numbers with the <a href="/stamp-duty-calculator">stamp duty calculator</a>.</p>
 
 <h2>Best Suburbs for First Home Buyers</h2>
-<p>For those looking to maximise value, Caboolture and Morayfield offer median house prices well within reach of most first home buyers, with strong infrastructure and amenities. Burpengary and Deception Bay provide a step up with slightly higher price points but excellent community facilities and transport links. If your budget stretches further, Narangba and North Lakes deliver premium lifestyles with top-rated schools and modern amenities.</p>
+<p>For those looking to maximise value, <a href="/suburbs/caboolture-qld-4510">Caboolture</a> and <a href="/suburbs/morayfield-qld-4506">Morayfield</a> offer median house prices well within reach of most first home buyers, with strong infrastructure and amenities. <a href="/suburbs/burpengary-qld-4505">Burpengary</a> and <a href="/suburbs/deception-bay-qld-4508">Deception Bay</a> provide a step up with slightly higher price points but excellent community facilities and transport links. If your budget stretches further, <a href="/suburbs/narangba-qld-4504">Narangba</a> and <a href="/suburbs/north-lakes-qld-4509">North Lakes</a> deliver premium lifestyles with top-rated schools and modern amenities.</p>
 
 <h2>Tips for Getting Started</h2>
 <ul>
-<li>Get pre-approved for your home loan before you start searching to understand your budget</li>
+<li>Get pre-approved for your home loan before you start searching, and check your ceiling with the <a href="/borrowing-power-calculator">borrowing power calculator</a></li>
 <li>Research the suburb thoroughly, including future development plans and infrastructure projects</li>
 <li>Engage a local buyer's agent who understands the Moreton Bay market</li>
 <li>Factor in additional costs such as building inspections, conveyancing, and moving expenses</li>
 <li>Don't rush the process, take time to attend open homes and understand what you truly need</li>
 </ul>
 
-<p>The Moreton Bay Region continues to experience population growth and infrastructure investment, making 2025 an excellent time to secure your first property. With the right preparation and professional guidance, owning your first home in this thriving corridor is well within reach.</p>`,
+<p>The Moreton Bay Region continues to experience population growth and infrastructure investment, and with zero transfer duty on new homes, first home buyers retain a genuine edge here. With the right preparation and professional guidance, owning your first home in this thriving corridor is well within reach — our full <a href="/guides/first-home-buyer-guide">first home buyer guide</a> covers every step.</p>`,
     coverImage: "/images/blog/cover-first-home-buyer-guide-moreton-bay-2025.jpg",
     author: {
       name: "Andy McMaster",
@@ -770,6 +987,7 @@ export const blogPosts: BlogPost[] = [
       "stamp duty",
     ],
     publishedAt: "2025-01-15",
+    updatedAt: "2026-07-24",
     readingTime: 6,
   },
   {
@@ -781,19 +999,19 @@ export const blogPosts: BlogPost[] = [
     content: `<p>Choosing the right suburb for your family is about more than just finding a house, it's about finding a community. The Moreton Bay Region offers a diverse range of family-friendly suburbs, each with its own unique character and appeal. Whether you prioritise top schools, green spaces, or community activities, there's a suburb in the northern corridor that ticks all the boxes.</p>
 
 <h2>1. North Lakes, The Complete Package</h2>
-<p>North Lakes consistently ranks as one of Queensland's most liveable suburbs, and it's easy to see why. This master-planned community boasts North Lakes State College and The Lakes College, extensive parkland networks, and Westfield North Lakes for all your shopping needs. With modern homes, wide streets, and a vibrant town centre, North Lakes is the gold standard for family living in Moreton Bay. The suburb also benefits from excellent bus connectivity and proximity to the Bruce Highway for commuters.</p>
+<p><a href="/suburbs/north-lakes-qld-4509">North Lakes</a> consistently ranks as one of Queensland's most liveable suburbs, and it's easy to see why. This master-planned community boasts North Lakes State College and The Lakes College, extensive parkland networks, and Westfield North Lakes for all your shopping needs. With modern homes, wide streets, and a vibrant town centre, North Lakes is the gold standard for family living in Moreton Bay. The suburb also benefits from excellent bus connectivity and proximity to the Bruce Highway for commuters.</p>
 
 <h2>2. Narangba, Leafy and Peaceful</h2>
-<p>For families seeking a quieter, more spacious lifestyle, Narangba delivers beautifully. Known for its larger blocks and tree-lined streets, Narangba offers a semi-rural feel without compromising on convenience. Narangba Valley State High School and Narangba State School are well-regarded, and the suburb features a network of walking trails and parks including the popular Jinker Track. Its train station provides a direct line to Brisbane CBD.</p>
+<p>For families seeking a quieter, more spacious lifestyle, <a href="/suburbs/narangba-qld-4504">Narangba</a> delivers beautifully. Known for its larger blocks and tree-lined streets, Narangba offers a semi-rural feel without compromising on convenience. Narangba Valley State High School and Narangba State School are well-regarded, and the suburb features a network of walking trails and parks including the popular Jinker Track. Its train station provides a direct line to Brisbane CBD.</p>
 
 <h2>3. Burpengary, Growing and Affordable</h2>
-<p>Burpengary strikes an excellent balance between affordability and lifestyle. With a strong mix of established homes and newer estates, families benefit from schools like Burpengary State Secondary College and Good Shepherd Catholic Primary School. The Burpengary Aquatic Centre, creek-side parklands, and local shopping plaza ensure families have everything they need close to home. The suburb's ongoing development means new facilities and amenities are continually being added.</p>
+<p><a href="/suburbs/burpengary-qld-4505">Burpengary</a> strikes an excellent balance between affordability and lifestyle. With a strong mix of established homes and newer estates, families benefit from schools like Burpengary State Secondary College and Good Shepherd Catholic Primary School. The Burpengary Aquatic Centre, creek-side parklands, and local shopping plaza ensure families have everything they need close to home. The suburb's ongoing development means new facilities and amenities are continually being added.</p>
 
 <h2>4. Morayfield, Convenience Central</h2>
-<p>Morayfield's major drawcard is its unmatched convenience. Home to one of the region's largest shopping centres, a new health precinct, and well-connected public transport, Morayfield makes daily family life effortless. Schools like St Eugene College and Morayfield State High School serve the growing community well, while the Morayfield Sport and Events Centre provides year-round activities for children and adults alike.</p>
+<p><a href="/suburbs/morayfield-qld-4506">Morayfield</a>'s major drawcard is its unmatched convenience. Home to one of the region's largest shopping centres, a new health precinct, and well-connected public transport, Morayfield makes daily family life effortless. Schools like St Eugene College and Morayfield State High School serve the growing community well, while the Morayfield Sport and Events Centre provides year-round activities for children and adults alike.</p>
 
 <h2>5. Deception Bay, Bayside Living</h2>
-<p>Deception Bay offers something the other suburbs can't, waterfront living at an affordable price. The foreshore parklands are a favourite for family picnics and evening walks, and the bay itself provides fishing, kayaking, and boating opportunities. With improving infrastructure and a strong community spirit, Deception Bay is a hidden gem for families who want a coastal lifestyle without the coastal price tag.</p>`,
+<p><a href="/suburbs/deception-bay-qld-4508">Deception Bay</a> offers something the other suburbs can't, waterfront living at an affordable price. The foreshore parklands are a favourite for family picnics and evening walks, and the bay itself provides fishing, kayaking, and boating opportunities. With improving infrastructure and a strong community spirit, Deception Bay is a hidden gem for families who want a coastal lifestyle without the coastal price tag.</p>`,
     coverImage: "/images/blog/cover-top-5-suburbs-families-moreton-bay.jpg",
     author: {
       name: "Bec Ramirez",
@@ -809,6 +1027,7 @@ export const blogPosts: BlogPost[] = [
       "narangba",
     ],
     publishedAt: "2025-02-10",
+    updatedAt: "2026-07-24",
     readingTime: 7,
   },
   {
@@ -823,7 +1042,7 @@ export const blogPosts: BlogPost[] = [
 <p>Off-market properties are homes where the owner has decided to sell but has chosen not to publicly list or advertise the property. There are many reasons sellers opt for this approach: they may want to test the market without committing to a full campaign, maintain privacy, avoid the disruption of open homes, or simply prefer a more discreet transaction. In the Moreton Bay Region, off-market sales are particularly common among established homeowners who have strong relationships with local agents.</p>
 
 <h2>How to Access Off-Market Opportunities</h2>
-<p>The most effective way to find off-market properties is by building strong relationships with local real estate agents who specialise in your target suburbs. Agents often know of properties that are about to come to market or sellers who would consider offers without a public campaign. Registering with a buyer's agent is another powerful strategy, as they maintain extensive networks and are often the first to hear about new opportunities. You can also let your network know you're actively looking, word of mouth still plays a significant role in property transactions.</p>
+<p>The most effective way to find off-market properties is by building strong relationships with local real estate agents who specialise in your target suburbs. Agents often know of properties that are about to come to market or sellers who would consider offers without a public campaign. Registering with a buyer's agent is another powerful strategy, as they maintain extensive networks and are often the first to hear about new opportunities — our guide to <a href="/guides/buyers-agent-cost-australia">buyer's agent costs</a> covers what that service runs. You can also <a href="/off-market">register your interest with us</a> to hear about off-market opportunities in your target suburbs, and let your network know you're actively looking — word of mouth still plays a significant role in property transactions.</p>
 
 <h2>Advantages and Considerations</h2>
 <ul>
@@ -847,6 +1066,7 @@ export const blogPosts: BlogPost[] = [
       "real estate tips",
     ],
     publishedAt: "2024-11-20",
+    updatedAt: "2026-07-24",
     readingTime: 5,
   },
   {
@@ -855,7 +1075,9 @@ export const blogPosts: BlogPost[] = [
     title: "Investment Property Guide: Moreton Bay Corridor",
     excerpt:
       "A comprehensive guide to investing in the Moreton Bay property corridor, including rental yields, growth suburbs, and key considerations for investors.",
-    content: `<p>The Moreton Bay corridor has emerged as one of southeast Queensland's most compelling investment destinations. With a combination of strong population growth, significant infrastructure investment, and relative affordability compared to Brisbane, the region offers investors attractive rental yields and solid capital growth prospects. Whether you're a first-time investor or expanding your portfolio, understanding the dynamics of the Moreton Bay market is essential to making informed decisions.</p>
+    content: `<p><em>Editor's note (July 2026): the yield, growth and vacancy figures in this article are as at early 2025. For current numbers, check the live suburb profiles — e.g. <a href="/suburbs/caboolture-qld-4510">Caboolture</a>, <a href="/suburbs/morayfield-qld-4506">Morayfield</a>, <a href="/suburbs/north-lakes-qld-4509">North Lakes</a> — and model returns with the <a href="/rental-yield-calculator">rental yield calculator</a>.</em></p>
+
+<p>The Moreton Bay corridor has emerged as one of southeast Queensland's most compelling investment destinations. With a combination of strong population growth, significant infrastructure investment, and relative affordability compared to Brisbane, the region offers investors attractive rental yields and solid capital growth prospects. Whether you're a first-time investor or expanding your portfolio, understanding the dynamics of the Moreton Bay market is essential to making informed decisions.</p>
 
 <h2>Why Moreton Bay?</h2>
 <p>Several factors are driving investor interest in the Moreton Bay Region. The area is experiencing population growth of approximately 2.5% annually, well above the national average, creating sustained demand for rental properties. Major infrastructure projects including the Bruce Highway upgrade, the Moreton Bay Rail Link extension, and new health and education facilities are adding long-term value to the region. Additionally, the Queensland Government's Southeast Queensland City Deal is directing billions of dollars in investment into the corridor over the coming decade.</p>
@@ -887,6 +1109,7 @@ export const blogPosts: BlogPost[] = [
       "property portfolio",
     ],
     publishedAt: "2025-01-28",
+    updatedAt: "2026-07-24",
     readingTime: 7,
   },
   {
@@ -941,7 +1164,7 @@ export const blogPosts: BlogPost[] = [
     content: `<p>House and land packages have become one of the most popular ways to enter the property market in the Moreton Bay Region. With new estates popping up across Caboolture, Morayfield, Burpengary, and beyond, buyers are presented with glossy brochures promising modern living at attractive price points. But are house and land packages genuinely a good deal, or are there hidden costs and compromises you should know about? Let's take an honest look at both sides.</p>
 
 <h2>The Advantages</h2>
-<p>House and land packages offer several compelling benefits. For first home buyers, they can be combined with the Queensland First Home Owner Grant of $30,000, significantly reducing the upfront cost. New builds come with structural warranties and builder guarantees, meaning fewer maintenance surprises in the early years. You'll also benefit from modern energy-efficient designs, contemporary floor plans, and the ability to customise finishes and layouts. From an investment perspective, depreciation benefits on new properties can provide meaningful tax advantages for investors.</p>
+<p>House and land packages offer several compelling benefits. For first home buyers, they can be combined with the Queensland <strong>First Home Owner Grant of $30,000</strong> (locked in for another four years by the 2026-27 State Budget), and eligible first home buyers pay <strong>zero transfer duty on new homes and vacant land</strong> — a saving worth more than the grant itself on many purchases. New builds come with structural warranties and builder guarantees, meaning fewer maintenance surprises in the early years. You'll also benefit from modern energy-efficient designs, contemporary floor plans, and the ability to customise finishes and layouts. From an investment perspective, depreciation benefits on new properties can provide meaningful tax advantages for investors — our <a href="/guides/property-depreciation-guide">property depreciation guide</a> explains how.</p>
 
 <h2>The Potential Downsides</h2>
 <p>However, house and land packages aren't without their drawbacks. The base price advertised often excludes essential items like fencing, landscaping, driveway extensions, and upgraded fixtures, which can add $30,000 to $60,000 to the final cost. Build times typically range from 6 to 12 months, during which you may need to continue paying rent elsewhere. Land sizes in newer estates tend to be smaller than established suburbs, often 300 to 450 square metres compared to 600+ square metres in older areas. There's also the consideration that newer estates may lack mature trees, established communities, and nearby amenities during the early stages of development.</p>
@@ -955,7 +1178,7 @@ export const blogPosts: BlogPost[] = [
 <li>Understand the estate covenants and any restrictions on modifications or landscaping</li>
 </ul>
 
-<p>House and land packages can represent excellent value when approached with realistic expectations and thorough due diligence. The key is to look beyond the headline price, understand the full cost of completion, and work with reputable builders who deliver quality homes on time and on budget. For many buyers in the Moreton Bay Region, a well-chosen house and land package remains one of the smartest paths to homeownership.</p>`,
+<p>House and land packages can represent excellent value when approached with realistic expectations and thorough due diligence. The key is to look beyond the headline price, understand the full cost of completion, and work with reputable builders who deliver quality homes on time and on budget. For many buyers in the Moreton Bay Region, a well-chosen house and land package remains one of the smartest paths to homeownership. Browse current <a href="/house-and-land">house-and-land options</a>, and see our guide on <a href="/guides/how-to-find-a-builder-australia">how to find a builder</a> before you sign anything.</p>`,
     coverImage: "/images/blog/cover-house-and-land-packages-are-they-worth-it.jpg",
     author: {
       name: "Ellie Johnston",
@@ -970,6 +1193,7 @@ export const blogPosts: BlogPost[] = [
       "construction",
     ],
     publishedAt: "2024-12-12",
+    updatedAt: "2026-07-24",
     readingTime: 6,
   },
   {
@@ -981,10 +1205,10 @@ export const blogPosts: BlogPost[] = [
     content: `<p>Selling your home is a significant financial decision, and in the Moreton Bay property market, the difference between a well-prepared sale and a hasty listing can be tens of thousands of dollars. Whether you're upsizing, downsizing, or relocating, taking the time to prepare your property and develop a strategic marketing plan will help you achieve the maximum sale price. Here are the most effective strategies our agents recommend.</p>
 
 <h2>Presentation Is Everything</h2>
-<p>First impressions matter enormously in real estate. Start with the exterior, ensure your lawn is manicured, garden beds are mulched, and the front entrance is inviting. A fresh coat of paint on the front door and a clean driveway can dramatically improve street appeal. Inside, declutter every room, deep clean all surfaces, and consider professional styling if your budget allows. Properties that are professionally styled consistently sell for 5% to 10% more than unstaged equivalents. Pay particular attention to kitchens and bathrooms, as these rooms have the greatest influence on buyer perception.</p>
+<p>First impressions matter enormously in real estate. Start with the exterior, ensure your lawn is manicured, garden beds are mulched, and the front entrance is inviting. A fresh coat of paint on the front door and a clean driveway can dramatically improve street appeal. Inside, declutter every room, deep clean all surfaces, and consider professional styling if your budget allows — our guide to <a href="/guides/home-staging-cost-australia">home staging costs</a> breaks down what full and partial styling run in each city. Properties that are professionally styled consistently sell for 5% to 10% more than unstaged equivalents. Pay particular attention to kitchens and bathrooms, as these rooms have the greatest influence on buyer perception, and check our guide on <a href="/guides/what-to-fix-before-selling-a-house">what to fix before selling</a> so you spend only where it returns.</p>
 
 <h2>Pricing Strategy</h2>
-<p>Setting the right price from day one is critical. Overpricing your property can lead to extended days on market, which ultimately results in a lower sale price as buyers perceive the listing as stale. Work with your agent to analyse recent comparable sales in your suburb and set a price guide that attracts genuine buyer interest while leaving room for competitive offers. In the current Moreton Bay market, well-priced properties are typically receiving multiple offers within the first two weeks of listing, creating the competitive tension that drives prices above expectations.</p>
+<p>Setting the right price from day one is critical. Overpricing your property can lead to extended days on market, which ultimately results in a lower sale price as buyers perceive the listing as stale. Start with a <a href="/appraisal">free appraisal</a> so your expectations rest on today's evidence, then work with your agent to analyse recent comparable sales in your suburb and set a price guide that attracts genuine buyer interest while leaving room for competitive offers. In the current Moreton Bay market, well-priced properties are typically receiving multiple offers within the first two weeks of listing, creating the competitive tension that drives prices above expectations.</p>
 
 <h2>Marketing That Works</h2>
 <ul>
@@ -995,7 +1219,7 @@ export const blogPosts: BlogPost[] = [
 <li>Host well-structured open homes and private inspections to create urgency among buyers</li>
 </ul>
 
-<p>The Moreton Bay property market remains active, with strong buyer demand across most suburbs. By investing in presentation, working with an experienced local agent, and implementing a strategic marketing campaign, you can position your property to achieve the best possible result. Remember, the small upfront investment in preparation and marketing consistently delivers a substantial return at sale time.</p>`,
+<p>The Moreton Bay property market remains active, with strong buyer demand across most suburbs. By investing in presentation, working with an experienced local agent, and implementing a strategic marketing campaign, you can position your property to achieve the best possible result. Remember, the small upfront investment in preparation and marketing consistently delivers a substantial return at sale time. For the complete playbook — costs, agent selection, marketing and the 12-week countdown — grab our free <a href="/selling-guide">selling guide</a>.</p>`,
     coverImage: "/images/blog/cover-selling-your-home-tips-for-maximum-value.jpg",
     author: {
       name: "Andy McMaster",
@@ -1010,6 +1234,7 @@ export const blogPosts: BlogPost[] = [
       "moreton bay",
     ],
     publishedAt: "2024-09-18",
+    updatedAt: "2026-07-24",
     readingTime: 6,
   },
   {
@@ -1018,7 +1243,9 @@ export const blogPosts: BlogPost[] = [
     title: "Moreton Bay Property Market Update Q1 2025",
     excerpt:
       "A data-driven overview of the Moreton Bay property market for the first quarter of 2025, including price trends, sales volumes, and market outlook.",
-    content: `<p>The Moreton Bay property market has started 2025 with continued momentum, building on the strong growth trajectory established through 2024. Across the region, median house prices have risen by 5.8% year-on-year, outperforming the Greater Brisbane average of 4.2%. Low stock levels, sustained population growth, and improving infrastructure continue to underpin demand across the northern corridor. Here's a detailed look at the key trends shaping the market in Q1 2025.</p>
+    content: `<p><em>Editor's note (July 2026): this is an archived quarterly update — the figures below describe the market as at early 2025. For current medians, rents and growth, see the live <a href="/property-market/brisbane">Brisbane market report</a> and the individual suburb profiles linked from it, which update as new data lands.</em></p>
+
+<p>The Moreton Bay property market has started 2025 with continued momentum, building on the strong growth trajectory established through 2024. Across the region, median house prices have risen by 5.8% year-on-year, outperforming the Greater Brisbane average of 4.2%. Low stock levels, sustained population growth, and improving infrastructure continue to underpin demand across the northern corridor. Here's a detailed look at the key trends shaping the market in Q1 2025.</p>
 
 <h2>Price Performance by Suburb</h2>
 <p>North Lakes remains the standout performer with a median house price of $785,000, reflecting 7.2% annual growth driven by strong demand from owner-occupiers and limited available stock. Narangba has also delivered impressive results, with its median reaching $720,000 on the back of 6.1% growth. At the more affordable end of the market, Caboolture ($575,000) and Deception Bay ($580,000) continue to attract first home buyers and investors, with annual growth rates of 4.5% and 5.5% respectively. Morayfield and Burpengary sit in the middle ground, offering solid growth potential with medians of $600,000 and $650,000.</p>
@@ -1050,6 +1277,7 @@ export const blogPosts: BlogPost[] = [
       "2025",
     ],
     publishedAt: "2025-03-05",
+    updatedAt: "2026-07-24",
     readingTime: 8,
   },
 
@@ -1966,7 +2194,9 @@ export const blogPosts: BlogPost[] = [
     title: "Negative Gearing Changes 2026: What Every Property Investor Needs to Know",
     excerpt:
       "The 2026-27 federal budget restricts negative gearing to new builds from 1 July 2027 for properties purchased after 7:30pm on budget night. Existing investors are grandfathered. Here's exactly what's changing, who is affected, and what it means for your strategy.",
-    content: `<p>The federal budget handed down on 12 May 2026 contained the most significant change to negative gearing since the rules were last touched in the late 1980s. From 1 July 2027, negative gearing for residential investment property will be limited to new builds only, but only for properties purchased after 7:30pm AEST on budget night. Everything else is grandfathered.</p>
+    content: `<p><em><strong>Update (July 2026):</strong> these changes are now law. Parliament passed the package on 25 June 2026 and the ATO has confirmed the measures, including a late Senate amendment ending new SMSF property borrowing. See our <a href="/guides/negative-gearing-cgt-changes-now-law-2026">coverage of the final legislation</a> for what passed and the 11-month runway to 1 July 2027. The explainer below reflects the rules as legislated.</em></p>
+
+<p>The federal budget handed down on 12 May 2026 contained the most significant change to negative gearing since the rules were last touched in the late 1980s. From 1 July 2027, negative gearing for residential investment property will be limited to new builds only, but only for properties purchased after 7:30pm AEST on budget night. Everything else is grandfathered.</p>
 
 <p>This article unpacks exactly what's changing, the timing rules that matter, who is and isn't affected, and what investors should actually do with the information.</p>
 
@@ -2080,6 +2310,7 @@ export const blogPosts: BlogPost[] = [
       "2026",
     ],
     publishedAt: "2026-05-13",
+    updatedAt: "2026-07-24",
     readingTime: 13,
   },
 
@@ -2089,7 +2320,9 @@ export const blogPosts: BlogPost[] = [
     title: "Capital Gains Tax on Property: How the 2026 Budget Changes the Rules",
     excerpt:
       "The 2026-27 federal budget scraps the 50% CGT discount on residential investment property, replacing it with cost base indexation and a 30% minimum tax on net gains. New builds and existing properties owned on 12 May 2026 are exempt. Here's how the new system works and what it means for your portfolio.",
-    content: `<p>For 26 years, Australian investors selling property held longer than 12 months have paid capital gains tax on only half the nominal gain. The 50% CGT discount, introduced in 1999, has been one of the most generous tax provisions in the system. The 2026-27 federal budget has changed it. For residential investment property purchased after 7:30pm AEST on 12 May 2026, the 50% discount is gone, replaced with cost base indexation and a new 30% minimum tax on net capital gains.</p>
+    content: `<p><em><strong>Update (July 2026):</strong> these changes are now law. Parliament passed the package on 25 June 2026 and the ATO has confirmed the measures. See our <a href="/guides/negative-gearing-cgt-changes-now-law-2026">coverage of the final legislation</a> for what passed. The explainer below reflects the rules as legislated.</em></p>
+
+<p>For 26 years, Australian investors selling property held longer than 12 months have paid capital gains tax on only half the nominal gain. The 50% CGT discount, introduced in 1999, has been one of the most generous tax provisions in the system. The 2026-27 federal budget has changed it. For residential investment property purchased after 7:30pm AEST on 12 May 2026, the 50% discount is gone, replaced with cost base indexation and a new 30% minimum tax on net capital gains.</p>
 
 <p>This article walks through exactly how the new CGT system works for residential property, who is affected, the worked examples that show what the new tax bill actually looks like, and what investors should do with the information.</p>
 
@@ -2223,6 +2456,7 @@ export const blogPosts: BlogPost[] = [
       "2026",
     ],
     publishedAt: "2026-05-13",
+    updatedAt: "2026-07-24",
     readingTime: 14,
   },
 ];

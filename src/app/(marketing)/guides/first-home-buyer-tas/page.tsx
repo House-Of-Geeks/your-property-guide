@@ -19,7 +19,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Tasmania first home buyer guide: $30,000 FHOG on new homes, 50% stamp duty concession on established homes up to $600K, federal schemes, and Tasmania's affordability advantage.",
   slug: "first-home-buyer-tas",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-07-24",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -70,7 +70,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Is Tasmania really one of Australia's most generous FHOGs?",
     answer:
-      "Yes. The $30,000 FHOG is one of the largest grants in Australia (Queensland's dropped to $15,000 from 1 July 2026). Combined with Tasmania's lower median prices, the grant covers a much larger share of a typical deposit than the same dollar amount in Sydney or Melbourne.",
+      "Yes. The $30,000 FHOG ties with Queensland's for the largest grant in Australia (Queensland's 2026-27 Budget locked its $30,000 in for another four years). Combined with Tasmania's lower median prices, the grant covers a much larger share of a typical deposit than the same dollar amount in Sydney or Melbourne.",
   },
   {
     question: "Can I get the FHOG and the stamp duty concession on the same home?",

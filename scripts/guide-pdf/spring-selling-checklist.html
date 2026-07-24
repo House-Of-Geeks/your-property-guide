@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<title>Your Spring 2026 Selling Countdown | Your Property Guide</title>
+<style>
+  /* Design language shared with selling-guide.html — same palette, type and
+     component styles, so the checklist reads as part of the same product. */
+  @page { size: A4; margin: 18mm 16mm; }
+
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.6;
+    color: #251c14;
+    background: #fefbf7;
+  }
+
+  h1, h2, h3, .serif { font-family: Georgia, "Times New Roman", serif; font-weight: normal; }
+
+  p { margin: 0 0 8pt 0; }
+  ul, ol { margin: 4pt 0 10pt 0; padding-left: 16pt; }
+  li { margin-bottom: 3.5pt; }
+  li::marker { color: #bd592f; }
+  strong { font-weight: 600; color: #17100b; }
+
+  .page { page-break-before: always; }
+
+  /* ---------- Cover ---------- */
+  .cover {
+    height: 260mm;
+    background-image:
+      radial-gradient(circle at 102% 6%, transparent 0 58mm, rgba(255, 221, 198, 0.07) 58mm 58.4mm, transparent 58.4mm),
+      radial-gradient(circle at 102% 6%, transparent 0 86mm, rgba(255, 221, 198, 0.07) 86mm 86.4mm, transparent 86.4mm),
+      radial-gradient(circle at 102% 6%, transparent 0 116mm, rgba(255, 221, 198, 0.07) 116mm 116.4mm, transparent 116.4mm),
+      radial-gradient(circle at 100% 100%, rgba(189, 89, 47, 0.32) 0, rgba(189, 89, 47, 0) 95mm);
+    background-color: #17100b;
+    border-radius: 4mm;
+    color: #fefbf7;
+    position: relative;
+    padding: 13mm 13mm 11mm;
+    display: flex;
+    flex-direction: column;
+  }
+  .cover-rule { height: 2.2pt; background: #bd592f; margin-bottom: 7mm; }
+  .masthead {
+    font-size: 12pt;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: #ffddc6;
+    font-weight: 600;
+    margin: 0;
+  }
+  .cover-title-block { margin-top: 34mm; }
+  .cover h1 {
+    font-size: 37pt;
+    line-height: 1.12;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: #fefbf7;
+    margin: 0;
+    max-width: 168mm;
+  }
+  .cover h1 em { font-style: italic; color: #e8a075; }
+  .cover .edition {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 16pt;
+    color: #bd592f;
+    margin: 9mm 0 0 0;
+  }
+  .cover .cover-sub {
+    font-size: 11.5pt;
+    line-height: 1.65;
+    color: rgba(254, 251, 247, 0.72);
+    max-width: 120mm;
+    margin: 7mm 0 0 0;
+  }
+  .cover-spacer { flex: 1; }
+  .cover-foot {
+    border-top: 1px solid rgba(254, 251, 247, 0.18);
+    padding-top: 6mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .cover-foot .site { font-family: Georgia, serif; font-size: 13pt; color: rgba(254, 251, 247, 0.85); }
+  .cover-foot .free {
+    font-size: 8.5pt;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #ffddc6;
+    font-weight: 600;
+  }
+
+  h2 {
+    font-size: 15pt;
+    color: #17100b;
+    margin: 16pt 0 6pt 0;
+    display: block;
+    break-after: avoid;
+  }
+  h2::before {
+    content: "";
+    display: block;
+    width: 24pt;
+    border-top: 2.5pt solid #bd592f;
+    margin-bottom: 5pt;
+  }
+
+  /* ---------- Page headline (light pages) ---------- */
+  .page-head h1 { font-size: 26pt; color: #17100b; margin: 0 0 4pt 0; }
+  .page-head .head-rule { border: none; border-top: 2.5pt solid #bd592f; width: 34pt; margin: 0 0 8pt 0; }
+  .page-head .standlight {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 11.5pt;
+    line-height: 1.55;
+    color: #564b42;
+    margin: 0 0 10pt 0;
+    max-width: 160mm;
+  }
+
+  /* ---------- Tables ---------- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    margin: 9pt 0 13pt 0;
+  }
+  th {
+    background: #17100b;
+    color: #f6ede2;
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 7.8pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    text-align: left;
+    padding: 7pt 9pt;
+    border: none;
+    vertical-align: bottom;
+  }
+  td { padding: 7pt 9pt; border: none; vertical-align: top; }
+  tbody tr:nth-child(even) td { background: #f6ede2; }
+  tr { break-inside: avoid; }
+
+  /* ---------- Countdown checklist ---------- */
+  table.timeline { font-size: 9.3pt; }
+  .timeline tbody tr:nth-child(even) td { background: transparent; }
+  .timeline td { border-bottom: 0.6pt solid #d9cfc5; padding: 8pt 9pt; }
+  .timeline td:first-child {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 11pt;
+    line-height: 1.25;
+    color: #bd592f;
+    border-right: 1.2pt solid rgba(189, 89, 47, 0.45);
+    padding-right: 8pt;
+  }
+  .timeline td:first-child strong { font-weight: normal; color: #bd592f; font-size: 12.5pt; }
+  .timeline td:last-child { text-align: center; font-size: 11pt; color: #953407; }
+  .timeline .phase td {
+    background: #17100b !important;
+    color: #ffddc6;
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border-right: none;
+    padding: 6pt 9pt;
+  }
+  .timeline .phase td em {
+    float: right;
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: normal;
+    letter-spacing: 0;
+    text-transform: none;
+    font-size: 9pt;
+    color: rgba(254, 251, 247, 0.65);
+  }
+
+  /* ---------- Callout boxes ---------- */
+  .box {
+    background: #f6ede2;
+    border-left: 3pt solid #bd592f;
+    border-radius: 0 2mm 2mm 0;
+    padding: 11pt 14pt;
+    margin: 13pt 0;
+    break-inside: avoid;
+  }
+  .box-title {
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #953407;
+    margin-bottom: 5pt;
+  }
+  .box p:last-child, .box ul:last-child { margin-bottom: 0; }
+
+  /* ---------- Stat callouts ---------- */
+  .stat {
+    background: #f6ede2;
+    border: 0.6pt solid #d9cfc5;
+    border-left: 4pt solid #bd592f;
+    border-radius: 0 2mm 2mm 0;
+    padding: 12pt 15pt 10pt;
+    margin: 13pt 0;
+    break-inside: avoid;
+  }
+  .stat-num {
+    font-family: Georgia, serif;
+    font-size: 42pt;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: #bd592f;
+    margin-bottom: 5pt;
+  }
+  .stat-label {
+    font-size: 8pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    line-height: 1.6;
+    color: #564b42;
+  }
+
+  /* ---------- Footer line ---------- */
+  .foot {
+    margin-top: 18pt;
+    padding-top: 6pt;
+    border-top: 0.6pt solid #d9cfc5;
+    font-size: 6.8pt;
+    color: #8a8276;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    break-before: avoid;
+  }
+
+  /* ---------- Back page ---------- */
+  .backpage {
+    height: 260mm;
+    background-image:
+      radial-gradient(circle at -2% 6%, transparent 0 58mm, rgba(255, 221, 198, 0.07) 58mm 58.4mm, transparent 58.4mm),
+      radial-gradient(circle at -2% 6%, transparent 0 86mm, rgba(255, 221, 198, 0.07) 86mm 86.4mm, transparent 86.4mm),
+      radial-gradient(circle at -2% 6%, transparent 0 116mm, rgba(255, 221, 198, 0.07) 116mm 116.4mm, transparent 116.4mm),
+      radial-gradient(circle at 0% 100%, rgba(189, 89, 47, 0.32) 0, rgba(189, 89, 47, 0) 95mm);
+    background-color: #17100b;
+    border-radius: 4mm;
+    color: #fefbf7;
+    padding: 14mm 13mm 12mm;
+    display: flex;
+    flex-direction: column;
+  }
+  .back-content { display: flex; flex-direction: column; flex: 1; }
+  .backpage h2 { color: #fefbf7; font-size: 19pt; margin: 0 0 6mm 0; }
+  .backpage h2::before { width: 26pt; border-top: 2.5pt solid #bd592f; margin-bottom: 6pt; }
+  .backpage p { color: rgba(254, 251, 247, 0.78); max-width: 152mm; }
+  .backpage p strong { color: #ffddc6; }
+  .back-spacer { flex: 1; }
+  .back-site { font-family: Georgia, serif; font-size: 25pt; color: #ffddc6; margin: 0 0 8mm 0; }
+  .disc-label {
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 221, 198, 0.7);
+    margin: 0 0 4pt 0;
+  }
+  .backpage .fineprint { font-size: 7.8pt; line-height: 1.55; color: rgba(254, 251, 247, 0.45); max-width: 165mm; }
+  .back-foot {
+    border-top: 1px solid rgba(254, 251, 247, 0.18);
+    padding-top: 5mm;
+    margin-top: 8mm;
+  }
+  .fineprint { font-size: 8.5pt; color: #6c655a; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<!-- ==================== COVER ==================== -->
+<section class="cover">
+  <div class="cover-top">
+    <div class="cover-rule"></div>
+    <div class="masthead">Your Property Guide</div>
+  </div>
+
+  <div class="cover-title-block">
+    <h1>Your <em>Spring 2026</em> Selling Countdown</h1>
+    <div class="edition">The printable 12-week checklist</div>
+    <p class="cover-sub">Pick your listing weekend, work backwards, and tick your way from first declutter to settlement day. The companion checklist to The Complete Guide to Selling Your Property in Australia.</p>
+  </div>
+
+  <div class="cover-spacer"></div>
+
+  <div class="cover-foot">
+    <span class="site">yourpropertyguide.com.au</span>
+    <span class="free">Free · Print Me</span>
+  </div>
+</section>
+
+<!-- ==================== PAGE 2: PICK YOUR WEEKEND ==================== -->
+<section class="page">
+  <div class="page-head">
+    <h1>First, pick your listing weekend</h1>
+    <hr class="head-rule">
+    <p class="standlight">Spring campaigns are won in winter. Photography happens a fortnight before launch, styling and trades before that, and your agent and conveyancer before everything. Choose the weekend you want your campaign live, then start the countdown on the matching Monday.</p>
+  </div>
+
+  <table>
+    <thead><tr><th>Start the checklist week of</th><th>Campaign goes live</th><th>The window</th></tr></thead>
+    <tbody>
+    <tr>
+      <td><strong>Monday 27 July 2026</strong></td>
+      <td><strong>11&ndash;12 September</strong></td>
+      <td>Early spring. You list while most vendors are still painting fences, so your home meets the season's first buyers with the least competition.</td>
+    </tr>
+    <tr>
+      <td><strong>Monday 24 August 2026</strong></td>
+      <td><strong>9&ndash;10 October</strong></td>
+      <td>Peak spring. The biggest buyer audience of the year, and the most competing stock. Presentation and pricing discipline decide who wins October.</td>
+    </tr>
+    <tr>
+      <td><strong>Monday 21 September 2026</strong></td>
+      <td><strong>6&ndash;7 November</strong></td>
+      <td>The last full window. Auction or exchange lands late November, before the market winds down for Christmas. In Victoria, mind the Melbourne Cup pause (Tuesday 3 November).</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="box">
+    <div class="box-title">Already past your start date?</div>
+    <p>The 12 weeks are comfortable, not mandatory. To compress to eight, run weeks 12 and 11 together (research while you interview agents), decide on styling in the same week you book trades, and hold the launch sequence &mdash; the last six weeks &mdash; exactly as written. What you should never compress: contract preparation. In NSW, Victoria, Queensland and the ACT your paperwork must be ready <strong>before</strong> marketing starts, and a late contract is the most common reason launch dates slip.</p>
+  </div>
+
+  <div class="stat">
+    <div class="stat-num">6&frac12; weeks</div>
+    <div class="stat-label">From first checklist tick to campaign launch &mdash; the rest is the campaign itself</div>
+  </div>
+
+  <p class="foot">yourpropertyguide.com.au &middot; Your Spring 2026 Selling Countdown</p>
+</section>
+
+<!-- ==================== PAGES 3-4: THE COUNTDOWN ==================== -->
+<section class="page">
+  <div class="page-head">
+    <h1>The countdown</h1>
+    <hr class="head-rule">
+    <p class="standlight">Weeks count down to exchange, with settlement following two to six weeks later. Chapter references point into your copy of The Complete Guide to Selling Your Property in Australia.</p>
+  </div>
+
+  <table class="timeline">
+    <thead><tr><th style="width:18%">When</th><th>What to do</th><th style="width:8%">Done</th></tr></thead>
+    <tr class="phase"><td colspan="3">Phase one &middot; Groundwork <em>weeks 12 to 9</em></td></tr>
+    <tr>
+      <td><strong>Week 12</strong></td>
+      <td>Research your suburb: pull six months of comparable sold prices, days on market and current competition, and build your own price range (Chapter 2). Book a free appraisal at yourpropertyguide.com.au/appraisal so your plan starts from evidence. Start decluttering, one room a week.</td>
+      <td>&#9744;</td>
+    </tr>
+    <tr>
+      <td><strong>Week 11</strong></td>
+      <td>Shortlist and interview three agents using the 10 questions (Chapter 5). Ask each for a written appraisal with comparables, a marketing plan with line-item costs, and their commission including GST. Phone their past vendors.</td>
+      <td>&#9744;</td>
+    </tr>
+    <tr>
+      <td><strong>Week 10</strong></td>
+      <td>Appoint your agent; negotiate commission and the agreement term before signing. Engage your conveyancer or solicitor and start contract or disclosure preparation (mandatory before marketing in NSW, VIC, QLD and the ACT). Notify your lender and ask about discharge timing and any fixed-rate break costs.</td>
+      <td>&#9744;</td>
+    </tr>
+    <tr>
+      <td><strong>Week 9</strong></td>
+      <td>Book trades for repairs and painting &mdash; spring is their busy season, so lock dates now. Order a pre-sale building and pest report if you've decided to (Chapter 4); in the ACT, commission the mandatory report pack. Fix every small broken thing.</td>
+      <td>&#9744;</td>
+    </tr>
+    <tr class="phase"><td colspan="3">Phase two &middot; Presentation <em>weeks 8 to 7</em></td></tr>
+    <tr>
+      <td><strong>Week 8</strong></td>
+      <td>Decide on styling: consultation, partial or full staging &mdash; stylists book out fast ahead of spring, so get two quotes this week. Finish decluttering and deep-clean. Tackle street appeal: garden, fence, letterbox, driveway. Spring buyers see your garden at its best; make sure it is.</td>
+      <td>&#9744;</td>
+    </tr>
+    <tr>
+      <td><strong>Week 7</strong></td>
+      <td>Trades and styling complete. Book photography for the property's best light, plus floorplan and (if warranted) video. Confirm the contract or disclosure pack is ready. Agree the launch price and the advertised price strategy in writing.</td>
+      <td>&#9744;</td>
+    </tr>
+    <tr class="phase"><td colspan="3">Phase three &middot; Launch <em>weeks 6 to 5</em></td></tr>
+    <tr>
+      <td><strong>Week 6</strong></td>
+      <td>Approve photos, floorplan and copy (check every fact yourself). Sign off the portal tier and total marketing spend. Listing goes live late in the week to catch the weekend's saved-search alerts. Signboard up.</td>
+      <td>&#9744;</td>
+    </tr>
+    <tr>
+      <td><strong>Week 5</strong></td>
+      <td>First open homes. Demand written feedback after each: groups through, repeat visitors, contract or disclosure requests, price feedback. This fortnight is your biggest audience; treat every enquiry as a live one.</td>
+      <td>&#9744;</td>
+    </tr>
+    <tr class="phase"><td colspan="3">Phase four &middot; Campaign and close <em>weeks 4 to settlement</em></td></tr>
+    <tr>
+      <td><strong>Week 4</strong></td>
+      <td>Second weekend of opens. Review the campaign data against launch expectations. Strong traffic, no offers? Hold briefly. Weak traffic? Reprice decisively now, not in week 2. Auction campaigns: review buyer interest with the agent and start thinking about reserve.</td>
+      <td>&#9744;</td>
+    </tr>
+    <tr>
+      <td><strong>Week 3</strong></td>
+      <td>Offers arriving (or auction week approaching). Insist on written offers with all conditions. Assess each on price, conditions, deposit and settlement terms (Chapter 8). Keep your pre-set floor in front of you.</td>
+      <td>&#9744;</td>
+    </tr>
+    <tr>
+      <td><strong>Week 2</strong></td>
+      <td>Negotiate and accept, or auction day: set the reserve from campaign evidence the same week. Contracts signed or exchanged. Buyer's cooling-off period runs (state table, Chapter 8). Deposit paid into the agent's trust account.</td>
+      <td>&#9744;</td>
+    </tr>
+    <tr>
+      <td><strong>Week 1</strong></td>
+      <td>Buyer's conditions in play: finance approval and building and pest inspection. Respond to any renegotiation attempt with your own evidence, not panic. Lodge your mortgage discharge authority with your lender immediately.</td>
+      <td>&#9744;</td>
+    </tr>
+    <tr>
+      <td><strong>Settlement window</strong><br>(2 to 6 weeks later)</td>
+      <td>Conveyancer prepares the transfer; lender processes the discharge (chase weekly). Book removalists, redirect mail, arrange utility disconnections for settlement day, keep insurance current until settlement. Leave the property in contract condition with all included items in place.</td>
+      <td>&#9744;</td>
+    </tr>
+    <tr>
+      <td><strong>Settlement day</strong></td>
+      <td>Buyer's pre-settlement inspection passes. Settlement completes electronically; mortgage paid out, balance lands in your account, agent releases keys and remits the deposit less commission. Keep the settlement statement with your tax records. Done.</td>
+      <td>&#9744;</td>
+    </tr>
+  </table>
+
+  <div class="box">
+    <div class="box-title">The three spring bottlenecks</div>
+    <p>Everything on this list is quick on its own; three things book out from August and blow up timelines when left late: <strong>trades</strong> (week 9), <strong>stylists</strong> (week 8) and <strong>contract preparation</strong> (week 10). Lock those three early and the rest of the countdown looks after itself.</p>
+  </div>
+
+  <p class="foot">yourpropertyguide.com.au &middot; Your Spring 2026 Selling Countdown</p>
+</section>
+
+<!-- ==================== BACK PAGE ==================== -->
+<section class="backpage page">
+  <div class="back-content">
+    <div class="cover-rule"></div>
+
+    <h2 class="serif" style="margin-top:14mm;">Start with your number</h2>
+    <p>Every decision on this checklist &mdash; agent, price strategy, how much to spend on presentation &mdash; gets easier once you know what your home is worth today. A free appraisal from a top local agent costs nothing and commits you to nothing.</p>
+    <p><strong>yourpropertyguide.com.au/appraisal</strong> &mdash; book your free appraisal.<br>
+    <strong>yourpropertyguide.com.au/real-estate-commission-calculator</strong> &mdash; see what commission would be on your sale.<br>
+    <strong>yourpropertyguide.com.au/selling-guide</strong> &mdash; the full 10-chapter guide this checklist comes from.</p>
+
+    <div class="back-spacer"></div>
+
+    <p class="back-site">yourpropertyguide.com.au</p>
+
+    <p class="disc-label">Disclaimer</p>
+    <p class="fineprint">This checklist is general information only. It is not financial, legal or tax advice, and it doesn't take your personal circumstances into account. Timeframes, legal requirements and market conditions are typical as at mid-2026; they vary by state, suburb and situation, and they change. Before acting on anything in this checklist, verify the current rules for your state and get advice from a licensed conveyancer or solicitor and other qualified professionals as your situation requires. While care has been taken in preparing this checklist, no warranty is given as to its accuracy or completeness, and no liability is accepted for any loss arising from reliance on it.</p>
+
+    <div class="back-foot">
+      <p class="fineprint" style="margin:0;">&copy; Profit Geeks 2026. All rights reserved.<br>
+      yourpropertyguide.com.au &middot; Your Spring 2026 Selling Countdown &middot; Companion to The Complete Guide to Selling Your Property in Australia</p>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

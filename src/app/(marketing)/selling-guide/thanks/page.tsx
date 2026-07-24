@@ -14,6 +14,8 @@ export const metadata: Metadata = {
 
 // Must match GUIDE_PDF_PATH in /api/leads/route.ts.
 const GUIDE_PDF_PATH = "/downloads/your-property-guide-selling-a-home-australia.pdf";
+// Seasonal bonus asset — keep in sync with CHECKLIST_PDF_PATH in lead-emails.ts.
+const CHECKLIST_PDF_PATH = "/downloads/your-property-guide-spring-selling-countdown-2026.pdf";
 
 interface PageProps {
   // Next 16 can deliver repeated params as arrays — normalise before use.
@@ -176,6 +178,24 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
               We&rsquo;ve also emailed you the link, so it&rsquo;s there
               whenever you need it.
             </p>
+            {/* Seasonal bonus: the printable countdown rides along with every
+                guide download. One extra asset, zero extra form friction. */}
+            <a
+              href={CHECKLIST_PDF_PATH}
+              download
+              className="group mt-5 flex items-center gap-3 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 px-4 py-3 text-left transition-colors"
+            >
+              <Download className="w-4 h-4 shrink-0 text-accent-lighter transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
+              <span className="min-w-0">
+                <span className="block text-sm font-medium text-white">
+                  Bonus: your Spring 2026 selling countdown
+                </span>
+                <span className="block text-xs text-white/64">
+                  The printable 12-week checklist, with start dates for a
+                  September, October or November listing
+                </span>
+              </span>
+            </a>
           </div>
 
           {phonePrompt && (

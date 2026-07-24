@@ -114,6 +114,10 @@ export const GUIDE_COVER_URL = "https://www.yourpropertyguide.com.au/images/guid
 export const BUYING_GUIDE_PDF_PATH = "/downloads/your-property-guide-buying-property-australia.pdf";
 export const BUYING_GUIDE_PDF_URL = `https://www.yourpropertyguide.com.au${BUYING_GUIDE_PDF_PATH}`;
 export const BUYING_GUIDE_COVER_URL = "https://www.yourpropertyguide.com.au/images/guide/buying-guide-cover-email.jpg";
+// Seasonal bonus for selling-guide leads: the printable 12-week countdown
+// (scripts/guide-pdf/spring-selling-checklist.html). Swap per season.
+export const CHECKLIST_PDF_PATH = "/downloads/your-property-guide-spring-selling-countdown-2026.pdf";
+export const CHECKLIST_PDF_URL = `https://www.yourpropertyguide.com.au${CHECKLIST_PDF_PATH}`;
 const APPRAISAL_URL = "https://www.yourpropertyguide.com.au/appraisal";
 const BORROWING_URL = "https://www.yourpropertyguide.com.au/borrowing-power-calculator";
 
@@ -376,6 +380,7 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
         <tr><td align="center" style="padding:26px 28px 6px;">
           ${emailButton("Download your guide (PDF)", buying ? BUYING_GUIDE_PDF_URL : GUIDE_PDF_URL)}
           <p style="margin:10px 0 0;font-size:12px;color:${C.inkSubtle};">Instant download · Works on any device · No card, no catch</p>
+          ${buying ? "" : `<p style="margin:12px 0 0;font-size:13px;line-height:1.55;color:${C.inkMuted};"><strong style="color:${C.terracottaDark};">Bonus:</strong> <a href="${CHECKLIST_PDF_URL}" style="color:${C.terracottaDark};font-weight:600;">your Spring 2026 selling countdown (PDF)</a> &mdash; the printable 12-week checklist, with the exact start dates for a September, October or November listing.</p>`}
         </td></tr>
         <tr><td style="padding:18px 28px 26px;">
           ${buying ? buyingHighlightsHtml() : guideHighlightsHtml()}

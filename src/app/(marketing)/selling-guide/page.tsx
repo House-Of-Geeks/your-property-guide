@@ -209,6 +209,16 @@ export default function SellingGuidePage() {
                 </ul>
               </div>
 
+              {/* Seasonal value-stack line: the countdown checklist ships
+                  free with the guide (delivered on the thanks page + email). */}
+              <p className="rise rise-d3 mb-8 -mt-2 font-sans text-sm text-ink leading-relaxed">
+                <span className="font-semibold text-primary">
+                  Spring bonus, included free:
+                </span>{" "}
+                the printable 12-week selling countdown, with the exact start
+                dates for a September, October or November 2026 listing.
+              </p>
+
               <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-sans font-medium">
                 <span className="inline-flex items-center gap-1.5">
                   <BookOpen className="w-3.5 h-3.5" aria-hidden="true" /> 10 chapters
