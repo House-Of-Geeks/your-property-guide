@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { ArrowRight, Check } from "lucide-react";
 import { subscribeToNewsletter } from "./actions";
 
@@ -18,6 +18,9 @@ export function NewsletterForm({ variant = "footer" }: NewsletterFormProps) {
   const [isPending, startTransition] = useTransition();
   const [status, setStatus] = useState<"idle" | "ok" | "err">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  // Honeypot: uncontrolled so a bot that sets .value via the DOM is still
+  // read at submit time. Real users never reach it (hidden, tabIndex -1).
+  const websiteRef = useRef<HTMLInputElement>(null);
 
   const isFooter = variant === "footer";
 
@@ -27,7 +30,7 @@ export function NewsletterForm({ variant = "footer" }: NewsletterFormProps) {
     setErrorMessage(null);
 
     startTransition(async () => {
-      const result = await subscribeToNewsletter({ email });
+      const result = await subscribeToNewsletter({ email, website: websiteRef.current?.value ?? "" });
       if (result.ok) {
         setStatus("ok");
         setEmail("");
@@ -51,6 +54,11 @@ export function NewsletterForm({ variant = "footer" }: NewsletterFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-2" noValidate>
+      {/* Honeypot: visually hidden, off-screen, aria-hidden. Matches the lead forms. */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+        <label htmlFor={`nl-website-${variant}`}>Website</label>
+        <input id={`nl-website-${variant}`} ref={websiteRef} type="text" name="website" tabIndex={-1} autoComplete="off" defaultValue="" />
+      </div>
       <div className={`flex flex-col sm:flex-row gap-2 ${isFooter ? "" : "max-w-md"}`}>
         <label htmlFor={`nl-${variant}`} className="sr-only">
           Email address

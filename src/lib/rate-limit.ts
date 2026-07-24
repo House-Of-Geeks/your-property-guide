@@ -55,16 +55,23 @@ export function checkRateLimit(key: string, opts: RateLimitOptions): RateLimitRe
   return { allowed: true, remaining: opts.limit - bucket.count, retryAfterSec: 0 };
 }
 
-// Pulls the best-available client IP from a NextRequest. Vercel sets
-// x-forwarded-for; we take the first hop. Falls back to a synthetic key
-// so the limiter still does something useful behind unknown proxies.
-export function ipKeyFromRequest(request: Request): string {
-  const xff = request.headers.get("x-forwarded-for");
+// Pulls the best-available client IP from any Headers-like object. Both
+// NextRequest.headers and the async `headers()` store (used by server
+// actions) expose `.get()`, so this works for API routes and actions alike.
+// Vercel sets x-forwarded-for; we take the first hop. Falls back to a
+// synthetic key so the limiter still does something behind unknown proxies.
+export function ipKeyFromHeaders(h: { get(name: string): string | null }): string {
+  const xff = h.get("x-forwarded-for");
   if (xff) {
     const first = xff.split(",")[0]?.trim();
     if (first) return first;
   }
-  const realIp = request.headers.get("x-real-ip");
+  const realIp = h.get("x-real-ip");
   if (realIp) return realIp.trim();
   return "unknown";
+}
+
+// Convenience wrapper for API routes that hold a Request/NextRequest.
+export function ipKeyFromRequest(request: Request): string {
+  return ipKeyFromHeaders(request.headers);
 }

@@ -14,14 +14,31 @@ import { EMAIL_COLORS, emailLayout } from "@/lib/email-theme";
 
 export const dynamic = "force-dynamic";
 
-function buildZeroFloorHtml(windowHours: number): string {
+// Row types stored in the Lead table that are NOT sales enquiries and must
+// be excluded from lead-health counts. Newsletter signups reuse the Lead
+// table (see components/newsletter/actions.ts) to avoid a schema migration;
+// counting them here would mask a real drop in enquiries — a week of pure
+// newsletter/spam signups would read as healthy lead flow. Add any future
+// synthetic Lead-table types to this list.
+const NON_LEAD_TYPES = ["newsletter"];
+
+// A footnote for the daily emails: newsletter signups aren't leads, but
+// hiding them entirely would be confusing on a day the "system" shows
+// table activity. Surface them as a clearly-labelled aside instead.
+function newsletterNote(newsletterCount: number, windowHours: number): string {
+  if (newsletterCount <= 0) return "";
+  const C = EMAIL_COLORS;
+  return `<p style="margin:12px 0 0;font-size:13px;color:${C.inkSubtle};">Aside: ${newsletterCount} newsletter signup${newsletterCount === 1 ? "" : "s"} also came in during this ${windowHours}h window. These aren't sales enquiries and don't count toward lead health.</p>`;
+}
+
+function buildZeroFloorHtml(windowHours: number, newsletterCount: number): string {
   const C = EMAIL_COLORS;
   return emailLayout({
     variant: "alert",
     eyebrow: `No leads in the last ${windowHours}h`,
     body: `
     <div style="padding:18px 24px;font-size:14px;color:${C.ink};line-height:1.55;">
-      <p style="margin:0 0 12px;">The daily lead-health check ran and found <strong>zero leads</strong> in the database for the last ${windowHours} hours.</p>
+      <p style="margin:0 0 12px;">The daily lead-health check ran and found <strong>zero sales enquiries</strong> in the database for the last ${windowHours} hours.</p>
       <p style="margin:0 0 12px;">This may be normal on a quiet day, or it may indicate a broken form, a rotated SendGrid key, or a deploy regression. Worth a quick sanity check.</p>
       <p style="margin:0;font-size:13px;color:${C.inkSubtle};">Things to verify:</p>
       <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:${C.inkMuted};">
@@ -29,21 +46,23 @@ function buildZeroFloorHtml(windowHours: number): string {
         <li>Check Vercel logs for /api/leads errors</li>
         <li>Confirm SENDGRID_API_KEY is still valid in Vercel env</li>
       </ul>
+      ${newsletterNote(newsletterCount, windowHours)}
     </div>`,
   });
 }
 
 // Sent when leads DID come in. A daily heartbeat so that silence is
 // meaningful: if no email arrives at all, the cron itself didn't run.
-function buildHeartbeatHtml(count: number, windowHours: number): string {
+function buildHeartbeatHtml(count: number, windowHours: number, newsletterCount: number): string {
   const C = EMAIL_COLORS;
   return emailLayout({
     variant: "brand",
     eyebrow: `${count} lead${count === 1 ? "" : "s"} in the last ${windowHours}h`,
     body: `
     <div style="padding:18px 24px;font-size:14px;color:${C.ink};line-height:1.55;">
-      <p style="margin:0;">Daily lead-health check ran OK — <strong>${count}</strong> lead${count === 1 ? "" : "s"} captured in the last ${windowHours} hours.</p>
+      <p style="margin:0;">Daily lead-health check ran OK — <strong>${count}</strong> sales enquir${count === 1 ? "y" : "ies"} captured in the last ${windowHours} hours.</p>
       <p style="margin:12px 0 0;font-size:13px;color:${C.inkSubtle};">You get this every day so a silent failure is obvious: no email at all means the check didn't run.</p>
+      ${newsletterNote(newsletterCount, windowHours)}
     </div>`,
   });
 }
@@ -88,11 +107,17 @@ export async function GET(request: NextRequest) {
 
   // Count leads, retrying transient DB blips so we don't fire a false
   // "DB down" alert. (db.ts also retries at the connection layer.)
+  // `count` is real sales enquiries only; newsletter signups are counted
+  // separately for visibility but never drive the zero/heartbeat decision.
   let count: number | null = null;
+  let newsletterCount = 0;
   let lastErr: unknown = null;
   for (let attempt = 0; attempt < 4; attempt++) {
     try {
-      count = await db.lead.count({ where: { createdAt: { gte: since } } });
+      [count, newsletterCount] = await Promise.all([
+        db.lead.count({ where: { createdAt: { gte: since }, type: { notIn: NON_LEAD_TYPES } } }),
+        db.lead.count({ where: { createdAt: { gte: since }, type: "newsletter" } }),
+      ]);
       break;
     } catch (err) {
       lastErr = err;
@@ -132,15 +157,17 @@ export async function GET(request: NextRequest) {
       subject: isZero
         ? `ALERT: No leads in last ${WINDOW_HOURS}h`
         : `Lead health: ${count} lead${count === 1 ? "" : "s"} in last ${WINDOW_HOURS}h`,
-      html: isZero ? buildZeroFloorHtml(WINDOW_HOURS) : buildHeartbeatHtml(count, WINDOW_HOURS),
+      html: isZero
+        ? buildZeroFloorHtml(WINDOW_HOURS, newsletterCount)
+        : buildHeartbeatHtml(count, WINDOW_HOURS, newsletterCount),
     });
   } catch (mailErr) {
     console.error("leads-health cron: daily email failed", mailErr);
     return NextResponse.json(
-      { ok: false, count, alertSent: false, error: "email failed" },
+      { ok: false, count, newsletterCount, alertSent: false, error: "email failed" },
       { status: 502 },
     );
   }
 
-  return NextResponse.json({ ok: true, count, alertSent: true, windowHours: WINDOW_HOURS });
+  return NextResponse.json({ ok: true, count, newsletterCount, alertSent: true, windowHours: WINDOW_HOURS });
 }
