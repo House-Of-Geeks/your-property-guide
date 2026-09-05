@@ -5,25 +5,29 @@ import { notFound } from "next/navigation";
 import { ChevronRight, GraduationCap, ExternalLink } from "lucide-react";
 import { getSchoolBySlug, getSchoolsInSuburb, makeSchoolSlug } from "@/lib/services/school-service";
 import { getProperties } from "@/lib/services/property-service";
-import type { PropertyType } from "@/types/property";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
-import { SchoolListingControls } from "@/components/school/SchoolListingControls";
+import { SchoolListings, SchoolListingsEmpty } from "@/components/school/SchoolListings";
 import { SchoolSearchBar } from "@/components/school/SchoolSearchBar";
-import { PROPERTY_TYPES, SITE_URL } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
 import { BreadcrumbJsonLd, EducationalOrganizationJsonLd } from "@/components/seo";
 
 interface SchoolPageProps {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<Record<string, string | undefined>>;
 }
 
-const GMAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? "";
+// 24h ISR (fix item 4a, part two). 9,670 school pages rendered from the
+// database on every request because this route read `searchParams` on the
+// server for the listing filters; that read is a dynamic-API call and also
+// what breaks an ISR render (DYNAMIC_SERVER_USAGE). The server now renders
+// the school and its suburb's full listing sets once, and mode / sort /
+// filters from the URL are applied on the client in SchoolListings. The
+// annual schools sync and the quarterly sync revalidate these paths on
+// demand (scripts/sync/revalidate-paths.ts).
+export const revalidate = 86400;
+export const dynamicParams = true;
+export function generateStaticParams() { return []; }
 
-// Derived from the canonical PROPERTY_TYPES list (whose values are exactly
-// the PropertyType union) so a new type can't silently go missing here.
-const PROPERTY_TYPE_VALUES: ReadonlySet<string> = new Set(
-  PROPERTY_TYPES.map((t) => t.value),
-);
+const GMAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? "";
 
 function typeLabel(type: string) {
   if (type === "primary") return "Primary";
@@ -61,48 +65,21 @@ export async function generateMetadata({ params }: SchoolPageProps): Promise<Met
   };
 }
 
-export default async function SchoolPage({ params, searchParams }: SchoolPageProps) {
+export default async function SchoolPage({ params }: SchoolPageProps) {
   const { slug } = await params;
-  const { sort, mode, minPrice, maxPrice, minBeds, minBaths, minCars, propertyType } = await searchParams;
   const school = await getSchoolBySlug(slug);
   if (!school) notFound();
 
-  const listingType = (mode === "rent" ? "rent" : mode === "sold" ? "sold" : "buy") as "buy" | "rent" | "sold";
-
-  // URL params are arbitrary strings; only pass a propertyType the filter
-  // actually understands so a mistyped/hostile param can't leak into the
-  // query as a nonsense filter.
-  const safePropertyType =
-    propertyType !== undefined && PROPERTY_TYPE_VALUES.has(propertyType)
-      ? (propertyType as PropertyType)
-      : undefined;
-
-  // Both queries only need data from `school`, neither depends on the other,
-  // so they run concurrently to save a DB round-trip of latency per render.
-  // searchParams keeps the route dynamic; this is purely a per-render speedup.
-  const [nearbySchools, propertiesResult] = await Promise.all([
+  // All four queries only need data from `school`, so they run concurrently.
+  // Each listing set is capped by getProperties; the client picks the mode.
+  const suburbSlug = school.suburb.slug;
+  const [nearbySchools, buy, rent, sold] = await Promise.all([
     getSchoolsInSuburb(school.suburbId, school.acaraId ?? undefined),
-    getProperties({
-      listingType,
-      suburb: school.suburb.slug,
-      propertyType: safePropertyType,
-      minPrice: minPrice ? Number(minPrice) : undefined,
-      maxPrice: maxPrice ? Number(maxPrice) : undefined,
-      minBeds: minBeds ? Number(minBeds) : undefined,
-      minBaths: minBaths ? Number(minBaths) : undefined,
-      minCars: minCars ? Number(minCars) : undefined,
-    }),
+    getProperties({ listingType: "buy", suburb: suburbSlug }),
+    getProperties({ listingType: "rent", suburb: suburbSlug }),
+    getProperties({ listingType: "sold", suburb: suburbSlug }),
   ]);
-  let properties = propertiesResult;
-
-  // Sort in-memory
-  if (sort === "newest") {
-    properties = [...properties].sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
-  } else if (sort === "price-asc") {
-    properties = [...properties].sort((a, b) => (a.price.value ?? 0) - (b.price.value ?? 0));
-  } else if (sort === "price-desc") {
-    properties = [...properties].sort((a, b) => (b.price.value ?? 0) - (a.price.value ?? 0));
-  }
+  const listings = { buy, rent, sold };
 
   // Street map (roadmap), not satellite
   const mapSrc = school.lat && school.lng && GMAPS_KEY
@@ -146,7 +123,7 @@ export default async function SchoolPage({ params, searchParams }: SchoolPagePro
       <div className="min-h-screen bg-gray-50">
       {/* Sticky search/filter bar */}
       <Suspense fallback={null}>
-        <SchoolSearchBar schoolName={school.name} currentMode={listingType} />
+        <SchoolSearchBar schoolName={school.name} />
       </Suspense>
 
       {/* Breadcrumb */}
@@ -173,26 +150,22 @@ export default async function SchoolPage({ params, searchParams }: SchoolPagePro
 
           {/* ── Left: property listings ───────────────────────────────── */}
           <div className="flex-1 min-w-0">
-            <Suspense fallback={null}>
-              <SchoolListingControls
-                count={properties.length}
+            {/* The fallback is the server-rendered buy grid (or empty state): it is
+                what the static HTML carries; SchoolListings takes over on the client. */}
+            <Suspense
+              fallback={
+                buy.length > 0
+                  ? <PropertyGrid properties={buy} />
+                  : <SchoolListingsEmpty suburbName={school.suburb.name} suburbSlug={suburbSlug} />
+              }
+            >
+              <SchoolListings
                 schoolName={school.name}
-                currentSort={sort ?? ""}
+                suburbName={school.suburb.name}
+                suburbSlug={suburbSlug}
+                listings={listings}
               />
             </Suspense>
-
-            {properties.length > 0 ? (
-              <PropertyGrid properties={properties} />
-            ) : (
-              <div className="rounded-xl bg-white border border-gray-200 p-10 text-center">
-                <GraduationCap className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-                <p className="text-gray-500">No active listings near {school.suburb.name} right now.</p>
-                <Link href={`/suburbs/${school.suburb.slug}`}
-                  className="mt-3 inline-block text-sm font-medium text-primary hover:text-primary/80">
-                  Explore {school.suburb.name} →
-                </Link>
-              </div>
-            )}
           </div>
 
           {/* ── Right: map + school info ──────────────────────────────── */}
