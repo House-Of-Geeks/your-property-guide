@@ -3,8 +3,13 @@
  *
  * Two outputs from one parse pass over the NSW VG yearly bulk ZIPs:
  *
- *   1. Suburb aggregate (existing): median house price, YoY growth, days on market
- *      → written to Suburb.medianHousePrice / annualGrowthHouse / daysOnMarket
+ *   1. Suburb aggregate (existing): median house price and YoY growth
+ *      → written to Suburb.medianHousePrice / annualGrowthHouse. "House" means
+ *        nature R (non-strata residence) with NO unit number: R also covers
+ *        company-title flats, which halved the median in apartment-heavy
+ *        suburbs (see sales-nsw-rules.ts). daysOnMarket is no longer written
+ *        by this feed: the VG file has settlement minus contract date, which
+ *        is the settlement period (a constant ~42 days), not time on market.
  *
  *   2. Per-property rows (new): one PropertySale row per transaction
  *      → written via COPY in per-year transactions, idempotent via
@@ -64,6 +69,7 @@ import { pipeline } from "node:stream/promises";
 import { Readable } from "node:stream";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
+import { isHouseSaleForAggregate } from "./sales-nsw-rules";
 
 const SOURCE_ID = "sales-nsw";        // suburb aggregator (existing)
 const ROWS_SOURCE = "vg-nsw";          // PropertySale.source value
@@ -178,8 +184,8 @@ function csvField(v: string | number | Date | null | undefined): string {
 // ─── Parsing ────────────────────────────────────────────────────────────────
 
 interface YearAggregate {
-  /** key = "SUBURB|POSTCODE" */
-  prices: Map<string, { prices: number[]; days: number[] }>;
+  /** key = "SUBURB|POSTCODE"; house sales only (see isHouseSaleForAggregate) */
+  prices: Map<string, { prices: number[] }>;
 }
 
 interface SaleRow {
@@ -246,17 +252,16 @@ function parseDat(text: string, year: number, acc: ParseResult, captureRows: boo
     if (!suburb || !postcode) continue;
 
     const settleDate = isOldFormat ? null : parseDate(cols[COL_SETTLE]?.trim() ?? "");
-    const daysDiff   = settleDate ? Math.round((settleDate.getTime() - contractDate.getTime()) / 86_400_000) : null;
     const nature     = (isOldFormat ? cols[OLD_COL_NATURE] : cols[COL_NATURE])?.trim().toUpperCase() ?? "";
+    const unitNumber = isOldFormat ? null : (cols[COL_UNIT_NUMBER]?.trim() || null);
 
-    // ── Aggregate path: only "R" (non-strata residence) for backwards compat ──
-    // Skip old-format aggregate — its nature codes don't map to R/V/3.
-    if (!isOldFormat && nature === "R") {
+    // ── Aggregate path: houses only — nature "R" with no unit number ──
+    // (old-format records are skipped: their nature codes don't map to R/V/3)
+    if (isHouseSaleForAggregate({ isOldFormat, nature, unitNumber })) {
       const key = `${suburb}|${postcode}`;
       let entry = acc.aggregate.prices.get(key);
-      if (!entry) { entry = { prices: [], days: [] }; acc.aggregate.prices.set(key, entry); }
+      if (!entry) { entry = { prices: [] }; acc.aggregate.prices.set(key, entry); }
       entry.prices.push(price);
-      if (daysDiff !== null && daysDiff >= 1 && daysDiff <= 365) entry.days.push(daysDiff);
     }
 
     // ── Row path: capture all valid rows regardless of nature code ──
@@ -476,7 +481,6 @@ async function writeAggregate(
     medianHousePrice:  number | null;
     annualGrowthHouse: number | null;
     salesCountHouse:   number;
-    daysOnMarket:      number | null;
   }
   const statsMap = new Map<string, SuburbStats>();
 
@@ -492,7 +496,6 @@ async function writeAggregate(
       medianHousePrice:  medianHouse,
       annualGrowthHouse: yoyHouse,
       salesCountHouse:   curr.prices.length,
-      daysOnMarket:      median(curr.days),
     });
   }
 
@@ -508,7 +511,6 @@ async function writeAggregate(
     medianHousePrice:  number;
     annualGrowthHouse: number | null;
     salesCountHouse:   number;
-    daysOnMarket:      number | null;
   }
   const updates: UpdateRow[] = [];
   for (const s of suburbs) {
@@ -519,7 +521,6 @@ async function writeAggregate(
       medianHousePrice:  stats.medianHousePrice,
       annualGrowthHouse: stats.annualGrowthHouse,
       salesCountHouse:   stats.salesCountHouse,
-      daysOnMarket:      stats.daysOnMarket,
     });
   }
   log(SOURCE_ID, `aggregate: ${updates.length} NSW suburbs would be updated`);
@@ -536,7 +537,10 @@ async function writeAggregate(
         "medianHousePrice"  = u.median_house,
         "annualGrowthHouse" = CASE WHEN u.yoy_house    IS NOT NULL THEN u.yoy_house    ELSE s."annualGrowthHouse" END,
         "salesCountHouse"   = u.sales_count,
-        "daysOnMarket"      = CASE WHEN u.days_on_mkt  IS NOT NULL THEN u.days_on_mkt  ELSE s."daysOnMarket"      END,
+        -- 0 is the codebase's "unknown, don't print". The previous value here was
+        -- settlement minus contract date (~42 days on every NSW page), which is
+        -- the settlement period, not time on market.
+        "daysOnMarket"      = 0,
         "statsSource"       = 'sales-nsw',
         "statsUpdatedAt"    = NOW(),
         "salesUpdatedAt"    = NOW()
@@ -544,9 +548,8 @@ async function writeAggregate(
         ${updates.map((u) => u.id)}::text[],
         ${updates.map((u) => u.medianHousePrice)}::int[],
         ${updates.map((u) => u.annualGrowthHouse)}::float8[],
-        ${updates.map((u) => u.salesCountHouse)}::int[],
-        ${updates.map((u) => u.daysOnMarket)}::int[]
-      ) AS u(id, median_house, yoy_house, sales_count, days_on_mkt)
+        ${updates.map((u) => u.salesCountHouse)}::int[]
+      ) AS u(id, median_house, yoy_house, sales_count)
       WHERE s.id = u.id
     `;
   }
