@@ -2,24 +2,28 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { PropertyGrid } from "@/components/property/PropertyGrid";
+import { SuburbListingResults } from "../ListingResults";
 import { PropertyFilters } from "@/components/property/PropertyFilters";
 import { SuburbSubrouteHeader, getSuburbListingTabs } from "@/components/suburb";
 import { ExpertCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
-import { getProperties, countProperties } from "@/lib/services/property-service";
+import { countProperties } from "@/lib/services/property-service";
 import { suburbRentTitle, suburbRentDescription } from "@/lib/utils/seo";
 import { SITE_URL } from "@/lib/constants";
 import { buildSuburbOgImageUrl } from "@/lib/og/helpers";
-import type { PropertyType } from "@/types";
 
 interface Props {
   params: Promise<{ slug: string }>;
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-// 7d ISR. See /suburbs/[slug]/page.tsx.
+// ISR, listings refresh once a day via the sync worker. `searchParams`
+// (filters / pagination) must not be awaited here: reading it at the top of
+// an ISR page is a dynamic-API call that fails the render at request time
+// in this Next version, and every suburb's /buy and /rent page returned 500
+// in production (5 Sep 2026). The read lives in SuburbListingResults,
+// inside a Suspense boundary, so the shell stays a CDN hit.
 export const revalidate = 604800;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
@@ -58,20 +62,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function SuburbRentPage({ params, searchParams }: Props) {
   const { slug } = await params;
-  const sp = await searchParams;
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) notFound();
 
-  const properties = await getProperties({
-    listingType: "rent",
-    suburb: slug,
-    propertyType: sp.propertyType as PropertyType | undefined,
-    minPrice: sp.minPrice ? Number(sp.minPrice) : undefined,
-    maxPrice: sp.maxPrice ? Number(sp.maxPrice) : undefined,
-    minBeds: sp.minBeds ? Number(sp.minBeds) : undefined,
-    sort: sp.sort,
-  });
-  const count = properties.length;
+  // Unfiltered stock for the subtitle; the grid below applies any filters.
+  const count = await countProperties({ listingType: "rent", suburb: slug });
 
   return (
     <>
@@ -103,10 +98,14 @@ export default async function SuburbRentPage({ params, searchParams }: Props) {
         <Suspense fallback={null}>
           <PropertyFilters listingType="rent" />
         </Suspense>
-        <PropertyGrid
-          properties={properties}
-          emptyMessage={`No rentals listed in ${suburb.name} right now. Check back soon, or browse the rental-market data using the tabs above.`}
-        />
+        <Suspense fallback={null}>
+          <SuburbListingResults
+            slug={slug}
+            listingType="rent"
+            searchParams={searchParams}
+            emptyMessage={`No rentals listed in ${suburb.name} right now. Check back soon, or browse the rental-market data using the tabs above.`}
+          />
+        </Suspense>
       </div>
 
       {/* Renters here are often next year's buyers. Deep-links the
