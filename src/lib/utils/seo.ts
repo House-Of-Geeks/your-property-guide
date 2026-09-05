@@ -40,11 +40,19 @@ export function suburbRentTitle(suburb: Suburb): string {
 }
 
 export function suburbBuyDescription(suburb: Suburb): string {
-  return `Browse all property for sale in ${suburb.name} ${suburb.postcode} — houses, units, townhouses and land. Median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}. View listings and enquire today.`;
+  // Same gate as suburbDescription: suburb-service zeroes the median for
+  // unreliable sources, and "$0K" in a SERP snippet is worse than no price.
+  const price = hasReliablePrice(suburb)
+    ? ` Median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}.`
+    : "";
+  return `Browse all property for sale in ${suburb.name} ${suburb.postcode} — houses, units, townhouses and land.${price} View listings and enquire today.`;
 }
 
 export function suburbRentDescription(suburb: Suburb): string {
-  return `Find rental properties in ${suburb.name} ${suburb.postcode}. Median rent ${suburb.stats.medianRentHouse}/wk. Browse available homes and enquire today.`;
+  // Rent comes from the rental feeds, independent of the sales gate; 0 is
+  // the codebase's "unknown" and must not print as "0/wk".
+  const rent = suburb.stats.medianRentHouse > 0 ? ` Median rent $${suburb.stats.medianRentHouse}/wk.` : "";
+  return `Find rental properties in ${suburb.name} ${suburb.postcode}.${rent} Browse available homes and enquire today.`;
 }
 
 // Directional suburbs ("Brighton East", "North Melbourne") are searched at
