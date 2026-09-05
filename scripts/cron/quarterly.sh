@@ -33,6 +33,12 @@ run sales-nsw
 run import-suburbs
 run nearby-suburbs
 
+# Purge the ISR cache for every suburb/postcode page this run touched so the
+# next request serves the new stats (non-fatal; skips itself if INDEXNOW_KEY
+# is unset). Runs BEFORE the IndexNow ping so crawlers fetch fresh pages.
+echo "::: revalidate-paths :::"
+npx tsx scripts/sync/revalidate-paths.ts 48 || echo "!!! revalidate-paths failed (non-fatal)"
+
 # Tell IndexNow-participating engines which suburb/postcode pages changed
 # this run (non-fatal; skips itself if INDEXNOW_KEY is unset).
 echo "::: indexnow-ping :::"
