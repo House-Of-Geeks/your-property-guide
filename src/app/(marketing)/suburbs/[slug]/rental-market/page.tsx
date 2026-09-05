@@ -14,6 +14,17 @@ interface RentalMarketPageProps {
   params: Promise<{ slug: string }>;
 }
 
+// 7d ISR, same as the suburb profile and its other sub-pages. Without these
+// exports this route rendered from the database on every request
+// (cache-control: private, no-store) — 1,513 sitemap URLs, plus the tab
+// links from every profile, hit by crawlers thousands of times a day. That
+// was a large part of the crawl-burst connection exhaustion in July 2026
+// (fix item 4a). Stats refresh via the quarterly sync, which now revalidates
+// changed suburbs' paths on demand (scripts/sync/revalidate-paths.ts).
+export const revalidate = 604800;
+export const dynamicParams = true;
+export function generateStaticParams() { return []; }
+
 export async function generateMetadata({ params }: RentalMarketPageProps): Promise<Metadata> {
   const { slug } = await params;
   const suburb = await getSuburbBySlug(slug);
