@@ -1,0 +1,24 @@
+# Fix item 4(b), rule R9: warm the highest-impression suburb pages after every
+# production deployment so crawlers do not land on an empty ISR cache. Vercel's
+# GitHub integration emits deployment_status events; only successful
+# Production deployments trigger the warm-up. No secrets, no npm install:
+# scripts/seo/warm.mjs is dependency-free and never fails the job.
+name: Warm cache after production deploy
+
+on:
+  deployment_status:
+
+jobs:
+  warm:
+    if: >-
+      github.event.deployment_status.state == 'success' &&
+      github.event.deployment_status.environment == 'Production'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Warm top suburb pages
+        run: node scripts/seo/warm.mjs --count 300 --concurrency 4
