@@ -42,11 +42,7 @@ describe("ISR routes", () => {
     });
   }
 
-  // KNOWN FAILURE, deliberately visible: /schools/[slug] still awaits
-  // searchParams and has no `revalidate` (9,670 sitemap URLs rendered per
-  // request). Fix item 4(a) part two moves its listing filters to the client
-  // like the suburb /buy and /rent pages; remove `.fails` in that commit.
-  it.fails("schools/[slug]/page.tsx is ISR without server searchParams — fails until 4(a) part two ships", () => {
+  it("schools/[slug]/page.tsx is ISR without server searchParams", () => {
     const src = fs.readFileSync(path.join(APP, "schools/[slug]/page.tsx"), "utf8");
     expect(src).toMatch(/export const revalidate = \d+/);
     expect(src).not.toMatch(/await searchParams/);

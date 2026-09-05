@@ -20,7 +20,8 @@ const PARKING_OPTIONS = [
 
 interface Props {
   schoolName: string;
-  currentMode: string;
+  /** Optional: the page is ISR and cannot read the URL on the server, so by default the mode comes from useSearchParams. */
+  currentMode?: string;
 }
 
 export function SchoolSearchBar({ schoolName, currentMode }: Props) {
@@ -34,7 +35,7 @@ export function SchoolSearchBar({ schoolName, currentMode }: Props) {
   const [typeOpen,   setTypeOpen]   = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
 
-  const mode         = currentMode || "buy";
+  const mode         = currentMode || searchParams.get("mode") || "buy";
   const minPrice     = searchParams.get("minPrice") ?? "";
   const maxPrice     = searchParams.get("maxPrice") ?? "";
   const minBeds      = searchParams.get("minBeds") ?? "";
