@@ -49,6 +49,11 @@
  *   --skip-aggregate      — only do row capture
  *   --skip-rows           — only do suburb aggregate (legacy behaviour)
  *   --no-cache            — re-download even if cached zip exists
+ *   --from-rows           — build the suburb aggregate from the PropertySale rows
+ *                           already captured (no download, no row capture). Also
+ *                           used automatically for a year whose download fails
+ *                           (valuergeneral.nsw.gov.au answered 403 to every client
+ *                           on 6 Sep 2026) when that year's rows exist in the DB.
  *
  * Source: https://valuergeneral.nsw.gov.au/__psi/yearly/{YEAR}.zip
  * License: NSW Government Open Data (CC BY 4.0)
@@ -110,6 +115,7 @@ interface CliOptions {
   skipAggregate: boolean;
   skipRows: boolean;
   useCache: boolean;
+  fromRows: boolean;
 }
 
 function parseCli(): CliOptions {
@@ -132,6 +138,7 @@ function parseCli(): CliOptions {
     limit:         get("limit") ? parseInt(get("limit")!, 10) : null,
     skipAggregate: has("skip-aggregate"),
     skipRows:      has("skip-rows"),
+    fromRows:      has("from-rows"),
     useCache:     !has("no-cache"),
   };
 }
@@ -385,6 +392,36 @@ async function loadYear(year: number, opts: CliOptions): Promise<ParseResult> {
   return acc;
 }
 
+// ─── Aggregate from captured rows (no download) ─────────────────────────────
+// Same rule as the DAT path (isHouseSaleForAggregate), applied to the rows the
+// row-capture path stored earlier. Price bounds match the DAT path.
+async function loadYearFromRows(year: number): Promise<ParseResult> {
+  const from = new Date(Date.UTC(year, 0, 1));
+  const to   = new Date(Date.UTC(year + 1, 0, 1));
+  const rows = await prisma.$queryRaw<Array<{ locality: string; postcode: string; price: number; nature: string | null; unit: string | null }>>`
+    SELECT upper("rawLocality") AS locality, "rawPostcode" AS postcode, price,
+           "natureCode" AS nature, "rawUnitNumber" AS unit
+    FROM "PropertySale"
+    WHERE source = ${ROWS_SOURCE}
+      AND "contractDate" >= ${from} AND "contractDate" < ${to}
+      AND price BETWEEN ${MIN_PRICE} AND ${MAX_PRICE}
+      AND "natureCode" = 'R'
+  `;
+  const acc: ParseResult = { aggregate: { prices: new Map() }, rows: [] };
+  let houses = 0;
+  for (const r of rows) {
+    if (!isHouseSaleForAggregate({ isOldFormat: false, nature: r.nature ?? "", unitNumber: r.unit })) continue;
+    if (!r.locality || !r.postcode) continue;
+    const key = `${r.locality}|${r.postcode}`;
+    let entry = acc.aggregate.prices.get(key);
+    if (!entry) { entry = { prices: [] }; acc.aggregate.prices.set(key, entry); }
+    entry.prices.push(r.price);
+    houses++;
+  }
+  log(SOURCE_ID, `${year}: aggregate from captured rows · ${rows.length} non-strata residences · ${houses} houses (no unit number) · ${acc.aggregate.prices.size} suburb/postcode combos`);
+  return acc;
+}
+
 // ─── Row writer (COPY into temp table → INSERT ON CONFLICT) ─────────────────
 
 /**
@@ -523,7 +560,16 @@ async function writeAggregate(
       salesCountHouse:   stats.salesCountHouse,
     });
   }
-  log(SOURCE_ID, `aggregate: ${updates.length} NSW suburbs would be updated`);
+  const nBands = { "1-4": 0, "5-19": 0, "20+": 0 };
+  for (const u of updates) nBands[u.salesCountHouse < 5 ? "1-4" : u.salesCountHouse < 20 ? "5-19" : "20+"]++;
+  log(SOURCE_ID, `aggregate: ${updates.length} NSW suburbs would be updated · house sales per suburb: ${JSON.stringify(nBands)}`);
+
+  // Sentinel suburbs, logged on every run so a wrong definition shows up in
+  // the log before it shows up on the site (see sales-nsw-rules.ts).
+  for (const key of ["BONDI|2026", "CRONULLA|2230", "MOSMAN|2088", "ORANGE|2800", "DUBBO|2830"]) {
+    const st = statsMap.get(key);
+    log(SOURCE_ID, `  ${key.padEnd(16)} median=${st?.medianHousePrice?.toLocaleString() ?? "—"} n=${st?.salesCountHouse ?? 0} yoy=${st?.annualGrowthHouse ?? "—"}`);
+  }
 
   if (dryRun) {
     log(SOURCE_ID, `aggregate: [dry-run] no DB writes`);
@@ -543,7 +589,11 @@ async function writeAggregate(
         "daysOnMarket"      = 0,
         "statsSource"       = 'sales-nsw',
         "statsUpdatedAt"    = NOW(),
-        "salesUpdatedAt"    = NOW()
+        "salesUpdatedAt"    = NOW(),
+        -- Prisma's @updatedAt is not touched by raw SQL; set it so the
+        -- suburbs sitemap lastmod, revalidate-paths and the IndexNow ping
+        -- all see these suburbs as changed.
+        "updatedAt"         = NOW()
       FROM UNNEST(
         ${updates.map((u) => u.id)}::text[],
         ${updates.map((u) => u.medianHousePrice)}::int[],
@@ -602,13 +652,28 @@ export async function run(): Promise<void> {
     await preflight();
 
     // Download + parse each year. Cached to disk so re-runs don't re-download.
+    // --from-rows (or a blocked download) builds the aggregate from the
+    // PropertySale rows captured earlier instead; row capture is skipped then.
     const yearResults = new Map<number, ParseResult>();
+    let rowsFromDb = opts.fromRows;
     for (const year of yearsToLoad) {
-      yearResults.set(year, await loadYear(year, opts));
+      if (opts.fromRows) {
+        yearResults.set(year, await loadYearFromRows(year));
+        continue;
+      }
+      try {
+        yearResults.set(year, await loadYear(year, opts));
+      } catch (err) {
+        const count = await prisma.propertySale.count({ where: { source: ROWS_SOURCE, contractDate: { gte: new Date(Date.UTC(year, 0, 1)), lt: new Date(Date.UTC(year + 1, 0, 1)) } } });
+        if (count === 0) throw err;
+        log(SOURCE_ID, `${year}: download failed (${err instanceof Error ? err.message : String(err)}) — ${count} rows already captured, building the aggregate from them; row capture skipped this run`);
+        yearResults.set(year, await loadYearFromRows(year));
+        rowsFromDb = true;
+      }
     }
 
     // ── Row writer (per-year transactions, isolated from aggregate) ──
-    if (!opts.skipRows) {
+    if (!opts.skipRows && !rowsFromDb) {
       const client = await pool.connect();
       try {
         for (const year of yearsToLoad) {
@@ -627,7 +692,7 @@ export async function run(): Promise<void> {
         client.release();
       }
     } else {
-      log(SOURCE_ID, `--skip-rows set: row capture disabled`);
+      log(SOURCE_ID, rowsFromDb ? `aggregate built from captured rows: row capture skipped` : `--skip-rows set: row capture disabled`);
     }
 
     // ── Aggregate (existing path) — only when we have current+prev pair ──
