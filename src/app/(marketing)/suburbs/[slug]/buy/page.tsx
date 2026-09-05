@@ -1,28 +1,29 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { SuburbListingResults } from "../ListingResults";
+import { PropertyGrid } from "@/components/property/PropertyGrid";
+import { FilteredPropertyGrid } from "@/components/property/FilteredPropertyGrid";
 import { PropertyFilters } from "@/components/property/PropertyFilters";
 import { SuburbSubrouteHeader, getSuburbListingTabs } from "@/components/suburb";
 import { ExpertCTA, StickyMatchCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
-import { countProperties } from "@/lib/services/property-service";
+import { getProperties, countProperties } from "@/lib/services/property-service";
 import { suburbBuyTitle, suburbBuyDescription } from "@/lib/utils/seo";
 import { SITE_URL } from "@/lib/constants";
 import { buildSuburbOgImageUrl } from "@/lib/og/helpers";
 
 interface Props {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<Record<string, string | undefined>>;
 }
 
-// ISR, listings refresh once a day via the sync worker. `searchParams`
-// (filters / pagination) must not be awaited here: reading it at the top of
-// an ISR page is a dynamic-API call that fails the render at request time
-// in this Next version, and every suburb's /buy and /rent page returned 500
-// in production (5 Sep 2026). The read lives in SuburbListingResults,
-// inside a Suspense boundary, so the shell stays a CDN hit.
+// ISR, listings refresh once a day via the sync worker. This route never
+// gets a build-time render (generateStaticParams is empty), so any server
+// read of `searchParams` during the ISR render throws DYNAMIC_SERVER_USAGE
+// and the page answers 500: that is what every suburb's /buy and /rent page
+// did in production until 5 Sep 2026. The server renders the suburb's full
+// listing set and the filters are applied on the client in
+// FilteredPropertyGrid, so the page stays a CDN hit.
 export const revalidate = 86400;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
@@ -60,13 +61,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function SuburbBuyPage({ params, searchParams }: Props) {
+export default async function SuburbBuyPage({ params }: Props) {
   const { slug } = await params;
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) notFound();
 
-  // Unfiltered stock for the subtitle; the grid below applies any filters.
-  const count = await countProperties({ listingType: "buy", suburb: slug });
+  // Unfiltered, capped listing set; the client-side grid applies any filters.
+  const properties = await getProperties({ listingType: "buy", suburb: slug });
+  const count = properties.length;
 
   return (
     <>
@@ -98,13 +100,8 @@ export default async function SuburbBuyPage({ params, searchParams }: Props) {
         <Suspense fallback={null}>
           <PropertyFilters listingType="buy" />
         </Suspense>
-        <Suspense fallback={null}>
-          <SuburbListingResults
-            slug={slug}
-            listingType="buy"
-            searchParams={searchParams}
-            emptyMessage={`No properties for sale in ${suburb.name} right now. Check back soon, or browse rentals or recently sold listings using the tabs above.`}
-          />
+        <Suspense fallback={<PropertyGrid properties={properties} emptyMessage={`No properties for sale in ${suburb.name} right now. Check back soon, or browse rentals or recently sold listings using the tabs above.`} />}>
+          <FilteredPropertyGrid properties={properties} listingType="buy" emptyMessage={`No properties for sale in ${suburb.name} right now. Check back soon, or browse rentals or recently sold listings using the tabs above.`} />
         </Suspense>
       </div>
 
