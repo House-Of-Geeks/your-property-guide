@@ -105,10 +105,17 @@ Tick items off as they ship.
 - [ ] 8. [code] Embed commission calculator at top of each state guide, preset to state rate;
       retitle "Real Estate Commission {State} 2026: Rates, Fees & Calculator". (06, C)
 - [ ] 9. [content] Regional rate table per state (capital / regional centres / remote), sourced, dated. (06)
-- [ ] 10. [content] "What it costs to sell in {State}" table with worked total at state median. (06)
+- [x] 10. DONE 8 Sep 2026 — PR #21 (3732896): "What it costs to sell in {State}" table on all eight guides, worked at
+      each guide's example price (the site's "state median" is a median of suburb medians and over-represents
+      metro suburbs, so it was not used); indicative ranges labelled, state documents sourced. Watch the national
+      cost guide's Bing position to 22 Sep (5 Sep: pos 3.0, 16 clicks). Original scope: table with worked total
+      at state median. (06)
 - [ ] 11. [code] Seller-funnel links: homepage seller path, /selling, /selling-guide, and the
       "Thinking of selling in {suburb}?" block on every suburb page → state commission guide. (06)
-- [ ] 12. [content] FAQ answers from People Also Ask on each state guide. (06)
+- [x] 12. DONE 8 Sep 2026 — PR #21 (3732896): one PAA question per guide (six questions per page), 40+ words with
+      a figure and a source; Rich Results Test clean. Found: RRT reports a "Paywalled Content" item on the guides
+      (Article schema isAccessibleForFree / hasPart markup); confirm it is intended, remove if not.
+      Original scope: FAQ answers from People Also Ask on each state guide. (06)
 
 ## Investor intent (week 3–6)
 
