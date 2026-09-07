@@ -50,6 +50,8 @@ import {
   PENDING_PRICE_LABEL,
   PENDING_PRICE_NOTE,
 } from "@/lib/suburb-data-quality";
+import { describeSalesProvenance, hasEnoughSales, thinSalesNote } from "@/lib/sales-provenance";
+import { PriceProvenance } from "@/components/suburb/PriceProvenance";
 
 interface SuburbDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -135,6 +137,17 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
   // Whether we trust this suburb's median enough to print it as fact.
   // Drives the main price card display and the unit-price callout.
   const priceTrusted = hasReliablePrice(suburb);
+  const salesProvenance = describeSalesProvenance({
+    source: suburb.dataFreshness?.salesSource,
+    periodEnd: suburb.dataFreshness?.salesPeriodEnd,
+    updatedAt: suburb.dataFreshness?.salesAsOf,
+    salesCount: suburb.dataFreshness?.salesCount,
+    suburbName: suburb.name,
+  });
+  // A trusted feed with too few sales: say so instead of "pending".
+  const thinSalesCount = !priceTrusted && salesProvenance && !hasEnoughSales(suburb.dataFreshness?.salesCount)
+    ? suburb.dataFreshness?.salesCount ?? null
+    : null;
   // Greater-capital classification (postcode-range based) for the
   // "{suburb}, {city}" answer phrasing and the city market-page link.
   const capitalCity = capitalCityFor(suburb.state, suburb.postcode);
@@ -211,12 +224,18 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                   "."
                 )}
               </p>
-              {priceTrusted && (
+              {priceTrusted && salesProvenance?.geography === "area" ? (
+                <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[65ch]">
+                  The median house price across the ABS statistical area that takes in {suburb.name} is{" "}
+                  <span className="font-medium text-ink">{formatPriceFull(suburb.stats.medianHousePrice)}</span>{" "}
+                  ({salesProvenance.period}).
+                </p>
+              ) : priceTrusted ? (
                 <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[65ch]">
                   The median house price in {suburb.name} is{" "}
                   <span className="font-medium text-ink">{formatPriceFull(suburb.stats.medianHousePrice)}</span>.
                 </p>
-              )}
+              ) : null}
               {stubDescription
                 ? intro.map((para, i) => (
                     <p key={i} className="font-sans text-lg sm:text-xl text-ink leading-[1.65] max-w-[65ch]">
@@ -397,10 +416,10 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                       <TrendingUp className="w-3.5 h-3.5 text-cta" /> Median house price
                     </p>
                     <p className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight">
-                      {PENDING_PRICE_LABEL}
+                      {thinSalesCount ? "Too few sales for a median" : PENDING_PRICE_LABEL}
                     </p>
                     <p className="font-sans text-sm text-ink-muted mt-3 leading-relaxed">
-                      {PENDING_PRICE_NOTE}{" "}
+                      {thinSalesCount && salesProvenance ? thinSalesNote(thinSalesCount, salesProvenance.period) : PENDING_PRICE_NOTE}{" "}
                       <Link
                         href="/methodology"
                         className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
@@ -422,11 +441,14 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                     </span>.
                   </p>
                 )}
-                <DataFreshnessNote
-                  label="Sales"
-                  asOf={suburb.dataFreshness?.salesAsOf ?? null}
-                  source={suburb.dataFreshness?.salesSource ?? undefined}
-                />
+                {priceTrusted ? (
+                  <PriceProvenance provenance={salesProvenance} />
+                ) : (
+                  <DataFreshnessNote
+                    label="Sales"
+                    asOf={suburb.dataFreshness?.salesAsOf ?? null}
+                  />
+                )}
               </div>
             </div>
 

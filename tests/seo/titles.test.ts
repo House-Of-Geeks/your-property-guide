@@ -58,7 +58,7 @@ function makeSuburb(overrides: Partial<Suburb> & { salesSource?: string | null }
     dataFreshness: {
       rentalAsOf: null, rentalSource: null,
       crimeAsOf: null, crimeSource: null,
-      salesAsOf: new Date("2026-06-30"), salesSource,
+      salesAsOf: new Date("2026-06-30"), salesSource, salesCount: null, salesPeriodEnd: null,
       censusAsOf: null, hazardAsOf: null, walkabilityAsOf: null, climateAsOf: null,
     },
     ...rest,
