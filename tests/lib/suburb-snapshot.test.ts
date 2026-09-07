@@ -45,6 +45,11 @@ describe("snapshot provenance line", () => {
       "Population: 2021 Census",
     ]);
   });
+  it("keeps rent and yield out of the band when the rent has no known source (NSW postcode-level all-dwellings rents)", () => {
+    const s = makeSuburb({}, { rentalSource: null });
+    expect(buildSnapshotStats(s).map((t) => t.key)).toEqual(["house", "population", "walk"]);
+    expect(buildSnapshotProvenance(s, buildSnapshotStats(s))).toEqual(["Prices: Median of 35 house sales · NSW Valuer General · calendar 2025", "Population: 2021 Census"]);
+  });
   it("omits families that are not shown", () => {
     // rent + days on market + walk score: three tiles, no price, no population
     const s = makeSuburb({ medianHousePrice: 0, annualGrowthHouse: 0, population: 0, daysOnMarket: 30 });

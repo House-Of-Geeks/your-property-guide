@@ -55,10 +55,16 @@ export function buildSnapshotStats(suburb: Suburb): SnapshotStat[] {
   if (s.medianUnitPrice > 0) {
     out.push({ key: "unit", label: "Median unit", value: formatPriceFull(s.medianUnitPrice), detail: s.annualGrowthUnit ? `${formatPercentage(s.annualGrowthUnit)} over 12 months` : undefined, icon: "/images/icons/median.svg" });
   }
-  if (s.medianRentHouse > 0) {
+  // Rent and yield only when the rent's source is known. NSW rents arrive
+  // postcode-level as an all-dwellings median (DCJ "Total" rows) with no
+  // per-suburb source row, so they are not house rents and stay out of the
+  // band until the feed is fixed (tracker follow-up); the rental section
+  // lower on the page is unchanged.
+  const rentSourced = Boolean(suburb.dataFreshness?.rentalSource);
+  if (rentSourced && s.medianRentHouse > 0) {
     out.push({ key: "rent", label: "Weekly rent", value: `$${s.medianRentHouse.toLocaleString("en-AU")}`, detail: s.medianRentUnit > 0 ? `Houses · units $${s.medianRentUnit.toLocaleString("en-AU")}` : "Houses", icon: "/images/icons/yield.svg" });
   }
-  const y = grossYieldPercent(s.medianRentHouse, s.medianHousePrice);
+  const y = rentSourced ? grossYieldPercent(s.medianRentHouse, s.medianHousePrice) : null;
   if (y !== null) {
     out.push({ key: "yield", label: "Gross yield", value: `${y.toFixed(1)}%`, detail: "Houses, on the median", icon: "/images/icons/yield.svg" });
   }
