@@ -51,7 +51,7 @@ const UPSERT_CHUNK = 1000;
 
 async function fetchWorkbook(url: string): Promise<Buffer | null> {
   try {
-    const res = await fetch(url, { headers: { "user-agent": USER_AGENT } });
+    const res = await fetch(url, { headers: { "user-agent": USER_AGENT }, signal: AbortSignal.timeout(120_000) });
     if (!res.ok) return null;
     if ((res.headers.get("content-type") ?? "").includes("text/html")) return null;
     return Buffer.from(await res.arrayBuffer());
@@ -63,7 +63,7 @@ async function fetchWorkbook(url: string): Promise<Buffer | null> {
 /** The newest workbook: the report page's link first, then known file-name patterns. */
 async function locateWorkbook(): Promise<{ buffer: Buffer; url: string }> {
   try {
-    const res = await fetch(REPORT_PAGE, { headers: { "user-agent": USER_AGENT } });
+    const res = await fetch(REPORT_PAGE, { headers: { "user-agent": USER_AGENT }, signal: AbortSignal.timeout(30_000) });
     if (res.ok) {
       const link = findLatestRentTablesUrl(await res.text(), REPORT_PAGE);
       if (link) {
