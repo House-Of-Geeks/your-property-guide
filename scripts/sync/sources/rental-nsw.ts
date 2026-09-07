@@ -27,6 +27,7 @@
  * Schedule: quarterly (scripts/cron/quarterly.sh)
  */
 import "dotenv/config";
+import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import * as XLSX from "xlsx";
 import { prisma } from "../db";
@@ -46,7 +47,7 @@ const REPORT_PAGE = "https://www.dcj.nsw.gov.au/about-us/families-and-communitie
 const DCJ_BASE = "https://www.dcj.nsw.gov.au/content/dam/dcj/dcj-website/documents/about-us/families-and-communities-statistics/housing-and-rent-sales";
 const USER_AGENT = "Mozilla/5.0 (compatible; YourPropertyGuide data sync; +https://yourpropertyguide.com.au)";
 const SAMPLE_SLUGS = ["bondi-nsw-2026", "sydney-nsw-2000", "double-bay-nsw-2028", "seaforth-nsw-2092", "dubbo-nsw-2830", "wagga-wagga-nsw-2650", "huskisson-nsw-2540"];
-const UPSERT_BATCH = 50;
+const UPSERT_CHUNK = 1000;
 
 async function fetchWorkbook(url: string): Promise<Buffer | null> {
   try {
@@ -168,32 +169,36 @@ export async function run(): Promise<void> {
       return;
     }
 
-    for (let i = 0; i < plan.length; i += UPSERT_BATCH) {
-      const batch = plan.slice(i, i + UPSERT_BATCH);
-      await prisma.$transaction(batch.map((r) => prisma.suburbRentalStat.upsert({
-        where: { suburbName_postcode_state_period: { suburbName: r.name, postcode: r.postcode, state: "NSW", period: parsed.period } },
-        create: {
-          suburbSlug:      r.slug,
-          suburbName:      r.name,
-          postcode:        r.postcode,
-          state:           "NSW",
-          period:          parsed.period,
-          periodDate:      parsed.periodDate,
-          medianRentHouse: r.house || null,
-          medianRentUnit:  r.unit || null,
-          bondLodgements:  r.bonds,
-          source:          SOURCE_ID,
-        },
-        update: {
-          suburbSlug:      r.slug,
-          periodDate:      parsed.periodDate,
-          medianRentHouse: r.house || null,
-          medianRentUnit:  r.unit || null,
-          bondLodgements:  r.bonds,
-          source:          SOURCE_ID,
-        },
-      })));
-      if ((i / UPSERT_BATCH) % 20 === 0) log(SOURCE_ID, `  rental rows ${Math.min(i + UPSERT_BATCH, plan.length)}/${plan.length}`);
+    // One bulk upsert per chunk. A Prisma $transaction of 50 upserts exceeded
+    // the 5 s interactive-transaction limit over the Railway proxy (7 Sep 2026
+    // run); UNNEST + ON CONFLICT is a single round trip per chunk.
+    for (let i = 0; i < plan.length; i += UPSERT_CHUNK) {
+      const chunk = plan.slice(i, i + UPSERT_CHUNK);
+      await prisma.$executeRaw`
+        INSERT INTO "SuburbRentalStat"
+          (id, "suburbSlug", "suburbName", postcode, state, period, "periodDate",
+           "medianRentHouse", "medianRentUnit", "bondLodgements", source, "createdAt", "updatedAt")
+        SELECT u.id, u.slug, u.name, u.postcode, 'NSW', ${parsed.period}, ${parsed.periodDate},
+               NULLIF(u.house, 0), NULLIF(u.unit, 0), u.bonds, ${SOURCE_ID}, NOW(), NOW()
+        FROM UNNEST(
+          ${chunk.map(() => randomUUID())}::text[],
+          ${chunk.map((r) => r.slug)}::text[],
+          ${chunk.map((r) => r.name)}::text[],
+          ${chunk.map((r) => r.postcode)}::text[],
+          ${chunk.map((r) => r.house)}::int[],
+          ${chunk.map((r) => r.unit)}::int[],
+          ${chunk.map((r) => r.bonds)}::int[]
+        ) AS u(id, slug, name, postcode, house, unit, bonds)
+        ON CONFLICT ("suburbName", postcode, state, period) DO UPDATE SET
+          "suburbSlug"      = EXCLUDED."suburbSlug",
+          "periodDate"      = EXCLUDED."periodDate",
+          "medianRentHouse" = EXCLUDED."medianRentHouse",
+          "medianRentUnit"  = EXCLUDED."medianRentUnit",
+          "bondLodgements"  = EXCLUDED."bondLodgements",
+          source            = EXCLUDED.source,
+          "updatedAt"       = NOW()
+      `;
+      log(SOURCE_ID, `  rental rows ${Math.min(i + UPSERT_CHUNK, plan.length)}/${plan.length}`);
     }
 
     if (plan.length > 0) {
