@@ -275,7 +275,10 @@ export async function run(): Promise<void> {
           "medianHousePrice" = u.median_house,
           "statsSource"      = 'sales-qld',
           "statsUpdatedAt"   = NOW(),
-          "salesUpdatedAt"   = NOW()
+          "salesUpdatedAt"   = NOW(),
+          -- Prisma's @updatedAt is not touched by raw SQL; the suburbs sitemap lastmod,
+          -- revalidate-paths and the IndexNow ping key on it (fix item 5).
+          "updatedAt" = NOW()
         FROM UNNEST(
           ${updates.map((u) => u.id)}::text[],
           ${updates.map((u) => u.medianHousePrice)}::int[]

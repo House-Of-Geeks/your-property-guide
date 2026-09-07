@@ -324,7 +324,10 @@ export async function run(): Promise<void> {
             "householdsLonePerson"= CASE WHEN u.households_lone      IS NOT NULL THEN u.households_lone::float8  ELSE s."householdsLonePerson" END,
             "medianRentHouse"     = CASE WHEN u.rent_house           IS NOT NULL THEN u.rent_house::int           ELSE s."medianRentHouse"     END,
             "medianRentUnit"      = CASE WHEN u.rent_unit            IS NOT NULL THEN u.rent_unit::int            ELSE s."medianRentUnit"      END,
-            "censusUpdatedAt"     = NOW()
+            "censusUpdatedAt"     = NOW(),
+            -- Prisma's @updatedAt is not touched by raw SQL; the suburbs sitemap lastmod,
+            -- revalidate-paths and the IndexNow ping key on it (fix item 5).
+            "updatedAt" = NOW()
           FROM UNNEST(
             ${updates.map((u) => u.id)}::text[],
             ${updates.map((u) => u.population)}::int[],

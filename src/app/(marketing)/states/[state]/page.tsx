@@ -13,6 +13,8 @@ import {
 } from "@/lib/services/suburb-rankings-service";
 import { formatPrice, formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { MostSearchedSuburbs } from "@/components/suburb/MostSearchedSuburbs";
+import { topSuburbsForState } from "@/lib/data/top-suburbs";
 
 const VALID_STATES = ["qld", "nsw", "vic", "wa", "sa", "tas", "nt", "act"];
 
@@ -165,6 +167,10 @@ export default async function StatePage({ params }: StatePageProps) {
       </section>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 space-y-14">
+
+        {/* Most searched suburbs (fix item 5): the pages that carry the
+            impressions, two clicks from the root so they are recrawled first. */}
+        <MostSearchedSuburbs label={stateName} suburbs={topSuburbsForState(upperState, 24)} />
 
         {/* Top Regions */}
         {regions.length > 0 && (

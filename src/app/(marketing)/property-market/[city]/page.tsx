@@ -10,6 +10,8 @@ import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { getCityMarket, type CityMarketSuburb } from "@/lib/services/city-market-service";
 import { CAPITAL_CITIES, getCapitalCity } from "@/lib/utils/metro";
 import { formatPrice, formatPriceFull } from "@/lib/utils/format";
+import { MostSearchedSuburbs } from "@/components/suburb/MostSearchedSuburbs";
+import { topSuburbsForCity } from "@/lib/data/top-suburbs";
 
 // City-level market pages targeting the "{city} property market" /
 // "{city} house prices" / "median house price {city}" query cluster —
@@ -328,6 +330,9 @@ export default async function CityMarketPage({
           showGrowth
         />
         <SuburbTable heading={`${city.name}'s highest median prices`} rows={market.premium} />
+
+        {/* Most searched suburbs (fix item 5) */}
+        <MostSearchedSuburbs label={`Greater ${city.name}`} suburbs={topSuburbsForCity(city.slug, 24)} tone="ink" />
 
         {/* Visible FAQ backing the FAQPage schema */}
         {faqs.length > 0 && (
