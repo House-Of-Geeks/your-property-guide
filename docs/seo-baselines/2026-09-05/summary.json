@@ -1,0 +1,217 @@
+{
+  "date": "2026-09-05",
+  "bing": {
+    "last28": {
+      "from": "2026-08-07",
+      "to": "2026-09-03",
+      "clicks": 361,
+      "impressions": 40616
+    },
+    "byTemplate": {
+      "guides": {
+        "pages": 65,
+        "clicks": 265,
+        "impressions": 6865
+      },
+      "suburb street": {
+        "pages": 117,
+        "clicks": 38,
+        "impressions": 232
+      },
+      "suburb profile": {
+        "pages": 159,
+        "clicks": 17,
+        "impressions": 2713
+      },
+      "other": {
+        "pages": 50,
+        "clicks": 9,
+        "impressions": 250
+      },
+      "suburb vs": {
+        "pages": 8,
+        "clicks": 7,
+        "impressions": 11
+      },
+      "postcodes": {
+        "pages": 106,
+        "clicks": 6,
+        "impressions": 1372
+      },
+      "market-reports": {
+        "pages": 3,
+        "clicks": 1,
+        "impressions": 19
+      },
+      "property-market": {
+        "pages": 3,
+        "clicks": 1,
+        "impressions": 21
+      },
+      "schools": {
+        "pages": 9,
+        "clicks": 1,
+        "impressions": 20
+      },
+      "glossary": {
+        "pages": 2,
+        "clicks": 0,
+        "impressions": 70
+      },
+      "calculators": {
+        "pages": 2,
+        "clicks": 0,
+        "impressions": 78
+      },
+      "home": {
+        "pages": 1,
+        "clicks": 0,
+        "impressions": 15
+      },
+      "suburb schools": {
+        "pages": 4,
+        "clicks": 0,
+        "impressions": 6
+      },
+      "compare": {
+        "pages": 1,
+        "clicks": 0,
+        "impressions": 2
+      },
+      "suburb rental-market": {
+        "pages": 2,
+        "clicks": 0,
+        "impressions": 3
+      },
+      "best-suburbs": {
+        "pages": 1,
+        "clicks": 0,
+        "impressions": 1
+      }
+    },
+    "crawl": {
+      "date": "2026-09-04",
+      "crawled": 1326,
+      "inIndex": 45109,
+      "code2xx": 53388,
+      "code5xx": 1346,
+      "code4xx": 11,
+      "errors": 116
+    },
+    "pagesSampled": 533,
+    "queriesSampled": 1118
+  },
+  "clarity": {
+    "window": "3 days",
+    "totals": {
+      "averageScrollDepth": 43.66,
+      "totalSessionCount": 113,
+      "totalBotSessionCount": 381,
+      "distinctUserCount": 839,
+      "pagesPerSessionPercentage": 1.244131455399061,
+      "activeTime": 206
+    },
+    "bySource": {
+      "": 35,
+      "google": 24,
+      "yahoo": 11,
+      "baidu": 0,
+      "bing": 28,
+      "copilot.com": 3,
+      "localhost": 1,
+      "chatgpt.com": 12,
+      "duckduckgo.com": 3,
+      "www.yourpropertyguide.com.au": 1
+    },
+    "byTemplate": {
+      "guides": {
+        "pages": 50,
+        "sessions": 58
+      },
+      "home": {
+        "pages": 4,
+        "sessions": 21
+      },
+      "other": {
+        "pages": 201,
+        "sessions": 19
+      },
+      "suburb profile": {
+        "pages": 84,
+        "sessions": 16
+      },
+      "suburb schools": {
+        "pages": 9,
+        "sessions": 9
+      },
+      "schools": {
+        "pages": 75,
+        "sessions": 7
+      },
+      "suburb rental-market": {
+        "pages": 16,
+        "sessions": 5
+      },
+      "calculators": {
+        "pages": 2,
+        "sessions": 4
+      },
+      "suburb vs": {
+        "pages": 46,
+        "sessions": 4
+      },
+      "property-market": {
+        "pages": 2,
+        "sessions": 2
+      },
+      "market-reports": {
+        "pages": 2,
+        "sessions": 2
+      },
+      "compare": {
+        "pages": 1,
+        "sessions": 1
+      },
+      "best-suburbs": {
+        "pages": 1,
+        "sessions": 1
+      },
+      "postcodes": {
+        "pages": 6,
+        "sessions": 1
+      },
+      "glossary": {
+        "pages": 1,
+        "sessions": 1
+      },
+      "suburb land": {
+        "pages": 13,
+        "sessions": 0
+      },
+      "regions": {
+        "pages": 1,
+        "sessions": 0
+      },
+      "suburb houses": {
+        "pages": 3,
+        "sessions": 0
+      },
+      "suburb units": {
+        "pages": 2,
+        "sessions": 0
+      },
+      "suburb townhouses": {
+        "pages": 3,
+        "sessions": 0
+      }
+    }
+  },
+  "backlinks": {
+    "rank": 2,
+    "backlinks": 30,
+    "referringDomains": 23,
+    "referringMainDomains": 23,
+    "cost": 0.024036
+  },
+  "gscExport": "yourpropertyguide.com.au-Performance-on-Search-2026-09-05.zip"
+}
