@@ -6,6 +6,7 @@ import {
   KeyFigure,
   MatchCTA,
   Sources,
+  SellingCostTable,
   EditorNote,
   PullQuote,
   type GuideFrontmatter,
@@ -16,6 +17,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real Estate Commission ACT: Average Rates & Agent Fees (2026)",
@@ -23,7 +25,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "What real estate agents charge in the ACT: typical commission of 1.8% to 2.25% (2.1% is most common), how it's structured, whether it includes GST, worked dollar examples by sale price, and how to negotiate.",
   slug: "real-estate-commission-act",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-06-14",
+  updatedAt: "2026-09-08",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -65,6 +67,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "structure",   label: "How commission is structured in ACT" },
   { id: "negotiable",  label: "Is commission negotiable in ACT?" },
   { id: "other-costs", label: "Commission vs the rest of your selling costs" },
+  { id: "cost-table",   label: "What it costs to sell in the ACT" },
   { id: "next-steps",  label: "Get the right agent first" },
 ];
 
@@ -110,7 +113,7 @@ export default function RealEstateCommissionACTPage() {
       frontmatter={FRONTMATTER}
       tldr={TLDR}
       toc={TOC}
-      faqs={FAQS}
+      faqs={[...FAQS, COMMISSION_PAA_FAQ.ACT]}
       related={RELATED}
     >
       <Callout variant="warning" title="Commission is not a fixed or official rate">
@@ -301,6 +304,8 @@ export default function RealEstateCommissionACTPage() {
 
       <MatchCTA kind="selling-agent" />
 
+      <SellingCostTable state="ACT" />
+
       <h2 id="next-steps">Get the right agent first</h2>
       <p>
         The cheapest commission rarely produces the best result. The agent who
@@ -336,6 +341,7 @@ export default function RealEstateCommissionACTPage() {
 }
 
 const COMMISSION_ACT_SOURCES: readonly SourceItem[] = [
+  { label: "Civil Law (Sale of Residential Property) Act 2003 (ACT)", href: "https://www.legislation.act.gov.au/a/2003-40/", note: "The building, pest and energy efficiency reports an ACT seller must provide" },
   { label: "Access Canberra: Real estate agent licensing", href: "https://www.accesscanberra.act.gov.au", note: "Licensing and regulation of real estate agents operating in the ACT" },
   { label: "Real Estate Institute of the ACT (REIACT)", href: "https://reiact.com.au", note: "ACT industry body for real estate professionals" },
   { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent commission, marketing and selling costs" },

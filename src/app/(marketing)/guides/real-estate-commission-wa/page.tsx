@@ -6,6 +6,7 @@ import {
   KeyFigure,
   MatchCTA,
   Sources,
+  SellingCostTable,
   EditorNote,
   PullQuote,
   type GuideFrontmatter,
@@ -16,6 +17,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real Estate Commission WA: Average Rates & Agent Fees (2026)",
@@ -23,7 +25,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "What real estate agents charge in Western Australia: the typical commission range, the most common rate, worked dollar examples by sale price, GST, what's included, and how to negotiate.",
   slug: "real-estate-commission-wa",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-06-14",
+  updatedAt: "2026-09-08",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -65,6 +67,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "how-structured",     label: "How commission is structured" },
   { id: "negotiable",         label: "Is commission negotiable in WA?" },
   { id: "other-costs",        label: "Commission vs your other costs" },
+  { id: "cost-table",   label: "What it costs to sell in WA" },
   { id: "next-steps",         label: "Get the right agent and rate" },
 ];
 
@@ -110,7 +113,7 @@ export default function RealEstateCommissionWaPage() {
       frontmatter={FRONTMATTER}
       tldr={TLDR}
       toc={TOC}
-      faqs={FAQS}
+      faqs={[...FAQS, COMMISSION_PAA_FAQ.WA]}
       related={RELATED}
     >
       <Callout variant="warning" title="These are typical market figures, not official rates">
@@ -311,6 +314,8 @@ export default function RealEstateCommissionWaPage() {
         sets out the rates and inclusions state by state.
       </p>
 
+      <SellingCostTable state="WA" />
+
       <h2 id="next-steps">Get the right agent and rate</h2>
       <p>
         The cheapest commission rarely produces the best net result. The seller
@@ -353,6 +358,7 @@ export default function RealEstateCommissionWaPage() {
 }
 
 const WA_COMMISSION_SOURCES: readonly SourceItem[] = [
+  { label: "Consumer Protection WA: Selling property", href: "https://www.consumerprotection.wa.gov.au/selling-property", note: "Contract, strata and disclosure requirements when selling in WA" },
   { label: "Real Estate Institute of WA (REIWA)", href: "https://reiwa.com.au", note: "Perth and regional WA market data and selling guidance" },
   { label: "Consumer Protection WA: Buying and selling property", href: "https://www.commerce.wa.gov.au/consumer-protection", note: "Agent licensing and consumer guidance for WA property sales" },
   { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent commission and selling costs" },

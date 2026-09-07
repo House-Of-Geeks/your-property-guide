@@ -6,6 +6,7 @@ import {
   KeyFigure,
   MatchCTA,
   Sources,
+  SellingCostTable,
   EditorNote,
   PullQuote,
   type GuideFrontmatter,
@@ -16,6 +17,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real Estate Commission NSW: Average Rates & Agent Fees (2026)",
@@ -23,7 +25,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "What real estate agents charge in NSW: typical commission of 1.8% to 2.5% (around 2% is common), worked dollar examples by sale price, GST, what's included, and how to negotiate.",
   slug: "real-estate-commission-nsw",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-06-14",
+  updatedAt: "2026-09-08",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -65,6 +67,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "structure",    label: "How commission is structured in NSW" },
   { id: "negotiable",   label: "Is commission negotiable in NSW?" },
   { id: "other-costs",  label: "Commission vs your other selling costs" },
+  { id: "cost-table",   label: "What it costs to sell in NSW" },
   { id: "next-steps",   label: "Get the right agent first" },
 ];
 
@@ -110,7 +113,7 @@ export default function RealEstateCommissionNswPage() {
       frontmatter={FRONTMATTER}
       tldr={TLDR}
       toc={TOC}
-      faqs={FAQS}
+      faqs={[...FAQS, COMMISSION_PAA_FAQ.NSW]}
       related={RELATED}
     >
       <Callout variant="warning" title="Commission is not a fixed or official rate">
@@ -310,6 +313,8 @@ export default function RealEstateCommissionNswPage() {
         sets out commission ranges state by state and what&rsquo;s included.
       </p>
 
+      <SellingCostTable state="NSW" />
+
       <h2 id="next-steps">Get the right agent first</h2>
       <p>
         The cheapest commission rarely means the best return. The agent who gets
@@ -346,6 +351,7 @@ export default function RealEstateCommissionNswPage() {
 }
 
 const NSW_COMMISSION_SOURCES: readonly SourceItem[] = [
+  { label: "NSW Government: Selling property in NSW", href: "https://www.nsw.gov.au/housing-and-construction/buying-and-selling-property/selling-a-property", note: "What the contract of sale must include before a NSW property is offered for sale" },
   { label: "NSW Fair Trading: Real estate agents", href: "https://www.nsw.gov.au/departments-and-agencies/fair-trading", note: "Licensing of agents and consumer guidance on agency agreements in NSW" },
   { label: "Real Estate Institute of NSW (REINSW)", href: "https://www.reinsw.com.au/", note: "Industry body for NSW real estate agents" },
   { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent commission, marketing and selling costs" },

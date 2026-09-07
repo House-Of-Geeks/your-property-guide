@@ -6,6 +6,7 @@ import {
   KeyFigure,
   MatchCTA,
   Sources,
+  SellingCostTable,
   EditorNote,
   PullQuote,
   type GuideFrontmatter,
@@ -16,6 +17,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real Estate Commission NT: Average Rates & Agent Fees (2026)",
@@ -23,7 +25,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "What real estate agents charge in the Northern Territory: typical commission of 2.4% to 2.7% (2.5% most common), worked dollar examples, GST, what's included, and how to negotiate the rate.",
   slug: "real-estate-commission-nt",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-06-14",
+  updatedAt: "2026-09-08",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -65,6 +67,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "how-structured",     label: "How commission is structured" },
   { id: "negotiable",         label: "Is commission negotiable?" },
   { id: "other-costs",        label: "Commission vs other selling costs" },
+  { id: "cost-table",   label: "What it costs to sell in the NT" },
   { id: "next-steps",         label: "Where to start" },
 ];
 
@@ -110,7 +113,7 @@ export default function RealEstateCommissionNtPage() {
       frontmatter={FRONTMATTER}
       tldr={TLDR}
       toc={TOC}
-      faqs={FAQS}
+      faqs={[...FAQS, COMMISSION_PAA_FAQ.NT]}
       related={RELATED}
     >
       <Callout variant="warning" title="There is no official commission rate in the NT">
@@ -315,6 +318,8 @@ export default function RealEstateCommissionNtPage() {
         for how rates and inclusions compare across Australia, the NT included.
       </p>
 
+      <SellingCostTable state="NT" />
+
       <h2 id="next-steps">Where to start</h2>
       <p>
         Knowing the typical rate is one thing. Getting a fair deal on your own
@@ -350,6 +355,7 @@ export default function RealEstateCommissionNtPage() {
 }
 
 const NT_COMMISSION_SOURCES: readonly SourceItem[] = [
+  { label: "NT Government: Dealing with a real estate agent", href: "https://nt.gov.au/property/buying-and-selling-a-home/ways-to-buy-or-sell-a-home/dealing-with-a-real-estate-agent", note: "Agency agreements, fees and commission when selling in the NT" },
   { label: "NT Consumer Affairs: Real estate agents and licensing", href: "https://nt.gov.au/industry/agents", note: "Licensing and conduct rules for Northern Territory agents" },
   { label: "Real Estate Institute of the Northern Territory (REINT)", href: "https://www.reint.com.au", note: "Industry body for NT agents" },
   { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent commission, GST and selling costs" },

@@ -6,6 +6,7 @@ import {
   KeyFigure,
   MatchCTA,
   Sources,
+  SellingCostTable,
   EditorNote,
   PullQuote,
   type GuideFrontmatter,
@@ -16,6 +17,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real Estate Commission QLD: Average Rates & Agent Fees (2026)",
@@ -23,7 +25,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "What real estate agents charge in Queensland: the typical 2.3% to 2.9% commission range, worked dollar examples, GST, how commission is structured, and how to negotiate in a deregulated QLD market.",
   slug: "real-estate-commission-qld",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-06-14",
+  updatedAt: "2026-09-08",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -65,6 +67,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "structure",   label: "How commission is structured in QLD" },
   { id: "negotiable",  label: "Is commission negotiable in QLD?" },
   { id: "other-costs", label: "Commission vs the rest of your selling costs" },
+  { id: "cost-table",   label: "What it costs to sell in Queensland" },
   { id: "next-steps",  label: "Getting an appraisal and the right agent" },
 ];
 
@@ -110,7 +113,7 @@ export default function RealEstateCommissionQldPage() {
       frontmatter={FRONTMATTER}
       tldr={TLDR}
       toc={TOC}
-      faqs={FAQS}
+      faqs={[...FAQS, COMMISSION_PAA_FAQ.QLD]}
       related={RELATED}
     >
       <Callout variant="warning" title="Commission is not fixed, and it is always negotiable">
@@ -312,6 +315,8 @@ export default function RealEstateCommissionQldPage() {
 
       <MatchCTA kind="selling-agent" />
 
+      <SellingCostTable state="QLD" />
+
       <h2 id="next-steps">Getting an appraisal and the right agent</h2>
       <p>
         Knowing the commission range is only useful once you have a realistic
@@ -347,6 +352,7 @@ export default function RealEstateCommissionQldPage() {
 }
 
 const QLD_COMMISSION_SOURCES: readonly SourceItem[] = [
+  { label: "Queensland Government: Seller disclosure scheme", href: "https://www.qld.gov.au/housing/buying-owning-home/seller-disclosure-scheme", note: "The seller disclosure statement (Form 2) required since 1 August 2025" },
   { label: "Office of Fair Trading Queensland: Property agents and licensing", href: "https://www.qld.gov.au/law/fair-trading", note: "Licensing and conduct rules for Queensland real estate agents" },
   { label: "Real Estate Institute of Queensland (REIQ)", href: "https://www.reiq.com/", note: "State peak body for agent standards and industry guidance" },
   { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent commission, GST and marketing costs" },
