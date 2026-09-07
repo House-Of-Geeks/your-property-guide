@@ -82,6 +82,10 @@ function toSuburb(
   // Merge denormalized *UpdatedAt fields into freshness
   const mergedFreshness: SuburbDataFreshness = {
     ...freshness,
+    // The NSW rental feed is postcode-level and writes no per-suburb
+    // SuburbRentalStat row, so the row-level rentalAsOf/rentalSource are
+    // null there; fall back to the Suburb row's own rental timestamp.
+    rentalAsOf:      freshness.rentalAsOf   ?? s.rentalUpdatedAt ?? null,
     salesAsOf:       s.salesUpdatedAt       ?? null,
     salesSource:     s.statsSource          ?? null,
     salesCount:      s.salesCountHouse > 0 ? s.salesCountHouse : null,
@@ -112,7 +116,11 @@ function toSuburb(
     priceUnreliable || !isPlausibleAnnualGrowth(s.annualGrowthHouse) ? 0 : s.annualGrowthHouse;
   const annualGrowthUnit  =
     priceUnreliable || !isPlausibleAnnualGrowth(s.annualGrowthUnit) ? 0 : s.annualGrowthUnit;
-  const daysOnMarket      = priceUnreliable ? 0 : s.daysOnMarket;
+  // No current feed produces days on market: sales-nsw wrote the settlement
+  // period until 6 Sep 2026 and now writes 0, and the remaining values are
+  // seed leftovers from the April import. Withheld until a feed supplies it
+  // (0 = unknown, not printed). Column kept for that day.
+  const daysOnMarket      = 0;
 
   return {
     id:          s.id,
