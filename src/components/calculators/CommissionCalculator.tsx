@@ -13,10 +13,26 @@ import { STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
 
 const STATES = Object.keys(STATE_RATES) as StateCode[];
 
-export function CommissionCalculator() {
-  const [state, setState] = useState<StateCode>("NSW");
-  const [salePrice, setSalePrice] = useState(850_000);
-  const [rate, setRate] = useState(STATE_RATES.NSW.typical);
+export interface CommissionCalculatorProps {
+  /** Preset state; the state guides pass their own (fix item 8). */
+  initialState?: StateCode;
+  initialPrice?: number;
+  /** "h3" when embedded under a guide's own h2. */
+  headingLevel?: "h2" | "h3";
+  /** The selling-guide CTA block; off inside a guide that has its own CTAs. */
+  showGuideCta?: boolean;
+}
+
+export function CommissionCalculator({
+  initialState = "NSW",
+  initialPrice = 850_000,
+  headingLevel = "h2",
+  showGuideCta = true,
+}: CommissionCalculatorProps = {}) {
+  const Heading = headingLevel;
+  const [state, setState] = useState<StateCode>(initialState);
+  const [salePrice, setSalePrice] = useState(initialPrice);
+  const [rate, setRate] = useState(STATE_RATES[initialState].typical);
   const [rateTouched, setRateTouched] = useState(false);
   const [marketing, setMarketing] = useState(4_000);
   const [conveyancing, setConveyancing] = useState(1_400);
@@ -48,7 +64,7 @@ export function CommissionCalculator() {
     <div className="max-w-3xl mx-auto space-y-8">
       {/* Inputs */}
       <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
-        <h2 className="text-lg font-semibold text-gray-900">Your Sale</h2>
+        <Heading className="text-lg font-semibold text-gray-900">Your Sale</Heading>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label htmlFor="commission-state" className="block text-sm font-medium text-gray-700 mb-1">
@@ -131,7 +147,7 @@ export function CommissionCalculator() {
 
       {/* Results */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-5">What Selling Costs You</h2>
+        <Heading className="text-lg font-semibold text-gray-900 mb-5">What Selling Costs You</Heading>
         <dl className="space-y-3">
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">
             <dt className="text-sm text-gray-600">Agent commission ({rate}%)</dt>
@@ -158,6 +174,7 @@ export function CommissionCalculator() {
 
       {/* Funnel CTA. The calculator answers "what does it cost"; the guide
           answers "how do I keep that number down". */}
+      {showGuideCta && (
       <div className="rounded-xl border border-line bg-surface-warm p-6 sm:p-7">
         <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-2">
           Free guide
@@ -179,6 +196,7 @@ export function CommissionCalculator() {
           <ArrowRight className="w-4 h-4" aria-hidden="true" />
         </Link>
       </div>
+      )}
     </div>
   );
 }
