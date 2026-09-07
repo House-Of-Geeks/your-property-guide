@@ -37,6 +37,8 @@ export interface SuburbDataFreshness {
   crimeSource:     string | null;
   salesAsOf:       Date | null;
   salesSource:     string | null;  // statsSource from Suburb row e.g. "sales-nsw", "sales-abs"
+  salesCount:      number | null;  // house sales behind the median; null when the source publishes no counts
+  salesPeriodEnd:  Date | null;    // end of the period the median describes (DataSource.dataAsOf of the source)
   censusAsOf:      Date | null;
   hazardAsOf:      Date | null;
   walkabilityAsOf: Date | null;

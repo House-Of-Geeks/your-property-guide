@@ -12,6 +12,7 @@
 
 import type { Suburb } from "@/types";
 import { hasReliablePrice } from "./suburb-data-quality";
+import { describeSalesProvenance } from "@/lib/sales-provenance";
 
 // ─── State-level reference baselines ──────────────────────────────────
 // Indicative all-suburb medians per state, as of 2026.  Used for
@@ -221,8 +222,17 @@ export function buildMarketSummary(suburb: Suburb): string {
   const g = growthDescriptor(s.annualGrowthHouse);
 
   const parts: string[] = [];
+  const prov = describeSalesProvenance({
+    source: suburb.dataFreshness?.salesSource,
+    periodEnd: suburb.dataFreshness?.salesPeriodEnd,
+    updatedAt: suburb.dataFreshness?.salesAsOf,
+    salesCount: suburb.dataFreshness?.salesCount,
+    suburbName: suburb.name,
+  });
   parts.push(
-    `Houses change hands at ${formatPricePrecise(s.medianHousePrice)} on a typical sale, ${cmp.phrase} the ${baseline.fullName} median.`,
+    prov?.geography === "area"
+      ? `Across the ABS statistical area that takes in ${suburb.name}, houses changed hands at ${formatPricePrecise(s.medianHousePrice)} in ${prov.period}, ${cmp.phrase} the ${baseline.fullName} median. ${prov.areaNote}`
+      : `Houses change hands at ${formatPricePrecise(s.medianHousePrice)} on a typical sale, ${cmp.phrase} the ${baseline.fullName} median${prov?.sampleNote ? ` (${prov.sampleNote}, ${prov.sourceLabel}, ${prov.period})` : ""}.`,
   );
   if (s.medianUnitPrice > 0) {
     const unitGap = Math.round((1 - s.medianUnitPrice / s.medianHousePrice) * 100);

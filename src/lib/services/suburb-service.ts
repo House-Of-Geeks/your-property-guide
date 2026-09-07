@@ -3,6 +3,7 @@ import type { Suburb, SuburbDataFreshness } from "@/types";
 import { db } from "@/lib/db";
 import type { Suburb as DbSuburb, School as DbSchool, SuburbHazard as DbSuburbHazard, SuburbClimate as DbSuburbClimate } from "@/generated/prisma/client";
 import { classifyPriceConfidence, isPlausibleAnnualGrowth } from "@/lib/suburb-data-quality";
+import { hasEnoughSales } from "@/lib/sales-provenance";
 
 type DbSuburbWithSchools = DbSuburb & { schools: DbSchool[] };
 
@@ -13,11 +14,22 @@ const NO_FRESHNESS: SuburbDataFreshness = {
   crimeSource:     null,
   salesAsOf:       null,
   salesSource:     null,
+  salesCount:      null,
+  salesPeriodEnd:  null,
   censusAsOf:      null,
   hazardAsOf:      null,
   walkabilityAsOf: null,
   climateAsOf:     null,
 };
+
+// End of the period each sales feed's medians describe (DataSource.dataAsOf:
+// 31 Dec of the calendar year for NSW and ABS, the quarter for VIC and SA).
+// Four rows, memoised per request; rendered under every median as provenance.
+const SALES_SOURCES = ["sales-nsw", "sales-vic", "sales-sa", "sales-abs"] as const;
+const getSalesPeriodEnds = cache(async (): Promise<Map<string, Date | null>> => {
+  const rows = await db.dataSource.findMany({ where: { id: { in: [...SALES_SOURCES] } }, select: { id: true, dataAsOf: true } });
+  return new Map(rows.map((r) => [r.id, r.dataAsOf ?? null]));
+});
 
 async function fetchFreshness(slug: string): Promise<{
   freshness: SuburbDataFreshness;
@@ -46,6 +58,8 @@ async function fetchFreshness(slug: string): Promise<{
       // Denormalized fields, filled in by toSuburb() after the Suburb row is fetched
       salesAsOf:       null,
       salesSource:     null,
+      salesCount:      null,
+      salesPeriodEnd:  null,
       censusAsOf:      null,
       hazardAsOf:      null,
       walkabilityAsOf: null,
@@ -63,12 +77,15 @@ function toSuburb(
   rentalRentUnit: number | null,
   hazard: DbSuburbHazard | null,
   climate: DbSuburbClimate | null,
+  salesPeriodEnds: Map<string, Date | null> = new Map(),
 ): Suburb {
   // Merge denormalized *UpdatedAt fields into freshness
   const mergedFreshness: SuburbDataFreshness = {
     ...freshness,
     salesAsOf:       s.salesUpdatedAt       ?? null,
     salesSource:     s.statsSource          ?? null,
+    salesCount:      s.salesCountHouse > 0 ? s.salesCountHouse : null,
+    salesPeriodEnd:  salesPeriodEnds.get(s.statsSource) ?? null,
     censusAsOf:      s.censusUpdatedAt      ?? null,
     hazardAsOf:      s.hazardUpdatedAt      ?? null,
     walkabilityAsOf: s.walkabilityUpdatedAt ?? null,
@@ -81,7 +98,11 @@ function toSuburb(
   // fields at the boundary so no downstream component publishes
   // fiction as fact. Rental, demographics, walkability, climate,
   // schools, hazard all come from independent sources and are kept.
-  const priceUnreliable = classifyPriceConfidence(mergedFreshness) === "unreliable";
+  // A trusted feed can still hand us a "median" of two or three sales; those
+  // are withheld the same way (fix item 1, step v; the count stays in
+  // freshness so the page can say why). Unknown counts never suppress.
+  const priceUnreliable =
+    classifyPriceConfidence(mergedFreshness) === "unreliable" || !hasEnoughSales(s.salesCountHouse);
   const medianHousePrice  = priceUnreliable ? 0 : s.medianHousePrice;
   const medianUnitPrice   = priceUnreliable ? 0 : s.medianUnitPrice;
   // Growth additionally passes a plausibility clamp: even trusted feeds
@@ -315,7 +336,8 @@ export const getSuburbBySlug = cache(async (slug: string): Promise<Suburb | null
   ]);
   if (!row) return null;
   const schools = await getNearbySchools(row);
-  return toSuburb({ ...row, schools }, freshness, rentalRentHouse, rentalRentUnit, hazard, climate);
+  const salesPeriodEnds = await getSalesPeriodEnds();
+  return toSuburb({ ...row, schools }, freshness, rentalRentHouse, rentalRentUnit, hazard, climate, salesPeriodEnds);
 });
 
 export async function getAllSuburbSlugs(): Promise<string[]> {

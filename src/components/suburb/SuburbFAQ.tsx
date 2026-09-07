@@ -3,6 +3,7 @@ import type { Suburb } from "@/types";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { fullLgaName } from "@/lib/utils/lga-names";
 import { hasReliablePrice } from "@/lib/suburb-data-quality";
+import { describeSalesProvenance } from "@/lib/sales-provenance";
 import { capitalCityFor } from "@/lib/utils/metro";
 
 interface SuburbFAQProps {
@@ -40,9 +41,19 @@ export function SuburbFAQ({ suburb }: SuburbFAQProps) {
       suburb.stats.medianUnitPrice
         ? ` The median unit price is ${formatPriceFull(suburb.stats.medianUnitPrice)}.`
         : "";
+    const prov = describeSalesProvenance({
+      source: suburb.dataFreshness?.salesSource,
+      periodEnd: suburb.dataFreshness?.salesPeriodEnd,
+      updatedAt: suburb.dataFreshness?.salesAsOf,
+      salesCount: suburb.dataFreshness?.salesCount,
+      suburbName: sn,
+    });
+    const lead = prov?.geography === "area"
+      ? `The median house price for the ABS statistical area (SA2) that takes in ${sn}, ${suburb.state} ${suburb.postcode} is ${formatPriceFull(suburb.stats.medianHousePrice)} (${prov.period}). ${prov.areaNote}`
+      : `The median house price in ${sn}, ${suburb.state} ${suburb.postcode} is ${formatPriceFull(suburb.stats.medianHousePrice)}${prov ? ` (${prov.sentence.replace(/\.$/, "").replace(/^Median of /, "median of ")})` : ""}.`;
     faqs.push({
       question: `What is the median house price in ${sn}?`,
-      answer: `The median house price in ${sn}, ${suburb.state} ${suburb.postcode} is ${formatPriceFull(suburb.stats.medianHousePrice)}.${unit}${growth}`,
+      answer: `${lead}${unit}${growth}`,
     });
   }
 
