@@ -193,7 +193,7 @@ async function main() {
   }> = {};
 
   let updated = 0;
-  let skipped = 0;
+  const skipped = 0;
   let noData  = 0;
 
   for (const suburb of suburbs) {
