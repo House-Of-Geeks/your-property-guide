@@ -102,7 +102,13 @@ Tick items off as they ship.
 
 ## Commission guides (week 2–4)
 
-- [ ] 8. [code] Embed commission calculator at top of each state guide, preset to state rate;
+- [ ] 8. [code] IN PROGRESS — NT pilot live 8 Sep 2026, PR #23 (5ccac66): calculator embedded at the top of the NT
+      guide preset to 2.5% and $800,000, retitled "Real Estate Commission NT 2026: Rates, Fees & Calculator";
+      embed by import, no schema, no second CTA; tests pin the pilot to NT. Baseline docs/seo-baselines/2026-09-07.
+      Next: read NT's Bing position and clicks on 22 Sep (`npm run seo:baseline -- --compare 2026-09-07`); if they
+      hold, WA and TAS, then NSW, VIC, QLD, SA, ACT, one commit each. The review's shared-layout extraction was
+      skipped for the pilot (shared components already prevent drift); decide before the second state.
+      Original scope: Embed commission calculator at top of each state guide, preset to state rate;
       retitle "Real Estate Commission {State} 2026: Rates, Fees & Calculator". (06, C)
 - [ ] 9. [content] Regional rate table per state (capital / regional centres / remote), sourced, dated. (06)
 - [x] 10. DONE 8 Sep 2026 — PR #21 (3732896): "What it costs to sell in {State}" table on all eight guides, worked at
@@ -113,8 +119,8 @@ Tick items off as they ship.
 - [ ] 11. [code] Seller-funnel links: homepage seller path, /selling, /selling-guide, and the
       "Thinking of selling in {suburb}?" block on every suburb page → state commission guide. (06)
 - [x] 12. DONE 8 Sep 2026 — PR #21 (3732896): one PAA question per guide (six questions per page), 40+ words with
-      a figure and a source; Rich Results Test clean. Found: RRT reports a "Paywalled Content" item on the guides
-      (Article schema isAccessibleForFree / hasPart markup); confirm it is intended, remove if not.
+      a figure and a source; Rich Results Test clean. The "Paywalled Content" item the test reports is the Article
+      schema declaring isAccessibleForFree: true, which Google files under that heading; nothing to change.
       Original scope: FAQ answers from People Also Ask on each state guide. (06)
 
 ## Investor intent (week 3–6)
