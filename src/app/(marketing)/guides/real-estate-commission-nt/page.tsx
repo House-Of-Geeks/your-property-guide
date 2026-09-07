@@ -7,6 +7,7 @@ import {
   MatchCTA,
   Sources,
   SellingCostTable,
+  CommissionCalculatorEmbed,
   EditorNote,
   PullQuote,
   type GuideFrontmatter,
@@ -20,9 +21,9 @@ import { guideOgImages } from "@/lib/og/helpers";
 import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "Real Estate Commission NT: Average Rates & Agent Fees (2026)",
+  title: "Real Estate Commission NT 2026: Rates, Fees & Calculator",
   description:
-    "What real estate agents charge in the Northern Territory: typical commission of 2.4% to 2.7% (2.5% most common), worked dollar examples, GST, what's included, and how to negotiate the rate.",
+    "What real estate agents charge in the Northern Territory: typical commission of 2.4% to 2.7% (2.5% most common), a calculator preset to the NT rate, worked dollar examples, GST, what's included, and how to negotiate.",
   slug: "real-estate-commission-nt",
   publishedAt: "2026-06-14",
   updatedAt: "2026-09-08",
@@ -62,6 +63,7 @@ const TLDR = [
 ];
 
 const TOC: GuideTOCEntry[] = [
+  { id: "calculator",   label: "Commission calculator" },
   { id: "average-commission", label: "Average commission in NT" },
   { id: "worked-examples",    label: "What it costs in dollars" },
   { id: "how-structured",     label: "How commission is structured" },
@@ -116,6 +118,8 @@ export default function RealEstateCommissionNtPage() {
       faqs={[...FAQS, COMMISSION_PAA_FAQ.NT]}
       related={RELATED}
     >
+      <CommissionCalculatorEmbed state="NT" />
+
       <Callout variant="warning" title="There is no official commission rate in the NT">
         <p>
           Commission in the Northern Territory is not regulated or fixed, and it
