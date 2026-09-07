@@ -8,19 +8,8 @@ import { formatPriceFull } from "@/lib/utils/format";
 // Typical residential commission ranges by state, mid-2026. These are
 // market-wide ranges, not quotes: metro suburbs sit at the low end,
 // regional at the high end. Sources: published averages from the major
-// agent-comparison platforms, cross-checked in docs/lead-gen-strategy.md.
-type StateCode = "NSW" | "VIC" | "QLD" | "SA" | "WA" | "TAS" | "NT" | "ACT";
-
-const STATE_RATES: Record<StateCode, { low: number; high: number; typical: number }> = {
-  NSW: { low: 1.8, high: 2.5,  typical: 2.0 },
-  VIC: { low: 1.6, high: 2.5,  typical: 2.0 },
-  QLD: { low: 2.3, high: 2.9,  typical: 2.5 },
-  SA:  { low: 1.8, high: 2.75, typical: 2.0 },
-  WA:  { low: 2.0, high: 2.8,  typical: 2.4 },
-  TAS: { low: 2.5, high: 3.25, typical: 2.9 },
-  NT:  { low: 2.4, high: 2.7,  typical: 2.5 },
-  ACT: { low: 1.8, high: 2.25, typical: 2.1 },
-};
+// agent-comparison platforms; the ranges live in src/lib/data/commission-rates.ts.
+import { STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
 
 const STATES = Object.keys(STATE_RATES) as StateCode[];
 

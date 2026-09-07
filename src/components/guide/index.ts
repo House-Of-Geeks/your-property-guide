@@ -27,3 +27,4 @@ export type { FaqAccordionItem } from "./FaqAccordion";
 export type { RelatedGuide } from "./RelatedGuides";
 export type { MatchCTAKind } from "./MatchCTA";
 export type { SourceItem } from "./Sources";
+export { SellingCostTable } from "./SellingCostTable";

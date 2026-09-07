@@ -6,6 +6,7 @@ import {
   KeyFigure,
   MatchCTA,
   Sources,
+  SellingCostTable,
   EditorNote,
   PullQuote,
   type GuideFrontmatter,
@@ -16,6 +17,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real Estate Commission SA: Average Rates & Agent Fees (2026)",
@@ -23,7 +25,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "What real estate agents charge in South Australia: the typical commission range, worked dollar examples by sale price, how fees are structured, GST, and how to negotiate the rate in SA.",
   slug: "real-estate-commission-sa",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-06-14",
+  updatedAt: "2026-09-08",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -65,6 +67,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "structure",    label: "How commission is structured in SA" },
   { id: "negotiable",   label: "Is commission negotiable in SA?" },
   { id: "other-costs",  label: "Commission vs your other selling costs" },
+  { id: "cost-table",   label: "What it costs to sell in South Australia" },
   { id: "next-steps",   label: "Get an appraisal and the right agent" },
 ];
 
@@ -110,7 +113,7 @@ export default function RealEstateCommissionSAPage() {
       frontmatter={FRONTMATTER}
       tldr={TLDR}
       toc={TOC}
-      faqs={FAQS}
+      faqs={[...FAQS, COMMISSION_PAA_FAQ.SA]}
       related={RELATED}
     >
       <Callout variant="warning" title="Commission is not fixed, and it is always negotiable">
@@ -285,6 +288,8 @@ export default function RealEstateCommissionSAPage() {
         will pay at settlement.
       </p>
 
+      <SellingCostTable state="SA" />
+
       <h2 id="next-steps">Get an appraisal and the right agent</h2>
       <p>
         The commission rate matters, but the agent you choose usually matters
@@ -319,6 +324,7 @@ export default function RealEstateCommissionSAPage() {
 }
 
 const SA_COMMISSION_SOURCES: readonly SourceItem[] = [
+  { label: "Law Handbook SA: Form 1", href: "https://lawhandbook.sa.gov.au/ch23s09s01.php", note: "The Form 1 vendor's statement a South Australian seller must provide" },
   { label: "Real Estate Institute of South Australia (REISA)", href: "https://www.reisa.com.au/", note: "South Australian industry body for real estate agents" },
   { label: "Consumer and Business Services SA: Land agents and salespeople", href: "https://www.cbs.sa.gov.au/", note: "Licensing and regulation of real estate agents in South Australia" },
   { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent commission and selling costs" },

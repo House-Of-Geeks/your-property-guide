@@ -6,6 +6,7 @@ import {
   KeyFigure,
   MatchCTA,
   Sources,
+  SellingCostTable,
   EditorNote,
   PullQuote,
   type GuideFrontmatter,
@@ -16,6 +17,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real Estate Commission VIC: Average Rates & Agent Fees (2026)",
@@ -23,7 +25,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "What real estate agents charge in Victoria: the typical 1.6% to 2.5% commission range, worked examples on common sale prices, how GST applies, what's included, and how to negotiate.",
   slug: "real-estate-commission-vic",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-06-14",
+  updatedAt: "2026-09-08",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -65,6 +67,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "how-structured",     label: "How commission is structured" },
   { id: "negotiable",         label: "Is commission negotiable?" },
   { id: "other-costs",        label: "Commission vs other selling costs" },
+  { id: "cost-table",   label: "What it costs to sell in Victoria" },
   { id: "next-steps",         label: "Getting the right agent and fee" },
 ];
 
@@ -110,7 +113,7 @@ export default function RealEstateCommissionVicPage() {
       frontmatter={FRONTMATTER}
       tldr={TLDR}
       toc={TOC}
-      faqs={FAQS}
+      faqs={[...FAQS, COMMISSION_PAA_FAQ.VIC]}
       related={RELATED}
     >
       <Callout variant="warning" title="Commission isn't fixed, and it's always negotiable">
@@ -296,6 +299,8 @@ export default function RealEstateCommissionVicPage() {
         sets out the rates by state.
       </p>
 
+      <SellingCostTable state="VIC" />
+
       <h2 id="next-steps">Getting the right agent and fee</h2>
       <p>
         The cheapest commission rarely beats the agent who sells your home for
@@ -332,6 +337,7 @@ export default function RealEstateCommissionVicPage() {
 }
 
 const VIC_COMMISSION_SOURCES: readonly SourceItem[] = [
+  { label: "Consumer Affairs Victoria: Selling property", href: "https://www.consumer.vic.gov.au/housing/buying-and-selling-property/selling-property", note: "The Section 32 vendor statement and the selling process in Victoria" },
   { label: "Consumer Affairs Victoria: Estate agents and commission", href: "https://www.consumer.vic.gov.au/", note: "Agent licensing and the deregulation of commission in Victoria" },
   { label: "Real Estate Institute of Victoria (REIV)", href: "https://reiv.com.au/", note: "Industry body context for the Victorian agent market" },
   { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent fees, GST and marketing costs" },

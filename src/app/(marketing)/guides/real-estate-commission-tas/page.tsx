@@ -6,6 +6,7 @@ import {
   KeyFigure,
   MatchCTA,
   Sources,
+  SellingCostTable,
   EditorNote,
   PullQuote,
   type GuideFrontmatter,
@@ -16,6 +17,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real Estate Commission TAS: Average Rates & Agent Fees (2026)",
@@ -23,7 +25,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "What real estate agents charge in Tasmania: the typical commission range, the most common rate, worked dollar examples on a TAS sale, how commission is structured, whether it includes GST, and how to negotiate.",
   slug: "real-estate-commission-tas",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-06-14",
+  updatedAt: "2026-09-08",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -65,6 +67,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "structure",    label: "How commission is structured" },
   { id: "negotiable",   label: "Is commission negotiable?" },
   { id: "other-costs",  label: "Commission vs the rest of your costs" },
+  { id: "cost-table",   label: "What it costs to sell in Tasmania" },
   { id: "next-steps",   label: "Getting the right agent and price" },
 ];
 
@@ -110,7 +113,7 @@ export default function RealEstateCommissionTasPage() {
       frontmatter={FRONTMATTER}
       tldr={TLDR}
       toc={TOC}
-      faqs={FAQS}
+      faqs={[...FAQS, COMMISSION_PAA_FAQ.TAS]}
       related={RELATED}
     >
       <Callout variant="warning" title="These are typical figures, not official rates">
@@ -302,6 +305,8 @@ export default function RealEstateCommissionTasPage() {
         which sets the Tasmanian rates in context against the rest of the country.
       </p>
 
+      <SellingCostTable state="TAS" />
+
       <h2 id="next-steps">Getting the right agent and price</h2>
       <p>
         The rate matters, but the agent matters more. The right agent in your
@@ -337,6 +342,7 @@ export default function RealEstateCommissionTasPage() {
 }
 
 const TAS_COMMISSION_SOURCES: readonly SourceItem[] = [
+  { label: "CBOS Tasmania: Buying and selling property", href: "https://www.cbos.tas.gov.au/topics/housing/buying-selling-property", note: "Consumer guidance on selling property and agents in Tasmania" },
   { label: "Real Estate Institute of Tasmania (REIT)", href: "https://www.reit.com.au", note: "Peak body for real estate agents in Tasmania" },
   { label: "Consumer, Building and Occupational Services (CBOS)", href: "https://www.cbos.tas.gov.au", note: "Tasmanian regulator that licenses property agents" },
   { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent commission, fees and marketing costs" },
