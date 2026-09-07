@@ -1,260 +1,197 @@
 /**
- * VIC Rental Data Sync (DFFH "Rental Report — Quarterly: Moving Annual Rents by Suburb")
+ * VIC Rental Data Sync (DFFH Rental Report: moving annual rents by suburb)
  *
- * The XLSX has one sheet per dwelling type:
- *   "1 bedroom flat", "2 bedroom flat", "3 bedroom flat",
- *   "2 bedroom house", "3 bedroom house", "4 bedroom house",
- *   "All properties"
+ * The workbook has one sheet per dwelling type ("1 bedroom flat" …
+ * "4 bedroom house", "All properties"); each sheet lists DFFH suburb groups
+ * with a Count/Median pair per quarter. Medians are moving annual (the
+ * twelve months to the quarter). DFFH groups small suburbs for sample size
+ * ("Albert Park-Middle Park-West St Kilda"); the feed splits a group into
+ * its component suburbs, all sharing the group's medians.
  *
- * Each sheet is identical structure:
- *   Row 0: title
- *   Row 1: quarter labels (pairs — Count, Median per quarter)
- *   Row 2: "Count" / "Median" labels
- *   Row 3+: Region | Suburb name | [Count, Median × quarter] ...
+ * What it writes (rules in rental-vic-rules.ts, tested):
+ *   - house rent = 3-bedroom house (then 4, then 2); unit rent = 2-bedroom
+ *     flat (then 1, then 3-bedroom flat); never the all-properties median
+ *   - one SuburbRentalStat row per matched suburb for the latest quarter,
+ *     with the bedroom medians alongside
+ *   - Suburb.medianRentHouse / medianRentUnit for those suburbs (0 where the
+ *     group has no figure), rentalUpdatedAt and updatedAt stamped
+ *   - legacy rows from the single-sheet version of this feed (no postcode,
+ *     source rental-vic) deleted: they held the all-properties median as the
+ *     house rent and won ties on the page for 77 suburbs (7 Sep 2026)
  *
- * DFFH groups suburbs into multi-suburb regions for sample-size reasons,
- * e.g. "Werribee-Hoppers Crossing", "Albert Park-Middle Park-West St Kilda".
- * We split on "-" and write a row per component suburb, all sharing the
- * group's medians (mirroring how Domain treats this data).
+ * Download: the data.vic.gov.au CKAN package first, then the DFFH direct
+ * URLs for recent quarters (the CKAN call failed on the 1 July 2026 cron).
  *
+ * Flags:  --dry-run  parse, plan and print; no writes
+ *         --file <path>  use a downloaded workbook instead of fetching
  * Source: https://discover.data.vic.gov.au/dataset/rental-report
  * Schedule: Quarterly
  */
 import "dotenv/config";
+import { readFileSync } from "node:fs";
 import * as XLSX from "xlsx";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
 import { getCkanDownloadUrl } from "../ckan";
+import {
+  SHEETS,
+  candidateVicUrls,
+  findLatestPopulatedQuarter,
+  parseMedian,
+  pickHouseRent,
+  pickUnitRent,
+  splitGroupName,
+  type GroupMedians,
+  type SheetKey,
+} from "./rental-vic-rules";
 
 const SOURCE_ID = "rental-vic";
 const CKAN_BASE = "https://discover.data.vic.gov.au";
 const PACKAGE_ID = "rental-report-quarterly-moving-annual-rents-by-suburb";
+const USER_AGENT = "Mozilla/5.0 (compatible; YourPropertyGuide data sync; +https://yourpropertyguide.com.au)";
+const SAMPLE_SLUGS = ["toorak-vic-3142", "brighton-vic-3186", "kew-vic-3101", "south-yarra-vic-3141", "armadale-vic-3143", "werribee-vic-3030", "ballarat-central-vic-3350"];
 
-const QUARTER_MAP: Record<string, string> = {
-  Mar: "Q1", Jun: "Q2", Sep: "Q3", Dec: "Q4",
-};
-const MONTH_NUM: Record<string, number> = {
-  Mar: 3, Jun: 6, Sep: 9, Dec: 12,
-};
-
-const SHEETS = {
-  "1 bedroom flat":  "1bed_flat",
-  "2 bedroom flat":  "2bed_flat",
-  "3 bedroom flat":  "3bed_flat",
-  "2 bedroom house": "2bed_house",
-  "3 bedroom house": "3bed_house",
-  "4 bedroom house": "4bed_house",
-  "All properties":  "all",
-} as const;
-
-type DwellingKey = (typeof SHEETS)[keyof typeof SHEETS];
-
-interface QuarterInfo { period: string; periodDate: Date; col: number }
-
-function parseQuarterLabel(label: string): { period: string; periodDate: Date } | null {
-  const m = String(label).trim().match(/^(Mar|Jun|Sep|Dec)\s+(\d{4})$/);
-  if (!m) return null;
-  const [, mon, year] = m;
-  return {
-    period:     `${year}-${QUARTER_MAP[mon]}`,
-    periodDate: new Date(`${year}-${String(MONTH_NUM[mon]).padStart(2, "0")}-01`),
-  };
-}
-
-/** Find the most recent quarter that has actual data (not the empty future-quarter columns). */
-function findLatestPopulatedQuarter(raw: (string | number)[][]): QuarterInfo | null {
-  const quarterRow = raw[1] as (string | number)[];
-  const labelRow   = raw[2] as (string | number)[];
-
-  for (let c = quarterRow.length - 1; c >= 2; c--) {
-    const parsed = parseQuarterLabel(String(quarterRow[c]));
-    if (!parsed) continue;
-    const lbl = String(labelRow[c]).trim().toLowerCase();
-    const medianCol = lbl === "median" ? c : (lbl === "count" && String(labelRow[c + 1]).trim().toLowerCase() === "median" ? c + 1 : -1);
-    if (medianCol < 0) continue;
-
-    // Verify at least one row in this column has a value.
-    let hasData = false;
-    for (let i = 3; i < raw.length; i++) {
-      if (raw[i]?.[medianCol] !== "" && raw[i]?.[medianCol] != null) { hasData = true; break; }
-    }
-    if (!hasData) continue;
-    return { ...parsed, col: medianCol };
+async function fetchWorkbook(url: string): Promise<Buffer | null> {
+  try {
+    const res = await fetch(url, { headers: { "user-agent": USER_AGENT } });
+    if (!res.ok) return null;
+    if ((res.headers.get("content-type") ?? "").includes("text/html")) return null;
+    return Buffer.from(await res.arrayBuffer());
+  } catch {
+    return null;
   }
-  return null;
 }
 
-function parseSheet(ws: XLSX.WorkSheet): Map<string, number> {
+async function locateWorkbook(): Promise<{ buffer: Buffer; url: string }> {
+  try {
+    const url = await getCkanDownloadUrl(PACKAGE_ID, CKAN_BASE, "XLSX");
+    const buffer = await fetchWorkbook(url);
+    if (buffer) return { buffer, url };
+    log(SOURCE_ID, `CKAN resource did not yield a workbook: ${url}`);
+  } catch (err) {
+    log(SOURCE_ID, `CKAN lookup failed: ${(err as Error).message}`);
+  }
+  for (const url of candidateVicUrls(new Date())) {
+    const buffer = await fetchWorkbook(url);
+    if (buffer) return { buffer, url };
+  }
+  throw new Error("Could not download the DFFH moving-annual-rents workbook");
+}
+
+function parseSheet(ws: XLSX.WorkSheet): { quarter: { period: string; periodDate: Date } | null; medians: Map<string, number> } {
   const raw = XLSX.utils.sheet_to_json<(string | number)[]>(ws, { header: 1, defval: "" });
   const found = findLatestPopulatedQuarter(raw);
-  if (!found) return new Map();
-  const out = new Map<string, number>();
+  const medians = new Map<string, number>();
+  if (!found) return { quarter: null, medians };
   for (let i = 3; i < raw.length; i++) {
     const name = String(raw[i][1] ?? "").trim();
     if (!name || name.toLowerCase().startsWith("group total")) continue;
-    const v = raw[i][found.col];
-    const median = typeof v === "number" ? v : parseInt(String(v).replace(/,/g, "")) || 0;
-    if (median > 0) out.set(name, median);
+    const median = parseMedian(raw[i][found.col]);
+    if (median !== null) medians.set(name, median);
   }
-  return out;
+  return { quarter: { period: found.period, periodDate: found.periodDate }, medians };
 }
 
-/** Load (name → {slug, postcode}) for VIC suburbs. */
-async function loadVicSuburbIndex(): Promise<Map<string, { slug: string; postcode: string }>> {
-  const rows = await prisma.suburb.findMany({
-    where: { state: "VIC" },
-    select: { slug: true, name: true, postcode: true },
-  });
-  const m = new Map<string, { slug: string; postcode: string }>();
-  for (const r of rows) m.set(r.name.trim().toLowerCase(), { slug: r.slug, postcode: r.postcode });
-  return m;
-}
-
-/** Split DFFH group name into component suburbs. "Werribee-Hoppers Crossing" → ["Werribee", "Hoppers Crossing"]. */
-function splitGroupName(raw: string): string[] {
-  const trimmed = raw.trim();
-  // Some entries use "/" or " - " etc; normalise to single delimiter then split.
-  const parts = trimmed.split(/\s*-\s*|\s*\/\s*/).map((s) => s.trim()).filter(Boolean);
-  return parts.length > 0 ? parts : [trimmed];
-}
-
-/** Resolve a name (single suburb or group) to a list of {slug, name, postcode}. Skips components we can't match. */
-function resolveComponents(
-  rawName: string,
-  index: Map<string, { slug: string; postcode: string }>
-): Array<{ slug: string; name: string; postcode: string }> {
-  // Try the full name first (handles "Hoppers Crossing", "Albert Park" etc.)
-  const direct = index.get(rawName.trim().toLowerCase());
-  if (direct) return [{ slug: direct.slug, name: rawName.trim(), postcode: direct.postcode }];
-
-  // Fall back to splitting groups.
-  const components = splitGroupName(rawName);
-  const out: Array<{ slug: string; name: string; postcode: string }> = [];
-  for (const c of components) {
-    const hit = index.get(c.toLowerCase());
-    if (hit) out.push({ slug: hit.slug, name: c, postcode: hit.postcode });
-  }
-  return out;
+interface PlannedRow {
+  id: string;
+  slug: string;
+  name: string;
+  postcode: string;
+  group: string;
+  house: number; // 0 = the group has no house figure
+  unit: number;
+  bed3: number | null;
+  bed2: number | null;
+  bed1: number | null;
 }
 
 export async function run(): Promise<void> {
-  await startSync(SOURCE_ID);
+  const args = process.argv.slice(2);
+  const dryRun = args.includes("--dry-run");
+  const fileArg = args.indexOf("--file") >= 0 ? args[args.indexOf("--file") + 1] : null;
+
+  if (!dryRun) await startSync(SOURCE_ID);
   try {
-    const dffhUrl = await getCkanDownloadUrl(PACKAGE_ID, CKAN_BASE, "XLSX");
-    log(SOURCE_ID, `downloading from ${dffhUrl}`);
-
-    const res = await fetch(dffhUrl);
-    if (!res.ok) throw new Error(`HTTP ${res.status} downloading VIC rental XLSX`);
-    const contentType = res.headers.get("content-type") ?? "";
-    if (contentType.includes("text/html")) throw new Error(`Got HTML instead of XLSX — redirect failed`);
-
-    const buffer = Buffer.from(await res.arrayBuffer());
+    const { buffer, url } = fileArg ? { buffer: readFileSync(fileArg), url: fileArg } : await locateWorkbook();
+    log(SOURCE_ID, `workbook: ${url}`);
     const wb = XLSX.read(buffer, { type: "buffer" });
-    log(SOURCE_ID, `sheets: ${wb.SheetNames.join(", ")}`);
 
-    // Per-sheet medians keyed by raw DFFH group name
-    const perSheet: Record<DwellingKey, Map<string, number>> = {} as Record<DwellingKey, Map<string, number>>;
-    let latestPeriod: { period: string; periodDate: Date } | null = null;
-
-    for (const [sheetName, key] of Object.entries(SHEETS) as Array<[string, DwellingKey]>) {
+    const perSheet = {} as Record<SheetKey, Map<string, number>>;
+    let latest: { period: string; periodDate: Date } | null = null;
+    for (const [sheetName, key] of Object.entries(SHEETS)) {
       const ws = wb.Sheets[sheetName];
-      if (!ws) {
-        log(SOURCE_ID, `sheet "${sheetName}" missing — skipping`);
-        perSheet[key] = new Map();
-        continue;
-      }
-      const raw = XLSX.utils.sheet_to_json<(string | number)[]>(ws, { header: 1, defval: "" });
-      const found = findLatestPopulatedQuarter(raw);
-      if (!found) {
-        log(SOURCE_ID, `sheet "${sheetName}" — no populated quarter found`);
-        perSheet[key] = new Map();
-        continue;
-      }
-      if (!latestPeriod) latestPeriod = { period: found.period, periodDate: found.periodDate };
-      perSheet[key] = parseSheet(ws);
-      log(SOURCE_ID, `sheet "${sheetName}" — latest ${found.period}, ${perSheet[key].size} groups`);
+      if (!ws) { log(SOURCE_ID, `sheet "${sheetName}" missing`); perSheet[key] = new Map(); continue; }
+      const { quarter, medians } = parseSheet(ws);
+      perSheet[key] = medians;
+      if (quarter && (!latest || quarter.periodDate > latest.periodDate)) latest = quarter;
+      log(SOURCE_ID, `sheet "${sheetName}": ${medians.size} groups, latest ${quarter?.period ?? "none"}`);
     }
+    if (!latest) throw new Error("No quarter data found in any sheet");
 
-    if (!latestPeriod) throw new Error("No quarter data found in any sheet");
+    const suburbs = await prisma.suburb.findMany({ where: { state: "VIC" }, select: { id: true, slug: true, name: true, postcode: true } });
+    const byName = new Map(suburbs.map((s) => [s.name.trim().toLowerCase(), s]));
 
-    const index = await loadVicSuburbIndex();
-    log(SOURCE_ID, `loaded ${index.size} VIC suburb names from DB`);
+    const groups = new Set<string>();
+    for (const m of Object.values(perSheet)) for (const g of m.keys()) groups.add(g);
 
-    // Aggregate group-level data into per-suburb rows.
-    const allGroupNames = new Set<string>();
-    for (const m of Object.values(perSheet)) for (const k of m.keys()) allGroupNames.add(k);
-
-    let statsRows = 0;
-    let suburbsUpdated = 0;
-    const visitedSlugs = new Set<string>();
-
-    for (const groupName of allGroupNames) {
-      const components = resolveComponents(groupName, index);
-      if (components.length === 0) continue;
-
-      const m1Bed = perSheet["1bed_flat"].get(groupName)  ?? null;
-      const m2Bed = perSheet["2bed_flat"].get(groupName)  ?? perSheet["2bed_house"].get(groupName) ?? null;
-      const m3Bed = perSheet["3bed_house"].get(groupName) ?? perSheet["3bed_flat"].get(groupName) ?? null;
-      const mHouse = perSheet["3bed_house"].get(groupName) ?? perSheet["4bed_house"].get(groupName) ?? perSheet["2bed_house"].get(groupName) ?? perSheet["all"].get(groupName) ?? null;
-      const mUnit  = perSheet["2bed_flat"].get(groupName)  ?? perSheet["1bed_flat"].get(groupName)  ?? perSheet["3bed_flat"].get(groupName) ?? perSheet["all"].get(groupName) ?? null;
-
-      for (const comp of components) {
-        if (visitedSlugs.has(comp.slug)) continue; // first group wins for shared-suburb cases
-        visitedSlugs.add(comp.slug);
-
-        await prisma.suburbRentalStat.upsert({
-          where: {
-            suburbName_postcode_state_period: {
-              suburbName: comp.name,
-              postcode:   comp.postcode,
-              state:      "VIC",
-              period:     latestPeriod.period,
-            },
-          },
-          create: {
-            suburbSlug:      comp.slug,
-            suburbName:      comp.name,
-            postcode:        comp.postcode,
-            state:           "VIC",
-            period:          latestPeriod.period,
-            periodDate:      latestPeriod.periodDate,
-            medianRentHouse: mHouse,
-            medianRentUnit:  mUnit,
-            medianRent3Bed:  m3Bed,
-            medianRent2Bed:  m2Bed,
-            medianRent1Bed:  m1Bed,
-            source:          SOURCE_ID,
-          },
-          update: {
-            suburbSlug:      comp.slug,
-            medianRentHouse: mHouse,
-            medianRentUnit:  mUnit,
-            medianRent3Bed:  m3Bed,
-            medianRent2Bed:  m2Bed,
-            medianRent1Bed:  m1Bed,
-          },
-        });
-        statsRows++;
-
-        // Write through to canonical Suburb row so the property page (which reads it directly) sees fresh values.
-        if (mHouse || mUnit) {
-          await prisma.suburb.update({
-            where: { slug: comp.slug },
-            data: {
-              ...(mHouse ? { medianRentHouse: mHouse } : {}),
-              ...(mUnit  ? { medianRentUnit:  mUnit  } : {}),
-              rentalUpdatedAt: new Date(),
-            },
-          });
-          suburbsUpdated++;
-        }
+    const plan: PlannedRow[] = [];
+    const seen = new Set<string>();
+    let unmatchedGroups = 0;
+    for (const group of groups) {
+      const direct = byName.get(group.trim().toLowerCase());
+      const members = direct ? [direct] : splitGroupName(group).map((n) => byName.get(n.toLowerCase())).filter((s): s is typeof suburbs[number] => Boolean(s));
+      if (members.length === 0) { unmatchedGroups++; continue; }
+      const m: GroupMedians = {};
+      for (const key of Object.keys(perSheet) as SheetKey[]) { const v = perSheet[key].get(group); if (v !== undefined) m[key] = v; }
+      const house = pickHouseRent(m), unit = pickUnitRent(m);
+      if (house === null && unit === null) continue;
+      for (const s of members) {
+        if (seen.has(s.slug)) continue; // first group wins for a suburb that appears in two groups
+        seen.add(s.slug);
+        plan.push({ id: s.id, slug: s.slug, name: s.name, postcode: s.postcode, group, house: house ?? 0, unit: unit ?? 0, bed3: m["3bed_house"] ?? m["3bed_flat"] ?? null, bed2: m["2bed_flat"] ?? m["2bed_house"] ?? null, bed1: m["1bed_flat"] ?? null });
       }
     }
+    const legacy = await prisma.suburbRentalStat.count({ where: { state: "VIC", source: SOURCE_ID, postcode: "" } });
+    log(SOURCE_ID, `plan: ${latest.period}; ${groups.size} groups, ${unmatchedGroups} with no suburb match; ${plan.length} suburbs (house unknown for ${plan.filter((r) => r.house === 0).length}, unit unknown for ${plan.filter((r) => r.unit === 0).length}); ${legacy} legacy single-sheet rows to delete`);
+    for (const slug of SAMPLE_SLUGS) {
+      const r = plan.find((x) => x.slug === slug);
+      log(SOURCE_ID, `  ${slug}: ${r ? `house $${r.house || "unknown"}, unit $${r.unit || "unknown"} (group "${r.group}")` : "not covered"}`);
+    }
+    if (dryRun) { log(SOURCE_ID, "dry run: no writes"); return; }
 
-    log(SOURCE_ID, `wrote ${statsRows} SuburbRentalStat rows · ${suburbsUpdated} Suburb rows updated`);
-    await finishSync(SOURCE_ID, statsRows, latestPeriod.periodDate);
+    for (const r of plan) {
+      await prisma.suburbRentalStat.upsert({
+        where: { suburbName_postcode_state_period: { suburbName: r.name, postcode: r.postcode, state: "VIC", period: latest.period } },
+        create: { suburbSlug: r.slug, suburbName: r.name, postcode: r.postcode, state: "VIC", period: latest.period, periodDate: latest.periodDate, medianRentHouse: r.house || null, medianRentUnit: r.unit || null, medianRent3Bed: r.bed3, medianRent2Bed: r.bed2, medianRent1Bed: r.bed1, source: SOURCE_ID },
+        update: { suburbSlug: r.slug, periodDate: latest.periodDate, medianRentHouse: r.house || null, medianRentUnit: r.unit || null, medianRent3Bed: r.bed3, medianRent2Bed: r.bed2, medianRent1Bed: r.bed1, source: SOURCE_ID },
+      });
+    }
+    log(SOURCE_ID, `wrote ${plan.length} SuburbRentalStat rows`);
+
+    if (plan.length > 0) {
+      // Rent has its own timestamp; statsUpdatedAt belongs to the sales feeds.
+      // Prisma's @updatedAt is not touched by raw SQL, and the suburbs sitemap
+      // lastmod, revalidate-paths and the IndexNow ping key on it.
+      await prisma.$executeRaw`
+        UPDATE "Suburb" AS s
+        SET "medianRentHouse" = u.rent_house,
+            "medianRentUnit"  = u.rent_unit,
+            "rentalUpdatedAt" = NOW(),
+            "updatedAt"       = NOW()
+        FROM UNNEST(${plan.map((r) => r.id)}::text[], ${plan.map((r) => r.house)}::int[], ${plan.map((r) => r.unit)}::int[]) AS u(id, rent_house, rent_unit)
+        WHERE s.id = u.id
+      `;
+      log(SOURCE_ID, `updated ${plan.length} Suburb rows`);
+    }
+
+    if (legacy > 0) {
+      const deleted = await prisma.suburbRentalStat.deleteMany({ where: { state: "VIC", source: SOURCE_ID, postcode: "" } });
+      log(SOURCE_ID, `deleted ${deleted.count} legacy single-sheet rows`);
+    }
+
+    await finishSync(SOURCE_ID, plan.length, latest.periodDate);
   } catch (err) {
-    await failSync(SOURCE_ID, err);
+    if (!dryRun) await failSync(SOURCE_ID, err);
     throw err;
   }
 }
