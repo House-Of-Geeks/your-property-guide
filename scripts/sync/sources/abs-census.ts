@@ -29,6 +29,7 @@ import * as XLSX from "xlsx";
 import Papa from "papaparse";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
+import { censusMayWriteRent } from "./rent-proxy-rules";
 
 const SOURCE_ID = "abs-census";
 
@@ -302,8 +303,10 @@ export async function run(): Promise<void> {
         // (i.e. no real rental data has been loaded from a state-specific source).
         // This applies equally to fallback states (WA, TAS, NT, ACT) and to
         // non-fallback states where the dedicated sync hasn't run yet.
-        const rentalFed = rentalCovered.has(suburb.slug);
-        const shouldUpdateRent = suburb.medianRentHouse === 0 && !rentalFed;
+        // States with a bond-data feed never take the census proxy (the feed
+        // is the authority there, and a 0 means it withheld the figure).
+        const mayWriteRent = censusMayWriteRent(state, rentalCovered.has(suburb.slug));
+        const shouldUpdateRent = suburb.medianRentHouse === 0 && mayWriteRent;
         updates.push({
           id:                   suburb.id,
           population:           census.population,
@@ -313,7 +316,7 @@ export async function run(): Promise<void> {
           householdsFamily:     census.householdsFamily,
           householdsLonePerson: census.householdsLonePerson,
           medianRentHouse:      census.medianRent !== null && shouldUpdateRent ? census.medianRent : null,
-          medianRentUnit:       rentalFed ? null : census.medianRent,
+          medianRentUnit:       mayWriteRent ? census.medianRent : null,
         });
       }
 
