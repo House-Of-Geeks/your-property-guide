@@ -272,9 +272,15 @@ export async function run(): Promise<void> {
       // Load all suburbs for this state
       const suburbs = await prisma.suburb.findMany({
         where: { state },
-        select: { id: true, name: true, medianRentHouse: true, statsSource: true },
+        select: { id: true, slug: true, name: true, medianRentHouse: true, statsSource: true },
       });
-      log(SOURCE_ID, `${state}: matching census data to ${suburbs.length} suburb records`);
+      // Suburbs a rental feed has written keep that feed's rents: a 0 there
+      // means the feed withheld the figure, not that nothing has loaded.
+      const rentalCovered = new Set(
+        (await prisma.suburbRentalStat.findMany({ where: { state, suburbSlug: { not: null } }, distinct: ["suburbSlug"], select: { suburbSlug: true } }))
+          .map((r) => r.suburbSlug as string),
+      );
+      log(SOURCE_ID, `${state}: matching census data to ${suburbs.length} suburb records (${rentalCovered.size} covered by a rental feed keep their rents)`);
 
       // Collect all matches in memory
       interface UpdateRow {
@@ -296,7 +302,8 @@ export async function run(): Promise<void> {
         // (i.e. no real rental data has been loaded from a state-specific source).
         // This applies equally to fallback states (WA, TAS, NT, ACT) and to
         // non-fallback states where the dedicated sync hasn't run yet.
-        const shouldUpdateRent = suburb.medianRentHouse === 0;
+        const rentalFed = rentalCovered.has(suburb.slug);
+        const shouldUpdateRent = suburb.medianRentHouse === 0 && !rentalFed;
         updates.push({
           id:                   suburb.id,
           population:           census.population,
@@ -306,7 +313,7 @@ export async function run(): Promise<void> {
           householdsFamily:     census.householdsFamily,
           householdsLonePerson: census.householdsLonePerson,
           medianRentHouse:      census.medianRent !== null && shouldUpdateRent ? census.medianRent : null,
-          medianRentUnit:       census.medianRent,
+          medianRentUnit:       rentalFed ? null : census.medianRent,
         });
       }
 
