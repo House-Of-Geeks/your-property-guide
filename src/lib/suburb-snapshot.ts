@@ -103,7 +103,11 @@ export function buildSnapshotProvenance(suburb: Suburb, stats: SnapshotStat[]): 
   }
   if (keys.has("rent") || keys.has("yield")) {
     const label = f?.rentalSource ? RENTAL_LABELS[f.rentalSource] ?? null : null;
-    if (label) parts.push(`Rent: ${label}${f?.rentalAsOf ? `, ${monthYear(new Date(f.rentalAsOf))}` : ""}`);
+    if (label) {
+      // NSW bond data is published by postcode, not suburb; say so.
+      const scope = f?.rentalSource === "rental-nsw" && suburb.postcode ? ` (postcode ${suburb.postcode})` : "";
+      parts.push(`Rent: ${label}${scope}${f?.rentalAsOf ? `, ${monthYear(new Date(f.rentalAsOf))}` : ""}`);
+    }
   }
   if (keys.has("population")) parts.push("Population: 2021 Census");
   return parts;

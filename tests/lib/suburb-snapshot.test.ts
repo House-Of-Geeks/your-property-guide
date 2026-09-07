@@ -41,10 +41,15 @@ describe("snapshot provenance line", () => {
     const s = makeSuburb();
     expect(buildSnapshotProvenance(s, buildSnapshotStats(s))).toEqual([
       "Prices: Median of 35 house sales · NSW Valuer General · calendar 2025",
-      "Rent: NSW rental bond data, June 2026",
+      "Rent: NSW rental bond data (postcode 2026), June 2026",
       "Population: 2021 Census",
     ]);
   });
+  it("names the postcode for NSW bond data, which is published by postcode", () => {
+    const s = makeSuburb({}, { rentalSource: "rental-nsw", rentalAsOf: new Date("2026-06-01T00:00:00Z") });
+    expect(buildSnapshotProvenance(s, buildSnapshotStats(s))[1]).toBe("Rent: NSW rental bond data (postcode 2026), June 2026");
+  });
+
   it("keeps rent and yield out of the band when the rent has no known source (NSW postcode-level all-dwellings rents)", () => {
     const s = makeSuburb({}, { rentalSource: null });
     expect(buildSnapshotStats(s).map((t) => t.key)).toEqual(["house", "population", "walk"]);
@@ -54,7 +59,7 @@ describe("snapshot provenance line", () => {
     // rent + days on market + walk score: three tiles, no price, no population
     const s = makeSuburb({ medianHousePrice: 0, annualGrowthHouse: 0, population: 0, daysOnMarket: 30 });
     expect(buildSnapshotStats(s).map((t) => t.key)).toEqual(["rent", "dom", "walk"]);
-    expect(buildSnapshotProvenance(s, buildSnapshotStats(s))).toEqual(["Rent: NSW rental bond data, June 2026"]);
+    expect(buildSnapshotProvenance(s, buildSnapshotStats(s))).toEqual(["Rent: NSW rental bond data (postcode 2026), June 2026"]);
   });
 });
 

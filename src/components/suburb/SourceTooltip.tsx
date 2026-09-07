@@ -15,7 +15,7 @@ const SOURCE_LABELS: Record<string, string> = {
   "seed":       "Estimated (seed data)",
   // Rental
   "rental-vic": "RTBA, Residential Tenancies Bond Authority (VIC)",
-  "rental-nsw": "NSW Fair Trading",
+  "rental-nsw": "NSW DCJ Rent and Sales Report (Rental Bond Board data, by postcode)",
   "rental-sa":  "Consumer and Business Services SA",
   "rental-qld": "QLD Government (RTA)",
   // Crime
