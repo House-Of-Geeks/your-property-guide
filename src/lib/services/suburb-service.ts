@@ -37,14 +37,17 @@ async function fetchFreshness(slug: string): Promise<{
   rentalRentUnit:  number | null;
 }> {
   const [rental, crime] = await Promise.all([
+    // Newest period, and on a tie the most recently written row: two rows for
+    // the same quarter (an old feed version's and the current one's) must not
+    // resolve by table order (VIC, 7 Sep 2026: Toorak showed the stale $688).
     db.suburbRentalStat.findFirst({
       where:   { suburbSlug: slug },
-      orderBy: { periodDate: "desc" },
+      orderBy: [{ periodDate: "desc" }, { updatedAt: "desc" }],
       select:  { periodDate: true, source: true, medianRentHouse: true, medianRentUnit: true },
     }),
     db.suburbCrimeStat.findFirst({
       where:   { suburbSlug: slug },
-      orderBy: { periodDate: "desc" },
+      orderBy: [{ periodDate: "desc" }, { updatedAt: "desc" }],
       select:  { periodDate: true, source: true },
     }),
   ]);
