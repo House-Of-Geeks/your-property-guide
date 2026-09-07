@@ -33,8 +33,8 @@ Tick items off as they ship.
       New follow-up: NSW unit medians (e.g. Bondi $538,560) are not produced by sales-nsw and predate the
       feeds; give medianUnitPrice the same provenance treatment or withhold it where the source has none.
       Follow-ups from the run:
-        - sales-abs must not overwrite a suburb whose statsSource is a fresher suburb-level feed (it overwrote
-          185 NSW suburbs when run after sales-nsw; fixed by re-running NSW). Add the guard.
+        - DONE 7 Sep 2026 — PR #19 (a3ee8da): sales-abs never overwrites a suburb whose statsSource is
+          sales-nsw, sales-vic or sales-sa (it overwrote 185 NSW suburbs on 6 Sep; fixed by re-running NSW).
         - 1,153 NSW medians rest on 1–4 sales: add a minimum-count display rule (step v, provenance rendering).
         - Valuer General (NSW) and Land Victoria now block automated downloads: 2026 NSW row capture and VIC
           quarterly medians need another route (manual download into .cache, or a browser-session fetch).
