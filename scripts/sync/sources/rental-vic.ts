@@ -53,7 +53,7 @@ const SAMPLE_SLUGS = ["toorak-vic-3142", "brighton-vic-3186", "kew-vic-3101", "s
 
 async function fetchWorkbook(url: string): Promise<Buffer | null> {
   try {
-    const res = await fetch(url, { headers: { "user-agent": USER_AGENT } });
+    const res = await fetch(url, { headers: { "user-agent": USER_AGENT }, signal: AbortSignal.timeout(120_000) });
     if (!res.ok) return null;
     if ((res.headers.get("content-type") ?? "").includes("text/html")) return null;
     return Buffer.from(await res.arrayBuffer());

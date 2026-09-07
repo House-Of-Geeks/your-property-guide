@@ -37,7 +37,7 @@ export async function fetchCkan<T>(
       ...(filters ? { filters: JSON.stringify(filters) } : {}),
     });
     const url = `${baseUrl}/api/3/action/datastore_search?${params}`;
-    const res = await fetch(url);
+    const res = await fetch(url, { signal: AbortSignal.timeout(30_000) });
     if (!res.ok) throw new Error(`CKAN HTTP ${res.status}: ${url}`);
     const json = (await res.json()) as CkanResult<T>;
     if (!json.success) throw new Error(json.error?.message ?? "CKAN error");
@@ -54,7 +54,7 @@ export async function fetchCkan<T>(
  */
 export async function getCkanPackage(packageId: string, baseUrl: string): Promise<CkanResource[]> {
   const url = `${baseUrl}/api/3/action/package_show?id=${packageId}`;
-  const res = await fetch(url);
+  const res = await fetch(url, { signal: AbortSignal.timeout(30_000) });
   if (!res.ok) throw new Error(`CKAN package HTTP ${res.status}: ${url}`);
   const json = await res.json() as { success: boolean; result: { resources: CkanResource[] } };
   if (!json.success) throw new Error(`CKAN package error: ${packageId}`);
