@@ -25,6 +25,7 @@
 import "dotenv/config";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
+import { SUBURB_LEVEL_SALES_SOURCES } from "./sales-abs-rules";
 import { resolveSlug } from "../slug-matcher";
 
 const SOURCE_ID = "sales-abs";
@@ -148,6 +149,7 @@ export async function run(): Promise<void> {
     const periodDate = new Date(`${year}-12-31`);
     let updated = 0;
     let skipped = 0;
+    let protectedRows = 0;
 
     // Process with limited concurrency to avoid hammering slug-matcher cache
     const CONCURRENCY = 5;
@@ -160,10 +162,13 @@ export async function run(): Promise<void> {
           const suburbSlug = await resolveSlug(obs.sa2Name, obs.state, "");
           if (!suburbSlug) { skipped++; return; }
 
-          await prisma.suburb.updateMany({
+          // Never over a suburb-level government feed's median (sales-abs-rules.ts):
+          // an SA2 area figure is the fallback, not the authority.
+          const res = await prisma.suburb.updateMany({
             where: {
               slug:  suburbSlug,
               state: obs.state,
+              statsSource: { notIn: [...SUBURB_LEVEL_SALES_SOURCES] },
             },
             data: {
               ...(obs.house ? { medianHousePrice: obs.house } : {}),
@@ -172,12 +177,12 @@ export async function run(): Promise<void> {
               salesUpdatedAt: periodDate,
             },
           });
-          updated++;
+          if (res.count === 0) protectedRows++; else updated++;
         }),
       );
     }
 
-    log(SOURCE_ID, `updated ${updated} suburbs, skipped ${skipped} (no price or no slug match)`);
+    log(SOURCE_ID, `updated ${updated} suburbs, skipped ${skipped} (no price or no slug match), left ${protectedRows} with a suburb-level feed's median`);
     await finishSync(SOURCE_ID, updated, periodDate);
   } catch (err) {
     await failSync(SOURCE_ID, err);
