@@ -1,73 +1,17 @@
 import Image from "next/image";
 import type { Suburb } from "@/types";
-import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
+import { buildSnapshotProvenance, buildSnapshotStats } from "@/lib/suburb-snapshot";
 
 interface SuburbSnapshotProps {
   suburb: Suburb;
 }
 
-// Magazine-style stat band that sits directly below the satellite hero.
-// Five editorial stats in a row, with Playfair display numerals and a thin
-// vertical rule between each. Replaces the dry quick-facts strip with
-// something that signals "this is a real publication" on first scroll.
-
-interface SnapshotStat {
-  label: string;
-  value: string;
-  detail?: string;
-  icon: string;
-}
-
-// Only tiles with a real underlying value are returned. Missing data
-// produces no tile rather than a "Sales data pending" or "–" placeholder.
-// Trust on the largest traffic surface dies when visitors see five empty
-// boxes; a shorter complete-looking band is the better outcome.
-function buildStats(suburb: Suburb): SnapshotStat[] {
-  const stats = suburb.stats;
-  const out: SnapshotStat[] = [];
-
-  if (stats.medianHousePrice) {
-    out.push({
-      label: "Median house",
-      value: formatPriceFull(stats.medianHousePrice),
-      detail: stats.annualGrowthHouse ? `${formatPercentage(stats.annualGrowthHouse)} year on year` : undefined,
-      icon: "/images/icons/median.svg",
-    });
-  }
-  if (stats.medianUnitPrice) {
-    out.push({
-      label: "Median unit",
-      value: formatPriceFull(stats.medianUnitPrice),
-      detail: stats.annualGrowthUnit ? `${formatPercentage(stats.annualGrowthUnit)} year on year` : undefined,
-      icon: "/images/icons/yield.svg",
-    });
-  }
-  if (stats.daysOnMarket) {
-    out.push({
-      label: "Days on market",
-      value: String(stats.daysOnMarket),
-      detail: "Average to sell",
-      icon: "/images/icons/growth.svg",
-    });
-  }
-  if (stats.walkScore !== null && stats.walkScore !== undefined) {
-    out.push({
-      label: "Walk score",
-      value: String(stats.walkScore),
-      detail: walkLabel(stats.walkScore),
-      icon: "/images/icons/walkability.svg",
-    });
-  }
-  if (stats.population) {
-    out.push({
-      label: "Population",
-      value: abbrevPopulation(stats.population),
-      detail: stats.medianAge ? `Median age ${stats.medianAge}` : undefined,
-      icon: "/images/icons/people.svg",
-    });
-  }
-  return out;
-}
+// Magazine-style stat band that sits directly below the satellite hero: the
+// opening snapshot (fix item 3). Up to six editorial stats with a thin
+// vertical rule between each, and a provenance line underneath naming the
+// source and period of each data family shown. Renders nothing below three
+// tiles. Every number comes through the gates in suburb-service, so this
+// band and the lead sentence in the brief cannot disagree.
 
 // Map of tile count → grid column class. Tailwind needs explicit class
 // strings at build time so we can't `grid-cols-${n}` dynamically.
@@ -77,26 +21,14 @@ const GRID_COLS: Record<number, string> = {
   3: "grid-cols-1 sm:grid-cols-3",
   4: "grid-cols-2 sm:grid-cols-4",
   5: "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5",
+  6: "grid-cols-2 sm:grid-cols-3 lg:grid-cols-6",
 };
 
-function abbrevPopulation(n: number): string {
-  if (n >= 100000) return `${(n / 1000).toFixed(0)}k`;
-  if (n >= 10000) return `${(n / 1000).toFixed(1)}k`;
-  return n.toLocaleString();
-}
-
-function walkLabel(score: number): string {
-  if (score >= 90) return "Walker's paradise";
-  if (score >= 70) return "Very walkable";
-  if (score >= 50) return "Somewhat walkable";
-  if (score >= 25) return "Car dependent";
-  return "Very car dependent";
-}
-
 export function SuburbSnapshot({ suburb }: SuburbSnapshotProps) {
-  const stats = buildStats(suburb);
+  const stats = buildSnapshotStats(suburb);
   if (stats.length === 0) return null;
-  const colsClass = GRID_COLS[stats.length] ?? GRID_COLS[5];
+  const provenance = buildSnapshotProvenance(suburb, stats);
+  const colsClass = GRID_COLS[stats.length] ?? GRID_COLS[6];
   return (
     <section
       aria-label={`${suburb.name} snapshot`}
@@ -131,6 +63,11 @@ export function SuburbSnapshot({ suburb }: SuburbSnapshotProps) {
             </div>
           ))}
         </div>
+        {provenance.length > 0 && (
+          <p className="mt-6 text-xs font-sans text-ink-subtle leading-relaxed">
+            {provenance.join("  ·  ")}
+          </p>
+        )}
       </div>
     </section>
   );

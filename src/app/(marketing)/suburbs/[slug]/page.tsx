@@ -52,6 +52,8 @@ import {
 } from "@/lib/suburb-data-quality";
 import { describeSalesProvenance, hasEnoughSales, thinSalesNote } from "@/lib/sales-provenance";
 import { PriceProvenance } from "@/components/suburb/PriceProvenance";
+import { buildLeadSentence } from "@/lib/suburb-snapshot";
+import { fullLgaName } from "@/lib/utils/lga-names";
 
 interface SuburbDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -151,6 +153,8 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
   // Greater-capital classification (postcode-range based) for the
   // "{suburb}, {city}" answer phrasing and the city market-page link.
   const capitalCity = capitalCityFor(suburb.state, suburb.postcode);
+  const leadSentence = buildLeadSentence(suburb);
+  const regionLabel = suburb.region && suburb.region !== suburb.state ? fullLgaName(suburb.region) : null;
 
   return (
     <>
@@ -199,14 +203,20 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             </div>
             <div className="lg:col-span-8 lg:col-start-5 space-y-5">
               {/* Above-the-fold plain-language answers to the page's two
-                  primary queries ("{suburb} postcode", "median house price
-                  {suburb}"), stated as sentences (not just stat tiles) high
-                  on the page for both readers and AI answer engines. The
-                  postcode is always known; the median is only printed when
-                  we trust it. */}
+                  primary queries, stated as sentences high on the page for
+                  readers, snippets and answer engines. When a median is
+                  published the first sentence leads with it and its source
+                  (fix item 3); the postcode sentence always follows. Both
+                  read the same gated object as the snapshot band above. */}
+              {leadSentence && (
+                <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[65ch]">
+                  {leadSentence}
+                </p>
+              )}
               <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[65ch]">
-                The postcode for {suburb.name} is{" "}
+                {leadSentence ? "Postcode " : `The postcode for ${suburb.name} is `}
                 <span className="font-medium text-ink">{suburb.postcode}</span> ({suburb.state})
+                {regionLabel && `, ${regionLabel}`}
                 {/* "{suburb} {city}" phrasing for the navigational cluster
                     ("sunnybank brisbane") competitor profiles win on. */}
                 {capitalCity ? (
@@ -224,18 +234,6 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                   "."
                 )}
               </p>
-              {priceTrusted && salesProvenance?.geography === "area" ? (
-                <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[65ch]">
-                  The median house price across the ABS statistical area that takes in {suburb.name} is{" "}
-                  <span className="font-medium text-ink">{formatPriceFull(suburb.stats.medianHousePrice)}</span>{" "}
-                  ({salesProvenance.period}).
-                </p>
-              ) : priceTrusted ? (
-                <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[65ch]">
-                  The median house price in {suburb.name} is{" "}
-                  <span className="font-medium text-ink">{formatPriceFull(suburb.stats.medianHousePrice)}</span>.
-                </p>
-              ) : null}
               {stubDescription
                 ? intro.map((para, i) => (
                     <p key={i} className="font-sans text-lg sm:text-xl text-ink leading-[1.65] max-w-[65ch]">
