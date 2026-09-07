@@ -51,3 +51,6 @@ next-env.d.ts
 
 # Local sync cache (large GeoJSON downloads)
 .cache/
+
+# SEO baselines: raw API responses are large; summaries and CSVs are committed
+/docs/seo-baselines/*/raw/

@@ -1,0 +1,562 @@
+<title>Your Property Guide Fix Review</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>@page{size:A4;margin:14mm 12mm}
+@media print{body{background:#fff}pre{white-space:pre-wrap;word-break:break-word}.doc{max-width:none;padding:0 4mm}.item,.tile,.stat,pre,.rule{break-inside:avoid}h2,h3,.item header{break-after:avoid}}
+
+:root{
+  --ground:#ffffff; --page:#f3f4f6; --panel:#f6f7f9; --panel2:#eef1f4; --rule:#e2e5e9; --rule2:#cfd4da;
+  --ink:#1b1f24; --ink2:#4a525c; --ink3:#7a838d;
+  --accent:#0f7b86; --accent-soft:#e6f3f4;
+  --crit:#b9331f; --crit-soft:#fbe9e5; --high:#b0710d; --high-soft:#fbf1dc; --med:#5b6570; --med-soft:#eceff2; --good:#0f7b86;
+  --note:#e7f1f5; --mono-bg:#f0f2f4;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#16191d; --page:#0f1114; --panel:#1c2025; --panel2:#22272d; --rule:#2b3138; --rule2:#3a424b;
+    --ink:#e8eaed; --ink2:#b3bac2; --ink3:#7f8790;
+    --accent:#4fb6bf; --accent-soft:#12303a;
+    --crit:#f07a62; --crit-soft:#3a1f1a; --high:#e0a53f; --high-soft:#3a2e15; --med:#a3adb8; --med-soft:#262b31; --good:#4fb6bf;
+    --note:#17272e; --mono-bg:#1f242a;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#16191d; --page:#0f1114; --panel:#1c2025; --panel2:#22272d; --rule:#2b3138; --rule2:#3a424b;
+  --ink:#e8eaed; --ink2:#b3bac2; --ink3:#7f8790;
+  --accent:#4fb6bf; --accent-soft:#12303a;
+  --crit:#f07a62; --crit-soft:#3a1f1a; --high:#e0a53f; --high-soft:#3a2e15; --med:#a3adb8; --med-soft:#262b31; --good:#4fb6bf;
+  --note:#17272e; --mono-bg:#1f242a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:"IBM Plex Sans",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.doc{max-width:860px;margin:0 auto;background:var(--ground);padding:48px 44px 64px}
+@media(max-width:640px){.doc{padding:28px 18px 48px}}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace}
+code{background:var(--mono-bg);padding:1px 5px;border-radius:3px;font-size:.88em}
+pre{background:var(--mono-bg);padding:12px 14px;border-radius:4px;font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.5;overflow-x:auto;margin:12px 0;color:var(--ink2);white-space:pre-wrap;word-break:break-word}
+a{color:var(--accent)}
+h1{font-size:34px;line-height:1.15;margin:8px 0 14px;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin:44px 0 0;padding:14px 0 10px;border-bottom:1px solid var(--rule);color:var(--ink)}
+h2 + p.lede{color:var(--ink2);margin:10px 0 18px;max-width:62ch}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.intro{font-size:16.5px;color:var(--ink2);max-width:66ch;margin:0 0 18px}
+.meta{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:6px 26px;padding-bottom:18px;border-bottom:2px solid var(--ink)}
+.meta b{color:var(--ink);font-weight:500}
+.grid{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:16px}
+.g4{grid-template-columns:repeat(4,1fr)} .g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:700px){.g4,.g3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.g4,.g3{grid-template-columns:1fr}}
+.stat{background:var(--ground);padding:18px 16px 14px}
+.stat .n{font-size:30px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.stat .d{font-size:12.5px;color:var(--ink2);margin-top:8px;line-height:1.4}
+.c-crit{color:var(--crit)} .c-high{color:var(--high)} .c-med{color:var(--med)} .c-good{color:var(--good)}
+.rules{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.rules li{background:var(--ground);padding:12px 14px;display:grid;grid-template-columns:34px 1fr;gap:12px;font-size:13.5px;color:var(--ink2)}
+.rules li .k{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--accent);padding-top:3px}
+.rules li b{color:var(--ink);font-weight:600}
+.item{border:1px solid var(--rule);border-radius:4px;padding:16px 20px 14px;margin:14px 0;background:var(--ground)}
+.item header{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.item .num{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink3);padding-top:4px;min-width:26px}
+.item h3{font-size:16.5px;margin:0;flex:1;font-weight:600;line-height:1.3;text-wrap:balance;min-width:60%}
+.tag{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:3px;white-space:nowrap;margin-top:3px}
+.t-crit{background:var(--crit-soft);color:var(--crit)} .t-high{background:var(--high-soft);color:var(--high)} .t-med{background:var(--med-soft);color:var(--med)} .t-low{background:var(--accent-soft);color:var(--accent)} .t-who{background:var(--panel2);color:var(--ink2)}
+.item p{margin:0 0 8px;color:var(--ink);max-width:72ch}
+.item .lab{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:500;margin:10px 0 3px}
+.item .lab.warn{color:var(--crit)}
+.item ul{margin:0 0 6px;padding-left:20px;max-width:72ch;color:var(--ink)}
+.item li{margin:0 0 5px}
+.item .gate{border-top:1px dashed var(--rule2);margin-top:10px;padding-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13.5px;color:var(--ink2)}
+@media(max-width:560px){.item .gate{grid-template-columns:1fr}}
+.item .gate b{display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);font-weight:500;margin-bottom:2px}
+.note{background:var(--note);border-radius:4px;padding:14px 16px;margin:14px 0;color:var(--ink)}
+.note b{font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:14px 0}
+th{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;text-align:left;color:var(--ink2);background:var(--panel);padding:10px 10px;border-bottom:1px solid var(--rule);font-weight:500}
+td{padding:9px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+td.mono,td.num{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink2)}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.blank{background:var(--panel);min-width:70px}
+.twrap{overflow-x:auto}
+.method{font-family:"IBM Plex Mono",monospace;font-size:11.5px;line-height:1.6;color:var(--ink3);border-top:1px solid var(--rule);margin-top:44px;padding-top:16px}
+</style>
+
+<div class="doc">
+<div class="eyebrow">Prepared by Profit Geeks</div>
+<h1>Fix review: what each change could break, and the guardrails before it ships</h1>
+<p class="intro">The 28 fixes from the 5 September search review (plus two found while building the guardrails), each read against the codebase for what it could damage: rankings that already work, the lead funnel, the database, data accuracy, or the law. Nothing on this list is actioned until its row in the sign-off table at the end says Approved. Two items changed on inspection and are marked as such.</p>
+<div class="meta">
+  <span><b>Site</b> yourpropertyguide.com.au</span>
+  <span><b>Stack</b> Next.js 16.2 · React 19 · Prisma 7 on Postgres/PostGIS (Railway) · Vercel</span>
+  <span><b>Checked</b> route caching, DB pool, data gates, sitemaps, guide registry, live cache headers</span>
+  <span><b>Date</b> 5 Sep 2026</span>
+</div>
+
+<div class="grid g4">
+  <div class="stat"><div class="n">28</div><div class="d">Fixes reviewed, in the order of work from the search review</div></div>
+  <div class="stat"><div class="n c-crit">6</div><div class="d">High-risk items: 2, 4, 8, 11, 19, 27. Each gets a staged rollout and a named check</div></div>
+  <div class="stat"><div class="n c-high">2</div><div class="d">Items rewritten by this review: 20 (stamp duty pages already exist) and 4 (the real cause found)</div></div>
+  <div class="stat"><div class="n c-good">13</div><div class="d">Rules that apply to every change, below, before any item starts</div></div>
+</div>
+
+
+<h2>Progress</h2>
+<p class="lede">Updated 7 September 2026, end of day. Seventeen pull requests and six production data runs since the review was written on 5 September, every one through the review's own process: branch from origin/main, lint, typecheck, tests, preview build, merge, production check, change-log row. Nothing was actioned without a go from Jos. Every production data write had a dry run first and keeps a rollback record with the old values under <code>docs/seo-baselines/2026-09-07/data-audit/</code>.</p>
+<div class="twrap"><table>
+<tr><th>Item</th><th>Status</th><th>Shipped as</th><th>What happened</th></tr>
+<tr><td>R2, R3, R6</td><td>Done 5 Sep</td><td>docs + scripts (uncommitted)</td><td>Baseline snapshot script and first snapshot (<code>docs/seo-baselines/2026-09-05</code>); change log seeded from git history; title tests. The title tests caught item 30 and the live checks caught item 29.</td></tr>
+<tr><td>29 (found)</td><td>Done 5 Sep</td><td>#1, #2</td><td>Every suburb /buy and /rent page had answered 500 for months: a server-side <code>searchParams</code> read in an ISR route. Filters now apply on the client. 35,816 URLs back to 200.</td></tr>
+<tr><td>30 (found)</td><td>Done 5 Sep</td><td>#1</td><td>"$0K" and "0/wk" no longer printed for price-suppressed suburbs.</td></tr>
+<tr><td>4(a)</td><td>Done 5 Sep</td><td>#3, #4</td><td>Rental-market and school pages were rendered per request; both now ISR. Batch revalidation endpoint; the sync crons purge changed pages before pinging IndexNow.</td></tr>
+<tr><td>4(b)</td><td>Done 5 Sep</td><td>#5</td><td>Warm-up of the top 300 suburbs after every production deploy, run by a GitHub Action. Build-time prebuild was tried and dropped: the build is deliberately database-free and previews have no database.</td></tr>
+<tr><td>4(c)</td><td>Held</td><td>—</td><td>Pooler and circuit breaker wait for Bing's daily 5xx count (1,346 on 4 Sep) to be read at 19 Sep; (a) and (b) may make it unnecessary.</td></tr>
+<tr><td>1</td><td>Done 7 Sep</td><td>#6, #7, #8, #9 + data runs</td><td>Reframed after a read-only production audit: no region gate (it would have suppressed Toorak, New Farm, Byron Bay). Instead: NSW house median corrected to houses only (Bondi $1.73M → $4.3M); provenance restored on ~4,000 pages after the 1 July cron had clobbered it; 3,998 postcode-level populations cleared and 67 regions fixed; provenance line under every median; ABS figures labelled as statistical-area medians; medians on fewer than 5 sales withheld (1,268). Published, explained medians: 3,451.</td></tr>
+<tr><td>5</td><td>Done 7 Sep</td><td>#10</td><td>"Most searched suburbs" links (up to 24, by Google impressions) on the 8 state pages and 8 capital-city market pages; every feed now stamps the suburb timestamp, so sitemap lastmod, revalidation and IndexNow see its changes. Homepage block deferred until the 4 Sep homepage rebuild is pushed.</td></tr>
+<tr><td>3</td><td>Done 7 Sep</td><td>#11 to #17 + data runs</td><td>Snapshot band under the hero (median house with 12-month change, median unit, weekly rent, gross yield, population, walk score; three to six tiles, a provenance line per data family) and a lead sentence that states the median, its sample, source and period. The production check then exposed the rent data, which took the rest of the day; see the next table.</td></tr>
+<tr><td>2, 6 to 28</td><td>Not started</td><td>—</td><td>Items 6 and 7 are yours (Search Console and Clarity consoles). Item 2 (titles) is next: the 14-day spacing rule on the suburb template runs from 7 Sep, so 21 Sep at the earliest.</td></tr>
+</table></div>
+
+<h3>Rent data, corrected on 7 September</h3>
+<p class="lede">The snapshot band put rents next to prices for the first time, and the numbers did not survive the comparison. Each row is one wrong definition, found by reading the feed against its source file.</p>
+<div class="twrap"><table>
+<tr><th>What was wrong</th><th>Fix</th><th>Result</th></tr>
+<tr><td>Days on market came from an April seed leftover; no feed produces it.</td><td>Withheld at the service boundary (#12).</td><td>Gone from every page until a feed supplies it.</td></tr>
+<tr><td>NSW: the feed stored DCJ's all-dwellings postcode median as the house rent, in rows named by postcode that never linked to a suburb. Bondi's page showed a 2021 Census $680 and a 0.8% yield against a $4.3M median. DCJ had also renamed its files, so the feed was stuck on December 2025.</td><td>Feed rewritten around the House and Flat/Unit rows, one row per suburb in each published postcode, workbook found from DCJ's own page (#13, #14). Run to the June 2026 quarter.</td><td>4,072 suburbs. Bondi $1,800 houses, $1,000 units, 2.2% yield, sourced to postcode 2026.</td></tr>
+<tr><td>2021 Census all-dwellings rents stood in as house and unit rents wherever a feed did not cover a suburb, in all four feed states.</td><td>Cleared to unknown in NSW, VIC, QLD and SA (#15); the census sync can no longer write a rent in a state with a bond-data feed.</td><td>9,203 suburbs say "unknown" instead of a wrong number. Every rent on the site now comes from a bond-data feed.</td></tr>
+<tr><td>Victoria: 77 suburbs carried a leftover row from the feed's single-sheet April version (all-properties median as house rent) with the same quarter date as the real row, and the page's lookup broke the tie by table order. Toorak showed $688 against $1,250 for 3-bedroom houses.</td><td>Lookups order by period, then update time; the feed never uses the all-properties sheet; legacy rows deleted; fetch timeouts after the CKAN lookup hung (#16, #17).</td><td>202 suburbs re-run to DFFH's latest quarter (September 2025). Toorak $1,250 houses, $650 units.</td></tr>
+</table></div>
+<div class="note"><b>Rules in practice.</b> R4 was set aside once, knowingly: item 1's provenance labelling shipped site-wide rather than by state cohort, because it only adds context or removes numbers built on one to four sales. Six production data writes (sales feeds, census repair, NSW rents, the rent-proxy clear across four states, the Victorian re-run), each with explicit authorisation, a dry run and a rollback record; two first attempts failed harmlessly before writing anything (a transaction timeout, a hung download) and were re-run after a fix. Sources that block or lag: the NSW Valuer General and Land Victoria refuse automated downloads (the NSW feed builds from captured rows); DFFH's newest rental quarter is still September 2025. Follow-ups logged in the tracker: the ABS feed must not overwrite a fresher suburb-level source; NSW unit medians have no feed; the homepage "most searched" block waits for the homepage push; the Queensland feed stamps a sales-side timestamp; Bing's 5xx watch to 19 Sep; the shown titles of Surfers Paradise, Toorak, Morayfield and Buderim around 21 Sep.</div>
+
+<h2>How to read each item</h2>
+<p class="lede">Every fix has the same five parts. Risk is graded on what it could break, not on effort.</p>
+<div class="twrap"><table>
+<tr><th>Part</th><th>What it answers</th></tr>
+<tr><td><b>Change</b></td><td>The one thing being done, scoped so it ships as a single revertable commit or a single content edit.</td></tr>
+<tr><td><b>Could break</b></td><td>The unintended consequences found by reading the code and the data: what is working today that this touches.</td></tr>
+<tr><td><b>Guardrails</b></td><td>The checks, gates, staging and tests that have to exist before and during the change.</td></tr>
+<tr><td><b>Ship when</b></td><td>The observable condition that says the guardrails held.</td></tr>
+<tr><td><b>Rollback</b></td><td>How it is undone, and how quickly.</td></tr>
+</table></div>
+
+<h2>Rules for every change</h2>
+<p class="lede">These exist so that no single fix can take down something that works. Several are missing from the repo today and are the first things to build.</p>
+<ul class="rules">
+  <li><span class="k">R1</span><span><b>Read the Next 16 docs in the repo before touching a route.</b> AGENTS.md warns this version differs from training data. The relevant guides are in <code>node_modules/next/dist/docs/01-app/02-guides/</code>: caching-without-cache-components, incremental-static-regeneration, revalidatePath.</span></li>
+  <li><span class="k">R2</span><span><b>Baseline before, measure after.</b> Before any item: save the Search Console page export for the affected template, a Bing page-stats pull, a Clarity 3-day pull and the current Bing 5xx count under <code>docs/seo-baselines/YYYY-MM-DD/</code>. Re-pull at 14 and 28 days. No baseline, no change.</span></li>
+  <li><span class="k">R3</span><span><b>One template change at a time, with a change log.</b> Add <code>docs/strategy/seo-change-log.md</code>: date, item number, what changed, cohort. Search Console and Bing movements are only attributable if changes are spaced; leave 14 days between changes to the same template.</span></li>
+  <li><span class="k">R4</span><span><b>Stage by cohort, not by switch.</b> There is no feature-flag system in the repo. For template changes, roll out by state (SA and TAS first: about 10% of suburbs, low traffic) using the slug suffix, watch for 14 days, then widen. Preview deployments on Vercel for everything before main.</span></li>
+  <li><span class="k">R5</span><span><b>URLs are permanent.</b> No new URL for an intent that already has a page. Check the guides sitemap first: it already holds eight stamp-duty state guides, eight renters-rights guides, eight first-home-buyer guides, a FIRB guide, a fastest-growing-suburbs guide and two cheapest-suburbs guides. A new page that overlaps one of these gets a redirect plan or is not built.</span></li>
+  <li><span class="k">R6</span><span><b>Titles are tested.</b> Add <code>tests/seo/titles.test.ts</code>: every title builder in <code>src/lib/utils/seo.ts</code> stays under 60 characters before the brand suffix, and no description contains a dollar figure when <code>hasReliablePrice</code> is false. Vitest already runs in CI-style via <code>npm test</code>.</span></li>
+  <li><span class="k">R7</span><span><b>Schema matches the page.</b> FAQPage JSON-LD only carries questions that are rendered as visible text, which is how <code>SuburbFAQ.tsx</code> works today. After any template change, run five sample URLs through Google's Rich Results Test and the Schema Markup Validator.</span></li>
+  <li><span class="k">R8</span><span><b>Every number passes a gate with a test.</b> <code>src/lib/suburb-data-quality.ts</code> already has <code>hasReliablePrice</code>, <code>isPlausibleHousePrice</code>, <code>isPlausibleAnnualGrowth</code> (±25%) and <code>isPlausibleGrossYield</code>, with tests. Any new figure rendered on a suburb page goes through one of these or a new sibling with its own test. Zero means "unknown, don't print"; keep that convention.</span></li>
+  <li><span class="k">R9</span><span><b>Deploy timing protects the database.</b> Every deployment empties the on-demand ISR cache for about 37,000 pages; the July outage was an IndexNow ping sending a crawl wave at a fresh deploy. Do not deploy within two hours of the sync cron or an IndexNow submission, and warm the top 500 suburbs by impressions with a script after each deploy before anything is pinged.</span></li>
+  <li><span class="k">R10</span><span><b>Rollback is one action.</b> Each code item is one commit on main, reverted with Vercel's instant rollback. Each content item keeps the previous copy in git. Nothing is combined into a multi-item release.</span></li>
+  <li><span class="k">R11</span><span><b>The lead funnel is watched.</b> Any change to a page carrying an appraisal, selling-guide or expert CTA is followed for seven days in the leads-health cron count (newsletter sign-ups excluded, as it already does). A drop of more than 20% week on week reverts the change first and investigates second.</span></li>
+  <li><span class="k">R12</span><span><b>Published figures are sourced and dated.</b> Any rate, threshold, grant, law or commission figure carries a source link and an "as at" date. Investment-flavoured text describes what the data shows and never recommends; the general-advice line that the finance guides already carry goes on every page that gets it.</span></li>
+  <li><span class="k">R13</span><span><b>API budgets are respected.</b> Clarity export: 10 calls a day. Bing URL submission: 100 a day, 2,600 a month, changed URLs only. DataForSEO: about $0.003 per SERP, $12 left on the account. Scripts read keys from <code>.env</code> and log their usage; nothing is hard-coded.</span></li>
+</ul>
+
+<h2>Dependencies</h2>
+<p class="lede">Order matters more than speed on four of these.</p>
+<div class="twrap"><table>
+<tr><th>Before</th><th>After</th><th>Why</th></tr>
+<tr><td>1 (data gates)</td><td>3, 17, 19, 21</td><td>Every one of those renders a number in a new, prominent place. Rendering an ungated number in a snapshot table or a stamp-duty line multiplies the Morayfield problem.</td></tr>
+<tr><td>4 (crawl path)</td><td>2, 3, 5 site-wide</td><td>A title change asks Google to re-fetch 17,908 pages. If a share of those fetches answers 5xx, the re-evaluation stalls and the old title lingers for months.</td></tr>
+<tr><td>8 (calculator embed, one state)</td><td>11 (links from 17,908 suburb pages)</td><td>Send the sitewide links to a page that has already been proven not to lose its Bing ranking after the restructure.</td></tr>
+<tr><td>20 (stamp-duty guides upgraded)</td><td>21 (per-suburb stamp-duty line)</td><td>The line links to the state page; the page has to be the finished version first.</td></tr>
+<tr><td>R2, R3, R6 (baseline, log, tests)</td><td>everything</td><td>None of the measurements in "ship when" work without them.</td></tr>
+</table></div>
+
+<h2>Guardrails and crawl</h2>
+
+<div class="item"><header><span class="num">01</span><h3>Provenance and plausibility gate on suburb stats</h3><span class="tag t-med">Medium risk</span><span class="tag t-who">code</span></header>
+<p><b>Change.</b> Render source, sample and period under every median; hold any median more than 25% off its region for review; keep dollar figures out of meta and opening copy when the source is a proxy; suppress population and region for suburbs missing from the 2021 ABS geography.</p>
+<div class="lab warn">Could break</div>
+<ul>
+<li>Morayfield's $1,095,000 passed the existing gates, which means its source is classed as reliable. A region-relative gate would hide the symptom while the feed keeps producing the figure (a sales-mix or acreage inclusion is the usual cause). The gate could suppress medians on thousands of legitimate outliers too: Toorak against its region, coastal towns against their shire.</li>
+<li>Suppressing a median removes it from the snippet, the FAQ and the JSON-LD on every affected page at once. The suburb pages carry 71% of impressions.</li>
+<li>The census-geography fallback is what gives Badagarang 48,267 residents; changing it touches every suburb that relies on the same fallback (about 30% per the pipeline notes).</li>
+</ul>
+<div class="lab">Guardrails</div>
+<ul>
+<li>Investigate Morayfield's feed first: pull the underlying sales rows for 4506 and compare the median with and without rural-residential lots. Fix the pipeline if that is the cause; the gate is the backstop, not the fix.</li>
+<li>Build the gate in report mode before enforce mode: a script that lists every suburb it would hold, with its region median, the deviation and the source. Sample 30 by hand across states. Only then flip it to enforce.</li>
+<li>Extend <code>suburb-data-quality.ts</code> rather than adding logic in components, with tests beside the existing ones in <code>tests/lib/suburb-data-quality.test.ts</code>. Use the same zero-means-unknown convention (R8).</li>
+<li>Provenance text comes from the existing <code>DataFreshnessNote</code> component and <code>statsSource</code> field; do not invent a parallel source of truth.</li>
+</ul>
+<div class="gate"><div><b>Ship when</b>The report-mode list is reviewed, the count of suppressed medians is known and accepted, and the Morayfield root cause is understood.</div><div><b>Rollback</b>One commit; the gate is a pure function, so reverting restores every figure at the next revalidation.</div></div>
+</div>
+
+<div class="item"><header><span class="num">02</span><h3>New suburb title and description</h3><span class="tag t-crit">High risk</span><span class="tag t-who">code</span></header>
+<p><b>Change.</b> In <code>src/lib/utils/seo.ts</code>, lead with suburb, state and postcode, then house prices, rent, schools and profile; open the description with the median, the 12-month change and the source month.</p>
+<div class="lab warn">Could break</div>
+<ul>
+<li>This is the third title template in six months on 17,908 pages. The June change quadrupled impressions; the pages are on page one for postcode queries and are cited in AI Overviews. A rewrite can lose that before it gains anything, and Google re-evaluates slowly on a 23-domain site (finding 04).</li>
+<li>Google is already rewriting the current title; it may rewrite the new one. The description is not being used for the snippet at all (the opening paragraph is), so a description change alone changes nothing visible.</li>
+<li>Title flapping: two changes 90 days apart on the same template reads as instability. A third change inside that window is the riskiest thing on this list.</li>
+</ul>
+<div class="lab">Guardrails</div>
+<ul>
+<li>Cohort first (R4): SA and TAS suburbs only, three weeks, judged on Search Console page-filtered CTR and on postcode-query impressions for that cohort against the rest of the country as the control.</li>
+<li>Keep the postcode in the title and keep the H1. Keep the description under 155 characters and free of dollar figures where <code>hasReliablePrice</code> is false (R6 test).</li>
+<li>Item 4 lands first, and item 3 ships with this one, since the snippet comes from the opening copy.</li>
+<li>Log the date (R3). Do not touch the title again for 90 days after the full rollout regardless of result.</li>
+</ul>
+<div class="gate"><div><b>Ship when</b>The cohort's CTR is higher than the control at three weeks and its postcode impressions have not fallen more than the control's.</div><div><b>Rollback</b>Revert the commit; the previous template is in git. Google takes weeks to re-read either way, which is why the cohort exists.</div></div>
+</div>
+
+<div class="item"><header><span class="num">03</span><h3>Opening snapshot table on the suburb page</h3><span class="tag t-med">Medium risk</span><span class="tag t-who">code</span></header>
+<p><b>Change.</b> Replace the "The postcode for X is…" opening with a snapshot table: median house, median unit, weekly rent, gross yield, 12-month change, days on market, population, source and date.</p>
+<div class="lab warn">Could break</div>
+<ul>
+<li>The opening sentence is what Google shows as the snippet and what the AI Overview quotes. A table is not quotable; the page could lose its snippet and its citation.</li>
+<li>Any row without data renders a blank or a zero on the most-viewed part of 17,908 pages. Under the existing gates that is thousands of pages.</li>
+<li>Duplicates the "The price of a home here" section further down; two sets of numbers that disagree after a partial sync is worse than one.</li>
+</ul>
+<div class="lab">Guardrails</div>
+<ul>
+<li>Keep one plain sentence above the table that carries the key figures and the postcode: "Morayfield's median house price is $X (QLD sales data, 12 months to June 2026). Postcode 4506, City of Moreton Bay." That sentence is the snippet and the citation; the table is for humans.</li>
+<li>Rows render only when their gate passes (R8); the table needs a minimum of three rows or it does not render and the old paragraph stays.</li>
+<li>Both blocks read from the same gated object, so they cannot disagree.</li>
+<li>Visual check on five suburbs across data tiers (full data, price-suppressed, no rental data, no census match, rural) on the preview deployment, on mobile.</li>
+</ul>
+<div class="gate"><div><b>Ship when</b>The five-tier preview check passes and item 1 is in enforce mode.</div><div><b>Rollback</b>One commit; the component is additive.</div></div>
+</div>
+
+<div class="item"><header><span class="num">04</span><h3>Take the database out of the crawl path</h3><span class="tag t-crit">High risk</span><span class="tag t-who">code</span></header>
+<div class="note"><b>Rewritten by this review.</b> The live cache headers show the suburb profile and its schools sub-page are served from ISR correctly (7-day revalidate, cache HIT). The rental-market sub-page (1,513 in the sitemap) and the school pages (9,670 in the sitemap) answer <code>cache-control: private, no-store</code> on every request: they are rendered from the database every time a crawler touches them. Neither route declares a <code>revalidate</code>. Add to that the runtime pool of one connection per instance with a two-retry backoff in <code>src/lib/db.ts</code>, and every deployment emptying the ISR cache, and the July 5xx wave is fully explained.</div>
+<p><b>Change.</b> Three steps, separately: (a) add the same ISR exports the profile page uses (<code>revalidate = 604800</code>, <code>dynamicParams = true</code>, empty <code>generateStaticParams</code>) to the rental-market and school routes; (b) prebuild the top 500 suburbs by impressions in <code>generateStaticParams</code> so they never hit a cold cache; (c) put a connection pooler in front of Postgres and return 503 with Retry-After from a circuit breaker when the pool is saturated.</p>
+<div class="lab warn">Could break</div>
+<ul>
+<li>Step (a) makes rental and school data up to seven days stale after a sync unless the sync revalidates those paths. Today the sync cron only pings IndexNow; the <code>/api/revalidate</code> route exists but nothing calls it for suburbs.</li>
+<li>Step (b) lengthens the build: 500 pages with several parallel queries each against a build pool of 10 connections × 3 workers. A build that times out blocks every deploy.</li>
+<li>Step (c) changes <code>DATABASE_URL</code> and the pool mode; Prisma 7 with the pg adapter and PgBouncer in transaction mode disallows some features (prepared statements, advisory locks). A 503 breaker that trips on user traffic turns a slow page into an error page for people, not just bots.</li>
+<li>The docs warn this Next version differs; a wrong export silently makes a route dynamic again.</li>
+</ul>
+<div class="lab">Guardrails</div>
+<ul>
+<li>Do (a) first and alone. Verify on the preview deployment with two GET requests per route: the second must show <code>x-vercel-cache: HIT</code> and <code>x-nextjs-prerender: 1</code>. Add a test that asserts those routes export <code>revalidate</code>.</li>
+<li>Wire the sync cron to POST the changed suburbs' paths to <code>/api/revalidate</code> (same key as IndexNow) before the IndexNow ping, so freshness does not regress.</li>
+<li>Do (b) with 100 suburbs first and time the build; scale to 500 only if the build stays under the current time plus 25%.</li>
+<li>Do (c) on a staging database URL first, run <code>npm test</code> and a preview deployment, and set the breaker to trip on crawler user agents only in its first version.</li>
+<li>Watch Bing's daily 5xx count from the Webmaster API for 14 days after each step (R2). It is the only daily crawl-error signal available.</li>
+</ul>
+<div class="gate"><div><b>Ship when</b>(a): second-request HIT on both routes in preview. (b): build time within budget. (c): zero 5xx in Bing's series for 14 days and no user-facing 503 in Vercel logs.</div><div><b>Rollback</b>Each step is its own commit. (a) and (b) revert cleanly; (c) reverts by restoring the previous <code>DATABASE_URL</code>.</div></div>
+</div>
+
+<div class="item"><header><span class="num">05</span><h3>Recrawl paths for the top 500 suburbs</h3><span class="tag t-low">Low risk</span><span class="tag t-who">code</span></header>
+<p><b>Change.</b> Link the top 500 suburbs by impressions from the state pages, the capital-city market pages and the homepage suburb block; drive the suburbs sitemap <code>lastModified</code> from real updates.</p>
+<div class="lab warn">Could break</div>
+<ul>
+<li>500 links on a state page is a link farm, not a navigation aid; it also dilutes the state page's own ranking.</li>
+<li>The sitemap already uses <code>Suburb.updatedAt</code>; rent-only updates land in <code>SuburbRentalStat</code> and do not move it. Faking <code>lastmod</code> to force recrawls gets sitemaps ignored.</li>
+<li>Adding a block to the homepage touches the 4 September redesign.</li>
+</ul>
+<div class="lab">Guardrails</div>
+<ul>
+<li>Cap at 20 to 30 suburbs per state page and per capital-city page, presented as "most viewed", with the list generated from the Search Console export rather than hand-picked.</li>
+<li>Touch <code>Suburb.updatedAt</code> when any child stat table changes, in the sync writer, so <code>lastmod</code> stays truthful.</li>
+<li>Homepage block: one row, behind the existing "Pick your starting point" section, checked with the leads count (R11).</li>
+</ul>
+<div class="gate"><div><b>Ship when</b>Preview shows the blocks and the sitemap dates move after a sync.</div><div><b>Rollback</b>One commit.</div></div>
+</div>
+
+<div class="item"><header><span class="num">06</span><h3>Request indexing on the top 50 suburbs</h3><span class="tag t-low">Low risk</span><span class="tag t-who">you</span></header>
+<p><b>Change.</b> URL Inspection → Request indexing in Search Console for the 50 suburbs with the most impressions; check the shown title for Surfers Paradise, Toorak, Morayfield and Buderim two weeks later.</p>
+<div class="lab warn">Could break</div><ul><li>Nothing on the site. The daily quota is about ten requests per property; five days of clicking.</li></ul>
+<div class="lab">Guardrails</div><ul><li>Do it after item 4(a) so the re-fetches land on cached pages. Record the dates in the change log.</li></ul>
+<div class="gate"><div><b>Ship when</b>Item 4(a) is live.</div><div><b>Rollback</b>Not applicable.</div></div>
+</div>
+
+<div class="item"><header><span class="num">07</span><h3>Clarity hygiene</h3><span class="tag t-low">Low risk</span><span class="tag t-who">you</span></header>
+<p><b>Change.</b> Exclude your own traffic (the <code>?design=</code> previews and localhost), turn on bot filtering, and watch the dead-click recordings on the CGT and Perth market guides.</p>
+<div class="lab warn">Could break</div><ul><li>An IP exclusion set too wide (an office range, a VPN exit) removes real visitors from every future report.</li></ul>
+<div class="lab">Guardrails</div><ul><li>Exclude by URL pattern and by a named cookie rather than by IP; check the next three-day pull shows direct sessions down and nothing else changed.</li></ul>
+<div class="gate"><div><b>Ship when</b>Next Clarity pull shows the previews gone.</div><div><b>Rollback</b>Remove the filter in Clarity settings.</div></div>
+</div>
+
+<h2>Commission guides</h2>
+
+<div class="item"><header><span class="num">08</span><h3>Embed the commission calculator in each state guide and retitle</h3><span class="tag t-crit">High risk</span><span class="tag t-who">code</span></header>
+<p><b>Change.</b> Put the calculator component at the top of each state guide, preset to that state's typical rate, and retitle to "Real Estate Commission {State} 2026: Rates, Fees &amp; Calculator".</p>
+<div class="lab warn">Could break</div>
+<ul>
+<li>These pages rank 2.6 to 3.7 on Bing and take 38, 13, 5 and 4 clicks each there; the agent-fees guide next to them takes 53. A restructure that changes the H1 and the top of the page can lose those before Google notices anything.</li>
+<li>The eight guides are eight separate <code>page.tsx</code> files of about 350 lines each with no shared template. Eight hand edits drift; one will be wrong.</li>
+<li>A copied calculator competes with <code>/real-estate-commission-calculator</code>, which has its own rankings and a WebApplication schema.</li>
+</ul>
+<div class="lab">Guardrails</div>
+<ul>
+<li>Extract a shared state-guide layout first (a refactor with no visible change, verified by a snapshot test of the rendered HTML), then make the content change once.</li>
+<li>Import the calculator component; never copy it. The calculator page keeps its canonical and its schema; the guide embed carries no WebApplication schema of its own.</li>
+<li>Pilot on NT (lowest traffic on both engines), keep the H1's core phrase and the URL, and watch Bing position for 14 days via the Webmaster API before the next state. Then WA and TAS (Google page one), then NSW, VIC, QLD, SA, ACT.</li>
+<li>Bing baseline per page saved before each state (R2).</li>
+</ul>
+<div class="gate"><div><b>Ship when</b>NT's Bing position and clicks hold for 14 days after the change.</div><div><b>Rollback</b>Per state, one commit each.</div></div>
+</div>
+
+<div class="item"><header><span class="num">09</span><h3>Regional rate table per state</h3><span class="tag t-med">Medium risk</span><span class="tag t-who">content</span></header>
+<p><b>Change.</b> A table of typical commission by capital, major regional centres and remote areas, sourced and dated, on each state guide.</p>
+<div class="lab warn">Could break</div>
+<ul>
+<li>OpenAgent's regional figures come from its own transaction data. Publishing invented or copied numbers is misinformation on a page sellers use to negotiate, and the copied kind is plagiarism of a competitor.</li>
+<li>Figures that go stale quietly become wrong; there is no owner for updating them.</li>
+</ul>
+<div class="lab">Guardrails</div>
+<ul>
+<li>Only figures with a citable source: state real-estate institutes, state fair-trading pages, published surveys, your own agent data if the platform holds enough. Where no source exists, publish a labelled range and say why.</li>
+<li>Each table carries "as at {month year}" and a source line; a calendar reminder each July to re-check.</li>
+<li>Editorial sign-off from you before publish (R12).</li>
+</ul>
+<div class="gate"><div><b>Ship when</b>Every row has a source you would defend to the agent it names.</div><div><b>Rollback</b>Content revert in git.</div></div>
+</div>
+
+<div class="item"><header><span class="num">10</span><h3>"What it costs to sell in {State}" table on the same page</h3><span class="tag t-low">Low risk</span><span class="tag t-who">content</span></header>
+<p><b>Change.</b> A state-specific cost table (commission, marketing, photography and staging, auctioneer, conveyancing, certificates, discharge) with a worked total at the state median.</p>
+<div class="lab warn">Could break</div>
+<ul><li>Duplicates <code>/guides/cost-of-selling-a-house-australia</code>, which takes 16 Bing clicks at position 3.0. Two pages with the same copy split the ranking.</li></ul>
+<div class="lab">Guardrails</div>
+<ul><li>The state table is a summary in the state's numbers with a link to the national guide as the long version; no paragraph is reused verbatim. The worked total uses the state median from the same gated data as the suburb pages.</li></ul>
+<div class="gate"><div><b>Ship when</b>The national guide's Bing position holds for 14 days after the first state ships.</div><div><b>Rollback</b>Content revert.</div></div>
+</div>
+
+<div class="item"><header><span class="num">11</span><h3>Seller-funnel links from the suburb pages and selling hubs</h3><span class="tag t-crit">High risk</span><span class="tag t-who">code</span></header>
+<p><b>Change.</b> Link the state commission guide from the homepage seller path, /selling, /selling-guide, and the "Thinking of selling in {suburb}?" block on every suburb page.</p>
+<div class="lab warn">Could break</div>
+<ul>
+<li>That block (<code>SuburbSellingGuideCTA.tsx</code>) is a lead-capture entry that deep-links to <code>/selling-guide?suburb=…</code>. A second link beside the CTA takes clicks from it. This is the one item on the list that can reduce enquiries directly.</li>
+<li>17,908 links with identical anchor text added in one deploy is the largest internal-link change the site has ever made; it reshapes which pages Google considers important.</li>
+</ul>
+<div class="lab">Guardrails</div>
+<ul>
+<li>The guide link is secondary: a text line under the CTA ("What agents charge in {State}"), never a second button, never above the CTA.</li>
+<li>Item 8 has finished its NT pilot first, so the destination is a proven page.</li>
+<li>Roll out by state (R4) and watch the leads-health count for seven days per state (R11). Vary anchor text by state naturally; it will, because the state name is in it.</li>
+<li>Hub links (/selling, /selling-guide, homepage) go in a separate commit from the suburb-page link.</li>
+</ul>
+<div class="gate"><div><b>Ship when</b>First state shows no drop in enquiries over seven days.</div><div><b>Rollback</b>One commit per state; instant.</div></div>
+</div>
+
+<div class="item"><header><span class="num">12</span><h3>FAQ answers from People Also Ask on each state guide</h3><span class="tag t-low">Low risk</span><span class="tag t-who">content</span></header>
+<p><b>Change.</b> Add the questions Google shows on each state's SERP to the guide's FAQ, answered with a figure.</p>
+<div class="lab warn">Could break</div><ul><li>FAQPage rich results are mostly gone for commercial sites, so the schema wins nothing; thin one-line answers read as filler and dilute the page.</li></ul>
+<div class="lab">Guardrails</div><ul><li>Each answer is at least 40 words with a number and a source; the JSON-LD only lists what is visible (R7). No more than six questions per page.</li></ul>
+<div class="gate"><div><b>Ship when</b>Rich Results Test passes on the changed page.</div><div><b>Rollback</b>Content revert.</div></div>
+</div>
+
+<h2>Investor intent</h2>
+
+<div class="item"><header><span class="num">13</span><h3>Rental-market sub-page rebuild</h3><span class="tag t-med">Medium risk</span><span class="tag t-who">code</span></header>
+<p><b>Change.</b> Retitle to "{Suburb} Rental Market 2026: Median Rent, Yield &amp; Vacancy"; add rent by bedroom count, yield, 12-month change, vacancy where sourced, rent history, listings, an investment FAQ, and a link from the profile's investment block.</p>
+<div class="lab warn">Could break</div>
+<ul>
+<li>State rental feeds exist for VIC, NSW, SA and QLD; NT, TAS, WA and ACT fall back to census figures. A title promising vacancy and bedroom splits on pages that have neither is a promise the page breaks, on the template with the best click-through on the site.</li>
+<li>The sitemap already limits these pages to the 1,513 with usable rental history (<code>hasUsableRentalHistory</code>). Widening the template without widening the gate produces empty sections; widening the gate produces thin pages.</li>
+<li>The route is dynamic today (item 4); a heavier page rendered per request costs more database time until 4(a) ships.</li>
+</ul>
+<div class="lab">Guardrails</div>
+<ul>
+<li>Item 4(a) first. Every section renders only when its data passes its gate; the title is built from the sections that will actually render ("Median Rent &amp; Yield" when there is no vacancy source).</li>
+<li>Keep the sitemap gate; do not add pages to it until they pass a minimum of three rendered sections.</li>
+<li>Pilot on 50 pages in one state with full rental data (VIC), check them by eye on mobile, then roll out.</li>
+</ul>
+<div class="gate"><div><b>Ship when</b>Pilot pages render with no empty section and Bing's 5xx count did not move.</div><div><b>Rollback</b>One commit.</div></div>
+</div>
+
+<div class="item"><header><span class="num">14</span><h3>Suburb school sub-page rebuild</h3><span class="tag t-med">Medium risk</span><span class="tag t-who">code</span></header>
+<p><b>Change.</b> Catchments, nearest schools with ICSEA and enrolment, distances, and a link back to the profile.</p>
+<div class="lab warn">Could break</div>
+<ul><li>Catchment overlays are missing for TAS secondary, WA, NT and SA per the pipeline notes; a catchment map that renders nothing looks broken. ICSEA is an ACARA figure with licence terms on republication that need checking before it is shown at scale.</li></ul>
+<div class="lab">Guardrails</div>
+<ul><li>Conditional sections (as in 13); confirm ACARA's terms for ICSEA display and attribute; pilot on 50 pages in NSW where catchments exist.</li></ul>
+<div class="gate"><div><b>Ship when</b>Google quick-backs on these pages fall in the next Clarity pull.</div><div><b>Rollback</b>One commit.</div></div>
+</div>
+
+<div class="item"><header><span class="num">15</span><h3>Rental yield calculator additions</h3><span class="tag t-low">Low risk</span><span class="tag t-who">content</span></header>
+<p><b>Change.</b> A "What is a good rental yield in 2026?" table by city and property type, one-line answers to the four PAA questions, a suburb yield lookup, and a highest-yield-by-state table.</p>
+<div class="lab warn">Could break</div><ul><li>The yield tables are computed from the same suburb data as item 1; without the gate, the "highest yields" table is a list of data errors. A slow lookup widget above the calculator pushes the calculator down and changes what people came for.</li></ul>
+<div class="lab">Guardrails</div><ul><li>Tables built from gated figures only, with the method line the best-suburbs commentary already uses; the lookup sits below the calculator; URL, H1 and schema unchanged.</li></ul>
+<div class="gate"><div><b>Ship when</b>Item 1 in enforce mode; the tables reviewed by you.</div><div><b>Rollback</b>Content revert.</div></div>
+</div>
+
+<div class="item"><header><span class="num">16</span><h3>Prefilled deep links from suburb pages to the calculator</h3><span class="tag t-med">Medium risk</span><span class="tag t-who">code</span></header>
+<p><b>Change.</b> A link from each suburb's investment block to the calculator, prefilled with that suburb's median price and rent.</p>
+<div class="lab warn">Could break</div>
+<ul><li>Query-string links create 17,908 crawlable URL variants of one page. Even with a canonical, Google spends crawl budget on them, and on a site already struggling to recrawl its top pages that is the wrong trade.</li></ul>
+<div class="lab">Guardrails</div>
+<ul><li>Use a hash fragment (<code>/rental-yield-calculator#price=…&amp;rent=…</code>) read client-side; fragments are not separate URLs to a crawler. Only render the link when both figures pass their gates.</li></ul>
+<div class="gate"><div><b>Ship when</b>Search Console's page report shows no parameter variants a month later.</div><div><b>Rollback</b>One commit.</div></div>
+</div>
+
+<h2>Suburb template intent blocks</h2>
+
+<div class="item"><header><span class="num">17</span><h3>Price history block</h3><span class="tag t-med">Medium risk</span><span class="tag t-who">code</span></header>
+<p><b>Change.</b> Five-year house and unit medians as a table with a small chart.</p>
+<div class="lab warn">Could break</div>
+<ul><li>Historical sales exist only where a historical feed does (VIC at 21% coverage, SA partial, the rest annual ABS). A chart with two points, or one built from thin-sample years, states a trend that does not exist.</li></ul>
+<div class="lab">Guardrails</div>
+<ul><li>Render only with at least three years and a minimum sales count per year; label the count; otherwise omit the block entirely (no "insufficient data" placeholder). Chart drawn server-side as inline SVG from the same gated series.</li></ul>
+<div class="gate"><div><b>Ship when</b>A report script lists how many suburbs qualify and the number is accepted.</div><div><b>Rollback</b>One commit.</div></div>
+</div>
+
+<div class="item"><header><span class="num">18</span><h3>Recent sales from the sold feed</h3><span class="tag t-med">Medium risk</span><span class="tag t-who">code</span></header>
+<p><b>Change.</b> A recent-sales list on the suburb page where sales are held.</p>
+<div class="lab warn">Could break</div>
+<ul><li>The sold feed is partner listings, twelve URLs in the sitemap today; most suburbs would show nothing or one sale. The address-level sales data may carry licence terms that forbid republication at address level.</li></ul>
+<div class="lab">Guardrails</div>
+<ul><li>Confirm the data licence for address-level display first; render only with three or more sales in twelve months; otherwise omit.</li></ul>
+<div class="gate"><div><b>Ship when</b>Licence confirmed in writing and the qualifying count is known.</div><div><b>Rollback</b>One commit.</div></div>
+</div>
+
+<div class="item"><header><span class="num">19</span><h3>Three data-generated FAQs per suburb</h3><span class="tag t-crit">High risk</span><span class="tag t-who">code</span></header>
+<p><b>Change.</b> "Is {suburb} a good place to invest?", "Is {suburb} expensive?", "Is {suburb} a nice place to live?", generated from yield, growth, days on market, medians against the state, walkability, schools and crime.</p>
+<div class="lab warn">Could break</div>
+<ul>
+<li>Generated at scale, the first question is an investment opinion on 17,908 suburbs. Written carelessly it is general financial advice with the site's name on it, and it is wrong wherever the inputs are wrong (item 1 again).</li>
+<li>The current FAQ set (postcode, population, walkability) is what is being cited today; removing it from the visible page removes it from the JSON-LD under R7.</li>
+</ul>
+<div class="lab">Guardrails</div>
+<ul>
+<li>Answers describe, never recommend: "On the data, {suburb} has a gross yield of X%, above the state median of Y%, and 12-month growth of Z%", followed by the general-advice line. No "good" or "bad" verdict in the answer text; the question can ask it, the answer reports the numbers.</li>
+<li>A question renders only when every input passes its gate; otherwise it is omitted, as <code>SuburbFAQ.tsx</code> already does. Keep the postcode question visible below the new three.</li>
+<li>Review 30 generated answers across states by hand before rollout; cohort by state (R4).</li>
+</ul>
+<div class="gate"><div><b>Ship when</b>The 30-answer review finds no sentence you would not sign.</div><div><b>Rollback</b>One commit.</div></div>
+</div>
+
+<h2>New pages and refreshes</h2>
+
+<div class="item"><header><span class="num">20</span><h3>Stamp duty state guides: upgrade the eight that exist</h3><span class="tag t-med">Medium risk</span><span class="tag t-who">code + content</span></header>
+<div class="note"><b>Rewritten by this review.</b> The report proposed building eight state pages. They exist: <code>/guides/stamp-duty-nsw</code> through <code>/guides/stamp-duty-act</code>, the WA one already titled "Stamp Duty WA: Calculator, Rates &amp; First Home Buyer Concessions (2026)". There is also <code>/guides/stamp-duty-queensland-what-you-need-to-know</code> overlapping the QLD guide. Building new URLs would have created nine duplicates. The fix is to bring the existing eight up to the format that ranks.</div>
+<p><b>Change.</b> On each existing state guide: embed the calculator preset to the state, add the rate table, first-home-buyer thresholds with dates, the foreign surcharge, exemptions, worked examples at $500k, $750k and $1M, and the PAA FAQ. Consolidate the second QLD page into the QLD guide with a redirect.</p>
+<div class="lab warn">Could break</div>
+<ul>
+<li>Rates and thresholds live in <code>src/lib/utils/stamp-duty.ts</code> with tests. A table typed into the page by hand drifts from the calculator the first time a rate changes (every 1 July), and people budget on these numbers.</li>
+<li>A redirect from the second QLD page loses whatever it ranks for if the target does not cover the same questions.</li>
+</ul>
+<div class="lab">Guardrails</div>
+<ul>
+<li>Generate the tables and worked examples from <code>stamp-duty.ts</code> at render time; a rate change then updates the calculator and all eight guides together, and the existing tests cover both.</li>
+<li>Verify each state's output against the revenue office's own calculator at the three example prices and link the office page as the source (R12).</li>
+<li>Check the second QLD page's Bing and Google queries before redirecting; fold its unique sections into the QLD guide first.</li>
+</ul>
+<div class="gate"><div><b>Ship when</b>The three worked examples match the state revenue calculators for all eight states.</div><div><b>Rollback</b>One commit per state; redirect removable.</div></div>
+</div>
+
+<div class="item"><header><span class="num">21</span><h3>Per-suburb stamp duty line on suburb pages</h3><span class="tag t-low">Low risk</span><span class="tag t-who">code</span></header>
+<p><b>Change.</b> "Stamp duty on the median house in {suburb}: $X ({state}, non-first-home buyer)", linking to the state guide.</p>
+<div class="lab warn">Could break</div><ul><li>A wrong median produces a wrong duty figure with a dollar sign on it. Assumptions (buyer type, established home, no concession) have to be visible or the figure misleads first-home buyers.</li></ul>
+<div class="lab">Guardrails</div><ul><li>Render only where <code>hasReliablePrice</code> is true; compute from <code>stamp-duty.ts</code>; state the assumptions inline; ships after 1 and 20.</li></ul>
+<div class="gate"><div><b>Ship when</b>Items 1 and 20 are live.</div><div><b>Rollback</b>One commit.</div></div>
+</div>
+
+<div class="item"><header><span class="num">22</span><h3>Best-suburbs city editions</h3><span class="tag t-med">Medium risk</span><span class="tag t-who">code + content</span></header>
+<p><b>Change.</b> A capital-city layer under each category (fastest growing in Perth, cheapest in Perth, best for families in Brisbane), ten named suburbs with a reason and figures each, a method block and an updated date.</p>
+<div class="lab warn">Could break</div>
+<ul>
+<li>Overlap with pages that already exist and already rank on Bing: <code>/guides/australia-fastest-growing-suburbs-2026</code>, <code>/guides/cheapest-suburbs-buy-house-australia-2026</code>, <code>/guides/cheapest-suburbs-australian-capitals-winter-2026</code>, <code>/guides/best-brisbane-suburbs-for-families-2026</code>. Three pages for one intent means none of them ranks.</li>
+<li>City rankings from thin data (SA sales at 0% for the stat table) produce a "top ten" of data artefacts. "Best" lists read as recommendations.</li>
+<li>A new route level under <code>/best-suburbs/[category]/[state]</code> changes the URL structure of a section that has 7 pages in the sitemap.</li>
+</ul>
+<div class="lab">Guardrails</div>
+<ul>
+<li>Map every existing page to an intent first and pick one canonical per intent; guides that lose become redirects or link to the canonical, never duplicates (R5).</li>
+<li>A city edition renders only when its ranking passes a minimum-data threshold (sales count, gated medians); the method block states it.</li>
+<li>Descriptive framing throughout with the general-advice line; pilot with Perth (the strongest data and the clearest SERP), measure for 28 days.</li>
+</ul>
+<div class="gate"><div><b>Ship when</b>The intent map is agreed and Perth's threshold report is accepted.</div><div><b>Rollback</b>One commit; redirects only after the pilot.</div></div>
+</div>
+
+<div class="item"><header><span class="num">23</span><h3>Moreton Bay and Brisbane families guides refresh</h3><span class="tag t-low">Low risk</span><span class="tag t-who">content</span></header>
+<p><b>Change.</b> Moreton Bay guide to 2026 with ten suburbs, a comparison table and PAA sections; Brisbane families guide retitled to the phrasing with volume and given the same table.</p>
+<div class="lab warn">Could break</div><ul><li>Changing the slug to add "2026" or the new phrasing breaks the URL (R5). A date stamp without a real update is the kind of freshness signal Google discounts.</li></ul>
+<div class="lab">Guardrails</div><ul><li>Same URLs; the year goes in the title only; every figure in the table comes from the suburb pages with a link, so the guide inherits their gates and their updates.</li></ul>
+<div class="gate"><div><b>Ship when</b>Table figures match the linked suburb pages.</div><div><b>Rollback</b>Content revert.</div></div>
+</div>
+
+<div class="item"><header><span class="num">24</span><h3>Buying guide retarget</h3><span class="tag t-low">Low risk</span><span class="tag t-who">content</span></header>
+<p><b>Change.</b> Retarget <code>/guides/buying-property-australia</code> to "how to buy a house in Australia" in title, H1 and opening, and link the existing FIRB guide for the non-resident intent.</p>
+<div class="lab warn">Could break</div><ul><li>The FIRB guide already takes Bing clicks; a new non-resident page would compete with it. The buying guide is 3,244 words with HowTo schema; a title change alone does not move a page from 74 to page one.</li></ul>
+<div class="lab">Guardrails</div><ul><li>No new page. Title and H1 change only, with the FIRB link in the opening; measure at 28 days before touching the body.</li></ul>
+<div class="gate"><div><b>Ship when</b>Baseline saved.</div><div><b>Rollback</b>Content revert.</div></div>
+</div>
+
+<div class="item"><header><span class="num">25</span><h3>Renters rights NSW rewrite for the 2026 changes</h3><span class="tag t-med">Medium risk</span><span class="tag t-who">content</span></header>
+<p><b>Change.</b> Rewrite around the 2026 law changes with a dated "what changed and when" table at the top.</p>
+<div class="lab warn">Could break</div><ul><li>Tenancy law is the one place on the site where a wrong sentence harms a reader directly. Eight state pages share a structure; a rewrite that diverges from it makes the set harder to maintain.</li></ul>
+<div class="lab">Guardrails</div><ul><li>Every legal claim cites the Act or the NSW Fair Trading page with a link and date; you sign off before publish (R12); keep the shared structure and the URL.</li></ul>
+<div class="gate"><div><b>Ship when</b>Citations checked against the source pages on the day of publish.</div><div><b>Rollback</b>Content revert.</div></div>
+</div>
+
+<div class="item"><header><span class="num">26</span><h3>First-home-buyer NSW guide title and snippet pass</h3><span class="tag t-low">Low risk</span><span class="tag t-who">content</span></header>
+<p><b>Change.</b> Title, opening and FAQ tuned to "first home buyer grant nsw", where Bing shows the page at 6.2 for 853 impressions.</p>
+<div class="lab warn">Could break</div><ul><li>Grant amounts and thresholds change on 1 July; the page also sits beside seven sibling state guides and three scheme guides that link to it. A title that claims the grant page overlaps <code>/guides/first-home-owner-grant-australia</code>.</li></ul>
+<div class="lab">Guardrails</div><ul><li>Figures sourced to Revenue NSW with a date; the national grant guide stays the grant page, the NSW page targets the NSW phrasing; measure on Bing at 14 days.</li></ul>
+<div class="gate"><div><b>Ship when</b>Baseline saved.</div><div><b>Rollback</b>Content revert.</div></div>
+</div>
+
+<h2>Ongoing</h2>
+
+<div class="item"><header><span class="num">27</span><h3>Link programme</h3><span class="tag t-crit">High risk</span><span class="tag t-who">you + content</span></header>
+<p><b>Change.</b> Quarterly data release with state press versions, embeddable widgets, expert-quote requests and partner links; target 100 referring domains by March 2027.</p>
+<div class="lab warn">Could break</div>
+<ul>
+<li>Link schemes are the one thing that gets a site penalised rather than ignored: paid links, widgets that force a followed link, reciprocal link swaps with the agencies on the platform, press releases with keyword anchors.</li>
+<li>The agent and agency directory was paused on 3 July; "partner links from agencies" assumes a live directory that no longer exists.</li>
+<li>A data release with a wrong number in it is a public correction on the record (item 1).</li>
+</ul>
+<div class="lab">Guardrails</div>
+<ul>
+<li>Widget attribution links are optional and <code>rel="nofollow"</code> by default, with the site named in text; editorial links come from coverage, never from the embed.</li>
+<li>No paid placements, no swaps, no anchor-text requests. Press versions carry plain links to the data pages.</li>
+<li>The data release goes through the item 1 gates and a manual check of every figure that appears in a headline.</li>
+<li>Track referring domains monthly from the DataForSEO index and disavow nothing unless a manual action arrives.</li>
+</ul>
+<div class="gate"><div><b>Ship when</b>The first release's figures are verified and the widget's link policy is written down.</div><div><b>Rollback</b>Links cannot be recalled; the guardrails are the protection.</div></div>
+</div>
+
+<div class="item"><header><span class="num">28</span><h3>Monthly measurement</h3><span class="tag t-low">Low risk</span><span class="tag t-who">code + you</span></header>
+<p><b>Change.</b> A script under <code>scripts/seo/</code> that pulls Bing page and query stats, a Clarity 3-day export, the 33 tracked SERPs, the Bing 5xx series and the backlink summary into a dated folder; Search Console page-by-query for the top 200 suburbs exported by hand until the API is connected.</p>
+<div class="lab warn">Could break</div><ul><li>Blowing the Clarity daily limit or the DataForSEO balance; submitting unchanged URLs to Bing on a schedule, which Bing treats as spam; committing keys.</li></ul>
+<div class="lab">Guardrails</div><ul><li>Keys from <code>.env</code> only (R13); the script refuses to run twice in a day; Bing submissions come from the sync's changed-suburb list, not from a full sitemap walk.</li></ul>
+<div class="gate"><div><b>Ship when</b>First dry run writes the folder and logs its API usage.</div><div><b>Rollback</b>Not applicable.</div></div>
+</div>
+
+<h2>Sign-off</h2>
+<p class="lede">Fill in as each item is reviewed. Decision is one of Approve, Change, Hold. Nothing starts without a row.</p>
+<div class="twrap"><table>
+<tr><th>#</th><th>Item</th><th>Risk</th><th>Depends on</th><th>Decision</th><th>Owner</th><th>Date</th></tr>
+<tr><td class="mono">1</td><td>Provenance and plausibility gate</td><td>Medium</td><td>—</td><td>Approve · done (reframed)</td><td>Claude, authorised by Jos</td><td>7 Sep 2026</td></tr>
+<tr><td class="mono">2</td><td>Suburb title and description</td><td>High</td><td>4, 3</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">3</td><td>Opening snapshot table</td><td>Medium</td><td>1</td><td>Approve · done, rent feeds corrected</td><td>Claude, authorised by Jos</td><td>7 Sep 2026</td></tr>
+<tr><td class="mono">4</td><td>Database out of the crawl path (a, b, c)</td><td>High</td><td>R1</td><td>Approve · (a)(b) done, (c) held</td><td>Claude, authorised by Jos</td><td>5 Sep 2026</td></tr>
+<tr><td class="mono">5</td><td>Recrawl paths, sitemap lastmod</td><td>Low</td><td>—</td><td>Approve · done (homepage block deferred)</td><td>Claude, authorised by Jos</td><td>7 Sep 2026</td></tr>
+<tr><td class="mono">6</td><td>Request indexing, top 50</td><td>Low</td><td>4a</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">7</td><td>Clarity hygiene</td><td>Low</td><td>—</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">8</td><td>Commission calculator embed and retitle</td><td>High</td><td>shared layout</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">9</td><td>Regional rate tables</td><td>Medium</td><td>sources</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">10</td><td>Cost-of-selling state tables</td><td>Low</td><td>—</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">11</td><td>Seller-funnel links</td><td>High</td><td>8 pilot</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">12</td><td>PAA FAQs on commission guides</td><td>Low</td><td>—</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">13</td><td>Rental-market sub-page rebuild</td><td>Medium</td><td>4a</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">14</td><td>School sub-page rebuild</td><td>Medium</td><td>4a, licence</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">15</td><td>Rental yield calculator content</td><td>Low</td><td>1</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">16</td><td>Prefilled calculator links (fragment)</td><td>Medium</td><td>—</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">17</td><td>Price history block</td><td>Medium</td><td>1</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">18</td><td>Recent sales</td><td>Medium</td><td>licence</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">19</td><td>Data-generated FAQs</td><td>High</td><td>1</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">20</td><td>Stamp duty guides upgraded (existing eight)</td><td>Medium</td><td>—</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">21</td><td>Per-suburb stamp duty line</td><td>Low</td><td>1, 20</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">22</td><td>Best-suburbs city editions</td><td>Medium</td><td>intent map</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">23</td><td>Moreton Bay and Brisbane guides</td><td>Low</td><td>—</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">24</td><td>Buying guide retarget</td><td>Low</td><td>—</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">25</td><td>Renters rights NSW rewrite</td><td>Medium</td><td>sign-off</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">26</td><td>First-home-buyer NSW title pass</td><td>Low</td><td>—</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">27</td><td>Link programme</td><td>High</td><td>1, policy</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">28</td><td>Monthly measurement script</td><td>Low</td><td>—</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+<tr><td class="mono">29</td><td>Suburb /buy and /rent sub-pages returning 500</td><td>High</td><td>—</td><td>Done</td><td>Claude, authorised by Jos</td><td>5 Sep 2026</td></tr>
+<tr><td class="mono">30</td><td>"$0K" in listing descriptions</td><td>Low</td><td>29</td><td>Done</td><td>Claude, authorised by Jos</td><td>5 Sep 2026</td></tr>
+</table></div>
+
+<div class="method">
+Basis. Read on 5 Sep 2026: src/lib/utils/seo.ts, src/lib/suburb-data-quality.ts, src/lib/services/suburb-service.ts, src/lib/db.ts, src/app/api/revalidate/route.ts, scripts/sync/indexnow-ping.ts, prisma/schema.prisma (Suburb, SuburbRentalStat, SuburbSalesStat, Lead), src/components/suburb/SuburbSellingGuideCTA.tsx and SuburbFAQ.tsx, src/lib/utils/stamp-duty.ts, the eight real-estate-commission guide pages, the suburbs and guides sitemap routes, tests/lib and tests/seo, next.config.ts, vercel.json, docs/data-pipeline-status.md. Live checks: GET twice on a suburb profile, its schools and rental-market sub-pages, a school page, a postcode page, a guide and a best-suburbs page, reading x-vercel-cache, x-nextjs-prerender and cache-control. Guides sitemap read for existing URLs. Companion documents: the search review of 5 Sep 2026 and docs/strategy/seo-fix-list-2026-09.md, which is the tracker.
+</div>
+</div>

@@ -21,7 +21,8 @@
     "sync": "tsx scripts/sync/run.ts",
     "audit:images": "tsx scripts/audit-image-urls.ts",
     "seo:audit": "tsx scripts/seo/audit.ts",
-    "publish:blogs": "node scripts/publish-blogs.mjs"
+    "publish:blogs": "node scripts/publish-blogs.mjs",
+    "seo:baseline": "tsx scripts/seo/baseline.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
