@@ -22,6 +22,17 @@
  * Pipeline: re-run after each ABS Census release (every ~5 years).
  * Update CENSUS_YEAR constant to match the new dataset ID.
  */
+// ── RETIRED (fix item 1, step 3, 6 Sep 2026) ────────────────────────────────
+// This seed writes ABS Postal Area figures to every suburb in a postcode, so
+// 30 Mackay localities ended up with 85,500 residents each and Badagarang
+// with all of postcode 2540. Suburb-level census data comes from
+// scripts/sync/sources/abs-census.ts (SAL geography). Refuses to run unless
+// you pass --allow-postcode-level and know what you are doing.
+if (!process.argv.includes("--allow-postcode-level")) {
+  console.error("sync-suburb-stats-abs.ts is retired: it writes postcode-level census figures onto every suburb in a postcode. Use scripts/sync/sources/abs-census.ts. Pass --allow-postcode-level to override.");
+  process.exit(1);
+}
+
 import { PrismaClient } from "../../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import * as dotenv from "dotenv";
@@ -182,7 +193,7 @@ async function main() {
   }> = {};
 
   let updated = 0;
-  let skipped = 0;
+  const skipped = 0;
   let noData  = 0;
 
   for (const suburb of suburbs) {
