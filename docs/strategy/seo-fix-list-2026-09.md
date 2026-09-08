@@ -134,8 +134,9 @@ Tick items off as they ship.
       Victorian history back-load DONE 8 Sep 2026 — PR #27 (150da70) + production run: 20 quarters per suburb
       (2020-Q4 to 2025-Q3), 4,040 rows; history table, 12-month change and the change FAQ now render on the pilot
       pages. Rollout commit should also reword the flat-year card ("0% over 12 months" → "Unchanged over 12 months").
-      Follow-ups: NSW 1/2/3-bedroom medians from the DCJ "Total" bedroom rows and NSW quarterly history from the
-      earlier DCJ files (feed change + run); QLD and SA history accumulate one quarter per run.
+      NSW bedrooms and history DONE 8 Sep 2026 — PR #29 (31ba7b3) + production run: 8 quarters (2024-Q3 to
+      2026-Q2), 32,914 rows, bedroom medians for 3,251 suburbs; the rollout will show them on 4,072 NSW pages.
+      Follow-ups: QLD and SA history accumulate one quarter per run (the RTA and CBS files are single-quarter).
       Original scope: title "{Suburb} Rental Market 2026: Median Rent, Yield & Vacancy"; rent by bedrooms, yield,
       12-month change, vacancy, rent history, listings, investment FAQ; link from profile investment block. (09, H)
 - [ ] 14. [code] Suburb school sub-page rebuild: catchments, nearest schools with ICSEA/enrolment,
