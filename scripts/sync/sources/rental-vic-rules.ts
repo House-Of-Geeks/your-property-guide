@@ -54,19 +54,33 @@ export interface QuarterColumn { period: string; periodDate: Date; col: number }
  * Later quarters can be present as empty columns.
  */
 export function findLatestPopulatedQuarter(raw: unknown[][]): QuarterColumn | null {
+  return findPopulatedQuarters(raw, 1)[0] ?? null;
+}
+
+/**
+ * The newest `max` quarter columns that hold data, newest first. The
+ * workbook carries every quarter since 2000 as Count/Median column pairs;
+ * the feed writes the last twenty (five years) so the rental-market page can
+ * show history and a 12-month change (fix item 13).
+ */
+export function findPopulatedQuarters(raw: unknown[][], max: number): QuarterColumn[] {
   const quarterRow = raw[1] ?? [];
   const captionRow = raw[2] ?? [];
-  for (let c = quarterRow.length - 1; c >= 2; c--) {
+  const out: QuarterColumn[] = [];
+  const seen = new Set<string>();
+  for (let c = quarterRow.length - 1; c >= 2 && out.length < max; c--) {
     const parsed = parseQuarterLabel(quarterRow[c]);
-    if (!parsed) continue;
+    if (!parsed || seen.has(parsed.period)) continue;
     const caption = String(captionRow[c] ?? "").trim().toLowerCase();
     const next = String(captionRow[c + 1] ?? "").trim().toLowerCase();
     const medianCol = caption === "median" ? c : caption === "count" && next === "median" ? c + 1 : -1;
     if (medianCol < 0) continue;
     const hasData = raw.slice(3).some((r) => r?.[medianCol] !== "" && r?.[medianCol] != null);
-    if (hasData) return { ...parsed, col: medianCol };
+    if (!hasData) continue;
+    seen.add(parsed.period);
+    out.push({ ...parsed, col: medianCol });
   }
-  return null;
+  return out;
 }
 
 /** DFFH cell → median; blank, "-" or non-numeric → null. */
