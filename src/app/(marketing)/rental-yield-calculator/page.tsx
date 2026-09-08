@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { RentalYieldCalculator } from "@/components/calculators/RentalYieldCalculator";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
-import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
+import { Callout, GuideSuburbSearch, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
+import { YieldBenchmarks } from "@/components/calculators/YieldBenchmarks";
+import { yieldFaqs } from "@/lib/data/yield-faqs";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
@@ -44,11 +46,6 @@ const FAQS: FaqItem[] = [
       "Gross rental yield is simply the annual rental income divided by the purchase price, expressed as a percentage. Net rental yield factors in all ongoing costs (council rates, insurance, property management, maintenance, etc.) and is calculated against the full cost base (purchase price plus buying costs). Net yield gives a more realistic picture of your actual return.",
   },
   {
-    question: "What is a good rental yield in Australia?",
-    answer:
-      "Gross rental yields in Australian capital cities typically range from 3 to 6%. Sydney and Melbourne often yield 2.5 to 4% gross, while regional areas and higher-density markets like Brisbane, Adelaide, and Perth can yield 4 to 6%+. 'Good' depends on your strategy: higher yields often come with lower capital growth prospects, and vice versa.",
-  },
-  {
     question: "What is cash flow and why does it matter?",
     answer:
       "Cash flow is the money left over after all expenses (including loan repayments) are paid from rental income. A positively geared property generates cash flow surplus each week. A negatively geared property costs more to hold than it earns in rent, the shortfall is often offset against other income for tax purposes.",
@@ -79,10 +76,12 @@ export default function RentalYieldCalculatorPage() {
     <CalculatorPageLayout
       frontmatter={FRONTMATTER}
       calculator={<RentalYieldCalculator />}
-      faqs={FAQS}
+      faqs={[...yieldFaqs(), ...FAQS]}
       related={RELATED}
       explainer={
         <>
+          <GuideSuburbSearch title="Look up a suburb's rent and yield" subtitle="Median rent, gross yield and the sales median behind it, for any suburb this site covers." />
+          <YieldBenchmarks />
           <h2>Gross vs net yield, in plain English</h2>
           <p>
             Yield is shorthand for &ldquo;how much income does this property
