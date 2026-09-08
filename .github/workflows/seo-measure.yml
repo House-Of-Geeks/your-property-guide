@@ -1,0 +1,46 @@
+# Monthly search measurement (fix item 28): Bing page and query stats, a
+# Clarity 3-day export, the tracked Google AU SERPs, the Bing 5xx series and
+# the backlink summary into docs/seo-baselines/<date>/, opened as a pull
+# request for review. Needs these repository secrets: BING_WEBMASTER_API_KEY,
+# CLARITY_API_TOKEN, DATAFORSEO_LOGIN, DATAFORSEO_PASSWORD. Search Console
+# stays a manual export (--gsc) until its API is connected.
+name: SEO monthly measurement
+
+on:
+  schedule:
+    - cron: "0 20 1 * *"   # 06:00 AEST on the 1st
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Pull the snapshot
+        env:
+          BING_WEBMASTER_API_KEY: ${{ secrets.BING_WEBMASTER_API_KEY }}
+          CLARITY_API_TOKEN: ${{ secrets.CLARITY_API_TOKEN }}
+          DATAFORSEO_LOGIN: ${{ secrets.DATAFORSEO_LOGIN }}
+          DATAFORSEO_PASSWORD: ${{ secrets.DATAFORSEO_PASSWORD }}
+        run: npm run seo:baseline
+      - name: Open a pull request with the snapshot
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          DATE=$(ls docs/seo-baselines | grep -E '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' | sort | tail -1)
+          git config user.name "seo-measure"
+          git config user.email "seo-measure@users.noreply.github.com"
+          git checkout -b "seo/baseline-$DATE"
+          git add docs/seo-baselines
+          git commit -m "docs(seo): monthly measurement snapshot $DATE"
+          git push -u origin "seo/baseline-$DATE"
+          gh pr create --base main --head "seo/baseline-$DATE" --title "docs(seo): monthly measurement $DATE" --body "$(cat docs/seo-baselines/$DATE/summary.md)"
