@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { db } from "@/lib/db";
 
 export interface SuburbRentalHistory {
@@ -17,9 +18,22 @@ export interface SuburbRentalHistory {
   source: string;
 }
 
-export async function getSuburbRentalHistory(suburbSlug: string): Promise<SuburbRentalHistory[]> {
+// Newest period first; on a tie the most recently written row (see the
+// same ordering in suburb-service). Memoised per request: the rental-market
+// page reads it in generateMetadata and again in the body.
+export const getSuburbRentalHistory = cache(async (suburbSlug: string): Promise<SuburbRentalHistory[]> => {
   return db.suburbRentalStat.findMany({
     where: { suburbSlug },
-    orderBy: { periodDate: "desc" },
+    orderBy: [{ periodDate: "desc" }, { updatedAt: "desc" }],
   });
+});
+
+/** Suburbs that have at least one rental row: the rental-market sitemap gate. */
+export async function getSuburbSlugsWithRentalData(): Promise<string[]> {
+  const rows = await db.suburbRentalStat.findMany({
+    where: { suburbSlug: { not: null } },
+    distinct: ["suburbSlug"],
+    select: { suburbSlug: true },
+  });
+  return rows.map((r) => r.suburbSlug as string);
 }
