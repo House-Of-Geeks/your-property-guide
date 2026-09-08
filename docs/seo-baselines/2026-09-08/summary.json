@@ -1,0 +1,262 @@
+{
+  "date": "2026-09-08",
+  "bing": {
+    "last28": {
+      "from": "2026-08-10",
+      "to": "2026-09-06",
+      "clicks": 388,
+      "impressions": 43120
+    },
+    "byTemplate": {
+      "guides": {
+        "pages": 67,
+        "clicks": 310,
+        "impressions": 8457
+      },
+      "suburb street": {
+        "pages": 117,
+        "clicks": 38,
+        "impressions": 233
+      },
+      "suburb profile": {
+        "pages": 178,
+        "clicks": 17,
+        "impressions": 2935
+      },
+      "other": {
+        "pages": 51,
+        "clicks": 9,
+        "impressions": 333
+      },
+      "postcodes": {
+        "pages": 114,
+        "clicks": 8,
+        "impressions": 1673
+      },
+      "suburb vs": {
+        "pages": 8,
+        "clicks": 7,
+        "impressions": 11
+      },
+      "property-market": {
+        "pages": 4,
+        "clicks": 5,
+        "impressions": 55
+      },
+      "schools": {
+        "pages": 9,
+        "clicks": 3,
+        "impressions": 24
+      },
+      "market-reports": {
+        "pages": 5,
+        "clicks": 2,
+        "impressions": 33
+      },
+      "glossary": {
+        "pages": 2,
+        "clicks": 0,
+        "impressions": 70
+      },
+      "calculators": {
+        "pages": 2,
+        "clicks": 0,
+        "impressions": 78
+      },
+      "home": {
+        "pages": 1,
+        "clicks": 0,
+        "impressions": 15
+      },
+      "suburb schools": {
+        "pages": 3,
+        "clicks": 0,
+        "impressions": 5
+      },
+      "compare": {
+        "pages": 1,
+        "clicks": 0,
+        "impressions": 2
+      },
+      "suburb rental-market": {
+        "pages": 3,
+        "clicks": 0,
+        "impressions": 4
+      },
+      "best-suburbs": {
+        "pages": 1,
+        "clicks": 0,
+        "impressions": 1
+      }
+    },
+    "crawl": {
+      "date": "2026-09-07",
+      "crawled": 2380,
+      "inIndex": 45243,
+      "code2xx": 52814,
+      "code5xx": 1153,
+      "code4xx": 20,
+      "errors": 86,
+      "code5xxLast7": 9818
+    },
+    "pagesSampled": 566,
+    "queriesSampled": 1119
+  },
+  "clarity": {
+    "window": "3 days",
+    "totals": {
+      "averageScrollDepth": 45.42,
+      "totalSessionCount": 151,
+      "totalBotSessionCount": 531,
+      "distinctUserCount": 1239,
+      "pagesPerSessionPercentage": 1.10795902285264,
+      "activeTime": 153
+    },
+    "bySource": {
+      "": 46,
+      "google": 31,
+      "yahoo": 14,
+      "baidu": 0,
+      "bing": 45,
+      "216.150.1.193": 1,
+      "chatgpt.com": 8,
+      "www.ecosia.org": 1,
+      "duckduckgo.com": 5,
+      "www.yourpropertyguide.com.au": 2
+    },
+    "byTemplate": {
+      "guides": {
+        "pages": 45,
+        "sessions": 60
+      },
+      "suburb profile": {
+        "pages": 119,
+        "sessions": 44
+      },
+      "other": {
+        "pages": 306,
+        "sessions": 24
+      },
+      "suburb rental-market": {
+        "pages": 28,
+        "sessions": 20
+      },
+      "home": {
+        "pages": 2,
+        "sessions": 7
+      },
+      "suburb schools": {
+        "pages": 10,
+        "sessions": 7
+      },
+      "suburb rent": {
+        "pages": 11,
+        "sessions": 7
+      },
+      "property-market": {
+        "pages": 8,
+        "sessions": 6
+      },
+      "suburb vs": {
+        "pages": 59,
+        "sessions": 6
+      },
+      "calculators": {
+        "pages": 3,
+        "sessions": 5
+      },
+      "market-reports": {
+        "pages": 5,
+        "sessions": 5
+      },
+      "schools": {
+        "pages": 92,
+        "sessions": 3
+      },
+      "suburb houses": {
+        "pages": 3,
+        "sessions": 2
+      },
+      "postcodes": {
+        "pages": 5,
+        "sessions": 1
+      },
+      "suburb land": {
+        "pages": 6,
+        "sessions": 0
+      },
+      "suburb buy": {
+        "pages": 8,
+        "sessions": 0
+      },
+      "regions": {
+        "pages": 3,
+        "sessions": 0
+      },
+      "suburb units": {
+        "pages": 1,
+        "sessions": 0
+      },
+      "suburb townhouses": {
+        "pages": 3,
+        "sessions": 0
+      }
+    }
+  },
+  "backlinks": {
+    "rank": 2,
+    "backlinks": 30,
+    "referringDomains": 23,
+    "referringMainDomains": 23,
+    "cost": 0.024036
+  },
+  "serps": {
+    "queries": 40,
+    "inTop10": 4,
+    "inTop3": 1,
+    "ranks": {
+      "borrowing power calculator": "",
+      "real estate commission nsw": "",
+      "real estate commission vic": "",
+      "real estate commission qld": "",
+      "best suburbs in moreton bay region": "",
+      "best suburbs in australia": "",
+      "best suburbs brisbane for families": "",
+      "renters rights act": "",
+      "morayfield property market": "",
+      "bondi median house price": "",
+      "cronulla median house price": "",
+      "how much is stamp duty wa": "",
+      "first home buyer guide nsw": "",
+      "south lake suburb profile": "",
+      "rental report brisbane": "",
+      "canberra suburbs median property prices": "",
+      "negative gearing australia": "",
+      "how to sell a house australia": "",
+      "morayfield postcode": 8,
+      "toorak postcode": 9,
+      "surfers paradise postcode": 8,
+      "2170 postcode": "",
+      "badagarang postcode": 3,
+      "highest growth suburbs wa": "",
+      "buying property in australia": "",
+      "stamp duty calculator wa": "",
+      "suburb profile": "",
+      "best suburbs in perth": "",
+      "real estate commission tas": "",
+      "real estate commission wa": "",
+      "toorak median house price": "",
+      "renters rights nsw": "",
+      "morayfield house prices": "",
+      "real estate commission sa": "",
+      "real estate commission act": "",
+      "real estate commission nt": "",
+      "cost of selling a house nsw": "",
+      "cost of selling a house qld": "",
+      "rental yield calculator": "",
+      "what is a good rental yield australia": ""
+    },
+    "cost": 0.08000000000000006
+  },
+  "gscExport": null
+}
