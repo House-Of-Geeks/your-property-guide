@@ -31,6 +31,17 @@ export function isTotalBedrooms(v: unknown): boolean {
   return String(v ?? "").trim().toLowerCase() === "total";
 }
 
+/** "Total" | 0 (bedsitter) | 1 | 2 | 3 | 4 ("4 or more") | null ("Not Specified", blank). */
+export function normaliseBedrooms(v: unknown): "total" | 0 | 1 | 2 | 3 | 4 | null {
+  const s = String(v ?? "").trim().toLowerCase();
+  if (s === "total") return "total";
+  if (s.startsWith("bedsit")) return 0;
+  const m = /^(\d)\s*(?:or more\s*)?bedrooms?/.exec(s);
+  if (!m) return null;
+  const n = parseInt(m[1], 10);
+  return n >= 4 ? 4 : (n as 1 | 2 | 3);
+}
+
 /** A DCJ number cell: 1150, "1,142", "-" (withheld) or "s" (small sample). */
 export function parseDcjNumber(v: unknown): number | null {
   if (typeof v === "number") return Number.isFinite(v) && v > 0 ? Math.round(v) : null;
@@ -68,6 +79,10 @@ export interface PostcodeRents {
   house: RentFigure | null;
   unit: RentFigure | null;
   all: RentFigure | null;
+  /** All dwelling types of that bedroom count (the "Total" dwelling-type rows). */
+  bed1: RentFigure | null;
+  bed2: RentFigure | null;
+  bed3: RentFigure | null;
 }
 
 function figure(median: unknown, newBonds: unknown): RentFigure | null {
@@ -78,17 +93,26 @@ function figure(median: unknown, newBonds: unknown): RentFigure | null {
   return { median: m, newBonds: b.count, smallSample: b.flag === "small" };
 }
 
-/** House, unit and all-dwellings medians per postcode from the Total-bedrooms rows. */
+/**
+ * Per postcode: house, unit and all-dwellings medians from the Total-bedrooms
+ * rows, and one/two/three-bedroom medians from the all-dwellings rows by
+ * bedroom count.
+ */
 export function selectPostcodeRents(rows: DcjRentRow[]): Map<string, PostcodeRents> {
   const out = new Map<string, PostcodeRents>();
   for (const r of rows) {
     const pc = String(r.postcode ?? "").trim();
     if (!/^\d{4}$/.test(pc)) continue;
-    if (!isTotalBedrooms(r.bedrooms)) continue;
     const cls = normaliseDwellingType(r.dwellingType);
-    if (cls !== "house" && cls !== "unit" && cls !== "all") continue;
-    const entry = out.get(pc) ?? { postcode: pc, house: null, unit: null, all: null };
-    entry[cls] = figure(r.median, r.newBonds);
+    const beds = normaliseBedrooms(r.bedrooms);
+    const entry = out.get(pc) ?? { postcode: pc, house: null, unit: null, all: null, bed1: null, bed2: null, bed3: null };
+    if (beds === "total" && (cls === "house" || cls === "unit" || cls === "all")) {
+      entry[cls] = figure(r.median, r.newBonds);
+    } else if (cls === "all" && (beds === 1 || beds === 2 || beds === 3)) {
+      entry[`bed${beds}`] = figure(r.median, r.newBonds);
+    } else {
+      continue;
+    }
     out.set(pc, entry);
   }
   return out;
@@ -124,17 +148,50 @@ export function findHeaderRow(raw: unknown[][]): number {
 
 export interface RentTablesLink { url: string; month: string; year: number }
 
-/** The newest rent-tables workbook linked from the DCJ report page (both file-name spellings). */
-export function findLatestRentTablesUrl(html: string, base: string): RentTablesLink | null {
-  const re = /href="([^"]*rent[-_]tables[-_]([a-z]+)[-_](\d{4})[-_]quarter\.xlsx)"/gi;
-  const found: RentTablesLink[] = [];
+const MONTH_ALIASES: Record<string, string> = { mar: "march", jun: "june", sep: "september", sept: "september", dec: "december" };
+
+/**
+ * Every rent-tables workbook linked from a DCJ page, newest first, one per
+ * quarter. DCJ has used "rent_tables_december_2025_quarter.xlsx",
+ * "rent-tables-june-2026-quarter.xlsx", "issue-151-rent-tables-mar-2025.xlsx"
+ * and "issue-121-rent-tables-september-2017.xlsx"; all four parse.
+ */
+export function findRentTablesLinks(html: string, base: string): RentTablesLink[] {
+  const re = /href="([^"]*rent[-_]tables[-_]([a-z]+)[-_](\d{4})[^"]*\.xlsx[^"]*)"/gi;
+  const found = new Map<string, RentTablesLink>();
   for (const m of html.matchAll(re)) {
-    const month = m[2].toLowerCase();
+    const raw = m[2].toLowerCase();
+    const month = MONTH_ALIASES[raw] ?? raw;
     if (!QUARTER_END_MONTHS.includes(month)) continue;
-    found.push({ url: new URL(m[1], base).toString(), month, year: parseInt(m[3], 10) });
+    const key = `${m[3]}-${month}`;
+    if (!found.has(key)) found.set(key, { url: new URL(m[1], base).toString(), month, year: parseInt(m[3], 10) });
   }
-  found.sort((a, b) => b.year - a.year || QUARTER_END_MONTHS.indexOf(b.month) - QUARTER_END_MONTHS.indexOf(a.month));
-  return found[0] ?? null;
+  return [...found.values()].sort((a, b) => b.year - a.year || QUARTER_END_MONTHS.indexOf(b.month) - QUARTER_END_MONTHS.indexOf(a.month));
+}
+
+/** The newest rent-tables workbook linked from the DCJ report page. */
+export function findLatestRentTablesUrl(html: string, base: string): RentTablesLink | null {
+  return findRentTablesLinks(html, base)[0] ?? null;
+}
+
+/** Quarter label pairs walking back from a period: "2026-Q2", 3 → [2026 june, 2026 march, 2025 december]. */
+export function quarterSequence(period: string, count: number): { year: number; month: string; period: string }[] {
+  const m = /^(\d{4})-Q([1-4])$/.exec(period);
+  if (!m) return [];
+  let year = parseInt(m[1], 10);
+  let q = parseInt(m[2], 10) - 1;
+  const out: { year: number; month: string; period: string }[] = [];
+  for (let i = 0; i < count; i++) {
+    out.push({ year, month: QUARTER_END_MONTHS[q], period: `${year}-Q${q + 1}` });
+    q -= 1;
+    if (q < 0) { q = 3; year -= 1; }
+  }
+  return out;
+}
+
+/** Direct URLs for one quarter in both spellings DCJ has used. */
+export function rentTablesUrlsForQuarter(year: number, month: string, base: string): string[] {
+  return [`${base}/rent-tables-${month}-${year}-quarter.xlsx`, `${base}/rent_tables_${month}_${year}_quarter.xlsx`];
 }
 
 /** Fallback URLs for the last eight quarters, newest first, in both spellings DCJ has used. */

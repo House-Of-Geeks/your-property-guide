@@ -122,3 +122,53 @@ describe("locating the workbook", () => {
     expect(urls[14]).toBe("https://x/y/rent-tables-september-2024-quarter.xlsx");
   });
 });
+
+describe("bedroom medians and history discovery", () => {
+  it("normalises DCJ bedroom labels", async () => {
+    const { normaliseBedrooms } = await import("../../scripts/sync/sources/rental-nsw-rules");
+    expect(normaliseBedrooms("Total")).toBe("total");
+    expect(normaliseBedrooms("1 Bedroom")).toBe(1);
+    expect(normaliseBedrooms("2 Bedrooms")).toBe(2);
+    expect(normaliseBedrooms("3 Bedrooms")).toBe(3);
+    expect(normaliseBedrooms("4 or more Bedrooms")).toBe(4);
+    expect(normaliseBedrooms("Bedsitter")).toBe(0);
+    expect(normaliseBedrooms("Not Specified")).toBeNull();
+  });
+  it("takes one, two and three-bedroom medians from the all-dwellings rows (Bondi, June 2026)", () => {
+    const rents = selectPostcodeRents([
+      row("2026", "Total", "Total", 1050, 750),
+      row("2026", "Total", "1 Bedroom", 850, 143),
+      row("2026", "Total", "2 Bedrooms", 1175, 297),
+      row("2026", "Total", "3 Bedrooms", 1750, 90),
+      row("2026", "Total", "4 or more Bedrooms", 2975, 32),
+      row("2026", "House", "Total", 1800, 65),
+      row("2026", "House", "3 Bedrooms", 1878, "s"),
+      row("2026", "Flat/Unit", "Total", 1000, 661),
+    ]);
+    const b = rents.get("2026")!;
+    expect([b.bed1?.median, b.bed2?.median, b.bed3?.median]).toEqual([850, 1175, 1750]);
+    expect(b.house?.median).toBe(1800);
+    expect(b.unit?.median).toBe(1000);
+  });
+  it("reads every quarterly link in the naming styles DCJ has used, newest first, one per quarter", async () => {
+    const { findRentTablesLinks, quarterSequence, rentTablesUrlsForQuarter } = await import("../../scripts/sync/sources/rental-nsw-rules");
+    const html = `
+      <a href="/x/rent-tables-june-2026-quarter.xlsx">a</a>
+      <a href="/x/rent_tables_december_2025_quarter.xlsx">b</a>
+      <a href="/x/Rent_tables_June_2025_quarter.xlsx">c</a>
+      <a href="/x/issue-151-rent-tables-mar-2025.xlsx">d</a>
+      <a href="/x/issue-149-rent-tables-sep-2024-quarter.xlsx">e</a>
+      <a href="/x/previous-rent-and-sales-reports/issue-121-rent-tables-september-2017.xlsx">f</a>
+      <a href="/x/sales-tables-march-2026-quarter.xlsx">not rent</a>
+      <a href="/x/rent-tables-june-2026-quarter.xlsx?v=2">dup</a>`;
+    const links = findRentTablesLinks(html, "https://www.dcj.nsw.gov.au/p.html");
+    expect(links.map((l) => `${l.year}-${l.month}`)).toEqual(["2026-june", "2025-december", "2025-june", "2025-march", "2024-september", "2017-september"]);
+    expect(links[0].url).toBe("https://www.dcj.nsw.gov.au/x/rent-tables-june-2026-quarter.xlsx");
+    expect(quarterSequence("2026-Q2", 3)).toEqual([
+      { year: 2026, month: "june", period: "2026-Q2" },
+      { year: 2026, month: "march", period: "2026-Q1" },
+      { year: 2025, month: "december", period: "2025-Q4" },
+    ]);
+    expect(rentTablesUrlsForQuarter(2025, "december", "https://b")).toEqual(["https://b/rent-tables-december-2025-quarter.xlsx", "https://b/rent_tables_december_2025_quarter.xlsx"]);
+  });
+});
