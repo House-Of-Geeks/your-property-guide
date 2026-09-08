@@ -131,8 +131,11 @@ Tick items off as they ship.
       ("Median Rent & Yield" or "Median Rent"; no vacancy, no feed has it). Verified in production; structural mobile
       check at 909 px clean, phone-width look by eye still owed. Next: 19 Sep Bing 5xx read; rollout = remove the
       pilot list (one commit); then the profile investment-block link (suburb template, after 21 Sep).
-      Follow-ups: Victorian history back-load from the DFFH workbook (feed change + production run) so history and
-      12-month change render; NSW 1/2/3-bedroom medians from the DCJ "Total" bedroom rows (feed change + run).
+      Victorian history back-load DONE 8 Sep 2026 — PR #27 (150da70) + production run: 20 quarters per suburb
+      (2020-Q4 to 2025-Q3), 4,040 rows; history table, 12-month change and the change FAQ now render on the pilot
+      pages. Rollout commit should also reword the flat-year card ("0% over 12 months" → "Unchanged over 12 months").
+      Follow-ups: NSW 1/2/3-bedroom medians from the DCJ "Total" bedroom rows and NSW quarterly history from the
+      earlier DCJ files (feed change + run); QLD and SA history accumulate one quarter per run.
       Original scope: title "{Suburb} Rental Market 2026: Median Rent, Yield & Vacancy"; rent by bedrooms, yield,
       12-month change, vacancy, rent history, listings, investment FAQ; link from profile investment block. (09, H)
 - [ ] 14. [code] Suburb school sub-page rebuild: catchments, nearest schools with ICSEA/enrolment,
