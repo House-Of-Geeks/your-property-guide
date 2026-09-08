@@ -125,9 +125,16 @@ Tick items off as they ship.
 
 ## Investor intent (week 3–6)
 
-- [ ] 13. [code] Rental-market sub-page rebuild: title "{Suburb} Rental Market 2026: Median Rent,
-      Yield & Vacancy"; rent by bedrooms, yield, 12-month change, vacancy, rent history, listings,
-      investment FAQ; link from profile investment block. (09, H)
+- [ ] 13. [code] IN PROGRESS — PR #25 (5f35ee8 gate, 01ce1bc pilot), 8 Sep 2026: sitemap gate added (the review's
+      1,513-page gate did not exist; 17,872 → 5,526 URLs) and empty pages noindexed; rebuilt page live for 50 VIC
+      suburbs from a tested model that renders only what its data supports and titles the page from those sections
+      ("Median Rent & Yield" or "Median Rent"; no vacancy, no feed has it). Verified in production; structural mobile
+      check at 909 px clean, phone-width look by eye still owed. Next: 19 Sep Bing 5xx read; rollout = remove the
+      pilot list (one commit); then the profile investment-block link (suburb template, after 21 Sep).
+      Follow-ups: Victorian history back-load from the DFFH workbook (feed change + production run) so history and
+      12-month change render; NSW 1/2/3-bedroom medians from the DCJ "Total" bedroom rows (feed change + run).
+      Original scope: title "{Suburb} Rental Market 2026: Median Rent, Yield & Vacancy"; rent by bedrooms, yield,
+      12-month change, vacancy, rent history, listings, investment FAQ; link from profile investment block. (09, H)
 - [ ] 14. [code] Suburb school sub-page rebuild: catchments, nearest schools with ICSEA/enrolment,
       distances, link back to profile. (C2)
 - [ ] 15. [content] Rental yield calculator: "good yield in 2026" table by city/property type,
