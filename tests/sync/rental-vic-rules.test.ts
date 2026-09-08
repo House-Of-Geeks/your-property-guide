@@ -68,3 +68,18 @@ describe("download fallback", () => {
     expect(urls).toHaveLength(16);
   });
 });
+
+describe("history quarters", () => {
+  const raw = [
+    ["3 bedroom house"],
+    ["", "", "Mar 2025", "Mar 2025", "Jun 2025", "Jun 2025", "Sep 2025", "Sep 2025", "Dec 2025", "Dec 2025"],
+    ["Region", "Suburb", "Count", "Median", "Count", "Median", "Count", "Median", "Count", "Median"],
+    ["Inner", "Toorak", 40, 1150, 44, 1200, 46, 1250, "", ""],
+  ];
+  it("returns the newest populated quarters first, up to the requested number, skipping empty future columns", async () => {
+    const { findPopulatedQuarters } = await import("../../scripts/sync/sources/rental-vic-rules");
+    expect(findPopulatedQuarters(raw, 20).map((q) => q.period)).toEqual(["2025-Q3", "2025-Q2", "2025-Q1"]);
+    expect(findPopulatedQuarters(raw, 2).map((q) => q.period)).toEqual(["2025-Q3", "2025-Q2"]);
+    expect(findPopulatedQuarters(raw, 1)[0].col).toBe(7);
+  });
+});
