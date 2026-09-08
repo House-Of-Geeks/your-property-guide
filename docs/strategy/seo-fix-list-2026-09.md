@@ -141,8 +141,16 @@ Tick items off as they ship.
       12-month change, vacancy, rent history, listings, investment FAQ; link from profile investment block. (09, H)
 - [ ] 14. [code] Suburb school sub-page rebuild: catchments, nearest schools with ICSEA/enrolment,
       distances, link back to profile. (C2)
-- [ ] 15. [content] Rental yield calculator: "good yield in 2026" table by city/property type,
-      PAA one-liners, suburb yield lookup, highest-yield-by-state table. (07, D)
+- [ ] 15. [content] BUILT, AWAITING YOUR TABLE REVIEW — PR #31 (8 Sep 2026): yield benchmarks by city and property
+      type from a generated data file (`scripts/seo/yield-benchmarks.ts`, regenerate after quarterly syncs) under the
+      suburb pages' gate; highest-yield suburbs for VIC and QLD; suburb lookup below the calculator; four PAA answers.
+      Withheld with reasons on the page: Perth/Hobart/Canberra/Darwin (no rental feed), Adelaide (SA sales medians
+      under review), Sydney units (no unit price feed), NSW ranking (postcode-level rents). Merge after your review.
+      Found while building: (a) `sales-sa` medians look inflated (Elizabeth $697,500; state median of suburb medians
+      $1.05M) — check the feed's column and definition as done for NSW and VIC; (b) `rental-sa` does not write through
+      to Suburb.medianRentHouse/Unit, so rankings and city pages use stale SA rents — add the write-through.
+      Original scope: "good yield in 2026" table by city/property type, PAA one-liners, suburb yield lookup,
+      highest-yield-by-state table. (07, D)
 - [ ] 16. [code] Prefilled deep links from suburb investment block → calculator
       (`?price=&rent=`, canonical to base). (D)
 
@@ -189,5 +197,9 @@ Tick items off as they ship.
 
 - [ ] 27. [you+content] Link programme: quarterly data release + state press versions, embeddable
       widgets, expert-quote requests, partner links. Target 100 referring domains by Mar 2027. (02, J)
-- [ ] 28. [code+you] Monthly measurement: GSC page×query top 200 suburbs, Bing page/query reports,
+- [x] 28. DONE 8 Sep 2026 — PR #32 (1bb6ad3): baseline script tracks 40 SERPs, sums the 5xx week, retries and caches;
+      `seo-measure.yml` runs on the 1st and opens a PR (YOU: add secrets BING_WEBMASTER_API_KEY, CLARITY_API_TOKEN,
+      DATAFORSEO_LOGIN, DATAFORSEO_PASSWORD and allow Actions to create PRs; until then run `npm run seo:baseline`
+      by hand). GSC stays a manual export (--gsc); CWV needs a PageSpeed API key (none); Bing URL submission already
+      happens after syncs via IndexNow. Original scope: GSC page×query top 200 suburbs, Bing page/query reports,
       33 tracked SERPs, Bing 5xx count, CWV once PSI quota resets, Bing URL submission after syncs. (K)
