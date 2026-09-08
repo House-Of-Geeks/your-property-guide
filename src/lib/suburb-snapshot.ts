@@ -6,6 +6,7 @@
 // sentence and the tiles cannot disagree. Pure; tested in
 // tests/lib/suburb-snapshot.test.ts.
 import type { Suburb } from "@/types";
+import { monthYear, rentalSourceLabel } from "@/lib/rental-labels";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { describeSalesProvenance, type SalesProvenance } from "@/lib/sales-provenance";
 
@@ -81,16 +82,6 @@ export function buildSnapshotStats(suburb: Suburb): SnapshotStat[] {
   return out.slice(0, MAX_SNAPSHOT_TILES);
 }
 
-const RENTAL_LABELS: Record<string, string> = {
-  "rental-nsw": "NSW rental bond data",
-  "rental-vic": "Victorian rental report",
-  "rental-sa": "SA rental bond data",
-  "rental-qld": "Queensland RTA bond data",
-  "abs-census": "2021 Census rent (proxy)",
-  "abs-census-2021": "2021 Census rent (proxy)",
-};
-
-const monthYear = (d: Date) => d.toLocaleDateString("en-AU", { month: "long", year: "numeric", timeZone: "UTC" });
 
 /** The provenance line under the tiles: one fragment per data family that is shown. */
 export function buildSnapshotProvenance(suburb: Suburb, stats: SnapshotStat[]): string[] {
@@ -102,12 +93,8 @@ export function buildSnapshotProvenance(suburb: Suburb, stats: SnapshotStat[]): 
     if (p) parts.push(p.geography === "area" ? `Prices: ${p.short}` : `Prices: ${p.short}`);
   }
   if (keys.has("rent") || keys.has("yield")) {
-    const label = f?.rentalSource ? RENTAL_LABELS[f.rentalSource] ?? null : null;
-    if (label) {
-      // NSW bond data is published by postcode, not suburb; say so.
-      const scope = f?.rentalSource === "rental-nsw" && suburb.postcode ? ` (postcode ${suburb.postcode})` : "";
-      parts.push(`Rent: ${label}${scope}${f?.rentalAsOf ? `, ${monthYear(new Date(f.rentalAsOf))}` : ""}`);
-    }
+    const label = rentalSourceLabel(f?.rentalSource, suburb.postcode);
+    if (label) parts.push(`Rent: ${label}${f?.rentalAsOf ? `, ${monthYear(new Date(f.rentalAsOf))}` : ""}`);
   }
   if (keys.has("population")) parts.push("Population: 2021 Census");
   return parts;

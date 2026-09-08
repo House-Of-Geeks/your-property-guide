@@ -7,6 +7,10 @@ import { ExpertCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getSuburbRentalHistory } from "@/lib/services/rental-service";
+import { countProperties } from "@/lib/services/property-service";
+import { buildRentalMarket } from "@/lib/rental-market";
+import { isRentalMarketPilot } from "@/lib/data/rental-market-pilot";
+import { RentalMarketSections } from "@/components/suburb/RentalMarketSections";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
@@ -30,8 +34,15 @@ export async function generateMetadata({ params }: RentalMarketPageProps): Promi
   const [suburb, history] = await Promise.all([getSuburbBySlug(slug), getSuburbRentalHistory(slug)]);
   if (!suburb) return { title: "Suburb Not Found" };
 
-  const title = `${suburb.name} Rental Market | Rent Prices & Trends`;
-  const description = `View rental price trends and history for ${suburb.name}, ${suburb.state}. Compare weekly rent for houses, units, and bedrooms.`;
+  let title = `${suburb.name} Rental Market | Rent Prices & Trends`;
+  let description = `View rental price trends and history for ${suburb.name}, ${suburb.state}. Compare weekly rent for houses, units, and bedrooms.`;
+  if (isRentalMarketPilot(slug)) {
+    // Pilot pages: the title names only the sections that will render.
+    const listings = await countProperties({ listingType: "rent", suburb: slug });
+    const model = buildRentalMarket(suburb, history, listings);
+    title = model.title;
+    description = model.description;
+  }
   const canonical = `${SITE_URL}/suburbs/${slug}/rental-market`;
 
   return {
@@ -66,6 +77,11 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
 
   if (!suburb) notFound();
 
+  // Fix item 13 pilot: 50 Victorian suburbs get the rebuilt page; the rest
+  // keep the markup below until the pilot has been checked.
+  const pilot = isRentalMarketPilot(slug);
+  const model = pilot ? buildRentalMarket(suburb, history, await countProperties({ listingType: "rent", suburb: slug })) : null;
+
   const latest = history[0] ?? null;
   const currentRent = latest?.medianRentHouse ?? suburb.stats.medianRentHouse;
   const grossYield =
@@ -90,8 +106,8 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
         postalCode={suburb.postcode}
       />
       <GuideArticleJsonLd
-        title={`${suburb.name} Rental Market | Rent Prices & Trends | ${SITE_NAME}`}
-        description={`View rental price trends and history for ${suburb.name}, ${suburb.state}. Compare weekly rent for houses, units, and bedrooms.`}
+        title={`${model?.title ?? `${suburb.name} Rental Market | Rent Prices & Trends`} | ${SITE_NAME}`}
+        description={model?.description ?? `View rental price trends and history for ${suburb.name}, ${suburb.state}. Compare weekly rent for houses, units, and bedrooms.`}
         url={`/suburbs/${slug}/rental-market`}
         datePublished="2025-01-01"
       />
@@ -100,13 +116,15 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
         suburb={suburb}
         eyebrow="Rental market in"
         title={<>The <span className="italic text-primary">rental market</span></>}
-        subtitle={`Median rent, history and gross-yield calculations for ${suburb.name}, ${suburb.state} ${suburb.postcode}.`}
+        subtitle={model?.current ? `Median rent, yield and what is listed now in ${suburb.name}, ${suburb.state} ${suburb.postcode}, from ${model.provenance}.` : `Median rent, history and gross-yield calculations for ${suburb.name}, ${suburb.state} ${suburb.postcode}.`}
         breadcrumbLeaf="Rental Market"
         tabs={getSuburbListingTabs(slug, "rental-market")}
       />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-14">
-        {history.length === 0 ? (
+        {model?.current ? (
+          <RentalMarketSections suburb={suburb} slug={slug} model={model} />
+        ) : history.length === 0 ? (
           <div className="rounded-2xl border border-line bg-surface-raised p-12 text-center">
             <BarChart3 className="w-10 h-10 text-ink-subtle mx-auto mb-3" />
             <p className="font-display text-xl text-ink">No rental data available yet</p>
