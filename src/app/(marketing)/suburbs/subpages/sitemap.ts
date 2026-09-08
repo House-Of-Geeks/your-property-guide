@@ -13,6 +13,7 @@ import {
   getSuburbListingInventory,
   type SuburbListingInventoryRow,
 } from "@/lib/services/property-service";
+import { getSuburbSlugsWithRentalData } from "@/lib/services/rental-service";
 
 // Suburb intent sub-pages (/suburbs/[slug]/houses etc.). Split into one
 // sitemap per type: ~15k indexable suburbs × 8 types would overflow the
@@ -39,8 +40,11 @@ export async function generateSitemaps() {
 // stock (and those pages noindex themselves — see e.g. [slug]/buy/page.tsx),
 // so submitting them would burn crawl budget on ~17,908 near-identical empty
 // pages per type. Each predicate mirrors the getProperties() filter its page
-// runs. schools + rental-market are absent here on purpose: they carry real
-// data for every suburb and stay in the sitemap unconditionally.
+// runs. schools is absent here on purpose: it carries real data for every
+// suburb and stays in the sitemap unconditionally. rental-market is gated
+// below on having a rental row (5,530 of 17,872 indexable suburbs on
+// 8 Sep 2026): the rest render "No rental data available yet" and noindex
+// themselves (fix item 13).
 const LISTING_TYPE_FILTERS: Partial<
   Record<(typeof SUBPAGE_TYPES)[number], (row: SuburbListingInventoryRow) => boolean>
 > = {
@@ -61,6 +65,12 @@ const getCachedListingInventory = unstable_cache(
   { revalidate: 86400, tags: ["sitemap-suburbs"] },
 );
 
+const getCachedRentalSuburbs = unstable_cache(
+  async () => getSuburbSlugsWithRentalData(),
+  ["sitemap-rental-suburbs:v1"],
+  { revalidate: 86400, tags: ["sitemap-suburbs"] },
+);
+
 export default async function sitemap(props: {
   id: Promise<string>;
 }): Promise<MetadataRoute.Sitemap> {
@@ -70,6 +80,11 @@ export default async function sitemap(props: {
   if (!(SUBPAGE_TYPES as readonly string[]).includes(type)) return [];
 
   let suburbs = await getIndexableSuburbsForSitemaps();
+
+  if (type === "rental-market") {
+    const withData = new Set(await getCachedRentalSuburbs());
+    suburbs = suburbs.filter(({ slug }) => withData.has(slug));
+  }
 
   const filter = LISTING_TYPE_FILTERS[type as (typeof SUBPAGE_TYPES)[number]];
   if (filter) {

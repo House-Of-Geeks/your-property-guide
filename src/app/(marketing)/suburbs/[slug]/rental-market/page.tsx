@@ -27,7 +27,7 @@ export function generateStaticParams() { return []; }
 
 export async function generateMetadata({ params }: RentalMarketPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const suburb = await getSuburbBySlug(slug);
+  const [suburb, history] = await Promise.all([getSuburbBySlug(slug), getSuburbRentalHistory(slug)]);
   if (!suburb) return { title: "Suburb Not Found" };
 
   const title = `${suburb.name} Rental Market | Rent Prices & Trends`;
@@ -38,6 +38,9 @@ export async function generateMetadata({ params }: RentalMarketPageProps): Promi
     title,
     description,
     alternates: { canonical },
+    // A page with no rental row renders "No rental data available yet": keep
+    // it out of the index (and the sitemap, see subpages/sitemap.ts).
+    robots: history.length === 0 ? { index: false, follow: true } : undefined,
     // og titles don't get the root title.template — brand them explicitly
     openGraph: { url: canonical, title: `${title} | ${SITE_NAME}`, description, type: "website" },
     twitter: { card: "summary_large_image" },
