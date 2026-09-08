@@ -2,27 +2,29 @@
  * NSW Rental Data Sync (DCJ Rent and Sales Report, postcode tables)
  *
  * Source: the NSW Department of Communities and Justice publishes Rental
- * Bond Board data quarterly. The workbook's "Postcode" sheet has one row per
- * postcode × dwelling type × bedroom count with the median weekly rent for
- * new bonds and the number of new bonds lodged.
+ * Bond Board data quarterly. Each quarter's workbook has a "Postcode" sheet
+ * with one row per postcode × dwelling type × bedroom count: the median
+ * weekly rent for new bonds and the number of new bonds lodged.
  *   https://www.dcj.nsw.gov.au/about-us/families-and-communities-statistics/housing-rent-and-sales/rent-and-sales-report.html
+ *   (previous quarters on the "previous rent and sales reports" page)
  *
  * What it writes (rules in rental-nsw-rules.ts, tested):
  *   - house rent  = the House / Total-bedrooms median
  *   - unit rent   = the Flat/Unit / Total-bedrooms median
- *   - one SuburbRentalStat row per NSW suburb in each covered postcode
- *     (suburbName = the suburb, so the page's freshness lookup finds it),
- *     with bondLodgements = new house bonds when DCJ prints the count
- *   - Suburb.medianRentHouse / medianRentUnit for those suburbs, 0 where DCJ
- *     withholds the figure (10 or fewer bonds) so a census proxy cannot stand
- *     in for it; rentalUpdatedAt and updatedAt stamped on the rows touched
- *   - legacy postcode-named rows (suburbName = postcode) from the earlier
- *     definition are deleted; they held the all-dwellings total as the house rent
+ *   - 1, 2 and 3-bedroom rents = the all-dwellings rows by bedroom count
+ *   - one SuburbRentalStat row per NSW suburb in each covered postcode, per
+ *     quarter, for the newest --history quarters DCJ still serves (default
+ *     8); bondLodgements = new house bonds when DCJ prints the count
+ *   - Suburb.medianRentHouse / medianRentUnit from the newest quarter, 0
+ *     where DCJ withholds the figure (10 or fewer bonds), rentalUpdatedAt and
+ *     updatedAt stamped on the rows touched
+ *   - legacy postcode-named rows (suburbName = postcode) deleted
  * Suburbs in postcodes DCJ does not publish keep whatever they had.
  *
  * Flags:
- *   --dry-run       parse, plan and print; no writes, no DataSource update
- *   --file <path>   use a downloaded workbook instead of fetching
+ *   --dry-run        parse, plan and print; no writes, no DataSource update
+ *   --file <path>    use a downloaded workbook as the newest quarter
+ *   --history <n>    quarters to load including the newest (default 8; 1 = newest only)
  *
  * Schedule: quarterly (scripts/cron/quarterly.sh)
  */
@@ -35,18 +37,24 @@ import { startSync, finishSync, failSync, log } from "../logger";
 import {
   candidateRentTablesUrls,
   findHeaderRow,
-  findLatestRentTablesUrl,
+  findRentTablesLinks,
   isCovered,
   parseReportingPeriod,
+  quarterSequence,
+  rentTablesUrlsForQuarter,
   selectPostcodeRents,
   type DcjRentRow,
+  type PostcodeRents,
+  type RentTablesLink,
 } from "./rental-nsw-rules";
 
 const SOURCE_ID = "rental-nsw";
 const REPORT_PAGE = "https://www.dcj.nsw.gov.au/about-us/families-and-communities-statistics/housing-rent-and-sales/rent-and-sales-report.html";
+const ARCHIVE_PAGE = "https://www.dcj.nsw.gov.au/about-us/families-and-communities-statistics/housing-rent-and-sales/previous-rent-and-sales-reports.html";
 const DCJ_BASE = "https://www.dcj.nsw.gov.au/content/dam/dcj/dcj-website/documents/about-us/families-and-communities-statistics/housing-and-rent-sales";
 const USER_AGENT = "Mozilla/5.0 (compatible; YourPropertyGuide data sync; +https://yourpropertyguide.com.au)";
 const SAMPLE_SLUGS = ["bondi-nsw-2026", "sydney-nsw-2000", "double-bay-nsw-2028", "seaforth-nsw-2092", "dubbo-nsw-2830", "wagga-wagga-nsw-2650", "huskisson-nsw-2540"];
+const DEFAULT_HISTORY = 8;
 const UPSERT_CHUNK = 1000;
 
 async function fetchWorkbook(url: string): Promise<Buffer | null> {
@@ -60,26 +68,90 @@ async function fetchWorkbook(url: string): Promise<Buffer | null> {
   }
 }
 
-/** The newest workbook: the report page's link first, then known file-name patterns. */
-async function locateWorkbook(): Promise<{ buffer: Buffer; url: string }> {
+async function fetchPageLinks(page: string): Promise<RentTablesLink[]> {
   try {
-    const res = await fetch(REPORT_PAGE, { headers: { "user-agent": USER_AGENT }, signal: AbortSignal.timeout(30_000) });
-    if (res.ok) {
-      const link = findLatestRentTablesUrl(await res.text(), REPORT_PAGE);
-      if (link) {
-        log(SOURCE_ID, `report page links ${link.month} ${link.year} quarter`);
-        const buffer = await fetchWorkbook(link.url);
-        if (buffer) return { buffer, url: link.url };
+    const res = await fetch(page, { headers: { "user-agent": USER_AGENT }, signal: AbortSignal.timeout(30_000) });
+    if (!res.ok) return [];
+    return findRentTablesLinks(await res.text(), page);
+  } catch (err) {
+    log(SOURCE_ID, `page unavailable: ${page} (${(err as Error).message})`);
+    return [];
+  }
+}
+
+interface ParsedWorkbook {
+  period: string;
+  periodDate: Date;
+  rents: Map<string, PostcodeRents>;
+}
+
+function parseWorkbook(buffer: Buffer, label: string): ParsedWorkbook {
+  const wb = XLSX.read(buffer, { type: "buffer" });
+  const sheetName = wb.SheetNames.find((n) => n.toLowerCase().includes("postcode"));
+  if (!sheetName) throw new Error(`${label}: no postcode sheet; sheets: ${wb.SheetNames.join(", ")}`);
+  const raw = XLSX.utils.sheet_to_json<(string | number)[]>(wb.Sheets[sheetName], { header: 1, defval: "" });
+
+  const periodCell = raw.find((r) => /reporting period/i.test(String(r?.[0] ?? "")))?.[0];
+  const parsed = parseReportingPeriod(String(periodCell ?? ""));
+  if (!parsed) throw new Error(`${label}: could not parse reporting period from "${String(periodCell ?? "")}"`);
+
+  const headerRow = findHeaderRow(raw);
+  if (headerRow < 0) throw new Error(`${label}: could not find the header row (first cell 'Postcode')`);
+  const headers = raw[headerRow].map((h) => String(h).replace(/\s+/g, " ").trim());
+  const col = (re: RegExp) => headers.findIndex((h) => re.test(h));
+  const cPostcode = col(/^postcode/i);
+  const cDwelling = col(/dwelling\s*type/i);
+  const cBedrooms = col(/bedroom/i);
+  const cMedian   = col(/median.*rent/i);
+  const cNewBonds = col(/new bonds lodged/i);
+  if (cPostcode < 0 || cDwelling < 0 || cBedrooms < 0 || cMedian < 0) {
+    throw new Error(`${label}: missing columns. Headers: ${headers.join(" | ")}`);
+  }
+  const rows: DcjRentRow[] = raw.slice(headerRow + 1).map((r) => ({
+    postcode:     r[cPostcode],
+    dwellingType: r[cDwelling],
+    bedrooms:     r[cBedrooms],
+    median:       r[cMedian],
+    newBonds:     cNewBonds >= 0 ? r[cNewBonds] : "",
+  }));
+  return { period: parsed.period, periodDate: parsed.periodDate, rents: selectPostcodeRents(rows) };
+}
+
+/** The newest workbook, then the earlier quarters DCJ still serves, newest first. */
+async function locateWorkbooks(history: number, newestFile: string | null): Promise<{ buffer: Buffer; url: string }[]> {
+  const links = [...(await fetchPageLinks(REPORT_PAGE)), ...(await fetchPageLinks(ARCHIVE_PAGE))];
+  const byQuarter = new Map<string, RentTablesLink>();
+  for (const l of links) if (!byQuarter.has(`${l.year}-${l.month}`)) byQuarter.set(`${l.year}-${l.month}`, l);
+  const out: { buffer: Buffer; url: string }[] = [];
+
+  let newest: { buffer: Buffer; url: string; period: string } | null = null;
+  if (newestFile) {
+    const buffer = readFileSync(newestFile);
+    newest = { buffer, url: newestFile, period: parseWorkbook(buffer, newestFile).period };
+  } else {
+    const sorted = [...byQuarter.values()];
+    for (const l of sorted.length ? sorted : []) {
+      const buffer = await fetchWorkbook(l.url);
+      if (buffer) { newest = { buffer, url: l.url, period: parseWorkbook(buffer, l.url).period }; break; }
+    }
+    if (!newest) {
+      for (const url of candidateRentTablesUrls(new Date(), DCJ_BASE)) {
+        const buffer = await fetchWorkbook(url);
+        if (buffer) { newest = { buffer, url, period: parseWorkbook(buffer, url).period }; break; }
       }
     }
-  } catch (err) {
-    log(SOURCE_ID, `report page unavailable: ${(err as Error).message}`);
   }
-  for (const url of candidateRentTablesUrls(new Date(), DCJ_BASE)) {
-    const buffer = await fetchWorkbook(url);
-    if (buffer) return { buffer, url };
+  if (!newest) throw new Error("Could not download any DCJ rent-tables workbook");
+  out.push({ buffer: newest.buffer, url: newest.url });
+
+  for (const q of quarterSequence(newest.period, history).slice(1)) {
+    const link = byQuarter.get(`${q.year}-${q.month}`);
+    const urls = [...(link ? [link.url] : []), ...rentTablesUrlsForQuarter(q.year, q.month, DCJ_BASE)];
+    let got: Buffer | null = null;
+    for (const url of urls) { got = await fetchWorkbook(url); if (got) { out.push({ buffer: got, url }); break; } }
+    if (!got) log(SOURCE_ID, `  ${q.period}: no workbook found (${urls.length} URLs tried)`);
   }
-  throw new Error("Could not download any recent DCJ rent-tables workbook");
+  return out;
 }
 
 interface PlannedRow {
@@ -87,8 +159,13 @@ interface PlannedRow {
   slug: string;
   name: string;
   postcode: string;
+  period: string;
+  periodDate: Date;
   house: number; // 0 = DCJ withholds it
   unit: number;
+  bed1: number | null;
+  bed2: number | null;
+  bed3: number | null;
   bonds: number | null;
 }
 
@@ -96,50 +173,20 @@ export async function run(): Promise<void> {
   const args = process.argv.slice(2);
   const dryRun = args.includes("--dry-run");
   const fileArg = args.indexOf("--file") >= 0 ? args[args.indexOf("--file") + 1] : null;
+  const history = args.indexOf("--history") >= 0 ? Math.max(1, parseInt(args[args.indexOf("--history") + 1], 10) || DEFAULT_HISTORY) : DEFAULT_HISTORY;
 
   if (!dryRun) await startSync(SOURCE_ID);
   try {
-    const { buffer, url } = fileArg
-      ? { buffer: readFileSync(fileArg), url: fileArg }
-      : await locateWorkbook();
-    log(SOURCE_ID, `workbook: ${url}`);
-
-    const wb = XLSX.read(buffer, { type: "buffer" });
-    const sheetName = wb.SheetNames.find((n) => n.toLowerCase().includes("postcode"));
-    if (!sheetName) throw new Error(`No postcode sheet; sheets: ${wb.SheetNames.join(", ")}`);
-    const raw = XLSX.utils.sheet_to_json<(string | number)[]>(wb.Sheets[sheetName], { header: 1, defval: "" });
-
-    const periodCell = raw.find((r) => /reporting period/i.test(String(r?.[0] ?? "")))?.[0];
-    const parsed = parseReportingPeriod(String(periodCell ?? ""));
-    if (!parsed) throw new Error(`Could not parse reporting period from "${String(periodCell ?? "")}"`);
-    log(SOURCE_ID, `period: ${parsed.period}`);
-
-    const headerRow = findHeaderRow(raw);
-    if (headerRow < 0) throw new Error("Could not find the header row (first cell 'Postcode')");
-    const headers = raw[headerRow].map((h) => String(h).replace(/\s+/g, " ").trim());
-    const col = (re: RegExp) => headers.findIndex((h) => re.test(h));
-    const cPostcode = col(/^postcode/i);
-    const cDwelling = col(/dwelling\s*type/i);
-    const cBedrooms = col(/bedroom/i);
-    const cMedian   = col(/median.*rent/i);
-    const cNewBonds = col(/new bonds lodged/i);
-    if (cPostcode < 0 || cDwelling < 0 || cBedrooms < 0 || cMedian < 0) {
-      throw new Error(`Missing columns. Headers: ${headers.join(" | ")}`);
+    const workbooks = await locateWorkbooks(history, fileArg);
+    const parsed: ParsedWorkbook[] = [];
+    for (const w of workbooks) {
+      const p = parseWorkbook(w.buffer, w.url);
+      parsed.push(p);
+      const covered = [...p.rents.values()].filter(isCovered).length;
+      log(SOURCE_ID, `${p.period}: ${w.url.split("/").pop()} · ${p.rents.size} postcodes, ${covered} with a published house or unit median, ${[...p.rents.values()].filter((r) => r.bed2).length} with a 2-bedroom median`);
     }
-
-    const rows: DcjRentRow[] = raw.slice(headerRow + 1).map((r) => ({
-      postcode:     r[cPostcode],
-      dwellingType: r[cDwelling],
-      bedrooms:     r[cBedrooms],
-      median:       r[cMedian],
-      newBonds:     cNewBonds >= 0 ? r[cNewBonds] : "",
-    }));
-    const rents = selectPostcodeRents(rows);
-    const covered = [...rents.values()].filter(isCovered);
-    const houseCount = covered.filter((p) => p.house).length;
-    const unitCount  = covered.filter((p) => p.unit).length;
-    const smallHouse = covered.filter((p) => p.house?.smallSample).length;
-    log(SOURCE_ID, `postcodes: ${rents.size} in file, ${covered.length} with a published house or unit median (house ${houseCount}, of which ${smallHouse} on 30 or fewer bonds; unit ${unitCount})`);
+    parsed.sort((a, b) => b.periodDate.getTime() - a.periodDate.getTime());
+    const newest = parsed[0];
 
     const suburbs = await prisma.suburb.findMany({ where: { state: "NSW" }, select: { id: true, slug: true, name: true, postcode: true } });
     const byPostcode = new Map<string, typeof suburbs>();
@@ -147,21 +194,25 @@ export async function run(): Promise<void> {
 
     const plan: PlannedRow[] = [];
     let postcodesWithoutSuburbs = 0;
-    for (const p of covered) {
-      const members = byPostcode.get(p.postcode) ?? [];
-      if (members.length === 0) { postcodesWithoutSuburbs++; continue; }
-      for (const s of members) {
-        plan.push({ id: s.id, slug: s.slug, name: s.name, postcode: s.postcode, house: p.house?.median ?? 0, unit: p.unit?.median ?? 0, bonds: p.house?.newBonds ?? null });
+    for (const p of parsed) {
+      for (const r of p.rents.values()) {
+        if (!isCovered(r)) continue;
+        const members = byPostcode.get(r.postcode) ?? [];
+        if (members.length === 0) { if (p === newest) postcodesWithoutSuburbs++; continue; }
+        for (const s of members) {
+          plan.push({ id: s.id, slug: s.slug, name: s.name, postcode: s.postcode, period: p.period, periodDate: p.periodDate, house: r.house?.median ?? 0, unit: r.unit?.median ?? 0, bed1: r.bed1?.median ?? null, bed2: r.bed2?.median ?? null, bed3: r.bed3?.median ?? null, bonds: r.house?.newBonds ?? null });
+        }
       }
     }
+    const latestRows = plan.filter((r) => r.period === newest.period);
     const legacy = await prisma.$queryRaw<{ n: bigint }[]>`SELECT COUNT(*)::bigint AS n FROM "SuburbRentalStat" WHERE state = 'NSW' AND source = ${SOURCE_ID} AND "suburbName" = postcode`;
     const legacyRows = Number(legacy[0]?.n ?? 0);
 
-    log(SOURCE_ID, `plan: ${plan.length} suburbs across ${covered.length - postcodesWithoutSuburbs} postcodes (${postcodesWithoutSuburbs} covered postcodes have no suburb rows); house rent unknown for ${plan.filter((r) => r.house === 0).length}, unit rent unknown for ${plan.filter((r) => r.unit === 0).length}; ${legacyRows} legacy postcode-named rows to delete; ${suburbs.length - plan.length} NSW suburbs untouched`);
+    log(SOURCE_ID, `plan: ${parsed.length} quarters ${parsed[parsed.length - 1].period} to ${newest.period}; ${plan.length} rows; newest quarter ${latestRows.length} suburbs (${postcodesWithoutSuburbs} covered postcodes have no suburb rows; house unknown for ${latestRows.filter((r) => r.house === 0).length}, unit unknown for ${latestRows.filter((r) => r.unit === 0).length}, 2-bedroom median for ${latestRows.filter((r) => r.bed2).length}); ${legacyRows} legacy postcode-named rows to delete; ${suburbs.length - latestRows.length} NSW suburbs untouched`);
     for (const slug of SAMPLE_SLUGS) {
-      const r = plan.find((x) => x.slug === slug);
-      const bonds = r?.house ? ` (${r.bonds ?? "30 or fewer"} new house bonds)` : "";
-      log(SOURCE_ID, `  ${slug}: ${r ? `house $${r.house || "unknown"}, unit $${r.unit || "unknown"}${bonds}` : "not covered"}`);
+      const rs = plan.filter((x) => x.slug === slug);
+      const r = rs.find((x) => x.period === newest.period);
+      log(SOURCE_ID, `  ${slug}: ${r ? `${rs.length} quarters; ${newest.period} house $${r.house || "unknown"}, unit $${r.unit || "unknown"}, 1/2/3 bed $${r.bed1 ?? "-"}/$${r.bed2 ?? "-"}/$${r.bed3 ?? "-"}${r.house ? ` (${r.bonds ?? "30 or fewer"} new house bonds)` : ""}; oldest ${rs[rs.length - 1].period} house $${rs[rs.length - 1].house || "unknown"}` : "not covered"}`);
     }
 
     if (dryRun) {
@@ -169,39 +220,46 @@ export async function run(): Promise<void> {
       return;
     }
 
-    // One bulk upsert per chunk. A Prisma $transaction of 50 upserts exceeded
-    // the 5 s interactive-transaction limit over the Railway proxy (7 Sep 2026
-    // run); UNNEST + ON CONFLICT is a single round trip per chunk.
+    // One bulk upsert per chunk (UNNEST + ON CONFLICT): Prisma transactions
+    // of many upserts exceed the 5 s limit over the Railway proxy.
     for (let i = 0; i < plan.length; i += UPSERT_CHUNK) {
       const chunk = plan.slice(i, i + UPSERT_CHUNK);
       await prisma.$executeRaw`
         INSERT INTO "SuburbRentalStat"
           (id, "suburbSlug", "suburbName", postcode, state, period, "periodDate",
-           "medianRentHouse", "medianRentUnit", "bondLodgements", source, "createdAt", "updatedAt")
-        SELECT u.id, u.slug, u.name, u.postcode, 'NSW', ${parsed.period}, ${parsed.periodDate},
-               NULLIF(u.house, 0), NULLIF(u.unit, 0), u.bonds, ${SOURCE_ID}, NOW(), NOW()
+           "medianRentHouse", "medianRentUnit", "medianRent1Bed", "medianRent2Bed", "medianRent3Bed", "bondLodgements", source, "createdAt", "updatedAt")
+        SELECT u.id, u.slug, u.name, u.postcode, 'NSW', u.period, u.period_date,
+               NULLIF(u.house, 0), NULLIF(u.unit, 0), u.bed1, u.bed2, u.bed3, u.bonds, ${SOURCE_ID}, NOW(), NOW()
         FROM UNNEST(
           ${chunk.map(() => randomUUID())}::text[],
           ${chunk.map((r) => r.slug)}::text[],
           ${chunk.map((r) => r.name)}::text[],
           ${chunk.map((r) => r.postcode)}::text[],
+          ${chunk.map((r) => r.period)}::text[],
+          ${chunk.map((r) => r.periodDate)}::timestamptz[],
           ${chunk.map((r) => r.house)}::int[],
           ${chunk.map((r) => r.unit)}::int[],
+          ${chunk.map((r) => r.bed1)}::int[],
+          ${chunk.map((r) => r.bed2)}::int[],
+          ${chunk.map((r) => r.bed3)}::int[],
           ${chunk.map((r) => r.bonds)}::int[]
-        ) AS u(id, slug, name, postcode, house, unit, bonds)
+        ) AS u(id, slug, name, postcode, period, period_date, house, unit, bed1, bed2, bed3, bonds)
         ON CONFLICT ("suburbName", postcode, state, period) DO UPDATE SET
           "suburbSlug"      = EXCLUDED."suburbSlug",
           "periodDate"      = EXCLUDED."periodDate",
           "medianRentHouse" = EXCLUDED."medianRentHouse",
           "medianRentUnit"  = EXCLUDED."medianRentUnit",
+          "medianRent1Bed"  = EXCLUDED."medianRent1Bed",
+          "medianRent2Bed"  = EXCLUDED."medianRent2Bed",
+          "medianRent3Bed"  = EXCLUDED."medianRent3Bed",
           "bondLodgements"  = EXCLUDED."bondLodgements",
           source            = EXCLUDED.source,
           "updatedAt"       = NOW()
       `;
-      log(SOURCE_ID, `  rental rows ${Math.min(i + UPSERT_CHUNK, plan.length)}/${plan.length}`);
+      if (((i / UPSERT_CHUNK) + 1) % 5 === 0 || i + UPSERT_CHUNK >= plan.length) log(SOURCE_ID, `  rental rows ${Math.min(i + UPSERT_CHUNK, plan.length)}/${plan.length}`);
     }
 
-    if (plan.length > 0) {
+    if (latestRows.length > 0) {
       // Rent has its own timestamp; statsUpdatedAt belongs to the sales feeds.
       // Prisma's @updatedAt is not touched by raw SQL, and the suburbs sitemap
       // lastmod, revalidate-paths and the IndexNow ping key on it.
@@ -212,13 +270,13 @@ export async function run(): Promise<void> {
             "rentalUpdatedAt" = NOW(),
             "updatedAt"       = NOW()
         FROM UNNEST(
-          ${plan.map((r) => r.id)}::text[],
-          ${plan.map((r) => r.house)}::int[],
-          ${plan.map((r) => r.unit)}::int[]
+          ${latestRows.map((r) => r.id)}::text[],
+          ${latestRows.map((r) => r.house)}::int[],
+          ${latestRows.map((r) => r.unit)}::int[]
         ) AS u(id, rent_house, rent_unit)
         WHERE s.id = u.id
       `;
-      log(SOURCE_ID, `updated ${plan.length} Suburb rows`);
+      log(SOURCE_ID, `updated ${latestRows.length} Suburb rows from ${newest.period}`);
     }
 
     if (legacyRows > 0) {
@@ -226,7 +284,7 @@ export async function run(): Promise<void> {
       log(SOURCE_ID, `deleted ${deleted} legacy postcode-named rows`);
     }
 
-    await finishSync(SOURCE_ID, plan.length, parsed.periodDate);
+    await finishSync(SOURCE_ID, latestRows.length, newest.periodDate);
   } catch (err) {
     if (!dryRun) await failSync(SOURCE_ID, err);
     throw err;

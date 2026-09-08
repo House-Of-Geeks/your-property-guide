@@ -51,6 +51,7 @@ describe("buildRentalMarket", () => {
     expect(m.provenance).toBe("Victorian rental report, September 2025");
     expect(m.faqs.map((f) => f.question)).toEqual(["What is the median rent in Werribee?", "What is the gross rental yield in Werribee?", "What does a one, two or three-bedroom rental cost in Werribee?"]);
     expect(m.faqs[1].answer).toContain("About 3.7% for houses: $460 a week is $23,920 a year against a median house price of $650,000");
+    expect(m.faqs[2].answer).toContain("three-bedroom figure is the median for houses");
   });
   it("adds history, the 12-month change and a listings section when the data exists", () => {
     const m = buildRentalMarket(suburb(), [row({}), row({ period: "2024-Q3", periodDate: new Date("2024-09-01T00:00:00Z"), medianRentHouse: 420, medianRentUnit: 380 })], 12);

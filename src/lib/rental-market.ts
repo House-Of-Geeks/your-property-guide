@@ -89,6 +89,13 @@ function fit(parts: string[]): string {
   return parts[0].slice(0, DESCRIPTION_BUDGET);
 }
 
+/** What a bedroom median covers, per feed: the sources define them differently. */
+export function bedroomDefinition(source: string): string {
+  if (source === "rental-nsw") return "These pool every dwelling type of that size, so a three-bedroom house usually sits above the three-bedroom figure and a three-bedroom unit below it.";
+  if (source === "rental-vic") return "The three-bedroom figure is the median for houses and the one and two-bedroom figures are for flats, following the Victorian report's tables.";
+  return "Bedroom figures follow the source's own definition of the dwelling types they cover.";
+}
+
 const signed = (n: number) => `${n > 0 ? "up" : n < 0 ? "down" : "flat at"}${n === 0 ? "" : ` ${Math.abs(n)}%`}`;
 
 export function buildRentalMarket(suburb: Suburb, history: SuburbRentalHistory[], listings: number): RentalMarketModel {
@@ -159,7 +166,7 @@ export function buildRentalMarket(suburb: Suburb, history: SuburbRentalHistory[]
     if (current.bed3) beds.push(`three-bedroom ${money(current.bed3)}`);
     faqs.push({
       question: `What does a one, two or three-bedroom rental cost in ${name}?`,
-      answer: `Median weekly rent by bedroom count in ${name}: ${beds.join(", ")} (${current.label}, ${when}). Bedroom medians pool houses and units of that size, so a three-bedroom house usually sits above the three-bedroom figure and a three-bedroom unit below it.`,
+      answer: `Median weekly rent by bedroom count in ${name}: ${beds.join(", ")} (${current.label}, ${when}). ${bedroomDefinition(current.source)}`,
     });
   }
   if (listings > 0) {
