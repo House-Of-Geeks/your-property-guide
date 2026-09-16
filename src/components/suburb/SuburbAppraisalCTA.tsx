@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Home, ArrowRight, Loader2 } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 import { ENRICH_LEAD_STORAGE_KEY } from "@/components/forms/ThanksPhoneAsk";
+import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
 
 interface Props {
   suburbName: string;
@@ -32,9 +33,11 @@ const TIMEFRAMES: { id: string; label: string }[] = [
  * replaces it with a 3-field appraisal request that converts traffic at
  * the moment of highest intent ("what's my home worth in this suburb?").
  *
- * Form is intentionally minimal: first name + email + property address.
- * Phone is collected post-submit on /appraisal/thanks via ThanksPhoneAsk +
- * /api/leads/enrich (the lead id is handed over in sessionStorage below).
+ * Form is short: first name, email, mobile, property address. Mobile is
+ * required (17 Sep 2026): an appraisal only happens once an agent calls to
+ * arrange it, so a number is the deliverable, and the field copy says so.
+ * The /appraisal/thanks phone ask still covers the rare submit that arrives
+ * without one (older tabs) via the sessionStorage hand-off below.
  * Suburb is implicit from the page context, no second guess required.
  */
 export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = "suburb-appraisal" }: Props) {
@@ -42,6 +45,8 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState<string | null>(null);
   const [timeframe, setTimeframe] = useState<string | null>(null);
   const [website, setWebsite] = useState(""); // honeypot
   const [loading, setLoading] = useState(false);
@@ -58,6 +63,11 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isValidPhone(phone)) {
+      setPhoneError(PHONE_ERROR);
+      return;
+    }
+    setPhoneError(null);
     setLoading(true);
     setError(null);
     try {
@@ -68,6 +78,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
           type: "appraisal-request",
           firstName: firstName.trim(),
           email: email.trim(),
+          phone: phone.trim(),
           address: address.trim(),
           appraisalAddress: address.trim(),
           suburb: suburbSlug,
@@ -82,11 +93,11 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
       clarityTag("appraisal_suburb", suburbSlug);
       clarityTag("appraisal_source", source ? "home-value-guide" : "suburb-inline");
       if (timeframe) clarityTag("appraisal_timeframe", timeframe);
-      // This form is deliberately phone-less, so every lead needs the
-      // thanks-page follow-up. Hand the lead id over in sessionStorage
-      // (it's the enrich bearer credential — never in the URL).
+      // Mobile is collected here now, so the thanks-page phone ask only
+      // fires if the number somehow did not make it (the id is the enrich
+      // bearer credential — sessionStorage, never the URL).
       try {
-        if (saved?.id) {
+        if (saved?.id && !phone.trim()) {
           sessionStorage.setItem(ENRICH_LEAD_STORAGE_KEY, saved.id);
         } else {
           sessionStorage.removeItem(ENRICH_LEAD_STORAGE_KEY);
@@ -166,6 +177,33 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
               className="w-full rounded-lg border border-line bg-surface-raised px-3 py-2.5 text-sm text-ink placeholder:text-ink-subtle outline-none transition-[border-color,box-shadow] duration-200 focus:border-cta focus:ring-[3px] focus:ring-cta/15"
             />
           </div>
+        </div>
+
+        <div>
+          <label htmlFor="suburb-appraisal-phone" className="block text-xs font-medium text-ink-muted mb-1">
+            Mobile <span className="font-normal text-ink-subtle">so your agent can arrange the appraisal</span>
+          </label>
+          <input
+            id="suburb-appraisal-phone"
+            type="tel"
+            required
+            inputMode="tel"
+            autoComplete="tel"
+            value={phone}
+            onChange={(e) => {
+              setPhone(e.target.value);
+              if (phoneError) setPhoneError(null);
+            }}
+            aria-invalid={phoneError ? true : undefined}
+            aria-describedby={phoneError ? "suburb-appraisal-phone-error" : undefined}
+            placeholder="0412 345 678"
+            className={`w-full rounded-lg border bg-surface-raised px-3 py-2.5 text-sm text-ink placeholder:text-ink-subtle outline-none transition-[border-color,box-shadow] duration-200 focus:border-cta focus:ring-[3px] focus:ring-cta/15 ${
+              phoneError ? "border-danger focus:border-danger" : "border-line"
+            }`}
+          />
+          {phoneError && (
+            <p id="suburb-appraisal-phone-error" className="mt-1.5 text-xs text-danger">{phoneError}</p>
+          )}
         </div>
 
         <div>
