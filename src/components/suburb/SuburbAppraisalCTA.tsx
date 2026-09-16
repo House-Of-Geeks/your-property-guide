@@ -9,7 +9,21 @@ import { ENRICH_LEAD_STORAGE_KEY } from "@/components/forms/ThanksPhoneAsk";
 interface Props {
   suburbName: string;
   suburbSlug: string;
+  /** Attribution string passed to /api/leads. Defaults to the suburb-page source. */
+  source?: string;
+  /** Clarity form name. Defaults to "suburb-appraisal". */
+  formName?: string;
 }
+
+// One-tap, optional. Feeds the same hot/warm/cold scoring the selling-guide
+// funnel uses, so an appraisal lead can be prioritised on speed-to-lead
+// without adding a required field to a form that converts because it's short.
+const TIMEFRAMES: { id: string; label: string }[] = [
+  { id: "0-3-months",     label: "Within 3 months" },
+  { id: "3-6-months",     label: "3 to 6 months" },
+  { id: "6-12-months",    label: "6 to 12 months" },
+  { id: "researching",    label: "Just curious" },
+];
 
 /**
  * Inline seller-capture CTA on suburb pages. The brief flagged the old
@@ -23,11 +37,12 @@ interface Props {
  * /api/leads/enrich (the lead id is handed over in sessionStorage below).
  * Suburb is implicit from the page context, no second guess required.
  */
-export function SuburbAppraisalCTA({ suburbName, suburbSlug }: Props) {
+export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = "suburb-appraisal" }: Props) {
   const router = useRouter();
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [timeframe, setTimeframe] = useState<string | null>(null);
   const [website, setWebsite] = useState(""); // honeypot
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +52,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug }: Props) {
     if (hasStarted) return;
     setHasStarted(true);
     clarityEvent("form_start");
-    clarityTag("form_name", "suburb-appraisal");
+    clarityTag("form_name", formName);
     clarityTag("form_suburb", suburbSlug);
   };
 
@@ -56,15 +71,17 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug }: Props) {
           address: address.trim(),
           appraisalAddress: address.trim(),
           suburb: suburbSlug,
+          sellingTimeframe: timeframe ?? undefined,
           website,
-          source: `suburb-page-${suburbSlug}-appraisal`,
+          source: source ?? `suburb-page-${suburbSlug}-appraisal`,
         }),
       });
       if (!res.ok) throw new Error("Failed");
       const saved = (await res.json().catch(() => null)) as { id?: string } | null;
       clarityEvent("request_quote");
       clarityTag("appraisal_suburb", suburbSlug);
-      clarityTag("appraisal_source", "suburb-inline");
+      clarityTag("appraisal_source", source ? "home-value-guide" : "suburb-inline");
+      if (timeframe) clarityTag("appraisal_timeframe", timeframe);
       // This form is deliberately phone-less, so every lead needs the
       // thanks-page follow-up. Hand the lead id over in sessionStorage
       // (it's the enrich bearer credential — never in the URL).
@@ -165,6 +182,32 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug }: Props) {
             className="w-full rounded-lg border border-line bg-surface-raised px-3 py-2.5 text-sm text-ink placeholder:text-ink-subtle outline-none transition-[border-color,box-shadow] duration-200 focus:border-cta focus:ring-[3px] focus:ring-cta/15"
           />
         </div>
+
+        <fieldset>
+          <legend className="block text-xs font-medium text-ink-muted mb-1.5">
+            Thinking of selling? <span className="font-normal text-ink-subtle">Optional</span>
+          </legend>
+          <div className="flex flex-wrap gap-2">
+            {TIMEFRAMES.map((t) => {
+              const active = timeframe === t.id;
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setTimeframe(active ? null : t.id)}
+                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                    active
+                      ? "bg-ink text-white border-ink"
+                      : "bg-surface-raised text-ink border-line hover:border-line-strong"
+                  }`}
+                >
+                  {t.label}
+                </button>
+              );
+            })}
+          </div>
+        </fieldset>
 
         {error && <p className="step-in text-sm text-danger">{error}</p>}
 

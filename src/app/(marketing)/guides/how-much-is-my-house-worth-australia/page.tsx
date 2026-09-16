@@ -16,14 +16,15 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HomeValueAppraisal } from "@/components/journey/HomeValueAppraisal";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "How Much Is My House Worth? (Australia, 2026)",
+  title: "How Much Is My House Worth? Free Property Appraisal (Australia)",
   description:
-    "The three ways to value a house in Australia (appraisal, bank valuation, online estimate), why they disagree, what actually drives your number, and how to get an accurate figure before you sell.",
+    "Pick your suburb, see what houses there are selling for, and get a free appraisal from a local agent. Plus the three ways a house is valued in Australia, why they disagree, and what actually drives your number.",
   slug: "how-much-is-my-house-worth-australia",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-06-14",
+  updatedAt: "2026-09-17",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -114,6 +115,11 @@ export default function HowMuchIsMyHouseWorthAustraliaPage() {
       faqs={FAQS}
       related={RELATED}
     >
+      {/* Valuation plan item 2: the page answers the question with an action,
+          not a guessed number. Suburb first, the suburb's median for context,
+          then the same appraisal form the suburb pages use. */}
+      <HomeValueAppraisal />
+
       <Callout variant="info" title="There isn't one answer, there are three">
         <p>
           Ask three different sources what your house is worth and you&rsquo;ll

@@ -72,7 +72,7 @@ Everything can be built in parallel. Shipping follows this order because each la
 into the earlier ones:
 
 1. **Suburb price section** — all states at once.
-2. **Home value estimator** — links into the price section.
+2. **House-worth page** — suburb first, then the appraisal form; links into the price section.
 3. **City house-price pages** — link into suburb price sections and the estimator.
 4. **Real estate agents in {suburb} pages** — lead-gen first, agent listings grow as the network
    does.
@@ -125,32 +125,41 @@ on each suburb, so it adds no database load.
 **Done when.** Five sample pages pass the Rich Results Test; "hawthorn median house price" shows
 the Hawthorn page; the +30 day pull has the median cluster below position 25.
 
-### 2. Home value estimator
+### 2. House-worth page: suburb first, then a free appraisal
 
 **Searches served.** "How much is my house worth" and its variants (about 40,000 a month),
-"property value estimate" (14,800), "home appraisal calculator" (3,400). These searches arrive with
-a place attached: "what is my house worth hawkesbury", 87 impressions at position 28, currently
-landing on a region page. The existing guide has had zero impressions since July because it
-explains why estimates differ and never gives one.
+"property value estimate" (14,800), "home appraisal calculator" (3,400). The existing guide has had
+zero impressions since July because it explained why estimates differ and offered nothing to do.
+
+**Why not an estimator.** Any number we computed from a suburb median would be the suburb's
+median dressed up as a valuation, and people searching this phrase have already seen real
+estimates from the portals. Dressing ours up would undercut the trust the site is built on and the
+appraisal it sits beside. The suburb pages already carry the appraisal form under the price
+section and the "How much is my house worth in {Suburb}?" question, so the intent is served at
+suburb level; what was missing was a way to act on the national page.
 
 **What gets built.**
 
-1. The estimator lives on the existing "How much is my house worth" guide page, keeping its URL
-   and search history. Retitled **"How Much Is My House Worth? Free Property Value Estimate
-   (Australia)"**. Tool at the top, the current explainer below it.
-2. The tool: pick a suburb, pick house or unit, get a range built from that suburb's median with
-   twelve-month movement and the sales count behind it. One next step: "Get a free appraisal from a
-   local agent", which feeds the existing appraisal request with the suburb attached. A bedroom
-   adjustment follows for NSW once the sales data is imported (item 7).
-3. Suburb versions at `/suburbs/{suburb}/property-value`, "How much is my house worth in
-   {Suburb}?", the same tool pre-filled. Only suburbs with a reliable price go in the sitemap.
-4. Region versions are deferred; region pages link to the suburb tool.
+1. The guide page keeps its URL and gains an action block at the top: pick a suburb, see that
+   suburb's median house price, twelve-month change, unit median and source line, stated plainly
+   as the suburb's figures and not the visitor's house, then the same three-field appraisal form
+   the suburb pages use, attributed to the guide and the suburb. Where a suburb's median is
+   withheld, the form still works and the page says why there is no figure.
+2. The guide is retitled **"How Much Is My House Worth? Free Property Appraisal (Australia)"**
+   with a description that says what the page now does. The explainer on the three kinds of number
+   stays below the block.
+3. The appraisal form everywhere gains one optional, one-tap question: when are you thinking of
+   selling. Leads that answer "within 3 months" are flagged hot in the agent handoff, the same
+   scoring the guide funnel uses, without adding a required field to a form that converts because
+   it is short.
+4. No suburb-level sub-pages. The suburb page owns "how much is my house worth in {Suburb}";
+   a second URL for the same intent would compete with it.
 
-**Quality gate.** The range is never narrower than ±10% of the median; withheld under five sales;
-the copy says estimate, not valuation.
+**Quality gate.** The suburb figures shown pass the same reliable-price test as the suburb page;
+nothing is labelled an estimate or a valuation.
 
-**Done when.** A range returns for the top fifty suburbs by impressions; the guide URL records
-impressions in the +30 day pull; suburb versions indexed wherever the price gate passes.
+**Done when.** The guide records impressions on "how much is my house worth" queries in the
++30 day pull; the first appraisal request arrives with a guide source.
 
 ### 3. City house-price pages
 
@@ -161,7 +170,7 @@ city pages average position 51 today.
 **What gets built.** On each city market page: title **"{City} House Prices & Property Market
 2026: Median, Growth, Suburbs"**; a heading "Median house price in {City}"; a table of the twenty
 highest-volume suburbs with median, twelve-month change and a link to each suburb's price section;
-a twelve-month trend; the estimator call to action. Three hundred words of copy per city describing
+a twelve-month trend; the appraisal call to action. Three hundred words of copy per city describing
 what the numbers show, sourced and dated, no recommendations.
 
 **Rollout.** All eight cities in one release: Perth, Sydney, Melbourne, Brisbane, Adelaide, Gold
@@ -254,8 +263,8 @@ stays parked.
 **What gets built.** The existing `/sold/{suburb}` URLs become **"Recently sold houses in {Suburb}
 {State} {Postcode}"**: address, sale price, contract date and property type for the last 24 months,
 with the median of the listed sales. The hub becomes a state → suburb index. Linked from the
-suburb price section and the estimator. Once the data is in, the suburb price section also gains
-its "recent sales" block for NSW suburbs, and the estimator gains its bedroom adjustment.
+suburb price section and the house-worth page. Once the data is in, the suburb price section also gains
+its "recent sales" block for NSW suburbs.
 
 **Quality gate.** A suburb enters the sitemap only with ten or more matched sales in 24 months;
 addresses only where the match to an address is confident; never an owner's name.
@@ -273,8 +282,8 @@ when a source exists.
 
 ## Decisions made
 
-1. **Estimator URL.** The estimator goes on the existing "How much is my house worth" guide page,
-   keeping its URL and history. No new URL.
+1. **House-worth page.** No estimator: the existing guide page keeps its URL and gains a
+   suburb-first appraisal block instead. No suburb sub-pages; the suburb page owns that intent.
 2. **Match flow on the agents page.** Reuse the homepage agent-match flow as is, with intent and
    suburb pre-set. No new form.
 3. **Sold data.** Manual downloads of the NSW Valuer General sales files. NSW sold pages proceed

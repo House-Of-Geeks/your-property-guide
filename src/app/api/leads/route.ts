@@ -142,6 +142,17 @@ export async function POST(request: Request) {
     // stays the complete record (incl. the consent snapshot) without a
     // schema migration.
     let persistedMessage = lead.message;
+    // Appraisal requests may carry an optional selling timeframe (one-tap
+    // chips on the suburb-page and house-worth forms). Keep it on the row
+    // the same way the guide funnel does, so the agent handoff sees it.
+    if (lead.type === "appraisal-request" && lead.sellingTimeframe) {
+      persistedMessage = [
+        `Timeframe: ${TIMEFRAME_LABELS[lead.sellingTimeframe] ?? lead.sellingTimeframe}`,
+        lead.message,
+      ]
+        .filter(Boolean)
+        .join(" · ");
+    }
     if (lead.type === "guide-download") {
       const score = scoreGuideLead(lead);
       persistedMessage = [
@@ -211,7 +222,12 @@ export async function POST(request: Request) {
     // inbox list without opening the email. Speed-to-lead is the whole
     // game: an appraisal-ready vendor contacted inside 24h converts at
     // roughly 4x the rate of one contacted later.
-    const scorePrefix = lead.type === "guide-download" ? `[${scoreGuideLead(lead)}] ` : "";
+    const scorePrefix =
+      lead.type === "guide-download"
+        ? `[${scoreGuideLead(lead)}] `
+        : lead.type === "appraisal-request" && lead.sellingTimeframe === "0-3-months"
+          ? "[HOT] "
+          : "";
     const subject     = `${scorePrefix}${typeLabel}, ${lead.firstName}${lead.lastName ? ` ${lead.lastName}` : ""}${lead.suburb ? ` (${lead.suburb})` : ""}`;
 
     // Match-request leads (the homepage MatchAgent flow) go ONLY to
