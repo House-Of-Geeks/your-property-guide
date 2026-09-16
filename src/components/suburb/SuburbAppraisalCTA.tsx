@@ -6,6 +6,7 @@ import { Home, ArrowRight, Loader2 } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 import { ENRICH_LEAD_STORAGE_KEY } from "@/components/forms/ThanksPhoneAsk";
 import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
+import { AddressAutocomplete } from "@/components/forms/AddressAutocomplete";
 
 interface Props {
   suburbName: string;
@@ -45,6 +46,10 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  // Suburb resolved from a Google-selected address, when it is one we hold and
+  // differs from the page's suburb (a Bondi page visitor entering a Bondi
+  // Beach address). Falls back to the page suburb.
+  const [addressSuburbSlug, setAddressSuburbSlug] = useState<string | null>(null);
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState<string | null>(null);
   const [timeframe, setTimeframe] = useState<string | null>(null);
@@ -81,7 +86,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
           phone: phone.trim(),
           address: address.trim(),
           appraisalAddress: address.trim(),
-          suburb: suburbSlug,
+          suburb: addressSuburbSlug ?? suburbSlug,
           sellingTimeframe: timeframe ?? undefined,
           website,
           source: source ?? `suburb-page-${suburbSlug}-appraisal`,
@@ -206,20 +211,15 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
           )}
         </div>
 
-        <div>
-          <label htmlFor="suburb-appraisal-address" className="block text-xs font-medium text-ink-muted mb-1">
-            Property address in {suburbName}
-          </label>
-          <input
-            id="suburb-appraisal-address"
-            type="text"
-            required
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder={`e.g. 15 Smith Street, ${suburbName}`}
-            className="w-full rounded-lg border border-line bg-surface-raised px-3 py-2.5 text-sm text-ink placeholder:text-ink-subtle outline-none transition-[border-color,box-shadow] duration-200 focus:border-cta focus:ring-[3px] focus:ring-cta/15"
-          />
-        </div>
+        <AddressAutocomplete
+          id="suburb-appraisal-address"
+          label={<>Property address in {suburbName}</>}
+          placeholder={`e.g. 15 Smith Street, ${suburbName}`}
+          required
+          value={address}
+          onChange={(v) => { setAddress(v); setAddressSuburbSlug(null); }}
+          onSelect={({ suburb }) => setAddressSuburbSlug(suburb?.slug ?? null)}
+        />
 
         <fieldset>
           <legend className="block text-xs font-medium text-ink-muted mb-1.5">
