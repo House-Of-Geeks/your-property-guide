@@ -203,3 +203,13 @@ Tick items off as they ship.
       by hand). GSC stays a manual export (--gsc); CWV needs a PageSpeed API key (none); Bing URL submission already
       happens after syncs via IndexNow. Original scope: GSC page×query top 200 suburbs, Bing page/query reports,
       33 tracked SERPs, Bing 5xx count, CWV once PSI quota resets, Bing URL submission after syncs. (K)
+
+## Valuation & agent search plan (16 Sep 2026)
+
+Items 31–35 live in `valuation-search-plan-2026-09.md` (plan items 1–5); tracked here for the change log.
+
+- [ ] 31. [code] BUILT 16 Sep 2026, branch `feat/suburb-price-section`: suburb price section (plan item 1). Absorbs 17 (price trend moved up) and 19 (valuation FAQ). 18 (recent sales) waits on the NSW VG import.
+- [ ] 32. [code+content] Home value estimator on the existing how-much-is-my-house-worth guide URL, plus /suburbs/{slug}/property-value (plan item 2).
+- [ ] 33. [code+content] City house-price pages on /property-market/{city} (plan item 3).
+- [ ] 34. [code] Real estate agents in {suburb} pages, lead-gen first (plan item 4).
+- [ ] 35. [code] Sold in {suburb}, NSW, after manual Valuer General download + import (plan item 7).

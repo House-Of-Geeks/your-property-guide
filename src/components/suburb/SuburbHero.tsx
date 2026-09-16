@@ -15,8 +15,8 @@ interface SuburbHeroProps {
 const GMAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? "";
 
 const TAB_LINKS = [
+  { label: "Prices",       href: "#market"       },
   { label: "About",        href: "#about"        },
-  { label: "Market",       href: "#market"       },
   { label: "Demographics", href: "#demographics" },
   { label: "Location",     href: "#location"     },
   { label: "Schools",      href: "#schools"      },

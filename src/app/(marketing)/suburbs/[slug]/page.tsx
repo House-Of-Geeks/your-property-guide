@@ -179,6 +179,166 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
 
+        {/* Market, asymmetric lead-stat + supporting grid */}
+        <section id="market" className="scroll-mt-16">
+          {marketSummary && (
+            <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-3xl mb-8">
+              {marketSummary}
+            </p>
+          )}
+          {(buyerView || sellerView) && (
+            <div className="grid sm:grid-cols-2 gap-4 mb-10">
+              {buyerView && (
+                <div className="rounded-xl border border-line bg-surface-raised p-5">
+                  <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-2">For buyers</p>
+                  <p className="font-sans text-sm text-ink leading-relaxed">{buyerView}</p>
+                  <p className="font-sans text-sm mt-3">
+                    <Link
+                      href="/borrowing-power-calculator"
+                      className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                    >
+                      See what you can borrow
+                    </Link>
+                  </p>
+                </div>
+              )}
+              {sellerView && (
+                <div className="rounded-xl border border-line bg-surface-raised p-5">
+                  <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-2">For sellers</p>
+                  <p className="font-sans text-sm text-ink leading-relaxed">{sellerView}</p>
+                  <p className="font-sans text-sm mt-3">
+                    <Link
+                      href="/real-estate-commission-calculator"
+                      className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                    >
+                      Work out your selling costs
+                    </Link>
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+          <div className="grid lg:grid-cols-12 gap-8">
+            {/* Lead stat */}
+            <div className="lg:col-span-5">
+              <p className="font-display italic text-primary text-base mb-3 leading-none">
+                Market
+              </p>
+              <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
+                House prices in {suburb.name}.
+              </h2>
+              <div className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
+                {priceTrusted ? (
+                  <>
+                    <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3 inline-flex items-center gap-2">
+                      <TrendingUp className="w-3.5 h-3.5 text-cta" /> Median house price
+                    </p>
+                    <p className="font-display text-5xl sm:text-6xl text-ink leading-none tracking-tight">
+                      {formatPriceFull(suburb.stats.medianHousePrice)}
+                    </p>
+                  </>
+                ) : (
+                  // Unreliable source (currently QLD/WA census-mortgage
+                  // proxy). Don't publish the back-calculated fiction
+                  // as a "median". Show an honest pending state with a
+                  // link to the methodology page.
+                  <>
+                    <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3 inline-flex items-center gap-2">
+                      <TrendingUp className="w-3.5 h-3.5 text-cta" /> Median house price
+                    </p>
+                    <p className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight">
+                      {thinSalesCount ? "Too few sales for a median" : PENDING_PRICE_LABEL}
+                    </p>
+                    <p className="font-sans text-sm text-ink-muted mt-3 leading-relaxed">
+                      {thinSalesCount && salesProvenance ? thinSalesNote(thinSalesCount, salesProvenance.period) : PENDING_PRICE_NOTE}{" "}
+                      <Link
+                        href="/methodology"
+                        className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                      >
+                        How we source data
+                      </Link>
+                      .
+                    </p>
+                  </>
+                )}
+                {priceTrusted && suburb.stats.annualGrowthHouse !== null && suburb.stats.annualGrowthHouse !== undefined && (
+                  <p className="font-sans text-base text-ink-muted mt-4 leading-relaxed">
+                    <span className={`font-medium ${suburb.stats.annualGrowthHouse >= 0 ? "text-success" : "text-danger"}`}>
+                      {formatPercentage(suburb.stats.annualGrowthHouse)}
+                    </span>{" "}
+                    over the past year. Median unit price{" "}
+                    <span className="font-medium text-ink">
+                      {suburb.stats.medianUnitPrice ? formatPriceFull(suburb.stats.medianUnitPrice) : "n/a"}
+                    </span>.
+                  </p>
+                )}
+                {priceTrusted ? (
+                  <PriceProvenance provenance={salesProvenance} />
+                ) : (
+                  <DataFreshnessNote
+                    label="Sales"
+                    asOf={suburb.dataFreshness?.salesAsOf ?? null}
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* Supporting grid */}
+            <div className="lg:col-span-7">
+              <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-4">
+                Rental and ownership
+              </p>
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <MetricCard label="Weekly rent (house)" value={suburb.stats.medianRentHouse ? `$${suburb.stats.medianRentHouse}/wk` : "–"} />
+                <MetricCard label="Weekly rent (unit)"  value={suburb.stats.medianRentUnit  ? `$${suburb.stats.medianRentUnit}/wk`  : "–"} />
+                <MetricCard label="Owner occupied"      value={suburb.stats.ownerOccupied   ? `${suburb.stats.ownerOccupied}%`     : "–"} />
+                <MetricCard label="Renter occupied"     value={suburb.stats.renterOccupied  ? `${suburb.stats.renterOccupied}%`    : "–"} />
+              </div>
+              <div className="rounded-2xl border border-line bg-surface-raised p-5 sm:p-6">
+                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">
+                  At a deeper level
+                </p>
+                <SuburbStatsComponent suburb={suburb} />
+              </div>
+              <DataFreshnessNote
+                label="Rental"
+                asOf={suburb.dataFreshness?.rentalAsOf ?? null}
+                source={suburb.dataFreshness?.rentalSource ?? undefined}
+              />
+              <div className="mt-3">
+                <Link
+                  href={`/suburbs/${suburb.slug}/rental-market`}
+                  className="inline-flex items-center gap-1 text-sm font-medium text-ink hover:text-primary"
+                >
+                  Open the full rental market view <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Five-year price trend, moved up from the investment section so the
+              price story reads as one block. Same trust gate as the median. */}
+          {priceTrusted && suburb.stats.medianHousePrice > 0 && suburb.stats.annualGrowthHouse !== 0 && (
+            <div className="mt-10 grid lg:grid-cols-12 gap-8">
+              <div className="lg:col-span-7">
+                <SuburbPriceTrend
+                  medianHousePrice={suburb.stats.medianHousePrice}
+                  annualGrowthHouse={suburb.stats.annualGrowthHouse}
+                  suburbName={suburb.name}
+                />
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* High-intent seller capture. Primary conversion CTA on the suburb
+            page, lead-magnet for the appraisal flow. */}
+        <section id="appraisal" className="scroll-mt-16">
+          <SuburbAppraisalCTA suburbName={suburb.name} suburbSlug={suburb.slug} />
+        </section>
+
+        <SectionDivider />
+
         {/* About, editorial lead with decorative contour.
             Renders curated description if present; otherwise a multi-
             paragraph algorithmic narrative built from the suburb's real
@@ -346,152 +506,6 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
         <SectionDivider />
 
-        {/* Market, asymmetric lead-stat + supporting grid */}
-        <section id="market" className="scroll-mt-16">
-          {marketSummary && (
-            <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-3xl mb-8">
-              {marketSummary}
-            </p>
-          )}
-          {(buyerView || sellerView) && (
-            <div className="grid sm:grid-cols-2 gap-4 mb-10">
-              {buyerView && (
-                <div className="rounded-xl border border-line bg-surface-raised p-5">
-                  <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-2">For buyers</p>
-                  <p className="font-sans text-sm text-ink leading-relaxed">{buyerView}</p>
-                  <p className="font-sans text-sm mt-3">
-                    <Link
-                      href="/borrowing-power-calculator"
-                      className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-                    >
-                      See what you can borrow
-                    </Link>
-                  </p>
-                </div>
-              )}
-              {sellerView && (
-                <div className="rounded-xl border border-line bg-surface-raised p-5">
-                  <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-2">For sellers</p>
-                  <p className="font-sans text-sm text-ink leading-relaxed">{sellerView}</p>
-                  <p className="font-sans text-sm mt-3">
-                    <Link
-                      href="/real-estate-commission-calculator"
-                      className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-                    >
-                      Work out your selling costs
-                    </Link>
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
-          <div className="grid lg:grid-cols-12 gap-8">
-            {/* Lead stat */}
-            <div className="lg:col-span-5">
-              <p className="font-display italic text-primary text-base mb-3 leading-none">
-                Market
-              </p>
-              <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-                The price of a home here.
-              </h2>
-              <div className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
-                {priceTrusted ? (
-                  <>
-                    <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3 inline-flex items-center gap-2">
-                      <TrendingUp className="w-3.5 h-3.5 text-cta" /> Median house price
-                    </p>
-                    <p className="font-display text-5xl sm:text-6xl text-ink leading-none tracking-tight">
-                      {formatPriceFull(suburb.stats.medianHousePrice)}
-                    </p>
-                  </>
-                ) : (
-                  // Unreliable source (currently QLD/WA census-mortgage
-                  // proxy). Don't publish the back-calculated fiction
-                  // as a "median". Show an honest pending state with a
-                  // link to the methodology page.
-                  <>
-                    <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3 inline-flex items-center gap-2">
-                      <TrendingUp className="w-3.5 h-3.5 text-cta" /> Median house price
-                    </p>
-                    <p className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight">
-                      {thinSalesCount ? "Too few sales for a median" : PENDING_PRICE_LABEL}
-                    </p>
-                    <p className="font-sans text-sm text-ink-muted mt-3 leading-relaxed">
-                      {thinSalesCount && salesProvenance ? thinSalesNote(thinSalesCount, salesProvenance.period) : PENDING_PRICE_NOTE}{" "}
-                      <Link
-                        href="/methodology"
-                        className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-                      >
-                        How we source data
-                      </Link>
-                      .
-                    </p>
-                  </>
-                )}
-                {priceTrusted && suburb.stats.annualGrowthHouse !== null && suburb.stats.annualGrowthHouse !== undefined && (
-                  <p className="font-sans text-base text-ink-muted mt-4 leading-relaxed">
-                    <span className={`font-medium ${suburb.stats.annualGrowthHouse >= 0 ? "text-success" : "text-danger"}`}>
-                      {formatPercentage(suburb.stats.annualGrowthHouse)}
-                    </span>{" "}
-                    over the past year. Median unit price{" "}
-                    <span className="font-medium text-ink">
-                      {suburb.stats.medianUnitPrice ? formatPriceFull(suburb.stats.medianUnitPrice) : "n/a"}
-                    </span>.
-                  </p>
-                )}
-                {priceTrusted ? (
-                  <PriceProvenance provenance={salesProvenance} />
-                ) : (
-                  <DataFreshnessNote
-                    label="Sales"
-                    asOf={suburb.dataFreshness?.salesAsOf ?? null}
-                  />
-                )}
-              </div>
-            </div>
-
-            {/* Supporting grid */}
-            <div className="lg:col-span-7">
-              <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-4">
-                Rental and ownership
-              </p>
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <MetricCard label="Weekly rent (house)" value={suburb.stats.medianRentHouse ? `$${suburb.stats.medianRentHouse}/wk` : "–"} />
-                <MetricCard label="Weekly rent (unit)"  value={suburb.stats.medianRentUnit  ? `$${suburb.stats.medianRentUnit}/wk`  : "–"} />
-                <MetricCard label="Owner occupied"      value={suburb.stats.ownerOccupied   ? `${suburb.stats.ownerOccupied}%`     : "–"} />
-                <MetricCard label="Renter occupied"     value={suburb.stats.renterOccupied  ? `${suburb.stats.renterOccupied}%`    : "–"} />
-              </div>
-              <div className="rounded-2xl border border-line bg-surface-raised p-5 sm:p-6">
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">
-                  At a deeper level
-                </p>
-                <SuburbStatsComponent suburb={suburb} />
-              </div>
-              <DataFreshnessNote
-                label="Rental"
-                asOf={suburb.dataFreshness?.rentalAsOf ?? null}
-                source={suburb.dataFreshness?.rentalSource ?? undefined}
-              />
-              <div className="mt-3">
-                <Link
-                  href={`/suburbs/${suburb.slug}/rental-market`}
-                  className="inline-flex items-center gap-1 text-sm font-medium text-ink hover:text-primary"
-                >
-                  Open the full rental market view <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <SectionDivider />
-
-        {/* High-intent seller capture. Primary conversion CTA on the suburb
-            page, lead-magnet for the appraisal flow. */}
-        <section>
-          <SuburbAppraisalCTA suburbName={suburb.name} suburbSlug={suburb.slug} />
-        </section>
-
         {/* Earlier-stage buyers and sellers, side by side. The appraisal
             form above captures vendors ready to talk to an agent today;
             these two capture the bigger group still researching. Each
@@ -523,20 +537,8 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 {investorView}
               </p>
             )}
-            <div className="grid lg:grid-cols-12 gap-6 mb-6">
-              <div className="lg:col-span-7">
-                <SuburbInvestment suburb={suburb} />
-              </div>
-              {suburb.stats.medianHousePrice > 0 &&
-                suburb.stats.annualGrowthHouse !== 0 && (
-                  <div className="lg:col-span-5">
-                    <SuburbPriceTrend
-                      medianHousePrice={suburb.stats.medianHousePrice}
-                      annualGrowthHouse={suburb.stats.annualGrowthHouse}
-                      suburbName={suburb.name}
-                    />
-                  </div>
-                )}
+            <div className="mb-6">
+              <SuburbInvestment suburb={suburb} />
             </div>
           </section>
         )}
