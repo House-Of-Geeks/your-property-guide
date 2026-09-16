@@ -8,6 +8,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Input, Select } from "@/components/ui";
 import { PROPERTY_TYPES } from "@/lib/constants";
 import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
+import { AddressAutocomplete } from "@/components/forms/AddressAutocomplete";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 import { requiredPhoneSchema } from "@/lib/utils/phone";
 
@@ -54,6 +55,7 @@ export function AppraisalForm() {
     handleSubmit,
     setValue,
     clearErrors,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<AppraisalFormData>({
     resolver: zodResolver(appraisalSchema),
@@ -62,6 +64,11 @@ export function AppraisalForm() {
       suburb: searchParams.get("suburb") ?? "",
     },
   });
+
+  const addressValue = watch("address") ?? "";
+  // Suburb filled from the chosen address; when set, the suburb search is
+  // replaced by a one-line confirmation with a "Change" link.
+  const [resolvedSuburb, setResolvedSuburb] = useState<{ slug: string; label: string } | null>(null);
 
   const onSubmit = async (data: AppraisalFormData) => {
     setError(null);
@@ -139,12 +146,32 @@ export function AppraisalForm() {
         </p>
       </div>
 
-      <Input
+      {/* Street address via Google Places (AU only). Selecting a suggestion
+          fills the suburb below; typing free text still works. */}
+      <input type="hidden" {...register("address")} />
+      <AddressAutocomplete
         id="appraisal-address"
         label="Property address"
-        placeholder="e.g. 15 Smith Street"
+        placeholder="Start typing, e.g. 15 Smith Street"
+        required
+        value={addressValue}
+        onChange={(v) => {
+          setValue("address", v, { shouldValidate: Boolean(errors.address) });
+          if (resolvedSuburb) { setResolvedSuburb(null); setValue("suburb", "", { shouldValidate: false }); }
+        }}
+        onSelect={({ parsed, suburb }) => {
+          if (suburb) {
+            setValue("suburb", suburb.slug, { shouldValidate: true });
+            clearErrors("suburb");
+            setResolvedSuburb({ slug: suburb.slug, label: `${suburb.name}, ${suburb.state} ${suburb.postcode}` });
+          } else {
+            setResolvedSuburb(null);
+            void parsed;
+          }
+        }}
         error={errors.address?.message}
-        {...register("address")}
+        labelClassName="block text-sm font-medium text-ink-muted mb-1"
+        inputClassName="w-full rounded-lg border border-line-strong px-3 py-2 text-sm text-ink placeholder:text-ink-subtle focus:border-primary outline-none"
       />
 
       {/* Suburb: live autocomplete over every suburb in the database (the
@@ -155,15 +182,28 @@ export function AppraisalForm() {
         <label htmlFor="appraisal-suburb" className="block text-xs font-medium text-ink-muted mb-1">
           Suburb
         </label>
-        <SuburbAutocomplete
-          defaultSlug={searchParams.get("suburb") ?? undefined}
-          placeholder="Suburb or postcode, e.g. Bondi or 2026"
-          onSelectLocation={(slug) => {
-            setValue("suburb", slug, { shouldValidate: true });
-            clearErrors("suburb");
-          }}
-          onClear={() => setValue("suburb", "", { shouldValidate: false })}
-        />
+        {resolvedSuburb ? (
+          <p className="flex items-center justify-between gap-3 rounded-lg border border-line bg-surface-warm px-3 py-2.5 text-sm text-ink">
+            <span>{resolvedSuburb.label}</span>
+            <button
+              type="button"
+              onClick={() => { setResolvedSuburb(null); setValue("suburb", "", { shouldValidate: false }); }}
+              className="text-xs text-ink-muted hover:text-ink underline underline-offset-4"
+            >
+              Change
+            </button>
+          </p>
+        ) : (
+          <SuburbAutocomplete
+            defaultSlug={searchParams.get("suburb") ?? undefined}
+            placeholder="Suburb or postcode, e.g. Bondi or 2026"
+            onSelectLocation={(slug) => {
+              setValue("suburb", slug, { shouldValidate: true });
+              clearErrors("suburb");
+            }}
+            onClear={() => setValue("suburb", "", { shouldValidate: false })}
+          />
+        )}
         <input type="hidden" id="appraisal-suburb" {...register("suburb")} />
         {errors.suburb?.message && (
           <p className="mt-1.5 text-xs text-danger">{errors.suburb.message}</p>
