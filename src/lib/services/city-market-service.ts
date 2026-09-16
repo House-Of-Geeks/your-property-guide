@@ -19,6 +19,23 @@ export interface CityMarketSuburb {
   medianHousePrice: number;
   annualGrowthHouse: number | null;
   population: number;
+  /** House sales behind the median in the latest period, 0 when the source does not report a count. */
+  salesCountHouse: number;
+}
+
+/** One Suburb row as the rollup needs it. Exported so the pure rollup can be tested without the DB. */
+export interface CityMarketRow {
+  slug: string;
+  name: string;
+  postcode: string;
+  medianHousePrice: number;
+  medianUnitPrice: number;
+  medianRentHouse: number;
+  annualGrowthHouse: number | null;
+  population: number;
+  salesCountHouse: number;
+  statsSource: string | null;
+  salesUpdatedAt: Date | null;
 }
 
 export interface CityMarket {
@@ -34,6 +51,15 @@ export interface CityMarket {
   topGrowth: CityMarketSuburb[];
   mostAffordable: CityMarketSuburb[];
   premium: CityMarketSuburb[];
+  /**
+   * The twenty established suburbs with the most recorded house sales
+   * (population as the tie-break, and the fallback where a source reports
+   * no counts). Valuation plan item 3: this is the "house prices by suburb"
+   * table the city page leads with.
+   */
+  busiest: CityMarketSuburb[];
+  /** Sum of reported house sales across contributing suburbs. */
+  totalSalesHouse: number;
   /** Most recent sales-data refresh across contributing suburbs. */
   salesAsOf: Date | null;
 }
@@ -60,7 +86,7 @@ function medianPercent(values: number[]): number | null {
 const pad4 = (n: number) => String(n).padStart(4, "0");
 
 export async function getCityMarket(city: CapitalCity): Promise<CityMarket> {
-  const rows = await db.suburb.findMany({
+  const rows: CityMarketRow[] = await db.suburb.findMany({
     where: {
       state: city.state,
       OR: city.ranges.map(([lo, hi]) => ({
@@ -76,11 +102,16 @@ export async function getCityMarket(city: CapitalCity): Promise<CityMarket> {
       medianRentHouse: true,
       annualGrowthHouse: true,
       population: true,
+      salesCountHouse: true,
       statsSource: true,
       salesUpdatedAt: true,
     },
   });
+  return buildCityMarket(rows);
+}
 
+/** Pure rollup over the metro's suburb rows. */
+export function buildCityMarket(rows: CityMarketRow[]): CityMarket {
   const priced = rows.filter(
     (s) => isReliableSalesSource(s.statsSource) && s.medianHousePrice > 0,
   );
@@ -92,9 +123,12 @@ export async function getCityMarket(city: CapitalCity): Promise<CityMarket> {
     medianHousePrice: s.medianHousePrice,
     annualGrowthHouse: isPlausibleAnnualGrowth(s.annualGrowthHouse) ? s.annualGrowthHouse : null,
     population: s.population,
+    salesCountHouse: s.salesCountHouse ?? 0,
   });
 
-  const growthEligible = priced.filter((s) => isPlausibleAnnualGrowth(s.annualGrowthHouse));
+  const growthEligible = priced.filter(
+    (s): s is CityMarketRow & { annualGrowthHouse: number } => isPlausibleAnnualGrowth(s.annualGrowthHouse),
+  );
 
   // Affordability/premium lists exclude micro-localities: a "suburb" of 40
   // people with three sales makes a misleading list entry.
@@ -125,6 +159,16 @@ export async function getCityMarket(city: CapitalCity): Promise<CityMarket> {
       .sort((a, b) => b.medianHousePrice - a.medianHousePrice)
       .slice(0, 8)
       .map(toCitySuburb),
+    busiest: [...listEligible]
+      .sort(
+        (a, b) =>
+          (b.salesCountHouse ?? 0) - (a.salesCountHouse ?? 0) ||
+          b.population - a.population ||
+          a.name.localeCompare(b.name),
+      )
+      .slice(0, 20)
+      .map(toCitySuburb),
+    totalSalesHouse: priced.reduce((sum, s) => sum + (s.salesCountHouse ?? 0), 0),
     salesAsOf: salesDates[0] ?? null,
   };
 }

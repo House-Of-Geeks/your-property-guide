@@ -12,6 +12,8 @@ import { CAPITAL_CITIES, getCapitalCity } from "@/lib/utils/metro";
 import { formatPrice, formatPriceFull } from "@/lib/utils/format";
 import { MostSearchedSuburbs } from "@/components/suburb/MostSearchedSuburbs";
 import { topSuburbsForCity } from "@/lib/data/top-suburbs";
+import { buildCityNarrative } from "@/lib/city-narrative";
+import { HomeValueAppraisal } from "@/components/journey/HomeValueAppraisal";
 
 // City-level market pages targeting the "{city} property market" /
 // "{city} house prices" / "median house price {city}" query cluster —
@@ -42,11 +44,14 @@ export async function generateMetadata({
   if (!city) return { title: "City Not Found" };
 
   const market = await getCityMarket(city);
-  const title = `${city.name} Property Market ${CURRENT_YEAR} — House Prices & Growth`;
+  // Valuation plan item 3: the query cluster is "{city} house prices" /
+  // "median house price {city}" / "{city} property market", in that order
+  // of volume, so the title leads with house prices.
+  const title = `${city.name} House Prices & Property Market ${CURRENT_YEAR}: Median, Growth, Suburbs`;
   const median = market.medianHousePrice
     ? `The median house price in ${city.name} is ${formatPriceFull(market.medianHousePrice)}. `
     : "";
-  const description = `${city.name} property market ${CURRENT_YEAR}: ${median}Suburb medians, annual growth, the fastest-rising and most affordable suburbs across Greater ${city.name}, from verified sales data.`;
+  const description = `${city.name} house prices ${CURRENT_YEAR}: ${median}Median house price by suburb for the twenty busiest suburbs, twelve-month growth, the fastest-rising and most affordable suburbs across Greater ${city.name}, from verified sales data.`;
 
   return {
     title,
@@ -91,15 +96,20 @@ function SuburbTable({
   heading,
   rows,
   showGrowth,
+  showSales,
+  as,
 }: {
   heading: string;
   rows: CityMarketSuburb[];
   showGrowth?: boolean;
+  showSales?: boolean;
+  as?: "h2" | "h3";
 }) {
   if (rows.length === 0) return null;
+  const Heading = as ?? "h3";
   return (
     <section>
-      <h3 className="font-display text-2xl text-ink mb-4 leading-tight">{heading}</h3>
+      <Heading className={`font-display ${as === "h2" ? "text-2xl sm:text-3xl" : "text-2xl"} text-ink mb-4 leading-tight`}>{heading}</Heading>
       <div className="overflow-x-auto rounded-2xl border border-line bg-surface-raised">
         <table className="w-full text-sm">
           <thead>
@@ -108,9 +118,12 @@ function SuburbTable({
               <th className="px-4 py-3 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide">Suburb</th>
               <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">Median price</th>
               {showGrowth && (
-                <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">Annual growth</th>
+                <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">12-month change</th>
               )}
-              <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">Profile</th>
+              {showSales && (
+                <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">House sales</th>
+              )}
+              <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">Prices</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-line">
@@ -119,7 +132,7 @@ function SuburbTable({
                 <td className="px-4 py-3 font-sans text-ink-subtle tabular-nums">{i + 1}</td>
                 <td className="px-4 py-3">
                   <Link
-                    href={`/suburbs/${row.slug}`}
+                    href={`/suburbs/${row.slug}#market`}
                     className="font-sans font-medium text-ink hover:text-primary transition-colors"
                   >
                     {row.name}
@@ -148,9 +161,14 @@ function SuburbTable({
                     </span>
                   </td>
                 )}
+                {showSales && (
+                  <td className="px-4 py-3 text-right tabular-nums font-sans text-sm text-ink-muted">
+                    {row.salesCountHouse > 0 ? row.salesCountHouse.toLocaleString() : "–"}
+                  </td>
+                )}
                 <td className="px-4 py-3 text-right">
                   <Link
-                    href={`/suburbs/${row.slug}`}
+                    href={`/suburbs/${row.slug}#market`}
                     className="font-sans text-xs font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors whitespace-nowrap"
                   >
                     View →
@@ -176,7 +194,8 @@ export default async function CityMarketPage({
 
   const market = await getCityMarket(city);
   const stateSlug = city.state.toLowerCase();
-  const pageTitle = `${city.name} Property Market ${CURRENT_YEAR}`;
+  const pageTitle = `${city.name} House Prices ${CURRENT_YEAR}`;
+  const narrative = buildCityNarrative(city, market);
 
   const housePrice = market.medianHousePrice ? formatPrice(market.medianHousePrice) : "N/A";
   const unitPrice = market.medianUnitPrice ? formatPrice(market.medianUnitPrice) : "N/A";
@@ -260,7 +279,7 @@ export default async function CityMarketPage({
             Greater {city.name} &middot; {market.suburbCount.toLocaleString()} suburbs tracked
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            {city.name} property market, <span className="italic text-primary">{CURRENT_YEAR}</span>.
+            {city.name} house prices, <span className="italic text-primary">{CURRENT_YEAR}</span>.
           </h1>
           {/* Direct answer sentence for "median house price {city}" — kept as
               plain prose so answer engines can quote it verbatim. */}
@@ -280,8 +299,8 @@ export default async function CityMarketPage({
                 verified government sales data.
               </>
             )}{" "}
-            Below: the fastest-growing, most affordable and highest-priced suburbs in Greater{" "}
-            {city.name}.
+            Below: house prices in the twenty busiest suburbs, then the fastest-growing, most
+            affordable and highest-priced suburbs in Greater {city.name}.
           </p>
         </div>
       </section>
@@ -289,6 +308,9 @@ export default async function CityMarketPage({
       {/* Stat anchor row */}
       <section className="bg-surface-raised border-b border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+          <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-6">
+            Median house price in {city.name}.
+          </h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <StatCard
               icon={<Home className="w-4 h-4" />}
@@ -319,6 +341,39 @@ export default async function CityMarketPage({
       </section>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+        {/* What the numbers show, built from the same rollup (sourced and
+            dated in its last paragraph). Describes; never recommends. */}
+        {narrative.length > 0 && (
+          <section className="max-w-3xl">
+            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-5">
+              What {city.name} house prices are doing.
+            </h2>
+            <div className="space-y-4">
+              {narrative.map((p, i) => (
+                <p
+                  key={i}
+                  className={
+                    i === narrative.length - 1
+                      ? "font-sans text-sm text-ink-subtle leading-relaxed"
+                      : "font-sans text-base sm:text-lg text-ink-muted leading-[1.7]"
+                  }
+                >
+                  {p}
+                </p>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* House prices by suburb: the twenty busiest established suburbs. */}
+        <SuburbTable
+          as="h2"
+          heading={`House prices by suburb: ${city.name}'s twenty busiest`}
+          rows={market.busiest}
+          showGrowth
+          showSales
+        />
+
         <SuburbTable
           heading={`Fastest-growing ${city.name} suburbs`}
           rows={market.topGrowth}
@@ -399,6 +454,14 @@ export default async function CityMarketPage({
           </p>
         </section>
       </div>
+
+      {/* Appraisal entry: city-price readers are one step from "what's mine
+          worth". Suburb first, that suburb's median, then the appraisal form. */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12">
+        <div className="max-w-3xl">
+          <HomeValueAppraisal />
+        </div>
+      </section>
 
       {/* Seller funnel exit — city-market readers are gauging whether it's
           a good time to sell. */}
