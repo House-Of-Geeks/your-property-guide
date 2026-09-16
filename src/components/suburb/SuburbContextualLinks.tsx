@@ -125,6 +125,7 @@ export function SuburbContextualLinks({ suburb }: SuburbContextualLinksProps) {
               // Points at the match funnel, not /agents — the agent
               // directory is paused (placeholder profiles only) per Andy,
               // 2026-07-03, and the funnel converts better anyway.
+              { label: `Real estate agents in ${name}`, href: `/suburbs/${slug}/agents` },
               { label: "Find a local expert",     href: `/find-an-expert?suburb=${slug}` },
               { label: "Get a free appraisal",   href: `/appraisal` },
             ].map((l) => (

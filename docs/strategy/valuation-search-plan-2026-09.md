@@ -219,8 +219,11 @@ without a reliable median render the page but tell search engines not to index i
 no "best" claims. Agents are listed only with their consent, in the order they were onboarded, no
 paid placement without labelling.
 
-**Rollout.** All eligible suburbs in one release. Agent listings switch on suburb by suburb as
-agents sign up through the "for agents" page; no further template change is needed.
+**Rollout.** All eligible suburbs in one release (4,719 with a reliable median at launch). The
+agent listing section is built but switched off by one flag until the directory holds real,
+consenting agents: as at September 2026 the agents table carries placeholder profiles only.
+When the flag is on, listings appear suburb by suburb as agents are onboarded; no further
+template change is needed.
 
 **Done when.** The page is indexed for the top 200 suburbs by search volume; the first match
 request arrives with an agents-page source; the first suburb shows a listed agent.

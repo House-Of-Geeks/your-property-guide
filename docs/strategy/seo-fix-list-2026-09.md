@@ -211,5 +211,5 @@ Items 31–35 live in `valuation-search-plan-2026-09.md` (plan items 1–5); tra
 - [ ] 31. [code] BUILT 16 Sep 2026, branch `feat/suburb-price-section`: suburb price section (plan item 1). Absorbs 17 (price trend moved up) and 19 (valuation FAQ). 18 (recent sales) waits on the NSW VG import.
 - [ ] 32. [code+content] BUILT 17 Sep 2026, branch `feat/home-value-form`: house-worth guide gains a suburb-first appraisal block and a new title; appraisal form gains an optional timeframe (plan item 2). Estimator and /suburbs/{slug}/property-value dropped 17 Sep: the suburb page owns that intent.
 - [ ] 33. [code+content] BUILT 17 Sep 2026, branch `feat/city-house-prices`: city pages retitled to house prices, twenty-busiest-suburbs table, data-built narrative, appraisal block (plan item 3).
-- [ ] 34. [code] Real estate agents in {suburb} pages, lead-gen first (plan item 4).
+- [ ] 34. [code] BUILT 17 Sep 2026, branch `feat/suburb-agents-pages`: /suburbs/{slug}/agents, lead-gen first; agent listings behind AGENT_LISTINGS_ENABLED (src/lib/suburb-agents.ts) until the directory holds real agents (plan item 4).
 - [ ] 35. [code] Sold in {suburb}, NSW, after manual Valuer General download + import (plan item 7).

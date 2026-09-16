@@ -43,6 +43,9 @@ export type PriceConfidence = "reliable" | "unreliable";
  * of going through the Suburb type. Unknown sources are unreliable —
  * the safer default.
  */
+/** The same list, for DB `in` filters (sitemap gates). */
+export const RELIABLE_SALES_SOURCES: readonly string[] = [...RELIABLE_SOURCES];
+
 export function isReliableSalesSource(source: string | null | undefined): boolean {
   return RELIABLE_SOURCES.has(source ?? "");
 }

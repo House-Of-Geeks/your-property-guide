@@ -14,6 +14,7 @@ import {
   type SuburbListingInventoryRow,
 } from "@/lib/services/property-service";
 import { getSuburbSlugsWithRentalData } from "@/lib/services/rental-service";
+import { getSuburbSlugsWithReliablePrice } from "@/lib/services/suburb-service";
 
 // Suburb intent sub-pages (/suburbs/[slug]/houses etc.). Split into one
 // sitemap per type: ~15k indexable suburbs × 8 types would overflow the
@@ -30,6 +31,7 @@ export const SUBPAGE_TYPES = [
   "rent",
   "schools",
   "rental-market",
+  "agents",
 ] as const;
 
 export async function generateSitemaps() {
@@ -71,6 +73,15 @@ const getCachedRentalSuburbs = unstable_cache(
   { revalidate: 86400, tags: ["sitemap-suburbs"] },
 );
 
+// agents pages (valuation plan item 4) index only where the suburb has a
+// reliable median, since the fees section is worked on that figure; the
+// page noindexes itself otherwise.
+const getCachedReliablePriceSuburbs = unstable_cache(
+  async () => getSuburbSlugsWithReliablePrice(),
+  ["sitemap-reliable-price-suburbs:v1"],
+  { revalidate: 86400, tags: ["sitemap-suburbs"] },
+);
+
 export default async function sitemap(props: {
   id: Promise<string>;
 }): Promise<MetadataRoute.Sitemap> {
@@ -84,6 +95,10 @@ export default async function sitemap(props: {
   if (type === "rental-market") {
     const withData = new Set(await getCachedRentalSuburbs());
     suburbs = suburbs.filter(({ slug }) => withData.has(slug));
+  }
+  if (type === "agents") {
+    const priced = new Set(await getCachedReliablePriceSuburbs());
+    suburbs = suburbs.filter(({ slug }) => priced.has(slug));
   }
 
   const filter = LISTING_TYPE_FILTERS[type as (typeof SUBPAGE_TYPES)[number]];
