@@ -56,7 +56,7 @@ const APPRAISAL_FAQS: { question: string; answer: string }[] = [
   {
     question: "How long does a property appraisal take?",
     answer:
-      "The inspection usually takes 20 to 40 minutes. Most agents give you a figure on the spot or within a day or two, often as a short written report with the comparable sales listed. Through Your Property Guide you hear from a matched agent within one business day of asking.",
+      "The inspection usually takes 20 to 40 minutes. Most agents give you a figure on the spot or within a day or two, often as a short written report with the comparable sales listed.",
   },
   {
     question: "Do I have to sell if I get an appraisal?",
@@ -197,18 +197,11 @@ export default function AppraisalPage() {
                   What happens after you ask.
                 </h2>
                 <ol className="space-y-3 font-sans text-base text-ink-muted leading-relaxed list-decimal pl-5">
-                  <li>Our team reads your request and matches it to one agent who actually sells in your suburb. No call centre, no auto-routing, and your details are not sold to a panel.</li>
-                  <li>The agent contacts you within one business day, by phone or email as you prefer, to arrange a time to see the property.</li>
-                  <li>They inspect, usually in 20 to 40 minutes, and give you a figure or a range, most often as a short written appraisal with the comparable sales listed.</li>
+                  <li>We match your request to an agent who sells in your suburb.</li>
+                  <li>The agent contacts you, by phone or email as you prefer, to arrange a time to see the property.</li>
+                  <li>They inspect and give you a figure or a range, most often as a short written appraisal with the comparable sales listed.</li>
                   <li>You decide what to do with it. Sell now, sell later, get a second appraisal, or file it away. There is no obligation at any step.</li>
                 </ol>
-                <p className="mt-4 font-sans text-sm text-ink-subtle leading-relaxed">
-                  Timeframes above are typical as at September 2026 and depend on the agent&rsquo;s diary. Read how we{" "}
-                  <Link href="/methodology" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">
-                    choose and vet agents
-                  </Link>
-                  .
-                </p>
               </div>
             </div>
 
