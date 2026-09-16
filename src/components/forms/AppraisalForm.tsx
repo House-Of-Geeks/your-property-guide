@@ -6,7 +6,8 @@ import { z } from "zod";
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Input, Select } from "@/components/ui";
-import { SUBURBS, PROPERTY_TYPES } from "@/lib/constants";
+import { PROPERTY_TYPES } from "@/lib/constants";
+import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 import { requiredPhoneSchema } from "@/lib/utils/phone";
 
@@ -51,6 +52,8 @@ export function AppraisalForm() {
   const {
     register,
     handleSubmit,
+    setValue,
+    clearErrors,
     formState: { errors, isSubmitting },
   } = useForm<AppraisalFormData>({
     resolver: zodResolver(appraisalSchema),
@@ -144,15 +147,30 @@ export function AppraisalForm() {
         {...register("address")}
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Select
-          id="appraisal-suburb"
-          label="Suburb"
-          options={SUBURBS.map((s) => ({ value: s.slug, label: s.name }))}
-          placeholder="Select suburb"
-          error={errors.suburb?.message}
-          {...register("suburb")}
+      {/* Suburb: live autocomplete over every suburb in the database (the
+          old <Select> listed the six prototype seed suburbs). The chosen
+          slug is written into the registered hidden field so validation and
+          the payload are unchanged. */}
+      <div>
+        <label htmlFor="appraisal-suburb" className="block text-xs font-medium text-ink-muted mb-1">
+          Suburb
+        </label>
+        <SuburbAutocomplete
+          defaultSlug={searchParams.get("suburb") ?? undefined}
+          placeholder="Suburb or postcode, e.g. Bondi or 2026"
+          onSelectLocation={(slug) => {
+            setValue("suburb", slug, { shouldValidate: true });
+            clearErrors("suburb");
+          }}
+          onClear={() => setValue("suburb", "", { shouldValidate: false })}
         />
+        <input type="hidden" id="appraisal-suburb" {...register("suburb")} />
+        {errors.suburb?.message && (
+          <p className="mt-1.5 text-xs text-danger">{errors.suburb.message}</p>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Select
           id="appraisal-propertyType"
           label="Type"
