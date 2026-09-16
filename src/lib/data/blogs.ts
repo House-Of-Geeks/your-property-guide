@@ -12,14 +12,14 @@ export const blogPosts: BlogPost[] = [
 
 <h2>What "selling privately" actually means</h2>
 <p>A private sale is one where you, the owner, market the property, run the inspections, field the offers and negotiate the price. You still need a solicitor or licensed conveyancer to prepare the contract and handle settlement; that part of the process is the same whether an agent is involved or not.</p>
-<p>There is one practical wrinkle. The two big portals do not take listings from private individuals: realestate.com.au accepts listings only from licensed agencies. So a private seller who wants to be seen where buyers are looking uses a for-sale-by-owner platform. These hold agency licences in each state and list the property on the portals on your behalf for a flat fee, while you do everything else. As at September 2026, the widely used ones charge in the order of $595 to $700 for the listing package (For Sale By Owner's Essentials package is $595; PropertyNow's flat fee is $694), with photography, signboards and portal upgrades sold on top.</p>
+<p>There is one practical wrinkle. The two big portals do not take listings from private individuals: realestate.com.au accepts listings only from licensed agencies. So a private seller who wants to be seen where buyers are looking uses a for-sale-by-owner platform. These hold agency licences in each state and list the property on the portals on your behalf for a flat fee, while you do everything else. As at September 2026, the widely used ones charge in the order of $800 to $1,000 for the listing package (For Sale By Owner lists a residential sale at $799; PropertyNow at $979 including GST), with photography, signboards and portal upgrades sold on top.</p>
 
 <h2>The legal work does not go away</h2>
 <p>This is the part most private-sale guides skate over. The disclosure obligations that agents normally organise sit with you, and in the two biggest states they must be done before the first buyer sees an advertisement.</p>
 <ul>
 <li><strong>New South Wales.</strong> A residential property cannot be offered for sale until a contract for sale, with the prescribed documents attached, has been prepared by a solicitor or licensed conveyancer. That means the title search, the planning certificate, the sewer diagram and the rest are done before you market, not after you find a buyer.</li>
 <li><strong>Victoria.</strong> Every vendor must give buyers a Section 32 vendor statement before they sign, and it has to be complete and correct or the buyer can walk away. In practice it is prepared before the property goes to market.</li>
-<li><strong>Queensland and the other states.</strong> The contract is usually prepared once a buyer is found, but seller disclosure requirements have tightened (Queensland introduced a mandatory seller disclosure regime in 2025), and the conveyancer still needs to be engaged early to get the searches under way.</li>
+<li><strong>Queensland and the other states.</strong> The contract is usually prepared once a buyer is found, but seller disclosure requirements have tightened (Queensland's mandatory seller disclosure statement applies to contracts from 1 August 2025), and the conveyancer still needs to be engaged early to get the searches under way.</li>
 </ul>
 <p>Budget for a conveyancer or solicitor in either route. Typical 2026 professional fees for a sale run from about $600 to $3,000 depending on the state and the practitioner, plus a few hundred dollars in searches and registration; NSW metro sits at the top of that range and Victoria and Queensland toward the bottom. If you sell privately, you also lose the agent as the person who chases the buyer's side when a contract stalls, so pick a conveyancer who is comfortable doing that.</p>
 
@@ -33,12 +33,12 @@ export const blogPosts: BlogPost[] = [
 </ul>
 <h3>Privately</h3>
 <ul>
-<li>Listing platform: about $595 to $700 for the package that puts you on realestate.com.au and Domain.</li>
+<li>Listing platform: about $800 to $1,000 for the package that puts you on realestate.com.au and Domain.</li>
 <li>Photography, floor plan and signboard: bought separately, either through the platform or directly. Budget as you would for the agent's marketing; the portals treat a badly photographed private listing exactly as they treat a badly photographed agent listing.</li>
 <li>Conveyancing: the same $1,000 to $3,000, because the same work is done.</li>
 <li>Your time: two to six weeks of inspections, enquiries and negotiation, often in evenings and on Saturdays.</li>
 </ul>
-<p>On that example the private route saves roughly <strong>$13,000 to $19,000</strong> in fees before you count your time. That is a real number, and it is why the option deserves a serious look. The question is whether an agent would have got you more than that back in price.</p>
+<p>On that example the private route saves roughly <strong>$13,000 to $19,000</strong> in fees before you count your time, and less if you buy the same photography and signboard an agent would. That is a real number, and it is why the option deserves a serious look. The question is whether an agent would have got you more than that back in price.</p>
 <p>Work it on your own figure with the <a href="/real-estate-commission-calculator">commission calculator</a>; the state guides cover <a href="/guides/real-estate-agent-fees-australia">what agents charge</a> and <a href="/guides/cost-of-selling-a-house-australia">the full cost of selling</a>.</p>
 
 <h2>What an agent does that you cannot see from outside</h2>
@@ -89,8 +89,9 @@ export const blogPosts: BlogPost[] = [
 <h2>Sources</h2>
 <ul>
 <li>Typical commission ranges by state: Your Property Guide <a href="/guides/real-estate-agent-fees-australia">agent fees guide</a>, September 2026.</li>
-<li>Portal listing rules and platform pricing: <a href="https://www.forsalebyowner.com.au/" rel="nofollow noopener">For Sale By Owner</a> and <a href="https://www.propertynow.com.au/" rel="nofollow noopener">PropertyNow</a>, published prices as at September 2026.</li>
-<li>NSW contract-before-marketing rule: <a href="https://www.nsw.gov.au/housing-and-construction/property-professionals/working-as-an-agent/sales-contracts" rel="nofollow noopener">NSW Government, sales contracts</a>.</li>
+<li>Portal listing rules and platform pricing: <a href="https://www.forsalebyowner.com.au/" rel="nofollow noopener">For Sale By Owner</a> ($799 residential) and <a href="https://www.propertynow.com.au/" rel="nofollow noopener">PropertyNow</a> ($979), prices as published on 17 September 2026.</li>
+<li>NSW contract-before-marketing rule: <a href="https://www.nsw.gov.au/housing-and-construction/property-professionals/working-as-an-agent/sales-contracts" rel="nofollow noopener">NSW Government, sales contracts</a> ("Residential property cannot be offered for sale until a contract of sale has been prepared"; Conveyancing (Sale of Land) Regulation 2022, Schedule 1).</li>
+<li>Queensland seller disclosure: <a href="https://www.qld.gov.au/law/housing-and-neighbours/buying-and-selling-a-property/seller-disclosure-scheme" rel="nofollow noopener">Queensland Government, seller disclosure scheme</a> (Property Law Act 2023, in force 1 August 2025).</li>
 <li>Victorian Section 32 vendor statement: <a href="https://www.consumer.vic.gov.au/" rel="nofollow noopener">Consumer Affairs Victoria</a>.</li>
 <li>Conveyancing fee ranges: published 2026 fee guides from Australian conveyancing practices, collated September 2026.</li>
 </ul>`,
