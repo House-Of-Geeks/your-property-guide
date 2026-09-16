@@ -140,6 +140,22 @@ export function RentalMarketSections({ suburb, slug, model: m }: { suburb: Subur
         </section>
       )}
 
+      {/* Sale-appraisal searches ("{suburb} property appraisal") were landing
+          here instead of on the profile page. Send sellers to the appraisal
+          block on the profile so this page stops absorbing that intent. */}
+      <section className="rounded-2xl border border-line bg-surface-raised p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">Selling instead?</p>
+          <h2 className="font-display text-xl sm:text-2xl text-ink leading-tight">
+            Get a free property appraisal in {suburb.name}.
+          </h2>
+          <p className="font-sans text-sm text-ink-muted mt-2">A local agent who sells in {suburb.name} will give you a figure based on recent comparable sales. No commitment.</p>
+        </div>
+        <Link href={`/suburbs/${slug}#appraisal`} className="shrink-0 inline-flex items-center gap-2 rounded-lg border border-line-strong bg-surface-raised text-ink px-4 py-2 text-sm font-medium hover:text-primary hover:border-primary">
+          Request an appraisal <ArrowRight className="w-4 h-4" />
+        </Link>
+      </section>
+
       {has("faq") && <Faq items={m.faqs} title={`Renting and investing in ${suburb.name}`} />}
     </>
   );

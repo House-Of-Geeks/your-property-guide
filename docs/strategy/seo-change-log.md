@@ -10,6 +10,7 @@ nothing ships without a baseline folder (`docs/seo-baselines/<date>/`, rule R2).
 
 | Date | Item | Change | Scope / cohort | Commit | Baseline | Notes |
 |---|---|---|---|---|---|---|
+| 2026-09-16 | Valuation plan 1 | Suburb profile: market section moved to first position under the snapshot and retitled "House prices in {Suburb}"; 5-year price trend moved into it (same trust gate); FAQ gains "How much is my house worth in {Suburb}?"; appraisal block eyebrow now "Free property appraisal in {Suburb}" with id=appraisal; sticky nav leads with Prices; rental-market pilot pages link back to the appraisal block. | All suburb profiles, all states, one release; rental-market pilot slugs | feat/suburb-price-section | docs/seo-baselines/2026-09-16 | Plan: docs/strategy/valuation-search-plan-2026-09.md. Targets: median cluster pos 31 → <25 at +30d. |
 | 2026-03-26 | pre-plan | Suburb title format fixed; location added to H1s; suburb listing pages added | all suburbs | see git log | — | Historical entry |
 | 2026-03-30 | pre-plan | Canonicals, OG/Twitter cards, H1s, schemas, sitemaps, title de-duplication | site-wide | see git log | — | Historical entry |
 | 2026-04-11 | pre-plan | Suburb profile pages reworked for search-intent matching | all suburbs | see git log | — | Historical entry |
