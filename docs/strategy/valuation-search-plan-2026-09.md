@@ -142,7 +142,7 @@ suburb level; what was missing was a way to act on the national page.
 
 1. The guide page keeps its URL and gains an action block at the top: pick a suburb, see that
    suburb's median house price, twelve-month change, unit median and source line, stated plainly
-   as the suburb's figures and not the visitor's house, then the same three-field appraisal form
+   as the suburb's figures and not the visitor's house, then the same short appraisal form (name, email, mobile, address)
    the suburb pages use, attributed to the guide and the suburb. Where a suburb's median is
    withheld, the form still works and the page says why there is no figure.
 2. The guide is retitled **"How Much Is My House Worth? Free Property Appraisal (Australia)"**
