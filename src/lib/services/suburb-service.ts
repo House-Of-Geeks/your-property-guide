@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { RELIABLE_SALES_SOURCES } from "@/lib/suburb-data-quality";
 import type { Suburb, SuburbDataFreshness } from "@/types";
 import { db } from "@/lib/db";
 import type { Suburb as DbSuburb, School as DbSchool, SuburbHazard as DbSuburbHazard, SuburbClimate as DbSuburbClimate } from "@/generated/prisma/client";
@@ -364,6 +365,16 @@ export async function getAllSuburbSlugsWithDates(): Promise<{ slug: string; upda
 // no population) which we noindex on the page itself — keeping them out
 // of the sitemap is the matching SEO hygiene step. Crawl budget on a
 // 9,600-page property site should go to pages with real content.
+// Suburbs whose median clears the reliable-price gate. Feeds the sitemap
+// for sub-pages that only make sense with a trusted median (agents pages).
+export async function getSuburbSlugsWithReliablePrice(): Promise<string[]> {
+  const rows = await db.suburb.findMany({
+    where: { medianHousePrice: { gt: 0 }, statsSource: { in: [...RELIABLE_SALES_SOURCES] } },
+    select: { slug: true },
+  });
+  return rows.map((r) => r.slug);
+}
+
 export async function getIndexableSuburbSlugsWithDates(): Promise<{ slug: string; updatedAt: Date }[]> {
   return db.suburb.findMany({
     where: {
