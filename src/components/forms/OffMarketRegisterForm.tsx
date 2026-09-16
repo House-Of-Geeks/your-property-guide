@@ -5,7 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
 import { Input, Select } from "@/components/ui";
-import { SUBURBS, PROPERTY_TYPES, PRICE_RANGES_BUY, BEDROOM_OPTIONS } from "@/lib/constants";
+import { PROPERTY_TYPES, PRICE_RANGES_BUY, BEDROOM_OPTIONS } from "@/lib/constants";
+import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
 import { CheckCircle, Lock } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 import { optionalPhoneSchema } from "@/lib/utils/phone";
@@ -37,6 +38,8 @@ export function OffMarketRegisterForm() {
 
   const {
     register,
+    setValue,
+    clearErrors,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<OffMarketFormData>({
@@ -142,14 +145,24 @@ export function OffMarketRegisterForm() {
 
       <div className="pt-2 border-t border-line">
         <p className="text-xs uppercase tracking-wider text-ink-subtle mb-3 mt-4">What are you looking for?</p>
-        <Select
-          id="offmarket-suburbs"
-          label="Preferred suburb"
-          options={SUBURBS.map((s) => ({ value: s.slug, label: s.name }))}
-          placeholder="Select suburb"
-          error={errors.suburbs?.message}
-          {...register("suburbs")}
+        {/* Live autocomplete over every suburb (the old <Select> listed the
+            six prototype seed suburbs). Slug lands in the registered hidden
+            field so validation and the payload are unchanged. */}
+        <label htmlFor="offmarket-suburbs" className="block text-xs font-medium text-ink-muted mb-1">
+          Preferred suburb
+        </label>
+        <SuburbAutocomplete
+          placeholder="Suburb or postcode, e.g. Bondi or 2026"
+          onSelectLocation={(slug) => {
+            setValue("suburbs", slug, { shouldValidate: true });
+            clearErrors("suburbs");
+          }}
+          onClear={() => setValue("suburbs", "", { shouldValidate: false })}
         />
+        <input type="hidden" id="offmarket-suburbs" {...register("suburbs")} />
+        {errors.suburbs?.message && (
+          <p className="mt-1.5 text-xs text-danger">{errors.suburbs.message}</p>
+        )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
