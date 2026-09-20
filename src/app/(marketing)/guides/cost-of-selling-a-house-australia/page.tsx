@@ -16,6 +16,8 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { COST_OF_SELLING_STATE, COST_OF_SELLING_STATES } from "@/lib/data/cost-of-selling-state";
+import { money, sellingCostTable } from "@/lib/data/selling-costs";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "The Cost of Selling a House in Australia (2026): Every Fee Explained",
@@ -23,7 +25,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Every cost of selling a house in Australia: agent commission, marketing, conveyancing, styling, repairs, auction and discharge fees, plus capital gains tax on an investment. With a worked example and where you can negotiate.",
   slug: "cost-of-selling-a-house-australia",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-06-14",
+  updatedAt: "2026-09-20",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -68,6 +70,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "auction",       label: "Auction and auctioneer fees" },
   { id: "discharge",     label: "Mortgage discharge fees" },
   { id: "cgt",           label: "Capital gains tax on an investment" },
+  { id: "by-state",      label: "Cost of selling by state" },
   { id: "worked-example",label: "A worked example" },
   { id: "next-steps",    label: "Where to start" },
 ];
@@ -107,6 +110,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "Commission Calculator",              href: "/real-estate-commission-calculator",        description: "Estimate the biggest selling cost for your price and state." },
+  { title: "Selling Costs Calculator",           href: "/selling-costs-calculator",                 description: "Every line of the bill and your net proceeds after the loan." },
   { title: "Real Estate Agent Fees in Australia", href: "/guides/real-estate-agent-fees-australia",  description: "Commission ranges by state, marketing budgets, and what's negotiable." },
   { title: "How to Sell a House in Australia",    href: "/guides/how-to-sell-a-house-australia",      description: "Every step from pre-listing prep through to settlement day." },
   { title: "How to Choose a Selling Agent",       href: "/guides/how-to-choose-a-selling-agent",      description: "The interview process, the appraisal-price trap, and what to negotiate." },
@@ -325,6 +329,26 @@ export default function CostOfSellingAHouseAustraliaPage() {
           or a registered tax agent before you sell an investment property.
         </p>
       </Callout>
+
+      <h2 id="by-state">Cost of selling by state</h2>
+      <p>
+        Commission ranges, the legal documents the seller must pay for and the
+        compliance items at sale all differ by state. Each guide below works the
+        full bill for that state and includes the{" "}
+        <Link href="/selling-costs-calculator">selling costs calculator</Link>{" "}
+        preset to its typical rate.
+      </p>
+      <ul>
+        {COST_OF_SELLING_STATES.map((s) => {
+          const t = sellingCostTable(s);
+          return (
+            <li key={s}>
+              <Link href={`/guides/${COST_OF_SELLING_STATE[s].slug}`}>Cost of selling a house in {t.stateName}</Link>:
+              commission {t.commission.low}% to {t.commission.high}%, {t.documents.label.toLowerCase()} {money(t.documents.low)} to {money(t.documents.high)}.
+            </li>
+          );
+        })}
+      </ul>
 
       <h2 id="worked-example">A worked example</h2>
       <p>

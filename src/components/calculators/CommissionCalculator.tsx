@@ -201,7 +201,7 @@ export function CommissionCalculator({
   );
 }
 
-function NumberInput({
+export function NumberInput({
   id,
   label,
   value,
