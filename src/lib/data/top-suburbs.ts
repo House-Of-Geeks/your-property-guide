@@ -35,3 +35,12 @@ export function topSuburbsForCity(citySlug: string, limit = 24): TopSuburb[] {
   if (!city) return [];
   return TOP_SUBURBS.filter((s) => s.state === city.state && capitalCityFor(s.state, s.postcode)?.slug === city.slug).slice(0, limit);
 }
+
+/**
+ * The most-searched suburbs among a given set, e.g. the suburbs of one
+ * region (LGA). Order is by impressions, most first.
+ */
+export function topSuburbsAmong(slugs: Iterable<string>, limit = 24): TopSuburb[] {
+  const set = slugs instanceof Set ? slugs : new Set(slugs);
+  return TOP_SUBURBS.filter((s) => set.has(s.slug)).slice(0, limit);
+}

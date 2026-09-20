@@ -116,18 +116,24 @@ export function buildCityMarket(rows: CityMarketRow[]): CityMarket {
     (s) => isReliableSalesSource(s.statsSource) && s.medianHousePrice > 0,
   );
 
+  // A growth figure of exactly 0 is how the sales feeds store "no prior
+  // period to compare", not a flat market; the suburb pages already treat
+  // it as unknown (the snapshot prints growth only when it is non-zero),
+  // so the rollup does the same rather than reporting a region as flat.
+  const knownGrowth = (g: number | null): g is number => isPlausibleAnnualGrowth(g) && g !== 0;
+
   const toCitySuburb = (s: (typeof priced)[number]): CityMarketSuburb => ({
     slug: s.slug,
     name: s.name,
     postcode: s.postcode,
     medianHousePrice: s.medianHousePrice,
-    annualGrowthHouse: isPlausibleAnnualGrowth(s.annualGrowthHouse) ? s.annualGrowthHouse : null,
+    annualGrowthHouse: knownGrowth(s.annualGrowthHouse) ? s.annualGrowthHouse : null,
     population: s.population,
     salesCountHouse: s.salesCountHouse ?? 0,
   });
 
   const growthEligible = priced.filter(
-    (s): s is CityMarketRow & { annualGrowthHouse: number } => isPlausibleAnnualGrowth(s.annualGrowthHouse),
+    (s): s is CityMarketRow & { annualGrowthHouse: number } => knownGrowth(s.annualGrowthHouse),
   );
 
   // Affordability/premium lists exclude micro-localities: a "suburb" of 40
