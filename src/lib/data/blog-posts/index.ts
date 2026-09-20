@@ -2,6 +2,7 @@
 // publication order the site relies on: newest first. blogs.ts re-exports
 // this array, so importers are unchanged.
 import type { BlogPost } from "@/types";
+import { post as real_estate_agency_agreements_by_state } from "./real-estate-agency-agreements-by-state";
 import { post as selling_a_house_after_separation_or_divorce } from "./selling-a-house-after-separation-or-divorce";
 import { post as reserve_price_auction } from "./reserve-price-auction";
 import { post as selling_a_house_with_tenants } from "./selling-a-house-with-tenants";
@@ -56,6 +57,7 @@ import { post as negative_gearing_changes_2026_budget } from "./negative-gearing
 import { post as cgt_changes_2026_budget } from "./cgt-changes-2026-budget";
 
 export const blogPosts: BlogPost[] = [
+  real_estate_agency_agreements_by_state,
   selling_a_house_after_separation_or_divorce,
   reserve_price_auction,
   selling_a_house_with_tenants,
