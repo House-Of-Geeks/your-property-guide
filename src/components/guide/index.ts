@@ -29,3 +29,4 @@ export type { MatchCTAKind } from "./MatchCTA";
 export type { SourceItem } from "./Sources";
 export { SellingCostTable } from "./SellingCostTable";
 export { CommissionCalculatorEmbed } from "./CommissionCalculatorEmbed";
+export { CostOfSellingStateGuide, costOfSellingFrontmatter, costOfSellingMetadata } from "./CostOfSellingStateGuide";

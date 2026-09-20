@@ -20,6 +20,8 @@ export function SellingCostTable({ state }: { state: StateCode }) {
         Commission is the biggest line, not the only one. This is the{" "}
         {t.stateName} summary in {t.stateName}&rsquo;s numbers, worked at a{" "}
         {money(t.price)} sale. The{" "}
+        <Link href={`/guides/cost-of-selling-a-house-${state.toLowerCase()}`}>cost of selling a house in {t.stateName}</Link>{" "}
+        guide goes through every line and what is different in {t.stateName}; the{" "}
         <Link href="/guides/cost-of-selling-a-house-australia">national cost of selling guide</Link>{" "}
         explains each line in full.
       </p>
