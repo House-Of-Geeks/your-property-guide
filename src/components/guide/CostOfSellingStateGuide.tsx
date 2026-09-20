@@ -14,7 +14,7 @@ export function costOfSellingFrontmatter(state: StateCode): GuideFrontmatter {
   const t = sellingCostTable(state);
   return {
     title: `Cost of Selling a House in ${t.stateName} (2026): Commission, Fees and Calculator`,
-    description: `Every cost of selling a house in ${t.stateName}: commission of ${t.commission.low}% to ${t.commission.high}%, marketing, conveyancing, the ${g.state === "NSW" || g.state === "WA" || g.state === "TAS" || g.state === "NT" ? "legal documents" : t.documents.label.toLowerCase()}, tax, and what is different in ${t.stateName}. Worked at ${money(t.price)}, with a calculator.`,
+    description: `Every cost of selling a house in ${t.stateName}: commission of ${t.commission.low}% to ${t.commission.high}%, marketing, conveyancing, the ${lowerFirst(t.documents.label)}, tax, and what is different in ${t.stateName}. Worked at ${money(t.price)}, with a calculator.`,
     slug: g.slug,
     publishedAt: COST_OF_SELLING_AS_OF,
     updatedAt: COST_OF_SELLING_AS_OF,
@@ -43,6 +43,7 @@ export function costOfSellingMetadata(state: StateCode): Metadata {
   };
 }
 
+const lowerFirst = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
 /** Renders a paragraph string, turning [text](/path) into links. */
@@ -113,7 +114,7 @@ export function CostOfSellingStateGuide({ state }: { state: StateCode }) {
 
       <h2 id="calculator">Selling costs calculator for {name}</h2>
       <p>
-        Preset to the typical {name} commission of {r.typical}% and the mid-point of the {t.documents.label.toLowerCase()} range.
+        Preset to the typical {name} commission of {r.typical}% and the mid-point of the {lowerFirst(t.documents.label)} range.
         Change any figure, add your loan balance, and the result shows what lands in your account at settlement. The{" "}
         <Link href="/selling-costs-calculator">full selling costs calculator</Link> covers every state.
       </p>
