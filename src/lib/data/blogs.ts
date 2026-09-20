@@ -135,7 +135,7 @@ export const blogPosts: BlogPost[] = [
     category: "Selling",
     tags: ["contract of sale","Queensland","seller disclosure","Form 2","selling a house","cooling-off period","Property Law Act 2023","REIQ contract","conveyancing","selling costs","2026"],
     publishedAt: "2026-09-20",
-    readingTime: 12,
+    readingTime: 14,
   },
   {
     id: "blog-contract-of-sale-nsw-2026",
