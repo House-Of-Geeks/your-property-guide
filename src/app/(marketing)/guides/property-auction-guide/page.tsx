@@ -22,7 +22,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "How auctions actually work in Australia. The reserve price, vendor bids, what 'passed in' means, why finance must be unconditional before auction day, and bidding strategies that don't lose you money.",
   slug: "property-auction-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-09-20",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
 const TLDR = [
   "Auction purchases have NO cooling-off period in any Australian state. If the hammer falls, you're committed unconditionally and pay 10% deposit on the spot.",
   "All due diligence (unconditional finance, building and pest inspection, contract review by your conveyancer) must be done before auction day.",
-  "The reserve price is the minimum the vendor will accept; it's set confidentially before auction. The agent's price guide is an estimate, not the reserve.",
+  "The reserve price is the minimum the vendor will accept; it's set confidentially before auction. The agent's price guide is an estimate, not the reserve. Victoria is the exception from October 2026: for residential auctions held on or after 16 October 2026, the reserve must be published in the advertising at least 7 days beforehand.",
   "If bidding doesn't reach reserve, the property is 'passed in' and the highest bidder usually gets first right to negotiate privately with the vendor.",
   "A vendor bid is a bid made by the auctioneer on behalf of the seller to push toward the reserve. It must be announced clearly and cannot win the auction.",
   "Bidder registration is mandatory in NSW and VIC and standard practice elsewhere. Bring photo ID and arrive 30 minutes early.",
@@ -86,7 +86,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What's the difference between a price guide and a reserve price?",
     answer:
-      "The price guide is the agent's pre-auction estimate of where bidding will fall. The reserve is the confidential minimum the vendor will accept, set just before auction starts. Price guides must be genuinely representative of vendor expectations under Australian consumer law, but they are not the reserve.",
+      "The price guide is the agent's pre-auction estimate of where bidding will fall. The reserve is the confidential minimum the vendor will accept, set just before auction starts. Price guides must be genuinely representative of vendor expectations under Australian consumer law, but they are not the reserve. Victoria is the exception: under the Consumer Legislation Amendment Act 2026, for residential auctions held on or after 16 October 2026 the agent must obtain the seller's reserve in writing as a single dollar figure and publish it in the advertising at least 7 days before the auction, or the auction cannot proceed.",
   },
   {
     question: "What does 'on the market' mean at auction?",
@@ -227,6 +227,36 @@ export default function PropertyAuctionGuidePage() {
       <p>
         A property cannot be sold at auction for less than the reserve price.
         If bidding does not reach the reserve, the property is &ldquo;passed in&rdquo;.
+      </p>
+      <p>
+        <strong>Victoria is the exception from October 2026.</strong> The{" "}
+        <a
+          href="https://content.legislation.vic.gov.au/sites/default/files/2026-09/26-036a-authorised.pdf"
+          rel="nofollow noopener"
+          target="_blank"
+        >
+          Consumer Legislation Amendment Act 2026
+        </a>{" "}
+        (Vic) inserts new sections 47AG to 47AI into the{" "}
+        <em>Estate Agents Act 1980</em>. From 1 October 2026, for residential
+        auctions and fixed-date sales held on or after 16 October 2026, the
+        agent must request the seller&rsquo;s reserve in writing as a single
+        dollar figure, publish it in the advertising for at least 7 days
+        before the auction, and must not conduct the auction otherwise. Each
+        breach carries a penalty of 240 penalty units.{" "}
+        <a
+          href="https://www.consumer.vic.gov.au/licensing-and-registration/estate-agents/new-changes-to-property-sales-and-underquoting-laws"
+          rel="nofollow noopener"
+          target="_blank"
+        >
+          Consumer Affairs Victoria
+        </a>{" "}
+        (updated 15 September 2026) puts it plainly: if the reserve has not
+        been published 7 days before the auction, it cannot go ahead. The
+        confidential-reserve description above still applies in every other
+        state and territory. For how a reserve is set, how it relates to the
+        price guide in each state, and the full Victorian rules, see our{" "}
+        <Link href="/guides/reserve-price-auction">reserve price guide</Link>.
       </p>
 
       <h2 id="passed-in">What &ldquo;passed in&rdquo; means</h2>
