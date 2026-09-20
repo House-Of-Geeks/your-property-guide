@@ -18,7 +18,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Cooling-off periods on Australian property purchases vary by state, from 0 days at auction in Tasmania to 5 days in NSW. Full state-by-state table, how to waive, and how to use it well.",
   slug: "cooling-off-period-by-state-australia",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-05-06",
+  updatedAt: "2026-09-20",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
 const TLDR = [
   "Cooling-off periods let a buyer rescind a private treaty contract within a defined window after exchange, typically 3 to 5 business days.",
   "Auction purchases have no cooling-off in any state. Once the hammer drops, the contract is binding immediately.",
-  "Withdrawing during cooling-off costs you a small penalty, typically 0.2% to 0.25% of the purchase price (e.g. $1,500 on a $700K home in NSW).",
+  "Withdrawing during cooling-off costs you a small penalty, typically 0.2% to 0.25% of the purchase price (e.g. $1,750 on a $700K home in NSW).",
   "Queensland, NSW, Victoria, and SA have cooling-off rights for private treaty buyers. Western Australia and Tasmania do not have a statutory cooling-off period.",
   "You can waive cooling-off (NSW: with a Section 66W certificate). Sellers often request this to firm up the deal.",
 ];
@@ -72,7 +72,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Do I get my deposit back if I pull out?",
     answer:
-      "You get most of it back. A small penalty (typically 0.2% to 0.25% of the purchase price) is forfeited to the seller. On a $700,000 NSW home, that's roughly $1,500. The balance of any deposit paid is refunded within a few business days.",
+      "You get most of it back. A small penalty (typically 0.2% to 0.25% of the purchase price) is forfeited to the seller. On a $700,000 NSW home, that's $1,750. The balance of any deposit paid is refunded within a few business days.",
   },
   {
     question: "When does the cooling-off clock start?",
@@ -161,7 +161,9 @@ export default function CoolingOffPeriodByStateGuide() {
       <p>
         <strong>2 clear business days</strong> after the buyer receives a
         signed copy of the contract (and the prescribed Form 1 vendor's
-        statement). No penalty for rescission in SA, full deposit refund.
+        statement). No percentage penalty in SA: the buyer gets their money
+        back, though the seller may keep a deposit of up to $100 (the most
+        that can be taken before the cooling-off period ends).
       </p>
 
       <h3>Australian Capital Territory</h3>
@@ -172,9 +174,11 @@ export default function CoolingOffPeriodByStateGuide() {
 
       <h3>Northern Territory</h3>
       <p>
-        <strong>4 business days</strong> for residential property. No statutory
-        penalty in the NT, though forfeiture terms can be written into the
-        contract.
+        <strong>4 business days</strong> for property not sold at auction. The
+        NT has no cooling-off legislation (its 2010 Act was repealed in 2013);
+        the right comes from the approved standard contract of sale, which
+        lets the buyer cancel without penalty. Check the contract, as the
+        period can be varied by agreement.
       </p>
 
       <h3>Western Australia</h3>
@@ -260,9 +264,9 @@ export default function CoolingOffPeriodByStateGuide() {
         <li>NSW: 0.25% (e.g. $1,750 on $700,000)</li>
         <li>VIC: 0.2% (e.g. $1,400 on $700,000)</li>
         <li>QLD: 0.25% (e.g. $1,750 on $700,000)</li>
-        <li>SA: $0 statutory penalty</li>
+        <li>SA: no percentage penalty (the seller may keep a deposit of up to $100)</li>
         <li>ACT: 0.25%</li>
-        <li>NT: $0 statutory penalty (contract terms may apply)</li>
+        <li>NT: no penalty under the standard contract (no legislation applies)</li>
       </ul>
       <p>
         These penalties are forfeited to the seller. The rest of any deposit
