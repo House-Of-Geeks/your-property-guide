@@ -3,6 +3,10 @@
 // this array, so importers are unchanged.
 import type { BlogPost } from "@/types";
 import { post as real_estate_agency_agreements_by_state } from "./real-estate-agency-agreements-by-state";
+import { post as underquoting_laws_by_state } from "./underquoting-laws-by-state";
+import { post as real_estate_agent_complaints_and_red_flags } from "./real-estate-agent-complaints-and-red-flags";
+import { post as changing_real_estate_agents_mid_campaign } from "./changing-real-estate-agents-mid-campaign";
+import { post as fixed_fee_vs_commission_real_estate_agents } from "./fixed-fee-vs-commission-real-estate-agents";
 import { post as selling_a_house_after_separation_or_divorce } from "./selling-a-house-after-separation-or-divorce";
 import { post as reserve_price_auction } from "./reserve-price-auction";
 import { post as selling_a_house_with_tenants } from "./selling-a-house-with-tenants";
@@ -58,6 +62,10 @@ import { post as cgt_changes_2026_budget } from "./cgt-changes-2026-budget";
 
 export const blogPosts: BlogPost[] = [
   real_estate_agency_agreements_by_state,
+  underquoting_laws_by_state,
+  real_estate_agent_complaints_and_red_flags,
+  changing_real_estate_agents_mid_campaign,
+  fixed_fee_vs_commission_real_estate_agents,
   selling_a_house_after_separation_or_divorce,
   reserve_price_auction,
   selling_a_house_with_tenants,
