@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { cache } from "react";
+import { buildCityMarket, type CityMarket, type CityMarketRow } from "@/lib/services/city-market-service";
 
 // State-level values that are not real SA3 regions, filter these out
 const STATE_NAMES = new Set([
@@ -72,6 +73,7 @@ export async function getRegionSuburbs(region: string) {
       medianHousePrice: true,
       medianUnitPrice: true,
       annualGrowthHouse: true,
+      statsSource: true,
     },
     orderBy: { name: "asc" },
   });
@@ -95,4 +97,29 @@ export async function getRegionStats(region: string) {
       ? parseFloat((growths.reduce((a, b) => a + b, 0) / growths.length).toFixed(1))
       : null,
   };
+}
+
+/**
+ * The region's market rollup: the same gated median-of-medians, busiest,
+ * fastest-growing, most-affordable and premium lists the capital-city pages
+ * use, built over the LGA's suburbs. Content gap item 6.
+ */
+export async function getRegionMarket(region: string): Promise<CityMarket> {
+  const rows: CityMarketRow[] = await db.suburb.findMany({
+    where: { region },
+    select: {
+      slug: true,
+      name: true,
+      postcode: true,
+      medianHousePrice: true,
+      medianUnitPrice: true,
+      medianRentHouse: true,
+      annualGrowthHouse: true,
+      population: true,
+      salesCountHouse: true,
+      statsSource: true,
+      salesUpdatedAt: true,
+    },
+  });
+  return buildCityMarket(rows);
 }
