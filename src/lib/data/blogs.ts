@@ -102,7 +102,7 @@ export const blogPosts: BlogPost[] = [
 <li><strong>Notices and outgoings.</strong> Any council or authority notice, and the rates and any special levies you are inheriting.</li>
 <li><strong>Owners corporation.</strong> Fees, the maintenance fund, any special levies, insurance, and the minutes for disputes or planned works.</li>
 </ol>
-<p>Have your own conveyancer review the statement before you sign anything. The <a href="/guides/cooling-off-period-vic">three-business-day cooling-off period in Victoria</a> is short, does not apply to auctions, and costs you 0.2% of the price to use.</p>
+<p>Have your own conveyancer review the statement before you sign anything. The <a href="/guides/cooling-off-period-vic">cooling-off period in Victoria</a> is three clear business days, does not apply to auctions, and costs you 0.2% of the price (minimum $100) to use.</p>
 
 <h2>Where this fits in the sale</h2>
 <p>The Section 32 is step one of the paperwork, not the whole process. Our guide to <a href="/guides/how-to-sell-a-house-australia">how to sell a house in Australia</a> covers the campaign end to end, the <a href="/guides/real-estate-commission-vic">Victorian commission guide</a> covers what an agent will charge, and if you want an agent who sells in your suburb to give you a figure first, <a href="/appraisal">request a free appraisal</a>. The <a href="/selling-guide">free selling guide</a> personalises the whole sequence to your suburb.</p>
