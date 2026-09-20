@@ -4,11 +4,15 @@ import Image from "next/image";
 import { MapPin } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
+import { unstable_cache } from "next/cache";
 import { getAllRegions } from "@/lib/services/region-service";
 import { SITE_URL } from "@/lib/constants";
 
-// Page body queries the DB; render on every request to avoid build-time DB hits.
-export const revalidate = 86400;
+// The index queries the DB. It used to be a static ISR page, which meant
+// the build-time render (no DB, so no regions) was served for up to a day
+// after every deploy. Render on request instead and cache the region list
+// behind a tag, the same pattern the regions sitemap uses.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Property Regions Across Australia",
@@ -23,6 +27,11 @@ export const metadata: Metadata = {
   },
 };
 
+const getCachedRegions = unstable_cache(getAllRegions, ["regions-index:v1"], {
+  revalidate: 86400,
+  tags: ["sitemap-regions"],
+});
+
 const STATE_ORDER = ["QLD", "NSW", "VIC", "WA", "SA", "TAS", "ACT", "NT"];
 const STATE_NAMES: Record<string, string> = {
   QLD: "Queensland",
@@ -36,13 +45,7 @@ const STATE_NAMES: Record<string, string> = {
 };
 
 export default async function RegionsPage() {
-  // Skip the DB at build (Railway proxy drops build-time connections); ISR
-  // (revalidate above) fills real data on first request. Empty renders cleanly
-  // — the grouping below drops empty states.
-  const regions =
-    process.env.NEXT_PHASE === "phase-production-build"
-      ? ([] as Awaited<ReturnType<typeof getAllRegions>>)
-      : await getAllRegions();
+  const regions = await getCachedRegions();
 
   // Group by state
   const byState = STATE_ORDER.reduce<Record<string, typeof regions>>((acc, state) => {
