@@ -16,6 +16,7 @@ import {
 import { syncGuideLeadToActiveCampaign } from "@/lib/activecampaign";
 import { checkRateLimit, ipKeyFromRequest } from "@/lib/rate-limit";
 import { normalizePhone } from "@/lib/utils/phone";
+import { attributionFromRequest, attributionJson, attributionRowsFor } from "@/lib/attribution-server";
 
 const NOTIFY_EMAIL = ANDY_EMAIL;
 const CC_EMAIL = LEADS_CC_EMAIL;
@@ -118,6 +119,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true, message: "Enquiry submitted successfully" });
     }
 
+    // How this browser found us (first visit, latest ad click) from the
+    // ypg_attr cookie, plus the page the form was submitted on. Read here,
+    // not from the payload, so every form gets it without changes.
+    const attribution = attributionFromRequest(request);
+
     // Route the lead
     const routing = routeLead({
       ...lead,
@@ -199,6 +205,8 @@ export async function POST(request: Request) {
         bedrooms:         lead.bedrooms,
         routedToAgent:    routing.agentId,
         routedReason:     routing.reason,
+        gclid:            attribution.gclid ?? undefined,
+        attribution:      attributionJson(attribution),
       },
     });
 
@@ -243,7 +251,7 @@ export async function POST(request: Request) {
         to: NOTIFY_EMAIL,
         cc: isMatchRequest ? undefined : CC_EMAIL,
         subject,
-        html: buildAdminEmailHtml(lead, agentName, routing.reason),
+        html: buildAdminEmailHtml(lead, agentName, routing.reason, attributionRowsFor(attribution)),
       });
     } catch (mailErr) {
       console.error("Lead notification email failed (lead saved to DB):", {

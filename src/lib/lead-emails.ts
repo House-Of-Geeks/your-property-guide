@@ -135,7 +135,13 @@ function escapeHtml(value: string): string {
     .replace(/"/g, "&quot;");
 }
 
-export function buildAdminEmailHtml(lead: LeadEmailData, agentName: string | null, routedReason: string): string {
+export function buildAdminEmailHtml(
+  lead: LeadEmailData,
+  agentName: string | null,
+  routedReason: string,
+  /** "How they found us" rows from lib/attribution; internal only, never sent to agents. */
+  attributionRows: Array<[string, string]> = [],
+): string {
   const C = EMAIL_COLORS;
   const typeLabel = labelFor(lead.type, lead.guideType);
   const fullName = escapeHtml(lead.lastName ? `${lead.firstName} ${lead.lastName}` : lead.firstName);
@@ -176,12 +182,27 @@ export function buildAdminEmailHtml(lead: LeadEmailData, agentName: string | nul
     )
     .join("");
 
+  const attributionHtml = attributionRows.length
+    ? `
+    <p style="margin:24px 24px 8px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${C.inkMuted};">How they found us</p>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+      ${attributionRows
+        .map(
+          ([label, value]) => `<tr>
+        <td style="padding:6px 12px 6px 24px;font-weight:600;white-space:nowrap;color:${C.inkMuted};background:${C.cream};border-bottom:1px solid ${C.line};">${escapeHtml(label)}</td>
+        <td style="padding:6px 24px 6px 12px;color:${C.ink};border-bottom:1px solid ${C.line};word-break:break-all;">${escapeHtml(value)}</td>
+       </tr>`,
+        )
+        .join("")}
+    </table>`
+    : "";
+
   return emailLayout({
     title: typeLabel,
     body: `
     <table style="width:100%;border-collapse:collapse;font-size:14px;">
       ${rows}
-    </table>`,
+    </table>${attributionHtml}`,
     footer: `Submitted via yourpropertyguide.com.au · ${new Date().toLocaleString("en-AU", { timeZone: "Australia/Brisbane" })} AEST`,
   });
 }
