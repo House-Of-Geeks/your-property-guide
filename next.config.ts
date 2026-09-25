@@ -36,6 +36,9 @@ const nextConfig: NextConfig = {
         destination: "/real-estate-agencies/:slug*",
         permanent: true,
       },
+      // Agent lead-supply page renamed so the slug matches the query
+      // ("real estate leads"), mirroring yourfinanceguide.com.au/finance-leads.
+      { source: "/for-agents", destination: "/real-estate-leads", permanent: true },
       // Blog content moved into the unified /guides hub. Preserves SEO + any
       // external links (e.g. RSS subscribers, partner sites).
       { source: "/blog",          destination: "/guides",          permanent: true },
