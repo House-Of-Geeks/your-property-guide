@@ -434,9 +434,10 @@ export default function HowToChooseSellingAgentPage() {
         <p>
           Our{" "}
           <Link href="/appraisal">free property appraisal</Link>{" "}
-          service connects you with vetted local agents who'll provide an
-          honest appraisal with comparable sales evidence. No commitment to
-          list with them.
+          service connects you with one vetted local agent who'll provide an
+          honest appraisal with comparable sales evidence. The agent pays us
+          a fee for the introduction. You pay nothing, and there&rsquo;s no
+          commitment to list with them.
         </p>
       </Callout>
     </GuideArticleLayout>

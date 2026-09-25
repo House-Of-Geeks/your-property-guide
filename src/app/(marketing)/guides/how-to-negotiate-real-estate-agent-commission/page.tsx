@@ -112,7 +112,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The Cost of Selling a House",         href: "/guides/cost-of-selling-a-house-australia", description: "Every selling cost beyond commission, with a worked example." },
   { title: "Free Selling Guide (PDF)",            href: "/selling-guide",                           description: "Fee benchmarks and the negotiation tactics that work, personalised to your suburb." },
   { title: "Free Property Appraisal",             href: "/appraisal",                               description: "A no-commitment appraisal from a vetted local agent, your negotiation baseline." },
-  { title: "Find an Expert",                      href: "/find-an-expert",                          description: "Get matched with vetted selling agents who compete for your listing." },
+  { title: "Find an Expert",                      href: "/find-an-expert",                          description: "Get matched with one vetted selling agent who sells in your suburb. Free for you." },
 ];
 
 export default function HowToNegotiateRealEstateAgentCommissionPage() {
@@ -468,8 +468,9 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
         record, days on market and sale-versus-quote results first, then
         negotiate hard with your preferred one or two. Our{" "}
         <Link href="/find-an-expert">find an expert</Link> service matches
-        you with vetted local agents so the shortlist starts from
-        performance, not from whoever letterbox-dropped you last week.
+        you with one vetted local agent, so at least one name on your
+        shortlist starts from performance, not from whoever letterbox-dropped
+        you last week.
       </p>
 
       <h2 id="paperwork">The paperwork, state by state</h2>
@@ -530,7 +531,7 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
         <li>
           <strong>Shortlist on performance.</strong> Use the{" "}
           <Link href="/guides/how-to-choose-a-selling-agent">choosing an agent guide</Link>{" "}
-          or get matched with vetted locals via{" "}
+          or get matched with one vetted local agent via{" "}
           <Link href="/find-an-expert">find an expert</Link>.
         </li>
         <li>

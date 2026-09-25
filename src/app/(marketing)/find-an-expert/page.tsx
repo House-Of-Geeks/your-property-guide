@@ -158,8 +158,8 @@ export default function FindAnExpertPage() {
                 items={[
                   { lead: "One match, not five.", body: "We pick the right specialist; you don't get five competing quotes." },
                   { lead: "One business day.", body: "They reach out by phone or email, your choice." },
-                  { lead: "Free for buyers and sellers.", body: "Specialists pay us only when matched work goes ahead." },
-                  { lead: "No data resale.", body: "We don't sell or trade your details." },
+                  { lead: "Free for buyers and sellers.", body: "The specialist pays us a fee for each introduction." },
+                  { lead: "Never passed around.", body: "Your details go only to the specialist you're matched with. We never sell them to anyone else." },
                 ]}
               />
             </div>
@@ -282,11 +282,14 @@ export default function FindAnExpertPage() {
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">Why we&rsquo;re free</p>
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-6">
-            Buyers and sellers pay nothing. Specialists pay only for matches that turn into engaged work.
+            Buyers and sellers pay nothing. Specialists pay us a fee for each introduction.
           </h2>
           <p className="font-sans text-lg text-ink-muted leading-relaxed mb-8">
-            We disclose this on every match. We don&rsquo;t sell your data. We don&rsquo;t accept
-            referral fees from anyone we wouldn&rsquo;t use ourselves.
+            We disclose this on every match. The fee comes out of the
+            specialist&rsquo;s pocket and doesn&rsquo;t change what you pay them.
+            Your details go only to the one specialist you&rsquo;re matched with.
+            We never sell them to anyone else, and we don&rsquo;t take fees from
+            anyone we wouldn&rsquo;t use ourselves.
           </p>
           <Link
             href="/about"

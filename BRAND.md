@@ -191,7 +191,7 @@ Lives on `/about` and is linkable from every lead-form fine print.
 > One specialist, vetted and the right fit for your situation — agent, broker, accountant, conveyancer, whoever fits. Not three competing quotes, not a bidding war for your enquiry. If the right person isn't in our network for you yet, we'll say so.
 
 ### 3. We earn from the specialist, not from you
-> Buyers, sellers and anyone using us pay nothing. Specialists pay us a referral fee only after they've done engaged work — not for a click, not for an enquiry. We disclose this on every match.
+> Buyers, sellers and anyone using us pay nothing. The specialist we introduce you to pays us a fee for that introduction. It isn't a share of their commission, it doesn't depend on the work going ahead, and it doesn't change what you pay them. We disclose this on every match.
 
 ### 4. Tell us when we're wrong
 > Suburb data updates monthly; if a school's catchment, a median, or a growth figure looks off to you, flag it and we'll fix it within a week.

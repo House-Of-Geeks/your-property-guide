@@ -277,6 +277,10 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
           <span aria-hidden="true">·</span>
           <a href="/privacy" className="underline underline-offset-2 hover:text-ink">Privacy</a>
         </p>
+        <p className="text-[11px] text-ink-subtle leading-relaxed">
+          Your details go only to the one local agent we match you with, who
+          pays us for the introduction. We never sell them to anyone else.
+        </p>
       </form>
     </div>
   );

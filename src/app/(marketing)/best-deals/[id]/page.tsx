@@ -238,11 +238,11 @@ export default async function BestDealDetailPage({ params }: PageProps) {
                     href={`/find-an-expert?intent=buying`}
                     className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-ink text-surface-raised hover:bg-primary font-medium px-5 py-3 transition-colors"
                   >
-                    Get connected{deal.agent ? ` with ${deal.agent.fullName.split(" ")[0]}` : ""}
+                    Get connected
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <p className="text-[11px] font-sans text-ink-subtle mt-3 leading-relaxed text-center">
-                    Free for buyers. We&rsquo;re paid only when matched work goes ahead.
+                    Free for buyers. We match you with one vetted specialist, who pays us for the introduction.
                   </p>
                 </div>
 

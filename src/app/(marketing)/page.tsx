@@ -372,7 +372,7 @@ export default function HomePage() {
         <BestDealsRail
           eyebrow="When you're ready to act"
           heading="A short list, hand-picked by our editors."
-          body="A small, considered set of properties from partner agents we'd happily put a family member in front of. We review every one before it goes live. You never pay us — partner agents do, and only if work goes ahead."
+          body="A small, considered set of properties from partner agents we'd happily put a family member in front of. We review every one before it goes live. You never pay us. Partner agents pay us a fee for each introduction we make."
         />
       </Suspense>
 

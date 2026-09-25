@@ -259,7 +259,9 @@ export default function AppraisalPage() {
             Every appraisal request is read and matched personally by our team.
             We pick one local agent who actually sells in your area, no call
             centre, no auto-routing, no comparison spam. You&rsquo;ll hear from
-            them within one business day.
+            them within one business day. That agent pays us a fee for the
+            introduction, whether or not you list with them. You pay nothing,
+            and your details go to no one else.
           </p>
           <p className="mt-5 font-sans text-sm text-ink-muted">
             Not ready for an appraisal yet? Start with the{" "}

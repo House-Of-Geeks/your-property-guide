@@ -32,6 +32,16 @@ const makeEnquirySchema = (requirePhone: boolean) =>
 
 type EnquiryFormData = z.infer<ReturnType<typeof makeEnquirySchema>>;
 
+// Lead types where the one recipient pays us for the introduction (pay per
+// lead, from 25 Sep 2026), so the fine print discloses the fee. A buyer or
+// renter enquiring on a listing (property-enquiry) and a general message are
+// not paid introductions and keep the plain privacy line.
+const PAID_INTRO_RECIPIENT: Partial<Record<string, string>> = {
+  "house-and-land-enquiry": "the agent or builder for this package",
+  // Agent profile "Selling my property & appraisals" topic, sent to that agent.
+  "appraisal-request": "this agent",
+};
+
 interface EnquiryFormProps {
   propertyId?: string;
   agentId?: string;
@@ -63,6 +73,13 @@ export function EnquiryForm({
   // feels off (people often just want an email answer). Everything else
   // is an agent-bound lead where the next step is a call.
   const requirePhone = requirePhoneProp ?? type !== "general-contact";
+  const paidRecipient = PAID_INTRO_RECIPIENT[type];
+  // Who the success message says the enquiry goes to. It must match the
+  // recipient disclosed in the fine print. A general message with no agent
+  // (the /contact page) stays with us.
+  const staysWithUs = type === "general-contact" && !agentId && !agencyId;
+  const successRecipient =
+    paidRecipient ?? (type === "property-enquiry" ? "the listing agent" : "the agent");
   const [submitted, setSubmitted] = useState<{ leadId: string | null; hadPhone: boolean } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -114,8 +131,12 @@ export function EnquiryForm({
         </div>
         <h3 className="font-display text-xl text-ink leading-tight">Enquiry sent.</h3>
         <p className="text-sm text-ink-muted mt-2 leading-relaxed max-w-sm mx-auto">
-          Look for a confirmation in your inbox. We&rsquo;ll connect you with the listing agent
-          within one business day.
+          Look for a confirmation in your inbox.{" "}
+          {staysWithUs ? (
+            <>We&rsquo;ll get back to you within one business day.</>
+          ) : (
+            <>We&rsquo;ll pass your enquiry to {successRecipient} within one business day.</>
+          )}
         </p>
         {!submitted.hadPhone && submitted.leadId && (
           <div className="mt-6 max-w-sm mx-auto text-left">
@@ -196,7 +217,13 @@ export function EnquiryForm({
         )}
       </button>
       <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
-        Free, no commitment. We&rsquo;ll never sell your details. Read our{" "}
+        Free, no commitment.{" "}
+        {paidRecipient ? (
+          <>Your details go only to {paidRecipient}, who pays us for the introduction. We never sell them to anyone else.</>
+        ) : (
+          <>We&rsquo;ll never sell your details.</>
+        )}{" "}
+        Read our{" "}
         <a href="/privacy" className="underline underline-offset-2 hover:text-ink">privacy policy</a>.
       </p>
     </form>

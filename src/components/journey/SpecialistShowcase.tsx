@@ -57,7 +57,7 @@ export async function SpecialistShowcase({
           <ul className="space-y-2 text-sm text-ink-muted leading-snug">
             <li className="flex gap-2"><ShieldCheck className="w-4 h-4 text-cta shrink-0 mt-0.5" /> Active in your suburb, not a call centre.</li>
             <li className="flex gap-2"><Eye className="w-4 h-4 text-cta shrink-0 mt-0.5" /> Vetted personally before we match.</li>
-            <li className="flex gap-2"><Handshake className="w-4 h-4 text-cta shrink-0 mt-0.5" /> Free for you, they pay only on matched work.</li>
+            <li className="flex gap-2"><Handshake className="w-4 h-4 text-cta shrink-0 mt-0.5" /> Free for you. They pay us a fee for the introduction.</li>
           </ul>
         </div>
       );
@@ -117,7 +117,7 @@ export async function SpecialistShowcase({
               {
                 Icon: Eye,
                 title: "Active in your area",
-                body: "Not a call-centre lead-buyer who works any suburb in any state. The specialist we send actually does business where you do.",
+                body: "Not a call centre that works any suburb in any state. The specialist we send actually does business where you do.",
               },
               {
                 Icon: ShieldCheck,
@@ -132,7 +132,7 @@ export async function SpecialistShowcase({
               {
                 Icon: Handshake,
                 title: "Free for buyers and sellers",
-                body: "Specialists pay us only when matched work goes ahead, and we disclose this on every match. You pay nothing, ever.",
+                body: "Specialists pay us a fee for each introduction, and we disclose this on every match. You pay nothing, ever.",
               },
             ].map(({ Icon, title, body }) => (
               <div key={title} className="rounded-xl border border-line bg-surface-warm p-5">

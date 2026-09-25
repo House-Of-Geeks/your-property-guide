@@ -102,7 +102,7 @@ export function BestDealCard({ deal, variant = "compact" }: BestDealCardProps) {
             </span>
           </div>
           <p className="text-[11px] font-sans text-ink-subtle mt-4 leading-relaxed">
-            Partner agent. We&rsquo;re paid only when matched work goes ahead. Buyers never pay.
+            Partner agent. The agent pays us a fee for each introduction. Buyers never pay.
           </p>
         </div>
       </Link>
