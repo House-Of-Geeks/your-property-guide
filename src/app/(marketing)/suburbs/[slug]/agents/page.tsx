@@ -77,8 +77,8 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
         title={<>Real estate agents in <span className="italic text-primary">{sn}</span>.</>}
         subtitle={
           model.commission && model.medianHousePrice
-            ? `What agents charge on ${sn}'s ${formatPriceFull(model.medianHousePrice)} median, how to choose one, and a free match with two to three agents who sell here.`
-            : `How to choose an agent in ${sn}, what they charge, and a free match with two to three agents who sell here.`
+            ? `What agents charge on ${sn}'s ${formatPriceFull(model.medianHousePrice)} median, how to choose an agent, and a free match with one who sells here.`
+            : `How to choose an agent in ${sn}, what they charge, and a free match with one agent who sells here.`
         }
       />
 
@@ -89,13 +89,13 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
           <div className="lg:col-span-5">
             <p className="font-display italic text-primary text-base mb-3 leading-none">Get matched</p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-4">
-              Two to three agents who sell in {sn}.
+              One agent who sells in {sn}.
             </h2>
             <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-md">
-              Tell us your timeframe and we connect you with agents who have recent sales in {sn}, not a call centre and not a panel. Free, and no obligation to list.
+              Tell us your timeframe and we connect you with one agent who has recent sales in {sn}, not a call centre and not a panel. Free, and no obligation to list.
             </p>
             <ul className="mt-6 space-y-2 font-sans text-sm text-ink-muted">
-              {["Agents with sales in this suburb", "Two to three, so you can compare", "You choose who to meet; we never sell your details"].map((t) => (
+              {["Recent sales in this suburb, not the wider region", "One agent, not five, and you decide whether to meet them", "Free for you. The agent pays us for the introduction"].map((t) => (
                 <li key={t} className="flex gap-2.5"><CheckCircle className="w-4 h-4 mt-0.5 text-cta flex-shrink-0" aria-hidden="true" />{t}</li>
               ))}
             </ul>
@@ -119,7 +119,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
               <p className="font-sans text-base text-ink leading-relaxed">
                 We&rsquo;re adding vetted agents in {sn}. Until they&rsquo;re listed here,{" "}
                 <a href="#match" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">request a match</a>{" "}
-                and our team will find you two to three who sell in the suburb.
+                and our team will find you one who sells in the suburb.
               </p>
               <p className="mt-3 font-sans text-sm text-ink-muted leading-relaxed">
                 Are you an agent who sells in {sn}?{" "}

@@ -443,7 +443,7 @@ export function MatchAgent({
                         <p className="mt-1 text-xs text-danger">{phoneError}</p>
                       ) : (
                         <p className="mt-1 text-[11px] text-ink-subtle leading-relaxed">
-                          Only your matched specialist gets this — one intro, never marketing calls.
+                          Used only for your introduction, never for marketing calls.
                         </p>
                       )}
                     </div>
@@ -501,7 +501,9 @@ export function MatchAgent({
                       {!submitting && <ArrowRight className="w-4 h-4" />}
                     </button>
                     <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
-                      Free, no commitment. We&rsquo;ll never sell your details. Read our{" "}
+                      Free, no commitment. Your details go only to the one specialist
+                      you&rsquo;re matched with, who pays us a fee for the introduction.
+                      We never sell them to anyone else. Read our{" "}
                       <a href="/privacy" className="underline underline-offset-2 hover:text-ink">privacy policy</a>.
                     </p>
                   </form>

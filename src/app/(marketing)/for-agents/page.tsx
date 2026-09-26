@@ -9,7 +9,7 @@ import { AgentEnquiryForm } from "./AgentEnquiryForm";
 
 const META_TITLE = "Seller leads for real estate agents, without the commission share";
 const META_DESCRIPTION =
-  "Qualified vendor leads from Australia's plain-English property education site. Timeframe-scored, max three agents per lead, delivered the moment they come in. No 20 to 30 percent commission share.";
+  "Qualified vendor leads from Australia's plain-English property education site. Timeframe-scored, one agent per lead, no 20 to 30 percent commission share.";
 
 export const metadata: Metadata = {
   title: META_TITLE,
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     images: guideOgImages({
       slug: "for-agents",
       title: "Qualified seller leads. Not a third of your commission.",
-      description: "Timeframe-scored vendor leads, max three agents per lead, no commission share.",
+      description: "Timeframe-scored vendor leads, one agent per lead, no commission share.",
     }),
   },
 };
@@ -84,8 +84,8 @@ export default function ForAgentsPage() {
                   },
                   {
                     icon: Users,
-                    title: "Three agents, maximum",
-                    body: "A lead goes to at most three local agents. No blast lists, no race against ten competitors who bought the same name.",
+                    title: "One agent per lead",
+                    body: "Every lead is exclusive to one local agent. No blast lists, no race against competitors who bought the same name.",
                   },
                   {
                     icon: Zap,

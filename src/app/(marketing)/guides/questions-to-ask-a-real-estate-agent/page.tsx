@@ -579,8 +579,9 @@ export default function QuestionsToAskARealEstateAgentPage() {
           <strong>Line up three interviews.</strong> Start with a{" "}
           <Link href="/appraisal">free property appraisal</Link> from a
           vetted local agent, or use{" "}
-          <Link href="/find-an-expert">find an expert</Link> to build your
-          shortlist without cold-calling agency front desks.
+          <Link href="/find-an-expert">find an expert</Link> to add one
+          matched agent to your shortlist without cold-calling agency front
+          desks.
         </li>
         <li>
           <strong>Ask, note, compare.</strong> Same questions, same order,
@@ -588,10 +589,10 @@ export default function QuestionsToAskARealEstateAgentPage() {
         </li>
       </ol>
 
-      <Callout variant="info" title="Want a shortlist worth interviewing?">
+      <Callout variant="info" title="Want a strong name on your shortlist?">
         <p>
           Our <Link href="/find-an-expert">find an expert</Link> service
-          points you to vetted local professionals, and a{" "}
+          matches you with one vetted local agent, and a{" "}
           <Link href="/appraisal">free appraisal</Link> gets you a written
           estimate with comparable sales evidence, exactly what question 6
           demands. No commitment to list with anyone.

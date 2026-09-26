@@ -74,17 +74,17 @@ export function buildSuburbAgentsModel(
   }
   faqs.push({
     question: `How do I find a good real estate agent in ${sn}?`,
-    answer: `Look for agents with recent sales in ${sn} itself, not just the wider area, and ask each for the comparable sales behind their price opinion. Compare two or three on their answers, their fee and marketing costs, and how they will report to you during the campaign. Your Property Guide can match you with two to three agents who sell in ${sn}; request a match on this page.`,
+    answer: `Look for agents with recent sales in ${sn} itself, not just the wider area, and ask each for the comparable sales behind their price opinion. Compare two or three on their answers, their fee and marketing costs, and how they will report to you during the campaign. Your Property Guide can match you with one agent who sells in ${sn}; request a match on this page.`,
   });
   faqs.push({
     question: `Do I have to pay to be matched with an agent in ${sn}?`,
-    answer: `No. Requesting a match or an appraisal through Your Property Guide is free and carries no obligation to list. Agents pay us only when they take on a seller we introduced, and that never changes the commission you negotiate with them.`,
+    answer: `No. Requesting a match or an appraisal through Your Property Guide is free and carries no obligation to list. Your details go to one agent only, and that agent pays us a fee for the introduction, whether or not you list with them. The agent pays it from their own pocket. We never charge you, and you negotiate commission directly with the agent.`,
   });
 
   const title = `Real Estate Agents in ${sn} ${suburb.state} ${suburb.postcode}`;
   const description = commission && median
-    ? `Find real estate agents who sell in ${sn}: what they charge on the ${formatPriceFull(median)} median (${commission.lowPct}% to ${commission.highPct}%), how to choose one, and a free match with two to three local agents.`
-    : `Find real estate agents who sell in ${sn} ${suburb.postcode}: what they charge, how to choose one, and a free match with two to three local agents.`;
+    ? `Real estate agents in ${sn}: what they charge on the ${formatPriceFull(median)} median (${commission.lowPct}% to ${commission.highPct}%), how to choose, and a free match with one local agent.`
+    : `Real estate agents in ${sn} ${suburb.postcode}: what they charge, how to choose, and a free match with one local agent.`;
 
   return {
     title,

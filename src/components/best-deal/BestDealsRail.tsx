@@ -72,8 +72,8 @@ export async function BestDealsRail({
           ))}
         </div>
         <p className="text-[11px] font-sans text-ink-subtle mt-6 leading-relaxed">
-          Partner-disclosed featured properties. We&rsquo;re paid only when matched work goes ahead.
-          Buyers and sellers never pay. <Link href="/about" className="underline decoration-line-strong hover:text-ink">Why we feature these</Link>.
+          Partner-disclosed featured properties. If you enquire, the partner agent for that property
+          pays us a fee for the introduction. Buyers and sellers never pay. <Link href="/about" className="underline decoration-line-strong hover:text-ink">Why we feature these</Link>.
         </p>
       </div>
     </section>

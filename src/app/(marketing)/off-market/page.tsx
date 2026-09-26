@@ -55,7 +55,8 @@ export default async function OffMarketPage() {
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             Off-market opportunities not listed on realestate.com.au or Domain.
-            Register your brief and our agents will match you privately.
+            Register your brief and we&apos;ll email you matching off-market properties.
+            Your details are never passed to agents.
           </p>
 
           {/* Stat row */}

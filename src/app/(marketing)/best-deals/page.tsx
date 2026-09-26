@@ -88,8 +88,8 @@ export default async function BestDealsPage({ searchParams }: PageProps) {
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             A small, deliberately limited set of partner-agent properties we think are worth a closer
-            look. Every deal is reviewed by us before going live. We&rsquo;re paid only when matched
-            work goes ahead. Buyers never pay.
+            look. Every deal is reviewed by us before going live. If you ask to be connected, we
+            introduce you to one agent, who pays us for the introduction. Buyers never pay.
           </p>
         </div>
       </section>

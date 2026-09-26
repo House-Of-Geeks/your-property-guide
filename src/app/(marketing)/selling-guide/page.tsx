@@ -55,12 +55,12 @@ const FAQS = [
   {
     question: "Is the selling guide really free?",
     answer:
-      "Yes. The guide is a free PDF, and there's no charge for anything on Your Property Guide. If you ask us to, we can also connect you with up to three top local agents. Agents pay us for that introduction, you never do, and we tell you before any agent gets your details.",
+      "Yes. The guide is a free PDF, and there's no charge for anything on Your Property Guide. Unless you tell us you're already listed, we may also pass your details to one top local agent when you request it. The agent pays us for that introduction, you never do, and the form tells you this before you submit.",
   },
   {
     question: "Will I get spammed by agents if I download it?",
     answer:
-      "No. Your details only go to agents if you're a genuine seller and you've agreed to it on the form. We cap it at three local agents, and if you're already listed with an agent we don't share your details at all.",
+      "No. Your details only go to an agent if you're a genuine seller and you've agreed to it on the form. They go to one local agent only, and we never sell them to anyone else. If you're already listed with an agent, we don't share your details at all.",
   },
   {
     question: "What does it cost to sell a house in Australia?",
@@ -229,7 +229,7 @@ export default function SellingGuidePage() {
                 </span>
                 <span aria-hidden="true">·</span>
                 <span className="inline-flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" /> No agent contact unless you ask
+                  <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" /> One agent, never a list
                 </span>
               </p>
             </div>
@@ -356,8 +356,8 @@ export default function SellingGuidePage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl">
             {[
               ["01", "You get the guide", "Every chapter, every checklist, free. No card, no catch, yours to keep."],
-              ["02", "If you want agents, we connect you", "Only if you ask. Up to three top local agents, never a blast list. Already listed? We don't share your details at all."],
-              ["03", "Agents pay us, you don't", "When an introduction leads to a listing, the agent pays us a fee. That's the whole business model, disclosed up front."],
+              ["02", "If you're selling, one agent, never a list", "Unless you're already listed, requesting the guide lets us pass your details to one top local agent. The form tells you this before you submit. Never a blast list. Already listed? We don't share your details at all."],
+              ["03", "Agents pay us, you don't", "The agent pays us a fee for each introduction, whether or not you list with them. It doesn't change what you pay: you negotiate commission directly with the agent. That's the whole business model, disclosed up front."],
             ].map(([n, t, body]) => (
               <div key={n} className="border-t border-line-strong pt-4">
                 <p className="font-display italic text-primary text-base mb-2 tabular-nums">{n}</p>

@@ -269,6 +269,13 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
       </button>
 
       <p className="text-xs text-gray-400">
+        {/* Selling/appraisal topic is an appraisal-request lead: a paid
+            introduction to this agency (pay per lead, from 25 Sep 2026). */}
+        {topic?.apiType === "appraisal-request" ? (
+          <>Your details go only to {agencyName}, who pays us for the introduction. We never sell them to anyone else.{" "}</>
+        ) : (
+          <>We&rsquo;ll never sell your details.{" "}</>
+        )}
         By submitting your enquiry, you agree to our{" "}
         <a href="/privacy" className="text-primary hover:underline">Privacy Policy</a>.
       </p>

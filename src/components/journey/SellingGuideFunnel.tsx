@@ -655,9 +655,9 @@ export function SellingGuideFunnel({
               {sharesWithAgents ? (
                 <>
                   By requesting the guide you agree we may share your details
-                  with up to three top local agents, who may contact you about
-                  selling your property. We never sell your data to anyone
-                  else.{" "}
+                  with one top local agent, who may contact you about selling
+                  your property. The agent pays us for the introduction. You
+                  pay nothing. We never sell your details to anyone else.{" "}
                 </>
               ) : (
                 <>

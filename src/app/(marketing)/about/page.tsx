@@ -37,7 +37,7 @@ const PRINCIPLES = [
   {
     icon: "/images/icons/broker.svg",
     title: "Honest about money",
-    body: "Partner agents and brokers pay us only when matched work goes ahead. Disclosed on every match. We don't sell or trade your details.",
+    body: "You pay nothing. Your details go only to the one agent or specialist you're matched with, who pays us for the introduction. We say so on every match, and we never sell your details to anyone else.",
   },
 ];
 
@@ -176,14 +176,19 @@ export default function AboutPage() {
             <p>
               When you&rsquo;re ready to talk to a specialist, whether that&rsquo;s
               an agent, broker, property accountant or conveyancer, we&rsquo;ll
-              match you with someone we&rsquo;d use ourselves. They pay us a
-              referral fee only when matched work goes ahead.
+              match you with one person we&rsquo;d use ourselves. They pay us
+              a fee for the introduction. It&rsquo;s not a share of their
+              commission, and they pay it whether or not you go ahead with
+              them.
             </p>
             <p>
-              We disclose this on every match. We don&rsquo;t sell your data.
-              We don&rsquo;t accept fees from anyone we wouldn&rsquo;t use
-              ourselves. And the data, guides, calculators and suburb profiles
-              stay free regardless.
+              That fee comes out of their pocket, not yours. It doesn&rsquo;t
+              change what you pay: you agree any commission or fee directly
+              with them. We disclose this on every match. We never sell your
+              details, and we never pass them to a second agent or
+              specialist. We don&rsquo;t accept fees from anyone we
+              wouldn&rsquo;t use ourselves. And the data,
+              guides, calculators and suburb profiles stay free regardless.
             </p>
           </div>
 
@@ -221,13 +226,16 @@ export default function AboutPage() {
                 scenes.
               </p>
               <p>
-                100% of our revenue comes from referral fees paid by partner
-                agents, brokers, conveyancers and accountants <em>only</em>{" "}
-                when matched work goes ahead. No advertising. No paid placements
-                in editorial. No fees from any party we wouldn&rsquo;t
-                recommend to our own family. Partner relationships are
-                disclosed on every introduction and on every Best Deal
-                listing.
+                100% of our revenue comes from introduction fees paid by
+                partner agents, brokers, conveyancers, accountants and
+                builders. When you ask to be connected, your details go to one
+                of them only, and they pay us a fee for that introduction.
+                It&rsquo;s not a share of their commission, and it
+                doesn&rsquo;t depend on a sale or job going ahead. No
+                advertising. No paid placements in editorial. No fees from any
+                party we wouldn&rsquo;t recommend to our own family. Partner
+                relationships are disclosed on every introduction and on every
+                Best Deal listing.
               </p>
             </div>
           </div>
@@ -526,8 +534,8 @@ export default function AboutPage() {
             variant="rich"
             items={[
               { lead: "No paywall.", body: "Every page is free, and stays that way. No login, no email gate." },
-              { lead: "No data resale.", body: "We don't sell or trade your details to anyone." },
-              { lead: "Disclosed matches.", body: "If a partner pays us, you'll see it on every introduction." },
+              { lead: "One match, no lists.", body: "Your details go only to the one agent or specialist you're matched with. We never sell them to anyone else." },
+              { lead: "Disclosed matches.", body: "The partner you're matched with pays us for the introduction. We say so on every match." },
               { lead: "Vetted only.", body: "We don't take referrals from anyone we wouldn't use ourselves." },
             ]}
           />
