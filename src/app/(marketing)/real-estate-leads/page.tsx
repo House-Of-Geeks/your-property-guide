@@ -206,11 +206,6 @@ const faqs = [
       "It depends on three numbers you already know: your average commission, what you pay per lead, and how many leads it takes you to win a listing. Divide the per-lead price by your lead-to-listing rate to get your cost per listing, then compare it with what a referral platform would take (20 to 30 per cent of the commission, or a flat fee). Paid leads are worth it when that cost per listing is lower than the alternative and you have the time to call them fast. They are not worth it if leads sit in an inbox for two days.",
   },
   {
-    question: "Is buying real estate leads legal?",
-    answer:
-      "Yes, when the person agreed to be contacted and the supplier passed on their details with that consent. The Privacy Act governs how the details are collected and disclosed, the Spam Act covers the emails and SMS you send, and the Do Not Call Register rules cover marketing calls. A homeowner who asked for a local agent to call them has consented to calls about that enquiry. Ask any supplier what the person was told when they gave their details. General information, not legal advice.",
-  },
-  {
     question: "What is a good cost per lead for real estate agents?",
     answer:
       "Work it out from the listing, not the lead. Divide the per-lead price by the share of leads you turn into listings to get your cost per listing, then compare it with your commission and with what a referral platform would take. At $150 a lead and one listing in ten leads, a listing costs you $1,500. Whether that is good depends on your commission, your suburb and how fast you call.",
