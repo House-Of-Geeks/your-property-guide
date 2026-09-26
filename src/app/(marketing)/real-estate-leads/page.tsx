@@ -223,9 +223,9 @@ const faqs = [
       "Work it out from the listing, not the lead. Divide the per-lead price by the share of leads you turn into listings to get your cost per listing, then compare it with your commission and with what a referral platform would take. At $150 a lead and one listing in ten leads, a listing costs you $1,500. Whether that is good depends on your commission, your suburb and how fast you call.",
   },
   {
-    question: "What conversion rate should I expect from real estate leads?",
+    question: "What conversion rate will I get from your leads?",
     answer:
-      "Published figures run from under 1 per cent to 1 in 3, because they measure different things. realestate.com.au says 1 in 3 of its seller leads became a new listing (its own data, March 2022 to February 2023). Stepps, a real estate marketing agency, found 21 per cent of 49,939 agency-website seller leads went to market within 90 days, with any agent. OpenAgent's 2018 to 2019 study of 2,049 agents had the average agent listing about 10 per cent of referral leads. Follow Up Boss data, cited by PrimeLeads, puts online real estate leads of every kind at 0.4 to 1.2 per cent. Each is the source's own claim, and none is a forecast for our leads: measure your own from your first twenty.",
+      "We don't quote one, for the same reason we won't promise one: it depends on your suburbs, how fast you call and how well you appraise, and no supplier knows those for you. What moves it most is speed (call inside the hour) and fit (leads in suburbs you actually sell in). Track your own lead-to-listing rate from your first twenty leads, and once you're a partner we'll share what agents on the same lead type report.",
   },
   {
     question: "How are the leads qualified?",
