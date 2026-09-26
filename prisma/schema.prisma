@@ -590,6 +590,12 @@ model Lead {
   bedrooms         String?
   routedToAgent    String? // resolved agent ID from lead-routing
   routedReason     String? // "direct-agent" | "listing-agent" | "suburb-coverage" | "round-robin"
+  // Ad attribution from the ypg_attr cookie (src/lib/attribution.ts). gclid
+  // is the latest Google Ads click, kept as a column so offline conversions
+  // can be matched and uploaded; attribution holds the first and latest
+  // touches plus the page the form was submitted on. Added 2026-09-25.
+  gclid            String?
+  attribution      Json?
 
   createdAt DateTime @default(now())
 
@@ -597,6 +603,7 @@ model Lead {
   @@index([agencyId])
   @@index([agentId])
   @@index([createdAt])
+  @@index([gclid])
 }
 
 // ---------------------------------------------------------------------------

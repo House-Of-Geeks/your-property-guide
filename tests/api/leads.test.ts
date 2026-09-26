@@ -275,4 +275,49 @@ describe("client payload contracts", () => {
     expect((await POST(makeRequest({ ...baseLead, lastName: "" }))).status).toBe(400);
     expect(dbLeadCreate).toHaveBeenCalledTimes(1);
   });
+
+  describe("ad attribution (ypg_attr cookie)", () => {
+    const cookie = `ypg_attr=${encodeURIComponent(JSON.stringify({
+      first: { at: "2026-09-01T00:00:00.000Z", landing_page: "/", referrer: "https://www.google.com/" },
+      last: { at: "2026-09-20T00:00:00.000Z", gclid: "Cj0KCQ_test", utm_source: "google", utm_medium: "cpc", utm_campaign: "sellers-qld", landing_page: "/selling-guide?gclid=Cj0KCQ_test" },
+      google: { at: "2026-09-20T00:00:00.000Z", gclid: "Cj0KCQ_test", utm_source: "google", utm_medium: "cpc", utm_campaign: "sellers-qld", landing_page: "/selling-guide?gclid=Cj0KCQ_test" },
+    }))}`;
+
+    it("stores the latest gclid, both touches and the submitting page on the lead", async () => {
+      const res = await POST(makeRequest(baseLead, { cookie: `other=1; ${cookie}`, referer: "https://example.com/appraisal" }));
+      expect(res.status).toBe(200);
+      const data = dbLeadCreate.mock.calls[0][0].data;
+      expect(data.gclid).toBe("Cj0KCQ_test");
+      expect(data.attribution).toMatchObject({
+        first: { landing_page: "/", referrer: "https://www.google.com/" },
+        last: { gclid: "Cj0KCQ_test", utm_campaign: "sellers-qld" },
+        google: { gclid: "Cj0KCQ_test" },
+        source_page: "/appraisal",
+      });
+    });
+
+    it("adds a 'How they found us' block to the internal email only", async () => {
+      await POST(makeRequest(baseLead, { cookie, referer: "https://example.com/appraisal" }));
+      const calls = sendMailMock.mock.calls.map((c) => c[0]);
+      const admin = calls.find((c) => c.to === "andy@theandylife.com");
+      const confirmation = calls.find((c) => c.to === baseLead.email);
+      expect(admin.html).toContain("How they found us");
+      expect(admin.html).toContain("Cj0KCQ_test");
+      expect(admin.html).toContain("sellers-qld");
+      expect(confirmation.html).not.toContain("Cj0KCQ_test");
+    });
+
+    it("saves nothing extra when there is no cookie and a cross-origin referer", async () => {
+      await POST(makeRequest(baseLead, { referer: "https://evil.example.net/page" }));
+      const data = dbLeadCreate.mock.calls[0][0].data;
+      expect(data.gclid).toBeUndefined();
+      expect(data.attribution).toBeUndefined();
+    });
+
+    it("ignores a malformed cookie instead of failing the lead", async () => {
+      const res = await POST(makeRequest(baseLead, { cookie: "ypg_attr=%7Bnot-json" }));
+      expect(res.status).toBe(200);
+      expect(dbLeadCreate.mock.calls[0][0].data.gclid).toBeUndefined();
+    });
+  });
 });

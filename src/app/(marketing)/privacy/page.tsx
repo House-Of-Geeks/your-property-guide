@@ -29,6 +29,14 @@ export default function PrivacyPage() {
           these when you request an appraisal or a specialist match, enquire about a property, package, agent or
           agency, download a guide, join our off-market register, or sign up for alerts or our newsletter.
         </p>
+        <p>
+          We also record how you found us: the page you first landed on, the website that referred you, and any
+          advertising campaign tags or ad click identifiers in the link you followed (for example Google&rsquo;s
+          &ldquo;gclid&rdquo;). If you then send us one of our forms (for example an enquiry, appraisal request,
+          guide download, or alert or off-market sign-up), we keep these with what you send, along with the page
+          you sent it from. If we connect you with an agent or specialist, they may tell us whether an appraisal
+          or listing followed.
+        </p>
 
         <h2>2. How We Use Your Information</h2>
         <p>We use your personal information to:</p>
@@ -37,6 +45,11 @@ export default function PrivacyPage() {
           <li>Send property alerts matching your criteria</li>
           <li>Process your property appraisal requests</li>
           <li>Improve our website and services</li>
+          <li>
+            Measure which of our advertising leads to enquiries, appraisals and listings, including telling the ad
+            platform that served an ad (such as Google) when a click led to an enquiry and whether that enquiry went
+            on to an appraisal or a listing
+          </li>
           <li>Communicate important updates about your enquiries</li>
         </ul>
 
@@ -65,15 +78,22 @@ export default function PrivacyPage() {
 
         <h2>5. Cookies</h2>
         <p>
-          Our website uses cookies to improve your browsing experience and analyse website traffic.
+          Our website uses cookies to improve your browsing experience and analyse website traffic. One of them,
+          called <code>ypg_attr</code>, is set by us and stores how you arrived: the landing page, the referring
+          site, campaign tags and ad click identifiers. It is set on your first visit and lasts 90 days from then,
+          or from your most recent visit through an ad or campaign link if that is later. Our site updates it on
+          your first visit and when you arrive through an ad or campaign link, and we store it with your details
+          only when you send us one of our enquiry, appraisal, guide or alert forms.
           You can control cookie settings through your browser preferences.
         </p>
 
         <h2>6. Service Providers and Overseas Disclosure</h2>
         <p>
           We use service providers to host the site, send email, manage our mailing list and measure how the site
-          is used. These include ActiveCampaign, SendGrid, Microsoft Clarity and Quantcast. Some of them store
-          information outside Australia, including in the United States.
+          is used. These include ActiveCampaign, SendGrid, Microsoft Clarity and Quantcast. When we measure
+          advertising, we may send an ad click identifier, and whether it led to an enquiry, an appraisal or a
+          listing (with a value we assign to it), to the ad platform that served the ad, such as Google. Some of these providers store information outside Australia,
+          including in the United States.
         </p>
 
         <h2>7. Your Rights</h2>
