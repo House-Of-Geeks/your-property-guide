@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants";
 import { categoryToSlug, getDistinctBlogCategories } from "@/lib/services/blog-service";
+import { leadTypePages } from "@/lib/data/real-estate-leads";
 
 // No lastModified here: these are hub/tool pages with no single content
 // date, and stamping `new Date()` on every request made lastmod meaningless
@@ -38,7 +39,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/selling-costs-calculator`,     changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE_URL}/selling-guide`,                changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE_URL}/buying-guide`,                 changeFrequency: "monthly", priority: 0.9 },
-    { url: `${SITE_URL}/for-agents`,                   changeFrequency: "monthly", priority: 0.6 },
+    { url: `${SITE_URL}/real-estate-leads`,            changeFrequency: "monthly", priority: 0.7 },
+    ...leadTypePages.map((p) => ({
+      url: `${SITE_URL}/real-estate-leads/${p.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
     { url: `${SITE_URL}/best-suburbs`,                 changeFrequency: "weekly",  priority: 0.7 },
     { url: `${SITE_URL}/compare`,                      changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/find-your-suburb`,             changeFrequency: "monthly", priority: 0.8 },

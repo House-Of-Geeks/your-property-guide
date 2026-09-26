@@ -123,7 +123,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
               </p>
               <p className="mt-3 font-sans text-sm text-ink-muted leading-relaxed">
                 Are you an agent who sells in {sn}?{" "}
-                <Link href="/for-agents" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">Join the network</Link>.
+                <Link href="/real-estate-leads" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">Join the network</Link>.
               </p>
             </div>
           ) : (

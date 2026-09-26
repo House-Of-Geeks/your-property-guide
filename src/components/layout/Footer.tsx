@@ -108,7 +108,7 @@ const FOOTER_COLUMNS = [
       { label: "Best Deals",               href: "/best-deals" },
       { label: "Find an expert",           href: "/find-an-expert" },
       { label: "Free property appraisal",  href: "/appraisal" },
-      { label: "For agents",               href: "/for-agents" },
+      { label: "Real estate leads",        href: "/real-estate-leads" },
     ],
   },
   {
