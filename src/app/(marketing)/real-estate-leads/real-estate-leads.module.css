@@ -583,7 +583,7 @@
   .ledgerFeature { border-right: none; padding-bottom: 6px; }
   .ledgerUs { border-right: none; padding-top: 6px; }
   .ledgerThem { padding-top: 0; }
-  .ledgerUs::before { content: 'Your Finance Guide'; }
+  .ledgerUs::before { content: 'Your Property Guide'; }
   .ledgerThem::before { content: 'Most providers'; }
   .ledgerUs::before, .ledgerThem::before {
     font-family: var(--fl-mono);

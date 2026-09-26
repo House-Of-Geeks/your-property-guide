@@ -4,9 +4,14 @@
 //
 // Everything here must stay true to what the consumer-side forms actually
 // capture and consent to:
-//   vendor     SellingGuideFunnel (type "guide-download", guideType selling):
+//   vendor     The selling questions, asked before contact details. Today
+//              only SellingGuideFunnel asks them (type "guide-download",
+//              guideType selling), but copy must not name the guide as the
+//              only route: any form that feeds vendor leads (e.g. a paid-ad
+//              form) must ask the same questions, show the same agent-contact
+//              consent and post as "guide-download" so it is scored:
 //              suburb, property type + beds, timeframe, agent status,
-//              motivation (opt), price expectation (opt), name, email,
+//              motivation (opt), price expectation (opt), then name, email,
 //              mobile (opt), marketing consent. Scored HOT/WARM/COLD by
 //              scoreGuideLead(); already-listed vendors are never shared.
 //   appraisal  AppraisalForm + SuburbAppraisalCTA ("appraisal-request"):
@@ -121,7 +126,7 @@ export const leadTypePages: LeadTypePage[] = [
     h1: "Vendor leads from homeowners who",
     h1Em: "told us when they are selling.",
     lede:
-      "A vendor lead here is a homeowner who worked through our seven-question selling guide before they gave us a name: their suburb, the property, when they plan to sell, and whether an agent already has them. We score each one on our side, drop anyone already listed, and send the rest to one agent who sells in that suburb.",
+      "A vendor lead here is a homeowner who answered our selling questions before they gave us a name: their suburb, the property, when they plan to sell, and whether an agent already has them. We score each one on our side, drop anyone already listed, and send the rest to one agent who sells in that suburb.",
     volume: "Highest volume",
     docketTitle: "Vendor lead",
     docket: [
@@ -137,22 +142,22 @@ export const leadTypePages: LeadTypePage[] = [
     ],
     docketConsents: ["Agent contact consent", "Mobile supplied", "Suburb matched"],
     stats: [
-      { value: "7", label: "Questions before contact details" },
+      { value: "4", label: "Qualifying questions before contact details" },
       { value: "3", label: "Scores: hot, warm, cold" },
       { value: "0", label: "Already-listed vendors sold" },
       { value: "1 : 1", label: "One lead, one agent" },
     ],
     sourcesIntro:
-      "These are the pages that produce vendor leads. A homeowner who arrives from one of them has already read what selling costs, what commission is negotiable and how to choose an agent, which is why the first call is a conversation about their property rather than a pitch.",
+      "These are the main pages that produce vendor leads. A homeowner who arrives from one of them has already read what selling costs, what commission is negotiable and how to choose an agent, which is why the first call is a conversation about their property rather than a pitch.",
     sources: [
-      { label: "The selling guide", href: "/selling-guide", why: "The seven-question funnel every vendor lead comes through. The guide itself is the reason they answer." },
+      { label: "The selling guide", href: "/selling-guide", why: "A free guide to selling in Australia. Homeowners answer the selling questions on the way to it." },
       { label: "Real estate commission calculator", href: "/real-estate-commission-calculator", why: "Homeowners working out what an agent will cost them on their own sale price." },
       { label: "Selling costs calculator", href: "/selling-costs-calculator", why: "Commission, marketing, conveyancing and state costs added up before they commit." },
       { label: "Real estate agent fees in Australia", href: "/guides/real-estate-agent-fees-australia", why: "Rates by state, what is negotiable, and what a fair marketing budget looks like." },
       { label: "Cost of selling a house", href: "/guides/cost-of-selling-a-house-australia", why: "The full bill, state by state, from agent fees to the final adjustments." },
       { label: "How to choose a selling agent", href: "/guides/how-to-choose-a-selling-agent", why: "Readers who are deciding who to call. The questions they will ask you are in it." },
       { label: "Best time to sell a house", href: "/guides/best-time-to-sell-a-house-australia", why: "Timing research, usually six to twelve weeks before a spring listing." },
-      { label: "Suburb profiles", href: "/suburbs", why: "Every suburb profile carries a selling-guide prompt for owners checking their own suburb's median." },
+      { label: "Suburb profiles", href: "/suburbs", why: "Every suburb profile invites owners checking their own suburb's median to answer the selling questions." },
     ],
     contents: [
       "Full name, email and mobile (we only charge for vendor leads with a mobile)",
@@ -166,7 +171,7 @@ export const leadTypePages: LeadTypePage[] = [
       "Timestamp, and the form they used, so you know exactly what they were told",
     ],
     profilesIntro:
-      "Three vendors typical of what the selling guide produces. Composites, not real people, but the shape is right.",
+      "Three vendors typical of what our selling questions produce. Composites, not real people, but the shape is right.",
     profiles: [
       {
         title: "The spring seller",
@@ -202,7 +207,7 @@ export const leadTypePages: LeadTypePage[] = [
           ["Hot", "Selling in 0 to 3 months, and no agency agreement signed", "Call inside the hour and book an appraisal. These are the vendors choosing an agent this month."],
           ["Warm", "Selling in 3 to 6 months", "Appraise now, then keep in touch. Most listings from warm vendors come from the agent who stayed in contact."],
           ["Cold", "6 to 12 months, 12+ months or still researching", "Kept in our own nurture until their timeframe shortens. Not sold as a vendor lead until then."],
-          ["Never sold", "Already listed with an agent", "They get the guide and nothing else. Their details are never passed on."],
+          ["Never sold", "Already listed with an agent", "Their details are never passed to an agent."],
         ],
       },
     },
@@ -244,7 +249,7 @@ export const leadTypePages: LeadTypePage[] = [
       },
     ],
     cardText:
-      "Homeowners who answered seven selling questions before giving their details. Scored hot or warm on timeframe and agent status; already-listed vendors never sold.",
+      "Homeowners who answered our selling questions before giving their details. Scored hot or warm on timeframe and agent status; already-listed vendors never sold.",
     cardTags: ["Timeframe", "Agent status", "Property type and beds", "Motivation and price, where given"],
   },
   {
@@ -349,7 +354,7 @@ export const leadTypePages: LeadTypePage[] = [
       {
         question: "How is an appraisal lead different from a vendor lead?",
         answer:
-          "An appraisal lead is a direct request for an agent to value a specific property, with the address attached. A vendor lead comes from our selling guide and carries more context about timing and motivation, but not the street address. Appraisal leads are closer to a booked appointment; vendor leads tell you more about where the homeowner is in the decision.",
+          "An appraisal lead is a direct request for an agent to value a specific property, with the address attached. A vendor lead comes from our selling questions and carries more context about timing, agent status and, where given, motivation, but not the street address. Appraisal leads are closer to a booked appointment; vendor leads tell you more about where the homeowner is in the decision.",
       },
       {
         question: "Are appraisal leads exclusive?",

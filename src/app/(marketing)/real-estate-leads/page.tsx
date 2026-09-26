@@ -70,7 +70,7 @@ const heroDocket: DocketRow[] = [
   { key: "Motivation", value: "Upsizing", note: "· optional, given" },
   { key: "Price in mind", value: "$800k to $900k", note: "· optional, given" },
   { key: "Mobile", value: "04xx xxx xxx" },
-  { key: "Came through", value: "Selling guide: seven questions, then the guide" },
+  { key: "Came through", value: "Selling questions", note: "· answered before contact details" },
 ];
 
 const ledger: Array<{ feature: string; us: string; them: string }> = [
@@ -188,7 +188,7 @@ const faqs = [
   {
     question: "What is a real estate lead on Your Property Guide?",
     answer:
-      "A homeowner or buyer who has used our suburb data, guides or calculators, then completed a separate form asking for a local agent: our seven-question selling guide, an appraisal request, or a specialist match. Every lead includes contact details, the suburb, the property and the answers they gave, plus the consent they agreed to. If you searched for real estate leads, real estate agent leads or where to buy seller leads in Australia, this is that: a supply of enquiries from our own audience, not a marketing service.",
+      "A homeowner or buyer who has used our suburb data, guides or calculators, then completed a separate form asking for a local agent: our selling questions, an appraisal request, or a specialist match. Every lead includes contact details, the suburb, the property and the answers they gave, plus the consent they agreed to. If you searched for real estate leads, real estate agent leads or where to buy seller leads in Australia, this is that: a supply of enquiries from our own audience, not a marketing service.",
   },
   {
     question: "Are the leads exclusive?",
@@ -218,12 +218,12 @@ const faqs = [
   {
     question: "How are the leads qualified?",
     answer:
-      "By what the homeowner told us before they gave their contact details, and by what we filter out. The selling guide asks suburb, property type and bedrooms, selling timeframe, and whether they have spoken to or signed with an agent, with motivation and price expectation optional. We score each lead hot, warm or cold on our side. Vendors who are already listed never become leads. We do not currently phone-verify every lead.",
+      "By what the homeowner told us before they gave their contact details, and by what we filter out. Our selling questions cover suburb, property type and bedrooms, selling timeframe, and whether they have spoken to or signed with an agent, with motivation and price expectation optional. We score each lead hot, warm or cold on our side. Vendors who are already listed never become leads. We do not currently phone-verify every lead.",
   },
   {
     question: "What is the difference between vendor, appraisal and buyer leads?",
     answer:
-      "Vendor leads come from the selling guide and carry the full qualification picture: timeframe, agent status, motivation and price. Appraisal leads come from someone asking for a local agent to value their property, with the street address and a mobile on every one. Buyer leads come from people who asked to be matched with a specialist to help them buy or invest, which suits buyers agents. Each has its own page with a sample record.",
+      "Vendor leads come from our selling questions and carry the full qualification picture: timeframe and agent status on every one, motivation and price where given. Appraisal leads come from someone asking for a local agent to value their property, with the street address and a mobile on every one. Buyer leads come from people who asked to be matched with a specialist to help them buy or invest, which suits buyers agents. Each has its own page with a sample record.",
   },
   {
     question: "Is there a minimum spend or lock-in contract?",
@@ -397,10 +397,10 @@ export default function RealEstateLeadsPage() {
                 agent to talk it through.
               </p>
               <p>
-                That is when she starts the selling guide. Seven questions, one
-                tap each: her suburb, the house, the timeframe (next three
-                months), whether she has talked to an agent yet (no), why she is
-                selling, and what she thinks it is worth. Contact details come
+                That is when she answers our selling questions, one tap each:
+                her suburb, the house, the timeframe (next three months),
+                whether she has talked to an agent yet (no), why she is selling,
+                and what she thinks it is worth. Contact details come
                 last, with a plain sentence at the point she gives them: a local
                 agent will contact her about selling. She adds her mobile.
               </p>
@@ -434,7 +434,7 @@ export default function RealEstateLeadsPage() {
               <div className={s.note} data-reveal>
                 <div className={s.noteKey}>The clock</div>
                 <div className={s.timeline}>
-                  <div className={s.timeRow}><span className={s.time}>8:02pm</span><span>Searches the question, lands on the guide</span></div>
+                  <div className={s.timeRow}><span className={s.time}>8:02pm</span><span>Searches the question, lands on our commission guide</span></div>
                   <div className={s.timeRow}><span className={s.time}>8:07pm</span><span>Runs the commission calculator on her figures</span></div>
                   <div className={s.timeRow}><span className={s.time}>8:10pm</span><span>Answers the selling questions: suburb, house, timeframe</span></div>
                   <div className={s.timeRow}><span className={s.time}>8:12pm</span><span>Gives her mobile, agrees a local agent may call</span></div>
@@ -522,15 +522,9 @@ export default function RealEstateLeadsPage() {
                 own emails.
               </p>
               <p>
-                Straight after, they get the selling guide by email: a real,
-                chaptered guide to selling in Australia. It covers choosing an
-                agent, commission and what is negotiable, so the homeowner you
-                ring has read the same page you would want them to read.
-              </p>
-              <p>
-                <strong>Already listed?</strong> They get the guide and nothing
-                else. Their details are never passed to an agent, so you never
-                pay to chase a property that is already on the market.
+                <strong>Already listed?</strong> Their details are never passed
+                to an agent, so you never pay to chase a property that is
+                already on the market.
               </p>
             </div>
           </div>
@@ -758,9 +752,8 @@ export default function RealEstateLeadsPage() {
             Volume follows population, so Sydney, Melbourne, Brisbane and Perth
             produce the most; regional partners tend to see less competition.
             Nominate an area as narrow as a single postcode. Selling a property
-            yourself? Homeowners can{" "}
-            <Link href="/appraisal">ask for a free appraisal</Link> or{" "}
-            <Link href="/selling-guide">get the selling guide</Link>.
+            yourself? You can{" "}
+            <Link href="/appraisal">ask for a free appraisal</Link>.
           </p>
         </div>
       </section>
