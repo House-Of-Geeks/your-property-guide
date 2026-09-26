@@ -158,32 +158,6 @@ const states = [
   { code: "NT", name: "Northern Territory", note: "Darwin, Palmerston, Alice Springs." },
 ];
 
-// Australian price models, as each supplier publishes them (Sep 2026).
-// Figures are the supplier's own claims, quoted with the source, not ours.
-const priceModels: string[][] = [
-  ["Pay per lead", "A fixed price for each lead delivered", "Get Listings publishes \"from $69 per lead, GST included\". PrimeLeads agrees a fixed price up front but does not publish it. Ours is quoted in writing."],
-  ["Portal seller leads", "Part of a portal subscription or suburb sponsorship", "realestate.com.au Seller Leads come with a residential subscription. Not priced separately."],
-  ["Referral platforms", "A share of your commission, or a flat fee, when the property sells", "Commonly 20 to 30 per cent of the commission. A 2019 trade report quoted agents giving up 15 to 20 per cent."],
-  ["Telemarketing and appointment setting", "Per campaign, per call block or per appointment", "Rarely published. You pay for the calling, whether or not an appraisal lists."],
-  ["Marketing agency retainer", "A monthly fee plus your ad spend", "Rarely published for agents. Developer marketing agencies quote from about $5,000 a month."],
-];
-
-// Published conversion figures, reconciled. Each measures something
-// different, which is why they disagree; all are the source's own claims.
-const benchmarks: string[][] = [
-  ["realestate.com.au", "Seller leads that became a new listing (internal data, Mar 2022 to Feb 2023)", "1 in 3"],
-  ["Stepps", "49,939 agency-website seller leads that went to market within 90 days, with any agent (Jun 2024 to Jun 2025)", "21%"],
-  ["OpenAgent", "Referral leads the average agent turned into a listing (2,049 agents, Feb 2018 to Feb 2019)", "About 10%"],
-  ["Follow Up Boss, cited by PrimeLeads", "Online real estate leads of every kind that became a transaction (US CRM data)", "0.4% to 1.2%"],
-];
-
-// "Is buying leads legal?" General information, not legal advice.
-const laws: string[][] = [
-  ["Privacy Act 1988 (Australian Privacy Principles)", "How personal information is collected, used and passed on", "The homeowner should be told at the point of collection who their details go to and why. Passing details to another business for its marketing needs consent, and a business that passes on personal information for a benefit cannot rely on the small business exemption unless the people concerned consented."],
-  ["Spam Act 2003", "Commercial emails and SMS", "Messages need consent, must identify you as the sender, and must include a working unsubscribe."],
-  ["Do Not Call Register Act 2006", "Telemarketing calls", "Calling a number on the register for marketing needs the person's consent. A homeowner who asked for a local agent to call them about their property has consented to calls about that enquiry."],
-];
-
 const supplierQuestions: Array<{ q: string; a: string }> = [
   { q: "Where exactly do the leads come from?", a: "Our own property education site, found through search and our own advertising. Every lead comes through our forms and our qualification questions. No bought lists, no call centres." },
   { q: "Is each lead exclusive, and is my territory?", a: "Each lead goes to one agent. We match by suburb and tell you who else we work with in your area before you start." },
@@ -197,7 +171,7 @@ const supplierQuestions: Array<{ q: string; a: string }> = [
   { q: "Do you check who you sell to?", a: "Yes. Your licence or registration on your state's public register, before the first lead." },
 ];
 
-// Worked numbers for the cost-per-listing chapter. Commission figures are
+// Worked numbers for the break-even table in the terms chapter. Commission figures are
 // illustrative inputs, not market averages; referral-fee models are the
 // platforms' published structures as described on our own commission guide.
 const SALE = 850_000;
@@ -222,9 +196,9 @@ const faqs = [
       "Yes, 100%. Each lead is delivered to one agent only. We do not sell the same homeowner to several agents, we do not resell aged leads later, and we do not run them through a call centre. If someone submits twice, you get the update, not a competitor.",
   },
   {
-    question: "How much do real estate leads cost?",
+    question: "How much do real estate leads cost in Australia?",
     answer:
-      "Pricing is per lead and depends on the lead type, your suburbs and the weekly volume you want. There is no platform fee, no retainer, no minimum and no share of your commission. Register with your suburbs and lead types and we will reply within one business day with current availability and a per-lead price in writing. The cost-per-listing section on this page shows how to judge any per-lead price against a commission-share platform.",
+      "It depends on how you pay. Pay-per-lead suppliers charge a fixed price for each lead: Get Listings publishes \"from $69 per lead, GST included\", and PrimeLeads agrees a fixed price up front without publishing it. Portal seller leads from realestate.com.au come with a residential subscription rather than a per-lead price. Referral platforms charge nothing up front but take a share of your commission when the property sells, commonly 20 to 30 per cent, or a flat fee. Telemarketing services and marketing agencies charge for the calling or by the month, plus ad spend, whether or not anything lists. Ours is pay per lead, priced by lead type, suburb and weekly volume, with no platform fee, no minimum and no share of your commission; register and we quote in writing within one business day. Supplier figures are as published on their websites in September 2026.",
   },
   {
     question: "Is it worth paying for real estate leads?",
@@ -240,6 +214,11 @@ const faqs = [
     question: "What is a good cost per lead for real estate agents?",
     answer:
       "Work it out from the listing, not the lead. Divide the per-lead price by the share of leads you turn into listings to get your cost per listing, then compare it with your commission and with what a referral platform would take. At $150 a lead and one listing in ten leads, a listing costs you $1,500. Whether that is good depends on your commission, your suburb and how fast you call.",
+  },
+  {
+    question: "What conversion rate will I get from your leads?",
+    answer:
+      "We don't quote one, for the same reason we won't promise one: it depends on your suburbs, how fast you call and how well you appraise, and no supplier knows those for you. What moves it most is speed (call inside the hour) and fit (leads in suburbs you actually sell in). Track your own lead-to-listing rate from your first twenty leads, and once you're a partner we'll share what agents on the same lead type report.",
   },
   {
     question: "How are the leads qualified?",
@@ -592,150 +571,13 @@ export default function RealEstateLeadsPage() {
         </div>
       </section>
 
-      {/* ── V. Cost per listing ──────────────────────────────────────── */}
-      <section className={s.section} id="cost-per-listing">
-        <div className={s.container}>
-          <div data-reveal>
-            <Chapter num="V." title="How much do real estate leads cost in Australia?" kicker="Five ways agents pay for leads, and the cost-per-listing maths that compares them" />
-          </div>
-          <div className={s.prose} style={{ maxWidth: "68ch" }} data-reveal>
-            <p>
-              Most answers to this question online are American. In Australia,
-              agents pay for leads in five ways, and they are hard to compare
-              because each charges at a different point: when the lead arrives,
-              every month, or when the property sells.
-            </p>
-          </div>
-          <div className={s.dataTableWrap} data-reveal>
-            <table className={s.dataTable}>
-              <caption className="sr-only">How Australian agents pay for leads</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Model</th>
-                  <th scope="col">How you pay</th>
-                  <th scope="col">What is published (Sep 2026)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {priceModels.map((r) => (
-                  <tr key={r[0]}>
-                    <th scope="row">{r[0]}</th>
-                    <td>{r[1]}</td>
-                    <td>{r[2]}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <p className={s.fine} style={{ marginTop: 12 }}>
-              Prices and terms are each supplier&rsquo;s own published claims, as
-              shown on their websites in September 2026, and can change. Check
-              with the supplier before relying on them.
-            </p>
-          </div>
-          <div className={s.prose} style={{ maxWidth: "68ch", marginTop: 40 }} data-reveal>
-            <h3 className={s.subhead}>The cost-per-listing maths</h3>
-            <p>
-              A per-lead price on its own tells you nothing. What matters is
-              what a listing costs you, and that takes one division: the price
-              of a lead divided by the share of leads you turn into a listing.
-              At $150 a lead, if one in ten lists, a listing costs you $1,500.
-              If one in twenty lists, it costs $3,000.
-            </p>
-            <p>
-              Compare that with the referral platforms. They are free to the
-              homeowner and charge the agent when the property sells: 20 to 30
-              per cent of the commission, or a flat fee. On an{" "}
-              {aud(SALE)} sale at {(RATE * 100).toFixed(1)} per cent, commission
-              is {aud(COMMISSION)}, so a 20 per cent share is{" "}
-              {aud(COMMISSION * 0.2)} and 30 per cent is {aud(COMMISSION * 0.3)}.
-              The table shows how many paid leads you could buy per listing
-              before paying per lead costs more than the share.
-            </p>
-          </div>
-          <div className={s.dataTableWrap} data-reveal>
-            <table className={s.dataTable}>
-              <caption className="sr-only">Break-even number of leads per listing against a commission share</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Price per lead</th>
-                  <th scope="col">Break-even vs 20% share ({aud(COMMISSION * 0.2)})</th>
-                  <th scope="col">Break-even vs 30% share ({aud(COMMISSION * 0.3)})</th>
-                </tr>
-              </thead>
-              <tbody>
-                {breakEven.map((r) => (
-                  <tr key={r.price}>
-                    <th scope="row">{aud(r.price)}</th>
-                    <td>{r.share20} leads per listing</td>
-                    <td>{r.share30} leads per listing</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <p className={s.fine} style={{ marginTop: 12 }}>
-              Illustrative. The per-lead prices are round numbers for the maths,
-              not our price list, and {(RATE * 100).toFixed(1)} per cent on{" "}
-              {aud(SALE)} is an example, not a market average. Use your own
-              commission and your own lead-to-listing rate. Our{" "}
-              <Link href="/real-estate-commission-calculator">commission calculator</Link>{" "}
-              works out the commission for any price and rate.
-            </p>
-          </div>
-          <div className={s.prose} style={{ maxWidth: "68ch", marginTop: 28 }} data-reveal>
-            <p>
-              Two things move your number more than the price does. Speed: a
-              homeowner who asked for an agent this evening and hears nothing
-              until Thursday has usually booked someone else. And fit: a lead
-              in a suburb you actually sell in lists at a very different rate
-              from one two suburbs over. That is why we match by suburb and
-              replace anything out of area.
-            </p>
-            <h3 className={s.subhead}>What conversion rate should you expect?</h3>
-            <p>
-              Published figures run from under 1 per cent to 1 in 3, and they
-              are all telling the truth about different things. Some count
-              listings with the agent who got the lead, some count homeowners
-              who sold with anyone, and some count every online enquiry,
-              including people who only wanted a price. Use them to sense-check
-              a supplier&rsquo;s claim, then measure your own from your first
-              twenty leads.
-            </p>
-          </div>
-          <div className={s.dataTableWrap} data-reveal>
-            <table className={s.dataTable}>
-              <caption className="sr-only">Published real estate lead conversion figures and what each measures</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Source</th>
-                  <th scope="col">What it measures</th>
-                  <th scope="col">Figure</th>
-                </tr>
-              </thead>
-              <tbody>
-                {benchmarks.map((r) => (
-                  <tr key={r[0]}>
-                    <th scope="row">{r[0]}</th>
-                    <td>{r[1]}</td>
-                    <td>{r[2]}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <p className={s.fine} style={{ marginTop: 12 }}>
-              Each figure is the source&rsquo;s own published claim, not verified
-              by us, and none is a forecast of results from our leads.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* ── Dark chapter: what we will not promise ───────────────────── */}
       <section className={s.dark}>
         <div className={s.darkMark} aria-hidden="true">y</div>
         <div className={s.container}>
           <div className={s.darkGrid}>
             <div data-reveal>
-              <div className={`${s.eyebrow} ${s.eyebrowOnDark}`}>VI. The part other pages leave out</div>
+              <div className={`${s.eyebrow} ${s.eyebrowOnDark}`}>V. The part other pages leave out</div>
               <h2 className={s.darkTitle}>
                 Four things we will <em>not</em> promise you.
               </h2>
@@ -759,11 +601,11 @@ export default function RealEstateLeadsPage() {
         </div>
       </section>
 
-      {/* ── VII. Terms ───────────────────────────────────────────────── */}
+      {/* ── VI. Terms ───────────────────────────────────────────────── */}
       <section className={s.section} id="pricing">
         <div className={s.container}>
           <div data-reveal>
-            <Chapter num="VII." title="Pay per lead. Nothing else." kicker="The terms, in four clauses" />
+            <Chapter num="VI." title="Pay per lead. Nothing else." kicker="The terms, in four clauses" />
           </div>
           <p className={s.lede} style={{ maxWidth: "60ch", marginBottom: 40 }} data-reveal>
             No monthly platform fee, no retainer, no minimum spend, no lock-in,
@@ -772,75 +614,54 @@ export default function RealEstateLeadsPage() {
             your mix in writing within one business day.
           </p>
           <Clauses />
-        </div>
-      </section>
-
-      {/* ── VIII. Is buying leads legal? ─────────────────────────────── */}
-      <section className={`${s.section} ${s.sectionPaper}`} id="compliance">
-        <div className={s.container}>
-          <div data-reveal>
-            <Chapter num="VIII." title="Is buying real estate leads legal?" kicker="Yes, with consent. The three laws that matter, in plain English" />
-          </div>
-          <div className={s.prose} style={{ maxWidth: "68ch" }} data-reveal>
+          <div className={s.prose} style={{ maxWidth: "68ch", marginTop: 48 }} id="cost-per-listing" data-reveal>
+            <h3 className={s.subhead}>Against a commission share</h3>
             <p>
-              Buying leads is legal in Australia when the person agreed to be
-              contacted, and the supplier passed their details on with that
-              consent. It is the consent that does the work, which is why the
-              first question to ask any supplier is what the person was told
-              when they gave their details.
+              Referral platforms charge nothing up front and take 20 to 30 per
+              cent of your commission when the property sells. On an{" "}
+              {aud(SALE)} sale at {(RATE * 100).toFixed(1)} per cent, that is{" "}
+              {aud(COMMISSION * 0.2)} to {aud(COMMISSION * 0.3)} per listing.
+              Paying per lead costs less for as long as you list at least one
+              lead in this many:
             </p>
           </div>
           <div className={s.dataTableWrap} data-reveal>
             <table className={s.dataTable}>
-              <caption className="sr-only">Australian laws that apply to buying and working real estate leads</caption>
+              <caption className="sr-only">Break-even number of leads per listing against a commission share</caption>
               <thead>
                 <tr>
-                  <th scope="col">Law</th>
-                  <th scope="col">What it covers</th>
-                  <th scope="col">What it means for bought leads</th>
+                  <th scope="col">Price per lead</th>
+                  <th scope="col">Break-even vs 20% share ({aud(COMMISSION * 0.2)})</th>
+                  <th scope="col">Break-even vs 30% share ({aud(COMMISSION * 0.3)})</th>
                 </tr>
               </thead>
               <tbody>
-                {laws.map((r) => (
-                  <tr key={r[0]}>
-                    <th scope="row">{r[0]}</th>
-                    <td>{r[1]}</td>
-                    <td>{r[2]}</td>
+                {breakEven.map((r) => (
+                  <tr key={r.price}>
+                    <th scope="row">{aud(r.price)}</th>
+                    <td>1 in {r.share20} leads</td>
+                    <td>1 in {r.share30} leads</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
-          <div className={s.prose} style={{ maxWidth: "68ch", marginTop: 28 }} data-reveal>
-            <p>
-              On our side: every form that produces a lead tells the person, at
-              the point they give their details, that a local agent or
-              specialist will contact them. Our own marketing emails need a
-              separate, unticked box. Readers who were told their details stay
-              with us (the buying guide and the off-market register) are never
-              sold as leads.
-            </p>
-            <p>
-              On your side: call and email about the enquiry they made, say who
-              you are and how you got their details, and put anyone who asks
-              you to stop on your do-not-contact list. Adding a lead to a
-              general marketing list is a separate consent question.
-            </p>
-            <p className={s.fine}>
-              General information, not legal advice. The Office of the
-              Australian Information Commissioner (privacy) and the Australian
-              Communications and Media Authority (spam and Do Not Call) publish
-              the detail.
+            <p className={s.fine} style={{ marginTop: 12 }}>
+              Illustrative. The per-lead prices are round numbers for the maths,
+              not our price list, and {(RATE * 100).toFixed(1)} per cent on{" "}
+              {aud(SALE)} is an example, not a market average. Use your own
+              commission and lead-to-listing rate; our{" "}
+              <Link href="/real-estate-commission-calculator">commission calculator</Link>{" "}
+              works out the commission for any price and rate.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── IX. Ten questions ────────────────────────────────────────── */}
-      <section className={s.section} id="supplier-checklist">
+      {/* ── VII. Ten questions ────────────────────────────────────────── */}
+      <section className={`${s.section} ${s.sectionPaper}`} id="supplier-checklist">
         <div className={s.container}>
           <div data-reveal>
-            <Chapter num="IX." title="Ten questions to ask any lead supplier." kicker="With our answers, so you can compare" />
+            <Chapter num="VII." title="Ten questions to ask any lead supplier." kicker="With our answers, so you can compare" />
           </div>
           <ol className={s.qaList} data-reveal-group>
             {supplierQuestions.map((item, i) => (
@@ -856,12 +677,12 @@ export default function RealEstateLeadsPage() {
         </div>
       </section>
 
-      {/* ── X. Who we work with ───────────────────────────────────── */}
-      <section className={`${s.section} ${s.sectionPaper}`}>
+      {/* ── VIII. Who we work with ───────────────────────────────────── */}
+      <section className={s.section}>
         <div className={s.container}>
           <div className={s.vetGrid}>
             <div data-reveal>
-              <Chapter num="X." title="A small number of agents, matched properly." kicker="We choose who we work with" />
+              <Chapter num="VIII." title="A small number of agents, matched properly." kicker="We choose who we work with" />
               <div className={s.prose} style={{ maxWidth: "50ch" }}>
                 <p>
                   We are not trying to sign up every agency in the country.
@@ -897,11 +718,11 @@ export default function RealEstateLeadsPage() {
         </div>
       </section>
 
-      {/* ── XI. Register ─────────────────────────────────────────────── */}
-      <section className={s.section}>
+      {/* ── IX. Register ─────────────────────────────────────────────── */}
+      <section className={`${s.section} ${s.sectionPaper}`}>
         <div className={s.container}>
           <div data-reveal>
-            <Chapter num="XI." title="Start receiving real estate leads." kicker="One business day to a written quote" />
+            <Chapter num="IX." title="Start receiving real estate leads." kicker="One business day to a written quote" />
           </div>
           <div className={s.registerGrid}>
             <div>
@@ -923,11 +744,11 @@ export default function RealEstateLeadsPage() {
         </div>
       </section>
 
-      {/* ── XII. Coverage ──────────────────────────────────────────────── */}
-      <section className={`${s.section} ${s.sectionPaper}`}>
+      {/* ── X. Coverage ──────────────────────────────────────────────── */}
+      <section className={s.section}>
         <div className={s.container}>
           <div data-reveal>
-            <Chapter num="XII." title="Real estate leads by state." kicker="Metro and regional, every state and territory" />
+            <Chapter num="X." title="Real estate leads by state." kicker="Metro and regional, every state and territory" />
           </div>
           <div className={s.gazetteer} data-reveal-group>
             {states.map((st) => (
@@ -950,10 +771,10 @@ export default function RealEstateLeadsPage() {
       </section>
 
       {/* ── FAQ. Mirrors the FAQPageJsonLd above. ─────────────────────── */}
-      <section className={s.section}>
+      <section className={`${s.section} ${s.sectionPaper}`}>
         <div className={s.container} style={{ maxWidth: 860 }}>
           <div data-reveal>
-            <Chapter num="XIII." title="Real estate leads: questions agents ask." kicker="Straight answers on exclusivity, qualification, pricing and who can register" />
+            <Chapter num="XI." title="Real estate leads: questions agents ask." kicker="Straight answers on exclusivity, qualification, pricing and who can register" />
           </div>
           <FaqAccordion items={faqs} />
         </div>
