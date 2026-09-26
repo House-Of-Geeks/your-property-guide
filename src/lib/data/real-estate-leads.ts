@@ -369,7 +369,7 @@ export const leadTypePages: LeadTypePage[] = [
       {
         question: "Is buying appraisal leads legal?",
         answer:
-          "Yes, when the homeowner has agreed to be contacted by an agent and the supplier discloses their details with that consent. Our appraisal forms say, at the point the homeowner gives their details, that one local agent will contact them. The main real estate leads page covers the Privacy Act, Spam Act and Do Not Call Register rules in more detail.",
+          "Yes, when the homeowner has agreed to be contacted by an agent and the supplier discloses their details with that consent. Our appraisal forms say, at the point the homeowner gives their details, that one local agent will contact them.",
       },
     ],
     cardText:

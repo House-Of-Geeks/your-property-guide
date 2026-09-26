@@ -158,13 +158,6 @@ const states = [
   { code: "NT", name: "Northern Territory", note: "Darwin, Palmerston, Alice Springs." },
 ];
 
-// "Is buying leads legal?" General information, not legal advice.
-const laws: string[][] = [
-  ["Privacy Act 1988 (Australian Privacy Principles)", "How personal information is collected, used and passed on", "The homeowner should be told at the point of collection who their details go to and why. Passing details to another business for its marketing needs consent, and a business that passes on personal information for a benefit cannot rely on the small business exemption unless the people concerned consented."],
-  ["Spam Act 2003", "Commercial emails and SMS", "Messages need consent, must identify you as the sender, and must include a working unsubscribe."],
-  ["Do Not Call Register Act 2006", "Telemarketing calls", "Calling a number on the register for marketing needs the person's consent. A homeowner who asked for a local agent to call them about their property has consented to calls about that enquiry."],
-];
-
 const supplierQuestions: Array<{ q: string; a: string }> = [
   { q: "Where exactly do the leads come from?", a: "Our own property education site, found through search and our own advertising. Every lead comes through our forms and our qualification questions. No bought lists, no call centres." },
   { q: "Is each lead exclusive, and is my territory?", a: "Each lead goes to one agent. We match by suburb and tell you who else we work with in your area before you start." },
@@ -664,72 +657,11 @@ export default function RealEstateLeadsPage() {
         </div>
       </section>
 
-      {/* ── VII. Is buying leads legal? ─────────────────────────────── */}
-      <section className={`${s.section} ${s.sectionPaper}`} id="compliance">
+      {/* ── VII. Ten questions ────────────────────────────────────────── */}
+      <section className={`${s.section} ${s.sectionPaper}`} id="supplier-checklist">
         <div className={s.container}>
           <div data-reveal>
-            <Chapter num="VII." title="Is buying real estate leads legal?" kicker="Yes, with consent. The three laws that matter, in plain English" />
-          </div>
-          <div className={s.prose} style={{ maxWidth: "68ch" }} data-reveal>
-            <p>
-              Buying leads is legal in Australia when the person agreed to be
-              contacted, and the supplier passed their details on with that
-              consent. It is the consent that does the work, which is why the
-              first question to ask any supplier is what the person was told
-              when they gave their details.
-            </p>
-          </div>
-          <div className={s.dataTableWrap} data-reveal>
-            <table className={s.dataTable}>
-              <caption className="sr-only">Australian laws that apply to buying and working real estate leads</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Law</th>
-                  <th scope="col">What it covers</th>
-                  <th scope="col">What it means for bought leads</th>
-                </tr>
-              </thead>
-              <tbody>
-                {laws.map((r) => (
-                  <tr key={r[0]}>
-                    <th scope="row">{r[0]}</th>
-                    <td>{r[1]}</td>
-                    <td>{r[2]}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className={s.prose} style={{ maxWidth: "68ch", marginTop: 28 }} data-reveal>
-            <p>
-              On our side: every form that produces a lead tells the person, at
-              the point they give their details, that a local agent or
-              specialist will contact them. Our own marketing emails need a
-              separate, unticked box. Readers who were told their details stay
-              with us (the buying guide and the off-market register) are never
-              sold as leads.
-            </p>
-            <p>
-              On your side: call and email about the enquiry they made, say who
-              you are and how you got their details, and put anyone who asks
-              you to stop on your do-not-contact list. Adding a lead to a
-              general marketing list is a separate consent question.
-            </p>
-            <p className={s.fine}>
-              General information, not legal advice. The Office of the
-              Australian Information Commissioner (privacy) and the Australian
-              Communications and Media Authority (spam and Do Not Call) publish
-              the detail.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── VIII. Ten questions ────────────────────────────────────────── */}
-      <section className={s.section} id="supplier-checklist">
-        <div className={s.container}>
-          <div data-reveal>
-            <Chapter num="VIII." title="Ten questions to ask any lead supplier." kicker="With our answers, so you can compare" />
+            <Chapter num="VII." title="Ten questions to ask any lead supplier." kicker="With our answers, so you can compare" />
           </div>
           <ol className={s.qaList} data-reveal-group>
             {supplierQuestions.map((item, i) => (
@@ -745,12 +677,12 @@ export default function RealEstateLeadsPage() {
         </div>
       </section>
 
-      {/* ── IX. Who we work with ───────────────────────────────────── */}
-      <section className={`${s.section} ${s.sectionPaper}`}>
+      {/* ── VIII. Who we work with ───────────────────────────────────── */}
+      <section className={s.section}>
         <div className={s.container}>
           <div className={s.vetGrid}>
             <div data-reveal>
-              <Chapter num="IX." title="A small number of agents, matched properly." kicker="We choose who we work with" />
+              <Chapter num="VIII." title="A small number of agents, matched properly." kicker="We choose who we work with" />
               <div className={s.prose} style={{ maxWidth: "50ch" }}>
                 <p>
                   We are not trying to sign up every agency in the country.
@@ -786,11 +718,11 @@ export default function RealEstateLeadsPage() {
         </div>
       </section>
 
-      {/* ── X. Register ─────────────────────────────────────────────── */}
-      <section className={s.section}>
+      {/* ── IX. Register ─────────────────────────────────────────────── */}
+      <section className={`${s.section} ${s.sectionPaper}`}>
         <div className={s.container}>
           <div data-reveal>
-            <Chapter num="X." title="Start receiving real estate leads." kicker="One business day to a written quote" />
+            <Chapter num="IX." title="Start receiving real estate leads." kicker="One business day to a written quote" />
           </div>
           <div className={s.registerGrid}>
             <div>
@@ -812,11 +744,11 @@ export default function RealEstateLeadsPage() {
         </div>
       </section>
 
-      {/* ── XI. Coverage ──────────────────────────────────────────────── */}
-      <section className={`${s.section} ${s.sectionPaper}`}>
+      {/* ── X. Coverage ──────────────────────────────────────────────── */}
+      <section className={s.section}>
         <div className={s.container}>
           <div data-reveal>
-            <Chapter num="XI." title="Real estate leads by state." kicker="Metro and regional, every state and territory" />
+            <Chapter num="X." title="Real estate leads by state." kicker="Metro and regional, every state and territory" />
           </div>
           <div className={s.gazetteer} data-reveal-group>
             {states.map((st) => (
@@ -839,10 +771,10 @@ export default function RealEstateLeadsPage() {
       </section>
 
       {/* ── FAQ. Mirrors the FAQPageJsonLd above. ─────────────────────── */}
-      <section className={s.section}>
+      <section className={`${s.section} ${s.sectionPaper}`}>
         <div className={s.container} style={{ maxWidth: 860 }}>
           <div data-reveal>
-            <Chapter num="XII." title="Real estate leads: questions agents ask." kicker="Straight answers on exclusivity, qualification, pricing and who can register" />
+            <Chapter num="XI." title="Real estate leads: questions agents ask." kicker="Straight answers on exclusivity, qualification, pricing and who can register" />
           </div>
           <FaqAccordion items={faqs} />
         </div>
