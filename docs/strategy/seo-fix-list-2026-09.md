@@ -213,3 +213,54 @@ Items 31–35 live in `valuation-search-plan-2026-09.md` (plan items 1–5); tra
 - [ ] 33. [code+content] BUILT 17 Sep 2026, branch `feat/city-house-prices`: city pages retitled to house prices, twenty-busiest-suburbs table, data-built narrative, appraisal block (plan item 3).
 - [ ] 34. [code] BUILT 17 Sep 2026, branch `feat/suburb-agents-pages`: /suburbs/{slug}/agents, lead-gen first; agent listings behind AGENT_LISTINGS_ENABLED (src/lib/suburb-agents.ts) until the directory holds real agents (plan item 4).
 - [ ] 35. [code] Sold in {suburb}, NSW, after manual Valuer General download + import (plan item 7).
+
+## Found from Search Console index coverage (29 Sep 2026) — review before actioning, same as the rest
+
+Report read on 29 Sep: Not found 27,793 · Alternate with canonical 7,422 · Excluded by noindex 7,365 · Server error 4,211 ·
+Soft 404 1,578 · Blocked by robots.txt 930 · Page with redirect 772 · Duplicate without canonical 236 · Crawled, not
+indexed 38,339 · Discovered, not indexed 1,269. Search Console's example URLs were not readable from the session (not
+signed in), so the split per row below is inferred from production logs, the live sitemaps and a read-only production
+count; item 44 asks for the exports to confirm it. Working files: session scratchpad (not committed).
+
+- [x] 36. DONE 29 Sep 2026 — PR #63 (5ae2f44): the six national /best-suburbs/{category} pages answered 500
+      (DYNAMIC_SERVER_USAGE, the item 29 fault). Verified 200 in production. ISR guard test now scans every route.
+- [x] 37. DONE 29 Sep 2026 — PR #64 (ae9ae54): sitemaps submit only pages that do not noindex themselves
+      (suburbs 17,872 → profiles the page marks indexable; agents 4,719 → those with a published median); /agents and
+      /real-estate-agencies out of the static sitemap; compare sitemap in canonical pair order.
+- [x] 38. DONE 29 Sep 2026 — PR #64 (de0acf5): canonical on /find-an-expert; test that every indexable page sets one.
+- [ ] 39. [decision] Thin suburb profiles. 3,805 profiles answer noindex under the page's own rule (no published price
+      and no population). Most became thin on 7 Sep when the postcode-level census copies were cleared (item 1 step
+      iii): an unflagged consequence of that change. In the three-month Google export to 5 Sep, 88 of them were in the
+      top 1,000 pages with 53 clicks and 25,951 impressions (5% of clicks, 12% of impressions), nearly all at position
+      8 to 10 on postcode lookups. By kind: 3,130 small localities, 407 named parts of suburbs, 234 postal names
+      (…DC, …BC), 35 institutions. The pages still carry 800 to 1,200 words in 8 to 11 sections, so "mostly empty
+      modules" no longer describes them.
+      Options: (a) leave them noindex; (b) index real localities again where the page renders enough data sections,
+      keep postal and institution names noindex (recommended); (c) index all as before 7 Sep.
+      Could break: (b) and (c) put back pages with no price and no population, which the rule was written to hold
+      back; the rule lives in one place (`suburb-indexability.ts` + the page), so the sitemap follows.
+- [ ] 40. [code] Stop linking to empty listing sub-pages. 13 suburbs have a listing; every other suburb's six listing
+      sub-pages (/buy, /rent, /houses, /units, /townhouses, /land: about 107,900 URLs) are empty, answer 200 with
+      noindex, and are reachable from the tab strip on every sub-page, the schools page's "View properties" and the
+      rental-market page's rent links. Feeds "Excluded by noindex", "Soft 404" and "Crawled, not indexed".
+      Change: render a tab or link only where the cached listing inventory has stock (rental-market tab where a
+      rental row exists). Could break: the tab strip is the sub-pages' navigation; an all-empty strip needs a
+      fallback to the profile link. Guardrails: inventory from the existing cached groupBy (no per-page query);
+      rental-market pilot pages checked by eye; one commit.
+- [ ] 41. [code] Social preview images are blocked to crawlers. Every suburb and guide declares og:image under
+      /api/og/, and robots.txt disallows /api/ ("Blocked by robots.txt", 930). Change: allow /api/og/ in robots.ts.
+      Could break: cost. The image routes answer `max-age=0, must-revalidate`; opening them to crawlers without a
+      CDN cache header means a function run per fetch across ~18,000 suburbs. Guardrail: long s-maxage on both
+      routes first, verified HIT on the second request, then the robots change.
+- [ ] 42. [code] Suburb schools sub-pages that say "No schools found" (2 of 50 sampled, about 4% of 17,872) are
+      indexable and in the sitemap: soft-404 candidates. Change: noindex on the empty state. Folds into item 14.
+- [ ] 43. [optional] Comparison links in canonical order. Each profile links six comparisons self-first, so about half
+      point at the non-canonical order (the "Alternate page with proper canonical tag" row; working as designed).
+      Linking the canonical order saves the duplicate crawl but puts the other suburb first on the page the visitor
+      lands on. Leave unless crawl budget becomes the constraint.
+- [ ] 44. [you] Search Console: (i) press Validate fix on "Server error (5xx)"; (ii) do NOT validate "Not found (404)":
+      those are the address pages (/property/…, 15.5M once submitted) and street pages (543k) removed on purpose and
+      answering 410, and the row shrinks on its own; (iii) export the example URLs of each row (up to 1,000 each)
+      so the split above can be confirmed.
+- [ ] 45. [copy] Best-suburbs H1 reads "The for families suburbs in Australia." on the family category (all states).
+
