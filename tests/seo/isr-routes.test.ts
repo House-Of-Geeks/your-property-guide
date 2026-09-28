@@ -48,3 +48,31 @@ describe("ISR routes", () => {
     expect(src).not.toMatch(/await searchParams/);
   });
 });
+
+// Every route, not only the suburb ones. The six national /best-suburbs
+// pages answered 500 for months (found 29 Sep 2026) because this test only
+// looked under suburbs/[slug]. The rule is structural, so scan for it: a
+// page under a dynamic segment that is ISR (exports `revalidate` or
+// `generateStaticParams`) must not read searchParams on the server.
+describe("ISR routes with a dynamic segment, site-wide", () => {
+  const stripComments = (src: string) => src.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, "");
+  const dynamicIsr = pagesUnder(APP).filter((file) => {
+    if (!rel(file).includes("[")) return false;
+    const code = stripComments(fs.readFileSync(file, "utf8"));
+    return /export const revalidate\s*=/.test(code) || /generateStaticParams/.test(code);
+  });
+
+  it("finds the dynamic ISR routes, including best-suburbs/[category]", () => {
+    expect(dynamicIsr.length).toBeGreaterThanOrEqual(15);
+    expect(dynamicIsr.map(rel)).toContain("best-suburbs/[category]/page.tsx");
+  });
+
+  for (const file of dynamicIsr) {
+    it(`${rel(file)} never reads searchParams on the server`, () => {
+      const code = stripComments(fs.readFileSync(file, "utf8"));
+      expect(code).not.toMatch(/await\s+(props\.)?searchParams/);
+      expect(code).not.toMatch(/use\(\s*searchParams/);
+      expect(code).not.toMatch(/searchParams\s*[:?]/);
+    });
+  }
+});

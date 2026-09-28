@@ -8,7 +8,6 @@ import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import {
   BestSuburbsListing,
   CATEGORY_CONFIG,
-  STATES,
 } from "@/components/best-suburbs/BestSuburbsListing";
 
 export const revalidate = 86400;
@@ -28,34 +27,33 @@ export async function generateStaticParams() {
   return VALID_CATEGORIES.map((category) => ({ category }));
 }
 
+// No `searchParams` here, on purpose. This is an ISR route with a dynamic
+// segment and no build-time render; awaiting searchParams in one of those
+// throws DYNAMIC_SERVER_USAGE at request time, and all six national pages
+// answered 500 until 29 Sep 2026 (the same fault as the suburb /buy and /rent
+// pages fixed on 5 Sep; tests/seo/isr-routes.test.ts now guards every route).
+// The old `?state=` filter it served is dead: the state chips link to the
+// static /best-suburbs/[category]/[state] pages, and a stray `?state=` URL
+// renders this page, whose canonical is the national URL.
 interface CategoryPageProps {
   params: Promise<{ category: string }>;
-  searchParams: Promise<{ state?: string }>;
 }
 
 export async function generateMetadata({
   params,
-  searchParams,
 }: CategoryPageProps): Promise<Metadata> {
   const { category } = await params;
-  const { state } = await searchParams;
 
   if (!VALID_CATEGORIES.includes(category as RankingCategory)) {
     return { title: "Not Found" };
   }
 
   const config = CATEGORY_CONFIG[category as RankingCategory];
-  const upperState = state?.toUpperCase();
-  const stateSuffix = upperState && (STATES as readonly string[]).includes(upperState)
-    ? ` in ${upperState}`
-    : " in Australia";
-  const title = `${config.title}${stateSuffix}`;
+  const title = `${config.title} in Australia`;
 
   return {
     title,
-    description: `${config.description} ${
-      upperState ? `Filtered to ${upperState} suburbs only.` : ""
-    }`.trim(),
+    description: config.description,
     alternates: { canonical: `${SITE_URL}/best-suburbs/${category}` },
     openGraph: {
       url: `${SITE_URL}/best-suburbs/${category}`,
@@ -70,27 +68,20 @@ export async function generateMetadata({
 
 export default async function BestSuburbsCategoryPage({
   params,
-  searchParams,
 }: CategoryPageProps) {
   const { category } = await params;
-  const { state: stateParam } = await searchParams;
 
   if (!VALID_CATEGORIES.includes(category as RankingCategory)) {
     notFound();
   }
 
   const cat = category as RankingCategory;
-  const state =
-    stateParam && (STATES as readonly string[]).includes(stateParam.toUpperCase())
-      ? stateParam.toUpperCase()
-      : null;
-
-  const suburbs = await getRankedSuburbs(cat, state ?? undefined, 50);
+  const suburbs = await getRankedSuburbs(cat, undefined, 50);
 
   return (
     <BestSuburbsListing
       category={cat}
-      state={state}
+      state={null}
       suburbs={suburbs}
       // Use static state routes (/best-suburbs/[category]/[state]) for the
       // chips so users land on canonical SEO URLs rather than ?state= params.
