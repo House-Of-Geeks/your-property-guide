@@ -5,8 +5,15 @@ import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 import { MatchAgentEmbed, TrustStrip } from "@/components/journey";
 import { BreadcrumbJsonLd } from "@/components/seo";
+import { SITE_URL } from "@/lib/constants";
 
+// The canonical matters here more than on most pages: every suburb and
+// rental-market page links to this one with its own query string
+// (?intent=…&suburb=…), and without a canonical each of those was a separate
+// duplicate to a crawler (Search Console, "Duplicate without user-selected
+// canonical", 29 Sep 2026).
 export const metadata: Metadata = {
+  alternates: { canonical: `${SITE_URL}/find-an-expert` },
   title: "Find your expert, agent, broker, or specialist",
   description:
     "Get connected with one vetted specialist for your property situation, agent, broker, accountant, conveyancer, whoever fits. Free for buyers and sellers, no commitment.",
