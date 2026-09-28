@@ -5,6 +5,16 @@ import { db } from "@/lib/db";
 import type { Suburb as DbSuburb, School as DbSchool, SuburbHazard as DbSuburbHazard, SuburbClimate as DbSuburbClimate } from "@/generated/prisma/client";
 import { classifyPriceConfidence, isPlausibleAnnualGrowth } from "@/lib/suburb-data-quality";
 import { hasEnoughSales } from "@/lib/sales-provenance";
+import { hasPublishedHouseMedian, isThinSuburbRow } from "@/lib/suburb-indexability";
+
+// Columns the indexability rules read (src/lib/suburb-indexability.ts).
+const INDEX_ROW_SELECT = {
+  medianHousePrice: true,
+  medianUnitPrice: true,
+  population: true,
+  statsSource: true,
+  salesCountHouse: true,
+} as const;
 
 type DbSuburbWithSchools = DbSuburb & { schools: DbSchool[] };
 
@@ -367,12 +377,32 @@ export async function getAllSuburbSlugsWithDates(): Promise<{ slug: string; upda
 // 9,600-page property site should go to pages with real content.
 // Suburbs whose median clears the reliable-price gate. Feeds the sitemap
 // for sub-pages that only make sense with a trusted median (agents pages).
+// The same rule as the page (hasReliablePrice on the gated object), which
+// also withholds a median built on fewer than five recorded sales.
 export async function getSuburbSlugsWithReliablePrice(): Promise<string[]> {
   const rows = await db.suburb.findMany({
     where: { medianHousePrice: { gt: 0 }, statsSource: { in: [...RELIABLE_SALES_SOURCES] } },
-    select: { slug: true },
+    select: { slug: true, ...INDEX_ROW_SELECT },
   });
-  return rows.map((r) => r.slug);
+  return rows.filter(hasPublishedHouseMedian).map((r) => r.slug);
+}
+
+// Suburb profiles that do not noindex themselves: the raw gate below, less
+// the rows the page calls thin once the price gate has run. Feeds the
+// suburbs sitemap only; the sub-page sitemaps keep the raw gate because
+// each sub-page has its own indexing rule.
+export async function getIndexableSuburbProfilesWithDates(): Promise<{ slug: string; updatedAt: Date }[]> {
+  const rows = await db.suburb.findMany({
+    where: {
+      OR: [
+        { medianHousePrice: { gt: 0 } },
+        { medianUnitPrice: { gt: 0 } },
+        { population: { gt: 0 } },
+      ],
+    },
+    select: { slug: true, updatedAt: true, ...INDEX_ROW_SELECT },
+  });
+  return rows.filter((r) => !isThinSuburbRow(r)).map(({ slug, updatedAt }) => ({ slug, updatedAt }));
 }
 
 export async function getIndexableSuburbSlugsWithDates(): Promise<{ slug: string; updatedAt: Date }[]> {

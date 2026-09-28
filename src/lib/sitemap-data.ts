@@ -1,5 +1,8 @@
 import { unstable_cache } from "next/cache";
-import { getIndexableSuburbSlugsWithDates } from "@/lib/services/suburb-service";
+import {
+  getIndexableSuburbProfilesWithDates,
+  getIndexableSuburbSlugsWithDates,
+} from "@/lib/services/suburb-service";
 
 // Shared suburb-list getter for the suburb sitemap and the eight per-type
 // sub-page sitemaps (src/app/(marketing)/suburbs/{,subpages/}sitemap.ts).
@@ -12,5 +15,14 @@ export const getIndexableSuburbsForSitemaps = unstable_cache(
   // v2: earlier per-file caches stored differently-shaped payloads under
   // "sitemap-suburbs:v1"; a fresh key avoids reading those stale entries.
   ["sitemap-suburbs:v2"],
+  { revalidate: 86400, tags: ["sitemap-suburbs"] },
+);
+
+// The suburbs sitemap itself: profiles that do not noindex themselves (the
+// page's thin rule, applied after the price gate). Its own cache key, so the
+// sub-page sitemaps above keep their list.
+export const getIndexableSuburbProfilesForSitemaps = unstable_cache(
+  async () => getIndexableSuburbProfilesWithDates(),
+  ["sitemap-suburb-profiles:v1"],
   { revalidate: 86400, tags: ["sitemap-suburbs"] },
 );
