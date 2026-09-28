@@ -10,6 +10,7 @@ export const dynamic = "force-dynamic";
 import type { MetadataRoute } from "next";
 import { unstable_cache } from "next/cache";
 import { SITE_URL } from "@/lib/constants";
+import { canonicalComparePath } from "@/lib/suburb-indexability";
 import {
   getTopComparisonPairsByState,
   type ComparisonPair,
@@ -24,13 +25,16 @@ const getEntries = unstable_cache(
       STATES.map((s) => getTopComparisonPairsByState(s, PAIRS_PER_STATE)),
     );
     const pairs: ComparisonPair[] = byState.flat();
-    return pairs.map((p) => ({
-      url: `${SITE_URL}/suburbs/${p.aSlug}/vs/${p.bSlug}`,
+    // The canonical order of each pair, once: the page canonicalises to the
+    // lexicographic order, so that is the URL to submit.
+    const paths = [...new Set(pairs.map((p) => canonicalComparePath(p.aSlug, p.bSlug)))];
+    return paths.map((path) => ({
+      url: `${SITE_URL}${path}`,
       changeFrequency: "monthly" as const,
       priority: 0.6,
     }));
   },
-  ["sitemap-compare:v1"],
+  ["sitemap-compare:v2"],
   { revalidate: 86400, tags: ["sitemap-compare"] },
 );
 

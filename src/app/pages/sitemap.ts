@@ -22,8 +22,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/off-market`,                   changeFrequency: "weekly",  priority: 0.7 },
     { url: `${SITE_URL}/suburbs`,                      changeFrequency: "weekly",  priority: 0.8 },
     { url: `${SITE_URL}/regions`,                      changeFrequency: "weekly",  priority: 0.7 },
-    { url: `${SITE_URL}/agents`,                       changeFrequency: "weekly",  priority: 0.7 },
-    { url: `${SITE_URL}/real-estate-agencies`,         changeFrequency: "weekly",  priority: 0.6 },
+    // /agents and /real-estate-agencies are noindex while the directory is
+    // paused, so they are not submitted (tests/seo/sitemap-hygiene.test.ts).
     { url: `${SITE_URL}/research`,                     changeFrequency: "monthly", priority: 0.6 },
     { url: `${SITE_URL}/price-guide`,                  changeFrequency: "weekly",  priority: 0.8 },
     { url: `${SITE_URL}/schools`,                      changeFrequency: "monthly", priority: 0.6 },

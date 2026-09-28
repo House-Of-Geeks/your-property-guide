@@ -9,10 +9,11 @@ export const dynamic = "force-dynamic";
 
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants";
-import { getIndexableSuburbsForSitemaps } from "@/lib/sitemap-data";
+import { getIndexableSuburbProfilesForSitemaps } from "@/lib/sitemap-data";
 
+// Only profiles that do not noindex themselves (src/lib/suburb-indexability.ts).
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const suburbs = await getIndexableSuburbsForSitemaps();
+  const suburbs = await getIndexableSuburbProfilesForSitemaps();
   return suburbs.map(({ slug, updatedAt }) => ({
     url: `${SITE_URL}/suburbs/${slug}`,
     lastModified: updatedAt,

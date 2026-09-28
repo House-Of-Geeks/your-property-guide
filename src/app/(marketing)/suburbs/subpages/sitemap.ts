@@ -78,7 +78,7 @@ const getCachedRentalSuburbs = unstable_cache(
 // page noindexes itself otherwise.
 const getCachedReliablePriceSuburbs = unstable_cache(
   async () => getSuburbSlugsWithReliablePrice(),
-  ["sitemap-reliable-price-suburbs:v1"],
+  ["sitemap-reliable-price-suburbs:v2"], // v2: also requires five recorded sales, as the page does
   { revalidate: 86400, tags: ["sitemap-suburbs"] },
 );
 
