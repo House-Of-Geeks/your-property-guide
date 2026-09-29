@@ -6,11 +6,9 @@ import type { Suburb as DbSuburb, School as DbSchool, SuburbHazard as DbSuburbHa
 import { classifyPriceConfidence, isPlausibleAnnualGrowth } from "@/lib/suburb-data-quality";
 import { hasEnoughSales } from "@/lib/sales-provenance";
 import { hasPublishedHouseMedian, isThinSuburbRow } from "@/lib/suburb-indexability";
-import { NON_LOCALITY_SLUGS, isNonLocalitySlug } from "@/lib/non-localities";
-
 // Postal delivery names, institutions and shopping-centre post offices are
-// not suburbs: every list and sitemap below leaves them out.
-const LOCALITIES_ONLY = { slug: { notIn: NON_LOCALITY_SLUGS } } as const;
+// not suburbs: every list and sitemap below leaves them out (LOCALITIES_ONLY).
+import { LOCALITIES_ONLY, isNonLocalitySlug } from "@/lib/non-localities";
 
 // Columns the indexability rules read (src/lib/suburb-indexability.ts).
 const INDEX_ROW_SELECT = {

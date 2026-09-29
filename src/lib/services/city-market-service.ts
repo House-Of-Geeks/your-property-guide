@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { LOCALITIES_ONLY } from "@/lib/non-localities";
 import {
   isPlausibleAnnualGrowth,
   isReliableSalesSource,
@@ -89,6 +90,7 @@ export async function getCityMarket(city: CapitalCity): Promise<CityMarket> {
   const rows: CityMarketRow[] = await db.suburb.findMany({
     where: {
       state: city.state,
+      ...LOCALITIES_ONLY,
       OR: city.ranges.map(([lo, hi]) => ({
         postcode: { gte: pad4(lo), lte: pad4(hi) },
       })),

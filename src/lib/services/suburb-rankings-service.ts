@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { LOCALITIES_ONLY, NON_LOCALITY_SLUGS, isNonLocalitySlug } from "@/lib/non-localities";
 
 export type RankingCategory =
   | "for-families"
@@ -109,7 +110,11 @@ export async function getRankedSuburbs(
   state?: string,
   limit = 50
 ): Promise<RankedSuburb[]> {
-  const stateFilter = state ? { state } : {};
+  // Postal delivery names and institutions are not suburbs to rank. Their
+  // rows carry seed figures (a walk score of 100, a census-proxy median), so
+  // without this they place: nine of the national most-walkable fifty on
+  // 29 Sep 2026, "HMAS Kuttabul" and "Bondi Junction Plaza" among them.
+  const stateFilter = { ...(state ? { state } : {}), ...LOCALITIES_ONLY };
 
   switch (category) {
     case "for-families": {
@@ -202,7 +207,9 @@ export async function getRankedSuburbs(
       `);
 
       const allSlugs = [...lowRiskSlugs, ...noHazardSlugs.map((r) => r.slug)];
-      const deduped = [...new Set(allSlugs)];
+      // `slug: { in }` below replaces the filter in stateFilter, so the
+      // list is filtered here.
+      const deduped = [...new Set(allSlugs)].filter((s) => !isNonLocalitySlug(s));
 
       if (deduped.length === 0) return [];
 
@@ -235,7 +242,7 @@ export async function getRankedSuburbs(
         "householdsFamily": number;
         "grossYield": number;
       };
-      const yieldRows = await db.$queryRawUnsafe<YieldRow[]>(`
+      const fetchedYieldRows = await db.$queryRawUnsafe<YieldRow[]>(`
         SELECT
           s.slug,
           s.name,
@@ -255,8 +262,10 @@ export async function getRankedSuburbs(
           AND s."medianHousePrice" > 0
           ${stateClause}
         ORDER BY "grossYield" DESC
-        LIMIT ${limit}
+        LIMIT ${limit + NON_LOCALITY_SLUGS.length}
       `);
+      // Fetched with room to spare, then the postal names dropped.
+      const yieldRows = fetchedYieldRows.filter((r) => !isNonLocalitySlug(r.slug)).slice(0, limit);
 
       const slugs = yieldRows.map((r) => r.slug);
       const [hazardMap, schoolRows] = await Promise.all([
@@ -333,7 +342,7 @@ export function getStateName(state: string): string {
 export async function getStateStats(state: string): Promise<StateStats> {
   const upperState = state.toUpperCase();
   const rows = await db.suburb.findMany({
-    where: { state: upperState },
+    where: { state: upperState, ...LOCALITIES_ONLY },
     select: { medianHousePrice: true, annualGrowthHouse: true },
   });
 
@@ -361,7 +370,7 @@ export async function getStateRegions(
   const upperState = state.toUpperCase();
   const rows = await db.suburb.groupBy({
     by: ["region"],
-    where: { state: upperState, region: { not: "" } },
+    where: { state: upperState, region: { not: "" }, ...LOCALITIES_ONLY },
     _count: { slug: true },
     orderBy: { region: "asc" },
   });
@@ -396,7 +405,7 @@ export async function getStateRegions(
 export async function getTopSuburbsByState(state: string, limit = 12) {
   const upperState = state.toUpperCase();
   return db.suburb.findMany({
-    where: { state: upperState, population: { gt: 0 } },
+    where: { state: upperState, population: { gt: 0 }, ...LOCALITIES_ONLY },
     select: {
       slug: true,
       name: true,
@@ -442,7 +451,7 @@ export async function getTopComparisonPairsByState(
 ): Promise<ComparisonPair[]> {
   const upperState = state.toUpperCase();
   const tops = await db.suburb.findMany({
-    where: { state: upperState, population: { gt: 0 } },
+    where: { state: upperState, population: { gt: 0 }, ...LOCALITIES_ONLY },
     select: { slug: true, name: true, postcode: true, nearbySuburbs: true },
     orderBy: { population: "desc" },
     take: Math.max(limit, 40), // need a buffer for dedup + missing-neighbour filtering
@@ -450,7 +459,11 @@ export async function getTopComparisonPairsByState(
 
   // Collect all neighbour slugs referenced, then check which exist
   const candidateNeighbourSlugs = new Set<string>();
-  for (const s of tops) for (const n of s.nearbySuburbs) candidateNeighbourSlugs.add(n);
+  // "Port Macquarie vs Port Macquarie BC" compared a town with its own
+  // mail centre: 50 such pairs were in the comparison sitemap on 29 Sep 2026.
+  for (const s of tops) {
+    for (const n of s.nearbySuburbs) if (!isNonLocalitySlug(n)) candidateNeighbourSlugs.add(n);
+  }
 
   const existingNeighbours = await db.suburb.findMany({
     where: { slug: { in: Array.from(candidateNeighbourSlugs) } },

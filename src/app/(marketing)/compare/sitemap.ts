@@ -34,7 +34,7 @@ const getEntries = unstable_cache(
       priority: 0.6,
     }));
   },
-  ["sitemap-compare:v2"],
+  ["sitemap-compare:v3"], // v3: no pair with a postal delivery name
   { revalidate: 86400, tags: ["sitemap-compare"] },
 );
 

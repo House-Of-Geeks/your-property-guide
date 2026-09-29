@@ -263,4 +263,20 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       answering 410, and the row shrinks on its own; (iii) export the example URLs of each row (up to 1,000 each)
       so the split above can be confirmed.
 - [ ] 45. [copy] Best-suburbs H1 reads "The for families suburbs in Australia." on the family category (all states).
+- [x] 46. DONE 29 Sep 2026 — PR #66 (1198854) and its follow-up: postal delivery names, institutions and
+      shopping-centre post offices are not suburbs. 290 rows ("Nerang DC", "Parliament House", "Penrith Plaza") had
+      profiles, sub-pages and places in every list. Their URLs redirect (196 to the real suburb of the same name in
+      the same postcode, 94 to the postcode page, which lists them as delivery names); lists, search, rankings,
+      comparison pairs and sitemaps leave them out. This is the "fix properly" half of item 39's postal and
+      institution names. The Suburb rows are still in the database: deleting them is a production write and waits
+      for a separate go (schools and listings may reference them).
+      Re-run `npx tsx scripts/seo/non-localities.ts` (read-only) after an import that adds suburbs and commit the
+      diff; `--check` prints the counts without writing.
+- [ ] 47. [code] Lists rank on the raw median column. The suburb page withholds a median whose source is distrusted
+      or which rests on fewer than five sales (item 1); the best-suburbs rankings, /price-guide, the state market
+      reports and the suburb finder query `medianHousePrice > 0` directly. On 29 Sep 2026, of the rows with a raw
+      house median, 4,719 came from the four trusted sales feeds and 12,973 from census proxies, rental feeds
+      that overwrote statsSource, and the distrusted QLD/WA feeds. Change: the same gate as the page
+      (`hasPublishedHouseMedian`) in each list query. Could break: rankings for QLD and WA would empty or thin out,
+      so the pages need an honest empty state first; ships by cohort with a before/after of each ranking.
 

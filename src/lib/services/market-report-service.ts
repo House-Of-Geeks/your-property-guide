@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { LOCALITIES_ONLY } from "@/lib/non-localities";
 
 export interface SuburbMarketRow {
   slug: string;
@@ -68,6 +69,7 @@ export async function getStateMarketData(state: string): Promise<StateMarketData
     db.suburb.findMany({
       where: {
         state: upperState,
+        ...LOCALITIES_ONLY,
         medianHousePrice: { gt: 100_000 },
         annualGrowthHouse: { gt: 0 },
       },
@@ -79,6 +81,7 @@ export async function getStateMarketData(state: string): Promise<StateMarketData
     db.suburb.findMany({
       where: {
         state: upperState,
+        ...LOCALITIES_ONLY,
         medianHousePrice: { gt: 100_000 },
       },
       select: SUBURB_SELECT,
@@ -89,6 +92,7 @@ export async function getStateMarketData(state: string): Promise<StateMarketData
     db.suburb.findMany({
       where: {
         state: upperState,
+        ...LOCALITIES_ONLY,
         medianHousePrice: { gt: 100_000 },
       },
       select: SUBURB_SELECT,
@@ -97,7 +101,7 @@ export async function getStateMarketData(state: string): Promise<StateMarketData
     }),
     // All suburbs for aggregate stats
     db.suburb.findMany({
-      where: { state: upperState },
+      where: { state: upperState, ...LOCALITIES_ONLY },
       select: {
         medianHousePrice: true,
         medianUnitPrice: true,

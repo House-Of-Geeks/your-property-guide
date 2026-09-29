@@ -1,11 +1,11 @@
 import { db } from "@/lib/db";
 import { isPlausibleAnnualGrowth, isReliableSalesSource } from "@/lib/suburb-data-quality";
-import { NON_LOCALITY_SLUGS, nonLocalitiesInPostcode, type NonLocality } from "@/lib/non-localities";
-
 // Postal delivery names, institutions and shopping-centre post offices share
-// postcodes with the suburbs around them but are not suburbs. The page lists
-// them separately, as what they are (getPostalNamesByPostcode).
-const LOCALITIES_ONLY = { slug: { notIn: NON_LOCALITY_SLUGS } } as const;
+// postcodes with the suburbs around them but are not suburbs (LOCALITIES_ONLY).
+// The page lists them separately, as what they are (getPostalNamesByPostcode).
+// The two all-postcode lists below keep them: a postcode Australia Post uses
+// only for a mail centre still has a page.
+import { LOCALITIES_ONLY, nonLocalitiesInPostcode, type NonLocality } from "@/lib/non-localities";
 
 export interface PostcodeSuburb {
   slug: string;

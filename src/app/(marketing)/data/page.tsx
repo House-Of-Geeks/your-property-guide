@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { db } from "@/lib/db";
+import { LOCALITIES_ONLY } from "@/lib/non-localities";
 import { GLOSSARY_TERMS } from "@/lib/data/glossary";
 import { SITE_URL } from "@/lib/constants";
 
@@ -55,7 +56,7 @@ async function getCounts() {
     blogPosts,
     houseAndLand,
   ] = await Promise.all([
-    db.suburb.count(),
+    db.suburb.count({ where: LOCALITIES_ONLY }),
     db.school.count(),
     db.property.count({ where: { status: "active" } }),
     db.property.count({ where: { status: "sold" } }),
