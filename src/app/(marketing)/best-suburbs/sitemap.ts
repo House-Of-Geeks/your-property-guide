@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants";
+import { isRanked, type RankingCategory } from "@/lib/ranking-notes";
 
-const CATEGORIES = [
+const CATEGORIES: RankingCategory[] = [
   "for-families",
   "highest-growth",
   "most-affordable",
@@ -27,9 +28,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: 0.7,
     })),
-    // State-level permutations: 6 categories × 8 states = 48 long-tail SEO pages
+    // State-level permutations: 6 categories × 8 states, less the states with
+    // nothing to rank (those pages say why and answer noindex).
     ...CATEGORIES.flatMap((cat) =>
-      STATES.map((state) => ({
+      STATES.filter((state) => isRanked(cat, state.toUpperCase())).map((state) => ({
         url: `${SITE_URL}/best-suburbs/${cat}/${state}`,
         changeFrequency: "weekly" as const,
         priority: 0.6,

@@ -1,28 +1,42 @@
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY, NON_LOCALITY_SLUGS, isNonLocalitySlug } from "@/lib/non-localities";
+import {
+  PUBLISHED_GROWTH,
+  PUBLISHED_HOUSE_MEDIAN,
+  PUBLISHED_HOUSE_MEDIAN_SQL,
+  publishedSales,
+  type MedianBasis,
+} from "@/lib/published-medians";
+import { MAX_PLAUSIBLE_GROSS_YIELD } from "@/lib/suburb-snapshot";
+import { YIELD_MIN_POPULATION, YIELD_RANKED_STATES, type RankingCategory } from "@/lib/ranking-notes";
 
-export type RankingCategory =
-  | "for-families"
-  | "highest-growth"
-  | "most-affordable"
-  | "most-walkable"
-  | "lowest-flood-risk"
-  | "best-rental-yield";
+export type { RankingCategory };
+
+// Every price, growth figure, rent and yield below is what the suburb's own
+// page publishes (fix item 47). Until 29 Sep 2026 the rankings read the raw
+// columns: "most affordable" led with medians back-calculated from 2021
+// census mortgage repayments, and "highest growth" with +4,612.1%.
 
 export interface RankedSuburb {
   slug: string;
   name: string;
   state: string;
   postcode: string;
+  /** 0 when the suburb's page publishes no median. */
   medianHousePrice: number;
   medianUnitPrice: number;
+  /** 0 when there is no published 12-month change. */
   annualGrowthHouse: number;
+  /** "area" for an ABS statistical-area median, shared by the suburbs in that area. */
+  medianBasis: MedianBasis | null;
   walkScore: number | null;
   population: number;
+  /** Weekly house rent from the suburb's latest bond-data row; 0 outside the yield ranking. */
   medianRentHouse: number;
   ownerOccupied: number;
   householdsFamily: number;
   avgSchoolIcsea: number | null;
+  /** Only in the yield ranking. */
   grossRentalYield: number | null;
   hazard: {
     floodClass: string | null;
@@ -38,9 +52,10 @@ type DbSuburbRow = {
   medianHousePrice: number;
   medianUnitPrice: number;
   annualGrowthHouse: number;
+  statsSource: string;
+  salesCountHouse: number;
   walkScore: number | null;
   population: number;
-  medianRentHouse: number;
   ownerOccupied: number;
   householdsFamily: number;
   schools: { icsea: number | null }[];
@@ -52,11 +67,6 @@ function computeAvgIcsea(schools: { icsea: number | null }[]): number | null {
   return Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
 }
 
-function computeGrossYield(rent: number, price: number): number | null {
-  if (rent <= 0 || price <= 0) return null;
-  return parseFloat(((rent * 52.0) / price * 100).toFixed(2));
-}
-
 const SUBURB_SELECT = {
   slug: true,
   name: true,
@@ -65,9 +75,10 @@ const SUBURB_SELECT = {
   medianHousePrice: true,
   medianUnitPrice: true,
   annualGrowthHouse: true,
+  statsSource: true,
+  salesCountHouse: true,
   walkScore: true,
   population: true,
-  medianRentHouse: true,
   ownerOccupied: true,
   householdsFamily: true,
   schools: { select: { icsea: true } },
@@ -85,24 +96,54 @@ async function fetchHazardMap(slugs: string[]): Promise<HazardMap> {
 }
 
 function buildRankedSuburb(row: DbSuburbRow, hazardMap: HazardMap): RankedSuburb {
-  const hazard = hazardMap.get(row.slug) ?? null;
+  const sales = publishedSales(row);
   return {
     slug: row.slug,
     name: row.name,
     state: row.state,
     postcode: row.postcode,
-    medianHousePrice: row.medianHousePrice,
-    medianUnitPrice: row.medianUnitPrice,
-    annualGrowthHouse: row.annualGrowthHouse,
+    medianHousePrice: sales.medianHousePrice,
+    medianUnitPrice: sales.medianUnitPrice,
+    annualGrowthHouse: sales.annualGrowthHouse,
+    medianBasis: sales.basis,
     walkScore: row.walkScore,
     population: row.population,
-    medianRentHouse: row.medianRentHouse,
+    medianRentHouse: 0,
     ownerOccupied: row.ownerOccupied,
     householdsFamily: row.householdsFamily,
     avgSchoolIcsea: computeAvgIcsea(row.schools),
-    grossRentalYield: computeGrossYield(row.medianRentHouse, row.medianHousePrice),
-    hazard,
+    grossRentalYield: null,
+    hazard: hazardMap.get(row.slug) ?? null,
   };
+}
+
+const STATE_CODES = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"];
+
+/** The states a yield ranking covers for this request: the ranked states, or the one asked for if it is one of them. */
+function yieldStates(state?: string): string[] {
+  const ranked = YIELD_RANKED_STATES.filter((s) => STATE_CODES.includes(s));
+  return state ? ranked.filter((s) => s === state) : ranked;
+}
+
+// A published median, a rent from the suburb's newest bond-data row, a
+// population that makes a rental market, and a yield inside the clamp the
+// suburb pages use. The state list is from YIELD_RANKED_STATES, never from
+// the request.
+function yieldFromSql(states: string[]): string {
+  return `
+        FROM "Suburb" s
+        JOIN LATERAL (
+          SELECT rs."medianRentHouse" AS rent
+          FROM "SuburbRentalStat" rs
+          WHERE rs."suburbSlug" = s.slug
+          ORDER BY rs."periodDate" DESC, rs."updatedAt" DESC
+          LIMIT 1
+        ) r ON TRUE
+        WHERE ${PUBLISHED_HOUSE_MEDIAN_SQL}
+          AND s.state IN (${states.map((st) => `'${st}'`).join(", ")})
+          AND s.population >= ${YIELD_MIN_POPULATION}
+          AND r.rent > 0
+          AND (r.rent * 52.0 / s."medianHousePrice" * 100) <= ${MAX_PLAUSIBLE_GROSS_YIELD}`;
 }
 
 export async function getRankedSuburbs(
@@ -134,13 +175,9 @@ export async function getRankedSuburbs(
 
     case "highest-growth": {
       const rows = await db.suburb.findMany({
-        where: {
-          ...stateFilter,
-          annualGrowthHouse: { gt: 0 },
-          medianHousePrice: { gt: 0 },
-        },
+        where: { ...stateFilter, ...PUBLISHED_GROWTH },
         select: SUBURB_SELECT,
-        orderBy: { annualGrowthHouse: "desc" },
+        orderBy: [{ annualGrowthHouse: "desc" }, { name: "asc" }],
         take: limit,
       });
       const hazardMap = await fetchHazardMap(rows.map((r) => r.slug));
@@ -151,10 +188,11 @@ export async function getRankedSuburbs(
       const rows = await db.suburb.findMany({
         where: {
           ...stateFilter,
+          ...PUBLISHED_HOUSE_MEDIAN,
           medianHousePrice: { gt: 100000 },
         },
         select: SUBURB_SELECT,
-        orderBy: { medianHousePrice: "asc" },
+        orderBy: [{ medianHousePrice: "asc" }, { name: "asc" }],
         take: limit,
       });
       const hazardMap = await fetchHazardMap(rows.map((r) => r.slug));
@@ -185,12 +223,6 @@ export async function getRankedSuburbs(
       const hazardMap: HazardMap = new Map(
         lowRiskHazards.map((h) => [h.suburbSlug, { floodClass: h.floodClass, bushfireRisk: h.bushfireRisk }])
       );
-
-      // Fetch suburbs with low risk
-      const lowRiskWhere = {
-        ...stateFilter,
-        slug: { in: lowRiskSlugs },
-      };
 
       // Fetch suburbs with no hazard record (use NOT IN via $queryRawUnsafe or use a different approach)
       // Prisma doesn't support "has no related record" without a relation, use raw approach
@@ -224,25 +256,26 @@ export async function getRankedSuburbs(
     }
 
     case "best-rental-yield": {
-      const stateClause = state
-        ? `AND s.state = '${state.replace(/'/g, "''")}'`
-        : "";
+      const states = yieldStates(state);
+      if (states.length === 0) return [];
       type YieldRow = {
         slug: string;
         name: string;
         state: string;
         postcode: string;
-        "medianHousePrice": number;
-        "medianUnitPrice": number;
-        "annualGrowthHouse": number;
-        "walkScore": number | null;
+        medianHousePrice: number;
+        medianUnitPrice: number;
+        annualGrowthHouse: number;
+        statsSource: string;
+        salesCountHouse: number;
+        walkScore: number | null;
         population: number;
-        "medianRentHouse": number;
-        "ownerOccupied": number;
-        "householdsFamily": number;
-        "grossYield": number;
+        ownerOccupied: number;
+        householdsFamily: number;
+        rent: number;
+        grossYield: number;
       };
-      const fetchedYieldRows = await db.$queryRawUnsafe<YieldRow[]>(`
+      const fetched = await db.$queryRawUnsafe<YieldRow[]>(`
         SELECT
           s.slug,
           s.name,
@@ -251,21 +284,30 @@ export async function getRankedSuburbs(
           s."medianHousePrice",
           s."medianUnitPrice",
           s."annualGrowthHouse",
+          s."statsSource",
+          s."salesCountHouse",
           s."walkScore",
           s.population,
-          s."medianRentHouse",
           s."ownerOccupied",
           s."householdsFamily",
-          (s."medianRentHouse" * 52.0 / s."medianHousePrice" * 100) AS "grossYield"
-        FROM "Suburb" s
-        WHERE s."medianRentHouse" > 0
-          AND s."medianHousePrice" > 0
-          ${stateClause}
-        ORDER BY "grossYield" DESC
-        LIMIT ${limit + NON_LOCALITY_SLUGS.length}
+          r.rent AS "rent",
+          (r.rent * 52.0 / s."medianHousePrice" * 100) AS "grossYield"
+        ${yieldFromSql(states)}
+        ORDER BY "grossYield" DESC, s.name ASC
+        LIMIT ${limit * 2 + NON_LOCALITY_SLUGS.length}
       `);
-      // Fetched with room to spare, then the postal names dropped.
-      const yieldRows = fetchedYieldRows.filter((r) => !isNonLocalitySlug(r.slug)).slice(0, limit);
+      // Fetched with room to spare, then the postal names dropped and a name
+      // kept once per state: "Horsham" has a row for each of its postcodes.
+      const seen = new Set<string>();
+      const yieldRows = fetched
+        .filter((r) => !isNonLocalitySlug(r.slug))
+        .filter((r) => {
+          const key = `${r.name.toLowerCase()}|${r.state}`;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        })
+        .slice(0, limit);
 
       const slugs = yieldRows.map((r) => r.slug);
       const [hazardMap, schoolRows] = await Promise.all([
@@ -285,30 +327,54 @@ export async function getRankedSuburbs(
       }
 
       return yieldRows.map((r) => {
-        const hazard = hazardMap.get(r.slug) ?? null;
-        const schools = schoolMap.get(r.slug) ?? [];
+        const ranked = buildRankedSuburb(
+          {
+            ...r,
+            medianHousePrice: Number(r.medianHousePrice),
+            medianUnitPrice: Number(r.medianUnitPrice),
+            annualGrowthHouse: Number(r.annualGrowthHouse),
+            salesCountHouse: Number(r.salesCountHouse),
+            walkScore: r.walkScore != null ? Number(r.walkScore) : null,
+            population: Number(r.population),
+            ownerOccupied: Number(r.ownerOccupied),
+            householdsFamily: Number(r.householdsFamily),
+            schools: schoolMap.get(r.slug) ?? [],
+          },
+          hazardMap,
+        );
         return {
-          slug: r.slug,
-          name: r.name,
-          state: r.state,
-          postcode: r.postcode,
-          medianHousePrice: Number(r["medianHousePrice"]),
-          medianUnitPrice: Number(r["medianUnitPrice"]),
-          annualGrowthHouse: Number(r["annualGrowthHouse"]),
-          walkScore: r["walkScore"] != null ? Number(r["walkScore"]) : null,
-          population: Number(r.population),
-          medianRentHouse: Number(r["medianRentHouse"]),
-          ownerOccupied: Number(r["ownerOccupied"]),
-          householdsFamily: Number(r["householdsFamily"]),
-          avgSchoolIcsea: computeAvgIcsea(schools),
-          grossRentalYield: parseFloat(Number(r["grossYield"]).toFixed(2)),
-          hazard,
+          ...ranked,
+          medianRentHouse: Number(r.rent),
+          grossRentalYield: parseFloat(Number(r.grossYield).toFixed(2)),
         };
       });
     }
 
     default:
       return [];
+  }
+}
+
+/**
+ * How many suburbs a ranking on a published figure was drawn from; null for
+ * a ranking on something else (schools, walkability, flood class). The page
+ * prints it beside the list.
+ */
+export async function getRankingEligibleCount(category: RankingCategory, state?: string): Promise<number | null> {
+  const stateFilter = { ...(state ? { state } : {}), ...LOCALITIES_ONLY };
+  switch (category) {
+    case "highest-growth":
+      return db.suburb.count({ where: { ...stateFilter, ...PUBLISHED_GROWTH } });
+    case "most-affordable":
+      return db.suburb.count({ where: { ...stateFilter, ...PUBLISHED_HOUSE_MEDIAN, medianHousePrice: { gt: 100000 } } });
+    case "best-rental-yield": {
+      const states = yieldStates(state);
+      if (states.length === 0) return 0;
+      const rows = await db.$queryRawUnsafe<{ n: bigint | number }[]>(`SELECT COUNT(*) AS n ${yieldFromSql(states)}`);
+      return Number(rows[0]?.n ?? 0);
+    }
+    default:
+      return null;
   }
 }
 

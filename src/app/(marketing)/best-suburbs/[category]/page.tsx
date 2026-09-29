@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   getRankedSuburbs,
+  getRankingEligibleCount,
   type RankingCategory,
 } from "@/lib/services/suburb-rankings-service";
+import { rankingNote } from "@/lib/ranking-notes";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import {
   BestSuburbsListing,
@@ -76,13 +78,17 @@ export default async function BestSuburbsCategoryPage({
   }
 
   const cat = category as RankingCategory;
+  // One after the other: the runtime pool holds a single connection.
   const suburbs = await getRankedSuburbs(cat, undefined, 50);
+  const eligible = await getRankingEligibleCount(cat, undefined);
+  const note = rankingNote(cat, null, suburbs.length, eligible);
 
   return (
     <BestSuburbsListing
       category={cat}
       state={null}
       suburbs={suburbs}
+      note={note}
       // Use static state routes (/best-suburbs/[category]/[state]) for the
       // chips so users land on canonical SEO URLs rather than ?state= params.
       useStaticStateRoutes

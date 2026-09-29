@@ -5,8 +5,8 @@
 //
 // The price side: suburb-service zeroes both medians when the sales source
 // is distrusted or the median rests on fewer than five recorded sales.
-// publishesPrices composes the same two functions the service uses
-// (isReliableSalesSource, hasEnoughSales), so it cannot drift from it.
+// publishesPrices is the rule the service itself reads (publishesMedians,
+// src/lib/published-medians.ts), so it cannot drift from it.
 //
 // The thin rule. Until 29 Sep 2026 a profile was thin (noindex) when it had
 // neither a published price nor a population. That was written when such a
@@ -27,8 +27,7 @@
 // belongs to (stateMatchesPostcode, src/lib/postcode-states.ts). Since item
 // 48 those rows redirect or answer 404; the check stays for the next one a
 // feed makes.
-import { isReliableSalesSource } from "@/lib/suburb-data-quality";
-import { hasEnoughSales } from "@/lib/sales-provenance";
+import { publishesMedians } from "@/lib/published-medians";
 import { stateMatchesPostcode, type SuburbPlace } from "@/lib/postcode-states";
 
 export { stateMatchesPostcode, type SuburbPlace };
@@ -43,7 +42,7 @@ export interface SuburbIndexRow {
 
 /** The service publishes this row's medians (trusted source, enough sales). */
 export function publishesPrices(row: Pick<SuburbIndexRow, "statsSource" | "salesCountHouse">): boolean {
-  return isReliableSalesSource(row.statsSource) && hasEnoughSales(row.salesCountHouse);
+  return publishesMedians(row);
 }
 
 /** Data a profile can carry of its own, besides a price and a population. */
