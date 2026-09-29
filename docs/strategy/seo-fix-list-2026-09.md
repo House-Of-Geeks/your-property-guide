@@ -282,7 +282,7 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       for a separate go (schools and listings may reference them).
       Re-run `npx tsx scripts/seo/non-localities.ts` (read-only) after an import that adds suburbs and commit the
       diff; `--check` prints the counts without writing.
-- [ ] 47. [code] IN PROGRESS 29 Sep 2026 (cohorts 1 and 2 of 3 shipped, see the end of this item). Lists rank on the raw median column. The suburb page withholds a median whose source is distrusted
+- [x] 47. [code] DONE 29 Sep 2026 in three cohorts (see the end of this item). Lists rank on the raw median column. The suburb page withholds a median whose source is distrusted
       or which rests on fewer than five sales (item 1); the best-suburbs rankings, /price-guide, the state market
       reports and the suburb finder query `medianHousePrice > 0` directly. On 29 Sep 2026, of the rows with a raw
       house median, 4,719 came from the four trusted sales feeds and 12,973 from census proxies, rental feeds
@@ -296,9 +296,18 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       Cohort 1 verified in production: 55 pages, 2,037 rows, every median the published one, no change beyond 25%.
       Cohort 2, state pages, market reports and price guide, DONE 29 Sep 2026: lists, averages and counts over
       published medians; growth only where measured; days on market removed; each page names its source.
-      Cohort 3: suburb finder, search, schools pages, the listing page's suburb box, postcode pages and the city and
-      region rollups (those two apply the source rule but not the five-sale rule).
-      Before snapshot: docs/seo-baselines/2026-09-29/lists/before.csv.
+      Cohort 2 verified in production: 29 pages, 573 rows, every median the published one (after-reports.csv).
+      Cohort 3, every other reader, DONE 29 Sep 2026: postcode pages, city and region rollups (these three
+      applied the source rule but not the five-sale rule), search, the suburb finder, the listing page's suburb box
+      and the school comparison. A test finds every file that reads the Suburb table and names a sales column.
+      The finder leaves out of the score what it cannot measure and says so; where the top priority cannot be
+      measured (growth outside NSW and SA, yield outside VIC and QLD, hazard everywhere) it shows the reason in
+      place of matches. Counts before and after: docs/seo-baselines/2026-09-29/lists/remaining-readers-dry-run.md.
+      Left for a decision: city and region titles end "Median, Growth, Suburbs" where the page has no growth to
+      show (item 2); `GROWTH_SOURCES` is the one line to change if the hand-entered Moreton Bay growth figures are
+      wanted back.
+      Snapshots: docs/seo-baselines/2026-09-29/lists/ (before.csv, after-rankings.csv, after-reports.csv,
+      before-readers.csv).
 - [x] 48. [data] DONE 29 Sep 2026 for (a) and (b); (c) left to Jos (see the end of this item). Rows that are not places. Found 29 Sep 2026 while reading the pages item 39 was about to index.
       (i) 25 suburbs filed under SA with an interstate postcode, each beside the real suburb: "Sydney, SA 2000",
       "East Melbourne, SA 3002", "Broken Hill, SA 2880", "Townsville, SA 4810", "George Town, SA 7253". The SA crime
@@ -332,4 +341,18 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       index. Could break: both change what nine pages each show; before/after per page as for item 47.
       Also seen: the NSW sales feed keeps the old growth figure when it has no prior-year median to compare
       (`ELSE s."annualGrowthHouse"`), so a growth figure beside a NSW median can predate the feed.
+      (iii) The suburb finder's "Low natural-hazard risk" priority has the same empty table behind it. Since item
+      47 it says so in place of matches; the option is still offered. Loading a hazard feed fixes (ii) and (iii)
+      with no code change.
+- [ ] 50. [data] Suburbs filed under the wrong region. Found 29 Sep 2026 while counting the region rollups
+      (item 47). (i) 20 of the 499 region names hold suburbs from two or more states and the region page takes
+      them all, because it selects by name alone: "Bayside" is 17 Victorian and 36 New South Wales suburbs,
+      "Latrobe" 22 Victorian and 39 Tasmanian, "Laverton" 79 in the NT, 18 in SA and 13 in WA. (ii) Suburbs sit in
+      regions they are not part of: the "Armidale" page counts Glen Innes and Tingha and not Armidale,
+      "Alexandrina" counts Mylor and Heathfield in the Adelaide Hills. The region's median, its tables and its
+      title describe the wrong place. Change: (a) select a region by name and state (the page already knows
+      both); (b) audit the region column against the ABS locality to LGA correspondence and re-import where it
+      differs. Could break: (a) changes which suburbs 20 region pages list, and 20 names need a second page or a
+      state in the URL; (b) is a production write and moves suburbs between pages: dry run with counts first,
+      then an explicit go.
 

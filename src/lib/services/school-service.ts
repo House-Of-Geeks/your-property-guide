@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { publishedSales } from "@/lib/published-medians";
 import { makeSchoolSlug } from "@/lib/utils/school";
 export { makeSchoolSlug } from "@/lib/utils/school";
 
@@ -14,10 +15,24 @@ export async function getSchoolBySlug(slug: string) {
   const acaraId = parseAcaraId(slug);
   if (!acaraId) return null;
 
-  return db.school.findUnique({
+  const school = await db.school.findUnique({
     where: { acaraId },
-    include: { suburb: { select: { slug: true, name: true, state: true, postcode: true, medianHousePrice: true } } },
+    include: {
+      suburb: {
+        select: { slug: true, name: true, state: true, postcode: true, medianHousePrice: true, statsSource: true, salesCountHouse: true },
+      },
+    },
   });
+  if (!school) return null;
+  // The suburb's median as its own page publishes it (fix item 47); 0 prints a dash.
+  const { statsSource, salesCountHouse, ...suburb } = school.suburb;
+  return {
+    ...school,
+    suburb: {
+      ...suburb,
+      medianHousePrice: publishedSales({ medianHousePrice: suburb.medianHousePrice, statsSource, salesCountHouse }).medianHousePrice,
+    },
+  };
 }
 
 export async function getAllSchoolSlugs(): Promise<string[]> {
@@ -142,7 +157,7 @@ export async function getSchoolsByRegion(suburbSlugs: string[]): Promise<RegionS
   // Resolve suburb IDs from slugs
   const suburbs = await db.suburb.findMany({
     where: { slug: { in: suburbSlugs } },
-    select: { id: true, slug: true, name: true, state: true, medianHousePrice: true },
+    select: { id: true, slug: true, name: true, state: true, medianHousePrice: true, statsSource: true, salesCountHouse: true },
   });
 
   const suburbIds = suburbs.map((s) => s.id);
@@ -183,7 +198,7 @@ export async function getSchoolsByRegion(suburbSlugs: string[]): Promise<RegionS
         name: sub?.name ?? "",
         slug: sub?.slug ?? "",
         state: sub?.state ?? "",
-        medianHousePrice: sub?.medianHousePrice ?? 0,
+        medianHousePrice: sub ? publishedSales(sub).medianHousePrice : 0,
       },
     };
   });

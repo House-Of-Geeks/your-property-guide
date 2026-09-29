@@ -14,7 +14,7 @@ import {
 } from "@/lib/services/market-report-service";
 import { formatPrice, formatPriceFull } from "@/lib/utils/format";
 import { STATE_COMMENTARY } from "@/lib/data/state-commentary";
-import { priceSourceLine } from "@/lib/ranking-notes";
+import { priceSourceLine, stateRankingLink } from "@/lib/ranking-notes";
 
 const STATE_SLUGS = ["qld", "nsw", "vic", "wa", "sa", "tas", "nt", "act"] as const;
 type StateSlug = (typeof STATE_SLUGS)[number];
@@ -380,10 +380,10 @@ export default async function StateMarketReportPage({
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
-              href={`/best-suburbs/highest-growth/${state}`}
+              href={stateRankingLink(upperState).href}
               className="inline-flex items-center gap-2 border border-line bg-surface-raised text-ink px-5 py-3 rounded-lg text-sm font-sans font-medium hover:border-primary/40 hover:text-primary transition-colors"
             >
-              {upperState} growth ranking
+              {stateRankingLink(upperState).label}
             </Link>
           </div>
         </section>

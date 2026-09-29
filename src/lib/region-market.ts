@@ -28,6 +28,18 @@ export function regionDisplayName(region: string): string {
   return STRIP_GREATER.has(region) ? region.replace(/^Greater /, "") : region;
 }
 
+/**
+ * What a house-prices page goes on to list, for its description: growth is
+ * named only where the rollup holds a 12-month change (New South Wales and
+ * South Australia on 29 Sep 2026), so a description never promises a table
+ * the page does not print.
+ */
+export function rollupCovers(market: Pick<CityMarket, "medianAnnualGrowth" | "topGrowth">): string {
+  return market.medianAnnualGrowth != null || market.topGrowth.length > 0
+    ? "twelve-month growth, the fastest-rising and most affordable"
+    : "the most affordable and the highest-priced";
+}
+
 /** True when the rollup found at least one suburb with a verified median. */
 export function regionHasPrices(market: Pick<CityMarket, "medianHousePrice">): boolean {
   return market.medianHousePrice != null && market.medianHousePrice > 0;
@@ -53,7 +65,7 @@ export function regionDescription(
   year = REGION_MARKET_YEAR,
 ): string {
   if (regionHasPrices(market) && market.medianHousePrice) {
-    return `${name} house prices ${year}: the median house price in ${name} is ${formatPriceFull(market.medianHousePrice)}. Median house price by suburb for the busiest suburbs, twelve-month growth, the fastest-rising and most affordable suburbs in the ${name} region, ${state}, from verified sales data.`;
+    return `${name} house prices ${year}: the median house price in ${name} is ${formatPriceFull(market.medianHousePrice)}. Median house price by suburb for the busiest suburbs, ${rollupCovers(market)} suburbs in the ${name} region, ${state}, from verified sales data.`;
   }
   return `${name} property market ${year}: suburb profiles, prices where verified sales data exists, schools and listings across the ${suburbCount} suburbs of the ${name} region, ${state}.`;
 }

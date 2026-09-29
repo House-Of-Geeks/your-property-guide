@@ -15,6 +15,8 @@ import { topSuburbsForCity } from "@/lib/data/top-suburbs";
 import { buildCityNarrative } from "@/lib/city-narrative";
 import { HomeValueAppraisal } from "@/components/journey/HomeValueAppraisal";
 import { StatCard, SuburbTable } from "@/components/market/MarketTables";
+import { stateRankingLink } from "@/lib/ranking-notes";
+import { rollupCovers } from "@/lib/region-market";
 
 // City-level market pages targeting the "{city} property market" /
 // "{city} house prices" / "median house price {city}" query cluster —
@@ -52,7 +54,7 @@ export async function generateMetadata({
   const median = market.medianHousePrice
     ? `The median house price in ${city.name} is ${formatPriceFull(market.medianHousePrice)}. `
     : "";
-  const description = `${city.name} house prices ${CURRENT_YEAR}: ${median}Median house price by suburb for the twenty busiest suburbs, twelve-month growth, the fastest-rising and most affordable suburbs across Greater ${city.name}, from verified sales data.`;
+  const description = `${city.name} house prices ${CURRENT_YEAR}: ${median}Median house price by suburb for the twenty busiest suburbs, ${rollupCovers(market)} suburbs across Greater ${city.name}, from verified sales data.`;
 
   return {
     title,
@@ -306,10 +308,10 @@ export default async function CityMarketPage({
               {city.state} state market report
             </Link>
             <Link
-              href={`/best-suburbs/highest-growth/${stateSlug}`}
+              href={stateRankingLink(city.state).href}
               className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors"
             >
-              {city.state} growth ranking
+              {stateRankingLink(city.state).label}
             </Link>
             {CAPITAL_CITIES.filter((c) => c.slug !== city.slug).map((c) => (
               <Link
@@ -328,10 +330,12 @@ export default async function CityMarketPage({
           <p className="text-xs uppercase tracking-[0.25em] text-ink-subtle mb-2">Data source</p>
           <p className="leading-relaxed">
             Figures are aggregated from suburb-level medians sourced from state valuers-general,
-            state government sales records and the ABS. Only suburbs with a verified sales source
-            contribute to price figures ({market.pricedSuburbCount.toLocaleString()} of{" "}
-            {market.suburbCount.toLocaleString()} tracked Greater {city.name} suburbs). Growth
-            outliers from thin sales samples are excluded.{" "}
+            state government sales records and the ABS. Only suburbs whose own page publishes a
+            median contribute to price figures ({market.pricedSuburbCount.toLocaleString()} of{" "}
+            {market.suburbCount.toLocaleString()} tracked Greater {city.name}
+            {" suburbs): "}a verified sales source, and at least five recorded sales where the count is
+            reported. A 12-month change is shown where the state&rsquo;s sales feed measures one, and
+            left out beyond 25%.{" "}
             <Link
               href="/methodology#median-prices"
               className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"

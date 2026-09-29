@@ -56,7 +56,7 @@ export function buildCityNarrative(
         (top && top.annualGrowthHouse != null
           ? `: ${top.name} recorded ${pct(top.annualGrowthHouse)}, the fastest of the established suburbs with plausible growth data`
           : "") +
-        `. Suburbs with fewer than a handful of sales, where one transaction can swing the median, are left out of the growth figures.`,
+        `. A change beyond 25% in a year, the mark of a handful of sales, is left out of the growth figures.`,
     );
   }
 
@@ -85,7 +85,7 @@ export function buildCityNarrative(
   paras.push(
     `Source: suburb medians from the ${place.state} valuer-general or state sales records and the ABS, aggregated by Your Property Guide` +
       (asOf ? `, sales data last refreshed ${asOf}` : "") +
-      `; page generated ${now.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })}. Only the ${market.pricedSuburbCount.toLocaleString()} of ${market.suburbCount.toLocaleString()} tracked suburbs with a verified sales source contribute to price figures.`,
+      `; page generated ${now.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })}. Only the ${market.pricedSuburbCount.toLocaleString()} of ${market.suburbCount.toLocaleString()} tracked suburbs whose own page publishes a median contribute to price figures: a verified sales source, and at least five recorded sales where the count is reported.`,
   );
   return paras;
 }

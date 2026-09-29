@@ -1,17 +1,15 @@
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY } from "@/lib/non-localities";
-import {
-  isPlausibleAnnualGrowth,
-  isReliableSalesSource,
-} from "@/lib/suburb-data-quality";
+import { publishedGrowth, publishesMedians } from "@/lib/published-medians";
 import { type CapitalCity } from "@/lib/utils/metro";
 
 // City-level market rollups for the /property-market/{city} pages.
-// Aggregates the suburb dataset upward using the same trust gates the
-// suburb pages apply: only suburbs whose salesSource we trust contribute
-// to price figures, and implausible growth outliers are excluded. The
-// headline number is the MEDIAN of suburb medians — an average would let
-// one waterfront enclave (or one bad row) drag the figure.
+// Aggregates the suburb dataset upward using the rule the suburb pages
+// apply (src/lib/published-medians.ts): only suburbs whose own page
+// publishes a median contribute to price figures, and a 12-month change
+// counts only where the suburb's page prints one. The headline number is
+// the MEDIAN of suburb medians — an average would let one waterfront
+// enclave (or one bad row) drag the figure.
 
 export interface CityMarketSuburb {
   slug: string;
@@ -114,28 +112,33 @@ export async function getCityMarket(city: CapitalCity): Promise<CityMarket> {
 
 /** Pure rollup over the metro's suburb rows. */
 export function buildCityMarket(rows: CityMarketRow[]): CityMarket {
-  const priced = rows.filter(
-    (s) => isReliableSalesSource(s.statsSource) && s.medianHousePrice > 0,
-  );
+  // The suburbs whose own page publishes a median: a trusted source, and
+  // five recorded sales where the count is known. Until 29 Sep 2026 the
+  // five-sale floor was missing here, so a rollup counted, and its tables
+  // printed, a median of two sales that the suburb's own page withheld.
+  const priced = rows.filter((s) => publishesMedians(s) && s.medianHousePrice > 0);
 
   // A growth figure of exactly 0 is how the sales feeds store "no prior
   // period to compare", not a flat market; the suburb pages already treat
   // it as unknown (the snapshot prints growth only when it is non-zero),
   // so the rollup does the same rather than reporting a region as flat.
-  const knownGrowth = (g: number | null): g is number => isPlausibleAnnualGrowth(g) && g !== 0;
+  // publishedGrowth is the suburb page's rule: 0 for those, for a change
+  // beyond the plausibility clamp, and for a figure beside a feed that
+  // measures no change (left there by an earlier import).
+  const knownGrowth = (s: CityMarketRow): boolean => publishedGrowth(s) !== 0;
 
   const toCitySuburb = (s: (typeof priced)[number]): CityMarketSuburb => ({
     slug: s.slug,
     name: s.name,
     postcode: s.postcode,
     medianHousePrice: s.medianHousePrice,
-    annualGrowthHouse: knownGrowth(s.annualGrowthHouse) ? s.annualGrowthHouse : null,
+    annualGrowthHouse: knownGrowth(s) ? s.annualGrowthHouse : null,
     population: s.population,
     salesCountHouse: s.salesCountHouse ?? 0,
   });
 
   const growthEligible = priced.filter(
-    (s): s is CityMarketRow & { annualGrowthHouse: number } => knownGrowth(s.annualGrowthHouse),
+    (s): s is CityMarketRow & { annualGrowthHouse: number } => knownGrowth(s),
   );
 
   // Affordability/premium lists exclude micro-localities: a "suburb" of 40

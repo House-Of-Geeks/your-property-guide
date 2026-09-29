@@ -3,6 +3,7 @@ import { cache } from "react";
 import { buildCityMarket, type CityMarket, type CityMarketRow } from "@/lib/services/city-market-service";
 // Postal delivery names and institutions are not suburbs of a region.
 import { LOCALITIES_ONLY } from "@/lib/non-localities";
+import { withPublishedSales } from "@/lib/published-medians";
 
 // State-level values that are not real SA3 regions, filter these out
 const STATE_NAMES = new Set([
@@ -66,7 +67,7 @@ export async function getAllRegionSlugs(): Promise<string[]> {
 }
 
 export async function getRegionSuburbs(region: string) {
-  return db.suburb.findMany({
+  const rows = await db.suburb.findMany({
     where: { region, ...LOCALITIES_ONLY },
     select: {
       slug: true,
@@ -77,30 +78,19 @@ export async function getRegionSuburbs(region: string) {
       medianUnitPrice: true,
       annualGrowthHouse: true,
       statsSource: true,
+      salesCountHouse: true,
     },
     orderBy: { name: "asc" },
   });
+  // The figures each suburb's own page publishes, 0 where it publishes none
+  // (fix item 47). Until 29 Sep 2026 the raw columns left here and the page
+  // checked the source but not the five-sale floor.
+  return rows.map(withPublishedSales);
 }
 
-export async function getRegionStats(region: string) {
-  const suburbs = await db.suburb.findMany({
-    where: { region, ...LOCALITIES_ONLY },
-    select: { medianHousePrice: true, annualGrowthHouse: true },
-  });
-
-  const prices  = suburbs.map((s) => s.medianHousePrice).filter((p) => p > 0);
-  const growths = suburbs.map((s) => s.annualGrowthHouse).filter((g) => g != null) as number[];
-
-  return {
-    suburbCount: suburbs.length,
-    medianHousePrice: prices.length
-      ? Math.round(prices.reduce((a, b) => a + b, 0) / prices.length)
-      : null,
-    avgAnnualGrowth: growths.length
-      ? parseFloat((growths.reduce((a, b) => a + b, 0) / growths.length).toFixed(1))
-      : null,
-  };
-}
+// getRegionStats, an average of the raw median and growth columns with no
+// trust gate, was removed on 29 Sep 2026: no page had called it since the
+// region pages moved to getRegionMarket below.
 
 /**
  * The region's market rollup: the same gated median-of-medians, busiest,

@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { isPlausibleAnnualGrowth, isReliableSalesSource } from "@/lib/suburb-data-quality";
+import { publishedSales } from "@/lib/published-medians";
 // Postal delivery names, institutions and shopping-centre post offices share
 // postcodes with the suburbs around them but are not suburbs (LOCALITIES_ONLY).
 // The page lists them separately, as what they are (getPostalNamesByPostcode).
@@ -58,6 +58,7 @@ export async function getSuburbsByPostcode(postcode: string): Promise<PostcodeSu
       annualGrowthHouse: true,
       population: true,
       statsSource: true,
+      salesCountHouse: true,
       schools: {
         select: {
           name: true,
@@ -86,17 +87,18 @@ export async function getSuburbsByPostcode(postcode: string): Promise<PostcodeSu
       a.name.localeCompare(b.name),
   );
 
-  // Same trust gate the suburb pages apply in suburb-service.toSuburb():
-  // never surface the QLD/WA census-mortgage proxy or seed placeholders
-  // as if they were real medians.
-  return ordered.map(({ statsSource, ...s }) => {
-    const reliable = isReliableSalesSource(statsSource);
+  // The rule the suburb pages apply in suburb-service.toSuburb(), read from
+  // the same place (src/lib/published-medians.ts) and not copied: until
+  // 29 Sep 2026 this checked the source but not the five-sale floor, so a
+  // postcode page printed a median its suburb's own page withheld, and a
+  // 12-month change of 0.0% where the feed had no earlier year to compare.
+  return ordered.map(({ statsSource, salesCountHouse, ...s }) => {
+    const sales = publishedSales({ ...s, statsSource, salesCountHouse });
     return {
       ...s,
-      medianHousePrice: reliable ? s.medianHousePrice : 0,
-      medianUnitPrice: reliable ? s.medianUnitPrice : 0,
-      annualGrowthHouse:
-        reliable && isPlausibleAnnualGrowth(s.annualGrowthHouse) ? s.annualGrowthHouse : null,
+      medianHousePrice: sales.medianHousePrice,
+      medianUnitPrice: sales.medianUnitPrice,
+      annualGrowthHouse: sales.annualGrowthHouse !== 0 ? sales.annualGrowthHouse : null,
     };
   });
 }
@@ -149,19 +151,19 @@ export async function getPostcodeStats(postcode: string): Promise<PostcodeStats>
       annualGrowthHouse: true,
       population: true,
       statsSource: true,
+      salesCountHouse: true,
       _count: { select: { schools: true } },
     },
   });
 
-  // Only average price data from suburbs whose sales source passes the
-  // trust gate — an average that mixes census-proxy fiction (sales-qld/wa,
-  // seed) with real medians ends up in SERP meta descriptions as fact.
-  const priced = suburbs.filter((s) => isReliableSalesSource(s.statsSource));
-  const prices = priced.map((s) => s.medianHousePrice).filter((p) => p > 0);
-  const unitPrices = priced.map((s) => s.medianUnitPrice).filter((p) => p > 0);
-  const growths = priced
-    .map((s) => s.annualGrowthHouse)
-    .filter((g) => isPlausibleAnnualGrowth(g)) as number[];
+  // Only average the figures the suburb pages publish: an average that mixes
+  // census-proxy fiction (sales-qld/wa, seed) or a median of three sales with
+  // real medians ends up in SERP meta descriptions as fact. A change of 0 is
+  // "no earlier year to compare", not a flat year, and is left out.
+  const published = suburbs.map(publishedSales);
+  const prices = published.map((s) => s.medianHousePrice).filter((p) => p > 0);
+  const unitPrices = published.map((s) => s.medianUnitPrice).filter((p) => p > 0);
+  const growths = published.map((s) => s.annualGrowthHouse).filter((g) => g !== 0);
 
   return {
     avgMedianHousePrice: prices.length

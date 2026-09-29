@@ -6,7 +6,7 @@ import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { ExpertCTA, BUYING_GUIDE_CTA } from "@/components/journey";
 import {
-  findMatchingSuburbs,
+  findSuburbMatches,
   priorityLabel,
   type Priority,
   type BudgetTier,
@@ -99,7 +99,13 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
     ? { priority, budget, stage, state }
     : null;
 
-  const matches = answers ? await findMatchingSuburbs(answers, 6) : [];
+  // Matches are scored on what each suburb's own page publishes (fix item
+  // 47). `unmeasured` is set when the top priority has no figure for any
+  // suburb in the search: there is then nothing to rank, and the page says why.
+  const result = answers ? await findSuburbMatches(answers, 6) : null;
+  const matches = result?.matches ?? [];
+  const unmeasured = result?.unmeasured ?? null;
+  const notes = result?.notes ?? [];
 
   return (
     <>
@@ -129,8 +135,8 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             Tell us what matters most, your budget, and your lifestyle stage.
-            We&rsquo;ll score every Australian suburb against your priorities
-            and surface the top six matches.
+            We&rsquo;ll score every suburb with a published median price
+            against your priorities and surface the top six matches.
           </p>
         </div>
       </section>
@@ -281,24 +287,32 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
                 Your matches
               </p>
               <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-3">
-                {matches.length === 0 ? (
+                {unmeasured ? (
+                  <>Nothing to rank on {priorityLabel(answers.priority).toLowerCase()} yet.</>
+                ) : matches.length === 0 ? (
                   <>No strong matches found.</>
                 ) : (
                   <>Top {matches.length} suburbs for <span className="italic text-primary">{priorityLabel(answers.priority).toLowerCase()}</span>.</>
                 )}
               </h2>
-              <p className="font-sans text-base text-ink-muted leading-relaxed">
-                Scored across budget, your priority, and your stage. Click any
-                suburb to see the full profile, comparable sales, schools and
-                hazard data.
-              </p>
+              {matches.length > 0 && (
+                <p className="font-sans text-base text-ink-muted leading-relaxed">
+                  Scored across budget, your priority, and your stage, on the
+                  figures each suburb&rsquo;s own page publishes. Click any
+                  suburb to see its full profile.
+                </p>
+              )}
             </div>
 
             {matches.length === 0 ? (
               <div className="rounded-2xl border border-line bg-surface-raised p-8 text-center">
-                <p className="font-sans text-ink-muted">
-                  No suburbs matched. Try widening your budget or selecting
-                  &ldquo;any state&rdquo;.
+                <p className="font-sans text-ink-muted max-w-2xl mx-auto leading-relaxed">
+                  {unmeasured ?? (
+                    <>
+                      No suburbs matched. Try widening your budget or selecting
+                      &ldquo;any state&rdquo;.
+                    </>
+                  )}
                 </p>
               </div>
             ) : (
@@ -338,19 +352,27 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
                       </ul>
                     )}
 
-                    <div className="mt-5 pt-5 border-t border-line grid grid-cols-3 gap-3">
+                    {/* items-end: a label that wraps in a narrow card must not push its figure off the row */}
+                    <div className="mt-5 pt-5 border-t border-line grid grid-cols-3 gap-3 items-end">
                       <div>
-                        <p className="text-[10px] font-sans uppercase tracking-wider text-ink-subtle">Median</p>
+                        <p className="text-[10px] font-sans uppercase tracking-wider text-ink-subtle">
+                          {m.medianBasis === "area" ? "Area median" : "Median"}
+                        </p>
                         <p className="font-display text-sm text-ink">
                           {m.medianHousePrice > 0 ? formatPrice(m.medianHousePrice) : "–"}
                         </p>
                       </div>
                       <div>
-                        <p className="text-[10px] font-sans uppercase tracking-wider text-ink-subtle">Growth</p>
-                        <p className={`font-display text-sm ${m.annualGrowthHouse >= 0 ? "text-emerald-700" : "text-red-700"}`}>
-                          {m.annualGrowthHouse >= 0 ? "+" : ""}
-                          {m.annualGrowthHouse.toFixed(1)}%
-                        </p>
+                        <p className="text-[10px] font-sans uppercase tracking-wider text-ink-subtle">12-month change</p>
+                        {/* 0 is "none published", not a flat year */}
+                        {m.annualGrowthHouse !== 0 ? (
+                          <p className={`font-display text-sm ${m.annualGrowthHouse > 0 ? "text-emerald-700" : "text-red-700"}`}>
+                            {m.annualGrowthHouse > 0 ? "+" : ""}
+                            {m.annualGrowthHouse.toFixed(1)}%
+                          </p>
+                        ) : (
+                          <p className="font-display text-sm text-ink">–</p>
+                        )}
                       </div>
                       <div>
                         <p className="text-[10px] font-sans uppercase tracking-wider text-ink-subtle">Yield</p>
@@ -364,6 +386,16 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
                       See profile →
                     </p>
                   </Link>
+                ))}
+              </div>
+            )}
+
+            {matches.length > 0 && notes.length > 0 && (
+              <div className="mt-8 max-w-3xl space-y-2">
+                {notes.map((n) => (
+                  <p key={n} className="font-sans text-sm text-ink-subtle leading-relaxed">
+                    {n}
+                  </p>
                 ))}
               </div>
             )}
@@ -406,18 +438,18 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
               {[
                 {
                   num: "01",
-                  title: "Score every suburb",
-                  body: "We pull median price, annual growth, ICSEA school scores, walk score, gross yield and hazard data for thousands of Australian suburbs.",
+                  title: "Score every suburb with a published median",
+                  body: "We read the median price each suburb's own page publishes, its 12-month change and gross yield where they are measured, ICSEA school scores, walk score and hazard records.",
                 },
                 {
                   num: "02",
                   title: "Weight to your priority",
-                  body: "Your top priority gets 40% of the weight; budget always gets at least 20%; safety is baked in. Stage tweaks the secondary mix.",
+                  body: "Your top priority gets 40% of the weight; budget always gets at least 20%. Stage tweaks the secondary mix. A measure we hold nothing on is left out of the score, and the results say so.",
                 },
                 {
                   num: "03",
                   title: "Surface the top six",
-                  body: "We rank, dedupe by population (so we don't surface tiny localities), and show why each suburb scored where it did.",
+                  body: "We rank, leave out localities of 500 residents or fewer, and show why each suburb scored where it did.",
                 },
               ].map((s) => (
                 <div

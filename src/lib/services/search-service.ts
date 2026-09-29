@@ -1,4 +1,5 @@
 import { NON_LOCALITY_SLUGS } from "@/lib/non-localities";
+import { publishedSales } from "@/lib/published-medians";
 import { db } from "@/lib/db";
 import { GLOSSARY_TERMS, type GlossaryTerm } from "@/lib/data/glossary";
 import { makeSchoolSlug } from "@/lib/utils/school";
@@ -138,6 +139,8 @@ export async function unifiedSearch(query: string): Promise<SearchResults> {
       state: true,
       postcode: true,
       medianHousePrice: true,
+      statsSource: true,
+      salesCountHouse: true,
     },
     orderBy: { name: "asc" },
     take: 12,
@@ -170,7 +173,8 @@ export async function unifiedSearch(query: string): Promise<SearchResults> {
     name: s.name,
     state: s.state,
     postcode: s.postcode,
-    medianHousePrice: s.medianHousePrice,
+    // The median the suburb's own page publishes; 0 prints nothing.
+    medianHousePrice: publishedSales(s).medianHousePrice,
   }));
 
   const schools: SearchResultSchool[] = schoolsRaw

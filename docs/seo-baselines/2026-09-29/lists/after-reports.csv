@@ -1,0 +1,574 @@
+page,robots,position,suburb,printed
+/price-guide,,1,bradfield-nsw-2556,Bradfield | NSW | 2556 | $12M | $343K | +25.0%
+/price-guide,,2,bellevue-hill-nsw-2023,Bellevue Hill | NSW | 2023 | $11M | $1.6M | +8.7%
+/price-guide,,3,watsons-bay-nsw-2030,Watsons Bay | NSW | 2030 | $9.6M | $685K | -
+/price-guide,,4,centennial-park-nsw-2021,Centennial Park | NSW | 2021 | $9.5M | $610K | -
+/price-guide,,5,vaucluse-nsw-2030,Vaucluse | NSW | 2030 | $8.9M | $685K | +9.5%
+/price-guide,,6,darling-point-nsw-2027,Darling Point | NSW | 2027 | $8.1M | $554K | -
+/price-guide,,7,dover-heights-nsw-2030,Dover Heights | NSW | 2030 | $7.4M | $1.5M | +6.7%
+/price-guide,,8,double-bay-nsw-2028,Double Bay | NSW | 2028 | $7.3M | $475K | +10.0%
+/price-guide,,9,tamarama-nsw-2026,Tamarama | NSW | 2026 | $7.1M | $539K | -18.9%
+/price-guide,,10,queenscliff-nsw-2096,Queenscliff | NSW | 2096 | $6.7M | $508K | -
+/price-guide,,11,waverton-nsw-2060,Waverton | NSW | 2060 | $6.2M | $475K | -
+/price-guide,,12,clontarf-nsw-2093,Clontarf | NSW | 2093 | $6.2M | $549K | -
+/price-guide,,13,longueville-nsw-2066,Longueville | NSW | 2066 | $6.1M | $475K | +19.4%
+/price-guide,,14,cremorne-point-nsw-2090,Cremorne Point | NSW | 2090 | $6.0M | $500K | +9.1%
+/price-guide,,15,henley-nsw-2111,Henley | NSW | 2111 | $5.9M | $475K | +3.5%
+/price-guide,,16,bronte-nsw-2024,Bronte | NSW | 2024 | $5.8M | $618K | -1.2%
+/price-guide,,17,ingleside-nsw-2101,Ingleside | NSW | 2101 | $5.7M | $475K | -
+/price-guide,,18,mosman-nsw-2088,Mosman | NSW | 2088 | $5.5M | $613K | -2.3%
+/price-guide,,19,wollstonecraft-nsw-2065,Wollstonecraft | NSW | 2065 | $5.4M | $475K | -
+/price-guide,,20,whale-beach-nsw-2107,Whale Beach | NSW | 2107 | $5.3M | $522K | -1.4%
+/price-guide,,21,northbridge-nsw-2063,Northbridge | NSW | 2063 | $5.3M | $737K | -0.8%
+/price-guide,,22,woollahra-nsw-2025,Woollahra | NSW | 2025 | $5.3M | $1.4M | +24.7%
+/price-guide,,23,palm-beach-nsw-2108,Palm Beach | NSW | 2108 | $5.2M | $593K | -2.3%
+/price-guide,,24,clovelly-nsw-2031,Clovelly | NSW | 2031 | $5.2M | $501K | +13.7%
+/price-guide,,25,balgowlah-heights-nsw-2093,Balgowlah Heights | NSW | 2093 | $5.0M | $549K | -
+/price-guide,,26,rossmore-nsw-2557,Rossmore | NSW | 2557 | $5M | $412K | +3.4%
+/price-guide,,27,toorak-vic-3142,Toorak | VIC | 3142 | $5M | $950K | -
+/price-guide,,28,forrest-act-2603,Forrest | ACT | 2603 | $5M | $849K | -
+/price-guide,,29,coogee-nsw-2034,Coogee | NSW | 2034 | $4.9M | $539K | +3.2%
+/price-guide,,30,tennyson-point-nsw-2111,Tennyson Point | NSW | 2111 | $4.9M | $475K | +20.4%
+/price-guide?sort=price-asc,,1,meekatharra-wa-6642,Meekatharra | WA | 6642 | $61K | $103K | -
+/price-guide?sort=price-asc,,2,nyah-west-vic-3595,Nyah West | VIC | 3595 | $70K | $103K | -
+/price-guide?sort=price-asc,,3,mukinbudin-wa-6479,Mukinbudin | WA | 6479 | $98K | $120K | -
+/price-guide?sort=price-asc,,4,balldale-nsw-2646,Balldale | NSW | 2646 | $100K | $189K | -
+/price-guide?sort=price-asc,,5,collarenebri-nsw-2833,Collarenebri | NSW | 2833 | $105K | $120K | -16.0%
+/price-guide?sort=price-asc,,6,hay-south-nsw-2711,Hay South | NSW | 2711 | $105K | $140K | -17.3%
+/price-guide?sort=price-asc,,7,tottenham-nsw-2873,Tottenham | NSW | 2873 | $120K | $129K | +20.0%
+/price-guide?sort=price-asc,,8,brewarrina-nsw-2839,Brewarrina | NSW | 2839 | $130K | $116K | -
+/price-guide?sort=price-asc,,9,jeparit-vic-3423,Jeparit | VIC | 3423 | $149K | $68K | -
+/price-guide?sort=price-asc,,10,pooncarie-nsw-2648,Pooncarie | NSW | 2648 | $150K | $144K | -
+/price-guide?sort=price-asc,,11,sunset-strip-nsw-2879,Sunset Strip | NSW | 2879 | $153K | $103K | -
+/price-guide?sort=price-asc,,12,hopetoun-vic-3396,Hopetoun | VIC | 3396 | $155K | $103K | -
+/price-guide?sort=price-asc,,13,morawa-wa-6623,Morawa | WA | 6623 | $160K | $190K | -
+/price-guide?sort=price-asc,,14,ravenswood-nsw-2824,Ravenswood | NSW | 2824 | $161K | $166K | -2.4%
+/price-guide?sort=price-asc,,15,carpentaria-qld-4823,Carpentaria | QLD | 4823 | $163K | $87K | -
+/price-guide?sort=price-asc,,16,charleville-qld-4470,Charleville | QLD | 4470 | $164K | $139K | -
+/price-guide?sort=price-asc,,17,binnaway-nsw-2395,Binnaway | NSW | 2395 | $165K | $97K | -19.5%
+/price-guide?sort=price-asc,,18,kulin-wa-6365,Kulin | WA | 6365 | $165K | $95K | -
+/price-guide?sort=price-asc,,19,menindee-nsw-2879,Menindee | NSW | 2879 | $169K | $103K | +17.4%
+/price-guide?sort=price-asc,,20,bendick-murrell-nsw-2803,Bendick Murrell | NSW | 2803 | $169K | $189K | -
+/price-guide?sort=price-asc,,21,collinsville-qld-4804,Collinsville | QLD | 4804 | $170K | $158K | -
+/price-guide?sort=price-asc,,22,cunderdin-wa-6407,Cunderdin | WA | 6407 | $170K | $192K | -
+/price-guide?sort=price-asc,,23,bigga-nsw-2583,Bigga | NSW | 2583 | $170K | $206K | -
+/price-guide?sort=price-asc,,24,ungarie-nsw-2669,Ungarie | NSW | 2669 | $170K | $82K | +19.3%
+/price-guide?sort=price-asc,,25,murtoa-vic-3390,Murtoa | VIC | 3390 | $175K | $111K | -
+/price-guide?sort=price-asc,,26,ardlethan-nsw-2665,Ardlethan | NSW | 2665 | $179K | $111K | -
+/price-guide?sort=price-asc,,27,minyip-vic-3392,Minyip | VIC | 3392 | $180K | $86K | -
+/price-guide?sort=price-asc,,28,dareton-nsw-2717,Dareton | NSW | 2717 | $180K | $171K | -2.7%
+/price-guide?sort=price-asc,,29,tara-qld-4421,Tara | QLD | 4421 | $180K | $124K | -
+/price-guide?sort=price-asc,,30,dowerin-wa-6461,Dowerin | WA | 6461 | $181K | $107K | -
+/price-guide?sort=growth-desc,,1,bradfield-nsw-2556,Bradfield | NSW | 2556 | $12M | $343K | +25.0%
+/price-guide?sort=growth-desc,,2,mulbring-nsw-2323,Mulbring | NSW | 2323 | $1.4M | $274K | +25.0%
+/price-guide?sort=growth-desc,,3,church-point-nsw-2105,Church Point | NSW | 2105 | $3.9M | $475K | +25.0%
+/price-guide?sort=growth-desc,,4,bellevue-heights-sa-5050,Bellevue Heights | SA | 5050 | $1.2M | $285K | +24.9%
+/price-guide?sort=growth-desc,,5,kearsley-nsw-2325,Kearsley | NSW | 2325 | $730K | $243K | +24.8%
+/price-guide?sort=growth-desc,,6,woollahra-nsw-2025,Woollahra | NSW | 2025 | $5.3M | $1.4M | +24.7%
+/price-guide?sort=growth-desc,,7,coromandel-valley-sa-5051,Coromandel Valley | SA | 5051 | $1.2M | $309K | +24.7%
+/price-guide?sort=growth-desc,,8,claremont-meadows-nsw-2747,Claremont Meadows | NSW | 2747 | $1.3M | $348K | +24.6%
+/price-guide?sort=growth-desc,,9,pokolbin-nsw-2320,Pokolbin | NSW | 2320 | $1.9M | $293K | +24.6%
+/price-guide?sort=growth-desc,,10,binalong-nsw-2584,Binalong | NSW | 2584 | $582K | $206K | +24.5%
+/price-guide?sort=growth-desc,,11,clifton-grove-nsw-2800,Clifton Grove | NSW | 2800 | $1.5M | $274K | +24.5%
+/price-guide?sort=growth-desc,,12,taren-point-nsw-2229,Taren Point | NSW | 2229 | $2.3M | $475K | +24.2%
+/price-guide?sort=growth-desc,,13,athelstone-sa-5076,Athelstone | SA | 5076 | $1.1M | $274K | +24.2%
+/price-guide?sort=growth-desc,,14,gilgandra-nsw-2827,Gilgandra | NSW | 2827 | $335K | $171K | +24.1%
+/price-guide?sort=growth-desc,,15,picton-nsw-2571,Picton | NSW | 2571 | $1.2M | $380K | +24.1%
+/price-guide?sort=growth-desc,,16,linley-point-nsw-2066,Linley Point | NSW | 2066 | $4.3M | $475K | +23.9%
+/price-guide?sort=growth-desc,,17,lilli-pilli-nsw-2229,Lilli Pilli | NSW | 2229 | $3.4M | $475K | +23.9%
+/price-guide?sort=growth-desc,,18,badagarang-nsw-2540,Badagarang | NSW | 2540 | $570K | $274K | +23.9%
+/price-guide?sort=growth-desc,,19,willunga-sa-5172,Willunga | SA | 5172 | $1.2M | $274K | +23.8%
+/price-guide?sort=growth-desc,,20,lightning-ridge-nsw-2834,Lightning Ridge | NSW | 2834 | $195K | $138K | +23.8%
+/price-guide?sort=growth-desc,,21,darlington-nsw-2330,Darlington | NSW | 2330 | $770K | $288K | +23.7%
+/price-guide?sort=growth-desc,,22,west-beach-sa-5024,West Beach | SA | 5024 | $1.8M | $317K | +23.6%
+/price-guide?sort=growth-desc,,23,carss-park-nsw-2221,Carss Park | NSW | 2221 | $2.5M | $475K | +23.6%
+/price-guide?sort=growth-desc,,24,bemboka-nsw-2550,Bemboka | NSW | 2550 | $620K | $225K | +23.5%
+/price-guide?sort=growth-desc,,25,hackham-west-sa-5163,Hackham West | SA | 5163 | $785K | $206K | +23.4%
+/price-guide?sort=growth-desc,,26,coraki-nsw-2471,Coraki | NSW | 2471 | $475K | $240K | +23.4%
+/price-guide?sort=growth-desc,,27,springdale-heights-nsw-2641,Springdale Heights | NSW | 2641 | $621K | $206K | +23.3%
+/price-guide?sort=growth-desc,,28,hillcrest-sa-5086,Hillcrest | SA | 5086 | $989K | $258K | +23.2%
+/price-guide?sort=growth-desc,,29,whitebridge-nsw-2290,Whitebridge | NSW | 2290 | $1.3M | $315K | +23.2%
+/price-guide?sort=growth-desc,,30,blakehurst-nsw-2221,Blakehurst | NSW | 2221 | $2.7M | $475K | +23.1%
+/price-guide?state=NSW,,1,bradfield-nsw-2556,Bradfield | NSW | 2556 | $12M | $343K | +25.0%
+/price-guide?state=NSW,,2,bellevue-hill-nsw-2023,Bellevue Hill | NSW | 2023 | $11M | $1.6M | +8.7%
+/price-guide?state=NSW,,3,watsons-bay-nsw-2030,Watsons Bay | NSW | 2030 | $9.6M | $685K | -
+/price-guide?state=NSW,,4,centennial-park-nsw-2021,Centennial Park | NSW | 2021 | $9.5M | $610K | -
+/price-guide?state=NSW,,5,vaucluse-nsw-2030,Vaucluse | NSW | 2030 | $8.9M | $685K | +9.5%
+/price-guide?state=NSW,,6,darling-point-nsw-2027,Darling Point | NSW | 2027 | $8.1M | $554K | -
+/price-guide?state=NSW,,7,dover-heights-nsw-2030,Dover Heights | NSW | 2030 | $7.4M | $1.5M | +6.7%
+/price-guide?state=NSW,,8,double-bay-nsw-2028,Double Bay | NSW | 2028 | $7.3M | $475K | +10.0%
+/price-guide?state=NSW,,9,tamarama-nsw-2026,Tamarama | NSW | 2026 | $7.1M | $539K | -18.9%
+/price-guide?state=NSW,,10,queenscliff-nsw-2096,Queenscliff | NSW | 2096 | $6.7M | $508K | -
+/price-guide?state=NSW,,11,waverton-nsw-2060,Waverton | NSW | 2060 | $6.2M | $475K | -
+/price-guide?state=NSW,,12,clontarf-nsw-2093,Clontarf | NSW | 2093 | $6.2M | $549K | -
+/price-guide?state=NSW,,13,longueville-nsw-2066,Longueville | NSW | 2066 | $6.1M | $475K | +19.4%
+/price-guide?state=NSW,,14,cremorne-point-nsw-2090,Cremorne Point | NSW | 2090 | $6.0M | $500K | +9.1%
+/price-guide?state=NSW,,15,henley-nsw-2111,Henley | NSW | 2111 | $5.9M | $475K | +3.5%
+/price-guide?state=NSW,,16,bronte-nsw-2024,Bronte | NSW | 2024 | $5.8M | $618K | -1.2%
+/price-guide?state=NSW,,17,ingleside-nsw-2101,Ingleside | NSW | 2101 | $5.7M | $475K | -
+/price-guide?state=NSW,,18,mosman-nsw-2088,Mosman | NSW | 2088 | $5.5M | $613K | -2.3%
+/price-guide?state=NSW,,19,wollstonecraft-nsw-2065,Wollstonecraft | NSW | 2065 | $5.4M | $475K | -
+/price-guide?state=NSW,,20,whale-beach-nsw-2107,Whale Beach | NSW | 2107 | $5.3M | $522K | -1.4%
+/price-guide?state=NSW,,21,northbridge-nsw-2063,Northbridge | NSW | 2063 | $5.3M | $737K | -0.8%
+/price-guide?state=NSW,,22,woollahra-nsw-2025,Woollahra | NSW | 2025 | $5.3M | $1.4M | +24.7%
+/price-guide?state=NSW,,23,palm-beach-nsw-2108,Palm Beach | NSW | 2108 | $5.2M | $593K | -2.3%
+/price-guide?state=NSW,,24,clovelly-nsw-2031,Clovelly | NSW | 2031 | $5.2M | $501K | +13.7%
+/price-guide?state=NSW,,25,balgowlah-heights-nsw-2093,Balgowlah Heights | NSW | 2093 | $5.0M | $549K | -
+/price-guide?state=NSW,,26,rossmore-nsw-2557,Rossmore | NSW | 2557 | $5M | $412K | +3.4%
+/price-guide?state=NSW,,27,coogee-nsw-2034,Coogee | NSW | 2034 | $4.9M | $539K | +3.2%
+/price-guide?state=NSW,,28,tennyson-point-nsw-2111,Tennyson Point | NSW | 2111 | $4.9M | $475K | +20.4%
+/price-guide?state=NSW,,29,rose-bay-nsw-2029,Rose Bay | NSW | 2029 | $4.9M | $515K | -
+/price-guide?state=NSW,,30,kirribilli-nsw-2061,Kirribilli | NSW | 2061 | $4.8M | $475K | -
+/price-guide?state=VIC,,1,toorak-vic-3142,Toorak | VIC | 3142 | $5M | $950K | -
+/price-guide?state=VIC,,2,brighton-vic-3186,Brighton | VIC | 3186 | $3.5M | $1.1M | -
+/price-guide?state=VIC,,3,canterbury-vic-3126,Canterbury | VIC | 3126 | $3.5M | $1.3M | -
+/price-guide?state=VIC,,4,deepdene-vic-3103,Deepdene | VIC | 3103 | $3.5M | $475K | -
+/price-guide?state=VIC,,5,mont-albert-vic-3127,Mont Albert | VIC | 3127 | $3.2M | $731K | -
+/price-guide?state=VIC,,6,balwyn-vic-3103,Balwyn | VIC | 3103 | $3.1M | $790K | -
+/price-guide?state=VIC,,7,portsea-vic-3944,Portsea | VIC | 3944 | $2.8M | $444K | -
+/price-guide?state=VIC,,8,kew-vic-3101,Kew | VIC | 3101 | $2.8M | $861K | -
+/price-guide?state=VIC,,9,ivanhoe-east-vic-3079,Ivanhoe East | VIC | 3079 | $2.7M | $874K | -
+/price-guide?state=VIC,,10,glen-iris-vic-3146,Glen Iris | VIC | 3146 | $2.7M | $648K | -
+/price-guide?state=VIC,,11,hawthorn-vic-3122,Hawthorn | VIC | 3122 | $2.7M | $536K | -
+/price-guide?state=VIC,,12,caulfield-vic-3162,Caulfield | VIC | 3162 | $2.7M | $752K | -
+/price-guide?state=VIC,,13,hawthorn-east-vic-3123,Hawthorn East | VIC | 3123 | $2.5M | $590K | -
+/price-guide?state=VIC,,14,malvern-vic-3144,Malvern | VIC | 3144 | $2.5M | $625K | -
+/price-guide?state=VIC,,15,malvern-vic-3143,Malvern | VIC | 3143 | $2.5M | $625K | -
+/price-guide?state=VIC,,16,camberwell-vic-3124,Camberwell | VIC | 3124 | $2.5M | $900K | -
+/price-guide?state=VIC,,17,malvern-east-vic-3145,Malvern East | VIC | 3145 | $2.4M | $541K | -
+/price-guide?state=VIC,,18,east-melbourne-vic-3002,East Melbourne | VIC | 3002 | $2.4M | $610K | -
+/price-guide?state=VIC,,19,middle-park-vic-3206,Middle Park | VIC | 3206 | $2.4M | $954K | -
+/price-guide?state=VIC,,20,elwood-vic-3184,Elwood | VIC | 3184 | $2.3M | $620K | -
+/price-guide?state=VIC,,21,st-kilda-west-vic-3182,St Kilda West | VIC | 3182 | $2.3M | $573K | -
+/price-guide?state=VIC,,22,caulfield-north-vic-3161,Caulfield North | VIC | 3161 | $2.3M | $608K | -
+/price-guide?state=VIC,,23,black-rock-vic-3193,Black Rock | VIC | 3193 | $2.3M | $1.2M | -
+/price-guide?state=VIC,,24,surrey-hills-vic-3127,Surrey Hills | VIC | 3127 | $2.3M | $1.1M | -
+/price-guide?state=VIC,,25,hampton-vic-3188,Hampton | VIC | 3188 | $2.2M | $950K | -
+/price-guide?state=VIC,,26,connewarre-vic-3227,Connewarre | VIC | 3227 | $2.2M | $356K | -
+/price-guide?state=VIC,,27,beaumaris-vic-3192,Beaumaris | VIC | 3192 | $2.1M | $1.1M | -
+/price-guide?state=VIC,,28,beaumaris-vic-3193,Beaumaris | VIC | 3193 | $2.1M | $1.1M | -
+/price-guide?state=VIC,,29,eaglemont-vic-3084,Eaglemont | VIC | 3084 | $2.1M | $608K | -
+/price-guide?state=VIC,,30,sandringham-vic-3191,Sandringham | VIC | 3191 | $2.1M | $706K | -
+/price-guide?state=QLD,,1,new-farm-qld-4005,New Farm | QLD | 4005 | $2.9M | $820K | -
+/price-guide?state=QLD,,2,clayfield-qld-4011,Clayfield | QLD | 4011 | $2.2M | $570K | -
+/price-guide?state=QLD,,3,hawthorne-qld-4171,Hawthorne | QLD | 4171 | $2.1M | $757K | -
+/price-guide?state=QLD,,4,broadbeach-waters-qld-4218,Broadbeach Waters | QLD | 4218 | $2.1M | $842K | -
+/price-guide?state=QLD,,5,bundall-qld-4217,Bundall | QLD | 4217 | $2.1M | $587K | -
+/price-guide?state=QLD,,6,robertson-qld-4109,Robertson | QLD | 4109 | $2.0M | $606K | -
+/price-guide?state=QLD,,7,st-lucia-qld-4067,St Lucia | QLD | 4067 | $2.0M | $625K | -
+/price-guide?state=QLD,,8,noosa-heads-qld-4567,Noosa Heads | QLD | 4567 | $2.0M | $1.9M | -
+/price-guide?state=QLD,,9,burleigh-heads-qld-4220,Burleigh Heads | QLD | 4220 | $2.0M | $996K | -
+/price-guide?state=QLD,,10,bulimba-qld-4171,Bulimba | QLD | 4171 | $1.9M | $818K | -
+/price-guide?state=QLD,,11,sunshine-beach-qld-4567,Sunshine Beach | QLD | 4567 | $1.9M | $1.1M | -
+/price-guide?state=QLD,,12,south-brisbane-qld-4101,South Brisbane | QLD | 4101 | $1.9M | $590K | -
+/price-guide?state=QLD,,13,clear-island-waters-qld-4226,Clear Island Waters | QLD | 4226 | $1.9M | $813K | -
+/price-guide?state=QLD,,14,balmoral-qld-4171,Balmoral | QLD | 4171 | $1.9M | $710K | -
+/price-guide?state=QLD,,15,wilston-qld-4051,Wilston | QLD | 4051 | $1.9M | $530K | -
+/price-guide?state=QLD,,16,coolangatta-qld-4225,Coolangatta | QLD | 4225 | $1.9M | $1.1M | -
+/price-guide?state=QLD,,17,noosaville-qld-4566,Noosaville | QLD | 4566 | $1.8M | $881K | -
+/price-guide?state=QLD,,18,fig-tree-pocket-qld-4069,Fig Tree Pocket | QLD | 4069 | $1.8M | $396K | -
+/price-guide?state=QLD,,19,highgate-hill-qld-4101,Highgate Hill | QLD | 4101 | $1.8M | $702K | -
+/price-guide?state=QLD,,20,mermaid-waters-qld-4218,Mermaid Waters | QLD | 4218 | $1.8M | $800K | -
+/price-guide?state=QLD,,21,benowa-qld-4217,Benowa | QLD | 4217 | $1.8M | $870K | -
+/price-guide?state=QLD,,22,grange-qld-4051,Grange | QLD | 4051 | $1.7M | $830K | -
+/price-guide?state=QLD,,23,bardon-qld-4065,Bardon | QLD | 4065 | $1.7M | $941K | -
+/price-guide?state=QLD,,24,hendra-qld-4011,Hendra | QLD | 4011 | $1.7M | $838K | -
+/price-guide?state=QLD,,25,palm-beach-qld-4221,Palm Beach | QLD | 4221 | $1.7M | $968K | -
+/price-guide?state=QLD,,26,ashgrove-qld-4060,Ashgrove | QLD | 4060 | $1.7M | $690K | -
+/price-guide?state=QLD,,27,coorparoo-qld-4151,Coorparoo | QLD | 4151 | $1.7M | $615K | -
+/price-guide?state=QLD,,28,runaway-bay-qld-4216,Runaway Bay | QLD | 4216 | $1.7M | $840K | -
+/price-guide?state=QLD,,29,kangaroo-point-qld-4169,Kangaroo Point | QLD | 4169 | $1.6M | $680K | -
+/price-guide?state=QLD,,30,taringa-qld-4068,Taringa | QLD | 4068 | $1.6M | $629K | -
+/price-guide?state=WA,,1,cottesloe-wa-6011,Cottesloe | WA | 6011 | $3.4M | $1.2M | -
+/price-guide?state=WA,,2,city-beach-wa-6015,City Beach | WA | 6015 | $2.8M | $1.3M | -
+/price-guide?state=WA,,3,floreat-wa-6014,Floreat | WA | 6014 | $1.9M | $785K | -
+/price-guide?state=WA,,4,east-fremantle-wa-6158,East Fremantle | WA | 6158 | $1.8M | $578K | -
+/price-guide?state=WA,,5,north-coogee-wa-6163,North Coogee | WA | 6163 | $1.6M | $575K | -
+/price-guide?state=WA,,6,winthrop-wa-6150,Winthrop | WA | 6150 | $1.4M | $343K | -
+/price-guide?state=WA,,7,east-perth-wa-6004,East Perth | WA | 6004 | $1.4M | $470K | -
+/price-guide?state=WA,,8,como-wa-6152,Como | WA | 6152 | $1.3M | $613K | -
+/price-guide?state=WA,,9,fremantle-wa-6160,Fremantle | WA | 6160 | $1.3M | $650K | -
+/price-guide?state=WA,,10,melville-wa-6156,Melville | WA | 6156 | $1.3M | $610K | -
+/price-guide?state=WA,,11,north-perth-wa-6006,North Perth | WA | 6006 | $1.3M | $525K | -
+/price-guide?state=WA,,12,gidgegannup-wa-6083,Gidgegannup | WA | 6083 | $1.2M | $343K | -
+/price-guide?state=WA,,13,karnup-wa-6176,Karnup | WA | 6176 | $1.1M | $294K | -
+/price-guide?state=WA,,14,scarborough-wa-6019,Scarborough | WA | 6019 | $1.1M | $627K | -
+/price-guide?state=WA,,15,willetton-wa-6155,Willetton | WA | 6155 | $1.1M | $682K | -
+/price-guide?state=WA,,16,bull-creek-wa-6149,Bull Creek | WA | 6149 | $1.1M | $604K | -
+/price-guide?state=WA,,17,bateman-wa-6150,Bateman | WA | 6150 | $1.1M | $748K | -
+/price-guide?state=WA,,18,duncraig-wa-6023,Duncraig | WA | 6023 | $1.1M | $541K | -
+/price-guide?state=WA,,19,ocean-reef-wa-6027,Ocean Reef | WA | 6027 | $1.1M | $683K | -
+/price-guide?state=WA,,20,leeming-wa-6149,Leeming | WA | 6149 | $1.1M | $600K | -
+/price-guide?state=WA,,21,mundijong-wa-6123,Mundijong | WA | 6123 | $928K | $309K | -
+/price-guide?state=WA,,22,coogee-wa-6166,Coogee | WA | 6166 | $927K | $500K | -
+/price-guide?state=WA,,23,jandakot-wa-6164,Jandakot | WA | 6164 | $910K | $309K | -
+/price-guide?state=WA,,24,woodvale-wa-6026,Woodvale | WA | 6026 | $883K | $475K | -
+/price-guide?state=WA,,25,kingsley-wa-6026,Kingsley | WA | 6026 | $869K | $615K | -
+/price-guide?state=WA,,26,margaret-river-wa-6285,Margaret River | WA | 6285 | $840K | $520K | -
+/price-guide?state=WA,,27,padbury-wa-6025,Padbury | WA | 6025 | $825K | $590K | -
+/price-guide?state=WA,,28,mundaring-wa-6073,Mundaring | WA | 6073 | $823K | $515K | -
+/price-guide?state=WA,,29,willagee-wa-6156,Willagee | WA | 6156 | $805K | $495K | -
+/price-guide?state=WA,,30,the-vines-wa-6069,The Vines | WA | 6069 | $800K | $453K | -
+/price-guide?state=SA,,1,north-adelaide-sa-5006,North Adelaide | SA | 5006 | $4.3M | $303K | -
+/price-guide?state=SA,,2,unley-sa-5061,Unley | SA | 5061 | $3.1M | $377K | -
+/price-guide?state=SA,,3,st-peters-sa-5069,St Peters | SA | 5069 | $2.9M | $345K | -
+/price-guide?state=SA,,4,somerton-park-sa-5044,Somerton Park | SA | 5044 | $2.4M | $317K | +5.2%
+/price-guide?state=SA,,5,walkerville-sa-5081,Walkerville | SA | 5081 | $2.3M | $343K | -8.2%
+/price-guide?state=SA,,6,glenunga-sa-5064,Glenunga | SA | 5064 | $2.3M | $405K | +16.5%
+/price-guide?state=SA,,7,kensington-gardens-sa-5068,Kensington Gardens | SA | 5068 | $2.3M | $317K | -
+/price-guide?state=SA,,8,glen-osmond-sa-5064,Glen Osmond | SA | 5064 | $2.2M | $405K | -
+/price-guide?state=SA,,9,norwood-sa-5067,Norwood | SA | 5067 | $2.2M | $341K | -
+/price-guide?state=SA,,10,st-georges-sa-5064,St Georges | SA | 5064 | $2.1M | $405K | -13.3%
+/price-guide?state=SA,,11,beaumont-sa-5066,Beaumont | SA | 5066 | $2.1M | $389K | +20.8%
+/price-guide?state=SA,,12,highgate-sa-5063,Highgate | SA | 5063 | $2.0M | $329K | +10.8%
+/price-guide?state=SA,,13,wattle-park-sa-5066,Wattle Park | SA | 5066 | $2.0M | $389K | -7.3%
+/price-guide?state=SA,,14,lower-mitcham-sa-5062,Lower Mitcham | SA | 5062 | $2.0M | $343K | -
+/price-guide?state=SA,,15,linden-park-sa-5065,Linden Park | SA | 5065 | $1.9M | $343K | +9.5%
+/price-guide?state=SA,,16,seacliff-sa-5049,Seacliff | SA | 5049 | $1.9M | $293K | -
+/price-guide?state=SA,,17,hazelwood-park-sa-5066,Hazelwood Park | SA | 5066 | $1.9M | $389K | +0.8%
+/price-guide?state=SA,,18,glenelg-east-sa-5045,Glenelg East | SA | 5045 | $1.9M | $309K | +9.4%
+/price-guide?state=SA,,19,henley-beach-south-sa-5022,Henley Beach South | SA | 5022 | $1.9M | $317K | -3.4%
+/price-guide?state=SA,,20,westbourne-park-sa-5041,Westbourne Park | SA | 5041 | $1.9M | $317K | -
+/price-guide?state=SA,,21,kensington-park-sa-5068,Kensington Park | SA | 5068 | $1.9M | $317K | +2.2%
+/price-guide?state=SA,,22,hawthorn-sa-5062,Hawthorn | SA | 5062 | $1.8M | $343K | +11.5%
+/price-guide?state=SA,,23,west-beach-sa-5024,West Beach | SA | 5024 | $1.8M | $317K | +23.6%
+/price-guide?state=SA,,24,payneham-sa-5070,Payneham | SA | 5070 | $1.8M | $289K | -
+/price-guide?state=SA,,25,parkside-sa-5063,Parkside | SA | 5063 | $1.8M | $329K | +18.1%
+/price-guide?state=SA,,26,henley-beach-sa-5022,Henley Beach | SA | 5022 | $1.8M | $317K | +6.8%
+/price-guide?state=SA,,27,craigburn-farm-sa-5051,Craigburn Farm | SA | 5051 | $1.7M | $309K | -
+/price-guide?state=SA,,28,prospect-sa-5082,Prospect | SA | 5082 | $1.7M | $309K | -
+/price-guide?state=SA,,29,grange-sa-5022,Grange | SA | 5022 | $1.7M | $317K | -6.1%
+/price-guide?state=SA,,30,hyde-park-sa-5061,Hyde Park | SA | 5061 | $1.7M | $377K | -
+/price-guide?state=TAS,,1,sandy-bay-tas-7005,Sandy Bay | TAS | 7005 | $1.3M | $720K | -
+/price-guide?state=TAS,,2,cambridge-tas-7170,Cambridge | TAS | 7170 | $1.0M | $765K | -
+/price-guide?state=TAS,,3,west-hobart-tas-7000,West Hobart | TAS | 7000 | $911K | $700K | -
+/price-guide?state=TAS,,4,south-arm-tas-7022,South Arm | TAS | 7022 | $910K | $240K | -
+/price-guide?state=TAS,,5,new-town-tas-7008,New Town | TAS | 7008 | $883K | $458K | -
+/price-guide?state=TAS,,6,launceston-tas-7250,Launceston | TAS | 7250 | $775K | $503K | -
+/price-guide?state=TAS,,7,legana-tas-7277,Legana | TAS | 7277 | $740K | $503K | -
+/price-guide?state=TAS,,8,port-sorell-tas-7307,Port Sorell | TAS | 7307 | $719K | $465K | -
+/price-guide?state=TAS,,9,newstead-tas-7250,Newstead | TAS | 7250 | $665K | $420K | -
+/price-guide?state=TAS,,10,cygnet-tas-7112,Cygnet | TAS | 7112 | $650K | $600K | -
+/price-guide?state=TAS,,11,trevallyn-tas-7250,Trevallyn | TAS | 7250 | $650K | $635K | -
+/price-guide?state=TAS,,12,riverside-tas-7250,Riverside | TAS | 7250 | $635K | $440K | -
+/price-guide?state=TAS,,13,west-moonah-tas-7009,West Moonah | TAS | 7009 | $627K | $490K | -
+/price-guide?state=TAS,,14,moonah-tas-7009,Moonah | TAS | 7009 | $615K | $436K | -
+/price-guide?state=TAS,,15,west-launceston-tas-7250,West Launceston | TAS | 7250 | $605K | $440K | -
+/price-guide?state=TAS,,16,latrobe-tas-7307,Latrobe | TAS | 7307 | $591K | $429K | -
+/price-guide?state=TAS,,17,rokeby-tas-7019,Rokeby | TAS | 7019 | $590K | $603K | -
+/price-guide?state=TAS,,18,westbury-tas-7303,Westbury | TAS | 7303 | $563K | $478K | -
+/price-guide?state=TAS,,19,glenorchy-tas-7010,Glenorchy | TAS | 7010 | $560K | $448K | -
+/price-guide?state=TAS,,20,longford-tas-7301,Longford | TAS | 7301 | $553K | $483K | -
+/price-guide?state=TAS,,21,waratah-tas-7321,Waratah | TAS | 7321 | $550K | $192K | -
+/price-guide?state=TAS,,22,south-launceston-tas-7249,South Launceston | TAS | 7249 | $538K | $501K | -
+/price-guide?state=TAS,,23,deloraine-tas-7304,Deloraine | TAS | 7304 | $533K | $375K | -
+/price-guide?state=TAS,,24,wynyard-tas-7325,Wynyard | TAS | 7325 | $506K | $405K | -
+/price-guide?state=TAS,,25,ulverstone-tas-7315,Ulverstone | TAS | 7315 | $500K | $420K | -
+/price-guide?state=TAS,,26,west-ulverstone-tas-7315,West Ulverstone | TAS | 7315 | $490K | $385K | -
+/price-guide?state=TAS,,27,invermay-tas-7248,Invermay | TAS | 7248 | $480K | $450K | -
+/price-guide?state=TAS,,28,new-norfolk-tas-7140,New Norfolk | TAS | 7140 | $480K | $448K | -
+/price-guide?state=TAS,,29,east-devonport-tas-7310,East Devonport | TAS | 7310 | $473K | $363K | -
+/price-guide?state=TAS,,30,devonport-tas-7310,Devonport | TAS | 7310 | $463K | $400K | -
+/price-guide?state=NT,,1,larrakeyah-nt-0820,Larrakeyah | NT | 0820 | $1.8M | $423K | -
+/price-guide?state=NT,,2,nightcliff-nt-0810,Nightcliff | NT | 0810 | $965K | $351K | -
+/price-guide?state=NT,,3,parap-nt-0820,Parap | NT | 0820 | $945K | $365K | -
+/price-guide?state=NT,,4,stuart-park-nt-0820,Stuart Park | NT | 0820 | $820K | $382K | -
+/price-guide?state=NT,,5,rapid-creek-nt-0810,Rapid Creek | NT | 0810 | $800K | $408K | -
+/price-guide?state=NT,,6,ross-nt-0873,Ross | NT | 0873 | $768K | $365K | -
+/price-guide?state=NT,,7,humpty-doo-nt-0836,Humpty Doo | NT | 0836 | $690K | $364K | -
+/price-guide?state=NT,,8,mount-johns-nt-0874,Mount Johns | NT | 0874 | $685K | $337K | -
+/price-guide?state=NT,,9,weddell-nt-0822,Weddell | NT | 0822 | $670K | $317K | -
+/price-guide?state=NT,,10,jingili-nt-0810,Jingili | NT | 0810 | $649K | $326K | -
+/price-guide?state=NT,,11,coconut-grove-nt-0810,Coconut Grove | NT | 0810 | $645K | $355K | -
+/price-guide?state=NT,,12,wanguri-nt-0810,Wanguri | NT | 0810 | $628K | $326K | -
+/price-guide?state=NT,,13,leanyer-nt-0812,Leanyer | NT | 0812 | $598K | $330K | -
+/price-guide?state=NT,,14,millner-nt-0810,Millner | NT | 0810 | $595K | $273K | -
+/price-guide?state=NT,,15,alawa-nt-0810,Alawa | NT | 0810 | $575K | $240K | -
+/price-guide?state=NT,,16,moil-nt-0810,Moil | NT | 0810 | $550K | $326K | -
+/price-guide?state=NT,,17,wulagi-nt-0812,Wulagi | NT | 0812 | $533K | $317K | -
+/price-guide?state=NT,,18,anula-nt-0812,Anula | NT | 0812 | $530K | $317K | -
+/price-guide?state=NT,,19,east-side-nt-0870,East Side | NT | 0870 | $500K | $282K | -
+/price-guide?state=NT,,20,tiwi-nt-0810,Tiwi | NT | 0810 | $500K | $390K | -
+/price-guide?state=NT,,21,bakewell-nt-0832,Bakewell | NT | 0832 | $485K | $257K | -
+/price-guide?state=NT,,22,wagaman-nt-0810,Wagaman | NT | 0810 | $470K | $326K | -
+/price-guide?state=NT,,23,driver-nt-0830,Driver | NT | 0830 | $458K | $253K | -
+/price-guide?state=NT,,24,larapinta-nt-0875,Larapinta | NT | 0875 | $440K | $309K | -
+/price-guide?state=NT,,25,karama-nt-0812,Karama | NT | 0812 | $435K | $235K | -
+/price-guide?state=NT,,26,woodroffe-nt-0830,Woodroffe | NT | 0830 | $427K | $309K | -
+/price-guide?state=NT,,27,gray-nt-0830,Gray | NT | 0830 | $390K | $250K | -
+/price-guide?state=NT,,28,moulden-nt-0830,Moulden | NT | 0830 | $380K | $309K | -
+/price-guide?state=NT,,29,tennant-creek-nt-0862,Tennant Creek | NT | 0862 | $275K | - | -
+/price-guide?state=ACT,,1,forrest-act-2603,Forrest | ACT | 2603 | $5M | $849K | -
+/price-guide?state=ACT,,2,reid-act-2612,Reid | ACT | 2612 | $2.4M | $580K | -
+/price-guide?state=ACT,,3,yarralumla-act-2600,Yarralumla | ACT | 2600 | $2.2M | $1.1M | -
+/price-guide?state=ACT,,4,turner-act-2612,Turner | ACT | 2612 | $2.2M | $640K | -
+/price-guide?state=ACT,,5,deakin-act-2600,Deakin | ACT | 2600 | $1.8M | $1.1M | -
+/price-guide?state=ACT,,6,braddon-act-2612,Braddon | ACT | 2612 | $1.7M | $570K | -
+/price-guide?state=ACT,,7,campbell-act-2612,Campbell | ACT | 2612 | $1.7M | $650K | -
+/price-guide?state=ACT,,8,garran-act-2605,Garran | ACT | 2605 | $1.6M | $780K | -
+/price-guide?state=ACT,,9,isaacs-act-2607,Isaacs | ACT | 2607 | $1.5M | $820K | -
+/price-guide?state=ACT,,10,ainslie-act-2602,Ainslie | ACT | 2602 | $1.5M | $343K | -
+/price-guide?state=ACT,,11,curtin-act-2605,Curtin | ACT | 2605 | $1.4M | $388K | -
+/price-guide?state=ACT,,12,aranda-act-2614,Aranda | ACT | 2614 | $1.4M | $775K | -
+/price-guide?state=ACT,,13,hughes-act-2605,Hughes | ACT | 2605 | $1.4M | $331K | -
+/price-guide?state=ACT,,14,denman-prospect-act-2611,Denman Prospect | ACT | 2611 | $1.4M | $622K | -
+/price-guide?state=ACT,,15,narrabundah-act-2604,Narrabundah | ACT | 2604 | $1.4M | $655K | -
+/price-guide?state=ACT,,16,wright-act-2611,Wright | ACT | 2611 | $1.4M | $499K | -
+/price-guide?state=ACT,,17,whitlam-act-2611,Whitlam | ACT | 2611 | $1.3M | - | -
+/price-guide?state=ACT,,18,chapman-act-2611,Chapman | ACT | 2611 | $1.3M | - | -
+/price-guide?state=ACT,,19,bruce-act-2617,Bruce | ACT | 2617 | $1.3M | $560K | -
+/price-guide?state=ACT,,20,pearce-act-2607,Pearce | ACT | 2607 | $1.3M | $720K | -
+/price-guide?state=ACT,,21,cook-act-2614,Cook | ACT | 2614 | $1.3M | $870K | -
+/price-guide?state=ACT,,22,weetangera-act-2614,Weetangera | ACT | 2614 | $1.3M | $786K | -
+/price-guide?state=ACT,,23,nicholls-act-2913,Nicholls | ACT | 2913 | $1.3M | $778K | -
+/price-guide?state=ACT,,24,hawker-act-2614,Hawker | ACT | 2614 | $1.2M | $387K | -
+/price-guide?state=ACT,,25,lyneham-act-2602,Lyneham | ACT | 2602 | $1.2M | $545K | -
+/price-guide?state=ACT,,26,hackett-act-2602,Hackett | ACT | 2602 | $1.2M | $845K | -
+/price-guide?state=ACT,,27,farrer-act-2607,Farrer | ACT | 2607 | $1.2M | $600K | -
+/price-guide?state=ACT,,28,throsby-act-2914,Throsby | ACT | 2914 | $1.2M | $745K | -
+/price-guide?state=ACT,,29,downer-act-2602,Downer | ACT | 2602 | $1.2M | $710K | -
+/price-guide?state=ACT,,30,forde-act-2914,Forde | ACT | 2914 | $1.1M | $843K | -
+/market-reports/nsw,,1,bradfield-nsw-2556,"1 | Bradfield 2556 | $12,000,000 | +25.0% | View →"
+/market-reports/nsw,,2,church-point-nsw-2105,"2 | Church Point 2105 | $3,862,500 | +25.0% | View →"
+/market-reports/nsw,,3,mulbring-nsw-2323,"3 | Mulbring 2323 | $1,375,000 | +25.0% | View →"
+/market-reports/nsw,,4,kearsley-nsw-2325,"4 | Kearsley 2325 | $730,000 | +24.8% | View →"
+/market-reports/nsw,,5,woollahra-nsw-2025,"5 | Woollahra 2025 | $5,250,000 | +24.7% | View →"
+/market-reports/nsw,,6,claremont-meadows-nsw-2747,"6 | Claremont Meadows 2747 | $1,322,000 | +24.6% | View →"
+/market-reports/nsw,,7,pokolbin-nsw-2320,"7 | Pokolbin 2320 | $1,850,000 | +24.6% | View →"
+/market-reports/nsw,,8,binalong-nsw-2584,"8 | Binalong 2584 | $582,000 | +24.5% | View →"
+/market-reports/nsw,,9,clifton-grove-nsw-2800,"9 | Clifton Grove 2800 | $1,500,000 | +24.5% | View →"
+/market-reports/nsw,,10,taren-point-nsw-2229,"10 | Taren Point 2229 | $2,300,000 | +24.2% | View →"
+/market-reports/nsw,,11,collarenebri-nsw-2833,"1 | Collarenebri 2833 | $105,000 | -16.0% | View →"
+/market-reports/nsw,,12,hay-south-nsw-2711,"2 | Hay South 2711 | $105,000 | -17.3% | View →"
+/market-reports/nsw,,13,tottenham-nsw-2873,"3 | Tottenham 2873 | $120,000 | +20.0% | View →"
+/market-reports/nsw,,14,brewarrina-nsw-2839,"4 | Brewarrina 2839 | $130,000 | - | View →"
+/market-reports/nsw,,15,pooncarie-nsw-2648,"5 | Pooncarie 2648 | $150,000 | - | View →"
+/market-reports/nsw,,16,sunset-strip-nsw-2879,"6 | Sunset Strip 2879 | $152,500 | - | View →"
+/market-reports/nsw,,17,ravenswood-nsw-2824,"7 | Ravenswood 2824 | $161,000 | -2.4% | View →"
+/market-reports/nsw,,18,binnaway-nsw-2395,"8 | Binnaway 2395 | $165,000 | -19.5% | View →"
+/market-reports/nsw,,19,bendick-murrell-nsw-2803,"9 | Bendick Murrell 2803 | $169,000 | - | View →"
+/market-reports/nsw,,20,menindee-nsw-2879,"10 | Menindee 2879 | $169,000 | +17.4% | View →"
+/market-reports/nsw,,21,bradfield-nsw-2556,"1 | Bradfield 2556 | $12,000,000 | View →"
+/market-reports/nsw,,22,bellevue-hill-nsw-2023,"2 | Bellevue Hill 2023 | $11,000,000 | View →"
+/market-reports/nsw,,23,watsons-bay-nsw-2030,"3 | Watsons Bay 2030 | $9,550,000 | View →"
+/market-reports/nsw,,24,centennial-park-nsw-2021,"4 | Centennial Park 2021 | $9,500,000 | View →"
+/market-reports/nsw,,25,vaucluse-nsw-2030,"5 | Vaucluse 2030 | $8,925,000 | View →"
+/market-reports/nsw,,26,darling-point-nsw-2027,"6 | Darling Point 2027 | $8,100,000 | View →"
+/market-reports/nsw,,27,dover-heights-nsw-2030,"7 | Dover Heights 2030 | $7,360,000 | View →"
+/market-reports/nsw,,28,double-bay-nsw-2028,"8 | Double Bay 2028 | $7,340,000 | View →"
+/market-reports/nsw,,29,tamarama-nsw-2026,"9 | Tamarama 2026 | $7,100,000 | View →"
+/market-reports/nsw,,30,queenscliff-nsw-2096,"10 | Queenscliff 2096 | $6,650,000 | View →"
+/market-reports/vic,,1,jeparit-vic-3423,"1 | Jeparit 3423 | $149,000 | - | View →"
+/market-reports/vic,,2,hopetoun-vic-3396,"2 | Hopetoun 3396 | $155,000 | - | View →"
+/market-reports/vic,,3,murtoa-vic-3390,"3 | Murtoa 3390 | $175,000 | - | View →"
+/market-reports/vic,,4,minyip-vic-3392,"4 | Minyip 3392 | $180,000 | - | View →"
+/market-reports/vic,,5,kaniva-vic-3419,"5 | Kaniva 3419 | $182,000 | - | View →"
+/market-reports/vic,,6,rupanyup-vic-3388,"6 | Rupanyup 3388 | $185,000 | - | View →"
+/market-reports/vic,,7,ouyen-vic-3490,"7 | Ouyen 3490 | $200,000 | - | View →"
+/market-reports/vic,,8,underbool-vic-3509,"8 | Underbool 3509 | $200,000 | - | View →"
+/market-reports/vic,,9,nhill-vic-3418,"9 | Nhill 3418 | $203,000 | - | View →"
+/market-reports/vic,,10,warracknabeal-vic-3393,"10 | Warracknabeal 3393 | $205,000 | - | View →"
+/market-reports/vic,,11,toorak-vic-3142,"1 | Toorak 3142 | $5,000,000 | View →"
+/market-reports/vic,,12,brighton-vic-3186,"2 | Brighton 3186 | $3,550,000 | View →"
+/market-reports/vic,,13,canterbury-vic-3126,"3 | Canterbury 3126 | $3,544,000 | View →"
+/market-reports/vic,,14,deepdene-vic-3103,"4 | Deepdene 3103 | $3,450,000 | View →"
+/market-reports/vic,,15,mont-albert-vic-3127,"5 | Mont Albert 3127 | $3,210,000 | View →"
+/market-reports/vic,,16,balwyn-vic-3103,"6 | Balwyn 3103 | $3,128,000 | View →"
+/market-reports/vic,,17,portsea-vic-3944,"7 | Portsea 3944 | $2,825,000 | View →"
+/market-reports/vic,,18,kew-vic-3101,"8 | Kew 3101 | $2,810,500 | View →"
+/market-reports/vic,,19,ivanhoe-east-vic-3079,"9 | Ivanhoe East 3079 | $2,732,500 | View →"
+/market-reports/vic,,20,glen-iris-vic-3146,"10 | Glen Iris 3146 | $2,715,000 | View →"
+/market-reports/qld,,1,carpentaria-qld-4823,"1 | Carpentaria 4823 | $163,000 | - | View →"
+/market-reports/qld,,2,charleville-qld-4470,"2 | Charleville 4470 | $164,000 | - | View →"
+/market-reports/qld,,3,collinsville-qld-4804,"3 | Collinsville 4804 | $169,500 | - | View →"
+/market-reports/qld,,4,tara-qld-4421,"4 | Tara 4421 | $180,000 | - | View →"
+/market-reports/qld,,5,mount-morgan-qld-4714,"5 | Mount Morgan 4714 | $215,000 | - | View →"
+/market-reports/qld,,6,longreach-qld-4730,"6 | Longreach 4730 | $220,000 | - | View →"
+/market-reports/qld,,7,banana-qld-4702,"7 | Banana 4702 | $230,000 | - | View →"
+/market-reports/qld,,8,ingham-qld-4850,"8 | Ingham 4850 | $245,000 | - | View →"
+/market-reports/qld,,9,charters-towers-qld-4820,"9 | Charters Towers 4820 | $253,000 | - | View →"
+/market-reports/qld,,10,rockhampton-city-qld-4700,"10 | Rockhampton City 4700 | $255,000 | - | View →"
+/market-reports/qld,,11,new-farm-qld-4005,"1 | New Farm 4005 | $2,908,400 | View →"
+/market-reports/qld,,12,clayfield-qld-4011,"2 | Clayfield 4011 | $2,200,000 | View →"
+/market-reports/qld,,13,broadbeach-waters-qld-4218,"3 | Broadbeach Waters 4218 | $2,100,000 | View →"
+/market-reports/qld,,14,hawthorne-qld-4171,"4 | Hawthorne 4171 | $2,100,000 | View →"
+/market-reports/qld,,15,bundall-qld-4217,"5 | Bundall 4217 | $2,075,000 | View →"
+/market-reports/qld,,16,robertson-qld-4109,"6 | Robertson 4109 | $2,011,944 | View →"
+/market-reports/qld,,17,st-lucia-qld-4067,"7 | St Lucia 4067 | $1,970,000 | View →"
+/market-reports/qld,,18,noosa-heads-qld-4567,"8 | Noosa Heads 4567 | $1,966,000 | View →"
+/market-reports/qld,,19,burleigh-heads-qld-4220,"9 | Burleigh Heads 4220 | $1,955,000 | View →"
+/market-reports/qld,,20,bulimba-qld-4171,"10 | Bulimba 4171 | $1,937,500 | View →"
+/market-reports/wa,,1,morawa-wa-6623,"1 | Morawa 6623 | $160,000 | - | View →"
+/market-reports/wa,,2,kulin-wa-6365,"2 | Kulin 6365 | $165,000 | - | View →"
+/market-reports/wa,,3,cunderdin-wa-6407,"3 | Cunderdin 6407 | $170,000 | - | View →"
+/market-reports/wa,,4,dowerin-wa-6461,"4 | Dowerin 6461 | $181,000 | - | View →"
+/market-reports/wa,,5,merredin-wa-6415,"5 | Merredin 6415 | $185,000 | - | View →"
+/market-reports/wa,,6,gnowangerup-wa-6335,"6 | Gnowangerup 6335 | $195,000 | - | View →"
+/market-reports/wa,,7,moora-wa-6510,"7 | Moora 6510 | $200,000 | - | View →"
+/market-reports/wa,,8,kojonup-wa-6395,"8 | Kojonup 6395 | $215,000 | - | View →"
+/market-reports/wa,,9,brookton-wa-6306,"9 | Brookton 6306 | $250,000 | - | View →"
+/market-reports/wa,,10,narrogin-wa-6312,"10 | Narrogin 6312 | $250,000 | - | View →"
+/market-reports/wa,,11,cottesloe-wa-6011,"1 | Cottesloe 6011 | $3,422,500 | View →"
+/market-reports/wa,,12,city-beach-wa-6015,"2 | City Beach 6015 | $2,762,500 | View →"
+/market-reports/wa,,13,floreat-wa-6014,"3 | Floreat 6014 | $1,945,750 | View →"
+/market-reports/wa,,14,east-fremantle-wa-6158,"4 | East Fremantle 6158 | $1,757,500 | View →"
+/market-reports/wa,,15,north-coogee-wa-6163,"5 | North Coogee 6163 | $1,650,000 | View →"
+/market-reports/wa,,16,winthrop-wa-6150,"6 | Winthrop 6150 | $1,389,500 | View →"
+/market-reports/wa,,17,east-perth-wa-6004,"7 | East Perth 6004 | $1,350,000 | View →"
+/market-reports/wa,,18,como-wa-6152,"8 | Como 6152 | $1,330,000 | View →"
+/market-reports/wa,,19,fremantle-wa-6160,"9 | Fremantle 6160 | $1,330,000 | View →"
+/market-reports/wa,,20,melville-wa-6156,"10 | Melville 6156 | $1,300,000 | View →"
+/market-reports/sa,,1,bellevue-heights-sa-5050,"1 | Bellevue Heights 5050 | $1,240,000 | +24.9% | View →"
+/market-reports/sa,,2,coromandel-valley-sa-5051,"2 | Coromandel Valley 5051 | $1,210,000 | +24.7% | View →"
+/market-reports/sa,,3,athelstone-sa-5076,"3 | Athelstone 5076 | $1,139,000 | +24.2% | View →"
+/market-reports/sa,,4,willunga-sa-5172,"4 | Willunga 5172 | $1,237,500 | +23.8% | View →"
+/market-reports/sa,,5,west-beach-sa-5024,"5 | West Beach 5024 | $1,808,000 | +23.6% | View →"
+/market-reports/sa,,6,hackham-west-sa-5163,"6 | Hackham West 5163 | $785,000 | +23.4% | View →"
+/market-reports/sa,,7,hillcrest-sa-5086,"7 | Hillcrest 5086 | $989,250 | +23.2% | View →"
+/market-reports/sa,,8,para-hills-west-sa-5096,"8 | Para Hills West 5096 | $890,000 | +22.8% | View →"
+/market-reports/sa,,9,gawler-south-sa-5118,"9 | Gawler South 5118 | $840,000 | +22.6% | View →"
+/market-reports/sa,,10,south-brighton-sa-5048,"10 | South Brighton 5048 | $1,580,000 | +22.5% | View →"
+/market-reports/sa,,11,elizabeth-south-sa-5112,"1 | Elizabeth South 5112 | $650,000 | +5.3% | View →"
+/market-reports/sa,,12,smithfield-plains-sa-5114,"2 | Smithfield Plains 5114 | $650,000 | +12.6% | View →"
+/market-reports/sa,,13,davoren-park-sa-5113,"3 | Davoren Park 5113 | $656,000 | +14.6% | View →"
+/market-reports/sa,,14,elizabeth-downs-sa-5113,"4 | Elizabeth Downs 5113 | $670,500 | +19.7% | View →"
+/market-reports/sa,,15,elizabeth-north-sa-5113,"5 | Elizabeth North 5113 | $671,000 | +13.0% | View →"
+/market-reports/sa,,16,elizabeth-park-sa-5113,"6 | Elizabeth Park 5113 | $680,000 | +21.4% | View →"
+/market-reports/sa,,17,elizabeth-east-sa-5112,"7 | Elizabeth East 5112 | $682,500 | +8.8% | View →"
+/market-reports/sa,,18,elizabeth-sa-5112,"8 | Elizabeth 5112 | $697,500 | +15.3% | View →"
+/market-reports/sa,,19,elizabeth-grove-sa-5112,"9 | Elizabeth Grove 5112 | $700,000 | +15.2% | View →"
+/market-reports/sa,,20,evanston-sa-5116,"10 | Evanston 5116 | $700,000 | +13.8% | View →"
+/market-reports/sa,,21,north-adelaide-sa-5006,"1 | North Adelaide 5006 | $4,270,000 | View →"
+/market-reports/sa,,22,unley-sa-5061,"2 | Unley 5061 | $3,051,000 | View →"
+/market-reports/sa,,23,st-peters-sa-5069,"3 | St Peters 5069 | $2,853,000 | View →"
+/market-reports/sa,,24,somerton-park-sa-5044,"4 | Somerton Park 5044 | $2,420,000 | View →"
+/market-reports/sa,,25,walkerville-sa-5081,"5 | Walkerville 5081 | $2,300,000 | View →"
+/market-reports/sa,,26,glenunga-sa-5064,"6 | Glenunga 5064 | $2,271,111 | View →"
+/market-reports/sa,,27,kensington-gardens-sa-5068,"7 | Kensington Gardens 5068 | $2,265,000 | View →"
+/market-reports/sa,,28,glen-osmond-sa-5064,"8 | Glen Osmond 5064 | $2,200,000 | View →"
+/market-reports/sa,,29,norwood-sa-5067,"9 | Norwood 5067 | $2,157,500 | View →"
+/market-reports/sa,,30,st-georges-sa-5064,"10 | St Georges 5064 | $2,060,000 | View →"
+/market-reports/tas,,1,ravenswood-tas-7250,"1 | Ravenswood 7250 | $350,000 | - | View →"
+/market-reports/tas,,2,smithton-tas-7330,"2 | Smithton 7330 | $385,000 | - | View →"
+/market-reports/tas,,3,mowbray-tas-7248,"3 | Mowbray 7248 | $420,000 | - | View →"
+/market-reports/tas,,4,george-town-tas-7253,"4 | George Town 7253 | $430,000 | - | View →"
+/market-reports/tas,,5,somerset-tas-7322,"5 | Somerset 7322 | $435,000 | - | View →"
+/market-reports/tas,,6,risdon-vale-tas-7016,"6 | Risdon Vale 7016 | $460,000 | - | View →"
+/market-reports/tas,,7,devonport-tas-7310,"7 | Devonport 7310 | $462,500 | - | View →"
+/market-reports/tas,,8,east-devonport-tas-7310,"8 | East Devonport 7310 | $473,000 | - | View →"
+/market-reports/tas,,9,invermay-tas-7248,"9 | Invermay 7248 | $480,000 | - | View →"
+/market-reports/tas,,10,new-norfolk-tas-7140,"10 | New Norfolk 7140 | $480,000 | - | View →"
+/market-reports/tas,,11,sandy-bay-tas-7005,"1 | Sandy Bay 7005 | $1,267,500 | View →"
+/market-reports/tas,,12,cambridge-tas-7170,"2 | Cambridge 7170 | $1,010,000 | View →"
+/market-reports/tas,,13,west-hobart-tas-7000,"3 | West Hobart 7000 | $910,500 | View →"
+/market-reports/tas,,14,south-arm-tas-7022,"4 | South Arm 7022 | $910,000 | View →"
+/market-reports/tas,,15,new-town-tas-7008,"5 | New Town 7008 | $882,500 | View →"
+/market-reports/tas,,16,launceston-tas-7250,"6 | Launceston 7250 | $775,000 | View →"
+/market-reports/tas,,17,legana-tas-7277,"7 | Legana 7277 | $740,000 | View →"
+/market-reports/tas,,18,port-sorell-tas-7307,"8 | Port Sorell 7307 | $718,500 | View →"
+/market-reports/tas,,19,newstead-tas-7250,"9 | Newstead 7250 | $665,000 | View →"
+/market-reports/tas,,20,cygnet-tas-7112,"10 | Cygnet 7112 | $650,000 | View →"
+/market-reports/nt,,1,tennant-creek-nt-0862,"1 | Tennant Creek 0862 | $275,000 | - | View →"
+/market-reports/nt,,2,moulden-nt-0830,"2 | Moulden 0830 | $380,000 | - | View →"
+/market-reports/nt,,3,gray-nt-0830,"3 | Gray 0830 | $390,000 | - | View →"
+/market-reports/nt,,4,woodroffe-nt-0830,"4 | Woodroffe 0830 | $427,000 | - | View →"
+/market-reports/nt,,5,karama-nt-0812,"5 | Karama 0812 | $435,000 | - | View →"
+/market-reports/nt,,6,larapinta-nt-0875,"6 | Larapinta 0875 | $440,250 | - | View →"
+/market-reports/nt,,7,driver-nt-0830,"7 | Driver 0830 | $457,500 | - | View →"
+/market-reports/nt,,8,wagaman-nt-0810,"8 | Wagaman 0810 | $470,000 | - | View →"
+/market-reports/nt,,9,bakewell-nt-0832,"9 | Bakewell 0832 | $484,500 | - | View →"
+/market-reports/nt,,10,east-side-nt-0870,"10 | East Side 0870 | $500,000 | - | View →"
+/market-reports/nt,,11,larrakeyah-nt-0820,"1 | Larrakeyah 0820 | $1,775,000 | View →"
+/market-reports/nt,,12,nightcliff-nt-0810,"2 | Nightcliff 0810 | $965,000 | View →"
+/market-reports/nt,,13,parap-nt-0820,"3 | Parap 0820 | $945,000 | View →"
+/market-reports/nt,,14,stuart-park-nt-0820,"4 | Stuart Park 0820 | $820,000 | View →"
+/market-reports/nt,,15,rapid-creek-nt-0810,"5 | Rapid Creek 0810 | $800,000 | View →"
+/market-reports/nt,,16,ross-nt-0873,"6 | Ross 0873 | $767,500 | View →"
+/market-reports/nt,,17,humpty-doo-nt-0836,"7 | Humpty Doo 0836 | $690,000 | View →"
+/market-reports/nt,,18,mount-johns-nt-0874,"8 | Mount Johns 0874 | $685,000 | View →"
+/market-reports/nt,,19,weddell-nt-0822,"9 | Weddell 0822 | $670,000 | View →"
+/market-reports/nt,,20,jingili-nt-0810,"10 | Jingili 0810 | $649,000 | View →"
+/market-reports/act,,1,greenway-act-2900,"1 | Greenway 2900 | $358,000 | - | View →"
+/market-reports/act,,2,phillip-act-2606,"2 | Phillip 2606 | $396,000 | - | View →"
+/market-reports/act,,3,belconnen-act-2617,"3 | Belconnen 2617 | $429,000 | - | View →"
+/market-reports/act,,4,lawson-act-2617,"4 | Lawson 2617 | $429,000 | - | View →"
+/market-reports/act,,5,jacka-act-2914,"5 | Jacka 2914 | $477,000 | - | View →"
+/market-reports/act,,6,barton-act-2600,"6 | Barton 2600 | $620,000 | - | View →"
+/market-reports/act,,7,charnwood-act-2615,"7 | Charnwood 2615 | $715,000 | - | View →"
+/market-reports/act,,8,scullin-act-2614,"8 | Scullin 2614 | $787,000 | - | View →"
+/market-reports/act,,9,holt-act-2615,"9 | Holt 2615 | $790,000 | - | View →"
+/market-reports/act,,10,latham-act-2615,"10 | Latham 2615 | $792,000 | - | View →"
+/market-reports/act,,11,forrest-act-2603,"1 | Forrest 2603 | $5,000,000 | View →"
+/market-reports/act,,12,reid-act-2612,"2 | Reid 2612 | $2,350,000 | View →"
+/market-reports/act,,13,yarralumla-act-2600,"3 | Yarralumla 2600 | $2,228,000 | View →"
+/market-reports/act,,14,turner-act-2612,"4 | Turner 2612 | $2,195,000 | View →"
+/market-reports/act,,15,deakin-act-2600,"5 | Deakin 2600 | $1,800,000 | View →"
+/market-reports/act,,16,braddon-act-2612,"6 | Braddon 2612 | $1,720,000 | View →"
+/market-reports/act,,17,campbell-act-2612,"7 | Campbell 2612 | $1,715,000 | View →"
+/market-reports/act,,18,garran-act-2605,"8 | Garran 2605 | $1,605,000 | View →"
+/market-reports/act,,19,isaacs-act-2607,"9 | Isaacs 2607 | $1,505,000 | View →"
+/market-reports/act,,20,ainslie-act-2602,"10 | Ainslie 2602 | $1,500,000 | View →"
+/states/nsw,,1,blacktown-nsw-2148,"Blacktown NSW 2148 + 8.2 % Median house $1.1M Population 50,961"
+/states/nsw,,2,port-macquarie-nsw-2444,"Port Macquarie NSW 2444 + 4.7 % Median house $890K Population 47,693"
+/states/nsw,,3,dubbo-nsw-2830,"Dubbo NSW 2830 + 8.7 % Median house $625K Population 43,516"
+/states/nsw,,4,orange-nsw-2800,"Orange NSW 2800 + 2.2 % Median house $700K Population 41,232"
+/states/nsw,,5,castle-hill-nsw-2154,"Castle Hill NSW 2154 + 4.0 % Median house $2.5M Population 40,874"
+/states/nsw,,6,auburn-nsw-2144,"Auburn NSW 2144 + 12.9 % Median house $1.5M Population 39,333"
+/states/nsw,,7,baulkham-hills-nsw-2153,"Baulkham Hills NSW 2153 + 1.7 % Median house $1.9M Population 37,415"
+/states/nsw,,8,bankstown-nsw-2200,"Bankstown NSW 2200 + 14.4 % Median house $1.5M Population 34,933"
+/states/nsw,,9,merrylands-nsw-2160,"Merrylands NSW 2160 + 7.7 % Median house $1.4M Population 32,472"
+/states/nsw,,10,ryde-nsw-2112,"Ryde NSW 2112 + 3.3 % Median house $2.5M Population 31,907"
+/states/nsw,,11,hurstville-nsw-2220,"Hurstville NSW 2220 + 12.0 % Median house $2.2M Population 31,162"
+/states/vic,,1,point-cook-vic-3030,"Point Cook VIC 3030 Median house $800K Population 66,781"
+/states/vic,,2,craigieburn-vic-3064,"Craigieburn VIC 3064 Median house $700K Population 65,178"
+/states/vic,,3,tarneit-vic-3029,"Tarneit VIC 3029 Median house $665K Population 56,370"
+/states/vic,,4,melbourne-vic-3000,"Melbourne VIC 3000 Median house $381K Population 54,941"
+/states/vic,,5,melbourne-vic-3004,"Melbourne VIC 3004 Median house $440K Population 54,941"
+/states/vic,,6,pakenham-vic-3810,"Pakenham VIC 3810 Median house $690K Population 54,118"
+/states/vic,,7,berwick-vic-3806,"Berwick VIC 3806 Median house $870K Population 50,298"
+/states/vic,,8,werribee-vic-3030,"Werribee VIC 3030 Median house $641K Population 50,027"
+/states/vic,,9,glen-waverley-vic-3150,"Glen Waverley VIC 3150 Median house $1.7M Population 42,642"
+/states/vic,,10,sunbury-vic-3429,"Sunbury VIC 3429 Median house $675K Population 38,851"
+/states/vic,,11,frankston-vic-3199,"Frankston VIC 3199 Median house $810K Population 37,331"
+/states/vic,,12,hoppers-crossing-vic-3029,"Hoppers Crossing VIC 3029 Median house $660K Population 37,216"
+/states/qld,,1,morayfield-qld-4506,"Morayfield QLD 4506 Median house $1.1M Population 24,898"
+/states/qld,,2,redbank-plains-qld-4301,"Redbank Plains QLD 4301 Median house $605K Population 24,349"
+/states/qld,,3,north-lakes-qld-4509,"North Lakes QLD 4509 Median house $820K Population 23,030"
+/states/qld,,4,kallangur-qld-4503,"Kallangur QLD 4503 Median house $685K Population 21,761"
+/states/qld,,5,narangba-qld-4504,"Narangba QLD 4504 Median house $790K Population 20,910"
+/states/wa,,1,ellenbrook-wa-6069,"Ellenbrook WA 6069 Median house $590K Population 24,668"
+/states/wa,,2,thornlie-wa-6108,"Thornlie WA 6108 Median house $605K Population 23,665"
+/states/wa,,3,morley-wa-6062,"Morley WA 6062 Median house $690K Population 22,539"
+/states/wa,,4,gosnells-wa-6110,"Gosnells WA 6110 Median house $530K Population 21,149"
+/states/wa,,5,willetton-wa-6155,"Willetton WA 6155 Median house $1.1M Population 19,262"
+/states/wa,,6,byford-wa-6122,"Byford WA 6122 Median house $630K Population 18,878"
+/states/wa,,7,ballajura-wa-6066,"Ballajura WA 6066 Median house $630K Population 18,459"
+/states/wa,,8,scarborough-wa-6019,"Scarborough WA 6019 Median house $1.1M Population 17,605"
+/states/sa,,1,morphett-vale-sa-5162,"Morphett Vale SA 5162 + 15.0 % Median house $824K Population 24,002"
+/states/sa,,2,parafield-gardens-sa-5107,"Parafield Gardens SA 5107 + 18.9 % Median house $880K Population 18,467"
+/states/sa,,3,adelaide-sa-5000,"Adelaide SA 5000 Median house $1.6M Population 18,202"
+/states/sa,,4,paralowie-sa-5108,"Paralowie SA 5108 + 22.3 % Median house $820K Population 17,504"
+/states/sa,,5,prospect-sa-5082,"Prospect SA 5082 Median house $1.7M Population 14,584"
+/states/tas,,1,devonport-tas-7310,"Devonport TAS 7310 Median house $463K Population 14,481"
+/states/tas,,2,sandy-bay-tas-7005,"Sandy Bay TAS 7005 Median house $1.3M Population 12,315"
+/states/tas,,3,ulverstone-tas-7315,"Ulverstone TAS 7315 Median house $500K Population 6,653"
+/states/tas,,4,west-hobart-tas-7000,"West Hobart TAS 7000 Median house $911K Population 6,525"
+/states/tas,,5,wynyard-tas-7325,"Wynyard TAS 7325 Median house $506K Population 6,296"
+/states/tas,,6,new-norfolk-tas-7140,"New Norfolk TAS 7140 Median house $480K Population 6,037"
+/states/nt,,1,karama-nt-0812,"Karama NT 0812 Median house $435K Population 4,803"
+/states/nt,,2,leanyer-nt-0812,"Leanyer NT 0812 Median house $598K Population 4,597"
+/states/nt,,3,humpty-doo-nt-0836,"Humpty Doo NT 0836 Median house $690K Population 4,313"
+/states/nt,,4,stuart-park-nt-0820,"Stuart Park NT 0820 Median house $820K Population 4,101"
+/states/nt,,5,larrakeyah-nt-0820,"Larrakeyah NT 0820 Median house $1.8M Population 3,943"
+/states/nt,,6,nightcliff-nt-0810,"Nightcliff NT 0810 Median house $965K Population 3,884"
+/states/act,,1,kambah-act-2902,"Kambah ACT 2902 Median house $860K Population 15,670"
+/states/act,,2,ngunnawal-act-2913,"Ngunnawal ACT 2913 Median house $811K Population 10,957"
+/states/act,,3,gungahlin-act-2912,"Gungahlin ACT 2912 Median house $996K Population 8,586"
+/states/act,,4,belconnen-act-2617,"Belconnen ACT 2617 Median house $429K Population 8,502"
+/states/act,,5,harrison-act-2914,"Harrison ACT 2914 Median house $1.0M Population 8,244"
+/states/act,,6,wanniassa-act-2903,"Wanniassa ACT 2903 Median house $880K Population 7,885"
+/states/act,,7,kaleen-act-2617,"Kaleen ACT 2617 Median house $1.0M Population 7,672"
+/states/act,,8,bruce-act-2617,"Bruce ACT 2617 Median house $1.3M Population 7,520"
+/states/act,,9,franklin-act-2913,"Franklin ACT 2913 Median house $985K Population 7,484"
+/states/act,,10,bonner-act-2914,"Bonner ACT 2914 Median house $890K Population 7,339"
+/states/act,,11,dunlop-act-2615,"Dunlop ACT 2615 Median house $838K Population 7,265"
