@@ -36,6 +36,15 @@ export const NON_LOCALITIES: readonly NonLocality[] = data.entries as NonLocalit
 export const HIDDEN_ROWS: readonly HiddenRow[] = data.hidden as HiddenRow[];
 export const NON_LOCALITIES_AS_AT: string = data.generatedAt;
 
+/**
+ * Changes whenever the list is regenerated. Every cached list that leaves
+ * these rows out carries it in its cache key, so a new list reaches the
+ * sitemaps with the deploy instead of when the 24-hour cache next expires:
+ * on 29 Sep 2026 the postcode sitemap went on listing "872" and "NOT
+ * DISCLOSED" after the rows had been hidden, because its key had not moved.
+ */
+export const NOT_PLACES_VERSION = `not-places:${data.generatedAt}:${data.entries.length}+${data.hidden.length}`;
+
 const BY_SLUG = new Map(NON_LOCALITIES.map((e) => [e.slug, e]));
 const HIDDEN = new Set(HIDDEN_ROWS.map((h) => h.slug));
 

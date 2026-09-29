@@ -6,6 +6,7 @@ import {
   HIDDEN_ROWS,
   MISFILED_SLUGS,
   NON_LOCALITIES,
+  NOT_PLACES_VERSION,
   NON_LOCALITY_SLUGS,
   isHiddenSlug,
   isNonLocalitySlug,
@@ -236,6 +237,23 @@ describe("lists that must not carry them", () => {
     has("src/lib/services/postcode-service.ts", "where: LISTED_POSTCODES,");
     has("scripts/sync/slug-matcher.ts", "if (!stateMatchesPostcode(s)) continue;");
     has("scripts/sync/sources/import-suburbs.ts", "!stateMatchesPostcode({ state: row.state, postcode })");
+  });
+  it("every cached list that leaves them out carries the list's version in its key", () => {
+    // A cached sitemap keeps its old contents for 24 hours unless its key
+    // moves. The key moves with the list.
+    const cached: Record<string, number> = {
+      "src/lib/sitemap-data.ts": 2,
+      "src/app/(marketing)/suburbs/subpages/sitemap.ts": 2,
+      "src/app/(marketing)/postcodes/sitemap.ts": 1,
+      "src/app/(marketing)/compare/sitemap.ts": 1,
+      "src/app/(marketing)/regions/sitemap.ts": 1,
+      "src/app/(marketing)/regions/page.tsx": 1,
+    };
+    for (const [file, keys] of Object.entries(cached)) {
+      const found = fs.readFileSync(file, "utf8").match(/\["[a-z-]+:v\d+", NOT_PLACES_VERSION\]/g) ?? [];
+      expect(found.length, file).toBe(keys);
+    }
+    expect(NOT_PLACES_VERSION).toMatch(/^not-places:\d{4}-\d{2}-\d{2}:\d+\+\d+$/);
   });
   it("every file that lists suburbs filters them, or says why it does not", () => {
     // PR #66 filtered the lists it knew of. The rankings, the comparison

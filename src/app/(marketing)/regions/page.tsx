@@ -6,6 +6,7 @@ import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { unstable_cache } from "next/cache";
 import { getAllRegions } from "@/lib/services/region-service";
+import { NOT_PLACES_VERSION } from "@/lib/non-localities";
 import { SITE_URL } from "@/lib/constants";
 
 // The index queries the DB. It used to be a static ISR page, which meant
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
   },
 };
 
-const getCachedRegions = unstable_cache(getAllRegions, ["regions-index:v1"], {
+const getCachedRegions = unstable_cache(getAllRegions, ["regions-index:v1", NOT_PLACES_VERSION], {
   revalidate: 86400,
   tags: ["sitemap-regions"],
 });
