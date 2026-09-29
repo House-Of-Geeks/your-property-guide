@@ -244,7 +244,7 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       again and back in the sitemap; 1,261 carry none and stay noindex, and 29 are held back as misfiled rows
       (item 48). One rule (`isThinProfile`), read by the page and the sitemap. Read in Search Console around
       27 Oct: "Excluded by noindex" down by about 2,200.
-- [ ] 40. [code] Stop linking to empty listing sub-pages. 13 suburbs have a listing; every other suburb's six listing
+- [x] 40. [code] DONE 29 Sep 2026 (see the end of this item). Stop linking to empty listing sub-pages. 13 suburbs have a listing; every other suburb's six listing
       sub-pages (/buy, /rent, /houses, /units, /townhouses, /land: about 107,900 URLs) are empty, answer 200 with
       noindex, and are reachable from the tab strip on every sub-page, the schools page's "View properties" and the
       rental-market page's rent links. Feeds "Excluded by noindex", "Soft 404" and "Crawled, not indexed".
@@ -252,6 +252,11 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       rental row exists). Could break: the tab strip is the sub-pages' navigation; an all-empty strip needs a
       fallback to the profile link. Guardrails: inventory from the existing cached groupBy (no per-page query);
       rental-market pilot pages checked by eye; one commit.
+      Shipped: tabs and links follow the listings a suburb has, by type, and the rental row for the rental-market
+      page (`src/lib/suburb-subpages.ts`, tested; the sub-page sitemaps use the same predicates). The inventory is
+      one indexed query per render, not the cached groupBy: a 24-hour cached read would have made every weekly
+      page revalidate daily. Not in this change: the profile's link to the agents sub-page, which is noindex for
+      suburbs without a published median (about 14,250 links); say if that should follow the same rule.
 - [ ] 41. [code] Social preview images are blocked to crawlers. Every suburb and guide declares og:image under
       /api/og/, and robots.txt disallows /api/ ("Blocked by robots.txt", 930). Change: allow /api/og/ in robots.ts.
       Could break: cost. The image routes answer `max-age=0, must-revalidate`; opening them to crawlers without a

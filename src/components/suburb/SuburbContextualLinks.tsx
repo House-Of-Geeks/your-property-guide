@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { SubpageAvailability } from "@/lib/suburb-subpages";
 
 interface SuburbContextualLinksProps {
   suburb: {
@@ -8,7 +9,22 @@ interface SuburbContextualLinksProps {
     postcode?: string;
     nearbySuburbs: string[];
   };
+  // Which listing sub-pages have stock (getSuburbSubpageAvailability). The
+  // For Sale and For Rent columns link only to those, and are left out when
+  // there are none: until 29 Sep 2026 every profile linked eight listing
+  // pages, empty for all but 13 suburbs.
+  availability: SubpageAvailability;
 }
+
+// Two columns on a phone; from there the grid follows the number of columns
+// drawn, so four columns sit two by two on a tablet instead of three and one.
+// Tailwind reads class names from the source, so each is spelt out.
+const GRID_COLUMNS: Record<number, string> = {
+  3: "sm:grid-cols-3",
+  4: "sm:grid-cols-2 lg:grid-cols-4",
+  5: "sm:grid-cols-3 lg:grid-cols-5",
+  6: "sm:grid-cols-3 lg:grid-cols-6",
+};
 
 function nearbyName(slug: string): string {
   // Strip trailing state-postcode suffix (e.g. "-qld-4500") and title-case
@@ -57,56 +73,62 @@ function sellingLinksForState(state: string | undefined): { label: string; href:
   ];
 }
 
-export function SuburbContextualLinks({ suburb }: SuburbContextualLinksProps) {
+export function SuburbContextualLinks({ suburb, availability }: SuburbContextualLinksProps) {
   const { name, slug, state, postcode, nearbySuburbs } = suburb;
   const nearby = nearbySuburbs.slice(0, 6);
   const buyingLinks = buyingLinksForState(state);
   const sellingLinks = sellingLinksForState(state);
+  // Canonical static sub-pages, not /buy?suburb=… query-param URLs:
+  // query-param variants split link equity and aren't the indexed canonical
+  // for these property-type queries.
+  const forSaleLinks = [
+    { show: availability.houses,     label: `Houses for sale in ${name}`,     href: `/suburbs/${slug}/houses` },
+    { show: availability.units,      label: `Units for sale in ${name}`,      href: `/suburbs/${slug}/units` },
+    { show: availability.townhouses, label: `Townhouses for sale in ${name}`, href: `/suburbs/${slug}/townhouses` },
+    { show: availability.land,       label: `Land for sale in ${name}`,       href: `/suburbs/${slug}/land` },
+    { show: availability.buy,        label: `All properties for sale in ${name}`, href: `/suburbs/${slug}/buy` },
+  ].filter((l) => l.show);
+  const columns = 3 + (forSaleLinks.length > 0 ? 1 : 0) + (availability.rent ? 1 : 0) + (nearby.length > 0 ? 1 : 0);
 
   return (
     <div className="border-t border-line mt-16 pt-10">
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8">
+      <div className={`grid grid-cols-2 ${GRID_COLUMNS[columns]} gap-8`}>
 
-        {/* For Sale */}
-        <div>
-          <h3 className="text-xs font-sans font-medium text-ink uppercase tracking-[0.2em] mb-3">For Sale</h3>
-          <ul className="space-y-2">
-            {/* Canonical static sub-pages, not /buy?suburb=… query-param
-                URLs — query-param variants split link equity and aren't
-                the indexed canonical for these property-type queries. */}
-            {[
-              { label: `Houses for sale in ${name}`,     href: `/suburbs/${slug}/houses` },
-              { label: `Units for sale in ${name}`,      href: `/suburbs/${slug}/units` },
-              { label: `Townhouses for sale in ${name}`, href: `/suburbs/${slug}/townhouses` },
-              { label: `Land for sale in ${name}`,       href: `/suburbs/${slug}/land` },
-              { label: `All properties for sale in ${name}`, href: `/suburbs/${slug}/buy` },
-            ].map((l) => (
-              <li key={l.href}>
-                <Link href={l.href} className="font-sans text-sm text-ink-muted hover:text-primary transition-colors leading-snug block">
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* For Sale: the listing pages that have stock */}
+        {forSaleLinks.length > 0 && (
+          <div>
+            <h3 className="text-xs font-sans font-medium text-ink uppercase tracking-[0.2em] mb-3">For Sale</h3>
+            <ul className="space-y-2">
+              {forSaleLinks.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="font-sans text-sm text-ink-muted hover:text-primary transition-colors leading-snug block">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
-        {/* For Rent */}
-        <div>
-          <h3 className="text-xs font-sans font-medium text-ink uppercase tracking-[0.2em] mb-3">For Rent</h3>
-          <ul className="space-y-2">
-            {[
-              { label: `Houses for rent in ${name}`,    href: `/rent?suburb=${slug}&propertyType=house` },
-              { label: `Units for rent in ${name}`,     href: `/rent?suburb=${slug}&propertyType=unit` },
-              { label: `All rentals in ${name}`,        href: `/suburbs/${slug}/rent` },
-            ].map((l) => (
-              <li key={l.href}>
-                <Link href={l.href} className="font-sans text-sm text-ink-muted hover:text-primary transition-colors leading-snug block">
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* For Rent: only when rentals are listed */}
+        {availability.rent && (
+          <div>
+            <h3 className="text-xs font-sans font-medium text-ink uppercase tracking-[0.2em] mb-3">For Rent</h3>
+            <ul className="space-y-2">
+              {[
+                { label: `Houses for rent in ${name}`,    href: `/rent?suburb=${slug}&propertyType=house` },
+                { label: `Units for rent in ${name}`,     href: `/rent?suburb=${slug}&propertyType=unit` },
+                { label: `All rentals in ${name}`,        href: `/suburbs/${slug}/rent` },
+              ].map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="font-sans text-sm text-ink-muted hover:text-primary transition-colors leading-snug block">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Suburb */}
         <div>

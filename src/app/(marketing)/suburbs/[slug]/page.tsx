@@ -22,6 +22,7 @@ import { SuburbClimate } from "@/components/suburb/SuburbClimate";
 import { SuburbCrime } from "@/components/suburb/SuburbCrime";
 import { SuburbInvestment } from "@/components/suburb/SuburbInvestment";
 import { SuburbContextualLinks } from "@/components/suburb/SuburbContextualLinks";
+import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availability";
 import { SuburbPriceTrend } from "@/components/suburb/SuburbPriceTrend";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { ExpertCTA, StickyMatchCTA } from "@/components/journey";
@@ -133,9 +134,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) notFound();
 
-  const [properties, crimeStat] = await Promise.all([
+  const [properties, crimeStat, availability] = await Promise.all([
     getPropertiesBySuburb(slug, 6),
     getSuburbCrimeWithLgaFallback(slug, suburb.state, suburb.region),
+    // Which sub-pages have something on them: the page links only to those.
+    getSuburbSubpageAvailability(suburb),
   ]);
 
   // Algorithmic narrative. Turns the structured suburb data into reading
@@ -319,14 +322,16 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 asOf={suburb.dataFreshness?.rentalAsOf ?? null}
                 source={suburb.dataFreshness?.rentalSource ?? undefined}
               />
-              <div className="mt-3">
-                <Link
-                  href={`/suburbs/${suburb.slug}/rental-market`}
-                  className="inline-flex items-center gap-1 text-sm font-medium text-ink hover:text-primary"
-                >
-                  Open the full rental market view <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
+              {availability["rental-market"] && (
+                <div className="mt-3">
+                  <Link
+                    href={`/suburbs/${suburb.slug}/rental-market`}
+                    className="inline-flex items-center gap-1 text-sm font-medium text-ink hover:text-primary"
+                  >
+                    Open the full rental market view <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
 
@@ -735,21 +740,31 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 </h2>
               </div>
               <div className="lg:col-span-5 flex flex-wrap gap-2 lg:justify-end">
-                <Link href={`/suburbs/${suburb.slug}/buy`}>
-                  <Button variant="outline" size="sm">For sale <ArrowRight className="w-4 h-4" /></Button>
-                </Link>
-                <Link href={`/suburbs/${suburb.slug}/rent`}>
-                  <Button variant="outline" size="sm">For rent <ArrowRight className="w-4 h-4" /></Button>
-                </Link>
-                <Link href={`/suburbs/${suburb.slug}/houses`}>
-                  <Button variant="outline" size="sm">Houses</Button>
-                </Link>
-                <Link href={`/suburbs/${suburb.slug}/units`}>
-                  <Button variant="outline" size="sm">Units</Button>
-                </Link>
-                <Link href={`/suburbs/${suburb.slug}/townhouses`}>
-                  <Button variant="outline" size="sm">Townhouses</Button>
-                </Link>
+                {availability.buy && (
+                  <Link href={`/suburbs/${suburb.slug}/buy`}>
+                    <Button variant="outline" size="sm">For sale <ArrowRight className="w-4 h-4" /></Button>
+                  </Link>
+                )}
+                {availability.rent && (
+                  <Link href={`/suburbs/${suburb.slug}/rent`}>
+                    <Button variant="outline" size="sm">For rent <ArrowRight className="w-4 h-4" /></Button>
+                  </Link>
+                )}
+                {availability.houses && (
+                  <Link href={`/suburbs/${suburb.slug}/houses`}>
+                    <Button variant="outline" size="sm">Houses</Button>
+                  </Link>
+                )}
+                {availability.units && (
+                  <Link href={`/suburbs/${suburb.slug}/units`}>
+                    <Button variant="outline" size="sm">Units</Button>
+                  </Link>
+                )}
+                {availability.townhouses && (
+                  <Link href={`/suburbs/${suburb.slug}/townhouses`}>
+                    <Button variant="outline" size="sm">Townhouses</Button>
+                  </Link>
+                )}
               </div>
             </div>
             <PropertyGrid properties={properties} />
@@ -770,6 +785,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             postcode: suburb.postcode,
             nearbySuburbs: suburb.nearbySuburbs,
           }}
+          availability={availability}
         />
 
         {/* Editorial integrity / sources note */}

@@ -6,6 +6,7 @@ import { SuburbSubrouteHeader } from "@/components/suburb";
 import { ExpertCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd, ItemListJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
+import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availability";
 import { makeSchoolSlug } from "@/lib/utils/school";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
@@ -64,6 +65,10 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
   const { slug } = await params;
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) notFound();
+
+  // The closing block links to the listings only when there are any;
+  // otherwise to the profile.
+  const { buy: hasListings } = await getSuburbSubpageAvailability(suburb);
 
   const schools = [...suburb.schools].sort((a, b) => {
     if (a.icsea == null && b.icsea == null) return 0;
@@ -264,22 +269,24 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
         <div className="mt-12 rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
           <div>
             <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
-              Nearby properties
+              {hasListings ? "Nearby properties" : "The suburb"}
             </p>
             <h2 className="font-display text-xl sm:text-2xl text-ink leading-tight">
-              Family-friendly homes in {suburb.name}.
+              {hasListings ? `Family-friendly homes in ${suburb.name}.` : `Living in ${suburb.name}.`}
             </h2>
             <p className="font-sans text-sm text-ink-muted mt-2">
               {suburb.stats.medianHousePrice > 0
                 ? `Median house price ${formatPriceFull(suburb.stats.medianHousePrice)}.`
-                : "Browse current listings."}
+                : hasListings
+                  ? "Browse current listings."
+                  : "Prices, rents and who lives here."}
             </p>
           </div>
           <Link
-            href={`/suburbs/${slug}/buy`}
+            href={hasListings ? `/suburbs/${slug}/buy` : `/suburbs/${slug}`}
             className="shrink-0 inline-flex items-center gap-2 rounded-lg border border-line-strong bg-surface-raised text-ink hover:border-ink hover:bg-surface-raised font-medium px-5 py-2.5 transition-colors"
           >
-            View properties <ArrowRight className="w-4 h-4" />
+            {hasListings ? "View properties" : "Suburb profile"} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 

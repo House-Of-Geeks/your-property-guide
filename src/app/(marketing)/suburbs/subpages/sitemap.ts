@@ -9,10 +9,8 @@ import type { MetadataRoute } from "next";
 import { unstable_cache } from "next/cache";
 import { SITE_URL } from "@/lib/constants";
 import { getIndexableSuburbsForSitemaps } from "@/lib/sitemap-data";
-import {
-  getSuburbListingInventory,
-  type SuburbListingInventoryRow,
-} from "@/lib/services/property-service";
+import { getSuburbListingInventory } from "@/lib/services/property-service";
+import { LISTING_SUBPAGE_FILTERS, type ListingInventoryRow } from "@/lib/suburb-subpages";
 import { getSuburbSlugsWithRentalData } from "@/lib/services/rental-service";
 import { getSuburbSlugsWithReliablePrice } from "@/lib/services/suburb-service";
 
@@ -41,22 +39,15 @@ export async function generateSitemaps() {
 // The six listing types render empty shells for suburbs with no matching
 // stock (and those pages noindex themselves — see e.g. [slug]/buy/page.tsx),
 // so submitting them would burn crawl budget on ~17,908 near-identical empty
-// pages per type. Each predicate mirrors the getProperties() filter its page
-// runs. schools is absent here on purpose: it carries real data for every
+// pages per type. The predicates (LISTING_SUBPAGE_FILTERS, shared with the
+// links on the pages) each mirror the getProperties() filter their page
+// runs. schools is absent there on purpose: it carries real data for every
 // suburb and stays in the sitemap unconditionally. rental-market is gated
 // below on having a rental row (5,530 of 17,872 indexable suburbs on
 // 8 Sep 2026): the rest render "No rental data available yet" and noindex
 // themselves (fix item 13).
-const LISTING_TYPE_FILTERS: Partial<
-  Record<(typeof SUBPAGE_TYPES)[number], (row: SuburbListingInventoryRow) => boolean>
-> = {
-  houses:       (r) => r.listingType === "buy" && r.propertyType === "house",
-  units:        (r) => r.listingType === "buy" && r.propertyType === "unit",
-  townhouses:   (r) => r.listingType === "buy" && r.propertyType === "townhouse",
-  land:         (r) => r.listingType === "buy" && r.propertyType === "land",
-  buy:          (r) => r.listingType === "buy",
-  rent:         (r) => r.listingType === "rent",
-};
+const LISTING_TYPE_FILTERS: Partial<Record<string, (row: ListingInventoryRow) => boolean>> =
+  LISTING_SUBPAGE_FILTERS;
 
 // force-dynamic (above) means every crawler hit reaches this file, so the
 // inventory groupBy is deduped through unstable_cache like the suburb list —
@@ -101,7 +92,7 @@ export default async function sitemap(props: {
     suburbs = suburbs.filter(({ slug }) => priced.has(slug));
   }
 
-  const filter = LISTING_TYPE_FILTERS[type as (typeof SUBPAGE_TYPES)[number]];
+  const filter = LISTING_TYPE_FILTERS[type];
   if (filter) {
     const inventory = await getCachedListingInventory();
     const withStock = new Set(inventory.filter(filter).map((r) => r.suburbSlug));

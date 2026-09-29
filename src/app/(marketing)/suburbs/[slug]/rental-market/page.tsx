@@ -6,6 +6,7 @@ import { SuburbSubrouteHeader, getSuburbListingTabs, DataFreshnessNote } from "@
 import { ExpertCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
+import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availability";
 import { getSuburbRentalHistory } from "@/lib/services/rental-service";
 import { countProperties } from "@/lib/services/property-service";
 import { buildRentalMarket } from "@/lib/rental-market";
@@ -82,6 +83,9 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
   const pilot = isRentalMarketPilot(slug);
   const model = pilot ? buildRentalMarket(suburb, history, await countProperties({ listingType: "rent", suburb: slug })) : null;
 
+  // Tabs and rent links only where the pages behind them have something on them.
+  const availability = await getSuburbSubpageAvailability(suburb);
+
   const latest = history[0] ?? null;
   const currentRent = latest?.medianRentHouse ?? suburb.stats.medianRentHouse;
   const grossYield =
@@ -118,7 +122,7 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
         title={<>The <span className="italic text-primary">rental market</span></>}
         subtitle={model?.current ? `Median rent, yield and what is listed now in ${suburb.name}, ${suburb.state} ${suburb.postcode}, from ${model.provenance}.` : `Median rent, history and gross-yield calculations for ${suburb.name}, ${suburb.state} ${suburb.postcode}.`}
         breadcrumbLeaf="Rental Market"
-        tabs={getSuburbListingTabs(slug, "rental-market")}
+        tabs={getSuburbListingTabs(slug, "rental-market", availability)}
       />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-14">
@@ -130,10 +134,15 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
             <p className="font-display text-xl text-ink">No rental data available yet</p>
             <p className="font-sans text-sm text-ink-muted mt-2 max-w-md mx-auto">
               Rental statistics for {suburb.name} have not yet been loaded into the database.
-              Check back soon, or{" "}
-              <Link href={`/suburbs/${slug}/rent`} className="underline hover:text-primary">
-                browse current rental listings
-              </Link>
+              Check back soon
+              {availability.rent && (
+                <>
+                  , or{" "}
+                  <Link href={`/suburbs/${slug}/rent`} className="underline hover:text-primary">
+                    browse current rental listings
+                  </Link>
+                </>
+              )}
               .
             </p>
           </div>
@@ -258,7 +267,8 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
               </div>
             </section>
 
-            {/* CTA, soft */}
+            {/* CTA, soft: only when there are rentals listed to browse */}
+            {availability.rent && (
             <div className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
               <div>
                 <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
@@ -278,6 +288,7 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
                 View rentals <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
+            )}
           </>
         )}
       </div>
