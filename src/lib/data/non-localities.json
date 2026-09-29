@@ -1,0 +1,2325 @@
+{
+ "generatedAt": "2026-09-29",
+ "entries": [
+  {
+   "slug": "belconnen-dc-act-2617",
+   "name": "Belconnen DC",
+   "state": "ACT",
+   "postcode": "2617",
+   "kind": "postal",
+   "parent": "belconnen-act-2617"
+  },
+  {
+   "slug": "canberra-international-airport-act-2609",
+   "name": "Canberra International Airport",
+   "state": "ACT",
+   "postcode": "2609",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "erindale-centre-act-2903",
+   "name": "Erindale Centre",
+   "state": "ACT",
+   "postcode": "2903",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
+   "slug": "fairbairn-raaf-act-2600",
+   "name": "Fairbairn RAAF",
+   "state": "ACT",
+   "postcode": "2600",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "hmas-creswell-act-2540",
+   "name": "HMAS Creswell",
+   "state": "ACT",
+   "postcode": "2540",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "hmas-harman-act-2600",
+   "name": "HMAS Harman",
+   "state": "ACT",
+   "postcode": "2600",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "jamison-centre-act-2614",
+   "name": "Jamison Centre",
+   "state": "ACT",
+   "postcode": "2614",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
+   "slug": "kippax-centre-act-2615",
+   "name": "Kippax Centre",
+   "state": "ACT",
+   "postcode": "2615",
+   "kind": "shopping-centre",
+   "parent": "kippax-act-2615"
+  },
+  {
+   "slug": "parliament-house-act-2600",
+   "name": "Parliament House",
+   "state": "ACT",
+   "postcode": "2600",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "phillip-dc-act-2606",
+   "name": "Phillip DC",
+   "state": "ACT",
+   "postcode": "2606",
+   "kind": "postal",
+   "parent": "phillip-act-2606"
+  },
+  {
+   "slug": "university-of-canberra-act-2617",
+   "name": "University of Canberra",
+   "state": "ACT",
+   "postcode": "2617",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "armidale-dc-nsw-2350",
+   "name": "Armidale DC",
+   "state": "NSW",
+   "postcode": "2350",
+   "kind": "postal",
+   "parent": "armidale-nsw-2350"
+  },
+  {
+   "slug": "ballina-dc-nsw-2478",
+   "name": "Ballina DC",
+   "state": "NSW",
+   "postcode": "2478",
+   "kind": "postal",
+   "parent": "ballina-nsw-2478"
+  },
+  {
+   "slug": "bankstown-airport-nsw-2200",
+   "name": "Bankstown Airport",
+   "state": "NSW",
+   "postcode": "2200",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "bondi-junction-plaza-nsw-2022",
+   "name": "Bondi Junction Plaza",
+   "state": "NSW",
+   "postcode": "2022",
+   "kind": "shopping-centre",
+   "parent": "bondi-junction-nsw-2022"
+  },
+  {
+   "slug": "coffs-harbour-dc-nsw-2450",
+   "name": "Coffs Harbour DC",
+   "state": "NSW",
+   "postcode": "2450",
+   "kind": "postal",
+   "parent": "coffs-harbour-nsw-2450"
+  },
+  {
+   "slug": "coffs-harbour-plaza-nsw-2450",
+   "name": "Coffs Harbour Plaza",
+   "state": "NSW",
+   "postcode": "2450",
+   "kind": "shopping-centre",
+   "parent": "coffs-harbour-nsw-2450"
+  },
+  {
+   "slug": "concord-west-dc-nsw-2138",
+   "name": "Concord West DC",
+   "state": "NSW",
+   "postcode": "2138",
+   "kind": "postal",
+   "parent": "concord-west-nsw-2138"
+  },
+  {
+   "slug": "crows-nest-dc-nsw-2065",
+   "name": "Crows Nest DC",
+   "state": "NSW",
+   "postcode": "2065",
+   "kind": "postal",
+   "parent": "crows-nest-nsw-2065"
+  },
+  {
+   "slug": "dubbo-dc-nsw-2830",
+   "name": "Dubbo DC",
+   "state": "NSW",
+   "postcode": "2830",
+   "kind": "postal",
+   "parent": "dubbo-nsw-2830"
+  },
+  {
+   "slug": "dural-dc-nsw-2158",
+   "name": "Dural DC",
+   "state": "NSW",
+   "postcode": "2158",
+   "kind": "postal",
+   "parent": "dural-nsw-2158"
+  },
+  {
+   "slug": "glendenning-dc-nsw-2761",
+   "name": "Glendenning DC",
+   "state": "NSW",
+   "postcode": "2761",
+   "kind": "postal",
+   "parent": "glendenning-nsw-2761"
+  },
+  {
+   "slug": "goulburn-dc-nsw-2580",
+   "name": "Goulburn DC",
+   "state": "NSW",
+   "postcode": "2580",
+   "kind": "postal",
+   "parent": "goulburn-nsw-2580"
+  },
+  {
+   "slug": "griffith-dc-nsw-2680",
+   "name": "Griffith DC",
+   "state": "NSW",
+   "postcode": "2680",
+   "kind": "postal",
+   "parent": "griffith-nsw-2680"
+  },
+  {
+   "slug": "hamilton-dc-nsw-2303",
+   "name": "Hamilton DC",
+   "state": "NSW",
+   "postcode": "2303",
+   "kind": "postal",
+   "parent": "hamilton-nsw-2303"
+  },
+  {
+   "slug": "hmas-albatross-nsw-2540",
+   "name": "HMAS Albatross",
+   "state": "NSW",
+   "postcode": "2540",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "hmas-kuttabul-nsw-2011",
+   "name": "HMAS Kuttabul",
+   "state": "NSW",
+   "postcode": "2011",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "hmas-platypus-nsw-2060",
+   "name": "HMAS Platypus",
+   "state": "NSW",
+   "postcode": "2060",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "hmas-rushcutters-nsw-2027",
+   "name": "HMAS Rushcutters",
+   "state": "NSW",
+   "postcode": "2027",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "hmas-waterhen-nsw-2060",
+   "name": "HMAS Waterhen",
+   "state": "NSW",
+   "postcode": "2060",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "hmas-watson-nsw-2030",
+   "name": "HMAS Watson",
+   "state": "NSW",
+   "postcode": "2030",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "hurstville-westfield-nsw-2220",
+   "name": "Hurstville Westfield",
+   "state": "NSW",
+   "postcode": "2220",
+   "kind": "shopping-centre",
+   "parent": "hurstville-nsw-2220"
+  },
+  {
+   "slug": "katoomba-dc-nsw-2780",
+   "name": "Katoomba DC",
+   "state": "NSW",
+   "postcode": "2780",
+   "kind": "postal",
+   "parent": "katoomba-nsw-2780"
+  },
+  {
+   "slug": "kingsgrove-dc-nsw-2208",
+   "name": "Kingsgrove DC",
+   "state": "NSW",
+   "postcode": "2208",
+   "kind": "postal",
+   "parent": "kingsgrove-nsw-2208"
+  },
+  {
+   "slug": "kirrawee-dc-nsw-2232",
+   "name": "Kirrawee DC",
+   "state": "NSW",
+   "postcode": "2232",
+   "kind": "postal",
+   "parent": "kirrawee-nsw-2232"
+  },
+  {
+   "slug": "lakemba-dc-nsw-2195",
+   "name": "Lakemba DC",
+   "state": "NSW",
+   "postcode": "2195",
+   "kind": "postal",
+   "parent": "lakemba-nsw-2195"
+  },
+  {
+   "slug": "lavington-dc-nsw-2640",
+   "name": "Lavington DC",
+   "state": "NSW",
+   "postcode": "2640",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "lavington-dc-nsw-2641",
+   "name": "Lavington DC",
+   "state": "NSW",
+   "postcode": "2641",
+   "kind": "postal",
+   "parent": "lavington-nsw-2641"
+  },
+  {
+   "slug": "lismore-dc-nsw-2480",
+   "name": "Lismore DC",
+   "state": "NSW",
+   "postcode": "2480",
+   "kind": "postal",
+   "parent": "lismore-nsw-2480"
+  },
+  {
+   "slug": "lithgow-dc-nsw-2790",
+   "name": "Lithgow DC",
+   "state": "NSW",
+   "postcode": "2790",
+   "kind": "postal",
+   "parent": "lithgow-nsw-2790"
+  },
+  {
+   "slug": "liverpool-westfield-nsw-2170",
+   "name": "Liverpool Westfield",
+   "state": "NSW",
+   "postcode": "2170",
+   "kind": "shopping-centre",
+   "parent": "liverpool-nsw-2170"
+  },
+  {
+   "slug": "macquarie-centre-nsw-2113",
+   "name": "Macquarie Centre",
+   "state": "NSW",
+   "postcode": "2113",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
+   "slug": "metford-dc-nsw-2323",
+   "name": "Metford DC",
+   "state": "NSW",
+   "postcode": "2323",
+   "kind": "postal",
+   "parent": "metford-nsw-2323"
+  },
+  {
+   "slug": "minto-dc-nsw-2566",
+   "name": "Minto DC",
+   "state": "NSW",
+   "postcode": "2566",
+   "kind": "postal",
+   "parent": "minto-nsw-2566"
+  },
+  {
+   "slug": "murwillumbah-dc-nsw-2484",
+   "name": "Murwillumbah DC",
+   "state": "NSW",
+   "postcode": "2484",
+   "kind": "postal",
+   "parent": "murwillumbah-nsw-2484"
+  },
+  {
+   "slug": "narellan-dc-nsw-2567",
+   "name": "Narellan DC",
+   "state": "NSW",
+   "postcode": "2567",
+   "kind": "postal",
+   "parent": "narellan-nsw-2567"
+  },
+  {
+   "slug": "newcastle-university-nsw-2308",
+   "name": "Newcastle University",
+   "state": "NSW",
+   "postcode": "2308",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "nowra-dc-nsw-2541",
+   "name": "Nowra DC",
+   "state": "NSW",
+   "postcode": "2541",
+   "kind": "postal",
+   "parent": "nowra-nsw-2541"
+  },
+  {
+   "slug": "nowra-naval-po-nsw-2540",
+   "name": "Nowra Naval PO",
+   "state": "NSW",
+   "postcode": "2540",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "oak-flats-dc-nsw-2529",
+   "name": "Oak Flats DC",
+   "state": "NSW",
+   "postcode": "2529",
+   "kind": "postal",
+   "parent": "oak-flats-nsw-2529"
+  },
+  {
+   "slug": "orange-dc-nsw-2800",
+   "name": "Orange DC",
+   "state": "NSW",
+   "postcode": "2800",
+   "kind": "postal",
+   "parent": "orange-nsw-2800"
+  },
+  {
+   "slug": "parliament-house-nsw-2000",
+   "name": "Parliament House",
+   "state": "NSW",
+   "postcode": "2000",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "parramatta-westfield-nsw-2150",
+   "name": "Parramatta Westfield",
+   "state": "NSW",
+   "postcode": "2150",
+   "kind": "shopping-centre",
+   "parent": "parramatta-nsw-2150"
+  },
+  {
+   "slug": "peakhurst-dc-nsw-2210",
+   "name": "Peakhurst DC",
+   "state": "NSW",
+   "postcode": "2210",
+   "kind": "postal",
+   "parent": "peakhurst-nsw-2210"
+  },
+  {
+   "slug": "penrith-plaza-nsw-2750",
+   "name": "Penrith Plaza",
+   "state": "NSW",
+   "postcode": "2750",
+   "kind": "shopping-centre",
+   "parent": "penrith-nsw-2750"
+  },
+  {
+   "slug": "port-macquarie-bc-nsw-2444",
+   "name": "Port Macquarie BC",
+   "state": "NSW",
+   "postcode": "2444",
+   "kind": "postal",
+   "parent": "port-macquarie-nsw-2444"
+  },
+  {
+   "slug": "queanbeyan-dc-nsw-2620",
+   "name": "Queanbeyan DC",
+   "state": "NSW",
+   "postcode": "2620",
+   "kind": "postal",
+   "parent": "queanbeyan-nsw-2620"
+  },
+  {
+   "slug": "randwick-dc-nsw-2031",
+   "name": "Randwick DC",
+   "state": "NSW",
+   "postcode": "2031",
+   "kind": "postal",
+   "parent": "randwick-nsw-2031"
+  },
+  {
+   "slug": "regents-park-dc-nsw-2143",
+   "name": "Regents Park DC",
+   "state": "NSW",
+   "postcode": "2143",
+   "kind": "postal",
+   "parent": "regents-park-nsw-2143"
+  },
+  {
+   "slug": "riverina-mc-nsw-2678",
+   "name": "Riverina MC",
+   "state": "NSW",
+   "postcode": "2678",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "rockdale-dc-nsw-2216",
+   "name": "Rockdale DC",
+   "state": "NSW",
+   "postcode": "2216",
+   "kind": "postal",
+   "parent": "rockdale-nsw-2216"
+  },
+  {
+   "slug": "royal-north-shore-hospital-nsw-2065",
+   "name": "Royal North Shore Hospital",
+   "state": "NSW",
+   "postcode": "2065",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "singleton-dc-nsw-2330",
+   "name": "Singleton DC",
+   "state": "NSW",
+   "postcode": "2330",
+   "kind": "postal",
+   "parent": "singleton-nsw-2330"
+  },
+  {
+   "slug": "st-peters-dc-nsw-2044",
+   "name": "St Peters DC",
+   "state": "NSW",
+   "postcode": "2044",
+   "kind": "postal",
+   "parent": "st-peters-nsw-2044"
+  },
+  {
+   "slug": "sydney-domestic-airport-nsw-2020",
+   "name": "Sydney Domestic Airport",
+   "state": "NSW",
+   "postcode": "2020",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "sydney-international-airport-nsw-2020",
+   "name": "Sydney International Airport",
+   "state": "NSW",
+   "postcode": "2020",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "taree-dc-nsw-2430",
+   "name": "Taree DC",
+   "state": "NSW",
+   "postcode": "2430",
+   "kind": "postal",
+   "parent": "taree-nsw-2430"
+  },
+  {
+   "slug": "the-university-of-sydney-nsw-2006",
+   "name": "The University of Sydney",
+   "state": "NSW",
+   "postcode": "2006",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "tweed-heads-south-dc-nsw-2486",
+   "name": "Tweed Heads South DC",
+   "state": "NSW",
+   "postcode": "2486",
+   "kind": "postal",
+   "parent": "tweed-heads-south-nsw-2486"
+  },
+  {
+   "slug": "unanderra-dc-nsw-2526",
+   "name": "Unanderra DC",
+   "state": "NSW",
+   "postcode": "2526",
+   "kind": "postal",
+   "parent": "unanderra-nsw-2526"
+  },
+  {
+   "slug": "wagga-wagga-bc-nsw-2650",
+   "name": "Wagga Wagga BC",
+   "state": "NSW",
+   "postcode": "2650",
+   "kind": "postal",
+   "parent": "wagga-wagga-nsw-2650"
+  },
+  {
+   "slug": "wagga-wagga-raaf-nsw-2651",
+   "name": "Wagga Wagga RAAF",
+   "state": "NSW",
+   "postcode": "2651",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "wallsend-dc-nsw-2287",
+   "name": "Wallsend DC",
+   "state": "NSW",
+   "postcode": "2287",
+   "kind": "postal",
+   "parent": "wallsend-nsw-2287"
+  },
+  {
+   "slug": "warriewood-dc-nsw-2102",
+   "name": "Warriewood DC",
+   "state": "NSW",
+   "postcode": "2102",
+   "kind": "postal",
+   "parent": "warriewood-nsw-2102"
+  },
+  {
+   "slug": "waterloo-dc-nsw-2017",
+   "name": "Waterloo DC",
+   "state": "NSW",
+   "postcode": "2017",
+   "kind": "postal",
+   "parent": "waterloo-nsw-2017"
+  },
+  {
+   "slug": "wetherill-park-bc-nsw-2164",
+   "name": "Wetherill Park BC",
+   "state": "NSW",
+   "postcode": "2164",
+   "kind": "postal",
+   "parent": "wetherill-park-nsw-2164"
+  },
+  {
+   "slug": "wollongong-dc-nsw-2500",
+   "name": "Wollongong DC",
+   "state": "NSW",
+   "postcode": "2500",
+   "kind": "postal",
+   "parent": "wollongong-nsw-2500"
+  },
+  {
+   "slug": "darwin-dc-nt-0820",
+   "name": "Darwin DC",
+   "state": "NT",
+   "postcode": "0820",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "darwin-international-airport-nt-0820",
+   "name": "Darwin International Airport",
+   "state": "NT",
+   "postcode": "0820",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "darwin-mc-nt-0820",
+   "name": "Darwin MC",
+   "state": "NT",
+   "postcode": "0820",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "darwin-mc-nt-0822",
+   "name": "Darwin MC",
+   "state": "NT",
+   "postcode": "0822",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "raaf-base-darwin-nt-0820",
+   "name": "RAAF Base Darwin",
+   "state": "NT",
+   "postcode": "0820",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "tindal-raaf-nt-0853",
+   "name": "Tindal RAAF",
+   "state": "NT",
+   "postcode": "0853",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "acacia-ridge-bc-qld-4110",
+   "name": "Acacia Ridge BC",
+   "state": "QLD",
+   "postcode": "4110",
+   "kind": "postal",
+   "parent": "acacia-ridge-qld-4110"
+  },
+  {
+   "slug": "acacia-ridge-dc-qld-4110",
+   "name": "Acacia Ridge DC",
+   "state": "QLD",
+   "postcode": "4110",
+   "kind": "postal",
+   "parent": "acacia-ridge-qld-4110"
+  },
+  {
+   "slug": "aitkenvale-bc-qld-4814",
+   "name": "Aitkenvale BC",
+   "state": "QLD",
+   "postcode": "4814",
+   "kind": "postal",
+   "parent": "aitkenvale-qld-4814"
+  },
+  {
+   "slug": "albion-bc-qld-4010",
+   "name": "Albion BC",
+   "state": "QLD",
+   "postcode": "4010",
+   "kind": "postal",
+   "parent": "albion-qld-4010"
+  },
+  {
+   "slug": "albion-dc-qld-4010",
+   "name": "Albion DC",
+   "state": "QLD",
+   "postcode": "4010",
+   "kind": "postal",
+   "parent": "albion-qld-4010"
+  },
+  {
+   "slug": "annerley-dc-qld-4103",
+   "name": "Annerley DC",
+   "state": "QLD",
+   "postcode": "4103",
+   "kind": "postal",
+   "parent": "annerley-qld-4103"
+  },
+  {
+   "slug": "archerfield-bc-qld-4108",
+   "name": "Archerfield BC",
+   "state": "QLD",
+   "postcode": "4108",
+   "kind": "postal",
+   "parent": "archerfield-qld-4108"
+  },
+  {
+   "slug": "arundel-bc-qld-4214",
+   "name": "Arundel BC",
+   "state": "QLD",
+   "postcode": "4214",
+   "kind": "postal",
+   "parent": "arundel-qld-4214"
+  },
+  {
+   "slug": "arundel-dc-qld-4214",
+   "name": "Arundel DC",
+   "state": "QLD",
+   "postcode": "4214",
+   "kind": "postal",
+   "parent": "arundel-qld-4214"
+  },
+  {
+   "slug": "booval-bc-qld-4304",
+   "name": "Booval BC",
+   "state": "QLD",
+   "postcode": "4304",
+   "kind": "postal",
+   "parent": "booval-qld-4304"
+  },
+  {
+   "slug": "booval-dc-qld-4304",
+   "name": "Booval DC",
+   "state": "QLD",
+   "postcode": "4304",
+   "kind": "postal",
+   "parent": "booval-qld-4304"
+  },
+  {
+   "slug": "brendale-bc-qld-4500",
+   "name": "Brendale BC",
+   "state": "QLD",
+   "postcode": "4500",
+   "kind": "postal",
+   "parent": "brendale-qld-4500"
+  },
+  {
+   "slug": "brendale-dc-qld-4500",
+   "name": "Brendale DC",
+   "state": "QLD",
+   "postcode": "4500",
+   "kind": "postal",
+   "parent": "brendale-qld-4500"
+  },
+  {
+   "slug": "bribie-island-dc-qld-4507",
+   "name": "Bribie Island DC",
+   "state": "QLD",
+   "postcode": "4507",
+   "kind": "postal",
+   "parent": "bribie-island-qld-4507"
+  },
+  {
+   "slug": "brisbane-city-dc-qld-4000",
+   "name": "Brisbane City DC",
+   "state": "QLD",
+   "postcode": "4000",
+   "kind": "postal",
+   "parent": "brisbane-city-qld-4000"
+  },
+  {
+   "slug": "brisbane-gpo-qld-4000",
+   "name": "Brisbane GPO",
+   "state": "QLD",
+   "postcode": "4000",
+   "kind": "postal",
+   "parent": "brisbane-qld-4000"
+  },
+  {
+   "slug": "brookside-centre-qld-4053",
+   "name": "Brookside Centre",
+   "state": "QLD",
+   "postcode": "4053",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
+   "slug": "browns-plains-bc-qld-4118",
+   "name": "Browns Plains BC",
+   "state": "QLD",
+   "postcode": "4118",
+   "kind": "postal",
+   "parent": "browns-plains-qld-4118"
+  },
+  {
+   "slug": "bundaberg-dc-qld-4670",
+   "name": "Bundaberg DC",
+   "state": "QLD",
+   "postcode": "4670",
+   "kind": "postal",
+   "parent": "bundaberg-qld-4670"
+  },
+  {
+   "slug": "bundall-bc-qld-4217",
+   "name": "Bundall BC",
+   "state": "QLD",
+   "postcode": "4217",
+   "kind": "postal",
+   "parent": "bundall-qld-4217"
+  },
+  {
+   "slug": "bundall-dc-qld-4217",
+   "name": "Bundall DC",
+   "state": "QLD",
+   "postcode": "4217",
+   "kind": "postal",
+   "parent": "bundall-qld-4217"
+  },
+  {
+   "slug": "burleigh-bc-qld-4220",
+   "name": "Burleigh BC",
+   "state": "QLD",
+   "postcode": "4220",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "burleigh-dc-qld-4220",
+   "name": "Burleigh DC",
+   "state": "QLD",
+   "postcode": "4220",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "burpengary-dc-qld-4505",
+   "name": "Burpengary DC",
+   "state": "QLD",
+   "postcode": "4505",
+   "kind": "postal",
+   "parent": "burpengary-qld-4505"
+  },
+  {
+   "slug": "caboolture-bc-qld-4510",
+   "name": "Caboolture BC",
+   "state": "QLD",
+   "postcode": "4510",
+   "kind": "postal",
+   "parent": "caboolture-qld-4510"
+  },
+  {
+   "slug": "cairns-dc-qld-4870",
+   "name": "Cairns DC",
+   "state": "QLD",
+   "postcode": "4870",
+   "kind": "postal",
+   "parent": "cairns-qld-4870"
+  },
+  {
+   "slug": "cairns-mc-qld-4870",
+   "name": "Cairns MC",
+   "state": "QLD",
+   "postcode": "4870",
+   "kind": "postal",
+   "parent": "cairns-qld-4870"
+  },
+  {
+   "slug": "cairns-mc-qld-4872",
+   "name": "Cairns MC",
+   "state": "QLD",
+   "postcode": "4872",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "cairns-orchid-plaza-qld-4870",
+   "name": "Cairns Orchid Plaza",
+   "state": "QLD",
+   "postcode": "4870",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
+   "slug": "caloundra-bc-qld-4551",
+   "name": "Caloundra BC",
+   "state": "QLD",
+   "postcode": "4551",
+   "kind": "postal",
+   "parent": "caloundra-qld-4551"
+  },
+  {
+   "slug": "caloundra-dc-qld-4551",
+   "name": "Caloundra DC",
+   "state": "QLD",
+   "postcode": "4551",
+   "kind": "postal",
+   "parent": "caloundra-qld-4551"
+  },
+  {
+   "slug": "capalaba-bc-qld-4157",
+   "name": "Capalaba BC",
+   "state": "QLD",
+   "postcode": "4157",
+   "kind": "postal",
+   "parent": "capalaba-qld-4157"
+  },
+  {
+   "slug": "capalaba-dc-qld-4157",
+   "name": "Capalaba DC",
+   "state": "QLD",
+   "postcode": "4157",
+   "kind": "postal",
+   "parent": "capalaba-qld-4157"
+  },
+  {
+   "slug": "central-queensland-mc-qld-4702",
+   "name": "Central Queensland MC",
+   "state": "QLD",
+   "postcode": "4702",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "central-queensland-university-qld-4701",
+   "name": "Central Queensland University",
+   "state": "QLD",
+   "postcode": "4701",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "chermside-bc-qld-4032",
+   "name": "Chermside BC",
+   "state": "QLD",
+   "postcode": "4032",
+   "kind": "postal",
+   "parent": "chermside-qld-4032"
+  },
+  {
+   "slug": "chermside-centre-qld-4032",
+   "name": "Chermside Centre",
+   "state": "QLD",
+   "postcode": "4032",
+   "kind": "shopping-centre",
+   "parent": "chermside-qld-4032"
+  },
+  {
+   "slug": "cleveland-dc-qld-4163",
+   "name": "Cleveland DC",
+   "state": "QLD",
+   "postcode": "4163",
+   "kind": "postal",
+   "parent": "cleveland-qld-4163"
+  },
+  {
+   "slug": "clontarf-dc-qld-4019",
+   "name": "Clontarf DC",
+   "state": "QLD",
+   "postcode": "4019",
+   "kind": "postal",
+   "parent": "clontarf-qld-4019"
+  },
+  {
+   "slug": "coorparoo-bc-qld-4151",
+   "name": "Coorparoo BC",
+   "state": "QLD",
+   "postcode": "4151",
+   "kind": "postal",
+   "parent": "coorparoo-qld-4151"
+  },
+  {
+   "slug": "coorparoo-dc-qld-4151",
+   "name": "Coorparoo DC",
+   "state": "QLD",
+   "postcode": "4151",
+   "kind": "postal",
+   "parent": "coorparoo-qld-4151"
+  },
+  {
+   "slug": "crestmead-dc-qld-4132",
+   "name": "Crestmead DC",
+   "state": "QLD",
+   "postcode": "4132",
+   "kind": "postal",
+   "parent": "crestmead-qld-4132"
+  },
+  {
+   "slug": "currumbin-dc-qld-4223",
+   "name": "Currumbin DC",
+   "state": "QLD",
+   "postcode": "4223",
+   "kind": "postal",
+   "parent": "currumbin-qld-4223"
+  },
+  {
+   "slug": "eagle-farm-bc-qld-4009",
+   "name": "Eagle Farm BC",
+   "state": "QLD",
+   "postcode": "4009",
+   "kind": "postal",
+   "parent": "eagle-farm-qld-4009"
+  },
+  {
+   "slug": "earlville-bc-qld-4870",
+   "name": "Earlville BC",
+   "state": "QLD",
+   "postcode": "4870",
+   "kind": "postal",
+   "parent": "earlville-qld-4870"
+  },
+  {
+   "slug": "ferny-hills-dc-qld-4055",
+   "name": "Ferny Hills DC",
+   "state": "QLD",
+   "postcode": "4055",
+   "kind": "postal",
+   "parent": "ferny-hills-qld-4055"
+  },
+  {
+   "slug": "fortitude-valley-bc-qld-4006",
+   "name": "Fortitude Valley BC",
+   "state": "QLD",
+   "postcode": "4006",
+   "kind": "postal",
+   "parent": "fortitude-valley-qld-4006"
+  },
+  {
+   "slug": "garbutt-bc-qld-4814",
+   "name": "Garbutt BC",
+   "state": "QLD",
+   "postcode": "4814",
+   "kind": "postal",
+   "parent": "garbutt-qld-4814"
+  },
+  {
+   "slug": "gladstone-bc-qld-4680",
+   "name": "Gladstone BC",
+   "state": "QLD",
+   "postcode": "4680",
+   "kind": "postal",
+   "parent": "gladstone-qld-4680"
+  },
+  {
+   "slug": "gladstone-dc-qld-4680",
+   "name": "Gladstone DC",
+   "state": "QLD",
+   "postcode": "4680",
+   "kind": "postal",
+   "parent": "gladstone-qld-4680"
+  },
+  {
+   "slug": "gold-coast-mc-qld-4217",
+   "name": "Gold Coast MC",
+   "state": "QLD",
+   "postcode": "4217",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "goodna-dc-qld-4300",
+   "name": "Goodna DC",
+   "state": "QLD",
+   "postcode": "4300",
+   "kind": "postal",
+   "parent": "goodna-qld-4300"
+  },
+  {
+   "slug": "griffith-university-qld-4111",
+   "name": "Griffith University",
+   "state": "QLD",
+   "postcode": "4111",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "gympie-dc-qld-4570",
+   "name": "Gympie DC",
+   "state": "QLD",
+   "postcode": "4570",
+   "kind": "postal",
+   "parent": "gympie-qld-4570"
+  },
+  {
+   "slug": "helensvale-town-centre-qld-4212",
+   "name": "Helensvale Town Centre",
+   "state": "QLD",
+   "postcode": "4212",
+   "kind": "shopping-centre",
+   "parent": "helensvale-qld-4212"
+  },
+  {
+   "slug": "hervey-bay-dc-qld-4655",
+   "name": "Hervey Bay DC",
+   "state": "QLD",
+   "postcode": "4655",
+   "kind": "postal",
+   "parent": "hervey-bay-qld-4655"
+  },
+  {
+   "slug": "indooroopilly-centre-qld-4068",
+   "name": "Indooroopilly Centre",
+   "state": "QLD",
+   "postcode": "4068",
+   "kind": "shopping-centre",
+   "parent": "indooroopilly-qld-4068"
+  },
+  {
+   "slug": "james-cook-university-qld-4811",
+   "name": "James Cook University",
+   "state": "QLD",
+   "postcode": "4811",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "kelvin-grove-bc-qld-4059",
+   "name": "Kelvin Grove BC",
+   "state": "QLD",
+   "postcode": "4059",
+   "kind": "postal",
+   "parent": "kelvin-grove-qld-4059"
+  },
+  {
+   "slug": "kelvin-grove-dc-qld-4059",
+   "name": "Kelvin Grove DC",
+   "state": "QLD",
+   "postcode": "4059",
+   "kind": "postal",
+   "parent": "kelvin-grove-qld-4059"
+  },
+  {
+   "slug": "kenmore-dc-qld-4069",
+   "name": "Kenmore DC",
+   "state": "QLD",
+   "postcode": "4069",
+   "kind": "postal",
+   "parent": "kenmore-qld-4069"
+  },
+  {
+   "slug": "kingaroy-dc-qld-4610",
+   "name": "Kingaroy DC",
+   "state": "QLD",
+   "postcode": "4610",
+   "kind": "postal",
+   "parent": "kingaroy-qld-4610"
+  },
+  {
+   "slug": "logan-city-bc-qld-4114",
+   "name": "Logan City BC",
+   "state": "QLD",
+   "postcode": "4114",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "logan-city-dc-qld-4114",
+   "name": "Logan City DC",
+   "state": "QLD",
+   "postcode": "4114",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "logan-hyperdome-bc-qld-4128",
+   "name": "Logan Hyperdome BC",
+   "state": "QLD",
+   "postcode": "4128",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "loganholme-bc-qld-4129",
+   "name": "Loganholme BC",
+   "state": "QLD",
+   "postcode": "4129",
+   "kind": "postal",
+   "parent": "loganholme-qld-4129"
+  },
+  {
+   "slug": "loganholme-dc-qld-4129",
+   "name": "Loganholme DC",
+   "state": "QLD",
+   "postcode": "4129",
+   "kind": "postal",
+   "parent": "loganholme-qld-4129"
+  },
+  {
+   "slug": "mackay-bc-qld-4740",
+   "name": "Mackay BC",
+   "state": "QLD",
+   "postcode": "4740",
+   "kind": "postal",
+   "parent": "mackay-qld-4740"
+  },
+  {
+   "slug": "mackay-dc-qld-4740",
+   "name": "Mackay DC",
+   "state": "QLD",
+   "postcode": "4740",
+   "kind": "postal",
+   "parent": "mackay-qld-4740"
+  },
+  {
+   "slug": "mackay-mc-qld-4741",
+   "name": "Mackay MC",
+   "state": "QLD",
+   "postcode": "4741",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "mansfield-bc-qld-4122",
+   "name": "Mansfield BC",
+   "state": "QLD",
+   "postcode": "4122",
+   "kind": "postal",
+   "parent": "mansfield-qld-4122"
+  },
+  {
+   "slug": "mansfield-dc-qld-4122",
+   "name": "Mansfield DC",
+   "state": "QLD",
+   "postcode": "4122",
+   "kind": "postal",
+   "parent": "mansfield-qld-4122"
+  },
+  {
+   "slug": "maroochydore-bc-qld-4558",
+   "name": "Maroochydore BC",
+   "state": "QLD",
+   "postcode": "4558",
+   "kind": "postal",
+   "parent": "maroochydore-qld-4558"
+  },
+  {
+   "slug": "maroochydore-dc-qld-4558",
+   "name": "Maroochydore DC",
+   "state": "QLD",
+   "postcode": "4558",
+   "kind": "postal",
+   "parent": "maroochydore-qld-4558"
+  },
+  {
+   "slug": "maryborough-dc-qld-4650",
+   "name": "Maryborough DC",
+   "state": "QLD",
+   "postcode": "4650",
+   "kind": "postal",
+   "parent": "maryborough-qld-4650"
+  },
+  {
+   "slug": "mater-hospital-qld-4101",
+   "name": "Mater Hospital",
+   "state": "QLD",
+   "postcode": "4101",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "milton-bc-qld-4064",
+   "name": "Milton BC",
+   "state": "QLD",
+   "postcode": "4064",
+   "kind": "postal",
+   "parent": "milton-qld-4064"
+  },
+  {
+   "slug": "mount-isa-bc-qld-4825",
+   "name": "Mount Isa BC",
+   "state": "QLD",
+   "postcode": "4825",
+   "kind": "postal",
+   "parent": "mount-isa-qld-4825"
+  },
+  {
+   "slug": "mount-isa-dc-qld-4825",
+   "name": "Mount Isa DC",
+   "state": "QLD",
+   "postcode": "4825",
+   "kind": "postal",
+   "parent": "mount-isa-qld-4825"
+  },
+  {
+   "slug": "nambour-bc-qld-4560",
+   "name": "Nambour BC",
+   "state": "QLD",
+   "postcode": "4560",
+   "kind": "postal",
+   "parent": "nambour-qld-4560"
+  },
+  {
+   "slug": "nambour-dc-qld-4560",
+   "name": "Nambour DC",
+   "state": "QLD",
+   "postcode": "4560",
+   "kind": "postal",
+   "parent": "nambour-qld-4560"
+  },
+  {
+   "slug": "nerang-bc-qld-4211",
+   "name": "Nerang BC",
+   "state": "QLD",
+   "postcode": "4211",
+   "kind": "postal",
+   "parent": "nerang-qld-4211"
+  },
+  {
+   "slug": "nerang-dc-qld-4211",
+   "name": "Nerang DC",
+   "state": "QLD",
+   "postcode": "4211",
+   "kind": "postal",
+   "parent": "nerang-qld-4211"
+  },
+  {
+   "slug": "noosaville-bc-qld-4566",
+   "name": "Noosaville BC",
+   "state": "QLD",
+   "postcode": "4566",
+   "kind": "postal",
+   "parent": "noosaville-qld-4566"
+  },
+  {
+   "slug": "noosaville-dc-qld-4566",
+   "name": "Noosaville DC",
+   "state": "QLD",
+   "postcode": "4566",
+   "kind": "postal",
+   "parent": "noosaville-qld-4566"
+  },
+  {
+   "slug": "northgate-mc-qld-4013",
+   "name": "Northgate MC",
+   "state": "QLD",
+   "postcode": "4013",
+   "kind": "postal",
+   "parent": "northgate-qld-4013"
+  },
+  {
+   "slug": "parliament-house-qld-4000",
+   "name": "Parliament House",
+   "state": "QLD",
+   "postcode": "4000",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "princess-alexandra-hospital-qld-4102",
+   "name": "Princess Alexandra Hospital",
+   "state": "QLD",
+   "postcode": "4102",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "richlands-bc-qld-4077",
+   "name": "Richlands BC",
+   "state": "QLD",
+   "postcode": "4077",
+   "kind": "postal",
+   "parent": "richlands-qld-4077"
+  },
+  {
+   "slug": "richlands-dc-qld-4077",
+   "name": "Richlands DC",
+   "state": "QLD",
+   "postcode": "4077",
+   "kind": "postal",
+   "parent": "richlands-qld-4077"
+  },
+  {
+   "slug": "robina-dc-qld-4226",
+   "name": "Robina DC",
+   "state": "QLD",
+   "postcode": "4226",
+   "kind": "postal",
+   "parent": "robina-qld-4226"
+  },
+  {
+   "slug": "robina-town-centre-qld-4230",
+   "name": "Robina Town Centre",
+   "state": "QLD",
+   "postcode": "4230",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
+   "slug": "rockhampton-dc-qld-4701",
+   "name": "Rockhampton DC",
+   "state": "QLD",
+   "postcode": "4701",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "rockhampton-hospital-qld-4700",
+   "name": "Rockhampton Hospital",
+   "state": "QLD",
+   "postcode": "4700",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "rocklea-dc-qld-4106",
+   "name": "Rocklea DC",
+   "state": "QLD",
+   "postcode": "4106",
+   "kind": "postal",
+   "parent": "rocklea-qld-4106"
+  },
+  {
+   "slug": "sandgate-dc-qld-4017",
+   "name": "Sandgate DC",
+   "state": "QLD",
+   "postcode": "4017",
+   "kind": "postal",
+   "parent": "sandgate-qld-4017"
+  },
+  {
+   "slug": "south-brisbane-bc-qld-4101",
+   "name": "South Brisbane BC",
+   "state": "QLD",
+   "postcode": "4101",
+   "kind": "postal",
+   "parent": "south-brisbane-qld-4101"
+  },
+  {
+   "slug": "southport-bc-qld-4215",
+   "name": "Southport BC",
+   "state": "QLD",
+   "postcode": "4215",
+   "kind": "postal",
+   "parent": "southport-qld-4215"
+  },
+  {
+   "slug": "springwood-bc-qld-4127",
+   "name": "Springwood BC",
+   "state": "QLD",
+   "postcode": "4127",
+   "kind": "postal",
+   "parent": "springwood-qld-4127"
+  },
+  {
+   "slug": "stafford-bc-qld-4053",
+   "name": "Stafford BC",
+   "state": "QLD",
+   "postcode": "4053",
+   "kind": "postal",
+   "parent": "stafford-qld-4053"
+  },
+  {
+   "slug": "stafford-dc-qld-4053",
+   "name": "Stafford DC",
+   "state": "QLD",
+   "postcode": "4053",
+   "kind": "postal",
+   "parent": "stafford-qld-4053"
+  },
+  {
+   "slug": "strathpine-centre-qld-4500",
+   "name": "Strathpine Centre",
+   "state": "QLD",
+   "postcode": "4500",
+   "kind": "shopping-centre",
+   "parent": "strathpine-qld-4500"
+  },
+  {
+   "slug": "sumner-park-bc-qld-4074",
+   "name": "Sumner Park BC",
+   "state": "QLD",
+   "postcode": "4074",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "sunshine-coast-mc-qld-4560",
+   "name": "Sunshine Coast MC",
+   "state": "QLD",
+   "postcode": "4560",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "sunshine-plaza-qld-4558",
+   "name": "Sunshine Plaza",
+   "state": "QLD",
+   "postcode": "4558",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
+   "slug": "thuringowa-dc-qld-4814",
+   "name": "Thuringowa DC",
+   "state": "QLD",
+   "postcode": "4814",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "tingalpa-bc-qld-4173",
+   "name": "Tingalpa BC",
+   "state": "QLD",
+   "postcode": "4173",
+   "kind": "postal",
+   "parent": "tingalpa-qld-4173"
+  },
+  {
+   "slug": "tingalpa-dc-qld-4173",
+   "name": "Tingalpa DC",
+   "state": "QLD",
+   "postcode": "4173",
+   "kind": "postal",
+   "parent": "tingalpa-qld-4173"
+  },
+  {
+   "slug": "toowong-bc-qld-4066",
+   "name": "Toowong BC",
+   "state": "QLD",
+   "postcode": "4066",
+   "kind": "postal",
+   "parent": "toowong-qld-4066"
+  },
+  {
+   "slug": "toowong-dc-qld-4066",
+   "name": "Toowong DC",
+   "state": "QLD",
+   "postcode": "4066",
+   "kind": "postal",
+   "parent": "toowong-qld-4066"
+  },
+  {
+   "slug": "toowoomba-bc-qld-4350",
+   "name": "Toowoomba BC",
+   "state": "QLD",
+   "postcode": "4350",
+   "kind": "postal",
+   "parent": "toowoomba-qld-4350"
+  },
+  {
+   "slug": "toowoomba-dc-qld-4350",
+   "name": "Toowoomba DC",
+   "state": "QLD",
+   "postcode": "4350",
+   "kind": "postal",
+   "parent": "toowoomba-qld-4350"
+  },
+  {
+   "slug": "toowoomba-mc-qld-4352",
+   "name": "Toowoomba MC",
+   "state": "QLD",
+   "postcode": "4352",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "townsville-dc-qld-4810",
+   "name": "Townsville DC",
+   "state": "QLD",
+   "postcode": "4810",
+   "kind": "postal",
+   "parent": "townsville-qld-4810"
+  },
+  {
+   "slug": "townsville-mc-qld-4810",
+   "name": "Townsville MC",
+   "state": "QLD",
+   "postcode": "4810",
+   "kind": "postal",
+   "parent": "townsville-qld-4810"
+  },
+  {
+   "slug": "upper-mount-gravatt-bc-qld-4122",
+   "name": "Upper Mount Gravatt BC",
+   "state": "QLD",
+   "postcode": "4122",
+   "kind": "postal",
+   "parent": "upper-mount-gravatt-qld-4122"
+  },
+  {
+   "slug": "virginia-bc-qld-4014",
+   "name": "Virginia BC",
+   "state": "QLD",
+   "postcode": "4014",
+   "kind": "postal",
+   "parent": "virginia-qld-4014"
+  },
+  {
+   "slug": "virginia-dc-qld-4014",
+   "name": "Virginia DC",
+   "state": "QLD",
+   "postcode": "4014",
+   "kind": "postal",
+   "parent": "virginia-qld-4014"
+  },
+  {
+   "slug": "wacol-east-immigration-centre-qld-4076",
+   "name": "Wacol East Immigration Centre",
+   "state": "QLD",
+   "postcode": "4076",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "warwick-dc-qld-4370",
+   "name": "Warwick DC",
+   "state": "QLD",
+   "postcode": "4370",
+   "kind": "postal",
+   "parent": "warwick-qld-4370"
+  },
+  {
+   "slug": "weipa-airport-qld-4874",
+   "name": "Weipa Airport",
+   "state": "QLD",
+   "postcode": "4874",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "wyalla-plaza-qld-4350",
+   "name": "Wyalla Plaza",
+   "state": "QLD",
+   "postcode": "4350",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
+   "slug": "wynnum-plaza-qld-4178",
+   "name": "Wynnum Plaza",
+   "state": "QLD",
+   "postcode": "4178",
+   "kind": "shopping-centre",
+   "parent": "wynnum-qld-4178"
+  },
+  {
+   "slug": "yatala-dc-qld-4207",
+   "name": "Yatala DC",
+   "state": "QLD",
+   "postcode": "4207",
+   "kind": "postal",
+   "parent": "yatala-qld-4207"
+  },
+  {
+   "slug": "adelaide-bc-sa-5000",
+   "name": "Adelaide BC",
+   "state": "SA",
+   "postcode": "5000",
+   "kind": "postal",
+   "parent": "adelaide-sa-5000"
+  },
+  {
+   "slug": "edinburgh-raaf-sa-5111",
+   "name": "Edinburgh RAAF",
+   "state": "SA",
+   "postcode": "5111",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "elizabeth-west-dc-sa-5113",
+   "name": "Elizabeth West DC",
+   "state": "SA",
+   "postcode": "5113",
+   "kind": "postal",
+   "parent": "elizabeth-west-sa-5113"
+  },
+  {
+   "slug": "enfield-plaza-sa-5085",
+   "name": "Enfield Plaza",
+   "state": "SA",
+   "postcode": "5085",
+   "kind": "shopping-centre",
+   "parent": "enfield-sa-5085"
+  },
+  {
+   "slug": "flinders-university-sa-5042",
+   "name": "Flinders University",
+   "state": "SA",
+   "postcode": "5042",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "glynde-dc-sa-5070",
+   "name": "Glynde DC",
+   "state": "SA",
+   "postcode": "5070",
+   "kind": "postal",
+   "parent": "glynde-sa-5070"
+  },
+  {
+   "slug": "glynde-plaza-sa-5070",
+   "name": "Glynde Plaza",
+   "state": "SA",
+   "postcode": "5070",
+   "kind": "shopping-centre",
+   "parent": "glynde-sa-5070"
+  },
+  {
+   "slug": "hilton-plaza-sa-5033",
+   "name": "Hilton Plaza",
+   "state": "SA",
+   "postcode": "5033",
+   "kind": "shopping-centre",
+   "parent": "hilton-sa-5033"
+  },
+  {
+   "slug": "lonsdale-dc-sa-5160",
+   "name": "Lonsdale DC",
+   "state": "SA",
+   "postcode": "5160",
+   "kind": "postal",
+   "parent": "lonsdale-sa-5160"
+  },
+  {
+   "slug": "marleston-dc-sa-5033",
+   "name": "Marleston DC",
+   "state": "SA",
+   "postcode": "5033",
+   "kind": "postal",
+   "parent": "marleston-sa-5033"
+  },
+  {
+   "slug": "melrose-park-dc-sa-5039",
+   "name": "Melrose Park DC",
+   "state": "SA",
+   "postcode": "5039",
+   "kind": "postal",
+   "parent": "melrose-park-sa-5039"
+  },
+  {
+   "slug": "mitcham-shopping-centre-sa-5062",
+   "name": "Mitcham Shopping Centre",
+   "state": "SA",
+   "postcode": "5062",
+   "kind": "shopping-centre",
+   "parent": "mitcham-sa-5062"
+  },
+  {
+   "slug": "modbury-north-dc-sa-5092",
+   "name": "Modbury North DC",
+   "state": "SA",
+   "postcode": "5092",
+   "kind": "postal",
+   "parent": "modbury-north-sa-5092"
+  },
+  {
+   "slug": "mount-gambier-dc-sa-5290",
+   "name": "Mount Gambier DC",
+   "state": "SA",
+   "postcode": "5290",
+   "kind": "postal",
+   "parent": "mount-gambier-sa-5290"
+  },
+  {
+   "slug": "o-halloran-hill-dc-sa-5158",
+   "name": "O'Halloran Hill DC",
+   "state": "SA",
+   "postcode": "5158",
+   "kind": "postal",
+   "parent": "o-halloran-hill-sa-5158"
+  },
+  {
+   "slug": "parliament-house-sa-5000",
+   "name": "Parliament House",
+   "state": "SA",
+   "postcode": "5000",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "port-adelaide-bc-sa-5015",
+   "name": "Port Adelaide BC",
+   "state": "SA",
+   "postcode": "5015",
+   "kind": "postal",
+   "parent": "port-adelaide-sa-5015"
+  },
+  {
+   "slug": "port-adelaide-dc-sa-5015",
+   "name": "Port Adelaide DC",
+   "state": "SA",
+   "postcode": "5015",
+   "kind": "postal",
+   "parent": "port-adelaide-sa-5015"
+  },
+  {
+   "slug": "regency-park-bc-sa-5010",
+   "name": "Regency Park BC",
+   "state": "SA",
+   "postcode": "5010",
+   "kind": "postal",
+   "parent": "regency-park-sa-5010"
+  },
+  {
+   "slug": "salisbury-south-bc-sa-5106",
+   "name": "Salisbury South BC",
+   "state": "SA",
+   "postcode": "5106",
+   "kind": "postal",
+   "parent": "salisbury-south-sa-5106"
+  },
+  {
+   "slug": "salisbury-south-dc-sa-5106",
+   "name": "Salisbury South DC",
+   "state": "SA",
+   "postcode": "5106",
+   "kind": "postal",
+   "parent": "salisbury-south-sa-5106"
+  },
+  {
+   "slug": "station-arcade-sa-5000",
+   "name": "Station Arcade",
+   "state": "SA",
+   "postcode": "5000",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
+   "slug": "torrensville-plaza-sa-5031",
+   "name": "Torrensville Plaza",
+   "state": "SA",
+   "postcode": "5031",
+   "kind": "shopping-centre",
+   "parent": "torrensville-sa-5031"
+  },
+  {
+   "slug": "unley-bc-sa-5061",
+   "name": "Unley BC",
+   "state": "SA",
+   "postcode": "5061",
+   "kind": "postal",
+   "parent": "unley-sa-5061"
+  },
+  {
+   "slug": "unley-dc-sa-5061",
+   "name": "Unley DC",
+   "state": "SA",
+   "postcode": "5061",
+   "kind": "postal",
+   "parent": "unley-sa-5061"
+  },
+  {
+   "slug": "whyalla-dc-sa-5600",
+   "name": "Whyalla DC",
+   "state": "SA",
+   "postcode": "5600",
+   "kind": "postal",
+   "parent": "whyalla-sa-5600"
+  },
+  {
+   "slug": "bathurst-street-po-tas-7000",
+   "name": "Bathurst Street PO",
+   "state": "TAS",
+   "postcode": "7000",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "norwood-avenue-po-tas-7250",
+   "name": "Norwood Avenue PO",
+   "state": "TAS",
+   "postcode": "7250",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "university-of-tasmania-tas-7005",
+   "name": "University of Tasmania",
+   "state": "TAS",
+   "postcode": "7005",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "booran-road-po-vic-3163",
+   "name": "Booran Road PO",
+   "state": "VIC",
+   "postcode": "3163",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "chadstone-centre-vic-3148",
+   "name": "Chadstone Centre",
+   "state": "VIC",
+   "postcode": "3148",
+   "kind": "shopping-centre",
+   "parent": "chadstone-vic-3148"
+  },
+  {
+   "slug": "deakin-university-vic-3217",
+   "name": "Deakin University",
+   "state": "VIC",
+   "postcode": "3217",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "deepdene-dc-vic-3103",
+   "name": "Deepdene DC",
+   "state": "VIC",
+   "postcode": "3103",
+   "kind": "postal",
+   "parent": "deepdene-vic-3103"
+  },
+  {
+   "slug": "domain-road-po-vic-3141",
+   "name": "Domain Road PO",
+   "state": "VIC",
+   "postcode": "3141",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "east-sale-raaf-vic-3852",
+   "name": "East Sale RAAF",
+   "state": "VIC",
+   "postcode": "3852",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "epping-dc-vic-3076",
+   "name": "Epping DC",
+   "state": "VIC",
+   "postcode": "3076",
+   "kind": "postal",
+   "parent": "epping-vic-3076"
+  },
+  {
+   "slug": "geelong-mc-vic-3221",
+   "name": "Geelong MC",
+   "state": "VIC",
+   "postcode": "3221",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "karingal-centre-vic-3199",
+   "name": "Karingal Centre",
+   "state": "VIC",
+   "postcode": "3199",
+   "kind": "shopping-centre",
+   "parent": "karingal-vic-3199"
+  },
+  {
+   "slug": "knox-city-centre-vic-3152",
+   "name": "Knox City Centre",
+   "state": "VIC",
+   "postcode": "3152",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
+   "slug": "la-trobe-university-vic-3083",
+   "name": "La Trobe University",
+   "state": "VIC",
+   "postcode": "3083",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "la-trobe-university-vic-3086",
+   "name": "La Trobe University",
+   "state": "VIC",
+   "postcode": "3086",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "lalor-plaza-vic-3075",
+   "name": "Lalor Plaza",
+   "state": "VIC",
+   "postcode": "3075",
+   "kind": "shopping-centre",
+   "parent": "lalor-vic-3075"
+  },
+  {
+   "slug": "lansell-plaza-vic-3555",
+   "name": "Lansell Plaza",
+   "state": "VIC",
+   "postcode": "3555",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
+   "slug": "laverton-raaf-vic-3027",
+   "name": "Laverton RAAF",
+   "state": "VIC",
+   "postcode": "3027",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "melbourne-university-vic-3052",
+   "name": "Melbourne University",
+   "state": "VIC",
+   "postcode": "3052",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "mildura-centre-plaza-vic-3501",
+   "name": "Mildura Centre Plaza",
+   "state": "VIC",
+   "postcode": "3501",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
+   "slug": "monash-university-vic-3800",
+   "name": "Monash University",
+   "state": "VIC",
+   "postcode": "3800",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "northland-centre-vic-3072",
+   "name": "Northland Centre",
+   "state": "VIC",
+   "postcode": "3072",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
+   "slug": "rosebud-plaza-vic-3939",
+   "name": "Rosebud Plaza",
+   "state": "VIC",
+   "postcode": "3939",
+   "kind": "shopping-centre",
+   "parent": "rosebud-vic-3939"
+  },
+  {
+   "slug": "royal-melbourne-hospital-vic-3050",
+   "name": "Royal Melbourne Hospital",
+   "state": "VIC",
+   "postcode": "3050",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "sale-east-raaf-vic-3852",
+   "name": "Sale East RAAF",
+   "state": "VIC",
+   "postcode": "3852",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "south-melbourne-dc-vic-3205",
+   "name": "South Melbourne DC",
+   "state": "VIC",
+   "postcode": "3205",
+   "kind": "postal",
+   "parent": "south-melbourne-vic-3205"
+  },
+  {
+   "slug": "southland-centre-vic-3192",
+   "name": "Southland Centre",
+   "state": "VIC",
+   "postcode": "3192",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
+   "slug": "tunstall-square-po-vic-3109",
+   "name": "Tunstall Square PO",
+   "state": "VIC",
+   "postcode": "3109",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "university-of-melbourne-vic-3010",
+   "name": "University of Melbourne",
+   "state": "VIC",
+   "postcode": "3010",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "wattletree-road-po-vic-3145",
+   "name": "Wattletree Road PO",
+   "state": "VIC",
+   "postcode": "3145",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "were-street-po-vic-3186",
+   "name": "Were Street PO",
+   "state": "VIC",
+   "postcode": "3186",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "williams-raaf-vic-3027",
+   "name": "Williams RAAF",
+   "state": "VIC",
+   "postcode": "3027",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "wodonga-plaza-vic-3690",
+   "name": "Wodonga Plaza",
+   "state": "VIC",
+   "postcode": "3690",
+   "kind": "shopping-centre",
+   "parent": "wodonga-vic-3690"
+  },
+  {
+   "slug": "world-trade-centre-vic-3005",
+   "name": "World Trade Centre",
+   "state": "VIC",
+   "postcode": "3005",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
+   "slug": "bassendean-dc-wa-6054",
+   "name": "Bassendean DC",
+   "state": "WA",
+   "postcode": "6054",
+   "kind": "postal",
+   "parent": "bassendean-wa-6054"
+  },
+  {
+   "slug": "bentley-dc-wa-6102",
+   "name": "Bentley DC",
+   "state": "WA",
+   "postcode": "6102",
+   "kind": "postal",
+   "parent": "bentley-wa-6102"
+  },
+  {
+   "slug": "bibra-lake-dc-wa-6163",
+   "name": "Bibra Lake DC",
+   "state": "WA",
+   "postcode": "6163",
+   "kind": "postal",
+   "parent": "bibra-lake-wa-6163"
+  },
+  {
+   "slug": "canning-vale-dc-wa-6155",
+   "name": "Canning Vale DC",
+   "state": "WA",
+   "postcode": "6155",
+   "kind": "postal",
+   "parent": "canning-vale-wa-6155"
+  },
+  {
+   "slug": "city-delivery-centre-wa-6000",
+   "name": "City Delivery Centre",
+   "state": "WA",
+   "postcode": "6000",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "geraldton-dc-wa-6530",
+   "name": "Geraldton DC",
+   "state": "WA",
+   "postcode": "6530",
+   "kind": "postal",
+   "parent": "geraldton-wa-6530"
+  },
+  {
+   "slug": "gwelup-dc-wa-6018",
+   "name": "Gwelup DC",
+   "state": "WA",
+   "postcode": "6018",
+   "kind": "postal",
+   "parent": "gwelup-wa-6018"
+  },
+  {
+   "slug": "joondalup-dc-wa-6027",
+   "name": "Joondalup DC",
+   "state": "WA",
+   "postcode": "6027",
+   "kind": "postal",
+   "parent": "joondalup-wa-6027"
+  },
+  {
+   "slug": "kelmscott-dc-wa-6111",
+   "name": "Kelmscott DC",
+   "state": "WA",
+   "postcode": "6111",
+   "kind": "postal",
+   "parent": "kelmscott-wa-6111"
+  },
+  {
+   "slug": "mandurah-dc-wa-6210",
+   "name": "Mandurah DC",
+   "state": "WA",
+   "postcode": "6210",
+   "kind": "postal",
+   "parent": "mandurah-wa-6210"
+  },
+  {
+   "slug": "mundaring-dc-wa-6073",
+   "name": "Mundaring DC",
+   "state": "WA",
+   "postcode": "6073",
+   "kind": "postal",
+   "parent": "mundaring-wa-6073"
+  },
+  {
+   "slug": "nedlands-dc-wa-6009",
+   "name": "Nedlands DC",
+   "state": "WA",
+   "postcode": "6009",
+   "kind": "postal",
+   "parent": "nedlands-wa-6009"
+  },
+  {
+   "slug": "northlands-po-wa-6905",
+   "name": "Northlands PO",
+   "state": "WA",
+   "postcode": "6905",
+   "kind": "postal",
+   "parent": "northlands-wa-6905"
+  },
+  {
+   "slug": "osborne-park-dc-wa-6017",
+   "name": "Osborne Park DC",
+   "state": "WA",
+   "postcode": "6017",
+   "kind": "postal",
+   "parent": "osborne-park-wa-6017"
+  },
+  {
+   "slug": "palmyra-dc-wa-6157",
+   "name": "Palmyra DC",
+   "state": "WA",
+   "postcode": "6157",
+   "kind": "postal",
+   "parent": "palmyra-wa-6157"
+  },
+  {
+   "slug": "perth-bc-wa-6849",
+   "name": "Perth BC",
+   "state": "WA",
+   "postcode": "6849",
+   "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "perth-gpo-wa-6000",
+   "name": "Perth GPO",
+   "state": "WA",
+   "postcode": "6000",
+   "kind": "postal",
+   "parent": "perth-wa-6000"
+  },
+  {
+   "slug": "raaf-waggrakine-wa-6530",
+   "name": "RAAF Waggrakine",
+   "state": "WA",
+   "postcode": "6530",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "rockingham-dc-wa-6168",
+   "name": "Rockingham DC",
+   "state": "WA",
+   "postcode": "6168",
+   "kind": "postal",
+   "parent": "rockingham-wa-6168"
+  },
+  {
+   "slug": "walliston-dc-wa-6076",
+   "name": "Walliston DC",
+   "state": "WA",
+   "postcode": "6076",
+   "kind": "postal",
+   "parent": "walliston-wa-6076"
+  },
+  {
+   "slug": "wangara-dc-wa-6065",
+   "name": "Wangara DC",
+   "state": "WA",
+   "postcode": "6065",
+   "kind": "postal",
+   "parent": "wangara-wa-6065"
+  },
+  {
+   "slug": "welshpool-dc-wa-6106",
+   "name": "Welshpool DC",
+   "state": "WA",
+   "postcode": "6106",
+   "kind": "postal",
+   "parent": "welshpool-wa-6106"
+  },
+  {
+   "slug": "westfield-wa-6111",
+   "name": "Westfield",
+   "state": "WA",
+   "postcode": "6111",
+   "kind": "shopping-centre",
+   "parent": null
+  }
+ ]
+}

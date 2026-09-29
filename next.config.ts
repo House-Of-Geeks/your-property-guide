@@ -1,4 +1,16 @@
 import type { NextConfig } from "next";
+// Suburb rows that are postal delivery names, institutions or shopping-centre
+// post offices (src/lib/non-localities.ts). Relative import: the config is
+// loaded outside the app's path aliases.
+import nonLocalities from "./src/lib/data/non-localities.json";
+
+const NON_LOCALITY_REDIRECTS = nonLocalities.entries.flatMap((e) => {
+  const target = e.parent ? `/suburbs/${e.parent}` : `/postcodes/${e.postcode}`;
+  return [
+    { source: `/suburbs/${e.slug}`, destination: target, permanent: true },
+    { source: `/suburbs/${e.slug}/:path*`, destination: e.parent ? `${target}/:path*` : target, permanent: true },
+  ];
+});
 
 const nextConfig: NextConfig = {
   // Edge-cache static blog covers aggressively. They live in /public so are
@@ -61,6 +73,10 @@ const nextConfig: NextConfig = {
       { source: "/buy/56-sunreef-street-burpengary-4505-thomson",        destination: "/buy/56-sunreef-street-burpengary-qld-4505",         permanent: true },
       { source: "/buy/burpengary-4505-thomson",                          destination: "/buy/burpengary-qld-4505-21369936",                  permanent: true },
       { source: "/buy/burpengary-4505-21049882-thomson",                 destination: "/buy/burpengary-qld-4505-21049882",                  permanent: true },
+      // "South Melbourne DC", "Penrith Plaza", "Parliament House": not places
+      // people live. Each goes to the real suburb of that name in its
+      // postcode, or to the postcode page (29 Sep 2026, 290 entries).
+      ...NON_LOCALITY_REDIRECTS,
     ];
   },
   images: {

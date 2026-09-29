@@ -1,6 +1,10 @@
 import { db } from "@/lib/db";
 import { cache } from "react";
 import { buildCityMarket, type CityMarket, type CityMarketRow } from "@/lib/services/city-market-service";
+import { NON_LOCALITY_SLUGS } from "@/lib/non-localities";
+
+// Postal delivery names and institutions are not suburbs of a region.
+const LOCALITIES_ONLY = { slug: { notIn: NON_LOCALITY_SLUGS } } as const;
 
 // State-level values that are not real SA3 regions, filter these out
 const STATE_NAMES = new Set([
@@ -38,6 +42,7 @@ export interface RegionSummary {
 export const getAllRegions = cache(async (): Promise<RegionSummary[]> => {
   const rows = await db.suburb.groupBy({
     by: ["region", "state"],
+    where: LOCALITIES_ONLY,
     _count: { slug: true },
     orderBy: [{ state: "asc" }, { region: "asc" }],
   });
@@ -64,7 +69,7 @@ export async function getAllRegionSlugs(): Promise<string[]> {
 
 export async function getRegionSuburbs(region: string) {
   return db.suburb.findMany({
-    where: { region },
+    where: { region, ...LOCALITIES_ONLY },
     select: {
       slug: true,
       name: true,
@@ -81,7 +86,7 @@ export async function getRegionSuburbs(region: string) {
 
 export async function getRegionStats(region: string) {
   const suburbs = await db.suburb.findMany({
-    where: { region },
+    where: { region, ...LOCALITIES_ONLY },
     select: { medianHousePrice: true, annualGrowthHouse: true },
   });
 
@@ -106,7 +111,7 @@ export async function getRegionStats(region: string) {
  */
 export async function getRegionMarket(region: string): Promise<CityMarket> {
   const rows: CityMarketRow[] = await db.suburb.findMany({
-    where: { region },
+    where: { region, ...LOCALITIES_ONLY },
     select: {
       slug: true,
       name: true,

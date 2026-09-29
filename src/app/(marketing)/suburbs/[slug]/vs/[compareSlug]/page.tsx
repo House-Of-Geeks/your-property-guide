@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,6 +9,7 @@ import { Faq } from "@/components/guide";
 import { MatchAgent, StickyMatchCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
+import { nonLocalityBySlug } from "@/lib/non-localities";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 import {
@@ -210,6 +211,18 @@ function CompareSection({
 
 export default async function SuburbVsPage({ params }: ComparePageProps) {
   const { slug, compareSlug } = await params;
+
+  // "Morayfield vs Caboolture BC" compared a suburb with a mail centre. The
+  // comparison moves to the real suburb, or back to the profile when there is
+  // none (or when it would compare the suburb with itself).
+  const postalName = nonLocalityBySlug(compareSlug);
+  if (postalName) {
+    permanentRedirect(
+      postalName.parent && postalName.parent !== slug
+        ? `/suburbs/${slug}/vs/${postalName.parent}`
+        : `/suburbs/${slug}`,
+    );
+  }
 
   const [suburbA, suburbB] = await Promise.all([
     getSuburbBySlug(slug),

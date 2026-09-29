@@ -1,3 +1,4 @@
+import { NON_LOCALITY_SLUGS } from "@/lib/non-localities";
 import { db } from "@/lib/db";
 import { GLOSSARY_TERMS, type GlossaryTerm } from "@/lib/data/glossary";
 import { makeSchoolSlug } from "@/lib/utils/school";
@@ -120,14 +121,17 @@ export async function unifiedSearch(query: string): Promise<SearchResults> {
 
   // Suburbs (and postcodes)
   const suburbsPromise = db.suburb.findMany({
-    where: isNumeric
-      ? { postcode: { startsWith: q } }
-      : {
-          OR: [
-            { name: { contains: q, mode: "insensitive" } },
-            { postcode: { startsWith: q } },
-          ],
-        },
+    where: {
+      slug: { notIn: NON_LOCALITY_SLUGS },
+      ...(isNumeric
+        ? { postcode: { startsWith: q } }
+        : {
+            OR: [
+              { name: { contains: q, mode: "insensitive" as const } },
+              { postcode: { startsWith: q } },
+            ],
+          }),
+    },
     select: {
       slug: true,
       name: true,

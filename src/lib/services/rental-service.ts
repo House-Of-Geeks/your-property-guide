@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { db } from "@/lib/db";
+import { isNonLocalitySlug } from "@/lib/non-localities";
 
 export interface SuburbRentalHistory {
   id: string;
@@ -35,5 +36,5 @@ export async function getSuburbSlugsWithRentalData(): Promise<string[]> {
     distinct: ["suburbSlug"],
     select: { suburbSlug: true },
   });
-  return rows.map((r) => r.suburbSlug as string);
+  return rows.map((r) => r.suburbSlug as string).filter((slug) => !isNonLocalitySlug(slug));
 }

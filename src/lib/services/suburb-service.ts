@@ -6,6 +6,11 @@ import type { Suburb as DbSuburb, School as DbSchool, SuburbHazard as DbSuburbHa
 import { classifyPriceConfidence, isPlausibleAnnualGrowth } from "@/lib/suburb-data-quality";
 import { hasEnoughSales } from "@/lib/sales-provenance";
 import { hasPublishedHouseMedian, isThinSuburbRow } from "@/lib/suburb-indexability";
+import { NON_LOCALITY_SLUGS, isNonLocalitySlug } from "@/lib/non-localities";
+
+// Postal delivery names, institutions and shopping-centre post offices are
+// not suburbs: every list and sitemap below leaves them out.
+const LOCALITIES_ONLY = { slug: { notIn: NON_LOCALITY_SLUGS } } as const;
 
 // Columns the indexability rules read (src/lib/suburb-indexability.ts).
 const INDEX_ROW_SELECT = {
@@ -178,7 +183,8 @@ function toSuburb(
     })),
     amenities:      s.amenities,
     transportLinks: s.transportLinks,
-    nearbySuburbs:  s.nearbySuburbs,
+    // "Caboolture BC" is not a neighbour; its URL redirects to Caboolture.
+    nearbySuburbs:  s.nearbySuburbs.filter((n) => !isNonLocalitySlug(n)),
     dataFreshness:  mergedFreshness,
     hazard: hazard
       ? {
@@ -305,6 +311,7 @@ export async function getSuburbs(opts?: {
   const { state, search, limit = 24, offset = 0 } = opts ?? {};
 
   const where = {
+    ...LOCALITIES_ONLY,
     ...(state ? { state: state.toUpperCase() } : {}),
     ...(search
       ? {
@@ -336,7 +343,7 @@ export async function getSuburbs(opts?: {
 export async function getFeaturedSuburbs(limit = 6): Promise<Suburb[]> {
   // Only suburbs with real data (population > 0) for the home page spotlight
   const rows = await db.suburb.findMany({
-    where: { population: { gt: 0 } },
+    where: { population: { gt: 0 }, ...LOCALITIES_ONLY },
     orderBy: { population: "desc" },
     take: limit,
     include: { schools: false },
@@ -363,12 +370,12 @@ export const getSuburbBySlug = cache(async (slug: string): Promise<Suburb | null
 });
 
 export async function getAllSuburbSlugs(): Promise<string[]> {
-  const rows = await db.suburb.findMany({ select: { slug: true } });
+  const rows = await db.suburb.findMany({ where: LOCALITIES_ONLY, select: { slug: true } });
   return rows.map((r) => r.slug);
 }
 
 export async function getAllSuburbSlugsWithDates(): Promise<{ slug: string; updatedAt: Date }[]> {
-  return db.suburb.findMany({ select: { slug: true, updatedAt: true } });
+  return db.suburb.findMany({ where: LOCALITIES_ONLY, select: { slug: true, updatedAt: true } });
 }
 
 // Sitemap-eligible suburbs only. Excludes thin pages (no price data AND
@@ -381,7 +388,7 @@ export async function getAllSuburbSlugsWithDates(): Promise<{ slug: string; upda
 // also withholds a median built on fewer than five recorded sales.
 export async function getSuburbSlugsWithReliablePrice(): Promise<string[]> {
   const rows = await db.suburb.findMany({
-    where: { medianHousePrice: { gt: 0 }, statsSource: { in: [...RELIABLE_SALES_SOURCES] } },
+    where: { medianHousePrice: { gt: 0 }, statsSource: { in: [...RELIABLE_SALES_SOURCES] }, ...LOCALITIES_ONLY },
     select: { slug: true, ...INDEX_ROW_SELECT },
   });
   return rows.filter(hasPublishedHouseMedian).map((r) => r.slug);
@@ -394,6 +401,7 @@ export async function getSuburbSlugsWithReliablePrice(): Promise<string[]> {
 export async function getIndexableSuburbProfilesWithDates(): Promise<{ slug: string; updatedAt: Date }[]> {
   const rows = await db.suburb.findMany({
     where: {
+      ...LOCALITIES_ONLY,
       OR: [
         { medianHousePrice: { gt: 0 } },
         { medianUnitPrice: { gt: 0 } },
@@ -408,6 +416,7 @@ export async function getIndexableSuburbProfilesWithDates(): Promise<{ slug: str
 export async function getIndexableSuburbSlugsWithDates(): Promise<{ slug: string; updatedAt: Date }[]> {
   return db.suburb.findMany({
     where: {
+      ...LOCALITIES_ONLY,
       OR: [
         { medianHousePrice: { gt: 0 } },
         { medianUnitPrice: { gt: 0 } },

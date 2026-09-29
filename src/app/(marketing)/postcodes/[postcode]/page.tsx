@@ -9,7 +9,10 @@ import {
   getSuburbsByPostcode,
   getAllPostcodes,
   getPostcodeStats,
+  getPostalNamesByPostcode,
 } from "@/lib/services/postcode-service";
+import { nonLocalityLabel } from "@/lib/locality-names";
+import { postcodeDescription, postcodeFaqs as buildPostcodeFaqs, postcodeLead, postcodeTitle } from "@/lib/postcode-copy";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
@@ -31,11 +34,19 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PostcodePageProps): Promise<Metadata> {
   const { postcode } = await params;
   const suburbs = await getSuburbsByPostcode(postcode);
-  if (suburbs.length === 0) return { title: "Postcode Not Found" };
+  // Delivery names ("Hervey Bay DC") are named as such, not as suburbs.
+  const postalNames = getPostalNamesByPostcode(postcode);
+  if (suburbs.length === 0 && postalNames.length === 0) return { title: "Postcode Not Found" };
 
-  const state = suburbs[0].state;
-  const suburbNames = suburbs.map((s) => s.name).slice(0, 3).join(", ");
+  const state = suburbs[0]?.state ?? postalNames[0].state;
   const stats = await getPostcodeStats(postcode);
+  const copy = {
+    postcode,
+    state,
+    suburbNames: suburbs.map((s) => s.name),
+    postalNames: postalNames.map((p) => p.name),
+    avgMedianHousePrice: stats.avgMedianHousePrice ? formatPriceFull(stats.avgMedianHousePrice) : null,
+  };
 
   // Reverse-lookup intent: Search Console shows "{number} postcode" queries
   // (e.g. "2761 postcode") ranking ~pos 9 with no clicks, and ranking data
@@ -45,20 +56,8 @@ export async function generateMetadata({ params }: PostcodePageProps): Promise<M
   // budget, otherwise two. The brand suffix is appended once by the root
   // title template (%s | Your Property Guide), so it must NOT be repeated
   // here — the old hard-coded suffix produced a double brand.
-  const buildTitle = (count: number) => {
-    const names = suburbs.slice(0, count).map((s) => s.name).join(", ");
-    const more = suburbs.length > count ? " & more" : "";
-    return `${postcode} Postcode — ${names}${more} (${state})`;
-  };
-  const threeNameTitle = buildTitle(3);
-  const title = threeNameTitle.length <= 60 ? threeNameTitle : buildTitle(2);
-  const description = `Postcode ${postcode} is ${suburbNames}${
-    suburbs.length > 3 ? ` and ${suburbs.length - 3} more` : ""
-  } in ${state}. ${
-    stats.avgMedianHousePrice
-      ? `Average median house price ${formatPriceFull(stats.avgMedianHousePrice)}. `
-      : ""
-  }Browse suburb profiles, schools and property data.`;
+  const title = postcodeTitle(copy);
+  const description = postcodeDescription(copy);
 
   return {
     title,
@@ -85,32 +84,22 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
     getPostcodeStats(postcode),
   ]);
 
-  if (suburbs.length === 0) notFound();
+  const postalNames = getPostalNamesByPostcode(postcode);
+  if (suburbs.length === 0 && postalNames.length === 0) notFound();
 
-  const state = suburbs[0].state;
+  const state = suburbs[0]?.state ?? postalNames[0].state;
+  const copy = {
+    postcode,
+    state,
+    suburbNames: suburbs.map((s) => s.name),
+    postalNames: postalNames.map((p) => p.name),
+  };
 
   // Names string + reverse-lookup FAQ. "{number} postcode" / "what suburb is
   // postcode X" are high-intent queries the postcode pages already rank for
   // (~pos 9); a direct answer block plus FAQPage schema gives Google a clean
   // snippet to lift them onto page one.
-  const namesAll = suburbs.map((s) => s.name).join(", ");
-  const namesShort =
-    suburbs.length > 4
-      ? `${suburbs.slice(0, 4).map((s) => s.name).join(", ")} and ${suburbs.length - 4} more`
-      : namesAll;
-  const postcodeFaqs = [
-    {
-      question: `What suburb is postcode ${postcode}?`,
-      answer:
-        suburbs.length === 1
-          ? `Postcode ${postcode} is ${suburbs[0].name}, ${state}.`
-          : `Postcode ${postcode} covers ${suburbs.length} suburbs in ${state}: ${namesAll}.`,
-    },
-    {
-      question: `What state is postcode ${postcode} in?`,
-      answer: `Postcode ${postcode} is in ${state}, Australia.`,
-    },
-  ];
+  const postcodeFaqs = buildPostcodeFaqs(copy);
 
   // Flatten all schools across suburbs in this postcode
   const allSchools = suburbs.flatMap((suburb) =>
@@ -153,19 +142,17 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
             </h1>
             <Badge variant="default">{state}</Badge>
           </div>
-          <p className="text-lg text-gray-600 mt-3 max-w-2xl">
-            Postcode {postcode} is in {state} and covers{" "}
-            {suburbs.length === 1 ? "the suburb of" : `${suburbs.length} suburbs:`} {namesShort}.
-            Browse profiles, median prices, schools and property data for each below.
-          </p>
+          <p className="text-lg text-gray-600 mt-3 max-w-2xl">{postcodeLead(copy)}</p>
 
           {/* Aggregate stats */}
           <div className="flex flex-wrap gap-6 mt-8">
-            <div className="flex items-center gap-2 text-sm">
-              <MapPin className="w-4 h-4 text-primary" />
-              <span className="font-semibold text-gray-900">{suburbs.length}</span>
-              <span className="text-gray-500">suburb{suburbs.length !== 1 ? "s" : ""}</span>
-            </div>
+            {suburbs.length > 0 && (
+              <div className="flex items-center gap-2 text-sm">
+                <MapPin className="w-4 h-4 text-primary" />
+                <span className="font-semibold text-gray-900">{suburbs.length}</span>
+                <span className="text-gray-500">suburb{suburbs.length !== 1 ? "s" : ""}</span>
+              </div>
+            )}
             {stats.totalPopulation > 0 && (
               <div className="flex items-center gap-2 text-sm">
                 <Users className="w-4 h-4 text-primary" />
@@ -208,13 +195,13 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
               suburb in this postcode. */}
           <div className="flex flex-wrap gap-3 mt-8">
             <Link
-              href={`/selling-guide?suburb=${suburbs[0].slug}`}
+              href={suburbs[0] ? `/selling-guide?suburb=${suburbs[0].slug}` : "/selling-guide"}
               className="inline-flex items-center gap-2 bg-primary text-white text-sm font-semibold rounded-lg px-5 py-2.5 hover:bg-primary/90 transition-colors w-fit"
             >
               Get the free selling guide
             </Link>
             <Link
-              href={`/buying-guide?suburb=${suburbs[0].slug}`}
+              href={suburbs[0] ? `/buying-guide?suburb=${suburbs[0].slug}` : "/buying-guide"}
               className="inline-flex items-center gap-2 bg-white border border-primary text-primary text-sm font-semibold rounded-lg px-5 py-2.5 hover:bg-primary/5 transition-colors w-fit"
             >
               Get the free buying guide
@@ -226,6 +213,7 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 space-y-14">
 
         {/* Suburbs grid */}
+        {suburbs.length > 0 && (
         <section>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Suburbs in Postcode {postcode}
@@ -290,6 +278,45 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
             ))}
           </div>
         </section>
+        )}
+
+        {/* Delivery names: what Australia Post calls its delivery centres,
+            business centres and post offices in this postcode. Text, not
+            profile links: they are not places people live, and their old
+            profile URLs redirect here or to the suburb they sit in. */}
+        {postalNames.length > 0 && (
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              Postal delivery names in {postcode}
+            </h2>
+            <p className="text-sm text-gray-500 mb-6 max-w-2xl">
+              Australia Post uses {postalNames.length === 1 ? "this name" : "these names"} for mail
+              in postcode {postcode}. {postalNames.length === 1 ? "It is not a suburb" : "They are not suburbs"},
+              so there is no suburb profile to show.
+            </p>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {postalNames.map((p) => {
+                const parent = p.parent ? suburbs.find((s) => s.slug === p.parent) : undefined;
+                return (
+                  <li key={p.slug} className="rounded-xl border border-gray-200 bg-white p-4">
+                    <p className="font-semibold text-gray-900">{p.name}</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {nonLocalityLabel(p.kind)}
+                      {parent && (
+                        <>
+                          {" "}in{" "}
+                          <Link href={`/suburbs/${parent.slug}`} className="text-primary hover:underline">
+                            {parent.name}
+                          </Link>
+                        </>
+                      )}
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        )}
 
         {/* Schools */}
         {allSchools.length > 0 && (
