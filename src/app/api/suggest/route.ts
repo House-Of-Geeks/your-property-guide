@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { NON_LOCALITY_SLUGS } from "@/lib/non-localities";
 import { makeSchoolSlug } from "@/lib/utils/school";
 import type { SuggestLocation, SuggestSchool, SuggestAgency, SuggestResponse } from "@/types/suggest";
 
@@ -17,14 +18,19 @@ export async function GET(req: NextRequest) {
 
   // Locations, always included
   const locationsPromise = db.suburb.findMany({
-    where: isNumeric
-      ? { postcode: { startsWith: q } }
-      : {
-          OR: [
-            { name: { contains: q, mode: "insensitive" } },
-            { postcode: { startsWith: q } },
-          ],
-        },
+    // Not the postal delivery names ("Nerang BC"): this list feeds the suburb
+    // picker on the lead forms.
+    where: {
+      slug: { notIn: NON_LOCALITY_SLUGS },
+      ...(isNumeric
+        ? { postcode: { startsWith: q } }
+        : {
+            OR: [
+              { name: { contains: q, mode: "insensitive" as const } },
+              { postcode: { startsWith: q } },
+            ],
+          }),
+    },
     select: { slug: true, name: true, state: true, postcode: true },
     orderBy: { name: "asc" },
     take: 6,

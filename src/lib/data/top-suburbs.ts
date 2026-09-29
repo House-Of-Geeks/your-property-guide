@@ -5,6 +5,7 @@
 // sit two clicks from the root and get recrawled first after a change.
 import prebuild from "./prebuild-suburbs.json";
 import { CAPITAL_CITIES, capitalCityFor } from "@/lib/utils/metro";
+import { isNonLocalitySlug } from "@/lib/non-localities";
 
 export interface TopSuburb {
   slug: string;
@@ -22,8 +23,15 @@ function parseSlug(slug: string): TopSuburb | null {
   return { slug, name, state: m[2].toUpperCase(), postcode: m[3] };
 }
 
-/** Ordered by impressions, most first. */
-export const TOP_SUBURBS: TopSuburb[] = prebuild.slugs.map(parseSlug).filter((s): s is TopSuburb => s !== null);
+/**
+ * Ordered by impressions, most first. Postal names ("Mandurah DC", 16 of the
+ * 304 on 29 Sep 2026) drew impressions on postcode lookups but are not
+ * suburbs, and their URLs now redirect.
+ */
+export const TOP_SUBURBS: TopSuburb[] = prebuild.slugs
+  .filter((slug) => !isNonLocalitySlug(slug))
+  .map(parseSlug)
+  .filter((s): s is TopSuburb => s !== null);
 
 export function topSuburbsForState(state: string, limit = 24): TopSuburb[] {
   const st = state.toUpperCase();

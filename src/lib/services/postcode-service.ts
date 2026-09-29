@@ -1,5 +1,11 @@
 import { db } from "@/lib/db";
 import { isPlausibleAnnualGrowth, isReliableSalesSource } from "@/lib/suburb-data-quality";
+import { NON_LOCALITY_SLUGS, nonLocalitiesInPostcode, type NonLocality } from "@/lib/non-localities";
+
+// Postal delivery names, institutions and shopping-centre post offices share
+// postcodes with the suburbs around them but are not suburbs. The page lists
+// them separately, as what they are (getPostalNamesByPostcode).
+const LOCALITIES_ONLY = { slug: { notIn: NON_LOCALITY_SLUGS } } as const;
 
 export interface PostcodeSuburb {
   slug: string;
@@ -29,9 +35,14 @@ export interface PostcodeStats {
   totalSchoolCount: number;
 }
 
+/** Delivery names Australia Post uses in this postcode; from the generated list, no query. */
+export function getPostalNamesByPostcode(postcode: string): NonLocality[] {
+  return nonLocalitiesInPostcode(postcode);
+}
+
 export async function getSuburbsByPostcode(postcode: string): Promise<PostcodeSuburb[]> {
   const rows = await db.suburb.findMany({
-    where: { postcode },
+    where: { postcode, ...LOCALITIES_ONLY },
     select: {
       slug: true,
       name: true,
@@ -124,7 +135,7 @@ export async function getAllPostcodesWithState(): Promise<PostcodeWithState[]> {
 
 export async function getPostcodeStats(postcode: string): Promise<PostcodeStats> {
   const suburbs = await db.suburb.findMany({
-    where: { postcode },
+    where: { postcode, ...LOCALITIES_ONLY },
     select: {
       medianHousePrice: true,
       medianUnitPrice: true,
