@@ -1,4 +1,5 @@
 import { prisma } from "./db";
+import { stateMatchesPostcode } from "../../src/lib/postcode-states";
 
 // Cached lookup: "name|state|postcode" → slug
 let cache: Map<string, string> | null = null;
@@ -14,6 +15,9 @@ export async function getSlugMap(): Promise<Map<string, string>> {
   });
   cache = new Map();
   for (const s of suburbs) {
+    // A row filed under a state its postcode does not belong to ("Sydney, SA
+    // 2000") is not a place: no feed may attach data to it (fix item 48).
+    if (!stateMatchesPostcode(s)) continue;
     cache.set(`${normalise(s.name)}|${normalise(s.state)}|${s.postcode.trim()}`, s.slug);
   }
   return cache;

@@ -289,7 +289,7 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       that overwrote statsSource, and the distrusted QLD/WA feeds. Change: the same gate as the page
       (`hasPublishedHouseMedian`) in each list query. Could break: rankings for QLD and WA would empty or thin out,
       so the pages need an honest empty state first; ships by cohort with a before/after of each ranking.
-- [ ] 48. [data] Rows that are not places. Found 29 Sep 2026 while reading the pages item 39 was about to index.
+- [x] 48. [data] DONE 29 Sep 2026 for (a) and (b); (c) left to Jos (see the end of this item). Rows that are not places. Found 29 Sep 2026 while reading the pages item 39 was about to index.
       (i) 25 suburbs filed under SA with an interstate postcode, each beside the real suburb: "Sydney, SA 2000",
       "East Melbourne, SA 3002", "Broken Hill, SA 2880", "Townsville, SA 4810", "George Town, SA 7253". The SA crime
       and rental feeds record an interstate address now and then and the sync creates a suburb for it.
@@ -302,4 +302,14 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       non-locality list with the real suburb as parent, so their URLs redirect (item 46's mechanism); (c) delete
       the junk rows. Could break: (c) is a production write, schools or crime rows may reference the rows; dry
       run with counts first, then an explicit go.
+      Shipped: (a) the SA crime feed skips records that are not places in South Australia and restores the zero of
+      0872; the stub importer and the slug matcher refuse a row its state cannot contain. The rental feed needed no
+      change: it carries no postcodes, and the old rental-sa stamp on these rows was the feed marking every SA row.
+      (b) 29 of the 31 redirect to the real suburb (the three misspellings and the Pipalyatjara copy found their
+      suburb too); "North Pole" and "Not Disclosed" answer 404. The list also gained 23 delivery names the first
+      rules missed ("Pacific Fair", "Warringah Mall", "Rundle Mall").
+      (c) Not done. Dry run (read-only) in docs/seo-baselines/2026-09-29/data-audit/rows-that-are-not-places.md:
+      nothing that cascades; 82 property addresses, 30 crime rows and 1 climate row refer to them. The rows are
+      inert now, and while they exist the generator keeps their redirects, so leaving them is the safer default.
+      The file lists the statements if Jos wants them gone.
 

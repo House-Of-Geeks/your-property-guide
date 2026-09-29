@@ -14,6 +14,7 @@ import "dotenv/config";
 import { randomUUID } from "crypto";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
+import { normalisePostcode, stateMatchesPostcode } from "../../../src/lib/postcode-states";
 
 const SOURCE_ID = "import-suburbs";
 
@@ -49,8 +50,17 @@ export async function run(): Promise<void> {
     // Build a combined list, deduplicated by slug
     const toCreate = new Map<string, { name: string; state: string; postcode: string }>();
 
+    // A stub is made only for a place the state can contain. The police data
+    // records an interstate address now and then; stubs made from those rows
+    // were "Sydney, SA 2000" and 24 others until 29 Sep 2026 (fix item 48).
+    let misfiled = 0;
+
     for (const row of crimeSuburbs) {
-      const postcode = row.postcode ?? "";
+      const postcode = normalisePostcode(row.postcode);
+      if (!postcode || !stateMatchesPostcode({ state: row.state, postcode })) {
+        misfiled++;
+        continue;
+      }
       const slug = makeSlug(row.suburbName, row.state, postcode);
       if (!toCreate.has(slug)) {
         toCreate.set(slug, { name: row.suburbName, state: row.state, postcode });
@@ -65,7 +75,7 @@ export async function run(): Promise<void> {
       void row;
     }
 
-    log(SOURCE_ID, `found ${toCreate.size} suburbs to potentially stub`);
+    log(SOURCE_ID, `found ${toCreate.size} suburbs to potentially stub; ${misfiled} skipped (postcode not in the state, or not a postcode)`);
 
     // Fetch existing slugs to avoid overwriting seed data
     const existingSlugs = new Set(

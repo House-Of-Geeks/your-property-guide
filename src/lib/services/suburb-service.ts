@@ -8,7 +8,7 @@ import { hasEnoughSales } from "@/lib/sales-provenance";
 import { hasPublishedHouseMedian, isThinSuburbRow } from "@/lib/suburb-indexability";
 // Postal delivery names, institutions and shopping-centre post offices are
 // not suburbs: every list and sitemap below leaves them out (LOCALITIES_ONLY).
-import { LOCALITIES_ONLY, isNonLocalitySlug } from "@/lib/non-localities";
+import { LOCALITIES_ONLY, isHiddenSlug, isNonLocalitySlug } from "@/lib/non-localities";
 
 // Columns the indexability rules read (src/lib/suburb-indexability.ts).
 const INDEX_ROW_SELECT = {
@@ -355,6 +355,9 @@ export async function getFeaturedSuburbs(limit = 6): Promise<Suburb[]> {
 // at zero risk — cache is per-request, so different requests still
 // see fresh ISR-revalidated data.
 export const getSuburbBySlug = cache(async (slug: string): Promise<Suburb | null> => {
+  // "Not Disclosed" and "North Pole, VIC 9999" are rows, not places, with
+  // nowhere to redirect to: every page built on this lookup answers 404.
+  if (isHiddenSlug(slug)) return null;
   const [row, { freshness, rentalRentHouse, rentalRentUnit }, hazard, climate] = await Promise.all([
     db.suburb.findUnique({ where: { slug }, include: { schools: false } }),
     fetchFreshness(slug),
