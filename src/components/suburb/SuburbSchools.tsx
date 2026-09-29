@@ -130,13 +130,15 @@ export function SuburbSchools({ suburbName, schools }: SuburbSchoolsProps) {
       <h2 className="font-display text-2xl text-ink leading-tight mb-1">Local schools for {suburbName}</h2>
       <p className="text-sm font-sans text-ink-muted mb-5">View the catchment for each school to find out more.</p>
 
-      {/* Tabs */}
+      {/* Tabs. At px-4 the four need 310px and a 320px screen offers 288px,
+          so the row ran 6px past the edge of the page. Under 22rem (352px)
+          they take px-3 and need 278px. */}
       <div className="flex gap-0 border-b border-line mb-4">
         {TABS.map((tab) => (
           <button
             key={tab.id}
             onClick={() => { setActiveTab(tab.id); setExpanded(false); }}
-            className={`px-4 py-2.5 text-sm font-sans font-medium border-b-2 transition-colors ${
+            className={`px-4 max-[22rem]:px-3 py-2.5 text-sm font-sans font-medium border-b-2 transition-colors ${
               activeTab === tab.id
                 ? "border-cta text-ink"
                 : "border-transparent text-ink-muted hover:text-ink"
