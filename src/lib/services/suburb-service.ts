@@ -392,23 +392,40 @@ export async function getSuburbSlugsWithReliablePrice(): Promise<string[]> {
   return rows.filter(hasPublishedHouseMedian).map((r) => r.slug);
 }
 
-// Suburb profiles that do not noindex themselves: the raw gate below, less
-// the rows the page calls thin once the price gate has run. Feeds the
-// suburbs sitemap only; the sub-page sitemaps keep the raw gate because
+// Suburb profiles that do not noindex themselves: every locality, less the
+// rows the page calls thin (isThinProfile: no published price, no population
+// and none of walkability, climate, crime or rental data, or a row filed
+// under a state its postcode does not belong to). Each set below is
+// read the way the page reads it for one suburb (fetchFreshness and toSuburb
+// above), once for all rows; the sitemap caches the result for a day. Feeds
+// the suburbs sitemap only; the sub-page sitemaps keep the raw gate because
 // each sub-page has its own indexing rule.
 export async function getIndexableSuburbProfilesWithDates(): Promise<{ slug: string; updatedAt: Date }[]> {
+  // One query after another, not Promise.all: the runtime pool holds a single
+  // connection (src/lib/db.ts), so parallel queries queue for it, and the
+  // one at the back of four can wait past the 5 s acquisition timeout.
   const rows = await db.suburb.findMany({
-    where: {
-      ...LOCALITIES_ONLY,
-      OR: [
-        { medianHousePrice: { gt: 0 } },
-        { medianUnitPrice: { gt: 0 } },
-        { population: { gt: 0 } },
-      ],
-    },
-    select: { slug: true, updatedAt: true, ...INDEX_ROW_SELECT },
+    where: LOCALITIES_ONLY,
+    select: { slug: true, updatedAt: true, walkScore: true, state: true, postcode: true, ...INDEX_ROW_SELECT },
   });
-  return rows.filter((r) => !isThinSuburbRow(r)).map(({ slug, updatedAt }) => ({ slug, updatedAt }));
+  const rental = await db.suburbRentalStat.groupBy({ by: ["suburbSlug"], where: { suburbSlug: { not: null } } });
+  const crime = await db.suburbCrimeStat.groupBy({ by: ["suburbSlug"], where: { suburbSlug: { not: null } } });
+  // toSuburb() drops a climate row that names no station; so does this.
+  const climate = await db.suburbClimate.findMany({
+    where: { bomStationId: { not: "" }, bomStationName: { not: "" } },
+    select: { suburbSlug: true },
+  });
+  const hasRental = new Set(rental.map((r) => r.suburbSlug));
+  const hasCrime = new Set(crime.map((r) => r.suburbSlug));
+  const hasClimate = new Set(climate.map((r) => r.suburbSlug));
+  return rows
+    .filter((r) => !isThinSuburbRow(r, {
+      walkScore: r.walkScore,
+      hasClimate: hasClimate.has(r.slug),
+      hasCrime: hasCrime.has(r.slug),
+      hasRental: hasRental.has(r.slug),
+    }))
+    .map(({ slug, updatedAt }) => ({ slug, updatedAt }));
 }
 
 export async function getIndexableSuburbSlugsWithDates(): Promise<{ slug: string; updatedAt: Date }[]> {
