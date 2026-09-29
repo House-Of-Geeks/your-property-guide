@@ -5,6 +5,8 @@ import { SuburbSubrouteHeader, getSuburbListingTabs } from "@/components/suburb"
 import { StickyMatchCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
+import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availability";
+import { emptyListingMessage } from "@/lib/suburb-subpages";
 import { getProperties, countProperties } from "@/lib/services/property-service";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { buildSuburbOgImageUrl } from "@/lib/og/helpers";
@@ -64,6 +66,7 @@ export default async function SuburbTownhousesPage({ params }: Props) {
     propertyType: "townhouse",
   });
   const count = properties.length;
+  const availability = await getSuburbSubpageAvailability(suburb);
 
   return (
     <>
@@ -88,13 +91,13 @@ export default async function SuburbTownhousesPage({ params }: Props) {
         title={<><span className="italic text-primary">Townhouses</span> for sale</>}
         subtitle={`${count} ${count === 1 ? "townhouse" : "townhouses"} on the market in ${suburb.name}, ${suburb.state} ${suburb.postcode}.`}
         breadcrumbLeaf="Townhouses"
-        tabs={getSuburbListingTabs(slug, "townhouses")}
+        tabs={getSuburbListingTabs(slug, "townhouses", availability)}
       />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <PropertyGrid
           properties={properties}
-          emptyMessage={`No townhouse listings in ${suburb.name} right now. Try the other listing types above.`}
+          emptyMessage={emptyListingMessage("townhouses", suburb.name, availability)}
         />
       </div>
 

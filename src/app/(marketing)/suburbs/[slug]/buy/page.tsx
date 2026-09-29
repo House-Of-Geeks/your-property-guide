@@ -8,6 +8,8 @@ import { SuburbSubrouteHeader, getSuburbListingTabs } from "@/components/suburb"
 import { ExpertCTA, StickyMatchCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
+import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availability";
+import { emptyListingMessage } from "@/lib/suburb-subpages";
 import { getProperties, countProperties } from "@/lib/services/property-service";
 import { suburbBuyTitle, suburbBuyDescription } from "@/lib/utils/seo";
 import { SITE_URL } from "@/lib/constants";
@@ -69,6 +71,8 @@ export default async function SuburbBuyPage({ params }: Props) {
   // Unfiltered, capped listing set; the client-side grid applies any filters.
   const properties = await getProperties({ listingType: "buy", suburb: slug });
   const count = properties.length;
+  const availability = await getSuburbSubpageAvailability(suburb);
+  const emptyMessage = emptyListingMessage("buy", suburb.name, availability);
 
   return (
     <>
@@ -93,15 +97,15 @@ export default async function SuburbBuyPage({ params }: Props) {
         title={<>Properties <span className="italic text-primary">for sale</span></>}
         subtitle={`${count} ${count === 1 ? "property" : "properties"} on the market in ${suburb.name}, ${suburb.state} ${suburb.postcode}.`}
         breadcrumbLeaf="For sale"
-        tabs={getSuburbListingTabs(slug, "buy")}
+        tabs={getSuburbListingTabs(slug, "buy", availability)}
       />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-8">
         <Suspense fallback={null}>
           <PropertyFilters listingType="buy" />
         </Suspense>
-        <Suspense fallback={<PropertyGrid properties={properties} emptyMessage={`No properties for sale in ${suburb.name} right now. Check back soon, or browse rentals or recently sold listings using the tabs above.`} />}>
-          <FilteredPropertyGrid properties={properties} listingType="buy" emptyMessage={`No properties for sale in ${suburb.name} right now. Check back soon, or browse rentals or recently sold listings using the tabs above.`} />
+        <Suspense fallback={<PropertyGrid properties={properties} emptyMessage={emptyMessage} />}>
+          <FilteredPropertyGrid properties={properties} listingType="buy" emptyMessage={emptyMessage} />
         </Suspense>
       </div>
 

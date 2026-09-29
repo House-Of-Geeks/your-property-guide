@@ -9,6 +9,8 @@ import { SuburbSubrouteHeader, getSuburbListingTabs } from "@/components/suburb"
 import { ExpertCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
+import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availability";
+import { emptyListingMessage } from "@/lib/suburb-subpages";
 import { getProperties, countProperties } from "@/lib/services/property-service";
 import { suburbRentTitle, suburbRentDescription } from "@/lib/utils/seo";
 import { SITE_URL } from "@/lib/constants";
@@ -69,6 +71,8 @@ export default async function SuburbRentPage({ params }: Props) {
   // Unfiltered, capped listing set; the client-side grid applies any filters.
   const properties = await getProperties({ listingType: "rent", suburb: slug });
   const count = properties.length;
+  const availability = await getSuburbSubpageAvailability(suburb);
+  const emptyMessage = emptyListingMessage("rent", suburb.name, availability);
 
   return (
     <>
@@ -93,15 +97,15 @@ export default async function SuburbRentPage({ params }: Props) {
         title={<>Properties <span className="italic text-primary">for rent</span></>}
         subtitle={`${count} ${count === 1 ? "rental" : "rentals"} available in ${suburb.name}, ${suburb.state} ${suburb.postcode}.`}
         breadcrumbLeaf="For rent"
-        tabs={getSuburbListingTabs(slug, "rent")}
+        tabs={getSuburbListingTabs(slug, "rent", availability)}
       />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-8">
         <Suspense fallback={null}>
           <PropertyFilters listingType="rent" />
         </Suspense>
-        <Suspense fallback={<PropertyGrid properties={properties} emptyMessage={`No rentals listed in ${suburb.name} right now. Check back soon, or browse the rental-market data using the tabs above.`} />}>
-          <FilteredPropertyGrid properties={properties} listingType="rent" emptyMessage={`No rentals listed in ${suburb.name} right now. Check back soon, or browse the rental-market data using the tabs above.`} />
+        <Suspense fallback={<PropertyGrid properties={properties} emptyMessage={emptyMessage} />}>
+          <FilteredPropertyGrid properties={properties} listingType="rent" emptyMessage={emptyMessage} />
         </Suspense>
       </div>
 

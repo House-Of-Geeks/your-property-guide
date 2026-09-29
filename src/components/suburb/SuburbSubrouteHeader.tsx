@@ -3,35 +3,23 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { SuburbMatchButton } from "./SuburbMatchButton";
+import { subpageTabs, type SubpageAvailability, type SubpageTab, type SuburbSubpage } from "@/lib/suburb-subpages";
 
-export interface SuburbSubrouteTab {
-  label: string;
-  href: string;
-  active?: boolean;
-}
+export type SuburbSubrouteTab = SubpageTab;
 
-// Standard listing-tab strip for the 6 listing sub-routes. Pass the active
-// segment to mark the corresponding tab.
-export type SuburbListingTab =
-  | "buy"
-  | "rent"
-  | "houses"
-  | "units"
-  | "townhouses"
-  | "land"
-  | "rental-market";
+// Standard tab strip for the listing sub-routes and the rental market. Pass
+// the active segment to mark its tab, and the suburb's availability
+// (getSuburbSubpageAvailability): a tab is a link, so one is drawn only for
+// a sub-page with something on it. Until 29 Sep 2026 all seven were drawn on
+// every sub-page of every suburb, six of them to empty pages.
+export type SuburbListingTab = SuburbSubpage;
 
-export function getSuburbListingTabs(slug: string, active: SuburbListingTab): SuburbSubrouteTab[] {
-  const items: { label: string; key: SuburbListingTab; href: string }[] = [
-    { label: "For sale",      key: "buy",            href: `/suburbs/${slug}/buy` },
-    { label: "For rent",      key: "rent",           href: `/suburbs/${slug}/rent` },
-    { label: "Houses",        key: "houses",         href: `/suburbs/${slug}/houses` },
-    { label: "Units",         key: "units",          href: `/suburbs/${slug}/units` },
-    { label: "Townhouses",    key: "townhouses",     href: `/suburbs/${slug}/townhouses` },
-    { label: "Land",          key: "land",           href: `/suburbs/${slug}/land` },
-    { label: "Rental market", key: "rental-market",  href: `/suburbs/${slug}/rental-market` },
-  ];
-  return items.map((i) => ({ label: i.label, href: i.href, active: i.key === active }));
+export function getSuburbListingTabs(
+  slug: string,
+  active: SuburbListingTab,
+  availability: SubpageAvailability,
+): SuburbSubrouteTab[] {
+  return subpageTabs(slug, active, availability);
 }
 
 interface SuburbSubrouteHeaderProps {
@@ -45,7 +33,8 @@ interface SuburbSubrouteHeaderProps {
   // Optional final breadcrumb leaf label (e.g. "Houses for Sale"). When set,
   // breadcrumbs render Suburbs > {suburb name} > {leaf}.
   breadcrumbLeaf?: string;
-  // Optional tab strip across the bottom of the header.
+  // Optional tab strip across the bottom of the header. Drawn from two tabs:
+  // the page being read alone is not navigation (the profile link above is).
   tabs?: readonly SuburbSubrouteTab[];
 }
 
@@ -123,7 +112,7 @@ export function SuburbSubrouteHeader({
           </div>
         </div>
 
-        {tabs && tabs.length > 0 && (
+        {tabs && tabs.length > 1 && (
           <nav
             aria-label={`${suburb.name} sub-pages`}
             className="mt-8 -mb-2 overflow-x-auto"
