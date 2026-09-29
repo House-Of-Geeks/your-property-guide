@@ -16,6 +16,7 @@ import { startSync, finishSync, failSync, log } from "../logger";
 import { resolveSlug } from "../slug-matcher";
 import { getCkanDownloadUrl } from "../ckan";
 import { batchUpsertCrime, type CrimeRecord } from "../crime-batch";
+import { saIncidentPlace } from "./crime-sa-rules";
 
 const SOURCE_ID = "crime-sa";
 const CKAN_BASE = "https://data.sa.gov.au/data";
@@ -53,11 +54,16 @@ export async function run(): Promise<void> {
       date:     Date;
     }>();
 
+    // Records that are not a place in South Australia (an interstate
+    // address, "NOT DISCLOSED") are skipped: see crime-sa-rules.ts.
+    let notInSa = 0;
+
     for (const row of data) {
-      const suburb   = String(row["Suburb - Incident"]   ?? "").trim();
-      const postcode = String(row["Postcode - Incident"] ?? "").trim();
-      const dateStr  = String(row["Reported Date"]       ?? "").trim();
-      if (!suburb || !dateStr) continue;
+      const place   = saIncidentPlace(row["Suburb - Incident"], row["Postcode - Incident"]);
+      const dateStr = String(row["Reported Date"] ?? "").trim();
+      if (!place) { notInSa++; continue; }
+      if (!dateStr) continue;
+      const { suburb, postcode } = place;
 
       // "Reported Date" format: "DD/MM/YYYY" — extract financial year
       // SA financial year: Jul–Jun (so Jul 2025–Jun 2026 = FY2025-26)
@@ -83,6 +89,8 @@ export async function run(): Promise<void> {
       if (offence) existing.breakdown[offence] = (existing.breakdown[offence] ?? 0) + count;
       grouped.set(key, existing);
     }
+
+    log(SOURCE_ID, `skipped ${notInSa} rows recorded outside South Australia or not disclosed`);
 
     // Process only the most recent financial year
     const allPeriods = [...new Set([...grouped.values()].map((v) => v.period))].sort();

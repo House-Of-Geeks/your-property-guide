@@ -24,9 +24,14 @@
 // "Sydney, SA 2000", "East Melbourne, SA 3002", "Townsville, SA 4810". Each
 // carries a crime or rental row, so the rule above would have indexed it.
 // Data of its own counts only for a row filed under the state its postcode
-// belongs to (stateMatchesPostcode).
+// belongs to (stateMatchesPostcode, src/lib/postcode-states.ts). Since item
+// 48 those rows redirect or answer 404; the check stays for the next one a
+// feed makes.
 import { isReliableSalesSource } from "@/lib/suburb-data-quality";
 import { hasEnoughSales } from "@/lib/sales-provenance";
+import { stateMatchesPostcode, type SuburbPlace } from "@/lib/postcode-states";
+
+export { stateMatchesPostcode, type SuburbPlace };
 
 export interface SuburbIndexRow {
   medianHousePrice: number;
@@ -34,54 +39,6 @@ export interface SuburbIndexRow {
   population: number;
   statsSource: string | null;
   salesCountHouse: number | null;
-}
-
-/** Where the row says the suburb is. */
-export interface SuburbPlace {
-  state: string;
-  postcode: string;
-}
-
-// Australia Post's postcode ranges by state.
-const POSTCODE_RANGES: readonly (readonly [number, number, string])[] = [
-  [200, 299, "ACT"], [2600, 2618, "ACT"], [2900, 2920, "ACT"],
-  [1000, 2599, "NSW"], [2619, 2899, "NSW"], [2921, 2999, "NSW"],
-  [800, 999, "NT"],
-  [4000, 4999, "QLD"], [9000, 9999, "QLD"],
-  [5000, 5999, "SA"],
-  [7000, 7999, "TAS"],
-  [3000, 3999, "VIC"], [8000, 8999, "VIC"],
-  [6000, 6999, "WA"],
-];
-
-// Postcodes that straddle a border, where the localities on the far side are
-// real: the states with a census-counted locality in the postcode on
-// 29 Sep 2026 (read-only production count), and the Jervis Bay Territory.
-const CROSS_BORDER: Readonly<Record<string, readonly string[]>> = {
-  "0872": ["NT", "SA", "WA"],
-  "2540": ["NSW", "ACT"],
-  "2611": ["ACT", "NSW"],
-  "2618": ["ACT", "NSW"],
-  "2620": ["NSW", "ACT"],
-  "3500": ["VIC", "NSW"],
-  "3586": ["VIC", "NSW"],
-  "3644": ["VIC", "NSW"],
-  "3691": ["VIC", "NSW"],
-  "3707": ["VIC", "NSW"],
-  "4375": ["QLD", "NSW"],
-  "4377": ["QLD", "NSW"],
-  "4380": ["QLD", "NSW"],
-  "4383": ["QLD", "NSW"],
-  "4385": ["QLD", "NSW"],
-  "4825": ["QLD", "NT"],
-};
-
-/** False for "Sydney, SA 2000", and for a postcode that is not four digits. */
-export function stateMatchesPostcode({ state, postcode }: SuburbPlace): boolean {
-  if (!/^\d{4}$/.test(postcode)) return false;
-  if (CROSS_BORDER[postcode]?.includes(state)) return true;
-  const n = Number(postcode);
-  return POSTCODE_RANGES.some(([from, to, s]) => s === state && n >= from && n <= to);
 }
 
 /** The service publishes this row's medians (trusted source, enough sales). */

@@ -4,8 +4,13 @@ import { isPlausibleAnnualGrowth, isReliableSalesSource } from "@/lib/suburb-dat
 // postcodes with the suburbs around them but are not suburbs (LOCALITIES_ONLY).
 // The page lists them separately, as what they are (getPostalNamesByPostcode).
 // The two all-postcode lists below keep them: a postcode Australia Post uses
-// only for a mail centre still has a page.
-import { LOCALITIES_ONLY, nonLocalitiesInPostcode, type NonLocality } from "@/lib/non-localities";
+// only for a mail centre still has a page. They leave out the rows that are
+// not even that (MISFILED_SLUGS) and anything that is not four digits: the
+// postcode sitemap listed "872" and "NOT DISCLOSED" until 29 Sep 2026.
+import { LOCALITIES_ONLY, MISFILED_SLUGS, nonLocalitiesInPostcode, type NonLocality } from "@/lib/non-localities";
+
+const LISTED_POSTCODES = { slug: { notIn: MISFILED_SLUGS } };
+const FOUR_DIGITS = /^\d{4}$/;
 
 export interface PostcodeSuburb {
   slug: string;
@@ -98,6 +103,7 @@ export async function getSuburbsByPostcode(postcode: string): Promise<PostcodeSu
 
 export async function getAllPostcodes(): Promise<string[]> {
   const rows = await db.suburb.findMany({
+    where: LISTED_POSTCODES,
     select: { postcode: true },
     orderBy: { postcode: "asc" },
   });
@@ -105,7 +111,7 @@ export async function getAllPostcodes(): Promise<string[]> {
   const seen = new Set<string>();
   const unique: string[] = [];
   for (const r of rows) {
-    if (r.postcode && !seen.has(r.postcode)) {
+    if (FOUR_DIGITS.test(r.postcode) && !seen.has(r.postcode)) {
       seen.add(r.postcode);
       unique.push(r.postcode);
     }
@@ -120,13 +126,14 @@ export interface PostcodeWithState {
 
 export async function getAllPostcodesWithState(): Promise<PostcodeWithState[]> {
   const rows = await db.suburb.findMany({
+    where: LISTED_POSTCODES,
     select: { postcode: true, state: true },
     orderBy: [{ state: "asc" }, { postcode: "asc" }],
   });
   // Deduplicate by postcode, keep first state seen
   const seen = new Map<string, string>();
   for (const r of rows) {
-    if (r.postcode && !seen.has(r.postcode)) {
+    if (FOUR_DIGITS.test(r.postcode) && !seen.has(r.postcode)) {
       seen.set(r.postcode, r.state);
     }
   }

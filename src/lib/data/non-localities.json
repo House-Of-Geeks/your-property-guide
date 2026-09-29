@@ -114,12 +114,28 @@
    "parent": null
   },
   {
+   "slug": "bankstown-square-nsw-2200",
+   "name": "Bankstown Square",
+   "state": "NSW",
+   "postcode": "2200",
+   "kind": "shopping-centre",
+   "parent": "bankstown-nsw-2200"
+  },
+  {
    "slug": "bondi-junction-plaza-nsw-2022",
    "name": "Bondi Junction Plaza",
    "state": "NSW",
    "postcode": "2022",
    "kind": "shopping-centre",
    "parent": "bondi-junction-nsw-2022"
+  },
+  {
+   "slug": "casula-mall-nsw-2170",
+   "name": "Casula Mall",
+   "state": "NSW",
+   "postcode": "2170",
+   "kind": "shopping-centre",
+   "parent": "casula-nsw-2170"
   },
   {
    "slug": "coffs-harbour-dc-nsw-2450",
@@ -168,6 +184,22 @@
    "postcode": "2158",
    "kind": "postal",
    "parent": "dural-nsw-2158"
+  },
+  {
+   "slug": "erina-fair-nsw-2250",
+   "name": "Erina Fair",
+   "state": "NSW",
+   "postcode": "2250",
+   "kind": "shopping-centre",
+   "parent": "erina-nsw-2250"
+  },
+  {
+   "slug": "forster-shopping-village-nsw-2428",
+   "name": "Forster Shopping Village",
+   "state": "NSW",
+   "postcode": "2428",
+   "kind": "shopping-centre",
+   "parent": "forster-nsw-2428"
   },
   {
    "slug": "glendenning-dc-nsw-2761",
@@ -282,6 +314,14 @@
    "parent": "kirrawee-nsw-2232"
   },
   {
+   "slug": "kotara-fair-nsw-2289",
+   "name": "Kotara Fair",
+   "state": "NSW",
+   "postcode": "2289",
+   "kind": "shopping-centre",
+   "parent": "kotara-nsw-2289"
+  },
+  {
    "slug": "lakemba-dc-nsw-2195",
    "name": "Lakemba DC",
    "state": "NSW",
@@ -330,6 +370,14 @@
    "parent": "liverpool-nsw-2170"
   },
   {
+   "slug": "macarthur-square-nsw-2560",
+   "name": "Macarthur Square",
+   "state": "NSW",
+   "postcode": "2560",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
    "slug": "macquarie-centre-nsw-2113",
    "name": "Macquarie Centre",
    "state": "NSW",
@@ -376,6 +424,14 @@
    "postcode": "2308",
    "kind": "institution",
    "parent": null
+  },
+  {
+   "slug": "north-sydney-shoppingworld-nsw-2060",
+   "name": "North Sydney Shoppingworld",
+   "state": "NSW",
+   "postcode": "2060",
+   "kind": "shopping-centre",
+   "parent": "north-sydney-nsw-2060"
   },
   {
    "slug": "nowra-dc-nsw-2541",
@@ -498,6 +554,14 @@
    "parent": null
   },
   {
+   "slug": "shellharbour-square-nsw-2529",
+   "name": "Shellharbour Square",
+   "state": "NSW",
+   "postcode": "2529",
+   "kind": "shopping-centre",
+   "parent": "shellharbour-nsw-2529"
+  },
+  {
    "slug": "singleton-dc-nsw-2330",
    "name": "Singleton DC",
    "state": "NSW",
@@ -536,6 +600,14 @@
    "postcode": "2430",
    "kind": "postal",
    "parent": "taree-nsw-2430"
+  },
+  {
+   "slug": "taylor-square-nsw-2010",
+   "name": "Taylor Square",
+   "state": "NSW",
+   "postcode": "2010",
+   "kind": "shopping-centre",
+   "parent": null
   },
   {
    "slug": "the-university-of-sydney-nsw-2006",
@@ -592,6 +664,22 @@
    "postcode": "2102",
    "kind": "postal",
    "parent": "warriewood-nsw-2102"
+  },
+  {
+   "slug": "warriewood-shopping-square-nsw-2102",
+   "name": "Warriewood Shopping Square",
+   "state": "NSW",
+   "postcode": "2102",
+   "kind": "shopping-centre",
+   "parent": "warriewood-nsw-2102"
+  },
+  {
+   "slug": "warringah-mall-nsw-2100",
+   "name": "Warringah Mall",
+   "state": "NSW",
+   "postcode": "2100",
+   "kind": "shopping-centre",
+   "parent": null
   },
   {
    "slug": "waterloo-dc-nsw-2017",
@@ -738,6 +826,14 @@
    "parent": "arundel-qld-4214"
   },
   {
+   "slug": "australia-fair-qld-4215",
+   "name": "Australia Fair",
+   "state": "QLD",
+   "postcode": "4215",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
    "slug": "booval-bc-qld-4304",
    "name": "Booval BC",
    "state": "QLD",
@@ -751,6 +847,14 @@
    "state": "QLD",
    "postcode": "4304",
    "kind": "postal",
+   "parent": "booval-qld-4304"
+  },
+  {
+   "slug": "booval-fair-qld-4304",
+   "name": "Booval Fair",
+   "state": "QLD",
+   "postcode": "4304",
+   "kind": "shopping-centre",
    "parent": "booval-qld-4304"
   },
   {
@@ -792,6 +896,14 @@
    "postcode": "4000",
    "kind": "postal",
    "parent": "brisbane-qld-4000"
+  },
+  {
+   "slug": "brisbane-market-qld-4106",
+   "name": "Brisbane Market",
+   "state": "QLD",
+   "postcode": "4106",
+   "kind": "shopping-centre",
+   "parent": null
   },
   {
    "slug": "brookside-centre-qld-4053",
@@ -1050,6 +1162,14 @@
    "parent": "garbutt-qld-4814"
   },
   {
+   "slug": "gatton-college-qld-4345",
+   "name": "Gatton College",
+   "state": "QLD",
+   "postcode": "4345",
+   "kind": "institution",
+   "parent": null
+  },
+  {
    "slug": "gladstone-bc-qld-4680",
    "name": "Gladstone BC",
    "state": "QLD",
@@ -1258,6 +1378,14 @@
    "parent": "maroochydore-qld-4558"
   },
   {
+   "slug": "marsden-postal-depot-qld-4132",
+   "name": "Marsden Postal Depot",
+   "state": "QLD",
+   "postcode": "4132",
+   "kind": "postal",
+   "parent": "marsden-qld-4132"
+  },
+  {
    "slug": "maryborough-dc-qld-4650",
    "name": "Maryborough DC",
    "state": "QLD",
@@ -1354,6 +1482,14 @@
    "parent": "northgate-qld-4013"
   },
   {
+   "slug": "pacific-fair-qld-4218",
+   "name": "Pacific Fair",
+   "state": "QLD",
+   "postcode": "4218",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
    "slug": "parliament-house-qld-4000",
    "name": "Parliament House",
    "state": "QLD",
@@ -1415,6 +1551,14 @@
    "state": "QLD",
    "postcode": "4700",
    "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "rockhampton-shopping-fair-qld-4701",
+   "name": "Rockhampton Shopping Fair",
+   "state": "QLD",
+   "postcode": "4701",
+   "kind": "shopping-centre",
    "parent": null
   },
   {
@@ -1570,6 +1714,14 @@
    "parent": null
   },
   {
+   "slug": "toowoomba-village-fair-qld-4350",
+   "name": "Toowoomba Village Fair",
+   "state": "QLD",
+   "postcode": "4350",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
    "slug": "townsville-dc-qld-4810",
    "name": "Townsville DC",
    "state": "QLD",
@@ -1666,6 +1818,86 @@
    "parent": "adelaide-sa-5000"
   },
   {
+   "slug": "alice-spring-sa-0870",
+   "name": "Alice Spring",
+   "state": "SA",
+   "postcode": "0870",
+   "kind": "misfiled",
+   "parent": "alice-springs-nt-0870"
+  },
+  {
+   "slug": "ararat-sa-3377",
+   "name": "Ararat",
+   "state": "SA",
+   "postcode": "3377",
+   "kind": "misfiled",
+   "parent": "ararat-vic-3377"
+  },
+  {
+   "slug": "beenleigh-sa-4207",
+   "name": "Beenleigh",
+   "state": "SA",
+   "postcode": "4207",
+   "kind": "misfiled",
+   "parent": "beenleigh-qld-4207"
+  },
+  {
+   "slug": "bellbrae-sa-3228",
+   "name": "Bellbrae",
+   "state": "SA",
+   "postcode": "3228",
+   "kind": "misfiled",
+   "parent": "bellbrae-vic-3228"
+  },
+  {
+   "slug": "bexley-sa-2207",
+   "name": "Bexley",
+   "state": "SA",
+   "postcode": "2207",
+   "kind": "misfiled",
+   "parent": "bexley-nsw-2207"
+  },
+  {
+   "slug": "broken-hill-sa-2880",
+   "name": "Broken Hill",
+   "state": "SA",
+   "postcode": "2880",
+   "kind": "misfiled",
+   "parent": "broken-hill-nsw-2880"
+  },
+  {
+   "slug": "calamvale-sa-4116",
+   "name": "Calamvale",
+   "state": "SA",
+   "postcode": "4116",
+   "kind": "misfiled",
+   "parent": "calamvale-qld-4116"
+  },
+  {
+   "slug": "city-west-campus-sa-5000",
+   "name": "City West Campus",
+   "state": "SA",
+   "postcode": "5000",
+   "kind": "institution",
+   "parent": null
+  },
+  {
+   "slug": "coonabarabran-sa-2357",
+   "name": "Coonabarabran",
+   "state": "SA",
+   "postcode": "2357",
+   "kind": "misfiled",
+   "parent": "coonabarabran-nsw-2357"
+  },
+  {
+   "slug": "east-melbourne-sa-3002",
+   "name": "East Melbourne",
+   "state": "SA",
+   "postcode": "3002",
+   "kind": "misfiled",
+   "parent": "east-melbourne-vic-3002"
+  },
+  {
    "slug": "edinburgh-raaf-sa-5111",
    "name": "Edinburgh RAAF",
    "state": "SA",
@@ -1682,6 +1914,14 @@
    "parent": "elizabeth-west-sa-5113"
   },
   {
+   "slug": "elsternwick-sa-3185",
+   "name": "Elsternwick",
+   "state": "SA",
+   "postcode": "3185",
+   "kind": "misfiled",
+   "parent": "elsternwick-vic-3185"
+  },
+  {
    "slug": "enfield-plaza-sa-5085",
    "name": "Enfield Plaza",
    "state": "SA",
@@ -1690,12 +1930,36 @@
    "parent": "enfield-sa-5085"
   },
   {
+   "slug": "faddon-sa-2904",
+   "name": "Faddon",
+   "state": "SA",
+   "postcode": "2904",
+   "kind": "misfiled",
+   "parent": "fadden-act-2904"
+  },
+  {
    "slug": "flinders-university-sa-5042",
    "name": "Flinders University",
    "state": "SA",
    "postcode": "5042",
    "kind": "institution",
    "parent": null
+  },
+  {
+   "slug": "george-town-sa-7253",
+   "name": "George Town",
+   "state": "SA",
+   "postcode": "7253",
+   "kind": "misfiled",
+   "parent": "george-town-tas-7253"
+  },
+  {
+   "slug": "gillen-sa-0870",
+   "name": "Gillen",
+   "state": "SA",
+   "postcode": "0870",
+   "kind": "misfiled",
+   "parent": "gillen-nt-0870"
   },
   {
    "slug": "glynde-dc-sa-5070",
@@ -1714,12 +1978,36 @@
    "parent": "glynde-sa-5070"
   },
   {
+   "slug": "halls-gap-sa-3381",
+   "name": "Halls Gap",
+   "state": "SA",
+   "postcode": "3381",
+   "kind": "misfiled",
+   "parent": "halls-gap-vic-3381"
+  },
+  {
    "slug": "hilton-plaza-sa-5033",
    "name": "Hilton Plaza",
    "state": "SA",
    "postcode": "5033",
    "kind": "shopping-centre",
    "parent": "hilton-sa-5033"
+  },
+  {
+   "slug": "ivanhoe-sa-3079",
+   "name": "Ivanhoe",
+   "state": "SA",
+   "postcode": "3079",
+   "kind": "misfiled",
+   "parent": "ivanhoe-vic-3079"
+  },
+  {
+   "slug": "loganholme-sa-4129",
+   "name": "Loganholme",
+   "state": "SA",
+   "postcode": "4129",
+   "kind": "misfiled",
+   "parent": "loganholme-qld-4129"
   },
   {
    "slug": "lonsdale-dc-sa-5160",
@@ -1730,12 +2018,28 @@
    "parent": "lonsdale-sa-5160"
   },
   {
+   "slug": "macquarie-park-sa-2113",
+   "name": "Macquarie Park",
+   "state": "SA",
+   "postcode": "2113",
+   "kind": "misfiled",
+   "parent": "macquarie-park-nsw-2113"
+  },
+  {
    "slug": "marleston-dc-sa-5033",
    "name": "Marleston DC",
    "state": "SA",
    "postcode": "5033",
    "kind": "postal",
    "parent": "marleston-sa-5033"
+  },
+  {
+   "slug": "marulan-sa-2579",
+   "name": "Marulan",
+   "state": "SA",
+   "postcode": "2579",
+   "kind": "misfiled",
+   "parent": "marulan-nsw-2579"
   },
   {
    "slug": "melrose-park-dc-sa-5039",
@@ -1770,6 +2074,14 @@
    "parent": "mount-gambier-sa-5290"
   },
   {
+   "slug": "mount-ousley-sa-2519",
+   "name": "Mount Ousley",
+   "state": "SA",
+   "postcode": "2519",
+   "kind": "misfiled",
+   "parent": "mount-ousley-nsw-2519"
+  },
+  {
    "slug": "o-halloran-hill-dc-sa-5158",
    "name": "O'Halloran Hill DC",
    "state": "SA",
@@ -1778,12 +2090,28 @@
    "parent": "o-halloran-hill-sa-5158"
   },
   {
+   "slug": "oakhampton-sa-2320",
+   "name": "Oakhampton",
+   "state": "SA",
+   "postcode": "2320",
+   "kind": "misfiled",
+   "parent": "oakhampton-nsw-2320"
+  },
+  {
    "slug": "parliament-house-sa-5000",
    "name": "Parliament House",
    "state": "SA",
    "postcode": "5000",
    "kind": "institution",
    "parent": null
+  },
+  {
+   "slug": "pipalyatjara-sa-872",
+   "name": "Pipalyatjara",
+   "state": "SA",
+   "postcode": "872",
+   "kind": "misfiled",
+   "parent": "pipalyatjara-sa-0872"
   },
   {
    "slug": "port-adelaide-bc-sa-5015",
@@ -1810,6 +2138,14 @@
    "parent": "regency-park-sa-5010"
   },
   {
+   "slug": "rundle-mall-sa-5000",
+   "name": "Rundle Mall",
+   "state": "SA",
+   "postcode": "5000",
+   "kind": "shopping-centre",
+   "parent": null
+  },
+  {
    "slug": "salisbury-south-bc-sa-5106",
    "name": "Salisbury South BC",
    "state": "SA",
@@ -1834,12 +2170,36 @@
    "parent": null
   },
   {
+   "slug": "sydney-sa-2000",
+   "name": "Sydney",
+   "state": "SA",
+   "postcode": "2000",
+   "kind": "misfiled",
+   "parent": "sydney-nsw-2000"
+  },
+  {
+   "slug": "tatyoon-sa-3378",
+   "name": "Tatyoon",
+   "state": "SA",
+   "postcode": "3378",
+   "kind": "misfiled",
+   "parent": "tatyoon-vic-3378"
+  },
+  {
    "slug": "torrensville-plaza-sa-5031",
    "name": "Torrensville Plaza",
    "state": "SA",
    "postcode": "5031",
    "kind": "shopping-centre",
    "parent": "torrensville-sa-5031"
+  },
+  {
+   "slug": "townsville-sa-4810",
+   "name": "Townsville",
+   "state": "SA",
+   "postcode": "4810",
+   "kind": "misfiled",
+   "parent": "townsville-qld-4810"
   },
   {
    "slug": "unley-bc-sa-5061",
@@ -1858,12 +2218,52 @@
    "parent": "unley-sa-5061"
   },
   {
+   "slug": "wagga-wagga-sa-2650",
+   "name": "Wagga Wagga",
+   "state": "SA",
+   "postcode": "2650",
+   "kind": "misfiled",
+   "parent": "wagga-wagga-nsw-2650"
+  },
+  {
+   "slug": "warwick-farm-sa-2170",
+   "name": "Warwick Farm",
+   "state": "SA",
+   "postcode": "2170",
+   "kind": "misfiled",
+   "parent": "warwick-farm-nsw-2170"
+  },
+  {
+   "slug": "wetherill-park-sa-2164",
+   "name": "Wetherill Park",
+   "state": "SA",
+   "postcode": "2164",
+   "kind": "misfiled",
+   "parent": "wetherill-park-nsw-2164"
+  },
+  {
    "slug": "whyalla-dc-sa-5600",
    "name": "Whyalla DC",
    "state": "SA",
    "postcode": "5600",
    "kind": "postal",
    "parent": "whyalla-sa-5600"
+  },
+  {
+   "slug": "wollert-sa-3750",
+   "name": "Wollert",
+   "state": "SA",
+   "postcode": "3750",
+   "kind": "misfiled",
+   "parent": "wollert-vic-3750"
+  },
+  {
+   "slug": "wooloongabba-sa-4102",
+   "name": "Wooloongabba",
+   "state": "SA",
+   "postcode": "4102",
+   "kind": "misfiled",
+   "parent": "woolloongabba-qld-4102"
   },
   {
    "slug": "bathurst-street-po-tas-7000",
@@ -1890,11 +2290,27 @@
    "parent": null
   },
   {
+   "slug": "ballarat-roadside-delivery-vic-3352",
+   "name": "Ballarat Roadside Delivery",
+   "state": "VIC",
+   "postcode": "3352",
+   "kind": "postal",
+   "parent": null
+  },
+  {
    "slug": "booran-road-po-vic-3163",
    "name": "Booran Road PO",
    "state": "VIC",
    "postcode": "3163",
    "kind": "postal",
+   "parent": null
+  },
+  {
+   "slug": "brentford-square-vic-3131",
+   "name": "Brentford Square",
+   "state": "VIC",
+   "postcode": "3131",
+   "kind": "shopping-centre",
    "parent": null
   },
   {
@@ -2320,6 +2736,22 @@
    "postcode": "6111",
    "kind": "shopping-centre",
    "parent": null
+  }
+ ],
+ "hidden": [
+  {
+   "slug": "north-pole-vic-9999",
+   "name": "North Pole",
+   "state": "VIC",
+   "postcode": "9999",
+   "reason": "no real suburb of that name in the postcode"
+  },
+  {
+   "slug": "not-disclosed-sa-NOT DISCLOSED",
+   "name": "Not Disclosed",
+   "state": "SA",
+   "postcode": "NOT DISCLOSED",
+   "reason": "no real suburb of that name in the postcode"
   }
  ]
 }
