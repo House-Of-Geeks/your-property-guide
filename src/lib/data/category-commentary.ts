@@ -67,7 +67,7 @@ export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = 
     intro:
       "'Most affordable' here means lowest median house price, the entry-level suburbs in each state. Affordability isn't the same as good value: a $400K outer-fringe suburb with stagnant population growth and weak infrastructure can be a worse buy than a $700K middle-ring suburb with structural demand. Use this list as a starting point for further research, not a final shortlist.",
     methodology:
-      "Sorted by median house price, lowest first, from $100,000. Only a median the suburb's own page publishes is ranked: NSW Valuer General sales, Land Victoria and SA Government quarterly medians, and ABS statistical-area (SA2) medians in the other states and territories, on at least five recorded sales where the count is known. An SA2 median covers the suburb and its neighbours.",
+      "Sorted by median house price, lowest first, from $100,000. Only a median the suburb's own page publishes is ranked: NSW Valuer General sales, Land Victoria and SA Government quarterly medians, and ABS statistical-area (SA2) medians in the other states and territories, on at least five recorded sales where the count is known. An SA2 median is for the area that carries the suburb's name, which can take in surrounding localities.",
     bestFor:
       "First home buyers prioritising entry into the property market; rentvestors looking for high-yield, lower-entry investments; buyers willing to commute further for a freestanding house.",
     faqs: [

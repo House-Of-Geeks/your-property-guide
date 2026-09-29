@@ -32,8 +32,11 @@ export interface RawSalesRow {
 
 /**
  * How a median was measured: "suburb" is a median of sales inside the suburb,
- * "area" is the ABS statistical area (SA2) that contains it, which can take
- * in the neighbours. Suburbs in one SA2 share a figure.
+ * "area" is the ABS statistical area (SA2) that carries the suburb's name,
+ * which can take in surrounding localities and can leave out part of the
+ * suburb (Morayfield is split between "Morayfield" and "Morayfield - East").
+ * The feed matches an area to a suburb by name, so no two suburbs share a
+ * figure.
  */
 export type MedianBasis = "suburb" | "area";
 

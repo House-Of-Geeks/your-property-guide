@@ -89,7 +89,10 @@ export function priceSourceLine(state: string | null): string {
     case "SA":
       return "Prices are the SA Government's quarterly suburb medians.";
     default:
-      return `Prices for ${stateName(state)} are ABS statistical-area (SA2) medians. An SA2 takes in a suburb and its neighbours, so suburbs in the same area share a figure.`;
+      // The ABS feed gives an area's figure to the suburb that carries the
+      // area's name, and to no other: suburbs do not share a figure. Until
+      // 29 Sep 2026 this line said they did.
+      return `Prices for ${stateName(state)} are ABS statistical-area (SA2) medians: each is the median for the area that carries the suburb's name. An SA2 can take in surrounding localities, so a figure can differ from sales in the suburb itself.`;
   }
 }
 

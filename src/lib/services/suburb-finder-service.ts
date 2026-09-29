@@ -39,7 +39,7 @@ export interface MatchedSuburb {
   postcode: string;
   /** The median the suburb's own page publishes. */
   medianHousePrice: number;
-  /** "area" for an ABS statistical-area median, shared by the suburbs in that area. */
+  /** "area" for the median of the ABS statistical area that carries the suburb's name. */
   medianBasis: MedianBasis | null;
   /** 0 when there is no published 12-month change. */
   annualGrowthHouse: number;
