@@ -28,6 +28,7 @@ import { ExpertCTA, StickyMatchCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { Badge, Button } from "@/components/ui";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
+import { isThinProfile } from "@/lib/suburb-indexability";
 import { getPropertiesBySuburb } from "@/lib/services/property-service";
 import { getSuburbCrimeWithLgaFallback } from "@/lib/services/data-freshness";
 import { suburbTitle, suburbDescription } from "@/lib/utils/seo";
@@ -75,15 +76,28 @@ export const revalidate = 604800;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
 
-// A suburb is "thin" when we have neither price data nor population — the
-// page is mostly empty modules. We let it remain reachable (direct URL +
-// internal links still work) but block search engines from indexing it
-// until real data lands, so search quality signals don't degrade.
+// A suburb is "thin" when it has no published price, no population and none
+// of walkability, climate, crime or rental data of its own (or is a row filed
+// under the wrong state, "Sydney, SA 2000"): the page is then mostly empty
+// modules. It stays reachable (direct URL + internal links
+// still work) but is kept out of the index until real data lands. The rule
+// is isThinProfile in src/lib/suburb-indexability.ts, which the suburbs
+// sitemap applies to the same signals, so the two cannot disagree.
 function isThinSuburb(s: Awaited<ReturnType<typeof getSuburbBySlug>>): boolean {
   if (!s) return false;
-  const hasPrices = !!s.stats.medianHousePrice || !!s.stats.medianUnitPrice;
-  const hasPopulation = !!s.stats.population;
-  return !hasPrices && !hasPopulation;
+  return isThinProfile({
+    publishedPrice: !!s.stats.medianHousePrice || !!s.stats.medianUnitPrice,
+    population: s.stats.population,
+    place: { state: s.state, postcode: s.postcode },
+    signals: {
+      walkScore: s.stats.walkScore,
+      hasClimate: s.climate != null,
+      // Set when a row for this suburb exists (fetchFreshness), which is what
+      // the sitemap counts.
+      hasCrime: s.dataFreshness?.crimeSource != null,
+      hasRental: s.dataFreshness?.rentalSource != null,
+    },
+  });
 }
 
 export async function generateMetadata({ params }: SuburbDetailPageProps): Promise<Metadata> {

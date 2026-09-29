@@ -228,7 +228,7 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       (suburbs 17,872 → profiles the page marks indexable; agents 4,719 → those with a published median); /agents and
       /real-estate-agencies out of the static sitemap; compare sitemap in canonical pair order.
 - [x] 38. DONE 29 Sep 2026 — PR #64 (de0acf5): canonical on /find-an-expert; test that every indexable page sets one.
-- [ ] 39. [decision] Thin suburb profiles. 3,805 profiles answer noindex under the page's own rule (no published price
+- [x] 39. [decision] DONE 29 Sep 2026 (option b, below). Thin suburb profiles. 3,805 profiles answer noindex under the page's own rule (no published price
       and no population). Most became thin on 7 Sep when the postcode-level census copies were cleared (item 1 step
       iii): an unflagged consequence of that change. In the three-month Google export to 5 Sep, 88 of them were in the
       top 1,000 pages with 53 clicks and 25,951 impressions (5% of clicks, 12% of impressions), nearly all at position
@@ -239,6 +239,11 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       keep postal and institution names noindex (recommended); (c) index all as before 7 Sep.
       Could break: (b) and (c) put back pages with no price and no population, which the rule was written to hold
       back; the rule lives in one place (`suburb-indexability.ts` + the page), so the sitemap follows.
+      Shipped: option (b). The postal and institution names became redirects (item 46, 290 rows). Of the 3,520 real
+      localities left, 2,230 that carry a walk score, a climate row, a crime row or a rental row are indexable
+      again and back in the sitemap; 1,261 carry none and stay noindex, and 29 are held back as misfiled rows
+      (item 48). One rule (`isThinProfile`), read by the page and the sitemap. Read in Search Console around
+      27 Oct: "Excluded by noindex" down by about 2,200.
 - [ ] 40. [code] Stop linking to empty listing sub-pages. 13 suburbs have a listing; every other suburb's six listing
       sub-pages (/buy, /rent, /houses, /units, /townhouses, /land: about 107,900 URLs) are empty, answer 200 with
       noindex, and are reachable from the tab strip on every sub-page, the schools page's "View properties" and the
@@ -279,4 +284,17 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       that overwrote statsSource, and the distrusted QLD/WA feeds. Change: the same gate as the page
       (`hasPublishedHouseMedian`) in each list query. Could break: rankings for QLD and WA would empty or thin out,
       so the pages need an honest empty state first; ships by cohort with a before/after of each ranking.
+- [ ] 48. [data] Rows that are not places. Found 29 Sep 2026 while reading the pages item 39 was about to index.
+      (i) 25 suburbs filed under SA with an interstate postcode, each beside the real suburb: "Sydney, SA 2000",
+      "East Melbourne, SA 3002", "Broken Hill, SA 2880", "Townsville, SA 4810", "George Town, SA 7253". The SA crime
+      and rental feeds record an interstate address now and then and the sync creates a suburb for it.
+      (ii) Misspellings and junk with no real twin: "Alice Spring, SA 0870", "Faddon, SA 2904", "Wooloongabba, SA
+      4102", "North Pole, VIC 9999", "Not Disclosed" (postcode "NOT DISCLOSED"), and "Pipalyatjara, SA 872", a
+      duplicate of the 0872 row with a population of 159, which is indexable today.
+      All but the last are noindex and item 39 keeps them so (`stateMatchesPostcode`). They still appear in
+      search, lists and the postcode pages of the real suburbs.
+      Change: (a) the two SA feeds skip a row whose postcode is outside SA's ranges (and 0872); (b) the 25 join the
+      non-locality list with the real suburb as parent, so their URLs redirect (item 46's mechanism); (c) delete
+      the junk rows. Could break: (c) is a production write, schools or crime rows may reference the rows; dry
+      run with counts first, then an explicit go.
 
