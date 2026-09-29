@@ -363,14 +363,25 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             paragraph algorithmic narrative built from the suburb's real
             data (median, growth, demographics, walkability, climate). */}
         <section id="about" className="scroll-mt-16 relative">
-          <Image
-            src="/images/illustrations/contour.svg"
-            alt=""
-            width={1200}
-            height={800}
+          {/* The contour runs 128px past the column on purpose. Left loose
+              it made every suburb page scroll sideways, so it sits in a box
+              that reaches the page gutters (the container's px-4 / sm:px-6
+              / lg:px-8) and is cut there. The image's right offset is 128px
+              minus that gutter, which keeps it exactly where it was. Keep
+              both in step with the container padding. */}
+          <div
             aria-hidden="true"
-            className="absolute -right-32 -top-16 w-[800px] max-w-none opacity-[0.08] pointer-events-none select-none -z-10"
-          />
+            className="absolute inset-y-0 -inset-x-4 sm:-inset-x-6 lg:-inset-x-8 overflow-x-clip pointer-events-none -z-10"
+          >
+            <Image
+              src="/images/illustrations/contour.svg"
+              alt=""
+              width={1200}
+              height={800}
+              aria-hidden="true"
+              className="absolute -right-28 sm:-right-26 lg:-right-24 -top-16 w-[800px] max-w-none opacity-[0.08] select-none"
+            />
+          </div>
           <div className="grid lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-3">
               <p className="font-display italic text-primary text-base mb-3 leading-none">
