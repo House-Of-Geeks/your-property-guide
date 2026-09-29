@@ -115,7 +115,7 @@ function AreaMark({ suburb, show }: { suburb: RankedSuburb; show: boolean }) {
   if (!show || suburb.medianBasis !== "area" || !(suburb.medianHousePrice > 0)) return null;
   return (
     <abbr
-      title="ABS statistical-area (SA2) median: the area takes in the suburb and its neighbours"
+      title="ABS statistical-area (SA2) median: the area that carries the suburb's name, which can take in surrounding localities"
       className="ml-1 font-sans text-[10px] uppercase tracking-wide text-ink-subtle no-underline"
     >
       area

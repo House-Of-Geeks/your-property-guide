@@ -27,7 +27,7 @@ export interface RankedSuburb {
   medianUnitPrice: number;
   /** 0 when there is no published 12-month change. */
   annualGrowthHouse: number;
-  /** "area" for an ABS statistical-area median, shared by the suburbs in that area. */
+  /** "area" for the median of the ABS statistical area that carries the suburb's name. */
   medianBasis: MedianBasis | null;
   walkScore: number | null;
   population: number;

@@ -306,8 +306,12 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       Left for a decision: city and region titles end "Median, Growth, Suburbs" where the page has no growth to
       show (item 2); `GROWTH_SOURCES` is the one line to change if the hand-entered Moreton Bay growth figures are
       wanted back.
+      Cohort 3 verified in production: 54 pages, 940 rows with figures, every median, change, rent and yield
+      the one the suburb's own page publishes; no days on market, no hazard claim, no change of 0.0%.
+      Corrected after cohort 3: the pages said suburbs in one ABS area share a figure. They do not (item 51);
+      the sentence now says what the feed does.
       Snapshots: docs/seo-baselines/2026-09-29/lists/ (before.csv, after-rankings.csv, after-reports.csv,
-      before-readers.csv).
+      before-readers.csv, after-readers.csv).
 - [x] 48. [data] DONE 29 Sep 2026 for (a) and (b); (c) left to Jos (see the end of this item). Rows that are not places. Found 29 Sep 2026 while reading the pages item 39 was about to index.
       (i) 25 suburbs filed under SA with an interstate postcode, each beside the real suburb: "Sydney, SA 2000",
       "East Melbourne, SA 3002", "Broken Hill, SA 2880", "Townsville, SA 4810", "George Town, SA 7253". The SA crime
@@ -354,5 +358,20 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       both); (b) audit the region column against the ABS locality to LGA correspondence and re-import where it
       differs. Could break: (a) changes which suburbs 20 region pages list, and 20 names need a second page or a
       state in the URL; (b) is a production write and moves suburbs between pages: dry run with counts first,
+      then an explicit go.
+- [ ] 51. [data] An ABS area median reaches a suburb only by name. Found 29 Sep 2026 while checking figures
+      that looked high (item 47). The ABS feed gives each statistical area's (SA2) median to the suburb with the
+      area's exact name (`resolveSlug(sa2Name, state, "")` in scripts/sync/sources/sales-abs.ts). The figures on
+      file match the ABS Data API for 2024 to the dollar. Two consequences:
+      (i) Of the 992 areas with a 2024 house median in QLD, WA, TAS, NT and ACT, 539 match a suburb and 453 do
+      not ("Loganholme - Tanah Merah", "Brighton (Qld)", "Kingston Beach - Blackmans Bay"), so their suburbs have
+      no published median and the ABS figure goes unused.
+      (ii) A suburb split between two areas takes the figure of the one that carries its name. Morayfield prints
+      $1,095,000, the figure for the SA2 "Morayfield"; most of the suburb lies in "Morayfield - East"
+      ($660,000). Ten areas are named this way.
+      Change: match through the ABS locality to SA2 correspondence (a suburb takes the area that holds most of
+      it) and name the area on the page. Could break: it changes the published median of suburbs in five
+      states and gives one to several hundred more, which makes them indexable under item 39's rule; it is a
+      production write by the feed. Dry run with counts and a list of every suburb whose figure would move,
       then an explicit go.
 

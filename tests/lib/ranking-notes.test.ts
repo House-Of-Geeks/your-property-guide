@@ -53,7 +53,9 @@ describe("the note", () => {
     expect(qld.empty).toBe(false);
     expect(qld.text).toContain("Ranked from 281 suburbs in Queensland with a published median.");
     expect(qld.text).toContain("ABS statistical-area (SA2) medians");
-    expect(qld.text).toContain("share a figure");
+    // An area's figure goes to the suburb of its name and to no other.
+    expect(qld.text).toContain("the median for the area that carries the suburb's name");
+    expect(qld.text).not.toContain("share a figure");
     expect(rankingNote("most-affordable", "NSW", 50, 1882).text).toContain("1,882 suburbs in New South Wales");
     expect(rankingNote("most-affordable", "NSW", 50, 1882).text).toContain("five recorded sales");
     expect(rankingNote("highest-growth", null, 50, 1269).text).toContain("beyond 25%");
