@@ -1,10 +1,8 @@
 import { db } from "@/lib/db";
 import { cache } from "react";
 import { buildCityMarket, type CityMarket, type CityMarketRow } from "@/lib/services/city-market-service";
-import { NON_LOCALITY_SLUGS } from "@/lib/non-localities";
-
 // Postal delivery names and institutions are not suburbs of a region.
-const LOCALITIES_ONLY = { slug: { notIn: NON_LOCALITY_SLUGS } } as const;
+import { LOCALITIES_ONLY } from "@/lib/non-localities";
 
 // State-level values that are not real SA3 regions, filter these out
 const STATE_NAMES = new Set([

@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { db } from "@/lib/db";
+import { LOCALITIES_ONLY } from "@/lib/non-localities";
 
 async function getStats() {
   const [suburbs, schools, listings] = await Promise.all([
-    db.suburb.count(),
+    db.suburb.count({ where: LOCALITIES_ONLY }),
     db.school.count(),
     db.property.count({ where: { status: "active" } }),
   ]);

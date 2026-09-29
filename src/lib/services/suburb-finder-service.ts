@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { LOCALITIES_ONLY } from "@/lib/non-localities";
 
 // ─── Quiz answer shape ──────────────────────────────────────────────────────
 
@@ -206,6 +207,7 @@ export async function findMatchingSuburbs(
   const candidates = await db.suburb.findMany({
     where: {
       ...stateFilter,
+      ...LOCALITIES_ONLY,
       medianHousePrice: { gt: 0 },
       population: { gt: 500 }, // skip tiny localities
     },

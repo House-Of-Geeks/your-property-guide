@@ -118,5 +118,27 @@ describe("lists that must not carry them", () => {
     has("src/lib/services/search-service.ts", "slug: { notIn: NON_LOCALITY_SLUGS }");
     has("src/app/api/suburbs/search/route.ts", "slug: { notIn: NON_LOCALITY_SLUGS }");
     has("src/app/api/suggest/route.ts", "slug: { notIn: NON_LOCALITY_SLUGS }");
+    has("src/lib/services/suburb-rankings-service.ts", "const stateFilter = { ...(state ? { state } : {}), ...LOCALITIES_ONLY };");
+    has("src/lib/services/suburb-rankings-service.ts", "if (!isNonLocalitySlug(n)) candidateNeighbourSlugs.add(n)");
+    has("src/app/(marketing)/compare/sitemap.ts", "sitemap-compare:v3");
+  });
+  it("every file that lists suburbs filters them, or says why it does not", () => {
+    // PR #66 filtered the lists it knew of. The rankings, the comparison
+    // pairs, the price guide and the market reports were not among them, and
+    // 50 pairs with a mail centre stayed in the comparison sitemap. A new
+    // list now has to make the choice.
+    const ON_PURPOSE: Record<string, string> = {
+      "src/lib/services/school-service.ts": "resolves the suburb slugs it is handed, which the region lists have filtered",
+    };
+    const files = (fs.readdirSync("src", { recursive: true, encoding: "utf8" }) as string[])
+      .map((f) => `src/${f.split("\\").join("/")}`)
+      .filter((f) => /\.(ts|tsx)$/.test(f) && !f.startsWith("src/generated/"));
+    const listing = files.filter((f) => /\.suburb\.(findMany|groupBy|count)\(|FROM "Suburb"/.test(fs.readFileSync(f, "utf8")));
+    expect(listing.length).toBeGreaterThanOrEqual(12);
+    for (const f of Object.keys(ON_PURPOSE)) expect(listing, f).toContain(f);
+    for (const f of listing) {
+      if (ON_PURPOSE[f]) continue;
+      expect(fs.readFileSync(f, "utf8"), f).toMatch(/LOCALITIES_ONLY|NON_LOCALITY_SLUGS|isNonLocalitySlug/);
+    }
   });
 });

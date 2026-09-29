@@ -6,6 +6,7 @@ import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
 import { db } from "@/lib/db";
+import { LOCALITIES_ONLY } from "@/lib/non-localities";
 import { formatPrice, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
@@ -74,6 +75,7 @@ export default async function PriceGuidePage({
   const where = {
     medianHousePrice: { gt: 0 },
     ...(state ? { state } : {}),
+    ...LOCALITIES_ONLY,
   };
 
   // Skip the DB at build (Railway proxy drops build-time connections); ISR

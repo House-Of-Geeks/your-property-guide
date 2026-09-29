@@ -28,6 +28,15 @@ const BY_SLUG = new Map(NON_LOCALITIES.map((e) => [e.slug, e]));
 /** For Prisma `notIn` filters on suburb lists. */
 export const NON_LOCALITY_SLUGS: string[] = NON_LOCALITIES.map((e) => e.slug);
 
+/**
+ * Prisma `where` fragment for any query that lists suburbs. The rows still
+ * carry figures of their own (a walk score of 100, a census-proxy median),
+ * so a list that ranks or counts on the raw columns picks them up unless it
+ * says otherwise. tests/seo/non-localities.test.ts checks every file that
+ * lists suburbs.
+ */
+export const LOCALITIES_ONLY = { slug: { notIn: NON_LOCALITY_SLUGS } };
+
 export function isNonLocalitySlug(slug: string): boolean {
   return BY_SLUG.has(slug);
 }
