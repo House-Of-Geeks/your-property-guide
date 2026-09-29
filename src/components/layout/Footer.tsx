@@ -151,9 +151,16 @@ function NetworkRow() {
         {NETWORK_LINKS.map((l, i) => (
           <span key={l.href}>
             {i > 0 && (
-              <span className="mx-2 text-white/55" aria-hidden="true">
-                &middot;
-              </span>
+              <>
+                <span className="mx-2 text-white/55" aria-hidden="true">
+                  &middot;
+                </span>
+                {/* The one place this row may wrap. Each link is nowrap and
+                    nothing between them is a space, so without this the row
+                    was a single 893px line and made every page scroll
+                    sideways on screens narrower than that. */}
+                <wbr />
+              </>
             )}
             <a
               href={l.href}
