@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { TrendingUp, TrendingDown, Clock } from "lucide-react";
+import { TrendingUp, TrendingDown } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY } from "@/lib/non-localities";
+import { PUBLISHED_CHANGE, PUBLISHED_HOUSE_MEDIAN, withPublishedSales } from "@/lib/published-medians";
+import { priceSourceLine } from "@/lib/ranking-notes";
 import { formatPrice, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
@@ -72,8 +74,11 @@ export default async function PriceGuidePage({
 
   const page = Math.max(1, parseInt(typeof sp.page === "string" ? sp.page : "1", 10) || 1);
 
+  // Only the medians each suburb's own page publishes (fix item 47). Sorted
+  // by growth, only the suburbs with a published 12-month change: the rest
+  // have none to sort on.
   const where = {
-    medianHousePrice: { gt: 0 },
+    ...(sort === "growth-desc" ? PUBLISHED_CHANGE : PUBLISHED_HOUSE_MEDIAN),
     ...(state ? { state } : {}),
     ...LOCALITIES_ONLY,
   };
@@ -93,16 +98,18 @@ export default async function PriceGuidePage({
         medianHousePrice: true,
         medianUnitPrice: true,
         annualGrowthHouse: true,
-        daysOnMarket: true,
+        statsSource: true,
+        salesCountHouse: true,
       },
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
     });
 
-  const [suburbs, total] =
+  const [rows, total] =
     process.env.NEXT_PHASE === "phase-production-build"
       ? ([[], 0] as [Awaited<ReturnType<typeof findManyQuery>>, number])
       : await Promise.all([findManyQuery(), db.suburb.count({ where })]);
+  const suburbs = rows.map(withPublishedSales);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
@@ -139,8 +146,8 @@ export default async function PriceGuidePage({
             <span className="italic font-light text-primary">side by side</span>.
           </h1>
           <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            Filter and compare median house and unit prices across every
-            Australian suburb, with annual growth and days on market.
+            Filter and compare the median house and unit prices we publish,
+            suburb by suburb, with the 12-month change where it is measured.
           </p>
         </div>
       </section>
@@ -222,9 +229,6 @@ export default async function PriceGuidePage({
               <th className="px-4 py-3 text-right font-sans font-medium text-ink uppercase tracking-wider text-xs">
                 Annual Growth
               </th>
-              <th className="px-4 py-3 text-right font-sans font-medium text-ink uppercase tracking-wider text-xs">
-                Days on Market
-              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-line">
@@ -263,16 +267,6 @@ export default async function PriceGuidePage({
                         <TrendingDown className="w-3.5 h-3.5" />
                       )}
                       {formatPercentage(suburb.annualGrowthHouse)}
-                    </span>
-                  ) : (
-                    <span className="text-ink-subtle">-</span>
-                  )}
-                </td>
-                <td className="px-4 py-3 text-right font-sans text-ink-muted">
-                  {suburb.daysOnMarket > 0 ? (
-                    <span className="inline-flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5 text-ink-subtle" />
-                      {suburb.daysOnMarket}d
                     </span>
                   ) : (
                     <span className="text-ink-subtle">-</span>
@@ -326,14 +320,6 @@ export default async function PriceGuidePage({
                   </p>
                 </div>
               )}
-              {suburb.daysOnMarket > 0 && (
-                <div>
-                  <p className="text-xs font-sans text-ink-subtle">Days on Market</p>
-                  <p className="font-display text-base text-ink">
-                    {suburb.daysOnMarket}d
-                  </p>
-                </div>
-              )}
             </div>
           </Link>
         ))}
@@ -342,8 +328,12 @@ export default async function PriceGuidePage({
       {/* Empty state */}
       {suburbs.length === 0 && (
         <div className="text-center py-16">
-          <p className="font-display text-xl text-ink">No suburbs found</p>
-          <p className="mt-1 text-sm font-sans text-ink-muted">Try adjusting your filters.</p>
+          <p className="font-display text-xl text-ink">Nothing to list here yet</p>
+          <p className="mt-1 text-sm font-sans text-ink-muted max-w-xl mx-auto">
+            {sort === "growth-desc"
+              ? "A 12-month change is measured in New South Wales and South Australia only. Sort by price to see the other states."
+              : "No suburb matches that filter with a published median."}
+          </p>
         </div>
       )}
 
@@ -378,7 +368,10 @@ export default async function PriceGuidePage({
       {/* Data source note */}
       <div className="mt-8 rounded-2xl border border-line bg-surface-warm p-5 text-sm font-sans text-ink-muted">
         <p className="text-xs uppercase tracking-[0.25em] text-ink-subtle mb-1.5">Data source</p>
-        <p>Data sourced from state government Valuer-General offices. Updated quarterly.</p>
+        <p>
+          {priceSourceLine(state ?? null)} A suburb is listed only when its own
+          page publishes the median.
+        </p>
       </div>
       </div>
 
