@@ -139,7 +139,14 @@ export function Header() {
             </div>
           </Link>
 
-          <nav ref={navRef} className="hidden lg:flex items-center gap-1">
+          {/* Full navigation from 67.5rem (1080px) up, the menu button below
+              that. Beside the logo, search, agent login and guide button
+              this row needs 1,059px of page width (measured 29 Sep 2026), so
+              at lg (1024px) it ran past the right edge and the whole page
+              scrolled sideways. 1080px leaves room for a scrollbar.
+              Re-measure before lowering it or adding a nav item. The menu
+              button and the mobile panel below switch at the same width. */}
+          <nav ref={navRef} className="hidden min-[67.5rem]:flex items-center gap-1">
             {NAV_LINKS.map((link) =>
               link.children ? (
                 <div key={link.label} className="relative">
@@ -211,7 +218,7 @@ export function Header() {
             </Link>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden p-2 text-ink-muted hover:text-ink hover:bg-surface-warm rounded-lg cursor-pointer"
+              className="min-[67.5rem]:hidden p-2 text-ink-muted hover:text-ink hover:bg-surface-warm rounded-lg cursor-pointer"
               aria-label="Toggle menu"
               aria-expanded={mobileOpen}
             >
@@ -223,7 +230,7 @@ export function Header() {
 
       {/* Mobile Nav */}
       {mobileOpen && (
-        <div className="lg:hidden border-t border-line bg-surface max-h-[calc(100vh-5rem)] overflow-y-auto">
+        <div className="min-[67.5rem]:hidden border-t border-line bg-surface max-h-[calc(100vh-5rem)] overflow-y-auto">
           <nav className="mx-auto max-w-7xl px-4 py-4 space-y-1">
             {NAV_LINKS.map((link) =>
               link.children ? (
