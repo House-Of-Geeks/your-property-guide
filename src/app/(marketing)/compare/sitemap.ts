@@ -11,6 +11,7 @@ import type { MetadataRoute } from "next";
 import { unstable_cache } from "next/cache";
 import { SITE_URL } from "@/lib/constants";
 import { canonicalComparePath } from "@/lib/suburb-indexability";
+import { NOT_PLACES_VERSION } from "@/lib/non-localities";
 import {
   getTopComparisonPairsByState,
   type ComparisonPair,
@@ -34,7 +35,7 @@ const getEntries = unstable_cache(
       priority: 0.6,
     }));
   },
-  ["sitemap-compare:v3"], // v3: no pair with a postal delivery name
+  ["sitemap-compare:v3", NOT_PLACES_VERSION], // v3: no pair with a postal delivery name
   { revalidate: 86400, tags: ["sitemap-compare"] },
 );
 

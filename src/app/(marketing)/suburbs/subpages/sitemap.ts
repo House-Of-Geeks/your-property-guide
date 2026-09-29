@@ -13,6 +13,7 @@ import { getSuburbListingInventory } from "@/lib/services/property-service";
 import { LISTING_SUBPAGE_FILTERS, type ListingInventoryRow } from "@/lib/suburb-subpages";
 import { getSuburbSlugsWithRentalData } from "@/lib/services/rental-service";
 import { getSuburbSlugsWithReliablePrice } from "@/lib/services/suburb-service";
+import { NOT_PLACES_VERSION } from "@/lib/non-localities";
 
 // Suburb intent sub-pages (/suburbs/[slug]/houses etc.). Split into one
 // sitemap per type: ~15k indexable suburbs × 8 types would overflow the
@@ -60,7 +61,7 @@ const getCachedListingInventory = unstable_cache(
 
 const getCachedRentalSuburbs = unstable_cache(
   async () => getSuburbSlugsWithRentalData(),
-  ["sitemap-rental-suburbs:v2"],
+  ["sitemap-rental-suburbs:v2", NOT_PLACES_VERSION],
   { revalidate: 86400, tags: ["sitemap-suburbs"] },
 );
 
@@ -69,7 +70,7 @@ const getCachedRentalSuburbs = unstable_cache(
 // page noindexes itself otherwise.
 const getCachedReliablePriceSuburbs = unstable_cache(
   async () => getSuburbSlugsWithReliablePrice(),
-  ["sitemap-reliable-price-suburbs:v3"], // v2: also requires five recorded sales, as the page does
+  ["sitemap-reliable-price-suburbs:v3", NOT_PLACES_VERSION], // v2: also requires five recorded sales, as the page does
   { revalidate: 86400, tags: ["sitemap-suburbs"] },
 );
 

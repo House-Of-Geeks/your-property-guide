@@ -5,6 +5,7 @@ import type { MetadataRoute } from "next";
 import { unstable_cache } from "next/cache";
 import { SITE_URL } from "@/lib/constants";
 import { getAllRegions } from "@/lib/services/region-service";
+import { NOT_PLACES_VERSION } from "@/lib/non-localities";
 
 const getEntries = unstable_cache(
   async (): Promise<MetadataRoute.Sitemap> => {
@@ -24,7 +25,7 @@ const getEntries = unstable_cache(
       })),
     ];
   },
-  ["sitemap-regions:v1"],
+  ["sitemap-regions:v1", NOT_PLACES_VERSION],
   { revalidate: 86400, tags: ["sitemap-regions"] },
 );
 

@@ -1,4 +1,5 @@
 import { unstable_cache } from "next/cache";
+import { NOT_PLACES_VERSION } from "@/lib/non-localities";
 import {
   getIndexableSuburbProfilesWithDates,
   getIndexableSuburbSlugsWithDates,
@@ -14,7 +15,7 @@ export const getIndexableSuburbsForSitemaps = unstable_cache(
   async () => getIndexableSuburbSlugsWithDates(),
   // v2: earlier per-file caches stored differently-shaped payloads under
   // "sitemap-suburbs:v1"; a fresh key avoids reading those stale entries.
-  ["sitemap-suburbs:v3"], // v3: without postal and institution names
+  ["sitemap-suburbs:v3", NOT_PLACES_VERSION], // v3: without postal and institution names
   { revalidate: 86400, tags: ["sitemap-suburbs"] },
 );
 
@@ -23,6 +24,6 @@ export const getIndexableSuburbsForSitemaps = unstable_cache(
 // sub-page sitemaps above keep their list.
 export const getIndexableSuburbProfilesForSitemaps = unstable_cache(
   async () => getIndexableSuburbProfilesWithDates(),
-  ["sitemap-suburb-profiles:v3"], // v3: the thin rule counts a locality's own data
+  ["sitemap-suburb-profiles:v3", NOT_PLACES_VERSION], // v3: the thin rule counts a locality's own data
   { revalidate: 86400, tags: ["sitemap-suburbs"] },
 );
