@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, TrendingUp, Home, DollarSign, Clock } from "lucide-react";
+import { ArrowRight, TrendingUp, Home, DollarSign } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
@@ -14,6 +14,7 @@ import {
 } from "@/lib/services/market-report-service";
 import { formatPrice, formatPriceFull } from "@/lib/utils/format";
 import { STATE_COMMENTARY } from "@/lib/data/state-commentary";
+import { priceSourceLine } from "@/lib/ranking-notes";
 
 const STATE_SLUGS = ["qld", "nsw", "vic", "wa", "sa", "tas", "nt", "act"] as const;
 type StateSlug = (typeof STATE_SLUGS)[number];
@@ -42,7 +43,7 @@ export async function generateMetadata({
   if (!isValidState(state)) return {};
   const stateName = getStateNameForReport(state);
   const title = `${stateName} Property Market Report ${CURRENT_YEAR}`;
-  const description = `${stateName} property market data for ${CURRENT_YEAR}, median prices, annual growth, top suburbs and affordability rankings, sourced from state revenue offices.`;
+  const description = `${stateName} property market data for ${CURRENT_YEAR}: median prices, the most affordable and highest-priced suburbs, and where each figure comes from.`;
   return {
     title,
     description,
@@ -179,12 +180,14 @@ export default async function StateMarketReportPage({
   const upperState = state.toUpperCase();
   const stateName = getStateNameForReport(state);
   const reportTitle = `${stateName} Property Market Report ${CURRENT_YEAR}`;
-  const reportDescription = `${stateName} property market data for ${CURRENT_YEAR}, median prices, annual growth, top suburbs and affordability rankings.`;
+  const reportDescription = `${stateName} property market data for ${CURRENT_YEAR}: median prices, the most affordable and highest-priced suburbs, and where each figure comes from.`;
 
   const housePrice = data.avgMedianHousePrice ? formatPrice(data.avgMedianHousePrice) : "N/A";
   const unitPrice = data.avgMedianUnitPrice ? formatPrice(data.avgMedianUnitPrice) : "N/A";
-  const growth = data.avgAnnualGrowth != null ? `${data.avgAnnualGrowth}%` : "N/A";
-  const dom = data.avgDaysOnMarket != null ? `${data.avgDaysOnMarket} days` : "N/A";
+  // A tile is drawn only for a figure there is: no feed measures a 12-month
+  // change outside NSW and SA, and none measures days on market.
+  const growth = data.avgAnnualGrowth != null ? `${data.avgAnnualGrowth > 0 ? "+" : ""}${data.avgAnnualGrowth}%` : null;
+  const priced = data.totalSuburbsWithData.toLocaleString("en-AU");
   const commentary = STATE_COMMENTARY[upperState];
 
   return (
@@ -223,15 +226,15 @@ export default async function StateMarketReportPage({
           </div>
 
           <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
-            Q1 {CURRENT_YEAR} &middot; {data.totalSuburbsWithData.toLocaleString()} suburbs tracked
+            {CURRENT_YEAR} &middot; {priced} suburbs with a published median
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
             {data.stateName} property market, <span className="italic text-primary">{CURRENT_YEAR}</span>.
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            Median prices, annual growth, days on market, and the state&rsquo;s
-            top suburbs by growth, affordability and price, sourced from
-            state revenue offices.
+            Median prices and the state&rsquo;s most affordable and
+            highest-priced suburbs, from the figures each suburb&rsquo;s own
+            page publishes.
           </p>
         </div>
       </section>
@@ -239,32 +242,31 @@ export default async function StateMarketReportPage({
       {/* Stat anchor row */}
       <section className="bg-surface-raised border-b border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className={`grid grid-cols-2 ${growth ? "lg:grid-cols-3" : ""} gap-4`}>
             <StatCard
               icon={<Home className="w-4 h-4" />}
               label="Avg median house"
               value={housePrice}
-              sub="across tracked suburbs"
+              sub={`across ${priced} suburbs`}
             />
             <StatCard
               icon={<DollarSign className="w-4 h-4" />}
               label="Avg median unit"
               value={unitPrice}
-              sub="across tracked suburbs"
+              sub="where a unit median is published"
             />
-            <StatCard
-              icon={<TrendingUp className="w-4 h-4" />}
-              label="Avg annual growth"
-              value={growth}
-              sub="house prices, last 12 months"
-            />
-            <StatCard
-              icon={<Clock className="w-4 h-4" />}
-              label="Avg days on market"
-              value={dom}
-              sub="time to sell"
-            />
+            {growth && (
+              <StatCard
+                icon={<TrendingUp className="w-4 h-4" />}
+                label="Avg annual growth"
+                value={growth}
+                sub="house prices, last 12 months"
+              />
+            )}
           </div>
+          <p className="mt-4 max-w-3xl font-sans text-sm text-ink-subtle leading-relaxed">
+            {priceSourceLine(upperState)}
+          </p>
         </div>
       </section>
 
@@ -344,10 +346,9 @@ export default async function StateMarketReportPage({
             Data source
           </p>
           <p className="leading-relaxed">
-            Market data sourced from state revenue offices and property sales
-            records. Updated quarterly. Median prices and growth figures are
-            calculated from available suburb-level data and may not reflect the
-            full market.{" "}
+            {priceSourceLine(upperState)} A suburb is listed only when its
+            own page publishes the median, so the tables are shorter than the
+            state. Averages are of suburb medians, not of sales.{" "}
             <Link
               href="/methodology#median-prices"
               className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"

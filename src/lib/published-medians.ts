@@ -107,6 +107,13 @@ export const PUBLISHED_GROWTH = {
   annualGrowthHouse: { gt: 0, lte: MAX_PLAUSIBLE_ANNUAL_GROWTH },
 };
 
+/** Prisma `where`: rows with a published 12-month change, up or down. For lists sorted by it. */
+export const PUBLISHED_CHANGE = {
+  ...PUBLISHED_HOUSE_MEDIAN,
+  statsSource: { in: [...GROWTH_SOURCES] },
+  annualGrowthHouse: { gte: -MAX_PLAUSIBLE_ANNUAL_GROWTH, lte: MAX_PLAUSIBLE_ANNUAL_GROWTH, not: 0 },
+};
+
 const sqlList = (values: readonly string[]) => values.map((v) => `'${v.replace(/'/g, "''")}'`).join(", ");
 
 /** The house-median rule for raw SQL over "Suburb" aliased `s`. */

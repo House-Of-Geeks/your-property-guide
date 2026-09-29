@@ -11,6 +11,7 @@ import {
   getTopSuburbsByState,
   getStateName,
 } from "@/lib/services/suburb-rankings-service";
+import { priceSourceLine } from "@/lib/ranking-notes";
 import { formatPrice, formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { MostSearchedSuburbs } from "@/components/suburb/MostSearchedSuburbs";
@@ -163,6 +164,12 @@ export default async function StatePage({ params }: StatePageProps) {
               </div>
             )}
           </div>
+          <p className="mt-4 max-w-3xl font-sans text-sm text-ink-subtle leading-relaxed">
+            {stats.avgMedianHousePrice
+              ? `The average is of the ${stats.pricedSuburbCount.toLocaleString("en-AU")} suburb medians we publish for ${stateName}. `
+              : ""}
+            {priceSourceLine(upperState)}
+          </p>
         </div>
       </section>
 

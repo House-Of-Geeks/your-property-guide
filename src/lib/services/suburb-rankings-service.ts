@@ -386,7 +386,11 @@ export interface StateStats {
   state: string;
   stateName: string;
   suburbCount: number;
+  /** Suburbs whose page publishes a house median: what the two averages are taken over. */
+  pricedSuburbCount: number;
+  /** Average of the published suburb medians. */
   avgMedianHousePrice: number | null;
+  /** Average of the published 12-month changes; null where no feed measures one. */
   avgAnnualGrowth: number | null;
 }
 
@@ -409,18 +413,20 @@ export async function getStateStats(state: string): Promise<StateStats> {
   const upperState = state.toUpperCase();
   const rows = await db.suburb.findMany({
     where: { state: upperState, ...LOCALITIES_ONLY },
-    select: { medianHousePrice: true, annualGrowthHouse: true },
+    select: { medianHousePrice: true, annualGrowthHouse: true, statsSource: true, salesCountHouse: true },
   });
 
-  const prices = rows.map((r) => r.medianHousePrice).filter((p) => p > 0);
-  const growths = rows
-    .map((r) => r.annualGrowthHouse)
-    .filter((g) => g != null && g !== 0) as number[];
+  // Averages of what the suburb pages publish, not of the raw columns: the
+  // Queensland "average median" was mostly census proxies until 29 Sep 2026.
+  const published = rows.map(publishedSales);
+  const prices = published.map((r) => r.medianHousePrice).filter((p) => p > 0);
+  const growths = published.map((r) => r.annualGrowthHouse).filter((g) => g !== 0);
 
   return {
     state: upperState,
     stateName: getStateName(upperState),
     suburbCount: rows.length,
+    pricedSuburbCount: prices.length,
     avgMedianHousePrice: prices.length
       ? Math.round(prices.reduce((a, b) => a + b, 0) / prices.length)
       : null,
@@ -470,7 +476,7 @@ export async function getStateRegions(
 
 export async function getTopSuburbsByState(state: string, limit = 12) {
   const upperState = state.toUpperCase();
-  return db.suburb.findMany({
+  const rows = await db.suburb.findMany({
     where: { state: upperState, population: { gt: 0 }, ...LOCALITIES_ONLY },
     select: {
       slug: true,
@@ -480,10 +486,17 @@ export async function getTopSuburbsByState(state: string, limit = 12) {
       region: true,
       medianHousePrice: true,
       annualGrowthHouse: true,
+      statsSource: true,
+      salesCountHouse: true,
       population: true,
     },
     orderBy: { population: "desc" },
     take: limit,
+  });
+  // The largest suburbs, each with the median and change its own page prints.
+  return rows.map(({ statsSource, salesCountHouse, ...s }) => {
+    const sales = publishedSales({ ...s, statsSource, salesCountHouse });
+    return { ...s, medianHousePrice: sales.medianHousePrice, annualGrowthHouse: sales.annualGrowthHouse, medianBasis: sales.basis };
   });
 }
 
