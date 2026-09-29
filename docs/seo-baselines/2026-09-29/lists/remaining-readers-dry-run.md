@@ -3,7 +3,7 @@
 Fix item 47, cohort 3. Read-only. Every count below is worked out over the production export of 29 Sep 2026
 (17,994 Suburb rows, of which 17,650 are localities; each suburb's newest rental row; 0 hazard rows), by the code
 on main ("before") and the code on the branch ("after"). No database was written to. What production printed
-before the change is in `before-readers.csv` (51 pages, fetched 29 Sep 2026).
+before the change is in `before-readers.csv` (54 pages, fetched 29 Sep 2026).
 
 The rule is the suburb page's own (`src/lib/published-medians.ts`): a median is published from a trusted sales
 source, with five recorded sales where the count is known; a 12-month change is published from a feed that
@@ -97,6 +97,13 @@ $427,000, Burpengary East $453,000: census proxies under the rental feed's name)
 
 After: Dakabin, Redcliffe and North Lakes print the ABS statistical-area median, labelled as one; all six print
 the rent from the suburb's newest bond-data row; none prints a change or days on market.
+
+## School comparisons
+
+The comparison prints each school's suburb median. Five comparisons were read: of their ten medians, four are
+ones the suburb's own page withholds (Caboolture $344,000 and Griffin $427,000, census proxies under the rental
+feed's name; Richmond, Tasmania, $360,000 from the 2021 census; Keswick $2,475,000, a median of two sales).
+After, each prints a dash.
 
 ## Not changed, and seen while counting
 
