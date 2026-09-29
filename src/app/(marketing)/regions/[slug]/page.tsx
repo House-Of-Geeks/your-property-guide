@@ -38,7 +38,7 @@ import {
 import { commissionOnMedian } from "@/lib/suburb-agents";
 import { STATE_NAMES, type StateCode } from "@/lib/data/commission-rates";
 import { topSuburbsAmong } from "@/lib/data/top-suburbs";
-import { isReliableSalesSource } from "@/lib/suburb-data-quality";
+import { stateRankingLink } from "@/lib/ranking-notes";
 import { capitalCityFor } from "@/lib/utils/metro";
 import { formatPrice, formatPriceFull } from "@/lib/utils/format";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
@@ -358,13 +358,13 @@ export default async function RegionPage({ params }: RegionPageProps) {
           </h2>
           <p className="font-sans text-sm text-ink-muted mb-6">
             All {suburbs.length.toLocaleString()} suburbs in the {region.region} region, {stateName}. Medians are
-            shown only where a verified sales source publishes one.
+            shown only where the suburb&rsquo;s own page publishes one.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {suburbs.map((suburb) => {
-              const trusted = isReliableSalesSource(suburb.statsSource);
-              const house = trusted && suburb.medianHousePrice > 0 ? formatPriceFull(suburb.medianHousePrice) : "–";
-              const unit = trusted && suburb.medianUnitPrice > 0 ? formatPriceFull(suburb.medianUnitPrice) : "–";
+              // Published figures: getRegionSuburbs has applied the suburb pages' rule.
+              const house = suburb.medianHousePrice > 0 ? formatPriceFull(suburb.medianHousePrice) : "–";
+              const unit = suburb.medianUnitPrice > 0 ? formatPriceFull(suburb.medianUnitPrice) : "–";
               return (
                 <Link
                   key={suburb.slug}
@@ -411,8 +411,8 @@ export default async function RegionPage({ params }: RegionPageProps) {
             <Link href={`/market-reports/${stateSlug}`} className={linkChip}>
               {region.state} state market report
             </Link>
-            <Link href={`/best-suburbs/highest-growth/${stateSlug}`} className={linkChip}>
-              {region.state} growth ranking
+            <Link href={stateRankingLink(region.state).href} className={linkChip}>
+              {stateRankingLink(region.state).label}
             </Link>
             <Link href="/regions" className={linkChip}>
               All regions
@@ -425,9 +425,12 @@ export default async function RegionPage({ params }: RegionPageProps) {
           <p className="text-xs uppercase tracking-[0.25em] text-ink-subtle mb-2">Data source</p>
           <p className="leading-relaxed">
             Figures are aggregated from suburb-level medians sourced from state valuers-general, state government
-            sales records and the ABS. Only suburbs with a verified sales source contribute to price figures (
+            sales records and the ABS. Only suburbs whose own page publishes a median contribute to price figures (
             {market.pricedSuburbCount.toLocaleString()} of {market.suburbCount.toLocaleString()} tracked{" "}
-            {region.region} suburbs). Growth outliers from thin sales samples are excluded.{" "}
+            {region.region}
+            {" suburbs): "}a verified sales source, and at least five recorded sales where the count is reported.
+            A 12-month change is shown where the state&rsquo;s sales feed measures one, and left out beyond
+            25%.{" "}
             <Link
               href="/methodology#median-prices"
               className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"

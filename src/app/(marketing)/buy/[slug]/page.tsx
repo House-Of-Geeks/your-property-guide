@@ -15,8 +15,13 @@ import { Badge } from "@/components/ui";
 import { getPropertyBySlug, getPropertiesByAgency } from "@/lib/services/property-service";
 import { getAgentById, getAgencyById } from "@/lib/services/agent-service";
 import { propertyTitle, propertyDescription, absoluteUrl } from "@/lib/utils/seo";
-import { formatDate, formatPriceFull } from "@/lib/utils/format";
+import { formatDate, formatPercentage, formatPriceFull } from "@/lib/utils/format";
 import { db } from "@/lib/db";
+import { getSuburbBySlug } from "@/lib/services/suburb-service";
+import { medianBasis } from "@/lib/published-medians";
+import { hasRentalRow } from "@/lib/suburb-subpages";
+import { salesProvenanceFor } from "@/lib/suburb-snapshot";
+import { monthYear, rentalSourceLabel } from "@/lib/rental-labels";
 import { SITE_URL } from "@/lib/constants";
 import { PropertyActions } from "@/components/property/PropertyActions";
 import { PropertyMap } from "@/components/property/PropertyMap";
@@ -80,6 +85,35 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
 
   const otherListings = agencyListings.filter((p) => p.id !== property.id).slice(0, 3);
 
+  // The suburb's figures as its own page prints them (fix item 47): read
+  // through the suburb service, so this box cannot print a median, a change
+  // or a rent that the suburb page withholds. Until 29 Sep 2026 it printed
+  // the raw columns, days on market among them, which no feed measures.
+  // Awaited after the queries above: the runtime pool holds one connection.
+  const suburbProfile = suburbData ? await getSuburbBySlug(property.suburbSlug) : null;
+  const profileStats = suburbProfile?.stats;
+  const priceBasis = medianBasis(suburbProfile?.dataFreshness?.salesSource);
+  const publishedMedian = profileStats && profileStats.medianHousePrice > 0 ? profileStats.medianHousePrice : 0;
+  const publishedChange = publishedMedian > 0 && profileStats?.annualGrowthHouse ? profileStats.annualGrowthHouse : 0;
+  const publishedRent =
+    suburbProfile && profileStats && hasRentalRow(suburbProfile) && profileStats.medianRentHouse > 0
+      ? profileStats.medianRentHouse
+      : 0;
+  const suburbInsights = [
+    ...(publishedMedian > 0
+      ? [{ label: priceBasis === "area" ? "Area median house price" : "Median house price", value: formatPriceFull(publishedMedian) }]
+      : []),
+    ...(publishedChange !== 0 ? [{ label: "12-month change", value: formatPercentage(publishedChange) }] : []),
+    ...(publishedRent > 0 ? [{ label: "Median house rent/wk", value: `$${publishedRent.toLocaleString("en-AU")}` }] : []),
+  ];
+  const rentLabel = rentalSourceLabel(suburbProfile?.dataFreshness?.rentalSource, property.address.postcode);
+  const rentAsOf = suburbProfile?.dataFreshness?.rentalAsOf;
+  const priceSource = publishedMedian > 0 && suburbProfile ? salesProvenanceFor(suburbProfile)?.short ?? null : null;
+  const insightSources = [
+    ...(priceSource ? [`Prices: ${priceSource}`] : []),
+    ...(publishedRent > 0 && rentLabel ? [`Rent: ${rentLabel}${rentAsOf ? `, ${monthYear(new Date(rentAsOf))}` : ""}`] : []),
+  ];
+
   const mapAddress = encodeURIComponent(property.address.full);
   const mapLat = suburbData?.lat ?? null;
   const mapLng = suburbData?.lng ?? null;
@@ -112,9 +146,14 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
       question: `Who is the agent for ${property.address.street}, ${property.address.suburb}?`,
       answer: `The listing agent is ${agent?.fullName ?? "the agency"} from ${agency?.name ?? "the listed agency"}. You can enquire via the contact form on this page or call ${agent?.phone ?? ""}.`,
     },
-    ...(suburbData ? [{
+    // Asked and answered only where the suburb's own page publishes a median.
+    ...(publishedMedian > 0 ? [{
       question: `What is the median house price in ${property.address.suburb}?`,
-      answer: `The median house price in ${property.address.suburb} is ${formatPriceFull(suburbData.medianHousePrice)}. The suburb has seen ${suburbData.annualGrowthHouse >= 0 ? "+" : ""}${suburbData.annualGrowthHouse.toFixed(1)}% annual growth.`,
+      answer:
+        (priceBasis === "area"
+          ? `The median house price for the ABS statistical area that takes in ${property.address.suburb} is ${formatPriceFull(publishedMedian)}.`
+          : `The median house price in ${property.address.suburb} is ${formatPriceFull(publishedMedian)}.`) +
+        (publishedChange !== 0 ? ` It moved ${formatPercentage(publishedChange)} over 12 months.` : ""),
     }] : []),
   ];
 
@@ -270,15 +309,17 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             {/* ── Suburb Insights ───────────────────────────────── */}
             {suburbData && (
               <div>
+                {/* Suburb-wide figures for houses, not for homes of this size. */}
                 <h2 className="font-display text-xl text-ink leading-tight mb-4">
-                  Insights for {property.features.bedrooms}-bedroom homes in {property.address.suburb}
+                  Insights for {property.address.suburb}
                 </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  <InsightStat label="Median price" value={formatPriceFull(suburbData.medianHousePrice)} />
-                  <InsightStat label="Annual growth" value={`${suburbData.annualGrowthHouse >= 0 ? "+" : ""}${suburbData.annualGrowthHouse.toFixed(1)}%`} />
-                  <InsightStat label="Days on market" value={String(suburbData.daysOnMarket)} />
-                  <InsightStat label="Median rent/wk" value={`$${suburbData.medianRentHouse}`} />
-                </div>
+                {suburbInsights.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {suburbInsights.map((i) => (
+                      <InsightStat key={i.label} label={i.label} value={i.value} />
+                    ))}
+                  </div>
+                )}
 
                 {/* Walkability + hazard badges */}
                 {(suburbData.walkScore != null || suburbHazard) && (
@@ -308,20 +349,9 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                   >
                     View suburb profile <ChevronRight className="w-4 h-4" />
                   </Link>
-                  <p className="text-xs font-sans text-ink-subtle">
-                    Source:{" "}
-                    <a
-                      href="https://www.abs.gov.au/census"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:underline"
-                    >
-                      ABS Census {suburbData.statsSource?.includes("2021") ? "2021" : ""}
-                    </a>
-                    {suburbData.statsUpdatedAt
-                      ? ` · updated ${new Date(suburbData.statsUpdatedAt).getFullYear()}`
-                      : ""}
-                  </p>
+                  {insightSources.length > 0 && (
+                    <p className="text-xs font-sans text-ink-subtle">{insightSources.join(" · ")}</p>
+                  )}
                 </div>
               </div>
             )}

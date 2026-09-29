@@ -63,6 +63,18 @@ export function isRanked(category: RankingCategory, state: string | null): boole
   return true;
 }
 
+/**
+ * The ranking a state's other pages (market report, city and region pages)
+ * link to: its growth ranking where there is one, else its most affordable
+ * suburbs, so no page links to a ranking with nothing in it.
+ */
+export function stateRankingLink(state: string): { href: string; label: string } {
+  const code = state.toUpperCase();
+  return isRanked("highest-growth", code)
+    ? { href: `/best-suburbs/highest-growth/${code.toLowerCase()}`, label: `${code} growth ranking` }
+    : { href: `/best-suburbs/most-affordable/${code.toLowerCase()}`, label: `${code} most affordable suburbs` };
+}
+
 const stateName = (state: string) => STATE_NAME[state] ?? state;
 
 /** Where the medians on the page come from. */

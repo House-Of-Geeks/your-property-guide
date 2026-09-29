@@ -120,7 +120,7 @@ function buildRankedSuburb(row: DbSuburbRow, hazardMap: HazardMap): RankedSuburb
 const STATE_CODES = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"];
 
 /** The states a yield ranking covers for this request: the ranked states, or the one asked for if it is one of them. */
-function yieldStates(state?: string): string[] {
+export function yieldStates(state?: string): string[] {
   const ranked = YIELD_RANKED_STATES.filter((s) => STATE_CODES.includes(s));
   return state ? ranked.filter((s) => s === state) : ranked;
 }
@@ -128,8 +128,9 @@ function yieldStates(state?: string): string[] {
 // A published median, a rent from the suburb's newest bond-data row, a
 // population that makes a rental market, and a yield inside the clamp the
 // suburb pages use. The state list is from YIELD_RANKED_STATES, never from
-// the request.
-function yieldFromSql(states: string[]): string {
+// the request. Read by the suburb finder too, so the yield it scores is the
+// yield this ranking prints.
+export function yieldFromSql(states: string[]): string {
   return `
         FROM "Suburb" s
         JOIN LATERAL (

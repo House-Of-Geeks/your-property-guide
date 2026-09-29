@@ -1,7 +1,9 @@
-// State pages, market reports and the price guide print what the suburb pages publish (fix item 47, cohort 2).
+// State pages, market reports and the price guide print what the suburb pages publish (fix item 47, cohort 2),
+// and so does every other reader of a suburb's sales figures (cohort 3).
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { GROWTH_SOURCES, PUBLISHED_CHANGE, PUBLISHED_HOUSE_MEDIAN } from "@/lib/published-medians";
+import { GROWTH_RANKED_STATES, stateRankingLink } from "@/lib/ranking-notes";
 
 const src = (f: string) => fs.readFileSync(f, "utf8");
 
@@ -40,6 +42,90 @@ describe("no list reads a raw median", () => {
       const s = src(f);
       expect(s, f).toContain("priceSourceLine(");
       expect(s, f).not.toMatch(/state revenue offices|Valuer-General offices/);
+    }
+  });
+});
+
+describe("every reader of a suburb's sales figures goes through the rule", () => {
+  // A file that reads the Suburb table and names a sales column either
+  // applies the rule or reads the suburb through the service that does.
+  // Cohort 3 closed the last of them: search, the schools pages, the listing
+  // page, the postcode pages, the city and region rollups, the suburb finder.
+  const RULE = /publishedSales|withPublishedSales|publishesMedians|publishedGrowth|PUBLISHED_HOUSE_MEDIAN|PUBLISHED_GROWTH|PUBLISHED_CHANGE|getSuburbBySlug/;
+  const ON_PURPOSE: Record<string, string> = {
+    "src/lib/services/property-page-suburb-cache.ts": "no page imports it since the address pages were removed",
+  };
+  const files = (fs.readdirSync("src", { recursive: true, encoding: "utf8" }) as string[])
+    .map((f) => `src/${f.split("\\").join("/")}`)
+    .filter((f) => /\.(ts|tsx)$/.test(f) && !f.startsWith("src/generated/"));
+  const readers = files.filter((f) => {
+    const s = src(f);
+    return /db\.suburb\.|FROM "Suburb"|\bsuburb:\s*\{\s*select/.test(s) && /medianHousePrice|medianUnitPrice|annualGrowthHouse|daysOnMarket/.test(s);
+  });
+
+  it("finds the readers", () => {
+    expect(readers.length).toBeGreaterThanOrEqual(12);
+    for (const f of [
+      "src/lib/services/search-service.ts",
+      "src/lib/services/school-service.ts",
+      "src/lib/services/postcode-service.ts",
+      "src/lib/services/city-market-service.ts",
+      "src/lib/services/region-service.ts",
+      "src/lib/services/suburb-finder-service.ts",
+      "src/app/(marketing)/buy/[slug]/page.tsx",
+      ...Object.keys(ON_PURPOSE),
+    ]) expect(readers, f).toContain(f);
+  });
+  it("and each applies it", () => {
+    for (const f of readers) {
+      if (ON_PURPOSE[f]) continue;
+      expect(src(f), f).toMatch(RULE);
+    }
+  });
+  it("the one left out is still unused", () => {
+    const name = "property-page-suburb-cache";
+    expect(files.filter((f) => !f.endsWith(`${name}.ts`) && src(f).includes(name))).toEqual([]);
+  });
+  it("no copy of the rule is left behind", () => {
+    // A reader that checks the source alone misses the five-sale floor.
+    for (const f of readers) {
+      if (f === "src/lib/services/suburb-service.ts") continue;
+      expect(src(f), f).not.toMatch(/isReliableSalesSource|isPlausibleAnnualGrowth/);
+    }
+    expect(src("src/app/(marketing)/regions/[slug]/page.tsx")).not.toMatch(/isReliableSalesSource/);
+    expect(src("src/lib/services/region-service.ts")).not.toContain("getRegionStats(");
+  });
+  it("the rollups apply the five-sale floor", () => {
+    expect(src("src/lib/services/city-market-service.ts")).toContain("rows.filter((s) => publishesMedians(s) && s.medianHousePrice > 0)");
+  });
+  it("the listing page prints the suburb's figures from the suburb service, and no days on market", () => {
+    const page = src("src/app/(marketing)/buy/[slug]/page.tsx");
+    expect(page).toContain("await getSuburbBySlug(property.suburbSlug)");
+    expect(page).not.toMatch(/suburbData\.(medianHousePrice|medianUnitPrice|annualGrowthHouse|medianRentHouse|daysOnMarket)/);
+    // No feed measures days on market; the medians are not census figures.
+    expect(page).not.toMatch(/label="Days on market"|daysOnMarket/);
+    expect(page).not.toContain("ABS Census");
+  });
+});
+
+describe("no page links to a ranking with nothing in it", () => {
+  it("links a state's pages to its growth ranking where there is one, else to its most affordable suburbs", () => {
+    for (const state of ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"]) {
+      const link = stateRankingLink(state);
+      const ranked = GROWTH_RANKED_STATES.includes(state);
+      expect(link.href, state).toBe(`/best-suburbs/${ranked ? "highest-growth" : "most-affordable"}/${state.toLowerCase()}`);
+      expect(link.label, state).toBe(ranked ? `${state} growth ranking` : `${state} most affordable suburbs`);
+    }
+    expect(stateRankingLink("vic").href).toBe("/best-suburbs/most-affordable/vic");
+  });
+  it("and the three pages that link there use it", () => {
+    for (const f of [
+      "src/app/(marketing)/market-reports/[state]/page.tsx",
+      "src/app/(marketing)/property-market/[city]/page.tsx",
+      "src/app/(marketing)/regions/[slug]/page.tsx",
+    ]) {
+      expect(src(f), f).toContain("stateRankingLink(");
+      expect(src(f), f).not.toMatch(/best-suburbs\/highest-growth\/\$\{/);
     }
   });
 });
