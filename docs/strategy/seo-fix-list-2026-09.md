@@ -282,13 +282,20 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       for a separate go (schools and listings may reference them).
       Re-run `npx tsx scripts/seo/non-localities.ts` (read-only) after an import that adds suburbs and commit the
       diff; `--check` prints the counts without writing.
-- [ ] 47. [code] Lists rank on the raw median column. The suburb page withholds a median whose source is distrusted
+- [ ] 47. [code] IN PROGRESS 29 Sep 2026 (cohort 1 of 3 shipped, see the end of this item). Lists rank on the raw median column. The suburb page withholds a median whose source is distrusted
       or which rests on fewer than five sales (item 1); the best-suburbs rankings, /price-guide, the state market
       reports and the suburb finder query `medianHousePrice > 0` directly. On 29 Sep 2026, of the rows with a raw
       house median, 4,719 came from the four trusted sales feeds and 12,973 from census proxies, rental feeds
       that overwrote statsSource, and the distrusted QLD/WA feeds. Change: the same gate as the page
       (`hasPublishedHouseMedian`) in each list query. Could break: rankings for QLD and WA would empty or thin out,
       so the pages need an honest empty state first; ships by cohort with a before/after of each ranking.
+      Cohort 1, rankings, DONE 29 Sep 2026: one rule in `src/lib/published-medians.ts`, read by the suburb service
+      and the rankings. No state emptied on price (every state has at least 29 published medians; QLD, WA, TAS, NT
+      and ACT are ABS statistical-area figures and the pages say so). Growth is ranked for NSW and SA only, yield
+      for VIC and QLD only; the twelve state pages with nothing to rank say why and answer noindex.
+      Cohort 2: price guide, market reports, state pages. Cohort 3: suburb finder, search, schools pages, postcode
+      pages and the city and region rollups (those two apply the source rule but not the five-sale rule).
+      Before snapshot: docs/seo-baselines/2026-09-29/lists/before.csv.
 - [x] 48. [data] DONE 29 Sep 2026 for (a) and (b); (c) left to Jos (see the end of this item). Rows that are not places. Found 29 Sep 2026 while reading the pages item 39 was about to index.
       (i) 25 suburbs filed under SA with an interstate postcode, each beside the real suburb: "Sydney, SA 2000",
       "East Melbourne, SA 3002", "Broken Hill, SA 2880", "Townsville, SA 4810", "George Town, SA 7253". The SA crime
@@ -312,4 +319,14 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       nothing that cascades; 82 property addresses, 30 crime rows and 1 climate row refer to them. The rows are
       inert now, and while they exist the generator keeps their redirects, so leaving them is the safer default.
       The file lists the statements if Jos wants them gone.
+- [ ] 49. [code] Two rankings that do not rank what they say. Found 29 Sep 2026 while gating the rankings (item 47).
+      (i) "Best suburbs for families" takes 500 suburbs with a family share above 40% in no stated order and sorts
+      those by school ICSEA, so the list is the best of an arbitrary 500, not of the 3,987 in NSW alone. Change:
+      rank in the database over every suburb (average ICSEA by suburb, then the top 50).
+      (ii) "Lowest flood risk" ranks suburbs with a low flood class or no hazard record. The hazard table is empty
+      in production, so every row shows "No data" and the list is 50 suburbs with no record, ordered by walk
+      score. Change: until a hazard feed is loaded, say so in place of the list and take the nine pages out of the
+      index. Could break: both change what nine pages each show; before/after per page as for item 47.
+      Also seen: the NSW sales feed keeps the old growth figure when it has no prior-year median to compare
+      (`ELSE s."annualGrowthHouse"`), so a growth figure beside a NSW median can predate the feed.
 

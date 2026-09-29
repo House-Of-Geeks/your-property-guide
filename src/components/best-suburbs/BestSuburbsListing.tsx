@@ -9,6 +9,7 @@ import {
 } from "@/lib/services/suburb-rankings-service";
 import { formatPrice, formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { CATEGORY_COMMENTARY } from "@/lib/data/category-commentary";
+import type { RankingNote } from "@/lib/ranking-notes";
 import { STATE_COMMENTARY } from "@/lib/data/state-commentary";
 
 const STATES = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"] as const;
@@ -108,7 +109,21 @@ function floodBadge(floodClass: string | null): React.ReactElement {
   );
 }
 
-function PrimaryMetric({ category, suburb }: { category: RankingCategory; suburb: RankedSuburb }) {
+// On a national list the ABS figures sit beside suburb medians, so they are
+// marked; a state list is all one kind and the note above it says which.
+function AreaMark({ suburb, show }: { suburb: RankedSuburb; show: boolean }) {
+  if (!show || suburb.medianBasis !== "area" || !(suburb.medianHousePrice > 0)) return null;
+  return (
+    <abbr
+      title="ABS statistical-area (SA2) median: the area takes in the suburb and its neighbours"
+      className="ml-1 font-sans text-[10px] uppercase tracking-wide text-ink-subtle no-underline"
+    >
+      area
+    </abbr>
+  );
+}
+
+function PrimaryMetric({ category, suburb, markArea }: { category: RankingCategory; suburb: RankedSuburb; markArea: boolean }) {
   switch (category) {
     case "for-families":
       return <span className="font-display text-base text-ink">{suburb.avgSchoolIcsea != null ? suburb.avgSchoolIcsea.toLocaleString() : "–"}</span>;
@@ -119,7 +134,12 @@ function PrimaryMetric({ category, suburb }: { category: RankingCategory; suburb
         </span>
       );
     case "most-affordable":
-      return <span className="font-display text-base text-ink">{suburb.medianHousePrice > 0 ? formatPriceFull(suburb.medianHousePrice) : "–"}</span>;
+      return (
+        <span className="font-display text-base text-ink">
+          {suburb.medianHousePrice > 0 ? formatPriceFull(suburb.medianHousePrice) : "–"}
+          <AreaMark suburb={suburb} show={markArea} />
+        </span>
+      );
     case "most-walkable":
       return (
         <span className="font-display text-base text-ink">
@@ -138,12 +158,17 @@ function PrimaryMetric({ category, suburb }: { category: RankingCategory; suburb
   }
 }
 
-function SecondaryMetric({ category, suburb }: { category: RankingCategory; suburb: RankedSuburb }) {
+function SecondaryMetric({ category, suburb, markArea }: { category: RankingCategory; suburb: RankedSuburb; markArea: boolean }) {
   switch (category) {
     case "for-families":
       return <span className="font-sans text-sm text-ink-muted">{suburb.householdsFamily > 0 ? `${suburb.householdsFamily.toFixed(0)}%` : "–"}</span>;
     case "highest-growth":
-      return <span className="font-sans text-sm text-ink-muted">{suburb.medianHousePrice > 0 ? formatPrice(suburb.medianHousePrice) : "–"}</span>;
+      return (
+        <span className="font-sans text-sm text-ink-muted">
+          {suburb.medianHousePrice > 0 ? formatPrice(suburb.medianHousePrice) : "–"}
+          <AreaMark suburb={suburb} show={markArea} />
+        </span>
+      );
     case "most-affordable":
       return (
         <span className={`font-sans text-sm ${suburb.annualGrowthHouse !== 0 ? (suburb.annualGrowthHouse >= 0 ? "text-emerald-700" : "text-red-700") : "text-ink-subtle"}`}>
@@ -152,7 +177,12 @@ function SecondaryMetric({ category, suburb }: { category: RankingCategory; subu
       );
     case "most-walkable":
     case "lowest-flood-risk":
-      return <span className="font-sans text-sm text-ink-muted">{suburb.medianHousePrice > 0 ? formatPrice(suburb.medianHousePrice) : "–"}</span>;
+      return (
+        <span className="font-sans text-sm text-ink-muted">
+          {suburb.medianHousePrice > 0 ? formatPrice(suburb.medianHousePrice) : "–"}
+          <AreaMark suburb={suburb} show={markArea} />
+        </span>
+      );
     case "best-rental-yield":
       return <span className="font-sans text-sm text-ink-muted">{suburb.medianRentHouse > 0 ? `$${suburb.medianRentHouse}/wk` : "–"}</span>;
   }
@@ -162,6 +192,11 @@ interface BestSuburbsListingProps {
   category: RankingCategory;
   state: string | null; // upper-case state code or null for national
   suburbs: RankedSuburb[];
+  /**
+   * Where the figures come from, or why there is nothing to rank
+   * (src/lib/ranking-notes.ts). Printed above the table, or in its place.
+   */
+  note: RankingNote;
   /**
    * If true, state filter chips link to /best-suburbs/[category]/[state] (the
    * permutation route). If false, they link to /best-suburbs/[category]?state=NSW.
@@ -173,9 +208,12 @@ export function BestSuburbsListing({
   category,
   state,
   suburbs,
+  note,
   useStaticStateRoutes = false,
 }: BestSuburbsListingProps) {
   const config = CATEGORY_CONFIG[category];
+  // A national list mixes suburb medians with ABS area medians.
+  const markArea = state === null;
   const stateName = state ? STATE_NAME[state] ?? state : null;
   const categoryCommentary = CATEGORY_COMMENTARY[category];
   const stateCommentary = state ? STATE_COMMENTARY[state] : null;
@@ -349,17 +387,23 @@ export function BestSuburbsListing({
           ))}
         </div>
 
-        {/* Results count */}
-        <p className="text-sm font-sans text-ink-muted mb-4">
-          Showing top {suburbs.length} suburbs
-          {stateName ? ` in ${stateName}` : " across Australia"}
-        </p>
+        {/* Results count, and where the figures come from */}
+        {suburbs.length > 0 && (
+          <div className="mb-4 max-w-3xl">
+            <p className="text-sm font-sans text-ink-muted">
+              Showing top {suburbs.length} suburbs
+              {stateName ? ` in ${stateName}` : " across Australia"}
+            </p>
+            {note.text && (
+              <p className="mt-1 text-sm font-sans text-ink-subtle leading-relaxed">{note.text}</p>
+            )}
+          </div>
+        )}
 
         {suburbs.length === 0 ? (
-          <div className="rounded-2xl border border-line bg-surface-raised p-10 text-center">
-            <p className="font-sans text-ink-muted">
-              No suburbs found for this filter. Try a different state.
-            </p>
+          <div className="rounded-2xl border border-line bg-surface-raised p-8 sm:p-10">
+            <p className="font-display text-xl text-ink mb-2">Nothing to rank here yet.</p>
+            <p className="font-sans text-ink-muted leading-relaxed max-w-2xl">{note.text}</p>
           </div>
         ) : (
           <>
@@ -398,10 +442,10 @@ export function BestSuburbsListing({
                       </td>
                       <td className="py-3 px-4 font-sans text-ink-muted">{suburb.state}</td>
                       <td className="py-3 px-4 text-right tabular-nums">
-                        <PrimaryMetric category={category} suburb={suburb} />
+                        <PrimaryMetric category={category} suburb={suburb} markArea={markArea} />
                       </td>
                       <td className="py-3 px-4 text-right tabular-nums">
-                        <SecondaryMetric category={category} suburb={suburb} />
+                        <SecondaryMetric category={category} suburb={suburb} markArea={markArea} />
                       </td>
                       <td className="py-3 px-4 text-right">
                         <Link
@@ -440,13 +484,13 @@ export function BestSuburbsListing({
                     <div>
                       <p className="text-xs font-sans text-ink-subtle">{PRIMARY_LABEL[category]}</p>
                       <p className="mt-0.5">
-                        <PrimaryMetric category={category} suburb={suburb} />
+                        <PrimaryMetric category={category} suburb={suburb} markArea={markArea} />
                       </p>
                     </div>
                     <div>
                       <p className="text-xs font-sans text-ink-subtle">{SECONDARY_LABEL[category]}</p>
                       <p className="mt-0.5">
-                        <SecondaryMetric category={category} suburb={suburb} />
+                        <SecondaryMetric category={category} suburb={suburb} markArea={markArea} />
                       </p>
                     </div>
                   </div>

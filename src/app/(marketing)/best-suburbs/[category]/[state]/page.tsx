@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   getRankedSuburbs,
+  getRankingEligibleCount,
   type RankingCategory,
 } from "@/lib/services/suburb-rankings-service";
+import { isRanked, rankingNote } from "@/lib/ranking-notes";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import {
   BestSuburbsListing,
@@ -74,6 +76,9 @@ export async function generateMetadata({
     title,
     description,
     alternates: { canonical },
+    // A state with nothing to rank (no 12-month change, no suburb-level
+    // rent) says so and stays out of the index until there is.
+    robots: isRanked(category, upperState) ? undefined : { index: false, follow: true },
     openGraph: {
       url: canonical,
       // og titles don't get the root title.template — brand them explicitly
@@ -94,13 +99,17 @@ export default async function BestSuburbsCategoryStatePage({
   const upperState = normaliseState(state);
   if (!upperState) notFound();
 
+  // One after the other: the runtime pool holds a single connection.
   const suburbs = await getRankedSuburbs(category, upperState, 50);
+  const eligible = await getRankingEligibleCount(category, upperState);
+  const note = rankingNote(category, upperState, suburbs.length, eligible);
 
   return (
     <BestSuburbsListing
       category={category}
       state={upperState}
       suburbs={suburbs}
+      note={note}
       useStaticStateRoutes
     />
   );

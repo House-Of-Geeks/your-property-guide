@@ -42,7 +42,7 @@ export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = 
     intro:
       "Capital growth is the long-term wealth driver in property, and the gap between top-quartile and bottom-quartile suburbs is enormous. A suburb growing at 8% annually doubles in 9 years; one at 3% takes 24. We rank by 12-month annual house-price growth, with the caveat that recent growth doesn't perfectly predict the next decade.",
     methodology:
-      "Annual growth is sourced from state Valuer-General data and cross-checked against ABS quarterly indicators. We require a non-zero medianHousePrice and exclude suburbs with too few sales for a meaningful median (typically under 12 sales over the period).",
+      "Annual growth is the 12-month change in the suburb's median house price, measured on the same sales as the median. It is measured in New South Wales (Valuer General sales) and South Australia (SA Government quarterly medians); the other sources publish a median without a change, so those states are not ranked. A suburb is ranked only when its own page publishes the median: at least five recorded sales. A change beyond 25% in a year is left out as a small-sample artefact.",
     bestFor:
       "Investors focused on capital appreciation; buyers willing to enter outer suburbs with strong fundamentals; buyers researching where the next wave of growth corridors might be.",
     faqs: [
@@ -67,7 +67,7 @@ export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = 
     intro:
       "'Most affordable' here means lowest median house price, the entry-level suburbs in each state. Affordability isn't the same as good value: a $400K outer-fringe suburb with stagnant population growth and weak infrastructure can be a worse buy than a $700K middle-ring suburb with structural demand. Use this list as a starting point for further research, not a final shortlist.",
     methodology:
-      "Sorted by median house price ascending, with a $100K minimum to exclude very small localities and data anomalies. State Valuer-General data, refreshed quarterly.",
+      "Sorted by median house price, lowest first, from $100,000. Only a median the suburb's own page publishes is ranked: NSW Valuer General sales, Land Victoria and SA Government quarterly medians, and ABS statistical-area (SA2) medians in the other states and territories, on at least five recorded sales where the count is known. An SA2 median covers the suburb and its neighbours.",
     bestFor:
       "First home buyers prioritising entry into the property market; rentvestors looking for high-yield, lower-entry investments; buyers willing to commute further for a freestanding house.",
     faqs: [
@@ -142,7 +142,7 @@ export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = 
     intro:
       "Gross rental yield is rent income as a percentage of property value, the headline cashflow metric for an investment property. Higher yield generally means stronger near-term cashflow but often correlates with lower capital growth, so this ranking is a starting point for cashflow-focused investors rather than long-term wealth-building.",
     methodology:
-      "Gross yield = (median weekly rent × 52) ÷ median house price × 100. Sourced from REIA quarterly indicators and state Valuer-General data. Excluded suburbs with insufficient rental data or median prices below the credible threshold.",
+      "Gross yield = (median weekly rent × 52) ÷ median house price × 100. Rent is the suburb's latest median from bond lodgements; price is the median the suburb's own page publishes. Victoria and Queensland are ranked. New South Wales is not, because its rents are published by postcode rather than by suburb. Suburbs under 1,000 residents and yields above 20% are left out.",
     bestFor:
       "Cashflow-focused investors; rentvestors seeking properties that fund their own holding costs; SMSF investors where positive cashflow matters more than capital appreciation.",
     faqs: [

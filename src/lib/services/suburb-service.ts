@@ -3,8 +3,7 @@ import { RELIABLE_SALES_SOURCES } from "@/lib/suburb-data-quality";
 import type { Suburb, SuburbDataFreshness } from "@/types";
 import { db } from "@/lib/db";
 import type { Suburb as DbSuburb, School as DbSchool, SuburbHazard as DbSuburbHazard, SuburbClimate as DbSuburbClimate } from "@/generated/prisma/client";
-import { classifyPriceConfidence, isPlausibleAnnualGrowth } from "@/lib/suburb-data-quality";
-import { hasEnoughSales } from "@/lib/sales-provenance";
+import { publishedSales } from "@/lib/published-medians";
 import { hasPublishedHouseMedian, isThinSuburbRow } from "@/lib/suburb-indexability";
 // Postal delivery names, institutions and shopping-centre post offices are
 // not suburbs: every list and sitemap below leaves them out (LOCALITIES_ONLY).
@@ -122,17 +121,17 @@ function toSuburb(
   // A trusted feed can still hand us a "median" of two or three sales; those
   // are withheld the same way (fix item 1, step v; the count stays in
   // freshness so the page can say why). Unknown counts never suppress.
-  const priceUnreliable =
-    classifyPriceConfidence(mergedFreshness) === "unreliable" || !hasEnoughSales(s.salesCountHouse);
-  const medianHousePrice  = priceUnreliable ? 0 : s.medianHousePrice;
-  const medianUnitPrice   = priceUnreliable ? 0 : s.medianUnitPrice;
+  // The rule is publishedSales (src/lib/published-medians.ts), which the
+  // lists read too, so a list cannot print a figure this page withholds.
   // Growth additionally passes a plausibility clamp: even trusted feeds
   // produce ±40% "growth" on thin-sales suburbs, and 0 is the codebase's
-  // "unknown, don't print" convention for these fields.
-  const annualGrowthHouse =
-    priceUnreliable || !isPlausibleAnnualGrowth(s.annualGrowthHouse) ? 0 : s.annualGrowthHouse;
-  const annualGrowthUnit  =
-    priceUnreliable || !isPlausibleAnnualGrowth(s.annualGrowthUnit) ? 0 : s.annualGrowthUnit;
+  // "unknown, don't print" convention for these fields. It is published
+  // only from a feed that measures it (NSW, SA): a figure beside an ABS or
+  // Land Victoria median was left by an earlier import.
+  const { medianHousePrice, medianUnitPrice, annualGrowthHouse } = publishedSales(s);
+  // No feed measures a 12-month change in the unit median; the eight values
+  // on file on 29 Sep 2026 were seed leftovers. Withheld like days on market.
+  const annualGrowthUnit = 0;
   // No current feed produces days on market: sales-nsw wrote the settlement
   // period until 6 Sep 2026 and now writes 0, and the remaining values are
   // seed leftovers from the April import. Withheld until a feed supplies it
