@@ -39,7 +39,6 @@ import { post as first_home_buyer_guide_moreton_bay_2025 } from "./first-home-bu
 import { post as top_5_suburbs_families_moreton_bay } from "./top-5-suburbs-families-moreton-bay";
 import { post as understanding_off_market_properties } from "./understanding-off-market-properties";
 import { post as investment_property_guide_moreton_bay_corridor } from "./investment-property-guide-moreton-bay-corridor";
-import { post as stamp_duty_queensland_what_you_need_to_know } from "./stamp-duty-queensland-what-you-need-to-know";
 import { post as house_and_land_packages_are_they_worth_it } from "./house-and-land-packages-are-they-worth-it";
 import { post as selling_your_home_tips_for_maximum_value } from "./selling-your-home-tips-for-maximum-value";
 import { post as moreton_bay_property_market_update_q1_2025 } from "./moreton-bay-property-market-update-q1-2025";
@@ -99,7 +98,6 @@ export const blogPosts: BlogPost[] = [
   top_5_suburbs_families_moreton_bay,
   understanding_off_market_properties,
   investment_property_guide_moreton_bay_corridor,
-  stamp_duty_queensland_what_you_need_to_know,
   house_and_land_packages_are_they_worth_it,
   selling_your_home_tips_for_maximum_value,
   moreton_bay_property_market_update_q1_2025,

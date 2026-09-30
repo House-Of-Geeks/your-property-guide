@@ -32,6 +32,8 @@ interface GuideArticleLayoutProps {
   toc: readonly GuideTOCEntry[];
   faqs?: readonly FaqItem[];
   related?: readonly RelatedGuide[];
+  /** Full-width block between the hero and the article (a calculator on a calculator-first guide). */
+  beforeBody?: React.ReactNode;
   children: React.ReactNode;
 }
 
@@ -41,6 +43,7 @@ export function GuideArticleLayout({
   toc,
   faqs = [],
   related = [],
+  beforeBody,
   children,
 }: GuideArticleLayoutProps) {
   const persona = frontmatter.persona ? PERSONA_BY_ID[frontmatter.persona] : null;
@@ -100,7 +103,7 @@ export function GuideArticleLayout({
           aria-hidden="true"
           className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
         />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-14 sm:pb-20 lg:pb-24">
+        <div className={`relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 ${beforeBody ? "pb-8 sm:pb-10" : "pb-14 sm:pb-20 lg:pb-24"}`}>
           <div className="mb-10">
             <Breadcrumbs items={breadcrumbItems} />
           </div>
@@ -177,6 +180,15 @@ export function GuideArticleLayout({
         </div>
       </section>
 
+      {/* Calculator-first guides put the tool straight under the H1. */}
+      {beforeBody && (
+        <section className="bg-surface-raised border-b border-line">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+            {beforeBody}
+          </div>
+        </section>
+      )}
+
       {/* Body, two-column with sticky sidebar on desktop */}
       <article className="bg-surface-raised">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
@@ -223,8 +235,9 @@ export function GuideArticleLayout({
               </div>
             </aside>
 
-            {/* Main column */}
-            <div className="lg:col-span-9 lg:order-1">
+            {/* Main column. min-w-0 so a wide table scrolls inside its own
+                wrapper instead of stretching the grid track past the phone. */}
+            <div className="min-w-0 lg:col-span-9 lg:order-1">
               <Tldr points={tldr} />
 
               {/* Mobile-only inline TOC */}

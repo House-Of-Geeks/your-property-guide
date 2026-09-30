@@ -18,6 +18,10 @@ import {
   suburbTitle,
 } from "@/lib/utils/seo";
 import { hasReliablePrice } from "@/lib/suburb-data-quality";
+import fs from "node:fs";
+import path from "node:path";
+import { ABBR, AUSTRALIAN_STATES, STAMP_DUTY_GUIDES, dutyFor, money, stampDutyMetaTitle, stampDutyTitle } from "@/lib/data/stamp-duty-state";
+import { SITE_NAME } from "@/lib/constants";
 
 const TITLE_BUDGET = 60;      // characters, before the brand suffix
 const DESCRIPTION_BUDGET = 160;
@@ -149,5 +153,53 @@ describe("descriptions respect the price-reliability gate", () => {
     expect(suburbDescription(metro).length).toBeLessThanOrEqual(DESCRIPTION_BUDGET);
     const capital = makeSuburb({ name: "Chermside South", postcode: "4032", state: "QLD", salesSource: "sales-abs" });
     expect(suburbDescription(capital).length).toBeLessThanOrEqual(DESCRIPTION_BUDGET);
+  });
+});
+
+// Item 20 (30 Sep 2026): the eight state stamp duty guides. <title> and
+// og:title take the short form inside the 60-character budget (before the
+// " | Your Property Guide" suffix the root layout adds); the long form is the
+// H1 and the Article headline.
+describe("stamp duty state guide titles", () => {
+  it("<title> and og:title are exactly '{STATE} Stamp Duty Calculator 2026: Rates & First Home Buyers'", () => {
+    for (const s of AUSTRALIAN_STATES) {
+      expect(STAMP_DUTY_GUIDES[s].metaTitle).toBe(`${ABBR[s]} Stamp Duty Calculator 2026: Rates & First Home Buyers`);
+      expect(stampDutyMetaTitle(s)).toBe(STAMP_DUTY_GUIDES[s].metaTitle);
+    }
+    expect(STAMP_DUTY_GUIDES.NSW.metaTitle).toHaveLength(57);
+  });
+
+  it("the short title is inside the 60-character budget for every state", () => {
+    for (const s of AUSTRALIAN_STATES) {
+      const t = STAMP_DUTY_GUIDES[s].metaTitle;
+      expect(t.length, `${s}: ${t}`).toBeLessThanOrEqual(TITLE_BUDGET);
+      expect(t).not.toMatch(/\$/);
+    }
+  });
+
+  it("the H1 and Article headline keep the long form", () => {
+    for (const s of AUSTRALIAN_STATES) {
+      expect(STAMP_DUTY_GUIDES[s].title).toBe(`${ABBR[s]} Stamp Duty Calculator 2026: Rates, Concessions & First Home Buyers`);
+      expect(stampDutyTitle(s)).toBe(STAMP_DUTY_GUIDES[s].title);
+    }
+  });
+
+  it("the metadata builder sets <title> and og:title from metaTitle, and the frontmatter (H1, Article headline) from title", () => {
+    const layout = fs.readFileSync(path.resolve(__dirname, "../../src/app/layout.tsx"), "utf8");
+    expect(layout).toContain("template: `%s | ${SITE_NAME}`");
+    expect(SITE_NAME).toBe("Your Property Guide");
+    const builder = fs.readFileSync(path.resolve(__dirname, "../../src/components/guide/StampDutyStateGuide.tsx"), "utf8");
+    const meta = builder.slice(builder.indexOf("export function stampDutyMetadata"), builder.indexOf("/** Renders a paragraph string"));
+    expect(meta).toContain("const metaTitle = STAMP_DUTY_GUIDES[state].metaTitle;");
+    expect(meta.match(/title: metaTitle,/g)).toHaveLength(2);
+    expect(builder).toMatch(/title: g\.title,/);
+  });
+
+  it("descriptions stay inside 160 characters and print only the engine's figure", () => {
+    for (const s of AUSTRALIAN_STATES) {
+      const g = STAMP_DUTY_GUIDES[s];
+      expect(g.description.length, `${s}: ${g.description}`).toBeLessThanOrEqual(DESCRIPTION_BUDGET);
+      expect(g.description).toContain(money(dutyFor(s, 750_000, "owner").total));
+    }
   });
 });

@@ -163,7 +163,7 @@ Tick items off as they ship.
 
 ## New pages and refreshes (week 6–12)
 
-- [ ] 20. [code+content] Upgrade the EXISTING eight /guides/stamp-duty-{state} pages (do not create new
+- [x] 20. BUILT 30 Sep 2026, PR #92, awaiting review. [code+content] Upgrade the EXISTING eight /guides/stamp-duty-{state} pages (do not create new
       URLs): embed calculator preset to state, tables generated from src/lib/utils/stamp-duty.ts,
       FHB thresholds with dates, surcharge, exemptions, worked examples $500k/$750k/$1M, PAA FAQ;
       fold /guides/stamp-duty-queensland-what-you-need-to-know into the QLD guide with a redirect. (07, E)

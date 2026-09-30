@@ -51,6 +51,11 @@ const nextConfig: NextConfig = {
       // Agent lead-supply page renamed so the slug matches the query
       // ("real estate leads"), mirroring yourfinanceguide.com.au/finance-leads.
       { source: "/for-agents", destination: "/real-estate-leads", permanent: true },
+      // Item 20 (30 Sep 2026): the Queensland stamp duty article was folded
+      // into the calculator-first QLD guide. The /blog form is listed before
+      // the /blog wildcard so it lands in one hop.
+      { source: "/guides/stamp-duty-queensland-what-you-need-to-know", destination: "/guides/stamp-duty-qld", permanent: true },
+      { source: "/blog/stamp-duty-queensland-what-you-need-to-know",   destination: "/guides/stamp-duty-qld", permanent: true },
       // Blog content moved into the unified /guides hub. Preserves SEO + any
       // external links (e.g. RSS subscribers, partner sites).
       { source: "/blog",          destination: "/guides",          permanent: true },
