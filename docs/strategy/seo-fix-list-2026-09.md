@@ -384,3 +384,16 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       production write by the feed. Dry run with counts and a list of every suburb whose figure would move,
       then an explicit go.
 
+## Commercial intent review (30 Sep 2026)
+
+Source: `docs/seo-baselines/2026-09-30/commercial-intent-review.md` (section and priority numbers below refer to it).
+Same gate as the rest: review before merging, one template change per fortnight, URLs never change.
+
+- [x] 52. [code+content] DONE 1 Oct 2026 — PR #84. property management fees guide (review 3.7, priority 5).
+      /guides/property-management-fees-australia on the same URL: title "Property Management Fees 2026: Rates by State &
+      Calculator" (58 characters), H1 "Property Management Fees in Australia 2026: Rates by State, With Calculator"; state table (management % range and average, letting weeks, renewal, inspection, admin;
+      every cell footnoted and dated; "No published range" where no named source gives one); annual cost calculator
+      (engine src/lib/property-management-fees-calc.ts, tested); one H2 per state with the regulated part; FAQ gains the
+      three PAA questions. Evidence: 1,000 Google / 295 AI searches, 0 GSC impressions, Bing 11 clicks / 444 impressions at
+      4.7; the AI Overview's state table is LocalAgentFinder's (13 Mar 2026) and the page now carries it with the source.
+      Next: state pages (3.7). Could break: nothing outside the one URL.

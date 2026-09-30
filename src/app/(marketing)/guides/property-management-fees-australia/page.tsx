@@ -3,34 +3,57 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
-  type FaqItem,
   type RelatedGuide,
+  type SourceItem,
 } from "@/components/guide";
+import { PropertyManagementFeesCalculator } from "@/components/calculators/PropertyManagementFeesCalculator";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import {
+  PM_FEES_AS_AT,
+  PM_FEES_FAQS,
+  PM_FEE_SOURCE_LIST,
+  PM_NATIONAL,
+  PM_STATE_FEES,
+  PM_STATE_ORDER,
+  dollarCell,
+  lettingCell,
+  managementCell,
+  stateFeeAnswer,
+  type PmCell,
+} from "@/lib/data/property-management-fees";
+import { computePmFees, defaultPmFeesInput } from "@/lib/property-management-fees-calc";
+import { formatPriceFull } from "@/lib/utils/format";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "Property Management Fees in Australia: What You'll Actually Pay (2026)",
+  title: "Property Management Fees in Australia 2026: Rates by State, With Calculator",
   description:
-    "Property manager fees in Australia broken down: management fee, letting fee, lease renewal, inspections, and the hidden charges to negotiate out. State-by-state ranges and a real-world annual example.",
+    "Management fees by state for 2026 (5.8% NSW to 8.7% WA and Tasmania), letting fees in weeks, renewal, inspection and statement charges, sourced and dated, with an annual cost calculator.",
   slug: "property-management-fees-australia",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-05-06",
-  readingTimeMinutes: 8,
+  updatedAt: "2026-09-30",
+  readingTimeMinutes: 12,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
   persona: "investing",
 };
 
+// The <title> is shorter than the H1: the root layout appends
+// " | Your Property Guide", and 60 characters before that suffix is the SERP
+// budget (tests/seo/titles.test.ts). The long form stays the H1 and the
+// Article headline, which read FRONTMATTER.title.
+const SEO_TITLE = "Property Management Fees 2026: Rates by State & Calculator";
+
 export const metadata: Metadata = {
-  title: FRONTMATTER.title,
+  title: SEO_TITLE,
   description: FRONTMATTER.description,
   alternates: { canonical: `${SITE_URL}/guides/${FRONTMATTER.slug}` },
   openGraph: {
     url: `${SITE_URL}/guides/${FRONTMATTER.slug}`,
-    title: FRONTMATTER.title,
+    title: SEO_TITLE,
     description: FRONTMATTER.description,
     type: "article",
     publishedTime: FRONTMATTER.publishedAt,
@@ -44,56 +67,38 @@ export const metadata: Metadata = {
   },
 };
 
+// The worked example uses Western Australia because it is one of the two
+// states where every line has a published range; the numbers come from the
+// same engine as the calculator, so they cannot drift from it.
+const EXAMPLE_RENT = 600;
+const EXAMPLE = computePmFees(defaultPmFeesInput("WA", EXAMPLE_RENT));
+const money = (n: number) => formatPriceFull(n);
+
 const TLDR = [
-  "The headline management fee in Australia is typically 5% to 10% of weekly rent collected, with most capital cities sitting at 6% to 8%.",
-  "On top of management, expect a letting fee (1 to 2 weeks rent), lease renewal fee ($150 to $300), routine inspection fee ($50 to $100 each), and admin charges.",
-  "All-in, plan for 9% to 14% of annual rent going to property management once everything is added up.",
-  "Cheaper isn't always better, a 5% manager who chases rent late and lets vacancies stretch out costs more than an 8% manager who keeps the property tenanted and well-maintained.",
-  "The biggest savings come from negotiating out the small charges (statement fees, monthly admin) and asking for a discount on multiple-property portfolios, not from cutting the headline rate.",
+  `Management fees average ${PM_NATIONAL.managementAverage}% of rent nationally: ${PM_STATE_FEES.NSW.management.average}% in New South Wales, ${PM_STATE_FEES.VIC.management.average}% in Victoria, ${PM_STATE_FEES.ACT.management.average}% in the ACT, ${PM_STATE_FEES.QLD.management.average}% in Queensland and South Australia, ${PM_STATE_FEES.NT.management.average}% in the Northern Territory and ${PM_STATE_FEES.WA.management.average}% in Western Australia and Tasmania (LocalAgentFinder, March 2026). Regional areas run higher than the capitals everywhere.`,
+  `Letting fees average ${PM_NATIONAL.lettingAverageWeeks} weeks' rent each time a new tenant is signed: about 1 week in Queensland and the Territory, 2 weeks in Tasmania and 2 to 3 weeks in Perth.`,
+  "No state sets or caps the fee. Each requires it in a written agreement (NSW's agency agreement, Victoria's managing authority, Queensland's Form 6, WA's written authority) and each consumer regulator says it is negotiable.",
+  "Lease renewal, routine inspection and statement charges come on top where the agency levies them. Only Western Australia and South Australia have published ranges for those lines, so get every charge in writing before you sign.",
+  `The calculator below starts at your state's published figures and shows the annual cost as a share of rent: about ${computePmFees(defaultPmFeesInput("NSW", EXAMPLE_RENT)).pctOfRent}% at New South Wales' figures and ${EXAMPLE.pctOfRent}% at Western Australia's.`,
 ];
 
 const TOC: GuideTOCEntry[] = [
-  { id: "what-they-do",       label: "What property managers actually do" },
-  { id: "fee-types",          label: "The 8 fee types" },
-  { id: "by-state",           label: "Typical fees by state" },
-  { id: "annual-example",     label: "A real annual example" },
-  { id: "negotiable",         label: "What's actually negotiable" },
-  { id: "cheap-vs-good",      label: "Cheap isn't the same as good" },
-  { id: "self-managing",      label: "Should you self-manage?" },
-  { id: "next-steps",         label: "Next steps" },
-];
-
-const FAQS: FaqItem[] = [
-  {
-    question: "What is the average property management fee in Australia?",
-    answer:
-      "The headline management fee averages 6% to 8% of weekly rent across capital cities, with regional areas often higher (8% to 12%) because there are fewer competing managers. NSW and VIC tend to be at the lower end of the range; QLD, SA, and WA at the higher end. Add letting fees and ancillary charges and the all-in cost is typically 9% to 14% of annual rent.",
-  },
-  {
-    question: "Is the property management fee tax deductible?",
-    answer:
-      "Yes. Property management fees are fully deductible against rental income in the same financial year for an investment property. The same applies to letting fees, lease renewal fees, inspection charges, and most ancillary admin fees, they're all costs of producing rental income.",
-  },
-  {
-    question: "Can I negotiate the property management fee?",
-    answer:
-      "Yes, especially for higher-rent properties or multi-property portfolios. The headline rate is sometimes negotiable by 0.5% to 1.5%, and the small charges (statement fees, monthly admin, routine inspection fees) are often dropped entirely on request. Get three written quotes before signing.",
-  },
-  {
-    question: "What's a letting fee?",
-    answer:
-      "A one-off charge when the manager finds and signs a new tenant, typically 1 to 2 weeks of rent. It covers advertising, applicant screening, contract preparation, and the ingoing inspection. You pay it each time tenants change, so high-turnover properties incur it more often.",
-  },
-  {
-    question: "How often should I get routine inspections?",
-    answer:
-      "Most states limit routine inspections to one every 3 months (some states say 4 per year max). The manager typically charges $50 to $100 per inspection. Quarterly inspections are standard for residential investment properties; annual is too rare and risks issues going unnoticed.",
-  },
-  {
-    question: "Can I switch property managers mid-tenancy?",
-    answer:
-      "Yes. The management agreement usually has a 30 to 60 day termination clause. You provide written notice; the outgoing manager hands over keys, files, and the bond authority transfer. The tenancy itself continues unchanged, the tenant's obligations don't reset.",
-  },
+  { id: "by-state",        label: "Fees by state (table)" },
+  { id: "calculator",      label: "Annual cost calculator" },
+  { id: "fee-types",       label: "The 8 fee types" },
+  { id: "fees-nsw",        label: "New South Wales" },
+  { id: "fees-vic",        label: "Victoria" },
+  { id: "fees-qld",        label: "Queensland" },
+  { id: "fees-wa",         label: "Western Australia" },
+  { id: "fees-sa",         label: "South Australia" },
+  { id: "fees-tas",        label: "Tasmania" },
+  { id: "fees-act",        label: "ACT" },
+  { id: "fees-nt",         label: "Northern Territory" },
+  { id: "annual-example",  label: "A worked annual example" },
+  { id: "negotiable",      label: "What's actually negotiable" },
+  { id: "cheap-vs-good",   label: "Cheap isn't the same as good" },
+  { id: "self-managing",   label: "Should you self-manage?" },
+  { id: "next-steps",      label: "Next steps" },
 ];
 
 const RELATED: RelatedGuide[] = [
@@ -104,193 +109,337 @@ const RELATED: RelatedGuide[] = [
   { title: "Find an Expert", href: "/find-an-expert", description: "Looking for a property manager? Browse our network." },
 ];
 
+const SOURCES: SourceItem[] = PM_FEE_SOURCE_LIST.map((s) => ({
+  label: `[${s.n}] ${s.label}`,
+  href: s.href,
+  note: s.date,
+}));
+
+function Cell({ c }: { c: PmCell }) {
+  return (
+    <>
+      {c.text}
+      {c.refs.length > 0 && (
+        <>
+          {" "}
+          <sup>[{c.refs.join(", ")}]</sup>
+        </>
+      )}
+    </>
+  );
+}
+
+// Footnotes used in the table, so the list under it names exactly those.
+const TABLE_REFS = [
+  ...new Set(
+    PM_STATE_ORDER.flatMap((code) => {
+      const s = PM_STATE_FEES[code];
+      return [
+        ...managementCell(s).refs,
+        ...lettingCell(s).refs,
+        ...dollarCell(code, s.renewal).refs,
+        ...dollarCell(code, s.inspection).refs,
+        ...dollarCell(code, s.admin).refs,
+      ];
+    }),
+  ),
+].sort((a, b) => a - b);
+
 export default function PropertyManagementFeesGuide() {
   return (
     <GuideArticleLayout
       frontmatter={FRONTMATTER}
       tldr={TLDR}
       toc={TOC}
-      faqs={FAQS}
+      faqs={PM_FEES_FAQS}
       related={RELATED}
     >
       <Callout variant="info" title="The headline rate is just the start">
         <p>
-          Most quotes you&rsquo;ll get advertise the management percentage and
-          stop there. The full picture is the management fee, plus the letting
-          fee, plus 5 to 7 ancillary charges most managers don&rsquo;t mention
-          upfront. We&rsquo;ll list them all below.
+          Most quotes advertise the management percentage and stop there. The
+          full picture is the management fee, plus the letting fee each time a
+          tenant changes, plus the renewal, inspection and statement charges
+          the agency levies. The table gives each state&rsquo;s published
+          figures; the calculator adds them up for your rent.
         </p>
       </Callout>
 
-      <h2 id="what-they-do">What property managers actually do</h2>
+      <h2 id="by-state">Property management fees by state (2026)</h2>
       <p className="lead">
-        A residential property manager handles the day-to-day operations of an
-        investment property: finding tenants, collecting rent, coordinating
-        repairs, conducting inspections, managing the bond, and handling
-        disputes. The headline fee covers the rent collection and basic admin;
-        most other tasks attract a separate charge.
+        The management fee is a percentage of the rent collected. The letting
+        fee is charged in weeks of rent each time a new tenant is signed. The
+        table gives each state&rsquo;s published range and its state average,
+        then the three extra charges where a named source publishes a range for
+        that state; where none does, the cell says so rather than guessing.
+        Footnotes point to the sources listed under the table, as at{" "}
+        {PM_FEES_AS_AT}.
       </p>
+      {/* Six columns do not fit the article column at the global th
+          nowrap, so the headers wrap and the table scrolls inside its own
+          box on narrow screens. `contain: inline-size` stops the table's
+          width reaching the layout's grid column, which otherwise grows to
+          fit it and widens the whole page on a phone (720px at 375px). */}
+      <div className="overflow-x-auto" style={{ contain: "inline-size" }} data-table="pm-fees-by-state">
+      <table style={{ minWidth: "44rem" }}>
+        <thead>
+          <tr>
+            {["State", "Management fee (% of rent)", "Letting fee (weeks of rent)", "Lease renewal", "Routine inspection", "Statements and admin"].map((h) => (
+              <th key={h} style={{ whiteSpace: "normal" }}>{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {PM_STATE_ORDER.map((code) => {
+            const s = PM_STATE_FEES[code];
+            return (
+              <tr key={code}>
+                <td>
+                  <strong>{s.name.replace(/^the /, "")}</strong>
+                  <br />
+                  <small>{s.capital}</small>
+                </td>
+                <td><Cell c={managementCell(s)} /></td>
+                <td><Cell c={lettingCell(s)} /></td>
+                <td><Cell c={dollarCell(code, s.renewal)} /></td>
+                <td><Cell c={dollarCell(code, s.inspection)} /></td>
+                <td><Cell c={dollarCell(code, s.admin)} /></td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      </div>
+      <p>
+        <small>
+          Sources for the table, with dates. The state averages are
+          LocalAgentFinder&rsquo;s, the same figures Google&rsquo;s AI Overview
+          prints for this search; the ranges are REIQ&rsquo;s table (sourced to
+          realestate.com.au) and WhichRealEstateAgent&rsquo;s city guides. A
+          &ldquo;no published range&rdquo; cell means none of these names a
+          figure for that state, not that the charge does not exist.
+        </small>
+      </p>
+      <ol>
+        {PM_FEE_SOURCE_LIST.filter((s) => TABLE_REFS.includes(s.n)).map((s) => (
+          <li key={s.n}>
+            <small>
+              [{s.n}]{" "}
+              <a href={s.href} target="_blank" rel="nofollow noopener">
+                {s.label}
+              </a>
+              , {s.date}.
+            </small>
+          </li>
+        ))}
+      </ol>
+
+      <KeyFigure
+        value={`${PM_NATIONAL.managementAverage}%`}
+        label="National average management fee, as a share of rent collected"
+        context={`LocalAgentFinder, March 2026, from agency quotes across the eight states; the letting fee averages ${PM_NATIONAL.lettingAverageWeeks} weeks' rent.`}
+      />
+
+      <h2 id="calculator">Annual property management cost calculator</h2>
+      <p>
+        Enter the weekly rent and pick the state. The management percentage
+        and letting weeks start at the state average from the table, the extra
+        charges at the midpoint of the state&rsquo;s published range (or empty
+        where none is published), and every line is editable. The result is the
+        annual cost of management and its share of the rent, which is the
+        figure to put into the{" "}
+        <a href="/rental-yield-calculator">rental yield calculator</a> as your
+        management cost.
+      </p>
+      <div className="not-prose my-6">
+        <PropertyManagementFeesCalculator initialState="NSW" initialRent={EXAMPLE_RENT} headingLevel="h3" />
+      </div>
 
       <h2 id="fee-types">The 8 fee types you need to know</h2>
+      <p>
+        A residential property manager finds tenants, collects rent,
+        coordinates repairs, inspects the property, holds the bond and handles
+        disputes. The headline fee covers rent collection and day-to-day
+        management; the rest is charged separately or bundled, depending on the
+        agency.
+      </p>
 
       <h3>1. Management fee</h3>
       <p>
-        The headline percentage. Calculated on rent <em>collected</em>, not
-        rent owed, so a vacancy means no fee for that period. Standard range:
-        6% to 8% in capital cities, 7% to 12% regional.
+        The headline percentage, calculated on rent <em>collected</em>, not
+        rent owed, so a vacancy costs no fee. About 5% to 8% in Sydney and
+        Melbourne, 7% to 12% in Brisbane, Perth and Adelaide and in regional
+        areas; the table above has each state.
       </p>
 
       <h3>2. Letting fee</h3>
       <p>
         Charged when a new tenant is signed. Covers advertising, screening,
-        contract prep, ingoing inspection. Typical: 1 to 2 weeks of weekly
-        rent. On a $600/week property, that&rsquo;s $600 to $1,200 each
-        time tenants change.
+        the tenancy agreement and the ingoing condition report. Usually 1 to 2
+        weeks&rsquo; rent, 2 to 3 weeks in Perth and up to 4 weeks at some
+        Melbourne and Hobart agencies (WhichRealEstateAgent, 2026). On $600 a
+        week that is $600 to $1,800 each time tenants change.
       </p>
 
       <h3>3. Lease renewal fee</h3>
       <p>
-        When the existing tenant renews for another fixed term, some managers
-        charge $150 to $300 for paperwork. Others include it in the
-        management fee. Easy to negotiate out at the contract stage.
+        Charged when the existing tenant signs a new fixed term. Perth
+        agencies quote {dollarCell("WA", PM_STATE_FEES.WA.renewal).text.replace(/ \(.*\)$/, "")}{" "}
+        and Adelaide agencies often one week&rsquo;s rent (WhichRealEstateAgent,
+        2026); no other state has a published range. Often waived on request.
       </p>
 
       <h3>4. Routine inspection fee</h3>
       <p>
-        $50 to $100 per inspection, usually quarterly. Some managers
-        bundle 2 free per year and charge for any extras.
+        $50 to $100 an inspection where a figure is published (Perth and
+        Adelaide, WhichRealEstateAgent, 2026). Some agencies include two or
+        four a year in the management fee. New South Wales and Western
+        Australia cap routine inspections at four in 12 months; Victoria allows
+        one every six months.
       </p>
 
-      <h3>5. Ingoing &amp; outgoing inspection</h3>
+      <h3>5. Ingoing and outgoing condition reports</h3>
       <p>
-        Detailed condition reports at the start and end of each tenancy. Often
-        $200 to $400 each, sometimes bundled with the letting fee. These
-        reports are critical for bond claims, so don&rsquo;t skip them.
+        The detailed reports at the start and end of each tenancy, which the
+        bond claim rests on. Some agencies fold them into the letting fee,
+        others charge for each; no state range is published, so ask for the
+        figure before you sign.
       </p>
 
-      <h3>6. Statement &amp; admin fees</h3>
+      <h3>6. Statement and admin fees</h3>
       <p>
-        Monthly or annual statement fees ($5 to $15/month). Annual financial
-        year statement (often $40 to $100). EFT or postage fees per disbursement.
-        Add up to $100 to $300/year and almost always negotiable.
+        Monthly or annual statement fees, the end-of-financial-year summary and
+        postage. Perth agencies quote $20 to $40 a year for statements and
+        Adelaide agencies $30 to $100 for the annual statement
+        (WhichRealEstateAgent, 2026). Almost always negotiable.
       </p>
 
-      <h3>7. Tribunal &amp; arrears</h3>
+      <h3>7. Tribunal and arrears</h3>
       <p>
-        If the manager has to attend QCAT/NCAT/VCAT for a dispute, expect
-        $100 to $200/hour plus filing fees. Arrears chasing is sometimes
-        billed at a flat $50 to $100 after a notice is issued.
+        Charged when the agent attends NCAT, VCAT, QCAT, SACAT or the
+        Magistrates Court for you, usually at an hourly rate; Adelaide agencies
+        quote from $300 (WhichRealEstateAgent, March 2026). Arrears follow-up
+        is normally part of the management fee.
       </p>
 
       <h3>8. End-of-management fee</h3>
       <p>
-        Some agreements include a fee to switch managers, often 1 to 2
-        weeks of rent or a flat $200 to $500. Read the termination clause
-        before signing.
+        Some agreements charge a fee to leave before the term ends. No range
+        is published; read the termination clause and have it removed before
+        you sign.
       </p>
 
-      <h2 id="by-state">Typical fees by state (2026)</h2>
-      <ul>
-        <li><strong>NSW (Sydney):</strong> 5.5% to 7% management; letting fee 1 to 2 weeks rent</li>
-        <li><strong>VIC (Melbourne):</strong> 5.5% to 7.5% management; letting fee 1 to 2 weeks rent</li>
-        <li><strong>QLD (Brisbane):</strong> 7% to 9% management; letting fee 1 week rent</li>
-        <li><strong>WA (Perth):</strong> 8.5% to 11% management; letting fee 2 weeks rent (often higher headline rate but lower letting fee structure)</li>
-        <li><strong>SA (Adelaide):</strong> 7% to 9% management; letting fee 1 to 1.5 weeks rent</li>
-        <li><strong>TAS (Hobart):</strong> 7% to 10% management</li>
-        <li><strong>ACT (Canberra):</strong> 6% to 8.5% management</li>
-        <li><strong>NT (Darwin):</strong> 8% to 12% management</li>
-      </ul>
+      {PM_STATE_ORDER.map((code) => {
+        const s = PM_STATE_FEES[code];
+        return (
+          <div key={code}>
+            <h2 id={`fees-${code.toLowerCase()}`}>How much are property management fees in {s.name}?</h2>
+            <p>{stateFeeAnswer(code)}</p>
+          </div>
+        );
+      })}
 
-      <KeyFigure
-        value="9% to 14%"
-        label="All-in property management cost as % of annual rent"
-        context="Management fee + letting fee + ancillary charges, calculated over a typical 1 to 2 year tenant cycle."
-      />
-
-      <h2 id="annual-example">A real annual example</h2>
+      <h2 id="annual-example">A worked annual example</h2>
       <p>
-        $600/week property in Brisbane, 7% management fee, tenant signed
-        with 1-week letting fee, no turnover during the year:
+        Western Australia and South Australia are the two states where every
+        line has a published range, so here is Perth at {money(EXAMPLE_RENT)} a
+        week on the table&rsquo;s figures: a management fee of{" "}
+        {PM_STATE_FEES.WA.management.average}%, a letting fee of{" "}
+        {PM_STATE_FEES.WA.letting.average} weeks spread over a two-year tenancy
+        with one renewal, four inspections and the statement fee, all quoted
+        inclusive of GST.
       </p>
       <ul>
-        <li>Annual rent: <strong>$31,200</strong></li>
-        <li>Management fee (7%): $2,184</li>
-        <li>Letting fee (1 week, prorated since signed mid-year): $300</li>
-        <li>Routine inspections (4 × $80): $320</li>
-        <li>Statement fees ($10/month): $120</li>
-        <li>EOFY statement: $80</li>
-        <li><strong>Total: $3,004 = 9.6% of annual rent</strong></li>
+        <li>Annual rent: <strong>{money(EXAMPLE.annualRent)}</strong></li>
+        {EXAMPLE.lines.map((l) => (
+          <li key={l.key}>
+            {l.label}
+            {l.key === "letting" ? ` (${money(EXAMPLE.lettingFeeOnce)} once, halved)` : ""}
+            {l.key === "renewal" ? " (one renewal in two years)" : ""}
+            : {money(l.amount)}
+          </li>
+        ))}
+        <li>
+          <strong>Total: {money(EXAMPLE.total)} = {EXAMPLE.pctOfRent}% of annual rent</strong>
+        </li>
       </ul>
       <p>
-        If the tenant moves out and a new one is signed, add another
-        $600 letting fee plus $300 ingoing/outgoing inspection.
-        That pushes the year&rsquo;s total to roughly 12% of rent.
+        If the tenant leaves after a year instead, the full{" "}
+        {money(EXAMPLE.lettingFeeOnce)} letting fee lands in that year and the
+        total rises to about{" "}
+        {computePmFees({ ...defaultPmFeesInput("WA", EXAMPLE_RENT), tenancyYears: 1 }).pctOfRent}% of
+        rent. Turnover, not the headline rate, is what moves the annual cost
+        most; the calculator lets you test it.
       </p>
 
       <h2 id="negotiable">What&rsquo;s actually negotiable</h2>
       <ul>
-        <li><strong>Headline management fee:</strong> 0.5% to 1.5% off the asking rate, especially on multi-property portfolios or high-rent properties.</li>
-        <li><strong>Lease renewal fee:</strong> Almost always droppable.</li>
-        <li><strong>Statement fees and admin:</strong> Almost always droppable.</li>
-        <li><strong>Routine inspection fee:</strong> Sometimes droppable to 2 free / year.</li>
-        <li><strong>Letting fee:</strong> Hardest to negotiate, but worth a try if you sign a 12-month exclusive agreement.</li>
-        <li><strong>End-of-management fee:</strong> Push hard to remove this, it locks you in.</li>
+        <li><strong>Headline management fee:</strong> negotiable in every state; agencies move most on higher rents and multi-property portfolios.</li>
+        <li><strong>Lease renewal fee:</strong> the easiest line to have removed.</li>
+        <li><strong>Statement and admin fees:</strong> almost always dropped on request.</li>
+        <li><strong>Routine inspection fee:</strong> ask for the year&rsquo;s inspections to be included in the management fee.</li>
+        <li><strong>Letting fee:</strong> the hardest to move, but worth asking on a longer management term.</li>
+        <li><strong>End-of-management fee:</strong> push to remove it; it locks you in.</li>
       </ul>
 
       <Callout variant="warning" title="Get the full fee schedule in writing">
         <p>
-          Always ask for the full fee schedule before signing the management
-          agreement. If a manager is reluctant to put every charge on paper,
-          take it as a signal about how transparent the rest of the relationship
-          will be.
+          Every state&rsquo;s regulator says the same thing: the fee is not
+          set by law, so it must be in the agreement you sign. Ask for the full
+          schedule before signing. If a manager is reluctant to put every
+          charge on paper, take it as a signal about how transparent the rest
+          of the relationship will be.
         </p>
       </Callout>
 
       <h2 id="cheap-vs-good">Cheap isn&rsquo;t the same as good</h2>
       <p>
-        A 5% manager who lets rent slip into 14-day arrears, or a manager
-        whose vacancies stretch from 1 week to 4 weeks, easily costs more
-        than an 8% manager who keeps the property tenanted and chases late
-        rent on day one.
+        A 5% manager who lets rent slip into 14-day arrears, or whose vacancies
+        stretch from one week to four, easily costs more than an 8% manager who
+        keeps the property tenanted and chases late rent on day one. One extra
+        week empty on a $600 property is $600, the same as a full percentage
+        point of management fee for a year.
       </p>
       <p>
-        Ask each candidate manager for their average vacancy period (in
-        days) and arrears rate (% of rent more than 7 days late). The good
-        ones will tell you. The ones who can&rsquo;t are the ones to skip.
+        Ask each candidate for their average vacancy period in days and their
+        arrears rate (share of rent more than 7 days late). The good ones will
+        tell you. The ones who can&rsquo;t are the ones to skip.
       </p>
 
       <h2 id="self-managing">Should you self-manage?</h2>
       <p>
         Self-management saves the management fee but requires you to learn
         your state&rsquo;s tenancy law, run the application screening, deal
-        with maintenance calls at all hours, and represent yourself at the
+        with maintenance calls at all hours and represent yourself at the
         tenancy tribunal if it comes to that. It works for owners with one
-        property nearby, time on their hands, and stomach for difficult
+        property nearby, time on their hands and the stomach for difficult
         conversations.
       </p>
       <p>
-        For most investors, the time and risk reduction is worth the 8% to 12%.
+        For most investors, the time and risk reduction is worth the 6% to 12%.
       </p>
 
       <h2 id="next-steps">Next steps</h2>
       <ol>
         <li>
           Get three written fee schedules from local managers. Compare the
-          all-in number, not just the headline percentage.
+          all-in annual number from the calculator, not the headline
+          percentage.
         </li>
         <li>
           Ask each candidate for their average vacancy days and arrears rate.
         </li>
         <li>
-          Use the{" "}
-          <a href="/rental-yield-calculator">Rental Yield Calculator</a> with
-          the all-in cost (not just management %) to model true net yield.
+          Put the all-in cost, not just the management percentage, into the{" "}
+          <a href="/rental-yield-calculator">rental yield calculator</a> to
+          see your true net yield.
         </li>
         <li>
-          Read the management agreement&rsquo;s termination clause carefully -
-          remove any fees for switching managers before signing.
+          Read the agreement&rsquo;s termination clause and remove any fee for
+          switching managers before signing.
         </li>
       </ol>
+
+      <Sources items={SOURCES} />
     </GuideArticleLayout>
   );
 }

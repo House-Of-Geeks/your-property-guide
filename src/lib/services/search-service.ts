@@ -75,7 +75,7 @@ const GUIDE_INDEX: { slug: string; title: string; description: string }[] = [
   { slug: "house-vs-apartment-investment-australia",  title: "House vs apartment investment",                     description: "Capital growth vs cash flow with a 20-year worked example." },
   { slug: "sydney-vs-melbourne-property-market",      title: "Sydney vs Melbourne property market",               description: "Side-by-side strategy comparison." },
   { slug: "buyers-agent-cost-australia",              title: "Buyer's agent cost in Australia",                   description: "Fees by service tier and city." },
-  { slug: "property-management-fees-australia",       title: "Property management fees Australia",                description: "All 8 fee types and the all-in cost." },
+  { slug: "property-management-fees-australia",       title: "Property management fees Australia",                description: "Rates by state, letting fees and an annual cost calculator." },
   { slug: "negative-gearing-australia",               title: "Negative gearing in Australia",                     description: "How it works and when it fits your strategy." },
   { slug: "property-depreciation-guide",              title: "Property depreciation guide",                       description: "Capital works vs plant & equipment deductions." },
   { slug: "smsf-property-guide",                      title: "SMSF property investment",                          description: "Buying property inside super, LRBA rules." },
