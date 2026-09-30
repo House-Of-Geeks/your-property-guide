@@ -4,35 +4,55 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
+  ScrollTable,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
-  type FaqItem,
   type RelatedGuide,
+  type SourceItem,
 } from "@/components/guide";
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import {
+  BUILDING_ALL,
+  HOUSE_ALL,
+  HOUSE_BIG_THREE,
+  INSPECTION_COSTS,
+  INSPECTION_FAQS,
+  PEST_ALL,
+  UNIT_ALL,
+  cityCosts,
+  formatCostRange,
+  type CostRange,
+} from "@/lib/data/inspection-costs";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "Building and pest inspection: what to expect (2026)",
+  title: "Building and Pest Inspection Cost in Australia (2026): Prices by City and Property Type",
   description:
-    "Why a building and pest inspection matters, what's actually inspected, common defects found, how to read the report, and how to negotiate after one.",
+    "What a building and pest inspection costs in Sydney, Melbourne, Brisbane, Perth, Adelaide, Hobart, Canberra and Darwin, by unit, house and large property, combined or separate, from inspectors' own price lists, plus who pays and what the report covers.",
   slug: "building-pest-inspection",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
-  readingTimeMinutes: 8,
+  updatedAt: "2026-09-30",
+  readingTimeMinutes: 11,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
   persona: "first-home",
 };
 
+// The <title> is shorter than the H1: the root layout appends
+// " | Your Property Guide", and 60 characters before that suffix is the SERP
+// budget (tests/seo/titles.test.ts). The long form stays the H1 and the
+// Article headline, which read FRONTMATTER.title.
+const SEO_TITLE = "Building and Pest Inspection Cost 2026: Prices by City";
+
 export const metadata: Metadata = {
-  title: FRONTMATTER.title,
+  title: SEO_TITLE,
   description: FRONTMATTER.description,
   alternates: { canonical: `${SITE_URL}/guides/${FRONTMATTER.slug}` },
   openGraph: {
     url: `${SITE_URL}/guides/${FRONTMATTER.slug}`,
-    title: FRONTMATTER.title,
+    title: SEO_TITLE,
     description: FRONTMATTER.description,
     type: "article",
     publishedTime: FRONTMATTER.publishedAt,
@@ -46,20 +66,28 @@ export const metadata: Metadata = {
   },
 };
 
+const prose = (r: CostRange) => formatCostRange(r, "prose");
+const perth = cityCosts("Perth");
+const sydney = cityCosts("Sydney");
+
 const TLDR = [
-  "A building and pest inspection costs $400 to $800 and is one of the highest-leverage spends in a property purchase, it can uncover tens of thousands in undisclosed issues.",
-  "Australia operates on caveat emptor (buyer beware), so you must investigate the property's condition before signing an unconditional contract.",
-  "Auction buyers must commission inspections BEFORE auction day, there's no cooling-off period and no subject-to-inspection clause at auction.",
-  "Inspectors check what's accessible and visible. They aren't structural engineers and don't test individual electrical or plumbing fixtures.",
-  "Major defects (active termites, rising damp, structural cracks, failed roofing) can warrant price reduction or walking away. Minor wear-and-tear is normal.",
-  "Don't use an inspector recommended by the selling agent. Get your own independent, insured inspector and attend the inspection in person if possible.",
+  `A combined building and pest inspection on a standard three or four bedroom house costs ${prose(HOUSE_ALL)} including GST across the capitals, and ${prose(HOUSE_BIG_THREE)} in Sydney, Melbourne and Brisbane. Units run ${prose(UNIT_ALL)}. Every figure comes from an inspector's price list or a dated price guide, listed under Sources.`,
+  `Building-only inspections are published at ${prose(BUILDING_ALL)} and pest-only at ${prose(PEST_ALL)}; booking both with one inspector is usually $30 to $80 cheaper than two visits (Pest Inspections Adelaide, 2026).`,
+  "The buyer pays in every state except the ACT, where the seller commissions the reports and the buyer reimburses them at completion. Victoria has announced a seller-pays scheme for legislation in 2027; nothing has changed yet.",
+  "The fee is not a tax deduction. On an investment property it joins the cost base as an incidental cost of acquisition and reduces the capital gain at sale (ATO, cost base of assets, 29 June 2026).",
+  "Australia operates on caveat emptor (buyer beware), so you must investigate the property's condition before signing an unconditional contract. Auction buyers must inspect before auction day: there is no cooling-off and no subject-to-inspection clause at auction.",
+  "Inspectors check what's accessible and visible. They aren't structural engineers and don't test individual electrical or plumbing fixtures. Don't use the selling agent's inspector: get your own, insured, and attend if you can.",
 ];
 
 const TOC: GuideTOCEntry[] = [
+  { id: "cost",             label: "Cost by city and property type" },
+  { id: "combined-vs-separate", label: "Combined vs building-only vs pest-only" },
+  { id: "what-changes-price", label: "What changes the price" },
+  { id: "hidden-fees",      label: "Hidden fees to ask about" },
+  { id: "who-pays",         label: "Who pays" },
   { id: "why-need",         label: "Why you need one" },
   { id: "whats-inspected",  label: "What's inspected" },
   { id: "common-issues",    label: "Common issues found" },
-  { id: "cost",             label: "Cost of inspections" },
   { id: "who-to-hire",      label: "Who to hire" },
   { id: "timing",           label: "When to get the inspection" },
   { id: "reading-report",   label: "How to read the report" },
@@ -67,46 +95,31 @@ const TOC: GuideTOCEntry[] = [
   { id: "new-homes",        label: "Inspections for new homes" },
 ];
 
-const FAQS: FaqItem[] = [
-  {
-    question: "How much does a building and pest inspection cost in Australia?",
-    answer:
-      "A combined building and pest inspection on a typical residential home costs $400 to $800. Building-only is $250 to $500; pest-only is $150 to $300. Larger or rural properties can run $600 to $1,200+. Strata apartment inspections are usually $250 to $500. Always pick combined unless cost is a real constraint, defects that attract pests overlap with structural ones.",
-  },
-  {
-    question: "Do I need an inspection if I'm buying a new home?",
-    answer:
-      "Yes. New homes commonly have incomplete waterproofing, missing insulation, drainage issues, settling cracks, or rectification items missed at handover. Engage a pre-handover inspector to attend the builder's final inspection with you, defects on their list become the builder's obligation to fix before you take possession. New builds also have statutory warranties (6 years structural, 2 years non-structural in most states).",
-  },
-  {
-    question: "Can I get an inspection before making an offer?",
-    answer:
-      "Yes, and many experienced buyers do. You pay for the inspection upfront on a property you may not buy, but you negotiate from a position of full knowledge and can avoid lengthy conditional periods. For auction purchases, this is mandatory, the inspection must happen before auction day.",
-  },
-  {
-    question: "What's the difference between major and minor defects?",
-    answer:
-      "Major defects require significant remediation and often cost thousands of dollars to fix (active termite damage, rising damp, foundation cracks, roof failure). Minor defects are normal wear and tear or small maintenance items (sticking doors, hairline plaster cracks, worn carpet). Reports must disclose major defects clearly; minor items are listed for completeness.",
-  },
-  {
-    question: "Can I use the inspection to negotiate a lower price?",
-    answer:
-      "Yes, and you should. If defects are found, get repair quotes from licensed tradespeople (not verbal estimates), then negotiate a price reduction equal to the cost of repairs. The vendor may agree to a price reduction, fix the defects before settlement, or refuse to negotiate (in which case, depending on your contract conditions, you may be able to walk away).",
-  },
-  {
-    question: "Should I trust an inspector recommended by the real estate agent?",
-    answer:
-      "No. The agent works for the vendor and has an interest in the sale completing quickly with minimal complications. An inspector with an ongoing referral relationship may be unwilling to flag issues that could derail a sale. Always engage your own independent inspector with professional indemnity insurance.",
-  },
-];
-
 const RELATED: RelatedGuide[] = [
   { title: "Buying Property in Australia",  href: "/guides/buying-property-australia",  description: "Where the inspection sits in the broader buying process." },
   { title: "Property Auction Guide",        href: "/guides/property-auction-guide",     description: "Why auction buyers must inspect before auction day." },
-  { title: "Conveyancing Guide",            href: "/guides/conveyancing-guide",         description: "The other professional you'll engage before settlement." },
+  { title: "Conveyancing Fees by State",    href: "/guides/conveyancing-guide",         description: "The other professional you'll engage before settlement, and what they charge." },
   { title: "First Home Buyer Guide",        href: "/guides/first-home-buyer-guide",     description: "Inspections in the broader first-home process." },
   { title: "Stamp Duty Calculator",         href: "/stamp-duty-calculator",             description: "Inspection cost is small relative to settlement-day stamp duty." },
   { title: "Browse suburbs",                href: "/suburbs",                           description: "Pick the suburb first, then commission inspections on shortlisted properties." },
+];
+
+const OTHER_SOURCES: SourceItem[] = [
+  { label: "ATO, Cost base of assets (the five elements; incidental costs of acquisition)", href: "https://www.ato.gov.au/individuals-and-families/investments-and-assets/capital-gains-tax/calculating-your-cgt/cost-base-of-asset", note: "last updated 29 Jun 2026" },
+  { label: "ATO, Rental properties 2025: rental expenses (acquisition and disposal costs are not deductible)", href: "https://www.ato.gov.au/forms-and-instructions/rental-properties-2025/rental-expenses", note: "last updated 29 May 2025" },
+  { label: "Queensland Government, Inspections when making an offer on a home (QBCC-licensed inspectors; write inspection terms into the contract)", href: "https://www.qld.gov.au/law/housing-and-neighbours/buying-and-selling-a-property/buying-a-home/making-an-offer-on-a-home/inspections", note: "last updated 22 Aug 2024" },
+  { label: "Statewide Legal, Subject to building and pest (the buyer organises the inspection and bears the cost under the REIQ contract)", href: "https://www.swc.net.au/publications/subject-to-building-amp-pest", note: "10 Sep 2018" },
+  { label: "Preston Law, Building and pest clause QLD (the contractual remedy is termination, acting reasonably)", href: "https://www.prestonlaw.com.au/blog/building-and-pest-clause-qld/", note: "13 Nov 2024" },
+  { label: "Duotax, Investment property cost base for CGT (building and pest inspections usually included if incurred when buying)", href: "https://duotax.com.au/insights/investment-property-cost-base-cgt/", note: "21 May 2026" },
+  { label: "Civil Law (Sale of Residential Property) Act 2003 (ACT), s 9 required documents and s 18 buyer to reimburse seller for cost of certain reports", href: "https://www.legislation.act.gov.au/a/2003-40", note: "republication effective 1 Nov 2025" },
+  { label: "Premier of Victoria, No more hassles getting pre-sale building inspections (seller-commissioned reports, legislation in 2027)", href: "https://www.premier.vic.gov.au/no-more-hassles-getting-pre-sale-building-inspections", note: "12 Mar 2026" },
+  { label: "Westla, Conveyancing costs NSW 2026 (strata inspection reports $350 to $450)", href: "https://westla.com.au/conveyancing-costs-nsw/", note: "2026" },
+];
+
+const SOURCES: SourceItem[] = [
+  ...INSPECTION_COSTS.flatMap((c) => c.sources.map((s) => ({ label: `${c.city}: ${s.label}`, href: s.href, note: s.note }))),
+  ...OTHER_SOURCES,
+  "Where a page quotes ex GST, the table adds 10% and rounds to the dollar; the note beside each source says which. Prices read 30 September 2026.",
 ];
 
 export default function BuildingPestInspectionPage() {
@@ -129,20 +142,188 @@ export default function BuildingPestInspectionPage() {
       frontmatter={FRONTMATTER}
       tldr={TLDR}
       toc={TOC}
-      faqs={FAQS}
+      faqs={INSPECTION_FAQS}
       related={RELATED}
     >
-      <Callout variant="tip" title="The single best $500 you'll spend">
+      <h2 id="cost">How much does a building and pest inspection cost?</h2>
+      <p className="lead">
+        A combined building and pest inspection on a standard three or four
+        bedroom house costs {prose(HOUSE_ALL)} including GST across the eight
+        capital cities, and {prose(HOUSE_BIG_THREE)} in Sydney, Melbourne and
+        Brisbane. The table below gives each city by property type. Every figure is a price an inspector or a dated price guide
+        publishes; the source for each row is listed at the end of the page.
+      </p>
+
+      <ScrollTable label="Building and pest inspection cost by city and property type">
+      <table>
+        <thead>
+          <tr>
+            <th>City</th>
+            <th>Unit</th>
+            <th>1–2 bed</th>
+            <th>3–4 bed</th>
+            <th>Large</th>
+          </tr>
+        </thead>
+        <tbody>
+          {INSPECTION_COSTS.map((c) => (
+            <tr key={c.city}>
+              <td><strong>{c.city}</strong></td>
+              <td>{formatCostRange(c.combined.unit)}</td>
+              <td>{formatCostRange(c.combined.small)}</td>
+              <td>{formatCostRange(c.combined.house)}</td>
+              <td>{formatCostRange(c.combined.large)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      </ScrollTable>
+      <p>
+        <small>
+          Combined building and pest inspection, GST included. Unit: unit or
+          apartment. 1&ndash;2 bed: townhouse or one to two bedroom house.
+          3&ndash;4 bed: three to four bedroom house. Large: five or more
+          bedrooms, multi-storey, older or rural. A plus sign means the top
+          figure is a &ldquo;from&rdquo; price with no published ceiling. An
+          asterisk means only one named source publishes that figure. Read 30
+          September 2026.
+        </small>
+      </p>
+
+      <KeyFigure
+        value={formatCostRange(HOUSE_BIG_THREE)}
+        label="Combined building and pest inspection on a three to four bedroom house in Sydney, Melbourne or Brisbane, GST included. The cheapest leverage point in the buying process."
+        context="iSPECT, Rapid Building Inspections, BuyWise, Inspect My Home and Pest & Building Inspections price pages, August and September 2026"
+      />
+
+      <h2 id="combined-vs-separate">Combined vs building-only vs pest-only</h2>
+      <p>
+        Most inspectors price the combined inspection as the default and the
+        two halves as separate products. Where a source publishes the split,
+        the table shows it; where the sources for a city price only the
+        combined inspection, the cell says so.
+      </p>
+      <ScrollTable label="Combined, building-only and pest-only inspection cost by city">
+      <table>
+        <thead>
+          <tr>
+            <th>City</th>
+            <th>Combined, 3–4 bed</th>
+            <th>Building only</th>
+            <th>Pest only</th>
+          </tr>
+        </thead>
+        <tbody>
+          {INSPECTION_COSTS.map((c) => (
+            <tr key={c.city}>
+              <td><strong>{c.city}</strong></td>
+              <td>{formatCostRange(c.combined.house)}</td>
+              <td>{c.buildingOnly ? formatCostRange(c.buildingOnly) : "Not published"}</td>
+              <td>{c.pestOnly ? formatCostRange(c.pestOnly) : "Not published"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      </ScrollTable>
+      <ul>
+        {INSPECTION_COSTS.map((c) => (
+          <li key={c.city}><strong>{c.city}.</strong> {c.note}</li>
+        ))}
+      </ul>
+      <p>
+        Book the combined inspection unless cost is a real constraint. The
+        defects that attract termites (moisture, timber-to-soil contact,
+        blocked subfloor ventilation) are the same ones a building inspector
+        writes up, and one visit is cheaper than two: Pest Inspections
+        Adelaide puts the saving at $30 to $80 (2026), and Inscope says adding
+        the pest inspection to a Melbourne building inspection costs $100 to
+        $200 (2026).
+      </p>
+
+      <h2 id="what-changes-price">What changes the price</h2>
+      <ul>
+        <li><strong>Bedrooms and storeys.</strong> iSPECT prices by bedroom count: $465 plus GST for a one to two bedroom house rising to $515 for five or more bedrooms in Sydney, Melbourne, Hobart, Canberra and Darwin, and $490 to $590 in Brisbane. Swell in Hobart runs from $550 for a one bedroom unit to $968 for a five bedroom, three bathroom house (18 May 2026).</li>
+        <li><strong>Age and construction.</strong> Older homes take longer and produce longer reports: Pest Inspections Adelaide adds $50 to $150 for pre-1990 homes and more for stone or double-brick character homes; Rapid prices an older Brisbane character home at $750 to $900 or more against $550 to $750 for a standard house (12 August 2026).</li>
+        <li><strong>Access.</strong> A roof void and a subfloor the inspector can enter cost nothing extra; ones they cannot get into are listed as &ldquo;not inspected&rdquo; and are the risk you carry.</li>
+        <li><strong>Location.</strong> Metro prices are base prices. Rapid (Adelaide), Point and Inscope (Melbourne) all say properties outside the metro area can attract a travel fee, and WA Building Inspections charges $89 plus GST per hour of additional travel.</li>
+        <li><strong>Urgency.</strong> Point Building Inspections adds $50 to $150 for priority or 24-hour turnaround in Melbourne (2026). Auction week is the expensive time to book.</li>
+        <li><strong>Extras.</strong> Thermal imaging, drone roof photography, drug-residue testing, pool and asbestos checks are priced separately: WA Building Inspections charges $799 plus GST for its thermographic package against $499 for the standard one, and Point quotes $200 to $500 for an asbestos or pool add-on.</li>
+      </ul>
+
+      <h2 id="hidden-fees">Hidden fees to ask about</h2>
+      <p>
+        The price pages agree on what to check before you accept a quote.
+        Ask, in writing:
+      </p>
+      <ul>
+        <li><strong>Is GST included?</strong> iSPECT, WA Building Inspections, APBI and My Canberra all quote ex GST; add 10%. Inspect My Home, Swell and QLD Build Check quote GST inclusive.</li>
+        <li><strong>Are sheds, granny flats and outbuildings included?</strong> WA Building Inspections charges $89 plus GST for each auxiliary dwelling or shed.</li>
+        <li><strong>Are common areas included for an apartment?</strong> Rapid notes that adding common areas to an apartment inspection costs extra.</li>
+        <li><strong>Does the roof void and subfloor get entered, or viewed from the hatch?</strong> BuyWise&rsquo;s checklist lists roof and subfloor access, moisture testing, thermal imaging and photography as the items to confirm.</li>
+        <li><strong>Is there a travel fee, and from where?</strong> Most metro quotes hold inside a set radius; My Canberra includes travel within 30 minutes of Canberra and confirms any extra before booking.</li>
+        <li><strong>What is the report turnaround, and is a phone debrief included?</strong> iSPECT, Inspect My Home, QLD Build Check and Pest &amp; Building Inspections all promise the report within 24 hours; a same-day rush may cost more.</li>
+      </ul>
+
+      <h2 id="who-pays">Who pays for the inspection</h2>
+      <p>
+        In New South Wales, Victoria, Queensland, Western Australia, South
+        Australia, Tasmania and the Northern Territory the buyer commissions
+        and pays for the inspection, because it is for the buyer&rsquo;s
+        benefit and an inspector chosen and paid by the seller is not
+        independent. Three points of difference:
+      </p>
+      <ul>
+        <li>
+          <strong>Queensland.</strong>{" "}
+          The REIQ standard contract&rsquo;s
+          building and pest condition puts the inspection on the buyer, who
+          organises it with licensed inspectors and bears the cost (Statewide
+          Legal, 10 September 2018), then tells the seller by the contract
+          date whether the reports are satisfactory. The contractual remedy
+          is termination, acting reasonably; a price cut is a negotiation,
+          not a right (Preston Law, 13 November 2024). The building inspector
+          must hold a QBCC licence (Queensland Government, Inspections, 22
+          August 2024).
+        </li>
+        <li>
+          <strong>The ACT.</strong> The seller must have a building and
+          compliance inspection report and a pest inspection report, each no
+          more than three months old, in the contract before the property is
+          listed, and the buyer reimburses their cost at completion, not
+          including any premium the seller paid for a faster turnaround
+          (Civil Law (Sale of Residential Property) Act 2003 (ACT), sections
+          9 and 18). That is why Canberra inspectors sell vendor packages:
+          ACTBIS at $1,790 and My Canberra at $1,697 plus GST for building,
+          pest, compliance and energy rating reports.
+        </li>
+        <li>
+          <strong>Victoria.</strong> On 12 March 2026 the Premier announced a
+          mandatory building and pest inspection scheme under which sellers
+          would commission the reports before sale, make them available to
+          every prospective buyer and recover the cost from the successful
+          purchaser, modelled partly on the ACT, with legislation to be
+          introduced in 2027 if the government is re-elected. Until then the
+          buyer pays.
+        </li>
+      </ul>
+      <p>
+        Strata buyers pay twice: a strata records inspection ($350 to $450 in
+        New South Wales, Westla, 2026) covers the scheme&rsquo;s finances, levies and
+        defect history, which a building inspection does not.
+      </p>
+
+      <Callout variant="tip" title="The single best few hundred dollars you'll spend">
         <p>
-          A building and pest inspection at $400 to $800 can uncover tens of
-          thousands of dollars in potential issues, or give you confidence to
-          proceed at full price. Either way, it&rsquo;s the highest-leverage
-          spend in the buying process.
+          A {prose(sydney.combined.house)} inspection on a Sydney house, or{" "}
+          {prose(perth.combined.house)} in Perth, can
+          uncover tens of thousands of dollars in issues, or give you
+          confidence to proceed at full price. Either way it is the
+          highest-leverage spend in the buying process.
         </p>
       </Callout>
 
       <h2 id="why-need">Why you need a building and pest inspection</h2>
-      <p className="lead">
+      <p>
         When purchasing property in Australia, you have limited rights to seek
         remedies after settlement for defects you could have discovered
         beforehand. The principle of <em>caveat emptor</em> (buyer beware)
@@ -236,40 +417,10 @@ export default function BuildingPestInspectionPage() {
         <li>Minor external paint deterioration</li>
       </ul>
 
-      <h2 id="cost">Cost of inspections</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Typical cost</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Building inspection only</td><td>$250 to $500</td></tr>
-          <tr><td>Pest inspection only</td><td>$150 to $300</td></tr>
-          <tr><td>Combined building and pest (recommended)</td><td>$400 to $800</td></tr>
-          <tr><td>Large home (5+ bed) or rural property</td><td>$600 to $1,200+</td></tr>
-          <tr><td>Strata / apartment</td><td>$250 to $500</td></tr>
-        </tbody>
-      </table>
-
-      <KeyFigure
-        value="$400–$800"
-        label="Combined building and pest inspection on a typical Australian residential home. The cheapest leverage point in the entire buying process."
-        context="Larger / rural properties run higher"
-      />
-
-      <p>
-        Always get a combined building and pest inspection from the same
-        inspector (or at least coordinate the two). Many defects that attract
-        pests (e.g. moisture, timber decay) are identified in both inspections,
-        a combined report gives the full picture.
-      </p>
-
       <h2 id="who-to-hire">Who to hire</h2>
       <p>Look for an inspector with the following qualifications:</p>
       <ul>
-        <li><strong>Building inspector.</strong> Should be a licensed builder, architect, or engineer with inspection qualifications. Check for membership in the Australian Institute of Building Surveyors (AIBS) or similar.</li>
+        <li><strong>Building inspector.</strong> Should be a licensed builder, architect, or engineer with inspection qualifications. Check for membership in the Australian Institute of Building Surveyors (AIBS) or similar. In Queensland only a QBCC-licensed residential building inspector can do a pre-purchase inspection.</li>
         <li><strong>Pest inspector.</strong> Should be a licensed pest controller or timber pest inspector, qualified under Australian Standard AS 4349.3.</li>
         <li><strong>Professional indemnity insurance.</strong> Essential. If the inspector misses a significant issue, you need recourse.</li>
       </ul>
@@ -290,7 +441,7 @@ export default function BuildingPestInspectionPage() {
 
       <h2 id="timing">When to get the inspection</h2>
       <ul>
-        <li><strong>Private sale with conditions.</strong> The inspection clause in your contract gives you a set timeframe (typically 7 to 14 days after exchange) to commission the inspection and, if issues are found, to either withdraw or renegotiate.</li>
+        <li><strong>Private sale with conditions.</strong> The inspection clause in your contract gives you a set timeframe to commission the inspection and, if issues are found, to either withdraw or renegotiate. Read the date in your contract, not a rule of thumb.</li>
         <li><strong>Before auction.</strong> Must be done <em>before</em> auction day. Contact the agent to arrange access. Allow at least 48 to 72 hours turnaround to receive the report.</li>
         <li><strong>Before making an offer (preferred).</strong> Some buyers commission inspections before making an offer to negotiate with full knowledge. This means paying for an inspection on properties you may not buy, but avoids conditional delays.</li>
       </ul>
@@ -346,7 +497,9 @@ export default function BuildingPestInspectionPage() {
         For new homes, consider engaging a <strong>pre-handover inspector</strong>{" "}
         who attends the builder&rsquo;s handover inspection with you. Any
         defects identified can be included in a defects list that the builder
-        must rectify before you take possession.
+        must rectify before you take possession. Handover inspections are
+        priced separately from pre-purchase ones: iSPECT charges $465 to $525
+        plus GST by bedroom count and WA Building Inspections $499 plus GST.
       </p>
       <p>
         New homes typically come with a statutory warranty period (usually 6
@@ -356,6 +509,8 @@ export default function BuildingPestInspectionPage() {
         <Link href="/guides/buying-property-australia">complete buying guide</Link>{" "}
         for the broader process.
       </p>
+
+      <Sources items={SOURCES} />
     </GuideArticleLayout>
     </>
   );
