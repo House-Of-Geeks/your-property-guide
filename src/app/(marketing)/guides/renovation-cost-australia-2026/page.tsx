@@ -10,20 +10,42 @@ import {
   Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
-  type FaqItem,
   type RelatedGuide,
 } from "@/components/guide";
+import {
+  RenovationAtAGlanceTable,
+  RenovationByStateTable,
+  RenovationCheckTable,
+  RenovationPerM2Table,
+  renovationSourceItems,
+} from "@/components/guide/RenovationCostTables";
+import { RenovationCostEstimator } from "@/components/calculators/RenovationCostEstimator";
+import {
+  ABS_PPI_HOUSE_ANNUAL_PCT,
+  ABS_PPI_HOUSE_QUARTER_PCT,
+  BATHROOM_CHECKS,
+  EXTENSION_CHECKS,
+  KDR_CHECKS,
+  KITCHEN_CHECKS,
+  ON_COSTS,
+  REGIONAL_ADJUSTMENT_PCT,
+  RENOVATION_COSTS_AS_AT,
+  RENOVATION_FAQS,
+  ROOM_ANSWERS,
+  SECONDARY_ROOM_CHECKS,
+  STATE_COSTS,
+} from "@/lib/data/renovation-costs";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "Renovation Cost in Australia (2026)",
+  title: "Renovation Cost in Australia (2026): Tables and Calculator",
   description:
-    "Real-world renovation costs in Australia for 2026: kitchens, bathrooms, full renovations, second storeys, extensions and knock-down rebuilds. Per-square-metre ranges, builder margins, and how to budget.",
+    "Renovation costs in Australia at September 2026: kitchens, bathrooms, laundries, extensions and rebuilds by finish level, per m² by state, and a calculator.",
   slug: "renovation-cost-australia-2026",
   publishedAt: "2026-05-13",
-  updatedAt: "2026-05-13",
-  readingTimeMinutes: 13,
+  updatedAt: "2026-09-30",
+  readingTimeMinutes: 17,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
   persona: "renovating",
@@ -50,18 +72,23 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Australian renovation costs in 2026 have stabilised after the 2021–24 spike but remain 30–45% higher than 2019. Expect $2,800–$4,500/m² for a mid-range full renovation in metro areas.",
-  "Kitchen renovations: $15K (budget refresh), $25K–$45K (mid-range), $60K+ (premium). Cabinetry and stone benchtops drive most of the cost.",
-  "Bathroom renovations: $15K–$22K (standard), $25K–$40K (premium). Waterproofing and tiling labour drive cost.",
+  `Costs have not come back down. Master Builders Australia puts the cost of building a home at more than 50% above pre-pandemic (26 August 2026), and ABS house construction prices rose ${ABS_PPI_HOUSE_ANNUAL_PCT}% in the year to June 2026. Expect $2,800–$4,500/m² for a mid-range full renovation in metro areas.`,
+  "Kitchen renovations: $12K–$18K (budget refresh), $25K–$45K (mid-range), $60K+ (premium). Cabinetry and stone benchtops drive most of the cost. Archicentre Australia's Cost Guide 2026 puts a standard kitchen fit-out at $23K–$49K.",
+  "Bathroom renovations: $15K–$22K (standard), $25K–$40K (premium). Waterproofing and tiling labour drive cost. Archicentre's 2026 fit-out range is $17.5K–$35K.",
   "Full house renovation: $200K–$500K for a mid-range three-bedroom. Second-storey addition: $250K–$450K. Knock-down rebuild: $400K–$900K plus demolition.",
   "Builder margin sits at 15–25% on smaller jobs, 12–18% on larger ones. Add 10–15% contingency on top of every quoted price.",
   "Pre-construction costs (architect, structural engineer, council, certifier, surveyor) typically run 8–15% of total project cost and are easy to forget when budgeting.",
 ];
 
 const TOC: GuideTOCEntry[] = [
-  { id: "why-costs-rose",        label: "Why costs rose, and what's stabilised" },
+  { id: "at-a-glance",            label: "Renovation costs at a glance" },
+  { id: "estimator",              label: "Renovation cost calculator" },
+  { id: "cost-per-m2",            label: "Cost per square metre by scope" },
+  { id: "cost-by-state",          label: "Cost by state and capital city" },
+  { id: "why-costs-rose",         label: "Why costs rose, and where they are now" },
   { id: "kitchens",               label: "Kitchen renovation costs" },
   { id: "bathrooms",              label: "Bathroom renovation costs" },
+  { id: "laundry-living-bedrooms", label: "Laundry, living areas and bedrooms" },
   { id: "full-renovation",        label: "Full house renovation" },
   { id: "extensions",             label: "Extensions and second storeys" },
   { id: "knock-down-rebuild",     label: "Knock-down rebuild" },
@@ -72,49 +99,6 @@ const TOC: GuideTOCEntry[] = [
   { id: "budgeting-method",       label: "How to budget honestly" },
 ];
 
-const FAQS: FaqItem[] = [
-  {
-    question: "How much does a full renovation cost in Australia in 2026?",
-    answer:
-      "For a standard three-bedroom house in a metro area, mid-range full renovation budgets in 2026 are $200,000 to $500,000, or roughly $2,800 to $4,500 per square metre of the area being renovated. Budget projects can land at $2,000 to $2,500/m² for cosmetic work only; premium projects (architect-designed, high-end finishes, structural work) can exceed $6,000/m². Regional areas are typically 10–20% cheaper than capital cities, though the gap narrows in tight markets.",
-  },
-  {
-    question: "What's the cheapest way to renovate a house?",
-    answer:
-      "Cosmetic work delivers the biggest perceived change for the smallest spend. Paint, new flooring, new lighting, new tapware, deep cleaning, and tidying up the garden can transform a tired home for $20,000–$40,000 and is realistic DIY-plus-tradies territory. Structural work (moving walls, new wet areas, new windows) multiplies cost quickly because it triggers waterproofing, electrical, plumbing, certification, and structural engineering. If you don't need to move a wall, don't move a wall.",
-  },
-  {
-    question: "Do I need council approval to renovate?",
-    answer:
-      "Depends on what you're doing and where. Cosmetic work (paint, flooring, tapware swap, kitchen cabinet replacement in the same footprint) generally doesn't need approval. Structural changes (moving walls, new windows, extensions, second storeys), new wet areas, and most external changes typically need either a Complying Development Certificate (NSW) / building permit (VIC) / building work approval (QLD) at minimum, and a full DA / planning permit if you're changing footprint, height, or use. Every council has different exempt-development rules, so confirm before you start. Doing work without required approval can mean stop-work orders, fines, and forced rectification at sale.",
-  },
-  {
-    question: "How much does a kitchen renovation cost in Australia?",
-    answer:
-      "Budget kitchen ($12,000–$18,000): flat-pack cabinetry, laminate benchtop, basic appliances, kept in the same layout. Mid-range ($25,000–$45,000): custom or premium flat-pack cabinetry, stone benchtop, quality appliances, possible minor layout change. Premium ($60,000+): designer cabinetry, premium stone or porcelain benchtop, integrated high-end appliances, full layout reconfiguration with new plumbing and electrical. Cabinetry typically represents 40–55% of the kitchen budget; benchtops 10–20%; appliances 15–25%; labour for installation, plumbing, electrical and tiling 15–25%.",
-  },
-  {
-    question: "How much does a bathroom renovation cost?",
-    answer:
-      "Standard bathroom ($15,000–$22,000): in-place refresh, new tiles, vanity, toilet, shower screen, tapware. Premium bathroom ($25,000–$40,000+): premium tiles and stone, frameless screen, freestanding bath, designer tapware, possible layout change, underfloor heating. Waterproofing alone is $1,500–$3,000 and is legally required to AS 3740. Never skip or shortcut this; it's the single biggest cause of insurance claims years later. Tiling labour is usually $60–$120/m² for the labour alone, materials separate.",
-  },
-  {
-    question: "How much should I budget for contingency?",
-    answer:
-      "Add 10–15% on top of every quoted price for unexpected issues, and another 5% for scope creep (you'll change your mind about something, almost everyone does). On structural work or older homes (pre-1990 in metro areas, anything pre-1970), increase to 15–20% contingency because you can't see what's behind the walls until you open them up. Asbestos, rotten timbers, outdated wiring, lead paint, and undocumented previous work all cost money to remediate when discovered.",
-  },
-  {
-    question: "Should I get a fixed-price or cost-plus contract?",
-    answer:
-      "Fixed-price gives you cost certainty but at the price of a larger contingency baked into the builder's quote (typically 8–15% of the contract value). Best for straightforward jobs where the scope is clear. Cost-plus (where you pay actual costs plus a fixed builder's margin, typically 15–20%) gives you transparency on actual costs and is often cheaper if the scope is well-managed, but you carry the risk of overruns. Best for complex jobs, heritage properties, or when you trust the builder. Get our fixed-vs-variable contracts guide for the full comparison.",
-  },
-  {
-    question: "Will renovating add value at sale?",
-    answer:
-      "Sometimes, but the maths is often disappointing. As a rough guide: cosmetic work (paint, flooring, styling) returns 3–10× its cost at sale. Kitchen and bathroom renovations return 0.6–1.2× their cost, usually less than you spent. Second storey additions and extensions return 0.7–1.0× their cost in most suburbs (the exception is high-end suburbs where the per-square-metre value justifies the build cost). The renovation premium goes up when the renovation lifts the property into a different buyer pool (e.g. a 2-bed house becomes a family-suitable 4-bed), and down when it over-improves for the suburb.",
-  },
-];
-
 const RELATED: RelatedGuide[] = [
   { title: "Fixed vs Variable Rate Loans Guide",  href: "/guides/fixed-vs-variable-rate-guide",      description: "How home loan rates work, relevant when adding a construction or equity loan." },
   { title: "Granny Flat Guides by State",         href: "/guides/granny-flat-guide-nsw",             description: "Cost, planning, and approvals for granny flats. Often the highest-ROI renovation move." },
@@ -123,21 +107,28 @@ const RELATED: RelatedGuide[] = [
   { title: "Borrowing Power Calculator",           href: "/borrowing-power-calculator",               description: "Run the numbers on what your renovation loan looks like before you talk to a broker." },
 ];
 
+const d = ON_COSTS.designAndApprovalsPct;
+const c = ON_COSTS.contingencyPct;
+
 export default function RenovationCostAustralia2026Page() {
   return (
     <GuideArticleLayout
       frontmatter={FRONTMATTER}
       tldr={TLDR}
       toc={TOC}
-      faqs={FAQS}
+      faqs={RENOVATION_FAQS}
       related={RELATED}
     >
       <Callout variant="info" title="Why these numbers, and how to use them">
         <p>
-          Every figure on this page is a 2026 metro-Australia range derived
-          from current builder quotes, HIA &quot;Renovations Roundup&quot;
-          tracking data, and ABS construction cost indices. Use them as a
-          rough budgeting starting point. The actual quote for <em>your</em>{" "}
+          The ranges marked &quot;this guide&quot; are 2026 metro-Australia
+          ranges from builder quotes on real jobs, including GST. Every table
+          sets them beside dated published sources (Archicentre Australia,
+          the CKA cost indicator, Rider Levett Bucknall, the ABS, Canstar,
+          Three Birds Renovations and Houzz) and names the source in each
+          cell. Where no source publishes a figure, the cell says so rather
+          than guessing. Use them as a budgeting starting point. The actual
+          quote for <em>your</em>{" "}
           project will vary with site access, structural condition, design
           complexity, and your finish choices.
         </p>
@@ -155,27 +146,85 @@ export default function RenovationCostAustralia2026Page() {
         </p>
       </EditorNote>
 
-      <h2 id="why-costs-rose">Why costs rose, and what&rsquo;s stabilised</h2>
+      <h2 id="at-a-glance">Renovation costs at a glance</h2>
+      <p>
+        Every room at three finish levels, as at {RENOVATION_COSTS_AS_AT}.
+        Where this guide has no figure for a finish level, the cell uses a
+        dated published source and names it. Where nobody publishes one, it
+        says &quot;no published range&quot;. Each room section below sets
+        this guide&rsquo;s range beside every source that publishes one.
+      </p>
+      <RenovationAtAGlanceTable />
+
+      <h2 id="estimator">Renovation cost calculator</h2>
+      <p>
+        Pick the rooms, the finish level and your state. The calculator adds
+        the ranges from the table above, applies the CKA indicator&rsquo;s
+        capital-city adjustment (and its {REGIONAL_ADJUSTMENT_PCT.low} to{" "}
+        {REGIONAL_ADJUSTMENT_PCT.high}% regional premium if you tick
+        regional), then adds this guide&rsquo;s design and approvals ({d.low}{" "}
+        to {d.high}%) and contingency ({c.low} to {c.high}%). It is an
+        estimate built from the tables on this page, not a quote.
+      </p>
+      <div className="not-prose my-6">
+        <RenovationCostEstimator />
+      </div>
+
+      <h2 id="cost-per-m2">Renovation cost per square metre by scope</h2>
+      <p>
+        The rate per square metre depends first on scope: how much of the
+        work is cosmetic, how much replaces services, and how much is
+        structural. This guide&rsquo;s three tiers sit against the three
+        published sources that quote a rate for renovation work.
+      </p>
+      <RenovationPerM2Table />
+
+      <h2 id="cost-by-state">Renovation cost by state and capital city</h2>
+      <p>
+        No published source gives a renovation rate per square metre for
+        each state. What is published: the CKA indicator&rsquo;s capital-city
+        adjustments for renovation work, Rider Levett Bucknall&rsquo;s rates
+        for custom-built houses in each capital, the ABS average cost of new
+        houses by state, and the ABS house construction price index by
+        capital. The calculator uses the CKA adjustments.
+      </p>
+      <p>
+        House construction prices rose fastest in Hobart
+        ({STATE_COSTS.TAS.ppiAnnualPct}%), Perth ({STATE_COSTS.WA.ppiAnnualPct}%)
+        and Adelaide ({STATE_COSTS.SA.ppiAnnualPct}%) in the year to June
+        2026, and slowest in Melbourne ({STATE_COSTS.VIC.ppiAnnualPct}%),
+        according to the ABS (31 July 2026). Demand is strongest in New
+        South Wales: HIA expects renovation investment there to outpace
+        Victoria by nearly 50% in 2026 (21 October 2025).
+      </p>
+      <RenovationByStateTable />
+
+      <h2 id="why-costs-rose">Why costs rose, and where they are now</h2>
       <p className="lead">
         Renovation costs in Australia rose sharply between 2021 and 2024,
         driven by COVID-era supply chain disruption, materials inflation, and
-        a building trades shortage that pushed labour rates up 25–40%. As of
-        early 2026, costs have stabilised but the new baseline sits 30–45%
-        above 2019. Don&rsquo;t budget against pre-2021 numbers. The
-        renovation market has reset.
+        a building trades shortage that pushed labour rates up 25–40%. They
+        have not come back down. ABS house construction output prices rose{" "}
+        {ABS_PPI_HOUSE_QUARTER_PCT.toFixed(1)}% in the June quarter 2026, the largest
+        quarterly rise since September 2022, and {ABS_PPI_HOUSE_ANNUAL_PCT}%
+        over the year (31 July 2026). Master Builders Australia puts the cost
+        of building a home at more than 50% above pre-pandemic (26 August
+        2026). Don&rsquo;t budget against pre-2021 numbers. The renovation
+        market has reset.
       </p>
       <p>
         What&rsquo;s happened since:
       </p>
       <ul>
-        <li><strong>Materials</strong> are back to single-digit annual inflation. Timber, steel and tiles have stabilised; the 2022–23 shortages are behind us.</li>
+        <li><strong>Materials</strong> inflation has picked up again. Master Builders Australia reported building materials inflation at a three-year high on 2 September 2026, though the 2022–23 timber and steel shortages are behind us.</li>
         <li><strong>Labour</strong> remains the binding constraint. Construction trades shortages haven&rsquo;t eased: apprenticeships dropped in the late 2010s and the pipeline is still thin. Expect 6 to 12 week waits to engage a{" "}
         <Link href="/guides/how-to-find-a-builder-australia">quality builder</Link> for anything substantial.</li>
-        <li><strong>Energy efficiency</strong> requirements (NCC 2025) now mandate higher insulation, glazing performance, and air-tightness on new and substantially renovated work. Real cost: 3–8% added to most renovation budgets but partially offset by lower energy bills.</li>
+        <li><strong>Energy efficiency</strong> requirements from NCC 2022 (the 7-star housing standard) raise insulation, glazing and air-tightness requirements on new and substantially renovated work. They commenced between 1 October 2023 and 1 May 2025 depending on the state; Tasmania did not adopt them and the NT kept 5 stars (ABCB). NCC 2025 was released on 1 May 2026 and each state sets its own start date; New South Wales adopts it on 1 May 2027. This guide&rsquo;s estimate of the real cost: 3–8% added to most renovation budgets, partially offset by lower energy bills.</li>
         <li><strong>Builder failures</strong> in 2023–24 (multiple high-profile insolvencies, especially in NSW and VIC) have driven up insurance costs and made owner-builders and small renovators more cautious. Always check builder solvency and home warranty insurance before signing.</li>
       </ul>
 
       <h2 id="kitchens">Kitchen renovation costs</h2>
+      <p className="lead">{ROOM_ANSWERS.kitchen}</p>
       <p>
         Kitchens are the most popular single-room renovation in Australia and
         the most variable on price. Three realistic tiers in 2026:
@@ -205,6 +254,12 @@ export default function RenovationCostAustralia2026Page() {
         <li>Full layout reconfiguration with new plumbing, electrical, gas.</li>
         <li>Specialty joinery: butler&rsquo;s pantry, integrated bins, charging stations.</li>
       </ul>
+      <h3>How the published sources compare</h3>
+      <p>
+        The published kitchen ranges sit close to this guide&rsquo;s mid-range.
+        The CKA figures exclude GST, so add 10% before comparing.
+      </p>
+      <RenovationCheckTable table={KITCHEN_CHECKS} />
 
       <KeyFigure
         value="$25k–$45k"
@@ -225,6 +280,7 @@ export default function RenovationCostAustralia2026Page() {
       </Callout>
 
       <h2 id="bathrooms">Bathroom renovation costs</h2>
+      <p className="lead">{ROOM_ANSWERS.bathroom}</p>
       <p>
         Bathrooms are smaller in scope but punch above their weight on cost
         because of waterproofing, tiling, plumbing and the dense regulatory
@@ -255,8 +311,26 @@ export default function RenovationCostAustralia2026Page() {
         common source of subsequent insurance claims, and remediation when it
         fails costs many multiples of doing it right the first time.
       </p>
+      <h3>How the published sources compare</h3>
+      <p>
+        CKA prices an ensuite separately from a main bathroom; Archicentre
+        gives one range for both. CKA figures exclude GST.
+      </p>
+      <RenovationCheckTable table={BATHROOM_CHECKS} />
+
+      <h2 id="laundry-living-bedrooms">Laundry, living areas and bedrooms</h2>
+      <p className="lead">{ROOM_ANSWERS.secondary}</p>
+      <p>
+        These rooms are rarely renovated on their own. They are usually part
+        of a wider refresh, so the published figures are mostly per room or
+        per square metre of a single trade: painting, flooring, rewiring and
+        re-plumbing. Use the per-square-metre rows to price a whole-house
+        paint or floor.
+      </p>
+      <RenovationCheckTable table={SECONDARY_ROOM_CHECKS} />
 
       <h2 id="full-renovation">Full house renovation</h2>
+      <p className="lead">{ROOM_ANSWERS.fullHouse}</p>
       <p>
         For a standard three-bedroom house being renovated room-by-room or as
         a whole-house project, 2026 budgets break down as follows:
@@ -267,14 +341,19 @@ export default function RenovationCostAustralia2026Page() {
         <li><strong>Premium</strong> (architect-designed, structural work, full re-stack of services, designer finishes): <strong>$5,000–$7,500/m²+</strong>. Total $400,000–$800,000.</li>
       </ul>
       <p>
-        Regional builds are typically 10–20% cheaper than capital city metro
-        in 2026, though the gap narrows in undersupplied regional markets
-        (Cairns, Geelong, Newcastle outer). Sydney is the most expensive city
-        per square metre by a small margin, Melbourne second, then Brisbane,
-        Perth, Adelaide.
+        Regional work generally costs more, not less. The CKA indicator (June
+        2026) adds {REGIONAL_ADJUSTMENT_PCT.low} to{" "}
+        {REGIONAL_ADJUSTMENT_PCT.high}% outside the capital cities depending
+        on distance, and Archicentre Australia&rsquo;s Cost Guide 2026 notes
+        that regional areas may attract a premium: land is cheaper in the
+        regions, building is not. Among the capitals, CKA puts Perth 5% and
+        Brisbane 4% above Sydney, Adelaide and Hobart level with it, and
+        Melbourne 1% below. The{" "}
+        <Link href="#cost-by-state">state table</Link> has the detail.
       </p>
 
       <h2 id="extensions">Extensions and second storeys</h2>
+      <p className="lead">{ROOM_ANSWERS.extensions}</p>
       <p>
         Adding floor area is the most common way to step up a property
         without selling. Two main approaches:
@@ -297,6 +376,11 @@ export default function RenovationCostAustralia2026Page() {
         adds because of structural risk; specialists are the better
         approach.
       </p>
+      <h3>How the published sources compare</h3>
+      <RenovationCheckTable table={EXTENSION_CHECKS} />
+      <p>
+        <small>{EXTENSION_CHECKS.note}</small>
+      </p>
       <h3>Granny flat: $130,000–$220,000</h3>
       <p>
         A separate dwelling on your existing block. State-by-state planning
@@ -310,6 +394,7 @@ export default function RenovationCostAustralia2026Page() {
       <MatchCTA kind="builder" />
 
       <h2 id="knock-down-rebuild">Knock-down rebuild</h2>
+      <p className="lead">{ROOM_ANSWERS.knockDownRebuild}</p>
       <p>
         At some point, renovation becomes worse value than starting fresh.
         Rough rule: if your projected renovation budget exceeds 70–80% of the
@@ -321,6 +406,8 @@ export default function RenovationCostAustralia2026Page() {
         <li><strong>New build (custom architect-designed)</strong>: $3,500–$6,000/m². A 220m² home lands at $750,000–$1.3M.</li>
         <li><strong>Renting elsewhere during the build</strong>: 8–14 months of rent, factor it in.</li>
       </ul>
+      <h3>How the published sources compare</h3>
+      <RenovationCheckTable table={KDR_CHECKS} />
 
       <PullQuote attribution="Andy McMaster, Editor">
         Every renovation budget that comes in on quote was over-budgeted
@@ -432,16 +519,14 @@ export default function RenovationCostAustralia2026Page() {
         Add them up. If your quoted price is $300,000, your defensible total
         budget is closer to $370,000–$410,000. If you can&rsquo;t fund the
         upper end of that range without stress, narrow the scope before
-        signing.
+        signing. The{" "}
+        <Link href="#estimator">calculator</Link> adds the first three for you.
       </p>
 
       <MatchCTA kind="mortgage-broker" />
 
       <Sources items={[
-        "Housing Industry Association (HIA), \"Renovations Roundup\" quarterly tracking, 2024–2026 metro Australia.",
-        "ABS Construction Output Price Indices and Producer Price Indices, March 2024–March 2026.",
-        "Master Builders Australia, 2025 trades-wages tracking and supply-chain reports.",
-        { label: "National Construction Code 2025, energy efficiency provisions", note: "mandatory commencement 1 May 2024 in most jurisdictions" },
+        ...renovationSourceItems(),
         "State-by-state planning portals (Service NSW Planning, VBA Victoria, QBCC Queensland, etc.) for current approval requirements.",
       ]} />
     </GuideArticleLayout>
