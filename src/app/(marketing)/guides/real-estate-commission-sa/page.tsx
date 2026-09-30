@@ -7,6 +7,7 @@ import {
   MatchCTA,
   Sources,
   SellingCostTable,
+  CommissionCalculatorEmbed,
   EditorNote,
   PullQuote,
   type GuideFrontmatter,
@@ -20,12 +21,13 @@ import { guideOgImages } from "@/lib/og/helpers";
 import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "Real Estate Commission SA: Average Rates & Agent Fees (2026)",
+  title: "Real Estate Commission SA 2026: Adelaide Rates, Fees & Calculator",
+  h1: "Real Estate Commission SA 2026: Adelaide & SA Rates, Fees & Calculator",
   description:
-    "What real estate agents charge in South Australia: the typical commission range, worked dollar examples by sale price, how fees are structured, GST, and how to negotiate the rate in SA.",
+    "What real estate agents charge in Adelaide and across South Australia: the typical commission range, a calculator preset to the SA rate, worked dollar examples by sale price, how fees are structured, GST, and how to negotiate.",
   slug: "real-estate-commission-sa",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-08",
+  updatedAt: "2026-09-30",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -53,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Real estate commission in South Australia typically runs from 1.8% to 2.75% of the sale price, with 2% the most common rate.",
+  "Real estate commission in Adelaide and across South Australia typically runs from 1.8% to 2.75% of the sale price, with 2% the most common rate.",
   "Commission is paid by the seller out of the sale proceeds at settlement, and it is negotiable, not a fixed or regulated rate.",
   "On a $800,000 sale, 2% works out to $16,000 in commission before GST. At the higher end (2.75%) it is $22,000.",
   "Most SA agents work on a 'no sale, no fee' basis, so commission is only payable if the property actually sells.",
@@ -62,6 +64,7 @@ const TLDR = [
 ];
 
 const TOC: GuideTOCEntry[] = [
+  { id: "calculator",   label: "Commission calculator" },
   { id: "average",      label: "Average commission in SA" },
   { id: "worked",       label: "What that costs on your sale price" },
   { id: "structure",    label: "How commission is structured in SA" },
@@ -116,6 +119,8 @@ export default function RealEstateCommissionSAPage() {
       faqs={[...FAQS, COMMISSION_PAA_FAQ.SA]}
       related={RELATED}
     >
+      <CommissionCalculatorEmbed state="SA" />
+
       <Callout variant="warning" title="Commission is not fixed, and it is always negotiable">
         <p>
           There is no regulated or official commission rate in South Australia.
@@ -139,7 +144,7 @@ export default function RealEstateCommissionSAPage() {
 
       <h2 id="average">Average real estate commission in SA</h2>
       <p className="lead">
-        Real estate commission in South Australia typically ranges from{" "}
+        Real estate commission in Adelaide and across South Australia typically ranges from{" "}
         <strong>1.8% to 2.75%</strong> of the final sale price, with{" "}
         <strong>2% the most common</strong> rate. Commission is a percentage of
         the price the property actually sells for, it is paid by the seller out

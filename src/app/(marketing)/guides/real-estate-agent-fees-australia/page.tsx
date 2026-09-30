@@ -18,7 +18,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "What real estate agents charge across Australia: commission rates by state, what's included, marketing costs charged separately, fixed-fee alternatives, and how to negotiate.",
   slug: "real-estate-agent-fees-australia",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-09-30",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -93,9 +93,9 @@ const FAQS: FaqItem[] = [
       "Yes, almost always. Most vendors don't realise commission is fully negotiable. Get quotes from at least three agents, compare full packages (not just the rate), and consider a tiered or performance-based commission that pays the agent more if they exceed a target price. Don't over-negotiate, shaving 0.2% off a $700,000 sale saves $1,400, and the better agent often makes that back many times.",
   },
   {
-    question: "What happens if my property doesn't sell?",
+    question: "Do real estate agents get paid if the house doesn't sell?",
     answer:
-      "Commission is generally only payable if the property sells. Marketing costs, however, are usually still owed whether or not it sells. Some agency agreements have additional clauses around campaign extensions, withdrawals, or change of agent, read these carefully before signing. Standard exclusive agreements run 60 to 90 days; longer terms should require strong justification.",
+      "Usually not. Most Australian agents work on a no sale, no fee basis, so commission is only payable when the property sells, normally at settlement out of the sale proceeds: at a typical 2% on an $800,000 sale, the $16,000 commission is owed only once the sale completes. Marketing is the exception. Photography, portal listings and styling, typically $2,000 to $8,000, are usually payable whether or not the home sells. The agency agreement sets out both. In NSW, section 55 of the Property and Stock Agents Act 2002 means an agent is not entitled to commission or expenses at all without a written agreement signed by you, and the other states and territories also require the appointment in writing with the commission and expenses set out. Read the commission and marketing terms, along with any campaign-extension, withdrawal or change-of-agent terms, before you sign. Standard exclusive agreements run 60 to 90 days.",
   },
 ];
 

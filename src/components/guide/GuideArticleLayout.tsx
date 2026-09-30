@@ -13,7 +13,8 @@ import { AuthorBylineCard } from "./AuthorBylineCard";
 import { PERSONA_BY_ID, type PersonaId } from "@/lib/constants/journey";
 
 export interface GuideFrontmatter {
-  title: string;          // Article H1
+  title: string;          // SERP title (metadata); also the H1 unless h1 is set
+  h1?: string;            // Page heading when it should carry more than the title budget allows (e.g. the capital city on a state guide)
   description: string;    // Meta description
   slug: string;           // URL slug under /guides/
   publishedAt: string;    // ISO date
@@ -67,6 +68,7 @@ export function GuideArticleLayout({
   const buyerFunnel = stickyIntent === "buying" ? BUYING_GUIDE_CTA : undefined;
 
   const guideUrl = `/guides/${frontmatter.slug}`;
+  const heading = frontmatter.h1 ?? frontmatter.title;
   const breadcrumbItems = [
     { label: "Guides", href: "/guides" },
     { label: frontmatter.title },
@@ -81,7 +83,7 @@ export function GuideArticleLayout({
       <ReadingProgressBar />
       <BreadcrumbJsonLd items={schemaBreadcrumbItems} />
       <GuideArticleJsonLd
-        title={frontmatter.title}
+        title={heading}
         description={frontmatter.description}
         url={guideUrl}
         datePublished={frontmatter.publishedAt}
@@ -131,7 +133,7 @@ export function GuideArticleLayout({
 
           {/* Display-scale H1. text-7xl/lg:8xl for editorial weight */}
           <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-medium">
-            {frontmatter.title}
+            {heading}
           </h1>
 
           {/* Standfirst in serif light for editorial colour. Marked

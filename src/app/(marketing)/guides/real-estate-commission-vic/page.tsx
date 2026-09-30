@@ -7,6 +7,7 @@ import {
   MatchCTA,
   Sources,
   SellingCostTable,
+  CommissionCalculatorEmbed,
   EditorNote,
   PullQuote,
   type GuideFrontmatter,
@@ -20,12 +21,13 @@ import { guideOgImages } from "@/lib/og/helpers";
 import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "Real Estate Commission VIC: Average Rates & Agent Fees (2026)",
+  title: "Real Estate Commission VIC 2026: Melbourne Rates, Fees & Calculator",
+  h1: "Real Estate Commission VIC 2026: Melbourne & VIC Rates, Fees & Calculator",
   description:
-    "What real estate agents charge in Victoria: the typical 1.6% to 2.5% commission range, worked examples on common sale prices, how GST applies, what's included, and how to negotiate.",
+    "What real estate agents charge in Melbourne and across Victoria: the typical 1.6% to 2.5% commission range, a calculator preset to the VIC rate, worked examples on common sale prices, how GST applies, what's included, and how to negotiate.",
   slug: "real-estate-commission-vic",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-08",
+  updatedAt: "2026-09-30",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -53,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Real estate commission in Victoria typically ranges from 1.6% to 2.5% of the sale price, with 2% the most common rate.",
+  "Real estate commission in Melbourne and across Victoria typically ranges from 1.6% to 2.5% of the sale price, with 2% the most common rate.",
   "At the typical 2%, a $800,000 sale costs $16,000 in commission, before GST.",
   "Commission is a percentage of the final sale price, paid by the seller at settlement, and it is always negotiable.",
   "Most VIC agents work on \"no sale, no fee\", so commission is only payable if the property sells.",
@@ -62,6 +64,7 @@ const TLDR = [
 ];
 
 const TOC: GuideTOCEntry[] = [
+  { id: "calculator",   label: "Commission calculator" },
   { id: "average-commission", label: "Average commission in VIC" },
   { id: "worked-examples",    label: "Worked examples by sale price" },
   { id: "how-structured",     label: "How commission is structured" },
@@ -116,6 +119,8 @@ export default function RealEstateCommissionVicPage() {
       faqs={[...FAQS, COMMISSION_PAA_FAQ.VIC]}
       related={RELATED}
     >
+      <CommissionCalculatorEmbed state="VIC" />
+
       <Callout variant="warning" title="Commission isn't fixed, and it's always negotiable">
         <p>
           There is no official or regulated commission rate in Victoria.
@@ -140,7 +145,7 @@ export default function RealEstateCommissionVicPage() {
 
       <h2 id="average-commission">Average real estate commission in VIC</h2>
       <p className="lead">
-        Real estate commission in Victoria typically ranges from{" "}
+        Real estate commission in Melbourne and across Victoria typically ranges from{" "}
         <strong>1.6% to 2.5%</strong> of the final sale price, with{" "}
         <strong>2% the most common rate</strong>. Commission is paid by the
         seller, charged as a percentage of what the property actually sells for,

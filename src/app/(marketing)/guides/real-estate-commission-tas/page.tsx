@@ -7,6 +7,7 @@ import {
   MatchCTA,
   Sources,
   SellingCostTable,
+  CommissionCalculatorEmbed,
   EditorNote,
   PullQuote,
   type GuideFrontmatter,
@@ -20,12 +21,13 @@ import { guideOgImages } from "@/lib/og/helpers";
 import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "Real Estate Commission TAS: Average Rates & Agent Fees (2026)",
+  title: "Real Estate Commission TAS 2026: Hobart Rates, Fees & Calculator",
+  h1: "Real Estate Commission TAS 2026: Hobart & TAS Rates, Fees & Calculator",
   description:
-    "What real estate agents charge in Tasmania: the typical commission range, the most common rate, worked dollar examples on a TAS sale, how commission is structured, whether it includes GST, and how to negotiate.",
+    "What real estate agents charge in Hobart and across Tasmania: the typical commission range, the most common rate, a calculator preset to the TAS rate, worked dollar examples on a TAS sale, how commission is structured, whether it includes GST, and how to negotiate.",
   slug: "real-estate-commission-tas",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-08",
+  updatedAt: "2026-09-30",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -53,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Real estate commission in Tasmania typically runs from 2.5% to 3.25% of the sale price, with 2.9% the most common rate.",
+  "Real estate commission in Hobart and across Tasmania typically runs from 2.5% to 3.25% of the sale price, with 2.9% the most common rate.",
   "Commission is a percentage of the final sale price, paid by the seller out of the proceeds at settlement.",
   "At a 2.9% rate, a $600,000 sale works out to about $17,400 in commission before GST.",
   "Almost every agent works on a no sale, no fee basis, so commission is only owed once the property actually sells.",
@@ -62,6 +64,7 @@ const TLDR = [
 ];
 
 const TOC: GuideTOCEntry[] = [
+  { id: "calculator",   label: "Commission calculator" },
   { id: "average",      label: "Average commission in TAS" },
   { id: "worked",       label: "Worked dollar examples" },
   { id: "structure",    label: "How commission is structured" },
@@ -116,6 +119,8 @@ export default function RealEstateCommissionTasPage() {
       faqs={[...FAQS, COMMISSION_PAA_FAQ.TAS]}
       related={RELATED}
     >
+      <CommissionCalculatorEmbed state="TAS" />
+
       <Callout variant="warning" title="These are typical figures, not official rates">
         <p>
           Real estate commission in Tasmania is not regulated or fixed, and it
@@ -139,7 +144,7 @@ export default function RealEstateCommissionTasPage() {
 
       <h2 id="average">Average real estate commission in TAS</h2>
       <p className="lead">
-        Real estate commission in Tasmania typically runs from{" "}
+        Real estate commission in Hobart and across Tasmania typically runs from{" "}
         <strong>2.5% to 3.25%</strong> of the final sale price, and{" "}
         <strong>2.9%</strong> is the most common rate. Commission is charged as a
         percentage of what the property sells for, so a higher sale price means a
