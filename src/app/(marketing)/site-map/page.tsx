@@ -78,6 +78,8 @@ const SECTIONS: Section[] = [
       { label: "Affordability calculator",   href: "/affordability-calculator" },
       { label: "Rental yield calculator",    href: "/rental-yield-calculator" },
       { label: "CGT calculator",             href: "/cgt-calculator" },
+      { label: "LMI calculator",             href: "/lmi-calculator" },
+      { label: "Negative gearing calculator", href: "/negative-gearing-calculator" },
       { label: "Refinancing calculator",     href: "/refinancing-calculator" },
     ],
   },

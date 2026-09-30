@@ -527,3 +527,25 @@ describe("/property-valuation title", () => {
     expect(h1.toLowerCase()).toBe(headline.toLowerCase());
   });
 });
+
+// Commercial intent review 3.3 (30 Sep 2026): the two calculators built for
+// "lmi calculator" and "negative gearing calculator" keep their titles and
+// descriptions inside the same budgets, and name the tool in the title.
+describe("calculator page titles stay inside the SERP budget", () => {
+  const pages: Array<[string, RegExp]> = [
+    ["lmi-calculator", /^LMI Calculator/],
+    ["negative-gearing-calculator", /^Negative Gearing Calculator/],
+  ];
+  for (const [slug, lead] of pages) {
+    it(`/${slug}`, async () => {
+      const { readFileSync } = await import("node:fs");
+      const src = readFileSync(`src/app/(marketing)/${slug}/page.tsx`, "utf8");
+      const title = src.match(/const META_TITLE = "([^"]+)";/)?.[1] ?? "";
+      const description = src.match(/const META_DESCRIPTION =\s*"([^"]+)";/)?.[1] ?? "";
+      expect(title).toMatch(lead);
+      expect(title.length, title).toBeLessThanOrEqual(TITLE_BUDGET);
+      expect(description.length, description).toBeGreaterThan(100);
+      expect(description.length, description).toBeLessThanOrEqual(DESCRIPTION_BUDGET);
+    });
+  }
+});

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -107,6 +108,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Borrowing Power Calculator", href: "/borrowing-power-calculator", description: "Find out what you can borrow on top of your deposit." },
   { title: "Lenders Mortgage Insurance Guide", href: "/guides/lenders-mortgage-insurance-guide", description: "How LMI is calculated and when it's worth paying." },
   { title: "Affordability Calculator", href: "/affordability-calculator", description: "Work out what house price your deposit and income can actually support." },
+  { title: "LMI Calculator", href: "/lmi-calculator", description: "What LMI costs on your price and deposit, with your state's stamp duty on it." },
 ];
 
 export default function HowMuchDepositGuidePage() {
@@ -134,7 +136,7 @@ export default function HowMuchDepositGuidePage() {
     >
       <Callout variant="info" title="The headline number isn't the only number">
         <p>
-          Deposit gets all the attention, but it's only half the cash you need
+          Deposit gets all the attention, but it&rsquo;s only half the cash you need
           to settle. Stamp duty, conveyancing, and building inspections add another
           5% on top in most states. We break the full picture down below.
         </p>
@@ -158,7 +160,7 @@ export default function HowMuchDepositGuidePage() {
 
       <h3>5% deposit</h3>
       <p>
-        The bare minimum at most banks. You'll pay LMI (typically $15,000 to $25,000
+        The bare minimum at most banks. You&rsquo;ll pay LMI (typically $15,000 to $25,000
         on a $500,000 to $700,000 loan), and your interest rate may be slightly
         higher than for a 20% deposit borrower. Eligible first home buyers can
         skip LMI entirely via the Home Guarantee Scheme.
@@ -174,7 +176,7 @@ export default function HowMuchDepositGuidePage() {
 
       <h3>20% deposit</h3>
       <p>
-        The classic "no LMI" benchmark. You get the widest choice of lenders,
+        The classic &ldquo;no LMI&rdquo; benchmark. You get the widest choice of lenders,
         the sharpest interest rates, and no upfront insurance premium. You also
         start with more equity, which means a smaller loan and lower repayments.
       </p>
@@ -182,7 +184,7 @@ export default function HowMuchDepositGuidePage() {
       <h2 id="lmi">What LMI actually costs</h2>
       <p>
         LMI is a one-off premium that protects the lender (not you) if you default
-        and the sale doesn't recover the loan. The premium scales with your
+        and the sale doesn&rsquo;t recover the loan. The premium scales with your
         loan-to-value ratio (LVR).
       </p>
 
@@ -195,6 +197,11 @@ export default function HowMuchDepositGuidePage() {
         <li><strong>15% deposit ($90,000):</strong> roughly $5,000 to $7,000 LMI</li>
         <li><strong>20% deposit ($120,000):</strong> $0 LMI</li>
       </ul>
+      <p>
+        Run your own price and deposit through our{" "}
+        <Link href="/lmi-calculator">LMI calculator</Link>, which adds the stamp
+        duty your state charges on the premium.
+      </p>
       <p>
         Most lenders will let you capitalise LMI into the loan rather than pay it
         upfront, but you then pay interest on it for the life of the loan. Our
@@ -249,24 +256,24 @@ export default function HowMuchDepositGuidePage() {
       <h3>Regional First Home Buyer Guarantee (RFHBG)</h3>
       <p>
         Same 5% deposit / no LMI structure as the HGS but for regional buyers
-        who've lived in or moved to a regional area. Place caps and price caps
+        who&rsquo;ve lived in or moved to a regional area. Place caps and price caps
         apply.
       </p>
 
       <p>
         Our blog post on{" "}
-        <a href="/guides/first-home-buyer-schemes-by-state-australia-2026">
+        <Link href="/guides/first-home-buyer-schemes-by-state-australia-2026">
           first home buyer schemes by state
-        </a>{" "}
+        </Link>{" "}
         covers state grants and stamp duty exemptions on top of these federal schemes.
       </p>
 
       <h2 id="genuine-savings">Genuine savings rule</h2>
       <p>
-        Most lenders require 5% of the purchase price to be "genuine savings" -
-        money you've held in your own name for at least 3 months. The point is
+        Most lenders require 5% of the purchase price to be &ldquo;genuine savings&rdquo; -
+        money you&rsquo;ve held in your own name for at least 3 months. The point is
         to demonstrate you can budget consistently. Gifts and inheritance often
-        don't count toward this 5%, though some lenders will accept them after
+        don&rsquo;t count toward this 5%, though some lenders will accept them after
         a 3-month holding period. Rent paid on time (with a rental ledger) can
         substitute for genuine savings at some banks.
       </p>
@@ -284,7 +291,7 @@ export default function HowMuchDepositGuidePage() {
       <Callout variant="warning" title="FHSS isn't fast money">
         <p>
           The withdrawal application takes about 25 business days from the
-          first request to funds in your bank account. Don't request the
+          first request to funds in your bank account. Don&rsquo;t request the
           withdrawal until you have a signed contract, once requested, the
           funds must be used for a home or returned (with tax penalties).
         </p>
@@ -298,11 +305,11 @@ export default function HowMuchDepositGuidePage() {
           account adds $500 to $2,000 a year on a deposit balance.
         </li>
         <li>
-          <strong>Auto-transfer on payday.</strong> Money you don't see is money
-          you don't spend. Treat your deposit savings as a fixed expense.
+          <strong>Auto-transfer on payday.</strong> Money you don&rsquo;t see is money
+          you don&rsquo;t spend. Treat your deposit savings as a fixed expense.
         </li>
         <li>
-          <strong>FHSS if you're a first home buyer.</strong> The 15% super tax
+          <strong>FHSS if you&rsquo;re a first home buyer.</strong> The 15% super tax
           rate beats most after-tax savings. See our notes above.
         </li>
         <li>
@@ -336,8 +343,8 @@ export default function HowMuchDepositGuidePage() {
         </li>
         <li>
           <strong>Get pre-approval.</strong> Most lenders give 90-day pre-approval
-          for free. It tells you exactly what you'll be allowed to borrow at
-          today's rates.
+          for free. It tells you exactly what you&rsquo;ll be allowed to borrow at
+          today&rsquo;s rates.
         </li>
         <li>
           <strong>Apply for any scheme places early.</strong> HGS, FHG, and RFHBG

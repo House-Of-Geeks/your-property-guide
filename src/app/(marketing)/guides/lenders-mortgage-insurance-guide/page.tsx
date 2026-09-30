@@ -101,7 +101,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide",       href: "/guides/first-home-buyer-guide", description: "Schemes that replace LMI with a government guarantee for eligible buyers." },
-  { title: "Borrowing Power Calculator",   href: "/borrowing-power-calculator",    description: "Run the deposit-vs-LMI math for your situation." },
+  { title: "LMI Calculator",               href: "/lmi-calculator",                description: "Your premium by LVR and loan size, with your state's stamp duty on it." },
   { title: "Affordability Calculator",     href: "/affordability-calculator",      description: "Model the LVR sweet-spot for your savings level." },
   { title: "Fixed vs Variable Rate Guide", href: "/guides/fixed-vs-variable-rate-guide", description: "Once LMI's settled, the next big decision." },
   { title: "First Home Buyer NSW",         href: "/guides/first-home-buyer-nsw",   description: "State-specific schemes and price caps." },
@@ -118,7 +118,7 @@ export default function LMIGuidePage() {
         steps={[
           { name: "Check your loan-to-value ratio (LVR)", text: "If your deposit is below 20%, LMI is likely required. Calculate LVR as loan amount divided by property price." },
           { name: "Check eligibility for federal schemes", text: "First Home Guarantee, Family Home Guarantee, and Regional First Home Buyer Guarantee all waive LMI for eligible buyers with 5% (or 2%) deposit." },
-          { name: "Estimate the LMI premium", text: "LMI scales with both LVR and loan amount. On a 95% LVR loan of $600K, expect ~$22K. On a 90% LVR loan of $600K, expect ~$13K." },
+          { name: "Estimate the LMI premium", text: "LMI scales with both LVR and loan amount. On a 95% LVR loan of $600K, expect ~$22K. On a 90% LVR loan of $600K, expect ~$13K.", url: "/lmi-calculator" },
           { name: "Decide upfront vs capitalised", text: "Pay LMI as a one-off cost or add it to your loan principal (capitalising). Capitalising costs more long-term in interest." },
           { name: "Consider professional or industry exemptions", text: "Some lenders waive LMI for eligible doctors, lawyers, accountants and other low-risk professions, even at 90% LVR.", url: "/borrowing-power-calculator" },
           { name: "Get a written quote and re-check at settlement", text: "LMI is calculated at the point your loan is approved. If your deposit grows or property valuation comes in higher, ask the lender to re-quote." },
@@ -232,6 +232,13 @@ export default function LMIGuidePage() {
           increase the premium, lenders price in tiers, not continuously.
         </p>
       </Callout>
+
+      <p>
+        For your own price and deposit, our{" "}
+        <Link href="/lmi-calculator">LMI calculator</Link> works out the LVR, the
+        premium from a published lender table and the stamp duty your state adds
+        to it.
+      </p>
 
       <h2 id="who-provides">Who provides LMI in Australia?</h2>
       <p>
