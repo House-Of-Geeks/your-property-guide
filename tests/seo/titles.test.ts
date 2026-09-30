@@ -7,6 +7,7 @@
 // chars) on top of whatever these builders return, so anything over 60 here is
 // guaranteed to be cut or rewritten in results (see the search review: the
 // current suburb title is shown as "Morayfield Postcode 4506 (QLD) - Suburbs").
+import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -20,7 +21,6 @@ import {
   suburbTitle,
 } from "@/lib/utils/seo";
 import { hasReliablePrice } from "@/lib/suburb-data-quality";
-import fs from "node:fs";
 import path from "node:path";
 import { ABBR, AUSTRALIAN_STATES, STAMP_DUTY_GUIDES, dutyFor, money, stampDutyMetaTitle, stampDutyTitle } from "@/lib/data/stamp-duty-state";
 import { SITE_NAME } from "@/lib/constants";
@@ -245,5 +245,25 @@ describe("cost-first guide titles", () => {
     for (const id of ["cost-nsw", "cost-vic", "cost-qld", "cost-other-states", "estimator"]) {
       expect(src).toContain(`id="${id}"`);
     }
+  });
+});
+
+// Commercial intent review 3.4 (30 Sep 2026): the valuation page's long
+// headline (81 characters) would be cut in results, so the <title> is the
+// short form and the long form is the H1 and the WebPage name.
+describe("/property-valuation title", () => {
+  const src = fs.readFileSync("src/app/(marketing)/property-valuation/page.tsx", "utf8");
+  const title = src.match(/const TITLE = "([^"]+)";/)?.[1] ?? "";
+  const headline = src.match(/const HEADLINE = "([^"]+)";/)?.[1] ?? "";
+  it("is under 60 characters and is what the metadata uses", () => {
+    expect(title).toBe("Property Valuation Australia: Appraisal vs Estimate (2026)");
+    expect(title.length).toBeLessThanOrEqual(TITLE_BUDGET);
+    expect(src).toMatch(/export const metadata[\s\S]*?title: TITLE,/);
+  });
+  it("keeps the long form as the H1 and the WebPage name", () => {
+    expect(headline).toBe("Property Valuation in Australia: Appraisal vs Valuation vs Online Estimate (2026)");
+    expect(src).toContain("name: HEADLINE,");
+    const h1 = (src.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? "").replace(/<[^>]+>|\{" "\}/g, " ").replace(/\s+/g, " ").trim();
+    expect(h1.toLowerCase()).toBe(headline.toLowerCase());
   });
 });

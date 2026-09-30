@@ -6,10 +6,12 @@ import {
   PUBLISHED_GROWTH,
   PUBLISHED_HOUSE_MEDIAN,
   PUBLISHED_HOUSE_MEDIAN_SQL,
+  UNIT_MEDIAN_SOURCES,
   medianBasis,
   publishedGrowth,
   publishedSales,
   publishesMedians,
+  publishesUnitMedian,
   withPublishedSales,
   type RawSalesRow,
 } from "@/lib/published-medians";
@@ -73,6 +75,29 @@ describe("12-month change", () => {
     expect(publishedGrowth(row({ annualGrowthHouse: -41.8 }))).toBe(0);
     expect(publishedGrowth(row({ medianHousePrice: 0 }))).toBe(0);
     expect(publishedGrowth(row({ annualGrowthHouse: null }))).toBe(0);
+  });
+});
+
+describe("unit medians", () => {
+  it("are published from the feeds that produce one", () => {
+    expect([...UNIT_MEDIAN_SOURCES]).toEqual(["sales-vic", "sales-abs"]);
+    expect(publishesUnitMedian(row({ statsSource: "sales-vic", salesCountHouse: 0 }))).toBe(true);
+    expect(publishesUnitMedian(row({ statsSource: "sales-abs", salesCountHouse: 0 }))).toBe(true);
+    for (const script of ["sales-vic", "sales-abs"]) {
+      expect(fs.readFileSync(`scripts/sync/sources/${script}.ts`, "utf8"), script).toContain("medianUnitPrice");
+    }
+  });
+  it("are not published beside an NSW or SA median: those feeds write only the house series, so the figure predates them", () => {
+    expect(publishesUnitMedian(row())).toBe(false);
+    expect(publishesUnitMedian(row({ statsSource: "sales-sa" }))).toBe(false);
+    for (const script of ["sales-nsw", "sales-sa"]) {
+      expect(fs.readFileSync(`scripts/sync/sources/${script}.ts`, "utf8"), script).not.toContain("medianUnitPrice");
+    }
+  });
+  it("clear the same gate as the house median, and need a figure", () => {
+    expect(publishesUnitMedian(row({ statsSource: "sales-vic", salesCountHouse: 3 }))).toBe(false);
+    expect(publishesUnitMedian(row({ statsSource: "sales-vic", salesCountHouse: 0, medianUnitPrice: 0 }))).toBe(false);
+    expect(publishesUnitMedian(row({ statsSource: "sales-vic", salesCountHouse: 0, medianUnitPrice: null }))).toBe(false);
   });
 });
 

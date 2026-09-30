@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import Image from "next/image";
 import { CheckCircle } from "lucide-react";
 import { AppraisalForm } from "@/components/forms/AppraisalForm";
+import { SuburbValueRange } from "@/components/journey/SuburbValueRange";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
 import Link from "next/link";
@@ -112,8 +113,8 @@ export default function AppraisalPage() {
                 </span>
               </div>
               <h1 className="font-display text-ink leading-[1.02] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 font-medium">
-                What is your home{" "}
-                <span className="italic font-light text-primary">actually worth</span>?
+                Free property appraisal{" "}
+                <span className="italic font-light text-primary">from a local agent</span>
               </h1>
               <p className="font-display font-light text-lg sm:text-xl text-ink leading-[1.3] max-w-xl mb-8">
                 An honest appraisal from a vetted local agent. No call centre,
@@ -128,10 +129,21 @@ export default function AppraisalPage() {
                   </span>
                 ))}
               </div>
+
+              {/* Commercial intent review 3.4 (30 Sep 2026): the SERPs for
+                  "property valuation" and "how much is my house worth" put
+                  instant estimates first and the agent appraisal second.
+                  Before the form, the suburb's published median for the
+                  dwelling type and a band either side of it, from the state
+                  sales feed. Never a figure the published-medians rule
+                  withholds, never a valuation of the visitor's home. */}
+              <div className="mt-8">
+                <SuburbValueRange after="link" appraisalHref="#appraisal-form" headingLevel="h2" />
+              </div>
             </div>
 
             <div className="lg:col-span-6">
-              <div className="rounded-2xl border border-line bg-surface-raised shadow-card p-6 sm:p-8">
+              <div id="appraisal-form" className="scroll-mt-24 rounded-2xl border border-line bg-surface-raised shadow-card p-6 sm:p-8">
                 <p className="text-xs font-sans uppercase tracking-[0.22em] text-ink-subtle mb-2">
                   Tell us about the property
                 </p>
@@ -164,7 +176,8 @@ export default function AppraisalPage() {
                     A property appraisal is a local real estate agent&rsquo;s honest estimate of what your home would sell for today. The agent walks through the property, looks at what similar homes nearby have sold for in the last few months, and gives you a figure or a range. It is free, it takes under an hour, and it does not commit you to selling, or to selling with that agent.
                   </p>
                   <p>
-                    It is not the same thing as a valuation. A valuation is a paid, formal report from a licensed valuer, prepared for a bank, a court or the tax office, and it tends to be conservative because it protects the lender. An online estimate is a third thing again: an automated guess from a model that has never seen your house, which can be close on a standard home in a busy suburb and badly wrong on anything unusual. When you are deciding whether to sell, the appraisal is the number that matters, because it comes from the people who watch buyers in your street every week.
+                    It is not the same thing as a valuation. A valuation is a paid, formal report from a licensed valuer, prepared for a bank, a court or the tax office, and it tends to be conservative because it protects the lender. An online estimate is a third thing again: an automated guess from a model that has never seen your house, which can be close on a standard home in a busy suburb and badly wrong on anything unusual. When you are deciding whether to sell, the appraisal is the number that matters, because it comes from the people who watch buyers in your street every week. The three are compared, with what a valuation costs and when a lender insists on one, in{" "}
+                    <Link href="/property-valuation" className="text-ink hover:text-primary underline underline-offset-4 decoration-line-strong">appraisal vs valuation vs online estimate</Link>.
                   </p>
                   <p>
                     One appraisal is a data point. Two or three, from agents who genuinely sell in your suburb, are a picture. Ask each to show you the comparable sales behind their figure and to explain how your home differs from each one. An agent who cannot do that is guessing, and an agent whose number is far above the others may be buying your listing rather than pricing your home.
@@ -225,6 +238,7 @@ export default function AppraisalPage() {
                 <p className="text-xs font-sans uppercase tracking-[0.22em] text-ink-subtle mb-3">Before you ask</p>
                 <ul className="space-y-2 font-sans text-sm text-ink-muted">
                   <li><Link href="/guides/how-much-is-my-house-worth-australia" className="text-ink hover:text-primary underline underline-offset-4 decoration-line-strong">How much is my house worth?</Link></li>
+                  <li><Link href="/property-valuation" className="text-ink hover:text-primary underline underline-offset-4 decoration-line-strong">Appraisal vs valuation vs online estimate</Link></li>
                   <li><Link href="/guides/how-to-prepare-for-a-property-appraisal" className="text-ink hover:text-primary underline underline-offset-4 decoration-line-strong">How to prepare for an appraisal</Link></li>
                   <li><Link href="/guides/questions-to-ask-a-real-estate-agent" className="text-ink hover:text-primary underline underline-offset-4 decoration-line-strong">Questions to ask the agent</Link></li>
                   <li><Link href="/real-estate-commission-calculator" className="text-ink hover:text-primary underline underline-offset-4 decoration-line-strong">What selling would cost</Link></li>

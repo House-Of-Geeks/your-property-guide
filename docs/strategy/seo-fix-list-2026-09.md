@@ -421,3 +421,13 @@ Source: docs/seo-baselines/2026-09-30/commercial-intent-review.md (untracked in 
       answer per room section; the four People-also-ask FAQs in FAQPage JSON-LD. DONE 1 Oct 2026 — PR #89. Still unpublished anywhere, so left as gaps: a renovation rate per m² by state (the state table uses
       CKA city adjustments, RLB custom-house rates and ABS new-house figures instead), second-storey rates by finish
       level, and a Canberra, Darwin or Hobart figure in some columns. Houzz's latest Australian study is 2023.
+Source: `docs/seo-baselines/2026-09-30/commercial-intent-review.md` (section numbers in brackets).
+
+- [x] 3.4 (priority 6). [code] Valuation and appraisal: instant range from published medians on /appraisal and the
+      house-worth guide, /appraisal H1 "Free property appraisal from a local agent", new /property-valuation page
+      (appraisal vs valuation vs online estimate, sourced valuation cost, PAA FAQs, WebPage + FAQPage JSON-LD).
+      DONE 1 Oct 2026 — PR #82. Left out: a bedrooms selector (no feed holds bedroom sales
+      medians; SuburbRentalStat holds bedroom rents only) and quartiles (no feed publishes them; the band is
+      median less and plus 15%, labelled). Unit medians are shown only from the feeds that produce one
+      (sales-vic, sales-abs; `UNIT_MEDIAN_SOURCES`); the site-wide unit-median withholding remains item 1's
+      open follow-up.

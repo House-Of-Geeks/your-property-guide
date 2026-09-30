@@ -78,6 +78,7 @@ const FOOTER_COLUMNS = [
     links: [
       { label: "All calculators",          href: "/tools" },
       { label: "Agent commission",         href: "/real-estate-commission-calculator" },
+      { label: "Property valuation range", href: "/property-valuation" },
       { label: "Find your suburb (quiz)",  href: "/find-your-suburb" },
       { label: "Compare two suburbs",      href: "/compare" },
       { label: "Mortgage calculator",      href: "/mortgage-calculator" },

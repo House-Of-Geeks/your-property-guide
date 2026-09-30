@@ -62,6 +62,14 @@ const GROUPS: ToolGroup[] = [
         primary: true,
       },
       {
+        href: "/property-valuation",
+        title: "Property Valuation Range",
+        description:
+          "Pick a suburb and a dwelling type for the published median and a range either side, then a free agent appraisal.",
+        badge: "Tool",
+        icon: "/images/icons/median.svg",
+      },
+      {
         href: "/best-suburbs",
         title: "Best Suburbs Rankings",
         description:

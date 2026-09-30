@@ -76,6 +76,20 @@ export function publishedGrowth(row: RawSalesRow): number {
   return isPlausibleAnnualGrowth(g) ? g : 0;
 }
 
+/**
+ * The feeds that produce a unit median. sales-nsw aggregates house sales only
+ * (nature R with no unit number) and sales-sa writes the house series, so a
+ * unit figure beside either predates the feeds (Bondi's $538,560, item 1
+ * follow-up) and is not a published unit median. Read by the instant range
+ * on /appraisal, /property-valuation and the house-worth guide.
+ */
+export const UNIT_MEDIAN_SOURCES: readonly string[] = ["sales-vic", "sales-abs"];
+
+/** The row's unit median was produced by its own feed and clears the same gate as the house median. */
+export function publishesUnitMedian(row: Pick<RawSalesRow, "statsSource" | "salesCountHouse" | "medianUnitPrice">): boolean {
+  return publishesMedians(row) && UNIT_MEDIAN_SOURCES.includes(row.statsSource ?? "") && (row.medianUnitPrice ?? 0) > 0;
+}
+
 /** The row's sales figures as the suburb page prints them. */
 export function publishedSales(row: RawSalesRow): PublishedSales {
   if (!publishesMedians(row)) return { medianHousePrice: 0, medianUnitPrice: 0, annualGrowthHouse: 0, basis: null };

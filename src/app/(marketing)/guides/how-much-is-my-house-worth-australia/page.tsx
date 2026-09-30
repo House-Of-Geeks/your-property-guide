@@ -16,7 +16,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
-import { HomeValueAppraisal } from "@/components/journey/HomeValueAppraisal";
+import { SuburbValueRange } from "@/components/journey/SuburbValueRange";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "How Much Is My House Worth? Free Property Appraisal (Australia)",
@@ -24,7 +24,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Pick your suburb, see what houses there are selling for, and get a free appraisal from a local agent. Plus the three ways a house is valued in Australia, why they disagree, and what actually drives your number.",
   slug: "how-much-is-my-house-worth-australia",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-17",
+  updatedAt: "2026-09-30",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -99,6 +99,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "Free Property Appraisal",            href: "/appraisal",                                 description: "An independent appraisal from a vetted local agent, no commitment." },
+  { title: "Appraisal vs Valuation vs Online Estimate", href: "/property-valuation",              description: "The three numbers side by side, what a valuation costs, and when a lender needs one." },
   { title: "Free Selling Guide (PDF)",            href: "/selling-guide",                             description: "The full process from listing to settlement, personalised to your suburb." },
   { title: "How to Sell a House in Australia",    href: "/guides/how-to-sell-a-house-australia",       description: "Every step from pre-listing prep through to settlement day." },
   { title: "How to Choose a Selling Agent",       href: "/guides/how-to-choose-a-selling-agent",      description: "The interview process, the appraisal-price trap, and what to negotiate." },
@@ -115,10 +116,13 @@ export default function HowMuchIsMyHouseWorthAustraliaPage() {
       faqs={FAQS}
       related={RELATED}
     >
-      {/* Valuation plan item 2: the page answers the question with an action,
-          not a guessed number. Suburb first, the suburb's median for context,
-          then the same appraisal form the suburb pages use. */}
-      <HomeValueAppraisal />
+      {/* Valuation plan item 2, extended by the commercial intent review 3.4
+          (30 Sep 2026): the page answers the question with an action, not a
+          guessed number. Suburb first, then the suburb's published median
+          for houses or units with a band either side (never a valuation of
+          the visitor's home), then the same appraisal form the suburb pages
+          use. */}
+      <SuburbValueRange after="form" formName="home-value-guide" />
 
       <Callout variant="info" title="There isn't one answer, there are three">
         <p>
@@ -178,6 +182,11 @@ export default function HowMuchIsMyHouseWorthAustraliaPage() {
         property attributes. It&rsquo;s instant and free, and it&rsquo;s the
         roughest of the three. On a standard home in a busy suburb it can be
         close. On anything out of the ordinary it can be a long way off.
+      </p>
+      <p>
+        For what each of the three costs, when a lender insists on a valuation
+        and how the automated models are built, read{" "}
+        <Link href="/property-valuation">property valuation in Australia: appraisal vs valuation vs online estimate</Link>.
       </p>
 
       <KeyFigure

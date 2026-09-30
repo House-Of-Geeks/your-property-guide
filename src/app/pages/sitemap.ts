@@ -34,6 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/cgt-calculator`,               changeFrequency: "yearly",  priority: 0.6 },
     { url: `${SITE_URL}/refinancing-calculator`,       changeFrequency: "yearly",  priority: 0.6 },
     { url: `${SITE_URL}/appraisal`,                    changeFrequency: "yearly",  priority: 0.6 },
+    { url: `${SITE_URL}/property-valuation`,           changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/affordability-calculator`,     changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/real-estate-commission-calculator`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE_URL}/selling-costs-calculator`,     changeFrequency: "monthly", priority: 0.9 },
