@@ -7,8 +7,10 @@ import {
   PUBLISHED_HOUSE_MEDIAN,
   PUBLISHED_HOUSE_MEDIAN_SQL,
   UNIT_MEDIAN_SOURCES,
+  measuresGrowth,
   medianBasis,
   publishedGrowth,
+  publishedGrowthFor,
   publishedSales,
   publishesMedians,
   publishesUnitMedian,
@@ -98,6 +100,30 @@ describe("unit medians", () => {
     expect(publishesUnitMedian(row({ statsSource: "sales-vic", salesCountHouse: 3 }))).toBe(false);
     expect(publishesUnitMedian(row({ statsSource: "sales-vic", salesCountHouse: 0, medianUnitPrice: 0 }))).toBe(false);
     expect(publishesUnitMedian(row({ statsSource: "sales-vic", salesCountHouse: 0, medianUnitPrice: null }))).toBe(false);
+  });
+});
+
+describe("12-month change on the gated Suburb object (fix item 2)", () => {
+  // The title, description and FAQ builders hold the Suburb type, not the row.
+  const suburb = (medianHousePrice: number, annualGrowthHouse: number, salesSource: string | null) => ({ stats: { medianHousePrice, annualGrowthHouse }, dataFreshness: { salesSource } });
+  it("names the feeds that measure a change", () => {
+    expect(measuresGrowth("sales-nsw")).toBe(true);
+    expect(measuresGrowth("sales-sa")).toBe(true);
+    for (const s of ["sales-vic", "sales-abs", "sales-qld", "seed", "", null, undefined]) expect(measuresGrowth(s), String(s)).toBe(false);
+  });
+  it("prints the change the page prints", () => {
+    expect(publishedGrowthFor(suburb(4_300_000, 13.9, "sales-nsw"))).toBe(13.9);
+    expect(publishedGrowthFor(suburb(850_000, -3.1, "sales-sa"))).toBe(-3.1);
+  });
+  it("and nothing beside a Land Victoria or ABS median, a withheld median, a distrusted source, an implausible figure or a 0", () => {
+    expect(publishedGrowthFor(suburb(2_692_500, 4, "sales-vic"))).toBe(0);
+    expect(publishedGrowthFor(suburb(1_095_000, 8.8, "sales-abs"))).toBe(0);
+    expect(publishedGrowthFor(suburb(0, 13.9, "sales-nsw"))).toBe(0);
+    expect(publishedGrowthFor(suburb(500_000, 6, "sales-qld"))).toBe(0);
+    expect(publishedGrowthFor(suburb(500_000, 6, null))).toBe(0);
+    expect(publishedGrowthFor({ stats: { medianHousePrice: 500_000, annualGrowthHouse: 6 } })).toBe(0);
+    expect(publishedGrowthFor(suburb(850_000, 41.8, "sales-nsw"))).toBe(0);
+    expect(publishedGrowthFor(suburb(850_000, 0, "sales-nsw"))).toBe(0);
   });
 });
 

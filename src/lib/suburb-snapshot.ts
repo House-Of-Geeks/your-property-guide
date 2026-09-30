@@ -47,6 +47,16 @@ export function walkLabel(score: number): string {
   return "Very car dependent";
 }
 
+/** The rent's source is known: the band, the title, the description and the investment FAQ print a rent (and a yield) only then. */
+export function rentSourceKnown(suburb: Pick<Suburb, "dataFreshness">): boolean {
+  return Boolean(suburb.dataFreshness?.rentalSource);
+}
+
+/** The page publishes a weekly rent with a known source, for houses or units. 0 is "unknown". */
+export function publishesRent(suburb: Pick<Suburb, "stats" | "dataFreshness">): boolean {
+  return rentSourceKnown(suburb) && (suburb.stats.medianRentHouse > 0 || suburb.stats.medianRentUnit > 0);
+}
+
 export function buildSnapshotStats(suburb: Suburb): SnapshotStat[] {
   const s = suburb.stats;
   const out: SnapshotStat[] = [];
@@ -61,7 +71,7 @@ export function buildSnapshotStats(suburb: Suburb): SnapshotStat[] {
   // per-suburb source row, so they are not house rents and stay out of the
   // band until the feed is fixed (tracker follow-up); the rental section
   // lower on the page is unchanged.
-  const rentSourced = Boolean(suburb.dataFreshness?.rentalSource);
+  const rentSourced = rentSourceKnown(suburb);
   if (rentSourced && s.medianRentHouse > 0) {
     out.push({ key: "rent", label: "Weekly rent", value: `$${s.medianRentHouse.toLocaleString("en-AU")}`, detail: s.medianRentUnit > 0 ? `Houses · units $${s.medianRentUnit.toLocaleString("en-AU")}` : "Houses", icon: "/images/icons/yield.svg" });
   }
