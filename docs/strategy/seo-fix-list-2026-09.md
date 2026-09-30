@@ -163,7 +163,7 @@ Tick items off as they ship.
 
 ## New pages and refreshes (week 6–12)
 
-- [x] 20. BUILT 30 Sep 2026, PR #92, awaiting review. [code+content] Upgrade the EXISTING eight /guides/stamp-duty-{state} pages (do not create new
+- [x] 20. DONE 30 Sep 2026 — PR #92 (b2f7d2c), verified in production the same evening: eight state titles and H1s, calculator first, corrected duty (QLD owner-occupier $750k $19,600, ACT $19,208, TAS first home $28,935), old QLD article and its /blog form 308 to /guides/stamp-duty-qld in one hop, no list, feed or sitemap links it. [code+content] Upgrade the EXISTING eight /guides/stamp-duty-{state} pages (do not create new
       URLs): embed calculator preset to state, tables generated from src/lib/utils/stamp-duty.ts,
       FHB thresholds with dates, surcharge, exemptions, worked examples $500k/$750k/$1M, PAA FAQ;
       fold /guides/stamp-duty-queensland-what-you-need-to-know into the QLD guide with a redirect. (07, E)
@@ -272,7 +272,11 @@ count; item 44 asks for the exports to confirm it. Working files: session scratc
       those are the address pages (/property/…, 15.5M once submitted) and street pages (543k) removed on purpose and
       answering 410, and the row shrinks on its own; (iii) export the example URLs of each row (up to 1,000 each)
       so the split above can be confirmed.
-- [ ] 45. [copy] Best-suburbs H1 reads "The for families suburbs in Australia." on the family category (all states).
+- [x] 45. DONE 30 Sep 2026 — PR #80. [copy] best-suburbs H1 read "The for families suburbs in Australia." on the
+      family category (all states); the state <title> ("Best for Families suburbs in Western Australia (WA)") and the ItemList name
+      had the same fault. One builder (src/lib/best-suburbs-headlines.ts) composes the sentence for every category and state
+      ("The best suburbs for families in Western Australia"), tested over all 54 combinations; the other five categories' titles
+      are unchanged.
 - [x] 46. DONE 29 Sep 2026 — PR #66 (1198854) and its follow-up: postal delivery names, institutions and
       shopping-centre post offices are not suburbs. 290 rows ("Nerang DC", "Parliament House", "Penrith Plaza") had
       profiles, sub-pages and places in every list. Their URLs redirect (196 to the real suburb of the same name in

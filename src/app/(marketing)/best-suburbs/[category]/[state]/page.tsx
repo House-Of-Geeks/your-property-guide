@@ -7,6 +7,7 @@ import {
 } from "@/lib/services/suburb-rankings-service";
 import { isRanked, rankingNote } from "@/lib/ranking-notes";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { bestSuburbsStateTitle } from "@/lib/best-suburbs-headlines";
 import {
   BestSuburbsListing,
   CATEGORY_CONFIG,
@@ -67,7 +68,7 @@ export async function generateMetadata({
   const config = CATEGORY_CONFIG[category];
   const stateName = STATE_NAME[upperState];
 
-  const title = `${config.title.replace(" Suburbs", "")} suburbs in ${stateName} (${upperState})`;
+  const title = bestSuburbsStateTitle(category, upperState);
   const description = `${config.description} Filtered to ${stateName} suburbs only.`;
 
   const canonical = `${SITE_URL}/best-suburbs/${category}/${state.toLowerCase()}`;
