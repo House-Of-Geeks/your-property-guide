@@ -49,7 +49,7 @@ describe("canonicals", () => {
     };
     walk(root);
     // Pages whose metadata comes from a shared builder that sets the canonical.
-    const viaHelper = /cost-of-selling-a-house-[a-z]+\/page\.tsx$/;
+    const viaHelper = /guides\/(cost-of-selling-a-house-[a-z]+|stamp-duty-(nsw|vic|qld|wa|sa|tas|act|nt))\/page\.tsx$/;
     const missing = pages.filter((file) => {
       const code = fs.readFileSync(file, "utf8").replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, "");
       if (/robots:\s*\{\s*index:\s*false/.test(code)) return false; // noindex pages need none

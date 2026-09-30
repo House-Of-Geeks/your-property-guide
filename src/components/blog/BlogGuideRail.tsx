@@ -19,11 +19,6 @@ const RAIL_BY_BLOG_SLUG: Record<string, RailGuide[]> = {
     { href: "/guides/how-much-deposit-to-buy-a-house",       title: "How much deposit do you need?",     description: "5%, 10%, 20%, what each tier unlocks, plus FHSS." },
     { href: "/guides/first-home-buyer-mistakes-to-avoid",    title: "10 first home buyer mistakes",      description: "The expensive errors, ranked, with the fix for each." },
   ],
-  "stamp-duty-queensland-what-you-need-to-know": [
-    { href: "/stamp-duty-calculator",                        title: "Stamp Duty Calculator",             description: "Estimate your liability across all Australian states." },
-    { href: "/guides/how-much-deposit-to-buy-a-house",       title: "How much deposit do you need?",     description: "Total cash to settle including stamp duty, conveyancing, fees." },
-    { href: "/guides/buying-property-australia",             title: "How to buy property in Australia",  description: "End-to-end step-by-step from deposit to settlement." },
-  ],
   "house-and-land-packages-are-they-worth-it": [
     { href: "/guides/buying-property-australia",             title: "Buying property in Australia",      description: "End-to-end buyer's playbook." },
     { href: "/guides/conveyancing-guide",                    title: "Conveyancing in Australia",         description: "What conveyancers do for new builds and contract review." },

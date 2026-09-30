@@ -33,7 +33,7 @@ export function MiniStampDutyEmbed({
 
   const result = useMemo(
     () =>
-      calculateStampDuty(price, state, isFirstHomeBuyer, /* foreign */ false, /* investment */ !isFirstHomeBuyer ? false : false),
+      calculateStampDuty(price, state, isFirstHomeBuyer, /* foreign */ false, /* investment */ false),
     [price, state, isFirstHomeBuyer],
   );
 
@@ -133,7 +133,7 @@ export function MiniStampDutyEmbed({
         </p>
         <p className="mt-2 font-sans text-sm text-ink-muted">
           {result.effectiveRate > 0 ? (
-            <>{(result.effectiveRate * 100).toFixed(2)}% effective rate on {formatMoney(price)}</>
+            <>{result.effectiveRate.toFixed(2)}% effective rate on {formatMoney(price)}</>
           ) : (
             <>No transfer duty payable at this price &amp; concession.</>
           )}

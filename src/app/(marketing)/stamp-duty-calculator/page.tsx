@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { StampDutyCalculator } from "@/components/calculators/StampDutyCalculator";
+import { StampDutyStateLinks } from "@/components/calculators/StampDutyStateLinks";
+import { STATE_DUTY_SCHEDULES } from "@/lib/utils/stamp-duty";
+import { ABBR, AUSTRALIAN_STATES, money, dutyFor } from "@/lib/data/stamp-duty-state";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
 import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
@@ -8,18 +11,18 @@ import { SITE_URL } from "@/lib/constants";
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Stamp Duty Calculator",
   description:
-    "Estimate stamp duty across all eight Australian states and territories. Includes first home buyer concessions and foreign buyer surcharges. Updated for 2025/26 rates.",
+    "Estimate stamp duty across all eight Australian states and territories, with first home buyer concessions and foreign buyer surcharges. Rates checked against each revenue office on 30 September 2026.",
   slug: "stamp-duty-calculator",
   schemaName: "Stamp Duty Calculator Australia",
   schemaDescription: "Calculate stamp duty costs across all Australian states and territories.",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-09-30",
   persona: "first-home",
 };
 
 // Stamp duty is a 74k/mo AU query — the highest-volume calculator query
 // on the site. Title leans into year + state coverage to win the snippet.
 const META_TITLE = "Stamp Duty Calculator 2026: All Australian States";
-const META_DESCRIPTION = "Free stamp duty calculator for all eight Australian states and territories. Includes first home buyer concessions and foreign buyer surcharges, updated for 2025/26 rates. No sign-up.";
+const META_DESCRIPTION = "Free stamp duty calculator for all eight Australian states and territories, with first home buyer concessions and foreign buyer surcharges. Rates checked 30 Sep 2026.";
 
 export const metadata: Metadata = {
   title: META_TITLE,
@@ -43,12 +46,13 @@ const FAQS: FaqItem[] = [
   {
     question: "Do first home buyers pay stamp duty?",
     answer:
-      "Most states offer concessions or full exemptions for first home buyers. Queensland offers a full concession up to $700,000, NSW up to $800,000, VIC up to $600,000, and WA up to $450,000. The ACT has an income-tested exemption scheme. SA does not offer a stamp duty concession but has a separate First Home Owner Grant.",
+      "It depends on the state. On an established home, an eligible first home buyer pays no duty up to $800,000 in NSW, $700,000 in Queensland, $600,000 in Victoria and $600,000 in WA (from 7 May 2026), with a reduced amount above those lines. In the ACT, an eligible buyer who has not owned property for five years pays nothing at any price from 1 July 2026. SA gives relief only on new homes and land. Tasmania's exemption ended on 30 June 2026, and the NT pays grants instead of a duty concession. Figures checked against each revenue office on 30 September 2026.",
   },
   {
     question: "What is the foreign buyer surcharge?",
-    answer:
-      "Foreign buyers of residential property pay an additional surcharge on top of standard duty. Rates are: NSW 8%, VIC 8%, QLD 8%, WA 7%, SA 7%, TAS 8%. The NT and ACT do not charge a foreign buyer surcharge.",
+    answer: `Foreign buyers of residential property pay a surcharge on top of standard duty: ${AUSTRALIAN_STATES.filter((st) => STATE_DUTY_SCHEDULES[st].foreign)
+      .map((st) => `${ABBR[st]} ${Math.round(STATE_DUTY_SCHEDULES[st].foreign!.rate * 100)}%`)
+      .join(", ")}. The ACT and the NT charge no foreign purchaser duty surcharge. On a $750,000 home in NSW the 9% surcharge adds ${money(750_000 * 0.09)} to the ${money(dutyFor("NSW", 750_000, "owner").total)} of transfer duty (rates checked 30 September 2026).`,
   },
   {
     question: "When is stamp duty paid?",
@@ -80,7 +84,19 @@ export default function StampDutyCalculatorPage() {
   return (
     <CalculatorPageLayout
       frontmatter={FRONTMATTER}
-      calculator={<StampDutyCalculator />}
+      calculator={
+        <>
+          <StampDutyCalculator />
+          <section id="by-state" className="scroll-mt-28 max-w-5xl mx-auto mt-12">
+            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-2">Calculate by state</h2>
+            <p className="font-sans text-base text-ink-muted mb-5">
+              Each state page runs this calculator locked to that state, with its full rates table, first home buyer
+              thresholds and worked examples. Figures are for an owner-occupier, rates checked 30 September 2026.
+            </p>
+            <StampDutyStateLinks />
+          </section>
+        </>
+      }
       faqs={FAQS}
       related={RELATED}
       intent="buying"
