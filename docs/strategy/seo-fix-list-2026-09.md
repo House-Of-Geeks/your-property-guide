@@ -494,3 +494,20 @@ Source: `docs/seo-baselines/2026-09-30/commercial-intent-review.md` (untracked, 
       Before merging: a property manager has to be ready to take the leads (the form promises a call within one
       business day; leads arrive in the lead inbox, routed like every other type). Open from 3.1: (c) of the review,
       a WA rental feed, which is what would let the Perth "rental investment" pages index.
+
+
+Source: `docs/seo-baselines/2026-09-30/commercial-intent-review.md` (section and priority numbers refer to it).
+
+- [x] Priority 10 (section 4, reading 2). [code] Index plumbing for the zero-impression guides. DONE 1 Oct 2026 — PR #90. The index check found nothing blocking (every guide 200, self-canonical, no noindex)
+      but three plumbing faults: the guides sitemap stamped the request time as lastmod on 97 of 155 entries; the
+      guides hung off /guides alone (89 of 155 listed there; /first-home-buyers, /buying-guide and /tools linked none,
+      /investing one, /selling two); and the glossary entries Google indexed in place of the conveyancing and LMI
+      guides linked neither guide. Shipped: one guide registry (src/lib/guides/registry.ts, titles and dates from each
+      guide's FRONTMATTER via src/lib/data/static-guides.json, `npm run guides:manifest`) feeding the sitemap's lastmod,
+      /guides (all 155 in nine sections), the category pages, a shared "Related guides" list on the five hubs, and a
+      glossary term to guide mapping (33 terms). Tests: tests/seo/guides-sitemap.test.ts (no lastmod later than the
+      page's date), tests/seo/guide-registry.test.ts. Left for Jos: resubmit /sitemap.xml in Search Console and request
+      indexing for help-to-buy-scheme-australia, lenders-mortgage-insurance-guide, conveyancing-guide and
+      building-pest-inspection after the refresh PRs land; the /house-and-land noindex decision (the check recommends
+      noindex until it has stock). Read in Search Console around 28 Oct: the four guides' coverage and the guides'
+      impressions against the 30 Sep baseline.

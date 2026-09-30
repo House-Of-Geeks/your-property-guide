@@ -6,6 +6,7 @@ export { GuideTOC } from "./GuideTOC";
 export { Faq } from "./Faq";
 export { FaqAccordion } from "./FaqAccordion";
 export { RelatedGuides } from "./RelatedGuides";
+export { GuideLinkList, RelatedGuidesSection } from "./GuideLinkList";
 export { SectionDivider } from "./SectionDivider";
 export { MiniStampDutyEmbed } from "./MiniStampDutyEmbed";
 export { MiniBorrowingPowerEmbed } from "./MiniBorrowingPowerEmbed";

@@ -1,29 +1,16 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Callout, GuideArticleLayout, MatchCTA, SellingCostTable, Sources, type GuideFrontmatter, type GuideTOCEntry, type RelatedGuide } from "@/components/guide";
+import { Callout, GuideArticleLayout, MatchCTA, SellingCostTable, Sources, type GuideTOCEntry, type RelatedGuide } from "@/components/guide";
 import { SellingCostsCalculator } from "@/components/calculators/SellingCostsCalculator";
 import { STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
 import { EXAMPLE_PRICE, money, sellingCostTable } from "@/lib/data/selling-costs";
-import { COST_OF_SELLING_AS_OF, COST_OF_SELLING_STATE, COST_OF_SELLING_STATES } from "@/lib/data/cost-of-selling-state";
+import { COST_OF_SELLING_STATE, COST_OF_SELLING_STATES } from "@/lib/data/cost-of-selling-state";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { costOfSellingFrontmatter } from "@/lib/guides/cost-of-selling-frontmatter";
 
-/** Frontmatter for a state cost guide; the route files build their metadata from it. */
-export function costOfSellingFrontmatter(state: StateCode): GuideFrontmatter {
-  const g = COST_OF_SELLING_STATE[state];
-  const t = sellingCostTable(state);
-  return {
-    title: `Cost of Selling a House in ${t.stateName} (2026): Commission, Fees and Calculator`,
-    description: `Every cost of selling a house in ${t.stateName}: commission of ${t.commission.low}% to ${t.commission.high}%, marketing, conveyancing, the ${lowerFirst(t.documents.label)}, tax, and what is different in ${t.stateName}. Worked at ${money(t.price)}, with a calculator.`,
-    slug: g.slug,
-    publishedAt: COST_OF_SELLING_AS_OF,
-    updatedAt: COST_OF_SELLING_AS_OF,
-    readingTimeMinutes: 9,
-    author: { name: "Your Property Guide editorial", role: "Australian property research" },
-    reviewedBy: { name: "Andy McMaster", role: "Editor" },
-    persona: "selling",
-  };
-}
+// Moved to src/lib/guides so the guide registry can read it; re-exported for existing imports.
+export { costOfSellingFrontmatter };
 
 export function costOfSellingMetadata(state: StateCode): Metadata {
   const f = costOfSellingFrontmatter(state);

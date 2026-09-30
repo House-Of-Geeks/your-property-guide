@@ -28,25 +28,13 @@ import {
 import { STATE_DUTY_SCHEDULES, officeRef } from "@/lib/utils/stamp-duty";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { stampDutyFrontmatter } from "@/lib/guides/stamp-duty-frontmatter";
+
+export { stampDutyFrontmatter };
 
 // Item 20 of the September 2026 fix review: the eight state stamp duty guides
 // on one calculator-first template. Copy lives in src/lib/data/stamp-duty-state.ts
 // and every figure is computed from src/lib/utils/stamp-duty.ts.
-
-export function stampDutyFrontmatter(state: AustralianState): GuideFrontmatter {
-  const g = STAMP_DUTY_GUIDES[state];
-  return {
-    title: g.title,
-    description: g.description,
-    slug: g.slug,
-    publishedAt: STAMP_DUTY_GUIDE_PUBLISHED,
-    updatedAt: STAMP_DUTY_VERIFIED_ON,
-    readingTimeMinutes: 8,
-    author: { name: "Your Property Guide editorial", role: "Australian property research" },
-    reviewedBy: { name: "Andy McMaster", role: "Editor" },
-    persona: "first-home",
-  };
-}
 
 /** <title> and og:title take the short form; the H1 and Article headline keep the long one (frontmatter.title). */
 export function stampDutyMetadata(state: AustralianState): Metadata {

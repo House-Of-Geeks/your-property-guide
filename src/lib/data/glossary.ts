@@ -606,6 +606,59 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   },
 ];
 
+const STAMP_DUTY_GUIDES = ["nsw", "vic", "qld", "wa", "sa", "tas", "act", "nt"].map((s) => `stamp-duty-${s}`);
+
+/**
+ * The guide (and calculator) a term's page sends the reader to under "Go
+ * deeper", most specific first, keyed by term slug. `guides` are guide
+ * slugs: title and URL come from the guide registry (src/lib/guides), so a
+ * retitled guide cannot go stale here. `tools` are calculator paths listed
+ * in CALCULATOR_GUIDES (src/lib/guides/hub-guides.ts). A term with no entry
+ * keeps its persona's general guide. Added 30 Sep 2026: Google indexed the
+ * conveyancing and LMI definitions in place of the guides, and the
+ * definitions linked nothing on the topic. Add a row when a term has a guide.
+ */
+export const GLOSSARY_GUIDE_LINKS: Record<string, { guides?: readonly string[]; tools?: readonly string[] }> = {
+  "conveyancer-conveyancing": { guides: ["conveyancing-guide"] },
+  "lenders-mortgage-insurance-lmi": { guides: ["lenders-mortgage-insurance-guide", "first-home-guarantee"] },
+  "capital-gains-tax-cgt": {
+    tools: ["/cgt-calculator"],
+    guides: ["cgt-changes-2026-budget", "negative-gearing-cgt-changes-now-law-2026"],
+  },
+  "capital-gain": { tools: ["/cgt-calculator"], guides: ["cgt-changes-2026-budget"] },
+  "stamp-duty-transfer-duty": { tools: ["/stamp-duty-calculator"], guides: STAMP_DUTY_GUIDES },
+  "land-transfer-duty": { tools: ["/stamp-duty-calculator"], guides: STAMP_DUTY_GUIDES },
+  "transfer-duty": { tools: ["/stamp-duty-calculator"], guides: STAMP_DUTY_GUIDES },
+  "negative-gearing": { guides: ["negative-gearing-australia", "negative-gearing-cgt-changes-now-law-2026"] },
+  "gearing-positive-negative-neutral": { guides: ["negative-gearing-australia"] },
+  "building-inspection": { guides: ["building-pest-inspection"] },
+  "cooling-off-period": { guides: ["cooling-off-period-by-state-australia", "cooling-off-period-vic"] },
+  "buyer-apos-s-agent": { guides: ["buyers-agent-cost-australia"] },
+  "depreciation-property": { guides: ["property-depreciation-guide"] },
+  "quantity-surveyor-qs": { guides: ["property-depreciation-guide"] },
+  "firb-foreign-investment-review-board": { guides: ["foreign-buyer-firb-guide"] },
+  "bridging-finance": { guides: ["bridging-loans-guide"] },
+  "offset-account": { guides: ["offset-accounts-explained-australia"] },
+  "pre-approval-conditional-approval": { guides: ["home-loan-pre-approval-australia"] },
+  "serviceability": { tools: ["/borrowing-power-calculator"], guides: ["how-much-can-i-borrow-australia"] },
+  "mortgage-broker": { guides: ["how-to-choose-a-mortgage-broker"] },
+  "fixed-interest-rate": { guides: ["fixed-vs-variable-rate-guide"] },
+  "variable-rate": { guides: ["fixed-vs-variable-rate-guide"] },
+  "settlement": { guides: ["settlement-day-australia"] },
+  "auction": { guides: ["property-auction-guide", "auction-vs-private-treaty"] },
+  "private-sale": { guides: ["auction-vs-private-treaty"] },
+  "commission-agent": {
+    tools: ["/real-estate-commission-calculator"],
+    guides: ["real-estate-agent-fees-australia", "how-to-negotiate-real-estate-agent-commission"],
+  },
+  "exclusive-agency-agreement": { guides: ["real-estate-agency-agreements-by-state"] },
+  "open-listing": { guides: ["real-estate-agency-agreements-by-state"] },
+  "section-32-vic": { guides: ["section-32-vendor-statement-victoria"] },
+  "appraisal": { guides: ["how-much-is-my-house-worth-australia", "how-to-prepare-for-a-property-appraisal"] },
+  "valuation": { guides: ["how-much-is-my-house-worth-australia"] },
+  "rentvesting": { guides: ["rentvesting-australia", "rentvesting-australia-state-by-state-guide-2026"] },
+};
+
 export const GLOSSARY_SLUGS = new Set(GLOSSARY_TERMS.map((t) => t.slug));
 
 export function getGlossaryTerm(slug: string): GlossaryTerm | null {

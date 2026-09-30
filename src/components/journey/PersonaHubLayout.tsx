@@ -6,9 +6,11 @@ import { SellingGuideFunnel } from "./SellingGuideFunnel";
 import { BuyingGuideFunnel } from "./BuyingGuideFunnel";
 import { StickyMatchCTA } from "./StickyMatchCTA";
 import { EditorNote, Faq } from "@/components/guide";
+import { RelatedGuidesSection } from "@/components/guide/GuideLinkList";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { PERSONAS, getPersonaById, type PersonaId } from "@/lib/constants/journey";
 import { PERSONA_HUB_CONTENT } from "@/lib/persona-hub-content";
+import { hubGuideGroups, hubGuideList } from "@/lib/guides/hub-guides";
 
 interface PersonaHubLayoutProps {
   personaId: PersonaId;
@@ -123,6 +125,8 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
   const otherPersonas = PERSONAS.filter((p) => p.id !== personaId);
   const content = PERSONA_HUB_CONTENT[personaId];
   const isBuyingHub = personaId === "first-home" || personaId === "upgrading" || personaId === "investing";
+  // The hub's full guide list (titles from the guide registry), where one is defined.
+  const guideList = hubGuideList(persona.hubPath);
 
   return (
     <>
@@ -335,6 +339,18 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
           </div>
         </div>
       </section>
+
+      {/* Every guide for this persona, not just the three first reads.
+          Until 30 Sep 2026 the hubs linked two guides or none, so the
+          guides hung off /guides alone. */}
+      {guideList && (
+        <RelatedGuidesSection
+          heading={guideList.heading}
+          intro={guideList.intro}
+          groups={hubGuideGroups(guideList)}
+          id="guides"
+        />
+      )}
 
       {/* Suburb data CTA, universal */}
       <section className="relative py-16 sm:py-20 bg-surface-warm border-y border-line-warm overflow-hidden">

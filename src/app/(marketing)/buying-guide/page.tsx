@@ -5,10 +5,12 @@ import Link from "next/link";
 import { BookOpen, CheckCircle2, Clock, ShieldCheck } from "lucide-react";
 
 import { FaqAccordion } from "@/components/guide";
+import { RelatedGuidesSection } from "@/components/guide/GuideLinkList";
 import { BuyingGuideFunnel } from "@/components/journey";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HUB_GUIDE_LISTS, hubGuideGroups } from "@/lib/guides/hub-guides";
 import { StickyGuideBar } from "../selling-guide/StickyGuideBar";
 
 const META_TITLE = "Free guide to buying property in Australia (2026)";
@@ -366,6 +368,14 @@ export default function BuyingGuidePage() {
           </div>
         </div>
       </section>
+
+      {/* The process guides, below the sales flow: the page linked none of
+          them until 30 Sep 2026. Titles come from the guide registry. */}
+      <RelatedGuidesSection
+        heading={HUB_GUIDE_LISTS["/buying-guide"].heading}
+        intro={HUB_GUIDE_LISTS["/buying-guide"].intro}
+        groups={hubGuideGroups(HUB_GUIDE_LISTS["/buying-guide"])}
+      />
 
       <StickyGuideBar />
     </>

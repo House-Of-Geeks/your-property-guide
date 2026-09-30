@@ -1,0 +1,726 @@
+{
+  "_generated": "by scripts/guides/static-guide-manifest.ts from each guide's FRONTMATTER; do not edit, run npm run guides:manifest",
+  "guides": [
+    {
+      "slug": "auction-vs-private-treaty",
+      "title": "Auction vs Private Treaty: Which Way Should You Sell? (2026)",
+      "description": "Auction vs private treaty in Australia: how each method works end-to-end, the real cost differences, 2026 clearance-rate context, cooling-off and underquoting rules by state, and a decision framework for choosing the right method for your property.",
+      "publishedAt": "2026-07-03",
+      "updatedAt": "2026-07-03",
+      "readingTimeMinutes": 10,
+      "persona": "selling"
+    },
+    {
+      "slug": "best-brisbane-suburbs-for-families-2026",
+      "title": "Best Brisbane Suburbs for Families in 2026",
+      "description": "The 10 best Brisbane suburbs for families in 2026, ranked by school quality, parks, walkability, commute time and median house price. Honest pros and cons for each.",
+      "publishedAt": "2026-05-06",
+      "updatedAt": "2026-05-06",
+      "readingTimeMinutes": 10,
+      "persona": "first-home"
+    },
+    {
+      "slug": "best-time-to-buy-property-australia",
+      "title": "Best Time to Buy Property in Australia: Seasons, Cycles, and Market Signals (2026)",
+      "description": "When is the best time to buy property in Australia? The honest answer covers seasonal patterns (winter softness), the rate cycle, life stage, and why 'time in market' usually beats 'timing the market'.",
+      "publishedAt": "2026-05-06",
+      "updatedAt": "2026-05-06",
+      "readingTimeMinutes": 8,
+      "persona": "first-home"
+    },
+    {
+      "slug": "best-time-to-sell-a-house-australia",
+      "title": "The Best Time to Sell a House in Australia (2026)",
+      "description": "When to sell a house in Australia: why spring and early autumn draw the most buyers, the case for selling in winter, why your suburb matters more than the month, and how interest rates and preparation beat timing the calendar.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-06-14",
+      "readingTimeMinutes": 8,
+      "persona": "selling"
+    },
+    {
+      "slug": "bridging-loans-guide",
+      "title": "Bridging Loans Australia: How They Work, Costs & When to Use One (2026)",
+      "description": "Bridging loan guide for Australians moving home: how peak debt and end debt work, typical interest rates, capitalised interest, the 6 to 12 month bridging period, and the alternatives.",
+      "publishedAt": "2026-05-06",
+      "updatedAt": "2026-05-06",
+      "readingTimeMinutes": 9,
+      "persona": "upgrading"
+    },
+    {
+      "slug": "building-pest-inspection",
+      "title": "Building and Pest Inspection Cost in Australia (2026): Prices by City and Property Type",
+      "description": "What a building and pest inspection costs in Sydney, Melbourne, Brisbane, Perth, Adelaide, Hobart, Canberra and Darwin, by unit, house and large property, combined or separate, from inspectors' own price lists, plus who pays and what the report covers.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-09-30",
+      "readingTimeMinutes": 11,
+      "persona": "first-home"
+    },
+    {
+      "slug": "buyers-agent-cost-australia",
+      "title": "How Much Does a Buyer's Agent Cost in Australia? (2026)",
+      "description": "Buyer's agent fees in Australia: fixed fees vs percentage commissions, typical ranges by market, what's included, and when paying $10K to $25K is worth it.",
+      "publishedAt": "2026-05-06",
+      "updatedAt": "2026-05-06",
+      "readingTimeMinutes": 8,
+      "persona": "investing"
+    },
+    {
+      "slug": "buying-property-australia",
+      "title": "How to buy property in Australia: the complete step-by-step guide (2026)",
+      "description": "Everything you need to know about buying property in Australia. From assessing your finances and researching suburbs through to inspections, exchange, and settlement.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 15,
+      "persona": "first-home"
+    },
+    {
+      "slug": "capital-growth-vs-cash-flow-australia",
+      "title": "Capital growth vs cash flow: how Australian property investors actually choose (2026)",
+      "description": "The investor decision that gets oversimplified into one sentence. What capital growth and cash flow really mean for an Australian property portfolio, how to model the trade-off, and which strategy fits which life stage.",
+      "publishedAt": "2026-05-18",
+      "updatedAt": "2026-05-18",
+      "readingTimeMinutes": 14,
+      "persona": "investing"
+    },
+    {
+      "slug": "conveyancing-guide",
+      "title": "Conveyancing Fees in Australia (2026): Costs in NSW, VIC, QLD and Every State",
+      "description": "What conveyancing costs to buy or sell in NSW, Victoria, Queensland and every other state: professional fees, searches, PEXA and registry fees from the 2026/27 schedules, a cost estimator, and when to use a solicitor.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-09-30",
+      "readingTimeMinutes": 13,
+      "persona": "first-home"
+    },
+    {
+      "slug": "cooling-off-period-by-state-australia",
+      "title": "Cooling-Off Period by State: How Long You Have to Pull Out (Australia 2026)",
+      "description": "Cooling-off periods on Australian property purchases vary by state, from 0 days at auction in Tasmania to 5 days in NSW. Full state-by-state table, how to waive, and how to use it well.",
+      "publishedAt": "2026-05-06",
+      "updatedAt": "2026-09-20",
+      "readingTimeMinutes": 7,
+      "persona": "first-home"
+    },
+    {
+      "slug": "cooling-off-period-vic",
+      "title": "Cooling-Off Period in Victoria (2026)",
+      "description": "The Victorian cooling-off period explained: how long you have, when it applies (and when it doesn't), the penalty if you withdraw, and how it interacts with auctions and Section 32 statements.",
+      "publishedAt": "2026-05-13",
+      "updatedAt": "2026-05-13",
+      "readingTimeMinutes": 7,
+      "persona": "first-home"
+    },
+    {
+      "slug": "cost-of-selling-a-house-australia",
+      "title": "The Cost of Selling a House in Australia (2026): Every Fee Explained",
+      "description": "Every cost of selling a house in Australia: agent commission, marketing, conveyancing, styling, repairs, auction and discharge fees, plus capital gains tax on an investment. With a worked example and where you can negotiate.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-09-20",
+      "readingTimeMinutes": 9,
+      "persona": "selling"
+    },
+    {
+      "slug": "downsizers-guide",
+      "title": "Downsizer's guide to Australian property: super contributions and concessions (2026)",
+      "description": "How the $300,000 downsizer super contribution works, stamp duty concessions, retirement village contracts, CGT, Centrelink implications, and practical considerations.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 7,
+      "persona": "upgrading"
+    },
+    {
+      "slug": "due-diligence-checklist-buying-a-house",
+      "title": "Due Diligence Checklist for Buying a House in Australia (2026)",
+      "description": "Every check, document, and red flag to investigate before you sign a contract on an Australian residential property. Use as a pre-offer and pre-settlement playbook.",
+      "publishedAt": "2026-05-13",
+      "updatedAt": "2026-05-13",
+      "readingTimeMinutes": 13,
+      "persona": "first-home"
+    },
+    {
+      "slug": "first-home-buyer-act",
+      "title": "First Home Buyer Guide ACT: Schemes, Stamp Duty & Canberra Property (2026)",
+      "description": "ACT first home buyer guide: no FHOG (instead a full stamp duty waiver via the Home Buyer Concession Scheme), ACT Shared Equity, $750,000 First Home Guarantee cap, and how leasehold land works.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 9,
+      "persona": "first-home"
+    },
+    {
+      "slug": "first-home-buyer-guide",
+      "title": "First Home Buyer Guide Australia: Grants, Schemes & Steps (2026)",
+      "description": "Complete guide for Australian first home buyers: federal grants and schemes (FHBG, Family Home Guarantee), state grants by state, stamp duty concessions, and step-by-step buying advice.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 10,
+      "persona": "first-home"
+    },
+    {
+      "slug": "first-home-buyer-mistakes-to-avoid",
+      "title": "10 First Home Buyer Mistakes to Avoid (and How to Fix Them), Australia 2026",
+      "description": "The 10 most expensive mistakes Australian first home buyers make in 2026, from over-stretching on a deposit to skipping building inspections. Each mistake explained with the simple fix.",
+      "publishedAt": "2026-05-06",
+      "updatedAt": "2026-05-06",
+      "readingTimeMinutes": 9,
+      "persona": "first-home"
+    },
+    {
+      "slug": "first-home-buyer-nsw",
+      "title": "First Home Buyer Guide NSW: Grants, Stamp Duty & Schemes (2026)",
+      "description": "NSW first home buyer guide: $10,000 FHOG for new homes, stamp duty exemption up to $800K, concession to $1M, federal schemes, and step-by-step NSW buying advice.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 7,
+      "persona": "first-home"
+    },
+    {
+      "slug": "first-home-buyer-nt",
+      "title": "First Home Buyer Guide Northern Territory: Grants & Schemes (2026)",
+      "description": "NT first home buyer guide: $10,000 FHOG, First Home Owner Discount of up to $23,928.60 in stamp duty relief, leasehold land considerations, and federal scheme caps for Darwin.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 8,
+      "persona": "first-home"
+    },
+    {
+      "slug": "first-home-buyer-qld",
+      "title": "First Home Buyer Guide QLD: $30K Grant, Stamp Duty & Schemes (2026)",
+      "description": "Queensland first home buyer guide: $30,000 FHOG for new homes under $750K (locked in by the 2026-27 QLD Budget), zero stamp duty on new homes, federal schemes, and QLD buying tips.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-07-24",
+      "readingTimeMinutes": 7,
+      "persona": "first-home"
+    },
+    {
+      "slug": "first-home-buyer-sa",
+      "title": "First Home Buyer Guide South Australia: Grants, Stamp Duty & Schemes (2026)",
+      "description": "Complete guide for first home buyers in South Australia: $15,000 FHOG, stamp duty rules, First Home Guarantee, HomeSeeker SA shared equity, and off-the-plan concessions.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 9,
+      "persona": "first-home"
+    },
+    {
+      "slug": "first-home-buyer-tas",
+      "title": "First Home Buyer Guide Tasmania: Grants, Stamp Duty & Schemes (2026)",
+      "description": "Tasmania first home buyer guide: $30,000 FHOG on new homes, 50% stamp duty concession on established homes up to $600K, federal schemes, and Tasmania's affordability advantage.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-07-24",
+      "readingTimeMinutes": 8,
+      "persona": "first-home"
+    },
+    {
+      "slug": "first-home-buyer-vic",
+      "title": "First Home Buyer Guide VIC: Grants, Stamp Duty & Schemes (2026)",
+      "description": "Victoria first home buyer guide: $10K FHOG (regional $20K), stamp duty exemption up to $600K, concession to $750K, federal schemes, and VIC buying tips.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 7,
+      "persona": "first-home"
+    },
+    {
+      "slug": "first-home-buyer-wa",
+      "title": "First Home Buyer Guide WA: $10K Grant, Stamp Duty & Schemes (2026)",
+      "description": "Western Australia first home buyer guide: $10,000 FHOG for new homes under $750K, stamp duty exemption under $450K, concession to $600K, federal schemes, and Keystart loans.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 7,
+      "persona": "first-home"
+    },
+    {
+      "slug": "first-home-guarantee",
+      "title": "First Home Guarantee 2026: Buy With a 5% Deposit, No LMI",
+      "description": "How the Australian Government 5% Deposit Scheme (the expanded First Home Guarantee) lets eligible first home buyers purchase with a 5% deposit and no Lenders Mortgage Insurance. The 2025 expansion, price caps, the Family Home Guarantee, and how it stacks with the FHOG.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-06-16",
+      "readingTimeMinutes": 8,
+      "persona": "first-home"
+    },
+    {
+      "slug": "first-home-owner-grant-australia",
+      "title": "First Home Owner Grant (FHOG) by State: 2026 Amounts & Eligibility",
+      "description": "The First Home Owner Grant is a state grant, not federal. See FHOG amounts, price caps and eligibility for every state and territory, plus links to each state's detailed guide.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-07-24",
+      "readingTimeMinutes": 8,
+      "persona": "first-home"
+    },
+    {
+      "slug": "first-home-super-saver-scheme",
+      "title": "First Home Super Saver Scheme (FHSS): Save Your Deposit in Super (2026)",
+      "description": "How the First Home Super Saver scheme works: make extra contributions into super, withdraw them plus earnings for a first-home deposit, and pocket the tax saving. Limits, the ATO release process, and the timing trap explained.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-06-14",
+      "readingTimeMinutes": 8,
+      "persona": "first-home"
+    },
+    {
+      "slug": "fixed-vs-variable-rate-guide",
+      "title": "Fixed vs variable rate home loans: which is better in 2026?",
+      "description": "Pros and cons of fixed and variable rate home loans in Australia. Split loans explained, break costs that surprise borrowers, the RBA rate context for 2026, and the questions to ask before fixing.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 6,
+      "persona": "first-home"
+    },
+    {
+      "slug": "foreign-buyer-firb-guide",
+      "title": "Buying property in Australia as a foreign buyer: complete FIRB guide (2026)",
+      "description": "Who counts as a foreign buyer, what properties you can purchase, FIRB application process and fees, state-by-state foreign-buyer surcharges, and tax implications.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 12,
+      "persona": "investing"
+    },
+    {
+      "slug": "granny-flat-guide-nsw",
+      "title": "Granny Flat Guide NSW: Rules, Costs & Rental Returns (2026)",
+      "description": "Everything you need to know about building a granny flat in NSW: complying development rules, build costs, rental income, and how to maximise your return.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 8,
+      "persona": "investing"
+    },
+    {
+      "slug": "granny-flat-guide-qld",
+      "title": "Granny Flat Guide Queensland: Rules, Costs & Investment Returns (2026)",
+      "description": "Building a secondary dwelling in Queensland: planning rules, Brisbane City Council requirements, costs, and rental returns in QLD's tight rental market.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 7,
+      "persona": "investing"
+    },
+    {
+      "slug": "granny-flat-guide-sa",
+      "title": "Granny Flat Guide South Australia: Rules, Costs & Planning (2026)",
+      "description": "Building a secondary dwelling in SA: Planning and Design Code, complying development pathway, lot sizes, costs $100K to $180K, owner-occupier rule, and PlanSA portal.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 9,
+      "persona": "investing"
+    },
+    {
+      "slug": "granny-flat-guide-vic",
+      "title": "Granny Flat Guide Victoria: Rules, Costs & Approvals (2026)",
+      "description": "Building a secondary dwelling in Victoria: planning permits, ResCode, council rules, costs, and what makes VIC slower and more expensive than NSW.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 7,
+      "persona": "investing"
+    },
+    {
+      "slug": "granny-flat-guide-wa",
+      "title": "Granny Flat Guide Western Australia: Rules, Costs & Approvals (2026)",
+      "description": "Building a granny flat (ancillary dwelling) in WA: R-Codes, lot sizes, building permit process, owner-occupier rules, costs $80K to $200K, and Perth rental demand.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 9,
+      "persona": "investing"
+    },
+    {
+      "slug": "help-to-buy-scheme-australia",
+      "title": "Help to Buy Scheme Australia: How the Shared Equity Scheme Works (2026)",
+      "description": "How the federal Help to Buy shared equity scheme works: the government takes up to 40% equity on a new home or 30% on an existing one, you buy with a 2% deposit, income and price caps apply, and you can buy the stake out over time.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-06-14",
+      "readingTimeMinutes": 8,
+      "persona": "first-home"
+    },
+    {
+      "slug": "home-loan-pre-approval-australia",
+      "title": "Home Loan Pre-approval in Australia (2026)",
+      "description": "What home loan pre-approval actually means, how to get it, how long it lasts, and the difference between conditional pre-approval and formal approval. Plain English, no bank jargon.",
+      "publishedAt": "2026-05-13",
+      "updatedAt": "2026-05-13",
+      "readingTimeMinutes": 10,
+      "persona": "first-home"
+    },
+    {
+      "slug": "home-staging-cost-australia",
+      "title": "Home Staging Costs in Australia (2026): What Property Styling Really Costs",
+      "description": "What home staging costs in Australia in 2026: full styling prices by city, partial and virtual staging, the six-week hire terms to watch, what the ROI claims are really worth, DIY staging on a budget, and when to skip staging entirely.",
+      "publishedAt": "2026-07-03",
+      "updatedAt": "2026-07-03",
+      "readingTimeMinutes": 10,
+      "persona": "selling"
+    },
+    {
+      "slug": "house-vs-apartment-investment-australia",
+      "title": "House vs Apartment Investment in Australia: Which Builds More Wealth? (2026)",
+      "description": "Houses vs apartments as investments in Australia: capital growth, rental yield, holding costs, and liquidity compared. Worked examples and the case for each.",
+      "publishedAt": "2026-05-06",
+      "updatedAt": "2026-05-06",
+      "readingTimeMinutes": 9,
+      "persona": "investing"
+    },
+    {
+      "slug": "how-long-does-it-take-to-buy-a-house-australia",
+      "title": "How Long Does It Take to Buy a House in Australia? Realistic 2026 Timelines",
+      "description": "From pre-approval to keys in hand, how long does buying a house in Australia really take? A realistic week-by-week breakdown with the typical delays that catch first-time buyers off guard.",
+      "publishedAt": "2026-05-06",
+      "updatedAt": "2026-05-06",
+      "readingTimeMinutes": 8,
+      "persona": "first-home"
+    },
+    {
+      "slug": "how-much-can-i-borrow-australia",
+      "title": "How Much Can I Borrow? Home Loan Borrowing Power in Australia (2026)",
+      "description": "How lenders work out your borrowing power: income, living expenses, debts, dependants, deposit and the serviceability buffer. Why two banks give different numbers, and how to lift your capacity.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-06-14",
+      "readingTimeMinutes": 8,
+      "persona": "first-home"
+    },
+    {
+      "slug": "how-much-deposit-to-buy-a-house",
+      "title": "How Much Deposit Do You Need to Buy a House in Australia? (2026)",
+      "description": "The full breakdown of house deposit requirements in Australia: 5% with LMI, 10% standard, 20% to skip LMI. Includes worked examples, government schemes, and a practical roadmap.",
+      "publishedAt": "2026-05-06",
+      "updatedAt": "2026-05-06",
+      "readingTimeMinutes": 9,
+      "persona": "first-home"
+    },
+    {
+      "slug": "how-much-is-my-house-worth-australia",
+      "title": "How Much Is My House Worth? Free Property Appraisal (Australia)",
+      "description": "Pick your suburb, see what houses there are selling for, and get a free appraisal from a local agent. Plus the three ways a house is valued in Australia, why they disagree, and what actually drives your number.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-09-30",
+      "readingTimeMinutes": 9,
+      "persona": "selling"
+    },
+    {
+      "slug": "how-to-choose-a-mortgage-broker",
+      "title": "How to Choose a Mortgage Broker in Australia (2026)",
+      "description": "How to pick a mortgage broker who works for you, not their lender panel. The questions to ask, what 'best interests duty' actually means, how brokers are paid, and the red flags worth walking away from.",
+      "publishedAt": "2026-05-13",
+      "updatedAt": "2026-05-13",
+      "readingTimeMinutes": 11,
+      "persona": "first-home"
+    },
+    {
+      "slug": "how-to-choose-a-selling-agent",
+      "title": "How to Choose a Selling Agent in Australia (2026)",
+      "description": "A practical guide to picking the right real estate agent to sell your home: how to interview, what questions to ask, the appraisal trap, fee structures, and how to negotiate the listing agreement.",
+      "publishedAt": "2026-05-06",
+      "updatedAt": "2026-05-06",
+      "readingTimeMinutes": 9,
+      "persona": "selling"
+    },
+    {
+      "slug": "how-to-find-a-builder-australia",
+      "title": "How to Find a Builder in Australia (2026)",
+      "description": "How to shortlist, vet, and engage a residential builder for renovations and new builds in Australia. Licences, insurance, contracts, references, and the red flags worth walking away from.",
+      "publishedAt": "2026-05-13",
+      "updatedAt": "2026-05-13",
+      "readingTimeMinutes": 12,
+      "persona": "renovating"
+    },
+    {
+      "slug": "how-to-negotiate-property-price-australia",
+      "title": "How to negotiate property price in Australia: the buyer's playbook (2026)",
+      "description": "Practical, agent-aware negotiation tactics for buying property in Australia. Opening offers, counter-offer logic, conditional clauses, walk-away triggers and the mistakes that cost real money.",
+      "publishedAt": "2026-05-18",
+      "updatedAt": "2026-05-18",
+      "readingTimeMinutes": 13,
+      "persona": "first-home"
+    },
+    {
+      "slug": "how-to-negotiate-real-estate-agent-commission",
+      "title": "How to Negotiate Real Estate Agent Commission in Australia (2026)",
+      "description": "Agent commission is not set by law anywhere in Australia, every rate is an opening offer. Average commission by state, what's actually negotiable, tiered structures, word-for-word scripts, and when a cheap agent costs more than they save.",
+      "publishedAt": "2026-07-03",
+      "updatedAt": "2026-07-03",
+      "readingTimeMinutes": 10,
+      "persona": "selling"
+    },
+    {
+      "slug": "how-to-prepare-for-a-property-appraisal",
+      "title": "How to Prepare for a Property Appraisal (2026): What Agents Look For",
+      "description": "How to prepare for a property appraisal: what agents assess in the walkthrough, what to clean and fix beforehand, the paperwork to have ready, how to spot an inflated appraisal, and the difference between an appraisal and a bank valuation.",
+      "publishedAt": "2026-07-03",
+      "updatedAt": "2026-07-03",
+      "readingTimeMinutes": 10,
+      "persona": "selling"
+    },
+    {
+      "slug": "how-to-sell-a-house-australia",
+      "title": "How to Sell a House in Australia (2026)",
+      "description": "A step-by-step guide to selling residential property in Australia: deciding when to sell, choosing the right agent, setting price, the auction vs private treaty decision, the campaign, contracts and settlement.",
+      "publishedAt": "2026-05-13",
+      "updatedAt": "2026-05-13",
+      "readingTimeMinutes": 14,
+      "persona": "selling"
+    },
+    {
+      "slug": "lenders-mortgage-insurance-guide",
+      "title": "Lenders Mortgage Insurance: What it costs and how to avoid it (2026)",
+      "description": "Complete guide to LMI in Australia. What it is (and isn't), when it applies, what it costs, who provides it (Helia, Arch), how to capitalise it into your loan, and four ways to avoid it.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 7,
+      "persona": "first-home"
+    },
+    {
+      "slug": "negative-gearing-australia",
+      "title": "Negative gearing in Australia: how it works (2026)",
+      "description": "How negative gearing actually works, what's deductible and what isn't, the depreciation overlay, the CGT connection, the risks, and whether the rules will change.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 8,
+      "persona": "investing"
+    },
+    {
+      "slug": "offset-accounts-explained-australia",
+      "title": "Offset accounts explained: how they work, what they save, and when they don't (2026)",
+      "description": "The mortgage feature most Australians use wrong. What an offset account actually does, how it saves interest mechanically, when it's worth the package fee, redraw vs offset, and how to use it as a deposit-builder for the next purchase.",
+      "publishedAt": "2026-05-18",
+      "updatedAt": "2026-05-18",
+      "readingTimeMinutes": 11,
+      "persona": "first-home"
+    },
+    {
+      "slug": "property-auction-guide",
+      "title": "Property auctions in Australia: how to bid and how to sell (2026)",
+      "description": "How auctions actually work in Australia. The reserve price, vendor bids, what 'passed in' means, why finance must be unconditional before auction day, and bidding strategies that don't lose you money.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-09-20",
+      "readingTimeMinutes": 9,
+      "persona": "selling"
+    },
+    {
+      "slug": "property-depreciation-guide",
+      "title": "Property depreciation: how investors maximise tax deductions (2026)",
+      "description": "Division 40 vs Division 43 explained, who can claim, the 2017 second-hand plant and equipment rule change, quantity surveyor reports, worked examples, and how to claim in your return.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 7,
+      "persona": "investing"
+    },
+    {
+      "slug": "property-management-fees-australia",
+      "title": "Property Management Fees in Australia 2026: Rates by State, With Calculator",
+      "description": "Management fees by state for 2026 (5.8% NSW to 8.7% WA and Tasmania), letting fees in weeks, renewal, inspection and statement charges, sourced and dated, with an annual cost calculator.",
+      "publishedAt": "2026-05-06",
+      "updatedAt": "2026-09-30",
+      "readingTimeMinutes": 12,
+      "persona": "investing"
+    },
+    {
+      "slug": "questions-to-ask-a-real-estate-agent",
+      "title": "23 Questions to Ask a Real Estate Agent Before You List (2026)",
+      "description": "The questions to ask a real estate agent when selling: comparable sales, sale method, commission and marketing costs, the agency agreement, buyer qualification and what happens if it doesn't sell — with what a good answer sounds like versus an evasive one.",
+      "publishedAt": "2026-07-03",
+      "updatedAt": "2026-07-03",
+      "readingTimeMinutes": 11,
+      "persona": "selling"
+    },
+    {
+      "slug": "real-estate-agent-fees-australia",
+      "title": "Real estate agent fees and commission in Australia (2026)",
+      "description": "What real estate agents charge across Australia: commission rates by state, what's included, marketing costs charged separately, fixed-fee alternatives, and how to negotiate.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-09-30",
+      "readingTimeMinutes": 8,
+      "persona": "selling"
+    },
+    {
+      "slug": "real-estate-commission-act",
+      "title": "Real Estate Commission ACT 2026: Canberra Rates, Fees & Calculator",
+      "description": "What real estate agents charge in Canberra and the ACT: typical commission of 1.8% to 2.25% (2.1% is most common), a calculator preset to the ACT rate, how it's structured, whether it includes GST, worked dollar examples by sale price, and how to negotiate.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-09-30",
+      "readingTimeMinutes": 8,
+      "persona": "selling"
+    },
+    {
+      "slug": "real-estate-commission-nsw",
+      "title": "Real Estate Commission NSW 2026: Sydney Rates, Fees & Calculator",
+      "description": "What real estate agents charge in Sydney and across NSW: typical commission of 1.8% to 2.5% (around 2% is common), a calculator preset to the NSW rate, worked dollar examples by sale price, GST, what's included, and how to negotiate.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-09-30",
+      "readingTimeMinutes": 8,
+      "persona": "selling"
+    },
+    {
+      "slug": "real-estate-commission-nt",
+      "title": "Real Estate Commission NT 2026: Rates, Fees & Calculator",
+      "description": "What real estate agents charge in the Northern Territory: typical commission of 2.4% to 2.7% (2.5% most common), a calculator preset to the NT rate, worked dollar examples, GST, what's included, and how to negotiate.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-09-08",
+      "readingTimeMinutes": 8,
+      "persona": "selling"
+    },
+    {
+      "slug": "real-estate-commission-qld",
+      "title": "Real Estate Commission QLD 2026: Brisbane Rates, Fees & Calculator",
+      "description": "What real estate agents charge in Brisbane and across Queensland: the typical 2.3% to 2.9% commission range, a calculator preset to the QLD rate, worked dollar examples, GST, how commission is structured, and how to negotiate in a deregulated market.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-09-30",
+      "readingTimeMinutes": 8,
+      "persona": "selling"
+    },
+    {
+      "slug": "real-estate-commission-sa",
+      "title": "Real Estate Commission SA 2026: Adelaide Rates, Fees & Calculator",
+      "description": "What real estate agents charge in Adelaide and across South Australia: the typical commission range, a calculator preset to the SA rate, worked dollar examples by sale price, how fees are structured, GST, and how to negotiate.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-09-30",
+      "readingTimeMinutes": 8,
+      "persona": "selling"
+    },
+    {
+      "slug": "real-estate-commission-tas",
+      "title": "Real Estate Commission TAS 2026: Hobart Rates, Fees & Calculator",
+      "description": "What real estate agents charge in Hobart and across Tasmania: the typical commission range, the most common rate, a calculator preset to the TAS rate, worked dollar examples on a TAS sale, how commission is structured, whether it includes GST, and how to negotiate.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-09-30",
+      "readingTimeMinutes": 8,
+      "persona": "selling"
+    },
+    {
+      "slug": "real-estate-commission-vic",
+      "title": "Real Estate Commission VIC 2026: Melbourne Rates, Fees & Calculator",
+      "description": "What real estate agents charge in Melbourne and across Victoria: the typical 1.6% to 2.5% commission range, a calculator preset to the VIC rate, worked examples on common sale prices, how GST applies, what's included, and how to negotiate.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-09-30",
+      "readingTimeMinutes": 8,
+      "persona": "selling"
+    },
+    {
+      "slug": "real-estate-commission-wa",
+      "title": "Real Estate Commission WA 2026: Perth Rates, Fees & Calculator",
+      "description": "What real estate agents charge in Perth and across Western Australia: the typical commission range, the most common rate, a calculator preset to the WA rate, worked dollar examples by sale price, GST, what's included, and how to negotiate.",
+      "publishedAt": "2026-06-14",
+      "updatedAt": "2026-09-30",
+      "readingTimeMinutes": 8,
+      "persona": "selling"
+    },
+    {
+      "slug": "renovation-cost-australia-2026",
+      "title": "Renovation Cost in Australia (2026): Tables and Calculator",
+      "description": "Renovation costs in Australia at September 2026: kitchens, bathrooms, laundries, extensions and rebuilds by finish level, per m² by state, and a calculator.",
+      "publishedAt": "2026-05-13",
+      "updatedAt": "2026-09-30",
+      "readingTimeMinutes": 17,
+      "persona": "renovating"
+    },
+    {
+      "slug": "renters-rights-act",
+      "title": "Renter's Rights in the ACT: Complete Guide for Canberra Tenants (2026)",
+      "description": "ACT tenant rights: bond, rent increases (8 weeks notice, 12 months between), no-grounds eviction protections, pet rights, minimum standards, and ACAT dispute resolution.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 10
+    },
+    {
+      "slug": "renters-rights-nsw",
+      "title": "Renter's Rights in NSW: Complete Guide for Tenants (2026)",
+      "description": "Everything NSW tenants need to know: bond rules, rent increases, repairs, entry rights, ending a tenancy, and how to resolve disputes through NCAT.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 10
+    },
+    {
+      "slug": "renters-rights-nt",
+      "title": "Renter's Rights in the Northern Territory: Complete Guide (2026)",
+      "description": "NT tenant rights: bond rules, rent increases (30 days notice), tropical-climate urgent repairs, remote community housing, and NTCAT dispute resolution.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 9
+    },
+    {
+      "slug": "renters-rights-qld",
+      "title": "Renter's Rights in Queensland: Complete Guide (2026)",
+      "description": "QLD tenant rights: bond, rent increases, repairs, entry, pet ownership reforms, and the 2024 grounds-based eviction laws. Includes RTA and QCAT dispute info.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 10
+    },
+    {
+      "slug": "renters-rights-sa",
+      "title": "Renter's Rights in South Australia: Complete Guide (2026)",
+      "description": "SA tenant rights: bond, rent increases, repairs, entry rights, and ending a tenancy under the Residential Tenancies Act 1995, plus SACAT dispute resolution.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 8
+    },
+    {
+      "slug": "renters-rights-tas",
+      "title": "Renter's Rights in Tasmania: Complete Guide for Tenants (2026)",
+      "description": "Tasmania tenant rights: bond rules, rent increases (12-month minimum, 42 days notice), inspections, repairs, ending a tenancy, and CBOS / Magistrates Court dispute resolution.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 9
+    },
+    {
+      "slug": "renters-rights-vic",
+      "title": "Renter's Rights in Victoria: Complete Guide (2026)",
+      "description": "Victoria's renter rights: no-grounds evictions abolished, pet ownership, modification rights, bond rules, rent increases, and VCAT disputes.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 10
+    },
+    {
+      "slug": "renters-rights-wa",
+      "title": "Renter's Rights in Western Australia: Complete Guide (2026)",
+      "description": "WA tenant rights: bond, rent increases, repairs, entry rights, and ending a tenancy under the Residential Tenancies Act 1987, plus how disputes work in WA without a tribunal.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 8
+    },
+    {
+      "slug": "rentvesting-australia",
+      "title": "Rentvesting in Australia: A Practical Guide (2026)",
+      "description": "Rent where you want to live, buy where it makes financial sense. How rentvesting actually works in Australia, the maths, the tax position, the first home buyer scheme trade-off, and when it's the right call.",
+      "publishedAt": "2026-05-13",
+      "updatedAt": "2026-05-13",
+      "readingTimeMinutes": 12,
+      "persona": "investing"
+    },
+    {
+      "slug": "sell-first-or-buy-first",
+      "title": "Sell First or Buy First? The Australian Mover's Decision Guide (2026)",
+      "description": "When you're moving home, do you sell first or buy first? Walk through the trade-offs, market signals, and the three financing options (sell first, subject-to-sale, bridging loan) with worked examples.",
+      "publishedAt": "2026-05-06",
+      "updatedAt": "2026-05-06",
+      "readingTimeMinutes": 8,
+      "persona": "upgrading"
+    },
+    {
+      "slug": "settlement-day-australia",
+      "title": "What happens on settlement day in Australia (2026 walkthrough)",
+      "description": "Settlement day in plain English: who does what, the order things happen, what can delay it, the final inspection, the funds flow and when you actually get the keys. State-by-state notes for NSW, VIC, QLD, WA, SA, TAS, ACT and NT.",
+      "publishedAt": "2026-05-18",
+      "updatedAt": "2026-05-18",
+      "readingTimeMinutes": 12,
+      "persona": "first-home"
+    },
+    {
+      "slug": "smsf-property-guide",
+      "title": "Buying property in an SMSF: complete guide (2026)",
+      "description": "How SMSFs invest in property: the sole purpose test, residential vs commercial rules, LRBA borrowing, costs, tax advantages including 0% in pension phase, and the risks.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-04-15",
+      "readingTimeMinutes": 10,
+      "persona": "investing"
+    },
+    {
+      "slug": "sydney-vs-melbourne-property-market",
+      "title": "Sydney vs Melbourne Property Market: Which Should You Buy In? (2026)",
+      "description": "Sydney vs Melbourne in 2026: median prices, capital growth, rental yields, affordability, and lifestyle compared. The honest case for each market and who each suits.",
+      "publishedAt": "2026-05-06",
+      "updatedAt": "2026-05-06",
+      "readingTimeMinutes": 9,
+      "persona": "investing"
+    },
+    {
+      "slug": "what-to-fix-before-selling-a-house",
+      "title": "What to Fix Before Selling a House (2026): What Pays, What Doesn't",
+      "description": "The repairs that return money when selling a house in Australia and the renovations that never do: the buyer-turnoff list, what building inspectors flag, cosmetic wins under $5,000, the over-capitalisation trap, and when to sell as-is.",
+      "publishedAt": "2026-07-03",
+      "updatedAt": "2026-07-03",
+      "readingTimeMinutes": 10,
+      "persona": "selling"
+    }
+  ]
+}
