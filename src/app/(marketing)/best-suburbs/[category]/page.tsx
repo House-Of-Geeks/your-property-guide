@@ -11,6 +11,7 @@ import {
   BestSuburbsListing,
   CATEGORY_CONFIG,
 } from "@/components/best-suburbs/BestSuburbsListing";
+import { cityEditionLinks, indexableCityEditionsForLinks } from "@/lib/services/city-rankings-service";
 
 export const revalidate = 86400;
 
@@ -82,6 +83,8 @@ export default async function BestSuburbsCategoryPage({
   const suburbs = await getRankedSuburbs(cat, undefined, 50);
   const eligible = await getRankingEligibleCount(cat, undefined);
   const note = rankingNote(cat, null, suburbs.length, eligible);
+  // The capital-city editions of this ranking that have ten suburbs to show.
+  const cityEditions = cityEditionLinks(await indexableCityEditionsForLinks(), { category: cat });
 
   return (
     <BestSuburbsListing
@@ -89,6 +92,7 @@ export default async function BestSuburbsCategoryPage({
       state={null}
       suburbs={suburbs}
       note={note}
+      cityEditions={cityEditions}
       // Use static state routes (/best-suburbs/[category]/[state]) for the
       // chips so users land on canonical SEO URLs rather than ?state= params.
       useStaticStateRoutes

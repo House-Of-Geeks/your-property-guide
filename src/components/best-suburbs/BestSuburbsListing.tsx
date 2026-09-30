@@ -3,6 +3,8 @@ import Image from "next/image";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, ItemListJsonLd, FAQPageJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
+import { cityEditionLinkLabel, cityEditionPath } from "@/lib/city-editions";
+import type { CapitalCity } from "@/lib/utils/metro";
 import {
   type RankingCategory,
   type RankedSuburb,
@@ -190,6 +192,12 @@ interface BestSuburbsListingProps {
    * permutation route). If false, they link to /best-suburbs/[category]?state=NSW.
    */
   useStaticStateRoutes?: boolean;
+  /**
+   * The capital-city editions of this ranking with ten suburbs to show
+   * (/best-suburbs/[category]/[city]); the page passes the state's, or all
+   * of them on the national list. Empty when none qualifies.
+   */
+  cityEditions?: { category: RankingCategory; city: CapitalCity }[];
 }
 
 export function BestSuburbsListing({
@@ -198,6 +206,7 @@ export function BestSuburbsListing({
   suburbs,
   note,
   useStaticStateRoutes = false,
+  cityEditions = [],
 }: BestSuburbsListingProps) {
   const config = CATEGORY_CONFIG[category];
   // A national list mixes suburb medians with ABS area medians.
@@ -368,6 +377,24 @@ export function BestSuburbsListing({
             </Link>
           ))}
         </div>
+
+        {/* The city editions: the same ranking over a greater capital city, one section per suburb */}
+        {cityEditions.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2 mb-6">
+            <span className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mr-2">
+              By city
+            </span>
+            {cityEditions.map((e) => (
+              <Link
+                key={e.city.slug}
+                href={cityEditionPath(e.category, e.city.slug)}
+                className="px-3 py-1.5 rounded-lg text-sm font-sans font-medium bg-surface-raised border border-line text-ink hover:border-primary/40 hover:text-primary transition-colors"
+              >
+                {cityEditionLinkLabel(e.category, e.city)}
+              </Link>
+            ))}
+          </div>
+        )}
 
         {/* Results count, and where the figures come from */}
         {suburbs.length > 0 && (

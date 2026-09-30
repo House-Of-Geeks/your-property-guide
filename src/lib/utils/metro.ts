@@ -20,6 +20,13 @@ export interface CapitalCity {
   state: string;
   /** Inclusive numeric postcode ranges covering the greater-city area. */
   ranges: [number, number][];
+  /**
+   * The city's General Post Office, the conventional city-centre point, in
+   * decimal degrees (WGS84). Distances "to the CBD" on the best-suburbs city
+   * editions are straight lines from a suburb's postcode centroid to this
+   * point, rounded to the kilometre.
+   */
+  cbd: { lat: number; lng: number };
 }
 
 export const CAPITAL_CITIES: CapitalCity[] = [
@@ -27,6 +34,7 @@ export const CAPITAL_CITIES: CapitalCity[] = [
     slug: "sydney",
     name: "Sydney",
     state: "NSW",
+    cbd: { lat: -33.8675, lng: 151.2070 }, // Sydney GPO, 1 Martin Place
     ranges: [
       [2000, 2249], // harbour to Sutherland/Hornsby
       [2555, 2574], // Macarthur / Camden
@@ -37,6 +45,7 @@ export const CAPITAL_CITIES: CapitalCity[] = [
     slug: "melbourne",
     name: "Melbourne",
     state: "VIC",
+    cbd: { lat: -37.8136, lng: 144.9631 }, // Melbourne GPO, Bourke and Elizabeth Streets
     ranges: [
       [3000, 3210], // CBD to Werribee/Frankston belt
       [3335, 3341], // Melton corridor
@@ -51,6 +60,7 @@ export const CAPITAL_CITIES: CapitalCity[] = [
     slug: "brisbane",
     name: "Brisbane",
     state: "QLD",
+    cbd: { lat: -27.4679, lng: 153.0281 }, // Brisbane GPO, 261 Queen Street
     ranges: [
       [4000, 4207], // Brisbane City, Redlands, Logan
       [4300, 4306], // Ipswich
@@ -61,6 +71,7 @@ export const CAPITAL_CITIES: CapitalCity[] = [
     slug: "perth",
     name: "Perth",
     state: "WA",
+    cbd: { lat: -31.9535, lng: 115.8605 }, // Perth GPO, Forrest Place
     ranges: [
       [6000, 6175], // metro core to Rockingham/Armadale
       [6210, 6210], // Mandurah (Greater Perth GCCSA)
@@ -70,12 +81,14 @@ export const CAPITAL_CITIES: CapitalCity[] = [
     slug: "adelaide",
     name: "Adelaide",
     state: "SA",
+    cbd: { lat: -34.9285, lng: 138.6007 }, // Adelaide GPO, King William Street
     ranges: [[5000, 5174]],
   },
   {
     slug: "hobart",
     name: "Hobart",
     state: "TAS",
+    cbd: { lat: -42.8821, lng: 147.3272 }, // Hobart GPO, Elizabeth Street
     ranges: [
       [7000, 7055], // Hobart, Glenorchy, Kingborough
       [7170, 7173], // Clarence east
@@ -85,6 +98,7 @@ export const CAPITAL_CITIES: CapitalCity[] = [
     slug: "canberra",
     name: "Canberra",
     state: "ACT",
+    cbd: { lat: -35.2802, lng: 149.1310 }, // Canberra GPO, Alinga Street
     ranges: [
       [2600, 2620],
       [2900, 2914],
@@ -94,6 +108,7 @@ export const CAPITAL_CITIES: CapitalCity[] = [
     slug: "darwin",
     name: "Darwin",
     state: "NT",
+    cbd: { lat: -12.4634, lng: 130.8456 }, // Darwin GPO, Cavenagh Street
     ranges: [[800, 832]], // 0800–0832 incl. Palmerston
   },
 ];
@@ -115,4 +130,48 @@ export function capitalCityFor(state: string, postcode: string): CapitalCity | n
     if (city.ranges.some(([lo, hi]) => pc >= lo && pc <= hi)) return city;
   }
   return null;
+}
+
+const pad4 = (n: number) => String(n).padStart(4, "0");
+
+/**
+ * Prisma `where` fragment for the suburbs of a greater capital city: the
+ * city's state and its postcode ranges (postcodes are 4-character strings,
+ * so the bounds are zero-padded and compared as strings). The same
+ * membership as capitalCityFor, for the city rollups and the best-suburbs
+ * city editions; tests/lib/city-editions.test.ts holds the two together.
+ */
+export function cityPostcodeWhere(city: CapitalCity): {
+  state: string;
+  OR: { postcode: { gte: string; lte: string } }[];
+} {
+  return {
+    state: city.state,
+    OR: city.ranges.map(([lo, hi]) => ({ postcode: { gte: pad4(lo), lte: pad4(hi) } })),
+  };
+}
+
+/** The same membership for raw SQL over "Suburb" aliased `s`. */
+export function cityPostcodeSql(city: CapitalCity, alias = "s"): string {
+  const ranges = city.ranges
+    .map(([lo, hi]) => `(${alias}.postcode >= '${pad4(lo)}' AND ${alias}.postcode <= '${pad4(hi)}')`)
+    .join(" OR ");
+  return `${alias}.state = '${city.state}' AND (${ranges})`;
+}
+
+/** Straight-line distance in kilometres between two points (haversine, Earth radius 6,371 km). */
+export function distanceKm(a: { lat: number; lng: number }, b: { lat: number; lng: number }): number {
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(b.lat - a.lat);
+  const dLng = toRad(b.lng - a.lng);
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLng / 2) ** 2;
+  return 2 * 6371 * Math.asin(Math.sqrt(h));
+}
+
+/** Kilometres from a suburb's centroid to the city's GPO, rounded, or null without a centroid. */
+export function kmToCbd(city: CapitalCity, s: { lat: number | null; lng: number | null }): number | null {
+  if (s.lat == null || s.lng == null) return null;
+  return Math.round(distanceKm({ lat: s.lat, lng: s.lng }, city.cbd));
 }

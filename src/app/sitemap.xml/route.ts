@@ -24,6 +24,7 @@ const SINGLE_PAGE_SITEMAPS = [
   `${SITE_URL}/postcodes/sitemap.xml`,
   `${SITE_URL}/states/sitemap.xml`,
   `${SITE_URL}/best-suburbs/sitemap.xml`,
+  `${SITE_URL}/best-suburbs/cities/sitemap.xml`,
   `${SITE_URL}/best-deals/sitemap.xml`,
   `${SITE_URL}/compare/sitemap.xml`,
   `${SITE_URL}/glossary/sitemap.xml`,

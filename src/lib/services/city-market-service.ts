@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY } from "@/lib/non-localities";
 import { publishedGrowth, publishesMedians } from "@/lib/published-medians";
-import { type CapitalCity } from "@/lib/utils/metro";
+import { cityPostcodeWhere, type CapitalCity } from "@/lib/utils/metro";
 
 // City-level market rollups for the /property-market/{city} pages.
 // Aggregates the suburb dataset upward using the rule the suburb pages
@@ -82,16 +82,13 @@ function medianPercent(values: number[]): number | null {
   return m == null ? null : Math.round(m * 10) / 10;
 }
 
-const pad4 = (n: number) => String(n).padStart(4, "0");
-
 export async function getCityMarket(city: CapitalCity): Promise<CityMarket> {
+  // The city's suburbs by postcode range: the one membership the
+  // best-suburbs city editions read too (cityPostcodeWhere, metro.ts).
   const rows: CityMarketRow[] = await db.suburb.findMany({
     where: {
-      state: city.state,
+      ...cityPostcodeWhere(city),
       ...LOCALITIES_ONLY,
-      OR: city.ranges.map(([lo, hi]) => ({
-        postcode: { gte: pad4(lo), lte: pad4(hi) },
-      })),
     },
     select: {
       slug: true,
