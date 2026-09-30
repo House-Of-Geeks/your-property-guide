@@ -25,8 +25,26 @@ export function getHEM(dependants: number): number {
   return HEM_BASE[dependants] ?? HEM_4PLUS;
 }
 
-/** Default assessment (buffered) rate, ~3% above a typical current rate. */
-export const DEFAULT_ASSESSMENT_RATE = 7.5;
+/**
+ * The loan rate the default assessment rate starts from: the average rate on
+ * new owner-occupier variable-rate loans, all institutions, in the RBA's
+ * statistical table F6 (series FLRHOFVA), July 2026. Update it, and the
+ * period below, when the table moves; the calculator, the income table on
+ * /borrowing-power-calculator and the guide embed all read it.
+ */
+export const REFERENCE_LOAN_RATE = 6.2;
+export const REFERENCE_LOAN_RATE_PERIOD = "July 2026";
+/** APRA's minimum serviceability buffer over the loan rate, confirmed at 3 percentage points on 28 May 2026. */
+export const APRA_SERVICEABILITY_BUFFER = 3;
+export const APRA_BUFFER_CONFIRMED = "28 May 2026";
+
+/**
+ * Default assessment (buffered) rate: the reference loan rate plus APRA's
+ * buffer, 9.2% as at 30 Sep 2026. It was 7.5% until then, which implied a
+ * 4.5% loan rate that no lender offered in 2026 and overstated capacity by
+ * about 17%.
+ */
+export const DEFAULT_ASSESSMENT_RATE = Math.round((REFERENCE_LOAN_RATE + APRA_SERVICEABILITY_BUFFER) * 10) / 10;
 
 export interface BorrowingResult {
   maxLoan: number;

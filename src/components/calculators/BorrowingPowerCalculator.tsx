@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { DollarSign, Info, Users, TrendingUp } from "lucide-react";
 import { formatPriceFull } from "@/lib/utils/format";
-import { computeBorrowingPower, getHEM } from "@/lib/utils/borrowing-power";
+import { DEFAULT_ASSESSMENT_RATE, computeBorrowingPower, getHEM } from "@/lib/utils/borrowing-power";
 
 export function BorrowingPowerCalculator() {
   const [income1, setIncome1] = useState(100_000);
@@ -12,7 +12,7 @@ export function BorrowingPowerCalculator() {
   const [monthlyExpenses, setMonthlyExpenses] = useState(3_000);
   const [dependants, setDependants] = useState(0);
   const [existingDebts, setExistingDebts] = useState(0);
-  const [assessmentRate, setAssessmentRate] = useState(7.5);
+  const [assessmentRate, setAssessmentRate] = useState(DEFAULT_ASSESSMENT_RATE);
   const [termYears, setTermYears] = useState(30);
 
   const result = useMemo(

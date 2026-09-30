@@ -53,6 +53,7 @@ const NAV_LINKS: NavLink[] = [
     href: "#",
     layout: "grouped",
     children: [
+      { label: "All calculators",       href: "/tools",                            group: "Calculators" },
       { label: "Agent commission",      href: "/real-estate-commission-calculator", group: "Calculators" },
       { label: "Borrowing power",       href: "/borrowing-power-calculator", group: "Calculators" },
       { label: "Mortgage repayments",   href: "/mortgage-calculator",        group: "Calculators" },
@@ -160,14 +161,17 @@ export function Header() {
                     <ChevronDown className={`w-4 h-4 transition-transform ${openMenu === link.label ? "rotate-180" : ""}`} />
                   </button>
 
-                  {openMenu === link.label && (
-                    link.layout === "mega" ? (
-                      <MegaMenu link={link} onClose={() => setOpenMenu(null)} />
-                    ) : link.layout === "grouped" ? (
-                      <GroupedMenu link={link} onClose={() => setOpenMenu(null)} />
-                    ) : (
-                      <ListMenu link={link} onClose={() => setOpenMenu(null)} />
-                    )
+                  {/* The panel is in the HTML on every page and hidden until
+                      opened, so a crawler finds each calculator and hub from
+                      the header. Until 30 Sep 2026 it rendered only on click,
+                      and the header's server HTML linked /guides, /search and
+                      the guide alone (commercial intent review, section 3.3). */}
+                  {link.layout === "mega" ? (
+                    <MegaMenu link={link} open={openMenu === link.label} onClose={() => setOpenMenu(null)} />
+                  ) : link.layout === "grouped" ? (
+                    <GroupedMenu link={link} open={openMenu === link.label} onClose={() => setOpenMenu(null)} />
+                  ) : (
+                    <ListMenu link={link} open={openMenu === link.label} onClose={() => setOpenMenu(null)} />
                   )}
                 </div>
               ) : (
@@ -293,10 +297,17 @@ export function Header() {
   );
 }
 
-function MegaMenu({ link, onClose }: { link: NavLink; onClose: () => void }) {
+interface MenuProps {
+  link: NavLink;
+  /** Closed panels stay in the DOM (display: none) so their links are in the server HTML. */
+  open: boolean;
+  onClose: () => void;
+}
+
+function MegaMenu({ link, open, onClose }: MenuProps) {
   const groups = Array.from(new Set(link.children!.map((c) => c.group ?? "")));
   return (
-    <div className="absolute top-full left-0 mt-1 bg-surface-raised rounded-xl shadow-card border border-line py-3 z-50 w-[520px]">
+    <div className={`${open ? "" : "hidden "}absolute top-full left-0 mt-1 bg-surface-raised rounded-xl shadow-card border border-line py-3 z-50 w-[520px]`}>
       <div className="grid grid-cols-2 gap-x-2">
         {groups.map((group) => {
           const items = link.children!.filter((c) => (c.group ?? "") === group);
@@ -325,10 +336,10 @@ function MegaMenu({ link, onClose }: { link: NavLink; onClose: () => void }) {
   );
 }
 
-function GroupedMenu({ link, onClose }: { link: NavLink; onClose: () => void }) {
+function GroupedMenu({ link, open, onClose }: MenuProps) {
   const groups = Array.from(new Set(link.children!.map((c) => c.group ?? "")));
   return (
-    <div className="absolute top-full left-0 mt-1 bg-surface-raised rounded-xl shadow-card border border-line py-3 z-50 w-[440px]">
+    <div className={`${open ? "" : "hidden "}absolute top-full left-0 mt-1 bg-surface-raised rounded-xl shadow-card border border-line py-3 z-50 w-[440px]`}>
       <div className="grid grid-cols-2 gap-x-2">
         {groups.map((group) => {
           const items = link.children!.filter((c) => (c.group ?? "") === group);
@@ -357,9 +368,9 @@ function GroupedMenu({ link, onClose }: { link: NavLink; onClose: () => void }) 
   );
 }
 
-function ListMenu({ link, onClose }: { link: NavLink; onClose: () => void }) {
+function ListMenu({ link, open, onClose }: MenuProps) {
   return (
-    <div className="absolute top-full left-0 mt-1 w-64 bg-surface-raised rounded-xl shadow-card border border-line py-2 z-50">
+    <div className={`${open ? "" : "hidden "}absolute top-full left-0 mt-1 w-64 bg-surface-raised rounded-xl shadow-card border border-line py-2 z-50`}>
       {link.children!.map((child) => (
         <Link
           key={`${child.href}-${child.label}`}

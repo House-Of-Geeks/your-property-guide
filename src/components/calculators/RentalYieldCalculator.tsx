@@ -1,77 +1,9 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { DollarSign, Info, Home, TrendingUp } from "lucide-react";
+import { DollarSign, Info, Home } from "lucide-react";
 import { formatPriceFull } from "@/lib/utils/format";
-
-interface RentalYieldResult {
-  annualRentalIncome: number;
-  grossYield: number;
-  netYield: number;
-  totalPurchaseCosts: number;
-  totalAnnualCosts: number;
-  annualNetIncome: number;
-  weeklyCashFlow: number;
-  annualLoanRepayments: number;
-}
-
-function computeRentalYield(
-  purchasePrice: number,
-  weeklyRent: number,
-  stampDuty: number,
-  legalFees: number,
-  buildingInspection: number,
-  councilRates: number,
-  waterRates: number,
-  insurance: number,
-  managementPct: number,
-  maintenancePct: number,
-  loanAmount: number,
-  loanRate: number,
-  loanTermYears: number
-): RentalYieldResult | null {
-  if (purchasePrice <= 0 || weeklyRent <= 0) return null;
-
-  const annualRentalIncome = weeklyRent * 52;
-
-  // Purchase costs
-  const totalPurchaseCosts = stampDuty + legalFees + buildingInspection;
-  const totalCostBase = purchasePrice + totalPurchaseCosts;
-
-  // Annual ongoing costs
-  const managementCost = (managementPct / 100) * annualRentalIncome;
-  const maintenanceCost = (maintenancePct / 100) * purchasePrice;
-  const totalAnnualCosts =
-    councilRates + waterRates + insurance + managementCost + maintenanceCost;
-
-  // Yields
-  const grossYield = (annualRentalIncome / purchasePrice) * 100;
-  const netYield = ((annualRentalIncome - totalAnnualCosts) / totalCostBase) * 100;
-
-  const annualNetIncome = annualRentalIncome - totalAnnualCosts;
-
-  // Loan repayments (optional)
-  let annualLoanRepayments = 0;
-  if (loanAmount > 0 && loanRate > 0) {
-    const r = loanRate / 100 / 12;
-    const n = loanTermYears * 12;
-    const monthly = loanAmount * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-    annualLoanRepayments = monthly * 12;
-  }
-
-  const weeklyCashFlow = (annualNetIncome - annualLoanRepayments) / 52;
-
-  return {
-    annualRentalIncome: Math.round(annualRentalIncome),
-    grossYield: Math.round(grossYield * 100) / 100,
-    netYield: Math.round(netYield * 100) / 100,
-    totalPurchaseCosts: Math.round(totalPurchaseCosts),
-    totalAnnualCosts: Math.round(totalAnnualCosts),
-    annualNetIncome: Math.round(annualNetIncome),
-    weeklyCashFlow: Math.round(weeklyCashFlow),
-    annualLoanRepayments: Math.round(annualLoanRepayments),
-  };
-}
+import { computeRentalYield } from "@/lib/rental-yield-calc";
 
 export function RentalYieldCalculator() {
   // Property
@@ -95,9 +27,11 @@ export function RentalYieldCalculator() {
   const [loanRate, setLoanRate] = useState(6.5);
   const [loanTermYears, setLoanTermYears] = useState(30);
 
+  // The maths lives in src/lib/rental-yield-calc.ts, shared with the
+  // server-rendered worked example on the page, so the two cannot disagree.
   const result = useMemo(
     () =>
-      computeRentalYield(
+      computeRentalYield({
         purchasePrice,
         weeklyRent,
         stampDuty,
@@ -110,8 +44,8 @@ export function RentalYieldCalculator() {
         maintenancePct,
         loanAmount,
         loanRate,
-        loanTermYears
-      ),
+        loanTermYears,
+      }),
     [
       purchasePrice,
       weeklyRent,
