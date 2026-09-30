@@ -11,48 +11,47 @@ import { formatPrice, formatPriceFull, formatPercentage } from "@/lib/utils/form
 import { CATEGORY_COMMENTARY } from "@/lib/data/category-commentary";
 import type { RankingNote } from "@/lib/ranking-notes";
 import { STATE_COMMENTARY } from "@/lib/data/state-commentary";
-
-const STATES = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"] as const;
+import {
+  bestSuburbsHeadline,
+  CATEGORY_HEADLINE,
+  placeName,
+  STATES,
+  STATE_NAME,
+} from "@/lib/best-suburbs-headlines";
 
 export interface CategoryConfig {
   title: string;
   description: string;
 }
 
-const CATEGORY_CONFIG: Record<RankingCategory, CategoryConfig & { eyebrow: string; italicTitle: string }> = {
+const CATEGORY_CONFIG: Record<RankingCategory, CategoryConfig & { eyebrow: string }> = {
   "for-families": {
     title: "Best Suburbs for Families",
-    italicTitle: "for families",
     eyebrow: "Family-friendly ranking",
     description: "Suburbs ranked by average school ICSEA score and family-household percentage.",
   },
   "highest-growth": {
     title: "Highest Growth Suburbs",
-    italicTitle: "highest growth",
     eyebrow: "Capital-growth ranking",
     description: "Suburbs with the strongest annual house price growth over the past 12 months.",
   },
   "most-affordable": {
     title: "Most Affordable Suburbs",
-    italicTitle: "most affordable",
     eyebrow: "Affordability ranking",
     description: "Suburbs with the lowest median house prices, great entry points into the property market.",
   },
   "most-walkable": {
     title: "Most Walkable Suburbs",
-    italicTitle: "most walkable",
     eyebrow: "Walkability ranking",
     description: "Suburbs with the highest walk scores, perfect for car-free or car-light lifestyles.",
   },
   "lowest-flood-risk": {
     title: "Lowest Flood Risk Suburbs",
-    italicTitle: "lowest flood risk",
     eyebrow: "Hazard-safe ranking",
     description: "Suburbs assessed as low flood risk or with no flood hazard record from Geoscience Australia.",
   },
   "best-rental-yield": {
     title: "Best Rental Yield Suburbs",
-    italicTitle: "best rental yield",
     eyebrow: "Investor ranking",
     description: "Suburbs with the highest gross rental yields, calculated from median price and weekly rent.",
   },
@@ -74,17 +73,6 @@ const SECONDARY_LABEL: Record<RankingCategory, string> = {
   "most-walkable":     "Median price",
   "lowest-flood-risk": "Median price",
   "best-rental-yield": "Weekly rent",
-};
-
-const STATE_NAME: Record<string, string> = {
-  NSW: "New South Wales",
-  VIC: "Victoria",
-  QLD: "Queensland",
-  WA:  "Western Australia",
-  SA:  "South Australia",
-  TAS: "Tasmania",
-  NT:  "Northern Territory",
-  ACT: "Australian Capital Territory",
 };
 
 function floodBadge(floodClass: string | null): React.ReactElement {
@@ -218,10 +206,9 @@ export function BestSuburbsListing({
   const categoryCommentary = CATEGORY_COMMENTARY[category];
   const stateCommentary = state ? STATE_COMMENTARY[state] : null;
 
-  // Headline + canonical
-  const headline = stateName
-    ? `${config.title.replace(" Suburbs", "")} suburbs in ${stateName}`
-    : config.title;
+  // The sentence the H1 prints, also the ItemList name (fix item 45).
+  const headline = bestSuburbsHeadline(category, state);
+  const h1 = CATEGORY_HEADLINE[category];
   const eyebrow = stateName
     ? `${config.eyebrow} · ${state}`
     : config.eyebrow;
@@ -279,16 +266,11 @@ export function BestSuburbsListing({
           <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
             {eyebrow}
           </p>
+          {/* Fix item 45: one string after the italic span, so React writes a
+              single text node and no <!-- --> boundary before the full stop. */}
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            {stateName ? (
-              <>
-                The <span className="italic text-primary">{config.italicTitle}</span> suburbs in {stateName}.
-              </>
-            ) : (
-              <>
-                The <span className="italic text-primary">{config.italicTitle}</span> suburbs in Australia.
-              </>
-            )}
+            The <span className="italic text-primary">{h1.lead}</span>
+            {` ${h1.noun} in ${placeName(state)}.`}
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             {config.description}
