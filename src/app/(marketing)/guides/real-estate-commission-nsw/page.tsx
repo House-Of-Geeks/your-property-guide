@@ -7,6 +7,7 @@ import {
   MatchCTA,
   Sources,
   SellingCostTable,
+  CommissionCalculatorEmbed,
   EditorNote,
   PullQuote,
   type GuideFrontmatter,
@@ -20,12 +21,13 @@ import { guideOgImages } from "@/lib/og/helpers";
 import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "Real Estate Commission NSW: Average Rates & Agent Fees (2026)",
+  title: "Real Estate Commission NSW 2026: Sydney Rates, Fees & Calculator",
+  h1: "Real Estate Commission NSW 2026: Sydney & NSW Rates, Fees & Calculator",
   description:
-    "What real estate agents charge in NSW: typical commission of 1.8% to 2.5% (around 2% is common), worked dollar examples by sale price, GST, what's included, and how to negotiate.",
+    "What real estate agents charge in Sydney and across NSW: typical commission of 1.8% to 2.5% (around 2% is common), a calculator preset to the NSW rate, worked dollar examples by sale price, GST, what's included, and how to negotiate.",
   slug: "real-estate-commission-nsw",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-08",
+  updatedAt: "2026-09-30",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -53,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Real estate commission in NSW typically runs 1.8% to 2.5% of the final sale price, with around 2% the most common rate.",
+  "Real estate commission in Sydney and across NSW typically runs 1.8% to 2.5% of the final sale price, with around 2% the most common rate.",
   "On a typical $800,000 NSW sale, 2% commission works out to $16,000. At 1.8% it's $14,400, and at 2.5% it's $20,000 (all excluding GST).",
   "Commission is a percentage of the sale price, paid by the seller out of the proceeds at settlement, not upfront.",
   "Most NSW agents work on a no sale, no fee basis, so commission is only payable if the property sells.",
@@ -62,6 +64,7 @@ const TLDR = [
 ];
 
 const TOC: GuideTOCEntry[] = [
+  { id: "calculator",   label: "Commission calculator" },
   { id: "average",      label: "Average commission in NSW" },
   { id: "worked",       label: "Worked examples by sale price" },
   { id: "structure",    label: "How commission is structured in NSW" },
@@ -116,6 +119,8 @@ export default function RealEstateCommissionNswPage() {
       faqs={[...FAQS, COMMISSION_PAA_FAQ.NSW]}
       related={RELATED}
     >
+      <CommissionCalculatorEmbed state="NSW" />
+
       <Callout variant="warning" title="Commission is not a fixed or official rate">
         <p>
           There is no regulated or set commission rate in New South Wales.
@@ -140,7 +145,7 @@ export default function RealEstateCommissionNswPage() {
 
       <h2 id="average">Average real estate commission in NSW</h2>
       <p className="lead">
-        In New South Wales, real estate commission typically runs from{" "}
+        In Sydney and across New South Wales, real estate commission typically runs from{" "}
         <strong>1.8% to 2.5%</strong> of the final sale price, and around{" "}
         <strong>2%</strong> is the most common rate. Commission is charged as a
         percentage of what your property sells for, paid by you as the seller out

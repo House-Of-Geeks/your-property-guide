@@ -7,6 +7,7 @@ import {
   MatchCTA,
   Sources,
   SellingCostTable,
+  CommissionCalculatorEmbed,
   EditorNote,
   PullQuote,
   type GuideFrontmatter,
@@ -20,12 +21,13 @@ import { guideOgImages } from "@/lib/og/helpers";
 import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "Real Estate Commission ACT: Average Rates & Agent Fees (2026)",
+  title: "Real Estate Commission ACT 2026: Canberra Rates, Fees & Calculator",
+  h1: "Real Estate Commission ACT 2026: Canberra & ACT Rates, Fees & Calculator",
   description:
-    "What real estate agents charge in the ACT: typical commission of 1.8% to 2.25% (2.1% is most common), how it's structured, whether it includes GST, worked dollar examples by sale price, and how to negotiate.",
+    "What real estate agents charge in Canberra and the ACT: typical commission of 1.8% to 2.25% (2.1% is most common), a calculator preset to the ACT rate, how it's structured, whether it includes GST, worked dollar examples by sale price, and how to negotiate.",
   slug: "real-estate-commission-act",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-08",
+  updatedAt: "2026-09-30",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -53,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Real estate commission in the ACT typically runs from 1.8% to 2.25% of the sale price, with 2.1% the most common figure.",
+  "Real estate commission in Canberra and the ACT typically runs from 1.8% to 2.25% of the sale price, with 2.1% the most common figure.",
   "Commission is a percentage of the final sale price, paid by the seller out of the proceeds at settlement, and it is negotiable.",
   "At the typical 2.1%, a $800,000 sale works out to $16,800 in commission, before GST.",
   "Commission usually attracts 10% GST on top, and quotes vary on whether that GST is shown, so always ask.",
@@ -62,6 +64,7 @@ const TLDR = [
 ];
 
 const TOC: GuideTOCEntry[] = [
+  { id: "calculator",   label: "Commission calculator" },
   { id: "average",     label: "Average real estate commission in ACT" },
   { id: "examples",    label: "Worked dollar examples" },
   { id: "structure",   label: "How commission is structured in ACT" },
@@ -116,6 +119,8 @@ export default function RealEstateCommissionACTPage() {
       faqs={[...FAQS, COMMISSION_PAA_FAQ.ACT]}
       related={RELATED}
     >
+      <CommissionCalculatorEmbed state="ACT" />
+
       <Callout variant="warning" title="Commission is not a fixed or official rate">
         <p>
           Real estate commission in the ACT is not regulated or fixed, and it is
@@ -140,8 +145,8 @@ export default function RealEstateCommissionACTPage() {
 
       <h2 id="average">Average real estate commission in ACT</h2>
       <p className="lead">
-        Real estate commission in the Australian Capital Territory typically
-        ranges from <strong>1.8% to 2.25%</strong> of the final sale price, with{" "}
+        Real estate commission in Canberra and the Australian Capital Territory
+        typically ranges from <strong>1.8% to 2.25%</strong> of the final sale price, with{" "}
         <strong>2.1% the most common</strong> figure. Commission is charged as a
         percentage of what your property sells for, paid by you as the seller out
         of the proceeds at settlement, and it is negotiable.

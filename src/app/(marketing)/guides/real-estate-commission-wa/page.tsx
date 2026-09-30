@@ -7,6 +7,7 @@ import {
   MatchCTA,
   Sources,
   SellingCostTable,
+  CommissionCalculatorEmbed,
   EditorNote,
   PullQuote,
   type GuideFrontmatter,
@@ -20,12 +21,13 @@ import { guideOgImages } from "@/lib/og/helpers";
 import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "Real Estate Commission WA: Average Rates & Agent Fees (2026)",
+  title: "Real Estate Commission WA 2026: Perth Rates, Fees & Calculator",
+  h1: "Real Estate Commission WA 2026: Perth & WA Rates, Fees & Calculator",
   description:
-    "What real estate agents charge in Western Australia: the typical commission range, the most common rate, worked dollar examples by sale price, GST, what's included, and how to negotiate.",
+    "What real estate agents charge in Perth and across Western Australia: the typical commission range, the most common rate, a calculator preset to the WA rate, worked dollar examples by sale price, GST, what's included, and how to negotiate.",
   slug: "real-estate-commission-wa",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-08",
+  updatedAt: "2026-09-30",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -53,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Real estate commission in WA typically runs from 2% to 2.8% of the final sale price, with 2.4% the most common rate.",
+  "Real estate commission in Perth and across WA typically runs from 2% to 2.8% of the final sale price, with 2.4% the most common rate.",
   "On a $600,000 sale at the typical 2.4%, commission is $14,400. On a $1,000,000 sale it's $24,000.",
   "Commission usually attracts 10% GST on top, and quotes vary on whether they show the GST-inclusive figure or not.",
   "Almost every WA agent works on a no sale, no fee basis, so commission is only payable once the property sells, at settlement.",
@@ -62,6 +64,7 @@ const TLDR = [
 ];
 
 const TOC: GuideTOCEntry[] = [
+  { id: "calculator",   label: "Commission calculator" },
   { id: "average-commission", label: "Average commission in WA" },
   { id: "worked-examples",    label: "Worked examples by sale price" },
   { id: "how-structured",     label: "How commission is structured" },
@@ -116,6 +119,8 @@ export default function RealEstateCommissionWaPage() {
       faqs={[...FAQS, COMMISSION_PAA_FAQ.WA]}
       related={RELATED}
     >
+      <CommissionCalculatorEmbed state="WA" />
+
       <Callout variant="warning" title="These are typical market figures, not official rates">
         <p>
           Commission in Western Australia is not regulated or fixed, and it is
@@ -140,9 +145,9 @@ export default function RealEstateCommissionWaPage() {
 
       <h2 id="average-commission">Average real estate commission in WA</h2>
       <p className="lead">
-        In Western Australia, real estate commission typically runs from{" "}
+        In Perth and across Western Australia, real estate commission typically runs from{" "}
         <strong>2% to 2.8%</strong> of the final sale price, with{" "}
-        <strong>2.4%</strong> the most common rate. Commission is charged as a
+        <strong>2.4%</strong>{" "}the most common rate. Commission is charged as a
         percentage of what your property sells for, it&rsquo;s paid by you, the
         seller, at settlement, and it is negotiable.
       </p>

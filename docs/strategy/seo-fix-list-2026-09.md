@@ -102,7 +102,12 @@ Tick items off as they ship.
 
 ## Commission guides (week 2–4)
 
-- [ ] 8. [code] IN PROGRESS — NT pilot live 8 Sep 2026, PR #23 (5ccac66): calculator embedded at the top of the NT
+- [x] 8. [code] DONE 30 Sep 2026 — PR #81: rolled out to NSW, VIC, QLD, SA, WA, TAS and ACT in one PR
+      (Jos asked for one go instead of one commit per state). Each guide opens with the calculator preset to its typical
+      rate and its example price; titles on the pilot pattern with the capital ("Real Estate Commission NSW 2026: Sydney
+      Rates, Fees & Calculator"), "{City} & {State}" in the h1; the national fees guide answers the PAA "Do real estate
+      agents get paid if the house doesn't sell?". NT unchanged from the pilot. History:
+      NT pilot live 8 Sep 2026, PR #23 (5ccac66): calculator embedded at the top of the NT
       guide preset to 2.5% and $800,000, retitled "Real Estate Commission NT 2026: Rates, Fees & Calculator";
       embed by import, no schema, no second CTA; tests pin the pilot to NT. Baseline docs/seo-baselines/2026-09-07.
       Next: read NT's Bing position and clicks on 22 Sep (`npm run seo:baseline -- --compare 2026-09-07`); if they
