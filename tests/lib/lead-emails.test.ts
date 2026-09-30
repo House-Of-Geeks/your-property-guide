@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   scoreGuideLead,
   confirmationCopy,
+  labelFor,
   buildAdminEmailHtml,
   buildConfirmationHtml,
   buildFailureAlertHtml,
@@ -233,5 +234,24 @@ describe("HTML escaping of lead fields", () => {
     expect(html).not.toContain("<script>");
     expect(html).toContain("&lt;script&gt;");
     expect(html).toContain("550 rejected recipient &lt;");
+  });
+});
+
+describe("rental-appraisal (landlord) copy", () => {
+  it("labels the type and confirms with property-manager wording", () => {
+    expect(labelFor("rental-appraisal")).toBe("Rental Appraisal Request (landlord)");
+    const c = confirmationCopy({ type: "rental-appraisal", firstName: "Priya", email: "p@example.com", appraisalAddress: "15 Smith St" });
+    expect(c.subject).toBe("Your rental appraisal request is in");
+    expect(c.intro).toBe("Thanks Priya. We've received your rental appraisal request for 15 Smith St.");
+    expect(c.next).toContain("property manager");
+    expect(c.next).toContain("no commitment until you decide to appoint them");
+    expect(c.next).not.toMatch(/\u2014/);
+  });
+  it("shows the landlord answers in the admin email", () => {
+    const html = buildAdminEmailHtml({ type: "rental-appraisal", firstName: "Priya", email: "p@example.com", tenanted: "no", managerTimeframe: "3-6-months" }, null, "round-robin");
+    expect(html).toContain("Currently tenanted");
+    expect(html).toContain("No, vacant");
+    expect(html).toContain("Wants a manager");
+    expect(html).toContain("3 to 6 months");
   });
 });

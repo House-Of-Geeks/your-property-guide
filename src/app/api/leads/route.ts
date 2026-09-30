@@ -8,6 +8,8 @@ import {
   labelFor,
   TIMEFRAME_LABELS,
   AGENT_STATUS_LABELS,
+  TENANTED_LABELS,
+  MANAGER_TIMEFRAME_LABELS,
   confirmationCopy,
   buildAdminEmailHtml,
   buildConfirmationHtml,
@@ -32,6 +34,9 @@ const leadSchema = z.object({
     "property-interest",
     "match-request",
     "guide-download",
+    // Landlord asking for a rental appraisal / property manager (the
+    // rental-market sub-page, 30 Sep 2026). Free string on the Lead row.
+    "rental-appraisal",
   ]),
   firstName: z.string().min(1),
   lastName: z.string().min(1).optional(),
@@ -81,6 +86,10 @@ const leadSchema = z.object({
   buyerPersona: z.enum(["first-home", "upgrading", "investing", "downsizing"]).optional(),
   financeStatus: z.enum(["pre-approved", "talking-to-lenders", "not-started", "cash"]).optional(),
   budget: z.string().max(40).optional(),
+  // Rental-appraisal (landlord) answers. No Lead columns: serialised into
+  // message below, the way the appraisal timeframe is.
+  tenanted: z.enum(["yes", "no"]).optional(),
+  managerTimeframe: z.enum(["asap", "0-3-months", "3-6-months", "researching"]).optional(),
   // Honeypot. Real users never see/fill this field (visually hidden,
   // aria-hidden, tabindex=-1). Bots autofill it. If populated, we silently
   // 200 the request without persisting or notifying — don't tip them off.
@@ -154,6 +163,15 @@ export async function POST(request: Request) {
     if (lead.type === "appraisal-request" && lead.sellingTimeframe) {
       persistedMessage = [
         `Timeframe: ${TIMEFRAME_LABELS[lead.sellingTimeframe] ?? lead.sellingTimeframe}`,
+        lead.message,
+      ]
+        .filter(Boolean)
+        .join(" · ");
+    }
+    if (lead.type === "rental-appraisal" && (lead.tenanted || lead.managerTimeframe)) {
+      persistedMessage = [
+        lead.tenanted && `Tenanted: ${TENANTED_LABELS[lead.tenanted] ?? lead.tenanted}`,
+        lead.managerTimeframe && `Wants a manager: ${MANAGER_TIMEFRAME_LABELS[lead.managerTimeframe] ?? lead.managerTimeframe}`,
         lead.message,
       ]
         .filter(Boolean)
@@ -235,7 +253,9 @@ export async function POST(request: Request) {
         ? `[${scoreGuideLead(lead)}] `
         : lead.type === "appraisal-request" && lead.sellingTimeframe === "0-3-months"
           ? "[HOT] "
-          : "";
+          : lead.type === "rental-appraisal" && lead.managerTimeframe === "asap"
+            ? "[HOT] "
+            : "";
     const subject     = `${scorePrefix}${typeLabel}, ${lead.firstName}${lead.lastName ? ` ${lead.lastName}` : ""}${lead.suburb ? ` (${lead.suburb})` : ""}`;
 
     // Match-request leads (the homepage MatchAgent flow) go ONLY to

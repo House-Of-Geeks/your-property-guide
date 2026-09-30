@@ -32,6 +32,9 @@ export interface LeadEmailData {
   buyerPersona?: string;
   financeStatus?: string;
   budget?: string;
+  /** Rental-appraisal (landlord) answers. */
+  tenanted?: string;
+  managerTimeframe?: string;
 }
 
 // Lead temperature for guide-download leads. The bands follow the
@@ -89,6 +92,18 @@ export const AGENT_STATUS_LABELS: Record<string, string> = {
   "already-listed": "Already listed with an agent",
 };
 
+export const TENANTED_LABELS: Record<string, string> = {
+  yes: "Yes, tenanted",
+  no:  "No, vacant",
+};
+
+export const MANAGER_TIMEFRAME_LABELS: Record<string, string> = {
+  "asap":        "As soon as possible",
+  "0-3-months":  "Within 3 months",
+  "3-6-months":  "3 to 6 months",
+  "researching": "Just comparing",
+};
+
 export function labelFor(type: string, guideType?: string): string {
   if (type === "guide-download" && guideType === "buying") return "Buying Guide Download";
   switch (type) {
@@ -100,6 +115,7 @@ export function labelFor(type: string, guideType?: string): string {
     case "property-interest":      return "Property Interest Registration";
     case "match-request":          return "Match Request (homepage)";
     case "guide-download":         return "Selling Guide Download";
+    case "rental-appraisal":       return "Rental Appraisal Request (landlord)";
     default:                       return "Property Enquiry";
   }
 }
@@ -163,6 +179,8 @@ export function buildAdminEmailHtml(
     lead.motivation       && ["Reason for selling", escapeHtml(lead.motivation)],
     lead.priceExpectation && ["Price expectation", escapeHtml(lead.priceExpectation)],
     lead.marketingConsent !== undefined && ["Marketing consent", lead.marketingConsent ? "Yes (opted in)" : "No"],
+    lead.tenanted         && ["Currently tenanted", TENANTED_LABELS[lead.tenanted] ?? escapeHtml(lead.tenanted)],
+    lead.managerTimeframe && ["Wants a manager",    MANAGER_TIMEFRAME_LABELS[lead.managerTimeframe] ?? escapeHtml(lead.managerTimeframe)],
     lead.message          && ["Message",          escapeHtml(lead.message)],
     lead.propertyId       && ["Property ID",       escapeHtml(lead.propertyId)],
     lead.suburb           && ["Suburb",            escapeHtml(lead.suburb)],
@@ -258,6 +276,12 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
         subject: "Your appraisal request is in",
         intro: `Thanks ${firstName}. We've received your free appraisal request${addr ? ` for ${addr}` : ""}.`,
         next: "A local agent will be in touch within one business day to arrange the appraisal. No commitment until you decide to take it further.",
+      };
+    case "rental-appraisal":
+      return {
+        subject: "Your rental appraisal request is in",
+        intro: `Thanks ${firstName}. We've received your rental appraisal request${addr ? ` for ${addr}` : ""}.`,
+        next: "A property manager who works in your suburb will be in touch within one business day to arrange it. They will give you a rent figure and their fee schedule; there is no commitment until you decide to appoint them.",
       };
     case "match-request":
       return {

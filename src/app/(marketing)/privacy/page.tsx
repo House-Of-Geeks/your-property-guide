@@ -55,8 +55,9 @@ export default function PrivacyPage() {
 
         <h2>3. Information Sharing</h2>
         <p>
-          When you ask us to connect you, for example by requesting an appraisal, a specialist match or an agent
-          through our selling guide, we share your details with the one agent or specialist you are matched with.
+          When you ask us to connect you, for example by requesting an appraisal, a rental appraisal, a specialist
+          match or an agent through our selling guide, we share your details with the one agent, property manager
+          or specialist you are matched with.
           For a house-and-land package enquiry, that is the listing agent or builder for that package. They pay us
           a fee for the introduction. You pay us nothing. If you enquire about a property listed for sale or rent,
           your enquiry goes to the listing agent or property manager for that property. If you contact an agent or
