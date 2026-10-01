@@ -11,6 +11,8 @@ interface GuideSuburbSearchProps {
   title?: string;
   /** Optional sub-line. */
   subtitle?: string;
+  /** Optional input hint. The default names Sydney and Brisbane suburbs. */
+  placeholder?: string;
 }
 
 /**
@@ -21,6 +23,7 @@ interface GuideSuburbSearchProps {
 export function GuideSuburbSearch({
   title = "Look up a suburb to research",
   subtitle = "Pull every figure on this page for any suburb in Australia.",
+  placeholder = "Try Bondi, Newtown, or 4006",
 }: GuideSuburbSearchProps) {
   const router = useRouter();
   const [, setSlug] = useState<string>("");
@@ -40,7 +43,7 @@ export function GuideSuburbSearch({
 
       <div className="max-w-xl">
         <SuburbAutocomplete
-          placeholder="Try Bondi, Newtown, or 4006"
+          placeholder={placeholder}
           onSelectLocation={(s) => {
             setSlug(s);
             router.push(`/suburbs/${s}`);

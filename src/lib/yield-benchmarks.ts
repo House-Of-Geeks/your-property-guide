@@ -7,6 +7,8 @@
 import type { FaqItem } from "@/components/guide/Faq";
 import { YIELD_AREAS, YIELD_BENCHMARKS_AS_OF, YIELD_SOURCE_DATES, type YieldArea } from "@/lib/data/yield-benchmarks";
 import { WORKED_EXAMPLE, computeRentalYield } from "@/lib/rental-yield-calc";
+import { YIELD_RANKED_STATES } from "@/lib/ranking-notes";
+import { placeName } from "@/lib/best-suburbs-headlines";
 
 export const yieldArea = (key: string): YieldArea | undefined => YIELD_AREAS.find((a) => a.key === key);
 
@@ -47,13 +49,37 @@ export function netYieldAtGross(grossPct: number): number | null {
   return r ? Math.round(r.netYield * 10) / 10 : null;
 }
 
+/**
+ * The state yield rankings, /best-suburbs/best-rental-yield/{state}, for the
+ * states that have one (YIELD_RANKED_STATES, the list isRanked reads, so no
+ * link points at a ranking that answers noindex). The calculator page links
+ * these instead of printing its own highest-yield lists (tracker item 15).
+ */
+export function yieldRankingLinks(): { href: string; label: string }[] {
+  return YIELD_RANKED_STATES.map((st) => ({
+    href: `/best-suburbs/best-rental-yield/${st.toLowerCase()}`,
+    label: `best rental yield suburbs in ${placeName(st)}`,
+  }));
+}
+
+/** "regional Queensland" in a sentence; city and state names unchanged. */
+const inSentence = (a: YieldArea): string => (a.kind === "regional" ? a.name.charAt(0).toLowerCase() + a.name.slice(1) : a.name);
+
+const money = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
+
 /** The People-also-ask answers for "rental yield calculator" (SERP of 30 Sep 2026) with the table's figures. Empty if the data file lacks the areas they cite, so nothing prints without a figure. */
 export function yieldFaqs(): FaqItem[] {
   const mel = yieldArea("melbourne"), bne = yieldArea("brisbane"), rvic = yieldArea("regional-vic"), rqld = yieldArea("regional-qld");
   const melH = pct(mel?.houseMedian), bneH = pct(bne?.houseMedian), rvicH = pct(rvic?.houseMedian), rqldH = pct(rqld?.houseMedian);
   const melU = pct(mel?.unitMedian), bneU = pct(bne?.unitMedian), melQ3 = pct(mel?.houseUpperQuartile), bneQ3 = pct(bne?.houseUpperQuartile);
-  const net45 = pct(netYieldAtGross(4.5)), net35 = pct(netYieldAtGross(3.5));
-  if (!melH || !bneH || !rvicH || !rqldH || !melU || !bneU || !melQ3 || !bneQ3 || !net45 || !net35) return [];
+  const net45 = pct(netYieldAtGross(4.5)), net35 = pct(netYieldAtGross(3.5)), net3 = pct(netYieldAtGross(3)), net7 = pct(netYieldAtGross(7));
+  const units = YIELD_AREAS.map((a) => a.unitMedian).filter((u): u is number => typeof u === "number" && u > 0);
+  const minUnit = pct(units.length ? Math.min(...units) : null);
+  // The area with the highest upper quartile: the 7% answer says even there three quarters of suburbs yield less.
+  const top = [...YIELD_AREAS].filter((a) => pct(a.houseUpperQuartile)).sort((a, b) => (b.houseUpperQuartile as number) - (a.houseUpperQuartile as number))[0];
+  const topQ3 = pct(top?.houseUpperQuartile);
+  const rent7 = WORKED_EXAMPLE.purchasePrice * 0.07;
+  if (!melH || !bneH || !rvicH || !rqldH || !melU || !bneU || !melQ3 || !bneQ3 || !net45 || !net35 || !net3 || !net7 || !minUnit || !top || !topQ3) return [];
   const asAt = yieldAsAt();
   return [
     {
@@ -70,6 +96,19 @@ export function yieldFaqs(): FaqItem[] {
       question: "Is 3.5% a good rental yield?",
       answer:
         `It is a middling house yield for a capital city and a low one anywhere else. On this site's figures (as at ${asAt}) 3.5% sits above the median gross house yield in Melbourne (${melH}) and just below Brisbane's (${bneH}), but below the regional medians (${rvicH} in regional Victoria, ${rqldH} in regional Queensland) and below every unit median in the table. On the worked example's costs, 3.5% gross is about ${net35} net, so the case for buying at that yield rests on capital growth, and once a loan is added the property is usually cash-flow negative.`,
+    },
+    // The two below are People-also-ask questions from the 8 Sep 2026 SERPs
+    // for "rental yield calculator" and "what is a good rental yield
+    // australia" (docs/seo-baselines/2026-09-08/serps.csv), tracker item 15.
+    {
+      question: "Is 3% rental yield bad?",
+      answer:
+        `Not for a house in Melbourne, where it is about the going rate: on the suburbs this site publishes with both a bond-data rent and a sales median (as at ${asAt}), the median gross house yield is ${melH} in Melbourne and ${bneH} in Brisbane. Against the rest of the table it is low: below Brisbane's median, below the regional medians (${rvicH} in regional Victoria, ${rqldH} in regional Queensland) and well below every unit median, the lowest of which is ${minUnit}. On the worked example's costs, 3% gross is about ${net3} net, so the return at that yield has to come from capital growth, and once a loan is added it is usually cash-flow negative; the calculator above shows by how much each week.`,
+    },
+    {
+      question: "What does a 7% rental yield mean?",
+      answer:
+        `That a year's rent is 7% of the purchase price, before any costs: on the worked example's ${money(WORKED_EXAMPLE.purchasePrice)} house that is ${money(rent7)} a year, or about ${money(rent7 / 52)} a week. On this site's figures that is high: on the suburbs with both a bond-data rent and a sales median (as at ${asAt}), the median gross house yield is ${melH} in Melbourne and ${bneH} in Brisbane, and 7% is above the upper quartile of every area in the table: even in ${inSentence(top)}, which has the highest, three quarters of suburbs yield less than ${topQ3}. A yield that high usually means a low price in a small market rather than a bargain, so check the sales count and the rent history on the suburb's page. On the worked example's costs, 7% gross is about ${net7} net.`,
     },
   ];
 }

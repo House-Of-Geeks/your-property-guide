@@ -5,9 +5,9 @@
 import { describe, expect, it } from "vitest";
 import { WORKED_EXAMPLE, computeRentalYield, workedExample } from "@/lib/rental-yield-calc";
 import { YIELD_AREAS, YIELD_BENCHMARKS_AS_OF, YIELD_SALES_SOURCES, YIELD_WITHHELD } from "@/lib/data/yield-benchmarks";
-import { netYieldAtGross, pct, yieldArea, yieldFaqs, yieldFeedDates } from "@/lib/yield-benchmarks";
+import { netYieldAtGross, pct, yieldArea, yieldFaqs, yieldFeedDates, yieldRankingLinks } from "@/lib/yield-benchmarks";
 import { calculateStampDuty } from "@/lib/utils/stamp-duty";
-import { YIELD_RANKED_STATES } from "@/lib/ranking-notes";
+import { YIELD_RANKED_STATES, isRanked } from "@/lib/ranking-notes";
 
 describe("computeRentalYield", () => {
   it("works gross on the price and net on the cost base, matching the widget's former inline maths", () => {
@@ -105,7 +105,14 @@ describe("yield benchmarks data", () => {
 describe("yield FAQ", () => {
   it("answers the PAA questions with the table's figures, 40+ words each, and a net figure from the engine", () => {
     const f = yieldFaqs();
-    expect(f.map((q) => q.question)).toEqual(["What is a good rental yield in Australia?", "Is 4.5% rental yield good?", "Is 3.5% a good rental yield?"]);
+    expect(f.map((q) => q.question)).toEqual([
+      "What is a good rental yield in Australia?",
+      "Is 4.5% rental yield good?",
+      "Is 3.5% a good rental yield?",
+      // Tracker item 15: the 8 Sep 2026 PAA questions the three above do not answer.
+      "Is 3% rental yield bad?",
+      "What does a 7% rental yield mean?",
+    ]);
     const mel = yieldArea("melbourne")!, bne = yieldArea("brisbane")!;
     for (const q of f) {
       expect(q.answer.split(/\s+/).length).toBeGreaterThanOrEqual(40);
@@ -117,8 +124,14 @@ describe("yield FAQ", () => {
     }
     expect(f[1].answer).toContain(pct(netYieldAtGross(4.5))!);
     expect(f[2].answer).toContain(pct(netYieldAtGross(3.5))!);
+    expect(f[3].answer).toContain(pct(netYieldAtGross(3))!);
+    expect(f[4].answer).toContain(pct(netYieldAtGross(7))!);
     expect(netYieldAtGross(4.5) as number).toBeLessThan(4.5);
     expect(netYieldAtGross(3.5) as number).toBeLessThan(netYieldAtGross(4.5) as number);
+    expect(netYieldAtGross(3) as number).toBeLessThan(netYieldAtGross(3.5) as number);
+    expect(netYieldAtGross(7) as number).toBeLessThan(7);
+    // 7% of the worked example's $600,000: $42,000 a year, $807.69 a week.
+    expect(f[4].answer).toContain("$600,000 house that is $42,000 a year, or about $808 a week");
   });
   it("still says what the figures say: rerun this after regenerating the data file, and reword the answers if it fails", () => {
     const h = (k: string) => yieldArea(k)!.houseMedian as number;
@@ -136,5 +149,23 @@ describe("yield FAQ", () => {
     expect(h("regional-vic")).toBeGreaterThan(3.5);
     expect(h("regional-qld")).toBeGreaterThan(3.5);
     expect(Math.min(...units)).toBeGreaterThan(3.5);
+    // "Is 3% bad?": about Melbourne's house median; every other house median above it; every unit median a point or more above ("well below").
+    expect(Math.abs(h("melbourne") - 3)).toBeLessThanOrEqual(0.3);
+    for (const a of YIELD_AREAS) if (a.key !== "melbourne") expect(a.houseMedian as number).toBeGreaterThan(3);
+    expect(Math.min(...units) - 3).toBeGreaterThanOrEqual(1);
+    expect(yieldFaqs()[3].answer).toContain(pct(Math.min(...units))!);
+    // "What does 7% mean?": above the upper quartile of every area, naming the highest.
+    const q3s = YIELD_AREAS.map((a) => a.houseUpperQuartile as number);
+    expect(Math.max(...q3s)).toBeLessThan(7);
+    expect(yieldFaqs()[4].answer).toContain(`yield less than ${pct(Math.max(...q3s))}`);
+  });
+});
+
+describe("yield ranking links", () => {
+  it("links the state yield rankings that exist instead of a second list, and only those", () => {
+    const links = yieldRankingLinks();
+    expect(links.map((l) => l.href)).toEqual(YIELD_RANKED_STATES.map((s) => `/best-suburbs/best-rental-yield/${s.toLowerCase()}`));
+    for (const s of YIELD_RANKED_STATES) expect(isRanked("best-rental-yield", s)).toBe(true);
+    expect(links.map((l) => l.label)).toEqual(["best rental yield suburbs in Victoria", "best rental yield suburbs in Queensland"]);
   });
 });

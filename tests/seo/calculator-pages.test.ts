@@ -55,6 +55,17 @@ describe("/rental-yield-calculator", () => {
     // The old unsourced ranges are gone; the answer now comes from the data file.
     expect(src).not.toContain("Sydney and Melbourne often yield 2.5 to 4% gross");
   });
+  it("puts the suburb lookup below the calculator without promising a figure the suburb page withholds, and links the yield rankings instead of a second list (item 15)", () => {
+    const lookup = src.indexOf("<GuideSuburbSearch");
+    expect(lookup).toBeGreaterThan(src.indexOf("calculator={<RentalYieldCalculator />}"));
+    expect(lookup).toBeLessThan(src.indexOf("How to calculate rental yield, step by step"));
+    expect(src).toContain('title="Look up a suburb\'s rent and yield"');
+    expect(src).toContain("Not every suburb has both.");
+    expect(src).not.toMatch(/for any suburb/i);
+    expect(src).toContain("yieldRankingLinks()");
+    expect(src).not.toContain("Highest-yielding suburbs by state");
+    expect(src.indexOf("<GoodYieldTable />")).toBeLessThan(src.indexOf("rankings.map("));
+  });
   it("uses the shared engine in the widget too, so the example and the widget agree", () => {
     const widget = read(path.resolve(__dirname, "../../src/components/calculators/RentalYieldCalculator.tsx"));
     expect(widget).toContain('from "@/lib/rental-yield-calc"');
