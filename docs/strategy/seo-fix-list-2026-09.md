@@ -155,12 +155,18 @@ Tick items off as they ship.
       12-month change, vacancy, rent history, listings, investment FAQ; link from profile investment block. (09, H)
 - [ ] 14. [code] Suburb school sub-page rebuild: catchments, nearest schools with ICSEA/enrolment,
       distances, link back to profile. (C2)
-- [ ] 15. [content] BUILT, AWAITING YOUR TABLE REVIEW — PR #31 (8 Sep 2026): yield benchmarks by city and property
-      type from a generated data file (`scripts/seo/yield-benchmarks.ts`, regenerate after quarterly syncs) under the
-      suburb pages' gate; highest-yield suburbs for VIC and QLD; suburb lookup below the calculator; four PAA answers.
-      Withheld with reasons on the page: Perth/Hobart/Canberra/Darwin (no rental feed), Adelaide (SA sales medians
-      under review), Sydney units (no unit price feed), NSW ranking (postcode-level rents). Merge after your review.
-      Found while building: (a) `sales-sa` medians look inflated (Elizabeth $697,500; state median of suburb medians
+- [x] 15. [content] DONE 1 Oct 2026 — PR #31. one commit on main after PR #85 (3.3a), which
+      merged the overlapping half. Dropped as duplicated by #85: the 8 Sep data file and generator (same paths; #85's
+      30 Sep file under the yield ranking's gate stands, so the 8 Sep Sydney yield built from postcode-level rents is
+      gone), the city "good yield" table, and the "good rental yield in Australia" and "Is 4.5% good?" answers (#85
+      answers those and 3.5%). The VIC and QLD highest-yield lists are not repeated: /best-suburbs/best-rental-yield/vic
+      and /qld rank the same suburbs under the same gate, and the page now links them under the good-yield table.
+      Kept: the suburb lookup below the calculator (it opens the suburb's page; the copy promises a rent only where its
+      source is known and a yield only beside a published house median), and two PAA answers from the 8 Sep SERPs that
+      #85 does not cover, "Is 3% rental yield bad?" and "What does a 7% rental yield mean?", worked from #85's data file
+      and engine and tested against it. Not built: the 30 Sep PAA "What is a 6% yield?" and "What is the 30% rent rule
+      in Australia?" (neither PR answers them).
+      Found while building on 8 Sep: (a) `sales-sa` medians look inflated (Elizabeth $697,500; state median of suburb medians
       $1.05M) — check the feed's column and definition as done for NSW and VIC; (b) `rental-sa` does not write through
       to Suburb.medianRentHouse/Unit, so rankings and city pages use stale SA rents — add the write-through.
       Original scope: "good yield in 2026" table by city/property type, PAA one-liners, suburb yield lookup,

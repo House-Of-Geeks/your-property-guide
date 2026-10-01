@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import Link from "next/link";
 import { RentalYieldCalculator } from "@/components/calculators/RentalYieldCalculator";
 import { GoodYieldTable } from "@/components/calculators/GoodYieldTable";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
-import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
+import { Callout, GuideSuburbSearch, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { workedExample } from "@/lib/rental-yield-calc";
-import { yieldFaqs } from "@/lib/yield-benchmarks";
+import { yieldFaqs, yieldRankingLinks } from "@/lib/yield-benchmarks";
 
 // Static content (the yield table is a generated data file); a weekly
 // re-render keeps the route on ISR like the rest of the site.
@@ -21,7 +22,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   slug: "rental-yield-calculator",
   schemaName: "Rental Yield Calculator",
   schemaDescription: "Calculate gross and net rental yield and weekly cash flow for investment properties.",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-01",
   persona: "investing",
 };
 
@@ -82,6 +83,7 @@ export default function RentalYieldCalculatorPage() {
   // Worked by the widget's own engine (src/lib/rental-yield-calc.ts), so the
   // example and the calculator cannot disagree.
   const { input: ex, result } = workedExample();
+  const rankings = yieldRankingLinks();
   return (
     <CalculatorPageLayout
       frontmatter={FRONTMATTER}
@@ -90,6 +92,16 @@ export default function RentalYieldCalculatorPage() {
       related={RELATED}
       explainer={
         <>
+          {/* Below the calculator: from the going rate to one suburb's own
+              figures. The suburb page prints a rent only where its source is
+              known and a yield only beside a published house median, so the
+              copy promises neither for every suburb (tracker item 15). */}
+          <GuideSuburbSearch
+            title="Look up a suburb's rent and yield"
+            subtitle="Opens the suburb's own page: its median weekly rent where the rent's source is known, and a gross yield where the page also publishes a house sales median. Not every suburb has both."
+            placeholder="Suburb name or postcode"
+          />
+
           <h2 id="how-to-calculate">How to calculate rental yield, step by step</h2>
           <ol>
             <li>
@@ -173,6 +185,21 @@ export default function RentalYieldCalculatorPage() {
           </p>
 
           <GoodYieldTable />
+          {/* The highest-yield suburbs are the yield rankings' job: link them
+              rather than print a second list here (tracker item 15). */}
+          {rankings.length > 0 && (
+            <p>
+              Looking for the highest-yielding suburbs rather than the going
+              rate? The same gated data ranks them, highest gross yield first:{" "}
+              {rankings.map((r, i) => (
+                <Fragment key={r.href}>
+                  {i > 0 ? (i === rankings.length - 1 ? " and " : ", ") : null}
+                  <Link href={r.href}>{r.label}</Link>
+                </Fragment>
+              ))}
+              .
+            </p>
+          )}
 
           <h2>Gross vs net yield, in plain English</h2>
           <p>
