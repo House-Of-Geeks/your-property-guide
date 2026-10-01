@@ -454,7 +454,10 @@ describe("stamp duty state guide titles", () => {
     const meta = builder.slice(builder.indexOf("export function stampDutyMetadata"), builder.indexOf("/** Renders a paragraph string"));
     expect(meta).toContain("const metaTitle = STAMP_DUTY_GUIDES[state].metaTitle;");
     expect(meta.match(/title: metaTitle,/g)).toHaveLength(2);
-    expect(builder).toMatch(/title: g\.title,/);
+    // The frontmatter (H1, Article headline) lives in src/lib/guides/stamp-duty-frontmatter.ts since PR #90.
+    const frontmatter = fs.readFileSync(path.resolve(__dirname, "../../src/lib/guides/stamp-duty-frontmatter.ts"), "utf8");
+    expect(frontmatter).toMatch(/title: g\.title,/);
+    expect(builder).toContain("stampDutyFrontmatter(state)");
   });
 
   it("descriptions stay inside 160 characters and print only the engine's figure", () => {

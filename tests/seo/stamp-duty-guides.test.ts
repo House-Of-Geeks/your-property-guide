@@ -160,8 +160,12 @@ describe("the Queensland article fold", () => {
     expect(read("src/components/blog/BlogGuideRail.tsx")).not.toContain(OLD);
     expect(read("src/app/(marketing)/guides/sitemap.ts")).not.toContain(OLD);
   });
-  it("the eight state guides stay in GUIDE_SLUGS", () => {
-    const sitemap = read("src/app/(marketing)/guides/sitemap.ts");
-    for (const s of AUSTRALIAN_STATES) expect(sitemap).toContain(`"${stampDutySlug(s)}"`);
+  // The guides sitemap reads the guide registry (PR #90), which takes the
+  // eight state guides from src/lib/guides/stamp-duty-frontmatter.ts.
+  it("the eight state guides stay in the guides sitemap", async () => {
+    const { default: sitemap } = await import("../../src/app/(marketing)/guides/sitemap");
+    const urls = sitemap().map((e) => e.url);
+    for (const s of AUSTRALIAN_STATES) expect(urls.some((u) => u.endsWith(`/guides/${stampDutySlug(s)}`)), stampDutySlug(s)).toBe(true);
+    expect(urls.some((u) => u.endsWith(`/guides/${OLD}`))).toBe(false);
   });
 });

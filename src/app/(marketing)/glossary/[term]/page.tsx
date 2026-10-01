@@ -6,7 +6,10 @@ import { ArrowRight, ArrowLeft } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, DefinedTermJsonLd } from "@/components/seo";
 import { ExpertCTA, BUYING_GUIDE_CTA } from "@/components/journey";
-import { GLOSSARY_TERMS, getGlossaryTerm } from "@/lib/data/glossary";
+import { GLOSSARY_GUIDE_LINKS, GLOSSARY_TERMS, getGlossaryTerm } from "@/lib/data/glossary";
+import { GuideLinkList } from "@/components/guide/GuideLinkList";
+import { resolveGuides } from "@/lib/guides/registry";
+import { getCalculator, toGuideLinks, type GuideLink } from "@/lib/guides/hub-guides";
 import { SITE_URL } from "@/lib/constants";
 
 export const dynamicParams = false;
@@ -106,7 +109,18 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
   const prev = idx > 0 ? allSorted[idx - 1] : null;
   const next = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
 
-  // Cross-link guide based on category
+  // The guides and calculators on this term's topic (GLOSSARY_GUIDE_LINKS);
+  // a term without an entry falls back to its persona's general guide.
+  const mapped = GLOSSARY_GUIDE_LINKS[entry.slug];
+  const topicLinks: GuideLink[] = mapped
+    ? [
+        ...(mapped.tools ?? []).flatMap((href) => {
+          const calc = getCalculator(href);
+          return calc ? [{ href: calc.href, title: calc.label }] : [];
+        }),
+        ...toGuideLinks(resolveGuides(mapped.guides ?? [])),
+      ]
+    : [];
   const relatedGuide = PERSONA_GUIDE[entry.category];
 
   const plain = stripHtml(entry.html);
@@ -172,8 +186,15 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
                 dangerouslySetInnerHTML={{ __html: `<p class="lead">${entry.html}</p>` }}
               />
 
-              {/* Cross-link to relevant guide */}
-              {relatedGuide && (
+              {/* Cross-link to the guide on this topic, else the persona guide */}
+              {topicLinks.length > 0 ? (
+                <div className="mt-10 rounded-2xl border border-line bg-surface-warm p-6">
+                  <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-4">
+                    Go deeper
+                  </p>
+                  <GuideLinkList groups={[{ links: topicLinks }]} columns={2} />
+                </div>
+              ) : relatedGuide && (
                 <div className="mt-10 rounded-2xl border border-line bg-surface-warm p-6">
                   <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
                     Go deeper

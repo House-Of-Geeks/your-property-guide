@@ -5,6 +5,8 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
+import { RelatedGuidesSection } from "@/components/guide/GuideLinkList";
+import { calculatorGuideGroups } from "@/lib/guides/hub-guides";
 
 export const metadata: Metadata = {
   title: "Free Australian Property Tools, Quizzes & Calculators",
@@ -325,6 +327,15 @@ export default function ToolsPage() {
           </section>
         ))}
       </div>
+
+      {/* Each calculator with the guides it pairs with (src/lib/guides/hub-guides.ts);
+          the page linked no guide at all until 30 Sep 2026. */}
+      <RelatedGuidesSection
+        heading="Every calculator, with the guide behind it"
+        intro="The calculator runs the numbers; the guides explain the rules, rates and exemptions it applies."
+        groups={calculatorGuideGroups()}
+        id="calculator-guides"
+      />
 
       {/* Methodology link */}
       <section className="bg-surface-warm border-t border-line-warm">

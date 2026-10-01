@@ -3,12 +3,15 @@ import { notFound, permanentRedirect } from "next/navigation";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { BlogGrid } from "@/components/blog/BlogGrid";
+import { GuideLinkList } from "@/components/guide/GuideLinkList";
 import {
   categoryToSlug,
   getBlogPostsByCategory,
   getDistinctBlogCategories,
 } from "@/lib/services/blog-service";
 import { resolveBlogCoverPath } from "@/lib/utils/blog-cover";
+import { staticGuidesForCategoryPage } from "@/lib/guides/registry";
+import { toGuideLinks } from "@/lib/guides/hub-guides";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 interface Props {
@@ -61,10 +64,16 @@ export default async function BlogCategoryPage({ params }: Props) {
   // them to the canonical slug URL so only one form accumulates ranking.
   if (category !== slug) permanentRedirect(`/guides/category/${slug}`);
 
+  // Every article in the category (the default limit of 100 would cut a
+  // growing category short), then the static guides filed under it, so the
+  // page lists its full set. All bundled data: no database read, and the
+  // 24-hour ISR window is unchanged.
   const [posts, allCategories] = await Promise.all([
-    getBlogPostsByCategory(slug),
+    getBlogPostsByCategory(slug, Number.POSITIVE_INFINITY),
     getDistinctBlogCategories(),
   ]);
+  const guideSections = staticGuidesForCategoryPage(slug);
+  const guideCount = guideSections.reduce((n, s) => n + s.guides.length, 0);
 
   if (posts.length === 0) notFound();
 
@@ -107,10 +116,26 @@ export default async function BlogCategoryPage({ params }: Props) {
         <p className="text-white/70 mt-2 max-w-xl">
           All articles and guides in the {label} category from the Your Property Guide research blog.
         </p>
-        <p className="text-white/40 text-sm mt-3">{posts.length} articles</p>
+        <p className="text-white/40 text-sm mt-3">
+          {guideCount > 0 ? `${posts.length} articles and ${guideCount} guides` : `${posts.length} articles`}
+        </p>
       </div>
 
       <BlogGrid posts={resolvedPosts} categories={allCategories} />
+
+      {guideSections.length > 0 && (
+        <section className="mt-16 border-t border-line pt-12">
+          <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl mb-3">
+            Step-by-step guides
+          </h2>
+          <p className="font-sans text-base text-ink-muted leading-relaxed max-w-2xl mb-8">
+            {`The guides that sit alongside the ${label} articles above.`}
+          </p>
+          <GuideLinkList
+            groups={guideSections.map(({ section, guides }) => ({ label: section.label, links: toGuideLinks(guides) }))}
+          />
+        </section>
+      )}
     </div>
   );
 }

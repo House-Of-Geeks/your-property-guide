@@ -6,6 +6,9 @@ import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { PERSONA_BY_ID } from "@/lib/constants/journey";
+import { GuideLinkList } from "@/components/guide/GuideLinkList";
+import { ALL_GUIDES, guidesBySection } from "@/lib/guides/registry";
+import { toGuideLinks } from "@/lib/guides/hub-guides";
 
 export const metadata: Metadata = {
   // Brand suffix is appended once by the root title template (%s | SITE_NAME);
@@ -23,156 +26,13 @@ export const metadata: Metadata = {
   },
 };
 
-interface Guide {
-  title: string;
-  description: string;
-  href: string;
-  readTime: string;
-  pillar?: boolean;
-}
-
-interface GuideSection {
-  id: string;
-  label: string;
-  blurb: string;
-  icon: string;
-  guides: Guide[];
-}
-
-const SECTIONS: GuideSection[] = [
-  {
-    id: "first-home",
-    label: "First home buyers",
-    blurb: "Schemes, deposits, LMI, and the buying process. Start with the national guide, then drill into your state.",
-    icon: "/images/icons/guide.svg",
-    guides: [
-      { title: "How to Buy Property in Australia",          href: "/guides/buying-property-australia", readTime: "15 min", description: "Complete step-by-step from saving your deposit to settlement.", pillar: true },
-      { title: "First Home Buyer Guide (National)",        href: "/guides/first-home-buyer-guide", readTime: "10 min", description: "Federal schemes, FHOG by state, stamp duty concessions and step-by-step buying." },
-      { title: "How Much Deposit to Buy a House?",          href: "/guides/how-much-deposit-to-buy-a-house", readTime: "9 min", description: "5%, 10%, 20%, what each tier unlocks, plus LMI, schemes, and FHSS." },
-      { title: "10 First Home Buyer Mistakes to Avoid",     href: "/guides/first-home-buyer-mistakes-to-avoid", readTime: "9 min", description: "The expensive errors, ranked, with the simple fix for each." },
-      { title: "Best Time to Buy Property in Australia",    href: "/guides/best-time-to-buy-property-australia", readTime: "8 min", description: "Seasonal patterns, the rate cycle, and why timing the market rarely wins." },
-      { title: "How Long Does It Take to Buy a House?",     href: "/guides/how-long-does-it-take-to-buy-a-house-australia", readTime: "8 min", description: "Realistic 12 to 20 week timeline, stage by stage, with state settlement times." },
-      { title: "Cooling-Off Period by State",               href: "/guides/cooling-off-period-by-state-australia", readTime: "7 min", description: "How long you have to pull out of a private treaty contract, state by state." },
-      { title: "Best Brisbane Suburbs for Families 2026",   href: "/guides/best-brisbane-suburbs-for-families-2026", readTime: "10 min", description: "Inner-ring, middle-ring, and outer growth corridors picked for school quality and lifestyle." },
-      { title: "How to Negotiate Property Price",           href: "/guides/how-to-negotiate-property-price-australia", readTime: "13 min", description: "Opening offers, counter-offer logic, walk-away triggers and the mistakes that cost buyers money." },
-      { title: "What Happens on Settlement Day",            href: "/guides/settlement-day-australia", readTime: "12 min", description: "Plain-English walkthrough of PEXA settlement, final inspection, funds flow, delays and state-by-state notes." },
-      { title: "Capital Growth vs Cash Flow",               href: "/guides/capital-growth-vs-cash-flow-australia", readTime: "14 min", description: "The investor decision that gets oversimplified into one sentence. How the trade-off actually works on real Australian property." },
-      { title: "Offset Accounts Explained",                 href: "/guides/offset-accounts-explained-australia", readTime: "11 min", description: "How offset accounts save interest mechanically, when the package fee is worth it, and the redraw trap that costs investors deductions." },
-      { title: "First Home Buyer Guide, NSW",               href: "/guides/first-home-buyer-nsw", readTime: "7 min",  description: "$10K FHOG, stamp duty exemption to $800K, FHB choice." },
-      { title: "First Home Buyer Guide, VIC",               href: "/guides/first-home-buyer-vic", readTime: "7 min",  description: "$10K metro / $20K regional FHOG, stamp duty to $600K." },
-      { title: "First Home Buyer Guide, QLD",               href: "/guides/first-home-buyer-qld", readTime: "7 min",  description: "$15K FHOG from 1 July 2026, transfer-duty concession, REIQ contract." },
-      { title: "First Home Buyer Guide, WA",                href: "/guides/first-home-buyer-wa",  readTime: "7 min",  description: "$10K FHOG, stamp duty to $450K, Keystart loans." },
-      { title: "First Home Buyer Guide, SA",                href: "/guides/first-home-buyer-sa",  readTime: "9 min",  description: "$15K FHOG, HomeSeeker shared equity, off-the-plan concession." },
-      { title: "First Home Buyer Guide, TAS",               href: "/guides/first-home-buyer-tas", readTime: "8 min",  description: "$30K FHOG, 50% stamp duty concession on established homes." },
-      { title: "First Home Buyer Guide, ACT",               href: "/guides/first-home-buyer-act", readTime: "9 min",  description: "Full stamp duty waiver via HBCS, Land Rent Scheme, Crown Lease." },
-      { title: "First Home Buyer Guide, NT",                href: "/guides/first-home-buyer-nt",  readTime: "8 min",  description: "$10K FHOG plus $23,928 stamp duty discount, leasehold land." },
-      { title: "NSW Stamp Duty Calculator",                 href: "/guides/stamp-duty-nsw", readTime: "8 min", description: "Calculator, 2026-27 rates, and the first home buyer exemption to $800K." },
-      { title: "VIC Stamp Duty Calculator",                 href: "/guides/stamp-duty-vic", readTime: "8 min", description: "Calculator, land transfer duty rates, and the $600K first home exemption." },
-      { title: "QLD Stamp Duty Calculator",                 href: "/guides/stamp-duty-qld", readTime: "8 min", description: "Calculator, home concession rates, and first home concessions to $700K and on new homes." },
-      { title: "WA Stamp Duty Calculator",                  href: "/guides/stamp-duty-wa",  readTime: "8 min", description: "Calculator, WA rates, and the first home owner rate to $600K from 7 May 2026." },
-      { title: "SA Stamp Duty Calculator",                  href: "/guides/stamp-duty-sa",  readTime: "8 min", description: "Calculator, SA rates, and the new-home first home exemption." },
-      { title: "TAS Stamp Duty Calculator",                 href: "/guides/stamp-duty-tas", readTime: "8 min", description: "Calculator, Tasmanian rates, and the first home exemption that ended 30 June 2026." },
-      { title: "NT Stamp Duty Calculator",                  href: "/guides/stamp-duty-nt",  readTime: "8 min", description: "Calculator, NT rates, and the $50K HomeGrown Territory grant." },
-      { title: "ACT Stamp Duty Calculator",                 href: "/guides/stamp-duty-act", readTime: "8 min", description: "Calculator, ACT rates, and the Home Buyer Concession Scheme with no cap from 1 July 2026." },
-      { title: "How Much Can I Borrow?",                    href: "/guides/how-much-can-i-borrow-australia", readTime: "9 min", description: "How lenders calculate borrowing power, the serviceability buffer, and how to lift your number." },
-      { title: "Home Loan Pre-Approval",                    href: "/guides/home-loan-pre-approval-australia", readTime: "8 min", description: "What pre-approval is, how long it lasts, and the documents lenders want." },
-      { title: "How to Choose a Mortgage Broker",           href: "/guides/how-to-choose-a-mortgage-broker", readTime: "8 min", description: "How brokers get paid, the right questions to ask, and broker vs bank." },
-      { title: "First Home Owner Grant by State",           href: "/guides/first-home-owner-grant-australia", readTime: "9 min", description: "FHOG amounts and eligibility for every state and territory, with links to each." },
-      { title: "First Home Guarantee (5% Deposit)",         href: "/guides/first-home-guarantee", readTime: "8 min", description: "Buy with a 5% deposit and no LMI, plus the income and price caps." },
-      { title: "Help to Buy Scheme",                        href: "/guides/help-to-buy-scheme-australia", readTime: "8 min", description: "The federal shared equity scheme, how the government's stake works, and the catches." },
-      { title: "First Home Super Saver Scheme",             href: "/guides/first-home-super-saver-scheme", readTime: "8 min", description: "Save your deposit inside super and cut the tax on it, plus the withdrawal limits." },
-      { title: "Due Diligence Checklist",                   href: "/guides/due-diligence-checklist-buying-a-house", readTime: "9 min", description: "Everything to check before you sign, from title and zoning to flood and strata." },
-      { title: "How to Find a Builder",                     href: "/guides/how-to-find-a-builder-australia", readTime: "8 min", description: "Vetting builders, reading the contract, and avoiding the common build traps." },
-      { title: "Lenders Mortgage Insurance (LMI)",          href: "/guides/lenders-mortgage-insurance-guide", readTime: "8 min",  description: "What LMI costs and the schemes that waive it." },
-      { title: "Fixed vs Variable Rate Mortgages",          href: "/guides/fixed-vs-variable-rate-guide", readTime: "8 min",  description: "Which loan structure fits your situation, with worked examples." },
-      { title: "Conveyancing in Australia",                 href: "/guides/conveyancing-guide", readTime: "8 min", description: "What conveyancers do, what they cost, and what to ask." },
-      { title: "Building & Pest Inspection",                href: "/guides/building-pest-inspection", readTime: "7 min", description: "When to inspect, what's covered, and how to read the report." },
-      { title: "Property Auction Guide",                    href: "/guides/property-auction-guide", readTime: "10 min", description: "How auctions actually run, bidding strategy, and pre-auction due diligence." },
-      { title: "Foreign Buyer (FIRB) Guide",                href: "/guides/foreign-buyer-firb-guide", readTime: "12 min", description: "FIRB rules, foreign buyer surcharges, and tax implications." },
-    ],
-  },
-  {
-    id: "selling",
-    label: "Selling your home",
-    blurb: "Picking an agent, the auction process, and how the agent fee structure actually works.",
-    icon: "/images/icons/broker.svg",
-    guides: [
-      { title: "How to Sell a House in Australia",           href: "/guides/how-to-sell-a-house-australia", readTime: "14 min", description: "The full sale process from appraisal to settlement, with timing, costs, and the decisions that move the price.", pillar: true },
-      { title: "How Much Is My House Worth?",               href: "/guides/how-much-is-my-house-worth-australia", readTime: "10 min", description: "Appraisal vs bank valuation vs online estimate, why they differ, and how to get an accurate figure." },
-      { title: "How to Choose a Selling Agent",             href: "/guides/how-to-choose-a-selling-agent", readTime: "9 min", description: "Interview process, the appraisal-price trap, fees, and the listing agreement." },
-      { title: "Real Estate Agent Fees in Australia",       href: "/guides/real-estate-agent-fees-australia", readTime: "8 min", description: "Commission rates by state, marketing costs, and what's negotiable." },
-      { title: "The Cost of Selling a House",               href: "/guides/cost-of-selling-a-house-australia", readTime: "9 min", description: "Every fee a seller pays, from commission and marketing to conveyancing, with a worked total." },
-      { title: "Best Time to Sell a House",                 href: "/guides/best-time-to-sell-a-house-australia", readTime: "8 min", description: "Spring vs autumn vs winter, the rate cycle, and why your suburb matters more than the month." },
-      { title: "How to Prepare for a Property Appraisal",   href: "/guides/how-to-prepare-for-a-property-appraisal", readTime: "10 min", description: "What agents actually assess, the paperwork to have ready, and a pre-appraisal checklist." },
-      { title: "Questions to Ask a Real Estate Agent",      href: "/guides/questions-to-ask-a-real-estate-agent", readTime: "11 min", description: "The 20+ questions that separate a great agent from a good talker, and what strong answers sound like." },
-      { title: "Auction vs Private Treaty",                 href: "/guides/auction-vs-private-treaty", readTime: "11 min", description: "How each method works, real cost differences, and a decision framework for your property and state." },
-      { title: "Home Staging Costs in Australia",           href: "/guides/home-staging-cost-australia", readTime: "10 min", description: "Full and partial styling costs by city, what the hire terms look like, and when staging isn't worth it." },
-      { title: "What to Fix Before Selling",                href: "/guides/what-to-fix-before-selling-a-house", readTime: "10 min", description: "Repairs that return money vs renovations that don't, room-by-room priorities, and when to sell as-is." },
-      { title: "How to Negotiate Agent Commission",         href: "/guides/how-to-negotiate-real-estate-agent-commission", readTime: "10 min", description: "What's actually negotiable, tiered commission structures, and scripts for the conversation." },
-      { title: "Real Estate Commission NSW",               href: "/guides/real-estate-commission-nsw", readTime: "7 min", description: "NSW commission rates, worked dollar examples, and how to negotiate." },
-      { title: "Real Estate Commission VIC",               href: "/guides/real-estate-commission-vic", readTime: "7 min", description: "Victorian commission rates, worked examples, and what's negotiable." },
-      { title: "Real Estate Commission QLD",               href: "/guides/real-estate-commission-qld", readTime: "7 min", description: "Queensland commission rates and worked dollar examples by sale price." },
-      { title: "Real Estate Commission WA",                href: "/guides/real-estate-commission-wa", readTime: "7 min", description: "WA commission rates, worked examples, and negotiation tips." },
-      { title: "Real Estate Commission SA",                href: "/guides/real-estate-commission-sa", readTime: "7 min", description: "South Australian commission rates and worked dollar examples." },
-      { title: "Real Estate Commission TAS",               href: "/guides/real-estate-commission-tas", readTime: "7 min", description: "Tasmanian commission rates, the highest typical band, and worked examples." },
-      { title: "Real Estate Commission NT",                href: "/guides/real-estate-commission-nt", readTime: "7 min", description: "Northern Territory commission rates and worked dollar examples." },
-      { title: "Real Estate Commission ACT",               href: "/guides/real-estate-commission-act", readTime: "7 min", description: "ACT commission rates, the lowest typical band, and worked examples." },
-      { title: "Property Auction Guide",                    href: "/guides/property-auction-guide", readTime: "10 min", description: "What to expect on auction day from the seller's side." },
-      { title: "Conveyancing in Australia",                 href: "/guides/conveyancing-guide", readTime: "8 min", description: "What your conveyancer does on the sell side." },
-    ],
-  },
-  {
-    id: "upgrading",
-    label: "Upgrading or downsizing",
-    blurb: "When two transactions need to talk to each other. Sell vs buy first, bridging loans, and downsizing strategy.",
-    icon: "/images/icons/map.svg",
-    guides: [
-      { title: "Sell First or Buy First?",                  href: "/guides/sell-first-or-buy-first", readTime: "8 min", description: "Decision tree across the three options, with worked examples." },
-      { title: "Bridging Loans Australia",                  href: "/guides/bridging-loans-guide", readTime: "9 min", description: "Peak debt, end debt, capitalised interest, and when bridging is the right call." },
-      { title: "Downsizers Guide",                          href: "/guides/downsizers-guide", readTime: "9 min", description: "When to downsize, super contribution rules, and matching the right home to a new lifestyle." },
-      { title: "How to Choose a Selling Agent",             href: "/guides/how-to-choose-a-selling-agent", readTime: "9 min", description: "Get the right agent listing your old home before you commit either way." },
-    ],
-  },
-  {
-    id: "investing",
-    label: "Property investors",
-    blurb: "Tax strategy, granny flat economics, depreciation schedules, and SMSF property.",
-    icon: "/images/icons/growth.svg",
-    guides: [
-      { title: "House vs Apartment Investment",             href: "/guides/house-vs-apartment-investment-australia", readTime: "9 min", description: "Capital growth, rental yield, holding costs and a 20-year worked example." },
-      { title: "Property Management Fees Australia",         href: "/guides/property-management-fees-australia", readTime: "8 min", description: "All 8 fee types, state ranges, and the all-in cost most quotes hide." },
-      { title: "Sydney vs Melbourne Property Market",        href: "/guides/sydney-vs-melbourne-property-market", readTime: "9 min", description: "Median prices, growth, yields and affordability between Australia's two biggest markets." },
-      { title: "Buyer's Agent Cost in Australia",           href: "/guides/buyers-agent-cost-australia", readTime: "8 min", description: "Fees by service tier and city, plus when a buyer's agent is actually worth it." },
-      { title: "Negative Gearing in Australia",             href: "/guides/negative-gearing-australia", readTime: "8 min", description: "How it works, what you can deduct, and whether it fits your strategy." },
-      { title: "Rentvesting in Australia",                  href: "/guides/rentvesting-australia", readTime: "8 min", description: "Rent where you want to live, invest where the numbers work, and the tax trade-offs." },
-      { title: "Renovation Cost Guide 2026",               href: "/guides/renovation-cost-australia-2026", readTime: "9 min", description: "What renovations actually cost in 2026, room by room, and which add resale value." },
-      { title: "Property Depreciation Guide",               href: "/guides/property-depreciation-guide", readTime: "9 min", description: "Capital works vs plant & equipment deductions, and when a depreciation schedule pays off." },
-      { title: "SMSF Property Investment",                  href: "/guides/smsf-property-guide", readTime: "10 min", description: "How SMSFs buy property, LRBA rules, and the trade-offs." },
-      { title: "Granny Flat Guide, NSW",                    href: "/guides/granny-flat-guide-nsw", readTime: "8 min", description: "NSW's CDC fast-track pathway, costs, and yields." },
-      { title: "Granny Flat Guide, VIC",                    href: "/guides/granny-flat-guide-vic", readTime: "7 min", description: "Victorian planning permits, ResCode, and growth corridor opportunities." },
-      { title: "Granny Flat Guide, QLD",                    href: "/guides/granny-flat-guide-qld", readTime: "7 min", description: "Brisbane City Council rules and QLD's tight rental market." },
-      { title: "Granny Flat Guide, SA",                     href: "/guides/granny-flat-guide-sa", readTime: "9 min", description: "SA Planning and Design Code, complying development, and Adelaide rents." },
-      { title: "Granny Flat Guide, WA",                     href: "/guides/granny-flat-guide-wa", readTime: "9 min", description: "R-Codes, owner-occupier rule, and Perth's tight rental market." },
-      { title: "Foreign Buyer (FIRB) Guide",                href: "/guides/foreign-buyer-firb-guide", readTime: "12 min", description: "FIRB rules, surcharges, and tax for overseas investors." },
-    ],
-  },
-  {
-    id: "renters",
-    label: "Renters",
-    blurb: "Your rights as a tenant, state by state. Bond, rent increases, repairs, entry, and ending a tenancy.",
-    icon: "/images/icons/hazard.svg",
-    guides: [
-      { title: "Renter's Rights, NSW",  href: "/guides/renters-rights-nsw", readTime: "10 min", description: "Bond, 12-month rent-increase minimum, NCAT, and no-grounds evictions." },
-      { title: "Renter's Rights, VIC",  href: "/guides/renters-rights-vic", readTime: "10 min", description: "No-grounds evictions abolished, pet rights, modification rights, and VCAT." },
-      { title: "Renter's Rights, QLD",  href: "/guides/renters-rights-qld", readTime: "10 min", description: "2024 reforms, RTA dispute resolution, and QCAT." },
-      { title: "Renter's Rights, SA",   href: "/guides/renters-rights-sa",  readTime: "8 min",  description: "SA tenant rules, CBS mediation, and SACAT." },
-      { title: "Renter's Rights, WA",   href: "/guides/renters-rights-wa",  readTime: "8 min",  description: "WA's Residential Tenancies Act, no tribunal, Magistrates Court route." },
-      { title: "Renter's Rights, TAS",  href: "/guides/renters-rights-tas", readTime: "9 min",  description: "Bond rules, the Rental Deposit Authority, and CBOS dispute resolution." },
-      { title: "Renter's Rights, NT",   href: "/guides/renters-rights-nt",  readTime: "9 min",  description: "Tropical-climate urgent repairs, remote community housing, and NTCAT." },
-      { title: "Renter's Rights, ACT",  href: "/guides/renters-rights-act", readTime: "10 min", description: "ACT's strong protections including effective no-grounds-eviction ban." },
-    ],
-  },
-];
+// Every published guide, grouped by section, from the guide registry: the
+// static guides' titles and descriptions come from their own FRONTMATTER and
+// the articles from blog-posts, so nothing on this page is typed twice and
+// nothing published is missing (tests/seo/guide-registry.test.ts). The page
+// stays static: the registry is bundled data, read at build time.
+const SECTIONS = guidesBySection();
+const TOTAL_GUIDES = ALL_GUIDES.length;
 
 const PERSONA_LINKS = [
   { id: "first-home", href: PERSONA_BY_ID["first-home"].hubPath, label: PERSONA_BY_ID["first-home"].cardLabel },
@@ -188,8 +48,6 @@ const TOOLS = [
 ];
 
 export default function GuidesHubPage() {
-  const totalGuides = SECTIONS.reduce((acc, s) => acc + s.guides.length, 0);
-
   return (
     <>
       <CollectionPageJsonLd
@@ -217,7 +75,7 @@ export default function GuidesHubPage() {
           <div className="grid lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-8">
               <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
-                {totalGuides} guides, all free, all current
+                {TOTAL_GUIDES} guides and articles, all free
               </p>
               <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
                 Property guides for <span className="italic text-primary">every stage</span>.
@@ -243,18 +101,20 @@ export default function GuidesHubPage() {
             </div>
           </div>
 
-          {/* Stat anchor row, breaks down the {totalGuides} headline by section */}
-          <div className="mt-12 flex flex-wrap gap-x-10 gap-y-6">
-            {SECTIONS.map((s) => (
-              <div key={s.id} className="flex items-start gap-3">
-                <Image src={s.icon} alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
+          {/* Stat anchor row: the headline count by section, each a jump link */}
+          <nav aria-label="Guide sections" className="mt-12 flex flex-wrap gap-x-10 gap-y-6">
+            {SECTIONS.map(({ section, guides }) => (
+              <a key={section.id} href={`#${section.id}`} className="group flex items-start gap-3">
+                <Image src={section.icon} alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
                 <div>
-                  <p className="font-display text-2xl text-ink leading-none mb-1">{s.guides.length}</p>
-                  <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">{s.label.toLowerCase()}</p>
+                  <p className="font-display text-2xl text-ink leading-none mb-1">{guides.length}</p>
+                  <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle group-hover:text-primary transition-colors">
+                    {section.label.toLowerCase()}
+                  </p>
                 </div>
-              </div>
+              </a>
             ))}
-          </div>
+          </nav>
         </div>
       </section>
 
@@ -279,11 +139,11 @@ export default function GuidesHubPage() {
         </div>
       </section>
 
-      {/* Guide sections by persona */}
+      {/* Every guide, by section */}
       <article className="bg-surface-raised">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
-          {SECTIONS.map((section) => (
-            <section key={section.id} id={section.id}>
+          {SECTIONS.map(({ section, guides }) => (
+            <section key={section.id} id={section.id} className="scroll-mt-24">
               <div className="grid lg:grid-cols-12 gap-8 mb-8">
                 <div className="lg:col-span-5">
                   <div className="flex items-center gap-3 mb-3">
@@ -291,7 +151,7 @@ export default function GuidesHubPage() {
                       <Image src={section.icon} alt="" width={24} height={24} className="w-6 h-6" aria-hidden="true" />
                     </div>
                     <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle">
-                      For {section.label.toLowerCase()}
+                      {guides.length === 1 ? "1 guide" : `${guides.length} guides`}
                     </p>
                   </div>
                   <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
@@ -305,36 +165,7 @@ export default function GuidesHubPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {section.guides.map((guide) => (
-                  <Link
-                    key={guide.href + guide.title}
-                    href={guide.href}
-                    className="group rounded-2xl border border-line bg-surface-raised hover:border-ink hover:shadow-card-hover p-6 transition-all flex flex-col"
-                  >
-                    {guide.pillar && (
-                      <p className="text-xs font-sans uppercase tracking-[0.2em] text-primary mb-2">
-                        Start here
-                      </p>
-                    )}
-                    <h3 className="font-display text-lg text-ink leading-tight mb-3">
-                      {guide.title}
-                    </h3>
-                    <p className="font-sans text-sm text-ink-muted leading-relaxed flex-1 mb-4">
-                      {guide.description}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-sans uppercase tracking-wider text-ink-subtle">
-                        {guide.readTime}
-                      </span>
-                      <span className="inline-flex items-center gap-1 text-sm font-medium text-ink">
-                        Read
-                        <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+              <GuideLinkList groups={[{ links: toGuideLinks(guides) }]} showDescriptions />
             </section>
           ))}
         </div>

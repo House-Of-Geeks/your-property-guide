@@ -31,16 +31,6 @@ export async function getAllBlogSlugs(): Promise<string[]> {
   return SORTED.map((p) => p.slug);
 }
 
-export async function getBlogSitemapEntries(): Promise<
-  { slug: string; publishedAt: Date; updatedAt: Date | null }[]
-> {
-  return SORTED.map((p) => ({
-    slug: p.slug,
-    publishedAt: new Date(p.publishedAt),
-    updatedAt: p.updatedAt ? new Date(p.updatedAt) : null,
-  }));
-}
-
 // Canonical URL segment for a category: "Buying Guide" -> "buying-guide".
 // Category pages, the sitemap, and internal links all use this form; the
 // stored labels keep their display casing.

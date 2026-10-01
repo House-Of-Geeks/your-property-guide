@@ -1,18 +1,19 @@
 import { describe, expect, it } from "vitest";
-import { readdirSync, statSync, existsSync } from "node:fs";
-import { readFileSync } from "node:fs";
+import { existsSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { ALL_GUIDES } from "@/lib/guides/registry";
 
 // Guard against the recurring "sitemap-orphaned guide" failure: static
-// guides live as directories under (marketing)/guides/<slug>/page.tsx but
-// only ship in the sitemap when someone remembers to append the slug to
-// GUIDE_SLUGS (this has been forgotten and batch-fixed twice — commits
-// 7589635 and the 2026-07-03 sprint). This test diffs the filesystem
-// against the array so the build's test run catches the drift instead of
-// a future SEO audit.
+// guides live as directories under (marketing)/guides/<slug>/page.tsx, and
+// the guides sitemap used to ship only the slugs someone remembered to
+// append to a hand-kept array (forgotten and batch-fixed twice, commits
+// 7589635 and the 2026-07-03 sprint). Since 30 Sep 2026 the sitemap, /guides
+// and the hubs read the guide registry, which is built from the page
+// folders (scripts/guides/static-guide-manifest.ts); this test diffs the
+// filesystem against the registry so a folder the registry misses fails
+// here instead of in a future SEO audit.
 
 const GUIDES_DIR = join(__dirname, "../../src/app/(marketing)/guides");
-const SITEMAP_FILE = join(GUIDES_DIR, "sitemap.ts");
 
 // Route groups/dynamic segments that are not static guide pages.
 const NON_GUIDE_DIRS = new Set(["[slug]", "category"]);
@@ -25,29 +26,23 @@ function guideDirsOnDisk(): string[] {
   });
 }
 
-function slugsInSitemap(): string[] {
-  const src = readFileSync(SITEMAP_FILE, "utf8");
-  const arrayMatch = src.match(/const GUIDE_SLUGS = \[([\s\S]*?)\];/);
-  if (!arrayMatch) throw new Error("GUIDE_SLUGS array not found in guides/sitemap.ts");
-  return [...arrayMatch[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
-}
+const staticSlugs = () => ALL_GUIDES.filter((g) => g.kind === "guide").map((g) => g.slug);
 
-describe("guides sitemap registration", () => {
-  it("every guide page directory is listed in GUIDE_SLUGS", () => {
-    const onDisk = guideDirsOnDisk();
-    const registered = new Set(slugsInSitemap());
-    const orphaned = onDisk.filter((slug) => !registered.has(slug));
-    expect(orphaned, `sitemap-orphaned guides (add to GUIDE_SLUGS in guides/sitemap.ts): ${orphaned.join(", ")}`).toEqual([]);
+describe("guide registry covers every guide folder", () => {
+  it("every guide page directory is a static guide in the registry", () => {
+    const registered = new Set(staticSlugs());
+    const orphaned = guideDirsOnDisk().filter((slug) => !registered.has(slug));
+    expect(orphaned, `guides missing from the registry (run npm run guides:manifest): ${orphaned.join(", ")}`).toEqual([]);
   });
 
-  it("GUIDE_SLUGS has no entries without a page directory", () => {
+  it("the registry has no static guide without a page directory", () => {
     const onDisk = new Set(guideDirsOnDisk());
-    const ghosts = slugsInSitemap().filter((slug) => !onDisk.has(slug));
-    expect(ghosts, `GUIDE_SLUGS entries with no page.tsx (would 404 in the sitemap): ${ghosts.join(", ")}`).toEqual([]);
+    const ghosts = staticSlugs().filter((slug) => !onDisk.has(slug));
+    expect(ghosts, `registry guides with no page.tsx (would 404 in the sitemap): ${ghosts.join(", ")}`).toEqual([]);
   });
 
-  it("GUIDE_SLUGS has no duplicates", () => {
-    const slugs = slugsInSitemap();
+  it("no two guides share a slug (a static guide and an article would fight over one URL)", () => {
+    const slugs = ALL_GUIDES.map((g) => g.slug);
     const dupes = slugs.filter((s, i) => slugs.indexOf(s) !== i);
     expect(dupes).toEqual([]);
   });
