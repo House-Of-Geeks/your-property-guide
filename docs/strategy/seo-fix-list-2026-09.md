@@ -536,3 +536,20 @@ Source: `docs/seo-baselines/2026-09-30/commercial-intent-review.md` (section 1, 
       company structures "never subject", but the change covers companies and most trusts; a link to
       /tools/negative-gearing-calculator, which has no route); the glossary's CGT entry (src/lib/data/glossary.ts,
       auto-linked from articles); and the CGT calculator widget, which applies only the 50% discount.
+Source: `docs/seo-baselines/2026-09-30/commercial-intent-review.md` (section 3.7, priority 10).
+
+- [x] 3.7 (priority 10). [code] /house-and-land indexes only while it has stock. DONE 1 Oct 2026 — PR #94.
+      The house-and-land decision the review left open (and the Priority 10 item above left for Jos). The hub was
+      "crawled, currently not indexed": 36 words around "0 new packages", indexable, listed in /house-and-land/sitemap.xml
+      and /pages/sitemap.xml; production held 0 HouseAndLandPackage rows (read-only count, 1 Oct 2026). Shipped: one
+      predicate, hasHouseAndLandStock (src/lib/house-and-land-indexability.ts), from one cached count (an hour, tag
+      `house-and-land-stock`) read by the hub, the package pages, /house-and-land/sitemap.xml and /sitemap.xml. With no
+      stock the hub answers noindex, follow, says no packages are listed, and links the house-and-land guide, the builder
+      guide, the FHOG and first home buyer guides (national and eight states), the eight stamp duty guides, the stamp duty
+      calculator and /first-home-buyers; the sitemaps leave it out, and the index leaves out the empty house-and-land
+      sitemap. The first package reverses it within the hour (or at once: POST /api/revalidate with that tag), no code
+      change. Noindex is the stopgap; the cause is no stock. Not built: the review's other option, city pages
+      ("house and land packages brisbane" 3,600, "qld" 390, "perth" 5,400) with a builder enquiry form, which needs
+      stock or a builder partner first. Found, not changed: /data prints "0" house & land packages beside "New build
+      packages from participating builders" (rule: never print a 0 as a figure). Tests:
+      tests/seo/house-and-land-indexability.test.ts.

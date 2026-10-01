@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { Bed, Bath, Car, Ruler, Package, CheckCircle } from "lucide-react";
+import { Bed, Bath, Car, Ruler, CheckCircle } from "lucide-react";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, HouseAndLandJsonLd } from "@/components/seo";
 import { Badge } from "@/components/ui";
-import { getHouseAndLandBySlug } from "@/lib/services/house-and-land-service";
+import { getHouseAndLandBySlug, getLiveHouseAndLandPackageCount } from "@/lib/services/house-and-land-service";
+import { houseAndLandRobots } from "@/lib/house-and-land-indexability";
 import { getAgentById } from "@/lib/services/agent-service";
 import { AgentCardCompact } from "@/components/agent/AgentCard";
 import { SITE_URL } from "@/lib/constants";
@@ -15,15 +16,21 @@ interface HouseAndLandDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
+// A package page exists only for a live package (404 otherwise), so it is
+// indexable whenever it renders, except in the window before the cached
+// stock count sees a new package: then it follows the hub and the sitemap,
+// which read the same count (src/lib/house-and-land-indexability.ts).
 export async function generateMetadata({ params }: HouseAndLandDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const pkg = await getHouseAndLandBySlug(slug);
   if (!pkg) return { title: "Package Not Found" };
+  const robots = houseAndLandRobots(await getLiveHouseAndLandPackageCount());
   const description = `${pkg.title} in ${pkg.estate}, ${pkg.suburb}. ${pkg.features.bedrooms} bed, ${pkg.features.bathrooms} bath. ${pkg.price.display}.`;
   return {
     title: `${pkg.title} - House & Land`,
     description,
     alternates: { canonical: `${SITE_URL}/house-and-land/${slug}` },
+    ...(robots ? { robots } : {}),
     openGraph: {
       url: `${SITE_URL}/house-and-land/${slug}`,
       title: `${pkg.title} - House & Land`,
