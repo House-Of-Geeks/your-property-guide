@@ -452,3 +452,24 @@ Source: docs/seo-baselines/2026-09-30/commercial-intent-review.md (untracked, in
       under the current gate; merge one and rebase the other. Follow-ups: regenerate
       src/lib/data/yield-benchmarks.ts after each rental or sales sync (the answers' wording is tested against it);
       move REFERENCE_LOAN_RATE in src/lib/utils/borrowing-power.ts when RBA table F6 moves.
+
+
+Source: `docs/seo-baselines/2026-09-30/commercial-intent-review.md` (untracked, in the shared checkout).
+
+- [x] 3.3b [code+content] Calculators: LMI and negative gearing (review 3.3, priority 8, second half). DONE 1 Oct 2026 — PR #91.
+      New /lmi-calculator, H1 "LMI calculator: what lenders mortgage insurance costs in 2026": price, deposit or loan,
+      state, first home buyer; LVR, premium, stamp duty on the premium, total; the 5% Deposit Scheme alternative linked
+      to /guides/first-home-guarantee. Engine src/lib/lmi-calc.ts (tested). Rate table: Home Loan Experts' published
+      lender table (page updated 18 May 2026), because Helia's estimator publishes no table, and a sweep of its API was
+      stopped; Helia's own quotes for the two FAQ examples are printed beside ours ($9,862 and $16,706 against our
+      $11,772 and $17,042). Duty on LMI from each revenue office: NSW exempt since 1 Jul 2017, Vic 10%, Qld 9%, WA 10%,
+      SA 11%, Tas 10%, NT 10%, ACT abolished 1 Jul 2016.
+      New /negative-gearing-calculator, H1 "Negative gearing calculator: your weekly cost after tax (2026)": ATO 2026–27
+      resident rates selectable, the guide's worked example as the default ($135 a week at 37%), and what 1 July 2027
+      does to an established home bought after 7:30pm AEST 12 May 2026 ($215 a week with no other rental income).
+      Engine src/lib/negative-gearing-calc.ts (tested against the guide's figures). Evidence: 3,600 and 2,400 searches a
+      month, zero impressions, calculator-only SERPs. Found while building, not changed here: (i) /guides/cgt-changes-2026-budget
+      says properties held on budget night keep the 50% discount, but the ATO (29 Jun 2026) and our now-law post say the
+      CGT change applies to gains accruing after 1 Jul 2027 on existing property too; (ii) /guides/negative-gearing-australia
+      still says negative gearing is unchanged "as of April 2026" and tabulates the 2023–24 rates (19%, 32.5%); (iii) prose
+      tables overflow phone screens in guides (the LMI guide is 431px wide at 375).

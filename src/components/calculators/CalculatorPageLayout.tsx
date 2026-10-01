@@ -227,11 +227,15 @@ const ALL_NEXT_STEPS: Record<string, NextStepLink> = {
   "rental-yield-calculator":       { label: "Rental yield",                 description: "Gross and net yield on a shortlisted investment property.",  href: "/rental-yield-calculator",       icon: "/images/icons/yield.svg" },
   "cgt-calculator":                { label: "Capital gains tax",            description: "Estimate CGT on a property sale, including the discount.",  href: "/cgt-calculator",                icon: "/images/icons/calculator.svg" },
   "refinancing-calculator":        { label: "Refinancing break-even",       description: "How long until refinancing actually saves you money.",       href: "/refinancing-calculator",        icon: "/images/icons/calculator.svg" },
+  "lmi-calculator":                { label: "LMI",                          description: "What lenders mortgage insurance costs on a deposit under 20%.", href: "/lmi-calculator",               icon: "/images/icons/calculator.svg" },
+  "negative-gearing-calculator":   { label: "Negative gearing",             description: "Your weekly cost after tax on an investment property.",     href: "/negative-gearing-calculator",   icon: "/images/icons/calculator.svg" },
   "guide-deposit":                 { label: "How much deposit do I need?",  description: "5%, 10%, 20%, plus government schemes and FHSS.",            href: "/guides/how-much-deposit-to-buy-a-house", icon: "/images/icons/guide.svg" },
   "guide-buying":                  { label: "How to buy property in Australia", description: "Step-by-step from deposit to settlement.",               href: "/guides/buying-property-australia", icon: "/images/icons/guide.svg" },
   "guide-bridging":                { label: "Bridging loans",               description: "Peak debt, end debt, and when bridging is the right call.", href: "/guides/bridging-loans-guide",   icon: "/images/icons/guide.svg" },
   "guide-house-vs-apartment":      { label: "House vs apartment",           description: "Capital growth vs cash flow, a 20-year worked example.",    href: "/guides/house-vs-apartment-investment-australia", icon: "/images/icons/guide.svg" },
   "guide-negative-gearing":        { label: "Negative gearing",             description: "How it works and whether it fits your strategy.",            href: "/guides/negative-gearing-australia", icon: "/images/icons/guide.svg" },
+  "guide-negative-gearing-2027":   { label: "Negative gearing from 2027",   description: "Who is grandfathered and what counts as a new build.",       href: "/guides/negative-gearing-changes-2026-budget", icon: "/images/icons/guide.svg" },
+  "guide-first-home-guarantee":    { label: "First Home Guarantee",         description: "Buy with a 5% deposit and no LMI.",                          href: "/guides/first-home-guarantee",   icon: "/images/icons/guide.svg" },
   "best-suburbs":                  { label: "Best suburbs by category",     description: "Schools, growth, affordability, walkability, yield.",        href: "/best-suburbs",                  icon: "/images/icons/map.svg" },
 };
 
@@ -240,8 +244,10 @@ const NEXT_STEPS_FOR_SLUG: Record<string, string[]> = {
   "stamp-duty-calculator":      ["borrowing-power-calculator", "mortgage-calculator", "guide-buying"],
   "borrowing-power-calculator": ["affordability-calculator", "mortgage-calculator", "guide-deposit"],
   "affordability-calculator":   ["borrowing-power-calculator", "stamp-duty-calculator", "best-suburbs"],
-  "rental-yield-calculator":    ["cgt-calculator", "guide-house-vs-apartment", "guide-negative-gearing"],
-  "cgt-calculator":             ["rental-yield-calculator", "guide-negative-gearing", "guide-bridging"],
+  "rental-yield-calculator":    ["negative-gearing-calculator", "cgt-calculator", "guide-house-vs-apartment"],
+  "cgt-calculator":             ["negative-gearing-calculator", "rental-yield-calculator", "guide-negative-gearing"],
+  "lmi-calculator":             ["stamp-duty-calculator", "borrowing-power-calculator", "guide-first-home-guarantee"],
+  "negative-gearing-calculator": ["rental-yield-calculator", "cgt-calculator", "guide-negative-gearing-2027"],
   "refinancing-calculator":     ["mortgage-calculator", "borrowing-power-calculator", "guide-buying"],
 };
 

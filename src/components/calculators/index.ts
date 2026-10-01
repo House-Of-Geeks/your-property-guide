@@ -6,4 +6,6 @@ export { CGTCalculator } from "./CGTCalculator";
 export { RefinancingCalculator } from "./RefinancingCalculator";
 export { AffordabilityCalculator } from "./AffordabilityCalculator";
 export { CommissionCalculator } from "./CommissionCalculator";
+export { LMICalculator } from "./LMICalculator";
+export { NegativeGearingCalculator } from "./NegativeGearingCalculator";
 export { CalculatorPageLayout, type CalculatorPageFrontmatter } from "./CalculatorPageLayout";

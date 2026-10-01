@@ -9,7 +9,7 @@ import { SITE_URL } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Free Australian Property Tools, Quizzes & Calculators",
   description:
-    "All our free property tools in one place: 7 calculators, the suburb match quiz, the suburb comparison tool, and the suburb finder. No sign-up.",
+    "All our free property tools in one place: 9 calculators, the suburb match quiz, the suburb comparison tool, and the suburb finder. No sign-up.",
   alternates: { canonical: `${SITE_URL}/tools` },
   openGraph: {
     url: `${SITE_URL}/tools`,
@@ -81,7 +81,7 @@ const GROUPS: ToolGroup[] = [
   {
     id: "calculate",
     label: "Calculate",
-    blurb: "Free, no sign-up. Cover the seven biggest property numbers you need to know.",
+    blurb: "Free, no sign-up. Cover the nine biggest property numbers you need to know.",
     tools: [
       {
         href: "/mortgage-calculator",
@@ -105,6 +105,13 @@ const GROUPS: ToolGroup[] = [
         icon: "/images/icons/calculator.svg",
       },
       {
+        href: "/lmi-calculator",
+        title: "LMI Calculator",
+        description:
+          "Lenders mortgage insurance on a deposit under 20%, with your state's stamp duty on the premium.",
+        icon: "/images/icons/calculator.svg",
+      },
+      {
         href: "/affordability-calculator",
         title: "Affordability Calculator",
         description:
@@ -116,6 +123,13 @@ const GROUPS: ToolGroup[] = [
         title: "Rental Yield Calculator",
         description:
           "Gross and net yield on a candidate investment property, with management fee inputs.",
+        icon: "/images/icons/yield.svg",
+      },
+      {
+        href: "/negative-gearing-calculator",
+        title: "Negative Gearing Calculator",
+        description:
+          "Rental loss, tax saving at the 2026–27 rates, and your weekly cost after tax.",
         icon: "/images/icons/yield.svg",
       },
       {

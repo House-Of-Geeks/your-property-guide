@@ -86,6 +86,8 @@ const FOOTER_COLUMNS = [
       { label: "Borrowing power",          href: "/borrowing-power-calculator" },
       { label: "Affordability",            href: "/affordability-calculator" },
       { label: "Rental yield",             href: "/rental-yield-calculator" },
+      { label: "LMI calculator",           href: "/lmi-calculator" },
+      { label: "Negative gearing",         href: "/negative-gearing-calculator" },
     ],
   },
   {

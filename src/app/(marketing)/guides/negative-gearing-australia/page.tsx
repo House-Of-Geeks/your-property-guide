@@ -108,7 +108,7 @@ const RELATED: RelatedGuide[] = [
   { title: "CGT Calculator",               href: "/cgt-calculator",                      description: "What you'll pay when you sell and the strategy concludes." },
   { title: "SMSF Property Guide",          href: "/guides/smsf-property-guide",          description: "Negative gearing inside super works very differently." },
   { title: "Best Suburbs for Investors",   href: "/best-suburbs",                        description: "Where to apply this strategy with realistic capital-growth assumptions." },
-  { title: "Mortgage Calculator",          href: "/mortgage-calculator",                 description: "Run the interest numbers that drive most rental losses." },
+  { title: "Negative Gearing Calculator",  href: "/negative-gearing-calculator",         description: "Your rental loss, tax saving and weekly cost after tax." },
 ];
 
 export default function NegativeGearingPage() {
@@ -198,6 +198,12 @@ export default function NegativeGearingPage() {
         of holding this property is roughly $7,033 a year (about $135 a week),
         compared to the apparent $11,163 rental loss. The higher your tax
         rate, the more the government subsidises your holding costs.
+      </p>
+      <p>
+        Run your own figures through our{" "}
+        <Link href="/negative-gearing-calculator">negative gearing calculator</Link>,
+        which uses the 2026&ndash;27 tax rates and shows what changes for your
+        property from 1 July 2027.
       </p>
       <p>
         If this property grows at 5% a year, it would be worth approximately
