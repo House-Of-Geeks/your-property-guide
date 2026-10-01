@@ -1,0 +1,1451 @@
+
+====================================================================================================
+QUERY: real estate commission nsw   KP vol 320  AI vol 12  | GSC impr 17 pos 34.1 (/real-estate-commission-calculator) | live rank not top 10
+OURS /guides/real-estate-commission-nsw: 2502 words, h2 10, tables 2, inputs 0, faq 6, schema Article,FAQPage, robots -
+  title: Real Estate Commission NSW: Average Rates & Agent Fees (2026) | Your Property Guide
+  h1: Real Estate Commission NSW: Average Rates & Agent Fees (2026)
+  h2: Average real estate commission in NSW ; Worked examples by sale price ; How commission is structured in NSW ; Is commission negotiable in NSW? ; Commission vs your other selling costs ; What it costs to sell in New South Wales ; Get the right agent first ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#4 https://verify.licence.nsw.gov.au/details/Contractor%20Licence/1-LJY-127
+   136 words, h2 2, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Verify licence - the place to look up and verify NSW licence and
+      registration information
+   h1: 
+   h2: Menu ; Welcome to Verify NSW
+#7 https://verify.licence.nsw.gov.au/details/Contractor%20Licence/1-4A69EX
+   136 words, h2 2, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Verify licence - the place to look up and verify NSW licence and
+      registration information
+   h1: 
+   h2: Menu ; Welcome to Verify NSW
+
+====================================================================================================
+QUERY: real estate commission qld   KP vol 590  AI vol 40  | GSC impr 22 pos 78.6 (/real-estate-commission-calculator) | live rank not top 10
+OURS /guides/real-estate-commission-qld: 2612 words, h2 10, tables 2, inputs 0, faq 6, schema Article,FAQPage, robots -
+  title: Real Estate Commission QLD: Average Rates & Agent Fees (2026) | Your Property Guide
+  h1: Real Estate Commission QLD: Average Rates & Agent Fees (2026)
+  h2: Average real estate commission in QLD ; Worked examples by sale price ; How commission is structured in QLD ; Is commission negotiable in QLD? ; Commission vs the rest of your selling costs ; What it costs to sell in Queensland ; Getting an appraisal and the right agent ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#2 https://whichrealestateagent.com.au/agent-fees/real-estate-agent-commission-qld/
+   3151 words, h2 10, tables 1, inputs 18, faqQ 0, schema FAQPage,PropertyValueSpecification,ReadAction
+   title: Brisbane Real Estate Agent Fees [2026 Guide] + Fee Calculator
+   h1: Brisbane Real Estate Agent Fees [2026 Guide] + Fee Calculator
+   h2: Agent Fees and Commission Calculator – Brisbane (QLD) ; How much does it cost to sell a house in Brisbane & QLD? ; Understanding real estate agent fees and commission structures ; Are real estate agent fees and commission rates regulated in QLD? ; Real Estate Institute of Queensland (REIQ) agent fees and commission rates ; Can you negotiate agent fees and commission rates in Brisbane and QLD? ; Are low commission agents worth the risk? ; What influences agent fees and commission rates? ; Other possible costs and fees you should be aware of ; FAQs
+#4 https://www.reiq.com/articles/property-sales/no-standard-commission-queensland
+   361 words, h2 1, tables 0, inputs 0, faqQ 0, schema 
+   title: REIQ | No such thing as 'standard' commission
+   h1: No such thing as 'standard' commission
+   h2: You might also like View All Articles
+#8 https://www.openagent.com.au/blog/commissions-pay-queensland-real-estate-agent
+   1928 words, h2 9, tables 1, inputs 0, faqQ 4, schema Article,Brand,FAQPage
+   title: What's the average real estate agent commission in QLD? 2025 - OpenAgent
+   h1: Who's the right agent for you?
+   h2: Average QLD real estate commissions in 2025 ; What's included in QLD real estate agent fees? ; Understand the ins-and-outs of commission structures ; How much do real estate agents earn? ; Other real estate selling fees in QLD to be aware of ; Frequently asked questions about Queensland real estate commissions ;  ; View agent & property tools ; Recent posts
+#9 https://connectskillsinstitute.edu.au/real-estate-commission-qld-calculator/
+   233 words, h2 1, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Real Estate Commission QLD Calculator
+   h1: Real Estate Commission QLD Calculator
+   h2: Get Your  FREE  Course Guide
+
+====================================================================================================
+QUERY: real estate agent fees   KP vol 1000  AI vol 73  | GSC impr 67 pos 31.2 (/guides/real-estate-commission-vic) | live rank not top 10
+OURS /guides/real-estate-agent-fees-australia: 2027 words, h2 12, tables 1, inputs 0, faq 6, schema Article,FAQPage, robots -
+  title: Real estate agent fees and commission in Australia (2026) | Your Property Guide
+  h1: Real estate agent fees and commission in Australia (2026)
+  h2: How real estate commission works ; Commission rates by state (typical ranges, 2026) ; What’s included in commission ; Marketing costs, charged separately ; Fixed fee vs commission ; How to negotiate agent fees ; The risk of choosing the cheapest agent ; Questions to ask before signing an agency agreement ; Understanding the agency agreement ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#2 https://ourtop10.com.au/blog/buyers-agent-fees/
+   4336 words, h2 18, tables 2, inputs 9, faqQ 0, schema Article,BlogPosting,PropertyValueSpecification,QuantitativeValue,ReadAction
+   title: Buyers Agent Fees: How Much Do They Really Cost?| OurTop10
+   h1: Buyer’s Agent Fees: How Much Does a Buyer’s Agent Cost in Australia?
+   h2: Key points ; What Does a Buyer’s Agent Do? ; How Do Buyer’s Agents Charge Fees? ; Typical Cost of a Buyer’s Agent in Australia ; Buyer’s agent fees by city ; What a 2% fee costs against a $20,000 fixed fee ; What Do Buyer’s Agent Fees Cover? ; Shane Hiscock ; Are Buyer’s Agents Worth the Cost? ; How to Choose a Buyer’s Agent Based on Fees and Value ; Negotiating Buyer’s Agent Fees ; Final Thoughts
+#5 https://sellingyourproperty.com.au/428-whatll-cost-hire-real-estate-agent/
+   753 words, h2 2, tables 0, inputs 0, faqQ 0, schema PropertyValueSpecification,ReadAction
+   title: What’ll It Cost to: Hire a Real Estate Agent? - Selling Your Property in Lake Macquarie NSW
+   h1: What’ll It Cost to: Hire a Real Estate Agent?
+   h2: As seen in.. ; Site Sponsor: EzyEstate Pty Ltd Real Estate Agent Bonnells Bay & Morisset
+#6 https://realestate-david-beshay.com.au/real-estate-agent-fees/
+   4363 words, h2 8, tables 3, inputs 7, faqQ 0, schema Article,CommentAction,PropertyValueSpecification,ReadAction
+   title: A Seller’s Guide to Real Estate Agent Fees - David Beshay Real Estate - Beshay Realty
+   h1: A Seller’s Guide to Real Estate Agent Fees
+   h2: What Are Real Estate Agent Fees in Mandurah? ; Exploring Different Commission Structures ; What Your Agent's Commission Actually Covers ; How to Calculate Your Final Sale Proceeds ; Negotiating Agent Fees and Choosing the Right Partner ; Understanding Your Agency Agreement ; Your Top Questions About Agent Fees Answered ; Related Posts
+#8 https://www.allenproperty.com.au/what-are-the-costs-of-selling-a-property-in-hervey-bay-agent-fees-marketing-and-more/
+   1085 words, h2 2, tables 0, inputs 0, faqQ 0, schema ReadAction
+   title: What Are the Costs of Selling a Property in Hervey Bay? (Agent Fees, Marketing and More) - Allen Property
+   h1: What Are the Costs of Selling a Property in Hervey Bay? (Agent Fees, Marketing and More)
+   h2: Existing Management Transfer ; Appraisal Request
+#9 https://smartrealty.com.au/understanding-real-estate-agent-selling-fees-in-perth/
+   1938 words, h2 16, tables 1, inputs 22, faqQ 0, schema Article,OpeningHoursSpecification,PropertyValueSpecification,ReadAction
+   title: Understanding Real Estate Agent Selling Fees in Perth - Smart Realty - Buy | Sell | Rent - Award Winning Property Management and Sales
+   h1: Understanding Real Estate Agent Selling Fees in Perth
+   h2: Understanding Real Estate Agent Selling Fees in Perth Explained ; Understanding the Different Types of Selling Fees ; Factors that Influence Selling Fees in Perth ; Comparing Selling Fees from Different Real Estate Agents ; Negotiating Selling Fees with Real Estate Agents ; The Importance of Transparency in Selling Fees ; Hidden Costs to Look Out for in Selling Fees ; How to Choose the Right Real Estate Agent Based on Selling Fees ; Tips for Saving Money on Selling Fees ; The Impact of Selling Fees on the Overall Selling Process ; Common Misconceptions about Real Estate Agent Selling Fees ; Us
+
+====================================================================================================
+QUERY: real estate commission calculator   KP vol 590  AI vol 30  | GSC impr 9 pos 81.2 (/real-estate-commission-calculator) | live rank not top 10
+OURS /real-estate-commission-calculator: 1028 words, h2 6, tables 0, inputs 6, faq 6, schema FAQPage,WebApplication, robots -
+  title: Real Estate Commission Calculator Australia: Costs by State | Your Property Guide
+  h1: Real Estate Commission Calculator
+  h2: Your Sale ; What Selling Costs You ; How real estate commission works in Australia ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#1 https://keylaw.com.au/commission-calculator/
+   641 words, h2 9, tables 1, inputs 16, faqQ 0, schema PropertyValueSpecification,ReadAction
+   title: Real Estate Agent Commission Calculator | Keylaw
+   h1: Real Estate Agent Commission Calculator
+   h2: Get a Quote ; Real Estate Agent Commission Types ; Real Estate Agent Commission Types ; How Does Real Estate Agent Commission Work? ; How Does Real Estate Agent Commission Work? ; When To Pay Real Estate Agent Commission ; Other Costs Of Selling A House ; Other Real Estate Agent Fees ; More Questions?
+#6 https://connectskillsinstitute.edu.au/real-estate-commission-nsw-calculator/
+   240 words, h2 1, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Real Estate Commission NSW Calculator
+   h1: Real Estate Commission NSW Calculator
+   h2: Get Your  FREE  Course Guide
+#7 https://www.omnicalculator.com/finance/real-estate-commission
+   691 words, h2 3, tables 0, inputs 0, faqQ 5, schema Article,FAQPage
+   title: Real Estate Commission Calculator
+   h1: Real Estate Commission Calculator
+   h2: What is the realtor commission? ; How do I calculate the realtor commission? ; FAQs
+
+====================================================================================================
+QUERY: cost of selling a house nsw   KP vol 30  AI vol 2  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/cost-of-selling-a-house-nsw: 2459 words, h2 12, tables 1, inputs 11, faq 5, schema Article,FAQPage, robots -
+  title: Cost of Selling a House in New South Wales (2026): Commission, Fees and Calculator | Your Property Guide
+  h1: Cost of Selling a House in New South Wales (2026): Commission, Fees and Calculator
+  h2: What it costs to sell in New South Wales ; Selling costs calculator for New South Wales ; Commission in New South Wales ; The contract must be ready before the first ad ; Your agency agreement has a cooling-off period and a 48-hour rule ; Auctions are the Sydney norm, and the auctioneer is an extra line ; Tax: no stamp duty for the seller, but a clearance certificate for everyone ; Where you can save ; Cost of selling in other states ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#5 https://www.realestate.com.au/news/experts-warn-sellers-against-selling-off-market-as-incredible-buyer-interest-drives-house-prices-up/
+   613 words, h2 1, tables 0, inputs 0, faqQ 0, schema NewsArticle
+   title: Experts warn sellers against selling off market as incredible buyer interest drives house prices up - realestate.com.au
+   h1: Experts warn sellers against selling off market as incredible buyer interest drives house prices up
+   h2: Editor’s pick videos
+#7 https://legislation.nsw.gov.au/view/whole/html/1998-03-17/act-1919-006
+   90028 words, h2 3, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Conveyancing Act 1919 No 6 - NSW Legislation
+   h1: Conveyancing Act 1919 No 6
+   h2: Site header ; Site navigation ; Site footer
+
+====================================================================================================
+QUERY: cost of selling a house   KP vol 720  AI vol 48  | GSC impr 17 pos 19.4 (/selling-costs-calculator) | live rank not top 10
+OURS /guides/cost-of-selling-a-house-australia: 2648 words, h2 14, tables 1, inputs 0, faq 6, schema Article,FAQPage, robots -
+  title: The Cost of Selling a House in Australia (2026): Every Fee Explained | Your Property Guide
+  h1: The Cost of Selling a House in Australia (2026): Every Fee Explained
+  h2: What it costs to sell a house ; Agent commission (the big one) ; Marketing and professional photography ; Conveyancing and legal ; Styling, staging and repairs ; Auction and auctioneer fees ; Mortgage discharge fees ; Capital gains tax on an investment ; Cost of selling by state ; A worked example ; Where to start ; Common questions
+#2 https://www.westpac.com.au/home-loans/next-home/cost-selling-house
+   1946 words, h2 9, tables 0, inputs 0, faqQ 0, schema 
+   title: How much does it cost to sell a house? | Westpac
+   h1: 
+   h2: What you’ll learn ; Getting the house ready for sale ; Marketing costs ; Real estate agent fees ; Conveyancing fees ; Mortgage discharge fees and other lender costs ; Capital gains tax ; Moving costs ; The cost of selling a house
+#5 https://www.realestate.com.au/advice/how-much-does-it-cost-to-sell-a-house/
+   2773 words, h2 7, tables 1, inputs 0, faqQ 0, schema Article
+   title: How much does it cost to sell a house in 2026 - realestate.com.au
+   h1: How much does it cost to sell a house in 2026
+   h2: Conveyancing fees ; Marketing costs ; Agents' fees, commissions and bonuses ; Lender fees ; Real estate styling costs ; Cost of selling a house in Australia – state by state guide for 2026 ; Editor’s pick videos
+#6 https://www.banksa.com.au/personal/home-loans/next-home/cost-selling-house
+   1941 words, h2 9, tables 0, inputs 0, faqQ 0, schema 
+   title: What are the costs of selling a property? | BankSA
+   h1: What’s the cost of selling a house?
+   h2: Real estate agent fees - someone to guide you ; Marketing costs - building a buzz ; Conveyancing fees - getting the sale over the line ; Lender fees - finalising your mortgage ; Capital gains tax ; Extra costs - boost your home’s value ; Ready to sell up and move on up? ; Articles & tools ; 
+#7 https://www.openagent.com.au/blog/how-much-does-it-cost-to-sell-a-house-in-qld
+   1418 words, h2 7, tables 0, inputs 0, faqQ 6, schema Article,Brand,FAQPage
+   title: How much does it cost to sell a house in QLD? - OpenAgent
+   h1: Who's the right agent for you?
+   h2: Conveyancing and government fees in Queensland ; Real estate agent commission in QLD ; Other fees to consider when selling your house in QLD ; Factors that can alter the cost of selling a house in QLD ;  ; View agent & property tools ; Recent posts
+#8 https://whichrealestateagent.com.au/agent-fees/costs-of-selling-a-property-perth-wa/
+   1348 words, h2 4, tables 1, inputs 28, faqQ 0, schema FAQPage,PropertyValueSpecification,ReadAction
+   title: Costs To Sell A Property in Perth [2026 Update + Calculator]
+   h1: Costs To Sell A Property in Perth [2026 Update + Calculator]
+   h2: How much will it cost to sell in Perth? ; Costs Of Selling Property Calculator in Perth ; Looking To Sell? ; Frequently Asked Questions
+
+====================================================================================================
+QUERY: how much do real estate agents charge   KP vol 480  AI vol 20  | GSC impr 89 pos 24.8 (/guides/real-estate-commission-vic) | live rank not top 10
+OURS /guides/real-estate-agent-fees-australia: 2027 words, h2 12, tables 1, inputs 0, faq 6, schema Article,FAQPage, robots -
+  title: Real estate agent fees and commission in Australia (2026) | Your Property Guide
+  h1: Real estate agent fees and commission in Australia (2026)
+  h2: How real estate commission works ; Commission rates by state (typical ranges, 2026) ; What’s included in commission ; Marketing costs, charged separately ; Fixed fee vs commission ; How to negotiate agent fees ; The risk of choosing the cheapest agent ; Questions to ask before signing an agency agreement ; Understanding the agency agreement ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#2 https://propertygo.com.au/buyer-agents/property-home-base/fees
+   419 words, h2 10, tables 0, inputs 0, faqQ 0, schema OfferCatalog,PriceSpecification,ProfessionalService,ReadAction,Service
+   title: Property Home Base Fees - What They Charge | PropertyGo
+   h1: Property Home Base fees
+   h2: Full buyer's agent service ; Services on their own ; How buyer's agent fees work ; Fee questions ; Contact Property Home Base ; For buyers ; Resources ; For professionals ; PropertyGo ; Buyer's agents by location
+#4 https://www.realestatebusiness.com.au/industry/6381-what-commission-rate-do-you-charge
+   639 words, h2 12, tables 0, inputs 12, faqQ 0, schema Article,InteractionCounter,NewsArticle,WebPageElement
+   title: What commission rate do you charge? - Real Estate Business
+   h1: What commission rate do you charge?
+   h2: More content ; Info ; Follow us on ; OUR PLATFORMS AND BRANDS ; EVENTS AND SUMMITS ; PODCASTS ; LEARNING AND EDUCATION ; MOMENTUM MARKETS NETWORK ; LINKS ; CATEGORIES ; STAY CONNECTED ; FOLLOW US ON
+#7 https://clintonbarkerproperty.com.au/advice/real-estate-agent-commission-northern-adelaide
+   627 words, h2 4, tables 0, inputs 0, faqQ 0, schema BlogPosting
+   title: Real Estate Agent Commission in Northern Adelaide: What Sellers Should Know | Clinton Barker Property
+   h1: Real Estate Agent Commission in Northern Adelaide: What Sellers Should Know
+   h2: Why the cheapest agent isn't always the best choice ; A word on high-volume agents ; What a good full-service agent should actually do ; My approach to commission and service
+#8 https://ipsbuyersagents.com.au/2024/12/31/how-to-get-the-most-out-of-your-brisbane-buyers-agent/
+   1265 words, h2 8, tables 1, inputs 0, faqQ 0, schema 
+   title: How to Get the Most Out of Your Brisbane Buyerâs Agent?
+   h1: How to Get the Most Out of Your Brisbane Buyerâs Agent?
+   h2: What is a Buyerâs Agent? ; Benefits of Using a Brisbane Buyerâs Agent ; Buyerâs Agents vs. Real Estate Agents: Key Differences Aspect Buyerâs Agent Real Estate Agent Works for Buyer Seller Objective Securing the best deal for buyer Achieving the highest price forâ¦ ; Off-Market Properties and Distressed Sales Off-Market Properties What is an Off-market properties they are those that are not listed publicly. These transactions often save sellersâ¦ ; How Much Does a Buyerâs Agent Cost in Brisbane? Buyerâs agents typically charge either: Fixed Fees : Ranging from $15,000 to $25,000 
+#9 https://househunters.com.au/buyers-agent-fees/
+   1551 words, h2 8, tables 2, inputs 0, faqQ 5, schema Article,CreativeWork,FAQPage,HowTo,QuantitativeValue
+   title: What Are Buyers Agent Fees? Get Affordable Results
+   h1: What Are Buyers Agent Fees? Get Affordable Results
+   h2: Buyers Agent Fees Australia: What You Really Pay and What You Actually Get ; Post navigation ; RELATED POSTS: ; browse Categories ; Recent Posts ; Recent Comments ; Company ; Legals
+
+====================================================================================================
+QUERY: real estate agent fees sydney   KP vol 40  AI vol 0  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/real-estate-commission-nsw: 2502 words, h2 10, tables 2, inputs 0, faq 6, schema Article,FAQPage, robots -
+  title: Real Estate Commission NSW: Average Rates & Agent Fees (2026) | Your Property Guide
+  h1: Real Estate Commission NSW: Average Rates & Agent Fees (2026)
+  h2: Average real estate commission in NSW ; Worked examples by sale price ; How commission is structured in NSW ; Is commission negotiable in NSW? ; Commission vs your other selling costs ; What it costs to sell in New South Wales ; Get the right agent first ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#4 https://www.unicornbuyersagents.com.au/buyers-agent-inner-west/
+   60 words, h2 6, tables 0, inputs 0, faqQ 16, schema AggregateRating,Article,City,FAQPage,LocalBusiness,OpeningHoursSpecification,Rating,RealEstateAgent,Review
+   title: Buyers Agent Inner West Sydney | Unicorn Buyers Agents
+   h1: Buyers Agent, Inner West Sydney
+   h2: Sydney · Inner West ; Who We Work With in the Inner West ; Frequently Asked Questions — Inner West Buyers Agent ; Ready to Buy in the Inner West? ; Subscribe to The Horn ; Subscribe to The Horn
+#6 https://www.propertynow.com.au/blog/hiring-a-real-estate-agent-will-you-get-more-for-your-home/
+   597 words, h2 1, tables 0, inputs 0, faqQ 0, schema BlogPosting
+   title: Hiring a Real Estate Agent: Will You Get More for Your Home?
+   h1: Hiring a real estate agent – will you get more for your home?
+   h2: We are Australia's best reviewed online agent
+#7 https://henderson.com.au/blog/your-guide-to-navigating-sydneys-competitive-real-estate-with-a-buyers-agent/
+   3943 words, h2 13, tables 0, inputs 0, faqQ 0, schema Article,OpeningHoursSpecification,PropertyValueSpecification,ReadAction,RealEstateAgent
+   title: Navigating Sydney’s Competitive Real Estate: A Buyer’s Agent Guide
+   h1: Your Guide to Navigating Sydney’s Competitive Real Estate with a Buyers Agent
+   h2: Your Guide to Navigating Sydney’s Competitive Real Estate with a Buyers Agent. ; Understanding Sydney’s Real Estate Market ; The Value of a Buyers Agent in Sydney’s Real Estate Market ; The Process of Buying Property in Sydney with a Buyers Agent ; Costs and Considerations When Hiring a Buyers Agent ; The Future of Sydney’s Real Estate Market ; Understanding Sydney’s Real Estate Market ; The Value of a Buyers Agent in Sydney’s Real Estate Market ; The Process of Buying Property in Sydney with a Buyers Agent ; Costs and Considerations When Hiring a Buyers Agent ; The Future of Sydney’s Real Est
+#9 https://whichrealestateagent.com.au/best-agents/picton-wollondilly-nsw-2571/
+   2429 words, h2 6, tables 0, inputs 11, faqQ 0, schema AggregateRating,Product,PropertyValueSpecification,ReadAction,brand
+   title: 34 Picton Real Estate Agents Reviewed - Choose The Best
+   h1: Best 14 Real Estate Agents In Picton [2026]
+   h2: List of Top Picton Real Estate Agents ; Which Real Estate Agent's Best Picton Agents ; What To Pay Your Picton Agent ; Frequently Asked Questions ; Picton Suburb Overview ; Nearby Suburbs
+
+====================================================================================================
+QUERY: stamp duty calculator nsw   KP vol 33100  AI vol 65  | GSC impr 2 pos 92 (/guides/stamp-duty-nsw) | live rank not top 10
+OURS /guides/stamp-duty-nsw: 1551 words, h2 9, tables 2, inputs 2, faq 5, schema Article,FAQPage, robots -
+  title: Stamp Duty NSW: Calculator, Rates & First Home Buyer Concessions (2026) | Your Property Guide
+  h1: Stamp Duty NSW: Calculator, Rates & First Home Buyer Concessions (2026)
+  h2: What is stamp duty in NSW? ; NSW stamp duty: what you’ll actually pay ; How NSW stamp duty is calculated ; First home buyers in NSW ; Foreign buyers and surcharges ; When do you pay stamp duty in NSW? ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#1 https://www.hatchrealestate.com.au/stamp-duty-calculator
+   74 words, h2 1, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Stamp Duty Calculator | Hatch Real Estate
+   h1: 
+   h2: Stamp Duty Calculator
+#5 https://mortgagebrg.com.au/stamp-duty-calculator-nsw.html
+   796 words, h2 4, tables 1, inputs 6, faqQ 5, schema FAQPage,FinancialService,WebApplication
+   title: Stamp Duty Calculator NSW 2026 | Transfer Duty & First Home Buyer Exemption | Mortgage Bridge
+   h1: NSW Stamp Duty Calculator
+   h2: NSW transfer duty rates, 2026/27 ; First home buyer thresholds ; Stamp duty is only part of what you need upfront ; NSW stamp duty questions
+#6 https://biz.ozsparkhub.com.au/en/tools/stamp-duty-calculator
+   277 words, h2 0, tables 0, inputs 2, faqQ 0, schema SoftwareApplication
+   title: Stamp Duty Calculator Australia 2026 | NSW VIC QLD | OzSparkHub
+   h1: Australian Stamp Duty Calculator
+   h2: 
+#8 https://yourownterms.com.au/stamp-duty-calculator/nsw/
+   734 words, h2 4, tables 1, inputs 0, faqQ 4, schema FAQPage
+   title: Stamp Duty Calculator NSW New South Wales 2026 — First Home Buyer Rates
+   h1: Stamp duty calculator New South Wales NSW
+   h2: Stamp duty rates in New South Wales ; Other upfront costs to budget for ; Frequently asked questions ; Stamp duty in other states
+
+====================================================================================================
+QUERY: stamp duty calculator wa   KP vol 14800  AI vol 54  | GSC impr 2 pos 90 (/guides/stamp-duty-wa) | live rank not top 10
+OURS /guides/stamp-duty-wa: 1453 words, h2 9, tables 2, inputs 2, faq 5, schema Article,FAQPage, robots -
+  title: Stamp Duty WA: Calculator, Rates & First Home Buyer Concessions (2026) | Your Property Guide
+  h1: Stamp Duty WA: Calculator, Rates & First Home Buyer Concessions (2026)
+  h2: What is stamp duty in WA? ; WA stamp duty: what you’ll actually pay ; How WA stamp duty is calculated ; First home buyers in WA ; Foreign buyers and surcharges ; When do you pay stamp duty in WA? ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#1 https://www.devineproperty.com.au/stamp-duty-calculator
+   26 words, h2 1, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Stamp Duty Calculator | Devine Property
+   h1: Stamp Duty Calculator
+   h2: Market News
+#4 https://www.inovayt.com.au/finance-calculators/stamp-duty-calculator/
+   1084 words, h2 8, tables 1, inputs 0, faqQ 4, schema AggregateRating,CreativeWorkSeries,FAQPage,LocalBusiness
+   title: Stamp Duty Calculator | Free Stamp Duty Calculator Online
+   h1: Stamp Duty Calculator
+   h2: Understanding Stamp Duty Before You Buy ; How the Stamp Duty Calculator Works ; Why Use the Stamp Duty Calculator? ; Frequently Asked Questions ;  ; Work with an Inovayt Broker ; Why Choose Inovayt ; Start your journey, contact Inovayt today
+#5 https://suburbscan.com.au/stamp-duty-calculator/wa
+   381 words, h2 3, tables 1, inputs 6, faqQ 0, schema WebApplication
+   title: WA Stamp Duty Calculator 2026 | SuburbScan
+   h1: WA stamp duty calculator
+   h2: What this figure excludes ; How Western Australia calculates it ; Other states and territories
+#7 https://www.riverhillgroup.com.au/stamp-duty-calculator
+   61 words, h2 0, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Stamp Duty Calculator - Riverhill Group
+   h1: Stamp Duty Calculator
+   h2: 
+
+====================================================================================================
+QUERY: stamp duty qld   KP vol 3600  AI vol 1025  | GSC impr 35 pos 95.7 (/guides/stamp-duty-queensland-what-you-need-to-know) | live rank not top 10
+OURS /guides/stamp-duty-qld: 1437 words, h2 9, tables 2, inputs 2, faq 5, schema Article,FAQPage, robots -
+  title: Stamp Duty QLD: Calculator, Rates & First Home Buyer Concessions (2026) | Your Property Guide
+  h1: Stamp Duty QLD: Calculator, Rates & First Home Buyer Concessions (2026)
+  h2: What is stamp duty in QLD? ; QLD stamp duty: what you’ll actually pay ; How QLD stamp duty is calculated ; First home buyers in QLD ; Foreign buyers and surcharges ; When do you pay stamp duty in QLD? ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#1 https://qro.qld.gov.au/duties/transfer-duty/calculate/transfer-duty-estimator/
+   1717 words, h2 1, tables 0, inputs 28, faqQ 0, schema PropertyValueSpecification,ReadAction
+   title: Transfer duty estimator - Queensland Revenue Office
+   h1: Transfer duty estimator
+   h2: Queensland Revenue Office
+#3 https://stampduty.calculatorsaustralia.com.au/stamp-duty-qld
+   1796 words, h2 9, tables 3, inputs 0, faqQ 0, schema AggregateRating,Product
+   title: Stamp Duty Calculator QLD (Queensland) - updated for 2026
+   h1: Stamp Duty Calculator QLD (Queensland)
+   h2: Stamp Duty Calculator QLD ; TL;DR: Stamp Duty in QLD - updated for 2026 ; Australia’s 5-Star Rated Stamp Duty Calculator on Google: ; Standard Transfer Duty Rates (2026) ; How Stamp Duty Differs by Buyer Type ; Stamp Duty by Property Type ; Important Information ; Extra Information ; Summary
+#5 https://qro.qld.gov.au/duties/transfer-duty/calculate/
+   541 words, h2 4, tables 0, inputs 0, faqQ 5, schema FAQPage,PropertyValueSpecification,ReadAction
+   title: Calculating transfer duty - Queensland Revenue Office
+   h1: Calculating transfer duty
+   h2: Latest news announcements ; Resources ; Frequently asked questions ; Queensland Revenue Office
+#6 https://www.queenslandcountry.bank/calculator/stamp-duty-calculator/
+   245 words, h2 3, tables 0, inputs 3, faqQ 0, schema 
+   title: Stamp Duty calculator | Queensland Country Bank
+   h1: Stamp Duty Calculator
+   h2: Utility menu ; Site search ; Help menu
+#7 https://qro.qld.gov.au/duties/transfer-duty/calculate/concession-rates/
+   1459 words, h2 5, tables 5, inputs 1, faqQ 0, schema PropertyValueSpecification,ReadAction
+   title: Transfer duty home concession rates - Queensland Revenue Office
+   h1: Transfer duty home concession rates
+   h2: Home concession ; First home concession ; First home (new home) concession ; First home vacant land concession ; Queensland Revenue Office
+
+====================================================================================================
+QUERY: how much is stamp duty wa   KP vol 590  AI vol 83  | GSC impr 86 pos 45.1 (/stamp-duty-calculator) | live rank not top 10
+OURS /guides/stamp-duty-wa: 1453 words, h2 9, tables 2, inputs 2, faq 5, schema Article,FAQPage, robots -
+  title: Stamp Duty WA: Calculator, Rates & First Home Buyer Concessions (2026) | Your Property Guide
+  h1: Stamp Duty WA: Calculator, Rates & First Home Buyer Concessions (2026)
+  h2: What is stamp duty in WA? ; WA stamp duty: what you’ll actually pay ; How WA stamp duty is calculated ; First home buyers in WA ; Foreign buyers and surcharges ; When do you pay stamp duty in WA? ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#2 https://reiwa.com.au/the-wa-market/resources/calculators/stamp-duty-calculator/
+   692 words, h2 11, tables 5, inputs 0, faqQ 0, schema 
+   title: Stamp Duty Calculator WA | House & Land Stamp Duty Calculator - REIWA
+   h1: Stamp duty calculator
+   h2: Quick use guide ; Stamp duty FAQs ; What are the general stamp duty rates? ; What are the residential stamp duty rates? ; What are the concessional stamp duty rates? ; What are the first home owner stamp duty rates? ; Related tags ; Discover more about WA real estate ; Explore reiwa.com.au ; Connect with us ; Acknowledgement of Country
+#4 https://www.wa.gov.au/service/financial-management/taxation-and-duty/calculate-your-transfer-duty
+   182 words, h2 7, tables 0, inputs 0, faqQ 0, schema GovernmentService
+   title: Calculate your transfer duty | Western Australian Government
+   h1: Calculate your transfer duty
+   h2: Related services and information ; Related information ; Provided by ; Contact ; Share ; Have a question or want to report a problem? ; Acknowledgement of Country
+#5 https://www.money.com.au/home-loans/calculators/stamp-duty-calculator/wa
+   1073 words, h2 12, tables 4, inputs 0, faqQ 0, schema OpeningHoursSpecification,csvw:Table
+   title: Stamp Duty Calculator WA (2026)
+   h1: WA Stamp Duty Calculator
+   h2: WA Stamp Duty Calculator ; What is stamp duty in Western Australia? ; How much is stamp duty in WA? ; General stamp duty rates in Western Australia ; $750,000 vs $1,000,000 property stamp duty example calculation in WA ; First-home buyer stamp duty rates in WA ; Who pays stamp duty in Western Australia? ; How do you pay stamp duty in WA? ; What are the stamp duty exemptions in Western Australia? ; Calculate stamp duty in your state or territory ; Home loans guides & resources ; Important Disclosures
+#6 https://www.transport.wa.gov.au/licensing/vehicle/duty-calculator
+   260 words, h2 10, tables 1, inputs 0, faqQ 0, schema 
+   title: Vehicle licence duty (stamp duty) calculator | Transport WA
+   h1: Vehicle licence duty (stamp duty) calculator
+   h2: Cookie Consent ; Main menu ; Online Services Menu ; On this page ; Why do we collect vehicle licence duty? ; Vehicle Duty Calculator (stamp duty) ; Fees ; Caravans and camper trailers ; Spouses and de factos ; Footer
+#7 https://apps.osr.wa.gov.au/revenuewaconnect/0/home?destination=calculators:transferduty
+   522 words, h2 0, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: RevenueWAConnect
+   h1: 
+   h2: 
+
+====================================================================================================
+QUERY: lmi calculator   KP vol 3600  AI vol 37  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/lenders-mortgage-insurance-guide: 1865 words, h2 10, tables 1, inputs 0, faq 6, schema Article,FAQPage,HowTo, robots -
+  title: Lenders Mortgage Insurance: What it costs and how to avoid it (2026) | Your Property Guide
+  h1: Lenders Mortgage Insurance: What it costs and how to avoid it (2026)
+  h2: What LMI is (and what it isn’t) ; When does LMI apply? ; How much does LMI cost? ; Who provides LMI in Australia? ; Capitalising LMI into your loan ; How to avoid LMI ; Is paying LMI ever worth it? ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#1 https://www.helia.com.au/the-hub/calculators-estimators/lmi-fee-estimator
+   295 words, h2 0, tables 5, inputs 7, faqQ 0, schema 
+   title: LMI fee estimator. | Helia
+   h1: LMI fee
+   h2: 
+#2 https://www.westpac.com.au/personal-banking/home-loans/calculator/stamp-duty-calculator/
+   1227 words, h2 4, tables 0, inputs 1, faqQ 0, schema 
+   title: Stamp duty and LMI calculator – NSW, QLD, SA, VIC and other states | Westpac
+   h1: Stamp duty and LMI Calculator
+   h2: Need to do a little more research? ; Frequently asked questions ; Help when you need it ; Things you should know
+#3 https://www.bankofmelbourne.com.au/personal/home-loans/home-loan-calculators/stamp-duty-calculator
+   977 words, h2 3, tables 0, inputs 0, faqQ 0, schema 
+   title: Stamp duty and LMI calculator | Bank of Melbourne
+   h1: Stamp Duty and LMI Calculator
+   h2: Choose your next step ; Other home loan calculators ; Tools to help you research
+#5 https://stanfordfinancial.com.au/calculators/lmi-calculator
+   516 words, h2 4, tables 0, inputs 12, faqQ 0, schema City,FAQPage,FinancialService,LocalBusiness,OpeningHoursSpecification,PropertyValue,State,WebApplication
+   title: LMI Calculator | Lenders Mortgage Insurance Cost | Stanford
+   h1: Work out what LMI could cost you.
+   h2: LMI FAQs ; More calculators to guide you ; Ready to talk about your next move? ; Guiding your next big financial moment.
+
+====================================================================================================
+QUERY: how much deposit do i need to buy a house   KP vol 590  AI vol 174  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/how-much-deposit-to-buy-a-house: 1704 words, h2 12, tables 0, inputs 4, faq 6, schema Article,FAQPage,HowTo, robots -
+  title: How Much Deposit Do You Need to Buy a House in Australia? (2026) | Your Property Guide
+  h1: How Much Deposit Do You Need to Buy a House in Australia? (2026)
+  h2: The short answer ; Deposit tiers explained ; What LMI actually costs ; All-in cash needed at settlement ; Government schemes (5% & 2%) ; Genuine savings rule ; First Home Super Saver scheme ; How to save faster ; Next steps ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#2 https://darkhorsefinancial.com.au/deposit-for-home-loan/
+   1478 words, h2 7, tables 1, inputs 0, faqQ 0, schema Article,PropertyValueSpecification,ReadAction
+   title: How Much Deposit Do You Need for a Home Loan? | Dark Horse Financial
+   h1: How Much Deposit Do You Need for a Home Loan?
+   h2: What is a Home Loan Deposit? ; How Much Deposit Do You Need to Pay? ; Why Pay a Larger Deposit? ; What is Lenders Mortgage Insurance? ; Government Schemes and Programs ; Looking for a New Home? ; More To Explore
+#4 https://www.realestate.com.au/advice/how-much-deposit-do-i-need-to-buy-first-home/?page=rea:buy:project%20profile%20details&element=content_carousel%7Cslot_1
+   1362 words, h2 7, tables 2, inputs 0, faqQ 0, schema Article
+   title: How Much Deposit Do You Need To Buy A House - realestate.com.au
+   h1: How much deposit do you need to buy a house
+   h2: How much deposit do I need to buy a home? ; Bigger deposit vs smaller deposit ; Example Deposit Amounts ; What other upfront costs do I need to pay ; Federal government first home buyer incentives ; Is a first-home buyer better off saving for a bigger deposit? ; Editor’s pick videos
+#6 https://fundd.com.au/buying-a-270000-house-deposit-needed-fees-grants-and-interest/
+   874 words, h2 1, tables 0, inputs 0, faqQ 0, schema 
+   title: Buying a $270,000 house (deposit needed, fees, grants and interest) – Fundd
+   h1: Buying a $270,000 house (deposit needed, fees, grants and interest)
+   h2: How to buy a $270,000 house in Australia
+#8 https://www.ozlend.com.au/how-to-buy-property-with-little-or-no-deposit-and-avoid-lmi/
+   1238 words, h2 11, tables 1, inputs 0, faqQ 0, schema PropertyValueSpecification,ReadAction
+   title: How to Buy A Property with Little or No Deposit and Avoid LMI
+   h1: How to Buy Property with Little or No Deposit and Avoid LMI
+   h2: Blog ; What’s LMI and Why Does It Cost So Much? ; Ways to Buy Without a Big Deposit ; Things to Know Before You Commit ; Getting It Done Right ; Why Get Professional Help ; Ready to Buy Without a Massive Deposit? ; FAQ’s ; Your Home – Your Mortgage ; Book Your Free Consultation ; Book Your Free Consultation
+#9 https://northbrisbanehomeloans.com.au/how-much-do-you-need-for-a-house-deposit/
+   876 words, h2 4, tables 0, inputs 0, faqQ 0, schema Article,FinancialService,LocalBusiness
+   title: How Much Do You Need for a House Deposit | NBHL
+   h1: House Deposit: How Much Do You Need?
+   h2: How Much Deposit Do You Need for a House? ; Smart Strategies for Saving Money for a House Deposit ; Start Saving for Your House Deposit the Smart Way ; Talk With Us
+
+====================================================================================================
+QUERY: first home buyer grant nsw   KP vol 6600  AI vol 74  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/first-home-buyer-nsw: 1428 words, h2 10, tables 1, inputs 0, faq 6, schema Article,FAQPage, robots -
+  title: First Home Buyer Guide NSW: Grants, Stamp Duty & Schemes (2026) | Your Property Guide
+  h1: First Home Buyer Guide NSW: Grants, Stamp Duty & Schemes (2026)
+  h2: First Home Owner Grant NSW ; Stamp duty exemption and concession ; Federal schemes available in NSW ; NSW-specific schemes and resources ; Median property prices for first home buyers ; The NSW buying process ; Key NSW contacts ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#4 https://www.easylinkconveyancing.com.au/resources/first-home-buyers-grant-nsw/
+   1166 words, h2 3, tables 0, inputs 0, faqQ 0, schema AggregateRating,Article,LocalBusiness,OpeningHoursSpecification,PropertyValueSpecification,ReadAction
+   title: First Home Buyers Grant, NSW | Eligibilty & How to Apply for Grant?
+   h1: First Home Buyers Grant, NSW – How to Apply?
+   h2: Understanding the First Home Buyer Grant ; Eligibility for NSW First Home Owner Grant ; How can One Apply for the NSW First Home Owner Grant?
+#10 https://www.somersoft.com/threads/fhog-for-girlfriend.51552/
+   97 words, h2 0, tables 0, inputs 0, faqQ 0, schema DiscussionForumPosting,InteractionCounter
+   title: FHOG for girlfriend | Somersoft
+   h1: FHOG for girlfriend
+   h2: 
+
+====================================================================================================
+QUERY: first home buyer stamp duty exemption nsw   KP vol 110  AI vol 4  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/first-home-buyer-nsw: 1428 words, h2 10, tables 1, inputs 0, faq 6, schema Article,FAQPage, robots -
+  title: First Home Buyer Guide NSW: Grants, Stamp Duty & Schemes (2026) | Your Property Guide
+  h1: First Home Buyer Guide NSW: Grants, Stamp Duty & Schemes (2026)
+  h2: First Home Owner Grant NSW ; Stamp duty exemption and concession ; Federal schemes available in NSW ; NSW-specific schemes and resources ; Median property prices for first home buyers ; The NSW buying process ; Key NSW contacts ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#2 https://www.revenue.nsw.gov.au/grants-schemes/assistance-scheme
+   1715 words, h2 7, tables 9, inputs 0, faqQ 0, schema 
+   title: First Home Buyers Assistance Scheme | Revenue NSW
+   h1: First Home Buyers Assistance Scheme
+   h2: Eligibility ; Property value and thresholds ; Requirements for living in the property ; Changes in living arrangements ; Find out how much you'll pay ; How to apply ; Contact us
+#5 https://www.stampdutycalcs.com.au/nsw/first-home-buyer
+   458 words, h2 11, tables 1, inputs 0, faqQ 4, schema FAQPage,WebApplication
+   title: NSW First Home Buyer Stamp Duty (2026–27) | Exemption, Savings & FHOG
+   h1: NSW First Home Buyer Stamp Duty
+   h2: NSW First Home Buyer Eligibility ; NSW FHB Concession Thresholds ; How Much Could You Save as a First Home Buyer? ; NSW First Home Owner Grant (FHOG) ; NSW First Home Buyer FAQ ; More NSW Stamp Duty Pages ; Stamp Duty Calculator ; Explore ; Our Standards ; Legal & Contact ; Part of MoneyToolkit
+#6 https://www.revenue.nsw.gov.au/taxes-duties-levies-royalties/transfer-duty/exemptions-and-concessions
+   216 words, h2 0, tables 0, inputs 0, faqQ 0, schema 
+   title: Transfer duty exemptions and concessions | Revenue NSW
+   h1: Transfer duty exemptions and concessions
+   h2: 
+#7 https://www.youi.com.au/home-insurance/articles/how-much-is-stamp-duty-for-first-home-buyers
+   2788 words, h2 17, tables 0, inputs 0, faqQ 0, schema Article,InsuranceAgency
+   title: How Much Is The First Home Buyer Stamp Duty Concession?
+   h1: How Much Is the First Home Buyer Stamp Duty Concession?
+   h2: In this post ; What is stamp duty? ; How do stamp duty concessions work? ; Available first home buyer stamp duty concessions by state ; Stamp duty concessions for first home buyers in NSW ; Stamp duty concessions for first home buyers in QLD ; Stamp duty concessions for first home buyers in WA ; Stamp duty concessions for first home buyers in VIC ; Stamp duty concessions for first home buyers in SA ; Stamp duty concessions for first home buyers in TAS ; Stamp duty concessions for first home buyers in the ACT ; Stamp duty concessions for first home buyers in the NT
+
+====================================================================================================
+QUERY: borrowing power calculator   KP vol 33100  AI vol 12  | GSC impr 419 pos 88.5 (/borrowing-power-calculator) | live rank not top 10
+OURS /borrowing-power-calculator: 1285 words, h2 8, tables 0, inputs 6, faq 6, schema FAQPage,WebApplication, robots -
+  title: How Much Can I Borrow? Borrowing Power Calculator Australia | Your Property Guide
+  h1: Borrowing Power Calculator
+  h2: Your Financial Details ; Pair this with… ; How banks assess your borrowing capacity ; The biggest levers on your borrowing power ; What this calculator doesn’t do ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#1 https://www.umoceania.com.au/calculators/borrowing-power-calculator
+   1304 words, h2 8, tables 0, inputs 0, faqQ 3, schema (unparseable),FAQPage,SiteNavigationElement
+   title: Borrowing Power Calculator - How Much Can I Borrow Calculator
+   h1: Borrowing Power Calculator
+   h2: What is Borrowing Power? ; What is a Borrowing Power Calculator? ; How Does the UM Oceania Borrowing Power Calculator Work? ; Features and Benefits of Borrowing Power Calculator ; Things to Know About Borrowing Power Calculator ; What is the Formula for Calculating Borrowing Power? ; Factors Affecting the Borrowing Power ; Frequently Asked Questions
+#3 https://chillifinance.smartonline.com.au/calculators/borrowing-power-calculator/
+   60 words, h2 0, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Borrowing Power Calculator - Chilli Finance
+   h1: Borrowing Power​
+   h2: 
+#4 https://lifestylefinancegroup.com.au/calculator-borrowing-capacity/
+   335 words, h2 1, tables 0, inputs 4, faqQ 0, schema PropertyValueSpecification,ReadAction
+   title: Newcastle Borrowing Power Calculator | Lifestyle Finance
+   h1: Borrowing Capacity Calculator
+   h2: Get in Touch
+#6 https://theloanbroker.com.au/borrowing-power-calculator/
+   9 words, h2 0, tables 0, inputs 0, faqQ 0, schema 
+   title: Borrowing power calculator – The Loan Broker
+   h1: Borrowing power calculator
+   h2: 
+
+====================================================================================================
+QUERY: rental yield calculator   KP vol 3600  AI vol 13  | GSC impr 68 pos 61.8 (/rental-yield-calculator) | live rank not top 10
+OURS /rental-yield-calculator: 1115 words, h2 11, tables 0, inputs 12, faq 6, schema FAQPage,WebApplication, robots -
+  title: Rental Yield Calculator Australia: Gross & Net Yield | Your Property Guide
+  h1: Rental Yield Calculator
+  h2: Property Details ; Purchase Costs ; Annual Ongoing Costs ; Loan Details (optional, for cash flow) ; Pair this with… ; Gross vs net yield, in plain English ; Cash flow vs yield, the difference ; What this calculator doesn’t do ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#1 https://www.ing.com.au/home-loans/calculators/rental-yield-calculator.html
+   202 words, h2 3, tables 0, inputs 15, faqQ 0, schema 
+   title: Rental yield calculator | ING
+   h1: Rental yield calculator
+   h2:  ; - ; Why should I get a home loan with ING?
+#2 https://www.calculatestuff.com/financial/rental-yield-calculator
+   1044 words, h2 1, tables 0, inputs 6, faqQ 0, schema 
+   title: Rental Yield Calculator
+   h1: Rental Yield Calculator
+   h2: How to Calculate Rental Yield
+#3 https://www.ianritchie.com.au/rental-yield-calculator
+   180 words, h2 1, tables 0, inputs 15, faqQ 0, schema 
+   title: Rental Yield Calculator | Ian Ritchie Real Estate
+   h1: 
+   h2: Rental Yield Calculator
+#6 https://www.westpac.com.au/home-loans/investing-in-property/rental-yield
+   1462 words, h2 6, tables 0, inputs 0, faqQ 0, schema 
+   title: How to calculate rental yield | Westpac
+   h1: 
+   h2: Investing in property: what is rental yield? ; How to calculate rental yield ; What is a ‘good’ rental yield? ; Where has the best rental yield? ; Things to consider when thinking about rental yield ; Interested in investing?
+#7 https://propertyinvestmentprofessionals.com.au/tools/rental-yield-calculator
+   1560 words, h2 8, tables 1, inputs 9, faqQ 9, schema FAQPage,SoftwareApplication
+   title: Rental Yield Calculator Australia — Gross & Net + Formula (2026)
+   h1: Rental Yield Calculator Australia 2026
+   h2: Property Details ; How to Calculate Rental Yield — Step by Step ; What is a Good Rental Yield in 2026? ; Gross vs Net Rental Yield Explained ; How the Calculator Works ; Calculator FAQs ; Ready to optimize your property investment strategy? ; Next Steps After Calculating Rental Yield
+
+====================================================================================================
+QUERY: mortgage calculator australia   KP vol 9900  AI vol 1  | GSC impr 23 pos 95.3 (/mortgage-calculator) | live rank not top 10
+OURS /mortgage-calculator: 1207 words, h2 9, tables 1, inputs 4, faq 6, schema FAQPage,WebApplication, robots -
+  title: Australian Mortgage Calculator 2026: Repayments & Interest | Your Property Guide
+  h1: Mortgage Repayment Calculator
+  h2: Loan Details ; Amortization Schedule ; Pair this with… ; What you’re actually paying for ; The biggest levers on total interest paid ; What this calculator doesn’t do ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#1 https://moneysmart.gov.au/home-loans/mortgage-calculator
+   387 words, h2 4, tables 0, inputs 0, faqQ 0, schema 
+   title: Mortgage calculator - Moneysmart.gov.au
+   h1: Mortgage calculator
+   h2: Disclaimers ; Assumptions ; FAQs - frequently asked questions ; Up next in Home loans
+#2 https://www.commbank.com.au/digital/home-buying/calculator/home-loan-repayments
+   1847 words, h2 1, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Mortgage Repayment Calculator | Home Loan Repayments
+   h1: Mortgage Repayment Calculator
+   h2: About us
+#3 https://www.westpac.com.au/personal-banking/home-loans/calculator/mortgage-repayment/
+   1927 words, h2 6, tables 0, inputs 1, faqQ 0, schema 
+   title: Mortgage Repayment Calculator | Westpac
+   h1: Home Loan Repayment Calculator
+   h2: Choose your next step ; Want to take three friends to Vegas? ; Help me choose ; Tips ; You may also like ; Things you should know
+#7 https://www.peoplefirstbank.com.au/calculators/home-loan-calculators
+   602 words, h2 6, tables 2, inputs 0, faqQ 0, schema HowTo
+   title: Home loan calculators | People First Bank
+   h1: Home loan calculators
+   h2: Our home loan calculators ; Not sure which home loan calculator to use? ; Not sure which home loan calculator to use? ; Ready to apply? ; Need some help? We've got you covered. ; Banking for you, better for all.
+#8 https://www.anz.com.au/personal/home-loans/calculators-tools/home-loan-repayment-calculator/
+   3332 words, h2 11, tables 1, inputs 0, faqQ 5, schema FAQPage,WebApplication
+   title: Home loan repayment calculator – Estimate your mortgage repayments | ANZ
+   h1: Home loan repayment calculator
+   h2: Featured rate ; 2 year fixed rate ; Connect with our home loan specialists or apply ; Your questions answered ; Important information ; About us ; Our other sites ; Security ; Contacts ; Connect with us ; Download our new app
+
+====================================================================================================
+QUERY: affordability calculator   KP vol 210  AI vol 28  | GSC impr 11 pos 103.9 (/affordability-calculator) | live rank not top 10
+OURS /affordability-calculator: 1239 words, h2 8, tables 0, inputs 7, faq 6, schema FAQPage,WebApplication, robots -
+  title: Property Affordability Calculator: How Much Can I Spend? | Your Property Guide
+  h1: Property Affordability Calculator
+  h2: Your Financial Details ; Pair this with… ; Two limits, the lower one wins ; Understanding LMI ; What this calculator doesn’t do ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#1 https://communitytrust.com/affordability-calculator/
+   382 words, h2 2, tables 0, inputs 13, faqQ 0, schema PropertyValueSpecification,ReadAction
+   title: Community Trust - A flexible alternative
+   h1: Affordability Calculator
+   h2: Where we are ; Talk to us
+#3 https://aeenx.com/au/mortgage-affordability-calculator-australia/
+   10 words, h2 1, tables 0, inputs 0, faqQ 0, schema 
+   title: Mortgage Affordability Calculator Australia | Aeenx
+   h1: Mortgage Affordability Calculator Australia
+   h2: Copilot
+#4 https://wealthwaveone.com/calculators/home-affordability-calculator
+   1291 words, h2 9, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Welcome to WealthWaveONE - The All-In-One Business Platform for WealthWave Leaders
+   h1: The All-in-One Business and Marketing  Platform for WealthWave Leaders
+   h2: All Our Brands—All In One Place ; Training for Growth ; Websites for Connecting ; Presentations for Engagement ; Email Marketing for Contacting and Responses ; Calculators for Insights ; Pricing for Everyone ; Choose From 2 Plans ; Select Add-Ons
+#5 https://www.dentalandmedical.com/calculators/mortgageaffordability/
+   475 words, h2 2, tables 1, inputs 36, faqQ 0, schema FinancialService,PropertyValueSpecification,ReadAction
+   title: Mortgage affordability calculator - Dental & Medical
+   h1: Mortgage Affordability Calculator
+   h2: NHS Financial Readiness Check ; KEEP UPDATED
+#6 https://www.calkoo.com/en/house-affordability-calculator
+   627 words, h2 3, tables 1, inputs 37, faqQ 7, schema FAQPage,SoftwareApplication
+   title: House Affordability Calculator | Income, Debt and Budget Based Estimate
+   h1: » House Affordability Calculator
+   h2: Related calculators ; TOP 5 ; explore See also:
+
+====================================================================================================
+QUERY: capital gains tax calculator property   KP vol 880  AI vol 117  | GSC impr 0 pos - () | live rank not top 10
+OURS /cgt-calculator: 1177 words, h2 8, tables 0, inputs 6, faq 6, schema FAQPage,WebApplication, robots -
+  title: CGT Calculator for Australian Property: 50% Discount Included | Your Property Guide
+  h1: Capital Gains Tax Calculator
+  h2: Property Details ; Pair this with… ; How CGT works on Australian property ; The biggest decisions that affect your CGT ; What this calculator doesn’t do ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#1 https://propertycompass.sextantdigital.com.au/app/cgt
+   519 words, h2 5, tables 0, inputs 16, faqQ 0, schema 
+   title: Capital Gains Tax Calculator | Property Compass
+   h1: Capital Gains Tax Estimator
+   h2: Purchase Details ; Sale ; Tax Details ; Results ; Capital Gains Tax on Australian property
+#3 https://www.rjsanderson.com.au/blog/calculating-capital-gains-tax
+   345 words, h2 1, tables 0, inputs 13, faqQ 0, schema 
+   title: R J Sanderson & Associates - Calculating your capital gains tax
+   h1: Calculating your capital gains tax
+   h2: Contact us
+#4 https://aussiecalc.com/cgt-calc
+   992 words, h2 0, tables 0, inputs 6, faqQ 5, schema Article,FAQPage,HowTo,HowToTool,WebApplication
+   title: Capital Gains Tax Calculator Australia 2025-26 | CGT | AussieCalc
+   h1: Capital Gains Tax Calculator Australia
+   h2: 
+#6 https://australianpropertyexperts.com.au/investment-structure-calculator/
+   2830 words, h2 4, tables 2, inputs 31, faqQ 5, schema FAQPage,WebApplication
+   title: Investment Structure Calculator: Own Name vs Company vs Trust
+   h1: Investment Structure Calculator: Own Name vs Company vs Trust
+   h2: What would change the answer ; The same portfolio in every state ; Common questions about investment structures ; How the structure changes what you keep
+#7 https://www.taxapp.com.au/a-beginner-s-guide-how-to-calculate-australian-cgt-using-a-free-tax-app
+   5616 words, h2 3, tables 0, inputs 0, faqQ 0, schema BlogPosting
+   title: How to Calculate Australian CGT Using Tax App for Free
+   h1: A Beginner's Guide: How to Calculate Australian CGT Using a Free Tax App
+   h2: Get Started with Us ; Our Awards! ⭐⭐⭐⭐⭐ ; More blog posts
+
+====================================================================================================
+QUERY: negative gearing calculator   KP vol 2400  AI vol 11  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/negative-gearing-australia: 2204 words, h2 13, tables 3, inputs 0, faq 6, schema Article,FAQPage, robots -
+  title: Negative gearing in Australia: how it works (2026) | Your Property Guide
+  h1: Negative gearing in Australia: how it works (2026)
+  h2: What negative gearing is ; Worked example ; What expenses are deductible? ; What is NOT deductible? ; Depreciation: the tax benefit most investors miss ; The CGT connection ; Positive vs neutral vs negative gearing ; Risks of negative gearing ; Is negative gearing still available in 2026? ; Tax return obligations ; Common questions ; Keep reading
+#1 https://www.savings.com.au/calculators/negative-gearing-calculator
+   1508 words, h2 7, tables 1, inputs 8, faqQ 0, schema LoanOrCredit,QuantitativeValue
+   title: Negative Gearing Calculator | Calculate The Impact
+   h1: Negative Gearing Calculator
+   h2: Buying or refinancing an investment property? ; How to calculate the tax implications of your negatively geared property ; Investment Calculators ; Important information ; Get rate alerts ; Save Smarter ; Send me the pod
+#2 https://www.yourinvestmentpropertymag.com.au/calculators/negative-gearing
+   3732 words, h2 13, tables 2, inputs 25, faqQ 3, schema FAQPage
+   title: Negative Gearing Calculator
+   h1: Negative Gearing Calculator
+   h2: $0 ; Check out some featured Investor Loans to buy a new, or refinance an existing Property ; What is negative gearing? ; How to calculate the tax implications of your negatively geared property ; Benefits of negative gearing ; What expenses can be considered when negative gearing? ; Is negative gearing right for your property investment strategy? ; About our Negative Gearing Calculator ; Assumptions ; Explanation of Terms ; Frequently Asked Questions about Negative Gearing ; Speak to an SMSF lending specialist
+#3 https://www.tmsfinancial.com.au/negative-gearing-calculator/
+   1407 words, h2 16, tables 0, inputs 15, faqQ 0, schema 
+   title: Negative Gearing Calculator 2025 - TMS Financial
+   h1: Negative Gearing Calculator 2027
+   h2: Your Income ; Loan details ; Your Property Expenses ; You are Negatively Geared ; What is negative gearing? ; Earning a tax refund through negative gearing ; Get the most out of your tax refund with TMS Financials ; The Benefits Of A Negatively Geared Property ; Risks associated with investment property negative gearing ; What you need for negative gearing to work ; Positive gearing benefits and tax considerations ; How does negative gearing work compared to positive gearing?
+#5 https://propertyinvestmentprofessionals.com.au/tools/negative-gearing-calculator
+   2358 words, h2 13, tables 1, inputs 15, faqQ 9, schema FAQPage,HowTo,SoftwareApplication
+   title: Free Negative Gearing Calculator Australia 2026 | Weekly Cost & ATO Refund
+   h1: Negative Gearing Calculator
+   h2: Property Details ; Rental Income ; Annual Expenses ; Tax Information ; Purchase Date & Property Type ; How the Calculator Works ; Learn More About Negative Gearing ; How Negative Gearing Works — A Worked Example ; Negative Gearing by State — How Land Tax Affects Your Deductions ; Negative Gearing vs Positive Gearing ; Negative Gearing FAQs ; Related Calculators
+#7 https://acttaxgroup.com.au/negative-gearing-calculator/
+   1883 words, h2 14, tables 0, inputs 44, faqQ 5, schema FAQPage,PropertyValueSpecification,ReadAction
+   title: Negative Gearing Calculator - ACT Tax Group
+   h1: 
+   h2: Income ; Loan Details ; Tax Withheld ; Negative Gearing Calculator ; Why Negative Gearing Matters for Your Tax Refund ; How Our Negative Gearing Calculator Works ; Making Sense of Your Results ; Making the Most of Your Tax Deductions ; How Negative Gearing Fits Into Your Investment Strategy ; Support for Property Investors ; Planning Ahead: What to Do After Using the Calculator ; Conclusion: Take Control of Your Tax with Confidence
+
+====================================================================================================
+QUERY: how much is my house worth   KP vol 4400  AI vol 60  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/how-much-is-my-house-worth-australia: 2293 words, h2 10, tables 0, inputs 1, faq 5, schema Article,FAQPage, robots -
+  title: How Much Is My House Worth? Free Property Appraisal (Australia) | Your Property Guide
+  h1: How Much Is My House Worth? Free Property Appraisal (Australia)
+  h2: Where’s the house? ; The three different numbers ; Why the three disagree ; What actually drives your number ; Why free online estimates miss ; How to get an accurate figure ; What to do next ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#1 https://www.domain.com.au/property-profile
+   216 words, h2 3, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Property Value Estimates & History | Domain
+   h1: Domain Home Price Guide
+   h2: Access key insights for confident property decisions ; Know what we know with the Domain App ; Expand Directory
+#4 https://www.commbank.com.au/retail/netbank/home-buying/tools/property-insights
+   705 words, h2 4, tables 0, inputs 1, faqQ 0, schema 
+   title: Property Value Estimate & Insights | CommBank
+   h1: You've been inactive for a while
+   h2: Property search with confidence ; Our lenders are local market experts ; Frequently asked questions ; Things you should know
+#7 https://www.cotality.com/au/insights/articles/what-is-my-property-worth-a-definitive-australian-guide-to-discovering-your-homes-value
+   2459 words, h2 6, tables 0, inputs 0, faqQ 0, schema Article,Thing
+   title: What is my property worth
+   h1: What is my property worth: a definitive Australian guide to discovering your home's value
+   h2: How much is my property worth? ; What really drives your property’s value ; Three ways to find your property’s true value ; How to use your property valuation to make better decisions ; Start tracking what your property is worth ; Related Insights ( 0 )
+
+====================================================================================================
+QUERY: free property valuation   KP vol 590  AI vol 65  | GSC impr 0 pos - () | live rank not top 10
+OURS /appraisal: 927 words, h2 7, tables 0, inputs 0, faq 6, schema FAQPage, robots -
+  title: Free Property Appraisal from a Local Agent | No Obligation | Your Property Guide
+  h1: What is your home actually worth ?
+  h2: Two minutes, then we take it from there. ; What a property appraisal actually is. ; What to have ready. ; What happens after you ask. ; Appraisals across Australia. ; Property appraisal questions. ; Plain-English property, in your inbox .
+#2 https://www.commbank.com.au/retail/netbank/home-buying/tools/property-insights
+   705 words, h2 4, tables 0, inputs 1, faqQ 0, schema 
+   title: Property Value Estimate & Insights | CommBank
+   h1: You've been inactive for a while
+   h2: Property search with confidence ; Our lenders are local market experts ; Frequently asked questions ; Things you should know
+#6 https://www.propertyvalue.com.au/
+   944 words, h2 9, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Sold House Prices, Real Estate Values & Auction Results | propertyvalue.com.au
+   h1: Access the same insights used by 
+real estate agents and the big 4 banks
+   h2: Unlimited insight into every available property, street, suburb and state in Australia ; Your account has been created ; Confident decisions. Better buying ; Australia's most comprehensive 
+ and up to date property data ; Property, street, suburb 
+and State profiles ; Keep your eye 
+on the market ; State of the Nation ; Investment Scores to match your strategy ; Top Suburbs
+#7 https://www.pnbank.com.au/home-loans/free-property-report/
+   500 words, h2 12, tables 0, inputs 0, faqQ 0, schema 
+   title: Perth property report with property value estimate | P&N Bank
+   h1: Free property report
+   h2: A property report can tell you: ; Our home loans are award-winning ; Hassle-free home loans ; We’re here to help ; Ready to apply? ; Talk to our friendly team ; You may also be interested in: ; Important information ; About ; Support ; Contact ; Social
+#8 https://www.bcu.com.au/home-loans/free-online-property-report/
+   460 words, h2 9, tables 0, inputs 0, faqQ 0, schema 
+   title: Get a free online property report | BCU Bank
+   h1: Free online property reports
+   h2: A property report can tell you: ; Our home loans are award-winning ; Because we're here to help ; You may also be interested in: ; Important information ; About ; Support ; Contact ; Social
+#11 https://valuergeneral.sa.gov.au/valuation/Property-Valuations
+   613 words, h2 1, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Property Valuations | Office of the Valuer-General
+   h1: Office of the Valuer-General
+   h2: Contact us
+
+====================================================================================================
+QUERY: property appraisal   KP vol 720  AI vol 97  | GSC impr 0 pos - () | live rank not top 10
+OURS /appraisal: 927 words, h2 7, tables 0, inputs 0, faq 6, schema FAQPage, robots -
+  title: Free Property Appraisal from a Local Agent | No Obligation | Your Property Guide
+  h1: What is your home actually worth ?
+  h2: Two minutes, then we take it from there. ; What a property appraisal actually is. ; What to have ready. ; What happens after you ask. ; Appraisals across Australia. ; Property appraisal questions. ; Plain-English property, in your inbox .
+#4 https://www.aussie.com.au/insights/articles/property-appraisals-vs-valuations-difference/
+   1290 words, h2 10, tables 1, inputs 0, faqQ 0, schema Article,Corporation
+   title: Property appraisals vs valuations: What's the difference? | Aussie
+   h1: Property appraisals vs valuations: What's the difference?
+   h2: What is a property appraisal? ; Why would I need a property appraisal? ; What is a property valuation? ; Why would you need a property valuation? ; How much does a property valuation cost? ; Who can provide a property appraisal? ; Who can provide a property valuation? ; Are home appraisals accurate? ; What’s the difference between a property appraisal and a valuation? ; How to increase property value
+#5 https://independent.com.au/appraisal
+   769 words, h2 6, tables 0, inputs 22, faqQ 0, schema Brand,QuantitativeValue,RealEstateAgent
+   title: Get A Property Appraisal Canberra | Independent Real Estate
+   h1: Get an instant property appraisal
+   h2: Enter your address below to get started ; Appraisal process explained ; Why get an appraisal? ; Online vs detailed appraisal ; What will agents take into consideration in the detailed estimate ; Got questions about the selling process?
+#6 https://www.ljhooker.com.au/sell/understanding-property-appraisals
+   3562 words, h2 20, tables 0, inputs 0, faqQ 0, schema 
+   title: Understanding Property Appraisals -  LJ Hooker
+   h1: Understanding Property Appraisals: A Home Owner's Guide
+   h2:  ; 01. ; What is a property appraisal? ; What's involved in a property appraisal? ; Leverage a national network over 4000 real estate agents to best understand the true value of your property ; Valuations vs. Appraisals ;  ; 02. ; The property appraisal process ; Discover Your Property's Potential ;  ; 03.
+#10 https://valuergeneral.sa.gov.au/valuation/Property-Valuations
+   613 words, h2 1, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Property Valuations | Office of the Valuer-General
+   h1: Office of the Valuer-General
+   h2: Contact us
+
+====================================================================================================
+QUERY: free property appraisal online   KP vol 320  AI vol 0  | GSC impr 0 pos - () | live rank not top 10
+OURS /appraisal: 927 words, h2 7, tables 0, inputs 0, faq 6, schema FAQPage, robots -
+  title: Free Property Appraisal from a Local Agent | No Obligation | Your Property Guide
+  h1: What is your home actually worth ?
+  h2: Two minutes, then we take it from there. ; What a property appraisal actually is. ; What to have ready. ; What happens after you ask. ; Appraisals across Australia. ; Property appraisal questions. ; Plain-English property, in your inbox .
+#3 https://www.commbank.com.au/retail/netbank/home-buying/tools/property-insights
+   705 words, h2 4, tables 0, inputs 1, faqQ 0, schema 
+   title: Property Value Estimate & Insights | CommBank
+   h1: You've been inactive for a while
+   h2: Property search with confidence ; Our lenders are local market experts ; Frequently asked questions ; Things you should know
+#4 https://www.domain.com.au/property-profile
+   216 words, h2 3, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Property Value Estimates & History | Domain
+   h1: Domain Home Price Guide
+   h2: Access key insights for confident property decisions ; Know what we know with the Domain App ; Expand Directory
+#7 https://sale-appraisal.professionals.com.au/
+   1281 words, h2 8, tables 0, inputs 15, faqQ 0, schema 
+   title: Free Property Appraisal From The Professionals
+   h1: Get a FREE In-home Property Appraisal
+   h2: What's included in our personalised Professionals property sales appraisal ; Hear from our happy home owners ; Our FREE in-home appraisal is the most accurate way to value your home and provide insights on how to maximise the sale price you can achieve. ; A property appraisal with Professionals is the most comprehensive way to value your home in today's market. ; Appraising your property in three easy steps ; Why sell with Professionals? ; Discover the difference a Professionals agent provides you ; Hear from our happy home owners
+#11 https://www.bcu.com.au/home-loans/free-online-property-report/
+   460 words, h2 9, tables 0, inputs 0, faqQ 0, schema 
+   title: Get a free online property report | BCU Bank
+   h1: Free online property reports
+   h2: A property report can tell you: ; Our home loans are award-winning ; Because we're here to help ; You may also be interested in: ; Important information ; About ; Support ; Contact ; Social
+
+====================================================================================================
+QUERY: best real estate agents sydney   KP vol 260  AI vol 73  | GSC impr 0 pos - () | live rank not top 10
+OURS /find-an-expert: 611 words, h2 4, tables 0, inputs 0, faq 0, schema , robots -
+  title: Find your expert, agent, broker, or specialist | Your Property Guide
+  h1: Tell us your situation. We’ll find the right person.
+  h2: Whichever bucket you’re in, we’ll find the right specialist for it. ; How matching works. ; Buyers and sellers pay nothing. Specialists pay us a fee for each introduction. ; Plain-English property, in your inbox .
+#2 https://www.realestatebusiness.com.au/reb-top-100-agents-2025
+   909 words, h2 11, tables 1, inputs 0, faqQ 0, schema Article,InteractionCounter
+   title: REB Top 100 Agents 2025 - Real Estate Business
+   h1: A WORD FROM OUR SPONSOR
+   h2: Welcome to the 14th annual REB Top 100 Agents ranking ; 2024 ; VS 2025 ; TOP 100 2024 129 ; TOP 100 2025 140 ; TOP 100 2024 111 ; TOP 100 2025 117 ; The number of listings and properties settled increased among the top 100 agents. ; The REB Top 100 Agents ranking provides a comprehensive understanding of the Australian real estate market by tracking and comparing the performance of the country’s top-performing agents. ; - - - ; REB TOP 100 AGENTS 2025
+#7 https://lsre.com.au/
+   21 words, h2 6, tables 0, inputs 0, faqQ 0, schema PropertyValueSpecification,ReadAction
+   title: Real Estate Agents & Property Managers Sydney & New South Wales | Laing+Simmons
+   h1: Sell or rent your home with Laing Simmons.
+   h2: How can we help? ; From the Newsroom ; The wisdom of Leanne Pilkington – 30 lessons from the woman who learned to back herself ; The conversation we’re not having ; The size myth most new agency owners believe ; Laing+Simmons expands unconventional PM Training
+#9 https://whichrealestateagent.com.au/real-estate-agents-sydney/
+   1975 words, h2 7, tables 0, inputs 18, faqQ 0, schema AggregateRating,Product,PropertyValueSpecification,ReadAction,brand
+   title: Real Estate Agents In Sydney, NSW - Top Agents List [2026]
+   h1: Real Estate Agents In Sydney, NSW – Top Agents List [2026]
+   h2: Real Estate Agencies In Sydney ; Best Real Estate Agents In Sydney ;  ; Real Estate Agent Fees Sydney ; Top 3 Agent Performance Statistics ; Property Market Trends – Sydney ; Real Estate In Sydney
+#10 https://www.levypropertygroup.com.au/bondi-top-real-estate-agents-sydney/
+   1280 words, h2 1, tables 1, inputs 35, faqQ 5, schema AggregateRating,BlogPosting,FAQPage,Rating,RealEstateAgent,Review
+   title: Top Real Estate Agents Sydney | Levy Property Group
+   h1: Top Real Estate Agents Sydney | Levy Property Group
+   h2: Key Takeaways
+
+====================================================================================================
+QUERY: how to choose a real estate agent   KP vol 70  AI vol 51  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/how-to-choose-a-selling-agent: 2421 words, h2 13, tables 0, inputs 0, faq 6, schema Article,FAQPage,HowTo, robots -
+  title: How to Choose a Selling Agent in Australia (2026) | Your Property Guide
+  h1: How to Choose a Selling Agent in Australia (2026)
+  h2: Why agent choice matters ; How to shortlist agents ; What to ask in the interview ; The appraisal-price trap ; Commission and fees ; Marketing budget and strategy ; The listing agreement ; Checking references ; Red flags ; Making the decision ; Common questions ; Keep reading
+#4 https://www.baysideproperties.com.au/how-to-choose-your-real-estate-agent
+   1075 words, h2 0, tables 0, inputs 1, faqQ 0, schema BlogPosting
+   title: How to Choose your Real Estate Agent - Simon Salm Re/max Bayside Properties
+   h1: How to Choose your Real Estate Agent
+   h2: 
+#5 https://ljhookerpropertypartners.com.au/landlords/how-to-choose-the-best-real-estate-agent/
+   825 words, h2 5, tables 0, inputs 1, faqQ 0, schema Article,CommentAction,PropertyValueSpecification,ReadAction
+   title: How to Choose the Best Real Estate Agent - LJ Hooker Property Partners
+   h1: How to Choose the Best Real Estate Agent
+   h2: Choosing the best real estate agent is crucial when selling your home or investment property. ; Residential Sales ; Residential Property Management ; Commercial & Industrial Sales ; Commercial Property Management
+#7 https://bowerbirdinteriors.com.au/five-tips-to-help-you-choose-a-real-estate-agent/
+   673 words, h2 2, tables 0, inputs 23, faqQ 0, schema Article,BlogPosting,LocalBusiness,OpeningHoursSpecification,PropertyValueSpecification,ReadAction
+   title: Five tips to help you choose a real estate agent | BOWERBIRD
+   h1: Five tips to help you choose a real estate agent
+   h2: Looking to style your interiors? Share your details and we’ll be in touch soon. ; Get new articles weekly, straight to your inbox.
+#8 https://fletchers.net.au/post/how-to-choose-a-real-estate-agent
+   597 words, h2 0, tables 0, inputs 0, faqQ 0, schema NewsArticle
+   title: How to choose the right real estate agent
+   h1: 22nd February 2017 / Jeremy Desmier: How to choose the right real estate agent
+   h2: 
+#9 https://www.commercialrealestate.com.au/advice/8-ways-to-choose-the-right-real-estate-agent-for-you-819354/
+   491 words, h2 3, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: 8 ways to choose the right real estate agent for you
+   h1: 8 ways to choose the right real estate agent for you
+   h2: We recommend ; Featured Properties ; We recommend
+
+====================================================================================================
+QUERY: compare real estate agents   KP vol 170  AI vol 0  | GSC impr 0 pos - () | live rank not top 10
+OURS /find-an-expert: 611 words, h2 4, tables 0, inputs 0, faq 0, schema , robots -
+  title: Find your expert, agent, broker, or specialist | Your Property Guide
+  h1: Tell us your situation. We’ll find the right person.
+  h2: Whichever bucket you’re in, we’ll find the right specialist for it. ; How matching works. ; Buyers and sellers pay nothing. Specialists pay us a fee for each introduction. ; Plain-English property, in your inbox .
+#1 https://www.localagentfinder.com.au/
+   1253 words, h2 8, tables 0, inputs 2, faqQ 5, schema AggregateRating,City,FAQPage,LocalBusiness,OpeningHoursSpecification
+   title: Compare Real Estate Agent Fees and Commissions
+   h1: Find top real estate agents & property managers to sell or rent with ease
+   h2: Finding the right agent has never been easier ; Support you can trust ; Helping over 1.4m people every year ; Tools to help you sell or rent with confidence ; Knowledge Centre ; Frequently asked questions ; Let's make your next move simple ; We find you the right agent for your property journey.
+#3 https://reiwa.com.au/agent-finder/
+   426 words, h2 9, tables 0, inputs 1, faqQ 0, schema 
+   title: Find & Compare Real Estate Agents in Perth & WA - REIWA
+   h1: Find real estate agents and agencies in Perth and WA
+   h2: How to select the right agent or agency ; Why use a REIWA agent? ; What is REIWA Accreditation? ; Other frequently asked questions ; reiwa.com Awards ; Discover more about WA real estate ; Explore reiwa.com.au ; Connect with us ; Acknowledgement of Country
+#5 https://www.ratemyagent.com.au/
+   331 words, h2 6, tables 0, inputs 1, faqQ 0, schema 
+   title: Australia's No.1 Real Estate Agent Reviews & Ratings Platform
+   h1: Find the right agent
+   h2: Find what you’re looking for ; Thinking of selling? Start wherever you are. ; What is RateMyAgent? ; Real reviews by real people ; Where great agents are found ; Every review has a story
+#7 https://www.openagent.com.au/
+   30 words, h2 0, tables 0, inputs 1, faqQ 0, schema 
+   title: Find and Compare Real Estate Agents - OpenAgent
+   h1: We make it easier for you to buy, sell and own property
+   h2: 
+
+====================================================================================================
+QUERY: buyers agent cost   KP vol 210  AI vol 3  | GSC impr 1 pos 87 (/guides/buyers-agent-cost-australia) | live rank not top 10
+OURS /guides/buyers-agent-cost-australia: 1380 words, h2 11, tables 0, inputs 0, faq 6, schema Article,FAQPage, robots -
+  title: How Much Does a Buyer's Agent Cost in Australia? (2026) | Your Property Guide
+  h1: How Much Does a Buyer's Agent Cost in Australia? (2026)
+  h2: What buyer’s agents actually do ; Fee models & ranges ; Cost by service tier ; Cost by market ; When a buyer’s agent is worth it ; What to ask before signing ; Buyer’s agent vs selling agent ; Next steps ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#4 https://www.buyersadvocate.com.au/how-much-does-a-buyers-agent-cost/
+   3221 words, h2 14, tables 1, inputs 0, faqQ 0, schema Article,PropertyValueSpecification,ReadAction
+   title: How Much Does a Buyers Agent Cost in Melbourne? Pricing Guide 2026
+   h1: Discover Buyer’s Agent Costs: How Much Does a Buyers Agent Cost in Melbourne and Is It Worth It?
+   h2: Understanding How Much a Buyers Agent Costs and Their Services ; Typical Fee Structures for Buyer’s Agents ; Fixed Fee Model ; Percentage of Purchase Price Model ; Tiered Pricing Model ; Upfront Costs and Retainers ; Calculating the Buyer’s Agent Cost ; Are Buyer’s Agent Fees Tax-Deductible? ; Value Proposition: Is Hiring a Buyer’s Agent Worth It? ; Selecting the Right Buyer’s Agent ; Summary ; Frequently Asked Questions
+#6 https://www.yourpropertyhound.com.au/brisbane-buyers-agents-fees-cost/
+   691 words, h2 5, tables 1, inputs 0, faqQ 0, schema Article,CommentAction,OpeningHoursSpecification,PropertyValueSpecification,ReadAction,RealEstateAgent
+   title: How much do Buyers Agents Fees cost in Brisbane?
+   h1: How much do Buyers Agents Fees cost in Brisbane?
+   h2: So what does the service of a Buyer’s Agent actually cost? ; We make buying simple ; About ; Services ; OFFICES
+#7 https://www.aussie.com.au/insights/articles/how-much-does-a-buyers-agent-cost/
+   1338 words, h2 10, tables 1, inputs 0, faqQ 0, schema Article,Corporation
+   title: How much does a buyer’s agent really cost? | Aussie
+   h1: How much does a buyer’s agent really cost?
+   h2: The 3 common buyer’s agent fee structures in Australia ; Who pays the buyer’s agent fees (and when)? ; Can you negotiate buyer’s agent fees? ; Hidden costs to watch out for ; Are buyer’s agent fees worth it? ; Real-world examples that prove the value ; Can buyer’s agent fees be included in your home loan? ; Aussie’s fixed-fee model ; Transparent fees mean confident buying ; Ready to talk fees with zero pressure?
+#8 https://entryeducation.edu.au/blog/buyers-agent-fees-and-commissions-australia/
+   1187 words, h2 7, tables 1, inputs 2, faqQ 0, schema Article,PropertyValueSpecification,ReadAction,SiteNavigationElement
+   title: Buyers agent fees & standard commissions in Australia - Entry Education
+   h1: Buyers agent fees & standard commissions in Australia
+   h2: How do buyers agent fees and commissions work? ; Is there a maximum fee or commission that buyers agents can charge? ; How much do buyers agents earn on average in Australia? ; Working as a buyer agent in Australia ; About the Author: Michael Dewar ; Unsure about what real estate course you should enrol into? ; Subscribe to receive the latest news and articles
+#9 https://www.hastingsba.com/buyers-agent-fees-sydney-cheapest-costly-mistake/
+   877 words, h2 5, tables 0, inputs 27, faqQ 0, schema Article,PropertyValueSpecification,ReadAction
+   title: Buyers Agent Fees in Sydney: Why the Cheapest Option Can Cost You More | Hastings Buyers Agency
+   h1: Buyers Agent Fees in Sydney: Why the Cheapest Option Can Cost You More
+   h2: What Do Buyers Agent Fees Look Like? ; Why Cheaper Buyers Agents Cost More in the Long Run ; Key Questions to Ask Your Buyers Agent ; Why Choose Hastings Buyers Agency ; Final Word
+
+====================================================================================================
+QUERY: buyers agent fees sydney   KP vol 260  AI vol 23  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/buyers-agent-cost-australia: 1380 words, h2 11, tables 0, inputs 0, faq 6, schema Article,FAQPage, robots -
+  title: How Much Does a Buyer's Agent Cost in Australia? (2026) | Your Property Guide
+  h1: How Much Does a Buyer's Agent Cost in Australia? (2026)
+  h2: What buyer’s agents actually do ; Fee models & ranges ; Cost by service tier ; Cost by market ; When a buyer’s agent is worth it ; What to ask before signing ; Buyer’s agent vs selling agent ; Next steps ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#2 https://johnsonpropertyco.com.au/how-much-do-buyers-agents-charge/
+   2193 words, h2 6, tables 0, inputs 0, faqQ 0, schema Article,PropertyValueSpecification,ReadAction
+   title: How much do buyers agents charge
+   h1: how much do buyers agents charge
+   h2: Understanding Buyers Agents Fees ; Fee Structures for Buyers Agents ; Negotiating Buyers Agents Fees ; The Value of Hiring a Buyers Agent ; Conclusion ; Are you looking to buy property in the Inner West of Sydney?
+#5 https://whatsthedamage.com.au/agencies/buyers-agent/sydney/
+   1016 words, h2 5, tables 0, inputs 13, faqQ 4, schema City,FAQPage,QuantitativeValue,Service,UnitPriceSpecification
+   title: Sydney Buyers Agent Leads — Exclusive Territory for One Buyers Agent | What's The Damage
+   h1: Lock in Sydney Buyers Agent leads. Lock out the competition.
+   h2: Your Sydney Buyers Agent territory. ; Why Sydney buyers agents choose exclusive. ; Why $500/month + GST exclusive beats shared-lead marketplaces for Sydney Buyers Agent agencies. ; Everything you'd want to ask. ; Apply for Sydney Buyers Agent territory
+#7 https://helentarrant.com/buyers-agent-fees-how-much-does-it-cost-to-hire-a-buyers-agent/
+   782 words, h2 0, tables 0, inputs 1, faqQ 3, schema FAQPage,PropertyValueSpecification,ReadAction
+   title: Buyers Agent Fees And How Much It Would Cost To Hire Them
+   h1: Everything you need to know about buyer’s agent fees
+   h2: 
+#8 https://zedrealestate.au/buyers-agent-fees-australia-the-elite-guide-to-investing-in-market-mastery/
+   3256 words, h2 16, tables 0, inputs 6, faqQ 8, schema Article,FAQPage,LocalBusiness,PropertyValueSpecification,ReadAction
+   title: Buyers Agent Fees Australia: The Elite Guide to Investing in Market Mastery
+   h1: Buyers Agent Fees Australia: The Elite Guide to Investing in Market Mastery
+   h2: Key Takeaways ; Table of Contents ; The Price of Mastery: Decoding Buyers Agent Fees in 2026 ; Performance Models: Fixed Fees vs. Percentage Commissions ; The ROI of Elite Advocacy: Why Fees Pay for Themselves ; Navigating the Engagement: Retainers, Success Fees, and Value ; Dominate the Market: The Zed Real Estate Advantage ; Own the Future: Your Market Mastery Starts Now ; Frequently Asked Questions ; Network ; RESIDENTIAL ; COMMERCIAL
+#9 https://househunters.com.au/choose-the-right-buyers-agent-superior-research-made-easy/
+   1642 words, h2 8, tables 3, inputs 0, faqQ 7, schema Article,FAQPage,QuantitativeValue
+   title: Choose The Right Buyers Agent - Superior Research Made Easy
+   h1: Choose The Right Buyers Agent – Superior Research Made Easy
+   h2: How To Choose The Right Buyer’s Agent In Sydney (2026 Guide) ; Post navigation ; RELATED POSTS: ; browse Categories ; Recent Posts ; Recent Comments ; Company ; Legals
+
+====================================================================================================
+QUERY: real estate agents morayfield   KP vol 140  AI vol 0  | GSC impr 0 pos - () | live rank not top 10
+OURS /suburbs/morayfield-qld-4506/agents: 747 words, h2 7, tables 0, inputs 5, faq 3, schema FAQPage, robots -
+  title: Real Estate Agents in Morayfield QLD 4506 | Your Property Guide
+  h1: Real estate agents in Morayfield .
+  h2: One agent who sells in Morayfield . ; Agents who sell in Morayfield . ; What agents charge in Morayfield . ; Five things to ask an agent in Morayfield . ; Where prices sit right now. ; Agents in Morayfield : common questions. ; Plain-English property, in your inbox .
+#4 https://caboolture.ljhooker.com.au/
+   1077 words, h2 6, tables 0, inputs 0, faqQ 0, schema 
+   title: Caboolture | Morayfield's Real Estate Agent - LJ Hooker Caboolture | Morayfield
+   h1: Real estate agents in Caboolture | Morayfield
+   h2: LJ Hooker Caboolture | Morayfield 1/207 Morayfield Road, MORAYFIELD QLD 4506 ; Welcome to LJ Hooker Caboolture | Morayfield ; View our Auctions ; Discover ; How can we help you? ; Follow us on Instagram @ljhooker
+#6 https://whichrealestateagent.com.au/best-agents/morayfield-morayfield-qld-4506/
+   2240 words, h2 6, tables 0, inputs 11, faqQ 0, schema AggregateRating,Product,PropertyValueSpecification,ReadAction,brand
+   title: 24 Morayfield Real Estate Agents Reviewed - Choose The Best
+   h1: Best 60 Real Estate Agents In Morayfield [2026]
+   h2: List of Top Morayfield Real Estate Agents ; Which Real Estate Agent's Best Morayfield Agents ; What To Pay Your Morayfield Agent ; Frequently Asked Questions ; Morayfield Suburb Overview ; Nearby Suburbs
+#7 https://professionalscaboolture.com.au/
+   1188 words, h2 4, tables 0, inputs 41, faqQ 0, schema 
+   title: Professionals Caboolture/Morayfield. Real estate experts in Caboolture, Morayfield, Toowoomba and surrounding areas
+   h1: Welcome to Professionals Caboolture/Morayfield
+   h2: Smarter Marketing. Stronger Results . ; Places We Love ; Why customers choose Professionals ; Subscribe to our Newsletter
+#9 https://pikeproperty.com.au/
+   1289 words, h2 0, tables 0, inputs 54, faqQ 0, schema ReadAction
+   title: Pike Property
+   h1: 
+   h2: 
+
+====================================================================================================
+QUERY: best suburbs to invest in brisbane   KP vol 320  AI vol 14  | GSC impr 0 pos - () | live rank not top 10
+OURS /best-suburbs/best-rental-yield/qld: 1733 words, h2 2, tables 1, inputs 0, faq 3, schema FAQPage,ItemList, robots -
+  title: Best Rental Yield suburbs in Queensland (QLD) | Your Property Guide
+  h1: The best rental yield suburbs in Queensland .
+  h2: About this ranking. ; Plain-English property, in your inbox .
+#2 https://www.realestate.com.au/news/queenslands-17-suburbs-to-watch-out-for-in-2026s-property-market/
+   1232 words, h2 1, tables 0, inputs 0, faqQ 0, schema NewsArticle
+   title: Queensland’s 17 suburbs to watch out for in 2026’s property market - realestate.com.au
+   h1: Queensland’s 17 suburbs to watch out for in 2026’s property market
+   h2: Editor’s pick videos
+#3 https://www.frasersproperty.com.au/inspiration/best-suburbs-in-brisbane
+   7844 words, h2 9, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Best suburbs in Brisbane: top areas to live and invest (2026)
+   h1: Best suburbs in Brisbane in 2026: where to live, buy or invest
+   h2: 12 Brisbane suburbs to watch in 2026 ; Best suburbs in Brisbane for families ; Best inner-city suburbs in Brisbane ; Best Brisbane suburbs for property investment ; Best value suburbs in Brisbane ; What defines a great suburb in Brisbane ; Choosing the right Brisbane suburb for you ; Key takeaways ; You may also like
+#5 https://satterley.com.au/news/best-suburbs-to-invest-in-brisbane/
+   1481 words, h2 16, tables 1, inputs 0, faqQ 0, schema Article,PropertyValueSpecification,ReadAction
+   title: Best Suburbs to Invest in Brisbane 2026 | Satterley News
+   h1: Best Suburbs to Invest in Brisbane and Cairns for 2026
+   h2: Primary Navigation. Contains: Community interactive map, Links with drop menu's and Search. ; Share ; Morayfield ; Smithfield ; Ripley ; Deception Bay ; Caboolture ; Loganlea ; Strathpine ; Narangba ; North Lakes ; Redcliffe
+#7 https://www.huntergalloway.com.au/best-suburbs-in-brisbane/
+   3874 words, h2 22, tables 4, inputs 0, faqQ 4, schema Article,FAQPage
+   title: 2026 Best Suburbs in Brisbane (Where to Live, Buy, or Invest)
+   h1: Best suburbs in Brisbane in 2026: a buyer's guide by budget and lifestyle
+   h2: How we ranked Brisbane's suburbs for 2026 ; The 2026 rankings: Brisbane's top 20 suburbs ; A closer look at the top three ; Top suburbs for first home buyers ; Best suburbs for families: the school-catchment premium ; Best suburbs for coastal living ; Best Brisbane suburbs by lifestyle ; Where the investors are looking in 2026 ; Brisbane's most expensive suburbs ; The 2032 Olympics and your suburb ; How to check safety before buying ; The unit shift is the real story of 2026
+#8 https://www.stryve.com.au/blog/best-suburb-to-invest-in-brisbane
+   2734 words, h2 8, tables 1, inputs 4, faqQ 5, schema Article,FAQPage
+   title: Best Suburb to Invest in Brisbane 2026 | Stryve
+   h1: Best Suburb to Invest in Brisbane 2026
+   h2: On This Page ; How We Choose the Best Investment Suburbs ; 10 Best Suburbs to Invest in Brisbane in 2026 ; Researching a suburb? Get the full picture. ; Bonus Suburbs to Watch in Brisbane ; Match Your Investment Strategy to the Right Suburb ; Get a free property report ; Frequently Asked Questions (FAQs)
+
+====================================================================================================
+QUERY: best suburbs in perth   KP vol 880  AI vol 363  | GSC impr 0 pos - () | live rank not top 10
+OURS /best-suburbs/for-families/wa: 1622 words, h2 2, tables 1, inputs 0, faq 3, schema FAQPage,ItemList, robots -
+  title: Best for Families suburbs in Western Australia (WA) | Your Property Guide
+  h1: The for families suburbs in Western Australia .
+  h2: About this ranking. ; Plain-English property, in your inbox .
+#4 https://risepropertybuyers.com.au/perth-best-suburbs-exploring-the-most-livable-areas-of-the-city/
+   15 words, h2 5, tables 0, inputs 0, faqQ 0, schema AggregateRating,BlogPosting,Rating,RealEstateAgent,Review
+   title: Perth Best Suburbs: Exploring the Most Livable Areas of the City
+   h1: Perth Best Suburbs: Exploring the Most Livable Areas of the City
+   h2: What Makes a Suburb Truly Livable? ; Exploring Perth’s Most Livable Suburbs: A Closer Look ; What You Should Know About Perth’s Suburb Trends ; Tips for Choosing the Right Suburb for You ; Your Dream Suburb Awaits: Let’s Make It Happen!
+#6 https://www.launchfinance.com.au/fastest-growing-suburbs-perth
+   1865 words, h2 4, tables 7, inputs 0, faqQ 7, schema BlogPosting,FAQPage,FinancialService,Thing
+   title: Fastest Growing Suburbs To Buy in Perth, The 2026 Guide
+   h1: Fastest Growing Suburbs To Buy in Perth, The 2026 Guide
+   h2: Why does suburb choice determine your investment success? ; Which Perth suburbs are growing the fastest? ; Frequently Asked Questions ; Your Next Steps
+#7 https://www.fragileremovals.com.au/moving-tips/best-places-to-live-in-perth/
+   9 words, h2 2, tables 0, inputs 0, faqQ 0, schema BlogPosting,MovingCompany
+   title: Best Places To Live In Perth | Top Suburbs & Areas
+   h1: Best places to live in Perth
+   h2: Best places to live in Perth ; Ready to Start Your Move?
+#8 https://www.luxcitybnb.com/best-perth-suburbs-to-stay/
+   17 words, h2 11, tables 0, inputs 3, faqQ 0, schema Article,CommentAction,PropertyValueSpecification,ReadAction
+   title: Best Suburbs to Stay in Perth for Your Type of Trip - Lux City BnB – Luxury Stays in Perth
+   h1: 
+   h2: Lux City BnB Pty Ltd ; Best Suburbs to Stay in Perth for Your Type of Trip ; For Beach Lovers ; For Families ; For Business Travellers ; For Shopping and Dining ; For Longer or Relocation Stays ; The Best Choice? ; Lux City BnB Pty Ltd ; Useful Links ; Contact Us
+
+====================================================================================================
+QUERY: best rental yield suburbs australia   KP vol 10  AI vol 1  | GSC impr 0 pos - () | live rank not top 10
+OURS /best-suburbs/best-rental-yield: 1644 words, h2 2, tables 1, inputs 0, faq 3, schema FAQPage,ItemList, robots -
+  title: Best Rental Yield Suburbs in Australia | Your Property Guide
+  h1: The best rental yield suburbs in Australia.
+  h2: About this ranking. ; Plain-English property, in your inbox .
+#2 https://www.smartpropertyinvestment.com.au/best-suburbs/highest-yield-suburbs
+   612 words, h2 8, tables 0, inputs 1, faqQ 0, schema Article
+   title: Highest Rental Yield Suburbs - Market Data - Smart Property Investment
+   h1: Highest Rental Yield Suburbs
+   h2: New South Wales (NSW) ; Victoria (VIC) ; Queensland (QLD) ; Australian Capital Territory (ACT) ; Tasmania (TAS) ; South Australia (SA) ; Western Australia (WA) ; Northern Territory (NT)
+#3 https://www.frasersproperty.com.au/inspiration/top-australian-suburbs-showing-the-highest-rental-yields-in-2026
+   7503 words, h2 9, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Highest rental yield suburbs in Australia in 2026
+   h1: Top Australian suburbs showing the highest rental yields in 2026
+   h2: Key takeaways: ; What is a rental yield and how it’s measured ; Top 17 highest rental yield suburbs in Australia ; Australia’s current rental yield trends ; What drives strong rental yields in certain areas ; Considerations when evaluating high-yield areas ; Regional vs metro: which areas typically show higher yields? ; Conclusion ; You may also like
+#6 https://www.realestate.com.au/news/rental-tiches-top-10-aussie-yield-hotspots-revealed/
+   581 words, h2 2, tables 0, inputs 0, faqQ 0, schema NewsArticle
+   title: Rental riches: Top 10 Aussie yield hotspots revealed - realestate.com.au
+   h1: Rental riches: Top 10 Aussie yield hotspots revealed
+   h2: Hotspotting national Top 10 positive cash flow hotspots ; Editor’s pick videos
+#7 https://www.openagent.com.au/blog/suburbs-with-highest-rental-yield-australia
+   3816 words, h2 5, tables 13, inputs 0, faqQ 6, schema Article,Brand,FAQPage
+   title: Suburbs with the highest rental yield in Australia revealed 2026 - OpenAgent
+   h1: Who's the right agent for you?
+   h2:  ; Frequently asked questions about rental yield and property investment ;  ; View agent & property tools ; Recent posts
+#8 https://www.savings.com.au/property/top-australian-suburbs-for-rental-yield-revealed
+   3509 words, h2 11, tables 4, inputs 5, faqQ 0, schema Article,LoanOrCredit,QuantitativeValue
+   title: 2026 Rental Yield Australia: Top 100 Suburbs
+   h1: Top Australian suburbs for rental yield revealed
+   h2: How important are rental yields to property investors? ; What gives a suburb a strong rental yield? ; Australia rental yields in 2026 ; Top 100 rental yield suburbs in Australia for houses ; Top 100 rental yield suburbs in Australia for units ; Did you find this page useful? ; Related Guides ; Important information ; Get rate alerts ; Save Smarter ; Send me the pod
+
+====================================================================================================
+QUERY: bondi median house price   KP vol 90  AI vol 0  | GSC impr 82 pos 44.9 (/suburbs/bondi-nsw-2026) | live rank not top 10
+OURS /suburbs/bondi-nsw-2026: 1830 words, h2 13, tables 0, inputs 11, faq 9, schema FAQPage, robots -
+  title: Bondi Postcode 2026 (NSW) — Suburb Profile & Median Price | Your Property Guide
+  h1: Bondi
+  h2: House prices in Bondi . ; What to know about Bondi . ; What it’s like to live here. ; Demographics. ; Investment overview. ; Crime and safety. ; Walkability. ; Location. ; Schools in Bondi . ; Local schools for Bondi ; Weather year-round. ; About Bondi .
+#1 https://property.carto.au/suburbs/nsw/bondi/unit-prices/chart
+   93 words, h2 0, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Bondi median unit prices chart (interactive) — 2002-2026
+   h1: Carto Australia  / Property Data
+   h2: 
+#6 https://www.levypropertygroup.com.au/how-much-does-bondi-beach-real-estate-agents-cost/
+   2767 words, h2 8, tables 2, inputs 35, faqQ 5, schema BlogPosting,FAQPage,RealEstateAgent
+   title: Honest Guide: How Much Bondi Beach Real Estate Agents Cost
+   h1: The Honest Truth About How Much Bondi Beach Real Estate Agents Cost (Revealed 2026)
+   h2: How Much Does Bondi Beach Real Estate Agents Cost in Commission? ; What Marketing Costs Actually Add Up To ; The Hidden Costs Most Agents Don’t Mention Upfront ; What Actually Affects How Much You’ll Pay ; Why the Cheapest Agent Usually Costs You More ; What You Should Actually Get for Your Money ; How to Choose Without Overpaying ; Frequently Asked Questions
+#8 https://buyingcost.com.au/suburbs/nsw/bondi-2026/
+   367 words, h2 4, tables 0, inputs 10, faqQ 1, schema FAQPage
+   title: What Will It REALLY Cost to Buy in Bondi? | buyingcost.com.au
+   h1: What Will It REALLY Cost to Buy in Bondi?
+   h2: Calculate your own costs in Bondi ; Local data for Bondi (2026) ; Nearby suburbs ; Buying in Bondi?
+
+====================================================================================================
+QUERY: morayfield house prices   KP vol 40  AI vol 0  | GSC impr 1 pos 10 (/suburbs/morayfield-qld-4506) | live rank not top 10
+OURS /suburbs/morayfield-qld-4506: 1889 words, h2 13, tables 0, inputs 11, faq 9, schema FAQPage, robots -
+  title: Morayfield Postcode 4506 (QLD) — Suburb Profile & Median Price | Your Property Guide
+  h1: Morayfield
+  h2: House prices in Morayfield . ; What to know about Morayfield . ; What it’s like to live here. ; Demographics. ; Investment overview. ; Crime and safety. ; Walkability. ; Location. ; Schools in Morayfield . ; Local schools for Morayfield ; Weather year-round. ; About Morayfield .
+#5 https://affinityproperty.net.au/morayfield-property-market-report-june-2026/
+   2725 words, h2 9, tables 1, inputs 26, faqQ 0, schema (unparseable),PropertyValueSpecification,QuantitativeValue,ReadAction
+   title: Morayfield Property Market Report – June 2026 - Affinity Property
+   h1: The Morayfield Growth Report
+   h2: Request a Market Appraisal ; Suburb Snapshot ; A Decade of Capital Growth ; 12-Month Median Value Trajectory ; Who Lives in Morayfield? ; Supply, Demand & Velocity ; Once-in-a-Generation Catalysts ; 2026 Federal Budget — What It Means for Morayfield ; Rental Growth & Market Outlook
+#6 https://www.openagent.com.au/suburb-profiles/morayfield-4506
+   1480 words, h2 14, tables 1, inputs 0, faqQ 3, schema FAQPage
+   title: Morayfield Property Market and Trends | OpenAgent
+   h1: Get a property report and suburb profile for any property in Morayfield
+   h2: Morayfield suburb profile ; Morayfield property market performance ; 5 year median price trend for houses and units ; Morayfield demographics ; Morayfield infrastructure, key developments and investment opportunities ; Suburbs near Morayfield ; How does Morayfield compare to nearby suburbs? ; Common questions about Morayfield ; Choose the right real estate agents in Morayfield ; Get a head start and compare top local agents in Morayfield ; Not quite ready to sell? ; Suburb and property report
+
+====================================================================================================
+QUERY: hawthorn median house price   KP vol 110  AI vol 7  | GSC impr 112 pos 20.7 (/suburbs/hawthorn-east-vic-3123) | live rank not top 10
+OURS /suburbs/hawthorn-vic-3122: 1565 words, h2 13, tables 0, inputs 11, faq 8, schema FAQPage, robots -
+  title: Hawthorn Postcode 3122 (VIC) — Suburb Profile & Median Price | Your Property Guide
+  h1: Hawthorn
+  h2: House prices in Hawthorn . ; What to know about Hawthorn . ; What it’s like to live here. ; Demographics. ; Investment overview. ; Crime and safety. ; Walkability. ; Location. ; Schools in Hawthorn . ; Local schools for Hawthorn ; Weather year-round. ; About Hawthorn .
+#5 https://www.yourinvestmentpropertymag.com.au/top-suburbs/vic/3122-hawthorn
+   2649 words, h2 10, tables 3, inputs 21, faqQ 0, schema 
+   title: Hawthorn, VIC 3122: Suburb Profile & Property Report | YIP
+   h1: Hawthorn, 3122
+   h2: Market Report ; Find property data on every suburb in Australia ; Check out some featured Investor Loans to buy a new, or refinance an existing Property ; Market Trends ; Rental Trends ; Looking to invest or refinance? ; Demographic Trends ; Get notified when our data is updated. ; Speak to an SMSF lending specialist ; Important information
+#7 https://www.openagent.com.au/suburb-profiles/hawthorn-3122
+   1491 words, h2 14, tables 1, inputs 0, faqQ 3, schema FAQPage
+   title: Hawthorn Property Market and Trends | OpenAgent
+   h1: Get a property report and suburb profile for any property in Hawthorn
+   h2: Hawthorn suburb profile ; Hawthorn property market performance ; 5 year median price trend for houses and units ; Hawthorn demographics ; Hawthorn infrastructure, key developments and investment opportunities ; Suburbs near Hawthorn ; How does Hawthorn compare to nearby suburbs? ; Common questions about Hawthorn ; Choose the right real estate agents in Hawthorn ; Get a head start and compare top local agents in Hawthorn ; Not quite ready to sell? ; Suburb and property report
+
+====================================================================================================
+QUERY: suburb profile   KP vol 1900  AI vol 25  | GSC impr 0 pos - () | live rank not top 10
+OURS /suburbs: 49 words, h2 2, tables 0, inputs 0, faq 0, schema CollectionPage, robots -
+  title: Browse All Australian Suburbs | Property Data & Profiles | Your Property Guide
+  h1: Australian suburbs, data and all .
+  h2: Plain-English property, in your inbox . ; Browse by State
+#5 https://www.comparethemarket.com.au/home-loans/suburb-profile-report/
+   2031 words, h2 11, tables 0, inputs 0, faqQ 2, schema FAQPage,VideoObject
+   title: What Is A Suburb Profile? | Simples! | Compare the Market
+   h1: Find the suburb of your dreams today!
+   h2: Research and compare suburbs with the help of our free suburb profiles ; Narrow down your suburb shortlist ; Tools to make your search easier ; Suburb reports: should you get one? ; How to get a free suburb or property report ; Start refining your property search today ; Suburb profiles explained ; What information does a suburb profile contain? ; Great feedback from our customers. ; Learn about home loans ; Ready to get started?
+#6 https://www.openagent.com.au/suburb-profiles
+   895 words, h2 7, tables 0, inputs 5, faqQ 2, schema FAQPage
+   title: Suburb profiles | The latest suburb price, trends & real estate data - OpenAgent
+   h1: Find a suburb you feel at home in
+   h2: What's in a suburb profile? ; Explore property market stats and trends for any suburb in Australia ; How we help you throughout your property journey ; Compare top performing agents in your area ; Digital Estimate for your property ; Professional market assessment for your property ; Suburb profile FAQs
+
+====================================================================================================
+QUERY: nedlands rental yield   KP vol 0  AI vol 0  | GSC impr 0 pos - () | live rank not top 10
+OURS /suburbs/nedlands-wa-6009/rental-market: 83 words, h2 1, tables 0, inputs 0, faq 0, schema Article, robots noindex, follow
+  title: Nedlands Rental Market | Rent Prices & Trends | Your Property Guide
+  h1: The rental market
+  h2: Plain-English property, in your inbox .
+#3 https://www.realestateinvestar.com.au/property/nedlands
+   1139 words, h2 5, tables 3, inputs 0, faqQ 0, schema 
+   title: Investment Property Nedlands, Western Australia, Nedlands, 6009
+   h1: Investment Property Nedlands, WA, 6009
+   h2: Suburb Snapshot ; Supply & Demand in Nedlands, Nedlands ; Statistical data for Nedlands, Nedlands ; Nedlands investment property listings Showing 5 of 240 investment properties found in Nedlands on realestateinvestar.com.au TBC Karella St, Nedlands $1,430,000 Rare Opportunity in Blue-Chip Nedlands Discover a rare opportunity to secure a premium home in the prestigious riverside suburb of Nedlands, where timeless character, leafy streets, and blue-chip appeal come together. Positioned in one of Perth's most tightly held and highly regarded locations, this is your chance to create a refined ... 
+#6 https://www.blackburnepropertymanagement.com.au/suburb/nedlands/
+   344 words, h2 8, tables 0, inputs 0, faqQ 0, schema PropertyValueSpecification,ReadAction
+   title: Nedlands Property Managers | Blackburne Property Management
+   h1: Nedlands
+   h2: About Nedlands ; Explore other suburbs ; Switch to Blackburne Property Management ; Appraisal Form ; Appraisal Form ; Property Enquiry ; Maintenance Request ; Vacate Notice Form
+#7 https://reiwa.com.au/rental-properties/nedlands/
+   1169 words, h2 26, tables 0, inputs 21, faqQ 0, schema Event,Residence
+   title: Rentals in Nedlands, WA 6009 | Houses for Rent & More
+   h1: Rentals in Nedlands, WA 6009
+   h2: 49 Vincent Street, Nedlands ; 39 Boronia Avenue, Nedlands ; 22 Kingston Street, Nedlands ; 7/89 Winthrop Avenue, Nedlands ; 55 Archdeacon Street, Nedlands ; 5/40 Portland Street, Nedlands ; 10G Kanimbla Road, Nedlands ; 2 Hardy Road, Nedlands ; 5/36 Megalong Street, Nedlands ; 65 Hobbs Avenue, Dalkeith ; 27 Leon Road, Dalkeith ; 3/3-9 Lucknow Place, West Perth
+
+====================================================================================================
+QUERY: rental appraisal port hedland   KP vol 0  AI vol 0  | GSC impr 101 pos 25.9 (/suburbs/port-hedland-wa-6721/rental-market) | live rank not top 10
+OURS /suburbs/port-hedland-wa-6721/rental-market: 90 words, h2 1, tables 0, inputs 0, faq 0, schema Article, robots noindex, follow
+  title: Port Hedland Rental Market | Rent Prices & Trends | Your Property Guide
+  h1: The rental market
+  h2: Plain-English property, in your inbox .
+#2 https://www.hfn.com.au/
+   409 words, h2 3, tables 0, inputs 13, faqQ 0, schema 
+   title: Real Estate Agent Port Hedland | Hedland First National Real Estate
+   h1: 
+   h2: BROWSE OUR FEATURED LISTINGS ; About Us ; STAY IN TOUCH
+#3 https://www.avalon-realestate.com.au/pages/real-estate/rental-appraisal
+   411 words, h2 3, tables 0, inputs 27, faqQ 0, schema 
+   title: Get a Rental Appraisal for your Pilbara Property - Avalon Real Estate
+   h1: 
+   h2: An Appraisal From The Local Experts ; Discover Better Returns ; Looking to Switch Property Manager? ​​
+#5 https://assetvaluations.com.au/property-valuations-port-hedland/
+   139 words, h2 5, tables 0, inputs 0, faqQ 0, schema OpeningHoursSpecification,PropertyValueSpecification,ReadAction
+   title: Property Valuations Port Hedland | Asset Valuations
+   h1: Property Valuations Port Hedland
+   h2: Property Valuations Port Hedland ; What People Say About Us ; Fast & Affordable Property Valuations Port Hedland, WA. ; Port Hedland Expert Property Valuers ; Trusted Property Valuations Port Hedland
+#7 https://hedland.ljhooker.com.au/property-appraisal
+   1309 words, h2 4, tables 0, inputs 0, faqQ 0, schema 
+   title: Property Appraisal Request - LJ Hooker Hedland
+   h1: Sell your property with Australia’s #1 real estate brand
+   h2: What our clients think about us ; We asked every customer who sold with us, how they would rate their experience. ; Get started on selling your home with a free property appraisal from LJ Hooker ; 
+
+====================================================================================================
+QUERY: canberra house prices by suburb   KP vol 30  AI vol 1  | GSC impr 1 pos 62 (/price-guide) | live rank not top 10
+OURS /property-market/canberra: 837 words, h2 7, tables 3, inputs 1, faq 2, schema Article,FAQPage, robots -
+  title: Canberra House Prices & Property Market 2026: Median, Growth, Suburbs | Your Property Guide
+  h1: Canberra house prices, 2026 .
+  h2: Median house price in Canberra . ; What Canberra house prices are doing. ; House prices by suburb: Canberra's twenty busiest ; Most searched suburbs in Greater Canberra ; Canberra property market questions ; Where’s the house? ; Plain-English property, in your inbox .
+#4 https://suburbiarealestate.com.au/suburb-profiles/watson-act-2602/
+   182 words, h2 3, tables 0, inputs 0, faqQ 0, schema PropertyValueSpecification,ReadAction
+   title: Watson ACT 2602 | Suburbia
+   h1: Real Estate Agents Watson ACT 2602
+   h2: At Suburbia we pride ourselves on bringing back the real in real estate. ; Properties don’t sell themselves. ; The Watson market may be turning. Find out the value of your property.
+#7 https://www.allhomes.com.au/news/they-sell-like-hotcakes-the-popular-canberra-suburb-drawing-in-buyers-1386325/
+   950 words, h2 4, tables 0, inputs 0, faqQ 0, schema 
+   title: 'They sell like hotcakes': the popular Canberra suburb drawing in buyers
+   h1: 'They sell like hotcakes': the popular Canberra suburb drawing in buyers
+   h2: My local ; Homes for sale in Conder ; We recommend ; We thought you might like
+#8 https://region.com.au/has-your-suburb-slipped-out-of-canberras-million-dollar-club/672759/
+   2577 words, h2 49, tables 0, inputs 6, faqQ 0, schema 
+   title: Has your suburb slipped out of Canberra's million-dollar club? | Region Canberra
+   h1: Has your suburb slipped out of Canberra's million-dollar club?
+   h2: Shoebridge trumps Hanson-Young and Faruqi to be new Greens leader ; Alleged attack left dating app match with broken skull, suspected brain injury ; Home Affairs orders government-wide review of legacy systems in wake of AI breach ; Shoebridge trumps Hanson-Young and Faruqi to be new Greens leader ; Home Affairs orders government-wide review of legacy systems in wake of AI breach ; Hanson-Young puts hand up for Greens leadership, as tributes flow for Waters ; Coach of the Gungahlin Bulls 18 years ago, Holbrook now the hot favourite to be named NRL Coach of the Year ; Labor doing the hard sell 
+
+====================================================================================================
+QUERY: property management fees   KP vol 1000  AI vol 295  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/property-management-fees-australia: 1444 words, h2 11, tables 0, inputs 0, faq 6, schema Article,FAQPage, robots -
+  title: Property Management Fees in Australia: What You'll Actually Pay (2026) | Your Property Guide
+  h1: Property Management Fees in Australia: What You'll Actually Pay (2026)
+  h2: What property managers actually do ; The 8 fee types you need to know ; Typical fees by state (2026) ; A real annual example ; What’s actually negotiable ; Cheap isn’t the same as good ; Should you self-manage? ; Next steps ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#4 https://www.reiq.com/articles/property-management/property-management-fees-an-in-depth-guide-to-understanding-the-costs-and-benefits
+   2086 words, h2 8, tables 0, inputs 0, faqQ 0, schema 
+   title: REIQ | Property Management Fees An In-Depth Guide to Understanding the Costs and Benefits
+   h1: Property management fees: An in-depth guide to understanding the costs and benefits
+   h2: What does a property manager do? ; What are the benefits of using a property manager? ; What property management fees can you expect to pay? ; What's the average property management costs and fees per state/territory? ; Considerations if you want to manage the investment property yourself ; Top ways a property manager can save you money ; 5 tips to choose a great property manager ; You might also like View All Articles
+#5 https://whichrealestateagent.com.au/property-management/fees/vic-melbourne/
+   2243 words, h2 7, tables 0, inputs 15, faqQ 0, schema FAQPage,PropertyValueSpecification,ReadAction
+   title: Melbourne Property Management Fees [2026 Guide] + Cost Calculator
+   h1: Property Management Fees – Melbourne (VIC) + Fee Calculator
+   h2: Property Management Fees Calculator – Melbourne (VIC) ; What Are the Main Property Management Fees in Melbourne? ; Are There Other Fees? ; What’s Regulated in Victoria and What Isn’t ; Important Updates in Victoria Landlords Should Know (2025–2026) ; Conclusion ; FAQs
+#6 https://boffo.com.au/the-mailbox/property-management-fees
+   629 words, h2 7, tables 0, inputs 0, faqQ 0, schema City,LocalBusiness,OpeningHoursSpecification,RealEstateAgent,State
+   title: Boffo Property Management Fees • Boffo Real Estate
+   h1: 
+   h2: Landlords will find that engaging a reliable and knowledgeable property manager can make a difference to how efficiently their investment properties and tenancies are managed. ; Understanding Property Management Fees in Adelaide ; Comparing Property Management Fees Adelaide ; Weighing Up Your Options As A Landlord ; If you'd like to talk to our property managers in Adelaide about property management fees, we would love to have a chat! Our highly experienced team are always available to answer your questions and demonstrate how ours is the best property management service in Adelaide. ; Don’t b
+#7 https://www.localagentfinder.com.au/blog/property-management-commission-fees
+   2412 words, h2 2, tables 1, inputs 0, faqQ 0, schema Article,BlogPosting
+   title: Property Management Fees Australia: 2026 Guide
+   h1: Property Management Fees Australia: 2026 Guide
+   h2: Let’s make your next move simple. ; We find you the right agent for your property journey.
+#8 https://www.blackburnepropertymanagement.com.au/resources/property-management-fees-perth/
+   987 words, h2 10, tables 0, inputs 0, faqQ 0, schema PropertyValueSpecification,ReadAction
+   title: Perth Property Management Fees
+   h1: Are you wondering what fees you should be paying and what Perth property managers do for their fees? Here is a simple gu
+   h2: Perth Property Management Fees in 2025 ; REQUEST AN APPRAISAL ; How much are property management fees in Perth? ; Why Choose Blackburne Property Management? ; Switch to Blackburne Property Management ; Appraisal Form ; Appraisal Form ; Property Enquiry ; Maintenance Request ; Vacate Notice Form
+
+====================================================================================================
+QUERY: conveyancing fees nsw   KP vol 480  AI vol 23  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/conveyancing-guide: 1812 words, h2 11, tables 2, inputs 2, faq 6, schema Article,FAQPage,HowTo, robots -
+  title: Conveyancing in Australia: What it costs and how to choose (2026) | Your Property Guide
+  h1: Conveyancing in Australia: What it costs and how to choose (2026)
+  h2: What conveyancing is ; Conveyancer vs solicitor ; The conveyancing process step by step ; Typical conveyancing costs by state ; DIY conveyancing (not recommended) ; Red flags in contracts ; When to use a solicitor instead ; How to choose a conveyancer ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#2 http://eng.quicklaw.com.au/public/nsw-conveyancing-costs.aspx
+   1068 words, h2 1, tables 26, inputs 27, faqQ 0, schema 
+   title: Conveyancing Costs (NSW) - Quicklaw Conveyancing
+   h1: Conveyancing Cost Calculator (NSW)
+   h2: NSW Conveyancing Cost Calculator
+#5 https://rslawgroup.au/blog/how-much-does-conveyancing-cost/
+   2086 words, h2 7, tables 0, inputs 0, faqQ 0, schema ReadAction
+   title: How Much Does Conveyancing Cost in NSW? | RS Law Group
+   h1: How Much Does Conveyancing Cost in NSW?
+   h2: What conveyancing costs can buyers and sellers expect to pay? ; What is the difference between sliding scale and fixed-fee conveyancing? ; What is not included in conveyancing fees? ; Can you do conveyancing yourself? What are the risks? ; Who pays conveyancing fees? ; What should I look for in a conveyancing quote? ; RS Law Group can help you with your conveyancing needs in NSW
+#7 https://jamesonlaw.com.au/conveyancing-law/conveyancing-quotes-nsw-how-to-compare-costs-and-services/
+   3568 words, h2 7, tables 0, inputs 99, faqQ 3, schema BlogPosting,FAQPage,HowTo,LegalService,VideoObject
+   title: Conveyancing Quotes NSW | 2026 Cost Breakdown & Guide
+   h1: Conveyancing Quotes NSW: How to Compare Costs and Services
+   h2: What is Actually Included in Your Conveyancing Quote ; How to Compare Conveyancing Quotes ; Red Flags When Reviewing Conveyancing Quotes ; Final Thoughts ; Need to speak to a lawyer? ; Privacy Policy Terms & Conditions Sitemap ; EMPOWERED BY PI R2
+#8 https://innerwestconveyancers.com.au/conveyancing/conveyancing-costs-nsw/
+   161 words, h2 3, tables 0, inputs 22, faqQ 0, schema Article,LegalService
+   title: Conveyancing Costs NSW - Property Conveyancing Solicitors Sydney
+   h1: Conveyancing Costs NSW
+   h2: Conveyancing Costs NSW ; PURCHASING A PROPERTY ; SELLING A PROPERTY
+#9 https://ncat.nsw.gov.au/case-types/consumers-and-businesses/conveyancing-costs.html
+   483 words, h2 5, tables 0, inputs 0, faqQ 0, schema 
+   title: Conveyancing costs | NSW Civil and Administrative Tribunal
+   h1: Conveyancing costs
+   h2: Orders NCAT can make ; How to apply ; What happens next ; Organisations that can help ; Follow us
+
+====================================================================================================
+QUERY: building and pest inspection cost   KP vol 1600  AI vol 203  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/building-pest-inspection: 2021 words, h2 12, tables 1, inputs 0, faq 6, schema Article,FAQPage,HowTo, robots -
+  title: Building and pest inspection: what to expect (2026) | Your Property Guide
+  h1: Building and pest inspection: what to expect (2026)
+  h2: Why you need a building and pest inspection ; What’s inspected ; Common issues found ; Cost of inspections ; Who to hire ; When to get the inspection ; How to read the report ; Negotiating after an inspection ; Inspections for new homes ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#2 https://www.commbank.com.au/brighter/property/building-and-pest-inspection.html
+   192 words, h2 10, tables 0, inputs 7, faqQ 0, schema 
+   title: Getting a building & pest inspection
+   h1: Getting a building & pest inspection
+   h2: Related ; What are building and pest inspections? ; Why should you pay for a building inspection? ; What doesn’t a building inspection cover? ; How much does a building inspection cost? ; Who should conduct a building inspection? ; When should you arrange for a building inspection? ; Our Home Lending Specialists can help with every stage of your property buying journey ; More in home loans ; Latest stories from Brighter
+#4 https://www.abc.net.au/news/2026-03-12/building-pest-inspection-costs-victorian-government-buyer-seller/106443736
+   885 words, h2 9, tables 0, inputs 0, faqQ 0, schema NewsArticle
+   title: Victorian government vows to shift building inspection costs from buyers to sellers - ABC News
+   h1: Victorian government vows to shift building inspection costs from buyers to sellers
+   h2: Explore the ABC ; In short: ; Vendors to make reports available to buyers ; Scheme to use ACT as model ; Top Stories ; Popular now ; Related topics ; Top Stories ; Just In
+#5 https://wabuildinginspections.com.au/building-inspections-perth-costs-services/comprehensive-combined-building-and-pest-inspections-perth/
+   12898 words, h2 9, tables 0, inputs 7, faqQ 0, schema FAQPage,OfferCatalog,ProfessionalService,Service,VideoObject
+   title: $499 Combined Building and Pest Inspections🥇 WA Building Inspections Perth
+   h1: Pre Purchase Building and Pest Inspection Perth
+   h2: Book Online in 30 Seconds ; Or Start With a Free Custom Quote ; What You Get in your Building and Pest Inspection Price ; Frequently Asked Questions ; Recent Defects Uncovered ; Trusted by 30,000+ Perth Homebuyers – Rated 4.9★ on Google ; Other Building Inspections ; Same Day Building Inspections Perth Wide ; Real Builders. Better Inspections.
+#6 https://www.buywiseinspections.com.au/building-and-pest-inspection-cost-melbourne/
+   1436 words, h2 10, tables 1, inputs 0, faqQ 0, schema Article,PropertyValueSpecification,ReadAction
+   title: Building and Pest Inspection Cost Melbourne | 2026 Price Guide
+   h1: Building and Pest Inspection Cost Melbourne
+   h2: How Much Does a Building and Pest Inspection Cost in Melbourne? ; Building and Pest Inspection Cost Table ; What Affects the Cost of a Building and Pest Inspection? ; Apartment vs Townhouse vs House Inspection Pricing ; Building-Only vs Pest-Only vs Combined Inspection ; What Is Included in the Price? ; Are There Hidden Fees? ; Why the Cheapest Inspection Can Cost More Later ; Melbourne Suburbs and Property Types That May Affect Pricing ; How to Get a Fixed Building and Pest Inspection Quote
+#7 https://sydney.ispect.com.au/building-inspection-cost
+   1006 words, h2 2, tables 5, inputs 12, faqQ 0, schema AggregateOffer,AggregateRating,OpeningHoursSpecification,Product,ProfessionalService,Thing
+   title: iSPECT Sydney Building Inspection Services - Cost Table
+   h1: Building Inspection Cost in Sydney
+   h2: Building, Pest and New Home (Stage) Inspection Costs in Sydney ; Customer Reviews
+
+====================================================================================================
+QUERY: home staging cost   KP vol 260  AI vol 55  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/home-staging-cost-australia: 3261 words, h2 14, tables 1, inputs 0, faq 6, schema Article,FAQPage, robots -
+  title: Home Staging Costs in Australia (2026): What Property Styling Really Costs | Your Property Guide
+  h1: Home Staging Costs in Australia (2026): What Property Styling Really Costs
+  h2: Staging costs at a glance ; What you’re actually paying for ; Cost by city ; Partial and occupied-home staging ; Virtual staging ; Hire terms and extension fees ; Does staging pay for itself? ; DIY staging on a budget ; When staging is not worth it ; How agents arrange staging ; Where to start ; Common questions
+#2 https://stagemyhometosell.com.au/central-coast/wendoree-park/home-staging-services-and-pricing.php
+   790 words, h2 7, tables 1, inputs 7, faqQ 0, schema 
+   title: Home Staging Services And Pricing | Stage my Home to Sell on September 2026, Central Coast
+   h1: Our Story
+   h2: Modern Coastal ; Australian Hamptons ; Contemporary Living ; Rural Living ; Recent Results 2020 ; Staging Your House For Sale in Wendoree Park ; Recommended by
+#5 https://www.bark.com/en/au/home-staging/victoria/melbourne/
+   2243 words, h2 21, tables 0, inputs 1, faqQ 5, schema AggregateOffer,AggregateRating,FAQPage,ItemList,LocalBusiness
+   title: Melbourne Home Staging | Bark Australia
+   h1: Hire the best home staging professionals in Melbourne
+   h2: Top home staging experts in Melbourne ; How much does it cost to hire a home staging professional in Melbourne? ; Finding a home staging professional in Melbourne is easy with Bark ; How to find a home staging professional in Melbourne ; Home staging services in Melbourne ; Why use Bark to find a home staging professional in Melbourne ; Verified reviews for home staging experts in Melbourne ; Sunny and Share Sunny and Share ; Bella Property Styling & Design - Certified Home Stager Bella Property Styling & Design - Certified Home Stager ; Affordable Home Staging Affordable Home Staging ; Raw at
+#7 https://www.virtualstaging.net.au/sydney-virtual-staging-real-estate/
+   1179 words, h2 14, tables 1, inputs 27, faqQ 6, schema City,FAQPage,Service
+   title: Sydney Virtual Staging | Virtual Staging Australia
+   h1: Real Estate Virtual Staging Sydney
+   h2: As trusted by ; ✔ Sell/rent properties 75% faster ; ✔ Increase buyer/renter interest ; ✔ Custom virtual staging options ; ✔ Increase sale/rental price ; ✔ Cost effective ; ✔ Buyers/tenants are drawn to photos ; Would you like assistance? Let us help you ; Ready to get started? Place your order below ; Choose from our range of Styling Options below ; What we need from you ; Benefits of Virtual Staging in Sydney
+#9 https://changingseasons.net.au/staging-companies-brisbane/
+   1625 words, h2 15, tables 0, inputs 0, faqQ 0, schema PropertyValueSpecification,ReadAction
+   title: Staging Companies Brisbane | Changing Seasons
+   h1: Staging Companies Brisbane – Transforming Spaces, Creating Impressions
+   h2: What Makes Our Staging Different? ; What Our Staging Process Looks Like ; The Results Speak for Themselves ; Honest Pricing. No Hidden Extras ; More Than Just Staging- Our Expert Services ; Why Brisbane Homes Need Staging More Than Ever ; Staging Apartments vs. Houses – What’s the Difference? ; Common Mistakes Homeowners Make Without Staging ; Virtual Staging vs. Physical Staging – Which One Works? ; How Staging Helps with Faster Sales ; Eco-Friendly & Sustainable Staging in Brisbane ; Choosing the Right Staging Company in Brisbane
+
+====================================================================================================
+QUERY: renovation cost australia   KP vol 20  AI vol 742  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/renovation-cost-australia-2026: 2877 words, h2 14, tables 0, inputs 0, faq 8, schema Article,FAQPage, robots -
+  title: Renovation Cost in Australia (2026) | Your Property Guide
+  h1: Renovation Cost in Australia (2026)
+  h2: Why costs rose, and what’s stabilised ; Kitchen renovation costs ; Bathroom renovation costs ; Full house renovation ; Extensions and second storeys ; Knock-down rebuild ; Pre-construction costs ; Fixed-price vs cost-plus contracts ; How to finance the work ; What actually adds value at sale ; How to budget honestly ; Common questions
+#2 https://site.co-architecture.com/advice/how-much-does-a-home-renovation-cost-in-australia-2026-calculator/
+   3635 words, h2 19, tables 9, inputs 3, faqQ 0, schema Article
+   title: How Much Does a Home Renovation Cost in Australia? (2026 Calculator)
+   h1: How Much Does a Home Renovation Cost in Australia? (2026 Calculator)
+   h2: What does a home renovation cost in Australia in 2026? Kitchen, bathroom, whole-house and room-by-room cost breakdowns by state. Use our free calculator. ; Use the free 2026 Renovation Cost Calculator ; Renovation costs at a glance - 2026 ; Kitchen renovation costs - 2026 ; Bathroom renovation costs - 2026 ; Laundry renovation costs ; Living areas, flooring, and internal spaces ; Whole-house renovation costs - 2026 ; What drives renovation costs in Australia? ; The three types of renovation ; Should I renovate or knock down and rebuild? ; How to budget for a renovation
+#4 https://www.canstar.com.au/home-loans/how-much-does-it-cost-to-renovate/
+   2920 words, h2 8, tables 0, inputs 0, faqQ 0, schema Article
+   title: How much does it cost to renovate a house in Australia? | Canstar
+   h1: How much does it cost to renovate a house in Australia?
+   h2: How much does a home renovation cost in Australia? ; How much does it cost to renovate a bathroom? ; How much does it cost to renovate a kitchen? ; How much does it cost to renovate a bedroom? ; How much does it cost to renovate a living room? ; How much does landscaping and decking cost? ; What is the renovation cost per m2 in Australia? ; Latest Articles in Home Loans
+#6 https://www.threebirdsrenovations.com/blog/how-much-does-a-bathroom-renovation-cost-2026
+   1422 words, h2 8, tables 0, inputs 0, faqQ 0, schema Article,LocalBusiness
+   title: HOW MUCH DOES A BATHROOM RENOVATION COST IN AUSTRALIA IN 2026? — THREE BIRDS RENOVATIONS
+   h1: HOW MUCH DOES A BATHROOM RENOVATION COST IN AUSTRALIA IN 2026?
+   h2: BATHROOM RENOVATION COSTS IN 2026: HOW SIZE & SCOPE AFFECT YOUR BUDGET ; WHAT IMPACTS BATHROOM RENOVATION COSTS? A FULL COST BREAKDOWN ; BATHROOM RENOVATION LABOUR COSTS: BUILDERS & TRADES ; DO YOU NEED COUNCIL APPROVAL FOR A BATHROOM RENOVATION IN AUSTRALIA? ; BATHROOM RENOVATION BUDGET TIPS: WHY YOU NEED A CONTINGENCY FUND ; IS A BATHROOM RENOVATION WORTH THE COST IN 2026? ; Three Birds Tips for a DREAM Bathroom TO FIT YOUR Budget ; Read More Like This
+#7 https://caulfieldkrivanek.com/home-renovation-cost-indicator/
+   1258 words, h2 0, tables 6, inputs 0, faqQ 0, schema 
+   title: Home Renovation Cost Indicator - CKA
+   h1: Home Renovation Construction Cost Indicator – June 2026 Edition
+   h2: 
+#8 https://qualitybuiltco.com.au/blog/how-much-do-home-renovations-cost-in-canberra/
+   1403 words, h2 8, tables 0, inputs 0, faqQ 0, schema PropertyValueSpecification,ReadAction
+   title: Quality Built Co
+   h1: How Much Do Home Renovations Cost in Canberra?
+   h2: Kitchen Renovation Costs in Canberra ; Bathroom Renovation Costs in Canberra ; Full Home Renovation Costs in Canberra ; What Affects the Cost of Renovating a Home in Canberra? ; Regional Factors Specific to Canberra ; Essential Budgeting Tips for Canberra Renovations ; Ready to Transform Your Canberra Home with Complete Cost Transparency? ; Ready to create your dream home renovation?
+
+====================================================================================================
+QUERY: capital gains tax changes 2026   KP vol 170  AI vol 44  | GSC impr 0 pos - () | live rank not top 10
+OURS /guides/cgt-changes-2026-budget: 2032 words, h2 14, tables 0, inputs 0, faq 0, schema NewsArticle, robots -
+  title: Capital Gains Tax on Property: How the 2026 Budget Changes the Rules | Your Property Guide
+  h1: Capital Gains Tax on Property: How the 2026 Budget Changes the Rules
+  h2: How the old 50% CGT discount worked ; The new system in three parts ; Worked example: long-held established property ; Worked example: shorter-held, faster-growth property ; Worked example: low-income retiree selling ; Who is grandfathered (the critical detail) ; What's exempt from the changes ; What this means for investor strategy ; Practical next steps ; What about transitional rules? ; The bigger picture ; Go deeper with our guides
+#2 https://www.ato.gov.au/about-ato/new-legislation/in-detail/individuals/tax-reform-boosting-home-ownership-reforming-negative-gearing-and-capital-gains-tax
+   198 words, h2 2, tables 0, inputs 0, faqQ 0, schema Article,Audience,GovernmentOrganization
+   title: Tax reform – Boosting home ownership – Reforming negative gearing and capital gains tax | Australian Taxation Office
+   h1: Tax reform – Boosting home ownership – Reforming negative gearing and capital gains tax
+   h2: Log in to ATO online services ; Log in to ATO online services
+#5 https://www.commbank.com.au/articles/newsroom/2026/02/cgt-capital-gains-tax-explained.html
+   2105 words, h2 1, tables 0, inputs 0, faqQ 0, schema Brand,article
+   title: What is capital gains tax and what are the latest changes?
+   h1: What is capital gains tax and what are the latest changes?
+   h2: Newsroom
+#6 https://consult.treasury.gov.au/c2026-792170
+   79 words, h2 0, tables None, inputs None, faqQ None, schema   [via dataforseo]
+   title: Open Point - Engagement, insights and analytics platform for surveys and
+      consultations
+   h1: 
+   h2: 
+#7 https://au.andersen.com/capital-gains-tax-changes-2026/
+   11 words, h2 11, tables 0, inputs 0, faqQ 0, schema BlogPosting
+   title: Capital Gains Tax Changes 2026: What Clients Are Asking | Andersen Australia.
+   h1: Capital Gains Tax Changes 2026: What Clients Are Asking
+   h2: What Clients Are Asking ; What This Means for You ; Next Steps ; Visit Our Budget Hub ; Frequently Asked Questions ; Related Articles ; Unlock truly independent advice. ; Blog Form ; Tax ; Advisory ; Transactions
+
+====================================================================================================
+QUERY: house and land packages qld   KP vol 390  AI vol 12  | GSC impr 0 pos - () | live rank not top 10
+OURS /house-and-land: 29 words, h2 1, tables 0, inputs 0, faq 0, schema , robots -
+  title: House & Land Packages | Your Property Guide
+  h1: House & land, brand new .
+  h2: Plain-English property, in your inbox .
+#1 https://www.realestate.com.au/house-and-land-packages/qld/
+   515 words, h2 0, tables 0, inputs 3, faqQ 0, schema 
+   title: New House and Land Packages For Sale in QLD
+   h1: New house and land packages for sale in QLD
+   h2: 
+#2 https://www.metricon.com.au/house-and-land/packages/queensland
+   2717 words, h2 7, tables 0, inputs 4, faqQ 0, schema 
+   title: House and Land Packages in Queensland – Browse Top Estates
+   h1: House & Land Packages Queensland
+   h2: Browse popular suburbs and estates in Queensland ; How Do House and Land Packages Work? ; Are House and Land Packages Good Value? ; How to Buy a House and Land Package in Queensland ; How Much Does a House and Land Package Cost in Queensland? ; Where Metricon Builds House and Land Packages in Queensland ; FAQs
+#3 https://www.burbank.com.au/queensland/house-and-land
+   2379 words, h2 5, tables 0, inputs 163, faqQ 0, schema 
+   title: Explore Queensland House and Land Packages | Burbank Homes
+   h1: House and Land Packages In Queensland
+   h2: Packages in Queensland ; How House and land packages work? - 3 easy steps ; House and land packages in Brisbane, Queensland ; How Burbank QLD House and Land packages work? ; What to know when buying a house and land package?
+#7 https://www.gjgardner.com.au/house-land-packages/qld/
+   2545 words, h2 4, tables 0, inputs 182, faqQ 0, schema Article
+   title: House & Land Packages in Queensland | G.J. Gardner Homes
+   h1: House & Land Packages in Queensland
+   h2: What our Customers Say ; Home & Land Packages FAQs ; Stay up to date ; Filters
+#8 https://www.dixonhomes.com.au/house-land.php
+   932 words, h2 2, tables 0, inputs 31, faqQ 0, schema 
+   title: Dixon Homes -House and Land
+   h1: House & Land Packages
+   h2: SEARCH PACKAGES ; Any Questions?
+
+====================================================================================================
+QUERY: house and land packages brisbane   KP vol 3600  AI vol 30  | GSC impr 0 pos - () | live rank not top 10
+OURS /house-and-land: 29 words, h2 1, tables 0, inputs 0, faq 0, schema , robots -
+  title: House & Land Packages | Your Property Guide
+  h1: House & land, brand new .
+  h2: Plain-English property, in your inbox .
+#2 https://coralhomes.com.au/house-and-land-packages-brisbane/
+   7142 words, h2 7, tables 0, inputs 13, faqQ 0, schema PropertyValueSpecification,ReadAction
+   title: House & Land Packages Brisbane | Coral Homes
+   h1: House and Land Packages Brisbane
+   h2: Are you looking for a house and land package in Brisbane? ; Why choose Coral Homes' house and land packages in Brisbane ; A simplified process for acquiring your home and land package in Brisbane ; Popular Brisbane house and land package options ; Why Coral Homes? ; HIA Award Wins ; Home design FAQs
+#3 https://www.realestate.com.au/house-and-land-packages/brisbane-southern-region-qld/
+   479 words, h2 0, tables 0, inputs 3, faqQ 0, schema 
+   title: New House and Land Packages For Sale in Brisbane - Southern Region, QLD
+   h1: New house and land packages for sale in Brisbane - Southern Region, QLD
+   h2: 
+#5 https://www.brightonhomes.net.au/house-and-land-packages
+   2821 words, h2 11, tables 0, inputs 161, faqQ 0, schema LocalBusiness,OpeningHoursSpecification
+   title: House and Land Packages Queensland | Brighton Homes
+   h1: House and Land Packages Queensland
+   h2: What comes first - the house or the land? ; Why choose a House and Land Package? ; House and Land Packages by Region ; North Brisbane ; South Brisbane ; Gold Coast ; Sunshine Coast ; West Brisbane ; Virtual Tours and display homes ; Frequently Asked questions ; Discover our blog articles to help you along your build journey
+#6 https://www.simonds.com.au/qld/house-and-land
+   916 words, h2 9, tables 0, inputs 0, faqQ 0, schema 
+   title: House & Land Packages In Brisbane & QLD | Award-winning Builder
+   h1: Get in touch
+   h2: Submit an enquiry ; Call us ; The Simonds Difference ; What does a House and Land in Brisbane include? ; Benefits of House and Land Packages in Brisbane & QLD ; Visit Simonds' Display Homes ; Explore Other House & Land Packages ; Get in touch ; The Simonds Difference
+#7 https://www.dixonhomes.com.au/house-land.php
+   932 words, h2 2, tables 0, inputs 31, faqQ 0, schema 
+   title: Dixon Homes -House and Land
+   h1: House & Land Packages
+   h2: SEARCH PACKAGES ; Any Questions?
+
+====================================================================================================
+QUERY: how to sell a house   KP vol 170  AI vol 1842  | GSC impr 64 pos 67.3 (/guides/how-to-sell-a-house-australia) | live rank not top 10
+OURS /guides/how-to-sell-a-house-australia: 3111 words, h2 14, tables 0, inputs 0, faq 8, schema Article,FAQPage,HowTo, robots -
+  title: How to Sell a House in Australia (2026) | Your Property Guide
+  h1: How to Sell a House in Australia (2026)
+  h2: When is the right time to sell? ; What it costs to sell ; Preparing the house ; Choosing an agent ; Auction vs private treaty ; Setting the price ; The marketing campaign ; Contracts and legal docs ; Negotiating offers ; Settlement day ; Capital gains tax ; Common questions
+#3 https://www.nsw.gov.au/housing-and-construction/buying-and-selling-property/selling-a-property/steps-to-selling-a-property
+   1331 words, h2 7, tables 0, inputs 0, faqQ 0, schema Article
+   title: Steps to selling a property | NSW Government
+   h1: Steps to selling a property
+   h2: Preparing a contract of sale ; Ways to sell a property ; Contract exchange ; Paying a deposit ; Cooling off period ; Settlement ; Land tax considerations for sellers
+#5 https://www.reiq.com/articles/property-investment/eight-steps-for-selling-property
+   1638 words, h2 1, tables 0, inputs 0, faqQ 0, schema 
+   title: REIQ | Eight steps for selling a house
+   h1: Eight steps for selling a house
+   h2: You might also like View All Articles
+#6 https://www.qld.gov.au/housing/buying-owning-home/selling-a-home
+   133 words, h2 6, tables 0, inputs 0, faqQ 0, schema 
+   title: Selling a home - qld.gov.au
+   h1: Selling a home
+   h2: Before you put your home on the market ; Ways to sell your home ; Receiving offers on your home ; Settlement day when selling your home ; Property smart guide ; Queensland Government
+#7 https://www.realestate.com.au/advice/selling/
+   94 words, h2 4, tables 0, inputs 0, faqQ 0, schema 
+   title: Tips For Selling a House & Property - Home Sellers Guide
+   h1: Selling
+   h2: How To Sell Your House ; Styling To Sell ; Real Estate Agents ; Moving
+#8 https://www.amp.com.au/resources/insights-hub/key-steps-to-selling-property-in-australia
+   1651 words, h2 13, tables 0, inputs 0, faqQ 0, schema 
+   title: Key steps to selling property in Australia - AMP
+   h1: Key steps to selling property in Australia
+   h2: 9 steps to selling a property ; 1. Get yourself and your property prepared for the sales process ; 2. Choose a real estate agent ; 3. Pick a sales method and set a price ; 4. Formalise the agency agreement ; 5. Prepare the vendor's statement and contract of sale ; 6. The sales campaign ; 7. Securing a sale ; 8. Discharging your mortgage ; 9. Settlement ; Other things to think about ; You may also like
+
+====================================================================================================
+QUERY: cgt on investment property   KP vol 1900  AI vol 42  | GSC impr 1 pos 100 (/glossary/capital-gains-tax-cgt) | live rank not top 10
+OURS /cgt-calculator: 1177 words, h2 8, tables 0, inputs 6, faq 6, schema FAQPage,WebApplication, robots -
+  title: CGT Calculator for Australian Property: 50% Discount Included | Your Property Guide
+  h1: Capital Gains Tax Calculator
+  h2: Property Details ; Pair this with… ; How CGT works on Australian property ; The biggest decisions that affect your CGT ; What this calculator doesn’t do ; Common questions ; Keep reading ; Plain-English property, in your inbox .
+#2 https://www.ato.gov.au/individuals-and-families/investments-and-assets/capital-gains-tax/property-and-capital-gains-tax/cgt-when-selling-your-rental-property
+   1319 words, h2 7, tables 0, inputs 0, faqQ 0, schema Article,Audience,GovernmentOrganization
+   title: Capital gains tax when selling your rental property | Australian Taxation Office
+   h1: Capital gains tax when selling your rental property
+   h2: Log in to ATO online services ; Log in to ATO online services ; How capital gains or losses apply ; Working out your costs ; Capital expenses ; GST on rental properties ; Foreign resident capital gains withholding
+#4 https://www.bentleys.com.au/insights/understanding-the-6-year-rule-for-property-investments-and-the-cgt-exemption/
+   2936 words, h2 13, tables 0, inputs 22, faqQ 0, schema AccountingService,OpeningHoursSpecification
+   title: 6 Year Rule: ATO Main Residence CGT Exemption Guide for 2026
+   h1: Understanding the 6 Year Rule for Property Investments and the CGT Exemption
+   h2: What Is the 6 Year Rule? ; Who Can Use It? ; How the Exemption Works in Practice ; The Relationship Between the 6 Year Rule and CGT ; What Happens If You Partially Used the Property for Income Before Moving Out? ; Keeping Track of Your Cost Base ; When the 6 Year Rule Doesn’t Apply ; Record Keeping and ATO Compliance ; The 6 Year Rule and Estate Planning ; After the Six Years Are Up ; Getting the Most Out of This Rule ; FAQs
+#5 https://www.nab.com.au/personal/life-moments/manage-money/money-basics/capital-gains-tax
+   945 words, h2 29, tables 0, inputs 0, faqQ 0, schema 
+   title: What is capital gains tax and how does it work? - NAB
+   h1: Capital gains tax: What it is and how it works
+   h2: Latest offers ; Your partner for zero fuss banking at every stage ; Get the most out of your NAB credit card ; Have we contacted you about confirming your details? ; Private Wealth Insights ; AI for Business Masterclass ; The Morning Call Podcast ; NAB’s Big Scam Education Conversation ; Have we contacted you about confirming your details? ; Have we contacted you about confirming your details? ; What is capital gains tax? ; What is a capital gain or capital loss?
+#6 https://iorder.com.au/publication/Download.aspx?ProdID=75443-04.2025
+   25150 words, h2 0, tables 0, inputs 2, faqQ 0, schema 
+   title: 
+   h1: 
+   h2: 
+#7 https://www.wilsonassoc.co/how-to-reduce-capital-gain-tax-on-your-investment-property/
+   642 words, h2 9, tables 0, inputs 0, faqQ 0, schema BlogPosting
+   title: 
+   h1: How to Reduce Capital Gain Tax (CGT) on Your Investment Property
+   h2: Related Posts ; Recent Posts ; Browse by Category ; Browse by Date ; Services ; Our firm ; Resources ; Contact ; CREDENTIALS
