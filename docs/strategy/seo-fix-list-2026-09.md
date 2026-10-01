@@ -481,3 +481,16 @@ Source: `docs/seo-baselines/2026-09-30/commercial-intent-review.md` (untracked, 
       CGT change applies to gains accruing after 1 Jul 2027 on existing property too; (ii) /guides/negative-gearing-australia
       still says negative gearing is unchanged "as of April 2026" and tabulates the 2023–24 rates (19%, 32.5%); (iii) prose
       tables overflow phone screens in guides (the LMI guide is 431px wide at 375).
+- [x] 53. [code+copy] DONE 1 Oct 2026 — PR #83. rental-market pages receive landlord intent and
+      hold nothing (review 3.1, priority 1). "Rental appraisal {suburb}" (599 impressions), "property managers
+      {suburb}" (188), "{suburb} rental investment" (875, all WA), "rent reviews {suburb}" (199) and "property management
+      fees {suburb}" (75) land on /suburbs/{slug}/rental-market at 35 to 45. Built on every branch of the template:
+      (a) a rental appraisal request (new lead type `rental-appraisal`, fee disclosure as on the appraisal form);
+      (b) "What property managers charge in {Suburb}": eight-state fee table (LocalAgentFinder 13 Mar 2026, REIQ
+      1 Dec 2023), other fees (Houst 11 May 2026), and a worked line on the suburb's median house rent where its source
+      is named; (c) FAQs "Is {Suburb} a good rental investment?" (published yield and 12-month change only, withheld
+      when neither is published), "What do property managers charge in {Suburb}?" and the two PAA questions on rental
+      appraisals. Indexing unchanged: no rental row, still noindex and out of the sitemap.
+      Before merging: a property manager has to be ready to take the leads (the form promises a call within one
+      business day; leads arrive in the lead inbox, routed like every other type). Open from 3.1: (c) of the review,
+      a WA rental feed, which is what would let the Perth "rental investment" pages index.

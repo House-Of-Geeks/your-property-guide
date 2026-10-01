@@ -177,6 +177,52 @@ describe("POST /api/leads", () => {
 // Each case mirrors the exact JSON a client form posts (JSON.stringify drops
 // undefined keys, same as the browser). If a form and the schema drift apart
 // again, it fails here instead of 400-ing real leads in production.
+describe("rental-appraisal (landlord) leads", () => {
+  const landlord = {
+    type: "rental-appraisal",
+    firstName: "Priya",
+    lastName: "Nair",
+    email: "priya@example.com",
+    phone: "0412 345 678",
+    address: "15 Smith Street, Goodna",
+    appraisalAddress: "15 Smith Street, Goodna",
+    suburb: "goodna-qld-4300",
+    propertyType: "house",
+    bedrooms: "3",
+    tenanted: "yes",
+    managerTimeframe: "asap",
+    website: "",
+    source: "suburb-page-goodna-qld-4300-rental-appraisal",
+  };
+  it("is accepted, serialised into message and flagged HOT when wanted as soon as possible", async () => {
+    const res = await POST(makeRequest(landlord));
+    expect(res.status).toBe(200);
+    const data = dbLeadCreate.mock.calls[0][0].data;
+    expect(data.type).toBe("rental-appraisal");
+    expect(data.message).toBe("Tenanted: Yes, tenanted · Wants a manager: As soon as possible");
+    expect(data.phone).toBe("0412345678");
+    expect(data.propertyType).toBe("house");
+    expect(data.bedrooms).toBe("3");
+    const [notify, confirm] = sendMailMock.mock.calls.map((c) => c[0]);
+    expect(notify.subject).toBe("[HOT] Rental Appraisal Request (landlord), Priya Nair (goodna-qld-4300)");
+    expect(notify.html).toContain("Currently tenanted");
+    expect(notify.html).toContain("As soon as possible");
+    expect(confirm.subject).toBe("Your rental appraisal request is in");
+    expect(confirm.html).toContain("property manager");
+  });
+  it("without the optional answers keeps message empty and no HOT prefix", async () => {
+    const res = await POST(makeRequest({ ...landlord, tenanted: undefined, managerTimeframe: undefined }));
+    expect(res.status).toBe(200);
+    expect(dbLeadCreate.mock.calls[0][0].data.message).toBeUndefined();
+    expect(sendMailMock.mock.calls[0][0].subject).toMatch(/^Rental Appraisal Request/);
+  });
+  it("rejects an answer outside the enums", async () => {
+    const res = await POST(makeRequest({ ...landlord, managerTimeframe: "tomorrow" }));
+    expect(res.status).toBe(400);
+    expect(dbLeadCreate).not.toHaveBeenCalled();
+  });
+});
+
 describe("client payload contracts", () => {
   it("agent-profile page: every enquiry topic maps to a type the schema accepts", async () => {
     for (const topic of AGENT_ENQUIRY_TYPES) {

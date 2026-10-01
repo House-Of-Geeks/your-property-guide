@@ -2,7 +2,9 @@ import Link from "next/link";
 import { ArrowRight, BarChart3, Home, TrendingUp } from "lucide-react";
 import type { Suburb } from "@/types/suburb";
 import type { RentalMarketModel } from "@/lib/rental-market";
+import type { LandlordModel } from "@/lib/rental-landlord";
 import { Faq } from "@/components/guide/Faq";
+import { RentalMarketLandlordSections } from "./RentalMarketLandlordSections";
 import { formatPriceFull } from "@/lib/utils/format";
 import { monthYear } from "@/lib/rental-labels";
 
@@ -26,10 +28,12 @@ const changeText = (n: number | null) => (n === null ? undefined : `${n > 0 ? "+
  * and the FAQ from the same figures, so nothing on the page promises what
  * another section cannot show.
  */
-export function RentalMarketSections({ suburb, slug, model: m }: { suburb: Suburb; slug: string; model: RentalMarketModel }) {
+export function RentalMarketSections({ suburb, slug, model: m, landlord }: { suburb: Suburb; slug: string; model: RentalMarketModel; landlord: LandlordModel }) {
   const c = m.current;
   if (!c) return null;
   const has = (s: RentalMarketModel["sections"][number]) => m.sections.includes(s);
+  // One FAQPage per page: the rent FAQs and the landlord FAQs share it.
+  const faqs = [...m.faqs, ...landlord.faqs];
   return (
     <>
       <section id="current-rent">
@@ -140,6 +144,11 @@ export function RentalMarketSections({ suburb, slug, model: m }: { suburb: Subur
         </section>
       )}
 
+      {/* Landlord intent ("rental appraisal {suburb}", "property managers
+          {suburb}") lands here: the rental appraisal request and the fee
+          table (commercial intent review 30 Sep 2026, section 3.1). */}
+      <RentalMarketLandlordSections suburb={suburb} landlord={landlord} />
+
       {/* Sale-appraisal searches ("{suburb} property appraisal") were landing
           here instead of on the profile page. Send sellers to the appraisal
           block on the profile so this page stops absorbing that intent. */}
@@ -156,7 +165,7 @@ export function RentalMarketSections({ suburb, slug, model: m }: { suburb: Subur
         </Link>
       </section>
 
-      {has("faq") && <Faq items={m.faqs} title={`Renting and investing in ${suburb.name}`} />}
+      {faqs.length > 0 && <Faq items={faqs} title={`Renting and investing in ${suburb.name}`} />}
     </>
   );
 }

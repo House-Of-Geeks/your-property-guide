@@ -12,6 +12,9 @@ import { countProperties } from "@/lib/services/property-service";
 import { buildRentalMarket } from "@/lib/rental-market";
 import { isRentalMarketPilot } from "@/lib/data/rental-market-pilot";
 import { RentalMarketSections } from "@/components/suburb/RentalMarketSections";
+import { RentalMarketLandlordSections } from "@/components/suburb/RentalMarketLandlordSections";
+import { buildLandlordModel } from "@/lib/rental-landlord";
+import { Faq } from "@/components/guide/Faq";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
@@ -86,6 +89,13 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
   // Tabs and rent links only where the pages behind them have something on them.
   const availability = await getSuburbSubpageAvailability(suburb);
 
+  // Landlord blocks on every rental-market page, with or without rental
+  // data (commercial intent review 30 Sep 2026, section 3.1): "rental
+  // appraisal {suburb}" and "property managers {suburb}" searches land here.
+  // Pure, from data already fetched; the page's noindex rule above and the
+  // sitemap gate (subpages/sitemap.ts) are unchanged by it.
+  const landlord = buildLandlordModel(suburb, history);
+
   const latest = history[0] ?? null;
   const currentRent = latest?.medianRentHouse ?? suburb.stats.medianRentHouse;
   const grossYield =
@@ -127,7 +137,7 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-14">
         {model?.current ? (
-          <RentalMarketSections suburb={suburb} slug={slug} model={model} />
+          <RentalMarketSections suburb={suburb} slug={slug} model={model} landlord={landlord} />
         ) : history.length === 0 ? (
           <div className="rounded-2xl border border-line bg-surface-raised p-12 text-center">
             <BarChart3 className="w-10 h-10 text-ink-subtle mx-auto mb-3" />
@@ -289,6 +299,13 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
               </Link>
             </div>
             )}
+          </>
+        )}
+
+        {!model?.current && (
+          <>
+            <RentalMarketLandlordSections suburb={suburb} landlord={landlord} />
+            <Faq items={landlord.faqs} title={`Renting and investing in ${suburb.name}`} />
           </>
         )}
       </div>
