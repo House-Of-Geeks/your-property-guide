@@ -11,10 +11,11 @@
  *   - renterOccupied   ← G37 R_Tot / Total × 100
  *   - medianRentUnit   ← G02 Median_rent_weekly (census baseline; synced data takes precedence)
  *
- * For states WITHOUT a dedicated rental sync (WA, TAS, NT, ACT), G02
+ * For states WITHOUT a dedicated rental sync (TAS, NT, ACT), G02
  * Med_rent_wkly is also written to Suburb.medianRentHouse as a fallback
  * proxy — but ONLY when the current value is 0 (i.e. no real rental data
- * has been loaded yet).
+ * has been loaded yet). WA has had a feed since 1 Oct 2026 (rental-wa), so
+ * censusMayWriteRent (rent-proxy-rules.ts) refuses it there.
  *
  * SAL code → suburb name lookup comes from:
  *   Metadata/2021Census_geog_desc_1st_2nd_3rd_release.xlsx
@@ -53,7 +54,8 @@ const STATE_PACKS: Array<{ state: string; url: string; rentalFallback?: boolean 
   {
     state: "WA",
     url: "https://www.abs.gov.au/census/find-census-data/datapacks/download/2021_GCP_SAL_for_WA_short-header.zip",
-    // WA has no free dedicated rental sync — use census rent as fallback proxy
+    // A fallback state until rental-wa (1 Oct 2026); censusMayWriteRent now
+    // refuses WA, since WA is in RENTAL_FEED_STATES.
     rentalFallback: true,
   },
   {
@@ -301,7 +303,7 @@ export async function run(): Promise<void> {
         if (!census) continue;
         // Only write census rent to medianRentHouse when the field is still 0
         // (i.e. no real rental data has been loaded from a state-specific source).
-        // This applies equally to fallback states (WA, TAS, NT, ACT) and to
+        // This applies equally to fallback states (TAS, NT, ACT) and to
         // non-fallback states where the dedicated sync hasn't run yet.
         // States with a bond-data feed never take the census proxy (the feed
         // is the authority there, and a 0 means it withheld the figure).

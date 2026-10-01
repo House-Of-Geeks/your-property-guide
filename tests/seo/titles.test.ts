@@ -208,6 +208,23 @@ describe("suburb titles stay inside the SERP budget", () => {
   });
 });
 
+describe("a WA profile with an all-dwellings rent (rental-wa, 1 Oct 2026)", () => {
+  // suburb-service hands the page house and unit rents of 0 and the
+  // all-dwellings median beside them; the band prints it as "All dwellings".
+  const wa = (rentalSource: string | null) => {
+    const s = makeSuburb({ name: "Nedlands", postcode: "6009", state: "WA", salesSource: "sales-abs", freshness: { rentalSource } });
+    s.stats = { ...s.stats, medianRentHouse: 0, medianRentUnit: 0, medianRentAll: 900 };
+    s.schools = [];
+    return s;
+  };
+  it("names Rent in the title, because the page publishes a sourced weekly rent", () => {
+    expect(suburbTitleHousePrices(wa("rental-wa"))).toBe("Nedlands WA 6009: House Prices, Rent & Suburb Profile");
+  });
+  it("and not when the rent's source is unknown", () => {
+    expect(suburbTitleHousePrices(wa(null))).toBe("Nedlands WA 6009: House Prices & Suburb Profile");
+  });
+});
+
 describe("the profile description leads with what the page publishes", () => {
   it("priced, growth measured (NSW): the median, its source and period, and the 12-month change", () => {
     const s = priced();

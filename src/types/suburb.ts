@@ -3,6 +3,8 @@ export interface SuburbStats {
   medianUnitPrice: number;
   medianRentHouse: number;
   medianRentUnit: number;
+  /** Median weekly rent across all dwellings where the feed has no house/unit split (WA). 0 or absent = none. Never in a yield. */
+  medianRentAll?: number;
   annualGrowthHouse: number;
   annualGrowthUnit: number;
   daysOnMarket: number;

@@ -731,6 +731,12 @@ model SuburbRentalStat {
   periodDate      DateTime
   medianRentHouse Int?
   medianRentUnit  Int?
+  // All dwelling types together. A bond feed that records no dwelling type
+  // (WA: rental-wa) publishes only this. Never a house rent and never part of
+  // a gross yield: a yield needs a house rent against the house price.
+  // Added by hand-applied DDL (scripts/sql/2026-10-01-suburb-rental-stat-median-rent-all.sql);
+  // the site reads it through withRentAllColumn (src/lib/services/rental-service.ts).
+  medianRentAll   Int?
   medianRent3Bed  Int?
   medianRent2Bed  Int?
   medianRent1Bed  Int?

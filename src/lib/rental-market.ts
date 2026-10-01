@@ -6,7 +6,16 @@ import type { Suburb } from "@/types/suburb";
 import type { SuburbRentalHistory } from "@/lib/services/rental-service";
 import type { FaqItem } from "@/components/guide/Faq";
 import { grossYieldPercent, salesProvenanceFor } from "@/lib/suburb-snapshot";
-import { monthYear, rentalSourceLabel } from "@/lib/rental-labels";
+import {
+  SMALL_SAMPLE_BONDS,
+  allDwellingsRent,
+  isAllDwellingsOnly,
+  monthYear,
+  quarterSpan,
+  rentalAttribution,
+  rentalSourceLabel,
+  type RentalAttribution,
+} from "@/lib/rental-labels";
 
 export const RENTAL_MARKET_YEAR = 2026;
 const TITLE_BUDGET = 60;
@@ -197,4 +206,68 @@ export function buildRentalMarket(suburb: Suburb, history: SuburbRentalHistory[]
   const provenance = current ? `${current.label}${current.bonds ? `, median of ${current.bonds.toLocaleString("en-AU")} new house bonds` : ""}, ${when}` : null;
 
   return { current, change, yieldHouse, yieldUnit, history: historyRows, columns, listings, sections, title, description, provenance, faqs: faqs.length >= 2 ? faqs : [] };
+}
+
+// ── All dwellings (WA) ──────────────────────────────────────────────────────
+//
+// The view for a suburb whose rent comes from a feed with no dwelling type
+// (rental-wa): one median across every dwelling per quarter, its bond count,
+// the change on the same quarter a year earlier, and the attribution the
+// licence asks for. No yield: see rental-labels.ts.
+
+export interface AllDwellingsQuarter {
+  period: string;
+  periodDate: Date;
+  weekly: number;
+  bonds: number | null;
+  smallSample: boolean;
+}
+
+export interface AllDwellingsMarket {
+  current: AllDwellingsQuarter & { source: string; label: string; when: string; span: string };
+  /** Percentage change on the same quarter a year earlier; null without both. */
+  change: { pct: number; fromPeriod: string; fromWeekly: number } | null;
+  /** Newest first. */
+  quarters: AllDwellingsQuarter[];
+  attribution: RentalAttribution | null;
+  description: string;
+  subtitle: string;
+}
+
+/**
+ * Null unless the suburb's newest rental row is an all-dwellings figure from
+ * a feed the site can name: the other states keep their own view.
+ */
+export function buildAllDwellingsMarket(
+  suburb: Pick<Suburb, "name" | "postcode" | "state">,
+  history: readonly SuburbRentalHistory[],
+): AllDwellingsMarket | null {
+  const rows = [...history].sort((a, b) => b.periodDate.getTime() - a.periodDate.getTime());
+  const newest = rows[0];
+  if (!newest || !isAllDwellingsOnly(newest) || allDwellingsRent(newest) === null) return null;
+  const label = rentalSourceLabel(newest.source, suburb.postcode);
+  if (!label) return null;
+
+  const quarters: AllDwellingsQuarter[] = rows
+    .filter((r) => r.source === newest.source && allDwellingsRent(r) !== null)
+    .map((r) => {
+      const bonds = val(r.bondLodgements);
+      return { period: r.period, periodDate: r.periodDate, weekly: allDwellingsRent(r) as number, bonds, smallSample: bonds !== null && bonds <= SMALL_SAMPLE_BONDS };
+    });
+  const head = quarters[0];
+  const current = { ...head, source: newest.source, label, when: monthYear(head.periodDate), span: quarterSpan(head.period) };
+
+  const prevPeriod = previousYearPeriod(head.period);
+  const prev = prevPeriod ? quarters.find((q) => q.period === prevPeriod) : undefined;
+  const pct = prev ? pctChange(prev.weekly, head.weekly) : null;
+  const change = prev && pct !== null ? { pct, fromPeriod: prev.period, fromWeekly: prev.weekly } : null;
+
+  const description = fit([
+    `Median weekly rent across all dwellings in ${suburb.name} ${suburb.postcode}: ${money(head.weekly)} (${label}, ${current.span}).`,
+    change ? `${change.pct > 0 ? "Up" : change.pct < 0 ? "Down" : "Flat"}${change.pct ? ` ${Math.abs(change.pct)}%` : ""} on a year earlier.` : "",
+    "Quarterly history from bond lodgements.",
+  ].filter(Boolean));
+  const subtitle = `Median weekly rent across all dwellings in ${suburb.name}, ${suburb.state} ${suburb.postcode}, quarter by quarter, from ${label}.`;
+
+  return { current, change, quarters, attribution: rentalAttribution(newest.source), description, subtitle };
 }

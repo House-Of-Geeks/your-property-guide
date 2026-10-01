@@ -9,10 +9,11 @@ import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availability";
 import { getSuburbRentalHistory } from "@/lib/services/rental-service";
 import { countProperties } from "@/lib/services/property-service";
-import { buildRentalMarket } from "@/lib/rental-market";
+import { buildAllDwellingsMarket, buildRentalMarket } from "@/lib/rental-market";
 import { isRentalMarketPilot } from "@/lib/data/rental-market-pilot";
 import { RentalMarketSections } from "@/components/suburb/RentalMarketSections";
 import { RentalMarketLandlordSections } from "@/components/suburb/RentalMarketLandlordSections";
+import { RentalMarketAllDwellings } from "@/components/suburb/RentalMarketAllDwellings";
 import { buildLandlordModel } from "@/lib/rental-landlord";
 import { Faq } from "@/components/guide/Faq";
 import { formatPriceFull } from "@/lib/utils/format";
@@ -46,6 +47,11 @@ export async function generateMetadata({ params }: RentalMarketPageProps): Promi
     const model = buildRentalMarket(suburb, history, listings);
     title = model.title;
     description = model.description;
+  } else {
+    // WA bond data: one median across all dwellings, so the description
+    // promises that figure, not house, unit and bedroom rents it lacks.
+    const all = buildAllDwellingsMarket(suburb, history);
+    if (all) description = all.description;
   }
   const canonical = `${SITE_URL}/suburbs/${slug}/rental-market`;
 
@@ -85,6 +91,9 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
   // keep the markup below until the pilot has been checked.
   const pilot = isRentalMarketPilot(slug);
   const model = pilot ? buildRentalMarket(suburb, history, await countProperties({ listingType: "rent", suburb: slug })) : null;
+  // WA: the newest row is an all-dwellings median (rental-wa). Its own view,
+  // with no house, unit or bedroom cards and no yield.
+  const all = model?.current ? null : buildAllDwellingsMarket(suburb, history);
 
   // Tabs and rent links only where the pages behind them have something on them.
   const availability = await getSuburbSubpageAvailability(suburb);
@@ -121,7 +130,7 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
       />
       <GuideArticleJsonLd
         title={`${model?.title ?? `${suburb.name} Rental Market | Rent Prices & Trends`} | ${SITE_NAME}`}
-        description={model?.description ?? `View rental price trends and history for ${suburb.name}, ${suburb.state}. Compare weekly rent for houses, units, and bedrooms.`}
+        description={model?.description ?? all?.description ?? `View rental price trends and history for ${suburb.name}, ${suburb.state}. Compare weekly rent for houses, units, and bedrooms.`}
         url={`/suburbs/${slug}/rental-market`}
         datePublished="2025-01-01"
       />
@@ -130,7 +139,7 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
         suburb={suburb}
         eyebrow="Rental market in"
         title={<>The <span className="italic text-primary">rental market</span></>}
-        subtitle={model?.current ? `Median rent, yield and what is listed now in ${suburb.name}, ${suburb.state} ${suburb.postcode}, from ${model.provenance}.` : `Median rent, history and gross-yield calculations for ${suburb.name}, ${suburb.state} ${suburb.postcode}.`}
+        subtitle={model?.current ? `Median rent, yield and what is listed now in ${suburb.name}, ${suburb.state} ${suburb.postcode}, from ${model.provenance}.` : all ? all.subtitle : `Median rent, history and gross-yield calculations for ${suburb.name}, ${suburb.state} ${suburb.postcode}.`}
         breadcrumbLeaf="Rental Market"
         tabs={getSuburbListingTabs(slug, "rental-market", availability)}
       />
@@ -156,6 +165,8 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
               .
             </p>
           </div>
+        ) : all ? (
+          <RentalMarketAllDwellings name={suburb.name} slug={slug} all={all} rentListings={availability.rent} />
         ) : (
           <>
             {/* Current rent summary */}

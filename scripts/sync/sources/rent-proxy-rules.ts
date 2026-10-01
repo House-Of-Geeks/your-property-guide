@@ -7,8 +7,13 @@
 // as a house rent and feeds a gross yield. NSW example, 7 Sep 2026: Bondi
 // showed $680 against DCJ's $1,800 for houses. The feed is the authority in
 // those states; a suburb the feed does not publish shows no rent.
+//
+// WA joined on 1 Oct 2026 with rental-wa (bond lodgements, all dwellings
+// only). Its census proxies on the suburbs the feed covers are cleared by the
+// feed itself; the rest are cleared by clear-rent-proxies --state WA, a
+// separate step with its own dry run.
 
-export const RENTAL_FEED_STATES = ["NSW", "VIC", "QLD", "SA"] as const;
+export const RENTAL_FEED_STATES = ["NSW", "VIC", "QLD", "SA", "WA"] as const;
 
 export function hasRentalFeed(state: string): boolean {
   return (RENTAL_FEED_STATES as readonly string[]).includes(state.trim().toUpperCase());

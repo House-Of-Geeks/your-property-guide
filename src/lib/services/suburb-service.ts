@@ -8,6 +8,8 @@ import { hasPublishedHouseMedian, isThinSuburbRow } from "@/lib/suburb-indexabil
 // Postal delivery names, institutions and shopping-centre post offices are
 // not suburbs: every list and sitemap below leaves them out (LOCALITIES_ONLY).
 import { LOCALITIES_ONLY, isHiddenSlug, isNonLocalitySlug } from "@/lib/non-localities";
+import { withRentAllColumn } from "@/lib/services/rental-service";
+import { allDwellingsRent, isAllDwellingsOnly } from "@/lib/rental-labels";
 
 // Columns the indexability rules read (src/lib/suburb-indexability.ts).
 const INDEX_ROW_SELECT = {
@@ -48,16 +50,19 @@ async function fetchFreshness(slug: string): Promise<{
   freshness: SuburbDataFreshness;
   rentalRentHouse: number | null;
   rentalRentUnit:  number | null;
+  rentalRentAll:   number | null;
 }> {
   const [rental, crime] = await Promise.all([
     // Newest period, and on a tie the most recently written row: two rows for
     // the same quarter (an old feed version's and the current one's) must not
     // resolve by table order (VIC, 7 Sep 2026: Toorak showed the stale $688).
-    db.suburbRentalStat.findFirst({
-      where:   { suburbSlug: slug },
-      orderBy: [{ periodDate: "desc" }, { updatedAt: "desc" }],
-      select:  { periodDate: true, source: true, medianRentHouse: true, medianRentUnit: true },
-    }),
+    withRentAllColumn((withAll) =>
+      db.suburbRentalStat.findFirst({
+        where:   { suburbSlug: slug },
+        orderBy: [{ periodDate: "desc" }, { updatedAt: "desc" }],
+        select:  { periodDate: true, source: true, medianRentHouse: true, medianRentUnit: true, medianRentAll: withAll },
+      }),
+    ),
     db.suburbCrimeStat.findFirst({
       where:   { suburbSlug: slug },
       orderBy: [{ periodDate: "desc" }, { updatedAt: "desc" }],
@@ -81,8 +86,12 @@ async function fetchFreshness(slug: string): Promise<{
       walkabilityAsOf: null,
       climateAsOf:     null,
     },
-    rentalRentHouse: rental?.medianRentHouse ?? null,
-    rentalRentUnit:  rental?.medianRentUnit  ?? null,
+    // An all-dwellings row (WA bond data) is the suburb's rent: its house
+    // and unit rents are unknown (0), not the Suburb row's census proxy, and
+    // the all-dwellings median travels on its own.
+    rentalRentHouse: isAllDwellingsOnly(rental) ? 0 : rental?.medianRentHouse ?? null,
+    rentalRentUnit:  isAllDwellingsOnly(rental) ? 0 : rental?.medianRentUnit  ?? null,
+    rentalRentAll:   allDwellingsRent(rental),
   };
 }
 
@@ -94,6 +103,7 @@ function toSuburb(
   hazard: DbSuburbHazard | null,
   climate: DbSuburbClimate | null,
   salesPeriodEnds: Map<string, Date | null> = new Map(),
+  rentalRentAll: number | null = null,
 ): Suburb {
   // Merge denormalized *UpdatedAt fields into freshness
   const mergedFreshness: SuburbDataFreshness = {
@@ -153,6 +163,8 @@ function toSuburb(
       // Use synced rental data if available, otherwise fall back to seed value
       medianRentHouse:   rentalRentHouse ?? s.medianRentHouse,
       medianRentUnit:    rentalRentUnit  ?? s.medianRentUnit,
+      // All dwellings (WA bond data): shown as such, never in a yield. 0 = none.
+      medianRentAll:     rentalRentAll ?? 0,
       annualGrowthHouse,
       annualGrowthUnit,
       daysOnMarket,
@@ -357,7 +369,7 @@ export const getSuburbBySlug = cache(async (slug: string): Promise<Suburb | null
   // "Not Disclosed" and "North Pole, VIC 9999" are rows, not places, with
   // nowhere to redirect to: every page built on this lookup answers 404.
   if (isHiddenSlug(slug)) return null;
-  const [row, { freshness, rentalRentHouse, rentalRentUnit }, hazard, climate] = await Promise.all([
+  const [row, { freshness, rentalRentHouse, rentalRentUnit, rentalRentAll }, hazard, climate] = await Promise.all([
     db.suburb.findUnique({ where: { slug }, include: { schools: false } }),
     fetchFreshness(slug),
     db.suburbHazard.findUnique({ where: { suburbSlug: slug } }),
@@ -366,7 +378,7 @@ export const getSuburbBySlug = cache(async (slug: string): Promise<Suburb | null
   if (!row) return null;
   const schools = await getNearbySchools(row);
   const salesPeriodEnds = await getSalesPeriodEnds();
-  return toSuburb({ ...row, schools }, freshness, rentalRentHouse, rentalRentUnit, hazard, climate, salesPeriodEnds);
+  return toSuburb({ ...row, schools }, freshness, rentalRentHouse, rentalRentUnit, hazard, climate, salesPeriodEnds, rentalRentAll);
 });
 
 export async function getAllSuburbSlugs(): Promise<string[]> {

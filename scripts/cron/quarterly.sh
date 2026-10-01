@@ -13,6 +13,7 @@ run rental-vic
 run rental-nsw
 run rental-sa
 run rental-qld
+# run rental-wa   # WA bond data: off until Jos approves the first import (manual in run.ts; needs scripts/sql/2026-10-01-suburb-rental-stat-median-rent-all.sql)
 
 # Crime
 run crime-nsw

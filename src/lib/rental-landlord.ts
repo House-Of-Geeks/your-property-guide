@@ -11,6 +11,7 @@ import type { SuburbRentalHistory } from "@/lib/services/rental-service";
 import { GROWTH_SOURCES, publishesMedians } from "@/lib/published-medians";
 import { grossYieldPercent, salesProvenanceFor } from "@/lib/suburb-snapshot";
 import { monthYear, rentalSourceLabel } from "@/lib/rental-labels";
+import { buildAllDwellingsMarket } from "@/lib/rental-market";
 
 // ── Sources ─────────────────────────────────────────────────────────────────
 
@@ -129,6 +130,11 @@ export function formatPct(n: number): string {
   return `${Number.isInteger(n) ? n : n.toFixed(1)}%`;
 }
 
+/** "a 5.9%", "an 8.7%", "an 11%": the article as the figure is spoken. */
+export function withArticle(figure: string): string {
+  return `${/^(8|11(?!\d)|18(?!\d))/.test(figure) ? "an" : "a"} ${figure}`;
+}
+
 export function formatPctRange(r: PctRange): string {
   if (r.hi === null) return `${formatPct(r.lo)} and above`;
   if (r.hi === r.lo) return formatPct(r.lo);
@@ -156,6 +162,31 @@ export function lettingFeeDollars(weeklyRent: number, weeks: number): number | n
 }
 
 // ── The suburb's published rent ─────────────────────────────────────────────
+
+/**
+ * An all-dwellings median (WA bond data): no house or unit split, so it
+ * illustrates a fee on the rent but is never put against a house price.
+ */
+export interface PublishedAllRent {
+  weekly: number;
+  label: string;
+  /** "September 2026". */
+  when: string;
+  /** "July to September 2026". */
+  span: string;
+  bonds: number | null;
+  source: string;
+  /** Change on the same quarter a year earlier, one decimal; null without both. */
+  changePct: number | null;
+}
+
+/** The newest all-dwellings median whose source the site can name, when the suburb has no house rent. */
+export function publishedAllDwellingsRent(history: readonly SuburbRentalHistory[], suburb: Pick<Suburb, "name" | "postcode" | "state">): PublishedAllRent | null {
+  const m = buildAllDwellingsMarket(suburb, history);
+  if (!m) return null;
+  const c = m.current;
+  return { weekly: c.weekly, label: c.label, when: c.when, span: c.span, bonds: c.bonds, source: c.source, changePct: m.change?.pct ?? null };
+}
 
 export interface PublishedRent {
   /** Median weekly house rent. */
@@ -192,7 +223,19 @@ export function workedFeeLine(name: string, rent: PublishedRent, fees: StateFeeR
   if (annual === null || letting === null) return null;
   return (
     `At ${name}'s median house rent of ${money(rent.house)} a week (${rent.label}, ${rent.when}), ` +
-    `a ${formatPct(fees.managementPct)} management fee is about ${money(annual)} a year, ` +
+    `${withArticle(formatPct(fees.managementPct))} management fee is about ${money(annual)} a year, ` +
+    `and a letting fee of ${formatWeeksOfRent(fees.lettingWeeks)} is about ${money(letting)} each time a new tenant signs.`
+  );
+}
+
+/** The same line on an all-dwellings median, said to be one. */
+export function workedFeeLineAll(name: string, rent: PublishedAllRent, fees: StateFeeRow): string | null {
+  const annual = annualManagementFee(rent.weekly, fees.managementPct);
+  const letting = lettingFeeDollars(rent.weekly, fees.lettingWeeks);
+  if (annual === null || letting === null) return null;
+  return (
+    `At ${name}'s median rent of ${money(rent.weekly)} a week across all dwellings (${rent.label}, ${rent.when}), ` +
+    `${withArticle(formatPct(fees.managementPct))} management fee is about ${money(annual)} a year, ` +
     `and a letting fee of ${formatWeeksOfRent(fees.lettingWeeks)} is about ${money(letting)} each time a new tenant signs.`
   );
 }
@@ -211,6 +254,8 @@ export interface InvestmentInputs {
   salesShort: string | null;
   /** Feed that measured the change, e.g. "NSW Valuer General". */
   growthSource: string | null;
+  /** An all-dwellings median (WA), used only when there is no yield and no change to report. */
+  allRent?: PublishedAllRent | null;
 }
 
 /**
@@ -221,6 +266,19 @@ export interface InvestmentInputs {
 export function investmentFaq(name: string, i: InvestmentInputs): FaqItem | null {
   const hasYield = i.yieldHouse !== null && i.rent !== null && i.medianHousePrice > 0;
   const hasGrowth = i.growthHouse !== null && i.growthHouse !== 0 && i.medianHousePrice > 0;
+  const close = ` Whether that makes ${name} a good investment depends on your loan rate, your tax position and how long you hold, so compare it with the suburbs around it and take advice on your own numbers.`;
+  if (!hasYield && !hasGrowth && i.allRent) {
+    // WA: the rent is published, a yield is not. Say why, then the figure.
+    const r = i.allRent;
+    const change = r.changePct === null ? "" : r.changePct === 0 ? ", the same as a year earlier" : `, ${r.changePct > 0 ? "up" : "down"} ${Math.abs(r.changePct)}% on the same quarter a year earlier`;
+    return {
+      question: `Is ${name} a good rental investment?`,
+      answer:
+        `No gross yield is worked out for ${name} here: the ${r.label} gives one median rent across all dwellings, with no figure for houses or units, and a yield needs a house rent against the house price. ` +
+        `The published figure is a median rent of ${money(r.weekly)} a week across all dwellings in ${r.span} (${r.label}${r.bonds ? `, ${r.bonds.toLocaleString("en-AU")} bonds` : ""})${change}.` +
+        close,
+    };
+  }
   if (!hasYield && !hasGrowth) return null;
 
   const price = `${money(i.medianHousePrice)}${i.salesShort ? ` (${i.salesShort})` : ""}`;
@@ -243,15 +301,16 @@ export function investmentFaq(name: string, i: InvestmentInputs): FaqItem | null
   const caveat = hasYield
     ? " Gross yield is before management fees, rates, insurance, maintenance and vacancy, so the net return is lower; the fee table on this page shows what management alone takes."
     : ` No rental median is published for ${name} yet, so a gross yield cannot be worked out here.`;
-  const close = ` Whether that makes ${name} a good investment depends on your loan rate, your tax position and how long you hold, so compare it with the suburbs around it and take advice on your own numbers.`;
   return { question: `Is ${name} a good rental investment?`, answer: figures + caveat + close };
 }
 
 /** The two People Also Ask questions on "rental appraisal {suburb}" searches. */
-export function rentalAppraisalFaqs(name: string, rent: PublishedRent | null): FaqItem[] {
+export function rentalAppraisalFaqs(name: string, rent: PublishedRent | null, allRent: PublishedAllRent | null = null): FaqItem[] {
   const median = rent
     ? ` In ${name} the median house rent is ${money(rent.house)} a week (${rent.label}, ${rent.when}), which is the middle of the market rather than a quote for your property.`
-    : "";
+    : allRent
+      ? ` In ${name} the median rent across all dwellings is ${money(allRent.weekly)} a week (${allRent.label}, ${allRent.when}), which is the middle of the market rather than a quote for your property.`
+      : "";
   return [
     {
       question: "Does it cost money to get a rental appraisal?",
@@ -282,6 +341,8 @@ export function chargesFaq(name: string, fees: StateFeeRow, worked: string | nul
 
 export interface LandlordModel {
   rent: PublishedRent | null;
+  /** All-dwellings median (WA) where there is no house rent; never in a yield. */
+  allRent: PublishedAllRent | null;
   fees: StateFeeRow | null;
   ancillary: AncillaryFee[];
   workedLine: string | null;
@@ -306,11 +367,13 @@ export function buildLandlordModel(suburb: Suburb, history: readonly SuburbRenta
   const growthHouse = typeof growthRaw === "number" && growthRaw !== 0 ? growthRaw : null;
 
   const rent = publishedHouseRent(history, suburb.postcode);
+  // The yield is on the house rent only; an all-dwellings median never enters it.
   const y = rent && medianHousePrice > 0 ? grossYieldPercent(rent.house, medianHousePrice) : null;
   const yieldHouse = y === null ? null : Math.round(y * 10) / 10;
+  const allRent = rent ? null : publishedAllDwellingsRent(history, suburb);
 
   const fees = stateFeeRow(suburb.state);
-  const workedLine = rent && fees ? workedFeeLine(suburb.name, rent, fees) : null;
+  const workedLine = fees ? (rent ? workedFeeLine(suburb.name, rent, fees) : allRent ? workedFeeLineAll(suburb.name, allRent, fees) : null) : null;
   const provenance = medianHousePrice > 0 ? salesProvenanceFor(suburb) : null;
 
   const faqs: FaqItem[] = [];
@@ -321,12 +384,13 @@ export function buildLandlordModel(suburb: Suburb, history: readonly SuburbRenta
     medianHousePrice,
     salesShort: provenance?.short ?? null,
     growthSource: growthHouse !== null ? provenance?.sourceLabel ?? null : null,
+    allRent,
   });
   if (invest) faqs.push(invest);
   if (fees) faqs.push(chargesFaq(suburb.name, fees, workedLine));
-  faqs.push(...rentalAppraisalFaqs(suburb.name, rent));
+  faqs.push(...rentalAppraisalFaqs(suburb.name, rent, allRent));
 
-  return { rent, fees, ancillary: ancillaryFeesFor(suburb.state), workedLine, yieldHouse, growthHouse, faqs };
+  return { rent, allRent, fees, ancillary: ancillaryFeesFor(suburb.state), workedLine, yieldHouse, growthHouse, faqs };
 }
 
 /** Lead-form choices, shared with the API's zod enum and the email labels. */
