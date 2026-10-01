@@ -514,3 +514,25 @@ Source: `docs/seo-baselines/2026-09-30/commercial-intent-review.md` (section and
       building-pest-inspection after the refresh PRs land; the /house-and-land noindex decision (the check recommends
       noindex until it has stock). Read in Search Console around 28 Oct: the four guides' coverage and the guides'
       impressions against the 30 Sep baseline.
+
+
+Source: `docs/seo-baselines/2026-09-30/commercial-intent-review.md` (section 1, Bing table) and item 3.3b's "found while building" (i) and (ii) above.
+
+- [x] 3.3b follow-up [content] Investor tax pages match the law as passed. DONE 1 Oct 2026 — PR #95.
+      /guides/cgt-changes-2026-budget (the site's top Bing page: 51 clicks, 1,280 impressions, position 5.0 in the 28 days
+      to 25 Sep) said property held on budget night keeps the 50% CGT discount, that the change covers only residential
+      property bought after 7:30pm AEST 12 May 2026 and applies to sales from 1 Jul 2026, and that shares and pre-1985
+      assets are untouched. The Treasury Laws Amendment (Tax Reform No. 1) Act 2026 (passed 25 Jun, assent 26 Jun 2026),
+      its explanatory memoranda, the Budget explainer (12 May 2026) and the ATO (29 Jun 2026) say the CGT change applies
+      from 1 Jul 2027 to gains accruing from that date on every CGT asset of individuals, trusts and partnerships,
+      already-owned assets split at 1 Jul 2027. Same URL and article form, dated correction note at the top, rewritten
+      body, sources listed, updatedAt 2026-10-01. /guides/negative-gearing-australia: 2026 status rewritten (law, cut-off,
+      new builds, who is covered), tax table on the ATO 2026–27 rates from the negative gearing calculator's engine,
+      CGT section and FAQs updated. /cgt-calculator: sourced note on gains after 1 Jul 2027, FAQ and limits updated.
+      Tests: tests/seo/tax-reform-2027-pages.test.ts. After merge: `npm run publish:blogs` (Jos's call; CLAUDE.md).
+      Still saying the old thing, not changed here (one item at a time): /guides/federal-budget-2026-property (property
+      owned on 12 May 2026 "keeps the 50% CGT discount on sale"; the CGT change limited to residential property);
+      /guides/negative-gearing-changes-2026-budget (SMSFs "same rules apply", but super funds are excluded; trust and
+      company structures "never subject", but the change covers companies and most trusts; a link to
+      /tools/negative-gearing-calculator, which has no route); the glossary's CGT entry (src/lib/data/glossary.ts,
+      auto-linked from articles); and the CGT calculator widget, which applies only the 50% discount.

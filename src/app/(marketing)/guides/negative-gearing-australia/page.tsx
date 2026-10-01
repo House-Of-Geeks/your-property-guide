@@ -6,6 +6,7 @@ import {
   KeyFigure,
   MatchCTA,
   GuideGlossaryRail,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -13,15 +14,17 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { TAX_RATES_SOURCE, computeNegativeGearing, defaultNegativeGearingInput } from "@/lib/negative-gearing-calc";
+import { TAX_REFORM_SOURCES } from "@/lib/data/tax-reform-2027";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Negative gearing in Australia: how it works (2026)",
   description:
-    "How negative gearing actually works, what's deductible and what isn't, the depreciation overlay, the CGT connection, the risks, and whether the rules will change.",
+    "How negative gearing works, what's deductible and what isn't, the depreciation overlay, the CGT connection, the risks, and what changes from 1 July 2027 under the law passed in June 2026.",
   slug: "negative-gearing-australia",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
-  readingTimeMinutes: 8,
+  updatedAt: "2026-10-01",
+  readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
   persona: "investing",
@@ -47,12 +50,28 @@ export const metadata: Metadata = {
   },
 };
 
+const fmt = (n: number) => `$${Math.abs(Math.round(n)).toLocaleString("en-AU")}`;
+
+// The worked example runs through the negative gearing calculator's engine, so
+// the guide, the calculator and its tests agree. Rates are the ATO's 2026–27
+// resident rates (src/lib/negative-gearing-calc.ts); the Medicare levy is left out.
+const EXAMPLE = defaultNegativeGearingInput();
+const ex = computeNegativeGearing(EXAMPLE);
+const RATE_ROWS = [15, 30, 37, 45].map((rate) => {
+  const r = computeNegativeGearing({ ...EXAMPLE, marginalRate: rate });
+  return { rate, saving: r.taxEffect, cost: -r.cashFlowAfterTax };
+});
+// From 1 July 2027, an established home contracted after 7:30pm AEST on
+// 12 May 2026 (the calculator's default timing) loses the saving against other income.
+const exFrom2027 = computeNegativeGearing({ ...EXAMPLE, timing: "established-after-cutoff" });
+
 const TLDR = [
   "Negative gearing means your investment property's costs (interest, rates, fees, depreciation) exceed its rental income. The net loss is deducted from your other taxable income.",
   "The strategy works when capital growth eventually outweighs the cumulative cash-flow losses. It's not a free lunch, you're betting on appreciation.",
   "At a 37% marginal tax rate, the government effectively subsidises about 37% of your annual rental loss. The higher your tax bracket, the bigger the subsidy.",
   "Loan interest, rates, insurance, management fees, repairs, and depreciation are deductible. Capital improvements, principal repayments, and stamp duty are not, they go to your CGT cost base.",
-  "When you sell after 12 months, the 50% CGT discount halves the taxable capital gain. Combined with annual deductions, this is the heart of why negative gearing is widely used.",
+  "On a sale before 1 July 2027, holding for at least 12 months halves the taxable gain (the 50% CGT discount). Gains that accrue from 1 July 2027 are indexed for inflation instead, with a 30% minimum tax for individuals; new builds can keep the discount.",
+  "From 1 July 2027, losses on an established home contracted after 7:30pm AEST on 12 May 2026 only offset income from residential property and carry forward. Homes held at that time and new builds keep negative gearing (law passed 25 June 2026; ATO, updated 29 June 2026).",
   "Risks: vacancy, rate rises, no capital growth, legislative change, and serviceability strain. Don't invest solely for the tax break.",
 ];
 
@@ -73,7 +92,8 @@ const FAQS: FaqItem[] = [
   {
     question: "How much can I save in tax through negative gearing?",
     answer:
-      "It depends on the size of your rental loss and your marginal tax rate. On a typical $700,000 investment property at 80% LVR, the annual rental loss might be around $11,000. At a 37% marginal tax rate, that's roughly $4,100 a year in tax savings. At a 45% rate, $5,000. The strategy is much more effective at higher tax brackets.",
+      "It depends on the size of your rental loss and your marginal tax rate. On a typical $700,000 investment property at 80% LVR, the annual rental loss might be around $11,000. At a 37% marginal tax rate, that's roughly $4,100 a year in tax savings. At a 45% rate, $5,000. The strategy is much more effective at higher tax brackets. " +
+      "Those savings use the ATO's 2026–27 resident rates, before the 2% Medicare levy. From 1 July 2027 an established home contracted after 7:30pm AEST on 12 May 2026 saves nothing against your other income: the loss is carried forward against residential rental income or capital gains on residential property instead.",
   },
   {
     question: "Does negative gearing make sense in a high interest rate environment?",
@@ -83,12 +103,14 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I negatively gear any property?",
     answer:
-      "You can claim deductions on any genuinely-rented investment property, but whether the property is positively, neutrally, or negatively geared depends on rental yield vs your costs. Low-yield, high-growth markets (inner Sydney, Melbourne) almost always run negative. Higher-yield regional markets often run positive. Use our rental yield calculator to model the math.",
+      "You can claim deductions on any genuinely-rented investment property, but whether the property is positively, neutrally, or negatively geared depends on rental yield vs your costs. Low-yield, high-growth markets (inner Sydney, Melbourne) almost always run negative. Higher-yield regional markets often run positive. Use our rental yield calculator to model the math. " +
+      "From 1 July 2027, though, a loss on an established home contracted after 7:30pm AEST on 12 May 2026 can no longer reduce the tax on your wages. New builds, and homes held at that time, keep negative gearing.",
   },
   {
     question: "Will negative gearing be removed in 2026?",
     answer:
-      "Not as of April 2026. The most recent serious threat was Labor's 2019 election policy to restrict negative gearing to new properties; Labor lost that election and the policy was abandoned. No major party currently has a policy to remove or restrict it. Government policy can change, however, so don't invest solely on the assumption these tax settings will persist forever.",
+      "Not removed, but limited. Parliament passed the 2026–27 Budget package on 25 June 2026, and from 1 July 2027 negative gearing on residential property is limited to new builds. Properties held at 7:30pm AEST on 12 May 2026, including those under a contract not yet settled, keep it until sold. " +
+      `An established home contracted after that time can be negatively geared until 30 June 2027; from 1 July 2027 its losses only offset income from residential property, with the excess carried forward. On our worked example that takes the after-tax cost at 37% from ${fmt(exFrom2027.weeklyCostAfterTax)} to ${fmt(exFrom2027.weeklyCostFrom2027)} a week if you have no other rental income (ATO, last updated 29 June 2026; Budget 2026–27 Tax Explainer, 12 May 2026).`,
   },
   {
     question: "What's the difference between negative gearing and depreciation?",
@@ -125,6 +147,12 @@ export default function NegativeGearingPage() {
           Tax rules change. This guide is for educational purposes only.
           Speak with a registered tax agent for advice specific to your
           situation.
+        </p>
+        <p>
+          Updated 1 October 2026: negative gearing and the 50% CGT discount
+          change from 1 July 2027 under the law Parliament passed on 25 June
+          2026. See <a href="#still-available">what changes</a> and{" "}
+          <a href="#cgt">the CGT connection</a>.
         </p>
       </Callout>
 
@@ -172,18 +200,23 @@ export default function NegativeGearingPage() {
 
       <p>
         This $11,163 net rental loss is deducted from your other taxable
-        income. The after-tax benefit depends on your marginal tax rate:
+        income. The after-tax benefit depends on your marginal tax rate. At
+        the ATO&rsquo;s 2026&ndash;27 resident rates ({TAX_RATES_SOURCE.dated}),
+        before the 2% Medicare levy:
       </p>
 
       <table>
         <thead>
-          <tr><th>Marginal tax rate</th><th>Annual tax saving</th><th>After-tax net cost</th></tr>
+          <tr><th>Marginal tax rate (2026&ndash;27)</th><th>Annual tax saving</th><th>After-tax net cost</th></tr>
         </thead>
         <tbody>
-          <tr><td>19%</td><td>$2,121</td><td>$9,042 a year</td></tr>
-          <tr><td>32.5%</td><td>$3,628</td><td>$7,535 a year</td></tr>
-          <tr><td>37%</td><td>$4,130</td><td>$7,033 a year</td></tr>
-          <tr><td>45%</td><td>$5,023</td><td>$6,140 a year</td></tr>
+          {RATE_ROWS.map((row) => (
+            <tr key={row.rate}>
+              <td>{row.rate}%</td>
+              <td>{fmt(row.saving)}</td>
+              <td>{fmt(row.cost)} a year</td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
@@ -205,6 +238,19 @@ export default function NegativeGearingPage() {
         which uses the 2026&ndash;27 tax rates and shows what changes for your
         property from 1 July 2027.
       </p>
+      <Callout variant="info" title="The same property from 1 July 2027">
+        <p>
+          Held at 7:30pm AEST on 12 May 2026, or a new build: no change. An
+          established home contracted after that time: from 1 July 2027 the{" "}
+          {fmt(ex.netRentalResult)} loss no longer reduces the tax on your
+          wages. It carries forward against future income from residential
+          property, including the capital gain when you sell, so the year
+          costs the full {fmt(exFrom2027.cashFlowBeforeTax)}, about{" "}
+          {fmt(exFrom2027.weeklyCostFrom2027)}{" "}a week, unless you have other
+          residential rental income to absorb it. Sources: ATO, last updated
+          29 June 2026; Budget 2026&ndash;27 Tax Explainer, 12 May 2026.
+        </p>
+      </Callout>
       <p>
         If this property grows at 5% a year, it would be worth approximately
         $1,128,000 after 10 years, a gain of $428,000, well exceeding the
@@ -281,22 +327,37 @@ export default function NegativeGearingPage() {
       <p>
         Negative gearing is most effective when the strategy eventually
         results in a capital gain. When you sell the investment property, you
-        will pay Capital Gains Tax (CGT) on the profit. However, if you hold
-        the property for more than 12 months, you are entitled to a 50% CGT
-        discount on the gain, meaning only half of the capital gain is
-        included in your assessable income.
+        will pay Capital Gains Tax (CGT) on the profit. On a sale before
+        1 July 2027, if you have held the property for at least 12 months, an
+        individual or trust gets a 50% CGT discount on the gain, meaning only
+        half of the capital gain is included in your assessable income.
       </p>
       <p>
-        <strong>Example.</strong> You buy for $700,000 and sell for $1,000,000
-        after 10 years. Capital gain: $300,000 (less any capital improvements
-        and selling costs). With the 50% CGT discount, only $150,000 is added
-        to your taxable income in the year of sale.
+        <strong>Example.</strong> You bought for $700,000 in 2017 and sell for
+        $1,000,000 before 1 July 2027. Capital gain: $300,000 (less any capital
+        improvements and selling costs). With the 50% CGT discount, only
+        $150,000 is added to your taxable income in the year of sale.
       </p>
       <p>
-        This combination, tax deductions at your full marginal rate on rental
-        losses, plus a 50% CGT discount on the eventual gain, is why negative
-        gearing is so widely used in Australia. Use our{" "}
-        <Link href="/cgt-calculator">CGT Calculator</Link> to model the exit.
+        <strong>From 1 July 2027.</strong>{" "}
+        The law passed on 25 June 2026 replaces the 50% discount for
+        individuals, trusts and partnerships with cost base indexation, so
+        only the gain above inflation is taxed, and a 30% minimum tax on the
+        gain for resident individuals. It covers property you already own:
+        the gain up to 1 July 2027 keeps the 50% discount, and the gain after
+        it is indexed from the property&rsquo;s value on that date. Nothing is payable until you sell. An investor
+        who buys a new build can choose the 50% discount or indexation when
+        they sell. The 12 May 2026 cut-off is a negative gearing rule only; it
+        does not keep the CGT discount. Our{" "}
+        <Link href="/guides/cgt-changes-2026-budget">CGT changes explainer</Link>{" "}
+        has the worked examples.
+      </p>
+      <p>
+        Tax deductions at your full marginal rate on rental losses, plus a
+        discounted tax rate on the eventual gain, is why negative gearing has
+        been so widely used in Australia. Use our{" "}
+        <Link href="/cgt-calculator">CGT Calculator</Link> to model the exit
+        under the rules that apply before 1 July 2027.
       </p>
       <p>
         Note: depreciation deductions may be subject to recapture at sale for
@@ -336,30 +397,33 @@ export default function NegativeGearingPage() {
       <ul>
         <li><strong>Vacancy.</strong> A vacant property earns no rent but still incurs all holding costs. Even a single month&rsquo;s vacancy significantly worsens your cash flow. Landlord insurance with rent default cover can partially mitigate this.</li>
         <li><strong>Interest rate rises.</strong> Since 2022, RBA rate increases have significantly increased interest costs for investors on variable rate loans. A 2% rate rise on a $560,000 loan adds $11,200 a year to costs, potentially turning a manageable loss into a severe one.</li>
-        <li><strong>Legislative change.</strong> The ATO or Government could change the rules on negative gearing or the CGT discount. Labor proposed limiting negative gearing to new properties in 2019 (the policy did not pass, see below). There is no guarantee current rules will remain unchanged.</li>
+        <li><strong>Legislative change.</strong> The rules have just changed: the 2026&ndash;27 Budget package, passed on 25 June 2026, limits negative gearing to new builds and replaces the 50% CGT discount from 1 July 2027 (see below). Parliament can change them again, so a property should still work if the tax benefits shrink further.</li>
         <li><strong>No capital growth.</strong> If the property does not appreciate, the strategy fails, you are left with accumulated losses and no compensating gain.</li>
         <li><strong>Serviceability strain.</strong> If your income drops (job loss, illness), your ability to cover the ongoing loss is compromised. Many investors have been forced to sell at sub-optimal times due to financial pressure.</li>
       </ul>
 
       <h2 id="still-available">Is negative gearing still available in 2026?</h2>
       <p>
-        Yes. Negative gearing on investment properties remains fully available
-        and unchanged in Australia as of April 2026.
+        Yes, for every investor until 30 June 2027. After that it depends on
+        when you bought and what. The 2026&ndash;27 Budget package is law: the
+        Treasury Laws Amendment (Tax Reform No. 1) Act 2026 passed both Houses
+        on 25 June 2026 and received Royal Assent on 26 June 2026. From
+        1 July 2027 it limits negative gearing for residential property to new
+        builds (ATO, last updated 29 June 2026).
       </p>
+      <ul>
+        <li><strong>Held at 7:30pm AEST on 12 May 2026</strong>, including under a contract signed but not yet settled: keeps negative gearing for as long as you own it.</li>
+        <li><strong>An established home contracted after that time:</strong> can be negatively geared until 30 June 2027. From 1 July 2027 its losses only offset income from residential property, including capital gains on residential property, and the excess carries forward to later years.</li>
+        <li><strong>A new build:</strong> keeps negative gearing whenever you buy it, but only the first buyer gets it. The Act leaves the exact definition to a ministerial instrument; the Budget explainer&rsquo;s examples include an off-the-plan apartment, a home built on vacant land and a knock-down that replaces one house with more than one dwelling, but not an extension or a one-for-one rebuild.</li>
+        <li><strong>Who it covers:</strong> individuals, partnerships, companies and most trusts. Super funds, including SMSFs, and widely held trusts are excluded.</li>
+        <li><strong>Commercial property and shares:</strong> negative gearing is unchanged.</li>
+      </ul>
       <p>
-        The most significant political threat was the Labor Party&rsquo;s 2019
-        election policy to limit negative gearing to new properties only (with
-        existing negatively geared properties grandfathered). Labor lost the
-        2019 election, and the policy was subsequently abandoned. No major
-        party currently has a policy to remove or substantially limit negative
-        gearing.
-      </p>
-      <p>
-        The 50% CGT discount for assets held more than 12 months also remains
-        unchanged. Government policy can change, however. Any investor
-        relying on the continuation of these tax settings should have an
-        investment strategy that remains viable even if the tax benefits were
-        reduced. Do not invest solely on the basis of tax deductions.
+        The 50% CGT discount changes on the same date; see{" "}
+        <a href="#cgt">the CGT connection</a> above. Parliament can change
+        these settings again, so any investment should remain viable if the
+        tax benefits were reduced further. Do not invest solely on the basis
+        of tax deductions.
       </p>
 
       <MatchCTA kind="accountant" />
@@ -379,6 +443,8 @@ export default function NegativeGearingPage() {
         in investment properties. The cost of professional tax advice is
         itself a deductible expense.
       </p>
+
+      <Sources items={[...TAX_REFORM_SOURCES, { label: TAX_RATES_SOURCE.name, href: TAX_RATES_SOURCE.url, note: `${TAX_RATES_SOURCE.dated[0].toUpperCase()}${TAX_RATES_SOURCE.dated.slice(1)}. Used in the worked example, before the Medicare levy.` }]} />
 
       <GuideGlossaryRail
         slugs={[
