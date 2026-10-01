@@ -18,7 +18,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/buy`,                          changeFrequency: "weekly",  priority: 0.5 },
     { url: `${SITE_URL}/rent`,                         changeFrequency: "weekly",  priority: 0.5 },
     { url: `${SITE_URL}/sold`,                         changeFrequency: "daily",   priority: 0.7 },
-    { url: `${SITE_URL}/house-and-land`,               changeFrequency: "weekly",  priority: 0.8 },
+    // /house-and-land is submitted by /house-and-land/sitemap.xml alone, and
+    // only while it has stock (src/lib/house-and-land-indexability.ts).
     { url: `${SITE_URL}/off-market`,                   changeFrequency: "weekly",  priority: 0.7 },
     { url: `${SITE_URL}/suburbs`,                      changeFrequency: "weekly",  priority: 0.8 },
     { url: `${SITE_URL}/regions`,                      changeFrequency: "weekly",  priority: 0.7 },

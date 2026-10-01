@@ -31,7 +31,7 @@ export interface HubGuideList {
 const STATES = ["nsw", "vic", "qld", "wa", "sa", "tas", "act", "nt"] as const;
 const perState = (prefix: string) => STATES.map((s) => `${prefix}-${s}`);
 
-export type HubPath = "/first-home-buyers" | "/buying-guide" | "/selling" | "/investing";
+export type HubPath = "/first-home-buyers" | "/buying-guide" | "/selling" | "/investing" | "/house-and-land";
 
 export const HUB_GUIDE_LISTS: Record<HubPath, HubGuideList> = {
   "/first-home-buyers": {
@@ -109,6 +109,25 @@ export const HUB_GUIDE_LISTS: Record<HubPath, HubGuideList> = {
           "property-management-fees-australia",
         ],
       },
+    ],
+  },
+  // The house-and-land hub shows this list with or without stock; while it
+  // has none, the list is most of what the page offers
+  // (src/lib/house-and-land-indexability.ts).
+  "/house-and-land": {
+    heading: "Before you buy a house and land package",
+    intro: "What a package price leaves out, how to check a builder, and the grants and stamp duty that apply to a new home in each state.",
+    groups: [
+      {
+        slugs: [
+          "house-and-land-packages-are-they-worth-it",
+          "how-to-find-a-builder-australia",
+          "first-home-owner-grant-australia",
+          "first-home-buyer-guide",
+        ],
+      },
+      { label: "First home buyers by state", href: "/first-home-buyers", slugs: perState("first-home-buyer") },
+      { label: "Stamp duty by state", slugs: perState("stamp-duty") },
     ],
   },
 };
