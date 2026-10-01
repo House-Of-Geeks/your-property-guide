@@ -92,6 +92,9 @@ Tick items off as they ship.
           216 s; top pages HIT afterwards. Regenerate `src/lib/data/prebuild-suburbs.json` from the
           latest baseline when the top pages change.
       (c) TODO connection pooler + circuit breaker → 503 + Retry-After. Check: Bing crawl 5xx reads zero. (04)
+      1 Oct 2026: the batch merge of ten review PRs started up to six warm-up runs at once and Postgres refused
+      connections ("too many clients already"); suburb pages answered 500 for about five minutes until the older runs
+      were cancelled (change log, 2026-10-01). Until (c) lands, merge one PR at a time or cancel duplicate warm runs.
       Learned from 29: a server `searchParams` read in a route with no build-time render throws
       DYNAMIC_SERVER_USAGE at request time; the /buy and /rent hubs are dynamic (no-store) routes,
       not the cached shells their comments describe. Re-check them under (b).

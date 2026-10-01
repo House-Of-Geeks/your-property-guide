@@ -1,0 +1,303 @@
+<title>Property Guide Intent Review</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#ffffff; --page:#f3f4f6; --panel:#f6f7f9; --panel2:#eef1f4; --rule:#e2e5e9; --rule2:#cfd4da;
+  --ink:#1b1f24; --ink2:#4a525c; --ink3:#7a838d;
+  --accent:#0f7b86; --accent-soft:#e6f3f4;
+  --crit:#b9331f; --crit-soft:#fbe9e5; --high:#b0710d; --high-soft:#fbf1dc; --med:#5b6570; --med-soft:#eceff2; --good:#0f7b86;
+  --note:#e7f1f5; --mono-bg:#f0f2f4;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#16191d; --page:#0f1114; --panel:#1c2025; --panel2:#22272d; --rule:#2b3138; --rule2:#3a424b;
+    --ink:#e8eaed; --ink2:#b3bac2; --ink3:#7f8790;
+    --accent:#4fb6bf; --accent-soft:#12303a;
+    --crit:#f07a62; --crit-soft:#3a1f1a; --high:#e0a53f; --high-soft:#3a2e15; --med:#a3adb8; --med-soft:#262b31; --good:#4fb6bf;
+    --note:#17272e; --mono-bg:#1f242a;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#16191d; --page:#0f1114; --panel:#1c2025; --panel2:#22272d; --rule:#2b3138; --rule2:#3a424b;
+  --ink:#e8eaed; --ink2:#b3bac2; --ink3:#7f8790;
+  --accent:#4fb6bf; --accent-soft:#12303a;
+  --crit:#f07a62; --crit-soft:#3a1f1a; --high:#e0a53f; --high-soft:#3a2e15; --med:#a3adb8; --med-soft:#262b31; --good:#4fb6bf;
+  --note:#17272e; --mono-bg:#1f242a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:"IBM Plex Sans",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-inline:16px;padding-block:24px 48px}
+.doc{max-width:900px;margin:0 auto;background:var(--ground);padding:48px 44px 64px}
+@media(max-width:640px){.doc{padding:28px 18px 48px}}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace}
+code{background:var(--mono-bg);padding:1px 5px;border-radius:3px;font-size:.86em;word-break:break-word}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1{font-size:34px;line-height:1.15;margin:8px 0 14px;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin:48px 0 0;padding:14px 0 10px;border-bottom:1px solid var(--rule);color:var(--ink);display:flex;gap:14px;align-items:baseline}
+h2 .k{font-family:"IBM Plex Mono",monospace;color:var(--accent);font-weight:500;letter-spacing:.1em}
+h3{font-size:17px;margin:30px 0 8px;font-weight:600;line-height:1.3;text-wrap:balance}
+h3 .k{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink3);font-weight:500;margin-right:8px}
+p{max-width:68ch;margin:10px 0}
+p.lede{color:var(--ink2);margin:10px 0 18px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.intro{font-size:16.5px;color:var(--ink2);max-width:66ch;margin:0 0 18px}
+.meta{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:6px 26px;padding-bottom:18px;border-bottom:2px solid var(--ink)}
+.meta b{color:var(--ink);font-weight:500}
+.toc{display:flex;flex-wrap:wrap;gap:6px 18px;margin:16px 0 4px;padding:0;list-style:none;font-size:13.5px}
+.toc li a{text-decoration:none;color:var(--ink2)}
+.toc li a:hover{color:var(--accent);text-decoration:underline}
+.toc li .k{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--accent);margin-right:6px}
+.grid{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:16px}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:700px){.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.g4{grid-template-columns:1fr}}
+.stat{background:var(--ground);padding:18px 16px 14px}
+.stat .n{font-size:30px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.stat .d{font-size:12.5px;color:var(--ink2);margin-top:8px;line-height:1.4}
+.c-crit{color:var(--crit)} .c-high{color:var(--high)} .c-good{color:var(--good)}
+.note{background:var(--note);border-left:3px solid var(--accent);padding:12px 16px;margin:16px 0;font-size:14px;color:var(--ink2);max-width:none}
+.note b{color:var(--ink)}
+.tbl{overflow-x:auto;margin:14px 0 6px;border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 11px;border-bottom:1px solid var(--rule);vertical-align:top;text-align:left}
+th{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:500;background:var(--panel)}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;white-space:nowrap}
+td.key{font-weight:600;color:var(--ink);white-space:nowrap}
+.tbl .path{font-family:"IBM Plex Mono",monospace;font-size:12.5px;white-space:nowrap}
+ul.plain{padding-left:20px;max-width:72ch}
+ul.plain li{margin:6px 0}
+ol.prio{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+ol.prio li{background:var(--ground);padding:12px 14px;display:grid;grid-template-columns:30px 1fr;gap:12px;font-size:14px;color:var(--ink2)}
+ol.prio li .k{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--accent);padding-top:2px}
+ol.prio li b{color:var(--ink);font-weight:600}
+.tag{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;white-space:nowrap;margin-left:6px;vertical-align:middle}
+.t-track{background:var(--accent-soft);color:var(--accent)}
+.t-new{background:var(--high-soft);color:var(--high)}
+.fam{display:grid;grid-template-columns:1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);margin:14px 0}
+.fam .row{background:var(--ground);padding:12px 14px}
+.fam .row h4{margin:0 0 4px;font-size:14.5px;font-weight:600}
+.fam .row p{margin:4px 0;font-size:13.5px;color:var(--ink2);max-width:none}
+.fam .row .m{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink3)}
+.fix{margin:10px 0 0;padding:10px 14px;background:var(--panel);border-left:3px solid var(--accent);font-size:14px;color:var(--ink2)}
+.fix b{color:var(--ink)}
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
+</style>
+
+<div class="doc">
+  <div class="eyebrow">Your Property Guide · Search data · 30 September 2026</div>
+  <h1>Commercial intent review</h1>
+  <p class="intro">Where yourpropertyguide.com.au matches commercial search intent, where it does not, and what the pages that do rank have that ours lack.</p>
+  <div class="meta">
+    <span>Google <b>30 Jun to 27 Sep 2026</b></span>
+    <span>Bing <b>28 days to 25 Sep</b></span>
+    <span>Keyword Planner <b>AU, 12-month average</b></span>
+    <span>DataForSEO <b>54 SERPs, 3,000 intent labels, US$0.73</b></span>
+    <span>Pages parsed <b>244 ours, 251 competitors</b></span>
+  </div>
+  <ul class="toc">
+    <li><a href="#s1"><span class="k">1</span>Scorecard</a></li>
+    <li><a href="#s2"><span class="k">2</span>Where we match intent</a></li>
+    <li><a href="#s3"><span class="k">3</span>Mismatches</a></li>
+    <li><a href="#s4"><span class="k">4</span>What is missing</a></li>
+    <li><a href="#s5"><span class="k">5</span>AI search</a></li>
+    <li><a href="#s6"><span class="k">6</span>People Also Ask</a></li>
+    <li><a href="#s7"><span class="k">7</span>Priority order</a></li>
+    <li><a href="#s8"><span class="k">8</span>Sources and files</a></li>
+  </ul>
+
+  <div class="note"><b>Caveat on clicks.</b> Google anonymises rare queries: the query dimension holds 54 of the 911 clicks in 90 days. Every query-level figure below is impressions and position. Clicks are read from the page and date dimensions.</div>
+
+  <h2 id="s1"><span class="k">1</span>Scorecard</h2>
+  <div class="grid g4">
+    <div class="stat"><div class="n">911</div><div class="d">Google clicks in 90 days, from 453,207 impressions</div></div>
+    <div class="stat"><div class="n">445</div><div class="d">Bing clicks in 28 days, from 45,880 impressions</div></div>
+    <div class="stat"><div class="n c-crit">2</div><div class="d">clicks from 4,715 commercial and transactional queries (23,499 impressions)</div></div>
+    <div class="stat"><div class="n c-crit">0 of 54</div><div class="d">commercial target SERPs where we are in the top 10</div></div>
+  </div>
+  <div class="tbl"><table>
+    <tr><th>Signal</th><th>Value</th></tr>
+    <tr><td class="key">Google, last 28 days vs prior 28</td><td>280 clicks / 163,339 impressions vs 278 / 141,228</td></tr>
+    <tr><td class="key">Bing index and 5xx per crawl day, last 7</td><td>49,046 in index; 294, 261, 209, 210, 182, 162, 156 (falling after the 29 Sep fixes)</td></tr>
+    <tr><td class="key">Postcode lookups</td><td>79% of Google query impressions (191,679 of 241,107) for 25 clicks</td></tr>
+    <tr><td class="key">Commercial + transactional (regex)</td><td>4,715 queries, 23,499 impressions, 2 clicks, average position 55 to 65</td></tr>
+    <tr><td class="key">Same, DataForSEO labels (top 3,000 non-postcode queries)</td><td>commercial 813 queries / 10,253 impressions; transactional 244 / 3,746; 0 clicks</td></tr>
+    <tr><td class="key">AI Overview</td><td>on 50 of 52 SERPs that returned one; our NSW commission guide is cited once ("real estate commission nsw")</td></tr>
+  </table></div>
+
+  <p>Bing and Google disagree about the same pages. On Bing the guides take 218 of the 244 sampled page clicks in 28 days at an average position of 4.7. On Google the same guides sit at 18 to 90.</p>
+  <div class="tbl"><table>
+    <tr><th>Page</th><th>Bing 28d clicks / impressions / position</th><th>Google 90d clicks / impressions / position</th></tr>
+    <tr><td class="path">/guides/cgt-changes-2026-budget</td><td>51 / 1,280 / 5.0</td><td>0 (not in the query rows)</td></tr>
+    <tr><td class="path">/guides/real-estate-agent-fees-australia</td><td>33 / 1,078 / 4.0</td><td>1 / 127 / 43.7</td></tr>
+    <tr><td class="path">/guides/real-estate-commission-nsw</td><td>24 / 518 / 3.0</td><td>7 / 1,634 / 27.2</td></tr>
+    <tr><td class="path">/guides/cost-of-selling-a-house-australia</td><td>18 / 363 / 3.0</td><td>0 / 106 / 62.8</td></tr>
+    <tr><td class="path">/guides/real-estate-commission-qld</td><td>18 / 388 / 2.7</td><td>0 / 118 / 18.8</td></tr>
+    <tr><td class="path">/guides/property-management-fees-australia</td><td>11 / 444 / 4.7</td><td>0 (2 queries)</td></tr>
+    <tr><td class="path">/borrowing-power-calculator</td><td>0 (all calculators on Bing: 0 / 3 / 7.0)</td><td>0 / 3,572 / 59.8</td></tr>
+    <tr><td class="path">/rental-yield-calculator</td><td>0</td><td>0 / 2,981 / 81.0</td></tr>
+  </table></div>
+  <p>The pages are not the reason Google ranks them low: the same URLs sit at 3 to 5 on Bing. The 5 September review's authority finding (23 referring domains) still stands. This review is about the on-page half.</p>
+
+  <h2 id="s2"><span class="k">2</span>Where we already match intent</h2>
+  <ul class="plain">
+    <li><b>Commission and fees guides.</b> Structure matches the ranking pages: state rate, worked examples at three prices, cost-of-selling table, negotiability, FAQ. Google shows the NSW guide at 18 to 29 for "real estate agents fees", "real estate agent fees nsw", "real estate fees nsw" and "real estate commission new south wales". The AI Overview for "real estate commission nsw" cites it. The QLD SERP's number 2 (WhichRealEstateAgent) differs in three ways: a commission calculator on the page (18 inputs), "Brisbane" in the title and H1, and 3,151 words. Tracker item 8 (embed the calculator; the NT pilot has it) is what the SERP rewards.</li>
+    <li><b>Cost of selling.</b> National guide 2,648 words with a table and six FAQs against Westpac (1,946) and realestate.com.au (2,773). The eight state guides carry the state calculator. Nothing to add beyond links.</li>
+    <li><b>Suburb medians.</b> "morayfield median house price" position 9, "morayfield capital growth" 19, "morayfield property investment" 21, "hawthorn median house price" 21. The suburb template is the right shape for the "{suburb} median house price" family (389 queries, 1,757 impressions).</li>
+    <li><b>Best suburbs.</b> "best suburbs in moreton bay region" 322 impressions at 31, "best suburbs in australia" 90 at 29, and the state rankings pick up clicks (lowest-flood-risk QLD 7, NSW 5; highest-growth TAS 4, WA 3).</li>
+  </ul>
+
+  <h2 id="s3"><span class="k">3</span>Intent mismatches: the page exists but is the wrong shape</h2>
+
+  <h3 id="s31"><span class="k">3.1</span>Rental-market pages receive landlord intent and hold nothing</h3>
+  <p>Five query families land on <code>/suburbs/{slug}/rental-market</code>:</p>
+  <div class="tbl"><table>
+    <tr><th>Family</th><th class="num">Queries</th><th class="num">Impressions</th><th class="num">Avg position</th><th>Examples</th></tr>
+    <tr><td class="key">"{suburb} rental investment"</td><td class="num">17</td><td class="num">875</td><td class="num">36</td><td>nedlands, darch, floreat, landsdale, joondalup, churchlands, innaloo, ocean reef (all WA)</td></tr>
+    <tr><td class="key">"rental appraisal {suburb}"</td><td class="num">56</td><td class="num">599</td><td class="num">35</td><td>port hedland 101 impressions at 26, scarborough 4020 at 24, newport 4020 at 20, karratha at 25</td></tr>
+    <tr><td class="key">"rent reviews {suburb}"</td><td class="num">8</td><td class="num">199</td><td class="num">36</td><td>picton, davidson, tahmoor (NSW)</td></tr>
+    <tr><td class="key">"property managers {suburb}"</td><td class="num">32</td><td class="num">188</td><td class="num">45</td><td>murdoch, haynes, tom price (WA), magill, horsham</td></tr>
+    <tr><td class="key">"property management fees {suburb}"</td><td class="num">4</td><td class="num">75</td><td class="num">40</td><td>goodna 62 at 40, petrie</td></tr>
+  </table></div>
+  <p>The landing pages hold 89 to 262 words and no form. Every WA and ACT page is <code>noindex</code> (no rental feed) and still shows at 20 to 37 from the days before the noindex. "Rental appraisal" and "property managers" are a landlord looking for a property manager: a lead type the site does not sell today, and the one form of intent where the searcher wants to be contacted.</p>
+  <p>What ranks for "rental appraisal port hedland": agency appraisal-request pages (Avalon 411 words, 27 inputs; LJ Hooker Hedland 1,309 words). What ranks for "nedlands rental yield": realestateinvestar's suburb investment page (1,139 words, 3 tables: snapshot, supply and demand, statistics).</p>
+  <div class="fix"><b>Fix, in order.</b> (a) A rental appraisal request block on every rental-market page (property-manager introduction, same consent pattern as the appraisal form). (b) "What property managers charge in {suburb}" from the state fee table, with a weekly-rent × fee worked line. (c) A WA rental data feed, because the "rental investment" demand is Perth suburbs and those pages are noindex. (d) An "Is {suburb} a good rental investment?" FAQ from yield and growth where published.</div>
+
+  <h3 id="s32"><span class="k">3.2</span>Stamp duty: the title promises a calculator the page does not have</h3>
+  <p>"stamp duty calculator nsw" 33,100 a month, "stamp duty calculator qld" 27,100, "stamp duty calculator vic" 27,100, "stamp duty calculator wa" 14,800, "stamp duty calculator sa" 8,100, "stamp duty calculator" 60,500. Our impressions across all of them: under 20, at positions 84 to 93.</p>
+  <p>Our state guides are titled "Stamp Duty NSW: Calculator, Rates &amp; First Home Buyer Concessions (2026)" but hold a two-input widget (price, checkbox) and link to <code>/stamp-duty-calculator</code>. Every ranking page for "stamp duty calculator nsw" has "calculator" and the state in the slug (4 of 4) and in the title and H1 (3 of 4), and leads with the tool: Mortgage Bridge (796 words, 6 inputs, rates table, first-home thresholds, 5 FAQs), yourownterms (734 words, rates table, other upfront costs, FAQ, other states), SuburbScan WA (381 words, 6 inputs, "what this figure excludes", "how WA calculates it"). For "stamp duty qld" the Queensland Revenue Office holds 1, 5 and 7 with its estimator, a "calculating transfer duty" page and a concession-rates page with five tables.</p>
+  <div class="fix"><b>Fix (tracker item 20, confirmed).</b> Make each state guide calculator-first: the full state calculator at the top, H1 "NSW Stamp Duty Calculator 2026: Rates, Concessions &amp; First Home Buyers", then the rates table, thresholds and FAQ, with the concession table as its own section. Keep the URLs. The national <code>/stamp-duty-calculator</code> links to the eight state pages.</div>
+
+  <h3 id="s33"><span class="k">3.3</span>Calculators: two are winnable, one is not</h3>
+  <div class="tbl"><table>
+    <tr><th>Query</th><th class="num">Volume</th><th>Our position / impressions</th><th>Who ranks in the top 10</th></tr>
+    <tr><td class="key">borrowing power calculator</td><td class="num">33,100</td><td>88 / 419</td><td>UM Oceania (1,304 words), Chilli Finance (60 words), Lifestyle Finance (335), The Loan Broker (9 words), then banks</td></tr>
+    <tr><td class="key">how much can i borrow</td><td class="num">12,100</td><td>32 / 100</td><td>banks</td></tr>
+    <tr><td class="key">rental yield calculator</td><td class="num">3,600</td><td>62 / 68</td><td>ING (202 words), calculatestuff (1,044), Ian Ritchie (180), Westpac guide (1,462), propertyinvestmentprofessionals (1,560 words, 9 FAQs, SoftwareApplication schema)</td></tr>
+    <tr><td class="key">mortgage calculator australia</td><td class="num">9,900</td><td>95 / 23</td><td>Moneysmart, CommBank, Westpac, ANZ</td></tr>
+    <tr><td class="key">affordability calculator</td><td class="num">210</td><td>104 / 11</td><td>mixed, some US</td></tr>
+    <tr><td class="key">capital gains tax calculator property</td><td class="num">880 (AI 117)</td><td>0 impressions</td><td>Property Compass, RJ Sanderson, AussieCalc (992 words; Article, FAQPage, HowTo and WebApplication schema), australianpropertyexperts</td></tr>
+    <tr><td class="key">negative gearing calculator</td><td class="num">2,400</td><td>0 (guide only)</td><td>savings.com.au, YIP (3,732 words, 25 inputs), TMS, propertyinvestmentprofessionals; 5 of 5 have a calculator</td></tr>
+    <tr><td class="key">lmi calculator</td><td class="num">3,600</td><td>0 (guide only)</td><td>Helia estimator (5 tables), Westpac, Bank of Melbourne, Stanford (WebApplication)</td></tr>
+  </table></div>
+  <p>The borrowing-power SERP holds a 9-word page at number 6 and a 60-word page at number 3, so it is not locked by authority. Our page has the schema (FAQPage, WebApplication), 1,285 words and six FAQs, and it is the site's most-shown commercial URL (3,572 impressions). Three things separate it from the pages above it: the title and H1 do not say "how much can I borrow" (the phrase gets 100 to 124 impressions on the page at 27 to 54); there is no server-rendered result table (borrowing power by income band, the thing a crawler and an AI Overview can read); and the calculators are reachable only from the footer and <code>/tools</code> (the header links <code>/guides</code>, <code>/search</code> and <code>/selling-guide</code>). The rental yield page has the same gaps; the ranking non-bank page has "What is a good rental yield in 2026?" and a step-by-step formula as H2s.</p>
+  <div class="fix"><b>Fix.</b> Mortgage calculator is banks and Moneysmart; leave it. Build the LMI estimator (premium bands by LVR and loan size are published) and a negative gearing calculator (the rental yield and CGT engines already exist); both SERPs are calculator-only. Put "how much can I borrow" in the borrowing-power H1, add a result table by income band, and link the tools from the header.</div>
+
+  <h3 id="s34"><span class="k">3.4</span>Valuation and appraisal: 369,790 monthly searches, zero impressions</h3>
+  <p>Keyword Planner family "valuation / appraisal": 101 keywords over 500 a month, 369,790 searches, none with a Search Console impression. Head terms: "property valuation" and "property value" 60,500; "property value estimate", "property worth calculator", "property appraisal estimate" 14,800 each; "house valuation" 5,400; "how much is my house worth" 4,400.</p>
+  <p>The SERPs are tools: Domain property profile, property.com.au, CommBank Property Insights, OpenAgent estimate, propertyvalue.com.au, then bank "free property report" pages (P&amp;N, BCU, 460 to 500 words). The AI Overview for "how much is my house worth" lists the portals' instant estimates first and the agent appraisal second.</p>
+  <p>Our pages: <code>/appraisal</code> (927 words, H1 "What is your home actually worth ?", no keyword, no estimate, six FAQs) and <code>/guides/how-much-is-my-house-worth-australia</code> (2,293 words, five FAQs). Neither offers a number.</p>
+  <div class="fix"><b>Fix.</b> An instant range on both pages from data the site already publishes (suburb median by dwelling type, adjusted by bedroom band where the NSW and VIC feeds have it), shown before the form. Then a <code>/property-valuation</code> page for the 60,500 head term that explains appraisal vs valuation vs automated estimate (the PAA set: "Can I get a free CoreLogic property value report?", "What is the most accurate website for property value?", "How much do property valuations charge?") and carries the same range tool. Retitle the <code>/appraisal</code> H1 to "Free property appraisal from a local agent".</div>
+
+  <h3 id="s35"><span class="k">3.5</span>Agents: the comparison intent needs a directory the site has not switched on</h3>
+  <p>"compare real estate agents" (170), "best real estate agents sydney" (260, AI 73), "real estate agents near me" (8,100), "real estate agents {city}" (1,600 to 1,900 each). Top 10: LocalAgentFinder (1,253 words, FAQPage, AggregateRating), REIWA agent finder, RateMyAgent, OpenAgent, REB Top 100, WhichRealEstateAgent city lists (1,975 words, 18 inputs, AggregateRating, Product).</p>
+  <p><code>/find-an-expert</code> has no JSON-LD, the H1 "Tell us your situation. We'll find the right person." and 611 words. The suburb agents pages (509 with impressions, 1,622 impressions, position 19.8; "fitzroy real estate agents" 12, "lane cove real estate agents" 11) are the right URL for "{suburb} real estate agents". The Morayfield page has one agent and 747 words; WhichRealEstateAgent's Morayfield page lists 60 agents in 2,240 words with "What to pay your Morayfield agent", FAQ, suburb overview and nearby suburbs, and carries AggregateRating.</p>
+  <div class="fix"><b>Fix.</b> Item 34's listings switch (<code>AGENT_LISTINGS_ENABLED</code>) once the directory has agents; until then the page should not claim "agents who sell in {suburb}" with one entry. Add "what to pay" from the suburb median and the state rate as a worked line, nearby-suburb links, and the agent count in the title when there are agents. Give <code>/find-an-expert</code> a Service schema, a keyworded H1 and a "how we compare agents" section.</div>
+
+  <h3 id="s36"><span class="k">3.6</span>Best suburbs: state pages where searchers name a city</h3>
+  <p>"best suburbs to invest in brisbane" 320, "best suburbs in perth" 880 (AI 363), "best suburbs in brisbane" and "best suburbs in sydney/melbourne" in the 880 to 1,900 range. Our nearest pages are state rankings with two H2s ("About this ranking", newsletter), one table, three FAQs, 1,622 to 1,733 words, and on the families category the H1 reads "The for families suburbs in Western Australia ." (tracker item 45).</p>
+  <p>What ranks: Hunter Galloway (3,874 words, 22 H2s, 4 tables, FAQ: method, top 20, first-home, families, coastal, investors, most expensive, Olympics, safety), Stryve (2,734 words: "How we choose", ten suburbs with a section each, bonus suburbs, strategy matching, FAQ), Satterley (one H2 per suburb), Frasers (7,844 words).</p>
+  <div class="fix"><b>Fix (tracker item 22).</b> City editions, ten suburbs with reasons, method, date. Add a section per suburb (H2 with the suburb name), an infrastructure or catalyst line, budget tiers, and the PAA answers ("What suburbs will boom in 2026 in QLD?", "Which Brisbane suburbs are undervalued?", "best suburbs to invest in Brisbane for $500,000 or less").</div>
+
+  <h3 id="s37"><span class="k">3.7</span>Guides that answer a different question from the one the SERP asks</h3>
+  <div class="tbl"><table>
+    <tr><th>Query</th><th>Volume (Google / AI)</th><th>Our page and shape</th><th>What ranks</th></tr>
+    <tr><td class="key">property management fees</td><td>1,000 / 295</td><td>national guide, 1,444 words, no table</td><td>REIQ (2,086 words, per-state section); WhichRealEstateAgent per-city pages with a fee calculator (2,243 words); LocalAgentFinder (2,412). The AI Overview prints a state table (NSW 5.8%, VIC 5.9%, QLD 7.5%, WA 8.7%, SA 7.5%, TAS 8.7%) with letting fees in weeks.</td></tr>
+    <tr><td class="key">building and pest inspection cost</td><td>1,600 / 203</td><td>"Building and pest inspection: what to expect" (2,021 words, one table)</td><td>"Building and Pest Inspection Cost Melbourne 2026 Price Guide" (cost table, by property type, building-only vs combined, hidden fees); iSPECT cost table (5 tables); CommBank.</td></tr>
+    <tr><td class="key">conveyancing fees nsw</td><td>480 / 23</td><td>national conveyancing guide (1,812 words, 2 tables)</td><td>NSW pages: Quicklaw cost calculator (26 tables), RS Law "How much does conveyancing cost in NSW" (2,086), Jameson Law quotes guide (3,568; FAQPage, HowTo).</td></tr>
+    <tr><td class="key">renovation cost australia</td><td>20 / 742 (AI)</td><td>2,877 words, 8 FAQs, no tables</td><td>co-architecture (3,635 words, 9 tables, calculator), Canstar (2,920), CKA cost indicator (6 tables).</td></tr>
+    <tr><td class="key">house and land packages brisbane / qld</td><td>3,600 / 390</td><td><code>/house-and-land</code> hub, 29 words</td><td>builders (Coral 7,142 words, Brighton 2,821, Metricon 2,717 with "how much does a package cost in Queensland" and FAQ) and realestate.com.au listings.</td></tr>
+    <tr><td class="key">suburb profile</td><td>1,900 / 25</td><td><code>/suburbs</code> index, 49 words</td><td>OpenAgent suburb profiles (895 words, "What's in a suburb profile?", FAQ), Compare the Market (2,031).</td></tr>
+    <tr><td class="key">cgt on investment property</td><td>1,900 / 42</td><td>CGT calculator (1,177 words)</td><td>ATO, Bentleys 6-year rule (2,936 words), NAB; the PAA is the 6-year rule and "how to avoid CGT".</td></tr>
+  </table></div>
+  <div class="fix"><b>Fixes.</b> A state fee table and an annual-cost calculator on the property management guide, then state pages. Retitle the inspection guide cost-first with a cost table by city and property type. NSW, VIC and QLD conveyancing cost pages with a fee calculator. Tables and a calculator on the renovation guide. A "what's in a suburb profile" section and search on <code>/suburbs</code>. A 6-year-rule and main-residence section (or guide) linked from the CGT calculator. House and land needs a decision: city pages with a builder enquiry form (the developer-lead product) and a package explainer, or noindex the empty hub.</div>
+
+  <h3 id="s38"><span class="k">3.8</span>Suburb profile titles and one cannibalisation</h3>
+  <p>"hawthorn median house price" (112 impressions) ranks the Hawthorn East page (3123) at 21, not Hawthorn (3122). Both pages carry the same title pattern ("{Suburb} Postcode {postcode} (VIC) — Suburb Profile &amp; Median Price") and both publish a Land Victoria median. Tracker item 2 (the title leads with the suburb and "house prices", not the postcode) is the fix; the postcode-first title is also why 79% of impressions are postcode lookups that do not click.</p>
+  <p>The suburb FAQ lacks the question every suburb SERP's PAA asks: "Is {suburb} a good investment?" (Bondi, Morayfield and Hawthorn all show it). Generate it from published yield and growth, and withhold where neither is published.</p>
+
+  <h2 id="s4"><span class="k">4</span>What is missing entirely: Keyword Planner against Search Console</h2>
+  <p>Keywords over 500 searches a month in commercial families, and the volume where the site has had no impression in 90 days.</p>
+  <div class="tbl"><table>
+    <tr><th>Family</th><th class="num">Keywords</th><th class="num">Monthly volume</th><th class="num">With any impression</th><th class="num">Volume with none</th></tr>
+    <tr><td class="key">loan calculators</td><td class="num">227</td><td class="num">2,004,180</td><td class="num">45</td><td class="num">1,607,800</td></tr>
+    <tr><td class="key">rates and loans</td><td class="num">272</td><td class="num">982,470</td><td class="num">10</td><td class="num">955,420</td></tr>
+    <tr><td class="key">stamp duty</td><td class="num">121</td><td class="num">819,530</td><td class="num">18</td><td class="num">654,840</td></tr>
+    <tr><td class="key">valuation / appraisal</td><td class="num">101</td><td class="num">369,790</td><td class="num">0</td><td class="num">369,790</td></tr>
+    <tr><td class="key">first home buyer</td><td class="num">88</td><td class="num">336,320</td><td class="num">5</td><td class="num">327,310</td></tr>
+    <tr><td class="key">suburb / house prices</td><td class="num">135</td><td class="num">300,570</td><td class="num">12</td><td class="num">267,170</td></tr>
+    <tr><td class="key">agents (find / compare)</td><td class="num">30</td><td class="num">248,510</td><td class="num">2</td><td class="num">246,510</td></tr>
+    <tr><td class="key">property management / renting</td><td class="num">75</td><td class="num">205,150</td><td class="num">2</td><td class="num">198,870</td></tr>
+    <tr><td class="key">rental yield / investing</td><td class="num">66</td><td class="num">188,030</td><td class="num">6</td><td class="num">136,550</td></tr>
+    <tr><td class="key">house and land / new homes</td><td class="num">80</td><td class="num">172,570</td><td class="num">0</td><td class="num">172,570</td></tr>
+    <tr><td class="key">process (conveyancing, inspections, auction)</td><td class="num">56</td><td class="num">131,830</td><td class="num">2</td><td class="num">125,430</td></tr>
+    <tr><td class="key">deposit / LMI</td><td class="num">41</td><td class="num">59,710</td><td class="num">1</td><td class="num">54,310</td></tr>
+    <tr><td class="key">buyers agent</td><td class="num">22</td><td class="num">29,250</td><td class="num">0</td><td class="num">29,250</td></tr>
+    <tr><td class="key">selling costs / commission</td><td class="num">24</td><td class="num">23,180</td><td class="num">20</td><td class="num">3,620</td></tr>
+  </table></div>
+  <p>Full list: <code>kp-gap.csv</code>. Three readings:</p>
+  <ol class="prio">
+    <li><span class="k">1</span><div><b>Selling costs is the one family where the site is present</b> (20 of 24 head terms have impressions). That is where the guides are strongest and where Bing already pays.</div></li>
+    <li><span class="k">2</span><div><b>Pages exist but have no impressions at all</b> for terms the site has a guide for: "first home owners grant qld" 14,800 (guide exists), "help to buy scheme" 12,100, "first home super saver scheme" 6,600, "first home buyers grant nsw" 6,600, "lmi calculator" 3,600 (guide), "cooling off period" 1,300, "conveyancing fees" 1,600, "buyers agent" 5,400 and every "buyers agent {city}". A page with 1,400 to 2,200 words and FAQ schema that gets zero impressions on a 6,600-a-month term is an indexing or link problem before it is a content problem. Check these URLs in Search Console's URL inspection (tracker item 44) and count the internal links into them; the header links only <code>/guides</code>, <code>/search</code> and <code>/selling-guide</code>.</div></li>
+    <li><span class="k">3</span><div><b>No page at all:</b> "landlord insurance" 14,800 (affiliate comparison), "rental bonds online" and "bond refund" (state bond authorities, but a "how to get your bond back" guide fits the renters series), "display homes" 6,600 and "house and land packages perth" 5,400 (see 3.7), "section 32" 5,400 (13 impressions on the conveyancing guide; a Victorian vendor statement guide would take it), "depreciation schedule" 2,900 (the depreciation guide exists; check it targets the phrase).</div></li>
+  </ol>
+
+  <h2 id="s5"><span class="k">5</span>AI search</h2>
+  <p>AI search volume (DataForSEO, AU) beside Google volume for the queries where the ratio matters.</p>
+  <div class="tbl"><table>
+    <tr><th>Query</th><th class="num">Google</th><th class="num">AI</th><th>Note</th></tr>
+    <tr><td class="key">how to sell a house</td><td class="num">170</td><td class="num">1,842</td><td>our HowTo guide, position 67 on Google</td></tr>
+    <tr><td class="key">selling a house</td><td class="num">140</td><td class="num">7,741</td><td></td></tr>
+    <tr><td class="key">how to buy a house in australia</td><td class="num">390</td><td class="num">5,245</td><td>buying-property-australia guide, position 67</td></tr>
+    <tr><td class="key">renovation cost</td><td class="num">210</td><td class="num">2,008</td><td></td></tr>
+    <tr><td class="key">how much can i afford / how much borrow</td><td class="num">40 / 40</td><td class="num">1,546 / 1,312</td><td>affordability and borrowing calculators</td></tr>
+    <tr><td class="key">stamp duty qld</td><td class="num">3,600</td><td class="num">1,025</td><td></td></tr>
+    <tr><td class="key">property management fees</td><td class="num">1,000</td><td class="num">295</td><td></td></tr>
+    <tr><td class="key">best suburbs in perth</td><td class="num">880</td><td class="num">363</td><td></td></tr>
+    <tr><td class="key">building and pest inspection cost</td><td class="num">1,600</td><td class="num">203</td><td></td></tr>
+    <tr><td class="key">capital gains tax calculator property</td><td class="num">880</td><td class="num">117</td><td></td></tr>
+  </table></div>
+  <p>AI Overviews appeared on 50 of 52 SERPs. Domains cited most: realestate.com.au 19, OpenAgent 12, CommBank 8, Reddit 7, WhichRealEstateAgent 6, Westpac 6, LocalAgentFinder 5, Canstar 5, ANZ 5. We are cited once. The cited pages share a pattern our commission guides already follow and the others do not: a table of figures by state or city, a date, a named source and a one-sentence definition at the top of the section. The property management, inspection, conveyancing and renovation guides need that table before they can be cited.</p>
+
+  <h2 id="s6"><span class="k">6</span>People Also Ask we do not answer</h2>
+  <p>From the 54 SERPs, questions absent from the FAQ schema of the matching page.</p>
+  <div class="fam">
+    <div class="row"><h4>Stamp duty</h4><p>"How much is stamp duty on a $800,000 house in NSW?", "How much stamp duty would I pay on a $1,000,000 house in Queensland?", "What is stamp duty on $820,000?" (dollar amounts at fixed prices, not rates); "Who is eligible for stamp duty exemption WA?".</p></div>
+    <div class="row"><h4>Deposit and LMI</h4><p>"How much LMI on a 10% deposit?", "How much deposit do I need for a $700,000 house?", "Is $40,000 enough for a house deposit?".</p></div>
+    <div class="row"><h4>Rental yield</h4><p>"Is 4.5% rental yield good?", "Is 3.5% a good rental yield?", "What is the 30% rent rule in Australia?".</p></div>
+    <div class="row"><h4>CGT</h4><p>"What is the 6 year rule for capital gains tax on property?", "How much capital gains tax will I pay on $300,000?", "How do I avoid paying CGT on investment property?".</p></div>
+    <div class="row"><h4>Buyers agent</h4><p>"Do you pay a buyer's agent upfront?", "Why are buyers agents so expensive?" (we answer tax deductibility and negotiation).</p></div>
+    <div class="row"><h4>Inspections</h4><p>"Who pays for building and pest inspection in QLD?", "Can you claim building and pest inspection cost?".</p></div>
+    <div class="row"><h4>Suburbs</h4><p>"Is {suburb} a good investment?", "What suburbs will boom in 2026 in QLD?", "Which suburb in Sydney has the highest median house price?" (the state rankings can answer the last one).</p></div>
+    <div class="row"><h4>Commission</h4><p>"Do real estate agents get paid if the house doesn't sell?" (answered on the state guides, not the national fees guide), "Is 70/30 a good commission split?" (agent-side; skip).</p></div>
+  </div>
+  <p>Every commission, stamp duty, cost-of-selling and calculator page already has FAQPage schema, so adding a question is a content change, not a template change.</p>
+
+  <h2 id="s7"><span class="k">7</span>Priority order</h2>
+  <ol class="prio">
+    <li><span class="k">1</span><div><b>Rental-market page as a landlord lead page</b><span class="tag t-new">new</span> (3.1): appraisal request block, property manager fees line, WA feed. A new lead type; 1,900 impressions of landlord intent on pages with nothing on them.</div></li>
+    <li><span class="k">2</span><div><b>Stamp duty state pages calculator-first</b><span class="tag t-track">tracker 20</span> (3.2): 33,100 + 27,100 + 27,100 + 14,800 + 8,100 searches a month on SERPs where small pages with the tool rank.</div></li>
+    <li><span class="k">3</span><div><b>Suburb profile title and FAQ</b><span class="tag t-track">tracker 2</span> (3.8): suburb and "house prices" first, an "Is {suburb} a good investment?" FAQ; resolves the Hawthorn / Hawthorn East pick and the 79% postcode-lookup impressions.</div></li>
+    <li><span class="k">4</span><div><b>Commission calculator rollout</b><span class="tag t-track">tracker 8</span> plus the capital city in the title of each state guide.</div></li>
+    <li><span class="k">5</span><div><b>Property management fees</b><span class="tag t-new">new</span>: state table, annual cost calculator, then state pages (3.7). The highest AI-to-Google ratio among the guides we already have.</div></li>
+    <li><span class="k">6</span><div><b>Appraisal and valuation</b><span class="tag t-new">new</span>: instant range from published medians on <code>/appraisal</code> and the house-worth guide, then <code>/property-valuation</code> (3.4).</div></li>
+    <li><span class="k">7</span><div><b>Best suburbs city editions</b><span class="tag t-track">tracker 22, 45</span> (3.6) and the H1 bug.</div></li>
+    <li><span class="k">8</span><div><b>Calculators</b><span class="tag t-new">new</span>: header link to the tools, borrowing-power result table and H1, LMI estimator, negative gearing calculator (3.3).</div></li>
+    <li><span class="k">9</span><div><b>Inspection, conveyancing, renovation</b><span class="tag t-new">new</span>: cost-first rewrites with tables (3.7).</div></li>
+    <li><span class="k">10</span><div><b>Index check on zero-impression guides</b><span class="tag t-track">tracker 44</span> (section 4, reading 2) and the house-and-land decision (3.7).</div></li>
+  </ol>
+  <p>Items 2, 3, 4 and 7 are already on the tracker; this review adds the evidence and the SERP shape for each. Items 1, 5, 6, 8 and 9 are new.</p>
+
+  <h2 id="s8"><span class="k">8</span>Sources and files</h2>
+  <div class="tbl"><table>
+    <tr><th>Source</th><th>What was pulled</th><th>Window</th></tr>
+    <tr><td class="key">Google Search Console API</td><td>service account on <code>sc-domain:yourpropertyguide.com.au</code>: queries, pages, query×page, daily totals</td><td>30 Jun to 27 Sep 2026 (90 days); 28-day windows to 27 Sep and to 30 Aug</td></tr>
+    <tr><td class="key">Bing Webmaster API</td><td>query stats, page stats, rank and traffic, crawl stats</td><td>17 Apr to 25 Sep 2026 (sampled rows); 28-day cut from 29 Aug</td></tr>
+    <tr><td class="key">Google Keyword Planner</td><td>AU, Google Search: 53,890 keyword ideas from 12 commercial seed batches; historical metrics for 2,393 exact queries</td><td>12-month averages to Aug 2026</td></tr>
+    <tr><td class="key">DataForSEO</td><td>search-intent labels for the top 3,000 non-postcode Search Console queries; AI search volume for 936 queries; 54 live Google AU SERPs (top 10, People Also Ask, AI Overview); 58 blocked competitor pages fetched with JavaScript</td><td>30 Sep 2026</td></tr>
+    <tr><td class="key">Page parser</td><td>244 of our pages (guides, tools, suburb, ranking) and 251 competitor URLs: title, H1, H2s, JSON-LD types, word count, tables, inputs, FAQ</td><td>30 Sep 2026</td></tr>
+  </table></div>
+  <p>DataForSEO spend: about US$0.73. Files in <code>docs/seo-baselines/2026-09-30/</code>: <code>gsc-*.csv</code>, <code>bing-*.csv</code>, <code>kp-*.csv</code>, <code>dfs-*.csv</code>, <code>serp-summary.csv</code>, <code>compare.csv</code>, <code>compare-digest.txt</code>; raw API responses in <code>raw/</code> (gitignored). Scripts: <code>~/Desktop/Ads/ypg-commercial-intent-review-2026-09-30/</code>, with <code>gsc.py</code> as the Search Console client. Three portals (realestate.com.au, domain.com.au, property.com.au) blocked page fetches even through DataForSEO, so their suburb pages are compared on title and rank only.</p>
+</div>
