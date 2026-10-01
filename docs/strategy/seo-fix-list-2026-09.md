@@ -397,3 +397,17 @@ Same gate as the rest: review before merging, one template change per fortnight,
       three PAA questions. Evidence: 1,000 Google / 295 AI searches, 0 GSC impressions, Bing 11 clicks / 444 impressions at
       4.7; the AI Overview's state table is LocalAgentFinder's (13 Mar 2026) and the page now carries it with the source.
       Next: state pages (3.7). Could break: nothing outside the one URL.
+
+
+Source: `docs/seo-baselines/2026-09-30/commercial-intent-review.md` (section and priority numbers below are the review's).
+
+- [ ] 3.7 (priority 9) [code][content] Inspection and conveyancing guides cost-first. /guides/building-pest-inspection
+      titled "Building and Pest Inspection Cost 2026: Prices by City" (H1 keeps the long form) with a city by
+      property type cost table (eight capitals, every figure from a dated inspector or price-guide page), combined vs
+      building-only vs pest-only, who pays, and the four PAA answers; /guides/conveyancing-guide titled "Conveyancing
+      Fees 2026: Costs in NSW, VIC, QLD & Every State" (H1 keeps the long form) with a state fee table, a cost estimator
+      (src/lib/conveyancing-costs.ts), NSW, VIC, QLD and other-state sections from the 2026/27 registry and PEXA
+      schedules, and five PAA answers. DONE 1 Oct 2026 — PR #88.
+      Not built: separate NSW, VIC and QLD conveyancing cost pages (the review's fix list names them; no state section
+      passed 1,000 words, so the PR proposes them instead of creating URLs). Tasmania's conveyancing figures rest on one
+      fee guide and one published average; refresh when a second source appears.

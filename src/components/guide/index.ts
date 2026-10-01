@@ -28,5 +28,6 @@ export type { RelatedGuide } from "./RelatedGuides";
 export type { MatchCTAKind } from "./MatchCTA";
 export type { SourceItem } from "./Sources";
 export { SellingCostTable } from "./SellingCostTable";
+export { ScrollTable } from "./ScrollTable";
 export { CommissionCalculatorEmbed } from "./CommissionCalculatorEmbed";
 export { CostOfSellingStateGuide, costOfSellingFrontmatter, costOfSellingMetadata } from "./CostOfSellingStateGuide";

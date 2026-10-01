@@ -8,6 +8,8 @@
 // guaranteed to be cut or rewritten in results (see the search review: the
 // current suburb title is shown as "Morayfield Postcode 4506 (QLD) - Suburbs").
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import type { Suburb } from "@/types";
 import {
   suburbBuyDescription,
@@ -200,6 +202,48 @@ describe("stamp duty state guide titles", () => {
       const g = STAMP_DUTY_GUIDES[s];
       expect(g.description.length, `${s}: ${g.description}`).toBeLessThanOrEqual(DESCRIPTION_BUDGET);
       expect(g.description).toContain(money(dutyFor(s, 750_000, "owner").total));
+    }
+  });
+});
+
+// Commercial intent review 30 Sep 2026, section 3.7: the inspection and
+// conveyancing guides lead with cost, the way the ranking pages do. The
+// <title> and og:title use a short form inside the 60-character budget; the
+// H1 and Article headline keep the long form from the frontmatter. Read as
+// text so the test does not import a page module.
+describe("cost-first guide titles", () => {
+  const read = (slug: string) =>
+    readFileSync(join(__dirname, "../../src/app/(marketing)/guides", slug, "page.tsx"), "utf8");
+  // FRONTMATTER.title: the H1 (GuideArticleLayout) and the Article headline.
+  const h1Of = (src: string) => src.match(/const FRONTMATTER: GuideFrontmatter = \{\s*title: "([^"]+)",/)?.[1];
+  const seoOf = (src: string) => src.match(/const SEO_TITLE = "([^"]+)";/)?.[1];
+  const usesSeoTitle = (src: string) => {
+    expect(src).toMatch(/export const metadata: Metadata = \{\s*title: SEO_TITLE,/);
+    expect(src).toMatch(/openGraph: \{\s*url: [^\n]*\n\s*title: SEO_TITLE,/);
+  };
+
+  it("building and pest inspection guide: short <title>, long H1", () => {
+    const src = read("building-pest-inspection");
+    const seo = seoOf(src)!;
+    expect(seo).toBe("Building and Pest Inspection Cost 2026: Prices by City");
+    expect(seo.length).toBeLessThanOrEqual(TITLE_BUDGET);
+    expect(h1Of(src)).toBe("Building and Pest Inspection Cost in Australia (2026): Prices by City and Property Type");
+    usesSeoTitle(src);
+    expect(src).toContain("faqs={INSPECTION_FAQS}");
+    expect(src).toContain('updatedAt: "2026-09-30"');
+  });
+
+  it("conveyancing guide: short <title> naming NSW, long H1", () => {
+    const src = read("conveyancing-guide");
+    const seo = seoOf(src)!;
+    expect(seo).toBe("Conveyancing Fees 2026: Costs in NSW, VIC, QLD & Every State");
+    expect(seo.length).toBeLessThanOrEqual(TITLE_BUDGET);
+    expect(h1Of(src)).toBe("Conveyancing Fees in Australia (2026): Costs in NSW, VIC, QLD and Every State");
+    usesSeoTitle(src);
+    expect(src).toContain("faqs={CONVEYANCING_FAQS}");
+    expect(src).toContain('updatedAt: "2026-09-30"');
+    for (const id of ["cost-nsw", "cost-vic", "cost-qld", "cost-other-states", "estimator"]) {
+      expect(src).toContain(`id="${id}"`);
     }
   });
 });
