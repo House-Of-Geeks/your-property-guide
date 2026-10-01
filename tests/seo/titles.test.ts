@@ -549,3 +549,22 @@ describe("calculator page titles stay inside the SERP budget", () => {
     });
   }
 });
+
+// The best-suburbs city editions (tracker item 22): titles in the searched
+// form, inside the budget, for every category and capital.
+describe("best-suburbs city edition titles", () => {
+  it("stay inside the SERP budget for every category and capital, and carry no figure", async () => {
+    const { CITY_EDITION_CATEGORIES, cityEditionTitle, cityEditionDescription } = await import("@/lib/city-editions");
+    const { CAPITAL_CITIES } = await import("@/lib/utils/metro");
+    for (const category of CITY_EDITION_CATEGORIES) {
+      for (const city of CAPITAL_CITIES) {
+        const title = cityEditionTitle(category, city);
+        expect(title.length, title).toBeLessThanOrEqual(TITLE_BUDGET);
+        expect(title).not.toMatch(/\$/);
+        const description = cityEditionDescription({ category, city, suburbs: [] });
+        expect(description.length, description).toBeLessThanOrEqual(DESCRIPTION_BUDGET);
+        expect(description).not.toMatch(/\$/);
+      }
+    }
+  });
+});

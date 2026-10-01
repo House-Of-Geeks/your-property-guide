@@ -14,6 +14,21 @@ import {
   STATES,
   STATE_NAME,
 } from "@/components/best-suburbs/BestSuburbsListing";
+import { CityEditionPage } from "@/components/best-suburbs/CityEdition";
+import { CAPITAL_CITIES, getCapitalCity, type CapitalCity } from "@/lib/utils/metro";
+import {
+  CITY_EDITION_CATEGORIES,
+  cityEditionDescription,
+  cityEditionPath,
+  cityEditionTitle,
+  hasCityEdition,
+  isCityEditionCategory,
+} from "@/lib/city-editions";
+import {
+  cityEditionLinks,
+  getCityEdition,
+  indexableCityEditionsForLinks,
+} from "@/lib/services/city-rankings-service";
 
 export const revalidate = 86400;
 
@@ -40,6 +55,12 @@ export async function generateStaticParams() {
       out.push({ category, state: state.toLowerCase() });
     }
   }
+  // The city editions share the segment: /best-suburbs/{category}/{city}.
+  for (const category of CITY_EDITION_CATEGORIES) {
+    for (const city of CAPITAL_CITIES) {
+      if (isRanked(category, city.state)) out.push({ category, state: city.slug });
+    }
+  }
   return out;
 }
 
@@ -56,12 +77,38 @@ function normaliseState(s: string): string | null {
   return (STATES as readonly string[]).includes(upper) ? upper : null;
 }
 
+// The second segment is a state code or a capital city's slug. A city
+// edition (tracker item 22) is the same category over Greater {City}, with a
+// section per suburb; it answers noindex and stays out of the city sitemap
+// when fewer than ten suburbs qualify (hasCityEdition, read by both).
+async function cityEditionMetadata(category: RankingCategory, city: CapitalCity): Promise<Metadata> {
+  const edition = await getCityEdition(category, city);
+  const title = cityEditionTitle(category, city);
+  const description = cityEditionDescription(edition);
+  const canonical = `${SITE_URL}${cityEditionPath(category, city.slug)}`;
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    robots: hasCityEdition(category, city.state, edition.suburbs.length) ? undefined : { index: false, follow: true },
+    openGraph: {
+      url: canonical,
+      title: `${title} | ${SITE_NAME}`,
+      description,
+      type: "website",
+    },
+    twitter: { card: "summary_large_image" },
+  };
+}
+
 export async function generateMetadata({
   params,
 }: CategoryStatePageProps): Promise<Metadata> {
   const { category, state } = await params;
 
   if (!isValidCategory(category)) return { title: "Not Found" };
+  const city = getCapitalCity(state);
+  if (city) return isCityEditionCategory(category) ? cityEditionMetadata(category, city) : { title: "Not Found" };
   const upperState = normaliseState(state);
   if (!upperState) return { title: "Not Found" };
 
@@ -97,6 +144,14 @@ export default async function BestSuburbsCategoryStatePage({
   const { category, state } = await params;
 
   if (!isValidCategory(category)) notFound();
+  const city = getCapitalCity(state);
+  if (city) {
+    if (!isCityEditionCategory(category)) notFound();
+    // One after the other: the runtime pool holds a single connection.
+    const edition = await getCityEdition(category, city);
+    const indexable = await indexableCityEditionsForLinks();
+    return <CityEditionPage edition={edition} indexable={indexable} updatedAt={new Date()} />;
+  }
   const upperState = normaliseState(state);
   if (!upperState) notFound();
 
@@ -104,6 +159,8 @@ export default async function BestSuburbsCategoryStatePage({
   const suburbs = await getRankedSuburbs(category, upperState, 50);
   const eligible = await getRankingEligibleCount(category, upperState);
   const note = rankingNote(category, upperState, suburbs.length, eligible);
+  // The state's city edition, where it has ten suburbs to show.
+  const cityEditions = cityEditionLinks(await indexableCityEditionsForLinks(), { category, state: upperState });
 
   return (
     <BestSuburbsListing
@@ -111,6 +168,7 @@ export default async function BestSuburbsCategoryStatePage({
       state={upperState}
       suburbs={suburbs}
       note={note}
+      cityEditions={cityEditions}
       useStaticStateRoutes
     />
   );

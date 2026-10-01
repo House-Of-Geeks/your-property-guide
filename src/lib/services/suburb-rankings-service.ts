@@ -129,12 +129,15 @@ export function yieldStates(state?: string): string[] {
 // population that makes a rental market, and a yield inside the clamp the
 // suburb pages use. The state list is from YIELD_RANKED_STATES, never from
 // the request. Read by the suburb finder too, so the yield it scores is the
-// yield this ranking prints.
-export function yieldFromSql(states: string[]): string {
+// yield this ranking prints, and by the best-suburbs city editions, which
+// pass the city's postcode ranges as `extraWhere` (cityPostcodeSql). The
+// lateral row also carries the rent's period and source for the callers
+// that print them.
+export function yieldFromSql(states: string[], extraWhere = ""): string {
   return `
         FROM "Suburb" s
         JOIN LATERAL (
-          SELECT rs."medianRentHouse" AS rent
+          SELECT rs."medianRentHouse" AS rent, rs."periodDate" AS "rentPeriod", rs.source AS "rentSource"
           FROM "SuburbRentalStat" rs
           WHERE rs."suburbSlug" = s.slug
           ORDER BY rs."periodDate" DESC, rs."updatedAt" DESC
@@ -144,7 +147,8 @@ export function yieldFromSql(states: string[]): string {
           AND s.state IN (${states.map((st) => `'${st}'`).join(", ")})
           AND s.population >= ${YIELD_MIN_POPULATION}
           AND r.rent > 0
-          AND (r.rent * 52.0 / s."medianHousePrice" * 100) <= ${MAX_PLAUSIBLE_GROSS_YIELD}`;
+          AND (r.rent * 52.0 / s."medianHousePrice" * 100) <= ${MAX_PLAUSIBLE_GROSS_YIELD}${extraWhere ? `
+          AND (${extraWhere})` : ""}`;
 }
 
 export async function getRankedSuburbs(

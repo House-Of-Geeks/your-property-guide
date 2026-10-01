@@ -1,0 +1,346 @@
+// The best-suburbs city editions (review of 30 Sep 2026, section 3.6,
+// tracker item 22): which pages exist, what makes one indexable, which
+// suburbs belong to a city, and what the copy promises.
+import fs from "node:fs";
+import { describe, expect, it } from "vitest";
+import {
+  CITY_EDITION_CATEGORIES,
+  CITY_EDITION_POOL,
+  CITY_EDITION_SIZE,
+  cityEditionDescription,
+  cityEditionFaqs,
+  cityEditionH1,
+  cityEditionLede,
+  cityEditionMethod,
+  cityEditionPath,
+  cityEditionTitle,
+  hasCityEdition,
+  isCityEditionCategory,
+  metricSummary,
+  showUnderBudget,
+  suburbParagraph,
+  underBudget,
+  type CityEdition,
+  type CityEditionSuburb,
+} from "@/lib/city-editions";
+import { CAPITAL_CITIES, capitalCityFor, cityPostcodeSql, cityPostcodeWhere, distanceKm, getCapitalCity, kmToCbd } from "@/lib/utils/metro";
+import { GROWTH_RANKED_STATES, YIELD_RANKED_STATES, isRanked, type RankingCategory } from "@/lib/ranking-notes";
+
+const read = (f: string) => fs.readFileSync(f, "utf8");
+const brisbane = getCapitalCity("brisbane")!;
+const sydney = getCapitalCity("sydney")!;
+const perth = getCapitalCity("perth")!;
+
+function suburb(over: Partial<CityEditionSuburb>): CityEditionSuburb {
+  return {
+    slug: "morayfield-qld-4506", name: "Morayfield", state: "QLD", postcode: "4506",
+    medianHousePrice: 660_000, medianUnitPrice: 0, annualGrowthHouse: 0, medianBasis: "area",
+    population: 25_000, householdsFamily: 62, walkScore: 40, avgSchoolIcsea: 980, schoolCount: 6,
+    medianRentHouse: 520, rentPeriod: new Date("2026-06-30T00:00:00Z"), rentSource: "rental-qld", grossRentalYield: 4.1,
+    kmToCbd: 40, ...over,
+  };
+}
+
+/** A pool of `count` rows in ranking order, each distinct. */
+function pool(count: number, over: (i: number) => Partial<CityEditionSuburb>): CityEditionSuburb[] {
+  return Array.from({ length: count }, (_, i) => suburb({ slug: `s${i}-qld-4${String(i).padStart(3, "0")}`, name: `Suburb ${i + 1}`, postcode: `4${String(i).padStart(3, "0")}`, ...over(i) }));
+}
+
+function edition(category: RankingCategory, city = brisbane, count = CITY_EDITION_POOL, over: (i: number) => Partial<CityEditionSuburb> = () => ({})): CityEdition {
+  return { category, city, suburbs: pool(count, over), eligible: 120, salesPeriod: city.state === "NSW" ? "calendar 2025" : "2024" };
+}
+
+const words = (s: string) => s.trim().split(/\s+/).length;
+
+describe("which pages are city editions", () => {
+  it("five categories, never flood risk (no hazard data, tracker item 49)", () => {
+    expect([...CITY_EDITION_CATEGORIES]).toEqual(["best-rental-yield", "highest-growth", "for-families", "most-affordable", "most-walkable"]);
+    expect(isCityEditionCategory("lowest-flood-risk")).toBe(false);
+    expect(isCityEditionCategory("best-rental-yield")).toBe(true);
+  });
+  it("is indexable only with ten suburbs, in a state where the category is ranked", () => {
+    for (const c of CITY_EDITION_CATEGORIES) {
+      for (const city of CAPITAL_CITIES) {
+        expect(hasCityEdition(c, city.state, CITY_EDITION_SIZE - 1), `${c} ${city.slug} nine`).toBe(false);
+        expect(hasCityEdition(c, city.state, 0), `${c} ${city.slug} none`).toBe(false);
+        expect(hasCityEdition(c, city.state, CITY_EDITION_SIZE), `${c} ${city.slug} ten`).toBe(isRanked(c, city.state));
+        expect(hasCityEdition(c, city.state, CITY_EDITION_POOL), `${c} ${city.slug} fifteen`).toBe(isRanked(c, city.state));
+      }
+    }
+    // yield only where a rent is measured for the suburb, growth only where a change is measured
+    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("best-rental-yield", c.state, 10)).map((c) => c.slug)).toEqual(["melbourne", "brisbane"]);
+    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("highest-growth", c.state, 10)).map((c) => c.slug)).toEqual(["sydney", "adelaide"]);
+    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("best-rental-yield", c.state, 10)).map((c) => c.state)).toEqual([...YIELD_RANKED_STATES]);
+    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("highest-growth", c.state, 10)).map((c) => c.state)).toEqual([...GROWTH_RANKED_STATES]);
+    expect(hasCityEdition("lowest-flood-risk", "QLD", 50)).toBe(false);
+  });
+  it("the page and the city sitemap read the predicate, from the same list", () => {
+    const page = read("src/app/(marketing)/best-suburbs/[category]/[state]/page.tsx");
+    expect(page).toContain("robots: hasCityEdition(category, city.state, edition.suburbs.length) ? undefined : { index: false, follow: true },");
+    // and the state pages keep theirs
+    expect(page).toContain("robots: isRanked(category, upperState) ? undefined : { index: false, follow: true },");
+    const sitemap = read("src/app/(marketing)/best-suburbs/cities/sitemap.ts");
+    expect(sitemap).toContain("getIndexableCityEditions()");
+    expect(sitemap).toContain('export const dynamic = "force-dynamic"');
+    const service = read("src/lib/services/city-rankings-service.ts");
+    // the sitemap list runs the page's own rows query and the page's own predicate on it
+    expect(service).toContain("const rows = await fetchRows(category, city);\n        if (hasCityEdition(category, city.state, rows.length)) out.push({ category, citySlug: city.slug });");
+    expect(service).toContain("const rows = await fetchRows(category, city);\n  const eligible");
+    expect(service).toContain("suburbs: rows.map((r) => r.suburb)");
+    expect(read("src/app/sitemap.xml/route.ts")).toContain("/best-suburbs/cities/sitemap.xml");
+  });
+  it("the state pages and the category pages link only to editions on that list", () => {
+    for (const f of ["src/app/(marketing)/best-suburbs/[category]/[state]/page.tsx", "src/app/(marketing)/best-suburbs/[category]/page.tsx"]) {
+      expect(read(f), f).toContain("cityEditionLinks(await indexableCityEditionsForLinks()");
+    }
+    expect(read("src/components/best-suburbs/BestSuburbsListing.tsx")).toContain("cityEditions.map((e) =>");
+  });
+  it("the queries apply the published-medians rule, the locality filter and no Promise.all", () => {
+    const service = read("src/lib/services/city-rankings-service.ts");
+    expect(service).toContain("...PUBLISHED_GROWTH");
+    expect(service).toContain("...PUBLISHED_HOUSE_MEDIAN,");
+    expect(service).toContain("publishedSales(row)");
+    expect(service).toContain("LOCALITIES_ONLY");
+    expect(service).toContain("isNonLocalitySlug(r.slug)");
+    expect(service).not.toContain("Promise.all");
+    expect(service).not.toMatch(/medianHousePrice: \{ gt: 0 \}/);
+    expect(service).not.toMatch(/isReliableSalesSource|isPlausibleAnnualGrowth/);
+    // growth is fetched only where a feed measures it; hazard is never read
+    expect(service).toContain("if (!isCityEditionCategory(category) || !isRanked(category, city.state)) return [];");
+    expect(service).not.toMatch(/suburbHazard|floodClass/);
+  });
+});
+
+describe("city membership", () => {
+  it("the Prisma filter and the SQL clause agree with capitalCityFor", () => {
+    const samples: [string, string, string | null][] = [
+      ["QLD", "4506", "brisbane"], ["QLD", "4000", "brisbane"], ["QLD", "4207", "brisbane"], ["QLD", "4300", "brisbane"],
+      ["QLD", "4217", null], ["QLD", "4870", null], ["NSW", "2000", "sydney"], ["NSW", "2250", null], ["NSW", "2560", "sydney"],
+      ["WA", "6000", "perth"], ["WA", "6210", "perth"], ["WA", "6211", null], ["VIC", "3000", "melbourne"], ["VIC", "3350", null],
+      ["SA", "5000", "adelaide"], ["TAS", "7000", "hobart"], ["ACT", "2600", "canberra"], ["NT", "0800", "darwin"], ["NT", "0870", null],
+    ];
+    for (const [state, postcode, expected] of samples) {
+      const city = capitalCityFor(state, postcode);
+      expect(city?.slug ?? null, `${state} ${postcode}`).toBe(expected);
+      for (const c of CAPITAL_CITIES) {
+        const w = cityPostcodeWhere(c);
+        const inWhere = w.state === state && w.OR.some((o) => postcode >= o.postcode.gte && postcode <= o.postcode.lte);
+        expect(inWhere, `${c.slug} where ${state} ${postcode}`).toBe(c.slug === expected);
+      }
+    }
+    // the SQL clause is the same ranges, zero-padded, on the alias
+    expect(cityPostcodeSql(perth)).toBe("s.state = 'WA' AND ((s.postcode >= '6000' AND s.postcode <= '6175') OR (s.postcode >= '6210' AND s.postcode <= '6210'))");
+    expect(cityPostcodeSql(getCapitalCity("darwin")!, "x")).toBe("x.state = 'NT' AND ((x.postcode >= '0800' AND x.postcode <= '0832'))");
+    expect(cityPostcodeWhere(getCapitalCity("darwin")!).OR).toEqual([{ postcode: { gte: "0800", lte: "0832" } }]);
+  });
+  it("the city rollup reads the same filter", () => {
+    expect(read("src/lib/services/city-market-service.ts")).toContain("...cityPostcodeWhere(city),");
+  });
+  it("measures the distance to the GPO from the centroid, and prints none without one", () => {
+    // Brisbane GPO to Morayfield's centroid is a little over 40 km.
+    const km = kmToCbd(brisbane, { lat: -27.1, lng: 152.95 });
+    expect(km).toBeGreaterThan(38);
+    expect(km).toBeLessThan(44);
+    expect(kmToCbd(brisbane, { lat: null, lng: null })).toBeNull();
+    expect(distanceKm(sydney.cbd, sydney.cbd)).toBe(0);
+    // Sydney GPO to Melbourne GPO is about 714 km
+    expect(Math.round(distanceKm(sydney.cbd, getCapitalCity("melbourne")!.cbd))).toBeGreaterThan(700);
+    expect(Math.round(distanceKm(sydney.cbd, getCapitalCity("melbourne")!.cbd))).toBeLessThan(730);
+    for (const c of CAPITAL_CITIES) {
+      expect(c.cbd.lat, c.slug).toBeLessThan(-10);
+      expect(c.cbd.lng, c.slug).toBeGreaterThan(110);
+    }
+  });
+});
+
+describe("titles and descriptions", () => {
+  it("title and H1 are in the searched form, under 60 characters, with no figure", () => {
+    for (const c of CITY_EDITION_CATEGORIES) {
+      for (const city of CAPITAL_CITIES) {
+        const t = cityEditionTitle(c, city);
+        expect(t.length, t).toBeLessThanOrEqual(60);
+        expect(t).not.toMatch(/\$/);
+        expect(t).toContain(city.name);
+        expect(t).toContain("2026");
+        expect(cityEditionH1(c, city)).toBe(t);
+        expect(t).not.toMatch(/^The for /);
+      }
+    }
+    expect(cityEditionTitle("best-rental-yield", brisbane)).toBe("Best Suburbs to Invest in Brisbane 2026: Rental Yield");
+    expect(cityEditionTitle("for-families", perth)).toBe("Best Suburbs for Families in Perth 2026");
+    expect(cityEditionTitle("most-affordable", brisbane)).toBe("Cheapest Suburbs in Brisbane 2026");
+    expect(cityEditionTitle("highest-growth", sydney)).toBe("Fastest Growing Suburbs in Sydney 2026");
+    expect(cityEditionTitle("most-walkable", getCapitalCity("melbourne")!)).toBe("Most Walkable Suburbs in Melbourne 2026");
+    expect(cityEditionPath("best-rental-yield", "brisbane")).toBe("/best-suburbs/best-rental-yield/brisbane");
+  });
+  it("descriptions fit 160 characters with the longest names and promise no figure", () => {
+    const long = (i: number) => ({ name: ["Karratha Industrial Estate", "Catherine Hill Bay", "Upper Caboolture", "Surfers Paradise"][i % 4] });
+    for (const c of CITY_EDITION_CATEGORIES) {
+      for (const city of CAPITAL_CITIES) {
+        const d = cityEditionDescription(edition(c, city, 10, long));
+        expect(d.length, d).toBeLessThanOrEqual(160);
+        // no price and no measured figure; the family list's 40% is its rule, not a figure
+        expect(d).not.toMatch(/\$|\d+\.\d+%/);
+        expect(d.replace("40% or more", "")).not.toMatch(/%/);
+        expect(d).toContain(city.name);
+      }
+    }
+    expect(cityEditionDescription(edition("best-rental-yield", brisbane, 10, (i) => ({ name: ["Morayfield", "Caboolture", "Kallangur"][i] ?? `S${i}` })))).toBe(
+      "Ten Greater Brisbane suburbs ranked by gross rental yield on published medians and bond rents: Morayfield, Caboolture and Kallangur. Method, table and FAQ.",
+    );
+  });
+  it("the lede names the ten", () => {
+    const lede = cityEditionLede(edition("for-families", perth));
+    expect(lede).toContain("the ten best Greater Perth suburbs for families are Suburb 1, Suburb 2");
+    expect(lede).toContain("Suburb 9 and Suburb 10.");
+    expect(lede).not.toContain("Suburb 11");
+  });
+});
+
+describe("what the page prints", () => {
+  it("the method names the data, its period, who is in and how distance is measured", () => {
+    const m = cityEditionMethod(edition("best-rental-yield", brisbane));
+    expect(m.join(" ")).toContain("Ranked by gross rental yield, highest first, from 120 Greater Brisbane suburbs");
+    expect(m.join(" ")).toContain("ABS statistical-area (SA2) medians");
+    expect(m.join(" ")).toContain("The medians are for 2024.");
+    expect(m.join(" ")).toContain("Queensland RTA bond data, June 2026 period");
+    expect(m.join(" ")).toContain("These ABS medians come without a 12-month change");
+    expect(m.join(" ")).toContain("postcodes 4000 to 4207, 4300 to 4306, 4500 to 4521");
+    expect(m.join(" ")).toContain("straight line from the suburb's postcode centroid to the Brisbane GPO");
+    const g = cityEditionMethod(edition("highest-growth", sydney)).join(" ");
+    expect(g).toContain("NSW Valuer General");
+    expect(g).toContain("The medians are for calendar 2025.");
+    expect(g).toContain("A change beyond 25% in a year is left out");
+    expect(cityEditionMethod(edition("for-families", perth)).join(" ")).toContain("a dash means none is published");
+    for (const line of m) expect(line).not.toMatch(/—|–/);
+    // never a 0 as a figure: a city with nothing qualifying names no count
+    const empty = cityEditionMethod({ ...edition("most-affordable", getCapitalCity("darwin")!, 0), eligible: 0 });
+    expect(empty[0]).toContain("from the Greater Darwin suburbs with a published median");
+    expect(empty.join(" ")).not.toMatch(/\b0 Greater/);
+  });
+  it("a suburb paragraph prints only published figures, never a 0, and growth only where measured", () => {
+    const e = edition("best-rental-yield", brisbane);
+    const p = suburbParagraph(e, suburb({}), 3);
+    expect(p).toBe("Morayfield (4506) is about 40 km from the Brisbane CBD. The median house price is $660,000 (the ABS statistical-area median for the area that carries its name) and the latest median house rent from Queensland RTA bond data is $520 a week, a gross yield of 4.1%, the 3rd highest in Greater Brisbane. 25,000 people lived there at the 2021 Census.");
+    // no centroid, no distance; no growth, no growth sentence
+    expect(suburbParagraph(e, suburb({ kmToCbd: null }), 1)).toMatch(/^Morayfield \(4506\) is in Greater Brisbane\./);
+    expect(suburbParagraph(e, suburb({ annualGrowthHouse: 0 }), 1)).not.toMatch(/year earlier/);
+    // a measured change prints, up or down
+    const nsw = edition("most-affordable", sydney);
+    expect(suburbParagraph(nsw, suburb({ state: "NSW", medianBasis: "suburb", annualGrowthHouse: -3.2, walkScore: 0 }), 2)).toContain("The median is down 3.2% on a year earlier.");
+    expect(suburbParagraph(nsw, suburb({ state: "NSW", medianBasis: "suburb", annualGrowthHouse: 6, walkScore: 55 }), 2)).toContain("the 2nd lowest published median in Greater Sydney. The median is up 6.0% on a year earlier. Walk score 55 out of 100. 25,000 people lived there at the 2021 Census, and families with dependants are 62% of households.");
+    // a family suburb without a published median says so instead of printing $0
+    const fam = suburbParagraph(edition("for-families", perth), suburb({ medianHousePrice: 0, medianBasis: null, state: "WA" }), 1);
+    expect(fam).toContain("The six schools we hold for the suburb average an ICSEA of 980 (ACARA), the highest in Greater Perth");
+    expect(suburbParagraph(edition("for-families", perth), suburb({ schoolCount: 1, avgSchoolIcsea: 1150 }), 4)).toContain("The one school we hold for the suburb has an ICSEA of 1150 (ACARA), the 4th highest in Greater Perth");
+    expect(fam).toContain("No house median is published for it yet.");
+    expect(fam).not.toMatch(/\$0\b/);
+    // population 0 prints nothing
+    expect(suburbParagraph(e, suburb({ population: 0 }), 1)).not.toContain("Census");
+    expect(suburbParagraph(edition("most-walkable", perth), suburb({ walkScore: 92, medianHousePrice: 0, medianBasis: null }), 1)).toContain("Its walk score is 92 out of 100, the highest in Greater Perth");
+    expect(suburbParagraph(edition("highest-growth", sydney), suburb({ annualGrowthHouse: 12.5, medianBasis: "suburb" }), 1)).toContain("The median house price rose 12.5% over 12 months to $660,000, the largest rise in Greater Sydney");
+    expect(metricSummary("best-rental-yield", suburb({}))).toBe("Gross yield 4.1%, median $660,000, rent $520 a week");
+    expect(metricSummary("most-affordable", suburb({ medianHousePrice: 0 }))).toBeUndefined();
+  });
+  it("the under-$500,000 section only where the data supports it, and never on the cheapest list", () => {
+    const none = edition("best-rental-yield", brisbane, 15, () => ({ medianHousePrice: 700_000 }));
+    expect(underBudget(none)).toEqual([]);
+    expect(showUnderBudget(none)).toBe(false);
+    const two = edition("best-rental-yield", brisbane, 15, (i) => ({ medianHousePrice: i < 2 ? 450_000 : 700_000 }));
+    expect(showUnderBudget(two)).toBe(false);
+    const some = edition("best-rental-yield", brisbane, 15, (i) => ({ medianHousePrice: i % 3 === 0 ? 450_000 : 700_000 }));
+    expect(underBudget(some).map((s) => s.name)).toEqual(["Suburb 1", "Suburb 4", "Suburb 7", "Suburb 10", "Suburb 13"]);
+    expect(showUnderBudget(some)).toBe(true);
+    // an unpublished median (0) is never "under budget"
+    expect(underBudget(edition("for-families", perth, 15, () => ({ medianHousePrice: 0 })))).toEqual([]);
+    expect(showUnderBudget(edition("most-affordable", brisbane, 15, () => ({ medianHousePrice: 300_000 })))).toBe(false);
+  });
+});
+
+describe("the FAQ answers the People Also Ask from the data", () => {
+  const editions: CityEdition[] = [
+    edition("best-rental-yield", brisbane),
+    edition("best-rental-yield", getCapitalCity("melbourne")!, 15, () => ({ state: "VIC", medianBasis: "suburb", rentSource: "rental-vic" })),
+    edition("highest-growth", sydney, 15, (i) => ({ state: "NSW", medianBasis: "suburb", annualGrowthHouse: 20 - i, medianHousePrice: 900_000 + i * 10_000 })),
+    edition("for-families", perth, 15, () => ({ state: "WA" })),
+    edition("for-families", perth, 15, () => ({ state: "WA", medianHousePrice: 0, medianBasis: null })),
+    edition("most-affordable", sydney, 15, (i) => ({ state: "NSW", medianBasis: "suburb", annualGrowthHouse: i % 2 ? 4.2 : -1.5, medianHousePrice: 480_000 + i * 20_000 })),
+    edition("most-affordable", brisbane, 15, (i) => ({ medianHousePrice: 480_000 + i * 20_000 })),
+    edition("most-walkable", perth, 15, () => ({ state: "WA" })),
+  ];
+  it("every answer is 40 words or more, carries a figure, names no forecast and uses no em-dash", () => {
+    for (const e of editions) {
+      const faqs = cityEditionFaqs(e);
+      expect(faqs.length, `${e.category} ${e.city.slug}`).toBeGreaterThanOrEqual(3);
+      for (const f of faqs) {
+        expect(words(f.answer), `${e.category} ${e.city.slug}: ${f.question}`).toBeGreaterThanOrEqual(40);
+        expect(f.answer, f.question).toMatch(/\d/);
+        expect(f.answer, f.question).not.toMatch(/—/);
+        // the question may be echoed in a refusal ("We do not predict which suburbs will boom"); nothing else forecasts
+        expect(f.answer.replace(/which suburbs will boom/gi, ""), f.question).not.toMatch(/\bwill (boom|rise|grow|double|outperform)\b/i);
+        expect(f.answer, f.question).not.toMatch(/\$0\b|\b0\.0%/);
+        expect(f.question).not.toMatch(/—/);
+      }
+    }
+  });
+  it("makes no hazard claim and no claim nothing measures", () => {
+    for (const e of editions) {
+      for (const f of cityEditionFaqs(e)) {
+        expect(f.answer, f.question).not.toMatch(/flood|bushfire|hazard/i);
+        expect(f.answer, f.question).not.toMatch(/typical suburb|revert|drift back/i);
+        expect(f.answer, f.question).not.toMatch(/\b1st\b|\b\d+ of the ten\b/);
+      }
+    }
+  });
+  it("answers the PAA of 'best suburbs to invest in brisbane'", () => {
+    const qs = cityEditionFaqs(editions[0]).map((f) => f.question);
+    expect(qs).toContain("What are the best suburbs in Brisbane to invest in for $500,000 or less?");
+    expect(qs).toContain("Which Brisbane suburbs are undervalued?");
+    expect(qs).toContain("Which suburbs will boom in Brisbane in 2026?");
+    expect(qs).toContain("Which Brisbane suburbs have the highest rental yields?");
+  });
+  it("answers the PAA of 'best suburbs in perth'", () => {
+    const qs = cityEditionFaqs(editions[3]).map((f) => f.question);
+    expect(qs).toContain("What suburbs should I stay away from in Perth?");
+    expect(qs).toContain("Which suburbs will boom in Perth in 2026?");
+    expect(qs).toContain("What are the best suburbs in Perth for families?");
+  });
+  it("'will boom' gets what the data shows: no growth figure where none is measured, the measured rises where one is", () => {
+    const qld = cityEditionFaqs(editions[0]).find((f) => f.question.startsWith("Which suburbs will boom"))!;
+    expect(qld.answer).toContain("We do not predict which suburbs will boom");
+    expect(qld.answer).toContain("we hold no growth figure to rank Brisbane suburbs on");
+    expect(qld.answer).toContain("ABS statistical-area (SA2) medians for 2024, and they come without a 12-month change");
+    const nsw = cityEditionFaqs(editions[2]).find((f) => f.question.startsWith("Which suburbs will boom"))!;
+    expect(nsw.answer).toContain("the largest measured rises over the last 12 months were Suburb 1 (+20.0%), Suburb 2 (+19.0%) and Suburb 3 (+18.0%)");
+    expect(nsw.answer).toContain("for calendar 2025");
+  });
+  it("the budget answer lists the suburbs under $500,000 or says there are none", () => {
+    const none = cityEditionFaqs(editions[0]).find((f) => f.question.includes("$500,000"))!;
+    expect(none.answer).toContain("None of the 15 Greater Brisbane suburbs at the top of this ranking has a published median house price under $500,000.");
+    expect(none.answer).toContain("The lowest among them is Suburb 1 at $660,000");
+    expect(none.answer).not.toMatch(/linked below/);
+    // every suburb under the budget is named, and the count matches the list
+    const six = cityEditionFaqs(edition("best-rental-yield", brisbane, 15, (i) => ({ medianHousePrice: i < 6 ? 450_000 + i * 1000 : 700_000 }))).find((f) => f.question.includes("$500,000"))!;
+    expect(six.answer).toContain("six have a published median house price under $500,000: Suburb 1 ($450,000), Suburb 2 ($451,000), Suburb 3 ($452,000), Suburb 4 ($453,000), Suburb 5 ($454,000) and Suburb 6 ($455,000).");
+    // on the cheapest list, none under the budget is a statement about the whole city
+    const syd = cityEditionFaqs(edition("most-affordable", sydney, 15, (i) => ({ state: "NSW", medianBasis: "suburb", medianHousePrice: 900_000 + i * 1000 }))).find((f) => f.question.includes("$500,000"))!;
+    expect(syd.answer).toContain("No Greater Sydney suburb of 1,000 or more residents has a published median house price under $500,000. The lowest is Suburb 1 at $900,000.");
+    const some = cityEditionFaqs(editions[6]).find((f) => f.question.includes("$500,000"))!;
+    expect(some.question).toBe("Where can I buy a house in Brisbane for under $500,000?");
+    expect(some.answer).toContain("one has a published median house price under $500,000: Suburb 1 ($480,000)");
+  });
+  it("a family list with no published median says so rather than printing a price", () => {
+    const f = cityEditionFaqs(editions[4]).find((q) => q.question.startsWith("How much does a house cost"))!;
+    expect(f.answer).toContain("None of the ten suburbs on this page has a published median house price yet.");
+    const priced = cityEditionFaqs(editions[3]).find((q) => q.question.startsWith("How much does a house cost"))!;
+    expect(priced.answer).toContain("All ten suburbs on this page have a published median house price, from $660,000 in Suburb 1");
+  });
+  it("the cheapest list says whether its suburbs rose where a change is measured, and that it cannot where none is", () => {
+    const nsw = cityEditionFaqs(editions[5]).find((f) => f.question.startsWith("Are Sydney"))!;
+    expect(nsw.answer).toContain("all ten have a measured 12-month change and five of those rose");
+    expect(nsw.answer).toContain("+4.2%");
+    const qld = cityEditionFaqs(editions[6]).find((f) => f.question.startsWith("Are Brisbane"))!;
+    expect(qld.answer).toContain("These ABS medians come without a 12-month change");
+    expect(qld.answer).toContain("cannot say whether the cheapest suburbs rose or fell");
+  });
+});

@@ -179,8 +179,16 @@ Tick items off as they ship.
       FHB thresholds with dates, surcharge, exemptions, worked examples $500k/$750k/$1M, PAA FAQ;
       fold /guides/stamp-duty-queensland-what-you-need-to-know into the QLD guide with a redirect. (07, E)
 - [ ] 21. [code] Per-suburb stamp duty line on suburb pages → state page. (E)
-- [ ] 22. [code+content] Best-suburbs city editions: capital-city layer per category, ten suburbs
-      with reason + figures, method block, visible updated date. (08, F)
+- [x] 22. [code+content] DONE 1 Oct 2026 — PR #86. best-suburbs city editions: capital-city layer per
+      category, ten suburbs with reason + figures, method block, visible updated date. (08, F)
+      /best-suburbs/{category}/{city} for the eight capitals (the /property-market/{city} postcode membership), five
+      categories: rental yield (Melbourne, Brisbane), fastest growing (Sydney, Adelaide), families, cheapest and most
+      walkable (all eight); 28 URLs, flood risk left out (item 49). Each: searched-form title and H1, method with source
+      and period, updated date, one H2 per suburb with a paragraph built from its published figures and distance to the
+      GPO, comparison table, ranks 11 to 15, "Under $500,000" where three or more qualify, PAA FAQ answered from the data
+      (never a forecast), ItemList, FAQPage and BreadcrumbList JSON-LD. Fewer than ten qualifying suburbs: noindex and
+      out of /best-suburbs/cities/sitemap.xml (hasCityEdition, one predicate over one query). State and national
+      ranking pages link to the editions that qualify. After deploy: list which editions reach the sitemap in production.
 - [ ] 23. [content] Moreton Bay families guide → 2026, ten suburbs, comparison table, PAA sections;
       Brisbane families guide retitle + table. (10, G)
 - [ ] 24. [content] Buying guide retarget → "how to buy a house in Australia"; link existing FIRB guide. (10, I)
