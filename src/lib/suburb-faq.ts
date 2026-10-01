@@ -97,6 +97,16 @@ export function buildSuburbFaqs(suburb: Suburb): SuburbFaq[] {
       question: `What is the average rent in ${sn}?`,
       answer: `${parts.join(", ")}.`,
     });
+  } else if ((suburb.stats.medianRentAll ?? 0) > 0 && rentSourceKnown(suburb)) {
+    // WA bond data: one median across every dwelling, with its source and
+    // date, and said to be what it is.
+    const f = suburb.dataFreshness;
+    const label = rentalSourceLabel(f?.rentalSource, suburb.postcode);
+    const when = f?.rentalAsOf ? `, ${monthYear(new Date(f.rentalAsOf))}` : "";
+    faqs.push({
+      question: `What is the average rent in ${sn}?`,
+      answer: `The median weekly rent in ${sn} is $${(suburb.stats.medianRentAll as number).toLocaleString("en-AU")} across all dwellings (${label}${when}). The bond records behind it carry no dwelling type, so there is no separate figure for houses and units.`,
+    });
   }
 
   // Schools

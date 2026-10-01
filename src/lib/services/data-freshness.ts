@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { RENTAL_ROW_SELECT, withRentAllColumn } from "@/lib/services/rental-service";
 
 export interface DataFreshness {
   id:            string;
@@ -40,10 +41,14 @@ export async function getCrimeFreshness(state: string): Promise<DataFreshness | 
 
 /** Get the latest rental stats for a suburb */
 export async function getLatestSuburbRental(suburbSlug: string) {
-  return db.suburbRentalStat.findFirst({
-    where:   { suburbSlug },
-    orderBy: { periodDate: "desc" },
-  });
+  // Through withRentAllColumn, like every read that names medianRentAll.
+  return withRentAllColumn((withAll) =>
+    db.suburbRentalStat.findFirst({
+      where:   { suburbSlug },
+      orderBy: { periodDate: "desc" },
+      select:  { ...RENTAL_ROW_SELECT, medianRentAll: withAll },
+    }),
+  );
 }
 
 /** Get the latest crime stats for a suburb */

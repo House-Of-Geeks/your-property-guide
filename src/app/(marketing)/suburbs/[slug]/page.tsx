@@ -321,8 +321,18 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 Rental and ownership
               </p>
               <div className="grid grid-cols-2 gap-4 mb-6">
-                <MetricCard label="Weekly rent (house)" value={suburb.stats.medianRentHouse ? `$${suburb.stats.medianRentHouse}/wk` : "–"} />
-                <MetricCard label="Weekly rent (unit)"  value={suburb.stats.medianRentUnit  ? `$${suburb.stats.medianRentUnit}/wk`  : "–"} />
+                {(suburb.stats.medianRentAll ?? 0) > 0 && !suburb.stats.medianRentHouse && !suburb.stats.medianRentUnit ? (
+                  // WA bond data: one median across all dwellings, no split.
+                  <>
+                    <MetricCard label="Weekly rent (all dwellings)" value={`$${suburb.stats.medianRentAll}/wk`} />
+                    <MetricCard label="House or unit rent" value="Not published" />
+                  </>
+                ) : (
+                  <>
+                    <MetricCard label="Weekly rent (house)" value={suburb.stats.medianRentHouse ? `$${suburb.stats.medianRentHouse}/wk` : "–"} />
+                    <MetricCard label="Weekly rent (unit)"  value={suburb.stats.medianRentUnit  ? `$${suburb.stats.medianRentUnit}/wk`  : "–"} />
+                  </>
+                )}
                 <MetricCard label="Owner occupied"      value={suburb.stats.ownerOccupied   ? `${suburb.stats.ownerOccupied}%`     : "–"} />
                 <MetricCard label="Renter occupied"     value={suburb.stats.renterOccupied  ? `${suburb.stats.renterOccupied}%`    : "–"} />
               </div>

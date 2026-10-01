@@ -4,16 +4,18 @@ import { RENTAL_FEED_STATES, censusMayWriteRent, hasRentalFeed } from "../../scr
 
 describe("rent proxy rules", () => {
   it("knows which states have a bond-data feed", () => {
-    expect([...RENTAL_FEED_STATES]).toEqual(["NSW", "VIC", "QLD", "SA"]);
+    expect([...RENTAL_FEED_STATES]).toEqual(["NSW", "VIC", "QLD", "SA", "WA"]);
     expect(hasRentalFeed("nsw")).toBe(true);
-    expect(hasRentalFeed(" WA ")).toBe(false);
+    expect(hasRentalFeed(" WA ")).toBe(true); // rental-wa, 1 Oct 2026
+    expect(hasRentalFeed("TAS")).toBe(false);
   });
   it("never lets the census write a rent in a feed state, covered or not", () => {
     expect(censusMayWriteRent("NSW", false)).toBe(false);
     expect(censusMayWriteRent("NSW", true)).toBe(false);
   });
   it("lets the census fill rents elsewhere unless a feed row exists", () => {
-    expect(censusMayWriteRent("WA", false)).toBe(true);
+    expect(censusMayWriteRent("TAS", false)).toBe(true);
     expect(censusMayWriteRent("TAS", true)).toBe(false);
+    expect(censusMayWriteRent("WA", false)).toBe(false);
   });
 });

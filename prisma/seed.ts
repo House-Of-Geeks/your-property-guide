@@ -404,6 +404,7 @@ async function main() {
     { id: "rental-nsw",    label: "NSW Rent and Sales Report",        category: "rental",  schedule: "quarterly", sourceUrl: "https://data.nsw.gov.au/data/dataset/rent-and-sales-report" },
     { id: "rental-sa",     label: "SA Private Rent Report",           category: "rental",  schedule: "quarterly", sourceUrl: "https://data.sa.gov.au/data/dataset/private-rent-report" },
     { id: "rental-qld",   label: "QLD Median Rents (RTA)",           category: "rental",  schedule: "quarterly", sourceUrl: "https://www.rta.qld.gov.au/forms-resources/rta-quarterly-data/median-rents-quarterly-data" },
+    { id: "rental-wa",    label: "WA Rental Bonds Data (Government of Western Australia)", category: "rental", schedule: "quarterly", sourceUrl: "https://housing-data-exchange.ahdap.org/dataset/west-australia-rental-bonds-data-2023-current" },
     { id: "crime-nsw",     label: "NSW Crime Stats (BOCSAR)",         category: "crime",   schedule: "quarterly", sourceUrl: "https://bocsar.nsw.gov.au/statistics-dashboards/open-datasets/criminal-offences-data.html" },
     { id: "crime-vic",     label: "VIC Crime Statistics Agency",      category: "crime",   schedule: "quarterly", sourceUrl: "https://www.crimestatistics.vic.gov.au/crime-statistics/latest-victorian-crime-data/download-data" },
     { id: "crime-qld",     label: "QLD Police Reported Offences",     category: "crime",   schedule: "quarterly", sourceUrl: "https://www.data.qld.gov.au/dataset/reported-offences-qld" },

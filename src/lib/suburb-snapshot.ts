@@ -6,7 +6,7 @@
 // sentence and the tiles cannot disagree. Pure; tested in
 // tests/lib/suburb-snapshot.test.ts.
 import type { Suburb } from "@/types";
-import { monthYear, rentalSourceLabel } from "@/lib/rental-labels";
+import { ALL_DWELLINGS_LABEL, monthYear, rentalSourceLabel } from "@/lib/rental-labels";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { describeSalesProvenance, type SalesProvenance } from "@/lib/sales-provenance";
 
@@ -52,9 +52,12 @@ export function rentSourceKnown(suburb: Pick<Suburb, "dataFreshness">): boolean 
   return Boolean(suburb.dataFreshness?.rentalSource);
 }
 
-/** The page publishes a weekly rent with a known source, for houses or units. 0 is "unknown". */
+/**
+ * The page publishes a weekly rent with a known source: for houses, units, or
+ * all dwellings together where the feed has no split (WA). 0 is "unknown".
+ */
 export function publishesRent(suburb: Pick<Suburb, "stats" | "dataFreshness">): boolean {
-  return rentSourceKnown(suburb) && (suburb.stats.medianRentHouse > 0 || suburb.stats.medianRentUnit > 0);
+  return rentSourceKnown(suburb) && (suburb.stats.medianRentHouse > 0 || suburb.stats.medianRentUnit > 0 || (suburb.stats.medianRentAll ?? 0) > 0);
 }
 
 export function buildSnapshotStats(suburb: Suburb): SnapshotStat[] {
@@ -74,7 +77,12 @@ export function buildSnapshotStats(suburb: Suburb): SnapshotStat[] {
   const rentSourced = rentSourceKnown(suburb);
   if (rentSourced && s.medianRentHouse > 0) {
     out.push({ key: "rent", label: "Weekly rent", value: `$${s.medianRentHouse.toLocaleString("en-AU")}`, detail: s.medianRentUnit > 0 ? `Houses · units $${s.medianRentUnit.toLocaleString("en-AU")}` : "Houses", icon: "/images/icons/yield.svg" });
+  } else if (rentSourced && (s.medianRentAll ?? 0) > 0) {
+    // WA bond data has no house/unit split: one median for every dwelling,
+    // labelled as such, and no yield tile (a yield needs a house rent).
+    out.push({ key: "rent", label: "Weekly rent", value: `$${(s.medianRentAll as number).toLocaleString("en-AU")}`, detail: ALL_DWELLINGS_LABEL, icon: "/images/icons/yield.svg" });
   }
+  // Houses only: an all-dwellings median is never divided by the house price.
   const y = rentSourced ? grossYieldPercent(s.medianRentHouse, s.medianHousePrice) : null;
   if (y !== null) {
     out.push({ key: "yield", label: "Gross yield", value: `${y.toFixed(1)}%`, detail: "Houses, on the median", icon: "/images/icons/yield.svg" });

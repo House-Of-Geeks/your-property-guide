@@ -1,0 +1,40 @@
+-- SuburbRentalStat."medianRentAll": the all-dwellings median weekly rent.
+--
+-- WHY: the WA rental feed (scripts/sync/sources/rental-wa.ts) reads WA bond
+-- lodgements, which record no dwelling type and no bedrooms. Its medians
+-- cover every dwelling together. The table had no column for that: writing
+-- them into "medianRentHouse" would print them as house rents and divide
+-- them by the house price as a yield, the mistake rental-nsw-rules.ts
+-- documents for the old NSW feed (Nedlands, June quarter 2026: $1,000 across
+-- all bonds, against REIWA's $1,300 for houses and $860 for units).
+--
+-- The statement is the output of
+--   npx prisma migrate diff --from-schema <schema before> --to-schema prisma/schema.prisma --script
+-- (not prisma db push: production carries School.geom and yfg_leads, which
+-- the schema lacks, and db push would drop them).
+--
+-- SAFETY:
+--   - Additive only: a nullable column with no default, a catalogue change in
+--     Postgres (no table rewrite, no backfill). Existing rows read NULL.
+--   - The site is safe before AND after this runs: every read that names the
+--     column goes through withRentAllColumn (src/lib/services/rental-service.ts),
+--     which retries without the column while it does not exist.
+--   - rental-wa refuses to write until the column exists, so the order is:
+--     this file, then the feed's --dry-run, then the feed.
+--   - Idempotent: IF NOT EXISTS makes a second run a no-op.
+--
+-- HOW TO RUN (psql rejects Prisma's connection_limit parameter: use the
+-- production URL without its query string, plus ?sslmode=require):
+--   psql "$PROD_URL" -f scripts/sql/2026-10-01-suburb-rental-stat-median-rent-all.sql
+--
+-- VERIFY:
+--   SELECT column_name, data_type, is_nullable
+--   FROM information_schema.columns
+--   WHERE table_name = 'SuburbRentalStat' AND column_name = 'medianRentAll';
+--   -- one row: medianRentAll | integer | YES
+--
+-- ROLLBACK (after deleting the WA rows, or they lose their only figure):
+--   DELETE FROM "SuburbRentalStat" WHERE source = 'rental-wa';
+--   ALTER TABLE "SuburbRentalStat" DROP COLUMN IF EXISTS "medianRentAll";
+
+ALTER TABLE "SuburbRentalStat" ADD COLUMN IF NOT EXISTS "medianRentAll" INTEGER;

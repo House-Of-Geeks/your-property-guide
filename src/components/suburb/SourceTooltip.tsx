@@ -18,6 +18,7 @@ const SOURCE_LABELS: Record<string, string> = {
   "rental-nsw": "NSW DCJ Rent and Sales Report (Rental Bond Board data, by postcode)",
   "rental-sa":  "Consumer and Business Services SA",
   "rental-qld": "QLD Government (RTA)",
+  "rental-wa":  "WA Rental Bonds Data, Government of Western Australia (CC BY 4.0)",
   // Crime
   "crime-nsw":  "BOCSAR, NSW Bureau of Crime Statistics",
   "crime-vic":  "Crime Statistics Agency VIC",

@@ -503,6 +503,18 @@ Source: `docs/seo-baselines/2026-09-30/commercial-intent-review.md` (untracked, 
       Before merging: a property manager has to be ready to take the leads (the form promises a call within one
       business day; leads arrive in the lead inbox, routed like every other type). Open from 3.1: (c) of the review,
       a WA rental feed, which is what would let the Perth "rental investment" pages index.
+- [ ] 3.1 (c) [code+data] WA rental feed. CODE MERGED 1 Oct 2026 — PR #96; the column change (scripts/sql/2026-10-01-suburb-rental-stat-median-rent-all.sql) and the first import wait for Jos's go, commands in the PR. rental-wa reads the WA
+      bond lodgements (WA Rental Bonds Data, National Housing Data Exchange, CC BY 4.0) and publishes quarterly
+      all-dwellings medians (11+ bonds, fewer than half at one rent, a published median in the four newest quarters)
+      into a new column, SuburbRentalStat.medianRentAll, never medianRentHouse; WA rental-market pages and profiles
+      show it as "All dwellings" with no yield. Dry run against production (read-only): 3,934 rows for 367 suburbs,
+      367 WA rental-market pages would leave noindex, all 367 in the rental-market sitemap; Nedlands $900, Joondalup
+      $640, Floreat $1,000, Port Hedland $988 (July to September 2026); Karratha withheld (10 of 15 bonds at $280).
+      Not live until Jos: applies scripts/sql/2026-10-01-suburb-rental-stat-median-rent-all.sql, runs
+      `npx tsx scripts/sync/run.ts rental-wa --dry-run` then without --dry-run, then revalidate-paths and
+      indexnow-ping (48). Afterwards, separately: clear-rent-proxies --state WA (dry run first) for the census
+      proxies left on WA suburbs the feed does not cover (1,440 WA localities get no row), and scheduling (the
+      release lands on the 1st to 3rd, so mid-month in Jan/Apr/Jul/Oct catches the full quarter).
 
 
 Source: `docs/seo-baselines/2026-09-30/commercial-intent-review.md` (section and priority numbers refer to it).

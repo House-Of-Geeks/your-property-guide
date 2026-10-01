@@ -7,6 +7,9 @@
  *   npm run sync quarterly     — run all quarterly sources
  *   npm run sync annual        — run all annual sources
  *
+ * A source with schedule "manual" is in no group: it runs only by name.
+ * rental-wa is one until its first import is approved (see its header).
+ *
  * Add DATABASE_URL to your environment (or .env file).
  */
 import "dotenv/config";
@@ -16,6 +19,7 @@ import { run as syncRentalVic }   from "./sources/rental-vic";
 import { run as syncRentalNsw }   from "./sources/rental-nsw";
 import { run as syncRentalSa }    from "./sources/rental-sa";
 import { run as syncRentalQld }   from "./sources/rental-qld";
+import { run as syncRentalWa }    from "./sources/rental-wa";
 import { run as syncCrimeNsw }    from "./sources/crime-nsw";
 import { run as syncCrimeVic }    from "./sources/crime-vic";
 import { run as syncCrimeQld }    from "./sources/crime-qld";
@@ -73,7 +77,7 @@ import { run as catchmentActPrimary }   from "./sources/catchment-act-primary";
 import { run as catchmentActSecondary } from "./sources/catchment-act-secondary";
 import { run as catchmentTasPrimary }   from "./sources/catchment-tas-primary";
 
-const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" | "annual" }> = {
+const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" | "annual" | "manual" }> = {
   "import-suburbs":     { run: importSuburbs,    schedule: "quarterly" },
   "import-suburbs-all": { run: importSuburbsAll, schedule: "annual"    },
   "abs-census":     { run: absCensus,        schedule: "annual"    },
@@ -82,6 +86,7 @@ const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" 
   "rental-nsw":     { run: syncRentalNsw,    schedule: "quarterly" },
   "rental-sa":      { run: syncRentalSa,     schedule: "quarterly" },
   "rental-qld":     { run: syncRentalQld,    schedule: "quarterly" },
+  "rental-wa":      { run: syncRentalWa,     schedule: "manual"    },
   "crime-nsw":      { run: syncCrimeNsw,     schedule: "quarterly" },
   "crime-vic":      { run: syncCrimeVic,     schedule: "quarterly" },
   "crime-qld":      { run: syncCrimeQld,     schedule: "quarterly" },
@@ -149,7 +154,7 @@ async function main(): Promise<void> {
   let toRun: string[];
 
   if (arg === "all") {
-    toRun = Object.keys(SOURCES);
+    toRun = Object.entries(SOURCES).filter(([, v]) => v.schedule !== "manual").map(([k]) => k);
   } else if (arg === "quarterly") {
     toRun = Object.entries(SOURCES).filter(([, v]) => v.schedule === "quarterly").map(([k]) => k);
   } else if (arg === "annual") {
