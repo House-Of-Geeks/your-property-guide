@@ -9,7 +9,8 @@ import { PERSONA_BY_ID, type PersonaId } from "@/lib/constants/journey";
 
 export interface CalculatorPageFrontmatter {
   // Page-level metadata
-  title: string;            // H1
+  title: string;            // Short name: breadcrumbs, schema, and the H1 unless `h1` is set
+  h1?: string;              // The H1 when it should carry the query (e.g. "How much can I borrow? ..."); defaults to `title`
   description: string;      // Subhead under H1 (also used for meta description)
   slug: string;             // URL slug at /<slug>
   // SEO
@@ -98,7 +99,7 @@ export function CalculatorPageLayout({
 
           {/* Display-scale H1 */}
           <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-medium">
-            {frontmatter.title}
+            {frontmatter.h1 ?? frontmatter.title}
           </h1>
 
           {/* Standfirst */}
@@ -154,7 +155,9 @@ export function CalculatorPageLayout({
               </div>
             </aside>
 
-            <div className="lg:col-span-9 lg:order-1">
+            {/* min-w-0: a wide table in the explainer scrolls inside its
+                wrapper instead of stretching the grid column past the phone's width. */}
+            <div className="min-w-0 lg:col-span-9 lg:order-1">
               <div className="prose-ypg">
                 {explainer}
               </div>

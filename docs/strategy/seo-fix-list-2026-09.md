@@ -437,3 +437,18 @@ Source: `docs/seo-baselines/2026-09-30/commercial-intent-review.md` (section num
       median less and plus 15%, labelled). Unit medians are shown only from the feeds that produce one
       (sales-vic, sales-abs; `UNIT_MEDIAN_SOURCES`); the site-wide unit-median withholding remains item 1's
       open follow-up.
+
+
+Source: docs/seo-baselines/2026-09-30/commercial-intent-review.md (untracked, in the shared checkout).
+
+- [x] 3.3a [code+content] Calculators: borrowing power and rental yield. DONE 1 Oct 2026 — PR #85.
+      /borrowing-power-calculator: H1 "How much can I borrow? Borrowing power calculator"; server-rendered
+      "Borrowing power by income" table (single and couple, $60,000 to $200,000) and a "$100,000 salary" FAQ from
+      the widget's engine; default assessment rate now 9.2% (RBA F6 new variable rate 6.2%, July 2026, plus APRA's
+      3-point buffer confirmed 28 May 2026), was 7.5%. /rental-yield-calculator: "How to calculate rental yield,
+      step by step" with a worked example, "What is a good rental yield in 2026?" from gated data (Vic and Qld only;
+      the other states listed with the reason), FAQs on 4.5% and 3.5%. Header: every dropdown is in the server HTML
+      and the Tools menu links /tools. Overlaps item 15 (PR #31): same generator and data file paths, regenerated
+      under the current gate; merge one and rebase the other. Follow-ups: regenerate
+      src/lib/data/yield-benchmarks.ts after each rental or sales sync (the answers' wording is tested against it);
+      move REFERENCE_LOAN_RATE in src/lib/utils/borrowing-power.ts when RBA table F6 moves.

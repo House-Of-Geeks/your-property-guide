@@ -1,9 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { RentalYieldCalculator } from "@/components/calculators/RentalYieldCalculator";
+import { GoodYieldTable } from "@/components/calculators/GoodYieldTable";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
 import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
+import { workedExample } from "@/lib/rental-yield-calc";
+import { yieldFaqs } from "@/lib/yield-benchmarks";
+
+// Static content (the yield table is a generated data file); a weekly
+// re-render keeps the route on ISR like the rest of the site.
+export const revalidate = 604800;
+
+const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Rental Yield Calculator",
@@ -12,7 +21,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   slug: "rental-yield-calculator",
   schemaName: "Rental Yield Calculator",
   schemaDescription: "Calculate gross and net rental yield and weekly cash flow for investment properties.",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-09-30",
   persona: "investing",
 };
 
@@ -44,11 +53,6 @@ const FAQS: FaqItem[] = [
       "Gross rental yield is simply the annual rental income divided by the purchase price, expressed as a percentage. Net rental yield factors in all ongoing costs (council rates, insurance, property management, maintenance, etc.) and is calculated against the full cost base (purchase price plus buying costs). Net yield gives a more realistic picture of your actual return.",
   },
   {
-    question: "What is a good rental yield in Australia?",
-    answer:
-      "Gross rental yields in Australian capital cities typically range from 3 to 6%. Sydney and Melbourne often yield 2.5 to 4% gross, while regional areas and higher-density markets like Brisbane, Adelaide, and Perth can yield 4 to 6%+. 'Good' depends on your strategy: higher yields often come with lower capital growth prospects, and vice versa.",
-  },
-  {
     question: "What is cash flow and why does it matter?",
     answer:
       "Cash flow is the money left over after all expenses (including loan repayments) are paid from rental income. A positively geared property generates cash flow surplus each week. A negatively geared property costs more to hold than it earns in rent, the shortfall is often offset against other income for tax purposes.",
@@ -75,14 +79,101 @@ const RELATED: RelatedGuide[] = [
 ];
 
 export default function RentalYieldCalculatorPage() {
+  // Worked by the widget's own engine (src/lib/rental-yield-calc.ts), so the
+  // example and the calculator cannot disagree.
+  const { input: ex, result } = workedExample();
   return (
     <CalculatorPageLayout
       frontmatter={FRONTMATTER}
       calculator={<RentalYieldCalculator />}
-      faqs={FAQS}
+      faqs={[...yieldFaqs(), ...FAQS]}
       related={RELATED}
       explainer={
         <>
+          <h2 id="how-to-calculate">How to calculate rental yield, step by step</h2>
+          <ol>
+            <li>
+              <strong>Annual rent.</strong> Weekly rent × 52. Use the rent the
+              property gets or the suburb median, not the asking rent.
+            </li>
+            <li>
+              <strong>Gross yield.</strong> Annual rent ÷ purchase price × 100.
+              This is the figure listings and market reports quote.
+            </li>
+            <li>
+              <strong>Annual costs.</strong> Add council rates, water rates,
+              landlord insurance, the management fee (a percentage of rent) and a
+              maintenance allowance (a percentage of the price), plus strata levies
+              and land tax where they apply.
+            </li>
+            <li>
+              <strong>Purchase costs.</strong> Stamp duty, conveyancing and the
+              building inspection. They go on top of the price to give the cost
+              base.
+            </li>
+            <li>
+              <strong>Net yield.</strong> (Annual rent − annual costs) ÷ (price +
+              purchase costs) × 100. This is the figure to compare properties on.
+            </li>
+          </ol>
+          <p>
+            A worked example: a {money(ex.purchasePrice)} house in Queensland let
+            at {money(ex.weeklyRent)}{" "}a week, with this calculator&rsquo;s default
+            costs and the transfer duty our{" "}
+            <Link href="/stamp-duty-calculator">stamp duty calculator</Link> works
+            out for an investor at that price (as at 30 September 2026).
+          </p>
+          <div className="overflow-x-auto">
+          <table>
+            <thead>
+              <tr>
+                <th>Step</th>
+                <th>Working</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Annual rent</td>
+                <td>{money(ex.weeklyRent)} × 52</td>
+                <td>{money(result.annualRentalIncome)}</td>
+              </tr>
+              <tr>
+                <td>Gross yield</td>
+                <td>{money(result.annualRentalIncome)} ÷ {money(ex.purchasePrice)} × 100</td>
+                <td>{result.grossYield.toFixed(2)}%</td>
+              </tr>
+              <tr>
+                <td>Annual costs</td>
+                <td>
+                  Council rates {money(ex.councilRates)} + water {money(ex.waterRates)} + insurance {money(ex.insurance)} +
+                  management {ex.managementPct}% of rent ({money(result.managementCost)}) + maintenance {ex.maintenancePct}% of
+                  price ({money(result.maintenanceCost)})
+                </td>
+                <td>{money(result.totalAnnualCosts)}</td>
+              </tr>
+              <tr>
+                <td>Purchase costs</td>
+                <td>Queensland transfer duty {money(ex.stampDuty)} + conveyancing {money(ex.legalFees)} + building inspection {money(ex.buildingInspection)}</td>
+                <td>{money(result.totalPurchaseCosts)}</td>
+              </tr>
+              <tr>
+                <td>Net yield</td>
+                <td>({money(result.annualRentalIncome)} − {money(result.totalAnnualCosts)}) ÷ ({money(ex.purchasePrice)} + {money(result.totalPurchaseCosts)}) × 100</td>
+                <td>{result.netYield.toFixed(2)}%</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          <p>
+            The gap between {result.grossYield.toFixed(2)}% gross and {result.netYield.toFixed(2)}% net is
+            the point of the exercise: the running costs and the purchase costs take{" "}
+            {(result.grossYield - result.netYield).toFixed(1)} percentage points off. Add a loan in the
+            calculator above to see the weekly cash flow after repayments.
+          </p>
+
+          <GoodYieldTable />
+
           <h2>Gross vs net yield, in plain English</h2>
           <p>
             Yield is shorthand for &ldquo;how much income does this property

@@ -160,7 +160,7 @@ export function MiniBorrowingPowerEmbed({
       </div>
 
       <p className="mt-4 font-sans text-xs text-ink-subtle leading-relaxed">
-        A simplified estimate assessed at a buffered {DEFAULT_ASSESSMENT_RATE}% over {TERM_YEARS} years, with
+        A simplified estimate assessed at a buffered {DEFAULT_ASSESSMENT_RATE}% over {TERM_YEARS}{" "}years, with
         no existing debts. To factor in a partner&rsquo;s income, credit cards, car loans, your real deposit
         and rate,{" "}
         <Link

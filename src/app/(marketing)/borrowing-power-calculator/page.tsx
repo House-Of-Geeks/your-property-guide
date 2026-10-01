@@ -1,23 +1,39 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BorrowingPowerCalculator } from "@/components/calculators/BorrowingPowerCalculator";
+import { BorrowingPowerTable } from "@/components/calculators/BorrowingPowerTable";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
 import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
+import { borrowingPowerFaqs } from "@/lib/borrowing-power-table";
+import {
+  APRA_BUFFER_CONFIRMED,
+  APRA_SERVICEABILITY_BUFFER,
+  DEFAULT_ASSESSMENT_RATE,
+  REFERENCE_LOAN_RATE,
+  REFERENCE_LOAN_RATE_PERIOD,
+} from "@/lib/utils/borrowing-power";
+
+// Static content; a weekly re-render keeps the route on ISR like the rest of the site.
+export const revalidate = 604800;
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Borrowing Power Calculator",
+  // The H1 carries the query the page is shown for ("how much can i borrow",
+  // 12,100 searches a month, position 32 on 30 Sep 2026); the short title
+  // stays for breadcrumbs and schema.
+  h1: "How much can I borrow? Borrowing power calculator",
   description:
     "Estimate how much you can borrow for a home loan based on your income, living expenses and current Australian lending standards.",
   slug: "borrowing-power-calculator",
   schemaName: "Borrowing Power Calculator",
   schemaDescription: "Estimate how much you can borrow based on your income, expenses, and APRA buffer.",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-09-30",
   persona: "first-home",
 };
 
-// Title tuned for the 14,800/mo "how much can I borrow" query, which is
-// the dominant search intent for this page. H1 stays clean.
+// Title and H1 both carry "how much can I borrow", the dominant intent for
+// this page (commercial intent review, 30 Sep 2026, section 3.3).
 const META_TITLE = "How Much Can I Borrow? Borrowing Power Calculator Australia";
 const META_DESCRIPTION = "Free Australian borrowing power calculator. Estimate how much a bank will lend you for a home loan, based on your income, expenses and the APRA 3% buffer. No sign-up.";
 
@@ -48,7 +64,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What is a serviceability buffer?",
     answer:
-      "APRA, the banking regulator, requires lenders to assess your ability to repay at your actual interest rate plus a 3% buffer. So if current rates are around 6%, banks test whether you can afford repayments at 9%. This protects borrowers from rate rises and is why the assessment rate in this calculator defaults to 7.5%.",
+      `APRA, the banking regulator, expects lenders to test whether you could repay at your loan rate plus a buffer, which it confirmed at ${APRA_SERVICEABILITY_BUFFER} percentage points on ${APRA_BUFFER_CONFIRMED}. The average rate on new owner-occupier variable loans was ${REFERENCE_LOAN_RATE}% in ${REFERENCE_LOAN_RATE_PERIOD} (RBA table F6), so a typical borrower is tested at about ${DEFAULT_ASSESSMENT_RATE}%. This protects borrowers from rate rises and is why the assessment rate in this calculator defaults to ${DEFAULT_ASSESSMENT_RATE}%.`,
   },
   {
     question: "How can I increase my borrowing power?",
@@ -61,9 +77,9 @@ const FAQS: FaqItem[] = [
       "No. This is an estimate based on simplified assumptions. Each lender has its own policies, HEM tables, and income treatment rules. For an accurate figure, speak with a mortgage broker who can assess multiple lenders on your behalf.",
   },
   {
-    question: "Why does the calculator use a 7.5% assessment rate when actual rates are lower?",
+    question: `Why does the calculator use a ${DEFAULT_ASSESSMENT_RATE}% assessment rate when actual rates are lower?`,
     answer:
-      "Because that's how lenders actually assess you. APRA's serviceability rule adds a 3% buffer on top of the rate the lender quotes. With a 4.5% offer rate, the test rate is 7.5%. The buffer means your borrowing capacity is always lower than your repayments at the offered rate would suggest.",
+      `Because that's how lenders actually assess you. APRA's serviceability rule adds a ${APRA_SERVICEABILITY_BUFFER} percentage point buffer on top of the rate the lender quotes. With the ${REFERENCE_LOAN_RATE}% average new variable rate of ${REFERENCE_LOAN_RATE_PERIOD}, the test rate is ${DEFAULT_ASSESSMENT_RATE}%. If your lender offers you less, lower the assessment rate by the difference. The buffer means your borrowing capacity is always lower than your repayments at the offered rate would suggest.`,
   },
 ];
 
@@ -81,11 +97,13 @@ export default function BorrowingPowerCalculatorPage() {
     <CalculatorPageLayout
       frontmatter={FRONTMATTER}
       calculator={<BorrowingPowerCalculator />}
-      faqs={FAQS}
+      faqs={[...borrowingPowerFaqs(), ...FAQS]}
       related={RELATED}
       intent="buying"
       explainer={
         <>
+          <BorrowingPowerTable />
+
           <h2>How banks assess your borrowing capacity</h2>
           <p>
             Australian banks use a serviceability assessment to determine the maximum
@@ -112,8 +130,9 @@ export default function BorrowingPowerCalculatorPage() {
             </li>
             <li>
               <strong>Serviceability buffer.</strong> APRA requires banks to test your
-              repayment capacity at your actual rate plus 3%. This is why the default
-              assessment rate is 7.5% even when market rates may be lower.
+              repayment capacity at your actual rate plus {APRA_SERVICEABILITY_BUFFER} percentage points.
+              This is why the default assessment rate is {DEFAULT_ASSESSMENT_RATE}%, above the{" "}
+              {REFERENCE_LOAN_RATE}% average new variable rate of {REFERENCE_LOAN_RATE_PERIOD}.
             </li>
             <li>
               <strong>Maximum loan.</strong> From the remaining surplus, the bank
@@ -125,7 +144,7 @@ export default function BorrowingPowerCalculatorPage() {
           <KeyFigure
             value="3%"
             label="The APRA serviceability buffer added to every loan assessment. Your borrowing capacity is always tested at your offered rate plus three percent."
-            context="APRA prudential standard APS 220"
+            context={`APRA, confirmed ${APRA_BUFFER_CONFIRMED}`}
           />
 
           <h2>The biggest levers on your borrowing power</h2>
