@@ -68,11 +68,16 @@ export function medianBasis(statsSource: string | null | undefined): MedianBasis
   return statsSource === "sales-abs" ? "area" : "suburb";
 }
 
+/** The feed named beside a median measures a 12-month change. */
+export function measuresGrowth(statsSource: string | null | undefined): boolean {
+  return GROWTH_SOURCES.includes(statsSource ?? "");
+}
+
 /** A 12-month change worth printing: measured by the row's own feed, on a published median, inside the plausibility clamp, and not the 0 the feeds store for "no prior period". */
 export function publishedGrowth(row: RawSalesRow): number {
   const g = row.annualGrowthHouse ?? 0;
   if (!publishesMedians(row) || !(row.medianHousePrice > 0)) return 0;
-  if (!GROWTH_SOURCES.includes(row.statsSource ?? "")) return 0;
+  if (!measuresGrowth(row.statsSource)) return 0;
   return isPlausibleAnnualGrowth(g) ? g : 0;
 }
 
@@ -88,6 +93,28 @@ export const UNIT_MEDIAN_SOURCES: readonly string[] = ["sales-vic", "sales-abs"]
 /** The row's unit median was produced by its own feed and clears the same gate as the house median. */
 export function publishesUnitMedian(row: Pick<RawSalesRow, "statsSource" | "salesCountHouse" | "medianUnitPrice">): boolean {
   return publishesMedians(row) && UNIT_MEDIAN_SOURCES.includes(row.statsSource ?? "") && (row.medianUnitPrice ?? 0) > 0;
+}
+
+/**
+ * The 12-month change as the suburb page prints it, read from the gated
+ * Suburb object (its stats have already been through publishedSales in
+ * suburb-service). Re-applies the rule for a caller that builds a Suburb
+ * without the service (a test fixture, the OG route): a published median
+ * from a trusted feed that measures a change, inside the clamp, and not the
+ * 0 the feeds store for "no prior period". 0 when nothing is published.
+ * The title and description builders and the suburb FAQ read this, so a
+ * growth figure beside a Land Victoria or ABS median can never reach a
+ * SERP snippet.
+ */
+export function publishedGrowthFor(suburb: {
+  stats: { medianHousePrice: number; annualGrowthHouse: number };
+  dataFreshness?: { salesSource: string | null } | null;
+}): number {
+  if (!(suburb.stats.medianHousePrice > 0)) return 0;
+  const source = suburb.dataFreshness?.salesSource;
+  if (!isReliableSalesSource(source) || !measuresGrowth(source)) return 0;
+  const g = suburb.stats.annualGrowthHouse;
+  return g && isPlausibleAnnualGrowth(g) ? g : 0;
 }
 
 /** The row's sales figures as the suburb page prints them. */

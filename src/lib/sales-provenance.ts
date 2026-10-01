@@ -17,8 +17,12 @@ export interface SalesProvenance {
   /** "suburb": a median of sales inside the suburb. "area": an ABS statistical area (SA2) that contains the suburb. */
   geography: "suburb" | "area";
   sourceLabel: string;
+  /** The source in a few words for a meta description or a parenthesis: "NSW Valuer General", "Land Victoria", "SA Government", "ABS". */
+  sourceShort: string;
   /** Human period the median describes, e.g. "calendar 2025", "2024", "the latest published quarter". */
   period: string;
+  /** The period without the bracketed update, for a parenthesis of its own: "the latest published quarter, updated May 2026". */
+  periodShort: string;
   /** "35 house sales" when the source reports counts. */
   sampleNote: string | null;
   /** Caveat for area medians. */
@@ -38,6 +42,7 @@ interface Input {
 }
 
 const monthYear = (d: Date) => d.toLocaleDateString("en-AU", { month: "long", year: "numeric", timeZone: "UTC" });
+const quarterShort = (updated: string | null) => `the latest published quarter${updated ? `, updated ${updated}` : ""}`;
 
 export function describeSalesProvenance(i: Input): SalesProvenance | null {
   const count = i.salesCount && i.salesCount > 0 ? i.salesCount : null;
@@ -49,7 +54,7 @@ export function describeSalesProvenance(i: Input): SalesProvenance | null {
     case "sales-nsw": {
       const period = year ? `calendar ${year}` : "the latest full calendar year";
       return {
-        geography: "suburb", sourceLabel: "NSW Valuer General", period, sampleNote, areaNote: null,
+        geography: "suburb", sourceLabel: "NSW Valuer General", sourceShort: "NSW Valuer General", period, periodShort: period, sampleNote, areaNote: null,
         short: `${sampleNote ? `Median of ${sampleNote}` : "Median"} · NSW Valuer General · ${period}`,
         sentence: `Median of ${sampleNote ?? "house sales"} recorded by the NSW Valuer General in ${period}.`,
       };
@@ -57,7 +62,7 @@ export function describeSalesProvenance(i: Input): SalesProvenance | null {
     case "sales-vic": {
       const period = `the latest published quarter${updated ? ` (updated ${updated})` : ""}`;
       return {
-        geography: "suburb", sourceLabel: "Land Victoria quarterly medians", period, sampleNote, areaNote: null,
+        geography: "suburb", sourceLabel: "Land Victoria quarterly medians", sourceShort: "Land Victoria", period, periodShort: quarterShort(updated), sampleNote, areaNote: null,
         short: `${sampleNote ? `Median of ${sampleNote}` : "Median"} · Land Victoria · ${period}`,
         sentence: `Land Victoria's quarterly suburb median${sampleNote ? ` from ${sampleNote}` : ""}, ${period}.`,
       };
@@ -65,7 +70,7 @@ export function describeSalesProvenance(i: Input): SalesProvenance | null {
     case "sales-sa": {
       const period = `the latest published quarter${updated ? ` (updated ${updated})` : ""}`;
       return {
-        geography: "suburb", sourceLabel: "SA Government quarterly medians", period, sampleNote, areaNote: null,
+        geography: "suburb", sourceLabel: "SA Government quarterly medians", sourceShort: "SA Government", period, periodShort: quarterShort(updated), sampleNote, areaNote: null,
         short: `${sampleNote ? `Median of ${sampleNote}` : "Median"} · SA Government · ${period}`,
         sentence: `The SA Government's quarterly suburb median${sampleNote ? ` from ${sampleNote}` : ""}, ${period}.`,
       };
@@ -74,7 +79,7 @@ export function describeSalesProvenance(i: Input): SalesProvenance | null {
       const period = year ? String(year) : "the latest ABS year";
       const areaNote = `An SA2 can take in surrounding localities, so this can differ from sales in ${i.suburbName} itself.`;
       return {
-        geography: "area", sourceLabel: "ABS statistical area (SA2)", period, sampleNote: null, areaNote,
+        geography: "area", sourceLabel: "ABS statistical area (SA2)", sourceShort: "ABS", period, periodShort: period, sampleNote: null, areaNote,
         short: `ABS statistical area (SA2) median · ${period}`,
         sentence: `Median house transfer price for the ABS statistical area (SA2) that takes in ${i.suburbName}, ${period}. ${areaNote}`,
       };

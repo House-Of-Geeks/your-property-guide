@@ -5,31 +5,54 @@
 // Why 60: Google truncates titles at roughly 600px, which is 55–65 characters
 // of mixed-case text. The root layout appends " | Your Property Guide" (22
 // chars) on top of whatever these builders return, so anything over 60 here is
-// guaranteed to be cut or rewritten in results (see the search review: the
-// current suburb title is shown as "Morayfield Postcode 4506 (QLD) - Suburbs").
+// guaranteed to be cut or rewritten in results (the search review of 5 Sep
+// 2026 showed the old suburb title as "Morayfield Postcode 4506 (QLD) - Suburbs").
+//
+// Fix item 2 (commercial intent review 3.8, 30 Sep 2026): the profile title
+// leads with the suburb and "House Prices", and the description with the
+// published median, its source and period, and the 12-month change where a
+// feed measures one. Both read the gated Suburb object through the same
+// rules as the page (hasReliablePrice, publishedGrowthFor), so a suburb whose
+// median the page withholds shows no dollar figure and no growth figure.
+// They apply to the SA and TAS cohort first (R4); the rest of the country
+// keeps today's builders as the control, tested below as they were on main.
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Suburb } from "@/types";
 import {
+  TITLE_COHORT_STATES,
+  inTitleCohort,
+  legacySuburbDescription,
+  legacySuburbTitle,
   suburbBuyDescription,
   suburbBuyTitle,
   suburbDescription,
+  suburbDescriptionHousePrices,
   suburbRentDescription,
   suburbRentTitle,
   suburbTitle,
+  suburbTitleHousePrices,
 } from "@/lib/utils/seo";
 import { hasReliablePrice } from "@/lib/suburb-data-quality";
 import path from "node:path";
 import { ABBR, AUSTRALIAN_STATES, STAMP_DUTY_GUIDES, dutyFor, money, stampDutyMetaTitle, stampDutyTitle } from "@/lib/data/stamp-duty-state";
 import { SITE_NAME } from "@/lib/constants";
+import { publishedGrowthFor } from "@/lib/published-medians";
+import { rentalMarketTitle } from "@/lib/rental-market";
 
 const TITLE_BUDGET = 60;      // characters, before the brand suffix
-const DESCRIPTION_BUDGET = 160;
+const DESCRIPTION_BUDGET = 160;         // the control's own budget
+const ITEM2_DESCRIPTION_BUDGET = 155;   // the item 2 guardrail in the fix review
 
-function makeSuburb(overrides: Partial<Suburb> & { salesSource?: string | null }): Suburb {
-  const { salesSource = "sales-nsw", ...rest } = overrides;
+type Freshness = NonNullable<Suburb["dataFreshness"]>;
+
+const schoolList = (n: number): Suburb["schools"] =>
+  Array.from({ length: n }, (_, i) => ({ name: `School ${i + 1}`, type: "primary" as const, sector: "government" as const, distance: 1, yearRange: null, gender: null, website: null, icsea: null, enrolment: null, acaraId: null }));
+
+function makeSuburb(overrides: Partial<Suburb> & { salesSource?: string | null; freshness?: Partial<Freshness> } = {}): Suburb {
+  const { salesSource = "sales-nsw", freshness = {}, ...rest } = overrides;
   return {
     id: "test",
     slug: "test-suburb-nsw-2000",
@@ -39,7 +62,7 @@ function makeSuburb(overrides: Partial<Suburb> & { salesSource?: string | null }
     region: "Sydney",
     description: "",
     heroImage: "",
-    schools: [],
+    schools: schoolList(20),
     amenities: [],
     transportLinks: [],
     nearbySuburbs: [],
@@ -62,10 +85,11 @@ function makeSuburb(overrides: Partial<Suburb> & { salesSource?: string | null }
       bikeScore: null,
     },
     dataFreshness: {
-      rentalAsOf: null, rentalSource: null,
+      rentalAsOf: new Date("2026-06-30T00:00:00Z"), rentalSource: "rental-nsw",
       crimeAsOf: null, crimeSource: null,
-      salesAsOf: new Date("2026-06-30"), salesSource, salesCount: null, salesPeriodEnd: null,
+      salesAsOf: new Date("2026-06-30"), salesSource, salesCount: null, salesPeriodEnd: new Date("2025-12-31T00:00:00Z"),
       censusAsOf: null, hazardAsOf: null, walkabilityAsOf: null, climateAsOf: null,
+      ...freshness,
     },
     ...rest,
   };
@@ -84,17 +108,70 @@ const LONG_NAMES: Array<Pick<Suburb, "name" | "postcode" | "state">> = [
   { name: "Morayfield", postcode: "4506", state: "QLD" },
 ];
 
+// The four cohorts the description and the FAQ distinguish.
+const priced = () => makeSuburb({ name: "Bondi", postcode: "2026", state: "NSW", salesSource: "sales-nsw", freshness: { salesCount: 35 } });
+const pricedGrowthUnmeasured = () => makeSuburb({ name: "Toorak", postcode: "3142", state: "VIC", salesSource: "sales-vic", freshness: { salesAsOf: new Date("2026-05-15T00:00:00Z") } });
+const pricedArea = () => makeSuburb({ name: "Morayfield", postcode: "4506", state: "QLD", salesSource: "sales-abs", freshness: { salesPeriodEnd: new Date("2024-12-31T00:00:00Z") } });
+const unpriced = () => {
+  const s = makeSuburb({ name: "Surfers Paradise", postcode: "4217", state: "QLD", salesSource: "sales-qld" });
+  s.stats.medianHousePrice = 0; // what suburb-service hands the page for a distrusted source
+  s.stats.medianUnitPrice = 0;
+  s.stats.annualGrowthHouse = 0;
+  return s;
+};
+
 describe("suburb titles stay inside the SERP budget", () => {
-  // KNOWN FAILURE, deliberately kept visible. The current profile title is
-  // "{Name} Postcode {XXXX} ({State}) — Suburb Profile & Median Price", which is
-  // 62+ characters even for "Morayfield" and gets rewritten by Google. It is
-  // replaced under item 2 of the fix review (cohort rollout, SA/TAS first).
-  // `it.fails` passes while the assertion fails and FAILS once item 2 lands, so
-  // whoever ships item 2 must remove the `.fails` marker in the same commit.
-  it.fails("profile title (suburbTitle) is under 60 characters — fails until fix item 2 ships", () => {
+  it("profile title (suburbTitle) is under 60 characters for every long name, priced or not", () => {
     for (const s of LONG_NAMES) {
-      expect(suburbTitle(makeSuburb(s)).length, `${s.name}: ${suburbTitle(makeSuburb(s))}`).toBeLessThanOrEqual(TITLE_BUDGET);
+      const t = suburbTitleHousePrices(makeSuburb(s));
+      expect(t.length, `${s.name}: ${t}`).toBeLessThanOrEqual(TITLE_BUDGET);
+      const u = suburbTitleHousePrices({ ...unpriced(), ...s });
+      expect(u.length, `${s.name}: ${u}`).toBeLessThanOrEqual(TITLE_BUDGET);
     }
+  });
+
+  it("leads with the suburb, state and postcode, then House Prices: the tracker's wording where it fits and the page publishes all three", () => {
+    expect(suburbTitleHousePrices(priced())).toBe("Bondi NSW 2026: House Prices, Rent, Schools & Suburb Profile");
+    // Longer names keep the order of the intents and drop from the end.
+    expect(suburbTitleHousePrices(pricedGrowthUnmeasured())).toBe("Toorak VIC 3142: House Prices, Rent & Suburb Profile");
+    expect(suburbTitleHousePrices(pricedArea())).toBe("Morayfield QLD 4506: House Prices, Rent & Suburb Profile");
+    expect(suburbTitleHousePrices(makeSuburb({ name: "Hawthorn East", postcode: "3123", state: "VIC", salesSource: "sales-vic" }))).toBe("Hawthorn East VIC 3123: House Prices, Rent & Suburb Profile");
+    expect(suburbTitleHousePrices(makeSuburb({ name: "Karratha Industrial Estate", postcode: "6714", state: "WA", salesSource: "sales-abs" }))).toBe("Karratha Industrial Estate WA 6714: House Prices & Profile");
+    for (const s of LONG_NAMES) {
+      expect(suburbTitleHousePrices(makeSuburb(s))).toMatch(new RegExp(`^${s.name} ${s.state} ${s.postcode}: House Prices`));
+    }
+  });
+
+  it("never says Postcode first: that lead drew 79% of impressions as postcode lookups with 25 clicks", () => {
+    for (const s of LONG_NAMES) expect(suburbTitleHousePrices(makeSuburb(s))).not.toMatch(/Postcode/);
+  });
+
+  it("does not promise House Prices for a suburb whose median the page withholds", () => {
+    expect(hasReliablePrice(unpriced())).toBe(false);
+    expect(suburbTitleHousePrices(unpriced())).toBe("Surfers Paradise QLD 4217: Rent, Schools & Suburb Profile");
+    for (const source of ["sales-qld", "sales-wa", "seed", null]) {
+      const s = makeSuburb({ name: "Morayfield", postcode: "4506", state: "QLD", salesSource: source });
+      s.stats.medianHousePrice = 0;
+      expect(suburbTitleHousePrices(s), `source=${source}`).not.toMatch(/House Prices/);
+      expect(suburbTitleHousePrices(s), `source=${source}`).toBe("Morayfield QLD 4506: Rent, Schools & Suburb Profile");
+    }
+    // A trusted feed with too few sales is withheld the same way (the service zeroes the median).
+    const thin = makeSuburb({ name: "Bondi", postcode: "2026", state: "NSW" });
+    thin.stats.medianHousePrice = 0;
+    expect(suburbTitleHousePrices(thin)).not.toMatch(/House Prices/);
+  });
+
+  it("names Rent only for a rent with a known source, and Schools only when the page lists schools", () => {
+    // Hawthorn East on 30 Sep 2026: a Land Victoria median, schools, no rent.
+    const noRent = makeSuburb({ name: "Hawthorn East", postcode: "3123", state: "VIC", salesSource: "sales-vic" });
+    noRent.stats.medianRentHouse = 0;
+    noRent.stats.medianRentUnit = 0;
+    expect(suburbTitleHousePrices(noRent)).toBe("Hawthorn East VIC 3123: House Prices & Suburb Profile");
+    // A rent on file with no named source (a seed or census value) is not a published rent.
+    const unsourced = makeSuburb({ name: "Bondi", postcode: "2026", state: "NSW", freshness: { rentalSource: null } });
+    expect(suburbTitleHousePrices(unsourced)).toBe("Bondi NSW 2026: House Prices, Schools & Suburb Profile");
+    const noSchools = makeSuburb({ name: "Bondi", postcode: "2026", state: "NSW", schools: [] });
+    expect(suburbTitleHousePrices(noSchools)).toBe("Bondi NSW 2026: House Prices, Rent & Suburb Profile");
   });
 
   it("buy and rent sub-page titles are under 60 characters", () => {
@@ -106,39 +183,220 @@ describe("suburb titles stay inside the SERP budget", () => {
     }
   });
 
+  it("sub-page titles neither repeat the profile title nor its lead", () => {
+    // The profile owns "{Suburb} {State} {Postcode}: ..."; the sub-pages keep
+    // their "{Thing} in {Suburb}" shape so no two pages compete for one query.
+    for (const s of LONG_NAMES) {
+      const sub = makeSuburb(s);
+      const profile = suburbTitleHousePrices(sub);
+      const lead = `${s.name} ${s.state} ${s.postcode}:`;
+      for (const t of [suburbBuyTitle(sub), suburbRentTitle(sub)]) {
+        expect(t).not.toBe(profile);
+        expect(t.startsWith(lead)).toBe(false);
+        expect(t).not.toMatch(/Suburb Profile|House Prices/);
+      }
+    }
+  });
+
   it("titles never contain a dollar figure (prices belong in descriptions, behind the gate)", () => {
     for (const s of LONG_NAMES) {
       const sub = makeSuburb(s);
-      for (const t of [suburbTitle(sub), suburbBuyTitle(sub), suburbRentTitle(sub)]) {
+      for (const t of [suburbTitleHousePrices(sub), suburbBuyTitle(sub), suburbRentTitle(sub)]) {
         expect(t).not.toMatch(/\$/);
       }
     }
   });
 });
 
-describe("descriptions respect the price-reliability gate", () => {
-  const unreliableSources: Array<string | null> = ["sales-qld", "sales-wa", "seed", null];
+describe("the profile description leads with what the page publishes", () => {
+  it("priced, growth measured (NSW): the median, its source and period, and the 12-month change", () => {
+    const s = priced();
+    s.stats.medianHousePrice = 4_300_000;
+    s.stats.annualGrowthHouse = 13.9;
+    expect(publishedGrowthFor(s)).toBe(13.9);
+    expect(suburbDescriptionHousePrices(s)).toBe(
+      "Bondi's median house price is $4,300,000 (NSW Valuer General, calendar 2025, up 13.9% in 12 months). Plus weekly rent and population 24,898 (2021 Census).",
+    );
+  });
 
-  it("profile description prints the median only when hasReliablePrice is true", () => {
-    const reliable = makeSuburb({ name: "Morayfield", postcode: "4506", state: "QLD", salesSource: "sales-abs" });
-    expect(hasReliablePrice(reliable)).toBe(true);
-    expect(suburbDescription(reliable)).toMatch(/\$1\.1M/);
+  it("says down, never a minus sign, for a fall (SA measures a change too)", () => {
+    const s = makeSuburb({ name: "Glenelg", postcode: "5045", state: "SA", salesSource: "sales-sa", freshness: { salesAsOf: new Date("2026-09-05T00:00:00Z") } });
+    s.stats.annualGrowthHouse = -3.1;
+    expect(suburbDescriptionHousePrices(s)).toMatch(/^Glenelg's median house price is \$1,095,000 \(SA Government, the latest published quarter, updated September 2026, down 3\.1% in 12 months\)\./);
+    expect(suburbDescriptionHousePrices(s)).not.toMatch(/-3\.1/);
+  });
 
-    for (const source of unreliableSources) {
-      const s = makeSuburb({ name: "Morayfield", postcode: "4506", state: "QLD", salesSource: source });
-      expect(hasReliablePrice(s)).toBe(false);
-      expect(suburbDescription(s), `source=${source}`).not.toMatch(/\$/);
+  it("priced, growth unmeasured (Land Victoria, ABS): the median and its source, and no change even when the column holds one", () => {
+    const vic = pricedGrowthUnmeasured();
+    expect(vic.stats.annualGrowthHouse).toBe(6); // a leftover the service would have zeroed
+    expect(publishedGrowthFor(vic)).toBe(0);
+    expect(suburbDescriptionHousePrices(vic)).toBe(
+      // The population would take it past the 155 guardrail, so it is skipped and the shorter facts go in.
+      "Toorak's median house price is $1,095,000 (Land Victoria, the latest published quarter, updated May 2026). Plus weekly rent, 20 schools and walk score 60.",
+    );
+    expect(suburbDescriptionHousePrices(vic)).not.toMatch(/%/);
+    const abs = pricedArea();
+    expect(suburbDescriptionHousePrices(abs)).toBe(
+      "Morayfield sits in an ABS statistical area (SA2) where the median house price is $1,095,000 (ABS, 2024). Plus weekly rent, 20 schools and walk score 60.",
+    );
+    expect(suburbDescriptionHousePrices(abs)).not.toMatch(/%/);
+  });
+
+  it("withholds an implausible change and the 0 the feeds store for no prior period", () => {
+    const big = priced();
+    big.stats.annualGrowthHouse = 41.8;
+    expect(suburbDescriptionHousePrices(big)).not.toMatch(/%/);
+    const zero = priced();
+    zero.stats.annualGrowthHouse = 0;
+    expect(suburbDescriptionHousePrices(zero)).not.toMatch(/%/);
+  });
+
+  it("unpriced: leads with what the page publishes, with no dollar figure, no growth figure and no $0", () => {
+    const s = unpriced();
+    s.stats.population = 26_412;
+    s.stats.walkScore = 90;
+    s.schools = Array.from({ length: 20 }, (_, i) => ({ name: `School ${i}`, type: "primary" as const, sector: "government" as const, distance: 1, yearRange: null, gender: null, website: null, icsea: null, enrolment: null, acaraId: null }));
+    expect(suburbDescriptionHousePrices(s)).toBe(
+      "Surfers Paradise, QLD 4217: suburb profile with weekly rent, population 26,412 (2021 Census), 20 schools and walk score 90.",
+    );
+    for (const source of ["sales-qld", "sales-wa", "seed", null]) {
+      const u = makeSuburb({ name: "Morayfield", postcode: "4506", state: "QLD", salesSource: source });
+      u.stats.medianHousePrice = 0;
+      const d = suburbDescriptionHousePrices(u);
+      expect(d, `source=${source}`).not.toMatch(/\$/);
+      expect(d, `source=${source}`).not.toMatch(/%/);
+      expect(d, `source=${source}`).toMatch(/^Morayfield, QLD 4506, in Greater Brisbane: suburb profile with weekly rent/);
     }
   });
 
-  it("profile description keeps a zeroed price out even when the source is trusted", () => {
-    // suburb-service zeroes medianHousePrice for unreliable rows; a trusted
-    // source with a 0 must still print nothing rather than "$0K".
+  it("names a weekly rent only where the rent's source is known (the snapshot band's rule)", () => {
+    const s = unpriced();
+    s.dataFreshness = { ...s.dataFreshness!, rentalSource: null };
+    expect(suburbDescriptionHousePrices(s)).not.toMatch(/rent/);
+    const p = priced();
+    p.dataFreshness = { ...p.dataFreshness!, rentalSource: null };
+    expect(suburbDescriptionHousePrices(p)).not.toMatch(/rent/);
+  });
+
+  it("unpriced with a trusted source but a zeroed median still prints nothing", () => {
+    // suburb-service zeroes medianHousePrice for rows on fewer than five
+    // sales; a trusted source with a 0 must print no price rather than "$0".
     const s = makeSuburb({ name: "Morayfield", postcode: "4506", state: "QLD" });
     s.stats.medianHousePrice = 0;
     expect(hasReliablePrice(s)).toBe(false);
-    expect(suburbDescription(s)).not.toMatch(/\$/);
+    expect(suburbDescriptionHousePrices(s)).not.toMatch(/\$/);
   });
+
+  it("a thin profile (no price, no population, no data of its own) names nothing it does not hold", () => {
+    const s = unpriced();
+    s.name = "Balladonia"; s.state = "WA"; s.postcode = "6443"; s.slug = "balladonia-wa-6443";
+    s.stats.population = 0; s.stats.walkScore = 0; s.stats.medianRentHouse = 0; s.stats.medianRentUnit = 0; s.schools = [];
+    expect(suburbDescriptionHousePrices(s)).toBe("Balladonia, WA 6443: suburb profile, postcode and location.");
+    expect(suburbTitleHousePrices(s)).toBe("Balladonia WA 6443: Suburb Profile");
+    // Production's Balladonia has a $150 house rent on file with no named source: neither builder names it.
+    s.stats.medianRentHouse = 150;
+    s.dataFreshness = { ...s.dataFreshness!, rentalSource: null };
+    expect(suburbDescriptionHousePrices(s)).toBe("Balladonia, WA 6443: suburb profile, postcode and location.");
+    expect(suburbTitleHousePrices(s)).toBe("Balladonia WA 6443: Suburb Profile");
+  });
+
+  it("keeps the reversed alias of a trailing directional name, the one crawlable place it appears", () => {
+    const vic = makeSuburb({ name: "Brighton East", postcode: "3187", state: "VIC", salesSource: "sales-vic" });
+    expect(suburbDescriptionHousePrices(vic)).toContain("Also known as East Brighton.");
+    const bare = makeSuburb({ name: "Brighton East", postcode: "3187", state: "VIC", salesSource: null });
+    bare.stats.medianHousePrice = 0;
+    expect(suburbDescriptionHousePrices(bare)).toMatch(/^Brighton East \(also known as East Brighton\), VIC 3187, in Greater Melbourne:/);
+    // A leading directional is the name itself: "South Yarra" is never "Yarra South".
+    expect(suburbDescriptionHousePrices(makeSuburb({ name: "South Yarra", postcode: "3141", state: "VIC", salesSource: "sales-vic" }))).not.toMatch(/also known/i);
+  });
+
+  it("stays under 155 characters (the item 2 guardrail) for every long name in every data case", () => {
+    for (const n of LONG_NAMES) {
+      for (const make of [priced, pricedGrowthUnmeasured, pricedArea, unpriced]) {
+        const s = { ...make(), ...n };
+        expect(suburbDescriptionHousePrices(s).length, `${n.name}: ${suburbDescriptionHousePrices(s)}`).toBeLessThanOrEqual(ITEM2_DESCRIPTION_BUDGET);
+      }
+    }
+  });
+});
+
+describe("item 2 rolls out by state cohort (R4): SA and TAS first, the rest of the country is the control", () => {
+  it("names the cohort", () => {
+    expect([...TITLE_COHORT_STATES]).toEqual(["SA", "TAS"]);
+    expect(inTitleCohort({ state: "SA" })).toBe(true);
+    expect(inTitleCohort({ state: "tas" })).toBe(true);
+    for (const state of ["NSW", "VIC", "QLD", "WA", "ACT", "NT"]) expect(inTitleCohort({ state }), state).toBe(false);
+  });
+  it("a cohort suburb gets the item 2 title and description", () => {
+    const glenelg = makeSuburb({ name: "Glenelg", postcode: "5045", state: "SA", salesSource: "sales-sa" });
+    expect(suburbTitle(glenelg)).toBe(suburbTitleHousePrices(glenelg));
+    // 61 characters with Schools, so Schools drops (R6).
+    expect(suburbTitle(glenelg)).toBe("Glenelg SA 5045: House Prices, Rent & Suburb Profile");
+    expect(suburbDescription(glenelg)).toBe(suburbDescriptionHousePrices(glenelg));
+    const sandyBay = makeSuburb({ name: "Sandy Bay", postcode: "7005", state: "TAS", salesSource: "sales-abs" });
+    expect(suburbTitle(sandyBay)).toMatch(/^Sandy Bay TAS 7005: House Prices/);
+  });
+  it("a control suburb keeps today's title and description, character for character", () => {
+    const bondi = makeSuburb({ name: "Bondi", postcode: "2026", state: "NSW" });
+    expect(suburbTitle(bondi)).toBe("Bondi Postcode 2026 (NSW) — Suburb Profile & Median Price");
+    expect(suburbTitle(bondi)).toBe(legacySuburbTitle(bondi));
+    expect(suburbDescription(bondi)).toBe(legacySuburbDescription(bondi));
+    expect(suburbDescription(bondi)).toBe("Bondi, NSW's postcode is 2026, in Greater Sydney. Median house price $1.1M, growth, schools and crime. No sign-up.");
+    const hawthorn = makeSuburb({ name: "Hawthorn", postcode: "3122", state: "VIC", salesSource: "sales-vic" });
+    expect(suburbTitle(hawthorn)).toBe("Hawthorn Postcode 3122 (VIC) — Suburb Profile & Median Price");
+  });
+});
+
+describe("the control's description still respects the price-reliability gate", () => {
+  // The tests the control's builder carried on main, kept while it is live.
+  const unreliableSources: Array<string | null> = ["sales-qld", "sales-wa", "seed", null];
+  it("prints the median only when hasReliablePrice is true", () => {
+    const reliable = makeSuburb({ name: "Morayfield", postcode: "4506", state: "QLD", salesSource: "sales-abs" });
+    expect(hasReliablePrice(reliable)).toBe(true);
+    expect(legacySuburbDescription(reliable)).toMatch(/\$1\.1M/);
+    for (const source of unreliableSources) {
+      const s = makeSuburb({ name: "Morayfield", postcode: "4506", state: "QLD", salesSource: source });
+      expect(hasReliablePrice(s)).toBe(false);
+      expect(legacySuburbDescription(s), `source=${source}`).not.toMatch(/\$/);
+    }
+  });
+  it("keeps a zeroed price out even when the source is trusted", () => {
+    const s = makeSuburb({ name: "Morayfield", postcode: "4506", state: "QLD" });
+    s.stats.medianHousePrice = 0;
+    expect(legacySuburbDescription(s)).not.toMatch(/\$/);
+  });
+  it("stays inside 160 characters where the builder promises it (metro and directional names)", () => {
+    expect(legacySuburbDescription(makeSuburb({ name: "Brighton East", postcode: "3187", state: "VIC", salesSource: "sales-vic" })).length).toBeLessThanOrEqual(DESCRIPTION_BUDGET);
+    expect(legacySuburbDescription(makeSuburb({ name: "Chermside South", postcode: "4032", state: "QLD", salesSource: "sales-abs" })).length).toBeLessThanOrEqual(DESCRIPTION_BUDGET);
+  });
+});
+
+describe("the sub-page titles keep their own shape", () => {
+  // Fix item 2, step 3: the profile owns "{Suburb} {State} {Postcode}: House
+  // Prices ... & Suburb Profile". The buy, rent, houses, units, townhouses,
+  // land, agents, rental-market and schools pages keep "{Thing} in {Suburb}"
+  // or "{Suburb} Rental Market", so no two pages of a suburb compete for one query.
+  const SUB = "src/app/(marketing)/suburbs/[slug]";
+  const subpages = fs.readdirSync(SUB, { withFileTypes: true })
+    .filter((d) => d.isDirectory() && fs.existsSync(`${SUB}/${d.name}/page.tsx`))
+    .map((d) => `${SUB}/${d.name}/page.tsx`);
+  it("finds the sub-pages", () => {
+    for (const p of ["buy", "rent", "houses", "units", "agents", "rental-market"]) expect(subpages).toContain(`${SUB}/${p}/page.tsx`);
+  });
+  it("none of them uses the profile title or its words", () => {
+    for (const f of [...subpages, "src/lib/suburb-agents.ts", "src/lib/rental-market.ts"]) {
+      const src = fs.readFileSync(f, "utf8");
+      expect(src, f).not.toMatch(/\bsuburbTitle\(/);
+      expect(src, f).not.toMatch(/House Prices|Suburb Profile/);
+    }
+    const t = rentalMarketTitle("Bondi", true);
+    expect(t).toBe("Bondi Rental Market 2026: Median Rent & Yield");
+    expect(t).not.toBe(suburbTitleHousePrices(makeSuburb({ name: "Bondi", postcode: "2026", state: "NSW" })));
+  });
+});
+
+describe("sub-page descriptions respect the price-reliability gate", () => {
+  const unreliableSources: Array<string | null> = ["sales-qld", "sales-wa", "seed", null];
 
   it("buy and rent sub-page descriptions never print a dollar figure for an unreliable price", () => {
     for (const source of unreliableSources) {
@@ -150,11 +408,13 @@ describe("descriptions respect the price-reliability gate", () => {
     }
   });
 
-  it("profile description stays inside 160 characters where the builder promises it (metro and directional names)", () => {
-    const metro = makeSuburb({ name: "Brighton East", postcode: "3187", state: "VIC", salesSource: "sales-vic" });
-    expect(suburbDescription(metro).length).toBeLessThanOrEqual(DESCRIPTION_BUDGET);
-    const capital = makeSuburb({ name: "Chermside South", postcode: "4032", state: "QLD", salesSource: "sales-abs" });
-    expect(suburbDescription(capital).length).toBeLessThanOrEqual(DESCRIPTION_BUDGET);
+  it("buy description prints the median only when hasReliablePrice is true", () => {
+    const reliable = makeSuburb({ name: "Morayfield", postcode: "4506", state: "QLD", salesSource: "sales-abs" });
+    expect(suburbBuyDescription(reliable)).toMatch(/\$1\.1M/);
+    for (const source of unreliableSources) {
+      const s = makeSuburb({ name: "Morayfield", postcode: "4506", state: "QLD", salesSource: source });
+      expect(suburbBuyDescription(s), `source=${source}`).not.toMatch(/\$/);
+    }
   });
 });
 

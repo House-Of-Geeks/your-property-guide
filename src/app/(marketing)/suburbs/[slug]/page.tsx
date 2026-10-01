@@ -53,6 +53,7 @@ import {
   PENDING_PRICE_NOTE,
 } from "@/lib/suburb-data-quality";
 import { describeSalesProvenance, hasEnoughSales, thinSalesNote } from "@/lib/sales-provenance";
+import { publishedGrowthFor } from "@/lib/published-medians";
 import { PriceProvenance } from "@/components/suburb/PriceProvenance";
 import { buildLeadSentence } from "@/lib/suburb-snapshot";
 import { fullLgaName } from "@/lib/utils/lga-names";
@@ -156,6 +157,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
   // Whether we trust this suburb's median enough to print it as fact.
   // Drives the main price card display and the unit-price callout.
   const priceTrusted = hasReliablePrice(suburb);
+  const houseGrowth = publishedGrowthFor(suburb);
   const salesProvenance = describeSalesProvenance({
     source: suburb.dataFreshness?.salesSource,
     periodEnd: suburb.dataFreshness?.salesPeriodEnd,
@@ -278,15 +280,28 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                     </p>
                   </>
                 )}
-                {priceTrusted && suburb.stats.annualGrowthHouse !== null && suburb.stats.annualGrowthHouse !== undefined && (
+                {/* The 12-month change only where a feed measures one (NSW, SA),
+                    the rule the title, description and FAQ read: annualGrowthHouse
+                    is a number, so the old null check printed "+0.0% over the
+                    past year" under every Land Victoria and ABS median. Spaces
+                    are written as strings (JSX spacing trap). */}
+                {priceTrusted && (houseGrowth !== 0 || suburb.stats.medianUnitPrice > 0) && (
                   <p className="font-sans text-base text-ink-muted mt-4 leading-relaxed">
-                    <span className={`font-medium ${suburb.stats.annualGrowthHouse >= 0 ? "text-success" : "text-danger"}`}>
-                      {formatPercentage(suburb.stats.annualGrowthHouse)}
-                    </span>{" "}
-                    over the past year. Median unit price{" "}
-                    <span className="font-medium text-ink">
-                      {suburb.stats.medianUnitPrice ? formatPriceFull(suburb.stats.medianUnitPrice) : "n/a"}
-                    </span>.
+                    {houseGrowth !== 0 && (
+                      <>
+                        <span className={`font-medium ${houseGrowth >= 0 ? "text-success" : "text-danger"}`}>
+                          {formatPercentage(houseGrowth)}
+                        </span>
+                        {" over the past year. "}
+                      </>
+                    )}
+                    {suburb.stats.medianUnitPrice > 0 && (
+                      <>
+                        {"Median unit price "}
+                        <span className="font-medium text-ink">{formatPriceFull(suburb.stats.medianUnitPrice)}</span>
+                        {"."}
+                      </>
+                    )}
                   </p>
                 )}
                 {priceTrusted ? (

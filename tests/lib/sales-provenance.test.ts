@@ -36,6 +36,16 @@ describe("sales provenance", () => {
     expect(p.period).toBe("the latest published quarter (updated September 2026)");
     expect(p.short).toBe("Median of 12 house sales · SA Government · the latest published quarter (updated September 2026)");
   });
+  it("carries a short source and period for a meta description or a parenthesis (fix item 2)", () => {
+    const nsw = describeSalesProvenance({ source: "sales-nsw", periodEnd: new Date("2025-12-31T00:00:00Z"), salesCount: 35, suburbName: "Bondi" })!;
+    expect([nsw.sourceShort, nsw.periodShort]).toEqual(["NSW Valuer General", "calendar 2025"]);
+    const vic = describeSalesProvenance({ source: "sales-vic", periodEnd: null, updatedAt: new Date("2026-05-15T00:00:00Z"), salesCount: null, suburbName: "Toorak" })!;
+    expect([vic.sourceShort, vic.periodShort]).toEqual(["Land Victoria", "the latest published quarter, updated May 2026"]);
+    const sa = describeSalesProvenance({ source: "sales-sa", periodEnd: null, salesCount: 12, suburbName: "Glenelg" })!;
+    expect([sa.sourceShort, sa.periodShort]).toEqual(["SA Government", "the latest published quarter"]);
+    const abs = describeSalesProvenance({ source: "sales-abs", periodEnd: new Date("2024-12-31T00:00:00Z"), salesCount: null, suburbName: "Morayfield" })!;
+    expect([abs.sourceShort, abs.periodShort]).toEqual(["ABS", "2024"]);
+  });
   it("returns nothing for proxy or unknown sources", () => {
     expect(describeSalesProvenance({ source: "sales-qld", periodEnd: null, salesCount: null, suburbName: "X" })).toBeNull();
     expect(describeSalesProvenance({ source: null, periodEnd: null, salesCount: null, suburbName: "X" })).toBeNull();

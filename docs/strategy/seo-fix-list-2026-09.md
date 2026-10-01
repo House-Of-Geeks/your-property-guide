@@ -41,9 +41,15 @@ Tick items off as they ship.
       Original scope: Provenance + plausibility gate on suburb stats: source/sample/period under every
       median; hold medians >25% off region; no dollar figure in meta/opening from proxy sources;
       suppress population/region for suburbs missing from 2021 ABS SAL. (03)
-- [ ] 2. [code] New suburb title + description in `src/lib/utils/seo.ts`:
+- [x] 2. [code] New suburb title + description in `src/lib/utils/seo.ts`:
       `{Suburb} {State} {Postcode}: House Prices, Rent, Schools & Suburb Profile`;
       description leads with median + 12-month change + source month. (01)
+      DONE 1 Oct 2026 — PR #87. (sign-off row for item 2 still blank). Staged per R4: title and
+      description for the SA and TAS cohort only (2,539 of 16,390 profiles in the production sitemap), the rest
+      keep today's builders as the control; widen via `TITLE_COHORT_STATES` after three weeks if the cohort's CTR
+      beats the control's. Each title topic named only where the page publishes it; growth only where measured
+      (NSW, SA). Same PR, every profile: "Is {suburb} a good investment?" FAQ (commercial intent review 3.8) and the
+      price card no longer prints "+0.0%" under Land Victoria and ABS medians.
 - [x] 3. DONE 7 Sep 2026 — PR #11 (f725a0e): snapshot band under the hero (median house with 12-month change,
       median unit, weekly rent, gross yield, population, walk score; 3–6 tiles; provenance line per data family)
       and the brief opens with "{Suburb}'s median house price is $X (median of N sales, source, period)"; then

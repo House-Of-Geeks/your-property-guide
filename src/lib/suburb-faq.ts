@@ -3,6 +3,9 @@ import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { fullLgaName } from "@/lib/utils/lga-names";
 import { hasReliablePrice } from "@/lib/suburb-data-quality";
 import { describeSalesProvenance } from "@/lib/sales-provenance";
+import { publishedGrowthFor } from "@/lib/published-medians";
+import { grossYieldPercent, rentSourceKnown, salesProvenanceFor } from "@/lib/suburb-snapshot";
+import { monthYear, rentalSourceLabel } from "@/lib/rental-labels";
 import { capitalCityFor } from "@/lib/utils/metro";
 
 export interface SuburbFaq {
@@ -30,13 +33,12 @@ export function buildSuburbFaqs(suburb: Suburb): SuburbFaq[] {
   // as fact here — this block feeds FAQPage JSON-LD, so a wrong figure
   // would surface directly in SERP snippets.
   if (hasReliablePrice(suburb)) {
-    // Truthy check on purpose: 0 is the service layer's "unknown /
-    // implausible, don't print" sentinel for growth — `!= null` was
-    // rendering "Annual growth is 0.0%" for those suburbs.
-    const growth =
-      suburb.stats.annualGrowthHouse
-        ? ` Annual growth is ${formatPercentage(suburb.stats.annualGrowthHouse)}.`
-        : "";
+    // 0 is the service layer's "unknown / implausible, don't print" sentinel
+    // for growth (`!= null` was rendering "Annual growth is 0.0%"), and a
+    // change is published only from a feed that measures one (NSW, SA):
+    // publishedGrowthFor re-applies both rules on the gated object.
+    const measuredGrowth = publishedGrowthFor(suburb);
+    const growth = measuredGrowth ? ` Annual growth is ${formatPercentage(measuredGrowth)}.` : "";
     const unit =
       suburb.stats.medianUnitPrice
         ? ` The median unit price is ${formatPriceFull(suburb.stats.medianUnitPrice)}.`
@@ -64,6 +66,9 @@ export function buildSuburbFaqs(suburb: Suburb): SuburbFaq[] {
       answer: `A useful starting point is the ${sn} median house price of ${formatPriceFull(suburb.stats.medianHousePrice)}${suburb.stats.medianUnitPrice ? ` (units ${formatPriceFull(suburb.stats.medianUnitPrice)})` : ""}. Your home will sit above or below that depending on land size, condition, position and what comparable homes nearby have sold for recently. For a figure specific to your property, request a free property appraisal from a local agent using the form on this page.`,
     });
   }
+
+  const investment = buildInvestmentFaq(suburb);
+  if (investment) faqs.push(investment);
 
   // Postcode, almost always present, useful for voice search
   faqs.push({
@@ -147,4 +152,70 @@ export function buildSuburbFaqs(suburb: Suburb): SuburbFaq[] {
   }
 
   return faqs;
+}
+
+/**
+ * "Is {suburb} a good investment?": the question every suburb SERP's People
+ * Also Ask carries (commercial intent review 3.8, 30 Sep 2026: Bondi,
+ * Morayfield and Hawthorn all show it) and the FAQ did not answer. Built
+ * only from what the page already publishes: the gross yield the snapshot
+ * band shows (a weekly house rent whose source is known, against a published
+ * median, inside the plausibility bound) and the 12-month change where the
+ * feed measures one (publishedGrowthFor). Withheld entirely where neither
+ * exists, names each figure's source and period, says when no change is
+ * measured or no house rent is published, and ends with the caveat that
+ * these are market figures, not advice. Exported for the tests.
+ */
+export function buildInvestmentFaq(suburb: Suburb): SuburbFaq | null {
+  const s = suburb.stats;
+  const sn = suburb.name;
+  const f = suburb.dataFreshness;
+  if (!hasReliablePrice(suburb)) return null;
+  const prov = salesProvenanceFor(suburb);
+  if (!prov) return null;
+  const rentSourced = rentSourceKnown(suburb);
+  const yieldPct = rentSourced ? grossYieldPercent(s.medianRentHouse, s.medianHousePrice) : null;
+  const growth = publishedGrowthFor(suburb);
+  if (yieldPct === null && !growth) return null;
+
+  const price = formatPriceFull(s.medianHousePrice);
+  const medianPhrase = prov.geography === "area"
+    ? `the ABS statistical area (SA2) median house price of ${price} (${prov.sourceShort}, ${prov.periodShort}), which can take in surrounding localities`
+    : `the median house price of ${price} (${prov.sourceShort}, ${prov.periodShort})`;
+  const direction = growth > 0 ? "rose" : "fell";
+  const changePct = `${Math.abs(growth).toFixed(1)}%`;
+
+  const figures: string[] = [];
+  const missing: string[] = [];
+  if (yieldPct !== null) {
+    const rentLabel = rentalSourceLabel(f?.rentalSource, suburb.postcode);
+    const rentWhen = f?.rentalAsOf ? `, ${monthYear(new Date(f.rentalAsOf))}` : "";
+    figures.push(
+      `the gross rental yield on houses in ${sn} is ${yieldPct.toFixed(1)}%: the median weekly house rent is $${s.medianRentHouse.toLocaleString("en-AU")} (${rentLabel}${rentWhen}) against ${medianPhrase}.`,
+    );
+  } else if (!(s.medianRentHouse > 0)) {
+    // Said only when there is no house rent at all. A rent without a named
+    // source, or a yield outside the plausible range, is left out of this
+    // answer without comment: the Investment overview computes its own yield
+    // from the rent on file, and the answer must not contradict it.
+    missing.push(`No weekly house rent is published for ${sn}, so there is no house yield to work out.`);
+  }
+  if (growth) {
+    figures.push(
+      yieldPct !== null
+        ? `The median house price ${direction} ${changePct} over 12 months on the same ${prov.sourceShort} figures.`
+        : `${sn}'s median house price ${direction} ${changePct} over 12 months, to ${price} (${prov.sourceShort}, ${prov.periodShort}).`,
+    );
+  } else {
+    missing.push(`No 12-month price change is published for ${sn}: the ${prov.sourceShort} figures we hold do not measure one.`);
+  }
+
+  // The first figure opens the answer; a second one follows as its own sentence.
+  const [first, ...rest] = figures;
+  const opening = `On the published figures, ${first.replace(/\.$/, "")}.`;
+  const caveat = `Whether ${sn} is a good investment for you depends on the price you pay, your loan and holding costs, vacancy and your tax position. These are published market figures, not financial advice.`;
+  return {
+    question: `Is ${sn} a good investment?`,
+    answer: [opening, ...rest, ...missing, caveat].join(" "),
+  };
 }
