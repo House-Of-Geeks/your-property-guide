@@ -39,7 +39,7 @@ const appraisalLead: LeadEmailData = {
 
 const files: [string, string][] = [
   ["admin-guide-hot.html", buildAdminEmailHtml(guideLead, "Jane Agent", "suburb-coverage")],
-  ["admin-appraisal.html", buildAdminEmailHtml(appraisalLead, null, "round-robin")],
+  ["admin-appraisal.html", buildAdminEmailHtml(appraisalLead, null, "")],
   ["confirm-guide.html", buildConfirmationHtml(guideLead)],
   ["confirm-appraisal.html", buildConfirmationHtml(appraisalLead)],
   ["alert-failure.html", buildFailureAlertHtml("lead_123", guideLead, new Error("SendGrid 401: api key revoked"))],

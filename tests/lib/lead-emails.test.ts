@@ -98,7 +98,7 @@ describe("buying-guide confirmation email", () => {
   });
 
   it("admin email surfaces buyer persona, finance and budget", () => {
-    const html = buildAdminEmailHtml(buyerLead(), null, "round-robin");
+    const html = buildAdminEmailHtml(buyerLead(), null, "");
     expect(html).toContain("First home buyer");
     expect(html).toContain("Pre-approved");
     expect(html).toContain("$750k to $1m");
@@ -137,7 +137,7 @@ describe("email branding", () => {
   });
 
   it("admin email surfaces the score and qualification fields", () => {
-    const html = buildAdminEmailHtml(guideLead({ motivation: "Downsizing" }), null, "round-robin");
+    const html = buildAdminEmailHtml(guideLead({ motivation: "Downsizing" }), null, "");
     expect(html).toContain("HOT");
     expect(html).toContain("Within 3 months");
     expect(html).toContain("Comparing agents now");
@@ -248,7 +248,7 @@ describe("rental-appraisal (landlord) copy", () => {
     expect(c.next).not.toMatch(/\u2014/);
   });
   it("shows the landlord answers in the admin email", () => {
-    const html = buildAdminEmailHtml({ type: "rental-appraisal", firstName: "Priya", email: "p@example.com", tenanted: "no", managerTimeframe: "3-6-months" }, null, "round-robin");
+    const html = buildAdminEmailHtml({ type: "rental-appraisal", firstName: "Priya", email: "p@example.com", tenanted: "no", managerTimeframe: "3-6-months" }, null, "");
     expect(html).toContain("Currently tenanted");
     expect(html).toContain("No, vacant");
     expect(html).toContain("Wants a manager");
