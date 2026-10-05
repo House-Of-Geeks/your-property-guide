@@ -588,8 +588,8 @@ model Lead {
   address          String?
   propertyType     String?
   bedrooms         String?
-  routedToAgent    String? // resolved agent ID from lead-routing
-  routedReason     String? // "direct-agent" | "listing-agent" | "suburb-coverage" | "round-robin"
+  routedToAgent    String? // agent the visitor chose (src/lib/utils/lead-routing.ts); null when unassigned
+  routedReason     String? // "direct-agent"; rows before Oct 2026 may also hold the placeholder "suburb-coverage" | "round-robin"
   // Ad attribution from the ypg_attr cookie (src/lib/attribution.ts). gclid
   // is the latest Google Ads click, kept as a column so offline conversions
   // can be matched and uploaded; attribution holds the first and latest

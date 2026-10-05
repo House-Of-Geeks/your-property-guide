@@ -133,7 +133,8 @@ export async function POST(request: Request) {
     // not from the payload, so every form gets it without changes.
     const attribution = attributionFromRequest(request);
 
-    // Route the lead
+    // Route the lead. Null unless the visitor chose an agent; unassigned
+    // leads get no "Routed to" row in the email.
     const routing = routeLead({
       ...lead,
       id: crypto.randomUUID(),
@@ -142,14 +143,16 @@ export async function POST(request: Request) {
 
     // Look up routed agent name for the email
     let agentName: string | null = null;
-    try {
-      const agent = await db.agent.findUnique({
-        where: { id: routing.agentId },
-        select: { fullName: true },
-      });
-      agentName = agent?.fullName ?? null;
-    } catch {
-      // non-fatal, routing info is nice-to-have in the email
+    if (routing) {
+      try {
+        const agent = await db.agent.findUnique({
+          where: { id: routing.agentId },
+          select: { fullName: true },
+        });
+        agentName = agent?.fullName ?? null;
+      } catch {
+        // non-fatal, routing info is nice-to-have in the email
+      }
     }
 
     // Guide-download leads carry qualification answers that have no
@@ -221,8 +224,8 @@ export async function POST(request: Request) {
         address:          lead.address,
         propertyType:     lead.propertyType,
         bedrooms:         lead.bedrooms,
-        routedToAgent:    routing.agentId,
-        routedReason:     routing.reason,
+        routedToAgent:    routing?.agentId,
+        routedReason:     routing?.reason,
         gclid:            attribution.gclid ?? undefined,
         attribution:      attributionJson(attribution),
       },
@@ -271,7 +274,7 @@ export async function POST(request: Request) {
         to: NOTIFY_EMAIL,
         cc: isMatchRequest ? undefined : CC_EMAIL,
         subject,
-        html: buildAdminEmailHtml(lead, agentName, routing.reason, attributionRowsFor(attribution)),
+        html: buildAdminEmailHtml(lead, agentName, routing?.reason ?? "", attributionRowsFor(attribution)),
       });
     } catch (mailErr) {
       console.error("Lead notification email failed (lead saved to DB):", {

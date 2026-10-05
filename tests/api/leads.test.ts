@@ -24,10 +24,6 @@ vi.mock("@/lib/email", () => ({
   DEFAULT_FROM: "test-from",
 }));
 
-vi.mock("@/lib/utils/lead-routing", () => ({
-  routeLead: () => ({ agentId: "agent_test", reason: "test-route" }),
-}));
-
 import { POST } from "@/app/api/leads/route";
 import { AGENT_ENQUIRY_TYPES } from "@/components/agent/enquiry-types";
 
@@ -171,6 +167,32 @@ describe("POST /api/leads", () => {
     const res = await POST(makeRequest(baseLead));
     expect(res.status).toBe(200);
     expect(dbLeadCreate).toHaveBeenCalledTimes(1);
+  });
+
+  // Leads are assigned only when the visitor chose an agent. A suburb or
+  // a fallback must never name one: the old placeholder routing put
+  // "Routed to Matthew Thomson (round-robin)" on leads nobody assigned.
+  it("leaves a lead with no chosen agent unassigned and the email without a Routed to row", async () => {
+    const res = await POST(makeRequest({ ...baseLead, suburb: "burpengary-qld-4505" }));
+    expect(res.status).toBe(200);
+    expect(dbAgentFind).not.toHaveBeenCalled();
+    const data = dbLeadCreate.mock.calls[0][0].data;
+    expect(data.routedToAgent).toBeUndefined();
+    expect(data.routedReason).toBeUndefined();
+    const notify = sendMailMock.mock.calls[0][0];
+    expect(notify.html).not.toContain("Routed to");
+  });
+
+  it("routes a lead to the agent the visitor chose", async () => {
+    const res = await POST(makeRequest({ ...baseLead, agentId: "agent-7" }));
+    expect(res.status).toBe(200);
+    expect(dbAgentFind).toHaveBeenCalledWith({ where: { id: "agent-7" }, select: { fullName: true } });
+    const data = dbLeadCreate.mock.calls[0][0].data;
+    expect(data.routedToAgent).toBe("agent-7");
+    expect(data.routedReason).toBe("direct-agent");
+    const notify = sendMailMock.mock.calls[0][0];
+    expect(notify.html).toContain("Routed to");
+    expect(notify.html).toContain("Test Agent (direct-agent)");
   });
 });
 
