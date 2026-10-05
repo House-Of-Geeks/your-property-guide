@@ -52,9 +52,6 @@ describe("every reader of a suburb's sales figures goes through the rule", () =>
   // Cohort 3 closed the last of them: search, the schools pages, the listing
   // page, the postcode pages, the city and region rollups, the suburb finder.
   const RULE = /publishedSales|withPublishedSales|publishesMedians|publishedGrowth|PUBLISHED_HOUSE_MEDIAN|PUBLISHED_GROWTH|PUBLISHED_CHANGE|getSuburbBySlug/;
-  const ON_PURPOSE: Record<string, string> = {
-    "src/lib/services/property-page-suburb-cache.ts": "no page imports it since the address pages were removed",
-  };
   const files = (fs.readdirSync("src", { recursive: true, encoding: "utf8" }) as string[])
     .map((f) => `src/${f.split("\\").join("/")}`)
     .filter((f) => /\.(ts|tsx)$/.test(f) && !f.startsWith("src/generated/"));
@@ -64,7 +61,7 @@ describe("every reader of a suburb's sales figures goes through the rule", () =>
   });
 
   it("finds the readers", () => {
-    expect(readers.length).toBeGreaterThanOrEqual(12);
+    expect(readers.length).toBeGreaterThanOrEqual(11);
     for (const f of [
       "src/lib/services/search-service.ts",
       "src/lib/services/school-service.ts",
@@ -73,18 +70,10 @@ describe("every reader of a suburb's sales figures goes through the rule", () =>
       "src/lib/services/region-service.ts",
       "src/lib/services/suburb-finder-service.ts",
       "src/app/(marketing)/buy/[slug]/page.tsx",
-      ...Object.keys(ON_PURPOSE),
     ]) expect(readers, f).toContain(f);
   });
   it("and each applies it", () => {
-    for (const f of readers) {
-      if (ON_PURPOSE[f]) continue;
-      expect(src(f), f).toMatch(RULE);
-    }
-  });
-  it("the one left out is still unused", () => {
-    const name = "property-page-suburb-cache";
-    expect(files.filter((f) => !f.endsWith(`${name}.ts`) && src(f).includes(name))).toEqual([]);
+    for (const f of readers) expect(src(f), f).toMatch(RULE);
   });
   it("no copy of the rule is left behind", () => {
     // A reader that checks the source alone misses the five-sale floor.

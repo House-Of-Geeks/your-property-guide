@@ -356,9 +356,8 @@ export default function DesignSystemPage() {
             <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">Warm surface</p>
             <h3 className="text-2xl text-ink mb-2">Buying guides</h3>
             <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[70ch]">
-              Editorial / tile background. Tokenises the warm-neutral hex literals already inlined in
-              <code className="px-1 py-0.5 bg-surface-warm-sunken rounded">home/ResearchTopics.tsx</code> and
-              <code className="px-1 py-0.5 bg-surface-warm-sunken rounded">home/SuburbSpotlight.tsx</code>.
+              Editorial / tile background. Tokenises the warm-neutral hex literals already inlined in{" "}
+              <code className="px-1 py-0.5 bg-surface-warm-sunken rounded">home/ResearchTopics.tsx</code>.
             </p>
             <div className="mt-4 inline-flex items-center gap-2 rounded-lg bg-surface-warm-sunken px-3 py-2 text-sm font-sans text-ink-muted">
               <MapPin className="w-4 h-4" /> Nested warm tile

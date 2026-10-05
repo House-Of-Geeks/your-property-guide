@@ -349,17 +349,6 @@ export async function getSuburbs(opts?: {
   };
 }
 
-export async function getFeaturedSuburbs(limit = 6): Promise<Suburb[]> {
-  // Only suburbs with real data (population > 0) for the home page spotlight
-  const rows = await db.suburb.findMany({
-    where: { population: { gt: 0 }, ...LOCALITIES_ONLY },
-    orderBy: { population: "desc" },
-    take: limit,
-    include: { schools: false },
-  });
-  return rows.map((s) => toSuburb({ ...s, schools: [] }, NO_FRESHNESS, null, null, null, null));
-}
-
 // Wrapped in React's cache() so multiple calls for the same slug
 // within a single render pass (e.g. generateMetadata + the page
 // handler) share one DB round trip. Cuts suburb-page DB hits in half
