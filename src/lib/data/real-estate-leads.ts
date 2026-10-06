@@ -290,6 +290,7 @@ export const leadTypePages: LeadTypePage[] = [
       "Appraisal requests come from two places: the appraisal page itself, and the appraisal prompt on every suburb profile, where homeowners are usually checking their own suburb's median and recent sales. Suburb-page requests tell you which suburb page they came from.",
     sources: [
       { label: "Free property appraisal", href: "/appraisal", why: "The dedicated appraisal request, with property type and bedrooms." },
+      { label: "Bridging loan calculator", href: "/bridging-loan-calculator", why: "Homeowners buying their next home before they sell. Every figure turns on the sale price, so the appraisal is their next step." },
       { label: "Suburb profiles", href: "/suburbs", why: "The appraisal prompt on each suburb page, under the median and recent sales. Captures a timeframe too." },
       { label: "Find an agent by suburb", href: "/agents", why: "Homeowners looking at who sells in their suburb, one step from asking for an appraisal." },
       { label: "How much is my house worth?", href: "/guides/how-much-is-my-house-worth-australia", why: "The online-estimate question. The guide explains why an agent appraisal is different." },

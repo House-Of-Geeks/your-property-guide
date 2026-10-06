@@ -217,9 +217,9 @@ export const GUIDE_SECTIONS: readonly GuideSection[] = [
   {
     id: "upgrading",
     label: "Upgrading or downsizing",
-    blurb: "When two transactions need to talk to each other: sell or buy first, bridging loans, and downsizing.",
+    blurb: "When two transactions need to talk to each other: sell or buy first, bridging loans and their alternatives, deposit bonds, and downsizing.",
     icon: "/images/icons/people.svg",
-    guides: ["sell-first-or-buy-first", "bridging-loans-guide", "downsizers-guide"],
+    guides: ["sell-first-or-buy-first", "bridging-loans-guide", "bridging-loan-alternatives", "deposit-bonds", "downsizers-guide"],
     articleCategories: [],
   },
   {

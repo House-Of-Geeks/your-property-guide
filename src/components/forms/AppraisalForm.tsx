@@ -34,7 +34,18 @@ const appraisalSchema = z.object({
 
 type AppraisalFormData = z.infer<typeof appraisalSchema>;
 
-export function AppraisalForm() {
+interface AppraisalFormProps {
+  /**
+   * Attribution string posted to /api/leads. "website" for the /appraisal and
+   * /property-valuation pages; a tool that embeds the form passes its own
+   * (the bridging calculator posts "bridging-calculator").
+   */
+  source?: string;
+  /** Clarity form name; also tagged as the appraisal source when `source` is set. */
+  formName?: string;
+}
+
+export function AppraisalForm({ source = "website", formName = "appraisal" }: AppraisalFormProps = {}) {
   const [error, setError] = useState<string | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
   const searchParams = useSearchParams();
@@ -47,7 +58,7 @@ export function AppraisalForm() {
     if (hasStarted) return;
     setHasStarted(true);
     clarityEvent("form_start");
-    clarityTag("form_name", "appraisal");
+    clarityTag("form_name", formName);
   };
 
   const {
@@ -87,12 +98,13 @@ export function AppraisalForm() {
           propertyType: data.propertyType || undefined,
           bedrooms: data.bedrooms || undefined,
           website: data.website ?? "",
-          source: "website",
+          source,
         }),
       });
       if (!res.ok) throw new Error("Failed to submit");
       clarityEvent("request_quote");
       clarityTag("appraisal_suburb", data.suburb);
+      if (source !== "website") clarityTag("appraisal_source", formName);
       if (data.propertyType) clarityTag("appraisal_property_type", data.propertyType);
       // Hand off to the thank-you page. The ConversionTracker there fires
       // the canonical `lead_conversion` event so this funnel is measurable

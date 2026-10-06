@@ -18,7 +18,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "How the $300,000 downsizer super contribution works, stamp duty concessions, retirement village contracts, CGT, Centrelink implications, and practical considerations.",
   slug: "downsizers-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-06",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -240,6 +240,7 @@ export default function DownsizersGuidePage() {
       <ul>
         <li><strong>Net proceeds after costs.</strong> Selling the family home involves agent commission (typically 1.5 to 2.5%), marketing costs, legal fees, moving costs, and potentially repairs or staging costs. Total selling costs can easily reach 3 to 5% of the sale price on a large property.</li>
         <li><strong>Buying costs.</strong> Stamp duty, legal fees, removalist costs, and any renovation or fit-out of the new property add to the total.</li>
+        <li><strong>Which comes first.</strong> Buying the smaller home before you sell usually means a bridging loan, and the interest on it is charged on the amount your sale will repay. Our <Link href="/guides/bridging-loans-guide#situations">bridging loans guide</Link> covers how lenders treat downsizers and retirees, and the <Link href="/bridging-loan-calculator">bridging loan calculator</Link> shows the cost from your own prices.</li>
         <li><strong>Lifestyle needs.</strong> Will the smaller property meet your needs for the next 10 to 20 years? Consider accessibility features, proximity to health services, social connections, and public transport.</li>
         <li><strong>Aged care planning.</strong> If full aged care is a possibility in the medium term, the sale proceeds from the family home and subsequent property decisions will affect aged care means testing. Get specialist aged care financial advice.</li>
         <li><strong>Emotional factors.</strong> Leaving the family home can be emotionally significant. Allow adequate time for the decision and involve family where appropriate.</li>

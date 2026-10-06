@@ -1,5 +1,5 @@
 {
- "note": "Tracked Google AU SERPs for the monthly measurement (fix item 28): the 33 from the 5 Sep search review plus the guide and calculator queries worked on since. One DataForSEO live task each (~$0.002).",
+ "note": "Tracked Google AU SERPs for the monthly measurement (fix item 28): the 33 from the 5 Sep search review plus the guide and calculator queries worked on since. One DataForSEO live task each (~$0.002). Bridging loan queries added 6 Oct 2026 (docs/seo-baselines/2026-10-06/bridging-loans).",
  "queries": [
   "borrowing power calculator",
   "real estate commission nsw",
@@ -40,6 +40,14 @@
   "cost of selling a house nsw",
   "cost of selling a house qld",
   "rental yield calculator",
-  "what is a good rental yield australia"
+  "what is a good rental yield australia",
+  "bridging loan",
+  "bridging loan calculator",
+  "how much does a bridging loan cost",
+  "bridging loan interest rate",
+  "how does a bridging loan work",
+  "deposit bond",
+  "bridging loan alternatives",
+  "cba bridging loan"
  ]
 }

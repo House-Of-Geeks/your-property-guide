@@ -229,6 +229,9 @@ const ALL_NEXT_STEPS: Record<string, NextStepLink> = {
   "refinancing-calculator":        { label: "Refinancing break-even",       description: "How long until refinancing actually saves you money.",       href: "/refinancing-calculator",        icon: "/images/icons/calculator.svg" },
   "lmi-calculator":                { label: "LMI",                          description: "What lenders mortgage insurance costs on a deposit under 20%.", href: "/lmi-calculator",               icon: "/images/icons/calculator.svg" },
   "negative-gearing-calculator":   { label: "Negative gearing",             description: "Your weekly cost after tax on an investment property.",     href: "/negative-gearing-calculator",   icon: "/images/icons/calculator.svg" },
+  "bridging-loan-calculator":      { label: "Bridging loan",                description: "Peak debt, end debt and what buying before you sell costs.", href: "/bridging-loan-calculator",      icon: "/images/icons/calculator.svg" },
+  "selling-costs-calculator":      { label: "Selling costs",                description: "Commission, marketing and legal costs on your sale.",       href: "/selling-costs-calculator",      icon: "/images/icons/calculator.svg" },
+  "guide-sell-first":              { label: "Sell first or buy first?",     description: "The decision before you commit to a bridging loan.",        href: "/guides/sell-first-or-buy-first", icon: "/images/icons/guide.svg" },
   "guide-deposit":                 { label: "How much deposit do I need?",  description: "5%, 10%, 20%, plus government schemes and FHSS.",            href: "/guides/how-much-deposit-to-buy-a-house", icon: "/images/icons/guide.svg" },
   "guide-buying":                  { label: "How to buy property in Australia", description: "Step-by-step from deposit to settlement.",               href: "/guides/buying-property-australia", icon: "/images/icons/guide.svg" },
   "guide-bridging":                { label: "Bridging loans",               description: "Peak debt, end debt, and when bridging is the right call.", href: "/guides/bridging-loans-guide",   icon: "/images/icons/guide.svg" },
@@ -249,6 +252,7 @@ const NEXT_STEPS_FOR_SLUG: Record<string, string[]> = {
   "lmi-calculator":             ["stamp-duty-calculator", "borrowing-power-calculator", "guide-first-home-guarantee"],
   "negative-gearing-calculator": ["rental-yield-calculator", "cgt-calculator", "guide-negative-gearing-2027"],
   "refinancing-calculator":     ["mortgage-calculator", "borrowing-power-calculator", "guide-buying"],
+  "bridging-loan-calculator":   ["guide-bridging", "selling-costs-calculator", "guide-sell-first"],
 };
 
 function NextStepRail({

@@ -1,0 +1,379 @@
+<title>Bridging Loan Action Plan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one centred report sheet on a grey page, same system as the 30 Sep commercial intent review. Plan table first, then one card per action, then measurement and evidence. */
+:root{
+  --ground:#ffffff; --page:#f3f4f6; --panel:#f6f7f9; --rule:#e2e5e9; --rule2:#cfd4da;
+  --ink:#1b1f24; --ink2:#4a525c; --ink3:#7a838d;
+  --accent:#0f7b86; --accent-soft:#e6f3f4;
+  --crit:#b9331f; --crit-soft:#fbe9e5; --high:#b0710d; --high-soft:#fbf1dc; --med:#5b6570; --med-soft:#eceff2;
+  --note:#e7f1f5; --mono-bg:#f0f2f4;
+  --sans:"IBM Plex Sans",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#16191d; --page:#0f1114; --panel:#1c2025; --rule:#2b3138; --rule2:#3a424b;
+    --ink:#e8eaed; --ink2:#b3bac2; --ink3:#7f8790;
+    --accent:#4fb6bf; --accent-soft:#12303a;
+    --crit:#f07a62; --crit-soft:#3a1f1a; --high:#e0a53f; --high-soft:#3a2e15; --med:#a3adb8; --med-soft:#262b31;
+    --note:#17272e; --mono-bg:#1f242a;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#16191d; --page:#0f1114; --panel:#1c2025; --rule:#2b3138; --rule2:#3a424b;
+  --ink:#e8eaed; --ink2:#b3bac2; --ink3:#7f8790;
+  --accent:#4fb6bf; --accent-soft:#12303a;
+  --crit:#f07a62; --crit-soft:#3a1f1a; --high:#e0a53f; --high-soft:#3a2e15; --med:#a3adb8; --med-soft:#262b31;
+  --note:#17272e; --mono-bg:#1f242a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-inline:16px;padding-block:24px 48px}
+.doc{max-width:920px;margin:0 auto;background:var(--ground);padding:48px 44px 64px}
+@media(max-width:640px){.doc{padding:28px 18px 48px}}
+code{font-family:var(--mono);background:var(--mono-bg);padding:1px 5px;border-radius:3px;font-size:.86em;word-break:break-word}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1{font-size:34px;line-height:1.15;margin:8px 0 14px;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin:52px 0 0;padding:14px 0 10px;border-bottom:1px solid var(--rule);display:flex;gap:14px;align-items:baseline}
+h2 .k{font-family:var(--mono);color:var(--accent);font-weight:500;letter-spacing:.1em}
+p{max-width:68ch;margin:10px 0}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.intro{font-size:16.5px;color:var(--ink2);max-width:66ch;margin:0 0 18px}
+.meta{font-family:var(--mono);font-size:12px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:6px 26px;padding-bottom:18px;border-bottom:2px solid var(--ink)}
+.meta b{color:var(--ink);font-weight:500}
+.toc{display:flex;flex-wrap:wrap;gap:6px 18px;margin:16px 0 4px;padding:0;list-style:none;font-size:13.5px}
+.toc a{text-decoration:none;color:var(--ink2)}
+.toc a:hover{color:var(--accent);text-decoration:underline}
+.toc .k{font-family:var(--mono);font-size:11.5px;color:var(--accent);margin-right:6px}
+
+.grid{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:18px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:760px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.g4{grid-template-columns:1fr}}
+.stat{background:var(--ground);padding:18px 16px 14px;min-width:0}
+.stat .n{font-size:29px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.stat .d{font-size:12.5px;color:var(--ink2);margin-top:8px;line-height:1.4}
+.c-crit{color:var(--crit)} .c-acc{color:var(--accent)}
+
+.note{background:var(--note);border-left:3px solid var(--accent);padding:12px 16px;margin:18px 0;font-size:14px;color:var(--ink2)}
+.note b{color:var(--ink)}
+
+.tbl{overflow-x:auto;margin:14px 0 6px;border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 11px;border-bottom:1px solid var(--rule);vertical-align:top;text-align:left}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:500;background:var(--panel);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;white-space:nowrap}
+td.key{font-weight:600;color:var(--ink)}
+td.ix{font-family:var(--mono);color:var(--accent);width:28px}
+.path{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
+.plan td{color:var(--ink2)}
+.plan td.key a{color:var(--ink);text-decoration:none}
+.plan td.key a:hover{color:var(--accent);text-decoration:underline}
+
+.tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;white-space:nowrap;vertical-align:middle}
+.t-fix{background:var(--crit-soft);color:var(--crit)}
+.t-tool{background:var(--accent-soft);color:var(--accent)}
+.t-page{background:var(--high-soft);color:var(--high)}
+.t-sec{background:var(--med-soft);color:var(--med)}
+.when{font-family:var(--mono);font-size:12px;color:var(--ink3);white-space:nowrap}
+
+.act{border:1px solid var(--rule);margin:22px 0 0}
+.act header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;padding:14px 18px 12px;background:var(--panel);border-bottom:1px solid var(--rule)}
+.act header .k{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:500}
+.act header h3{margin:0;font-size:18px;font-weight:600;line-height:1.3;text-wrap:balance;flex:1 1 320px;min-width:0}
+.act header .side{display:flex;gap:10px;align-items:center}
+.act .body{padding:6px 18px 18px;display:grid;gap:4px}
+.act .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin:14px 0 2px}
+.act p{margin:4px 0;color:var(--ink2)}
+.act p b,.act li b{color:var(--ink);font-weight:600}
+.act ul{margin:4px 0;padding-left:20px;color:var(--ink2);max-width:76ch}
+.act li{margin:5px 0}
+.act .done{margin-top:12px;padding:10px 14px;background:var(--accent-soft);color:var(--ink);font-size:14px}
+.act .done b{color:var(--accent)}
+.kw{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px;padding:0;list-style:none}
+.kw li{font-size:12.5px;border:1px solid var(--rule2);padding:2px 8px;border-radius:12px;color:var(--ink2);margin:0}
+.kw li span{font-family:var(--mono);font-size:11.5px;color:var(--ink3);margin-left:5px}
+blockquote{margin:8px 0;padding:6px 0 6px 14px;border-left:2px solid var(--rule2);font-family:var(--mono);font-size:12.5px;color:var(--ink2);max-width:76ch}
+
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+ul.plain{padding-left:20px;max-width:72ch;color:var(--ink2)}
+ul.plain li{margin:6px 0}
+ul.plain b{color:var(--ink)}
+.foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--rule);font-size:13px;color:var(--ink3)}
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
+</style>
+
+<div class="doc">
+  <div class="eyebrow">Your Property Guide · Search data · 6 October 2026</div>
+  <h1>Bridging loans action plan</h1>
+  <p class="intro">People searching for bridging loans are mostly homeowners trying to buy their next home before the current one sells. They already know what the product is. They want the cost in dollars, the risks, the cheaper options and which banks offer one. This plan sets out what to fix, build and write, in order, so our pages answer those questions while the spring selling peak is on.</p>
+  <div class="meta">
+    <span>Search Console <b>16 months to 3 Oct</b></span>
+    <span>Bing <b>to 2 Oct</b></span>
+    <span>Keyword Planner <b>AU, 12-month average</b></span>
+    <span>DataForSEO <b>16 live AU SERPs, US$0.47</b></span>
+  </div>
+  <ul class="toc">
+    <li><a href="#plan"><span class="k">1</span>The plan</a></li>
+    <li><a href="#actions"><span class="k">2</span>Actions in detail</a></li>
+    <li><a href="#not"><span class="k">3</span>What we leave alone</a></li>
+    <li><a href="#measure"><span class="k">4</span>How we measure it</a></li>
+    <li><a href="#why"><span class="k">5</span>The evidence</a></li>
+  </ul>
+
+  <div class="grid g4">
+    <div class="stat"><div class="n">26,300</div><div class="d">Google searches a month in Australia across 317 distinct bridging searches, close variants counted once</div></div>
+    <div class="stat"><div class="n c-crit">0 of 16</div><div class="d">Google AU results pages where we reach the top 10. Bridgit is on 10 of them</div></div>
+    <div class="stat"><div class="n">2,800</div><div class="d">searches a month for a bridging calculator. We have 11 calculators and none for bridging</div></div>
+    <div class="stat"><div class="n c-crit">$2,500</div><div class="d">what our guide said 6 months on a $500k bridge costs. At the 9.3% banks publish it is about $23,700</div></div>
+  </div>
+
+  <div class="note"><b>Status, 6 October.</b> All eight actions are built and waiting for review in pull request #99. Figures on this page use a 9.3% example bridging rate: the banks that add the interest to the loan published 9.28% to 10.29% on 6 October.</div>
+
+  <div class="note"><b>Timing.</b> "bridging loan" runs at 6,600 searches a month in September–October and March, against 3,600 in December. The fixes in week 1 should go live while spring demand is high. The new pages need to be indexed before the autumn peak in March.</div>
+
+  <h2 id="plan"><span class="k">1</span>The plan</h2>
+  <div class="tbl"><table class="plan">
+    <tr><th>#</th><th>Action</th><th>Type</th><th>What it answers</th><th class="num">Searches / mo</th><th>When</th></tr>
+    <tr><td class="ix">1</td><td class="key"><a href="#a1">Correct the cost figures in the guide</a></td><td><span class="tag t-fix">Fix</span></td><td>"How much does it cost?" Shown on 11 of 16 results pages</td><td class="num">2,800</td><td class="when">Week 1</td></tr>
+    <tr><td class="ix">2</td><td class="key"><a href="#a2">Lead every FAQ with a direct answer</a></td><td><span class="tag t-fix">Fix</span></td><td>The People Also Ask questions, word for word</td><td class="num">n/a</td><td class="when">Week 1</td></tr>
+    <tr><td class="ix">3</td><td class="key"><a href="#a3">Link, track and take a baseline</a></td><td><span class="tag t-sec">Setup</span></td><td>Gets the changes found and measured</td><td class="num">n/a</td><td class="when">Week 1</td></tr>
+    <tr><td class="ix">4</td><td class="key"><a href="#a4">Build the bridging loan calculator</a></td><td><span class="tag t-tool">New tool</span></td><td>"What will my numbers be?" Leads to an appraisal request</td><td class="num">2,800</td><td class="when">Weeks 2–3</td></tr>
+    <tr><td class="ix">5</td><td class="key"><a href="#a5">Write the deposit bond guide</a></td><td><span class="tag t-page">New page</span></td><td>The largest uncovered term we found</td><td class="num">2,300</td><td class="when">Weeks 2–3</td></tr>
+    <tr><td class="ix">6</td><td class="key"><a href="#a6">Write the alternatives guide</a></td><td><span class="tag t-page">New page</span></td><td>"Is there a cheaper alternative?" Shown on 13 of 16 results pages</td><td class="num">about 40</td><td class="when">Weeks 3–4</td></tr>
+    <tr><td class="ix">7</td><td class="key"><a href="#a7">Add a bank-by-bank table</a></td><td><span class="tag t-sec">Section</span></td><td>"Which banks do bridging loans?"</td><td class="num">4,000</td><td class="when">Weeks 3–4</td></tr>
+    <tr><td class="ix">8</td><td class="key"><a href="#a8">Add risk and scenario sections</a></td><td><span class="tag t-sec">Section</span></td><td>"What if it doesn't sell?" and the scenario questions Bing sends us</td><td class="num">long tail</td><td class="when">Weeks 3–4</td></tr>
+  </table></div>
+  <p>Order: fix what is wrong first. Then build the tool with the most demand, which is also the one that fits how we make money: the least certain number in a bridging plan is the sale price, and a free appraisal answers it. The pages that answer the remaining questions come after.</p>
+
+  <h2 id="actions"><span class="k">2</span>Actions in detail</h2>
+
+  <section class="act" id="a1">
+    <header><span class="k">1</span><h3>Correct the cost figures in the guide</h3><div class="side"><span class="tag t-fix">Fix</span><span class="when">Week 1 · small</span></div></header>
+    <div class="body">
+      <div class="lbl">Why</div>
+      <p>Cost is the most-asked question about bridging loans. The guide's "True cost of bridging" section and the FAQ "How much extra does bridging cost vs selling first?" say a $500,000 bridge over 6 months adds "roughly $2,500" of interest. That counts only the 1-point rate margin. If you sell first you never borrow that $500,000. With a bridging loan you pay the full rate on it.</p>
+      <div class="lbl">What to change in <span class="path">/guides/bridging-loans-guide</span></div>
+      <ul>
+        <li><b>Cost paragraph and FAQ.</b> Interest on the bridged amount at the full rate: about $23,700 for $500k over 6 months at 9.3%, capitalised monthly. With the guide's own fee and holding-cost range, the total is about $25,000 to $27,000 before any rent saved.</li>
+        <li><b>Worked example.</b> It shows "Capitalised bridging interest (6 months @ 7.5%): ~$28,000". On the $1.05m that the sale repays it is about $49,800 at 9.3% (about $40,000 even at the guide's own 7.5%). Peak debt becomes about $2,035,000 (78% LVR, still under the 80% cap) and end debt about $985,000.</li>
+        <li><b>Add a cost table.</b> Use the amounts people search for, at an example rate inside the published bank rates (9.3%), with interest capitalised monthly; label it as an example and date it.</li>
+      </ul>
+      <div class="tbl"><table>
+        <tr><th>Amount bridged</th><th class="num">3 months</th><th class="num">6 months</th><th class="num">12 months</th></tr>
+        <tr><td class="key">$100,000</td><td class="num">$2,343</td><td class="num">$4,741</td><td class="num">$9,707</td></tr>
+        <tr><td class="key">$350,000</td><td class="num">$8,201</td><td class="num">$16,594</td><td class="num">$33,974</td></tr>
+        <tr><td class="key">$500,000</td><td class="num">$11,715</td><td class="num">$23,705</td><td class="num">$48,534</td></tr>
+        <tr><td class="key">$1,000,000</td><td class="num">$23,431</td><td class="num">$47,410</td><td class="num">$97,068</td></tr>
+      </table></div>
+      <div class="done"><b>Done when</b> every dollar figure on the page agrees with the table, and the FAQ answers "How much does a $100,000 bridging loan cost?" in its first sentence.</div>
+    </div>
+  </section>
+
+  <section class="act" id="a2">
+    <header><span class="k">2</span><h3>Lead every FAQ with a direct answer</h3><div class="side"><span class="tag t-fix">Fix</span><span class="when">Week 1 · small</span></div></header>
+    <div class="body">
+      <div class="lbl">Why</div>
+      <p>An AI Overview appears on all 16 results pages. The answers it cites are short and specific. The guide's FAQ uses our own wording, not the questions people ask.</p>
+      <div class="lbl">Rewrite the FAQ around these questions, each answered in one or two sentences</div>
+      <ul>
+        <li>How much does a $100,000 bridging loan cost? <span class="when">11 of 16 SERPs</span></li>
+        <li>What are the downsides of a bridging loan? <span class="when">11 of 16</span></li>
+        <li>Is there a cheaper alternative to a bridging loan? <span class="when">13 of 16</span>, answer briefly and link to action 6</li>
+        <li>How much equity do you need for a bridging loan? <span class="when">6 of 16</span></li>
+        <li>Can you repay a bridging loan early? <span class="when">5 of 16</span></li>
+        <li>How long can a bridging loan last? <span class="when">4 of 16</span></li>
+        <li>Do you make repayments during a bridging loan? <span class="when">Bing, four phrasings</span></li>
+        <li>What is the difference between open and closed bridging? <span class="when">180 searches a month; the guide never uses either term</span></li>
+      </ul>
+      <p>Keep the FAQ structured data in step with the visible questions. Update the page's <code>updatedAt</code>.</p>
+      <div class="done"><b>Done when</b> each question above appears word for word as an FAQ heading, with the answer in its first sentence.</div>
+    </div>
+  </section>
+
+  <section class="act" id="a3">
+    <header><span class="k">3</span><h3>Link, track and take a baseline</h3><div class="side"><span class="tag t-sec">Setup</span><span class="when">Week 1 · small</span></div></header>
+    <div class="body">
+      <ul>
+        <li><b>Internal links into the guide</b> from <span class="path">/guides/sell-first-or-buy-first</span>, <span class="path">/guides/downsizers-guide</span>, <span class="path">/appraisal</span> and <span class="path">/glossary/bridging-finance</span>. Use the anchor text people search: "bridging loan", "how bridging loans work", "bridging loan costs".</li>
+        <li><b>Add tracked queries</b> to <code>docs/seo-baselines/tracked-queries.json</code>: bridging loan, bridging loan calculator, how much does a bridging loan cost, bridging loan interest rate, how does a bridging loan work, deposit bond, bridging loan alternatives, cba bridging loan.</li>
+        <li><b>Request a recrawl.</b> Google last crawled the guide on 12 July 2026. Ping IndexNow for Bing and resubmit the URL in Search Console.</li>
+      </ul>
+      <div class="done"><b>Done when</b> the tracked queries are in the next <code>npm run seo:baseline</code> run and the guide shows a crawl date after the change.</div>
+    </div>
+  </section>
+
+  <section class="act" id="a4">
+    <header><span class="k">4</span><h3>Build the bridging loan calculator</h3><div class="side"><span class="tag t-tool">New tool</span><span class="when">Weeks 2–3 · medium</span></div></header>
+    <div class="body">
+      <div class="lbl">Why</div>
+      <p>About 2,800 searches a month ask for a bridging calculator, and another 400 name a bank's calculator. Bridgit and the banks rank with calculators. None of them start from the seller's side. We can, because we already show an instant suburb price range on <span class="path">/appraisal</span> and <span class="path">/property-valuation</span>.</p>
+      <ul class="kw">
+        <li>bridging loan calculator<span>1,300</span></li><li>…australia<span>390</span></li><li>bridging finance calculator<span>210</span></li><li>calculate bridging loan<span>210</span></li><li>nab bridging loan calculator<span>140</span></li><li>bridging loan repayment calculator<span>110</span></li><li>westpac<span>90</span></li><li>anz<span>70</span></li><li>st george<span>70</span></li><li>cba<span>50</span></li>
+      </ul>
+      <div class="lbl">Build at <span class="path">/bridging-loan-calculator</span>, next to our other calculators</div>
+      <ul>
+        <li><b>Inputs:</b> suburb and current home value, pre-filled from the suburb range; mortgage owing; purchase price of the new home; state, with stamp duty taken from our stamp duty calculator; selling costs, defaulted from the commission calculator; months to sell; bridging rate.</li>
+        <li><b>Outputs:</b> peak debt; peak LVR against an 80% cap; capitalised interest; end debt; monthly repayment on the end debt; and the cost compared with selling first and renting.</li>
+        <li><b>Lead step:</b> the sale price drives every result and is the number people are least sure of. Put "Get a free appraisal to firm up your sale price" directly under the results, using the existing appraisal form and consent wording.</li>
+        <li><b>Content under the tool:</b> how each figure is worked out, the table from action 1, and links to the guide and the alternatives page.</li>
+        <li>Add it to the header calculators menu and link it from the guide's first screen.</li>
+      </ul>
+      <div class="done"><b>Done when</b> the page loads with a worked example already filled in, the figures match the guide's worked example, and the appraisal step records leads the way <span class="path">/appraisal</span> does.</div>
+    </div>
+  </section>
+
+  <section class="act" id="a5">
+    <header><span class="k">5</span><h3>Write the deposit bond guide</h3><div class="side"><span class="tag t-page">New page</span><span class="when">Weeks 2–3 · medium</span></div></header>
+    <div class="body">
+      <div class="lbl">Why</div>
+      <p>"deposit bond" alone gets 1,900 searches a month with low competition, and we have no page on it. Search Console already shows us impressions for "what are deposit bonds", "how does a deposit bond work" and "what is a deposit bond". On Bing, people mix the two products up: "what is a bridging bond loan qld".</p>
+      <ul class="kw">
+        <li>deposit bond<span>1,900</span></li><li>qbe deposit bond<span>90</span></li><li>deposit bond cost<span>70</span></li><li>deposit bond meaning<span>50</span></li><li>deposit bond commonwealth bank<span>50</span></li><li>deposit power deposit bond<span>50</span></li><li>deposit bond for house purchase<span>30</span></li><li>home deposit bond<span>20</span></li>
+      </ul>
+      <div class="lbl">Cover</div>
+      <ul>
+        <li>What a deposit bond is and how it works on a contract of sale</li>
+        <li>What it costs and how the price is set</li>
+        <li>Who issues them, and when a vendor or agent can refuse one</li>
+        <li>The risks (a People Also Ask question)</li>
+        <li>Deposit bond vs bridging loan (a Google related search)</li>
+        <li>Using one when the deposit is tied up in the home you are selling</li>
+      </ul>
+      <div class="done"><b>Done when</b> the page is live at <span class="path">/guides/deposit-bonds</span>, linked from the bridging guide and the alternatives guide, and in the tracked queries.</div>
+    </div>
+  </section>
+
+  <section class="act" id="a6">
+    <header><span class="k">6</span><h3>Write the alternatives guide</h3><div class="side"><span class="tag t-page">New page</span><span class="when">Weeks 3–4 · medium</span></div></header>
+    <div class="body">
+      <div class="lbl">Why</div>
+      <p>"Is there a cheaper alternative to a bridging loan?" is the most common People Also Ask question: it shows on 13 of the 16 results pages. Google's related searches add "bridging loan vs relocation loan" and "deposit bond vs bridging loan". A relocation loan turns out to be St.George's, Bank of Melbourne's and BankSA's name for their bridging loan, and Bridgit and Yard are non-bank bridging lenders, so the guide explains both rather than listing them as alternatives.</p>
+      <ul class="kw">
+        <li>bridging loan alternatives<span>about 40</span></li><li>deposit bond vs bridging loan<span>related search</span></li><li>bridging loan vs relocation loan<span>related search, answered as the same product</span></li>
+      </ul>
+      <div class="lbl">Build around one comparison table at <span class="path">/guides/bridging-loan-alternatives</span></div>
+      <div class="tbl"><table>
+        <tr><th>Option</th><th>Columns to fill</th></tr>
+        <tr><td class="key">Bridging loan</td><td rowspan="6">What it is · what it costs on a worked example · the main risk · when it fits · link to detail</td></tr>
+        <tr><td class="key">Sell first and rent</td></tr>
+        <tr><td class="key">Subject-to-sale offer</td></tr>
+        <tr><td class="key">Longer settlement on the purchase</td></tr>
+        <tr><td class="key">Deposit bond</td></tr>
+        <tr><td class="key">Using equity for the deposit</td></tr>
+      </table></div>
+      <div class="done"><b>Done when</b> the page answers the PAA question in its first sentence and links to the calculator, the deposit bond guide and <span class="path">/guides/sell-first-or-buy-first</span>.</div>
+    </div>
+  </section>
+
+  <section class="act" id="a7">
+    <header><span class="k">7</span><h3>Add a bank-by-bank table to the guide</h3><div class="side"><span class="tag t-sec">Section</span><span class="when">Weeks 3–4 · medium (research)</span></div></header>
+    <div class="body">
+      <div class="lbl">Why</div>
+      <p>About 4,000 searches a month name a bank alongside bridging. People Also Ask includes "Do banks do bridging loans anymore?", "Which banks provide bridging loans?" and "What is the interest rate on a CBA bridging loan?". The guide names no lenders.</p>
+      <div class="tbl"><table>
+        <tr><th>Bank</th><th class="num">Searches / mo</th><th>Bank</th><th class="num">Searches / mo</th></tr>
+        <tr><td class="key">Westpac</td><td class="num">850</td><td class="key">Macquarie</td><td class="num">150</td></tr>
+        <tr><td class="key">CBA</td><td class="num">790</td><td class="key">Bankwest</td><td class="num">90</td></tr>
+        <tr><td class="key">NAB</td><td class="num">570</td><td class="key">ING</td><td class="num">90</td></tr>
+        <tr><td class="key">ANZ</td><td class="num">540</td><td class="key">Bendigo</td><td class="num">90</td></tr>
+        <tr><td class="key">St George</td><td class="num">470</td><td class="key">Suncorp, Bank of Melbourne</td><td class="num">50 each</td></tr>
+      </table></div>
+      <div class="lbl">Columns</div>
+      <p>Offers bridging (yes or no) · maximum term · open or closed · construction allowed · how interest is handled · maximum peak-debt LVR · source link · date checked.</p>
+      <div class="lbl">Rules</div>
+      <ul>
+        <li>We do not hold a credit licence. Keep it factual and general, and don't rank or recommend a lender.</li>
+        <li>Show the date checked on the table and recheck it every quarter. Leave out rates unless each one has its own date.</li>
+      </ul>
+      <div class="done"><b>Done when</b> every cell has a source, and the table sits under a heading that matches the question: "Which banks offer bridging loans?"</div>
+    </div>
+  </section>
+
+  <section class="act" id="a8">
+    <header><span class="k">8</span><h3>Add risk and scenario sections</h3><div class="side"><span class="tag t-sec">Section</span><span class="when">Weeks 3–4 · small to medium</span></div></header>
+    <div class="body">
+      <div class="lbl">Why</div>
+      <p>Bing already ranks the guide at positions 1–7 for long, specific questions that no competing page answers. These are some of them, verbatim:</p>
+      <blockquote>what happens if i cant end my bridging loan after 12 months, does the bank fire sale my house</blockquote>
+      <blockquote>value of my house has dropped is my bridging loan still good</blockquote>
+      <blockquote>if i have two propertys uder a bridging loan and then decide not to sell one and keep it can i divide them into two seperate loans and have one as a rental property</blockquote>
+      <blockquote>within a bridging loan can tou tenant the property you are treuinh to sell</blockquote>
+      <div class="lbl">Sections to add</div>
+      <ul>
+        <li><b>What if your home doesn't sell?</b> What happens at the end of a 6- or 12-month term, what happens if the price falls, the lender's options (extension, refinance, forced sale) and how to protect yourself (a sell-by date, a realistic price, an auction). Link to the suburb's market data.</li>
+        <li><b>Keeping the old home as an investment.</b> Splitting the loan into a home loan and an investment loan. Add a note that interest deductibility follows what the money was used for, and point readers to an accountant.</li>
+        <li><b>Renting out the old home while it is for sale.</b></li>
+        <li><b>Downsizers and retirees.</b> How the end-debt test works with little or no income. Link to and from <span class="path">/guides/downsizers-guide</span>.</li>
+        <li><b>Building while you live in the old home.</b> Construction bridging, about 130 searches a month.</li>
+        <li><b>Stamp duty timing</b> when buying before selling.</li>
+      </ul>
+      <div class="done"><b>Done when</b> each Bing question above has a heading that answers it.</div>
+    </div>
+  </section>
+
+  <h2 id="not"><span class="k">3</span>What we leave alone</h2>
+  <ul class="plain">
+    <li><b>Commercial, development, fast and private bridging.</b> About 450 searches a month, with bids of A$55–67 from specialist lenders. These searchers are not our sellers.</li>
+    <li><b>Recommending a lender or a loan.</b> We give general, dated, sourced information only.</li>
+    <li><b>Going after "what is a bridging loan" directly.</b> The banks and Bridgit hold it. The guide already covers it; we compete on cost, risk and the seller's situation first.</li>
+  </ul>
+
+  <h2 id="measure"><span class="k">4</span>How we measure it</h2>
+  <p>Take a snapshot when actions 1–3 go live, then again at 14 and 28 days, with <code>npm run seo:baseline -- --compare &lt;date&gt;</code>.</p>
+  <div class="tbl"><table>
+    <tr><th>Signal</th><th>Today</th><th>What good looks like</th></tr>
+    <tr><td class="key">Google impressions on the guide</td><td>About 10 a month since August (269 in July)</td><td>Back above July and still growing a month after the fixes</td></tr>
+    <tr><td class="key">Google position, bridging cost and rate queries</td><td>73 to 83</td><td>Inside the top 30, then the top 10</td></tr>
+    <tr><td class="key">Bing impressions on the guide</td><td>78 in 28 days, position 6.2</td><td>Higher impressions, still in the top 5 for the long questions</td></tr>
+    <tr><td class="key">Tracked SERPs where we are in the top 10</td><td>0 of 16</td><td>The calculator and deposit bond queries first</td></tr>
+    <tr><td class="key">Appraisal requests from the calculator</td><td>Not built yet</td><td>Tracked from launch day as a separate lead source</td></tr>
+  </table></div>
+
+  <h2 id="why"><span class="k">5</span>The evidence</h2>
+  <div class="two">
+    <div>
+      <p><b>Why people want a bridging loan</b>, strongest evidence first:</p>
+      <ul class="plain">
+        <li><b>To buy the next home before the current one sells.</b> Every bank product works this way, and every long Bing question is about it.</li>
+        <li><b>To secure a purchase while the deposit is tied up</b> (deposit bonds, about 2,300 a month).</li>
+        <li><b>To downsize</b>, often retirees on little income.</li>
+        <li><b>To build</b> while living in the old home.</li>
+        <li><b>To buy at auction or settle fast.</b></li>
+        <li><b>To keep the old home as a rental</b> instead of selling it.</li>
+      </ul>
+    </div>
+    <div>
+      <p><b>What they want to know</b>, shown as how many of the 16 results pages carry each question:</p>
+      <div class="tbl"><table>
+        <tr><th>Question</th><th class="num">SERPs</th></tr>
+        <tr><td>Is there a cheaper alternative?</td><td class="num">13</td></tr>
+        <tr><td>What are the downsides?</td><td class="num">11</td></tr>
+        <tr><td>How much does a $100,000 bridging loan cost?</td><td class="num">11</td></tr>
+        <tr><td>How much equity do you need?</td><td class="num">6</td></tr>
+        <tr><td>Can you repay early?</td><td class="num">5</td></tr>
+        <tr><td>How long can bridging loans last?</td><td class="num">4</td></tr>
+        <tr><td>How to get a 100% bridging loan?</td><td class="num">4</td></tr>
+      </table></div>
+    </div>
+  </div>
+  <div class="tbl"><table>
+    <tr><th>Theme</th><th class="num">AU searches / mo</th><th>Our coverage today</th></tr>
+    <tr><td class="key">Head terms (bridging loan, bridging finance)</td><td class="num">8,810</td><td>Guide, at position about 90 on Google</td></tr>
+    <tr><td class="key">Lenders and comparison, including relocation loans and Bridgit</td><td class="num">4,360</td><td>None (action 7)</td></tr>
+    <tr><td class="key">What it is and how it works</td><td class="num">3,480</td><td>Covered</td></tr>
+    <tr><td class="key">Alternatives, including deposit bonds</td><td class="num">2,380</td><td>Partial: sell first and subject-to-sale only (actions 5, 6)</td></tr>
+    <tr><td class="key">Rates, cost and repayments</td><td class="num">2,820</td><td>Covered, but the figures are wrong (action 1)</td></tr>
+    <tr><td class="key">Calculators</td><td class="num">2,820</td><td>None (action 4)</td></tr>
+    <tr><td class="key">Eligibility, risk and term</td><td class="num">520</td><td>Partial (actions 2, 8)</td></tr>
+    <tr><td class="key">Buying before selling, phrased explicitly</td><td class="num">510</td><td>Covered, and in <span class="path">/guides/sell-first-or-buy-first</span></td></tr>
+    <tr><td class="key">Fast, private, commercial, development</td><td class="num">450</td><td>Leave alone</td></tr>
+    <tr><td class="key">Building, downsizers</td><td class="num">180</td><td>None (action 8)</td></tr>
+  </table></div>
+  <p class="foot">Full findings and data: <code>docs/seo-baselines/2026-10-06/bridging-loans/</code> (README.md, keywords.csv, questions.csv, our-queries.csv, serp-landscape.csv). Pull script: <code>~/Desktop/Ads/ypg-bridging-pull.py</code>. Search volumes are Keyword Planner 12-month averages to August 2026. People Also Ask counts are from 16 live Google AU desktop results pages on 6 October 2026.</p>
+</div>

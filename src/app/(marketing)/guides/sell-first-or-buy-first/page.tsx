@@ -12,6 +12,15 @@ import {
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import {
+  EXAMPLE_BRIDGING_RATE,
+  capitalisedInterest,
+  computeBridging,
+  defaultBridgingInput,
+  defaultBuyingCosts,
+  defaultSellingCosts,
+} from "@/lib/bridging-calc";
+import type { AustralianState } from "@/lib/utils/stamp-duty";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Sell First or Buy First? The Australian Mover's Decision Guide (2026)",
@@ -19,7 +28,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "When you're moving home, do you sell first or buy first? Walk through the trade-offs, market signals, and the three financing options (sell first, subject-to-sale, bridging loan) with worked examples.",
   slug: "sell-first-or-buy-first",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-05-06",
+  updatedAt: "2026-10-06",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -46,11 +55,27 @@ export const metadata: Metadata = {
   },
 };
 
+const fmt = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
+// The bridging figures in the summary and worked examples come from the
+// engine behind /bridging-loan-calculator, so they cannot drift from it.
+const bridge = (state: AustralianState, salePrice: number, mortgageOwing: number, purchasePrice: number) =>
+  computeBridging({
+    ...defaultBridgingInput(state),
+    salePrice,
+    mortgageOwing,
+    purchasePrice,
+    sellingCosts: defaultSellingCosts(salePrice, state, mortgageOwing),
+    buyingCosts: defaultBuyingCosts(purchasePrice, state),
+  });
+const EX_A = bridge("NSW", 1_600_000, 400_000, 2_100_000);
+const EX_C = bridge("VIC", 1_200_000, 600_000, 1_500_000);
+const PER_100K = capitalisedInterest(100_000, EXAMPLE_BRIDGING_RATE, 6);
+
 const TLDR = [
   "There are three options for moving home: sell first, buy first with a subject-to-sale offer, or buy first with a bridging loan. Each trades cost against timing risk.",
   "Sell first is the cheapest financially but you may need short-term accommodation, and you might end up settling for the wrong next home in a hurry.",
   "Subject-to-sale offers work in slow private-treaty markets but are almost never accepted at auction or in hot conditions.",
-  "Bridging loans give you the most timing flexibility but typically add $3,000 to $6,000+ in interest, fees, and double-holding costs over a 6-month bridging period.",
+  `Bridging loans give you the most timing flexibility, but you pay the full bridging rate on the part your sale repays: about ${fmt(PER_100K)} per $100,000 for six months at ${EXAMPLE_BRIDGING_RATE}%, plus fees and double holding costs.`,
   "The right answer depends on three things: market direction (is it rising or softening?), your equity position, and your appetite for moving twice.",
   "Get appraisals on your existing home and pre-approval for the bridging or end-debt loan before you make the decision.",
 ];
@@ -206,7 +231,10 @@ export default function SellFirstOrBuyFirstPage() {
         application/discharge fees, two valuations, and double holding costs
         (rates, insurance, utilities) for the bridging period. Read our{" "}
         <Link href="/guides/bridging-loans-guide">Bridging Loans guide</Link>{" "}
-        for the full mechanics.
+        for the full mechanics, run your own numbers in the{" "}
+        <Link href="/bridging-loan-calculator">bridging loan calculator</Link>,
+        or compare the{" "}
+        <Link href="/guides/bridging-loan-alternatives">alternatives to a bridging loan</Link>.
       </p>
 
       <h2 id="market-signal">What the market is telling you</h2>
@@ -315,8 +343,11 @@ export default function SellFirstOrBuyFirstPage() {
         <strong>Best option:</strong> Bridging. Subject-to-sale won't be
         accepted at auction in this market. Sell-first risks the next home
         going to a competing buyer or rising further in price. Equity supports
-        peak debt LVR. Bridging cost (~$5K to $6K all in) is small relative to
-        likely price rise on the target home if you delay.
+        peak debt LVR ({EX_A.peakLvr}%). Bridging costs about{" "}
+        {fmt(EX_A.bridgingCost)} in interest and fees over six months on the{" "}
+        {fmt(EX_A.bridgingLoan)} the sale repays. That is still less than a
+        3% a quarter rise for two quarters on a $2.1M home (about{" "}
+        {fmt(2_100_000 * 0.06)}) if you wait.
       </p>
 
       <h3>Example B, soft market, average equity</h3>
@@ -343,7 +374,10 @@ export default function SellFirstOrBuyFirstPage() {
         that your next home (or one like it) will still be available in 2 to 3
         months. Subject-to-sale is plausible but you're competing with
         unconditional buyers. Sell-first gives you the cleanest position and
-        avoids ~$5K of bridging cost. Negotiate a 60-day leaseback from your
+        avoids about {fmt(EX_C.bridgingCost)} of bridging interest and fees
+        over six months.
+        {!EX_C.withinCap &&
+          ` Peak debt would also be ${EX_C.peakLvr}% of the two homes’ value, above the 80% most lenders allow.`} Negotiate a 60-day leaseback from your
         buyer if accommodation between settlements is a problem.
       </p>
 

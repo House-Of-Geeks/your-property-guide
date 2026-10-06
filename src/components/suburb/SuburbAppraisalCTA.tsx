@@ -96,7 +96,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
       const saved = (await res.json().catch(() => null)) as { id?: string } | null;
       clarityEvent("request_quote");
       clarityTag("appraisal_suburb", suburbSlug);
-      clarityTag("appraisal_source", source ? "home-value-guide" : "suburb-inline");
+      clarityTag("appraisal_source", source ? formName : "suburb-inline");
       if (timeframe) clarityTag("appraisal_timeframe", timeframe);
       // Mobile is collected here now, so the thanks-page phone ask only
       // fires if the number somehow did not make it (the id is the enrich

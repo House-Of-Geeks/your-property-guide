@@ -242,6 +242,8 @@ export default function AppraisalPage() {
                   <li><Link href="/guides/how-to-prepare-for-a-property-appraisal" className="text-ink hover:text-primary underline underline-offset-4 decoration-line-strong">How to prepare for an appraisal</Link></li>
                   <li><Link href="/guides/questions-to-ask-a-real-estate-agent" className="text-ink hover:text-primary underline underline-offset-4 decoration-line-strong">Questions to ask the agent</Link></li>
                   <li><Link href="/real-estate-commission-calculator" className="text-ink hover:text-primary underline underline-offset-4 decoration-line-strong">What selling would cost</Link></li>
+                  <li><Link href="/guides/bridging-loans-guide" className="text-ink hover:text-primary underline underline-offset-4 decoration-line-strong">Buying before you sell: how bridging loans work</Link></li>
+                  <li><Link href="/bridging-loan-calculator" className="text-ink hover:text-primary underline underline-offset-4 decoration-line-strong">Bridging loan calculator</Link></li>
                 </ul>
               </div>
             </aside>

@@ -8,4 +8,5 @@ export { AffordabilityCalculator } from "./AffordabilityCalculator";
 export { CommissionCalculator } from "./CommissionCalculator";
 export { LMICalculator } from "./LMICalculator";
 export { NegativeGearingCalculator } from "./NegativeGearingCalculator";
+export { BridgingLoanCalculator } from "./BridgingLoanCalculator";
 export { CalculatorPageLayout, type CalculatorPageFrontmatter } from "./CalculatorPageLayout";
