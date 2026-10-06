@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
+import { FhssNote } from "@/components/guide/FhssNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -251,13 +252,8 @@ export default function FirstHomeBuyerACTPage() {
       <h3>Help to Buy</h3>
       <HelpToBuyNote state="ACT" as="p" />
 
-      <h3>First Home Super Saver Scheme (FHSSS)</h3>
-      <p>
-        Given Canberra's high average incomes (driven by the public sector), the
-        FHSSS is particularly valuable. Voluntary super contributions of up to
-        $15,000/year (max $50,000 total) can be withdrawn for a deposit, with
-        contributions taxed at 15% rather than your marginal rate.
-      </p>
+      <h3>First Home Super Saver scheme (FHSS)</h3>
+      <FhssNote as="p" />
 
       <h2 id="leasehold">Leasehold land, the ACT's unique system</h2>
       <p>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
+import { FhssNote } from "@/components/guide/FhssNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -234,6 +235,7 @@ export default function FirstHomeBuyerWAPage() {
           income limit $125K. Perth price cap $600,000.
         </li>
         <HelpToBuyNote state="WA" />
+        <FhssNote />
       </ul>
       <p>
         Note: WA's $600,000 Perth cap is lower than east-coast capitals, reflecting

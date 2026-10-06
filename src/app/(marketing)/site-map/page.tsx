@@ -83,6 +83,7 @@ const SECTIONS: Section[] = [
       { label: "Refinancing calculator",     href: "/refinancing-calculator" },
       { label: "Bridging loan calculator",   href: "/bridging-loan-calculator" },
       { label: "Help to Buy calculator",     href: "/help-to-buy-calculator" },
+      { label: "FHSS calculator",            href: "/fhss-calculator" },
     ],
   },
   {

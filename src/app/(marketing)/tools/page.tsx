@@ -121,6 +121,13 @@ const GROUPS: ToolGroup[] = [
         icon: "/images/icons/calculator.svg",
       },
       {
+        href: "/fhss-calculator",
+        title: "FHSS Calculator",
+        description:
+          "What the First Home Super Saver scheme adds to your deposit: the release, the deemed earnings, the tax, and the same money saved in a bank.",
+        icon: "/images/icons/calculator.svg",
+      },
+      {
         href: "/bridging-loan-calculator",
         title: "Bridging Loan Calculator",
         description:

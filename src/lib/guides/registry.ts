@@ -149,6 +149,7 @@ export const GUIDE_SECTIONS: readonly GuideSection[] = [
       "help-to-buy-scheme-wa",
       "shared-equity-schemes-australia",
       "first-home-super-saver-scheme",
+      "use-super-to-buy-a-house",
       "how-much-deposit-to-buy-a-house",
       "lenders-mortgage-insurance-guide",
       "first-home-buyer-mistakes-to-avoid",

@@ -187,7 +187,8 @@ export default function SharedEquitySchemesPage() {
         <p>
           Help to Buy can&rsquo;t be combined with any other shared equity scheme or
           with the 5% Deposit Scheme. It can be combined with first home owner
-          grants, stamp duty concessions and the First Home Super Saver Scheme.
+          grants, stamp duty concessions and the{" "}
+          <Link href="/guides/first-home-super-saver-scheme">First Home Super Saver Scheme</Link>.
         </p>
       </Callout>
 

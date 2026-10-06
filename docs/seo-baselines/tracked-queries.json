@@ -1,5 +1,5 @@
 {
- "note": "Tracked Google AU SERPs for the monthly measurement (fix item 28): the 33 from the 5 Sep search review plus the guide and calculator queries worked on since. One DataForSEO live task each (~$0.002). Bridging loan queries added 6 Oct 2026 (docs/seo-baselines/2026-10-06/bridging-loans). Help to Buy queries added 7 Oct 2026 (docs/seo-baselines/2026-10-06/help-to-buy).",
+ "note": "Tracked Google AU SERPs for the monthly measurement (fix item 28): the 33 from the 5 Sep search review plus the guide and calculator queries worked on since. One DataForSEO live task each (~$0.002). Bridging loan queries added 6 Oct 2026 (docs/seo-baselines/2026-10-06/bridging-loans). Help to Buy queries added 7 Oct 2026 (docs/seo-baselines/2026-10-06/help-to-buy). FHSS queries added 7 Oct 2026 (docs/seo-baselines/2026-10-07/fhss).",
  "queries": [
   "borrowing power calculator",
   "real estate commission nsw",
@@ -56,6 +56,13 @@
   "help to buy price cap",
   "help to buy calculator",
   "shared equity scheme",
-  "victorian homebuyer fund"
+  "victorian homebuyer fund",
+  "first home super saver scheme",
+  "fhss",
+  "fhss calculator",
+  "first home super saver scheme calculator",
+  "can i use my super to buy a house",
+  "use super to buy house",
+  "is fhss worth it"
  ]
 }

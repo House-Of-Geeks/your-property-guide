@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
+import { FhssNote } from "@/components/guide/FhssNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -208,13 +209,13 @@ export default function FirstHomeBuyerGuidePage() {
 
       <h3>4. Help to Buy (Shared Equity Scheme)</h3>
       <HelpToBuyNote as="p" />
-      <ul>
-        <li><strong>Income limits:</strong> $90,000 for singles; $120,000 for couples</li>
-        <li>Buyers need a minimum 2% deposit and no LMI</li>
-        <li>The government shares in capital gains proportional to its equity stake</li>
-        <li>10,000 places per year</li>
-        <li><strong>Check availability:</strong> As of 2026, the scheme&rsquo;s operational status and participating states. Check housing.gov.au for current details.</li>
-      </ul>
+      <p>
+        The government shares in any rise or fall in the home&rsquo;s value in
+        proportion to its share, and you can buy it back over time.
+      </p>
+
+      <h3>5. First Home Super Saver scheme (FHSS)</h3>
+      <FhssNote as="p" />
 
       <h2 id="fhog-by-state">First Home Owner Grant by state</h2>
       <p>

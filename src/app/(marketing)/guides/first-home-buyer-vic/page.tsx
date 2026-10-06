@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
+import { FhssNote } from "@/components/guide/FhssNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -224,6 +225,7 @@ export default function FirstHomeBuyerVICPage() {
           income limit $125K.
         </li>
         <HelpToBuyNote state="VIC" />
+        <FhssNote />
       </ul>
       <p>
         See our{" "}
