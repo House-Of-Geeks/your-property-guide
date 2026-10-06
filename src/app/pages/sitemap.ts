@@ -38,6 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/negative-gearing-calculator`,  changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/bridging-loan-calculator`,     changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/help-to-buy-calculator`,       changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE_URL}/fhss-calculator`,              changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/appraisal`,                    changeFrequency: "yearly",  priority: 0.6 },
     { url: `${SITE_URL}/property-valuation`,           changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/affordability-calculator`,     changeFrequency: "monthly", priority: 0.8 },

@@ -105,6 +105,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Lenders mortgage insurance guide", href: "/guides/lenders-mortgage-insurance-guide", description: "What LMI is, who it protects, and when paying it makes sense." },
   { title: "First Home Guarantee", href: "/guides/first-home-guarantee", description: "Buy with a 5% deposit and no LMI: eligibility and price caps." },
   { title: "Help to Buy calculator", href: "/help-to-buy-calculator", description: "Buy with a 2% deposit and no LMI while the government funds up to 40%." },
+  { title: "FHSS calculator", href: "/fhss-calculator", description: "Build the deposit faster in super, so you need less LMI or none." },
   { title: "How much deposit do I need?", href: "/guides/how-much-deposit-to-buy-a-house", description: "5%, 10% or 20%, and the cash you need on top." },
   { title: "Stamp duty calculator", href: "/stamp-duty-calculator", description: "The other big upfront cost, by state." },
   { title: "Borrowing power calculator", href: "/borrowing-power-calculator", description: "What lenders will let you borrow on your income." },

@@ -301,9 +301,10 @@ export default function FirstHomeOwnerGrantAustraliaPage() {
           established homes and can sit alongside a state grant.
         </li>
         <li>
-          <strong>FHOG plus the First Home Super Saver Scheme.</strong> The FHSS
-          lets you save a deposit inside super at a lower tax rate, then withdraw
-          it. It runs separately from the grant.
+          <strong>FHOG plus the First Home Super Saver Scheme.</strong> The{" "}
+          <Link href="/guides/first-home-super-saver-scheme">FHSS</Link> lets you
+          save a deposit inside super at a lower tax rate, then withdraw it. It
+          runs separately from the grant.
         </li>
       </ul>
       <p>

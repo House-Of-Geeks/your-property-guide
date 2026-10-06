@@ -1,0 +1,255 @@
+<title>FHSS Action Plan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one centred report sheet on a grey page, same system as the bridging and Help to Buy plans. Plan table first, then one card per action, then measurement and evidence. */
+:root{
+  --ground:#ffffff; --page:#f3f4f6; --panel:#f6f7f9; --rule:#e2e5e9; --rule2:#cfd4da;
+  --ink:#1b1f24; --ink2:#4a525c; --ink3:#7a838d;
+  --accent:#0f7b86; --accent-soft:#e6f3f4;
+  --crit:#b9331f; --crit-soft:#fbe9e5; --high:#b0710d; --high-soft:#fbf1dc; --med:#5b6570; --med-soft:#eceff2;
+  --note:#e7f1f5; --mono-bg:#f0f2f4;
+  --sans:"IBM Plex Sans",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#16191d; --page:#0f1114; --panel:#1c2025; --rule:#2b3138; --rule2:#3a424b;
+    --ink:#e8eaed; --ink2:#b3bac2; --ink3:#7f8790;
+    --accent:#4fb6bf; --accent-soft:#12303a;
+    --crit:#f07a62; --crit-soft:#3a1f1a; --high:#e0a53f; --high-soft:#3a2e15; --med:#a3adb8; --med-soft:#262b31;
+    --note:#17272e; --mono-bg:#1f242a;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#16191d; --page:#0f1114; --panel:#1c2025; --rule:#2b3138; --rule2:#3a424b;
+  --ink:#e8eaed; --ink2:#b3bac2; --ink3:#7f8790;
+  --accent:#4fb6bf; --accent-soft:#12303a;
+  --crit:#f07a62; --crit-soft:#3a1f1a; --high:#e0a53f; --high-soft:#3a2e15; --med:#a3adb8; --med-soft:#262b31;
+  --note:#17272e; --mono-bg:#1f242a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-inline:16px;padding-block:24px 48px}
+.doc{max-width:920px;margin:0 auto;background:var(--ground);padding:48px 44px 64px}
+@media(max-width:640px){.doc{padding:28px 18px 48px}}
+code{font-family:var(--mono);background:var(--mono-bg);padding:1px 5px;border-radius:3px;font-size:.86em;word-break:break-word}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1{font-size:34px;line-height:1.15;margin:8px 0 14px;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin:52px 0 0;padding:14px 0 10px;border-bottom:1px solid var(--rule);display:flex;gap:14px;align-items:baseline}
+h2 .k{font-family:var(--mono);color:var(--accent);font-weight:500;letter-spacing:.1em}
+p{max-width:68ch;margin:10px 0}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.intro{font-size:16.5px;color:var(--ink2);max-width:66ch;margin:0 0 18px}
+.meta{font-family:var(--mono);font-size:12px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:6px 26px;padding-bottom:18px;border-bottom:2px solid var(--ink)}
+.meta b{color:var(--ink);font-weight:500}
+.toc{display:flex;flex-wrap:wrap;gap:6px 18px;margin:16px 0 4px;padding:0;list-style:none;font-size:13.5px}
+.toc a{text-decoration:none;color:var(--ink2)}
+.toc a:hover{color:var(--accent);text-decoration:underline}
+.toc .k{font-family:var(--mono);font-size:11.5px;color:var(--accent);margin-right:6px}
+
+.grid{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:18px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:760px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.g4{grid-template-columns:1fr}}
+.stat{background:var(--ground);padding:18px 16px 14px;min-width:0}
+.stat .n{font-size:29px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.stat .d{font-size:12.5px;color:var(--ink2);margin-top:8px;line-height:1.4}
+.c-crit{color:var(--crit)} .c-acc{color:var(--accent)}
+
+.note{background:var(--note);border-left:3px solid var(--accent);padding:12px 16px;margin:18px 0;font-size:14px;color:var(--ink2)}
+.note b{color:var(--ink)}
+
+.tbl{overflow-x:auto;margin:14px 0 6px;border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 11px;border-bottom:1px solid var(--rule);vertical-align:top;text-align:left}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:500;background:var(--panel);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;white-space:nowrap}
+td.key{font-weight:600;color:var(--ink)}
+td.ix{font-family:var(--mono);color:var(--accent);width:28px}
+.path{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
+.plan td{color:var(--ink2)}
+.plan td.key a{color:var(--ink);text-decoration:none}
+.plan td.key a:hover{color:var(--accent);text-decoration:underline}
+
+.tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;white-space:nowrap;vertical-align:middle}
+.t-fix{background:var(--crit-soft);color:var(--crit)}
+.t-tool{background:var(--accent-soft);color:var(--accent)}
+.t-page{background:var(--high-soft);color:var(--high)}
+.t-sec{background:var(--med-soft);color:var(--med)}
+.when{font-family:var(--mono);font-size:12px;color:var(--ink3);white-space:nowrap}
+
+.act{border:1px solid var(--rule);margin:22px 0 0}
+.act header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;padding:14px 18px 12px;background:var(--panel);border-bottom:1px solid var(--rule)}
+.act header .k{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:500}
+.act header h3{margin:0;font-size:18px;font-weight:600;line-height:1.3;text-wrap:balance;flex:1 1 320px;min-width:0}
+.act header .side{display:flex;gap:10px;align-items:center}
+.act .body{padding:6px 18px 18px;display:grid;gap:4px}
+.act .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin:14px 0 2px}
+.act p{margin:4px 0;color:var(--ink2)}
+.act p b,.act li b{color:var(--ink);font-weight:600}
+.act ul{margin:4px 0;padding-left:20px;color:var(--ink2);max-width:76ch}
+.act li{margin:5px 0}
+.act .done{margin-top:12px;padding:10px 14px;background:var(--accent-soft);color:var(--ink);font-size:14px}
+.act .done b{color:var(--accent)}
+.kw{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px;padding:0;list-style:none}
+.kw li{font-size:12.5px;border:1px solid var(--rule2);padding:2px 8px;border-radius:12px;color:var(--ink2);margin:0}
+.kw li span{font-family:var(--mono);font-size:11.5px;color:var(--ink3);margin-left:5px}
+blockquote{margin:8px 0;padding:6px 0 6px 14px;border-left:2px solid var(--rule2);font-family:var(--mono);font-size:12.5px;color:var(--ink2);max-width:76ch}
+
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+ul.plain{padding-left:20px;max-width:72ch;color:var(--ink2)}
+ul.plain li{margin:6px 0}
+ul.plain b{color:var(--ink)}
+.foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--rule);font-size:13px;color:var(--ink3)}
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
+</style>
+
+<div class="doc">
+  <div class="eyebrow">Your Property Guide · Search data · 7 October 2026</div>
+  <h1>First Home Super Saver action plan</h1>
+  <p class="intro">About 22,000 searches a month name the First Home Super Saver scheme, and another 11,000 ask whether super can be used to buy a house. They want the limits, whether it beats saving in the bank, how it&rsquo;s taxed and how long the money takes. Our guide answers none of that with numbers, quotes a timing rule that changed in 2024, and barely shows on Google or in Copilot. This plan rewrites it, adds the only up-to-date FHSS calculator, and answers the plain-English question directly.</p>
+  <div class="meta">
+    <span>Search Console <b>16 months to 4 Oct</b></span>
+    <span>Bing and AI Performance <b>to 7 Oct</b></span>
+    <span>Keyword Planner <b>AU, monthly to Aug 2026</b></span>
+    <span>DataForSEO <b>16 AU SERPs, US$0.28</b></span>
+    <span>ATO rules <b>read 7 Oct</b></span>
+  </div>
+  <ul class="toc">
+    <li><a href="#plan"><span class="k">1</span>The plan</a></li>
+    <li><a href="#actions"><span class="k">2</span>Actions in detail</a></li>
+    <li><a href="#not"><span class="k">3</span>What we leave alone</a></li>
+    <li><a href="#measure"><span class="k">4</span>How we measure it</a></li>
+    <li><a href="#why"><span class="k">5</span>The evidence</a></li>
+  </ul>
+
+  <div class="grid g4">
+    <div class="stat"><div class="n">33,000</div><div class="d">searches a month on average: 22,000 naming the scheme and 11,000 asking if super can buy a house (12 months to Aug 2026)</div></div>
+    <div class="stat"><div class="n c-crit">21</div><div class="d">Google impressions for our guide in 16 months, though it is indexed</div></div>
+    <div class="stat"><div class="n c-crit">7</div><div class="d">Copilot citations in three months, against 3,500 for our first home buyer and deposit answers</div></div>
+    <div class="stat"><div class="n">2017</div><div class="d">the year of the figures in the government&rsquo;s own FHSS estimator ($30,000 limit, 4.78% rate)</div></div>
+  </div>
+
+  <div class="note"><b>What&rsquo;s wrong with the guide.</b> It gives no figures, and its timing advice predates the 15 September 2024 changes. You now need the determination before settlement, not before signing; you can request the release up to 90 days after signing; and you have 90 days, not 28, to tell the ATO.</div>
+
+  <h2 id="plan"><span class="k">1</span>The plan</h2>
+  <div class="tbl"><table class="plan">
+    <tr><th>#</th><th>Action</th><th>Type</th><th>What it answers</th><th class="num">Avg searches / mo</th><th>When</th></tr>
+    <tr><td class="ix">1</td><td class="key"><a href="#a1">Rewrite the guide with the figures and the 2024 rules</a></td><td><span class="tag t-fix">Fix</span></td><td>Limits, tax, timing, and &ldquo;is it worth it&rdquo;</td><td class="num">22,000</td><td class="when">Week 1</td></tr>
+    <tr><td class="ix">2</td><td class="key"><a href="#a2">Build the FHSS calculator</a></td><td><span class="tag t-tool">New tool</span></td><td>&ldquo;Is FHSS better than saving outside super?&rdquo; with your numbers</td><td class="num">650</td><td class="when">Weeks 1–3</td></tr>
+    <tr><td class="ix">3</td><td class="key"><a href="#a3">Answer &ldquo;Can I use my super to buy a house?&rdquo;</a></td><td><span class="tag t-page">New page</span></td><td>The plain-English version of the question</td><td class="num">11,000</td><td class="when">Weeks 2–3</td></tr>
+    <tr><td class="ix">4</td><td class="key"><a href="#a4">Cover the process and the edge cases</a></td><td><span class="tag t-sec">Sections</span></td><td>Salary sacrifice, couples, land, not buying, HECS</td><td class="num">long tail</td><td class="when">Weeks 2–3</td></tr>
+    <tr><td class="ix">5</td><td class="key"><a href="#a5">Link from the pages Copilot already trusts</a></td><td><span class="tag t-sec">Setup</span></td><td>Gets the rewrite found and cited</td><td class="num">n/a</td><td class="when">Week 1</td></tr>
+    <tr><td class="ix">6</td><td class="key"><a href="#a6">Be ready for tax time</a></td><td><span class="tag t-sec">Timing</span></td><td>The May–June peak</td><td class="num">27,600 in May</td><td class="when">Before May 2027</td></tr>
+  </table></div>
+
+  <h2 id="actions"><span class="k">2</span>Actions in detail</h2>
+
+  <section class="act" id="a1">
+    <header><span class="k">1</span><h3>Rewrite the guide with the figures and the 2024 rules</h3><div class="side"><span class="tag t-fix">Fix</span><span class="when">Week 1 · medium</span></div></header>
+    <div class="body">
+      <div class="lbl">Lead with a dated facts box (ATO, read 7 October 2026)</div>
+      <div class="tbl"><table>
+        <tr><td class="key">How much counts</td><td>$15,000 of voluntary contributions a year, $50,000 in total</td></tr>
+        <tr><td class="key">What you get back</td><td>100% of after-tax contributions, 85% of before-tax ones, plus deemed earnings at the shortfall interest charge rate (7.51% from October 2026)</td></tr>
+        <tr><td class="key">What counts</td><td>Salary sacrifice, personal contributions (deductible or not). Not super guarantee, not a spouse&rsquo;s or parent&rsquo;s contributions</td></tr>
+        <tr><td class="key">Tax when released</td><td>Your marginal rate plus Medicare levy, less a 30% offset, on the before-tax part and the earnings</td></tr>
+        <tr><td class="key">Who</td><td>18 or over, never owned property in Australia (with a hardship exception), live in the home for 6 of the first 12 months. Each person applies separately</td></tr>
+        <tr><td class="key">Timing</td><td>Determination before settlement; release up to 90 days after signing; paid in 15–20 business days; 12 months to buy (extendable to 24)</td></tr>
+        <tr><td class="key">If you don&rsquo;t buy</td><td>Put it back into super, or pay 20% FHSS tax</td></tr>
+      </table></div>
+      <div class="lbl">Answer these questions first-sentence first</div>
+      <ul>
+        <li>Is FHSS better than saving outside super? <span class="when">5 of 16 SERPs</span></li>
+        <li>Is FHSS salary sacrifice? <span class="when">5</span></li>
+        <li>Is it worth doing FHSS? / What are the disadvantages? <span class="when">5 + 3, and 3 + 2</span></li>
+        <li>How does the 30% FHSS tax offset work? / Do you pay tax on FHSS? / Does it reduce your taxable income?</li>
+        <li>What happens if you don&rsquo;t use FHSS? / How long does release take?</li>
+        <li>Can you use FHSS for land, building, off the plan, or an investment property?</li>
+      </ul>
+      <div class="done"><b>Done when</b> every figure has a source and date, the timing section matches the post-September 2024 rules, and the page shows a worked comparison with a bank account.</div>
+    </div>
+  </section>
+
+  <section class="act" id="a2">
+    <header><span class="k">2</span><h3>Build the FHSS calculator</h3><div class="side"><span class="tag t-tool">New tool</span><span class="when">Weeks 1–3 · medium</span></div></header>
+    <div class="body">
+      <p>The most-asked question is whether FHSS beats saving in the bank, and the answer depends on your income. Treasury&rsquo;s estimator still runs on 2017 settings. Ours would be the current one.</p>
+      <ul>
+        <li><b>Inputs:</b> taxable income, how you contribute (salary sacrifice or after-tax), amount a year, number of years, a bank interest rate to compare.</li>
+        <li><b>Outputs:</b> what counts toward the caps, the releasable amount (85% and 100% rules), deemed earnings at the SIC rate, tax withheld (marginal plus Medicare, less 30%), the deposit in your hand, and the same money saved after tax in a bank.</li>
+        <li>Keep the rules (caps, SIC rates by quarter, tax rates) in one dated data file, tested, so the guide and the calculator agree. The 2026–27 income tax rates and Medicare levy must be confirmed from the ATO before it ships.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="act" id="a3">
+    <header><span class="k">3</span><h3>Answer &ldquo;Can I use my super to buy a house?&rdquo;</h3><div class="side"><span class="tag t-page">New page</span><span class="when">Weeks 2–3 · small to medium</span></div></header>
+    <div class="body">
+      <ul class="kw">
+        <li>use super to buy house<span>1,600</span></li><li>can you use your super to buy a home<span>1,000</span></li><li>can you use super to buy a house<span>880</span></li><li>super to buy first home<span>590</span></li><li>use super for home deposit<span>480</span></li><li>can i use my super for a house deposit<span>390</span></li><li>can i access my super to buy a house<span>320</span></li>
+      </ul>
+      <p>The direct answer: generally no, except through FHSS, which lets you withdraw voluntary contributions (not super guarantee) for a first home. The page explains what you can and can&rsquo;t do, then points to the guide and the calculator. Check any statement about SMSFs or early release grounds against the ATO before publishing.</p>
+    </div>
+  </section>
+
+  <section class="act" id="a4">
+    <header><span class="k">4</span><h3>Cover the process and the edge cases</h3><div class="side"><span class="tag t-sec">Sections</span><span class="when">Weeks 2–3 · small</span></div></header>
+    <div class="body">
+      <ul>
+        <li><b>Putting money in:</b> salary sacrifice versus personal contributions you claim a deduction for (the notice of intent to your fund), and how that answers &ldquo;how would they know it was me who contributed?&rdquo;</li>
+        <li><b>Couples, siblings, friends:</b> each person has their own $50,000 for the same home.</li>
+        <li><b>What you can buy:</b> a home, including off the plan or land with a building contract; not vacant land alone or an investment property.</li>
+        <li><b>If you don&rsquo;t buy:</b> recontribute or pay 20% FHSS tax; extensions to 24 months.</li>
+        <li><b>Tax side-effects:</b> HECS (salary sacrifice counts in repayment income; the release doesn&rsquo;t), Division 293, the tax return.</li>
+        <li><b>With other schemes:</b> FHSS can be combined with the 5% Deposit Scheme, Help to Buy, grants and duty concessions.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="act" id="a5">
+    <header><span class="k">5</span><h3>Link from the pages Copilot already trusts</h3><div class="side"><span class="tag t-sec">Setup</span><span class="when">Week 1 · small</span></div></header>
+    <div class="body">
+      <p>Copilot cites us about 3,500 times in three months for 75 first home buyer and deposit questions, and 7 times for FHSS. Link the FHSS guide and calculator from the deposit guide, the nine first home buyer guides, the 5% Deposit Scheme and Help to Buy pages, and the borrowing power and LMI calculators. Add tracked queries and ping IndexNow after release.</p>
+    </div>
+  </section>
+
+  <section class="act" id="a6">
+    <header><span class="k">6</span><h3>Be ready for tax time</h3><div class="side"><span class="tag t-sec">Timing</span><span class="when">Before May 2027</span></div></header>
+    <div class="body">
+      <p>Searches peak in May and June, when people decide on salary sacrifice before 30 June. Have the rewrite, the calculator and the super page indexed well before May, and refresh the SIC rate each quarter.</p>
+    </div>
+  </section>
+
+  <h2 id="not"><span class="k">3</span>What we leave alone</h2>
+  <ul class="plain">
+    <li><b>FHSS as a radio term</b> (frequency hopping), university faculties and baby monitors: most of the autocomplete noise.</li>
+    <li><b>General early release of super</b> (hardship, compassionate grounds, retirement) beyond a short pointer from the super page.</li>
+    <li><b>The inheritance and retirement questions</b> that leak into People Also Ask.</li>
+  </ul>
+
+  <h2 id="measure"><span class="k">4</span>How we measure it</h2>
+  <div class="tbl"><table>
+    <tr><th>Signal</th><th>Today</th><th>What good looks like</th></tr>
+    <tr><td class="key">Google impressions on the guide</td><td>21 in 16 months</td><td>Hundreds a month within 28 days of the rewrite</td></tr>
+    <tr><td class="key">Copilot citations (Bing AI Performance)</td><td>7 in three months; no FHSS grounding queries</td><td>FHSS grounding queries appearing, as they did for Help to Buy</td></tr>
+    <tr><td class="key">Tracked SERPs where we&rsquo;re in the top 10</td><td>0 of 15</td><td>The calculator and the super question first</td></tr>
+  </table></div>
+
+  <h2 id="why"><span class="k">5</span>The evidence</h2>
+  <div class="tbl"><table>
+    <tr><th>Theme</th><th class="num">Avg searches / mo</th><th>Our coverage today</th></tr>
+    <tr><td class="key">Head terms (first home super saver scheme, fhss)</td><td class="num">about 19,000</td><td>Guide, barely ranking</td></tr>
+    <tr><td class="key">Can I use my super to buy a house? (all phrasings)</td><td class="num">11,000</td><td>None (action 3)</td></tr>
+    <tr><td class="key">Release, withdrawal and timing</td><td class="num">900</td><td>Outdated (action 1)</td></tr>
+    <tr><td class="key">Calculators</td><td class="num">650</td><td>None (action 2)</td></tr>
+    <tr><td class="key">Eligibility</td><td class="num">490</td><td>Partial</td></tr>
+    <tr><td class="key">How it works, limits, tax, worth it</td><td class="num">770</td><td>No figures (action 1); top of People Also Ask</td></tr>
+  </table></div>
+  <p>People Also Ask, out of 16 results pages: &ldquo;Is FHSS better than saving outside super?&rdquo; (5), &ldquo;Is FHSS salary sacrifice?&rdquo; (5), &ldquo;Is it worth doing FHSS?&rdquo; (5), &ldquo;What are the disadvantages of FHSS?&rdquo; (3), &ldquo;How does the 30% FHSS tax offset work?&rdquo; (3), &ldquo;What happens if you don&rsquo;t use FHSS?&rdquo; (3), &ldquo;Do you pay tax on FHSS?&rdquo; (3).</p>
+  <p class="foot">Full findings: <code>docs/seo-baselines/2026-10-07/fhss/</code> (README.md, official-facts.md, keywords.csv, questions.csv, autocomplete.csv, serp-landscape.csv, our-queries.csv, bing-ai-citations.csv). Pull script: <code>~/Desktop/Ads/ypg-topic-pull.py</code> with <code>ypg-topic-fhss.json</code>.</p>
+</div>
