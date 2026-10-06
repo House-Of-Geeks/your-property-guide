@@ -130,8 +130,10 @@ ul.plain b{color:var(--ink)}
     <div class="stat"><div class="n">26,300</div><div class="d">Google searches a month in Australia across 317 distinct bridging searches, close variants counted once</div></div>
     <div class="stat"><div class="n c-crit">0 of 16</div><div class="d">Google AU results pages where we reach the top 10. Bridgit is on 10 of them</div></div>
     <div class="stat"><div class="n">2,800</div><div class="d">searches a month for a bridging calculator. We have 11 calculators and none for bridging</div></div>
-    <div class="stat"><div class="n c-crit">$2,500</div><div class="d">what our guide says 6 months on a $500k bridge costs. At its own 7.5% rate it is about $19,000</div></div>
+    <div class="stat"><div class="n c-crit">$2,500</div><div class="d">what our guide said 6 months on a $500k bridge costs. At the 9.3% banks publish it is about $23,700</div></div>
   </div>
+
+  <div class="note"><b>Status, 6 October.</b> All eight actions are built and waiting for review in pull request #99. Figures on this page use a 9.3% example bridging rate: the banks that add the interest to the loan published 9.28% to 10.29% on 6 October.</div>
 
   <div class="note"><b>Timing.</b> "bridging loan" runs at 6,600 searches a month in September–October and March, against 3,600 in December. The fixes in week 1 should go live while spring demand is high. The new pages need to be indexed before the autumn peak in March.</div>
 
@@ -143,7 +145,7 @@ ul.plain b{color:var(--ink)}
     <tr><td class="ix">3</td><td class="key"><a href="#a3">Link, track and take a baseline</a></td><td><span class="tag t-sec">Setup</span></td><td>Gets the changes found and measured</td><td class="num">n/a</td><td class="when">Week 1</td></tr>
     <tr><td class="ix">4</td><td class="key"><a href="#a4">Build the bridging loan calculator</a></td><td><span class="tag t-tool">New tool</span></td><td>"What will my numbers be?" Leads to an appraisal request</td><td class="num">2,800</td><td class="when">Weeks 2–3</td></tr>
     <tr><td class="ix">5</td><td class="key"><a href="#a5">Write the deposit bond guide</a></td><td><span class="tag t-page">New page</span></td><td>The largest uncovered term we found</td><td class="num">2,300</td><td class="when">Weeks 2–3</td></tr>
-    <tr><td class="ix">6</td><td class="key"><a href="#a6">Write the alternatives guide</a></td><td><span class="tag t-page">New page</span></td><td>"Is there a cheaper alternative?" Shown on 13 of 16 results pages</td><td class="num">about 600</td><td class="when">Weeks 3–4</td></tr>
+    <tr><td class="ix">6</td><td class="key"><a href="#a6">Write the alternatives guide</a></td><td><span class="tag t-page">New page</span></td><td>"Is there a cheaper alternative?" Shown on 13 of 16 results pages</td><td class="num">about 40</td><td class="when">Weeks 3–4</td></tr>
     <tr><td class="ix">7</td><td class="key"><a href="#a7">Add a bank-by-bank table</a></td><td><span class="tag t-sec">Section</span></td><td>"Which banks do bridging loans?"</td><td class="num">4,000</td><td class="when">Weeks 3–4</td></tr>
     <tr><td class="ix">8</td><td class="key"><a href="#a8">Add risk and scenario sections</a></td><td><span class="tag t-sec">Section</span></td><td>"What if it doesn't sell?" and the scenario questions Bing sends us</td><td class="num">long tail</td><td class="when">Weeks 3–4</td></tr>
   </table></div>
@@ -158,16 +160,16 @@ ul.plain b{color:var(--ink)}
       <p>Cost is the most-asked question about bridging loans. The guide's "True cost of bridging" section and the FAQ "How much extra does bridging cost vs selling first?" say a $500,000 bridge over 6 months adds "roughly $2,500" of interest. That counts only the 1-point rate margin. If you sell first you never borrow that $500,000. With a bridging loan you pay the full rate on it.</p>
       <div class="lbl">What to change in <span class="path">/guides/bridging-loans-guide</span></div>
       <ul>
-        <li><b>Cost paragraph and FAQ.</b> Interest on the bridged amount at the full rate: about $19,000 for $500k over 6 months at 7.5%, capitalised monthly. With the guide's own fee and holding-cost range, the total is about $20,000 to $22,000 before any rent saved.</li>
-        <li><b>Worked example.</b> It shows "Capitalised bridging interest (6 months @ 7.5%): ~$28,000". On the $1.05m that the sale repays it is about $40,000. Peak debt becomes about $2,025,000 (78% LVR, still under the 80% cap) and end debt about $975,000.</li>
-        <li><b>Add a cost table.</b> Use the amounts people search for. The rate is the guide's own 7.5%, with interest capitalised monthly; label it as an example and date it.</li>
+        <li><b>Cost paragraph and FAQ.</b> Interest on the bridged amount at the full rate: about $23,700 for $500k over 6 months at 9.3%, capitalised monthly. With the guide's own fee and holding-cost range, the total is about $25,000 to $27,000 before any rent saved.</li>
+        <li><b>Worked example.</b> It shows "Capitalised bridging interest (6 months @ 7.5%): ~$28,000". On the $1.05m that the sale repays it is about $49,800 at 9.3% (about $40,000 even at the guide's own 7.5%). Peak debt becomes about $2,035,000 (78% LVR, still under the 80% cap) and end debt about $985,000.</li>
+        <li><b>Add a cost table.</b> Use the amounts people search for, at an example rate inside the published bank rates (9.3%), with interest capitalised monthly; label it as an example and date it.</li>
       </ul>
       <div class="tbl"><table>
         <tr><th>Amount bridged</th><th class="num">3 months</th><th class="num">6 months</th><th class="num">12 months</th></tr>
-        <tr><td class="key">$100,000</td><td class="num">$1,887</td><td class="num">$3,809</td><td class="num">$7,763</td></tr>
-        <tr><td class="key">$350,000</td><td class="num">$6,604</td><td class="num">$13,332</td><td class="num">$27,171</td></tr>
-        <tr><td class="key">$500,000</td><td class="num">$9,434</td><td class="num">$19,045</td><td class="num">$38,816</td></tr>
-        <tr><td class="key">$1,000,000</td><td class="num">$18,867</td><td class="num">$38,091</td><td class="num">$77,633</td></tr>
+        <tr><td class="key">$100,000</td><td class="num">$2,343</td><td class="num">$4,741</td><td class="num">$9,707</td></tr>
+        <tr><td class="key">$350,000</td><td class="num">$8,201</td><td class="num">$16,594</td><td class="num">$33,974</td></tr>
+        <tr><td class="key">$500,000</td><td class="num">$11,715</td><td class="num">$23,705</td><td class="num">$48,534</td></tr>
+        <tr><td class="key">$1,000,000</td><td class="num">$23,431</td><td class="num">$47,410</td><td class="num">$97,068</td></tr>
       </table></div>
       <div class="done"><b>Done when</b> every dollar figure on the page agrees with the table, and the FAQ answers "How much does a $100,000 bridging loan cost?" in its first sentence.</div>
     </div>
@@ -251,20 +253,19 @@ ul.plain b{color:var(--ink)}
     <header><span class="k">6</span><h3>Write the alternatives guide</h3><div class="side"><span class="tag t-page">New page</span><span class="when">Weeks 3–4 · medium</span></div></header>
     <div class="body">
       <div class="lbl">Why</div>
-      <p>"Is there a cheaper alternative to a bridging loan?" is the most common People Also Ask question: it shows on 13 of the 16 results pages. Google's related searches add "bridging loan vs relocation loan" and "deposit bond vs bridging loan". People also search the buy-before-you-sell providers by name.</p>
+      <p>"Is there a cheaper alternative to a bridging loan?" is the most common People Also Ask question: it shows on 13 of the 16 results pages. Google's related searches add "bridging loan vs relocation loan" and "deposit bond vs bridging loan". A relocation loan turns out to be St.George's, Bank of Melbourne's and BankSA's name for their bridging loan, and Bridgit and Yard are non-bank bridging lenders, so the guide explains both rather than listing them as alternatives.</p>
       <ul class="kw">
-        <li>relocation loan<span>110</span></li><li>st george relocation loan<span>110</span></li><li>westpac relocation loan<span>30</span></li><li>bridgit / bridge it loans<span>about 270</span></li><li>bridging loan alternatives<span>30 each, 4 phrasings</span></li>
+        <li>bridging loan alternatives<span>about 40</span></li><li>deposit bond vs bridging loan<span>related search</span></li><li>bridging loan vs relocation loan<span>related search, answered as the same product</span></li>
       </ul>
       <div class="lbl">Build around one comparison table at <span class="path">/guides/bridging-loan-alternatives</span></div>
       <div class="tbl"><table>
         <tr><th>Option</th><th>Columns to fill</th></tr>
-        <tr><td class="key">Bridging loan</td><td rowspan="7">What it is · what it costs on a worked example · the main risk · when it fits · link to detail</td></tr>
-        <tr><td class="key">Relocation loan</td></tr>
-        <tr><td class="key">Deposit bond</td></tr>
+        <tr><td class="key">Bridging loan</td><td rowspan="6">What it is · what it costs on a worked example · the main risk · when it fits · link to detail</td></tr>
         <tr><td class="key">Sell first and rent</td></tr>
-        <tr><td class="key">Buy subject to sale, or negotiate a long settlement</td></tr>
-        <tr><td class="key">Buy-before-you-sell providers</td></tr>
-        <tr><td class="key">Top-up or equity release on the current loan</td></tr>
+        <tr><td class="key">Subject-to-sale offer</td></tr>
+        <tr><td class="key">Longer settlement on the purchase</td></tr>
+        <tr><td class="key">Deposit bond</td></tr>
+        <tr><td class="key">Using equity for the deposit</td></tr>
       </table></div>
       <div class="done"><b>Done when</b> the page answers the PAA question in its first sentence and links to the calculator, the deposit bond guide and <span class="path">/guides/sell-first-or-buy-first</span>.</div>
     </div>
@@ -364,9 +365,9 @@ ul.plain b{color:var(--ink)}
   <div class="tbl"><table>
     <tr><th>Theme</th><th class="num">AU searches / mo</th><th>Our coverage today</th></tr>
     <tr><td class="key">Head terms (bridging loan, bridging finance)</td><td class="num">8,810</td><td>Guide, at position about 90 on Google</td></tr>
-    <tr><td class="key">Lenders and comparison</td><td class="num">3,800</td><td>None (action 7)</td></tr>
+    <tr><td class="key">Lenders and comparison, including relocation loans and Bridgit</td><td class="num">4,360</td><td>None (action 7)</td></tr>
     <tr><td class="key">What it is and how it works</td><td class="num">3,480</td><td>Covered</td></tr>
-    <tr><td class="key">Alternatives, including deposit bonds</td><td class="num">2,940</td><td>Partial: sell first and subject-to-sale only (actions 5, 6)</td></tr>
+    <tr><td class="key">Alternatives, including deposit bonds</td><td class="num">2,380</td><td>Partial: sell first and subject-to-sale only (actions 5, 6)</td></tr>
     <tr><td class="key">Rates, cost and repayments</td><td class="num">2,820</td><td>Covered, but the figures are wrong (action 1)</td></tr>
     <tr><td class="key">Calculators</td><td class="num">2,820</td><td>None (action 4)</td></tr>
     <tr><td class="key">Eligibility, risk and term</td><td class="num">520</td><td>Partial (actions 2, 8)</td></tr>

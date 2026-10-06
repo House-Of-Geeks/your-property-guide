@@ -31,7 +31,7 @@ Files in this folder:
   - *"How much equity do you need?"* (6)
 - **Calculators and alternatives are the largest gaps.** Bridging calculators draw about 2,800 searches a month, and we have 11 calculators but no bridging one. "Deposit bond" alone draws 1,900 a month, and we have no page on it.
 - **Bing likes our guide. Google barely knows it exists.** Bing ranks it mostly between positions 1 and 8 for long, specific questions. Google tested it in July (269 impressions at an average position near 90) and has shown it about 10 times a month since. The page is indexed; Google last crawled it on 12 July 2026.
-- **The guide's cost section understates the cost by roughly four to five times** (see section 6). Cost is the question asked most often, so this is the first thing to fix.
+- **The guide's cost section understates the cost by roughly five times** (see section 6). Cost is the question asked most often, so this is the first thing to fix.
 
 ## 2. Why people want a bridging loan
 
@@ -86,8 +86,8 @@ Bing shows the fear behind these questions:
 **3. "Is there something cheaper?"** This is the single most common People Also Ask question (13 of 16 SERPs). The alternatives people name:
 
 - deposit bond (1,900 a month)
-- relocation loan ("relocation loan" 110, "st george relocation loan" 110, "westpac relocation loan" 30)
-- Bridgit and other buy-before-you-sell providers (about 270 for "bridgit", "bridge it loans" and "bridgeit loans")
+- relocation loan ("relocation loan" 110, "st george relocation loan" 110, "westpac relocation loan" 30), which turns out to be St.George's, Bank of Melbourne's and BankSA's name for their bridging loan, so it is the same product (section 8)
+- Bridgit and Yard (about 270 for "bridgit", "bridge it loans" and "bridgeit loans"), which are non-bank bridging lenders rather than alternatives
 - selling first and renting
 
 Related searches add "bridging loan vs relocation loan" and "deposit bond vs bridging loan". Bridgit ranks in the top 10 of 10 of the 16 SERPs.
@@ -157,7 +157,7 @@ What wins is either a provider with a calculator (Bridgit, the banks) or a forum
 | What it is, how it works, peak and end debt | Covered, with a worked example | Open versus closed bridging is not named |
 | Cost in dollars | One cost paragraph, which understates the cost (section 6) | No cost-per-$100k table, no answer for $100k/$350k/$500k, no monthly-payment answer for end debt |
 | Calculator | Links to the borrowing power and stamp duty calculators | **No bridging calculator.** About 2,800 searches a month |
-| Alternatives | Sell first; buy subject to sale | **No deposit bond** (1,900 a month), **no relocation loan**, no buy-before-you-sell providers, no long or delayed settlement |
+| Alternatives | Sell first; buy subject to sale | **No deposit bond** (1,900 a month), no long or delayed settlement, no use of equity for the deposit; relocation loans and non-bank lenders not explained |
 | Risk and "what if it doesn't sell" | FAQ "What if my old home doesn't sell in time?" | Nothing on a falling sale price, the end of a 12-month term, forced sale, or refinancing out |
 | Eligibility and equity | "Will a lender approve me?" section | No direct "how much equity" answer; nothing on retirees or no income |
 | Which banks | Not covered | **No lender table.** About 4,000 searches a month |
@@ -167,9 +167,9 @@ What wins is either a provider with a calculator (Bridgit, the banks) or a forum
 
 ## 6. The cost figures on the guide need correcting
 
-The "True cost of bridging" section and the FAQ "How much extra does bridging cost vs selling first?" both say a $500,000 bridge over 6 months costs "roughly $2,500 of additional interest". That counts only the 1-point rate margin. Selling first means you never borrow that $500,000. Bridging means you pay the full rate on it: at 7.5% for 6 months that is about **$18,750**, not $2,500. The guide's total of "$3,500 to $5,500 versus selling first" should be closer to $20,000 to $22,000 (using the guide's own fee figures), before any rent saved.
+The "True cost of bridging" section and the FAQ "How much extra does bridging cost vs selling first?" both say a $500,000 bridge over 6 months costs "roughly $2,500 of additional interest". That counts only the 1-point rate margin. Selling first means you never borrow that $500,000. Bridging means you pay the full rate on it: at 9.3%, inside the 9.28% to 10.29% the banks that capitalise interest published on 6 October, that is about **$23,700** for 6 months, not $2,500. Even at the guide's own 7.5% it was about $18,750. The guide's total of "$3,500 to $5,500 versus selling first" should be closer to $25,000 to $27,000 (using the guide's own fee figures), before any rent saved.
 
-The worked example also does not reconcile. It shows "capitalised bridging interest (6 months @ 7.5%): ~$28,000". Six months at 7.5% on the $1.05 million that the sale repays is about $39,000.
+The worked example also does not reconcile. It shows "capitalised bridging interest (6 months @ 7.5%): ~$28,000". Six months on the $1.05 million that the sale repays is about $49,800 at 9.3%, and about $39,000 even at the guide's own 7.5%.
 
 Since "how much does it cost" is the most-asked question, these two corrections come before any new content.
 
@@ -181,7 +181,7 @@ Since "how much does it cost" is the most-asked question, these two corrections 
    - Outputs: peak debt, peak LVR, capitalised interest, end debt, monthly repayment on end debt.
    - Pre-fill the value from the instant suburb range we already show on `/appraisal`. Pull stamp duty from our stamp duty calculator.
    - The most uncertain input is the sale price, so the call to action is a free appraisal from a local agent. This is the strongest fit between this demand and how we make money.
-3. **Write a deposit bond guide** (1,900 a month, low competition) and **an alternatives guide**: bridging loan vs relocation loan vs deposit bond vs sell first and rent vs buy-before-you-sell providers. This answers the most common People Also Ask question.
+3. **Write a deposit bond guide** (1,900 a month, low competition) and **an alternatives guide**: bridging loan vs deposit bond vs sell first and rent vs subject-to-sale vs a longer settlement vs using equity, explaining that a relocation loan is a bridging loan. This answers the most common People Also Ask question.
 4. **Add a lender table to the guide.** For CBA, Westpac, NAB, ANZ, St George, Bankwest, ING, Macquarie, Bendigo and Suncorp, show whether they offer bridging, maximum term (6 or 12 months, longer for construction), open or closed, how interest is handled, and maximum peak-debt LVR. Each row needs a source link and a checked date. Keep it factual and general, because we do not hold a credit licence.
 5. **Add a "what if it doesn't sell" section.** Cover the 6- or 12-month term ending, a falling sale price, the lender's options (extension, refinance, forced sale), how to protect yourself (sell-by date, realistic price, auction), and a link to suburb days-on-market data.
 6. **Add short sections or FAQs for the scenarios Bing sends us:**
@@ -197,7 +197,7 @@ Since "how much does it cost" is the most-asked question, these two corrections 
 
 Lender pages read while building the plan corrected three assumptions above:
 
-- **Rates.** The 7.5% used in sections 1, 6 and 7 is the guide's old example rate. On 6 October the banks that add bridging interest to the loan published 9.28% (Bank of Melbourne) to 10.29% (Bendigo Bank). The site now uses 9.3% as its example, which puts six months on $500,000 at about $23,700 rather than $19,000.
+- **Rates.** The plan first used the guide's old 7.5% example rate. On 6 October the banks that add bridging interest to the loan published 9.28% (Bank of Melbourne) to 10.29% (Bendigo Bank), so the site and the figures above now use 9.3%: six months on $500,000 is about $23,700 rather than $19,000.
 - **Interest method.** Not all bridging loans capitalise interest. Westpac, the St.George group and Bendigo Bank do; CBA and ANZ require interest-only repayments; Bankwest lets you choose. The calculator offers both methods.
 - **Relocation loans.** St.George, Bank of Melbourne and BankSA describe their relocation loan as also known as a bridging loan, so it is the same product rather than an alternative. Bridgit and Yard are non-bank bridging lenders.
 
