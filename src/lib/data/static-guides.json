@@ -264,11 +264,11 @@
     },
     {
       "slug": "first-home-super-saver-scheme",
-      "title": "First Home Super Saver Scheme (FHSS): Save Your Deposit in Super (2026)",
-      "description": "How the First Home Super Saver scheme works: make extra contributions into super, withdraw them plus earnings for a first-home deposit, and pocket the tax saving. Limits, the ATO release process, and the timing trap explained.",
+      "title": "First Home Super Saver Scheme (FHSS) 2026: Limits, Tax and How to Withdraw",
+      "description": "How the FHSS scheme works in 2026: $15,000 a year and $50,000 in total, 85% of before-tax contributions, deemed earnings, the 30% tax offset, the timing rules since September 2024, and whether it beats saving in a bank.",
       "publishedAt": "2026-06-14",
-      "updatedAt": "2026-06-14",
-      "readingTimeMinutes": 8,
+      "updatedAt": "2026-10-07",
+      "readingTimeMinutes": 14,
       "persona": "first-home"
     },
     {
@@ -775,6 +775,15 @@
       "updatedAt": "2026-05-06",
       "readingTimeMinutes": 9,
       "persona": "investing"
+    },
+    {
+      "slug": "use-super-to-buy-a-house",
+      "title": "Can I Use My Super to Buy a House? What You Can and Can't Do (2026)",
+      "description": "Mostly no, with one exception: the First Home Super Saver scheme lets first home buyers withdraw up to $50,000 of voluntary contributions plus earnings for a deposit. What it adds, why employer super can't be used, early release, SMSFs and paying off a mortgage.",
+      "publishedAt": "2026-10-07",
+      "updatedAt": "2026-10-07",
+      "readingTimeMinutes": 7,
+      "persona": "first-home"
     },
     {
       "slug": "what-to-fix-before-selling-a-house",

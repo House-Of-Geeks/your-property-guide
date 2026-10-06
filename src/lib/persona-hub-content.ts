@@ -117,7 +117,7 @@ const FIRST_HOME: PersonaHubContent = {
     {
       question: "What is the First Home Super Saver Scheme (FHSSS)?",
       answer:
-        "The FHSSS lets you make voluntary contributions to your super (up to $15,000 per year, $50,000 total) and withdraw them later for a first home deposit. Because super is taxed at 15% (versus your marginal income tax rate), you save tax on the contributions. You need to apply for a determination from the ATO before signing a contract.",
+        "The FHSSS lets you make voluntary contributions to your super (up to $15,000 per year, $50,000 total) and withdraw them, plus deemed earnings, for a first home deposit. Salary sacrificed contributions are taxed at 15% in super instead of your marginal rate, which is where the saving comes from. Since 15 September 2024 you need the ATO's determination before the home becomes yours (generally settlement), and you can request the release up to 90 days after signing a contract.",
     },
     {
       question: "Should I get pre-approval before house-hunting?",

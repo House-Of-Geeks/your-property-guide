@@ -232,6 +232,8 @@ const ALL_NEXT_STEPS: Record<string, NextStepLink> = {
   "bridging-loan-calculator":      { label: "Bridging loan",                description: "Peak debt, end debt and what buying before you sell costs.", href: "/bridging-loan-calculator",      icon: "/images/icons/calculator.svg" },
   "selling-costs-calculator":      { label: "Selling costs",                description: "Commission, marketing and legal costs on your sale.",       href: "/selling-costs-calculator",      icon: "/images/icons/calculator.svg" },
   "help-to-buy-calculator":         { label: "Help to Buy",                  description: "Eligibility, the government's share and your repayments.",   href: "/help-to-buy-calculator",        icon: "/images/icons/calculator.svg" },
+  "fhss-calculator":               { label: "FHSS",                         description: "What the First Home Super Saver scheme adds to your deposit.", href: "/fhss-calculator",               icon: "/images/icons/calculator.svg" },
+  "guide-fhss":                    { label: "First Home Super Saver scheme", description: "The limits, the tax, and the timing rules since 2024.",       href: "/guides/first-home-super-saver-scheme", icon: "/images/icons/guide.svg" },
   "guide-help-to-buy":             { label: "Help to Buy scheme",           description: "How shared equity works, the rules and what happens at sale.", href: "/guides/help-to-buy-scheme-australia", icon: "/images/icons/guide.svg" },
   "guide-sell-first":              { label: "Sell first or buy first?",     description: "The decision before you commit to a bridging loan.",        href: "/guides/sell-first-or-buy-first", icon: "/images/icons/guide.svg" },
   "guide-deposit":                 { label: "How much deposit do I need?",  description: "5%, 10%, 20%, plus government schemes and FHSS.",            href: "/guides/how-much-deposit-to-buy-a-house", icon: "/images/icons/guide.svg" },
@@ -256,6 +258,7 @@ const NEXT_STEPS_FOR_SLUG: Record<string, string[]> = {
   "refinancing-calculator":     ["mortgage-calculator", "borrowing-power-calculator", "guide-buying"],
   "bridging-loan-calculator":   ["guide-bridging", "selling-costs-calculator", "guide-sell-first"],
   "help-to-buy-calculator":     ["guide-help-to-buy", "guide-first-home-guarantee", "stamp-duty-calculator"],
+  "fhss-calculator":            ["guide-fhss", "guide-deposit", "borrowing-power-calculator"],
 };
 
 function NextStepRail({

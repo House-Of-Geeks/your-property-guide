@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
+import { FhssNote } from "@/components/guide/FhssNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -214,12 +215,8 @@ export default function FirstHomeBuyerNTPage() {
       <h3>Help to Buy</h3>
       <HelpToBuyNote state="NT" as="p" />
 
-      <h3>First Home Super Saver Scheme (FHSSS)</h3>
-      <p>
-        Voluntary super contributions of up to $15,000/year (max $50,000) can be
-        withdrawn for a first home deposit. Tax savings can be substantial for
-        higher-income earners.
-      </p>
+      <h3>First Home Super Saver scheme (FHSS)</h3>
+      <FhssNote as="p" />
 
       <h2 id="leasehold">Leasehold land, a critical NT consideration</h2>
       <p>

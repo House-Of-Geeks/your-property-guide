@@ -210,6 +210,7 @@ const RELATED: RelatedGuide[] = [
   { title: "5% Deposit Scheme (First Home Guarantee)", href: "/guides/first-home-guarantee",     description: "Buy with a 5% deposit and no LMI while keeping 100% ownership." },
   { title: "First Home Buyer Guide (national)", href: "/guides/first-home-buyer-guide",        description: "Federal schemes, grants by state, stamp duty concessions and the buying process." },
   { title: "How Much Deposit to Buy a House",   href: "/guides/how-much-deposit-to-buy-a-house", description: "What you really need to save, and the schemes that lower the bar." },
+  { title: "First Home Super Saver Scheme",     href: "/guides/first-home-super-saver-scheme",  description: "Build the deposit in super; it combines with Help to Buy." },
   { title: "Borrowing Power Calculator",        href: "/borrowing-power-calculator",            description: "See how a smaller loan under shared equity changes what you can afford." },
 ];
 
@@ -538,7 +539,7 @@ export default function HelpToBuySchemeAustraliaPage() {
       <h2 id="combining">Combining it with other schemes</h2>
       <ul>
         <li><strong>Can&rsquo;t combine:</strong> the 5% Deposit Scheme and the rest of the Home Guarantee Scheme, any other shared equity scheme (including state schemes such as Queensland&rsquo;s Boost to Buy), and state home-ownership loans or guarantees.</li>
-        <li><strong>Can combine:</strong> your state&rsquo;s first home owner grant, stamp duty concessions, and the First Home Super Saver Scheme.</li>
+        <li><strong>Can combine:</strong> your state&rsquo;s first home owner grant, stamp duty concessions, and the <Link href="/guides/first-home-super-saver-scheme">First Home Super Saver Scheme</Link>.</li>
       </ul>
       <p>
         Our guide to{" "}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
+import { FhssNote } from "@/components/guide/FhssNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -229,6 +230,7 @@ export default function FirstHomeBuyerNSWPage() {
       <ul>
         <HomeGuaranteeNote state="NSW" />
         <HelpToBuyNote state="NSW" />
+        <FhssNote />
       </ul>
       <p>
         Federal schemes are available through participating lenders nationwide,

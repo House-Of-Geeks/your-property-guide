@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FHSS_RELEASE_BUSINESS_DAYS, FHSS_TAX_PCT, FHSS_TIMING } from "@/lib/data/fhss";
+import { EXAMPLE_BANK_RATE, computeFhss, defaultFhssInput } from "@/lib/fhss-calc";
 import {
   GuideArticleLayout,
   Callout,
@@ -70,6 +72,11 @@ const TOC: GuideTOCEntry[] = [
   { id: "next-steps",       label: "Next steps" },
 ];
 
+// FHSS worked example, from the FHSS calculator's engine (src/lib/fhss-calc.ts).
+const FHSS_EX = defaultFhssInput();
+const FHSS_EXR = computeFhss(FHSS_EX);
+const fmtFhss = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
+
 const FAQS: FaqItem[] = [
   {
     question: "Can I buy a house with no deposit in Australia?",
@@ -89,7 +96,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I use my super for a house deposit?",
     answer:
-      "Through the First Home Super Saver scheme (FHSS), first home buyers can voluntarily contribute up to $15,000 per year (max $50,000 total) into super and later withdraw it for a deposit. The contributions are taxed at 15% rather than your marginal rate, so the after-tax balance grows faster than savings outside super. Withdrawals are taxed at marginal rate minus 30%.",
+      "Only the extra contributions you make, through the First Home Super Saver scheme (FHSS). First home buyers can count up to $15,000 of voluntary contributions a year ($50,000 in total) and later withdraw them, plus deemed earnings, for a deposit. Salary sacrifice is taxed at 15% going in rather than your marginal rate; when it's released, the before-tax part and the earnings are taxed at your marginal rate plus Medicare levy, less a 30% offset. Your employer's compulsory super can't be used.",
   },
   {
     question: "What counts as genuine savings?",
@@ -285,20 +292,30 @@ export default function HowMuchDepositGuidePage() {
 
       <h2 id="fhss">First Home Super Saver scheme</h2>
       <p>
-        FHSS lets first home buyers contribute up to $15,000 per financial year
-        (max $50,000 total per person) into super, then withdraw it later for a
-        deposit. Contributions are taxed at 15% rather than your marginal rate,
-        and withdrawals are taxed at marginal rate minus 30%. For a couple
-        earning $90,000 each, this can mean $4,000 to $6,000 in tax savings on
-        a $50,000 contribution each.
+        FHSS lets first home buyers count up to $15,000 of voluntary
+        contributions a financial year (max $50,000 total per person) in super,
+        then withdraw them with deemed earnings for a deposit. Salary sacrifice
+        is taxed at 15% going in rather than your marginal rate, and the release
+        at your marginal rate plus Medicare levy, less a 30% offset. On a{" "}
+        {fmtFhss(FHSS_EX.salary)} salary, salary sacrificing{" "}
+        {fmtFhss(FHSS_EX.perYear)} a year for {FHSS_EX.years} years leaves{" "}
+        {fmtFhss(FHSS_EXR.inHand)} for the deposit, against{" "}
+        {fmtFhss(FHSS_EXR.bank.total)} saved in a bank at {EXAMPLE_BANK_RATE}%. A
+        couple can each do it. See the{" "}
+        <Link href="/guides/first-home-super-saver-scheme">FHSS guide</Link> or run
+        your own numbers in the <Link href="/fhss-calculator">FHSS calculator</Link>.
       </p>
 
       <Callout variant="warning" title="FHSS isn't fast money">
         <p>
-          The withdrawal application takes about 25 business days from the
-          first request to funds in your bank account. Don&rsquo;t request the
-          withdrawal until you have a signed contract, once requested, the
-          funds must be used for a home or returned (with tax penalties).
+          The money takes {FHSS_RELEASE_BUSINESS_DAYS.min} to{" "}
+          {FHSS_RELEASE_BUSINESS_DAYS.max} business days to arrive after you
+          request the release. You can request it up to{" "}
+          {FHSS_TIMING.releaseAfterSigningDays} days after signing a contract, so
+          plan for the deposit due when you sign to come from elsewhere. Once
+          it&rsquo;s released you have {FHSS_TIMING.contractMonths} months to
+          sign (the ATO can extend this), or you must put it back into super or
+          pay {FHSS_TAX_PCT}% FHSS tax.
         </p>
       </Callout>
 
@@ -315,7 +332,8 @@ export default function HowMuchDepositGuidePage() {
         </li>
         <li>
           <strong>FHSS if you&rsquo;re a first home buyer.</strong> The 15% super tax
-          rate beats most after-tax savings. See our notes above.
+          rate beats most after-tax savings. See our notes above, or try the{" "}
+          <Link href="/fhss-calculator">FHSS calculator</Link>.
         </li>
         <li>
           <strong>Renegotiate fixed costs.</strong> Insurance, energy, mobile,

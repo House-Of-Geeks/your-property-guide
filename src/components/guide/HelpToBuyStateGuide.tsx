@@ -187,8 +187,8 @@ export function HelpToBuyStateGuide({ state, frontmatter }: { state: AustralianS
 
       <h2 id="combine">Grants and stamp duty you can add</h2>
       <p>
-        Help to Buy can be combined with a first home owner grant, stamp duty concessions and the First Home
-        Super Saver Scheme. In {page.name}:
+        Help to Buy can be combined with a first home owner grant, stamp duty concessions and the{" "}
+        <Link href="/guides/first-home-super-saver-scheme">First Home Super Saver Scheme</Link>. In {page.name}:
       </p>
       <ul>
         {page.combine.map((c) => <li key={c.title}><strong>{c.title}:</strong> {c.body}</li>)}

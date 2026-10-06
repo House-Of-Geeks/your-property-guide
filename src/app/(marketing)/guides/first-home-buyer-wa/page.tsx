@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
+import { FhssNote } from "@/components/guide/FhssNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -223,6 +224,7 @@ export default function FirstHomeBuyerWAPage() {
       <ul>
         <HomeGuaranteeNote state="WA" />
         <HelpToBuyNote state="WA" />
+        <FhssNote />
       </ul>
       <p>
         Note: WA's $600,000 Perth cap is lower than east-coast capitals, reflecting

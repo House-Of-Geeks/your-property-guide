@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
+import { FhssNote } from "@/components/guide/FhssNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -232,13 +233,8 @@ export default function FirstHomeBuyerSAPage() {
         <HomeGuaranteeNote state="SA" />
       </ul>
 
-      <h3>First Home Super Saver Scheme (FHSSS)</h3>
-      <p>
-        The FHSSS lets you make voluntary super contributions of up to $15,000 per
-        year (up to $50,000 total) and then withdraw these (plus associated
-        earnings) as a home deposit. The tax advantage comes from contributions
-        being taxed at 15% rather than your marginal rate.
-      </p>
+      <h3>First Home Super Saver scheme (FHSS)</h3>
+      <FhssNote as="p" />
 
       <h3>Help to Buy (shared equity)</h3>
       <HelpToBuyNote state="SA" as="p" />

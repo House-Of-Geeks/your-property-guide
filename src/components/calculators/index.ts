@@ -10,4 +10,5 @@ export { LMICalculator } from "./LMICalculator";
 export { NegativeGearingCalculator } from "./NegativeGearingCalculator";
 export { BridgingLoanCalculator } from "./BridgingLoanCalculator";
 export { HelpToBuyCalculator } from "./HelpToBuyCalculator";
+export { FhssCalculator } from "./FhssCalculator";
 export { CalculatorPageLayout, type CalculatorPageFrontmatter } from "./CalculatorPageLayout";

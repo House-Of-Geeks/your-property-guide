@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
+import { FhssNote } from "@/components/guide/FhssNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -221,12 +222,8 @@ export default function FirstHomeBuyerTasPage() {
       <h3>Help to Buy</h3>
       <HelpToBuyNote state="TAS" as="p" />
 
-      <h3>First Home Super Saver Scheme (FHSSS)</h3>
-      <p>
-        Voluntary super contributions of up to $15,000/year (capped at $50,000
-        total), withdrawable as a home deposit. The tax saving is the difference
-        between the 15% super rate and your marginal income tax rate.
-      </p>
+      <h3>First Home Super Saver scheme (FHSS)</h3>
+      <FhssNote as="p" />
 
       <h2 id="affordability">Tasmania, one of Australia's most affordable states</h2>
       <p>

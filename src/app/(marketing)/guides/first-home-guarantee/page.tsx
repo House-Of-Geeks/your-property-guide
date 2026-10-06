@@ -131,6 +131,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Lenders Mortgage Insurance",         href: "/guides/lenders-mortgage-insurance-guide",   description: "What LMI costs and exactly how the guarantee schemes waive it." },
   { title: "How Much Deposit to Buy a House",    href: "/guides/how-much-deposit-to-buy-a-house",    description: "What you really need to save, with and without a government scheme." },
   { title: "First Home Buyer Guide, NSW",        href: "/guides/first-home-buyer-nsw",               description: "State-specific grants, stamp duty and price caps for New South Wales." },
+  { title: "First Home Super Saver Scheme",      href: "/guides/first-home-super-saver-scheme",      description: "Build the deposit in super and withdraw it with deemed earnings. Combines with the 5% Deposit Scheme." },
   { title: "Borrowing Power Calculator",         href: "/borrowing-power-calculator",                description: "Estimate how much a lender might let you borrow in under a minute." },
 ];
 

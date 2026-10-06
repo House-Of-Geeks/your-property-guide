@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
+import { FhssNote } from "@/components/guide/FhssNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -224,6 +225,7 @@ export default function FirstHomeBuyerQLDPage() {
       <ul>
         <HomeGuaranteeNote state="QLD" />
         <HelpToBuyNote state="QLD" />
+        <FhssNote />
       </ul>
       <p>
         See our{" "}

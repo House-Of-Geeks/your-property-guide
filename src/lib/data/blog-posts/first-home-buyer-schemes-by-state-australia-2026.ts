@@ -25,10 +25,10 @@ ${AUSTRALIAN_STATES.map((s) => `<li>${hgCapSentence(s)}</li>`).join("\n")}
 <p>${HG_MIN_DEPOSIT_PCT.singleParent}% deposit, no LMI, for single parents and single legal guardians, with no income test since ${HG_DATES.expanded}. You don't need to be a first home buyer, but any other home you own must be sold within ${HG_SINGLE_PARENT_SELL_WEEKS} weeks of settling. Same property price caps as the 5% Deposit Scheme.</p>
 
 <h3>Help to Buy (Shared Equity Scheme)</h3>
-<p>Government takes up to 40% equity (new homes) or 30% (established). Income limits: $90K single, $120K couple. 10,000 places annually. Check current operational status at housing.gov.au.</p>
+<p>The government contributes up to 40% of the price of a new home or 30% of an existing one, with a 2% minimum deposit and no LMI. For 2026–27 the income limits are $103,000 single and $165,000 for couples and single parents, with price caps by area. Applications opened on 5 December 2025. See our <a href="/guides/help-to-buy-scheme-australia">Help to Buy guide</a>.</p>
 
 <h3>First Home Super Saver Scheme (FHSSS)</h3>
-<p>Voluntary super contributions of up to $15,000/year, capped at $50,000 total, withdrawable for a deposit. Tax saving = difference between 15% super tax and your marginal rate.</p>
+<p>Count up to $15,000 of voluntary super contributions a year ($50,000 in total) and withdraw them, plus deemed earnings, for a deposit. Salary sacrifice is taxed at 15% going in instead of your marginal rate, and the release at your marginal rate less a 30% offset. See our <a href="/guides/first-home-super-saver-scheme">FHSS guide</a> and <a href="/fhss-calculator">FHSS calculator</a>.</p>
 
 <h2>NSW</h2>
 <ul>
