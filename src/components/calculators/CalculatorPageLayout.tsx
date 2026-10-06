@@ -231,6 +231,8 @@ const ALL_NEXT_STEPS: Record<string, NextStepLink> = {
   "negative-gearing-calculator":   { label: "Negative gearing",             description: "Your weekly cost after tax on an investment property.",     href: "/negative-gearing-calculator",   icon: "/images/icons/calculator.svg" },
   "bridging-loan-calculator":      { label: "Bridging loan",                description: "Peak debt, end debt and what buying before you sell costs.", href: "/bridging-loan-calculator",      icon: "/images/icons/calculator.svg" },
   "selling-costs-calculator":      { label: "Selling costs",                description: "Commission, marketing and legal costs on your sale.",       href: "/selling-costs-calculator",      icon: "/images/icons/calculator.svg" },
+  "help-to-buy-calculator":         { label: "Help to Buy",                  description: "Eligibility, the government's share and your repayments.",   href: "/help-to-buy-calculator",        icon: "/images/icons/calculator.svg" },
+  "guide-help-to-buy":             { label: "Help to Buy scheme",           description: "How shared equity works, the rules and what happens at sale.", href: "/guides/help-to-buy-scheme-australia", icon: "/images/icons/guide.svg" },
   "guide-sell-first":              { label: "Sell first or buy first?",     description: "The decision before you commit to a bridging loan.",        href: "/guides/sell-first-or-buy-first", icon: "/images/icons/guide.svg" },
   "guide-deposit":                 { label: "How much deposit do I need?",  description: "5%, 10%, 20%, plus government schemes and FHSS.",            href: "/guides/how-much-deposit-to-buy-a-house", icon: "/images/icons/guide.svg" },
   "guide-buying":                  { label: "How to buy property in Australia", description: "Step-by-step from deposit to settlement.",               href: "/guides/buying-property-australia", icon: "/images/icons/guide.svg" },
@@ -249,10 +251,11 @@ const NEXT_STEPS_FOR_SLUG: Record<string, string[]> = {
   "affordability-calculator":   ["borrowing-power-calculator", "stamp-duty-calculator", "best-suburbs"],
   "rental-yield-calculator":    ["negative-gearing-calculator", "cgt-calculator", "guide-house-vs-apartment"],
   "cgt-calculator":             ["negative-gearing-calculator", "rental-yield-calculator", "guide-negative-gearing"],
-  "lmi-calculator":             ["stamp-duty-calculator", "borrowing-power-calculator", "guide-first-home-guarantee"],
+  "lmi-calculator":             ["help-to-buy-calculator", "borrowing-power-calculator", "guide-first-home-guarantee"],
   "negative-gearing-calculator": ["rental-yield-calculator", "cgt-calculator", "guide-negative-gearing-2027"],
   "refinancing-calculator":     ["mortgage-calculator", "borrowing-power-calculator", "guide-buying"],
   "bridging-loan-calculator":   ["guide-bridging", "selling-costs-calculator", "guide-sell-first"],
+  "help-to-buy-calculator":     ["guide-help-to-buy", "guide-first-home-guarantee", "stamp-duty-calculator"],
 };
 
 function NextStepRail({

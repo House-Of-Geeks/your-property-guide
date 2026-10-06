@@ -114,6 +114,13 @@ const GROUPS: ToolGroup[] = [
         icon: "/images/icons/calculator.svg",
       },
       {
+        href: "/help-to-buy-calculator",
+        title: "Help to Buy Calculator",
+        description:
+          "Check the Help to Buy income limit and your state's price cap, the government's share, your repayments, and the 5% Deposit Scheme alternative.",
+        icon: "/images/icons/calculator.svg",
+      },
+      {
         href: "/bridging-loan-calculator",
         title: "Bridging Loan Calculator",
         description:

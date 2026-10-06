@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -221,10 +222,7 @@ export default function FirstHomeBuyerWAPage() {
       <h2 id="federal-schemes">Federal schemes available in WA</h2>
       <ul>
         <HomeGuaranteeNote state="WA" />
-        <li>
-          <strong>Help to Buy (shared equity):</strong> Up to 40% government equity
-          on new homes / 30% on existing.
-        </li>
+        <HelpToBuyNote state="WA" />
       </ul>
       <p>
         Note: WA's $600,000 Perth cap is lower than east-coast capitals, reflecting

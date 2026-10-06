@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -227,11 +228,7 @@ export default function FirstHomeBuyerNSWPage() {
       <h2 id="federal-schemes">Federal schemes available in NSW</h2>
       <ul>
         <HomeGuaranteeNote state="NSW" />
-        <li>
-          <strong>Help to Buy (shared equity):</strong> Government takes up to 40%
-          equity on new homes / 30% on existing. Income limits $90K single /
-          $120K couple. Check housing.gov.au for current operational status.
-        </li>
+        <HelpToBuyNote state="NSW" />
       </ul>
       <p>
         Federal schemes are available through participating lenders nationwide,

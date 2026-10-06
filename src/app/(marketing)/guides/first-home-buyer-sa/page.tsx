@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -240,11 +241,7 @@ export default function FirstHomeBuyerSAPage() {
       </p>
 
       <h3>Help to Buy (shared equity)</h3>
-      <p>
-        The federal Help to Buy scheme (government takes up to 40% equity in a new
-        home / 30% in existing) has been legislated. Check the current rollout and
-        SA-specific details on the Housing Australia site.
-      </p>
+      <HelpToBuyNote state="SA" as="p" />
 
       <h2 id="homeseeker">HomeSeeker SA, state shared equity</h2>
       <p>

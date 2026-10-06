@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -222,13 +223,7 @@ export default function FirstHomeBuyerQLDPage() {
       <h2 id="federal-schemes">Federal schemes available in QLD</h2>
       <ul>
         <HomeGuaranteeNote state="QLD" />
-        <li>
-          <strong>Help to Buy (shared equity):</strong> Up to 40% government equity
-          on new homes / 30% on existing, with a 2% minimum deposit. From 1 July
-          2026 the income caps are $103,000 (singles) and $165,000 (joint or
-          single parents), with 10,000 new places for 2026-27. See our{" "}
-          <Link href="/guides/help-to-buy-scheme-australia">Help to Buy guide</Link>.
-        </li>
+        <HelpToBuyNote state="QLD" />
       </ul>
       <p>
         See our{" "}

@@ -12,6 +12,7 @@ import {
   type FaqItem,
   type RelatedGuide,
   type SourceItem,
+  ScrollTable,
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
@@ -76,7 +77,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How much is the First Home Owner Grant in NSW, Queensland and Victoria?",
     answer:
-      "NSW pays $10,000 on eligible new homes. Queensland pays $30,000 for new builds — the boost was due to end on 30 June 2026, but the 2026-27 Queensland Budget locked it in for another four years, and the Queensland Revenue Office confirms $30,000 for eligible contracts signed from 20 November 2023. Victoria pays $10,000 for new homes in metropolitan areas and $20,000 for new homes in regional Victoria. All three apply to new homes only and carry their own price caps, so confirm the current amount and cap with the relevant state revenue office before you rely on it.",
+      "NSW pays $10,000 on eligible new homes. Queensland pays $30,000 for new builds — the boost was due to end on 30 June 2026, but the 2026-27 Queensland Budget locked it in for another four years, and the Queensland Revenue Office confirms $30,000 for eligible contracts signed from 20 November 2023. Victoria pays $10,000 for new homes up to $750,000; its $20,000 regional grant ended on 30 June 2021. All three apply to new homes only and carry their own price caps, so confirm the current amount and cap with the relevant state revenue office before you rely on it.",
   },
   {
     question: "Can you get the FHOG on an established home?",
@@ -104,7 +105,7 @@ const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide (national)", href: "/guides/first-home-buyer-guide",  description: "Federal schemes, FHOG by state, stamp duty concessions and the full buying process." },
   { title: "First Home Guarantee",              href: "/guides/first-home-guarantee",      description: "The 5% deposit, no-LMI federal scheme: who qualifies, price caps and how to apply." },
   { title: "First Home Buyer Guide, NSW",       href: "/guides/first-home-buyer-nsw",      description: "NSW grant, stamp duty exemption and price caps in one place." },
-  { title: "First Home Buyer Guide, VIC",       href: "/guides/first-home-buyer-vic",      description: "Victoria's metro and regional grants plus stamp duty relief." },
+  { title: "First Home Buyer Guide, VIC",       href: "/guides/first-home-buyer-vic",      description: "Victoria's $10,000 grant plus stamp duty relief." },
   { title: "First Home Buyer Guide, QLD",       href: "/guides/first-home-buyer-qld",      description: "Queensland's larger new-build grant and first home concession." },
   { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",            description: "Estimate your duty and first home buyer saving, state by state." },
 ];
@@ -169,7 +170,8 @@ export default function FirstHomeOwnerGrantAustraliaPage() {
         review or are time-limited boosts.
       </p>
 
-      <table>
+      <ScrollTable label="First Home Owner Grant by state">
+        <table>
         <thead>
           <tr>
             <th>State / Territory</th>
@@ -182,13 +184,13 @@ export default function FirstHomeOwnerGrantAustraliaPage() {
           <tr>
             <td><strong>NSW</strong></td>
             <td>$10,000</td>
-            <td>New homes up to $750,000</td>
+            <td>New homes up to $600,000, or land and a building contract up to $750,000</td>
             <td><Link href="/guides/first-home-buyer-nsw">NSW guide</Link></td>
           </tr>
           <tr>
             <td><strong>VIC</strong></td>
-            <td>$10,000 metro / $20,000 regional</td>
-            <td>New homes</td>
+            <td>$10,000</td>
+            <td>New homes up to $750,000 (the $20,000 regional grant ended on 30 June 2021)</td>
             <td><Link href="/guides/first-home-buyer-vic">VIC guide</Link></td>
           </tr>
           <tr>
@@ -229,6 +231,7 @@ export default function FirstHomeOwnerGrantAustraliaPage() {
           </tr>
         </tbody>
       </table>
+      </ScrollTable>
 
       <Callout variant="info" title="Queensland's $30,000 boost was locked in, not lapsed">
         <p>
@@ -382,7 +385,7 @@ export default function FirstHomeOwnerGrantAustraliaPage() {
 const FHOG_SOURCES: readonly SourceItem[] = [
   { label: "firsthome.gov.au: First home buyer support and grants", href: "https://www.firsthome.gov.au/", note: "Federal hub linking to each state and territory grant" },
   { label: "Revenue NSW: First Home Owner Grant (New Homes)", href: "https://www.revenue.nsw.gov.au/grants-schemes/first-home-buyer", note: "NSW grant amount, caps and eligibility" },
-  { label: "State Revenue Office Victoria: First Home Owner Grant", href: "https://www.sro.vic.gov.au/fhogapply", note: "Victorian metro and regional grant detail" },
+  { label: "State Revenue Office Victoria: First Home Owner Grant", href: "https://www.sro.vic.gov.au/fhogapply", note: "Victorian grant detail" },
   { label: "Queensland Revenue Office: First Home Owner Grant", href: "https://qro.qld.gov.au/property-concessions-grants/first-home-grant/", note: "Queensland new-build grant and current amount" },
   { label: "Housing Australia: First Home Guarantee", href: "https://www.housingaustralia.gov.au/support-buy-home", note: "Federal scheme that stacks with the state grant" },
 ];

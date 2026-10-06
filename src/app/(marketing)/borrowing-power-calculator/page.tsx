@@ -89,6 +89,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Affordability Calculator", href: "/affordability-calculator",      description: "How much property you can afford on top of how much you can borrow." },
   { title: "Mortgage Repayments",      href: "/mortgage-calculator",           description: "What the loan will actually cost you each month." },
   { title: "LMI Explained",            href: "/guides/lenders-mortgage-insurance-guide", description: "What it costs and the schemes that waive it." },
+  { title: "Help to Buy Calculator",   href: "/help-to-buy-calculator",        description: "If the loan is too big: the government funds up to 40% and you borrow less." },
   { title: "Refinancing Calculator",   href: "/refinancing-calculator",        description: "Whether your current loan is still the best one for you." },
 ];
 

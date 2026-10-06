@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -18,7 +19,7 @@ import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide VIC: Grants, Stamp Duty & Schemes (2026)",
   description:
-    "Victoria first home buyer guide: $10K FHOG (regional $20K), stamp duty exemption up to $600K, concession to $750K, federal schemes, and VIC buying tips.",
+    "Victoria first home buyer guide: the $10,000 FHOG on new homes, stamp duty exemption up to $600K and concession to $750K, Help to Buy and federal schemes, and VIC buying tips.",
   slug: "first-home-buyer-vic",
   publishedAt: "2026-04-01",
   updatedAt: "2026-10-07",
@@ -49,11 +50,11 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Victoria's FHOG is $10,000 in metro Melbourne and $20,000 in regional VIC, on new homes only, capped at $750,000.",
+  "Victoria's FHOG is $10,000 on new homes only, capped at $750,000. The $20,000 regional grant ended on 30 June 2021.",
   "Full stamp duty exemption applies to any first home (new or established) up to $600,000, with a scaled concession up to $750,000.",
   "On a $550,000 first home, eligible buyers pay $0 stamp duty, saving roughly $26,000.",
   `Federal schemes all work in VIC. The 5% Deposit Scheme has had no income test or limit on places since ${HG_DATES.expanded}; its price cap is ${fmtCap(HG_PRICE_CAPS.VIC.capital)} in Greater Melbourne and Geelong and ${fmtCap(HG_PRICE_CAPS.VIC.rest)} elsewhere.`,
-  "The Victorian Homebuyer Fund is a state shared-equity scheme that can cut the required deposit to 5% with no LMI.",
+  "The Victorian Homebuyer Fund closed to new applications on 10 September 2025; the federal Help to Buy scheme is now Victoria's shared equity option.",
   "Always verify amounts and thresholds with the State Revenue Office Victoria before signing.",
 ];
 
@@ -69,9 +70,9 @@ const TOC: GuideTOCEntry[] = [
 
 const FAQS: FaqItem[] = [
   {
-    question: "What counts as 'regional Victoria' for the $20,000 FHOG?",
+    question: "Is there still a $20,000 FHOG for regional Victoria?",
     answer:
-      "Anywhere outside Melbourne's metropolitan boundary. Geelong, Ballarat, Bendigo, Wodonga, the Latrobe Valley, and the Surf Coast all qualify. The State Revenue Office publishes the official boundary map. Even some outer-Melbourne suburbs sit within the regional zone, so check the map before assuming.",
+      "No. The State Revenue Office's historical rates show the $20,000 regional grant ran from 1 July 2017 to 30 June 2021. The grant is now $10,000 for a new home anywhere in Victoria, capped at $750,000.",
   },
   {
     question: "Can I get the VIC FHOG on an established home?",
@@ -89,9 +90,9 @@ const FAQS: FaqItem[] = [
       "Up to $600,000 purchase price, yes, full exemption. Between $600,001 and $750,000 a scaled concession applies (not zero, but significantly reduced). Above $750,000 the standard rate kicks in.",
   },
   {
-    question: "What is the Victorian Homebuyer Fund?",
+    question: "Is the Victorian Homebuyer Fund still open?",
     answer:
-      "A state shared-equity scheme. The Victorian Government takes an equity stake of up to 25% in the property, reducing the deposit you need to 5% with no LMI. Income caps and property price caps apply. The government shares in capital gains proportional to its equity. Check homes.vic.gov.au for current availability and rules.",
+      "No. The Victorian Homebuyer Fund closed to new applications on 10 September 2025, and the State Revenue Office lists it among its closed schemes. The federal Help to Buy scheme is now Victoria's shared equity option: the government contributes up to 40% of a new home or 30% of an existing one, with a 2% deposit.",
   },
   {
     question: "What's the cooling-off period in Victoria?",
@@ -132,10 +133,9 @@ export default function FirstHomeBuyerVICPage() {
       <EditorNote>
         <p>
           Two Victorian quirks catch buyers out every week. The first:
-          the regional FHOG is double the metro grant ($20K vs $10K),
-          but only on new builds in eligible regional postcodes. The
-          second: the stamp duty exemption stops dead at $600K with a
-          taper to $750K, and Melbourne medians don&rsquo;t play nicely
+          the $10K grant is for new homes only, so it doesn&rsquo;t help on
+          an established home. The second: the stamp duty exemption stops
+          dead at $600K with a taper to $750K, and Melbourne medians don&rsquo;t play nicely
           with that ceiling. Check your contract price against both
           ceilings before you sign, not after.
         </p>
@@ -144,26 +144,19 @@ export default function FirstHomeBuyerVICPage() {
       <h2 id="fhog-vic">First Home Owner Grant VIC</h2>
       <p className="lead">
         Victoria offers the First Home Owner Grant for eligible buyers purchasing
-        new homes. The grant amount depends on whether you're buying in metro
-        Melbourne or regional Victoria.
+        new homes, the same amount anywhere in the state.
       </p>
 
       <KeyFigure
-        value="$20,000"
-        label="The FHOG for new homes in regional Victoria, double the metro Melbourne grant."
+        value="$10,000"
+        label="The FHOG for a new home in Victoria, for contracts from 1 July 2013."
         context="Capped at $750,000 total value"
       />
 
-      <ul>
-        <li><strong>Metro Melbourne:</strong> $10,000</li>
-        <li><strong>Regional Victoria:</strong> $20,000, a meaningful boost for buyers targeting regional cities and towns</li>
-      </ul>
-
       <p>
-        "Regional Victoria" for FHOG purposes means anywhere outside Melbourne's
-        metropolitan boundary. Cities such as Geelong, Ballarat, Bendigo, Wodonga,
-        and the Latrobe Valley all qualify. The State Revenue Office publishes the
-        official boundary map.
+        The $20,000 grant for new homes in regional Victoria ran from 1 July 2017 to
+        30 June 2021 and no longer applies, according to the State Revenue
+        Office&rsquo;s historical rates.
       </p>
 
       <h3>Eligibility requirements</h3>
@@ -219,10 +212,7 @@ export default function FirstHomeBuyerVICPage() {
       <h2 id="federal-schemes">Federal schemes available in VIC</h2>
       <ul>
         <HomeGuaranteeNote state="VIC" />
-        <li>
-          <strong>Help to Buy (shared equity):</strong> Up to 40% government equity
-          on new homes / 30% on existing. Income limits $90K single / $120K couple.
-        </li>
+        <HelpToBuyNote state="VIC" />
       </ul>
       <p>
         See our{" "}
@@ -233,10 +223,9 @@ export default function FirstHomeBuyerVICPage() {
       <h2 id="vic-specific">VIC-specific schemes and resources</h2>
       <ul>
         <li>
-          <strong>Victorian Homebuyer Fund:</strong> Shared equity scheme where the
-          Victorian Government takes an equity stake of up to 25%, reducing the
-          required deposit to 5% with no LMI. Income caps and property price caps
-          apply. Check homes.vic.gov.au for current availability.
+          <strong>Victorian Homebuyer Fund:</strong> closed to new applications on
+          10 September 2025. Victoria&rsquo;s shared equity option is now the federal{" "}
+          <Link href="/guides/help-to-buy-scheme-victoria">Help to Buy scheme</Link>.
         </li>
         <li>
           <strong>Homes Victoria:</strong> Check homes.vic.gov.au for any current
@@ -277,7 +266,7 @@ export default function FirstHomeBuyerVICPage() {
           </a>
         </li>
         <li>
-          <strong>Homes Victoria</strong>, Victorian Homebuyer Fund and affordable housing:{" "}
+          <strong>Homes Victoria</strong>, affordable housing:{" "}
           <a href="https://www.homes.vic.gov.au" target="_blank" rel="noopener noreferrer">
             homes.vic.gov.au
           </a>

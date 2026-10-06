@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -245,6 +246,9 @@ export default function FirstHomeBuyerACTPage() {
       <ul>
         <HomeGuaranteeNote state="ACT" />
       </ul>
+
+      <h3>Help to Buy</h3>
+      <HelpToBuyNote state="ACT" as="p" />
 
       <h3>First Home Super Saver Scheme (FHSSS)</h3>
       <p>

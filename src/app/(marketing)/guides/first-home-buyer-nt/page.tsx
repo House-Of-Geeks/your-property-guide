@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -209,6 +210,9 @@ export default function FirstHomeBuyerNTPage() {
       <ul>
         <HomeGuaranteeNote state="NT" />
       </ul>
+
+      <h3>Help to Buy</h3>
+      <HelpToBuyNote state="NT" as="p" />
 
       <h3>First Home Super Saver Scheme (FHSSS)</h3>
       <p>

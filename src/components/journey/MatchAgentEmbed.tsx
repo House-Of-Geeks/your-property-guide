@@ -16,5 +16,14 @@ import { MatchAgent } from "./MatchAgent";
  */
 export function MatchAgentEmbed() {
   const params = useSearchParams();
-  return <MatchAgent key={params.toString()} />;
+  return <MatchAgent key={params.toString()} source={matchSourceFromParam(params.get("from"))} />;
+}
+
+/**
+ * Pages that send readers to /find-an-expert add ?from=<page> so the lead
+ * carries where it started ("find-an-expert-help-to-buy"). Only a short
+ * slug is accepted; anything else keeps MatchAgent's default source.
+ */
+export function matchSourceFromParam(from: string | null): string | undefined {
+  return from && /^[a-z0-9-]{1,40}$/.test(from) ? `find-an-expert-${from}` : undefined;
 }
