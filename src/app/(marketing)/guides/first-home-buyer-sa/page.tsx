@@ -12,6 +12,8 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
+import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide South Australia: Grants, Stamp Duty & Schemes (2026)",
@@ -19,7 +21,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Complete guide for first home buyers in South Australia: $15,000 FHOG, stamp duty rules, First Home Guarantee, HomeSeeker SA shared equity, and off-the-plan concessions.",
   slug: "first-home-buyer-sa",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -50,7 +52,7 @@ const TLDR = [
   "SA's FHOG is $15,000 on new homes only, capped at $650,000 contract price.",
   "SA does NOT offer a stamp duty exemption or concession for first home buyers on established homes, the FHOG is the main FHB-specific concession.",
   "On a $600,000 home, SA stamp duty is roughly $26,830, a significant upfront cost to factor into your savings target.",
-  "Federal schemes (FHBG, Family Home Guarantee, Help to Buy) work in SA with price caps of $600K Adelaide and $450K regional.",
+  `Federal schemes work in SA. The 5% Deposit Scheme has had no income test or limit on places since ${HG_DATES.expanded}; its price cap is ${fmtCap(HG_PRICE_CAPS.SA.capital)} in Greater Adelaide and ${fmtCap(HG_PRICE_CAPS.SA.rest)} elsewhere.`,
   "HomeSeeker SA is a state shared-equity scheme; availability changes per round, check the SA Housing Authority before relying on it.",
   "SA's off-the-plan stamp duty concession can deliver meaningful savings on apartment purchases, not exclusive to first home buyers.",
 ];
@@ -95,7 +97,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I combine the FHOG with the federal First Home Guarantee?",
     answer:
-      "Yes, on a new home under both caps ($650K FHOG cap and $600K Adelaide / $450K regional FHBG cap). Adding the First Home Super Saver Scheme on top can let eligible buyers stack the federal scheme + state grant + tax-advantaged super deposit, materially reducing your savings target.",
+      `Yes, on a new home under both caps ($650K FHOG cap, and the 5% Deposit Scheme cap of ${fmtCap(HG_PRICE_CAPS.SA.capital)} in Greater Adelaide or ${fmtCap(HG_PRICE_CAPS.SA.rest)} elsewhere). Adding the First Home Super Saver Scheme on top can let eligible buyers stack the federal scheme + state grant + tax-advantaged super deposit, materially reducing your savings target.`,
   },
 ];
 
@@ -224,21 +226,10 @@ export default function FirstHomeBuyerSAPage() {
         Australia.
       </p>
 
-      <h3>First Home Guarantee (formerly FHLDS)</h3>
-      <p>
-        The First Home Guarantee allows eligible first home buyers to purchase
-        with as little as a 5% deposit, with the government guaranteeing up to 15%
-        of the loan, no LMI required. SA price caps:
-      </p>
+      <h3>5% Deposit Scheme (First Home Guarantee)</h3>
       <ul>
-        <li><strong>Adelaide (metro):</strong> $600,000</li>
-        <li><strong>Regional SA:</strong> $450,000</li>
+        <HomeGuaranteeNote state="SA" />
       </ul>
-      <p>
-        Income caps: $125,000 single / $200,000 couple. Places are limited each
-        financial year and allocated first-come, first-served. Apply through a
-        participating lender.
-      </p>
 
       <h3>First Home Super Saver Scheme (FHSSS)</h3>
       <p>

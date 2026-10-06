@@ -12,6 +12,8 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
+import { HG_DATES, HG_PRICE_CAPS, fmtCap, hgCapSentence } from "@/lib/data/home-guarantee";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide Tasmania: Grants, Stamp Duty & Schemes (2026)",
@@ -19,7 +21,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Tasmania first home buyer guide: $30,000 FHOG on new homes, 50% stamp duty concession on established homes up to $600K, federal schemes, and Tasmania's affordability advantage.",
   slug: "first-home-buyer-tas",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-07-24",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -50,9 +52,9 @@ const TLDR = [
   "Tasmania's $30,000 FHOG is one of the most generous in Australia, on new homes only.",
   "Established homes get a 50% stamp duty concession up to $600,000, saving roughly $9,000 on a $500,000 home.",
   "You can have FHOG on a new home OR the stamp duty concession on an established home, not both on the same property.",
-  "First Home Guarantee uses a uniform $600,000 cap across Tasmania (no metro/regional split).",
+  `The 5% Deposit Scheme's price cap is ${fmtCap(HG_PRICE_CAPS.TAS.capital)} in Greater Hobart and ${fmtCap(HG_PRICE_CAPS.TAS.rest)} in the rest of Tasmania, with no income test since ${HG_DATES.expanded}.`,
   "Tasmania remains one of Australia's most affordable states; Hobart medians sit well below Sydney/Melbourne, and the north-west coast is among the cheapest in the country.",
-  "Tasmania's Regional First Home Buyer Guarantee covers most of the state outside Hobart, including Launceston, Burnie, Devonport.",
+  `The Regional First Home Buyer Guarantee closed to new guarantees on ${HG_DATES.expanded}. Buyers in Launceston, Burnie and Devonport use the 5% Deposit Scheme at the ${fmtCap(HG_PRICE_CAPS.TAS.rest)} cap.`,
 ];
 
 const TOC: GuideTOCEntry[] = [
@@ -80,12 +82,12 @@ const FAQS: FaqItem[] = [
   {
     question: "What's the price cap for the Tasmanian First Home Guarantee?",
     answer:
-      "$600,000 across all of Tasmania. Unlike larger states with separate metro/regional caps, Tasmania uses a uniform cap reflecting the state's more consistent property values.",
+      `${hgCapSentence("TAS")}, under the caps in force since ${HG_DATES.expanded}. Both the price and the lender's valuation must be at or under the cap, and there's no income test.`,
   },
   {
-    question: "Do most Tasmanian buyers qualify for the Regional First Home Buyer Guarantee?",
+    question: "Can Tasmanian buyers still use the Regional First Home Buyer Guarantee?",
     answer:
-      "Yes, in practice. Most of Tasmania outside greater Hobart is classified as regional, so buyers in Launceston, Burnie, Devonport and surrounding areas typically qualify if they've lived in the area for 12+ months.",
+      `No. It closed to new guarantees on ${HG_DATES.expanded}. Buyers in Launceston, Burnie, Devonport and the rest of Tasmania outside Greater Hobart now use the 5% Deposit Scheme at the ${fmtCap(HG_PRICE_CAPS.TAS.rest)} cap, with no requirement to have lived in the area.`,
   },
   {
     question: "What's the cooling-off period in Tasmania?",
@@ -111,7 +113,7 @@ const RELATED: RelatedGuide[] = [
 const STEPS = [
   { step: "1", title: "Understand your finances", desc: "Calculate borrow + save. Factor in stamp duty (or 50% concession for established), legal fees, pest and building inspection, and moving costs." },
   { step: "2", title: "Decide: new or established", desc: "New: $30,000 FHOG, full stamp duty. Established: no FHOG but 50% duty concession. Run the numbers at your target price." },
-  { step: "3", title: "Check federal scheme eligibility", desc: "First Home Guarantee (5% deposit, no LMI) via a participating lender. Regional FHBG often applies outside Hobart." },
+  { step: "3", title: "Check federal scheme eligibility", desc: "5% Deposit Scheme (5% deposit, no LMI, no income test) via a participating lender." },
   { step: "4", title: "Get pre-approval", desc: "A clear budget and a stronger offer. Important in tight stock markets." },
   { step: "5", title: "Search and inspect", desc: "Building and pest inspection before contract is essential, especially on older Tassie homes." },
   { step: "6", title: "Engage a conveyancer", desc: "A Tasmanian conveyancer or solicitor reviews the contract, runs searches, and manages settlement." },
@@ -144,10 +146,11 @@ export default function FirstHomeBuyerTasPage() {
           an established one, and most buyers I&rsquo;ve seen here pick
           wrong on the maths. The grant is bigger up front, but on a
           sub-$500K established home the duty concession plus the lower
-          purchase price often nets out better. The other Tasmanian
-          quirk: the First Home Guarantee uses a single $600K cap with
-          no metro/regional split, which actually works in your favour
-          across most of the state.
+          purchase price often nets out better. Check the 5% Deposit
+          Scheme cap for where you&rsquo;re buying too: it&rsquo;s{" "}
+          {fmtCap(HG_PRICE_CAPS.TAS.capital)} in Greater Hobart but{" "}
+          {fmtCap(HG_PRICE_CAPS.TAS.rest)} in Launceston and the rest of the
+          state.
         </p>
       </EditorNote>
 
@@ -209,21 +212,10 @@ export default function FirstHomeBuyerTasPage() {
 
       <h2 id="federal-schemes">Federal government schemes</h2>
 
-      <h3>First Home Guarantee</h3>
-      <p>
-        5% deposit, no LMI. Tasmania price cap is{" "}
-        <strong>$600,000 across all areas</strong> (metro and regional), reflecting
-        the state's more uniform property values. Income caps: $125,000 single /
-        $200,000 couple (combined taxable income from the previous financial year).
-      </p>
-
-      <h3>Regional First Home Buyer Guarantee</h3>
-      <p>
-        Same 5% deposit / no LMI benefit, specifically for buyers in regional
-        areas who've lived in that region for 12+ months. Most of Tasmania outside
-        Hobart is regional, so this applies to buyers in Launceston, Burnie,
-        Devonport, and surrounds.
-      </p>
+      <h3>5% Deposit Scheme (First Home Guarantee)</h3>
+      <ul>
+        <HomeGuaranteeNote state="TAS" />
+      </ul>
 
       <h3>First Home Super Saver Scheme (FHSSS)</h3>
       <p>
@@ -269,8 +261,9 @@ export default function FirstHomeBuyerTasPage() {
       <h3>Burnie and the north-west coast</h3>
       <p>
         Burnie, Devonport, and surrounds are among the most affordable property
-        markets in Australia. First home buyers can access quality homes well
-        within the $600,000 First Home Guarantee cap, often comfortably below it.
+        markets in Australia. First home buyers can find quality homes under the{" "}
+        {fmtCap(HG_PRICE_CAPS.TAS.rest)} 5% Deposit Scheme cap that applies outside
+        Greater Hobart.
       </p>
 
       <h2 id="eligibility">Eligibility requirements</h2>

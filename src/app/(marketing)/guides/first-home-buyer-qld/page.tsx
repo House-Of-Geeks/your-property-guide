@@ -12,6 +12,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide QLD: $30K Grant, Stamp Duty & Schemes (2026)",
@@ -19,7 +20,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Queensland first home buyer guide: $30,000 FHOG for new homes under $750K (locked in by the 2026-27 QLD Budget), zero stamp duty on new homes, federal schemes, and QLD buying tips.",
   slug: "first-home-buyer-qld",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-07-24",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -220,17 +221,7 @@ export default function FirstHomeBuyerQLDPage() {
 
       <h2 id="federal-schemes">Federal schemes available in QLD</h2>
       <ul>
-        <li>
-          <strong>5% Deposit Scheme (expanded First Home Guarantee):</strong> 5%
-          deposit, no LMI. Since the late-2025 expansion there is no income test
-          and places are uncapped. Property price caps apply by location — check
-          the current QLD cap with Housing Australia. See our{" "}
-          <Link href="/guides/first-home-guarantee">5% Deposit Scheme guide</Link>.
-        </li>
-        <li>
-          <strong>Family Home Guarantee:</strong> 2% deposit for eligible single
-          parents and guardians, even if they've owned before.
-        </li>
+        <HomeGuaranteeNote state="QLD" />
         <li>
           <strong>Help to Buy (shared equity):</strong> Up to 40% government equity
           on new homes / 30% on existing, with a 2% minimum deposit. From 1 July

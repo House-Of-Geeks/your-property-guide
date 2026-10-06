@@ -12,6 +12,8 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
+import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide NSW: Grants, Stamp Duty & Schemes (2026)",
@@ -19,7 +21,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "NSW first home buyer guide: $10,000 FHOG for new homes, stamp duty exemption up to $800K, concession to $1M, federal schemes, and step-by-step NSW buying advice.",
   slug: "first-home-buyer-nsw",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -49,7 +51,7 @@ export const metadata: Metadata = {
 const TLDR = [
   "NSW offers a $10,000 First Home Owner Grant on new homes only, capped at $750,000 contract price.",
   "Full stamp duty exemption applies on any home (new or established) up to $800,000, with a scaled concession up to $1,000,000.",
-  "Federal schemes (First Home Guarantee, Family Home Guarantee, Help to Buy) work in NSW with the same income limits as elsewhere; price caps are $900K Sydney metro and $750K regional NSW.",
+  `Federal schemes work in NSW. The 5% Deposit Scheme has had no income test or limit on places since ${HG_DATES.expanded}; its price cap is ${fmtCap(HG_PRICE_CAPS.NSW.capital)} in Greater Sydney and NSW's regional centres and ${fmtCap(HG_PRICE_CAPS.NSW.rest)} elsewhere.`,
   "On a $750,000 home, an eligible NSW first home buyer pays $0 stamp duty, saving roughly $29,000 versus a standard buyer.",
   "First Home Buyer Choice (annual property tax instead of upfront stamp duty) remains available for properties up to $1.5M for eligible buyers.",
   "Rules and price caps change. Verify with Revenue NSW or a licensed conveyancer before relying on these figures.",
@@ -89,7 +91,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I combine the FHOG with the First Home Guarantee in NSW?",
     answer:
-      "Yes, if you're buying a new home under both price caps. The FHBG covers the deposit/LMI side ($900K Sydney, $750K regional NSW caps); the FHOG is a $10,000 cash grant on top, capped at $750K contract price. Stack them with the stamp duty exemption and you can save $40,000 to $50,000 on a Sydney new build.",
+      `Yes, if you're buying a new home under both price caps. The 5% Deposit Scheme covers the deposit/LMI side (caps of ${fmtCap(HG_PRICE_CAPS.NSW.capital)} in Greater Sydney and the regional centres, ${fmtCap(HG_PRICE_CAPS.NSW.rest)} elsewhere in NSW); the FHOG is a $10,000 cash grant on top, capped at $750K contract price. Stack them with the stamp duty exemption and you can save $40,000 to $50,000 on a Sydney new build.`,
   },
   {
     question: "What's the cooling-off period in NSW?",
@@ -224,20 +226,7 @@ export default function FirstHomeBuyerNSWPage() {
 
       <h2 id="federal-schemes">Federal schemes available in NSW</h2>
       <ul>
-        <li>
-          <strong>First Home Guarantee (FHBG):</strong> 5% deposit, no LMI. Income
-          limits $125K single / $200K couple. Property price cap $900,000 Sydney
-          metro and $750,000 regional NSW.
-        </li>
-        <li>
-          <strong>Regional First Home Buyer Guarantee:</strong> Same as FHBG for
-          buyers purchasing in regional NSW. You must have lived in the area for
-          12+ months continuously prior to purchase.
-        </li>
-        <li>
-          <strong>Family Home Guarantee:</strong> 2% deposit for single parents,
-          income limit $125K. Price cap as for FHBG.
-        </li>
+        <HomeGuaranteeNote state="NSW" />
         <li>
           <strong>Help to Buy (shared equity):</strong> Government takes up to 40%
           equity on new homes / 30% on existing. Income limits $90K single /

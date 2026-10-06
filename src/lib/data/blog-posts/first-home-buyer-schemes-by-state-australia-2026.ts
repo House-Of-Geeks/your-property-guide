@@ -1,4 +1,6 @@
 import type { BlogPost } from "@/types";
+import { AUSTRALIAN_STATES } from "@/lib/utils/stamp-duty";
+import { HG_DATES, HG_MIN_DEPOSIT_PCT, HG_NO_OWNERSHIP_YEARS, HG_PREAPPROVAL_DAYS, HG_SINGLE_PARENT_SELL_WEEKS, hgCapSentence } from "@/lib/data/home-guarantee";
 
 export const post: BlogPost = {
   id: "blog-fhb-schemes-state-2026",
@@ -12,11 +14,15 @@ export const post: BlogPost = {
 
 <h2>Federal schemes (available everywhere)</h2>
 
-<h3>First Home Guarantee (FHBG)</h3>
-<p>5% deposit, no LMI. Income limits: $125K single, $200K couple. Property price caps vary by location: $900K Sydney metro, $800K Melbourne, $700K Brisbane, $600K Perth, $600K Adelaide, $600K Hobart, $750K Canberra, $600K Darwin. Regional caps are lower (typically $750K NSW regional, $650K VIC regional, $550K QLD regional).</p>
+<h3>First Home Guarantee (the 5% Deposit Scheme)</h3>
+<p>${HG_MIN_DEPOSIT_PCT.firstHome}% deposit, no LMI. On ${HG_DATES.expanded} it was renamed the Australian Government 5% Deposit Scheme, and the income test and the limit on places were removed. It's open to first home buyers and to anyone who hasn't owned property in Australia in the last ${HG_NO_OWNERSHIP_YEARS} years. Property price caps by location:</p>
+<ul>
+${AUSTRALIAN_STATES.map((s) => `<li>${hgCapSentence(s)}</li>`).join("\n")}
+</ul>
+<p>The Regional First Home Buyer Guarantee closed to new guarantees on ${HG_DATES.expanded}; regional buyers use the 5% Deposit Scheme at their area's cap.</p>
 
 <h3>Family Home Guarantee</h3>
-<p>2% deposit, no LMI, for single parents and single legal guardians. Income limit: $125K. Same property price caps as FHBG.</p>
+<p>${HG_MIN_DEPOSIT_PCT.singleParent}% deposit, no LMI, for single parents and single legal guardians, with no income test since ${HG_DATES.expanded}. You don't need to be a first home buyer, but any other home you own must be sold within ${HG_SINGLE_PARENT_SELL_WEEKS} weeks of settling. Same property price caps as the 5% Deposit Scheme.</p>
 
 <h3>Help to Buy (Shared Equity Scheme)</h3>
 <p>Government takes up to 40% equity (new homes) or 30% (established). Income limits: $90K single, $120K couple. 10,000 places annually. Check current operational status at housing.gov.au.</p>
@@ -97,9 +103,9 @@ export const post: BlogPost = {
 <h2>How to maximise the stack</h2>
 <ol>
 <li><strong>Identify your scheme combinations.</strong> Federal FHBG + state FHOG + state stamp duty concession is the typical maximum stack</li>
-<li><strong>Time your application properly.</strong> FHBG places run out during the year; apply early in the financial year if possible</li>
+<li><strong>Time your application properly.</strong> The 5% Deposit Scheme has had unlimited places since ${HG_DATES.expanded}, so the deadline that matters is the ${HG_PREAPPROVAL_DAYS} days a pre-approval gives you to sign a contract</li>
 <li><strong>Stay under the price caps.</strong> Even one dollar over disqualifies the entire benefit. Plan well under cap to leave negotiation room</li>
-<li><strong>Consider a mortgage broker who works with FHB schemes.</strong> They know which lenders have FHBG places and can structure the application correctly</li>
+<li><strong>Consider a mortgage broker who works with FHB schemes.</strong> They know which lenders offer the 5% Deposit Scheme and can structure the application correctly</li>
 <li><strong>Get state-specific conveyancing advice.</strong> Each scheme has paperwork that needs to be lodged correctly</li>
 <li><strong>For investors: schemes don't apply.</strong> If you're not buying as PPR, most FHB benefits are unavailable</li>
 </ol>
@@ -119,5 +125,6 @@ export const post: BlogPost = {
   category: "Buying Guide",
   tags: ["first home buyer", "schemes", "fhog", "stamp duty", "2026"],
   publishedAt: "2026-05-06",
+  updatedAt: "2026-10-07",
   readingTime: 12,
 };

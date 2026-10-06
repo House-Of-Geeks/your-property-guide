@@ -16,6 +16,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HG_DATES } from "@/lib/data/home-guarantee";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Help to Buy Scheme Australia: How the Shared Equity Scheme Works (2026)",
@@ -23,7 +24,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "How the federal Help to Buy shared equity scheme works: the government takes up to 40% equity on a new home or 30% on an existing one, you buy with a 2% deposit, income and price caps apply, and you can buy the stake out over time.",
   slug: "help-to-buy-scheme-australia",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-06-14",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -53,7 +54,7 @@ export const metadata: Metadata = {
 const TLDR = [
   "Help to Buy is a federal shared equity scheme. The Commonwealth takes an equity stake of up to 40% on a new home or up to 30% on an existing home, so you take out a smaller loan.",
   "You can buy with as little as a 2% deposit, and because the government owns part of the home you avoid Lenders Mortgage Insurance.",
-  "Income caps and property price caps apply. The income caps are lower than the First Home Guarantee, so the scheme is aimed at lower and middle income buyers.",
+  `Income caps and property price caps apply. The 5% Deposit Scheme (First Home Guarantee) has had no income test since ${HG_DATES.expanded}, so Help to Buy is the scheme aimed at lower and middle income buyers.`,
   "You do not pay rent on the government's share. You repay only your own mortgage. When you can afford to, you can buy out the government's stake in stages.",
   "When you sell, the government takes its share of the sale price, including its share of any capital growth, in proportion to the equity it holds.",
   "Scheme caps, income limits and availability change. Verify current figures with Housing Australia before you rely on them.",
@@ -79,7 +80,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Who is eligible for Help to Buy?",
     answer:
-      "You must be an Australian citizen aged 18 or over, buy the home to live in (not as an investment), and not currently own any other land or property in Australia or overseas. Income caps and property price caps also apply, and the income caps are lower than the First Home Guarantee, so the scheme targets lower and middle income buyers. The exact income thresholds and price caps for your location are set by Housing Australia and change over time, so confirm the current figures before you apply.",
+      `You must be an Australian citizen aged 18 or over, buy the home to live in (not as an investment), and not currently own any other land or property in Australia or overseas. Income caps and property price caps also apply (the First Home Guarantee has had no income test since ${HG_DATES.expanded}), so the scheme targets lower and middle income buyers. The exact income thresholds and price caps for your location are set by Housing Australia and change over time, so confirm the current figures before you apply.`,
   },
   {
     question: "Do you have to pay rent on the government's share?",
@@ -94,7 +95,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Help to Buy vs First Home Guarantee, which is better?",
     answer:
-      "They solve different problems. The First Home Guarantee lets you keep 100% ownership and buy with a 5% deposit, with the government guaranteeing the gap so you avoid LMI. Help to Buy gives you a smaller mortgage because the government co-owns up to 40% of the home, but you share future capital growth with it. Help to Buy has lower income caps and suits buyers who need to cut the loan size to afford repayments. The First Home Guarantee suits buyers who can service a larger loan and want to keep all the upside. Compare both against your borrowing power before deciding.",
+      "They solve different problems. The First Home Guarantee lets you keep 100% ownership and buy with a 5% deposit, with the government guaranteeing the gap so you avoid LMI. Help to Buy gives you a smaller mortgage because the government co-owns up to 40% of the home, but you share future capital growth with it. Help to Buy has income caps (the First Home Guarantee has none) and suits buyers who need to cut the loan size to afford repayments. The First Home Guarantee suits buyers who can service a larger loan and want to keep all the upside. Compare both against your borrowing power before deciding.",
   },
   {
     question: "Is Help to Buy available in every state?",
@@ -214,7 +215,7 @@ export default function HelpToBuySchemeAustraliaPage() {
         <li><strong>Citizenship and age:</strong> Australian citizen, aged 18 or over.</li>
         <li><strong>Live in it:</strong> You must occupy the home. It cannot be an investment property.</li>
         <li><strong>Don&rsquo;t own other property:</strong> You cannot currently own any other land or property in Australia or overseas. You do not have to be a first home buyer in the strict sense, but you must not be a current owner.</li>
-        <li><strong>Income caps:</strong> Lower than the First Home Guarantee. These caps are the main thing that decides whether Help to Buy fits your situation.</li>
+        <li><strong>Income caps:</strong> Yes, unlike the First Home Guarantee, which has had no income test since {HG_DATES.expanded}. These caps are the main thing that decides whether Help to Buy fits your situation.</li>
         <li><strong>Price caps:</strong> A maximum property value applies and varies by location, in line with local market conditions.</li>
         <li><strong>Limited places:</strong> The scheme has a capped number of places per year, so timing matters.</li>
       </ul>
@@ -342,8 +343,8 @@ export default function HelpToBuySchemeAustraliaPage() {
           </tr>
           <tr>
             <td><strong>Income caps</strong></td>
-            <td>Lower</td>
-            <td>Higher ($125K single / $200K couple)</td>
+            <td>Yes</td>
+            <td>None since {HG_DATES.expanded}</td>
           </tr>
         </tbody>
       </table>

@@ -12,14 +12,16 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
+import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide ACT: Schemes, Stamp Duty & Canberra Property (2026)",
   description:
-    "ACT first home buyer guide: no FHOG (instead a full stamp duty waiver via the Home Buyer Concession Scheme), ACT Shared Equity, $750,000 First Home Guarantee cap, and how leasehold land works.",
+    "ACT first home buyer guide: no FHOG (instead a full stamp duty waiver via the Home Buyer Concession Scheme), ACT Shared Equity, the $1 million 5% Deposit Scheme cap, and how leasehold land works.",
   slug: "first-home-buyer-act",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -51,7 +53,7 @@ const TLDR = [
   "On a $700,000 ACT home, the HBCS can wipe out a stamp duty bill of roughly $27,000.",
   "The ACT Shared Equity Scheme co-invests with eligible lower-to-middle income buyers (teachers, nurses, junior public servants).",
   "Land Rent Scheme lets you lease the land from the ACT Government and only finance the build, lowering upfront capital required.",
-  "First Home Guarantee cap is $750,000 in the ACT, joint second highest in Australia.",
+  `The 5% Deposit Scheme (First Home Guarantee) cap is ${fmtCap(HG_PRICE_CAPS.ACT.capital)} across the ACT, with no income test since ${HG_DATES.expanded}.`,
   "All ACT land is held under 99-year Crown Lease (leasehold). For standard residential purchases this operates almost identically to freehold.",
 ];
 
@@ -113,7 +115,7 @@ const RELATED: RelatedGuide[] = [
 const STEPS = [
   { step: "1", title: "Check HBCS eligibility first", desc: "Confirm income and property-value thresholds before searching. Zero stamp duty vs a $20K+ bill changes your total budget significantly." },
   { step: "2", title: "Calculate your total budget", desc: "Conveyancing ($1,500 to $2,500), inspections, title searches, moving. Exclude stamp duty if HBCS-eligible; include it if not." },
-  { step: "3", title: "Consider the First Home Guarantee", desc: "If your deposit is under 20%, FHBG (5% deposit, no LMI, $750,000 cap) saves tens of thousands in LMI. Apply via a participating lender." },
+  { step: "3", title: "Consider the First Home Guarantee", desc: `If your deposit is under 20%, the 5% Deposit Scheme (5% deposit, no LMI, ${fmtCap(HG_PRICE_CAPS.ACT.capital)} cap) saves tens of thousands in LMI. Apply via a participating lender.` },
   { step: "4", title: "Get pre-approval", desc: "Any major bank lends on ACT Crown Lease properties without issue, leasehold isn't an obstacle." },
   { step: "5", title: "Understand the Crown Lease", desc: "Have your conveyancer review lease conditions and any development or change-of-use restrictions on the property." },
   { step: "6", title: "Make an offer and sign", desc: "Standard ACT purchase contract. 5 business days cooling-off on private treaty (none at auction)." },
@@ -239,13 +241,10 @@ export default function FirstHomeBuyerACTPage() {
 
       <h2 id="federal-schemes">Federal government schemes</h2>
 
-      <h3>First Home Guarantee</h3>
-      <p>
-        5% deposit, no LMI. ACT price cap is <strong>$750,000</strong>, joint
-        second highest in Australia after NSW ($900,000) and tied with Victoria.
-        This reflects Canberra's high median prices and makes the scheme
-        applicable to a wide range of ACT properties.
-      </p>
+      <h3>5% Deposit Scheme (First Home Guarantee)</h3>
+      <ul>
+        <HomeGuaranteeNote state="ACT" />
+      </ul>
 
       <h3>First Home Super Saver Scheme (FHSSS)</h3>
       <p>
@@ -289,8 +288,8 @@ export default function FirstHomeBuyerACTPage() {
         <li>Inner Canberra (Braddon, Kingston, Barton, New Acton) commands significant premiums</li>
       </ul>
       <p>
-        For first home buyers, the HBCS waiver and the $750K FHBG cap are
-        critical enablers in a market where median house prices regularly exceed
+        For first home buyers, the HBCS waiver and the{" "}
+        {fmtCap(HG_PRICE_CAPS.ACT.capital)} 5% Deposit Scheme cap are critical enablers in a market where median house prices regularly exceed
         $900,000.
       </p>
 

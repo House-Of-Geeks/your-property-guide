@@ -10,6 +10,7 @@ import { BuyingGuideFunnel } from "@/components/journey";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
 import { HUB_GUIDE_LISTS, hubGuideGroups } from "@/lib/guides/hub-guides";
 import { StickyGuideBar } from "../selling-guide/StickyGuideBar";
 
@@ -56,7 +57,7 @@ const FAQS = [
   {
     question: "Which first home buyer schemes apply in 2026?",
     answer:
-      "The big ones: the Australian Government 5% Deposit Scheme (no place caps and no income test since October 2025, with city price caps like $1.5m in Sydney and $1m in Brisbane), Help to Buy shared equity from 2% deposit, the First Home Super Saver scheme, plus state grants and stamp duty concessions that differ in every state. Chapter 3 has the full 2026 table.",
+      `The big ones: the Australian Government 5% Deposit Scheme (no place caps and no income test since ${HG_DATES.expanded}, with city price caps like ${fmtCap(HG_PRICE_CAPS.NSW.capital)} in Greater Sydney and ${fmtCap(HG_PRICE_CAPS.QLD.capital)} in Greater Brisbane), Help to Buy shared equity from 2% deposit, the First Home Super Saver scheme, plus state grants and stamp duty concessions that differ in every state. Chapter 3 has the full 2026 table.`,
   },
   {
     question: "How much deposit do I actually need?",

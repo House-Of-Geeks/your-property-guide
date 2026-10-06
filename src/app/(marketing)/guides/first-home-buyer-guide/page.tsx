@@ -13,6 +13,14 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HomeGuaranteeCapsTable } from "@/components/guide/HomeGuaranteeNote";
+import {
+  HG_DATES,
+  HG_MIN_AGE,
+  HG_MIN_DEPOSIT_PCT,
+  HG_NO_OWNERSHIP_YEARS,
+  HG_SINGLE_PARENT_SELL_WEEKS,
+} from "@/lib/data/home-guarantee";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide Australia: Grants, Schemes & Steps (2026)",
@@ -20,7 +28,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Complete guide for Australian first home buyers: federal grants and schemes (FHBG, Family Home Guarantee), state grants by state, stamp duty concessions, and step-by-step buying advice.",
   slug: "first-home-buyer-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 10,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -49,8 +57,8 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "Combining a federal scheme like the First Home Guarantee with a state First Home Owner Grant and stamp duty concessions can save eligible buyers $30,000 to $60,000+.",
-  "The First Home Guarantee lets eligible buyers purchase with a 5% deposit, no Lenders Mortgage Insurance. Income limits: $125,000 single, $200,000 couple.",
-  "The Family Home Guarantee allows single parents to buy with a 2% deposit, no LMI, and is available even if you have previously owned a home.",
+  `The First Home Guarantee, now called the 5% Deposit Scheme, lets eligible buyers purchase with a ${HG_MIN_DEPOSIT_PCT.firstHome}% deposit and no Lenders Mortgage Insurance. Since ${HG_DATES.expanded} there's no income test and no limit on places.`,
+  `The Family Home Guarantee allows single parents to buy with a ${HG_MIN_DEPOSIT_PCT.singleParent}% deposit, no LMI, and is available even if you have previously owned a home.`,
   "First Home Owner Grants apply mostly to new homes only and vary widely by state, from no grant in ACT up to $30,000 in QLD and TAS.",
   "Most states offer first home buyers a full or partial stamp duty exemption, with thresholds and rules differing by jurisdiction.",
   "Always verify current eligibility, price caps and grant amounts with the relevant government agency before relying on this information.",
@@ -74,11 +82,11 @@ const FAQS: FaqItem[] = [
   },
   {
     question: "What is the income limit for the First Home Guarantee?",
-    answer: "$125,000 a year for singles and $200,000 a year for couples, based on combined taxable income from the previous financial year. The Family Home Guarantee uses a $125,000 limit for the single parent or guardian.",
+    answer: `There isn't one. The income test was removed on ${HG_DATES.expanded}, when the scheme was expanded and renamed the Australian Government 5% Deposit Scheme. The Family Home Guarantee for single parents and legal guardians has no income test either. What still applies is the property price cap for the area you buy in.`,
   },
   {
     question: "Do I need to be a first home buyer to use the Family Home Guarantee?",
-    answer: "No. The Family Home Guarantee is open to single parents and single legal guardians with at least one dependent child, even if you have previously owned property. As long as you do not currently own a home, you can use the scheme.",
+    answer: `No. The Family Home Guarantee is open to single parents and single legal guardians with at least one dependent child, even if you have previously owned property. If you own a home now, you can still use it as long as you sell that home within ${HG_SINGLE_PARENT_SELL_WEEKS} weeks of settling the new one.`,
   },
   {
     question: "How much deposit do I need to buy a first home in Australia?",
@@ -86,7 +94,7 @@ const FAQS: FaqItem[] = [
   },
   {
     question: "Do I have to use a mortgage broker to access the First Home Guarantee?",
-    answer: "No. You can apply directly with any participating lender. A broker can compare rates across lenders, know which lenders still have FHBG places (they run out during the year), and handle the FHBG paperwork as part of your loan application at no cost to you. Brokers are paid by the lender, not by you.",
+    answer: "No. You can apply directly with any participating lender. A broker can compare rates across lenders, know which ones offer the 5% Deposit Scheme, and handle the FHBG paperwork as part of your loan application at no cost to you. Brokers are paid by the lender, not by you.",
   },
   {
     question: "What happens if my purchase price exceeds the price cap by a small amount?",
@@ -165,44 +173,44 @@ export default function FirstHomeBuyerGuidePage() {
         government guarantees the gap.
       </p>
 
-      <h3>1. First Home Guarantee (FHBG)</h3>
+      <h3>1. First Home Guarantee (the 5% Deposit Scheme)</h3>
       <p>
         The most widely used scheme. It allows eligible first home buyers to
-        purchase a property with as little as a <strong>5% deposit</strong> without
-        paying LMI.
+        purchase a property with as little as a{" "}
+        <strong>{HG_MIN_DEPOSIT_PCT.firstHome}% deposit</strong> without paying LMI. On{" "}
+        {HG_DATES.expanded} it was expanded and renamed the Australian Government 5%
+        Deposit Scheme.
       </p>
       <ul>
-        <li><strong>Income limits:</strong> $125,000/year for singles; $200,000/year for couples (combined taxable income from the previous financial year)</li>
-        <li><strong>Who qualifies:</strong> Australian citizens or permanent residents aged 18+, who have not previously owned or had an interest in real property in Australia</li>
-        <li><strong>Property type:</strong> New and established residential properties</li>
-        <li><strong>Property price caps (selected, 2025/26):</strong> Vary by location, typically $800,000 to $900,000 in capital cities and $650,000 to $750,000 in regional areas. Check Housing Australia&rsquo;s website for the cap in your specific location.</li>
-        <li><strong>Number of places per year:</strong> 35,000 places (shared with Regional First Home Buyer Guarantee)</li>
-        <li><strong>How to access:</strong> Apply through a participating lender. Most major banks and many credit unions participate.</li>
+        <li><strong>Income limits:</strong> None since {HG_DATES.expanded}</li>
+        <li><strong>Who qualifies:</strong> Australian citizens or permanent residents aged {HG_MIN_AGE}+ who haven&rsquo;t owned property in Australia (including a lease of land or company title) in the last {HG_NO_OWNERSHIP_YEARS} years. Apply alone or with one other person.</li>
+        <li><strong>Property type:</strong> New and established homes, off-the-plan, house and land packages, and vacant land with a building contract, to live in</li>
+        <li><strong>Number of places:</strong> Unlimited, with no waiting list</li>
+        <li><strong>How to access:</strong> Apply through a participating lender or a broker.</li>
+        <li><strong>Property price caps:</strong> By state and area, below.</li>
       </ul>
+
+      <HomeGuaranteeCapsTable />
 
       <h3>2. Regional First Home Buyer Guarantee</h3>
       <p>
-        The same structure as the FHBG but specifically for buyers purchasing in{" "}
-        <strong>regional Australia</strong>. You must have lived in the regional area
-        (or an adjacent area) for at least 12 months continuously prior to purchase.
+        Closed. No new regional guarantees have been issued since{" "}
+        {HG_DATES.expanded}. Buyers in regional areas now use the 5% Deposit Scheme
+        above, at the price cap for their area, with no residency test.
       </p>
-      <ul>
-        <li>Same income limits and deposit (5%) as the FHBG</li>
-        <li>Property price caps apply, generally the same regional caps as FHBG</li>
-        <li>10,000 places per year</li>
-      </ul>
 
       <h3>3. Family Home Guarantee</h3>
       <p>
         Designed for <strong>single parents and single legal guardians</strong> with
-        at least one dependent child. Allows purchase with just a{" "}
-        <strong>2% deposit</strong> without LMI.
+        at least one dependent child, and now marketed as the 5% Deposit Scheme for
+        single parents. Allows purchase with just a{" "}
+        <strong>{HG_MIN_DEPOSIT_PCT.singleParent}% deposit</strong> without LMI.
       </p>
       <ul>
-        <li><strong>Income limit:</strong> $125,000/year (single parent or guardian only)</li>
-        <li>You do not need to be a first home buyer. The scheme is also available to previous homeowners who no longer own property.</li>
-        <li>5,000 places per year</li>
-        <li>Property price caps apply as for FHBG</li>
+        <li><strong>Income limit:</strong> None since {HG_DATES.expanded}</li>
+        <li>You do not need to be a first home buyer. If you own a home, it must be sold within {HG_SINGLE_PARENT_SELL_WEEKS} weeks of settling the new one.</li>
+        <li>Unlimited places; you apply on your own, with no joint applications</li>
+        <li>The same property price caps as first home buyers</li>
       </ul>
 
       <h3>4. Help to Buy (Shared Equity Scheme)</h3>
@@ -320,7 +328,7 @@ export default function FirstHomeBuyerGuidePage() {
       </p>
       <ul>
         <li>Compare rates and features across all participating lenders simultaneously</li>
-        <li>Know which lenders currently have available FHBG places (they do run out during the year)</li>
+        <li>Know which lenders take part in the 5% Deposit Scheme and how each treats it</li>
         <li>Help structure your application to maximise your approval chances</li>
         <li>Handle the FHBG paperwork as part of your loan application at no extra cost to you</li>
       </ul>

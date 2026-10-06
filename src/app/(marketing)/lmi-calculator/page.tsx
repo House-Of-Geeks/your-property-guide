@@ -4,6 +4,7 @@ import { LMICalculator } from "@/components/calculators/LMICalculator";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
 import { Callout, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
+import { HG_MIN_DEPOSIT_PCT, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
 import { STATE_NAMES, type StateCode } from "@/lib/data/commission-rates";
 import {
   HELIA_INVESTOR_READING,
@@ -24,7 +25,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   schemaName: "LMI Calculator",
   schemaDescription:
     "Estimate lenders mortgage insurance in Australia from the price and deposit: LVR, premium by LVR and loan size, and state stamp duty on the premium.",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-07",
   persona: "first-home",
 };
 
@@ -77,8 +78,8 @@ const FAQS: FaqItem[] = [
   {
     question: "How to avoid LMI without a 20% deposit?",
     answer:
-      "Four routes. An eligible first home buyer can use the Australian Government 5% Deposit Scheme, which has no income test and replaces LMI with a government guarantee under a price cap ($1.5 million in NSW capital cities and regional centres). " +
-      "Single parents can use the Family Home Guarantee with 2%. A family guarantor can secure part of the loan with their own property. " +
+      `Four routes. An eligible first home buyer can use the Australian Government 5% Deposit Scheme, which has no income test and replaces LMI with a government guarantee under a price cap (for example ${fmtCap(HG_PRICE_CAPS.NSW.capital)} in Greater Sydney and the NSW regional centres). ` +
+      `Single parents can use the Family Home Guarantee with ${HG_MIN_DEPOSIT_PCT.singleParent}%. A family guarantor can secure part of the loan with their own property. ` +
       `Some lenders waive LMI for certain professions, such as doctors and accountants. On the $600,000 example above, any of these saves ${fmt(ex600.total)}.`,
   },
   {

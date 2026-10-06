@@ -13,6 +13,7 @@ import {
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HG_MIN_DEPOSIT_PCT } from "@/lib/data/home-guarantee";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Lenders Mortgage Insurance: What it costs and how to avoid it (2026)",
@@ -20,7 +21,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Complete guide to LMI in Australia. What it is (and isn't), when it applies, what it costs, who provides it (Helia, Arch), how to capitalise it into your loan, and four ways to avoid it.",
   slug: "lenders-mortgage-insurance-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -117,7 +118,7 @@ export default function LMIGuidePage() {
         url={`/guides/${FRONTMATTER.slug}`}
         steps={[
           { name: "Check your loan-to-value ratio (LVR)", text: "If your deposit is below 20%, LMI is likely required. Calculate LVR as loan amount divided by property price." },
-          { name: "Check eligibility for federal schemes", text: "First Home Guarantee, Family Home Guarantee, and Regional First Home Buyer Guarantee all waive LMI for eligible buyers with 5% (or 2%) deposit." },
+          { name: "Check eligibility for federal schemes", text: `The 5% Deposit Scheme (First Home Guarantee) and the Family Home Guarantee for single parents waive LMI for eligible buyers with a ${HG_MIN_DEPOSIT_PCT.firstHome}% (or ${HG_MIN_DEPOSIT_PCT.singleParent}%) deposit.` },
           { name: "Estimate the LMI premium", text: "LMI scales with both LVR and loan amount. On a 95% LVR loan of $600K, expect ~$22K. On a 90% LVR loan of $600K, expect ~$13K.", url: "/lmi-calculator" },
           { name: "Decide upfront vs capitalised", text: "Pay LMI as a one-off cost or add it to your loan principal (capitalising). Capitalising costs more long-term in interest." },
           { name: "Consider professional or industry exemptions", text: "Some lenders waive LMI for eligible doctors, lawyers, accountants and other low-risk professions, even at 90% LVR.", url: "/borrowing-power-calculator" },

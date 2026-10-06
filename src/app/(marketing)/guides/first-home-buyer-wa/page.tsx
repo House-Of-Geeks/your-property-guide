@@ -12,6 +12,8 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
+import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide WA: $10K Grant, Stamp Duty & Schemes (2026)",
@@ -19,7 +21,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Western Australia first home buyer guide: $10,000 FHOG for new homes under $750K, stamp duty exemption under $450K, concession to $600K, federal schemes, and Keystart loans.",
   slug: "first-home-buyer-wa",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -51,7 +53,7 @@ const TLDR = [
   "Full stamp duty exemption applies up to $450,000 with a scaled concession to $600,000, on both new and established homes.",
   "On a $400,000 first home an eligible buyer pays $0 transfer duty, saving roughly $13,400.",
   "Keystart is WA's state-owned low-deposit lender, with deposits as low as 2% and no LMI for eligible buyers, unique to WA.",
-  "Federal schemes work in WA with property price caps of $600K Perth and $450K regional.",
+  `Federal schemes work in WA. The 5% Deposit Scheme has had no income test or limit on places since ${HG_DATES.expanded}; its price cap is ${fmtCap(HG_PRICE_CAPS.WA.capital)} in Greater Perth and ${fmtCap(HG_PRICE_CAPS.WA.rest)} elsewhere.`,
   "WA has no statutory cooling-off period on residential private treaty sales, so pre-contract due diligence matters more.",
 ];
 
@@ -89,7 +91,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I combine the FHBG, FHOG, and stamp duty exemption in WA?",
     answer:
-      "Yes, on a new home under all the relevant caps. A $400,000 new home in outer Perth could give you the federal FHBG (5% deposit, no LMI), the $10,000 FHOG, and a full stamp duty exemption, a combined saving of roughly $25,000 to $30,000 over a standard purchase.",
+      "Yes, on a new home under all the relevant caps. A $400,000 new home in outer Perth could give you the federal 5% Deposit Scheme (5% deposit, no LMI), the $10,000 FHOG, and a full stamp duty exemption, a combined saving of roughly $25,000 to $30,000 over a standard purchase.",
   },
   {
     question: "What's the Offer and Acceptance form?",
@@ -218,20 +220,7 @@ export default function FirstHomeBuyerWAPage() {
 
       <h2 id="federal-schemes">Federal schemes available in WA</h2>
       <ul>
-        <li>
-          <strong>First Home Guarantee (FHBG):</strong> 5% deposit, no LMI. Income
-          limits $125K single / $200K couple. Property price cap $600,000 Perth
-          and $450,000 regional WA.
-        </li>
-        <li>
-          <strong>Regional First Home Buyer Guarantee:</strong> For buyers
-          purchasing in regional WA, areas like Bunbury, Geraldton, Kalgoorlie, and
-          the Pilbara. You must have lived in the area for 12+ months.
-        </li>
-        <li>
-          <strong>Family Home Guarantee:</strong> 2% deposit for single parents,
-          income limit $125K. Perth price cap $600,000.
-        </li>
+        <HomeGuaranteeNote state="WA" />
         <li>
           <strong>Help to Buy (shared equity):</strong> Up to 40% government equity
           on new homes / 30% on existing.

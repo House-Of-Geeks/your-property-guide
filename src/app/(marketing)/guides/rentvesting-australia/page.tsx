@@ -16,6 +16,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HG_MOVE_IN_MONTHS, HG_NO_OWNERSHIP_YEARS, HG_SOURCES } from "@/lib/data/home-guarantee";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Rentvesting in Australia: A Practical Guide (2026)",
@@ -23,7 +24,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Rent where you want to live, buy where it makes financial sense. How rentvesting actually works in Australia, the maths, the tax position, the first home buyer scheme trade-off, and when it's the right call.",
   slug: "rentvesting-australia",
   publishedAt: "2026-05-13",
-  updatedAt: "2026-05-13",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 12,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -86,7 +87,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I use the First Home Guarantee on a rentvesting purchase?",
     answer:
-      "No. The First Home Guarantee (FHBG) requires you to be a first home buyer AND occupy the property as your principal place of residence within a defined period (typically 12 months) and live there continuously for a minimum period. Buying as an investment from day one disqualifies you. The same applies to most state first home owner grants and stamp duty concessions. Investment-from-day-one is the trade-off rentvesters make.",
+      `No. The First Home Guarantee (FHBG, now the 5% Deposit Scheme) requires you to be a first home buyer, or not to have owned property in Australia in the last ${HG_NO_OWNERSHIP_YEARS} years, AND to move in within ${HG_MOVE_IN_MONTHS} months of settlement and keep living there while the guarantee is in place. Buying as an investment from day one disqualifies you. The same applies to most state first home owner grants and stamp duty concessions. Investment-from-day-one is the trade-off rentvesters make.`,
   },
   {
     question: "Will I still get the first home owner grant later if I rentvest first?",
@@ -413,7 +414,7 @@ const RENTVESTING_SOURCES: readonly SourceItem[] = [
   { label: "ATO: Rental properties, claiming expenses", href: "https://www.ato.gov.au/individuals-and-families/investments-and-assets/residential-rental-properties", note: "Deductible expense list and depreciation rules" },
   { label: "APRA: Investment lending macroprudential guidance", href: "https://www.apra.gov.au/", note: "Serviceability buffer and investor-loan policy referenced in finance section" },
   { label: "ABS: Lending Indicators", href: "https://www.abs.gov.au/statistics/economy/finance/lending-indicators", note: "Investor share of housing finance commitments" },
-  { label: "NHFIC (Housing Australia): First Home Guarantee eligibility", href: "https://www.housingaustralia.gov.au/", note: "Owner-occupier requirement that disqualifies rentvesting purchases" },
+  { ...HG_SOURCES.faqs, note: "Owner-occupier requirement that disqualifies rentvesting purchases" },
   { label: "State First Home Owner Grant schedules (NSW, VIC, QLD, WA, SA, ACT, NT, TAS)", note: "Used for first-home-buyer scheme trade-off analysis" },
   { label: "CoreLogic Australia: Home Value Index methodology", href: "https://www.corelogic.com.au/our-data/methodology", note: "Capital-growth and yield benchmarks" },
 ];

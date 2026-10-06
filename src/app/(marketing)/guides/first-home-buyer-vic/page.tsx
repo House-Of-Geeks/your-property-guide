@@ -12,6 +12,8 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
+import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide VIC: Grants, Stamp Duty & Schemes (2026)",
@@ -19,7 +21,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Victoria first home buyer guide: $10K FHOG (regional $20K), stamp duty exemption up to $600K, concession to $750K, federal schemes, and VIC buying tips.",
   slug: "first-home-buyer-vic",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -50,7 +52,7 @@ const TLDR = [
   "Victoria's FHOG is $10,000 in metro Melbourne and $20,000 in regional VIC, on new homes only, capped at $750,000.",
   "Full stamp duty exemption applies to any first home (new or established) up to $600,000, with a scaled concession up to $750,000.",
   "On a $550,000 first home, eligible buyers pay $0 stamp duty, saving roughly $26,000.",
-  "Federal schemes (FHBG, Family Home Guarantee, Help to Buy) all work in VIC; price caps are $800K Melbourne metro and $650K regional.",
+  `Federal schemes all work in VIC. The 5% Deposit Scheme has had no income test or limit on places since ${HG_DATES.expanded}; its price cap is ${fmtCap(HG_PRICE_CAPS.VIC.capital)} in Greater Melbourne and Geelong and ${fmtCap(HG_PRICE_CAPS.VIC.rest)} elsewhere.`,
   "The Victorian Homebuyer Fund is a state shared-equity scheme that can cut the required deposit to 5% with no LMI.",
   "Always verify amounts and thresholds with the State Revenue Office Victoria before signing.",
 ];
@@ -216,20 +218,7 @@ export default function FirstHomeBuyerVICPage() {
 
       <h2 id="federal-schemes">Federal schemes available in VIC</h2>
       <ul>
-        <li>
-          <strong>First Home Guarantee (FHBG):</strong> 5% deposit, no LMI. Income
-          limits $125K single / $200K couple. Property price cap $800,000 Melbourne
-          and $650,000 regional VIC.
-        </li>
-        <li>
-          <strong>Regional First Home Buyer Guarantee:</strong> Same as FHBG for
-          buyers purchasing in regional VIC. Geelong, Ballarat, and Bendigo are
-          all popular under this scheme.
-        </li>
-        <li>
-          <strong>Family Home Guarantee:</strong> 2% deposit for single parents,
-          income limit $125K.
-        </li>
+        <HomeGuaranteeNote state="VIC" />
         <li>
           <strong>Help to Buy (shared equity):</strong> Up to 40% government equity
           on new homes / 30% on existing. Income limits $90K single / $120K couple.

@@ -15,6 +15,7 @@ import {
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HG_DATES, HG_MIN_DEPOSIT_PCT, HG_NO_OWNERSHIP_YEARS, HG_PREAPPROVAL_DAYS } from "@/lib/data/home-guarantee";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "How Much Deposit Do You Need to Buy a House in Australia? (2026)",
@@ -22,7 +23,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "The full breakdown of house deposit requirements in Australia: 5% with LMI, 10% standard, 20% to skip LMI. Includes worked examples, government schemes, and a practical roadmap.",
   slug: "how-much-deposit-to-buy-a-house",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-05-06",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -52,7 +53,7 @@ export const metadata: Metadata = {
 const TLDR = [
   "Most Australian lenders require a minimum 5% deposit, but you'll pay Lenders Mortgage Insurance (LMI) on anything below 20%.",
   "A 20% deposit is the threshold to avoid LMI entirely. On a $700,000 home that's $140,000 saved, plus another $20,000 to $40,000 for stamp duty and fees.",
-  "First Home Buyers can use the Home Guarantee Scheme to buy with just 5% (no LMI), the Family Home Guarantee for 2%, or the Regional First Home Buyer Guarantee.",
+  `First home buyers can use the 5% Deposit Scheme (the Home Guarantee Scheme) to buy with just ${HG_MIN_DEPOSIT_PCT.firstHome}% and no LMI, and single parents the Family Home Guarantee with ${HG_MIN_DEPOSIT_PCT.singleParent}%. The Regional First Home Buyer Guarantee closed on ${HG_DATES.expanded}.`,
   "Genuine savings rules typically require 5% of the price held in your name for at least 3 months. Gifts, FHSS, and inheritance can supplement but rarely replace it.",
   "The total cash you need at settlement is deposit + stamp duty + conveyancing + building inspection + bank fees. Budget 23% to 25% of the price all-in if you want to avoid LMI.",
 ];
@@ -78,7 +79,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Is a 5% deposit enough?",
     answer:
-      "Mathematically yes, most banks accept it. Practically, expect to pay $15,000 to $25,000 in LMI on a $600,000 to $700,000 loan. The Home Guarantee Scheme avoids LMI on a 5% deposit but has property price caps and an income test. If you qualify, it's usually the cheapest path in.",
+      `Mathematically yes, most banks accept it. Practically, expect to pay $15,000 to $25,000 in LMI on a $600,000 to $700,000 loan. The 5% Deposit Scheme avoids LMI on a 5% deposit; it has property price caps but no income test since ${HG_DATES.expanded}. If you qualify, it's usually the cheapest path in.`,
   },
   {
     question: "How much deposit for a $500,000 house?",
@@ -98,7 +99,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Does the Home Guarantee Scheme have a deadline?",
     answer:
-      "Places are allocated in batches (typically 1 July and 1 January each financial year). Demand outstrips supply each round, so apply through a participating lender as early as possible. The scheme is administered by Housing Australia, with eligibility based on income, citizenship, and price caps that vary by suburb.",
+      `No. Since ${HG_DATES.expanded} places in the 5% Deposit Scheme are unlimited and there's no waiting list, so there are no rounds to wait for. Once a participating lender pre-approves you, you have ${HG_PREAPPROVAL_DAYS} days to find a home and sign a contract. The scheme is administered by Housing Australia, with eligibility based on citizenship or permanent residency, not having owned property in Australia in the last ${HG_NO_OWNERSHIP_YEARS} years, and a price cap for the area you buy in.`,
   },
 ];
 
@@ -121,7 +122,7 @@ export default function HowMuchDepositGuidePage() {
         steps={[
           { name: "Decide your deposit tier", text: "Pick 5%, 10%, or 20% based on your timeline and tolerance for paying LMI." },
           { name: "Calculate the all-in cash needed", text: "Add stamp duty, conveyancing, building/pest inspections, and lender fees on top of the deposit itself.", url: "/stamp-duty-calculator" },
-          { name: "Check eligibility for government schemes", text: "Home Guarantee Scheme, Family Home Guarantee, and Regional First Home Buyer Guarantee can drop your required deposit to 5% or 2% with no LMI." },
+          { name: "Check eligibility for government schemes", text: `The 5% Deposit Scheme, and the Family Home Guarantee for single parents, can drop your required deposit to ${HG_MIN_DEPOSIT_PCT.firstHome}% or ${HG_MIN_DEPOSIT_PCT.singleParent}% with no LMI.` },
           { name: "Open a high-interest savings account and auto-transfer on payday", text: "Treat your deposit savings as a fixed expense, paid before discretionary spending." },
           { name: "Use the First Home Super Saver scheme if eligible", text: "FHSS lets you contribute up to $50,000 into super at 15% tax and withdraw it later for a deposit." },
           { name: "Get pre-approval and lock in", text: "Get 90-day pre-approval from a lender once you're within $20K of your target deposit.", url: "/borrowing-power-calculator" },
@@ -239,25 +240,29 @@ export default function HowMuchDepositGuidePage() {
 
       <h2 id="schemes">Government schemes (5% &amp; 2%)</h2>
 
-      <h3>Home Guarantee Scheme (HGS)</h3>
+      <h3>5% Deposit Scheme (Home Guarantee Scheme)</h3>
       <p>
-        The federal government guarantees the gap between your 5% deposit and
-        the 20% LMI threshold for eligible first home buyers. You skip LMI
-        entirely. Income caps apply ($125,000 single, $200,000 couple), and
-        each region has a price cap.
+        The federal government guarantees the gap between your{" "}
+        {HG_MIN_DEPOSIT_PCT.firstHome}% deposit and the 20% LMI threshold for eligible
+        first home buyers. You skip LMI entirely. Since {HG_DATES.expanded}{" "}
+        there&rsquo;s no income test and no limit on places, but each area has a
+        price cap. Our{" "}
+        <Link href="/guides/first-home-guarantee">5% Deposit Scheme guide</Link> has the
+        caps for every state.
       </p>
 
       <h3>Family Home Guarantee (FHG)</h3>
       <p>
-        For single parents with at least one dependent, the deposit drops to
-        2% of the property price. Same LMI exemption mechanism as the HGS.
+        For single parents with at least one dependent, the deposit drops to{" "}
+        {HG_MIN_DEPOSIT_PCT.singleParent}% of the property price, with no income test.
+        Same LMI exemption mechanism and price caps as the 5% Deposit Scheme.
       </p>
 
       <h3>Regional First Home Buyer Guarantee (RFHBG)</h3>
       <p>
-        Same 5% deposit / no LMI structure as the HGS but for regional buyers
-        who&rsquo;ve lived in or moved to a regional area. Place caps and price caps
-        apply.
+        Closed. No new regional guarantees have been issued since{" "}
+        {HG_DATES.expanded}; regional buyers use the 5% Deposit Scheme at their
+        area&rsquo;s price cap.
       </p>
 
       <p>
@@ -326,8 +331,8 @@ export default function HowMuchDepositGuidePage() {
       </ol>
 
       <GuideNewsletterCallout
-        title="Get notified when scheme rounds open"
-        subtitle="The Home Guarantee Scheme allocates places twice a year. Subscribe to get a heads-up when the next round opens."
+        title="Get notified when scheme rules change"
+        subtitle="Price caps, grants and stamp duty concessions change with budgets and new legislation. Subscribe to hear when the rules behind your deposit move."
       />
 
       <h2 id="next-steps">Next steps</h2>
@@ -347,8 +352,9 @@ export default function HowMuchDepositGuidePage() {
           today&rsquo;s rates.
         </li>
         <li>
-          <strong>Apply for any scheme places early.</strong> HGS, FHG, and RFHBG
-          spots fill within weeks of each new financial year.
+          <strong>Check the price cap where you&rsquo;re buying.</strong> The 5% Deposit
+          Scheme has no limit on places, but the cap for your area decides which homes
+          qualify.
         </li>
       </ol>
     </GuideArticleLayout>

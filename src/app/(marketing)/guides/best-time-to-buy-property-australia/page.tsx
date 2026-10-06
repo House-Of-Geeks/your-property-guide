@@ -12,6 +12,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HG_DATES } from "@/lib/data/home-guarantee";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Best Time to Buy Property in Australia: Seasons, Cycles, and Market Signals (2026)",
@@ -19,7 +20,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "When is the best time to buy property in Australia? The honest answer covers seasonal patterns (winter softness), the rate cycle, life stage, and why 'time in market' usually beats 'timing the market'.",
   slug: "best-time-to-buy-property-australia",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-05-06",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -94,7 +95,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Should first home buyers wait for grant rounds?",
     answer:
-      "Yes, if you're using a Home Guarantee Scheme place. Place allocations reset twice a year (1 July and 1 January). Waiting a few weeks for a fresh round is often worth it. For state grants and stamp duty concessions, eligibility is usually based on contract date, check your state's rules before delaying.",
+      `Not for the 5% Deposit Scheme (the Home Guarantee Scheme): since ${HG_DATES.expanded} it has had no limit on places and no waiting list, so there are no rounds to wait for. For state grants and stamp duty concessions, eligibility is usually based on contract date, check your state's rules before delaying.`,
   },
 ];
 
