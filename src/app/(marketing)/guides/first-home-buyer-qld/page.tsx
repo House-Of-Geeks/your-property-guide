@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -19,7 +20,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Queensland first home buyer guide: $30,000 FHOG for new homes under $750K (locked in by the 2026-27 QLD Budget), zero stamp duty on new homes, federal schemes, and QLD buying tips.",
   slug: "first-home-buyer-qld",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-07-24",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -231,13 +232,7 @@ export default function FirstHomeBuyerQLDPage() {
           <strong>Family Home Guarantee:</strong> 2% deposit for eligible single
           parents and guardians, even if they've owned before.
         </li>
-        <li>
-          <strong>Help to Buy (shared equity):</strong> Up to 40% government equity
-          on new homes / 30% on existing, with a 2% minimum deposit. From 1 July
-          2026 the income caps are $103,000 (singles) and $165,000 (joint or
-          single parents), with 10,000 new places for 2026-27. See our{" "}
-          <Link href="/guides/help-to-buy-scheme-australia">Help to Buy guide</Link>.
-        </li>
+        <HelpToBuyNote state="QLD" />
       </ul>
       <p>
         See our{" "}

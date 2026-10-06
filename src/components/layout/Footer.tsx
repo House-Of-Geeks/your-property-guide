@@ -89,6 +89,7 @@ const FOOTER_COLUMNS = [
       { label: "LMI calculator",           href: "/lmi-calculator" },
       { label: "Negative gearing",         href: "/negative-gearing-calculator" },
       { label: "Bridging loan",            href: "/bridging-loan-calculator" },
+      { label: "Help to Buy",              href: "/help-to-buy-calculator" },
     ],
   },
   {

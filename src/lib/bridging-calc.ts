@@ -19,6 +19,7 @@
 import { calculateStampDuty, type AustralianState } from "@/lib/utils/stamp-duty";
 import { computeSellingCosts, defaultSellingCostsInput } from "@/lib/selling-costs-calc";
 import { estimateConveyancingCost } from "@/lib/conveyancing-costs";
+import { monthlyRepayment } from "@/lib/utils/repayment";
 
 /** Westpac, NAB and Bendigo Bank cap total lending at 80% of both properties' combined value. */
 export const PEAK_LVR_CAP = 80;
@@ -101,14 +102,8 @@ export function capitalisedInterest(amount: number, ratePct: number, months: num
   return r(amount * (Math.pow(1 + ratePct / 100 / 12, months) - 1));
 }
 
-/** Monthly principal-and-interest repayment. */
-export function monthlyRepayment(principal: number, ratePct: number, termYears: number): number {
-  if (principal <= 0 || termYears <= 0) return 0;
-  const n = termYears * 12;
-  const i = ratePct / 100 / 12;
-  if (i === 0) return r(principal / n);
-  return r((principal * i) / (1 - Math.pow(1 + i, -n)));
-}
+/** Monthly principal-and-interest repayment (src/lib/utils/repayment.ts). */
+export { monthlyRepayment };
 
 /** Owner-occupier stamp duty on the new home, not a first home, not a foreign buyer. */
 export function purchaseStampDuty(price: number, state: AustralianState): number {

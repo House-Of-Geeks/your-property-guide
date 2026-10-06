@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -19,7 +20,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Tasmania first home buyer guide: $30,000 FHOG on new homes, 50% stamp duty concession on established homes up to $600K, federal schemes, and Tasmania's affordability advantage.",
   slug: "first-home-buyer-tas",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-07-24",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -216,6 +217,9 @@ export default function FirstHomeBuyerTasPage() {
         the state's more uniform property values. Income caps: $125,000 single /
         $200,000 couple (combined taxable income from the previous financial year).
       </p>
+
+      <h3>Help to Buy</h3>
+      <HelpToBuyNote state="TAS" as="p" />
 
       <h3>Regional First Home Buyer Guarantee</h3>
       <p>

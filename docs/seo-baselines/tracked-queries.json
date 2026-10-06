@@ -1,5 +1,5 @@
 {
- "note": "Tracked Google AU SERPs for the monthly measurement (fix item 28): the 33 from the 5 Sep search review plus the guide and calculator queries worked on since. One DataForSEO live task each (~$0.002). Bridging loan queries added 6 Oct 2026 (docs/seo-baselines/2026-10-06/bridging-loans).",
+ "note": "Tracked Google AU SERPs for the monthly measurement (fix item 28): the 33 from the 5 Sep search review plus the guide and calculator queries worked on since. One DataForSEO live task each (~$0.002). Bridging loan queries added 6 Oct 2026 (docs/seo-baselines/2026-10-06/bridging-loans). Help to Buy queries added 7 Oct 2026 (docs/seo-baselines/2026-10-06/help-to-buy).",
  "queries": [
   "borrowing power calculator",
   "real estate commission nsw",
@@ -48,6 +48,14 @@
   "how does a bridging loan work",
   "deposit bond",
   "bridging loan alternatives",
-  "cba bridging loan"
+  "cba bridging loan",
+  "help to buy scheme",
+  "help to buy scheme qld",
+  "help to buy scheme nsw",
+  "help to buy eligibility",
+  "help to buy price cap",
+  "help to buy calculator",
+  "shared equity scheme",
+  "victorian homebuyer fund"
  ]
 }

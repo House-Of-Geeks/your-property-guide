@@ -37,7 +37,7 @@ export const post: BlogPost = {
 <ul>
 <li><strong>FHOG:</strong> $10,000 metro Melbourne, $20,000 regional Victoria, on new homes up to $750,000</li>
 <li><strong>Stamp duty:</strong> Full exemption to $600,000, concession to $750,000 (new and established)</li>
-<li><strong>Victorian Homebuyer Fund:</strong> State shared equity scheme, up to 25% government equity, 5% deposit, no LMI, income and property caps apply</li>
+<li><strong>Victorian Homebuyer Fund:</strong> closed to new applications on 10 September 2025. Victoria's shared equity option is now the federal <a href="/guides/help-to-buy-scheme-victoria">Help to Buy scheme</a></li>
 <li><strong>PPR concession:</strong> Available to non-FHB owner-occupiers on properties up to $550,000</li>
 </ul>
 <p>Maximum savings stacking: ~$35,000 to $40,000 on a $600K first home.</p>

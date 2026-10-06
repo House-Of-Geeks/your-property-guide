@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -19,7 +20,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Western Australia first home buyer guide: $10,000 FHOG for new homes under $750K, stamp duty exemption under $450K, concession to $600K, federal schemes, and Keystart loans.",
   slug: "first-home-buyer-wa",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -232,10 +233,7 @@ export default function FirstHomeBuyerWAPage() {
           <strong>Family Home Guarantee:</strong> 2% deposit for single parents,
           income limit $125K. Perth price cap $600,000.
         </li>
-        <li>
-          <strong>Help to Buy (shared equity):</strong> Up to 40% government equity
-          on new homes / 30% on existing.
-        </li>
+        <HelpToBuyNote state="WA" />
       </ul>
       <p>
         Note: WA's $600,000 Perth cap is lower than east-coast capitals, reflecting
