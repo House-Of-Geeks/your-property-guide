@@ -32,7 +32,7 @@ ${AUSTRALIAN_STATES.map((s) => `<li>${hgCapSentence(s)}</li>`).join("\n")}
 
 <h2>NSW</h2>
 <ul>
-<li><strong>FHOG:</strong> $10,000 for new homes up to $750,000</li>
+<li><strong>FHOG:</strong> $10,000 for new homes bought for up to $600,000, or land and a building contract up to $750,000</li>
 <li><strong>Stamp duty:</strong> Full exemption up to $800,000 (new and established), concession to $1,000,000</li>
 <li><strong>First Home Buyer Choice:</strong> Optional annual property tax (0.3% of land value) instead of upfront stamp duty, properties up to $1.5M</li>
 <li><strong>Shared Equity Home Buyer Helper:</strong> Up to 40% government equity (new) or 30% (established) for eligible buyers (key workers, single parents, older singles)</li>
