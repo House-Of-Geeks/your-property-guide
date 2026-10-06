@@ -3,6 +3,8 @@
 import { describe, expect, it } from "vitest";
 import { BRIDGING_LENDERS, PUBLISHED_CAPITALISED_RATES } from "@/lib/data/bridging-lenders";
 import {
+  BRIDGING_CALCULATOR_SOURCE,
+  bridgingCalculatorSource,
   EXAMPLE_BRIDGING_RATE,
   PEAK_LVR_CAP,
   capitalisedInterest,
@@ -121,5 +123,13 @@ describe("monthly repayment", () => {
     // $600,000 at 6% over 30 years is $3,597 a month.
     expect(monthlyRepayment(600_000, 6, 30)).toBe(3_597);
     expect(monthlyRepayment(0, 6, 30)).toBe(0);
+  });
+});
+
+describe("lead source", () => {
+  it("tags every appraisal request from the calculator, with or without a suburb", () => {
+    expect(bridgingCalculatorSource("bondi-nsw-2026")).toBe("bridging-calculator-bondi-nsw-2026");
+    expect(bridgingCalculatorSource()).toBe(BRIDGING_CALCULATOR_SOURCE);
+    expect(bridgingCalculatorSource().startsWith("bridging-calculator")).toBe(true);
   });
 });

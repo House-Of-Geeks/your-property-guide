@@ -197,6 +197,16 @@ export function defaultBridgingInput(state: AustralianState = "NSW"): BridgingIn
   };
 }
 
+/**
+ * Lead source for appraisal requests started on the bridging calculator:
+ * "bridging-calculator-<suburb slug>" from the suburb form, or
+ * "bridging-calculator" from the full form when no suburb was picked. Also
+ * the Clarity form name, so both forms report as one funnel.
+ */
+export const BRIDGING_CALCULATOR_SOURCE = "bridging-calculator";
+export const bridgingCalculatorSource = (slug?: string): string =>
+  slug ? `${BRIDGING_CALCULATOR_SOURCE}-${slug}` : BRIDGING_CALCULATOR_SOURCE;
+
 /** Rows for the "what bridging costs" table on the guide and the calculator page. */
 export const COST_TABLE_AMOUNTS = [100_000, 350_000, 500_000, 1_000_000] as const;
 export const COST_TABLE_MONTHS = [3, 6, 12] as const;

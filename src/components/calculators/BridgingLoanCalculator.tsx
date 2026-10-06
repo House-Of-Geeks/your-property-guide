@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, Loader2, MapPin } from "lucide-react";
+import { Loader2, MapPin } from "lucide-react";
 import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
 import { SuburbAppraisalCTA } from "@/components/suburb/SuburbAppraisalCTA";
+import { AppraisalForm } from "@/components/forms/AppraisalForm";
 import { formatPriceFull } from "@/lib/utils/format";
 import { STATE_NAMES } from "@/lib/data/commission-rates";
 import { AUSTRALIAN_STATES, type AustralianState } from "@/lib/utils/stamp-duty";
@@ -18,6 +19,8 @@ import {
   defaultSellingCosts,
   type BridgingInput,
   type InterestMode,
+  BRIDGING_CALCULATOR_SOURCE,
+  bridgingCalculatorSource,
 } from "@/lib/bridging-calc";
 import { PUBLISHED_CAPITALISED_RATES } from "@/lib/data/bridging-lenders";
 import { NumberInput } from "./CommissionCalculator";
@@ -26,8 +29,6 @@ const field =
   "w-full rounded-lg border border-gray-300 px-3 py-3 text-gray-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white";
 const MONTHS = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-/** Lead source for appraisal requests started on the bridging calculator. */
-export const bridgingCalculatorSource = (slug: string) => `bridging-calculator-${slug}`;
 
 /**
  * Peak debt, end debt and what bridging costs, from the sale price of the
@@ -299,29 +300,27 @@ export function BridgingLoanCalculator() {
       )}
 
       {suburb ? (
-        <SuburbAppraisalCTA
-          suburbName={suburb.name}
-          suburbSlug={suburb.slug}
-          source={bridgingCalculatorSource(suburb.slug)}
-          formName="bridging-calculator"
-        />
+        <div id="appraisal-form" className="scroll-mt-24">
+          <SuburbAppraisalCTA
+            suburbName={suburb.name}
+            suburbSlug={suburb.slug}
+            source={bridgingCalculatorSource(suburb.slug)}
+            formName={BRIDGING_CALCULATOR_SOURCE}
+          />
+        </div>
       ) : (
-        <div className="rounded-xl border border-line bg-surface-warm p-6 sm:p-7">
+        <div id="appraisal-form" className="scroll-mt-24 rounded-xl border border-line bg-surface-warm p-6 sm:p-7">
           <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-2">The number that moves everything</p>
           <h3 className="font-display text-xl sm:text-2xl text-ink leading-tight tracking-tight mb-2">
             Firm up your sale price before you talk to a lender
           </h3>
-          <p className="text-sm text-ink-muted leading-relaxed mb-4">
+          <p className="text-sm text-ink-muted leading-relaxed mb-5">
             Every figure above depends on what your current home sells for. A local agent will give you a free appraisal
-            from recent comparable sales, and the lender will want one for the bridging application anyway.
+            from recent comparable sales, and the lender will want a valuation for the bridging application anyway.
           </p>
-          <Link
-            href="/appraisal"
-            className="group inline-flex items-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-ink font-semibold px-5 py-3 text-sm transition-colors"
-          >
-            Get a free appraisal
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-          </Link>
+          <Suspense fallback={<div className="h-96" aria-busy="true" />}>
+            <AppraisalForm source={bridgingCalculatorSource()} formName={BRIDGING_CALCULATOR_SOURCE} />
+          </Suspense>
         </div>
       )}
     </div>

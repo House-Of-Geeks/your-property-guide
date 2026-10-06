@@ -184,7 +184,7 @@ export default function BridgingLoanCalculatorPage() {
             <p>
               Change the sale price by 5% and the end debt moves by about {fmt(ex.salePrice * 0.05)}. Lenders value your
               current home for the application, so an appraisal from an agent who sells in your street is worth having
-              before you apply. <Link href="/appraisal">Get a free appraisal</Link>.
+              before you apply. <a href="#appraisal-form">Get a free appraisal</a> with the form above.
             </p>
           </Callout>
 
