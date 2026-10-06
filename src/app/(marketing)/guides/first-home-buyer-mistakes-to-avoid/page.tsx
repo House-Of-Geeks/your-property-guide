@@ -11,6 +11,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HG_DATES, HG_PREAPPROVAL_DAYS } from "@/lib/data/home-guarantee";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "10 First Home Buyer Mistakes to Avoid (and How to Fix Them), Australia 2026",
@@ -18,7 +19,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "The 10 most expensive mistakes Australian first home buyers make in 2026, from over-stretching on a deposit to skipping building inspections. Each mistake explained with the simple fix.",
   slug: "first-home-buyer-mistakes-to-avoid",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-05-06",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -216,13 +217,17 @@ export default function FirstHomeBuyerMistakesGuide() {
 
       <h2 id="scheme-deadlines">7. Missing first home buyer scheme deadlines</h2>
       <p>
-        <strong>The mistake:</strong> You qualify for the Home Guarantee
-        Scheme but apply too late and miss the allocation round. Or you sign
-        a contract one day after a stamp duty concession changes.
+        <strong>The mistake:</strong>{" "}
+        You&rsquo;re pre-approved for the 5% Deposit
+        Scheme but don&rsquo;t sign a contract within the {HG_PREAPPROVAL_DAYS} days
+        the pre-approval allows. Or you sign a contract one day after a stamp duty
+        concession changes.
       </p>
       <p>
-        <strong>The fix:</strong> Check scheme allocation rounds before you
-        start shopping (HGS resets on 1 July and 1 January). Confirm your
+        <strong>The fix:</strong>{" "}
+        Get scheme pre-approval when you&rsquo;re ready
+        to make offers, not months ahead. Places have been unlimited since{" "}
+        {HG_DATES.expanded}, so there&rsquo;s no round to beat. Confirm your
         state&rsquo;s stamp duty concession is in force at the contract date.
       </p>
 

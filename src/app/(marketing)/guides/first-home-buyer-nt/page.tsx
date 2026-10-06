@@ -14,6 +14,8 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
+import { HG_DATES, HG_NT_CAP_BEFORE_SPLIT, HG_PRICE_CAPS, fmtCap, hgCapSentence } from "@/lib/data/home-guarantee";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide Northern Territory: Grants & Schemes (2026)",
@@ -52,7 +54,7 @@ const TLDR = [
   "NT's FHOG is $10,000 on new or substantially renovated homes (more flexible than most state grants).",
   "The First Home Owner Discount delivers up to $23,928.60 of stamp duty relief, on new and established homes alike.",
   "Total maximum benefit for new homes is roughly $33,928.60, one of the most generous combinations in Australia by dollar value.",
-  "First Home Guarantee cap is $600,000 across the NT (Darwin and regional).",
+  `The 5% Deposit Scheme cap is ${fmtCap(HG_PRICE_CAPS.NT.capital)} in Greater Darwin and ${fmtCap(HG_PRICE_CAPS.NT.rest)} in the rest of the NT; Darwin's rose from ${fmtCap(HG_NT_CAP_BEFORE_SPLIT)} on ${HG_DATES.ntCapSplit}.`,
   "Land tenure matters in the NT: a significant share of land is leasehold, not freehold. In established Darwin suburbs Crown Lease is the norm and behaves like freehold for most purposes.",
   "Engage an NT-qualified conveyancer early, especially for properties in remote areas or on community land.",
 ];
@@ -85,9 +87,9 @@ const FAQS: FaqItem[] = [
       "For established Darwin suburbs on standard Crown Lease, leasehold operates similarly to freehold for practical purposes and major banks lend on it. Concerns rise on remote properties, community land governed by the Aboriginal Land Rights Act, or unusual tenure arrangements. Your conveyancer should confirm tenure for any specific property.",
   },
   {
-    question: "What's the FHBG price cap in the NT?",
+    question: "What's the 5% Deposit Scheme price cap in the NT?",
     answer:
-      "$600,000 across the NT (Darwin and regional). This cap is broadly aligned with NT median prices and applies the same income limits as elsewhere ($125K single / $200K couple).",
+      `${hgCapSentence("NT")}. Darwin's cap rose from ${fmtCap(HG_NT_CAP_BEFORE_SPLIT)} on ${HG_DATES.ntCapSplit}; the rest of the territory stayed at ${fmtCap(HG_PRICE_CAPS.NT.rest)}. There has been no income test since ${HG_DATES.expanded}.`,
   },
   {
     question: "Why do I need a building inspection in Darwin specifically?",
@@ -113,7 +115,7 @@ const RELATED: RelatedGuide[] = [
 const STEPS = [
   { step: "1", title: "Understand the NT market and land tenure", desc: "Research Darwin/regional and the tenure of any property you consider. Engage an NT conveyancer early, leasehold rules differ from mainland states." },
   { step: "2", title: "Calculate your total costs", desc: "Stamp duty (up to $23,928.60 offset by the First Home Owner Discount), legal fees, building inspection (cyclone rating compliance), moving costs." },
-  { step: "3", title: "Check grant and scheme eligibility", desc: "Confirm eligibility for the $10,000 FHOG (new/substantially renovated), First Home Owner Discount, and FHBG ($600K cap)." },
+  { step: "3", title: "Check grant and scheme eligibility", desc: `Confirm eligibility for the $10,000 FHOG (new/substantially renovated), First Home Owner Discount, and the 5% Deposit Scheme (${fmtCap(HG_PRICE_CAPS.NT.capital)} cap in Greater Darwin, ${fmtCap(HG_PRICE_CAPS.NT.rest)} elsewhere).` },
   { step: "4", title: "Get pre-approval", desc: "Use a lender that actively lends on NT Crown Lease properties. Not all lenders operate in the NT; a broker familiar with Darwin helps." },
   { step: "5", title: "Search and inspect", desc: "Building and pest inspection. In Darwin also check cyclone ratings, AC systems, flood/inundation exposure." },
   { step: "6", title: "Engage an NT conveyancer", desc: "They review the contract, confirm land tenure, do title searches, and manage settlement." },
@@ -205,21 +207,13 @@ export default function FirstHomeBuyerNTPage() {
 
       <h2 id="federal-schemes">Federal government schemes</h2>
 
-      <h3>First Home Guarantee</h3>
-      <p>
-        5% deposit, no LMI. NT price cap is <strong>$600,000</strong> for both
-        Darwin and regional NT.
-      </p>
+      <h3>5% Deposit Scheme (First Home Guarantee)</h3>
+      <ul>
+        <HomeGuaranteeNote state="NT" />
+      </ul>
 
       <h3>Help to Buy</h3>
       <HelpToBuyNote state="NT" as="p" />
-
-      <h3>Regional First Home Buyer Guarantee</h3>
-      <p>
-        For buyers in regional NT who've lived in the region for 12+ months. Same
-        5% deposit / no LMI benefit. Most of the NT outside Darwin qualifies as
-        regional.
-      </p>
 
       <h3>First Home Super Saver scheme (FHSS)</h3>
       <FhssNote as="p" />

@@ -1,4 +1,5 @@
 import type { BlogPost } from "@/types";
+import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
 
 export const post: BlogPost = {
   id: "blog-sydney-market-2026",
@@ -26,7 +27,7 @@ export const post: BlogPost = {
 <li>Western Sydney's infrastructure pipeline (airport, motorways, rail) will continue to support outer-fringe price growth</li>
 <li>Inner-city units remain under-priced relative to houses on a long-run basis, watch for investor re-entry</li>
 <li>Days on market may compress further in tightly-held middle ring suburbs as supply remains constrained</li>
-<li>First home buyer competition for the $800K to $1.1M segment will be intense, particularly with the FHBG cap at $900K in Sydney metro</li>
+<li>First home buyer competition for the $800K to $1.1M segment will be intense, particularly with the 5% Deposit Scheme cap at ${fmtCap(HG_PRICE_CAPS.NSW.capital)} in Greater Sydney and no income test since ${HG_DATES.expanded}</li>
 </ul>
 
 <p>The Sydney market in 2026 rewards patience and preparation. Buyers serious about competing should have pre-approval secured, conveyancer engaged, and be willing to act when the right property surfaces. Sellers benefit from a market still tilted in their favour for well-presented, fairly-priced listings, but conditioning buyers above market with inflated price guides is increasingly likely to extend campaigns rather than capture the upside.</p>`,
@@ -35,5 +36,6 @@ export const post: BlogPost = {
   category: "Market Update",
   tags: ["sydney", "nsw", "market update", "2026", "property prices"],
   publishedAt: "2026-05-06",
+  updatedAt: "2026-10-07",
   readingTime: 8,
 };

@@ -14,6 +14,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide QLD: $30K Grant, Stamp Duty & Schemes (2026)",
@@ -222,17 +223,7 @@ export default function FirstHomeBuyerQLDPage() {
 
       <h2 id="federal-schemes">Federal schemes available in QLD</h2>
       <ul>
-        <li>
-          <strong>5% Deposit Scheme (expanded First Home Guarantee):</strong> 5%
-          deposit, no LMI. Since the late-2025 expansion there is no income test
-          and places are uncapped. Property price caps apply by location — check
-          the current QLD cap with Housing Australia. See our{" "}
-          <Link href="/guides/first-home-guarantee">5% Deposit Scheme guide</Link>.
-        </li>
-        <li>
-          <strong>Family Home Guarantee:</strong> 2% deposit for eligible single
-          parents and guardians, even if they've owned before.
-        </li>
+        <HomeGuaranteeNote state="QLD" />
         <HelpToBuyNote state="QLD" />
         <FhssNote />
       </ul>

@@ -17,6 +17,7 @@
 // the legislation", not "growth-hacked AI slop".
 
 import type { PersonaId } from "@/lib/constants/journey";
+import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
 
 export interface HubCalculatorCard {
   label: string;
@@ -72,8 +73,8 @@ const FIRST_HOME: PersonaHubContent = {
     heading: "The schemes, the deposit, the *stamp duty*.",
     paragraphs: [
       "Buying a first home in Australia is mostly three problems running in parallel: how much deposit you actually need, which federal or state schemes you qualify for, and how much stamp duty you can avoid paying. Get those three right and the rest is paperwork.",
-      "On deposit: most lenders will accept a 5% deposit if you can qualify for the First Home Guarantee (FHBG), which waives Lenders Mortgage Insurance on a 5% deposit. Without the FHBG, expect to need 20% to avoid LMI, or pay LMI of roughly 2-4% of the loan to get in on 5-10%. The FHBG has annual place limits and income caps ($125k singles, $200k couples), so apply through a participating lender early in the financial year.",
-      "On schemes: the First Home Owner Grant (FHOG) is state-administered and varies wildly: $10k in QLD for new homes only, $10k in NSW for new homes under $750k, $20k in regional VIC. The First Home Super Saver Scheme (FHSSS) lets you draw up to $50k of voluntary super contributions for a deposit, a useful top-up that most first home buyers don't know about.",
+      `On deposit: most lenders will accept a 5% deposit if you can qualify for the First Home Guarantee (FHBG), which waives Lenders Mortgage Insurance on a 5% deposit. Without the FHBG, expect to need 20% to avoid LMI, or pay LMI of roughly 2-4% of the loan to get in on 5-10%. Since ${HG_DATES.expanded} the FHBG, now the 5% Deposit Scheme, has no income test and no limit on places; what still applies is the price cap for the area you buy in.`,
+      "On schemes: the First Home Owner Grant (FHOG) is state-administered and varies by state: $30k in QLD and $10k in NSW and VIC, all for new homes only, under each state's price cap (Victoria's $20k regional grant ended in June 2021). The First Home Super Saver Scheme (FHSSS) lets you withdraw up to $50k of voluntary super contributions, plus deemed earnings, for a deposit, a useful top-up that most first home buyers don't know about.",
       "On stamp duty: this is where the biggest dollar saving usually sits. NSW first home buyers pay no stamp duty under $800k, partial concession to $1M. VIC offers full exemption under $600k, sliding scale to $750k. QLD has its own First Home Concession with a $700k cap. WA is generous under $450k. Calculate before you make an offer, not after — the gap between qualifying and not qualifying can be tens of thousands of dollars.",
       "Pre-approval before you bid. Conditional approval (sometimes called 'pre-approval') tells you what a lender will lend you on your current income and expenses, subject to property valuation. It's not a guarantee, but going to an auction without one is gambling with your deposit.",
     ],
@@ -111,7 +112,7 @@ const FIRST_HOME: PersonaHubContent = {
     {
       question: "How does the First Home Guarantee work?",
       answer:
-        "The First Home Guarantee (FHBG) lets eligible first home buyers buy with a 5% deposit and no LMI. The federal government guarantees up to 15% of the loan, so the lender treats it as if you had a 20% deposit. Income caps apply ($125k singles, $200k couples). Property price caps vary by city. Places are limited each financial year and are allocated through participating lenders.",
+        `The First Home Guarantee (FHBG) lets eligible first home buyers buy with a 5% deposit and no LMI. The federal government guarantees up to 15% of the loan, so the lender treats it as if you had a 20% deposit. There's been no income test and no limit on places since ${HG_DATES.expanded}. Property price caps vary by area (for example ${fmtCap(HG_PRICE_CAPS.NSW.capital)} in Greater Sydney), and you apply through a participating lender.`,
     },
     {
       question: "What is the First Home Super Saver Scheme (FHSSS)?",

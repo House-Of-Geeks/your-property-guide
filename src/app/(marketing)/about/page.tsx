@@ -477,7 +477,7 @@ export default function AboutPage() {
             <p>
               <strong>Updates.</strong> Guides are reviewed at least annually,
               and immediately after any material law or scheme change (state
-              budget changes, Home Guarantee Scheme rounds, RBA rate
+              budget changes, Home Guarantee Scheme changes, RBA rate
               decisions, ATO determinations). Each guide shows the published
               date and the last-reviewed date in the byline.
             </p>

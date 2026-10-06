@@ -103,7 +103,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide (national)", href: "/guides/first-home-buyer-guide",  description: "Federal schemes, FHOG by state, stamp duty concessions and the full buying process." },
-  { title: "First Home Guarantee",              href: "/guides/first-home-guarantee",      description: "The 5% deposit, no-LMI federal scheme: income limits, price caps and how to apply." },
+  { title: "First Home Guarantee",              href: "/guides/first-home-guarantee",      description: "The 5% deposit, no-LMI federal scheme: who qualifies, price caps and how to apply." },
   { title: "First Home Buyer Guide, NSW",       href: "/guides/first-home-buyer-nsw",      description: "NSW grant, stamp duty exemption and price caps in one place." },
   { title: "First Home Buyer Guide, VIC",       href: "/guides/first-home-buyer-vic",      description: "Victoria's $10,000 grant plus stamp duty relief." },
   { title: "First Home Buyer Guide, QLD",       href: "/guides/first-home-buyer-qld",      description: "Queensland's larger new-build grant and first home concession." },

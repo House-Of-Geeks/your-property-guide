@@ -5,6 +5,7 @@ import Link from "next/link";
 import { formatPriceFull } from "@/lib/utils/format";
 import { STATE_NAMES, type StateCode } from "@/lib/data/commission-rates";
 import { LMI_DUTY, LMI_RATE_SOURCE, computeLmi, defaultLmiInput, type LmiInput } from "@/lib/lmi-calc";
+import { HG_MIN_DEPOSIT_PCT, HG_NO_OWNERSHIP_YEARS, HG_PRICE_CAPS, fmtCap, hgCapSentence } from "@/lib/data/home-guarantee";
 import { NumberInput } from "./CommissionCalculator";
 
 const STATES = Object.keys(LMI_DUTY) as StateCode[];
@@ -23,6 +24,10 @@ export function LMICalculator() {
   const r = useMemo(() => computeLmi(input), [input]);
   const fmt = (n: number) => formatPriceFull(Math.round(n));
   const duty = LMI_DUTY[input.state];
+  // The 5% Deposit Scheme needs the price under the area's cap (the capital-city
+  // cap is the highest in each state) and at least a 5% deposit.
+  const overCap = input.price > HG_PRICE_CAPS[input.state].capital;
+  const underSchemeDeposit = r.lvr > 100 - HG_MIN_DEPOSIT_PCT.firstHome;
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">
@@ -121,14 +126,20 @@ export function LMICalculator() {
           {input.firstHomeBuyer ? (
             <>
               <h3 className="font-display text-xl sm:text-2xl text-ink leading-tight tracking-tight mb-2">
-                {r.status === "priced"
-                  ? `The 5% Deposit Scheme could save you ${fmt(r.total)}`
-                  : "The 5% Deposit Scheme removes LMI"}
+                {overCap
+                  ? `This price is over the 5% Deposit Scheme cap in ${STATE_NAMES[input.state]}`
+                  : underSchemeDeposit
+                    ? `The 5% Deposit Scheme needs at least a ${HG_MIN_DEPOSIT_PCT.firstHome}% deposit`
+                    : r.status === "priced"
+                      ? `The 5% Deposit Scheme could save you ${fmt(r.total)}`
+                      : "The 5% Deposit Scheme removes LMI"}
               </h3>
               <p className="text-sm text-ink-muted leading-relaxed mb-4">
                 Under the Australian Government 5% Deposit Scheme (the expanded First Home Guarantee), an eligible first
-                home buyer can buy with a 5% deposit and pay no LMI, because the government guarantees the rest of the
-                deposit a lender wants. There is no income test, but the price must be under the cap for your area.
+                home buyer can buy with a {HG_MIN_DEPOSIT_PCT.firstHome}% deposit and pay no LMI, because the government
+                guarantees the rest of the deposit a lender wants. There is no income test, but the price must be under
+                the cap for your area: {hgCapSentence(input.state)}.
+                {overCap && <> At {fmt(input.price)} this home is over even the {fmtCap(HG_PRICE_CAPS[input.state].capital)} cap.</>}
               </p>
             </>
           ) : (
@@ -137,9 +148,10 @@ export function LMICalculator() {
                 Not a first home buyer? A guarantor may still avoid LMI
               </h3>
               <p className="text-sm text-ink-muted leading-relaxed mb-4">
-                The 5% Deposit Scheme is for first home buyers. Single parents and guardians can use the Family Home
-                Guarantee with a 2% deposit even if they have owned before. A family guarantor or a professional package
-                are the other routes.
+                The 5% Deposit Scheme is for first home buyers and anyone who hasn&rsquo;t owned property in Australia
+                in the last {HG_NO_OWNERSHIP_YEARS} years. Single parents and guardians can use the Family Home Guarantee
+                with a {HG_MIN_DEPOSIT_PCT.singleParent}% deposit even if they have owned before. A family guarantor or a
+                professional package are the other routes.
               </p>
             </>
           )}

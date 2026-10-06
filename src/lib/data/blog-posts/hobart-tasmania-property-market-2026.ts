@@ -1,4 +1,5 @@
 import type { BlogPost } from "@/types";
+import { HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
 
 export const post: BlogPost = {
   id: "blog-hobart-market-2026",
@@ -29,7 +30,7 @@ export const post: BlogPost = {
 <li>The 50% stamp duty concession on established homes up to $600,000 keeps the established market accessible</li>
 <li>Tasmanian short-stay regulation reform continues to evolve; investors with Airbnb portfolios should track changes</li>
 <li>Continued interstate migration, particularly from Victoria, is expected to support price growth</li>
-<li>Federal First Home Guarantee uniform $600,000 cap supports broad eligibility across Tasmania</li>
+<li>The federal 5% Deposit Scheme (First Home Guarantee) caps are ${fmtCap(HG_PRICE_CAPS.TAS.capital)} in Greater Hobart and ${fmtCap(HG_PRICE_CAPS.TAS.rest)} in the rest of Tasmania, so buyers outside Hobart work to the lower number</li>
 </ul>
 
 <p>Tasmania in 2026 isn't the high-growth headline story it was five years ago, but it remains one of Australia's best-balanced markets. Lower entry prices, strong rental demand, and the lifestyle appeal that drove the 2018–22 boom haven't gone away. For owner-occupiers and patient investors with a 5 to 10 year horizon, the case is still compelling.</p>`,
@@ -38,5 +39,6 @@ export const post: BlogPost = {
   category: "Market Update",
   tags: ["hobart", "tasmania", "market update", "2026", "launceston"],
   publishedAt: "2026-05-06",
+  updatedAt: "2026-10-07",
   readingTime: 7,
 };
