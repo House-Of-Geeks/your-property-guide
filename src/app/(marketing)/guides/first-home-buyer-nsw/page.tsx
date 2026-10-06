@@ -51,7 +51,7 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "NSW offers a $10,000 First Home Owner Grant on new homes only, capped at $750,000 contract price.",
+  "NSW offers a $10,000 First Home Owner Grant on new homes only: up to $600,000 for a home you buy, or $750,000 for land plus a contract to build.",
   "Full stamp duty exemption applies on any home (new or established) up to $800,000, with a scaled concession up to $1,000,000.",
   `Federal schemes work in NSW. The 5% Deposit Scheme has had no income test or limit on places since ${HG_DATES.expanded}; its price cap is ${fmtCap(HG_PRICE_CAPS.NSW.capital)} in Greater Sydney and NSW's regional centres and ${fmtCap(HG_PRICE_CAPS.NSW.rest)} elsewhere.`,
   "On a $750,000 home, an eligible NSW first home buyer pays $0 stamp duty, saving roughly $29,000 versus a standard buyer.",
@@ -78,7 +78,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What's the price cap for the NSW FHOG?",
     answer:
-      "$750,000 contract price for the new home. One dollar over the cap and you lose the entire grant. Plan well under to leave room for negotiation.",
+      "$600,000 purchase price for a new or substantially renovated home. If you buy vacant land and sign a building contract, or build as an owner-builder, the land and the build together can be up to $750,000. One dollar over the cap and you lose the entire grant, so plan well under to leave room for negotiation.",
   },
   {
     question: "Is stamp duty really $0 in NSW for first home buyers?",
@@ -93,7 +93,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I combine the FHOG with the First Home Guarantee in NSW?",
     answer:
-      `Yes, if you're buying a new home under both price caps. The 5% Deposit Scheme covers the deposit/LMI side (caps of ${fmtCap(HG_PRICE_CAPS.NSW.capital)} in Greater Sydney and the regional centres, ${fmtCap(HG_PRICE_CAPS.NSW.rest)} elsewhere in NSW); the FHOG is a $10,000 cash grant on top, capped at $750K contract price. Stack them with the stamp duty exemption and you can save $40,000 to $50,000 on a Sydney new build.`,
+      `Yes, if you're buying a new home under both price caps. The 5% Deposit Scheme covers the deposit/LMI side (caps of ${fmtCap(HG_PRICE_CAPS.NSW.capital)} in Greater Sydney and the regional centres, ${fmtCap(HG_PRICE_CAPS.NSW.rest)} elsewhere in NSW); the FHOG is a $10,000 cash grant on top, for a new home bought for up to $600,000, or land and a building contract up to $750,000. Add the stamp duty exemption, which covers any home up to $800,000.`,
   },
   {
     question: "What's the cooling-off period in NSW?",
@@ -134,7 +134,7 @@ export default function FirstHomeBuyerNSWPage() {
       <EditorNote>
         <p>
           The single biggest thing buyers misread in NSW is the gap
-          between the $10,000 FHOG (new homes only, $750K cap) and the
+          between the $10,000 FHOG (new homes only, $600K cap, or $750K for land and a build) and the
           stamp duty exemption (any home, $800K cap). Most first home
           buyers I talk to here qualify for the duty exemption on an
           established home and never get near the grant. That&rsquo;s the
@@ -152,7 +152,7 @@ export default function FirstHomeBuyerNSWPage() {
 
       <KeyFigure
         value="$10,000"
-        label="The NSW First Home Owner Grant for new homes up to $750,000."
+        label="The NSW First Home Owner Grant for new homes up to $600,000, or land and a building contract up to $750,000."
         context="Established homes do not qualify"
       />
 
@@ -167,11 +167,18 @@ export default function FirstHomeBuyerNSWPage() {
 
       <h3>Eligible properties</h3>
       <ul>
-        <li>New homes (never previously occupied or sold), $750,000 or less</li>
-        <li>Substantially renovated homes, $750,000 or less</li>
-        <li>Owner-builder new homes that meet the same price cap</li>
+        <li>New homes (never previously occupied or sold), purchase price $600,000 or less</li>
+        <li>Substantially renovated homes, purchase price $600,000 or less</li>
+        <li>Vacant land plus a building contract, or an owner-builder home: land and build together $750,000 or less</li>
         <li>Established homes do <strong>not</strong> qualify for the NSW FHOG</li>
       </ul>
+      <p>
+        Caps from{" "}
+        <a href="https://www.revenue.nsw.gov.au/grants-schemes/first-home-owner-new-homes-grant" target="_blank" rel="noopener noreferrer">
+          Revenue NSW: First Home Owner (New Homes) Grant
+        </a>
+        , checked 7 October 2026.
+      </p>
 
       <h3>How and when the grant is paid</h3>
       <p>

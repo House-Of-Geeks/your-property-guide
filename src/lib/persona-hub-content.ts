@@ -97,7 +97,7 @@ const FIRST_HOME: PersonaHubContent = {
     {
       question: "What is the First Home Owner Grant in 2026?",
       answer:
-        "The FHOG is administered by each state and territory. NSW: $10,000 for new homes under $750,000. VIC: $10,000 (or $20,000 regional) for new homes under $750,000. QLD: $30,000 (boosted) for new homes only. WA: $10,000 for new homes under $750,000 metro / $1m regional. SA: $15,000 for new homes under $650,000. TAS: $30,000 for new homes. The grant only covers newly built homes in most states.",
+        "The FHOG is administered by each state and territory. NSW: $10,000 for new homes up to $600,000 (or $750,000 for land and a building contract). VIC: $10,000 for new homes up to $750,000. QLD: $30,000 (boosted) for new homes only. WA: $10,000 for new homes under $750,000 metro / $1m regional. SA: $15,000 for new homes under $650,000. TAS: $30,000 for new homes. The grant only covers newly built homes in most states.",
     },
     {
       question: "Do first home buyers pay stamp duty?",

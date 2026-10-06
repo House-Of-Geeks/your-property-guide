@@ -243,8 +243,8 @@ export default function FirstHomeBuyerGuidePage() {
         </thead>
         <tbody>
           <tr><td><strong>QLD</strong></td><td>$30,000</td><td>New homes (never lived in)</td><td>$750,000 contract price</td></tr>
-          <tr><td><strong>NSW</strong></td><td>$10,000</td><td>New homes</td><td>$600,000 (metro) / $750,000 (regional)</td></tr>
-          <tr><td><strong>VIC</strong></td><td>$10,000 (metro) / $20,000 (regional)</td><td>New homes</td><td>$750,000</td></tr>
+          <tr><td><strong>NSW</strong></td><td>$10,000</td><td>New homes</td><td>$600,000 purchase price, or $750,000 for land and a building contract</td></tr>
+          <tr><td><strong>VIC</strong></td><td>$10,000</td><td>New homes</td><td>$750,000</td></tr>
           <tr><td><strong>WA</strong></td><td>$10,000</td><td>New homes</td><td>$750,000</td></tr>
           <tr><td><strong>SA</strong></td><td>$15,000</td><td>New homes</td><td>$650,000</td></tr>
           <tr><td><strong>TAS</strong></td><td>$30,000</td><td>New homes (check current state offer)</td><td>No cap (check current rules)</td></tr>
