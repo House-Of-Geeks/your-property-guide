@@ -30,7 +30,10 @@ Files in this folder:
   - *"How much does a $100,000 bridging loan cost?"* (11)
   - *"How much equity do you need?"* (6)
 - **Calculators and alternatives are the largest gaps.** Bridging calculators draw about 2,800 searches a month, and we have 11 calculators but no bridging one. "Deposit bond" alone draws 1,900 a month, and we have no page on it.
-- **Bing likes our guide. Google barely knows it exists.** Bing ranks it mostly between positions 1 and 8 for long, specific questions. Google tested it in July (269 impressions at an average position near 90) and has shown it about 10 times a month since. The page is indexed; Google last crawled it on 12 July 2026.
+- **Bing likes our guide. Google barely knows it exists.**
+  - In Bing search it ranks mostly between positions 1 and 8 for long, specific questions.
+  - In Bing's AI Performance report it is **the most-cited page on the site in Copilot**: 4,000 citations between 6 July and 4 October 2026, from 25 grounding queries led by "bridging loan" (1,800), "short term bridging loans australia" (318) and "bridge loan australia" (240). See `bing-ai-citations.csv`; this report isn't in the Bing API, so it was read from the dashboard.
+  - On Google: tested in July (269 impressions at an average position near 90) and has shown it about 10 times a month since. The page is indexed; Google last crawled it on 12 July 2026.
 - **The guide's cost section understates the cost by roughly five times** (see section 6). Cost is the question asked most often, so this is the first thing to fix.
 
 ## 2. Why people want a bridging loan

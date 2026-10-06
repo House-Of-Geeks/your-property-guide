@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -19,7 +20,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "ACT first home buyer guide: no FHOG (instead a full stamp duty waiver via the Home Buyer Concession Scheme), ACT Shared Equity, $750,000 First Home Guarantee cap, and how leasehold land works.",
   slug: "first-home-buyer-act",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -246,6 +247,9 @@ export default function FirstHomeBuyerACTPage() {
         This reflects Canberra's high median prices and makes the scheme
         applicable to a wide range of ACT properties.
       </p>
+
+      <h3>Help to Buy</h3>
+      <HelpToBuyNote state="ACT" as="p" />
 
       <h3>First Home Super Saver Scheme (FHSSS)</h3>
       <p>

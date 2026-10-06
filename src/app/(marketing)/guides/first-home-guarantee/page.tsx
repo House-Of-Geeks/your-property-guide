@@ -20,7 +20,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "How the Australian Government 5% Deposit Scheme (the expanded First Home Guarantee) lets eligible first home buyers purchase with a 5% deposit and no Lenders Mortgage Insurance. The 2025 expansion, price caps, the Family Home Guarantee, and how it stacks with the FHOG.",
   slug: "first-home-guarantee",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-06-16",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -272,9 +272,12 @@ export default function FirstHomeGuaranteePage() {
       <p>
         There is also the{" "}
         <Link href="/guides/help-to-buy-scheme-australia">Help to Buy shared equity scheme</Link>,
-        where the government co-invests in the property to shrink the mortgage you
-        need. It is a different mechanism to the guarantees and worth comparing if a
-        smaller loan matters more to you than full ownership from day one.
+        where the government contributes part of the price to shrink the mortgage you
+        need. It is a different mechanism to the guarantees, and you can&rsquo;t use
+        both: the Help to Buy rules exclude anyone using the Home Guarantee Scheme.
+        Compare the two on your own numbers in the{" "}
+        <Link href="/help-to-buy-calculator">Help to Buy calculator</Link>, which shows
+        the same home under each.
       </p>
 
       <h2 id="stacking">Stacking with the FHOG and stamp duty</h2>

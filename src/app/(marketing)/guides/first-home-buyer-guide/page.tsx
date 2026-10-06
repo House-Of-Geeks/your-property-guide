@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -20,7 +21,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Complete guide for Australian first home buyers: federal grants and schemes (FHBG, Family Home Guarantee), state grants by state, stamp duty concessions, and step-by-step buying advice.",
   slug: "first-home-buyer-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 10,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -206,12 +207,7 @@ export default function FirstHomeBuyerGuidePage() {
       </ul>
 
       <h3>4. Help to Buy (Shared Equity Scheme)</h3>
-      <p>
-        The Help to Buy scheme, legislated in 2024, enables eligible buyers to
-        purchase a home with the government taking an equity co-investment of up to
-        40% (new homes) or 30% (existing homes). This reduces the size of the
-        mortgage required.
-      </p>
+      <HelpToBuyNote as="p" />
       <ul>
         <li><strong>Income limits:</strong> $90,000 for singles; $120,000 for couples</li>
         <li>Buyers need a minimum 2% deposit and no LMI</li>

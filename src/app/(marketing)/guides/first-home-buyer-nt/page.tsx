@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -19,7 +20,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "NT first home buyer guide: $10,000 FHOG, First Home Owner Discount of up to $23,928.60 in stamp duty relief, leasehold land considerations, and federal scheme caps for Darwin.",
   slug: "first-home-buyer-nt",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -208,6 +209,9 @@ export default function FirstHomeBuyerNTPage() {
         5% deposit, no LMI. NT price cap is <strong>$600,000</strong> for both
         Darwin and regional NT.
       </p>
+
+      <h3>Help to Buy</h3>
+      <HelpToBuyNote state="NT" as="p" />
 
       <h3>Regional First Home Buyer Guarantee</h3>
       <p>

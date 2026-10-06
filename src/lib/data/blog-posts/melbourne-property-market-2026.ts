@@ -24,7 +24,7 @@ export const post: BlogPost = {
 <ul>
 <li>Stamp duty is biting harder in Victoria than other states. Watch for any 2026 reform announcements which could move buyer behaviour</li>
 <li>Rental vacancy in greater Melbourne sits at 1.7%, supporting yield-driven investor activity in middle and outer suburbs</li>
-<li>The Victorian Homebuyer Fund continues to widen first home buyer access in the $600K to $750K range</li>
+<li>The Victorian Homebuyer Fund closed to new applications on 10 September 2025; the federal <a href="/guides/help-to-buy-scheme-victoria">Help to Buy scheme</a> is now Victoria's shared equity option</li>
 <li>Apartment supply pipeline is finally moderating, which should support inner-city unit prices through late 2026</li>
 <li>Regional centres benefit from continued remote-work uptake and infrastructure spending</li>
 </ul>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -19,7 +20,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Complete guide for first home buyers in South Australia: $15,000 FHOG, stamp duty rules, First Home Guarantee, HomeSeeker SA shared equity, and off-the-plan concessions.",
   slug: "first-home-buyer-sa",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -249,11 +250,7 @@ export default function FirstHomeBuyerSAPage() {
       </p>
 
       <h3>Help to Buy (shared equity)</h3>
-      <p>
-        The federal Help to Buy scheme (government takes up to 40% equity in a new
-        home / 30% in existing) has been legislated. Check the current rollout and
-        SA-specific details on the Housing Australia site.
-      </p>
+      <HelpToBuyNote state="SA" as="p" />
 
       <h2 id="homeseeker">HomeSeeker SA, state shared equity</h2>
       <p>

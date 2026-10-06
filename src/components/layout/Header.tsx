@@ -63,6 +63,7 @@ const NAV_LINKS: NavLink[] = [
       { label: "CGT",                   href: "/cgt-calculator",             group: "Calculators" },
       { label: "Refinancing",           href: "/refinancing-calculator",     group: "Calculators" },
       { label: "Bridging loan",         href: "/bridging-loan-calculator",   group: "Calculators" },
+      { label: "Help to Buy",           href: "/help-to-buy-calculator",     group: "Calculators" },
       { label: "Property glossary",     href: "/glossary",                   group: "Reference" },
       { label: "RBA cash rate",         href: "/rba-cash-rate",              group: "Reference" },
       { label: "Market reports",        href: "/market-reports",             group: "Reference" },

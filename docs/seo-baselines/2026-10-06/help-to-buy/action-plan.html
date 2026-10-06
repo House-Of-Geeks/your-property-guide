@@ -1,0 +1,348 @@
+<title>Help to Buy Action Plan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one centred report sheet on a grey page, same system as the bridging loans plan. Plan table first, then one card per action, then measurement and evidence. */
+:root{
+  --ground:#ffffff; --page:#f3f4f6; --panel:#f6f7f9; --rule:#e2e5e9; --rule2:#cfd4da;
+  --ink:#1b1f24; --ink2:#4a525c; --ink3:#7a838d;
+  --accent:#0f7b86; --accent-soft:#e6f3f4;
+  --crit:#b9331f; --crit-soft:#fbe9e5; --high:#b0710d; --high-soft:#fbf1dc; --med:#5b6570; --med-soft:#eceff2;
+  --note:#e7f1f5; --mono-bg:#f0f2f4;
+  --sans:"IBM Plex Sans",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#16191d; --page:#0f1114; --panel:#1c2025; --rule:#2b3138; --rule2:#3a424b;
+    --ink:#e8eaed; --ink2:#b3bac2; --ink3:#7f8790;
+    --accent:#4fb6bf; --accent-soft:#12303a;
+    --crit:#f07a62; --crit-soft:#3a1f1a; --high:#e0a53f; --high-soft:#3a2e15; --med:#a3adb8; --med-soft:#262b31;
+    --note:#17272e; --mono-bg:#1f242a;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#16191d; --page:#0f1114; --panel:#1c2025; --rule:#2b3138; --rule2:#3a424b;
+  --ink:#e8eaed; --ink2:#b3bac2; --ink3:#7f8790;
+  --accent:#4fb6bf; --accent-soft:#12303a;
+  --crit:#f07a62; --crit-soft:#3a1f1a; --high:#e0a53f; --high-soft:#3a2e15; --med:#a3adb8; --med-soft:#262b31;
+  --note:#17272e; --mono-bg:#1f242a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-inline:16px;padding-block:24px 48px}
+.doc{max-width:920px;margin:0 auto;background:var(--ground);padding:48px 44px 64px}
+@media(max-width:640px){.doc{padding:28px 18px 48px}}
+code{font-family:var(--mono);background:var(--mono-bg);padding:1px 5px;border-radius:3px;font-size:.86em;word-break:break-word}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1{font-size:34px;line-height:1.15;margin:8px 0 14px;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin:52px 0 0;padding:14px 0 10px;border-bottom:1px solid var(--rule);display:flex;gap:14px;align-items:baseline}
+h2 .k{font-family:var(--mono);color:var(--accent);font-weight:500;letter-spacing:.1em}
+p{max-width:68ch;margin:10px 0}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.intro{font-size:16.5px;color:var(--ink2);max-width:66ch;margin:0 0 18px}
+.meta{font-family:var(--mono);font-size:12px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:6px 26px;padding-bottom:18px;border-bottom:2px solid var(--ink)}
+.meta b{color:var(--ink);font-weight:500}
+.toc{display:flex;flex-wrap:wrap;gap:6px 18px;margin:16px 0 4px;padding:0;list-style:none;font-size:13.5px}
+.toc a{text-decoration:none;color:var(--ink2)}
+.toc a:hover{color:var(--accent);text-decoration:underline}
+.toc .k{font-family:var(--mono);font-size:11.5px;color:var(--accent);margin-right:6px}
+
+.grid{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:18px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:760px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.g4{grid-template-columns:1fr}}
+.stat{background:var(--ground);padding:18px 16px 14px;min-width:0}
+.stat .n{font-size:29px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.stat .d{font-size:12.5px;color:var(--ink2);margin-top:8px;line-height:1.4}
+.c-crit{color:var(--crit)} .c-acc{color:var(--accent)}
+
+.note{background:var(--note);border-left:3px solid var(--accent);padding:12px 16px;margin:18px 0;font-size:14px;color:var(--ink2)}
+.note b{color:var(--ink)}
+
+.tbl{overflow-x:auto;margin:14px 0 6px;border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 11px;border-bottom:1px solid var(--rule);vertical-align:top;text-align:left}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:500;background:var(--panel);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;white-space:nowrap}
+td.key{font-weight:600;color:var(--ink)}
+td.ix{font-family:var(--mono);color:var(--accent);width:28px}
+.path{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
+.plan td{color:var(--ink2)}
+.plan td.key a{color:var(--ink);text-decoration:none}
+.plan td.key a:hover{color:var(--accent);text-decoration:underline}
+
+.tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;white-space:nowrap;vertical-align:middle}
+.t-fix{background:var(--crit-soft);color:var(--crit)}
+.t-tool{background:var(--accent-soft);color:var(--accent)}
+.t-page{background:var(--high-soft);color:var(--high)}
+.t-sec{background:var(--med-soft);color:var(--med)}
+.when{font-family:var(--mono);font-size:12px;color:var(--ink3);white-space:nowrap}
+
+.act{border:1px solid var(--rule);margin:22px 0 0}
+.act header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;padding:14px 18px 12px;background:var(--panel);border-bottom:1px solid var(--rule)}
+.act header .k{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:500}
+.act header h3{margin:0;font-size:18px;font-weight:600;line-height:1.3;text-wrap:balance;flex:1 1 320px;min-width:0}
+.act header .side{display:flex;gap:10px;align-items:center}
+.act .body{padding:6px 18px 18px;display:grid;gap:4px}
+.act .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin:14px 0 2px}
+.act p{margin:4px 0;color:var(--ink2)}
+.act p b,.act li b{color:var(--ink);font-weight:600}
+.act ul{margin:4px 0;padding-left:20px;color:var(--ink2);max-width:76ch}
+.act li{margin:5px 0}
+.act .done{margin-top:12px;padding:10px 14px;background:var(--accent-soft);color:var(--ink);font-size:14px}
+.act .done b{color:var(--accent)}
+.kw{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px;padding:0;list-style:none}
+.kw li{font-size:12.5px;border:1px solid var(--rule2);padding:2px 8px;border-radius:12px;color:var(--ink2);margin:0}
+.kw li span{font-family:var(--mono);font-size:11.5px;color:var(--ink3);margin-left:5px}
+blockquote{margin:8px 0;padding:6px 0 6px 14px;border-left:2px solid var(--rule2);font-family:var(--mono);font-size:12.5px;color:var(--ink2);max-width:76ch}
+
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+ul.plain{padding-left:20px;max-width:72ch;color:var(--ink2)}
+ul.plain li{margin:6px 0}
+ul.plain b{color:var(--ink)}
+.foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--rule);font-size:13px;color:var(--ink3)}
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
+</style>
+
+<div class="doc">
+  <div class="eyebrow">Your Property Guide · Search data · 7 October 2026</div>
+  <h1>Help to Buy action plan</h1>
+  <p class="intro">About 27,000 Australians a month search for Help to Buy and shared equity. They want the figures, what sharing ownership with the government means for them, what they can afford, and the rules for living with it. Google has crawled our guide and chosen not to index it, because it gives none of those figures. Copilot, meanwhile, cites it more than almost any page on the site, including three statements that are now wrong. This plan rewrites it with the numbers, adds a calculator, and covers the questions nobody answers in plain terms.</p>
+  <div class="meta">
+    <span>Search Console <b>16 months to 3 Oct</b></span>
+    <span>Bing <b>to 6 Oct</b></span>
+    <span>Keyword Planner <b>AU, monthly to Aug 2026</b></span>
+    <span>DataForSEO <b>16 live AU SERPs, US$0.47</b></span>
+    <span>Bing AI Performance <b>6 Jul to 4 Oct</b></span>
+    <span>Official facts <b>read 6–7 Oct</b></span>
+  </div>
+  <ul class="toc">
+    <li><a href="#plan"><span class="k">1</span>The plan</a></li>
+    <li><a href="#actions"><span class="k">2</span>Actions in detail</a></li>
+    <li><a href="#not"><span class="k">3</span>What we leave alone</a></li>
+    <li><a href="#measure"><span class="k">4</span>How we measure it</a></li>
+    <li><a href="#why"><span class="k">5</span>The evidence</a></li>
+  </ul>
+
+  <div class="grid g4">
+    <div class="stat"><div class="n">27,000</div><div class="d">Help to Buy and shared equity searches a month in Australia (Aug 2026), after peaks of 44,000 at launch and 59,000 in March</div></div>
+    <div class="stat"><div class="n c-crit">Not indexed</div><div class="d">Google crawled our guide on 14 July and left it out of the index. 11 impressions in 16 months</div></div>
+    <div class="stat"><div class="n c-acc">3,400</div><div class="d">Copilot citations of the guide in three months, the third most-cited page on the site</div></div>
+    <div class="stat"><div class="n">7 of 16</div><div class="d">results pages asking &ldquo;What does it mean if the government owns 30% of your house?&rdquo;</div></div>
+  </div>
+
+  <div class="note"><b>Why the guide isn&rsquo;t indexed.</b> It gives no figures: no income limits, price caps, lenders or dates, and it tells readers to treat its points &ldquo;as the shape of the rules rather than fixed numbers&rdquo;. It also has three statements that are now wrong (action 1). Our own July news article has the current income limits; the guide doesn&rsquo;t. We appear on none of the 16 Google results pages.</div>
+
+  <div class="note"><b>Copilot already relies on it.</b> Bing&rsquo;s AI Performance report shows 3,400 Copilot citations of the guide between 6 July and 4 October. They come from 12 grounding queries: &ldquo;help to buy scheme&rdquo; (1,800, a 12.3% citation share), &ldquo;help to buy scheme 2026&rdquo; (665), &ldquo;help to buy&rdquo; (300), &ldquo;help to buy scheme australia&rdquo; (216), &ldquo;shared equity scheme&rdquo; (129) and others. Copilot is passing on what the page says, so the corrections in action 1 matter now, not just for Google. Keep the sections it cites and the &ldquo;2026&rdquo; in the title.</div>
+
+  <h2 id="plan"><span class="k">1</span>The plan</h2>
+  <div class="tbl"><table class="plan">
+    <tr><th>#</th><th>Action</th><th>Type</th><th>What it answers</th><th class="num">Searches / mo</th><th>When</th></tr>
+    <tr><td class="ix">1</td><td class="key"><a href="#a1">Rewrite the guide with the figures, and get it indexed</a></td><td><span class="tag t-fix">Fix</span></td><td>&ldquo;Am I eligible?&rdquo; Income limits, price caps, shares, lenders, dates</td><td class="num">20,000+</td><td class="when">Week 1</td></tr>
+    <tr><td class="ix">2</td><td class="key"><a href="#a2">Answer &ldquo;what does a 30% government share mean?&rdquo; with a worked example</a></td><td><span class="tag t-fix">Fix</span></td><td>The most-asked question, plus the downsides</td><td class="num">PAA 7 + 8 of 16</td><td class="when">Week 1</td></tr>
+    <tr><td class="ix">3</td><td class="key"><a href="#a3">Link, track and request indexing</a></td><td><span class="tag t-sec">Setup</span></td><td>Gets the rewrite crawled and measured</td><td class="num">n/a</td><td class="when">Week 1</td></tr>
+    <tr><td class="ix">4</td><td class="key"><a href="#a4">Build the Help to Buy calculator</a></td><td><span class="tag t-tool">New tool</span></td><td>&ldquo;What can I afford with it?&rdquo; and &ldquo;Am I under the caps?&rdquo;</td><td class="num">290, up 13&times;</td><td class="when">Weeks 2–3</td></tr>
+    <tr><td class="ix">5</td><td class="key"><a href="#a5">Cover living with the scheme</a></td><td><span class="tag t-sec">Section</span></td><td>Buying back, selling, renovating, renting out, income rising, separation</td><td class="num">long tail</td><td class="when">Weeks 2–3</td></tr>
+    <tr><td class="ix">6</td><td class="key"><a href="#a6">Cover each state</a></td><td><span class="tag t-page">New pages</span></td><td>&ldquo;help to buy scheme qld / nsw / victoria / wa&rdquo;</td><td class="num">3,300</td><td class="when">Weeks 3–4</td></tr>
+    <tr><td class="ix">7</td><td class="key"><a href="#a7">Write the shared equity schemes guide</a></td><td><span class="tag t-page">New page</span></td><td>State schemes, which are closed, and what can be combined</td><td class="num">2,450</td><td class="when">Weeks 3–4</td></tr>
+    <tr><td class="ix">8</td><td class="key"><a href="#a8">Decide the lead path</a></td><td><span class="tag t-sec">Decision</span></td><td>Where a Help to Buy reader goes next</td><td class="num">n/a</td><td class="when">Before action 4 ships</td></tr>
+  </table></div>
+  <p>Order: get the guide into the index first, because nothing else ranks while it&rsquo;s out. The calculator answers the second-biggest question set and gives the page something no official source has. The state and shared equity pages pick up the rest.</p>
+
+  <h2 id="actions"><span class="k">2</span>Actions in detail</h2>
+
+  <section class="act" id="a1">
+    <header><span class="k">1</span><h3>Rewrite the guide with the figures, and get it indexed</h3><div class="side"><span class="tag t-fix">Fix</span><span class="when">Week 1 · medium</span></div></header>
+    <div class="body">
+      <div class="lbl">Keep what Copilot cites</div>
+      <p>Keep the existing sections (what it is, how shared equity works, the rent question, buying out, selling, the comparison with the 5% Deposit Scheme) and &ldquo;2026&rdquo; in the title. Add the figures to them rather than starting over.</p>
+      <div class="lbl">Lead with a dated facts box (2026–27, from Housing Australia)</div>
+      <div class="tbl"><table>
+        <tr><td class="key">Government share</td><td>Up to 30% of an existing home, up to 40% of a new home (minimum 5%)</td></tr>
+        <tr><td class="key">Your deposit</td><td>At least 2%, plus whatever the lender says you can reasonably afford. No LMI.</td></tr>
+        <tr><td class="key">Income limits</td><td>$103,000 single; $165,000 joint or single parent (taxable income, latest ATO assessment; indexed each 1 July)</td></tr>
+        <tr><td class="key">Who</td><td>Australian citizens 18 or over; permanent residents are not eligible. You can&rsquo;t own property now, but previous owners can apply. You must live in the home.</td></tr>
+        <tr><td class="key">Rent or interest on the government&rsquo;s share</td><td>None</td></tr>
+        <tr><td class="key">Places</td><td>10,000 a year, unused places carried over, 40,000 in total; split by state population</td></tr>
+        <tr><td class="key">Lenders</td><td>Bank Australia, Commonwealth Bank, Teachers Mutual Bank Limited (and its brands), Queensland Country Bank</td></tr>
+        <tr><td class="key">Started</td><td>5 December 2025; national since Tasmania joined on 9 June 2026</td></tr>
+      </table></div>
+      <div class="lbl">Price caps by state</div>
+      <div class="tbl"><table>
+        <tr><th>State</th><th class="num">Capital and regional centres</th><th class="num">Rest of state</th></tr>
+        <tr><td class="key">NSW</td><td class="num">$1,300,000</td><td class="num">$800,000</td></tr>
+        <tr><td class="key">Vic</td><td class="num">$950,000</td><td class="num">$650,000</td></tr>
+        <tr><td class="key">Qld</td><td class="num">$1,000,000</td><td class="num">$700,000</td></tr>
+        <tr><td class="key">WA</td><td class="num">$850,000</td><td class="num">$600,000</td></tr>
+        <tr><td class="key">SA</td><td class="num">$900,000</td><td class="num">$500,000</td></tr>
+        <tr><td class="key">Tas</td><td class="num">$700,000</td><td class="num">$550,000</td></tr>
+        <tr><td class="key">ACT</td><td class="num">$1,000,000</td><td class="num">n/a</td></tr>
+        <tr><td class="key">NT</td><td class="num">$600,000</td><td class="num">$600,000</td></tr>
+      </table></div>
+      <p>Regional centres on the higher cap: Newcastle and Lake Macquarie, Illawarra, Central Coast, Mid-North Coast, Coffs Harbour–Grafton and Richmond–Tweed (NSW); Geelong (Vic); Gold Coast and Sunshine Coast (Qld).</p>
+      <div class="lbl">Correct what&rsquo;s now wrong</div>
+      <ul>
+        <li><b>&ldquo;Income caps are lower than the First Home Guarantee&rdquo;.</b> The 5% Deposit Scheme has had no income test since late 2025. Rewrite the comparison.</li>
+        <li><b>&ldquo;Availability and start dates have varied by jurisdiction&rdquo;.</b> National since 9 June 2026.</li>
+        <li><b>Combining schemes is missing.</b> Help to Buy can&rsquo;t be used with the 5% Deposit Scheme or any state shared equity scheme. It can be used with first home owner grants, stamp duty concessions and the First Home Super Saver Scheme.</li>
+      </ul>
+      <div class="lbl">Answer these questions word for word, first sentence first</div>
+      <ul>
+        <li>Who is eligible for the Help to Buy scheme in Australia?</li>
+        <li>What are the downsides of the Help to Buy scheme? <span class="when">8 of 16, two phrasings</span></li>
+        <li>Which banks are doing the Help to Buy scheme?</li>
+        <li>What is the maximum you can put in a Help to Buy? / What is the price cap in my state?</li>
+        <li>Can I use Help to Buy and the 5% Deposit Scheme together?</li>
+        <li>Can permanent residents use Help to Buy?</li>
+        <li>When did Help to Buy start, and how many places are left?</li>
+      </ul>
+      <div class="done"><b>Done when</b> every figure on the page has a source and a date, the three wrong statements are gone, and the page carries a &ldquo;checked&rdquo; date for 2026–27.</div>
+    </div>
+  </section>
+
+  <section class="act" id="a2">
+    <header><span class="k">2</span><h3>Answer &ldquo;what does a 30% government share mean?&rdquo; with a worked example</h3><div class="side"><span class="tag t-fix">Fix</span><span class="when">Week 1 · small</span></div></header>
+    <div class="body">
+      <div class="lbl">Why</div>
+      <p>It&rsquo;s the most-asked question on the results pages (7 of 16), and the downsides are next (8). Searchers want to see what they give up in money terms. Nobody shows it with numbers.</p>
+      <div class="lbl">The example, a $700,000 existing home</div>
+      <div class="tbl"><table>
+        <tr><th></th><th class="num">Help to Buy</th><th class="num">5% Deposit Scheme</th></tr>
+        <tr><td class="key">Deposit</td><td class="num">$14,000 (2%)</td><td class="num">$35,000 (5%)</td></tr>
+        <tr><td class="key">Government share</td><td class="num">$210,000 (30%)</td><td class="num">None, a guarantee only</td></tr>
+        <tr><td class="key">Home loan</td><td class="num">$476,000</td><td class="num">$665,000</td></tr>
+        <tr><td class="key">Monthly repayment, 30 years at an example 6.5%</td><td class="num">$3,009</td><td class="num">$4,203</td></tr>
+        <tr><td class="key">Sell later for $800,000: to the government</td><td class="num">$240,000</td><td class="num">$0</td></tr>
+      </table></div>
+      <p>Then the downsides in plain terms: you share the growth, buying back the share costs today&rsquo;s value (in steps of at least 5%, with a valuation each time), you can&rsquo;t rent the home out, renovations of $21,000 or more need notice, and you can&rsquo;t combine it with the 5% Deposit Scheme.</p>
+      <div class="done"><b>Done when</b> the question is a heading on the guide, answered in its first sentence, with the table under it.</div>
+    </div>
+  </section>
+
+  <section class="act" id="a3">
+    <header><span class="k">3</span><h3>Link, track and request indexing</h3><div class="side"><span class="tag t-sec">Setup</span><span class="when">Week 1 · small</span></div></header>
+    <div class="body">
+      <ul>
+        <li><b>Request indexing</b> of the rewritten guide in Search Console, and ping IndexNow.</li>
+        <li><b>Internal links</b> from the First Home Guarantee guide, the eight first home buyer state guides, the first home buyer hub, the LMI and borrowing power calculators, and both Help to Buy news articles.</li>
+        <li><b>Tracked queries:</b> help to buy scheme, help to buy scheme qld, help to buy scheme nsw, help to buy eligibility, help to buy price cap, help to buy calculator, shared equity scheme, victorian homebuyer fund.</li>
+      </ul>
+      <div class="done"><b>Done when</b> URL Inspection shows the guide as indexed.</div>
+    </div>
+  </section>
+
+  <section class="act" id="a4">
+    <header><span class="k">4</span><h3>Build the Help to Buy calculator</h3><div class="side"><span class="tag t-tool">New tool</span><span class="when">Weeks 2–3 · medium</span></div></header>
+    <div class="body">
+      <div class="lbl">Why</div>
+      <p>&ldquo;help to buy calculator&rdquo; grew from 20 to 260 searches a month in a year. People Also Ask is full of affordability questions: the deposit for a $700,000 house (7 of 16), the income for a $700,000 mortgage (6), the income for a $500,000 house (6). None of the ranking pages works out the money for you.</p>
+      <div class="lbl">Build at <span class="path">/help-to-buy-calculator</span></div>
+      <ul>
+        <li><b>Inputs:</b> state and capital or regional area, new or existing, price, deposit, income, single, couple or single parent.</li>
+        <li><b>Eligibility check:</b> income against the limit and price against the cap, with the reason if either fails.</li>
+        <li><b>Outputs:</b> the government&rsquo;s share (up to 30% or 40%), your loan, monthly repayments, the same purchase under the 5% Deposit Scheme, and what the government receives at sale after an assumed growth rate.</li>
+        <li>Keep the rules in one data file, with each figure&rsquo;s source and date, so the guide and the calculator print the same numbers and the 1 July update is one edit.</li>
+      </ul>
+      <div class="done"><b>Done when</b> it opens on a worked example, matches the guide&rsquo;s example, and the limits and caps are tested.</div>
+    </div>
+  </section>
+
+  <section class="act" id="a5">
+    <header><span class="k">5</span><h3>Cover living with the scheme</h3><div class="side"><span class="tag t-sec">Section</span><span class="when">Weeks 2–3 · small to medium</span></div></header>
+    <div class="body">
+      <p>Autocomplete has about 32 questions here, and none of the ranking pages answer them plainly. One short, question-led section each:</p>
+      <ul>
+        <li><b>Buying back the share:</b> at least 5% of today&rsquo;s value each time (or all of it), at a valuation you pay for.</li>
+        <li><b>If your income rises:</b> reviewed at least every 5 years. Only 2 years in a row over the limit triggers anything. You repay at least 5% within 90 days if the lender finds you can afford it, and never if it would push you into LMI.</li>
+        <li><b>Selling:</b> the government gets its percentage of the sale price or a valuation, whichever is higher; the bank is repaid first.</li>
+        <li><b>Renovating:</b> notify before $21,000 or more in 12 months, or any work needing council approval, so the added value stays yours.</li>
+        <li><b>Renting it out:</b> not allowed, except for Defence postings, employer relocations and serious illness.</li>
+        <li><b>Refinancing, separation and death:</b> what Housing Australia allows in each case.</li>
+        <li><b>New, existing, off the plan or building:</b> the 40% and 30% split, and moving in within 3 months of completion.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="act" id="a6">
+    <header><span class="k">6</span><h3>Cover each state</h3><div class="side"><span class="tag t-page">New pages</span><span class="when">Weeks 3–4 · medium</span></div></header>
+    <div class="body">
+      <ul class="kw">
+        <li>help to buy scheme qld<span>1,300</span></li><li>help to buy scheme nsw<span>1,300</span></li><li>help to buy scheme victoria<span>about 1,000</span></li><li>help to buy scheme wa<span>480</span></li><li>help to buy scheme sa<span>260</span></li><li>help to buy scheme tasmania<span>70</span></li>
+      </ul>
+      <p>Start with Queensland, NSW, Victoria and WA. Each page covers:</p>
+      <ul>
+        <li>the state&rsquo;s two price caps and which regions get the higher one</li>
+        <li>the state grants and duty concessions that <em>can</em> be combined</li>
+        <li>the state shared equity scheme that can&rsquo;t, and whether it is open: Boost to Buy, Keystart, the closed Victorian Homebuyer Fund</li>
+        <li>a link to the state&rsquo;s first home buyer guide</li>
+      </ul>
+      <p>The other states get a section in the main guide.</p>
+    </div>
+  </section>
+
+  <section class="act" id="a7">
+    <header><span class="k">7</span><h3>Write the shared equity schemes guide</h3><div class="side"><span class="tag t-page">New page</span><span class="when">Weeks 3–4 · medium</span></div></header>
+    <div class="body">
+      <p>About 2,450 searches a month go to state schemes, and some of those schemes are closed: &ldquo;victorian homebuyer fund&rdquo; still gets 480 a month a year after it shut. One page with the status of each, and none can be combined with Help to Buy:</p>
+      <div class="tbl"><table>
+        <tr><th>Scheme</th><th>Status (official, read 6 Oct 2026)</th></tr>
+        <tr><td class="key">Help to Buy (federal)</td><td>Open, national</td></tr>
+        <tr><td class="key">Victorian Homebuyer Fund</td><td>Closed to new applications 10 September 2025</td></tr>
+        <tr><td class="key">NSW Shared Equity Home Buyer Helper</td><td>Closed 30 June 2024</td></tr>
+        <tr><td class="key">Qld Boost to Buy</td><td>Open, regional places only in round 2</td></tr>
+        <tr><td class="key">WA Keystart shared ownership</td><td>Open, including Urban Connect for new apartments and townhouses</td></tr>
+        <tr><td class="key">SA HomeStart Shared Equity Option</td><td>Open</td></tr>
+        <tr><td class="key">Tas MyHome</td><td>Open, through Bank of us</td></tr>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="act" id="a8">
+    <header><span class="k">8</span><h3>Decide the lead path</h3><div class="side"><span class="tag t-sec">Decision</span><span class="when">Before action 4 ships</span></div></header>
+    <div class="body">
+      <p>Help to Buy readers are buyers, mostly first home buyers on lower and middle incomes, not sellers, so the appraisal step that fits bridging doesn&rsquo;t fit here. The options:</p>
+      <ul>
+        <li>the buyer match (<span class="path">/find-an-expert</span>), which sells buyer leads</li>
+        <li>the first home buyer guide funnel</li>
+        <li>a referral to a participating lender or broker</li>
+      </ul>
+      <p>This is a commercial call for you.</p>
+    </div>
+  </section>
+
+  <h2 id="not"><span class="k">3</span>What we leave alone</h2>
+  <ul class="plain">
+    <li><b>The UK and Irish Help to Buy schemes.</b> They fill autocomplete (Martin Lewis, ISA, Dublin, Kerry), and none of it is our audience.</li>
+    <li><b>The adjacent schemes, for now.</b> First Home Super Saver (about 21,000 a month), first home owner grants (18,000), the 5% Deposit Scheme (19,700) and &ldquo;first home buyer schemes&rdquo; (24,000) are a bigger opportunity in their own right. They need their own plan.</li>
+    <li><b>Lender rates and recommendations.</b> List the participating lenders with a date; don&rsquo;t compare or rank them.</li>
+  </ul>
+
+  <h2 id="measure"><span class="k">4</span>How we measure it</h2>
+  <div class="tbl"><table>
+    <tr><th>Signal</th><th>Today</th><th>What good looks like</th></tr>
+    <tr><td class="key">Google index status of the guide</td><td>Crawled, not indexed (14 July)</td><td>Indexed within two weeks of the rewrite</td></tr>
+    <tr><td class="key">Copilot citations of the guide (Bing AI Performance)</td><td>3,400 in 3 months; 12.3% share on &ldquo;help to buy scheme&rdquo;</td><td>Holding or rising after the rewrite, and the citation share growing</td></tr>
+    <tr><td class="key">Google impressions on the guide</td><td>11 in 16 months</td><td>Hundreds a month within 28 days</td></tr>
+    <tr><td class="key">Bing queries on the guide</td><td>None</td><td>Appearing for the head and state terms</td></tr>
+    <tr><td class="key">Tracked SERPs where we&rsquo;re in the top 10</td><td>0 of 16</td><td>The calculator and the state terms first</td></tr>
+  </table></div>
+
+  <h2 id="why"><span class="k">5</span>The evidence</h2>
+  <div class="tbl"><table>
+    <tr><th>Theme</th><th class="num">AU searches / mo, Aug 2026</th><th>Our coverage today</th></tr>
+    <tr><td class="key">Head terms (help to buy scheme)</td><td class="num">15,270</td><td>Guide, not indexed</td></tr>
+    <tr><td class="key">What it is and how it works, shared equity</td><td class="num">4,140</td><td>In words, no figures</td></tr>
+    <tr><td class="key">State and city</td><td class="num">3,310</td><td>None (action 6)</td></tr>
+    <tr><td class="key">State shared equity schemes</td><td class="num">2,450</td><td>None (action 7)</td></tr>
+    <tr><td class="key">Apply, lenders, places and dates</td><td class="num">850</td><td>None (action 1)</td></tr>
+    <tr><td class="key">Eligibility, income and price caps</td><td class="num">680</td><td>Shape only (action 1)</td></tr>
+    <tr><td class="key">Calculators</td><td class="num">290</td><td>None (action 4)</td></tr>
+    <tr><td class="key">Pros, cons, comparisons, property type, living with it</td><td class="num">260</td><td>Partial (actions 2, 5); far bigger in People Also Ask and autocomplete than in volume</td></tr>
+  </table></div>
+  <p>The questions with the most People Also Ask appearances, out of 16 results pages: &ldquo;What does it mean if the government owns 30% of your house?&rdquo; (7), &ldquo;How much deposit do I need for a $700000 house?&rdquo; (7), &ldquo;How much do you need to earn for a $700000 mortgage?&rdquo; (6), &ldquo;How much income do you need to buy a $500,000 house in Australia?&rdquo; (6), and &ldquo;What are the downsides of the Help to Buy scheme?&rdquo; (5, and 3 more in another phrasing).</p>
+  <p class="foot">Full findings: <code>docs/seo-baselines/2026-10-06/help-to-buy/</code> (README.md, official-facts.md, keywords.csv, questions.csv, autocomplete.csv, serp-landscape.csv, our-queries.csv). Pull script: <code>~/Desktop/Ads/ypg-topic-pull.py</code> with <code>ypg-topic-help-to-buy.json</code>. Volumes are Keyword Planner monthly figures for August 2026 unless stated. The worked example uses an example 6.5% rate.</p>
+</div>

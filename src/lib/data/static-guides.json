@@ -159,7 +159,7 @@
       "title": "First Home Buyer Guide ACT: Schemes, Stamp Duty & Canberra Property (2026)",
       "description": "ACT first home buyer guide: no FHOG (instead a full stamp duty waiver via the Home Buyer Concession Scheme), ACT Shared Equity, $750,000 First Home Guarantee cap, and how leasehold land works.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-07",
       "readingTimeMinutes": 9,
       "persona": "first-home"
     },
@@ -168,7 +168,7 @@
       "title": "First Home Buyer Guide Australia: Grants, Schemes & Steps (2026)",
       "description": "Complete guide for Australian first home buyers: federal grants and schemes (FHBG, Family Home Guarantee), state grants by state, stamp duty concessions, and step-by-step buying advice.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-07",
       "readingTimeMinutes": 10,
       "persona": "first-home"
     },
@@ -186,7 +186,7 @@
       "title": "First Home Buyer Guide NSW: Grants, Stamp Duty & Schemes (2026)",
       "description": "NSW first home buyer guide: $10,000 FHOG for new homes, stamp duty exemption up to $800K, concession to $1M, federal schemes, and step-by-step NSW buying advice.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-07",
       "readingTimeMinutes": 7,
       "persona": "first-home"
     },
@@ -195,7 +195,7 @@
       "title": "First Home Buyer Guide Northern Territory: Grants & Schemes (2026)",
       "description": "NT first home buyer guide: $10,000 FHOG, First Home Owner Discount of up to $23,928.60 in stamp duty relief, leasehold land considerations, and federal scheme caps for Darwin.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-07",
       "readingTimeMinutes": 8,
       "persona": "first-home"
     },
@@ -204,7 +204,7 @@
       "title": "First Home Buyer Guide QLD: $30K Grant, Stamp Duty & Schemes (2026)",
       "description": "Queensland first home buyer guide: $30,000 FHOG for new homes under $750K (locked in by the 2026-27 QLD Budget), zero stamp duty on new homes, federal schemes, and QLD buying tips.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-07-24",
+      "updatedAt": "2026-10-07",
       "readingTimeMinutes": 7,
       "persona": "first-home"
     },
@@ -213,7 +213,7 @@
       "title": "First Home Buyer Guide South Australia: Grants, Stamp Duty & Schemes (2026)",
       "description": "Complete guide for first home buyers in South Australia: $15,000 FHOG, stamp duty rules, First Home Guarantee, HomeSeeker SA shared equity, and off-the-plan concessions.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-07",
       "readingTimeMinutes": 9,
       "persona": "first-home"
     },
@@ -222,16 +222,16 @@
       "title": "First Home Buyer Guide Tasmania: Grants, Stamp Duty & Schemes (2026)",
       "description": "Tasmania first home buyer guide: $30,000 FHOG on new homes, 50% stamp duty concession on established homes up to $600K, federal schemes, and Tasmania's affordability advantage.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-07-24",
+      "updatedAt": "2026-10-07",
       "readingTimeMinutes": 8,
       "persona": "first-home"
     },
     {
       "slug": "first-home-buyer-vic",
       "title": "First Home Buyer Guide VIC: Grants, Stamp Duty & Schemes (2026)",
-      "description": "Victoria first home buyer guide: $10K FHOG (regional $20K), stamp duty exemption up to $600K, concession to $750K, federal schemes, and VIC buying tips.",
+      "description": "Victoria first home buyer guide: the $10,000 FHOG on new homes, stamp duty exemption up to $600K and concession to $750K, Help to Buy and federal schemes, and VIC buying tips.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-07",
       "readingTimeMinutes": 7,
       "persona": "first-home"
     },
@@ -240,7 +240,7 @@
       "title": "First Home Buyer Guide WA: $10K Grant, Stamp Duty & Schemes (2026)",
       "description": "Western Australia first home buyer guide: $10,000 FHOG for new homes under $750K, stamp duty exemption under $450K, concession to $600K, federal schemes, and Keystart loans.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-07",
       "readingTimeMinutes": 7,
       "persona": "first-home"
     },
@@ -249,7 +249,7 @@
       "title": "First Home Guarantee 2026: Buy With a 5% Deposit, No LMI",
       "description": "How the Australian Government 5% Deposit Scheme (the expanded First Home Guarantee) lets eligible first home buyers purchase with a 5% deposit and no Lenders Mortgage Insurance. The 2025 expansion, price caps, the Family Home Guarantee, and how it stacks with the FHOG.",
       "publishedAt": "2026-06-14",
-      "updatedAt": "2026-06-16",
+      "updatedAt": "2026-10-07",
       "readingTimeMinutes": 8,
       "persona": "first-home"
     },
@@ -258,7 +258,7 @@
       "title": "First Home Owner Grant (FHOG) by State: 2026 Amounts & Eligibility",
       "description": "The First Home Owner Grant is a state grant, not federal. See FHOG amounts, price caps and eligibility for every state and territory, plus links to each state's detailed guide.",
       "publishedAt": "2026-06-14",
-      "updatedAt": "2026-07-24",
+      "updatedAt": "2026-10-07",
       "readingTimeMinutes": 8,
       "persona": "first-home"
     },
@@ -337,10 +337,46 @@
     {
       "slug": "help-to-buy-scheme-australia",
       "title": "Help to Buy Scheme Australia: How the Shared Equity Scheme Works (2026)",
-      "description": "How the federal Help to Buy shared equity scheme works: the government takes up to 40% equity on a new home or 30% on an existing one, you buy with a 2% deposit, income and price caps apply, and you can buy the stake out over time.",
+      "description": "The federal Help to Buy scheme for 2026–27: income limits ($103,000 single, $165,000 joint), price caps by state, the 2% deposit, the government's 30% or 40% share, participating lenders, what happens when you sell, and how it compares with the 5% Deposit Scheme.",
       "publishedAt": "2026-06-14",
-      "updatedAt": "2026-06-14",
-      "readingTimeMinutes": 8,
+      "updatedAt": "2026-10-07",
+      "readingTimeMinutes": 14,
+      "persona": "first-home"
+    },
+    {
+      "slug": "help-to-buy-scheme-nsw",
+      "title": "Help to Buy Scheme NSW (2026): Price Caps, Eligibility and Stamp Duty",
+      "description": "Help to Buy in NSW for 2026–27: the $1.3 million and $800,000 price caps and where they apply, income limits, the First Home Buyers Assistance Scheme and $10,000 grant you can add, and lenders.",
+      "publishedAt": "2026-10-07",
+      "updatedAt": "2026-10-07",
+      "readingTimeMinutes": 6,
+      "persona": "first-home"
+    },
+    {
+      "slug": "help-to-buy-scheme-qld",
+      "title": "Help to Buy Scheme QLD (2026): Price Caps, Eligibility and the $30,000 Grant",
+      "description": "Help to Buy in Queensland for 2026–27: the $1 million and $700,000 price caps, income limits, the $30,000 First Home Owner Grant and no duty on new homes, how Queensland treats the government's share, and Boost to Buy.",
+      "publishedAt": "2026-10-07",
+      "updatedAt": "2026-10-07",
+      "readingTimeMinutes": 6,
+      "persona": "first-home"
+    },
+    {
+      "slug": "help-to-buy-scheme-victoria",
+      "title": "Help to Buy Scheme Victoria (2026): Price Caps, Eligibility and Stamp Duty",
+      "description": "Help to Buy in Victoria for 2026–27: the $950,000 and $650,000 price caps, income limits, no duty to $600,000 on the full price, the $10,000 grant, and what replaced the Victorian Homebuyer Fund.",
+      "publishedAt": "2026-10-07",
+      "updatedAt": "2026-10-07",
+      "readingTimeMinutes": 6,
+      "persona": "first-home"
+    },
+    {
+      "slug": "help-to-buy-scheme-wa",
+      "title": "Help to Buy Scheme WA (2026): Price Caps, Eligibility and Keystart",
+      "description": "Help to Buy in Western Australia for 2026–27: the $850,000 and $600,000 price caps, income limits, the $10,000 grant and first home owner duty rate, how RevenueWA treats the government's share, and Keystart.",
+      "publishedAt": "2026-10-07",
+      "updatedAt": "2026-10-07",
+      "readingTimeMinutes": 6,
       "persona": "first-home"
     },
     {
@@ -711,6 +747,15 @@
       "publishedAt": "2026-05-18",
       "updatedAt": "2026-05-18",
       "readingTimeMinutes": 12,
+      "persona": "first-home"
+    },
+    {
+      "slug": "shared-equity-schemes-australia",
+      "title": "Shared Equity Schemes in Australia (2026): Help to Buy and Every State Scheme",
+      "description": "Every shared equity scheme in Australia and whether it's open: Help to Buy, Queensland's Boost to Buy, WA's Keystart, SA's HomeStart and Tasmania's MyHome, plus the closed Victorian Homebuyer Fund and NSW Shared Equity Home Buyer Helper.",
+      "publishedAt": "2026-10-07",
+      "updatedAt": "2026-10-07",
+      "readingTimeMinutes": 8,
       "persona": "first-home"
     },
     {

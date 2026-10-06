@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import {
   GuideArticleLayout,
   Callout,
@@ -19,7 +20,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "NSW first home buyer guide: $10,000 FHOG for new homes, stamp duty exemption up to $800K, concession to $1M, federal schemes, and step-by-step NSW buying advice.",
   slug: "first-home-buyer-nsw",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-07",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -238,11 +239,7 @@ export default function FirstHomeBuyerNSWPage() {
           <strong>Family Home Guarantee:</strong> 2% deposit for single parents,
           income limit $125K. Price cap as for FHBG.
         </li>
-        <li>
-          <strong>Help to Buy (shared equity):</strong> Government takes up to 40%
-          equity on new homes / 30% on existing. Income limits $90K single /
-          $120K couple. Check housing.gov.au for current operational status.
-        </li>
+        <HelpToBuyNote state="NSW" />
       </ul>
       <p>
         Federal schemes are available through participating lenders nationwide,
