@@ -114,6 +114,13 @@ const GROUPS: ToolGroup[] = [
         icon: "/images/icons/calculator.svg",
       },
       {
+        href: "/bridging-loan-calculator",
+        title: "Bridging Loan Calculator",
+        description:
+          "Buying before you sell: peak debt and its LVR, interest added while you sell, end debt and the cost against selling first.",
+        icon: "/images/icons/calculator.svg",
+      },
+      {
         href: "/affordability-calculator",
         title: "Affordability Calculator",
         description:

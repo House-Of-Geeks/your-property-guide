@@ -38,12 +38,21 @@
       "persona": "selling"
     },
     {
+      "slug": "bridging-loan-alternatives",
+      "title": "Alternatives to a Bridging Loan in Australia: What Costs Less (2026)",
+      "description": "Selling first and renting, subject-to-sale offers, longer settlements, deposit bonds and using your equity, compared on cost and risk against a bridging loan, with what each costs on the same move.",
+      "publishedAt": "2026-10-06",
+      "updatedAt": "2026-10-06",
+      "readingTimeMinutes": 10,
+      "persona": "upgrading"
+    },
+    {
       "slug": "bridging-loans-guide",
-      "title": "Bridging Loans Australia: How They Work, Costs & When to Use One (2026)",
-      "description": "Bridging loan guide for Australians moving home: how peak debt and end debt work, typical interest rates, capitalised interest, the 6 to 12 month bridging period, and the alternatives.",
+      "title": "Bridging Loans Australia: How They Work, What They Cost & the Risks (2026)",
+      "description": "How a bridging loan works when you buy before you sell: peak debt and end debt, what the interest costs in dollars, how much equity you need, what happens if your home doesn't sell, and the cheaper alternatives.",
       "publishedAt": "2026-05-06",
-      "updatedAt": "2026-05-06",
-      "readingTimeMinutes": 9,
+      "updatedAt": "2026-10-06",
+      "readingTimeMinutes": 14,
       "persona": "upgrading"
     },
     {
@@ -119,11 +128,20 @@
       "persona": "selling"
     },
     {
+      "slug": "deposit-bonds",
+      "title": "Deposit Bonds Australia: How They Work, What They Cost & the Risks (2026)",
+      "description": "What a deposit bond is, what it costs, who issues them, when a seller can refuse one, how they work at auction, and how a bond fits when you buy your next home before selling the current one.",
+      "publishedAt": "2026-10-06",
+      "updatedAt": "2026-10-06",
+      "readingTimeMinutes": 9,
+      "persona": "upgrading"
+    },
+    {
       "slug": "downsizers-guide",
       "title": "Downsizer's guide to Australian property: super contributions and concessions (2026)",
       "description": "How the $300,000 downsizer super contribution works, stamp duty concessions, retirement village contracts, CGT, Centrelink implications, and practical considerations.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-06",
       "readingTimeMinutes": 7,
       "persona": "upgrading"
     },
@@ -682,7 +700,7 @@
       "title": "Sell First or Buy First? The Australian Mover's Decision Guide (2026)",
       "description": "When you're moving home, do you sell first or buy first? Walk through the trade-offs, market signals, and the three financing options (sell first, subject-to-sale, bridging loan) with worked examples.",
       "publishedAt": "2026-05-06",
-      "updatedAt": "2026-05-06",
+      "updatedAt": "2026-10-06",
       "readingTimeMinutes": 8,
       "persona": "upgrading"
     },

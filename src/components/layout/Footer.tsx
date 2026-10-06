@@ -88,6 +88,7 @@ const FOOTER_COLUMNS = [
       { label: "Rental yield",             href: "/rental-yield-calculator" },
       { label: "LMI calculator",           href: "/lmi-calculator" },
       { label: "Negative gearing",         href: "/negative-gearing-calculator" },
+      { label: "Bridging loan",            href: "/bridging-loan-calculator" },
     ],
   },
   {

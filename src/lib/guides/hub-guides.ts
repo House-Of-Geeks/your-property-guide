@@ -153,6 +153,7 @@ export const CALCULATOR_GUIDES: readonly CalculatorGuides[] = [
   { href: "/stamp-duty-calculator", label: "Stamp Duty Calculator", guides: perState("stamp-duty") },
   { href: "/borrowing-power-calculator", label: "Borrowing Power Calculator", guides: ["how-much-can-i-borrow-australia", "home-loan-pre-approval-australia"] },
   { href: "/lmi-calculator", label: "LMI Calculator", guides: ["lenders-mortgage-insurance-guide", "how-much-deposit-to-buy-a-house", "first-home-guarantee"] },
+  { href: "/bridging-loan-calculator", label: "Bridging Loan Calculator", guides: ["bridging-loans-guide", "sell-first-or-buy-first", "downsizers-guide"] },
   { href: "/affordability-calculator", label: "Affordability Calculator", guides: ["how-much-deposit-to-buy-a-house", "lenders-mortgage-insurance-guide"] },
   { href: "/mortgage-calculator", label: "Mortgage Calculator", guides: ["fixed-vs-variable-rate-guide", "lenders-mortgage-insurance-guide"] },
   { href: "/refinancing-calculator", label: "Refinancing Calculator", guides: ["fixed-vs-variable-rate-guide", "offset-accounts-explained-australia"] },
