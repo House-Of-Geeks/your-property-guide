@@ -1,23 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { DollarSign, Info, AlertTriangle, CheckCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { formatPriceFull } from "@/lib/utils/format";
 
-// HEM base by number of dependants (monthly, $)
-const HEM_BASE: Record<number, number> = {
-  0: 2_000,
-  1: 2_500,
-  2: 3_000,
-  3: 3_500,
-};
-const HEM_4PLUS = 4_000;
-
-function getHEM(dependants: number): number {
-  if (dependants >= 4) return HEM_4PLUS;
-  return HEM_BASE[dependants] ?? HEM_4PLUS;
-}
+import { getHEM, type Household, type Region } from "@/lib/utils/borrowing-power";
+import { HEM_AS_AT, hemIncomeBand } from "@/lib/data/hem";
 
 type DepositPercent = 10 | 15 | 20;
 type AustralianState =
@@ -64,6 +53,8 @@ function computeAffordability(
   dependants: number,
   depositPct: DepositPercent,
   interestRate: number,
+  household: Household,
+  region: Region,
 ): AffordabilityResult | null {
   const grossAnnual = income1 + income2;
   if (grossAnnual <= 0 || savings <= 0) return null;
@@ -82,7 +73,7 @@ function computeAffordability(
   const assessmentRate = interestRate + 3;
   const netAnnual = grossAnnual * 0.72;
   const monthlyNetIncome = netAnnual / 12;
-  const hemUsed = Math.max(monthlyExpenses, getHEM(dependants));
+  const hemUsed = Math.max(monthlyExpenses, getHEM(dependants, { household, grossIncome: grossAnnual, region }));
   const availableForRepayments = monthlyNetIncome - hemUsed;
   if (availableForRepayments <= 0) return null;
 
@@ -149,10 +140,13 @@ export function AffordabilityCalculator() {
   const [depositPct, setDepositPct] = useState<DepositPercent>(20);
   const [interestRate, setInterestRate] = useState(6.5);
   const [selectedState, setSelectedState] = useState<AustralianState>("QLD");
+  const [householdChoice, setHouseholdChoice] = useState<Household | null>(null);
+  const [region, setRegion] = useState<Region>("capital");
+  const household: Household = householdChoice ?? (income2 > 0 ? "couple" : "single");
+  const hemBenchmark = getHEM(dependants, { household, grossIncome: income1 + income2, region });
 
-  const result = useMemo(
-    () =>
-      computeAffordability(
+  // Cheap arithmetic; computed on every render rather than memoised.
+  const result = computeAffordability(
         income1,
         income2,
         savings,
@@ -160,9 +154,9 @@ export function AffordabilityCalculator() {
         dependants,
         depositPct,
         interestRate,
-      ),
-    [income1, income2, savings, monthlyExpenses, dependants, depositPct, interestRate]
-  );
+        household,
+        region,
+      );
 
   const fmt = (n: number) => formatPriceFull(Math.round(n));
 
@@ -210,6 +204,32 @@ export function AffordabilityCalculator() {
           hint="If below the HEM benchmark for your household, the bank minimum will be used."
         />
 
+        {/* Household and location move the HEM floor */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Household</label>
+            <div className="grid grid-cols-2 gap-2">
+              {(["single", "couple"] as Household[]).map((h) => (
+                <button key={h} type="button" onClick={() => setHouseholdChoice(h)}
+                  className={`py-2 rounded-lg text-sm font-medium border transition-colors ${household === h ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"}`}>
+                  {h === "single" ? "Single" : "Couple"}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Where you will live</label>
+            <div className="grid grid-cols-2 gap-2">
+              {(["capital", "regional"] as Region[]).map((r) => (
+                <button key={r} type="button" onClick={() => setRegion(r)}
+                  className={`py-2 rounded-lg text-sm font-medium border transition-colors ${region === r ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"}`}>
+                  {r === "capital" ? "Capital city" : "Regional"}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* Dependants */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -231,7 +251,8 @@ export function AffordabilityCalculator() {
             ))}
           </div>
           <p className="text-xs text-gray-500 mt-1">
-            HEM benchmark: {fmt(getHEM(dependants >= 6 ? 4 : dependants))}/month
+            Indicative HEM for a {household === "couple" ? "couple" : "single person"} with {dependants === 0 ? "no dependants" : `${dependants >= 6 ? "6 or more" : dependants} dependant${dependants === 1 ? "" : "s"}`} on{" "}
+            {hemIncomeBand(income1 + income2).label}: <strong>{fmt(hemBenchmark)} a month</strong> ({HEM_AS_AT}, our estimate; the bank uses the higher of this and your figure).
           </p>
         </div>
 
@@ -417,6 +438,13 @@ export function AffordabilityCalculator() {
                 className="flex-1 flex items-center justify-between gap-2 rounded-lg border border-gray-200 px-4 py-3 text-sm text-gray-700 hover:border-primary hover:text-primary transition-colors"
               >
                 <span>Precise stamp duty for {selectedState}</span>
+                <ArrowRight className="w-4 h-4 flex-shrink-0" />
+              </Link>
+              <Link
+                href={`/best-suburbs/most-affordable/${selectedState.toLowerCase()}`}
+                className="flex-1 flex items-center justify-between gap-2 rounded-lg border border-gray-200 px-4 py-3 text-sm text-gray-700 hover:border-primary hover:text-primary transition-colors"
+              >
+                <span>Suburbs this price buys in {selectedState}</span>
                 <ArrowRight className="w-4 h-4 flex-shrink-0" />
               </Link>
               <Link

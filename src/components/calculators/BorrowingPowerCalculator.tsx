@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { DollarSign, Info, Users, TrendingUp } from "lucide-react";
 import { formatPriceFull } from "@/lib/utils/format";
-import { DEFAULT_ASSESSMENT_RATE, computeBorrowingPower, getHEM } from "@/lib/utils/borrowing-power";
+import { DEFAULT_ASSESSMENT_RATE, computeBorrowingPower, getHEM, type Household, type Region } from "@/lib/utils/borrowing-power";
+import { HEM_AS_AT, hemIncomeBand } from "@/lib/data/hem";
 
 export function BorrowingPowerCalculator() {
   const [income1, setIncome1] = useState(100_000);
@@ -14,20 +15,23 @@ export function BorrowingPowerCalculator() {
   const [existingDebts, setExistingDebts] = useState(0);
   const [assessmentRate, setAssessmentRate] = useState(DEFAULT_ASSESSMENT_RATE);
   const [termYears, setTermYears] = useState(30);
+  const [householdChoice, setHouseholdChoice] = useState<Household | null>(null);
+  const [region, setRegion] = useState<Region>("capital");
+  // A second income means a couple unless the reader says otherwise.
+  const household: Household = householdChoice ?? (income2 > 0 ? "couple" : "single");
+  const hemBenchmark = getHEM(dependants, { household, grossIncome: income1 + income2, region });
 
-  const result = useMemo(
-    () =>
-      computeBorrowingPower(
+  // Cheap arithmetic; computed on every render rather than memoised.
+  const result = computeBorrowingPower(
         income1,
         income2,
         monthlyExpenses,
         dependants,
         existingDebts,
         assessmentRate,
-        termYears
-      ),
-    [income1, income2, monthlyExpenses, dependants, existingDebts, assessmentRate, termYears]
-  );
+        termYears,
+        { household, region }
+      );
 
   const fmt = (n: number) => formatPriceFull(Math.round(n));
 
@@ -68,6 +72,48 @@ export function BorrowingPowerCalculator() {
           hint="If left below the HEM benchmark for your household, the bank minimum will be used."
         />
 
+        {/* Household and location: they move the HEM floor */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Household</label>
+            <div className="grid grid-cols-2 gap-2">
+              {(["single", "couple"] as Household[]).map((h) => (
+                <button
+                  key={h}
+                  type="button"
+                  onClick={() => setHouseholdChoice(h)}
+                  className={`py-2 rounded-lg text-sm font-medium border transition-colors ${
+                    household === h
+                      ? "bg-primary text-white border-primary"
+                      : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
+                  }`}
+                >
+                  {h === "single" ? "Single" : "Couple"}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Where you will live</label>
+            <div className="grid grid-cols-2 gap-2">
+              {(["capital", "regional"] as Region[]).map((r) => (
+                <button
+                  key={r}
+                  type="button"
+                  onClick={() => setRegion(r)}
+                  className={`py-2 rounded-lg text-sm font-medium border transition-colors ${
+                    region === r
+                      ? "bg-primary text-white border-primary"
+                      : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
+                  }`}
+                >
+                  {r === "capital" ? "Capital city" : "Regional"}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* Dependants */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -89,7 +135,10 @@ export function BorrowingPowerCalculator() {
             ))}
           </div>
           <p className="text-xs text-gray-500 mt-1">
-            HEM benchmark: {fmt(getHEM(dependants >= 6 ? 4 : dependants))}/month
+            Indicative HEM for a {household === "couple" ? "couple" : "single person"} with {dependants === 0 ? "no dependants" : `${dependants >= 6 ? "6 or more" : dependants} dependant${dependants === 1 ? "" : "s"}`} on{" "}
+            {hemIncomeBand(income1 + income2).label} in a {region === "capital" ? "capital city" : "regional area"}:{" "}
+            <strong>{fmt(hemBenchmark)} a month</strong> ({HEM_AS_AT}, our estimate; see the{" "}
+            <a href="#hem-table" className="underline">HEM table</a> below).
           </p>
         </div>
 
@@ -187,14 +236,14 @@ export function BorrowingPowerCalculator() {
             <StatCard
               label="Living Expenses Used"
               value={fmt(result.hemUsed)}
-              sub="HEM or your figure"
+              sub={result.expensesSource === "hem" ? `indicative HEM benchmark, ${HEM_AS_AT}` : "your declared figure (above HEM)"}
             />
           </div>
 
           {/* Breakdown */}
           <div className="px-6 pb-4 space-y-3 border-t border-gray-100 pt-4">
             <SummaryRow label="Monthly net income" value={fmt(result.monthlyNetIncome)} />
-            <SummaryRow label="Less: living expenses (HEM)" value={`-${fmt(result.hemUsed)}`} />
+            <SummaryRow label={result.expensesSource === "hem" ? "Less: living expenses (HEM floor)" : "Less: living expenses (declared)"} value={`-${fmt(result.hemUsed)}`} />
             <SummaryRow label="Less: existing debts" value={`-${fmt(existingDebts)}`} />
             <SummaryRow
               label="Available for repayments"

@@ -56,7 +56,9 @@ describe("borrowing power by income", () => {
   });
   it("answers the $100,000 salary question with the table's own figure, 40+ words and the assumptions", () => {
     const faqs = borrowingPowerFaqs();
-    expect(faqs).toHaveLength(1);
+    expect(faqs).toHaveLength(2);
+    expect(faqs[1].question).toMatch(/couple with two children/);
+    expect(faqs[1].answer).not.toMatch(/\$0\b/);
     const [faq] = faqs;
     expect(faq.question).toBe("How much can I borrow on a $100,000 salary?");
     expect(faq.answer.split(/\s+/).length).toBeGreaterThanOrEqual(40);

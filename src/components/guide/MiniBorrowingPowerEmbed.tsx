@@ -109,7 +109,7 @@ export function MiniBorrowingPowerEmbed({
             className="w-full rounded-lg border border-line bg-surface-raised px-4 py-2.5 font-sans text-base text-ink focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
           />
           <p className="mt-2 font-sans text-xs text-ink-subtle">
-            The bank uses at least the HEM benchmark ({formatMoney(getHEM(dependants))}/mo for your household).
+            The bank uses at least the HEM benchmark ({formatMoney(getHEM(dependants, { grossIncome: income }))}/mo, our indicative figure for a single applicant on this income).
           </p>
         </div>
       </div>

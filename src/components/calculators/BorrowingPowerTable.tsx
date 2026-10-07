@@ -20,10 +20,11 @@ export function BorrowingPowerTable() {
       <p>
         What a single applicant and a couple can borrow on this calculator&rsquo;s
         method, before you enter your own figures. Assumptions, as at {asAt()}:
-        no other debts, no dependants, living expenses of {money(BORROWING_TABLE.monthlyExpenses)} a
-        month (the floor this calculator applies to a household with no
-        dependants; the calculator above starts at $3,000, so enter {money(BORROWING_TABLE.monthlyExpenses)} to
-        reproduce a row), net income taken as 72% of gross, repayments capped at 85%
+        no other debts, no dependants, living expenses at the indicative HEM floor for each
+        household and income band ({BORROWING_TABLE.asAtHem}; {money(BORROWING_TABLE.monthlyExpenses)} a month for a
+        single person on $100,000, more for a couple or a higher income, as the{" "}
+        <a href="#hem-table">HEM table</a> below shows; the calculator above starts at $3,000, so enter a
+        lower figure to reproduce a row), net income taken as 72% of gross, repayments capped at 85%
         of what is left, and a {rate}% assessment rate over {BORROWING_TABLE.termYears} years.
         That rate is the {BORROWING_TABLE.loanRate}% average rate on new owner-occupier variable
         loans in {BORROWING_TABLE.loanRatePeriod} (Reserve Bank of Australia, statistical table F6)
@@ -58,9 +59,8 @@ export function BorrowingPowerTable() {
       <p>
         <small>
           Couple: both partners earn the income shown, so the $100,000 row is a
-          $200,000 household. The calculator applies the same expense floor to a
-          couple as to a single person, where lenders allow more for a couple, so
-          the couple column is the more generous of the two. Add a 20% deposit for the purchase price (a {money(rows[0].single)} loan
+          $200,000 household, and carries the higher living-expense floor of a
+          couple in a higher income band. Add a 20% deposit for the purchase price (a {money(rows[0].single)} loan
           buys about {money(Math.round(rows[0].single / 0.8 / 1000) * 1000)}). A credit card limit, a car loan or HECS
           repayments come off the surplus before the loan is worked out, so treat
           each figure as a ceiling and run your own numbers above.

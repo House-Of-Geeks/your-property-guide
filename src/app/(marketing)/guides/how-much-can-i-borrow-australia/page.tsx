@@ -206,7 +206,11 @@ export default function HowMuchCanIBorrowAustraliaPage() {
         location. If you declare less than the benchmark, the lender uses the
         benchmark anyway. If you declare more, they use your figure. The practical
         effect is a floor under your assessed expenses, which is why understating
-        your spending rarely lifts your borrowing power.
+        your spending rarely lifts your borrowing power. HEM excludes rent and
+        mortgage payments; childcare, school fees, HECS and loan repayments are
+        counted on top of it. Our <Link href="/borrowing-power-calculator#hem-table">borrowing power calculator</Link> shows
+        the indicative HEM for each household, and the{" "}
+        <Link href="/glossary/hem-household-expenditure-measure">glossary entry</Link> has the definition in a paragraph.
       </p>
 
       <h2 id="the-buffer">The serviceability buffer</h2>

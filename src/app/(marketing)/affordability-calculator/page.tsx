@@ -1,23 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AffordabilityCalculator } from "@/components/calculators/AffordabilityCalculator";
+import { AffordabilityByHouseholdTable } from "@/components/calculators/AffordabilityByHouseholdTable";
+import { affordabilityFaqs } from "@/lib/affordability-table";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
 import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Property Affordability Calculator",
+  // The H1 carries the query the page is shown for ("how much house can i
+  // afford", the top query reaching it on 30 Sep 2026 at position 88).
+  h1: "How much house can I afford? Property affordability calculator",
   description:
     "Find out what property price you can realistically afford based on your deposit, income and living costs, using the same methods Australian banks use.",
   slug: "affordability-calculator",
   schemaName: "Property Affordability Calculator",
   schemaDescription: "Calculate how much property you can afford based on your deposit and borrowing power.",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-08",
   persona: "first-home",
 };
 
-const META_TITLE = "Property Affordability Calculator: How Much Can I Spend?";
-const META_DESCRIPTION = "Free Australian property affordability calculator. Combines borrowing power, deposit, stamp duty and buying costs into the price you can actually afford. No sign-up.";
+const META_TITLE = "How Much House Can I Afford? Property Affordability Calculator Australia";
+const META_DESCRIPTION = "Free Australian affordability calculator: the purchase price your deposit and income support, with the HEM living-expense floor for your household, by income and family size. No sign-up.";
 
 export const metadata: Metadata = {
   title: META_TITLE,
@@ -59,6 +64,11 @@ const FAQS: FaqItem[] = [
       "This is an estimate based on simplified assumptions. Actual borrowing capacity varies by lender, your credit history, employment type, and other factors. Stamp duty rates also vary by state and buyer status. Use our Stamp Duty Calculator for a precise duty estimate, and speak with a mortgage broker for a personalised borrowing assessment.",
   },
   {
+    question: "How do living expenses and the HEM benchmark change what I can afford?",
+    answer:
+      "A bank deducts the higher of the living expenses you declare and the Household Expenditure Measure (HEM) for a household like yours before it works out what you can repay, so declaring less than HEM does not lift the figure, while a couple with children carries a higher floor than a single person on the same income. This calculator applies an indicative HEM by household, income band and location; the table below shows the floors and the prices they leave. Rent and mortgage payments are not in HEM, and childcare, school fees, HECS and loan repayments come off on top of it.",
+  },
+  {
     question: "Should I buy at my maximum affordable price?",
     answer:
       "Almost never. Buying at your absolute ceiling leaves no buffer for rate rises, unexpected repairs, life changes, or fluctuating income. Many buyers target 10 to 15% below their calculated max to keep the loan comfortable through the cycle. The calculator shows what's possible; what's wise depends on your situation.",
@@ -72,6 +82,7 @@ const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide",     href: "/guides/first-home-buyer-guide", description: "Schemes that change the deposit math." },
   { title: "LMI Explained",              href: "/guides/lenders-mortgage-insurance-guide", description: "What LMI is, what it costs, and how to avoid it." },
   { title: "Browse suburbs by median",   href: "/suburbs",                    description: "See what your affordable price actually buys you, by suburb." },
+  { title: "What is HEM?",               href: "/glossary/hem-household-expenditure-measure", description: "The living-expense floor lenders apply, in a paragraph." },
 ];
 
 export default function AffordabilityCalculatorPage() {
@@ -79,11 +90,13 @@ export default function AffordabilityCalculatorPage() {
     <CalculatorPageLayout
       frontmatter={FRONTMATTER}
       calculator={<AffordabilityCalculator />}
-      faqs={FAQS}
+      faqs={[...affordabilityFaqs(), ...FAQS]}
       related={RELATED}
       intent="buying"
       explainer={
         <>
+          <AffordabilityByHouseholdTable />
+
           <h2>Two limits, the lower one wins</h2>
           <p>
             Your maximum affordable purchase price is constrained by two separate
@@ -103,9 +116,10 @@ export default function AffordabilityCalculatorPage() {
           <p>
             Banks assess whether you can afford repayments at your actual interest
             rate plus a 3% buffer (required by APRA). They deduct living expenses,
-            using at least the HEM (Household Expenditure Measure) benchmark, and
-            existing debts. The remaining surplus determines your maximum monthly
-            repayment, which sets your borrowing limit.
+            using at least the <Link href="/glossary/hem-household-expenditure-measure">HEM (Household Expenditure Measure)</Link> benchmark
+            for your household, and existing debts. The remaining surplus determines
+            your maximum monthly repayment, which sets your borrowing limit. The
+            table above shows the floor this calculator applies for each household.
           </p>
 
           <KeyFigure

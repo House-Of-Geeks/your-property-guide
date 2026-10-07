@@ -301,8 +301,8 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   {
     term: "HEM (Household Expenditure Measure)",
     slug: "hem-household-expenditure-measure",
-    html: `A benchmark used by Australian lenders to assess a borrower&apos;s living expenses when calculating loan serviceability. If a borrower&apos;s declared expenses are lower than HEM, the lender typically uses HEM. HEM was introduced to address concerns about lenders accepting unrealistically low expense estimates.`,
-    category: "selling",
+    html: `The <strong>Household Expenditure Measure</strong> is a benchmark of living expenses produced by the Melbourne Institute at the University of Melbourne and used by Australian lenders when they assess a home loan. It is built from the ABS Household Expenditure Survey as the median spend on absolute basics (food, utilities, transport, communications, children&apos;s clothing) plus the 25th-percentile spend on discretionary basics, and it varies by household composition, gross income band and location. Lenders use the <em>higher</em> of the expenses you declare and the HEM for a household like yours, which APRA&apos;s guide APG 223 expects them to scale by income, so declaring less than HEM does not lift your borrowing power. HEM excludes rent and mortgage payments; childcare, school fees, insurance, HECS and loan repayments are assessed on top of it. The tables are licensed to lenders, not published. Our <a href="/borrowing-power-calculator#hem-table">borrowing power calculator</a> applies indicative figures by household, and Your Finance Guide&apos;s <a href="https://www.yourfinanceguide.com.au/resources/hem-household-expenditure-measure-explained" rel="noopener">HEM explainer</a> covers how lenders apply it in detail.`,
+    category: "first-home",
   },
   {
     term: "Hold-Over Tenancy",
@@ -506,7 +506,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
     term: "Serviceability",
     slug: "serviceability",
     html: `A lender&apos;s assessment of whether a borrower can afford to repay a loan. Lenders assess income, expenses, existing debts, and apply a serviceability buffer (currently 3% above the loan rate). Your borrowing capacity is largely determined by serviceability, even if you have a large deposit, a lender won&apos;t lend you more than you can service.`,
-    category: "renters",
+    category: "first-home",
   },
   {
     term: "Settlement",
@@ -642,6 +642,9 @@ export const GLOSSARY_GUIDE_LINKS: Record<string, { guides?: readonly string[]; 
   "offset-account": { guides: ["offset-accounts-explained-australia"] },
   "pre-approval-conditional-approval": { guides: ["home-loan-pre-approval-australia"] },
   "serviceability": { tools: ["/borrowing-power-calculator"], guides: ["how-much-can-i-borrow-australia"] },
+  "hem-household-expenditure-measure": { tools: ["/borrowing-power-calculator", "/affordability-calculator"], guides: ["how-much-can-i-borrow-australia", "home-loan-pre-approval-australia"] },
+  "debt-to-income-ratio-dti": { tools: ["/borrowing-power-calculator"], guides: ["how-much-can-i-borrow-australia"] },
+  "loan-to-value-ratio-lvr": { tools: ["/borrowing-power-calculator", "/affordability-calculator"], guides: ["lenders-mortgage-insurance-guide", "how-much-deposit-to-buy-a-house"] },
   "mortgage-broker": { guides: ["how-to-choose-a-mortgage-broker"] },
   "fixed-interest-rate": { guides: ["fixed-vs-variable-rate-guide"] },
   "variable-rate": { guides: ["fixed-vs-variable-rate-guide"] },
