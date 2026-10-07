@@ -1,0 +1,97 @@
+slug,best_keyword,kp_vol,gsc_90d_impressions,gsc_position,definition_words
+bond-rental,bond,246000,17,77.8,55
+cash-rate-rba,rba,49500,7,69.4,50
+negative-gearing,negative gearing,40500,1,2.0,50
+depreciation-property,property,40500,3,81.0,56
+capital-gains-tax-cgt,capital gains tax,33100,743,68.0,59
+mortgage-broker,mortgage broker,22200,2,81.5,58
+auction,auction,22200,9,53.4,46
+caveat,caveat,18100,2,42.0,55
+stamp-duty-transfer-duty,stamp duty,14800,8,66.0,57
+section-32-vic,vic,14800,59,72.3,60
+mortgage,mortgage,12100,6,75.7,49
+land-tax,land tax,12100,0,,54
+equity,equity,12100,11,63.2,47
+commission-agent,commission,8100,79,40.5,38
+capital-gain,capital gain,8100,54,77.8,40
+building-inspection,building inspection,8100,0,,41
+title-search,title search,6600,0,,44
+vendor,vendor,5400,46,7.5,27
+settlement,settlement,5400,16,68.9,55
+offset-account,offset account,5400,0,,51
+lenders-mortgage-insurance-lmi,lmi,5400,6,74.2,59
+gearing-positive-negative-neutral,neutral,5400,3,6.7,38
+appraisal,appraisal,5400,24,81.1,50
+tenants-in-common,tenants in common,4400,0,,8
+quantity-surveyor-qs,quantity surveyor,4400,4,15.5,61
+firb-foreign-investment-review-board,firb,4400,40,46.4,40
+easement,easement,4400,48,90.2,52
+debt-to-income-ratio-dti,dti,4400,1,8.0,50
+break-fee-lease,lease,4400,3,41.0,52
+refinancing,refinancing,3600,0,,48
+loan-to-value-ratio-lvr,lvr,3600,2,93.0,58
+hem-household-expenditure-measure,hem,3600,15,40.6,43
+chattels,chattels,3600,13,78.1,48
+auction-clearance-rate,auction clearance rate,3600,0,,50
+encumbrance,encumbrance,2900,29,73.4,38
+completion,completion,2900,2,9.0,42
+body-corporate,body corporate,2900,37,63.1,48
+appreciation,appreciation,2900,3,7.0,40
+valuation,valuation,2400,1,78.0,45
+lien,lien,2400,26,64.8,41
+fixtures,fixtures,2400,44,76.2,41
+rentvesting,rentvesting,1900,1,82.0,49
+deposit-bond,deposit bond,1900,5,79.0,53
+writ,writ,1600,4,3.5,57
+unencumbered,unencumbered,1600,74,11.2,37
+line-of-credit,line of credit,1600,1,10.0,49
+joint-tenants-vs-tenants-in-common,joint tenants,1600,8,93.2,61
+icsea,icsea,1600,3,68.7,50
+gazumping,gazumping,1600,8,58.8,57
+fixed-interest-rate,fixed interest rate,1600,36,53.6,46
+certificate-of-title,certificate of title,1600,0,,37
+development-application-da,development application,1300,27,13.6,45
+cooling-off-period,cooling off period,1300,3,58.0,49
+clearance-certificate,clearance certificate,1300,9,39.9,43
+bridging-finance,bridging finance,1300,47,81.4,50
+vendor-finance,vendor finance,1000,3,34.0,54
+strata-title,strata title,1000,8,94.1,51
+put-and-call-option,put and call option,1000,9,64.9,65
+principal-and-interest,principal and interest,1000,41,89.5,45
+interest-only-loan,interest-only loan,1000,0,,47
+dual-occupancy,dual occupancy,1000,85,56.8,40
+contract-of-sale,contract of sale,1000,11,68.5,40
+balloon-payment,balloon payment,1000,1,94.0,46
+transfer-duty,transfer duty,880,4,77.2,6
+serviceability,serviceability,880,9,67.3,55
+comparison-rate,comparison rate,880,0,,51
+zoning,zoning,720,7,42.9,58
+pre-approval-conditional-approval,pre-approval,720,0,,55
+mortgagee-in-possession,mortgagee in possession,720,13,65.9,55
+freehold,freehold,720,0,,41
+cross-collateralisation,cross-collateralisation,720,2,6.5,44
+right-of-way,right of way,390,8,14.4,46
+restrictive-covenant,restrictive covenant,390,34,74.1,55
+compulsory-acquisition,compulsory acquisition,390,20,56.3,42
+variable-rate,variable rate,320,1,78.0,48
+redraw-facility,redraw facility,320,0,,54
+private-sale,private sale,320,0,,56
+unconditional-contract,unconditional contract,210,11,41.5,45
+draw-down,draw down,170,3,7.7,36
+subject-to-finance-clause,subject to finance clause,140,14,62.0,51
+median-price,median price,140,25,14.3,62
+gst-on-property,gst on property,140,95,34.9,48
+non-conforming-loan,non-conforming loan,90,1,56.0,50
+gross-rental-yield,gross rental yield,90,14,73.1,46
+discharge-fee,discharge fee,90,5,25.0,40
+adjustable-rate-mortgage,adjustable rate mortgage,90,0,,60
+land-transfer-duty,land transfer duty,70,3,31.7,6
+exchange-of-contracts,exchange of contracts,70,3,27.3,46
+exclusive-agency-agreement,exclusive agency agreement,50,7,44.1,48
+open-listing,open listing,30,2,31.5,38
+net-rental-yield,net rental yield,30,2,41.5,40
+option-fee,option fee,20,30,8.3,53
+funds-to-complete,funds to complete,20,11,5.5,46
+proportional-ownership,proportional ownership,10,0,,41
+interest-rate-buffer,interest rate buffer,10,1,5.0,56
+hold-over-tenancy,hold-over tenancy,10,8,7.5,45

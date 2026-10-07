@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BorrowingPowerCalculator } from "@/components/calculators/BorrowingPowerCalculator";
 import { BorrowingPowerTable } from "@/components/calculators/BorrowingPowerTable";
+import { HemTable } from "@/components/calculators/HemTable";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
 import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
@@ -28,7 +29,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   slug: "borrowing-power-calculator",
   schemaName: "Borrowing Power Calculator",
   schemaDescription: "Estimate how much you can borrow based on your income, expenses, and APRA buffer.",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-08",
   persona: "first-home",
 };
 
@@ -59,7 +60,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What is the HEM benchmark?",
     answer:
-      "HEM (Household Expenditure Measure) is a benchmark developed by Melbourne Institute. Banks use it as a minimum living-expense figure: if your declared expenses are lower than HEM, they'll use HEM instead. The amount varies based on household composition and location, but broadly ranges from around $2,000 a month for singles to $4,000+ a month for families.",
+      "The Household Expenditure Measure is a benchmark of living expenses produced by the Melbourne Institute from the ABS Household Expenditure Survey: the median spend on absolute basics plus the 25th-percentile spend on discretionary basics, varying by household composition, income band and location, updated quarterly. Lenders use the higher of the expenses you declare and the HEM for a household like yours, which APRA expects them to scale by income, so declaring less than HEM does not lift your borrowing power. HEM excludes rent and mortgage payments; childcare, school fees, HECS and loan repayments are assessed on top. The tables are licensed to lenders and not published; this calculator applies the indicative figures in the table above.",
   },
   {
     question: "What is a serviceability buffer?",
@@ -87,6 +88,7 @@ const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide",   href: "/guides/first-home-buyer-guide", description: "How federal schemes, state grants, and stamp duty concessions stack." },
   { title: "Stamp Duty Calculator",    href: "/stamp-duty-calculator",         description: "What you'll actually pay (concessions included)." },
   { title: "Affordability Calculator", href: "/affordability-calculator",      description: "How much property you can afford on top of how much you can borrow." },
+  { title: "What is HEM?",             href: "/glossary/hem-household-expenditure-measure", description: "The living-expense floor lenders apply, in a paragraph." },
   { title: "Mortgage Repayments",      href: "/mortgage-calculator",           description: "What the loan will actually cost you each month." },
   { title: "LMI Explained",            href: "/guides/lenders-mortgage-insurance-guide", description: "What it costs and the schemes that waive it." },
   { title: "Help to Buy Calculator",   href: "/help-to-buy-calculator",        description: "If the loan is too big: the government funds up to 40% and you borrow less." },
@@ -105,6 +107,8 @@ export default function BorrowingPowerCalculatorPage() {
       explainer={
         <>
           <BorrowingPowerTable />
+
+          <HemTable />
 
           <h2>How banks assess your borrowing capacity</h2>
           <p>

@@ -270,7 +270,7 @@ export default function HomeLoanPreApprovalAustraliaPage() {
         <li><strong>3 months of bank statements</strong> for any savings or offset accounts.</li>
         <li><strong>Photo ID</strong>: driver&rsquo;s licence and/or passport.</li>
         <li><strong>List of existing debts</strong>: credit cards (limit + balance), personal loans, HECS/HELP, car loans, BNPL accounts.</li>
-        <li><strong>List of regular monthly expenses</strong>. Most lenders use HEM (Household Expenditure Measure) as a baseline; some require detailed expense reporting.</li>
+        <li><strong>List of regular monthly expenses</strong>. Most lenders use the <Link href="/glossary/hem-household-expenditure-measure">HEM (Household Expenditure Measure)</Link> as a floor and your declared figure if it is higher; some require detailed expense reporting.</li>
         <li><strong>Rental income evidence</strong> if you own existing investment property: rental statements from a property manager.</li>
       </ul>
       <p>

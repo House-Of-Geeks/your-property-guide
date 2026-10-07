@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HEM Action Plan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one centred report sheet on a grey page, same system as the bridging and Help to Buy plans. Plan table first, then one card per action, then measurement and evidence. */
+:root{
+  --ground:#ffffff; --page:#f3f4f6; --panel:#f6f7f9; --rule:#e2e5e9; --rule2:#cfd4da;
+  --ink:#1b1f24; --ink2:#4a525c; --ink3:#7a838d;
+  --accent:#0f7b86; --accent-soft:#e6f3f4;
+  --crit:#b9331f; --crit-soft:#fbe9e5; --high:#b0710d; --high-soft:#fbf1dc; --med:#5b6570; --med-soft:#eceff2;
+  --note:#e7f1f5; --mono-bg:#f0f2f4;
+  --sans:"IBM Plex Sans",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#16191d; --page:#0f1114; --panel:#1c2025; --rule:#2b3138; --rule2:#3a424b;
+    --ink:#e8eaed; --ink2:#b3bac2; --ink3:#7f8790;
+    --accent:#4fb6bf; --accent-soft:#12303a;
+    --crit:#f07a62; --crit-soft:#3a1f1a; --high:#e0a53f; --high-soft:#3a2e15; --med:#a3adb8; --med-soft:#262b31;
+    --note:#17272e; --mono-bg:#1f242a;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#16191d; --page:#0f1114; --panel:#1c2025; --rule:#2b3138; --rule2:#3a424b;
+  --ink:#e8eaed; --ink2:#b3bac2; --ink3:#7f8790;
+  --accent:#4fb6bf; --accent-soft:#12303a;
+  --crit:#f07a62; --crit-soft:#3a1f1a; --high:#e0a53f; --high-soft:#3a2e15; --med:#a3adb8; --med-soft:#262b31;
+  --note:#17272e; --mono-bg:#1f242a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;padding-inline:16px;padding-block:24px 48px}
+.doc{max-width:920px;margin:0 auto;background:var(--ground);padding:48px 44px 64px}
+@media(max-width:640px){.doc{padding:28px 18px 48px}}
+code{font-family:var(--mono);background:var(--mono-bg);padding:1px 5px;border-radius:3px;font-size:.86em;word-break:break-word}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1{font-size:34px;line-height:1.15;margin:8px 0 14px;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin:52px 0 0;padding:14px 0 10px;border-bottom:1px solid var(--rule);display:flex;gap:14px;align-items:baseline}
+h2 .k{font-family:var(--mono);color:var(--accent);font-weight:500;letter-spacing:.1em}
+p{max-width:68ch;margin:10px 0}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.intro{font-size:16.5px;color:var(--ink2);max-width:66ch;margin:0 0 18px}
+.meta{font-family:var(--mono);font-size:12px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:6px 26px;padding-bottom:18px;border-bottom:2px solid var(--ink)}
+.meta b{color:var(--ink);font-weight:500}
+.toc{display:flex;flex-wrap:wrap;gap:6px 18px;margin:16px 0 4px;padding:0;list-style:none;font-size:13.5px}
+.toc a{text-decoration:none;color:var(--ink2)}
+.toc a:hover{color:var(--accent);text-decoration:underline}
+.toc .k{font-family:var(--mono);font-size:11.5px;color:var(--accent);margin-right:6px}
+
+.grid{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:18px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:760px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.g4{grid-template-columns:1fr}}
+.stat{background:var(--ground);padding:18px 16px 14px;min-width:0}
+.stat .n{font-size:29px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.stat .d{font-size:12.5px;color:var(--ink2);margin-top:8px;line-height:1.4}
+.c-crit{color:var(--crit)} .c-acc{color:var(--accent)}
+
+.note{background:var(--note);border-left:3px solid var(--accent);padding:12px 16px;margin:18px 0;font-size:14px;color:var(--ink2)}
+.note b{color:var(--ink)}
+
+.tbl{overflow-x:auto;margin:14px 0 6px;border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 11px;border-bottom:1px solid var(--rule);vertical-align:top;text-align:left}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);font-weight:500;background:var(--panel);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;white-space:nowrap}
+td.key{font-weight:600;color:var(--ink)}
+td.ix{font-family:var(--mono);color:var(--accent);width:28px}
+.path{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
+.plan td{color:var(--ink2)}
+.plan td.key a{color:var(--ink);text-decoration:none}
+.plan td.key a:hover{color:var(--accent);text-decoration:underline}
+
+.tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;white-space:nowrap;vertical-align:middle}
+.t-fix{background:var(--crit-soft);color:var(--crit)}
+.t-tool{background:var(--accent-soft);color:var(--accent)}
+.t-page{background:var(--high-soft);color:var(--high)}
+.t-sec{background:var(--med-soft);color:var(--med)}
+.when{font-family:var(--mono);font-size:12px;color:var(--ink3);white-space:nowrap}
+
+.act{border:1px solid var(--rule);margin:22px 0 0}
+.act header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;padding:14px 18px 12px;background:var(--panel);border-bottom:1px solid var(--rule)}
+.act header .k{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:500}
+.act header h3{margin:0;font-size:18px;font-weight:600;line-height:1.3;text-wrap:balance;flex:1 1 320px;min-width:0}
+.act header .side{display:flex;gap:10px;align-items:center}
+.act .body{padding:6px 18px 18px;display:grid;gap:4px}
+.act .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin:14px 0 2px}
+.act p{margin:4px 0;color:var(--ink2)}
+.act p b,.act li b{color:var(--ink);font-weight:600}
+.act ul{margin:4px 0;padding-left:20px;color:var(--ink2);max-width:76ch}
+.act li{margin:5px 0}
+.act .done{margin-top:12px;padding:10px 14px;background:var(--accent-soft);color:var(--ink);font-size:14px}
+.act .done b{color:var(--accent)}
+.kw{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px;padding:0;list-style:none}
+.kw li{font-size:12.5px;border:1px solid var(--rule2);padding:2px 8px;border-radius:12px;color:var(--ink2);margin:0}
+.kw li span{font-family:var(--mono);font-size:11.5px;color:var(--ink3);margin-left:5px}
+blockquote{margin:8px 0;padding:6px 0 6px 14px;border-left:2px solid var(--rule2);font-family:var(--mono);font-size:12.5px;color:var(--ink2);max-width:76ch}
+
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+ul.plain{padding-left:20px;max-width:72ch;color:var(--ink2)}
+ul.plain li{margin:6px 0}
+ul.plain b{color:var(--ink)}
+.foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--rule);font-size:13px;color:var(--ink3)}
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
+</style>
+</head>
+<body>
+<main class="doc">
+<p class="eyebrow">Your Property Guide · topic plan</p>
+<h1>Household Expenditure Measure: own the definition, then the calculator</h1>
+<p class="intro">We hold a 51-word glossary stub under a question that about 1,500 to 2,000 Australians a month ask Google in its finance sense, that AI assistants ask 5,700 times a month, and that sits beside a 900-a-month serviceability cluster we already have the calculator for. Nothing of ours appears in any of the 16 results pages. The pages that do are 1,400 to 3,700 words with an indicative table, and they are what the AI Overviews quote.</p>
+<div class="meta"><span>Research <b>8 October 2026</b></span><span>Folder <b>docs/seo-baselines/2026-10-08/hem</b></span><span>Pull <b>ypg-topic-pull.py · ypg-topic-hem.json</b></span><span>Spend <b>US$0.52 DataForSEO</b></span></div>
+<ul class="toc"><li><a href="#plan"><span class="k">01</span>Plan</a></li><li><a href="#a1"><span class="k">02</span>Guide</a></li><li><a href="#a2"><span class="k">03</span>Calculator</a></li><li><a href="#a3"><span class="k">04</span>Borrowing calculator fix</a></li><li><a href="#a4"><span class="k">05</span>Glossary and links</a></li><li><a href="#a5"><span class="k">06</span>Average expenses</a></li><li><a href="#measure"><span class="k">07</span>Measurement</a></li><li><a href="#evidence"><span class="k">08</span>Evidence</a></li></ul>
+
+<div class="grid g4">
+<div class="stat"><div class="n">3,600</div><div class="d">"hem" searches a month in Australia (3,600 to 4,400 every month); finance-intent share estimated at 1,500 to 2,000 with the explicit phrasings</div></div>
+<div class="stat"><div class="n">5,700</div><div class="d">AI-assistant prompts a month for "hem" and "what is hem" (DataForSEO AI search volume)</div></div>
+<div class="stat"><div class="n c-crit">11</div><div class="d">Google impressions for our HEM glossary page in 16 months, positions 43 to 82, no clicks</div></div>
+<div class="stat"><div class="n c-crit">0 of 16</div><div class="d">results pages where we appear in the top 10 or in the AI Overview</div></div>
+</div>
+
+<h2 id="plan"><span class="k">01</span>The plan</h2>
+<div class="tbl"><table class="plan">
+<thead><tr><th>#</th><th>Action</th><th>Type</th><th>Answers</th><th>Order</th></tr></thead>
+<tbody>
+<tr><td class="num">1</td><td class="key"><a href="#a1">HEM guide written to be quoted</a></td><td><span class="tag t-page">page</span></td><td>what is HEM, how it is built, what it excludes, HEM or actual, the APRA and ASIC position, indicative table, FAQ</td><td class="when">first</td></tr>
+<tr><td class="num">2</td><td class="key"><a href="#a2">HEM and living-expenses calculator</a></td><td><span class="tag t-tool">tool</span></td><td>"hem calculator" and its state, salary and lender variants; "hem for a couple / family of 4"; "household expenditure measure calculator"</td><td class="when">with 1</td></tr>
+<tr><td class="num">3</td><td class="key"><a href="#a3">Scale the borrowing power calculator's HEM and name it a serviceability calculator</a></td><td><span class="tag t-fix">fix</span></td><td>the 900-a-month serviceability cluster; the unlabelled flat HEM floor</td><td class="when">with 1</td></tr>
+<tr><td class="num">4</td><td class="key"><a href="#a4">Expand the glossary entry, re-file it, relink</a></td><td><span class="tag t-fix">fix</span></td><td>the definitional AI prompts; the selling-guide "Go deeper" link</td><td class="when">with 1</td></tr>
+<tr><td class="num">5</td><td class="key"><a href="#a5">Average living expenses in Australia, by household</a></td><td><span class="tag t-sec">section</span></td><td>"average living expenses australia" and the single, couple, Melbourne variants (about 500 a month)</td><td class="when">after 1</td></tr>
+<tr><td class="num">6</td><td class="key"><a href="#measure">Tracked queries and the Bing AI export</a></td><td><span class="tag t-sec">measure</span></td><td>whether any of it moved</td><td class="when">now, then 28 days</td></tr>
+</tbody></table></div>
+<p class="note"><b>Not in scope here:</b> the 27 other glossary stubs that sit under volume (caveat 18,100, land tax 12,100, equity 12,100, title search 6,600, tenants in common 4,400, DTI 4,400, LVR 3,600 and the rest). Section 6 of the README lists them; the lender-side ones belong with this work, the conveyancing ones with the contract-of-sale guides.</p>
+
+<h2 id="a1"><span class="k">02</span>Action 1</h2>
+<article class="act">
+<header><span class="k">A1</span><h3>A HEM guide that states the five facts in the first paragraph and carries an indicative table</h3><div class="side"><span class="tag t-page">page</span><span class="when">first</span></div></header>
+<div class="body">
+<p class="lbl">Why</p>
+<p>Every page the AI Overviews cite says the same five things in its first 150 words: Melbourne Institute; median spend on basics plus the 25th percentile on discretionary items; a floor under declared expenses; varies by household, income band and location; excludes housing. Ours says one of them. The People Also Ask list adds the questions nobody answers from the source documents: does HEM include rent, HEM or my actual spending, how far back do banks look, is HEM the same at every bank.</p>
+<p class="lbl">Build</p>
+<ul>
+<li><b>URL:</b> <code>/guides/household-expenditure-measure-hem</code>, with the glossary page kept as the short definition and linking down (no equity to redirect).</li>
+<li><b>Order:</b> one-paragraph definition; who makes it and from what; how it is built; what it includes and what it leaves out; the indicative table by household type and income band, dated, labelled "Your Property Guide estimate" with the method stated, because the licensed table is not public and every ranking page publishes an indicative one; how lenders apply it (APRA's greater-of rule quoted from APG 223, ASIC's "plausibility check, not a substitute" from RG 209, the Westpac outcome in two sentences); what banks verify on statements and for how long; what moves borrowing capacity and what does not; a worked example (couple, $180,000, Sydney, two children); FAQ with FAQPage schema.</li>
+<li><b>FAQ from the PAA and forums:</b> Does HEM include rent? · Do lenders use HEM or my actual expenses? · Is HEM the same at every bank? · Can I lower my expenses before I apply, and does it help? · What counts as a living expense on an application? · Is spending $3,000 a month a lot? · What does HEM stand for in finance? · How is HEM calculated?</li>
+<li><b>Length:</b> 2,500 to 3,000 words. <b>Sources:</b> <code>official-facts.md</code>. The Melbourne Institute page blocks scripted fetches; read it in a browser before quoting.</li>
+</ul>
+<p class="lbl">Keywords it answers</p>
+<ul class="kw"><li>hem <span>3,600</span></li><li>hem meaning <span>1,300</span></li><li>what is hem <span>590</span></li><li>household expenditure measure <span>260</span></li><li>hem living expenses <span>90</span></li><li>hem table <span>70</span></li><li>hem benchmark <span>50</span></li><li>hem mortgage <span>20</span></li><li>hem banking <span>20</span></li><li>hem home loan <span>10</span></li></ul>
+</div></article>
+
+<h2 id="a2"><span class="k">03</span>Action 2</h2>
+<article class="act">
+<header><span class="k">A2</span><h3>A HEM and living-expenses calculator, embedded in the guide and at its own URL</h3><div class="side"><span class="tag t-tool">tool</span><span class="when">with A1</span></div></header>
+<div class="body">
+<p class="lbl">Why</p>
+<p>"hem calculator" is 390 searches a month and autocomplete adds "australia", "nsw", "victoria", "nab", "based on salary", "based on income" and "hem for single person / couple / family of 3 / 4 / 5". Google's AI Overview for the query says there is no public HEM calculator, and the top result is a broker's page. Home Loan Experts and Bank Australia hold the "living expenses calculator" variant. Nothing in the results shows the reader the figure a lender will use for their household and what it does to their borrowing capacity.</p>
+<p class="lbl">Build</p>
+<ul>
+<li><b>URL:</b> <code>/hem-calculator</code> on <code>CalculatorPageLayout</code> with WebApplication schema, same pattern as the FHSS and bridging calculators.</li>
+<li><b>Inputs:</b> household (single, couple), dependants, gross household income band, state, capital or regional, then optional declared expenses by the categories lenders ask for (groceries, utilities, transport, insurance, childcare, education, subscriptions, entertainment, other).</li>
+<li><b>Outputs:</b> indicative HEM for that household, monthly and annual, dated and labelled; the reader's declared total beside it; which figure a lender would use and why; the borrowing-capacity difference, handed to the borrowing power calculator with the figures pre-filled.</li>
+<li><b>Data:</b> one indicative table in <code>src/lib/data/hem.ts</code> (household type by income band, with a regional adjustment), the same table A3 uses, with its method and date in a comment and on the page. Pure computation in <code>src/lib/hem-calc.ts</code> with tests.</li>
+</ul>
+<p class="lbl">Keywords it answers</p>
+<ul class="kw"><li>hem calculator <span>390</span></li><li>household expenditure measure calculator <span>50</span></li><li>hem living expenses calculator <span>20</span></li><li>home loan living expenses calculator <span>10</span></li><li>hem calculator nab <span>10</span></li><li>hem for a couple / family of 4 <span>autocomplete</span></li><li>bank living expenses calculator <span>autocomplete</span></li></ul>
+</div></article>
+
+<h2 id="a3"><span class="k">04</span>Action 3</h2>
+<article class="act">
+<header><span class="k">A3</span><h3>Scale the borrowing power calculator's HEM, show the figure used, and call the page a serviceability calculator</h3><div class="side"><span class="tag t-fix">fix</span><span class="when">with A1</span></div></header>
+<div class="body">
+<p class="lbl">Why</p>
+<p>The calculator floors expenses at $2,000, $2,500, $3,000, $3,500 or $4,000 a month by number of dependants. APRA's guide says a prudent lender scales the index by income, and the real measure varies by household composition and location as well. The result is shown without saying which benchmark produced it. Separately, "serviceability calculator" and its lender variants are about 900 searches a month of commercial intent and the page never uses the word.</p>
+<p class="lbl">Build</p>
+<ul>
+<li>Replace <code>HEM_BASE</code> in <code>src/lib/utils/borrowing-power.ts</code> with a lookup into the shared indicative table (household, dependants, income band, region); keep the greater-of logic.</li>
+<li>In the results, print "Living expenses used: $X a month (your figure / the indicative HEM benchmark for your household, [date])" with a link to the guide.</li>
+<li>Title and H1 become "Borrowing Power and Serviceability Calculator"; add an FAQ item "What is a serviceability calculator?" and one on the 3% buffer; update the glossary "serviceability" entry to link here.</li>
+</ul>
+<p class="lbl">Keywords it answers</p>
+<ul class="kw"><li>serviceability calculator <span>390</span></li><li>loan serviceability calculator <span>110</span></li><li>mortgage serviceability calculator <span>90</span></li><li>cba serviceability calculator <span>70</span></li><li>home loan serviceability <span>50</span></li><li>westpac / macquarie serviceability calculator <span>50 each</span></li><li>serviceability buffer <span>20</span></li></ul>
+</div></article>
+
+<h2 id="a4"><span class="k">05</span>Action 4</h2>
+<article class="act">
+<header><span class="k">A4</span><h3>Expand the glossary entry to the five facts, re-file it, and link every lending page to the guide</h3><div class="side"><span class="tag t-fix">fix</span><span class="when">with A1</span></div></header>
+<div class="body">
+<ul>
+<li>Glossary definition to about 150 words: the five facts plus "excludes housing" and the greater-of rule. Category from <code>selling</code> to <code>first-home</code> so the "Go deeper" link stops pointing at the selling-agent guide; add the guide and the calculator to <code>GLOSSARY_GUIDE_LINKS</code>.</li>
+<li>One sentence and a link in: the pre-approval guide, the deposit guide, the first home buyer guide, the affordability calculator explainer, the APRA buffer post and the "how much can I borrow" guide's HEM section.</li>
+<li>Add a <code>serviceability</code>, <code>debt-to-income-ratio-dti</code> and <code>loan-to-value-ratio-lvr</code> cross-link block on all four lender-side glossary stubs; DTI already sits at position 8 for "dti" (4,400 a month) with a 50-word definition.</li>
+</ul>
+</div></article>
+
+<h2 id="a5"><span class="k">06</span>Action 5</h2>
+<article class="act">
+<header><span class="k">A5</span><h3>Average living expenses in Australia, by household type, beside the HEM figure</h3><div class="side"><span class="tag t-sec">section</span><span class="when">after A1</span></div></header>
+<div class="body">
+<p>About 500 searches a month ask what normal spending is ("average living expenses australia" 210, single person 90, Melbourne 90, monthly 70, couple 50) and the People Also Ask on the HEM queries repeat it ("What are the average monthly living expenses in Australia?", "Is spending $3,000 a month a lot?", "What is the 50/30/20 rule?"). Source the table to the ABS Household Expenditure Survey and the Melbourne Institute poverty lines, show the HEM figure in the next column, and the page explains in one glance why HEM is below average and why a lender still uses it as the floor. Start as a section of A1; split it out if it draws its own impressions.</p>
+</div></article>
+
+<h2 id="measure"><span class="k">07</span>Measurement</h2>
+<ul>
+<li>Add to <code>docs/seo-baselines/tracked-queries.json</code>: hem · hem calculator · household expenditure measure · hem benchmark · hem table · hem living expenses · serviceability calculator · living expenses for home loan.</li>
+<li>Export Bing Webmaster AI Performance (grounding queries and citations) for <code>/glossary/hem-household-expenditure-measure</code> and <code>/borrowing-power-calculator</code> now, save as <code>bing-ai-citations.csv</code> in this folder, and again at 28 days. The API does not expose it.</li>
+<li>Re-run <code>ypg-topic-pull.py</code> with <code>ypg-topic-hem.json</code> at 28 days and compare the Search Console family impressions (69 in 16 months today) and the page-query lists.</li>
+</ul>
+
+<h2 id="evidence"><span class="k">08</span>Evidence files</h2>
+<div class="tbl"><table>
+<thead><tr><th>File</th><th>What it holds</th></tr></thead>
+<tbody>
+<tr><td><code>README.md</code></td><td>The research note: sources, findings, the question table, who ranks, our pages against the questions, recommendations, and where else the pattern shows up</td></tr>
+<tr><td><code>official-facts.md</code></td><td>APRA APG 223 quoted, ASIC RG 209 and REP 643, the Westpac appeal outcome, the Melbourne Institute description, lender pages</td></tr>
+<tr><td><code>questions.csv</code></td><td>People Also Ask questions ranked by how many of the 16 SERPs show them, plus question-form keywords from DataForSEO Labs</td></tr>
+<tr><td><code>serp-landscape.csv</code></td><td>Per query: our rank, top 10 domains, PAA, AI Overview presence and citations, SERP features</td></tr>
+<tr><td><code>keywords.csv</code></td><td>1,728 unique Keyword Planner ideas with volume, competition, CPC, seed batch and monthly series; <code>in_hem_cluster</code> flags the HEM and living-expenses terms</td></tr>
+<tr><td><code>ai-volume.csv</code></td><td>AI search volume and intent label for the HEM cluster</td></tr>
+<tr><td><code>autocomplete.csv</code></td><td>Google autocomplete for 46 prefixes (sewing and furniture noise included; the README quotes the finance set)</td></tr>
+<tr><td><code>our-queries.csv</code></td><td>Every Google and Bing query that reached the five pages</td></tr>
+<tr><td><code>competitor-pages.csv</code></td><td>Length, headings, tables, FAQ schema and dollar figures of the 16 ranking or cited pages</td></tr>
+<tr><td><code>glossary-volumes.csv</code></td><td>Google Ads volume for every glossary term, with the stub's impressions, position and definition length</td></tr>
+</tbody></table></div>
+</main>
+</body>
+</html>

@@ -6,9 +6,6 @@ export { calculateStampDuty, type StampDutyInput, type StampDutyResult } from ".
 export {
   computeBorrowingPower,
   getHEM,
-  HEM_BASE,
-  HEM_MAX_DEPENDANTS,
-  HEM_4PLUS,
   DEFAULT_ASSESSMENT_RATE,
   type BorrowingResult,
 } from "./borrowing-power";

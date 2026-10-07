@@ -4,25 +4,35 @@
 //
 // Method (deliberately conservative, mirrors how lenders assess serviceability):
 //   net income  = gross x 0.72 (rough average tax + Medicare)
-//   expenses    = max(your figure, HEM benchmark for the household)
+//   expenses    = max(your figure, indicative HEM for the household, income band and region)
 //   surplus     = net monthly income - expenses - existing debt repayments
 //   capacity    = 85% of surplus, amortised at the assessment (buffered) rate
 //   price       = max loan / 0.8 (assumes a 20% deposit)
 
-// HEM (Household Expenditure Measure) base by number of dependants (monthly, $).
-export const HEM_BASE: Record<number, number> = {
-  0: 2_000,
-  1: 2_500,
-  2: 3_000,
-  3: 3_500,
-};
-export const HEM_MAX_DEPENDANTS = 4;
-export const HEM_4PLUS = 4_000;
+import { indicativeHem, type Household, type Region } from "@/lib/data/hem";
 
-/** Monthly HEM benchmark for a household with the given number of dependants. */
-export function getHEM(dependants: number): number {
-  if (dependants >= HEM_MAX_DEPENDANTS) return HEM_4PLUS;
-  return HEM_BASE[dependants] ?? HEM_4PLUS;
+export type { Household, Region } from "@/lib/data/hem";
+
+export interface HemOptions {
+  /** Defaults to "single"; the calculators pass "couple" when a second income is entered. */
+  household?: Household;
+  /** Gross annual household income; picks the income band. Defaults to the middle band. */
+  grossIncome?: number;
+  region?: Region;
+}
+
+/**
+ * Indicative monthly HEM benchmark for a household (src/lib/data/hem.ts):
+ * scaled by household composition, income band and location, as APRA's
+ * guide expects lenders to do, rather than a flat figure by dependants.
+ */
+export function getHEM(dependants: number, opts: HemOptions = {}): number {
+  return indicativeHem({
+    household: opts.household ?? "single",
+    dependants,
+    grossIncome: opts.grossIncome ?? 100_000,
+    region: opts.region ?? "capital",
+  });
 }
 
 /**
@@ -51,8 +61,19 @@ export interface BorrowingResult {
   estimatedPurchasePrice: number;
   monthlyRepayment: number;
   monthlyNetIncome: number;
+  /** The living expenses deducted: the declared figure or the HEM benchmark, whichever is higher. */
   hemUsed: number;
+  /** The indicative HEM benchmark for the household at this income. */
+  hemBenchmark: number;
+  /** Which figure hemUsed is. */
+  expensesSource: "declared" | "hem";
   availableForRepayments: number;
+}
+
+export interface BorrowingOptions {
+  /** Defaults to "couple" when income2 > 0, else "single". */
+  household?: Household;
+  region?: Region;
 }
 
 export function computeBorrowingPower(
@@ -62,7 +83,8 @@ export function computeBorrowingPower(
   dependants: number,
   existingDebts: number,
   assessmentRate: number,
-  termYears: number
+  termYears: number,
+  opts: BorrowingOptions = {}
 ): BorrowingResult | null {
   const grossAnnual = income1 + income2;
   if (grossAnnual <= 0) return null;
@@ -70,7 +92,8 @@ export function computeBorrowingPower(
   const netAnnual = grossAnnual * 0.72;
   const monthlyNetIncome = netAnnual / 12;
 
-  const hemBase = getHEM(dependants);
+  const household: Household = opts.household ?? (income2 > 0 ? "couple" : "single");
+  const hemBase = getHEM(dependants, { household, grossIncome: grossAnnual, region: opts.region });
   const hemUsed = Math.max(monthlyExpenses, hemBase);
 
   const availableForRepayments = monthlyNetIncome - hemUsed - existingDebts;
@@ -99,6 +122,8 @@ export function computeBorrowingPower(
     monthlyRepayment: Math.round(monthlyRepayment),
     monthlyNetIncome: Math.round(monthlyNetIncome),
     hemUsed: Math.round(hemUsed),
+    hemBenchmark: Math.round(hemBase),
+    expensesSource: monthlyExpenses > hemBase ? "declared" : "hem",
     availableForRepayments: Math.round(availableForRepayments),
   };
 }
