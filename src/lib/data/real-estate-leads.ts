@@ -11,8 +11,11 @@
 //              form) must ask the same questions, show the same agent-contact
 //              consent and post as "guide-download" so it is scored:
 //              suburb, property type + beds, timeframe, agent status,
-//              motivation (opt), price expectation (opt), then name, email,
-//              mobile (opt), marketing consent. Scored HOT/WARM/COLD by
+//              motivation (opt), price expectation (opt), then name and
+//              email, then mobile (required) on its own step. The consent
+//              (agent contact + marketing email) is the statement on both
+//              contact steps. Stopping before the mobile leaves a partial
+//              lead that is never shared. Scored HOT/WARM/COLD by
 //              scoreGuideLead(); already-listed vendors are never shared.
 //   appraisal  AppraisalForm + SuburbAppraisalCTA ("appraisal-request"):
 //              name, email, mobile (required), address, suburb, property

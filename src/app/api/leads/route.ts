@@ -23,6 +23,10 @@ import { attributionFromRequest, attributionJson, attributionRowsFor } from "@/l
 const NOTIFY_EMAIL = ANDY_EMAIL;
 const CC_EMAIL = LEADS_CC_EMAIL;
 
+// How long a partial guide lead (name + email, no mobile yet) can still be
+// completed by the funnel's mobile step. Same window as /api/leads/enrich.
+const PARTIAL_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
+
 const leadSchema = z.object({
   type: z.enum([
     "property-enquiry",
@@ -86,6 +90,9 @@ const leadSchema = z.object({
   buyerPersona: z.enum(["first-home", "upgrading", "investing", "downsizing"]).optional(),
   financeStatus: z.enum(["pre-approved", "talking-to-lenders", "not-started", "cash"]).optional(),
   budget: z.string().max(40).optional(),
+  // Second submit of the two-step guide funnels: the id of the partial
+  // lead (saved by the first submit, no phone) that this mobile completes.
+  partialLeadId: z.string().min(10).max(64).optional(),
   // Rental-appraisal (landlord) answers. No Lead columns: serialised into
   // message below, the way the appraisal timeframe is.
   tenanted: z.enum(["yes", "no"]).optional(),
@@ -207,7 +214,44 @@ export async function POST(request: Request) {
     // the raw string — a lead with an odd-looking number beats no lead.
     const storedPhone = lead.phone ? (normalizePhone(lead.phone) ?? lead.phone.trim()) : undefined;
 
-    const saved = await db.lead.create({
+    // Two-step guide funnels. The first submit (name + email, no phone)
+    // saves a partial lead: no guide email yet, "[PARTIAL]" to the team,
+    // tagged ypg-partial in ActiveCampaign, never passed to an agent. The
+    // second posts the same answers plus the mobile and the partial's id:
+    // the phone is filled in on that row, then the lead gets everything a
+    // complete one does (team email, guide email, AC). A partial that
+    // can't be completed (unknown id, other email, too old) doesn't bounce
+    // the visitor; the submission is saved as a new complete lead instead.
+    let savedId: string | null = null;
+    if (lead.type === "guide-download" && lead.partialLeadId && storedPhone) {
+      const partial = await db.lead.findUnique({ where: { id: lead.partialLeadId } });
+      if (
+        partial &&
+        partial.type === "guide-download" &&
+        partial.email.toLowerCase() === lead.email.toLowerCase() &&
+        Date.now() - partial.createdAt.getTime() <= PARTIAL_WINDOW_MS
+      ) {
+        // Already completed (double submit): succeed without sending
+        // anything twice.
+        if (partial.phone && partial.phone.trim().length > 0) {
+          return NextResponse.json({ success: true, message: "Enquiry submitted successfully", id: partial.id });
+        }
+        // Guarded write, as in /api/leads/enrich: the phone-is-empty
+        // condition lives in the query, so of two concurrent submits only
+        // one completes the lead and sends the emails.
+        const updated = await db.lead.updateMany({
+          where: { id: partial.id, phone: null },
+          data: { phone: storedPhone, message: persistedMessage },
+        });
+        if (updated.count === 0) {
+          return NextResponse.json({ success: true, message: "Enquiry submitted successfully", id: partial.id });
+        }
+        savedId = partial.id;
+      }
+    }
+    const isPartialGuideLead = lead.type === "guide-download" && !storedPhone;
+
+    savedId ??= (await db.lead.create({
       data: {
         type:             lead.type,
         firstName:        lead.firstName,
@@ -229,7 +273,7 @@ export async function POST(request: Request) {
         gclid:            attribution.gclid ?? undefined,
         attribution:      attributionJson(attribution),
       },
-    });
+    })).id;
 
     // ActiveCampaign sync for guide leads. Best-effort: the DB row and
     // email notification are the canonical record; a slow or down AC API
@@ -240,7 +284,7 @@ export async function POST(request: Request) {
         await syncGuideLeadToActiveCampaign(lead);
       } catch (acErr) {
         console.error("ActiveCampaign sync failed (lead saved to DB):", {
-          leadId: saved.id,
+          leadId: savedId,
           error: acErr instanceof Error ? acErr.message : String(acErr),
         });
       }
@@ -259,7 +303,10 @@ export async function POST(request: Request) {
           : lead.type === "rental-appraisal" && lead.managerTimeframe === "asap"
             ? "[HOT] "
             : "";
-    const subject     = `${scorePrefix}${typeLabel}, ${lead.firstName}${lead.lastName ? ` ${lead.lastName}` : ""}${lead.suburb ? ` (${lead.suburb})` : ""}`;
+    // "[PARTIAL]" first: a guide lead with no mobile yet must not be
+    // handed to an agent (they are only charged for leads with a mobile).
+    const partialPrefix = isPartialGuideLead ? "[PARTIAL] " : "";
+    const subject     = `${partialPrefix}${scorePrefix}${typeLabel}, ${lead.firstName}${lead.lastName ? ` ${lead.lastName}` : ""}${lead.suburb ? ` (${lead.suburb})` : ""}`;
 
     // Match-request leads (the homepage MatchAgent flow) go ONLY to
     // andy@theandylife.com, no CC. Per Andy 2026-05-10. Other lead
@@ -278,7 +325,7 @@ export async function POST(request: Request) {
       });
     } catch (mailErr) {
       console.error("Lead notification email failed (lead saved to DB):", {
-        leadId: saved.id,
+        leadId: savedId,
         type: lead.type,
         error: mailErr instanceof Error ? mailErr.message : String(mailErr),
       });
@@ -288,12 +335,12 @@ export async function POST(request: Request) {
       try {
         await sendMail({
           to: NOTIFY_EMAIL,
-          subject: `ALERT: Lead notification failed (${saved.id})`,
-          html: buildFailureAlertHtml(saved.id, lead, mailErr),
+          subject: `ALERT: Lead notification failed (${savedId})`,
+          html: buildFailureAlertHtml(savedId, lead, mailErr),
         });
       } catch (alertErr) {
         console.error("Lead failure-alert email ALSO failed:", {
-          leadId: saved.id,
+          leadId: savedId,
           error: alertErr instanceof Error ? alertErr.message : String(alertErr),
         });
       }
@@ -304,26 +351,30 @@ export async function POST(request: Request) {
     //    the in-page confirmation; admin notification carries the data.
     //    replyTo routes "reply to this email" responses (the HOT email's
     //    P.S. fast-track line) to a monitored inbox instead of noreply@.
-    try {
-      const { subject: confirmSubject } = confirmationCopy(lead);
-      await sendMail({
-        to: lead.email,
-        replyTo: ANDY_EMAIL,
-        subject: confirmSubject,
-        html: buildConfirmationHtml(lead),
-      });
-    } catch (confirmErr) {
-      console.error("Lead confirmation email failed:", {
-        leadId: saved.id,
-        to: lead.email,
-        error: confirmErr instanceof Error ? confirmErr.message : String(confirmErr),
-      });
+    //    A partial guide lead gets nothing yet: the guide is sent when
+    //    the funnel's mobile step completes the lead.
+    if (!isPartialGuideLead) {
+      try {
+        const { subject: confirmSubject } = confirmationCopy(lead);
+        await sendMail({
+          to: lead.email,
+          replyTo: ANDY_EMAIL,
+          subject: confirmSubject,
+          html: buildConfirmationHtml(lead),
+        });
+      } catch (confirmErr) {
+        console.error("Lead confirmation email failed:", {
+          leadId: savedId,
+          to: lead.email,
+          error: confirmErr instanceof Error ? confirmErr.message : String(confirmErr),
+        });
+      }
     }
 
     return NextResponse.json({
       success: true,
       message: "Enquiry submitted successfully",
-      id: saved.id,
+      id: savedId,
     });
   } catch (err) {
     console.error("Lead submission error:", err);

@@ -112,6 +112,9 @@ export function BuyingGuideFunnel({
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState<string | null>(null);
   const [website, setWebsite] = useState(""); // honeypot, must stay empty
+  // The partial lead step 6 saved (id from the API) and the name + email
+  // it was saved with, so going back and continuing unchanged reuses it.
+  const [partial, setPartial] = useState<{ id: string | null; key: string } | null>(null);
 
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -149,13 +152,77 @@ export function BuyingGuideFunnel({
     setStep(to);
   };
 
-  const onSubmit = async (e: React.FormEvent) => {
+  // Everything the API needs except the mobile. Sent twice: from the
+  // contact step (saves a partial lead) and again with the mobile and the
+  // partial's id (completes it; only then is the guide emailed).
+  const leadPayload = () => ({
+    type: "guide-download",
+    guideType: "buying",
+    firstName: firstName.trim(),
+    lastName: lastName.trim() || undefined,
+    email: email.trim(),
+    suburb: suburbSlug ?? undefined,
+    propertyType: propertyType ?? undefined,
+    sellingTimeframe: timeframe,
+    buyerPersona: persona,
+    financeStatus: finance ?? undefined,
+    budget: budget ?? undefined,
+    // Requesting the guide is the consent: the statement under the
+    // button says we'll email tips and market updates (no checkbox
+    // since Oct 2026). ActiveCampaign subscribes on this flag.
+    marketingConsent: true,
+    source,
+    website,
+  });
+
+  const postLead = async (body: Record<string, unknown>): Promise<{ id?: string } | null> => {
+    const res = await fetch("/api/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      const json = await res.json().catch(() => null);
+      throw new Error(json?.error ?? "Submit failed");
+    }
+    return res.json().catch(() => null);
+  };
+
+  // Step 6, name + email. Saved at once as a partial lead (no mobile, no
+  // guide sent yet), so someone who stops at the mobile step is still in
+  // the database and ActiveCampaign.
+  const onSubmitContact = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!timeframe || !persona) return;
-    // Mobile is required (the field's `required` stops an empty submit)
-    // and must be dialable, or the server rejects it and the user only
-    // sees a generic error. Required here only: the API keeps phone
-    // optional, so a tab loaded before this rule can't dead-end.
+    const key = [firstName.trim(), lastName.trim(), email.trim().toLowerCase()].join("\n");
+    if (partial?.key === key) {
+      goForward(7);
+      return;
+    }
+    setError(null);
+    setSubmitting(true);
+    try {
+      const saved = await postLead(leadPayload());
+      // No id back (only the honeypot path answers without one) just
+      // means step 7 creates the lead whole instead of completing it.
+      setPartial({ id: saved?.id ?? null, key });
+      clarityEvent("guide_email_captured");
+      clarityTag("guide_type", "buying");
+      goForward(7);
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // Step 7, the mobile. Completes the partial lead: the server adds the
+  // number, emails the guide and sends the team the full lead.
+  const onSubmitMobile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!timeframe || !persona) return;
+    // `required` stops an empty submit; the number must also be dialable,
+    // or the server rejects it and the user only sees a generic error.
     if (!isValidPhone(phone)) {
       setPhoneError(PHONE_ERROR);
       return;
@@ -164,34 +231,7 @@ export function BuyingGuideFunnel({
     setError(null);
     setSubmitting(true);
     try {
-      const res = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "guide-download",
-          guideType: "buying",
-          firstName: firstName.trim(),
-          lastName: lastName.trim() || undefined,
-          email: email.trim(),
-          phone: phone.trim() || undefined,
-          suburb: suburbSlug ?? undefined,
-          propertyType: propertyType ?? undefined,
-          sellingTimeframe: timeframe,
-          buyerPersona: persona,
-          financeStatus: finance ?? undefined,
-          budget: budget ?? undefined,
-          // Requesting the guide is the consent: the statement under the
-          // button says we'll email tips and market updates (no checkbox
-          // since Oct 2026). ActiveCampaign subscribes on this flag.
-          marketingConsent: true,
-          source,
-          website,
-        }),
-      });
-      if (!res.ok) {
-        const body = await res.json().catch(() => null);
-        throw new Error(body?.error ?? "Submit failed");
-      }
+      await postLead({ ...leadPayload(), phone: phone.trim(), partialLeadId: partial?.id ?? undefined });
       clarityEvent("guide_download_submitted");
       clarityTag("guide_type", "buying");
       clarityTag("guide_timeframe", timeframe);
@@ -211,7 +251,7 @@ export function BuyingGuideFunnel({
     }
   };
 
-  const stepTotal = 7;
+  const stepTotal = 8;
   const stepIndex = Math.min(step, stepTotal - 1);
 
   // Shared option-button styling. Tactile: options rise a hair on hover
@@ -240,6 +280,22 @@ export function BuyingGuideFunnel({
     >
       <ArrowLeft className="w-3.5 h-3.5" /> Back
     </button>
+  );
+
+  // Collection statement, also the marketing-email consent (there is no
+  // checkbox), so it sits under the button on both contact steps: where
+  // the email is given and where the mobile is.
+  const collectionStatement = (
+    <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
+      By requesting the guide you agree we may email it to you, plus
+      buying tips and market updates for your suburb (unsubscribe
+      anytime). Your details are never sold and never passed to
+      selling agents. Read our{" "}
+      <a href="/privacy" className="underline underline-offset-2 hover:text-ink">
+        privacy policy
+      </a>
+      .
+    </p>
   );
 
   return (
@@ -483,7 +539,7 @@ export function BuyingGuideFunnel({
           <h3 className="rise rise-d1 font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-3">
             Where should we send it?
           </h3>
-          <form onSubmit={onSubmit} className="rise rise-d2 space-y-3">
+          <form onSubmit={onSubmitContact} className="rise rise-d2 space-y-3">
             {/* Honeypot: visually hidden, off-screen, aria-hidden. */}
             <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
               <label htmlFor="buying-guide-website">Website</label>
@@ -525,6 +581,44 @@ export function BuyingGuideFunnel({
               onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
             />
+
+            {error && <p className="text-sm text-danger">{error}</p>}
+
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3.5 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer press"
+            >
+              {submitting ? (
+                <>
+                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true" />
+                  Saving…
+                </>
+              ) : (
+                <>
+                  Continue
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
+            </button>
+
+            {collectionStatement}
+          </form>
+          {backButton(5)}
+        </div>
+      )}
+
+      {/* Step 7, mobile. Its own step, after the email is saved, so a
+          visitor who won't give a number is still a (partial) lead. */}
+      {step === 7 && (
+        <div>
+          <p className="rise text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-3">
+            Last step
+          </p>
+          <h3 className="rise rise-d1 font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-3">
+            What&rsquo;s your mobile?
+          </h3>
+          <form onSubmit={onSubmitMobile} className="rise rise-d2 space-y-3">
             <div>
               <input
                 type="tel"
@@ -579,21 +673,9 @@ export function BuyingGuideFunnel({
               )}
             </button>
 
-            {/* Collection statement, also the marketing-email consent
-                (there is no checkbox), so it stays at the point of
-                collection, right under the button. */}
-            <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
-              By requesting the guide you agree we may email it to you, plus
-              buying tips and market updates for your suburb (unsubscribe
-              anytime). Your details are never sold and never passed to
-              selling agents. Read our{" "}
-              <a href="/privacy" className="underline underline-offset-2 hover:text-ink">
-                privacy policy
-              </a>
-              .
-            </p>
+            {collectionStatement}
           </form>
-          {backButton(5)}
+          {backButton(6)}
         </div>
       )}
 
