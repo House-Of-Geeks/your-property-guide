@@ -417,6 +417,59 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   }
 }
 
+/* The flagged mobile field (react-phone-number-input, Oct 2026, as on Why
+   Solar's rebate quiz), drawn like the site's other inputs. Australia is the
+   only country, so the flag is a label, not a menu. */
+.ypg-phone-input.PhoneInput {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  background: var(--surface-warm);
+  overflow: hidden;
+  transition: border-color 200ms, box-shadow 200ms;
+}
+.ypg-phone-input.PhoneInput:focus-within {
+  border-color: var(--cta);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--cta) 15%, transparent);
+}
+.ypg-phone-input--error.PhoneInput,
+.ypg-phone-input--error.PhoneInput:focus-within {
+  border-color: var(--danger);
+}
+.ypg-phone-input--error.PhoneInput:focus-within {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--danger) 15%, transparent);
+}
+.ypg-phone-input .PhoneInputCountry {
+  margin-right: 0;
+  padding: 0 0.75rem;
+  border-right: 1px solid var(--line);
+}
+.ypg-phone-input .PhoneInputCountryIcon {
+  --PhoneInputCountryFlag-height: 1.125em;
+}
+.ypg-phone-input .PhoneInputCountrySelectArrow {
+  display: none;
+}
+.ypg-phone-input .PhoneInputCountrySelect {
+  pointer-events: none;
+}
+.ypg-phone-input .PhoneInputInput {
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--ink);
+  caret-color: var(--cta);
+}
+.ypg-phone-input .PhoneInputInput::placeholder {
+  color: var(--ink-subtle);
+}
+
 /* Warm minimal scrollbar (WebKit + Firefox). */
 * {
   scrollbar-width: thin;
