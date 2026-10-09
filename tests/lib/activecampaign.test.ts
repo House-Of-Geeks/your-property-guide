@@ -6,7 +6,6 @@ const lead = (overrides: Partial<LeadEmailData> = {}): LeadEmailData => ({
   type: "guide-download",
   firstName: "Sarah",
   email: "sarah@example.com",
-  phone: "0412345678",
   suburb: "burpengary-qld-4505",
   propertyType: "house",
   bedrooms: "4",
@@ -34,11 +33,6 @@ describe("buildAcTags", () => {
     const tags = buildAcTags(lead({ marketingConsent: false }), "HOT");
     expect(tags).toContain("ypg-no-consent");
     expect(tags).not.toContain("ypg-consented");
-  });
-
-  it("tags a guide lead with no mobile yet as partial, and only that one", () => {
-    expect(buildAcTags(lead({ phone: undefined }), "HOT")).toContain("ypg-partial");
-    expect(buildAcTags(lead(), "HOT")).not.toContain("ypg-partial");
   });
 
   it("DO-NOT-CONTACT score flows through as a tag", () => {
