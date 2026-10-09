@@ -136,6 +136,7 @@ export const BUYING_GUIDE_PDF_URL = `https://www.yourpropertyguide.com.au${BUYIN
 export const BUYING_GUIDE_COVER_URL = "https://www.yourpropertyguide.com.au/images/guide/buying-guide-cover-email.jpg";
 const APPRAISAL_URL = "https://www.yourpropertyguide.com.au/appraisal";
 const BORROWING_URL = "https://www.yourpropertyguide.com.au/borrowing-power-calculator";
+const BUYERS_AGENT_URL = "https://www.yourpropertyguide.com.au/find-an-expert?intent=buying#match";
 
 // Lead fields are attacker-controlled free text (any bot can POST
 // /api/leads). Escape them before they land inside an email template:
@@ -406,27 +407,30 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
   if (lead.type === "guide-download" && !lead.callKind) {
     const score = scoreGuideLead(lead);
     const buying = lead.guideType === "buying";
+    // The dark call-to-action panel. Every guide email pushes towards an
+    // agent (Jos, 9 Oct 2026): sellers who aren't listed get the appraisal
+    // with one top local agent, every buyer a buyer's agent match. Listed
+    // sellers were promised no agent contact, so they get neither.
+    const panel = (eyebrow: string, text: string, button: string) => `
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0 0;background:${C.ink};border-radius:10px;">
+        <tr><td style="padding:20px 22px;">
+          <p style="margin:0 0 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:${C.apricot};">${eyebrow}</p>
+          ${text}
+          ${button}
+        </td></tr>
+      </table>`;
     const appraisalPanel = buying
       ? (score === "HOT" || score === "WARM"
-        ? `
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0 0;background:${C.ink};border-radius:10px;">
-        <tr><td style="padding:20px 22px;">
-          <p style="margin:0 0 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:${C.apricot};">Know your number</p>
-          <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">Every good buying decision starts with one number: what a lender will actually approve, after the serviceability buffer. The borrowing power calculator runs it in 60 seconds, no sign-up.</p>
-          ${emailButton("Run my borrowing power", BORROWING_URL)}
-        </td></tr>
-      </table>`
-        : "")
-      : (score === "HOT" || score === "WARM"
-        ? `
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0 0;background:${C.ink};border-radius:10px;">
-        <tr><td style="padding:20px 22px;">
-          <p style="margin:0 0 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:${C.apricot};">Put a number on it</p>
-          <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">Medians tell you about the suburb. An appraisal tells you about <em style="color:#ffffff;font-style:normal;font-weight:600;">your place</em>: a defensible price range, the comparable sales behind it, and what to fix first. Thirty minutes with a top local agent, free, no listing agreement, and you control who contacts you.</p>
-          ${emailButton("Book my free appraisal", APPRAISAL_URL)}
-        </td></tr>
-      </table>`
-        : "");
+        ? panel("Know your number", `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">Every good buying decision starts with one number: what a lender will actually approve, after the serviceability buffer. The borrowing power calculator runs it in 60 seconds, no sign-up.</p>`, emailButton("Run my borrowing power", BORROWING_URL))
+        : "") +
+        panel(
+          "Get a buyer's agent",
+          `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">A buyer's agent works for you, not the seller. They know what homes in your suburbs really sell for, check the property over and can negotiate or bid for you. Getting matched with one is free, with no commitment.</p>`,
+          emailButton("Get matched with a buyer's agent", BUYERS_AGENT_URL),
+        )
+      : score !== "DO-NOT-CONTACT"
+        ? panel("Put a number on it", `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">Medians tell you about the suburb. An appraisal tells you about <em style="color:#ffffff;font-style:normal;font-weight:600;">your place</em>: a defensible price range, the comparable sales behind it, and what to fix first. Thirty minutes with a top local agent, free, no listing agreement, and you control who contacts you.</p>`, emailButton("Book my free appraisal", APPRAISAL_URL))
+        : "";
 
     const psLine =
       score === "HOT" && !buying
