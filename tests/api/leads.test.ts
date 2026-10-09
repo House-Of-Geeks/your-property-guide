@@ -343,6 +343,15 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       expect(dbLeadCreate.mock.calls[0][0].data.message).toContain("Consent: one agent may call");
     });
 
+    it("sends the flagged field's E.164 number to Sent 24/7 as is, and stores 04…", async () => {
+      configure(false);
+      s247(201, { success: true, lead_id: "s247_2", status: "pending" });
+      await POST(makeRequest({ ...call, phone: "+61491570156" }));
+      const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+      expect(body.lead.phone).toBe("+61491570156");
+      expect(dbLeadCreate.mock.calls[0][0].data.phone).toBe("0491570156");
+    });
+
     it.each([
       ["an already-listed seller", { agentStatus: "already-listed" }],
       ["a cold seller", { sellingTimeframe: "12-plus-months" }],
