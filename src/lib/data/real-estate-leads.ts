@@ -14,9 +14,10 @@
 //              motivation (opt), price expectation (opt), then name and
 //              email, then mobile (required) on its own step. The consent
 //              (agent contact + marketing email) is the statement on both
-//              contact steps. Stopping before the mobile leaves a partial
-//              lead that is never shared. Scored HOT/WARM/COLD by
-//              scoreGuideLead(); already-listed vendors are never shared.
+//              contact steps. Stopping before the mobile leaves a
+//              PartialLead (never shared). Scored HOT/WARM/COLD by
+//              scoreGuideLead(); only HOT and WARM vendors who didn't say
+//              "already listed" go to Sent 24/7 (sent247HoldReason).
 //   appraisal  AppraisalForm + SuburbAppraisalCTA ("appraisal-request"):
 //              name, email, mobile (required), address, suburb, property
 //              type, bedrooms. Consent: one vetted local agent.

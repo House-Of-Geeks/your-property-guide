@@ -94,8 +94,9 @@ export default function PrivacyPage() {
 
         <h2>6. Service Providers and Overseas Disclosure</h2>
         <p>
-          We use service providers to host the site, send email, manage our mailing list and measure how the site
-          is used. These include ActiveCampaign, SendGrid, Microsoft Clarity and Quantcast. When we measure
+          We use service providers to host the site, send email, manage our mailing list, deliver your details to
+          the agent you are matched with, and measure how the site is used. These include Sent 24/7, ActiveCampaign,
+          SendGrid, Microsoft Clarity and Quantcast. When we measure
           advertising, we may send an ad click identifier, and whether it led to an enquiry, an appraisal or a
           listing (with a value we assign to it), to the ad platform that served the ad, such as Google. Some of these providers store information outside Australia,
           including in the United States.

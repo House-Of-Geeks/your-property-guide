@@ -1,19 +1,28 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 // vi.mock factories are hoisted above top-level variables. Use vi.hoisted
 // to define the spies in the same hoisted scope so the factories can
 // reference them safely.
-const { dbLeadCreate, dbLeadFindUnique, dbLeadUpdateMany, dbAgentFind, sendMailMock } = vi.hoisted(() => ({
-  dbLeadCreate:     vi.fn(),
-  dbLeadFindUnique: vi.fn(),
-  dbLeadUpdateMany: vi.fn(),
-  dbAgentFind:      vi.fn(),
-  sendMailMock:     vi.fn(),
+const { dbLeadCreate, dbAgentFind, sendMailMock, dbPartialUpsert, dbPartialDeleteMany } = vi.hoisted(() => ({
+  dbLeadCreate:        vi.fn(),
+  dbAgentFind:         vi.fn(),
+  sendMailMock:        vi.fn(),
+  dbPartialUpsert:     vi.fn(),
+  dbPartialDeleteMany: vi.fn(),
+}));
+
+// after() runs its callback at once here, so what it does can be asserted.
+vi.mock("next/server", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("next/server")>()),
+  after: (fn: () => unknown) => {
+    void fn();
+  },
 }));
 
 vi.mock("@/lib/db", () => ({
   db: {
-    lead: { create: dbLeadCreate, findUnique: dbLeadFindUnique, updateMany: dbLeadUpdateMany },
+    lead: { create: dbLeadCreate },
+    partialLead: { upsert: dbPartialUpsert, deleteMany: dbPartialDeleteMany },
     agent: { findUnique: dbAgentFind },
   },
 }));
@@ -53,8 +62,10 @@ const baseLead = {
 
 beforeEach(() => {
   dbLeadCreate.mockReset();
-  dbLeadFindUnique.mockReset();
-  dbLeadUpdateMany.mockReset();
+  dbPartialUpsert.mockReset();
+  dbPartialDeleteMany.mockReset();
+  dbPartialUpsert.mockResolvedValue({ id: "partial_test_1" });
+  dbPartialDeleteMany.mockResolvedValue({ count: 1 });
   dbAgentFind.mockReset();
   sendMailMock.mockReset();
   dbLeadCreate.mockResolvedValue({ id: "lead_test_123" });
@@ -124,6 +135,7 @@ describe("POST /api/leads", () => {
         type: "guide-download",
         firstName: "Sarah",
         email: "sarah@example.com",
+        phone: "0412 345 678",
         suburb: "burpengary-qld-4505",
         propertyType: "house",
         bedrooms: "4",
@@ -203,10 +215,10 @@ describe("POST /api/leads", () => {
 // Each case mirrors the exact JSON a client form posts (JSON.stringify drops
 // undefined keys, same as the browser). If a form and the schema drift apart
 // again, it fails here instead of 400-ing real leads in production.
-// The guide funnels save name + email first (a partial lead, no phone),
-// then complete the same row from a separate mobile step.
-describe("two-step guide capture", () => {
-  const answers = {
+// Two-step guide funnels (Why Solar's model): the email step is a
+// PartialLead, the mobile step the lead; sellable vendor leads go to Sent 24/7.
+describe("guide funnels: partials and Sent 24/7", () => {
+  const seller = {
     type: "guide-download" as const,
     firstName: "Sarah",
     lastName: "Lee",
@@ -219,87 +231,104 @@ describe("two-step guide capture", () => {
     marketingConsent: true,
     source: "selling-guide-page",
   };
-  const partialRow = (overrides: Record<string, unknown> = {}) => ({
-    id: "partial_lead_0001",
-    type: "guide-download",
-    email: "sarah@example.com",
-    phone: null,
-    createdAt: new Date(),
-    ...overrides,
-  });
   const mails = () => sendMailMock.mock.calls.map((c) => c[0]);
+  const adminHtml = () => mails().find((m) => m.to === "andy@theandylife.com").html as string;
+  const fetchMock = vi.fn();
 
-  it("first submit (no phone) saves a partial: [PARTIAL] to the team, no guide email", async () => {
-    const res = await POST(makeRequest(answers));
-    expect(res.status).toBe(200);
-    expect((await res.json()).id).toBe("lead_test_123");
-    expect(dbLeadCreate).toHaveBeenCalledTimes(1);
-    expect(dbLeadCreate.mock.calls[0][0].data.phone).toBeUndefined();
-    expect(mails()).toHaveLength(1);
-    expect(mails()[0].to).toBe("andy@theandylife.com");
-    expect(mails()[0].subject).toMatch(/^\[PARTIAL\] \[HOT\] /);
-    expect(mails()[0].html).toContain("Not given yet.");
+  beforeEach(() => {
+    fetchMock.mockReset();
+    vi.stubGlobal("fetch", fetchMock);
   });
-
-  it("second submit fills the phone in on the partial row and sends the full lead and the guide", async () => {
-    dbLeadFindUnique.mockResolvedValue(partialRow());
-    dbLeadUpdateMany.mockResolvedValue({ count: 1 });
-    const res = await POST(makeRequest({ ...answers, phone: "0412 345 678", partialLeadId: "partial_lead_0001" }));
-    expect(res.status).toBe(200);
-    expect((await res.json()).id).toBe("partial_lead_0001");
-    expect(dbLeadCreate).not.toHaveBeenCalled();
-    const update = dbLeadUpdateMany.mock.calls[0][0];
-    expect(update.where).toEqual({ id: "partial_lead_0001", phone: null });
-    expect(update.data.phone).toBe("0412345678");
-    expect(update.data.message).toContain("Score: HOT");
-    const admin = mails().find((m) => m.to === "andy@theandylife.com");
-    expect(admin.subject).toMatch(/^\[HOT\] /);
-    expect(admin.html).toContain("0412 345 678");
-    expect(admin.html).not.toContain("Not given yet.");
-    expect(mails().some((m) => m.to === "Sarah@Example.com")).toBe(true);
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
   });
+  const configure = () => {
+    vi.stubEnv("SENT247_API_KEY", "sk_live_test");
+    vi.stubEnv("SENT247_VENDOR_CAMPAIGN_ID", "camp-vendor");
+  };
+  const s247 = (status: number, body: unknown) =>
+    fetchMock.mockResolvedValue(new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } }));
 
-  it("an already-completed partial (double submit) succeeds without writing or emailing again", async () => {
-    dbLeadFindUnique.mockResolvedValue(partialRow({ phone: "0412345678" }));
-    const res = await POST(makeRequest({ ...answers, phone: "0412 345 678", partialLeadId: "partial_lead_0001" }));
+  it("a guide download without a phone is saved as a partial: no Lead row, no emails", async () => {
+    const res = await POST(makeRequest(seller));
     expect(res.status).toBe(200);
-    expect(dbLeadUpdateMany).not.toHaveBeenCalled();
+    expect((await res.json()).id).toBe("partial_test_1");
     expect(dbLeadCreate).not.toHaveBeenCalled();
     expect(sendMailMock).not.toHaveBeenCalled();
+    const upsert = dbPartialUpsert.mock.calls[0][0];
+    expect(upsert.where).toEqual({ email_source: { email: "sarah@example.com", source: "selling-guide" } });
+    expect(upsert.create.data.answers).toMatchObject({ sellingTimeframe: "0-3-months", agentStatus: "comparing" });
+    expect(upsert.create.data.placement).toBe("selling-guide-page");
   });
 
-  it("losing a concurrent completion (guarded write matches nothing) sends nothing", async () => {
-    dbLeadFindUnique.mockResolvedValue(partialRow());
-    dbLeadUpdateMany.mockResolvedValue({ count: 0 });
-    const res = await POST(makeRequest({ ...answers, phone: "0412 345 678", partialLeadId: "partial_lead_0001" }));
-    expect(res.status).toBe(200);
-    expect(sendMailMock).not.toHaveBeenCalled();
+  it("a buying-guide partial is kept under its own source", async () => {
+    await POST(makeRequest({ ...seller, guideType: "buying", agentStatus: undefined, buyerPersona: "first-home" }));
+    expect(dbPartialUpsert.mock.calls[0][0].where.email_source.source).toBe("buying-guide");
   });
 
-  it("a partial id with a different email is not completed; the submission becomes a new complete lead", async () => {
-    dbLeadFindUnique.mockResolvedValue(partialRow({ email: "someone-else@example.com" }));
-    const res = await POST(makeRequest({ ...answers, phone: "0412 345 678", partialLeadId: "partial_lead_0001" }));
+  it("a complete guide lead deletes the email's partials and says Sent 24/7 is off until configured", async () => {
+    const res = await POST(makeRequest({ ...seller, phone: "0412 345 678" }));
     expect(res.status).toBe(200);
-    expect(dbLeadUpdateMany).not.toHaveBeenCalled();
     expect(dbLeadCreate).toHaveBeenCalledTimes(1);
-    expect(dbLeadCreate.mock.calls[0][0].data.phone).toBe("0412345678");
-    expect(mails().some((m) => m.to === "Sarah@Example.com")).toBe(true);
-  });
-
-  it("an expired partial is not completed either", async () => {
-    dbLeadFindUnique.mockResolvedValue(partialRow({ createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000) }));
-    const res = await POST(makeRequest({ ...answers, phone: "0412 345 678", partialLeadId: "partial_lead_0001" }));
-    expect(res.status).toBe(200);
-    expect(dbLeadUpdateMany).not.toHaveBeenCalled();
-    expect(dbLeadCreate).toHaveBeenCalledTimes(1);
-  });
-
-  it("a one-step guide submit with a phone (tab loaded before this change) is a complete lead as before", async () => {
-    const res = await POST(makeRequest({ ...answers, phone: "0412 345 678" }));
-    expect(res.status).toBe(200);
-    expect(dbLeadFindUnique).not.toHaveBeenCalled();
+    expect(dbPartialDeleteMany).toHaveBeenCalledWith({ where: { email: "sarah@example.com" } });
     expect(mails()).toHaveLength(2);
-    expect(mails().find((m) => m.to === "andy@theandylife.com").subject).not.toContain("[PARTIAL]");
+    expect(adminHtml()).toContain("Not sent (Sent 24/7 not configured)");
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("sends a HOT vendor to the Sent 24/7 vendor campaign, with consent and the resume token", async () => {
+    configure();
+    s247(201, { success: true, lead_id: "s247_1", status: "pending" });
+    const res = await POST(makeRequest({ ...seller, phone: "0412 345 678", resumeToken: "tok_1", resumeClickId: "c_1" }));
+    expect(res.status).toBe(200);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toBe("https://api.sent247.com/api/v1/leads");
+    expect(init.headers).toMatchObject({ Authorization: "Bearer sk_live_test", "Idempotency-Key": "lead_test_123" });
+    const body = JSON.parse(init.body);
+    expect(body).toMatchObject({ campaign_id: "camp-vendor", resume_token: "tok_1", resume_click_id: "c_1" });
+    expect(body.lead).toMatchObject({ first_name: "Sarah", last_name: "Lee", phone: "+61412345678" });
+    expect(body.consent.tcpa_consent).toBe(true);
+    expect(body.consent.consent_text).toMatch(/^By requesting the guide you agree we may share your details with one top local agent/);
+    expect(adminHtml()).toContain("Accepted (pending), lead s247_1");
+  });
+
+  it.each([
+    ["already-listed vendors", { agentStatus: "already-listed" }, "already listed"],
+    ["cold vendors", { sellingTimeframe: "12-plus-months" }, "cold vendors are not sold"],
+    ["buying-guide leads", { guideType: "buying", agentStatus: undefined, buyerPersona: "investing", financeStatus: "cash" }, "never passed to agents"],
+  ])("never sends %s to Sent 24/7", async (_label, overrides, reason) => {
+    configure();
+    await POST(makeRequest({ ...seller, ...overrides, phone: "0412 345 678" }));
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(adminHtml()).toContain(reason);
+  });
+
+  it("a Sent 24/7 outage never costs the lead, and the team email says it wasn't delivered", async () => {
+    configure();
+    s247(502, { error: { message: "bad gateway" } });
+    const res = await POST(makeRequest({ ...seller, phone: "0412 345 678" }));
+    expect(res.status).toBe(200);
+    expect(dbLeadCreate).toHaveBeenCalledTimes(1);
+    expect(adminHtml()).toContain("FAILED, not delivered: HTTP 502: bad gateway");
+  });
+
+  it("a filter or duplicate rejection is reported as rejected, not failed", async () => {
+    configure();
+    s247(200, { success: false, status: "rejected", rejection_reasons: ["duplicate lead"] });
+    await POST(makeRequest({ ...seller, phone: "0412 345 678" }));
+    expect(adminHtml()).toContain("Rejected by Sent 24/7: duplicate lead");
+  });
+
+  it("a vendor partial is held in Sent 24/7 with its id as ws_resume", async () => {
+    configure();
+    s247(201, { success: true, lead_id: "s247_p", status: "partial" });
+    await POST(makeRequest(seller));
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toBe("https://api.sent247.com/api/v1/leads/partial");
+    expect(JSON.parse(init.body).custom_fields.ws_resume).toBe("partial_test_1");
   });
 });
 

@@ -44,7 +44,9 @@ export interface LeadEmailData {
 // agency agreement).
 export type LeadScore = "HOT" | "WARM" | "COLD" | "DO-NOT-CONTACT";
 
-export function scoreGuideLead(lead: LeadEmailData): LeadScore {
+export function scoreGuideLead(
+  lead: Pick<LeadEmailData, "guideType" | "sellingTimeframe" | "financeStatus" | "agentStatus">,
+): LeadScore {
   if (lead.guideType === "buying") {
     // Buyer temperature: near-term timeframe plus finance readiness.
     // Pre-approved or cash buyers inside three months are the leads a
@@ -157,6 +159,8 @@ export function buildAdminEmailHtml(
   routedReason: string,
   /** "How they found us" rows from lib/attribution; internal only, never sent to agents. */
   attributionRows: Array<[string, string]> = [],
+  /** Where the lead was delivered (the "Sent 24/7" row); plain text, escaped here. */
+  deliveryRows: Array<[string, string]> = [],
 ): string {
   const C = EMAIL_COLORS;
   const typeLabel = labelFor(lead.type, lead.guideType);
@@ -170,10 +174,7 @@ export function buildAdminEmailHtml(
     score && ["Lead score", `<strong style="color:${scoreColor};">${score}</strong>`],
     ["Name",    fullName],
     ["Email",   `<a href="mailto:${email}" style="color:${C.terracottaDark};">${email}</a>`],
-    lead.phone
-      ? ["Phone", escapeHtml(lead.phone)]
-      : lead.type === "guide-download" &&
-        ["Phone", `<strong>Not given yet.</strong> Partial lead: stopped before the mobile step. Don&rsquo;t pass it to an agent.`],
+    lead.phone            && ["Phone",             escapeHtml(lead.phone)],
     lead.buyerPersona     && ["Buyer type",        BUYER_PERSONA_LABELS[lead.buyerPersona] ?? escapeHtml(lead.buyerPersona)],
     lead.sellingTimeframe && [lead.guideType === "buying" ? "Buying timeframe" : "Selling timeframe", TIMEFRAME_LABELS[lead.sellingTimeframe] ?? escapeHtml(lead.sellingTimeframe)],
     lead.financeStatus    && ["Finance",           FINANCE_STATUS_LABELS[lead.financeStatus] ?? escapeHtml(lead.financeStatus)],
@@ -193,6 +194,7 @@ export function buildAdminEmailHtml(
     lead.bedrooms         && ["Bedrooms",          escapeHtml(lead.bedrooms)],
     agentName             && ["Routed to",         `${agentName} (${routedReason})`],
     lead.source           && ["Source",            escapeHtml(lead.source)],
+    ...deliveryRows.map(([label, value]): [string, string] => [escapeHtml(label), escapeHtml(value)]),
   ]
     .filter((r): r is [string, string] => Array.isArray(r))
     .map(([label, value]) =>

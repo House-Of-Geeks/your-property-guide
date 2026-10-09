@@ -606,6 +606,36 @@ model Lead {
   @@index([gclid])
 }
 
+// A guide-funnel visitor who finished the name + email step but not the
+// mobile step (Oct 2026). Same model as Why Solar's PartialLead: one row per
+// email per guide, updated in place on every save, deleted when that email
+// completes a lead in /api/leads. Never emailed to the team and never shared
+// with an agent. Sellable vendor partials are also held in Sent 24/7, whose
+// recovery email links back with ?ws_resume=<id> so the funnel can restore
+// the answers (/api/partial-lead/restore). Created by hand-written DDL:
+// scripts/sql/2026-10-09-partial-lead.sql.
+model PartialLead {
+  id          String   @id @default(cuid())
+  // Stored lower-cased, so one person is one row per guide.
+  email       String
+  firstName   String?
+  lastName    String?
+  // Which funnel: "selling-guide" | "buying-guide". Where it sat on the
+  // site (homepage band, suburb page) is data.placement.
+  source      String
+  // The funnel's answers so far ({ answers: {...}, placement }).
+  data        Json?
+  // Path of the page the funnel was on, from the Referer header.
+  pageUrl     String?
+  gclid       String?
+  attribution Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([email, source])
+  @@index([createdAt])
+}
+
 // ---------------------------------------------------------------------------
 // Best Deal (partner-submitted, staff-moderated featured property)
 //
