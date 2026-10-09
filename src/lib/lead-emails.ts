@@ -170,7 +170,10 @@ export function buildAdminEmailHtml(
     score && ["Lead score", `<strong style="color:${scoreColor};">${score}</strong>`],
     ["Name",    fullName],
     ["Email",   `<a href="mailto:${email}" style="color:${C.terracottaDark};">${email}</a>`],
-    lead.phone            && ["Phone",             escapeHtml(lead.phone)],
+    lead.phone
+      ? ["Phone", escapeHtml(lead.phone)]
+      : lead.type === "guide-download" &&
+        ["Phone", `<strong>Not given yet.</strong> Partial lead: stopped before the mobile step. Don&rsquo;t pass it to an agent.`],
     lead.buyerPersona     && ["Buyer type",        BUYER_PERSONA_LABELS[lead.buyerPersona] ?? escapeHtml(lead.buyerPersona)],
     lead.sellingTimeframe && [lead.guideType === "buying" ? "Buying timeframe" : "Selling timeframe", TIMEFRAME_LABELS[lead.sellingTimeframe] ?? escapeHtml(lead.sellingTimeframe)],
     lead.financeStatus    && ["Finance",           FINANCE_STATUS_LABELS[lead.financeStatus] ?? escapeHtml(lead.financeStatus)],

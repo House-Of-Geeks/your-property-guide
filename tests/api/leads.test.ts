@@ -3,15 +3,17 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 // vi.mock factories are hoisted above top-level variables. Use vi.hoisted
 // to define the spies in the same hoisted scope so the factories can
 // reference them safely.
-const { dbLeadCreate, dbAgentFind, sendMailMock } = vi.hoisted(() => ({
-  dbLeadCreate: vi.fn(),
-  dbAgentFind:  vi.fn(),
-  sendMailMock: vi.fn(),
+const { dbLeadCreate, dbLeadFindUnique, dbLeadUpdateMany, dbAgentFind, sendMailMock } = vi.hoisted(() => ({
+  dbLeadCreate:     vi.fn(),
+  dbLeadFindUnique: vi.fn(),
+  dbLeadUpdateMany: vi.fn(),
+  dbAgentFind:      vi.fn(),
+  sendMailMock:     vi.fn(),
 }));
 
 vi.mock("@/lib/db", () => ({
   db: {
-    lead: { create: dbLeadCreate },
+    lead: { create: dbLeadCreate, findUnique: dbLeadFindUnique, updateMany: dbLeadUpdateMany },
     agent: { findUnique: dbAgentFind },
   },
 }));
@@ -51,6 +53,8 @@ const baseLead = {
 
 beforeEach(() => {
   dbLeadCreate.mockReset();
+  dbLeadFindUnique.mockReset();
+  dbLeadUpdateMany.mockReset();
   dbAgentFind.mockReset();
   sendMailMock.mockReset();
   dbLeadCreate.mockResolvedValue({ id: "lead_test_123" });
@@ -199,6 +203,106 @@ describe("POST /api/leads", () => {
 // Each case mirrors the exact JSON a client form posts (JSON.stringify drops
 // undefined keys, same as the browser). If a form and the schema drift apart
 // again, it fails here instead of 400-ing real leads in production.
+// The guide funnels save name + email first (a partial lead, no phone),
+// then complete the same row from a separate mobile step.
+describe("two-step guide capture", () => {
+  const answers = {
+    type: "guide-download" as const,
+    firstName: "Sarah",
+    lastName: "Lee",
+    email: "Sarah@Example.com",
+    suburb: "burpengary-qld-4505",
+    propertyType: "house",
+    bedrooms: "4",
+    sellingTimeframe: "0-3-months" as const,
+    agentStatus: "comparing" as const,
+    marketingConsent: true,
+    source: "selling-guide-page",
+  };
+  const partialRow = (overrides: Record<string, unknown> = {}) => ({
+    id: "partial_lead_0001",
+    type: "guide-download",
+    email: "sarah@example.com",
+    phone: null,
+    createdAt: new Date(),
+    ...overrides,
+  });
+  const mails = () => sendMailMock.mock.calls.map((c) => c[0]);
+
+  it("first submit (no phone) saves a partial: [PARTIAL] to the team, no guide email", async () => {
+    const res = await POST(makeRequest(answers));
+    expect(res.status).toBe(200);
+    expect((await res.json()).id).toBe("lead_test_123");
+    expect(dbLeadCreate).toHaveBeenCalledTimes(1);
+    expect(dbLeadCreate.mock.calls[0][0].data.phone).toBeUndefined();
+    expect(mails()).toHaveLength(1);
+    expect(mails()[0].to).toBe("andy@theandylife.com");
+    expect(mails()[0].subject).toMatch(/^\[PARTIAL\] \[HOT\] /);
+    expect(mails()[0].html).toContain("Not given yet.");
+  });
+
+  it("second submit fills the phone in on the partial row and sends the full lead and the guide", async () => {
+    dbLeadFindUnique.mockResolvedValue(partialRow());
+    dbLeadUpdateMany.mockResolvedValue({ count: 1 });
+    const res = await POST(makeRequest({ ...answers, phone: "0412 345 678", partialLeadId: "partial_lead_0001" }));
+    expect(res.status).toBe(200);
+    expect((await res.json()).id).toBe("partial_lead_0001");
+    expect(dbLeadCreate).not.toHaveBeenCalled();
+    const update = dbLeadUpdateMany.mock.calls[0][0];
+    expect(update.where).toEqual({ id: "partial_lead_0001", phone: null });
+    expect(update.data.phone).toBe("0412345678");
+    expect(update.data.message).toContain("Score: HOT");
+    const admin = mails().find((m) => m.to === "andy@theandylife.com");
+    expect(admin.subject).toMatch(/^\[HOT\] /);
+    expect(admin.html).toContain("0412 345 678");
+    expect(admin.html).not.toContain("Not given yet.");
+    expect(mails().some((m) => m.to === "Sarah@Example.com")).toBe(true);
+  });
+
+  it("an already-completed partial (double submit) succeeds without writing or emailing again", async () => {
+    dbLeadFindUnique.mockResolvedValue(partialRow({ phone: "0412345678" }));
+    const res = await POST(makeRequest({ ...answers, phone: "0412 345 678", partialLeadId: "partial_lead_0001" }));
+    expect(res.status).toBe(200);
+    expect(dbLeadUpdateMany).not.toHaveBeenCalled();
+    expect(dbLeadCreate).not.toHaveBeenCalled();
+    expect(sendMailMock).not.toHaveBeenCalled();
+  });
+
+  it("losing a concurrent completion (guarded write matches nothing) sends nothing", async () => {
+    dbLeadFindUnique.mockResolvedValue(partialRow());
+    dbLeadUpdateMany.mockResolvedValue({ count: 0 });
+    const res = await POST(makeRequest({ ...answers, phone: "0412 345 678", partialLeadId: "partial_lead_0001" }));
+    expect(res.status).toBe(200);
+    expect(sendMailMock).not.toHaveBeenCalled();
+  });
+
+  it("a partial id with a different email is not completed; the submission becomes a new complete lead", async () => {
+    dbLeadFindUnique.mockResolvedValue(partialRow({ email: "someone-else@example.com" }));
+    const res = await POST(makeRequest({ ...answers, phone: "0412 345 678", partialLeadId: "partial_lead_0001" }));
+    expect(res.status).toBe(200);
+    expect(dbLeadUpdateMany).not.toHaveBeenCalled();
+    expect(dbLeadCreate).toHaveBeenCalledTimes(1);
+    expect(dbLeadCreate.mock.calls[0][0].data.phone).toBe("0412345678");
+    expect(mails().some((m) => m.to === "Sarah@Example.com")).toBe(true);
+  });
+
+  it("an expired partial is not completed either", async () => {
+    dbLeadFindUnique.mockResolvedValue(partialRow({ createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000) }));
+    const res = await POST(makeRequest({ ...answers, phone: "0412 345 678", partialLeadId: "partial_lead_0001" }));
+    expect(res.status).toBe(200);
+    expect(dbLeadUpdateMany).not.toHaveBeenCalled();
+    expect(dbLeadCreate).toHaveBeenCalledTimes(1);
+  });
+
+  it("a one-step guide submit with a phone (tab loaded before this change) is a complete lead as before", async () => {
+    const res = await POST(makeRequest({ ...answers, phone: "0412 345 678" }));
+    expect(res.status).toBe(200);
+    expect(dbLeadFindUnique).not.toHaveBeenCalled();
+    expect(mails()).toHaveLength(2);
+    expect(mails().find((m) => m.to === "andy@theandylife.com").subject).not.toContain("[PARTIAL]");
+  });
+});
+
 describe("rental-appraisal (landlord) leads", () => {
   const landlord = {
     type: "rental-appraisal",

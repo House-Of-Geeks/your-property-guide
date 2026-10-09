@@ -8,15 +8,20 @@ import { type LeadEmailData, type LeadScore, scoreGuideLead, TIMEFRAME_LABELS, A
 //   namespaced (list "YPG Property Sellers", fields "YPG ...", tags "ypg-*").
 // - Best-effort: the caller wraps this in try/catch; a slow or down AC API
 //   must never cost us the lead (DB row + email are the canonical record).
-// - List subscription is gated on the marketing-consent checkbox (Spam Act
-//   express consent). Non-consented leads still get a contact record with
-//   tags and fields (CRM visibility for the appraisal pipeline) but are
-//   never subscribed to the marketing list.
+// - List subscription is gated on marketingConsent (Spam Act). The guide
+//   funnels send it as true: the collection statement under the button is
+//   the consent (no checkbox since Oct 2026). A lead without it still gets
+//   a contact record with tags and fields but is never subscribed.
+// - Partial leads (the funnel's first submit: name + email, no mobile yet)
+//   are tagged ypg-partial for a "finish getting your guide" automation.
+//   The tag comes off when a guide lead with a mobile syncs for the same
+//   email, so it only ever means "stopped before the mobile step".
 // - IDs are resolved by name at runtime and cached per warm instance, so
 //   nothing breaks if AC assigns different IDs across environments.
 //   Setup script: scripts/setup-activecampaign.ts
 
 const LIST_NAME = "YPG Property Sellers";
+export const PARTIAL_TAG = "ypg-partial";
 const BUYER_LIST_NAME = "YPG Property Buyers";
 
 const FIELD_TITLES = {
@@ -84,6 +89,7 @@ export function buildAcTags(lead: LeadEmailData, score: LeadScore): string[] {
   if (buying && lead.financeStatus) tags.push(`ypg-finance-${lead.financeStatus}`);
   if (!buying && lead.agentStatus) tags.push(`ypg-agent-${lead.agentStatus}`);
   tags.push(lead.marketingConsent ? "ypg-consented" : "ypg-no-consent");
+  if (lead.type === "guide-download" && !lead.phone) tags.push(PARTIAL_TAG);
   return tags;
 }
 
@@ -209,7 +215,16 @@ export async function syncGuideLeadToActiveCampaign(lead: LeadEmailData): Promis
     ),
   );
 
-  // 3. List subscription, only with express consent (Spam Act). Buyers
+  // 3. A guide lead with a mobile clears the contact's ypg-partial tag
+  //    (normally the partial this submission just completed).
+  if (lead.phone) {
+    const partialTagId = await resolveTagId(PARTIAL_TAG);
+    const links = await acFetch(`/contacts/${contactId}/contactTags`);
+    const stale = ((links.contactTags ?? []) as { id: string; tag: string }[]).filter((ct) => ct.tag === partialTagId);
+    await Promise.all(stale.map((ct) => acFetch(`/contactTags/${ct.id}`, { method: "DELETE" })));
+  }
+
+  // 4. List subscription, only with express consent (Spam Act). Buyers
   //    and sellers live on separate lists so automations stay clean.
   if (lead.marketingConsent) {
     const listId = await resolveListId(lead.guideType === "buying" ? BUYER_LIST_NAME : LIST_NAME);
