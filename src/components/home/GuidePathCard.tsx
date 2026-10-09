@@ -53,28 +53,43 @@ export function GuidePathCard() {
   return (
     <div className="rounded-2xl border border-line bg-surface-raised overflow-hidden shadow-card">
       {/* Path toggle: the fork in the road, phrased as the visitor's
-          own situation rather than our product names. */}
-      <div className="relative grid grid-cols-2 border-b border-line" role="tablist" aria-label="Choose your guide">
-        {/* Sliding pill behind the tabs; buttons stay transparent above it */}
-        <span
-          aria-hidden="true"
-          className="absolute inset-y-0 left-0 w-1/2 bg-cta transition-transform duration-[250ms] ease-[var(--ease-out-quint)]"
-          style={{ transform: path === "buying" ? "translateX(100%)" : "translateX(0)" }}
-        />
-        {(["selling", "buying"] as const).map((key) => (
-          <button
-            key={key}
-            role="tab"
-            aria-selected={path === key}
-            onClick={() => setPath(key)}
-            className={[
-              "relative z-10 bg-transparent py-3.5 text-sm font-sans font-semibold transition-colors duration-200 cursor-pointer",
-              path === key ? "text-white" : "text-ink-muted hover:text-ink",
-            ].join(" ")}
-          >
-            {key === "selling" ? "I’m selling" : "I’m buying"}
-          </button>
-        ))}
+          own situation rather than our product names. A labelled,
+          recessed track with a pill thumb (the same control as the
+          GuideBandSwitcher further down the homepage) so it reads as a
+          choice. Edge-to-edge halves read as a header bar, not a toggle. */}
+      <div className="px-5 pt-4 pb-4 border-b border-line">
+        <p
+          id="guide-path-label"
+          className="mb-2.5 text-center text-[10px] uppercase tracking-[0.26em] text-ink-muted font-sans font-medium"
+        >
+          Choose your guide
+        </p>
+        <div
+          className="relative grid grid-cols-2 rounded-full border border-line bg-surface-warm-sunken p-1"
+          role="tablist"
+          aria-labelledby="guide-path-label"
+        >
+          {/* Sliding pill behind the tabs; buttons stay transparent above it */}
+          <span
+            aria-hidden="true"
+            className="absolute inset-y-1 left-1 w-[calc(50%-4px)] rounded-full bg-cta shadow-[0_2px_6px_rgba(189,89,47,0.35)] transition-transform duration-[250ms] ease-[var(--ease-out-quint)]"
+            style={{ transform: path === "buying" ? "translateX(100%)" : "translateX(0)" }}
+          />
+          {(["selling", "buying"] as const).map((key) => (
+            <button
+              key={key}
+              role="tab"
+              aria-selected={path === key}
+              onClick={() => setPath(key)}
+              className={[
+                "relative z-10 rounded-full bg-transparent py-2.5 text-sm font-sans font-semibold transition-colors duration-200 cursor-pointer",
+                path === key ? "text-white" : "text-ink hover:text-cta",
+              ].join(" ")}
+            >
+              {key === "selling" ? "I’m selling" : "I’m buying"}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Cover band */}
