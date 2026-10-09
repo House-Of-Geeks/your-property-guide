@@ -3,9 +3,11 @@ import {
   AU_MOBILE_ERROR,
   NON_AU_MOBILE_ERROR,
   auMobileError,
+  cleanAuPhone,
   isLikelyTestNumber,
   isNonAusValidNumber,
   isValidAusMobile,
+  pastedAuPhone,
 } from "@/lib/utils/au-mobile";
 
 describe("isValidAusMobile", () => {
@@ -52,5 +54,49 @@ describe("auMobileError", () => {
     expect(auMobileError("")).toBe(AU_MOBILE_ERROR);
     expect(auMobileError(undefined)).toBe(AU_MOBILE_ERROR);
     expect(auMobileError("+6421123456")).toBe(NON_AU_MOBILE_ERROR);
+  });
+});
+
+describe("cleanAuPhone", () => {
+  it("repairs what autofill and 0061 leave in the field", () => {
+    expect(cleanAuPhone("+0491570156")).toBe("+61491570156");
+    expect(cleanAuPhone("+610491570156")).toBe("+61491570156");
+    expect(cleanAuPhone("+6161491570156")).toBe("+61491570156");
+  });
+
+  it("leaves good values and other countries alone", () => {
+    expect(cleanAuPhone("+61491570156")).toBe("+61491570156");
+    expect(cleanAuPhone("+447700900123")).toBe("+447700900123");
+    expect(cleanAuPhone("")).toBe("");
+  });
+});
+
+describe("pastedAuPhone", () => {
+  it("turns every AU format into the field's value", () => {
+    for (const text of [
+      "0491 570 156",
+      "0491-570-156",
+      "(0491) 570 156",
+      "491 570 156",
+      "+61 491 570 156",
+      "+61491570156",
+      "61491570156",
+      "+61 (0) 491 570 156",
+      "0061 491 570 156",
+      "0011 61 491 570 156",
+      "Mob: 0491 570 156",
+    ]) {
+      expect(pastedAuPhone(text), text).toBe("+61491570156");
+    }
+  });
+
+  it("keeps landlines AU, for the field to refuse", () => {
+    expect(pastedAuPhone("(02) 9555 1234")).toBe("+61295551234");
+  });
+
+  it("hands other countries and junk to the field", () => {
+    expect(pastedAuPhone("+44 7700 900123")).toBeNull();
+    expect(pastedAuPhone("0044 7700 900123")).toBeNull();
+    expect(pastedAuPhone("call me")).toBeNull();
   });
 });

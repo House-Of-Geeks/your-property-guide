@@ -44,6 +44,28 @@ export function isLikelyTestNumber(phone: string): boolean {
   return new Set(["0412345678", "0400000000", "0411111111", "0401234567"]).has(national);
 }
 
+/** Repairs values the field builds from a few real habits: "+0430…"
+ *  (autofill), "+610430…" (the trunk 0 kept after +61) and "+6161430…"
+ *  (0061 typed, which the field reads as a national number). */
+export function cleanAuPhone(value: string): string {
+  if (/^\+0/.test(value)) return "+61" + value.slice(2);
+  return value.replace(/^\+610/, "+61").replace(/^\+6161(\d{9})$/, "+61$1");
+}
+
+/** A pasted number as the field's value ("+61491570156"), whatever the
+ *  format: 0491 570 156, +61 (0) 491…, 61491570156, 0011 61…, "Mob: 04…".
+ *  Null for another country or no number, which the field then handles. */
+export function pastedAuPhone(text: string): string | null {
+  let s = text.replace(/[^\d+]/g, "");
+  if (s.startsWith("0011")) s = "+" + s.slice(4);
+  else if (s.startsWith("00")) s = "+" + s.slice(2);
+  if (s.startsWith("+61")) s = s.slice(3);
+  else if (s.startsWith("+")) return null;
+  else if (/^61\d{9}$/.test(s)) s = s.slice(2);
+  if (s.startsWith("0")) s = s.slice(1);
+  return /^\d+$/.test(s) ? "+61" + s : null;
+}
+
 /** What to show under the field, or null when the number can be sent. */
 export function auMobileError(phone: string | undefined): string | null {
   if (isNonAusValidNumber(phone)) return NON_AU_MOBILE_ERROR;

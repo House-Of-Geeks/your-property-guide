@@ -6,7 +6,7 @@ import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import AU from "country-flag-icons/react/3x2/AU";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
-import { auMobileError } from "@/lib/utils/au-mobile";
+import { auMobileError, cleanAuPhone, pastedAuPhone } from "@/lib/utils/au-mobile";
 import { callConsentText, GUIDE_THANKS_KEY, type GuideThanksContext } from "@/lib/guide-consent";
 
 // The guide thanks pages' client side (Oct 2026, Why Solar's ebook flow:
@@ -168,15 +168,7 @@ export function GuideCallCard({ guide }: { guide: "selling" | "buying" }) {
                 countrySelectProps={{ tabIndex: -1 }}
                 initialValueFormat="national"
                 value={phone}
-                onChange={(value) => {
-                  let cleaned = value || "";
-                  // Autofill or paste can leave "+0430835484", which never
-                  // parses: put the +61 back.
-                  if (/^\+0/.test(cleaned)) cleaned = "+61" + cleaned.slice(2);
-                  // A trunk 0 left after the +61.
-                  cleaned = cleaned.replace(/^\+610/, "+61");
-                  setPhone(cleaned);
-                }}
+                onChange={(value) => setPhone(cleanAuPhone(value || ""))}
                 onBlur={() => {
                   if (!phone) return;
                   setPhoneTouched(true);
@@ -189,15 +181,12 @@ export function GuideCallCard({ guide }: { guide: "selling" | "buying" }) {
                   "aria-invalid": phoneError ? true : undefined,
                   autoComplete: "tel",
                   onPaste: (e: React.ClipboardEvent<HTMLInputElement>) => {
-                    // Paste straight to E.164 so "0430835484" doesn't end up
-                    // as "+61 0430 835 484".
-                    let digits = e.clipboardData.getData("text").replace(/[^\d+]/g, "");
-                    if (digits.startsWith("+61")) digits = digits.slice(3);
-                    else if (digits.startsWith("0061")) digits = digits.slice(4);
-                    if (digits.startsWith("0")) digits = digits.slice(1);
-                    if (!digits || !/^\d+$/.test(digits)) return; // let the library handle it
+                    // Any AU format straight to E.164; another country
+                    // goes to the field, which shows the error.
+                    const pasted = pastedAuPhone(e.clipboardData.getData("text"));
+                    if (!pasted) return;
                     e.preventDefault();
-                    setPhone("+61" + digits);
+                    setPhone(pasted);
                     setPhoneRemountKey((k) => k + 1);
                   },
                 }}
