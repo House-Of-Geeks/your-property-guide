@@ -188,6 +188,7 @@ export async function syncGuideLeadToActiveCampaign(lead: LeadEmailData): Promis
       contact: {
         email: lead.email,
         firstName: lead.firstName,
+        ...(lead.lastName ? { lastName: lead.lastName } : {}),
         ...(lead.phone ? { phone: lead.phone } : {}),
         fieldValues,
       },

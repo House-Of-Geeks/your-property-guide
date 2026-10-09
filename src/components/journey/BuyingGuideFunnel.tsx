@@ -107,10 +107,10 @@ export function BuyingGuideFunnel({
   const [budget, setBudget] = useState<string | null>(null);
 
   const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState<string | null>(null);
-  const [marketingConsent, setMarketingConsent] = useState(false);
   const [website, setWebsite] = useState(""); // honeypot, must stay empty
 
   const [submitting, setSubmitting] = useState(false);
@@ -171,6 +171,7 @@ export function BuyingGuideFunnel({
           type: "guide-download",
           guideType: "buying",
           firstName: firstName.trim(),
+          lastName: lastName.trim() || undefined,
           email: email.trim(),
           phone: phone.trim() || undefined,
           suburb: suburbSlug ?? undefined,
@@ -179,7 +180,10 @@ export function BuyingGuideFunnel({
           buyerPersona: persona,
           financeStatus: finance ?? undefined,
           budget: budget ?? undefined,
-          marketingConsent,
+          // Requesting the guide is the consent: the statement under the
+          // button says we'll email tips and market updates (no checkbox
+          // since Oct 2026). ActiveCampaign subscribes on this flag.
+          marketingConsent: true,
           source,
           website,
         }),
@@ -492,15 +496,26 @@ export function BuyingGuideFunnel({
                 onChange={(e) => setWebsite(e.target.value)}
               />
             </div>
-            <input
-              type="text"
-              required
-              placeholder="First name"
-              autoComplete="given-name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
-            />
+            <div className="grid grid-cols-2 gap-3">
+              <input
+                type="text"
+                required
+                placeholder="First name"
+                autoComplete="given-name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="w-full min-w-0 rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
+              />
+              <input
+                type="text"
+                required
+                placeholder="Last name"
+                autoComplete="family-name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="w-full min-w-0 rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
+              />
+            </div>
             <input
               type="email"
               required
@@ -539,19 +554,6 @@ export function BuyingGuideFunnel({
               ) : null}
             </div>
 
-            <label className="flex items-start gap-2.5 pt-1 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={marketingConsent}
-                onChange={(e) => setMarketingConsent(e.target.checked)}
-                className="mt-0.5 h-4 w-4 rounded border-line accent-[var(--cta)] cursor-pointer"
-              />
-              <span className="text-xs text-ink-muted leading-relaxed">
-                Email me buying tips and market updates for my suburb.
-                Unsubscribe anytime.
-              </span>
-            </label>
-
             {error && <p className="text-sm text-danger">{error}</p>}
 
             <button
@@ -577,9 +579,14 @@ export function BuyingGuideFunnel({
               )}
             </button>
 
+            {/* Collection statement, also the marketing-email consent
+                (there is no checkbox), so it stays at the point of
+                collection, right under the button. */}
             <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
-              We&rsquo;ll email you the guide. Your details are never sold and
-              never passed to selling agents. Read our{" "}
+              By requesting the guide you agree we may email it to you, plus
+              buying tips and market updates for your suburb (unsubscribe
+              anytime). Your details are never sold and never passed to
+              selling agents. Read our{" "}
               <a href="/privacy" className="underline underline-offset-2 hover:text-ink">
                 privacy policy
               </a>
