@@ -18,7 +18,7 @@ export default function PrivacyPage() {
 
       <div className="max-w-3xl mx-auto prose prose-gray">
         <h1>Privacy Policy</h1>
-        <p><em>Last updated: September 2026</em></p>
+        <p><em>Last updated: October 2026</em></p>
 
         <h2>1. Information We Collect</h2>
         <p>
@@ -43,6 +43,10 @@ export default function PrivacyPage() {
         <ul>
           <li>Connect you with one agent or specialist when you ask us to</li>
           <li>Send property alerts matching your criteria</li>
+          <li>
+            Email you the guide you asked for, and tips and market updates for your suburb when you download a
+            guide or sign up for our newsletter. You can unsubscribe from these at any time
+          </li>
           <li>Process your property appraisal requests</li>
           <li>Improve our website and services</li>
           <li>
