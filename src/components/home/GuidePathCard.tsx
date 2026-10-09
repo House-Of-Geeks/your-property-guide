@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BookOpen } from "lucide-react";
+import { ArrowRight, BookOpen, Check } from "lucide-react";
 
 /**
  * Homepage hero card offering both lead magnets behind a single toggle.
@@ -82,10 +82,14 @@ export function GuidePathCard() {
               aria-selected={path === key}
               onClick={() => setPath(key)}
               className={[
-                "relative z-10 rounded-full bg-transparent py-2.5 text-sm font-sans font-semibold transition-colors duration-200 cursor-pointer",
+                "relative z-10 inline-flex items-center justify-center gap-1.5 rounded-full bg-transparent py-2.5 text-sm font-sans font-semibold transition-colors duration-200 cursor-pointer",
                 path === key ? "text-white" : "text-ink hover:text-cta",
               ].join(" ")}
             >
+              {/* Tick on the chosen side; mounts on select so it pops in */}
+              {path === key && (
+                <Check className="check-pop w-4 h-4 shrink-0" strokeWidth={2.5} aria-hidden="true" />
+              )}
               {key === "selling" ? "I’m selling" : "I’m buying"}
             </button>
           ))}
