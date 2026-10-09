@@ -1,27 +1,57 @@
-import { scoreGuideLead, TIMEFRAME_LABELS, AGENT_STATUS_LABELS, type LeadEmailData } from "@/lib/lead-emails";
+import {
+  scoreGuideLead,
+  TIMEFRAME_LABELS,
+  AGENT_STATUS_LABELS,
+  GUIDE_PDF_URL,
+  BUYING_GUIDE_PDF_URL,
+  type LeadEmailData,
+} from "@/lib/lead-emails";
 import type { LeadAttribution } from "@/lib/attribution-server";
 import { normalizePhone } from "@/lib/utils/phone";
 
-// Sent 24/7 (sent247.com) lead delivery, the way Why Solar does it
-// (House-Of-Geeks/Why-Solar, lib/sent247.ts). Complete guide leads go to the
-// Your Property Guide tenant's vendor campaign, which hands each one to one
-// agent. Partials (name + email, no mobile yet) are held there, never
-// distributed, and recovered by the campaign's email sequence; its resume link
-// comes back to the funnel as ?resume=<token>&ws_resume=<PartialLead id>.
-// A later full lead for the same email completes the held partial in place
-// (by resume_token, or by email on the same campaign).
+// Sent 24/7 (sent247.com), the way Why Solar uses it (House-Of-Geeks/Why-Solar:
+// lib/sent247.ts for leads, lib/battery-guide/sent247.ts for its ebook).
 //
-// Inert until SENT247_API_KEY (a seller key in the YPG tenant) and
-// SENT247_VENDOR_CAMPAIGN_ID are both set.
+// Guide downloads are lead magnets: POST /api/v1/lead-magnets with the guide's
+// slug and PDF link. Sent 24/7 keeps them apart from leads (never validated,
+// sold or distributed) and sends every email to the reader: the guide itself
+// and the follow-ups, from a "lead magnet" sequence on the campaign. Switched
+// on only when LEAD_MAGNET_TO_SENT247 is exactly "true"; until then YPG sends
+// its own guide email.
 //
-// Only leads YPG may sell are ever sent (sent247CampaignFor): in Sent 24/7 a
-// campaign with no buyers linked offers its leads to every active buyer in
-// the tenant, so no campaign is a safe place to park a lead that was promised
-// no agent.
+// A call request from a seller YPG may sell is a lead: POST /api/v1/leads to
+// the vendor campaign, which hands it to one agent. Any lead with an email and
+// a phone also stops that address's guide series in Sent 24/7.
+//
+// Both need SENT247_API_KEY (a seller key in the YPG tenant) and
+// SENT247_VENDOR_CAMPAIGN_ID. Only leads YPG may sell are ever posted as
+// leads (sent247HoldReason): in Sent 24/7 a campaign with no buyers linked
+// offers its leads to every active buyer in the tenant.
 
 export const SENT247_BASE_URL = "https://api.sent247.com";
 const LEADS_URL = `${SENT247_BASE_URL}/api/v1/leads`;
+const LEAD_MAGNETS_URL = `${SENT247_BASE_URL}/api/v1/lead-magnets`;
 const TIMEOUT_MS = 8_000;
+const MAGNET_TIMEOUT_MS = 5_000;
+
+/** The two guides as Sent 24/7 lead magnets. Never change a slug once live: it picks the email series. */
+export const LEAD_MAGNETS = {
+  selling: {
+    slug: "selling-guide",
+    name: "The Complete Guide to Selling Your Property in Australia",
+    downloadUrl: GUIDE_PDF_URL,
+  },
+  buying: {
+    slug: "buying-guide",
+    name: "The Complete Guide to Buying Property in Australia",
+    downloadUrl: BUYING_GUIDE_PDF_URL,
+  },
+} as const;
+
+/** Exactly "true", as on Why Solar, so a half-made config change can't switch delivery on. */
+export function leadMagnetDeliveryEnabled(): boolean {
+  return process.env.LEAD_MAGNET_TO_SENT247 === "true" && sent247Config() !== null;
+}
 
 export function sent247Config(): { apiKey: string; vendorCampaignId: string } | null {
   const apiKey = process.env.SENT247_API_KEY?.trim();
@@ -135,15 +165,13 @@ export interface Sent247LeadInput {
   consentText: string;
   attribution: LeadAttribution | null;
   ctx: RequestContext;
-  /** From a recovery link (?resume / ?c): completes the held partial in place. */
-  resumeToken?: string;
+  /** ?c= from a Sent 24/7 email link: credits that email with the lead. */
   resumeClickId?: string;
 }
 
 export function buildSent247LeadBody(i: Sent247LeadInput) {
   return {
     campaign_id: i.campaignId,
-    ...(i.resumeToken ? { resume_token: i.resumeToken } : {}),
     ...(i.resumeClickId ? { resume_click_id: i.resumeClickId } : {}),
     lead: {
       first_name: i.lead.firstName,
@@ -164,31 +192,109 @@ export function buildSent247LeadBody(i: Sent247LeadInput) {
   };
 }
 
-export interface Sent247PartialInput {
-  partialId: string;
-  email: string;
-  firstName?: string | null;
-  lastName?: string | null;
-  answers: GuideLeadFields;
+export interface Sent247LeadMagnetInput {
+  lead: LeadEmailData;
   campaignId: string;
+  /** Our Lead.id for the download, as a custom field. */
+  referenceId: string;
+  consentText: string;
   attribution: LeadAttribution | null;
   ctx: RequestContext;
 }
 
-export function buildSent247PartialBody(i: Sent247PartialInput) {
+export function buildSent247LeadMagnetBody(i: Sent247LeadMagnetInput) {
+  const magnet = i.lead.guideType === "buying" ? LEAD_MAGNETS.buying : LEAD_MAGNETS.selling;
+  const address = addressFromSuburbSlug(i.lead.suburb);
   return {
     campaign_id: i.campaignId,
+    magnet: { slug: magnet.slug, name: magnet.name, download_url: magnet.downloadUrl },
     lead: {
-      first_name: i.firstName || undefined,
-      last_name: i.lastName || undefined,
-      email: i.email,
-      address: addressFromSuburbSlug(i.answers.suburb),
+      email: i.lead.email,
+      first_name: i.lead.firstName,
+      last_name: i.lead.lastName || undefined,
+      postcode: address?.zip,
+      state: address?.state,
     },
-    // ws_resume: Sent 24/7 adds it to the recovery link, so the funnel can
-    // restore from our own row (/api/partial-lead/restore?id=).
-    custom_fields: { ...guideCustomFields(i.answers), ws_resume: i.partialId },
+    // email_consent: the email step's statement covers the guide and tips
+    // emails. Without it Sent 24/7 records the download and emails nothing.
+    consent: {
+      email_consent: true,
+      consent_text: i.consentText,
+      consent_timestamp: new Date().toISOString(),
+      consent_ip: i.ctx.ip,
+    },
     attribution: sent247Attribution(i.attribution, i.ctx),
+    custom_fields: { ...guideCustomFields(i.lead), reference_id: i.referenceId },
   };
+}
+
+export type Sent247LeadMagnetOutcome =
+  | { kind: "sent"; signupId: string | null; status: string | null; emails: string | null; emailsReason: string | null }
+  | { kind: "rejected"; reason: string }
+  | { kind: "failed"; reason: string; retryable: true };
+
+async function postLeadMagnet(apiKey: string, body: unknown, timeoutMs: number): Promise<Sent247LeadMagnetOutcome> {
+  try {
+    const res = await fetch(LEAD_MAGNETS_URL, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+    const json = (await res.json().catch(() => null)) as {
+      signup_id?: string;
+      status?: string;
+      emails?: string;
+      emails_reason?: string;
+      error?: { code?: string; message?: string };
+    } | null;
+    if (res.status === 429 || res.status >= 500) {
+      return { kind: "failed", reason: `HTTP ${res.status}`, retryable: true };
+    }
+    if (!res.ok) {
+      return { kind: "rejected", reason: `HTTP ${res.status}${json?.error?.code ? ` ${json.error.code}` : ""}` };
+    }
+    return {
+      kind: "sent",
+      signupId: json?.signup_id ?? null,
+      status: json?.status ?? null,
+      emails: json?.emails ?? null,
+      emailsReason: json?.emails_reason ?? null,
+    };
+  } catch (err) {
+    return { kind: "failed", reason: err instanceof Error ? err.message : String(err), retryable: true };
+  }
+}
+
+/**
+ * Record a guide download in Sent 24/7, which then emails the guide. Never
+ * throws. A network error, 429 or 5xx is retried in the background (3 s,
+ * then 10 s later) through `defer` (after() in the route), as Why Solar does;
+ * the reader already has the download on the thanks page.
+ */
+export async function sendSent247LeadMagnet(
+  apiKey: string,
+  input: Sent247LeadMagnetInput,
+  defer: (task: () => Promise<unknown>) => void,
+): Promise<Sent247LeadMagnetOutcome> {
+  const body = buildSent247LeadMagnetBody(input);
+  const first = await postLeadMagnet(apiKey, body, MAGNET_TIMEOUT_MS);
+  if (first.kind === "failed") {
+    defer(async () => {
+      for (const waitMs of [3_000, 10_000]) {
+        await new Promise((r) => setTimeout(r, waitMs));
+        const retry = await postLeadMagnet(apiKey, body, TIMEOUT_MS);
+        if (retry.kind !== "failed") {
+          if (retry.kind === "rejected") console.error("Sent 24/7 lead magnet rejected on retry:", retry.reason);
+          return;
+        }
+      }
+      console.error("Sent 24/7 lead magnet failed after retries (download saved to DB):", input.referenceId);
+    });
+  } else if (first.kind === "rejected") {
+    console.error("Sent 24/7 lead magnet rejected:", first.reason, input.referenceId);
+  }
+  return first;
 }
 
 export type Sent247Outcome =
@@ -232,60 +338,6 @@ export async function sendSent247Lead(apiKey: string, input: Sent247LeadInput): 
     return { kind: "accepted", leadId: json?.lead_id ?? null, status: json?.status ?? null };
   } catch (err) {
     return { kind: "failed", reason: err instanceof Error ? err.message : String(err) };
-  }
-}
-
-/** POST a partial for Sent 24/7 to hold and recover. Never throws; false on any failure. */
-export async function sendSent247Partial(apiKey: string, input: Sent247PartialInput): Promise<boolean> {
-  try {
-    const res = await fetch(`${LEADS_URL}/partial`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify(buildSent247PartialBody(input)),
-      signal: AbortSignal.timeout(TIMEOUT_MS),
-    });
-    if (!res.ok) {
-      console.error("Sent 24/7 partial rejected:", res.status, (await res.text().catch(() => "")).slice(0, 300));
-    }
-    return res.ok;
-  } catch (err) {
-    console.error("Sent 24/7 partial failed:", err instanceof Error ? err.message : String(err));
-    return false;
-  }
-}
-
-export type Sent247PartialLookup =
-  | { ok: true; email: string | null; firstName: string | null; lastName: string | null; wsResume: string | null }
-  | { ok: false; completed: boolean };
-
-/**
- * Resolve a recovery link's resume token to the partial Sent 24/7 holds. The
- * token is the credential (the endpoint takes no API key); 410 means the
- * partial was already completed.
- */
-export async function fetchSent247PartialByToken(token: string): Promise<Sent247PartialLookup> {
-  try {
-    const res = await fetch(`${SENT247_BASE_URL}/partials/${encodeURIComponent(token)}`, {
-      signal: AbortSignal.timeout(TIMEOUT_MS),
-      cache: "no-store",
-    });
-    if (!res.ok) return { ok: false, completed: res.status === 410 };
-    const j = (await res.json()) as {
-      email?: string;
-      first_name?: string;
-      last_name?: string;
-      custom_fields?: Record<string, unknown>;
-    };
-    const wsResume = j.custom_fields?.ws_resume;
-    return {
-      ok: true,
-      email: j.email ?? null,
-      firstName: j.first_name ?? null,
-      lastName: j.last_name ?? null,
-      wsResume: typeof wsResume === "string" ? wsResume : null,
-    };
-  } catch {
-    return { ok: false, completed: false };
   }
 }
 

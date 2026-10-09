@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { z } from "zod";
 import { routeLead } from "@/lib/utils/lead-routing";
 import { db } from "@/lib/db";
@@ -15,16 +15,16 @@ import {
   buildConfirmationHtml,
   buildFailureAlertHtml,
 } from "@/lib/lead-emails";
-import { syncGuideLeadToActiveCampaign } from "@/lib/activecampaign";
 import { checkRateLimit, ipKeyFromRequest } from "@/lib/rate-limit";
 import { normalizePhone } from "@/lib/utils/phone";
 import { attributionFromRequest, attributionJson, attributionRowsFor } from "@/lib/attribution-server";
-import { guideConsentText } from "@/lib/guide-consent";
-import { deletePartialsFor, savePartialGuideLead } from "@/lib/partial-leads";
+import { callConsentText, downloadConsentText, guideCallKind } from "@/lib/guide-consent";
 import {
   describeSent247,
+  leadMagnetDeliveryEnabled,
   requestContext,
   sendSent247Lead,
+  sendSent247LeadMagnet,
   sent247Config,
   sent247HoldReason,
 } from "@/lib/sent247";
@@ -95,10 +95,13 @@ const leadSchema = z.object({
   buyerPersona: z.enum(["first-home", "upgrading", "investing", "downsizing"]).optional(),
   financeStatus: z.enum(["pre-approved", "talking-to-lenders", "not-started", "cash"]).optional(),
   budget: z.string().max(40).optional(),
-  // From a Sent 24/7 recovery link (?resume=, ?c=) the funnel was opened
-  // with: passed on so Sent 24/7 completes the partial it holds in place.
-  resumeToken: z.string().max(200).optional(),
+  // ?c= from a Sent 24/7 email link the funnel was opened from: credits
+  // that email with the lead.
   resumeClickId: z.string().max(200).optional(),
+  // Guide funnels: a call request from the thanks page (the download's
+  // answers again, now with a phone). Without it a guide lead with a phone
+  // is a one-step submit from a tab loaded before Oct 2026's flow.
+  call: z.boolean().optional(),
   // Rental-appraisal (landlord) answers. No Lead columns: serialised into
   // message below, the way the appraisal timeframe is.
   tenanted: z.enum(["yes", "no"]).optional(),
@@ -147,37 +150,12 @@ export async function POST(request: Request) {
     const attribution = attributionFromRequest(request);
     const ctx = requestContext(request);
 
-    // A guide download without a phone is not a lead yet: it is the email
-    // step of the two-step guide funnels, posted here by a tab loaded before
-    // that step went to /api/partial-lead. Saved as a partial the same way
-    // (no Lead row, no emails), and the id lets that tab carry on.
-    if (lead.type === "guide-download" && !lead.phone) {
-      const { id } = await savePartialGuideLead(
-        {
-          email: lead.email,
-          firstName: lead.firstName,
-          lastName: lead.lastName,
-          source: lead.guideType === "buying" ? "buying-guide" : "selling-guide",
-          placement: lead.source,
-          answers: {
-            guideType: lead.guideType,
-            suburb: lead.suburb,
-            propertyType: lead.propertyType,
-            bedrooms: lead.bedrooms,
-            sellingTimeframe: lead.sellingTimeframe,
-            agentStatus: lead.agentStatus,
-            motivation: lead.motivation,
-            priceExpectation: lead.priceExpectation,
-            buyerPersona: lead.buyerPersona,
-            financeStatus: lead.financeStatus,
-            budget: lead.budget,
-          },
-        },
-        attribution,
-        ctx,
-      );
-      return NextResponse.json({ success: true, message: "Enquiry submitted successfully", id });
-    }
+    // Guide leads (Oct 2026, Why Solar's ebook flow): a download is name +
+    // email, no phone, and gets the guide; a call request from the thanks
+    // page re-sends the answers with a phone. Who that call goes to (one
+    // agent, or YPG itself) follows from the answers.
+    const guideDownload = lead.type === "guide-download" && !lead.phone;
+    const callKind = lead.type === "guide-download" && lead.phone ? guideCallKind(lead) : null;
 
     // Route the lead. Null unless the visitor chose an agent; unassigned
     // leads get no "Routed to" row in the email.
@@ -239,7 +217,11 @@ export async function POST(request: Request) {
         lead.motivation && `Motivation: ${lead.motivation}`,
         lead.priceExpectation && `Price expectation: ${lead.priceExpectation}`,
         `Marketing consent: ${lead.marketingConsent ? "yes" : "no"}`,
-        `Agent-sharing disclosure shown at submission`,
+        guideDownload
+          ? "Consent: guide and tips emails (download)"
+          : callKind === "agent"
+            ? "Consent: one agent may call (call request)"
+            : "Consent: call from YPG only, never an agent (call request)",
         lead.message,
       ]
         .filter(Boolean)
@@ -277,40 +259,69 @@ export async function POST(request: Request) {
       },
     });
 
-    // A completed guide lead supersedes the partials saved for its email
-    // (the funnel's email step). Best-effort, like Why Solar's.
-    if (lead.type === "guide-download") {
-      try {
-        await deletePartialsFor(lead.email);
-      } catch (partialErr) {
-        console.error("Partial cleanup failed (lead saved to DB):", {
-          leadId: saved.id,
-          error: partialErr instanceof Error ? partialErr.message : String(partialErr),
-        });
+    // Guide leads no longer sync to ActiveCampaign (Oct 2026): Sent 24/7's
+    // lead magnet series is the only thing that emails guide readers.
+
+    // A download: the guide, and nothing for the team (they hear about
+    // calls). Sent 24/7 emails the guide when switched on; otherwise, or when
+    // it won't (no series yet, a rejected post), YPG sends its own guide
+    // email. A retryable failure is retried in the background and YPG stays
+    // quiet, so nobody gets the guide twice: the thanks page has it anyway.
+    if (guideDownload) {
+      let emailOnItsWay = false;
+      let sendOwnEmail = true;
+      const cfg = sent247Config();
+      if (cfg && leadMagnetDeliveryEnabled()) {
+        const outcome = await sendSent247LeadMagnet(
+          cfg.apiKey,
+          {
+            lead,
+            campaignId: cfg.vendorCampaignId,
+            referenceId: saved.id,
+            consentText: downloadConsentText(lead.guideType),
+            attribution,
+            ctx,
+          },
+          (task) => after(task),
+        );
+        if (outcome.kind === "sent") {
+          emailOnItsWay = outcome.emails === "started";
+          // Repeat downloads ("already_started") and suppressed addresses
+          // get nothing more; only a series that never started falls back.
+          sendOwnEmail = outcome.emails === "not_started" && outcome.emailsReason !== "suppressed";
+        } else {
+          sendOwnEmail = outcome.kind === "rejected";
+        }
       }
+      if (sendOwnEmail) {
+        try {
+          await sendMail({
+            to: lead.email,
+            replyTo: ANDY_EMAIL,
+            subject: confirmationCopy(lead).subject,
+            html: buildConfirmationHtml(lead),
+          });
+          emailOnItsWay = true;
+        } catch (confirmErr) {
+          console.error("Guide email failed (download saved to DB):", {
+            leadId: saved.id,
+            error: confirmErr instanceof Error ? confirmErr.message : String(confirmErr),
+          });
+        }
+      }
+      return NextResponse.json({ success: true, message: "Enquiry submitted successfully", id: saved.id, emailOnItsWay });
     }
 
-    // ActiveCampaign sync for guide leads. Best-effort: the DB row and
-    // email notification are the canonical record; a slow or down AC API
-    // must never cost us the lead or block the response. Consent gating
-    // and tag/field mapping live in src/lib/activecampaign.ts.
-    if (lead.type === "guide-download") {
-      try {
-        await syncGuideLeadToActiveCampaign(lead);
-      } catch (acErr) {
-        console.error("ActiveCampaign sync failed (lead saved to DB):", {
-          leadId: saved.id,
-          error: acErr instanceof Error ? acErr.message : String(acErr),
-        });
-      }
-    }
-
-    // Sent 24/7: a guide lead YPG may sell goes to the vendor campaign, which
-    // hands it to one agent (and completes the partial it held, by resume
-    // token or email). Awaited, as Why Solar does, so the team email can say
+    // A guide call request from a seller YPG may sell goes to the Sent 24/7
+    // vendor campaign, which hands it to one agent (and stops the address's
+    // guide series). Awaited, as Why Solar does, so the team email can say
     // whether it went; a failure never costs the lead (DB row + email).
     const deliveryRows: Array<[string, string]> = [];
-    if (lead.type === "guide-download" && lead.phone) {
+    if (callKind) {
+      deliveryRows.push([
+        "Call requested",
+        callKind === "agent" ? "One top local agent (vendor lead)" : "From YPG only. Never pass to an agent.",
+      ]);
       const cfg = sent247Config();
       const hold = sent247HoldReason(lead);
       const outcome = !cfg
@@ -318,13 +329,12 @@ export async function POST(request: Request) {
         : hold
           ? ({ kind: "held", reason: hold } as const)
           : await sendSent247Lead(cfg.apiKey, {
-              lead: { ...lead, phone: lead.phone },
+              lead: { ...lead, phone: lead.phone! },
               campaignId: cfg.vendorCampaignId,
               referenceId: saved.id,
-              consentText: guideConsentText(lead),
+              consentText: callConsentText(callKind),
               attribution,
               ctx,
-              resumeToken: lead.resumeToken,
               resumeClickId: lead.resumeClickId,
             });
       if (outcome.kind === "failed") {
@@ -346,7 +356,8 @@ export async function POST(request: Request) {
           : lead.type === "rental-appraisal" && lead.managerTimeframe === "asap"
             ? "[HOT] "
             : "";
-    const subject     = `${scorePrefix}${typeLabel}, ${lead.firstName}${lead.lastName ? ` ${lead.lastName}` : ""}${lead.suburb ? ` (${lead.suburb})` : ""}`;
+    const callLabel = callKind === "agent" ? "Appraisal call: " : callKind === "ypg" ? "Call from YPG (not for agents): " : "";
+    const subject     = `${scorePrefix}${callLabel}${typeLabel}, ${lead.firstName}${lead.lastName ? ` ${lead.lastName}` : ""}${lead.suburb ? ` (${lead.suburb})` : ""}`;
 
     // Match-request leads (the homepage MatchAgent flow) go ONLY to
     // andy@theandylife.com, no CC. Per Andy 2026-05-10. Other lead
@@ -391,13 +402,16 @@ export async function POST(request: Request) {
     //    the in-page confirmation; admin notification carries the data.
     //    replyTo routes "reply to this email" responses (the HOT email's
     //    P.S. fast-track line) to a monitored inbox instead of noreply@.
+    //    A guide call request gets a call confirmation (callKind); a one-step
+    //    guide submit from an old tab still gets the guide.
+    const confirmLead = callKind && lead.call ? { ...lead, callKind } : lead;
     try {
-      const { subject: confirmSubject } = confirmationCopy(lead);
+      const { subject: confirmSubject } = confirmationCopy(confirmLead);
       await sendMail({
         to: lead.email,
         replyTo: ANDY_EMAIL,
         subject: confirmSubject,
-        html: buildConfirmationHtml(lead),
+        html: buildConfirmationHtml(confirmLead),
       });
     } catch (confirmErr) {
       console.error("Lead confirmation email failed:", {

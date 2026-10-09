@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle, Download, ArrowRight } from "lucide-react";
 import { ConversionTracker } from "@/components/journey/ConversionTracker";
+import { GuideCallCard, GuideEmailNote } from "@/components/journey/GuideThanksExtras";
 
 export const metadata: Metadata = {
   title: "Your buying guide is ready",
@@ -115,11 +116,10 @@ export default async function BuyingGuideThanksPage({ searchParams }: PageProps)
               <Download className="w-5 h-5 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
               Download your guide (PDF)
             </a>
-            <p className="mt-3 text-xs text-white/72">
-              We&rsquo;ve also emailed you the link, so it&rsquo;s there
-              whenever you need it.
-            </p>
+            <GuideEmailNote guide="buying" />
           </div>
+
+          <GuideCallCard guide="buying" />
         </div>
       </section>
 

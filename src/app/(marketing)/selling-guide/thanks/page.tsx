@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle, Download, ArrowRight } from "lucide-react";
 import { ConversionTracker } from "@/components/journey/ConversionTracker";
+import { GuideCallCard, GuideEmailNote } from "@/components/journey/GuideThanksExtras";
 
 export const metadata: Metadata = {
   title: "Your selling guide is ready",
@@ -21,17 +22,18 @@ interface PageProps {
   searchParams: Promise<{ score?: string | string[]; suburb?: string | string[]; }>;
 }
 
-// Next-step copy keyed to the lead temperature the funnel computed.
-// HOT sellers get told an agent callback is coming (matching the
-// admin-side speed-to-lead handling); everyone else gets a soft path.
+// Next-step copy keyed to the lead temperature the funnel computed. An
+// agent call is offered, never promised: sellers book one in the call
+// card below the download (GuideCallCard), so nothing goes to an agent
+// unless they ask.
 const SCORE_COPY: Record<string, { headline: string; body: string }> = {
   hot: {
     headline: "Your guide is ready. One more thing.",
-    body: "Selling within three months means pricing, presentation and agent choice are all still open, and all three are worth money. Read chapter 3 tonight, it takes ten minutes. We'll be in touch shortly about a free appraisal so you walk into every agent conversation already knowing your numbers. Nothing goes to anyone until you say so.",
+    body: "Selling within three months means pricing, presentation and agent choice are all still open, and all three are worth money. Read chapter 3 tonight, it takes ten minutes. Want a free appraisal, so you walk into every agent conversation already knowing your numbers? Book a call below. Nothing goes to anyone unless you ask.",
   },
   warm: {
     headline: "Your guide is ready.",
-    body: "Three to six months out is the sweet spot: enough time to prepare properly, and preparation is where the money is. Start with chapter 3 (the real cost of selling) and chapter 5 (the 10 agent questions). When you're closer, one click lines up a free appraisal.",
+    body: "Three to six months out is the sweet spot: enough time to prepare properly, and preparation is where the money is. Start with chapter 3 (the real cost of selling) and chapter 5 (the 10 agent questions). When you're ready, book a free appraisal call below.",
   },
   cold: {
     headline: "Your guide is ready.",
@@ -52,12 +54,11 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
     ? suburb.replace(/-[a-z]{2,3}-\d{4}$/, "").replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
     : null;
 
-  // Cross-sell cards. The appraisal card leads because HOT sellers were
-  // just told "we'll be in touch about a free appraisal" — this lets them
-  // book it themselves instead of waiting on us. Listed vendors were
-  // promised no agent contact, so they don't get the appraisal ask.
+  // Cross-sell cards. Hot and warm sellers get their appraisal ask in the
+  // call card above, so the appraisal card leads only for cold sellers.
+  // Listed vendors were promised no agent contact: no appraisal ask.
   const crossSells = [
-    ...(score !== "listed"
+    ...(score === "cold"
       ? [
           {
             href: suburb ? `/appraisal?suburb=${suburb}` : "/appraisal",
@@ -160,10 +161,7 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
               <Download className="w-5 h-5 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
               Download your guide (PDF)
             </a>
-            <p className="mt-3 text-xs text-white/72">
-              We&rsquo;ve also emailed you the link, so it&rsquo;s there
-              whenever you need it.
-            </p>
+            <GuideEmailNote guide="selling" />
             {/* Seasonal bonus: the printable countdown rides along with every
                 guide download. One extra asset, zero extra form friction. */}
             <a
@@ -183,6 +181,8 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
               </span>
             </a>
           </div>
+
+          <GuideCallCard guide="selling" />
         </div>
       </section>
 

@@ -35,6 +35,8 @@ export interface LeadEmailData {
   /** Rental-appraisal (landlord) answers. */
   tenanted?: string;
   managerTimeframe?: string;
+  /** A guide call request: "agent" (one agent calls) or "ypg" (YPG calls). Set by /api/leads. */
+  callKind?: string;
 }
 
 // Lead temperature for guide-download leads. The bands follow the
@@ -241,6 +243,21 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
   const addr = rawAddr && escapeHtml(rawAddr);
   switch (lead.type) {
     case "guide-download": {
+      // A call request from the guide thanks page: they already have the guide.
+      if (lead.callKind === "agent") {
+        return {
+          subject: "Your free appraisal call is booked",
+          intro: `Thanks ${firstName}. We've passed your request to one top local agent.`,
+          next: "They'll call you within one business day to arrange your free appraisal. No obligation: nothing happens unless you decide to go ahead.",
+        };
+      }
+      if (lead.callKind === "ypg") {
+        return {
+          subject: "We'll give you a call",
+          intro: `Thanks ${firstName}. Your call request is in.`,
+          next: "Someone from Your Property Guide will call you soon. We use your number only for that call, and we never pass it to an agent.",
+        };
+      }
       const score = scoreGuideLead(lead);
       if (lead.guideType === "buying") {
         const next =
@@ -262,7 +279,7 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
       // is worth money, in their situation, not generic reassurance.
       const next =
         score === "HOT"
-          ? "You said you're selling within three months. That's the window where the right moves still pay: pricing, presentation and agent choice are all open. Tonight, read chapter 3, it takes ten minutes and tells you where every dollar of your 3 to 5 percent selling cost goes. This week, put a real number on your place: we'll line up a free appraisal with a top local agent, so you walk into every conversation knowing exactly what it's worth. Nothing leaves our hands until you say so."
+          ? "You said you're selling within three months. That's the window where the right moves still pay: pricing, presentation and agent choice are all open. Tonight, read chapter 3, it takes ten minutes and tells you where every dollar of your 3 to 5 percent selling cost goes. This week, put a real number on your place: book a free appraisal with a top local agent (the button below), so you walk into every conversation knowing exactly what it's worth. Nothing leaves our hands until you ask."
           : score === "WARM"
             ? "Three to six months out is the sweet spot. You have time to prepare properly, and preparation is where the money is: sellers who fix the right things and interview three agents routinely walk away with thousands more. Start with chapter 3 (the costs) and chapter 5 (the agent questions). When you're closer, one click lines up a free appraisal."
             : score === "DO-NOT-CONTACT"
@@ -389,8 +406,8 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
 
   // Guide delivery gets the full treatment: cover-art hero, centred
   // download button, chapter on-ramp, score-aware next step. Everything
-  // else keeps the quiet single-column note.
-  if (lead.type === "guide-download") {
+  // else, a guide call request included, keeps the quiet single-column note.
+  if (lead.type === "guide-download" && !lead.callKind) {
     const score = scoreGuideLead(lead);
     const buying = lead.guideType === "buying";
     const appraisalPanel = buying

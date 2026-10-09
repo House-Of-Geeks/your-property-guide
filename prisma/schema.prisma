@@ -606,6 +606,11 @@ model Lead {
   @@index([gclid])
 }
 
+// RETIRED (Oct 2026, same day): the guide is now given for an email, so
+// there is no partial to keep. Nothing reads or writes this table; it stays
+// here only because it exists in production (drop with DROP TABLE
+// "PartialLead" on Jos's go, then delete this model).
+//
 // A guide-funnel visitor who finished the name + email step but not the
 // mobile step (Oct 2026). Same model as Why Solar's PartialLead: one row per
 // email per guide, updated in place on every save, deleted when that email
