@@ -2,8 +2,11 @@
 
 import { useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { ArrowRight, Check, Phone } from "lucide-react";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+import AU from "country-flag-icons/react/3x2/AU";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
-import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
+import { auMobileError } from "@/lib/utils/au-mobile";
 import { callConsentText, GUIDE_THANKS_KEY, type GuideThanksContext } from "@/lib/guide-consent";
 
 // The guide thanks pages' client side (Oct 2026, Why Solar's ebook flow:
@@ -41,7 +44,7 @@ export function GuideEmailNote({ guide }: { guide: "selling" | "buying" }) {
   const ctx = useGuideThanks(guide);
   if (!ctx?.emailOnItsWay) return null;
   return (
-    <p className="mt-3 text-xs text-white/72">
+    <p className="mt-2 text-xs text-white/72">
       We&rsquo;ve also emailed you the link, so it&rsquo;s there whenever you need it.
     </p>
   );
@@ -87,8 +90,14 @@ function callCopy(ctx: GuideThanksContext) {
  */
 export function GuideCallCard({ guide }: { guide: "selling" | "buying" }) {
   const ctx = useGuideThanks(guide);
+  // E.164 from the flagged field ("+61412345678"); the API stores 04…
   const [phone, setPhone] = useState("");
-  const [phoneError, setPhoneError] = useState<string | null>(null);
+  // Errors show once they've left the field or pressed the button, then
+  // update as they type (Why Solar's rebate quiz).
+  const [phoneTouched, setPhoneTouched] = useState(false);
+  // The field keeps the digits as typed; a remount redraws them from the
+  // value, so "412345678" or a paste shows as "0412 345 678" after a blur.
+  const [phoneRemountKey, setPhoneRemountKey] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
@@ -98,6 +107,7 @@ export function GuideCallCard({ guide }: { guide: "selling" | "buying" }) {
 
   if (!ctx) return null;
   const copy = callCopy(ctx);
+  const phoneError = phoneTouched ? auMobileError(phone) : null;
 
   const send = async (typed: string, keepalive = false) => {
     const res = await fetch("/api/leads", {
@@ -110,19 +120,15 @@ export function GuideCallCard({ guide }: { guide: "selling" | "buying" }) {
   };
 
   const promote = () => {
-    const typed = phone.trim();
-    if (promotion.current || !isValidPhone(typed)) return;
-    promotion.current = { phone: typed, done: send(typed, true).then(() => true, () => false) };
+    if (promotion.current || auMobileError(phone)) return;
+    promotion.current = { phone, done: send(phone, true).then(() => true, () => false) };
   };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const typed = phone.trim();
-    if (!isValidPhone(typed)) {
-      setPhoneError(PHONE_ERROR);
-      return;
-    }
-    setPhoneError(null);
+    const typed = phone;
+    setPhoneTouched(true);
+    if (auMobileError(typed)) return;
     setError(null);
     setSubmitting(true);
     try {
@@ -140,7 +146,7 @@ export function GuideCallCard({ guide }: { guide: "selling" | "buying" }) {
   };
 
   return (
-    <div className="rise rise-d3 mx-auto max-w-lg mt-6 text-left rounded-2xl border border-line bg-surface-raised p-6 shadow-card">
+    <div className="rise rise-d3 w-full max-w-lg mx-auto lg:mx-0 text-left rounded-2xl border border-line bg-surface-raised p-5 sm:p-6 shadow-card">
       {done ? (
         <p className="flex items-start gap-2.5 text-sm text-ink leading-relaxed" role="status">
           <Check className="check-pop mt-0.5 w-4 h-4 shrink-0 text-cta" aria-hidden="true" />
@@ -153,25 +159,49 @@ export function GuideCallCard({ guide }: { guide: "selling" | "buying" }) {
           <p className="text-sm text-ink-muted leading-relaxed mb-4">{copy.body}</p>
           <form onSubmit={onSubmit} className="space-y-3">
             <div>
-              <input
-                type="tel"
-                required
-                placeholder="Mobile"
-                autoComplete="tel"
-                inputMode="tel"
-                aria-label="Mobile"
+              <PhoneInput
+                key={phoneRemountKey}
+                defaultCountry="AU"
+                countries={["AU"]}
+                addInternationalOption={false}
+                flags={{ AU }}
+                countrySelectProps={{ tabIndex: -1 }}
+                initialValueFormat="national"
                 value={phone}
-                onChange={(e) => {
-                  setPhone(e.target.value);
-                  if (phoneError) setPhoneError(null);
+                onChange={(value) => {
+                  let cleaned = value || "";
+                  // Autofill or paste can leave "+0430835484", which never
+                  // parses: put the +61 back.
+                  if (/^\+0/.test(cleaned)) cleaned = "+61" + cleaned.slice(2);
+                  // A trunk 0 left after the +61.
+                  cleaned = cleaned.replace(/^\+610/, "+61");
+                  setPhone(cleaned);
                 }}
-                onBlur={promote}
-                aria-invalid={phoneError ? true : undefined}
-                className={`w-full rounded-lg border bg-surface-warm px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:ring-[3px] outline-none transition-[border-color,box-shadow] duration-200 ${
-                  phoneError
-                    ? "border-danger focus:border-danger focus:ring-danger/15"
-                    : "border-line focus:border-cta focus:ring-cta/15"
-                }`}
+                onBlur={() => {
+                  if (!phone) return;
+                  setPhoneTouched(true);
+                  setPhoneRemountKey((k) => k + 1);
+                  promote();
+                }}
+                placeholder="Mobile, e.g. 0412 345 678"
+                numberInputProps={{
+                  "aria-label": "Mobile",
+                  "aria-invalid": phoneError ? true : undefined,
+                  autoComplete: "tel",
+                  onPaste: (e: React.ClipboardEvent<HTMLInputElement>) => {
+                    // Paste straight to E.164 so "0430835484" doesn't end up
+                    // as "+61 0430 835 484".
+                    let digits = e.clipboardData.getData("text").replace(/[^\d+]/g, "");
+                    if (digits.startsWith("+61")) digits = digits.slice(3);
+                    else if (digits.startsWith("0061")) digits = digits.slice(4);
+                    if (digits.startsWith("0")) digits = digits.slice(1);
+                    if (!digits || !/^\d+$/.test(digits)) return; // let the library handle it
+                    e.preventDefault();
+                    setPhone("+61" + digits);
+                    setPhoneRemountKey((k) => k + 1);
+                  },
+                }}
+                className={`ypg-phone-input${phoneError ? " ypg-phone-input--error" : ""}`}
               />
               {phoneError && <p className="mt-1.5 text-xs text-danger">{phoneError}</p>}
             </div>
