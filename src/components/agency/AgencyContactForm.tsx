@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { User, Phone, Mail } from "lucide-react";
-import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
+import { User, Mail } from "lucide-react";
+import { auMobileError } from "@/lib/utils/au-mobile";
+import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 import { AGENT_ENQUIRY_TYPES } from "@/components/agent/enquiry-types";
 import { PhoneFollowUp } from "@/components/forms/PhoneFollowUp";
@@ -57,10 +58,10 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
       setPhoneError("Mobile is required so the agency can reach you");
       return;
     }
-    // Optional or not, a typed number must be dialable — otherwise the API
-    // rejects the whole enquiry with a generic error.
-    if (phone && !isValidPhone(phone)) {
-      setPhoneError(PHONE_ERROR);
+    // Optional or not, a typed number must be an Australian mobile.
+    const mobileError = phone ? auMobileError(phone) : null;
+    if (mobileError) {
+      setPhoneError(mobileError);
       return;
     }
     setPhoneError("");
@@ -172,23 +173,17 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Mobile {requirePhone && <span className="text-red-500">*</span>}
             </label>
-            <div className="relative">
-              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="tel"
-                autoComplete="tel"
-                inputMode="tel"
-                value={form.phone}
-                onChange={(e) => {
-                  set("phone", e.target.value);
-                  if (phoneError) setPhoneError("");
-                }}
-                aria-invalid={phoneError ? true : undefined}
-                className={`w-full pl-9 pr-3 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 ${
-                  phoneError ? "border-red-400 focus:ring-red-400" : "border-gray-300 focus:ring-primary"
-                }`}
-              />
-            </div>
+            <AuPhoneInput
+              value={form.phone}
+              onChange={(v) => {
+                set("phone", v);
+                if (phoneError) setPhoneError("");
+              }}
+              aria-label="Mobile"
+              invalid={!!phoneError}
+              tone="plain"
+              size="md"
+            />
             {phoneError && <p className="mt-1 text-xs text-red-500">{phoneError}</p>}
           </div>
           <div>

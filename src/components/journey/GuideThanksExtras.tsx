@@ -2,11 +2,9 @@
 
 import { useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { ArrowRight, Check, Phone } from "lucide-react";
-import PhoneInput from "react-phone-number-input";
-import "react-phone-number-input/style.css";
-import AU from "country-flag-icons/react/3x2/AU";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
-import { auMobileError, cleanAuPhone, pastedAuPhone } from "@/lib/utils/au-mobile";
+import { auMobileError } from "@/lib/utils/au-mobile";
+import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
 import { callConsentText, GUIDE_THANKS_KEY, type GuideThanksContext } from "@/lib/guide-consent";
 
 // The guide thanks pages' client side (Oct 2026, Why Solar's ebook flow:
@@ -95,9 +93,6 @@ export function GuideCallCard({ guide }: { guide: "selling" | "buying" }) {
   // Errors show once they've left the field or pressed the button, then
   // update as they type (Why Solar's rebate quiz).
   const [phoneTouched, setPhoneTouched] = useState(false);
-  // The field keeps the digits as typed; a remount redraws them from the
-  // value, so "412345678" or a paste shows as "0412 345 678" after a blur.
-  const [phoneRemountKey, setPhoneRemountKey] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
@@ -159,38 +154,16 @@ export function GuideCallCard({ guide }: { guide: "selling" | "buying" }) {
           <p className="text-sm text-ink-muted leading-relaxed mb-4">{copy.body}</p>
           <form onSubmit={onSubmit} className="space-y-3">
             <div>
-              <PhoneInput
-                key={phoneRemountKey}
-                defaultCountry="AU"
-                countries={["AU"]}
-                addInternationalOption={false}
-                flags={{ AU }}
-                countrySelectProps={{ tabIndex: -1 }}
-                initialValueFormat="national"
+              <AuPhoneInput
                 value={phone}
-                onChange={(value) => setPhone(cleanAuPhone(value || ""))}
+                onChange={setPhone}
                 onBlur={() => {
                   if (!phone) return;
                   setPhoneTouched(true);
-                  setPhoneRemountKey((k) => k + 1);
                   promote();
                 }}
-                placeholder="Mobile, e.g. 0412 345 678"
-                numberInputProps={{
-                  "aria-label": "Mobile",
-                  "aria-invalid": phoneError ? true : undefined,
-                  autoComplete: "tel",
-                  onPaste: (e: React.ClipboardEvent<HTMLInputElement>) => {
-                    // Any AU format straight to E.164; another country
-                    // goes to the field, which shows the error.
-                    const pasted = pastedAuPhone(e.clipboardData.getData("text"));
-                    if (!pasted) return;
-                    e.preventDefault();
-                    setPhone(pasted);
-                    setPhoneRemountKey((k) => k + 1);
-                  },
-                }}
-                className={`ypg-phone-input${phoneError ? " ypg-phone-input--error" : ""}`}
+                aria-label="Mobile"
+                invalid={!!phoneError}
               />
               {phoneError && <p className="mt-1.5 text-xs text-danger">{phoneError}</p>}
             </div>

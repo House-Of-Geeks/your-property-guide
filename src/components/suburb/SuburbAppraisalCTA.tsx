@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { Home, ArrowRight, Loader2 } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 import { ENRICH_LEAD_STORAGE_KEY } from "@/components/forms/ThanksPhoneAsk";
-import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
+import { auMobileError } from "@/lib/utils/au-mobile";
+import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
 import { AddressAutocomplete } from "@/components/forms/AddressAutocomplete";
 
 interface Props {
@@ -68,8 +69,9 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isValidPhone(phone)) {
-      setPhoneError(PHONE_ERROR);
+    const mobileError = auMobileError(phone);
+    if (mobileError) {
+      setPhoneError(mobileError);
       return;
     }
     setPhoneError(null);
@@ -83,7 +85,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
           type: "appraisal-request",
           firstName: firstName.trim(),
           email: email.trim(),
-          phone: phone.trim(),
+          phone,
           address: address.trim(),
           appraisalAddress: address.trim(),
           suburb: addressSuburbSlug ?? suburbSlug,
@@ -188,23 +190,19 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
           <label htmlFor="suburb-appraisal-phone" className="block text-xs font-medium text-ink-muted mb-1">
             Mobile <span className="font-normal text-ink-subtle">so your agent can arrange the appraisal</span>
           </label>
-          <input
+          <AuPhoneInput
             id="suburb-appraisal-phone"
-            type="tel"
-            required
-            inputMode="tel"
-            autoComplete="tel"
             value={phone}
-            onChange={(e) => {
-              setPhone(e.target.value);
+            onChange={(v) => {
+              setPhone(v);
               if (phoneError) setPhoneError(null);
             }}
-            aria-invalid={phoneError ? true : undefined}
+            required
+            invalid={!!phoneError}
             aria-describedby={phoneError ? "suburb-appraisal-phone-error" : undefined}
             placeholder="0412 345 678"
-            className={`w-full rounded-lg border bg-surface-raised px-3 py-2.5 text-sm text-ink placeholder:text-ink-subtle outline-none transition-[border-color,box-shadow] duration-200 focus:border-cta focus:ring-[3px] focus:ring-cta/15 ${
-              phoneError ? "border-danger focus:border-danger" : "border-line"
-            }`}
+            tone="raised"
+            size="md"
           />
           {phoneError && (
             <p id="suburb-appraisal-phone-error" className="mt-1.5 text-xs text-danger">{phoneError}</p>

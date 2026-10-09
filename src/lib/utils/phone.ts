@@ -1,10 +1,8 @@
-// AU-first phone validation + normalisation, shared by the lead forms
-// (client-side validation) and the leads API (server-side normalisation
-// before persisting). Deliberately lenient: the goal is to catch junk
-// ("asdf", "123") without ever rejecting a real reachable number — an
-// over-strict validator costs leads, which is worse than a messy string.
-
-import { z } from "zod";
+// AU-first phone normalisation for the leads API, before persisting.
+// Deliberately lenient: it catches junk ("asdf", "123") without ever
+// rejecting a real reachable number, because the API never bounces a lead
+// over the phone. The forms check the number themselves, more strictly
+// (AuPhoneInput and lib/utils/au-mobile, Oct 2026).
 
 const FORMATTING = /[\s\-().]/g;
 
@@ -46,27 +44,3 @@ export function normalizePhone(raw: string): string | null {
 
   return null;
 }
-
-export function isValidPhone(raw: string): boolean {
-  return normalizePhone(raw) !== null;
-}
-
-/** Standard inline error for forms — one message everywhere. */
-export const PHONE_ERROR = "Enter a valid phone number, e.g. 0412 345 678";
-
-// Shared zod fragments for the react-hook-form lead forms, so every form
-// applies exactly the same phone rules instead of re-encoding them.
-
-/** Phone the form can't submit without. `message` is the required-field
- *  error; each form words it around why the number is needed. */
-export function requiredPhoneSchema(message = "Phone number is required") {
-  return z.string().min(1, message).refine(isValidPhone, PHONE_ERROR);
-}
-
-/** Optional phone: empty or whitespace-only input passes (the user never
- *  really filled the field in, so it must not error), anything else must
- *  be a valid number. */
-export const optionalPhoneSchema = z
-  .string()
-  .optional()
-  .refine((v) => !v || v.trim() === "" || isValidPhone(v), PHONE_ERROR);

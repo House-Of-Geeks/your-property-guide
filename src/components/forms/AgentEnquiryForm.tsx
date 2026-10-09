@@ -4,6 +4,8 @@ import { useState } from "react";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { clarityEvent } from "@/lib/clarity";
 import { LEAD_TYPE_OPTIONS, type LeadTypeValue } from "@/lib/data/real-estate-leads";
+import { auMobileError } from "@/lib/utils/au-mobile";
+import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
 
 /**
  * Agent-side registration form for /real-estate-leads and its lead-type
@@ -17,6 +19,7 @@ export function AgentEnquiryForm({ defaultLeadTypes = [] }: { defaultLeadTypes?:
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState<string | null>(null);
   const [agency, setAgency] = useState("");
   const [coverage, setCoverage] = useState("");
   const [licence, setLicence] = useState("");
@@ -33,6 +36,11 @@ export function AgentEnquiryForm({ defaultLeadTypes = [] }: { defaultLeadTypes?:
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    const mobileError = auMobileError(phone);
+    if (mobileError) {
+      setPhoneError(mobileError);
+      return;
+    }
     setSubmitting(true);
     try {
       const typeLabels = LEAD_TYPE_OPTIONS.filter((o) => leadTypes.includes(o.value)).map((o) => o.label);
@@ -122,7 +130,20 @@ export function AgentEnquiryForm({ defaultLeadTypes = [] }: { defaultLeadTypes?:
         <input type="text" aria-label="Last name" placeholder="Last name" value={lastName} onChange={(e) => setLastName(e.target.value)} className={inputClass} />
       </div>
       <input type="email" required aria-label="Work email" placeholder="Work email" value={email} onChange={(e) => setEmail(e.target.value)} className={inputClass} />
-      <input type="tel" required aria-label="Mobile" placeholder="Mobile" value={phone} onChange={(e) => setPhone(e.target.value)} className={inputClass} />
+      <div>
+        <AuPhoneInput
+          value={phone}
+          onChange={(v) => {
+            setPhone(v);
+            if (phoneError) setPhoneError(null);
+          }}
+          required
+          aria-label="Mobile"
+          invalid={!!phoneError}
+          tone="raised"
+        />
+        {phoneError && <p className="mt-1.5 text-xs text-danger">{phoneError}</p>}
+      </div>
       <input type="text" required aria-label="Agency or company name" placeholder="Agency or company name" value={agency} onChange={(e) => setAgency(e.target.value)} className={inputClass} />
       <input
         type="text"

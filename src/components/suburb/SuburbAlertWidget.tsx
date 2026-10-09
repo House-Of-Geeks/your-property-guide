@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { Bell, CheckCircle, Loader2 } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
-import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
+import { auMobileError } from "@/lib/utils/au-mobile";
+import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
 
 interface Props {
   suburbName: string;
@@ -19,14 +20,16 @@ export function SuburbAlertWidget({ suburbName, suburbSlug }: Props) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading]     = useState(false);
   const [error, setError]         = useState<string | null>(null);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Phone is an optional enrichment on this email-first signup — but if
     // one was entered it must be dialable, and junk must fail HERE rather
     // than as an opaque 400 from the server that costs the lead.
-    if (phone.trim() && !isValidPhone(phone)) {
-      setError(PHONE_ERROR);
+    const mobileError = phone ? auMobileError(phone) : null;
+    if (mobileError) {
+      setPhoneError(mobileError);
       return;
     }
     setLoading(true);
@@ -40,7 +43,7 @@ export function SuburbAlertWidget({ suburbName, suburbSlug }: Props) {
           firstName: firstName.trim(),
           lastName: lastName.trim() || undefined,
           email: email.trim(),
-          phone: phone.trim() || undefined,
+          phone: phone || undefined,
           suburb: suburbName,
           source: `suburb-page-${suburbSlug}`,
           website,
@@ -131,7 +134,9 @@ export function SuburbAlertWidget({ suburbName, suburbSlug }: Props) {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          {/* Stacked on phones: the flag leaves a half-width mobile field too
+              narrow for the number. */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label htmlFor="alert-email" className="block text-xs font-medium text-gray-600 mb-1">
                 Email <span className="text-red-500">*</span>
@@ -148,19 +153,21 @@ export function SuburbAlertWidget({ suburbName, suburbSlug }: Props) {
             </div>
             <div>
               <label htmlFor="alert-phone" className="block text-xs font-medium text-gray-600 mb-1">
-                Phone <span className="text-gray-400 font-normal">(optional)</span>
+                Mobile <span className="text-gray-400 font-normal">(optional)</span>
               </label>
-              <input
+              <AuPhoneInput
                 id="alert-phone"
-                type="tel"
                 value={phone}
-                onChange={(e) => {
-                  setPhone(e.target.value);
-                  if (error) setError(null);
+                onChange={(v) => {
+                  setPhone(v);
+                  if (phoneError) setPhoneError(null);
                 }}
-                placeholder="04XX XXX XXX"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
+                placeholder="0412 345 678"
+                invalid={!!phoneError}
+                tone="plain"
+                size="sm"
               />
+              {phoneError && <p className="mt-1 text-xs text-red-500">{phoneError}</p>}
             </div>
           </div>
 

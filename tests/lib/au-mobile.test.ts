@@ -1,13 +1,17 @@
 import { describe, it, expect } from "vitest";
 import {
   AU_MOBILE_ERROR,
+  MOBILE_ERROR,
   NON_AU_MOBILE_ERROR,
   auMobileError,
   cleanAuPhone,
+  displayPhone,
   isLikelyTestNumber,
   isNonAusValidNumber,
   isValidAusMobile,
+  optionalMobileSchema,
   pastedAuPhone,
+  requiredMobileSchema,
 } from "@/lib/utils/au-mobile";
 
 describe("isValidAusMobile", () => {
@@ -55,6 +59,34 @@ describe("auMobileError", () => {
     expect(auMobileError(undefined)).toBe(AU_MOBILE_ERROR);
     expect(auMobileError("+6421123456")).toBe(NON_AU_MOBILE_ERROR);
   });
+
+  it("lets a listing enquiry give an overseas number, never a landline or dummy", () => {
+    const overseas = { overseas: true };
+    expect(auMobileError("+6421123456", overseas)).toBeNull();
+    expect(auMobileError("+447911123456", overseas)).toBeNull();
+    expect(auMobileError("+61430835484", overseas)).toBeNull();
+    expect(auMobileError("+61295551234", overseas)).toBe(MOBILE_ERROR);
+    expect(auMobileError("+61412345678", overseas)).toBe(MOBILE_ERROR);
+    expect(auMobileError("", overseas)).toBe(MOBILE_ERROR);
+  });
+});
+
+describe("mobile schemas", () => {
+  it("requiredMobileSchema: the reason when empty, the rule's error when wrong", () => {
+    const schema = requiredMobileSchema("Mobile is required");
+    expect(schema.safeParse("+61430835484").success).toBe(true);
+    expect(schema.safeParse("").error?.issues[0].message).toBe("Mobile is required");
+    expect(schema.safeParse("+61295551234").error?.issues[0].message).toBe(AU_MOBILE_ERROR);
+    expect(requiredMobileSchema("x", { overseas: true }).safeParse("+6421123456").success).toBe(true);
+  });
+
+  it("optionalMobileSchema: empty passes, a wrong number doesn't", () => {
+    const schema = optionalMobileSchema();
+    expect(schema.safeParse("").success).toBe(true);
+    expect(schema.safeParse(undefined).success).toBe(true);
+    expect(schema.safeParse("+61430835484").success).toBe(true);
+    expect(schema.safeParse("+6421123456").error?.issues[0].message).toBe(NON_AU_MOBILE_ERROR);
+  });
 });
 
 describe("cleanAuPhone", () => {
@@ -98,5 +130,13 @@ describe("pastedAuPhone", () => {
     expect(pastedAuPhone("+44 7700 900123")).toBeNull();
     expect(pastedAuPhone("0044 7700 900123")).toBeNull();
     expect(pastedAuPhone("call me")).toBeNull();
+  });
+});
+
+describe("displayPhone", () => {
+  it("shows AU numbers the local way and overseas ones with their code", () => {
+    expect(displayPhone("+61491570156")).toBe("0491 570 156");
+    expect(displayPhone("+447911123456")).toBe("+44 7911 123456");
+    expect(displayPhone("0491 570 156")).toBe("0491 570 156");
   });
 });
