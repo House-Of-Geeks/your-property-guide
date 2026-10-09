@@ -3,6 +3,10 @@ import { type LeadEmailData, type LeadScore, scoreGuideLead, TIMEFRAME_LABELS, A
 // ActiveCampaign lead sync. Pushes qualified guide-download leads into the
 // House of Geeks AC account so nurture automations can run against them.
 //
+// NOT CALLED since Oct 2026: guide readers are emailed only by Sent 24/7's
+// lead magnet series (src/lib/sent247.ts), as Jos decided. Kept, with its
+// tests, until the AC lists are wound down; delete it then.
+//
 // Design constraints:
 // - The AC account is shared across several businesses: everything is
 //   namespaced (list "YPG Property Sellers", fields "YPG ...", tags "ypg-*").
@@ -12,8 +16,6 @@ import { type LeadEmailData, type LeadScore, scoreGuideLead, TIMEFRAME_LABELS, A
 //   funnels send it as true: the collection statement under the button is
 //   the consent (no checkbox since Oct 2026). A lead without it still gets
 //   a contact record with tags and fields but is never subscribed.
-// - Only complete guide leads are synced. Partials (email step, no mobile)
-//   live in PartialLead and are recovered by Sent 24/7, not here.
 // - IDs are resolved by name at runtime and cached per warm instance, so
 //   nothing breaks if AC assigns different IDs across environments.
 //   Setup script: scripts/setup-activecampaign.ts

@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ArrowRight, ArrowLeft, Check } from "lucide-react";
 import { SuburbAutocomplete, slugToSuburbLabel } from "@/components/search/SuburbAutocomplete";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
-import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
-import { BUYING_CONSENT } from "@/lib/guide-consent";
+import { GUIDE_THANKS_KEY, BUYING_EMAIL_CONSENT, guideCallKind, type GuideThanksContext } from "@/lib/guide-consent";
 
 // ----- Option sets ---------------------------------------------------------
 // Question order is fixed by conversion research, lowest-friction first,
@@ -59,11 +58,6 @@ const BUDGETS: string[] = [
   "Not sure yet",
 ];
 
-// A restored answer, kept only when it is still one of the options.
-function pick<T extends string>(value: unknown, options: readonly T[]): T | null {
-  return typeof value === "string" && (options as readonly string[]).includes(value) ? (value as T) : null;
-}
-
 const timeframeLabel = (id: Timeframe) => TIMEFRAMES.find((t) => t.id === id)?.label ?? "";
 
 // Mirrors the server-side scoring in /api/leads for display on the
@@ -115,17 +109,7 @@ export function BuyingGuideFunnel({
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [phoneError, setPhoneError] = useState<string | null>(null);
   const [website, setWebsite] = useState(""); // honeypot, must stay empty
-  // The last partial step 6 saved, so Back then Continue with nothing
-  // changed doesn't post it again.
-  const savedPartial = useRef<string | null>(null);
-  // The safety net's full-lead POST, made when a valid mobile loses focus,
-  // so the button finishes that request instead of posting the lead twice.
-  const promotion = useRef<{ phone: string; done: Promise<boolean> } | null>(null);
-  // Resume token and click id from a recovery link (?resume, ?c).
-  const resume = useRef<{ token?: string; clickId?: string }>({});
 
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -163,171 +147,58 @@ export function BuyingGuideFunnel({
     setStep(to);
   };
 
-  const answers = () => ({
-    guideType: "buying" as const,
-    suburb: suburbSlug ?? undefined,
-    propertyType: propertyType ?? undefined,
-    sellingTimeframe: timeframe ?? undefined,
-    buyerPersona: persona ?? undefined,
-    financeStatus: finance ?? undefined,
-    budget: budget ?? undefined,
-  });
-
-  // The complete lead, less the mobile.
-  const leadPayload = () => ({
-    type: "guide-download",
-    firstName: firstName.trim(),
-    lastName: lastName.trim() || undefined,
-    email: email.trim(),
-    ...answers(),
-    // Requesting the guide is the consent: the statement under the
-    // button says we'll email tips and market updates (no checkbox
-    // since Oct 2026). ActiveCampaign subscribes on this flag.
-    marketingConsent: true,
-    resumeToken: resume.current.token,
-    resumeClickId: resume.current.clickId,
-    source,
-    website,
-  });
-
-  const postLead = async (body: Record<string, unknown>, keepalive = false) => {
-    const res = await fetch("/api/leads", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-      keepalive,
-    });
-    if (!res.ok) {
-      const json = await res.json().catch(() => null);
-      throw new Error(json?.error ?? "Submit failed");
-    }
-  };
-
-  // Opened from a recovery link (?ws_resume= our PartialLead id, ?resume= a
-  // Sent 24/7 token): restore the saved answers and open at the mobile step,
-  // as Why Solar's quiz does. Buying partials are not sent to Sent 24/7 today
-  // (never passed to agents), but the link works the same if they are.
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const wsResume = params.get("ws_resume");
-    const token = params.get("resume");
-    if (!wsResume && !token) return;
-    resume.current = { token: token ?? undefined, clickId: params.get("c") ?? undefined };
-    let cancelled = false;
-    (async () => {
-      let saved: {
-        firstName?: string | null;
-        lastName?: string | null;
-        email?: string | null;
-        answers?: Record<string, unknown>;
-      } | null = null;
-      try {
-        const qs = wsResume
-          ? `id=${encodeURIComponent(wsResume)}`
-          : `token=${encodeURIComponent(token!)}&source=buying-guide`;
-        const res = await fetch(`/api/partial-lead/restore?${qs}`);
-        if (res.ok) saved = await res.json();
-      } catch {
-        // Restore is best-effort; the URL's own name and email still help.
-      }
-      if (cancelled) return;
-      const a = saved?.answers ?? {};
-      const first = saved?.firstName || params.get("first_name") || "";
-      const last = saved?.lastName || params.get("last_name") || "";
-      const mail = saved?.email || params.get("email") || "";
-      setFirstName(first);
-      setLastName(last);
-      setEmail(mail);
-      const slug = typeof a.suburb === "string" ? a.suburb : null;
-      if (slug) {
-        setSuburbSlug(slug);
-        setSuburbLabel(slugToSuburbLabel(slug));
-      }
-      const tf = pick(a.sellingTimeframe, TIMEFRAMES.map((t) => t.id));
-      const who = pick(a.buyerPersona, PERSONAS.map((p) => p.id));
-      setPersona(who);
-      setPropertyType(pick(a.propertyType, PROPERTY_TYPES.map((t) => t.id)));
-      setBudget(pick(a.budget, BUDGETS));
-      setTimeframe(tf);
-      setFinance(pick(a.financeStatus, FINANCE_STATUSES.map((f) => f.id)));
-      // Everything the mobile step needs is back: open it. Otherwise start
-      // from the questions, with the contact details already filled in.
-      direction.current = "fwd";
-      if (tf && who && first && mail) setStep(7);
-      else if (slug) setStep(1);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  // Step 6, name + email. Saved in the background as a partial (Why Solar's
-  // model: /api/partial-lead keeps one row per email per guide) and the
-  // visitor moves straight on. A partial is not a lead: no team email, no
-  // guide yet.
-  const onSubmitContact = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!timeframe || !persona) return;
-    const body = JSON.stringify({
-      email: email.trim(),
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
-      source: "buying-guide",
-      placement: source,
-      answers: answers(),
-      website,
-    });
-    if (savedPartial.current !== body) {
-      savedPartial.current = body;
-      fetch("/api/partial-lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body,
-        keepalive: true,
-      }).catch(() => {
-        // Never blocks the visitor: the complete lead is the record that matters.
-      });
-      clarityEvent("guide_email_captured");
-      clarityTag("guide_type", "buying");
-    }
-    goForward(7);
-  };
-
-  // Safety net (Why Solar's usePartialLead promotion): a valid mobile that
-  // loses focus creates the complete lead at once, keepalive, so a missed
-  // tap or a closed tab doesn't lose it. Once only; the button finishes it.
-  const promote = () => {
-    const typed = phone.trim();
-    if (promotion.current || !timeframe || !persona || !isValidPhone(typed)) return;
-    promotion.current = {
-      phone: typed,
-      done: postLead({ ...leadPayload(), phone: typed }, true).then(
-        () => true,
-        () => false,
-      ),
-    };
-  };
-
-  // Step 7, the mobile. Creates the complete lead (unless the safety net
-  // already did, with this number): the server emails the guide and the
-  // team and deletes the partial.
-  const onSubmitMobile = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!timeframe || !persona) return;
-    const typed = phone.trim();
-    // `required` stops an empty submit; the number must also be dialable,
-    // or the server rejects it and the user only sees a generic error.
-    if (!isValidPhone(typed)) {
-      setPhoneError(PHONE_ERROR);
-      return;
-    }
-    setPhoneError(null);
     setError(null);
     setSubmitting(true);
     try {
-      const promoted = promotion.current;
-      const sent = promoted?.phone === typed && (await promoted.done);
-      if (!sent) await postLead({ ...leadPayload(), phone: typed });
+      const payload = {
+        type: "guide-download",
+        guideType: "buying",
+        firstName: firstName.trim(),
+        lastName: lastName.trim() || undefined,
+        email: email.trim(),
+        suburb: suburbSlug ?? undefined,
+        propertyType: propertyType ?? undefined,
+        sellingTimeframe: timeframe,
+        buyerPersona: persona,
+        financeStatus: finance ?? undefined,
+        budget: budget ?? undefined,
+        // Requesting the guide is the consent to the guide and tips
+        // emails: the statement under the button says so (no checkbox
+        // since Oct 2026).
+        marketingConsent: true,
+        // ?c= from a Sent 24/7 email link: credits that email if they book a call.
+        resumeClickId: params.get("c") ?? undefined,
+        source,
+        website,
+      };
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.error ?? "Submit failed");
+      }
+      const saved = (await res.json().catch(() => null)) as { emailOnItsWay?: boolean } | null;
+      // Hand the thanks page what its call card needs, in sessionStorage
+      // (this tab only, never the URL): who a call would go to, whether
+      // the guide email is on its way, and the answers to re-send with a
+      // phone if they book one.
+      const handoff: GuideThanksContext = {
+        guide: "buying",
+        kind: guideCallKind({ guideType: "buying", sellingTimeframe: timeframe }),
+        emailOnItsWay: saved?.emailOnItsWay === true,
+        payload,
+      };
+      try {
+        sessionStorage.setItem(GUIDE_THANKS_KEY, JSON.stringify(handoff));
+      } catch {
+        // Storage blocked: the thanks page shows the download without the call card.
+      }
       clarityEvent("guide_download_submitted");
       clarityTag("guide_type", "buying");
       clarityTag("guide_timeframe", timeframe);
@@ -347,7 +218,7 @@ export function BuyingGuideFunnel({
     }
   };
 
-  const stepTotal = 8;
+  const stepTotal = 7;
   const stepIndex = Math.min(step, stepTotal - 1);
 
   // Shared option-button styling. Tactile: options rise a hair on hover
@@ -376,19 +247,6 @@ export function BuyingGuideFunnel({
     >
       <ArrowLeft className="w-3.5 h-3.5" /> Back
     </button>
-  );
-
-  // Collection statement, also the marketing-email consent (there is no
-  // checkbox), so it sits under the button on both contact steps: where
-  // the email is given and where the mobile is.
-  const collectionStatement = (
-    <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
-      {BUYING_CONSENT} Read our{" "}
-      <a href="/privacy" className="underline underline-offset-2 hover:text-ink">
-        privacy policy
-      </a>
-      .
-    </p>
   );
 
   return (
@@ -632,7 +490,7 @@ export function BuyingGuideFunnel({
           <h3 className="rise rise-d1 font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-3">
             Where should we send it?
           </h3>
-          <form onSubmit={onSubmitContact} className="rise rise-d2 space-y-3">
+          <form onSubmit={onSubmit} className="rise rise-d2 space-y-3">
             {/* Honeypot: visually hidden, off-screen, aria-hidden. */}
             <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
               <label htmlFor="buying-guide-website">Website</label>
@@ -679,63 +537,6 @@ export function BuyingGuideFunnel({
 
             <button
               type="submit"
-              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3.5 text-sm transition-colors cursor-pointer press"
-            >
-              Continue
-              <ArrowRight className="w-4 h-4" />
-            </button>
-
-            {collectionStatement}
-          </form>
-          {backButton(5)}
-        </div>
-      )}
-
-      {/* Step 7, mobile. Its own step, after the email is saved, so a
-          visitor who won't give a number is still a (partial) lead. */}
-      {step === 7 && (
-        <div>
-          <p className="rise text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-3">
-            Last step
-          </p>
-          <h3 className="rise rise-d1 font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-3">
-            What&rsquo;s your mobile?
-          </h3>
-          <form onSubmit={onSubmitMobile} className="rise rise-d2 space-y-3">
-            <div>
-              <input
-                type="tel"
-                required
-                placeholder="Mobile"
-                autoComplete="tel"
-                inputMode="tel"
-                value={phone}
-                onChange={(e) => {
-                  setPhone(e.target.value);
-                  if (phoneError) setPhoneError(null);
-                }}
-                onBlur={promote}
-                aria-invalid={phoneError ? true : undefined}
-                className={`w-full rounded-lg border bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:ring-[3px] outline-none transition-[border-color,box-shadow] duration-200 ${
-                  phoneError
-                    ? "border-danger focus:border-danger focus:ring-danger/15"
-                    : "border-line focus:border-cta focus:ring-cta/15"
-                }`}
-              />
-              {phoneError ? (
-                <p className="mt-1.5 text-xs text-danger">{phoneError}</p>
-              ) : timeframe === "0-3-months" ? (
-                <p className="mt-1.5 text-[11px] text-ink-subtle leading-relaxed">
-                  So we can call to help plan your next steps — buying help
-                  only, never selling agents.
-                </p>
-              ) : null}
-            </div>
-
-            {error && <p className="text-sm text-danger">{error}</p>}
-
-            <button
-              type="submit"
               disabled={submitting || submitted}
               className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3.5 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer press"
             >
@@ -757,9 +558,19 @@ export function BuyingGuideFunnel({
               )}
             </button>
 
-            {collectionStatement}
+            {/* Collection statement, also the marketing-email consent (no
+                checkbox), at the point of collection (APP 5). An optional
+                call is asked for on the thanks page, with its own statement
+                (lib/guide-consent.ts). */}
+            <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
+              {BUYING_EMAIL_CONSENT} Read our{" "}
+              <a href="/privacy" className="underline underline-offset-2 hover:text-ink">
+                privacy policy
+              </a>
+              .
+            </p>
           </form>
-          {backButton(6)}
+          {backButton(5)}
         </div>
       )}
 

@@ -12,12 +12,12 @@
 //              consent and post as "guide-download" so it is scored:
 //              suburb, property type + beds, timeframe, agent status,
 //              motivation (opt), price expectation (opt), then name and
-//              email, then mobile (required) on its own step. The consent
-//              (agent contact + marketing email) is the statement on both
-//              contact steps. Stopping before the mobile leaves a
-//              PartialLead (never shared). Scored HOT/WARM/COLD by
-//              scoreGuideLead(); only HOT and WARM vendors who didn't say
-//              "already listed" go to Sent 24/7 (sent247HoldReason).
+//              email for the guide (a download, never sold). The vendor
+//              lead is the optional call booked on the thanks page: a
+//              mobile plus the one-agent consent, offered only to HOT and
+//              WARM vendors who didn't say "already listed" (guideCallKind
+//              / sent247HoldReason), and sent to Sent 24/7. Scored
+//              HOT/WARM/COLD by scoreGuideLead().
 //   appraisal  AppraisalForm + SuburbAppraisalCTA ("appraisal-request"):
 //              name, email, mobile (required), address, suburb, property
 //              type, bedrooms. Consent: one vetted local agent.

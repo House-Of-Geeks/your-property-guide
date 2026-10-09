@@ -3,26 +3,25 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 // vi.mock factories are hoisted above top-level variables. Use vi.hoisted
 // to define the spies in the same hoisted scope so the factories can
 // reference them safely.
-const { dbLeadCreate, dbAgentFind, sendMailMock, dbPartialUpsert, dbPartialDeleteMany } = vi.hoisted(() => ({
-  dbLeadCreate:        vi.fn(),
-  dbAgentFind:         vi.fn(),
-  sendMailMock:        vi.fn(),
-  dbPartialUpsert:     vi.fn(),
-  dbPartialDeleteMany: vi.fn(),
+const { dbLeadCreate, dbAgentFind, sendMailMock, deferred } = vi.hoisted(() => ({
+  dbLeadCreate: vi.fn(),
+  dbAgentFind:  vi.fn(),
+  sendMailMock: vi.fn(),
+  deferred:     [] as Array<() => unknown>,
 }));
 
-// after() runs its callback at once here, so what it does can be asserted.
+// after() queues its callback here instead of running it, so a test can
+// see that background work (the lead magnet retry) was scheduled.
 vi.mock("next/server", async (importOriginal) => ({
   ...(await importOriginal<typeof import("next/server")>()),
   after: (fn: () => unknown) => {
-    void fn();
+    deferred.push(fn);
   },
 }));
 
 vi.mock("@/lib/db", () => ({
   db: {
     lead: { create: dbLeadCreate },
-    partialLead: { upsert: dbPartialUpsert, deleteMany: dbPartialDeleteMany },
     agent: { findUnique: dbAgentFind },
   },
 }));
@@ -36,6 +35,7 @@ vi.mock("@/lib/email", () => ({
 }));
 
 import { POST } from "@/app/api/leads/route";
+import { AGENT_CALL_CONSENT, BUYING_EMAIL_CONSENT, SELLING_EMAIL_CONSENT } from "@/lib/guide-consent";
 import { AGENT_ENQUIRY_TYPES } from "@/components/agent/enquiry-types";
 
 function makeRequest(body: unknown, headers: Record<string, string> = {}): Request {
@@ -62,10 +62,7 @@ const baseLead = {
 
 beforeEach(() => {
   dbLeadCreate.mockReset();
-  dbPartialUpsert.mockReset();
-  dbPartialDeleteMany.mockReset();
-  dbPartialUpsert.mockResolvedValue({ id: "partial_test_1" });
-  dbPartialDeleteMany.mockResolvedValue({ count: 1 });
+  deferred.length = 0;
   dbAgentFind.mockReset();
   sendMailMock.mockReset();
   dbLeadCreate.mockResolvedValue({ id: "lead_test_123" });
@@ -160,7 +157,7 @@ describe("POST /api/leads", () => {
     expect(saved.message).toContain("Score: HOT");
     expect(saved.message).toContain("Timeframe: Within 3 months");
     expect(saved.message).toContain("Marketing consent: yes");
-    expect(saved.message).toContain("disclosure shown");
+    expect(saved.message).toContain("Consent: one agent may call");
   });
 
   it("rejects a guide-download with an invalid timeframe enum", async () => {
@@ -215,9 +212,10 @@ describe("POST /api/leads", () => {
 // Each case mirrors the exact JSON a client form posts (JSON.stringify drops
 // undefined keys, same as the browser). If a form and the schema drift apart
 // again, it fails here instead of 400-ing real leads in production.
-// Two-step guide funnels (Why Solar's model): the email step is a
-// PartialLead, the mobile step the lead; sellable vendor leads go to Sent 24/7.
-describe("guide funnels: partials and Sent 24/7", () => {
+// Guide funnels (Oct 2026, Why Solar's ebook flow): a download is name +
+// email and gets the guide (Sent 24/7 lead magnet when switched on); a call
+// request from the thanks page is the lead, for one agent or for YPG.
+describe("guide funnels: download, call request and Sent 24/7", () => {
   const seller = {
     type: "guide-download" as const,
     firstName: "Sarah",
@@ -232,7 +230,8 @@ describe("guide funnels: partials and Sent 24/7", () => {
     source: "selling-guide-page",
   };
   const mails = () => sendMailMock.mock.calls.map((c) => c[0]);
-  const adminHtml = () => mails().find((m) => m.to === "andy@theandylife.com").html as string;
+  const adminMail = () => mails().find((m) => m.to === "andy@theandylife.com");
+  const readerMail = () => mails().find((m) => m.to === "Sarah@Example.com");
   const fetchMock = vi.fn();
 
   beforeEach(() => {
@@ -243,92 +242,137 @@ describe("guide funnels: partials and Sent 24/7", () => {
     vi.unstubAllGlobals();
     vi.unstubAllEnvs();
   });
-  const configure = () => {
+  const configure = (magnets = true) => {
     vi.stubEnv("SENT247_API_KEY", "sk_live_test");
     vi.stubEnv("SENT247_VENDOR_CAMPAIGN_ID", "camp-vendor");
+    if (magnets) vi.stubEnv("LEAD_MAGNET_TO_SENT247", "true");
   };
   const s247 = (status: number, body: unknown) =>
     fetchMock.mockResolvedValue(new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } }));
 
-  it("a guide download without a phone is saved as a partial: no Lead row, no emails", async () => {
-    const res = await POST(makeRequest(seller));
-    expect(res.status).toBe(200);
-    expect((await res.json()).id).toBe("partial_test_1");
-    expect(dbLeadCreate).not.toHaveBeenCalled();
-    expect(sendMailMock).not.toHaveBeenCalled();
-    const upsert = dbPartialUpsert.mock.calls[0][0];
-    expect(upsert.where).toEqual({ email_source: { email: "sarah@example.com", source: "selling-guide" } });
-    expect(upsert.create.data.answers).toMatchObject({ sellingTimeframe: "0-3-months", agentStatus: "comparing" });
-    expect(upsert.create.data.placement).toBe("selling-guide-page");
+  describe("a download (no phone)", () => {
+    it("is saved, YPG emails the guide while Sent 24/7 is off, and the team is not emailed", async () => {
+      const res = await POST(makeRequest(seller));
+      expect(res.status).toBe(200);
+      expect((await res.json()).emailOnItsWay).toBe(true);
+      expect(dbLeadCreate.mock.calls[0][0].data.phone).toBeUndefined();
+      expect(dbLeadCreate.mock.calls[0][0].data.message).toContain("Consent: guide and tips emails (download)");
+      expect(mails()).toHaveLength(1);
+      expect(readerMail().subject).toBe("Your selling guide + the $20,000 question");
+      expect(fetchMock).not.toHaveBeenCalled();
+    });
+
+    it("is posted to Sent 24/7 as a lead magnet when switched on, and YPG sends nothing", async () => {
+      configure();
+      s247(201, { success: true, signup_id: "sg_1", status: "new", emails: "started" });
+      const res = await POST(makeRequest(seller));
+      expect((await res.json()).emailOnItsWay).toBe(true);
+      expect(sendMailMock).not.toHaveBeenCalled();
+      const [url, init] = fetchMock.mock.calls[0];
+      expect(url).toBe("https://api.sent247.com/api/v1/lead-magnets");
+      expect(init.headers).toMatchObject({ Authorization: "Bearer sk_live_test" });
+      const body = JSON.parse(init.body);
+      expect(body.campaign_id).toBe("camp-vendor");
+      expect(body.magnet).toEqual({
+        slug: "selling-guide",
+        name: "The Complete Guide to Selling Your Property in Australia",
+        download_url: "https://www.yourpropertyguide.com.au/downloads/your-property-guide-selling-a-home-australia.pdf",
+      });
+      expect(body.lead).toMatchObject({ email: "Sarah@Example.com", first_name: "Sarah", postcode: "4505", state: "QLD" });
+      expect("phone" in body.lead).toBe(false);
+      expect(body.consent).toMatchObject({ email_consent: true, consent_text: SELLING_EMAIL_CONSENT });
+      expect(body.custom_fields).toMatchObject({ reference_id: "lead_test_123", lead_score: "HOT" });
+    });
+
+    it("uses the buying-guide magnet and consent for buyers", async () => {
+      configure();
+      s247(201, { success: true, emails: "started" });
+      await POST(makeRequest({ ...seller, guideType: "buying", agentStatus: undefined, buyerPersona: "first-home" }));
+      const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+      expect(body.magnet.slug).toBe("buying-guide");
+      expect(body.consent.consent_text).toBe(BUYING_EMAIL_CONSENT);
+    });
+
+    it("falls back to YPG's guide email when Sent 24/7 has no series to start", async () => {
+      configure();
+      s247(201, { success: true, status: "new", emails: "not_started", emails_reason: "no_active_series" });
+      const res = await POST(makeRequest(seller));
+      expect((await res.json()).emailOnItsWay).toBe(true);
+      expect(readerMail()).toBeTruthy();
+    });
+
+    it("emails nobody who is on Sent 24/7's suppression list, or who already has the series", async () => {
+      configure();
+      s247(201, { success: true, status: "new", emails: "not_started", emails_reason: "suppressed" });
+      expect((await (await POST(makeRequest(seller))).json()).emailOnItsWay).toBe(false);
+      s247(200, { success: true, status: "repeat", emails: "already_started" });
+      expect((await (await POST(makeRequest(seller))).json()).emailOnItsWay).toBe(false);
+      expect(sendMailMock).not.toHaveBeenCalled();
+    });
+
+    it("on a Sent 24/7 outage schedules a background retry and sends no second guide email", async () => {
+      configure();
+      s247(503, { error: { code: "UNAVAILABLE" } });
+      const res = await POST(makeRequest(seller));
+      expect(res.status).toBe(200);
+      expect((await res.json()).emailOnItsWay).toBe(false);
+      expect(deferred).toHaveLength(1);
+      expect(sendMailMock).not.toHaveBeenCalled();
+    });
   });
 
-  it("a buying-guide partial is kept under its own source", async () => {
-    await POST(makeRequest({ ...seller, guideType: "buying", agentStatus: undefined, buyerPersona: "first-home" }));
-    expect(dbPartialUpsert.mock.calls[0][0].where.email_source.source).toBe("buying-guide");
-  });
+  describe("a call request (thanks page, with a phone)", () => {
+    const call = { ...seller, phone: "0412 345 678", call: true, resumeClickId: "c_1" };
 
-  it("a complete guide lead deletes the email's partials and says Sent 24/7 is off until configured", async () => {
-    const res = await POST(makeRequest({ ...seller, phone: "0412 345 678" }));
-    expect(res.status).toBe(200);
-    expect(dbLeadCreate).toHaveBeenCalledTimes(1);
-    expect(dbPartialDeleteMany).toHaveBeenCalledWith({ where: { email: "sarah@example.com" } });
-    expect(mails()).toHaveLength(2);
-    expect(adminHtml()).toContain("Not sent (Sent 24/7 not configured)");
-    expect(fetchMock).not.toHaveBeenCalled();
-  });
+    it("from a HOT seller goes to the Sent 24/7 vendor campaign with the one-agent consent", async () => {
+      configure(false);
+      s247(201, { success: true, lead_id: "s247_1", status: "pending" });
+      const res = await POST(makeRequest(call));
+      expect(res.status).toBe(200);
+      const [url, init] = fetchMock.mock.calls[0];
+      expect(url).toBe("https://api.sent247.com/api/v1/leads");
+      expect(init.headers).toMatchObject({ "Idempotency-Key": "lead_test_123" });
+      const body = JSON.parse(init.body);
+      expect(body).toMatchObject({ campaign_id: "camp-vendor", resume_click_id: "c_1" });
+      expect(body.lead).toMatchObject({ phone: "+61412345678", last_name: "Lee" });
+      expect(body.consent.consent_text).toBe(AGENT_CALL_CONSENT);
+      expect(adminMail().subject).toMatch(/^\[HOT\] Appraisal call: Selling Guide Download, Sarah Lee/);
+      expect(adminMail().html).toContain("One top local agent (vendor lead)");
+      expect(adminMail().html).toContain("Accepted (pending), lead s247_1");
+      expect(readerMail().subject).toBe("Your free appraisal call is booked");
+      expect(dbLeadCreate.mock.calls[0][0].data.message).toContain("Consent: one agent may call");
+    });
 
-  it("sends a HOT vendor to the Sent 24/7 vendor campaign, with consent and the resume token", async () => {
-    configure();
-    s247(201, { success: true, lead_id: "s247_1", status: "pending" });
-    const res = await POST(makeRequest({ ...seller, phone: "0412 345 678", resumeToken: "tok_1", resumeClickId: "c_1" }));
-    expect(res.status).toBe(200);
-    expect(fetchMock).toHaveBeenCalledTimes(1);
-    const [url, init] = fetchMock.mock.calls[0];
-    expect(url).toBe("https://api.sent247.com/api/v1/leads");
-    expect(init.headers).toMatchObject({ Authorization: "Bearer sk_live_test", "Idempotency-Key": "lead_test_123" });
-    const body = JSON.parse(init.body);
-    expect(body).toMatchObject({ campaign_id: "camp-vendor", resume_token: "tok_1", resume_click_id: "c_1" });
-    expect(body.lead).toMatchObject({ first_name: "Sarah", last_name: "Lee", phone: "+61412345678" });
-    expect(body.consent.tcpa_consent).toBe(true);
-    expect(body.consent.consent_text).toMatch(/^By requesting the guide you agree we may share your details with one top local agent/);
-    expect(adminHtml()).toContain("Accepted (pending), lead s247_1");
-  });
+    it.each([
+      ["an already-listed seller", { agentStatus: "already-listed" }],
+      ["a cold seller", { sellingTimeframe: "12-plus-months" }],
+      ["a buyer", { guideType: "buying", agentStatus: undefined, buyerPersona: "investing", financeStatus: "cash" }],
+    ])("from %s is a call from YPG, never sent to Sent 24/7", async (_label, overrides) => {
+      configure(false);
+      await POST(makeRequest({ ...call, ...overrides }));
+      expect(fetchMock).not.toHaveBeenCalled();
+      expect(adminMail().subject).toContain("Call from YPG (not for agents)");
+      expect(adminMail().html).toContain("Never pass to an agent.");
+      expect(readerMail().subject).toBe("We'll give you a call");
+      expect(dbLeadCreate.mock.calls[0][0].data.message).toContain("Consent: call from YPG only");
+    });
 
-  it.each([
-    ["already-listed vendors", { agentStatus: "already-listed" }, "already listed"],
-    ["cold vendors", { sellingTimeframe: "12-plus-months" }, "cold vendors are not sold"],
-    ["buying-guide leads", { guideType: "buying", agentStatus: undefined, buyerPersona: "investing", financeStatus: "cash" }, "never passed to agents"],
-  ])("never sends %s to Sent 24/7", async (_label, overrides, reason) => {
-    configure();
-    await POST(makeRequest({ ...seller, ...overrides, phone: "0412 345 678" }));
-    expect(fetchMock).not.toHaveBeenCalled();
-    expect(adminHtml()).toContain(reason);
-  });
+    it("says plainly when Sent 24/7 isn't configured or didn't take it", async () => {
+      await POST(makeRequest(call));
+      expect(adminMail().html).toContain("Not sent (Sent 24/7 not configured)");
+      sendMailMock.mockClear();
+      configure(false);
+      s247(502, { error: { message: "bad gateway" } });
+      const res = await POST(makeRequest(call));
+      expect(res.status).toBe(200);
+      expect(adminMail().html).toContain("FAILED, not delivered: HTTP 502: bad gateway");
+    });
 
-  it("a Sent 24/7 outage never costs the lead, and the team email says it wasn't delivered", async () => {
-    configure();
-    s247(502, { error: { message: "bad gateway" } });
-    const res = await POST(makeRequest({ ...seller, phone: "0412 345 678" }));
-    expect(res.status).toBe(200);
-    expect(dbLeadCreate).toHaveBeenCalledTimes(1);
-    expect(adminHtml()).toContain("FAILED, not delivered: HTTP 502: bad gateway");
-  });
-
-  it("a filter or duplicate rejection is reported as rejected, not failed", async () => {
-    configure();
-    s247(200, { success: false, status: "rejected", rejection_reasons: ["duplicate lead"] });
-    await POST(makeRequest({ ...seller, phone: "0412 345 678" }));
-    expect(adminHtml()).toContain("Rejected by Sent 24/7: duplicate lead");
-  });
-
-  it("a vendor partial is held in Sent 24/7 with its id as ws_resume", async () => {
-    configure();
-    s247(201, { success: true, lead_id: "s247_p", status: "partial" });
-    await POST(makeRequest(seller));
-    expect(fetchMock).toHaveBeenCalledTimes(1);
-    const [url, init] = fetchMock.mock.calls[0];
-    expect(url).toBe("https://api.sent247.com/api/v1/leads/partial");
-    expect(JSON.parse(init.body).custom_fields.ws_resume).toBe("partial_test_1");
+    it("a one-step guide submit with a phone (a tab from before this change) still gets the guide", async () => {
+      await POST(makeRequest({ ...seller, phone: "0412 345 678" }));
+      expect(readerMail().subject).toBe("Your selling guide + the $20,000 question");
+      expect(adminMail()).toBeTruthy();
+    });
   });
 });
 

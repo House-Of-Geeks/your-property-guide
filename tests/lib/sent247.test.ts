@@ -1,14 +1,15 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, afterEach, vi } from "vitest";
 import {
   addressFromSuburbSlug,
   buildSent247LeadBody,
-  buildSent247PartialBody,
+  buildSent247LeadMagnetBody,
   describeSent247,
   guideCustomFields,
+  leadMagnetDeliveryEnabled,
   sent247HoldReason,
   toE164AU,
 } from "@/lib/sent247";
-import { SELLING_CONSENT_SHARES } from "@/lib/guide-consent";
+import { AGENT_CALL_CONSENT, SELLING_EMAIL_CONSENT, guideCallKind } from "@/lib/guide-consent";
 
 const seller = {
   type: "guide-download",
@@ -66,23 +67,21 @@ describe("buildSent247LeadBody", () => {
     lead: seller,
     campaignId: "camp-1",
     referenceId: "lead_1",
-    consentText: SELLING_CONSENT_SHARES,
+    consentText: AGENT_CALL_CONSENT,
     attribution: {
       state: { first: { at: "2026-10-01T00:00:00Z", landing_page: "/selling-guide", referrer: "https://www.google.com/" }, last: { at: "2026-10-02T00:00:00Z", utm_source: "google", utm_medium: "cpc", gclid: "g1" } },
       sourcePage: "/selling-guide",
       gclid: "g1",
     },
     ctx: { ip: "203.0.113.9", userAgent: "UA" },
-    resumeToken: "tok",
     resumeClickId: "click",
   });
-  it("carries the contact, consent and resume token the intake requires", () => {
+  it("carries the contact, consent and email click id the intake requires", () => {
     expect(body.campaign_id).toBe("camp-1");
-    expect(body.resume_token).toBe("tok");
     expect(body.resume_click_id).toBe("click");
     expect(body.lead).toMatchObject({ first_name: "Sarah", last_name: "-", email: "sarah@example.com", phone: "+61412345678" });
     expect(body.lead.address).toMatchObject({ state: "QLD", zip: "4505" });
-    expect(body.consent).toMatchObject({ tcpa_consent: true, consent_ip: "203.0.113.9", consent_text: SELLING_CONSENT_SHARES });
+    expect(body.consent).toMatchObject({ tcpa_consent: true, consent_ip: "203.0.113.9", consent_text: AGENT_CALL_CONSENT });
     expect(body.custom_fields.reference_id).toBe("lead_1");
   });
   it("takes campaign params from the latest touch and the landing page from the first", () => {
@@ -90,22 +89,46 @@ describe("buildSent247LeadBody", () => {
   });
 });
 
-describe("buildSent247PartialBody", () => {
-  it("puts our PartialLead id in ws_resume so the recovery link can bring it back", () => {
-    const body = buildSent247PartialBody({
-      partialId: "pl_1",
-      email: "sarah@example.com",
-      firstName: "Sarah",
-      lastName: null,
-      answers: seller,
+describe("buildSent247LeadMagnetBody", () => {
+  it("records the guide download with email consent and no phone", () => {
+    const body = buildSent247LeadMagnetBody({
+      lead: { ...seller, lastName: "Lee" },
       campaignId: "camp-1",
+      referenceId: "lead_9",
+      consentText: SELLING_EMAIL_CONSENT,
       attribution: null,
-      ctx: {},
+      ctx: { ip: "203.0.113.9" },
     });
-    expect(body.custom_fields.ws_resume).toBe("pl_1");
-    expect(body.lead).toMatchObject({ first_name: "Sarah", email: "sarah@example.com" });
-    expect("phone" in body.lead).toBe(false);
-    expect("consent" in body).toBe(false);
+    expect(body.magnet.slug).toBe("selling-guide");
+    expect(body.magnet.download_url).toMatch(/^https:\/\/www\.yourpropertyguide\.com\.au\/downloads\/.+\.pdf$/);
+    expect(body.lead).toEqual({ email: "sarah@example.com", first_name: "Sarah", last_name: "Lee", postcode: "4505", state: "QLD" });
+    expect(body.consent).toMatchObject({ email_consent: true, consent_text: SELLING_EMAIL_CONSENT, consent_ip: "203.0.113.9" });
+    expect(body.custom_fields.reference_id).toBe("lead_9");
+  });
+});
+
+describe("leadMagnetDeliveryEnabled", () => {
+  afterEach(() => vi.unstubAllEnvs());
+  it("needs the flag to be exactly \"true\" and the key and campaign set", () => {
+    vi.stubEnv("SENT247_API_KEY", "sk_live_x");
+    vi.stubEnv("SENT247_VENDOR_CAMPAIGN_ID", "camp");
+    vi.stubEnv("LEAD_MAGNET_TO_SENT247", "1");
+    expect(leadMagnetDeliveryEnabled()).toBe(false);
+    vi.stubEnv("LEAD_MAGNET_TO_SENT247", "true");
+    expect(leadMagnetDeliveryEnabled()).toBe(true);
+    vi.stubEnv("SENT247_API_KEY", "");
+    expect(leadMagnetDeliveryEnabled()).toBe(false);
+  });
+});
+
+describe("guideCallKind agrees with sent247HoldReason", () => {
+  it("offers an agent call exactly when the lead may go to Sent 24/7", () => {
+    for (const guideType of ["selling", "buying"])
+      for (const sellingTimeframe of ["0-3-months", "3-6-months", "6-12-months", "12-plus-months", "researching"])
+        for (const agentStatus of ["comparing", "not-started", "already-listed", undefined]) {
+          const a = { ...seller, guideType, sellingTimeframe, agentStatus };
+          expect(guideCallKind(a) === "agent").toBe(sent247HoldReason(a) === null);
+        }
   });
 });
 
