@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle, Download, ArrowRight } from "lucide-react";
 import { ConversionTracker } from "@/components/journey/ConversionTracker";
-import { ThanksPhoneAsk } from "@/components/forms/ThanksPhoneAsk";
 
 export const metadata: Metadata = {
   title: "Your buying guide is ready",
@@ -19,17 +18,6 @@ interface PageProps {
   // Next 16 can deliver repeated params as arrays — normalise before use.
   searchParams: Promise<{ score?: string | string[]; suburb?: string | string[]; }>;
 }
-
-// Post-download phone ask. The funnel leaves a lead id in sessionStorage
-// only when no mobile was captured (ThanksPhoneAsk checks client-side).
-// The buying funnel's collection statement promises details never go to
-// selling agents, so the framing here is buying help from our side only
-// — never an agent handoff.
-const PHONE_PROMPT: Record<string, string> = {
-  hot: "Want to move faster? Add your mobile and we’ll call to help plan your next step — buying help only, never selling agents.",
-  warm: "Add your mobile and we’ll give you a quick call about getting finance-ready — buying help only, never selling agents.",
-  cold: "Prefer to talk it through when you’re ready? Add your mobile and we’ll check in — no pressure, no spam.",
-};
 
 const SCORE_COPY: Record<string, { headline: string; body: string }> = {
   hot: {
@@ -51,7 +39,6 @@ export default async function BuyingGuideThanksPage({ searchParams }: PageProps)
   const score = typeof scoreParam === "string" ? scoreParam : undefined;
   const suburb = typeof suburbParam === "string" ? suburbParam : undefined;
   const copy = SCORE_COPY[score ?? ""] ?? SCORE_COPY.cold;
-  const phonePrompt = PHONE_PROMPT[score ?? ""] ?? PHONE_PROMPT.cold;
   const suburbLabel = suburb
     ? suburb.replace(/-[a-z]{2,3}-\d{4}$/, "").replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
     : null;
@@ -133,8 +120,6 @@ export default async function BuyingGuideThanksPage({ searchParams }: PageProps)
               whenever you need it.
             </p>
           </div>
-
-          <ThanksPhoneAsk source="buying-guide-thanks" prompt={phonePrompt} />
         </div>
       </section>
 
