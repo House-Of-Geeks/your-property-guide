@@ -5,7 +5,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { SuburbAutocomplete, slugToSuburbLabel } from "@/components/search/SuburbAutocomplete";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
-import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
+import { auMobileError } from "@/lib/utils/au-mobile";
+import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
 
 type Intent =
   | "buying"
@@ -142,11 +143,12 @@ export function MatchAgent({
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!intent || !timeframe) return;
-    // Phone is required and sanity-checked client-side. The API stays
+    // Phone is required and must be an Australian mobile. The API stays
     // lenient (never reject a lead over a phone format) — this gate is
     // purely so the specialist gets a number they can actually dial.
-    if (!isValidPhone(phone)) {
-      setPhoneError(PHONE_ERROR);
+    const mobileError = auMobileError(phone);
+    if (mobileError) {
+      setPhoneError(mobileError);
       return;
     }
     setPhoneError(null);
@@ -169,7 +171,7 @@ export function MatchAgent({
           firstName: firstName.trim(),
           lastName: trimmedLast || undefined,
           email: email.trim(),
-          phone: phone.trim(),
+          phone,
           message,
           suburb: suburbSlug ?? undefined,
           source,
@@ -421,23 +423,16 @@ export function MatchAgent({
                       className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
                     />
                     <div>
-                      <input
-                        type="tel"
-                        required
-                        placeholder="Mobile"
-                        autoComplete="tel"
-                        inputMode="tel"
+                      <AuPhoneInput
                         value={phone}
-                        onChange={(e) => {
-                          setPhone(e.target.value);
+                        onChange={(v) => {
+                          setPhone(v);
                           if (phoneError) setPhoneError(null);
                         }}
-                        aria-invalid={phoneError ? true : undefined}
-                        className={`w-full rounded-lg border bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:ring-2 outline-none transition-colors ${
-                          phoneError
-                            ? "border-danger focus:border-danger focus:ring-danger/20"
-                            : "border-line focus:border-cta focus:ring-cta/20"
-                        }`}
+                        required
+                        aria-label="Mobile"
+                        invalid={!!phoneError}
+                        tone="raised"
                       />
                       {phoneError ? (
                         <p className="mt-1 text-xs text-danger">{phoneError}</p>

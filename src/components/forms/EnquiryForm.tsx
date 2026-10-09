@@ -1,13 +1,14 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMemo, useState } from "react";
 import { Input } from "@/components/ui";
 import { CheckCircle, Send } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
-import { optionalPhoneSchema, requiredPhoneSchema } from "@/lib/utils/phone";
+import { optionalMobileSchema, requiredMobileSchema } from "@/lib/utils/au-mobile";
+import { AuPhoneField } from "./AuPhoneInput";
 import { PhoneFollowUp } from "./PhoneFollowUp";
 
 // Property-page enquiry form. Required fields kept to the minimum that's
@@ -16,15 +17,17 @@ import { PhoneFollowUp } from "./PhoneFollowUp";
 // whose next step is a call (REA and Domain both require phone on their
 // enquiry forms, so buyers expect the ask). General contact stays
 // email-only; a post-submit follow-up harvests the phone instead so the
-// extra field never costs the conversion.
-const makeEnquirySchema = (requirePhone: boolean) =>
+// extra field never costs the conversion. A listing enquiry also takes an
+// overseas mobile (overseas buyers are real buyers); every other enquiry
+// needs an Australian one.
+const makeEnquirySchema = (requirePhone: boolean, overseas: boolean) =>
   z.object({
     firstName: z.string().min(1, "First name is required"),
     lastName: z.string().optional(),
     email: z.string().email("Valid email is required"),
     phone: requirePhone
-      ? requiredPhoneSchema("Mobile is required so the agent can reach you")
-      : optionalPhoneSchema,
+      ? requiredMobileSchema("Mobile is required so the agent can reach you", { overseas })
+      : optionalMobileSchema({ overseas }),
     message: z.string().optional(),
     // Honeypot — must remain empty. Real users never see this field.
     website: z.string().optional(),
@@ -73,6 +76,7 @@ export function EnquiryForm({
   // feels off (people often just want an email answer). Everything else
   // is an agent-bound lead where the next step is a call.
   const requirePhone = requirePhoneProp ?? type !== "general-contact";
+  const overseas = type === "property-enquiry" || type === "house-and-land-enquiry";
   const paidRecipient = PAID_INTRO_RECIPIENT[type];
   // Who the success message says the enquiry goes to. It must match the
   // recipient disclosed in the fine print. A general message with no agent
@@ -83,14 +87,15 @@ export function EnquiryForm({
   const [submitted, setSubmitted] = useState<{ leadId: string | null; hadPhone: boolean } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const resolver = useMemo(() => zodResolver(makeEnquirySchema(requirePhone)), [requirePhone]);
+  const resolver = useMemo(() => zodResolver(makeEnquirySchema(requirePhone, overseas)), [requirePhone, overseas]);
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<EnquiryFormData>({
     resolver,
-    defaultValues: { message: defaultMessage || "" },
+    defaultValues: { phone: "", message: defaultMessage || "" },
   });
 
   const onSubmit = async (data: EnquiryFormData) => {
@@ -104,7 +109,7 @@ export function EnquiryForm({
           firstName: data.firstName.trim(),
           lastName: data.lastName?.trim() || undefined,
           email: data.email.trim(),
-          phone: data.phone?.trim() || undefined,
+          phone: data.phone || undefined,
           message: data.message?.trim() || undefined,
           propertyId,
           agentId,
@@ -143,6 +148,7 @@ export function EnquiryForm({
             <PhoneFollowUp
               leadId={submitted.leadId}
               source={`enquiry-${type}`}
+              overseas={overseas}
               prompt="Want a faster answer? Add your mobile and we’ll call instead of emailing."
             />
           </div>
@@ -175,15 +181,21 @@ export function EnquiryForm({
         error={errors.email?.message}
         {...register("email")}
       />
-      <Input
-        id="enquiry-phone"
-        label={requirePhone ? "Mobile" : "Mobile (optional)"}
-        type="tel"
-        placeholder="04XX XXX XXX"
-        autoComplete="tel"
-        inputMode="tel"
-        error={errors.phone?.message}
-        {...register("phone")}
+      <Controller
+        name="phone"
+        control={control}
+        render={({ field }) => (
+          <AuPhoneField
+            id="enquiry-phone"
+            label={requirePhone ? "Mobile" : "Mobile (optional)"}
+            value={field.value ?? ""}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            overseas={overseas}
+            placeholder="0412 345 678"
+            error={errors.phone?.message}
+          />
+        )}
       />
       <Input
         id="enquiry-lastName"

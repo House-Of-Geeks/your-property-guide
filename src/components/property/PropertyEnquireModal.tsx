@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { X, User, Mail, Phone, MessageSquare, Loader2, CheckCircle2 } from "lucide-react";
+import { X, User, Mail, MessageSquare, Loader2, CheckCircle2 } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
-import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
+import { auMobileError } from "@/lib/utils/au-mobile";
+import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
 
 const ENQUIRY_TYPES = [
   "Inspection times",
@@ -76,9 +77,11 @@ export function PropertyEnquireDialog({
     if (loading || submitted) return; // double-submit guard
     // Required + sanity-checked: this lead lands with the listing agent,
     // whose follow-up is a call. (Also: an empty string here used to fail
-    // the API's min-length check and 400 the whole enquiry.)
-    if (!isValidPhone(phone)) {
-      setPhoneError(PHONE_ERROR);
+    // the API's min-length check and 400 the whole enquiry.) Overseas
+    // numbers are fine: overseas buyers are real buyers.
+    const mobileError = auMobileError(phone, { overseas: true });
+    if (mobileError) {
+      setPhoneError(mobileError);
       return;
     }
     setPhoneError(null);
@@ -92,7 +95,7 @@ export function PropertyEnquireDialog({
           firstName: firstName.trim(),
           lastName: lastName.trim() || undefined,
           email: email.trim(),
-          phone: phone.trim(),
+          phone,
           type: "property-enquiry",
           message: [
             selected.length ? `Enquiring about: ${selected.join(", ")}` : "",
@@ -224,7 +227,6 @@ export function PropertyEnquireDialog({
                   { icon: <User className="w-4 h-4" />, placeholder: "First name *", value: firstName, onChange: setFirstName, required: true, autoComplete: "given-name" },
                   { icon: <User className="w-4 h-4" />, placeholder: "Last name *", value: lastName, onChange: setLastName, required: true, autoComplete: "family-name" },
                   { icon: <Mail className="w-4 h-4" />, placeholder: "Email *", type: "email", value: email, onChange: setEmail, required: true, autoComplete: "email" },
-                  { icon: <Phone className="w-4 h-4" />, placeholder: "Mobile *", type: "tel", value: phone, onChange: setPhone, required: true, autoComplete: "tel" },
                 ] as Array<{ icon: React.ReactNode; placeholder: string; type?: string; value: string; onChange: (v: string) => void; required?: boolean; autoComplete?: string }>).map((f) => (
                   <div key={f.placeholder} className="relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{f.icon}</span>
@@ -232,22 +234,27 @@ export function PropertyEnquireDialog({
                       type={f.type ?? "text"}
                       placeholder={f.placeholder}
                       value={f.value}
-                      onChange={(e) => {
-                        f.onChange(e.target.value);
-                        if (f.type === "tel" && phoneError) setPhoneError(null);
-                      }}
+                      onChange={(e) => f.onChange(e.target.value)}
                       required={f.required}
                       autoComplete={f.autoComplete}
-                      inputMode={f.type === "tel" ? "tel" : undefined}
-                      aria-invalid={f.type === "tel" && phoneError ? true : undefined}
-                      className={`w-full pl-9 pr-3 py-2.5 text-sm border rounded-lg focus:ring-1 outline-none transition-colors ${
-                        f.type === "tel" && phoneError
-                          ? "border-red-400 focus:border-red-400 focus:ring-red-400"
-                          : "border-gray-300 focus:border-primary focus:ring-primary"
-                      }`}
+                      className="w-full pl-9 pr-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
                     />
                   </div>
                 ))}
+                <AuPhoneInput
+                  value={phone}
+                  onChange={(v) => {
+                    setPhone(v);
+                    if (phoneError) setPhoneError(null);
+                  }}
+                  overseas
+                  required
+                  placeholder="Mobile *"
+                  aria-label="Mobile"
+                  invalid={!!phoneError}
+                  tone="plain"
+                  size="md"
+                />
                 {phoneError && <p className="text-xs text-red-500">{phoneError}</p>}
 
                 {error && <p className="text-sm text-red-500">{error}</p>}

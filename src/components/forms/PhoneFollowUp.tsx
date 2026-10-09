@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
-import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
+import { auMobileError, displayPhone } from "@/lib/utils/au-mobile";
+import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
 
 interface PhoneFollowUpProps {
   /** Lead to enrich — the id returned by POST /api/leads. */
@@ -12,6 +13,8 @@ interface PhoneFollowUpProps {
   source: string;
   /** Lead-in line above the field. Keep it a reason, not a demand. */
   prompt?: string;
+  /** After a listing enquiry, where an overseas number is fine too. */
+  overseas?: boolean;
 }
 
 /**
@@ -24,6 +27,7 @@ export function PhoneFollowUp({
   leadId,
   source,
   prompt = "Prefer to talk it through? Add your mobile and we’ll call you first.",
+  overseas = false,
 }: PhoneFollowUpProps) {
   const [phone, setPhone] = useState("");
   const [state, setState] = useState<"idle" | "saving" | "done" | "expired">("idle");
@@ -34,7 +38,7 @@ export function PhoneFollowUp({
       <div className="flex items-center gap-2.5 rounded-xl border border-line bg-surface-raised px-4 py-3.5">
         <CheckCircle className="w-4 h-4 text-cta shrink-0" />
         <p className="text-sm text-ink">
-          Got it — expect a call on <span className="font-medium">{phone.trim()}</span>.
+          Got it — expect a call on <span className="font-medium">{displayPhone(phone)}</span>.
         </p>
       </div>
     );
@@ -55,8 +59,9 @@ export function PhoneFollowUp({
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isValidPhone(phone)) {
-      setError(PHONE_ERROR);
+    const mobileError = auMobileError(phone, { overseas });
+    if (mobileError) {
+      setError(mobileError);
       return;
     }
     setError(null);
@@ -65,7 +70,7 @@ export function PhoneFollowUp({
       const res = await fetch("/api/leads/enrich", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: leadId, phone: phone.trim() }),
+        body: JSON.stringify({ id: leadId, phone }),
       });
       if (res.status === 404) {
         setState("expired");
@@ -85,23 +90,19 @@ export function PhoneFollowUp({
     <form onSubmit={onSubmit} className="rounded-xl border border-line bg-surface-raised px-4 py-4">
       <p className="text-sm text-ink leading-snug mb-3">{prompt}</p>
       <div className="flex gap-2">
-        <input
-          type="tel"
-          placeholder="04XX XXX XXX"
-          autoComplete="tel"
-          inputMode="tel"
+        <AuPhoneInput
           value={phone}
-          onChange={(e) => {
-            setPhone(e.target.value);
+          onChange={(v) => {
+            setPhone(v);
             if (error) setError(null);
           }}
+          overseas={overseas}
+          placeholder="0412 345 678"
           aria-label="Mobile number"
-          aria-invalid={error ? true : undefined}
-          className={`min-w-0 flex-1 rounded-lg border bg-surface px-3 py-2.5 text-sm text-ink placeholder:text-ink-subtle focus:ring-1 outline-none transition-colors ${
-            error
-              ? "border-danger focus:border-danger focus:ring-danger"
-              : "border-line-strong focus:border-primary focus:ring-primary"
-          }`}
+          invalid={!!error}
+          tone="field"
+          size="md"
+          className="min-w-0 flex-1"
         />
         <button
           type="submit"

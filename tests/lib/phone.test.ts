@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { normalizePhone, isValidPhone } from "@/lib/utils/phone";
+import { normalizePhone } from "@/lib/utils/phone";
 
 describe("normalizePhone", () => {
   it("normalises AU mobiles in common formats", () => {
@@ -48,13 +48,5 @@ describe("normalizePhone", () => {
     expect(normalizePhone("04123")).toBeNull(); // too short
     expect(normalizePhone("041234567890")).toBeNull(); // too long
     expect(normalizePhone("no thanks")).toBeNull();
-  });
-});
-
-describe("isValidPhone", () => {
-  it("mirrors normalizePhone", () => {
-    expect(isValidPhone("0412 345 678")).toBe(true);
-    expect(isValidPhone("+61 412 345 678")).toBe(true);
-    expect(isValidPhone("garbage")).toBe(false);
   });
 });

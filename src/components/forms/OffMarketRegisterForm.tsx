@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
@@ -9,18 +9,20 @@ import { PROPERTY_TYPES, PRICE_RANGES_BUY, BEDROOM_OPTIONS } from "@/lib/constan
 import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
 import { CheckCircle, Lock } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
-import { optionalPhoneSchema } from "@/lib/utils/phone";
+import { optionalMobileSchema } from "@/lib/utils/au-mobile";
+import { AuPhoneField } from "./AuPhoneInput";
 import { PhoneFollowUp } from "./PhoneFollowUp";
 
 // Off-market alert signup. The user's already on /off-market explicitly
 // asking for alerts, so we keep the criteria fields but trim required
 // contact info to firstName + email + suburb. Last name and phone are
-// optional, alerts are email-driven.
+// optional, alerts are email-driven. An overseas mobile is fine: overseas
+// buyers are real buyers.
 const offMarketSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().optional(),
   email: z.string().email("Valid email is required"),
-  phone: optionalPhoneSchema,
+  phone: optionalMobileSchema({ overseas: true }),
   suburbs: z.string().min(1, "Pick at least one suburb"),
   propertyType: z.string().optional(),
   minPrice: z.string().optional(),
@@ -38,12 +40,14 @@ export function OffMarketRegisterForm() {
 
   const {
     register,
+    control,
     setValue,
     clearErrors,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<OffMarketFormData>({
     resolver: zodResolver(offMarketSchema),
+    defaultValues: { phone: "" },
   });
 
   const onSubmit = async (data: OffMarketFormData) => {
@@ -56,7 +60,7 @@ export function OffMarketRegisterForm() {
           firstName: data.firstName.trim(),
           lastName: data.lastName?.trim() || undefined,
           email: data.email.trim(),
-          phone: data.phone?.trim() || undefined,
+          phone: data.phone || undefined,
           type: "off-market-register",
           suburb: data.suburbs,
           buyingCriteria: {
@@ -97,6 +101,7 @@ export function OffMarketRegisterForm() {
             <PhoneFollowUp
               leadId={submitted.leadId}
               source="off-market-register"
+              overseas
               prompt="Off-market moves fast — add your mobile to get a call before the email goes out."
             />
           </div>
@@ -127,15 +132,21 @@ export function OffMarketRegisterForm() {
         error={errors.email?.message}
         {...register("email")}
       />
-      <Input
-        id="offmarket-phone"
-        label="Mobile (optional — get a call before the email alert)"
-        type="tel"
-        placeholder="04XX XXX XXX"
-        autoComplete="tel"
-        inputMode="tel"
-        error={errors.phone?.message}
-        {...register("phone")}
+      <Controller
+        name="phone"
+        control={control}
+        render={({ field }) => (
+          <AuPhoneField
+            id="offmarket-phone"
+            label="Mobile (optional — get a call before the email alert)"
+            value={field.value ?? ""}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            overseas
+            placeholder="0412 345 678"
+            error={errors.phone?.message}
+          />
+        )}
       />
       <Input
         id="offmarket-lastName"

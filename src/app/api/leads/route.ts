@@ -53,10 +53,9 @@ const leadSchema = z.object({
   // Blank/whitespace phones collapse to undefined instead of failing the
   // min-length check — several older client builds posted phone: "" and
   // every such enquiry 400'd. Never bounce a lead over the phone field.
-  // min(6), not min(8): the client validator (isValidPhone) accepts
-  // 6-digit 13-series business numbers, and server-valid must stay a
-  // superset of client-valid or required-phone forms dead-end with a
-  // generic error on numbers the field just accepted.
+  // Server-valid must stay a superset of what the forms accept (AU and
+  // overseas mobiles in E.164, see lib/utils/au-mobile), or a required
+  // phone dead-ends with a generic error on a number the field accepted.
   phone: z.preprocess(
     (v) => (typeof v === "string" ? v.trim() || undefined : v),
     z.string().min(6).optional(),

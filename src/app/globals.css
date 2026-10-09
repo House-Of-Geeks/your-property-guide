@@ -417,33 +417,49 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   }
 }
 
-/* The flagged mobile field (react-phone-number-input, Oct 2026, as on Why
-   Solar's rebate quiz), drawn like the site's other inputs. Australia is the
-   only country, so the flag is a label, not a menu. */
+/* The flagged phone field, AuPhoneInput (react-phone-number-input, Oct
+   2026, as on Why Solar's rebate quiz). The country is a label, not a
+   menu. Tones and sizes match the inputs around each form; each sets
+   --pi-* variables, read with the warm defaults as fallbacks. */
 .ypg-phone-input.PhoneInput {
   display: flex;
   align-items: stretch;
-  border: 1px solid var(--line);
+  border: 1px solid var(--pi-border, var(--line));
   border-radius: 0.5rem;
-  background: var(--surface-warm);
+  background: var(--pi-bg, var(--surface-warm));
   overflow: hidden;
   transition: border-color 200ms, box-shadow 200ms;
 }
 .ypg-phone-input.PhoneInput:focus-within {
-  border-color: var(--cta);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--cta) 15%, transparent);
+  border-color: var(--pi-focus, var(--cta));
+  box-shadow: 0 0 0 var(--pi-ring, 3px)
+    color-mix(in oklab, var(--pi-focus, var(--cta)) var(--pi-ring-alpha, 15%), transparent);
 }
-.ypg-phone-input--error.PhoneInput,
-.ypg-phone-input--error.PhoneInput:focus-within {
-  border-color: var(--danger);
+.ypg-phone-input--raised { --pi-bg: var(--surface-raised); }
+.ypg-phone-input--field {
+  --pi-bg: var(--surface);
+  --pi-border: var(--line-strong);
+  --pi-focus: var(--primary);
+  --pi-ring: 1px;
+  --pi-ring-alpha: 100%;
 }
-.ypg-phone-input--error.PhoneInput:focus-within {
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--danger) 15%, transparent);
+.ypg-phone-input--plain {
+  --pi-bg: #fff;
+  --pi-border: var(--gray-300);
+  --pi-focus: var(--primary);
+  --pi-ring: 1px;
+  --pi-ring-alpha: 100%;
+}
+.ypg-phone-input--md { --pi-py: 0.625rem; --pi-px: 0.75rem; }
+.ypg-phone-input--sm { --pi-py: 0.5rem; --pi-px: 0.75rem; }
+.ypg-phone-input--error {
+  --pi-border: var(--danger);
+  --pi-focus: var(--danger);
 }
 .ypg-phone-input .PhoneInputCountry {
   margin-right: 0;
   padding: 0 0.75rem;
-  border-right: 1px solid var(--line);
+  border-right: 1px solid var(--pi-border, var(--line));
 }
 .ypg-phone-input .PhoneInputCountryIcon {
   --PhoneInputCountryFlag-height: 1.125em;
@@ -460,14 +476,18 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   border: 0;
   outline: none;
   background: transparent;
-  padding: 0.75rem 1rem;
+  padding: var(--pi-py, 0.75rem) var(--pi-px, 1rem);
   font-size: 0.875rem;
   line-height: 1.25rem;
   color: var(--ink);
-  caret-color: var(--cta);
+  caret-color: var(--pi-focus, var(--cta));
 }
 .ypg-phone-input .PhoneInputInput::placeholder {
   color: var(--ink-subtle);
+}
+.ypg-phone-input .PhoneInputInput:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 /* Warm minimal scrollbar (WebKit + Firefox). */

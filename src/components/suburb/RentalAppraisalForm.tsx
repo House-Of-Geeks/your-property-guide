@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { ArrowRight, CheckCircle, KeyRound, Loader2 } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
-import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
+import { auMobileError } from "@/lib/utils/au-mobile";
+import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
 import { AddressAutocomplete } from "@/components/forms/AddressAutocomplete";
 import { PROPERTY_TYPES } from "@/lib/constants";
 import { MANAGER_TIMEFRAMES, type ManagerTimeframe } from "@/lib/rental-landlord";
@@ -61,8 +62,9 @@ export function RentalAppraisalForm({ suburbName, suburbSlug, state, postcode }:
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isValidPhone(phone)) {
-      setPhoneError(PHONE_ERROR);
+    const mobileError = auMobileError(phone);
+    if (mobileError) {
+      setPhoneError(mobileError);
       return;
     }
     setPhoneError(null);
@@ -79,7 +81,7 @@ export function RentalAppraisalForm({ suburbName, suburbSlug, state, postcode }:
           firstName,
           lastName,
           email: email.trim(),
-          phone: phone.trim(),
+          phone,
           address: address.trim(),
           appraisalAddress: address.trim(),
           suburb: addressSuburbSlug ?? suburbSlug,
@@ -158,18 +160,16 @@ export function RentalAppraisalForm({ suburbName, suburbSlug, state, postcode }:
           <label htmlFor="rental-appraisal-phone" className={labelClass}>
             Mobile <span className="font-normal text-ink-subtle">so the property manager can arrange the appraisal</span>
           </label>
-          <input
+          <AuPhoneInput
             id="rental-appraisal-phone"
-            type="tel"
-            required
-            inputMode="tel"
-            autoComplete="tel"
             value={phone}
-            onChange={(e) => { setPhone(e.target.value); if (phoneError) setPhoneError(null); }}
-            aria-invalid={phoneError ? true : undefined}
+            onChange={(v) => { setPhone(v); if (phoneError) setPhoneError(null); }}
+            required
+            invalid={!!phoneError}
             aria-describedby={phoneError ? "rental-appraisal-phone-error" : undefined}
             placeholder="0412 345 678"
-            className={`${inputClass} ${phoneError ? "border-danger focus:border-danger" : ""}`}
+            tone="raised"
+            size="md"
           />
           {phoneError && <p id="rental-appraisal-phone-error" className="mt-1.5 text-xs text-danger">{phoneError}</p>}
         </div>

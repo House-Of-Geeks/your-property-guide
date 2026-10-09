@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
@@ -10,7 +10,8 @@ import { PROPERTY_TYPES } from "@/lib/constants";
 import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
 import { AddressAutocomplete } from "@/components/forms/AddressAutocomplete";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
-import { requiredPhoneSchema } from "@/lib/utils/phone";
+import { requiredMobileSchema } from "@/lib/utils/au-mobile";
+import { AuPhoneField } from "@/components/forms/AuPhoneInput";
 
 // Free-appraisal request form. Visitor is on /appraisal explicitly asking
 // for a valuation, so intent is implicit. Trimmed from the original 9
@@ -23,7 +24,7 @@ import { requiredPhoneSchema } from "@/lib/utils/phone";
 const appraisalSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   email: z.string().email("Valid email is required"),
-  phone: requiredPhoneSchema("Mobile is required so your agent can arrange the appraisal"),
+  phone: requiredMobileSchema("Mobile is required so your agent can arrange the appraisal"),
   address: z.string().min(5, "Property address is required"),
   suburb: z.string().min(1, "Suburb is required"),
   propertyType: z.string().optional(),
@@ -63,6 +64,7 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
 
   const {
     register,
+    control,
     handleSubmit,
     setValue,
     clearErrors,
@@ -71,6 +73,7 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
   } = useForm<AppraisalFormData>({
     resolver: zodResolver(appraisalSchema),
     defaultValues: {
+      phone: "",
       address: searchParams.get("address") ?? "",
       suburb: searchParams.get("suburb") ?? "",
     },
@@ -91,7 +94,7 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
           type: "appraisal-request",
           firstName: data.firstName.trim(),
           email: data.email.trim(),
-          phone: data.phone?.trim() || undefined,
+          phone: data.phone || undefined,
           address: data.address.trim(),
           appraisalAddress: data.address.trim(),
           suburb: data.suburb,
@@ -143,15 +146,20 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
       </div>
 
       <div>
-        <Input
-          id="appraisal-phone"
-          label="Mobile"
-          type="tel"
-          placeholder="04XX XXX XXX"
-          autoComplete="tel"
-          inputMode="tel"
-          error={errors.phone?.message}
-          {...register("phone")}
+        <Controller
+          name="phone"
+          control={control}
+          render={({ field }) => (
+            <AuPhoneField
+              id="appraisal-phone"
+              label="Mobile"
+              value={field.value ?? ""}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              placeholder="0412 345 678"
+              error={errors.phone?.message}
+            />
+          )}
         />
         <p className="mt-1 text-[11px] text-ink-subtle leading-relaxed">
           Your agent calls this number once to arrange the appraisal — nothing else.
