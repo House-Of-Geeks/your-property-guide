@@ -156,10 +156,25 @@ describe("email branding", () => {
     expect(html).not.toContain("#1a3a5c");
   });
 
-  it("COLD emails skip the appraisal panel and P.S.", () => {
+  it("COLD sellers still get the appraisal panel, but not the P.S.", () => {
     const html = buildConfirmationHtml(guideLead({ sellingTimeframe: "researching" }));
-    expect(html).not.toContain("Put a number on it");
+    expect(html).toContain("Put a number on it");
     expect(html).not.toContain("fast-track");
+  });
+
+  it("listed sellers get no agent ask at all", () => {
+    const html = buildConfirmationHtml(guideLead({ agentStatus: "already-listed" }));
+    expect(html).not.toContain("Put a number on it");
+    expect(html).not.toContain("buyer's agent");
+  });
+
+  it("every buyer gets the buyer's agent panel", () => {
+    for (const buyerPersona of ["first-home", "investing"]) {
+      const html = buildConfirmationHtml(guideLead({ guideType: "buying", buyerPersona, sellingTimeframe: undefined, agentStatus: undefined }));
+      expect(html).toContain("Get matched with a buyer's agent");
+      expect(html).toContain("find-an-expert?intent=buying#match");
+      expect(html).not.toContain("Put a number on it");
+    }
   });
 
   it("non-guide confirmations have no download button or value strip", () => {
