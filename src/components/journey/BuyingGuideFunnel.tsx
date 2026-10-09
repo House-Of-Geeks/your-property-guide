@@ -6,7 +6,6 @@ import { ArrowRight, ArrowLeft, Check } from "lucide-react";
 import { SuburbAutocomplete, slugToSuburbLabel } from "@/components/search/SuburbAutocomplete";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 import { isValidPhone, PHONE_ERROR } from "@/lib/utils/phone";
-import { ENRICH_LEAD_STORAGE_KEY } from "@/components/forms/ThanksPhoneAsk";
 
 // ----- Option sets ---------------------------------------------------------
 // Question order is fixed by conversion research, lowest-friction first,
@@ -153,10 +152,11 @@ export function BuyingGuideFunnel({
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!timeframe || !persona) return;
-    // Phone stays optional (the download is the conversion) but a typed
-    // number must be dialable — otherwise the server rejects it and the
-    // user only sees a generic error.
-    if (phone.trim() && !isValidPhone(phone)) {
+    // Mobile is required (the field's `required` stops an empty submit)
+    // and must be dialable, or the server rejects it and the user only
+    // sees a generic error. Required here only: the API keeps phone
+    // optional, so a tab loaded before this rule can't dead-end.
+    if (!isValidPhone(phone)) {
       setPhoneError(PHONE_ERROR);
       return;
     }
@@ -188,7 +188,6 @@ export function BuyingGuideFunnel({
         const body = await res.json().catch(() => null);
         throw new Error(body?.error ?? "Submit failed");
       }
-      const saved: { id?: string } | null = await res.json().catch(() => null);
       clarityEvent("guide_download_submitted");
       clarityTag("guide_type", "buying");
       clarityTag("guide_timeframe", timeframe);
@@ -196,19 +195,6 @@ export function BuyingGuideFunnel({
       if (suburbSlug) clarityTag("guide_suburb", suburbSlug);
       const qs = new URLSearchParams({ score: displayScore(timeframe, finance) });
       if (suburbSlug) qs.set("suburb", suburbSlug);
-      // No mobile left? Hand the lead id to the thanks page (via
-      // sessionStorage, never the URL — the id is the enrich endpoint's
-      // bearer credential and URLs leak into history/analytics) so its
-      // "add your mobile" follow-up can enrich this lead in place.
-      try {
-        if (!phone.trim() && saved?.id) {
-          sessionStorage.setItem(ENRICH_LEAD_STORAGE_KEY, saved.id);
-        } else {
-          sessionStorage.removeItem(ENRICH_LEAD_STORAGE_KEY);
-        }
-      } catch {
-        // Storage blocked — the thanks page just skips the phone ask.
-      }
       // Success beat: the button confirms before the route changes.
       setSubmitted(true);
       window.setTimeout(() => {
@@ -527,7 +513,8 @@ export function BuyingGuideFunnel({
             <div>
               <input
                 type="tel"
-                placeholder="Mobile (optional)"
+                required
+                placeholder="Mobile"
                 autoComplete="tel"
                 inputMode="tel"
                 value={phone}
@@ -546,8 +533,8 @@ export function BuyingGuideFunnel({
                 <p className="mt-1.5 text-xs text-danger">{phoneError}</p>
               ) : timeframe === "0-3-months" ? (
                 <p className="mt-1.5 text-[11px] text-ink-subtle leading-relaxed">
-                  Add your mobile if you&rsquo;d like a quick call to plan your
-                  next steps — buying help only, never selling agents.
+                  So we can call to help plan your next steps — buying help
+                  only, never selling agents.
                 </p>
               ) : null}
             </div>
