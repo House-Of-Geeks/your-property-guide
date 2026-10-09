@@ -98,11 +98,6 @@ export function GuidePathCard() {
 
       {/* Cover band */}
       <div className="group relative bg-surface-inverse px-7 pt-8 pb-7">
-        <div className="absolute top-6 right-6">
-          <span className="inline-flex items-center rounded-full bg-cta text-white text-[10px] font-sans font-semibold uppercase tracking-wider px-3 py-1">
-            Free PDF
-          </span>
-        </div>
         <div className="flex items-end gap-5">
           {/* Both covers stay mounted (stacked in one grid cell) so the first
               toggle crossfades instead of popping while the second image loads.
@@ -126,9 +121,18 @@ export function GuidePathCard() {
             ))}
           </div>
           <div className="pb-1">
-            <p className="text-[10px] uppercase tracking-[0.26em] text-white/70 font-sans font-medium mb-2">
-              2026 edition
-            </p>
+            {/* Badge sits in the text column's flow, not pinned to the
+                band's corner: pinned, it overlapped "2026 edition" and the
+                title whenever the title wrapped to three lines (cards under
+                about 400px wide: phones and 1024px laptops). */}
+            <div className="mb-2 flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+              <span className="inline-flex items-center rounded-full bg-cta text-white text-[10px] font-sans font-semibold uppercase tracking-wider px-3 py-1">
+                Free PDF
+              </span>
+              <p className="text-[10px] uppercase tracking-[0.26em] text-white/70 font-sans font-medium">
+                2026 edition
+              </p>
+            </div>
             <p className="font-display text-white text-xl sm:text-[22px] leading-[1.18] tracking-tight">
               {p.title}
             </p>
