@@ -36,6 +36,17 @@ interface CalculatorPageLayoutProps {
   // (mortgage, borrowing power, etc.) serve people buying or refinancing,
   // so the seller-framed default would be an intent mismatch for them.
   intent?: "selling" | "buying";
+  /**
+   * True only when every default and figure on the page carries a named
+   * source and an as-at date. Prints the "sourced and dated" line in the
+   * sidebar; without it the sidebar makes no sourcing claim.
+   */
+  sourced?: boolean;
+  /**
+   * The sidebar's "Estimate, not a quote" note. Defaults to a general line;
+   * lending calculators pass the lender-policy wording.
+   */
+  estimateNote?: React.ReactNode;
 }
 
 export function CalculatorPageLayout({
@@ -45,6 +56,8 @@ export function CalculatorPageLayout({
   faqs = [],
   related = [],
   intent = "selling",
+  sourced = false,
+  estimateNote = "These numbers use simplified assumptions. Check the figures that matter with the relevant authority or a licensed professional before you act.",
 }: CalculatorPageLayoutProps) {
   const persona = frontmatter.persona ? PERSONA_BY_ID[frontmatter.persona] : null;
   const pageUrl = `/${frontmatter.slug}`;
@@ -141,7 +154,7 @@ export function CalculatorPageLayout({
                     Estimate, not a quote
                   </p>
                   <p className="font-sans text-sm text-ink-muted leading-relaxed">
-                    These numbers use simplified assumptions. Real lender policies vary widely, especially around income shading, HEM tables, and existing debts.
+                    {estimateNote}
                   </p>
                 </div>
                 <div>
@@ -149,7 +162,10 @@ export function CalculatorPageLayout({
                     Editorial integrity
                   </p>
                   <p className="font-sans text-sm text-ink-muted leading-relaxed">
-                    Every figure on this page is sourced and dated. If anything looks off, tell us and we&rsquo;ll fix it within a week.
+                    {sourced
+                      ? "Every figure on this page carries its source and date. "
+                      : ""}
+                    If anything looks off, tell us and we&rsquo;ll fix it within a week.
                   </p>
                 </div>
               </div>

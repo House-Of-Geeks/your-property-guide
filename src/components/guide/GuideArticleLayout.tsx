@@ -35,6 +35,13 @@ interface GuideArticleLayoutProps {
   related?: readonly RelatedGuide[];
   /** Full-width block between the hero and the article (a calculator on a calculator-first guide). */
   beforeBody?: React.ReactNode;
+  /**
+   * True only when every figure on the page carries a named source and an
+   * as-at date (a <Sources> block on the page lists them). Prints the
+   * "sourced and dated" line in the sidebar; without it the sidebar makes no
+   * sourcing claim (commercial-intent review, 10 Oct 2026, section 0.2).
+   */
+  sourced?: boolean;
   children: React.ReactNode;
 }
 
@@ -45,6 +52,7 @@ export function GuideArticleLayout({
   faqs = [],
   related = [],
   beforeBody,
+  sourced = false,
   children,
 }: GuideArticleLayoutProps) {
   const persona = frontmatter.persona ? PERSONA_BY_ID[frontmatter.persona] : null;
@@ -223,7 +231,10 @@ export function GuideArticleLayout({
                     Editorial integrity
                   </p>
                   <p className="font-sans text-sm text-ink-muted leading-relaxed">
-                    Every figure on this page is sourced and dated. If anything looks off, tell us and we&rsquo;ll fix it within a week.
+                    {sourced
+                      ? "Every figure on this page carries its source and date in the Sources section. "
+                      : ""}
+                    If anything looks off, tell us and we&rsquo;ll fix it within a week.
                   </p>
                   <p className="mt-3">
                     <Link
