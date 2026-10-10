@@ -1,0 +1,11 @@
+signal,ours_pct,top5_pct
+query terms in slug,48,29
+query terms in title,70,35
+query terms in H1,62,29
+year in title,67,15
+table on page,64,24
+tool (3+ inputs),47,31
+FAQPage schema,84,15
+named author,6,33
+median words,1906.5,1221
+median share of query terms in intro,82,

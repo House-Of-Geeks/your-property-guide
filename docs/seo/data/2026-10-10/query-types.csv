@@ -1,0 +1,17 @@
+type,queries,impr,avg_pos,clicks,pct_impr_top10,pct_impr_landing_lacks_signal,pct_impr_landing_is_tool
+location: suburb,549,3944,26.1,0,10,4,69
+agents,389,2976,26.9,0,7,0,78
+location: state/city,112,783,28.6,0,13,11,54
+fees/commission,77,525,35.2,0,4,1,96
+calculator,49,365,57.9,0,5,3,97
+appraisal/valuation,63,312,24.7,0,25,89,54
+rental/landlord,51,283,39.6,0,4,14,62
+generic,40,278,57.1,0,6,0,48
+best/top,28,194,21.9,0,23,34,14
+cheapest/affordable,10,145,16.1,0,0,2,0
+median/house price,14,138,24.2,0,27,14,49
+segment,6,55,18.5,0,20,0,0
+near me,6,26,25.7,0,0,100,77
+review/rating,2,13,32.7,0,0,100,100
+compare/vs,3,11,59.8,0,27,27,0
+brand + product,2,9,50.8,0,0,0,100

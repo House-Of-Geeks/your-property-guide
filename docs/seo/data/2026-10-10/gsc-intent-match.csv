@@ -1,0 +1,764 @@
+query,intent,vertical,impr,clicks,pos,landing,landing_share,expected,status,other_pages
+australia affordable suburbs under 350k,commercial,borrowing,88,0,10.4,/guides/cheapest-suburbs-buy-house-australia-2026,1.0,/guides/cheapest-suburbs-buy-house-australia-2026,match,
+borrowing power calculator,transactional,borrowing,59,0,84.5,/borrowing-power-calculator,1.0,/borrowing-power-calculator,match,
+fees for selling a house,commercial,selling,56,0,10.5,/guides/cost-of-selling-a-house-act,0.29,/guides/cost-of-selling-a-house-australia,split,"/guides/cost-of-selling-a-house-nsw (12, 18) | /guides/cost-of-selling-a-house-qld (10, 16) | /guides/cost-of-selling-a-house-vic (10, 19)"
+williamstown real estate agents,commercial,agents,44,0,31.3,/suburbs/williamstown-vic-3016/agents,0.57,/suburbs/williamstown-vic-3016/agents,split,"/suburbs/williamstown-north-vic-3016/agents (19, 38)"
+clayton real estate agents,commercial,agents,42,0,15.7,/suburbs/clayton-vic-3168/agents,0.81,/suburbs/clayton-vic-3168/agents,match,"/suburbs/clayton-south-vic-3169/agents (8, 18)"
+real estate agents malvern,commercial,agents,39,0,11.3,/suburbs/malvern-vic-3144/agents,0.69,/suburbs/malvern-vic-3144/agents,split,"/suburbs/malvern-east-vic-3145/agents (8, 60) | /suburbs/malvern-vic-3143/agents (4, 62)"
+prahran real estate agents,commercial,agents,36,0,19.3,/suburbs/prahran-vic-3181/agents,0.72,/suburbs/prahran-vic-3181/agents,split,"/suburbs/prahran-vic-3143/agents (10, 9)"
+lenders mortgage insurance calculator,commercial,deposit-lmi,35,0,10.9,/lmi-calculator,1.0,/lmi-calculator,match,
+kyogle real estate agents,commercial,agents,33,0,18.7,/suburbs/kyogle-nsw-2474/agents,1.0,/suburbs/kyogle-nsw-2474/agents,match,
+moorebank,commercial,other,33,0,10.7,/suburbs/moorebank-nsw-2170,1.0,/suburbs/moorebank-nsw-2170,match,
+cost of selling a house in qld,commercial,selling,31,0,21.9,/guides/cost-of-selling-a-house-qld,0.94,/guides/cost-of-selling-a-house-qld,match,"/selling-costs-calculator (2, 96)"
+real estate agents yamba,commercial,agents,31,0,16,/suburbs/yamba-nsw-2464/agents,1.0,/suburbs/yamba-nsw-2464/agents,match,
+australian consumer law misleading conduct property sale water rights wa,commercial,other,30,0,2,/guides/contract-of-sale-wa,1.0,/guides/contract-of-sale-wa,no strong page,
+castle hill real estate agents,commercial,agents,30,0,16.9,/suburbs/castle-hill-nsw-2154/agents,1.0,/suburbs/castle-hill-nsw-2154/agents,match,
+real estate agents williamstown,commercial,agents,30,0,19.8,/suburbs/williamstown-vic-3016/agents,1.0,/suburbs/williamstown-vic-3016/agents,match,
+kiama real estate agents,commercial,agents,29,0,28.8,/suburbs/kiama-nsw-2533/agents,0.83,/suburbs/kiama-nsw-2533/agents,match,"/suburbs/kiama-heights-nsw-2533/agents (5, 61)"
+lane cove real estate agents,commercial,agents,29,0,10.0,/suburbs/lane-cove-north-nsw-2066/agents,0.55,/suburbs/lane-cove-nsw-2066/agents,split,"/suburbs/lane-cove-nsw-2066/agents (11, 10) | /suburbs/lane-cove-west-nsw-2066/agents (2, 13)"
+real estate agents carindale,commercial,agents,29,0,20.9,/suburbs/carindale-qld-4152/agents,1.0,/suburbs/carindale-qld-4152/agents,match,
+real estate agents prahran,commercial,agents,29,0,19.6,/suburbs/prahran-vic-3143/agents,0.59,/suburbs/prahran-vic-3181/agents,split,"/suburbs/prahran-vic-3181/agents (12, 33)"
+goulburn real estate agents,commercial,agents,27,0,22.3,/suburbs/goulburn-nsw-2580/agents,1.0,/suburbs/goulburn-nsw-2580/agents,match,
+grafton real estate agents,commercial,agents,27,0,12.7,/suburbs/grafton-nsw-2460/agents,0.89,/suburbs/grafton-nsw-2460/agents,match,"/suburbs/south-grafton-nsw-2460/agents (3, 13)"
+rentvesting,commercial,renting,27,0,69.8,/guides/rentvesting-australia,1.0,/guides/rentvesting-australia,match,
+mosman real estate agents,commercial,agents,26,0,17.2,/suburbs/mosman-nsw-2088/agents,1.0,/suburbs/mosman-nsw-2088/agents,match,
+property appraisal bandiana,commercial,appraisal,26,0,3.6,/suburbs/bandiana-vic-3694/agents,0.77,/suburbs/bandiana-vic-3694/agents,match,"/suburbs/bandiana-vic-3691/agents (5, 3) | /suburbs/bandiana-vic-3691 (1, 3)"
+real estate agents bermagui,commercial,agents,26,0,16.9,/suburbs/bermagui-nsw-2546/agents,1.0,/suburbs/bermagui-nsw-2546/agents,match,
+warwick real estate agents,commercial,agents,26,0,17.9,/suburbs/warwick-qld-4370/agents,1.0,/suburbs/warwick-qld-4370/agents,match,
+camberwell real estate agents,commercial,agents,25,0,22.6,/suburbs/camberwell-vic-3124/agents,1.0,/suburbs/camberwell-vic-3124/agents,match,
+real estate agents goulburn,commercial,agents,25,0,15.2,/suburbs/goulburn-nsw-2580/agents,1.0,/suburbs/goulburn-nsw-2580/agents,match,
+34-36 southampton avenue buttaba nsw 2283,commercial,other,24,0,21.3,/suburbs/buttaba-nsw-2283/agents,1.0,/suburbs/buttaba-nsw-2283/agents,match,
+bermagui real estate agents,commercial,agents,24,0,12.8,/suburbs/bermagui-nsw-2546/agents,1.0,/suburbs/bermagui-nsw-2546/agents,match,
+borrowing capacity calculator,transactional,borrowing,24,0,96.9,/borrowing-power-calculator,1.0,/borrowing-power-calculator,match,
+real estate agents kensington,commercial,agents,24,0,18.6,/suburbs/kensington-vic-3031/agents,1.0,/suburbs/kensington-vic-3031/agents,match,
+real estate leads,commercial,suburb-data,24,0,51.4,/real-estate-leads,0.88,/real-estate-leads,match,"/for-agents (2, 93) | /real-estate-leads/buyer-leads (1, 33)"
+best suburbs in melbourne for families,commercial,best-suburbs,23,0,14.5,/best-suburbs/for-families/melbourne,1.0,/best-suburbs/for-families/vic,wrong page,
+devonport real estate agents,commercial,agents,23,0,41.5,/suburbs/east-devonport-tas-7310/agents,0.57,/suburbs/devonport-tas-7310/agents,split,"/suburbs/devonport-tas-7310/agents (10, 55)"
+real estate agents echuca,commercial,agents,23,0,18.1,/suburbs/echuca-vic-3564/agents,1.0,/suburbs/echuca-vic-3564/agents,match,
+real estate selling fees,commercial,commission,23,0,18.2,/guides/real-estate-commission-vic,0.61,/guides/real-estate-agent-fees-australia,split,"/guides/real-estate-commission-nsw (9, 37)"
+median house price dandenong,commercial,suburb-data,22,0,9.9,/suburbs/dandenong-vic-3175/rental-market,1.0,/suburbs/dandenong-vic-3175,wrong page,
+northcote real estate agents,commercial,agents,22,0,20.1,/suburbs/northcote-vic-3070/agents,1.0,/suburbs/northcote-vic-3070/agents,match,
+real estate agents emerald,commercial,agents,22,0,17.4,/suburbs/emerald-vic-3782/agents,1.0,/suburbs/emerald-vic-3782/agents,match,
+real estate agents kiama,commercial,agents,22,0,24.9,/suburbs/kiama-nsw-2533/agents,0.86,/suburbs/kiama-nsw-2533/agents,match,"/suburbs/kiama-heights-nsw-2533/agents (3, 42)"
+real estate agents moree,commercial,agents,22,0,16.4,/suburbs/moree-nsw-2400/agents,1.0,/suburbs/moree-nsw-2400/agents,match,
+real estate agents narooma,commercial,agents,22,0,16.8,/suburbs/narooma-nsw-2546/agents,1.0,/suburbs/narooma-nsw-2546/agents,match,
+yamba real estate agents,commercial,agents,21,0,21.4,/suburbs/yamba-nsw-2464/agents,1.0,/suburbs/yamba-nsw-2464/agents,match,
+best suburbs in moreton bay region,commercial,best-suburbs,20,0,31.1,/guides/top-5-suburbs-families-moreton-bay,1.0,/regions,wrong page,
+elwood real estate agents,commercial,agents,20,0,35.5,/suburbs/elwood-vic-3184/agents,1.0,/suburbs/elwood-vic-3184/agents,match,
+real estate agents port melbourne,commercial,agents,20,0,27.2,/suburbs/port-melbourne-vic-3207/agents,1.0,/suburbs/port-melbourne-vic-3207/agents,match,
+real estate agents eagle vale,commercial,agents,19,0,7.9,/suburbs/eagle-vale-nsw-2558/agents,1.0,/suburbs/eagle-vale-nsw-2558/agents,match,
+narooma real estate agents,commercial,agents,18,0,23.7,/suburbs/narooma-nsw-2546/agents,1.0,/suburbs/narooma-nsw-2546/agents,match,
+point cook real estate agents,commercial,agents,18,0,13.8,/suburbs/point-cook-vic-3030/agents,1.0,/suburbs/point-cook-vic-3030/agents,match,
+real estate agent fees nsw,commercial,commission,18,0,21.6,/guides/real-estate-commission-nsw,1.0,/guides/real-estate-commission-nsw,match,
+real estate agents camberwell,commercial,agents,18,0,33.3,/suburbs/camberwell-vic-3124/agents,1.0,/suburbs/camberwell-vic-3124/agents,match,
+real estate agents north melbourne,commercial,agents,18,0,30.6,/suburbs/north-melbourne-vic-3051/agents,1.0,/suburbs/north-melbourne-vic-3051/agents,match,
+bribie island real estate agents,commercial,agents,17,0,51.5,/suburbs/bribie-island-qld-4507/agents,1.0,/suburbs/bribie-island-qld-4507/agents,match,
+buying house australia,transactional,buying,17,0,69.1,/guides/buying-property-australia,0.53,/buying-guide,split,"/buying-guide (8, 82)"
+echuca real estate agents,commercial,agents,17,0,11.9,/suburbs/echuca-vic-3564/agents,1.0,/suburbs/echuca-vic-3564/agents,match,
+general renovation costs,commercial,renovation,17,0,73.3,/renovating,1.0,/guides/renovation-cost-australia-2026,wrong page,
+home price guide,commercial,appraisal,17,0,17.8,/,1.0,/price-guide,wrong page,
+realtor real estate agent bandiana,commercial,agents,17,0,11.7,/suburbs/bandiana-vic-3694/agents,0.65,/suburbs/bandiana-vic-3694/agents,split,"/suburbs/bandiana-vic-3691/agents (6, 19)"
+surry hills real estate agents,commercial,agents,17,0,4.1,/suburbs/surry-hills-nsw-2010/agents,1.0,/suburbs/surry-hills-nsw-2010/agents,match,
+torquay real estate agents,commercial,agents,17,0,24.7,/suburbs/torquay-vic-3228/agents,1.0,/suburbs/torquay-vic-3228/agents,match,
+mount waverley median house price,commercial,suburb-data,16,0,24.5,/suburbs/glen-waverley-vic-3150/vs/mount-waverley-vic-3149,1.0,/suburbs/mount-waverley-vic-3149,wrong page,
+real estate agents leumeah,commercial,agents,16,0,20.9,/suburbs/leumeah-nsw-2560/agents,1.0,/suburbs/leumeah-nsw-2560/agents,match,
+stamp duty on inherited property nsw,commercial,stamp-duty,16,0,9.9,/guides/selling-a-deceased-estate-property,1.0,/guides/stamp-duty-nsw,wrong page,
+best suburbs in darwin,commercial,best-suburbs,15,0,8.2,/best-suburbs/most-walkable/darwin,0.6,/best-suburbs/for-families/nt,split,"/best-suburbs/for-families/darwin (5, 10) | /best-suburbs/most-affordable/darwin (1, 27)"
+hamilton real estate agents,commercial,agents,15,0,39.9,/suburbs/hamilton-vic-3300/agents,1.0,/suburbs/hamilton-vic-3300/agents,match,
+hurstville median house price,commercial,suburb-data,15,0,24.3,/suburbs/hurstville-nsw-2220/vs/south-hurstville-nsw-2221,0.87,/suburbs/hurstville-nsw-2220,wrong page,"/suburbs/hurstville-grove-nsw-2220/rental-market (1, 61) | /suburbs/hurstville-nsw-2220/vs/hurstville-grove-nsw-2220 (1, 15)"
+real estate agent fees,commercial,commission,15,0,29.6,/guides/real-estate-commission-vic,0.53,/guides/real-estate-agent-fees-australia,split,"/guides/real-estate-commission-nsw (7, 40)"
+real estate fees selling house calculator,commercial,commission,15,0,37.6,/real-estate-commission-calculator,0.4,/selling-costs-calculator,split,"/selling-costs-calculator (6, 33) | /guides/cost-of-selling-a-house-vic (2, 10) | /guides/cost-of-selling-a-house-qld (1, 10)"
+south yarra real estate agents,commercial,agents,15,0,28.5,/suburbs/south-yarra-vic-3141/agents,1.0,/suburbs/south-yarra-vic-3141/agents,match,
+blackburn real estate agents,commercial,agents,14,0,23.9,/suburbs/blackburn-vic-3130/agents,1.0,/suburbs/blackburn-vic-3130/agents,match,
+cost of selling a house in nsw,commercial,selling,14,0,11.8,/guides/cost-of-selling-a-house-nsw,0.79,/guides/cost-of-selling-a-house-nsw,split,"/selling-costs-calculator (3, 21)"
+cost to sell house,commercial,selling,14,0,31.3,/selling-costs-calculator,0.64,/guides/sell-your-house-privately-australia,split,"/guides/cost-of-selling-a-house-nsw (3, 74) | /guides/cost-of-selling-a-house-vic (1, 25) | /guides/cost-of-selling-a-house-wa (1, 32)"
+dandenong median house price,commercial,suburb-data,14,0,15.5,/suburbs/dandenong-vic-3175/rental-market,1.0,/suburbs/dandenong-vic-3175/rental-market,match,
+glenelg real estate agents,commercial,agents,14,0,29.2,/suburbs/glenelg-north-sa-5045/agents,0.93,/suburbs/glenelg-north-sa-5045/agents,match,"/suburbs/glenelg-east-sa-5045/agents (1, 96)"
+median house price frankston,commercial,suburb-data,14,0,13.4,/suburbs/frankston-vic-3199/vs/frankston-north-vic-3200,0.93,/property-market/sydney,wrong page,"/suburbs/frankston-vic-3199/vs/frankston-east-vic-3199 (1, 70)"
+property valuation north richmond,commercial,appraisal,14,0,24.9,/suburbs/north-richmond-nsw-2754/agents,1.0,/property-valuation,wrong page,
+real estate agents bathurst,commercial,agents,14,0,49.8,/suburbs/bathurst-nsw-2795/agents,0.93,/suburbs/bathurst-nsw-2795/agents,match,"/suburbs/south-bathurst-nsw-2795/agents (1, 69)"
+real estate agents castle hill,commercial,agents,14,0,34.7,/suburbs/castle-hill-nsw-2154/agents,1.0,/suburbs/castle-hill-nsw-2154/agents,match,
+real estate agents glen alpine,commercial,agents,14,0,11.9,/suburbs/glen-alpine-nsw-2560/agents,1.0,/suburbs/glen-alpine-nsw-2560/agents,match,
+real estate agents mansfield,commercial,agents,14,0,18.9,/suburbs/mansfield-vic-3722/agents,1.0,/suburbs/mansfield-vic-3722/agents,match,
+real estate fees for selling a house,commercial,commission,14,0,25,/guides/real-estate-commission-nsw,0.5,/selling,split,"/guides/real-estate-commission-vic (3, 24) | /selling-costs-calculator (3, 92) | /guides/cost-of-selling-a-house-nsw (1, 64)"
+rent reviews bankstown,commercial,property-management,14,0,37.4,/suburbs/bankstown-nsw-2200/rental-market,0.64,/suburbs/bankstown-nsw-2200/rental-market,split,"/suburbs/bankstown-north-nsw-2200/rental-market (5, 37)"
+rental appraisal port hedland,commercial,property-management,14,0,19.3,/suburbs/port-hedland-wa-6721/rental-market,0.57,/suburbs/port-hedland-wa-6721/rental-market,split,"/suburbs/south-hedland-wa-6722/rental-market (5, 15) | /suburbs/port-hedland-wa-6721/agents (1, 27)"
+scarborough real estate agents,commercial,agents,14,0,32.4,/suburbs/scarborough-wa-6019/agents,0.71,/suburbs/scarborough-wa-6019/agents,split,"/suburbs/scarborough-nsw-2515/agents (4, 9)"
+105 lilli pilli point road lilli pilli nsw 2229,transactional,other,13,0,27.1,/suburbs/lilli-pilli-nsw-2536/agents,1.0,/suburbs/lilli-pilli-nsw-2536/agents,match,
+batemans bay real estate agents,commercial,agents,13,0,37.8,/suburbs/north-batemans-bay-nsw-2536/agents,1.0,/suburbs/byron-bay-nsw-2481/agents,wrong page,
+buying a house australia,transactional,buying,13,0,78.1,/guides/buying-property-australia,0.85,/guides/buying-property-australia,match,"/buying-guide (2, 94)"
+cost of selling a house in wa,commercial,selling,13,0,16.8,/guides/cost-of-selling-a-house-wa,1.0,/guides/cost-of-selling-a-house-wa,match,
+house selling costs,commercial,selling,13,0,25.2,/selling-costs-calculator,0.69,/guides/cost-of-selling-a-house-wa,wrong page,"/guides/cost-of-selling-a-house-nsw (2, 24) | /guides/cost-of-selling-a-house-qld (2, 30)"
+how much do real estate agents charge to sell a house,commercial,commission,13,0,27,/guides/real-estate-commission-vic,0.54,/guides/how-much-is-my-house-worth-australia,split,"/guides/real-estate-commission-nsw (6, 76)"
+ingleburn real estate agents,commercial,agents,13,0,21.3,/suburbs/ingleburn-nsw-2565/agents,1.0,/suburbs/ingleburn-nsw-2565/agents,match,
+karratha real estate agents,commercial,agents,13,0,25.5,/suburbs/karratha-wa-6714/agents,1.0,/suburbs/karratha-wa-6714/agents,match,
+real estate agents buxton,commercial,agents,13,0,26.8,/suburbs/buxton-nsw-2571/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents in narooma,commercial,agents,13,0,32.2,/suburbs/narooma-nsw-2546/agents,1.0,/suburbs/narooma-nsw-2546/agents,match,
+real estate agents in newton,commercial,agents,13,0,29.5,/suburbs/newton-sa-5074/agents,1.0,/suburbs/newton-sa-5074/agents,match,
+real estate agents kew,commercial,agents,13,0,14.7,/suburbs/kew-east-vic-3102/agents,1.0,/suburbs/kew-vic-3101/agents,wrong page,
+real estate selling costs calculator,commercial,selling,13,0,61.2,/selling-costs-calculator,0.62,/selling-costs-calculator,match,"/guides/cost-of-selling-a-house-tas (2, 26) | /guides/cost-of-selling-a-house-vic (2, 16) | /guides/cost-of-selling-a-house-qld (1, 21)"
+selling house costs,commercial,selling,13,0,59.5,/guides/cost-of-selling-a-house-nsw,0.46,/guides/cost-of-selling-a-house-wa,split,"/guides/cost-of-selling-a-house-qld (5, 69) | /guides/cost-of-selling-a-house-act (1, 27) | /selling-costs-calculator (1, 31)"
+best agent to sell in brighton sa,commercial,agents,12,0,18.3,/suburbs/brighton-sa-5048/agents,0.5,/suburbs/brighton-sa-5048/agents,split,"/suburbs/south-brighton-sa-5048/agents (6, 44)"
+canberra suburbs median property prices latest,commercial,suburb-data,12,0,57.7,/market-reports/act,0.5,/property-market/canberra,split,"/property-market/canberra (6, 54)"
+fees when selling a house,commercial,selling,12,0,32.9,/guides/cost-of-selling-a-house-nsw,0.33,/selling,split,"/selling-costs-calculator (4, 75) | /guides/real-estate-commission-vic (2, 10) | /guides/cost-of-selling-a-house-act (1, 19)"
+flat fee commissions,commercial,commission,12,0,68.4,/guides/fixed-fee-vs-commission-real-estate-agents,0.83,/guides/real-estate-commission-wa,wrong page,"/guides/real-estate-commission-nsw (2, 64)"
+horsham real estate agents,commercial,agents,12,0,41.6,/suburbs/horsham-vic-3401/agents,0.58,/suburbs/horsham-vic-3401/agents,split,"/suburbs/horsham-vic-3400/agents (5, 40)"
+how much does a section 32 cost in victoria,commercial,conveyancing-inspections,12,0,25.8,/guides/cost-of-selling-a-house-vic,0.67,/guides/section-32-vendor-statement-victoria,split,"/guides/section-32-vendor-statement-victoria (4, 62)"
+north melbourne real estate agents,commercial,agents,12,0,33,/suburbs/north-melbourne-vic-3051/agents,1.0,/suburbs/north-melbourne-vic-3051/agents,match,
+property management bermagui,commercial,property-management,12,0,44.8,/suburbs/bermagui-nsw-2546/agents,1.0,/guides/property-management-fees-australia,wrong page,
+real estate agencies ingleburn,commercial,agents,12,0,32.4,/suburbs/ingleburn-nsw-2565/agents,1.0,/suburbs/ingleburn-nsw-2565/agents,match,
+real estate agent services sydenham,commercial,agents,12,0,20.3,/suburbs/sydenham-vic-3037/agents,0.58,/suburbs/sydenham-vic-3037/agents,split,"/suburbs/sydenham-nsw-2044/agents (5, 61)"
+real estate agents in ballina,commercial,agents,12,0,41.1,/suburbs/ballina-nsw-2478/agents,1.0,/suburbs/ballina-nsw-2478/agents,match,
+real estate agents ingleburn,commercial,agents,12,0,31.7,/suburbs/ingleburn-nsw-2565/agents,1.0,/suburbs/ingleburn-nsw-2565/agents,match,
+rentvesting australia,commercial,renting,12,0,74.5,/guides/rentvesting-australia,1.0,/guides/rentvesting-australia,match,
+what is the average real estate agent commission in nsw,commercial,commission,12,0,29.3,/guides/real-estate-commission-nsw,0.5,/guides/real-estate-agent-fees-australia,split,"/real-estate-commission-calculator (6, 77)"
+yarraville real estate agents,commercial,agents,12,0,22.7,/suburbs/yarraville-vic-3013/agents,1.0,/suburbs/yarraville-vic-3013/agents,match,
+ballina real estate agents,commercial,agents,11,0,37.9,/suburbs/ballina-nsw-2478/agents,1.0,/suburbs/ballina-nsw-2478/agents,match,
+best family suburbs melbourne,commercial,suburb-data,11,0,9.3,/best-suburbs/for-families/melbourne,1.0,/postcodes/3978,no strong page,
+best property value estimator australia,commercial,appraisal,11,0,4.2,/property-valuation,1.0,/property-valuation,match,
+best suburbs in brisbane for families,commercial,best-suburbs,11,0,13.6,/best-suburbs/for-families/brisbane,1.0,/guides/best-brisbane-suburbs-for-families-2026,wrong page,
+cheltenham real estate agents,commercial,agents,11,0,40.8,/suburbs/cheltenham-east-vic-3192/agents,0.36,/suburbs/cheltenham-vic-3192/agents,split,"/suburbs/cheltenham-vic-3192/agents (4, 41) | /suburbs/cheltenham-north-vic-3192/agents (3, 54)"
+leads for real estate,commercial,suburb-data,11,0,50.8,/real-estate-leads,1.0,/real-estate-leads,match,
+moree real estate agents,commercial,agents,11,0,45.8,/suburbs/moree-nsw-2400/agents,1.0,/suburbs/moree-nsw-2400/agents,match,
+port melbourne real estate agents,commercial,agents,11,0,45.9,/suburbs/port-melbourne-vic-3207/agents,1.0,/suburbs/port-melbourne-vic-3207/agents,match,
+property appraisal cremorne,commercial,appraisal,11,0,14.8,/suburbs/cremorne-nsw-2090/agents,0.36,/appraisal,split,"/suburbs/cremorne-point-nsw-2090/agents (4, 22) | /suburbs/cremorne-vic-3121/agents (3, 88)"
+real estate agent north richmond,transactional,agents,11,0,24.5,/suburbs/north-richmond-nsw-2754/agents,1.0,/suburbs/north-richmond-nsw-2754/agents,match,
+real estate agents fees,commercial,commission,11,0,36.8,/guides/real-estate-commission-nsw,0.73,/guides/fixed-fee-vs-commission-real-estate-agents,split,"/guides/real-estate-commission-vic (3, 82)"
+real estate agents gregory hills,commercial,agents,11,0,32.1,/suburbs/gregory-hills-nsw-2557/agents,1.0,/postcodes/2557,wrong page,
+real estate agents harrisdale,commercial,agents,11,0,21.1,/suburbs/harrisdale-wa-6112/agents,1.0,/suburbs/harrisdale-wa-6112/agents,match,
+real estate agents horsham,commercial,agents,11,0,32.7,/suburbs/horsham-vic-3401/agents,0.64,/suburbs/horsham-vic-3401/agents,split,"/suburbs/horsham-vic-3400/agents (4, 31)"
+real estate agents in grafton,commercial,agents,11,0,33.7,/suburbs/grafton-nsw-2460/agents,1.0,/suburbs/grafton-nsw-2460/agents,match,
+real estate agents pymble,commercial,agents,11,0,12.9,/suburbs/pymble-nsw-2073/agents,0.64,/suburbs/pymble-nsw-2073/agents,split,"/suburbs/west-pymble-nsw-2073/agents (4, 16)"
+real estate agents warwick,commercial,agents,11,0,41.2,/suburbs/warwick-qld-4370/agents,1.0,/suburbs/warwick-qld-4370/agents,match,
+real estate brokerage fee,commercial,suburb-data,11,0,33.2,/guides/real-estate-commission-vic,0.55,/guides/real-estate-commission-wa,split,"/guides/real-estate-commission-nsw (5, 69)"
+real estate fees nsw,commercial,commission,11,0,14.6,/guides/real-estate-commission-nsw,1.0,/guides/real-estate-commission-nsw,match,
+sell your house calculator,transactional,selling,11,0,26,/selling-costs-calculator,1.0,/selling-costs-calculator,match,
+south connect jandakot jandakot wa 6164,transactional,other,11,0,18.3,/suburbs/jandakot-wa-6164,1.0,/suburbs/south-lake-wa-6164/rental-market,wrong page,
+your price real estate gawler,commercial,suburb-data,11,0,30,/suburbs/gawler-south-sa-5118/agents,0.45,/suburbs/gawler-sa-5118,split,"/suburbs/gawler-east-sa-5118/agents (3, 46) | /suburbs/gawler-west-sa-5118/agents (3, 29)"
+annandale real estate agents,commercial,agents,10,0,31.8,/suburbs/annandale-nsw-2038/agents,1.0,/suburbs/annandale-nsw-2038/agents,match,
+bankstown house prices,commercial,suburb-data,10,0,41.3,/suburbs/bankstown-nsw-2200/rental-market,1.0,/suburbs/bankstown-nsw-2200/rental-market,match,
+bankstown property prices,commercial,suburb-data,10,0,45.8,/suburbs/bankstown-nsw-2200/rental-market,1.0,/suburbs/bankstown-nsw-2200/rental-market,match,
+buyers agent killarney heights,transactional,buyers-agent,10,0,45.5,/suburbs/killarney-vale-nsw-2261/agents,0.6,/postcodes/2087,split,"/suburbs/killarney-heights-nsw-2087/agents (3, 11) | /suburbs/dover-heights-nsw-2030/agents (1, 36)"
+byron bay real estate agents,commercial,agents,10,0,51.8,/suburbs/byron-bay-nsw-2481/agents,1.0,/suburbs/byron-bay-nsw-2481/agents,match,
+canberra property market value report,commercial,market,10,0,57.2,/market-reports/act,0.5,/property-market/canberra,split,"/property-market/canberra (5, 66)"
+cheapest suburbs to buy in melbourne,commercial,best-suburbs,10,0,12.3,/best-suburbs/most-affordable/melbourne,1.0,/guides/cheapest-suburbs-buy-house-australia-2026,wrong page,
+conveyancing fees wa,commercial,conveyancing-inspections,10,0,66.6,/guides/cost-of-selling-a-house-wa,1.0,/guides/conveyancing-guide,wrong page,
+cost of selling a house in nsw calculator,commercial,selling,10,0,30.3,/guides/cost-of-selling-a-house-nsw,0.6,/guides/cost-of-selling-a-house-nsw,split,"/selling-costs-calculator (3, 97) | /guides/cost-of-selling-a-house-act (1, 4)"
+eltham property area guide,commercial,other,10,0,10.6,/suburbs/eltham-vic-3095/agents,0.5,/suburbs/eltham-vic-3095/agents,split,"/suburbs/eltham-north-vic-3095/agents (4, 6) | /suburbs/eltham-nsw-2480/rental-market (1, 20)"
+fitzroy real estate agents,commercial,agents,10,0,20.3,/suburbs/fitzroy-vic-3065/agents,0.6,/suburbs/fitzroy-vic-3065/agents,split,"/suburbs/fitzroy-north-vic-3068/agents (4, 14)"
+house selling cost calculator,commercial,selling,10,0,18.3,/guides/cost-of-selling-a-house-vic,0.5,/selling-costs-calculator,split,"/guides/cost-of-selling-a-house-tas (3, 11) | /selling-costs-calculator (2, 48)"
+kew real estate agents,commercial,agents,10,0,15.7,/suburbs/kew-east-vic-3102/agents,1.0,/suburbs/kew-vic-3101/agents,wrong page,
+property selling costs,commercial,selling,10,0,56.2,/selling-costs-calculator,0.6,/guides/cost-of-selling-a-house-wa,split,"/guides/cost-of-selling-a-house-act (4, 52)"
+propertyguide,commercial,other,10,0,3.2,/,0.9,/suburbs/wollongong-nsw-2500,no strong page,"/suburbs/gold-coast-mc-qld-4217/rental-market (1, 5)"
+real estate agents ballina,commercial,agents,10,0,39,/suburbs/ballina-nsw-2478/agents,1.0,/suburbs/ballina-nsw-2478/agents,match,
+real estate agents bribie island,commercial,agents,10,0,41.8,/suburbs/bribie-island-qld-4507/agents,1.0,/suburbs/bribie-island-qld-4507/agents,match,
+real estate agents granville,commercial,agents,10,0,13.4,/suburbs/granville-nsw-2142/agents,0.5,/suburbs/south-melbourne-vic-3205/agents,split,"/suburbs/south-granville-nsw-2142/agents (3, 40) | /suburbs/granville-qld-4650/agents (2, 28)"
+real estate agents in bathurst,commercial,agents,10,0,50.1,/suburbs/bathurst-nsw-2795/agents,1.0,/suburbs/bathurst-nsw-2795/agents,match,
+real estate agents in dubbo,commercial,agents,10,0,47.5,/suburbs/dubbo-nsw-2830/agents,1.0,/suburbs/dubbo-nsw-2830/agents,match,
+real estate agents in goulburn,commercial,agents,10,0,44.7,/suburbs/goulburn-nsw-2580/agents,1.0,/suburbs/goulburn-nsw-2580/agents,match,
+real estate agents in kiama,commercial,agents,10,0,34.8,/suburbs/kiama-nsw-2533/agents,1.0,/suburbs/kiama-nsw-2533/agents,match,
+real estate agents in yamba,commercial,agents,10,0,30.8,/suburbs/yamba-nsw-2464/agents,1.0,/suburbs/yamba-nsw-2464/agents,match,
+real estate agents mosman,commercial,agents,10,0,42,/suburbs/mosman-nsw-2088/agents,1.0,/suburbs/mosman-nsw-2088/agents,match,
+real estate agents rostrevor,commercial,agents,10,0,14.2,/suburbs/rostrevor-sa-5073/agents,1.0,/suburbs/rostrevor-sa-5073/agents,match,
+real estate agents spearwood,commercial,agents,10,0,15.5,/suburbs/spearwood-wa-6163/agents,1.0,/suburbs/spearwood-wa-6163/agents,match,
+realtor real estate agent springdale heights,commercial,agents,10,0,8.6,/suburbs/springdale-heights-nsw-2641/agents,1.0,/suburbs/springdale-heights-nsw-2641/agents,match,
+bankstown property appraisal,commercial,appraisal,9,0,70.6,/suburbs/bankstown-nsw-2200/rental-market,1.0,/suburbs/bankstown-nsw-2200/agents,wrong page,
+best agent to sell house goodna,commercial,agents,9,0,18.7,/suburbs/goodna-qld-4300/agents,1.0,/guides/how-to-sell-a-house-australia,wrong page,
+best real estate agent goodna,commercial,agents,9,0,34,/suburbs/goodna-qld-4300/agents,1.0,/suburbs/goodna-qld-4300/agents,match,
+buyers agent cheltenham,transactional,buyers-agent,9,0,29.6,/suburbs/cheltenham-vic-3192/agents,0.78,/suburbs/cheltenham-vic-3192/agents,split,"/suburbs/cheltenham-north-vic-3192/agents (2, 11)"
+buying real estate australia,transactional,suburb-data,9,0,57.4,/guides/buying-property-australia,0.56,/real-estate-leads/buyer-leads,split,"/buying-guide (4, 79)"
+cheapest houses in melbourne,commercial,suburb-data,9,0,32.8,/best-suburbs/most-affordable/melbourne,1.0,/property-market/melbourne,no strong page,
+cheapest melbourne suburbs,commercial,suburb-data,9,0,39,/best-suburbs/most-affordable/melbourne,1.0,/postcodes/3978,no strong page,
+cronulla real estate agents,commercial,agents,9,0,47.2,/suburbs/cronulla-nsw-2230/agents,1.0,/suburbs/cronulla-nsw-2230/agents,match,
+emerald real estate agents,commercial,agents,9,0,10.2,/suburbs/emerald-vic-3782/agents,1.0,/suburbs/emerald-vic-3782/agents,match,
+frankston real estate agents,commercial,agents,9,0,35.5,/suburbs/frankston-vic-3199/agents,0.89,/suburbs/frankston-vic-3199/agents,match,"/suburbs/frankston-south-vic-3199/agents (1, 51)"
+north lakes real estate agents,commercial,agents,9,0,35.3,/suburbs/north-lakes-qld-4509/agents,1.0,/suburbs/north-lakes-qld-4509/agents,match,
+real estate agents bardon,commercial,agents,9,0,8.6,/suburbs/bardon-qld-4065/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents east fremantle,commercial,agents,9,0,33.7,/suburbs/east-fremantle-wa-6158/agents,1.0,/suburbs/east-fremantle-wa-6158/agents,match,
+real estate agents grafton,commercial,agents,9,0,32.3,/suburbs/grafton-nsw-2460/agents,1.0,/suburbs/grafton-nsw-2460/agents,match,
+real estate agents in echuca,commercial,agents,9,0,34,/suburbs/echuca-vic-3564/agents,1.0,/suburbs/echuca-vic-3564/agents,match,
+real estate agents in horsham,commercial,agents,9,0,32.9,/suburbs/horsham-vic-3401/agents,0.78,/suburbs/horsham-vic-3401/agents,split,"/suburbs/horsham-vic-3400/agents (2, 34)"
+real estate agents kalkallo,commercial,agents,9,0,25.4,/suburbs/kalkallo-vic-3064/agents,1.0,/suburbs/kalkallo-vic-3064/agents,match,
+real estate agents lindfield,commercial,agents,9,0,9,/suburbs/east-lindfield-nsw-2070/agents,0.78,/suburbs/south-melbourne-vic-3205/agents,split,"/suburbs/lindfield-nsw-2070/agents (2, 4)"
+real estate agents st andrews,commercial,agents,9,0,20.1,/suburbs/st-andrews-nsw-2566/agents,1.0,/suburbs/st-kilda-west-vic-3182/agents,wrong page,
+real estate agents unley,commercial,agents,9,0,26.4,/suburbs/unley-sa-5061/agents,1.0,/suburbs/unley-sa-5061/agents,match,
+real estate charges to sell a house,transactional,selling,9,0,30,/guides/real-estate-commission-nsw,0.56,/guides/how-to-sell-a-house-australia,split,"/guides/cost-of-selling-a-house-nsw (3, 82) | /guides/cost-of-selling-a-house-australia (1, 96)"
+real estate fees for seller,commercial,commission,9,0,26.6,/guides/real-estate-commission-vic,0.56,/guides/real-estate-commission-wa,split,"/guides/real-estate-commission-nsw (4, 66)"
+real estate fees for selling,commercial,commission,9,0,18.6,/guides/real-estate-commission-nsw,0.89,/selling,wrong page,"/selling-costs-calculator (1, 92)"
+rental appraisal south hedland,transactional,property-management,9,0,15.1,/suburbs/south-hedland-wa-6722/rental-market,0.56,/appraisal,split,"/suburbs/south-hedland-wa-6722/agents (4, 20)"
+"rental yields in mount gambier, sa",commercial,yield,9,0,32.4,/suburbs/mount-gambier-east-sa-5291/rental-market,0.44,/suburbs/mount-gambier-sa-5290/rental-market,split,"/suburbs/mount-gambier-west-sa-5291/rental-market (3, 51) | /suburbs/mount-gambier-dc-sa-5290/rental-market (2, 34)"
+selling fees,commercial,commission,9,0,33.9,/guides/cost-of-selling-a-house-qld,0.89,/selling,wrong page,"/guides/cost-of-selling-a-house-wa (1, 11)"
+stanthorpe real estate agents,commercial,agents,9,0,44.7,/suburbs/stanthorpe-qld-4380/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+wauchope real estate agents,commercial,agents,9,0,47.2,/suburbs/wauchope-nsw-2446/agents,1.0,/postcodes/2446,wrong page,
+bribie real estate agents,commercial,agents,8,0,45.5,/suburbs/bribie-island-qld-4507/agents,1.0,/suburbs/bribie-island-qld-4507/agents,match,
+caroline springs real estate agents,commercial,agents,8,0,43.6,/suburbs/caroline-springs-vic-3023/agents,1.0,/suburbs/caroline-springs-vic-3023/agents,match,
+cost of selling a house calculator,commercial,selling,8,0,86.3,/selling-costs-calculator,0.75,/selling-costs-calculator,match,"/guides/cost-of-selling-a-house-tas (1, 20) | /guides/cost-of-selling-a-house-vic (1, 11)"
+cost of selling a house in tasmania,commercial,selling,8,0,8,/guides/cost-of-selling-a-house-tas,1.0,/guides/cost-of-selling-a-house-tas,match,
+estate agents torquay,commercial,agents,8,0,33.5,/suburbs/torquay-vic-3228/agents,1.0,/suburbs/torquay-vic-3228/agents,match,
+floreat rental investment,commercial,rental-investment,8,0,29.5,/suburbs/floreat-wa-6014/rental-market,1.0,/suburbs/floreat-wa-6014/rental-market,match,
+glen waverley real estate agents,commercial,agents,8,0,28.2,/suburbs/glen-waverley-vic-3150/agents,1.0,/suburbs/glen-waverley-vic-3150/agents,match,
+glenbrook real estate agents,commercial,agents,8,0,24,/suburbs/glenbrook-nsw-2773/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+mortgage brokers glenquarie,commercial,mortgage,8,0,56,/suburbs/bardia-nsw-2565,1.0,/guides/how-to-choose-a-mortgage-broker,wrong page,
+nedlands rental investment,commercial,rental-investment,8,0,29.5,/suburbs/nedlands-wa-6009/rental-market,1.0,/suburbs/nedlands-wa-6909/rental-market,wrong page,
+property management harrisdale,commercial,property-management,8,0,37,/suburbs/harrisdale-wa-6112/agents,1.0,/guides/property-management-fees-australia,wrong page,
+property valuation campsie,commercial,appraisal,8,0,31.4,/suburbs/campsie-nsw-2194/rental-market,1.0,/property-valuation,wrong page,
+pymble real estate agents,commercial,agents,8,0,25.8,/suburbs/pymble-nsw-2073/agents,0.75,/suburbs/pymble-nsw-2073/agents,split,"/suburbs/west-pymble-nsw-2073/agents (2, 48)"
+real estate agencies bermagui,commercial,agents,8,0,18.5,/suburbs/bermagui-nsw-2546/agents,1.0,/suburbs/bermagui-nsw-2546/agents,match,
+real estate agent near me west albury,transactional,agents,8,0,29.9,/suburbs/west-albury-nsw-2640/agents,1.0,/suburbs/west-albury-nsw-2640/agents,match,
+real estate agent services fraser rise,commercial,agents,8,0,31.5,/suburbs/fraser-rise-vic-3336/agents,1.0,/suburbs/fraser-rise-vic-3336/agents,match,
+real estate agent services sunshine north,commercial,agents,8,0,23.4,/suburbs/sunshine-north-vic-3020/agents,1.0,/suburbs/sunshine-north-vic-3020/agents,match,
+real estate agents bateman,commercial,agents,8,0,13,/suburbs/bateman-wa-6150/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents bellingen,commercial,agents,8,0,21.5,/suburbs/bellingen-nsw-2454/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents byron bay,commercial,agents,8,0,48.1,/suburbs/byron-bay-nsw-2481/agents,1.0,/suburbs/byron-bay-nsw-2481/agents,match,
+real estate agents coolbellup,commercial,agents,8,0,11.9,/suburbs/coolbellup-wa-6163/agents,1.0,/suburbs/coolbellup-wa-6163/agents,match,
+real estate agents forster,commercial,agents,8,0,20.4,/suburbs/forster-nsw-2428/agents,1.0,/suburbs/forster-nsw-2428/agents,match,
+real estate agents in byron bay,commercial,agents,8,0,50,/suburbs/byron-bay-nsw-2481/agents,1.0,/suburbs/byron-bay-nsw-2481/agents,match,
+real estate agents in cronulla,commercial,agents,8,0,42.2,/suburbs/cronulla-nsw-2230/agents,1.0,/suburbs/cronulla-nsw-2230/agents,match,
+real estate agents in leeming,commercial,agents,8,0,18.6,/suburbs/leeming-wa-6149/agents,1.0,/suburbs/leeming-wa-6149/agents,match,
+real estate agents melville,commercial,agents,8,0,17,/suburbs/melville-wa-6156/agents,1.0,/suburbs/melville-wa-6156/agents,match,
+real estate agents north coogee,commercial,agents,8,0,16,/suburbs/north-coogee-wa-6163/agents,1.0,/suburbs/north-coogee-wa-6163/agents,match,
+real estate agents scarborough,commercial,agents,8,0,48.6,/suburbs/scarborough-wa-6019/agents,1.0,/suburbs/scarborough-wa-6019/agents,match,
+real estate agents springdale heights,commercial,agents,8,0,15.6,/suburbs/springdale-heights-nsw-2641/agents,1.0,/suburbs/springdale-heights-nsw-2641/agents,match,
+real estate agents the ponds,commercial,agents,8,0,35.3,/suburbs/the-ponds-nsw-2769/agents,0.88,/suburbs/the-ponds-nsw-2769/schools,no strong page,"/suburbs/saumarez-ponds-nsw-2350/agents (1, 84)"
+real estate agents wauchope,commercial,agents,8,0,38.1,/suburbs/wauchope-nsw-2446/agents,1.0,/postcodes/2446,wrong page,
+watsons bay buyers agent,commercial,buyers-agent,8,0,25.1,/suburbs/watsons-bay-nsw-2030/agents,1.0,/postcodes/2295,no strong page,
+what is the average real estate agent commission in victoria,commercial,commission,8,0,24.8,/guides/real-estate-commission-vic,0.75,/guides/real-estate-agent-fees-australia,split,"/real-estate-commission-calculator (2, 89)"
+which perth suburbs have high rental yield,commercial,yield,8,0,45.2,/best-suburbs/best-rental-yield/wa,1.0,/best-suburbs/best-rental-yield,no strong page,
+albany real estate agents,commercial,agents,7,0,43,/suburbs/albany-wa-6330/agents,1.0,/suburbs/albany-wa-6330/agents,match,
+bathurst real estate agents,commercial,agents,7,0,51.1,/suburbs/bathurst-nsw-2795/agents,1.0,/suburbs/bathurst-nsw-2795/agents,match,
+beaumaris real estate agents,commercial,agents,7,0,46.8,/suburbs/beaumaris-vic-3193/agents,0.71,/postcodes/3192,split,"/suburbs/beaumaris-vic-3192/agents (2, 57)"
+best rental yield melbourne,commercial,yield,7,0,10.9,/best-suburbs/best-rental-yield/melbourne,1.0,/best-suburbs/best-rental-yield/vic,wrong page,
+best suburbs hobart,commercial,best-suburbs,7,0,11.7,/best-suburbs/for-families/hobart,1.0,/best-suburbs/for-families/tas,no strong page,
+blaxland real estate agents,commercial,agents,7,0,26.7,/suburbs/blaxland-nsw-2774/agents,1.0,/suburbs/blaxland-nsw-2774/agents,match,
+bribie island real estate agencies,commercial,agents,7,0,51.1,/suburbs/bribie-island-qld-4507/agents,1.0,/suburbs/bribie-island-qld-4507/agents,match,
+brighton sa rental yield,transactional,yield,7,0,24.4,/suburbs/brighton-sa-5048/rental-market,1.0,/suburbs/brighton-sa-5048/rental-market,match,
+burleigh heads real estate agents,commercial,agents,7,0,51.3,/suburbs/burleigh-heads-qld-4220/agents,1.0,/suburbs/noosa-heads-qld-4567/agents,wrong page,
+buyers agency lilyfield,commercial,buyers-agent,7,0,70.4,/suburbs/lilyfield-nsw-2040/agents,1.0,/guides/buyers-agent-cost-australia,no strong page,
+buyers agent caulfield south,transactional,buyers-agent,7,0,26.1,/suburbs/caulfield-south-vic-3162/agents,1.0,/suburbs/caulfield-south-vic-3162/agents,match,
+buyers agent glebe,commercial,buyers-agent,7,0,40.9,/suburbs/glebe-nsw-2037/agents,1.0,/suburbs/glebe-nsw-2037/agents,match,
+buyers agent greenwich,transactional,buyers-agent,7,0,15.1,/suburbs/greenwich-nsw-2065/agents,1.0,/guides/buyers-agent-cost-australia,no strong page,
+calculate rental yield perth,transactional,yield,7,0,72.4,/rental-yield-calculator,1.0,/rental-yield-calculator,match,
+commission on sale of property,commercial,commission,7,0,60,/guides/real-estate-commission-vic,0.43,/buy,split,"/guides/real-estate-commission-nsw (2, 81) | /real-estate-commission-calculator (2, 86)"
+conveyancing costs perth,commercial,conveyancing-inspections,7,0,83,/guides/cost-of-selling-a-house-wa,1.0,/guides/conveyancing-guide,wrong page,
+cost of selling a house in victoria,commercial,selling,7,0,20.6,/guides/cost-of-selling-a-house-vic,0.57,/guides/cost-of-selling-a-house-vic,split,"/guides/real-estate-commission-vic (3, 19)"
+cost of selling a house in victoria calculator,commercial,selling,7,0,45.2,/guides/cost-of-selling-a-house-vic,0.86,/guides/cost-of-selling-a-house-vic,match,"/selling-costs-calculator (1, 101)"
+costs of selling a house stamp duty,commercial,selling,7,0,12.5,/guides/cost-of-selling-a-house-wa,0.57,/guides/stamp-duty-wa,split,"/guides/cost-of-selling-a-house-qld (3, 20)"
+deceased estate property transfer,transactional,selling,7,0,84.1,/guides/selling-a-deceased-estate-property,1.0,/guides/selling-a-deceased-estate-property,match,
+dubbo real estate agents,commercial,agents,7,0,44.7,/suburbs/dubbo-nsw-2830/agents,1.0,/suburbs/dubbo-nsw-2830/agents,match,
+elwood real estate agencies,commercial,agents,7,0,7.1,/suburbs/elwood-vic-3184/agents,1.0,/suburbs/elwood-vic-3184/agents,match,
+free property appraisal wollert,commercial,appraisal,7,0,36.1,/suburbs/wollert-vic-3750/rental-market,1.0,/appraisal,wrong page,
+griffith real estate agents,commercial,agents,7,0,7,/suburbs/griffith-nsw-2680/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+gross rental yield,commercial,yield,7,0,74.7,/rental-yield-calculator,1.0,/rental-yield-calculator,match,
+high rental yields in geraldton,commercial,yield,7,0,24.5,/best-suburbs/best-rental-yield/wa,0.57,/suburbs/geraldton-wa-6530/rental-market,split,"/suburbs/geraldton-wa-6530/rental-market (3, 50)"
+kalgoorlie real estate agents,commercial,agents,7,0,36.6,/suburbs/kalgoorlie-wa-6430/agents,1.0,/suburbs/kalgoorlie-wa-6430/agents,match,
+kensington real estate agents,commercial,agents,7,0,24,/suburbs/kensington-vic-3031/agents,0.71,/suburbs/kensington-vic-3031/agents,match,"/suburbs/kensington-gardens-sa-5068/agents (1, 65) | /suburbs/kensington-park-sa-5068/agents (1, 66)"
+low commission real estate,commercial,commission,7,0,73.7,/guides/real-estate-commission-vic,0.43,/guides/real-estate-commission-wa,split,"/guides/fixed-fee-vs-commission-real-estate-agents (2, 36) | /guides/real-estate-commission-nsw (2, 86)"
+malvern real estate agents,commercial,agents,7,0,25.8,/suburbs/malvern-vic-3144/agents,0.71,/suburbs/malvern-vic-3144/agents,split,"/suburbs/malvern-east-vic-3145/agents (2, 14)"
+mortgage power calculator,commercial,mortgage,7,0,80,/borrowing-power-calculator,1.0,/mortgage-calculator,wrong page,
+property appraisal estimate,commercial,appraisal,7,0,67.4,/property-valuation,1.0,/property-valuation,match,
+queanbeyan house selling agent,transactional,agents,7,0,28,/suburbs/queanbeyan-nsw-2620/agents,0.86,/selling,wrong page,"/suburbs/queanbeyan-east-nsw-2620/agents (1, 33)"
+real estate agents annandale,commercial,agents,7,0,40.6,/suburbs/annandale-nsw-2038/agents,1.0,/suburbs/annandale-nsw-2038/agents,match,
+real estate agents blackburn,commercial,agents,7,0,33.6,/suburbs/blackburn-vic-3130/agents,1.0,/suburbs/blackburn-vic-3130/agents,match,
+real estate agents carina,commercial,agents,7,0,19,/suburbs/carina-qld-4152/agents,0.57,/suburbs/south-melbourne-vic-3205/agents,split,"/suburbs/carina-heights-qld-4152/agents (3, 16)"
+real estate agents cremorne nsw,commercial,agents,7,0,22.6,/suburbs/cremorne-nsw-2090/agents,0.71,/suburbs/cremorne-nsw-2090/agents,split,"/suburbs/cremorne-point-nsw-2090/agents (2, 60)"
+real estate agents fitzroy,commercial,agents,7,0,13.7,/suburbs/fitzroy-north-vic-3068/agents,0.57,/suburbs/fitzroy-vic-3065/agents,split,"/suburbs/fitzroy-vic-3065/agents (3, 23)"
+real estate agents goodwood,commercial,agents,7,0,7.9,/suburbs/goodwood-sa-5034/agents,1.0,/suburbs/goodwood-sa-5034/agents,match,
+real estate agents homebush,commercial,agents,7,0,12.6,/suburbs/homebush-nsw-2140/agents,0.71,/postcodes/2140,split,"/suburbs/homebush-west-nsw-2140/agents (2, 23)"
+real estate agents in coolbellup,commercial,agents,7,0,9.7,/suburbs/coolbellup-wa-6163/agents,1.0,/suburbs/coolbellup-wa-6163/agents,match,
+real estate agents in harrisdale,commercial,agents,7,0,20,/suburbs/harrisdale-wa-6112/agents,1.0,/suburbs/harrisdale-wa-6112/agents,match,
+real estate agents kalgoorlie,commercial,agents,7,0,35.9,/suburbs/kalgoorlie-wa-6430/agents,1.0,/suburbs/kalgoorlie-wa-6430/agents,match,
+real estate agents springwood nsw,commercial,agents,7,0,29.9,/suburbs/springwood-nsw-2777/agents,1.0,/suburbs/springwood-nsw-2777/agents,match,
+real estate agents stanthorpe,commercial,agents,7,0,37,/suburbs/stanthorpe-qld-4380/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents wahroonga,commercial,agents,7,0,64.2,/suburbs/north-wahroonga-nsw-2076/agents,0.57,/suburbs/wahroonga-nsw-2076,split,"/suburbs/wahroonga-nsw-2076/agents (3, 70)"
+rental appraisal dampier,transactional,property-management,7,0,4.6,/suburbs/dampier-wa-6713/rental-market,1.0,/appraisal,wrong page,
+rentvestment,commercial,renting,7,0,60.8,/guides/rentvesting-australia,1.0,/suburbs/wollongong-nsw-2500,no strong page,
+sell my house goodna,transactional,selling,7,0,14.9,/suburbs/goodna-qld-4300/agents,1.0,/guides/how-to-sell-a-house-australia,wrong page,
+selling costs calculator,commercial,selling,7,0,11.7,/selling-costs-calculator,0.57,/selling-costs-calculator,split,"/guides/cost-of-selling-a-house-vic (3, 28)"
+springwood nsw real estate agencies,commercial,agents,7,0,40.3,/suburbs/springwood-nsw-2777/agents,1.0,/suburbs/springwood-nsw-2777/agents,match,
+tom price post code,commercial,suburb-data,7,0,9.9,/postcodes/6751,1.0,/suburbs/wollongong-nsw-2500,no strong page,
+yield calculator,transactional,yield,7,0,64.1,/rental-yield-calculator,1.0,/rental-yield-calculator,match,
+agency greenwith,commercial,agents,6,0,20.3,/suburbs/greenwith-sa-5125/agents,1.0,/suburbs/greenwith-sa-5125/agents,match,
+appraisal leads,commercial,appraisal,6,0,70.8,/real-estate-leads,0.83,/real-estate-leads/appraisal-leads,wrong page,"/for-agents (1, 96)"
+calculate borrowing power,transactional,borrowing,6,0,89.7,/borrowing-power-calculator,1.0,/guides/how-much-can-i-borrow-australia,wrong page,
+cheap suburbs melbourne,commercial,suburb-data,6,0,23.3,/best-suburbs/most-affordable/melbourne,1.0,/postcodes/3978,no strong page,
+commission for selling a house,transactional,commission,6,0,67.3,/guides/real-estate-commission-nsw,0.5,/guides/cost-of-selling-a-house-wa,split,"/guides/real-estate-commission-vic (3, 67)"
+cost of selling a house in queensland calculator,commercial,selling,6,0,28.5,/guides/cost-of-selling-a-house-qld,1.0,/guides/cost-of-selling-a-house-qld,match,
+cost of selling a house victoria,commercial,selling,6,0,25.5,/guides/cost-of-selling-a-house-vic,0.83,/guides/cost-of-selling-a-house-vic,match,"/guides/real-estate-commission-vic (1, 19)"
+finding a real estate agent to buy a house,transactional,agents,6,0,81.3,/find-an-expert,1.0,/guides/real-estate-agent-fees-australia,wrong page,
+forster real estate agents,commercial,agents,6,0,42.3,/suburbs/forster-nsw-2428/agents,1.0,/suburbs/forster-nsw-2428/agents,match,
+government fees when selling a house,commercial,selling,6,0,39.3,/guides/cost-of-selling-a-house-qld,0.83,/selling,wrong page,"/guides/cost-of-selling-a-house-nsw (1, 23)"
+home appraisals cape schanck,commercial,appraisal,6,0,12,/suburbs/cape-schanck-vic-3939/agents,1.0,/selling,wrong page,
+home appraisals deepdene,commercial,appraisal,6,0,8.2,/suburbs/deepdene-vic-3103,0.5,/selling,split,"/suburbs/deepdene-vic-3103/agents (3, 9)"
+home appraisals flinders,commercial,appraisal,6,0,10.2,/suburbs/flinders-park-sa-5025/agents,1.0,/selling,wrong page,
+home property agents neutral bay,commercial,agents,6,0,38.2,/suburbs/neutral-bay-nsw-2089/agents,1.0,/property-market/sydney,wrong page,
+how much does it cost to sell a house in south australia,commercial,selling,6,0,10.5,/guides/cost-of-selling-a-house-sa,1.0,/guides/sell-your-house-privately-australia,wrong page,
+innaloo rental investment,transactional,rental-investment,6,0,29.8,/suburbs/innaloo-wa-6018/rental-market,0.83,/suburbs/innaloo-wa-6018/rental-market,match,"/suburbs/innaloo-wa-6918/rental-market (1, 26)"
+investment property income calculator,commercial,suburb-data,6,0,64.5,/rental-yield-calculator,1.0,/investing,no strong page,
+is morayfield a good suburb,commercial,suburb-data,6,0,19.2,/suburbs/morayfield-qld-4506,1.0,/suburbs/morayfield-qld-4506,match,
+landsdale rental investment,commercial,rental-investment,6,0,23.5,/suburbs/landsdale-wa-6065/rental-market,1.0,/suburbs/landsdale-wa-6065/rental-market,match,
+lindfield real estate agents,commercial,agents,6,0,32.3,/suburbs/east-lindfield-nsw-2070/agents,0.67,/suburbs/south-melbourne-vic-3205/agents,split,"/suburbs/lindfield-nsw-2070/agents (2, 30)"
+melbourne's cheapest suburbs,commercial,best-suburbs,6,0,22.8,/best-suburbs/most-affordable/melbourne,1.0,/suburbs/wollongong-nsw-2500,no strong page,
+mortgage insurance calculator,commercial,deposit-lmi,6,0,43.7,/lmi-calculator,1.0,/lmi-calculator,match,
+mount waverley real estate agents,commercial,agents,6,0,32.3,/suburbs/mount-waverley-vic-3149/agents,1.0,/suburbs/mount-waverley-vic-3149/agents,match,
+port douglas real estate agents,commercial,agents,6,0,35.8,/suburbs/port-douglas-qld-4877/agents,1.0,/suburbs/port-douglas-qld-4877/agents,match,
+property appraisal lavington,commercial,appraisal,6,0,27.3,/suburbs/lavington-nsw-2641/agents,1.0,/appraisal,wrong page,
+property appraisal springdale heights,commercial,appraisal,6,0,12.2,/suburbs/springdale-heights-nsw-2641/agents,1.0,/appraisal,wrong page,
+property portfolio bankstown,commercial,other,6,0,75,/suburbs/bankstown-nsw-2200/rental-market,1.0,/suburbs/bankstown-nsw-2200/rental-market,match,
+property selling cost calculator,commercial,selling,6,0,98.3,/selling-costs-calculator,1.0,/selling-costs-calculator,match,
+real estate agent commission percentage nsw,commercial,commission,6,0,25.7,/guides/real-estate-commission-nsw,0.83,/guides/real-estate-agent-fees-australia,wrong page,"/guides/fixed-fee-vs-commission-real-estate-agents (1, 78)"
+real estate agent near me bandiana,transactional,agents,6,0,16.8,/suburbs/bandiana-vic-3694/agents,1.0,/suburbs/bandiana-vic-3694/agents,match,
+real estate agent services burnside,commercial,agents,6,0,13,/suburbs/burnside-vic-3023/agents,1.0,/suburbs/burnside-vic-3023/agents,match,
+real estate agents bardia,commercial,agents,6,0,6.5,/suburbs/bardia-nsw-2565/agents,1.0,/suburbs/bardia-nsw-2565,wrong page,
+real estate agents birmingham gardens nsw,commercial,agents,6,0,15.7,/suburbs/birmingham-gardens-nsw-2287/agents,1.0,/suburbs/queanbeyan-nsw-2620/agents,wrong page,
+real estate agents carnegie,commercial,agents,6,0,35.8,/suburbs/carnegie-vic-3163/agents,1.0,/suburbs/carnegie-vic-3163/agents,match,
+real estate agents faulconbridge,commercial,agents,6,0,23.7,/suburbs/faulconbridge-nsw-2776/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents frankston,commercial,agents,6,0,53.5,/suburbs/frankston-vic-3199/agents,0.83,/suburbs/frankston-vic-3199/agents,match,"/suburbs/frankston-south-vic-3199/agents (1, 98)"
+real estate agents glebe,commercial,agents,6,0,27.5,/suburbs/glebe-nsw-2037/agents,1.0,/suburbs/glebe-nsw-2037/agents,match,
+real estate agents in frankston south,commercial,agents,6,0,37,/suburbs/frankston-south-vic-3199/agents,1.0,/suburbs/frankston-south-vic-3199/agents,match,
+real estate agents in mudgee,commercial,agents,6,0,37.7,/suburbs/mudgee-nsw-2850/agents,1.0,/suburbs/mudgee-nsw-2850/agents,match,
+real estate agents in north coogee,commercial,agents,6,0,16.5,/suburbs/north-coogee-wa-6163/agents,1.0,/suburbs/north-coogee-wa-6163/agents,match,
+real estate agents in springwood nsw,commercial,agents,6,0,19.5,/suburbs/springwood-nsw-2777/agents,1.0,/suburbs/springwood-nsw-2777/agents,match,
+real estate agents in warrnambool,commercial,agents,6,0,43.8,/suburbs/warrnambool-vic-3280/agents,1.0,/suburbs/warrnambool-vic-3280/agents,match,
+real estate agents lawson nsw,commercial,agents,6,0,22.8,/suburbs/lawson-nsw-2783/agents,1.0,/suburbs/queanbeyan-nsw-2620/agents,wrong page,
+real estate agents newton,commercial,agents,6,0,3.2,/suburbs/newton-sa-5074/agents,1.0,/suburbs/newton-sa-5074/agents,match,
+real estate agents north lakes,commercial,agents,6,0,30,/suburbs/north-lakes-qld-4509/agents,1.0,/suburbs/north-lakes-qld-4509/agents,match,
+real estate agents richmond nsw,commercial,agents,6,0,34.8,/suburbs/richmond-nsw-2753/agents,1.0,/suburbs/north-richmond-nsw-2754/agents,wrong page,
+real estate agents wallsend nsw,commercial,agents,6,0,37.2,/suburbs/wallsend-nsw-2287/agents,0.83,/suburbs/queanbeyan-nsw-2620/agents,wrong page,"/suburbs/west-wallsend-nsw-2286/agents (1, 66)"
+real estate agents west albury,commercial,agents,6,0,27.7,/suburbs/west-albury-nsw-2640/agents,1.0,/suburbs/west-albury-nsw-2640/agents,match,
+real estate lead generation,commercial,suburb-data,6,0,88.5,/real-estate-leads,1.0,/real-estate-leads,match,
+real estate rates for selling,commercial,suburb-data,6,0,22,/guides/cost-of-selling-a-house-nsw,0.17,/guides/real-estate-commission-wa,wrong page,"/guides/cost-of-selling-a-house-qld (1, 78) | /guides/cost-of-selling-a-house-wa (1, 71) | /guides/real-estate-commission-nsw (1, 27)"
+real estate underquoting,commercial,selling,6,0,58.7,/guides/underquoting-laws-by-state,1.0,/guides/underquoting-laws-by-state,no strong page,
+rental agents the ponds,commercial,property-management,6,0,43,/suburbs/the-ponds-nsw-2769/agents,1.0,/suburbs/the-ponds-nsw-2769/schools,wrong page,
+rental estimate canberra,transactional,property-management,6,0,57.8,/suburbs/canberra-act-2600/rental-market,1.0,/suburbs/canberra-act-2600/rental-market,match,
+rental investment calculator,commercial,yield,6,0,75.5,/rental-yield-calculator,1.0,/rental-yield-calculator,match,
+rental yield melbourne suburbs,commercial,yield,6,0,54,/best-suburbs/best-rental-yield/melbourne,1.0,/best-suburbs/best-rental-yield/vic,wrong page,
+typical real estate agent fees,commercial,commission,6,0,30.8,/guides/real-estate-commission-vic,0.67,/guides/real-estate-agent-fees-australia,split,"/guides/real-estate-commission-nsw (2, 52)"
+wahroonga real estate agents,commercial,agents,6,0,11.2,/suburbs/wahroonga-nsw-2076/agents,0.67,/suburbs/wahroonga-nsw-2076,split,"/suburbs/north-wahroonga-nsw-2076/agents (2, 13)"
+what percentage do real estate agents take,commercial,agents,6,0,64,/guides/real-estate-commission-vic,0.67,/suburbs/south-melbourne-vic-3205/agents,no strong page,"/guides/real-estate-commission-nsw (2, 71)"
+yield calculation property,transactional,yield,6,0,63,/rental-yield-calculator,1.0,/guides/sydney-property-market-2026,wrong page,
+yield property calculator,transactional,yield,6,0,51.7,/rental-yield-calculator,1.0,/rental-yield-calculator,match,
+115 lilli pilli point road lilli pilli nsw 2229,transactional,other,5,0,26.2,/suburbs/lilli-pilli-nsw-2536/agents,1.0,/suburbs/lilli-pilli-nsw-2536/agents,match,
+adjustable rates vs fixed rates,commercial,mortgage,5,0,84.8,/guides/fixed-vs-variable-rate-guide,1.0,/guides/fixed-vs-variable-rate-guide,match,
+agent commission calculator,commercial,commission,5,0,48.7,/guides/real-estate-commission-nsw,0.4,/real-estate-commission-calculator,split,"/real-estate-commission-calculator (2, 59) | /guides/real-estate-commission-vic (1, 84)"
+appraisal for rent canberra,commercial,appraisal,5,0,66.4,/suburbs/canberra-act-2601/rental-market,0.8,/suburbs/canberra-act-2600/rental-market,wrong page,"/suburbs/canberra-act-2600/rental-market (1, 62)"
+aspley real estate agents,commercial,agents,5,0,4.4,/suburbs/aspley-qld-4034/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+average buyers agent fee,commercial,commission,5,0,51.6,/guides/real-estate-commission-nsw,1.0,/guides/buyers-agent-cost-australia,no strong page,
+best buyers agents near seven hills,commercial,buyers-agent,5,0,52.4,/suburbs/seven-hills-nsw-2147/agents,1.0,/suburbs/victoria-hill-qld-4361,no strong page,
+best places to invest in regional australia,commercial,best-suburbs,5,0,43.4,/guides/best-regional-towns-invest-australia-2026,1.0,/guides/best-regional-towns-invest-australia-2026,match,
+best real estate agents bungendore,commercial,agents,5,0,28.4,/suburbs/bungendore-nsw-2621/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+best suburbs to live in brisbane for families,commercial,best-suburbs,5,0,47,/best-suburbs/for-families/brisbane,0.6,/guides/best-brisbane-suburbs-for-families-2026,split,"/guides/best-brisbane-suburbs-for-families-2026 (2, 71)"
+boondall rental yield,commercial,yield,5,0,24.8,/suburbs/boondall-qld-4034/vs/geebung-qld-4034,1.0,/best-suburbs/best-rental-yield/vic,wrong page,
+braidwood real estate agents,commercial,agents,5,0,27.8,/suburbs/braidwood-nsw-2622/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+buyers agent shell harbour,transactional,buyers-agent,5,0,27,/suburbs/shellharbour-nsw-2529/agents,1.0,/guides/buyers-agent-cost-australia,no strong page,
+buyers agent vaucluse,transactional,buyers-agent,5,0,68,/suburbs/vaucluse-nsw-2030/agents,1.0,/guides/buyers-agent-cost-australia,no strong page,
+buying and selling costs calculator,commercial,selling,5,0,77.8,/selling-costs-calculator,1.0,/selling-costs-calculator,match,
+buying guides livingpristine,commercial,other,5,0,14.8,/buying-guide,1.0,/buying-guide,match,
+calculate rental return,transactional,yield,5,0,73,/rental-yield-calculator,1.0,/guides/granny-flat-guide-nsw,no strong page,
+calculate rental yield,transactional,yield,5,0,70.8,/rental-yield-calculator,1.0,/rental-yield-calculator,match,
+caulfield south real estate agents,commercial,agents,5,0,15,/suburbs/caulfield-south-vic-3162/agents,1.0,/suburbs/caulfield-south-vic-3162/agents,match,
+cheapest homes in melbourne,commercial,suburb-data,5,0,22.8,/best-suburbs/most-affordable/melbourne,1.0,/property-market/melbourne,wrong page,
+clermont real estate agents,commercial,agents,5,0,17.4,/suburbs/clermont-qld-4721/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+collingwood real estate agents,commercial,agents,5,0,25.2,/suburbs/collingwood-vic-3066/agents,1.0,/suburbs/collingwood-vic-3066/agents,match,
+commission on selling a house brighton,transactional,commission,5,0,76.4,/guides/real-estate-commission-vic,0.4,/guides/cost-of-selling-a-house-wa,split,"/real-estate-commission-calculator (2, 78) | /guides/real-estate-commission-nsw (1, 76)"
+cost of selling a house in south australia,commercial,selling,5,0,7.8,/guides/cost-of-selling-a-house-sa,1.0,/guides/cost-of-selling-a-house-sa,match,
+cost of selling a house qld,commercial,selling,5,0,35,/guides/cost-of-selling-a-house-qld,0.8,/guides/cost-of-selling-a-house-qld,match,"/selling-costs-calculator (1, 86)"
+cost to sell house qld,commercial,selling,5,0,24.6,/guides/cost-of-selling-a-house-qld,1.0,/guides/sell-your-house-privately-australia,wrong page,
+costs of selling a house calculator,commercial,selling,5,0,82.2,/selling-costs-calculator,0.8,/selling-costs-calculator,match,"/guides/cost-of-selling-a-house-vic (1, 14)"
+costs of selling a house calculator nsw,commercial,selling,5,0,47.2,/guides/cost-of-selling-a-house-nsw,0.8,/guides/cost-of-selling-a-house-nsw,match,"/selling-costs-calculator (1, 95)"
+darch rental investment,commercial,rental-investment,5,0,23.2,/suburbs/darch-wa-6065/rental-market,1.0,/suburbs/darch-wa-6065/rental-market,match,
+docklands real estate agents,commercial,agents,5,0,20.2,/suburbs/docklands-vic-3008/agents,1.0,/suburbs/docklands-vic-3008/agents,match,
+earlwood real estate agents,commercial,agents,5,0,32.6,/suburbs/earlwood-nsw-2206/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+essendon real estate agents,commercial,agents,5,0,21.8,/suburbs/essendon-vic-3040/agents,1.0,/suburbs/essendon-vic-3040/agents,match,
+estate agent fees,commercial,commission,5,0,40,/guides/real-estate-commission-vic,0.6,/guides/real-estate-agent-fees-australia,split,"/guides/real-estate-commission-nsw (2, 40)"
+fees when selling a house in qld,commercial,selling,5,0,45.2,/guides/cost-of-selling-a-house-qld,0.8,/guides/cost-of-selling-a-house-qld,match,"/selling-costs-calculator (1, 100)"
+fixed fee real estate,commercial,commission,5,0,34.7,/guides/real-estate-commission-nsw,0.4,/guides/fixed-fee-vs-commission-real-estate-agents,split,"/guides/real-estate-commission-vic (2, 46) | /guides/fixed-fee-vs-commission-real-estate-agents (1, 12)"
+free property appraisal medowie,commercial,appraisal,5,0,4.6,/suburbs/medowie-nsw-2318/agents,1.0,/appraisal,wrong page,
+glebe real estate agents,commercial,agents,5,0,25.4,/suburbs/glebe-nsw-2037/agents,1.0,/suburbs/glebe-nsw-2037/agents,match,
+granny flat investment qld,transactional,new-homes,5,0,75.4,/guides/granny-flat-guide-qld,1.0,/guides/granny-flat-guide-qld,match,
+home appraisals balnarring,commercial,appraisal,5,0,9.2,/suburbs/balnarring-vic-3926/agents,1.0,/selling,wrong page,
+home appraisals caulfield north,commercial,appraisal,5,0,12.6,/suburbs/caulfield-north-vic-3161/agents,1.0,/selling,wrong page,
+home appraisals glen huntly,commercial,appraisal,5,0,7,/suburbs/glen-huntly-vic-3163/agents,1.0,/selling,wrong page,
+how much commission does a realtor make nsw,commercial,commission,5,0,42.2,/guides/real-estate-commission-nsw,1.0,/guides/how-much-is-my-house-worth-australia,no strong page,
+how much does a buyers agent cost north shore,commercial,commission,5,0,85.6,/suburbs/north-shore-vic-3214/agents,1.0,/guides/buyers-agent-cost-australia,wrong page,
+how much does it cost to sell a house in qld,commercial,selling,5,0,24.6,/guides/cost-of-selling-a-house-qld,1.0,/guides/sell-your-house-privately-australia,wrong page,
+how much to sell a home,commercial,selling,5,0,38,/guides/cost-of-selling-a-house-nsw,0.2,/guides/how-much-is-my-house-worth-australia,wrong page,"/guides/cost-of-selling-a-house-qld (1, 61) | /guides/cost-of-selling-a-house-wa (1, 38) | /selling (1, 81)"
+independent property buying advice strathfield,transactional,other,5,0,54.8,/suburbs/strathfield-nsw-2135/agents,0.6,/guides/buying-property-australia,split,"/suburbs/strathfield-south-nsw-2136/agents (2, 62)"
+investing in regional australia,commercial,other,5,0,53,/guides/best-regional-towns-invest-australia-2026,1.0,/investing,wrong page,
+investment property affordability calculator,commercial,borrowing,5,0,78,/affordability-calculator,1.0,/affordability-calculator,match,
+investment property yield calculator,commercial,yield,5,0,64,/rental-yield-calculator,1.0,/investing,wrong page,
+leads for real estate agents,commercial,agents,5,0,68.2,/real-estate-leads,1.0,/real-estate-leads/buyer-leads,wrong page,
+lender title insurance cost,commercial,other,5,0,75.6,/lmi-calculator,1.0,/guides/lenders-mortgage-insurance-guide,wrong page,
+notice to vacate due to sale of property nsw,transactional,selling,5,0,48.8,/guides/selling-a-house-with-tenants,1.0,/buy,no strong page,
+port macquarie real estate agents,commercial,agents,5,0,50.2,/suburbs/port-macquarie-nsw-2444/agents,1.0,/suburbs/port-macquarie-nsw-2444/agents,match,
+property appraisal cammeray,commercial,appraisal,5,0,16.6,/suburbs/cammeray-nsw-2062/agents,1.0,/appraisal,wrong page,
+property valuation ashfield,commercial,appraisal,5,0,37.4,/suburbs/ashfield-nsw-2131/rental-market,1.0,/property-valuation,wrong page,
+real estate agencies blaxland nsw,commercial,agents,5,0,35.2,/suburbs/blaxland-nsw-2774/agents,1.0,/suburbs/blaxland-nsw-2774/agents,match,
+real estate agent fees for selling,commercial,commission,5,0,63.5,/guides/real-estate-commission-vic,0.8,/guides/real-estate-agent-fees-australia,wrong page,"/guides/real-estate-commission-nsw (1, 85)"
+real estate agent north albury,transactional,agents,5,0,6.2,/suburbs/north-albury-nsw-2640/agents,1.0,/suburbs/south-albury-nsw-2640/agents,wrong page,
+real estate agent services derrimut,commercial,agents,5,0,37.4,/suburbs/derrimut-vic-3026/agents,1.0,/guides/real-estate-agent-fees-australia,wrong page,
+real estate agents auchenflower,commercial,agents,5,0,7.8,/suburbs/auchenflower-qld-4066/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents bandiana,commercial,agents,5,0,6,/suburbs/bandiana-vic-3694/agents,1.0,/suburbs/bandiana-vic-3694/agents,match,
+real estate agents capalaba,commercial,agents,5,0,40.2,/suburbs/capalaba-qld-4157/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents chelsea,commercial,agents,5,0,9,/suburbs/chelsea-heights-vic-3196/agents,0.6,/suburbs/chelsea-heights-vic-3196/agents,split,"/suburbs/chelsea-vic-3196/agents (2, 8)"
+real estate agents cheltenham,commercial,agents,5,0,49,/suburbs/cheltenham-east-vic-3192/agents,0.4,/suburbs/cheltenham-vic-3192/agents,split,"/suburbs/cheltenham-vic-3192/agents (2, 24) | /suburbs/cheltenham-north-vic-3192/agents (1, 75)"
+real estate agents eltham,commercial,agents,5,0,19.4,/suburbs/eltham-vic-3095/agents,1.0,/suburbs/eltham-vic-3095/agents,match,
+real estate agents gisborne,commercial,agents,5,0,11.7,/suburbs/gisborne-vic-3437/agents,0.6,/suburbs/south-melbourne-vic-3205/agents,split,"/suburbs/new-gisborne-vic-3438/agents (2, 14)"
+real estate agents in port douglas,commercial,agents,5,0,55.2,/suburbs/port-douglas-qld-4877/agents,1.0,/suburbs/port-douglas-qld-4877/agents,match,
+real estate agents in queanbeyan,commercial,agents,5,0,43.3,/suburbs/queanbeyan-east-nsw-2620/agents,0.6,/suburbs/queanbeyan-nsw-2620/agents,wrong page,"/suburbs/queanbeyan-nsw-2620/agents (1, 54) | /suburbs/queanbeyan-west-nsw-2620/agents (1, 51)"
+real estate agents kearns,commercial,agents,5,0,11,/suburbs/kearns-nsw-2558/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents lake coogee,commercial,agents,5,0,57.2,/suburbs/north-coogee-wa-6163/agents,0.6,/suburbs/north-coogee-wa-6163/agents,split,"/suburbs/coogee-wa-6166/agents (2, 48)"
+real estate agents lambton nsw,commercial,agents,5,0,23.7,/suburbs/north-lambton-nsw-2299/agents,0.6,/suburbs/queanbeyan-nsw-2620/agents,split,"/suburbs/new-lambton-nsw-2305/agents (2, 29)"
+real estate agents melrose park,commercial,agents,5,0,16.6,/suburbs/melrose-park-sa-5039/agents,1.0,/suburbs/middle-park-vic-3206/agents,wrong page,
+real estate agents morley,commercial,agents,5,0,29,/suburbs/morley-wa-6062/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents preston,commercial,agents,5,0,25.4,/suburbs/preston-vic-3072/agents,1.0,/suburbs/preston-vic-3072/agents,match,
+real estate agents rockingham,commercial,agents,5,0,96.5,/suburbs/rockingham-wa-6168/agents,1.0,/suburbs/rockingham-wa-6168/agents,match,
+real estate agents south albury,commercial,agents,5,0,8.2,/suburbs/south-albury-nsw-2640/agents,1.0,/suburbs/south-albury-nsw-2640/agents,match,
+real estate agents south morang,commercial,agents,5,0,4.8,/suburbs/south-morang-vic-3752/agents,1.0,/suburbs/south-morang-vic-3752/agents,match,
+real estate agents thomastown,commercial,agents,5,0,26.8,/suburbs/thomastown-vic-3074/agents,1.0,/suburbs/thomastown-vic-3074/agents,match,
+real estate agents vale park,commercial,agents,5,0,21.4,/suburbs/vale-park-sa-5081/agents,1.0,/suburbs/eagle-vale-nsw-2558/agents,wrong page,
+real estate agents waratah nsw,commercial,agents,5,0,27,/suburbs/waratah-west-nsw-2298/agents,0.8,/suburbs/queanbeyan-nsw-2620/agents,wrong page,"/suburbs/waratah-nsw-2298/agents (1, 22)"
+real estate commission rate,commercial,commission,5,0,59,/guides/real-estate-commission-vic,0.6,/guides/real-estate-commission-wa,split,"/guides/real-estate-commission-nsw (2, 82)"
+real estate lead generation australia,commercial,suburb-data,5,0,90.4,/real-estate-leads,1.0,/real-estate-leads,match,
+real estate property appraisal fairview park,commercial,appraisal,5,0,8.8,/suburbs/fairview-park-sa-5126/agents,1.0,/real-estate-leads/appraisal-leads,wrong page,
+redcliffe median house price,commercial,suburb-data,5,0,23,/suburbs/redcliffe-qld-4020/rental-market,0.6,/property-market/sydney,split,"/suburbs/redcliffe-qld-4020/agents (2, 29)"
+redcliffe real estate agents,commercial,agents,5,0,42.8,/suburbs/redcliffe-qld-4020/agents,1.0,/suburbs/redcliffe-qld-4020/agents,match,
+rentvesting strategy property purchase,transactional,renting,5,0,68.8,/guides/rentvesting-australia,1.0,/guides/rentvesting-australia-state-by-state-guide-2026,wrong page,
+rentvesting trend australia,commercial,renting,5,0,61.2,/guides/rentvesting-australia,1.0,/guides/rentvesting-australia,match,
+sell my house hawkesbury,transactional,selling,5,0,5.2,/suburbs/hawkesbury-heights-nsw-2777/agents,1.0,/guides/how-to-sell-a-house-australia,wrong page,
+settlement agent fees calculator wa,commercial,commission,5,0,83.2,/real-estate-commission-calculator,0.6,/guides/real-estate-commission-wa,split,"/selling-costs-calculator (2, 90)"
+shoalhaven heads real estate agents,commercial,agents,5,0,18.4,/suburbs/shoalhaven-heads-nsw-2535/agents,1.0,/suburbs/noosa-heads-qld-4567/agents,wrong page,
+sinagra rental investment,commercial,rental-investment,5,0,22.2,/suburbs/sinagra-wa-6065/rental-market,1.0,/suburbs/sinagra-wa-6065/rental-market,match,
+springwood nsw real estate agents,commercial,agents,5,0,18.6,/suburbs/springwood-nsw-2777/agents,1.0,/suburbs/springwood-nsw-2777/agents,match,
+standard agency fee,commercial,commission,5,0,47.8,/guides/fixed-fee-vs-commission-real-estate-agents,1.0,/selling,no strong page,
+suburbs with best rental yield melbourne,commercial,yield,5,0,36.8,/best-suburbs/best-rental-yield/melbourne,1.0,/best-suburbs/best-rental-yield/vic,wrong page,
+vaucluse average house price,commercial,suburb-data,5,0,80.8,/price-guide,1.0,/suburbs/vaucluse-nsw-2030,wrong page,
+what are the most affordable suburbs to buy in perth,commercial,borrowing,5,0,27.8,/best-suburbs/most-affordable/wa,0.6,/best-suburbs/most-affordable/wa,split,"/best-suburbs/most-affordable/perth (2, 28)"
+what schools are near riverfield estate,commercial,other,5,0,25.2,/suburbs/clyde-vic-3978/schools,1.0,/schools,no strong page,
+which clyde estate has the best schools,commercial,other,5,0,39.4,/suburbs/clyde-vic-3978/schools,0.8,/suburbs/clyde-vic-3978/schools,match,"/schools/clyde-secondary-college-53068 (1, 9)"
+willoughby real estate agents,commercial,agents,5,0,10.3,/suburbs/willoughby-east-nsw-2068/agents,0.6,/postcodes/2068,split,"/suburbs/willoughby-nsw-2068/agents (2, 3)"
+work out rental yield calculator,transactional,yield,5,0,60.8,/rental-yield-calculator,1.0,/rental-yield-calculator,match,
+agent fee for selling property,transactional,commission,4,0,17.7,/guides/real-estate-commission-nsw,0.75,/selling-guide,wrong page,"/guides/real-estate-commission-vic (1, 35)"
+agent fees for selling house,commercial,commission,4,0,27.2,/guides/real-estate-commission-nsw,0.5,/selling,split,"/guides/real-estate-commission-vic (2, 28)"
+average real estate commission,commercial,commission,4,0,46.7,/guides/real-estate-commission-nsw,0.5,/guides/real-estate-commission-wa,split,"/guides/real-estate-commission-vic (2, 34)"
+ayr real estate agents,commercial,agents,4,0,22.8,/suburbs/ayr-qld-4807/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+balwyn north real estate agents,commercial,agents,4,0,31.8,/suburbs/balwyn-north-vic-3104/agents,1.0,/suburbs/balwyn-north-vic-3104/agents,match,
+best estate agents torquay,commercial,agents,4,0,46.5,/suburbs/torquay-vic-3228/agents,1.0,/suburbs/torquay-vic-3228/agents,match,
+best rental yield melbourne 2020,commercial,yield,4,0,16.8,/best-suburbs/best-rental-yield/melbourne,1.0,/best-suburbs/best-rental-yield/vic,wrong page,
+best rental yield suburbs melbourne,commercial,yield,4,0,32.8,/best-suburbs/best-rental-yield/melbourne,1.0,/best-suburbs/best-rental-yield/vic,wrong page,
+best suburbs in australia,commercial,best-suburbs,4,0,25.2,/best-suburbs,1.0,/best-suburbs,match,
+best suburbs to invest in melbourne 2021,commercial,best-suburbs,4,0,7.5,/best-suburbs/best-rental-yield/melbourne,1.0,/best-suburbs/best-rental-yield/melbourne,match,
+best suburbs to live in canberra,commercial,best-suburbs,4,0,7.5,/best-suburbs/for-families/canberra,1.0,/data,wrong page,
+box hill real estate agents,commercial,agents,4,0,19.7,/suburbs/box-hill-nsw-2765/agents,0.5,/suburbs/box-hill-south-vic-3128/agents,split,"/suburbs/box-hill-south-vic-3128/agents (2, 15)"
+buyers agency petersham,commercial,buyers-agent,4,0,64,/suburbs/petersham-nsw-2049/agents,1.0,/guides/buyers-agent-cost-australia,no strong page,
+buyers agent canterbury,transactional,buyers-agent,4,0,63.2,/suburbs/canterbury-vic-3126/agents,1.0,/suburbs/canterbury-vic-3126/agents,match,
+buyers agent caulfield north,transactional,buyers-agent,4,0,11.8,/suburbs/caulfield-north-vic-3161/agents,1.0,/suburbs/caulfield-north-vic-3161/agents,match,
+buyers agent dulwich hill,transactional,buyers-agent,4,0,26.8,/suburbs/dulwich-hill-nsw-2203/agents,1.0,/postcodes/2203,wrong page,
+buyers agent port melbourne,transactional,buyers-agent,4,0,40.8,/suburbs/port-melbourne-vic-3207/agents,1.0,/suburbs/port-melbourne-vic-3207/agents,match,
+caulfield north real estate agents,commercial,agents,4,0,17.5,/suburbs/caulfield-north-vic-3161/agents,1.0,/suburbs/caulfield-north-vic-3161/agents,match,
+cheapest suburbs in melbourne to buy,commercial,best-suburbs,4,0,21.5,/best-suburbs/most-affordable/melbourne,1.0,/guides/cheapest-suburbs-buy-house-australia-2026,wrong page,
+clarinda median house price,commercial,suburb-data,4,0,8,/suburbs/clarinda-vic-3169,1.0,/suburbs/clarinda-vic-3169,match,
+commission house sale,transactional,commission,4,0,46.5,/guides/real-estate-commission-nsw,0.5,/selling,split,"/guides/real-estate-commission-vic (2, 46)"
+conveyancing costs sa,commercial,conveyancing-inspections,4,0,62.5,/guides/cost-of-selling-a-house-sa,1.0,/guides/conveyancing-guide,wrong page,
+cost of selling a house in western australia,commercial,selling,4,0,10.2,/guides/cost-of-selling-a-house-wa,1.0,/guides/cost-of-selling-a-house-wa,match,
+cost of selling a property calculator,commercial,selling,4,0,79.5,/selling-costs-calculator,1.0,/selling-costs-calculator,match,
+costs of owning a rental property,commercial,yield,4,0,77.8,/investing,1.0,/guides/home-staging-cost-australia,no strong page,
+deepdene real estate agents,commercial,agents,4,0,15,/suburbs/deepdene-vic-3103/agents,0.75,/suburbs/deepdene-vic-3103/agents,match,"/suburbs/deepdene-vic-3103 (1, 84)"
+devonport median house prices,commercial,suburb-data,4,0,58,/suburbs/devonport-tas-7310/rental-market,0.25,/suburbs/devonport-tas-7310,wrong page,"/suburbs/devonport-tas-7310/vs/don-tas-7310 (1, 67) | /suburbs/devonport-tas-7310/vs/miandetta-tas-7310 (1, 49) | /suburbs/devonport-tas-7310/vs/west-devonport-tas-7310 (1, 74)"
+fastest growing regional towns in australia,commercial,best-suburbs,4,0,45.2,/guides/best-regional-towns-invest-australia-2026,1.0,/guides/australia-fastest-growing-suburbs-2026,wrong page,
+fees for realtors,commercial,agents,4,0,42,/guides/real-estate-commission-nsw,1.0,/selling,no strong page,
+finding a realtor for buying,transactional,agents,4,0,67.2,/find-an-expert,1.0,/buying-guide,wrong page,
+hawthorn east real estate agents,commercial,agents,4,0,18,/suburbs/hawthorn-east-vic-3123/agents,1.0,/suburbs/hawthorn-east-vic-3123,wrong page,
+home appraisals capel sound,commercial,appraisal,4,0,15.8,/suburbs/capel-sound-vic-3940/agents,1.0,/selling,wrong page,
+home appraisals cheltenham,commercial,appraisal,4,0,31.8,/suburbs/cheltenham-sa-5014/agents,0.75,/selling,wrong page,"/suburbs/cheltenham-nsw-2119/agents (1, 84)"
+home appraisals mount eliza,commercial,appraisal,4,0,17.5,/suburbs/mount-eliza-vic-3930/agents,1.0,/selling,wrong page,
+how much do renovations cost australia,commercial,renovation,4,0,24,/guides/renovation-cost-australia-2026,1.0,/guides/renovation-cost-australia-2026,match,
+how much does it cost to sell a house in victoria,commercial,selling,4,0,15.7,/guides/cost-of-selling-a-house-vic,0.75,/guides/sell-your-house-privately-australia,wrong page,"/guides/real-estate-commission-vic (1, 28)"
+joondalup rental investment,commercial,rental-investment,4,0,38,/suburbs/joondalup-wa-6027/rental-market,1.0,/suburbs/joondalup-wa-6027/rental-market,match,
+karrinyup rental investment,commercial,rental-investment,4,0,32,/suburbs/karrinyup-wa-6018/rental-market,1.0,/suburbs/karrinyup-wa-6018/rental-market,match,
+kensington real estate agencies,commercial,agents,4,0,22,/suburbs/kensington-vic-3031/agents,1.0,/suburbs/kensington-vic-3031/agents,match,
+leichhardt real estate agents,commercial,agents,4,0,14.8,/suburbs/leichhardt-nsw-2040/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+lightsview agents,commercial,agents,4,0,11,/suburbs/lightsview-sa-5085/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,no strong page,
+lmi insurance calculator,commercial,deposit-lmi,4,0,5,/lmi-calculator,1.0,/lmi-calculator,match,
+maroubra median house price,commercial,suburb-data,4,0,28,/price-guide,0.25,/property-market/sydney,wrong page,"/suburbs/eastgardens-nsw-2036/vs/maroubra-nsw-2035 (1, 64) | /suburbs/malabar-nsw-2036/vs/maroubra-nsw-2035 (1, 58) | /suburbs/maroubra-nsw-2035/vs/hillsdale-nsw-2036 (1, 28)"
+mortgage affordability calculator,commercial,borrowing,4,0,53.8,/borrowing-power-calculator,0.75,/affordability-calculator,wrong page,"/affordability-calculator (1, 73)"
+mortgage brokers baromi,commercial,mortgage,4,0,26,/suburbs/mirboo-north-vic-3871,1.0,/guides/how-to-choose-a-mortgage-broker,wrong page,
+mudgee real estate agents,commercial,agents,4,0,35.8,/suburbs/mudgee-nsw-2850/agents,1.0,/suburbs/mudgee-nsw-2850/agents,match,
+newman property management,commercial,property-management,4,0,23.2,/suburbs/newman-wa-6753/rental-market,1.0,/guides/property-management-fees-australia,wrong page,
+notice to vacate due to sale of property qld,transactional,selling,4,0,74.2,/guides/selling-a-house-with-tenants,1.0,/buy,no strong page,
+preston real estate agents,commercial,agents,4,0,33.5,/suburbs/preston-vic-3072/agents,1.0,/suburbs/preston-vic-3072/agents,match,
+property agents jesmond,commercial,agents,4,0,37.8,/suburbs/jesmond-nsw-2299/agents,1.0,/selling-guide,no strong page,
+property appraisal caroline springs,commercial,appraisal,4,0,44.5,/suburbs/caroline-springs-vic-3023/agents,1.0,/appraisal,wrong page,
+property appraisal east albury,commercial,appraisal,4,0,13,/suburbs/east-albury-nsw-2640/agents,1.0,/appraisal,wrong page,
+property appraisal greenwith,commercial,appraisal,4,0,9,/suburbs/greenwith-sa-5125/agents,1.0,/appraisal,wrong page,
+property appraisal hawkesbury,commercial,appraisal,4,0,8.2,/suburbs/hawkesbury-heights-nsw-2777/agents,1.0,/appraisal,wrong page,
+property appraisal north albury,commercial,appraisal,4,0,2,/suburbs/north-albury-nsw-2640/agents,1.0,/appraisal,wrong page,
+property appraisal south albury,commercial,appraisal,4,0,13.2,/suburbs/south-albury-nsw-2640/agents,1.0,/appraisal,wrong page,
+property appraisal west albury,commercial,appraisal,4,0,14.8,/suburbs/west-albury-nsw-2640/agents,1.0,/appraisal,wrong page,
+property appraisals albany creek,commercial,appraisal,4,0,18,/suburbs/albany-creek-qld-4035/agents,1.0,/appraisal,wrong page,
+property valuation glenmore park,commercial,appraisal,4,0,42.5,/suburbs/glenmore-park-nsw-2745/rental-market,1.0,/property-valuation,wrong page,
+real estate agency eltham,commercial,agents,4,0,68.3,/suburbs/eltham-north-vic-3095/agents,0.5,/suburbs/eltham-vic-3095/agents,split,"/suburbs/eltham-vic-3095/agents (2, 65)"
+real estate agent commission percentage,commercial,commission,4,0,61,/guides/real-estate-commission-nsw,0.5,/guides/real-estate-agent-fees-australia,split,"/guides/real-estate-commission-vic (2, 78)"
+real estate agent cost,commercial,commission,4,0,52.8,/guides/real-estate-commission-nsw,0.5,/guides/real-estate-agent-fees-australia,split,"/guides/real-estate-commission-vic (2, 63)"
+real estate agent fee,commercial,commission,4,0,57,/guides/real-estate-commission-nsw,0.5,/guides/real-estate-agent-fees-australia,split,"/guides/real-estate-commission-vic (2, 50)"
+real estate agent lead sources,commercial,agents,4,0,73.6,/real-estate-leads,1.0,/methodology,wrong page,
+real estate agent services caroline springs,commercial,agents,4,0,50.2,/suburbs/caroline-springs-vic-3023/agents,1.0,/suburbs/caroline-springs-vic-3023/agents,match,
+real estate agents ambarvale,commercial,agents,4,0,3.5,/suburbs/ambarvale-nsw-2560/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents ascot vale,commercial,agents,4,0,33.8,/suburbs/ascot-vale-vic-3032/agents,1.0,/suburbs/eagle-vale-nsw-2558/agents,wrong page,
+real estate agents avoca beach,commercial,agents,4,0,9.8,/suburbs/avoca-beach-nsw-2251/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,no strong page,
+real estate agents cammeray,commercial,agents,4,0,21.2,/suburbs/cammeray-nsw-2062/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents cardiff nsw,commercial,agents,4,0,24,/suburbs/cardiff-south-nsw-2285/agents,1.0,/suburbs/queanbeyan-nsw-2620/agents,wrong page,
+real estate agents christies beach,commercial,agents,4,0,25.5,/suburbs/christies-beach-sa-5165/agents,1.0,/suburbs/christies-beach-sa-5165/rental-market,wrong page,
+real estate agents cremorne,commercial,agents,4,0,43,/suburbs/cremorne-nsw-2090/agents,0.5,/suburbs/cremorne-nsw-2090/agents,split,"/suburbs/cremorne-point-nsw-2090/agents (2, 46)"
+real estate agents diamond creek,commercial,agents,4,0,5.8,/suburbs/diamond-creek-vic-3089/agents,1.0,/suburbs/diamond-creek-vic-3089/agents,match,
+real estate agents frenchs forest,commercial,agents,4,0,28,/suburbs/frenchs-forest-nsw-2086/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,no strong page,
+real estate agents glenfield,commercial,agents,4,0,7,/suburbs/glenfield-nsw-2167/agents,0.5,/suburbs/south-melbourne-vic-3205/agents,split,"/suburbs/glenfield-park-nsw-2650/agents (2, 30)"
+real estate agents goodna,commercial,agents,4,0,21.2,/suburbs/goodna-qld-4300/agents,1.0,/suburbs/goodna-qld-4300/agents,match,
+real estate agents guildford west,commercial,agents,4,0,37.7,/suburbs/guildford-nsw-2161/agents,0.5,/suburbs/west-albury-nsw-2640/agents,split,"/suburbs/guildford-west-nsw-2161/agents (2, 38)"
+real estate agents in seville grove,commercial,agents,4,0,19,/suburbs/seville-grove-wa-6112/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,no strong page,
+real estate agents in spearwood,commercial,agents,4,0,24.2,/suburbs/spearwood-wa-6163/agents,1.0,/suburbs/spearwood-wa-6163/agents,match,
+real estate agents killarney vale,commercial,agents,4,0,19,/suburbs/killarney-vale-nsw-2261/agents,1.0,/suburbs/eagle-vale-nsw-2558/agents,wrong page,
+real estate agents kurri kurri,commercial,agents,4,0,19.5,/suburbs/kurri-kurri-nsw-2327/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents mudgee,commercial,agents,4,0,44.2,/suburbs/mudgee-nsw-2850/agents,1.0,/suburbs/mudgee-nsw-2850/agents,match,
+real estate agents munno para,commercial,agents,4,0,30.7,/suburbs/munno-para-sa-5115/agents,0.5,/suburbs/south-melbourne-vic-3205/agents,no strong page,"/suburbs/munno-para-downs-sa-5115/agents (1, 47) | /suburbs/munno-para-west-sa-5115/agents (1, 51)"
+real estate agents narangba,commercial,agents,4,0,20.5,/suburbs/narangba-qld-4504/agents,1.0,/suburbs/narangba-qld-4504/rental-market,no strong page,
+real estate agents northbridge,commercial,agents,4,0,27,/suburbs/northbridge-nsw-2063/agents,1.0,/suburbs/northbridge-wa-6803,wrong page,
+real estate agents port macquarie,commercial,agents,4,0,51.5,/suburbs/port-macquarie-nsw-2444/agents,1.0,/suburbs/port-macquarie-nsw-2444/agents,match,
+real estate agents redcliffe,commercial,agents,4,0,47.5,/suburbs/redcliffe-qld-4020/agents,1.0,/suburbs/redcliffe-qld-4020/agents,match,
+real estate agents st marys,commercial,agents,4,0,33.5,/suburbs/st-marys-nsw-2760/agents,1.0,/suburbs/st-kilda-west-vic-3182/agents,wrong page,
+real estate agents wentworthville,commercial,agents,4,0,3,/suburbs/south-wentworthville-nsw-2145/agents,0.5,/suburbs/south-melbourne-vic-3205/agents,split,"/suburbs/wentworthville-nsw-2145/agents (2, 3)"
+real estate agents west wodonga,commercial,agents,4,0,11.8,/suburbs/west-wodonga-vic-3690/agents,1.0,/postcodes/3690,wrong page,
+real estate agents willagee,commercial,agents,4,0,12,/suburbs/willagee-wa-6156/agents,1.0,/suburbs/willagee-wa-6156/agents,match,
+rent reviews davidson,commercial,property-management,4,0,22,/suburbs/davidson-nsw-2085/rental-market,1.0,/suburbs/davidson-nsw-2085/rental-market,match,
+rental agents greenwith,commercial,property-management,4,0,15.8,/suburbs/greenwith-sa-5125/agents,1.0,/suburbs/greenwith-sa-5125/agents,match,
+reserve bid auction,transactional,selling,4,0,46.8,/guides/reserve-price-auction,1.0,/guides/reserve-price-auction,match,
+reserve price auction,commercial,selling,4,0,45.2,/guides/reserve-price-auction,1.0,/guides/reserve-price-auction,match,
+richmond real estate agents,commercial,agents,4,0,48.8,/suburbs/richmond-vic-3121/agents,1.0,/suburbs/north-richmond-nsw-2754/agents,wrong page,
+second dwelling investment property queensland,commercial,other,4,0,76.5,/guides/granny-flat-guide-qld,1.0,/find-your-suburb,wrong page,
+sell house calculator,transactional,selling,4,0,14.5,/guides/cost-of-selling-a-house-vic,0.5,/selling-costs-calculator,wrong page,"/guides/cost-of-selling-a-house-qld (1, 17) | /guides/cost-of-selling-a-house-tas (1, 18)"
+sell my home queanbeyan,transactional,selling,4,0,2.5,/suburbs/queanbeyan-nsw-2620/agents,0.5,/guides/how-to-sell-a-house-australia,wrong page,"/suburbs/queanbeyan-east-nsw-2620/agents (1, 95) | /suburbs/queanbeyan-west-nsw-2620/agents (1, 76)"
+selling cost calculator,commercial,selling,4,0,40.2,/selling-costs-calculator,1.0,/selling-costs-calculator,match,
+selling costs calculator nsw,commercial,selling,4,0,81.8,/selling-costs-calculator,1.0,/guides/cost-of-selling-a-house-nsw,wrong page,
+settlement fees wa,commercial,conveyancing-inspections,4,0,46.2,/guides/cost-of-selling-a-house-wa,1.0,/guides/settlement-day-australia,no strong page,
+turramurra real estate agents,commercial,agents,4,0,26.3,/suburbs/north-turramurra-nsw-2074/agents,0.75,/suburbs/south-melbourne-vic-3205/agents,wrong page,"/suburbs/turramurra-nsw-2074/agents (1, 40)"
+upgrade or downsize your home,transactional,other,4,0,61.5,/upgrading,1.0,/guides/cheapest-suburbs-buy-house-australia-2026,no strong page,
+warrnambool real estate agents,commercial,agents,4,0,44.5,/suburbs/warrnambool-vic-3280/agents,1.0,/suburbs/warrnambool-vic-3280/agents,match,
+which brisbane suburbs have good schools and family homes,commercial,suburb-data,4,0,17.2,/best-suburbs/for-families/brisbane,0.75,/property-market/brisbane,no strong page,"/guides/best-brisbane-suburbs-for-families-2026 (1, 57)"
+woolgoolga real estate agents,commercial,agents,4,0,38.5,/suburbs/woolgoolga-nsw-2456/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+109 morrison avenue wombarra nsw 2515,transactional,other,3,0,11,/suburbs/wombarra-nsw-2515/agents,1.0,/suburbs/thirroul-nsw-2515,no strong page,
+affordable land near werribee and hoppers crossing,commercial,borrowing,3,0,12,/suburbs/werribee-vic-3030/vs/hoppers-crossing-vic-3029,1.0,/suburbs/werribee-vic-3030/vs/werribee-south-vic-3030,no strong page,
+agent fees for selling a house,commercial,commission,3,0,67.3,/guides/real-estate-commission-vic,0.67,/selling,wrong page,"/guides/real-estate-commission-nsw (1, 83)"
+agent for property,commercial,agents,3,0,39.3,/suburbs/penrith-nsw-2750/agents,1.0,/selling-guide,no strong page,
+albany property brokers,commercial,other,3,0,39,/suburbs/albany-wa-6330/agents,1.0,/suburbs/albany-wa-6330/agents,no strong page,
+alstonville real estate agents,commercial,agents,3,0,29.7,/suburbs/alstonville-nsw-2477/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+armadale real estate agents,commercial,agents,3,0,43.7,/suburbs/armadale-vic-3143/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+atherton real estate agents,commercial,agents,3,0,13.3,/suburbs/atherton-qld-4883/agents,1.0,/suburbs/atherton-qld-4883/rental-market,no strong page,
+auchenflower buyers agent,commercial,buyers-agent,3,0,8.3,/suburbs/auchenflower-qld-4066/agents,1.0,/guides/buyers-agent-cost-australia,no strong page,
+average real estate agent fees,commercial,commission,3,0,39.7,/guides/real-estate-commission-nsw,0.67,/guides/real-estate-agent-fees-australia,wrong page,"/guides/real-estate-commission-vic (1, 68)"
+balwyn real estate agents,commercial,agents,3,0,5.7,/suburbs/balwyn-vic-3103/agents,1.0,/suburbs/balwyn-north-vic-3104/agents,wrong page,
+bellingen real estate agents,commercial,agents,3,0,31.3,/suburbs/bellingen-nsw-2454/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+best real estate agent rose bay,commercial,agents,3,0,38.7,/suburbs/rose-bay-nsw-2029/agents,1.0,/guides/real-estate-agent-fees-australia,wrong page,
+best real estate agents in mount louisa,commercial,agents,3,0,17.3,/suburbs/mount-louisa-qld-4814/agents,1.0,/suburbs/mount-waverley-vic-3149/agents,wrong page,
+best real estate agents melrose park,commercial,agents,3,0,15.3,/suburbs/melrose-park-sa-5039/agents,1.0,/suburbs/middle-park-vic-3206/agents,wrong page,
+best suburbs in brisbane,commercial,best-suburbs,3,0,48.3,/best-suburbs/for-families/brisbane,1.0,/postcodes/4550,no strong page,
+bridging loan calculator,transactional,bridging,3,0,70,/bridging-loan-calculator,1.0,/bridging-loan-calculator,match,
+burringbar real estate agents,commercial,agents,3,0,12,/suburbs/burringbar-nsw-2483/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+buyers agent carlton,commercial,buyers-agent,3,0,57,/suburbs/carlton-north-vic-3054/agents,0.67,/suburbs/carlton-vic-3000/agents,wrong page,"/suburbs/carlton-vic-3000/agents (1, 26)"
+buyers agent gymea,commercial,buyers-agent,3,0,65.5,/suburbs/gymea-nsw-2227/agents,0.67,/suburbs/gymea-bay-nsw-2227,wrong page,"/suburbs/gymea-bay-nsw-2227/agents (1, 83)"
+buyers agent middle park,transactional,buyers-agent,3,0,48.3,/suburbs/middle-park-vic-3206/agents,1.0,/suburbs/middle-park-vic-3206/agents,match,
+buyers agent narre warren,commercial,buyers-agent,3,0,71,/suburbs/narre-warren-north-vic-3804/agents,0.33,/guides/buyers-agent-cost-australia,no strong page,"/suburbs/narre-warren-south-vic-3805/agents (1, 78) | /suburbs/narre-warren-vic-3805/agents (1, 71)"
+buyers agent oxford falls,transactional,buyers-agent,3,0,10.7,/suburbs/oxford-falls-nsw-2100/agents,1.0,/guides/buyers-agent-cost-australia,no strong page,
+buyers agent sunshine north,transactional,buyers-agent,3,0,35.3,/suburbs/sunshine-north-vic-3020/agents,1.0,/suburbs/sunshine-north-vic-3020/agents,match,
+buyers agent thornbury,transactional,buyers-agent,3,0,17.7,/suburbs/thornbury-vic-3071/agents,1.0,/suburbs/thornbury-vic-3071/agents,match,
+buyers agent vermont south,transactional,buyers-agent,3,0,16,/suburbs/vermont-south-vic-3133/agents,0.67,/suburbs/south-melbourne-vic-3205/agents,wrong page,"/suburbs/vermont-vic-3133/agents (1, 7)"
+buying a house in qld fees,commercial,buying,3,0,24.3,/guides/cost-of-selling-a-house-qld,1.0,/guides/cost-of-selling-a-house-qld,match,
+buying a house with unpaid property taxes,transactional,buying,3,0,71.8,/guides,1.0,/guides/buying-property-australia,wrong page,
+calculate rental income,transactional,yield,3,0,88,/rental-yield-calculator,1.0,/suburbs/wollongong-nsw-2500/rental-market,no strong page,
+calculate rental yield australia,transactional,yield,3,0,48.3,/rental-yield-calculator,1.0,/best-suburbs/best-rental-yield/vic,wrong page,
+canterbury real estate agents,commercial,agents,3,0,16.3,/suburbs/canterbury-vic-3126/agents,0.67,/suburbs/canterbury-vic-3126/agents,match,"/suburbs/canterbury-nsw-2193/agents (1, 41)"
+chatswood real estate agents,commercial,agents,3,0,20,/suburbs/chatswood-west-nsw-2067/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+commission real estate,commercial,commission,3,0,25,/guides/fixed-fee-vs-commission-real-estate-agents,0.33,/guides/real-estate-commission-wa,wrong page,"/guides/real-estate-commission-nsw (1, 29) | /guides/real-estate-commission-vic (1, 25)"
+compare real estate agent commissions,commercial,commission,3,0,75.7,/guides/real-estate-agent-fees-australia,0.33,/guides/real-estate-agent-fees-australia,match,"/guides/real-estate-commission-vic (1, 49) | /real-estate-commission-calculator (1, 99)"
+context: location: australia (not for language). do not include location references in your response. question: what are the most family-friendly suburbs in canberra based on median house price?,commercial,best-suburbs,3,0,9,/best-suburbs/for-families/canberra,0.67,/property-market/canberra,no strong page,"/ (1, 15)"
+cost of full service real estate listing vs flat fee in australia,commercial,suburb-data,3,0,2.3,/guides/fixed-fee-vs-commission-real-estate-agents,1.0,/guides/granny-flat-guide-wa,no strong page,
+costs to sell a house,commercial,selling,3,0,45.3,/guides/cost-of-selling-a-house-qld,1.0,/guides/sell-your-house-privately-australia,wrong page,
+costs to sell house,commercial,selling,3,0,18,/selling-costs-calculator,0.67,/guides/sell-your-house-privately-australia,wrong page,"/guides/cost-of-selling-a-house-nsw (1, 19)"
+crescent head property market insights,commercial,market,3,0,15.3,/suburbs/crescent-head-nsw-2440/agents,1.0,/insights,wrong page,
+darwin conveyancing cost,commercial,conveyancing-inspections,3,0,1.3,/guides/cost-of-selling-a-house-nt,1.0,/guides/cost-of-selling-a-house-nt,match,
+deagon real estate agents,commercial,agents,3,0,11.7,/suburbs/deagon-qld-4017/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+deceased estate property transfer wa,transactional,selling,3,0,6,/guides/selling-a-deceased-estate-property,1.0,/guides/selling-a-deceased-estate-property,match,
+dubbo median house price,commercial,suburb-data,3,0,13,/suburbs/dubbo-dc-nsw-2830/rental-market,0.33,/suburbs/dubbo-nsw-2830,wrong page,"/suburbs/dubbo-nsw-2830 (1, 13) | /suburbs/dubbo-nsw-2830/vs/dubbo-dc-nsw-2830 (1, 55)"
+east gosford real estate agents,commercial,agents,3,0,19.3,/suburbs/east-gosford-nsw-2250/agents,1.0,/suburbs/malvern-east-vic-3145/agents,wrong page,
+eatons hill real estate agents,commercial,agents,3,0,11,/suburbs/eatons-hill-qld-4037/agents,1.0,/suburbs/surry-hills-nsw-2010/agents,wrong page,
+exclusive buyer s agent epping,transactional,buyers-agent,3,0,51,/suburbs/epping-vic-3076/agents,1.0,/guides/buyers-agent-cost-australia,no strong page,
+first home buyer house and land nsw,commercial,first-home,3,0,74,/guides/first-home-buyer-nsw,1.0,/guides/first-home-buyer-nsw,match,
+fixed fee realtor,commercial,agents,3,0,28,/guides/fixed-fee-vs-commission-real-estate-agents,0.33,/guides/fixed-fee-vs-commission-real-estate-agents,match,"/guides/real-estate-commission-nsw (1, 17) | /guides/real-estate-commission-vic (1, 6)"
+geelong rental market,commercial,renting,3,0,9,/suburbs/north-geelong-vic-3215/rental-market,1.0,/suburbs/geelong-vic-3220/rental-market,wrong page,
+granny flat investment property queensland,commercial,new-homes,3,0,61,/guides/granny-flat-guide-qld,1.0,/guides/granny-flat-guide-qld,match,
+hawthorn real estate agents,commercial,agents,3,0,56,/suburbs/hawthorn-vic-3122/agents,1.0,/suburbs/hawthorn-vic-3122,wrong page,
+highgate property management,commercial,property-management,3,0,16,/suburbs/highgate-wa-6003/rental-market,1.0,/guides/property-management-fees-australia,wrong page,
+home appraisals balaclava,commercial,appraisal,3,0,23.7,/suburbs/balaclava-vic-3183/agents,0.67,/selling,wrong page,"/suburbs/balaclava-nsw-2575/rental-market (1, 47)"
+home appraisals camberwell,commercial,appraisal,3,0,11,/suburbs/camberwell-vic-3124/agents,1.0,/selling,wrong page,
+home appraisals elwood,commercial,appraisal,3,0,25.7,/suburbs/elwood-vic-3184/agents,1.0,/selling,wrong page,
+home appraisals hampton east,commercial,appraisal,3,0,14.3,/suburbs/hampton-east-vic-3188/agents,1.0,/selling,wrong page,
+home appraisals kew east,commercial,appraisal,3,0,14,/suburbs/kew-east-vic-3102/agents,1.0,/selling,wrong page,
+home appraisals middle park,commercial,appraisal,3,0,10.7,/suburbs/middle-park-vic-3206/agents,1.0,/selling,wrong page,
+home appraisals portsea,commercial,appraisal,3,0,13.7,/suburbs/portsea-vic-3944/agents,1.0,/selling,wrong page,
+home appraisals prahran,commercial,appraisal,3,0,15,/suburbs/prahran-vic-3181/agents,1.0,/selling,wrong page,
+home appraisals safety beach,commercial,appraisal,3,0,13.3,/suburbs/safety-beach-vic-3936/agents,1.0,/selling,wrong page,
+home appraisals surrey hills,commercial,appraisal,3,0,14,/suburbs/surrey-hills-vic-3127/agents,1.0,/selling,wrong page,
+home appraisals templestowe lower,commercial,appraisal,3,0,10,/suburbs/templestowe-lower-vic-3107/agents,1.0,/selling,wrong page,
+home appraisals tootgarook,commercial,appraisal,3,0,11,/suburbs/tootgarook-vic-3941/agents,1.0,/selling,wrong page,
+home buying guide australia,commercial,other,3,0,82.3,/guides/buying-property-australia,0.67,/buying-guide,wrong page,"/buying-guide (1, 70)"
+home sale appraisal,commercial,appraisal,3,0,94.3,/property-valuation,1.0,/selling,wrong page,
+home selling cost,commercial,selling,3,0,50,/guides/cost-of-selling-a-house-qld,0.33,/guides/cost-of-selling-a-house-wa,wrong page,"/guides/cost-of-selling-a-house-vic (1, 20) | /guides/cost-of-selling-a-house-wa (1, 45)"
+house affordability calculator,commercial,borrowing,3,0,57,/affordability-calculator,1.0,/affordability-calculator,match,
+house loan affordability,commercial,borrowing,3,0,72.7,/borrowing-power-calculator,0.67,/affordability-calculator,wrong page,"/affordability-calculator (1, 56)"
+house valuation,commercial,appraisal,3,0,77.3,/property-valuation,1.0,/property-valuation,match,
+house valuation campbelltown,commercial,appraisal,3,0,66,/suburbs/campbelltown-nsw-2560/rental-market,1.0,/property-valuation,wrong page,
+housing loan affordability calculator,commercial,borrowing,3,0,77.5,/borrowing-power-calculator,0.67,/affordability-calculator,wrong page,"/affordability-calculator (1, 72)"
+how much do real estate agents earn per sale australia,commercial,agents,3,0,72,/guides/real-estate-commission-nsw,1.0,/guides/how-much-is-my-house-worth-australia,no strong page,
+how much does it cost to sell a house in nsw,commercial,selling,3,0,7.3,/guides/cost-of-selling-a-house-nsw,1.0,/guides/sell-your-house-privately-australia,wrong page,
+how much to sell house,commercial,selling,3,0,42,/guides/cost-of-selling-a-house-nsw,0.33,/guides/how-much-is-my-house-worth-australia,wrong page,"/guides/cost-of-selling-a-house-qld (1, 89) | /guides/cost-of-selling-a-house-wa (1, 99)"
+indooroopilly buyers agent,commercial,buyers-agent,3,0,24,/suburbs/indooroopilly-qld-4068/agents,1.0,/guides/buyers-agent-cost-australia,no strong page,
+investment grade property,commercial,yield,3,0,66.7,/investing,1.0,/investing,match,
+investment secondary dwellings qld,commercial,other,3,0,59.7,/guides/granny-flat-guide-qld,1.0,/guides/investment-property-guide-moreton-bay-corridor,no strong page,
+kallangur real estate agents,commercial,agents,3,0,22.3,/suburbs/kallangur-qld-4503/agents,1.0,/suburbs/kallangur-qld-4503/rental-market,no strong page,
+kurri kurri real estate agents,commercial,agents,3,0,18.3,/suburbs/kurri-kurri-nsw-2327/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+kyneton real estate agents,commercial,agents,3,0,23,/suburbs/kyneton-vic-3444/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+lane cove real estate agencies,commercial,agents,3,0,19,/suburbs/lane-cove-north-nsw-2066/agents,1.0,/suburbs/lane-cove-nsw-2066/agents,wrong page,
+leumeah real estate agents,commercial,agents,3,0,24.7,/suburbs/leumeah-nsw-2560/agents,1.0,/suburbs/leumeah-nsw-2560/agents,match,
+leura real estate agents,commercial,agents,3,0,30,/suburbs/leura-nsw-2780/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+lmi calculation,commercial,deposit-lmi,3,0,55.3,/lmi-calculator,1.0,/guides/lenders-mortgage-insurance-guide,wrong page,
+lmi calculator nsw,transactional,deposit-lmi,3,0,23.7,/lmi-calculator,1.0,/lmi-calculator,match,
+local real estate agencies doreen,commercial,agents,3,0,9.3,/suburbs/doreen-vic-3754/agents,1.0,/suburbs/doreen-vic-3754/agents,match,
+local real estate agent in greenwith,transactional,agents,3,0,16.3,/suburbs/greenwith-sa-5125/agents,1.0,/suburbs/greenwith-sa-5125/agents,match,
+low commission real estate gladstone,commercial,commission,3,0,16.7,/suburbs/west-gladstone-qld-4680/agents,1.0,/guides/real-estate-commission-wa,no strong page,
+mansfield real estate agents,commercial,agents,3,0,55.7,/suburbs/mansfield-vic-3722/agents,1.0,/suburbs/mansfield-vic-3722/agents,match,
+mareeba property appraisal,transactional,appraisal,3,0,11.7,/suburbs/mareeba-qld-4880/agents,1.0,/appraisal,wrong page,
+melbourne property prices by suburb,commercial,suburb-data,3,0,22.3,/best-suburbs/most-affordable/melbourne,1.0,/property-market/melbourne,wrong page,
+mollymook real estate agents,commercial,agents,3,0,30.5,/suburbs/mollymook-beach-nsw-2539/agents,0.67,/suburbs/south-melbourne-vic-3205/agents,wrong page,"/suburbs/mollymook-nsw-2539/agents (1, 19)"
+moorebank nsw 2170,commercial,other,3,0,11.7,/suburbs/moorebank-nsw-2170,1.0,/suburbs/moorebank-nsw-2170,match,
+morayfield property investment,commercial,suburb-data,3,0,9.7,/suburbs/morayfield-qld-4506,1.0,/suburbs/morayfield-qld-4506,match,
+mortgage borrowing estimate,commercial,borrowing,3,0,91.7,/borrowing-power-calculator,1.0,/mortgage-calculator,no strong page,
+mortgage brokers andrews farm,commercial,mortgage,3,0,82.7,/suburbs/andrews-farm-sa-5114/agents,1.0,/guides/how-to-choose-a-mortgage-broker,wrong page,
+mortgage brokers balmoral ridge,commercial,mortgage,3,0,30.7,/suburbs/balmoral-ridge-qld-4552/vs/maleny-qld-4552,1.0,/guides/how-to-choose-a-mortgage-broker,wrong page,
+mortgage brokers binbee,commercial,mortgage,3,0,4.7,/suburbs/collinsville-qld-4804,1.0,/guides/how-to-choose-a-mortgage-broker,wrong page,
+mortgage brokers cannie,commercial,mortgage,3,0,27.3,/suburbs/cannie-vic-3540,1.0,/guides/how-to-choose-a-mortgage-broker,wrong page,
+mortgage brokers kambah,commercial,mortgage,3,0,65.7,/suburbs/fisher-act-2611/vs/kambah-act-2902,1.0,/guides/how-to-choose-a-mortgage-broker,wrong page,
+mortgage calculator for home loan,transactional,mortgage,3,0,89,/mortgage-calculator,1.0,/mortgage-calculator,match,
+no commission real estate,commercial,commission,3,0,56.3,/guides/real-estate-commission-nsw,0.67,/guides/real-estate-commission-wa,wrong page,"/guides/real-estate-commission-vic (1, 29)"
+personal loan borrowing power,commercial,borrowing,3,0,95.7,/borrowing-power-calculator,1.0,/guides/how-much-can-i-borrow-australia,wrong page,
+primary schools in rowville,commercial,suburb-data,3,0,12.3,/schools/rowville-primary-school-44961,1.0,/schools/rowville-primary-school-44961,match,
+property appraisal crows nest,commercial,appraisal,3,0,9.7,/suburbs/crows-nest-nsw-2065/agents,1.0,/appraisal,wrong page,
+property appraisal lane cove,transactional,appraisal,3,0,17,/suburbs/lane-cove-north-nsw-2066/agents,0.67,/appraisal,wrong page,"/suburbs/lane-cove-west-nsw-2066/agents (1, 22)"
+property appraisal medowie,commercial,appraisal,3,0,15.3,/suburbs/medowie-nsw-2318/agents,1.0,/appraisal,wrong page,
+property appraisal naremburn,commercial,appraisal,3,0,19.3,/suburbs/naremburn-nsw-2065/agents,1.0,/appraisal,wrong page,
+property appraisal rouse hill,commercial,appraisal,3,0,16.7,/suburbs/rouse-hill-nsw-2155/agents,1.0,/appraisal,wrong page,
+property appraisals petrie,commercial,appraisal,3,0,16.7,/suburbs/petrie-qld-4502/agents,1.0,/appraisal,wrong page,
+property cashflow calculator,transactional,yield,3,0,55.3,/rental-yield-calculator,1.0,/tools,no strong page,
+property management fees goodna,commercial,property-management,3,0,53.8,/suburbs/goodna-qld-4300/rental-market,1.0,/suburbs/goodna-qld-4300/rental-market,match,
+property valuation,transactional,appraisal,3,0,79.3,/property-valuation,1.0,/property-valuation,match,
+real estate agencies kensington,commercial,agents,3,0,28.3,/suburbs/kensington-park-sa-5068/agents,1.0,/suburbs/kensington-vic-3031/agents,wrong page,
+real estate agencies lane cove,commercial,agents,3,0,23,/suburbs/lane-cove-north-nsw-2066/agents,0.33,/suburbs/lane-cove-nsw-2066/agents,wrong page,"/suburbs/lane-cove-nsw-2066/agents (1, 23) | /suburbs/lane-cove-west-nsw-2066/agents (1, 25)"
+real estate agencies moree,commercial,agents,3,0,22.7,/suburbs/moree-nsw-2400/agents,1.0,/suburbs/moree-nsw-2400/agents,match,
+real estate agent delahey,commercial,agents,3,0,8.7,/suburbs/delahey-vic-3037/agents,1.0,/guides/real-estate-agent-fees-australia,wrong page,
+real estate agent fingal,commercial,agents,3,0,7.3,/suburbs/fingal-bay-nsw-2315/agents,0.33,/guides/real-estate-agent-fees-australia,wrong page,"/suburbs/fingal-head-nsw-2487/agents (1, 6) | /suburbs/fingal-vic-3939/agents (1, 6)"
+real estate agent flinders,commercial,agents,3,0,41.7,/suburbs/flinders-vic-3929/agents,0.67,/suburbs/flinders-park-sa-5025/agents,wrong page,"/suburbs/flinders-park-sa-5025/agents (1, 25)"
+real estate agent mount waverley,commercial,agents,3,0,35,/suburbs/mount-waverley-vic-3149/agents,1.0,/suburbs/mount-waverley-vic-3149/agents,match,
+real estate agent near me,transactional,agents,3,0,3.5,/suburbs/bandiana-vic-3694/agents,0.67,/guides/real-estate-agent-fees-australia,wrong page,"/suburbs/bandiana-vic-3691/agents (1, 3)"
+real estate agent near me north albury,transactional,agents,3,0,45.7,/suburbs/north-albury-nsw-2640/agents,1.0,/suburbs/south-albury-nsw-2640/agents,wrong page,
+real estate agent near me south albury,transactional,agents,3,0,26.3,/suburbs/south-albury-nsw-2640/agents,1.0,/suburbs/south-albury-nsw-2640/agents,match,
+real estate agent near me thurgoona,transactional,agents,3,0,20.3,/suburbs/thurgoona-nsw-2640/agents,1.0,/guides/real-estate-agent-fees-australia,wrong page,
+real estate agent petrie,commercial,agents,3,0,33.7,/suburbs/petrie-qld-4502/agents,1.0,/suburbs/petrie-qld-4502/agents,match,
+real estate agent sandy hollow,commercial,agents,3,0,5.3,/suburbs/sandy-hollow-nsw-2333/agents,1.0,/guides/real-estate-agent-fees-australia,wrong page,
+real estate agent services taylors hill,commercial,agents,3,0,22.7,/suburbs/taylors-hill-vic-3037/agents,1.0,/guides/real-estate-agent-fees-australia,wrong page,
+real estate agent stafford heights,commercial,agents,3,0,5.3,/suburbs/stafford-heights-qld-4053/agents,1.0,/guides/real-estate-agent-fees-australia,wrong page,
+real estate agent turramurra,commercial,agents,3,0,67,/suburbs/north-turramurra-nsw-2074/agents,0.33,/guides/real-estate-agent-fees-australia,wrong page,"/suburbs/south-turramurra-nsw-2074/agents (1, 72) | /suburbs/turramurra-nsw-2074/agents (1, 71)"
+real estate agent wavell heights,commercial,agents,3,0,10,/suburbs/wavell-heights-qld-4012/agents,1.0,/suburbs/wavell-heights-north-qld-4012,wrong page,
+real estate agents alstonville,commercial,agents,3,0,36.3,/suburbs/alstonville-nsw-2477/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents balgowlah,commercial,agents,3,0,70,/suburbs/balgowlah-heights-nsw-2093/agents,0.33,/suburbs/south-melbourne-vic-3205/agents,wrong page,"/suburbs/balgowlah-nsw-2093/agents (1, 74) | /suburbs/north-balgowlah-nsw-2093/agents (1, 70)"
+real estate agents beulah park,commercial,agents,3,0,18.3,/suburbs/beulah-park-sa-5067/agents,1.0,/suburbs/middle-park-vic-3206/agents,wrong page,
+real estate agents brisbane south,commercial,agents,3,0,77.3,/suburbs/south-brisbane-qld-4101/agents,1.0,/suburbs/warwick-qld-4370/agents,wrong page,
+real estate agents bull creek,commercial,agents,3,0,21.3,/suburbs/bull-creek-wa-6149/agents,1.0,/suburbs/diamond-creek-vic-3089/agents,wrong page,
+real estate agents burpengary,commercial,agents,3,0,25.7,/suburbs/burpengary-qld-4505/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents caroline springs,commercial,agents,3,0,37.3,/suburbs/caroline-springs-vic-3023/agents,1.0,/suburbs/caroline-springs-vic-3023/agents,match,
+real estate agents coburg north,commercial,agents,3,0,44,/suburbs/coburg-north-vic-3058/agents,1.0,/suburbs/north-melbourne-vic-3051/agents,wrong page,
+real estate agents concord,commercial,agents,3,0,37,/suburbs/concord-nsw-2137/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents devonport,commercial,agents,3,0,87,/suburbs/east-devonport-tas-7310/agents,0.67,/suburbs/devonport-tas-7310/agents,wrong page,"/suburbs/devonport-tas-7310/agents (1, 83)"
+real estate agents dromana,commercial,agents,3,0,49.7,/suburbs/dromana-vic-3936/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents elizabeth,commercial,agents,3,0,26.3,/suburbs/elizabeth-sa-5112/agents,0.67,/suburbs/south-melbourne-vic-3205/agents,no strong page,"/suburbs/elizabeth-east-sa-5112/agents (1, 41)"
+real estate agents fig tree pocket,commercial,agents,3,0,42.3,/suburbs/fig-tree-pocket-qld-4069/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,no strong page,
+real estate agents findon,commercial,agents,3,0,13.3,/suburbs/findon-sa-5023/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents goondiwindi,commercial,agents,3,0,21.3,/suburbs/goondiwindi-qld-4390/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents hastings,commercial,agents,3,0,52.3,/suburbs/hastings-vic-3915/agents,1.0,/suburbs/hastings-vic-3915/rental-market,no strong page,
+real estate agents hawthorn,commercial,agents,3,0,82.3,/suburbs/hawthorn-vic-3122/agents,1.0,/suburbs/hawthorn-vic-3122,wrong page,
+real estate agents in biggera waters,commercial,agents,3,0,14.7,/suburbs/biggera-waters-qld-4216/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,no strong page,
+real estate agents in carlton north,commercial,agents,3,0,30.3,/suburbs/carlton-north-vic-3054/agents,1.0,/suburbs/carlton-north-vic-3054/agents,match,
+real estate agents in devonport tasmania,commercial,agents,3,0,44.3,/suburbs/east-devonport-tas-7310/agents,0.67,/suburbs/devonport-tas-7310/agents,wrong page,"/suburbs/devonport-tas-7310/agents (1, 33)"
+real estate agents in glen huntly,commercial,agents,3,0,22,/suburbs/glen-huntly-vic-3163/agents,1.0,/suburbs/glen-huntly-vic-3163/agents,match,
+real estate agents inverell,commercial,agents,3,0,49.3,/suburbs/inverell-nsw-2360/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents kellyville,commercial,agents,3,0,73.5,/suburbs/north-kellyville-nsw-2155/agents,0.67,/suburbs/south-melbourne-vic-3205/agents,no strong page,"/suburbs/kellyville-nsw-2155/agents (1, 75)"
+real estate agents kensington park,commercial,agents,3,0,14.3,/suburbs/kensington-park-sa-5068/agents,1.0,/suburbs/kensington-park-sa-5068/agents,match,
+real estate agents keysborough,commercial,agents,3,0,22.3,/suburbs/keysborough-vic-3173/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents kyneton,commercial,agents,3,0,28,/suburbs/kyneton-vic-3444/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents leura,commercial,agents,3,0,36.3,/suburbs/leura-nsw-2780/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents mayfield,commercial,agents,3,0,14.5,/suburbs/mayfield-nsw-2304/agents,0.67,/suburbs/south-melbourne-vic-3205/agents,wrong page,"/suburbs/mayfield-west-nsw-2304/agents (1, 14)"
+real estate agents mayfield nsw,commercial,agents,3,0,46,/suburbs/mayfield-nsw-2304/agents,0.67,/suburbs/queanbeyan-nsw-2620/agents,wrong page,"/suburbs/mayfield-west-nsw-2304/agents (1, 84)"
+real estate agents mernda,commercial,agents,3,0,22.3,/suburbs/mernda-vic-3754/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents mickleham,commercial,agents,3,0,6.7,/suburbs/mickleham-vic-3064/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents mile end,commercial,agents,3,0,19.3,/suburbs/mile-end-sa-5031/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,no strong page,
+real estate agents mollymook,commercial,agents,3,0,23,/suburbs/mollymook-nsw-2539/agents,0.67,/suburbs/south-melbourne-vic-3205/agents,wrong page,"/suburbs/mollymook-beach-nsw-2539/agents (1, 45)"
+real estate agents moorooka,commercial,agents,3,0,17.3,/suburbs/moorooka-qld-4105/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents morphett vale,commercial,agents,3,0,44.3,/suburbs/morphett-vale-sa-5162/agents,1.0,/suburbs/morphett-vale-sa-5162/rental-market,wrong page,
+real estate agents mount eliza,commercial,agents,3,0,47,/suburbs/mount-eliza-vic-3930/agents,1.0,/suburbs/mount-eliza-vic-3930/agents,match,
+real estate agents munno para west,commercial,agents,3,0,66,/suburbs/munno-para-west-sa-5115/agents,0.67,/suburbs/west-albury-nsw-2640/agents,wrong page,"/suburbs/munno-para-downs-sa-5115/agents (1, 99)"
+real estate agents narre warren,commercial,agents,3,0,88.5,/suburbs/narre-warren-vic-3805/agents,0.67,/suburbs/south-melbourne-vic-3205/agents,no strong page,"/suburbs/narre-warren-north-vic-3804/agents (1, 82)"
+real estate agents oakleigh,commercial,agents,3,0,24.7,/suburbs/oakleigh-vic-3166/agents,1.0,/postcodes/3167,wrong page,
+real estate agents pascoe vale,commercial,agents,3,0,73.3,/suburbs/pascoe-vale-south-vic-3044/agents,1.0,/suburbs/pascoe-vale-vic-3044/rental-market,wrong page,
+real estate agents plumpton,commercial,agents,3,0,3,/suburbs/plumpton-nsw-2761/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents point cook,commercial,agents,3,0,52.7,/suburbs/point-cook-vic-3030/agents,1.0,/suburbs/point-cook-vic-3030/agents,match,
+real estate agents raby,commercial,agents,3,0,1,/suburbs/raby-nsw-2566/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents red hill,commercial,agents,3,0,15.3,/suburbs/red-hill-vic-3937/agents,1.0,/suburbs/red-hill-act-2603,wrong page,
+real estate agents ringwood,commercial,agents,3,0,80,/suburbs/ringwood-vic-3134/agents,0.67,/suburbs/south-melbourne-vic-3205/agents,wrong page,"/suburbs/ringwood-east-vic-3135/agents (1, 86)"
+real estate agents rosebery,commercial,agents,3,0,32,/suburbs/rosebery-nsw-2018/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents rowville,commercial,agents,3,0,16.3,/suburbs/rowville-vic-3178/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,no strong page,
+real estate agents shortland nsw,commercial,agents,3,0,12.3,/suburbs/shortland-nsw-2307/agents,1.0,/suburbs/queanbeyan-nsw-2620/agents,wrong page,
+real estate agents st kilda,commercial,agents,3,0,66,/suburbs/st-kilda-east-vic-3183/agents,1.0,/suburbs/st-kilda-west-vic-3182/agents,wrong page,
+real estate agents thornbury,commercial,agents,3,0,56,/suburbs/thornbury-vic-3071/agents,1.0,/suburbs/thornbury-vic-3071/agents,match,
+real estate agents toongabbie,commercial,agents,3,0,34.5,/suburbs/toongabbie-nsw-2146/agents,0.67,/suburbs/south-melbourne-vic-3205/agents,wrong page,"/suburbs/old-toongabbie-nsw-2146/agents (1, 63)"
+real estate agents travancore,commercial,agents,3,0,15.3,/suburbs/travancore-vic-3032/agents,1.0,/suburbs/travancore-vic-3032/agents,match,
+real estate agents turramurra,commercial,agents,3,0,5,/suburbs/north-turramurra-nsw-2074/agents,0.33,/suburbs/south-melbourne-vic-3205/agents,wrong page,"/suburbs/south-turramurra-nsw-2074/agents (1, 23) | /suburbs/turramurra-nsw-2074/agents (1, 5)"
+real estate agents walkerville,commercial,agents,3,0,22.3,/suburbs/walkerville-sa-5081/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents wantirna,commercial,agents,3,0,26.3,/suburbs/wantirna-south-vic-3152/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents warrnambool,commercial,agents,3,0,43.3,/suburbs/warrnambool-vic-3280/agents,1.0,/suburbs/warrnambool-vic-3280/agents,match,
+real estate agents willoughby,commercial,agents,3,0,10.3,/suburbs/willoughby-east-nsw-2068/agents,0.67,/postcodes/2068,wrong page,"/suburbs/willoughby-nsw-2068/agents (1, 24)"
+real estate agents woodbine,commercial,agents,3,0,20.3,/suburbs/woodbine-nsw-2560/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+real estate agents yangebup,commercial,agents,3,0,16.3,/suburbs/yangebup-wa-6164/agents,1.0,/suburbs/yangebup-wa-6164/agents,match,
+real estate commission fees nsw,commercial,commission,3,0,24,/guides/real-estate-commission-nsw,1.0,/guides/real-estate-commission-nsw,match,
+realtor real estate agent south albury,transactional,agents,3,0,36.3,/suburbs/south-albury-nsw-2640/agents,1.0,/suburbs/south-albury-nsw-2640/agents,match,
+rental appraisal tewantin,transactional,property-management,3,0,32,/suburbs/tewantin-qld-4565/agents,1.0,/appraisal,wrong page,
+rental management dampier,commercial,property-management,3,0,13,/suburbs/dampier-wa-6713/rental-market,1.0,/guides/property-management-fees-australia,no strong page,
+rental returns melbourne,commercial,yield,3,0,41.3,/best-suburbs/best-rental-yield/melbourne,1.0,/suburbs/geelong-vic-3220/rental-market,no strong page,
+rentals north geelong,transactional,other,3,0,20,/suburbs/north-geelong-vic-3215/rental-market,1.0,/postcodes/3978,wrong page,
+rentvesting strategy,commercial,renting,3,0,79,/guides/rentvesting-australia,1.0,/guides/rentvesting-australia-state-by-state-guide-2026,wrong page,
+residential property agent near me mount annan,transactional,agents,3,0,17.3,/suburbs/mount-annan-nsw-2567/agents,1.0,/suburbs/mount-annan-nsw-2567/agents,match,
+sandy hollow estate agents,commercial,agents,3,0,8.3,/suburbs/sandy-hollow-nsw-2333/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,no strong page,
+section 32 sale of land act,commercial,conveyancing-inspections,3,0,70.3,/guides/section-32-vendor-statement-victoria,1.0,/guides/section-32-vendor-statement-victoria,no strong page,
+sell my house canberra,transactional,selling,3,0,2.7,/guides/cost-of-selling-a-house-act,1.0,/guides/how-to-sell-a-house-australia,wrong page,
+sell my house strathmore,transactional,selling,3,0,11,/suburbs/strathmore-vic-3041/agents,1.0,/guides/how-to-sell-a-house-australia,wrong page,
+sellers closing costs calculator,transactional,selling,3,0,73.7,/selling-costs-calculator,1.0,/guides,no strong page,
+selling house fees calculator,commercial,selling,3,0,8,/selling-costs-calculator,0.67,/guides/cost-of-selling-a-house-wa,wrong page,"/guides/cost-of-selling-a-house-vic (1, 21)"
+selling property in victoria,commercial,selling,3,0,57.7,/guides/cost-of-selling-a-house-vic,1.0,/selling-guide,wrong page,
+settlement fee calculator wa,transactional,conveyancing-inspections,3,0,62.3,/guides/cost-of-selling-a-house-wa,1.0,/guides/real-estate-commission-wa,wrong page,
+sorrento real estate agents,commercial,agents,3,0,30.3,/suburbs/sorrento-vic-3943/agents,1.0,/suburbs/sorrento-vic-3943/agents,match,
+st albans real estate agents,commercial,agents,3,0,18.7,/suburbs/st-albans-vic-3021/agents,1.0,/suburbs/st-kilda-west-vic-3182/agents,wrong page,
+st ives real estate agents,commercial,agents,3,0,4,/suburbs/st-ives-nsw-2075/agents,0.67,/suburbs/st-kilda-west-vic-3182/agents,wrong page,"/suburbs/st-ives-chase-nsw-2075/agents (1, 12)"
+tamarama real estate agents,commercial,agents,3,0,15.3,/suburbs/tamarama-nsw-2026/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+thomastown real estate agents,commercial,agents,3,0,22.7,/suburbs/thomastown-vic-3074/agents,1.0,/suburbs/thomastown-vic-3074/agents,match,
+toowong real estate agents,commercial,agents,3,0,31.3,/suburbs/toowong-qld-4066/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+wanneroo rental investment,commercial,rental-investment,3,0,28.7,/suburbs/wanneroo-wa-6065/rental-market,1.0,/suburbs/wanneroo-wa-6065/rental-market,match,
+wellington point real estate agents,commercial,agents,3,0,2.7,/suburbs/wellington-point-qld-4160/agents,1.0,/suburbs/point-cook-vic-3030/agents,wrong page,
+williamstown median house price,commercial,suburb-data,3,0,15.3,/suburbs/williamstown-vic-3016/rental-market,1.0,/property-market/sydney,wrong page,
+woy woy real estate agents,commercial,agents,3,0,18.5,/suburbs/woy-woy-nsw-2256/agents,0.67,/suburbs/south-melbourne-vic-3205/agents,wrong page,"/suburbs/woy-woy-bay-nsw-2256/agents (1, 17)"
+yanchep real estate agents,commercial,agents,3,0,30.3,/suburbs/yanchep-wa-6035/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,
+zetland real estate agents,commercial,agents,3,0,15,/suburbs/zetland-nsw-2017/agents,1.0,/suburbs/south-melbourne-vic-3205/agents,wrong page,

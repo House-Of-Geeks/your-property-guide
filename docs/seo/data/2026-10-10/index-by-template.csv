@@ -1,0 +1,10 @@
+template,inspected,Crawled - currently not indexed,Discovered – currently not indexed,"Duplicate, Google chose different canonical than user",Excluded by ‘noindex’ tag,Page with redirect,Server error (5xx),Submitted and indexed,URL is unknown to Google
+money page,318,61,4,0,0,0,5,247,1
+suburb profile,270,46,4,0,11,5,0,204,0
+suburb agents,190,0,0,0,0,0,0,190,0
+suburb rental-market,170,2,5,0,0,0,0,162,1
+postcode,101,42,2,0,0,0,0,57,0
+suburb schools,60,2,4,0,0,0,0,54,0
+school,60,29,0,0,0,0,0,31,0
+region/state/market,39,25,0,0,0,0,0,14,0
+suburb other sub,25,1,5,1,0,0,0,17,1
