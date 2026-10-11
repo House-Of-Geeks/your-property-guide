@@ -31,27 +31,34 @@ import {
   HG_SOURCES,
   fmtCap,
 } from "@/lib/data/home-guarantee";
+import { LMI_RATE_SOURCE, premiumAt } from "@/lib/lmi-calc";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "First Home Guarantee 2026: Buy With a 5% Deposit, No LMI",
+  title: "Australian Government 5% Deposit Scheme (First Home Guarantee): 2026 caps and rules",
   description:
     "How the Australian Government 5% Deposit Scheme (the expanded First Home Guarantee) lets eligible first home buyers purchase with a 5% deposit and no Lenders Mortgage Insurance. The 2025 expansion, price caps, the Family Home Guarantee, and how it stacks with the FHOG.",
   slug: "first-home-guarantee",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
   persona: "first-home",
 };
 
+// The scheme's name since 1 October 2025 leads the <title>, as it does on three
+// of the five rivals (commercial-intent review 10 Oct 2026, buying 3.7); the
+// H1 (FRONTMATTER.title) carries the long form and the old name.
+const SEO_TITLE = "5% Deposit Scheme 2026: Price Caps, Eligibility, No LMI";
+const LMI_600K_5 = `$${premiumAt(600_000, 5)!.toLocaleString("en-AU")}`;
+
 export const metadata: Metadata = {
-  title: FRONTMATTER.title,
+  title: SEO_TITLE,
   description: FRONTMATTER.description,
   alternates: { canonical: `${SITE_URL}/guides/${FRONTMATTER.slug}` },
   openGraph: {
     url: `${SITE_URL}/guides/${FRONTMATTER.slug}`,
-    title: FRONTMATTER.title,
+    title: SEO_TITLE,
     description: FRONTMATTER.description,
     type: "article",
     publishedTime: FRONTMATTER.publishedAt,
@@ -88,6 +95,11 @@ const TOC: GuideTOCEntry[] = [
 ];
 
 const FAQS: FaqItem[] = [
+  {
+    question: "What is a 5% deposit on a $600,000 house?",
+    answer:
+      `$30,000. Through the 5% Deposit Scheme an eligible buyer pays no lenders mortgage insurance on that deposit if the price is within the area's cap, for example ${fmtCap(HG_PRICE_CAPS.VIC.rest)} in regional Victoria (Housing Australia, read ${formatDate(HG_CHECKED_ON)}). Without the scheme, LMI at 5% down is ${LMI_600K_5} on one lender's published table (${LMI_RATE_SOURCE.name.split(",")[0]}, ${LMI_RATE_SOURCE.dated}). Stamp duty and buying costs are extra.`,
+  },
   {
     question: "What is the First Home Guarantee?",
     answer:
@@ -173,10 +185,13 @@ export default function FirstHomeGuaranteePage() {
 
       <h2 id="what-it-is">What the First Home Guarantee is</h2>
       <p className="lead">
-        The First Home Guarantee is a federal scheme run through Housing Australia.
-        It lets eligible first home buyers purchase with as little as a {FHB}% deposit,
-        with the government guaranteeing the rest so you avoid Lenders Mortgage
-        Insurance.
+        The 5% Deposit Scheme lets an eligible buyer purchase with a {FHB}% deposit and no
+        lenders mortgage insurance, under a price cap of {fmtCap(HG_PRICE_CAPS.NSW.capital)} in
+        Greater Sydney (Housing Australia, read {formatDate(HG_CHECKED_ON)}). It is the First Home
+        Guarantee under its new name, run through Housing Australia, with the government
+        guaranteeing the part of the loan above {HG_GUARANTEE_FROM_LVR}% of the value. Without it,
+        LMI on a $600,000 home with 5% down is {LMI_600K_5} on one lender&rsquo;s published table (see
+        our <Link href="/lmi-calculator">LMI calculator</Link>).
       </p>
       <p>
         On {HG_DATES.expanded} the scheme was expanded and renamed the Australian Government
@@ -320,6 +335,9 @@ export default function FirstHomeGuaranteePage() {
         Compare the two on your own numbers in the{" "}
         <Link href="/help-to-buy-calculator">Help to Buy calculator</Link>, which shows
         the same home under each.
+        Our side-by-side,{" "}
+        <Link href="/guides/help-to-buy-scheme-australia#vs-guarantee">Help to Buy vs the 5% Deposit Scheme</Link>,
+        sets out the trade-off.
       </p>
 
       <h2 id="stacking">Stacking with the FHOG and stamp duty</h2>

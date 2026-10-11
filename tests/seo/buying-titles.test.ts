@@ -10,6 +10,7 @@ const TITLES: Array<[string, string]> = [
   ["first-home-owner-grant-australia", "First Home Owner Grant 2026: Amounts and Caps by State"],
   ["lenders-mortgage-insurance-guide", "Lenders Mortgage Insurance 2026: What It Costs, How to Avoid"],
   ["how-much-deposit-to-buy-a-house", "How Much Deposit Do You Need for a House? 2026 Guide"],
+  ["first-home-guarantee", "5% Deposit Scheme 2026: Price Caps, Eligibility, No LMI"],
 ];
 
 describe("buying guide titles", () => {
