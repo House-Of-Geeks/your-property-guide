@@ -70,7 +70,7 @@ export const RENTERS_GUIDES: Record<RentersState, RentersGuide> = {
     state: "TAS",
     slug: "renters-rights-tas",
     linkTitle: "Renters' rights in Tasmania",
-    blurb: "Tasmanian tenancy rules, bonds and repairs.",
+    blurb: "A Tasmanian landlord needs a listed reason to end a non-fixed term lease.",
   },
   ACT: {
     state: "ACT",
@@ -392,6 +392,78 @@ export const WA_RENTERS_SOURCES = {
     label: "Consumer Protection WA, Safe tenancy: family and domestic violence",
     href: `${WA_CP}/safe-tenancy-fdv`,
     date: "last updated 19 February 2026",
+    read: READ,
+  },
+} as const satisfies Record<string, RentersSource>;
+
+const CAT = "https://consumeraffairs.tas.gov.au/topics/housing/renting";
+
+/** Consumer Affairs Tasmania pages behind /guides/renters-rights-tas. */
+export const TAS_RENTERS_SOURCES = {
+  ownerEnding: {
+    label: "Consumer Affairs Tasmania, Owner ending a lease",
+    href: `${CAT}/ending-a-tenancylease/owner-ending-lease`,
+    date: "last updated 17 July 2026",
+    read: READ,
+  },
+  nonFixed: {
+    label: "Consumer Affairs Tasmania, Ending a non-fixed term lease",
+    href: `${CAT}/ending-a-tenancylease/ending-non-fixed-term-lease`,
+    date: "last updated 25 March 2020",
+    read: READ,
+  },
+  tenantEnding: {
+    label: "Consumer Affairs Tasmania, Tenant ending a fixed term lease",
+    href: `${CAT}/ending-a-tenancylease/tenant-ending-lease`,
+    date: "last updated 25 March 2020",
+    read: READ,
+  },
+  rentIncreases: {
+    label: "Consumer Affairs Tasmania, Rent increases",
+    href: `${CAT}/during-a-tenancylease/rent-increases`,
+    date: "last updated 2 July 2020",
+    read: READ,
+  },
+  bond: {
+    label: "Consumer Affairs Tasmania, Rental bond lodgement and paying a bond contribution",
+    href: `${CAT}/bonds/bond-lodgement-and-paying-a-bond-contribution`,
+    date: "last updated 30 June 2020",
+    read: READ,
+  },
+  upfront: {
+    label: "Consumer Affairs Tasmania, Upfront entry costs: renting",
+    href: `${CAT}/beginning-tenancy/upfront-costs`,
+    date: "last updated 1 July 2020",
+    read: READ,
+  },
+  access: {
+    label: "Consumer Affairs Tasmania, Privacy and access: renting (routine inspections)",
+    href: `${CAT}/during-a-tenancylease/privacy-access`,
+    date: "last updated 15 September 2020",
+    read: READ,
+  },
+  urgentRepairs: {
+    label: "Consumer Affairs Tasmania, Urgent repairs to rental properties",
+    href: `${CAT}/rental-maintenance-repairs-changes/urgent-repairs`,
+    date: "last updated 2 July 2020",
+    read: READ,
+  },
+  reimbursement: {
+    label: "Consumer Affairs Tasmania, Reimbursement of repair costs",
+    href: `${CAT}/rental-maintenance-repairs-changes/reimbursement-of-repairs`,
+    date: "last updated 2 July 2020",
+    read: READ,
+  },
+  pets: {
+    label: "Consumer Affairs Tasmania, Pets in rental properties",
+    href: `${CAT}/beginning-tenancy/pets`,
+    date: "last updated 20 March 2026",
+    read: READ,
+  },
+  courtOrder: {
+    label: "Consumer Affairs Tasmania, Court order end to a tenancy (including family violence)",
+    href: `${CAT}/ending-a-tenancylease/court-order-end-tenancy`,
+    date: "last updated 11 April 2018",
     read: READ,
   },
 } as const satisfies Record<string, RentersSource>;

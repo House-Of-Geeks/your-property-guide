@@ -11,6 +11,7 @@ import {
   NSW_RENTERS_SOURCES,
   QLD_RENTERS_SOURCES,
   SA_RENTERS_SOURCES,
+  TAS_RENTERS_SOURCES,
   VIC_RENTERS_SOURCES,
   WA_RENTERS_SOURCES,
   RENTERS_GUIDES,
@@ -181,6 +182,23 @@ describe("WA renters' rights guide", () => {
     expect(RENTERS_GUIDES.WA.blurb).toContain("60 days");
     for (const s of Object.values(WA_RENTERS_SOURCES)) {
       expect(s.href).toMatch(/^https:\/\/www\.consumerprotection\.wa\.gov\.au\//);
+      expect(s.date).toMatch(DATE);
+    }
+  });
+});
+
+describe("TAS renters' rights guide", () => {
+  const src = page("renters-rights-tas");
+
+  it("lists the reasons a landlord needs, not a no-grounds notice", () => {
+    expect(src).not.toMatch(/Tasmania still permits no-grounds/);
+    expect(src).not.toMatch(/42 days from landlord \(no grounds\)/);
+    expect(src).not.toMatch(/at least 42 days written notice before the increase/);
+    expect(src).toContain("60 days");
+    expect(src).toContain("once every 3 months");
+    expect(RENTERS_GUIDES.TAS.blurb).toContain("listed reason");
+    for (const s of Object.values(TAS_RENTERS_SOURCES)) {
+      expect(s.href).toMatch(/^https:\/\/consumeraffairs\.tas\.gov\.au\//);
       expect(s.date).toMatch(DATE);
     }
   });
