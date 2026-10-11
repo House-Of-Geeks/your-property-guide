@@ -29,6 +29,7 @@ const UNSOURCED = [
 const STATES = [
   { slug: "granny-flat-guide-vic", instrument: [/Amendment VC253/, /clause 54/] },
   { slug: "granny-flat-guide-nsw", instrument: [/State Environmental Planning Policy \(Housing\) 2021/, /Schedule 1/, /section 54/] },
+  { slug: "granny-flat-guide-qld", instrument: [/Planning Regulation 2017/, /Schedule 24/, /Planning Act 2016/, /City Plan 2014/] },
 ] as const;
 
 describe("state granny flat guides", () => {
@@ -85,5 +86,16 @@ describe("state granny flat guides", () => {
     expect(src).toContain("12 m");
     expect(src).toContain("section 51");
     expect(src).toContain("version in force from 11 September 2026");
+  });
+
+  it("QLD: no unconfirmed council-DA rule, Brisbane limits or vacancy claim; renting since 26 Sep 2022 and the QBCC threshold", () => {
+    const src = read("granny-flat-guide-qld");
+    expect(src).not.toMatch(/Most projects require a Development Application/);
+    expect(src).not.toMatch(/25 to 30 business days/);
+    expect(src).not.toMatch(/600m²|600 m²/);
+    expect(src).not.toMatch(/80m²|80 m²/);
+    expect(src).toContain("26 September 2022");
+    expect(src).toContain("$3,300");
+    expect(src).toContain("Major amendment package L");
   });
 });
