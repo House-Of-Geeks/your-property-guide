@@ -25,7 +25,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "The mortgage feature most Australians use wrong. What an offset account actually does, how it saves interest mechanically, when it's worth the package fee, redraw vs offset, and how to use it as a deposit-builder for the next purchase.",
   slug: "offset-accounts-explained-australia",
   publishedAt: "2026-05-18",
-  updatedAt: "2026-05-18",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 11,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -316,7 +316,10 @@ export default function OffsetAccountsExplainedPage() {
       <h2 id="investment-loans">Why offset matters more on investment loans</h2>
       <p>
         Investment-loan interest is tax-deductible against rental
-        income (and other income, in the case of negative gearing).
+        income (and other income, in the case of negative gearing, though
+        from 1 July 2027 not for an established home bought after 7:30pm
+        AEST on 12 May 2026, whose losses only offset residential property
+        income and gains).
         Owner-occupier loan interest isn&rsquo;t deductible. That
         difference changes how offset and redraw work tactically.
       </p>

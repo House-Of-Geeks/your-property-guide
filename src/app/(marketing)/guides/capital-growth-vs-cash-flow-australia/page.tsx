@@ -23,7 +23,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "The investor decision that gets oversimplified into one sentence. What capital growth and cash flow really mean for an Australian property portfolio, how to model the trade-off, and which strategy fits which life stage.",
   slug: "capital-growth-vs-cash-flow-australia",
   publishedAt: "2026-05-18",
-  updatedAt: "2026-05-18",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 14,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -97,7 +97,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Does negative gearing make capital-growth strategy more attractive?",
     answer:
-      "Marginally, but less than property spruikers make out. Negative gearing turns a $10,000 annual cash-flow loss into a $5,300 loss for an investor on the top marginal rate (47 per cent). You're still spending real money out of pocket each year; the tax saving offsets less than half. Negative gearing makes growth strategy viable for high-income investors who can absorb the cash drain while waiting for appreciation. For investors on average incomes (32.5 per cent marginal rate), the offset is smaller and the cash drain is harder. See our negative gearing guide for the full mechanics.",
+      "Marginally, but less than property spruikers make out. Negative gearing turns a $10,000 annual cash-flow loss into a $5,300 loss for an investor on the top marginal rate (47 per cent). You're still spending real money out of pocket each year; the tax saving offsets less than half. Negative gearing makes growth strategy viable for high-income investors who can absorb the cash drain while waiting for appreciation. For investors on middle incomes (30 per cent marginal rate in 2026-27, 32 per cent with the Medicare levy), the offset is smaller and the cash drain is harder. And from 1 July 2027, a loss on an established home bought after 7:30pm AEST on 12 May 2026 no longer reduces tax on other income at all: it is carried forward against residential property income and gains (ATO, last updated 29 June 2026). See our negative gearing guide for the full mechanics.",
   },
   {
     question: "When should I switch from cash-flow focus to growth focus (or vice versa)?",
@@ -130,7 +130,7 @@ export default function CapitalGrowthVsCashFlowPage() {
         steps={[
           { name: "Define your years-to-exit",          text: "10+ years favours growth; 3 to 5 years favours yield. Short holding periods don't give growth time to compound." },
           { name: "Test your serviceability headroom",  text: "If a new lender will lend you another $400,000+, growth strategy is viable. If you're near ceiling, you need cash-flow positive purchases.", url: "/borrowing-power-calculator" },
-          { name: "Check your tax bracket",              text: "47 per cent marginal rate makes negative gearing meaningfully useful. 32.5 per cent makes it marginal." },
+          { name: "Check your tax bracket",              text: "A 47 per cent rate (45 per cent plus the Medicare levy) makes negative gearing meaningfully useful; 32 per cent (30 plus the levy) less so. From 1 July 2027 an established home bought after 12 May 2026 gets no saving against other income." },
           { name: "Model both on the actual property",   text: "Use the rental yield calculator and the mortgage calculator to project 10-year cash flow and 10-year capital value.", url: "/rental-yield-calculator" },
           { name: "Compare against what's missing in your portfolio", text: "Already have two growth properties? Probably need cash flow next. Have two yielders? Probably need growth." },
           { name: "Pick deliberately, not by default",   text: "The wrong way to choose is whichever the buyer's agent or social-media investor is currently selling." },
@@ -352,9 +352,13 @@ export default function CapitalGrowthVsCashFlowPage() {
       <h2 id="tax-effect">The tax effect (and why it&rsquo;s smaller than the spruikers say)</h2>
       <p>
         Negative gearing converts cash-flow losses into deductions against
-        your taxable income. On a 47 per cent marginal rate, a $10,000
-        loss becomes a $5,300 loss after tax. The tax effect is real, but
-        it&rsquo;s a partial offset, not a free lunch.
+        your taxable income. On a 47 per cent marginal rate (the top 45 per
+        cent rate plus the Medicare levy), a $10,000 loss becomes a $5,300
+        loss after tax. The tax effect is real, but it&rsquo;s a partial
+        offset, not a free lunch. From 1 July 2027 it disappears for an
+        established home bought after 7:30pm AEST on 12 May 2026, whose losses
+        only offset residential property income and gains; see our{" "}
+        <Link href="/guides/negative-gearing-changes-2026-budget">negative gearing changes explainer</Link>.
       </p>
       <p>
         The full mechanics (depreciation schedules, capital works
