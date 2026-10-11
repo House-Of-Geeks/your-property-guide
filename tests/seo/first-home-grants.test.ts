@@ -27,6 +27,7 @@ import { FIRST_HOME_SUMMARY } from "@/lib/data/stamp-duty-state";
 import { HG_NT_CAP_BEFORE_SPLIT, HG_PRICE_CAPS } from "@/lib/data/home-guarantee";
 import { HTB_INCOME_LIMITS, HTB_INCOME_LIMITS_PREVIOUS, HTB_PRICE_CAPS } from "@/lib/data/help-to-buy";
 import { FHSS_ANNUAL_LIMIT, FHSS_TOTAL_LIMIT, FHSS_TOTAL_LIMIT_BEFORE_2022 } from "@/lib/data/fhss";
+import { PERSONA_HUB_CONTENT } from "@/lib/persona-hub-content";
 
 // ─── The data file ──────────────────────────────────────────────────────────
 
@@ -309,4 +310,29 @@ describe("pages rendered from the data file", () => {
       }
     }, 30_000);
   }
+});
+
+describe("/first-home-buyers hub copy (its FAQ answers render as FAQPage JSON-LD)", () => {
+  const hub = PERSONA_HUB_CONTENT["first-home"];
+  const html = [hub.metaTitle, hub.metaDescription, ...hub.deepDive.paragraphs, ...hub.faqs.flatMap((f) => [f.question, f.answer])]
+    .map((t) => `<p>${t}</p>`)
+    .join("");
+
+  it("prints only first home figures in the data files, and no closed scheme as current", () => {
+    expect(scan(html, null)).toEqual([]);
+  });
+
+  it("names every state's grant from the data file", () => {
+    const answer = hub.faqs.find((f) => f.question === "What is the First Home Owner Grant in 2026?")!.answer;
+    for (const s of AUSTRALIAN_STATES) {
+      const g = FIRST_HOME_GRANTS[s];
+      if (g.amount !== null) expect(answer, s).toContain(fmt(g.amount));
+    }
+    expect(answer).toContain("ACT: none");
+  });
+
+  it("keeps the title within 60 characters and the description within 160", () => {
+    expect(hub.metaTitle.length).toBeLessThanOrEqual(60);
+    expect(hub.metaDescription.length).toBeLessThanOrEqual(160);
+  });
 });

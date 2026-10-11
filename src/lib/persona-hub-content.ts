@@ -18,6 +18,9 @@
 
 import type { PersonaId } from "@/lib/constants/journey";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
+import { FIRST_HOME_DUTY as FHD, FIRST_HOME_GRANTS as FHG, fmt as fhFmt, longDate as fhDate } from "@/lib/data/first-home-grants";
+import { FHSS_ANNUAL_LIMIT, FHSS_TOTAL_LIMIT } from "@/lib/data/fhss";
+import { LMI_RATE_SOURCE, premiumAt } from "@/lib/lmi-calc";
 
 export interface HubCalculatorCard {
   label: string;
@@ -64,26 +67,37 @@ export interface PersonaHubContent {
 // Target queries: "first home buyer grant" (18,100/mo), "first home
 // buyer" (12,100/mo), "first home buyer scheme" (9,900/mo).
 
+// Grant amounts and duty thresholds come from src/lib/data/first-home-grants.ts
+// and the stamp duty engine; LMI from the /lmi-calculator table (commercial-
+// intent review 10 Oct 2026, buying 0.1 row 14). These FAQ answers render as
+// FAQPage JSON-LD, so tests/seo/first-home-grants.test.ts scans them too.
+const fhA = (s: keyof typeof FHG) => fhFmt(FHG[s].amount!);
+const fhT = (s: keyof typeof FHD) => fhFmt(FHD[s].exemptTo!);
+const fhC = (s: keyof typeof FHD) => fhFmt(FHD[s].concessionTo!);
+const LMI_600K_90 = fhFmt(premiumAt(600_000, 10)!);
+const LMI_600K_95 = fhFmt(premiumAt(600_000, 5)!);
+const LMI_SOURCE = `${LMI_RATE_SOURCE.name.split(",")[0]}'s lender table, ${LMI_RATE_SOURCE.dated}`;
+
 const FIRST_HOME: PersonaHubContent = {
-  metaTitle: "First Home Buyer Australia 2026: Grants, Schemes, Deposit & Stamp Duty",
+  metaTitle: "First Home Buyer Schemes 2026: Grants, Deposit, Stamp Duty",
   metaDescription:
-    "Plain-English guide for first home buyers in Australia. Federal grants and schemes, stamp duty concessions by state, deposit math, LMI, and what banks actually approve. Free, no sign-up.",
+    "First home buyer schemes in Australia: state grants and stamp duty relief by state, the 5% Deposit Scheme, Help to Buy, the FHSS and LMI, sourced and dated.",
   deepDive: {
     eyebrow: "First home buying in Australia, in 2026",
     heading: "The schemes, the deposit, the *stamp duty*.",
     paragraphs: [
       "Buying a first home in Australia is mostly three problems running in parallel: how much deposit you actually need, which federal or state schemes you qualify for, and how much stamp duty you can avoid paying. Get those three right and the rest is paperwork.",
-      `On deposit: most lenders will accept a 5% deposit if you can qualify for the First Home Guarantee (FHBG), which waives Lenders Mortgage Insurance on a 5% deposit. Without the FHBG, expect to need 20% to avoid LMI, or pay LMI of roughly 2-4% of the loan to get in on 5-10%. Since ${HG_DATES.expanded} the FHBG, now the 5% Deposit Scheme, has no income test and no limit on places; what still applies is the price cap for the area you buy in.`,
-      "On schemes: the First Home Owner Grant (FHOG) is state-administered and varies by state: $30k in QLD and $10k in NSW and VIC, all for new homes only, under each state's price cap (Victoria's $20k regional grant ended in June 2021). The First Home Super Saver Scheme (FHSSS) lets you withdraw up to $50k of voluntary super contributions, plus deemed earnings, for a deposit, a useful top-up that most first home buyers don't know about.",
-      "On stamp duty: this is where the biggest dollar saving usually sits. NSW first home buyers pay no stamp duty under $800k, partial concession to $1M. VIC offers full exemption under $600k, sliding scale to $750k. QLD has its own First Home Concession with a $700k cap. WA is generous under $450k. Calculate before you make an offer, not after — the gap between qualifying and not qualifying can be tens of thousands of dollars.",
-      "Pre-approval before you bid. Conditional approval (sometimes called 'pre-approval') tells you what a lender will lend you on your current income and expenses, subject to property valuation. It's not a guarantee, but going to an auction without one is gambling with your deposit.",
+      `On deposit: the federal 5% Deposit Scheme (the expanded First Home Guarantee) lets an eligible buyer purchase with a 5% deposit and no Lenders Mortgage Insurance. Since ${HG_DATES.expanded} it has had no income test and no limit on places; what still applies is the price cap for the area you buy in. Without it, expect to need 20% to avoid LMI: on a $600,000 home, one lender's table puts LMI at ${LMI_600K_90} with a 10% deposit and ${LMI_600K_95} with 5% (${LMI_SOURCE}).`,
+      `On schemes: the First Home Owner Grant is paid by each state, on new homes only: ${fhA("NT")} in the Northern Territory (the HomeGrown Territory Grant), ${fhA("QLD")} in Queensland, ${fhA("TAS")} in Tasmania, up to ${fhA("SA")} in South Australia, ${fhA("NSW")} in NSW, Victoria and WA, and none in the ACT, each under its own price cap and contract dates (revenue offices, read ${fhDate(FHG.NSW.checkedOn)}). The First Home Super Saver Scheme lets you withdraw up to ${fhFmt(FHSS_TOTAL_LIMIT)} of voluntary super contributions, plus deemed earnings, for a deposit.`,
+      `On stamp duty: this is where the biggest dollar saving usually sits. NSW first home buyers pay no duty up to ${fhT("NSW")}, with a concession under ${fhC("NSW")}. Victoria: none up to ${fhT("VIC")}, sliding to ${fhC("VIC")}. Queensland: none on an established home up to ${fhT("QLD")}, phasing out under ${fhC("QLD")}, and none on a new home at any price. WA: none up to ${fhT("WA")}, a concession to ${fhC("WA")}. SA: none on a new home, full duty on an established one. The ACT: none for an eligible buyer since ${FHD.ACT.from}. Tasmania and the NT give no first home duty relief. Calculate before you make an offer, not after.`,
+      "Pre-approval before you bid. Conditional approval (sometimes called 'pre-approval') is a lender's estimate of what it may lend you on your current income and expenses, subject to property valuation. It's not a guarantee, but going to an auction without one is gambling with your deposit.",
     ],
   },
   calculatorsHeading: "Calculators built for your situation",
   calculatorsBlurb:
     "The five numbers a first home buyer needs to know before they bid. Free, no sign-up, results in seconds.",
   calculators: [
-    { label: "How much can I borrow?",       href: "/borrowing-power-calculator", blurb: "What a lender will actually approve on your income and expenses." },
+    { label: "How much can I borrow?",       href: "/borrowing-power-calculator", blurb: "An estimate of what a lender may lend on your income and expenses." },
     { label: "Stamp duty calculator",        href: "/stamp-duty-calculator",      blurb: "First home buyer concessions included for every state and territory." },
     { label: "What can I afford?",           href: "/affordability-calculator",   blurb: "Combines deposit, borrowing power, stamp duty and buying costs into a price you can spend." },
     { label: "Mortgage repayment calculator",href: "/mortgage-calculator",        blurb: "Weekly, fortnightly or monthly repayments and total interest over the loan." },
@@ -92,22 +106,22 @@ const FIRST_HOME: PersonaHubContent = {
     {
       question: "How much deposit do I need to buy a first home in Australia?",
       answer:
-        "Most lenders accept a 5% deposit if you qualify for the First Home Guarantee (FHBG), which waives Lenders Mortgage Insurance. Without the FHBG, plan for 20% to avoid LMI, or 5-10% plus LMI of roughly 2-4% of the loan amount. You'll also need 2-5% on top for stamp duty, conveyancing and inspection costs.",
+        `With the 5% Deposit Scheme, 5% and no Lenders Mortgage Insurance, if the price is under your area's cap (for example ${fmtCap(HG_PRICE_CAPS.NSW.capital)} in Greater Sydney). Without it, plan for 20% to avoid LMI, or 5 to 10% plus LMI: ${LMI_600K_95} on a $600,000 home with 5% down (${LMI_SOURCE}). Budget for stamp duty, conveyancing and inspections on top.`,
     },
     {
       question: "What is the First Home Owner Grant in 2026?",
       answer:
-        "The FHOG is administered by each state and territory. NSW: $10,000 for new homes up to $600,000 (or $750,000 for land and a building contract). VIC: $10,000 for new homes up to $750,000. QLD: $30,000 (boosted) for new homes only. WA: $10,000 for new homes under $750,000 metro / $1m regional. SA: $15,000 for new homes under $650,000. TAS: $30,000 for new homes. The grant only covers newly built homes in most states.",
+        `Each state sets its own, on new homes only. NSW: ${fhA("NSW")}, up to ${fhFmt(FHG.NSW.caps[0].value)} (or ${fhFmt(FHG.NSW.caps[1].value)} for land and a build). VIC: ${fhA("VIC")}, up to ${fhFmt(FHG.VIC.caps[0].value)}. QLD: ${fhA("QLD")}, under ${fhFmt(FHG.QLD.caps[0].value)}. WA: up to ${fhA("WA")}, capped at ${fhFmt(FHG.WA.caps[0].value)} in Perth. SA: up to ${fhA("SA")}, no cap. TAS: ${fhA("TAS")} to ${FHG.TAS.endsOn}. NT: ${fhA("NT")} to ${FHG.NT.endsOn}. ACT: none (revenue offices, read ${fhDate(FHG.NSW.checkedOn)}).`,
     },
     {
       question: "Do first home buyers pay stamp duty?",
       answer:
-        "Often no, or much less than other buyers. NSW abolishes stamp duty for first home buyers under $800,000 with a sliding concession to $1m. VIC waives it under $600,000, sliding to $750,000. QLD has a First Home Concession with thresholds up to $700,000 (full exemption typically under $550,000). WA exempts up to $450,000. Always check current thresholds with the state revenue office before you make an offer.",
+        `Often no, or much less. NSW: nothing up to ${fhT("NSW")}, a concession under ${fhC("NSW")}. VIC: nothing up to ${fhT("VIC")}, sliding to ${fhC("VIC")}. QLD: nothing on an established home up to ${fhT("QLD")} (phasing out under ${fhC("QLD")}) or on any new home. WA: nothing up to ${fhT("WA")}, a concession to ${fhC("WA")}. SA: nothing on a new home. ACT: nothing for an eligible buyer. Tasmania and the NT: full duty. Check with the state revenue office before you offer.`,
     },
     {
       question: "What is Lenders Mortgage Insurance (LMI) and when does it apply?",
       answer:
-        "LMI protects the lender — not you — if you default on the loan. It typically applies when your deposit is less than 20% of the purchase price. The cost ranges from roughly 1% of the loan for a 15% deposit up to 4-5% for a 5% deposit. LMI is waived under the First Home Guarantee, the Family Home Guarantee and the Regional First Home Buyer Guarantee.",
+        `LMI protects the lender, not you, if you default on the loan. It usually applies when your deposit is under 20% of the price. On a $600,000 home one lender's table charges ${LMI_600K_90} at a 10% deposit and ${LMI_600K_95} at 5% (${LMI_SOURCE}). It is waived under the 5% Deposit Scheme and the Family Home Guarantee; the Regional First Home Buyer Guarantee has issued no new guarantees since ${HG_DATES.expanded}.`,
     },
     {
       question: "How does the First Home Guarantee work?",
@@ -117,12 +131,12 @@ const FIRST_HOME: PersonaHubContent = {
     {
       question: "What is the First Home Super Saver Scheme (FHSSS)?",
       answer:
-        "The FHSSS lets you make voluntary contributions to your super (up to $15,000 per year, $50,000 total) and withdraw them, plus deemed earnings, for a first home deposit. Salary sacrificed contributions are taxed at 15% in super instead of your marginal rate, which is where the saving comes from. Since 15 September 2024 you need the ATO's determination before the home becomes yours (generally settlement), and you can request the release up to 90 days after signing a contract.",
+        `The FHSSS lets you make voluntary contributions to your super (up to ${fhFmt(FHSS_ANNUAL_LIMIT)} a year, ${fhFmt(FHSS_TOTAL_LIMIT)} in total) and withdraw them, plus deemed earnings, for a first home deposit. Salary sacrificed contributions are taxed at 15% in super instead of your marginal rate, which is where the saving comes from. Since 15 September 2024 you need the ATO's determination before the home becomes yours (generally settlement), and you can request the release up to 90 days after signing a contract.`,
     },
     {
       question: "Should I get pre-approval before house-hunting?",
       answer:
-        "Yes. Conditional approval (often called pre-approval) tells you what a lender will lend you based on your income and expenses, subject to property valuation. It's not legally binding but it shapes what you can credibly bid on and is a prerequisite for most auctions. Most pre-approvals are valid for 3-6 months.",
+        "Yes. Conditional approval (often called pre-approval) is a lender's estimate of what it may lend you on your income and expenses, subject to property valuation. It's not legally binding, but it shapes what you can credibly bid on and is a prerequisite for most auctions. Most pre-approvals are valid for 3-6 months.",
     },
   ],
   matchIntent: "buying",
