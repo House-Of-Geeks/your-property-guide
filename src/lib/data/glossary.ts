@@ -91,7 +91,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   {
     term: "Capital Gains Tax (CGT)",
     slug: "capital-gains-tax-cgt",
-    html: `A tax on the profit made from selling a capital asset (including investment properties). In Australia, CGT is part of income tax, the gain is added to your taxable income in the year of sale. Properties held for more than 12 months receive a 50% CGT discount. Your primary residence (principal place of residence) is generally exempt from CGT.`,
+    html: `A tax on the profit made from selling a capital asset (including investment properties). In Australia, CGT is part of income tax, the gain is added to your taxable income in the year of sale. On a sale before 1 July 2027, individuals and trusts that have held the asset for at least 12 months get a 50% CGT discount; companies get none. From 1 July 2027 the discount is replaced, for gains that accrue from that date, by cost base indexation and a 30% minimum tax for resident individuals, including on property you already own (ATO, last updated 29 June 2026). Your primary residence (principal place of residence) is generally exempt from CGT. See <a href="/guides/cgt-changes-2026-budget">how the CGT change works from 1 July 2027</a>.`,
     category: "investing",
   },
   {
@@ -397,7 +397,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   {
     term: "Negative Gearing",
     slug: "negative-gearing",
-    html: `When an investment property&apos;s expenses (interest, rates, management, depreciation) exceed its rental income, creating a net loss. This loss can be used to offset other taxable income, reducing the investor&apos;s tax bill. Negative gearing is a common strategy in Australia, though the benefit depends on the investor&apos;s marginal tax rate.`,
+    html: `When an investment property&apos;s expenses (interest, rates, management, depreciation) exceed its rental income, creating a net loss. Until 30 June 2027 this loss can be used to offset other taxable income, reducing the investor&apos;s tax bill, and the benefit depends on the investor&apos;s marginal tax rate. From 1 July 2027, the loss on an established home bought after 7:30pm AEST on 12 May 2026 can only be offset against income and gains from residential property, with any excess carried forward; homes held before then and new builds keep negative gearing (ATO, last updated 29 June 2026). See <a href="/guides/negative-gearing-changes-2026-budget">what the negative gearing change does</a>.`,
     category: "renters",
   },
   {
@@ -629,7 +629,10 @@ export const GLOSSARY_GUIDE_LINKS: Record<string, { guides?: readonly string[]; 
   "stamp-duty-transfer-duty": { tools: ["/stamp-duty-calculator"], guides: STAMP_DUTY_GUIDES },
   "land-transfer-duty": { tools: ["/stamp-duty-calculator"], guides: STAMP_DUTY_GUIDES },
   "transfer-duty": { tools: ["/stamp-duty-calculator"], guides: STAMP_DUTY_GUIDES },
-  "negative-gearing": { guides: ["negative-gearing-australia", "negative-gearing-cgt-changes-now-law-2026"] },
+  "negative-gearing": {
+    tools: ["/negative-gearing-calculator"],
+    guides: ["negative-gearing-australia", "negative-gearing-changes-2026-budget", "negative-gearing-cgt-changes-now-law-2026"],
+  },
   "gearing-positive-negative-neutral": { guides: ["negative-gearing-australia"] },
   "building-inspection": { guides: ["building-pest-inspection"] },
   "cooling-off-period": { guides: ["cooling-off-period-by-state-australia", "cooling-off-period-vic"] },
