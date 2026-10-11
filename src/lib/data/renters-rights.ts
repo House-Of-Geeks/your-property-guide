@@ -52,7 +52,7 @@ export const RENTERS_GUIDES: Record<RentersState, RentersGuide> = {
     state: "QLD",
     slug: "renters-rights-qld",
     linkTitle: "Renters' rights in Queensland",
-    blurb: "Queensland tenancy rules and the Residential Tenancies Authority.",
+    blurb: "A Queensland landlord needs an approved reason, which can be the end of a fixed term.",
   },
   WA: {
     state: "WA",
@@ -241,6 +241,91 @@ export const VIC_RENTERS_SOURCES = {
     label: "Consumer Affairs Victoria, Resolving disputes (Rental Dispute Resolution Victoria)",
     href: `${CAV}/legal-and-dispute-support/resolving-disputes`,
     date: "last updated 26 February 2026",
+    read: READ,
+  },
+} as const satisfies Record<string, RentersSource>;
+
+const RTA = "https://www.rta.qld.gov.au";
+const RTA_NO_DATE = "no date shown";
+
+/** Residential Tenancies Authority pages behind /guides/renters-rights-qld. */
+export const QLD_RENTERS_SOURCES = {
+  changes: {
+    label: "Residential Tenancies Authority (RTA), Rental law changes (2021 to 2025, by start date)",
+    href: `${RTA}/rental-law-changes`,
+    date: RTA_NO_DATE,
+    read: READ,
+  },
+  endingAgreement: {
+    label: "RTA, Ending a tenancy agreement (approved reasons under the Residential Tenancies and Rooming Accommodation Act 2008)",
+    href: `${RTA}/ending-a-tenancy/ending-a-tenancy-agreement`,
+    date: RTA_NO_DATE,
+    read: READ,
+  },
+  noticePeriods: {
+    label: "RTA, Notice periods for ending a tenancy",
+    href: `${RTA}/ending-tenancy-notice`,
+    date: RTA_NO_DATE,
+    read: READ,
+  },
+  rent: {
+    label: "RTA, Rent increases",
+    href: `${RTA}/rent`,
+    date: RTA_NO_DATE,
+    read: READ,
+  },
+  bond: {
+    label: "RTA, Rental bond",
+    href: `${RTA}/starting-a-tenancy/rental-bond`,
+    date: RTA_NO_DATE,
+    read: READ,
+  },
+  entry: {
+    label: "RTA, Entry to the property",
+    href: `${RTA}/during-a-tenancy/living-in-the-property/entry-to-the-property`,
+    date: RTA_NO_DATE,
+    read: READ,
+  },
+  inspections: {
+    label: "RTA, Routine inspections",
+    href: `${RTA}/during-a-tenancy/living-in-the-property/routine-inspections`,
+    date: RTA_NO_DATE,
+    read: READ,
+  },
+  emergencyRepairs: {
+    label: "RTA, Emergency repairs",
+    href: `${RTA}/during-a-tenancy/repairs/emergency-repairs`,
+    date: RTA_NO_DATE,
+    read: READ,
+  },
+  routineRepairs: {
+    label: "RTA, Routine repairs",
+    href: `${RTA}/during-a-tenancy/repairs/routine-repairs`,
+    date: RTA_NO_DATE,
+    read: READ,
+  },
+  standards: {
+    label: "RTA, Minimum housing standards",
+    href: `${RTA}/during-a-tenancy/minimum-housing-standards`,
+    date: RTA_NO_DATE,
+    read: READ,
+  },
+  pets: {
+    label: "RTA, Renting with pets",
+    href: `${RTA}/during-a-tenancy/living-in-the-property/renting-with-pets`,
+    date: RTA_NO_DATE,
+    read: READ,
+  },
+  domesticViolence: {
+    label: "RTA, Domestic violence in a rental property",
+    href: `${RTA}/domestic-violence-in-a-rental-property`,
+    date: RTA_NO_DATE,
+    read: READ,
+  },
+  disputes: {
+    label: "RTA, Disputes (free RTA dispute resolution, then QCAT)",
+    href: `${RTA}/disputes`,
+    date: RTA_NO_DATE,
     read: READ,
   },
 } as const satisfies Record<string, RentersSource>;

@@ -9,6 +9,7 @@ import { describe, expect, it } from "vitest";
 import { PM_STATE_FEES } from "@/lib/data/property-management-fees";
 import {
   NSW_RENTERS_SOURCES,
+  QLD_RENTERS_SOURCES,
   SA_RENTERS_SOURCES,
   VIC_RENTERS_SOURCES,
   RENTERS_GUIDES,
@@ -133,6 +134,30 @@ describe("VIC renters' rights guide", () => {
     expect(src).toMatch(/\n\s+sourced\n/);
     for (const s of Object.values(VIC_RENTERS_SOURCES)) {
       expect(s.href).toMatch(/^https:\/\/www\.consumer\.vic\.gov\.au\//);
+      expect(s.date).toMatch(DATE);
+    }
+  });
+});
+
+describe("QLD renters' rights guide", () => {
+  const src = page("renters-rights-qld");
+
+  it("drops the 2024 grounds story and the transitional no-grounds row", () => {
+    expect(src).not.toMatch(/2024 reforms moved/);
+    expect(src).not.toMatch(/pre-2024 rules/);
+    expect(src).not.toMatch(/1800 512 888/);
+    expect(src).not.toMatch(/up to \$300/);
+    expect(src).toContain("End of a fixed-term agreement");
+    expect(RENTERS_GUIDES.QLD.blurb).toContain("approved reason");
+  });
+
+  it("gives the RTA's inspection, bond and repair rules", () => {
+    expect(src).toContain("at most once every 3 months");
+    expect(src).toContain("within 10 days");
+    expect(src).toContain("4 weeks&apos; rent");
+    expect(src).toContain("1300 366 311");
+    for (const s of Object.values(QLD_RENTERS_SOURCES)) {
+      expect(s.href).toMatch(/^https:\/\/www\.rta\.qld\.gov\.au\//);
       expect(s.date).toMatch(DATE);
     }
   });
