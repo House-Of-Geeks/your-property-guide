@@ -333,9 +333,12 @@ export default function RealEstateAgentFeesPage() {
           Be cautious about signing for more than 90 days without a strong reason.
         </li>
         <li>
-          <strong>Cooling-off period.</strong> In most states, you have a short
-          cooling-off period (often 1 to 3 days) after signing an agency agreement
-          to cancel without penalty. Check your state&rsquo;s rules.
+          <strong>Cooling-off period.</strong> NSW gives you until 5 pm on the
+          next business day or Saturday after signing to cancel the agency
+          agreement. Victoria, Queensland, South Australia and WA give no
+          cooling-off on it, so read the agreement before you sign. Our guide to{" "}
+          <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>{" "}
+          sets out each state&rsquo;s rules.
         </li>
         <li>
           <strong>Commission trigger.</strong> Understand exactly when commission

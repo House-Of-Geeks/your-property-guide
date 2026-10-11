@@ -90,3 +90,15 @@ describe("valuation wording (review 10 Oct 2026, selling 0.9)", () => {
     }
   });
 });
+
+describe("fees guide cooling-off (review 10 Oct 2026, selling 0.5)", () => {
+  it("matches the agency-agreements guide: NSW only, to 5 pm the next business day or Saturday", () => {
+    const fees = readFileSync("src/app/(marketing)/guides/real-estate-agent-fees-australia/page.tsx", "utf8");
+    expect(fees).not.toMatch(/often 1 to 3 days|In most states, you have a short/);
+    expect(fees).toContain("NSW gives you until 5 pm on the");
+    expect(fees).toContain('href="/guides/real-estate-agency-agreements-by-state"');
+    const agreements = readFileSync("src/lib/data/blog-posts/real-estate-agency-agreements-by-state.ts", "utf8").replace(/<[^>]+>/g, "");
+    expect(agreements).toContain("ends at 5 pm on the next business day or Saturday");
+    expect(agreements).toContain("Victoria, Queensland, SA and WA have none");
+  });
+});
