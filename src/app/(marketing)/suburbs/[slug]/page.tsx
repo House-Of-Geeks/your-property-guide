@@ -49,10 +49,12 @@ import {
 } from "@/lib/suburb-narrative";
 import {
   hasReliablePrice,
-  PENDING_PRICE_LABEL,
-  PENDING_PRICE_NOTE,
+  profileSourceLine,
+  withheldPriceNote,
 } from "@/lib/suburb-data-quality";
-import { describeSalesProvenance, hasEnoughSales, thinSalesNote } from "@/lib/sales-provenance";
+import { describeSalesProvenance, hasEnoughSales } from "@/lib/sales-provenance";
+import { rentalSourceLabel } from "@/lib/rental-labels";
+import { db } from "@/lib/db";
 import { publishedGrowthFor } from "@/lib/published-medians";
 import { PriceProvenance } from "@/components/suburb/PriceProvenance";
 import { buildLeadSentence } from "@/lib/suburb-snapshot";
@@ -165,10 +167,27 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
     salesCount: suburb.dataFreshness?.salesCount,
     suburbName: suburb.name,
   });
-  // A trusted feed with too few sales: say so instead of "pending".
-  const thinSalesCount = !priceTrusted && salesProvenance && !hasEnoughSales(suburb.dataFreshness?.salesCount)
-    ? suburb.dataFreshness?.salesCount ?? null
+  // Why the median is withheld, in words that stay true until the reason
+  // goes (suburbs-market 0.5, 10 Oct 2026): a rental feed's label on the
+  // sales columns, the census estimate, no trusted feed, too few sales,
+  // a unit median above the house median, or no median in the feed. The
+  // gated object zeroes both medians in the last two cases, so only then
+  // does the page read the row's own columns to tell them apart.
+  const needsRawMedians = !priceTrusted && salesProvenance !== null && hasEnoughSales(suburb.dataFreshness?.salesCount);
+  const rawMedians = needsRawMedians
+    ? await db.suburb.findUnique({ where: { slug }, select: { medianHousePrice: true, medianUnitPrice: true } })
     : null;
+  const withheld = priceTrusted
+    ? null
+    : withheldPriceNote({
+        name: suburb.name,
+        state: suburb.state,
+        statsSource: suburb.dataFreshness?.salesSource,
+        salesCount: suburb.dataFreshness?.salesCount,
+        period: salesProvenance?.period ?? null,
+        rawHouse: rawMedians?.medianHousePrice,
+        rawUnit: rawMedians?.medianUnitPrice,
+      });
   // Greater-capital classification (postcode-range based) for the
   // "{suburb}, {city}" answer phrasing and the city market-page link.
   const capitalCity = capitalCityFor(suburb.state, suburb.postcode);
@@ -257,19 +276,18 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                     </p>
                   </>
                 ) : (
-                  // Unreliable source (currently QLD/WA census-mortgage
-                  // proxy). Don't publish the back-calculated fiction
-                  // as a "median". Show an honest pending state with a
-                  // link to the methodology page.
+                  // No published median: say why (withheldPriceNote), with a
+                  // link to the methodology page. Never a figure the gate
+                  // withheld.
                   <>
                     <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3 inline-flex items-center gap-2">
                       <TrendingUp className="w-3.5 h-3.5 text-cta" /> Median house price
                     </p>
                     <p className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight">
-                      {thinSalesCount ? "Too few sales for a median" : PENDING_PRICE_LABEL}
+                      {withheld?.label}
                     </p>
                     <p className="font-sans text-sm text-ink-muted mt-3 leading-relaxed">
-                      {thinSalesCount && salesProvenance ? thinSalesNote(thinSalesCount, salesProvenance.period) : PENDING_PRICE_NOTE}{" "}
+                      {withheld?.note}{" "}
                       <Link
                         href="/methodology"
                         className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
@@ -285,7 +303,10 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                     is a number, so the old null check printed "+0.0% over the
                     past year" under every Land Victoria and ABS median. Spaces
                     are written as strings (JSX spacing trap). */}
-                {priceTrusted && (houseGrowth !== 0 || suburb.stats.medianUnitPrice > 0) && (
+                {/* A unit median the gate publishes shows even when the house
+                    median is withheld (a Land Victoria quarter with units and
+                    no house median). */}
+                {(priceTrusted ? houseGrowth !== 0 || suburb.stats.medianUnitPrice > 0 : suburb.stats.medianUnitPrice > 0) && (
                   <p className="font-sans text-base text-ink-muted mt-4 leading-relaxed">
                     {houseGrowth !== 0 && (
                       <>
@@ -304,7 +325,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                     )}
                   </p>
                 )}
-                {priceTrusted ? (
+                {priceTrusted || suburb.stats.medianUnitPrice > 0 ? (
                   <PriceProvenance provenance={salesProvenance} />
                 ) : (
                   <DataFreshnessNote
@@ -345,7 +366,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
               <DataFreshnessNote
                 label="Rental"
                 asOf={suburb.dataFreshness?.rentalAsOf ?? null}
-                source={suburb.dataFreshness?.rentalSource ?? undefined}
+                source={rentalSourceLabel(suburb.dataFreshness?.rentalSource, suburb.postcode) ?? undefined}
               />
               {availability["rental-market"] && (
                 <div className="mt-3">
@@ -832,7 +853,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 <BarChart3 className="w-4 h-4 text-cta" /> Sources cited
               </p>
               <p className="text-ink-muted leading-relaxed">
-                Median, growth and rental data from state revenue offices and ABS.
+                {profileSourceLine(suburb.state)}{" "}
                 Census from ABS 2021. Climate from BoM. Hazard from Geoscience Australia.
                 School data from ACARA. Crime from state police open data.{" "}
                 <Link
@@ -844,19 +865,20 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
               </p>
             </div>
             <div>
-              <p className="font-medium text-ink mb-2">Always dated</p>
+              <p className="font-medium text-ink mb-2">Sources and dates</p>
               <p className="text-ink-muted leading-relaxed">
-                Every figure on this page carries its source and as-of date in a
-                tooltip. If a figure looks off to you, tell us and we&rsquo;ll fix
-                it within a week.
+                Each section names its source, and its date where the feed gives
+                one. Where we can&rsquo;t vouch for a figure we leave it out and
+                say why. If a figure looks off to you, tell us and we&rsquo;ll
+                check it.
               </p>
             </div>
             <div>
               <p className="font-medium text-ink mb-2">No login</p>
               <p className="text-ink-muted leading-relaxed">
                 No paywall, no sign-up, no download form. The suburb data is the
-                product. We earn from partner brokers and agents on the rare
-                occasion you ask for one.
+                product. If you ask us for an agent or a specialist, the one who
+                receives your details pays us a fee.
               </p>
             </div>
           </div>
