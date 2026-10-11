@@ -69,3 +69,12 @@ describe("RBA table F6 rates", () => {
     );
   });
 });
+
+describe("/guides/bridging-loans-guide", () => {
+  it("answers 'How much do you pay back on a bridging loan?' from the engine's worked example", () => {
+    const src = read("app/(marketing)/guides/bridging-loans-guide/page.tsx");
+    expect(src).toContain('question: "How much do you pay back on a bridging loan?"');
+    expect(src).toContain("${fmt(EXR.endDebt)}");
+    expect(src).toContain("${EXAMPLE_ONGOING_RATE}%");
+  });
+});

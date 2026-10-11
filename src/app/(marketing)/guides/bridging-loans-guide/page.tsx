@@ -109,6 +109,11 @@ const FAQS: FaqItem[] = [
       `Add the application, valuation and discharge fees. Scale it to your own figure: $500,000 for six months is about ${fmt(ON_500K_6)}. The bridging loan calculator works it out from your sale and purchase prices.`,
   },
   {
+    question: "How much do you pay back on a bridging loan?",
+    answer:
+      `The bridging part comes back out of the sale, and what is left is an ordinary home loan. In our worked example (a home in New South Wales expected to sell for ${fmt(EX.salePrice)} with ${fmt(EX.mortgageOwing)} owing, a ${fmt(EX.purchasePrice)} purchase, sold within six months), peak debt is ${fmt(EXR.peakDebt)}, including ${fmt(EXR.capitalisedInterest)} of interest added at ${RATE}%. The sale repays ${fmt(EXR.netSaleProceeds)} and leaves ${fmt(EXR.endDebt)}, about ${fmt(EXR.monthlyRepayment)} a month over 30 years at ${EXAMPLE_ONGOING_RATE}% (the ${AVERAGE_NEW_VARIABLE_RATE.period} average new variable rate, RBA table F6). The calculator works it for your own figures.`,
+  },
+  {
     question: "Do you make repayments during a bridging loan?",
     answer:
       "It depends on the lender. Westpac, St.George, Bank of Melbourne, BankSA and Bendigo Bank add the bridging interest to the loan, so there are no repayments on the bridging part until the sale. " +
