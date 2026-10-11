@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { LOCALITIES_ONLY } from "@/lib/non-localities";
 import { GLOSSARY_TERMS } from "@/lib/data/glossary";
 import { SITE_URL } from "@/lib/constants";
+import { hasHouseAndLandStock } from "@/lib/house-and-land-indexability";
 
 export const revalidate = 3600; // refresh hourly
 
@@ -26,12 +27,21 @@ export const metadata: Metadata = {
 };
 
 interface StatBlock {
-  value: string;
+  count: number;
   label: string;
   source: string;
   context: string;
   href?: string;
   sourceLink?: string;
+}
+
+// A count is printed only when there is something to count. A zero is not a
+// figure: it either means a feed has not loaded (hazard records) or that
+// nothing is listed (house and land packages, 0 in production on 1 Oct
+// 2026), and "0" beside a named source reads as a dataset that exists. The
+// build render (every count 0, see below) prints only the editorial rows.
+function printable(s: StatBlock): boolean {
+  return Number.isFinite(s.count) && s.count > 0;
 }
 
 function formatCount(n: number): string {
@@ -88,7 +98,7 @@ async function getCounts() {
 export default async function DataPage() {
   // Skip the DB at build (Railway proxy drops build-time connections); ISR
   // (revalidate above) fills real counts on first request. Empty renders
-  // cleanly — every count below is zero-safe via formatCount/String.
+  // cleanly: a zero count is never printed (printable above).
   const c =
     process.env.NEXT_PHASE === "phase-production-build"
       ? ({
@@ -111,27 +121,27 @@ export default async function DataPage() {
 
   const heroStats: StatBlock[] = [
     {
-      value: formatCount(c.suburbs),
+      count: c.suburbs,
       label: "Suburbs profiled",
       source: "ABS, state Valuer-General offices",
       context: "Every suburb in Australia with median, growth, demographics, schools, walk score and hazard data.",
       href: "/suburbs",
     },
     {
-      value: formatCount(c.schools),
+      count: c.schools,
       label: "Schools tracked",
       source: "ACARA",
       context: "Government, Catholic, and independent schools with year range, sector, ICSEA and catchment data.",
       href: "/schools",
     },
     {
-      value: formatCount(c.propertyAddresses),
+      count: c.propertyAddresses,
       label: "Property addresses",
       source: "GNAF, state revenue offices",
       context: "Individual property records with sales history and street-level granularity.",
     },
     {
-      value: formatCount(c.propertySales),
+      count: c.propertySales,
       label: "Sales records",
       source: "State Valuer-General offices",
       context: "Historical sales used to calculate medians, growth, and recent comparables.",
@@ -139,39 +149,50 @@ export default async function DataPage() {
     },
   ];
 
-  const datasets: { heading: string; rows: StatBlock[] }[] = [
+  const allDatasets: { heading: string; rows: StatBlock[] }[] = [
     {
       heading: "Listings",
       rows: [
-        { value: formatCount(c.propertiesActive), label: "Active listings",   source: "Real estate agencies + manual partner uploads", context: "Properties currently for sale or rent.", href: "/buy" },
-        { value: formatCount(c.propertiesSold),   label: "Recently sold",     source: "State Valuer-General + agency reports",          context: "Sales completed in the last 12 to 24 months." },
-        { value: formatCount(c.houseAndLand),     label: "House & land packages", source: "Builder partners",                          context: "New build packages from participating builders.", href: "/house-and-land" },
+        { count: c.propertiesActive, label: "Active listings",   source: "Real estate agencies + manual partner uploads", context: "Properties currently for sale or rent.", href: "/buy" },
+        { count: c.propertiesSold,   label: "Recently sold",     source: "State Valuer-General + agency reports",          context: "Sales completed in the last 12 to 24 months." },
+        // Only while there is stock: the same rule that keeps /house-and-land
+        // out of the index (src/lib/house-and-land-indexability.ts). No
+        // builder partner is confirmed (10 Oct 2026), so the row names who
+        // lists a package rather than "builder partners".
+        ...(hasHouseAndLandStock(c.houseAndLand)
+          ? [{ count: c.houseAndLand, label: "House & land packages", source: "The listing builder or agent", context: "New build packages listed on the site.", href: "/house-and-land" }]
+          : []),
       ],
     },
     {
       heading: "Suburb data",
       rows: [
-        { value: formatCount(c.suburbs),  label: "Suburbs",       source: "ABS Statistical Areas + Australia Post", context: "Every Australian suburb with median, growth, and demographic data." },
-        { value: formatCount(c.hazards),  label: "Hazard records", source: "Geoscience Australia + state hazard mapping",  context: "Flood class and bushfire risk classification per suburb." },
-        { value: formatCount(c.climates), label: "Climate records", source: "Bureau of Meteorology",                       context: "Mean monthly rainfall and temperature, matched to nearest BoM station." },
+        { count: c.suburbs,  label: "Suburbs",       source: "ABS Statistical Areas + Australia Post", context: "Every Australian suburb with median, growth, and demographic data." },
+        { count: c.hazards,  label: "Hazard records", source: "Geoscience Australia + state hazard mapping",  context: "Flood class and bushfire risk classification per suburb." },
+        { count: c.climates, label: "Climate records", source: "Bureau of Meteorology",                       context: "Mean monthly rainfall and temperature, matched to nearest BoM station." },
       ],
     },
     {
       heading: "People",
       rows: [
-        { value: formatCount(c.agents),   label: "Real estate agents", source: "State licensing registers",       context: "Active agents with listing and sales history.", href: "/find-an-expert" },
-        { value: formatCount(c.agencies), label: "Real estate agencies", source: "State licensing registers",     context: "Agencies operating across Australia.", href: "/real-estate-agencies" },
+        { count: c.agents,   label: "Real estate agents", source: "State licensing registers",       context: "Active agents with listing and sales history.", href: "/find-an-expert" },
+        { count: c.agencies, label: "Real estate agencies", source: "State licensing registers",     context: "Agencies operating across Australia.", href: "/real-estate-agencies" },
       ],
     },
     {
       heading: "Editorial",
       rows: [
-        { value: String(totalGuides),    label: "Guides",          source: "Editorial team",  context: "In-depth, sourced, dated guides for buyers, sellers, movers, investors, renters.", href: "/guides" },
-        { value: String(totalGlossary),  label: "Glossary terms",  source: "Editorial team",  context: "Plain-English definitions of every property term you'll meet.", href: "/glossary" },
-        { value: String(c.blogPosts),    label: "Articles",        source: "Editorial team",  context: "Capital city outlooks, market updates, and topical analysis.", href: "/guides" },
+        { count: totalGuides,    label: "Guides",          source: "Editorial team",  context: "In-depth, sourced, dated guides for buyers, sellers, movers, investors, renters.", href: "/guides" },
+        { count: totalGlossary,  label: "Glossary terms",  source: "Editorial team",  context: "Plain-English definitions of every property term you'll meet.", href: "/glossary" },
+        { count: c.blogPosts,    label: "Articles",        source: "Editorial team",  context: "Capital city outlooks, market updates, and topical analysis.", href: "/guides" },
       ],
     },
   ];
+
+  const shownHero = heroStats.filter(printable);
+  const datasets = allDatasets
+    .map((d) => ({ ...d, rows: d.rows.filter(printable) }))
+    .filter((d) => d.rows.length > 0);
 
   return (
     <>
@@ -214,46 +235,48 @@ export default async function DataPage() {
       </section>
 
       {/* Hero stat grid */}
-      <section className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {heroStats.map((s) => {
-              const inner = (
-                <>
-                  <p className="font-display text-5xl text-ink leading-none mb-3">
-                    {s.value}
-                  </p>
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-3">
-                    {s.label}
-                  </p>
-                  <p className="font-sans text-sm text-ink-muted leading-relaxed mb-3">
-                    {s.context}
-                  </p>
-                  <p className="font-sans text-xs text-ink-subtle">
-                    Source: {s.source}
-                  </p>
-                </>
-              );
-              return s.href ? (
-                <Link
-                  key={s.label}
-                  href={s.href}
-                  className="group rounded-2xl border border-line bg-surface-warm p-6 hover:border-primary/40 hover:shadow-md transition-all"
-                >
-                  {inner}
-                </Link>
-              ) : (
-                <div
-                  key={s.label}
-                  className="rounded-2xl border border-line bg-surface-warm p-6"
-                >
-                  {inner}
-                </div>
-              );
-            })}
+      {shownHero.length > 0 && (
+        <section className="bg-surface-raised border-b border-line">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {shownHero.map((s) => {
+                const inner = (
+                  <>
+                    <p className="font-display text-5xl text-ink leading-none mb-3">
+                      {formatCount(s.count)}
+                    </p>
+                    <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-3">
+                      {s.label}
+                    </p>
+                    <p className="font-sans text-sm text-ink-muted leading-relaxed mb-3">
+                      {s.context}
+                    </p>
+                    <p className="font-sans text-xs text-ink-subtle">
+                      Source: {s.source}
+                    </p>
+                  </>
+                );
+                return s.href ? (
+                  <Link
+                    key={s.label}
+                    href={s.href}
+                    className="group rounded-2xl border border-line bg-surface-warm p-6 hover:border-primary/40 hover:shadow-md transition-all"
+                  >
+                    {inner}
+                  </Link>
+                ) : (
+                  <div
+                    key={s.label}
+                    className="rounded-2xl border border-line bg-surface-warm p-6"
+                  >
+                    {inner}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Detailed dataset breakdown */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-12">
@@ -280,7 +303,7 @@ export default async function DataPage() {
                 <tbody className="divide-y divide-line">
                   {d.rows.map((r) => (
                     <tr key={r.label} className="hover:bg-surface-warm/60 transition-colors">
-                      <td className="py-4 px-4 font-display text-xl text-ink tabular-nums whitespace-nowrap">{r.value}</td>
+                      <td className="py-4 px-4 font-display text-xl text-ink tabular-nums whitespace-nowrap">{formatCount(r.count)}</td>
                       <td className="py-4 px-4 font-sans">
                         {r.href ? (
                           <Link
