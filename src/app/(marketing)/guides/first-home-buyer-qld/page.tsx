@@ -6,7 +6,7 @@ import {
   GuideArticleLayout,
   Callout,
   EditorNote,
-  KeyFigure,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -15,14 +15,30 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
+import { HG_CHECKED_ON, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
+import { FirstHomeDutyFacts, FirstHomeGrantFacts } from "@/components/guide/FirstHomeStateFacts";
+import { FIRST_HOME_DUTY, FIRST_HOME_GRANTS, fmt, firstHomeSources, longDate } from "@/lib/data/first-home-grants";
+import { SHARED_EQUITY_SCHEMES } from "@/lib/data/help-to-buy";
+import { dutyFor, money } from "@/lib/data/stamp-duty-state";
+
+// Grant and duty figures come from src/lib/data/first-home-grants.ts and the
+// stamp duty engine (commercial-intent review 10 Oct 2026, buying 0.1 row 12
+// and 3.3). Budget claims that QRO's own pages do not carry are gone.
+const GRANT = FIRST_HOME_GRANTS.QLD;
+const DUTY = FIRST_HOME_DUTY.QLD;
+const GRANT_AMOUNT = fmt(GRANT.amount!);
+const GRANT_CAP = fmt(GRANT.caps[0].value);
+const DUTY_700K = dutyFor("QLD", 700_000, "owner").total;
+const DUTY_800K = money(dutyFor("QLD", 800_000, "first").total);
+const BOOST = SHARED_EQUITY_SCHEMES.find((x) => x.name === "Boost to Buy")!;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide QLD: $30K Grant, Stamp Duty & Schemes (2026)",
   description:
-    "Queensland first home buyer guide: $30,000 FHOG for new homes under $750K (locked in by the 2026-27 QLD Budget), zero stamp duty on new homes, federal schemes, and QLD buying tips.",
+    "Queensland first home buyer guide: $30,000 grant on new homes under $750,000, no transfer duty on a new home, and $0 on an established home to $700,000.",
   slug: "first-home-buyer-qld",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -50,20 +66,19 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Queensland's FHOG is $30,000 on new homes only, capped at $750,000 contract price. The 2026-27 QLD Budget locked the $30,000 amount in for another four years — it was due to halve on 1 July 2026 but didn't.",
-  "Eligible first home buyers pay zero transfer duty on new homes and vacant land (made permanent in the 2026-27 Budget), and a full concession applies on established homes up to $700,000, phasing out at $800,000.",
-  "Stacked together, the grant plus duty relief on a new build routinely exceeds $50,000 in support.",
+  `Queensland pays a ${GRANT_AMOUNT} first home owner grant on a new home valued under ${GRANT_CAP}, for contracts signed on or after 20 November 2023; QRO publishes no end date (read ${longDate(GRANT.checkedOn)}).`,
+  `Eligible first home buyers pay no transfer duty on a new home or vacant land at any price (from 1 May 2025), and none on an established home up to ${fmt(DUTY.exemptTo!)}, phasing out under ${fmt(DUTY.concessionTo!)}.`,
+  `Together, on a $700,000 new home the grant and the duty saved come to ${money(GRANT.amount! + DUTY_700K)} (Queensland Revenue Office rates).`,
   "Federal schemes (the 5% Deposit Scheme, Family Home Guarantee, Help to Buy) all work in QLD, and the 5% Deposit Scheme no longer has income caps or place limits.",
   "QLD uses the REIQ standard contract with conditions built in (building, pest, finance) rather than relying on a cooling-off period.",
   "Cooling-off in QLD is 5 business days from the buyer receiving the contract; no cooling-off at auction.",
 ];
 
 const TOC: GuideTOCEntry[] = [
-  { id: "fhog-qld",       label: "$30,000 First Home Owner Grant QLD" },
+  { id: "fhog-qld",       label: "First Home Owner Grant QLD" },
   { id: "stamp-duty-qld", label: "Stamp duty (transfer duty) concession" },
   { id: "federal-schemes",label: "Federal schemes in QLD" },
   { id: "qld-specific",   label: "QLD-specific schemes and resources" },
-  { id: "median-prices",  label: "Median property prices" },
   { id: "buying-process", label: "The QLD buying process" },
   { id: "contacts",       label: "Key contacts" },
 ];
@@ -72,17 +87,22 @@ const FAQS: FaqItem[] = [
   {
     question: "Is QLD's FHOG still $30,000?",
     answer:
-      "Yes. The boosted $30,000 grant was due to revert to $15,000 for contracts signed from 1 July 2026, but the 2026-27 Queensland Budget (23 June 2026) locked it in for another four years. The Queensland Revenue Office confirms $30,000 for eligible contracts signed from 20 November 2023, with no end date currently published. It is triple the $10,000 paid in NSW, VIC metro, and WA, and combined with zero transfer duty on new homes it makes Queensland the most generous state for buying a new first home.",
+      `Yes. The Queensland Revenue Office lists ${GRANT_AMOUNT} for eligible contracts signed on or after 20 November 2023 (it was $15,000 before that date) and publishes no end date (read ${longDate(GRANT.checkedOn)}). The home must be new and valued under ${GRANT_CAP}, land and contract variations included. Combined with no transfer duty on a new home, it is worth more than the grant alone.`,
   },
   {
     question: "Can I get the QLD FHOG on an established home?",
     answer:
-      "No. The grant only applies to new homes, off-the-plan, or owner-builder new builds. Established properties don't qualify. However, the First Home Concession on stamp duty is available for both new and established homes up to $550,000.",
+      `No. The grant only applies to new homes, off-the-plan homes and owner-builder new builds. Established properties don't qualify. The first home concession on transfer duty does cover an established home: no duty up to ${fmt(DUTY.exemptTo!)}, a shrinking concession under ${fmt(DUTY.concessionTo!)} (Queensland Revenue Office, read ${longDate(DUTY.checkedOn)}).`,
   },
   {
     question: "Does QLD have a full stamp duty exemption like NSW or VIC?",
     answer:
-      "No. QLD reduces transfer duty rather than eliminating it. The First Home Concession applies to homes up to $550,000 and gives a flat reduction. There's also a separate Home Concession (the standard owner-occupier rate) that applies even if you're not a first home buyer.",
+      `Yes, for most first homes. An eligible first home buyer pays no transfer duty on a new home or vacant land at any price (transactions from 1 May 2025), and none on an established home up to ${fmt(DUTY.exemptTo!)}, with the concession phasing out under ${fmt(DUTY.concessionTo!)} (contracts from ${DUTY.from}). At ${fmt(DUTY.concessionTo!)} you pay the home concession rate: ${DUTY_800K}.`,
+  },
+  {
+    question: "How much deposit do I need for a $700,000 house in Queensland?",
+    answer:
+      `You need $140,000 (20%) to avoid lenders mortgage insurance without a scheme. At 5% it is $35,000, and through the 5% Deposit Scheme an eligible buyer pays no LMI where the price is within the area's cap, ${fmtCap(HG_PRICE_CAPS.QLD.capital)} in Greater Brisbane (Housing Australia, read ${longDate(HG_CHECKED_ON)}). Buying costs are extra, though a first home buyer pays no transfer duty at that price.`,
   },
   {
     question: "When is the FHOG paid?",
@@ -119,31 +139,24 @@ export default function FirstHomeBuyerQLDPage() {
       faqs={FAQS}
       related={RELATED}
     >
-      <Callout variant="success" title="The $30,000 grant stays — the 1 July step-down was cancelled">
+      <Callout variant="success" title={`The grant is ${GRANT_AMOUNT}, with no end date published`}>
         <p>
-          Queensland&rsquo;s boosted <strong>$30,000</strong> First Home Owner
-          Grant was scheduled to revert to $15,000 for contracts signed from 1
-          July 2026. It didn&rsquo;t: the <strong>2026-27 Queensland Budget</strong>{" "}
-          (23 June 2026) locked the $30,000 grant in for another four years, and
-          made the zero transfer duty for first home buyers on new homes
-          permanent. The{" "}
-          <a href="https://qro.qld.gov.au/property-concessions-grants/first-home-grant/" target="_blank" rel="noopener noreferrer">
+          The{" "}
+          <a href={GRANT.source.href} target="_blank" rel="noopener noreferrer">
             Queensland Revenue Office
           </a>{" "}
-          confirms $30,000 for eligible contracts signed from 20 November 2023,
-          with no end date currently published. Verify your own eligibility with
-          QRO or a licensed conveyancer before signing.
+          lists <strong>{GRANT_AMOUNT}</strong> for eligible contracts signed on or after 20 November
+          2023 and publishes no end date (read {longDate(GRANT.checkedOn)}). Verify your own
+          eligibility with QRO or a licensed conveyancer before signing.
         </p>
       </Callout>
 
       <EditorNote>
         <p>
-          The step-down everyone (including us, briefly) expected on 1
-          July never happened — the Budget kept the $30,000 grant, and
-          on a new build it now stacks with zero transfer duty. That
-          combination routinely clears $50,000 in support, which is why
-          new homes deserve a serious look in Queensland even if you
-          started out shopping established. The trap I see most:
+          On a new build in Queensland the {GRANT_AMOUNT} grant stacks with
+          zero transfer duty: on a $700,000 new home that is{" "}
+          {money(GRANT.amount! + DUTY_700K)} between them, which is why new homes
+          deserve a serious look even if you started out shopping established. The trap I see most:
           buyers assume the QLD contract works like NSW with a
           cooling-off they&rsquo;ll lean on. The REIQ contract is built
           around subject-to clauses instead. Negotiate the conditions
@@ -151,61 +164,44 @@ export default function FirstHomeBuyerQLDPage() {
         </p>
       </EditorNote>
 
-      <h2 id="fhog-qld">$30,000 First Home Owner Grant QLD</h2>
+      <h2 id="fhog-qld">First Home Owner Grant QLD</h2>
       <p className="lead">
-        Queensland pays a $30,000 First Home Owner Grant to eligible first home
-        buyers purchasing or building a new home — the largest first home grant
-        in the country, locked in by the 2026-27 State Budget.
+        Queensland pays a {GRANT_AMOUNT} first home owner grant to eligible first home
+        buyers buying or building a new home.
       </p>
 
-      <KeyFigure
-        value="$30,000"
-        label="The QLD First Home Owner Grant on new homes up to $750,000, for eligible contracts signed from 20 November 2023."
-        context="Established homes do not qualify"
-      />
+      <FirstHomeGrantFacts state="QLD" />
 
       <h3>Eligibility requirements</h3>
       <ul>
         <li>At least one applicant must be an Australian citizen or permanent resident</li>
         <li>All applicants must be 18 years or older</li>
-        <li>No applicant can have previously owned residential property in Australia</li>
-        <li>At least one applicant must occupy the home as their principal place of residence for at least 12 months within 12 months of completion or settlement</li>
+        <li>Neither you nor your spouse can have owned residential property in Australia before 1 July 2000, or one you lived in since</li>
+        <li>You must move in within 1 year of the completed transaction and live there continuously for 6 months (Queensland Revenue Office)</li>
       </ul>
 
       <h3>Eligible properties</h3>
       <ul>
-        <li>New homes (not previously occupied or sold as residential property) with a contract price of $750,000 or less</li>
-        <li>Owner-built new homes must have a building contract value of $750,000 or less</li>
+        <li>New homes (not previously occupied or sold as residential property) valued under {GRANT_CAP}, land and any contract variations included</li>
+        <li>Owner-built new homes and building contracts under the same {GRANT_CAP} cap</li>
         <li>Established properties do <strong>not</strong> qualify for the FHOG in QLD</li>
       </ul>
 
       <h3>When is the grant paid?</h3>
       <p>
         For purchases (e.g. off-the-plan), the grant is paid at settlement. For
-        construction contracts, it's paid when the first progress payment is
+        construction contracts, it&rsquo;s paid when the first progress payment is
         requested by the builder. Apply through the Queensland Revenue Office or
         via your lender; most lenders process the FHOG alongside your loan.
       </p>
 
       <h2 id="stamp-duty-qld">Stamp duty (transfer duty) concession in QLD</h2>
       <p>
-        Queensland's first home buyer duty relief is now among the most generous
+        Queensland&rsquo;s first home buyer duty relief is now among the most generous
         in the country, and it runs on two tracks depending on what you buy.
       </p>
 
-      <h3>New homes and vacant land: zero duty</h3>
-      <ul>
-        <li>Eligible first home buyers pay <strong>no transfer duty on a new home</strong>, with no price cap — made permanent in the 2026-27 Budget (in place since 1 May 2025)</li>
-        <li>A separate first home vacant land concession applies on land up to $500,000</li>
-        <li>The property must be your first home in Australia and you must move in within the required occupancy window</li>
-      </ul>
-
-      <h3>Established homes: full concession to $700,000</h3>
-      <ul>
-        <li>Full concession (i.e. $0 duty) on established homes up to <strong>$700,000</strong></li>
-        <li>The concession phases out between $700,000 and $800,000</li>
-        <li>Above $800,000, standard duty applies with no first home discount — on an $800,000 buy that's the full $29,025</li>
-      </ul>
+      <FirstHomeDutyFacts state="QLD" />
 
       <p>
         See our full <Link href="/guides/stamp-duty-qld">Queensland stamp duty
@@ -218,7 +214,7 @@ export default function FirstHomeBuyerQLDPage() {
       <p>
         Queensland also applies a standard Home Concession for all owner-occupiers,
         not just first home buyers, so even buyers over the first-home thresholds
-        pay less than the general rate on a home they'll live in.
+        pay less than the general rate on a home they&rsquo;ll live in.
       </p>
 
       <h2 id="federal-schemes">Federal schemes available in QLD</h2>
@@ -230,7 +226,7 @@ export default function FirstHomeBuyerQLDPage() {
       <p>
         See our{" "}
         <Link href="/guides/first-home-buyer-guide">national First Home Buyer Guide</Link>{" "}
-        for full federal scheme detail and how the schemes stack with Queensland's
+        for full federal scheme detail and how the schemes stack with Queensland&rsquo;s
         grant and duty relief.
       </p>
 
@@ -238,42 +234,34 @@ export default function FirstHomeBuyerQLDPage() {
       <ul>
         <li>
           <strong>Queensland Housing Finance Loan:</strong> For low-to-moderate
-          income earners who can't access a loan from a traditional lender.
+          income earners who can&rsquo;t access a loan from a traditional lender.
           Administered by Homes and Housing QLD. Check eligibility at qld.gov.au/housing.
         </li>
         <li>
-          <strong>Deposit assist (shared equity):</strong> Some QLD credit unions
-          and building societies offer shared-equity arrangements for first home
-          buyers. Check with your broker or lender.
+          <strong>{BOOST.name} (state shared equity):</strong> {BOOST.terms}. Status:{" "}
+          {BOOST.statusNote} (
+          <a href={BOOST.source.href} target="_blank" rel="noopener noreferrer">{BOOST.source.label}</a>
+          , read 7 October 2026). It cannot be combined with the federal Help to Buy scheme.
         </li>
         <li>
-          <strong>First Home Vacant Land Concession:</strong> For buyers
-          purchasing vacant land to build their first home. Reduced transfer duty
-          applies on land valued at $400,000 or less.
+          <strong>First home vacant land concession:</strong> for buyers of vacant land to build
+          their first home, no transfer duty at any value for transactions from 1 May 2025
+          (Queensland Revenue Office).
         </li>
       </ul>
 
-      <h2 id="median-prices">Median property prices for first home buyers</h2>
       <p>
-        South East Queensland has had significant price growth since 2020. First
-        home buyers typically target:
-      </p>
-      <ul>
-        <li><strong>Brisbane outer suburbs:</strong> Ipswich, Logan, and Moreton Bay regions, house medians $600K to $800K</li>
-        <li><strong>Moreton Bay region:</strong> North Lakes, Caboolture, Redcliffe, popular FHB suburbs with medians $620K to $750K</li>
-        <li><strong>Gold Coast hinterland:</strong> Ormeau, Coomera, Pimpama, house medians $680K to $800K</li>
-        <li><strong>Regional Queensland:</strong> Toowoomba, Rockhampton, Mackay, house medians $400K to $600K with high rental yields</li>
-      </ul>
-      <p>
-        Browse <Link href="/suburbs">QLD suburb profiles</Link> for current data.
+        To compare prices before you set a budget, search any Queensland suburb in our{" "}
+        <Link href="/suburbs">suburb profiles</Link>; each one shows its median only where the
+        sales data behind it passes our checks.
       </p>
 
       <h2 id="buying-process">The QLD buying process</h2>
       <p>QLD has some distinct features versus other states:</p>
       <ul>
         <li><strong>REIQ contract:</strong> QLD uses the Real Estate Institute of Queensland standard contract of sale, with standard conditions for building and pest inspection, finance, and sometimes FIRB.</li>
-        <li><strong>Conditions are built in:</strong> Unlike NSW, building inspections and finance conditions are typically negotiated into the contract before it's signed, rather than relying on a cooling-off window.</li>
-        <li><strong>Cooling-off period:</strong> 5 business days from the buyer's receipt of the contract (residential, not auction).</li>
+        <li><strong>Conditions are built in:</strong> Unlike NSW, building inspections and finance conditions are typically negotiated into the contract before it&rsquo;s signed, rather than relying on a cooling-off window.</li>
+        <li><strong>Cooling-off period:</strong> 5 business days from the buyer&rsquo;s receipt of the contract (residential, not auction).</li>
         <li><strong>Auctions:</strong> Less common than Sydney/Melbourne. Private treaty (conditional contract) dominates in QLD.</li>
         <li><strong>Settlement:</strong> Typically 30 to 60 days; via PEXA.</li>
       </ul>
@@ -286,7 +274,7 @@ export default function FirstHomeBuyerQLDPage() {
       <ul>
         <li>
           <strong>Queensland Revenue Office</strong>, FHOG, transfer duty, concessions:{" "}
-          <a href="https://qro.qld.gov.au/property-concessions-grants/first-home-grant/" target="_blank" rel="noopener noreferrer">
+          <a href={GRANT.source.href} target="_blank" rel="noopener noreferrer">
             qro.qld.gov.au
           </a>
         </li>
@@ -303,6 +291,8 @@ export default function FirstHomeBuyerQLDPage() {
           </a>
         </li>
       </ul>
+
+      <Sources items={[...firstHomeSources(["QLD"]), { label: BOOST.source.label, href: BOOST.source.href, note: "read 7 October 2026" }]} />
     </GuideArticleLayout>
   );
 }

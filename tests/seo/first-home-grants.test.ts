@@ -145,7 +145,9 @@ function money(raw: string, suffix?: string): number {
 
 const AMOUNT = String.raw`\$(\d[\d,]*(?:\.\d+)?)\s?(k|K|m|M|million)?\b`;
 /** Amounts written as a threshold or a cap. */
-const THRESHOLD = new RegExp(String.raw`(?:up to|under|below|less than|capped at|caps? of|cap is|not exceed(?:ing)?|exceeds?|over|above|to|and|between|at or under|or less than)\s+` + AMOUNT, "g");
+const THRESHOLD = new RegExp(String.raw`(?:up to|under|below|less than|capped at|caps? of|cap is|not exceed(?:ing)?|exceeds?|over|above|between|at or under|or less than)\s+` + AMOUNT, "g");
+/** "$600,001 to $750,000", "$700,000 and $800,000": both ends of a band. */
+const RANGE = new RegExp(AMOUNT + String.raw`\s+(?:to|and)\s+` + AMOUNT, "g");
 const CAP_AFTER = new RegExp(AMOUNT + String.raw`\s+(?:price |property value |value )?cap`, "g");
 /** Amounts written as a grant. */
 const GRANT_AFTER = new RegExp(AMOUNT + String.raw`\s+(?:\w+\s+){0,2}(?:First Home Owner|FHOG|first home owner|grant|HomeGrown|cash grant)`, "g");
@@ -156,7 +158,9 @@ function claimedFigures(seg: string): number[] {
   for (const re of [THRESHOLD, CAP_AFTER, GRANT_AFTER, GRANT_BEFORE]) {
     for (const m of seg.matchAll(re)) out.push(money(m[1], m[2]));
   }
-  return out.filter((n) => n >= 5_000);
+  for (const m of seg.matchAll(RANGE)) out.push(money(m[1], m[2]), money(m[3], m[4]));
+  // "$600,001" is the first dollar of a band that starts at $600,000.
+  return out.filter((n) => n >= 5_000).map((n) => (n % 100 === 1 ? n - 1 : n));
 }
 
 function figuresIn(text: string): number[] {
@@ -282,6 +286,7 @@ const PAGES: Array<{ path: string; state: AustralianState | null; load: () => Pr
   { path: "/guides/first-home-buyer-nt", state: "NT", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-nt/page") },
   { path: "/guides/first-home-buyer-sa", state: "SA", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-sa/page") },
   { path: "/guides/first-home-buyer-act", state: "ACT", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-act/page") },
+  { path: "/guides/first-home-buyer-qld", state: "QLD", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-qld/page") },
 ];
 
 describe("pages rendered from the data file", () => {
