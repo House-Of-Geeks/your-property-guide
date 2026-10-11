@@ -15,6 +15,7 @@ import { getProperties, countProperties } from "@/lib/services/property-service"
 import { suburbRentTitle, suburbRentDescription } from "@/lib/utils/seo";
 import { SITE_URL } from "@/lib/constants";
 import { buildSuburbOgImageUrl } from "@/lib/og/helpers";
+import { canonicalSuburbSlug } from "@/lib/duplicate-localities";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -41,10 +42,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: suburbRentTitle(suburb),
     description: suburbRentDescription(suburb),
-    alternates: { canonical: `${SITE_URL}/suburbs/${slug}/rent` },
+    alternates: { canonical: `${SITE_URL}/suburbs/${canonicalSuburbSlug(slug)}/rent` },
     robots: listingCount === 0 ? { index: false, follow: true } : undefined,
     openGraph: {
-      url: `${SITE_URL}/suburbs/${slug}/rent`,
+      url: `${SITE_URL}/suburbs/${canonicalSuburbSlug(slug)}/rent`,
       title: suburbRentTitle(suburb),
       description: suburbRentDescription(suburb),
       type: "website",

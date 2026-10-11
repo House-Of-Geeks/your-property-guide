@@ -11,6 +11,7 @@ import { makeSchoolSlug } from "@/lib/utils/school";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import type { School } from "@/types";
+import { canonicalSuburbSlug } from "@/lib/duplicate-localities";
 
 interface SuburbSchoolsPageProps {
   params: Promise<{ slug: string }>;
@@ -49,7 +50,7 @@ export async function generateMetadata({ params }: SuburbSchoolsPageProps): Prom
   const schools = suburb.schools;
   const title = `Schools in ${suburb.name}, ${suburb.state} | Ranked by ICSEA`;
   const description = `Browse all ${schools.length} schools in ${suburb.name}. Compare ICSEA scores, school types, and nearby property prices.`;
-  const canonical = `${SITE_URL}/suburbs/${slug}/schools`;
+  const canonical = `${SITE_URL}/suburbs/${canonicalSuburbSlug(slug)}/schools`;
 
   return {
     title,

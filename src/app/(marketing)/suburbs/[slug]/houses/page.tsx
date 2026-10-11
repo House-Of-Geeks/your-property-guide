@@ -10,6 +10,7 @@ import { emptyListingMessage } from "@/lib/suburb-subpages";
 import { getProperties, countProperties } from "@/lib/services/property-service";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { buildSuburbOgImageUrl } from "@/lib/og/helpers";
+import { canonicalSuburbSlug } from "@/lib/duplicate-localities";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -33,10 +34,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: `${SITE_URL}/suburbs/${slug}/houses` },
+    alternates: { canonical: `${SITE_URL}/suburbs/${canonicalSuburbSlug(slug)}/houses` },
     robots: listingCount === 0 ? { index: false, follow: true } : undefined,
     openGraph: {
-      url: `${SITE_URL}/suburbs/${slug}/houses`,
+      url: `${SITE_URL}/suburbs/${canonicalSuburbSlug(slug)}/houses`,
       // og titles don't get the root title.template — brand them explicitly
       title: `${title} | ${SITE_NAME}`,
       description,
