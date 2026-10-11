@@ -158,7 +158,7 @@ export function RentalMarketSections({ suburb, slug, model: m, landlord }: { sub
           <h2 className="font-display text-xl sm:text-2xl text-ink leading-tight">
             Get a free property appraisal in {suburb.name}.
           </h2>
-          <p className="font-sans text-sm text-ink-muted mt-2">A local agent who sells in {suburb.name} will give you a figure based on recent comparable sales. No commitment.</p>
+          <p className="font-sans text-sm text-ink-muted mt-2">Where we have an agent in the area, one local agent gives you a figure based on recent comparable sales. No commitment.</p>
         </div>
         <Link href={`/suburbs/${slug}#appraisal`} className="shrink-0 inline-flex items-center gap-2 rounded-lg border border-line-strong bg-surface-raised text-ink px-4 py-2 text-sm font-medium hover:text-primary hover:border-primary">
           Request an appraisal <ArrowRight className="w-4 h-4" />

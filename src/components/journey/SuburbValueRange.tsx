@@ -173,8 +173,8 @@ export function SuburbValueRange({
           </>
         ) : (
           <p className="font-sans text-sm text-ink-muted leading-relaxed max-w-xl">
-            {withheldNote(summary, dwelling)} An agent who sells in {summary.name} will still give you a
-            figure from the comparable sales they know.
+            {withheldNote(summary, dwelling)} Where we have an agent in the area, a local agent can still
+            give you a figure from the comparable sales they know.
           </p>
         )}
 

@@ -263,7 +263,7 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
         {!isSubmitting && <span aria-hidden="true">→</span>}
       </button>
       <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
-        Free, no commitment. Your details go only to the one vetted local agent we match you with, who pays us for the introduction. We never sell them to anyone else.{" "}
+        Free, no commitment. Your details go only to the one local agent we introduce you to, who pays us for the introduction. Where we do not yet have an agent in your area, we tell you rather than pass your details on. We never sell them to anyone else.{" "}
         <a href="/privacy" className="underline underline-offset-2 hover:text-ink">Privacy policy</a>.
       </p>
     </form>

@@ -37,7 +37,7 @@ export function MatchDrawer({
   intent,
   source = "match-drawer",
   heading = "Tell us your situation",
-  subhead = "Three quick questions and we’ll match you with the right specialist, usually within one business day.",
+  subhead = "Three quick questions, and where we have a specialist for your situation, we introduce one.",
 }: MatchDrawerProps) {
   // Lock body scroll while open
   useEffect(() => {

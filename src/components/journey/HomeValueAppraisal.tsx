@@ -51,7 +51,7 @@ export function HomeValueAppraisal() {
           Where&rsquo;s the house?
         </h2>
         <p className="text-sm text-ink-muted mb-5 max-w-lg">
-          We&rsquo;ll show you what houses in that suburb are selling for, then a local agent who sells there gives you a figure for yours. Free, no commitment to list.
+          We&rsquo;ll show you what houses in that suburb are selling for, then, where we have an agent in your area, one local agent gives you a figure for yours. Free, no commitment to list.
         </p>
         <SuburbAutocomplete
           placeholder="Suburb or postcode, e.g. Hawthorn or 3122"
@@ -103,7 +103,7 @@ export function HomeValueAppraisal() {
           </>
         ) : (
           <p className="font-sans text-sm text-ink-muted leading-relaxed max-w-xl">
-            We don&rsquo;t publish a median for {summary.name} yet: too few recorded sales to be reliable. An agent who sells in {summary.name} will still give you a figure from the comparable sales they know.
+            We don&rsquo;t publish a median for {summary.name} yet: too few recorded sales to be reliable. Where we have an agent in the area, a local agent can still give you a figure from the comparable sales they know.
           </p>
         )}
       </div>
