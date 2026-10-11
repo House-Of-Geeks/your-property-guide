@@ -98,6 +98,7 @@ const TLDR = [
 
 const TOC: GuideTOCEntry[] = [
   { id: "what-it-is",           label: "What rentvesting is" },
+  { id: "vs-buying",             label: "Rentvesting vs buying your own home" },
   { id: "who-it-suits",          label: "Who rentvesting suits" },
   { id: "the-maths",             label: "The maths: does it actually work?" },
   { id: "tax-2027",              label: "What the 1 July 2027 tax changes mean" },
@@ -214,6 +215,21 @@ export default function RentvestingAustraliaPage() {
         property in a growth corridor or regional centre as the first step on
         the ladder.
       </p>
+
+      <h2 id="vs-buying">Rentvesting vs buying your own home</h2>
+      <table>
+        <thead>
+          <tr><th></th><th>Rentvesting</th><th>Buying the home you live in</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Where you live</td><td>The suburb you want, as a renter</td><td>Where you can afford to buy</td></tr>
+          <tr><td>First home buyer schemes</td><td>Usually forfeited: the 5% Deposit Scheme needs you to live in the home</td><td>Available if you qualify</td></tr>
+          <tr><td>Losses against your salary</td><td>Until 30 June 2027; from {REFORM_START} only for a new build or a home held at {NEGATIVE_GEARING_CUTOFF}</td><td>None: a home&rsquo;s costs aren&rsquo;t deductible</td></tr>
+          <tr><td>CGT when you sell</td><td>Yes; gains from {REFORM_START} indexed, with a 30% minimum tax</td><td>Main residence exemption</td></tr>
+          <tr><td>Who pays the mortgage</td><td>You and your tenant&rsquo;s rent</td><td>You</td></tr>
+          <tr><td>Day-to-day obligations</td><td>Landlord duties under your state&rsquo;s tenancy law</td><td>Owner&rsquo;s upkeep only</td></tr>
+        </tbody>
+      </table>
 
       <h2 id="who-it-suits">Who rentvesting suits</h2>
       <p>
