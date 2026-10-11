@@ -18,6 +18,7 @@ import { buildLandlordModel } from "@/lib/rental-landlord";
 import { Faq } from "@/components/guide/Faq";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
+import { canonicalSuburbSlug } from "@/lib/duplicate-localities";
 
 interface RentalMarketPageProps {
   params: Promise<{ slug: string }>;
@@ -53,7 +54,10 @@ export async function generateMetadata({ params }: RentalMarketPageProps): Promi
     const all = buildAllDwellingsMarket(suburb, history);
     if (all) description = all.description;
   }
-  const canonical = `${SITE_URL}/suburbs/${slug}/rental-market`;
+  // A secondary postcode row (the same locality under a second postcode)
+  // canonicalises to the primary row's rental-market page, as its profile
+  // does (src/lib/duplicate-localities.ts). No redirect.
+  const canonical = `${SITE_URL}/suburbs/${canonicalSuburbSlug(slug)}/rental-market`;
 
   return {
     title,
