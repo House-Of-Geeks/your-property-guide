@@ -8,6 +8,7 @@ import {
   STATE_SALES_AGENCY,
   STATE_SALES_SOURCE_LINE,
   profileSourceLine,
+  withheldLeadSentence,
   withheldPriceNote,
 } from "@/lib/suburb-data-quality";
 import { RENTAL_FEED_STATES } from "../../scripts/sync/sources/rent-proxy-rules";
@@ -72,6 +73,26 @@ describe("withheldPriceNote", () => {
           expect(`${n.label} ${n.note}`).not.toMatch(/\$|%/);
         }
       }
+    }
+  });
+});
+
+describe("the first sentence where the median is withheld", () => {
+  it("says so and gives the reason as a clause", () => {
+    const mosman = withheldPriceNote({ name: "Mosman", state: "NSW", statsSource: "rental-nsw", salesCount: 228 });
+    expect(withheldLeadSentence("Mosman", mosman)).toBe(
+      "Mosman has no published median house price yet: the sales figure on file is being re-checked against the NSW Valuer General's figures.",
+    );
+    const thin = withheldPriceNote({ name: "Bermagui", state: "NSW", statsSource: "sales-nsw", salesCount: 3, period: "calendar 2025" });
+    expect(withheldLeadSentence("Bermagui", thin)).toBe(
+      "Bermagui has no published median house price yet: only 3 house sales were recorded in calendar 2025, and we publish a median from 5.",
+    );
+    const kew = withheldPriceNote({ name: "Kew East", state: "VIC", statsSource: "sales-vic", salesCount: null, rawHouse: 660_000, rawUnit: 1_396_000 });
+    expect(withheldLeadSentence("Kew East", kew)).toBe(
+      "Kew East has no published median house price yet: Land Victoria's figures put the unit median above the house median, so both are being checked.",
+    );
+    for (const statsSource of ["sales-qld", "seed", null]) {
+      expect(withheldLeadSentence("X", withheldPriceNote({ name: "X", state: "QLD", statsSource, salesCount: null }))).not.toMatch(/\$|%/);
     }
   });
 });

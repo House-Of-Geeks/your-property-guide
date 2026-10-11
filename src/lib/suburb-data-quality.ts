@@ -17,9 +17,9 @@
 //   - "seed" (default): initial seed value, may be a placeholder.
 //
 // Rule: if we don't have a high-confidence price for a suburb, we don't
-// SHOW it as if it were a verified median. We say "pending verified
-// data partner" and link to /methodology. Better to admit a gap than
-// to publish wrong numbers.
+// SHOW it as if it were a verified median. We say why it is withheld
+// (withheldPriceNote below) and link to /methodology. Better to admit a
+// gap than to publish wrong numbers.
 
 import type { Suburb, SuburbDataFreshness } from "@/types";
 import { MIN_SALES_FOR_MEDIAN, thinSalesNote } from "@/lib/sales-provenance";
@@ -103,7 +103,7 @@ export function isPlausibleAnnualGrowth(growth: number | null | undefined): bool
 export const PENDING_PRICE_LABEL = "Verified median pending";
 
 /**
- * The fallback explainer. Until 10 Oct 2026 it said "We're working on a data
+ * The fallback explainer. At the 10 Oct 2026 review it said "We're working on a data
  * partner; in the meantime, treat the state-level figures as a guide only",
  * on pages that show no state-level figure and for states whose sources
  * exist (the commercial intent review, suburbs-market 0.5).
@@ -148,6 +148,8 @@ export interface WithheldPriceNote {
   label: string;
   /** The sentence under it. */
   note: string;
+  /** The reason as a clause, for "{Suburb} has no published median house price yet: {reason}." */
+  reason: string;
 }
 
 export interface WithheldPriceInput {
@@ -162,6 +164,11 @@ export interface WithheldPriceInput {
   /** The row's own columns, before the gate. Needed only to tell a missing median from an inverted pair. */
   rawHouse?: number | null;
   rawUnit?: number | null;
+}
+
+/** "{Suburb} has no published median house price yet: {reason}." The profile's first sentence where the median is withheld. */
+export function withheldLeadSentence(name: string, note: Pick<WithheldPriceNote, "reason">): string {
+  return `${name} has no published median house price yet: ${note.reason}.`;
 }
 
 /**
@@ -179,6 +186,7 @@ export function withheldPriceNote(i: WithheldPriceInput): WithheldPriceNote {
       kind: "label",
       label: "Median being re-checked",
       note: `The sales figure on file for ${i.name} carries a rental feed's label, so we can't confirm it came from ${agency}. We don't show it until it has been checked against ${agency}'s figures.`,
+      reason: `the sales figure on file is being re-checked against ${agency}'s figures`,
     };
   }
   if (CENSUS_ESTIMATE_SOURCES.has(source)) {
@@ -186,16 +194,22 @@ export function withheldPriceNote(i: WithheldPriceInput): WithheldPriceNote {
       kind: "estimate",
       label: PENDING_PRICE_LABEL,
       note: `No trusted sales feed has a house median for ${i.name} yet. The only figure on file is an estimate worked back from 2021 Census mortgage repayments, not a record of sales, so we don't show it.`,
+      reason: "no trusted sales feed has one, and the only figure on file is an estimate from 2021 Census mortgage repayments",
     };
   }
   if (!isReliableSalesSource(source)) {
-    return { kind: "no-feed", label: PENDING_PRICE_LABEL, note: `No trusted sales feed has a house median for ${i.name} yet, so we don't show one.` };
+    return { kind: "no-feed", label: PENDING_PRICE_LABEL, note: `No trusted sales feed has a house median for ${i.name} yet, so we don't show one.`, reason: "no trusted sales feed has one" };
   }
   const feed = FEED_AGENCY[source] ?? agency;
   const period = i.period ? ` in ${i.period}` : "";
   const count = i.salesCount ?? 0;
   if (count >= 1 && count < MIN_SALES_FOR_MEDIAN) {
-    return { kind: "thin-sales", label: "Too few sales for a median", note: thinSalesNote(count, i.period || "the latest period") };
+    return {
+      kind: "thin-sales",
+      label: "Too few sales for a median",
+      note: thinSalesNote(count, i.period || "the latest period"),
+      reason: `only ${count} house sale${count === 1 ? " was" : "s were"} recorded${period}, and we publish a median from ${MIN_SALES_FOR_MEDIAN}`,
+    };
   }
   const house = i.rawHouse ?? 0;
   const unit = i.rawUnit ?? 0;
@@ -204,9 +218,15 @@ export function withheldPriceNote(i: WithheldPriceInput): WithheldPriceNote {
       kind: "inverted",
       label: "Median being re-checked",
       note: `${capitalise(feed)}'s figures for ${i.name} put the unit median above the house median, which points to an error in the data, so we have withheld both while we check them.`,
+      reason: `${feed}'s figures put the unit median above the house median, so both are being checked`,
     };
   }
-  return { kind: "no-median", label: "No published house median", note: `${capitalise(feed)} gives no house median for ${i.name}${period}.` };
+  return {
+    kind: "no-median",
+    label: "No published house median",
+    note: `${capitalise(feed)} gives no house median for ${i.name}${period}.`,
+    reason: `${feed} gives none${period}`,
+  };
 }
 
 function capitalise(s: string): string {
@@ -215,10 +235,10 @@ function capitalise(s: string): string {
 
 // ── Where the profile's figures come from (the footer's source line) ──────
 //
-// Until 10 Oct 2026 the footer said "Median, growth and rental data from
+// At the 10 Oct 2026 review the footer said "Median, growth and rental data from
 // state revenue offices and ABS": no revenue office supplies a median. The
 // agencies below are the feeds in scripts/sync/sources, checked against
-// their publishers on 10 Oct 2026 (NSW DCJ Rent and Sales Report; Homes
+// their publishers on 11 Oct 2026 (NSW DCJ Rent and Sales Report; Homes
 // Victoria Rental Report, "the major source ... is the Residential
 // Tenancies Bond Authority"; SA Private Rent Report, "bonds lodged with
 // Consumer and Business Services"; Queensland RTA; WA rental bonds data;

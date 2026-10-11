@@ -26,7 +26,7 @@ import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availabilit
 import { SuburbPriceTrend } from "@/components/suburb/SuburbPriceTrend";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { ExpertCTA, StickyMatchCTA } from "@/components/journey";
-import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, JsonLd, PlaceJsonLd } from "@/components/seo";
 import { Badge, Button } from "@/components/ui";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { isThinProfile } from "@/lib/suburb-indexability";
@@ -50,16 +50,19 @@ import {
 import {
   hasReliablePrice,
   profileSourceLine,
+  withheldLeadSentence,
   withheldPriceNote,
 } from "@/lib/suburb-data-quality";
 import { describeSalesProvenance, hasEnoughSales } from "@/lib/sales-provenance";
-import { rentalSourceLabel } from "@/lib/rental-labels";
+import { ALL_DWELLINGS_ONLY_SOURCES, monthYear, rentalSourceLabel } from "@/lib/rental-labels";
+import { withPublishedSales } from "@/lib/published-medians";
+import { LOCALITIES_ONLY } from "@/lib/non-localities";
 import { db } from "@/lib/db";
 import { publishedGrowthFor } from "@/lib/published-medians";
 import { PriceProvenance } from "@/components/suburb/PriceProvenance";
-import { buildLeadSentence } from "@/lib/suburb-snapshot";
+import { buildLeadSentence, grossYieldPercent, rentSourceKnown } from "@/lib/suburb-snapshot";
 import { fullLgaName } from "@/lib/utils/lga-names";
-import { canonicalSuburbSlug, primaryLocalitySlug } from "@/lib/duplicate-localities";
+import { canonicalSuburbSlug, isSecondaryLocality, primaryLocalitySlug } from "@/lib/duplicate-localities";
 
 interface SuburbDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -201,6 +204,46 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
   const primarySlug = primaryLocalitySlug(slug);
   const primaryPostcode = primarySlug ? primarySlug.slice(primarySlug.lastIndexOf("-") + 1) : null;
 
+  // suburbs-market 3.1 (10 Oct 2026). The first sentence where the median is
+  // withheld says so and why; the rent sentence follows with its source.
+  const firstSentence = leadSentence ?? (withheld ? withheldLeadSentence(suburb.name, withheld) : null);
+  const rentLabel = rentSourceKnown(suburb) ? rentalSourceLabel(suburb.dataFreshness?.rentalSource, suburb.postcode) : null;
+  const rentSentence = rentLabel && suburb.stats.medianRentHouse > 0
+    ? `The median weekly house rent is $${suburb.stats.medianRentHouse.toLocaleString("en-AU")} (${rentLabel.replace(/ \((postcode \d{4})\)$/, " for $1")}${suburb.dataFreshness?.rentalAsOf ? `, ${monthYear(new Date(suburb.dataFreshness.rentalAsOf))}` : ""}).`
+    : null;
+  // Postcode lookups were 79% of the profiles' impressions: name the other
+  // suburbs in the postcode, linked, under the hero.
+  const postcodeNeighbours = (
+    await db.suburb.findMany({
+      where: { AND: [{ postcode: suburb.postcode, state: suburb.state, slug: { not: slug } }, LOCALITIES_ONLY] },
+      select: { slug: true, name: true },
+      orderBy: [{ population: "desc" }, { name: "asc" }],
+      take: 8,
+    })
+  ).filter((n) => !isSecondaryLocality(n.slug) && n.name !== suburb.name).slice(0, 5);
+  // "How {Suburb} compares with nearby suburbs": the five nearest linked
+  // neighbours' figures as their own profiles publish them (withPublishedSales,
+  // a rent only from a bond-data row with a house figure).
+  const comparison = await nearbyComparison(suburb.nearbySuburbs.filter((n) => n !== slug && !isSecondaryLocality(n)).slice(0, 5));
+  const comparisonRows = [
+    {
+      slug: suburb.slug,
+      name: suburb.name,
+      postcode: suburb.postcode,
+      median: priceTrusted ? suburb.stats.medianHousePrice : 0,
+      priceSource: priceTrusted ? salesProvenance?.sourceShort ?? null : null,
+      rent: rentLabel && suburb.stats.medianRentHouse > 0 ? suburb.stats.medianRentHouse : 0,
+      rentSource: rentLabel && suburb.stats.medianRentHouse > 0 ? rentLabel : null,
+    },
+    ...comparison,
+  ];
+  const showComparison = comparison.filter((r) => r.median > 0 || r.rent > 0).length >= 2;
+  // The as-at date of the page's sales and rent figures, for the WebPage node.
+  const asAt = [suburb.dataFreshness?.salesAsOf, suburb.dataFreshness?.rentalAsOf]
+    .filter((d): d is Date => d != null)
+    .map((d) => new Date(d))
+    .sort((a, b) => b.getTime() - a.getTime())[0];
+
   return (
     <>
       <BreadcrumbJsonLd
@@ -216,11 +259,44 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         addressRegion={suburb.state}
         postalCode={suburb.postcode}
       />
+      {/* WebPage with dateModified at the sales or rent as-at date
+          (suburbs-market 3.1). No price in JSON-LD. */}
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          name: `${suburb.name}, ${suburb.state} ${suburb.postcode} suburb profile`,
+          url: `${SITE_URL}/suburbs/${canonicalSuburbSlug(slug)}`,
+          about: { "@type": "Place", name: `${suburb.name}, ${suburb.state} ${suburb.postcode}` },
+          ...(asAt ? { dateModified: asAt.toISOString().slice(0, 10) } : {}),
+        }}
+      />
 
       <SuburbHero suburb={suburb} />
 
       {/* Magazine-style snapshot band, sits below the satellite hero */}
       <SuburbSnapshot suburb={suburb} />
+
+      {postcodeNeighbours.length > 0 && (
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8">
+          <p className="font-sans text-sm text-ink-muted leading-relaxed">
+            {`Postcode ${suburb.postcode} also covers `}
+            {postcodeNeighbours.map((n, i) => (
+              <span key={n.slug}>
+                {i > 0 && (i === postcodeNeighbours.length - 1 ? " and " : ", ")}
+                <Link href={`/suburbs/${n.slug}`} className="font-medium text-ink underline-offset-4 hover:underline">
+                  {n.name}
+                </Link>
+              </span>
+            ))}
+            {". "}
+            <Link href={`/postcodes/${suburb.postcode}`} className="font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">
+              {`Every suburb in postcode ${suburb.postcode}`}
+            </Link>
+            {"."}
+          </p>
+        </div>
+      )}
 
       {primarySlug && primaryPostcode && (
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8">
@@ -466,13 +542,14 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                   published the first sentence leads with it and its source
                   (fix item 3); the postcode sentence always follows. Both
                   read the same gated object as the snapshot band above. */}
-              {leadSentence && (
+              {firstSentence && (
                 <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[65ch]">
-                  {leadSentence}
+                  {firstSentence}
+                  {rentSentence && ` ${rentSentence}`}
                 </p>
               )}
               <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[65ch]">
-                {leadSentence ? "Postcode " : `The postcode for ${suburb.name} is `}
+                {firstSentence ? "Postcode " : `The postcode for ${suburb.name} is `}
                 <span className="font-medium text-ink">{suburb.postcode}</span> ({suburb.state})
                 {regionLabel && `, ${regionLabel}`}
                 {/* "{suburb} {city}" phrasing for the navigational cluster
@@ -547,6 +624,61 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 </div>
               </div>
             </div>
+          </section>
+        )}
+
+        {showComparison && (
+          <section id="nearby-comparison" className="scroll-mt-16">
+            <p className="font-display italic text-primary text-base mb-3 leading-none">
+              Neighbours
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
+              How {suburb.name} compares with nearby suburbs.
+            </h2>
+            <div className="overflow-x-auto rounded-xl border border-line">
+              <table className="w-full text-left font-sans text-sm">
+                <caption className="sr-only">{`${suburb.name} and nearby suburbs: median house price, weekly house rent and gross yield, with sources`}</caption>
+                <thead className="bg-surface-warm text-ink">
+                  <tr>
+                    <th scope="col" className="px-4 py-3 font-medium">Suburb</th>
+                    <th scope="col" className="px-4 py-3 font-medium">Median house price</th>
+                    <th scope="col" className="px-4 py-3 font-medium">Weekly house rent</th>
+                    <th scope="col" className="px-4 py-3 font-medium">Gross yield</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-line bg-surface-raised">
+                  {comparisonRows.map((r) => {
+                    const y = grossYieldPercent(r.rent, r.median);
+                    return (
+                      <tr key={r.slug} className="align-top">
+                        <th scope="row" className="px-4 py-3 font-medium">
+                          {r.slug === suburb.slug ? (
+                            <span className="text-ink">{`${r.name} ${r.postcode}`}</span>
+                          ) : (
+                            <Link href={`/suburbs/${r.slug}`} className="text-ink hover:text-primary transition-colors">
+                              {`${r.name} ${r.postcode}`}
+                            </Link>
+                          )}
+                        </th>
+                        <td className="px-4 py-3 text-ink tabular-nums">
+                          {r.median > 0 ? formatPriceFull(r.median) : "–"}
+                          {r.priceSource && <span className="block text-xs text-ink-subtle">{r.priceSource}</span>}
+                        </td>
+                        <td className="px-4 py-3 text-ink tabular-nums">
+                          {r.rent > 0 ? `$${r.rent.toLocaleString("en-AU")}` : "–"}
+                          {r.rentSource && <span className="block text-xs text-ink-subtle">{r.rentSource}</span>}
+                        </td>
+                        <td className="px-4 py-3 text-ink tabular-nums">{y !== null ? `${y.toFixed(1)}%` : "–"}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-3 font-sans text-xs text-ink-subtle">
+              Each figure as that suburb&rsquo;s own profile publishes it; a dash where the profile withholds it or no
+              feed covers it. Gross yield is a year&rsquo;s house rent over the median house price, before costs.
+            </p>
           </section>
         )}
 
@@ -628,7 +760,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
               For investors
             </p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-              Investment overview.
+              {investorView ? `Is ${suburb.name} a good investment?` : "Investment overview."}
             </h2>
             {investorView && (
               <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-3xl mb-8">
@@ -937,6 +1069,49 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
       />
     </>
   );
+}
+
+interface ComparisonRow {
+  slug: string;
+  name: string;
+  postcode: string;
+  /** 0 where the neighbour's profile withholds it. */
+  median: number;
+  priceSource: string | null;
+  rent: number;
+  rentSource: string | null;
+}
+
+/** The neighbours' published median and bond-data house rent, in the order given. */
+async function nearbyComparison(slugs: string[]): Promise<ComparisonRow[]> {
+  if (slugs.length === 0) return [];
+  const rows = await db.suburb.findMany({
+    where: { AND: [{ slug: { in: slugs } }, LOCALITIES_ONLY] },
+    select: { slug: true, name: true, postcode: true, medianHousePrice: true, medianUnitPrice: true, annualGrowthHouse: true, statsSource: true, salesCountHouse: true },
+  });
+  const rents = await db.suburbRentalStat.findMany({
+    where: { suburbSlug: { in: slugs } },
+    orderBy: [{ suburbSlug: "asc" }, { periodDate: "desc" }, { updatedAt: "desc" }],
+    distinct: ["suburbSlug"],
+    select: { suburbSlug: true, source: true, medianRentHouse: true },
+  });
+  const bySlug = new Map(rows.map((r) => [r.slug, withPublishedSales(r)]));
+  const rentBySlug = new Map(rents.map((r) => [r.suburbSlug, r]));
+  return slugs.flatMap((slug) => {
+    const r = bySlug.get(slug);
+    if (!r) return [];
+    const rentRow = rentBySlug.get(slug);
+    const rent = rentRow && !ALL_DWELLINGS_ONLY_SOURCES.includes(rentRow.source) ? rentRow.medianRentHouse ?? 0 : 0;
+    return [{
+      slug: r.slug,
+      name: r.name,
+      postcode: r.postcode,
+      median: r.medianHousePrice,
+      priceSource: r.medianHousePrice > 0 ? describeSalesProvenance({ source: r.statsSource, periodEnd: null, salesCount: null, suburbName: r.name })?.sourceShort ?? null : null,
+      rent: rent > 0 ? rent : 0,
+      rentSource: rent > 0 ? rentalSourceLabel(rentRow?.source, r.postcode) : null,
+    }];
+  });
 }
 
 function MetricCard({ label, value }: { label: string; value: string }) {
