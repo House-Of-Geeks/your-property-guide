@@ -28,7 +28,7 @@ describe("/guides/cgt-changes-2026-budget", () => {
   it("keeps its URL and news form, and dates the correction", () => {
     expect(p.category).toBe("News");
     expect(p.publishedAt).toBe("2026-05-13");
-    expect(p.updatedAt).toBe("2026-10-01");
+    expect(p.updatedAt).toBe("2026-10-11");
     expect(p.content.indexOf("Correction, 1 October 2026")).toBeGreaterThanOrEqual(0);
     expect(p.content.indexOf("Correction, 1 October 2026")).toBeLessThan(200);
   });
@@ -74,6 +74,14 @@ describe("/guides/cgt-changes-2026-budget", () => {
     }
     expect(p.content).toContain(ATO_REFORM_SOURCE.href);
     expect(p.content).not.toContain("—");
+  });
+
+  it("has the before-and-after table and answers the Bing and PAA questions (10 Oct 2026 review)", () => {
+    expect(p.content).toContain("<h2>Before and after 1 July 2027 at a glance</h2>");
+    expect(body).toContain("Does the new capital gains tax apply to existing investment properties?");
+    expect(body).toContain("Yes, from 1 July 2027. On property you own before then, the gain up to 1 July 2027 keeps the 50% discount");
+    expect(body).toContain("How much capital gains tax will I pay on $300,000?");
+    expect(body).toContain("$57,850");
   });
 
   it("agrees with the now-law article on the CGT start date", () => {

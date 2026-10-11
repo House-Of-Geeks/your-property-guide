@@ -12,6 +12,22 @@ export const post: BlogPost = {
 
 <p>This article explains how the new system works, what happens to property you already own, who is outside the change, worked examples from the government's explainer and our own, and what to do before 1 July 2027.</p>
 
+<h2>Before and after 1 July 2027 at a glance</h2>
+<table>
+<thead><tr><th></th><th>Sale before 1 July 2027</th><th>Sale from 1 July 2027</th></tr></thead>
+<tbody>
+<tr><td>Gain on an asset held at least 12 months, individuals and trusts</td><td>50% discount</td><td>Gain up to 1 July 2027: 50% discount. Gain after it: cost base indexation</td></tr>
+<tr><td>Minimum tax</td><td>None</td><td>30% for resident individuals on gains accruing from 1 July 2027, unless they receive a listed payment such as the Age Pension that year</td></tr>
+<tr><td>Assets you already own</td><td>50% discount</td><td>Split at 1 July 2027, using the asset's value on that date</td></tr>
+<tr><td>Assets bought from 1 July 2027</td><td>Not applicable</td><td>Indexation and the minimum tax on the whole gain</td></tr>
+<tr><td>New residential dwellings</td><td>50% discount</td><td>The first buyer chooses the 50% discount or indexation; later buyers get indexation</td></tr>
+<tr><td>Companies and super funds</td><td>No discount for companies; one-third for super funds</td><td>Unchanged</td></tr>
+<tr><td>Your home</td><td>Main residence exemption</td><td>Unchanged</td></tr>
+<tr><td>Pre-CGT assets (bought before 20 September 1985)</td><td>Exempt</td><td>Gains to 1 July 2027 stay exempt; gains after it are taxed under the new rules</td></tr>
+</tbody>
+</table>
+<p>The sources for each row are in the sections below and listed at the end.</p>
+
 <h2>How the 50% CGT discount works until 30 June 2027</h2>
 <p>For a sale before 1 July 2027 nothing changes. Under those rules:</p>
 <ol>
@@ -123,6 +139,16 @@ export const post: BlogPost = {
 <p>The Budget explainer puts numbers on how the change lands by asset. Over the past 20 years, inflation made up on average 42% of a house's nominal gain over a five-year hold and 36% over ten years, against 59% and 50% for units and 53% and 56% for ASX 200 shares. Indexation would have sheltered less of a typical house gain than the 50% discount did, and about as much or more of a typical unit or share gain. Treasury's modelling, in the same explainer, has the package adding around 75,000 owner-occupiers over the next decade and house prices growing around 2% less over a couple of years than with no change.</p>
 <p>On the minimum tax, the explanatory memorandum estimates that had it applied in 2022-23, over 95% of net capital gains income would have been earned by people either unaffected by it or on a marginal rate above 30% during their working lives.</p>
 
+<h2>Frequently asked questions</h2>
+<h3>Does the new capital gains tax apply to existing investment properties?</h3>
+<p>Yes, from 1 July 2027. On property you own before then, the gain up to 1 July 2027 keeps the 50% discount, and the gain after it is indexed for inflation, with a 30% minimum tax for resident individuals. Nothing is payable until you sell (ATO, last updated 29 June 2026).</p>
+<h3>What are the new rules for capital gains tax in Australia?</h3>
+<p>For gains that accrue from 1 July 2027, individuals, trusts and partnerships work out the gain with cost base indexation instead of the 50% discount, and resident individuals pay at least 30% on it unless they receive a listed income support payment that year. New builds keep a choice for the first buyer; companies, super funds and your home are unchanged.</p>
+<h3>Does the 50% capital gains tax discount still apply in 2026?</h3>
+<p>Yes. A sale before 1 July 2027 of an asset held at least 12 months gets the 50% discount as before, and the gain that accrued up to 1 July 2027 keeps it even when you sell later.</p>
+<h3>How much capital gains tax will I pay on $300,000?</h3>
+<p>It depends on your other income and when you sell. Before 1 July 2027, half the gain, $150,000, is added to your taxable income: with $100,000 of other income that adds about $57,850 of tax at the 2026-27 resident rates plus $3,000 of Medicare levy. Our <a href="/cgt-calculator">CGT calculator</a> works it for your figures, including a sale after 1 July 2027.</p>
+
 <p><em>This article is general information, not tax advice. The new rules turn on your circumstances, the 1 July 2027 value of what you own and the ministerial instruments that set the details; speak to a registered tax agent before acting.</em></p>
 
 <h2>Sources</h2>
@@ -148,6 +174,6 @@ export const post: BlogPost = {
     "2026",
   ],
   publishedAt: "2026-05-13",
-  updatedAt: "2026-10-01",
+  updatedAt: "2026-10-11",
   readingTime: 12,
 };
