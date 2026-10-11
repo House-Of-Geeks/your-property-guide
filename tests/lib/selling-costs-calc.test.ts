@@ -77,4 +77,16 @@ describe("state cost guides", () => {
       expect(a).toContain(t.commission.highAmount.toLocaleString("en-AU"));
     }
   });
+  it("gives the cost table's own totals in the FAQ and its JSON-LD, labelled before and with GST on the commission (review 10 Oct 2026, 0.6 and 0.7)", () => {
+    const fmt = (n: number) => `$${n.toLocaleString("en-AU")}`;
+    for (const s of COST_OF_SELLING_STATES) {
+      const t = sellingCostTable(s);
+      const a = COST_OF_SELLING_STATE[s].faqs[0].answer;
+      expect(COST_OF_SELLING_STATE[s].faqs[0].question).toMatch(/^How much does it cost to sell a house in /);
+      expect(a).toContain(`${fmt(t.totalLow)} to ${fmt(t.totalHigh)} before GST on the commission`);
+      expect(a).toContain(`${fmt(t.totalLowWithGst)} to ${fmt(t.totalHighWithGst)} with it`);
+      expect(a).not.toMatch(/all-in|all in/);
+      expect(t.totalHighWithGst).toBe(t.totalHigh + Math.round(t.commission.highAmount * 0.1));
+    }
+  });
 });

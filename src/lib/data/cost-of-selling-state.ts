@@ -6,6 +6,7 @@
 // [text](/path) links, rendered by the template.
 import type { FaqItem, SourceItem } from "@/components/guide";
 import type { StateCode } from "./commission-rates";
+import { CONVEYANCING, MARKETING, lineRange, money, sellingCostTable } from "./selling-costs";
 
 export interface StateDifference {
   heading: string;
@@ -47,8 +48,49 @@ const YPG_NOTE: SourceItem =
 const FRCGW_PARA =
   "Since 1 January 2025 every seller of Australian property needs an ATO clearance certificate before settlement, whatever the price. Without one the buyer must withhold 15% of the price and pay it to the ATO, and you wait for your tax return to get it back. The certificate is free, applied for online, and usually issued within days; ask your conveyancer to lodge it the week you list.";
 
+interface CostFaqDetail {
+  question: string;
+  /** How the state's documents line reads in a sentence ("Section 32 certificates"). */
+  docs: string;
+  /** "conveyancing" unless the state's word differs. */
+  conveyancer?: string;
+  /** The conditional lines, where the state has more than an auctioneer and a discharge fee. */
+  extras?: string;
+  /** Adds the commission on the capital's median dwelling value. */
+  capitalTail?: boolean;
+  tail?: string;
+}
+
+/**
+ * "How much does it cost to sell a house in {State}?": the answer is built
+ * from the state's cost table, so the FAQ and its FAQPage JSON-LD give the
+ * same totals as the TL;DR and the table (commercial-intent review, 10 Oct
+ * 2026, selling 0.7), and say plainly that the totals leave out GST on the
+ * commission (0.6).
+ */
+function costFaqAnswer(state: StateCode, capital: string, capitalMedian: number, d: CostFaqDetail): string {
+  const t = sellingCostTable(state);
+  const c = t.commission;
+  const article = /^8/.test(String(t.price)) ? "an" : "a";
+  const extras = d.extras ?? "an auctioneer and a mortgage discharge fee if they apply";
+  const parts = [
+    `On ${article} ${money(t.price)} sale, budget roughly ${money(t.totalLow)} to ${money(t.totalHigh)} before GST on the commission, or ${money(t.totalLowWithGst)} to ${money(t.totalHighWithGst)} with it.`,
+    `That covers commission of ${money(c.lowAmount)} to ${money(c.highAmount)} (${c.low}% to ${c.high}%, plus GST), marketing of ${lineRange(MARKETING)}, ${d.conveyancer ?? "conveyancing"} of ${lineRange(CONVEYANCING)}, ${d.docs} at ${lineRange(t.documents)}, and ${extras}.`,
+  ];
+  if (d.capitalTail) {
+    const at = (rate: number) => money(Math.round((capitalMedian * rate) / 100));
+    parts.push(`On the Cotality ${capital} median of ${money(capitalMedian)} (August 2026), commission alone is ${at(c.low)} to ${at(c.high)} before GST.`);
+  }
+  if (d.tail) parts.push(d.tail);
+  return parts.join(" ");
+}
+
+function withCostFaq(g: StateCostGuide, d: CostFaqDetail): StateCostGuide {
+  return { ...g, faqs: [{ question: d.question, answer: costFaqAnswer(g.state, g.capital, g.capitalMedian, d) }, ...g.faqs] };
+}
+
 export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
-  NSW: {
+  NSW: withCostFaq({
     state: "NSW",
     slug: "cost-of-selling-a-house-nsw",
     capital: "Sydney",
@@ -86,7 +128,6 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       },
     ],
     faqs: [
-      { question: "How much does it cost to sell a house in NSW?", answer: "On an $800,000 sale, budget roughly $19,000 to $32,000 all-in: commission of $14,400 to $20,000 (1.8% to 2.5%, plus GST), marketing of $2,000 to $8,000, conveyancing of $800 to $2,500, contract documents of $300 to $600, and an auctioneer and mortgage discharge fee if they apply. On a Sydney-median sale above $1.2 million the commission alone is $22,000 to $30,500." },
       { question: "Who pays stamp duty when selling a house in NSW?", answer: "The buyer. Transfer duty in NSW is paid by the purchaser within three months of exchange. The seller pays no duty on the sale." },
       { question: "Do I need a solicitor or conveyancer to sell in NSW?", answer: "In practice yes, because the contract with its prescribed documents must be prepared before the property is advertised, and only a solicitor or licensed conveyancer can prepare it properly. Fees typically run $800 to $2,500 plus $300 to $600 in searches." },
       { question: "What is the average real estate commission in NSW?", answer: "Typically 1.8% to 2.5% of the sale price, with around 2% the most common rate and Sydney metro agents often below it. Commission is not regulated and is always negotiable; GST of 10% usually applies on top." },
@@ -98,9 +139,9 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       { label: "NSW Government, Selling a property in NSW", href: "https://www.nsw.gov.au/housing-and-construction/buying-and-selling-property/selling-a-property" },
       COTALITY, ATO_FRCGW, ATO_CGT, YPG_NOTE,
     ],
-  },
+  }, { docs: "contract documents", capitalTail: true, question: "How much does it cost to sell a house in NSW?" }),
 
-  VIC: {
+  VIC: withCostFaq({
     state: "VIC",
     slug: "cost-of-selling-a-house-vic",
     capital: "Melbourne",
@@ -143,7 +184,6 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       },
     ],
     faqs: [
-      { question: "How much does it cost to sell a house in Victoria?", answer: "On an $800,000 sale, budget roughly $17,000 to $32,000 all-in: commission of $12,800 to $20,000 (1.6% to 2.5%, plus GST), marketing of $2,000 to $8,000, conveyancing of $800 to $2,500, Section 32 certificates of $300 to $800, and an auctioneer and mortgage discharge fee if they apply. Melbourne metro commission often sits under 2%." },
       { question: "Who pays for the Section 32 in Victoria?", answer: "The seller. The vendor statement is your obligation under section 32 of the Sale of Land Act 1962, and the certificates it needs typically cost $300 to $800 plus your conveyancer's fee. The buyer pays for their own contract review and any building inspection." },
       { question: "Can a Victorian seller pass land tax on to the buyer?", answer: "Not for a sale under $10 million. Since 1 January 2024, section 10G of the Sale of Land Act makes such a clause of no effect. It only matters for investment properties; a principal place of residence is exempt from land tax anyway." },
       { question: "What is the average real estate commission in Victoria?", answer: "Typically 1.6% to 2.5%, with around 2% most common and Melbourne metro agents often lower. Commission is deregulated and negotiable, and the agent must tell you it is negotiable before you sign the authority. GST of 10% usually applies on top." },
@@ -155,9 +195,9 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       { label: "Consumer Affairs Victoria, Selling property", href: "https://www.consumer.vic.gov.au/housing/buying-and-selling-property/selling-property" },
       COTALITY, ATO_FRCGW, ATO_CGT, YPG_NOTE,
     ],
-  },
+  }, { docs: "Section 32 certificates", question: "How much does it cost to sell a house in Victoria?" }),
 
-  QLD: {
+  QLD: withCostFaq({
     state: "QLD",
     slug: "cost-of-selling-a-house-qld",
     capital: "Brisbane",
@@ -200,7 +240,6 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       },
     ],
     faqs: [
-      { question: "How much does it cost to sell a house in Queensland?", answer: "On an $800,000 sale, budget roughly $22,000 to $36,000 all-in: commission of $18,400 to $23,200 (2.3% to 2.9%, plus GST), marketing of $2,000 to $8,000, conveyancing of $800 to $2,500, the Form 2 disclosure searches of $200 to $700, plus a pool safety certificate, smoke alarm work, an auctioneer or a mortgage discharge fee where they apply." },
       { question: "Is real estate commission capped in Queensland?", answer: "Not since 1 December 2014, when the Property Occupations Act 2014 removed the former 5% cap. Commission is now negotiated, and typical rates are 2.3% to 2.9% of the sale price plus GST, with around 2.5% most common." },
       { question: "Who pays for the seller disclosure statement in Queensland?", answer: "The seller. The Form 2 and its certificates are your obligation under the Property Law Act 2023 from 1 August 2025. Search fees are typically $200 to $700; a body corporate certificate for a unit adds to that." },
       { question: "Do I need a pool safety certificate to sell in Queensland?", answer: "You must either give the buyer a current certificate before settlement or give a Form 36 notice that there is none, after which the buyer must obtain one within 90 days. Most sellers get the certificate, typically $150 to $300 for the inspection plus any fence repairs." },
@@ -212,9 +251,9 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       { label: "Queensland Government, Selling a home with a pool and Smoke alarms when selling", href: "https://www.qld.gov.au/housing/buying-owning-home/selling-a-home" },
       COTALITY, ATO_FRCGW, ATO_CGT, YPG_NOTE,
     ],
-  },
+  }, { docs: "the Form 2 disclosure searches", extras: "a pool safety certificate, smoke alarm work, an auctioneer or a mortgage discharge fee where they apply", question: "How much does it cost to sell a house in Queensland?" }),
 
-  SA: {
+  SA: withCostFaq({
     state: "SA",
     slug: "cost-of-selling-a-house-sa",
     capital: "Adelaide",
@@ -257,7 +296,6 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       },
     ],
     faqs: [
-      { question: "How much does it cost to sell a house in South Australia?", answer: "On an $800,000 sale, budget roughly $19,000 to $34,000 all-in: commission of $14,400 to $22,000 (1.8% to 2.75%, plus GST), marketing of $2,000 to $8,000, conveyancing of $800 to $2,500, Form 1 searches of $300 to $600, and an auctioneer and mortgage discharge fee if they apply." },
       { question: "Who prepares and pays for the Form 1 in SA?", answer: "Where an agent is appointed, the agent prepares it; the searches, typically $300 to $600, are a cost to the seller. Without an agent, your conveyancer prepares it. The buyer's two-business-day cooling-off period runs from when the Form 1 is served." },
       { question: "How long can an agency agreement run in South Australia?", answer: "No more than 90 days. It can be extended once, either by written agreement for up to 90 days signed no earlier than 14 days before expiry, or automatically for 180 days if the agent serves a notice of expiry and you do not object. You can terminate at any time during an extension by written notice." },
       { question: "What is the average real estate commission in South Australia?", answer: "Typically 1.8% to 2.75% of the sale price, with around 2% most common in Adelaide and higher rates in regional SA. Commission is negotiable, and GST of 10% usually applies on top." },
@@ -269,9 +307,9 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       { label: "Consumer and Business Services SA, Selling a home", href: "https://www.cbs.sa.gov.au/" },
       COTALITY, ATO_FRCGW, ATO_CGT, YPG_NOTE,
     ],
-  },
+  }, { docs: "Form 1 searches", question: "How much does it cost to sell a house in South Australia?" }),
 
-  WA: {
+  WA: withCostFaq({
     state: "WA",
     slug: "cost-of-selling-a-house-wa",
     capital: "Perth",
@@ -314,7 +352,6 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       },
     ],
     faqs: [
-      { question: "How much does it cost to sell a house in WA?", answer: "On a $600,000 sale, budget roughly $16,000 to $29,000 all-in: commission of $12,000 to $16,800 (2% to 2.8%, plus GST), marketing of $2,000 to $8,000, settlement agent fees of $800 to $2,500, title and strata searches of $100 to $400, and smoke alarm or RCD work and a mortgage discharge fee where they apply. On the Perth median near $1 million, commission alone is $20,000 to $28,000." },
       { question: "Do I need smoke alarms and RCDs to sell a house in WA?", answer: "Yes. Mains-powered smoke alarms less than ten years old and at least two RCDs must be in place before the property is transferred, at the seller's cost. If the house already complies there is nothing to pay; otherwise an electrician's work is typically $150 to $700." },
       { question: "Is there a vendor statement in Western Australia?", answer: "No. WA has no Section 32 or Form 1 equivalent. The buyer does their own searches, and the seller's disclosure obligations are the warranties in the contract and the general duty not to mislead." },
       { question: "What is the average real estate commission in WA?", answer: "Typically 2% to 2.8% of the sale price, with around 2.4% common in Perth and higher rates in regional WA. Commission is negotiable and GST of 10% usually applies on top." },
@@ -326,9 +363,9 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       { label: "Consumer Protection WA, Selling property, and Building and Energy, RCDs and smoke alarms", href: "https://www.consumerprotection.wa.gov.au/selling-property" },
       COTALITY, ATO_FRCGW, ATO_CGT, YPG_NOTE,
     ],
-  },
+  }, { docs: "title and strata searches", conveyancer: "settlement agent fees", extras: "smoke alarm or RCD work, an auctioneer and a mortgage discharge fee where they apply", capitalTail: true, question: "How much does it cost to sell a house in WA?" }),
 
-  TAS: {
+  TAS: withCostFaq({
     state: "TAS",
     slug: "cost-of-selling-a-house-tas",
     capital: "Hobart",
@@ -365,7 +402,6 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       },
     ],
     faqs: [
-      { question: "How much does it cost to sell a house in Tasmania?", answer: "On a $600,000 sale, budget roughly $18,000 to $31,000 all-in: commission of $15,000 to $19,500 (2.5% to 3.25%, plus GST), marketing of $2,000 to $8,000, conveyancing of $800 to $2,500, contract and council certificates of $200 to $500, and a mortgage discharge fee if there is a loan." },
       { question: "Why is real estate commission higher in Tasmania?", answer: "Lower sale prices and a thinner market. Agents cover the same fixed cost of a campaign from a smaller price, so percentages run 2.5% to 3.25% against about 2% in the big capitals. The dollar figure per sale is often similar. Commission is negotiable, and the percentage is worth negotiating hardest on higher-value Hobart homes." },
       { question: "Is there a cooling-off period when selling in Tasmania?", answer: "No, for either side. The buyer has no statutory cooling-off period on the contract, and the seller has none on the agency agreement. A signed contract is binding subject to its finance and inspection conditions." },
       { question: "Do I need a vendor statement to sell in Tasmania?", answer: "No. Tasmania has no Section 32 or Form 1 equivalent. Your conveyancer prepares the contract and obtains the council and water certificates the buyer expects, typically $200 to $500." },
@@ -377,9 +413,9 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       { label: "Property Agents Board of Tasmania", href: "https://www.propertyagentsboard.com.au/" },
       COTALITY, ATO_FRCGW, ATO_CGT, YPG_NOTE,
     ],
-  },
+  }, { docs: "contract and council certificates", question: "How much does it cost to sell a house in Tasmania?" }),
 
-  ACT: {
+  ACT: withCostFaq({
     state: "ACT",
     slug: "cost-of-selling-a-house-act",
     capital: "Canberra",
@@ -422,7 +458,6 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       },
     ],
     faqs: [
-      { question: "How much does it cost to sell a house in Canberra?", answer: "On an $800,000 sale, budget roughly $19,000 to $31,000 all-in: commission of $14,400 to $18,000 (1.8% to 2.25%, plus GST), marketing of $2,000 to $8,000, a solicitor at $800 to $2,500, the pre-sale reports and enquiries at $800 to $1,500 (the building and pest reports are reimbursed by the buyer at settlement), and an auctioneer and mortgage discharge fee if they apply." },
       { question: "Who pays for the building and pest report in the ACT?", answer: "The seller commissions and pays for them before advertising, as the Civil Law (Sale of Residential Property) Act 2003 requires, and section 18 requires the buyer to reimburse the cost of the building and pest reports at settlement. The energy efficiency rating is a cost the seller keeps." },
       { question: "Do I need an energy efficiency rating to sell in Canberra?", answer: "Yes. The EER statement is one of the required documents, and section 22 of the Act requires the rating to be shown in every advertisement for the property. An assessment typically costs $200 to $400." },
       { question: "What is the average real estate commission in the ACT?", answer: "Typically 1.8% to 2.25% of the sale price, with around 2.1% common. Commission is negotiable and GST of 10% usually applies on top." },
@@ -434,9 +469,9 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       { label: "Access Canberra, Real estate and property", href: "https://www.accesscanberra.act.gov.au/business-and-work/real-estate-and-property" },
       COTALITY, ATO_FRCGW, ATO_CGT, YPG_NOTE,
     ],
-  },
+  }, { docs: "the pre-sale reports and enquiries", conveyancer: "a solicitor's fees", tail: "The building and pest reports are reimbursed by the buyer at settlement.", question: "How much does it cost to sell a house in Canberra?" }),
 
-  NT: {
+  NT: withCostFaq({
     state: "NT",
     slug: "cost-of-selling-a-house-nt",
     capital: "Darwin",
@@ -473,7 +508,6 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       },
     ],
     faqs: [
-      { question: "How much does it cost to sell a house in the Northern Territory?", answer: "On an $800,000 sale, budget roughly $22,000 to $33,000 all-in: commission of $19,200 to $21,600 (2.4% to 2.7%, plus GST), marketing of $2,000 to $8,000, conveyancing of $800 to $2,500, contract and title search of $100 to $300, and a mortgage discharge fee if there is a loan. On the Darwin median of about $650,000, commission alone is $15,500 to $17,500." },
       { question: "Is there a vendor statement in the NT?", answer: "No. The Territory has no Section 32 or Form 1 equivalent. Your conveyancer prepares the contract and a title search, and the buyer does their own due diligence within the four-business-day cooling-off period." },
       { question: "What is the average real estate commission in the NT?", answer: "Typically 2.4% to 2.7% of the sale price, with around 2.5% common. Commission is negotiable and GST of 10% usually applies on top." },
       { question: "Does the NT have land tax?", answer: "No. The Northern Territory is the only jurisdiction without land tax, so there is no land tax adjustment at settlement for an investment property. Capital gains tax is federal and still applies to an investment." },
@@ -484,7 +518,7 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       { label: "NT Government, Dealing with a real estate agent, and Buying and selling a home", href: "https://nt.gov.au/property/buying-and-selling-a-home/ways-to-buy-or-sell-a-home/dealing-with-a-real-estate-agent" },
       COTALITY, ATO_FRCGW, ATO_CGT, YPG_NOTE,
     ],
-  },
+  }, { docs: "a contract and title search", capitalTail: true, question: "How much does it cost to sell a house in the Northern Territory?" }),
 };
 
 export const COST_OF_SELLING_STATES: StateCode[] = ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "ACT", "NT"];

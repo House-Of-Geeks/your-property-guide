@@ -60,7 +60,7 @@ export function CostOfSellingStateGuide({ state }: { state: StateCode }) {
 
   const article = /^8/.test(String(price)) ? "an" : "a";
   const tldr = [
-    `Selling ${article} ${money(price)} house in ${name} typically costs ${money(t.totalLow)} to ${money(t.totalHigh)} all-in, ${t.totalLowPct}% to ${t.totalHighPct}% of the price, before any capital gains tax.`,
+    `Selling ${article} ${money(price)} house in ${name} typically costs ${money(t.totalLow)} to ${money(t.totalHigh)} before GST on the commission (${t.totalLowPct}% to ${t.totalHighPct}% of the price), or ${money(t.totalLowWithGst)} to ${money(t.totalHighWithGst)} with it, before any capital gains tax.`,
     `Commission is the biggest line: ${r.low}% to ${r.high}% in ${name}, most often around ${r.typical}%, so ${money(t.commission.lowAmount)} to ${money(t.commission.highAmount)} at ${money(price)}. GST of 10% usually applies on top, and the rate is negotiable.`,
     `${t.documents.label}: ${money(t.documents.low)} to ${money(t.documents.high)}. ${t.documents.note}`,
     `Marketing (${money(2_000)} to ${money(8_000)}) is payable whether or not the property sells; conveyancing runs ${money(800)} to ${money(2_500)}; an auctioneer and a mortgage discharge fee apply only if you auction or have a loan.`,
@@ -120,7 +120,7 @@ export function CostOfSellingStateGuide({ state }: { state: StateCode }) {
         <Link href="/guides/how-to-negotiate-real-estate-agent-commission">negotiation guide</Link> the method.
       </p>
       <p>
-        Two checks before you compare rates. Ask whether the quote includes GST: a {r.typical}% rate excluding GST is {(r.typical * 1.1).toFixed(2)}% all-in.
+        Two checks before you compare rates. Ask whether the quote includes GST: a {r.typical}% rate excluding GST is {Number((r.typical * 1.1).toFixed(2))}% with GST.
         And ask what is included: some agents bundle the auctioneer and part of the marketing, others charge every item separately, so the cheaper
         rate is not always the cheaper agent. See <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">fixed fee vs commission</Link> for the
         alternative models.
@@ -160,7 +160,8 @@ export function CostOfSellingStateGuide({ state }: { state: StateCode }) {
         </li>
       </ul>
       <p>
-        As a share of the price, {name} selling costs at {money(price)} run {pctOf(t.totalLow, price)} to {pctOf(t.totalHigh, price)} before tax.
+        As a share of the price, {name} selling costs at {money(price)} run {pctOf(t.totalLow, price)} to {pctOf(t.totalHigh, price)} before GST on the
+        commission and before any capital gains tax.
         The national guide to <Link href="/guides/cost-of-selling-a-house-australia">the cost of selling a house</Link> explains each line in full.
       </p>
 
