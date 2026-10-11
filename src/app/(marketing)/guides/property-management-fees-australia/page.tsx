@@ -34,7 +34,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Management fees by state for 2026 (5.8% NSW to 8.7% WA and Tasmania), letting fees in weeks, renewal, inspection and statement charges, sourced and dated, with an annual cost calculator.",
   slug: "property-management-fees-australia",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 12,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -106,7 +106,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Negative Gearing in Australia", href: "/guides/negative-gearing-australia", description: "How property management fees flow through to your tax return." },
   { title: "Property Depreciation Guide", href: "/guides/property-depreciation-guide", description: "The other big deduction on your investment property." },
   { title: "House vs Apartment Investment", href: "/guides/house-vs-apartment-investment-australia", description: "How property management fits into the holding-cost picture." },
-  { title: "Find an Expert", href: "/find-an-expert", description: "Looking for a property manager? Browse our network." },
+  { title: "Rentvesting in Australia", href: "/guides/rentvesting-australia", description: "Renting where you live and owning an investment, and the 1 July 2027 tax change." },
 ];
 
 const SOURCES: SourceItem[] = PM_FEE_SOURCE_LIST.map((s) => ({

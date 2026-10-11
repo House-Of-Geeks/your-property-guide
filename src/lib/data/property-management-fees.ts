@@ -359,11 +359,34 @@ export function noPublishedRange(state: StateCode): string {
   return `No published ${state} range`;
 }
 
+/**
+ * Where LocalAgentFinder's state average sits relative to the range the
+ * other sources publish: "below" or "above" when it falls outside it, null
+ * when it is inside (or there is no range). The average and the range are
+ * two surveys taken at different times, so they can disagree; the cell and
+ * the state answer then say so rather than print an average that looks
+ * like a mistake beside its own range (commercial-intent review, 10 Oct
+ * 2026, renting 0.6).
+ */
+export function averageOutsideRange(r: { low?: number; high?: number; average: number }): "below" | "above" | null {
+  if (r.low === undefined || r.high === undefined) return null;
+  if (r.average < r.low) return "below";
+  if (r.average > r.high) return "above";
+  return null;
+}
+
+/** The clause a cell adds when the average sits outside the published range. */
+export function differentSurveyNote(side: "below" | "above"): string {
+  return `LocalAgentFinder, March 2026, a different survey that sits ${side} this range`;
+}
+
 export function managementCell(s: PmStateFees): PmCell {
   const m = s.management;
   const range = m.low === m.high ? pct(m.low) : `${pct(m.low)} to ${pct(m.high)}`;
   const note = m.note ? ` (${m.note})` : "";
-  return { text: `${range}${note}; state average ${pct(m.average)}`, refs: refs(m.sources) };
+  const side = averageOutsideRange(m);
+  const avg = side ? `${pct(m.average)} (${differentSurveyNote(side)})` : pct(m.average);
+  return { text: `${range}${note}; state average ${avg}`, refs: refs(m.sources) };
 }
 
 export function lettingCell(s: PmStateFees): PmCell {
@@ -372,7 +395,9 @@ export function lettingCell(s: PmStateFees): PmCell {
     return { text: `about ${weeks(l.average)} (state average)`, refs: refs(l.sources) };
   }
   const range = l.low === l.high ? weeks(l.low) : `${l.low} to ${weeks(l.high)}`;
-  return { text: `${range}; state average ${weeks(l.average)}`, refs: refs(l.sources) };
+  const side = averageOutsideRange(l);
+  const avg = side ? `${weeks(l.average)} (${differentSurveyNote(side)})` : weeks(l.average);
+  return { text: `${range}; state average ${avg}`, refs: refs(l.sources) };
 }
 
 export function dollarCell(state: StateCode, r: PmDollarRange | null): PmCell {
@@ -398,11 +423,15 @@ export function stateFeeAnswer(state: StateCode): string {
     .join("; ");
   const range = m.low === m.high ? pct(m.low) : `${pct(m.low)} to ${pct(m.high)}`;
   const detail = m.note ? `${m.note}; ${rangeSources}` : rangeSources;
-  const first = `In ${s.name}, the published management fee is ${range} of rent collected (${detail}), and LocalAgentFinder's March 2026 state average is ${pct(m.average)}.`;
+  const mSide = averageOutsideRange(m);
+  const first = mSide
+    ? `In ${s.name}, the published management fee is ${range} of rent collected (${detail}), while LocalAgentFinder's March 2026 state average is ${pct(m.average)}, ${mSide} that range because it comes from a different survey.`
+    : `In ${s.name}, the published management fee is ${range} of rent collected (${detail}), and LocalAgentFinder's March 2026 state average is ${pct(m.average)}.`;
+  const lSide = averageOutsideRange(l);
   const letting =
     l.low === undefined || l.high === undefined
       ? `The letting fee averages ${weeksRent(l.average)} (LocalAgentFinder, March 2026).`
-      : `Letting fees run ${l.low === l.high ? weeksRent(l.low) : `${l.low} to ${weeksRent(l.high)}`} when a new tenant is signed, averaging ${weeks(l.average)}.`;
+      : `Letting fees run ${l.low === l.high ? weeksRent(l.low) : `${l.low} to ${weeksRent(l.high)}`} when a new tenant is signed, averaging ${weeks(l.average)}${lSide ? ` in a different survey (LocalAgentFinder, March 2026), ${lSide} that range` : ""}.`;
   return `${first} ${letting} ${s.regulated}`;
 }
 
