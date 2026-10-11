@@ -1,4 +1,5 @@
 // Fix items 10 and 12: the state cost tables and the People-also-ask FAQs on the commission guides.
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { STATE_RATES, type StateCode } from "../../src/lib/data/commission-rates";
 import { COMMISSION_PAA_FAQ } from "../../src/lib/data/commission-faqs";
@@ -21,12 +22,15 @@ describe("commission rates", () => {
 describe("selling-cost table", () => {
   it("works NSW through at $800,000: commission plus the always-payable lines at the low end, everything at the high end", () => {
     const t = sellingCostTable("NSW");
+    const r = STATE_RATES.NSW;
+    const at = (rate: number) => Math.round((800_000 * rate) / 100);
     expect(t.price).toBe(800_000);
-    expect(t.commission).toMatchObject({ lowAmount: 14_400, typicalAmount: 16_000, highAmount: 20_000 });
-    expect(t.totalLow).toBe(14_400 + 2_000 + 800 + 300);
-    expect(t.totalHigh).toBe(20_000 + 8_000 + 2_500 + 600 + 1_200 + 400);
-    expect(t.totalLowPct).toBe(2.2);
-    expect(t.totalHighPct).toBe(4.1);
+    expect(t.commission).toMatchObject({ lowAmount: at(r.low), typicalAmount: at(r.typical), highAmount: at(r.high) });
+    expect(t.totalLow).toBe(at(r.low) + 2_000 + 800 + 300);
+    expect(t.totalHigh).toBe(at(r.high) + 8_000 + 2_500 + 600 + 1_200 + 400);
+    expect(t.totalLowPct).toBe(Math.round((t.totalLow / 800_000) * 1000) / 10);
+    expect(t.totalHighPct).toBe(Math.round((t.totalHigh / 800_000) * 1000) / 10);
+    expect(t.totalHighWithGst).toBe(t.totalHigh + Math.round(at(r.high) * 0.1));
   });
   it("keeps every state near the national guide's 2 to 4 per cent before tax (the $600,000 states run higher at the top end)", () => {
     for (const s of STATES) {
@@ -60,5 +64,79 @@ describe("People-also-ask FAQs", () => {
   it("uses the same numbers as the cost table (Victoria's total)", () => {
     const t = sellingCostTable("VIC");
     expect(COMMISSION_PAA_FAQ.VIC.answer).toContain(`$${t.totalLow.toLocaleString("en-AU")} to $${t.totalHigh.toLocaleString("en-AU")}`);
+  });
+});
+
+describe("commission copy (review 10 Oct 2026, selling 0.4)", () => {
+  const pages = ["real-estate-agent-fees-australia", ...STATES.map((s) => `real-estate-commission-${s.toLowerCase()}`)];
+  it("no longer says a better agent 'earns back their commission many times over', and shows the arithmetic instead", () => {
+    // $20,000 against the $1,600 gap between 1.8% and 2% on $800,000 is 12.5 times.
+    expect(20_000 / ((800_000 * (2 - 1.8)) / 100)).toBeGreaterThan(12);
+    for (const p of pages) {
+      const src = readFileSync(`src/app/(marketing)/guides/${p}/page.tsx`, "utf8");
+      expect(src).not.toMatch(/many times( over)?/);
+    }
+    const fees = readFileSync("src/app/(marketing)/guides/real-estate-agent-fees-australia/page.tsx", "utf8");
+    expect(fees).toContain("covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times");
+  });
+});
+
+describe("valuation wording (review 10 Oct 2026, selling 0.9)", () => {
+  it("promises no 'accurate value': the guides offer a realistic price range", () => {
+    for (const s of STATES) {
+      const src = readFileSync(`src/app/(marketing)/guides/real-estate-commission-${s.toLowerCase()}/page.tsx`, "utf8");
+      expect(src).not.toMatch(/accurate (value|read)|you can trust/i);
+      expect(src).toContain("realistic price range");
+    }
+  });
+});
+
+describe("fees guide cooling-off (review 10 Oct 2026, selling 0.5)", () => {
+  it("matches the agency-agreements guide: NSW only, to 5 pm the next business day or Saturday", () => {
+    const fees = readFileSync("src/app/(marketing)/guides/real-estate-agent-fees-australia/page.tsx", "utf8");
+    expect(fees).not.toMatch(/often 1 to 3 days|In most states, you have a short/);
+    expect(fees).toContain("NSW gives you until 5 pm on the");
+    expect(fees).toContain('href="/guides/real-estate-agency-agreements-by-state"');
+    const agreements = readFileSync("src/lib/data/blog-posts/real-estate-agency-agreements-by-state.ts", "utf8").replace(/<[^>]+>/g, "");
+    expect(agreements).toContain("ends at 5 pm on the next business day or Saturday");
+    expect(agreements).toContain("Victoria, Queensland, SA and WA have none");
+  });
+});
+
+describe("national fees guide (review 10 Oct 2026, selling P1, 0.2, 0.3, 0.6a, 0.8)", () => {
+  const fees = readFileSync("src/app/(marketing)/guides/real-estate-agent-fees-australia/page.tsx", "utf8");
+  it("carries the calculator, the sourced state table, a GST section and a sources block", () => {
+    expect(fees).toContain('<CommissionCalculator initialState="NSW" initialPrice={800_000} headingLevel="h3" showGuideCta={false} />');
+    expect(fees).toMatch(/const TOC: GuideTOCEntry\[\] = \[\n  \{ id: "calculator",/);
+    expect(fees).toContain("<NationalCommissionTable price={800_000} />");
+    expect(fees).toContain('<h2 id="gst">Does commission include GST?</h2>');
+    expect(fees).toContain("<Sources items={SOURCES} />");
+    expect(fees).not.toContain("WebApplication");
+  });
+  it("links the national pages the review lists, with its anchors", () => {
+    for (const [href, anchor] of [
+      ["/guides/fixed-fee-vs-commission-real-estate-agents", "fixed fee vs commission agents"],
+      ["/guides/cost-of-selling-a-house-australia", "the full cost of selling a house"],
+      ["/selling-costs-calculator", "selling costs calculator"],
+      ["/guides/real-estate-agency-agreements-by-state", "agency agreements by state"],
+      ["/guides/how-to-negotiate-real-estate-agent-commission", "how to negotiate real estate agent commission"],
+      ["/guides/sell-your-house-privately-australia", "sell your house privately"],
+    ]) expect(fees).toContain(`<Link href="${href}">${anchor}</Link>`);
+  });
+  it("types no national range and makes no unsourced claims", () => {
+    expect(fees).not.toMatch(/1\.5% to 3\.5%|1\.5% to 3\.0%|\$3,000 to \$6,000|above \$2M|below 1\.5%|\$3k/);
+    expect(fees).toContain("nationalRange()");
+    const title = /^  title: "([^"]+)",$/m.exec(fees)![1];
+    expect(title).toBe("Real Estate Agent Fees & Commission 2026: Rates by State");
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(/^    "([^"]+)",$/m.exec(fees.slice(fees.indexOf("  description:")))![1].length).toBeLessThanOrEqual(160);
+  });
+});
+
+describe("negotiation guide (review 10 Oct 2026, selling 0.3 and 0.8)", () => {
+  it("shows the sourced state table and makes no unsourced rate claims", () => {
+    const src = readFileSync("src/app/(marketing)/guides/how-to-negotiate-real-estate-agent-commission/page.tsx", "utf8");
+    expect(src).toContain("<NationalCommissionTable price={800_000} />");
+    expect(src).not.toMatch(/\$2 million|below 1\.5%|1\.5 to 3\.5%|last to cap|last legislated|<td>1\.8% to 2\.5%<\/td>/);
   });
 });

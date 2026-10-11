@@ -4,14 +4,47 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { DollarSign, ArrowRight } from "lucide-react";
 import { formatPriceFull } from "@/lib/utils/format";
+import { computeSellingCosts, type SellingCostsResult } from "@/lib/selling-costs-calc";
 
-// Typical residential commission ranges by state, mid-2026. These are
-// market-wide ranges, not quotes: metro suburbs sit at the low end,
-// regional at the high end. Sources: published averages from the major
-// agent-comparison platforms; the ranges live in src/lib/data/commission-rates.ts.
-import { STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
+// Typical residential commission ranges by state. The ranges, their sources
+// and their as-at date live in src/lib/data/commission-rates.ts.
+import { COMMISSION_AS_AT, STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
 
 const STATES = Object.keys(STATE_RATES) as StateCode[];
+
+export interface CommissionCalculatorInput {
+  price: number;
+  /** Percent, e.g. 2. */
+  rate: number;
+  /** True when the quoted rate already includes GST. */
+  includesGst: boolean;
+  marketing: number;
+  conveyancing: number;
+  other: number;
+}
+
+/**
+ * The calculator's arithmetic. It runs through the selling costs
+ * calculator's own function, so the same sale gives the same commission,
+ * GST, total and net on both tools (commercial-intent review, 10 Oct 2026,
+ * 0.6): GST of 10% is added to the commission unless the quote includes it.
+ */
+export function commissionCalculatorResult(i: CommissionCalculatorInput): SellingCostsResult {
+  return computeSellingCosts({
+    price: i.price,
+    commissionRate: i.rate,
+    commissionIncludesGst: i.includesGst,
+    marketing: i.marketing,
+    conveyancing: i.conveyancing,
+    documents: 0,
+    presentation: 0,
+    auction: false,
+    auctioneer: 0,
+    loanBalance: 0,
+    discharge: 0,
+    other: i.other,
+  });
+}
 
 export interface CommissionCalculatorProps {
   /** Preset state; the state guides pass their own (fix item 8). */
@@ -34,6 +67,8 @@ export function CommissionCalculator({
   const [salePrice, setSalePrice] = useState(initialPrice);
   const [rate, setRate] = useState(STATE_RATES[initialState].typical);
   const [rateTouched, setRateTouched] = useState(false);
+  // Default "add 10%": most agency agreements state the rate before GST.
+  const [includesGst, setIncludesGst] = useState(false);
   const [marketing, setMarketing] = useState(4_000);
   const [conveyancing, setConveyancing] = useState(1_400);
   const [other, setOther] = useState(0);
@@ -45,18 +80,17 @@ export function CommissionCalculator({
   };
 
   const result = useMemo(() => {
-    const commission = (salePrice * rate) / 100;
-    const totalCosts = commission + marketing + conveyancing + other;
-    const net = salePrice - totalCosts;
+    const r = commissionCalculatorResult({ price: salePrice, rate, includesGst, marketing, conveyancing, other });
     return {
-      commission: Math.round(commission),
-      totalCosts: Math.round(totalCosts),
-      net: Math.round(net),
-      costPct: salePrice > 0 ? Math.round((totalCosts / salePrice) * 1000) / 10 : 0,
+      commission: r.commission,
+      gst: r.commissionGst,
+      totalCosts: r.totalCosts,
+      net: r.netBeforeLoan,
+      costPct: r.costPct,
       stateLow: Math.round((salePrice * STATE_RATES[state].low) / 100),
       stateHigh: Math.round((salePrice * STATE_RATES[state].high) / 100),
     };
-  }, [salePrice, rate, marketing, conveyancing, other, state]);
+  }, [salePrice, rate, includesGst, marketing, conveyancing, other, state]);
 
   const fmt = (n: number) => formatPriceFull(n);
 
@@ -109,10 +143,26 @@ export function CommissionCalculator({
               className="w-full rounded-lg border border-gray-300 px-3 py-3 text-gray-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
             />
             <p className="text-xs text-gray-500 mt-1">
-              Typical in {state}: {STATE_RATES[state].low}% to {STATE_RATES[state].high}%.
-              Check whether quotes include GST; add 10% to the commission if not.
+              Typical in {state}: {STATE_RATES[state].low}% to {STATE_RATES[state].high}% (published averages, {COMMISSION_AS_AT}); state average {STATE_RATES[state].typical}%.
             </p>
           </div>
+          <div>
+            <label htmlFor="commission-gst" className="block text-sm font-medium text-gray-700 mb-1">
+              Does the quoted rate include GST?
+            </label>
+            <select
+              id="commission-gst"
+              value={includesGst ? "yes" : "no"}
+              onChange={(e) => setIncludesGst(e.target.value === "yes")}
+              className="w-full rounded-lg border border-gray-300 px-3 py-3 text-gray-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none bg-white"
+            >
+              <option value="no">No, add 10% GST</option>
+              <option value="yes">Yes, GST included</option>
+            </select>
+            <p className="text-xs text-gray-500 mt-1">Check the agency agreement: it states the rate and whether GST is on top.</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <NumberInput
             id="marketing-budget"
             label="Marketing budget"
@@ -122,8 +172,6 @@ export function CommissionCalculator({
             step={500}
             hint="Portal listings, photography, signage. Typically $2,000 to $10,000."
           />
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <NumberInput
             id="conveyancing-fees"
             label="Conveyancing"
@@ -133,6 +181,8 @@ export function CommissionCalculator({
             step={100}
             hint="Typically $800 to $2,500."
           />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <NumberInput
             id="other-costs"
             label="Other costs"
@@ -150,11 +200,17 @@ export function CommissionCalculator({
         <Heading className="text-lg font-semibold text-gray-900 mb-5">What Selling Costs You</Heading>
         <dl className="space-y-3">
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-            <dt className="text-sm text-gray-600">Agent commission ({rate}%)</dt>
+            <dt className="text-sm text-gray-600">Agent commission ({rate}%{includesGst ? ", incl. GST" : ""})</dt>
             <dd className="text-sm font-semibold text-gray-900">{fmt(result.commission)}</dd>
           </div>
+          {result.gst > 0 && (
+            <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+              <dt className="text-sm text-gray-600">GST on commission (10%)</dt>
+              <dd className="text-sm font-semibold text-gray-900">{fmt(result.gst)}</dd>
+            </div>
+          )}
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-            <dt className="text-sm text-gray-600">Commission range in {state} ({STATE_RATES[state].low}% to {STATE_RATES[state].high}%)</dt>
+            <dt className="text-sm text-gray-600">Published range in {state} ({STATE_RATES[state].low}% to {STATE_RATES[state].high}%, before GST)</dt>
             <dd className="text-sm text-gray-500">{fmt(result.stateLow)} to {fmt(result.stateHigh)}</dd>
           </div>
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">

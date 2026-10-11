@@ -16,6 +16,11 @@ import {
 } from "@/lib/suburb-agents";
 import { STATE_RATES } from "@/lib/data/commission-rates";
 
+// The NSW range comes from the sourced table in commission-rates.ts (review 10 Oct 2026, selling 0.1).
+const NSW = STATE_RATES.NSW;
+const on = (median: number, rate: number) => Math.round((median * rate) / 100);
+const aud = (n: number) => `$${n.toLocaleString("en-AU")}`;
+
 function makeSuburb(over: Partial<Suburb["stats"]> = {}, freshness: Partial<NonNullable<Suburb["dataFreshness"]>> = {}, state = "NSW"): Suburb {
   return {
     id: "t", slug: "bondi-nsw-2026", name: "Bondi", postcode: "2026", state, region: "Waverley", description: "", heroImage: "",
@@ -30,8 +35,8 @@ const agency = { id: "ag1", slug: "smith-realty", name: "Smith Realty" } as Agen
 describe("commissionOnMedian", () => {
   it("works the state range on the suburb median", () => {
     const c = commissionOnMedian("NSW", 1_000_000)!;
-    expect([c.lowPct, c.typicalPct, c.highPct]).toEqual([1.8, 2.0, 2.5]);
-    expect([c.lowAmount, c.typicalAmount, c.highAmount]).toEqual([18_000, 20_000, 25_000]);
+    expect([c.lowPct, c.typicalPct, c.highPct]).toEqual([NSW.low, NSW.typical, NSW.high]);
+    expect([c.lowAmount, c.typicalAmount, c.highAmount]).toEqual([on(1_000_000, NSW.low), on(1_000_000, NSW.typical), on(1_000_000, NSW.high)]);
   });
   it("returns null for an unknown state or no median", () => {
     expect(commissionOnMedian("XX", 1_000_000)).toBeNull();
@@ -44,22 +49,22 @@ describe("buildSuburbAgentsModel", () => {
     const m = buildSuburbAgentsModel(makeSuburb(), [agent], [agency]);
     expect(m.title).toBe("Real Estate Agents in Bondi, NSW: Fees & Free Appraisal");
     expect(m.indexable).toBe(true);
-    expect(m.commission?.lowAmount).toBe(77_400);
-    expect(m.commission?.highAmount).toBe(107_500);
+    expect(m.commission?.lowAmount).toBe(on(4_300_000, NSW.low));
+    expect(m.commission?.highAmount).toBe(on(4_300_000, NSW.high));
     expect(m.faqs[0].question).toBe("What do real estate agents charge in Bondi?");
-    expect(m.faqs[0].answer).toContain("$77,400 to $107,500");
-    expect(m.description).toBe("Real estate agents in Bondi: 1.8% to 2.5% commission on the $4,300,000 median (NSW Valuer General), how to choose one, and a free appraisal.");
+    expect(m.faqs[0].answer).toContain(`${aud(on(4_300_000, NSW.low))} to ${aud(on(4_300_000, NSW.high))}`);
+    expect(m.description).toBe(`Real estate agents in Bondi: ${NSW.low}% to ${NSW.high}% commission on the $4,300,000 median (NSW Valuer General), how to choose one, and a free appraisal.`);
     expect(m.matchSource).toBe("suburb-agents-bondi-nsw-2026");
   });
   it("is not indexable without a reliable median, and works the state range on example prices instead", () => {
     const m = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 0 }), [], []);
     expect(m.indexable).toBe(false);
     expect(m.commission).toBeNull();
-    expect(m.stateRange).toEqual({ lowPct: 1.8, highPct: 2.5, typicalPct: 2.0 });
+    expect(m.stateRange).toEqual({ lowPct: NSW.low, highPct: NSW.high, typicalPct: NSW.typical });
     expect(m.examples.map((e) => e.price)).toEqual([...EXAMPLE_SALE_PRICES]);
-    expect(m.examples[1]).toMatchObject({ price: 1_000_000, lowAmount: 18_000, highAmount: 25_000 });
+    expect(m.examples[1]).toMatchObject({ price: 1_000_000, lowAmount: on(1_000_000, NSW.low), highAmount: on(1_000_000, NSW.high) });
     expect(m.faqs[0].question).toBe("What do real estate agents charge in Bondi?");
-    expect(m.faqs[0].answer).toContain("1.8% to 2.5%");
+    expect(m.faqs[0].answer).toContain(`${NSW.low}% to ${NSW.high}%`);
     expect(m.faqs[0].answer).toContain("an example price rather than Bondi's own");
   });
   it("prints each state's own range from STATE_RATES, never a national string (F2, 10 Oct 2026)", () => {
@@ -185,9 +190,9 @@ describe("agents page title, intro and description (section 3.1, 10 Oct 2026)", 
   });
   it("opens with the fee range worked on the median, or on an example price when it is withheld", () => {
     const pub = buildSuburbAgentsModel(makeSuburb(), [], []);
-    expect(pub.intro).toBe("Agents in Bondi typically charge 1.8% to 2.5% of the sale price, about $77,400 to $107,500 on Bondi's median house price of $4,300,000 (NSW Valuer General, calendar 2025). Here is how to choose one and how to get a free appraisal.");
+    expect(pub.intro).toBe(`Agents in Bondi typically charge ${NSW.low}% to ${NSW.high}% of the sale price, about ${aud(on(4_300_000, NSW.low))} to ${aud(on(4_300_000, NSW.high))} on Bondi's median house price of $4,300,000 (NSW Valuer General, calendar 2025). Here is how to choose one and how to get a free appraisal.`);
     const wh = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 0 }), [], []);
-    expect(wh.intro).toBe("Agents in New South Wales typically charge 1.8% to 2.5% of the sale price, $18,000 to $25,000 on a $1,000,000 sale. Here is how to choose one in Bondi and how to get a free appraisal.");
+    expect(wh.intro).toBe(`Agents in New South Wales typically charge ${NSW.low}% to ${NSW.high}% of the sale price, ${aud(on(1_000_000, NSW.low))} to ${aud(on(1_000_000, NSW.high))} on a $1,000,000 sale. Here is how to choose one in Bondi and how to get a free appraisal.`);
   });
   it("keeps every description inside 160 characters and says 'appraisal'", () => {
     for (const name of ["Bondi", "North Batemans Bay", "Kangaroo Island Coastal Strip"]) {

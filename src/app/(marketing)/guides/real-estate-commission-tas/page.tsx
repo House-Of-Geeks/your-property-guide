@@ -19,15 +19,35 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
+import { StateCommissionTable, commissionSourceItems } from "@/components/guide/CommissionRateTable";
+import {
+  STATE_COMMISSION,
+  STATE_RATES,
+  commissionAmount,
+  commissionWithGst,
+  pct,
+  regionalRange,
+  stateRateSummary,
+  stateSources,
+  whereInState,
+  workedExamples,
+} from "@/lib/data/commission-rates";
+
+// Every rate on this page comes from the sourced table in
+// src/lib/data/commission-rates.ts (commercial-intent review, 10 Oct 2026, 0.1).
+const R = STATE_RATES.TAS;
+const C = STATE_COMMISSION.TAS;
+const REG = regionalRange("TAS");
+const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real Estate Commission TAS 2026: Hobart Rates, Fees & Calculator",
   h1: "Real Estate Commission TAS 2026: Hobart & TAS Rates, Fees & Calculator",
   description:
-    "What real estate agents charge in Hobart and across Tasmania: the typical commission range, the most common rate, a calculator preset to the TAS rate, worked dollar examples on a TAS sale, how commission is structured, whether it includes GST, and how to negotiate.",
+    "Hobart and Tasmanian agent commission: published figures 2.26% to 3.25%, a calculator preset to the TAS rate, dollar examples with GST, and how to negotiate.",
   slug: "real-estate-commission-tas",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -55,12 +75,12 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Real estate commission in Hobart and across Tasmania typically runs from 2.5% to 3.25% of the sale price, with 2.9% the most common rate.",
+  `Published figures for real estate commission in Hobart and across Tasmania run from ${pct(R.low)} (${whereInState("TAS", R.low)}) to ${pct(R.high)} (${whereInState("TAS", R.high)}), with a state average of ${pct(R.typical)} (OpenAgent, September 2026).`,
   "Commission is a percentage of the final sale price, paid by the seller out of the proceeds at settlement.",
-  "At a 2.9% rate, a $600,000 sale works out to about $17,400 in commission before GST.",
+  `At the ${pct(R.typical)} state average, a $600,000 sale works out to ${money(commissionAmount(600_000, R.typical))} in commission before GST, or ${money(commissionWithGst(600_000, R.typical))} with it.`,
   "Almost every agent works on a no sale, no fee basis, so commission is only owed once the property actually sells.",
   "Commission usually attracts 10% GST on top, and quotes vary on whether they show it, so always ask whether a rate is inclusive or exclusive.",
-  "Commission is deregulated in Tasmania and always negotiable. Compare two or three local agents and negotiate the rate and the marketing budget.",
+  "No Tasmanian scale sets the rate, so it is always negotiable. Compare two or three local agents and negotiate the rate and the marketing budget.",
 ];
 
 const TOC: GuideTOCEntry[] = [
@@ -70,6 +90,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "structure",    label: "How commission is structured" },
   { id: "negotiable",   label: "Is commission negotiable?" },
   { id: "other-costs",  label: "Commission vs the rest of your costs" },
+  { id: "agreement",    label: "What the agency agreement must say" },
   { id: "cost-table",   label: "What it costs to sell in Tasmania" },
   { id: "next-steps",   label: "Getting the right agent and price" },
 ];
@@ -78,17 +99,17 @@ const FAQS: FaqItem[] = [
   {
     question: "What is the average real estate commission in TAS?",
     answer:
-      "In Tasmania, commission typically falls between 2.5% and 3.25% of the sale price, and 2.9% is the most common rate. The figure is a percentage of the final sale price rather than a flat fee, so the dollar amount rises with the price even at the same rate. These are typical market figures, not official or regulated rates, and they are negotiable, so the number you are first quoted is a starting point. Get the rate in writing from two or three local agents and check whether it includes GST.",
+      `OpenAgent's Tasmanian state average is ${pct(R.typical)} of the sale price (September 2026), with Hobart at ${pct(C.capital.rate)} and the regions from ${pct(REG!.low)} to ${pct(REG!.high)}. bRight Agent's median across Tasmanian postcodes is ${pct(C.median)} (February 2026), the highest state median in its report, because it weights regional towns. These are published averages, not official or regulated rates, and the number you are first quoted is a starting point. Get the rate in writing from two or three local agents and check whether it includes GST.`,
   },
   {
     question: "How much do real estate agents charge in Tasmania?",
     answer:
-      "Most Tasmanian agents charge a percentage commission on the sale price, usually somewhere from 2.5% to 3.25%, with 2.9% the typical figure. On a $600,000 sale at 2.9% that is about $17,400 before GST; on an $800,000 sale it is about $23,200. On top of commission you generally pay separately for marketing and advertising, professional photography and any styling. Commission is paid from the sale proceeds at settlement, and almost all agents work on a no sale, no fee basis.",
+      `Most Tasmanian agents charge a percentage commission on the sale price, and published figures run from ${pct(R.low)} to ${pct(R.high)}. At the ${pct(R.typical)} state average, a $600,000 sale costs ${money(commissionAmount(600_000, R.typical))} before GST, and an $800,000 sale ${money(commissionAmount(800_000, R.typical))}. On top of commission you generally pay separately for marketing and advertising, professional photography and any styling. Commission is paid from the sale proceeds at settlement, and almost all agents work on a no sale, no fee basis.`,
   },
   {
     question: "Is real estate commission negotiable in TAS?",
     answer:
-      "Yes. Commission is deregulated in Tasmania, which means there is no official or fixed rate and agents set their own. The percentage on the first agency agreement you read is an opening number, not a fixed price. The way to negotiate well is to get appraisals from two or three agents who actively sell in your area, compare the rate against the service and the marketing budget rather than in isolation, and ask each agent to justify their number. Be wary of simply taking the cheapest, since a stronger agent can earn back a small rate difference many times over on the final price.",
+      "Yes. There is no official or fixed rate in Tasmania: the Property Agents Board publishes no commission scale, and agents set their own. The percentage on the first agency agreement you read is an opening number, not a fixed price. The way to negotiate well is to get appraisals from two or three agents who actively sell in your area, compare the rate against the service and the marketing budget rather than in isolation, and ask each agent to justify their number. Be wary of simply taking the cheapest: on $800,000 the gap between 1.8% and 2% is $1,600 before GST, and an extra $20,000 on the price covers it more than twelve times.",
   },
   {
     question: "Do you pay commission if the house doesn't sell?",
@@ -107,7 +128,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The Cost of Selling a House",          href: "/guides/cost-of-selling-a-house-australia",  description: "Every selling cost beyond commission." },
   { title: "Real Estate Agent Fees (National)",    href: "/guides/real-estate-agent-fees-australia",   description: "How fees and commission work across Australia." },
   { title: "How to Choose a Selling Agent",        href: "/guides/how-to-choose-a-selling-agent",      description: "Pick the right agent, then negotiate the fee." },
-  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get an accurate value before you list." },
+  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get a realistic price range before you list." },
 ];
 
 export default function RealEstateCommissionTasPage() {
@@ -120,13 +141,17 @@ export default function RealEstateCommissionTasPage() {
       related={RELATED}
     >
       <CommissionCalculatorEmbed state="TAS" />
+      <p>
+        Selling in another state? See{" "}
+        <Link href="/guides/real-estate-agent-fees-australia">real estate agent fees in every state</Link>.
+      </p>
 
-      <Callout variant="warning" title="These are typical figures, not official rates">
+      <Callout variant="warning" title="These are published averages, not official rates">
         <p>
           Real estate commission in Tasmania is not regulated or fixed, and it
-          is always negotiable. The ranges in this guide are typical market
-          figures, not official rates, and they vary by agent, suburb and
-          property type. Always get current written quotes from your own local
+          is always negotiable. The figures in this guide are published averages
+          and medians, each named and dated in the table below, not official
+          rates, and your quote will vary by agent, suburb and property type. Always get current written quotes from your own local
           agents and check whether each rate includes GST before you rely on it.
         </p>
       </Callout>
@@ -144,62 +169,56 @@ export default function RealEstateCommissionTasPage() {
 
       <h2 id="average">Average real estate commission in TAS</h2>
       <p className="lead">
-        Real estate commission in Hobart and across Tasmania typically runs from{" "}
-        <strong>2.5% to 3.25%</strong> of the final sale price, and{" "}
-        <strong>2.9%</strong> is the most common rate. Commission is charged as a
-        percentage of what the property sells for, so a higher sale price means a
-        higher fee in dollar terms even at the same rate. It is paid by the
-        seller, out of the proceeds, at settlement.
+        {stateRateSummary("TAS")} Commission is charged as a percentage of what
+        the property sells for, so a higher sale price means a higher fee in
+        dollar terms even at the same rate. It is paid by the seller, out of the
+        proceeds, at settlement.
       </p>
+      <StateCommissionTable state="TAS" price={600_000} />
       <p>
-        Tasmania sits a little higher than the larger mainland markets. In big
-        capital cities like Sydney and Melbourne, where property values are high
-        and agents compete hard for listings, percentage rates are often pushed
-        down towards 2% or below. Tasmania has lower median prices and a smaller
-        pool of sales spread across Hobart, Launceston and the regional centres,
-        so the percentage tends to sit higher to cover the agent&rsquo;s cost of
-        running a campaign. A typical Tasmanian rate of 2.9% is above the norm in
-        the biggest cities and broadly in line with the smaller states and
-        regional markets.
+        Tasmania sits above the larger mainland capitals on both measures.
+        OpenAgent puts Hobart at {pct(C.capital.rate)}, against{" "}
+        {pct(STATE_COMMISSION.NSW.capital.rate)} in Sydney and{" "}
+        {pct(STATE_COMMISSION.VIC.capital.rate)} in Melbourne, and bRight
+        Agent&rsquo;s Tasmanian median of {pct(C.median)} is the highest state
+        median in its 2026 report.
       </p>
 
       <KeyFigure
-        value="2.9%"
-        label="The most common real estate commission rate in Tasmania, within a typical range of 2.5% to 3.25% of the sale price."
-        context="Deregulated and negotiable, GST usually on top"
+        value={pct(R.typical)}
+        label={`OpenAgent's TAS state average commission (September 2026). On an $800,000 sale that's ${money(commissionAmount(800_000, R.typical))} before GST.`}
+        context={`Published averages run ${pct(R.low)} to ${pct(R.high)}, before GST, and it's negotiable`}
       />
 
       <p>
         Within that range, where your rate lands depends on the property, the
-        location and the agent. A straightforward home in a high-demand pocket of
-        Hobart may attract a rate near the bottom of the range, while a harder
-        sale in a thinner regional market, or a property that needs more work to
-        market, may sit nearer the top. None of these are fixed, which is exactly
+        location and the agent: Hobart&rsquo;s average is the lowest published
+        Tasmanian figure and the regional areas run from {pct(REG!.low)} to{" "}
+        {pct(REG!.high)}. None of these are fixed, which is exactly
         why comparing local agents matters.
       </p>
 
       <h2 id="worked">Worked dollar examples</h2>
       <p>
         Because commission is a percentage, the easiest way to understand it is in
-        dollars. The table below shows what commission works out to across the
-        typical Tasmanian range, from the lower end at 2.5%, through the most
-        common 2.9%, up to the higher end at 3.25%.
+        dollars. The table below shows what commission works out to at the
+        lowest published Tasmanian figure ({pct(R.low)}), the state average
+        ({pct(R.typical)}) and the highest ({pct(R.high)}).
       </p>
 
       <table>
         <thead>
           <tr>
             <th>Sale price</th>
-            <th>At 2.5% (lower)</th>
-            <th>At 2.9% (typical)</th>
-            <th>At 3.25% (higher)</th>
+            <th>At {pct(R.low)} (lowest)</th>
+            <th>At {pct(R.typical)} (state average)</th>
+            <th>At {pct(R.high)} (highest)</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>$600,000</td><td>$15,000</td><td>$17,400</td><td>$19,500</td></tr>
-          <tr><td>$800,000</td><td>$20,000</td><td>$23,200</td><td>$26,000</td></tr>
-          <tr><td>$1,000,000</td><td>$25,000</td><td>$29,000</td><td>$32,500</td></tr>
-          <tr><td>$1,500,000</td><td>$37,500</td><td>$43,500</td><td>$48,750</td></tr>
+          {workedExamples("TAS").map((w) => (
+            <tr key={w.price}><td>{money(w.price)}</td><td>{money(w.low)}</td><td>{money(w.typical)}</td><td>{money(w.high)}</td></tr>
+          ))}
         </tbody>
       </table>
 
@@ -258,8 +277,9 @@ export default function RealEstateCommissionTasPage() {
 
       <h2 id="negotiable">Is commission negotiable in TAS?</h2>
       <p>
-        Yes. Commission is <strong>deregulated</strong> in Tasmania, which means
-        there is no official or legislated rate and each agency sets its own. The
+        Yes. There is no official rate in Tasmania: the Property Agents Board,
+        which regulates agents, publishes no commission scale, and each agency
+        sets its own. The
         percentage on the first agreement you read is an opening number, and even
         a small reduction is real money on a typical sale price. To negotiate
         well:
@@ -278,9 +298,7 @@ export default function RealEstateCommissionTasPage() {
         </li>
         <li>
           <strong>Be wary of the cheapest.</strong> The lowest rate is not always
-          the best outcome. An agent who negotiates a stronger final price earns
-          back a small rate difference many times over, so weigh who is most
-          likely to get you the best result, not just who charges least.
+          the best outcome. An extra $20,000 on the price covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times, so compare agents on results before rates.
         </li>
       </ol>
       <p>
@@ -310,6 +328,22 @@ export default function RealEstateCommissionTasPage() {
         which sets the Tasmanian rates in context against the rest of the country.
       </p>
 
+      <h2 id="agreement">What your agency agreement must say about commission</h2>
+      <p>
+        In Tasmania the appointment must be in writing before the agent acts,
+        and it must set out the commission and expenses (Property Agents and
+        Land Transactions Act 2016). There is no 90-day cap like Queensland&rsquo;s
+        or South Australia&rsquo;s, so the term you sign is the term you get, and
+        the Property Agents Board publishes no commission scale.
+      </p>
+      <p>
+        Our guide to{" "}
+        <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>{" "}
+        covers the clauses worth changing first. If you are weighing a flat fee instead of a percentage, see{" "}
+        <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">flat fee agents</Link>{" "}
+        and what they leave out.
+      </p>
+
       <SellingCostTable state="TAS" />
 
       <h2 id="next-steps">Getting the right agent and price</h2>
@@ -327,10 +361,10 @@ export default function RealEstateCommissionTasPage() {
           covers the interview, the over-quote trap, and exactly what to negotiate.
         </li>
         <li>
-          <strong>Get an accurate value first.</strong> Knowing what your home is
-          realistically worth shapes every fee conversation. The{" "}
+          <strong>Get a realistic price range first.</strong> Knowing the range your home is
+          likely to sell in shapes every fee conversation. The{" "}
           <Link href="/guides/how-much-is-my-house-worth-australia">how much is my house worth guide</Link>{" "}
-          explains how to land on a figure you can trust.
+          explains how to land on a realistic range.
         </li>
         <li>
           <strong>Size the commission.</strong> Run your price through{" "}
@@ -347,8 +381,6 @@ export default function RealEstateCommissionTasPage() {
 }
 
 const TAS_COMMISSION_SOURCES: readonly SourceItem[] = [
-  { label: "CBOS Tasmania: Buying and selling property", href: "https://www.cbos.tas.gov.au/topics/housing/buying-selling-property", note: "Consumer guidance on selling property and agents in Tasmania" },
-  { label: "Real Estate Institute of Tasmania (REIT)", href: "https://www.reit.com.au", note: "Peak body for real estate agents in Tasmania" },
-  { label: "Consumer, Building and Occupational Services (CBOS)", href: "https://www.cbos.tas.gov.au", note: "Tasmanian regulator that licenses property agents" },
-  { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent commission, fees and marketing costs" },
+  ...commissionSourceItems(stateSources("TAS")),
+  { label: "Property Agents and Land Transactions Act 2016 (Tas)", href: "https://www.legislation.tas.gov.au/view/html/inforce/current/act-2016-058", note: "The Act under which Tasmanian property agents are licensed" },
 ];

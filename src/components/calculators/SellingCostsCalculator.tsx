@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { formatPriceFull } from "@/lib/utils/format";
-import { STATE_NAMES, STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
+import { COMMISSION_AS_AT, STATE_NAMES, STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
 import { STATE_DOCUMENTS } from "@/lib/data/selling-costs";
 import { computeSellingCosts, defaultSellingCostsInput } from "@/lib/selling-costs-calc";
 import { NumberInput } from "./CommissionCalculator";
@@ -78,7 +78,7 @@ export function SellingCostsCalculator({
               onChange={(e) => { setRateTouched(true); set("commissionRate", Number(e.target.value) || 0); }}
               className={field}
             />
-            <p className="text-xs text-gray-500 mt-1">Typical in {state}: {rates.low}% to {rates.high}%, most often around {rates.typical}%.</p>
+            <p className="text-xs text-gray-500 mt-1">Typical in {state}: {rates.low}% to {rates.high}% (published averages, {COMMISSION_AS_AT}); state average {rates.typical}%.</p>
           </div>
           <div>
             <label htmlFor="sc-gst" className="block text-sm font-medium text-gray-700 mb-1">Does the quoted rate include GST?</label>

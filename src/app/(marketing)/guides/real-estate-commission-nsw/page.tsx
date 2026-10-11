@@ -19,15 +19,36 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
+import { StateCommissionTable, commissionSourceItems } from "@/components/guide/CommissionRateTable";
+import {
+  STATE_COMMISSION,
+  STATE_RATES,
+  commissionAmount,
+  commissionWithGst,
+  pct,
+  regionalRange,
+  stateRateSummary,
+  stateSources,
+  whereInState,
+  workedExamples,
+} from "@/lib/data/commission-rates";
+
+// Every rate on this page comes from the sourced table in
+// src/lib/data/commission-rates.ts (commercial-intent review, 10 Oct 2026, 0.1).
+const R = STATE_RATES.NSW;
+const C = STATE_COMMISSION.NSW;
+const REG = regionalRange("NSW")!;
+const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
+const AT_800 = commissionAmount(800_000, R.typical);
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real Estate Commission NSW 2026: Sydney Rates, Fees & Calculator",
   h1: "Real Estate Commission NSW 2026: Sydney & NSW Rates, Fees & Calculator",
   description:
-    "What real estate agents charge in Sydney and across NSW: typical commission of 1.8% to 2.5% (around 2% is common), a calculator preset to the NSW rate, worked dollar examples by sale price, GST, what's included, and how to negotiate.",
+    "Sydney and NSW agent commission: published averages 1.64% to 2.85%, a calculator preset to the NSW rate, dollar examples with GST, and how to negotiate.",
   slug: "real-estate-commission-nsw",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -55,17 +76,18 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Real estate commission in Sydney and across NSW typically runs 1.8% to 2.5% of the final sale price, with around 2% the most common rate.",
-  "On a typical $800,000 NSW sale, 2% commission works out to $16,000. At 1.8% it's $14,400, and at 2.5% it's $20,000 (all excluding GST).",
+  `Published averages for real estate commission in Sydney and across NSW run from ${pct(R.low)} (${whereInState("NSW", R.low)}) to ${pct(R.high)} (${whereInState("NSW", R.high)}), with a state average of ${pct(R.typical)} (OpenAgent, September 2026).`,
+  `On an $800,000 NSW sale, the state average works out to ${money(AT_800)} before GST, or ${money(commissionWithGst(800_000, R.typical))} with it. At ${pct(R.low)} it's ${money(commissionAmount(800_000, R.low))}, and at ${pct(R.high)} it's ${money(commissionAmount(800_000, R.high))} (excluding GST).`,
   "Commission is a percentage of the sale price, paid by the seller out of the proceeds at settlement, not upfront.",
   "Most NSW agents work on a no sale, no fee basis, so commission is only payable if the property sells.",
   "GST of 10% usually applies on top of the commission, and quotes vary on whether they show the rate inclusive or exclusive of GST.",
-  "Commission in NSW is deregulated and always negotiable. Compare two or three agents and negotiate the rate and the marketing spend, not just the headline percentage.",
+  "No NSW law sets the rate, and the NSW Government says you can negotiate it. Compare two or three agents and negotiate the rate and the marketing spend, not just the headline percentage.",
 ];
 
 const TOC: GuideTOCEntry[] = [
   { id: "calculator",   label: "Commission calculator" },
   { id: "average",      label: "Average commission in NSW" },
+  { id: "agreement",    label: "What the agency agreement must say" },
   { id: "worked",       label: "Worked examples by sale price" },
   { id: "structure",    label: "How commission is structured in NSW" },
   { id: "negotiable",   label: "Is commission negotiable in NSW?" },
@@ -78,17 +100,17 @@ const FAQS: FaqItem[] = [
   {
     question: "What is the average real estate commission in NSW?",
     answer:
-      "In New South Wales, commission typically falls between 1.8% and 2.5% of the final sale price, and around 2% is the most common rate. NSW sits at the lower end of the national picture because Sydney and the major regional centres have high property values, and agents compete hard for listings where the dollar amount of commission is already substantial. There is no fixed or official rate, so the figure you are quoted is a starting point you can negotiate.",
+      `OpenAgent's NSW state average is ${pct(R.typical)} of the sale price (September 2026), with Sydney at ${pct(C.capital.rate)} and regional NSW areas from ${pct(REG.low)} to ${pct(REG.high)}. bRight Agent's median across NSW postcodes is ${pct(C.median)} (February 2026). The two measure different things, so read them as a range. There is no fixed or official rate: the NSW Government says the commission is negotiable and must be written into the agency agreement, so the figure you are quoted is a starting point.`,
   },
   {
     question: "How much do real estate agents charge in New South Wales?",
     answer:
-      "Most NSW agents charge a percentage of the sale price rather than a flat fee. At the typical 2% rate, a $600,000 sale costs $12,000, an $800,000 sale costs $16,000 and a $1,000,000 sale costs $20,000 in commission, before GST. Lower-quoting agents may sit closer to 1.8% and higher service or regional agents closer to 2.5%. Marketing, photography and styling are charged separately on top, so always ask for the full cost, not just the commission rate.",
+      `Most NSW agents charge a percentage of the sale price rather than a flat fee. At the ${pct(R.typical)} state average, a $600,000 sale costs ${money(commissionAmount(600_000, R.typical))}, an $800,000 sale ${money(AT_800)} and a $1,000,000 sale ${money(commissionAmount(1_000_000, R.typical))} in commission, before GST. Sydney's average is lower (${pct(R.low)}) and the highest regional average is ${pct(R.high)} (OpenAgent, September 2026). Marketing, photography and styling are charged separately on top, so always ask for the full cost, not just the commission rate.`,
   },
   {
     question: "Is real estate commission negotiable in NSW?",
     answer:
-      "Yes. Commission is deregulated in New South Wales, which means there is no government-set rate and every agent sets their own. The percentage on the first agency agreement you read is an opening number, not a fixed price. The way to negotiate well is to get appraisals from two or three local agents, compare the rate against the service and the marketing budget, and ask each agent to justify their figure. Pushing the rate down even slightly on a Sydney sale price is real money.",
+      "Yes. No NSW law sets the rate, and the NSW Government's guide to agency agreements says you can negotiate the amounts of any commissions, fees and expenses. The percentage on the first agency agreement you read is an opening number, not a fixed price. The way to negotiate well is to get appraisals from two or three local agents, compare the rate against the service and the marketing budget, and ask each agent to justify their figure. Pushing the rate down even slightly on a Sydney sale price is real money.",
   },
   {
     question: "Do you pay commission if the house doesn't sell?",
@@ -107,7 +129,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The Cost of Selling a House",          href: "/guides/cost-of-selling-a-house-australia",  description: "Every selling cost beyond commission." },
   { title: "Real Estate Agent Fees (National)",    href: "/guides/real-estate-agent-fees-australia",   description: "How fees and commission work across Australia." },
   { title: "How to Choose a Selling Agent",        href: "/guides/how-to-choose-a-selling-agent",      description: "Pick the right agent, then negotiate the fee." },
-  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get an accurate value before you list." },
+  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get a realistic price range before you list." },
 ];
 
 export default function RealEstateCommissionNswPage() {
@@ -120,13 +142,17 @@ export default function RealEstateCommissionNswPage() {
       related={RELATED}
     >
       <CommissionCalculatorEmbed state="NSW" />
+      <p>
+        Selling in another state? See{" "}
+        <Link href="/guides/real-estate-agent-fees-australia">real estate agent fees in every state</Link>.
+      </p>
 
       <Callout variant="warning" title="Commission is not a fixed or official rate">
         <p>
-          There is no regulated or set commission rate in New South Wales.
-          Commission is deregulated and always negotiable, and the ranges in
-          this guide are typical market figures, not official rates. They are a
-          guide for comparison only. Always get written quotes from your own
+          There is no regulated or set commission rate in New South Wales, and
+          the NSW Government says the amount is negotiable. The figures in this
+          guide are published averages and medians, each named and dated in the
+          table below, not official rates. They are a guide for comparison only. Always get written quotes from your own
           local agents and confirm the current rate, what it includes and
           whether GST is on top before you rely on any number here.
         </p>
@@ -145,52 +171,40 @@ export default function RealEstateCommissionNswPage() {
 
       <h2 id="average">Average real estate commission in NSW</h2>
       <p className="lead">
-        In Sydney and across New South Wales, real estate commission typically runs from{" "}
-        <strong>1.8% to 2.5%</strong> of the final sale price, and around{" "}
-        <strong>2%</strong> is the most common rate. Commission is charged as a
-        percentage of what your property sells for, paid by you as the seller out
-        of the sale proceeds at settlement, and it is negotiable.
+        {stateRateSummary("NSW")} Commission is charged as a percentage of what
+        your property sells for, paid by you as the seller out of the sale
+        proceeds at settlement, and it is negotiable.
       </p>
+      <StateCommissionTable state="NSW" price={800_000} />
       <p>
-        NSW sits at the lower end of the national range. States and territories
-        with smaller sale prices, such as parts of regional Queensland, Western
-        Australia and the Northern Territory, tend to see higher percentage rates
-        because the dollar amount of commission has to cover the agent&rsquo;s
-        costs on a lower sale figure. In NSW, where Sydney and the major coastal
-        and regional centres carry high property values, agents compete hard for
-        listings and the typical rate settles around 2%.
-      </p>
-      <p>
-        That said, the rate moves with the property and the area. A
-        straightforward home in a high-turnover Sydney suburb might attract a
-        rate closer to 1.8%, while a lower-priced or harder-to-sell property in a
-        thinner regional market might sit nearer 2.5%. The headline percentage
-        matters far less than the dollar amount it produces, which is where the
-        worked examples below come in.
+        The rate moves with the area. OpenAgent puts Sydney&rsquo;s average at{" "}
+        {pct(R.low)}, below every regional NSW area it publishes, where averages
+        run up to {pct(R.high)} in {whereInState("NSW", R.high)}. The headline
+        percentage matters far less than the dollar amount it produces, which is
+        where the worked examples below come in.
       </p>
 
       <h2 id="worked">Worked examples by sale price</h2>
       <p>
         Because commission is a percentage, the dollar figure scales with your
-        sale price. The table below shows what the typical NSW range looks like
-        in dollars at three rates: 1.8% at the lower end, 2% as the typical rate,
-        and 2.5% at the higher end.
+        sale price. The table below shows the NSW figures in dollars at three
+        rates: {pct(R.low)}, the lowest published average; {pct(R.typical)}, the
+        state average; and {pct(R.high)}, the highest published average.
       </p>
 
       <table>
         <thead>
           <tr>
             <th>Sale price</th>
-            <th>At 1.8% (lower)</th>
-            <th>At 2% (typical)</th>
-            <th>At 2.5% (higher)</th>
+            <th>At {pct(R.low)} (lowest)</th>
+            <th>At {pct(R.typical)} (state average)</th>
+            <th>At {pct(R.high)} (highest)</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>$600,000</td><td>$10,800</td><td>$12,000</td><td>$15,000</td></tr>
-          <tr><td>$800,000</td><td>$14,400</td><td>$16,000</td><td>$20,000</td></tr>
-          <tr><td>$1,000,000</td><td>$18,000</td><td>$20,000</td><td>$25,000</td></tr>
-          <tr><td>$1,500,000</td><td>$27,000</td><td>$30,000</td><td>$37,500</td></tr>
+          {workedExamples("NSW").map((w) => (
+            <tr key={w.price}><td>{money(w.price)}</td><td>{money(w.low)}</td><td>{money(w.typical)}</td><td>{money(w.high)}</td></tr>
+          ))}
         </tbody>
       </table>
 
@@ -203,9 +217,9 @@ export default function RealEstateCommissionNswPage() {
       </p>
 
       <KeyFigure
-        value="~2%"
-        label="The most common real estate commission rate in NSW. On a typical $800,000 sale that's $16,000 before GST."
-        context="Typical range runs 1.8% to 2.5%, and it's negotiable"
+        value={pct(R.typical)}
+        label={`OpenAgent's NSW state average commission (September 2026). On an $800,000 sale that's ${money(AT_800)} before GST.`}
+        context={`Published averages run ${pct(R.low)} to ${pct(R.high)}, and it's negotiable`}
       />
 
       <h2 id="structure">How commission is structured in NSW</h2>
@@ -251,10 +265,11 @@ export default function RealEstateCommissionNswPage() {
 
       <h2 id="negotiable">Is commission negotiable in NSW?</h2>
       <p>
-        Yes. Commission in New South Wales is <strong>deregulated</strong>, which
-        means there is no government-set rate and no legislated minimum or
-        maximum. Every agent sets their own rate, so the percentage on the first
-        agency agreement you read is an opening number, not a fixed price.
+        Yes. No NSW law sets the rate, and the NSW Government&rsquo;s guide to
+        agency agreements says you can negotiate the amounts of any commissions,
+        fees and expenses. Every agent sets their own rate, so the percentage on
+        the first agency agreement you read is an opening number, not a fixed
+        price.
       </p>
 
       <PullQuote attribution="Andy McMaster, Editor">
@@ -277,10 +292,7 @@ export default function RealEstateCommissionNswPage() {
           headline rate alone.
         </li>
         <li>
-          <strong>Be wary of the cheapest.</strong> An agent who negotiates an
-          extra $20,000 on your sale earns their commission back many times over,
-          even at a slightly higher rate. The lowest quote is rarely the best
-          result. Ask each agent to back their number with recent comparable
+          <strong>Be wary of the cheapest.</strong> An extra $20,000 on the price covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times, so compare agents on results before rates. Ask each agent to back their number with recent comparable
           sales in your area.
         </li>
       </ol>
@@ -295,7 +307,29 @@ export default function RealEstateCommissionNswPage() {
           Real Estate Institute of NSW (REINSW)
         </a>
         . Neither body sets commission rates, but checking that an agent is
-        properly licensed is a sensible first step.
+        properly licensed is a sensible first step. If something goes wrong
+        later, here is how to{" "}
+        <Link href="/guides/real-estate-agent-complaints-and-red-flags">complain about a real estate agent in NSW</Link>.
+      </p>
+
+      <h2 id="agreement">What your agency agreement must say about commission</h2>
+      <p>
+        Before an agent can market your home in NSW you both sign an agency
+        agreement. The NSW Government&rsquo;s guide says it must state the
+        services the agent will provide, the amounts of any fees or commission
+        you agree to pay, when the agent is entitled to be paid (usually only
+        when the property sells), how and when payment is made, and the
+        agent&rsquo;s estimated selling price. Ask for each agent&rsquo;s fees,
+        commission and expenses in writing before you sign, and compare them in
+        dollars.
+      </p>
+      <p>
+        You then have a cooling-off period: you can cancel the agreement until
+        5 pm on the next business day or Saturday after you sign. Our guide to{" "}
+        <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>{" "}
+        covers the clauses worth changing first. If you are weighing a flat fee instead of a percentage, see{" "}
+        <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">flat fee agents</Link>{" "}
+        and what they leave out.
       </p>
 
       <MatchCTA kind="selling-agent" />
@@ -329,11 +363,10 @@ export default function RealEstateCommissionNswPage() {
       </p>
       <ol>
         <li>
-          <strong>Get an accurate value.</strong> Before you talk fees, know what
-          your home is worth. Our guide to{" "}
+          <strong>Get a realistic price range.</strong> Before you talk fees, know what
+          your home is likely to sell for. Our guide to{" "}
           <Link href="/guides/how-much-is-my-house-worth-australia">how much your house is worth</Link>{" "}
-          covers the three ways to value a home and how to land on a figure you
-          can trust.
+          covers the three ways to value a home and how to land on a realistic range.
         </li>
         <li>
           <strong>Choose the agent on results, not rate.</strong> The{" "}
@@ -356,8 +389,6 @@ export default function RealEstateCommissionNswPage() {
 }
 
 const NSW_COMMISSION_SOURCES: readonly SourceItem[] = [
+  ...commissionSourceItems(stateSources("NSW")),
   { label: "NSW Government: Selling property in NSW", href: "https://www.nsw.gov.au/housing-and-construction/buying-and-selling-property/selling-a-property", note: "What the contract of sale must include before a NSW property is offered for sale" },
-  { label: "NSW Fair Trading: Real estate agents", href: "https://www.nsw.gov.au/departments-and-agencies/fair-trading", note: "Licensing of agents and consumer guidance on agency agreements in NSW" },
-  { label: "Real Estate Institute of NSW (REINSW)", href: "https://www.reinsw.com.au/", note: "Industry body for NSW real estate agents" },
-  { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent commission, marketing and selling costs" },
 ];

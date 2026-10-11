@@ -4,9 +4,12 @@
 // because agents, conveyancers and lenders quote them individually and no
 // state publishes a survey. The state-documents line names what the law
 // requires the seller to prepare, with the government source that says so.
-import { STATE_NAMES, STATE_RATES, type StateCode } from "./commission-rates";
+import { COMMISSION_AS_AT, GST_RATE, STATE_NAMES, STATE_ORDER, STATE_RATES, type StateCode } from "./commission-rates";
 
-export const SELLING_COSTS_AS_AT = "September 2026";
+export { GST_RATE };
+
+/** When the commission figures were last read; the other lines are indicative budgets (see below). */
+export const SELLING_COSTS_AS_AT = COMMISSION_AS_AT;
 
 export interface CostSource {
   label: string;
@@ -38,10 +41,10 @@ export const EXAMPLE_PRICE: Record<StateCode, number> = {
   NSW: 800_000, VIC: 800_000, QLD: 800_000, SA: 800_000, WA: 600_000, TAS: 600_000, ACT: 800_000, NT: 800_000,
 };
 
-const MARKETING: CostLine = { key: "marketing", label: "Marketing and photography", low: 2_000, high: 8_000, note: "Portal listing, photography, floor plan and signboard. Quoted by the agent and payable whether or not the property sells.", applies: "always" };
-const CONVEYANCING: CostLine = { key: "conveyancing", label: "Conveyancing or solicitor", low: 800, high: 2_500, note: "Professional fee plus searches and disbursements.", applies: "always" };
-const AUCTIONEER: CostLine = { key: "auctioneer", label: "Auctioneer", low: 400, high: 1_200, note: "Only if you sell at auction; sometimes included in the agency agreement.", applies: "auction" };
-const DISCHARGE: CostLine = { key: "discharge", label: "Mortgage discharge", low: 150, high: 400, note: "The lender's fee to release the mortgage at settlement. Break costs on a fixed-rate loan are separate and can be far larger.", applies: "loan" };
+export const MARKETING: CostLine = { key: "marketing", label: "Marketing and photography", low: 2_000, high: 8_000, note: "Portal listing, photography, floor plan and signboard. Quoted by the agent and payable whether or not the property sells.", applies: "always" };
+export const CONVEYANCING: CostLine = { key: "conveyancing", label: "Conveyancing or solicitor", low: 800, high: 2_500, note: "Professional fee plus searches and disbursements.", applies: "always" };
+export const AUCTIONEER: CostLine = { key: "auctioneer", label: "Auctioneer", low: 400, high: 1_200, note: "Only if you sell at auction; sometimes included in the agency agreement.", applies: "auction" };
+export const DISCHARGE: CostLine = { key: "discharge", label: "Mortgage discharge", low: 150, high: 400, note: "The lender's fee to release the mortgage at settlement. Break costs on a fixed-rate loan are separate and can be far larger.", applies: "loan" };
 
 export const STATE_DOCUMENTS: Record<StateCode, StateDocuments> = {
   NSW: { label: "Contract of sale documents", low: 300, high: 600, note: "Title search, the Section 10.7 planning certificate and a sewer diagram, attached to the contract before the property can be offered for sale.", source: { label: "NSW Government: Selling property in NSW", href: "https://www.nsw.gov.au/housing-and-construction/buying-and-selling-property/selling-a-property" } },
@@ -61,19 +64,22 @@ export interface SellingCostTableData {
   commission: { low: number; high: number; typical: number; lowAmount: number; highAmount: number; typicalAmount: number };
   lines: CostLine[];
   documents: StateDocuments;
-  /** Private treaty, no mortgage, everything at the bottom of its range. */
+  /** Private treaty, no mortgage, everything at the bottom of its range, before GST on commission. */
   totalLow: number;
-  /** Auction with a mortgage, everything at the top of its range. */
+  /** Auction with a mortgage, everything at the top of its range, before GST on commission. */
   totalHigh: number;
   totalLowPct: number;
   totalHighPct: number;
+  /** The same totals with 10% GST added to the commission. */
+  totalLowWithGst: number;
+  totalHighWithGst: number;
 }
 
 const round = (n: number) => Math.round(n);
 const pct = (n: number, price: number) => Math.round((n / price) * 1000) / 10;
 
-export function sellingCostTable(state: StateCode): SellingCostTableData {
-  const price = EXAMPLE_PRICE[state];
+/** The state's cost table at its example price, or at any price passed in. */
+export function sellingCostTable(state: StateCode, price: number = EXAMPLE_PRICE[state]): SellingCostTableData {
   const r = STATE_RATES[state];
   const documents = STATE_DOCUMENTS[state];
   const docLine: CostLine = { key: "documents", label: documents.label, low: documents.low, high: documents.high, note: documents.note, applies: "always", source: documents.source };
@@ -86,7 +92,48 @@ export function sellingCostTable(state: StateCode): SellingCostTableData {
   };
   const totalLow = commission.lowAmount + lines.filter((l) => l.applies === "always").reduce((s, l) => s + l.low, 0);
   const totalHigh = commission.highAmount + lines.reduce((s, l) => s + l.high, 0);
-  return { state, stateName: STATE_NAMES[state], price, commission, lines, documents, totalLow, totalHigh, totalLowPct: pct(totalLow, price), totalHighPct: pct(totalHigh, price) };
+  const totalLowWithGst = totalLow + round(commission.lowAmount * GST_RATE);
+  const totalHighWithGst = totalHigh + round(commission.highAmount * GST_RATE);
+  return { state, stateName: STATE_NAMES[state], price, commission, lines, documents, totalLow, totalHigh, totalLowPct: pct(totalLow, price), totalHighPct: pct(totalHigh, price), totalLowWithGst, totalHighWithGst };
 }
+
+export interface NationalSellingCost {
+  price: number;
+  /** The cheapest state's low total and the dearest state's high total at this price, before GST on commission. */
+  low: number;
+  lowState: StateCode;
+  high: number;
+  highState: StateCode;
+  lowPct: number;
+  highPct: number;
+  /** The same two totals with GST on the commission. */
+  lowWithGst: number;
+  highWithGst: number;
+}
+
+/**
+ * The national cost of selling at one price: every state's table worked at
+ * that price, lowest low to highest high. Every national total on the site
+ * comes from here (commercial-intent review, 10 Oct 2026, selling 0.3).
+ */
+export function nationalSellingCost(price = 800_000): NationalSellingCost {
+  const tables = STATE_ORDER.map((s) => sellingCostTable(s, price));
+  const lo = tables.reduce((a, b) => (b.totalLow < a.totalLow ? b : a));
+  const hi = tables.reduce((a, b) => (b.totalHigh > a.totalHigh ? b : a));
+  return {
+    price,
+    low: lo.totalLow,
+    lowState: lo.state,
+    high: hi.totalHigh,
+    highState: hi.state,
+    lowPct: pct(lo.totalLow, price),
+    highPct: pct(hi.totalHigh, price),
+    lowWithGst: lo.totalLowWithGst,
+    highWithGst: hi.totalHighWithGst,
+  };
+}
+
+/** "$2,000 to $8,000": a cost line's range, for text that names it. */
+export const lineRange = (l: { low: number; high: number }) => `${money(l.low)} to ${money(l.high)}`;
 
 export const money = (n: number) => `$${n.toLocaleString("en-AU")}`;

@@ -19,14 +19,31 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
+import { StateCommissionTable, commissionSourceItems } from "@/components/guide/CommissionRateTable";
+import {
+  STATE_COMMISSION,
+  STATE_RATES,
+  commissionAmount,
+  commissionWithGst,
+  pct,
+  stateSources,
+  whereInState,
+  workedExamples,
+} from "@/lib/data/commission-rates";
+
+// Every rate on this page comes from the sourced table in
+// src/lib/data/commission-rates.ts (commercial-intent review, 10 Oct 2026, 0.1).
+const R = STATE_RATES.NT;
+const C = STATE_COMMISSION.NT;
+const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real Estate Commission NT 2026: Rates, Fees & Calculator",
   description:
-    "What real estate agents charge in the Northern Territory: typical commission of 2.4% to 2.7% (2.5% most common), a calculator preset to the NT rate, worked dollar examples, GST, what's included, and how to negotiate.",
+    "Darwin and NT agent commission: published figures 2.47% to 3%, a calculator preset to the NT rate, dollar examples with GST, and how to negotiate.",
   slug: "real-estate-commission-nt",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-08",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -54,9 +71,9 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Real estate commission in the Northern Territory typically runs from 2.4% to 2.7% of the sale price, with 2.5% the most common rate.",
+  `Published figures for real estate commission in the Northern Territory run from ${pct(R.low)} (${whereInState("NT", R.low)}) to ${pct(R.high)} (${whereInState("NT", R.high)}), with a territory average of ${pct(R.typical)} (OpenAgent, September 2026).`,
   "Commission is a percentage of the final sale price, paid by the seller at settlement, and it is negotiable. There is no official or fixed rate in the NT.",
-  "At a typical 2.5%, an $800,000 sale carries around $20,000 in commission before GST. A $600,000 sale is about $15,000.",
+  `At the ${pct(R.typical)} territory average, an $800,000 sale carries ${money(commissionAmount(800_000, R.typical))} in commission before GST, or ${money(commissionWithGst(800_000, R.typical))} with it. A $600,000 sale is ${money(commissionAmount(600_000, R.typical))}.`,
   "Most NT agents work on a \"no sale, no fee\" basis, so commission is only payable when the property actually sells.",
   "GST of 10% usually applies on top of commission, and quotes vary on whether they show the figure inclusive or exclusive of it.",
   "Commission is always negotiable. Compare two or three local agents on both the rate and the marketing budget before you sign.",
@@ -69,6 +86,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "how-structured",     label: "How commission is structured" },
   { id: "negotiable",         label: "Is commission negotiable?" },
   { id: "other-costs",        label: "Commission vs other selling costs" },
+  { id: "agreement",    label: "What the agency agreement must say" },
   { id: "cost-table",   label: "What it costs to sell in the NT" },
   { id: "next-steps",         label: "Where to start" },
 ];
@@ -77,17 +95,17 @@ const FAQS: FaqItem[] = [
   {
     question: "What is the average real estate commission in NT?",
     answer:
-      "In the Northern Territory, real estate commission typically sits between 2.4% and 2.7% of the sale price, with 2.5% the most common rate. That is a touch above the lower rates seen in the larger southern capitals, where high property values let agents compete on a smaller percentage. There is no official or legislated rate in the NT, so the figure is always negotiable and varies by agent, suburb and property. Get written quotes from two or three local agents before you settle on a number.",
+      `OpenAgent's Northern Territory average is ${pct(R.typical)} of the sale price, with Darwin at ${pct(C.capital.rate)} (September 2026); it publishes no figure for Outback NT. bRight Agent's NT median is ${pct(C.median)} (February 2026), and Real Estate Business reported Tennant Creek at 3.85%, the highest postcode in that report. There is no official rate: the NT Government says the agreement sets out the fees or commission and you can negotiate the amount. Get written quotes from two or three local agents before you settle on a number.`,
   },
   {
     question: "How much do real estate agents charge in the Northern Territory?",
     answer:
-      "Agents in the Northern Territory charge a commission of roughly 2.4% to 2.7% of the final sale price, most often around 2.5%, paid by the seller at settlement. On an $800,000 sale at 2.5% that is about $20,000 before GST; on a $600,000 sale it is about $15,000. Marketing, photography and styling are usually billed separately on top of commission. Because the rate is negotiable, the cleanest way to know your number is to compare local quotes side by side.",
+      `Agents in the Northern Territory charge a commission on the final sale price, paid by the seller at settlement, and published figures run from ${pct(R.low)} to ${pct(R.high)}. At the ${pct(R.typical)} territory average, an $800,000 sale is ${money(commissionAmount(800_000, R.typical))} before GST; a $600,000 sale is ${money(commissionAmount(600_000, R.typical))}. Marketing, photography and styling are usually billed separately on top of commission. Because the rate is negotiable, the cleanest way to know your number is to compare local quotes side by side.`,
   },
   {
     question: "Is real estate commission negotiable in NT?",
     answer:
-      "Yes. Commission is deregulated in the Northern Territory, so there is no fixed or official rate and every agent sets their own. The percentage on the first agency agreement you read is an opening number, not a fixed price. The way to negotiate well is to get two or three appraisals, compare the rate against the service and the marketing budget rather than in isolation, and ask each agent to justify their figure. Be wary of simply taking the cheapest, since a stronger agent who negotiates a higher sale price can easily earn back a small difference in rate.",
+      "Yes. Commission is deregulated in the Northern Territory, so there is no fixed or official rate and every agent sets their own. The percentage on the first agency agreement you read is an opening number, not a fixed price. The way to negotiate well is to get two or three appraisals, compare the rate against the service and the marketing budget rather than in isolation, and ask each agent to justify their figure. Be wary of simply taking the cheapest: on $800,000 each 0.1% of rate is $800 before GST, so weigh it against each agent's recent results.",
   },
   {
     question: "Do you pay commission if the house doesn't sell?",
@@ -106,7 +124,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The Cost of Selling a House",       href: "/guides/cost-of-selling-a-house-australia", description: "Every selling cost beyond commission." },
   { title: "Real Estate Agent Fees (National)", href: "/guides/real-estate-agent-fees-australia",  description: "How fees and commission work across Australia." },
   { title: "How to Choose a Selling Agent",     href: "/guides/how-to-choose-a-selling-agent",     description: "Pick the right agent, then negotiate the fee." },
-  { title: "How Much Is My House Worth?",        href: "/guides/how-much-is-my-house-worth-australia", description: "Get an accurate value before you list." },
+  { title: "How Much Is My House Worth?",        href: "/guides/how-much-is-my-house-worth-australia", description: "Get a realistic price range before you list." },
 ];
 
 export default function RealEstateCommissionNtPage() {
@@ -119,13 +137,18 @@ export default function RealEstateCommissionNtPage() {
       related={RELATED}
     >
       <CommissionCalculatorEmbed state="NT" />
+      <p>
+        Selling in another state? See{" "}
+        <Link href="/guides/real-estate-agent-fees-australia">real estate agent fees in every state</Link>.
+      </p>
 
       <Callout variant="warning" title="There is no official commission rate in the NT">
         <p>
           Commission in the Northern Territory is not regulated or fixed, and it
-          is always negotiable. The ranges in this guide are typical market
-          figures, not official rates, and they move with the agent, the suburb
-          and the property. Treat every number here as indicative and confirm a
+          is always negotiable. The figures in this guide are published averages
+          and medians, each named and dated in the table below, not official
+          rates, and your quote will move with the agent, the suburb and the
+          property. Treat every number here as indicative and confirm a
           current, written quote with your own local agents before you rely on
           it.
         </p>
@@ -143,57 +166,50 @@ export default function RealEstateCommissionNtPage() {
 
       <h2 id="average-commission">Average real estate commission in NT</h2>
       <p className="lead">
-        Real estate commission in the Northern Territory typically runs from{" "}
-        <strong>2.4% to 2.7%</strong> of the final sale price, with{" "}
-        <strong>2.5% the most common</strong> rate. Commission is a percentage
-        of the sale price, paid by the seller at settlement, and it is
-        negotiable. There is no official or legislated rate in the territory.
+        Published figures for the Northern Territory run from {pct(R.low)} (the
+        Darwin average) to {pct(R.high)} (the NT median). OpenAgent&rsquo;s
+        territory average is {pct(R.typical)} (September 2026). Commission is a
+        percentage of the sale price, paid by the seller at settlement, and it
+        is negotiable. There is no official rate in the territory.
       </p>
+      <StateCommissionTable state="NT" price={800_000} />
       <p>
-        That 2.5% midpoint sits a little above the rates you tend to see in the
-        larger southern capitals like Sydney and Melbourne, where very high
-        property values let agents compete on a smaller percentage. The NT is a
-        smaller, lower-turnover market with fewer sales spread across a vast
-        area, so agents earn their fee on a more modest base. That dynamic is
-        why the typical rate here lands closer to other smaller and regional
-        markets than to the keenest big-city numbers.
-      </p>
-      <p>
-        Within Darwin, Palmerston and the surrounding suburbs you will see the
-        most competition, and a confident vendor with a sought-after property
-        can often negotiate toward the lower end. In Alice Springs, Katherine
-        and more remote parts of the territory, where buyer pools are thinner,
-        rates can sit toward the higher end of the range. None of these figures
-        is set in stone, which is exactly why comparing local agents matters.
+        Darwin&rsquo;s average of {pct(C.capital.rate)} sits above Sydney&rsquo;s{" "}
+        {pct(STATE_COMMISSION.NSW.capital.rate)} and Melbourne&rsquo;s{" "}
+        {pct(STATE_COMMISSION.VIC.capital.rate)} on the same measure. Remote
+        towns run higher: Real Estate Business reported Tennant Creek at 3.85%,
+        the highest postcode in bRight Agent&rsquo;s 2026 report. OpenAgent
+        publishes no figure for Outback NT. None of these figures is set in
+        stone, which is exactly why comparing local agents matters.
       </p>
 
       <KeyFigure
-        value="2.5%"
-        label="The most common real estate commission rate in the Northern Territory, within a typical range of 2.4% to 2.7% of the sale price."
-        context="Negotiable, and quoted before or after GST depending on the agent"
+        value={pct(R.typical)}
+        label={`OpenAgent's NT state average commission (September 2026). On an $800,000 sale that's ${money(commissionAmount(800_000, R.typical))} before GST.`}
+        context={`Published averages run ${pct(R.low)} to ${pct(R.high)}, before GST, and it's negotiable`}
       />
 
       <h2 id="worked-examples">What it costs in dollars</h2>
       <p>
-        Percentages are easy to wave away, so here is what the NT range looks
-        like in real money across a few sale prices. The columns show the lower
-        end of the typical range, the most common rate, and the higher end.
+        Percentages are easy to wave away, so here is what the NT figures look
+        like in real money across a few sale prices: the lowest published figure
+        ({pct(R.low)}), the territory average ({pct(R.typical)}) and the highest
+        ({pct(R.high)}).
       </p>
 
       <table>
         <thead>
           <tr>
             <th>Sale price</th>
-            <th>At 2.4% (lower)</th>
-            <th>At 2.5% (typical)</th>
-            <th>At 2.7% (higher)</th>
+            <th>At {pct(R.low)} (lowest)</th>
+            <th>At {pct(R.typical)} (state average)</th>
+            <th>At {pct(R.high)} (highest)</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>$600,000</td><td>$14,400</td><td>$15,000</td><td>$16,200</td></tr>
-          <tr><td>$800,000</td><td>$19,200</td><td>$20,000</td><td>$21,600</td></tr>
-          <tr><td>$1,000,000</td><td>$24,000</td><td>$25,000</td><td>$27,000</td></tr>
-          <tr><td>$1,500,000</td><td>$36,000</td><td>$37,500</td><td>$40,500</td></tr>
+          {workedExamples("NT").map((w) => (
+            <tr key={w.price}><td>{money(w.price)}</td><td>{money(w.low)}</td><td>{money(w.typical)}</td><td>{money(w.high)}</td></tr>
+          ))}
         </tbody>
       </table>
 
@@ -279,9 +295,7 @@ export default function RealEstateCommissionNtPage() {
         </li>
         <li>
           <strong>Be wary of the cheapest.</strong> The agent with the lowest
-          rate is not automatically the best value. A stronger negotiator who
-          lifts your sale price by tens of thousands earns back a small
-          difference in rate many times over.
+          rate is not automatically the best value. An extra $20,000 on the price covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times, so compare agents on results before rates.
         </li>
         <li>
           <strong>Confirm the GST position.</strong> Make sure every quote is on
@@ -322,6 +336,23 @@ export default function RealEstateCommissionNtPage() {
         for how rates and inclusions compare across Australia, the NT included.
       </p>
 
+      <h2 id="agreement">What your agency agreement must say about commission</h2>
+      <p>
+        The NT Government says the agreement with your agent sets out the
+        services, the fees or commission you agree to pay, the agent&rsquo;s
+        authority and the estimated selling price, and that you can negotiate
+        the amount of any commission, fees or expenses. Under the Agents
+        Licensing Act 1979 the appointment must be in writing before the agent
+        acts. There is no statutory 90-day cap in the NT.
+      </p>
+      <p>
+        Our guide to{" "}
+        <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>{" "}
+        covers the clauses worth changing first. If you are weighing a flat fee instead of a percentage, see{" "}
+        <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">flat fee agents</Link>{" "}
+        and what they leave out.
+      </p>
+
       <SellingCostTable state="NT" />
 
       <h2 id="next-steps">Where to start</h2>
@@ -337,11 +368,10 @@ export default function RealEstateCommissionNtPage() {
           conversation.
         </li>
         <li>
-          <strong>Get an accurate value first.</strong> A realistic sale price
+          <strong>Get a realistic price range first.</strong> The likely sale price
           underpins the whole exercise. Our{" "}
           <Link href="/guides/how-much-is-my-house-worth-australia">how much is my house worth guide</Link>{" "}
-          covers the three ways to value a home and how to land on a figure you
-          can trust.
+          covers the three ways to value a home and how to land on a realistic range.
         </li>
         <li>
           <strong>Choose the right agent, then negotiate.</strong> The{" "}
@@ -359,8 +389,6 @@ export default function RealEstateCommissionNtPage() {
 }
 
 const NT_COMMISSION_SOURCES: readonly SourceItem[] = [
+  ...commissionSourceItems(stateSources("NT")),
   { label: "NT Government: Dealing with a real estate agent", href: "https://nt.gov.au/property/buying-and-selling-a-home/ways-to-buy-or-sell-a-home/dealing-with-a-real-estate-agent", note: "Agency agreements, fees and commission when selling in the NT" },
-  { label: "NT Consumer Affairs: Real estate agents and licensing", href: "https://nt.gov.au/industry/agents", note: "Licensing and conduct rules for Northern Territory agents" },
-  { label: "Real Estate Institute of the Northern Territory (REINT)", href: "https://www.reint.com.au", note: "Industry body for NT agents" },
-  { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent commission, GST and selling costs" },
 ];

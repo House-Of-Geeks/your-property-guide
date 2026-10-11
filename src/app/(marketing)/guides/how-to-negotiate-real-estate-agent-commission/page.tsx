@@ -16,6 +16,12 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { NationalCommissionTable, commissionSourceItems } from "@/components/guide/CommissionRateTable";
+import { COMMISSION_SOURCES, nationalRange, pct } from "@/lib/data/commission-rates";
+
+// Rates come from the sourced table in src/lib/data/commission-rates.ts
+// (commercial-intent review, 10 Oct 2026, selling 0.1, 0.3 and 0.8).
+const N = nationalRange();
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "How to Negotiate Real Estate Agent Commission in Australia (2026)",
@@ -23,7 +29,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Agent commission is not set by law anywhere in Australia, every rate is an opening offer. Average commission by state, what's actually negotiable, tiered structures, word-for-word scripts, and when a cheap agent costs more than they save.",
   slug: "how-to-negotiate-real-estate-agent-commission",
   publishedAt: "2026-07-03",
-  updatedAt: "2026-07-03",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 10,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -51,12 +57,12 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Commission is not set by law anywhere in Australia. Queensland scrapped the last legislated cap in 2014, so every rate you are quoted is an opening offer, not a fixed price.",
-  "Typical residential rates run roughly 1.5 to 3.5% depending on state, suburb and price. Sydney and Melbourne metro sit lowest, regional areas and Tasmania sit highest.",
+  "Commission is not set by law anywhere in Australia. Queensland deregulated maximum commission rates in 2014, so every rate you are quoted is an opening offer, not a fixed price.",
+  `Published averages and medians run from ${pct(N.low)} (${N.lowWhere}) to ${pct(N.high)} (${N.highWhere}). Capital cities sit lowest and regional areas highest.`,
   "Five things are negotiable, not one: the rate, the structure (flat, fixed fee or tiered), the marketing budget line by line, the exclusive agency period, and the tail clause.",
   "All your leverage exists before you sign the agency agreement. Get three written proposals, negotiate while agents are still competing for the listing, then sign.",
   "A tiered commission (lower base plus a bonus above a target price) aligns the agent's incentive with yours, but only if the target sits above the realistic appraisal range.",
-  "Don't over-negotiate. Shaving 0.5% off commission on an $800,000 sale saves $4,000; an agent who negotiates 2% more on the price adds $16,000. Pick the best agent first, then negotiate the fee.",
+  "Don't over-negotiate. Shaving 0.5% off commission on an $800,000 sale saves $4,000; if a better agent gets 2% more on the price, that adds $16,000. Pick the best agent first, then negotiate the fee.",
 ];
 
 const TOC: GuideTOCEntry[] = [
@@ -76,22 +82,22 @@ const FAQS: FaqItem[] = [
   {
     question: "What is the average real estate commission in Australia?",
     answer:
-      "Most residential sales land between 2% and 3% of the sale price, but the spread by location is wide. Metro Sydney and Melbourne typically run 1.6% to 2.5% with averages around 2%, Brisbane, Perth and Adelaide sit a little higher, and regional areas and Tasmania commonly run 2.5% to 3.5%. Statewide medians that include regional sales sit toward the top of each range. There is no legislated rate anywhere in Australia, so treat any average as a benchmark for negotiation, not a price list.",
+      `Published averages and medians run from ${pct(N.low)} (${N.lowWhere}) to ${pct(N.high)} (${N.highWhere}). OpenAgent's state averages run from ${pct(N.averageLow)} in the ACT to ${pct(N.averageHigh)} in Queensland (September 2026), and bRight Agent's national median across more than 200 postcodes is ${pct(N.nationalMedian)} (February 2026), higher because it counts more regional towns. There is no legislated rate anywhere in Australia, so treat any average as a benchmark for negotiation, not a price list.`,
   },
   {
     question: "Is real estate agent commission negotiable?",
     answer:
-      "Yes, everywhere in Australia. No state or territory sets commission by law, and Queensland, the last to cap rates, removed its cap in 2014. In Victoria an agent must tell you the commission is negotiable before you sign the sales authority. The practical way to negotiate is competition: get written proposals from three agents who sell in your suburb, compare the full package, and ask your preferred agent to sharpen their number before you sign.",
+      "Yes, everywhere in Australia. No state or territory sets commission by law, and Queensland deregulated its maximum rates in 2014. In Victoria an agent must tell you the commission is negotiable before you sign the sales authority. The practical way to negotiate is competition: get written proposals from three agents who sell in your suburb, compare the full package, and ask your preferred agent to sharpen their number before you sign.",
   },
   {
     question: "How much can I realistically negotiate off the commission?",
     answer:
-      "In competitive metro markets, 0.2 to 0.5 percentage points off the opening quote is a realistic outcome, and higher-value properties (above roughly $2 million) often settle below 1.5% because the dollar amount is already large. How far you get depends on how many agents are competing for your listing, how saleable the property is, and the state of the local market. In thin regional markets with few agents there is less room to move on the rate, so focus on the marketing budget and the agreement terms instead.",
+      "There is no published figure for how much sellers negotiate off, so work in dollars: on an $800,000 sale, 0.2 percentage points is $1,600 and 0.5 points is $4,000 before GST. How far you get depends on how many agents are competing for your listing, how saleable the property is, and the state of the local market. In thin regional markets with few agents there is less room to move on the rate, so focus on the marketing budget and the agreement terms instead.",
   },
   {
     question: "Should I just pick the agent with the lowest commission?",
     answer:
-      "Usually not. On an $800,000 sale, the gap between a 1.6% agent and a 2.2% agent is $4,800. If the better agent achieves even 1 to 2% more on the price through sharper pricing, marketing and negotiation, that is $8,000 to $16,000, which swamps the fee saving. A very low rate can also signal an agent who carries too many listings or who will push for a fast sale rather than a strong one. Choose the agent most likely to maximise your net proceeds, then negotiate their fee.",
+      "Usually not. On an $800,000 sale, the gap between a 1.6% agent and a 2.2% agent is $4,800. If the better agent achieves 1 to 2% more on the price through sharper pricing, marketing and negotiation, that is $8,000 to $16,000, which would swamp the fee saving. A very low rate can also signal an agent who carries too many listings or who will push for a fast sale rather than a strong one. Choose the agent most likely to maximise your net proceeds, then negotiate their fee.",
   },
   {
     question: "What is a tiered or performance-based commission?",
@@ -149,9 +155,9 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
       <h2 id="whats-negotiable">What&rsquo;s actually negotiable</h2>
       <p className="lead">
         No Australian state or territory sets real estate commission by law.
-        Queensland was the last to cap rates and removed its cap under the
-        Property Occupations Act 2014, so for over a decade every commission
-        in the country has been whatever you and the agent agree in writing.
+        Queensland deregulated its maximum rates in 2014 (REIQ), when the
+        Property Occupations Act 2014 commenced, so every commission is
+        whatever you and the agent agree in writing.
         That makes the whole agreement negotiable, not just the headline rate.
       </p>
       <p>Five things are on the table before you sign:</p>
@@ -194,36 +200,17 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
         Rates track property values and competition. Where prices are high
         and agents are plentiful, percentages compress; in regional markets
         with fewer sales to spread costs across, they climb. These are the
-        typical ranges we track across states:
+        published averages and medians for each state, every figure footnoted
+        to its source:
       </p>
 
-      <table>
-        <thead>
-          <tr>
-            <th>State</th>
-            <th>Typical range</th>
-            <th>Average</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td><Link href="/guides/real-estate-commission-nsw"><strong>NSW</strong></Link></td><td>1.8% to 2.5%</td><td>~2.0%</td></tr>
-          <tr><td><Link href="/guides/real-estate-commission-vic"><strong>VIC</strong></Link></td><td>1.6% to 2.5%</td><td>~2.0%</td></tr>
-          <tr><td><Link href="/guides/real-estate-commission-qld"><strong>QLD</strong></Link></td><td>2.3% to 2.9%</td><td>~2.5%</td></tr>
-          <tr><td><Link href="/guides/real-estate-commission-wa"><strong>WA</strong></Link></td><td>2.0% to 2.8%</td><td>~2.4%</td></tr>
-          <tr><td><Link href="/guides/real-estate-commission-sa"><strong>SA</strong></Link></td><td>1.8% to 2.75%</td><td>~2.0%</td></tr>
-          <tr><td><Link href="/guides/real-estate-commission-tas"><strong>TAS</strong></Link></td><td>2.5% to 3.25%</td><td>~2.9%</td></tr>
-          <tr><td><Link href="/guides/real-estate-commission-nt"><strong>NT</strong></Link></td><td>2.4% to 2.7%</td><td>~2.5%</td></tr>
-          <tr><td><Link href="/guides/real-estate-commission-act"><strong>ACT</strong></Link></td><td>1.8% to 2.25%</td><td>~2.1%</td></tr>
-        </tbody>
-      </table>
+      <NationalCommissionTable price={800_000} />
 
       <p>
-        Two caveats. Statewide medians that include regional sales sit toward
-        the top of each range, sometimes above it, because regional rates run
-        higher than metro. And on properties above roughly $2 million, rates
-        frequently negotiate below 1.5% because the dollar amount is already
-        substantial. For the full breakdown of what these rates include, see
-        the{" "}
+        One caveat. bRight Agent&rsquo;s medians count more regional postcodes,
+        so they sit above OpenAgent&rsquo;s averages in every state; quote the
+        figure that matches where you are selling. For the full breakdown of
+        what these rates include, see the{" "}
         <Link href="/guides/real-estate-agent-fees-australia">agent fees guide</Link>.
       </p>
 
@@ -242,9 +229,9 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
 
       <p>
         The dollar view cuts both ways, and this is the part most negotiation
-        advice skips. On that same $800,000 home, an agent who prices,
-        markets and negotiates 2% better adds $16,000 to your result, four
-        times the fee saving above. The rate conversation is worth having,
+        advice skips. On that same $800,000 home, if an agent prices, markets
+        and negotiates 2% better, that adds $16,000 to your result, four times
+        the fee saving above. The rate conversation is worth having,
         but it is the second most important decision you&rsquo;ll make. The
         first is which agent you hand the sale to. Work out both numbers for
         your own property with the{" "}
@@ -556,5 +543,7 @@ const COMMISSION_NEGOTIATION_SOURCES: readonly SourceItem[] = [
   { label: "NSW Government (Fair Trading): Agency agreements for the sale of property in NSW", href: "https://www.nsw.gov.au/housing-and-construction/buying-and-selling-property/selling-a-property/agency-agreements", note: "Fees not set by law, cooling-off period, expense and rebate disclosure" },
   { label: "Consumer Affairs Victoria: Selling property with or without an agent", href: "https://www.consumer.vic.gov.au/housing/buying-and-selling-property/selling-property/selling-property-with-or-without-an-agent", note: "Commission negotiable, sales authority contents, no cooling-off in VIC" },
   { label: "Queensland Government: Appointing a real estate agent", href: "https://www.qld.gov.au/law/housing-and-neighbours/buying-and-selling-a-property/selling-a-home/before-you-put-your-home-on-the-market/appointing-a-real-estate-agent", note: "Form 6 appointments, 90-day cap on sole/exclusive agency" },
-  { label: "Queensland legislation: Property Occupations Act 2014", href: "https://www.legislation.qld.gov.au/view/html/inforce/current/act-2014-022", note: "Removed the last legislated commission cap in Australia" },
+  { label: "Queensland legislation: Property Occupations Act 2014", href: "https://www.legislation.qld.gov.au/view/html/inforce/current/act-2014-022", note: "Form 6 appointments; commission stated as a GST-inclusive amount" },
+  ...commissionSourceItems([COMMISSION_SOURCES.reiq]),
+  ...commissionSourceItems(Object.values(COMMISSION_SOURCES).filter((x) => x.label.startsWith("OpenAgent") || x === COMMISSION_SOURCES.bright || x === COMMISSION_SOURCES["ato-gst"]).sort((a, b) => a.n - b.n)),
 ];

@@ -11,10 +11,12 @@ describe("computeSellingCosts", () => {
   it("adds GST to commission unless the quote includes it, and only counts conditional lines when they apply", () => {
     const base = { ...defaultSellingCostsInput("NSW", 800_000), marketing: 4_000, conveyancing: 1_400, documents: 450 };
     const r = computeSellingCosts(base);
-    expect(r.commission).toBe(16_000);           // 2.0% of $800,000
-    expect(r.commissionGst).toBe(1_600);
+    const commission = Math.round((800_000 * STATE_RATES.NSW.typical) / 100);
+    const gst = Math.round(commission * 0.1);
+    expect(r.commission).toBe(commission);       // the NSW typical rate on $800,000
+    expect(r.commissionGst).toBe(gst);
     expect(r.lines.map((l) => l.key)).toEqual(["commission", "gst", "marketing", "conveyancing", "documents"]);
-    expect(r.totalCosts).toBe(16_000 + 1_600 + 4_000 + 1_400 + 450);
+    expect(r.totalCosts).toBe(commission + gst + 4_000 + 1_400 + 450);
     expect(r.netBeforeLoan).toBe(800_000 - r.totalCosts);
     expect(r.netAfterLoan).toBe(r.netBeforeLoan);
 
@@ -75,6 +77,33 @@ describe("state cost guides", () => {
       const a = COST_OF_SELLING_STATE[s].faqs[0].answer;
       expect(a).toContain(t.commission.lowAmount.toLocaleString("en-AU"));
       expect(a).toContain(t.commission.highAmount.toLocaleString("en-AU"));
+    }
+  });
+  it("gives the cost table's own totals in the FAQ and its JSON-LD, labelled before and with GST on the commission (review 10 Oct 2026, 0.6 and 0.7)", () => {
+    const fmt = (n: number) => `$${n.toLocaleString("en-AU")}`;
+    for (const s of COST_OF_SELLING_STATES) {
+      const t = sellingCostTable(s);
+      const a = COST_OF_SELLING_STATE[s].faqs[0].answer;
+      expect(COST_OF_SELLING_STATE[s].faqs[0].question).toMatch(/^How much does it cost to sell a house in /);
+      expect(a).toContain(`${fmt(t.totalLow)} to ${fmt(t.totalHigh)} before GST on the commission`);
+      expect(a).toContain(`${fmt(t.totalLowWithGst)} to ${fmt(t.totalHighWithGst)} with it`);
+      expect(a).not.toMatch(/all-in|all in/);
+      expect(t.totalHighWithGst).toBe(t.totalHigh + Math.round(t.commission.highAmount * 0.1));
+    }
+  });
+});
+
+describe("state cost guides: commission sourcing (review 10 Oct 2026, selling 0.1 and 0.8)", () => {
+  it("cite the commission sources, drop 'compiled market figures', and make no unsourced rank claims", () => {
+    for (const s of COST_OF_SELLING_STATES) {
+      const g = COST_OF_SELLING_STATE[s];
+      const labels = g.sources.map((x) => (typeof x === "string" ? x : x.label)).join("\n");
+      expect(labels).toContain("OpenAgent");
+      expect(labels).toContain("bRight Agent");
+      expect(labels).not.toContain("compiled market figures");
+      const text = [...g.intro, ...g.faqs.map((f) => f.answer)].join(" ");
+      expect(text).not.toMatch(/cheapest agent commission|highest typical commission|Typically \d/);
+      expect(text).toContain(`${STATE_RATES[s].low}%`);
     }
   });
 });

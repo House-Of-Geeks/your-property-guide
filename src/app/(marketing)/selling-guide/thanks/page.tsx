@@ -61,7 +61,7 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
           {
             href: suburb ? `/appraisal?suburb=${suburb}` : "/appraisal",
             label: "Book your free appraisal now",
-            sub: "A top local agent values your home — free, no obligation",
+            sub: "One local agent who sells in your area gives you a price range, free, no obligation",
           },
         ]
       : []),

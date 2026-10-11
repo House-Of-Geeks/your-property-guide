@@ -19,15 +19,31 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
+import { StateCommissionTable, commissionSourceItems } from "@/components/guide/CommissionRateTable";
+import {
+  STATE_COMMISSION,
+  STATE_RATES,
+  commissionAmount,
+  commissionWithGst,
+  pct,
+  stateSources,
+  workedExamples,
+} from "@/lib/data/commission-rates";
+
+// Every rate on this page comes from the sourced table in
+// src/lib/data/commission-rates.ts (commercial-intent review, 10 Oct 2026, 0.1).
+const R = STATE_RATES.ACT;
+const C = STATE_COMMISSION.ACT;
+const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real Estate Commission ACT 2026: Canberra Rates, Fees & Calculator",
   h1: "Real Estate Commission ACT 2026: Canberra & ACT Rates, Fees & Calculator",
   description:
-    "What real estate agents charge in Canberra and the ACT: typical commission of 1.8% to 2.25% (2.1% is most common), a calculator preset to the ACT rate, how it's structured, whether it includes GST, worked dollar examples by sale price, and how to negotiate.",
+    "Canberra and ACT agent commission: published figures 1.78% to 2.23%, a calculator preset to the ACT rate, dollar examples with GST, and how to negotiate.",
   slug: "real-estate-commission-act",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -55,9 +71,9 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Real estate commission in Canberra and the ACT typically runs from 1.8% to 2.25% of the sale price, with 2.1% the most common figure.",
+  `Published figures for real estate commission in Canberra and the ACT run from ${pct(R.low)} (OpenAgent's Canberra and ACT average, September 2026) to ${pct(R.high)} (bRight Agent's ACT median, February 2026).`,
   "Commission is a percentage of the final sale price, paid by the seller out of the proceeds at settlement, and it is negotiable.",
-  "At the typical 2.1%, a $800,000 sale works out to $16,800 in commission, before GST.",
+  `At the ${pct(R.typical)} average, an $800,000 sale works out to ${money(commissionAmount(800_000, R.typical))} in commission before GST, or ${money(commissionWithGst(800_000, R.typical))} with it.`,
   "Commission usually attracts 10% GST on top, and quotes vary on whether that GST is shown, so always ask.",
   "Most ACT agents work on a \"no sale, no fee\" basis, so commission is only payable if the property actually sells.",
   "Commission is always negotiable in the ACT. Compare two or three agents and negotiate the rate and the marketing budget together.",
@@ -70,6 +86,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "structure",   label: "How commission is structured in ACT" },
   { id: "negotiable",  label: "Is commission negotiable in ACT?" },
   { id: "other-costs", label: "Commission vs the rest of your selling costs" },
+  { id: "agreement",    label: "What the agency agreement must say" },
   { id: "cost-table",   label: "What it costs to sell in the ACT" },
   { id: "next-steps",  label: "Get the right agent first" },
 ];
@@ -78,17 +95,17 @@ const FAQS: FaqItem[] = [
   {
     question: "What is the average real estate commission in ACT?",
     answer:
-      "In the ACT, real estate commission typically ranges from 1.8% to 2.25% of the sale price, with 2.1% the most common figure. That sits close to the lower end of the national spread, similar to the larger eastern-state capitals, because Canberra has relatively high property values and a competitive pool of agents. Commission is charged as a percentage of the final sale price and is negotiable, so the rate you are first quoted is a starting point rather than a fixed price.",
+      `OpenAgent's average for Canberra and the ACT is ${pct(R.typical)} of the sale price (September 2026), the lowest state or territory average it publishes; bRight Agent's ACT median is ${pct(C.median)} (February 2026), also the lowest state median in its report. Commission is charged as a percentage of the final sale price, and the agency agreement must state it, or how it is worked out, with the dollar amount at an estimated sale price. It is negotiable, so the rate you are first quoted is a starting point.`,
   },
   {
     question: "How much do real estate agents charge in the Australian Capital Territory?",
     answer:
-      "Most agents in the ACT charge a percentage commission of around 1.8% to 2.25%, with 2.1% the typical rate, on top of which 10% GST usually applies. At 2.1%, a $600,000 sale is about $12,600 in commission, a $1,000,000 sale is about $21,000, and a $1,500,000 sale is about $31,500, all before GST. Marketing and advertising are charged separately. Because commission scales with the sale price, the dollar figure matters more than the headline rate, so run your own price through a calculator before you compare agents.",
+      `Most agents in the ACT charge a percentage commission, and published figures run from ${pct(R.low)} to ${pct(R.high)}, with 10% GST added where a quote excludes it. At ${pct(R.typical)}, a $600,000 sale is ${money(commissionAmount(600_000, R.typical))} in commission, a $1,000,000 sale ${money(commissionAmount(1_000_000, R.typical))}, and a $1,500,000 sale ${money(commissionAmount(1_500_000, R.typical))}, all before GST. Marketing and advertising are charged separately. Because commission scales with the sale price, the dollar figure matters more than the headline rate, so run your own price through a calculator before you compare agents.`,
   },
   {
     question: "Is real estate commission negotiable in ACT?",
     answer:
-      "Yes. Commission is deregulated in the ACT, so there is no official or fixed rate and agents set their own fees. That means the percentage is open to negotiation. The way to negotiate well is to get appraisals from two or three local agents, compare the rate against the service and the marketing budget rather than in isolation, and ask each agent to justify their number. Be wary of the cheapest quote if it comes with a thin campaign or a less experienced negotiator, because a slightly higher rate can pay for itself in a better sale price.",
+      "Yes. Commission is deregulated in the ACT, so there is no official or fixed rate and agents set their own fees. That means the percentage is open to negotiation. The way to negotiate well is to get appraisals from two or three local agents, compare the rate against the service and the marketing budget rather than in isolation, and ask each agent to justify their number. Be wary of the cheapest quote if it comes with a thin campaign or a less experienced negotiator, because the dollar result matters more than the rate: on $800,000 each 0.1% is $800 before GST.",
   },
   {
     question: "Do you pay commission if the house doesn't sell?",
@@ -98,7 +115,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Does commission include GST in ACT?",
     answer:
-      "Usually not in the headline number. Real estate commission in the ACT typically attracts 10% GST on top of the quoted rate, and quotes vary on whether they show the figure inclusive or exclusive of GST. A 2.1% commission on an $800,000 sale is $16,800 before GST and $18,480 with GST added. Always ask each agent whether their quote includes GST so you are comparing like with like.",
+      "Usually not in the headline number. Real estate commission in the ACT typically attracts 10% GST on top of the quoted rate, and quotes vary on whether they show the figure inclusive or exclusive of GST. A 2% commission on an $800,000 sale is $16,000 before GST and $17,600 with GST added. Always ask each agent whether their quote includes GST so you are comparing like with like.",
   },
 ];
 
@@ -107,7 +124,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The Cost of Selling a House",          href: "/guides/cost-of-selling-a-house-australia", description: "Every selling cost beyond commission." },
   { title: "Real Estate Agent Fees (National)",    href: "/guides/real-estate-agent-fees-australia", description: "How fees and commission work across Australia." },
   { title: "How to Choose a Selling Agent",        href: "/guides/how-to-choose-a-selling-agent",    description: "Pick the right agent, then negotiate the fee." },
-  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get an accurate value before you list." },
+  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get a realistic price range before you list." },
 ];
 
 export default function RealEstateCommissionACTPage() {
@@ -120,12 +137,17 @@ export default function RealEstateCommissionACTPage() {
       related={RELATED}
     >
       <CommissionCalculatorEmbed state="ACT" />
+      <p>
+        Selling in another state? See{" "}
+        <Link href="/guides/real-estate-agent-fees-australia">real estate agent fees in every state</Link>.
+      </p>
 
       <Callout variant="warning" title="Commission is not a fixed or official rate">
         <p>
           Real estate commission in the ACT is not regulated or fixed, and it is
-          always negotiable. The ranges in this guide are typical market figures,
-          not official rates, and they vary by agent, suburb and property type.
+          always negotiable. The figures in this guide are published averages and
+          medians, each named and dated in the table below, not official rates,
+          and your quote will vary by agent, suburb and property type.
           Treat every number here as indicative and get written quotes from your
           own local agents before you rely on it. Check whether each quote
           includes GST.
@@ -145,55 +167,52 @@ export default function RealEstateCommissionACTPage() {
 
       <h2 id="average">Average real estate commission in ACT</h2>
       <p className="lead">
-        Real estate commission in Canberra and the Australian Capital Territory
-        typically ranges from <strong>1.8% to 2.25%</strong> of the final sale price, with{" "}
-        <strong>2.1% the most common</strong> figure. Commission is charged as a
-        percentage of what your property sells for, paid by you as the seller out
-        of the proceeds at settlement, and it is negotiable.
+        Published figures for Canberra and the ACT run from {pct(R.low)} (OpenAgent&rsquo;s
+        average, September 2026) to {pct(R.high)} (bRight Agent&rsquo;s median,
+        February 2026). Commission is charged as a percentage of what your
+        property sells for, paid by you as the seller out of the proceeds at
+        settlement, and it is negotiable.
       </p>
+      <StateCommissionTable state="ACT" price={800_000} />
       <p>
-        That puts the ACT towards the lower end of the national range. Commission
-        tends to be lower in capital cities with high property values and a
-        competitive pool of agents, and higher in regional areas where sale
-        prices are smaller. Canberra has both high median values and a dense,
-        professional agent market in a relatively compact geography, so rates
-        here sit closer to those in the larger eastern-state capitals than to the
-        higher figures common in some regional and smaller markets.
+        Both measures put the ACT at the bottom of the national table: its
+        average is the lowest state or territory average OpenAgent publishes,
+        and its median is the lowest state median in bRight Agent&rsquo;s 2026
+        report. OpenAgent publishes no separate regional figure for the ACT.
       </p>
       <p>
         Because commission is a percentage, the dollar amount scales with your
-        sale price. At the same 2.1% rate, a higher sale price simply means a
+        sale price. At the same {pct(R.typical)} rate, a higher sale price simply means a
         higher fee in dollars, which is why the absolute figure matters more than
         the headline rate when you compare agents.
       </p>
 
       <KeyFigure
-        value="2.1%"
-        label="The most common real estate commission rate in the ACT, within a typical range of 1.8% to 2.25% of the sale price."
-        context="Indicative market figures, not an official rate. GST usually applies on top."
+        value={pct(R.typical)}
+        label={`OpenAgent's ACT state average commission (September 2026). On an $800,000 sale that's ${money(commissionAmount(800_000, R.typical))} before GST.`}
+        context={`Published averages run ${pct(R.low)} to ${pct(R.high)}, before GST, and it's negotiable`}
       />
 
       <h2 id="examples">Worked dollar examples</h2>
       <p>
-        Here is what the typical ACT commission range looks like in dollars
-        across a few sale prices. The table shows the lower end (1.8%), the
-        typical rate (2.1%) and the higher end (2.25%).
+        Here is what the published ACT figures look like in dollars across a few
+        sale prices: the {pct(R.typical)} average, the {pct(R.high)} median, and
+        the average with 10% GST added.
       </p>
 
       <table>
         <thead>
           <tr>
             <th>Sale price</th>
-            <th>At 1.8% (lower)</th>
-            <th>At 2.1% (typical)</th>
-            <th>At 2.25% (higher)</th>
+            <th>At {pct(R.typical)} (Canberra and ACT average)</th>
+            <th>At {pct(R.high)} (ACT median)</th>
+            <th>At {pct(R.typical)}, with GST</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>$600,000</td><td>$10,800</td><td>$12,600</td><td>$13,500</td></tr>
-          <tr><td>$800,000</td><td>$14,400</td><td>$16,800</td><td>$18,000</td></tr>
-          <tr><td>$1,000,000</td><td>$18,000</td><td>$21,000</td><td>$22,500</td></tr>
-          <tr><td>$1,500,000</td><td>$27,000</td><td>$31,500</td><td>$33,750</td></tr>
+          {workedExamples("ACT").map((w) => (
+            <tr key={w.price}><td>{money(w.price)}</td><td>{money(w.typical)}</td><td>{money(w.high)}</td><td>{money(w.typicalWithGst)}</td></tr>
+          ))}
         </tbody>
       </table>
 
@@ -207,7 +226,7 @@ export default function RealEstateCommissionACTPage() {
       <h2 id="structure">How commission is structured in ACT</h2>
       <p>
         Most ACT agents charge a single flat percentage of the sale price, for
-        example 2.1% across the whole price. Some will offer a tiered or
+        example {pct(R.typical)} across the whole price. Some will offer a tiered or
         performance-based structure instead, where the rate steps up on the
         amount above an agreed target price. A performance incentive can align
         the agent&rsquo;s interests with yours, because they earn more only if
@@ -269,8 +288,7 @@ export default function RealEstateCommissionACTPage() {
         </li>
         <li>
           <strong>Be wary of the cheapest.</strong> The lowest quote can mean a
-          thinner campaign or a less experienced negotiator. An agent who gets you
-          a higher sale price earns back a slightly higher rate many times over.
+          thinner campaign or a less experienced negotiator. An extra $20,000 on the price covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times, so compare agents on results before rates.
         </li>
         <li>
           <strong>Ask whether GST is included.</strong> So you are comparing like
@@ -309,6 +327,23 @@ export default function RealEstateCommissionACTPage() {
 
       <MatchCTA kind="selling-agent" />
 
+      <h2 id="agreement">What your agency agreement must say about commission</h2>
+      <p>
+        Under the ACT&rsquo;s Agents Regulation 2003, the agency agreement must
+        state when the agent is entitled to commission, the amount or how it is
+        worked out, and when it is payable. Where the commission is a percentage
+        of the price, the agreement must also give the dollar amount at a stated
+        estimated sale price, so you see the figure before you sign. There is no
+        statutory 90-day cap in the ACT.
+      </p>
+      <p>
+        Our guide to{" "}
+        <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>{" "}
+        covers the clauses worth changing first. If you are weighing a flat fee instead of a percentage, see{" "}
+        <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">flat fee agents</Link>{" "}
+        and what they leave out.
+      </p>
+
       <SellingCostTable state="ACT" />
 
       <h2 id="next-steps">Get the right agent first</h2>
@@ -321,10 +356,10 @@ export default function RealEstateCommissionACTPage() {
       </p>
       <ol>
         <li>
-          <strong>Get an accurate value.</strong> A market-facing figure from a
+          <strong>Get a realistic price range.</strong> A market-facing figure from a
           local agent is the starting point.{" "}
           <Link href="/guides/how-much-is-my-house-worth-australia">How much is my house worth?</Link>{" "}
-          covers how to land on a number you can trust.
+          covers how to land on a realistic range.
         </li>
         <li>
           <strong>Choose the right agent.</strong> Our{" "}
@@ -346,8 +381,7 @@ export default function RealEstateCommissionACTPage() {
 }
 
 const COMMISSION_ACT_SOURCES: readonly SourceItem[] = [
+  ...commissionSourceItems(stateSources("ACT")),
   { label: "Civil Law (Sale of Residential Property) Act 2003 (ACT)", href: "https://www.legislation.act.gov.au/a/2003-40/", note: "The building, pest and energy efficiency reports an ACT seller must provide" },
-  { label: "Access Canberra: Real estate agent licensing", href: "https://www.accesscanberra.act.gov.au", note: "Licensing and regulation of real estate agents operating in the ACT" },
-  { label: "Real Estate Institute of the ACT (REIACT)", href: "https://reiact.com.au", note: "ACT industry body for real estate professionals" },
-  { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent commission, marketing and selling costs" },
+  { label: "Access Canberra: Licensing for business, real estate and stock and station agents", href: "https://www.accesscanberra.act.gov.au/business-and-work/real-estate-and-property/licensing-for-business-real-estate-and-stock-and-station-agents", note: "Agents Act 2003 licensing; page updated 28 April 2026, read 11 October 2026" },
 ];

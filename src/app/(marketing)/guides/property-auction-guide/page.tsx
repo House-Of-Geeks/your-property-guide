@@ -22,7 +22,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "How auctions actually work in Australia. The reserve price, vendor bids, what 'passed in' means, why finance must be unconditional before auction day, and bidding strategies that don't lose you money.",
   slug: "property-auction-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-09-20",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
 const TLDR = [
   "Auction purchases have NO cooling-off period in any Australian state. If the hammer falls, you're committed unconditionally and pay 10% deposit on the spot.",
   "All due diligence (unconditional finance, building and pest inspection, contract review by your conveyancer) must be done before auction day.",
-  "The reserve price is the minimum the vendor will accept; it's set confidentially before auction. The agent's price guide is an estimate, not the reserve. Victoria is the exception from October 2026: for residential auctions held on or after 16 October 2026, the reserve must be published in the advertising at least 7 days beforehand.",
+  "The reserve price is the minimum the vendor will accept; it's set confidentially before auction. The agent's price guide is an estimate, not the reserve. Victoria is the exception: for residential auctions held on or after 16 October 2026, the reserve will have to be published in the advertising at least 7 days beforehand (Consumer Affairs Victoria).",
   "If bidding doesn't reach reserve, the property is 'passed in' and the highest bidder usually gets first right to negotiate privately with the vendor.",
   "A vendor bid is a bid made by the auctioneer on behalf of the seller to push toward the reserve. It must be announced clearly and cannot win the auction.",
   "Bidder registration is mandatory in NSW and VIC and standard practice elsewhere. Bring photo ID and arrive 30 minutes early.",

@@ -19,15 +19,35 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
+import { StateCommissionTable, commissionSourceItems } from "@/components/guide/CommissionRateTable";
+import {
+  STATE_COMMISSION,
+  STATE_RATES,
+  commissionAmount,
+  commissionWithGst,
+  pct,
+  regionalRange,
+  stateRateSummary,
+  stateSources,
+  whereInState,
+  workedExamples,
+} from "@/lib/data/commission-rates";
+
+// Every rate on this page comes from the sourced table in
+// src/lib/data/commission-rates.ts (commercial-intent review, 10 Oct 2026, 0.1).
+const R = STATE_RATES.VIC;
+const C = STATE_COMMISSION.VIC;
+const REG = regionalRange("VIC");
+const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real Estate Commission VIC 2026: Melbourne Rates, Fees & Calculator",
   h1: "Real Estate Commission VIC 2026: Melbourne & VIC Rates, Fees & Calculator",
   description:
-    "What real estate agents charge in Melbourne and across Victoria: the typical 1.6% to 2.5% commission range, a calculator preset to the VIC rate, worked examples on common sale prices, how GST applies, what's included, and how to negotiate.",
+    "Melbourne and VIC agent commission: published averages 1.78% to 2.79%, a calculator preset to the VIC rate, dollar examples with GST, and how to negotiate.",
   slug: "real-estate-commission-vic",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -55,8 +75,8 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Real estate commission in Melbourne and across Victoria typically ranges from 1.6% to 2.5% of the sale price, with 2% the most common rate.",
-  "At the typical 2%, a $800,000 sale costs $16,000 in commission, before GST.",
+  `Published averages for real estate commission in Melbourne and across Victoria run from ${pct(R.low)} (${whereInState("VIC", R.low)}) to ${pct(R.high)} (${whereInState("VIC", R.high)}), with a state average of ${pct(R.typical)} (OpenAgent, September 2026).`,
+  `At the ${pct(R.typical)} state average, an $800,000 sale costs ${money(commissionAmount(800_000, R.typical))} in commission before GST, or ${money(commissionWithGst(800_000, R.typical))} with it.`,
   "Commission is a percentage of the final sale price, paid by the seller at settlement, and it is always negotiable.",
   "Most VIC agents work on \"no sale, no fee\", so commission is only payable if the property sells.",
   "Marketing, photography and styling are usually charged separately, on top of the commission rate.",
@@ -70,6 +90,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "how-structured",     label: "How commission is structured" },
   { id: "negotiable",         label: "Is commission negotiable?" },
   { id: "other-costs",        label: "Commission vs other selling costs" },
+  { id: "agreement",    label: "What the agency agreement must say" },
   { id: "cost-table",   label: "What it costs to sell in Victoria" },
   { id: "next-steps",         label: "Getting the right agent and fee" },
 ];
@@ -78,12 +99,12 @@ const FAQS: FaqItem[] = [
   {
     question: "What is the average real estate commission in VIC?",
     answer:
-      "Real estate commission in Victoria typically ranges from 1.6% to 2.5% of the sale price, with 2% the most common rate. It is charged as a percentage of the final sale price and paid by the seller at settlement. At 2%, a $800,000 sale costs $16,000 in commission before GST. There is no official or fixed rate, so the figure you are quoted varies by agent, suburb and property value, and it is always negotiable.",
+      `OpenAgent's Victorian state average is ${pct(R.typical)} of the sale price (September 2026), with Melbourne at ${pct(C.capital.rate)} and regional areas from ${pct(REG!.low)} to ${pct(REG!.high)}; bRight Agent's median across Victorian postcodes is ${pct(C.median)} (February 2026). It is charged on the final sale price and paid by the seller at settlement: at ${pct(R.typical)}, an $800,000 sale costs ${money(commissionAmount(800_000, R.typical))} before GST. There is no official or fixed rate, and Consumer Affairs Victoria says the agent must tell you commission is negotiable before you sign.`,
   },
   {
     question: "How much do real estate agents charge in Victoria?",
     answer:
-      "Most Victorian agents charge a commission of between 1.6% and 2.5% of the sale price, clustered around 2%. On a $600,000 sale that is roughly $9,600 to $15,000, and on a $1,000,000 sale it is roughly $16,000 to $25,000, before GST. Commission almost always sits separately from marketing, which is billed on top. Because rates are not set by law in Victoria, the only way to know what you will pay is to get written quotes from a few local agents.",
+      `Most Victorian agents charge a percentage of the sale price, and published averages run from ${pct(R.low)} to ${pct(R.high)}. On a $600,000 sale that is ${money(commissionAmount(600_000, R.low))} to ${money(commissionAmount(600_000, R.high))}, and on a $1,000,000 sale ${money(commissionAmount(1_000_000, R.low))} to ${money(commissionAmount(1_000_000, R.high))}, before GST. Commission almost always sits separately from marketing, which is billed on top. Because rates are not set by law in Victoria, the only way to know what you will pay is to get written quotes from a few local agents.`,
   },
   {
     question: "Is real estate commission negotiable in VIC?",
@@ -98,7 +119,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Does commission include GST in VIC?",
     answer:
-      "Usually not in the headline number. Real estate commission in Victoria normally attracts 10% GST on top of the quoted rate, so a 2% commission effectively costs 2.2% once GST is added. Some agents quote the rate inclusive of GST and some quote it exclusive, which makes a real difference to the final bill. Always ask whether the rate you are being quoted includes GST so you are comparing agents on the same basis.",
+      "Usually not in the headline number. Real estate commission in Victoria normally attracts 10% GST on top of the quoted rate, so a 2% commission costs 2.2% once GST is added. Some agents quote the rate inclusive of GST and some quote it exclusive, which makes a real difference to the final bill. Always ask whether the rate you are being quoted includes GST so you are comparing agents on the same basis.",
   },
 ];
 
@@ -107,7 +128,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The Cost of Selling a House",           href: "/guides/cost-of-selling-a-house-australia",  description: "Every selling cost beyond commission." },
   { title: "Real Estate Agent Fees (National)",     href: "/guides/real-estate-agent-fees-australia",   description: "How fees and commission work across Australia." },
   { title: "How to Choose a Selling Agent",         href: "/guides/how-to-choose-a-selling-agent",      description: "Pick the right agent, then negotiate the fee." },
-  { title: "How Much Is My House Worth?",           href: "/guides/how-much-is-my-house-worth-australia", description: "Get an accurate value before you list." },
+  { title: "How Much Is My House Worth?",           href: "/guides/how-much-is-my-house-worth-australia", description: "Get a realistic price range before you list." },
 ];
 
 export default function RealEstateCommissionVicPage() {
@@ -120,13 +141,18 @@ export default function RealEstateCommissionVicPage() {
       related={RELATED}
     >
       <CommissionCalculatorEmbed state="VIC" />
+      <p>
+        Selling in another state? See{" "}
+        <Link href="/guides/real-estate-agent-fees-australia">real estate agent fees in every state</Link>.
+      </p>
 
       <Callout variant="warning" title="Commission isn't fixed, and it's always negotiable">
         <p>
           There is no official or regulated commission rate in Victoria.
-          Commission is deregulated, so the percentages in this guide are
-          typical market figures, not set rates, and they vary by agent, suburb
-          and property value. Treat every number here as indicative, get written
+          Commission is negotiable, so the percentages in this guide are
+          published averages and medians, each named and dated in the table
+          below, not set rates, and your quote will vary by agent, suburb and
+          property value. Treat every number here as indicative, get written
           quotes from your own local agents, and confirm the current rate
           (and whether GST is included) before you rely on it.
         </p>
@@ -145,33 +171,30 @@ export default function RealEstateCommissionVicPage() {
 
       <h2 id="average-commission">Average real estate commission in VIC</h2>
       <p className="lead">
-        Real estate commission in Melbourne and across Victoria typically ranges from{" "}
-        <strong>1.6% to 2.5%</strong> of the final sale price, with{" "}
-        <strong>2% the most common rate</strong>. Commission is paid by the
-        seller, charged as a percentage of what the property actually sells for,
-        and it is always negotiable.
+        {stateRateSummary("VIC")} Commission is paid by the seller, charged as a
+        percentage of what the property actually sells for, and it is always
+        negotiable.
       </p>
+      <StateCommissionTable state="VIC" price={800_000} />
       <p>
-        By national standards, Victoria sits towards the lower end. Commission
-        rates tend to be lower in the larger, higher-value capital cities and
-        higher in regional and smaller markets, and Melbourne&rsquo;s high
-        median price pulls Victorian rates down. The typical 2% in VIC is in
-        line with New South Wales and below the 2.5% to 3% more common in
-        states like Queensland and Western Australia. Within Victoria, premium
-        Melbourne suburbs often see rates closer to the bottom of the range,
-        while smaller regional sales can sit nearer the top.
+        Rates are lower in Melbourne than in regional Victoria: OpenAgent puts
+        Melbourne&rsquo;s average at {pct(C.capital.rate)}, against {pct(REG!.low)} to{" "}
+        {pct(REG!.high)} across the regional areas it publishes. Victoria&rsquo;s
+        state average of {pct(R.typical)} compares with {pct(STATE_RATES.NSW.typical)} in
+        New South Wales and {pct(STATE_RATES.QLD.typical)} in Queensland on the same
+        measure.
       </p>
 
       <KeyFigure
-        value="1.6–2.5%"
-        label="Typical real estate commission range in Victoria, with 2% the most common rate. Charged on the final sale price and paid by the seller at settlement."
-        context="Indicative only, and excludes GST"
+        value={pct(R.typical)}
+        label={`OpenAgent's VIC state average commission (September 2026). On an $800,000 sale that's ${money(commissionAmount(800_000, R.typical))} before GST.`}
+        context={`Published averages run ${pct(R.low)} to ${pct(R.high)}, before GST, and it's negotiable`}
       />
 
       <p>
         Commission is normally quoted before GST, and in Victoria it usually
         attracts <strong>10% GST on top</strong> of the rate. A 2% commission
-        therefore effectively costs 2.2% once GST is added. Agents differ on
+        therefore costs 2.2% once GST is added. Agents differ on
         whether they show the rate inclusive or exclusive of GST, so always ask
         which one you are being quoted before you compare.
       </p>
@@ -179,25 +202,24 @@ export default function RealEstateCommissionVicPage() {
       <h2 id="worked-examples">Worked examples by sale price</h2>
       <p>
         Because commission is a percentage, the dollar figure scales with your
-        sale price. Here is what the typical Victorian range looks like in
-        dollars across common sale prices, at the lower end (1.6%), the typical
-        rate (2%) and the higher end (2.5%).
+        sale price. Here are the Victorian figures in dollars across common sale
+        prices, at the lowest published average ({pct(R.low)}), the state average
+        ({pct(R.typical)}) and the highest published average ({pct(R.high)}).
       </p>
 
       <table>
         <thead>
           <tr>
             <th>Sale price</th>
-            <th>At 1.6% (lower)</th>
-            <th>At 2% (typical)</th>
-            <th>At 2.5% (higher)</th>
+            <th>At {pct(R.low)} (lowest)</th>
+            <th>At {pct(R.typical)} (state average)</th>
+            <th>At {pct(R.high)} (highest)</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>$600,000</td><td>$9,600</td><td>$12,000</td><td>$15,000</td></tr>
-          <tr><td>$800,000</td><td>$12,800</td><td>$16,000</td><td>$20,000</td></tr>
-          <tr><td>$1,000,000</td><td>$16,000</td><td>$20,000</td><td>$25,000</td></tr>
-          <tr><td>$1,500,000</td><td>$24,000</td><td>$30,000</td><td>$37,500</td></tr>
+          {workedExamples("VIC").map((w) => (
+            <tr key={w.price}><td>{money(w.price)}</td><td>{money(w.low)}</td><td>{money(w.typical)}</td><td>{money(w.high)}</td></tr>
+          ))}
         </tbody>
       </table>
 
@@ -278,8 +300,7 @@ export default function RealEstateCommissionVicPage() {
         </li>
         <li>
           <strong>Be wary of the cheapest quote.</strong> The lowest rate is not
-          automatically the best value. An agent who negotiates a higher sale
-          price earns their commission back many times over, so weigh the rate
+          automatically the best value. An extra $20,000 on the price covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times, so compare agents on results before rates. Weigh the rate
           against the campaign and the agent&rsquo;s track record, not in isolation.
         </li>
       </ol>
@@ -304,6 +325,27 @@ export default function RealEstateCommissionVicPage() {
         sets out the rates by state.
       </p>
 
+      <h2 id="agreement">What your agency agreement must say about commission</h2>
+      <p>
+        In Victoria the agency agreement is a sales authority. Under the Estate
+        Agents Act 1980 the agent cannot recover commission or outgoings unless
+        the authority is in writing, signed by you, states the commission and
+        expenses (as a dollar figure, or a percentage with a dollar example),
+        and you were given a copy. It must also state the agent&rsquo;s estimated
+        selling price, a single figure or a range of up to 10%, and Consumer
+        Affairs Victoria says the agent must tell you commission and expenses
+        are negotiable before you sign. Any rebate the agent receives on
+        advertising must be passed to you. There is no cooling-off period on a
+        sales authority, so read it before you sign.
+      </p>
+      <p>
+        Our guide to{" "}
+        <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>{" "}
+        covers the clauses worth changing first. If you are weighing a flat fee instead of a percentage, see{" "}
+        <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">flat fee agents</Link>{" "}
+        and what they leave out.
+      </p>
+
       <SellingCostTable state="VIC" />
 
       <h2 id="next-steps">Getting the right agent and fee</h2>
@@ -317,7 +359,7 @@ export default function RealEstateCommissionVicPage() {
           <strong>Size the fee for your price.</strong> Run your expected sale
           price through the{" "}
           <Link href="/real-estate-commission-calculator">commission calculator</Link>{" "}
-          using the VIC setting so you know what 2% means in dollars before any
+          using the VIC setting so you know what {pct(R.typical)} means in dollars before any
           conversation.
         </li>
         <li>
@@ -342,8 +384,6 @@ export default function RealEstateCommissionVicPage() {
 }
 
 const VIC_COMMISSION_SOURCES: readonly SourceItem[] = [
+  ...commissionSourceItems(stateSources("VIC")),
   { label: "Consumer Affairs Victoria: Selling property", href: "https://www.consumer.vic.gov.au/housing/buying-and-selling-property/selling-property", note: "The Section 32 vendor statement and the selling process in Victoria" },
-  { label: "Consumer Affairs Victoria: Estate agents and commission", href: "https://www.consumer.vic.gov.au/", note: "Agent licensing and the deregulation of commission in Victoria" },
-  { label: "Real Estate Institute of Victoria (REIV)", href: "https://reiv.com.au/", note: "Industry body context for the Victorian agent market" },
-  { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent fees, GST and marketing costs" },
 ];

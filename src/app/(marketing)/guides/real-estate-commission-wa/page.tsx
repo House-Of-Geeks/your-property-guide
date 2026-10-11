@@ -19,15 +19,34 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
+import { StateCommissionTable, commissionSourceItems } from "@/components/guide/CommissionRateTable";
+import {
+  STATE_COMMISSION,
+  STATE_RATES,
+  commissionAmount,
+  pct,
+  regionalRange,
+  stateRateSummary,
+  stateSources,
+  whereInState,
+  workedExamples,
+} from "@/lib/data/commission-rates";
+
+// Every rate on this page comes from the sourced table in
+// src/lib/data/commission-rates.ts (commercial-intent review, 10 Oct 2026, 0.1).
+const R = STATE_RATES.WA;
+const C = STATE_COMMISSION.WA;
+const REG = regionalRange("WA");
+const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real Estate Commission WA 2026: Perth Rates, Fees & Calculator",
   h1: "Real Estate Commission WA 2026: Perth & WA Rates, Fees & Calculator",
   description:
-    "What real estate agents charge in Perth and across Western Australia: the typical commission range, the most common rate, a calculator preset to the WA rate, worked dollar examples by sale price, GST, what's included, and how to negotiate.",
+    "Perth and WA agent commission: published averages 2.06% to 3.25%, a calculator preset to the WA rate, dollar examples with GST, and how to negotiate.",
   slug: "real-estate-commission-wa",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -55,8 +74,8 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Real estate commission in Perth and across WA typically runs from 2% to 2.8% of the final sale price, with 2.4% the most common rate.",
-  "On a $600,000 sale at the typical 2.4%, commission is $14,400. On a $1,000,000 sale it's $24,000.",
+  `Published averages for real estate commission in Perth and across WA run from ${pct(R.low)} (${whereInState("WA", R.low)}) to ${pct(R.high)} (${whereInState("WA", R.high)}), with a state average of ${pct(R.typical)} (OpenAgent, September 2026).`,
+  `On a $600,000 sale at the ${pct(R.typical)} state average, commission is ${money(commissionAmount(600_000, R.typical))} before GST. On a $1,000,000 sale it's ${money(commissionAmount(1_000_000, R.typical))}.`,
   "Commission usually attracts 10% GST on top, and quotes vary on whether they show the GST-inclusive figure or not.",
   "Almost every WA agent works on a no sale, no fee basis, so commission is only payable once the property sells, at settlement.",
   "Commission is deregulated in WA. There is no official or fixed rate, so the percentage you're first quoted is always negotiable.",
@@ -70,6 +89,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "how-structured",     label: "How commission is structured" },
   { id: "negotiable",         label: "Is commission negotiable in WA?" },
   { id: "other-costs",        label: "Commission vs your other costs" },
+  { id: "agreement",    label: "What the agency agreement must say" },
   { id: "cost-table",   label: "What it costs to sell in WA" },
   { id: "next-steps",         label: "Get the right agent and rate" },
 ];
@@ -78,17 +98,17 @@ const FAQS: FaqItem[] = [
   {
     question: "What is the average real estate commission in WA?",
     answer:
-      "In Western Australia, commission typically ranges from 2% to 2.8% of the final sale price, with 2.4% the most common rate. It is charged as a percentage of what the property sells for and is paid by the seller at settlement. WA tends to sit slightly above the rates seen in the larger eastern-state capitals, where higher property values let agents compete on a lower percentage. There is no official or fixed rate, so always get written quotes from two or three local agents before you settle on a number.",
+      `OpenAgent's WA state average is ${pct(R.typical)} of the sale price (September 2026), with Perth at ${pct(C.capital.rate)} and regional areas from ${pct(REG!.low)} to ${pct(REG!.high)}; bRight Agent's median across WA postcodes is ${pct(C.median)} (February 2026). It is charged on what the property sells for and paid by the seller at settlement. There is no official or fixed rate: REIWA says government regulations do not fix agents' fees, so get written quotes from two or three local agents before you settle on a number.`,
   },
   {
     question: "How much do real estate agents charge in Western Australia?",
     answer:
-      "Most WA agents charge between 2% and 2.8% of the sale price, with 2.4% being the figure you'll see most often. As a dollar example, a $600,000 sale at 2.4% works out to $14,400, and an $800,000 sale at the same rate is $19,200. These figures exclude GST, which is usually added at 10% on top. Marketing and photography are billed separately again. Use our commission calculator to get an exact figure for your own sale price.",
+      `Most WA agents charge a percentage of the sale price, and published averages run from ${pct(R.low)} in Perth to ${pct(R.high)} in ${whereInState("WA", R.high)}. At the ${pct(R.typical)} state average, a $600,000 sale works out to ${money(commissionAmount(600_000, R.typical))} and an $800,000 sale ${money(commissionAmount(800_000, R.typical))}. These figures exclude GST, which adds 10% where a quote excludes it. Marketing and photography are billed separately again. Use our commission calculator to get an exact figure for your own sale price.`,
   },
   {
     question: "Is real estate commission negotiable in WA?",
     answer:
-      "Yes. Commission in Western Australia is deregulated, which means there is no government-set or fixed rate and agents set their own pricing. The percentage on the first agency agreement you read is a starting point, not a fixed fee. The best way to negotiate is to compare two or three agents, weigh the rate against the marketing package and the agent's track record in your suburb, and be wary of picking purely on the cheapest quote. An agent who negotiates a higher sale price can easily earn back a slightly higher rate.",
+      "Yes. Commission in Western Australia is deregulated, which means there is no government-set or fixed rate and agents set their own pricing. The percentage on the first agency agreement you read is a starting point, not a fixed fee. The best way to negotiate is to compare two or three agents, weigh the rate against the marketing package and the agent's track record in your suburb, and be wary of picking purely on the cheapest quote. Ask each agent to show recent sales in your suburb so you can weigh the rate against results.",
   },
   {
     question: "Do you pay commission if the house doesn't sell?",
@@ -98,7 +118,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Does commission include GST in WA?",
     answer:
-      "Commission usually attracts 10% GST on top of the agreed rate. Where quotes get confusing is that some agents show the GST-inclusive figure and some quote the rate before GST, so a 2.4% quote and a 2.4% quote can mean different final dollar amounts. Always ask whether the rate you've been given includes GST so you're comparing like with like across agents.",
+      "Commission usually attracts 10% GST on top of the agreed rate. Where quotes get confusing is that some agents show the GST-inclusive figure and some quote the rate before GST, so two quotes at the same percentage can mean different final dollar amounts. Always ask whether the rate you've been given includes GST so you're comparing like with like across agents.",
   },
 ];
 
@@ -107,7 +127,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The Cost of Selling a House",          href: "/guides/cost-of-selling-a-house-australia",  description: "Every selling cost beyond commission." },
   { title: "Real Estate Agent Fees (National)",    href: "/guides/real-estate-agent-fees-australia",   description: "How fees and commission work across Australia." },
   { title: "How to Choose a Selling Agent",        href: "/guides/how-to-choose-a-selling-agent",      description: "Pick the right agent, then negotiate the fee." },
-  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get an accurate value before you list." },
+  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get a realistic price range before you list." },
 ];
 
 export default function RealEstateCommissionWaPage() {
@@ -120,12 +140,17 @@ export default function RealEstateCommissionWaPage() {
       related={RELATED}
     >
       <CommissionCalculatorEmbed state="WA" />
+      <p>
+        Selling in another state? See{" "}
+        <Link href="/guides/real-estate-agent-fees-australia">real estate agent fees in every state</Link>.
+      </p>
 
-      <Callout variant="warning" title="These are typical market figures, not official rates">
+      <Callout variant="warning" title="These are published averages, not official rates">
         <p>
           Commission in Western Australia is not regulated or fixed, and it is
-          always negotiable. The ranges in this guide reflect what sellers
-          commonly pay, not an official rate set by anyone. Rates vary by agent,
+          always negotiable. The figures in this guide are published averages
+          and medians, each named and dated in the table below, not an official
+          rate set by anyone. Rates vary by agent,
           suburb and property, so treat every figure here as indicative and get
           written, current quotes from your own local agents before you commit.
         </p>
@@ -145,59 +170,46 @@ export default function RealEstateCommissionWaPage() {
 
       <h2 id="average-commission">Average real estate commission in WA</h2>
       <p className="lead">
-        In Perth and across Western Australia, real estate commission typically runs from{" "}
-        <strong>2% to 2.8%</strong> of the final sale price, with{" "}
-        <strong>2.4%</strong>{" "}the most common rate. Commission is charged as a
-        percentage of what your property sells for, it&rsquo;s paid by you, the
-        seller, at settlement, and it is negotiable.
+        {stateRateSummary("WA")} Commission is charged as a percentage of what
+        your property sells for, it&rsquo;s paid by you, the seller, at
+        settlement, and it is negotiable.
       </p>
+      <StateCommissionTable state="WA" price={600_000} />
       <p>
-        WA sits a little above the rates you&rsquo;ll see quoted in the larger
-        eastern-state capitals. In high-value markets like inner Sydney and
-        Melbourne, agents often compete on a lower percentage because the
-        dollar amount on an expensive home is already large. Across much of
-        Western Australia, where median prices are lower than those premium
-        eastern markets, the percentage tends to run a touch higher to land on
-        a workable fee. The national typical sits around 2%, and WA&rsquo;s
-        typical 2.4% reflects that gap.
-      </p>
-      <p>
-        Within WA itself the rate moves with the property and the location.
-        Higher-value homes in sought-after Perth suburbs can attract rates at
-        the lower end of the range, while smaller sales and regional listings,
-        where the agent&rsquo;s time and costs are spread over a smaller fee,
-        often sit nearer the top. None of this is fixed, which is exactly why
-        comparing local agents matters.
+        The gap between Perth and the regions is wide in WA. OpenAgent puts
+        Perth&rsquo;s average at {pct(C.capital.rate)}, against {pct(REG!.low)} in
+        the {whereInState("WA", REG!.low)} up to {pct(REG!.high)} in{" "}
+        {whereInState("WA", REG!.high)}. None of this is fixed, which is exactly
+        why comparing local agents matters.
       </p>
 
       <KeyFigure
-        value="2.4%"
-        label="The most common real estate commission rate in Western Australia, within a typical range of 2% to 2.8% of the sale price."
-        context="Negotiable, and usually plus 10% GST"
+        value={pct(R.typical)}
+        label={`OpenAgent's WA state average commission (September 2026). On an $800,000 sale that's ${money(commissionAmount(800_000, R.typical))} before GST.`}
+        context={`Published averages run ${pct(R.low)} to ${pct(R.high)}, before GST, and it's negotiable`}
       />
 
       <h2 id="worked-examples">Worked examples by sale price</h2>
       <p>
         Because commission is a percentage, the dollar figure climbs with the
-        sale price even at the same rate. Here is what the WA range works out to
-        across a spread of sale prices, at the lower end (2%), the typical rate
-        (2.4%), and the higher end (2.8%).
+        sale price even at the same rate. Here are the WA figures across a spread
+        of sale prices, at the lowest published average ({pct(R.low)}), the state
+        average ({pct(R.typical)}) and the highest published average ({pct(R.high)}).
       </p>
 
       <table>
         <thead>
           <tr>
             <th>Sale price</th>
-            <th>At 2% (lower)</th>
-            <th>At 2.4% (typical)</th>
-            <th>At 2.8% (higher)</th>
+            <th>At {pct(R.low)} (lowest)</th>
+            <th>At {pct(R.typical)} (state average)</th>
+            <th>At {pct(R.high)} (highest)</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>$600,000</td><td>$12,000</td><td>$14,400</td><td>$16,800</td></tr>
-          <tr><td>$800,000</td><td>$16,000</td><td>$19,200</td><td>$22,400</td></tr>
-          <tr><td>$1,000,000</td><td>$20,000</td><td>$24,000</td><td>$28,000</td></tr>
-          <tr><td>$1,500,000</td><td>$30,000</td><td>$36,000</td><td>$42,000</td></tr>
+          {workedExamples("WA").map((w) => (
+            <tr key={w.price}><td>{money(w.price)}</td><td>{money(w.low)}</td><td>{money(w.typical)}</td><td>{money(w.high)}</td></tr>
+          ))}
         </tbody>
       </table>
 
@@ -210,8 +222,8 @@ export default function RealEstateCommissionWaPage() {
 
       <h2 id="how-structured">How commission is structured in WA</h2>
       <p>
-        Most WA agents quote a single flat percentage of the sale price, so a
-        2.4% rate on a $700,000 sale is simply $16,800 before GST. Some agents
+        Most WA agents quote a single flat percentage of the sale price, so a{" "}
+        {pct(R.typical)} rate on a $700,000 sale is simply {money(commissionAmount(700_000, R.typical))} before GST. Some agents
         instead offer a tiered or performance-based structure, where the rate
         steps up on the amount achieved above an agreed target price. A
         performance clause can be worth asking about, because it ties the
@@ -319,6 +331,25 @@ export default function RealEstateCommissionWaPage() {
         sets out the rates and inclusions state by state.
       </p>
 
+      <h2 id="agreement">What your agency agreement must say about commission</h2>
+      <p>
+        Under section 60 of the Real Estate and Business Agents Act 1978, a WA
+        agent is not entitled to commission unless they were appointed in
+        writing, signed by you, setting out the property, the services and the
+        commission and how it is worked out. There is no statutory maximum term
+        and no cooling-off period, and most agencies use the REIWA Exclusive
+        Selling Agency Authority with the term left blank, so the number you
+        write in is the number you are bound by. REIWA says government
+        regulations do not fix agents&rsquo; fees.
+      </p>
+      <p>
+        Our guide to{" "}
+        <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>{" "}
+        covers the clauses worth changing first. If you are weighing a flat fee instead of a percentage, see{" "}
+        <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">flat fee agents</Link>{" "}
+        and what they leave out.
+      </p>
+
       <SellingCostTable state="WA" />
 
       <h2 id="next-steps">Get the right agent and rate</h2>
@@ -330,11 +361,10 @@ export default function RealEstateCommissionWaPage() {
       </p>
       <ol>
         <li>
-          <strong>Get a real appraisal.</strong> Before you talk fees, get an
-          accurate read on what your home is worth. The{" "}
+          <strong>Get a real appraisal.</strong> Before you talk fees, get a
+          realistic price range for your home. The{" "}
           <Link href="/guides/how-much-is-my-house-worth-australia">how much is my house worth guide</Link>{" "}
-          covers the three ways to value a home and how to land on a figure you
-          can trust.
+          covers the three ways to value a home and how to land on a realistic range.
         </li>
         <li>
           <strong>Choose the agent on merit.</strong> Our{" "}
@@ -363,8 +393,6 @@ export default function RealEstateCommissionWaPage() {
 }
 
 const WA_COMMISSION_SOURCES: readonly SourceItem[] = [
+  ...commissionSourceItems(stateSources("WA")),
   { label: "Consumer Protection WA: Selling property", href: "https://www.consumerprotection.wa.gov.au/selling-property", note: "Contract, strata and disclosure requirements when selling in WA" },
-  { label: "Real Estate Institute of WA (REIWA)", href: "https://reiwa.com.au", note: "Perth and regional WA market data and selling guidance" },
-  { label: "Consumer Protection WA: Buying and selling property", href: "https://www.commerce.wa.gov.au/consumer-protection", note: "Agent licensing and consumer guidance for WA property sales" },
-  { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent commission and selling costs" },
 ];
