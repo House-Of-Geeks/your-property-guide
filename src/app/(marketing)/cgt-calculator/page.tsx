@@ -5,7 +5,7 @@ import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/componen
 import { Callout, KeyFigure, Sources, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { ATO_REFORM_SOURCE, BUDGET_EXPLAINER_SOURCE, ACT_SOURCE } from "@/lib/data/tax-reform-2027";
-import { CGT_DISCOUNT_SOURCE, COMPANY_RATE_SOURCE, SMSF_TAX_SOURCE } from "@/lib/cgt-calc";
+import { CGT_DISCOUNT_SOURCE, COMPANY_RATE_SOURCE, SMSF_TAX_SOURCE, TAX_CUTS_2027_SOURCE } from "@/lib/cgt-calc";
 import { INCOME_TAX_SOURCE, INCOME_TAX_YEAR, MEDICARE_LEVY_SOURCE } from "@/lib/utils/income-tax";
 
 const src = (s: { name: string; url: string; dated: string; readOn: string }) => ({
@@ -146,8 +146,12 @@ export default function CGTCalculatorPage() {
               and the gain after it is indexed from the property&rsquo;s value
               on that date. Investors in new builds can choose the discount or
               indexation when they sell. This calculator applies the rules for
-              gains before 1 July 2027. Source: ATO, last updated 29 June 2026;
-              our <Link href="/guides/cgt-changes-2026-budget">CGT changes explainer</Link>{" "}
+              the sale date you enter: from 1 July 2027 it splits the gain at
+              that date, indexes the later part at the inflation rate you choose
+              (2.5% a year by default, the Budget explainer&rsquo;s assumption),
+              applies the 30% minimum unless you receive an exempting payment,
+              and offers the new build choice. Source: ATO, last updated 29 June
+              2026; our <Link href="/guides/cgt-changes-2026-budget">CGT changes explainer</Link>{" "}
               has worked examples.
             </p>
           </Callout>
@@ -214,12 +218,13 @@ export default function CGTCalculatorPage() {
             <li>It treats a trust as one resident adult beneficiary taking the whole gain, an SMSF as in accumulation phase, and a company as paying the rate you pick; real structures have more moving parts, see our <Link href="/guides/smsf-property-guide">SMSF Property Guide</Link>.</li>
             <li>It leaves out tax offsets, the Medicare levy&rsquo;s low-income reduction and the Medicare levy surcharge, and your other capital gains and losses.</li>
             <li>It doesn&rsquo;t model temporary residents, foreign residents, or non-residents (different rules apply).</li>
-            <li>It doesn&rsquo;t yet apply cost base indexation or the 30% minimum tax that replace the 50% discount for gains accruing from 1 July 2027.</li>
+            <li>For gains from 1 July 2027 it indexes at one inflation rate a year rather than the CPI quarter by quarter, and estimates the 1 July 2027 value by steady growth unless you enter one; the ATO&rsquo;s tools and the Minister&rsquo;s instruments will set both.</li>
           </ul>
 
           <Sources
             items={[
               src(INCOME_TAX_SOURCE),
+              src(TAX_CUTS_2027_SOURCE),
               src(MEDICARE_LEVY_SOURCE),
               src(CGT_DISCOUNT_SOURCE),
               src(COMPANY_RATE_SOURCE),

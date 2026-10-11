@@ -93,3 +93,58 @@ describe("the 12-month test", () => {
     expect(r.taxableGain).toBe(200_000);
   });
 });
+
+// The Budget 2026-27 Tax Explainer's cameos (12 May 2026), worked by the
+// engine's 1 July 2027 mode. They use 2.5% inflation and a 47% rate (45% plus
+// the Medicare levy).
+describe("gains from 1 July 2027: the Budget explainer's cameos", () => {
+  const person = (over: Partial<CgtInput>) => computeCgt({ ...base, owner: "individual", ...over });
+
+  it("Jane: owned before 1 July 2027, the gain split at that date", () => {
+    const r = person({ purchasePrice: 800_000, salePrice: 1_600_000, purchaseDate: "2022-07-01", saleDate: "2032-07-01" });
+    expect(r.rules).toBe("split");
+    expect(r.valueAt2027Estimated).toBe(true);
+    expect(r.valueAt2027).toBe(1_131_371);
+    expect(r.gainBefore2027).toBe(331_371);
+    expect(Math.abs(r.indexedGainAfter2027 - 319_958)).toBeLessThanOrEqual(1);
+    expect(Math.abs(r.taxableGain - 485_643)).toBeLessThanOrEqual(1);
+  });
+
+  it("David, Ben and Kate: bought in July 2027, held 10 years", () => {
+    const sale = (growth: number) => Math.round(500_000 * Math.pow(1 + growth, 10));
+    const at = (growth: number) => person({ purchasePrice: 500_000, salePrice: sale(growth), purchaseDate: "2027-07-01", saleDate: "2037-07-01" });
+    const david = at(0.05);
+    expect(david.rules).toBe("indexation");
+    expect(Math.abs(david.taxableGain - 174_405)).toBeLessThanOrEqual(1);
+    expect(at(0.025).taxableGain).toBe(0);
+    expect(Math.abs(at(0.075).taxableGain - 390_474)).toBeLessThanOrEqual(1);
+    // David pays $8,075 more than under the 50% discount ($157,224 taxable).
+    const asNewBuild = person({ purchasePrice: 500_000, salePrice: sale(0.05), purchaseDate: "2027-07-01", saleDate: "2037-07-01", newBuild: true });
+    expect(asNewBuild.newBuildChoice?.chosen).toBe("discount");
+    expect(Math.abs(asNewBuild.taxableGain - 157_224)).toBeLessThanOrEqual(1);
+    expect(Math.abs(asNewBuild.newBuildChoice!.alternativeTax - asNewBuild.totalTax - 8_075)).toBeLessThanOrEqual(2);
+  });
+
+  it("Jack: $10,000 gain on $25,000 of income pays the 30% minimum", () => {
+    const r = person({ purchasePrice: 100_000, salePrice: 110_000, purchaseDate: "2027-07-01", saleDate: "2029-08-01", otherIncome: 25_000, inflationPct: 0 });
+    expect(r.taxYear).toBe("2027–28");
+    expect(r.incomeTax).toBe(1_400);
+    expect(r.minimumTaxTopUp).toBe(1_600);
+    expect(person({ purchasePrice: 100_000, salePrice: 110_000, purchaseDate: "2027-07-01", saleDate: "2029-08-01", otherIncome: 25_000, inflationPct: 0, exemptPayment: true }).minimumTaxTopUp).toBe(0);
+  });
+
+  it("companies and super funds are outside the change", () => {
+    const co = computeCgt({ ...base, owner: "company", purchaseDate: "2022-07-01", saleDate: "2032-07-01" });
+    expect(co.rules).toBe("discount");
+    expect(co.taxableGain).toBe(200_000);
+    const fund = computeCgt({ ...base, owner: "smsf", purchaseDate: "2022-07-01", saleDate: "2032-07-01" });
+    expect(fund.rules).toBe("discount");
+    expect(fund.taxableGain).toBe(133_333);
+  });
+
+  it("a user's own 1 July 2027 value replaces the estimate", () => {
+    const r = person({ purchasePrice: 800_000, salePrice: 1_600_000, purchaseDate: "2022-07-01", saleDate: "2032-07-01", valueAt2027: 1_000_000 });
+    expect(r.valueAt2027Estimated).toBe(false);
+    expect(r.gainBefore2027).toBe(200_000);
+  });
+});
