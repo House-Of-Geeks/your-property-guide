@@ -24,18 +24,51 @@ export interface CommissionOnMedian {
   typicalAmount: number;
 }
 
+/** The state's typical range, read straight from STATE_RATES. */
+export interface StateCommissionRange {
+  lowPct: number;
+  highPct: number;
+  typicalPct: number;
+}
+
+/** A commission worked on an example sale price (labelled as an example, never as the suburb's figure). */
+export interface CommissionOnExample extends CommissionOnMedian {
+  price: number;
+}
+
+/**
+ * Sale prices the fees section works the state range on when the suburb has
+ * no published median. Round figures, printed as examples, so they cannot be
+ * read as a local price.
+ */
+export const EXAMPLE_SALE_PRICES: readonly number[] = [750_000, 1_000_000, 1_500_000];
+
 export interface SuburbAgentsModel {
   title: string;
   description: string;
   /** Indexable only where the median clears the reliable-price gate. */
   indexable: boolean;
   medianHousePrice: number | null;
+  /**
+   * The state's own range, printed on every page whether or not the median
+   * is published (until 10 Oct 2026 a page without a median printed a
+   * national "1.6% to 3.25%" string: Victoria's low and Tasmania's high).
+   */
+  stateRange: StateCommissionRange | null;
   commission: CommissionOnMedian | null;
+  /** The state range worked on EXAMPLE_SALE_PRICES; empty when the median is published. */
+  examples: CommissionOnExample[];
   agents: Agent[];
   agencies: Agency[];
   faqs: { question: string; answer: string }[];
   matchSource: string;
   appraisalSource: string;
+}
+
+export function stateCommissionRange(state: string): StateCommissionRange | null {
+  const rates = STATE_RATES[state as StateCode];
+  if (!rates) return null;
+  return { lowPct: rates.low, highPct: rates.high, typicalPct: rates.typical };
 }
 
 export function commissionOnMedian(state: string, median: number): CommissionOnMedian | null {
@@ -62,6 +95,13 @@ export function buildSuburbAgentsModel(
   const reliable = hasReliablePrice(suburb);
   const median = reliable ? suburb.stats.medianHousePrice : null;
   const commission = median ? commissionOnMedian(suburb.state, median) : null;
+  const stateRange = stateCommissionRange(suburb.state);
+  const examples: CommissionOnExample[] = commission
+    ? []
+    : EXAMPLE_SALE_PRICES.flatMap((price) => {
+        const c = commissionOnMedian(suburb.state, price);
+        return c ? [{ ...c, price }] : [];
+      });
   const shownAgents = listingsEnabled ? agents : [];
   const shownAgencies = listingsEnabled ? agencies : [];
 
@@ -69,7 +109,13 @@ export function buildSuburbAgentsModel(
   if (commission && median) {
     faqs.push({
       question: `What do real estate agents charge in ${sn}?`,
-      answer: `Agents in ${suburb.state} typically charge ${commission.lowPct}% to ${commission.highPct}% of the sale price, with around ${commission.typicalPct}% common. On ${sn}'s median house price of ${formatPriceFull(median)} that is roughly ${formatPriceFull(commission.lowAmount)} to ${formatPriceFull(commission.highAmount)} before GST and marketing. Commission is negotiable in every state.`,
+      answer: `Agents in ${suburb.state} typically charge ${commission.lowPct}% to ${commission.highPct}% of the sale price, with around ${commission.typicalPct}% common. On ${sn}'s median house price of ${formatPriceFull(median)} that is roughly ${formatPriceFull(commission.lowAmount)} to ${formatPriceFull(commission.highAmount)} before GST and marketing. Commission is agreed with the agent and can be negotiated.`,
+    });
+  } else if (stateRange) {
+    const example = examples.find((e) => e.price === 1_000_000);
+    faqs.push({
+      question: `What do real estate agents charge in ${sn}?`,
+      answer: `Agents in ${suburb.state} typically charge ${stateRange.lowPct}% to ${stateRange.highPct}% of the sale price, with around ${stateRange.typicalPct}% common.${example ? ` On a ${formatPriceFull(example.price)} sale, an example price rather than ${sn}'s own, that is roughly ${formatPriceFull(example.lowAmount)} to ${formatPriceFull(example.highAmount)} before GST and marketing.` : ""} Commission is agreed with the agent and can be negotiated.`,
     });
   }
   faqs.push({
@@ -91,7 +137,9 @@ export function buildSuburbAgentsModel(
     description,
     indexable: reliable,
     medianHousePrice: median,
+    stateRange,
     commission,
+    examples,
     agents: shownAgents,
     agencies: shownAgencies,
     faqs,

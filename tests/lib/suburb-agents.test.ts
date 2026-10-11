@@ -2,11 +2,13 @@
 import { describe, expect, it } from "vitest";
 import type { Suburb } from "@/types";
 import type { Agent, Agency } from "@/types/agent";
-import { AGENT_LISTINGS_ENABLED, buildSuburbAgentsModel, commissionOnMedian } from "@/lib/suburb-agents";
+import fs from "node:fs";
+import { AGENT_LISTINGS_ENABLED, EXAMPLE_SALE_PRICES, buildSuburbAgentsModel, commissionOnMedian } from "@/lib/suburb-agents";
+import { STATE_RATES } from "@/lib/data/commission-rates";
 
-function makeSuburb(over: Partial<Suburb["stats"]> = {}, freshness: Partial<NonNullable<Suburb["dataFreshness"]>> = {}): Suburb {
+function makeSuburb(over: Partial<Suburb["stats"]> = {}, freshness: Partial<NonNullable<Suburb["dataFreshness"]>> = {}, state = "NSW"): Suburb {
   return {
-    id: "t", slug: "bondi-nsw-2026", name: "Bondi", postcode: "2026", state: "NSW", region: "Waverley", description: "", heroImage: "",
+    id: "t", slug: "bondi-nsw-2026", name: "Bondi", postcode: "2026", state, region: "Waverley", description: "", heroImage: "",
     schools: [], amenities: [], transportLinks: [], nearbySuburbs: [],
     stats: { medianHousePrice: 4_300_000, medianUnitPrice: 538_560, medianRentHouse: 1800, medianRentUnit: 1100, annualGrowthHouse: 13.9, annualGrowthUnit: 0, daysOnMarket: 0, population: 10_411, medianAge: 34, ownerOccupied: 40, renterOccupied: 55, householdsFamily: 50, householdsLonePerson: 30, walkScore: 92, transitScore: null, bikeScore: null, ...over },
     dataFreshness: { rentalAsOf: null, rentalSource: null, crimeAsOf: null, crimeSource: null, salesAsOf: new Date("2026-09-05T00:00:00Z"), salesSource: "sales-nsw", salesCount: 35, salesPeriodEnd: new Date("2025-12-31T00:00:00Z"), censusAsOf: null, hazardAsOf: null, walkabilityAsOf: null, climateAsOf: null, ...freshness },
@@ -39,14 +41,28 @@ describe("buildSuburbAgentsModel", () => {
     expect(m.description).toContain("$4,300,000 median (1.8% to 2.5%)");
     expect(m.matchSource).toBe("suburb-agents-bondi-nsw-2026");
   });
-  it("is not indexable without a reliable median, and drops the commission FAQ but keeps the page useful", () => {
+  it("is not indexable without a reliable median, and works the state range on example prices instead", () => {
     const m = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 0 }), [], []);
     expect(m.indexable).toBe(false);
     expect(m.commission).toBeNull();
-    expect(m.faqs.map((f) => f.question)).toEqual([
-      "How do I find a good real estate agent in Bondi?",
-      "Do I have to pay to be matched with an agent in Bondi?",
-    ]);
+    expect(m.stateRange).toEqual({ lowPct: 1.8, highPct: 2.5, typicalPct: 2.0 });
+    expect(m.examples.map((e) => e.price)).toEqual([...EXAMPLE_SALE_PRICES]);
+    expect(m.examples[1]).toMatchObject({ price: 1_000_000, lowAmount: 18_000, highAmount: 25_000 });
+    expect(m.faqs[0].question).toBe("What do real estate agents charge in Bondi?");
+    expect(m.faqs[0].answer).toContain("1.8% to 2.5%");
+    expect(m.faqs[0].answer).toContain("an example price rather than Bondi's own");
+  });
+  it("prints each state's own range from STATE_RATES, never a national string (F2, 10 Oct 2026)", () => {
+    for (const state of Object.keys(STATE_RATES) as (keyof typeof STATE_RATES)[]) {
+      const m = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 0 }, {}, state), [], []);
+      expect(m.stateRange).toEqual({ lowPct: STATE_RATES[state].low, highPct: STATE_RATES[state].high, typicalPct: STATE_RATES[state].typical });
+      expect(m.faqs[0].answer).toContain(`${STATE_RATES[state].low}% to ${STATE_RATES[state].high}%`);
+    }
+    const page = fs.readFileSync("src/app/(marketing)/suburbs/[slug]/agents/page.tsx", "utf8");
+    expect(page).not.toMatch(/1\.6% and 3\.25%|between \d/);
+  });
+  it("works no examples when the median is published", () => {
+    expect(buildSuburbAgentsModel(makeSuburb(), [], []).examples).toEqual([]);
   });
   it("hides agent listings while the directory is paused, and shows them when enabled", () => {
     expect(AGENT_LISTINGS_ENABLED).toBe(false);

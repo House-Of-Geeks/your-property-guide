@@ -161,8 +161,13 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
               What agents charge in {sn}.
             </h2>
             <p className="font-sans text-base text-ink-muted leading-[1.7] max-w-md">
-              Commission in {stateName} is set by agreement, not regulation. Agents typically charge{" "}
-              {model.commission ? `${model.commission.lowPct}% to ${model.commission.highPct}%` : "between 1.6% and 3.25%"} of the sale price, plus marketing and GST, and every figure is negotiable.
+              {/* Always the state's own range (F2, 10 Oct 2026): the median
+                  only decides whether the worked figures use the suburb's
+                  price or example prices. */}
+              Commission in {stateName} is agreed between you and the agent.
+              {model.stateRange
+                ? <> Agents typically charge {model.stateRange.lowPct}% to {model.stateRange.highPct}% of the sale price, around {model.stateRange.typicalPct}% being common, plus marketing and GST, and every figure is negotiable.</>
+                : <> Marketing and GST come on top, and every figure is negotiable.</>}
             </p>
             <p className="mt-4 font-sans text-sm">
               <Link href={commissionGuide} className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">
@@ -196,13 +201,38 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
                   Before GST and marketing. Typical {stateName} ranges as at September 2026, from published agent-comparison guides; no state sets an official rate.
                 </p>
               </div>
-            ) : (
-              <div className="rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
-                <p className="font-sans text-base text-ink-muted leading-relaxed">
-                  We don&rsquo;t publish a median for {sn} yet, so we can&rsquo;t work the commission on a local figure. The {stateName} range still applies; the calculator works it on your expected price.
+            ) : model.examples.length > 0 ? (
+              <div className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
+                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-4">
+                  The {stateName} range on example sale prices
+                </p>
+                <div className="overflow-x-auto">
+                  <table className="w-full font-sans text-sm text-left border-collapse">
+                    <thead>
+                      <tr className="text-xs text-ink-subtle">
+                        <th scope="col" className="py-2 pr-3 font-normal">Example sale price</th>
+                        <th scope="col" className="py-2 pr-3 font-normal">Low, {model.examples[0].lowPct}%</th>
+                        <th scope="col" className="py-2 pr-3 font-normal">Typical, {model.examples[0].typicalPct}%</th>
+                        <th scope="col" className="py-2 font-normal">High, {model.examples[0].highPct}%</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-line">
+                      {model.examples.map((e) => (
+                        <tr key={e.price}>
+                          <th scope="row" className="py-2 pr-3 font-medium text-ink tabular-nums">{formatPriceFull(e.price)}</th>
+                          <td className="py-2 pr-3 text-ink-muted tabular-nums">{formatPriceFull(e.lowAmount)}</td>
+                          <td className="py-2 pr-3 text-ink-muted tabular-nums">{formatPriceFull(e.typicalAmount)}</td>
+                          <td className="py-2 text-ink-muted tabular-nums">{formatPriceFull(e.highAmount)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="mt-5 font-sans text-xs text-ink-subtle leading-relaxed">
+                  Before GST and marketing. These are example prices, not {sn}&rsquo;s: we don&rsquo;t publish a median for {sn} yet. The calculator works the range on your own expected price.
                 </p>
               </div>
-            )}
+            ) : null}
           </div>
         </section>
 
