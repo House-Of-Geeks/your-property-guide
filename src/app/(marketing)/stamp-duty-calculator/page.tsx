@@ -5,8 +5,24 @@ import { StampDutyStateLinks } from "@/components/calculators/StampDutyStateLink
 import { STATE_DUTY_SCHEDULES } from "@/lib/utils/stamp-duty";
 import { ABBR, AUSTRALIAN_STATES, money, dutyFor } from "@/lib/data/stamp-duty-state";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
-import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
+import { Callout, KeyFigure, ScrollTable, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
+import { FIRST_HOME_DUTY, dutyReliefCell, fmt, longDate } from "@/lib/data/first-home-grants";
+
+// First home buyer lines come from src/lib/data/first-home-grants.ts, whose
+// thresholds are the engine's (commercial-intent review 10 Oct 2026, buying
+// 0.2 and 3.1). The duty range replaces an unsourced "$20,000 to $60,000".
+const FHD = FIRST_HOME_DUTY;
+const DUTY_750K = AUSTRALIAN_STATES.map((st) => ({ st, duty: dutyFor(st, 750_000, "owner").total })).sort((a, b) => a.duty - b.duty);
+const LOW = DUTY_750K[0];
+const HIGH = DUTY_750K[DUTY_750K.length - 1];
+const DUTY_RANGE = `${money(LOW.duty)} to ${money(HIGH.duty)}`;
+const SURCHARGES = AUSTRALIAN_STATES.flatMap((st) => (STATE_DUTY_SCHEDULES[st].foreign ? [STATE_DUTY_SCHEDULES[st].foreign!.rate * 100] : []));
+const COVERS: Record<"any" | "newOnly" | "none", string> = {
+  any: "New and established",
+  newOnly: "New homes and land only",
+  none: "None",
+};
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Stamp Duty Calculator",
@@ -15,7 +31,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   slug: "stamp-duty-calculator",
   schemaName: "Stamp Duty Calculator Australia",
   schemaDescription: "Calculate stamp duty costs across all Australian states and territories.",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-11",
   persona: "first-home",
 };
 
@@ -46,7 +62,12 @@ const FAQS: FaqItem[] = [
   {
     question: "Do first home buyers pay stamp duty?",
     answer:
-      "It depends on the state. On an established home, an eligible first home buyer pays no duty up to $800,000 in NSW, $700,000 in Queensland, $600,000 in Victoria and $600,000 in WA (from 7 May 2026), with a reduced amount above those lines. In the ACT, an eligible buyer who has not owned property for five years pays nothing at any price from 1 July 2026. SA gives relief only on new homes and land. Tasmania's exemption ended on 30 June 2026, and the NT pays grants instead of a duty concession. Figures checked against each revenue office on 30 September 2026.",
+      `It depends on the state. On an established home, an eligible first home buyer pays no duty up to ${fmt(FHD.NSW.exemptTo!)} in NSW, ${fmt(FHD.QLD.exemptTo!)} in Queensland, ${fmt(FHD.VIC.exemptTo!)} in Victoria and ${fmt(FHD.WA.exemptTo!)} in WA (from ${FHD.WA.from}), with a reduced amount above those lines. In the ACT, an eligible buyer who has not owned property for five years pays nothing at any price from ${FHD.ACT.from}. SA gives relief only on new homes and land. Tasmania's exemption ended on 30 June 2026, and the NT pays a grant instead of a duty concession. Checked against each revenue office on ${longDate(FHD.NSW.checkedOn)} and ${longDate(FHD.SA.checkedOn)}.`,
+  },
+  {
+    question: "Who is exempted from stamp duty?",
+    answer:
+      `No one is exempt in every state; each sets its own rules. The largest relief is for first home buyers: in NSW an eligible first home buyer pays no transfer duty on a home up to ${fmt(FHD.NSW.exemptTo!)} (Revenue NSW, contracts from ${FHD.NSW.from}, read ${longDate(FHD.NSW.checkedOn)}). NSW also exempts some transfers between spouses and charges deceased estates a concessional rate; our state guides list each state's exemptions.`,
   },
   {
     question: "What is the foreign buyer surcharge?",
@@ -111,14 +132,14 @@ export default function StampDutyCalculatorPage() {
           </p>
           <p>
             It&rsquo;s the single largest upfront cost most buyers face after the deposit.
-            On a typical capital-city purchase it usually lands somewhere between
-            $20,000 and $60,000 of unavoidable cash, before concessions.
+            On a $750,000 home an owner-occupier pays from {money(LOW.duty)} in {ABBR[LOW.st]} to{" "}
+            {money(HIGH.duty)} in {ABBR[HIGH.st]}. That is before any first home buyer relief.
           </p>
 
           <KeyFigure
-            value="$20k–$60k+"
-            label="What unconcessioned stamp duty typically costs on a capital-city purchase, before any first-home or owner-occupier discount."
-            context="Estimate, varies by state and price"
+            value={DUTY_RANGE}
+            label="Stamp duty on a $750,000 home for an owner-occupier who is not a first home buyer, across the eight states and territories."
+            context="Our calculator on each revenue office's rates, checked 30 September 2026"
           />
 
           <h2>How rates differ across states</h2>
@@ -145,24 +166,48 @@ export default function StampDutyCalculatorPage() {
           <ul>
             <li><strong>Whether you&rsquo;re a first home buyer.</strong> Most states give first home buyers either a full or partial exemption below a threshold.</li>
             <li><strong>Whether you&rsquo;re buying as an owner-occupier or investor.</strong> Owner-occupier discounts exist in several states.</li>
-            <li><strong>Whether you&rsquo;re a foreign buyer.</strong> A surcharge of 7% to 8% applies in most states on top of standard duty.</li>
+            <li><strong>Whether you&rsquo;re a foreign buyer.</strong> A surcharge of {Math.min(...SURCHARGES)}% to {Math.max(...SURCHARGES)}% applies in six states on top of standard duty; the ACT and the NT charge none.</li>
           </ul>
 
-          <h2>First home buyer concessions in plain English</h2>
+          <h2>First home buyer stamp duty by state</h2>
           <p>
-            For state-by-state detail, see our state-specific first home buyer
-            guides:{" "}
-            <Link href="/guides/first-home-buyer-nsw">NSW</Link>,{" "}
-            <Link href="/guides/first-home-buyer-vic">VIC</Link>,{" "}
-            <Link href="/guides/first-home-buyer-qld">QLD</Link>,{" "}
-            <Link href="/guides/first-home-buyer-wa">WA</Link>.
+            What an eligible first home buyer pays, state by state, with the date each
+            revenue office was checked:
           </p>
+          <ScrollTable label="First home buyer stamp duty relief by state and territory">
+            <table>
+              <thead>
+                <tr>
+                  <th>State</th>
+                  <th>First home buyer relief</th>
+                  <th>Covers</th>
+                  <th>From</th>
+                  <th>Source, checked</th>
+                </tr>
+              </thead>
+              <tbody>
+                {AUSTRALIAN_STATES.map((st) => {
+                  const d = FHD[st];
+                  return (
+                    <tr key={st}>
+                      <td><Link href={`/guides/first-home-buyer-${st.toLowerCase()}`}>First home buyer guide {ABBR[st]}</Link></td>
+                      <td>{dutyReliefCell(st)}</td>
+                      <td>{COVERS[d.covers]}</td>
+                      <td>{d.from || "Not applicable"}</td>
+                      <td>
+                        <a href={d.source.href} target="_blank" rel="noopener noreferrer">{d.source.label.split(":")[0]}</a>, {longDate(d.checkedOn)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </ScrollTable>
           <p>
-            Each state has a price threshold below which duty is fully exempt or
-            heavily reduced for eligible first home buyers, and usually a
-            concessional band above that where duty scales back to the full rate.
-            <strong> Even one dollar over the cap removes the concession entirely</strong>,
-            so when you&rsquo;re negotiating near a threshold, the maths matters.
+            Where a state has a concession band, duty scales back up to the full rate
+            across the band, so a price a little over the exemption line costs some
+            duty rather than all of it. Above the top of the band the full rate
+            applies, so when you&rsquo;re negotiating near a threshold, the maths matters.
           </p>
 
           <Callout variant="warning" title="Verify before you settle">
