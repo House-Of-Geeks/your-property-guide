@@ -77,7 +77,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
     category: "first-home",
   },
   {
-    term: "Buyer&apos;s Agent",
+    term: "Buyer's Agent",
     slug: "buyer-apos-s-agent",
     html: `A licensed real estate professional who represents and advocates for a property buyer (not the seller). Buyer&apos;s agents research properties, conduct due diligence, and negotiate on the buyer&apos;s behalf. They charge either a flat fee or a percentage of the purchase price (typically 1–2.5%). Particularly valuable in competitive or unfamiliar markets.`,
     category: "selling",
@@ -587,7 +587,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
     category: "selling",
   },
   {
-    term: "Vendor&apos;s Statement",
+    term: "Vendor's Statement",
     slug: "vendor-apos-s-statement",
     html: `A document prepared by the seller&apos;s legal representative that discloses key information about the property to potential buyers. Known as a Section 32 in VIC and a Vendor Disclosure Statement in other states. Includes title details, zoning, outgoings, and known encumbrances.`,
     category: "selling",

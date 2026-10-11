@@ -32,3 +32,14 @@ describe("glossary: tax entries carry the 1 July 2027 law", () => {
     expect(html).toContain('href="/guides/negative-gearing-changes-2026-budget"');
   });
 });
+
+describe("glossary term names", () => {
+  it("are plain text, with no HTML entities (the search page, rails and links print them as text)", () => {
+    for (const t of GLOSSARY_TERMS) expect(t.term, t.slug).not.toMatch(/&[a-z]+;|&#\d+;/i);
+  });
+
+  it("keep their slugs: no URL changes", () => {
+    expect(GLOSSARY_TERMS.find((t) => t.slug === "buyer-apos-s-agent")?.term).toBe("Buyer's Agent");
+    expect(GLOSSARY_TERMS.find((t) => t.slug === "vendor-apos-s-statement")?.term).toBe("Vendor's Statement");
+  });
+});
