@@ -53,9 +53,9 @@ function callCopy(ctx: GuideThanksContext) {
     return {
       kicker: "Free appraisal",
       heading: "Want to know what your place is worth?",
-      body: "Add your mobile and one top local agent will call you to arrange a free appraisal. No obligation.",
+      body: "Add your mobile and one local agent who sells in your area will call you to arrange a free appraisal. No obligation.",
       button: "Book my call",
-      done: "Done. One top local agent will call you within one business day.",
+      done: "Done. We've passed your details to one local agent, who will call you about the appraisal.",
     };
   }
   const p = ctx.payload as { agentStatus?: string };

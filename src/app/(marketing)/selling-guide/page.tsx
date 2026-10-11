@@ -10,11 +10,24 @@ import { StatNumber } from "@/components/motion/StatNumber";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { COMMISSION_AS_AT, nationalRange, pct } from "@/lib/data/commission-rates";
+import { MARKETING, CONVEYANCING, lineRange, nationalSellingCost } from "@/lib/data/selling-costs";
+
+// The promises on this page are sums, not forecasts (commercial-intent review,
+// 10 Oct 2026, selling 0.10): commission and the saving are worked on one
+// example sale, and every range comes from the shared selling-cost data.
+const EXAMPLE_SALE = 850_000;
+const EXAMPLE_RATE = 2;
+const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
+const COMMISSION_EXAMPLE = Math.round((EXAMPLE_SALE * EXAMPLE_RATE) / 100);
+const SAVING_EXAMPLE = Math.round((EXAMPLE_SALE * 0.2) / 100);
+const N = nationalRange();
+const COST = nationalSellingCost(800_000);
 import { StickyGuideBar } from "./StickyGuideBar";
 
 const META_TITLE = "Free guide to selling your property in Australia (2026)";
 const META_DESCRIPTION =
-  "The agent you pick is a $20,000 decision. This free guide shows you how to pick well: real selling costs by state, fee negotiation, and the 10 questions that expose an average agent. Personalised to your suburb.";
+  "Free guide to selling in Australia: selling costs by state, how to compare agents and negotiate commission, and a 12-week plan. Personalised to your suburb.";
 
 export const metadata: Metadata = {
   title: META_TITLE,
@@ -48,14 +61,14 @@ const CHAPTERS = [
 
 const FAQS = [
   {
-    question: "How does a free guide save me money?",
+    question: "What will the guide help me with?",
     answer:
-      "Three ways, all covered with real numbers. Agent selection: the gap between a strong and average agent on a typical sale runs five figures, and chapter 5 gives you the 10 questions that reveal which one you're talking to. Fee negotiation: commission is negotiable in every state, and 0.2 to 0.4 percent off a typical sale is $1,700 to $3,400. Preparation: the right pre-sale fixes return 3 to 10 times their cost, and chapter 4 tells you which ones they are.",
+      `Three decisions, with the sums shown. Agent selection: chapter 5 gives you the 10 questions to ask before you sign. Fee negotiation: commission is negotiable in every state, and 0.2% on an ${money(EXAMPLE_SALE)} sale is ${money(SAVING_EXAMPLE)} before GST. Preparation: chapter 4 covers which pre-sale fixes are worth doing and which to skip. What you save depends on your agent and your sale.`,
   },
   {
     question: "Is the selling guide really free?",
     answer:
-      "Yes. The guide is a free PDF, and there's no charge for anything on Your Property Guide. Unless you tell us you're already listed, we may also pass your details to one top local agent when you request it. The agent pays us for that introduction, you never do, and the form tells you this before you submit.",
+      "Yes. The guide is a free PDF, and there's no charge for anything on Your Property Guide. Unless you tell us you're already listed, we may also pass your details to one local agent who sells in your area when you request it. The agent pays us for that introduction, you never do, and the form tells you this before you submit.",
   },
   {
     question: "Will I get spammed by agents if I download it?",
@@ -65,12 +78,12 @@ const FAQS = [
   {
     question: "What does it cost to sell a house in Australia?",
     answer:
-      "Plan for 3 to 5 percent of your sale price all-in. Agent commission runs roughly 1.6 to 3 percent depending on your state and suburb, marketing $2,000 to $10,000, conveyancing $800 to $2,500, plus any styling, repairs and lender fees. Chapter 3 of the guide breaks every cost down by state.",
+      `On an $800,000 sale our state cost tables add up to ${money(COST.low)} to ${money(COST.high)} before GST on the commission, ${COST.lowPct}% to ${COST.highPct}% of the price. Published commission averages and medians run ${pct(N.low)} to ${pct(N.high)} depending on the state and the area, marketing ${lineRange(MARKETING)} and conveyancing ${lineRange(CONVEYANCING)} (indicative ranges), plus any styling, repairs and lender fees. Chapter 3 of the guide breaks every cost down by state.`,
   },
   {
     question: "Do I need an agent to sell my house?",
     answer:
-      "No, private sales are legal in every state. About 90 percent of Australian sellers still use an agent, mostly for pricing evidence, buyer reach and negotiation. The guide covers both routes honestly, including when DIY makes sense.",
+      "No, private sales are legal in every state. Many sellers still use an agent for pricing evidence, buyer reach and negotiation. The guide covers both routes honestly, including when DIY makes sense.",
   },
 ];
 
@@ -145,7 +158,7 @@ export default function SellingGuidePage() {
               <h1 className="rise rise-d1 font-display text-ink tracking-tight mb-6 text-4xl sm:text-5xl lg:text-6xl leading-[1.02] font-medium">
                 The agent you pick is a{" "}
                 <span className="u-draw relative inline-block italic font-light text-primary">
-                  $20,000
+                  {money(COMMISSION_EXAMPLE)}
                   {/* Hand-drawn underline, draws in after the entrance */}
                   <svg
                     className="absolute left-[-2%] right-0 bottom-[-0.12em] w-[104%] h-[0.22em]"
@@ -167,11 +180,11 @@ export default function SellingGuidePage() {
               </h1>
 
               <p className="rise rise-d2 font-display text-lg sm:text-xl text-ink leading-[1.35] mb-8 font-light">
-                On a typical sale, the gap between a strong agent and an
-                average one runs five figures. This free guide shows you how
-                to tell them apart, what selling really costs, and where to
-                claw thousands back. Ten chapters, personalised to your
-                suburb, in your inbox in 60 seconds.
+                At {EXAMPLE_RATE}% on an {money(EXAMPLE_SALE)} sale, the agent&rsquo;s
+                commission alone is {money(COMMISSION_EXAMPLE)} before GST. This free
+                guide shows you how to compare agents, what selling really
+                costs, and which costs you can negotiate. Ten chapters,
+                personalised to your suburb, in your inbox in 60 seconds.
               </p>
 
               <div className="flex items-start gap-6 mb-8">
@@ -193,8 +206,8 @@ export default function SellingGuidePage() {
                 <ul className="space-y-3 pt-1">
                   {[
                     "The 10 questions that expose an average agent before you sign",
-                    "Fee negotiation that typically saves $1,700 to $3,400",
-                    "Presentation moves that return 3 to 10 times their cost",
+                    `Fee negotiation, with the sums: 0.2% on ${money(EXAMPLE_SALE)} is ${money(SAVING_EXAMPLE)}`,
+                    "Which presentation jobs are worth doing, and which to skip",
                     "The 60-day trap that quietly discounts stale listings",
                   ].map((line, i) => (
                     <li
@@ -274,21 +287,21 @@ export default function SellingGuidePage() {
           </p>
           <div data-reveal-group className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
             {[
-              ["$20,000+", "the typical gap between a strong agent and an average one on a mid-market sale"],
-              ["3 to 10x", "what smart, cheap presentation returns at sale time, while big renovations rarely break even"],
-              ["$1,700 to $3,400", "what negotiating 0.2 to 0.4 percent off commission saves on a typical sale"],
+              [money(COMMISSION_EXAMPLE), `commission at ${EXAMPLE_RATE}% on an ${money(EXAMPLE_SALE)} sale, before GST`],
+              [money(SAVING_EXAMPLE), `what 0.2% off that rate is worth on the same sale`],
+              [`${money(COST.low)} to ${money(COST.high)}`, "what selling an $800,000 house costs across the states, before GST on commission"],
             ].map(([n, label]) => (
               <div key={n} className="text-center sm:text-left">
                 <span className="block h-px w-10 bg-primary-dark/40 rule-draw mb-4 mx-auto sm:mx-0" aria-hidden="true" />
                 <p className="font-display italic text-primary-dark text-4xl sm:text-5xl leading-none mb-3 tracking-tight">
-                  {n === "$20,000+" ? <StatNumber value={n} /> : n}
+                  {n === money(COMMISSION_EXAMPLE) ? <StatNumber value={n} /> : n}
                 </p>
                 <p className="font-sans text-sm text-ink-muted leading-relaxed">{label}</p>
               </div>
             ))}
           </div>
           <p className="mt-10 text-center text-xs text-ink-subtle font-sans">
-            Figures are typical ranges from the guide, chapters 3 to 5. Your sale will vary. That is exactly why chapter 2 exists.
+            The first two figures are sums on one example sale; the third comes from our state cost tables (commission as at {COMMISSION_AS_AT}). Your sale will vary.
           </p>
         </div>
       </section>
@@ -346,7 +359,7 @@ export default function SellingGuidePage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl">
             {[
               ["01", "You get the guide", "Every chapter, every checklist, free. No card, no catch, yours to keep."],
-              ["02", "If you're selling, one agent, never a list", "Unless you're already listed, requesting the guide lets us pass your details to one top local agent. The form tells you this before you submit. Never a blast list. Already listed? We don't share your details at all."],
+              ["02", "If you're selling, one agent, never a list", "Unless you're already listed, requesting the guide lets us pass your details to one local agent who sells in your area. The form tells you this before you submit. Never a blast list. Already listed? We don't share your details at all."],
               ["03", "Agents pay us, you don't", "The agent pays us a fee for each introduction, whether or not you list with them. It doesn't change what you pay: you negotiate commission directly with the agent. That's the whole business model, disclosed up front."],
             ].map(([n, t, body]) => (
               <div key={n} className="border-t border-line-strong pt-4">

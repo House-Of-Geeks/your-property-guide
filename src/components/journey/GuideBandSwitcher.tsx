@@ -3,6 +3,12 @@
 import { useState, Suspense } from "react";
 import { SellingGuideFunnel } from "./SellingGuideFunnel";
 import { BuyingGuideFunnel } from "./BuyingGuideFunnel";
+import { nationalSellingCost } from "@/lib/data/selling-costs";
+
+// The selling pitch quotes the shared state cost tables, not a typed range
+// (commercial-intent review, 10 Oct 2026, selling 0.3).
+const COST = nationalSellingCost(800_000);
+const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
 
 /**
  * The homepage's closing conversion band, with a path toggle so buyers
@@ -17,7 +23,7 @@ const COPY = {
     headlineAccent: "selling",
     headlineTail: "your property.",
     pitch:
-      "Selling costs 3 to 5 percent of your price. The right moves claw thousands of it back. Ten chapters that show you how, personalised to your suburb, free.",
+      `Selling an $800,000 house costs ${money(COST.low)} to ${money(COST.high)} across the states, before GST on commission. Ten chapters on where that goes and what you can negotiate, personalised to your suburb, free.`,
     steps: [
       ["01", "Answer 7 quick questions (60 seconds)"],
       ["02", "We personalise the guide to your suburb"],
