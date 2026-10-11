@@ -95,8 +95,16 @@ describe("/guides/negative-gearing-australia", () => {
   const src = read("guides/negative-gearing-australia/page.tsx");
 
   it("is dated after the law passed", () => {
-    expect(src).toContain('updatedAt: "2026-10-01"');
+    expect(src).toContain('updatedAt: "2026-10-11"');
     expect(src).toContain("Updated 1 October 2026");
+  });
+
+  it("answers why negative gearing exists and how much it saves, and links the calculator first (10 Oct 2026 review)", () => {
+    expect(src).toContain('<h2 id="why">Why does negative gearing exist?</h2>');
+    expect(src).toContain('<h2 id="how-much">How much tax does negative gearing save?</h2>');
+    expect(src).toContain('question: "Why is there negative gearing?"');
+    expect(src.indexOf('href="/negative-gearing-calculator"')).toBeLessThan(src.indexOf('<h2 id="what-is">'));
+    expect(src).toContain('href="/guides/negative-gearing-changes-2026-budget"');
   });
 
   it("drops the pre-law status and the 2023–24 rates", () => {

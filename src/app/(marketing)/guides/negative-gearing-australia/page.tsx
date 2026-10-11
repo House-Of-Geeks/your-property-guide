@@ -16,6 +16,7 @@ import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { TAX_RATES_SOURCE, computeNegativeGearing, defaultNegativeGearingInput } from "@/lib/negative-gearing-calc";
 import { TAX_REFORM_SOURCES } from "@/lib/data/tax-reform-2027";
+import { MEDICARE_LEVY_PCT } from "@/lib/utils/income-tax";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Negative gearing in Australia: how it works (2026)",
@@ -23,7 +24,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "How negative gearing works, what's deductible and what isn't, the depreciation overlay, the CGT connection, the risks, and what changes from 1 July 2027 under the law passed in June 2026.",
   slug: "negative-gearing-australia",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-01",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -61,6 +62,9 @@ const RATE_ROWS = [15, 30, 37, 45].map((rate) => {
   const r = computeNegativeGearing({ ...EXAMPLE, marginalRate: rate });
   return { rate, saving: r.taxEffect, cost: -r.cashFlowAfterTax };
 });
+// What each $10,000 of rental loss saves in each 2026-27 bracket, with the
+// Medicare levy, for "How much tax does negative gearing save?".
+const PER_10K = [15, 30, 37, 45].map((rate) => ({ rate, saving: ((rate + MEDICARE_LEVY_PCT) / 100) * 10_000 }));
 // From 1 July 2027, an established home contracted after 7:30pm AEST on
 // 12 May 2026 (the calculator's default timing) loses the saving against other income.
 const exFrom2027 = computeNegativeGearing({ ...EXAMPLE, timing: "established-after-cutoff" });
@@ -77,7 +81,9 @@ const TLDR = [
 
 const TOC: GuideTOCEntry[] = [
   { id: "what-is",                   label: "What negative gearing is" },
+  { id: "why",                       label: "Why does negative gearing exist?" },
   { id: "worked-example",            label: "Worked example" },
+  { id: "how-much",                  label: "How much tax does it save?" },
   { id: "deductible",                label: "What expenses are deductible?" },
   { id: "not-deductible",            label: "What is NOT deductible?" },
   { id: "depreciation",              label: "Depreciation: the deduction most miss" },
@@ -89,6 +95,11 @@ const TOC: GuideTOCEntry[] = [
 ];
 
 const FAQS: FaqItem[] = [
+  {
+    question: "Why is there negative gearing?",
+    answer:
+      "Because expenses incurred in earning assessable income are deductible (section 8-1 of the Income Tax Assessment Act 1997) and Australia taxes income from all sources together, so a rental loss reduces the tax on wages. The 2026 law changes that for established homes bought after 7:30pm AEST on 12 May 2026: from 1 July 2027 their losses only offset residential property income and gains (ATO, last updated 29 June 2026).",
+  },
   {
     question: "How much can I save in tax through negative gearing?",
     answer:
@@ -154,6 +165,10 @@ export default function NegativeGearingPage() {
           2026. See <a href="#still-available">what changes</a> and{" "}
           <a href="#cgt">the CGT connection</a>.
         </p>
+        <p>
+          Work out your weekly cost after tax, before and after 1 July 2027, with the{" "}
+          <Link href="/negative-gearing-calculator">negative gearing calculator</Link>.
+        </p>
       </Callout>
 
       <h2 id="what-is">What negative gearing is</h2>
@@ -176,6 +191,18 @@ export default function NegativeGearingPage() {
         <strong>Key principle.</strong> Negative gearing is not a free lunch.
         You are genuinely losing money on a cash-flow basis, you are betting
         that capital growth will deliver a larger long-term gain.
+      </p>
+
+      <h2 id="why">Why does negative gearing exist?</h2>
+      <p>
+        It is not a special concession. It follows from the general rule that you can deduct expenses you incur in
+        earning assessable income (section 8-1 of the Income Tax Assessment Act 1997), and from Australia taxing
+        your income from all sources together, so a loss from one source reduces the tax on another. The 2026
+        Budget explainer gives the government&rsquo;s reason for changing it: letting rental losses reduce salary
+        and wages encourages leveraged property investment that can give investors greater tax advantages than
+        owner-occupiers get. From 1 July 2027 the law quarantines those losses for established homes bought after
+        budget night; our <Link href="/guides/negative-gearing-changes-2026-budget">negative gearing changes explainer</Link>{" "}
+        covers who it affects.
       </p>
 
       <h2 id="worked-example">Worked example</h2>
@@ -255,6 +282,29 @@ export default function NegativeGearingPage() {
         If this property grows at 5% a year, it would be worth approximately
         $1,128,000 after 10 years, a gain of $428,000, well exceeding the
         cumulative holding costs of approximately $70,330 over the decade.
+      </p>
+
+      <h2 id="how-much">How much tax does negative gearing save?</h2>
+      <p>
+        The loss times your marginal rate, plus the {MEDICARE_LEVY_PCT}% Medicare levy, for as long as the loss can
+        reduce your other income. For every $10,000 of rental loss, at the ATO&rsquo;s 2026&ndash;27 resident rates:
+      </p>
+      <table>
+        <thead>
+          <tr><th>Your marginal rate</th><th>Tax saved on a $10,000 loss, with the Medicare levy</th></tr>
+        </thead>
+        <tbody>
+          {PER_10K.map((r) => (
+            <tr key={r.rate}>
+              <td>{r.rate}%</td>
+              <td>{fmt(r.saving)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p>
+        A loss large enough to pull part of your income into a lower bracket saves a little less. On an established
+        home bought after 7:30pm AEST on 12 May 2026, the saving against other income stops on 1 July 2027.
       </p>
 
       <h2 id="deductible">What expenses are deductible?</h2>
