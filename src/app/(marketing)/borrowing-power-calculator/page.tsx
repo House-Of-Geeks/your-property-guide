@@ -26,8 +26,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   // 12,100 searches a month, position 32 on 30 Sep 2026); the short title
   // stays for breadcrumbs and schema.
   h1: "How much can I borrow? Borrowing power calculator",
-  description:
-    "Estimate how much you can borrow for a home loan based on your income, living expenses and current Australian lending standards.",
+  description: `Estimate your borrowing power: how much a lender may lend on your income, living expenses and debts, tested at ${DEFAULT_ASSESSMENT_RATE}%, which is ${REFERENCE_LOAN_RATE_PERIOD}'s ${REFERENCE_LOAN_RATE}% average new variable rate (RBA table F6) plus APRA's ${APRA_SERVICEABILITY_BUFFER}-point buffer.`,
   slug: "borrowing-power-calculator",
   schemaName: "Borrowing Power Calculator",
   schemaDescription: "Estimate how much you can borrow based on your income, expenses, and APRA buffer.",
@@ -38,7 +37,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
 // Title and H1 both carry "how much can I borrow", the dominant intent for
 // this page (commercial intent review, 30 Sep 2026, section 3.3).
 const META_TITLE = "How Much Can I Borrow? Borrowing Power Calculator Australia";
-const META_DESCRIPTION = "Free Australian borrowing power calculator. Estimate how much a bank will lend you for a home loan, based on your income, expenses and the APRA 3% buffer. No sign-up.";
+const META_DESCRIPTION = "Free Australian borrowing power calculator. Estimate how much a lender may lend you for a home loan, based on your income, expenses and the APRA 3% buffer.";
 
 export const metadata: Metadata = {
   title: META_TITLE,
