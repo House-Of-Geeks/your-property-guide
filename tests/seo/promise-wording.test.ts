@@ -47,6 +47,13 @@ describe("promise wording", () => {
     expect(card.blurb).not.toMatch(/independent|vetted/i);
   });
 
+  it("the broker guide describes our introduction with its fee, not as a vetted match", () => {
+    const src = page("guides/how-to-choose-a-mortgage-broker");
+    expect(src).not.toMatch(/vetted/i);
+    expect(src).not.toContain("We run one");
+    expect(src).toContain("one introduction to a mortgage broker, who receives your details and pays us a fee for the introduction");
+  });
+
   it("the refinancing page prints no HTML entity inside a plain-text description", () => {
     expect(page("refinancing-calculator")).not.toMatch(/description: "[^"]*&[a-z]+;/);
   });

@@ -132,7 +132,7 @@ export default function HowToChooseMortgageBrokerPage() {
         url={`/guides/${FRONTMATTER.slug}`}
         steps={[
           { name: "Get clear on what you need", text: "First home, refinance, investment property, construction, complex income. Different brokers have different specialisations." },
-          { name: "Shortlist 3 to 4 brokers", text: "Referrals from people whose financial judgement you trust, MFAA/FBAA find-a-broker tools, or vetted-broker matching services. Verify each broker's ACL on the ASIC register." },
+          { name: "Shortlist 3 to 4 brokers", text: "Referrals from people whose financial judgement you trust, MFAA/FBAA find-a-broker tools, or introduction services (ask how the broker is chosen and who pays whom). Verify each broker's ACL on the ASIC register." },
           { name: "Run an initial 30-minute call with each", text: "Talk through your situation, ask their typical lender mix, ask them to explain Best Interests Duty in their own words." },
           { name: "Compare lender panels and process", text: "How many lenders, big four exposure, mid-tier and non-bank coverage, how they document their BID compliance." },
           { name: "Provide documents and get a borrowing-capacity range", text: "Two payslips, three months of bank statements, ID, list of existing debts. A good broker gives you a realistic range within an hour of having the documents." },
@@ -292,7 +292,7 @@ export default function HowToChooseMortgageBrokerPage() {
       <ul>
         <li><strong>Referrals from people whose financial judgement you trust.</strong> Friends, family, your accountant, your conveyancer. The single best source.</li>
         <li><strong>MFAA and FBAA &quot;find a broker&quot; directories.</strong> Both industry associations list accredited members. Filter by suburb and specialisation.</li>
-        <li><strong>Vetted-broker matching services.</strong> Services that screen brokers on track record, lender panel, and complaints history before referring you. Faster than DIY-sourcing if you don&rsquo;t have a personal referral. (We run one: see <Link href="/find-an-expert">Find an expert</Link>.)</li>
+        <li><strong>Introduction services.</strong> Services that pass your details to a broker. Ask how the broker is chosen and who pays whom, and check the broker yourself on the ASIC register. Ours is <Link href="/find-an-expert">Find an expert</Link>: one introduction to a mortgage broker, who receives your details and pays us a fee for the introduction.</li>
       </ul>
       <p>
         Avoid: brokers who cold-call you, brokers from comparison-site
