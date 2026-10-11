@@ -176,6 +176,9 @@ function currentFor(state: AustralianState, seg: string): Set<number> {
     out.add(d.land.exemptTo);
     if (d.land.concessionTo !== null) out.add(d.land.concessionTo);
   }
+  // The owner-occupier rate's ceiling (Victoria's $550,000 PPR rate) is a duty threshold too.
+  const oo = STATE_DUTY_SCHEDULES[state].ownerOccupier?.upTo;
+  if (oo) out.add(oo);
   const hg = HG_PRICE_CAPS[state];
   out.add(hg.capital);
   if (hg.rest !== null) out.add(hg.rest);
@@ -209,7 +212,7 @@ export function scan(html: string, pageState: AustralianState | null): Finding[]
   const findings: Finding[] = [];
   for (const seg of segments(html)) {
     for (const name of NOT_CURRENT_NAMES) {
-      if (seg.includes(name) && !/closed|ended|ceased|not a |no longer|is not|isn't|wasn't|replaced/i.test(seg)) {
+      if (seg.includes(name) && !/closed|ended|ceased|previous|not a |no longer|is not|isn.t|wasn.t|replaced/i.test(seg)) {
         findings.push({ segment: seg, reason: `names ${name} as current` });
       }
     }
@@ -263,11 +266,18 @@ describe("the scanner", () => {
 
 // ─── The pages ──────────────────────────────────────────────────────────────
 
-type PageModule = { default: ComponentType };
-const render = async (load: () => Promise<PageModule>) => renderToStaticMarkup(createElement((await load()).default));
+type PageModule = { default: ComponentType; metadata?: { title?: unknown; description?: unknown } };
+/** The page body, plus its <title> and meta description, which a search result shows. */
+const render = async (load: () => Promise<PageModule>) => {
+  const mod = await load();
+  const meta = [mod.metadata?.title, mod.metadata?.description].filter((x) => typeof x === "string");
+  return `${meta.map((m) => `<p>${m}</p>`).join("")}${renderToStaticMarkup(createElement(mod.default))}`;
+};
 
 /** The pages that render the data file, with the state they are about (null for national pages). */
-const PAGES: Array<{ path: string; state: AustralianState | null; load: () => Promise<PageModule> }> = [];
+const PAGES: Array<{ path: string; state: AustralianState | null; load: () => Promise<PageModule> }> = [
+  { path: "/guides/first-home-buyer-nsw", state: "NSW", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-nsw/page") },
+];
 
 describe("pages rendered from the data file", () => {
   it("covers at least one page", () => {
