@@ -21,8 +21,9 @@ import {
   cityEditionDescription,
   cityEditionPath,
   cityEditionTitle,
-  hasCityEdition,
+  editionCoverage,
   isCityEditionCategory,
+  isCityEditionIndexable,
 } from "@/lib/city-editions";
 import {
   cityEditionLinks,
@@ -80,7 +81,8 @@ function normaliseState(s: string): string | null {
 // The second segment is a state code or a capital city's slug. A city
 // edition (tracker item 22) is the same category over Greater {City}, with a
 // section per suburb; it answers noindex and stays out of the city sitemap
-// when fewer than ten suburbs qualify (hasCityEdition, read by both).
+// when fewer than ten suburbs qualify or the measure cannot rank them (the
+// walk score's tie at 100): isCityEditionIndexable, read by both.
 async function cityEditionMetadata(category: RankingCategory, city: CapitalCity): Promise<Metadata> {
   const edition = await getCityEdition(category, city);
   const title = cityEditionTitle(category, city);
@@ -90,7 +92,7 @@ async function cityEditionMetadata(category: RankingCategory, city: CapitalCity)
     title,
     description,
     alternates: { canonical },
-    robots: hasCityEdition(category, city.state, edition.suburbs.length) ? undefined : { index: false, follow: true },
+    robots: isCityEditionIndexable(category, city.state, edition.suburbs.length, editionCoverage(edition)) ? undefined : { index: false, follow: true },
     openGraph: {
       url: canonical,
       title: `${title} | ${SITE_NAME}`,
@@ -156,8 +158,10 @@ export default async function BestSuburbsCategoryStatePage({
   if (!upperState) notFound();
 
   // One after the other: the runtime pool holds a single connection.
-  const suburbs = await getRankedSuburbs(category, upperState, 50);
-  const eligible = await getRankingEligibleCount(category, upperState);
+  // Nothing is fetched for a ranking the state's figures cannot support.
+  const ranked = isRanked(category, upperState);
+  const suburbs = ranked ? await getRankedSuburbs(category, upperState, 50) : [];
+  const eligible = ranked ? await getRankingEligibleCount(category, upperState) : null;
   const note = rankingNote(category, upperState, suburbs.length, eligible);
   // The state's city edition, where it has ten suburbs to show.
   const cityEditions = cityEditionLinks(await indexableCityEditionsForLinks(), { category, state: upperState });

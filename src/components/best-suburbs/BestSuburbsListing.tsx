@@ -11,8 +11,7 @@ import {
 } from "@/lib/services/suburb-rankings-service";
 import { formatPrice, formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { CATEGORY_COMMENTARY } from "@/lib/data/category-commentary";
-import type { RankingNote } from "@/lib/ranking-notes";
-import { STATE_COMMENTARY } from "@/lib/data/state-commentary";
+import { WALK_TIE_NOTE, isRanked, listedRows, type RankingNote } from "@/lib/ranking-notes";
 import {
   bestSuburbsHeadline,
   CATEGORY_HEADLINE,
@@ -30,7 +29,7 @@ const CATEGORY_CONFIG: Record<RankingCategory, CategoryConfig & { eyebrow: strin
   "for-families": {
     title: "Best Suburbs for Families",
     eyebrow: "Family-friendly ranking",
-    description: "Suburbs ranked by average school ICSEA score and family-household percentage.",
+    description: "Suburbs ranked by the average ICSEA of their schools, among suburbs where family households are at least 40% of households.",
   },
   "highest-growth": {
     title: "Highest Growth Suburbs",
@@ -45,12 +44,13 @@ const CATEGORY_CONFIG: Record<RankingCategory, CategoryConfig & { eyebrow: strin
   "most-walkable": {
     title: "Most Walkable Suburbs",
     eyebrow: "Walkability ranking",
-    description: "Suburbs with the highest walk scores, perfect for car-free or car-light lifestyles.",
+    description: "Suburbs by walk score, a count of the shops and services mapped within 1 km.",
   },
   "lowest-flood-risk": {
     title: "Lowest Flood Risk Suburbs",
-    eyebrow: "Hazard-safe ranking",
-    description: "Suburbs assessed as low flood risk or with no flood hazard record from Geoscience Australia.",
+    eyebrow: "Flood risk",
+    // No ranking until a flood hazard feed loads (ranking-notes.FLOOD_HAZARD_FEED_LOADED).
+    description: "Why we do not rank suburbs on flood risk yet, and where to check the flood risk of an address.",
   },
   "best-rental-yield": {
     title: "Best Rental Yield Suburbs",
@@ -203,7 +203,7 @@ interface BestSuburbsListingProps {
 export function BestSuburbsListing({
   category,
   state,
-  suburbs,
+  suburbs: ranked,
   note,
   useStaticStateRoutes = false,
   cityEditions = [],
@@ -213,7 +213,14 @@ export function BestSuburbsListing({
   const markArea = state === null;
   const stateName = state ? STATE_NAME[state] ?? state : null;
   const categoryCommentary = CATEGORY_COMMENTARY[category];
-  const stateCommentary = state ? STATE_COMMENTARY[state] : null;
+  // A ranking with no data to rank on anywhere (flood risk until a hazard
+  // feed loads) shows its note and nothing that describes a ranking; a state
+  // the category cannot rank keeps the general copy but no FAQ.
+  const rankedAnywhere = isRanked(category, null);
+  const rankedHere = isRanked(category, state);
+  const rows = listedRows(category, ranked);
+  const suburbs = rows.map((r) => r.suburb);
+  const anyTied = rows.some((r) => r.rank === null);
 
   // The sentence the H1 prints, also the ItemList name (fix item 45).
   const headline = bestSuburbsHeadline(category, state);
@@ -237,15 +244,17 @@ export function BestSuburbsListing({
           ...(stateName ? [{ name: state ?? "", url: `${baseUrl}/${state?.toLowerCase()}` }] : []),
         ]}
       />
-      <ItemListJsonLd
-        name={headline}
-        url={state ? `${baseUrl}/${state.toLowerCase()}` : baseUrl}
-        items={suburbs.slice(0, 20).map((s) => ({
-          name: s.name,
-          url: `/suburbs/${s.slug}`,
-          description: s.medianHousePrice ? formatPrice(s.medianHousePrice) : undefined,
-        }))}
-      />
+      {suburbs.length > 0 && !anyTied && (
+        <ItemListJsonLd
+          name={headline}
+          url={state ? `${baseUrl}/${state.toLowerCase()}` : baseUrl}
+          items={suburbs.slice(0, 20).map((s) => ({
+            name: s.name,
+            url: `/suburbs/${s.slug}`,
+            description: s.medianHousePrice ? formatPrice(s.medianHousePrice) : undefined,
+          }))}
+        />
+      )}
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
@@ -278,8 +287,14 @@ export function BestSuburbsListing({
           {/* Fix item 45: one string after the italic span, so React writes a
               single text node and no <!-- --> boundary before the full stop. */}
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            The <span className="italic text-primary">{h1.lead}</span>
-            {` ${h1.noun} in ${placeName(state)}.`}
+            {rankedAnywhere ? (
+              <>
+                The <span className="italic text-primary">{h1.lead}</span>
+                {` ${h1.noun} in ${placeName(state)}.`}
+              </>
+            ) : (
+              `${config.title} in ${placeName(state)}: no ranking yet.`
+            )}
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             {config.description}
@@ -290,93 +305,69 @@ export function BestSuburbsListing({
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         {/* Editorial commentary band, what this ranking is and how to use it */}
-        <section className="mb-10 grid lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-7">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
-              About this ranking
-            </p>
-            <div className="prose-ypg prose-ypg-tight">
-              <p>{categoryCommentary.intro}</p>
-              {stateCommentary && (
-                <>
-                  <h3 className="font-display text-xl text-ink mt-6 mb-3">
-                    {stateName} property market in 2026
-                  </h3>
-                  <p>{stateCommentary.marketContext}</p>
-                </>
-              )}
+        {rankedAnywhere && (
+          <section className="mb-10 grid lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-7">
+              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+                About this ranking
+              </p>
+              <div className="prose-ypg prose-ypg-tight">
+                <p>{categoryCommentary.intro}</p>
+              </div>
             </div>
-          </div>
 
-          <aside className="lg:col-span-5 space-y-4">
-            {stateCommentary && (
-              <>
-                <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
-                    Buyer tip, {state}
-                  </p>
-                  <p className="font-sans text-sm text-ink leading-relaxed">
-                    {stateCommentary.buyerTip}
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
-                    Watch out, {state}
-                  </p>
-                  <p className="font-sans text-sm text-ink leading-relaxed">
-                    {stateCommentary.watchOut}
-                  </p>
-                </div>
-              </>
-            )}
-            <div className="rounded-2xl border border-line bg-surface-warm p-5">
-              <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
-                Methodology
-              </p>
-              <p className="font-sans text-sm text-ink-muted leading-relaxed">
-                {categoryCommentary.methodology}
-              </p>
-            </div>
-            <div className="rounded-2xl border border-line bg-surface-warm p-5">
-              <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
-                Best for
-              </p>
-              <p className="font-sans text-sm text-ink-muted leading-relaxed">
-                {categoryCommentary.bestFor}
-              </p>
-            </div>
-          </aside>
-        </section>
+            <aside className="lg:col-span-5 space-y-4">
+              <div className="rounded-2xl border border-line bg-surface-warm p-5">
+                <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                  Methodology
+                </p>
+                <p className="font-sans text-sm text-ink-muted leading-relaxed">
+                  {categoryCommentary.methodology}
+                </p>
+              </div>
+              <div className="rounded-2xl border border-line bg-surface-warm p-5">
+                <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                  Best for
+                </p>
+                <p className="font-sans text-sm text-ink-muted leading-relaxed">
+                  {categoryCommentary.bestFor}
+                </p>
+              </div>
+            </aside>
+          </section>
+        )}
 
-        {/* State filter pills */}
-        <div className="flex flex-wrap items-center gap-2 mb-6">
-          <span className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mr-2">
-            By state
-          </span>
-          <Link
-            href={allHref}
-            className={`px-3 py-1.5 rounded-lg text-sm font-sans font-medium transition-colors ${
-              !state
-                ? "bg-ink text-white"
-                : "bg-surface-raised border border-line text-ink hover:border-primary/40 hover:text-primary"
-            }`}
-          >
-            All Australia
-          </Link>
-          {STATES.map((s) => (
+        {/* State filter pills: only the states this category can rank */}
+        {rankedAnywhere && (
+          <div className="flex flex-wrap items-center gap-2 mb-6">
+            <span className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mr-2">
+              By state
+            </span>
             <Link
-              key={s}
-              href={stateHref(s)}
+              href={allHref}
               className={`px-3 py-1.5 rounded-lg text-sm font-sans font-medium transition-colors ${
-                state === s
+                !state
                   ? "bg-ink text-white"
                   : "bg-surface-raised border border-line text-ink hover:border-primary/40 hover:text-primary"
               }`}
             >
-              {s}
+              All Australia
             </Link>
-          ))}
-        </div>
+            {STATES.filter((s) => isRanked(category, s) || s === state).map((s) => (
+              <Link
+                key={s}
+                href={stateHref(s)}
+                className={`px-3 py-1.5 rounded-lg text-sm font-sans font-medium transition-colors ${
+                  state === s
+                    ? "bg-ink text-white"
+                    : "bg-surface-raised border border-line text-ink hover:border-primary/40 hover:text-primary"
+                }`}
+              >
+                {s}
+              </Link>
+            ))}
+          </div>
+        )}
 
         {/* The city editions: the same ranking over a greater capital city, one section per suburb */}
         {cityEditions.length > 0 && (
@@ -406,6 +397,14 @@ export function BestSuburbsListing({
             {note.text && (
               <p className="mt-1 text-sm font-sans text-ink-subtle leading-relaxed">{note.text}</p>
             )}
+            {anyTied && (
+              <p className="mt-2 text-sm font-sans text-ink-muted leading-relaxed">
+                {WALK_TIE_NOTE} They carry no rank number
+                {rows.every((r) => r.rank === null) && suburbs.length >= 50
+                  ? ", and this list does not hold every suburb that scores 100."
+                  : "."}
+              </p>
+            )}
           </div>
         )}
 
@@ -434,12 +433,12 @@ export function BestSuburbsListing({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-line">
-                  {suburbs.map((suburb, i) => (
+                  {rows.map(({ suburb, rank }) => (
                     <tr
                       key={suburb.slug}
                       className="hover:bg-surface-warm/60 transition-colors"
                     >
-                      <td className="py-3 px-4 text-ink-subtle tabular-nums font-sans">{i + 1}</td>
+                      <td className="py-3 px-4 text-ink-subtle tabular-nums font-sans">{rank ?? ""}</td>
                       <td className="py-3 px-4">
                         <Link
                           href={`/suburbs/${suburb.slug}`}
@@ -472,7 +471,7 @@ export function BestSuburbsListing({
 
             {/* Mobile cards */}
             <div className="sm:hidden space-y-3">
-              {suburbs.map((suburb, i) => (
+              {rows.map(({ suburb, rank }) => (
                 <Link
                   key={suburb.slug}
                   href={`/suburbs/${suburb.slug}`}
@@ -481,7 +480,7 @@ export function BestSuburbsListing({
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-sans text-ink-subtle tabular-nums">#{i + 1}</span>
+                        {rank != null && <span className="text-xs font-sans text-ink-subtle tabular-nums">#{rank}</span>}
                         <span className="font-display text-base text-ink truncate">{suburb.name}</span>
                       </div>
                       <p className="text-xs font-sans text-ink-subtle mt-0.5">
@@ -513,41 +512,45 @@ export function BestSuburbsListing({
         )}
 
         {/* FAQ section, emits FAQPage schema for rich-results */}
-        <section className="mt-14 grid lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-4">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
-              Common questions
-            </p>
-            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-              About this ranking.
-            </h2>
-          </div>
-          <div className="lg:col-span-8 space-y-4">
-            {categoryCommentary.faqs.map((faq) => (
-              <details
-                key={faq.question}
-                className="group rounded-2xl border border-line bg-surface-raised p-5 sm:p-6 [&_summary::-webkit-details-marker]:hidden"
-              >
-                <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
-                  <span className="font-display text-lg text-ink leading-tight">
-                    {faq.question}
-                  </span>
-                  <span
-                    className="shrink-0 mt-1 w-6 h-6 rounded-full border border-line-strong text-ink-subtle group-open:bg-ink group-open:text-white group-open:border-ink flex items-center justify-center transition-colors text-sm font-display"
-                    aria-hidden="true"
-                  >
-                    <span className="group-open:hidden">+</span>
-                    <span className="hidden group-open:inline">−</span>
-                  </span>
-                </summary>
-                <p className="mt-3 font-sans text-base text-ink-muted leading-relaxed">
-                  {faq.answer}
-                </p>
-              </details>
-            ))}
-          </div>
-        </section>
-        <FAQPageJsonLd faqs={categoryCommentary.faqs} />
+        {rankedHere && (
+          <>
+          <section className="mt-14 grid lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-4">
+              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+                Common questions
+              </p>
+              <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
+                About this ranking.
+              </h2>
+            </div>
+            <div className="lg:col-span-8 space-y-4">
+              {categoryCommentary.faqs.map((faq) => (
+                <details
+                  key={faq.question}
+                  className="group rounded-2xl border border-line bg-surface-raised p-5 sm:p-6 [&_summary::-webkit-details-marker]:hidden"
+                >
+                  <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
+                    <span className="font-display text-lg text-ink leading-tight">
+                      {faq.question}
+                    </span>
+                    <span
+                      className="shrink-0 mt-1 w-6 h-6 rounded-full border border-line-strong text-ink-subtle group-open:bg-ink group-open:text-white group-open:border-ink flex items-center justify-center transition-colors text-sm font-display"
+                      aria-hidden="true"
+                    >
+                      <span className="group-open:hidden">+</span>
+                      <span className="hidden group-open:inline">−</span>
+                    </span>
+                  </summary>
+                  <p className="mt-3 font-sans text-base text-ink-muted leading-relaxed">
+                    {faq.answer}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </section>
+          <FAQPageJsonLd faqs={categoryCommentary.faqs} />
+          </>
+        )}
 
         {/* Cross-link to other categories */}
         <div className="mt-12 rounded-2xl border border-line bg-surface-warm p-6">
@@ -556,7 +559,7 @@ export function BestSuburbsListing({
           </p>
           <div className="flex flex-wrap gap-2">
             {(Object.keys(CATEGORY_CONFIG) as RankingCategory[])
-              .filter((c) => c !== category)
+              .filter((c) => c !== category && isRanked(c, state))
               .map((c) => (
                 <Link
                   key={c}

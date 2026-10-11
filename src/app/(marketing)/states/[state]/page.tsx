@@ -11,7 +11,9 @@ import {
   getTopSuburbsByState,
   getStateName,
 } from "@/lib/services/suburb-rankings-service";
-import { priceSourceLine } from "@/lib/ranking-notes";
+import { isRanked, priceSourceLine } from "@/lib/ranking-notes";
+import { getStateCoverage } from "@/lib/services/city-market-service";
+import { COVERAGE_MIN_SUBURBS, meetsCoverageFloor } from "@/lib/median-coverage";
 import { formatPrice, formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { MostSearchedSuburbs } from "@/components/suburb/MostSearchedSuburbs";
@@ -71,6 +73,11 @@ export default async function StatePage({ params }: StatePageProps) {
     getStateRegions(upperState),
     getTopSuburbsByState(upperState, 12),
   ]);
+  // A statewide average only where enough of the state publishes a median
+  // (src/lib/median-coverage.ts; review of 10 Oct 2026, 0.3).
+  const covered = meetsCoverageFloor(await getStateCoverage(upperState), COVERAGE_MIN_SUBURBS);
+  const avgHouse = covered ? stats.avgMedianHousePrice : null;
+  const avgGrowth = covered ? stats.avgAnnualGrowth : null;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -121,8 +128,8 @@ export default async function StatePage({ params }: StatePageProps) {
             mapped.
           </h1>
           <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl mb-12">
-            Suburb profiles, school data, and property market insights across{" "}
-            {stateName}. Free, ungated, sourced and dated.
+            Suburb profiles, school data, and property market figures across{" "}
+            {stateName}, each with its source.
           </p>
 
           {/* Hairline-divided stats row */}
@@ -136,26 +143,26 @@ export default async function StatePage({ params }: StatePageProps) {
                 Suburbs covered
               </p>
             </div>
-            {stats.avgMedianHousePrice && (
+            {avgHouse && (
               <div className="py-6 sm:py-7 px-4 sm:px-6 border-l border-line">
                 <p className="font-display text-4xl sm:text-5xl text-ink leading-none mb-2.5 tracking-tight">
-                  {formatPriceFull(stats.avgMedianHousePrice)}
+                  {formatPriceFull(avgHouse)}
                 </p>
                 <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
                   <Home className="w-3 h-3" aria-hidden="true" />
-                  Avg median house
+                  Average of suburb medians
                 </p>
               </div>
             )}
-            {stats.avgAnnualGrowth != null && (
+            {avgGrowth != null && (
               <div className="py-6 sm:py-7 px-4 sm:px-6 border-l border-line border-t sm:border-t-0">
                 <p
                   className={`font-display text-4xl sm:text-5xl leading-none mb-2.5 tracking-tight ${
-                    stats.avgAnnualGrowth >= 0 ? "text-ink" : "text-danger"
+                    avgGrowth >= 0 ? "text-ink" : "text-danger"
                   }`}
                 >
-                  {stats.avgAnnualGrowth >= 0 ? "+" : ""}
-                  {stats.avgAnnualGrowth}%
+                  {avgGrowth >= 0 ? "+" : ""}
+                  {avgGrowth}%
                 </p>
                 <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
                   <TrendingUp className="w-3 h-3" aria-hidden="true" />
@@ -165,9 +172,9 @@ export default async function StatePage({ params }: StatePageProps) {
             )}
           </div>
           <p className="mt-4 max-w-3xl font-sans text-sm text-ink-subtle leading-relaxed">
-            {stats.avgMedianHousePrice
-              ? `The average is of the ${stats.pricedSuburbCount.toLocaleString("en-AU")} suburb medians we publish for ${stateName}. `
-              : ""}
+            {avgHouse
+              ? `The average is of the ${stats.pricedSuburbCount.toLocaleString("en-AU")} suburb medians we publish for ${stateName}, not a median of sales. `
+              : `No statewide average: too few ${stateName} suburbs publish a median for one to stand for the state. `}
             {priceSourceLine(upperState)}
           </p>
         </div>
@@ -312,16 +319,16 @@ export default async function StatePage({ params }: StatePageProps) {
           </p>
           <div className="flex flex-wrap gap-2">
             {[
-              { label: "Best for Families", slug: "for-families" },
-              { label: "Highest Growth", slug: "highest-growth" },
-              { label: "Most Affordable", slug: "most-affordable" },
-              { label: "Most Walkable", slug: "most-walkable" },
-              { label: "Lowest Flood Risk", slug: "lowest-flood-risk" },
-              { label: "Best Rental Yield", slug: "best-rental-yield" },
-            ].map(({ label, slug }) => (
+              { label: "Best for Families", slug: "for-families" as const },
+              { label: "Highest Growth", slug: "highest-growth" as const },
+              { label: "Most Affordable", slug: "most-affordable" as const },
+              { label: "Most Walkable", slug: "most-walkable" as const },
+              { label: "Lowest Flood Risk", slug: "lowest-flood-risk" as const },
+              { label: "Best Rental Yield", slug: "best-rental-yield" as const },
+            ].filter(({ slug }) => isRanked(slug, upperState)).map(({ label, slug }) => (
               <Link
                 key={slug}
-                href={`/best-suburbs/${slug}?state=${upperState}`}
+                href={`/best-suburbs/${slug}/${upperState.toLowerCase()}`}
                 className="px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-sm text-gray-700 font-medium hover:border-primary hover:text-primary transition-colors"
               >
                 {label}

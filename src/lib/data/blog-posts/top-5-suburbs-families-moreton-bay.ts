@@ -3,25 +3,45 @@ import type { BlogPost } from "@/types";
 export const post: BlogPost = {
   id: "blog-top-suburbs-families",
   slug: "top-5-suburbs-families-moreton-bay",
-  title: "Top 5 Suburbs for Families in Moreton Bay",
+  title: "Five Family Suburbs in the Moreton Bay Region: 2026 Guide",
   excerpt:
-    "Discover the best family-friendly suburbs in the Moreton Bay Region, featuring excellent schools, parks, and community facilities.",
-  content: `<p>Choosing the right suburb for your family is about more than just finding a house, it's about finding a community. The Moreton Bay Region offers a diverse range of family-friendly suburbs, each with its own unique character and appeal. Whether you prioritise top schools, green spaces, or community activities, there's a suburb in the northern corridor that ticks all the boxes.</p>
+    "North Lakes, Narangba, Burpengary, Morayfield and Deception Bay: their train lines, and where to find each suburb's schools, rents and published prices. A guide, not a ranking.",
+  content: `<p>The Moreton Bay region is the council area north of Brisbane. This guide covers five of its family suburbs: North Lakes, Narangba, Burpengary, Morayfield and Deception Bay. It is a guide, not a ranking. We have not measured these five against the rest of the region on one stated figure, so we do not call them the best or the top five.</p>
 
-<h2>1. North Lakes, The Complete Package</h2>
-<p><a href="/suburbs/north-lakes-qld-4509">North Lakes</a> consistently ranks as one of Queensland's most liveable suburbs, and it's easy to see why. This master-planned community boasts North Lakes State College and The Lakes College, extensive parkland networks, and Westfield North Lakes for all your shopping needs. With modern homes, wide streets, and a vibrant town centre, North Lakes is the gold standard for family living in Moreton Bay. The suburb also benefits from excellent bus connectivity and proximity to the Bruce Highway for commuters.</p>
+<p>If you want a ranking, ours is <a href="/best-suburbs/for-families/brisbane">the best suburbs for families in Brisbane</a>. It ranks suburbs on the average ICSEA of their schools (ACARA), among suburbs where family households are at least 40% of households (2021 Census), and Greater Brisbane there takes in the Moreton Bay postcodes 4500 to 4521. Every suburb in the region is listed on our <a href="/regions/moreton-bay">Moreton Bay region page</a>.</p>
 
-<h2>2. Narangba, Leafy and Peaceful</h2>
-<p>For families seeking a quieter, more spacious lifestyle, <a href="/suburbs/narangba-qld-4504">Narangba</a> delivers beautifully. Known for its larger blocks and tree-lined streets, Narangba offers a semi-rural feel without compromising on convenience. Narangba Valley State High School and Narangba State School are well-regarded, and the suburb features a network of walking trails and parks including the popular Jinker Track. Its train station provides a direct line to Brisbane CBD.</p>
+<h2>What to compare, and where each figure comes from</h2>
+<ul>
+<li><strong>Schools.</strong> Each suburb profile lists the schools in and near the suburb, with ACARA's ICSEA where it is published. ICSEA describes the socio-educational backgrounds of a school's students; it is not a measure of teaching. A school's catchment is set by address, not by suburb, so check the address before you buy or rent.</li>
+<li><strong>Rent.</strong> The profiles print the median weekly rent from Queensland RTA bond data, with its quarter.</li>
+<li><strong>Price.</strong> A profile prints a median house price only where the source is verified and enough sales sit behind it. Several Moreton Bay profiles show none at present: we withhold a median rather than print one we cannot stand behind.</li>
+<li><strong>Trains.</strong> Two lines serve the region: the Caboolture line, and the Redcliffe Peninsula line, which runs 12.6 km from Petrie to Kippa-Ring (Translink).</li>
+<li><strong>Flood.</strong> Flood risk changes from street to street. Check the council's flood information for the exact address.</li>
+</ul>
 
-<h2>3. Burpengary, Growing and Affordable</h2>
-<p><a href="/suburbs/burpengary-qld-4505">Burpengary</a> strikes an excellent balance between affordability and lifestyle. With a strong mix of established homes and newer estates, families benefit from schools like Burpengary State Secondary College and Good Shepherd Catholic Primary School. The Burpengary Aquatic Centre, creek-side parklands, and local shopping plaza ensure families have everything they need close to home. The suburb's ongoing development means new facilities and amenities are continually being added.</p>
+<h2>North Lakes</h2>
+<p><a href="/suburbs/north-lakes-qld-4509">North Lakes</a> has no train station of its own: the nearest are Mango Hill and Mango Hill East on the Redcliffe Peninsula line, in the neighbouring suburb of Mango Hill (Translink). Its profile lists its schools, rent and published figures.</p>
 
-<h2>4. Morayfield, Convenience Central</h2>
-<p><a href="/suburbs/morayfield-qld-4506">Morayfield</a>'s major drawcard is its unmatched convenience. Home to one of the region's largest shopping centres, a new health precinct, and well-connected public transport, Morayfield makes daily family life effortless. Schools like St Eugene College and Morayfield State High School serve the growing community well, while the Morayfield Sport and Events Centre provides year-round activities for children and adults alike.</p>
+<h2>Narangba</h2>
+<p><a href="/suburbs/narangba-qld-4504">Narangba</a> station is on the Caboolture line, which runs through to the Brisbane CBD (Translink). Its profile lists its schools, rent and published figures.</p>
 
-<h2>5. Deception Bay, Bayside Living</h2>
-<p><a href="/suburbs/deception-bay-qld-4508">Deception Bay</a> offers something the other suburbs can't, waterfront living at an affordable price. The foreshore parklands are a favourite for family picnics and evening walks, and the bay itself provides fishing, kayaking, and boating opportunities. With improving infrastructure and a strong community spirit, Deception Bay is a hidden gem for families who want a coastal lifestyle without the coastal price tag.</p>`,
+<h2>Burpengary</h2>
+<p><a href="/suburbs/burpengary-qld-4505">Burpengary</a> station is on the Caboolture line (Translink). Its profile lists its schools, rent and published figures.</p>
+
+<h2>Morayfield</h2>
+<p><a href="/suburbs/morayfield-qld-4506">Morayfield</a> station is on the Caboolture line (Translink). Its profile lists its schools, rent and published figures.</p>
+
+<h2>Deception Bay</h2>
+<p><a href="/suburbs/deception-bay-qld-4508">Deception Bay</a> sits on the bay of the same name. It has no train station on either line (Translink). Its profile lists its schools, rent and published figures.</p>
+
+<h2>What are the suburbs of Moreton Bay?</h2>
+<p>The region runs from Redcliffe and the Redcliffe Peninsula through North Lakes, Petrie and the Pine Rivers suburbs to Caboolture, Bribie Island and the hinterland. Our <a href="/regions/moreton-bay">Moreton Bay region page</a> lists every suburb we track there, with the median house price where one is published, and its <a href="/regions/moreton-bay/schools">schools page</a> lists the region's schools.</p>
+
+<h2>Sources</h2>
+<ul>
+<li>Translink, Caboolture line and Redcliffe Peninsula line stations, and the Redcliffe Peninsula line (12.6 km, Petrie to Kippa-Ring): translink.com.au, read 11 October 2026.</li>
+<li>School ICSEA: ACARA, as each suburb profile prints it. Family households: ABS 2021 Census. Rents: Queensland RTA bond data, with the quarter on each profile.</li>
+</ul>`,
   coverImage: "/images/blog/cover-top-5-suburbs-families-moreton-bay.jpg",
   author: {
     name: "Bec Ramirez",
@@ -37,6 +57,6 @@ export const post: BlogPost = {
     "narangba",
   ],
   publishedAt: "2025-02-10",
-  updatedAt: "2026-07-24",
-  readingTime: 7,
+  updatedAt: "2026-10-11",
+  readingTime: 4,
 };

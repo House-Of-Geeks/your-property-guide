@@ -8,7 +8,7 @@
  *   - transitCount: nodes tagged public_transport=stop_position within 500 m
  *
  * Scores (0–100):
- *   walkScore   = min(100, amenityCount × 2)
+ *   walkScore   = min(100, amenityCount × 2)   (walkScoreFromAmenities, src/lib/ranking-notes.ts)
  *   transitScore = min(100, transitCount × 10)
  *   bikeScore    = min(100, cyclewayCount × 5)
  *
@@ -23,6 +23,7 @@
 import "dotenv/config";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
+import { walkScoreFromAmenities } from "../../../src/lib/ranking-notes";
 
 const SOURCE_ID = "walkability";
 const OVERPASS_URL = "https://overpass-api.de/api/interpreter";
@@ -52,7 +53,7 @@ function buildQuery(lat: number, lng: number): string {
   );
 }
 
-interface OverpassElement {
+export interface OverpassElement {
   type: "node" | "way" | "relation";
   id: number;
   tags?: Record<string, string>;
@@ -73,7 +74,7 @@ async function fetchScores(
   lat: number,
   lng: number,
   retries = 4,
-): Promise<{ walkScore: number; transitScore: number; bikeScore: number }> {
+): Promise<WalkabilityCounts> {
   const query = buildQuery(lat, lng);
 
   let lastErr: Error | undefined;
@@ -104,9 +105,25 @@ async function fetchScores(
   throw lastErr ?? new Error("retries exhausted");
 }
 
-function computeScores(elements: OverpassElement[]): {
-  walkScore: number; transitScore: number; bikeScore: number;
-} {
+/**
+ * The counts behind the scores, and the scores. The walk score caps at 100
+ * (50 amenities), so it cannot rank the suburbs that reach it: on 10 Oct
+ * 2026 every city edition's top ten scored 100 (review of 10 Oct 2026,
+ * suburbs-market 0.1a). amenityCount is the uncapped measure the walkable
+ * lists should rank on. It is returned here but not stored: storing it needs
+ * a Suburb column (amenityCount Int?), which is a schema change, then a
+ * re-run of this sync. Until then the lists show the tie at 100 unranked.
+ */
+export interface WalkabilityCounts {
+  amenityCount: number;
+  transitCount: number;
+  cyclewayCount: number;
+  walkScore: number;
+  transitScore: number;
+  bikeScore: number;
+}
+
+export function computeScores(elements: OverpassElement[]): WalkabilityCounts {
 
   let amenityCount = 0;
   let cyclewayCount = 0;
@@ -124,7 +141,10 @@ function computeScores(elements: OverpassElement[]): {
   }
 
   return {
-    walkScore:   Math.min(100, Math.round(amenityCount * 2)),
+    amenityCount,
+    transitCount,
+    cyclewayCount,
+    walkScore:   walkScoreFromAmenities(amenityCount),
     transitScore: Math.min(100, transitCount * 10),
     bikeScore:   Math.min(100, cyclewayCount * 5),
   };

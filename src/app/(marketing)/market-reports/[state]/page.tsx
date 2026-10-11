@@ -13,8 +13,12 @@ import {
   type SuburbMarketRow,
 } from "@/lib/services/market-report-service";
 import { formatPrice, formatPriceFull } from "@/lib/utils/format";
-import { STATE_COMMENTARY } from "@/lib/data/state-commentary";
 import { priceSourceLine, stateRankingLink } from "@/lib/ranking-notes";
+import { getStateCoverage } from "@/lib/services/city-market-service";
+import { COVERAGE_MIN_SUBURBS, coverageShortfall, meetsCoverageFloor } from "@/lib/median-coverage";
+import { CAPITAL_CITIES } from "@/lib/utils/metro";
+import { cityEditionLinkLabel, cityEditionPath } from "@/lib/city-editions";
+import { cityEditionLinks, indexableCityEditionsForLinks } from "@/lib/services/city-rankings-service";
 
 const STATE_SLUGS = ["qld", "nsw", "vic", "wa", "sa", "tas", "nt", "act"] as const;
 type StateSlug = (typeof STATE_SLUGS)[number];
@@ -43,7 +47,7 @@ export async function generateMetadata({
   if (!isValidState(state)) return {};
   const stateName = getStateNameForReport(state);
   const title = `${stateName} Property Market Report ${CURRENT_YEAR}`;
-  const description = `${stateName} property market data for ${CURRENT_YEAR}: median prices, the most affordable and highest-priced suburbs, and where each figure comes from.`;
+  const description = `${stateName} property market data for ${CURRENT_YEAR}: the suburb medians we publish, ranked lists where enough suburbs have one, and where each figure comes from.`;
   return {
     title,
     description,
@@ -178,17 +182,20 @@ export default async function StateMarketReportPage({
 
   const data = await getStateMarketData(state);
   const upperState = state.toUpperCase();
+  const coverage = await getStateCoverage(upperState);
+  const covered = meetsCoverageFloor(coverage, COVERAGE_MIN_SUBURBS);
+  const capital = CAPITAL_CITIES.find((c) => c.state === upperState) ?? null;
+  const editions = cityEditionLinks(await indexableCityEditionsForLinks(), { state: upperState });
   const stateName = getStateNameForReport(state);
   const reportTitle = `${stateName} Property Market Report ${CURRENT_YEAR}`;
-  const reportDescription = `${stateName} property market data for ${CURRENT_YEAR}: median prices, the most affordable and highest-priced suburbs, and where each figure comes from.`;
+  const reportDescription = `${stateName} property market data for ${CURRENT_YEAR}: the suburb medians we publish, ranked lists where enough suburbs have one, and where each figure comes from.`;
 
-  const housePrice = data.avgMedianHousePrice ? formatPrice(data.avgMedianHousePrice) : "N/A";
-  const unitPrice = data.avgMedianUnitPrice ? formatPrice(data.avgMedianUnitPrice) : "N/A";
+  const housePrice = covered && data.avgMedianHousePrice ? formatPrice(data.avgMedianHousePrice) : null;
+  const unitPrice = covered && data.avgMedianUnitPrice ? formatPrice(data.avgMedianUnitPrice) : null;
   // A tile is drawn only for a figure there is: no feed measures a 12-month
   // change outside NSW and SA, and none measures days on market.
-  const growth = data.avgAnnualGrowth != null ? `${data.avgAnnualGrowth > 0 ? "+" : ""}${data.avgAnnualGrowth}%` : null;
+  const growth = covered && data.avgAnnualGrowth != null ? `${data.avgAnnualGrowth > 0 ? "+" : ""}${data.avgAnnualGrowth}%` : null;
   const priced = data.totalSuburbsWithData.toLocaleString("en-AU");
-  const commentary = STATE_COMMENTARY[upperState];
 
   return (
     <>
@@ -232,9 +239,9 @@ export default async function StateMarketReportPage({
             {data.stateName} property market, <span className="italic text-primary">{CURRENT_YEAR}</span>.
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            Median prices and the state&rsquo;s most affordable and
-            highest-priced suburbs, from the figures each suburb&rsquo;s own
-            page publishes.
+            {covered
+              ? "Median prices and the state's most affordable and highest-priced suburbs, from the figures each suburb's own page publishes."
+              : `We do not publish a statewide figure for ${data.stateName} yet. ${coverageShortfall(coverage, data.stateName)}`}
           </p>
         </div>
       </section>
@@ -245,16 +252,18 @@ export default async function StateMarketReportPage({
           <div className={`grid grid-cols-2 ${growth ? "lg:grid-cols-3" : ""} gap-4`}>
             <StatCard
               icon={<Home className="w-4 h-4" />}
-              label="Avg median house"
-              value={housePrice}
-              sub={`across ${priced} suburbs`}
+              label="Average of suburb house medians"
+              value={housePrice ?? "Not published"}
+              sub={housePrice ? `across ${priced} suburbs, not a median of sales` : "too few suburbs with a published median"}
             />
-            <StatCard
-              icon={<DollarSign className="w-4 h-4" />}
-              label="Avg median unit"
-              value={unitPrice}
-              sub="where a unit median is published"
-            />
+            {unitPrice && (
+              <StatCard
+                icon={<DollarSign className="w-4 h-4" />}
+                label="Average of suburb unit medians"
+                value={unitPrice}
+                sub="where a unit median is published"
+              />
+            )}
             {growth && (
               <StatCard
                 icon={<TrendingUp className="w-4 h-4" />}
@@ -271,56 +280,51 @@ export default async function StateMarketReportPage({
       </section>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-        {/* State commentary */}
-        {commentary && (
-          <section className="grid lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-7">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
-                State of the market
-              </p>
-              <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-4">
-                {data.stateName} in {CURRENT_YEAR}.
-              </h2>
-              <div className="prose-ypg prose-ypg-tight">
-                <p>{commentary.marketContext}</p>
-              </div>
-            </div>
-            <aside className="lg:col-span-5 space-y-4">
-              <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
-                  Buyer tip, {upperState}
-                </p>
-                <p className="font-sans text-sm text-ink leading-relaxed">
-                  {commentary.buyerTip}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
-                  Watch out, {upperState}
-                </p>
-                <p className="font-sans text-sm text-ink leading-relaxed">
-                  {commentary.watchOut}
-                </p>
-              </div>
-            </aside>
-          </section>
+        {/* Tables: ranked lists only where enough of the state publishes a median */}
+        {covered && (
+          <>
+            <SuburbTable
+              heading={`Top ${data.topByGrowth.length} ${data.stateName} suburbs by annual growth`}
+              rows={data.topByGrowth}
+              showGrowth
+            />
+            <SuburbTable
+              heading={`${data.stateName}'s most affordable suburbs`}
+              rows={data.topMostAffordable}
+              showGrowth
+            />
+            <SuburbTable
+              heading={`${data.stateName}'s highest median prices`}
+              rows={data.topByMedianPrice}
+            />
+          </>
         )}
 
-        {/* Tables */}
-        <SuburbTable
-          heading={`Top ${data.topByGrowth.length} ${data.stateName} suburbs by annual growth`}
-          rows={data.topByGrowth}
-          showGrowth
-        />
-        <SuburbTable
-          heading={`${data.stateName}'s most affordable suburbs`}
-          rows={data.topMostAffordable}
-          showGrowth
-        />
-        <SuburbTable
-          heading={`${data.stateName}'s highest median prices`}
-          rows={data.topByMedianPrice}
-        />
+        {/* The capital and its ranked lists */}
+        {capital && (
+          <section className="rounded-2xl border border-line bg-surface-warm p-6">
+            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              {capital.name}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Link
+                href={`/property-market/${capital.slug}`}
+                className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors"
+              >
+                {capital.name} house prices by suburb
+              </Link>
+              {editions.map((e) => (
+                <Link
+                  key={`${e.category}-${e.city.slug}`}
+                  href={cityEditionPath(e.category, e.city.slug)}
+                  className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors"
+                >
+                  {cityEditionLinkLabel(e.category, e.city)}
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Cross-link to other state reports */}
         <section className="rounded-2xl border border-line bg-surface-warm p-6">
@@ -348,7 +352,10 @@ export default async function StateMarketReportPage({
           <p className="leading-relaxed">
             {priceSourceLine(upperState)} A suburb is listed only when its
             own page publishes the median, so the tables are shorter than the
-            state. Averages are of suburb medians, not of sales.{" "}
+            state. Averages are of suburb medians, not of sales, and are
+            printed only when at least {COVERAGE_MIN_SUBURBS} suburbs and a
+            fifth of the state&rsquo;s suburbs of 1,000 or more residents
+            publish a median.{" "}
             <Link
               href="/methodology#median-prices"
               className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"

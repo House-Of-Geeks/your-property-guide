@@ -14,11 +14,16 @@ import {
   cityEditionMethod,
   cityEditionPath,
   cityEditionTitle,
+  PRICE_RANKED_CATEGORIES,
   hasCityEdition,
   isCityEditionCategory,
+  isCityEditionIndexable,
+  noEditionReason,
+  isNumbered,
   metricSummary,
   showUnderBudget,
   suburbParagraph,
+  tiedAtCap,
   underBudget,
   type CityEdition,
   type CityEditionSuburb,
@@ -59,24 +64,52 @@ describe("which pages are city editions", () => {
     expect(isCityEditionCategory("best-rental-yield")).toBe(true);
   });
   it("is indexable only with ten suburbs, in a state where the category is ranked", () => {
+    const wide = { pool: 300, suburbs: 400 };
     for (const c of CITY_EDITION_CATEGORIES) {
       for (const city of CAPITAL_CITIES) {
-        expect(hasCityEdition(c, city.state, CITY_EDITION_SIZE - 1), `${c} ${city.slug} nine`).toBe(false);
-        expect(hasCityEdition(c, city.state, 0), `${c} ${city.slug} none`).toBe(false);
-        expect(hasCityEdition(c, city.state, CITY_EDITION_SIZE), `${c} ${city.slug} ten`).toBe(isRanked(c, city.state));
-        expect(hasCityEdition(c, city.state, CITY_EDITION_POOL), `${c} ${city.slug} fifteen`).toBe(isRanked(c, city.state));
+        expect(hasCityEdition(c, city.state, CITY_EDITION_SIZE - 1, wide), `${c} ${city.slug} nine`).toBe(false);
+        expect(hasCityEdition(c, city.state, 0, wide), `${c} ${city.slug} none`).toBe(false);
+        expect(hasCityEdition(c, city.state, CITY_EDITION_SIZE, wide), `${c} ${city.slug} ten`).toBe(isRanked(c, city.state));
+        expect(hasCityEdition(c, city.state, CITY_EDITION_POOL, wide), `${c} ${city.slug} fifteen`).toBe(isRanked(c, city.state));
       }
     }
     // yield only where a rent is measured for the suburb, growth only where a change is measured
-    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("best-rental-yield", c.state, 10)).map((c) => c.slug)).toEqual(["melbourne", "brisbane"]);
-    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("highest-growth", c.state, 10)).map((c) => c.slug)).toEqual(["sydney", "adelaide"]);
-    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("best-rental-yield", c.state, 10)).map((c) => c.state)).toEqual([...YIELD_RANKED_STATES]);
-    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("highest-growth", c.state, 10)).map((c) => c.state)).toEqual([...GROWTH_RANKED_STATES]);
-    expect(hasCityEdition("lowest-flood-risk", "QLD", 50)).toBe(false);
+    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("best-rental-yield", c.state, 10, wide)).map((c) => c.slug)).toEqual(["melbourne", "brisbane"]);
+    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("highest-growth", c.state, 10, wide)).map((c) => c.slug)).toEqual(["sydney", "adelaide"]);
+    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("best-rental-yield", c.state, 10, wide)).map((c) => c.state)).toEqual([...YIELD_RANKED_STATES]);
+    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("highest-growth", c.state, 10, wide)).map((c) => c.state)).toEqual([...GROWTH_RANKED_STATES]);
+    expect(hasCityEdition("lowest-flood-risk", "QLD", 50, wide)).toBe(false);
+  });
+  it("a price ranking needs a pool that stands for the city (review of 10 Oct 2026, 0.2b)", () => {
+    for (const c of PRICE_RANKED_CATEGORIES) {
+      const state = c === "highest-growth" ? "SA" : "VIC";
+      // no count, no edition: the page and the sitemap always pass one
+      expect(hasCityEdition(c, state, 15), c).toBe(false);
+      // Brisbane on 10 Oct 2026: 17 of 196 suburbs of 1,000 or more residents
+      expect(hasCityEdition(c, state, 15, { pool: 17, suburbs: 196 }), c).toBe(false);
+      // Hobart: 25 of 30 is a large share but too few suburbs
+      expect(hasCityEdition(c, state, 15, { pool: 25, suburbs: 30 }), c).toBe(false);
+      // Perth's 66 ABS medians of about 280 suburbs clear it; Adelaide's 259 easily
+      expect(hasCityEdition(c, state, 15, { pool: 66, suburbs: 280 }), c).toBe(true);
+      expect(hasCityEdition(c, state, 15, { pool: 259, suburbs: 300 }), c).toBe(true);
+    }
+    // the rankings on something other than price need no count
+    expect(hasCityEdition("for-families", "QLD", 15)).toBe(true);
+    const thin = { ...edition("most-affordable", brisbane), eligible: 17, citySuburbs: 196 };
+    expect(noEditionReason(thin)).toBe("We publish a figure drawn from many suburbs only when at least 30 suburbs and a fifth of Greater Brisbane's 196 suburbs of 1,000 or more residents have a published median; only 17 do. Ten suburbs from so few would not stand for the city.");
+    expect(noEditionReason({ ...edition("most-affordable", brisbane), eligible: 120, citySuburbs: 400 })).toBeNull();
+    expect(noEditionReason({ ...edition("for-families", brisbane, 4), citySuburbs: null })).toBe("A city edition needs 10 suburbs to show, and only 4 in Greater Brisbane qualify on the rules below.");
+  });
+  it("the cheapest list screens out CBD cores and apartment markets (review of 10 Oct 2026, 0.2a)", () => {
+    const service = read("src/lib/services/city-rankings-service.ts");
+    expect(service).toContain("const kept = rows.filter((r) => passesHouseScreens(r, rents.get(r.slug)?.house));");
+    expect(service).toContain("return (await screenedAffordable(city)).slice(0, CITY_EDITION_POOL);");
+    expect(service).toContain("return (await screenedAffordable(city)).length;");
+    expect(cityEditionMethod(edition("most-affordable", getCapitalCity("melbourne")!)).join(" ")).toContain("CBD-core postcodes and suburbs whose house median looks like an apartment market's are left out");
   });
   it("the page and the city sitemap read the predicate, from the same list", () => {
     const page = read("src/app/(marketing)/best-suburbs/[category]/[state]/page.tsx");
-    expect(page).toContain("robots: hasCityEdition(category, city.state, edition.suburbs.length) ? undefined : { index: false, follow: true },");
+    expect(page).toContain("robots: isCityEditionIndexable(category, city.state, edition.suburbs.length, editionCoverage(edition)) ? undefined : { index: false, follow: true },");
     // and the state pages keep theirs
     expect(page).toContain("robots: isRanked(category, upperState) ? undefined : { index: false, follow: true },");
     const sitemap = read("src/app/(marketing)/best-suburbs/cities/sitemap.ts");
@@ -84,7 +117,7 @@ describe("which pages are city editions", () => {
     expect(sitemap).toContain('export const dynamic = "force-dynamic"');
     const service = read("src/lib/services/city-rankings-service.ts");
     // the sitemap list runs the page's own rows query and the page's own predicate on it
-    expect(service).toContain("const rows = await fetchRows(category, city);\n        if (hasCityEdition(category, city.state, rows.length)) out.push({ category, citySlug: city.slug });");
+    expect(service).toContain("const edition = await fetchCityEdition(category, city);\n        if (isCityEditionIndexable(category, city.state, edition.suburbs.length, editionCoverage(edition))) out.push({ category, citySlug: city.slug });");
     expect(service).toContain("const rows = await fetchRows(category, city);\n  const eligible");
     expect(service).toContain("suburbs: rows.map((r) => r.suburb)");
     expect(read("src/app/sitemap.xml/route.ts")).toContain("/best-suburbs/cities/sitemap.xml");
@@ -99,6 +132,9 @@ describe("which pages are city editions", () => {
     const service = read("src/lib/services/city-rankings-service.ts");
     expect(service).toContain("...PUBLISHED_GROWTH");
     expect(service).toContain("...PUBLISHED_HOUSE_MEDIAN,");
+    // the inverted-median rule in the database filters (published-medians.notInvertedMedians)
+    expect(service.match(/\.\.\.notInvertedMedians\(db\.suburb\.fields\.medianHousePrice\)/g)).toHaveLength(2);
+    expect(read("src/app/(marketing)/price-guide/page.tsx")).toContain("...notInvertedMedians(db.suburb.fields.medianHousePrice),");
     expect(service).toContain("publishedSales(row)");
     expect(service).toContain("LOCALITIES_ONLY");
     expect(service).toContain("isNonLocalitySlug(r.slug)");
@@ -108,6 +144,65 @@ describe("which pages are city editions", () => {
     // growth is fetched only where a feed measures it; hazard is never read
     expect(service).toContain("if (!isCityEditionCategory(category) || !isRanked(category, city.state)) return [];");
     expect(service).not.toMatch(/suburbHazard|floodClass/);
+  });
+});
+
+describe("the cheapest editions date their medians and give the official city figure (review 0.2c, 3.2)", () => {
+  it("puts the data period in the first sentence", () => {
+    expect(cityEditionLede(edition("most-affordable", perth))).toMatch(/^By published median house price \(medians for 2024\), the ten cheapest Greater Perth suburbs are Suburb 1/);
+  });
+  it("prints Metropolitan Adelaide's Valuer-General median in the method, and none where unverified", () => {
+    const adelaide = getCapitalCity("adelaide")!;
+    const m = cityEditionMethod(edition("most-affordable", adelaide, 15, () => ({ state: "SA", medianBasis: "suburb" }))).join(" ");
+    expect(m).toContain("For context, metropolitan Adelaide's median house sale price was $975,000 in the June 2026 quarter (SA Valuer-General): a median of every house sale, not of suburb medians.");
+    expect(cityEditionMethod(edition("most-affordable", getCapitalCity("melbourne")!)).join(" ")).not.toContain("For context");
+  });
+});
+
+describe("most walkable: a tie at the capped score is not a ranking (review of 10 Oct 2026, 0.1a)", () => {
+  const capped = edition("most-walkable", sydney, 15, () => ({ state: "NSW", medianBasis: "suburb", walkScore: 100 }));
+  const tied = { ...capped, atCap: 212 };
+  it("the walkable editions answer noindex and stay out of the city sitemap while the score caps", () => {
+    for (const city of CAPITAL_CITIES) {
+      expect(isCityEditionIndexable("most-walkable", city.state, CITY_EDITION_POOL), city.slug).toBe(false);
+      expect(hasCityEdition("most-walkable", city.state, CITY_EDITION_POOL), city.slug).toBe(true);
+    }
+    const wide = { pool: 300, suburbs: 400 };
+    for (const c of CITY_EDITION_CATEGORIES.filter((c) => c !== "most-walkable")) {
+      for (const city of CAPITAL_CITIES) expect(isCityEditionIndexable(c, city.state, CITY_EDITION_POOL, wide)).toBe(hasCityEdition(c, city.state, CITY_EDITION_POOL, wide));
+    }
+  });
+  it("lists the suburbs at 100 unnumbered and says why", () => {
+    expect(tiedAtCap(tied)).toHaveLength(10);
+    expect(tied.suburbs.every((s) => !isNumbered("most-walkable", s))).toBe(true);
+    expect(isNumbered("most-walkable", suburb({ walkScore: 98 }))).toBe(true);
+    expect(isNumbered("most-affordable", suburb({ walkScore: 100 }))).toBe(true);
+    const lede = cityEditionLede(tied);
+    expect(lede).toContain("212 Greater Sydney suburbs of 1,000 or more residents reach it, so it cannot rank them. Listed alphabetically, the first ten are Suburb 1");
+    expect(lede).not.toMatch(/most walkable Greater/);
+    const method = cityEditionMethod(tied).join(" ");
+    expect(method).toContain("These suburbs all score 100; listed alphabetically.");
+    expect(method).toContain("within 1 km of the suburb's postcode centroid, capped at 100");
+    expect(method).not.toMatch(/transport stops and pedestrian|Ranked by walk score/);
+    const p = suburbParagraph(tied, tied.suburbs[3], 4);
+    expect(p).toContain("Its walk score is 100 out of 100, the maximum, shared with 211 other Greater Sydney suburbs");
+    expect(p).not.toMatch(/4th|highest/);
+    const faq = cityEditionFaqs(tied).find((f) => f.question.startsWith("Which are the most walkable"))!;
+    expect(faq.answer).toContain("The walk score cannot say: 212 Greater Sydney suburbs");
+    expect(faq.answer).not.toMatch(/exceptional|out of 100\)/);
+    expect(cityEditionDescription(tied)).toMatch(/^Greater Sydney suburbs by walk score, ties at the 100 cap listed alphabetically/);
+  });
+  it("numbers the suburbs below the cap after the tied ones", () => {
+    const mixed = { ...edition("most-walkable", perth, 15, (i) => ({ state: "WA", walkScore: i < 3 ? 100 : 96 - i })), atCap: 3 };
+    expect(tiedAtCap(mixed).map((s) => s.name)).toEqual(["Suburb 1", "Suburb 2", "Suburb 3"]);
+    expect(cityEditionLede(mixed)).toBe("Suburb 1, Suburb 2 and Suburb 3 all score the maximum walk score of 100, listed alphabetically; after them, by walk score, come Suburb 4, Suburb 5, Suburb 6, Suburb 7, Suburb 8, Suburb 9 and Suburb 10.");
+    expect(suburbParagraph(mixed, mixed.suburbs[3], 4)).toContain("Its walk score is 93 out of 100, the 4th highest in Greater Perth");
+  });
+  it("the page shows no rank or ItemList for tied suburbs", () => {
+    const page = read("src/components/best-suburbs/CityEdition.tsx");
+    expect(page).toContain("{full && tied.length === 0 && (");
+    expect(page).toContain("{isNumbered(category, s) && <span");
+    expect(page).toContain("{isNumbered(category, s) ? i + 1 : \"\"}");
   });
 });
 
@@ -191,9 +286,32 @@ describe("titles and descriptions", () => {
   });
   it("the lede names the ten", () => {
     const lede = cityEditionLede(edition("for-families", perth));
-    expect(lede).toContain("the ten best Greater Perth suburbs for families are Suburb 1, Suburb 2");
+    expect(lede).toContain("among Greater Perth suburbs where family households are at least 40% of households (2021 Census), the ten that rank highest are Suburb 1, Suburb 2");
     expect(lede).toContain("Suburb 9 and Suburb 10.");
     expect(lede).not.toContain("Suburb 11");
+  });
+});
+
+describe("the family criterion says what it measures (review of 10 Oct 2026, 0.1b)", () => {
+  it("calls the 2021 Census share family households, never families with dependants", () => {
+    // householdsFamily is ABS G35 Total_FamHhold over all households: couples without children count.
+    const e = edition("for-families", perth, 15, () => ({ state: "WA" }));
+    const all = [
+      cityEditionLede(e),
+      cityEditionDescription(e),
+      ...cityEditionMethod(e),
+      ...e.suburbs.map((s, i) => suburbParagraph(e, s, i + 1)),
+      ...e.suburbs.map((s) => metricSummary("for-families", s) ?? ""),
+      ...cityEditionFaqs(e).map((f) => f.answer),
+      ...cityEditionFaqs(edition("most-affordable", brisbane)).map((f) => f.answer),
+      ...edition("most-affordable", brisbane).suburbs.map((s, i) => suburbParagraph(edition("most-affordable", brisbane), s, i + 1)),
+    ].join(" ");
+    expect(all).not.toMatch(/dependants|dependents|families are \d|families with/i);
+    expect(all).toContain("family households are at least 40% of households");
+    expect(cityEditionMethod(e).join(" ")).toContain("couples without children count");
+    for (const f of ["src/lib/data/category-commentary.ts", "src/components/best-suburbs/BestSuburbsListing.tsx", "src/app/(marketing)/best-suburbs/page.tsx"]) {
+      expect(read(f), f).not.toMatch(/families with dependen|Population-weighted|highest-rated schools/);
+    }
   });
 });
 
@@ -228,7 +346,7 @@ describe("what the page prints", () => {
     // a measured change prints, up or down
     const nsw = edition("most-affordable", sydney);
     expect(suburbParagraph(nsw, suburb({ state: "NSW", medianBasis: "suburb", annualGrowthHouse: -3.2, walkScore: 0 }), 2)).toContain("The median is down 3.2% on a year earlier.");
-    expect(suburbParagraph(nsw, suburb({ state: "NSW", medianBasis: "suburb", annualGrowthHouse: 6, walkScore: 55 }), 2)).toContain("the 2nd lowest published median in Greater Sydney. The median is up 6.0% on a year earlier. Walk score 55 out of 100. 25,000 people lived there at the 2021 Census, and families with dependants are 62% of households.");
+    expect(suburbParagraph(nsw, suburb({ state: "NSW", medianBasis: "suburb", annualGrowthHouse: 6, walkScore: 55 }), 2)).toContain("the 2nd lowest published median in Greater Sydney. The median is up 6.0% on a year earlier. Walk score 55 out of 100. 25,000 people lived there at the 2021 Census, and family households are 62% of households.");
     // a family suburb without a published median says so instead of printing $0
     const fam = suburbParagraph(edition("for-families", perth), suburb({ medianHousePrice: 0, medianBasis: null, state: "WA" }), 1);
     expect(fam).toContain("The six schools we hold for the suburb average an ICSEA of 980 (ACARA), the highest in Greater Perth");

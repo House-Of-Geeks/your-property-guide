@@ -1,5 +1,6 @@
 import type { CityMarket } from "@/lib/services/city-market-service";
 import { formatPriceFull } from "@/lib/utils/format";
+import { priceSourceLine } from "@/lib/ranking-notes";
 
 // Pure helpers for the region (LGA) house-prices template. Content gap
 // item 6: the region pages already held the suburb data; this reframes
@@ -40,7 +41,7 @@ export function rollupCovers(market: Pick<CityMarket, "medianAnnualGrowth" | "to
     : "the most affordable and the highest-priced";
 }
 
-/** True when the rollup found at least one suburb with a verified median. */
+/** True when the rollup publishes a typical suburb median: verified medians above the coverage floor. */
 export function regionHasPrices(market: Pick<CityMarket, "medianHousePrice">): boolean {
   return market.medianHousePrice != null && market.medianHousePrice > 0;
 }
@@ -65,7 +66,8 @@ export function regionDescription(
   year = REGION_MARKET_YEAR,
 ): string {
   if (regionHasPrices(market) && market.medianHousePrice) {
-    return `${name} house prices ${year}: the median house price in ${name} is ${formatPriceFull(market.medianHousePrice)}. Median house price by suburb for the busiest suburbs, ${rollupCovers(market)} suburbs in the ${name} region, ${state}, from verified sales data.`;
+    const full = `${name} house prices ${year}: typical suburb median ${formatPriceFull(market.medianHousePrice)} across ${market.pricedSuburbCount.toLocaleString("en-AU")} suburbs. House prices by suburb and ${rollupCovers(market)} suburbs in the ${name} region, ${state}.`;
+    return full.length <= 160 ? full : `${name} house prices ${year}: typical suburb median ${formatPriceFull(market.medianHousePrice)} across ${market.pricedSuburbCount.toLocaleString("en-AU")} suburbs, and house prices by suburb.`;
   }
   return `${name} property market ${year}: suburb profiles, prices where verified sales data exists, schools and listings across the ${suburbCount} suburbs of the ${name} region, ${state}.`;
 }
@@ -76,9 +78,9 @@ export function buildRegionFaqs(name: string, state: string, market: CityMarket)
   if (market.medianHousePrice) {
     faqs.push({
       question: `What is the median house price in ${name}?`,
-      answer: `The median house price across the ${name} region of ${state} is ${formatPriceFull(market.medianHousePrice)}, calculated as the median of ${market.pricedSuburbCount.toLocaleString()} suburb-level medians from verified government sales data.${
-        market.medianUnitPrice ? ` The median unit price is ${formatPriceFull(market.medianUnitPrice)}.` : ""
-      }`,
+      answer: `The typical suburb median house price across the ${name} region of ${state} is ${formatPriceFull(market.medianHousePrice)}: the median of ${market.pricedSuburbCount.toLocaleString()} suburb medians, each the figure the suburb's own page publishes, not a median of every sale.${
+        market.medianUnitPrice ? ` The typical suburb unit median is ${formatPriceFull(market.medianUnitPrice)}.` : ""
+      } ${priceSourceLine(state)}`,
     });
   }
   if (market.medianAnnualGrowth != null) {
@@ -100,7 +102,7 @@ export function buildRegionFaqs(name: string, state: string, market: CityMarket)
     const names = market.mostAffordable.slice(0, 3).map((s) => s.name).join(", ");
     faqs.push({
       question: `What are the cheapest suburbs in ${name}?`,
-      answer: `Among established suburbs (population 1,000+) with verified sales data, the most affordable suburbs in the ${name} region by median house price are ${names}.`,
+      answer: `Among established suburbs (population 1,000+) with a published median, the most affordable suburbs in the ${name} region by median house price are ${names}. CBD-core postcodes and apartment markets are left out, because a "house" median among apartments is not a house price.`,
     });
   }
   return faqs;

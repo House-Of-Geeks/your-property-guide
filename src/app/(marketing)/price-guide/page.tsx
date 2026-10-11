@@ -7,25 +7,37 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY } from "@/lib/non-localities";
-import { PUBLISHED_CHANGE, PUBLISHED_HOUSE_MEDIAN, withPublishedSales } from "@/lib/published-medians";
+import { PUBLISHED_CHANGE, PUBLISHED_HOUSE_MEDIAN, notInvertedMedians, withPublishedSales } from "@/lib/published-medians";
 import { priceSourceLine } from "@/lib/ranking-notes";
 import { formatPrice, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
+import {
+  HOW_TO_READ_A_MEDIAN,
+  PRICE_GUIDE_YEAR,
+  PRICE_UNDER_OPTIONS,
+  notApartmentMarketsWhere,
+  parsePriceUnder,
+  priceGuideLede,
+} from "@/lib/price-guide";
 
 // ISR, DB-querying services have build-phase guards, so we cache for 24h
 // instead of running a function on every visit.
 export const revalidate = 86400;
 
+// Review of 10 Oct 2026, suburbs-market 3.6: the query is "house prices by
+// suburb" / "median house price by suburb" / "home price guide".
+const TITLE = `House Prices by Suburb: Australian Median Price Guide ${PRICE_GUIDE_YEAR}`;
+const DESCRIPTION =
+  "Median house prices by suburb across Australia, each the figure the suburb's own page publishes, with its source: state sales records and ABS area medians.";
+
 export const metadata: Metadata = {
-  title: "Property Price Guide | Australian Suburb Median Prices",
-  description:
-    "Compare median house and unit prices across Australian suburbs. Updated quarterly from official government data.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/price-guide` },
   openGraph: {
     url: `${SITE_URL}/price-guide`,
-    title: "Property Price Guide | Australian Suburb Median Prices",
-    description:
-      "Compare median house and unit prices across Australian suburbs. Updated quarterly from official government data.",
+    title: TITLE,
+    description: DESCRIPTION,
     type: "website",
   },
   twitter: { card: "summary_large_image" },
@@ -73,22 +85,29 @@ export default async function PriceGuidePage({
       : "price-desc";
 
   const page = Math.max(1, parseInt(typeof sp.page === "string" ? sp.page : "1", 10) || 1);
+  const under = parsePriceUnder(sp.under);
 
   // Only the medians each suburb's own page publishes (fix item 47). Sorted
   // by growth, only the suburbs with a published 12-month change: the rest
   // have none to sort on.
   const where = {
     ...(sort === "growth-desc" ? PUBLISHED_CHANGE : PUBLISHED_HOUSE_MEDIAN),
+    // A row whose unit median is above its house median publishes neither.
+    ...notInvertedMedians(db.suburb.fields.medianHousePrice),
     ...(state ? { state } : {}),
     ...LOCALITIES_ONLY,
+    // Lowest first is a cheapest list: the cheapest-house screens apply
+    // (src/lib/median-coverage.ts; review of 10 Oct 2026, 0.2a).
+    ...(sort === "price-asc" || under ? notApartmentMarketsWhere() : {}),
   };
+  const filtered = under ? { ...where, medianHousePrice: { ...where.medianHousePrice, lt: under } } : where;
 
   // Skip the DB at build (Railway proxy drops build-time connections); ISR
   // (revalidate above) fills real data on first request. Empty renders cleanly
   // — pagination math clamps and the "No suburbs found" empty state covers it.
   const findManyQuery = () =>
     db.suburb.findMany({
-      where,
+      where: filtered,
       orderBy: buildOrderBy(sort),
       select: {
         slug: true,
@@ -105,10 +124,22 @@ export default async function PriceGuidePage({
       take: PAGE_SIZE,
     });
 
-  const [rows, total] =
-    process.env.NEXT_PHASE === "phase-production-build"
-      ? ([[], 0] as [Awaited<ReturnType<typeof findManyQuery>>, number])
-      : await Promise.all([findManyQuery(), db.suburb.count({ where })]);
+  // One after the other: the runtime pool holds a single connection.
+  const building = process.env.NEXT_PHASE === "phase-production-build";
+  const rows = building ? [] : await findManyQuery();
+  const total = building ? 0 : await db.suburb.count({ where: filtered });
+  // The states the guide lists a median for, to name only the sources it uses.
+  const listedStates = building
+    ? []
+    : (
+        await db.suburb.groupBy({
+          by: ["state"],
+          where: { ...PUBLISHED_HOUSE_MEDIAN, ...notInvertedMedians(db.suburb.fields.medianHousePrice), ...LOCALITIES_ONLY },
+          _count: { _all: true },
+        })
+      )
+        .filter((g) => g._count._all > 0)
+        .map((g) => g.state);
   const suburbs = rows.map(withPublishedSales);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
@@ -138,16 +169,15 @@ export default async function PriceGuidePage({
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
             <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              Updated quarterly
+              Every median we publish
             </span>
           </div>
           <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
-            Median prices,{" "}
-            <span className="italic font-light text-primary">side by side</span>.
+            House prices by suburb,{" "}
+            <span className="italic font-light text-primary">every median we publish</span>.
           </h1>
           <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            Filter and compare the median house and unit prices we publish,
-            suburb by suburb, with the 12-month change where it is measured.
+            {priceGuideLede(total, listedStates)}
           </p>
         </div>
       </section>
@@ -189,6 +219,26 @@ export default async function PriceGuidePage({
             <option value="price-desc">Highest Price</option>
             <option value="price-asc">Lowest Price</option>
             <option value="growth-desc">Highest Growth</option>
+          </select>
+        </div>
+
+        {/* Budget filter: "suburbs under $500,000" */}
+        <div className="flex items-center gap-2">
+          <label htmlFor="under-select" className="text-sm font-sans font-medium text-ink whitespace-nowrap">
+            Median under
+          </label>
+          <select
+            id="under-select"
+            name="under"
+            defaultValue={under ? String(under) : ""}
+            className="rounded-lg border border-line bg-surface-raised px-3 py-2 text-sm font-sans text-ink focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+          >
+            <option value="">Any price</option>
+            {PRICE_UNDER_OPTIONS.map((v) => (
+              <option key={v} value={v}>
+                {formatPrice(v)}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -345,7 +395,7 @@ export default async function PriceGuidePage({
         >
           {page > 1 && (
             <Link
-              href={buildUrl({ state, sort, page: page - 1 })}
+              href={buildUrl({ state, sort, under, page: page - 1 })}
               className="rounded-lg border border-line px-3 py-2 text-sm font-sans text-ink-muted hover:bg-surface-warm transition-colors"
             >
               Previous
@@ -356,7 +406,7 @@ export default async function PriceGuidePage({
           </span>
           {page < totalPages && (
             <Link
-              href={buildUrl({ state, sort, page: page + 1 })}
+              href={buildUrl({ state, sort, under, page: page + 1 })}
               className="rounded-lg border border-line px-3 py-2 text-sm font-sans text-ink-muted hover:bg-surface-warm transition-colors"
             >
               Next
@@ -364,6 +414,27 @@ export default async function PriceGuidePage({
           )}
         </nav>
       )}
+
+      {/* How to read a suburb median */}
+      <section className="mt-10 max-w-3xl">
+        <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-4">How to read a suburb median</h2>
+        <ul className="space-y-3 font-sans text-base text-ink-muted leading-relaxed list-disc pl-5">
+          {HOW_TO_READ_A_MEDIAN.map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
+        <p className="mt-4 font-sans text-sm text-ink-subtle">
+          City by city:{" "}
+          <Link href="/property-market" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">
+            house prices in each capital
+          </Link>
+          {" "}and the{" "}
+          <Link href="/best-suburbs/most-affordable" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">
+            most affordable suburbs
+          </Link>
+          .
+        </p>
+      </section>
 
       {/* Data source note */}
       <div className="mt-8 rounded-2xl border border-line bg-surface-warm p-5 text-sm font-sans text-ink-muted">
@@ -380,8 +451,8 @@ export default async function PriceGuidePage({
           with the selling guide as the softer fallback below. */}
       <ExpertCTA
         headline="Wondering what your own place is worth?"
-        body="Medians tell you the suburb; an appraisal tells you your home. Get a free, no-obligation property appraisal from a top local agent, based on recent sales in your street."
-        ctaLabel="Get a free property appraisal"
+        body="Medians tell you the suburb; an appraisal tells you about your home. Ask for a free, no-obligation appraisal from a local agent: the appraisal page says who receives your details, and tells you if we have no agent for your area."
+        ctaLabel="Ask for a free appraisal"
         href="/appraisal"
       />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 -mt-6 text-center">

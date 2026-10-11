@@ -18,11 +18,18 @@ import type { MedianBasis } from "@/lib/published-medians";
 import {
   GROWTH_RANKED_STATES,
   SALES_BASIS_BY_STATE,
+  WALK_RANKED_UNCAPPED,
+  WALK_SCORE_CAP,
+  WALK_SCORE_DEFINITION,
+  WALK_TIE_NOTE,
   isRanked,
+  isTiedAtWalkCap,
   priceSourceLine,
   type RankingCategory,
 } from "@/lib/ranking-notes";
 import { rentalSourceLabel, monthYear } from "@/lib/rental-labels";
+import { HOUSE_SCREEN_NOTE, coverageShortfall, meetsCoverageFloor, type Coverage } from "@/lib/median-coverage";
+import { officialCityMedian, officialMedianSentence } from "@/lib/data/official-city-medians";
 import type { CapitalCity } from "@/lib/utils/metro";
 import { formatPriceFull } from "@/lib/utils/format";
 
@@ -58,12 +65,53 @@ export function isCityEditionCategory(category: string): category is RankingCate
 }
 
 /**
- * Whether there is a city edition to publish. Read by the page (robots) and
- * by the city sitemap, from the same query, so the sitemap lists exactly
- * what the pages declare.
+ * The categories ranked on a published median (price, change, yield). Their
+ * pool must also clear the coverage floor (src/lib/median-coverage.ts): on
+ * 10 Oct 2026 Brisbane's "ten cheapest" came from 17 suburbs, most of them
+ * acreage (review of 10 Oct 2026, suburbs-market 0.2b).
  */
-export function hasCityEdition(category: RankingCategory, state: string, shown: number): boolean {
-  return isCityEditionCategory(category) && isRanked(category, state) && shown >= CITY_EDITION_SIZE;
+export const PRICE_RANKED_CATEGORIES: readonly RankingCategory[] = ["best-rental-yield", "highest-growth", "most-affordable"];
+
+/** The edition's pool against the city's suburbs of 1,000 or more residents, or null where it was not counted. */
+export function editionCoverage(e: Pick<CityEdition, "eligible" | "citySuburbs">): Coverage | null {
+  return e.citySuburbs != null ? { pool: e.eligible, suburbs: e.citySuburbs } : null;
+}
+
+/**
+ * Whether there is a city edition to publish: ten suburbs to show, in a
+ * state the category can rank, and for a price ranking a pool that clears
+ * the coverage floor. Below the floor the page says why and answers
+ * noindex; when the medians return (QLD, NSW) it follows by itself. Read by
+ * the page (robots, through isCityEditionIndexable) and by the city sitemap,
+ * from the same query, so the sitemap lists exactly what the pages declare.
+ */
+export function hasCityEdition(category: RankingCategory, state: string, shown: number, coverage: Coverage | null = null): boolean {
+  if (!isCityEditionCategory(category) || !isRanked(category, state) || shown < CITY_EDITION_SIZE) return false;
+  if (PRICE_RANKED_CATEGORIES.includes(category)) return coverage != null && meetsCoverageFloor(coverage);
+  return true;
+}
+
+/** Why there is no edition, for the page that says so; null when there is one. */
+export function noEditionReason(e: CityEdition): string | null {
+  const shown = top(e).length;
+  const coverage = editionCoverage(e);
+  if (hasCityEdition(e.category, e.city.state, shown, coverage)) return null;
+  if (shown >= CITY_EDITION_SIZE && PRICE_RANKED_CATEGORIES.includes(e.category) && coverage) {
+    return `${coverageShortfall(coverage, `Greater ${e.city.name}`)} Ten suburbs from so few would not stand for the city.`;
+  }
+  return `A city edition needs ${CITY_EDITION_SIZE} suburbs to show, and ${shown === 0 ? "none" : shown === 1 ? "only one" : `only ${shown}`} in Greater ${e.city.name} ${shown === 1 ? "qualifies" : "qualify"} on the rules below.`;
+}
+
+/**
+ * Whether the edition goes in the index and the city sitemap: an edition to
+ * show, on a measure that ranks. Not the walkable editions while the walk
+ * score caps at 100 (src/lib/ranking-notes.ts): their top ten tie at the cap
+ * and are listed alphabetically, which is not a ranking to put in search
+ * (review of 10 Oct 2026, suburbs-market 0.1a). The page still renders.
+ */
+export function isCityEditionIndexable(category: RankingCategory, state: string, shown: number, coverage: Coverage | null = null): boolean {
+  if (category === "most-walkable" && !WALK_RANKED_UNCAPPED) return false;
+  return hasCityEdition(category, state, shown, coverage);
 }
 
 export function cityEditionPath(category: RankingCategory, citySlug: string): string {
@@ -107,6 +155,20 @@ export interface CityEdition {
   eligible: number;
   /** The period the medians describe, from the sales feed ("calendar 2025", "2024"). */
   salesPeriod: string | null;
+  /** Walkable only: eligible suburbs tied at the capped walk score of 100. */
+  atCap?: number;
+  /** Price rankings: the city's suburbs of 1,000 or more residents, for the coverage floor. */
+  citySuburbs?: number | null;
+}
+
+/** The suburbs among the ten that tie at the capped walk score: unnumbered, alphabetical. */
+export function tiedAtCap(e: Pick<CityEdition, "suburbs" | "category">): CityEditionSuburb[] {
+  return e.category === "most-walkable" ? top(e).filter((s) => isTiedAtWalkCap(s.walkScore)) : [];
+}
+
+/** Whether a row carries a rank: not one tied at the walk-score cap. */
+export function isNumbered(category: RankingCategory, s: CityEditionSuburb): boolean {
+  return !(category === "most-walkable" && isTiedAtWalkCap(s.walkScore));
 }
 
 export const top = (e: Pick<CityEdition, "suburbs">) => e.suburbs.slice(0, CITY_EDITION_SIZE);
@@ -181,9 +243,9 @@ export function cityEditionDescription(e: Pick<CityEdition, "category" | "city" 
   const stem: Record<RankingCategory, string> = {
     "best-rental-yield": `Ten Greater ${c} suburbs ranked by gross rental yield on published medians and bond rents`,
     "highest-growth": `Ten Greater ${c} suburbs ranked by measured 12-month change in the published median house price`,
-    "for-families": `Ten Greater ${c} suburbs ranked by school ICSEA, where families are 40% or more of households`,
+    "for-families": `Ten Greater ${c} suburbs ranked by school ICSEA, where family households are 40% or more of households`,
     "most-affordable": `Ten Greater ${c} suburbs ranked by lowest published median house price`,
-    "most-walkable": `Ten Greater ${c} suburbs ranked by walk score`,
+    "most-walkable": `Greater ${c} suburbs by walk score, ties at the ${WALK_SCORE_CAP} cap listed alphabetically`,
     "lowest-flood-risk": `Ten Greater ${c} suburbs by flood risk`,
   };
   // More names first; the closing line goes before a name does.
@@ -200,7 +262,7 @@ export function cityEditionDescription(e: Pick<CityEdition, "category" | "city" 
 }
 
 /** The direct answer under the H1: the ten, named. */
-export function cityEditionLede(e: Pick<CityEdition, "category" | "city" | "suburbs">): string {
+export function cityEditionLede(e: Pick<CityEdition, "category" | "city" | "suburbs"> & { atCap?: number; salesPeriod?: string | null }): string {
   const c = e.city.name;
   const list = joinNames(top(e).map((s) => s.name));
   switch (e.category) {
@@ -209,11 +271,20 @@ export function cityEditionLede(e: Pick<CityEdition, "category" | "city" | "subu
     case "highest-growth":
       return `By the measured 12-month change in the published median house price, the ten fastest growing Greater ${c} suburbs are ${list}.`;
     case "for-families":
-      return `By the average ICSEA of their schools, among suburbs where families with dependants are at least 40% of households, the ten best Greater ${c} suburbs for families are ${list}.`;
+      return `By the average ICSEA of their schools (ACARA), among Greater ${c} suburbs where family households are at least 40% of households (2021 Census), the ten that rank highest are ${list}.`;
     case "most-affordable":
-      return `By published median house price, the ten cheapest Greater ${c} suburbs are ${list}.`;
-    case "most-walkable":
-      return `By walk score, the ten most walkable Greater ${c} suburbs are ${list}.`;
+      // The data period in the first sentence (review of 10 Oct 2026, 0.2c: Perth's are 2024 ABS medians).
+      return `By published median house price${e.salesPeriod ? ` (medians for ${e.salesPeriod})` : ""}, the ten cheapest Greater ${c} suburbs are ${list}.`;
+    case "most-walkable": {
+      const tied = tiedAtCap(e);
+      if (tied.length === 0) return `By walk score, the ten most walkable Greater ${c} suburbs are ${list}.`;
+      const reach = e.atCap ?? tied.length;
+      if (tied.length === top(e).length) {
+        return `The walk score stops at ${WALK_SCORE_CAP}, and ${n(reach)} Greater ${c} suburbs of ${n(CITY_EDITION_MIN_POPULATION)} or more residents reach it, so it cannot rank them. Listed alphabetically, the first ten are ${list}.`;
+      }
+      const rest = top(e).filter((s) => !tied.includes(s));
+      return `${joinNames(tied.map((s) => s.name))} ${tied.length === 1 ? "scores" : "all score"} the maximum walk score of ${WALK_SCORE_CAP}${tied.length === 1 ? "" : ", listed alphabetically"}; after ${tied.length === 1 ? "it" : "them"}, by walk score, come ${joinNames(rest.map((s) => s.name))}.`;
+    }
     default:
       return `The ten Greater ${c} suburbs in this ranking are ${list}.`;
   }
@@ -259,13 +330,20 @@ export function cityEditionMethod(e: CityEdition): string[] {
       lines.push(`Ranked by the 12-month change in the median house price, largest rise first, from ${from} with a published median, a measured change and ${n(CITY_EDITION_MIN_POPULATION)} or more residents.`);
       break;
     case "for-families":
-      lines.push(`Ranked by the average ICSEA (ACARA's Index of Community Socio-Educational Advantage) of the schools we hold for each suburb, highest first, from ${from} where families with dependants are at least 40% of households (2021 Census) and ${n(CITY_EDITION_MIN_POPULATION)} or more people live.`);
+      lines.push(`Ranked by the average ICSEA (ACARA's Index of Community Socio-Educational Advantage) of the schools we hold for each suburb, highest first, from ${from} where family households are at least 40% of households (2021 Census) and ${n(CITY_EDITION_MIN_POPULATION)} or more people live. A family household is any household with a family in it, so couples without children count: the share is not a count of households with children.`);
       break;
     case "most-affordable":
       lines.push(`Ranked by published median house price, lowest first, from ${from} with a published median above $100,000 and ${n(CITY_EDITION_MIN_POPULATION)} or more residents.`);
+      lines.push(HOUSE_SCREEN_NOTE);
+      {
+        // The city-wide figure beside the suburb medians, where a government source publishes one (review 3.2).
+        const official = officialCityMedian(city.slug);
+        if (official) lines.push(`For context, ${officialMedianSentence(official).replace(/^./, (ch) => ch.toLowerCase())}: a median of every house sale, not of suburb medians.`);
+      }
       break;
     case "most-walkable":
-      lines.push(`Ranked by walk score, highest first, from ${from} with a walk score and ${n(CITY_EDITION_MIN_POPULATION)} or more residents. The score counts the shops, services, transport stops and pedestrian infrastructure within walking distance of the suburb's centre, from OpenStreetMap.`);
+      lines.push(`Sorted by walk score, highest first, from ${from} with a walk score and ${n(CITY_EDITION_MIN_POPULATION)} or more residents. ${WALK_SCORE_DEFINITION}`);
+      if (tiedAtCap(e).length > 0) lines.push(`${WALK_TIE_NOTE} They carry no rank number.`);
       break;
     default:
       break;
@@ -311,7 +389,7 @@ function growthSentence(s: CityEditionSuburb): string {
 
 function populationSentence(s: CityEditionSuburb, withFamilies: boolean): string {
   if (!(s.population > 0)) return "";
-  const fam = withFamilies && s.householdsFamily > 0 ? `, and families with dependants are ${s.householdsFamily.toFixed(0)}% of households` : "";
+  const fam = withFamilies && s.householdsFamily > 0 ? `, and family households are ${s.householdsFamily.toFixed(0)}% of households` : "";
   return ` ${n(s.population)} people lived there at the 2021 Census${fam}.`;
 }
 
@@ -324,7 +402,7 @@ const distanceClause = (s: CityEditionSuburb, city: Pick<CapitalCity, "name">) =
   s.kmToCbd != null ? ` is about ${n(s.kmToCbd)} km from the ${city.name} CBD` : "";
 
 /** One paragraph per suburb, built from its figures and nothing else. */
-export function suburbParagraph(e: Pick<CityEdition, "category" | "city">, s: CityEditionSuburb, rank: number): string {
+export function suburbParagraph(e: Pick<CityEdition, "category" | "city"> & { atCap?: number }, s: CityEditionSuburb, rank: number): string {
   const city = e.city;
   const where = distanceClause(s, city);
   const opener = `${s.name} (${s.postcode})${where || " is in Greater " + city.name}.`;
@@ -344,16 +422,21 @@ export function suburbParagraph(e: Pick<CityEdition, "category" | "city">, s: Ci
         ? "The one school we hold for the suburb has an ICSEA of"
         : `The ${countWord(s.schoolCount)} schools we hold for the suburb average an ICSEA of`;
       const schools = s.avgSchoolIcsea != null
-        ? ` ${held} ${icseaText(s.avgSchoolIcsea)} (ACARA), ${rankPhrase(rank, "highest")} in Greater ${city.name} among suburbs where families are at least 40% of households.`
+        ? ` ${held} ${icseaText(s.avgSchoolIcsea)} (ACARA), ${rankPhrase(rank, "highest")} in Greater ${city.name} among suburbs where family households are at least 40% of households.`
         : "";
-      const fam = s.householdsFamily > 0 ? ` Families with dependants are ${s.householdsFamily.toFixed(0)}% of households.` : "";
+      const fam = s.householdsFamily > 0 ? ` Family households are ${s.householdsFamily.toFixed(0)}% of households.` : "";
       return `${opener}${schools}${fam}${priceSentence(s)}${populationSentence(s, false)}`;
     }
     case "most-affordable": {
       return `${opener} The median house price is ${formatPriceFull(s.medianHousePrice)}${basisNote(s)}, ${rankPhrase(rank, "lowest")} published median in Greater ${city.name}.${growthSentence(s)}${s.walkScore != null && s.walkScore > 0 ? ` Walk score ${s.walkScore} out of 100.` : ""}${populationSentence(s, true)}`;
     }
     case "most-walkable": {
-      return `${opener} Its walk score is ${s.walkScore ?? 0} out of 100, ${rankPhrase(rank, "highest")} in Greater ${city.name}, from the shops, transport stops and footpaths within walking distance of its centre.${priceSentence(s)}${populationSentence(s, false)}`;
+      const what = "a count of the shops and services mapped within 1 km of its postcode centroid";
+      if (isTiedAtWalkCap(s.walkScore)) {
+        const others = e.atCap != null && e.atCap > 1 ? `, shared with ${n(e.atCap - 1)} other Greater ${city.name} ${e.atCap - 1 === 1 ? "suburb" : "suburbs"}` : "";
+        return `${opener} Its walk score is ${WALK_SCORE_CAP} out of ${WALK_SCORE_CAP}, the maximum${others}: ${what}, which stops counting at ${WALK_SCORE_CAP}.${priceSentence(s)}${populationSentence(s, false)}`;
+      }
+      return `${opener} Its walk score is ${s.walkScore ?? 0} out of ${WALK_SCORE_CAP}, ${rankPhrase(rank, "highest")} in Greater ${city.name}: ${what}.${priceSentence(s)}${populationSentence(s, false)}`;
     }
     default:
       return opener;
@@ -368,7 +451,7 @@ export function metricSummary(category: RankingCategory, s: CityEditionSuburb): 
     case "highest-growth":
       return s.annualGrowthHouse !== 0 ? `${s.annualGrowthHouse > 0 ? "+" : ""}${s.annualGrowthHouse.toFixed(1)}% in 12 months, median ${formatPriceFull(s.medianHousePrice)}` : undefined;
     case "for-families":
-      return s.avgSchoolIcsea != null ? `Average school ICSEA ${icseaText(s.avgSchoolIcsea)}, families ${s.householdsFamily.toFixed(0)}% of households` : undefined;
+      return s.avgSchoolIcsea != null ? `Average school ICSEA ${icseaText(s.avgSchoolIcsea)}, family households ${s.householdsFamily.toFixed(0)}% of households` : undefined;
     case "most-affordable":
       return s.medianHousePrice > 0 ? `Median house price ${formatPriceFull(s.medianHousePrice)}` : undefined;
     case "most-walkable":
@@ -470,18 +553,23 @@ function topThreeAnswer(e: CityEdition): CityFaq {
     case "for-families":
       return {
         question: `What are the best suburbs in ${city.name} for families?`,
-        answer: `By the average ICSEA of their schools, among Greater ${city.name} suburbs where families with dependants are at least 40% of households, the top three are ${joinNames(rows.map((s) => withFigure(s, (r) => `ICSEA ${icseaText(r.avgSchoolIcsea ?? 0)}`)))}. ICSEA is ACARA's index of the socio-educational backgrounds of a school's students, published for every Australian school; it is a proxy for resourcing and outcomes, not a measure of teaching, so check the in-catchment school for an address before buying. The ranking is drawn from ${n(e.eligible)} suburbs.`,
+        answer: `By the average ICSEA of their schools, among Greater ${city.name} suburbs where family households (couples without children included) are at least 40% of households, the top three are ${joinNames(rows.map((s) => withFigure(s, (r) => `ICSEA ${icseaText(r.avgSchoolIcsea ?? 0)}`)))}. ICSEA is ACARA's index of the socio-educational backgrounds of a school's students, published for every Australian school; it is a proxy for resourcing and outcomes, not a measure of teaching, so check the in-catchment school for an address before buying. The ranking is drawn from ${n(e.eligible)} suburbs.`,
       };
     case "most-affordable":
       return {
         question: `What are the cheapest suburbs in ${city.name}?`,
         answer: `By published median house price, the cheapest Greater ${city.name} suburbs of ${n(CITY_EDITION_MIN_POPULATION)} or more residents are ${joinNames(rows.map((s) => withFigure(s, (r) => formatPriceFull(r.medianHousePrice))))}. ${priceSourceLine(city.state)} A suburb is listed only when its own page publishes the median, and the ranking is drawn from ${n(e.eligible)} suburbs with one.`,
       };
-    case "most-walkable":
+    case "most-walkable": {
+      const tied = tiedAtCap(e);
+      const lead = tied.length === top(e).length && tied.length > 0
+        ? `The walk score cannot say: ${n(e.atCap ?? tied.length)} Greater ${city.name} suburbs of ${n(CITY_EDITION_MIN_POPULATION)} or more residents score the maximum of ${WALK_SCORE_CAP}, and the score stops there. Listed alphabetically, the first three are ${joinNames(rows.map((s) => s.name))}.`
+        : `By walk score, the most walkable Greater ${city.name} suburbs of ${n(CITY_EDITION_MIN_POPULATION)} or more residents are ${joinNames(rows.map((s) => withFigure(s, (r) => `${r.walkScore} out of ${WALK_SCORE_CAP}`)))}${tied.length > 0 ? `; those at ${WALK_SCORE_CAP} are tied and listed alphabetically` : ""}.`;
       return {
         question: `Which are the most walkable suburbs in ${city.name}?`,
-        answer: `By walk score, the most walkable Greater ${city.name} suburbs of ${n(CITY_EDITION_MIN_POPULATION)} or more residents are ${joinNames(rows.map((s) => withFigure(s, (r) => `${r.walkScore} out of 100`)))}. The score counts the shops, services, transport stops and pedestrian infrastructure within walking distance of the suburb's centre, from OpenStreetMap; 90 and above is exceptional. The ranking is drawn from ${n(e.eligible)} suburbs with a score.`,
+        answer: `${lead} ${WALK_SCORE_DEFINITION} It counts places, not footpaths, transport or hills. The list is drawn from ${n(e.eligible)} suburbs with a score.`,
       };
+    }
     default:
       return { question: `Which are the best suburbs in ${city.name}?`, answer: cityEditionLede(e) };
   }
@@ -507,7 +595,7 @@ function avoidAnswer(e: CityEdition): CityFaq {
   const { city } = e;
   return {
     question: `What suburbs should I stay away from in ${city.name}?`,
-    answer: `We do not publish a list of suburbs to avoid. This page ranks suburbs for families on measured figures, and a suburb missing from it may simply have no school with an ICSEA we hold, a family share under 40% of households or fewer than ${n(CITY_EDITION_MIN_POPULATION)} residents. Each suburb's own page shows its crime figures where the state publishes them and its rents and sales, so check those for the address you are looking at rather than the suburb's reputation.`,
+    answer: `We do not publish a list of suburbs to avoid. This page ranks suburbs for families on measured figures, and a suburb missing from it may simply have no school with an ICSEA we hold, a family-household share under 40% of households or fewer than ${n(CITY_EDITION_MIN_POPULATION)} residents. Each suburb's own page shows its crime figures where the state publishes them and its rents and sales, so check those for the address you are looking at rather than the suburb's reputation.`,
   };
 }
 

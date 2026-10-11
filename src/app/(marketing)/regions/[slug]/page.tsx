@@ -21,11 +21,12 @@ import {
 import {
   getRegionBySlug,
   getRegionSuburbs,
-  getRegionMarket,
   getAllRegionSlugs,
 } from "@/lib/services/region-service";
+import { getRegionRollup } from "@/lib/services/city-market-service";
 import { getProperties } from "@/lib/services/property-service";
-import { buildCityNarrative } from "@/lib/city-narrative";
+import { buildCityNarrative, rentCard, rentSourceText } from "@/lib/city-narrative";
+import { REGION_COVERAGE_MIN_SUBURBS, coverageShortfall } from "@/lib/median-coverage";
 import {
   REGION_MARKET_YEAR,
   buildRegionFaqs,
@@ -38,7 +39,7 @@ import {
 import { commissionOnMedian } from "@/lib/suburb-agents";
 import { STATE_NAMES, type StateCode } from "@/lib/data/commission-rates";
 import { topSuburbsAmong } from "@/lib/data/top-suburbs";
-import { stateRankingLink } from "@/lib/ranking-notes";
+import { priceSourceLine, stateRankingLink } from "@/lib/ranking-notes";
 import { capitalCityFor } from "@/lib/utils/metro";
 import { formatPrice, formatPriceFull } from "@/lib/utils/format";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
@@ -49,6 +50,11 @@ import { SITE_NAME, SITE_URL } from "@/lib/constants";
 // through the same source-trust gates. URLs are unchanged. Where a region
 // has no suburb with a verified median, the page keeps the suburb, school
 // and listing links and claims nothing about prices.
+
+/** Guides written for a region, linked from its page (review of 10 Oct 2026, 3.4). */
+const REGION_GUIDES: Record<string, { href: string; label: string }[]> = {
+  "moreton-bay": [{ href: "/guides/top-5-suburbs-families-moreton-bay", label: "Family suburbs in the Moreton Bay region" }],
+};
 
 interface RegionPageProps {
   params: Promise<{ slug: string }>;
@@ -70,7 +76,9 @@ export async function generateMetadata({ params }: RegionPageProps): Promise<Met
   const region = await getRegionBySlug(slug);
   if (!region) return { title: "Region Not Found" };
 
-  const market = await getRegionMarket(region.region);
+  // The region rollup with its coverage floor and bond rents (review of
+  // 10 Oct 2026, suburbs-market 0.3): Moreton Bay's headline came from 5.
+  const market = await getRegionRollup(region.region);
   const name = regionDisplayName(region.region);
   const title = regionTitle(name, regionHasPrices(market));
   const description = regionDescription(name, region.state, market, region.suburbCount);
@@ -99,7 +107,7 @@ export default async function RegionPage({ params }: RegionPageProps) {
 
   const [suburbs, market] = await Promise.all([
     getRegionSuburbs(region.region),
-    getRegionMarket(region.region),
+    getRegionRollup(region.region),
   ]);
 
   const name = regionDisplayName(region.region);
@@ -137,13 +145,12 @@ export default async function RegionPage({ params }: RegionPageProps) {
   });
   const properties = allProperties.slice(0, 6);
 
-  const housePrice = market.medianHousePrice ? formatPrice(market.medianHousePrice) : "N/A";
-  const unitPrice = market.medianUnitPrice ? formatPrice(market.medianUnitPrice) : "N/A";
   const growth =
     market.medianAnnualGrowth != null
       ? `${market.medianAnnualGrowth > 0 ? "+" : ""}${market.medianAnnualGrowth}%`
-      : "N/A";
-  const rent = market.medianRentHouse ? `$${market.medianRentHouse}/wk` : "N/A";
+      : null;
+  const rent = rentCard(market.rent);
+  const shortfall = coverageShortfall(market.coverage, name, REGION_COVERAGE_MIN_SUBURBS);
 
   const linkChip =
     "inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors";
@@ -209,17 +216,18 @@ export default async function RegionPage({ params }: RegionPageProps) {
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             {market.medianHousePrice ? (
               <>
-                The median house price in {name} is{" "}
-                <span className="font-medium text-ink">{formatPriceFull(market.medianHousePrice)}</span>, the
-                median of {market.pricedSuburbCount.toLocaleString()} suburb medians from verified government
-                sales data. Below: house prices in the busiest suburbs, then the fastest-growing, most affordable
-                and highest-priced suburbs in the {name} region of {stateName}.
+                The typical suburb median house price in the {name} region is{" "}
+                <span className="font-medium text-ink">{formatPriceFull(market.medianHousePrice)}</span>: the
+                median of {market.pricedSuburbCount.toLocaleString()} suburb medians
+                {market.salesPeriod ? `, for ${market.salesPeriod}` : ""}, not a median of every sale. Below: house
+                prices in the busiest suburbs, then {market.topGrowth.length > 0 ? "the fastest-growing, " : ""}most
+                affordable and highest-priced suburbs in the {name} region of {stateName}.
               </>
             ) : (
               <>
                 Suburb profiles, schools and listings across the {region.suburbCount.toLocaleString()} suburbs of
-                the {name} region, {stateName}. Verified sales data has not yet been published for these suburbs,
-                so this page shows no median prices until it is.
+                the {name} region, {stateName}. We do not publish a typical median for the region yet. {shortfall}
+                {market.busiest.length > 0 ? " The suburb medians that are published are listed below." : ""}
               </>
             )}
           </p>
@@ -231,13 +239,27 @@ export default async function RegionPage({ params }: RegionPageProps) {
         <section className="bg-surface-raised border-b border-line">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
             <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-6">
-              Median house price in {name}.
+              Typical suburb median in {name}.
             </h2>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <StatCard icon={<Home className="w-4 h-4" />} label="Median house" value={housePrice} sub="median of suburb medians" />
-              <StatCard icon={<Building2 className="w-4 h-4" />} label="Median unit" value={unitPrice} sub="median of suburb medians" />
-              <StatCard icon={<TrendingUp className="w-4 h-4" />} label="Typical annual growth" value={growth} sub="house prices, last 12 months" />
-              <StatCard icon={<DollarSign className="w-4 h-4" />} label="Median house rent" value={rent} sub="weekly, across tracked suburbs" />
+              <StatCard
+                icon={<Home className="w-4 h-4" />}
+                label="Typical suburb median"
+                value={formatPrice(market.medianHousePrice ?? 0)}
+                sub={`houses, median of ${market.pricedSuburbCount.toLocaleString()} suburb medians`}
+              />
+              {market.medianUnitPrice && (
+                <StatCard
+                  icon={<Building2 className="w-4 h-4" />}
+                  label="Typical suburb unit median"
+                  value={formatPrice(market.medianUnitPrice)}
+                  sub={`median of ${market.unitSuburbCount.toLocaleString()} suburb medians`}
+                />
+              )}
+              {growth && (
+                <StatCard icon={<TrendingUp className="w-4 h-4" />} label="Typical 12-month change" value={growth} sub="house medians, where the feed measures one" />
+              )}
+              {rent && <StatCard icon={<DollarSign className="w-4 h-4" />} label={rent.label} value={rent.value} sub={rent.sub} />}
             </div>
           </div>
         </section>
@@ -315,7 +337,8 @@ export default async function RegionPage({ params }: RegionPageProps) {
               {commission && market.medianHousePrice && (
                 <p className="mt-4 font-sans text-sm text-ink-muted leading-relaxed">
                   Commission in {stateName} typically runs {commission.lowPct}% to {commission.highPct}%. On the{" "}
-                  {name} median of {formatPriceFull(market.medianHousePrice)} that is{" "}
+                  {name} typical suburb median of {formatPriceFull(market.medianHousePrice)} (
+                  {market.pricedSuburbCount.toLocaleString()} suburbs) that is{" "}
                   {formatPriceFull(commission.lowAmount)} to {formatPriceFull(commission.highAmount)}, before
                   marketing. Rates are negotiable; see the{" "}
                   <Link
@@ -403,6 +426,11 @@ export default async function RegionPage({ params }: RegionPageProps) {
             <Link href={`/regions/${slug}/schools`} className={linkChip}>
               Schools in {region.region}
             </Link>
+            {(REGION_GUIDES[slug] ?? []).map((g) => (
+              <Link key={g.href} href={g.href} className={linkChip}>
+                {g.label}
+              </Link>
+            ))}
             {capital && (
               <Link href={`/property-market/${capital.slug}`} className={linkChip}>
                 {capital.name} house prices
@@ -424,13 +452,9 @@ export default async function RegionPage({ params }: RegionPageProps) {
         <section className="rounded-2xl border border-line bg-surface-warm p-5 text-sm font-sans text-ink-muted">
           <p className="text-xs uppercase tracking-[0.25em] text-ink-subtle mb-2">Data source</p>
           <p className="leading-relaxed">
-            Figures are aggregated from suburb-level medians sourced from state valuers-general, state government
-            sales records and the ABS. Only suburbs whose own page publishes a median contribute to price figures (
-            {market.pricedSuburbCount.toLocaleString()} of {market.suburbCount.toLocaleString()} tracked{" "}
-            {region.region}
-            {" suburbs): "}a verified sales source, and at least five recorded sales where the count is reported.
-            A 12-month change is shown where the state&rsquo;s sales feed measures one, and left out beyond
-            25%.{" "}
+            {priceSourceLine(region.state)}
+            {market.rent ? ` Rents: ${rentSourceText(market.rent)}, the median of the suburbs' latest bond-data medians.` : ""}
+            {` Only suburbs whose own page publishes a median contribute to price figures (${market.pricedSuburbCount.toLocaleString()} of ${market.suburbCount.toLocaleString()} tracked ${region.region} suburbs): a verified sales source, and at least five recorded sales where the count is reported. A typical figure for the region is printed only when at least ${REGION_COVERAGE_MIN_SUBURBS} suburbs and a fifth of its suburbs of 1,000 or more residents have one. A 12-month change is shown where the state's sales feed measures one, and left out beyond 25%. `}
             <Link
               href="/methodology#median-prices"
               className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"

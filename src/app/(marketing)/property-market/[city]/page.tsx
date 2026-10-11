@@ -9,14 +9,24 @@ import { ExpertCTA } from "@/components/journey";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { getCityMarket } from "@/lib/services/city-market-service";
 import { CAPITAL_CITIES, getCapitalCity } from "@/lib/utils/metro";
-import { formatPrice, formatPriceFull } from "@/lib/utils/format";
+import { formatPrice } from "@/lib/utils/format";
 import { MostSearchedSuburbs } from "@/components/suburb/MostSearchedSuburbs";
 import { topSuburbsForCity } from "@/lib/data/top-suburbs";
-import { buildCityNarrative } from "@/lib/city-narrative";
+import {
+  buildCityNarrative,
+  cityMarketDescription,
+  cityMarketHeading,
+  cityMarketLede,
+  cityMarketTitle,
+  cityMedianFaq,
+  rentCard,
+  rentSourceText,
+} from "@/lib/city-narrative";
+import { officialCityMedian } from "@/lib/data/official-city-medians";
+import { COVERAGE_MIN_SUBURBS, coverageShortfall } from "@/lib/median-coverage";
 import { HomeValueAppraisal } from "@/components/journey/HomeValueAppraisal";
 import { StatCard, SuburbTable } from "@/components/market/MarketTables";
-import { stateRankingLink } from "@/lib/ranking-notes";
-import { rollupCovers } from "@/lib/region-market";
+import { priceSourceLine, stateRankingLink } from "@/lib/ranking-notes";
 
 // City-level market pages targeting the "{city} property market" /
 // "{city} house prices" / "median house price {city}" query cluster —
@@ -49,12 +59,13 @@ export async function generateMetadata({
   const market = await getCityMarket(city);
   // Valuation plan item 3: the query cluster is "{city} house prices" /
   // "median house price {city}" / "{city} property market", in that order
-  // of volume, so the title leads with house prices.
-  const title = `${city.name} House Prices & Property Market ${CURRENT_YEAR}: Median, Growth, Suburbs`;
-  const median = market.medianHousePrice
-    ? `The median house price in ${city.name} is ${formatPriceFull(market.medianHousePrice)}. `
-    : "";
-  const description = `${city.name} house prices ${CURRENT_YEAR}: ${median}Median house price by suburb for the twenty busiest suburbs, ${rollupCovers(market)} suburbs across Greater ${city.name}, from verified sales data.`;
+  // of volume, so the title leads with house prices, where the page prints
+  // a typical median; without one it says property market.
+  const title = cityMarketTitle(city, market, CURRENT_YEAR);
+  // Our figure is the typical suburb median, printed only above the
+  // coverage floor; the official figure only where it is verified (review
+  // of 10 Oct 2026, suburbs-market 0.3).
+  const description = cityMarketDescription(city, market, officialCityMedian(city.slug), CURRENT_YEAR);
 
   return {
     title,
@@ -83,28 +94,21 @@ export default async function CityMarketPage({
 
   const market = await getCityMarket(city);
   const stateSlug = city.state.toLowerCase();
-  const pageTitle = `${city.name} House Prices ${CURRENT_YEAR}`;
-  const narrative = buildCityNarrative(city, market);
+  const heading = cityMarketHeading(city, market);
+  const pageTitle = `${heading} ${CURRENT_YEAR}`;
+  const official = officialCityMedian(city.slug);
+  const narrative = buildCityNarrative(city, market, new Date(), { official });
+  const shortfall = coverageShortfall(market.coverage, `Greater ${city.name}`, COVERAGE_MIN_SUBURBS);
 
-  const housePrice = market.medianHousePrice ? formatPrice(market.medianHousePrice) : "N/A";
-  const unitPrice = market.medianUnitPrice ? formatPrice(market.medianUnitPrice) : "N/A";
   const growth =
     market.medianAnnualGrowth != null
       ? `${market.medianAnnualGrowth > 0 ? "+" : ""}${market.medianAnnualGrowth}%`
-      : "N/A";
-  const rent = market.medianRentHouse ? `$${market.medianRentHouse}/wk` : "N/A";
+      : null;
+  const rent = rentCard(market.rent);
 
   // Plain-sentence answers for the page's primary queries, mirrored into
   // FAQPage JSON-LD so SERP/AI answer engines can lift them directly.
-  const faqs: { question: string; answer: string }[] = [];
-  if (market.medianHousePrice) {
-    faqs.push({
-      question: `What is the median house price in ${city.name}?`,
-      answer: `The median house price across Greater ${city.name} is ${formatPriceFull(market.medianHousePrice)}, calculated as the median of ${market.pricedSuburbCount.toLocaleString()} suburb-level medians from verified government sales data.${
-        market.medianUnitPrice ? ` The median unit price is ${formatPriceFull(market.medianUnitPrice)}.` : ""
-      }`,
-    });
-  }
+  const faqs: { question: string; answer: string }[] = [cityMedianFaq(city, market, official, shortfall)];
   if (market.medianAnnualGrowth != null) {
     faqs.push({
       question: `Are ${city.name} house prices rising?`,
@@ -124,7 +128,7 @@ export default async function CityMarketPage({
     const names = market.mostAffordable.slice(0, 3).map((s) => s.name).join(", ");
     faqs.push({
       question: `What are the cheapest suburbs in ${city.name}?`,
-      answer: `Among established suburbs (population 1,000+) with verified sales data, the most affordable Greater ${city.name} suburbs by median house price are ${names}.`,
+      answer: `Among established suburbs (population 1,000+) with a published median, the most affordable Greater ${city.name} suburbs by median house price are ${names}. CBD-core postcodes and apartment markets are left out, because a "house" median among apartments is not a house price. ${priceSourceLine(city.state)}`,
     });
   }
 
@@ -168,28 +172,17 @@ export default async function CityMarketPage({
             Greater {city.name} &middot; {market.suburbCount.toLocaleString()} suburbs tracked
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            {city.name} house prices, <span className="italic text-primary">{CURRENT_YEAR}</span>.
+            {heading}, <span className="italic text-primary">{CURRENT_YEAR}</span>.
           </h1>
           {/* Direct answer sentence for "median house price {city}" — kept as
               plain prose so answer engines can quote it verbatim. */}
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            {market.medianHousePrice ? (
-              <>
-                The median house price in {city.name} is{" "}
-                <span className="font-medium text-ink">
-                  {formatPriceFull(market.medianHousePrice)}
-                </span>
-                , the median of {market.pricedSuburbCount.toLocaleString()} suburb medians from
-                verified government sales data.
-              </>
-            ) : (
-              <>
-                Suburb medians, annual growth and rankings across Greater {city.name}, from
-                verified government sales data.
-              </>
-            )}{" "}
-            Below: house prices in the twenty busiest suburbs, then the fastest-growing, most
-            affordable and highest-priced suburbs in Greater {city.name}.
+            {cityMarketLede(city, market, official, shortfall)}{" "}
+            {market.medianHousePrice
+              ? `Below: house prices in the busiest suburbs, then ${market.topGrowth.length > 0 ? "the fastest-growing, " : ""}most affordable and highest-priced suburbs in Greater ${city.name}.`
+              : market.busiest.length > 0
+                ? `Below: the suburb medians that are published.`
+                : ""}
           </p>
         </div>
       </section>
@@ -198,33 +191,46 @@ export default async function CityMarketPage({
       <section className="bg-surface-raised border-b border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
           <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-6">
-            Median house price in {city.name}.
+            Typical suburb median in {city.name}.
           </h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {official && (
+              <StatCard
+                icon={<Home className="w-4 h-4" />}
+                label={`${official.area} median`}
+                value={formatPrice(official.medianHousePrice)}
+                sub={`${official.source}, ${official.period.replace(/^the /, "")}`}
+              />
+            )}
             <StatCard
               icon={<Home className="w-4 h-4" />}
-              label="Median house"
-              value={housePrice}
-              sub="median of suburb medians"
+              label="Typical suburb median"
+              value={market.medianHousePrice ? formatPrice(market.medianHousePrice) : "Not published"}
+              sub={
+                market.medianHousePrice
+                  ? `houses, median of ${market.pricedSuburbCount.toLocaleString()} suburb medians`
+                  : "too few suburbs with a published median"
+              }
             />
-            <StatCard
-              icon={<Building2 className="w-4 h-4" />}
-              label="Median unit"
-              value={unitPrice}
-              sub="median of suburb medians"
-            />
-            <StatCard
-              icon={<TrendingUp className="w-4 h-4" />}
-              label="Typical annual growth"
-              value={growth}
-              sub="house prices, last 12 months"
-            />
-            <StatCard
-              icon={<DollarSign className="w-4 h-4" />}
-              label="Median house rent"
-              value={rent}
-              sub="weekly, across tracked suburbs"
-            />
+            {market.medianUnitPrice && (
+              <StatCard
+                icon={<Building2 className="w-4 h-4" />}
+                label="Typical suburb unit median"
+                value={formatPrice(market.medianUnitPrice)}
+                sub={`median of ${market.unitSuburbCount.toLocaleString()} suburb medians`}
+              />
+            )}
+            {growth && (
+              <StatCard
+                icon={<TrendingUp className="w-4 h-4" />}
+                label="Typical 12-month change"
+                value={growth}
+                sub="house medians, where the feed measures one"
+              />
+            )}
+            {rent && (
+              <StatCard icon={<DollarSign className="w-4 h-4" />} label={rent.label} value={rent.value} sub={rent.sub} />
+            )}
           </div>
         </div>
       </section>
@@ -257,7 +263,11 @@ export default async function CityMarketPage({
         {/* House prices by suburb: the twenty busiest established suburbs. */}
         <SuburbTable
           as="h2"
-          heading={`House prices by suburb: ${city.name}'s twenty busiest`}
+          heading={
+            market.busiest.length >= 20
+              ? `House prices by suburb: ${city.name}'s twenty busiest`
+              : `House prices by suburb in Greater ${city.name}`
+          }
           rows={market.busiest}
           showGrowth
           showSales
@@ -329,13 +339,10 @@ export default async function CityMarketPage({
         <section className="rounded-2xl border border-line bg-surface-warm p-5 text-sm font-sans text-ink-muted">
           <p className="text-xs uppercase tracking-[0.25em] text-ink-subtle mb-2">Data source</p>
           <p className="leading-relaxed">
-            Figures are aggregated from suburb-level medians sourced from state valuers-general,
-            state government sales records and the ABS. Only suburbs whose own page publishes a
-            median contribute to price figures ({market.pricedSuburbCount.toLocaleString()} of{" "}
-            {market.suburbCount.toLocaleString()} tracked Greater {city.name}
-            {" suburbs): "}a verified sales source, and at least five recorded sales where the count is
-            reported. A 12-month change is shown where the state&rsquo;s sales feed measures one, and
-            left out beyond 25%.{" "}
+            {priceSourceLine(city.state)}
+            {market.rent ? ` Rents: ${rentSourceText(market.rent)}, the median of the suburbs' latest bond-data medians.` : ""}
+            {official ? ` City-wide median: ${official.source}, ${official.period}, read ${new Date(`${official.readOn}T00:00:00Z`).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })}.` : ""}
+            {` Only suburbs whose own page publishes a median contribute to price figures (${market.pricedSuburbCount.toLocaleString()} of ${market.suburbCount.toLocaleString()} tracked Greater ${city.name} suburbs): a verified sales source, and at least five recorded sales where the count is reported. A typical figure is printed only when at least ${COVERAGE_MIN_SUBURBS} suburbs and a fifth of the city's suburbs of 1,000 or more residents have one. A 12-month change is shown where the state's sales feed measures one, and left out beyond 25%. `}
             <Link
               href="/methodology#median-prices"
               className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"

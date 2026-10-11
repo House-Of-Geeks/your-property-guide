@@ -15,9 +15,9 @@ export interface CategoryCommentary {
 export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = {
   "for-families": {
     intro:
-      "Family-friendly suburbs balance four things: schools you'd actually send your kids to, parks and bike paths that get used, walkable neighbourhood retail, and a price point that doesn't lock you out of upgrading rooms when the family grows. We rank by the strongest measurable proxy (school ICSEA) and weight by the share of households that are families with dependents.",
+      "Family-friendly suburbs balance four things: schools you'd actually send your kids to, parks and bike paths that get used, walkable neighbourhood retail, and a price point that doesn't lock you out of upgrading rooms when the family grows. We rank on one measurable proxy, the average ICSEA of a suburb's schools, among suburbs where family households are at least 40% of households. A family household is any household with a family in it, couples without children included, so the share is not a count of households with children.",
     methodology:
-      "Suburbs are scored on average ICSEA across primary and secondary schools (sourced from ACARA), filtered to suburbs where families with dependents make up at least 40% of households (ABS Census 2021). Population-weighted to avoid outliers from very small localities.",
+      "Suburbs are ranked on the average ICSEA of the primary and secondary schools we hold for each suburb (ACARA), among suburbs where family households make up at least 40% of households (ABS Census 2021). A family household includes couples without children. The share of households with dependent children is not used: we do not hold it yet.",
     bestFor:
       "First home buyers planning to start a family in the next 5 years; existing families upsizing into a longer-term home; relocating families researching new areas.",
     faqs: [
@@ -90,9 +90,9 @@ export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = 
   },
   "most-walkable": {
     intro:
-      "Walkability isn't just about cafes, well-connected suburbs with high walk scores tend to retain value better in downturns and attract a wider buyer pool when sold. The walk-score-driven ranking favours inner-ring suburbs with mixed-use streets, transport, and dense neighbourhood retail.",
+      "A walk score says how many everyday shops and services are within a short walk. It favours suburbs with dense neighbourhood retail, and it is capped, so in the busiest suburbs it stops telling them apart.",
     methodology:
-      "Walk score is computed from OpenStreetMap data, counts of nearby amenities, transit stops, and pedestrian-friendly infrastructure within typical walking distance of the suburb centroid. Refreshed quarterly. Higher is better; 90+ is exceptional.",
+      "The walk score is 2 points for each shop, cafe, restaurant, supermarket, pharmacy, bank, gym, library or hospital mapped in OpenStreetMap within 1 km of the suburb's postcode centroid, capped at 100. A suburb with 50 or more such places scores 100, so the suburbs at 100 are tied: they are listed alphabetically, not ranked. Transport stops and footpaths are not in the score.",
     bestFor:
       "Apartment buyers; downsizers who want to walk to local shops; renters of investment properties (walkability is a tenant-demand multiplier); car-free or one-car households.",
     faqs: [
@@ -109,7 +109,7 @@ export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = 
       {
         question: "How does walkability differ from transit score?",
         answer:
-          "Walk score measures access to amenities on foot. Transit score measures public transport access. The two correlate but aren't identical, some apartment-heavy suburbs have moderate walk scores but exceptional transit, and vice versa.",
+          "Our walk score counts shops and services within 1 km; our transit score counts public transport stop positions within 500 m, also from OpenStreetMap. The two are separate counts, so a suburb can score high on one and low on the other.",
       },
     ],
   },

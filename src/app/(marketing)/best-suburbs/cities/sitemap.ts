@@ -1,8 +1,9 @@
 // The best-suburbs city editions, /best-suburbs/{category}/{city}: only the
-// ones with ten suburbs to show. The page answers noindex for the rest, and
-// both read one predicate (hasCityEdition, src/lib/city-editions.ts) from one
-// query (getIndexableCityEditions), so the sitemap lists exactly what the
-// pages declare. The state list stays in ../sitemap.ts, which needs no
+// ones with ten suburbs to show on a measure that ranks (not the walkable
+// editions while the walk score ties at 100). The page answers noindex for
+// the rest, and both read one predicate (isCityEditionIndexable,
+// src/lib/city-editions.ts) from one query (getIndexableCityEditions), so the
+// sitemap lists exactly what the pages declare. The state list stays in ../sitemap.ts, which needs no
 // database; this one does, so it is force-dynamic + unstable_cache like the
 // regions sitemap.
 export const dynamic = "force-dynamic";

@@ -2,17 +2,22 @@ import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY, NON_LOCALITY_SLUGS, NOT_PLACES_VERSION, isNonLocalitySlug } from "@/lib/non-localities";
-import { PUBLISHED_GROWTH, PUBLISHED_HOUSE_MEDIAN, publishedSales } from "@/lib/published-medians";
+import { PUBLISHED_GROWTH, PUBLISHED_HOUSE_MEDIAN, notInvertedMedians, publishedSales } from "@/lib/published-medians";
 import { describeSalesProvenance } from "@/lib/sales-provenance";
-import { isRanked, type RankingCategory } from "@/lib/ranking-notes";
+import { WALK_SCORE_CAP, isRanked, type RankingCategory } from "@/lib/ranking-notes";
 import { yieldFromSql, yieldStates } from "@/lib/services/suburb-rankings-service";
+import { latestBondRents } from "@/lib/services/city-market-service";
+import { passesHouseScreens } from "@/lib/median-coverage";
 import { CAPITAL_CITIES, cityPostcodeSql, cityPostcodeWhere, getCapitalCity, kmToCbd, type CapitalCity } from "@/lib/utils/metro";
 import {
   CITY_EDITION_CATEGORIES,
   CITY_EDITION_MIN_POPULATION,
   CITY_EDITION_POOL,
-  hasCityEdition,
+  CITY_EDITION_SIZE,
+  PRICE_RANKED_CATEGORIES,
+  editionCoverage,
   isCityEditionCategory,
+  isCityEditionIndexable,
   type CityEdition,
   type CityEditionSuburb,
 } from "@/lib/city-editions";
@@ -132,8 +137,16 @@ const yieldFrom = (city: CapitalCity): string | null => {
   return states.length === 0 ? null : yieldFromSql(states, cityPostcodeSql(city));
 };
 
-const growthWhere = (city: CapitalCity) => ({ ...baseWhere(city), ...PUBLISHED_GROWTH });
-const affordableWhere = (city: CapitalCity) => ({ ...baseWhere(city), ...PUBLISHED_HOUSE_MEDIAN, medianHousePrice: { gt: 100000 } });
+// notInvertedMedians: a row whose unit median is above its house median
+// publishes neither (published-medians.hasInvertedMedians), so it is not
+// counted or ranked either.
+const growthWhere = (city: CapitalCity) => ({ ...baseWhere(city), ...PUBLISHED_GROWTH, ...notInvertedMedians(db.suburb.fields.medianHousePrice) });
+const affordableWhere = (city: CapitalCity) => ({
+  ...baseWhere(city),
+  ...PUBLISHED_HOUSE_MEDIAN,
+  ...notInvertedMedians(db.suburb.fields.medianHousePrice),
+  medianHousePrice: { gt: 100000 },
+});
 const walkableWhere = (city: CapitalCity) => ({ ...baseWhere(city), walkScore: { gt: 0 } });
 // Every family suburb in the city with a school ICSEA, ranked here on the
 // average: the state ranking sorts the first 500 it finds (tracker item 49).
@@ -142,6 +155,31 @@ const familiesWhere = (city: CapitalCity) => ({
   householdsFamily: { gt: 40 },
   schools: { some: { icsea: { not: null } } },
 });
+
+/**
+ * The cheapest list's whole pool, screened: every Greater {City} suburb with
+ * a published median above $100,000 and 1,000 or more residents, less the
+ * CBD-core postcodes and the apartment markets (src/lib/median-coverage.ts,
+ * the July 2026 report's screens), cheapest first, a name once. The rent the
+ * screen reads is the suburb's latest bond-data house rent. Read once per
+ * request for the rows and the count.
+ */
+const screenedAffordable = cache(async (city: CapitalCity): Promise<Fetched[]> => {
+  const rows = await db.suburb.findMany({
+    where: affordableWhere(city),
+    select: SELECT,
+    orderBy: [{ medianHousePrice: "asc" }, { name: "asc" }],
+  });
+  const rents = await latestBondRents(rows.map((r) => r.slug));
+  const kept = rows.filter((r) => passesHouseScreens(r, rents.get(r.slug)?.house));
+  return dedupeByName(kept.map((r) => toEditionSuburb(r, city, null)), (r) => r.suburb.name);
+});
+
+/** The city's suburbs of 1,000 or more residents (a name once): the coverage floor's denominator. */
+async function citySuburbCount(city: CapitalCity): Promise<number> {
+  const rows = await db.suburb.findMany({ where: baseWhere(city), select: { name: true }, distinct: ["name"] });
+  return rows.length;
+}
 
 /** The edition's rows, ranked, at most CITY_EDITION_POOL. Read by the page and by the sitemap list. */
 async function fetchRows(category: RankingCategory, city: CapitalCity): Promise<Fetched[]> {
@@ -196,15 +234,8 @@ async function fetchRows(category: RankingCategory, city: CapitalCity): Promise<
       return dedupeByName(rows.map((r) => toEditionSuburb(r, city, null)), byName).slice(0, CITY_EDITION_POOL);
     }
 
-    case "most-affordable": {
-      const rows = await db.suburb.findMany({
-        where: affordableWhere(city),
-        select: SELECT,
-        orderBy: [{ medianHousePrice: "asc" }, { name: "asc" }],
-        take: CITY_EDITION_POOL * 2,
-      });
-      return dedupeByName(rows.map((r) => toEditionSuburb(r, city, null)), byName).slice(0, CITY_EDITION_POOL);
-    }
+    case "most-affordable":
+      return (await screenedAffordable(city)).slice(0, CITY_EDITION_POOL);
 
     case "for-families": {
       const rows = await db.suburb.findMany({ where: familiesWhere(city), select: SELECT });
@@ -243,7 +274,8 @@ async function eligibleCount(category: RankingCategory, city: CapitalCity): Prom
     case "highest-growth":
       return db.suburb.count({ where: growthWhere(city) });
     case "most-affordable":
-      return db.suburb.count({ where: affordableWhere(city) });
+      // The screened pool, a name once: what the ten were ranked from.
+      return (await screenedAffordable(city)).length;
     case "for-families":
       return db.suburb.count({ where: familiesWhere(city) });
     case "most-walkable":
@@ -266,12 +298,25 @@ async function salesPeriodFor(city: CapitalCity, rows: Fetched[]): Promise<strin
   return describeSalesProvenance({ source: priced.statsSource, periodEnd: feed?.dataAsOf ?? null, updatedAt: updated, salesCount: null, suburbName: city.name })?.period ?? null;
 }
 
+/** Walkable only: the eligible suburbs (a name once) tied at the capped walk score, which the score cannot order. */
+async function atCapCount(city: CapitalCity): Promise<number> {
+  const rows = await db.suburb.findMany({
+    where: { ...walkableWhere(city), walkScore: { gte: WALK_SCORE_CAP } },
+    select: { name: true },
+    distinct: ["name"],
+  });
+  return rows.length;
+}
+
 async function fetchCityEdition(category: RankingCategory, city: CapitalCity): Promise<CityEdition> {
   // One after the other: the runtime pool holds a single connection.
   const rows = await fetchRows(category, city);
   const eligible = rows.length > 0 ? await eligibleCount(category, city) : 0;
   const salesPeriod = await salesPeriodFor(city, rows);
-  return { category, city, suburbs: rows.map((r) => r.suburb), eligible, salesPeriod };
+  const atCap = category === "most-walkable" && rows.length > 0 ? await atCapCount(city) : undefined;
+  // The coverage floor's denominator, where a price ranking has ten to show.
+  const citySuburbs = PRICE_RANKED_CATEGORIES.includes(category) && rows.length >= CITY_EDITION_SIZE ? await citySuburbCount(city) : null;
+  return { category, city, suburbs: rows.map((r) => r.suburb), eligible, salesPeriod, atCap, citySuburbs };
 }
 
 /** One fetch per request: generateMetadata and the page share it. */
@@ -283,10 +328,11 @@ export interface IndexableCityEdition {
 }
 
 /**
- * The city editions with ten suburbs to show: the one list the city sitemap
- * submits and the state pages, the category pages and the editions link to.
- * The same query and the same predicate (hasCityEdition) as the page's own
- * robots decision, cached for a day like the other sitemap lists.
+ * The indexable city editions: the one list the city sitemap submits and the
+ * state pages, the category pages and the editions link to. The same query
+ * and the same predicate (isCityEditionIndexable: ten suburbs to show, on a
+ * measure that ranks) as the page's own robots decision, cached for a day
+ * like the other sitemap lists.
  */
 export const getIndexableCityEditions = unstable_cache(
   async (): Promise<IndexableCityEdition[]> => {
@@ -294,14 +340,16 @@ export const getIndexableCityEditions = unstable_cache(
     for (const category of CITY_EDITION_CATEGORIES) {
       for (const city of CAPITAL_CITIES) {
         if (!isRanked(category, city.state)) continue;
-        // The page's own rows query, and the page's own predicate on them.
-        const rows = await fetchRows(category, city);
-        if (hasCityEdition(category, city.state, rows.length)) out.push({ category, citySlug: city.slug });
+        // Never indexable while the walk score ties at 100: no query needed.
+        if (!isCityEditionIndexable(category, city.state, CITY_EDITION_POOL, { pool: Number.MAX_SAFE_INTEGER, suburbs: 1 })) continue;
+        // The page's own edition query, and the page's own predicate on it.
+        const edition = await fetchCityEdition(category, city);
+        if (isCityEditionIndexable(category, city.state, edition.suburbs.length, editionCoverage(edition))) out.push({ category, citySlug: city.slug });
       }
     }
     return out;
   },
-  ["best-suburbs-city-editions:v1", NOT_PLACES_VERSION],
+  ["best-suburbs-city-editions:v3", NOT_PLACES_VERSION],
   { revalidate: 86400, tags: ["sitemap-best-suburbs-cities"] },
 );
 

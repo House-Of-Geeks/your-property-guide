@@ -2,6 +2,12 @@
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
+  FLOOD_HAZARD_FEED_LOADED,
+  WALK_RANKED_UNCAPPED,
+  WALK_TIE_NOTE,
+  isTiedAtWalkCap,
+  listedRows,
+  walkScoreFromAmenities,
   GROWTH_RANKED_STATES,
   YIELD_RANKED_STATES,
   isRanked,
@@ -25,11 +31,57 @@ describe("which states are ranked", () => {
     expect([...YIELD_RANKED_STATES]).toEqual(["VIC", "QLD"]);
     expect(STATES.filter((s) => isRanked("best-rental-yield", s))).toEqual(["VIC", "QLD"]);
   });
-  it("everything else everywhere, and every national page", () => {
+  it("everything else everywhere, and every national page but flood risk", () => {
     for (const c of CATEGORIES) {
+      if (c === "lowest-flood-risk") continue;
       expect(isRanked(c, null), c).toBe(true);
       if (c !== "highest-growth" && c !== "best-rental-yield") for (const s of STATES) expect(isRanked(c, s), `${c} ${s}`).toBe(true);
     }
+  });
+  it("flood risk nowhere until a hazard feed loads (tracker item 49(ii))", () => {
+    expect(FLOOD_HAZARD_FEED_LOADED).toBe(false);
+    expect(isRanked("lowest-flood-risk", null)).toBe(false);
+    for (const s of STATES) expect(isRanked("lowest-flood-risk", s), s).toBe(false);
+    const qld = rankingNote("lowest-flood-risk", "QLD", 16, 900);
+    expect(qld.empty).toBe(true);
+    expect(qld.text).toContain("No flood risk ranking for Queensland yet.");
+    expect(qld.text).toContain("a suburb with no flood record is not a suburb with no flood risk");
+    expect(rankingNote("lowest-flood-risk", null, 50, null).text).toMatch(/^No flood risk ranking yet\./);
+  });
+});
+
+describe("the walk score caps at 100 (review of 10 Oct 2026, 0.1a)", () => {
+  it("is two points an amenity, capped, the same rule the sync writes", () => {
+    expect(walkScoreFromAmenities(0)).toBe(0);
+    expect(walkScoreFromAmenities(37)).toBe(74);
+    expect(walkScoreFromAmenities(49)).toBe(98);
+    expect(walkScoreFromAmenities(50)).toBe(100);
+    expect(walkScoreFromAmenities(400)).toBe(100);
+    const sync = fs.readFileSync("scripts/sync/sources/walkability.ts", "utf8");
+    expect(sync).toContain("walkScore:   walkScoreFromAmenities(amenityCount),");
+    // the uncapped count is computed and returned, ready for a column to store it
+    expect(sync).toContain("export function computeScores(elements: OverpassElement[]): WalkabilityCounts {");
+    expect(sync).toMatch(/return \{\n\s+amenityCount,/);
+  });
+  it("lists a tie at the cap alphabetically and unnumbered until the lists rank on the uncapped count", () => {
+    expect(WALK_RANKED_UNCAPPED).toBe(false);
+    expect(isTiedAtWalkCap(100)).toBe(true);
+    expect(isTiedAtWalkCap(98)).toBe(false);
+    expect(isTiedAtWalkCap(null)).toBe(false);
+    expect(WALK_TIE_NOTE).toMatch(/^These suburbs all score 100; listed alphabetically\./);
+    const rows = [
+      { name: "Balmain", walkScore: 100 }, { name: "Alexandria", walkScore: 100 }, { name: "Zetland", walkScore: 96 }, { name: "Annandale", walkScore: 100 }, { name: "Yagoona", walkScore: 90 },
+    ];
+    expect(listedRows("most-walkable", rows).map((r) => [r.suburb.name, r.rank])).toEqual([
+      ["Alexandria", null], ["Annandale", null], ["Balmain", null], ["Zetland", 4], ["Yagoona", 5],
+    ]);
+    expect(listedRows("most-affordable", rows).map((r) => r.rank)).toEqual([1, 2, 3, 4, 5]);
+    const listing = fs.readFileSync("src/components/best-suburbs/BestSuburbsListing.tsx", "utf8");
+    expect(listing).toContain("const rows = listedRows(category, ranked);");
+    expect(listing).toContain("{rank ?? \"\"}");
+    expect(listing).toContain("{suburbs.length > 0 && !anyTied && (");
+    const commentary = fs.readFileSync("src/lib/data/category-commentary.ts", "utf8");
+    expect(commentary).not.toMatch(/Refreshed quarterly|90\+ is exceptional|transit stops, and pedestrian/);
   });
 });
 
@@ -84,9 +136,30 @@ describe("the pages", () => {
     expect(urls).toContain("/best-suburbs/best-rental-yield/vic");
     expect(urls).not.toContain("/best-suburbs/highest-growth/vic");
     expect(urls).not.toContain("/best-suburbs/best-rental-yield/nsw");
-    expect(urls).toHaveLength(1 + 6 + 48 - 6 - 6);
+    // flood risk: no national page and no state page until a hazard feed loads
+    expect(urls.filter((u) => u.includes("lowest-flood-risk"))).toEqual([]);
+    expect(urls).toHaveLength(1 + 5 + 48 - 6 - 6 - 8);
     const page = fs.readFileSync("src/app/(marketing)/best-suburbs/[category]/[state]/page.tsx", "utf8");
     expect(page).toContain("robots: isRanked(category, upperState) ? undefined : { index: false, follow: true },");
+    expect(page).toContain("const suburbs = ranked ? await getRankedSuburbs(category, upperState, 50) : [];");
+    const national = fs.readFileSync("src/app/(marketing)/best-suburbs/[category]/page.tsx", "utf8");
+    expect(national).toContain("robots: isRanked(category as RankingCategory, null) ? undefined : { index: false, follow: true },");
+    expect(national).toContain("const suburbs = ranked ? await getRankedSuburbs(cat, undefined, 50) : [];");
+    // the hub, the listings' cross-links and the state pages link only to ranked lists
+    expect(fs.readFileSync("src/app/(marketing)/best-suburbs/page.tsx", "utf8")).toContain("ALL_CATEGORIES.filter((c) => isRanked(c.slug, null))");
+    expect(fs.readFileSync("src/components/best-suburbs/BestSuburbsListing.tsx", "utf8")).toContain(".filter((c) => c !== category && isRanked(c, state))");
+    const states = fs.readFileSync("src/app/(marketing)/states/[state]/page.tsx", "utf8");
+    expect(states).toContain(".filter(({ slug }) => isRanked(slug, upperState))");
+    expect(states).not.toContain("best-suburbs/${slug}?state=");
+  });
+  it("prints no unsourced state commentary (review of 10 Oct 2026, 0.6)", () => {
+    // The blocks said Tasmania pays a $30,000 grant and a 50% duty concession and that the
+    // ACT waives duty for downsizers at any price, against our own sourced duty engine.
+    expect(fs.existsSync("src/lib/data/state-commentary.ts")).toBe(false);
+    for (const f of ["src/components/best-suburbs/BestSuburbsListing.tsx", "src/app/(marketing)/market-reports/[state]/page.tsx"]) {
+      const text = fs.readFileSync(f, "utf8");
+      expect(text, f).not.toMatch(/STATE_COMMENTARY|state-commentary|Buyer tip|Watch out/);
+    }
   });
   it("the methodology says what is done", () => {
     const text = fs.readFileSync("src/lib/data/category-commentary.ts", "utf8");
