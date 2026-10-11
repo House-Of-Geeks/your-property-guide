@@ -39,7 +39,7 @@ export function RentalMarketSections({ suburb, slug, model: m, landlord }: { sub
       <section id="current-rent">
         <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">Current rent</p>
         <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-          What it costs to rent in {suburb.name} now.
+          The latest published rents in {suburb.name}.
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {c.house && <MetricCard label="Houses (median)" value={`${money(c.house)}/wk`} sub={changeText(m.change?.house ?? null)} />}

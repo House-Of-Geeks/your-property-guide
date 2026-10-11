@@ -234,7 +234,7 @@ export function workedFeeLineAll(name: string, rent: PublishedAllRent, fees: Sta
   const letting = lettingFeeDollars(rent.weekly, fees.lettingWeeks);
   if (annual === null || letting === null) return null;
   return (
-    `At ${name}'s median rent of ${money(rent.weekly)} a week across all dwellings (${rent.label}, ${rent.when}), ` +
+    `At ${name}'s median rent of ${money(rent.weekly)} a week across all dwellings (${rent.label}, ${rent.span}), ` +
     `${withArticle(formatPct(fees.managementPct))} management fee is about ${money(annual)} a year, ` +
     `and a letting fee of ${formatWeeksOfRent(fees.lettingWeeks)} is about ${money(letting)} each time a new tenant signs.`
   );
@@ -309,7 +309,7 @@ export function rentalAppraisalFaqs(name: string, rent: PublishedRent | null, al
   const median = rent
     ? ` In ${name} the median house rent is ${money(rent.house)} a week (${rent.label}, ${rent.when}), which is the middle of the market rather than a quote for your property.`
     : allRent
-      ? ` In ${name} the median rent across all dwellings is ${money(allRent.weekly)} a week (${allRent.label}, ${allRent.when}), which is the middle of the market rather than a quote for your property.`
+      ? ` In ${name} the median rent across all dwellings is ${money(allRent.weekly)} a week (${allRent.label}, ${allRent.span}), which is the middle of the market rather than a quote for your property.`
       : "";
   return [
     {

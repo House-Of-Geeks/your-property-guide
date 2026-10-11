@@ -144,13 +144,13 @@ describe("the landlord blocks on an all-dwellings rent", () => {
     expect(m.rent).toBeNull();
     expect(m.yieldHouse).toBeNull();
     expect(m.allRent).toMatchObject({ weekly: 900, label: "WA rental bond data", when: "September 2026", bonds: 53, changePct: 0 });
-    expect(m.workedLine).toBe("At Nedlands's median rent of $900 a week across all dwellings (WA rental bond data, September 2026), an 8.7% management fee is about $4,072 a year, and a letting fee of 1.7 weeks' rent is about $1,530 each time a new tenant signs.");
+    expect(m.workedLine).toBe("At Nedlands's median rent of $900 a week across all dwellings (WA rental bond data, July to September 2026), an 8.7% management fee is about $4,072 a year, and a letting fee of 1.7 weeks' rent is about $1,530 each time a new tenant signs.");
     const invest = m.faqs.find((f) => f.question === "Is Nedlands a good rental investment?");
     expect(invest?.answer).toContain("No gross yield is worked out for Nedlands here");
     expect(invest?.answer).toContain("a median rent of $900 a week across all dwellings in July to September 2026 (WA rental bond data, 53 bonds), the same as a year earlier.");
     expect(words(invest!.answer)).toBeGreaterThanOrEqual(40);
     const appraisal = m.faqs.find((f) => f.question === "What is involved in a rental appraisal?");
-    expect(appraisal?.answer).toContain("In Nedlands the median rent across all dwellings is $900 a week (WA rental bond data, September 2026)");
+    expect(appraisal?.answer).toContain("In Nedlands the median rent across all dwellings is $900 a week (WA rental bond data, July to September 2026)");
   });
   it("report the change when there is one", () => {
     const rent = publishedAllDwellingsRent([waRow("2026-Q3", 990, 40), waRow("2025-Q3", 900, 60)], nedlands())!;
