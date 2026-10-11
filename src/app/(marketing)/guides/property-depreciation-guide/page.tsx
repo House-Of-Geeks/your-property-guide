@@ -4,6 +4,7 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -12,13 +13,30 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 
+const ATO_CAPITAL_WORKS = {
+  label: "ATO: Work out your capital works deductions",
+  href: "https://www.ato.gov.au/individuals-and-families/investments-and-assets/property-and-land/residential-rental-properties/rental-expenses/capital-expenses/work-out-your-capital-works-deductions",
+  note: "Last updated 22 June 2026, read 11 October 2026. 2.5% for residential construction started after 15 September 1987, 40 years from completion, estimates by a quantity surveyor, and the 9 May 2017 rule for second-hand assets.",
+};
+const ATO_COST_BASE = {
+  label: "ATO: Cost base adjustments for capital works",
+  href: "https://www.ato.gov.au/individuals-and-families/investments-and-assets/capital-gains-tax/calculating-your-cgt/cost-base-adjustments-for-capital-works",
+  note: "Last updated 22 June 2026, read 11 October 2026.",
+};
+const EFFECTIVE_LIFE = {
+  label: "Income Tax Assessment (Effective Life of Depreciating Assets) Determination 2025 (LI 2025/20), residential property operators (67110)",
+  href: "https://www.ato.gov.au/law/view/view.htm?docid=%22OPS%2FLI202520%2F00001%22",
+  note: "The Commissioner's effective lives used in the table and the worked example, read 11 October 2026.",
+};
+
 const FRONTMATTER: GuideFrontmatter = {
-  title: "Property depreciation: how investors maximise tax deductions (2026)",
+  title: "Property Depreciation Schedule: What Investors Claim (2026)",
+  h1: "Property depreciation and tax depreciation schedules: what investors can claim (2026)",
   description:
-    "Division 40 vs Division 43 explained, who can claim, the 2017 second-hand plant and equipment rule change, quantity surveyor reports, worked examples, and how to claim in your return.",
+    "What a tax depreciation schedule includes, capital works at 2.5% for 40 years, plant and equipment lives, the 2017 second-hand rule and how to claim.",
   slug: "property-depreciation-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -47,11 +65,11 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "Property depreciation is a non-cash tax deduction for investment properties. You don't physically spend money to claim it, the deduction reflects the gradual decline in value of the building and its fittings.",
-  "Division 43 (capital works) covers the building structure: 2.5% per year for 40 years from construction date, on properties built after 16 September 1987.",
+  "Division 43 (capital works) covers the building structure: 2.5% a year for 40 years from when construction was completed, for residential construction that started after 15 September 1987 (ATO).",
   "Division 40 (plant and equipment) covers removable fittings: carpet, blinds, hot water systems, appliances. Each has its own ATO-set effective life.",
   "The 2017 rule change blocks Division 40 claims on existing plant and equipment in established properties bought after 9 May 2017. Division 43 is unaffected.",
-  "A Quantity Surveyor (QS) tax depreciation schedule costs $500 to $800 and is the ATO-accepted way to maximise and substantiate claims. The fee is itself tax deductible.",
-  "On a typical new $650,000 investment property, year-one deductions of $15,000+ can save $5,500 in tax at a 37% marginal rate. Over 40 years, depreciation alone can save $130,000+.",
+  "Without the builder's invoices, the ATO accepts a construction cost estimate from a quantity surveyor or another independent qualified person, usually set out in a tax depreciation schedule. The fee is itself tax deductible.",
+  "In our worked example, a new $650,000 investment property generates $15,600 of deductions in year one, saving about $5,770 at a 37% marginal rate before the Medicare levy. Over 40 years the capital works deduction alone adds up to the full construction cost.",
 ];
 
 const TOC: GuideTOCEntry[] = [
@@ -60,7 +78,10 @@ const TOC: GuideTOCEntry[] = [
   { id: "div-40",             label: "Division 40: plant and equipment" },
   { id: "who-can-claim",      label: "Who can claim depreciation?" },
   { id: "2017-change",        label: "The 2017 second-hand rule change" },
-  { id: "qs-report",          label: "Quantity surveyor report" },
+  { id: "qs-report",          label: "What a depreciation schedule includes" },
+  { id: "own-schedule",       label: "Can I create my own schedule?" },
+  { id: "how-long",           label: "How long can you depreciate?" },
+  { id: "ato-tables",         label: "The ATO's effective life tables" },
   { id: "worked-example",     label: "Worked example" },
   { id: "new-vs-established", label: "New vs established properties" },
   { id: "how-to-claim",       label: "How to claim in your tax return" },
@@ -85,12 +106,12 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I claim depreciation on an old established property?",
     answer:
-      "Partially. Division 43 still applies if construction commenced after 16 September 1987, regardless of when you bought it. You inherit the remaining years of the 40-year schedule. Division 40 (plant and equipment) cannot be claimed on existing fittings if you bought the property after 9 May 2017, but you can claim Division 40 on any new fittings you install yourself.",
+      "Partially. Division 43 still applies if residential construction started after 15 September 1987, regardless of when you bought it. You inherit the remaining years of the 40-year schedule. Division 40 (plant and equipment) cannot be claimed on existing fittings if you bought the property after 9 May 2017, but you can claim Division 40 on any new fittings you install yourself.",
   },
   {
     question: "Should I buy new or established for depreciation?",
     answer:
-      "New properties give significantly higher depreciation: full 40-year Division 43 ahead of you, plus full Division 40 on all original fittings. An established 20-year-old property has roughly half the Division 43 life remaining and (post-2017) no Division 40 on existing fittings. New properties typically generate $15,000+ in year-one deductions vs $5,000 to $8,000 on established.",
+      "New properties give significantly higher depreciation: full 40-year Division 43 ahead of you, plus full Division 40 on all original fittings. An established 20-year-old property has roughly half the Division 43 life remaining and (post-2017) no Division 40 on existing fittings. In our worked example a new property generates $15,600 of deductions in year one; an established one bought after 9 May 2017 gets only the remaining capital works and any new fittings you add.",
   },
   {
     question: "Is depreciation worth claiming if my property is positively geared?",
@@ -121,13 +142,19 @@ export default function PropertyDepreciationGuidePage() {
         <p>
           Depreciation rules are complex and have changed over time. Always
           consult a registered tax agent or accountant before claiming
-          depreciation deductions. Quantity surveyor reports should be
-          prepared by a qualified ATO-recognised QS.
+          depreciation deductions. A construction cost estimate should come
+          from a quantity surveyor or another independent qualified person
+          (ATO).
         </p>
       </Callout>
 
       <h2 id="what-is">What property depreciation is</h2>
       <p className="lead">
+        A tax depreciation schedule, prepared by a quantity surveyor, sets out
+        what you can claim each year on a rental property: capital works on the
+        building and the decline in value of plant and equipment.
+      </p>
+      <p>
         In Australia, investment property owners can claim a tax deduction for
         the gradual wear and tear of a property&rsquo;s structure and its
         internal fittings. This is called <strong>depreciation</strong>, and it
@@ -154,8 +181,8 @@ export default function PropertyDepreciationGuidePage() {
       </p>
       <Callout variant="info" title="Key Division 43 rules">
         <p>
-          <strong>Rate.</strong> 2.5% per year for 40 years from the date of construction.<br />
-          <strong>Eligibility cutoff.</strong> Only properties with construction commenced after 16 September 1987 qualify.<br />
+          <strong>Rate.</strong> 2.5% a year, for 40 years from the date construction was completed.<br />
+          <strong>Eligibility cutoff.</strong> Residential construction that started after 15 September 1987. (Construction from 18 July 1985 to 15 September 1987 was deductible at 4%, a period that has now run out.)<br />
           <strong>Based on.</strong> Original construction cost (not purchase price).<br />
           <strong>Claimed by.</strong> Any investor owning a rental property, regardless of whether it was new or established when purchased.
         </p>
@@ -166,7 +193,7 @@ export default function PropertyDepreciationGuidePage() {
       </p>
       <ul>
         <li>Annual Division 43 deduction: $400,000 × 2.5% = <strong>$10,000/year</strong></li>
-        <li>Available for 40 years from construction commencement</li>
+        <li>Available for 40 years from when construction was completed</li>
         <li>Remaining years available depends on construction date and when you purchased</li>
       </ul>
       <p>
@@ -177,8 +204,8 @@ export default function PropertyDepreciationGuidePage() {
         amount.
       </p>
       <p>
-        <strong>Properties built before 16 September 1987</strong> are not
-        eligible for Division 43 deductions, regardless of when you purchased
+        <strong>Homes whose construction started before 16 September 1987</strong>{" "}
+        have no Division 43 deduction left, regardless of when you purchased
         them. This excludes many older inner-city terrace houses, period homes,
         and pre-war properties.
       </p>
@@ -198,18 +225,21 @@ export default function PropertyDepreciationGuidePage() {
           </tr>
         </thead>
         <tbody>
-          <tr><td>Carpet</td><td>10 years</td><td>Division 40</td></tr>
-          <tr><td>Blinds and curtains</td><td>6 years</td><td>Division 40</td></tr>
-          <tr><td>Hot water system</td><td>12 years</td><td>Division 40</td></tr>
-          <tr><td>Air conditioning unit</td><td>10 years</td><td>Division 40</td></tr>
-          <tr><td>Oven and cooktop</td><td>12 years</td><td>Division 40</td></tr>
-          <tr><td>Dishwasher</td><td>10 years</td><td>Division 40</td></tr>
-          <tr><td>Ceiling fans</td><td>15 years</td><td>Division 40</td></tr>
-          <tr><td>Solar panels</td><td>20 years</td><td>Division 40</td></tr>
+          <tr><td>Carpet</td><td>8 years</td><td>Division 40</td></tr>
+          <tr><td>Window blinds, internal</td><td>10 years</td><td>Division 40</td></tr>
+          <tr><td>Window curtains</td><td>6 years</td><td>Division 40</td></tr>
+          <tr><td>Hot water system, electric or gas</td><td>12 years</td><td>Division 40</td></tr>
+          <tr><td>Air conditioning, room unit</td><td>10 years</td><td>Division 40</td></tr>
+          <tr><td>Oven or stove</td><td>12 years</td><td>Division 40</td></tr>
+          <tr><td>Dishwasher</td><td>8 years</td><td>Division 40</td></tr>
+          <tr><td>Ceiling fans</td><td>5 years</td><td>Division 40</td></tr>
+          <tr><td>Solar power generating system</td><td>20 years</td><td>Division 40</td></tr>
         </tbody>
       </table>
       <p>
-        The ATO sets the effective life for each asset type. Depreciation can
+        The Commissioner of Taxation sets an effective life for each asset type
+        (the lives above are from the 2025 determination, LI 2025/20, for
+        residential property operators); you can use it or work out your own. Depreciation can
         be claimed using either the <em>diminishing value method</em>{" "}
         (front-loaded, higher deductions in early years) or the{" "}
         <em>prime cost method</em> (straight-line, equal deductions each year).
@@ -222,7 +252,7 @@ export default function PropertyDepreciationGuidePage() {
       <ul>
         <li>Owns a rental property (or property available for rent)</li>
         <li>Derives rental income from the property</li>
-        <li>Has an eligible property (construction commenced after 16 September 1987 for Division 43)</li>
+        <li>Has an eligible property (residential construction started after 15 September 1987 for Division 43)</li>
       </ul>
       <p>
         Importantly, depreciation is only available on investment properties,
@@ -260,7 +290,7 @@ export default function PropertyDepreciationGuidePage() {
         </tbody>
       </table>
 
-      <h2 id="qs-report">Quantity surveyor report</h2>
+      <h2 id="qs-report">What a tax depreciation schedule includes</h2>
       <p>
         A <strong>tax depreciation schedule</strong> prepared by a qualified
         Quantity Surveyor (QS) is the standard way to maximise and substantiate
@@ -274,22 +304,47 @@ export default function PropertyDepreciationGuidePage() {
         <li>Year-by-year depreciation schedule for the next 40 years</li>
         <li>Both diminishing value and prime cost methods shown</li>
       </ul>
-      <p>Cost of a QS depreciation schedule:</p>
-      <ul>
-        <li><strong>Residential properties.</strong> $500 to $800 for an initial schedule</li>
-        <li><strong>Commercial properties.</strong> $700 to $1,500+</li>
-      </ul>
       <p>
-        The QS fee itself is tax deductible as an expense of managing your
-        investment property. Given that the schedule can generate tens of
-        thousands of dollars in deductions over its lifetime, the cost is
-        almost always worth it.
+        The fee for the estimate is tax deductible (ATO). Ask two or three
+        quantity surveyors for a quote; your accountant or property manager
+        can usually suggest a local firm.
       </p>
+
+      <h2 id="own-schedule">Can I create my own depreciation schedule?</h2>
       <p>
-        Well-known ATO-recognised QS firms include BMT Tax Depreciation,
-        Washington Brown, and MCG Quantity Surveyors, but there are many
-        others. Your accountant or property manager can usually recommend a
-        local firm.
+        Partly. If you know the actual construction cost, for example because
+        you built the property and kept the invoices, you can work out the
+        capital works deduction yourself: the cost times 2.5% a year, for the
+        part of the year the property earned income. If you don&rsquo;t, the
+        ATO says you can get an estimate from a quantity surveyor or another
+        independent qualified person, and claim the fee. Plant and equipment
+        you can work out yourself from what each item cost and its effective
+        life, using the ATO&rsquo;s depreciation tools.
+      </p>
+
+      <h2 id="how-long">How long can you depreciate a rental property in Australia?</h2>
+      <p>
+        The building: 40 years from when construction was completed, at 2.5% a
+        year, for residential construction that started after 15 September
+        1987. A buyer inherits whatever is left of the 40 years. Plant and
+        equipment: over each item&rsquo;s effective life, from 5 years for
+        ceiling fans to 20 years for a solar power system (LI 2025/20). From
+        1 July 2027, on an established home bought after 7:30pm AEST on
+        12 May 2026, these deductions count towards the rental loss that is
+        carried forward rather than reducing tax on your wages (see our{" "}
+        <Link href="/guides/negative-gearing-changes-2026-budget">negative gearing changes explainer</Link>).
+      </p>
+
+      <h2 id="ato-tables">What are the depreciation tables for ATO assets?</h2>
+      <p>
+        The Commissioner&rsquo;s effective lives are set out in a legislative
+        instrument, the Income Tax Assessment (Effective Life of Depreciating
+        Assets) Determination 2025 (LI 2025/20). Its residential property
+        operators table lists the assets in a rental home, such as carpet (8
+        years), internal blinds (10 years), dishwashers (8 years) and electric
+        or gas hot water systems (12 years). Under the diminishing value
+        method, the yearly rate is 200% divided by the effective life, so 25%
+        a year for carpet.
       </p>
 
       <h2 id="worked-example">Worked example</h2>
@@ -311,16 +366,16 @@ export default function PropertyDepreciationGuidePage() {
         </thead>
         <tbody>
           <tr><td>Division 43 (capital works)</td><td>$370,000 × 2.5%</td><td><strong>$9,250</strong></td></tr>
-          <tr><td>Division 40, carpet ($15,000 at DV 20%)</td><td>$15,000 × 20%</td><td><strong>$3,000</strong></td></tr>
-          <tr><td>Division 40, hot water + appliances ($12,000 at DV 18%)</td><td>$12,000 × 18%</td><td><strong>$2,160</strong></td></tr>
-          <tr><td>Division 40, blinds ($3,000 at DV 25%)</td><td>$3,000 × 25%</td><td><strong>$750</strong></td></tr>
-          <tr><td><strong>Total deductions, Year 1</strong></td><td></td><td><strong>$15,160</strong></td></tr>
+          <tr><td>Division 40, carpet ($15,000, 8-year life, DV 25%)</td><td>$15,000 × 25%</td><td><strong>$3,750</strong></td></tr>
+          <tr><td>Division 40, hot water and oven ($12,000, 12-year life, DV 16.67%)</td><td>$12,000 × 16.67%</td><td><strong>$2,000</strong></td></tr>
+          <tr><td>Division 40, internal blinds ($3,000, 10-year life, DV 20%)</td><td>$3,000 × 20%</td><td><strong>$600</strong></td></tr>
+          <tr><td><strong>Total deductions, Year 1</strong></td><td></td><td><strong>$15,600</strong></td></tr>
         </tbody>
       </table>
 
       <KeyFigure
-        value="$5,609"
-        label="Year-one tax saving from depreciation alone, on a new $650,000 investment property at a 37% marginal tax rate. Over 40 years, depreciation can save $130,000+ in tax."
+        value="$5,772"
+        label="Year-one tax saving from depreciation alone, on a new $650,000 investment property at a 37% marginal tax rate (before the Medicare levy). Over 40 years, depreciation can save $130,000+ in tax."
         context="Worked example, diminishing value method"
       />
 
@@ -361,6 +416,8 @@ export default function PropertyDepreciationGuidePage() {
         <Link href="/guides/negative-gearing-australia">Negative Gearing Guide</Link> for
         more detail.
       </p>
+
+      <Sources items={[ATO_CAPITAL_WORKS, EFFECTIVE_LIFE, ATO_COST_BASE]} />
     </GuideArticleLayout>
   );
 }
