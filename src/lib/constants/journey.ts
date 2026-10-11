@@ -106,10 +106,10 @@ export const PERSONAS: readonly Persona[] = [
     order: 5,
     featuredOnHomepage: false,
     cardLabel: "Renovating my home",
-    cardBlurb: "Real-world renovation costs, finance options, builder selection, and what actually adds value.",
+    cardBlurb: "Renovation costs from published cost guides, finance options, builder checks and approvals.",
     hubPath: "/renovating",
     hubHeading: "Renovating your home",
-    hubLede: "Renovation costs in 2026, how to finance the work, how to find a builder you can trust, and which jobs actually return the money at sale. Free, ungated, plain English.",
+    hubLede: "How to finance renovation work, find and check a builder, and which approvals your state requires, with the renovation cost guide and calculator. Free, ungated, plain English.",
     illustration: "/images/illustrations/guides-hero.svg",
     startingPoints: [
       { label: "Renovation cost guide 2026", href: "/guides/renovation-cost-australia-2026", description: "Kitchens, bathrooms, second storeys and full renovations. What they actually cost.", icon: "/images/icons/calculator.svg" },

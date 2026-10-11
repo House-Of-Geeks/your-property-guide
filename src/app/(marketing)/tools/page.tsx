@@ -169,6 +169,13 @@ const GROUPS: ToolGroup[] = [
           "Break-even point on switching home loans, after exit and entry fees.",
         icon: "/images/icons/calculator.svg",
       },
+      {
+        href: "/renovation-cost-calculator",
+        title: "Renovation Cost Calculator",
+        description:
+          "A cost range for a kitchen, bathroom or whole-house renovation, from published 2026 cost guides.",
+        icon: "/images/icons/calculator.svg",
+      },
     ],
   },
   {
