@@ -240,6 +240,18 @@ describe("renovation guide copy", () => {
       expect(PAGE, id).toContain(`id: "${id}"`);
       expect(PAGE, id).toContain(`id="${id}"`);
     }
-    expect(PAGE).toContain('updatedAt: "2026-09-30"');
+    expect(PAGE).toContain('updatedAt: "2026-10-11"');
+  });
+  it("quotes no unsourced return ratios and no national granny flat range (review 10 Oct 2026, F8 and F8c)", () => {
+    const valueFaq = RENOVATION_FAQS.find((f) => f.question === "Will renovating add value at sale?")?.answer ?? "";
+    for (const text of [PAGE, valueFaq]) {
+      expect(text).not.toMatch(/\d(\.\d)?× (to|cost)/);
+      expect(text).not.toMatch(/\d(\.\d)?–\d+(\.\d)?× /);
+      expect(text).not.toContain("$130,000–$220,000");
+      expect(text).not.toMatch(/best ROI/);
+    }
+    expect(PAGE).toContain("/guides/what-to-fix-before-selling-a-house");
+    expect(PAGE).toContain("<h3>What devalues a house</h3>");
+    for (const st of ["nsw", "vic", "qld", "wa", "sa"]) expect(PAGE).toContain(`/guides/granny-flat-guide-${st}`);
   });
 });

@@ -645,6 +645,6 @@ export const RENOVATION_FAQS: RenovationFaq[] = [
   {
     question: "Will renovating add value at sale?",
     answer:
-      "Sometimes, but the maths is often disappointing. As a rough guide: cosmetic work (paint, flooring, styling) returns 3–10× its cost at sale. Kitchen and bathroom renovations return 0.6–1.2× their cost, usually less than you spent. Second storey additions and extensions return 0.7–1.0× their cost in most suburbs (the exception is high-end suburbs where the per-square-metre value justifies the build cost). The renovation premium goes up when the renovation lifts the property into a different buyer pool (e.g. a 2-bed house becomes a family-suitable 4-bed), and down when it over-improves for the suburb.",
+      "Sometimes, but we know of no published, dated Australian study that measures how much of a renovation's cost comes back at sale, so treat any ratio you see with care. What decides it: whether the work lifts the home into a wider buyer pool (a bedroom or bathroom that comparable homes in the suburb already have), whether it over-capitalises for the street, and whether it fixes defects or unapproved work that put buyers off. Compare what similar sold homes nearby offer before you spend, and read our guide to what to fix before selling a house.",
   },
 ];

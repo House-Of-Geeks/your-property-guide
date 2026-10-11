@@ -44,7 +44,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Renovation costs in Australia at September 2026: kitchens, bathrooms, laundries, extensions and rebuilds by finish level, per m² by state, and a calculator.",
   slug: "renovation-cost-australia-2026",
   publishedAt: "2026-05-13",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 17,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -101,7 +101,7 @@ const TOC: GuideTOCEntry[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "Fixed vs Variable Rate Loans Guide",  href: "/guides/fixed-vs-variable-rate-guide",      description: "How home loan rates work, relevant when adding a construction or equity loan." },
-  { title: "Granny Flat Guides by State",         href: "/guides/granny-flat-guide-nsw",             description: "Cost, planning, and approvals for granny flats. Often the highest-ROI renovation move." },
+  { title: "Granny Flat Rules by State",          href: "/guides/granny-flat-guide-nsw",             description: "Approvals and build costs for a granny flat in NSW, with links to VIC, QLD, WA and SA." },
   { title: "How to Sell a House in Australia",    href: "/guides/how-to-sell-a-house-australia",     description: "If you're renovating to sell, read this on what actually moves the price." },
   { title: "How to Choose a Mortgage Broker",     href: "/guides/how-to-choose-a-mortgage-broker",   description: "Renovation finance is broker territory. Most lenders price construction differently." },
   { title: "Borrowing Power Calculator",           href: "/borrowing-power-calculator",               description: "Run the numbers on what your renovation loan looks like before you talk to a broker." },
@@ -381,14 +381,16 @@ export default function RenovationCostAustralia2026Page() {
       <p>
         <small>{EXTENSION_CHECKS.note}</small>
       </p>
-      <h3>Granny flat: $130,000–$220,000</h3>
+      <h3>Granny flats</h3>
       <p>
-        A separate dwelling on your existing block. State-by-state planning
-        rules vary significantly, so read our <Link href="/guides/granny-flat-guide-nsw">granny flat guides</Link> for the full
-        per-state breakdown. Granny flats often have the best ROI of any
-        renovation because they add rental income (or accommodate aging
-        parents / adult children without buying a second property), and they
-        appeal to the investor buyer pool at sale.
+        A granny flat is a separate dwelling with its own approval rules in
+        each state. Our guides set out the rules and a build cost derived from
+        Archicentre Australia&rsquo;s 2026 rates for{" "}
+        <Link href="/guides/granny-flat-guide-nsw">NSW</Link>,{" "}
+        <Link href="/guides/granny-flat-guide-vic">Victoria</Link>,{" "}
+        <Link href="/guides/granny-flat-guide-qld">Queensland</Link>,{" "}
+        <Link href="/guides/granny-flat-guide-wa">Western Australia</Link> and{" "}
+        <Link href="/guides/granny-flat-guide-sa">South Australia</Link>.
       </p>
 
       <MatchCTA kind="builder" />
@@ -486,22 +488,28 @@ export default function RenovationCostAustralia2026Page() {
 
       <h2 id="what-adds-value">What actually adds value at sale</h2>
       <p>
-        If your motivation is selling later for more, the ROI is consistently
-        disappointing. Approximate &quot;recover at sale&quot; ratios in 2026
-        metro markets:
+        We know of no published, dated Australian study that measures how much
+        of a renovation&rsquo;s cost comes back at sale, so this guide quotes
+        no return ratios. What decides it:
       </p>
       <ul>
-        <li><strong>Cosmetic refresh</strong> (paint, flooring, tapware, garden, deep clean): 3× to 10× cost recovered at sale.</li>
-        <li><strong>Kitchen renovation</strong> (mid-range): 0.6× to 1.2× cost recovered.</li>
-        <li><strong>Bathroom renovation</strong>: 0.5× to 1.0× cost recovered.</li>
-        <li><strong>Granny flat</strong> (suburb dependent): 0.8× to 1.4× cost recovered, plus rental income before sale.</li>
-        <li><strong>Second storey or extension</strong>: 0.7× to 1.0× cost recovered in most suburbs; can exceed 1.0× in high-end suburbs where per-m² value is high.</li>
-        <li><strong>Pool</strong>: 0.4× to 0.8× cost recovered.</li>
+        <li><strong>Whether the work lifts the buyer pool.</strong> A change that makes the home suit more of the buyers in your suburb, such as the bedroom or bathroom comparable homes already have, matters more than finishes.</li>
+        <li><strong>Whether it over-capitalises for the suburb.</strong> Spending past what comparable sold homes in the street offer is the most common way to lose money at sale.</li>
+        <li><strong>Whether it fixes what stops a sale.</strong> Defects, unapproved work and tired presentation put buyers off; cosmetic work such as paint, flooring and the garden is the cheapest way to change how a home presents.</li>
       </ul>
       <p>
-        Renovation pays off when it&rsquo;s for you to live in. Renovating
-        purely to flip is usually a worse trade than buying a better
-        property in the first place.
+        Renovation pays off most when it is for you to live in. If you are
+        renovating to sell, our guide to{" "}
+        <Link href="/guides/what-to-fix-before-selling-a-house">what to fix before selling a house</Link>{" "}
+        covers which jobs to do and which to leave.
+      </p>
+      <h3>What devalues a house</h3>
+      <p>
+        Problems a buyer cannot see past: structural defects, unapproved
+        building work and hazardous materials. If your home was built or
+        renovated before 1990 it might contain asbestos (Asbestos Safety and
+        Eradication Agency), so have it checked before you budget. Spending
+        past what the suburb supports also loses money at sale.
       </p>
 
       <h2 id="budgeting-method">How to budget honestly</h2>
@@ -527,6 +535,11 @@ export default function RenovationCostAustralia2026Page() {
 
       <Sources items={[
         ...renovationSourceItems(),
+        {
+          label: "Asbestos Safety and Eradication Agency, Householders and home renovators (homes built or renovated before 1990 might contain asbestos)",
+          href: "https://www.asbestossafety.gov.au/about-asbestos/practical-guidance/householders-and-home-renovators",
+          note: "read 11 October 2026",
+        },
         "State-by-state planning portals (Service NSW Planning, VBA Victoria, QBCC Queensland, etc.) for current approval requirements.",
       ]} />
     </GuideArticleLayout>
