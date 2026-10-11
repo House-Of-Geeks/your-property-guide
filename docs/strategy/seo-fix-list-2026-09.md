@@ -571,3 +571,36 @@ Source: `docs/seo-baselines/2026-09-30/commercial-intent-review.md` (section 3.7
       stock or a builder partner first. Found, not changed: /data prints "0" house & land packages beside "New build
       packages from participating builders" (rule: never print a 0 as a figure). Tests:
       tests/seo/house-and-land-indexability.test.ts.
+
+## Commercial intent review (10 Oct 2026)
+
+Source: `docs/seo/commercial-intent-review-2026-10-10.md` (section numbers below are the review's) and the seven files in
+`docs/seo/commercial-intent-pages-2026-10-10/`. Built by parallel builders on 10 and 11 Oct 2026, one branch per vertical
+from `cb64689`, integrated on `review/commercial-intent-2026-10-10`; one commit per fix; change-log rows dated 2026-10-11.
+Owner decisions (Jos, 10 Oct): apply the label repair if the dry run looks right; a property manager is contracted for
+rental appraisal leads; the /agents profiles are real; no URL changes for now.
+
+- [x] 0.1 Suburb sales labels repaired in production, 11 Oct 2026 (NSW published medians 0 to 1,883, QLD 61 to 280);
+      guard, repair script and provenance test on `fix/ci-data-guard`. **Open, Jos:** redeploy the Railway cron services
+      (quarterly, annual-schools, annual-hazards, annual-overlays) from main once the guard merges, before 1 Jan 2027
+      02:00 UTC; optional CHECK constraint `stats_source_not_rental`; the 6,839 withheld-row relabels (`--apply` without
+      `--trusted-only`); a `sales-vic` run (writes the house sales count).
+- [ ] 0.2 items 1, 4 (buying): first home grants from one sourced file, eleven pages. Branch `fix/ci-buying`. PR pending.
+- [ ] 0.2 items 2, 3, 4 (finance-tax): RBA page, tax law pages, CGT calculator, lending defaults. Branch `fix/ci-finance-tax`. PR pending.
+- [ ] 0.2 item 5 (renting): renters' rights in eight states, rentvesting. Branch `fix/ci-renting-landlords`. PR pending.
+      Before merge: Andy McMaster reviews the rewritten guides that carry his "Reviewed by" line.
+- [ ] 0.2 item 7 (selling): sourced commission table, GST, national guides. Branch `fix/ci-selling`. PR pending.
+- [ ] 0.2 items 8, 9, 10 (rankings-markets, suburb-profiles): rankings that measure what they say, coverage floors,
+      titles in every state, vs pages, duplicates. Branches `fix/ci-rankings-markets`, `fix/ci-suburb-profiles`. PR pending.
+      R3: both change templates (profiles, rental-market, best-suburbs); Jos to decide whether they ship together.
+- [ ] 0.2 items 11, 12, 14 (agents-appraisal, sitewide, lead): promises, /agents wording, Kew East guard, bylines.
+      Branches `fix/ci-agents-appraisal`, `fix/ci-sitewide`, lead branch. PR pending.
+- [ ] 0.2 item 13 (new-homes-renovation): planning law on the granny flat and builder guides, /renovation-cost-calculator.
+      Branch `fix/ci-new-homes-renovation`. PR pending.
+- [ ] After merge: `npm run publish:blogs` (16 posts across finance-tax, buying, selling, renting, rankings); request
+      indexing in the order of the review's 0.4 and each builder's list; IndexNow for the changed URLs.
+- Open, not built (each needs a decision, data or a new route): agents pages indexable on local content (proposed rule and
+  20-page sample in the agents builder's report); city hubs at /best-suburbs/{city}; walkable ranking on an uncapped
+  amenity count (schema column); Census family-composition import; hazard feed for the flood ranking; buyer's agent city
+  pages (needs a partner); "vetted" claims on /about, the specialist showcase and best-deals (does a vetting process
+  exist?); Google Analytics 4; the item 13 rental-market rollout (after 15 Oct); the 30% rent rule and bond refund pages.
