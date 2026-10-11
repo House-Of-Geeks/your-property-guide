@@ -13,3 +13,11 @@ describe("how to sell a house: capital gains tax", () => {
     expect(src).not.toMatch(/with a 50% discount if held for over twelve months/);
   });
 });
+
+describe("how to sell a house: costs (review 10 Oct 2026, selling 0.3 and P8)", () => {
+  it("takes its cost figures from the shared data and links the national cost guide", () => {
+    expect(src).toContain("nationalSellingCost(800_000)");
+    expect(src).not.toMatch(/2\.5% to 4%|1\.5% to 3%|\$3,000 to \$10,000|\$300 to \$700|\$25k/);
+    expect(src).toContain('<Link href="/guides/cost-of-selling-a-house-australia">what it costs to sell a house</Link>');
+  });
+});

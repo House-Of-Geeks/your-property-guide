@@ -18,6 +18,12 @@ import { HowToJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { ATO_REFORM_SOURCE } from "@/lib/data/tax-reform-2027";
+import { nationalRange, pct } from "@/lib/data/commission-rates";
+import { AUCTIONEER, CONVEYANCING, DISCHARGE, MARKETING, lineRange, money, nationalSellingCost } from "@/lib/data/selling-costs";
+
+// Selling-cost figures come from the shared data (commercial-intent review, 10 Oct 2026, selling 0.3).
+const N = nationalRange();
+const COST = nationalSellingCost(800_000);
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "How to Sell a House in Australia (2026)",
@@ -56,7 +62,7 @@ const TLDR = [
   "Selling a house in Australia typically takes 8 to 12 weeks from listing to settlement, with the campaign itself running 4 to 6 weeks.",
   "The single biggest factor in your sale price is the agent you pick. Interview at least three who actually sell in your suburb.",
   "Auction works best for properties with broad appeal in active markets; private treaty suits unique homes, quieter markets, or sellers who want price certainty.",
-  "Total selling costs are typically 2.5% to 4% of sale price (agent commission, marketing, conveyancing, capital gains where applicable).",
+  `Selling an $800,000 house costs ${money(COST.low)} to ${money(COST.high)} across the states before GST on the commission (${COST.lowPct}% to ${COST.highPct}%): agent commission, marketing, conveyancing and your state's documents, plus capital gains tax on an investment.`,
   "The legal stack varies by state. VIC needs a Section 32, NSW a contract with prescribed documents, QLD a disclosure statement from 2025. Get your conveyancer engaged before the agent.",
   "Cosmetic presentation (cleaning, decluttering, styling) returns 3 to 10× its cost. Structural fixes rarely pay for themselves at sale.",
 ];
@@ -94,7 +100,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How much does it cost to sell a house in Australia?",
     answer:
-      "Total selling costs run 2.5% to 4% of the sale price. The components: agent commission (1.5% to 3% plus GST), marketing (typically $3,000 to $10,000, occasionally up to $20,000 for premium campaigns), conveyancing ($800 to $2,500), discharge of mortgage fees ($300 to $700), and any pre-sale repairs or styling. Capital gains tax can be a much larger cost if the property was an investment, see the tax section.",
+      `On an $800,000 house, ${money(COST.low)} to ${money(COST.high)} across the states before GST on the commission, ${COST.lowPct}% to ${COST.highPct}% of the price. The components: agent commission (published averages ${pct(N.low)} to ${pct(N.high)}, plus GST), marketing (an indicative ${lineRange(MARKETING)}), conveyancing (${lineRange(CONVEYANCING)}), your state's documents, a mortgage discharge fee (${lineRange(DISCHARGE)}), and any pre-sale repairs or styling. Capital gains tax can be a much larger cost if the property was an investment, see the tax section.`,
   },
   {
     question: "Can I sell my house without an agent?",
@@ -205,24 +211,28 @@ export default function HowToSellAHouseAustraliaPage() {
 
       <h2 id="selling-costs">What it costs to sell</h2>
       <p>
-        Plan for total selling costs of <strong>2.5% to 4% of the sale
-        price</strong>, before any capital gains tax. On a $900,000 sale
-        that&rsquo;s $22,500 to $36,000. The components:
+        On an $800,000 house, our state cost tables put the total at{" "}
+        <strong>{money(COST.low)} to {money(COST.high)}</strong> before GST on
+        the commission ({COST.lowPct}% to {COST.highPct}% of the price), before
+        any capital gains tax. Our guide to{" "}
+        <Link href="/guides/cost-of-selling-a-house-australia">what it costs to sell a house</Link>{" "}
+        goes through every line by state. The components:
       </p>
       <ul>
-        <li><strong>Agent commission</strong>: 1.5% to 3% of sale price, plus GST. Negotiable, especially above $1.5M.</li>
-        <li><strong>Marketing</strong>: $3,000 to $10,000 typical, $15,000+ for premium campaigns with drone, video and broad print. Paid by seller separately from commission.</li>
-        <li><strong>Conveyancing</strong>: $800 to $2,500 depending on state and complexity.</li>
-        <li><strong>Mortgage discharge</strong>: $300 to $700 in lender fees.</li>
+        <li><strong>Agent commission</strong>: published averages and medians of {pct(N.low)} to {pct(N.high)} of the sale price depending on the state and the area, plus GST. Negotiable; see{" "}
+          <Link href="/guides/real-estate-agent-fees-australia">real estate agent fees by state</Link>.</li>
+        <li><strong>Marketing</strong>: an indicative {lineRange(MARKETING)}, paid by the seller separately from commission and usually whether or not the home sells.</li>
+        <li><strong>Conveyancing</strong>: {lineRange(CONVEYANCING)} depending on state and complexity, plus the documents your state requires.</li>
+        <li><strong>Mortgage discharge</strong>: {lineRange(DISCHARGE)} in lender and registration fees. Fixed-rate break costs are separate.</li>
         <li><strong>Pre-sale prep</strong>: cleaning $300 to $800, decluttering / removalist for staging $500 to $2,000, styling $3,000 to $8,000 for a 6-week campaign, minor repairs as needed.</li>
-        <li><strong>Auction fees</strong> (if auctioning): $400 to $800 for the auctioneer, often bundled into commission.</li>
+        <li><strong>Auction fees</strong> (if auctioning): {lineRange(AUCTIONEER)} for the auctioneer, sometimes included in the agency agreement.</li>
         <li><strong>Capital gains tax</strong>: only on investment properties (see the tax section).</li>
       </ul>
 
       <KeyFigure
-        value="$25k–$35k"
-        label="Typical total selling costs on a $900k property"
-        context="Excluding capital gains tax"
+        value={`${money(COST.low)} to ${money(COST.high)}`}
+        label="Total selling costs on an $800,000 house across the states, before GST on the commission"
+        context="Excluding capital gains tax; the selling costs calculator works your own figures"
       />
 
       <h2 id="preparing-house">Preparing the house</h2>
