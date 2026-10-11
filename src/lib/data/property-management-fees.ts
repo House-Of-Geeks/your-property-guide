@@ -491,6 +491,16 @@ export const PM_FEES_FAQS: PmFaq[] = [
       "About 7.5% of weekly rent, with a letting fee averaging 1.4 weeks' rent (LocalAgentFinder, March 2026). New South Wales (5.8%) and Victoria (5.9%) are the cheapest states; Western Australia and Tasmania (8.7%) the dearest. Regional areas run higher than the capitals everywhere, up to about 12% in regional New South Wales and Queensland (REIQ, December 2023). Add the letting fee and the published extras and the all-in cost runs from about 7% of annual rent at New South Wales' figures to about 12% at Western Australia's (the calculator on this page shows each state).",
   },
   {
+    question: "What does a property manager do in Australia?",
+    answer:
+      "A property manager is a real estate agent who runs a rental for its owner: advertising the property, screening tenants, signing the lease, collecting the rent and chasing arrears, arranging repairs, carrying out routine inspections, holding the bond and representing the owner at the tenancy tribunal. Australian agencies charge an average 7.5% of the rent they collect for this, plus a letting fee averaging 1.4 weeks' rent for each new tenant (LocalAgentFinder, March 2026).",
+  },
+  {
+    question: "Do I still pay the management fee if my property is vacant?",
+    answer:
+      "Not the percentage fee: it is charged on the rent the agency collects, so a month with no rent collected carries no management fee. What a vacancy does cost is the rent you miss and the letting fee, which averages 1.4 weeks' rent when the next tenant signs (LocalAgentFinder, March 2026), plus any advertising the agreement says you pay for. Check the agreement for minimum monthly or administration fees that apply regardless.",
+  },
+  {
     question: "Is the property management fee tax deductible?",
     answer:
       "Yes. Property management fees are deductible against rental income in the year you pay them for a property that is rented or genuinely available for rent, and the same applies to letting fees, lease renewal fees, inspection charges and statement fees, because they are costs of earning the rent (ATO, Rental properties 2025: rental expenses, June 2025). Keep the agency's end-of-financial-year statement: it lists every fee for the return.",

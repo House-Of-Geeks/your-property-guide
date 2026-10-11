@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import {
   GuideArticleLayout,
   Callout,
+  GuideSuburbSearch,
   KeyFigure,
   Sources,
   type GuideFrontmatter,
@@ -83,6 +84,7 @@ const TLDR = [
 ];
 
 const TOC: GuideTOCEntry[] = [
+  { id: "what-pm-does",    label: "What a property manager does" },
   { id: "by-state",        label: "Fees by state (table)" },
   { id: "calculator",      label: "Annual cost calculator" },
   { id: "fee-types",       label: "The 8 fee types" },
@@ -96,7 +98,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "fees-nt",         label: "Northern Territory" },
   { id: "annual-example",  label: "A worked annual example" },
   { id: "negotiable",      label: "What's actually negotiable" },
-  { id: "cheap-vs-good",   label: "Cheap isn't the same as good" },
+  { id: "cheap-vs-good",   label: "How to choose a property manager" },
   { id: "self-managing",   label: "Should you self-manage?" },
   { id: "next-steps",      label: "Next steps" },
 ];
@@ -163,6 +165,18 @@ export default function PropertyManagementFeesGuide() {
           figures; the calculator adds them up for your rent.
         </p>
       </Callout>
+
+      <h2 id="what-pm-does">What does a property manager do?</h2>
+      <p>
+        A property manager is a real estate agent who runs a rental for its
+        owner: finding and screening tenants, collecting the rent, arranging
+        repairs, carrying out routine inspections, holding the bond and
+        representing the owner in disputes. Australian agencies charge an
+        average {PM_NATIONAL.managementAverage}% of the rent they collect for
+        the service, plus a letting fee each time a new tenant signs
+        (LocalAgentFinder, 13 March 2026). The state sections below set out
+        how each state regulates the agreement you sign with them.
+      </p>
 
       <h2 id="by-state">Property management fees by state (2026)</h2>
       <p className="lead">
@@ -240,6 +254,10 @@ export default function PropertyManagementFeesGuide() {
       />
 
       <h2 id="calculator">Annual property management cost calculator</h2>
+      <GuideSuburbSearch
+        title="Look up your suburb's median rent"
+        subtitle="Each suburb profile shows its published rent with the source and period, and links its rental market page. Put that rent into the calculator below."
+      />
       <p>
         Enter the weekly rent and pick the state. The management percentage
         and letting weeks start at the state average from the table, the extra
@@ -391,7 +409,7 @@ export default function PropertyManagementFeesGuide() {
         </p>
       </Callout>
 
-      <h2 id="cheap-vs-good">Cheap isn&rsquo;t the same as good</h2>
+      <h2 id="cheap-vs-good">How to choose a property manager: cheap isn&rsquo;t the same as good</h2>
       <p>
         A 5% manager who lets rent slip into 14-day arrears, or whose vacancies
         stretch from one week to four, easily costs more than an 8% manager who
@@ -404,6 +422,14 @@ export default function PropertyManagementFeesGuide() {
         arrears rate (share of rent more than 7 days late). The good ones will
         tell you. The ones who can&rsquo;t are the ones to skip.
       </p>
+      <p>Other questions worth asking before you sign:</p>
+      <ul>
+        <li>What exactly does the management fee include, and what is charged on top? Get the full schedule in writing.</li>
+        <li>How many properties does each property manager look after, and who covers when they are away?</li>
+        <li>How often do you inspect, and do I get the report with photos?</li>
+        <li>How do you screen applicants, and how fast do you act on late rent?</li>
+        <li>How much notice do I give to end the agreement, and is there an exit fee?</li>
+      </ul>
 
       <h2 id="self-managing">Should you self-manage?</h2>
       <p>
