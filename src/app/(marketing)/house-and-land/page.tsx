@@ -47,7 +47,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
     ? NO_STOCK_DESCRIPTION
     : suburbName
       ? `Browse new house and land packages in ${suburbName}.`
-      : "Browse house and land packages across Australia. New homes from top builders at competitive prices.";
+      : "Browse new house and land packages listed with us: the price, land size, estate and builder for each, and what to check before you enquire.";
   const robots = houseAndLandRobots(live);
   return {
     title,
@@ -100,11 +100,23 @@ export default async function HouseAndLandPage({ searchParams }: PageProps) {
               <>House &amp; land packages</>
             )}
           </h1>
+          {/* Copy that stays true the day stock appears (commercial-intent review,
+              10 Oct 2026, new homes F10): no "top builders" without criteria,
+              and no promised duty saving, which depends on the state and on
+              how the land and building contracts are written. */}
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             {listed
-              ? "New build packages from top Australian builders, with land titled, fixed prices, and stamp-duty savings on the building component."
+              ? "New house and land packages listed by builders and agents, each with its price, land size, estate and builder. Check what the price includes before you enquire."
               : noneListed}
           </p>
+          {listed && (
+            <p className="font-sans text-base text-ink-muted leading-relaxed max-w-2xl mt-4">
+              Whether stamp duty is charged on the land alone or on the whole package depends on your state and on how
+              the land and building contracts are written. Check it with the{" "}
+              <Link href="/stamp-duty-calculator" className="underline hover:text-primary">stamp duty calculator</Link>
+              {" and your conveyancer before you sign."}
+            </p>
+          )}
         </div>
       </section>
 

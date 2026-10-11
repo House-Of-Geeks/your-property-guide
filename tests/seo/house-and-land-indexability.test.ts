@@ -235,6 +235,10 @@ describe("the stocked hub", () => {
     expect(t).not.toContain("No house and land packages are listed");
     for (const p of stock.packages) expect(html).toContain(`href="/house-and-land/${p.slug}"`);
     expect(html).toContain('href="/guides/house-and-land-packages-are-they-worth-it"');
+    // Review 10 Oct 2026, F10: true the day stock appears.
+    expect(t).not.toMatch(/top (Australian )?builders/i);
+    expect(t).not.toMatch(/stamp-duty savings/i);
+    expect(t).toContain("depends on your state and on how the land and building contracts are written");
   });
   it("a suburb with nothing listed says so and links every package", async () => {
     setStock(2);
