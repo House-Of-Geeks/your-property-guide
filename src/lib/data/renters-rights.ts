@@ -76,7 +76,7 @@ export const RENTERS_GUIDES: Record<RentersState, RentersGuide> = {
     state: "ACT",
     slug: "renters-rights-act",
     linkTitle: "Renters' rights in the ACT",
-    blurb: "ACT tenancy rules, bonds and ACAT.",
+    blurb: "An ACT landlord needs a legal ground; the end of a fixed term isn't one.",
   },
   NT: {
     state: "NT",
@@ -464,6 +464,54 @@ export const TAS_RENTERS_SOURCES = {
     label: "Consumer Affairs Tasmania, Court order end to a tenancy (including family violence)",
     href: `${CAT}/ending-a-tenancylease/court-order-end-tenancy`,
     date: "last updated 11 April 2018",
+    read: READ,
+  },
+} as const satisfies Record<string, RentersSource>;
+
+const ACT_GOV = "https://www.act.gov.au/housing-planning-and-property/renting";
+
+/** ACT Government (Justice and Community Safety Directorate) pages behind /guides/renters-rights-act. */
+export const ACT_RENTERS_SOURCES = {
+  laws: {
+    label: "ACT Government, Rental laws in the ACT (Residential Tenancies Act 1997)",
+    href: `${ACT_GOV}/rental-laws-in-the-act`,
+    date: "last updated 21 January 2026",
+    read: READ,
+  },
+  landlordEnding: {
+    label: "ACT Government, Ending a tenancy for landlords (grounds and notice periods)",
+    href: `${ACT_GOV}/ending-a-tenancy-for-landlords`,
+    date: "last updated 8 October 2025",
+    read: READ,
+  },
+  ending: {
+    label: "ACT Government, Ending a tenancy",
+    href: `${ACT_GOV}/ending-a-tenancy`,
+    date: "last updated 7 May 2026",
+    read: READ,
+  },
+  starting: {
+    label: "ACT Government, Starting a tenancy (fixed term becomes periodic; bond)",
+    href: `${ACT_GOV}/starting-a-tenancy`,
+    date: "last updated 8 September 2026",
+    read: READ,
+  },
+  during: {
+    label: "ACT Government, During a tenancy (rent increases, inspections, repairs, modifications)",
+    href: `${ACT_GOV}/during-a-tenancy`,
+    date: "last updated 30 January 2026",
+    read: READ,
+  },
+  before: {
+    label: "ACT Government, Before renting (pets, rent bidding, ceiling insulation standard)",
+    href: `${ACT_GOV}/before-renting`,
+    date: "last updated 8 September 2026",
+    read: READ,
+  },
+  familyViolence: {
+    label: "ACT Government, Ending a tenancy because of domestic or family violence",
+    href: `${ACT_GOV}/ending-a-tenancy-because-of-domestic-or-family-violence`,
+    date: "last updated 7 May 2026",
     read: READ,
   },
 } as const satisfies Record<string, RentersSource>;

@@ -8,6 +8,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { PM_STATE_FEES } from "@/lib/data/property-management-fees";
 import {
+  ACT_RENTERS_SOURCES,
   NSW_RENTERS_SOURCES,
   QLD_RENTERS_SOURCES,
   SA_RENTERS_SOURCES,
@@ -199,6 +200,23 @@ describe("TAS renters' rights guide", () => {
     expect(RENTERS_GUIDES.TAS.blurb).toContain("listed reason");
     for (const s of Object.values(TAS_RENTERS_SOURCES)) {
       expect(s.href).toMatch(/^https:\/\/consumeraffairs\.tas\.gov\.au\//);
+      expect(s.date).toMatch(DATE);
+    }
+  });
+});
+
+describe("ACT renters' rights guide", () => {
+  const src = page("renters-rights-act");
+
+  it("states the ACT's grounds rule and drops the unverified notice periods", () => {
+    expect(src).not.toMatch(/largely abolished/);
+    expect(src).not.toMatch(/8 weeks notice \(one of the longest/);
+    expect(src).not.toMatch(/2 weeks written notice \(longer than most states\), max 4 per year/);
+    expect(src).toContain("the end of a fixed term isn't one");
+    expect(RENTERS_GUIDES.ACT.blurb).toContain("legal ground");
+    expect(src).toContain("/guides/property-management-fees-australia#fees-act");
+    for (const s of Object.values(ACT_RENTERS_SOURCES)) {
+      expect(s.href).toMatch(/^https:\/\/www\.act\.gov\.au\//);
       expect(s.date).toMatch(DATE);
     }
   });
