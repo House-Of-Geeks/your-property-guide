@@ -45,6 +45,15 @@ export function getHEM(dependants: number, opts: HemOptions = {}): number {
  */
 export const REFERENCE_LOAN_RATE = AVERAGE_NEW_VARIABLE_RATE.rate;
 export const REFERENCE_LOAN_RATE_PERIOD = AVERAGE_NEW_VARIABLE_RATE.period;
+/**
+ * The sidebar's "Estimate, not a quote" note on the lending calculators
+ * (borrowing power, affordability, refinancing, bridging). The other
+ * calculators keep CalculatorPageLayout's general line: until 11 Oct 2026 this
+ * text showed on every calculator, the CGT, rental yield and LMI pages included.
+ */
+export const LENDER_POLICY_NOTE =
+  "Real lender policies vary widely, especially around income shading, HEM tables, and existing debts.";
+
 /** APRA's minimum serviceability buffer over the loan rate, confirmed at 3 percentage points on 28 May 2026. */
 export const APRA_SERVICEABILITY_BUFFER = 3;
 export const APRA_BUFFER_CONFIRMED = "28 May 2026";

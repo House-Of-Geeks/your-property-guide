@@ -16,6 +16,7 @@ import {
 } from "@/lib/bridging-calc";
 import { PUBLISHED_CAPITALISED_RATES } from "@/lib/data/bridging-lenders";
 import { AVERAGE_NEW_VARIABLE_RATE, F6_RATE_CAVEAT, F6_SOURCE } from "@/lib/data/rba-lending-rates";
+import { LENDER_POLICY_NOTE } from "@/lib/utils/borrowing-power";
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Bridging loan calculator",
@@ -101,6 +102,7 @@ export default function BridgingLoanCalculatorPage() {
     <CalculatorPageLayout
       frontmatter={FRONTMATTER}
       calculator={<BridgingLoanCalculator />}
+      estimateNote={LENDER_POLICY_NOTE}
       faqs={FAQS}
       related={RELATED}
       intent="selling"

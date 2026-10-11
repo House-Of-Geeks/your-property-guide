@@ -6,6 +6,7 @@ import { affordabilityFaqs } from "@/lib/affordability-table";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
 import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
+import { LENDER_POLICY_NOTE } from "@/lib/utils/borrowing-power";
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Property Affordability Calculator",
@@ -90,6 +91,7 @@ export default function AffordabilityCalculatorPage() {
     <CalculatorPageLayout
       frontmatter={FRONTMATTER}
       calculator={<AffordabilityCalculator />}
+      estimateNote={LENDER_POLICY_NOTE}
       faqs={[...affordabilityFaqs(), ...FAQS]}
       related={RELATED}
       intent="buying"

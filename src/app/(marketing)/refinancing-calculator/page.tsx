@@ -13,6 +13,7 @@ import {
   REFINANCE_EXAMPLE_GAP,
   describeF6,
 } from "@/lib/data/rba-lending-rates";
+import { LENDER_POLICY_NOTE } from "@/lib/utils/borrowing-power";
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Refinancing Calculator",
@@ -88,6 +89,7 @@ export default function RefinancingCalculatorPage() {
     <CalculatorPageLayout
       frontmatter={FRONTMATTER}
       calculator={<RefinancingCalculator />}
+      estimateNote={LENDER_POLICY_NOTE}
       faqs={FAQS}
       related={RELATED}
       intent="buying"

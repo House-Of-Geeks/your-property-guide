@@ -13,6 +13,7 @@ import {
   DEFAULT_ASSESSMENT_RATE,
   REFERENCE_LOAN_RATE,
   REFERENCE_LOAN_RATE_PERIOD,
+  LENDER_POLICY_NOTE,
 } from "@/lib/utils/borrowing-power";
 
 // Static content; a weekly re-render keeps the route on ISR like the rest of the site.
@@ -101,6 +102,7 @@ export default function BorrowingPowerCalculatorPage() {
     <CalculatorPageLayout
       frontmatter={FRONTMATTER}
       calculator={<BorrowingPowerCalculator />}
+      estimateNote={LENDER_POLICY_NOTE}
       faqs={[...borrowingPowerFaqs(), ...FAQS]}
       related={RELATED}
       intent="buying"
