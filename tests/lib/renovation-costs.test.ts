@@ -7,6 +7,7 @@ import { join } from "node:path";
 import {
   ARCHICENTRE_2026,
   CHECK_TABLES,
+  FULL_RENO_PER_100,
   COST_ITEMS,
   COST_ITEM_BY_KEY,
   FINISHES,
@@ -267,6 +268,14 @@ describe("renovation guide copy", () => {
       expect(approval, law).toContain(law);
       expect(PAGE, law).toContain(law);
     }
+  });
+  it("prints one full-renovation range, computed from the per-m² tiers, and no unsourced labour figure (F8e)", () => {
+    expect(FULL_RENO_PER_100.mid).toEqual({ low: 280_000, high: 450_000, open: undefined });
+    const text = [PAGE, ROOM_ANSWERS.fullHouse, ...RENOVATION_FAQS.map((f) => f.answer)].join("\n");
+    expect(text).not.toMatch(/\$200,000[–-]\$400,000|\$200,000 to \$500,000|\$200K[–-]\$500K|starts at \$200,000/);
+    expect(text).not.toContain("labour rates up 25–40%");
+    expect(text).not.toContain("can exceed $6,000/m²");
+    expect(ROOM_ANSWERS.fullHouse).toContain("$280,000 to $450,000");
   });
   it("sends contract readers to the building contract checklist, not a home loan rate guide (F8b)", () => {
     expect(PAGE).toContain('href="/guides/how-to-find-a-builder-australia#contract"');

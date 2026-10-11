@@ -24,16 +24,24 @@ import {
   ABS_PPI_HOUSE_ANNUAL_PCT,
   ABS_PPI_HOUSE_QUARTER_PCT,
   BATHROOM_CHECKS,
+  COST_ITEM_BY_KEY,
+  FULL_RENO_EXAMPLE_M2,
+  FULL_RENO_PER_100,
   EXTENSION_CHECKS,
   KDR_CHECKS,
   KITCHEN_CHECKS,
+  KDR_ROWS,
   ON_COSTS,
   REGIONAL_ADJUSTMENT_PCT,
   RENOVATION_COSTS_AS_AT,
   RENOVATION_FAQS,
   ROOM_ANSWERS,
+  SCOPE_PER_M2,
   SECONDARY_ROOM_CHECKS,
   STATE_COSTS,
+  perM2Total,
+  rangeText,
+  type Range,
 } from "@/lib/data/renovation-costs";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
@@ -71,11 +79,21 @@ export const metadata: Metadata = {
   },
 };
 
+// Every total below is computed from the tables in renovation-costs.ts
+// (review 10 Oct 2026, F8e), so the TL;DR, the body and the FAQs agree.
+const SECOND_STOREY_EXAMPLE_M2 = 60;
+const KDR_EXAMPLE_M2 = 220;
+const ss = COST_ITEM_BY_KEY.secondStorey.byFinish.mid.range as Range;
+const kdrDemo = KDR_ROWS[0].all?.range as Range;
+const kdrVolume = KDR_ROWS[1].byFinish?.basic.range as Range;
+const kdrCustom = KDR_ROWS[1].byFinish?.high.range as Range;
+const per100 = (r: Range) => rangeText(r);
+
 const TLDR = [
   `Costs have not come back down. Master Builders Australia puts the cost of building a home at more than 50% above pre-pandemic (26 August 2026), and ABS house construction prices rose ${ABS_PPI_HOUSE_ANNUAL_PCT}% in the year to June 2026. Expect $2,800–$4,500/m² for a mid-range full renovation in metro areas.`,
   "Kitchen renovations: $12K–$18K (budget refresh), $25K–$45K (mid-range), $60K+ (premium). Cabinetry and stone benchtops drive most of the cost. Archicentre Australia's Cost Guide 2026 puts a standard kitchen fit-out at $23K–$49K.",
   "Bathroom renovations: $15K–$22K (standard), $25K–$40K (premium). Waterproofing and tiling labour drive cost. Archicentre's 2026 fit-out range is $17.5K–$35K.",
-  "Full house renovation: $200K–$500K for a mid-range three-bedroom. Second-storey addition: $250K–$450K. Knock-down rebuild: $400K–$900K plus demolition.",
+  `Full house renovation: ${rangeText(SCOPE_PER_M2.guide.mid, "/m²")} mid-range, ${per100(FULL_RENO_PER_100.mid)} for every ${FULL_RENO_EXAMPLE_M2} m² renovated. A ${SECOND_STOREY_EXAMPLE_M2} m² second storey: ${rangeText(perM2Total(ss, SECOND_STOREY_EXAMPLE_M2))}. Knock-down rebuild: ${rangeText(kdrVolume, "/m²")} for a volume-built home or ${rangeText(kdrCustom, "/m²")} custom, plus ${rangeText(kdrDemo)} to demolish.`,
   "Builder margin sits at 15–25% on smaller jobs, 12–18% on larger ones. Add 10–15% contingency on top of every quoted price.",
   "Pre-construction costs (architect, structural engineer, council, certifier, surveyor) typically run 8–15% of total project cost and are easy to forget when budgeting.",
 ];
@@ -203,8 +221,8 @@ export default function RenovationCostAustralia2026Page() {
       <p className="lead">
         Renovation costs in Australia rose sharply between 2021 and 2024,
         driven by COVID-era supply chain disruption, materials inflation, and
-        a building trades shortage that pushed labour rates up 25–40%. They
-        have not come back down. ABS house construction output prices rose{" "}
+        a building trades shortage that pushed up labour rates. They have
+        not come back down. ABS house construction output prices rose{" "}
         {ABS_PPI_HOUSE_QUARTER_PCT.toFixed(1)}% in the June quarter 2026, the largest
         quarterly rise since September 2022, and {ABS_PPI_HOUSE_ANNUAL_PCT}%
         over the year (31 July 2026). Master Builders Australia puts the cost
@@ -336,9 +354,9 @@ export default function RenovationCostAustralia2026Page() {
         a whole-house project, 2026 budgets break down as follows:
       </p>
       <ul>
-        <li><strong>Cosmetic only</strong> (paint, flooring, tapware, lighting, minor): <strong>$2,000–$2,500/m²</strong>. Total $80,000–$150,000 for a 50–60m² affected area.</li>
-        <li><strong>Mid-range</strong> (cosmetic plus kitchen, one bathroom, some replanning): <strong>$2,800–$4,500/m²</strong>. Total $200,000–$400,000.</li>
-        <li><strong>Premium</strong> (architect-designed, structural work, full re-stack of services, designer finishes): <strong>$5,000–$7,500/m²+</strong>. Total $400,000–$800,000.</li>
+        <li><strong>Cosmetic only</strong> (paint, flooring, tapware, lighting, minor): <strong>{rangeText(SCOPE_PER_M2.guide.cosmetic, "/m²")}</strong>, or {per100(FULL_RENO_PER_100.cosmetic)} for every {FULL_RENO_EXAMPLE_M2} m² renovated.</li>
+        <li><strong>Mid-range</strong> (cosmetic plus kitchen, one bathroom, some replanning): <strong>{rangeText(SCOPE_PER_M2.guide.mid, "/m²")}</strong>, or {per100(FULL_RENO_PER_100.mid)} for every {FULL_RENO_EXAMPLE_M2} m².</li>
+        <li><strong>Premium</strong> (architect-designed, structural work, full re-stack of services, designer finishes): <strong>{rangeText(SCOPE_PER_M2.guide.premium, "/m²")}</strong>, or {per100(FULL_RENO_PER_100.premium)} for every {FULL_RENO_EXAMPLE_M2} m².</li>
       </ul>
       <p>
         Regional work generally costs more, not less. The CKA indicator (June
@@ -371,8 +389,8 @@ export default function RenovationCostAustralia2026Page() {
         Considerably more complex. Adds load to the existing structure,
         usually requires structural reinforcement of the ground floor, scaffold
         and access costs, and you&rsquo;ll need to lift the existing roof off.
-        A 60m² second storey (typically two bedrooms and a bathroom) lands at
-        $270,000–$420,000. Some builders won&rsquo;t take on second-storey
+        A {SECOND_STOREY_EXAMPLE_M2} m² second storey (typically two bedrooms and a bathroom) lands at{" "}
+        {rangeText(perM2Total(ss, SECOND_STOREY_EXAMPLE_M2))}. Some builders won&rsquo;t take on second-storey
         adds because of structural risk; specialists are the better
         approach.
       </p>
@@ -403,9 +421,9 @@ export default function RenovationCostAustralia2026Page() {
         cost of a new build, look at knock-down rebuild instead.
       </p>
       <ul>
-        <li><strong>Demolition</strong>: $20,000–$45,000 for a typical detached house, more for asbestos remediation or difficult access.</li>
-        <li><strong>New build (volume builder)</strong>: $1,800–$2,800/m² for a project home. A 220m² home lands at $400,000–$600,000.</li>
-        <li><strong>New build (custom architect-designed)</strong>: $3,500–$6,000/m². A 220m² home lands at $750,000–$1.3M.</li>
+        <li><strong>Demolition</strong>: {rangeText(kdrDemo)} for a typical detached house, more for asbestos remediation or difficult access.</li>
+        <li><strong>New build (volume builder)</strong>: {rangeText(kdrVolume, "/m²")} for a project home. A {KDR_EXAMPLE_M2} m² home lands at {rangeText(perM2Total(kdrVolume, KDR_EXAMPLE_M2))}.</li>
+        <li><strong>New build (custom architect-designed)</strong>: {rangeText(kdrCustom, "/m²")}. A {KDR_EXAMPLE_M2} m² home lands at {rangeText(perM2Total(kdrCustom, KDR_EXAMPLE_M2))}.</li>
         <li><strong>Renting elsewhere during the build</strong>: 8–14 months of rent, factor it in.</li>
       </ul>
       <h3>How the published sources compare</h3>

@@ -406,6 +406,20 @@ export const SCOPE_PER_M2 = {
 };
 
 /**
+ * One area for turning the per-square-metre tiers into a dollar total, so
+ * every full-renovation total on the page is the same arithmetic (review
+ * 10 Oct 2026, F8e: the page printed $200,000 to $400,000 in one place and
+ * $200,000 to $500,000 in three others).
+ */
+export const FULL_RENO_EXAMPLE_M2 = 100;
+export const perM2Total = (r: Range, m2: number): Range => ({ low: r.low * m2, high: r.high * m2, open: r.open });
+export const FULL_RENO_PER_100 = {
+  cosmetic: perM2Total(SCOPE_PER_M2.guide.cosmetic, FULL_RENO_EXAMPLE_M2),
+  mid: perM2Total(SCOPE_PER_M2.guide.mid, FULL_RENO_EXAMPLE_M2),
+  premium: perM2Total(SCOPE_PER_M2.guide.premium, FULL_RENO_EXAMPLE_M2),
+};
+
+/**
  * Archicentre Australia Cost Guide 2026, page 3 (Renovations and Additions),
  * read 11 October 2026. All figures include GST. The new construction rate is
  * "basic shell only and the extended roofline over the shell"; the guide says
@@ -567,7 +581,7 @@ export const ROOM_ANSWERS = {
   kitchen: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, a kitchen renovation in metro Australia costs ${rangeText(k.basic.range as Range)} for a budget refresh, ${rangeText(k.mid.range as Range)} mid-range and ${rangeText(k.high.range as Range)} premium; Archicentre Australia's Cost Guide 2026 puts a standard kitchen fit-out at $23,000 to $49,000 including GST and excluding white goods.`,
   bathroom: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, a bathroom renovation costs ${rangeText(b.mid.range as Range)} for a standard in-place refresh and ${rangeText(b.high.range as Range)} premium in metro Australia, with Three Birds Renovations (January 2026) putting a budget cosmetic refresh at $8,000 to $15,000 and Archicentre Australia's Cost Guide 2026 a bathroom or ensuite fit-out at $17,500 to $35,000.`,
   secondary: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, a laundry fit-out costs ${rangeText(laundry)} (Archicentre Australia Cost Guide 2026, standard materials), a living-area refresh ${rangeText(living)} (Canstar, January 2025) and a basic bedroom refresh ${rangeText(bedroom)} per room (Canstar, January 2025).`,
-  fullHouse: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, a full renovation of a three-bedroom house in metro Australia costs ${rangeText(SCOPE_PER_M2.guide.cosmetic, "/m²")} for cosmetic work, ${rangeText(SCOPE_PER_M2.guide.mid, "/m²")} mid-range and ${rangeText(SCOPE_PER_M2.guide.premium, "/m²")} premium, or $200,000 to $500,000 for a mid-range project; Archicentre Australia's Cost Guide 2026 puts renovation inside an existing building at ${rangeText(SCOPE_PER_M2.archicentreExisting, "/m²")}.`,
+  fullHouse: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, a full renovation of a three-bedroom house in metro Australia costs ${rangeText(SCOPE_PER_M2.guide.cosmetic, "/m²")} for cosmetic work, ${rangeText(SCOPE_PER_M2.guide.mid, "/m²")} mid-range and ${rangeText(SCOPE_PER_M2.guide.premium, "/m²")} premium, which is ${rangeText(FULL_RENO_PER_100.mid)} for every ${FULL_RENO_EXAMPLE_M2} m² renovated mid-range; Archicentre Australia's Cost Guide 2026 puts renovation inside an existing building at ${rangeText(SCOPE_PER_M2.archicentreExisting, "/m²")}.`,
   extensions: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, a ground-floor extension costs ${rangeText(ext, "/m²")} and a second-storey addition ${rangeText(ss, "/m²")} for the shell in metro Australia; Archicentre Australia's Cost Guide 2026 prices new construction and extensions at ${rangeText(SCOPE_PER_M2.archicentreNewAndExtension, "/m²")} with first-floor additions extra.`,
   knockDownRebuild: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, demolishing a typical detached house costs ${rangeText(demo)} and a new house $1,800 to $2,800/m² from a volume builder or $3,500 to $6,000/m² custom; the ABS-derived average for every new house built in 2024-25 is ${money(ABS_NEW_HOUSE_NATIONAL_PER_M2)}/m² (Landmark Valuations, July 2026) and Rider Levett Bucknall's Riders Digest 2026 prices a Sydney custom-built house at $2,500 to $7,600/m².`,
 };
@@ -595,12 +609,12 @@ export const RENOVATION_FAQS: RenovationFaq[] = [
   {
     question: RENOVATION_PAA_QUESTIONS[0],
     answer:
-      `For a standard three-bedroom house in a metro area, a mid-range full renovation in ${RENOVATION_COSTS_AS_AT_SHORT} costs $200,000 to $500,000, or roughly ${rangeText(SCOPE_PER_M2.guide.mid, "/m²")} of the area being renovated. Cosmetic-only projects land at ${rangeText(SCOPE_PER_M2.guide.cosmetic, "/m²")}; premium projects (architect-designed, high-end finishes, structural work) can exceed $6,000/m². Archicentre Australia's Cost Guide 2026 puts renovation inside an existing building at ${rangeText(SCOPE_PER_M2.archicentreExisting, "/m²")} with standard materials, and the ABS reports house construction output prices up ${ABS_PPI_HOUSE_ANNUAL_PCT}% in the year to June 2026. Regional work generally costs more, not less: the CKA cost indicator (June 2026) adds ${REGIONAL_ADJUSTMENT_PCT.low} to ${REGIONAL_ADJUSTMENT_PCT.high}% outside the capital cities.`,
+      `For a standard three-bedroom house in a metro area, a mid-range full renovation in ${RENOVATION_COSTS_AS_AT_SHORT} costs ${rangeText(SCOPE_PER_M2.guide.mid, "/m²")} of the area being renovated, which is ${rangeText(FULL_RENO_PER_100.mid)} for every ${FULL_RENO_EXAMPLE_M2} m². Cosmetic-only projects land at ${rangeText(SCOPE_PER_M2.guide.cosmetic, "/m²")}; premium projects (architect-designed, high-end finishes, structural work) at ${rangeText(SCOPE_PER_M2.guide.premium, "/m²")}. Archicentre Australia's Cost Guide 2026 puts renovation inside an existing building at ${rangeText(SCOPE_PER_M2.archicentreExisting, "/m²")} with standard materials, and the ABS reports house construction output prices up ${ABS_PPI_HOUSE_ANNUAL_PCT}% in the year to June 2026. Regional work generally costs more, not less: the CKA cost indicator (June 2026) adds ${REGIONAL_ADJUSTMENT_PCT.low} to ${REGIONAL_ADJUSTMENT_PCT.high}% outside the capital cities.`,
   },
   {
     question: RENOVATION_PAA_QUESTIONS[1],
     answer:
-      `Yes for two rooms and a refresh, no for a whole house. At ${RENOVATION_COSTS_AS_AT_SHORT} metro prices, $100,000 covers a mid-range kitchen (${rangeText(k.mid.range as Range)}) and a standard bathroom (${rangeText(b.mid.range as Range)}) with $33,000 to $60,000 left for paint, flooring and lighting (Canstar, January 2025: a living-area refresh is ${rangeText(living)}), or about 40 to 50 m² of cosmetic work at ${rangeText(SCOPE_PER_M2.guide.cosmetic, "/m²")}. A mid-range whole-house renovation starts at $200,000. This guide's contingency is ${ON_COSTS.contingencyPct.low} to ${ON_COSTS.contingencyPct.high}%, so hold back $10,000 to $15,000 and plan the work at $85,000 to $90,000.`,
+      `Yes for two rooms and a refresh, no for a whole house. At ${RENOVATION_COSTS_AS_AT_SHORT} metro prices, $100,000 covers a mid-range kitchen (${rangeText(k.mid.range as Range)}) and a standard bathroom (${rangeText(b.mid.range as Range)}) with $33,000 to $60,000 left for paint, flooring and lighting (Canstar, January 2025: a living-area refresh is ${rangeText(living)}), or about 40 to 50 m² of cosmetic work at ${rangeText(SCOPE_PER_M2.guide.cosmetic, "/m²")}. A mid-range renovation of the whole house costs ${rangeText(SCOPE_PER_M2.guide.mid, "/m²")}, ${rangeText(FULL_RENO_PER_100.mid)} for every ${FULL_RENO_EXAMPLE_M2} m². This guide's contingency is ${ON_COSTS.contingencyPct.low} to ${ON_COSTS.contingencyPct.high}%, so hold back $10,000 to $15,000 and plan the work at $85,000 to $90,000.`,
   },
   {
     question: RENOVATION_PAA_QUESTIONS[2],
@@ -615,7 +629,7 @@ export const RENOVATION_FAQS: RenovationFaq[] = [
   {
     question: "What's the cheapest way to renovate a house?",
     answer:
-      "Cosmetic work delivers the biggest perceived change for the smallest spend. Paint, new flooring, new lighting, new tapware, deep cleaning, and tidying up the garden can transform a tired home for $20,000–$40,000 and is realistic DIY-plus-tradies territory. Structural work (moving walls, new wet areas, new windows) multiplies cost quickly because it triggers waterproofing, electrical, plumbing, certification, and structural engineering. If you don't need to move a wall, don't move a wall.",
+      "Cosmetic work delivers the biggest perceived change for the smallest spend. Paint, new flooring, new lighting, new tapware, deep cleaning and tidying up the garden can transform a tired home, and it is realistic DIY-plus-tradies territory: Archicentre Australia's Cost Guide 2026 prices interior painting at $20 to $40 per m² and carpet at $45 to $165 per m², including GST. Structural work (moving walls, new wet areas, new windows) multiplies cost quickly because it triggers waterproofing, electrical, plumbing, certification, and structural engineering. If you don't need to move a wall, don't move a wall.",
   },
   {
     question: "Do I need council approval to renovate?",
