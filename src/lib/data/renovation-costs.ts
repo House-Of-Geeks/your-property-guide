@@ -405,6 +405,38 @@ export const SCOPE_PER_M2 = {
   canstar: { low: 1_600, high: 3_700 } as Range,
 };
 
+/**
+ * Archicentre Australia Cost Guide 2026, page 3 (Renovations and Additions),
+ * read 11 October 2026. All figures include GST. The new construction rate is
+ * "basic shell only and the extended roofline over the shell"; the guide says
+ * that where the work involves a kitchen, bathroom or laundry "you must add
+ * the wet area fitout costs".
+ */
+export const ARCHICENTRE_2026 = {
+  readOn: "11 October 2026",
+  newConstructionPerM2: SCOPE_PER_M2.archicentreNewAndExtension,
+  renovationPerM2: SCOPE_PER_M2.archicentreExisting,
+  kitchen: { low: 23_000, high: 49_000 } as Range,
+  bathroom: { low: 17_500, high: 35_000 } as Range,
+  laundry: { low: 10_000, high: 19_000 } as Range,
+};
+
+/**
+ * A granny flat's build cost as the Archicentre guide says to add it up: the
+ * new construction shell rate times the floor area, plus one kitchen and one
+ * bathroom fit-out. Excludes site works, service connections, approvals,
+ * design and other professional fees, landscaping and any regional premium.
+ * Used by the five state granny flat guides (commercial-intent review, 10 Oct
+ * 2026, F1 to F5) so none of them prints a cost range of its own.
+ */
+export function grannyFlatBuildRange(m2: number): Range {
+  const a = ARCHICENTRE_2026;
+  return {
+    low: a.newConstructionPerM2.low * m2 + a.kitchen.low + a.bathroom.low,
+    high: a.newConstructionPerM2.high * m2 + a.kitchen.high + a.bathroom.high,
+  };
+}
+
 /** Room cross-checks by source; a string cell is a figure the source gives in another form. */
 export interface CheckRow {
   source: SourceId;

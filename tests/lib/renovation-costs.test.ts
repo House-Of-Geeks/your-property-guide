@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
+  ARCHICENTRE_2026,
   CHECK_TABLES,
   COST_ITEMS,
   COST_ITEM_BY_KEY,
@@ -19,6 +20,7 @@ import {
   SCOPE_PER_M2,
   STATE_COSTS,
   STATE_ORDER,
+  grannyFlatBuildRange,
   rangeCellText,
   rangeText,
   type Range,
@@ -110,6 +112,21 @@ describe("renovation cost sources", () => {
     expect(rangeCellText({ low: 60_000, high: 60_000, open: true })).toBe("$60,000+");
     expect(rangeCellText({ low: 7_000, high: 15_000, open: true })).toBe("$7,000 to $15,000+");
     expect(rangeCellText({ low: 2_500, high: 7_600 }, "/m²")).toBe("$2,500 to $7,600 /m²");
+  });
+});
+
+describe("granny flat build range (Archicentre Cost Guide 2026)", () => {
+  it("pins the Archicentre 2026 figures the five state guides use", () => {
+    expect(ARCHICENTRE_2026.newConstructionPerM2).toEqual({ low: 2_700, high: 5_100 });
+    expect(ARCHICENTRE_2026.renovationPerM2).toEqual({ low: 1_600, high: 3_900 });
+    expect(ARCHICENTRE_2026.kitchen).toEqual({ low: 23_000, high: 49_000 });
+    expect(ARCHICENTRE_2026.bathroom).toEqual({ low: 17_500, high: 35_000 });
+    expect(ARCHICENTRE_2026.laundry).toEqual({ low: 10_000, high: 19_000 });
+  });
+  it("adds the shell rate times the area to one kitchen and one bathroom fit-out, as the guide says", () => {
+    expect(grannyFlatBuildRange(60)).toEqual({ low: 2_700 * 60 + 23_000 + 17_500, high: 5_100 * 60 + 49_000 + 35_000 });
+    expect(grannyFlatBuildRange(40)).toEqual({ low: 148_500, high: 288_000 });
+    expect(grannyFlatBuildRange(70)).toEqual({ low: 229_500, high: 441_000 });
   });
 });
 
