@@ -42,7 +42,7 @@
  * sourceRowKey = `${districtCode}:${propertyId}:${saleCounter}` (globally unique within NSW VG)
  *
  * CLI flags:
- *   --dry-run             — parse + count, write nothing
+ *   --dry-run             : parse + count, write nothing (not even the DataSource row)
  *   --year=2024           — process only this year (no YoY aggregate; rows still capture)
  *   --years=2020,2021,..  — explicit year list (rows; aggregate uses last pair)
  *   --limit=10000         — cap rows per year (smoke test)
@@ -630,7 +630,8 @@ async function preflight(): Promise<void> {
 
 export async function run(): Promise<void> {
   const opts = parseCli();
-  await startSync(SOURCE_ID);
+  // --dry-run writes nothing, the DataSource row included.
+  if (!opts.dryRun) await startSync(SOURCE_ID);
   log(SOURCE_ID, `options: ${JSON.stringify(opts)}`);
 
   // Default years: last full calendar year + the year before (for YoY)
@@ -712,9 +713,9 @@ export async function run(): Promise<void> {
     log(SOURCE_ID, `summary: ${totalInserted} rows inserted · ${totalSkipped} skipped (dupe) · ${suburbsUpdated} suburbs updated`);
     log(SOURCE_ID, `to undo this run's row writes: DELETE FROM "PropertySale" WHERE "runId" = '${runId}'`);
 
-    await finishSync(SOURCE_ID, suburbsUpdated + totalInserted, new Date(`${Math.max(...yearsToLoad)}-12-31`));
+    if (!opts.dryRun) await finishSync(SOURCE_ID, suburbsUpdated + totalInserted, new Date(`${Math.max(...yearsToLoad)}-12-31`));
   } catch (err) {
-    await failSync(SOURCE_ID, err);
+    if (!opts.dryRun) await failSync(SOURCE_ID, err);
     throw err;
   } finally {
     await pool.end();
