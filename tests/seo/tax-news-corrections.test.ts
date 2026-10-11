@@ -6,7 +6,7 @@
 // Amendment (Tax Reform No. 1) Act 2026 and the ATO page (29 June 2026), the
 // same as /guides/cgt-changes-2026-budget (tests/seo/tax-reform-2027-pages).
 import { describe, expect, it } from "vitest";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { blogPosts } from "@/lib/data/blogs";
 import { ATO_REFORM_SOURCE } from "@/lib/data/tax-reform-2027";
@@ -169,5 +169,39 @@ describe("/guides/negative-gearing-cgt-changes-now-law-2026", () => {
     expect(body).toContain("from 10 August 2026, the 45th day after Royal Assent");
     expect(body).toContain("other than business real property");
     expect(body).not.toContain("98 votes to 39");
+  });
+});
+
+describe("/guides/smsf-property-guide", () => {
+  const src = readFileSync(join(MARKETING, "guides/smsf-property-guide/page.tsx"), "utf8");
+
+  it("is dated after the change and states the LRBA ban from the Act", () => {
+    expect(src).toContain('updatedAt: "2026-10-11"');
+    expect(src).toContain('const LRBA_BAN_START = "10 August 2026"');
+    expect(src).toContain("business real property");
+    expect(src).toContain("section 67A");
+    expect(src).toContain('question: "Can an SMSF still borrow to buy property?"');
+  });
+
+  it("no longer offers a new LRBA for residential property or unsourced loan pricing", () => {
+    for (const stale of [
+      "SMSFs can borrow money to purchase property through",
+      "Borrowing requires a Limited Recourse Borrowing Arrangement",
+      "1.5% to 2.5%",
+      "Latrobe",
+      "($150,000 personally (45% tax rate)",
+      "at least every 3 years",
+      "Half marginal rate</td>",
+    ]) {
+      expect(src, stale).not.toContain(stale);
+    }
+  });
+
+  it("keeps CGT in super consistent with the CGT article and cites dated sources", () => {
+    expect(src).toContain("super funds keep their one-third discount");
+    expect(src).toContain("section 26-155(4)");
+    expect(src).toContain('href="/guides/cgt-changes-2026-budget"');
+    expect(src).toContain("<Sources");
+    expect(src).toContain("Last updated 15 May 2026, read 11 October 2026");
   });
 });
