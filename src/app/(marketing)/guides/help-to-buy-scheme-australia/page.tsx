@@ -45,20 +45,25 @@ const FRONTMATTER: GuideFrontmatter = {
     "The federal Help to Buy scheme for 2026–27: income limits ($103,000 single, $165,000 joint), price caps by state, the 2% deposit, the government's 30% or 40% share, participating lenders, what happens when you sell, and how it compares with the 5% Deposit Scheme.",
   slug: "help-to-buy-scheme-australia",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 14,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
   persona: "first-home",
 };
 
+// The <title> is shorter than the H1 (FRONTMATTER.title): the root layout
+// appends " | Your Property Guide", and the old title ran to 70 characters
+// before it (commercial-intent review 10 Oct 2026, buying 3.4).
+const SEO_TITLE = "Help to Buy Scheme 2026: Income Limits, Price Caps & Rules";
+
 export const metadata: Metadata = {
-  title: FRONTMATTER.title,
+  title: SEO_TITLE,
   description: FRONTMATTER.description,
   alternates: { canonical: `${SITE_URL}/guides/${FRONTMATTER.slug}` },
   openGraph: {
     url: `${SITE_URL}/guides/${FRONTMATTER.slug}`,
-    title: FRONTMATTER.title,
+    title: SEO_TITLE,
     description: FRONTMATTER.description,
     type: "article",
     publishedTime: FRONTMATTER.publishedAt,
@@ -273,10 +278,11 @@ export default function HelpToBuySchemeAustraliaPage() {
 
       <h2 id="what-it-is">What Help to Buy is</h2>
       <p className="lead">
-        Help to Buy is the federal shared equity scheme, legislated in 2024 and
-        run by Housing Australia through participating lenders. The Australian
-        Government contributes part of the price of the home you buy, which means
-        you borrow less and need a much smaller deposit. It is one of several first
+        Help to Buy is the Australian Government&rsquo;s shared equity scheme: it contributes up to{" "}
+        {HTB_SHARE.new.max}% of a new home or {HTB_SHARE.existing.max}% of an existing one, and for {HTB_YEAR} a
+        single applicant&rsquo;s taxable income must be no more than {fmt(HTB_INCOME_LIMITS.single)} (Housing
+        Australia, read {checkedOn}). Housing Australia runs it through participating lenders, so you borrow less
+        and need a much smaller deposit. It is one of several first
         home buyer schemes covered in our{" "}
         <Link href="/guides/first-home-buyer-guide">national First Home Buyer Guide</Link>.
       </p>
