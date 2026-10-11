@@ -31,7 +31,7 @@
  *    tests/sync/sales-provenance-writers.test.ts). The current rental-nsw
  *    writes only the suburbs in postcodes DCJ publishes (4,072 on 7 Sep).
  * 2. The 1 Oct NSW pattern is exactly the old feed's. On 29 Sep production NSW
- *    rows carried sales-nsw (522 of the 644 NSW rows the lists printed,
+ *    rows carried sales-nsw (296 of the 374 NSW suburbs the lists printed,
  *    docs/seo-baselines/2026-09-29/lists/before.csv). On 10 Oct all 5,275
  *    carry rental-nsw. Only rental-nsw between 520c41d (3 Apr) and be3def1
  *    (3 Jul) writes the label to every NSW row:
@@ -41,8 +41,9 @@
  *    answers 403 and would have relabelled about 3,034 suburbs after
  *    rental-nsw; the code before it has no fallback and fails on the 403.
  * 4. QLD: rental-qld rows went from 293 priced (5 Sep audit) to 533, and QLD
- *    sales-abs from 180 list rows (29 Sep) to 61: the old rental-qld's per-row
- *    stamp, removed in be3def1.
+ *    sales-abs from at least 126 suburbs (the ones the lists printed on
+ *    29 Sep) to 61 rows: the old rental-qld's per-row stamp, removed in
+ *    be3def1.
  * 5. The 1 Jul run did the same at 12:02 to 12:03 AEST (02:02 UTC, the
  *    "0 2 1 1,4,7,10 *" schedule), two days before be3def1. The GitHub
  *    schedule has been off since 6 May (16ddec9): the Railway cron services own
