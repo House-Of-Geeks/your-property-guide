@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { Suburb } from "@/types";
 import type { Agent, Agency } from "@/types/agent";
 import fs from "node:fs";
-import { AGENT_LISTINGS_ENABLED, EXAMPLE_SALE_PRICES, buildSuburbAgentsModel, commissionOnMedian } from "@/lib/suburb-agents";
+import { AGENT_LISTINGS_ENABLED, COMMISSION_RULE_SOURCES, EXAMPLE_SALE_PRICES, buildSuburbAgentsModel, commissionOnMedian } from "@/lib/suburb-agents";
 import { STATE_RATES } from "@/lib/data/commission-rates";
 
 function makeSuburb(over: Partial<Suburb["stats"]> = {}, freshness: Partial<NonNullable<Suburb["dataFreshness"]>> = {}, state = "NSW"): Suburb {
@@ -38,7 +38,7 @@ describe("buildSuburbAgentsModel", () => {
     expect(m.commission?.highAmount).toBe(107_500);
     expect(m.faqs[0].question).toBe("What do real estate agents charge in Bondi?");
     expect(m.faqs[0].answer).toContain("$77,400 to $107,500");
-    expect(m.description).toContain("$4,300,000 median (1.8% to 2.5%)");
+    expect(m.description).toContain("$4,300,000 median (NSW Valuer General, 1.8% to 2.5%)");
     expect(m.matchSource).toBe("suburb-agents-bondi-nsw-2026");
   });
   it("is not indexable without a reliable median, and works the state range on example prices instead", () => {
@@ -75,5 +75,41 @@ describe("buildSuburbAgentsModel", () => {
     const m = buildSuburbAgentsModel(makeSuburb(), [agent], [agency], true);
     const text = [m.title, m.description, ...m.faqs.map((f) => f.answer)].join(" ");
     expect(text).not.toMatch(/\bbest\b|top-rated|\bratings?\b|stars/i);
+  });
+});
+
+describe("median provenance and commission sources (F3, 10 Oct 2026)", () => {
+  it("names the feed and period of a suburb median", () => {
+    const m = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 1_600_000 }, { salesSource: "sales-vic", salesCount: 120, salesAsOf: new Date("2026-05-15T00:00:00Z") }, "VIC"), [], []);
+    expect(m.provenance?.sourceShort).toBe("Land Victoria");
+    expect(m.provenance?.basis).toBe("suburb");
+    expect(m.provenance?.sentence).toContain("Land Victoria's quarterly suburb median");
+    expect(m.provenance?.sentence).toContain("May 2026");
+    expect(m.medianPhrase).toBe("Bondi's median house price of $1,600,000");
+    expect(m.faqs[0].answer).toContain("(Land Victoria, the latest published quarter, updated May 2026)");
+    expect(m.description).toContain("(Land Victoria,");
+  });
+  it("calls an ABS figure the statistical area's, never the suburb's own median", () => {
+    const m = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 473_000 }, { salesSource: "sales-abs", salesCount: null, salesPeriodEnd: new Date("2024-12-31T00:00:00Z") }, "TAS"), [], []);
+    expect(m.provenance?.basis).toBe("area");
+    expect(m.provenance?.caption).toBe("Median house price, ABS statistical area (SA2) for Bondi");
+    expect(m.provenance?.sentence).toContain("can differ from sales in Bondi itself");
+    expect(m.medianPhrase).toBe("the ABS statistical-area (SA2) median house price for Bondi, $473,000");
+    expect(m.faqs[0].answer).not.toContain("Bondi's median");
+    expect(m.description).toContain("ABS area median");
+  });
+  it("has no provenance when the median is withheld", () => {
+    const m = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 0 }), [], []);
+    expect(m.provenance).toBeNull();
+    expect(m.medianPhrase).toBeNull();
+  });
+  it("cites the states' own pages only where they were read, and the page names the range's source", () => {
+    for (const src of Object.values(COMMISSION_RULE_SOURCES)) {
+      expect(src!.href).toMatch(/^https:\/\/www\.(nsw|consumer\.vic|qld)\.gov\.au\//);
+      expect(src!.asAt).toMatch(/read \d{1,2} \w+ 2026/);
+    }
+    const page = fs.readFileSync("src/app/(marketing)/suburbs/[slug]/agents/page.tsx", "utf8");
+    expect(page).not.toContain("published agent-comparison guides");
+    expect(page).toContain("Your Property Guide&rsquo;s typical figure");
   });
 });

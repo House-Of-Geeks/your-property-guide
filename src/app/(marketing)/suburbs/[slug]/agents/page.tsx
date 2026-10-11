@@ -9,7 +9,7 @@ import { MatchAgent } from "@/components/journey/MatchAgent";
 import { BreadcrumbJsonLd, FAQPageJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getAgents, getAgenciesBySuburbSlug } from "@/lib/services/agent-service";
-import { buildSuburbAgentsModel, CHOOSING_POINTS } from "@/lib/suburb-agents";
+import { buildSuburbAgentsModel, CHOOSING_POINTS, COMMISSION_RULE_SOURCES } from "@/lib/suburb-agents";
 import { STATE_NAMES, type StateCode } from "@/lib/data/commission-rates";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
@@ -57,6 +57,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
   const sn = suburb.name;
   const stateName = STATE_NAMES[suburb.state as StateCode] ?? suburb.state;
   const commissionGuide = `/guides/real-estate-commission-${suburb.state.toLowerCase()}`;
+  const ruleSource = COMMISSION_RULE_SOURCES[suburb.state as StateCode] ?? null;
 
   return (
     <>
@@ -76,8 +77,8 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
         breadcrumbLeaf="Real Estate Agents"
         title={<>Real estate agents in <span className="italic text-primary">{sn}</span>.</>}
         subtitle={
-          model.commission && model.medianHousePrice
-            ? `What agents charge on ${sn}'s ${formatPriceFull(model.medianHousePrice)} median, how to choose an agent, and a free match with one who sells here.`
+          model.commission && model.medianPhrase
+            ? `What agents charge on ${model.medianPhrase}, how to choose an agent, and a free match with one who sells here.`
             : `How to choose an agent in ${sn}, what they charge, and a free match with one agent who sells here.`
         }
       />
@@ -178,12 +179,23 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
                 Work out your own sale
               </Link>
             </p>
+            {/* F3 (10 Oct 2026): name where the range and the rule come from. */}
+            <p className="mt-4 font-sans text-xs text-ink-subtle leading-relaxed max-w-md">
+              The range is Your Property Guide&rsquo;s typical figure for {stateName} as at September 2026, explained in our {suburb.state} commission guide.
+              {ruleSource ? (
+                <>
+                  {" "}On the rule:{" "}
+                  <a href={ruleSource.href} target="_blank" rel="noopener" className="underline underline-offset-2 hover:text-ink">{ruleSource.label}</a>
+                  {" "}({ruleSource.asAt}): {ruleSource.says}.
+                </>
+              ) : null}
+            </p>
           </div>
           <div className="lg:col-span-7">
             {model.commission && model.medianHousePrice ? (
               <div className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
                 <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-4">
-                  On {sn}&rsquo;s median house price of {formatPriceFull(model.medianHousePrice)}
+                  On {model.medianPhrase}
                 </p>
                 <div className="grid grid-cols-3 gap-4">
                   {[
@@ -198,7 +210,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
                   ))}
                 </div>
                 <p className="mt-5 font-sans text-xs text-ink-subtle leading-relaxed">
-                  Before GST and marketing. Typical {stateName} ranges as at September 2026, from published agent-comparison guides; no state sets an official rate.
+                  Before GST and marketing.{model.provenance ? <> The median: {model.provenance.sentence}</> : null}
                 </p>
               </div>
             ) : model.examples.length > 0 ? (
@@ -268,12 +280,15 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
               Where prices sit right now.
             </h2>
             {model.medianHousePrice ? (
-              <p className="font-sans text-base text-ink-muted leading-[1.7] max-w-md">
-                The median house price in {sn} is <span className="font-medium text-ink">{formatPriceFull(model.medianHousePrice)}</span>
-                {suburb.stats.annualGrowthHouse ? <>, <span className={`font-medium ${suburb.stats.annualGrowthHouse >= 0 ? "text-success" : "text-danger"}`}>{formatPercentage(suburb.stats.annualGrowthHouse)}</span> over the past year</> : null}
-                {suburb.dataFreshness?.salesCount ? <>, from {suburb.dataFreshness.salesCount} recorded house sales</> : null}.{" "}
-                <Link href={`/suburbs/${slug}#market`} className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">Full house prices for {sn}</Link>.
-              </p>
+              <div className="font-sans text-base text-ink-muted leading-[1.7] max-w-md space-y-3">
+                <p>
+                  {model.provenance?.caption ?? `Median house price in ${sn}`}:{" "}
+                  <span className="font-medium text-ink">{formatPriceFull(model.medianHousePrice)}</span>
+                  {suburb.stats.annualGrowthHouse ? <>, <span className={`font-medium ${suburb.stats.annualGrowthHouse >= 0 ? "text-success" : "text-danger"}`}>{formatPercentage(suburb.stats.annualGrowthHouse)}</span> over the past year</> : null}.{" "}
+                  <Link href={`/suburbs/${slug}#market`} className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">Full house prices for {sn}</Link>.
+                </p>
+                {model.provenance ? <p className="text-sm text-ink-subtle">{model.provenance.sentence}</p> : null}
+              </div>
             ) : (
               <p className="font-sans text-base text-ink-muted leading-[1.7] max-w-md">
                 We don&rsquo;t publish a median for {sn} yet. An agent who sells here will still give you a figure from the comparable sales they know.

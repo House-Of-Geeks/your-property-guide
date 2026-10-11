@@ -3,6 +3,8 @@ import type { Agent, Agency } from "@/types/agent";
 import { hasReliablePrice } from "@/lib/suburb-data-quality";
 import { STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
 import { formatPriceFull } from "@/lib/utils/format";
+import { describeSalesProvenance, type SalesProvenance } from "@/lib/sales-provenance";
+import { medianCaption } from "@/lib/value-range";
 
 /**
  * "Real estate agents in {Suburb}" pages (valuation plan item 4).
@@ -43,6 +45,46 @@ export interface CommissionOnExample extends CommissionOnMedian {
  */
 export const EXAMPLE_SALE_PRICES: readonly number[] = [750_000, 1_000_000, 1_500_000];
 
+/**
+ * Where the rule that commission is agreed, not set, is stated by the state
+ * itself. Only states whose own page was read are listed; the others print
+ * the rule without a citation. The ranges are Your Property Guide's typical
+ * figures (STATE_RATES), explained in each state's commission guide.
+ */
+export const COMMISSION_RULE_SOURCES: Partial<Record<StateCode, { label: string; href: string; says: string; asAt: string }>> = {
+  NSW: {
+    label: "NSW Government, Agency agreements for the sale of property in NSW",
+    href: "https://www.nsw.gov.au/housing-and-construction/buying-and-selling-property/selling-a-property/agency-agreements",
+    says: "you can negotiate the commission, fees and expenses with the agent",
+    asAt: "updated 8 July 2026, read 11 October 2026",
+  },
+  VIC: {
+    label: "Consumer Affairs Victoria, Authorities, rebates and commission",
+    href: "https://www.consumer.vic.gov.au/licensing-and-registration/estate-agents/running-your-business/authorities-commissions-and-contracts/authorities-rebates-and-commission",
+    says: "the agent must tell you that commission and expenses are negotiable before you sign",
+    asAt: "updated 12 October 2023, read 11 October 2026",
+  },
+  QLD: {
+    label: "Queensland Government, Charging commission for selling and letting",
+    href: "https://www.qld.gov.au/community/fair-trading/regulated-industries-licensing-and-legislation/property-industry-regulation/legal-requirements-for-the-property-industry/charging-commission-for-selling-and-letting-in-the-property-industry",
+    says: "the government sets no limit on commission, and it is set in writing, including GST, when you appoint the agent",
+    asAt: "updated 20 October 2020, read 11 October 2026",
+  },
+};
+
+/** The median's source and period, as the suburb profile prints it, plus the phrases the agents page needs. */
+export interface AgentsMedianProvenance {
+  /** "Median house price in Williamstown" or "Median house price, ABS statistical area (SA2) for East Devonport". */
+  caption: string;
+  /** The provenance sentence the instant range prints (describeSalesProvenance). */
+  sentence: string;
+  /** "Land Victoria", "NSW Valuer General", "ABS". */
+  sourceShort: string;
+  /** "the latest published quarter, updated May 2026", "calendar 2025", "2024". */
+  period: string;
+  basis: "suburb" | "area";
+}
+
 export interface SuburbAgentsModel {
   title: string;
   description: string;
@@ -56,6 +98,10 @@ export interface SuburbAgentsModel {
    */
   stateRange: StateCommissionRange | null;
   commission: CommissionOnMedian | null;
+  /** Source, period and geography of the published median; null when none is published. */
+  provenance: AgentsMedianProvenance | null;
+  /** The median in words for a sentence: "Williamstown's median house price of $1,600,000" or "the ABS statistical-area (SA2) median house price for East Devonport, $473,000". */
+  medianPhrase: string | null;
   /** The state range worked on EXAMPLE_SALE_PRICES; empty when the median is published. */
   examples: CommissionOnExample[];
   agents: Agent[];
@@ -95,6 +141,29 @@ export function buildSuburbAgentsModel(
   const reliable = hasReliablePrice(suburb);
   const median = reliable ? suburb.stats.medianHousePrice : null;
   const commission = median ? commissionOnMedian(suburb.state, median) : null;
+  const prov: SalesProvenance | null = median
+    ? describeSalesProvenance({
+        source: suburb.dataFreshness?.salesSource,
+        periodEnd: suburb.dataFreshness?.salesPeriodEnd,
+        updatedAt: suburb.dataFreshness?.salesAsOf,
+        salesCount: suburb.dataFreshness?.salesCount,
+        suburbName: sn,
+      })
+    : null;
+  const provenance: AgentsMedianProvenance | null = prov
+    ? {
+        caption: medianCaption({ name: sn, basis: prov.geography }, "house"),
+        sentence: prov.sentence,
+        sourceShort: prov.sourceShort,
+        period: prov.periodShort,
+        basis: prov.geography,
+      }
+    : null;
+  const medianPhrase = median
+    ? provenance?.basis === "area"
+      ? `the ABS statistical-area (SA2) median house price for ${sn}, ${formatPriceFull(median)}`
+      : `${sn}'s median house price of ${formatPriceFull(median)}`
+    : null;
   const stateRange = stateCommissionRange(suburb.state);
   const examples: CommissionOnExample[] = commission
     ? []
@@ -106,10 +175,11 @@ export function buildSuburbAgentsModel(
   const shownAgencies = listingsEnabled ? agencies : [];
 
   const faqs: { question: string; answer: string }[] = [];
-  if (commission && median) {
+  if (commission && median && medianPhrase) {
+    const cite = provenance ? ` (${provenance.sourceShort}, ${provenance.period})` : "";
     faqs.push({
       question: `What do real estate agents charge in ${sn}?`,
-      answer: `Agents in ${suburb.state} typically charge ${commission.lowPct}% to ${commission.highPct}% of the sale price, with around ${commission.typicalPct}% common. On ${sn}'s median house price of ${formatPriceFull(median)} that is roughly ${formatPriceFull(commission.lowAmount)} to ${formatPriceFull(commission.highAmount)} before GST and marketing. Commission is agreed with the agent and can be negotiated.`,
+      answer: `Agents in ${suburb.state} typically charge ${commission.lowPct}% to ${commission.highPct}% of the sale price, with around ${commission.typicalPct}% common. On ${medianPhrase}${cite}, that is roughly ${formatPriceFull(commission.lowAmount)} to ${formatPriceFull(commission.highAmount)} before GST and marketing. Commission is agreed with the agent and can be negotiated.`,
     });
   } else if (stateRange) {
     const example = examples.find((e) => e.price === 1_000_000);
@@ -129,7 +199,7 @@ export function buildSuburbAgentsModel(
 
   const title = `Real Estate Agents in ${sn} ${suburb.state} ${suburb.postcode}`;
   const description = commission && median
-    ? `Real estate agents in ${sn}: what they charge on the ${formatPriceFull(median)} median (${commission.lowPct}% to ${commission.highPct}%), how to choose, and a free match with one local agent.`
+    ? `Real estate agents in ${sn}: what they charge on the ${formatPriceFull(median)} ${provenance?.basis === "area" ? "ABS area " : ""}median (${provenance?.sourceShort ?? "published"}, ${commission.lowPct}% to ${commission.highPct}%), how to choose, and a free match with one local agent.`
     : `Real estate agents in ${sn} ${suburb.postcode}: what they charge, how to choose, and a free match with one local agent.`;
 
   return {
@@ -139,6 +209,8 @@ export function buildSuburbAgentsModel(
     medianHousePrice: median,
     stateRange,
     commission,
+    provenance,
+    medianPhrase,
     examples,
     agents: shownAgents,
     agencies: shownAgencies,
