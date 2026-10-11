@@ -33,7 +33,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "What a building and pest inspection costs in Sydney, Melbourne, Brisbane, Perth, Adelaide, Hobart, Canberra and Darwin, by unit, house and large property, combined or separate, from inspectors' own price lists, plus who pays and what the report covers.",
   slug: "building-pest-inspection",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 11,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -68,6 +68,7 @@ export const metadata: Metadata = {
 
 const prose = (r: CostRange) => formatCostRange(r, "prose");
 const perth = cityCosts("Perth");
+const CITY_H3 = ["Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide"] as const;
 const sydney = cityCosts("Sydney");
 
 const TLDR = [
@@ -189,6 +190,21 @@ export default function BuildingPestInspectionPage() {
           September 2026.
         </small>
       </p>
+
+      {/* One answer-first line per big capital: the cost SERPs that rank are city pages (buying 3.5). */}
+      {CITY_H3.map((city) => {
+        const c = cityCosts(city);
+        return (
+          <div key={city}>
+            <h3>Building and pest inspection cost in {city}</h3>
+            <p>
+              A combined building and pest inspection on a three to four bedroom house in {city} costs{" "}
+              {prose(c.combined.house)} including GST, and {prose(c.combined.unit)} for a unit (
+              {c.sources.map((src) => src.label.split(",")[0]).join("; ")}; {c.sources[0].note.split(";")[0]}).
+            </p>
+          </div>
+        );
+      })}
 
       <KeyFigure
         value={formatCostRange(HOUSE_BIG_THREE)}
@@ -397,6 +413,15 @@ export default function BuildingPestInspectionPage() {
         <li><strong>Significant roof damage.</strong> Failed flashings, cracked tiles, or deteriorated roofing membranes that require full replacement. Roof replacements can cost $10,000 to $30,000+.</li>
         <li><strong>Subfloor drainage issues.</strong> Poor drainage allowing water pooling under the house, which promotes termite activity and timber decay.</li>
       </ul>
+
+      <h3>What is the biggest red flag in a home inspection?</h3>
+      <p>
+        The findings most likely to change a purchase are structural: moving footings or cracked
+        walls, roof framing faults, and active termites or termite damage. They can cost more to
+        fix than any discount you negotiate, so treat any of them as a reason to get a specialist
+        report before you go further. The inspection itself costs {prose(HOUSE_ALL)} on a standard
+        house across the capitals (inspector price lists above).
+      </p>
 
       <h3>Moderate (maintenance items to budget for)</h3>
       <ul>
