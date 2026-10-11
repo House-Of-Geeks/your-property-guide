@@ -5,7 +5,7 @@ import {
   getRankingEligibleCount,
   type RankingCategory,
 } from "@/lib/services/suburb-rankings-service";
-import { rankingNote } from "@/lib/ranking-notes";
+import { isRanked, rankingNote } from "@/lib/ranking-notes";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import {
   BestSuburbsListing,
@@ -58,6 +58,9 @@ export async function generateMetadata({
     title,
     description: config.description,
     alternates: { canonical: `${SITE_URL}/best-suburbs/${category}` },
+    // A ranking with no data to rank on (flood risk, until a hazard feed
+    // loads) says why and stays out of the index.
+    robots: isRanked(category as RankingCategory, null) ? undefined : { index: false, follow: true },
     openGraph: {
       url: `${SITE_URL}/best-suburbs/${category}`,
       // og titles don't get the root title.template — brand them explicitly
@@ -80,8 +83,9 @@ export default async function BestSuburbsCategoryPage({
 
   const cat = category as RankingCategory;
   // One after the other: the runtime pool holds a single connection.
-  const suburbs = await getRankedSuburbs(cat, undefined, 50);
-  const eligible = await getRankingEligibleCount(cat, undefined);
+  const ranked = isRanked(cat, null);
+  const suburbs = ranked ? await getRankedSuburbs(cat, undefined, 50) : [];
+  const eligible = ranked ? await getRankingEligibleCount(cat, undefined) : null;
   const note = rankingNote(cat, null, suburbs.length, eligible);
   // The capital-city editions of this ranking that have ten suburbs to show.
   const cityEditions = cityEditionLinks(await indexableCityEditionsForLinks(), { category: cat });

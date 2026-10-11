@@ -50,13 +50,26 @@ export const YIELD_RANKED_STATES: readonly string[] = ["VIC", "QLD"];
 export const YIELD_MIN_POPULATION = 1000;
 
 /**
- * Whether there is a ranking to publish for the state. Where there is not,
- * the page says why, answers noindex and stays out of the sitemap, the way
- * the site treats every other page with nothing on it; when the figures
- * arrive the page and the sitemap follow without a code change here beyond
- * the two lists above.
+ * Whether a flood hazard feed is loaded. The lowest-flood-risk ranking needs
+ * a flood hazard class for each suburb (SuburbHazard.floodClass), and that
+ * table is empty in production (tracker item 49(ii)): every row on the state
+ * pages read "Flood risk: No data", and the list was in effect suburbs with
+ * no record, which is not suburbs with no flood risk. Until a feed loads
+ * the ranking is published nowhere: no table, noindex, out of the sitemaps,
+ * and the page says why (review of 10 Oct 2026, suburbs-market 0.1c). Flip
+ * this when a hazard feed has loaded and its coverage has been checked.
+ */
+export const FLOOD_HAZARD_FEED_LOADED = false;
+
+/**
+ * Whether there is a ranking to publish for the state (null: the national
+ * page). Where there is not, the page says why, answers noindex and stays
+ * out of the sitemap, the way the site treats every other page with nothing
+ * on it; when the figures arrive the page and the sitemap follow without a
+ * code change here beyond the lists and the flag above.
  */
 export function isRanked(category: RankingCategory, state: string | null): boolean {
+  if (category === "lowest-flood-risk") return FLOOD_HAZARD_FEED_LOADED;
   if (state === null) return true;
   if (category === "highest-growth") return GROWTH_RANKED_STATES.includes(state);
   if (category === "best-rental-yield") return YIELD_RANKED_STATES.includes(state);
@@ -117,6 +130,13 @@ export function rankingNote(
   eligible: number | null,
 ): RankingNote {
   const drawn = eligible != null && eligible > 0 ? suburbsIn(eligible, state) : null;
+
+  if (category === "lowest-flood-risk" && !isRanked(category, state)) {
+    return {
+      empty: true,
+      text: `No flood risk ranking${state ? ` for ${stateName(state)}` : ""} yet. Ranking suburbs on flood risk needs a flood hazard class for each suburb, and we do not hold one: a suburb with no flood record is not a suburb with no flood risk. Flood risk changes from street to street, so check the council's flood map or a flood report for the exact address.`,
+    };
+  }
 
   if (category === "highest-growth") {
     if (shown === 0) {

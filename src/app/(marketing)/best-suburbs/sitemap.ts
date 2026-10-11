@@ -22,8 +22,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.8,
     },
-    // National-level category pages
-    ...CATEGORIES.map((cat) => ({
+    // National-level category pages, less a ranking with no data to rank on
+    // (flood risk until a hazard feed loads: the page says why and answers noindex).
+    ...CATEGORIES.filter((cat) => isRanked(cat, null)).map((cat) => ({
       url: `${SITE_URL}/best-suburbs/${cat}`,
       changeFrequency: "weekly" as const,
       priority: 0.7,

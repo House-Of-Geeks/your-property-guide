@@ -11,7 +11,7 @@ import {
   getTopSuburbsByState,
   getStateName,
 } from "@/lib/services/suburb-rankings-service";
-import { priceSourceLine } from "@/lib/ranking-notes";
+import { isRanked, priceSourceLine } from "@/lib/ranking-notes";
 import { formatPrice, formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { MostSearchedSuburbs } from "@/components/suburb/MostSearchedSuburbs";
@@ -312,16 +312,16 @@ export default async function StatePage({ params }: StatePageProps) {
           </p>
           <div className="flex flex-wrap gap-2">
             {[
-              { label: "Best for Families", slug: "for-families" },
-              { label: "Highest Growth", slug: "highest-growth" },
-              { label: "Most Affordable", slug: "most-affordable" },
-              { label: "Most Walkable", slug: "most-walkable" },
-              { label: "Lowest Flood Risk", slug: "lowest-flood-risk" },
-              { label: "Best Rental Yield", slug: "best-rental-yield" },
-            ].map(({ label, slug }) => (
+              { label: "Best for Families", slug: "for-families" as const },
+              { label: "Highest Growth", slug: "highest-growth" as const },
+              { label: "Most Affordable", slug: "most-affordable" as const },
+              { label: "Most Walkable", slug: "most-walkable" as const },
+              { label: "Lowest Flood Risk", slug: "lowest-flood-risk" as const },
+              { label: "Best Rental Yield", slug: "best-rental-yield" as const },
+            ].filter(({ slug }) => isRanked(slug, upperState)).map(({ label, slug }) => (
               <Link
                 key={slug}
-                href={`/best-suburbs/${slug}?state=${upperState}`}
+                href={`/best-suburbs/${slug}/${upperState.toLowerCase()}`}
                 className="px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-sm text-gray-700 font-medium hover:border-primary hover:text-primary transition-colors"
               >
                 {label}

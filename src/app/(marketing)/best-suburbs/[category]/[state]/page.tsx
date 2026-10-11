@@ -156,8 +156,10 @@ export default async function BestSuburbsCategoryStatePage({
   if (!upperState) notFound();
 
   // One after the other: the runtime pool holds a single connection.
-  const suburbs = await getRankedSuburbs(category, upperState, 50);
-  const eligible = await getRankingEligibleCount(category, upperState);
+  // Nothing is fetched for a ranking the state's figures cannot support.
+  const ranked = isRanked(category, upperState);
+  const suburbs = ranked ? await getRankedSuburbs(category, upperState, 50) : [];
+  const eligible = ranked ? await getRankingEligibleCount(category, upperState) : null;
   const note = rankingNote(category, upperState, suburbs.length, eligible);
   // The state's city edition, where it has ten suburbs to show.
   const cityEditions = cityEditionLinks(await indexableCityEditionsForLinks(), { category, state: upperState });

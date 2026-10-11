@@ -4,23 +4,24 @@ import Image from "next/image";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
+import { isRanked, type RankingCategory } from "@/lib/ranking-notes";
 
 export const metadata: Metadata = {
   title: "Best Suburbs in Australia",
   description:
-    "Discover the best Australian suburbs ranked by schools, growth, affordability, walkability, flood risk, and rental yield. Find your perfect suburb.",
+    "Australian suburbs ranked on one stated measure each: school ICSEA, measured price change, published median house price, walk score and gross rental yield.",
   alternates: { canonical: `${SITE_URL}/best-suburbs` },
   openGraph: {
     url: `${SITE_URL}/best-suburbs`,
     title: "Best Suburbs in Australia | Your Property Guide",
     description:
-      "Discover the best Australian suburbs ranked by schools, growth, affordability, walkability, flood risk, and rental yield.",
+      "Australian suburbs ranked on one stated measure each: school ICSEA, measured price change, published median house price, walk score and gross rental yield.",
     type: "website",
   },
   twitter: { card: "summary_large_image" },
 };
 
-const CATEGORIES = [
+const ALL_CATEGORIES: { slug: RankingCategory; title: string; description: string; icon: string }[] = [
   {
     slug: "for-families",
     title: "Best for Families",
@@ -50,10 +51,10 @@ const CATEGORIES = [
     icon: "/images/icons/walkability.svg",
   },
   {
+    // Listed once a flood hazard feed loads (ranking-notes.FLOOD_HAZARD_FEED_LOADED).
     slug: "lowest-flood-risk",
     title: "Lowest Flood Risk",
-    description:
-      "Suburbs assessed as low flood risk or with no hazard record, peace of mind for homeowners.",
+    description: "Suburbs by flood hazard class.",
     icon: "/images/icons/hazard.svg",
   },
   {
@@ -64,6 +65,10 @@ const CATEGORIES = [
     icon: "/images/icons/yield.svg",
   },
 ];
+
+/** Only the rankings there is data to rank on: no card links to an empty list. */
+const CATEGORIES = ALL_CATEGORIES.filter((c) => isRanked(c.slug, null));
+const COUNT_WORD = ["No", "One", "Two", "Three", "Four", "Five", "Six"];
 
 export default function BestSuburbsHubPage() {
   return (
@@ -93,7 +98,7 @@ export default function BestSuburbsHubPage() {
           {/* Magazine masthead */}
           <div className="flex items-center gap-4 mb-10">
             <span className="font-display italic text-primary text-base sm:text-lg leading-none">
-              Six ranked lists
+              {COUNT_WORD[CATEGORIES.length]} ranked lists
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
             <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
@@ -107,9 +112,8 @@ export default function BestSuburbsHubPage() {
             to you.
           </h1>
           <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            Six rankings across schools, growth, affordability, walkability,
-            flood safety and rental yield. Built on real public data, with no
-            marketing spin.
+            {COUNT_WORD[CATEGORIES.length]} rankings, each on one stated measure from public
+            data: schools, measured price change, price, walkability and rental yield.
           </p>
         </div>
       </section>
@@ -141,9 +145,11 @@ export default function BestSuburbsHubPage() {
         <div className="mt-12 rounded-2xl border border-line bg-surface-warm p-6 text-sm font-sans text-ink-muted leading-relaxed">
           <p className="text-xs uppercase tracking-[0.25em] text-ink-subtle mb-2">Methodology</p>
           <p>
-            Rankings are built from publicly available data, ACARA school scores, ABS Census
-            demographics, Geoscience Australia flood risk assessments, and OpenStreetMap walkability
-            indicators. Updated periodically.
+            Rankings are built from public data: ACARA school ICSEA, 2021 Census household
+            figures, the median each suburb&rsquo;s own page publishes, bond-data rents and
+            OpenStreetMap amenity counts.
+            {!isRanked("lowest-flood-risk", null) &&
+              " There is no flood risk ranking: we hold no flood hazard class for each suburb, and a suburb with no flood record is not a suburb with no flood risk."}
           </p>
         </div>
       </div>
