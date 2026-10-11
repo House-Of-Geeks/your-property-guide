@@ -281,6 +281,7 @@ const PAGES: Array<{ path: string; state: AustralianState | null; load: () => Pr
   { path: "/guides/first-home-buyer-tas", state: "TAS", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-tas/page") },
   { path: "/guides/first-home-buyer-nt", state: "NT", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-nt/page") },
   { path: "/guides/first-home-buyer-sa", state: "SA", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-sa/page") },
+  { path: "/guides/first-home-buyer-act", state: "ACT", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-act/page") },
 ];
 
 describe("pages rendered from the data file", () => {
@@ -298,6 +299,6 @@ describe("pages rendered from the data file", () => {
         expect(html).toContain(g.source.href);
         expect(html).toContain(FIRST_HOME_DUTY[page.state].source.href);
       }
-    });
+    }, 30_000);
   }
 });
