@@ -33,7 +33,6 @@ const SECTIONS: Section[] = [
       { label: "Properties for rent",     href: "/rent" },
       { label: "Recently sold",           href: "/sold" },
       { label: "Off-market properties",   href: "/off-market" },
-      { label: "House & land packages",   href: "/house-and-land" },
     ],
   },
   {
@@ -61,7 +60,6 @@ const SECTIONS: Section[] = [
       { label: "Highest growth",          href: "/best-suburbs/highest-growth" },
       { label: "Most affordable",         href: "/best-suburbs/most-affordable" },
       { label: "Most walkable",           href: "/best-suburbs/most-walkable" },
-      { label: "Lowest flood risk",       href: "/best-suburbs/lowest-flood-risk" },
       { label: "Best rental yield",       href: "/best-suburbs/best-rental-yield" },
     ],
   },

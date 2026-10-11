@@ -41,7 +41,7 @@ const RAIL_BY_BLOG_SLUG: Record<string, RailGuide[]> = {
   ],
   "top-5-suburbs-families-moreton-bay": [
     { href: "/guides/best-brisbane-suburbs-for-families-2026", title: "Best Brisbane suburbs for families", description: "Inner / middle / outer ring family picks." },
-    { href: "/best-suburbs/for-families",                    title: "Best for families ranking",         description: "Schools, parks, walkability, scored across Australia." },
+    { href: "/best-suburbs/for-families",                    title: "Best for families ranking",         description: "Ranked by local school ICSEA where family households are 40% or more." },
     { href: "/find-your-suburb",                             title: "Find your suburb (4-question quiz)", description: "Get six suburbs scored against your priorities." },
   ],
   "moreton-bay-property-market-update-q1-2025": [
