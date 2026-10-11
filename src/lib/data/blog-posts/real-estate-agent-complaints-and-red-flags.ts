@@ -39,7 +39,7 @@ export const post: BlogPost = {
 <h2>The evidence to keep</h2>
 <ul>
 <li>the signed agency agreement, the marketing schedule and every variation;</li>
-<li>dated screenshots of each advertisement and any price guide, and the statement of information in Victoria;</li>
+<li>dated screenshots of each advertisement and any price guide, and the Property Price Statement in Victoria (the statement of information before 1 October 2026);</li>
 <li>every email and text from the agent, and a note of each phone call with the date and what was said;</li>
 <li>the written offers, with the dates you were told about them;</li>
 <li>the commission invoice and the settlement statement.</li>
@@ -108,5 +108,6 @@ export const post: BlogPost = {
   category: "Selling",
   tags: ["real estate agent complaints","Fair Trading","Consumer Affairs Victoria","Office of Fair Trading","red flags","bad real estate agent","commission dispute","selling a house","2026"],
   publishedAt: "2026-09-20",
+  updatedAt: "2026-10-11",
   readingTime: 11,
 };

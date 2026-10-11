@@ -188,7 +188,7 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       {
         heading: "Auctions, and the October 2026 reserve rule",
         body: [
-          "Melbourne has the highest auction share in the country, and the auctioneer is often the listing agent or a colleague included in the fee; where charged separately expect $400 to $1,200. From 1 October 2026, for auctions held on or after 16 October, the seller's reserve must be a single figure published in advertising at least seven days before the auction, so the reserve conversation now happens earlier in the campaign. Our [reserve price guide](/guides/reserve-price-auction) explains what changes for sellers.",
+          "Melbourne has the highest auction share in the country, and the auctioneer is often the listing agent or a colleague included in the fee; where charged separately expect $400 to $1,200. New rules started on 1 October 2026: for auctions and fixed-date sales held on or after 16 October 2026, the agent must publish your reserve as a single figure in advertising at least seven days before the auction, and the auction cannot go ahead if it has not been, so the reserve conversation will happen earlier in the campaign. The statement of information has also become the Property Price Statement, which the agent updates with the sale price once the sale is unconditional (Consumer Affairs Victoria). Our [reserve price guide](/guides/reserve-price-auction) explains what changes for sellers.",
         ],
       },
       {
@@ -209,7 +209,7 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
       { label: "Sale of Land Act 1962 (Vic), sections 10G and 32 to 32P", href: "https://www.legislation.vic.gov.au/in-force/acts/sale-land-act-1962" },
       { label: "Estate Agents Act 1980 (Vic), sections 47A, 48A and 49A", href: "https://www.legislation.vic.gov.au/in-force/acts/estate-agents-act-1980" },
       { label: "Consumer Affairs Victoria, Selling property", href: "https://www.consumer.vic.gov.au/housing/buying-and-selling-property/selling-property" },
-      ...commissionSources("VIC"), COTALITY, ATO_FRCGW, ATO_CGT, YPG_NOTE,
+      ...commissionSources("VIC"), { label: "Consumer Affairs Victoria, Selling property by auction (reserve published 7 days before auctions and fixed-date sales held on and from 16 October 2026; Property Price Statement replaces the statement of information)", href: "https://www.consumer.vic.gov.au/housing/buying-and-selling-property/selling-property/selling-property-by-auction", note: "read 11 October 2026" }, COTALITY, ATO_FRCGW, ATO_CGT, YPG_NOTE,
     ],
   }, { docs: "Section 32 certificates", question: "How much does it cost to sell a house in Victoria?" }),
 
