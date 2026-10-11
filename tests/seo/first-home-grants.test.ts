@@ -277,6 +277,7 @@ const render = async (load: () => Promise<PageModule>) => {
 /** The pages that render the data file, with the state they are about (null for national pages). */
 const PAGES: Array<{ path: string; state: AustralianState | null; load: () => Promise<PageModule> }> = [
   { path: "/guides/first-home-buyer-nsw", state: "NSW", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-nsw/page") },
+  { path: "/guides/first-home-buyer-wa", state: "WA", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-wa/page") },
 ];
 
 describe("pages rendered from the data file", () => {
