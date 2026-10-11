@@ -1,0 +1,167 @@
+repair-stats-source: dry run (no database writes)
+
+== Writer evidence (read only) ==
+  DataSource crime-nsw       ok      lastFetchedAt 2026-10-01T02:05:53.401Z  dataAsOf 2026-01-01  records 3451
+  DataSource import-suburbs  ok      lastFetchedAt 2026-10-01T02:08:41.596Z  dataAsOf none  records 23
+  DataSource rental-nsw      ok      lastFetchedAt 2026-10-01T02:04:57.087Z  dataAsOf 2025-12-01  records 441
+  DataSource rental-qld      ok      lastFetchedAt 2026-10-01T02:05:29.734Z  dataAsOf 2026-06-01  records 514
+  DataSource rental-sa       ok      lastFetchedAt 2026-10-01T02:05:19.508Z  dataAsOf 2026-06-01  records 642
+  DataSource rental-vic      error   lastFetchedAt 2026-10-01T02:03:43.462Z  dataAsOf 2025-09-01  records 202  error: fetch failed
+  DataSource sales-nsw       error   lastFetchedAt 2026-10-01T02:08:36.487Z  dataAsOf 2025-12-31  records 3034  error: HTTP 403 fetching https://www.valuergeneral.nsw.gov.au/__psi/yearly/2025.zip
+  DataSource sales-sa        ok      lastFetchedAt 2026-10-01T02:07:59.895Z  dataAsOf 2026-07-22  records 373
+  DataSource sales-vic       error   lastFetchedAt 2026-10-01T02:07:43.565Z  dataAsOf 2025-06-01  records 748  error: Both VIC house and unit downloads failed
+  (rental-nsw: the code before 7 Sep reads the December 2025 workbook, so dataAsOf 2025-12-01 and a recordCount near the number of postcodes; the current feed: 2026-06-01 or later and about 4,000)
+  NSW postcode-named rental rows (the old feed writes them; the current one deleted 441 on 7 Sep): 2026-10-01 441
+  NSW rental-nsw: 5275 of 5275 rows; rentalUpdatedAt on 1 Oct 5275; rentalUpdatedAt 2026-10-01 to 2026-10-01; no salesUpdatedAt 2208
+  QLD rental-qld: 533 of 3931 rows; rentalUpdatedAt on 1 Oct 500; rentalUpdatedAt 2026-07-01 to 2026-10-01; no salesUpdatedAt 57
+  SA rental-sa: 1738 of 2131 rows; rentalUpdatedAt on 1 Oct 1738; rentalUpdatedAt 2026-10-01 to 2026-10-01; no salesUpdatedAt 1724
+  VIC rental-vic: 2749 of 3500 rows; rentalUpdatedAt on 1 Oct 0; rentalUpdatedAt 2026-05-03 to 2026-09-08; no salesUpdatedAt 2749
+  (NSW: the old rental-nsw stamps rentalUpdatedAt on every NSW row; the current feed only on suburbs in the postcodes DCJ publishes)
+
+10295 rows carry a rental label
+[sales-nsw] 2023: aggregate from captured rows · 109164 non-strata residences · 78222 houses (no unit number) · 2916 suburb/postcode combos
+[sales-nsw] 2025: aggregate from captured rows · 157073 non-strata residences · 111890 houses (no unit number) · 3044 suburb/postcode combos
+
+== Plan by state ==
+
+NSW: 5275 rows labelled rental-nsw
+    3034  relabel sales-nsw (trusted) [nsw-rows-match]: 1881 publish a median after the repair (5+ sales or count unknown)
+            abbotsbury-nsw-2176: $1,800,000 on 43 sales equals the Valuer General rows for calendar 2025 (vg-nsw, nature R, no unit number)
+            abbotsford-nsw-2046: $3,435,500 on 24 sales equals the Valuer General rows for calendar 2025 (vg-nsw, nature R, no unit number)
+            abercrombie-nsw-2795: $832,500 on 20 sales equals the Valuer General rows for calendar 2025 (vg-nsw, nature R, no unit number)
+            aberdare-nsw-2325: $672,500 on 60 sales equals the Valuer General rows for calendar 2025 (vg-nsw, nature R, no unit number)
+            aberdeen-nsw-2336: $600,000 on 41 sales equals the Valuer General rows for calendar 2025 (vg-nsw, nature R, no unit number)
+            aberfoyle-nsw-2350: $5,500,000 on 1 sales equals the Valuer General rows for calendar 2025 (vg-nsw, nature R, no unit number)
+            aberglasslyn-nsw-2320: $807,000 on 139 sales equals the Valuer General rows for calendar 2025 (vg-nsw, nature R, no unit number)
+            abermain-nsw-2326: $672,500 on 62 sales equals the Valuer General rows for calendar 2025 (vg-nsw, nature R, no unit number)
+    2169  relabel abs-census-2021 (stays withheld) [census-seed]
+            aarons-pass-nsw-2850: house $381,000, unit $274,320 (72%): the 2021 Census mortgage seed
+            abercrombie-river-nsw-2795: house $381,000, unit $274,320 (72%): the 2021 Census mortgage seed
+            abington-nsw-2350: house $330,000, unit $237,600 (72%): the 2021 Census mortgage seed
+            acacia-park-nsw-2350: house $330,000, unit $237,600 (72%): the 2021 Census mortgage seed
+            acacia-plateau-nsw-2476: house $238,000, unit $171,360 (72%): the 2021 Census mortgage seed
+            adjungbilly-nsw-2727: house $219,000, unit $157,680 (72%): the 2021 Census mortgage seed
+            afterlee-nsw-2474: house $286,000, unit $205,920 (72%): the 2021 Census mortgage seed
+            airly-nsw-2846: house $234,000, unit $168,480 (72%): the 2021 Census mortgage seed
+      39  undecided [no-median]
+            bimberi-nsw-2611: no median on the row: there is no sales figure to attribute
+            blue-cow-nsw-2624: no median on the row: there is no sales figure to attribute
+            blue-nobby-nsw-2408: no median on the row: there is no sales figure to attribute
+            brindabella-nsw-2611: no median on the row: there is no sales figure to attribute
+            bulyeroi-nsw-2387: no median on the row: there is no sales figure to attribute
+            burbong-nsw-2620: no median on the row: there is no sales figure to attribute
+            burren-junction-nsw-2386: no median on the row: there is no sales figure to attribute
+            callaghan-nsw-2308: no median on the row: there is no sales figure to attribute
+      31  undecided [nsw-no-rows]
+            alumy-creek-nsw-2460: no captured Valuer General house sales for this suburb and postcode in calendar 2025
+            bennetts-green-nsw-2290: no captured Valuer General house sales for this suburb and postcode in calendar 2025
+            bilgola-nsw-2107: no captured Valuer General house sales for this suburb and postcode in calendar 2025
+            blue-knob-nsw-2480: no captured Valuer General house sales for this suburb and postcode in calendar 2025
+            boree-nsw-2800: no captured Valuer General house sales for this suburb and postcode in calendar 2025
+            brays-creek-nsw-2484: no captured Valuer General house sales for this suburb and postcode in calendar 2025
+            bridgman-nsw-2330: no captured Valuer General house sales for this suburb and postcode in calendar 2025
+            bumbaldry-nsw-2794: no captured Valuer General house sales for this suburb and postcode in calendar 2025
+       2  relabel sales-abs (trusted) [abs-period-end]: 2 publish a median after the repair (5+ sales or count unknown)
+            banksmeadow-nsw-2019: salesUpdatedAt 2024-12-31 is an ABS period end; no later sales feed wrote the row
+            chullora-nsw-2190: salesUpdatedAt 2024-12-31 is an ABS period end; no later sales feed wrote the row
+
+QLD: 533 rows labelled rental-qld
+     232  relabel sales-qld (stays withheld) [census-proxy]
+            acacia-ridge-qld-4110: whole-thousand $334,000 stamped 2026-05-05: the census-mortgage proxy (sales-qld)
+            agnes-water-qld-4677: whole-thousand $330,000 stamped 2026-05-05: the census-mortgage proxy (sales-qld)
+            airlie-beach-qld-4802: whole-thousand $424,000 stamped 2026-05-05: the census-mortgage proxy (sales-qld)
+            alexandra-headland-qld-4572: whole-thousand $401,000 stamped 2026-05-05: the census-mortgage proxy (sales-qld)
+            allenstown-qld-4700: whole-thousand $271,000 stamped 2026-05-05: the census-mortgage proxy (sales-qld)
+            andergrove-qld-4740: whole-thousand $363,000 stamped 2026-05-05: the census-mortgage proxy (sales-qld)
+            augustine-heights-qld-4300: whole-thousand $475,000 stamped 2026-05-05: the census-mortgage proxy (sales-qld)
+            avenell-heights-qld-4670: whole-thousand $264,000 stamped 2026-05-05: the census-mortgage proxy (sales-qld)
+     219  relabel sales-abs (trusted) [abs-period-end]: 219 publish a median after the repair (5+ sales or count unknown)
+            aitkenvale-qld-4814: salesUpdatedAt 2024-12-31 is an ABS period end; no later sales feed wrote the row
+            albany-creek-qld-4035: salesUpdatedAt 2024-12-31 is an ABS period end; no later sales feed wrote the row
+            alderley-qld-4051: salesUpdatedAt 2024-12-31 is an ABS period end; no later sales feed wrote the row
+            alexandra-hills-qld-4161: salesUpdatedAt 2024-12-31 is an ABS period end; no later sales feed wrote the row
+            algester-qld-4115: salesUpdatedAt 2024-12-31 is an ABS period end; no later sales feed wrote the row
+            annerley-qld-4103: salesUpdatedAt 2024-12-31 is an ABS period end; no later sales feed wrote the row
+            arundel-qld-4214: salesUpdatedAt 2024-12-31 is an ABS period end; no later sales feed wrote the row
+            ashgrove-qld-4060: salesUpdatedAt 2024-12-31 is an ABS period end; no later sales feed wrote the row
+      82  relabel abs-census-2021 (stays withheld) [census-seed]
+            annandale-qld-4814: house $333,000, unit $239,760 (72%): the 2021 Census mortgage seed
+            arana-hills-qld-4054: house $429,000, unit $308,880 (72%): the 2021 Census mortgage seed
+            avoca-qld-4670: house $286,000, unit $205,920 (72%): the 2021 Census mortgage seed
+            banya-qld-4551: house $429,000, unit $308,880 (72%): the 2021 Census mortgage seed
+            baringa-qld-4551: house $429,000, unit $308,880 (72%): the 2021 Census mortgage seed
+            beaconsfield-qld-4740: house $381,000, unit $274,320 (72%): the 2021 Census mortgage seed
+            bethania-qld-4205: house $330,000, unit $237,600 (72%): the 2021 Census mortgage seed
+            blackwater-qld-4717: house $238,000, unit $171,360 (72%): the 2021 Census mortgage seed
+
+SA: 1738 rows labelled rental-sa
+    1624  relabel abs-census-2021 (stays withheld) [census-seed]
+            abminga-station-sa-5440: house $17,000, unit $12,240 (72%): the 2021 Census mortgage seed
+            adelaide-bc-sa-5000: house $381,000, unit $274,320 (72%): the 2021 Census mortgage seed
+            agery-sa-5558: house $264,000, unit $190,080 (72%): the 2021 Census mortgage seed
+            alawoona-sa-5311: house $143,000, unit $102,960 (72%): the 2021 Census mortgage seed
+            alford-sa-5555: house $184,000, unit $132,480 (72%): the 2021 Census mortgage seed
+            allandale-station-sa-5723: house $138,000, unit $99,360 (72%): the 2021 Census mortgage seed
+            allendale-east-sa-5291: house $321,000, unit $231,120 (72%): the 2021 Census mortgage seed
+            allendale-north-sa-5373: house $253,000, unit $182,160 (72%): the 2021 Census mortgage seed
+     100  undecided [no-median]
+            adelaide-airport-sa-5950: no median on the row: there is no sales figure to attribute
+            alice-spring-sa-0870: no median on the row: there is no sales figure to attribute
+            arcoona-sa-5720: no median on the row: there is no sales figure to attribute
+            arkaroola-sa-5701: no median on the row: there is no sales figure to attribute
+            arkaroola-village-sa-5701: no median on the row: there is no sales figure to attribute
+            beenleigh-sa-4207: no median on the row: there is no sales figure to attribute
+            bellbrae-sa-3228: no median on the row: there is no sales figure to attribute
+            billa-kalina-sa-5720: no median on the row: there is no sales figure to attribute
+      14  undecided [sa-no-quarter]
+            bradbury-sa-5153: no stored SA Government quarter has this median and sales count
+            clarendon-sa-5157: no stored SA Government quarter has this median and sales count
+            collinswood-sa-5081: no stored SA Government quarter has this median and sales count
+            direk-sa-5110: no stored SA Government quarter has this median and sales count
+            green-fields-sa-5107: no stored SA Government quarter has this median and sales count
+            greenhill-sa-5140: no stored SA Government quarter has this median and sales count
+            kangarilla-sa-5157: no stored SA Government quarter has this median and sales count
+            lenswood-sa-5240: no stored SA Government quarter has this median and sales count
+
+VIC: 2749 rows labelled rental-vic
+    2732  relabel abs-census-2021 (stays withheld) [census-seed]
+            abbeyard-vic-3737: house $308,000, unit $221,760 (72%): the 2021 Census mortgage seed
+            aberfeldy-vic-3825: house $238,000, unit $171,360 (72%): the 2021 Census mortgage seed
+            acheron-vic-3714: house $291,000, unit $209,520 (72%): the 2021 Census mortgage seed
+            adams-estate-vic-3984: house $342,000, unit $246,240 (72%): the 2021 Census mortgage seed
+            ada-vic-3833: house $238,000, unit $171,360 (72%): the 2021 Census mortgage seed
+            addington-vic-3352: house $352,000, unit $253,440 (72%): the 2021 Census mortgage seed
+            adelaide-lead-vic-3465: house $235,000, unit $169,200 (72%): the 2021 Census mortgage seed
+            agnes-vic-3962: house $220,000, unit $158,400 (72%): the 2021 Census mortgage seed
+      17  undecided [no-median]
+            bandiana-milpo-vic-3694: no median on the row: there is no sales figure to attribute
+            bellbrae-vic-3228: no median on the row: there is no sales figure to attribute
+            bells-beach-vic-3228: no median on the row: there is no sales figure to attribute
+            cobram-east-vic-3644: no median on the row: there is no sales figure to attribute
+            hmas-cerberus-vic-3920: no median on the row: there is no sales figure to attribute
+            jung-vic-3399: no median on the row: there is no sales figure to attribute
+            koonoomoo-vic-3644: no median on the row: there is no sales figure to attribute
+            la-trobe-university-vic-3086: no median on the row: there is no sales figure to attribute
+
+== Suburbs quoted in the review ==
+  bondi-nsw-2026 (rental-nsw): -> sales-nsw; $4,300,000 on 35 sales equals the Valuer General rows for calendar 2025 (vg-nsw, nature R, no unit number)
+  castle-hill-nsw-2154 (rental-nsw): -> sales-nsw; $2,500,000 on 455 sales equals the Valuer General rows for calendar 2025 (vg-nsw, nature R, no unit number)
+  dubbo-nsw-2830 (rental-nsw): -> sales-nsw; $625,000 on 1028 sales equals the Valuer General rows for calendar 2025 (vg-nsw, nature R, no unit number)
+  lane-cove-nsw-2066 (rental-nsw): -> sales-nsw; $3,195,000 on 52 sales equals the Valuer General rows for calendar 2025 (vg-nsw, nature R, no unit number)
+  mosman-nsw-2088 (rental-nsw): -> sales-nsw; $5,535,000 on 228 sales equals the Valuer General rows for calendar 2025 (vg-nsw, nature R, no unit number)
+  carindale-qld-4152 (rental-qld): -> sales-abs; salesUpdatedAt 2024-12-31 is an ABS period end; no later sales feed wrote the row
+
+== Rows with a trusted label, by state: now -> after the repair ==
+  ACT      91 ->     91   (published medians now 91)
+  NSW       0 ->   3036   (published medians now 0)
+  NT       29 ->     29   (published medians now 29)
+  QLD      61 ->    280   (published medians now 61)
+  SA      373 ->    373   (published medians now 271)
+  TAS      36 ->     36   (published medians now 36)
+  VIC     748 ->    748   (published medians now 748)
+  WA      111 ->    111   (published medians now 111)
+
+relabel 10094 rows (3255 to a trusted label, 6839 to a withheld one); undecided 201
+plan and rollback record: /private/tmp/claude-501/-Volumes-GeekWork-Your-Property-Guide/ee5d72b0-b920-4a2e-80fe-da1364378788/scratchpad/stats-source-repair-plan.csv (10295 rows; the "from" column restores the old labels)
+
+dry run: no database writes. To apply: npx tsx scripts/sync/repair-stats-source.ts --apply [--trusted-only]
