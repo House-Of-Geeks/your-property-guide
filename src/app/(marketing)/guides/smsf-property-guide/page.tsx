@@ -102,6 +102,11 @@ const FAQS: FaqItem[] = [
       `Not to buy a home. Since ${LRBA_BAN_START}, section 67A of the SIS Act only allows a new limited recourse borrowing arrangement for real property if it is business real property, broadly land and buildings used wholly and exclusively in a business. An SMSF can still buy residential property with cash it already holds, and loans entered into before ${LRBA_BAN_START}, refinancing of them, and purchases under contracts signed before then continue (Tax Reform No. 1 Act, Schedule 5).`,
   },
   {
+    question: "What is the new rule for investment property in Australia?",
+    answer:
+      `The Treasury Laws Amendment (Tax Reform No. 1) Act 2026 makes three changes. From 1 July 2027, losses on an established home bought after 7:30pm AEST on 12 May 2026 only offset income and gains from residential property, and the 50% CGT discount gives way to cost base indexation and a 30% minimum tax for individuals, trusts and partnerships on gains that accrue from that date. Since ${LRBA_BAN_START}, an SMSF cannot take out a new limited recourse loan to buy residential property. Complying super funds, SMSFs included, are outside the first two changes.`,
+  },
+  {
     question: "What is an LRBA?",
     answer:
       `A limited recourse borrowing arrangement: the structure an SMSF must use to borrow to buy an asset. The asset is held in a separate holding (bare) trust, and if the fund defaults the lender can only claim against that asset. Once the loan is repaid, the asset can be transferred to the fund. For real property, a new LRBA entered into from ${LRBA_BAN_START} must be for business real property.`,

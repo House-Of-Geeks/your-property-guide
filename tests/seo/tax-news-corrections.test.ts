@@ -181,6 +181,7 @@ describe("/guides/smsf-property-guide", () => {
     expect(src).toContain("business real property");
     expect(src).toContain("section 67A");
     expect(src).toContain('question: "Can an SMSF still borrow to buy property?"');
+    expect(src).toContain('question: "What is the new rule for investment property in Australia?"');
   });
 
   it("no longer offers a new LRBA for residential property or unsourced loan pricing", () => {
