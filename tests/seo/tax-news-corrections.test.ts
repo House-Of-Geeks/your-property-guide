@@ -206,3 +206,26 @@ describe("/guides/smsf-property-guide", () => {
     expect(src).toContain("Last updated 15 May 2026, read 11 October 2026");
   });
 });
+
+describe("/guides/apra-3-percent-buffer-new-lending-limits-2026", () => {
+  const p = post("apra-3-percent-buffer-new-lending-limits-2026");
+  const body = text(p.content);
+  const afterNote = text(p.content.slice(p.content.indexOf("</em></p>")));
+
+  it("dates the correction and reports APRA's latest settings", () => {
+    expect(p.updatedAt).toBe("2026-10-11");
+    expect(p.title.length).toBeLessThanOrEqual(60);
+    expect(p.content.indexOf("Correction, 11 October 2026")).toBeLessThan(200);
+    expect(body).toContain("28 May 2026");
+    expect(body).toContain("1 February 2026");
+    expect(body).toContain("20%");
+  });
+
+  it("no longer says the debt-to-income limit is not in force", () => {
+    for (const wrong of ["These are not in force", "Nothing has changed today", "With the cash rate at 4.35%", "as and when interest rates eventually come down"]) {
+      expect(afterNote, wrong).not.toContain(wrong);
+    }
+    expect(p.content).toContain("apra-maintains-current-macroprudential-policy-settings-highly-uncertain");
+    expectLinksResolve(p.content);
+  });
+});
