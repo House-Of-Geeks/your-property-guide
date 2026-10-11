@@ -17,6 +17,7 @@ import {
   HTB_INCOME_LIMITS,
   HTB_LENDERS,
   HTB_MIN_DEPOSIT_PCT,
+  HTB_MIN_REPAYMENT_PCT,
   HTB_PRICE_CAPS,
   HTB_SHARE,
   HTB_SOURCES,
@@ -87,10 +88,17 @@ export function htbStateFaqs(state: AustralianState): FaqItem[] {
         `At least ${HTB_MIN_DEPOSIT_PCT}% of the price: ${fmt(page.examplePrice * 0.02)} on a ${fmt(page.examplePrice)} home. With the government's ${ex.sharePct}% on an existing home, your loan would be ${fmt(ex.loan)}, about ${fmt(ex.monthlyRepayment)} a month at ${EXAMPLE_LOAN_RATE}%. ` +
         "You'll also need money for stamp duty, legal costs and loan fees.",
     },
+    {
+      // A People Also Ask question on the NSW, VIC, SA and Help to Buy SERPs (commercial-intent review 10 Oct 2026, section 6).
+      question: `What does it mean if the government owns ${HTB_SHARE.existing.max}% of your house?`,
+      answer:
+        `Under Help to Buy the government pays up to ${HTB_SHARE.existing.max}% of an existing home's price, or ${HTB_SHARE.new.max}% of a new one, and owns that share. ` +
+        `You pay no rent on it, can buy it back in steps of at least ${HTB_MIN_REPAYMENT_PCT}% of the home's value, and repay its share of the sale price when you sell (Housing Australia, read ${checkedOn}).`,
+    },
     ...page.faqs,
     ...(stateScheme
       ? [{
-          question: `Can I use Help to Buy with ${stateScheme.name}?`,
+          question: stateScheme.status === "closed" ? `Is the closed ${stateScheme.name} an alternative to Help to Buy?` : `Can I use Help to Buy with ${stateScheme.name}?`,
           answer:
             stateScheme.status === "closed"
               ? `No. ${stateScheme.name}: ${stateScheme.statusNote}, so Help to Buy is now the shared equity option in ${page.name}.`

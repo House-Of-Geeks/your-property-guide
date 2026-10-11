@@ -29,6 +29,8 @@ import { HTB_INCOME_LIMITS, HTB_INCOME_LIMITS_PREVIOUS, HTB_PRICE_CAPS } from "@
 import { FHSS_ANNUAL_LIMIT, FHSS_TOTAL_LIMIT, FHSS_TOTAL_LIMIT_BEFORE_2022 } from "@/lib/data/fhss";
 import { PERSONA_HUB_CONTENT } from "@/lib/persona-hub-content";
 import { blogPosts } from "@/lib/data/blogs";
+import { htbStateFaqs } from "@/components/guide/HelpToBuyStateGuide";
+import { HTB_STATE_PAGES } from "@/lib/data/help-to-buy-states";
 
 // ─── The data file ──────────────────────────────────────────────────────────
 
@@ -389,6 +391,16 @@ describe("the eight stamp duty state guides' grant and first home lines", () => 
       });
       const html = strings.map((t) => `<p>${t.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")}</p>`).join("");
       expect(scan(html, st)).toEqual([]);
+    });
+  }
+});
+
+describe("the Help to Buy state pages' FAQ answers (FAQPage JSON-LD)", () => {
+  for (const st of Object.keys(HTB_STATE_PAGES) as AustralianState[]) {
+    it(`${st}: every first home figure is in the data files`, () => {
+      const html = htbStateFaqs(st).map((f) => `<p>${f.question}</p><p>${f.answer}</p>`).join("");
+      expect(scan(html, st)).toEqual([]);
+      expect(html).toContain("What does it mean if the government owns 30% of your house?");
     });
   }
 });
