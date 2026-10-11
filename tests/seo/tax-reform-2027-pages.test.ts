@@ -149,3 +149,24 @@ describe("reform sources", () => {
     }
   });
 });
+
+describe("/cgt-calculator: section 3 of the 10 Oct 2026 review", () => {
+  const src = read("cgt-calculator/page.tsx");
+
+  it("carries the query and both rule sets in the title, H1 and intro", () => {
+    expect(src).toContain('const META_TITLE = "CGT Calculator for Property: 50% Discount and 2027 Rules";');
+    expect(src).toContain('h1: "Capital gains tax calculator for property: before and after 1 July 2027"');
+    const t = src.match(/const META_TITLE = "([^"]+)"/)![1];
+    const d = src.match(/const META_DESCRIPTION = "([^"]+)"/)![1];
+    expect(t.length).toBeLessThanOrEqual(60);
+    expect(d.length).toBeLessThanOrEqual(160);
+  });
+
+  it("answers the PAA questions from the engine and the ATO", () => {
+    for (const q of ["How much capital gains tax will I pay on $300,000?", "What is the 6 year rule for capital gains tax?", "Can I move back into my investment property to avoid CGT?"]) {
+      expect(src).toContain(`question: "${q}"`);
+    }
+    expect(src).toContain("ATO, last updated 22 June 2026");
+    for (const h of ['id="by-gain"', 'id="after-2027"', 'id="six-year-rule"', 'id="structures"', 'id="capital-losses"']) expect(src).toContain(h);
+  });
+});
