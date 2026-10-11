@@ -9,7 +9,7 @@ import { CAPITAL_CITIES } from "@/lib/utils/metro";
 
 function row(over: Partial<CityMarketRow>): CityMarketRow {
   return {
-    slug: "x", name: "X", postcode: "6000", medianHousePrice: 800_000, medianUnitPrice: 450_000, medianRentHouse: 600,
+    slug: "x", name: "X", postcode: "6000", medianHousePrice: 800_000, medianUnitPrice: 350_000, medianRentHouse: 600, // unit below every house median here (hasInvertedMedians)
     annualGrowthHouse: 5, population: 5000, salesCountHouse: 50, statsSource: "sales-nsw", salesUpdatedAt: new Date("2026-08-01T00:00:00Z"), ...over,
   };
 }

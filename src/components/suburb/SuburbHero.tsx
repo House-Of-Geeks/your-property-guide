@@ -84,6 +84,9 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
           </p>
           <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-white drop-shadow-lg leading-[1.05] tracking-tight">
             <span className="italic">{suburb.name}</span>
+            {/* The full H1 reads "{Suburb}, {STATE} {pc}" (suburbs-market 3.1);
+                the state and postcode show in the pill just below. */}
+            <span className="sr-only">{`, ${suburb.state} ${suburb.postcode}`}</span>
           </h1>
           <div className="mt-4 inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
             <span className="text-sm font-sans font-medium tracking-wide text-white">

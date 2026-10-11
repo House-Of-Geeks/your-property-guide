@@ -11,6 +11,7 @@ import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { nonLocalityBySlug } from "@/lib/non-localities";
 import { formatPriceFull } from "@/lib/utils/format";
+import { publishedGrowthFor } from "@/lib/published-medians";
 import { SITE_URL } from "@/lib/constants";
 import {
   buildCompareNarrative,
@@ -233,6 +234,12 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
 
   const a = suburbA.stats;
   const b = suburbB.stats;
+  // The 12-month change as each profile prints it: a figure only where the
+  // feed measured one (NSW Valuer General, SA Government). 0 is "not
+  // measured" and shows as "–", never "+0.0%" (suburbs-market 0.4).
+  const growthA = publishedGrowthFor(suburbA);
+  const growthB = publishedGrowthFor(suburbB);
+  const fmtGrowth = (g: number) => (g !== 0 ? `${g > 0 ? "+" : ""}${g.toFixed(1)}%` : "–");
 
   const schoolCountA = suburbA.schools.length;
   const schoolCountB = suburbB.schools.length;
@@ -267,12 +274,12 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
   // article-style intro tells a story, not just numbers.
   const aWins =
     Number(cmp(a.medianHousePrice || null, b.medianHousePrice || null, false) === "a") +
-    Number(cmp(a.annualGrowthHouse, b.annualGrowthHouse, true) === "a") +
+    Number(cmp(growthA || null, growthB || null, true) === "a") +
     Number(cmp(a.walkScore, b.walkScore, true) === "a") +
     Number(cmp(icseaA, icseaB, true) === "a");
   const bWins =
     Number(cmp(a.medianHousePrice || null, b.medianHousePrice || null, false) === "b") +
-    Number(cmp(a.annualGrowthHouse, b.annualGrowthHouse, true) === "b") +
+    Number(cmp(growthA || null, growthB || null, true) === "b") +
     Number(cmp(a.walkScore, b.walkScore, true) === "b") +
     Number(cmp(icseaA, icseaB, true) === "b");
 
@@ -371,22 +378,26 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
             </div>
           )}
 
-          {/* Two suburb header cards */}
+          {/* Two suburb header cards. Each links its profile's price section
+              with a price anchor where the profile publishes a median (the
+              profile owns "{suburb} median house price", suburbs-market 3.1
+              and section 4), and its profile otherwise. */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10">
             {[
-              { suburb: suburbA, slug: slug, stats: a },
-              { suburb: suburbB, slug: compareSlug, stats: b },
-            ].map(({ suburb, slug: s, stats }) => (
-              <Link
+              { suburb: suburbA, slug: slug, stats: a, growth: growthA },
+              { suburb: suburbB, slug: compareSlug, stats: b, growth: growthB },
+            ].map(({ suburb, slug: s, stats, growth }) => (
+              <div
                 key={s}
-                href={`/suburbs/${s}`}
-                className="rounded-2xl border border-line bg-surface-raised p-5 hover:border-primary/40 hover:shadow-md transition-all group"
+                className="rounded-2xl border border-line bg-surface-raised p-5"
               >
                 <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-1">
                   {suburb.state} &middot; {suburb.postcode}
                 </p>
-                <h2 className="font-display text-2xl text-ink group-hover:text-primary transition-colors leading-tight">
-                  {suburb.name}
+                <h2 className="font-display text-2xl text-ink leading-tight">
+                  <Link href={`/suburbs/${s}`} className="hover:text-primary transition-colors">
+                    {suburb.name}
+                  </Link>
                 </h2>
                 {stats.medianHousePrice > 0 && (
                   <p className="mt-3 font-sans text-sm text-ink-muted">
@@ -396,18 +407,26 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
                     </span>
                   </p>
                 )}
-                {stats.annualGrowthHouse != null && (
+                {growth !== 0 && (
                   <p className="mt-1 font-sans text-sm text-ink-muted">
-                    Growth{" "}
+                    {"12-month change "}
                     <span
-                      className={`font-display text-base ${stats.annualGrowthHouse >= 0 ? "text-emerald-700" : "text-red-700"}`}
+                      className={`font-display text-base ${growth >= 0 ? "text-emerald-700" : "text-red-700"}`}
                     >
-                      {stats.annualGrowthHouse >= 0 ? "+" : ""}
-                      {stats.annualGrowthHouse.toFixed(1)}%
+                      {fmtGrowth(growth)}
                     </span>
                   </p>
                 )}
-              </Link>
+                <p className="mt-3 font-sans text-sm">
+                  <Link
+                    href={stats.medianHousePrice > 0 ? `/suburbs/${s}#market` : `/suburbs/${s}`}
+                    className="inline-flex items-center gap-1 font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                  >
+                    {stats.medianHousePrice > 0 ? `${suburb.name} median house price` : `${suburb.name} suburb profile`}
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </p>
+              </div>
             ))}
           </div>
         </div>
@@ -512,12 +531,14 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
             valB={b.medianUnitPrice > 0 ? formatPriceFull(b.medianUnitPrice) : "–"}
             winner={cmp(a.medianUnitPrice || null, b.medianUnitPrice || null, false)}
           />
-          <CompareRow
-            label="Annual growth (house)"
-            valA={a.annualGrowthHouse != null ? `${a.annualGrowthHouse >= 0 ? "+" : ""}${a.annualGrowthHouse.toFixed(1)}%` : "–"}
-            valB={b.annualGrowthHouse != null ? `${b.annualGrowthHouse >= 0 ? "+" : ""}${b.annualGrowthHouse.toFixed(1)}%` : "–"}
-            winner={cmp(a.annualGrowthHouse, b.annualGrowthHouse, true)}
-          />
+          {(growthA !== 0 || growthB !== 0) && (
+            <CompareRow
+              label="12-month change (house)"
+              valA={fmtGrowth(growthA)}
+              valB={fmtGrowth(growthB)}
+              winner={cmp(growthA || null, growthB || null, true)}
+            />
+          )}
           <CompareRow
             label="Days on market"
             valA={a.daysOnMarket > 0 ? `${a.daysOnMarket} days` : "–"}
