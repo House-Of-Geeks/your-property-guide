@@ -1,6 +1,7 @@
 import {
   ABS_PPI_HOUSE_ANNUAL_PCT,
   COST_ITEMS,
+  FIGURES_BASIS_ID,
   FINISHES,
   FINISH_LABELS,
   KDR_ROWS,
@@ -33,6 +34,9 @@ import {
 
 function Src({ id }: { id: SourceId }) {
   const s = RENOVATION_SOURCES[id];
+  // "this guide" links to the basis statement on the page (review 10 Oct
+  // 2026, F8f, and the Clarity dead clicks on the plain-text tag).
+  if (id === "guide") return <a href={`#${FIGURES_BASIS_ID}`}>{s.short}</a>;
   return s.href ? (
     <a href={s.href} target="_blank" rel="noopener noreferrer">{s.short}</a>
   ) : (
@@ -107,7 +111,8 @@ export function RenovationAtAGlanceTable() {
       </div>
       <p>
         <small>
-          As at {RENOVATION_COSTS_AS_AT}. &quot;This guide&quot; figures are metro Australia including GST.
+          As at {RENOVATION_COSTS_AS_AT}. &quot;This guide&quot; figures are our editorial working ranges
+          for metro Australia including GST (<a href={`#${FIGURES_BASIS_ID}`}>how we use them</a>).
           A cell reads &quot;{NO_PUBLISHED_RANGE}&quot; where neither this guide nor a dated
           published source gives a figure for that finish level; nothing is interpolated.
           CKA figures use Sydney prices as the base and exclude GST. The knock-down rebuild
@@ -139,7 +144,7 @@ export function RenovationPerM2Table() {
         </thead>
         <tbody>
           <tr>
-            <td><strong>This guide</strong></td>
+            <td><strong><Src id="guide" /></strong></td>
             <td>{m2(g.cosmetic)}</td>
             <td>{m2(g.mid)}</td>
             <td>{m2(g.premium)}</td>

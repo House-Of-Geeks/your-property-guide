@@ -31,6 +31,7 @@ import {
   KDR_CHECKS,
   KITCHEN_CHECKS,
   KDR_ROWS,
+  FIGURES_BASIS_ID,
   ON_COSTS,
   REGIONAL_ADJUSTMENT_PCT,
   RENOVATION_COSTS_AS_AT,
@@ -137,20 +138,24 @@ export default function RenovationCostAustralia2026Page() {
       faqs={RENOVATION_FAQS}
       related={RELATED}
     >
-      <Callout variant="info" title="Why these numbers, and how to use them">
-        <p>
-          The ranges marked &quot;this guide&quot; are 2026 metro-Australia
-          ranges from builder quotes on real jobs, including GST. Every table
-          sets them beside dated published sources (Archicentre Australia,
-          the CKA cost indicator, Rider Levett Bucknall, the ABS, Canstar,
-          Three Birds Renovations and Houzz) and names the source in each
-          cell. Where no source publishes a figure, the cell says so rather
-          than guessing. Use them as a budgeting starting point. The actual
-          quote for <em>your</em>{" "}
-          project will vary with site access, structural condition, design
-          complexity, and your finish choices.
-        </p>
-      </Callout>
+      <div id={FIGURES_BASIS_ID} className="scroll-mt-28">
+        <Callout variant="info" title="Where these numbers come from">
+          <p>
+            Each room section opens with a dated published figure: Archicentre
+            Australia&rsquo;s Cost Guide 2026, the CKA cost indicator (June
+            2026), Rider Levett Bucknall, the ABS, Canstar, Three Birds
+            Renovations or Houzz. Ranges marked &quot;this guide&quot; are our
+            editorial working ranges for metro Australia, including GST, first
+            published in May 2026 and set beside those sources in every table
+            as at {RENOVATION_COSTS_AS_AT}. They are not a survey or a
+            published index, so read them as a cross-check on the published
+            figures, not a substitute for them. Where no source publishes a
+            figure, the cell says so rather than guessing. The quote for{" "}
+            <em>your</em> project will vary with site access, structural
+            condition, design complexity and your finish choices.
+          </p>
+        </Callout>
+      </div>
 
       <EditorNote>
         <p>

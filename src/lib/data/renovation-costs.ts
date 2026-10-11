@@ -13,6 +13,9 @@ import type { StateCode } from "./commission-rates";
 export const RENOVATION_COSTS_AS_AT = "30 September 2026";
 export const RENOVATION_COSTS_AS_AT_SHORT = "September 2026";
 
+/** The id of the basis statement each page that shows "this guide" figures carries; the tag links to it. */
+export const FIGURES_BASIS_ID = "figures-basis";
+
 export type SourceId =
   | "guide"
   | "archicentre2026"
@@ -44,7 +47,13 @@ export interface RenovationSource {
 export const RENOVATION_SOURCES: Record<SourceId, RenovationSource> = {
   guide: {
     id: "guide",
-    label: "This guide's metro Australia ranges, from builder quotes on real jobs, reviewed " + RENOVATION_COSTS_AS_AT,
+    // The page used to call these "ranges from builder quotes on real jobs".
+    // That basis (how many quotes, where, when) is not documented anywhere
+    // we can cite, so the label now says only what is true: they are the
+    // guide's own working ranges, set beside dated published sources
+    // (review 10 Oct 2026, F8f). The "this guide" tag links to the basis
+    // statement on the page (FIGURES_BASIS_ID).
+    label: "This guide's editorial working ranges for metro Australia, first published in May 2026 and set beside the published sources in each table as at " + RENOVATION_COSTS_AS_AT + "; not a survey or a published index",
     short: "this guide",
     date: RENOVATION_COSTS_AS_AT,
     href: null,
@@ -578,12 +587,12 @@ const bedroom = COST_ITEM_BY_KEY.bedroom.byFinish.basic.range as Range;
 const demo = KDR_ROWS[0].all?.range as Range;
 
 export const ROOM_ANSWERS = {
-  kitchen: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, a kitchen renovation in metro Australia costs ${rangeText(k.basic.range as Range)} for a budget refresh, ${rangeText(k.mid.range as Range)} mid-range and ${rangeText(k.high.range as Range)} premium; Archicentre Australia's Cost Guide 2026 puts a standard kitchen fit-out at $23,000 to $49,000 including GST and excluding white goods.`,
-  bathroom: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, a bathroom renovation costs ${rangeText(b.mid.range as Range)} for a standard in-place refresh and ${rangeText(b.high.range as Range)} premium in metro Australia, with Three Birds Renovations (January 2026) putting a budget cosmetic refresh at $8,000 to $15,000 and Archicentre Australia's Cost Guide 2026 a bathroom or ensuite fit-out at $17,500 to $35,000.`,
+  kitchen: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, Archicentre Australia's Cost Guide 2026 puts a standard kitchen fit-out at ${rangeText(ARCHICENTRE_2026.kitchen)} including GST and excluding white goods; this guide's working ranges are ${rangeText(k.basic.range as Range)} for a budget refresh, ${rangeText(k.mid.range as Range)} mid-range and ${rangeText(k.high.range as Range)} premium.`,
+  bathroom: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, Archicentre Australia's Cost Guide 2026 puts a bathroom or ensuite fit-out at ${rangeText(ARCHICENTRE_2026.bathroom)} including GST and Three Birds Renovations (January 2026) a budget cosmetic refresh at $8,000 to $15,000; this guide's working ranges are ${rangeText(b.mid.range as Range)} for a standard in-place refresh and ${rangeText(b.high.range as Range)} premium in metro Australia.`,
   secondary: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, a laundry fit-out costs ${rangeText(laundry)} (Archicentre Australia Cost Guide 2026, standard materials), a living-area refresh ${rangeText(living)} (Canstar, January 2025) and a basic bedroom refresh ${rangeText(bedroom)} per room (Canstar, January 2025).`,
-  fullHouse: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, a full renovation of a three-bedroom house in metro Australia costs ${rangeText(SCOPE_PER_M2.guide.cosmetic, "/m²")} for cosmetic work, ${rangeText(SCOPE_PER_M2.guide.mid, "/m²")} mid-range and ${rangeText(SCOPE_PER_M2.guide.premium, "/m²")} premium, which is ${rangeText(FULL_RENO_PER_100.mid)} for every ${FULL_RENO_EXAMPLE_M2} m² renovated mid-range; Archicentre Australia's Cost Guide 2026 puts renovation inside an existing building at ${rangeText(SCOPE_PER_M2.archicentreExisting, "/m²")}.`,
-  extensions: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, a ground-floor extension costs ${rangeText(ext, "/m²")} and a second-storey addition ${rangeText(ss, "/m²")} for the shell in metro Australia; Archicentre Australia's Cost Guide 2026 prices new construction and extensions at ${rangeText(SCOPE_PER_M2.archicentreNewAndExtension, "/m²")} with first-floor additions extra.`,
-  knockDownRebuild: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, demolishing a typical detached house costs ${rangeText(demo)} and a new house $1,800 to $2,800/m² from a volume builder or $3,500 to $6,000/m² custom; the ABS-derived average for every new house built in 2024-25 is ${money(ABS_NEW_HOUSE_NATIONAL_PER_M2)}/m² (Landmark Valuations, July 2026) and Rider Levett Bucknall's Riders Digest 2026 prices a Sydney custom-built house at $2,500 to $7,600/m².`,
+  fullHouse: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, Archicentre Australia's Cost Guide 2026 puts renovation inside an existing building at ${rangeText(SCOPE_PER_M2.archicentreExisting, "/m²")} including GST; this guide's working ranges for a full renovation in metro Australia are ${rangeText(SCOPE_PER_M2.guide.cosmetic, "/m²")} for cosmetic work, ${rangeText(SCOPE_PER_M2.guide.mid, "/m²")} mid-range and ${rangeText(SCOPE_PER_M2.guide.premium, "/m²")} premium, which is ${rangeText(FULL_RENO_PER_100.mid)} for every ${FULL_RENO_EXAMPLE_M2} m² renovated mid-range.`,
+  extensions: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, Archicentre Australia's Cost Guide 2026 prices new construction and extensions at ${rangeText(SCOPE_PER_M2.archicentreNewAndExtension, "/m²")} for the shell including GST, with first-floor additions extra; this guide's working ranges are ${rangeText(ext, "/m²")} for a ground-floor extension and ${rangeText(ss, "/m²")} for a second-storey addition in metro Australia.`,
+  knockDownRebuild: `As at ${RENOVATION_COSTS_AS_AT_SHORT}, the ABS-derived average for every new house built in 2024-25 is ${money(ABS_NEW_HOUSE_NATIONAL_PER_M2)}/m² (Landmark Valuations, July 2026) and Rider Levett Bucknall's Riders Digest 2026 prices a Sydney custom-built house at $2,500 to $7,600/m²; this guide's working ranges are ${rangeText(demo)} to demolish a typical detached house and a new house at $1,800 to $2,800/m² from a volume builder or $3,500 to $6,000/m² custom.`,
 };
 
 // ---------------------------------------------------------------------------

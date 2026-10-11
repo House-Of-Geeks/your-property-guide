@@ -277,6 +277,20 @@ describe("renovation guide copy", () => {
     expect(text).not.toContain("can exceed $6,000/m²");
     expect(ROOM_ANSWERS.fullHouse).toContain("$280,000 to $450,000");
   });
+  it("states the basis of the 'this guide' ranges honestly and opens each room with a published figure (F8f)", () => {
+    expect(RENOVATION_SOURCES.guide.label).not.toMatch(/builder quotes on real jobs/);
+    expect(RENOVATION_SOURCES.guide.label).toMatch(/editorial working ranges/);
+    expect(PAGE).not.toMatch(/from builder quotes on real jobs/);
+    expect(PAGE).toContain("id={FIGURES_BASIS_ID}");
+    const tables = readFileSync(join(__dirname, "../../src/components/guide/RenovationCostTables.tsx"), "utf8");
+    expect(tables).toContain('if (id === "guide") return <a href={`#${FIGURES_BASIS_ID}`}>');
+    for (const [key, sentence] of Object.entries(ROOM_ANSWERS)) {
+      const guideAt = sentence.indexOf("this guide");
+      const published = sentence.search(/Archicentre|Canstar|Landmark|Rider Levett Bucknall|Three Birds/);
+      expect(published, key).toBeGreaterThanOrEqual(0);
+      if (guideAt >= 0) expect(published, key).toBeLessThan(guideAt);
+    }
+  });
   it("sends contract readers to the building contract checklist, not a home loan rate guide (F8b)", () => {
     expect(PAGE).toContain('href="/guides/how-to-find-a-builder-australia#contract"');
     expect(PAGE).toContain("what to check in a building contract");
