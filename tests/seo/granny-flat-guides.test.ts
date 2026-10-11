@@ -30,6 +30,7 @@ const STATES = [
   { slug: "granny-flat-guide-vic", instrument: [/Amendment VC253/, /clause 54/] },
   { slug: "granny-flat-guide-nsw", instrument: [/State Environmental Planning Policy \(Housing\) 2021/, /Schedule 1/, /section 54/] },
   { slug: "granny-flat-guide-qld", instrument: [/Planning Regulation 2017/, /Schedule 24/, /Planning Act 2016/, /City Plan 2014/] },
+  { slug: "granny-flat-guide-wa", instrument: [/State Planning Policy 7\.3/, /Residential Design Codes Volume 1/, /clause 5\.5\.1/, /clause 2\.8/] },
 ] as const;
 
 describe("state granny flat guides", () => {
@@ -97,5 +98,17 @@ describe("state granny flat guides", () => {
     expect(src).toContain("26 September 2022");
     expect(src).toContain("$3,300");
     expect(src).toContain("Major amendment package L");
+  });
+
+  it("WA: no owner-occupier rule, no 100 m² cap or R20 rule, the 70 m² limit and no minimum lot size", () => {
+    const src = read("granny-flat-guide-wa");
+    expect(src).not.toMatch(/must be owner-occupied/i);
+    expect(src).not.toMatch(/Pure investment dual-occupancy/i);
+    expect(src).not.toMatch(/100m²|100 m²/);
+    expect(src).not.toMatch(/\bR20\b/);
+    expect(src).toContain("70 m²");
+    expect(src).toContain("version 3");
+    expect(src).toContain("$20,000");
+    expect(src).not.toContain("commerce.wa.gov.au");
   });
 });
