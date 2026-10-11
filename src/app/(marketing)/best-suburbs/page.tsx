@@ -47,7 +47,7 @@ const ALL_CATEGORIES: { slug: RankingCategory; title: string; description: strin
     slug: "most-walkable",
     title: "Most Walkable",
     description:
-      "Suburbs with the highest walk scores, perfect for those who love living close to shops, cafes, and transport.",
+      "Suburbs by walk score, a count of the shops and services mapped within 1 km. Ties at the 100 cap are listed alphabetically.",
     icon: "/images/icons/walkability.svg",
   },
   {

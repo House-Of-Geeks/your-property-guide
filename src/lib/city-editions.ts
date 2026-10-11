@@ -18,7 +18,12 @@ import type { MedianBasis } from "@/lib/published-medians";
 import {
   GROWTH_RANKED_STATES,
   SALES_BASIS_BY_STATE,
+  WALK_RANKED_UNCAPPED,
+  WALK_SCORE_CAP,
+  WALK_SCORE_DEFINITION,
+  WALK_TIE_NOTE,
   isRanked,
+  isTiedAtWalkCap,
   priceSourceLine,
   type RankingCategory,
 } from "@/lib/ranking-notes";
@@ -66,6 +71,18 @@ export function hasCityEdition(category: RankingCategory, state: string, shown: 
   return isCityEditionCategory(category) && isRanked(category, state) && shown >= CITY_EDITION_SIZE;
 }
 
+/**
+ * Whether the edition goes in the index and the city sitemap: an edition to
+ * show, on a measure that ranks. Not the walkable editions while the walk
+ * score caps at 100 (src/lib/ranking-notes.ts): their top ten tie at the cap
+ * and are listed alphabetically, which is not a ranking to put in search
+ * (review of 10 Oct 2026, suburbs-market 0.1a). The page still renders.
+ */
+export function isCityEditionIndexable(category: RankingCategory, state: string, shown: number): boolean {
+  if (category === "most-walkable" && !WALK_RANKED_UNCAPPED) return false;
+  return hasCityEdition(category, state, shown);
+}
+
 export function cityEditionPath(category: RankingCategory, citySlug: string): string {
   return `/best-suburbs/${category}/${citySlug}`;
 }
@@ -107,6 +124,18 @@ export interface CityEdition {
   eligible: number;
   /** The period the medians describe, from the sales feed ("calendar 2025", "2024"). */
   salesPeriod: string | null;
+  /** Walkable only: eligible suburbs tied at the capped walk score of 100. */
+  atCap?: number;
+}
+
+/** The suburbs among the ten that tie at the capped walk score: unnumbered, alphabetical. */
+export function tiedAtCap(e: Pick<CityEdition, "suburbs" | "category">): CityEditionSuburb[] {
+  return e.category === "most-walkable" ? top(e).filter((s) => isTiedAtWalkCap(s.walkScore)) : [];
+}
+
+/** Whether a row carries a rank: not one tied at the walk-score cap. */
+export function isNumbered(category: RankingCategory, s: CityEditionSuburb): boolean {
+  return !(category === "most-walkable" && isTiedAtWalkCap(s.walkScore));
 }
 
 export const top = (e: Pick<CityEdition, "suburbs">) => e.suburbs.slice(0, CITY_EDITION_SIZE);
@@ -183,7 +212,7 @@ export function cityEditionDescription(e: Pick<CityEdition, "category" | "city" 
     "highest-growth": `Ten Greater ${c} suburbs ranked by measured 12-month change in the published median house price`,
     "for-families": `Ten Greater ${c} suburbs ranked by school ICSEA, where family households are 40% or more of households`,
     "most-affordable": `Ten Greater ${c} suburbs ranked by lowest published median house price`,
-    "most-walkable": `Ten Greater ${c} suburbs ranked by walk score`,
+    "most-walkable": `Greater ${c} suburbs by walk score, ties at the ${WALK_SCORE_CAP} cap listed alphabetically`,
     "lowest-flood-risk": `Ten Greater ${c} suburbs by flood risk`,
   };
   // More names first; the closing line goes before a name does.
@@ -200,7 +229,7 @@ export function cityEditionDescription(e: Pick<CityEdition, "category" | "city" 
 }
 
 /** The direct answer under the H1: the ten, named. */
-export function cityEditionLede(e: Pick<CityEdition, "category" | "city" | "suburbs">): string {
+export function cityEditionLede(e: Pick<CityEdition, "category" | "city" | "suburbs"> & { atCap?: number }): string {
   const c = e.city.name;
   const list = joinNames(top(e).map((s) => s.name));
   switch (e.category) {
@@ -212,8 +241,16 @@ export function cityEditionLede(e: Pick<CityEdition, "category" | "city" | "subu
       return `By the average ICSEA of their schools (ACARA), among Greater ${c} suburbs where family households are at least 40% of households (2021 Census), the ten that rank highest are ${list}.`;
     case "most-affordable":
       return `By published median house price, the ten cheapest Greater ${c} suburbs are ${list}.`;
-    case "most-walkable":
-      return `By walk score, the ten most walkable Greater ${c} suburbs are ${list}.`;
+    case "most-walkable": {
+      const tied = tiedAtCap(e);
+      if (tied.length === 0) return `By walk score, the ten most walkable Greater ${c} suburbs are ${list}.`;
+      const reach = e.atCap ?? tied.length;
+      if (tied.length === top(e).length) {
+        return `The walk score stops at ${WALK_SCORE_CAP}, and ${n(reach)} Greater ${c} suburbs of ${n(CITY_EDITION_MIN_POPULATION)} or more residents reach it, so it cannot rank them. Listed alphabetically, the first ten are ${list}.`;
+      }
+      const rest = top(e).filter((s) => !tied.includes(s));
+      return `${joinNames(tied.map((s) => s.name))} ${tied.length === 1 ? "scores" : "all score"} the maximum walk score of ${WALK_SCORE_CAP}${tied.length === 1 ? "" : ", listed alphabetically"}; after ${tied.length === 1 ? "it" : "them"}, by walk score, come ${joinNames(rest.map((s) => s.name))}.`;
+    }
     default:
       return `The ten Greater ${c} suburbs in this ranking are ${list}.`;
   }
@@ -265,7 +302,8 @@ export function cityEditionMethod(e: CityEdition): string[] {
       lines.push(`Ranked by published median house price, lowest first, from ${from} with a published median above $100,000 and ${n(CITY_EDITION_MIN_POPULATION)} or more residents.`);
       break;
     case "most-walkable":
-      lines.push(`Ranked by walk score, highest first, from ${from} with a walk score and ${n(CITY_EDITION_MIN_POPULATION)} or more residents. The score counts the shops, services, transport stops and pedestrian infrastructure within walking distance of the suburb's centre, from OpenStreetMap.`);
+      lines.push(`Sorted by walk score, highest first, from ${from} with a walk score and ${n(CITY_EDITION_MIN_POPULATION)} or more residents. ${WALK_SCORE_DEFINITION}`);
+      if (tiedAtCap(e).length > 0) lines.push(`${WALK_TIE_NOTE} They carry no rank number.`);
       break;
     default:
       break;
@@ -324,7 +362,7 @@ const distanceClause = (s: CityEditionSuburb, city: Pick<CapitalCity, "name">) =
   s.kmToCbd != null ? ` is about ${n(s.kmToCbd)} km from the ${city.name} CBD` : "";
 
 /** One paragraph per suburb, built from its figures and nothing else. */
-export function suburbParagraph(e: Pick<CityEdition, "category" | "city">, s: CityEditionSuburb, rank: number): string {
+export function suburbParagraph(e: Pick<CityEdition, "category" | "city"> & { atCap?: number }, s: CityEditionSuburb, rank: number): string {
   const city = e.city;
   const where = distanceClause(s, city);
   const opener = `${s.name} (${s.postcode})${where || " is in Greater " + city.name}.`;
@@ -353,7 +391,12 @@ export function suburbParagraph(e: Pick<CityEdition, "category" | "city">, s: Ci
       return `${opener} The median house price is ${formatPriceFull(s.medianHousePrice)}${basisNote(s)}, ${rankPhrase(rank, "lowest")} published median in Greater ${city.name}.${growthSentence(s)}${s.walkScore != null && s.walkScore > 0 ? ` Walk score ${s.walkScore} out of 100.` : ""}${populationSentence(s, true)}`;
     }
     case "most-walkable": {
-      return `${opener} Its walk score is ${s.walkScore ?? 0} out of 100, ${rankPhrase(rank, "highest")} in Greater ${city.name}, from the shops, transport stops and footpaths within walking distance of its centre.${priceSentence(s)}${populationSentence(s, false)}`;
+      const what = "a count of the shops and services mapped within 1 km of its postcode centroid";
+      if (isTiedAtWalkCap(s.walkScore)) {
+        const others = e.atCap != null && e.atCap > 1 ? `, shared with ${n(e.atCap - 1)} other Greater ${city.name} ${e.atCap - 1 === 1 ? "suburb" : "suburbs"}` : "";
+        return `${opener} Its walk score is ${WALK_SCORE_CAP} out of ${WALK_SCORE_CAP}, the maximum${others}: ${what}, which stops counting at ${WALK_SCORE_CAP}.${priceSentence(s)}${populationSentence(s, false)}`;
+      }
+      return `${opener} Its walk score is ${s.walkScore ?? 0} out of ${WALK_SCORE_CAP}, ${rankPhrase(rank, "highest")} in Greater ${city.name}: ${what}.${priceSentence(s)}${populationSentence(s, false)}`;
     }
     default:
       return opener;
@@ -477,11 +520,16 @@ function topThreeAnswer(e: CityEdition): CityFaq {
         question: `What are the cheapest suburbs in ${city.name}?`,
         answer: `By published median house price, the cheapest Greater ${city.name} suburbs of ${n(CITY_EDITION_MIN_POPULATION)} or more residents are ${joinNames(rows.map((s) => withFigure(s, (r) => formatPriceFull(r.medianHousePrice))))}. ${priceSourceLine(city.state)} A suburb is listed only when its own page publishes the median, and the ranking is drawn from ${n(e.eligible)} suburbs with one.`,
       };
-    case "most-walkable":
+    case "most-walkable": {
+      const tied = tiedAtCap(e);
+      const lead = tied.length === top(e).length && tied.length > 0
+        ? `The walk score cannot say: ${n(e.atCap ?? tied.length)} Greater ${city.name} suburbs of ${n(CITY_EDITION_MIN_POPULATION)} or more residents score the maximum of ${WALK_SCORE_CAP}, and the score stops there. Listed alphabetically, the first three are ${joinNames(rows.map((s) => s.name))}.`
+        : `By walk score, the most walkable Greater ${city.name} suburbs of ${n(CITY_EDITION_MIN_POPULATION)} or more residents are ${joinNames(rows.map((s) => withFigure(s, (r) => `${r.walkScore} out of ${WALK_SCORE_CAP}`)))}${tied.length > 0 ? `; those at ${WALK_SCORE_CAP} are tied and listed alphabetically` : ""}.`;
       return {
         question: `Which are the most walkable suburbs in ${city.name}?`,
-        answer: `By walk score, the most walkable Greater ${city.name} suburbs of ${n(CITY_EDITION_MIN_POPULATION)} or more residents are ${joinNames(rows.map((s) => withFigure(s, (r) => `${r.walkScore} out of 100`)))}. The score counts the shops, services, transport stops and pedestrian infrastructure within walking distance of the suburb's centre, from OpenStreetMap; 90 and above is exceptional. The ranking is drawn from ${n(e.eligible)} suburbs with a score.`,
+        answer: `${lead} ${WALK_SCORE_DEFINITION} It counts places, not footpaths, transport or hills. The list is drawn from ${n(e.eligible)} suburbs with a score.`,
       };
+    }
     default:
       return { question: `Which are the best suburbs in ${city.name}?`, answer: cityEditionLede(e) };
   }

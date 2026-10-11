@@ -3,6 +3,11 @@ import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   FLOOD_HAZARD_FEED_LOADED,
+  WALK_RANKED_UNCAPPED,
+  WALK_TIE_NOTE,
+  isTiedAtWalkCap,
+  listedRows,
+  walkScoreFromAmenities,
   GROWTH_RANKED_STATES,
   YIELD_RANKED_STATES,
   isRanked,
@@ -42,6 +47,41 @@ describe("which states are ranked", () => {
     expect(qld.text).toContain("No flood risk ranking for Queensland yet.");
     expect(qld.text).toContain("a suburb with no flood record is not a suburb with no flood risk");
     expect(rankingNote("lowest-flood-risk", null, 50, null).text).toMatch(/^No flood risk ranking yet\./);
+  });
+});
+
+describe("the walk score caps at 100 (review of 10 Oct 2026, 0.1a)", () => {
+  it("is two points an amenity, capped, the same rule the sync writes", () => {
+    expect(walkScoreFromAmenities(0)).toBe(0);
+    expect(walkScoreFromAmenities(37)).toBe(74);
+    expect(walkScoreFromAmenities(49)).toBe(98);
+    expect(walkScoreFromAmenities(50)).toBe(100);
+    expect(walkScoreFromAmenities(400)).toBe(100);
+    const sync = fs.readFileSync("scripts/sync/sources/walkability.ts", "utf8");
+    expect(sync).toContain("walkScore:   walkScoreFromAmenities(amenityCount),");
+    // the uncapped count is computed and returned, ready for a column to store it
+    expect(sync).toContain("export function computeScores(elements: OverpassElement[]): WalkabilityCounts {");
+    expect(sync).toMatch(/return \{\n\s+amenityCount,/);
+  });
+  it("lists a tie at the cap alphabetically and unnumbered until the lists rank on the uncapped count", () => {
+    expect(WALK_RANKED_UNCAPPED).toBe(false);
+    expect(isTiedAtWalkCap(100)).toBe(true);
+    expect(isTiedAtWalkCap(98)).toBe(false);
+    expect(isTiedAtWalkCap(null)).toBe(false);
+    expect(WALK_TIE_NOTE).toMatch(/^These suburbs all score 100; listed alphabetically\./);
+    const rows = [
+      { name: "Balmain", walkScore: 100 }, { name: "Alexandria", walkScore: 100 }, { name: "Zetland", walkScore: 96 }, { name: "Annandale", walkScore: 100 }, { name: "Yagoona", walkScore: 90 },
+    ];
+    expect(listedRows("most-walkable", rows).map((r) => [r.suburb.name, r.rank])).toEqual([
+      ["Alexandria", null], ["Annandale", null], ["Balmain", null], ["Zetland", 4], ["Yagoona", 5],
+    ]);
+    expect(listedRows("most-affordable", rows).map((r) => r.rank)).toEqual([1, 2, 3, 4, 5]);
+    const listing = fs.readFileSync("src/components/best-suburbs/BestSuburbsListing.tsx", "utf8");
+    expect(listing).toContain("const rows = listedRows(category, ranked);");
+    expect(listing).toContain("{rank ?? \"\"}");
+    expect(listing).toContain("{suburbs.length > 0 && !anyTied && (");
+    const commentary = fs.readFileSync("src/lib/data/category-commentary.ts", "utf8");
+    expect(commentary).not.toMatch(/Refreshed quarterly|90\+ is exceptional|transit stops, and pedestrian/);
   });
 });
 

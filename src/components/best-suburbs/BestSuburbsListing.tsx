@@ -11,7 +11,7 @@ import {
 } from "@/lib/services/suburb-rankings-service";
 import { formatPrice, formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { CATEGORY_COMMENTARY } from "@/lib/data/category-commentary";
-import { isRanked, type RankingNote } from "@/lib/ranking-notes";
+import { WALK_TIE_NOTE, isRanked, listedRows, type RankingNote } from "@/lib/ranking-notes";
 import {
   bestSuburbsHeadline,
   CATEGORY_HEADLINE,
@@ -44,7 +44,7 @@ const CATEGORY_CONFIG: Record<RankingCategory, CategoryConfig & { eyebrow: strin
   "most-walkable": {
     title: "Most Walkable Suburbs",
     eyebrow: "Walkability ranking",
-    description: "Suburbs with the highest walk scores, perfect for car-free or car-light lifestyles.",
+    description: "Suburbs by walk score, a count of the shops and services mapped within 1 km.",
   },
   "lowest-flood-risk": {
     title: "Lowest Flood Risk Suburbs",
@@ -203,7 +203,7 @@ interface BestSuburbsListingProps {
 export function BestSuburbsListing({
   category,
   state,
-  suburbs,
+  suburbs: ranked,
   note,
   useStaticStateRoutes = false,
   cityEditions = [],
@@ -218,6 +218,9 @@ export function BestSuburbsListing({
   // the category cannot rank keeps the general copy but no FAQ.
   const rankedAnywhere = isRanked(category, null);
   const rankedHere = isRanked(category, state);
+  const rows = listedRows(category, ranked);
+  const suburbs = rows.map((r) => r.suburb);
+  const anyTied = rows.some((r) => r.rank === null);
 
   // The sentence the H1 prints, also the ItemList name (fix item 45).
   const headline = bestSuburbsHeadline(category, state);
@@ -241,7 +244,7 @@ export function BestSuburbsListing({
           ...(stateName ? [{ name: state ?? "", url: `${baseUrl}/${state?.toLowerCase()}` }] : []),
         ]}
       />
-      {suburbs.length > 0 && (
+      {suburbs.length > 0 && !anyTied && (
         <ItemListJsonLd
           name={headline}
           url={state ? `${baseUrl}/${state.toLowerCase()}` : baseUrl}
@@ -394,6 +397,14 @@ export function BestSuburbsListing({
             {note.text && (
               <p className="mt-1 text-sm font-sans text-ink-subtle leading-relaxed">{note.text}</p>
             )}
+            {anyTied && (
+              <p className="mt-2 text-sm font-sans text-ink-muted leading-relaxed">
+                {WALK_TIE_NOTE} They carry no rank number
+                {rows.every((r) => r.rank === null) && suburbs.length >= 50
+                  ? ", and this list does not hold every suburb that scores 100."
+                  : "."}
+              </p>
+            )}
           </div>
         )}
 
@@ -422,12 +433,12 @@ export function BestSuburbsListing({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-line">
-                  {suburbs.map((suburb, i) => (
+                  {rows.map(({ suburb, rank }) => (
                     <tr
                       key={suburb.slug}
                       className="hover:bg-surface-warm/60 transition-colors"
                     >
-                      <td className="py-3 px-4 text-ink-subtle tabular-nums font-sans">{i + 1}</td>
+                      <td className="py-3 px-4 text-ink-subtle tabular-nums font-sans">{rank ?? ""}</td>
                       <td className="py-3 px-4">
                         <Link
                           href={`/suburbs/${suburb.slug}`}
@@ -460,7 +471,7 @@ export function BestSuburbsListing({
 
             {/* Mobile cards */}
             <div className="sm:hidden space-y-3">
-              {suburbs.map((suburb, i) => (
+              {rows.map(({ suburb, rank }) => (
                 <Link
                   key={suburb.slug}
                   href={`/suburbs/${suburb.slug}`}
@@ -469,7 +480,7 @@ export function BestSuburbsListing({
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-sans text-ink-subtle tabular-nums">#{i + 1}</span>
+                        {rank != null && <span className="text-xs font-sans text-ink-subtle tabular-nums">#{rank}</span>}
                         <span className="font-display text-base text-ink truncate">{suburb.name}</span>
                       </div>
                       <p className="text-xs font-sans text-ink-subtle mt-0.5">

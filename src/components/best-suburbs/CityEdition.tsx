@@ -5,7 +5,7 @@ import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, FAQPageJsonLd, ItemListJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
-import { GROWTH_RANKED_STATES, isRanked, rankingNote, stateRankingLink, type RankingCategory } from "@/lib/ranking-notes";
+import { GROWTH_RANKED_STATES, WALK_SCORE_CAP, WALK_TIE_NOTE, isRanked, rankingNote, stateRankingLink, type RankingCategory } from "@/lib/ranking-notes";
 import {
   CITY_EDITION_BUDGET,
   CITY_EDITION_LABEL,
@@ -17,10 +17,12 @@ import {
   cityEditionMethod,
   cityEditionPath,
   hasCityEdition,
+  isNumbered,
   metricSummary,
   more,
   showUnderBudget,
   suburbParagraph,
+  tiedAtCap,
   top,
   underBudget,
   type CityEdition,
@@ -144,6 +146,10 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
   const method = cityEditionMethod(edition);
   const five = more(edition);
   const cheap = showUnderBudget(edition) ? underBudget(edition) : [];
+  // Walkable: suburbs tied at the capped score carry no rank (ranking-notes).
+  const tied = tiedAtCap(edition);
+  const allTied = tied.length > 0 && tied.length === ten.length;
+  const fiveTied = five.length > 0 && five.every((s) => !isNumbered(category, s));
 
   const otherCities = cityEditionLinks(indexable, { category }).filter((e) => e.city.slug !== city.slug);
   const otherLists = cityEditionLinks(indexable, { citySlug: city.slug }).filter((e) => e.category !== category);
@@ -157,7 +163,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
           { name: city.name, url: path },
         ]}
       />
-      {full && (
+      {full && tied.length === 0 && (
         <ItemListJsonLd
           name={h1}
           url={path}
@@ -202,7 +208,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
           <p className="mt-5 font-sans text-sm text-ink-subtle">
             <span className="text-ink">Updated {fmtDate(updatedAt)}.</span>
             {edition.salesPeriod ? ` Medians for ${edition.salesPeriod}.` : ""}
-            {full ? ` Ranked from ${n(edition.eligible)} Greater ${city.name} suburbs.` : ""}
+            {full ? ` ${tied.length > 0 ? "Drawn" : "Ranked"} from ${n(edition.eligible)} Greater ${city.name} suburbs.` : ""}
           </p>
         </div>
       </section>
@@ -245,13 +251,18 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
           <>
             {/* One section per suburb */}
             <section>
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-6">The ten, in order</p>
+              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-6">
+                {allTied ? `Ten that score ${WALK_SCORE_CAP}, alphabetically` : "The ten, in order"}
+              </p>
+              {tied.length > 0 && (
+                <p className="max-w-3xl -mt-3 mb-6 font-sans text-sm text-ink-muted leading-relaxed">{WALK_TIE_NOTE}</p>
+              )}
               <div className="space-y-10">
                 {ten.map((s, i) => (
                   <article key={s.slug} className="max-w-3xl border-t border-line pt-8" id={s.slug}>
                     <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-3">
-                      <span className="text-ink-subtle tabular-nums mr-2">{`${i + 1}.`}</span>
-                      {` ${s.name}, ${s.postcode}`}
+                      {isNumbered(category, s) && <span className="text-ink-subtle tabular-nums mr-2">{`${i + 1}.`}</span>}
+                      {`${isNumbered(category, s) ? " " : ""}${s.name}, ${s.postcode}`}
                     </h2>
                     <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7]">{suburbParagraph(edition, s, i + 1)}</p>
                     <dl className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-sans text-sm">
@@ -295,7 +306,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
                   <tbody className="divide-y divide-line">
                     {ten.map((s, i) => (
                       <tr key={s.slug} className="hover:bg-surface-warm/60 transition-colors">
-                        <td className="py-3 px-4 text-ink-subtle tabular-nums font-sans">{i + 1}</td>
+                        <td className="py-3 px-4 text-ink-subtle tabular-nums font-sans">{isNumbered(category, s) ? i + 1 : ""}</td>
                         <td className="py-3 px-4">
                           <a href={`#${s.slug}`} className="font-sans font-medium text-ink hover:text-primary transition-colors">
                             {s.name}
@@ -322,6 +333,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
               </div>
               <p className="mt-3 font-sans text-sm text-ink-subtle max-w-3xl">
                 A dash means the suburb&rsquo;s own page publishes no figure. &ldquo;Area&rdquo; marks an ABS statistical-area median.
+                {tied.length > 0 && ` No rank number means the suburb is tied at the capped walk score of ${WALK_SCORE_CAP}.`}
               </p>
             </section>
 
@@ -332,9 +344,11 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
                   {five.length === 5 ? "Five" : n(five.length)} more worth a look.
                 </h2>
                 <p className="font-sans text-base text-ink-muted leading-relaxed mb-5">
-                  Ranks {CITY_EDITION_SIZE + 1} to {CITY_EDITION_SIZE + five.length} on the same rule, for a shortlist that runs past the ten.
+                  {fiveTied
+                    ? `${five.length === 1 ? "One more suburb that scores" : "More suburbs that also score"} ${WALK_SCORE_CAP}, listed alphabetically, for a shortlist that runs past the ten.`
+                    : `Ranks ${CITY_EDITION_SIZE + 1} to ${CITY_EDITION_SIZE + five.length} on the same rule, for a shortlist that runs past the ten.`}
                 </p>
-                <ol className="space-y-2 font-sans text-base text-ink-muted" start={CITY_EDITION_SIZE + 1}>
+                <ol className={`space-y-2 font-sans text-base text-ink-muted${fiveTied ? " list-none" : ""}`} start={CITY_EDITION_SIZE + 1}>
                   {five.map((s) => (
                     <li key={s.slug} className="flex flex-wrap items-baseline gap-x-3">
                       <Link href={`/suburbs/${s.slug}`} className="font-medium text-ink hover:text-primary transition-colors">

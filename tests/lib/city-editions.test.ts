@@ -16,9 +16,12 @@ import {
   cityEditionTitle,
   hasCityEdition,
   isCityEditionCategory,
+  isCityEditionIndexable,
+  isNumbered,
   metricSummary,
   showUnderBudget,
   suburbParagraph,
+  tiedAtCap,
   underBudget,
   type CityEdition,
   type CityEditionSuburb,
@@ -76,7 +79,7 @@ describe("which pages are city editions", () => {
   });
   it("the page and the city sitemap read the predicate, from the same list", () => {
     const page = read("src/app/(marketing)/best-suburbs/[category]/[state]/page.tsx");
-    expect(page).toContain("robots: hasCityEdition(category, city.state, edition.suburbs.length) ? undefined : { index: false, follow: true },");
+    expect(page).toContain("robots: isCityEditionIndexable(category, city.state, edition.suburbs.length) ? undefined : { index: false, follow: true },");
     // and the state pages keep theirs
     expect(page).toContain("robots: isRanked(category, upperState) ? undefined : { index: false, follow: true },");
     const sitemap = read("src/app/(marketing)/best-suburbs/cities/sitemap.ts");
@@ -84,7 +87,7 @@ describe("which pages are city editions", () => {
     expect(sitemap).toContain('export const dynamic = "force-dynamic"');
     const service = read("src/lib/services/city-rankings-service.ts");
     // the sitemap list runs the page's own rows query and the page's own predicate on it
-    expect(service).toContain("const rows = await fetchRows(category, city);\n        if (hasCityEdition(category, city.state, rows.length)) out.push({ category, citySlug: city.slug });");
+    expect(service).toContain("const rows = await fetchRows(category, city);\n        if (isCityEditionIndexable(category, city.state, rows.length)) out.push({ category, citySlug: city.slug });");
     expect(service).toContain("const rows = await fetchRows(category, city);\n  const eligible");
     expect(service).toContain("suburbs: rows.map((r) => r.suburb)");
     expect(read("src/app/sitemap.xml/route.ts")).toContain("/best-suburbs/cities/sitemap.xml");
@@ -108,6 +111,52 @@ describe("which pages are city editions", () => {
     // growth is fetched only where a feed measures it; hazard is never read
     expect(service).toContain("if (!isCityEditionCategory(category) || !isRanked(category, city.state)) return [];");
     expect(service).not.toMatch(/suburbHazard|floodClass/);
+  });
+});
+
+describe("most walkable: a tie at the capped score is not a ranking (review of 10 Oct 2026, 0.1a)", () => {
+  const capped = edition("most-walkable", sydney, 15, () => ({ state: "NSW", medianBasis: "suburb", walkScore: 100 }));
+  const tied = { ...capped, atCap: 212 };
+  it("the walkable editions answer noindex and stay out of the city sitemap while the score caps", () => {
+    for (const city of CAPITAL_CITIES) {
+      expect(isCityEditionIndexable("most-walkable", city.state, CITY_EDITION_POOL), city.slug).toBe(false);
+      expect(hasCityEdition("most-walkable", city.state, CITY_EDITION_POOL), city.slug).toBe(true);
+    }
+    for (const c of CITY_EDITION_CATEGORIES.filter((c) => c !== "most-walkable")) {
+      for (const city of CAPITAL_CITIES) expect(isCityEditionIndexable(c, city.state, CITY_EDITION_POOL)).toBe(hasCityEdition(c, city.state, CITY_EDITION_POOL));
+    }
+  });
+  it("lists the suburbs at 100 unnumbered and says why", () => {
+    expect(tiedAtCap(tied)).toHaveLength(10);
+    expect(tied.suburbs.every((s) => !isNumbered("most-walkable", s))).toBe(true);
+    expect(isNumbered("most-walkable", suburb({ walkScore: 98 }))).toBe(true);
+    expect(isNumbered("most-affordable", suburb({ walkScore: 100 }))).toBe(true);
+    const lede = cityEditionLede(tied);
+    expect(lede).toContain("212 Greater Sydney suburbs of 1,000 or more residents reach it, so it cannot rank them. Listed alphabetically, the first ten are Suburb 1");
+    expect(lede).not.toMatch(/most walkable Greater/);
+    const method = cityEditionMethod(tied).join(" ");
+    expect(method).toContain("These suburbs all score 100; listed alphabetically.");
+    expect(method).toContain("within 1 km of the suburb's postcode centroid, capped at 100");
+    expect(method).not.toMatch(/transport stops and pedestrian|Ranked by walk score/);
+    const p = suburbParagraph(tied, tied.suburbs[3], 4);
+    expect(p).toContain("Its walk score is 100 out of 100, the maximum, shared with 211 other Greater Sydney suburbs");
+    expect(p).not.toMatch(/4th|highest/);
+    const faq = cityEditionFaqs(tied).find((f) => f.question.startsWith("Which are the most walkable"))!;
+    expect(faq.answer).toContain("The walk score cannot say: 212 Greater Sydney suburbs");
+    expect(faq.answer).not.toMatch(/exceptional|out of 100\)/);
+    expect(cityEditionDescription(tied)).toMatch(/^Greater Sydney suburbs by walk score, ties at the 100 cap listed alphabetically/);
+  });
+  it("numbers the suburbs below the cap after the tied ones", () => {
+    const mixed = { ...edition("most-walkable", perth, 15, (i) => ({ state: "WA", walkScore: i < 3 ? 100 : 96 - i })), atCap: 3 };
+    expect(tiedAtCap(mixed).map((s) => s.name)).toEqual(["Suburb 1", "Suburb 2", "Suburb 3"]);
+    expect(cityEditionLede(mixed)).toBe("Suburb 1, Suburb 2 and Suburb 3 all score the maximum walk score of 100, listed alphabetically; after them, by walk score, come Suburb 4, Suburb 5, Suburb 6, Suburb 7, Suburb 8, Suburb 9 and Suburb 10.");
+    expect(suburbParagraph(mixed, mixed.suburbs[3], 4)).toContain("Its walk score is 93 out of 100, the 4th highest in Greater Perth");
+  });
+  it("the page shows no rank or ItemList for tied suburbs", () => {
+    const page = read("src/components/best-suburbs/CityEdition.tsx");
+    expect(page).toContain("{full && tied.length === 0 && (");
+    expect(page).toContain("{isNumbered(category, s) && <span");
+    expect(page).toContain("{isNumbered(category, s) ? i + 1 : \"\"}");
   });
 });
 

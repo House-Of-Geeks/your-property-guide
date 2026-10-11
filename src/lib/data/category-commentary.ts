@@ -90,9 +90,9 @@ export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = 
   },
   "most-walkable": {
     intro:
-      "Walkability isn't just about cafes, well-connected suburbs with high walk scores tend to retain value better in downturns and attract a wider buyer pool when sold. The walk-score-driven ranking favours inner-ring suburbs with mixed-use streets, transport, and dense neighbourhood retail.",
+      "A walk score says how many everyday shops and services are within a short walk. It favours suburbs with dense neighbourhood retail, and it is capped, so in the busiest suburbs it stops telling them apart.",
     methodology:
-      "Walk score is computed from OpenStreetMap data, counts of nearby amenities, transit stops, and pedestrian-friendly infrastructure within typical walking distance of the suburb centroid. Refreshed quarterly. Higher is better; 90+ is exceptional.",
+      "The walk score is 2 points for each shop, cafe, restaurant, supermarket, pharmacy, bank, gym, library or hospital mapped in OpenStreetMap within 1 km of the suburb's postcode centroid, capped at 100. A suburb with 50 or more such places scores 100, so the suburbs at 100 are tied: they are listed alphabetically, not ranked. Transport stops and footpaths are not in the score.",
     bestFor:
       "Apartment buyers; downsizers who want to walk to local shops; renters of investment properties (walkability is a tenant-demand multiplier); car-free or one-car households.",
     faqs: [
@@ -109,7 +109,7 @@ export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = 
       {
         question: "How does walkability differ from transit score?",
         answer:
-          "Walk score measures access to amenities on foot. Transit score measures public transport access. The two correlate but aren't identical, some apartment-heavy suburbs have moderate walk scores but exceptional transit, and vice versa.",
+          "Our walk score counts shops and services within 1 km; our transit score counts public transport stop positions within 500 m, also from OpenStreetMap. The two are separate counts, so a suburb can score high on one and low on the other.",
       },
     ],
   },

@@ -49,6 +49,59 @@ export const YIELD_RANKED_STATES: readonly string[] = ["VIC", "QLD"];
 /** A yield ranking leaves out suburbs smaller than this: a handful of bonds is not a rental market. */
 export const YIELD_MIN_POPULATION = 1000;
 
+// ── Walk score ──────────────────────────────────────────────────────────────
+//
+// The walk score is two points for each shop, cafe, restaurant, supermarket,
+// pharmacy, bank, gym, library or hospital mapped in OpenStreetMap within
+// 1 km of the suburb's postcode centroid, capped at 100
+// (scripts/sync/sources/walkability.ts reads walkScoreFromAmenities). Any
+// suburb with 50 or more such places scores 100, so on 10 Oct 2026 every
+// suburb in the top ten of every city edition scored 100 and the "ranking"
+// was the alphabet (review of 10 Oct 2026, suburbs-market 0.1a). A tie at
+// the cap is listed alphabetically and unnumbered, and the walkable city
+// editions answer noindex, until the lists rank on the uncapped count
+// (which needs a column for it: a schema change and a sync run).
+
+export const WALK_POINTS_PER_AMENITY = 2;
+export const WALK_SCORE_CAP = 100;
+/** The amenities at which the score reaches the cap. */
+export const WALK_CAP_AMENITIES = WALK_SCORE_CAP / WALK_POINTS_PER_AMENITY;
+
+/** The score the walkability sync writes for an amenity count. */
+export function walkScoreFromAmenities(amenityCount: number): number {
+  return Math.min(WALK_SCORE_CAP, Math.round(amenityCount * WALK_POINTS_PER_AMENITY));
+}
+
+/** Whether the walkable lists rank on a measure that does not cap. False until the uncapped amenity count is stored. */
+export const WALK_RANKED_UNCAPPED = false;
+
+/** A walk score tied at the cap: the score cannot order these suburbs, so they are listed alphabetically and unnumbered. */
+export function isTiedAtWalkCap(score: number | null | undefined): boolean {
+  return !WALK_RANKED_UNCAPPED && score != null && score >= WALK_SCORE_CAP;
+}
+
+/**
+ * The rows as a list prints them: on the walkable list, the suburbs tied at
+ * the capped walk score come first in alphabetical order and carry no rank;
+ * the rest keep the ranking's order and are numbered after them. Every
+ * other list is numbered as ranked.
+ */
+export function listedRows<T extends { name: string; walkScore: number | null }>(
+  category: RankingCategory,
+  rows: T[],
+): { suburb: T; rank: number | null }[] {
+  if (category !== "most-walkable") return rows.map((suburb, i) => ({ suburb, rank: i + 1 }));
+  const tied = rows.filter((s) => isTiedAtWalkCap(s.walkScore)).sort((a, b) => a.name.localeCompare(b.name));
+  const rest = rows.filter((s) => !isTiedAtWalkCap(s.walkScore));
+  return [...tied.map((suburb) => ({ suburb, rank: null })), ...rest.map((suburb, i) => ({ suburb, rank: tied.length + i + 1 }))];
+}
+
+/** The sentence a walkable list prints above suburbs tied at the cap. */
+export const WALK_TIE_NOTE = `These suburbs all score ${WALK_SCORE_CAP}; listed alphabetically. The walk score stops at ${WALK_SCORE_CAP}, reached at ${WALK_CAP_AMENITIES} shops and services within 1 km, so it cannot rank them.`;
+
+/** What the walk score measures, in one sentence. */
+export const WALK_SCORE_DEFINITION = `The walk score is ${WALK_POINTS_PER_AMENITY} points for each shop, cafe, restaurant, supermarket, pharmacy, bank, gym, library or hospital mapped in OpenStreetMap within 1 km of the suburb's postcode centroid, capped at ${WALK_SCORE_CAP}.`;
+
 /**
  * Whether a flood hazard feed is loaded. The lowest-flood-risk ranking needs
  * a flood hazard class for each suburb (SuburbHazard.floodClass), and that
