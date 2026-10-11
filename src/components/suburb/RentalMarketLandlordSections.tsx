@@ -85,7 +85,7 @@ export function RentalMarketLandlordSections({ suburb, landlord }: { suburb: Sub
           </div>
         </div>
         <p className="font-sans text-xs text-ink-subtle mt-3">
-          {`Typical management fee and letting fee: ${FEE_SOURCES.laf.label}, ${FEE_SOURCES.laf.date}. Metro and regional ranges: ${FEE_SOURCES.reiq.label}, ${FEE_SOURCES.reiq.date}. Percentages are of the rent collected; a letting fee is charged once per new tenancy.`}
+          {`Typical management fee and letting fee: ${FEE_SOURCES.laf.label}, ${FEE_SOURCES.laf.date}. Metro and regional ranges: ${FEE_SOURCES.reiq.label}, ${FEE_SOURCES.reiq.date}. These are two different surveys, so a typical fee can sit outside its state's range (Queensland and South Australia). Percentages are of the rent collected; a letting fee is charged once per new tenancy.`}
         </p>
 
         {workedLine && (
@@ -112,8 +112,8 @@ export function RentalMarketLandlordSections({ suburb, landlord }: { suburb: Sub
           </ul>
           <p className="font-sans text-xs text-ink-subtle mt-3">
             {`Sources: ${ancillarySources.map((s) => `${s.label}, ${s.date}`).join("; ")}. Tribunal representation, maintenance mark-ups and statement fees vary by agency and belong on the schedule you ask for. `}
-            <Link href="/guides/property-management-fees-australia" className="underline hover:text-primary">The eight fee types and what is negotiable</Link>
-            {" covers the full list."}
+            <Link href="/guides/property-management-fees-australia" className="underline hover:text-primary">Property management fees by state</Link>
+            {" covers the eight fee types and what is negotiable."}
           </p>
         </div>
       </section>
