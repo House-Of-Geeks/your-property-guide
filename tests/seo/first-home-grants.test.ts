@@ -109,7 +109,7 @@ const STATE_PATTERNS: Record<AustralianState, RegExp> = {
 
 const FIRST_HOME_CONTEXT = /grant|FHOG|HomeGrown|first home|first-home|duty relief|exemption|exempt|concession|stamp duty|transfer duty|conveyance duty|land transfer duty/i;
 /** A sentence that dates a figure to the past may quote a superseded one. */
-const PAST = /\bbefore\b|\buntil\b|\bapplied\b|\bwas\b|\bwere\b|\bprevious|\bended\b|\bceased\b|\bclosed\b|\bcommenced\b|\bused to\b|\bup until\b|\bto \d{1,2} \w+ 20\d\d|between \d{1,2} \w+ 20\d\d and/i;
+const PAST = /\bbefore\b|\breplaced\b|\buntil\b|\bapplied\b|\bwas\b|\bwere\b|\bprevious|\bended\b|\bceased\b|\bclosed\b|\bcommenced\b|\bused to\b|\bup until\b|\bto \d{1,2} \w+ 20\d\d|between \d{1,2} \w+ 20\d\d and/i;
 
 /** Text a reader (or a crawler reading the JSON-LD) sees, one segment per sentence, list item or table row. */
 export function segments(html: string): string[] {
@@ -279,6 +279,7 @@ const PAGES: Array<{ path: string; state: AustralianState | null; load: () => Pr
   { path: "/guides/first-home-buyer-nsw", state: "NSW", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-nsw/page") },
   { path: "/guides/first-home-buyer-wa", state: "WA", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-wa/page") },
   { path: "/guides/first-home-buyer-tas", state: "TAS", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-tas/page") },
+  { path: "/guides/first-home-buyer-nt", state: "NT", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-nt/page") },
 ];
 
 describe("pages rendered from the data file", () => {
