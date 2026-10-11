@@ -379,6 +379,19 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
               ) : null}
             </div>
           )}
+          {/* Weekly rent from a bond feed, with its source and month. */}
+          {model.rent ? (
+            <p className="mt-3 font-sans text-base text-ink-muted leading-[1.7] max-w-2xl">
+              Median weekly rent:{" "}
+              {[
+                model.rent.house ? `houses ${formatPriceFull(model.rent.house)}` : null,
+                model.rent.unit ? `units ${formatPriceFull(model.rent.unit)}` : null,
+                !model.rent.house && !model.rent.unit && model.rent.all ? `all dwellings ${formatPriceFull(model.rent.all)}` : null,
+              ].filter(Boolean).join(", ")}{" "}
+              <span className="text-sm text-ink-subtle">({model.rent.source}{model.rent.asAt ? `, ${model.rent.asAt}` : ""})</span>.{" "}
+              <Link href={`/suburbs/${slug}/rental-market`} className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">Rents in {sn}</Link>.
+            </p>
+          ) : null}
         </section>
 
         {/* 7. Neighbouring agents pages, indexable ones only, parent locality first. */}

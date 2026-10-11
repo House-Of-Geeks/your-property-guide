@@ -251,3 +251,14 @@ describe("nearby agents links (section 3.1)", () => {
     expect(parentLocalityName("East")).toBeNull();
   });
 });
+
+describe("weekly rent at a glance", () => {
+  it("prints a bond-feed rent with its source and month, labelling NSW by postcode", () => {
+    const m = buildSuburbAgentsModel(makeSuburb({}, { rentalSource: "rental-nsw", rentalAsOf: new Date("2026-06-30T00:00:00Z") }), [], []);
+    expect(m.rent).toEqual({ house: 1800, unit: 1100, all: null, source: "NSW rental bond data (postcode 2026)", asAt: "June 2026" });
+  });
+  it("never prints the 2021 Census proxy or a rent with no source", () => {
+    expect(buildSuburbAgentsModel(makeSuburb({}, { rentalSource: "abs-census-2021" }), [], []).rent).toBeNull();
+    expect(buildSuburbAgentsModel(makeSuburb({}, { rentalSource: null }), [], []).rent).toBeNull();
+  });
+});

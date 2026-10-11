@@ -7,6 +7,8 @@ import { formatPriceFull } from "@/lib/utils/format";
 import { describeSalesProvenance, type SalesProvenance } from "@/lib/sales-provenance";
 import { medianCaption } from "@/lib/value-range";
 import { buildHomeValueSummary } from "@/lib/home-value";
+import { publishesRent } from "@/lib/suburb-snapshot";
+import { monthYear, rentalSourceLabel } from "@/lib/rental-labels";
 
 /**
  * "Real estate agents in {Suburb}" pages (valuation plan item 4).
@@ -114,6 +116,12 @@ export interface SuburbAgentsModel {
    * is published.
    */
   withheldNote: string | null;
+  /**
+   * The suburb's weekly rent from a bond feed, with its source and month,
+   * for "{Suburb} property market at a glance". Never the 2021 Census proxy.
+   * NSW bond data is published by postcode, and the label says so.
+   */
+  rent: { house: number | null; unit: number | null; all: number | null; source: string; asAt: string | null } | null;
   /** A published unit median shown where the house median is withheld, with its own source line. */
   unitMedian: { price: number; provenance: string } | null;
   /** The state range worked on EXAMPLE_SALE_PRICES; empty when the median is published. */
@@ -199,6 +207,9 @@ export interface NearbyAgentsLink {
   href: string;
   label: string;
 }
+
+/** The rental feeds that record bonds lodged (not the 2021 Census proxy). */
+export const BOND_RENT_SOURCES: readonly string[] = ["rental-nsw", "rental-vic", "rental-sa", "rental-qld", "rental-wa"];
 
 /** How many neighbour links an agents page carries. */
 export const MAX_NEARBY_AGENT_LINKS = 8;
@@ -293,6 +304,17 @@ export function buildSuburbAgentsModel(
   const unitMedian = !median && summary.medianUnitPrice && summary.unitProvenance
     ? { price: summary.medianUnitPrice, provenance: summary.unitProvenance }
     : null;
+  const rentSource = suburb.dataFreshness?.rentalSource ?? null;
+  const rentLabel = BOND_RENT_SOURCES.includes(rentSource ?? "") ? rentalSourceLabel(rentSource, suburb.postcode) : null;
+  const rent = rentLabel && publishesRent(suburb)
+    ? {
+        house: suburb.stats.medianRentHouse > 0 ? suburb.stats.medianRentHouse : null,
+        unit: suburb.stats.medianRentUnit > 0 ? suburb.stats.medianRentUnit : null,
+        all: (suburb.stats.medianRentAll ?? 0) > 0 ? (suburb.stats.medianRentAll ?? null) : null,
+        source: rentLabel,
+        asAt: suburb.dataFreshness?.rentalAsOf ? monthYear(suburb.dataFreshness.rentalAsOf) : null,
+      }
+    : null;
   const stateRange = stateCommissionRange(suburb.state);
   const examples: CommissionOnExample[] = commission
     ? []
@@ -378,6 +400,7 @@ export function buildSuburbAgentsModel(
     provenance,
     medianPhrase,
     withheldNote: withheld,
+    rent,
     unitMedian,
     examples,
     agents: shownAgents,
