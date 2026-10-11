@@ -16,8 +16,10 @@ import {
   cityEditionLinkLabel,
   cityEditionMethod,
   cityEditionPath,
+  editionCoverage,
   hasCityEdition,
   isNumbered,
+  noEditionReason,
   metricSummary,
   more,
   showUnderBudget,
@@ -137,7 +139,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
   const stateHref = `/best-suburbs/${category}/${city.state.toLowerCase()}`;
   const h1 = cityEditionH1(category, city);
   const ten = top(edition);
-  const full = hasCityEdition(category, city.state, ten.length);
+  const full = hasCityEdition(category, city.state, ten.length, editionCoverage(edition));
   // A category the state's figures cannot rank (growth outside NSW and SA, yield outside VIC and QLD).
   const ranked = isRanked(category, city.state);
   const note = rankingNote(category, city.state, 0, 0);
@@ -218,9 +220,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
           <section className="rounded-2xl border border-line bg-surface-raised p-8 sm:p-10 max-w-3xl">
             <p className="font-display text-xl text-ink mb-2">No {city.name} edition yet.</p>
             <p className="font-sans text-ink-muted leading-relaxed">
-              {!ranked
-                ? note.text
-                : `A city edition needs ${CITY_EDITION_SIZE} suburbs to show, and ${ten.length === 0 ? "none" : ten.length === 1 ? "only one" : `only ${ten.length}`} in Greater ${city.name} ${ten.length === 1 ? "qualifies" : "qualify"} on the rules below. The ${stateName} ranking has the full list.`}
+              {!ranked ? note.text : `${noEditionReason(edition) ?? ""} The ${stateName} ranking has the full list.`}
             </p>
             <p className="mt-4">
               <Link href={ranked ? stateHref : `/best-suburbs/${category}`} className={pill}>

@@ -14,9 +14,11 @@ import {
   cityEditionMethod,
   cityEditionPath,
   cityEditionTitle,
+  PRICE_RANKED_CATEGORIES,
   hasCityEdition,
   isCityEditionCategory,
   isCityEditionIndexable,
+  noEditionReason,
   isNumbered,
   metricSummary,
   showUnderBudget,
@@ -62,24 +64,52 @@ describe("which pages are city editions", () => {
     expect(isCityEditionCategory("best-rental-yield")).toBe(true);
   });
   it("is indexable only with ten suburbs, in a state where the category is ranked", () => {
+    const wide = { pool: 300, suburbs: 400 };
     for (const c of CITY_EDITION_CATEGORIES) {
       for (const city of CAPITAL_CITIES) {
-        expect(hasCityEdition(c, city.state, CITY_EDITION_SIZE - 1), `${c} ${city.slug} nine`).toBe(false);
-        expect(hasCityEdition(c, city.state, 0), `${c} ${city.slug} none`).toBe(false);
-        expect(hasCityEdition(c, city.state, CITY_EDITION_SIZE), `${c} ${city.slug} ten`).toBe(isRanked(c, city.state));
-        expect(hasCityEdition(c, city.state, CITY_EDITION_POOL), `${c} ${city.slug} fifteen`).toBe(isRanked(c, city.state));
+        expect(hasCityEdition(c, city.state, CITY_EDITION_SIZE - 1, wide), `${c} ${city.slug} nine`).toBe(false);
+        expect(hasCityEdition(c, city.state, 0, wide), `${c} ${city.slug} none`).toBe(false);
+        expect(hasCityEdition(c, city.state, CITY_EDITION_SIZE, wide), `${c} ${city.slug} ten`).toBe(isRanked(c, city.state));
+        expect(hasCityEdition(c, city.state, CITY_EDITION_POOL, wide), `${c} ${city.slug} fifteen`).toBe(isRanked(c, city.state));
       }
     }
     // yield only where a rent is measured for the suburb, growth only where a change is measured
-    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("best-rental-yield", c.state, 10)).map((c) => c.slug)).toEqual(["melbourne", "brisbane"]);
-    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("highest-growth", c.state, 10)).map((c) => c.slug)).toEqual(["sydney", "adelaide"]);
-    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("best-rental-yield", c.state, 10)).map((c) => c.state)).toEqual([...YIELD_RANKED_STATES]);
-    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("highest-growth", c.state, 10)).map((c) => c.state)).toEqual([...GROWTH_RANKED_STATES]);
-    expect(hasCityEdition("lowest-flood-risk", "QLD", 50)).toBe(false);
+    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("best-rental-yield", c.state, 10, wide)).map((c) => c.slug)).toEqual(["melbourne", "brisbane"]);
+    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("highest-growth", c.state, 10, wide)).map((c) => c.slug)).toEqual(["sydney", "adelaide"]);
+    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("best-rental-yield", c.state, 10, wide)).map((c) => c.state)).toEqual([...YIELD_RANKED_STATES]);
+    expect(CAPITAL_CITIES.filter((c) => hasCityEdition("highest-growth", c.state, 10, wide)).map((c) => c.state)).toEqual([...GROWTH_RANKED_STATES]);
+    expect(hasCityEdition("lowest-flood-risk", "QLD", 50, wide)).toBe(false);
+  });
+  it("a price ranking needs a pool that stands for the city (review of 10 Oct 2026, 0.2b)", () => {
+    for (const c of PRICE_RANKED_CATEGORIES) {
+      const state = c === "highest-growth" ? "SA" : "VIC";
+      // no count, no edition: the page and the sitemap always pass one
+      expect(hasCityEdition(c, state, 15), c).toBe(false);
+      // Brisbane on 10 Oct 2026: 17 of 196 suburbs of 1,000 or more residents
+      expect(hasCityEdition(c, state, 15, { pool: 17, suburbs: 196 }), c).toBe(false);
+      // Hobart: 25 of 30 is a large share but too few suburbs
+      expect(hasCityEdition(c, state, 15, { pool: 25, suburbs: 30 }), c).toBe(false);
+      // Perth's 66 ABS medians of about 280 suburbs clear it; Adelaide's 259 easily
+      expect(hasCityEdition(c, state, 15, { pool: 66, suburbs: 280 }), c).toBe(true);
+      expect(hasCityEdition(c, state, 15, { pool: 259, suburbs: 300 }), c).toBe(true);
+    }
+    // the rankings on something other than price need no count
+    expect(hasCityEdition("for-families", "QLD", 15)).toBe(true);
+    const thin = { ...edition("most-affordable", brisbane), eligible: 17, citySuburbs: 196 };
+    expect(noEditionReason(thin)).toBe("We publish a figure drawn from many suburbs only when at least 30 suburbs and a fifth of Greater Brisbane's 196 suburbs of 1,000 or more residents have a published median; only 17 do. Ten suburbs from so few would not stand for the city.");
+    expect(noEditionReason({ ...edition("most-affordable", brisbane), eligible: 120, citySuburbs: 400 })).toBeNull();
+    expect(noEditionReason({ ...edition("for-families", brisbane, 4), citySuburbs: null })).toBe("A city edition needs 10 suburbs to show, and only 4 in Greater Brisbane qualify on the rules below.");
+  });
+  it("the cheapest list screens out CBD cores and apartment markets (review of 10 Oct 2026, 0.2a)", () => {
+    const service = read("src/lib/services/city-rankings-service.ts");
+    expect(service).toContain("const kept = rows.filter((r) => passesHouseScreens(r, rents.get(r.slug)?.house));");
+    expect(service).toContain("return (await screenedAffordable(city)).slice(0, CITY_EDITION_POOL);");
+    expect(service).toContain("return (await screenedAffordable(city)).length;");
+    expect(cityEditionMethod(edition("most-affordable", getCapitalCity("melbourne")!)).join(" ")).toContain("CBD-core postcodes and suburbs whose house median looks like an apartment market's are left out");
   });
   it("the page and the city sitemap read the predicate, from the same list", () => {
     const page = read("src/app/(marketing)/best-suburbs/[category]/[state]/page.tsx");
-    expect(page).toContain("robots: isCityEditionIndexable(category, city.state, edition.suburbs.length) ? undefined : { index: false, follow: true },");
+    expect(page).toContain("robots: isCityEditionIndexable(category, city.state, edition.suburbs.length, editionCoverage(edition)) ? undefined : { index: false, follow: true },");
     // and the state pages keep theirs
     expect(page).toContain("robots: isRanked(category, upperState) ? undefined : { index: false, follow: true },");
     const sitemap = read("src/app/(marketing)/best-suburbs/cities/sitemap.ts");
@@ -87,7 +117,7 @@ describe("which pages are city editions", () => {
     expect(sitemap).toContain('export const dynamic = "force-dynamic"');
     const service = read("src/lib/services/city-rankings-service.ts");
     // the sitemap list runs the page's own rows query and the page's own predicate on it
-    expect(service).toContain("const rows = await fetchRows(category, city);\n        if (isCityEditionIndexable(category, city.state, rows.length)) out.push({ category, citySlug: city.slug });");
+    expect(service).toContain("const edition = await fetchCityEdition(category, city);\n        if (isCityEditionIndexable(category, city.state, edition.suburbs.length, editionCoverage(edition))) out.push({ category, citySlug: city.slug });");
     expect(service).toContain("const rows = await fetchRows(category, city);\n  const eligible");
     expect(service).toContain("suburbs: rows.map((r) => r.suburb)");
     expect(read("src/app/sitemap.xml/route.ts")).toContain("/best-suburbs/cities/sitemap.xml");
@@ -122,8 +152,9 @@ describe("most walkable: a tie at the capped score is not a ranking (review of 1
       expect(isCityEditionIndexable("most-walkable", city.state, CITY_EDITION_POOL), city.slug).toBe(false);
       expect(hasCityEdition("most-walkable", city.state, CITY_EDITION_POOL), city.slug).toBe(true);
     }
+    const wide = { pool: 300, suburbs: 400 };
     for (const c of CITY_EDITION_CATEGORIES.filter((c) => c !== "most-walkable")) {
-      for (const city of CAPITAL_CITIES) expect(isCityEditionIndexable(c, city.state, CITY_EDITION_POOL)).toBe(hasCityEdition(c, city.state, CITY_EDITION_POOL));
+      for (const city of CAPITAL_CITIES) expect(isCityEditionIndexable(c, city.state, CITY_EDITION_POOL, wide)).toBe(hasCityEdition(c, city.state, CITY_EDITION_POOL, wide));
     }
   });
   it("lists the suburbs at 100 unnumbered and says why", () => {

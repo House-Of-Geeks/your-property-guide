@@ -1,7 +1,68 @@
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY } from "@/lib/non-localities";
 import { publishedGrowth, publishesMedians } from "@/lib/published-medians";
+import { isAllDwellingsOnly } from "@/lib/rental-labels";
+import { withRentAllColumn } from "@/lib/services/rental-service";
 import { cityPostcodeWhere, type CapitalCity } from "@/lib/utils/metro";
+
+// ── Bond-data rents ─────────────────────────────────────────────────────────
+
+/** The rental feeds that publish bond-data medians. Not the 2021 Census proxies. */
+export const BOND_RENT_SOURCES: readonly string[] = ["rental-nsw", "rental-vic", "rental-sa", "rental-qld", "rental-wa"];
+
+/** A suburb's latest rental row, when it is from a bond feed. */
+export interface BondRent {
+  slug: string;
+  source: string;
+  period: string;
+  periodDate: Date;
+  /** Weekly house rent; null where the feed records no dwelling type (WA). */
+  house: number | null;
+  /** All dwellings together (WA bond data); null elsewhere. */
+  all: number | null;
+}
+
+type RentRow = { slug: string; source: string; period: string; periodDate: Date; house: number | null; unit: number | null; all: number | null };
+
+/**
+ * Each suburb's latest rental row (newest period, then the most recently
+ * written, as the suburb page reads it), kept only when it comes from a bond
+ * feed: the rent the suburb's own page prints with a bond-data source.
+ */
+export async function latestBondRents(slugs: string[]): Promise<Map<string, BondRent>> {
+  if (slugs.length === 0) return new Map();
+  const rows = await withRentAllColumn((withAll) =>
+    withAll
+      ? db.$queryRaw<RentRow[]>`
+          SELECT DISTINCT ON (rs."suburbSlug") rs."suburbSlug" AS slug, rs.source, rs.period, rs."periodDate",
+                 rs."medianRentHouse" AS house, rs."medianRentUnit" AS unit, rs."medianRentAll" AS "all"
+          FROM "SuburbRentalStat" rs
+          WHERE rs."suburbSlug" = ANY(${slugs})
+          ORDER BY rs."suburbSlug", rs."periodDate" DESC, rs."updatedAt" DESC`
+      : db.$queryRaw<RentRow[]>`
+          SELECT DISTINCT ON (rs."suburbSlug") rs."suburbSlug" AS slug, rs.source, rs.period, rs."periodDate",
+                 rs."medianRentHouse" AS house, rs."medianRentUnit" AS unit, NULL::int AS "all"
+          FROM "SuburbRentalStat" rs
+          WHERE rs."suburbSlug" = ANY(${slugs})
+          ORDER BY rs."suburbSlug", rs."periodDate" DESC, rs."updatedAt" DESC`,
+  );
+  return bondRentMap(rows);
+}
+
+/** Pure: the bond-feed rows of a latest-row read, keyed by slug. Exported for tests. */
+export function bondRentMap(rows: RentRow[]): Map<string, BondRent> {
+  const out = new Map<string, BondRent>();
+  for (const r of rows) {
+    if (!BOND_RENT_SOURCES.includes(r.source)) continue;
+    const figures = { source: r.source, medianRentHouse: r.house, medianRentUnit: r.unit, medianRentAll: r.all };
+    const allOnly = isAllDwellingsOnly(figures);
+    const house = !allOnly && r.house != null && Number(r.house) > 0 ? Number(r.house) : null;
+    const all = r.all != null && Number(r.all) > 0 ? Number(r.all) : null;
+    if (house == null && all == null) continue;
+    out.set(r.slug, { slug: r.slug, source: r.source, period: r.period, periodDate: new Date(r.periodDate), house, all: allOnly ? all : null });
+  }
+  return out;
+}
 
 // City-level market rollups for the /property-market/{city} pages.
 // Aggregates the suburb dataset upward using the rule the suburb pages

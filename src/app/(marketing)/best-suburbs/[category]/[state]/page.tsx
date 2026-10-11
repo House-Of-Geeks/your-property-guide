@@ -21,6 +21,7 @@ import {
   cityEditionDescription,
   cityEditionPath,
   cityEditionTitle,
+  editionCoverage,
   isCityEditionCategory,
   isCityEditionIndexable,
 } from "@/lib/city-editions";
@@ -91,7 +92,7 @@ async function cityEditionMetadata(category: RankingCategory, city: CapitalCity)
     title,
     description,
     alternates: { canonical },
-    robots: isCityEditionIndexable(category, city.state, edition.suburbs.length) ? undefined : { index: false, follow: true },
+    robots: isCityEditionIndexable(category, city.state, edition.suburbs.length, editionCoverage(edition)) ? undefined : { index: false, follow: true },
     openGraph: {
       url: canonical,
       title: `${title} | ${SITE_NAME}`,

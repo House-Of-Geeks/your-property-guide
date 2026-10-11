@@ -28,6 +28,7 @@ import {
   type RankingCategory,
 } from "@/lib/ranking-notes";
 import { rentalSourceLabel, monthYear } from "@/lib/rental-labels";
+import { HOUSE_SCREEN_NOTE, coverageShortfall, meetsCoverageFloor, type Coverage } from "@/lib/median-coverage";
 import type { CapitalCity } from "@/lib/utils/metro";
 import { formatPriceFull } from "@/lib/utils/format";
 
@@ -63,12 +64,41 @@ export function isCityEditionCategory(category: string): category is RankingCate
 }
 
 /**
- * Whether there is a city edition to publish. Read by the page (robots) and
- * by the city sitemap, from the same query, so the sitemap lists exactly
- * what the pages declare.
+ * The categories ranked on a published median (price, change, yield). Their
+ * pool must also clear the coverage floor (src/lib/median-coverage.ts): on
+ * 10 Oct 2026 Brisbane's "ten cheapest" came from 17 suburbs, most of them
+ * acreage (review of 10 Oct 2026, suburbs-market 0.2b).
  */
-export function hasCityEdition(category: RankingCategory, state: string, shown: number): boolean {
-  return isCityEditionCategory(category) && isRanked(category, state) && shown >= CITY_EDITION_SIZE;
+export const PRICE_RANKED_CATEGORIES: readonly RankingCategory[] = ["best-rental-yield", "highest-growth", "most-affordable"];
+
+/** The edition's pool against the city's suburbs of 1,000 or more residents, or null where it was not counted. */
+export function editionCoverage(e: Pick<CityEdition, "eligible" | "citySuburbs">): Coverage | null {
+  return e.citySuburbs != null ? { pool: e.eligible, suburbs: e.citySuburbs } : null;
+}
+
+/**
+ * Whether there is a city edition to publish: ten suburbs to show, in a
+ * state the category can rank, and for a price ranking a pool that clears
+ * the coverage floor. Below the floor the page says why and answers
+ * noindex; when the medians return (QLD, NSW) it follows by itself. Read by
+ * the page (robots, through isCityEditionIndexable) and by the city sitemap,
+ * from the same query, so the sitemap lists exactly what the pages declare.
+ */
+export function hasCityEdition(category: RankingCategory, state: string, shown: number, coverage: Coverage | null = null): boolean {
+  if (!isCityEditionCategory(category) || !isRanked(category, state) || shown < CITY_EDITION_SIZE) return false;
+  if (PRICE_RANKED_CATEGORIES.includes(category)) return coverage != null && meetsCoverageFloor(coverage);
+  return true;
+}
+
+/** Why there is no edition, for the page that says so; null when there is one. */
+export function noEditionReason(e: CityEdition): string | null {
+  const shown = top(e).length;
+  const coverage = editionCoverage(e);
+  if (hasCityEdition(e.category, e.city.state, shown, coverage)) return null;
+  if (shown >= CITY_EDITION_SIZE && PRICE_RANKED_CATEGORIES.includes(e.category) && coverage) {
+    return `${coverageShortfall(coverage, `Greater ${e.city.name}`)} Ten suburbs from so few would not stand for the city.`;
+  }
+  return `A city edition needs ${CITY_EDITION_SIZE} suburbs to show, and ${shown === 0 ? "none" : shown === 1 ? "only one" : `only ${shown}`} in Greater ${e.city.name} ${shown === 1 ? "qualifies" : "qualify"} on the rules below.`;
 }
 
 /**
@@ -78,9 +108,9 @@ export function hasCityEdition(category: RankingCategory, state: string, shown: 
  * and are listed alphabetically, which is not a ranking to put in search
  * (review of 10 Oct 2026, suburbs-market 0.1a). The page still renders.
  */
-export function isCityEditionIndexable(category: RankingCategory, state: string, shown: number): boolean {
+export function isCityEditionIndexable(category: RankingCategory, state: string, shown: number, coverage: Coverage | null = null): boolean {
   if (category === "most-walkable" && !WALK_RANKED_UNCAPPED) return false;
-  return hasCityEdition(category, state, shown);
+  return hasCityEdition(category, state, shown, coverage);
 }
 
 export function cityEditionPath(category: RankingCategory, citySlug: string): string {
@@ -126,6 +156,8 @@ export interface CityEdition {
   salesPeriod: string | null;
   /** Walkable only: eligible suburbs tied at the capped walk score of 100. */
   atCap?: number;
+  /** Price rankings: the city's suburbs of 1,000 or more residents, for the coverage floor. */
+  citySuburbs?: number | null;
 }
 
 /** The suburbs among the ten that tie at the capped walk score: unnumbered, alphabetical. */
@@ -300,6 +332,7 @@ export function cityEditionMethod(e: CityEdition): string[] {
       break;
     case "most-affordable":
       lines.push(`Ranked by published median house price, lowest first, from ${from} with a published median above $100,000 and ${n(CITY_EDITION_MIN_POPULATION)} or more residents.`);
+      lines.push(HOUSE_SCREEN_NOTE);
       break;
     case "most-walkable":
       lines.push(`Sorted by walk score, highest first, from ${from} with a walk score and ${n(CITY_EDITION_MIN_POPULATION)} or more residents. ${WALK_SCORE_DEFINITION}`);
