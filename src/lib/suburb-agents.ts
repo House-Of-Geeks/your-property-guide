@@ -190,7 +190,7 @@ export function buildSuburbAgentsModel(
   }
   faqs.push({
     question: `How do I find a good real estate agent in ${sn}?`,
-    answer: `Look for agents with recent sales in ${sn} itself, not just the wider area, and ask each for the comparable sales behind their price opinion. Compare two or three on their answers, their fee and marketing costs, and how they will report to you during the campaign. Your Property Guide can match you with one agent who sells in ${sn}; request a match on this page.`,
+    answer: `Look for agents with recent sales in ${sn} itself, not just the wider area, and ask each for the comparable sales behind their price opinion. Compare two or three on their answers, their fee and marketing costs, and how they will report to you during the campaign. Where we have an agent who covers ${sn}, Your Property Guide can introduce you to one; where we don't, we tell you rather than pass your details on.`,
   });
   faqs.push({
     question: `Do I have to pay to be matched with an agent in ${sn}?`,
@@ -199,8 +199,8 @@ export function buildSuburbAgentsModel(
 
   const title = `Real Estate Agents in ${sn} ${suburb.state} ${suburb.postcode}`;
   const description = commission && median
-    ? `Real estate agents in ${sn}: what they charge on the ${formatPriceFull(median)} ${provenance?.basis === "area" ? "ABS area " : ""}median (${provenance?.sourceShort ?? "published"}, ${commission.lowPct}% to ${commission.highPct}%), how to choose, and a free match with one local agent.`
-    : `Real estate agents in ${sn} ${suburb.postcode}: what they charge, how to choose, and a free match with one local agent.`;
+    ? `Real estate agents in ${sn}: what they charge on the ${formatPriceFull(median)} ${provenance?.basis === "area" ? "ABS area " : ""}median (${provenance?.sourceShort ?? "published"}, ${commission.lowPct}% to ${commission.highPct}%), how to choose, and a free appraisal.`
+    : `Real estate agents in ${sn} ${suburb.postcode}: what they charge, how to choose one, and how to ask a local agent for a free appraisal.`;
 
   return {
     title,

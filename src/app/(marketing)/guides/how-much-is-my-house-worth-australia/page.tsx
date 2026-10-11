@@ -98,7 +98,7 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Free Property Appraisal",            href: "/appraisal",                                 description: "An independent appraisal from a vetted local agent, no commitment." },
+  { title: "Free Property Appraisal",            href: "/appraisal",                                 description: "Ask one local agent for a free appraisal, no commitment to list." },
   { title: "Appraisal vs Valuation vs Online Estimate", href: "/property-valuation",              description: "The three numbers side by side, what a valuation costs, and when a lender needs one." },
   { title: "Free Selling Guide (PDF)",            href: "/selling-guide",                             description: "The full process from listing to settlement, personalised to your suburb." },
   { title: "How to Sell a House in Australia",    href: "/guides/how-to-sell-a-house-australia",       description: "Every step from pre-listing prep through to settlement day." },
@@ -378,7 +378,7 @@ export default function HowMuchIsMyHouseWorthAustraliaPage() {
       <MatchCTA
         kind="selling-agent"
         href="/appraisal"
-        lead="Want a real number, not an automated guess? Get a free appraisal from a vetted local agent who sells your type of property in your suburb."
+        lead="Want a real number, not an automated guess? Ask a local agent for a free appraisal, backed by the comparable sales in your suburb."
         ctaLabel="Get my free appraisal"
       />
 

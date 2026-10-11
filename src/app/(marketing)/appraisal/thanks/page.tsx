@@ -7,7 +7,7 @@ import { ThanksPhoneAsk } from "@/components/forms/ThanksPhoneAsk";
 
 export const metadata: Metadata = {
   title: "Appraisal request received",
-  description: "Your free property appraisal request is in. A local agent will be in touch within one business day.",
+  description: "Your free property appraisal request is in. We look for a local agent who covers your area, and tell you if we do not have one yet.",
   robots: { index: false, follow: false },
 };
 
@@ -38,15 +38,16 @@ export default async function AppraisalThanksPage({ searchParams }: PageProps) {
           </h1>
           <p className="font-sans text-lg sm:text-xl text-ink-muted leading-relaxed max-w-xl mx-auto">
             We&rsquo;ve received your request{suburbLabel ? ` for ${suburbLabel}` : ""}.
-            Look for a confirmation in your inbox in the next few minutes, and a call
-            or email from a local agent within one business day.
+            Look for a confirmation in your inbox. Where we have an agent who covers
+            your area, they will call or email you; where we do not yet have one, we
+            tell you rather than pass your details on.
           </p>
           {/* Renders only when the submitting form left a lead id in
               sessionStorage (phone-less appraisal requests, e.g. the
               suburb-page inline CTA). */}
           <ThanksPhoneAsk
             source="appraisal-thanks"
-            prompt="Appraisals move fastest over the phone — add your mobile and the agent will call you first."
+            prompt="Appraisals move fastest over the phone: add your mobile so the agent can call you."
           />
         </div>
       </section>
@@ -60,16 +61,16 @@ export default async function AppraisalThanksPage({ searchParams }: PageProps) {
             <li className="flex gap-4">
               <span className="shrink-0 w-8 h-8 rounded-full bg-surface-warm text-ink font-medium grid place-items-center text-sm">1</span>
               <div>
-                <p className="font-medium text-ink">A local agent reads your details.</p>
+                <p className="font-medium text-ink">We look for a local agent.</p>
                 <p className="text-sm text-ink-muted mt-1 leading-relaxed">
-                  Someone who actively sells in your area, with current comparable sales evidence.
+                  One who sells in your area. If we do not have one there yet, we tell you rather than pass your details on.
                 </p>
               </div>
             </li>
             <li className="flex gap-4">
               <span className="shrink-0 w-8 h-8 rounded-full bg-surface-warm text-ink font-medium grid place-items-center text-sm">2</span>
               <div>
-                <p className="font-medium text-ink">They reach out within one business day.</p>
+                <p className="font-medium text-ink">The agent gets in touch.</p>
                 <p className="text-sm text-ink-muted mt-1 leading-relaxed">
                   By phone or email, your choice. They&rsquo;ll talk you through what your home is realistically worth and the comparable sales backing the number.
                 </p>

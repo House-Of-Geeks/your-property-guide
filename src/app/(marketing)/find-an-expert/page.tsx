@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}/find-an-expert` },
   title: "Find your expert, agent, broker, or specialist",
   description:
-    "Get connected with one vetted specialist for your property situation, agent, broker, accountant, conveyancer, whoever fits. Free for buyers and sellers, no commitment.",
+    "Ask for one introduction to an agent, broker or other property specialist for your situation, where we have one in your area. Free for buyers and sellers, no commitment.",
 };
 
 // Editorial hub explaining how the match flow works. The actual lead engine
@@ -51,7 +51,7 @@ const LANES: Lane[] = [
     eyebrow: "Selling",
     headline: "When you want an appraisal or a real selling plan.",
     body:
-      "A listing agent who actually knows your suburb, recent sales, what buyers are paying, the right campaign for your property. Not the agent who knocks on the door with a flyer; the one who's selling in your street.",
+      "Look for a listing agent who knows your suburb: recent sales, what buyers are paying, the right campaign for your property. Not the agent who knocks on the door with a flyer; one who is selling in your street.",
     fits: [
       "You want an honest appraisal before you commit",
       "You're weighing private sale vs auction",
@@ -64,7 +64,7 @@ const LANES: Lane[] = [
     eyebrow: "Refinancing",
     headline: "When you need finance, pre-approval, or a better rate.",
     body:
-      "A mortgage broker compares 30+ lenders for you, not just one bank. They know which lender will say yes to your situation, what documents you need, and where the rate cut hides.",
+      "A mortgage broker compares loans from a panel of lenders, not just one bank, and can tell you which lenders' policies fit your situation, what documents you need, and what an approval would depend on.",
     fits: [
       "You want to know what you can borrow",
       "You need pre-approval before you bid",
@@ -77,7 +77,7 @@ const LANES: Lane[] = [
     eyebrow: "Something else",
     headline: "Inheritance, divorce, downsizing, or planning ahead.",
     body:
-      "Property situations don't always reduce to buy/sell/invest. We work with property accountants, conveyancers, family lawyers and estate planners, and we'll point you at the right one for your situation, not the closest one to a sale.",
+      "Property situations don't always reduce to buy/sell/invest. Tell us what is going on: where we have a specialist who handles it, such as a property accountant, conveyancer, family lawyer or estate planner, we introduce one; where we don't, we tell you.",
     fits: [
       "You've inherited a property and don't know where to start",
       "You're separating and need to deal with a shared property",
@@ -96,13 +96,13 @@ const HOW_IT_WORKS = [
   },
   {
     step: "02",
-    title: "We pick the right specialist",
+    title: "We look for one specialist",
     body:
-      "One match, vetted for your suburb and your situation. Not three competing quotes, not a bidding war for your enquiry.",
+      "Where we have one who covers your area and your situation, we introduce them. Not three competing quotes, not a bidding war for your enquiry. Where we don't, we tell you.",
   },
   {
     step: "03",
-    title: "They reach out within one business day",
+    title: "They get in touch, or we tell you we can't help yet",
     body:
       "By phone or email, your choice. No commitment until you decide to take the next step.",
   },
@@ -136,15 +136,14 @@ export default function FindAnExpertPage() {
                 </span>
               </div>
               <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">
-                Tell us your situation.{" "}
-                <span className="italic font-light text-primary">We&rsquo;ll find</span>{" "}
-                the right person.
+                Find a real estate agent, buyer&rsquo;s agent or broker.{" "}
+                <span className="italic font-light text-primary">One introduction, free.</span>
               </h1>
               <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-2xl mb-10">
-                Property situations are messier than buyer-or-seller. We match
-                you with one vetted specialist for your situation, whether
-                that&rsquo;s an agent, broker, accountant or conveyancer. Free
-                for buyers and sellers, no commitment, no comparison spam.
+                Tell us what you are selling or buying and where. Where we have a
+                licensed agent or specialist who works in your area, we introduce
+                one; the specialist pays us a fee for the introduction and you pay
+                nothing. No commitment, no comparison spam.
               </p>
               <div className="flex flex-wrap gap-3 mb-10">
                 <Link
@@ -163,8 +162,8 @@ export default function FindAnExpertPage() {
               <TrustStrip
                 variant="rich"
                 items={[
-                  { lead: "One match, not five.", body: "We pick the right specialist; you don't get five competing quotes." },
-                  { lead: "One business day.", body: "They reach out by phone or email, your choice." },
+                  { lead: "One introduction, not five.", body: "Where we have a specialist for your area, you hear from one, not five competing quotes." },
+                  { lead: "We tell you either way.", body: "Where we have no one for your area yet, we say so rather than pass your details on." },
                   { lead: "Free for buyers and sellers.", body: "The specialist pays us a fee for each introduction." },
                   { lead: "Never passed around.", body: "Your details go only to the specialist you're matched with. We never sell them to anyone else." },
                 ]}
@@ -196,7 +195,7 @@ export default function FindAnExpertPage() {
               Four situations, one engine
             </p>
             <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
-              Whichever bucket you&rsquo;re in, we&rsquo;ll find the right specialist for it.
+              Whichever bucket you&rsquo;re in, here is who can help.
             </h2>
           </div>
 
@@ -238,10 +237,10 @@ export default function FindAnExpertPage() {
           <div className="mt-12 rounded-2xl border border-line-warm bg-surface-warm p-8 max-w-3xl mx-auto text-center">
             <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-2">How matching works</p>
             <p className="font-sans text-base text-ink-muted leading-relaxed">
-              Every enquiry is read and matched personally by our team. We pick
-              one vetted specialist for your situation, no call centre, no
-              auto-routing, no comparison spam. You&rsquo;ll hear from them
-              within one business day.
+              Every enquiry is read by our team. Where we have a specialist for
+              your situation in your area, we introduce one, no call centre, no
+              comparison spam; where we don&rsquo;t, we tell you rather than pass
+              your details on.
             </p>
           </div>
         </div>

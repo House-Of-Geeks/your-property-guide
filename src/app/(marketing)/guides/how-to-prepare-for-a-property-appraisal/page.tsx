@@ -106,7 +106,7 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Free Property Appraisal",             href: "/appraisal",                                   description: "An independent appraisal from a vetted local agent, no commitment to list." },
+  { title: "Free Property Appraisal",             href: "/appraisal",                                   description: "Ask one local agent for a free appraisal, no commitment to list." },
   { title: "How to Choose a Selling Agent",       href: "/guides/how-to-choose-a-selling-agent",        description: "The interview process, the appraisal-price trap, and what to negotiate." },
   { title: "How Much Is My House Worth?",         href: "/guides/how-much-is-my-house-worth-australia", description: "The three ways to value a home and how to land on a figure you can trust." },
   { title: "Cost of Selling a House",             href: "/guides/cost-of-selling-a-house-australia",    description: "Every fee from commission to conveyancing, with a worked example." },
@@ -218,9 +218,9 @@ export default function HowToPrepareForAPropertyAppraisalPage() {
       <Callout variant="info" title="Want a number without the sales pitch pressure?">
         <p>
           Our <Link href="/appraisal">free property appraisal</Link> service
-          connects you with a vetted local agent who provides an honest
-          appraisal backed by comparable sales evidence. No obligation to list,
-          no lock-in.
+          introduces you to a local agent, where we have one in your area,
+          for an appraisal backed by comparable sales evidence. No obligation
+          to list, no lock-in.
         </p>
       </Callout>
 
@@ -466,11 +466,11 @@ export default function HowToPrepareForAPropertyAppraisalPage() {
       <Callout variant="info" title="Ready for an honest number?">
         <p>
           Start with a{" "}
-          <Link href="/appraisal">free property appraisal</Link> from a vetted
-          local agent, backed by comparable sales evidence and with no
-          obligation to list. Or{" "}
-          <Link href="/find-an-expert">find a local expert</Link> if
-          you&rsquo;d rather browse agents in your area first.
+          <Link href="/appraisal">free property appraisal</Link> from a local
+          agent, backed by comparable sales evidence and with no obligation to
+          list. Or{" "}
+          <Link href="/find-an-expert">ask for one introduction</Link> to an
+          agent who covers your area.
         </p>
       </Callout>
 

@@ -106,7 +106,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Commission Calculator",               href: "/real-estate-commission-calculator",       description: "What an agent costs on your sale price, by state." },
   { title: "Real Estate Agent Fees in Australia", href: "/guides/real-estate-agent-fees-australia", description: "Detailed breakdown of commission structures across states." },
   { title: "Property Auction Guide",              href: "/guides/property-auction-guide",            description: "How auctions actually run, and what to expect from your agent on auction day." },
-  { title: "Free Property Appraisal",             href: "/appraisal",                                description: "An independent appraisal from a vetted local agent, no commitment." },
+  { title: "Free Property Appraisal",             href: "/appraisal",                                description: "Ask one local agent for a free appraisal, no commitment to list." },
   { title: "Sell First or Buy First?",            href: "/guides/sell-first-or-buy-first",           description: "The decision tree before you commit to either a sale or a purchase." },
   { title: "Conveyancing in Australia",           href: "/guides/conveyancing-guide",                description: "What your conveyancer does on the sell side." },
 ];
@@ -154,7 +154,7 @@ export default function HowToChooseSellingAgentPage() {
       </p>
       <p>
         Treat this like hiring a contractor for a major renovation. You
-        wouldn't pick the first quote without comparison, and you wouldn't pick
+        wouldn&rsquo;t pick the first quote without comparison, and you wouldn&rsquo;t pick
         purely on price. Same logic applies here.
       </p>
 
@@ -195,31 +195,31 @@ export default function HowToChooseSellingAgentPage() {
 
       <h2 id="interview">What to ask in the interview</h2>
       <p>
-        The interview/appraisal is a one-hour meeting at the property. You're
-        evaluating them as much as they're evaluating the property. Specific
+        The interview/appraisal is a one-hour meeting at the property. You&rsquo;re
+        evaluating them as much as they&rsquo;re evaluating the property. Specific
         questions to ask:
       </p>
 
       <h3>Local market</h3>
       <ul>
         <li>What three properties most recently sold in this suburb that are most comparable to mine? Show me.</li>
-        <li>What's the days-on-market trend in this suburb over the last quarter?</li>
-        <li>What's your auction clearance rate over the last 6 months? (If they recommend auction)</li>
+        <li>What&rsquo;s the days-on-market trend in this suburb over the last quarter?</li>
+        <li>What&rsquo;s your auction clearance rate over the last 6 months? (If they recommend auction)</li>
         <li>What types of buyers are active in this suburb right now?</li>
       </ul>
 
       <h3>Appraisal and pricing</h3>
       <ul>
-        <li>What's your appraisal price, and exactly which comparable sales support it?</li>
+        <li>What&rsquo;s your appraisal price, and exactly which comparable sales support it?</li>
         <li>Where would you set the price guide if listed for private treaty? For auction reserve?</li>
-        <li>What's the most likely sale price range, in your honest assessment?</li>
-        <li>If we don't get our target price, what would you recommend, drop the price, change the strategy, or wait?</li>
+        <li>What&rsquo;s the most likely sale price range, in your honest assessment?</li>
+        <li>If we don&rsquo;t get our target price, what would you recommend, drop the price, change the strategy, or wait?</li>
       </ul>
 
       <h3>Marketing and process</h3>
       <ul>
-        <li>What marketing package do you recommend, and what's the spend?</li>
-        <li>What's your campaign timeline (open homes, auction date, etc.)?</li>
+        <li>What marketing package do you recommend, and what&rsquo;s the spend?</li>
+        <li>What&rsquo;s your campaign timeline (open homes, auction date, etc.)?</li>
         <li>How many opens per week, and for how many weeks?</li>
         <li>Will you be the lead agent on inspections or will it be passed to a junior?</li>
         <li>How do you handle pre-auction offers?</li>
@@ -227,11 +227,11 @@ export default function HowToChooseSellingAgentPage() {
 
       <h3>Fees and agreement</h3>
       <ul>
-        <li>What's your commission rate, and is it negotiable?</li>
-        <li>What's the exclusive agency period in your standard agreement?</li>
-        <li>What's the tail clause length, and how is "introduced" defined?</li>
+        <li>What&rsquo;s your commission rate, and is it negotiable?</li>
+        <li>What&rsquo;s the exclusive agency period in your standard agreement?</li>
+        <li>What&rsquo;s the tail clause length, and how is &ldquo;introduced&rdquo; defined?</li>
         <li>Are there any fees beyond commission and marketing?</li>
-        <li>What happens if I'm not happy and want to terminate the agreement early?</li>
+        <li>What happens if I&rsquo;m not happy and want to terminate the agreement early?</li>
       </ul>
 
       <p>
@@ -255,17 +255,17 @@ export default function HowToChooseSellingAgentPage() {
 
       <p>How it plays out:</p>
       <ol>
-        <li>You interview three agents. Two appraise at $1.4M to $1.5M based on comparable sales. One quotes $1.6M, "we have buyers waiting".</li>
+        <li>You interview three agents. Two appraise at $1.4M to $1.5M based on comparable sales. One quotes $1.6M, &ldquo;we have buyers waiting&rdquo;.</li>
         <li>You sign with the high quote, hoping to capture the upside.</li>
-        <li>First two weeks of opens, agent reports "good interest but no firm offers at this level".</li>
-        <li>Week 4 they suggest "the market's giving us feedback at $1.45M, what would you do at that level?"</li>
+        <li>First two weeks of opens, agent reports &ldquo;good interest but no firm offers at this level&rdquo;.</li>
+        <li>Week 4 they suggest &ldquo;the market&rsquo;s giving us feedback at $1.45M, what would you do at that level?&rdquo;</li>
         <li>Sale settles at $1.42M. Less than the honest agents would have got you, after a longer, more stressful campaign.</li>
       </ol>
 
       <p>How to avoid it:</p>
       <ul>
-        <li><strong>Demand specific comparable sales</strong> for any appraisal. Last 90 days, same suburb, similar property. If they can't show you 3 to 5 supporting sales, the number is fiction.</li>
-        <li><strong>Get a second opinion from a buyer's agent or independent valuer</strong> if the appraisals diverge significantly.</li>
+        <li><strong>Demand specific comparable sales</strong> for any appraisal. Last 90 days, same suburb, similar property. If they can&rsquo;t show you 3 to 5 supporting sales, the number is fiction.</li>
+        <li><strong>Get a second opinion from a buyer&rsquo;s agent or independent valuer</strong> if the appraisals diverge significantly.</li>
         <li><strong>Pay attention to the spread.</strong> If one agent quotes 10%+ above the others without supporting sales, treat it as a sales tactic.</li>
       </ul>
 
@@ -290,8 +290,8 @@ export default function HowToChooseSellingAgentPage() {
       <p>
         Some agents propose tiered commission: e.g. 1.5% on sale price up to
         $1M, then 5% on every dollar above $1M. The intent is to align the
-        agent's incentive to push for a higher price. The risk is that the
-        tier kicks in at a price that's already a stretch, and you end up
+        agent&rsquo;s incentive to push for a higher price. The risk is that the
+        tier kicks in at a price that&rsquo;s already a stretch, and you end up
         paying more for a marginal uplift.
       </p>
       <p>
@@ -300,8 +300,8 @@ export default function HowToChooseSellingAgentPage() {
         genuine outperformance.
       </p>
 
-      <h3>What's not in commission</h3>
-      <p>Commission usually doesn't include:</p>
+      <h3>What&rsquo;s not in commission</h3>
+      <p>Commission usually doesn&rsquo;t include:</p>
       <ul>
         <li>Marketing costs ($3K to $10K typical, paid separately)</li>
         <li>Auctioneer fee if going to auction ($500 to $1,500)</li>
@@ -325,7 +325,7 @@ export default function HowToChooseSellingAgentPage() {
       </p>
       <p>
         The realestate.com.au listing tier is usually the biggest line item
-        and the one with the most ROI debate. "Premier" or "Highlight"
+        and the one with the most ROI debate. &ldquo;Premier&rdquo; or &ldquo;Highlight&rdquo;
         listings get top placement and more views, but cost a lot more than
         standard. For a $1M+ property in a competitive area, the upgraded
         listing is usually justified. For a $500K property in a soft market,
@@ -352,10 +352,10 @@ export default function HowToChooseSellingAgentPage() {
       <h3>Tail clause</h3>
       <p>
         After the exclusive period ends, for how long is the agent still
-        owed commission if a "buyer they introduced" purchases? 60 to 90 days
+        owed commission if a &ldquo;buyer they introduced&rdquo; purchases? 60 to 90 days
         is typical; some agreements have 180+ day tails. The wording of
-        "introduced" matters, push for a tight definition (e.g. "made a
-        written offer" or "attended an inspection during the agency period").
+        &ldquo;introduced&rdquo; matters, push for a tight definition (e.g. &ldquo;made a
+        written offer&rdquo; or &ldquo;attended an inspection during the agency period&rdquo;).
       </p>
 
       <h3>Marketing commitment</h3>
@@ -367,7 +367,7 @@ export default function HowToChooseSellingAgentPage() {
 
       <h3>Termination</h3>
       <p>
-        What's the termination process if you're not happy? Can you switch
+        What&rsquo;s the termination process if you&rsquo;re not happy? Can you switch
         agents during the exclusive period for serious cause (lack of opens,
         no offers, lack of communication)? Negotiate a clear termination right
         upfront.
@@ -375,7 +375,7 @@ export default function HowToChooseSellingAgentPage() {
 
       <h3>Sole vs general agency</h3>
       <p>
-        Almost always go with sole agency, it aligns the agent's incentive to
+        Almost always go with sole agency, it aligns the agent&rsquo;s incentive to
         actually market the property. General agency tends to result in less
         effort from any individual agent.
       </p>
@@ -383,7 +383,7 @@ export default function HowToChooseSellingAgentPage() {
       <h2 id="references">Checking references</h2>
       <p>
         Ask the agent for 2 or 3 sellers from their last 6 months. Call them
-        (don't just email) and ask:
+        (don&rsquo;t just email) and ask:
       </p>
       <ul>
         <li>Did the final sale price match the original appraisal?</li>
@@ -405,15 +405,15 @@ export default function HowToChooseSellingAgentPage() {
         <li>The agent dismisses your questions, deflects, or gets defensive when challenged</li>
         <li>They push hard on a marketing package without explaining how each line moves the sale price</li>
         <li>The proposed listing agreement has long tail clauses (180+ days) or vague termination terms</li>
-        <li>They can't provide recent comparable sales they personally negotiated</li>
+        <li>They can&rsquo;t provide recent comparable sales they personally negotiated</li>
         <li>References are reluctantly provided, vague, or unable to be reached</li>
-        <li>They promise specific buyers ("I have 5 buyers waiting") without naming them or explaining how they'll be brought through</li>
+        <li>They promise specific buyers (&ldquo;I have 5 buyers waiting&rdquo;) without naming them or explaining how they&rsquo;ll be brought through</li>
       </ul>
 
       <h2 id="decision">Making the decision</h2>
       <p>
-        After three or four interviews, you'll usually have a clear front-runner.
-        It's typically the agent who:
+        After three or four interviews, you&rsquo;ll usually have a clear front-runner.
+        It&rsquo;s typically the agent who:
       </p>
       <ol>
         <li>Quoted a realistic appraisal supported by genuine comparable sales</li>
@@ -424,7 +424,7 @@ export default function HowToChooseSellingAgentPage() {
         <li>Offered a reasonable listing agreement (60 to 90 day exclusive, tight tail clause, clear termination)</li>
       </ol>
       <p>
-        Once you've picked, negotiate the agreement before signing. The most
+        Once you&rsquo;ve picked, negotiate the agreement before signing. The most
         common negotiation points: commission rate (especially on higher-value
         properties), marketing package, exclusive period length, and tail
         clause definition.
@@ -434,9 +434,10 @@ export default function HowToChooseSellingAgentPage() {
         <p>
           Our{" "}
           <Link href="/appraisal">free property appraisal</Link>{" "}
-          service connects you with one vetted local agent who'll provide an
-          honest appraisal with comparable sales evidence. The agent pays us
-          a fee for the introduction. You pay nothing, and there&rsquo;s no
+          service introduces you to one local agent, where we have one in
+          your area, to give you an appraisal with the comparable sales behind
+          it; where we do not yet have one, we tell you. The agent pays us a
+          fee for the introduction. You pay nothing, and there&rsquo;s no
           commitment to list with them.
         </p>
       </Callout>

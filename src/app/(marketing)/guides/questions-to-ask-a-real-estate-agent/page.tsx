@@ -112,7 +112,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The Cost of Selling a House",         href: "/guides/cost-of-selling-a-house-australia",   description: "Every fee from commission to conveyancing, with a worked example." },
   { title: "Property Auction Guide",              href: "/guides/property-auction-guide",              description: "How auctions actually run, and what to expect from your agent on auction day." },
   { title: "Free Selling Guide (PDF)",            href: "/selling-guide",                              description: "The agent interview questions and nine more chapters, personalised to your suburb." },
-  { title: "Free Property Appraisal",             href: "/appraisal",                                  description: "An independent appraisal from a vetted local agent, no commitment." },
+  { title: "Free Property Appraisal",             href: "/appraisal",                                  description: "Ask one local agent for a free appraisal, no commitment to list." },
 ];
 
 export default function QuestionsToAskARealEstateAgentPage() {
@@ -127,8 +127,8 @@ export default function QuestionsToAskARealEstateAgentPage() {
       <Callout variant="warning" title="Rules differ by state, agreements differ by agent">
         <p>
           Agency agreement rules, cooling-off periods and underquoting laws
-          vary by state, and every agency's agreement is worded differently.
-          The figures here are indicative. Check your state's consumer
+          vary by state, and every agency&rsquo;s agreement is worded differently.
+          The figures here are indicative. Check your state&rsquo;s consumer
           affairs or fair trading guidance before signing, and get every
           answer you rely on in writing.
         </p>
@@ -138,9 +138,9 @@ export default function QuestionsToAskARealEstateAgentPage() {
         <p>
           Every seller I speak to prepared harder for their last job interview
           than for the meeting that decides who sells their biggest asset.
-          The agent has done this pitch hundreds of times; you'll do it two
+          The agent has done this pitch hundreds of times; you&rsquo;ll do it two
           or three times in your life. A written list of questions flips that
-          imbalance. You don't need to be adversarial, you just need to be
+          imbalance. You don&rsquo;t need to be adversarial, you just need to be
           the seller who asks for evidence instead of accepting charm.
         </p>
       </EditorNote>
@@ -155,7 +155,7 @@ export default function QuestionsToAskARealEstateAgentPage() {
         who will earn their fee from agents who are good at winning listings.
       </p>
       <p>
-        For each question below you'll find why it matters and what a good
+        For each question below you&rsquo;ll find why it matters and what a good
         answer sounds like versus an evasive one. Ask every shortlisted agent
         the same list in the same order, and take notes. Patterns show up
         fast.
@@ -178,13 +178,13 @@ export default function QuestionsToAskARealEstateAgentPage() {
       <p>
         <strong>Good answer:</strong> names addresses, sale dates and prices,
         and explains how each compares to yours. <strong>Evasive:</strong>{" "}
-        quotes suburb medians or "the market's really hot right now" without
+        quotes suburb medians or &ldquo;the market&rsquo;s really hot right now&rdquo; without
         a single specific sale.
       </p>
 
       <h3>2. How many properties like mine have you sold in this suburb in the last 12 months?</h3>
       <p>
-        You're hiring the individual, not the franchise. An agent with ten
+        You&rsquo;re hiring the individual, not the franchise. An agent with ten
         recent local sales has a live database of underbidders, buyers who
         missed out and are still hunting. That list is often where your
         buyer comes from.
@@ -203,32 +203,32 @@ export default function QuestionsToAskARealEstateAgentPage() {
       </p>
       <p>
         <strong>Good answer:</strong> a current figure and the trend, e.g.
-        "median days on market here has drifted from 28 to 35 this quarter".{" "}
-        <strong>Evasive:</strong> "demand is strong" with nothing behind it.
+        &ldquo;median days on market here has drifted from 28 to 35 this quarter&rdquo;.{" "}
+        <strong>Evasive:</strong> &ldquo;demand is strong&rdquo; with nothing behind it.
       </p>
 
       <h3>4. Who is the likely buyer for this property?</h3>
       <p>
         The buyer profile dictates the marketing plan: which channels, which
-        photos, which open times. If they can't describe your buyer, they're
+        photos, which open times. If they can&rsquo;t describe your buyer, they&rsquo;re
         guessing at the campaign too.
       </p>
       <p>
         <strong>Good answer:</strong> two or three specific profiles, backed
         by current enquiry on similar listings. <strong>Evasive:</strong>{" "}
-        "a home like this appeals to everyone".
+        &ldquo;a home like this appeals to everyone&rdquo;.
       </p>
 
       <h3>5. Will you personally run the opens and negotiate the offers, or does that go to someone else?</h3>
       <p>
         Some lead agents win the listing and hand the work to a junior. That
-        can be fine, but you should know who you're actually getting before
+        can be fine, but you should know who you&rsquo;re actually getting before
         you sign.
       </p>
       <p>
         <strong>Good answer:</strong> names exactly who does what, and puts
-        the lead agent on the negotiation. <strong>Evasive:</strong> "we
-        work as a team" with no names attached.
+        the lead agent on the negotiation. <strong>Evasive:</strong> &ldquo;we
+        work as a team&rdquo; with no names attached.
       </p>
 
       <h2 id="price-and-method">Price and method of sale</h2>
@@ -238,26 +238,26 @@ export default function QuestionsToAskARealEstateAgentPage() {
         habit rather than what suits your property.
       </p>
 
-      <h3>6. What's your estimated selling price, in writing, and what evidence supports it?</h3>
+      <h3>6. What&rsquo;s your estimated selling price, in writing, and what evidence supports it?</h3>
       <p>
         In NSW, the agent is legally required to include a reasonable
         estimated selling price in the agency agreement, supported by
         factors like comparable sales. In every state, a written estimate is
         your accountability anchor: it makes the classic
-        "quote high, condition down" play much harder to run.
+        &ldquo;quote high, condition down&rdquo; play much harder to run.
       </p>
       <p>
         <strong>Good answer:</strong> a tight range that traces back to the
         comparable sales from question 1, written into the agreement.{" "}
-        <strong>Evasive:</strong> a big verbal number, "we'll let the market
-        decide", or a range so wide it commits to nothing.
+        <strong>Evasive:</strong> a big verbal number, &ldquo;we&rsquo;ll let the market
+        decide&rdquo;, or a range so wide it commits to nothing.
       </p>
 
       <h3>7. Do you recommend private treaty or auction for my property, and why?</h3>
       <p>
         The right method depends on buyer depth, property type and local
         norms, not on what the office always does. Auction adds an
-        auctioneer's fee and a hard deadline; private treaty gives more
+        auctioneer&rsquo;s fee and a hard deadline; private treaty gives more
         control but can drift.
       </p>
       <p>
@@ -267,7 +267,7 @@ export default function QuestionsToAskARealEstateAgentPage() {
         with no trade-offs discussed.
       </p>
 
-      <h3>8. If you're recommending auction, what's your clearance rate over the last six months?</h3>
+      <h3>8. If you&rsquo;re recommending auction, what&rsquo;s your clearance rate over the last six months?</h3>
       <p>
         Their personal clearance rate tells you whether they can actually
         run an auction campaign. You can sanity-check the claim: Cotality
@@ -284,9 +284,9 @@ export default function QuestionsToAskARealEstateAgentPage() {
 
       <h3>9. Where would you set the advertised price guide, and how will you keep it honest?</h3>
       <p>
-        Underquoting wastes your campaign on buyers who can't reach your
-        price. NSW bans advertising below the agent's written estimate,
-        bans "offers over" style ads, and caps advertised ranges at a 10%
+        Underquoting wastes your campaign on buyers who can&rsquo;t reach your
+        price. NSW bans advertising below the agent&rsquo;s written estimate,
+        bans &ldquo;offers over&rdquo; style ads, and caps advertised ranges at a 10%
         spread. Other states police misleading price conduct too. A guide
         set too high is just as costly: it kills early enquiry, and the
         first two weeks are when buyer interest peaks.
@@ -294,8 +294,8 @@ export default function QuestionsToAskARealEstateAgentPage() {
       <p>
         <strong>Good answer:</strong> a guide strategy anchored to the
         written estimate, updated in writing if the market moves.{" "}
-        <strong>Evasive:</strong> "we'll quote it low to get bodies through
-        the door".
+        <strong>Evasive:</strong> &ldquo;we&rsquo;ll quote it low to get bodies through
+        the door&rdquo;.
       </p>
 
       <h2 id="fees-and-costs">Commission and marketing costs</h2>
@@ -311,19 +311,19 @@ export default function QuestionsToAskARealEstateAgentPage() {
         context="NSW Fair Trading and Consumer Affairs Victoria both say so explicitly"
       />
 
-      <h3>10. What's your commission rate, and does that include GST?</h3>
+      <h3>10. What&rsquo;s your commission rate, and does that include GST?</h3>
       <p>
         Typical rates run roughly 1.5 to 3% plus GST, lower in the big
         metros and on higher-value homes, higher in regional markets. The
-        GST question matters: on a $20,000 fee it's a $2,000 difference.
+        GST question matters: on a $20,000 fee it&rsquo;s a $2,000 difference.
         Run your own numbers through the{" "}
         <Link href="/real-estate-commission-calculator">commission calculator</Link>{" "}
         before the meeting so you know what any rate means in dollars.
       </p>
       <p>
         <strong>Good answer:</strong> a clear rate, GST treatment stated,
-        openness to discussing structure. <strong>Evasive:</strong> "that's
-        the standard rate". There is no standard rate, anywhere in
+        openness to discussing structure. <strong>Evasive:</strong> &ldquo;that&rsquo;s
+        the standard rate&rdquo;. There is no standard rate, anywhere in
         Australia.
       </p>
 
@@ -332,7 +332,7 @@ export default function QuestionsToAskARealEstateAgentPage() {
         A typical residential campaign runs somewhere between $3,000 and
         $10,000 depending on property value, portal tier and whether you
         stage. The portal listing upgrade is usually the biggest line and
-        the most debated one. You're entitled to know what each item is
+        the most debated one. You&rsquo;re entitled to know what each item is
         expected to do for your price.
       </p>
       <p>
@@ -342,22 +342,22 @@ export default function QuestionsToAskARealEstateAgentPage() {
         approve it on the spot.
       </p>
 
-      <h3>12. Do I pay the marketing costs if the property doesn't sell?</h3>
+      <h3>12. Do I pay the marketing costs if the property doesn&rsquo;t sell?</h3>
       <p>
         In most agreements, vendor-paid advertising is payable regardless of
         the result, upfront, at settlement or via a payment plan. Sellers
-        are routinely surprised by this after a failed campaign. Don't be.
+        are routinely surprised by this after a failed campaign. Don&rsquo;t be.
       </p>
       <p>
         <strong>Good answer:</strong> a plain yes, with the budget capped in
         writing and payment timing explained. <strong>Evasive:</strong>{" "}
-        "don't worry about that, it will sell".
+        &ldquo;don&rsquo;t worry about that, it will sell&rdquo;.
       </p>
 
       <h3>13. Are there any other costs? Auctioneer, admin fees, mid-campaign upgrades?</h3>
       <p>
         Small fees hide in agreements: auctioneer fees, administration or
-        "file" charges, and suggested portal upgrades once the campaign is
+        &ldquo;file&rdquo; charges, and suggested portal upgrades once the campaign is
         running. Get the complete list before you sign, not as the invoices
         arrive. Our{" "}
         <Link href="/guides/cost-of-selling-a-house-australia">cost of selling guide</Link>{" "}
@@ -365,7 +365,7 @@ export default function QuestionsToAskARealEstateAgentPage() {
       </p>
       <p>
         <strong>Good answer:</strong> a complete written fee schedule.{" "}
-        <strong>Evasive:</strong> "just the usual costs".
+        <strong>Evasive:</strong> &ldquo;just the usual costs&rdquo;.
       </p>
 
       <MatchCTA kind="selling-agent" />
@@ -392,16 +392,16 @@ export default function QuestionsToAskARealEstateAgentPage() {
       </p>
       <p>
         <strong>Good answer:</strong> around 60 days with a clear rationale
-        and willingness to review. <strong>Evasive:</strong> 120+ days "to
-        be safe". Safe for whom?
+        and willingness to review. <strong>Evasive:</strong> 120+ days &ldquo;to
+        be safe&rdquo;. Safe for whom?
       </p>
 
-      <h3>15. What's the tail clause? How long, and how is "introduced" defined?</h3>
+      <h3>15. What&rsquo;s the tail clause? How long, and how is &ldquo;introduced&rdquo; defined?</h3>
       <p>
         A tail clause keeps the agent entitled to commission if the buyer
-        was "introduced" during the agency period, even if the sale happens
+        was &ldquo;introduced&rdquo; during the agency period, even if the sale happens
         months after the agreement ends. Reasonable in principle, dangerous
-        when "introduced" is defined loosely. Push for a tight definition,
+        when &ldquo;introduced&rdquo; is defined loosely. Push for a tight definition,
         such as attended an inspection or made a written offer.
       </p>
       <p>
@@ -410,20 +410,20 @@ export default function QuestionsToAskARealEstateAgentPage() {
         surprise that you asked.
       </p>
 
-      <h3>16. How do I end this agreement if it isn't working, and is there a cooling-off period?</h3>
+      <h3>16. How do I end this agreement if it isn&rsquo;t working, and is there a cooling-off period?</h3>
       <p>
         This is a great honesty test because the answer is checkable. In
         NSW you get a cooling-off period of one business day after signing
         an agency agreement. In Victoria there is no cooling-off on a sales
         authority at all. In Queensland, cancelling an appointment generally
-        requires 30 days' written notice. A good agent knows their state's
+        requires 30 days&rsquo; written notice. A good agent knows their state&rsquo;s
         rules cold and volunteers a fair exit path for mid-campaign
         breakdowns.
       </p>
       <p>
         <strong>Good answer:</strong> the correct rule for your state,
         unprompted, plus a written termination process.{" "}
-        <strong>Evasive:</strong> "nobody's ever wanted to leave".
+        <strong>Evasive:</strong> &ldquo;nobody&rsquo;s ever wanted to leave&rdquo;.
       </p>
 
       <h2 id="campaign-and-buyers">Campaign and buyer qualification</h2>
@@ -443,10 +443,10 @@ export default function QuestionsToAskARealEstateAgentPage() {
       <p>
         <strong>Good answer:</strong> a repeatable process, asking about
         pre-approval, deposit readiness and timing before contract.{" "}
-        <strong>Evasive:</strong> "we get a feel for who's serious".
+        <strong>Evasive:</strong> &ldquo;we get a feel for who&rsquo;s serious&rdquo;.
       </p>
 
-      <h3>18. What's the opens schedule, and how do you follow up every attendee?</h3>
+      <h3>18. What&rsquo;s the opens schedule, and how do you follow up every attendee?</h3>
       <p>
         The follow-up call after the open is where offers are made or lost.
         You want to know the cadence: how many opens per week, how quickly
@@ -455,27 +455,27 @@ export default function QuestionsToAskARealEstateAgentPage() {
       <p>
         <strong>Good answer:</strong> a defined schedule and follow-up
         within 24 to 48 hours, with feedback reported back to you.{" "}
-        <strong>Evasive:</strong> no system, just "we stay in touch with
-        interested parties".
+        <strong>Evasive:</strong> no system, just &ldquo;we stay in touch with
+        interested parties&rdquo;.
       </p>
 
       <h3>19. How will offers be handled? Will I see every offer in writing?</h3>
       <p>
         You are entitled to know about offers on your property, and a
-        written record protects you if a "verbal offer" is used to pressure
+        written record protects you if a &ldquo;verbal offer&rdquo; is used to pressure
         you into a quick decision. Agree upfront that every offer reaches
-        you in writing, with the buyer's conditions and finance position
+        you in writing, with the buyer&rsquo;s conditions and finance position
         attached.
       </p>
       <p>
         <strong>Good answer:</strong> every offer in writing, promptly, with
-        context to judge it. <strong>Evasive:</strong> "we'll only bring you
-        the serious ones".
+        context to judge it. <strong>Evasive:</strong> &ldquo;we&rsquo;ll only bring you
+        the serious ones&rdquo;.
       </p>
 
       <h2 id="communication">Communication and reporting</h2>
       <p>
-        Most seller complaints aren't about the result, they're about
+        Most seller complaints aren&rsquo;t about the result, they&rsquo;re about
         silence. Set the standard before you sign, when your leverage is
         highest.
       </p>
@@ -490,30 +490,30 @@ export default function QuestionsToAskARealEstateAgentPage() {
       <p>
         <strong>Good answer:</strong> a fixed weekly rhythm with a written
         report, and calls for anything urgent. <strong>Evasive:</strong>{" "}
-        "you can call me anytime", which quietly puts the burden on you.
+        &ldquo;you can call me anytime&rdquo;, which quietly puts the burden on you.
       </p>
 
       <h3>21. What feedback would make you change strategy, and at what point?</h3>
       <p>
         Good agents define their triggers upfront: if enquiry is below X
-        after two weeks, or opens are strong but no offers land, here's
-        what we change. Without agreed triggers, "the market is telling us
-        something" becomes code for "drop your price".
+        after two weeks, or opens are strong but no offers land, here&rsquo;s
+        what we change. Without agreed triggers, &ldquo;the market is telling us
+        something&rdquo; becomes code for &ldquo;drop your price&rdquo;.
       </p>
       <p>
         <strong>Good answer:</strong> specific thresholds and the options at
         each, price, presentation or method. <strong>Evasive:</strong>{" "}
-        "let's see how we go".
+        &ldquo;let&rsquo;s see how we go&rdquo;.
       </p>
 
-      <h2 id="if-it-doesnt-sell">If the property doesn't sell</h2>
+      <h2 id="if-it-doesnt-sell">If the property doesn&rsquo;t sell</h2>
       <p>
         Not every campaign lands. The agents worth hiring have a plan B
         before they need one, and their answer here tells you how honest
         the rest of the pitch was.
       </p>
 
-      <h3>22. What's the plan if we haven't had an acceptable offer after 30 days?</h3>
+      <h3>22. What&rsquo;s the plan if we haven&rsquo;t had an acceptable offer after 30 days?</h3>
       <p>
         The first month is when buyer interest peaks. If it passes without a
         serious offer, something needs to change, and you want to know the
@@ -522,8 +522,8 @@ export default function QuestionsToAskARealEstateAgentPage() {
       </p>
       <p>
         <strong>Good answer:</strong> a staged plan with decision points,
-        agreed with you in advance. <strong>Evasive:</strong> "that won't
-        happen with this property", which is exactly what over-quoting
+        agreed with you in advance. <strong>Evasive:</strong> &ldquo;that won&rsquo;t
+        happen with this property&rdquo;, which is exactly what over-quoting
         sounds like from the other side.
       </p>
 
@@ -531,11 +531,11 @@ export default function QuestionsToAskARealEstateAgentPage() {
       <p>
         Get the exit picture clear: marketing costs already incurred are
         usually payable, the tail clause may still apply to buyers already
-        introduced, and you'll want your enquiry list and feedback history
+        introduced, and you&rsquo;ll want your enquiry list and feedback history
         if you relist with someone else.
       </p>
       <p>
-        <strong>Good answer:</strong> a transparent account of what's owed
+        <strong>Good answer:</strong> a transparent account of what&rsquo;s owed
         and a professional handover position. <strong>Evasive:</strong> any
         answer that only makes sense if you never leave.
       </p>
@@ -549,7 +549,7 @@ export default function QuestionsToAskARealEstateAgentPage() {
         <li><strong>Specifics beat sentiment.</strong> Addresses, dates, numbers and names are good signs. Adjectives are not evidence.</li>
         <li><strong>Written beats verbal.</strong> A good agent volunteers to put estimates, fees and plans in writing. An evasive one treats the request as an insult.</li>
         <li><strong>Pushback is a feature.</strong> The agent who challenges your price expectations with evidence will also challenge buyers on your behalf. The one who agrees with everything is negotiating for your signature, not your sale price.</li>
-        <li><strong>Watch the checkable claims.</strong> Clearance rates, cooling-off rules and "my recent sales" can all be verified. Catch one embellishment in the interview and assume the rest of the pitch carries the same discount.</li>
+        <li><strong>Watch the checkable claims.</strong> Clearance rates, cooling-off rules and &ldquo;my recent sales&rdquo; can all be verified. Catch one embellishment in the interview and assume the rest of the pitch carries the same discount.</li>
       </ul>
 
       <PullQuote attribution="Andy McMaster, Editor">
@@ -560,7 +560,7 @@ export default function QuestionsToAskARealEstateAgentPage() {
 
       <h2 id="next-steps">Take the list with you</h2>
       <p>
-        Don't try to memorise 23 questions. Do it in this order instead:
+        Don&rsquo;t try to memorise 23 questions. Do it in this order instead:
       </p>
       <ol>
         <li>
@@ -573,15 +573,15 @@ export default function QuestionsToAskARealEstateAgentPage() {
           <strong>Size the fees first.</strong> Run your expected price
           through the{" "}
           <Link href="/real-estate-commission-calculator">commission calculator</Link>{" "}
-          so every rate you're quoted translates to dollars on the spot.
+          so every rate you&rsquo;re quoted translates to dollars on the spot.
         </li>
         <li>
           <strong>Line up three interviews.</strong> Start with a{" "}
           <Link href="/appraisal">free property appraisal</Link> from a
-          vetted local agent, or use{" "}
-          <Link href="/find-an-expert">find an expert</Link> to add one
-          matched agent to your shortlist without cold-calling agency front
-          desks.
+          local agent, or use{" "}
+          <Link href="/find-an-expert">find an expert</Link> to ask for one
+          introduction to an agent who covers your area, where we have one,
+          without cold-calling agency front desks.
         </li>
         <li>
           <strong>Ask, note, compare.</strong> Same questions, same order,
@@ -592,7 +592,7 @@ export default function QuestionsToAskARealEstateAgentPage() {
       <Callout variant="info" title="Want a strong name on your shortlist?">
         <p>
           Our <Link href="/find-an-expert">find an expert</Link> service
-          matches you with one vetted local agent, and a{" "}
+          introduces one local agent where we have one in your area, and a{" "}
           <Link href="/appraisal">free appraisal</Link> gets you a written
           estimate with comparable sales evidence, exactly what question 6
           demands. No commitment to list with anyone.

@@ -8,6 +8,7 @@ import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
 import Link from "next/link";
 import { SITE_URL } from "@/lib/constants";
+import { COVERAGE_CAVEAT } from "@/lib/match-coverage";
 
 // Form lives in the hero's right column (above the fold on desktop, second
 // position on mobile after the headline) so visitors arrive on a page that
@@ -16,16 +17,17 @@ import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Free Property Appraisal from a Local Agent | No Obligation",
-  description: "Get a free property appraisal from a vetted agent who sells in your suburb: what an appraisal is, how it differs from a bank valuation or online estimate, what to have ready, and what happens after you ask.",
+  description: "Ask a local agent for a free property appraisal: what an appraisal is, how it differs from a bank valuation or online estimate, what to have ready, and what happens next.",
   alternates: { canonical: `${SITE_URL}/appraisal` },
-  openGraph: { url: `${SITE_URL}/appraisal`, title: "Free Property Appraisal from a Local Agent | No Obligation", description: "Request a free property appraisal from a vetted local real estate agent.", type: "website" },
+  openGraph: { url: `${SITE_URL}/appraisal`, title: "Free Property Appraisal from a Local Agent | No Obligation", description: "Ask a local real estate agent for a free property appraisal, with no commitment to list.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
+// F4 (10 Oct 2026): no speed or match promise the network cannot back.
 const TRUST_POINTS = [
-  "Vetted local agent, not a call centre",
-  "Honest comparable-sales evidence",
-  "Response within one business day",
+  "One local agent, not a call centre or a panel",
+  "Ask for the comparable sales behind the figure",
+  "No commitment to list, with them or anyone",
 ];
 
 // Valuation plan item 5. The page was a form with no indexable content:
@@ -117,8 +119,8 @@ export default function AppraisalPage() {
                 <span className="italic font-light text-primary">from a local agent</span>
               </h1>
               <p className="font-display font-light text-lg sm:text-xl text-ink leading-[1.3] max-w-xl mb-8">
-                An honest appraisal from a vetted local agent. No call centre,
-                no auto-routing, no commitment to list with them.
+                Ask one local agent for a figure on your home, backed by
+                comparable sales. No call centre, no commitment to list with them.
               </p>
 
               <div className="flex flex-col gap-3 font-sans text-sm text-ink-muted">
@@ -153,6 +155,7 @@ export default function AppraisalPage() {
                 <Suspense fallback={<div className="h-96" aria-busy="true" />}>
                   <AppraisalForm />
                 </Suspense>
+                <p className="mt-4 font-sans text-xs text-ink-subtle leading-relaxed">{COVERAGE_CAVEAT}</p>
               </div>
             </div>
           </div>
@@ -210,7 +213,7 @@ export default function AppraisalPage() {
                   What happens after you ask.
                 </h2>
                 <ol className="space-y-3 font-sans text-base text-ink-muted leading-relaxed list-decimal pl-5">
-                  <li>We match your request to an agent who sells in your suburb.</li>
+                  <li>We look for an agent who sells in your suburb. Where we do not yet have one, we tell you rather than pass your details on.</li>
                   <li>The agent contacts you, by phone or email as you prefer, to arrange a time to see the property.</li>
                   <li>They inspect and give you a figure or a range, most often as a short written appraisal with the comparable sales listed.</li>
                   <li>You decide what to do with it. Sell now, sell later, get a second appraisal, or file it away. There is no obligation at any step.</li>
@@ -231,7 +234,7 @@ export default function AppraisalPage() {
                   ))}
                 </dl>
                 <p className="mt-4 font-sans text-xs text-ink-subtle leading-relaxed">
-                  Coverage depends on having a vetted agent in your area. Where we do not yet have one, we tell you rather than pass your details on.
+                  {COVERAGE_CAVEAT}
                 </p>
               </div>
               <div className="rounded-2xl border border-line bg-surface-warm p-6">
@@ -272,12 +275,12 @@ export default function AppraisalPage() {
             How matching works
           </p>
           <p className="font-sans text-base text-ink-muted leading-relaxed">
-            Every appraisal request is read and matched personally by our team.
-            We pick one local agent who actually sells in your area, no call
-            centre, no auto-routing, no comparison spam. You&rsquo;ll hear from
-            them within one business day. That agent pays us a fee for the
-            introduction, whether or not you list with them. You pay nothing,
-            and your details go to no one else.
+            Every appraisal request is read by our team. Where we have an agent
+            who sells in your area, we introduce one, not a panel and not a call
+            centre; where we do not yet have one, we tell you rather than pass
+            your details on. That agent pays us a fee for the introduction,
+            whether or not you list with them. You pay nothing, and your details
+            go to no one else.
           </p>
           <p className="mt-5 font-sans text-sm text-ink-muted">
             Not ready for an appraisal yet? Start with the{" "}

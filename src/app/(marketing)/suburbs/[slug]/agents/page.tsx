@@ -10,6 +10,7 @@ import { BreadcrumbJsonLd, FAQPageJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getAgents, getAgenciesBySuburbSlug } from "@/lib/services/agent-service";
 import { buildSuburbAgentsModel, CHOOSING_POINTS, COMMISSION_RULE_SOURCES } from "@/lib/suburb-agents";
+import { COVERAGE_CAVEAT } from "@/lib/match-coverage";
 import { STATE_NAMES, type StateCode } from "@/lib/data/commission-rates";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
@@ -78,8 +79,8 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
         title={<>Real estate agents in <span className="italic text-primary">{sn}</span>.</>}
         subtitle={
           model.commission && model.medianPhrase
-            ? `What agents charge on ${model.medianPhrase}, how to choose an agent, and a free match with one who sells here.`
-            : `How to choose an agent in ${sn}, what they charge, and a free match with one agent who sells here.`
+            ? `What agents charge on ${model.medianPhrase}, how to choose an agent, and how to ask one local agent for a free appraisal.`
+            : `How to choose an agent in ${sn}, what they charge, and how to ask one local agent for a free appraisal.`
         }
       />
 
@@ -88,18 +89,19 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
             with intent and suburb pre-set so the visitor lands on timeframe. */}
         <section id="match" className="scroll-mt-16 grid lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-5">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">Get matched</p>
+            <p className="font-display italic text-primary text-base mb-3 leading-none">Ask for an introduction</p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-4">
-              One agent who sells in {sn}.
+              One local agent, not a panel.
             </h2>
             <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-md">
-              Tell us your timeframe and we connect you with one agent who has recent sales in {sn}, not a call centre and not a panel. Free, and no obligation to list.
+              Tell us your timeframe. Where we have an agent who sells in or around {sn}, we introduce you to that one agent, not a call centre and not a panel. Free, and no obligation to list.
             </p>
             <ul className="mt-6 space-y-2 font-sans text-sm text-ink-muted">
-              {["Recent sales in this suburb, not the wider region", "One agent, not five, and you decide whether to meet them", "Free for you. The agent pays us for the introduction"].map((t) => (
+              {["One agent, not five, and you decide whether to meet them", "Free for you. The agent pays us for the introduction", "No agent here yet? We tell you rather than pass your details on"].map((t) => (
                 <li key={t} className="flex gap-2.5"><CheckCircle className="w-4 h-4 mt-0.5 text-cta flex-shrink-0" aria-hidden="true" />{t}</li>
               ))}
             </ul>
+            <p className="mt-4 font-sans text-xs text-ink-subtle leading-relaxed max-w-md">{COVERAGE_CAVEAT}</p>
           </div>
           <div className="lg:col-span-7">
             <Suspense fallback={<div className="rounded-2xl border border-line bg-surface-warm p-8 min-h-[280px]" aria-hidden="true" />}>
@@ -113,14 +115,14 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
         <section id="agents" className="scroll-mt-16">
           <p className="font-display italic text-primary text-base mb-3 leading-none">Who sells here</p>
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-            Agents who sell in {sn}.
+            {model.agents.length === 0 && model.agencies.length === 0 ? <>Finding an agent in {sn}.</> : <>Agents listed for {sn}.</>}
           </h2>
           {model.agents.length === 0 && model.agencies.length === 0 ? (
             <div className="rounded-2xl border border-line bg-surface-warm p-6 sm:p-8 max-w-2xl">
               <p className="font-sans text-base text-ink leading-relaxed">
-                We&rsquo;re adding vetted agents in {sn}. Until they&rsquo;re listed here,{" "}
-                <a href="#match" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">request a match</a>{" "}
-                and our team will find you one who sells in the suburb.
+                We don&rsquo;t list agents for {sn} on this page yet. Compare two or three who sell here on the five questions below, or{" "}
+                <a href="#match" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">ask for an introduction</a>:
+                where we have an agent who covers {sn}, we introduce one; where we don&rsquo;t, we tell you.
               </p>
               <p className="mt-3 font-sans text-sm text-ink-muted leading-relaxed">
                 Are you an agent who sells in {sn}?{" "}

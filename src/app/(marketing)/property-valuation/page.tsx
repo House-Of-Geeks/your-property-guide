@@ -7,6 +7,7 @@ import { SuburbValueRange } from "@/components/journey/SuburbValueRange";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { COVERAGE_CAVEAT } from "@/lib/match-coverage";
 
 // Commercial intent review 3.4 (30 Sep 2026): the "property valuation" and
 // "property value" family is 101 Keyword Planner terms over 500 a month,
@@ -162,7 +163,7 @@ export default function PropertyValuationPage() {
                 {[
                   "Every figure carries its source and date",
                   "The suburb range comes from the state sales feeds, never a model of your home",
-                  "The appraisal is free, from one vetted local agent, with no commitment to list",
+                  "The appraisal is free, from one local agent where we have one in your area, with no commitment to list",
                 ].map((p) => (
                   <li key={p} className="inline-flex items-start gap-2">
                     <CheckCircle className="w-4 h-4 mt-0.5 text-cta shrink-0" aria-hidden="true" />
@@ -369,8 +370,8 @@ export default function PropertyValuationPage() {
                 <p>
                   An appraisal is the number that matters when you are deciding whether to sell, because it comes from
                   someone who watches buyers in your street every week and can show you the sales behind it. Tell us
-                  where the property is and we match you with one vetted agent who sells there. They contact you within
-                  one business day, inspect, and give you a figure or a range in writing. There is no commitment to
+                  where the property is: where we have an agent who sells there, we introduce one, who inspects and
+                  gives you a figure or a range; where we do not yet have one, we tell you. There is no commitment to
                   list, with them or with anyone.
                 </p>
                 <p>
@@ -390,6 +391,7 @@ export default function PropertyValuationPage() {
                 <Suspense fallback={<div className="h-96" aria-busy="true" />}>
                   <AppraisalForm />
                 </Suspense>
+                <p className="mt-4 font-sans text-xs text-ink-subtle leading-relaxed">{COVERAGE_CAVEAT}</p>
               </div>
             </div>
           </div>
