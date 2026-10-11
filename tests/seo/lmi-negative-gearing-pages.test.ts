@@ -91,3 +91,11 @@ describe("pair this with", () => {
     }
   });
 });
+
+describe("/lmi-calculator H2 (10 Oct 2026 review, finance-tax P8)", () => {
+  it("asks the question searchers type", () => {
+    const src = read(MARKETING, "lmi-calculator", "page.tsx");
+    expect(src).toContain("How is LMI calculated?");
+    expect(src).not.toContain("How LMI is worked out");
+  });
+});
