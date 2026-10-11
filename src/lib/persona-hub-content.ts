@@ -328,63 +328,56 @@ const UPGRADING: PersonaHubContent = {
 };
 
 // ─── Renovating ───────────────────────────────────────────────────────
-// Target queries: "home renovation cost" (590/mo), "renovating a house"
-// (480/mo).  Lower volume but consistent commercial intent.
+// Commercial-intent review, 10 Oct 2026 (new homes F7 and section 3.2): the
+// hub took cost queries off /guides/renovation-cost-australia-2026 with
+// unsourced cost and ROI figures that contradicted the guide, and two FAQs
+// with the guide's questions but different answers. The hub now covers
+// finance, builders, approvals and granny flats, and sends cost readers to
+// the guide and its calculator. It prints no cost or return figure: the
+// guide's sourced tables in src/lib/data/renovation-costs.ts are the only
+// place those live, and no FAQ here repeats one of the guide's questions.
 
 const RENOVATING: PersonaHubContent = {
-  metaTitle: "Renovating a House in Australia 2026: Costs, Finance, Builders, ROI",
+  metaTitle: "Renovating Your Home: Finance, Builders and Approvals",
   metaDescription:
-    "Current 2026 renovation cost ranges, how to finance the work, how to choose a builder, and which jobs actually add resale value. Plain English, no sign-up.",
+    "How to fund a renovation, choose and check a builder, and what needs approval in your state, with links to our renovation cost tables and calculator.",
   deepDive: {
-    eyebrow: "Renovating in Australia, in 2026",
-    heading: "Cost ranges, finance, and *return on renovation*.",
+    eyebrow: "Renovating your home",
+    heading: "Finance, builders and *approvals*.",
     paragraphs: [
-      "Renovation costs in Australia have moved hard since 2023. Materials are up 15-25% on pre-COVID baselines and trade labour rates are up 20-40% in capital cities. Budgeting a kitchen at 2019 prices is how owners blow budgets before the first wall comes down. This hub gives current-market cost ranges, finance paths, builder selection and return-on-renovation guidance in one place.",
-      "Indicative 2026 cost ranges: a budget kitchen renovation (cabinets, benchtop, basic appliances) lands around $15,000-$25,000; mid-range $25,000-$50,000; high-end (custom cabinetry, stone benchtops, premium appliances) $50,000-$120,000. A bathroom renovation is $15,000-$35,000 mid-range, $35,000-$80,000 high-end. A double-storey extension runs $250,000-$500,000+ depending on size, complexity and finishes. A full house renovation is usually $3,000-$5,000 per square metre.",
-      "Financing a renovation is usually one of three paths: redraw or refinance against existing equity (cheapest, most flexible), a construction loan (released in stages against builder invoices, used for major work), or a personal loan (fastest, most expensive). The cleanest path for a $50k+ renovation is usually a refinance that pulls cash out of existing equity into an offset account, so interest only accrues on what you actually spend.",
-      "Choosing a builder is the variable most owners underestimate. Get three quotes for any job over $20,000, on a like-for-like scope. Ask for builder licence numbers (and verify them with the state authority), public liability insurance, home warranty insurance (for jobs over the state threshold), and references for completed work in the last 12 months that you can call. The cheapest quote is rarely the cheapest job by the time it's done.",
-      "Return on renovation varies sharply by job. Kitchens and bathrooms typically return 60-90% of cost at sale. A second bathroom in a 3-bedroom house often returns 100%+. Cosmetic refreshes (paint, flooring, landscaping) return 200-400% on dollars spent. Extensions and pools rarely return their cost — they're lifestyle decisions, not investments. The 'always-skip' for resale: high-end appliances, custom cabinetry, premium finishes that future buyers may not value.",
+      "Start with the numbers: our renovation cost guide prices kitchens, bathrooms, extensions and full renovations by finish level and state, as at 30 September 2026, and its calculator adds design, approvals and a contingency. Every figure there carries a dated source, so this page does not repeat them. The rest of this hub covers the three things that decide whether the budget holds: how you pay, who builds it, and what needs approval.",
+      "Paying for the work: most renovations are paid for with cash, by borrowing against the equity in your home (a top-up or a refinance), or with a construction loan that releases money in stages as the builder reaches milestones. A personal loan is quicker to arrange but usually costs more. A mortgage broker can compare how lenders treat renovation and construction lending, and the borrowing power and repayment calculators below show what the extra borrowing costs each month.",
+      "Finding and checking a builder: get written, itemised quotes on the same brief, check the builder's licence on your state's register, call recent clients, and do not pay a deposit until you hold the home warranty insurance certificate for your job. Each state sets its own contract value above which the builder must take out that cover. Our guide to finding a builder has the register and the threshold for every state.",
+      "Approvals by state: what needs approval depends on the work and the state. In NSW, minor work can be exempt or complying development under the State Environmental Planning Policy (Exempt and Complying Development Codes) 2008; anything outside those codes needs a development application. In Victoria a building permit is issued under the Building Act 1993, and the planning scheme, made under the Planning and Environment Act 1987, says whether you also need a planning permit. In Queensland building approval comes under the Building Act 1975 and development approval under the Planning Act 2016. Ask a certifier or your council before a quote becomes a contract.",
+      "Granny flats by state: a granny flat follows its own rules in every state. Our guides set out the approval path and build cost for NSW (the Housing SEPP 2021), Victoria (small second dwellings since Amendment VC253), Queensland (the Planning Regulation 2017), Western Australia (the R-Codes Volume 1) and South Australia (ancillary accommodation under the Planning and Design Code).",
     ],
   },
   calculatorsHeading: "Numbers for a renovator",
   calculatorsBlurb:
-    "Working out whether the job stacks up before you sign with a builder.",
+    "Price the job, then work out how to pay for it, before you sign with a builder.",
   calculators: [
+    { label: "Renovation cost calculator",    href: "/renovation-cost-calculator", blurb: "Rooms, finish level and state in; a sourced cost range with design, approvals and contingency out." },
+    { label: "Renovation costs in Australia", href: "/guides/renovation-cost-australia-2026", blurb: "Kitchens, bathrooms, extensions and rebuilds by finish level and state, every figure sourced and dated." },
+    { label: "How to find a builder",         href: "/guides/how-to-find-a-builder-australia", blurb: "Licence registers and home warranty thresholds for every state, and the checks before you sign." },
     { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "What you can borrow to fund the work, on top of your current loan." },
     { label: "Mortgage repayment calculator", href: "/mortgage-calculator",        blurb: "What the refinanced loan will cost each month, given the extra borrowing." },
-    { label: "Capital gains tax calculator",  href: "/cgt-calculator",             blurb: "If you're renovating an investment property, what CGT looks like at sale." },
-    { label: "Free property appraisal",       href: "/appraisal",                  blurb: "Estimate of current value before the work, so you know what extra value the renovation has to create." },
+    { label: "Granny flat rules in NSW",      href: "/guides/granny-flat-guide-nsw", blurb: "Secondary dwellings under the Housing SEPP 2021, with links to the VIC, QLD, WA and SA guides." },
   ],
   faqs: [
     {
-      question: "How much does a kitchen renovation cost in Australia?",
-      answer:
-        "Budget kitchen (flat-pack cabinets, laminate benchtop, basic appliances): $15,000-$25,000. Mid-range (custom cabinets, stone benchtop, mid-tier appliances): $25,000-$50,000. High-end (custom cabinetry, premium stone or engineered surfaces, integrated premium appliances): $50,000-$120,000. Plumbing relocations, electrical upgrades and demolition add to the base cost. Get three written quotes on the same scope before you commit.",
-    },
-    {
-      question: "How much does a bathroom renovation cost in Australia?",
-      answer:
-        "A standard bathroom renovation lands at $15,000-$35,000 for mid-range fixtures and finishes. High-end (premium tiles, freestanding bath, frameless glass, double vanity) runs $35,000-$80,000. Allow extra for plumbing relocations, structural changes and waterproofing. Bathrooms typically take 3-5 weeks of trades-on-site for a like-for-like swap, longer if walls move.",
-    },
-    {
       question: "How do I finance a renovation in Australia?",
       answer:
-        "Three common paths: refinance and redraw against existing equity (cheapest interest rate, most flexible — best for jobs over $30k); a construction loan (released in stages against builder invoices, used for major structural work); or a personal loan (fast to set up, expensive — only for small cosmetic jobs). For most owners, the cleanest play is refinancing into an offset account so interest only accrues on what's actually spent.",
+        "Three common paths: borrowing against the equity in your home through a top-up or refinance, a construction loan released in stages against the builder's progress claims for larger structural work, or a personal loan, which is quicker to set up but usually dearer. Cash avoids interest altogether. A mortgage broker can compare how lenders treat renovation lending, and our borrowing power and mortgage calculators show what the extra borrowing costs.",
     },
     {
-      question: "Which renovations add the most value to a home?",
+      question: "How do I check a builder before I sign?",
       answer:
-        "Cosmetic refreshes (paint, flooring, modest landscaping) typically return 200-400% on dollars spent. Kitchens and bathrooms return 60-90% if done to a mid-range standard appropriate to the suburb. Adding a second bathroom to a 3-bedroom house often returns more than 100%. Extensions, pools and high-end finishes rarely return their cost at sale — they're lifestyle decisions. Always benchmark against what comparable sold homes in your suburb actually have.",
-    },
-    {
-      question: "Do I need council approval to renovate?",
-      answer:
-        "Depends on the scope and your state. Internal cosmetic work (paint, flooring, replacing fixtures like-for-like) typically doesn't need approval. Structural changes (moving walls, plumbing relocations, electrical) often need a Complying Development Certificate (CDC) or a Development Application (DA). Extensions, second-storey additions and major facade changes almost always need a DA, which can take 2-4 months to approve. Check with your local council before any quote becomes a contract.",
+        "Check the licence on your state's register for both the company and the named builder, get itemised written quotes on the same brief, call clients from recent jobs, and read the contract's variation, payment and defects clauses. Do not pay a deposit until you hold the home warranty insurance certificate for your job; each state sets the contract value that triggers it. Our guide to finding a builder lists the register and threshold for every state.",
     },
     {
       question: "Should I renovate or sell?",
       answer:
-        "Rule of thumb: if the renovation cost plus your current home's value exceeds the sale price of a comparable already-renovated home in your suburb, sell. If it sits below, renovate. Add a 'cost of moving' premium of $30,000-$80,000 (stamp duty, agent fees, conveyancing, moving costs) to the renovation side of the equation. The 'renovation rescue' calculation is usually closer than emotional attachment suggests.",
+        "Compare two totals. Renovating: the cost of the work (price it with our renovation cost guide and calculator) plus somewhere to live during the build. Selling and buying a home that already has what you want: agent fees, marketing and conveyancing on the sale, and stamp duty on the purchase. Our selling costs calculator and stamp duty calculator give you the second total for your state and price; then weigh what each option gets you.",
     },
   ],
   matchIntent: "buying",

@@ -24,8 +24,10 @@ import {
  * 3.7). Rooms, finish level and state in; a low-to-high range out. Every
  * figure comes from src/lib/data/renovation-costs.ts through
  * src/lib/renovation-estimate.ts, so the estimate is built from the tables on
- * the page and says so. No WebApplication schema: this is a guide section,
- * not a standalone tool.
+ * the page and says so. It runs inside the guide and on its own page,
+ * /renovation-cost-calculator (review 10 Oct 2026, section 5.1), which carries
+ * the WebApplication schema through CalculatorPageLayout; both pages render
+ * the at-a-glance table the estimate is built from.
  */
 export function RenovationCostEstimator({ initialState = "NSW" }: { initialState?: StateCode }) {
   const [input, setInput] = useState<RenovationEstimateInput>(() => defaultRenovationInput(initialState));

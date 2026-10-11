@@ -175,6 +175,7 @@ export const CALCULATOR_GUIDES: readonly CalculatorGuides[] = [
     label: "Selling Costs Calculator",
     guides: ["cost-of-selling-a-house-australia", ...perState("cost-of-selling-a-house")],
   },
+  { href: "/renovation-cost-calculator", label: "Renovation Cost Calculator", guides: ["renovation-cost-australia-2026", "how-to-find-a-builder-australia"] },
 ];
 
 export function getCalculator(href: string): CalculatorGuides | undefined {

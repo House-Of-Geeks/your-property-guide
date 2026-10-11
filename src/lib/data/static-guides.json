@@ -292,46 +292,46 @@
     {
       "slug": "granny-flat-guide-nsw",
       "title": "Granny Flat Guide NSW: Rules, Costs & Rental Returns (2026)",
-      "description": "Everything you need to know about building a granny flat in NSW: complying development rules, build costs, rental income, and how to maximise your return.",
+      "description": "Granny flats in NSW under the Housing SEPP 2021: the 60 m² cap, the 450 m² lot and 12 m frontage for a CDC, renting it out, and what one costs to build.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
-      "readingTimeMinutes": 8,
+      "updatedAt": "2026-10-11",
+      "readingTimeMinutes": 7,
       "persona": "investing"
     },
     {
       "slug": "granny-flat-guide-qld",
-      "title": "Granny Flat Guide Queensland: Rules, Costs & Investment Returns (2026)",
-      "description": "Building a secondary dwelling in Queensland: planning rules, Brisbane City Council requirements, costs, and rental returns in QLD's tight rental market.",
+      "title": "Secondary Dwellings QLD (2026): Granny Flat Rules and Costs",
+      "description": "Queensland granny flat rules: a secondary dwelling under the Planning Regulation 2017, renting it to anyone since 2022, the approvals you need, and costs.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
-      "readingTimeMinutes": 7,
+      "updatedAt": "2026-10-11",
+      "readingTimeMinutes": 6,
       "persona": "investing"
     },
     {
       "slug": "granny-flat-guide-sa",
-      "title": "Granny Flat Guide South Australia: Rules, Costs & Planning (2026)",
-      "description": "Building a secondary dwelling in SA: Planning and Design Code, complying development pathway, lot sizes, costs $100K to $180K, owner-occupier rule, and PlanSA portal.",
+      "title": "Secondary Dwellings SA (2026): Granny Flat Rules and Costs",
+      "description": "SA granny flats are ancillary accommodation under the Planning and Design Code: approval under the PDI Act 2016, the 70 m² limit, renting it out, and costs.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
-      "readingTimeMinutes": 9,
-      "persona": "investing"
-    },
-    {
-      "slug": "granny-flat-guide-vic",
-      "title": "Granny Flat Guide Victoria: Rules, Costs & Approvals (2026)",
-      "description": "Building a secondary dwelling in Victoria: planning permits, ResCode, council rules, costs, and what makes VIC slower and more expensive than NSW.",
-      "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 7,
       "persona": "investing"
     },
     {
-      "slug": "granny-flat-guide-wa",
-      "title": "Granny Flat Guide Western Australia: Rules, Costs & Approvals (2026)",
-      "description": "Building a granny flat (ancillary dwelling) in WA: R-Codes, lot sizes, building permit process, owner-occupier rules, costs $80K to $200K, and Perth rental demand.",
+      "slug": "granny-flat-guide-vic",
+      "title": "Granny Flat Rules Victoria (2026): Small Second Dwellings",
+      "description": "Victoria's granny flat rules since VC253: up to 60 m², no planning permit on most lots, a building permit always, who can live there, and build costs.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
-      "readingTimeMinutes": 9,
+      "updatedAt": "2026-10-11",
+      "readingTimeMinutes": 6,
+      "persona": "investing"
+    },
+    {
+      "slug": "granny-flat-guide-wa",
+      "title": "Granny Flat Guide WA (2026): Rules, Costs and Approvals",
+      "description": "WA granny flats (ancillary dwellings) under the R-Codes Volume 1: the 70 m² limit, no minimum lot size, when no planning approval is needed, renting, costs.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-10-11",
+      "readingTimeMinutes": 7,
       "persona": "investing"
     },
     {
@@ -465,7 +465,7 @@
       "title": "How to Find a Builder in Australia (2026)",
       "description": "How to shortlist, vet, and engage a residential builder for renovations and new builds in Australia. Licences, insurance, contracts, references, and the red flags worth walking away from.",
       "publishedAt": "2026-05-13",
-      "updatedAt": "2026-05-13",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 12,
       "persona": "renovating"
     },
@@ -654,7 +654,7 @@
       "title": "Renovation Cost in Australia (2026): Tables and Calculator",
       "description": "Renovation costs in Australia at September 2026: kitchens, bathrooms, laundries, extensions and rebuilds by finish level, per m² by state, and a calculator.",
       "publishedAt": "2026-05-13",
-      "updatedAt": "2026-09-30",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 17,
       "persona": "renovating"
     },

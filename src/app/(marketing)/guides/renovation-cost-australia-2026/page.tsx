@@ -21,19 +21,29 @@ import {
 } from "@/components/guide/RenovationCostTables";
 import { RenovationCostEstimator } from "@/components/calculators/RenovationCostEstimator";
 import {
+  ARCHICENTRE_2026,
   ABS_PPI_HOUSE_ANNUAL_PCT,
   ABS_PPI_HOUSE_QUARTER_PCT,
   BATHROOM_CHECKS,
+  COST_ITEM_BY_KEY,
+  FULL_RENO_EXAMPLE_M2,
+  FULL_RENO_PER_100,
   EXTENSION_CHECKS,
   KDR_CHECKS,
   KITCHEN_CHECKS,
+  KDR_ROWS,
+  FIGURES_BASIS_ID,
   ON_COSTS,
   REGIONAL_ADJUSTMENT_PCT,
   RENOVATION_COSTS_AS_AT,
   RENOVATION_FAQS,
   ROOM_ANSWERS,
+  SCOPE_PER_M2,
   SECONDARY_ROOM_CHECKS,
   STATE_COSTS,
+  perM2Total,
+  rangeText,
+  type Range,
 } from "@/lib/data/renovation-costs";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
@@ -44,7 +54,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Renovation costs in Australia at September 2026: kitchens, bathrooms, laundries, extensions and rebuilds by finish level, per m² by state, and a calculator.",
   slug: "renovation-cost-australia-2026",
   publishedAt: "2026-05-13",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 17,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -71,11 +81,21 @@ export const metadata: Metadata = {
   },
 };
 
+// Every total below is computed from the tables in renovation-costs.ts
+// (review 10 Oct 2026, F8e), so the TL;DR, the body and the FAQs agree.
+const SECOND_STOREY_EXAMPLE_M2 = 60;
+const KDR_EXAMPLE_M2 = 220;
+const ss = COST_ITEM_BY_KEY.secondStorey.byFinish.mid.range as Range;
+const kdrDemo = KDR_ROWS[0].all?.range as Range;
+const kdrVolume = KDR_ROWS[1].byFinish?.basic.range as Range;
+const kdrCustom = KDR_ROWS[1].byFinish?.high.range as Range;
+const per100 = (r: Range) => rangeText(r);
+
 const TLDR = [
   `Costs have not come back down. Master Builders Australia puts the cost of building a home at more than 50% above pre-pandemic (26 August 2026), and ABS house construction prices rose ${ABS_PPI_HOUSE_ANNUAL_PCT}% in the year to June 2026. Expect $2,800–$4,500/m² for a mid-range full renovation in metro areas.`,
   "Kitchen renovations: $12K–$18K (budget refresh), $25K–$45K (mid-range), $60K+ (premium). Cabinetry and stone benchtops drive most of the cost. Archicentre Australia's Cost Guide 2026 puts a standard kitchen fit-out at $23K–$49K.",
   "Bathroom renovations: $15K–$22K (standard), $25K–$40K (premium). Waterproofing and tiling labour drive cost. Archicentre's 2026 fit-out range is $17.5K–$35K.",
-  "Full house renovation: $200K–$500K for a mid-range three-bedroom. Second-storey addition: $250K–$450K. Knock-down rebuild: $400K–$900K plus demolition.",
+  `Full house renovation: ${rangeText(SCOPE_PER_M2.guide.mid, "/m²")} mid-range, ${per100(FULL_RENO_PER_100.mid)} for every ${FULL_RENO_EXAMPLE_M2} m² renovated. A ${SECOND_STOREY_EXAMPLE_M2} m² second storey: ${rangeText(perM2Total(ss, SECOND_STOREY_EXAMPLE_M2))}. Knock-down rebuild: ${rangeText(kdrVolume, "/m²")} for a volume-built home or ${rangeText(kdrCustom, "/m²")} custom, plus ${rangeText(kdrDemo)} to demolish.`,
   "Builder margin sits at 15–25% on smaller jobs, 12–18% on larger ones. Add 10–15% contingency on top of every quoted price.",
   "Pre-construction costs (architect, structural engineer, council, certifier, surveyor) typically run 8–15% of total project cost and are easy to forget when budgeting.",
 ];
@@ -89,7 +109,8 @@ const TOC: GuideTOCEntry[] = [
   { id: "kitchens",               label: "Kitchen renovation costs" },
   { id: "bathrooms",              label: "Bathroom renovation costs" },
   { id: "laundry-living-bedrooms", label: "Laundry, living areas and bedrooms" },
-  { id: "full-renovation",        label: "Full house renovation" },
+  { id: "budget-30000",           label: "What can you renovate for $30,000?" },
+  { id: "full-renovation",        label: "Full house renovation cost" },
   { id: "extensions",             label: "Extensions and second storeys" },
   { id: "knock-down-rebuild",     label: "Knock-down rebuild" },
   { id: "pre-construction",       label: "Pre-construction costs" },
@@ -101,7 +122,7 @@ const TOC: GuideTOCEntry[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "Fixed vs Variable Rate Loans Guide",  href: "/guides/fixed-vs-variable-rate-guide",      description: "How home loan rates work, relevant when adding a construction or equity loan." },
-  { title: "Granny Flat Guides by State",         href: "/guides/granny-flat-guide-nsw",             description: "Cost, planning, and approvals for granny flats. Often the highest-ROI renovation move." },
+  { title: "Granny Flat Rules by State",          href: "/guides/granny-flat-guide-nsw",             description: "Approvals and build costs for a granny flat in NSW, with links to VIC, QLD, WA and SA." },
   { title: "How to Sell a House in Australia",    href: "/guides/how-to-sell-a-house-australia",     description: "If you're renovating to sell, read this on what actually moves the price." },
   { title: "How to Choose a Mortgage Broker",     href: "/guides/how-to-choose-a-mortgage-broker",   description: "Renovation finance is broker territory. Most lenders price construction differently." },
   { title: "Borrowing Power Calculator",           href: "/borrowing-power-calculator",               description: "Run the numbers on what your renovation loan looks like before you talk to a broker." },
@@ -119,20 +140,33 @@ export default function RenovationCostAustralia2026Page() {
       faqs={RENOVATION_FAQS}
       related={RELATED}
     >
-      <Callout variant="info" title="Why these numbers, and how to use them">
-        <p>
-          The ranges marked &quot;this guide&quot; are 2026 metro-Australia
-          ranges from builder quotes on real jobs, including GST. Every table
-          sets them beside dated published sources (Archicentre Australia,
-          the CKA cost indicator, Rider Levett Bucknall, the ABS, Canstar,
-          Three Birds Renovations and Houzz) and names the source in each
-          cell. Where no source publishes a figure, the cell says so rather
-          than guessing. Use them as a budgeting starting point. The actual
-          quote for <em>your</em>{" "}
-          project will vary with site access, structural condition, design
-          complexity, and your finish choices.
-        </p>
-      </Callout>
+      <p className="lead">
+        Archicentre Australia&rsquo;s Cost Guide 2026 puts a standard kitchen
+        fit-out at {rangeText(ARCHICENTRE_2026.kitchen)}, a bathroom at{" "}
+        {rangeText(ARCHICENTRE_2026.bathroom)} and renovation inside an
+        existing house at {rangeText(ARCHICENTRE_2026.renovationPerM2, "/m²")},
+        all including GST. The tables below set those figures beside every
+        other dated source, room by room, as at {RENOVATION_COSTS_AS_AT}.
+      </p>
+
+      <div id={FIGURES_BASIS_ID} className="scroll-mt-28">
+        <Callout variant="info" title="Where these numbers come from">
+          <p>
+            Each room section opens with a dated published figure: Archicentre
+            Australia&rsquo;s Cost Guide 2026, the CKA cost indicator (June
+            2026), Rider Levett Bucknall, the ABS, Canstar, Three Birds
+            Renovations or Houzz. Ranges marked &quot;this guide&quot; are our
+            editorial working ranges for metro Australia, including GST, first
+            published in May 2026 and set beside those sources in every table
+            as at {RENOVATION_COSTS_AS_AT}. They are not a survey or a
+            published index, so read them as a cross-check on the published
+            figures, not a substitute for them. Where no source publishes a
+            figure, the cell says so rather than guessing. The quote for{" "}
+            <em>your</em> project will vary with site access, structural
+            condition, design complexity and your finish choices.
+          </p>
+        </Callout>
+      </div>
 
       <EditorNote>
         <p>
@@ -169,6 +203,11 @@ export default function RenovationCostAustralia2026Page() {
       <div className="not-prose my-6">
         <RenovationCostEstimator />
       </div>
+      <p>
+        The same calculator has its own page, the{" "}
+        <Link href="/renovation-cost-calculator">renovation cost calculator</Link>,
+        if you want to come back to it.
+      </p>
 
       <h2 id="cost-per-m2">Renovation cost per square metre by scope</h2>
       <p>
@@ -203,8 +242,8 @@ export default function RenovationCostAustralia2026Page() {
       <p className="lead">
         Renovation costs in Australia rose sharply between 2021 and 2024,
         driven by COVID-era supply chain disruption, materials inflation, and
-        a building trades shortage that pushed labour rates up 25–40%. They
-        have not come back down. ABS house construction output prices rose{" "}
+        a building trades shortage that pushed up labour rates. They have
+        not come back down. ABS house construction output prices rose{" "}
         {ABS_PPI_HOUSE_QUARTER_PCT.toFixed(1)}% in the June quarter 2026, the largest
         quarterly rise since September 2022, and {ABS_PPI_HOUSE_ANNUAL_PCT}%
         over the year (31 July 2026). Master Builders Australia puts the cost
@@ -329,16 +368,34 @@ export default function RenovationCostAustralia2026Page() {
       </p>
       <RenovationCheckTable table={SECONDARY_ROOM_CHECKS} />
 
-      <h2 id="full-renovation">Full house renovation</h2>
+      <h2 id="budget-30000">What can you renovate for $30,000?</h2>
+      <p>
+        At Archicentre Australia&rsquo;s 2026 rates, including GST, $30,000
+        pays for one of these:
+      </p>
+      <ul>
+        <li><strong>A standard kitchen in the same layout</strong>, at the lower end of the {rangeText(ARCHICENTRE_2026.kitchen)} fit-out range, with white goods extra.</li>
+        <li><strong>A bathroom or ensuite</strong> fit-out, {rangeText(ARCHICENTRE_2026.bathroom)}.</li>
+        <li><strong>A laundry</strong> fit-out ({rangeText(ARCHICENTRE_2026.laundry)}) with paint and new flooring elsewhere: interior painting is $20 to $40 per m² and carpet $45 to $165 per m².</li>
+      </ul>
+      <p>
+        It does not stretch to moving walls, plumbing or gas, which add
+        structural and services work, or to more than one wet area. Keep
+        the {ON_COSTS.contingencyPct.low} to {ON_COSTS.contingencyPct.high}%
+        contingency out of the $30,000, and use the{" "}
+        <Link href="#estimator">calculator</Link> to price your own mix.
+      </p>
+
+      <h2 id="full-renovation">Full house renovation cost</h2>
       <p className="lead">{ROOM_ANSWERS.fullHouse}</p>
       <p>
         For a standard three-bedroom house being renovated room-by-room or as
         a whole-house project, 2026 budgets break down as follows:
       </p>
       <ul>
-        <li><strong>Cosmetic only</strong> (paint, flooring, tapware, lighting, minor): <strong>$2,000–$2,500/m²</strong>. Total $80,000–$150,000 for a 50–60m² affected area.</li>
-        <li><strong>Mid-range</strong> (cosmetic plus kitchen, one bathroom, some replanning): <strong>$2,800–$4,500/m²</strong>. Total $200,000–$400,000.</li>
-        <li><strong>Premium</strong> (architect-designed, structural work, full re-stack of services, designer finishes): <strong>$5,000–$7,500/m²+</strong>. Total $400,000–$800,000.</li>
+        <li><strong>Cosmetic only</strong> (paint, flooring, tapware, lighting, minor): <strong>{rangeText(SCOPE_PER_M2.guide.cosmetic, "/m²")}</strong>, or {per100(FULL_RENO_PER_100.cosmetic)} for every {FULL_RENO_EXAMPLE_M2} m² renovated.</li>
+        <li><strong>Mid-range</strong> (cosmetic plus kitchen, one bathroom, some replanning): <strong>{rangeText(SCOPE_PER_M2.guide.mid, "/m²")}</strong>, or {per100(FULL_RENO_PER_100.mid)} for every {FULL_RENO_EXAMPLE_M2} m².</li>
+        <li><strong>Premium</strong> (architect-designed, structural work, full re-stack of services, designer finishes): <strong>{rangeText(SCOPE_PER_M2.guide.premium, "/m²")}</strong>, or {per100(FULL_RENO_PER_100.premium)} for every {FULL_RENO_EXAMPLE_M2} m².</li>
       </ul>
       <p>
         Regional work generally costs more, not less. The CKA indicator (June
@@ -371,8 +428,8 @@ export default function RenovationCostAustralia2026Page() {
         Considerably more complex. Adds load to the existing structure,
         usually requires structural reinforcement of the ground floor, scaffold
         and access costs, and you&rsquo;ll need to lift the existing roof off.
-        A 60m² second storey (typically two bedrooms and a bathroom) lands at
-        $270,000–$420,000. Some builders won&rsquo;t take on second-storey
+        A {SECOND_STOREY_EXAMPLE_M2} m² second storey (typically two bedrooms and a bathroom) lands at{" "}
+        {rangeText(perM2Total(ss, SECOND_STOREY_EXAMPLE_M2))}. Some builders won&rsquo;t take on second-storey
         adds because of structural risk; specialists are the better
         approach.
       </p>
@@ -381,14 +438,16 @@ export default function RenovationCostAustralia2026Page() {
       <p>
         <small>{EXTENSION_CHECKS.note}</small>
       </p>
-      <h3>Granny flat: $130,000–$220,000</h3>
+      <h3>Granny flats</h3>
       <p>
-        A separate dwelling on your existing block. State-by-state planning
-        rules vary significantly, so read our <Link href="/guides/granny-flat-guide-nsw">granny flat guides</Link> for the full
-        per-state breakdown. Granny flats often have the best ROI of any
-        renovation because they add rental income (or accommodate aging
-        parents / adult children without buying a second property), and they
-        appeal to the investor buyer pool at sale.
+        A granny flat is a separate dwelling with its own approval rules in
+        each state. Our guides set out the rules and a build cost derived from
+        Archicentre Australia&rsquo;s 2026 rates for{" "}
+        <Link href="/guides/granny-flat-guide-nsw">NSW</Link>,{" "}
+        <Link href="/guides/granny-flat-guide-vic">Victoria</Link>,{" "}
+        <Link href="/guides/granny-flat-guide-qld">Queensland</Link>,{" "}
+        <Link href="/guides/granny-flat-guide-wa">Western Australia</Link> and{" "}
+        <Link href="/guides/granny-flat-guide-sa">South Australia</Link>.
       </p>
 
       <MatchCTA kind="builder" />
@@ -401,9 +460,9 @@ export default function RenovationCostAustralia2026Page() {
         cost of a new build, look at knock-down rebuild instead.
       </p>
       <ul>
-        <li><strong>Demolition</strong>: $20,000–$45,000 for a typical detached house, more for asbestos remediation or difficult access.</li>
-        <li><strong>New build (volume builder)</strong>: $1,800–$2,800/m² for a project home. A 220m² home lands at $400,000–$600,000.</li>
-        <li><strong>New build (custom architect-designed)</strong>: $3,500–$6,000/m². A 220m² home lands at $750,000–$1.3M.</li>
+        <li><strong>Demolition</strong>: {rangeText(kdrDemo)} for a typical detached house, more for asbestos remediation or difficult access.</li>
+        <li><strong>New build (volume builder)</strong>: {rangeText(kdrVolume, "/m²")} for a project home. A {KDR_EXAMPLE_M2} m² home lands at {rangeText(perM2Total(kdrVolume, KDR_EXAMPLE_M2))}.</li>
+        <li><strong>New build (custom architect-designed)</strong>: {rangeText(kdrCustom, "/m²")}. A {KDR_EXAMPLE_M2} m² home lands at {rangeText(perM2Total(kdrCustom, KDR_EXAMPLE_M2))}.</li>
         <li><strong>Renting elsewhere during the build</strong>: 8–14 months of rent, factor it in.</li>
       </ul>
       <h3>How the published sources compare</h3>
@@ -462,8 +521,8 @@ export default function RenovationCostAustralia2026Page() {
         For straightforward renovations under $300K, fixed-price is usually
         the right call. For complex jobs, heritage properties, or projects
         where scope will evolve, cost-plus often delivers better value if you
-        trust the builder. Read our <Link href="/guides/fixed-vs-variable-rate-guide">fixed vs variable
-        guide</Link> (the same principle applies to contract types).
+        trust the builder. Before you sign either kind, read our guide on{" "}
+        <Link href="/guides/how-to-find-a-builder-australia#contract">what to check in a building contract</Link>.
       </p>
 
       <h2 id="finance">How to finance the work</h2>
@@ -486,22 +545,28 @@ export default function RenovationCostAustralia2026Page() {
 
       <h2 id="what-adds-value">What actually adds value at sale</h2>
       <p>
-        If your motivation is selling later for more, the ROI is consistently
-        disappointing. Approximate &quot;recover at sale&quot; ratios in 2026
-        metro markets:
+        We know of no published, dated Australian study that measures how much
+        of a renovation&rsquo;s cost comes back at sale, so this guide quotes
+        no return ratios. What decides it:
       </p>
       <ul>
-        <li><strong>Cosmetic refresh</strong> (paint, flooring, tapware, garden, deep clean): 3× to 10× cost recovered at sale.</li>
-        <li><strong>Kitchen renovation</strong> (mid-range): 0.6× to 1.2× cost recovered.</li>
-        <li><strong>Bathroom renovation</strong>: 0.5× to 1.0× cost recovered.</li>
-        <li><strong>Granny flat</strong> (suburb dependent): 0.8× to 1.4× cost recovered, plus rental income before sale.</li>
-        <li><strong>Second storey or extension</strong>: 0.7× to 1.0× cost recovered in most suburbs; can exceed 1.0× in high-end suburbs where per-m² value is high.</li>
-        <li><strong>Pool</strong>: 0.4× to 0.8× cost recovered.</li>
+        <li><strong>Whether the work lifts the buyer pool.</strong> A change that makes the home suit more of the buyers in your suburb, such as the bedroom or bathroom comparable homes already have, matters more than finishes.</li>
+        <li><strong>Whether it over-capitalises for the suburb.</strong> Spending past what comparable sold homes in the street offer is the most common way to lose money at sale.</li>
+        <li><strong>Whether it fixes what stops a sale.</strong> Defects, unapproved work and tired presentation put buyers off; cosmetic work such as paint, flooring and the garden is the cheapest way to change how a home presents.</li>
       </ul>
       <p>
-        Renovation pays off when it&rsquo;s for you to live in. Renovating
-        purely to flip is usually a worse trade than buying a better
-        property in the first place.
+        Renovation pays off most when it is for you to live in. If you are
+        renovating to sell, our guide to{" "}
+        <Link href="/guides/what-to-fix-before-selling-a-house">what to fix before selling a house</Link>{" "}
+        covers which jobs to do and which to leave.
+      </p>
+      <h3>What devalues a house</h3>
+      <p>
+        Problems a buyer cannot see past: structural defects, unapproved
+        building work and hazardous materials. If your home was built or
+        renovated before 1990 it might contain asbestos (Asbestos Safety and
+        Eradication Agency), so have it checked before you budget. Spending
+        past what the suburb supports also loses money at sale.
       </p>
 
       <h2 id="budgeting-method">How to budget honestly</h2>
@@ -527,7 +592,16 @@ export default function RenovationCostAustralia2026Page() {
 
       <Sources items={[
         ...renovationSourceItems(),
-        "State-by-state planning portals (Service NSW Planning, VBA Victoria, QBCC Queensland, etc.) for current approval requirements.",
+        {
+          label: "Asbestos Safety and Eradication Agency, Householders and home renovators (homes built or renovated before 1990 might contain asbestos)",
+          href: "https://www.asbestossafety.gov.au/about-asbestos/practical-guidance/householders-and-home-renovators",
+          note: "read 11 October 2026",
+        },
+        {
+          label: "Approvals: NSW, State Environmental Planning Policy (Exempt and Complying Development Codes) 2008, as named in the Housing SEPP 2021 dictionary (NSW Planning Portal for applications); VIC, Building Act 1993 and the planning scheme under the Planning and Environment Act 1987 (Cardinia Shire Council, Planning vs building); QLD, Building Act 1975 and Planning Act 2016 (Queensland legislation, current reprint)",
+          href: "https://www.legislation.qld.gov.au/view/whole/html/inforce/current/act-1975-011",
+          note: "read 11 October 2026",
+        },
       ]} />
     </GuideArticleLayout>
   );

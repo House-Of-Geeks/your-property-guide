@@ -5,7 +5,9 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
+  ARCHICENTRE_2026,
   CHECK_TABLES,
+  FULL_RENO_PER_100,
   COST_ITEMS,
   COST_ITEM_BY_KEY,
   FINISHES,
@@ -19,6 +21,8 @@ import {
   SCOPE_PER_M2,
   STATE_COSTS,
   STATE_ORDER,
+  grannyFlatBuildRange,
+  m2For,
   rangeCellText,
   rangeText,
   type Range,
@@ -113,6 +117,21 @@ describe("renovation cost sources", () => {
   });
 });
 
+describe("granny flat build range (Archicentre Cost Guide 2026)", () => {
+  it("pins the Archicentre 2026 figures the five state guides use", () => {
+    expect(ARCHICENTRE_2026.newConstructionPerM2).toEqual({ low: 2_700, high: 5_100 });
+    expect(ARCHICENTRE_2026.renovationPerM2).toEqual({ low: 1_600, high: 3_900 });
+    expect(ARCHICENTRE_2026.kitchen).toEqual({ low: 23_000, high: 49_000 });
+    expect(ARCHICENTRE_2026.bathroom).toEqual({ low: 17_500, high: 35_000 });
+    expect(ARCHICENTRE_2026.laundry).toEqual({ low: 10_000, high: 19_000 });
+  });
+  it("adds the shell rate times the area to one kitchen and one bathroom fit-out, as the guide says", () => {
+    expect(grannyFlatBuildRange(60)).toEqual({ low: 2_700 * 60 + 23_000 + 17_500, high: 5_100 * 60 + 49_000 + 35_000 });
+    expect(grannyFlatBuildRange(40)).toEqual({ low: 148_500, high: 288_000 });
+    expect(grannyFlatBuildRange(70)).toEqual({ low: 229_500, high: 441_000 });
+  });
+});
+
 describe("estimateRenovation", () => {
   it("adds the guide's mid-range kitchen and bathroom for NSW with no adjustment, then the on-costs", () => {
     const r = estimateRenovation(defaultRenovationInput("NSW"));
@@ -190,7 +209,7 @@ describe("estimateRenovation", () => {
 });
 
 describe("renovation guide copy", () => {
-  it("answers the four People-also-ask questions in 40+ words with a figure and a dated source (rule 9)", () => {
+  it("answers the seven People-also-ask questions in 40+ words with a figure and a dated source (rule 9)", () => {
     for (const q of RENOVATION_PAA_QUESTIONS) {
       const f = RENOVATION_FAQS.find((x) => x.question === q);
       expect(f, q).toBeDefined();
@@ -219,10 +238,78 @@ describe("renovation guide copy", () => {
     expect(PAGE).toContain("RenovationPerM2Table");
     expect(PAGE).toContain("RenovationByStateTable");
     expect(PAGE).toContain("faqs={RENOVATION_FAQS}");
-    for (const id of ["at-a-glance", "estimator", "cost-per-m2", "cost-by-state", "kitchens", "bathrooms", "laundry-living-bedrooms", "full-renovation", "extensions", "knock-down-rebuild", "pre-construction", "fixed-vs-cost-plus", "finance", "what-adds-value", "budgeting-method"]) {
+    for (const id of ["at-a-glance", "estimator", "budget-30000", "cost-per-m2", "cost-by-state", "kitchens", "bathrooms", "laundry-living-bedrooms", "full-renovation", "extensions", "knock-down-rebuild", "pre-construction", "fixed-vs-cost-plus", "finance", "what-adds-value", "budgeting-method"]) {
       expect(PAGE, id).toContain(`id: "${id}"`);
       expect(PAGE, id).toContain(`id="${id}"`);
     }
-    expect(PAGE).toContain('updatedAt: "2026-09-30"');
+    expect(PAGE).toContain('updatedAt: "2026-10-11"');
+  });
+  it("quotes no unsourced return ratios and no national granny flat range (review 10 Oct 2026, F8 and F8c)", () => {
+    const valueFaq = RENOVATION_FAQS.find((f) => f.question === "Will renovating add value at sale?")?.answer ?? "";
+    for (const text of [PAGE, valueFaq]) {
+      expect(text).not.toMatch(/\d(\.\d)?× (to|cost)/);
+      expect(text).not.toMatch(/\d(\.\d)?–\d+(\.\d)?× /);
+      expect(text).not.toContain("$130,000–$220,000");
+      expect(text).not.toMatch(/best ROI/);
+    }
+    expect(PAGE).toContain("/guides/what-to-fix-before-selling-a-house");
+    expect(PAGE).toContain("<h3>What devalues a house</h3>");
+    for (const st of ["nsw", "vic", "qld", "wa", "sa"]) expect(PAGE).toContain(`/guides/granny-flat-guide-${st}`);
+  });
+  it("names the approval instruments by state and drops the old regulator names from the sources (F8d)", () => {
+    expect(PAGE).not.toMatch(/VBA Victoria|Service NSW Planning|QBCC Queensland, etc/);
+    const approval = RENOVATION_FAQS.find((f) => f.question === "Do I need council approval to renovate?")?.answer ?? "";
+    for (const law of [
+      "State Environmental Planning Policy (Exempt and Complying Development Codes) 2008",
+      "Building Act 1993",
+      "Planning and Environment Act 1987",
+      "Building Act 1975",
+      "Planning Act 2016",
+    ]) {
+      expect(approval, law).toContain(law);
+      expect(PAGE, law).toContain(law);
+    }
+  });
+  it("prints one full-renovation range, computed from the per-m² tiers, and no unsourced labour figure (F8e)", () => {
+    expect(FULL_RENO_PER_100.mid).toEqual({ low: 280_000, high: 450_000, open: undefined });
+    const text = [PAGE, ROOM_ANSWERS.fullHouse, ...RENOVATION_FAQS.map((f) => f.answer)].join("\n");
+    expect(text).not.toMatch(/\$200,000[–-]\$400,000|\$200,000 to \$500,000|\$200K[–-]\$500K|starts at \$200,000/);
+    expect(text).not.toContain("labour rates up 25–40%");
+    expect(text).not.toContain("can exceed $6,000/m²");
+    expect(ROOM_ANSWERS.fullHouse).toContain("$280,000 to $450,000");
+  });
+  it("states the basis of the 'this guide' ranges honestly and opens each room with a published figure (F8f)", () => {
+    expect(RENOVATION_SOURCES.guide.label).not.toMatch(/builder quotes on real jobs/);
+    expect(RENOVATION_SOURCES.guide.label).toMatch(/editorial working ranges/);
+    expect(PAGE).not.toMatch(/from builder quotes on real jobs/);
+    expect(PAGE).toContain("id={FIGURES_BASIS_ID}");
+    const tables = readFileSync(join(__dirname, "../../src/components/guide/RenovationCostTables.tsx"), "utf8");
+    expect(tables).toContain('if (id === "guide") return <a href={`#${FIGURES_BASIS_ID}`}>');
+    for (const [key, sentence] of Object.entries(ROOM_ANSWERS)) {
+      const guideAt = sentence.indexOf("this guide");
+      const published = sentence.search(/Archicentre|Canstar|Landmark|Rider Levett Bucknall|Three Birds/);
+      expect(published, key).toBeGreaterThanOrEqual(0);
+      if (guideAt >= 0) expect(published, key).toBeLessThan(guideAt);
+    }
+  });
+  it("answers the build-or-buy questions from the ABS-derived average and renames the full-house H2 (review 3.1 and 6)", () => {
+    expect(m2For(400_000, 1_967)).toBe(205);
+    expect(m2For(600_000, 1_967)).toBe(305);
+    expect(m2For(300_000, 1_967)).toBe(155);
+    const q400 = RENOVATION_FAQS.find((f) => f.question === "Is $400,000 enough to build a house?")?.answer ?? "";
+    expect(q400).toContain("$1,967");
+    expect(q400).toContain("about 205 m²");
+    const buy = RENOVATION_FAQS.find((f) => f.question === "Is it cheaper to build or buy?")?.answer ?? "";
+    expect(buy).toContain("about $475,000");
+    expect(PAGE).toContain('<h2 id="full-renovation">Full house renovation cost</h2>');
+    expect(PAGE).toContain('<h2 id="budget-30000">What can you renovate for $30,000?</h2>');
+  });
+  it("sends contract readers to the building contract checklist, not a home loan rate guide (F8b)", () => {
+    expect(PAGE).toContain('href="/guides/how-to-find-a-builder-australia#contract"');
+    expect(PAGE).toContain("what to check in a building contract");
+    expect(PAGE).not.toMatch(/fixed vs variable\s+guide<\/Link> \(the same principle/);
+    const contractFaq = RENOVATION_FAQS.find((f) => f.question === "Should I get a fixed-price or cost-plus contract?")?.answer ?? "";
+    expect(contractFaq).not.toContain("fixed-vs-variable contracts guide");
+    expect(contractFaq).toContain("what to check in a building contract");
   });
 });
