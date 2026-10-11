@@ -58,3 +58,17 @@ describe("promise wording", () => {
     expect(page("refinancing-calculator")).not.toMatch(/description: "[^"]*&[a-z]+;/);
   });
 });
+
+describe("/refinancing-calculator: section 3 of the 10 Oct 2026 review", () => {
+  const src = page("refinancing-calculator");
+  it("carries 'refinance calculator' in the title and H1, and a worked saving table", () => {
+    const t = src.match(/const META_TITLE = "([^"]+)"/)![1];
+    const d = src.match(/const META_DESCRIPTION = "([^"]+)"/)![1];
+    expect(t).toBe("Refinance Calculator: Is Switching Your Home Loan Worth It?");
+    expect(t.length).toBeLessThanOrEqual(60);
+    expect(d.length).toBeLessThanOrEqual(160);
+    expect(src).toContain('h1: "Refinance calculator: is switching your home loan worth it?"');
+    expect(src).toContain('id="by-loan-size"');
+    expect(src).toContain("monthlyRepayment(loan, REFINANCE_EXAMPLE_CURRENT_RATE");
+  });
+});

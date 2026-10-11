@@ -14,11 +14,22 @@ import {
   describeF6,
 } from "@/lib/data/rba-lending-rates";
 import { LENDER_POLICY_NOTE } from "@/lib/utils/borrowing-power";
+import { monthlyRepayment } from "@/lib/utils/repayment";
+
+// "Monthly saving by loan size and rate cut", worked rather than typed: a
+// current rate of REFINANCE_EXAMPLE_CURRENT_RATE, 25 years left (the
+// calculator's starting term), principal and interest.
+const TERM_LEFT = 25;
+const LOANS = [400_000, 600_000, 800_000, 1_000_000] as const;
+const CUTS = [0.25, 0.5, 1] as const;
+const saving = (loan: number, cut: number) =>
+  monthlyRepayment(loan, REFINANCE_EXAMPLE_CURRENT_RATE, TERM_LEFT) - monthlyRepayment(loan, REFINANCE_EXAMPLE_CURRENT_RATE - cut, TERM_LEFT);
+const usd = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Refinancing Calculator",
-  description:
-    "Find out whether switching your home loan is worth it. Calculate monthly savings, break-even point, and total interest saved over the life of the loan.",
+  h1: "Refinance calculator: is switching your home loan worth it?",
+  description: `Enter your balance, your rate and a new rate to see the monthly saving, the month you break even after switching costs and the interest saved, against the ${AVERAGE_NEW_VARIABLE_RATE.rate}% average rate on new owner-occupier variable loans in ${AVERAGE_NEW_VARIABLE_RATE.period} (RBA table F6).`,
   slug: "refinancing-calculator",
   schemaName: "Refinancing Calculator",
   schemaDescription: "Calculate savings from refinancing your home loan and your break-even point.",
@@ -26,8 +37,8 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   persona: "upgrading",
 };
 
-const META_TITLE = "Refinancing Calculator Australia 2026: Should I Refinance?";
-const META_DESCRIPTION = "Free Australian refinancing calculator. Work out monthly savings, break-even point and lifetime interest saved before you switch home loans. No sign-up.";
+const META_TITLE = "Refinance Calculator: Is Switching Your Home Loan Worth It?";
+const META_DESCRIPTION = "Free refinance calculator: monthly saving, break-even month and interest saved when you switch home loans, against the RBA F6 average new variable rate.";
 
 export const metadata: Metadata = {
   title: META_TITLE,
@@ -102,6 +113,31 @@ export default function RefinancingCalculatorPage() {
             {AVERAGE_OUTSTANDING_VARIABLE_RATE.rate}% (RBA table F6), so on average existing borrowers paid about what new
             ones did: the saving depends on your own rate. Both figures are {F6_RATE_CAVEAT}. Enter your own.
           </p>
+
+          <h2 id="by-loan-size">Monthly saving by loan size and rate cut</h2>
+          <p>
+            What a lower rate saves each month on a principal and interest loan with {TERM_LEFT} years left,
+            starting from {REFINANCE_EXAMPLE_CURRENT_RATE}% (the calculator&rsquo;s example current rate). Before
+            switching costs; the calculator above works out the break-even month.
+          </p>
+          <div className="overflow-x-auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Loan balance</th>
+                  {CUTS.map((c) => <th key={c}>{c} point lower</th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {LOANS.map((loan) => (
+                  <tr key={loan}>
+                    <td>{usd(loan)}</td>
+                    {CUTS.map((c) => <td key={c}>{usd(saving(loan, c))} a month</td>)}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           <h2>Should you refinance your home loan?</h2>
           <p>
