@@ -17,9 +17,12 @@ describe("affordability by income and household", () => {
       expect(r.couple.hem).toBe(indicativeHem({ household: "couple", dependants: 0, grossIncome: r.income }));
       expect(r.coupleTwoChildren.hem).toBeGreaterThan(r.couple.hem);
       expect(r.single.price! % 5_000).toBe(0);
-      // the same income carries a higher floor as a couple, and higher again with children
-      expect(r.couple.price!).toBeLessThan(r.single.price!);
+      // Children raise the floor, so a family affords less than the same couple. (Since
+      // 11 Oct 2026 net income is worked at the 2026-27 tax rates per applicant, so a
+      // couple splitting an income pays less tax than one earner and can afford more
+      // than a single person on the same total at higher incomes.)
       expect(r.coupleTwoChildren.price!).toBeLessThan(r.couple.price!);
+      expect(r.couple.hem).toBeGreaterThan(r.single.hem);
     }
     for (let i = 1; i < rows.length; i++) expect(rows[i].single.price!).toBeGreaterThan(rows[i - 1].single.price!);
   });

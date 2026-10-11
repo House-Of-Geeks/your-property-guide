@@ -7,6 +7,7 @@ import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/componen
 import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { borrowingPowerFaqs } from "@/lib/borrowing-power-table";
+import { INCOME_TAX_SOURCE, INCOME_TAX_YEAR, MEDICARE_LEVY_PCT } from "@/lib/utils/income-tax";
 import {
   APRA_BUFFER_CONFIRMED,
   APRA_SERVICEABILITY_BUFFER,
@@ -124,7 +125,10 @@ export default function BorrowingPowerCalculatorPage() {
             </li>
             <li>
               <strong>Net income.</strong> An after-tax estimate is calculated. This
-              calculator uses a simple 72% net factor as an approximation.
+              calculator takes each applicant&rsquo;s income tax at the ATO&rsquo;s{" "}
+              {INCOME_TAX_YEAR} resident rates and the {MEDICARE_LEVY_PCT}% Medicare levy off
+              their gross pay, before tax offsets ({INCOME_TAX_SOURCE.dated}). Lenders use their
+              own tax tables and may shade bonus, overtime or rental income.
             </li>
             <li>
               <strong>Living expenses (HEM).</strong> Banks deduct your living costs.

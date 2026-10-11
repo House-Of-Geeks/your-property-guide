@@ -25,7 +25,8 @@ export function BorrowingPowerTable() {
         household and income band ({BORROWING_TABLE.asAtHem}; {money(getHEM(0, { grossIncome: 60_000 }))} a month for a
         single person under $80,000, {money(getHEM(0, { grossIncome: 100_000 }))} from $80,000 to $150,000, more for a
         couple or a higher income, as the <a href="#hem-table">HEM table</a> below shows; the calculator above starts
-        at $3,000, so enter a lower figure to reproduce a row), net income taken as 72% of gross, repayments capped at 85%
+        at $3,000, so enter a lower figure to reproduce a row), net income after 2026&ndash;27 income tax and the 2%
+        Medicare levy for each applicant, repayments capped at 85%
         of what is left, and a {rate}% assessment rate over {BORROWING_TABLE.termYears} years.
         That rate is the {BORROWING_TABLE.loanRate}% average rate on new owner-occupier variable
         loans in {BORROWING_TABLE.loanRatePeriod} (Reserve Bank of Australia, statistical table F6)

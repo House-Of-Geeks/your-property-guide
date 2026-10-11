@@ -3,7 +3,10 @@
 // place means the tool and the guide can never disagree.
 //
 // Method (deliberately conservative, mirrors how lenders assess serviceability):
-//   net income  = gross x 0.72 (rough average tax + Medicare)
+//   net income  = each applicant's gross less income tax at the ATO's 2026-27
+//                 resident rates and the 2% Medicare levy, before offsets
+//                 (a flat 72% of gross until 11 Oct 2026, which understated
+//                 net pay on lower incomes and overstated it on high ones)
 //   expenses    = max(your figure, indicative HEM for the household, income band and region)
 //   surplus     = net monthly income - expenses - existing debt repayments
 //   capacity    = 85% of surplus, amortised at the assessment (buffered) rate
@@ -11,6 +14,18 @@
 
 import { indicativeHem, type Household, type Region } from "@/lib/data/hem";
 import { AVERAGE_NEW_VARIABLE_RATE } from "@/lib/data/rba-lending-rates";
+import { MEDICARE_LEVY_PCT, incomeTax } from "@/lib/utils/income-tax";
+
+/**
+ * One applicant's net annual income: gross less income tax at the ATO's
+ * 2026-27 resident rates and the 2% Medicare levy, before tax offsets and the
+ * levy's low-income reduction (src/lib/utils/income-tax.ts). About 84% of
+ * $60,000, 77% of $100,000 and 70% of $200,000.
+ */
+export function netAnnualIncome(gross: number): number {
+  const g = Math.max(0, Number.isFinite(gross) ? gross : 0);
+  return g - incomeTax(g) - (g * MEDICARE_LEVY_PCT) / 100;
+}
 
 export type { Household, Region } from "@/lib/data/hem";
 
@@ -112,7 +127,7 @@ export function computeBorrowingPower(
   const grossAnnual = income1 + income2;
   if (grossAnnual <= 0) return null;
 
-  const netAnnual = grossAnnual * 0.72;
+  const netAnnual = netAnnualIncome(income1) + netAnnualIncome(income2);
   const monthlyNetIncome = netAnnual / 12;
 
   const household: Household = opts.household ?? (income2 > 0 ? "couple" : "single");

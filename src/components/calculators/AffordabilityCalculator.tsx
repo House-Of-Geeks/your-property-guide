@@ -5,7 +5,7 @@ import { DollarSign, Info, AlertTriangle, CheckCircle, ArrowRight } from "lucide
 import Link from "next/link";
 import { formatPriceFull } from "@/lib/utils/format";
 
-import { getHEM, type Household, type Region } from "@/lib/utils/borrowing-power";
+import { getHEM, netAnnualIncome, type Household, type Region } from "@/lib/utils/borrowing-power";
 import { HEM_AS_AT, hemIncomeBand } from "@/lib/data/hem";
 
 type DepositPercent = 10 | 15 | 20;
@@ -71,7 +71,8 @@ function computeAffordability(
   // Step 3: Borrowing power (mirrors BorrowingPowerCalculator logic)
   // Assessment rate: actual rate + 3% APRA buffer
   const assessmentRate = interestRate + 3;
-  const netAnnual = grossAnnual * 0.72;
+  // Each applicant's pay after 2026-27 income tax and the Medicare levy, as the borrowing engine does.
+  const netAnnual = netAnnualIncome(income1) + netAnnualIncome(income2);
   const monthlyNetIncome = netAnnual / 12;
   const hemUsed = Math.max(monthlyExpenses, getHEM(dependants, { household, grossIncome: grossAnnual, region }));
   const availableForRepayments = monthlyNetIncome - hemUsed;

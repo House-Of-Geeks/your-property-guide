@@ -3,7 +3,7 @@
 // are worked by the widget's engine, state their assumptions, and never print 0.
 import { describe, expect, it } from "vitest";
 import { BORROWING_TABLE, borrowingPowerByIncome, borrowingPowerFaqs, maxLoanFor, percentLowerAtRate } from "@/lib/borrowing-power-table";
-import { APRA_SERVICEABILITY_BUFFER, DEFAULT_ASSESSMENT_RATE, REFERENCE_LOAN_RATE, computeBorrowingPower, getHEM, loanPerMonthlyDollar } from "@/lib/utils/borrowing-power";
+import { APRA_SERVICEABILITY_BUFFER, DEFAULT_ASSESSMENT_RATE, REFERENCE_LOAN_RATE, computeBorrowingPower, getHEM, loanPerMonthlyDollar, netAnnualIncome } from "@/lib/utils/borrowing-power";
 import { affordabilityFaqs } from "@/lib/affordability-table";
 
 describe("borrowing power by income", () => {
@@ -90,5 +90,18 @@ describe("the cost of a dollar of monthly expenses", () => {
     expect(family).toContain("about $104 of loan, or about $130 of purchase price with a 20% deposit");
     expect(family).not.toContain("roughly $130 of loan");
     for (const f of affordabilityFaqs()) expect(f.answer).not.toContain("roughly $130 of borrowing capacity");
+  });
+});
+
+describe("net income", () => {
+  it("is gross less 2026-27 resident income tax and the 2% Medicare levy, per applicant", () => {
+    // $60,000: tax $8,520, levy $1,200
+    expect(netAnnualIncome(60_000)).toBe(50_280);
+    // $100,000: tax $20,520, levy $2,000
+    expect(netAnnualIncome(100_000)).toBe(77_480);
+    // $200,000: tax $55,870, levy $4,000
+    expect(netAnnualIncome(200_000)).toBe(140_130);
+    const r = computeBorrowingPower(100_000, 50_000, 0, 0, 0, DEFAULT_ASSESSMENT_RATE, 30)!;
+    expect(r.monthlyNetIncome).toBe(Math.round((netAnnualIncome(100_000) + netAnnualIncome(50_000)) / 12));
   });
 });

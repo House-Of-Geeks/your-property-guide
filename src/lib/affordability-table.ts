@@ -9,7 +9,7 @@ import { HEM_AS_AT, indicativeHem } from "@/lib/data/hem";
 import { DEFAULT_ASSESSMENT_RATE, REFERENCE_LOAN_RATE, REFERENCE_LOAN_RATE_PERIOD, computeBorrowingPower, loanPerMonthlyDollar } from "@/lib/utils/borrowing-power";
 
 export const AFFORDABILITY_TABLE = {
-  asAt: "2026-10-08",
+  asAt: "2026-10-11",
   hemAsAt: HEM_AS_AT,
   assessmentRate: DEFAULT_ASSESSMENT_RATE,
   loanRate: REFERENCE_LOAN_RATE,
@@ -59,7 +59,7 @@ export function affordabilityFaqs(): FaqItem[] {
   if (r100?.single.price) {
     faqs.push({
       question: "How much house can I afford on $100,000 a year?",
-      answer: `On this calculator's method, a single applicant on $100,000 with no other debts can afford a purchase price of about ${money(r100.single.price)} with a 20% deposit: the bank takes net income as 72% of gross, deducts the indicative HEM living-expense floor of ${money(r100.single.hem)} a month for a single person at that income (${HEM_AS_AT}), caps repayments at 85% of what is left, and tests them at ${AFFORDABILITY_TABLE.assessmentRate}% over ${AFFORDABILITY_TABLE.termYears} years. A couple on $100,000 combined affords about ${money(r100.couple.price ?? 0)} because the couple's HEM is higher. The deposit is the other limit: ${money(r100.single.price)} needs about ${money(r100.single.price * 0.2)} saved plus buying costs.`,
+      answer: `On this calculator's method, a single applicant on $100,000 with no other debts can afford a purchase price of about ${money(r100.single.price)} with a 20% deposit: the calculator takes net income after 2026-27 income tax and the 2% Medicare levy, deducts the indicative HEM living-expense floor of ${money(r100.single.hem)} a month for a single person at that income (${HEM_AS_AT}), caps repayments at 85% of what is left, and tests them at ${AFFORDABILITY_TABLE.assessmentRate}% over ${AFFORDABILITY_TABLE.termYears} years. A couple on $100,000 combined affords about ${money(r100.couple.price ?? 0)}: their living-expense floor is higher, while splitting the income between two people lowers the tax on it. The deposit is the other limit: ${money(r100.single.price)} needs about ${money(r100.single.price * 0.2)} saved plus buying costs.`,
     });
   }
   const perDollar = Math.round(loanPerMonthlyDollar(AFFORDABILITY_TABLE.assessmentRate, AFFORDABILITY_TABLE.termYears));
