@@ -11,6 +11,7 @@ import { GuideLinkList } from "@/components/guide/GuideLinkList";
 import { resolveGuides } from "@/lib/guides/registry";
 import { getCalculator, toGuideLinks, type GuideLink } from "@/lib/guides/hub-guides";
 import { SITE_URL } from "@/lib/constants";
+import { decodeEntities, termLabel } from "../term-label";
 
 export const dynamicParams = false;
 
@@ -58,13 +59,7 @@ const PERSONA_GUIDE: Record<
 
 // Strip HTML tags for meta-description and the DefinedTerm schema description.
 function stripHtml(html: string): string {
-  return html
-    .replace(/<[^>]+>/g, "")
-    .replace(/&apos;/g, "'")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
+  return decodeEntities(html.replace(/<[^>]+>/g, ""))
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -76,14 +71,15 @@ export async function generateMetadata({ params }: TermPageProps): Promise<Metad
 
   const plain = stripHtml(entry.html);
   const meta = plain.length > 160 ? `${plain.slice(0, 157)}…` : plain;
+  const name = termLabel(entry);
 
   return {
-    title: `${entry.term}, Australian Property Glossary`,
+    title: `${name}, Australian Property Glossary`,
     description: meta,
     alternates: { canonical: `${SITE_URL}/glossary/${entry.slug}` },
     openGraph: {
       url: `${SITE_URL}/glossary/${entry.slug}`,
-      title: `${entry.term}, Australian property definition`,
+      title: `${name}, Australian property definition`,
       description: meta,
       type: "article",
     },
@@ -96,9 +92,13 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
   const entry = getGlossaryTerm(term);
   if (!entry) notFound();
 
+  // Every term name renders through termLabel (../term-label.ts): two
+  // stored names carry an HTML entity that React would print raw.
+  const name = termLabel(entry);
+
   // Pick 8 alphabetically-adjacent terms as a "browse nearby" rail
   const allSorted = [...GLOSSARY_TERMS].sort((a, b) =>
-    a.term.localeCompare(b.term),
+    termLabel(a).localeCompare(termLabel(b)),
   );
   const idx = allSorted.findIndex((t) => t.slug === entry.slug);
   const nearby = allSorted
@@ -130,11 +130,11 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
       <BreadcrumbJsonLd
         items={[
           { name: "Property Glossary", url: "/glossary" },
-          { name: entry.term, url: `/glossary/${entry.slug}` },
+          { name, url: `/glossary/${entry.slug}` },
         ]}
       />
       <DefinedTermJsonLd
-        term={entry.term}
+        term={name}
         description={plain}
         url={`/glossary/${entry.slug}`}
       />
@@ -154,7 +154,7 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
             <Breadcrumbs
               items={[
                 { label: "Glossary", href: "/glossary" },
-                { label: entry.term },
+                { label: name },
               ]}
             />
           </div>
@@ -170,7 +170,7 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
           </div>
           <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-4 max-w-[18ch] font-medium">
             What is{" "}
-            <span className="italic font-light text-primary">{entry.term}</span>?
+            <span className="italic font-light text-primary">{name}</span>?
           </h1>
         </div>
       </section>
@@ -226,7 +226,7 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
                       <ArrowLeft className="w-3 h-3" /> Previous
                     </p>
                     <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
-                      {prev.term}
+                      {termLabel(prev)}
                     </p>
                   </Link>
                 ) : (
@@ -241,7 +241,7 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
                       Next <ArrowRight className="w-3 h-3" />
                     </p>
                     <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
-                      {next.term}
+                      {termLabel(next)}
                     </p>
                   </Link>
                 ) : (
@@ -273,7 +273,7 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
                             href={`/glossary/${n.slug}`}
                             className="font-sans text-sm text-ink-muted hover:text-primary transition-colors"
                           >
-                            {n.term}
+                            {termLabel(n)}
                           </Link>
                         </li>
                       ))}
