@@ -3,23 +3,31 @@ import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
-  KeyFigure,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
   type RelatedGuide,
 } from "@/components/guide";
+import { GrannyFlatCostTable, grannyFlatCostSource } from "@/components/guide/GrannyFlatCostTable";
+import { grannyFlatBuildRange, rangeText } from "@/lib/data/renovation-costs";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 
+// Rewritten 11 Oct 2026 (commercial-intent review, 10 Oct 2026, F2 and F2b).
+// The page named the wrong instrument (the low rise housing code it cited
+// covers dual occupancies, manor houses and terraces) and printed unsourced
+// yield and value-uplift claims. Every rule below is from the State
+// Environmental Planning Policy (Housing) 2021, Chapter 3, Part 1 and
+// Schedule 1, version in force from 11 September 2026, read 10 October 2026.
 const FRONTMATTER: GuideFrontmatter = {
   title: "Granny Flat Guide NSW: Rules, Costs & Rental Returns (2026)",
   description:
-    "Everything you need to know about building a granny flat in NSW: complying development rules, build costs, rental income, and how to maximise your return.",
+    "Granny flats in NSW under the Housing SEPP 2021: the 60 m² cap, the 450 m² lot and 12 m frontage for a CDC, renting it out, and what one costs to build.",
   slug: "granny-flat-guide-nsw",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
-  readingTimeMinutes: 8,
+  updatedAt: "2026-10-11",
+  readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
   persona: "investing",
@@ -45,68 +53,67 @@ export const metadata: Metadata = {
   },
 };
 
+const SEPP_URL = "https://legislation.nsw.gov.au/view/html/inforce/current/epi-2021-0714";
+const SIZES = [40, 60] as const;
+const at60 = rangeText(grannyFlatBuildRange(60));
+
 const TLDR = [
-  "NSW has the most streamlined granny flat approval pathway in Australia: complying development under the Low Rise Housing Diversity Code (formerly SEPP 2009), with approvals as fast as 10 to 20 days via a private certifier.",
-  "Minimum lot size 450m², minimum lot width 12m, max secondary-dwelling floor area 60m².",
-  "Build costs range from ~$100,000 (basic 1-bed) to $280,000+ (premium 60m² 2-bed). Prefab options can come in lower.",
-  "Typical western Sydney rents of $350 to $500/week deliver gross yields of 12 to 15% on construction cost, well above standalone investment property yields.",
-  "NSW does NOT require the owner to live on the property. Both dwellings can be rented out, making it attractive for pure investors.",
-  "Granny flats can't be strata titled separately in NSW. They sell with the main property.",
+  "In NSW a granny flat is a secondary dwelling under the State Environmental Planning Policy (Housing) 2021, Chapter 3, Part 1, which applies in residential zones R1 to R5 wherever a dwelling house is permitted.",
+  "Floor area: no more than 60 m², or more where another planning instrument (usually your council's LEP) allows it (section 52; Schedule 1, section 4).",
+  "A certifier can approve it as complying development (a CDC, no council DA) on a lot of at least 450 m² in a residential zone other than R5, at least 12 m wide at the building line on a lot of up to 900 m², if it meets every Schedule 1 standard (section 54).",
+  "A lot developed under this Part cannot be subdivided, so the granny flat cannot be sold on its own title (section 51).",
+  "The Housing SEPP sets no condition on who lives in either dwelling, so you can rent the granny flat, the house or both.",
+  `Building a 60 m² granny flat costs about ${at60} for the shell, roof, kitchen and bathroom, on Archicentre Australia's 2026 rates, before site works, connections and fees.`,
 ];
 
 const TOC: GuideTOCEntry[] = [
   { id: "what-is",          label: "What is a granny flat in NSW?" },
-  { id: "complying-dev",    label: "Complying development fast-track" },
-  { id: "requirements",     label: "Site requirements and setbacks" },
-  { id: "costs",            label: "Building costs" },
-  { id: "prefab",           label: "Prefab and modular options" },
-  { id: "rental-returns",   label: "Rental returns and yield" },
-  { id: "approval-pathway", label: "CDC vs DA pathways" },
-  { id: "owner-occupier",   label: "Owner-occupier requirement" },
-  { id: "strata",           label: "Selling a granny flat separately" },
+  { id: "complying-dev",    label: "Complying development: the CDC route" },
+  { id: "requirements",     label: "Lot, size and setback standards" },
+  { id: "approval-pathway", label: "CDC or development application" },
+  { id: "costs",            label: "What a granny flat costs to build" },
+  { id: "costs-outside",    label: "Costs outside the build price" },
+  { id: "owner-occupier",   label: "Who can live there, and renting it out" },
+  { id: "disadvantages",    label: "Disadvantages of a granny flat" },
   { id: "finance",          label: "Financing your granny flat" },
-  { id: "property-value",   label: "Impact on property value" },
+  { id: "other-states",     label: "Granny flat rules in other states" },
 ];
 
 const FAQS: FaqItem[] = [
   {
     question: "Do I need to live on the property to build a granny flat in NSW?",
     answer:
-      "No. NSW doesn't impose an owner-occupier requirement on secondary dwellings. You can build a granny flat on an investment property and rent both dwellings, which is unusual compared to some other states.",
-  },
-  {
-    question: "How fast can I get a granny flat approved in NSW?",
-    answer:
-      "If your site qualifies for complying development under the Low Rise Housing Diversity Code, a private certifier can issue the Complying Development Certificate (CDC) in roughly 10 to 20 days. If you need a council DA (e.g. heritage area, undersized lot), expect 2 to 6 months.",
+      "No. Chapter 3, Part 1 of the State Environmental Planning Policy (Housing) 2021, which governs secondary dwellings, sets no condition on who lives in the principal dwelling or the granny flat. You can rent either or both. Check your title for any private covenant before you design.",
   },
   {
     question: "What's the maximum size for a granny flat in NSW?",
     answer:
-      "60m² of internal floor area for a secondary dwelling under the complying development code. Verandahs, balconies, and external storage typically don't count toward the 60m² cap, but check with your certifier.",
+      "60 m² of floor area, or a larger area if another environmental planning instrument (usually your council's LEP) permits it (Housing SEPP 2021, section 52 and Schedule 1, section 4). For a CDC the principal dwelling, granny flat and attached structures together are also capped: 330 m² on a lot of 450 to 600 m², 380 m² up to 900 m² and 430 m² above that.",
+  },
+  {
+    question: "What size block do I need for a granny flat in NSW?",
+    answer:
+      "For complying development (a CDC from a certifier) the lot must be at least 450 m² and in a residential zone other than R5, and at least 12 m wide at the building line if it is 450 to 900 m² (15 m up to 1,500 m², 18 m above). Through a council DA, a detached granny flat on a site of at least 450 m² meets the Housing SEPP's non-discretionary standard, so the council cannot demand a larger site.",
   },
   {
     question: "Can I sell the granny flat separately from the main house?",
     answer:
-      "No. A granny flat in NSW can't be strata titled separately. It must be sold with the primary dwelling on the same lot. Some older properties have been formally subdivided which is a different scenario, check the title.",
+      "No. Section 51 of the Housing SEPP 2021 says development consent must not be granted to subdivide a lot developed under its secondary dwelling Part, so the granny flat stays on the same title as the house.",
   },
   {
-    question: "What rental yield should I expect on a granny flat?",
+    question: "Is a granny flat complying development in NSW?",
     answer:
-      "On a $160,000 all-in build with $450/week rent in western Sydney, gross yield is roughly 14.6%. After property management fees (8 to 10%), insurance, and maintenance, net yield typically lands in the 9 to 11% range, well above standalone investment property yields.",
-  },
-  {
-    question: "Will adding a granny flat increase my property value?",
-    answer:
-      "In high-demand suburbs near transport and amenities, an approved tenanted granny flat can add 20 to 30% more value than the construction cost. In lower-demand areas the uplift may be closer to break-even. The addition can also make the property harder to sell to buyers wanting privacy and a large yard.",
+      "It can be. Under section 54 of the Housing SEPP 2021 a detached or attached granny flat is complying development if the lot is in a residential zone other than R5, is at least 450 m², meets the general requirements of the Codes SEPP (clauses 1.17A and 1.18) and is not on land excluded by clause 1.19, and the design meets every standard in Schedule 1. Otherwise it needs a development application to the council.",
   },
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Granny Flat Guide VIC",       href: "/guides/granny-flat-guide-vic", description: "Victoria's secondary dwelling rules and Class 1a/SDA pathways." },
-  { title: "Granny Flat Guide QLD",       href: "/guides/granny-flat-guide-qld", description: "Auxiliary dwellings and what's allowed in QLD." },
-  { title: "Negative Gearing in Australia", href: "/guides/negative-gearing-australia", description: "Tax treatment of investment property and granny flat income." },
-  { title: "Property Depreciation Guide",   href: "/guides/property-depreciation-guide", description: "Maximising deductions on a new granny flat build." },
-  { title: "Rental Yield Calculator",     href: "/rental-yield-calculator",         description: "Model gross and net yield on your specific scenario." },
+  { title: "Granny Flat Guide VIC",           href: "/guides/granny-flat-guide-vic", description: "Small second dwellings under Amendment VC253." },
+  { title: "Granny Flat Guide QLD",           href: "/guides/granny-flat-guide-qld", description: "Secondary dwellings under the Planning Regulation 2017." },
+  { title: "Granny Flat Guide WA",            href: "/guides/granny-flat-guide-wa",  description: "Ancillary dwellings under the R-Codes Volume 1." },
+  { title: "Granny Flat Guide SA",            href: "/guides/granny-flat-guide-sa",  description: "Ancillary accommodation under the Planning and Design Code." },
+  { title: "Property Depreciation Guide",     href: "/guides/property-depreciation-guide", description: "Deductions on a new granny flat you rent out." },
+  { title: "Rental Yield Calculator",         href: "/rental-yield-calculator", description: "Run gross and net yield on your own build cost and rent." },
 ];
 
 export default function GrannyFlatGuideNSWPage() {
@@ -117,235 +124,174 @@ export default function GrannyFlatGuideNSWPage() {
       toc={TOC}
       faqs={FAQS}
       related={RELATED}
+      sourced
     >
-      <Callout variant="warning" title="Verify before you commit">
+      <Callout variant="warning" title="Check your own lot first">
         <p>
-          Planning rules and costs vary significantly by council and site
-          conditions. Always verify with your local council or a certifier before
-          committing to a project.
-        </p>
-      </Callout>
-
-      <Callout variant="info" title="NSW advantage">
-        <p>
-          NSW has the most streamlined granny flat approval pathway in Australia.
-          Eligible properties can be approved as complying development in weeks,
-          without a council DA.
+          Whether your lot qualifies depends on its zone, size, frontage and
+          any exclusion in the Codes SEPP (heritage, flood, bushfire and
+          others). A certifier or your council can confirm before you pay for
+          a design.
         </p>
       </Callout>
 
       <h2 id="what-is">What is a granny flat in NSW?</h2>
       <p className="lead">
-        In NSW, a granny flat is formally a <strong>secondary dwelling</strong>:
-        a self-contained dwelling built on the same lot as an existing home (the
-        primary dwelling), with its own separate entrance, kitchen, bathroom, and
-        living area.
+        In NSW a granny flat is a <strong>secondary dwelling</strong>, and the
+        rules for it sit in the{" "}
+        <a href={SEPP_URL} target="_blank" rel="noopener noreferrer">State Environmental Planning Policy (Housing) 2021</a>,
+        Chapter 3, Part 1 (sections 49 to 57) and Schedule 1. That Part applies
+        on land in zones R1, R2, R3, R4 and R5 where a dwelling house is
+        permitted under another planning instrument.
       </p>
       <p>
-        Secondary dwellings are governed primarily by the <strong>Low Rise
-        Housing Diversity Code</strong> (formerly the Affordable Rental Housing
-        SEPP 2009). This state-wide code allows granny flats to be approved as
-        complying development on eligible lots, bypassing the need for a council
-        DA in most cases.
-      </p>
-      <p>
-        The secondary dwelling must be <strong>subordinate</strong> to the main
-        dwelling, it can't be larger or more prominent than the primary home.
+        With development consent, a secondary dwelling is allowed if no other
+        dwelling than the principal dwelling and the secondary dwelling will be
+        on the land, the two together stay within the floor area your LEP
+        allows for a dwelling house, and the secondary dwelling is no more than
+        60 m², or a larger area another instrument permits (section 52).
       </p>
 
-      <h2 id="complying-dev">Complying development, NSW's fast-track approval</h2>
+      <h2 id="complying-dev">Complying development: the CDC route</h2>
       <p>
-        NSW is unique in having a state-wide complying development pathway for
-        granny flats. Under the Low Rise Housing Diversity Code, granny flats
-        meeting the criteria can be approved in <strong>10 to 20 days</strong> by
-        a private certifier, without going through council.
-      </p>
-
-      <KeyFigure
-        value="10–20 days"
-        label="Typical CDC approval time for an eligible NSW secondary dwelling."
-        context="A council DA can take 2 to 6 months"
-      />
-
-      <p>To qualify as complying development, a secondary dwelling must:</p>
-      <ul>
-        <li>Be located on a residential lot</li>
-        <li>Meet the minimum lot size and width requirements (see below)</li>
-        <li>Not exceed <strong>60m²</strong> of floor area</li>
-        <li>Meet setback and height requirements</li>
-        <li>Have separate access</li>
-      </ul>
-      <p>
-        If your site doesn't meet these criteria, you may still be able to build
-        a granny flat through a council DA, but it takes longer and costs more.
-      </p>
-
-      <h2 id="requirements">Site requirements and setbacks</h2>
-      <p>Minimum site requirements for complying development:</p>
-      <ul>
-        <li><strong>Lot size:</strong> Minimum <strong>450m²</strong> for a detached secondary dwelling</li>
-        <li><strong>Lot width:</strong> At least <strong>12 metres</strong></li>
-        <li><strong>Only one secondary dwelling</strong> per residential lot</li>
-      </ul>
-      <p>Typical setback requirements for a detached granny flat:</p>
-      <ul>
-        <li><strong>Rear setback:</strong> Minimum 3 metres</li>
-        <li><strong>Side setback:</strong> Minimum 0.9 metres (varies by lot size and height)</li>
-        <li><strong>Height:</strong> Maximum 8.5 metres (often limited further by zone and council)</li>
-      </ul>
-      <p>
-        Individual councils can have additional requirements alongside the state
-        code. Check with a certifier or council before finalising a design.
-      </p>
-
-      <h2 id="costs">Building costs</h2>
-      <p>
-        Cost depends heavily on size, finish, and site conditions. Rough ranges
-        for 2025 to 2026:
-      </p>
-
-      <table>
-        <thead>
-          <tr><th>Type</th><th>Size</th><th>Estimated cost</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Studio / 1 bed (basic)</td><td>30 to 40m²</td><td>$100,000 to $150,000</td></tr>
-          <tr><td>1 to 2 bed (mid-range)</td><td>45 to 55m²</td><td>$150,000 to $200,000</td></tr>
-          <tr><td>2 bed (full 60m², premium)</td><td>55 to 60m²</td><td>$200,000 to $280,000+</td></tr>
-        </tbody>
-      </table>
-
-      <p>Additional costs to budget for:</p>
-      <ul>
-        <li>Certifier fees: $2,000 to $5,000</li>
-        <li>Site preparation (demolition, earthworks): $5,000 to $30,000+ depending on slope and access</li>
-        <li>Utility connections (power, water, sewer): $5,000 to $20,000</li>
-        <li>Landscaping and fencing: $3,000 to $15,000</li>
-      </ul>
-
-      <h2 id="prefab">Prefab and modular options</h2>
-      <p>
-        Prefab/modular granny flats are a popular alternative to traditional
-        construction. They're built off-site and craned into position, often 6 to
-        12 weeks from order to installation.
+        Under section 54 a granny flat can be <strong>complying
+        development</strong>, approved by a certifier with a complying
+        development certificate (CDC) instead of a council development
+        application, if:
       </p>
       <ul>
-        <li><strong>Supply and install (basic):</strong> $80,000 to $120,000</li>
-        <li><strong>Supply and install (premium):</strong> $120,000 to $180,000+</li>
+        <li>the land is in a residential zone other than R5 Large Lot Residential;</li>
+        <li>the work involves no basement and no roof terrace on the topmost roof;</li>
+        <li>it meets the general requirements for complying development in the Codes SEPP (clauses 1.17A and 1.18) and is not on land excluded by clause 1.19(1);</li>
+        <li>the lot is at least <strong>450 m²</strong>; and</li>
+        <li>it meets every development standard in Schedule 1.</li>
       </ul>
       <p>
-        Those prices typically include structure, fit-out, and installation but
-        exclude site prep and utility connections. Get at least 3 quotes and check
-        track record, quality varies significantly.
+        A granny flat built inside the existing house follows a shorter list
+        (section 54(3)): it must meet the Building Code of Australia, avoid
+        environmentally sensitive land and heritage items, add no more than a
+        new entrance to the outside of the house, and stay within 60 m².
       </p>
 
-      <h2 id="rental-returns">Rental returns and yield</h2>
-      <p>
-        Granny flats can generate strong rental income, particularly in Sydney
-        and regional NSW.
-      </p>
+      <h2 id="requirements">Lot, size and setback standards</h2>
+      <p>The main Schedule 1 standards for a CDC on a lot of 450 to 900 m²:</p>
       <ul>
-        <li><strong>Sydney metro (western suburbs):</strong> $350 to $500/week for a 1 to 2 bed flat</li>
-        <li><strong>Sydney metro (inner/northern suburbs):</strong> $450 to $700/week</li>
-        <li><strong>Regional NSW (larger centres):</strong> $250 to $400/week</li>
+        <li><strong>Frontage:</strong> at least 12 m at the building line (15 m on a lot over 900 m² and up to 1,500 m², 18 m above that); a battle-axe lot needs an access laneway at least 3 m wide (section 2).</li>
+        <li><strong>One of each:</strong> one principal dwelling and one secondary dwelling on the lot when the work is finished (section 2).</li>
+        <li><strong>Site coverage:</strong> no more than 50% of the lot for the house, granny flat and ancillary structures together (40% from 900 m², 30% above 1,500 m²) (section 3).</li>
+        <li><strong>Floor area:</strong> granny flat no more than 60 m², or more where another instrument allows; house, granny flat and attached structures together no more than 330 m² up to 600 m² of lot, 380 m² up to 900 m² (section 4).</li>
+        <li><strong>Height:</strong> no more than 8.5 m above existing ground level (section 6).</li>
+        <li><strong>Side setback:</strong> at least 0.9 m, more as the building rises above 3.8 m (section 9).</li>
+        <li><strong>Rear setback:</strong> at least 3 m, plus three times any height above 3.8 m, up to 8 m (section 10).</li>
       </ul>
       <p>
-        A worked example: $160,000 construction cost (all-in), $450/week rent in
-        western Sydney:
-      </p>
-      <ul>
-        <li>Annual rent: $450 × 52 = $23,400</li>
-        <li>Gross yield on construction: $23,400 ÷ $160,000 = <strong>14.6%</strong></li>
-      </ul>
-      <p>
-        That's gross. Deduct property management (8 to 10%), insurance, and
-        maintenance for a net figure. Even so, granny flat yields often
-        substantially exceed standalone investment property yields. Use our{" "}
-        <Link href="/rental-yield-calculator">rental yield calculator</Link> to
-        model your scenario.
+        No extra parking space is required (section 2(3)). The full schedule
+        also covers privacy, landscaping, bushfire-prone land and more; your
+        certifier works through it.
       </p>
 
-      <h2 id="approval-pathway">Approval pathways, CDC vs DA</h2>
+      <h2 id="approval-pathway">CDC or development application</h2>
       <ol>
         <li>
-          <strong>CDC (Complying Development Certificate)</strong> via a private
-          certifier. Fastest and cheapest where eligible. 10 to 20 days. No
-          community consultation. Certifier fees $2,000 to $5,000.
+          <strong>CDC from a certifier:</strong> where the lot and the design
+          meet section 54 and Schedule 1.
         </li>
         <li>
-          <strong>DA (Development Application)</strong> via local council.
-          Required where CDC criteria aren't met (heritage areas, flood-affected,
-          undersized lots). 2 to 6 months. Higher cost, less predictable outcome.
+          <strong>Development application to the council:</strong> for
+          everything else, including R5 lots, excluded land and designs that
+          miss a Schedule 1 standard. For a detached granny flat, a site of at
+          least 450 m² is a non-discretionary standard (section 53): if the
+          site meets it, the council cannot require a larger one.
         </li>
       </ol>
+
+      <h2 id="costs">What a granny flat costs to build</h2>
       <p>
-        CDC is almost always preferable where eligible. Engage a certifier early.
+        No official source publishes a granny flat price for NSW. The nearest
+        published rates are Archicentre Australia&rsquo;s, and its guide says
+        to price an addition with wet areas as the shell plus the fit-outs. On
+        that basis:
+      </p>
+      <GrannyFlatCostTable sizes={SIZES} state="NSW" />
+      <p>
+        Extension and renovation rates per square metre, by state, are in our{" "}
+        <Link href="/guides/renovation-cost-australia-2026">renovation and extension costs per square metre</Link>{" "}
+        guide.
       </p>
 
-      <h2 id="owner-occupier">Owner-occupier requirement</h2>
+      <h2 id="costs-outside">Costs outside the build price</h2>
       <p>
-        <strong>NSW does not require the owner to live on the property</strong>{" "}
-        to build or rent a granny flat. This makes NSW secondary dwellings
-        attractive as pure investment properties, you can build on an investment
-        property and rent both dwellings.
+        Archicentre&rsquo;s rates assume good site access and a simple roof.
+        Its guide tells you to allow extra for:
       </p>
+      <ul>
+        <li>adverse ground conditions, such as a sloping or reactive site;</li>
+        <li>upgrading services (electrical, plumbing) and connecting the new dwelling to them;</li>
+        <li>site drainage, paving and landscaping;</li>
+        <li>professional fees: design, engineering and the certifier.</li>
+      </ul>
       <p>
-        This differs from some other states and councils. Always verify with your
-        council or certifier.
+        Get those priced on your own site before you compare builders&rsquo;
+        quotes.
       </p>
 
-      <h2 id="strata">Can you sell a granny flat separately?</h2>
+      <h2 id="owner-occupier">Who can live there, and renting it out</h2>
       <p>
-        In NSW, a granny flat <strong>cannot be strata titled separately</strong>{" "}
-        and sold as a standalone property. The secondary dwelling forms part of
-        the same lot as the primary dwelling and must be sold with it.
+        <strong>The Housing SEPP sets no owner-occupier condition.</strong>{" "}
+        Nothing in Chapter 3, Part 1 limits who lives in the principal dwelling
+        or the granny flat, so you can rent either or both. A private covenant
+        on the title can still restrict building one; your conveyancer can
+        check.
       </p>
       <p>
-        Some older properties may have been formally subdivided into separate
-        lots, which is different from a modern secondary dwelling. Check your
-        title if unsure.
+        We do not publish rent or yield figures for granny flats: no official
+        source reports their rents separately. Look up the rents in your
+        suburb and run your own build cost and rent through the{" "}
+        <Link href="/rental-yield-calculator">rental yield calculator</Link>.
+        Rent is taxable income, and a new build has depreciation to claim; see
+        our <Link href="/guides/property-depreciation-guide">property depreciation guide</Link>.
       </p>
+
+      <h2 id="disadvantages">Disadvantages of a granny flat</h2>
+      <ul>
+        <li><strong>Space:</strong> 60 m² is the cap in most areas, enough for one or two bedrooms.</li>
+        <li><strong>Privacy and yard:</strong> it shares the block, and site coverage and setbacks take garden space from the house.</li>
+        <li><strong>Resale:</strong> it cannot be subdivided or sold on its own title (section 51), and some buyers want the yard more than the income.</li>
+        <li><strong>Cost before rent:</strong> site works, connections and fees sit on top of the build price.</li>
+      </ul>
 
       <h2 id="finance">Financing your granny flat</h2>
       <ul>
-        <li>
-          <strong>Equity release / redraw from existing mortgage:</strong>{" "}
-          Typically the cheapest option if you have equity. Your lender may
-          increase your mortgage to fund construction.
-        </li>
-        <li>
-          <strong>Construction loan:</strong> A separate loan with funds drawn
-          progressively as building milestones are reached. Typically requires a
-          fixed-price building contract.
-        </li>
-        <li>
-          <strong>Personal loan:</strong> Suitable for smaller projects but
-          carries a higher rate than secured options.
-        </li>
+        <li><strong>Equity in your home:</strong> a top-up or refinance of your existing loan, if you have the equity.</li>
+        <li><strong>Construction loan:</strong> drawn down in stages as the build reaches milestones, usually against a fixed-price building contract.</li>
+        <li><strong>Personal loan:</strong> for smaller projects, at a higher rate than secured lending.</li>
       </ul>
       <p>
-        Talk to a mortgage broker before committing, the financing structure
-        materially affects your total cost.
+        A mortgage broker can compare how lenders treat granny flat
+        construction. Our{" "}
+        <Link href="/guides/how-to-find-a-builder-australia">guide to finding a builder</Link>{" "}
+        covers the licence check and the home warranty insurance the builder
+        must take out on work over the state threshold.
       </p>
 
-      <h2 id="property-value">Impact on property value</h2>
-      <p>
-        A well-built, self-contained granny flat typically adds significant value
-        to a residential property. In good locations (close to transport,
-        amenities), the added value often <strong>exceeds the construction
-        cost</strong>.
-      </p>
+      <h2 id="other-states">Granny flat rules in other states</h2>
       <ul>
-        <li>20% to 30% more in value than build cost (in high-demand suburbs)</li>
-        <li>Closer to cost price in lower-demand areas</li>
+        <li><Link href="/guides/granny-flat-guide-vic">Granny flat rules in Victoria</Link></li>
+        <li><Link href="/guides/granny-flat-guide-qld">Granny flat rules in Queensland</Link></li>
+        <li><Link href="/guides/granny-flat-guide-wa">Granny flat rules in WA</Link></li>
+        <li><Link href="/guides/granny-flat-guide-sa">Granny flat rules in South Australia</Link></li>
       </ul>
-      <p>
-        Buyers seeking rental income or multigenerational living will pay a
-        premium for an approved, tenanted secondary dwelling. The addition can
-        make the property harder to sell to buyers seeking privacy (smaller
-        backyard). Get a professional valuation before and after construction to
-        understand the full picture.
-      </p>
+
+      <Sources
+        items={[
+          {
+            label: "State Environmental Planning Policy (Housing) 2021 (NSW), Chapter 3, Part 1 Secondary dwellings (sections 49 to 57) and Schedule 1 Complying development, secondary dwellings",
+            href: SEPP_URL,
+            note: "version in force from 11 September 2026; read 10 October 2026",
+          },
+          grannyFlatCostSource(),
+        ]}
+      />
     </GuideArticleLayout>
   );
 }

@@ -28,6 +28,7 @@ const UNSOURCED = [
 
 const STATES = [
   { slug: "granny-flat-guide-vic", instrument: [/Amendment VC253/, /clause 54/] },
+  { slug: "granny-flat-guide-nsw", instrument: [/State Environmental Planning Policy \(Housing\) 2021/, /Schedule 1/, /section 54/] },
 ] as const;
 
 describe("state granny flat guides", () => {
@@ -71,5 +72,18 @@ describe("state granny flat guides", () => {
     expect(src).toContain("A building permit is always required");
     expect(src).toContain("300 m²");
     expect(src).toContain("28 March 2027");
+  });
+
+  it("NSW: names the Housing SEPP, not the Low Rise Housing Diversity Code, and drops the uplift and 'unique' claims", () => {
+    const src = read("granny-flat-guide-nsw");
+    expect(src).not.toContain("Low Rise Housing Diversity Code");
+    expect(src).not.toMatch(/most streamlined/i);
+    expect(src).not.toMatch(/\bunique\b/i);
+    expect(src).not.toMatch(/20 to 30%|20% to 30%/);
+    expect(src).not.toMatch(/14\.6%/);
+    expect(src).toContain("450 m²");
+    expect(src).toContain("12 m");
+    expect(src).toContain("section 51");
+    expect(src).toContain("version in force from 11 September 2026");
   });
 });
