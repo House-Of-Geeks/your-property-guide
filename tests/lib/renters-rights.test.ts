@@ -10,6 +10,7 @@ import { PM_STATE_FEES } from "@/lib/data/property-management-fees";
 import {
   ACT_RENTERS_SOURCES,
   NSW_RENTERS_SOURCES,
+  NT_RENTERS_SOURCES,
   QLD_RENTERS_SOURCES,
   SA_RENTERS_SOURCES,
   TAS_RENTERS_SOURCES,
@@ -217,6 +218,24 @@ describe("ACT renters' rights guide", () => {
     expect(src).toContain("/guides/property-management-fees-australia#fees-act");
     for (const s of Object.values(ACT_RENTERS_SOURCES)) {
       expect(s.href).toMatch(/^https:\/\/www\.act\.gov\.au\//);
+      expect(s.date).toMatch(DATE);
+    }
+  });
+});
+
+describe("NT renters' rights guide", () => {
+  const src = page("renters-rights-nt");
+
+  it("has no bond authority, the six-month rent rule and the 60-day notice", () => {
+    expect(src).not.toMatch(/Lodged with NT Consumer Affairs/);
+    expect(src).not.toMatch(/does NOT have a 12-month minimum/);
+    expect(src).not.toMatch(/42 days from landlord/);
+    expect(src).toContain("no bond authority");
+    expect(src).toContain("six months");
+    expect(src).toContain("60 days");
+    expect(RENTERS_GUIDES.NT.blurb).toContain("60 days");
+    for (const s of Object.values(NT_RENTERS_SOURCES)) {
+      expect(s.href).toMatch(/^https:\/\/(consumeraffairs\.)?nt\.gov\.au\//);
       expect(s.date).toMatch(DATE);
     }
   });

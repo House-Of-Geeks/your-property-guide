@@ -82,7 +82,7 @@ export const RENTERS_GUIDES: Record<RentersState, RentersGuide> = {
     state: "NT",
     slug: "renters-rights-nt",
     linkTitle: "Renters' rights in the NT",
-    blurb: "Northern Territory tenancy rules, bonds and repairs.",
+    blurb: "NT landlords can still end a lease without grounds, on 60 days' notice.",
   },
 };
 
@@ -512,6 +512,54 @@ export const ACT_RENTERS_SOURCES = {
     label: "ACT Government, Ending a tenancy because of domestic or family violence",
     href: `${ACT_GOV}/ending-a-tenancy-because-of-domestic-or-family-violence`,
     date: "last updated 7 May 2026",
+    read: READ,
+  },
+} as const satisfies Record<string, RentersSource>;
+
+const NT_GOV = "https://nt.gov.au/property/private-renters";
+
+/** NT Consumer Affairs and NT.GOV.AU pages behind /guides/renters-rights-nt. */
+export const NT_RENTERS_SOURCES = {
+  caRenting: {
+    label: "NT Consumer Affairs, Renting in the NT (changes commencing 2 January 2024, pets from 1 January 2021)",
+    href: "https://consumeraffairs.nt.gov.au/for-consumers/residential-tenancies",
+    date: "last updated 16 February 2026",
+    read: READ,
+  },
+  deposits: {
+    label: "NT.GOV.AU, Security deposits/bonds",
+    href: `${NT_GOV}/find-out-about-rental-costs/security-deposits-bonds`,
+    date: "last updated 2 December 2025",
+    read: READ,
+  },
+  rent: {
+    label: "NT.GOV.AU, Paying rent and other costs (rent increases)",
+    href: `${NT_GOV}/find-out-about-rental-costs/paying-rent-and-other-costs`,
+    date: "last updated 24 April 2020",
+    read: READ,
+  },
+  disputes: {
+    label: "NT.GOV.AU, Common tenancy disputes (entry, inspections, security deposit return)",
+    href: `${NT_GOV}/renters-your-rights-and-responsibilities/common-tenancy-disputes`,
+    date: "last updated 24 April 2020",
+    read: READ,
+  },
+  repairs: {
+    label: "NT.GOV.AU, Repairs and maintenance on rented properties",
+    href: `${NT_GOV}/what-to-do-if-your-home-needs-repairs/repairs-and-maintenance-on-rented-properties`,
+    date: "last updated 11 November 2016",
+    read: READ,
+  },
+  breakLease: {
+    label: "NT.GOV.AU, Breaking a lease early",
+    href: `${NT_GOV}/moving-out/breaking-a-lease-early`,
+    date: "last updated 9 August 2024",
+    read: READ,
+  },
+  bidding: {
+    label: "NT.GOV.AU, Rent bidding",
+    href: `${NT_GOV}/find-out-about-rental-costs/rent-bidding`,
+    date: "last updated 24 May 2024",
     read: READ,
   },
 } as const satisfies Record<string, RentersSource>;
