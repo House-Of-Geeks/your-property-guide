@@ -61,9 +61,9 @@ const FAQS: FaqItem[] = [
       "Usually no, commission is payable on a successful sale. But marketing costs are typically payable whether or not the property sells, and some agreements include other charges. Read the agency agreement for what is payable if you withdraw or the listing expires.",
   },
   {
-    question: "What do agent comparison websites charge?",
+    question: "How do you calculate a commission?",
     answer:
-      "Platforms like OpenAgent and LocalAgentFinder are free for sellers but charge the agent a referral fee, typically 20% to 30% of their commission, or a flat fee around 0.4% of the sale price. Some top agents refuse to pay these fees, so platform shortlists don't always show the best agents in your suburb. It costs nothing to also ask around locally.",
+      "Multiply the sale price by the agreed rate, then add 10% GST if the quote excludes it. $800,000 at 2% is $16,000, plus $1,600 GST, $17,600 in total. On a tiered agreement, apply each rate only to its slice of the price: 2% up to $800,000 and 10% of anything above it on an $850,000 sale is $16,000 plus $5,000, $21,000 before GST. GST is 10% on most services (ATO), and a Queensland appointment form states the commission as a GST-inclusive amount (REIQ).",
   },
 ];
 
