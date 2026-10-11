@@ -278,8 +278,7 @@ export default function RealEstateCommissionVicPage() {
         </li>
         <li>
           <strong>Be wary of the cheapest quote.</strong> The lowest rate is not
-          automatically the best value. An agent who negotiates a higher sale
-          price earns their commission back many times over, so weigh the rate
+          automatically the best value. An extra $20,000 on the price covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times, so compare agents on results before rates. Weigh the rate
           against the campaign and the agent&rsquo;s track record, not in isolation.
         </li>
       </ol>

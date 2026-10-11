@@ -88,7 +88,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Is real estate commission negotiable in QLD?",
     answer:
-      "Yes. Commission in Queensland is deregulated, which means there is no legislated rate and agents set their own pricing. That makes the figure on the first agency agreement an opening number, not a fixed price. The way to negotiate well is to compare two or three local agents, weigh the rate against the service and marketing on offer, and negotiate on the marketing spend as well as the percentage. Avoid choosing purely on the cheapest rate, because an agent who negotiates a higher sale price can earn back a slightly higher fee many times over.",
+      "Yes. Commission in Queensland is deregulated, which means there is no legislated rate and agents set their own pricing. That makes the figure on the first agency agreement an opening number, not a fixed price. The way to negotiate well is to compare two or three local agents, weigh the rate against the service and marketing on offer, and negotiate on the marketing spend as well as the percentage. Avoid choosing purely on the cheapest rate, because the rate is only part of the result: on $800,000 the gap between 1.8% and 2% is $1,600 before GST, and an extra $20,000 on the price covers it more than twelve times.",
   },
   {
     question: "Do you pay commission if the house doesn't sell?",
@@ -279,9 +279,7 @@ export default function RealEstateCommissionQldPage() {
         </li>
         <li>
           <strong>Be wary of the cheapest quote.</strong> The lowest rate is not
-          the same as the best outcome. An agent who negotiates a stronger sale
-          price can earn back a slightly higher fee many times over, while a
-          cut-rate agent with too many listings may give yours little attention.
+          the same as the best outcome. An extra $20,000 on the price covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times, so compare agents on results before rates.
         </li>
       </ol>
 

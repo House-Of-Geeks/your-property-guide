@@ -263,7 +263,7 @@ export default function RealEstateCommissionSAPage() {
       <ul>
         <li><strong>Compare two or three local agents.</strong> Getting competing appraisals gives you the leverage and the information to push on the rate.</li>
         <li><strong>Negotiate on the rate <em>and</em> the marketing.</strong> A slightly lower percentage means little if the marketing budget is padded. Treat both as part of the same deal.</li>
-        <li><strong>Be wary of the cheapest.</strong> The lowest rate is not the best outcome if it comes with a thin campaign or an agent juggling too many listings. A good agent who achieves more on the sale earns their fee back many times over.</li>
+        <li><strong>Be wary of the cheapest.</strong> The lowest rate is not the best outcome if it comes with a thin campaign or an agent juggling too many listings. An extra $20,000 on the price covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times, so compare agents on results before rates.</li>
         <li><strong>Get it in writing.</strong> Confirm the rate, whether GST is included, and what marketing costs sit on top, all in the agency agreement.</li>
       </ul>
       <p>

@@ -51,7 +51,7 @@ const TLDR = [
   "Marketing costs (photography, online listings, signboard, styling) are usually charged separately on top of commission and typically run $3,000 to $6,000 for an average home.",
   "Fixed-fee agencies charge $3,000 to $10,000 flat. They can save money on high-value sales but reduce the agent's incentive to negotiate hard for you.",
   "Always interview at least three agents and compare the full package: pricing strategy, marketing plan, suburb track record, not just the commission rate.",
-  "An agent who negotiates an extra $20,000 on the sale earns back their commission many times over. Cheapest agent rarely means best return.",
+  "An extra $20,000 on the price covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times, so compare agents on results before rates.",
 ];
 
 const TOC: GuideTOCEntry[] = [
@@ -90,7 +90,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I negotiate commission rates?",
     answer:
-      "Yes, almost always. Most vendors don't realise commission is fully negotiable. Get quotes from at least three agents, compare full packages (not just the rate), and consider a tiered or performance-based commission that pays the agent more if they exceed a target price. Don't over-negotiate, shaving 0.2% off a $700,000 sale saves $1,400, and the better agent often makes that back many times.",
+      "Yes, almost always. Most vendors don't realise commission is fully negotiable. Get quotes from at least three agents, compare full packages (not just the rate), and consider a tiered or performance-based commission that pays the agent more if they exceed a target price. Shaving 0.2% off a $700,000 sale saves $1,400 before GST, so weigh that saving against each agent's recent results in your suburb rather than taking the lowest rate.",
   },
   {
     question: "Do real estate agents get paid if the house doesn't sell?",
@@ -298,7 +298,7 @@ export default function RealEstateAgentFeesPage() {
         based on the lowest commission can be a costly mistake.
       </p>
       <ul>
-        <li>An agent who negotiates an extra $20,000 on a sale earns back their commission many times over, even if their rate is slightly higher than competitors.</li>
+        <li>An extra $20,000 on the price covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times, so compare agents on results before rates.</li>
         <li>A low-commission agent who is juggling 50 listings may not give your property the attention it deserves.</li>
         <li>Poor photography, weak marketing, or a low-energy campaign can cost you more in foregone sale price than you saved in commission.</li>
       </ul>

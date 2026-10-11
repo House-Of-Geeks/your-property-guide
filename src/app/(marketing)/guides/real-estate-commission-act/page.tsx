@@ -269,8 +269,7 @@ export default function RealEstateCommissionACTPage() {
         </li>
         <li>
           <strong>Be wary of the cheapest.</strong> The lowest quote can mean a
-          thinner campaign or a less experienced negotiator. An agent who gets you
-          a higher sale price earns back a slightly higher rate many times over.
+          thinner campaign or a less experienced negotiator. An extra $20,000 on the price covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times, so compare agents on results before rates.
         </li>
         <li>
           <strong>Ask whether GST is included.</strong> So you are comparing like

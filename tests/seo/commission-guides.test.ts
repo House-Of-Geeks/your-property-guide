@@ -1,4 +1,5 @@
 // Fix items 10 and 12: the state cost tables and the People-also-ask FAQs on the commission guides.
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { STATE_RATES, type StateCode } from "../../src/lib/data/commission-rates";
 import { COMMISSION_PAA_FAQ } from "../../src/lib/data/commission-faqs";
@@ -63,5 +64,19 @@ describe("People-also-ask FAQs", () => {
   it("uses the same numbers as the cost table (Victoria's total)", () => {
     const t = sellingCostTable("VIC");
     expect(COMMISSION_PAA_FAQ.VIC.answer).toContain(`$${t.totalLow.toLocaleString("en-AU")} to $${t.totalHigh.toLocaleString("en-AU")}`);
+  });
+});
+
+describe("commission copy (review 10 Oct 2026, selling 0.4)", () => {
+  const pages = ["real-estate-agent-fees-australia", ...STATES.map((s) => `real-estate-commission-${s.toLowerCase()}`)];
+  it("no longer says a better agent 'earns back their commission many times over', and shows the arithmetic instead", () => {
+    // $20,000 against the $1,600 gap between 1.8% and 2% on $800,000 is 12.5 times.
+    expect(20_000 / ((800_000 * (2 - 1.8)) / 100)).toBeGreaterThan(12);
+    for (const p of pages) {
+      const src = readFileSync(`src/app/(marketing)/guides/${p}/page.tsx`, "utf8");
+      expect(src).not.toMatch(/many times( over)?/);
+    }
+    const fees = readFileSync("src/app/(marketing)/guides/real-estate-agent-fees-australia/page.tsx", "utf8");
+    expect(fees).toContain("covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times");
   });
 });

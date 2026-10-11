@@ -88,7 +88,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Is real estate commission negotiable in TAS?",
     answer:
-      "Yes. Commission is deregulated in Tasmania, which means there is no official or fixed rate and agents set their own. The percentage on the first agency agreement you read is an opening number, not a fixed price. The way to negotiate well is to get appraisals from two or three agents who actively sell in your area, compare the rate against the service and the marketing budget rather than in isolation, and ask each agent to justify their number. Be wary of simply taking the cheapest, since a stronger agent can earn back a small rate difference many times over on the final price.",
+      "Yes. Commission is deregulated in Tasmania, which means there is no official or fixed rate and agents set their own. The percentage on the first agency agreement you read is an opening number, not a fixed price. The way to negotiate well is to get appraisals from two or three agents who actively sell in your area, compare the rate against the service and the marketing budget rather than in isolation, and ask each agent to justify their number. Be wary of simply taking the cheapest: on $800,000 the gap between 1.8% and 2% is $1,600 before GST, and an extra $20,000 on the price covers it more than twelve times.",
   },
   {
     question: "Do you pay commission if the house doesn't sell?",
@@ -278,9 +278,7 @@ export default function RealEstateCommissionTasPage() {
         </li>
         <li>
           <strong>Be wary of the cheapest.</strong> The lowest rate is not always
-          the best outcome. An agent who negotiates a stronger final price earns
-          back a small rate difference many times over, so weigh who is most
-          likely to get you the best result, not just who charges least.
+          the best outcome. An extra $20,000 on the price covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times, so compare agents on results before rates.
         </li>
       </ol>
       <p>

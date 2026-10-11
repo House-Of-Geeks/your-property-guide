@@ -277,10 +277,7 @@ export default function RealEstateCommissionNswPage() {
           headline rate alone.
         </li>
         <li>
-          <strong>Be wary of the cheapest.</strong> An agent who negotiates an
-          extra $20,000 on your sale earns their commission back many times over,
-          even at a slightly higher rate. The lowest quote is rarely the best
-          result. Ask each agent to back their number with recent comparable
+          <strong>Be wary of the cheapest.</strong> An extra $20,000 on the price covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times, so compare agents on results before rates. Ask each agent to back their number with recent comparable
           sales in your area.
         </li>
       </ol>

@@ -279,9 +279,7 @@ export default function RealEstateCommissionNtPage() {
         </li>
         <li>
           <strong>Be wary of the cheapest.</strong> The agent with the lowest
-          rate is not automatically the best value. A stronger negotiator who
-          lifts your sale price by tens of thousands earns back a small
-          difference in rate many times over.
+          rate is not automatically the best value. An extra $20,000 on the price covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times, so compare agents on results before rates.
         </li>
         <li>
           <strong>Confirm the GST position.</strong> Make sure every quote is on
