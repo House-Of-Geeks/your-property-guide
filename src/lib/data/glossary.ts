@@ -175,7 +175,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   {
     term: "Debt-to-Income Ratio (DTI)",
     slug: "debt-to-income-ratio-dti",
-    html: `The ratio of a borrower&apos;s total debt to their gross annual income. Australian regulators have asked lenders to limit high DTI lending (above 6x income). For example, if you earn $100,000 and have $600,000 in total debt, your DTI is 6. A high DTI can affect your ability to borrow.`,
+    html: `The ratio of a borrower&apos;s total debt to their gross annual income. Since 1 February 2026, APRA has limited banks to making no more than 20% of their new owner-occupier loans, and separately 20% of their new investor loans, at a DTI of six or more (APRA, confirmed 28 May 2026). For example, if you earn $100,000 and have $600,000 in total debt, your DTI is 6. A high DTI can affect your ability to borrow.`,
     category: "first-home",
   },
   {

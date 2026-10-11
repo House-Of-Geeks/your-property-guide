@@ -43,3 +43,12 @@ describe("glossary term names", () => {
     expect(GLOSSARY_TERMS.find((t) => t.slug === "vendor-apos-s-statement")?.term).toBe("Vendor's Statement");
   });
 });
+
+describe("glossary: debt-to-income entry", () => {
+  it("states APRA's limit in force since 1 February 2026", () => {
+    const { html } = entry("debt-to-income-ratio-dti");
+    expect(html).toContain("1 February 2026");
+    expect(html).toContain("20%");
+    expect(html).toContain("28 May 2026");
+  });
+});
