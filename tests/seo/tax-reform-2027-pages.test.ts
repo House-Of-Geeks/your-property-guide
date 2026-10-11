@@ -127,8 +127,8 @@ describe("/cgt-calculator", () => {
     expect(src).toContain('title="Gains after 1 July 2027"');
     expect(src).toContain("This calculator applies the rules for");
     expect(src).toContain("ATO, last updated 29 June 2026");
-    expect(src).toContain("<Sources items={[ATO_REFORM_SOURCE");
-    expect(src).toContain('updatedAt: "2026-10-01"');
+    expect(src).toMatch(/<Sources\s+items=\{\[[\s\S]*ATO_REFORM_SOURCE/);
+    expect(src).toContain('updatedAt: "2026-10-11"');
   });
 
   it("keeps the FAQ (and so its FAQPage JSON-LD) in step with the note", () => {

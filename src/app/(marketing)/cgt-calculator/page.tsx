@@ -5,6 +5,14 @@ import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/componen
 import { Callout, KeyFigure, Sources, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { ATO_REFORM_SOURCE, BUDGET_EXPLAINER_SOURCE, ACT_SOURCE } from "@/lib/data/tax-reform-2027";
+import { CGT_DISCOUNT_SOURCE, COMPANY_RATE_SOURCE, SMSF_TAX_SOURCE } from "@/lib/cgt-calc";
+import { INCOME_TAX_SOURCE, INCOME_TAX_YEAR, MEDICARE_LEVY_SOURCE } from "@/lib/utils/income-tax";
+
+const src = (s: { name: string; url: string; dated: string; readOn: string }) => ({
+  label: s.name,
+  href: s.url,
+  note: `${s.dated[0].toUpperCase()}${s.dated.slice(1)}, read ${s.readOn}.`,
+});
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Capital Gains Tax Calculator",
@@ -13,7 +21,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   slug: "cgt-calculator",
   schemaName: "Capital Gains Tax Calculator",
   schemaDescription: "Calculate Australian capital gains tax including the 50% CGT discount and main residence exemption.",
-  updatedAt: "2026-10-01",
+  updatedAt: "2026-10-11",
   persona: "investing",
 };
 
@@ -37,7 +45,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What is the 50% CGT discount?",
     answer:
-      "If you hold an investment property for more than 12 months, you are eligible for a 50% CGT discount as an individual or trust. This means only half of your capital gain is added to your taxable income. Companies are not eligible for this discount. " +
+      "If you hold an investment property for at least 12 months, leaving out the day you bought it and the day you sell (contract dates), you are eligible for a 50% CGT discount as an individual or trust. This means only half of your capital gain is added to your taxable income. Complying super funds get a one-third discount and companies get none (ATO). " +
       "For gains that accrue from 1 July 2027 the discount is replaced by cost base indexation and, for resident individuals, a 30% minimum tax. On property you already own, the gain up to 1 July 2027 keeps the discount; investors in new builds can choose to keep it (ATO, last updated 29 June 2026).",
   },
   {
@@ -53,7 +61,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How does joint ownership affect CGT?",
     answer:
-      "In a 50/50 joint ownership arrangement, each owner is liable for CGT on their own share of the gain. Each party applies their own marginal tax rate and any applicable discounts to their half of the taxable gain.",
+      "In a 50/50 joint ownership arrangement, each owner is liable for CGT on their own share of the gain. Each party adds their half of the taxable gain to their own taxable income, so it is taxed at their own rates. The calculator assumes both owners have the same other income.",
   },
   {
     question: "What costs can I include in my cost base?",
@@ -108,9 +116,23 @@ export default function CGTCalculatorPage() {
 
           <h3>50% CGT discount</h3>
           <p>
-            If you&rsquo;ve owned the property for more than 12 months as an
+            If you&rsquo;ve owned the property for at least 12 months as an
             individual or via a trust, only 50% of the net capital gain is
-            taxable. Companies do not qualify.
+            taxable. The 12 months run between the contract dates, leaving out
+            both days. Complying super funds get a one-third discount and
+            companies get none: a company pays 25% as a base rate entity or 30%
+            otherwise on the whole gain, and a company that mainly holds
+            property is usually not a base rate entity (ATO).
+          </p>
+
+          <h3>Your tax rate on the gain</h3>
+          <p>
+            The taxable gain is added to your other income for the year and
+            taxed at the ATO&rsquo;s {INCOME_TAX_YEAR} resident rates: nil to
+            $18,200, 15% to $45,000, 30% to $135,000, 37% to $190,000 and 45%
+            above, plus the 2% Medicare levy. A large gain can push part of
+            itself into a higher bracket, which is why the calculator asks for
+            your other taxable income rather than a single rate.
           </p>
 
           <Callout variant="info" title="Gains after 1 July 2027">
@@ -140,16 +162,18 @@ export default function CGTCalculatorPage() {
 
           <KeyFigure
             value="50%"
-            label="Of your net capital gain that's taxable when an individual or trust holds an investment property for more than 12 months, on a gain that accrues before 1 July 2027. Companies don't get the discount."
+            label="Of your net capital gain that's taxable when an individual or trust holds an investment property for at least 12 months, on a gain that accrues before 1 July 2027. Companies don't get the discount."
             context="ATO, individual marginal-rate basis"
           />
 
           <h2>The biggest decisions that affect your CGT</h2>
-          <h3>Hold for at least 12 months and one day</h3>
+          <h3>Hold for at least 12 months</h3>
           <p>
-            The cliff is hard. Selling at 11 months and 30 days means 100% of the
-            gain is taxable; 12 months and one day means 50%. If you&rsquo;re close
-            to the threshold, the maths almost always favours waiting.
+            The cliff is hard. The ATO leaves out the day you bought and the day
+            you sell: its example is an asset acquired on 2 February 2021, which
+            gets the discount on a sale contract signed on or after 3 February
+            2022. A day earlier and 100% of the gain is taxable. If you&rsquo;re
+            close to the threshold, check the contract dates.
           </p>
           <h3>Sell in a low-income year</h3>
           <p>
@@ -185,15 +209,26 @@ export default function CGTCalculatorPage() {
 
           <h2>What this calculator doesn&rsquo;t do</h2>
           <ul>
-            <li>It doesn&rsquo;t apply specific marginal-rate brackets, you input the rate.</li>
             <li>It doesn&rsquo;t handle complex partial-exemption scenarios with multiple rental periods.</li>
             <li>It doesn&rsquo;t adjust the cost base for depreciation that you claimed during ownership (which reduces your cost base on sale).</li>
-            <li>It doesn&rsquo;t handle SMSF, company or trust structures (which have different CGT treatments), see our <Link href="/guides/smsf-property-guide">SMSF Property Guide</Link>.</li>
+            <li>It treats a trust as one resident adult beneficiary taking the whole gain, an SMSF as in accumulation phase, and a company as paying the rate you pick; real structures have more moving parts, see our <Link href="/guides/smsf-property-guide">SMSF Property Guide</Link>.</li>
+            <li>It leaves out tax offsets, the Medicare levy&rsquo;s low-income reduction and the Medicare levy surcharge, and your other capital gains and losses.</li>
             <li>It doesn&rsquo;t model temporary residents, foreign residents, or non-residents (different rules apply).</li>
             <li>It doesn&rsquo;t yet apply cost base indexation or the 30% minimum tax that replace the 50% discount for gains accruing from 1 July 2027.</li>
           </ul>
 
-          <Sources items={[ATO_REFORM_SOURCE, ACT_SOURCE, BUDGET_EXPLAINER_SOURCE]} />
+          <Sources
+            items={[
+              src(INCOME_TAX_SOURCE),
+              src(MEDICARE_LEVY_SOURCE),
+              src(CGT_DISCOUNT_SOURCE),
+              src(COMPANY_RATE_SOURCE),
+              src(SMSF_TAX_SOURCE),
+              ATO_REFORM_SOURCE,
+              ACT_SOURCE,
+              BUDGET_EXPLAINER_SOURCE,
+            ]}
+          />
         </>
       }
     />
