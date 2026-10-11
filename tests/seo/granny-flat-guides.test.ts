@@ -31,6 +31,7 @@ const STATES = [
   { slug: "granny-flat-guide-nsw", instrument: [/State Environmental Planning Policy \(Housing\) 2021/, /Schedule 1/, /section 54/] },
   { slug: "granny-flat-guide-qld", instrument: [/Planning Regulation 2017/, /Schedule 24/, /Planning Act 2016/, /City Plan 2014/] },
   { slug: "granny-flat-guide-wa", instrument: [/State Planning Policy 7\.3/, /Residential Design Codes Volume 1/, /clause 5\.5\.1/, /clause 2\.8/] },
+  { slug: "granny-flat-guide-sa", instrument: [/Planning, Development and Infrastructure Act 2016/, /Planning and Design Code/, /ancillary accommodation/, /deemed-to-satisfy/] },
 ] as const;
 
 describe("state granny flat guides", () => {
@@ -110,5 +111,17 @@ describe("state granny flat guides", () => {
     expect(src).toContain("version 3");
     expect(src).toContain("$20,000");
     expect(src).not.toContain("commerce.wa.gov.au");
+  });
+
+  it("SA: uses the Act's pathways, not NSW's complying development, and drops the owner-occupier rule and the 250 m² lot", () => {
+    const src = read("granny-flat-guide-sa");
+    expect(src).not.toContain("Complying development pathway");
+    expect(src).not.toMatch(/as 'complying development'/);
+    expect(src).not.toMatch(/must be owner-occupied/i);
+    expect(src).not.toMatch(/250m²|250 m²/);
+    expect(src).toContain("Deemed-to-satisfy pathway");
+    expect(src).toContain("27 November 2023");
+    expect(src).toContain("70 m²");
+    expect(src).toContain("$20,000 or more");
   });
 });
