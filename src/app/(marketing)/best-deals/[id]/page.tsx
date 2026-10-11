@@ -242,7 +242,7 @@ export default async function BestDealDetailPage({ params }: PageProps) {
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <p className="text-[11px] font-sans text-ink-subtle mt-3 leading-relaxed text-center">
-                    Free for buyers. We match you with one vetted specialist, who pays us for the introduction.
+                    Free for buyers. Where we have a specialist in the area, we introduce one, who pays us for the introduction.
                   </p>
                 </div>
 

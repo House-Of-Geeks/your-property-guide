@@ -6,7 +6,7 @@ import { ConversionTracker } from "@/components/journey/ConversionTracker";
 
 export const metadata: Metadata = {
   title: "We're matching you with a specialist",
-  description: "Your match request is in. A vetted specialist will be in touch within one business day.",
+  description: "Your request is in. Where we have a specialist for your situation, we introduce one, who pays us for the introduction.",
   robots: { index: false, follow: false },
 };
 
@@ -29,11 +29,11 @@ const INTENT_COPY: Record<string, { headline: string; what: string }> = {
   },
   refinancing: {
     headline: "We're finding your broker.",
-    what: "A mortgage broker who can compare 30+ lenders, not just one bank, and tell you honestly which one will say yes to your situation.",
+    what: "A mortgage broker who compares lenders' policies for your situation, not just one bank's.",
   },
   "something-else": {
-    headline: "We're finding the right person.",
-    what: "Whether that's a property accountant, conveyancer, family lawyer, or estate planner, we'll match you with the specialist who fits the situation, not the closest one to a sale.",
+    headline: "We've got your request.",
+    what: "Whether that's a property accountant, conveyancer, family lawyer, or estate planner, we look for a specialist who fits the situation, not the closest one to a sale. Where we do not yet have one, we tell you rather than pass your details on.",
   },
   researching: {
     headline: "We've got your context.",
@@ -44,8 +44,8 @@ const INTENT_COPY: Record<string, { headline: string; what: string }> = {
 export default async function GetConnectedThanksPage({ searchParams }: PageProps) {
   const { intent, suburb } = await searchParams;
   const copy = (intent && INTENT_COPY[intent]) || {
-    headline: "We're finding the right specialist.",
-    what: "Someone vetted for your situation, your suburb, and your timing. You'll hear from them within one business day.",
+    headline: "We've got your request.",
+    what: "Where we have a specialist for your situation and suburb, we introduce one, who pays us a fee for the introduction. Where we do not yet have one, we tell you rather than pass your details on.",
   };
   // The suburb param is a full slug ("bondi-nsw-2026") — strip the
   // state-postcode suffix before titlecasing so copy reads "Bondi".
@@ -122,14 +122,14 @@ export default async function GetConnectedThanksPage({ searchParams }: PageProps
               <div>
                 <p className="font-medium text-ink">We pick one specialist, not five.</p>
                 <p className="text-sm text-ink-muted mt-1 leading-relaxed">
-                  No comparison spam, no bidding war for your enquiry. One vetted person with the right experience for your situation.
+                  No comparison spam, no bidding war for your enquiry. One introduction, not a list.
                 </p>
               </div>
             </li>
             <li className="flex gap-4">
               <span className="shrink-0 w-8 h-8 rounded-full bg-surface-warm text-ink font-medium grid place-items-center text-sm">3</span>
               <div>
-                <p className="font-medium text-ink">They reach out within one business day.</p>
+                <p className="font-medium text-ink">If we introduce someone, they contact you.</p>
                 <p className="text-sm text-ink-muted mt-1 leading-relaxed">
                   Their profile arrives first, by email, so you know who you&rsquo;re talking to before the conversation starts.
                 </p>
