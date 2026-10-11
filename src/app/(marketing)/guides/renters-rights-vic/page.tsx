@@ -3,6 +3,7 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -10,16 +11,21 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
-import { renterGuideLinks } from "@/lib/data/renters-rights";
+import { VIC_RENTERS_SOURCES, renterGuideLinks, sourceItems } from "@/lib/data/renters-rights";
 
+// Every rule below is from the Consumer Affairs Victoria pages in
+// VIC_RENTERS_SOURCES, read 11 October 2026. Until this rewrite the guide
+// missed the 2025 laws and gave an inspection rule that contradicted CAV
+// (commercial-intent review, 10 Oct 2026, renting 0.3).
 const FRONTMATTER: GuideFrontmatter = {
-  title: "Renter's Rights in Victoria: Complete Guide (2026)",
+  title: "Tenant Rights in Victoria (2026): Renters' Rules Explained",
+  h1: "Tenant and renter rights in Victoria (2026)",
   description:
-    "Victoria's renter rights: no-grounds evictions abolished, pet ownership, modification rights, bond rules, rent increases, and VCAT disputes.",
+    "Victorian renting rules as at October 2026: the 2025 ban on no-fault evictions, 90 days' notice, rent increases, bond, repairs, inspections, pets and RDRV.",
   slug: "renters-rights-vic",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
-  readingTimeMinutes: 10,
+  updatedAt: "2026-10-11",
+  readingTimeMinutes: 12,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
 };
@@ -45,65 +51,72 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Since March 2021, no-grounds evictions are abolished in Victoria. Landlords need a valid reason to end a tenancy.",
-  "Renters can keep pets unless the landlord refuses on reasonable grounds and successfully applies to VCAT within 14 days. No pet bond allowed.",
-  "Renters can make minor modifications (picture hooks, securing furniture, garden stakes) without landlord permission. Larger modifications need consent that can't be unreasonably refused.",
-  "Maximum bond: 1 month's rent for properties up to $900/week, 2 months for properties above. Lodged with the RTBA within 10 business days.",
-  "Rent can only go up once every 12 months with at least 60 days written notice. VCAT can review excessive increases.",
-  "Urgent repairs must be addressed within 24 hours. Tenants can arrange repairs up to $2,500 and reclaim cost if landlord doesn't respond.",
+  "Since 25 November 2025 a Victorian rental provider (landlord) can't give a notice to vacate without a valid reason, even at the end of a fixed term. A fixed term that ends without a new agreement becomes month-by-month.",
+  "Most notices to vacate for a valid reason, such as a sale, renovation or the owner moving in, now need 90 days' notice (60 days before 25 November 2025).",
+  "Rent can rise only once every 12 months, with 90 days' notice on the prescribed form. You can ask Consumer Affairs Victoria (CAV) for a free rent assessment within 30 days of the notice.",
+  "A bond can't be more than one month's rent unless the rent is over $900 a week or VCAT sets a higher bond. There is no pet bond.",
+  "General inspections: not in the first 3 months, at most once every 6 months, with 7 days' written notice, between 8am and 6pm and not on public holidays.",
+  "Urgent repairs must be done immediately; if the rental provider doesn't respond, you can arrange one costing up to $2,500 and be repaid within 7 days. Non-urgent repairs are due within 14 days of a written request.",
 ];
 
 const TOC: GuideTOCEntry[] = [
-  { id: "rta",            label: "Victorian Residential Tenancies Act" },
-  { id: "bond",           label: "Bond rules" },
+  { id: "rta",            label: "The Residential Tenancies Act 1997" },
+  { id: "what-changed",   label: "What changed in 2025 and 2026" },
+  { id: "notice-to-vacate", label: "Notices to vacate: reasons and notice" },
   { id: "rent-increases", label: "Rent increases" },
-  { id: "repairs",        label: "Repairs and maintenance" },
-  { id: "entry-rights",   label: "Landlord entry rights" },
-  { id: "modifications",  label: "Modifications to the property" },
-  { id: "pets",           label: "Pet ownership" },
-  { id: "ending-tenancy", label: "Ending a tenancy" },
-  { id: "no-grounds",     label: "No-grounds evictions abolished" },
-  { id: "disputes",       label: "Resolving disputes via VCAT" },
+  { id: "bond",           label: "Bond" },
+  { id: "entry-rights",   label: "Inspections and entry" },
+  { id: "repairs",        label: "Repairs" },
+  { id: "modifications",  label: "Changes to the property" },
+  { id: "pets",           label: "Pets" },
+  { id: "disputes",       label: "RDRV and VCAT" },
   { id: "resources",      label: "Resources and contacts" },
 ];
 
 const FAQS: FaqItem[] = [
   {
+    question: "What are the recent changes to Victorian rental law?",
+    answer:
+      "From 25 November 2025 a rental provider can't give a notice to vacate without a valid reason, even at the end of a fixed term; the notice for a rent increase and for most notices to vacate rose from 60 to 90 days; all forms of rental bidding are banned; and properties must meet the minimum standards when advertised. A standard rental application form followed on 31 March 2026 (Consumer Affairs Victoria, updated 27 September 2026).",
+  },
+  {
     question: "Can my landlord end my tenancy without a reason in Victoria?",
     answer:
-      "No. Since March 2021, no-grounds notices to vacate are illegal in Victoria. Landlords must cite a legally valid reason, e.g. the property is sold and requires vacant possession, the owner is moving in, or major renovations are planned. If you suspect the stated reason isn't genuine (e.g. owner claims to move in then re-lists the property), you can challenge at VCAT.",
+      "No. Since 25 November 2025 a rental provider must give a valid reason for any notice to vacate, including at the end of a fixed-term agreement, and some reasons need evidence such as a building permit or a statutory declaration; without it the notice is invalid. A fixed term that ends with no new agreement and no valid notice becomes month-by-month (Consumer Affairs Victoria).",
   },
   {
-    question: "Can my landlord refuse to let me have a pet?",
+    question: "How much notice does a rental provider need to give in Victoria?",
     answer:
-      "Only on reasonable grounds, and they must apply to VCAT within 14 days to formalise the refusal. Reasonable grounds include the property being unsuitable for the pet's size or council rules being breached. Landlords cannot charge a 'pet bond' in Victoria. Tenants remain responsible for any damage caused by their pet.",
+      "90 days for most valid reasons, including selling, renovating, demolishing, a change of use and the rental provider or their family moving in (60 days before 25 November 2025). Shorter notice applies where the renter is at fault: 14 days for rent at least 14 days overdue, and immediate notice for serious damage or danger to others (Consumer Affairs Victoria, updated 26 February 2026).",
   },
   {
-    question: "What modifications can I make without asking the landlord?",
+    question: "How often can the rent go up in Victoria?",
     answer:
-      "Minor modifications since the 2021 reforms: hanging pictures with nails or hooks, installing curtain rods or blinds, securing furniture for safety, picture hooks, garden stakes, doormats. Larger changes (dishwasher, AC install, structural changes) need consent, which can't be unreasonably refused. You may need to restore the original condition when vacating.",
+      "No more than once every 12 months in most agreements, and only with at least 90 days' notice on the prescribed Notice of proposed rent increase form; a notice on the wrong form is not valid. If you think the increase is too high, you can ask Consumer Affairs Victoria for a free rent assessment within 30 days of the notice, and then go to Rental Dispute Resolution Victoria (Consumer Affairs Victoria, 2026).",
   },
   {
-    question: "How fast must urgent repairs be done in Victoria?",
+    question: "How often can a landlord inspect a rental in Victoria?",
     answer:
-      "Within 24 hours of being reported. Urgent repairs include burst pipes, gas leaks, dangerous electrical faults, serious flooding, failure of cooling/heating in extreme weather, and blocked sewers. If the landlord fails to respond, you can arrange repairs up to $2,500 (raised under the 2021 reforms) and reclaim the cost.",
+      "A general inspection can happen only after the first 3 months of the agreement and at most once every 6 months, with at least 7 days' written notice stating the reason. Entry is allowed only between 8am and 6pm and not on public holidays unless you agree (Consumer Affairs Victoria, When a rental provider can enter a property, updated 23 April 2025).",
   },
   {
-    question: "How big a bond can the landlord demand?",
+    question: "Can my landlord refuse a pet in Victoria?",
     answer:
-      "1 month's rent for properties up to $900/week. 2 months' rent for properties above $900/week. Lodged with the Residential Tenancies Bond Authority (RTBA) within 10 business days. You can check your bond at rtba.vic.gov.au.",
+      "Only through VCAT. The rental provider has 14 days from receiving your request to agree in writing or apply to VCAT to refuse it; if they don't respond within 14 days you can keep the pet. You can't keep the pet while VCAT decides, and a rental provider can't ask for a pet bond (Consumer Affairs Victoria, Pets).",
   },
   {
-    question: "What happens to a fixed-term lease at the end of the term?",
+    question: "How big a bond can a landlord ask for in Victoria?",
     answer:
-      "If you stay without signing a new lease, it automatically becomes periodic on the same terms. The landlord can't issue a no-grounds notice on a periodic tenancy in Victoria; they still need a valid reason and the appropriate notice period (typically 60 days).",
+      "In most cases no more than one month's rent. A higher bond is allowed only when the weekly rent is more than $900 or VCAT has set a higher bond for the property. If you pay the rental provider, they must lodge the bond with the Residential Tenancies Bond Authority within 14 days, not counting public holidays (Consumer Affairs Victoria, updated 27 September 2026).",
   },
 ];
 
 const RELATED: RelatedGuide[] = [
   ...renterGuideLinks(["NSW", "QLD", "WA", "SA"]),
-  { title: "First Home Buyer Guide VIC",      href: "/guides/first-home-buyer-vic", description: "When you're ready to stop renting and buy your first home." },
+  { title: "First Home Buyer Guide VIC", href: "/guides/first-home-buyer-vic", description: "When you're ready to stop renting and buy your first home." },
 ];
+
+const S = VIC_RENTERS_SOURCES;
 
 export default function RentersRightsVICPage() {
   return (
@@ -113,217 +126,219 @@ export default function RentersRightsVICPage() {
       toc={TOC}
       faqs={FAQS}
       related={RELATED}
+      sourced
     >
+      <Callout variant="info" title="Correction, 11 October 2026">
+        <p>
+          Earlier versions of this guide (reviewed April 2026) said
+          no-grounds evictions had been abolished in March 2021, gave 60
+          days&apos; notice for rent increases and notices to vacate, said
+          inspections were limited to four a year, and gave a bond rule of two
+          months&apos; rent above $900 a week. Consumer Affairs Victoria dates
+          the ban on notices to vacate without a valid reason, including at
+          the end of a fixed term, and the move to 90 days&apos; notice, to 25
+          November 2025. We have rewritten the guide from the CAV pages listed
+          at the end.
+        </p>
+      </Callout>
+
       <Callout variant="warning" title="Not legal advice">
         <p>
-          This guide is general information only, not legal advice. Laws change.
-          Verify current rules with{" "}
-          <a href="https://www.consumer.vic.gov.au/renting" target="_blank" rel="noopener noreferrer">
+          This guide is general information only, not legal advice. Check the
+          current rules with{" "}
+          <a href="https://www.consumer.vic.gov.au/housing/renting" target="_blank" rel="noopener noreferrer">
             Consumer Affairs Victoria
           </a>{" "}
-          or{" "}
-          <a href="https://www.tenantsvic.org.au" target="_blank" rel="noopener noreferrer">
-            Tenants Victoria
-          </a>{" "}
-          before taking action.
+          before you act.
         </p>
       </Callout>
 
-      <Callout variant="info" title="Victoria leads the way">
-        <p>
-          Since March 2021, no-grounds evictions have been abolished in
-          Victoria. Landlords must have a valid reason to end a tenancy.
-          Victoria also has stronger pet rights and modification rights than
-          most other states.
-        </p>
-      </Callout>
-
-      <h2 id="rta">The Victorian Residential Tenancies Act 1997</h2>
+      <h2 id="rta">The Residential Tenancies Act 1997</h2>
       <p className="lead">
-        The Residential Tenancies Act 1997 (VIC) governs all residential
-        tenancies in Victoria. The Act was significantly reformed in March 2021,
-        introducing some of the strongest renter protections in Australia,
-        including the abolition of no-grounds evictions, expanded modification
-        rights, and new pet ownership rules.
+        Since 25 November 2025 a Victorian rental provider needs a valid
+        reason for any notice to vacate, even at the end of a fixed term, and
+        must give 90 days&apos; notice of a rent increase (Consumer Affairs
+        Victoria). Renting in Victoria is governed by the Residential
+        Tenancies Act 1997, which calls tenants &ldquo;renters&rdquo; and
+        landlords &ldquo;rental providers&rdquo;.
       </p>
       <p>
-        The reforms added over 130 new minimum standards for rental properties.
-        Properties must meet basic standards of habitability: working locks,
-        functional heating, draught sealing, adequate lighting in bathrooms and
-        laundries, and a vermin-proof rubbish bin.
-      </p>
-      <p>
-        The Act is administered by Consumer Affairs Victoria, with disputes
-        heard by the Victorian Civil and Administrative Tribunal (VCAT).
+        Consumer Affairs Victoria (CAV) explains and enforces the rules,
+        the Residential Tenancies Bond Authority (RTBA) holds bonds, Rental
+        Dispute Resolution Victoria (RDRV) is the free first stop for most
+        disputes, and the Victorian Civil and Administrative Tribunal (VCAT)
+        decides those RDRV can&apos;t resolve.
       </p>
 
-      <h2 id="bond">Bond rules</h2>
+      <h2 id="what-changed">What changed in 2025 and 2026</h2>
+      <p>By start date (Consumer Affairs Victoria, updated 27 September 2026):</p>
       <ul>
-        <li><strong>Maximum bond:</strong> 1 month&apos;s rent for properties up to $900/week, 2 months&apos; rent for properties above $900/week.</li>
-        <li><strong>Lodgement:</strong> The bond must be lodged with the Residential Tenancies Bond Authority (RTBA) within 10 business days. Check yours at rtba.vic.gov.au.</li>
-        <li><strong>Claiming the bond:</strong> If both parties agree, the bond is refunded at the end of tenancy. Disputes go to VCAT.</li>
+        <li><strong>25 November 2025:</strong> ban on no-fault evictions: no notice to vacate without a valid reason, even at the end of a fixed term. Notice for a rent increase and for certain notices to vacate rose to 90 days. All forms of rental bidding banned, including accepting an offer above the advertised rent or more than one month&apos;s rent in advance. Properties must meet the minimum standards when advertised. Annual smoke alarm checks for all rental agreements, and new rules protecting renters&apos; personal information.</li>
+        <li><strong>1 December 2025:</strong> internal window coverings must have secured cords.</li>
+        <li><strong>31 March 2026:</strong> a prescribed rental application form; limits on what applicants can be asked; third-party businesses barred from charging renters fees for applications or rent payments; more factors considered when deciding whether a rent increase is excessive.</li>
+        <li><strong>1 July 2026:</strong> eligible renters can move their bond to a new rental under the Portable Rental Bond Scheme.</li>
+        <li><strong>9 September 2026:</strong> renters can pay the bond directly to the RTBA.</li>
       </ul>
+      <p>Coming next:</p>
+      <ul>
+        <li><strong>From 13 October 2026:</strong> rental providers must tell you in advance, with evidence, if they will claim on the bond; gas and electrical safety checks every 2 years; records showing the property met the minimum standards; no fees for making a rental application.</li>
+        <li><strong>Phased in from 1 March 2027:</strong> minimum energy efficiency standards for heating, cooling, hot water, showerheads, ceiling insulation and draughtproofing.</li>
+      </ul>
+
+      <h2 id="notice-to-vacate">Notices to vacate: reasons and notice</h2>
+      <p>
+        A rental provider can give a notice to vacate only for a reason the
+        law lists, and some reasons need evidence with the notice. On a fixed
+        term, the termination date must be on or after the end date of the
+        agreement; on a month-by-month agreement the notice can be given at
+        any time, for a valid reason. A notice can&apos;t be given because you
+        asked for repairs or a pet, or challenged a rent increase.
+      </p>
+      <table>
+        <thead>
+          <tr><th>Reason</th><th>Evidence needed</th><th>Minimum notice</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Sale, or putting the property up for sale with vacant possession</td><td>Contract of sale, agent&apos;s authority to sell, or a contract prepared by a conveyancer or lawyer</td><td>90 days</td></tr>
+          <tr><td>The rental provider, their immediate family or a dependant moving in</td><td>Statutory declaration</td><td>90 days</td></tr>
+          <tr><td>Repairs, renovation or reconstruction that need the property empty</td><td>Building permit</td><td>90 days</td></tr>
+          <tr><td>Demolition</td><td>Building permit for demolition and a builder-demolisher&apos;s contract</td><td>90 days</td></tr>
+          <tr><td>Use for another purpose, such as a business</td><td>Statutory declaration and business details</td><td>90 days</td></tr>
+          <tr><td>Rent at least 14 days overdue, and other renter breaches on CAV&apos;s list</td><td>n/a</td><td>14 days</td></tr>
+          <tr><td>Serious damage, or putting others in danger</td><td>n/a</td><td>Immediate</td></tr>
+        </tbody>
+      </table>
+      <p>
+        After a notice to vacate for a sale, demolition or the rental provider
+        or family moving in, the property can&apos;t be re-let as a home for 6
+        months from the notice unless VCAT approves. If you don&apos;t leave,
+        the rental provider can apply to VCAT for a possession order; you can
+        challenge a notice that wasn&apos;t given properly or whose reason you
+        dispute.
+      </p>
+      <p>
+        <strong>Your notice:</strong> to leave at the end of an agreement you
+        must give 28 days&apos; notice. Some reasons let you leave early
+        without breaking the agreement, on 14 days&apos; notice: for example
+        if you are given a notice of intention to sell and the sale
+        wasn&apos;t disclosed before you signed. People experiencing family
+        violence can apply to VCAT to change or end the agreement.
+      </p>
 
       <h2 id="rent-increases">Rent increases</h2>
       <ul>
-        <li><strong>Frequency:</strong> Once every 12 months, both fixed-term and periodic.</li>
-        <li><strong>Notice:</strong> At least 60 days written notice.</li>
-        <li><strong>Challenge:</strong> Apply to VCAT within 30 days of receiving notice if you believe the increase is excessive.</li>
+        <li>In most agreements the rent can&apos;t go up more than once every <strong>12 months</strong>, even if the agreement says otherwise. On a long-term agreement it can rise only if the agreement allows it.</li>
+        <li>The rental provider must give at least <strong>90 days&apos; notice</strong> (60 days before 25 November 2025), on the prescribed Notice of proposed rent increase form. A notice on the wrong form is not valid.</li>
       </ul>
+      <KeyFigure
+        value="12 months / 90 days"
+        label="Minimum gap between rent increases, and minimum notice of one, in Victoria."
+        context="Consumer Affairs Victoria, Rent increases, updated 26 February 2026"
+      />
       <p>
-        During a fixed-term tenancy, rent can only be increased if the amount or
-        method of calculation is specified in the agreement.
+        If you think an increase is too high, ask CAV for a free rent
+        assessment <strong>within 30 days</strong> of the notice; you
+        can&apos;t be forced to leave for asking. CAV looks at comparable
+        rents, the size of the increase against the current rent and Melbourne
+        CPI, increases in the past 24 months and the condition of the
+        property. If the report finds the increase too high and the rental
+        provider won&apos;t lower it, apply to RDRV within 30 days of the
+        report; VCAT can set a maximum rent, usually for 12 months.
       </p>
 
-      <h2 id="repairs">Repairs and maintenance</h2>
-      <p>
-        Landlords must keep the property in good repair and compliant with
-        health and safety laws.
-      </p>
-
-      <h3>Urgent repairs</h3>
-      <p>
-        Must be attended to within <strong>24 hours</strong> of being reported.
-        These include burst pipes, gas leaks, dangerous electrical faults,
-        serious flooding, failure of cooling/heating in extreme weather, and
-        blocked sewers.
-      </p>
-      <p>
-        If the landlord fails to respond, tenants may arrange repairs up to{" "}
-        <strong>$2,500</strong> (raised under the 2021 reforms) and reclaim the
-        cost.
-      </p>
-
-      <h3>Non-urgent repairs</h3>
-      <p>
-        Must be completed within <strong>14 days</strong> of written notice.
-        Always document repair requests in writing and keep records of the
-        landlord&apos;s response.
-      </p>
-
-      <h2 id="entry-rights">Landlord entry rights</h2>
+      <h2 id="bond">Bond</h2>
       <ul>
-        <li><strong>Routine inspections:</strong> Maximum 4 per year, at least 24 hours notice (no more than 14 days in advance)</li>
-        <li><strong>General entry:</strong> At least 24 hours notice for most types of entry</li>
-        <li><strong>Emergency:</strong> No notice required in genuine emergencies</li>
-      </ul>
-      <p>
-        Entry must be between 8am and 6pm weekdays, or 9am and 6pm Saturdays.
-        Not permitted on Sundays or public holidays without consent.
-      </p>
-
-      <h2 id="modifications">Modifications to the property</h2>
-      <p>
-        One of the most significant areas where VIC differs from other states.
-        Since the 2021 reforms, renters can make <strong>minor
-        modifications</strong> without landlord permission.
-      </p>
-      <ul>
-        <li>Hanging pictures with nails or hooks</li>
-        <li>Installing curtain rods or blinds</li>
-        <li>Securing furniture to walls for safety</li>
-        <li>Installing picture hooks, garden stakes, or doormats</li>
-      </ul>
-      <p>
-        For larger modifications (installing a dishwasher, air conditioning,
-        structural changes), the landlord&apos;s consent is required, but consent
-        cannot be unreasonably refused. When vacating, the tenant typically
-        restores the property to original condition (or the landlord may agree
-        to leave modifications in place).
-      </p>
-
-      <h2 id="pets">Pet ownership</h2>
-      <p>Victoria has some of the most progressive pet rules in Australia:</p>
-      <ul>
-        <li>Renters <strong>can keep pets</strong>, landlords can&apos;t simply refuse without reason</li>
-        <li>Landlords may only refuse on <strong>reasonable grounds</strong> as defined in the Act (property unsuitable for the pet, council rules)</li>
-        <li>If refused, the landlord must apply to VCAT within 14 days with their reasons; tenants can challenge the refusal</li>
-      </ul>
-      <p>
-        Landlords <strong>cannot charge a &quot;pet bond&quot;</strong> in Victoria. Tenants
-        remain responsible for any damage caused by their pet.
-      </p>
-
-      <h2 id="ending-tenancy">Ending a tenancy</h2>
-      <p>
-        The major 2021 reform: landlords must now have a <strong>valid
-        reason</strong> to end a tenancy, no-grounds notices are no longer
-        permitted.
-      </p>
-      <ul>
-        <li>Property sold, buyer requires vacant possession, <strong>60 days notice</strong></li>
-        <li>Major renovations or demolition, <strong>60 days notice</strong></li>
-        <li>Owner or immediate family moving in, <strong>60 days notice</strong></li>
-        <li>Significant breach of duties by the renter, VCAT order required</li>
+        <li><strong>Maximum:</strong> in most cases one month&apos;s rent. A higher bond is allowed only if the weekly rent is more than $900 or VCAT has set a higher bond for the property.</li>
+        <li><strong>No pet bond:</strong> a rental provider can&apos;t ask for an extra bond for a pet.</li>
+        <li><strong>Lodging:</strong> the RTBA holds every bond. If you pay the rental provider, they must lodge it within 14 days, not counting public holidays; since 9 September 2026 you can pay the RTBA directly if you tell the rental provider in writing first. The RTBA sends a receipt within 7 days.</li>
+        <li><strong>Moving:</strong> since 1 July 2026 eligible renters can transfer their bond to a new rental under the Portable Rental Bond Scheme.</li>
       </ul>
 
+      <h2 id="entry-rights">Inspections and entry</h2>
       <table>
         <thead>
-          <tr><th>Situation</th><th>Tenant notice</th><th>Landlord notice</th></tr>
+          <tr><th>Reason for entry</th><th>Minimum written notice</th></tr>
         </thead>
         <tbody>
-          <tr><td>End of fixed term</td><td>28 days</td><td>Must have valid reason</td></tr>
-          <tr><td>Periodic, sold (vacant possession)</td><td>N/A</td><td>60 days</td></tr>
-          <tr><td>Periodic, major renovations</td><td>N/A</td><td>60 days</td></tr>
+          <tr><td>General (routine) inspection: not in the first 3 months, at most once every 6 months</td><td>7 days</td></tr>
+          <tr><td>Repairs or other legal duties</td><td>24 hours</td></tr>
+          <tr><td>Showing the property to renters, buyers or lenders</td><td>48 hours</td></tr>
+          <tr><td>A valuation, or photos or video for advertising</td><td>7 days</td></tr>
         </tbody>
       </table>
-
-      <h2 id="no-grounds">No-grounds evictions, abolished in VIC</h2>
       <p>
-        Since <strong>March 2021</strong>, it&apos;s illegal for a Victorian landlord
-        to issue a no-grounds notice to vacate. Landlords cannot end your
-        tenancy simply because they want to, without a legally valid reason.
+        Entry is allowed only between 8am and 6pm and not on a public holiday,
+        unless you agree no more than 7 days before. Prospective renters can be
+        shown through only in the last 21 days of the agreement. For each sales
+        inspection the rental provider must compensate you half a day&apos;s
+        rent or $30, whichever is more.
       </p>
 
-      <KeyFigure
-        value="0"
-        label="No-grounds evictions allowed in Victoria since March 2021."
-      />
-
+      <h2 id="repairs">Repairs</h2>
       <p>
-        If you receive a notice that doesn&apos;t cite a valid reason, or you believe
-        the stated reason isn&apos;t genuine (e.g. owner claims to move in, then
-        re-lists the property), you can challenge it at VCAT. This protection
-        applies to both fixed-term and periodic tenancies.
+        Urgent repairs, the list the law defines (such as a burst water
+        service, a gas leak or a dangerous electrical fault), must be done
+        immediately. Ask the rental provider or agent straight away. If they
+        don&apos;t respond, you can arrange and pay for an urgent repair
+        costing <strong>$2,500 or less</strong>; give them written notice with
+        the receipts within 7 days and they have 7 days to repay you. For
+        repairs over $2,500, or if you aren&apos;t repaid, apply to RDRV.
+      </p>
+      <p>
+        Non-urgent repairs must be done within <strong>14 days</strong> of your
+        written request. If they aren&apos;t, you can ask CAV for a repairs
+        inspection or apply to VCAT.
       </p>
 
-      <h2 id="disputes">Resolving disputes, VCAT</h2>
+      <h2 id="modifications">Changes to the property</h2>
       <p>
-        VCAT handles tenancy disputes in Victoria. Applications can be made
-        online and hearings are generally held within a few weeks for urgent
-        matters.
+        You can make some changes without permission, including curtains,
+        removable window film, a wireless doorbell, adhesive child safety
+        locks and, unless the property is heritage-listed, picture hooks and
+        furniture anchors on surfaces other than exposed brick or concrete.
+        For other changes you need the rental provider&apos;s permission, and
+        for some, such as flyscreens, a vegetable garden or painting, they
+        can refuse only with a good reason (CAV, updated 7 December 2025).
       </p>
+
+      <h2 id="pets">Pets</h2>
       <ul>
-        <li>Bond disputes</li>
-        <li>Repair orders</li>
-        <li>Challenging rent increases</li>
-        <li>Challenging notices to vacate</li>
-        <li>Pet permission disputes</li>
+        <li>Ask the rental provider in writing. They have <strong>14 days</strong> from the day after they receive the request to agree in writing or apply to VCAT to refuse.</li>
+        <li>If they don&apos;t respond within 14 days, you can keep the pet. You can&apos;t keep it while VCAT is deciding.</li>
+        <li>There is no pet bond. If VCAT orders the pet excluded and you don&apos;t comply within 14 days, the rental provider can give 28 days&apos; notice to vacate.</li>
       </ul>
+
+      <h2 id="disputes">RDRV and VCAT</h2>
       <p>
-        Consumer Affairs Victoria also provides free dispute resolution services
-        before going to VCAT.
+        Rental Dispute Resolution Victoria is a free service for renters,
+        rental providers and agents that helps resolve most renting disputes,
+        including rent increases, repairs and bonds. If RDRV can&apos;t resolve
+        it, it helps you apply to VCAT. Keep letters, emails, photos and
+        receipts as evidence.
       </p>
 
       <h2 id="resources">Resources and contacts</h2>
       <ul>
         <li>
-          <strong>Consumer Affairs Victoria</strong>:{" "}
-          <a href="https://www.consumer.vic.gov.au/renting" target="_blank" rel="noopener noreferrer">consumer.vic.gov.au/renting</a>
+          <strong>Consumer Affairs Victoria</strong>, renting:{" "}
+          <a href="https://www.consumer.vic.gov.au/housing/renting" target="_blank" rel="noopener noreferrer">consumer.vic.gov.au/housing/renting</a>
         </li>
         <li>
-          <strong>Tenants Victoria</strong>, free advice and advocacy:{" "}
-          <a href="https://www.tenantsvic.org.au" target="_blank" rel="noopener noreferrer">tenantsvic.org.au</a>
+          <strong>Residential Tenancies Bond Authority</strong>:{" "}
+          <a href="https://rtba.vic.gov.au" target="_blank" rel="noopener noreferrer">rtba.vic.gov.au</a>
         </li>
         <li>
-          <strong>RTBA</strong>, check your bond:{" "}
-          <a href="https://www.rtba.vic.gov.au" target="_blank" rel="noopener noreferrer">rtba.vic.gov.au</a>
-        </li>
-        <li>
-          <strong>VCAT</strong>, lodging a dispute:{" "}
+          <strong>VCAT</strong>:{" "}
           <a href="https://www.vcat.vic.gov.au" target="_blank" rel="noopener noreferrer">vcat.vic.gov.au</a>
         </li>
       </ul>
+
+      <Sources
+        items={[
+          ...sourceItems(S),
+          "Every rule on this page is from the Consumer Affairs Victoria pages above, which cite the Residential Tenancies Act 1997 as amended. Each page's own last-updated date is given.",
+        ]}
+      />
     </GuideArticleLayout>
   );
 }

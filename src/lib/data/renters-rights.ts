@@ -46,7 +46,7 @@ export const RENTERS_GUIDES: Record<RentersState, RentersGuide> = {
     state: "VIC",
     slug: "renters-rights-vic",
     linkTitle: "Renters' rights in Victoria",
-    blurb: "Victorian renting rules, bonds, repairs and VCAT.",
+    blurb: "Since 25 November 2025 Victoria bans notices to vacate without a reason.",
   },
   QLD: {
     state: "QLD",
@@ -169,6 +169,78 @@ export const NSW_RENTERS_SOURCES = {
     label: "NSW Fair Trading, Ending a tenancy because of domestic violence and abuse",
     href: `${NSW_GOV}/rules/ending-a-tenancy-because-of-domestic-violence-and-abuse`,
     date: "no date shown",
+    read: READ,
+  },
+} as const satisfies Record<string, RentersSource>;
+
+const CAV = "https://www.consumer.vic.gov.au/housing/renting";
+
+/** Consumer Affairs Victoria pages behind /guides/renters-rights-vic. */
+export const VIC_RENTERS_SOURCES = {
+  changes: {
+    label: "Consumer Affairs Victoria, New changes to the rental laws (start date of each change)",
+    href: `${CAV}/new-changes-to-the-rental-laws`,
+    date: "last updated 27 September 2026",
+    read: READ,
+  },
+  noticeToVacate: {
+    label: "Consumer Affairs Victoria, Notice to vacate in rental properties (reasons, evidence and notice periods)",
+    href: `${CAV}/moving-out-giving-notice-and-evictions/notice-to-vacate/notice-to-vacate-in-rental-properties`,
+    date: "last updated 26 February 2026",
+    read: READ,
+  },
+  renterNotice: {
+    label: "Consumer Affairs Victoria, Renters giving notice of intention to vacate",
+    href: `${CAV}/moving-out-giving-notice-and-evictions/giving-notice-as-a-renter/renter-giving-notice`,
+    date: "last updated 7 December 2025",
+    read: READ,
+  },
+  rentIncreases: {
+    label: "Consumer Affairs Victoria, Rent increases",
+    href: `${CAV}/rent-bond-bills-and-condition-reports/rent/rent-increases`,
+    date: "last updated 26 February 2026",
+    read: READ,
+  },
+  rentChallenge: {
+    label: "Consumer Affairs Victoria, Challenging rent increases or high rent",
+    href: `${CAV}/rent-bond-bills-and-condition-reports/rent/challenging-rent-increases-or-high-rent`,
+    date: "last updated 30 March 2026",
+    read: READ,
+  },
+  bond: {
+    label: "Consumer Affairs Victoria, Bond amounts and paying a bond",
+    href: `${CAV}/rent-bond-bills-and-condition-reports/bond/bond-amounts-and-paying-a-bond`,
+    date: "last updated 27 September 2026",
+    read: READ,
+  },
+  entry: {
+    label: "Consumer Affairs Victoria, When a rental provider can enter a property",
+    href: `${CAV}/rental-providers-inspecting-or-entering-a-property/when-a-rental-provider-can-enter-a-property`,
+    date: "last updated 23 April 2025",
+    read: READ,
+  },
+  repairs: {
+    label: "Consumer Affairs Victoria, Repairs in rental properties",
+    href: `${CAV}/repairs-alterations-safety-and-pets/repairs/repairs-in-rental-properties`,
+    date: "last updated 26 February 2026",
+    read: READ,
+  },
+  pets: {
+    label: "Consumer Affairs Victoria, Pets",
+    href: `${CAV}/repairs-alterations-safety-and-pets/pets`,
+    date: "last updated 23 April 2025",
+    read: READ,
+  },
+  modifications: {
+    label: "Consumer Affairs Victoria, Renters making changes to the property",
+    href: `${CAV}/repairs-alterations-safety-and-pets/renters-making-changes-to-the-property`,
+    date: "last updated 7 December 2025",
+    read: READ,
+  },
+  disputes: {
+    label: "Consumer Affairs Victoria, Resolving disputes (Rental Dispute Resolution Victoria)",
+    href: `${CAV}/legal-and-dispute-support/resolving-disputes`,
+    date: "last updated 26 February 2026",
     read: READ,
   },
 } as const satisfies Record<string, RentersSource>;

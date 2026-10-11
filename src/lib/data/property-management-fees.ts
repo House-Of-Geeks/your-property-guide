@@ -120,7 +120,7 @@ export const PM_FEE_SOURCES: Record<PmSourceKey, PmSource> = {
     n: 13,
     label: "Consumer Affairs Victoria, When a rental provider can enter a property (general inspection once every six months, not in the first three)",
     href: "https://www.consumer.vic.gov.au/housing/renting/rental-providers-inspecting-or-entering-a-property/when-a-rental-provider-can-enter-a-property",
-    date: "read 30 September 2026",
+    date: "last updated 23 April 2025, read 11 October 2026",
   },
   "qld-fees": {
     n: 14,

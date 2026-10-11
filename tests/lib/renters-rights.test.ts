@@ -6,9 +6,11 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+import { PM_STATE_FEES } from "@/lib/data/property-management-fees";
 import {
   NSW_RENTERS_SOURCES,
   SA_RENTERS_SOURCES,
+  VIC_RENTERS_SOURCES,
   RENTERS_GUIDES,
   renterGuideLinks,
   sourceItems,
@@ -104,6 +106,33 @@ describe("SA renters' rights guide", () => {
     expect(src).toMatch(/\n\s+sourced\n/);
     for (const s of Object.values(SA_RENTERS_SOURCES)) {
       expect(s.href).toMatch(/^https:\/\/(www\.sa\.gov\.au|cbs\.sa\.gov\.au)\//);
+      expect(s.date).toMatch(DATE);
+    }
+  });
+});
+
+describe("VIC renters' rights guide", () => {
+  const src = page("renters-rights-vic");
+
+  it("states the 25 November 2025 changes, not a 2021 abolition", () => {
+    expect(src).not.toMatch(/Since March 2021, no-grounds evictions are abolished/);
+    expect(src).not.toMatch(/at least 60 days written notice/);
+    expect(src).toContain("Since 25 November 2025 a Victorian rental provider");
+    expect(src).toContain("90 days");
+    expect(RENTERS_GUIDES.VIC.blurb).toContain("25 November 2025");
+  });
+
+  it("gives Consumer Affairs Victoria's inspection rule, as the property management data does", () => {
+    expect(src).not.toMatch(/Maximum 4 per year/i);
+    expect(src).toContain("not in the first 3 months, at most once every 6 months");
+    expect(PM_STATE_FEES.VIC.inspectionsNote).toMatch(/one general inspection every six months and none in the first three months/);
+    expect(PM_STATE_FEES.VIC.inspectionsPerYear).toBe(2);
+  });
+
+  it("cites Consumer Affairs Victoria pages with their own dates", () => {
+    expect(src).toMatch(/\n\s+sourced\n/);
+    for (const s of Object.values(VIC_RENTERS_SOURCES)) {
+      expect(s.href).toMatch(/^https:\/\/www\.consumer\.vic\.gov\.au\//);
       expect(s.date).toMatch(DATE);
     }
   });
