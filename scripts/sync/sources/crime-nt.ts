@@ -127,7 +127,8 @@ export async function run(): Promise<void> {
     // to look up region-level data via the lga field.
     await prisma.suburb.updateMany({
       where: { state: "NT" },
-      data: { statsUpdatedAt: new Date(), crimeUpdatedAt: new Date() },
+      // statsUpdatedAt belongs to the sales feeds.
+      data: { crimeUpdatedAt: new Date() },
     });
 
     await finishSync(SOURCE_ID, count, periodDate);

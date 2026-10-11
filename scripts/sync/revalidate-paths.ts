@@ -3,8 +3,8 @@
  *
  * The suburb profile and its sub-pages are 7-day ISR routes. After a sync
  * writes new stats, this asks production to invalidate the cached HTML of
- * every suburb touched in the window (profile, rental-market, schools
- * sub-page) and every postcode page those suburbs belong to, so the next
+ * every suburb touched in the window (profile, rental-market, schools and
+ * agents sub-pages) and every postcode page those suburbs belong to, so the next
  * visitor or crawler sees the new numbers instead of a week-old page.
  * Invalidation is lazy (regenerated on next request), so a big batch does
  * not cause a render storm. Runs before indexnow-ping in the cron scripts.
@@ -58,7 +58,9 @@ async function main(): Promise<void> {
   const paths: string[] = [];
   const postcodes = new Set<string>();
   for (const s of changed) {
-    paths.push(`/suburbs/${s.slug}`, `/suburbs/${s.slug}/rental-market`, `/suburbs/${s.slug}/schools`);
+    // The agents page publishes the median and is indexable only with one
+    // (src/lib/suburb-agents.ts), so a sales label change moves it too.
+    paths.push(`/suburbs/${s.slug}`, `/suburbs/${s.slug}/rental-market`, `/suburbs/${s.slug}/schools`, `/suburbs/${s.slug}/agents`);
     postcodes.add(s.postcode);
   }
   for (const pc of postcodes) paths.push(`/postcodes/${pc}`);

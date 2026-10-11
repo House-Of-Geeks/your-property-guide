@@ -42,7 +42,7 @@
  * sourceRowKey = `${districtCode}:${propertyId}:${saleCounter}` (globally unique within NSW VG)
  *
  * CLI flags:
- *   --dry-run             — parse + count, write nothing
+ *   --dry-run             : parse + count, write nothing (not even the DataSource row)
  *   --year=2024           — process only this year (no YoY aggregate; rows still capture)
  *   --years=2020,2021,..  — explicit year list (rows; aggregate uses last pair)
  *   --limit=10000         — cap rows per year (smoke test)
@@ -145,7 +145,7 @@ function parseCli(): CliOptions {
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
-function median(nums: number[]): number | null {
+export function median(nums: number[]): number | null {
   if (nums.length === 0) return null;
   const sorted = [...nums].sort((a, b) => a - b);
   const m = Math.floor(sorted.length / 2);
@@ -190,12 +190,12 @@ function csvField(v: string | number | Date | null | undefined): string {
 
 // ─── Parsing ────────────────────────────────────────────────────────────────
 
-interface YearAggregate {
+export interface YearAggregate {
   /** key = "SUBURB|POSTCODE"; house sales only (see isHouseSaleForAggregate) */
   prices: Map<string, { prices: number[] }>;
 }
 
-interface SaleRow {
+export interface SaleRow {
   sourceRowKey:   string;
   rawHouseNumber: string | null;
   rawUnitNumber:  string | null;
@@ -213,7 +213,7 @@ interface SaleRow {
   dealingNumber:  string | null;
 }
 
-interface ParseResult {
+export interface ParseResult {
   aggregate: YearAggregate;
   rows:      SaleRow[];
 }
@@ -395,7 +395,9 @@ async function loadYear(year: number, opts: CliOptions): Promise<ParseResult> {
 // ─── Aggregate from captured rows (no download) ─────────────────────────────
 // Same rule as the DAT path (isHouseSaleForAggregate), applied to the rows the
 // row-capture path stored earlier. Price bounds match the DAT path.
-async function loadYearFromRows(year: number): Promise<ParseResult> {
+// Exported for scripts/sync/repair-stats-source.ts, which checks a row's median
+// against this same aggregate.
+export async function loadYearFromRows(year: number): Promise<ParseResult> {
   const from = new Date(Date.UTC(year, 0, 1));
   const to   = new Date(Date.UTC(year + 1, 0, 1));
   const rows = await prisma.$queryRaw<Array<{ locality: string; postcode: string; price: number; nature: string | null; unit: string | null }>>`
@@ -630,7 +632,8 @@ async function preflight(): Promise<void> {
 
 export async function run(): Promise<void> {
   const opts = parseCli();
-  await startSync(SOURCE_ID);
+  // --dry-run writes nothing, the DataSource row included.
+  if (!opts.dryRun) await startSync(SOURCE_ID);
   log(SOURCE_ID, `options: ${JSON.stringify(opts)}`);
 
   // Default years: last full calendar year + the year before (for YoY)
@@ -712,9 +715,9 @@ export async function run(): Promise<void> {
     log(SOURCE_ID, `summary: ${totalInserted} rows inserted · ${totalSkipped} skipped (dupe) · ${suburbsUpdated} suburbs updated`);
     log(SOURCE_ID, `to undo this run's row writes: DELETE FROM "PropertySale" WHERE "runId" = '${runId}'`);
 
-    await finishSync(SOURCE_ID, suburbsUpdated + totalInserted, new Date(`${Math.max(...yearsToLoad)}-12-31`));
+    if (!opts.dryRun) await finishSync(SOURCE_ID, suburbsUpdated + totalInserted, new Date(`${Math.max(...yearsToLoad)}-12-31`));
   } catch (err) {
-    await failSync(SOURCE_ID, err);
+    if (!opts.dryRun) await failSync(SOURCE_ID, err);
     throw err;
   } finally {
     await pool.end();

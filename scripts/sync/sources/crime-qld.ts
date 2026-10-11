@@ -112,9 +112,10 @@ export async function run(): Promise<void> {
 
     const count = await batchUpsertCrime(records);
 
+    // Crime has its own timestamp; statsUpdatedAt belongs to the sales feeds.
     await prisma.suburb.updateMany({
       where: { state: "QLD" },
-      data: { statsUpdatedAt: new Date(), crimeUpdatedAt: new Date() },
+      data: { crimeUpdatedAt: new Date() },
     });
 
     await finishSync(SOURCE_ID, count, periodDate);

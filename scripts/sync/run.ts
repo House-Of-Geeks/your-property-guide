@@ -11,9 +11,16 @@
  * rental-wa is one until its first import is approved (see its header).
  *
  * Add DATABASE_URL to your environment (or .env file).
+ *
+ * Every source is wrapped in the stats-source guard (stats-source-guard.ts):
+ * if a run takes the trusted sales label off more than a tenth of the NSW or
+ * VIC rows, that source is reported as failed with a line starting
+ * "!!! STATS-SOURCE GUARD FAILED (<source>)" and the process exits 1.
  */
 import "dotenv/config";
 import { prisma } from "./db";
+import { trustedCountsByState } from "./stats-source-guard";
+import { breachLine, guardBreaches, type TrustedCounts } from "./stats-source-guard-rules";
 import { run as syncAcaraSchools } from "./sources/acara-schools";
 import { run as syncRentalVic }   from "./sources/rental-vic";
 import { run as syncRentalNsw }   from "./sources/rental-nsw";
@@ -142,6 +149,26 @@ const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" 
   "catchment-tas-primary":   { run: catchmentTasPrimary,   schedule: "annual" },
 };
 
+/** Trusted-label counts, or null when the database cannot be read (the guard then stands aside). */
+async function guardCounts(): Promise<TrustedCounts | null> {
+  try {
+    return await trustedCountsByState();
+  } catch (err) {
+    console.warn(`stats-source guard unavailable: ${err instanceof Error ? err.message : String(err)}`);
+    return null;
+  }
+}
+
+/** A failure message when the source took the trusted label off a guarded state's rows. */
+async function guardAfter(id: string, before: TrustedCounts | null): Promise<string | null> {
+  if (!before) return null;
+  const after = await guardCounts();
+  if (!after) return null;
+  const breaches = guardBreaches(before, after);
+  for (const b of breaches) console.error(breachLine(id, b));
+  return breaches.length ? `stats-source guard: ${breaches.map((b) => `${b.state} ${b.before} -> ${b.after}`).join(", ")}` : null;
+}
+
 async function main(): Promise<void> {
   const arg = process.argv[2];
 
@@ -173,12 +200,19 @@ async function main(): Promise<void> {
   const results: { id: string; status: "ok" | "error"; error?: string }[] = [];
 
   for (const id of toRun) {
+    const before = await guardCounts();
     try {
       await SOURCES[id].run();
       results.push({ id, status: "ok" });
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       results.push({ id, status: "error", error: msg });
+    }
+    const breach = await guardAfter(id, before);
+    if (breach) {
+      const r = results[results.length - 1];
+      r.status = "error";
+      r.error = r.error ? `${r.error}; ${breach}` : breach;
     }
   }
 

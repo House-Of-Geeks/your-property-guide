@@ -93,6 +93,7 @@ import Papa from "papaparse";
 import * as XLSX from "xlsx";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
+import { PROXY_PROTECTED_SOURCES, proxyMayOverwrite } from "./census-proxy-rules";
 
 const SOURCE_ID = "sales-qld";
 
@@ -245,7 +246,7 @@ export async function run(): Promise<void> {
     // Load QLD suburbs from DB
     const suburbs = await prisma.suburb.findMany({
       where: { state: "QLD" },
-      select: { id: true, name: true, postcode: true },
+      select: { id: true, name: true, postcode: true, statsSource: true },
     });
     log(SOURCE_ID, `matching against ${suburbs.length} QLD DB suburbs`);
 
@@ -254,11 +255,14 @@ export async function run(): Promise<void> {
       medianHousePrice: number;
     }
     const updates: UpdateRow[] = [];
+    let protectedRows = 0;
 
     for (const suburb of suburbs) {
       const key = normName(suburb.name);
       const est = estimates.get(key);
       if (!est) continue;
+      // Never over a median the site trusts (census-proxy-rules.ts).
+      if (!proxyMayOverwrite(suburb.statsSource)) { protectedRows++; continue; }
 
       updates.push({
         id:               suburb.id,
@@ -266,7 +270,7 @@ export async function run(): Promise<void> {
       });
     }
 
-    log(SOURCE_ID, `updating ${updates.length} QLD suburbs with census-derived price estimates`);
+    log(SOURCE_ID, `updating ${updates.length} QLD suburbs with census-derived price estimates; left ${protectedRows} with a trusted sales median (${PROXY_PROTECTED_SOURCES.join(", ")})`);
 
     if (updates.length > 0) {
       await prisma.$executeRaw`
@@ -284,6 +288,7 @@ export async function run(): Promise<void> {
           ${updates.map((u) => u.medianHousePrice)}::int[]
         ) AS u(id, median_house)
         WHERE s.id = u.id
+          AND NOT (s."statsSource" = ANY(${[...PROXY_PROTECTED_SOURCES]}::text[]))
       `;
     }
 

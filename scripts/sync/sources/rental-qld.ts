@@ -272,7 +272,8 @@ export async function run(): Promise<void> {
         SET
           "medianRentHouse" = CASE WHEN u.rent_house IS NOT NULL THEN u.rent_house::int ELSE s."medianRentHouse" END,
           "medianRentUnit"  = CASE WHEN u.rent_unit  IS NOT NULL THEN u.rent_unit::int  ELSE s."medianRentUnit"  END,
-          "statsUpdatedAt"  = NOW(),
+          -- Rent has its own timestamp; statsSource and statsUpdatedAt belong
+          -- to the sales feeds.
           "rentalUpdatedAt" = NOW(),
           -- Prisma's @updatedAt is not touched by raw SQL; the suburbs sitemap lastmod,
           -- revalidate-paths and the IndexNow ping key on it (fix item 5).
