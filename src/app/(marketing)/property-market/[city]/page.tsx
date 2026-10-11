@@ -15,7 +15,9 @@ import { topSuburbsForCity } from "@/lib/data/top-suburbs";
 import {
   buildCityNarrative,
   cityMarketDescription,
+  cityMarketHeading,
   cityMarketLede,
+  cityMarketTitle,
   cityMedianFaq,
   rentCard,
   rentSourceText,
@@ -57,8 +59,9 @@ export async function generateMetadata({
   const market = await getCityMarket(city);
   // Valuation plan item 3: the query cluster is "{city} house prices" /
   // "median house price {city}" / "{city} property market", in that order
-  // of volume, so the title leads with house prices.
-  const title = `${city.name} House Prices & Property Market ${CURRENT_YEAR}: Median, Growth, Suburbs`;
+  // of volume, so the title leads with house prices, where the page prints
+  // a typical median; without one it says property market.
+  const title = cityMarketTitle(city, market, CURRENT_YEAR);
   // Our figure is the typical suburb median, printed only above the
   // coverage floor; the official figure only where it is verified (review
   // of 10 Oct 2026, suburbs-market 0.3).
@@ -91,7 +94,8 @@ export default async function CityMarketPage({
 
   const market = await getCityMarket(city);
   const stateSlug = city.state.toLowerCase();
-  const pageTitle = `${city.name} House Prices ${CURRENT_YEAR}`;
+  const heading = cityMarketHeading(city, market);
+  const pageTitle = `${heading} ${CURRENT_YEAR}`;
   const official = officialCityMedian(city.slug);
   const narrative = buildCityNarrative(city, market, new Date(), { official });
   const shortfall = coverageShortfall(market.coverage, `Greater ${city.name}`, COVERAGE_MIN_SUBURBS);
@@ -168,7 +172,7 @@ export default async function CityMarketPage({
             Greater {city.name} &middot; {market.suburbCount.toLocaleString()} suburbs tracked
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            {city.name} house prices, <span className="italic text-primary">{CURRENT_YEAR}</span>.
+            {heading}, <span className="italic text-primary">{CURRENT_YEAR}</span>.
           </h1>
           {/* Direct answer sentence for "median house price {city}" — kept as
               plain prose so answer engines can quote it verbatim. */}

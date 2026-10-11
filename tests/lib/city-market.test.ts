@@ -5,7 +5,7 @@
 import { describe, expect, it } from "vitest";
 import fs from "node:fs";
 import { BOND_RENT_SOURCES, bondRentMap, buildCityMarket, cityRent, mainSalesSource, type BondRent, type CityMarketRow } from "@/lib/services/city-market-service";
-import { buildCityNarrative, cityMarketDescription, cityMarketLede, cityMedianFaq, rentCard, typicalMedianLabel } from "@/lib/city-narrative";
+import { buildCityNarrative, cityMarketDescription, cityMarketHeading, cityMarketLede, cityMarketTitle, cityMedianFaq, rentCard, typicalMedianLabel } from "@/lib/city-narrative";
 import { OFFICIAL_CITY_MEDIANS, officialCityMedian, officialMedianSentence } from "@/lib/data/official-city-medians";
 import { coverageShortfall } from "@/lib/median-coverage";
 import { CAPITAL_CITIES } from "@/lib/utils/metro";
@@ -242,5 +242,23 @@ describe("what the city page says about its median", () => {
   it("names the feed behind the medians", () => {
     expect(mainSalesSource(city(10, 6, (i) => ({ statsSource: i < 4 ? "sales-sa" : i < 6 ? "sales-abs" : "seed" })))).toBe("sales-sa");
     expect(mainSalesSource(city(3, 0))).toBeNull();
+  });
+});
+
+describe("the city title switches when there is no median (review of 10 Oct 2026, 0.7)", () => {
+  it("leads with house prices only over a printed median, in 60 characters or fewer", () => {
+    for (const c of CAPITAL_CITIES) {
+      for (const m of [{ medianHousePrice: 1_000_000 }, { medianHousePrice: null }]) {
+        const t = cityMarketTitle(c, m, 2026);
+        expect(t.length, t).toBeLessThanOrEqual(60);
+        expect(t).not.toMatch(/\u2014|\$/);
+      }
+    }
+    expect(cityMarketTitle({ name: "Melbourne" }, { medianHousePrice: 1_000_000 }, 2026)).toBe("Melbourne House Prices 2026: Medians by Suburb & Market Data");
+    expect(cityMarketTitle({ name: "Sydney" }, { medianHousePrice: null }, 2026)).toBe("Sydney Property Market 2026: Suburbs & Market Data");
+    expect(cityMarketHeading({ name: "Sydney" }, { medianHousePrice: null })).toBe("Sydney property market");
+    const page = fs.readFileSync("src/app/(marketing)/property-market/[city]/page.tsx", "utf8");
+    expect(page).toContain("const title = cityMarketTitle(city, market, CURRENT_YEAR);");
+    expect(page).not.toContain("Median, Growth, Suburbs");
   });
 });

@@ -186,3 +186,21 @@ export function rentCard(rent: CityRent | null): { label: string; value: string;
     sub: `${rentalSourceLabel(rent.source) ?? "Bond data"}, ${quarterSpan(rent.period)}, ${n(rent.suburbs)} suburbs`,
   };
 }
+
+/**
+ * The city page's <title>, 60 characters or fewer. It leads with house
+ * prices only where the page prints a typical median; otherwise it says
+ * property market, as the region template does (review of 10 Oct 2026,
+ * suburbs-market 0.7: /property-market/sydney promised a median and printed
+ * "N/A"). It switches back by itself when the medians return.
+ */
+export function cityMarketTitle(city: { name: string }, market: Pick<CityMarket, "medianHousePrice">, year: number): string {
+  return market.medianHousePrice
+    ? `${city.name} House Prices ${year}: Medians by Suburb & Market Data`
+    : `${city.name} Property Market ${year}: Suburbs & Market Data`;
+}
+
+/** The H1, without the year's styling: "{City} house prices" or "{City} property market". */
+export function cityMarketHeading(city: { name: string }, market: Pick<CityMarket, "medianHousePrice">): string {
+  return market.medianHousePrice ? `${city.name} house prices` : `${city.name} property market`;
+}
