@@ -9,6 +9,8 @@ import {
   MiniStampDutyEmbed,
   GuideNewsletterCallout,
   GuideGlossaryRail,
+  ScrollTable,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -17,15 +19,36 @@ import {
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
-import { HG_DATES, HG_MIN_DEPOSIT_PCT, HG_NO_OWNERSHIP_YEARS, HG_PREAPPROVAL_DAYS } from "@/lib/data/home-guarantee";
+import { HG_CHECKED_ON, HG_DATES, HG_MIN_DEPOSIT_PCT, HG_NO_OWNERSHIP_YEARS, HG_PREAPPROVAL_DAYS, HG_PRICE_CAPS, HG_SOURCES, fmtCap } from "@/lib/data/home-guarantee";
+import { LMI_RATE_SOURCE, premiumAt } from "@/lib/lmi-calc";
+import { dutyFor } from "@/lib/data/stamp-duty-state";
+import { AUSTRALIAN_STATES } from "@/lib/utils/stamp-duty";
+import { longDate } from "@/lib/data/first-home-grants";
+import { HOUSE_ALL, formatCostRange } from "@/lib/data/inspection-costs";
+
+// LMI figures come from the /lmi-calculator table (src/lib/lmi-calc.ts) and
+// duty from the stamp duty engine (commercial-intent review 10 Oct 2026,
+// buying 0.1 row 16 and 3.11): the hand-typed LMI ranges sat below that table.
+const fmt = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
+const prem = (price: number, depositPct: number) => {
+  const v = premiumAt(price, depositPct);
+  return v === null ? "not in the table" : fmt(v);
+};
+const LMI_SRC = `${LMI_RATE_SOURCE.name.split(",")[0]}'s published lender table, ${LMI_RATE_SOURCE.dated}`;
+const DEPOSIT_PRICES = [400_000, 500_000, 600_000, 700_000, 800_000, 1_000_000] as const;
+const DUTY_STATES = ["NSW", "VIC", "QLD"] as const;
+const dutyRange = (price: number) => {
+  const all = AUSTRALIAN_STATES.map((st) => dutyFor(st, price, "owner").total);
+  return `${fmt(Math.min(...all))} to ${fmt(Math.max(...all))}`;
+};
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "How Much Deposit Do You Need to Buy a House in Australia? (2026)",
+  title: "How Much Deposit Do You Need for a House? 2026 Guide",
   description:
-    "The full breakdown of house deposit requirements in Australia: 5% with LMI, 10% standard, 20% to skip LMI. Includes worked examples, government schemes, and a practical roadmap.",
+    "House deposits in Australia: 5% with LMI, 10%, or 20% to skip it, with LMI and stamp duty by price from a published lender table and our calculator.",
   slug: "how-much-deposit-to-buy-a-house",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -54,10 +77,10 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "Most Australian lenders require a minimum 5% deposit, but you'll pay Lenders Mortgage Insurance (LMI) on anything below 20%.",
-  "A 20% deposit is the threshold to avoid LMI entirely. On a $700,000 home that's $140,000 saved, plus another $20,000 to $40,000 for stamp duty and fees.",
+  `A 20% deposit is the threshold to avoid LMI entirely. On a $700,000 home that's $140,000 saved, plus stamp duty of ${dutyRange(700_000)} for an owner-occupier depending on the state, plus fees.`,
   `First home buyers can use the 5% Deposit Scheme (the Home Guarantee Scheme) to buy with just ${HG_MIN_DEPOSIT_PCT.firstHome}% and no LMI, and single parents the Family Home Guarantee with ${HG_MIN_DEPOSIT_PCT.singleParent}%. The Regional First Home Buyer Guarantee closed on ${HG_DATES.expanded}.`,
   "Genuine savings rules typically require 5% of the price held in your name for at least 3 months. Gifts, FHSS, and inheritance can supplement but rarely replace it.",
-  "The total cash you need at settlement is deposit + stamp duty + conveyancing + building inspection + bank fees. Budget 23% to 25% of the price all-in if you want to avoid LMI.",
+  `The total cash you need at settlement is deposit + stamp duty + conveyancing + building inspection + bank fees. On a $700,000 home with no first home relief, stamp duty alone is ${dutyRange(700_000)}, depending on the state.`,
 ];
 
 const TOC: GuideTOCEntry[] = [
@@ -86,12 +109,22 @@ const FAQS: FaqItem[] = [
   {
     question: "Is a 5% deposit enough?",
     answer:
-      `Mathematically yes, most banks accept it. Practically, expect to pay $15,000 to $25,000 in LMI on a $600,000 to $700,000 loan. The 5% Deposit Scheme avoids LMI on a 5% deposit; it has property price caps but no income test since ${HG_DATES.expanded}. If you qualify, it's usually the cheapest path in.`,
+      `Most banks accept it, but you pay LMI: on one lender's published table, ${prem(600_000, 5)} on a $600,000 home and ${prem(700_000, 5)} on $700,000 with 5% down (${LMI_SRC}). The 5% Deposit Scheme avoids LMI on a 5% deposit; it has property price caps but no income test since ${HG_DATES.expanded}. If you qualify, it's usually the cheapest path in.`,
   },
   {
     question: "How much deposit for a $500,000 house?",
     answer:
-      "5% is $25,000 (with LMI), 10% is $50,000, and 20% is $100,000. Add stamp duty (varies by state, about $18,000 in NSW for a non-first-home buyer), conveyancing ($1,500 to $3,000), building/pest inspection ($600 to $1,000), and lender fees ($600 to $1,200). Total cash to settle a 20% deposit purchase: roughly $120,000 to $125,000.",
+      `5% is $25,000 (plus ${prem(500_000, 5)} LMI on one lender's table), 10% is $50,000 (plus ${prem(500_000, 10)}), and 20% is $100,000 with no LMI. Add stamp duty: ${fmt(dutyFor("NSW", 500_000, "owner").total)} in NSW for a buyer who is not a first home buyer (Revenue NSW rates), nothing for an eligible first home buyer. Then conveyancing, a building and pest inspection and lender fees.`,
+  },
+  {
+    question: "What is a 5% deposit on a $600,000 house?",
+    answer:
+      `$30,000. Through the 5% Deposit Scheme an eligible buyer pays no lenders mortgage insurance on that deposit if the price is within the area's cap, for example ${fmtCap(HG_PRICE_CAPS.VIC.rest)} in regional Victoria (Housing Australia, read ${longDate(HG_CHECKED_ON)}). Without the scheme, LMI on one lender's table is ${prem(600_000, 5)}. Stamp duty and buying costs are extra.`,
+  },
+  {
+    question: "How much deposit do I need for a $700,000 house?",
+    answer:
+      `$140,000 (20%) to avoid lenders mortgage insurance without a scheme. At 5% it is $35,000, and through the 5% Deposit Scheme an eligible buyer pays no LMI where the price is within the area's cap, for example ${fmtCap(HG_PRICE_CAPS.QLD.capital)} in Greater Brisbane (Housing Australia, read ${longDate(HG_CHECKED_ON)}). Without it, LMI at 5% down is ${prem(700_000, 5)} on one lender's table.`,
   },
   {
     question: "Can I use my super for a house deposit?",
@@ -168,16 +201,16 @@ export default function HowMuchDepositGuidePage() {
 
       <h3>5% deposit</h3>
       <p>
-        The bare minimum at most banks. You&rsquo;ll pay LMI (typically $15,000 to $25,000
-        on a $500,000 to $700,000 loan), and your interest rate may be slightly
+        The bare minimum at most banks. You&rsquo;ll pay LMI ({prem(500_000, 5)} on a $500,000 home
+        and {prem(700_000, 5)} on $700,000, on one lender&rsquo;s published table), and your interest rate may be slightly
         higher than for a 20% deposit borrower. Eligible first home buyers can
         skip LMI entirely via the Home Guarantee Scheme.
       </p>
 
       <h3>10% deposit</h3>
       <p>
-        A common middle ground. LMI is roughly 1.5% to 2% of the loan amount,
-        rather than 3% to 4% at the 5% level. You unlock more lenders and
+        A common middle ground. LMI is far cheaper than at 5%: {prem(600_000, 10)} rather than{" "}
+        {prem(600_000, 5)} on a $600,000 home. You unlock more lenders and
         better rates than a 5% deposit would, without waiting another year or
         two to hit 20%.
       </p>
@@ -197,14 +230,61 @@ export default function HowMuchDepositGuidePage() {
       </p>
 
       <p>
-        Indicative LMI on a $600,000 purchase:
+        Deposit and LMI by price, from the same published lender table our LMI calculator uses
+        (premium before state duty):
       </p>
-      <ul>
-        <li><strong>5% deposit ($30,000):</strong> roughly $20,000 to $25,000 LMI</li>
-        <li><strong>10% deposit ($60,000):</strong> roughly $10,000 to $13,000 LMI</li>
-        <li><strong>15% deposit ($90,000):</strong> roughly $5,000 to $7,000 LMI</li>
-        <li><strong>20% deposit ($120,000):</strong> $0 LMI</li>
-      </ul>
+      <ScrollTable label="Deposit and LMI by price">
+        <table>
+          <thead>
+            <tr>
+              <th>Price</th>
+              <th>5% deposit</th>
+              <th>LMI at 5%</th>
+              <th>10% deposit</th>
+              <th>LMI at 10%</th>
+              <th>20% deposit (no LMI)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {DEPOSIT_PRICES.map((p) => (
+              <tr key={p}>
+                <td>{fmt(p)}</td>
+                <td>{fmt(p * 0.05)}</td>
+                <td>{prem(p, 5)}</td>
+                <td>{fmt(p * 0.1)}</td>
+                <td>{prem(p, 10)}</td>
+                <td>{fmt(p * 0.2)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </ScrollTable>
+      <p>
+        Source: <a href={LMI_RATE_SOURCE.url} target="_blank" rel="noopener noreferrer">{LMI_RATE_SOURCE.name}</a>,{" "}
+        {LMI_RATE_SOURCE.dated}, read {LMI_RATE_SOURCE.readOn}. Insurers and lenders price differently. The
+        5% Deposit Scheme removes LMI at 5% for an eligible buyer under the area&rsquo;s price cap.
+      </p>
+      <p>Stamp duty at the same prices in the three biggest states, from our stamp duty calculator:</p>
+      <ScrollTable label="Stamp duty by price, NSW, Victoria and Queensland">
+        <table>
+          <thead>
+            <tr>
+              <th>Price</th>
+              {DUTY_STATES.map((st) => <th key={st}>{st} first home buyer / other owner-occupier</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {DEPOSIT_PRICES.map((p) => (
+              <tr key={p}>
+                <td>{fmt(p)}</td>
+                {DUTY_STATES.map((st) => (
+                  <td key={st}>{fmt(dutyFor(st, p, "first").total)} / {fmt(dutyFor(st, p, "owner").total)}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </ScrollTable>
       <p>
         Run your own price and deposit through our{" "}
         <Link href="/lmi-calculator">LMI calculator</Link>, which adds the stamp
@@ -221,17 +301,17 @@ export default function HowMuchDepositGuidePage() {
         Beyond the deposit itself, you need to budget for:
       </p>
       <ul>
-        <li><strong>Stamp duty:</strong> $0 to $40,000+ depending on price, state, and first home buyer status. Use our Stamp Duty Calculator for the exact figure.</li>
-        <li><strong>Conveyancing or solicitor:</strong> $1,500 to $3,000.</li>
-        <li><strong>Building &amp; pest inspection:</strong> $500 to $1,000.</li>
-        <li><strong>Bank application &amp; valuation fees:</strong> $400 to $1,200.</li>
-        <li><strong>Title transfer &amp; registration:</strong> $200 to $400.</li>
-        <li><strong>Council and water adjustments:</strong> $200 to $1,500 (rates already paid by the seller, prorated).</li>
+        <li><strong>Stamp duty:</strong> on a $700,000 home, {dutyRange(700_000)} for an owner-occupier depending on the state, and often nothing for an eligible first home buyer. Use our Stamp Duty Calculator for the exact figure.</li>
+        <li><strong>Conveyancing or solicitor:</strong> fees vary by state; our <Link href="/guides/conveyancing-guide">conveyancing guide</Link> has them, sourced and dated.</li>
+        <li><strong>Building &amp; pest inspection:</strong> {formatCostRange(HOUSE_ALL, "prose")} for a three to four bedroom house across the capitals (inspector price lists, in our <Link href="/guides/building-pest-inspection">inspection guide</Link>).</li>
+        <li><strong>Bank application &amp; valuation fees:</strong> ask your lender; some charge none.</li>
+        <li><strong>Title transfer &amp; registration:</strong> a state government fee, set by price in some states.</li>
+        <li><strong>Council and water adjustments:</strong> your share of rates the seller has already paid, prorated at settlement.</li>
       </ul>
       <p>
         On a $700,000 house with a 20% deposit and no first home buyer
-        exemptions, plan for about $165,000 to $175,000 in total cash to
-        complete the purchase.
+        relief, that is $140,000 plus {dutyRange(700_000)} of stamp duty, plus the
+        fees above.
       </p>
 
       <MiniStampDutyEmbed />
@@ -375,6 +455,14 @@ export default function HowMuchDepositGuidePage() {
           qualify.
         </li>
       </ol>
+
+      <Sources
+        items={[
+          { label: LMI_RATE_SOURCE.name, href: LMI_RATE_SOURCE.url, note: `${LMI_RATE_SOURCE.dated}, read ${LMI_RATE_SOURCE.readOn}` },
+          { label: HG_SOURCES.priceCaps.label, href: HG_SOURCES.priceCaps.href, note: `read ${longDate(HG_CHECKED_ON)}` },
+          "Stamp duty figures are our stamp duty calculator's, on each revenue office's rates checked 30 September 2026.",
+        ]}
+      />
     </GuideArticleLayout>
     </>
   );
