@@ -44,6 +44,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/affordability-calculator`,     changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/real-estate-commission-calculator`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE_URL}/selling-costs-calculator`,     changeFrequency: "monthly", priority: 0.9 },
+    { url: `${SITE_URL}/renovation-cost-calculator`,   changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/selling-guide`,                changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE_URL}/buying-guide`,                 changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE_URL}/real-estate-leads`,            changeFrequency: "monthly", priority: 0.7 },

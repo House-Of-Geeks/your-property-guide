@@ -356,7 +356,7 @@ const RENOVATING: PersonaHubContent = {
   calculatorsBlurb:
     "Price the job, then work out how to pay for it, before you sign with a builder.",
   calculators: [
-    { label: "Renovation cost calculator",    href: "/guides/renovation-cost-australia-2026#estimator", blurb: "Rooms, finish level and state in; a sourced cost range with design, approvals and contingency out." },
+    { label: "Renovation cost calculator",    href: "/renovation-cost-calculator", blurb: "Rooms, finish level and state in; a sourced cost range with design, approvals and contingency out." },
     { label: "Renovation costs in Australia", href: "/guides/renovation-cost-australia-2026", blurb: "Kitchens, bathrooms, extensions and rebuilds by finish level and state, every figure sourced and dated." },
     { label: "How to find a builder",         href: "/guides/how-to-find-a-builder-australia", blurb: "Licence registers and home warranty thresholds for every state, and the checks before you sign." },
     { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "What you can borrow to fund the work, on top of your current loan." },

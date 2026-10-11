@@ -192,6 +192,11 @@ export default function RenovationCostAustralia2026Page() {
       <div className="not-prose my-6">
         <RenovationCostEstimator />
       </div>
+      <p>
+        The same calculator has its own page, the{" "}
+        <Link href="/renovation-cost-calculator">renovation cost calculator</Link>,
+        if you want to come back to it.
+      </p>
 
       <h2 id="cost-per-m2">Renovation cost per square metre by scope</h2>
       <p>
