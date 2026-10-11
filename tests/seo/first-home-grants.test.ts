@@ -278,6 +278,7 @@ const render = async (load: () => Promise<PageModule>) => {
 const PAGES: Array<{ path: string; state: AustralianState | null; load: () => Promise<PageModule> }> = [
   { path: "/guides/first-home-buyer-nsw", state: "NSW", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-nsw/page") },
   { path: "/guides/first-home-buyer-wa", state: "WA", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-wa/page") },
+  { path: "/guides/first-home-buyer-tas", state: "TAS", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-tas/page") },
 ];
 
 describe("pages rendered from the data file", () => {
