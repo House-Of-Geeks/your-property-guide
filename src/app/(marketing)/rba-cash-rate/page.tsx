@@ -4,6 +4,18 @@ import { TrendingDown, TrendingUp, Minus, ArrowRight, Info } from "lucide-react"
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { Sources } from "@/components/guide/Sources";
+import {
+  CASH_RATE_DECISIONS,
+  CASH_RATE_SOURCE,
+  DECISION_TIME,
+  MEETING_SCHEDULE_SOURCE,
+  formatLongDate,
+  formatShortDate,
+  latestDecision,
+  upcomingMeetings,
+  type CashRateDecision,
+} from "@/lib/data/rba-cash-rate";
 
 export const metadata: Metadata = {
   title: "RBA Cash Rate History & Property Market Impact",
@@ -20,72 +32,40 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
-interface RateEntry {
-  date: string;
-  rate: number;
-  change: number;
-  note: string;
+// Every figure on this page comes from src/lib/data/rba-cash-rate.ts, which a
+// test keeps up to date with the RBA's meeting schedule. Rebuilt daily so the
+// "next decision" line moves on after each meeting.
+export const revalidate = 86400;
+
+/** The day this page's data was last checked against the RBA and edited. */
+const PAGE_UPDATED = "2026-10-11";
+
+function decisionLabel(change: number): string {
+  if (change > 0) return "Hike";
+  if (change < 0) return "Cut";
+  return "Hold";
 }
 
-const rateHistory: RateEntry[] = [
-  { date: "2026-06-16", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2026-05-05", rate: 4.35, change: 0.25,  note: "Hike" },
-  { date: "2026-03-17", rate: 4.10, change: 0.25,  note: "Hike" },
-  { date: "2026-02-03", rate: 3.85, change: 0.25,  note: "Hike" },
-  { date: "2025-12-09", rate: 3.60, change: 0,     note: "Hold" },
-  { date: "2025-11-04", rate: 3.60, change: 0,     note: "Hold" },
-  { date: "2025-09-30", rate: 3.60, change: 0,     note: "Hold" },
-  { date: "2025-08-12", rate: 3.60, change: -0.25, note: "Cut" },
-  { date: "2025-07-08", rate: 3.85, change: 0,     note: "Hold" },
-  { date: "2025-05-20", rate: 3.85, change: -0.25, note: "Cut" },
-  { date: "2025-04-01", rate: 4.10, change: 0,     note: "Hold" },
-  { date: "2025-02-18", rate: 4.10, change: -0.25, note: "Cut" },
-  { date: "2024-12-10", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2024-11-05", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2024-09-24", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2024-08-06", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2024-06-18", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2024-05-07", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2024-03-19", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2024-02-06", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2023-11-07", rate: 4.35, change: 0.25,  note: "Hike" },
-  { date: "2023-09-05", rate: 4.10, change: 0,     note: "Hold" },
-  { date: "2023-07-04", rate: 4.10, change: 0,     note: "Hold" },
-  { date: "2023-06-06", rate: 4.10, change: 0.25,  note: "Hike" },
-  { date: "2023-05-02", rate: 3.85, change: 0.25,  note: "Hike" },
-  { date: "2023-04-04", rate: 3.60, change: 0,     note: "Hold" },
-  { date: "2023-03-07", rate: 3.60, change: 0.25,  note: "Hike" },
-  { date: "2023-02-07", rate: 3.35, change: 0.25,  note: "Hike" },
-  { date: "2022-12-06", rate: 3.10, change: 0.25,  note: "Hike" },
-  { date: "2022-11-01", rate: 2.85, change: 0.25,  note: "Hike" },
-  { date: "2022-10-04", rate: 2.60, change: 0.25,  note: "Hike" },
-  { date: "2022-09-06", rate: 2.35, change: 0.50,  note: "Hike" },
-  { date: "2022-08-02", rate: 1.85, change: 0.50,  note: "Hike" },
-  { date: "2022-07-05", rate: 1.35, change: 0.50,  note: "Hike" },
-  { date: "2022-06-07", rate: 0.85, change: 0.50,  note: "Hike" },
-  { date: "2022-05-03", rate: 0.35, change: 0.25,  note: "Hike" },
-  { date: "2020-11-03", rate: 0.10, change: -0.15, note: "Cut" },
-  { date: "2020-03-19", rate: 0.25, change: -0.25, note: "Emergency Cut" },
-  { date: "2020-03-03", rate: 0.50, change: -0.25, note: "Emergency Cut" },
-];
+const ORDINALS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth"];
 
-const upcomingMeetings2026 = [
-  { dates: "10–11 August",    decision: "Aug 11" },
-  { dates: "28–29 September", decision: "Sep 29" },
-  { dates: "2–3 November",    decision: "Nov 3" },
-  { dates: "7–8 December",    decision: "Dec 8" },
-];
-
-function formatRateDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString("en-AU", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
+/** "Raised 0.25 points on 29 September 2026, the fourth rise this year." */
+function latestSummary(d: CashRateDecision): string {
+  const year = Number(d.announced.slice(0, 4));
+  const inYear = CASH_RATE_DECISIONS.filter((x) => x.announced.startsWith(`${year}-`) && x.announced <= d.announced);
+  const pts = Math.abs(d.change).toFixed(2);
+  if (d.change > 0) {
+    const n = inYear.filter((x) => x.change > 0).length;
+    return `Raised ${pts} points on ${formatLongDate(d.announced)}, the ${ORDINALS[n - 1] ?? `${n}th`} rise in ${year}`;
+  }
+  if (d.change < 0) {
+    const n = inYear.filter((x) => x.change < 0).length;
+    return `Cut ${pts} points on ${formatLongDate(d.announced)}, the ${ORDINALS[n - 1] ?? `${n}th`} cut in ${year}`;
+  }
+  return `Held at ${d.rate.toFixed(2)}% on ${formatLongDate(d.announced)}`;
 }
 
 function NoteChip({ note }: { note: string }) {
-  if (note.includes("Cut") || note.includes("Emergency")) {
+  if (note === "Cut") {
     return (
       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
         <TrendingDown className="w-3 h-3" />
@@ -124,8 +104,10 @@ function ChangeCell({ change }: { change: number }) {
 }
 
 export default function RBACashRatePage() {
-  const currentRate = rateHistory[0];
-  const recentHistory = rateHistory.slice(0, 20);
+  const currentRate = latestDecision();
+  const recentHistory = CASH_RATE_DECISIONS.slice(0, 20);
+  const upcoming = upcomingMeetings();
+  const next = upcoming[0];
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
@@ -135,7 +117,7 @@ export default function RBACashRatePage() {
         description="Track the RBA cash rate history and understand how interest rate changes affect Australian property prices. Updated with each RBA decision."
         url="/rba-cash-rate"
         datePublished="2026-01-01"
-        dateModified="2026-06-16"
+        dateModified={PAGE_UPDATED}
       />
       <Breadcrumbs items={[{ label: "RBA Cash Rate" }]} />
 
@@ -153,17 +135,28 @@ export default function RBACashRatePage() {
       {/* Current rate display */}
       <div className="max-w-4xl mx-auto mb-10">
         <div className="gradient-brand rounded-2xl p-8 text-white text-center">
-          <p className="text-sm opacity-80 mb-1">Current RBA Cash Rate</p>
+          <p className="text-sm opacity-80 mb-1">RBA cash rate target</p>
           <p className="text-7xl font-bold tracking-tight mb-2">
             {currentRate.rate.toFixed(2)}%
           </p>
           <p className="text-base opacity-90">
-            As of {formatRateDate(currentRate.date)}, {currentRate.note}
+            Effective {formatLongDate(currentRate.effective)}
           </p>
           <div className="mt-4 inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-2 text-sm">
-            <Minus className="w-4 h-4" />
-            Held at 4.35% on 16 June 2026 after three consecutive hikes this year
+            {currentRate.change > 0 ? (
+              <TrendingUp className="w-4 h-4" />
+            ) : currentRate.change < 0 ? (
+              <TrendingDown className="w-4 h-4" />
+            ) : (
+              <Minus className="w-4 h-4" />
+            )}
+            {latestSummary(currentRate)}
           </div>
+          {next && (
+            <p className="mt-4 text-sm opacity-90">
+              Next decision: {DECISION_TIME} Sydney time, {formatLongDate(next.decision)}
+            </p>
+          )}
         </div>
       </div>
 
@@ -173,7 +166,7 @@ export default function RBACashRatePage() {
           href="/guides/rba-cash-rate-june-2026-what-it-means-for-buyers"
           className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
         >
-          Read our full analysis of the June 2026 decision
+          Our analysis of the June 2026 hold
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
@@ -195,13 +188,13 @@ export default function RBACashRatePage() {
               <tbody className="divide-y divide-gray-100">
                 {recentHistory.map((entry, i) => (
                   <tr
-                    key={i}
+                    key={entry.announced}
                     className={`hover:bg-gray-50 transition-colors ${
                       i === 0 ? "bg-primary/5 font-medium" : ""
                     }`}
                   >
                     <td className="px-4 py-3 text-gray-900">
-                      {formatRateDate(entry.date)}
+                      {formatShortDate(entry.announced)}
                       {i === 0 && (
                         <span className="ml-2 text-xs bg-primary text-white px-1.5 py-0.5 rounded">
                           Latest
@@ -215,7 +208,7 @@ export default function RBACashRatePage() {
                       <ChangeCell change={entry.change} />
                     </td>
                     <td className="px-4 py-3 text-center">
-                      <NoteChip note={entry.note} />
+                      <NoteChip note={decisionLabel(entry.change)} />
                     </td>
                   </tr>
                 ))}
@@ -223,7 +216,17 @@ export default function RBACashRatePage() {
             </table>
           </div>
           <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 text-xs text-gray-500">
-            Showing {recentHistory.length} most recent decisions. Data sourced from the Reserve Bank of Australia.
+            The {recentHistory.length} most recent decisions, by the day each was announced; the new
+            target takes effect the next day. From the RBA&apos;s{" "}
+            <a
+              href={CASH_RATE_SOURCE.url}
+              target="_blank"
+              rel="nofollow noopener"
+              className="underline hover:text-gray-700"
+            >
+              Cash Rate Target table
+            </a>
+            , read {CASH_RATE_SOURCE.readOn}.
           </div>
         </div>
       </div>
@@ -315,47 +318,52 @@ export default function RBACashRatePage() {
         </div>
       </div>
 
-      {/* 2026 Meeting dates */}
-      <div className="max-w-4xl mx-auto mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          Remaining 2026 RBA Meeting Dates
-        </h2>
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="bg-gray-50 text-gray-600 text-xs font-medium uppercase tracking-wide">
-                  <th className="px-4 py-3 text-left">Meeting Dates</th>
-                  <th className="px-4 py-3 text-left">Decision Announced</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {upcomingMeetings2026.map((m, i) => (
-                  <tr key={i} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-4 py-3 text-gray-900">{m.dates} 2026</td>
-                    <td className="px-4 py-3 text-gray-600">{m.decision} 2026</td>
+      {/* Upcoming meetings: past meetings drop off once their decision is recorded */}
+      {upcoming.length > 0 && (
+        <div className="max-w-4xl mx-auto mb-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Upcoming RBA Meeting Dates
+          </h2>
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-gray-50 text-gray-600 text-xs font-medium uppercase tracking-wide">
+                    <th className="px-4 py-3 text-left">Meeting</th>
+                    <th className="px-4 py-3 text-left">Decision announced ({DECISION_TIME} Sydney time)</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="px-4 py-3 bg-amber-50 border-t border-amber-100 flex items-start gap-2 text-xs text-amber-800">
-            <Info className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
-            <span>
-              Dates are approximate and subject to change. Always check{" "}
-              <a
-                href="https://www.rba.gov.au"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-amber-900"
-              >
-                rba.gov.au
-              </a>{" "}
-              for confirmed meeting dates.
-            </span>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {upcoming.map((m) => (
+                    <tr key={m.decision} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-4 py-3 text-gray-900">
+                        {formatShortDate(m.start)} to {formatShortDate(m.decision)}
+                      </td>
+                      <td className="px-4 py-3 text-gray-600">{formatLongDate(m.decision)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="px-4 py-3 bg-amber-50 border-t border-amber-100 flex items-start gap-2 text-xs text-amber-800">
+              <Info className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+              <span>
+                The Monetary Policy Board&apos;s published schedule, read {MEETING_SCHEDULE_SOURCE.readOn}. The RBA can
+                change it; check{" "}
+                <a
+                  href={MEETING_SCHEDULE_SOURCE.url}
+                  target="_blank"
+                  rel="nofollow noopener"
+                  className="underline hover:text-amber-900"
+                >
+                  rba.gov.au
+                </a>{" "}
+                before a meeting.
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Refinance funnel exit. Rate-watchers checking this page after each
           decision are the site's highest-intent refinance audience. */}
@@ -385,6 +393,32 @@ export default function RBACashRatePage() {
             </Link>
           </div>
         </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto mb-8">
+        <Sources
+          items={[
+            {
+              label: CASH_RATE_SOURCE.name,
+              href: CASH_RATE_SOURCE.url,
+              note: `every decision on this page, read ${CASH_RATE_SOURCE.readOn}`,
+            },
+            ...(currentRate.statement
+              ? [
+                  {
+                    label: `Statement by the Monetary Policy Board: Monetary Policy Decision (media release ${currentRate.statement.number})`,
+                    href: currentRate.statement.url,
+                    note: formatLongDate(currentRate.announced),
+                  },
+                ]
+              : []),
+            {
+              label: MEETING_SCHEDULE_SOURCE.name,
+              href: MEETING_SCHEDULE_SOURCE.url,
+              note: `read ${MEETING_SCHEDULE_SOURCE.readOn}`,
+            },
+          ]}
+        />
       </div>
 
       {/* Disclaimer */}
