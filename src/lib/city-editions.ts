@@ -181,7 +181,7 @@ export function cityEditionDescription(e: Pick<CityEdition, "category" | "city" 
   const stem: Record<RankingCategory, string> = {
     "best-rental-yield": `Ten Greater ${c} suburbs ranked by gross rental yield on published medians and bond rents`,
     "highest-growth": `Ten Greater ${c} suburbs ranked by measured 12-month change in the published median house price`,
-    "for-families": `Ten Greater ${c} suburbs ranked by school ICSEA, where families are 40% or more of households`,
+    "for-families": `Ten Greater ${c} suburbs ranked by school ICSEA, where family households are 40% or more of households`,
     "most-affordable": `Ten Greater ${c} suburbs ranked by lowest published median house price`,
     "most-walkable": `Ten Greater ${c} suburbs ranked by walk score`,
     "lowest-flood-risk": `Ten Greater ${c} suburbs by flood risk`,
@@ -209,7 +209,7 @@ export function cityEditionLede(e: Pick<CityEdition, "category" | "city" | "subu
     case "highest-growth":
       return `By the measured 12-month change in the published median house price, the ten fastest growing Greater ${c} suburbs are ${list}.`;
     case "for-families":
-      return `By the average ICSEA of their schools, among suburbs where families with dependants are at least 40% of households, the ten best Greater ${c} suburbs for families are ${list}.`;
+      return `By the average ICSEA of their schools (ACARA), among Greater ${c} suburbs where family households are at least 40% of households (2021 Census), the ten that rank highest are ${list}.`;
     case "most-affordable":
       return `By published median house price, the ten cheapest Greater ${c} suburbs are ${list}.`;
     case "most-walkable":
@@ -259,7 +259,7 @@ export function cityEditionMethod(e: CityEdition): string[] {
       lines.push(`Ranked by the 12-month change in the median house price, largest rise first, from ${from} with a published median, a measured change and ${n(CITY_EDITION_MIN_POPULATION)} or more residents.`);
       break;
     case "for-families":
-      lines.push(`Ranked by the average ICSEA (ACARA's Index of Community Socio-Educational Advantage) of the schools we hold for each suburb, highest first, from ${from} where families with dependants are at least 40% of households (2021 Census) and ${n(CITY_EDITION_MIN_POPULATION)} or more people live.`);
+      lines.push(`Ranked by the average ICSEA (ACARA's Index of Community Socio-Educational Advantage) of the schools we hold for each suburb, highest first, from ${from} where family households are at least 40% of households (2021 Census) and ${n(CITY_EDITION_MIN_POPULATION)} or more people live. A family household is any household with a family in it, so couples without children count: the share is not a count of households with children.`);
       break;
     case "most-affordable":
       lines.push(`Ranked by published median house price, lowest first, from ${from} with a published median above $100,000 and ${n(CITY_EDITION_MIN_POPULATION)} or more residents.`);
@@ -311,7 +311,7 @@ function growthSentence(s: CityEditionSuburb): string {
 
 function populationSentence(s: CityEditionSuburb, withFamilies: boolean): string {
   if (!(s.population > 0)) return "";
-  const fam = withFamilies && s.householdsFamily > 0 ? `, and families with dependants are ${s.householdsFamily.toFixed(0)}% of households` : "";
+  const fam = withFamilies && s.householdsFamily > 0 ? `, and family households are ${s.householdsFamily.toFixed(0)}% of households` : "";
   return ` ${n(s.population)} people lived there at the 2021 Census${fam}.`;
 }
 
@@ -344,9 +344,9 @@ export function suburbParagraph(e: Pick<CityEdition, "category" | "city">, s: Ci
         ? "The one school we hold for the suburb has an ICSEA of"
         : `The ${countWord(s.schoolCount)} schools we hold for the suburb average an ICSEA of`;
       const schools = s.avgSchoolIcsea != null
-        ? ` ${held} ${icseaText(s.avgSchoolIcsea)} (ACARA), ${rankPhrase(rank, "highest")} in Greater ${city.name} among suburbs where families are at least 40% of households.`
+        ? ` ${held} ${icseaText(s.avgSchoolIcsea)} (ACARA), ${rankPhrase(rank, "highest")} in Greater ${city.name} among suburbs where family households are at least 40% of households.`
         : "";
-      const fam = s.householdsFamily > 0 ? ` Families with dependants are ${s.householdsFamily.toFixed(0)}% of households.` : "";
+      const fam = s.householdsFamily > 0 ? ` Family households are ${s.householdsFamily.toFixed(0)}% of households.` : "";
       return `${opener}${schools}${fam}${priceSentence(s)}${populationSentence(s, false)}`;
     }
     case "most-affordable": {
@@ -368,7 +368,7 @@ export function metricSummary(category: RankingCategory, s: CityEditionSuburb): 
     case "highest-growth":
       return s.annualGrowthHouse !== 0 ? `${s.annualGrowthHouse > 0 ? "+" : ""}${s.annualGrowthHouse.toFixed(1)}% in 12 months, median ${formatPriceFull(s.medianHousePrice)}` : undefined;
     case "for-families":
-      return s.avgSchoolIcsea != null ? `Average school ICSEA ${icseaText(s.avgSchoolIcsea)}, families ${s.householdsFamily.toFixed(0)}% of households` : undefined;
+      return s.avgSchoolIcsea != null ? `Average school ICSEA ${icseaText(s.avgSchoolIcsea)}, family households ${s.householdsFamily.toFixed(0)}% of households` : undefined;
     case "most-affordable":
       return s.medianHousePrice > 0 ? `Median house price ${formatPriceFull(s.medianHousePrice)}` : undefined;
     case "most-walkable":
@@ -470,7 +470,7 @@ function topThreeAnswer(e: CityEdition): CityFaq {
     case "for-families":
       return {
         question: `What are the best suburbs in ${city.name} for families?`,
-        answer: `By the average ICSEA of their schools, among Greater ${city.name} suburbs where families with dependants are at least 40% of households, the top three are ${joinNames(rows.map((s) => withFigure(s, (r) => `ICSEA ${icseaText(r.avgSchoolIcsea ?? 0)}`)))}. ICSEA is ACARA's index of the socio-educational backgrounds of a school's students, published for every Australian school; it is a proxy for resourcing and outcomes, not a measure of teaching, so check the in-catchment school for an address before buying. The ranking is drawn from ${n(e.eligible)} suburbs.`,
+        answer: `By the average ICSEA of their schools, among Greater ${city.name} suburbs where family households (couples without children included) are at least 40% of households, the top three are ${joinNames(rows.map((s) => withFigure(s, (r) => `ICSEA ${icseaText(r.avgSchoolIcsea ?? 0)}`)))}. ICSEA is ACARA's index of the socio-educational backgrounds of a school's students, published for every Australian school; it is a proxy for resourcing and outcomes, not a measure of teaching, so check the in-catchment school for an address before buying. The ranking is drawn from ${n(e.eligible)} suburbs.`,
       };
     case "most-affordable":
       return {
@@ -507,7 +507,7 @@ function avoidAnswer(e: CityEdition): CityFaq {
   const { city } = e;
   return {
     question: `What suburbs should I stay away from in ${city.name}?`,
-    answer: `We do not publish a list of suburbs to avoid. This page ranks suburbs for families on measured figures, and a suburb missing from it may simply have no school with an ICSEA we hold, a family share under 40% of households or fewer than ${n(CITY_EDITION_MIN_POPULATION)} residents. Each suburb's own page shows its crime figures where the state publishes them and its rents and sales, so check those for the address you are looking at rather than the suburb's reputation.`,
+    answer: `We do not publish a list of suburbs to avoid. This page ranks suburbs for families on measured figures, and a suburb missing from it may simply have no school with an ICSEA we hold, a family-household share under 40% of households or fewer than ${n(CITY_EDITION_MIN_POPULATION)} residents. Each suburb's own page shows its crime figures where the state publishes them and its rents and sales, so check those for the address you are looking at rather than the suburb's reputation.`,
   };
 }
 

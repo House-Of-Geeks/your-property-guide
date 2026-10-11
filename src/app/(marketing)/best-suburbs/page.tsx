@@ -26,7 +26,7 @@ const ALL_CATEGORIES: { slug: RankingCategory; title: string; description: strin
     slug: "for-families",
     title: "Best for Families",
     description:
-      "Top suburbs with the highest-rated schools (by ICSEA) and high proportions of family households.",
+      "Suburbs ranked by the average ICSEA of their schools, where family households are at least 40% of households.",
     icon: "/images/icons/people.svg",
   },
   {

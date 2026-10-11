@@ -29,7 +29,7 @@ const CATEGORY_CONFIG: Record<RankingCategory, CategoryConfig & { eyebrow: strin
   "for-families": {
     title: "Best Suburbs for Families",
     eyebrow: "Family-friendly ranking",
-    description: "Suburbs ranked by average school ICSEA score and family-household percentage.",
+    description: "Suburbs ranked by the average ICSEA of their schools, among suburbs where family households are at least 40% of households.",
   },
   "highest-growth": {
     title: "Highest Growth Suburbs",

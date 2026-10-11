@@ -191,9 +191,32 @@ describe("titles and descriptions", () => {
   });
   it("the lede names the ten", () => {
     const lede = cityEditionLede(edition("for-families", perth));
-    expect(lede).toContain("the ten best Greater Perth suburbs for families are Suburb 1, Suburb 2");
+    expect(lede).toContain("among Greater Perth suburbs where family households are at least 40% of households (2021 Census), the ten that rank highest are Suburb 1, Suburb 2");
     expect(lede).toContain("Suburb 9 and Suburb 10.");
     expect(lede).not.toContain("Suburb 11");
+  });
+});
+
+describe("the family criterion says what it measures (review of 10 Oct 2026, 0.1b)", () => {
+  it("calls the 2021 Census share family households, never families with dependants", () => {
+    // householdsFamily is ABS G35 Total_FamHhold over all households: couples without children count.
+    const e = edition("for-families", perth, 15, () => ({ state: "WA" }));
+    const all = [
+      cityEditionLede(e),
+      cityEditionDescription(e),
+      ...cityEditionMethod(e),
+      ...e.suburbs.map((s, i) => suburbParagraph(e, s, i + 1)),
+      ...e.suburbs.map((s) => metricSummary("for-families", s) ?? ""),
+      ...cityEditionFaqs(e).map((f) => f.answer),
+      ...cityEditionFaqs(edition("most-affordable", brisbane)).map((f) => f.answer),
+      ...edition("most-affordable", brisbane).suburbs.map((s, i) => suburbParagraph(edition("most-affordable", brisbane), s, i + 1)),
+    ].join(" ");
+    expect(all).not.toMatch(/dependants|dependents|families are \d|families with/i);
+    expect(all).toContain("family households are at least 40% of households");
+    expect(cityEditionMethod(e).join(" ")).toContain("couples without children count");
+    for (const f of ["src/lib/data/category-commentary.ts", "src/components/best-suburbs/BestSuburbsListing.tsx", "src/app/(marketing)/best-suburbs/page.tsx"]) {
+      expect(read(f), f).not.toMatch(/families with dependen|Population-weighted|highest-rated schools/);
+    }
   });
 });
 
@@ -228,7 +251,7 @@ describe("what the page prints", () => {
     // a measured change prints, up or down
     const nsw = edition("most-affordable", sydney);
     expect(suburbParagraph(nsw, suburb({ state: "NSW", medianBasis: "suburb", annualGrowthHouse: -3.2, walkScore: 0 }), 2)).toContain("The median is down 3.2% on a year earlier.");
-    expect(suburbParagraph(nsw, suburb({ state: "NSW", medianBasis: "suburb", annualGrowthHouse: 6, walkScore: 55 }), 2)).toContain("the 2nd lowest published median in Greater Sydney. The median is up 6.0% on a year earlier. Walk score 55 out of 100. 25,000 people lived there at the 2021 Census, and families with dependants are 62% of households.");
+    expect(suburbParagraph(nsw, suburb({ state: "NSW", medianBasis: "suburb", annualGrowthHouse: 6, walkScore: 55 }), 2)).toContain("the 2nd lowest published median in Greater Sydney. The median is up 6.0% on a year earlier. Walk score 55 out of 100. 25,000 people lived there at the 2021 Census, and family households are 62% of households.");
     // a family suburb without a published median says so instead of printing $0
     const fam = suburbParagraph(edition("for-families", perth), suburb({ medianHousePrice: 0, medianBasis: null, state: "WA" }), 1);
     expect(fam).toContain("The six schools we hold for the suburb average an ICSEA of 980 (ACARA), the highest in Greater Perth");

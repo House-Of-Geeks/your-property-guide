@@ -15,9 +15,9 @@ export interface CategoryCommentary {
 export const CATEGORY_COMMENTARY: Record<RankingCategory, CategoryCommentary> = {
   "for-families": {
     intro:
-      "Family-friendly suburbs balance four things: schools you'd actually send your kids to, parks and bike paths that get used, walkable neighbourhood retail, and a price point that doesn't lock you out of upgrading rooms when the family grows. We rank by the strongest measurable proxy (school ICSEA) and weight by the share of households that are families with dependents.",
+      "Family-friendly suburbs balance four things: schools you'd actually send your kids to, parks and bike paths that get used, walkable neighbourhood retail, and a price point that doesn't lock you out of upgrading rooms when the family grows. We rank on one measurable proxy, the average ICSEA of a suburb's schools, among suburbs where family households are at least 40% of households. A family household is any household with a family in it, couples without children included, so the share is not a count of households with children.",
     methodology:
-      "Suburbs are scored on average ICSEA across primary and secondary schools (sourced from ACARA), filtered to suburbs where families with dependents make up at least 40% of households (ABS Census 2021). Population-weighted to avoid outliers from very small localities.",
+      "Suburbs are ranked on the average ICSEA of the primary and secondary schools we hold for each suburb (ACARA), among suburbs where family households make up at least 40% of households (ABS Census 2021). A family household includes couples without children. The share of households with dependent children is not used: we do not hold it yet.",
     bestFor:
       "First home buyers planning to start a family in the next 5 years; existing families upsizing into a longer-term home; relocating families researching new areas.",
     faqs: [
