@@ -114,7 +114,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "Home loan pre-approval guide",            href: "/guides/home-loan-pre-approval-australia", description: "How to get conditional and unconditional pre-approval before house-hunting." },
-  { title: "How to choose a mortgage broker",         href: "/guides/how-to-choose-a-mortgage-broker", description: "Brokers shop offset products across 30+ lenders; the right one matters." },
+  { title: "How to choose a mortgage broker",         href: "/guides/how-to-choose-a-mortgage-broker", description: "A broker compares many lenders' offset products for your situation." },
   { title: "Fixed vs variable rate guide",            href: "/guides/fixed-vs-variable-rate-guide", description: "Fully offset accounts are usually only available on variable rates." },
   { title: "How much deposit do I need?",             href: "/guides/how-much-deposit-to-buy-a-house", description: "The offset-as-deposit strategy for upgraders and investors." },
   { title: "Mortgage repayment calculator",           href: "/mortgage-calculator", description: "Model the interest saving from a $20K, $50K or $100K offset balance." },

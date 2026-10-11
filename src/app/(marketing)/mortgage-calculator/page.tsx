@@ -171,8 +171,8 @@ export default function MortgageCalculatorPage() {
             <li>It doesn&rsquo;t cover construction loans (interest charged on drawn amount only).</li>
           </ul>
           <p>
-            For a precise quote on your specific situation, a mortgage broker can
-            compare 30+ lenders for you in one process.{" "}
+            For a quote on your specific situation, a mortgage broker compares
+            many lenders&rsquo; policies for you in one process.{" "}
             <Link href="/find-an-expert?intent=refinancing">Get connected</Link> if you want a free intro to one.
           </p>
 

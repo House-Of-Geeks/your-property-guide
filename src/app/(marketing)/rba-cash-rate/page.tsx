@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { Sources } from "@/components/guide/Sources";
+import { AVERAGE_NEW_VARIABLE_RATE, AVERAGE_OUTSTANDING_VARIABLE_RATE, F6_SOURCE } from "@/lib/data/rba-lending-rates";
 import {
   CASH_RATE_DECISIONS,
   CASH_RATE_SOURCE,
@@ -373,9 +374,10 @@ export default function RBACashRatePage() {
             Is Your Rate Still Competitive?
           </h2>
           <p className="text-gray-700 text-sm mb-4">
-            Every hold or hike widens the gap between the sharpest new-customer rates and
-            what existing borrowers pay. A broker can compare your current loan against
-            30+ lenders for free.
+            In {AVERAGE_OUTSTANDING_VARIABLE_RATE.period} the average variable rate on outstanding
+            owner-occupier loans was {AVERAGE_OUTSTANDING_VARIABLE_RATE.rate}% and on new ones{" "}
+            {AVERAGE_NEW_VARIABLE_RATE.rate}% (RBA table F6), so whether switching saves you money
+            depends on your own rate. A broker compares many lenders&rsquo; policies for your situation.
           </p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
             <Link
@@ -416,6 +418,11 @@ export default function RBACashRatePage() {
               label: MEETING_SCHEDULE_SOURCE.name,
               href: MEETING_SCHEDULE_SOURCE.url,
               note: `read ${MEETING_SCHEDULE_SOURCE.readOn}`,
+            },
+            {
+              label: F6_SOURCE.name,
+              href: F6_SOURCE.url,
+              note: `series ${AVERAGE_OUTSTANDING_VARIABLE_RATE.series} and ${AVERAGE_NEW_VARIABLE_RATE.series}, ${AVERAGE_NEW_VARIABLE_RATE.period}; published ${F6_SOURCE.published}, read ${F6_SOURCE.readOn}`,
             },
           ]}
         />

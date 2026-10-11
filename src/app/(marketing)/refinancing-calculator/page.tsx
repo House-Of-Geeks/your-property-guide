@@ -77,9 +77,9 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "Mortgage Repayments",          href: "/mortgage-calculator",        description: "Run the new loan numbers in detail before switching." },
-  { title: "Borrowing Power Calculator",   href: "/borrowing-power-calculator", description: "Confirm a new lender will approve you before you discharge." },
+  { title: "Borrowing Power Calculator",   href: "/borrowing-power-calculator", description: "An estimate of what a new lender may lend on your income and expenses, before you apply." },
   { title: "Fixed vs Variable Rate Guide", href: "/guides/fixed-vs-variable-rate-guide", description: "Whether to lock the new loan in or stay on variable." },
-  { title: "Get connected",                href: "/find-an-expert?intent=refinancing",  description: "We&rsquo;ll match you with a broker who can compare 30+ lenders." },
+  { title: "Get connected",                href: "/find-an-expert?intent=refinancing",  description: "One mortgage broker receives your details and pays us a fee; a broker compares many lenders' policies for your situation." },
   { title: "First Home Buyer Guide",       href: "/guides/first-home-buyer-guide", description: "If your first loan was via a scheme, check the discharge implications." },
   { title: "Affordability Calculator",     href: "/affordability-calculator",   description: "If refinancing is part of an upgrade plan, model the next purchase." },
 ];
@@ -171,7 +171,7 @@ export default function RefinancingCalculatorPage() {
           </ul>
           <p>
             For a full refinancing analysis on your specific loan, a mortgage
-            broker can compare the actual policies and packages of 30+ lenders.
+            broker compares many lenders&rsquo; policies and packages for your situation.
             <Link href="/find-an-expert?intent=refinancing">Get connected</Link> if
             you want a free intro to one.
           </p>

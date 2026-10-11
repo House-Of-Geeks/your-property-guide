@@ -221,7 +221,7 @@ const INVESTING: PersonaHubContent = {
   calculators: [
     { label: "Rental yield calculator",       href: "/rental-yield-calculator",    blurb: "Gross and net yield, weekly cash flow, full cost picture." },
     { label: "Capital gains tax calculator",  href: "/cgt-calculator",             blurb: "Estimate CGT on a sale, including the 50% discount and main residence partial exemption." },
-    { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "What an investor loan will actually approve, after the APRA buffer and rental income shading." },
+    { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "An estimate of what a lender may lend on your income and expenses, at the APRA buffer." },
     { label: "Best suburbs for investors",    href: "/best-suburbs",               blurb: "Suburbs ranked by yield, growth, demographic demand." },
   ],
   faqs: [
@@ -289,8 +289,8 @@ const UPGRADING: PersonaHubContent = {
   calculators: [
     { label: "Stamp duty (your next home)",   href: "/stamp-duty-calculator",      blurb: "The single biggest line item when moving. By state, with current 2025/26 rates." },
     { label: "Mortgage repayment calculator", href: "/mortgage-calculator",        blurb: "What the new loan will actually cost each month, weekly or fortnightly." },
-    { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "What a lender will approve on your current income and equity position." },
-    { label: "Free property appraisal",       href: "/appraisal",                  blurb: "Independent estimate of your current home from a vetted local agent." },
+    { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "An estimate of what a lender may lend on your income and expenses, at the APRA buffer." },
+    { label: "Free property appraisal",       href: "/appraisal",                  blurb: "A local agent's estimate of what your current home could sell for. One agent receives your details and pays us a fee." },
   ],
   faqs: [
     {
