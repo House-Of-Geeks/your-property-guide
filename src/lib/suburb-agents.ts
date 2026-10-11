@@ -1,11 +1,11 @@
 import type { Suburb } from "@/types";
 import type { Agent, Agency } from "@/types/agent";
-import { hasReliablePrice } from "@/lib/suburb-data-quality";
+import { hasReliablePrice, withheldPriceNote } from "@/lib/suburb-data-quality";
 import { STATE_NAMES, STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
 import { AUSSIE_GUIDE, CAV_PROPERTY_PRICES, NSW_AGENCY_AGREEMENTS, QLD_COMMISSION, cite, valuationCostCited } from "@/lib/data/appraisal-sources";
 import { formatPriceFull } from "@/lib/utils/format";
 import { describeSalesProvenance, type SalesProvenance } from "@/lib/sales-provenance";
-import { medianCaption, withheldNote } from "@/lib/value-range";
+import { medianCaption } from "@/lib/value-range";
 import { buildHomeValueSummary } from "@/lib/home-value";
 
 /**
@@ -107,10 +107,11 @@ export interface SuburbAgentsModel {
   /** The median in words for a sentence: "Williamstown's median house price of $1,600,000" or "the ABS statistical-area (SA2) median house price for East Devonport, $473,000". */
   medianPhrase: string | null;
   /**
-   * Why no house median is printed, in the words the instant range uses
-   * (withheldNote): the recorded sales count and period where the feed has
-   * too few, otherwise that no trusted feed covers the suburb. Null when the
-   * median is published.
+   * Why no house median is printed, in the suburb profile's own words
+   * (withheldPriceNote): a rental feed's label on the sales columns, the
+   * census estimate, no trusted feed, too few sales with the count and
+   * period, or a unit median above the house median. Null when the median
+   * is published.
    */
   withheldNote: string | null;
   /** A published unit median shown where the house median is withheld, with its own source line. */
@@ -239,6 +240,8 @@ export function pickNearbyAgentLinks(
 export interface SuburbAgentsOptions {
   /** Another locality in the same state carries this name: keep the postcode in the title. */
   nameShared?: boolean;
+  /** The row's own medians before the gate, to tell a missing median from an inverted pair (Kew East). */
+  rawMedians?: { house: number | null; unit: number | null } | null;
 }
 
 export function buildSuburbAgentsModel(
@@ -276,7 +279,17 @@ export function buildSuburbAgentsModel(
       : `${sn}'s median house price of ${formatPriceFull(median)}`
     : null;
   const summary = buildHomeValueSummary(suburb);
-  const withheld = median ? null : withheldNote(summary, "house");
+  const withheld = median
+    ? null
+    : withheldPriceNote({
+        name: sn,
+        state: suburb.state,
+        statsSource: suburb.dataFreshness?.salesSource,
+        salesCount: suburb.dataFreshness?.salesCount,
+        period: summary.period,
+        rawHouse: opts.rawMedians?.house ?? null,
+        rawUnit: opts.rawMedians?.unit ?? null,
+      }).note;
   const unitMedian = !median && summary.medianUnitPrice && summary.unitProvenance
     ? { price: summary.medianUnitPrice, provenance: summary.unitProvenance }
     : null;

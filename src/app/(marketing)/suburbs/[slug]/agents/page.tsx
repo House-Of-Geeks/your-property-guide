@@ -44,9 +44,9 @@ export function generateStaticParams() { return []; }
 // Each row carries the agents sitemap's own gate (a published house median),
 // so a link never points at a page that noindexes itself. Memoised per
 // request: generateMetadata and the page both call load().
-const getNeighbourRows = cache(async (slug: string): Promise<{ rows: NearbyAgentsRow[]; nameShared: boolean }> => {
+const getNeighbourRows = cache(async (slug: string): Promise<{ rows: NearbyAgentsRow[]; nameShared: boolean; rawMedians: { house: number | null; unit: number | null } | null }> => {
   const suburb = await getSuburbBySlug(slug);
-  if (!suburb) return { rows: [], nameShared: false };
+  if (!suburb) return { rows: [], nameShared: false, rawMedians: null };
   const parent = parentLocalityName(suburb.name);
   const names = [suburb.name, ...directionalVariants(suburb.name), ...(parent ? [parent] : [])];
   try {
@@ -62,10 +62,13 @@ const getNeighbourRows = cache(async (slug: string): Promise<{ rows: NearbyAgent
       // and does not count as a second locality of the same name.
       rows: raw.map((r) => ({ slug: r.slug, name: r.name, state: r.state, postcode: r.postcode, indexable: hasPublishedHouseMedian(r) && !isSecondaryLocality(r.slug) })),
       nameShared: raw.some((r) => r.slug !== slug && !isSecondaryLocality(r.slug) && r.state === suburb.state && r.name === suburb.name),
+      // The page's own row comes back with the same-name rows: its medians
+      // before the gate tell an inverted pair (Kew East) from a missing one.
+      rawMedians: ((self) => (self ? { house: self.medianHousePrice, unit: self.medianUnitPrice } : null))(raw.find((r) => r.slug === slug)),
     };
   } catch {
     // The links are a convenience: a failed read leaves the page without them.
-    return { rows: [], nameShared: false };
+    return { rows: [], nameShared: false, rawMedians: null };
   }
 });
 
@@ -75,7 +78,7 @@ async function load(slug: string) {
   const [agents, agencies] = await Promise.all([getAgents(slug), getAgenciesBySuburbSlug(slug)]);
   const neighbours = await getNeighbourRows(slug);
   const nearby = pickNearbyAgentLinks(suburb, suburb.nearbySuburbs, neighbours.rows);
-  return { suburb, nearby, model: buildSuburbAgentsModel(suburb, agents, agencies, undefined, { nameShared: neighbours.nameShared }) };
+  return { suburb, nearby, model: buildSuburbAgentsModel(suburb, agents, agencies, undefined, { nameShared: neighbours.nameShared, rawMedians: neighbours.rawMedians }) };
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

@@ -130,9 +130,17 @@ describe("the real reason a median is withheld (F7, 10 Oct 2026)", () => {
     const m = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 0 }, { salesSource: "sales-nsw", salesCount: 3 }), [], []);
     expect(m.withheldNote).toBe("Only 3 house sales were recorded in calendar 2025, too few for a reliable median. We publish one from 5 sales or more.");
   });
-  it("says no trusted feed covers the suburb when the source is distrusted", () => {
-    const m = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 0 }, { salesSource: "rental-nsw" }), [], []);
-    expect(m.withheldNote).toBe("We don't publish a house median for Bondi yet: no trusted sales feed covers it.");
+  it("gives the profile's own reason: a rental label being re-checked, no trusted feed, or an inverted pair", () => {
+    const label = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 0 }, { salesSource: "rental-nsw" }), [], []);
+    expect(label.withheldNote).toBe("The sales figure on file for Bondi carries a rental feed's label, so we can't confirm it came from the NSW Valuer General. We don't show it until it has been checked against the NSW Valuer General's figures.");
+    const noFeed = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 0 }, { salesSource: null }, "QLD"), [], []);
+    expect(noFeed.withheldNote).toBe("No trusted sales feed has a house median for Bondi yet, so we don't show one.");
+    // Kew East: the gate withholds both medians when the unit median is above the house median.
+    const inverted = buildSuburbAgentsModel(
+      makeSuburb({ medianHousePrice: 0, medianUnitPrice: 0 }, { salesSource: "sales-vic", salesCount: null }, "VIC"),
+      [], [], false, { rawMedians: { house: 660_000, unit: 1_396_000 } },
+    );
+    expect(inverted.withheldNote).toContain("put the unit median above the house median");
   });
   it("is null when the median is published, and the page prints the note, not a bare 'not yet'", () => {
     expect(buildSuburbAgentsModel(makeSuburb(), [], []).withheldNote).toBeNull();
