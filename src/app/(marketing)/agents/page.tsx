@@ -12,14 +12,18 @@ import { AgentsResults } from "./Results";
 // cache. Filter-aware metadata was previously dynamic; now static for cache.
 export const revalidate = 86400;
 
+const DESCRIPTION = "Browse the real estate agents listed with Your Property Guide and search by suburb to see who covers your area.";
+
 export const metadata: Metadata = {
   title: "Find a Real Estate Agent",
-    // Directory paused (placeholder profiles only) per Andy, 2026-07-03 —
-    // pages stay reachable but out of the index until real agents load.
-    robots: { index: false, follow: true },
-  description: "Browse experienced local real estate agents across Australia.",
+  // Out of the index while the directory lists only a handful of agents
+  // (directory paused 3 Jul 2026). The agents listed are real agents who
+  // agreed to be listed (owner decision, 10 Oct 2026); the page makes no
+  // vetting, featuring or rating claim about them.
+  robots: { index: false, follow: true },
+  description: DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/agents` },
-  openGraph: { url: `${SITE_URL}/agents`, title: "Find a Real Estate Agent", description: "Browse experienced local real estate agents across Australia.", type: "website" },
+  openGraph: { url: `${SITE_URL}/agents`, title: "Find a Real Estate Agent", description: DESCRIPTION, type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
@@ -54,7 +58,7 @@ export default function AgentsPage({ searchParams }: AgentsPageProps) {
                 </span>
                 <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
                 <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-                  Vetted directory
+                  Agent directory
                 </span>
               </div>
               <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 max-w-[20ch] font-medium">
@@ -62,8 +66,8 @@ export default function AgentsPage({ searchParams }: AgentsPageProps) {
                 <span className="italic font-light text-primary">local agent</span>.
               </h1>
               <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-2xl mb-8">
-                Browse trusted local real estate agents across Australia.
-                Search by suburb to see who knows your area.
+                Browse the real estate agents listed with us. Search by
+                suburb to see who covers your area.
               </p>
               <div className="max-w-xl">
                 <AgentSearch />
