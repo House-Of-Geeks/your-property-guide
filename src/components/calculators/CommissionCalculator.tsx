@@ -8,7 +8,7 @@ import { computeSellingCosts, type SellingCostsResult } from "@/lib/selling-cost
 
 // Typical residential commission ranges by state. The ranges, their sources
 // and their as-at date live in src/lib/data/commission-rates.ts.
-import { STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
+import { COMMISSION_AS_AT, STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
 
 const STATES = Object.keys(STATE_RATES) as StateCode[];
 
@@ -143,7 +143,7 @@ export function CommissionCalculator({
               className="w-full rounded-lg border border-gray-300 px-3 py-3 text-gray-900 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
             />
             <p className="text-xs text-gray-500 mt-1">
-              Typical in {state}: {STATE_RATES[state].low}% to {STATE_RATES[state].high}%.
+              Typical in {state}: {STATE_RATES[state].low}% to {STATE_RATES[state].high}% (published averages, {COMMISSION_AS_AT}); state average {STATE_RATES[state].typical}%.
             </p>
           </div>
           <div>
@@ -210,7 +210,7 @@ export function CommissionCalculator({
             </div>
           )}
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-            <dt className="text-sm text-gray-600">Commission range in {state} ({STATE_RATES[state].low}% to {STATE_RATES[state].high}%, before GST)</dt>
+            <dt className="text-sm text-gray-600">Published range in {state} ({STATE_RATES[state].low}% to {STATE_RATES[state].high}%, before GST)</dt>
             <dd className="text-sm text-gray-500">{fmt(result.stateLow)} to {fmt(result.stateHigh)}</dd>
           </div>
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">

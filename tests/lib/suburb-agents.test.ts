@@ -3,6 +3,12 @@ import { describe, expect, it } from "vitest";
 import type { Suburb } from "@/types";
 import type { Agent, Agency } from "@/types/agent";
 import { AGENT_LISTINGS_ENABLED, buildSuburbAgentsModel, commissionOnMedian } from "@/lib/suburb-agents";
+import { STATE_RATES } from "@/lib/data/commission-rates";
+
+// The NSW range comes from the sourced table in commission-rates.ts (review 10 Oct 2026, selling 0.1).
+const NSW = STATE_RATES.NSW;
+const on = (median: number, rate: number) => Math.round((median * rate) / 100);
+const aud = (n: number) => `$${n.toLocaleString("en-AU")}`;
 
 function makeSuburb(over: Partial<Suburb["stats"]> = {}, freshness: Partial<NonNullable<Suburb["dataFreshness"]>> = {}): Suburb {
   return {
@@ -18,8 +24,8 @@ const agency = { id: "ag1", slug: "smith-realty", name: "Smith Realty" } as Agen
 describe("commissionOnMedian", () => {
   it("works the state range on the suburb median", () => {
     const c = commissionOnMedian("NSW", 1_000_000)!;
-    expect([c.lowPct, c.typicalPct, c.highPct]).toEqual([1.8, 2.0, 2.5]);
-    expect([c.lowAmount, c.typicalAmount, c.highAmount]).toEqual([18_000, 20_000, 25_000]);
+    expect([c.lowPct, c.typicalPct, c.highPct]).toEqual([NSW.low, NSW.typical, NSW.high]);
+    expect([c.lowAmount, c.typicalAmount, c.highAmount]).toEqual([on(1_000_000, NSW.low), on(1_000_000, NSW.typical), on(1_000_000, NSW.high)]);
   });
   it("returns null for an unknown state or no median", () => {
     expect(commissionOnMedian("XX", 1_000_000)).toBeNull();
@@ -32,11 +38,11 @@ describe("buildSuburbAgentsModel", () => {
     const m = buildSuburbAgentsModel(makeSuburb(), [agent], [agency]);
     expect(m.title).toBe("Real Estate Agents in Bondi NSW 2026");
     expect(m.indexable).toBe(true);
-    expect(m.commission?.lowAmount).toBe(77_400);
-    expect(m.commission?.highAmount).toBe(107_500);
+    expect(m.commission?.lowAmount).toBe(on(4_300_000, NSW.low));
+    expect(m.commission?.highAmount).toBe(on(4_300_000, NSW.high));
     expect(m.faqs[0].question).toBe("What do real estate agents charge in Bondi?");
-    expect(m.faqs[0].answer).toContain("$77,400 to $107,500");
-    expect(m.description).toContain("$4,300,000 median (1.8% to 2.5%)");
+    expect(m.faqs[0].answer).toContain(`${aud(on(4_300_000, NSW.low))} to ${aud(on(4_300_000, NSW.high))}`);
+    expect(m.description).toContain(`$4,300,000 median (${NSW.low}% to ${NSW.high}%)`);
     expect(m.matchSource).toBe("suburb-agents-bondi-nsw-2026");
   });
   it("is not indexable without a reliable median, and drops the commission FAQ but keeps the page useful", () => {

@@ -11,10 +11,12 @@ describe("computeSellingCosts", () => {
   it("adds GST to commission unless the quote includes it, and only counts conditional lines when they apply", () => {
     const base = { ...defaultSellingCostsInput("NSW", 800_000), marketing: 4_000, conveyancing: 1_400, documents: 450 };
     const r = computeSellingCosts(base);
-    expect(r.commission).toBe(16_000);           // 2.0% of $800,000
-    expect(r.commissionGst).toBe(1_600);
+    const commission = Math.round((800_000 * STATE_RATES.NSW.typical) / 100);
+    const gst = Math.round(commission * 0.1);
+    expect(r.commission).toBe(commission);       // the NSW typical rate on $800,000
+    expect(r.commissionGst).toBe(gst);
     expect(r.lines.map((l) => l.key)).toEqual(["commission", "gst", "marketing", "conveyancing", "documents"]);
-    expect(r.totalCosts).toBe(16_000 + 1_600 + 4_000 + 1_400 + 450);
+    expect(r.totalCosts).toBe(commission + gst + 4_000 + 1_400 + 450);
     expect(r.netBeforeLoan).toBe(800_000 - r.totalCosts);
     expect(r.netAfterLoan).toBe(r.netBeforeLoan);
 

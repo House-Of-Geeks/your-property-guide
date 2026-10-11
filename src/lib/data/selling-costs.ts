@@ -4,9 +4,12 @@
 // because agents, conveyancers and lenders quote them individually and no
 // state publishes a survey. The state-documents line names what the law
 // requires the seller to prepare, with the government source that says so.
-import { STATE_NAMES, STATE_RATES, type StateCode } from "./commission-rates";
+import { COMMISSION_AS_AT, GST_RATE, STATE_NAMES, STATE_ORDER, STATE_RATES, type StateCode } from "./commission-rates";
 
-export const SELLING_COSTS_AS_AT = "September 2026";
+export { GST_RATE };
+
+/** When the commission figures were last read; the other lines are indicative budgets (see below). */
+export const SELLING_COSTS_AS_AT = COMMISSION_AS_AT;
 
 export interface CostSource {
   label: string;
@@ -72,14 +75,11 @@ export interface SellingCostTableData {
   totalHighWithGst: number;
 }
 
-/** GST on the agent's commission (ATO: GST is 10% on most goods and services). */
-export const GST_RATE = 0.1;
-
 const round = (n: number) => Math.round(n);
 const pct = (n: number, price: number) => Math.round((n / price) * 1000) / 10;
 
-export function sellingCostTable(state: StateCode): SellingCostTableData {
-  const price = EXAMPLE_PRICE[state];
+/** The state's cost table at its example price, or at any price passed in. */
+export function sellingCostTable(state: StateCode, price: number = EXAMPLE_PRICE[state]): SellingCostTableData {
   const r = STATE_RATES[state];
   const documents = STATE_DOCUMENTS[state];
   const docLine: CostLine = { key: "documents", label: documents.label, low: documents.low, high: documents.high, note: documents.note, applies: "always", source: documents.source };
@@ -95,6 +95,42 @@ export function sellingCostTable(state: StateCode): SellingCostTableData {
   const totalLowWithGst = totalLow + round(commission.lowAmount * GST_RATE);
   const totalHighWithGst = totalHigh + round(commission.highAmount * GST_RATE);
   return { state, stateName: STATE_NAMES[state], price, commission, lines, documents, totalLow, totalHigh, totalLowPct: pct(totalLow, price), totalHighPct: pct(totalHigh, price), totalLowWithGst, totalHighWithGst };
+}
+
+export interface NationalSellingCost {
+  price: number;
+  /** The cheapest state's low total and the dearest state's high total at this price, before GST on commission. */
+  low: number;
+  lowState: StateCode;
+  high: number;
+  highState: StateCode;
+  lowPct: number;
+  highPct: number;
+  /** The same two totals with GST on the commission. */
+  lowWithGst: number;
+  highWithGst: number;
+}
+
+/**
+ * The national cost of selling at one price: every state's table worked at
+ * that price, lowest low to highest high. Every national total on the site
+ * comes from here (commercial-intent review, 10 Oct 2026, selling 0.3).
+ */
+export function nationalSellingCost(price = 800_000): NationalSellingCost {
+  const tables = STATE_ORDER.map((s) => sellingCostTable(s, price));
+  const lo = tables.reduce((a, b) => (b.totalLow < a.totalLow ? b : a));
+  const hi = tables.reduce((a, b) => (b.totalHigh > a.totalHigh ? b : a));
+  return {
+    price,
+    low: lo.totalLow,
+    lowState: lo.state,
+    high: hi.totalHigh,
+    highState: hi.state,
+    lowPct: pct(lo.totalLow, price),
+    highPct: pct(hi.totalHigh, price),
+    lowWithGst: lo.totalLowWithGst,
+    highWithGst: hi.totalHighWithGst,
+  };
 }
 
 /** "$2,000 to $8,000": a cost line's range, for text that names it. */

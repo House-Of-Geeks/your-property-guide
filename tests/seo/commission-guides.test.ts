@@ -21,12 +21,15 @@ describe("commission rates", () => {
 describe("selling-cost table", () => {
   it("works NSW through at $800,000: commission plus the always-payable lines at the low end, everything at the high end", () => {
     const t = sellingCostTable("NSW");
+    const r = STATE_RATES.NSW;
+    const at = (rate: number) => Math.round((800_000 * rate) / 100);
     expect(t.price).toBe(800_000);
-    expect(t.commission).toMatchObject({ lowAmount: 14_400, typicalAmount: 16_000, highAmount: 20_000 });
-    expect(t.totalLow).toBe(14_400 + 2_000 + 800 + 300);
-    expect(t.totalHigh).toBe(20_000 + 8_000 + 2_500 + 600 + 1_200 + 400);
-    expect(t.totalLowPct).toBe(2.2);
-    expect(t.totalHighPct).toBe(4.1);
+    expect(t.commission).toMatchObject({ lowAmount: at(r.low), typicalAmount: at(r.typical), highAmount: at(r.high) });
+    expect(t.totalLow).toBe(at(r.low) + 2_000 + 800 + 300);
+    expect(t.totalHigh).toBe(at(r.high) + 8_000 + 2_500 + 600 + 1_200 + 400);
+    expect(t.totalLowPct).toBe(Math.round((t.totalLow / 800_000) * 1000) / 10);
+    expect(t.totalHighPct).toBe(Math.round((t.totalHigh / 800_000) * 1000) / 10);
+    expect(t.totalHighWithGst).toBe(t.totalHigh + Math.round(at(r.high) * 0.1));
   });
   it("keeps every state near the national guide's 2 to 4 per cent before tax (the $600,000 states run higher at the top end)", () => {
     for (const s of STATES) {
