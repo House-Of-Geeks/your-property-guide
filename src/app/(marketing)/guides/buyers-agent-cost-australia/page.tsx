@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
-  KeyFigure,
   MatchCTA,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -12,13 +13,21 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 
+// Commercial-intent review 10 Oct 2026, buying 0.1 row 17 and 3.6: every fee
+// on this guide was unsourced and undated (unchanged since 6 May), the
+// licence answer named the wrong NSW licence category, a link card offered a
+// directory of checked agents on a page that makes one introduction, and both
+// CTAs pushed the selling guide. Until a dated,
+// sourced fee table exists, the guide explains how buyer's agents charge
+// with worked arithmetic, not market ranges.
+
 const FRONTMATTER: GuideFrontmatter = {
-  title: "How Much Does a Buyer's Agent Cost in Australia? (2026)",
+  title: "Buyer's Agent Fees in Australia 2026: How They Charge",
   description:
-    "Buyer's agent fees in Australia: fixed fees vs percentage commissions, typical ranges by market, what's included, and when paying $10K to $25K is worth it.",
+    "How buyer's agents charge in Australia: fixed fees, percentages and bidding-only, what each costs on a worked example, licensing, and how to check one first.",
   slug: "buyers-agent-cost-australia",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-05-06",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -45,21 +54,38 @@ export const metadata: Metadata = {
   },
 };
 
+/** The buyer match: intent buying, the #57 disclosure, no new form. */
+const MATCH_HREF = "/find-an-expert?intent=buying";
+const NSW_BUYERS_AGENT = {
+  label: "NSW Government: Using a real estate agent to buy a property",
+  href: "https://www.nsw.gov.au/housing-and-construction/buying-and-selling-property/buying-property-nsw/using-a-real-estate-agent-to-buy-a-property",
+};
+const NSW_LICENCE_CHECK = {
+  label: "NSW Government: Check a licence for a property agent or conveyancer",
+  href: "https://www.nsw.gov.au/housing-and-construction/buying-and-selling-property/buying-property-nsw/preparing-to-purchase/property-agent-or-conveyancer-licence-check",
+};
+const CAV_ESTATE_AGENTS = {
+  label: "Consumer Affairs Victoria: Estate agents (licensing and registration)",
+  href: "https://www.consumer.vic.gov.au/licensing-and-registration/estate-agents",
+};
+
+/** Worked arithmetic for a percentage fee: the fee is the rate times the price. */
+const pctFee = (pct: number, price: number) => `$${Math.round((price * pct) / 100).toLocaleString("en-AU")}`;
+
 const TLDR = [
-  "Buyer's agent fees in Australia typically range from $8,000 to $25,000 for a full-service engagement, depending on price point and market.",
-  "Two pricing models dominate: a fixed fee (often $10,000 to $18,000 in capital cities) or a percentage of the purchase price (1.5% to 3%).",
-  "Auction bidding only services are cheaper, typically $500 to $1,500 per auction.",
-  "On a $1.5M Sydney purchase, a buyer's agent at 2% costs $30,000. The decision is whether they save you that much in price negotiation, off-market access, or research time.",
-  "Best fit: investors buying interstate, time-poor professionals, and first-time buyers in tightly contested markets. Less obvious value if you've already bought in your suburb before.",
+  "A buyer's agent works for you, the buyer, and charges you directly: a fixed fee, a percentage of the purchase price, or a per-auction fee for bidding only.",
+  `A percentage fee grows with the price: at 2%, a $1,000,000 purchase costs ${pctFee(2, 1_000_000)} and a $1,500,000 purchase ${pctFee(2, 1_500_000)}. A fixed fee doesn't, which removes any reward for you paying more.`,
+  "We have not found a regulator or survey figure for typical fees that we can source and date, so this guide gives no market range. Get three written quotes and compare them on the same price.",
+  "In NSW a buyer's agent must hold a real estate agent's licence, or a certificate of registration and work under a licensed agent (NSW Government). Check the licence on the public register before you sign.",
+  "Best fit: buying interstate, time-poor buyers, and contested markets. Less obvious value if you've bought in the suburb before.",
 ];
 
 const TOC: GuideTOCEntry[] = [
   { id: "what-they-do",     label: "What buyer's agents actually do" },
-  { id: "fee-models",       label: "Fee models &amp; ranges" },
-  { id: "by-service",       label: "Cost by service tier" },
-  { id: "by-market",        label: "Cost by market" },
-  { id: "is-it-worth-it",   label: "When it's worth it" },
-  { id: "what-to-ask",      label: "What to ask before signing" },
+  { id: "fee-models",       label: "How buyer's agents charge" },
+  { id: "regulated",        label: "Are buyer's agents regulated?" },
+  { id: "is-it-worth-it",   label: "Is a buyer's agent worth it?" },
+  { id: "what-to-ask",      label: "How to check a buyer's agent before you sign" },
   { id: "vs-selling-agent", label: "Buyer's agent vs selling agent" },
   { id: "next-steps",       label: "Next steps" },
 ];
@@ -68,41 +94,41 @@ const FAQS: FaqItem[] = [
   {
     question: "What's the average buyer's agent fee in Australia?",
     answer:
-      "For a full search-to-settlement engagement on a $1M to $1.5M property, expect $12,000 to $25,000. Fixed fees in Sydney and Melbourne sit around $15,000 to $18,000 for capital city houses; percentage fees of 1.5% to 2% are common at higher price points. Auction bidding only is much cheaper at $500 to $1,500 per auction.",
+      `We have not found an official or survey average we can source and date, and agencies quote case by case. What you can compare is the structure: a fixed fee, or a percentage of the price, which at 2% is ${pctFee(2, 1_000_000)} on a $1,000,000 home. Ask three agents for a written quote on the same brief and price.`,
   },
   {
-    question: "Do buyer's agents save money on the purchase price?",
+    question: "Are buyers agents worth it in Australia?",
     answer:
-      "Sometimes, but not always. A skilled buyer's agent who knows the suburb can identify when the asking price is inflated and negotiate harder than an emotional buyer would. On a hot auction property, however, the ceiling is set by the highest bidder, your agent can't conjure a discount that the market won't give. The bigger value is often time saved and off-market access, not price.",
+      "They can be when the search is the bottleneck: buying interstate, buying with little time, or in a market where you keep losing at auction. They are worth less if you know the suburb's recent sales already. Weigh the quoted fee against what you would otherwise spend in time, and against the price discipline an agent who is not emotionally invested brings.",
+  },
+  {
+    question: "Do you pay a buyer's agent upfront?",
+    answer:
+      "It depends on the engagement agreement, which sets what is payable when you sign, what on exchange or settlement, and what if you withdraw. Ask for it in writing before you pay anything, and check whether any part is refundable if you don't buy.",
   },
   {
     question: "Is the fee tax deductible?",
     answer:
-      "For investment properties, the buyer's agent fee is added to the cost base of the property and reduces capital gains tax when you sell. It's not immediately deductible like an interest expense. For owner-occupied purchases, the fee is not deductible at all. Check with your accountant for your specific circumstances.",
-  },
-  {
-    question: "Can I negotiate the fee?",
-    answer:
-      "Yes. Fixed fees are more negotiable than percentage fees, especially if you're confident on the suburb already and only need search and negotiation help. Bringing your own pre-shortlisted properties or limiting the engagement to two or three suburbs can knock 10% to 20% off the quote.",
+      "For an investment property, a buyer's agent fee is a cost of buying the asset, so it forms part of the cost base and reduces capital gains tax when you sell; it is not deducted in the year you pay it. For a home you live in, it is not deductible. Check with your accountant for your circumstances.",
   },
   {
     question: "Are buyer's agents licensed?",
     answer:
-      "Yes. Each state has a real estate or property licensing regime, for example, NSW requires a Class 1 or Class 2 Real Estate Licence (Stock and Station). Always check the licence number on your state's licensing register before signing an engagement letter.",
+      "Yes. In NSW a buyer's agent must hold a real estate agent's licence, or hold a certificate of registration and work under the direction of a licensed real estate agent (NSW Government, read 11 October 2026). Other states license estate agents too. Check the licence on your state's public register before you sign an engagement.",
   },
   {
-    question: "Do they have to be exclusive?",
+    question: "What is the difference between a selling agent and a buyer's agent?",
     answer:
-      "Most engagements are exclusive, you can't shop the same brief to multiple agents. Some firms offer a non-exclusive arrangement at a higher fee. Read the engagement letter carefully for the exclusivity clause and the term length (commonly 6 months).",
+      "A selling agent is hired and paid by the vendor to get the best price for the vendor. A buyer's agent is hired and paid by you to find the right property and pay no more than it is worth. They work for opposite sides of the same deal.",
   },
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "How to Choose a Selling Agent", href: "/guides/how-to-choose-a-selling-agent", description: "On the other side of the deal: picking the agent who lists your existing home." },
   { title: "Property Auction Guide", href: "/guides/property-auction-guide", description: "If you're heading to auction with or without a buyer's agent, here's the playbook." },
-  { title: "Real Estate Agent Fees in Australia", href: "/guides/real-estate-agent-fees-australia", description: "Selling agent commissions across every state, side-by-side." },
-  { title: "Off-Market Properties", href: "/off-market", description: "Properties before they hit Domain or realestate.com.au, what buyer's agents access on your behalf." },
-  { title: "Find an Expert", href: "/find-an-expert", description: "Browse buyer's agents and brokers we've vetted." },
+  { title: "How to Negotiate a Property Price", href: "/guides/how-to-negotiate-property-price-australia", description: "Negotiating a private sale yourself." },
+  { title: "Buying Property in Australia", href: "/guides/buying-property-australia", description: "The full step-by-step buying process." },
+  { title: "Off-Market Properties", href: "/off-market", description: "Properties before they hit Domain or realestate.com.au." },
+  { title: "Find an Expert", href: MATCH_HREF, description: "Tell us your situation: one specialist receives your details and pays us a fee for the introduction." },
 ];
 
 export default function BuyersAgentCostGuide() {
@@ -118,7 +144,7 @@ export default function BuyersAgentCostGuide() {
         <p>
           A selling agent is paid by the vendor and acts in their interest. A
           buyer&rsquo;s agent is paid by you and acts in yours. Different role,
-          different fee structure, different incentives, don&rsquo;t confuse the two.
+          different fee structure, different incentives.
         </p>
       </Callout>
 
@@ -126,146 +152,138 @@ export default function BuyersAgentCostGuide() {
       <p className="lead">
         A full-service buyer&rsquo;s agent runs the purchase from brief to settlement:
         suburb research, shortlisting, due diligence, contract review,
-        negotiation, and (often) bidding at auction. A bidding-only service is
-        narrower, they show up on auction day and bid to your maximum.
+        negotiation, and often bidding at auction. A bidding-only service is
+        narrower: they attend the auction and bid to your maximum.
       </p>
 
       <ul>
-        <li><strong>Brief &amp; shortlist:</strong> Translate your goals into a property brief, then surface 5 to 15 candidates per week from on-market and off-market sources.</li>
-        <li><strong>Inspection &amp; due diligence:</strong> Inspect on your behalf, commission building/pest reports, review strata records.</li>
-        <li><strong>Pricing intelligence:</strong> Pull recent comparable sales and tell you what the property is genuinely worth (not what the agent claims).</li>
-        <li><strong>Negotiation or bidding:</strong> Handle private treaty negotiations or bid at auction, often saving you the emotional component of the contest.</li>
-        <li><strong>Settlement coordination:</strong> Coordinate with your conveyancer and broker through to handover.</li>
+        <li><strong>Brief and shortlist:</strong> turn your goals into a property brief, then find candidates on and off the market.</li>
+        <li><strong>Inspection and due diligence:</strong> inspect for you, arrange building and pest reports, review strata records.</li>
+        <li><strong>Pricing:</strong> pull recent comparable sales and say what the property is worth, not what the selling agent quotes.</li>
+        <li><strong>Negotiation or bidding:</strong> handle a private sale negotiation or bid at auction for you.</li>
+        <li><strong>Settlement:</strong> work with your conveyancer and broker through to handover.</li>
       </ul>
 
-      <h2 id="fee-models">Fee models &amp; ranges</h2>
+      <h2 id="fee-models">How buyer&rsquo;s agents charge</h2>
+      <p>
+        Fees are set by each agency and quoted case by case. We have not found a regulator or
+        survey figure for typical fees that we can source and date, so there is no market range
+        here. What you can compare is the structure, and the arithmetic behind it.
+      </p>
 
       <h3>Fixed fee</h3>
       <p>
-        A flat dollar amount agreed upfront, regardless of the purchase price.
-        Common at capital city houses around the median ($800K to $2M).
-        Typical range: $10,000 to $18,000.
+        A flat dollar amount agreed upfront, whatever the purchase price. Its advantage is that the
+        agent earns nothing extra if you pay more. Some agencies set fixed fees in price brackets.
       </p>
 
-      <h3>Percentage of purchase price</h3>
+      <h3>Percentage of the purchase price</h3>
       <p>
-        Usually 1.5% to 3% of the final purchase price. More common at higher
-        price points and for prestige work. Drawback: misaligned incentive (the
-        agent earns more if you pay more).
-      </p>
-
-      <h3>Tiered fixed fee</h3>
-      <p>
-        Some firms set fixed fees in price brackets, e.g. $12,000 up to $1.2M,
-        $16,000 from $1.2M to $1.8M. Cleaner than a flat percentage and avoids
-        the &ldquo;incentive to overpay&rdquo; problem.
+        The fee is a percentage of what you pay. At 1.5%, a $1,000,000 purchase costs{" "}
+        {pctFee(1.5, 1_000_000)}; at 2%, {pctFee(2, 1_000_000)}; at 2% on $1,500,000,{" "}
+        {pctFee(2, 1_500_000)}. The drawback is the incentive: the agent earns more if you pay more,
+        so ask for a cap.
       </p>
 
       <h3>Bidding only</h3>
       <p>
-        $500 to $1,500 per auction. You handle research and inspection
-        yourself; the agent attends the auction and bids on your behalf to a
-        pre-agreed maximum.
+        A per-auction fee. You do the research and inspections; the agent attends the auction
+        and bids for you to a maximum you agree in writing beforehand.
       </p>
-
-      <KeyFigure
-        value="$10K to $25K"
-        label="Typical full-service fee for an Australian capital city purchase"
-        context="Fixed or percentage. Bidding-only is much cheaper at $500 to $1,500."
-      />
-
-      <h2 id="by-service">Cost by service tier</h2>
-      <ul>
-        <li><strong>Auction bidding only:</strong> $500 to $1,500 per auction</li>
-        <li><strong>Negotiation only (you&rsquo;ve found the property):</strong> $2,000 to $5,000</li>
-        <li><strong>Shortlist + inspect (no negotiation):</strong> $5,000 to $9,000</li>
-        <li><strong>Full search to settlement:</strong> $10,000 to $25,000+</li>
-        <li><strong>Premium / prestige:</strong> 2% to 3% of purchase price</li>
-      </ul>
-
-      <h2 id="by-market">Cost by market</h2>
-      <p>
-        Fees scale with market size and complexity:
-      </p>
-      <ul>
-        <li><strong>Sydney:</strong> $15,000 to $25,000 fixed for full service; 2% to 2.5% common at $2M+.</li>
-        <li><strong>Melbourne:</strong> $13,000 to $20,000 fixed for full service.</li>
-        <li><strong>Brisbane:</strong> $11,000 to $17,000 fixed.</li>
-        <li><strong>Perth, Adelaide:</strong> $9,000 to $15,000 fixed.</li>
-        <li><strong>Regional / interstate:</strong> Add 10% to 25% if the agent is travelling or working outside their home market.</li>
-      </ul>
-
-      <h2 id="is-it-worth-it">When a buyer&rsquo;s agent is worth it</h2>
-
-      <h3>Strong fit</h3>
-      <ul>
-        <li>You&rsquo;re buying interstate and don&rsquo;t know the local market.</li>
-        <li>You&rsquo;re a time-poor professional and the search itself is the bottleneck.</li>
-        <li>You&rsquo;re an investor where access to off-market stock matters.</li>
-        <li>You&rsquo;ve lost two or three auctions and need professional bidding to break the streak.</li>
-      </ul>
-
-      <h3>Weaker fit</h3>
-      <ul>
-        <li>You&rsquo;ve already bought in this suburb before and know the comps cold.</li>
-        <li>The market is soft and stock is plentiful, negotiation leverage already favours buyers.</li>
-        <li>You&rsquo;re buying near the bottom of the market ($400K to $600K) where the fixed fee swallows a large slice of your savings.</li>
-      </ul>
 
       <Callout variant="warning" title="Watch for hidden referrals">
         <p>
           Some &ldquo;free&rdquo; buyer&rsquo;s agents are paid by selling agents or developers
           for steering buyers their way. The fee feels free to you but you may
           end up looking only at properties from a narrow seller pool. Read the
-          engagement letter for any third-party commissions.
+          engagement agreement for any third-party commissions.
         </p>
       </Callout>
 
-      <MatchCTA kind="buyers-agent" />
+      <h2 id="regulated">Are buyer&rsquo;s agents regulated?</h2>
+      <p>
+        Yes, as real estate agents. In NSW a buyer&rsquo;s agent must hold either a real estate
+        agent&rsquo;s licence, or a certificate of registration and work under the direction of a
+        licensed real estate agent (
+        <a href={NSW_BUYERS_AGENT.href} target="_blank" rel="noopener noreferrer">NSW Government</a>
+        , read 11 October 2026). Every other state and territory licenses estate agents too, through
+        its consumer affairs or fair trading agency; in Victoria that is{" "}
+        <a href={CAV_ESTATE_AGENTS.href} target="_blank" rel="noopener noreferrer">Consumer Affairs Victoria</a>.
+      </p>
+      <p>
+        Before you sign, look the agent and the agency up on the state&rsquo;s public register (in
+        NSW, through the{" "}
+        <a href={NSW_LICENCE_CHECK.href} target="_blank" rel="noopener noreferrer">licence check</a>
+        ) and confirm the name on the engagement agreement matches.
+      </p>
 
-      <h2 id="what-to-ask">What to ask before signing</h2>
+      <h2 id="is-it-worth-it">Is a buyer&rsquo;s agent worth it?</h2>
+
+      <h3>Strong fit</h3>
+      <ul>
+        <li>You&rsquo;re buying interstate and don&rsquo;t know the local market.</li>
+        <li>You&rsquo;re time-poor and the search itself is the bottleneck.</li>
+        <li>You&rsquo;re an investor and off-market stock matters to you.</li>
+        <li>You&rsquo;ve lost several auctions and want a professional bidder.</li>
+      </ul>
+
+      <h3>Weaker fit</h3>
+      <ul>
+        <li>You&rsquo;ve bought in this suburb before and know its recent sales.</li>
+        <li>The market is soft and stock is plentiful, so leverage already favours buyers.</li>
+        <li>The fee would be a large share of a modest price, so work it out against your budget first.</li>
+      </ul>
+
+      <MatchCTA
+        kind="buyers-agent"
+        lead="Buying soon? Tell us where you're buying: one buyer's agent receives your details and pays us a fee for the introduction. You pay us nothing, and there's no commitment."
+        ctaLabel="Tell us what you're buying"
+        href={MATCH_HREF}
+      />
+
+      <h2 id="what-to-ask">How to check a buyer&rsquo;s agent before you sign</h2>
       <ol>
-        <li>What&rsquo;s your fee, and is it fixed, percentage, or capped?</li>
-        <li>What&rsquo;s included in the fee (inspections, reports, contract review)?</li>
-        <li>How many properties have you transacted in my target suburb in the last 12 months?</li>
-        <li>Are you taking any commission from selling agents or developers? If so, on which properties?</li>
-        <li>What&rsquo;s the engagement term, and what happens if I withdraw?</li>
-        <li>Will you bid at auction, and is that included or extra?</li>
-        <li>Can I see your three most recent client outcomes (price paid vs comparable sales)?</li>
+        <li>Check the licence (or registration) on your state&rsquo;s public register.</li>
+        <li>What&rsquo;s your fee, and is it fixed, a percentage, or capped? Put it in writing.</li>
+        <li>What&rsquo;s included (inspections, reports, contract review, auction bidding)?</li>
+        <li>What is payable on signing, on exchange or settlement, and if I withdraw?</li>
+        <li>How many properties have you bought in my target suburb in the last 12 months?</li>
+        <li>Do you take any payment from selling agents or developers? On which properties?</li>
+        <li>Can I see recent client outcomes (price paid against comparable sales)?</li>
       </ol>
 
       <h2 id="vs-selling-agent">Buyer&rsquo;s agent vs selling agent</h2>
       <p>
         A selling agent (what most people just call &ldquo;the agent&rdquo;) is hired by
-        the vendor to market and sell their property. They&rsquo;re paid commission
-        when the property sells, on a contract usually capped at 6 to 12 weeks.
+        the vendor to market and sell their property, and is paid commission when it sells.
+        Our <Link href="/guides/real-estate-agent-fees-australia">agent fees guide</Link> covers
+        what sellers pay.
       </p>
       <p>
-        A buyer&rsquo;s agent is hired by you, the buyer. They get paid whether you
-        buy or not (depending on the engagement structure), and have a fiduciary
-        obligation to you. The two roles never act for the same client at once.
+        A buyer&rsquo;s agent is hired by you, the buyer, and acts for you. The engagement agreement
+        sets when they are paid and whether you pay if you don&rsquo;t buy.
       </p>
 
       <h2 id="next-steps">Next steps</h2>
       <ol>
+        <li>Decide which service fits: bidding-only can be enough if you already know the suburb.</li>
+        <li>Get three written quotes on the same brief and price, and compare structures and inclusions.</li>
+        <li>Check each agent&rsquo;s licence on your state&rsquo;s register.</li>
         <li>
-          Decide which service tier fits, bidding-only is often enough if you
-          already know the suburb.
-        </li>
-        <li>
-          Get three written quotes. Compare fee structures, inclusions, and
-          recent transactions.
-        </li>
-        <li>
-          Cross-check their licence number on your state&rsquo;s real estate licensing
-          register.
-        </li>
-        <li>
-          Run a parallel{" "}
-          <a href="/borrowing-power-calculator">Borrowing Power Calculator</a>{" "}
-          and pre-approval so the agent knows your real budget on day one.
+          Get pre-approval and run our{" "}
+          <Link href="/borrowing-power-calculator">borrowing power calculator</Link>{" "}
+          so the agent works to a budget a lender may support.
         </li>
       </ol>
+
+      <Sources
+        items={[
+          { label: NSW_BUYERS_AGENT.label, href: NSW_BUYERS_AGENT.href, note: "read 11 October 2026" },
+          { label: NSW_LICENCE_CHECK.label, href: NSW_LICENCE_CHECK.href, note: "read 11 October 2026" },
+          { label: CAV_ESTATE_AGENTS.label, href: CAV_ESTATE_AGENTS.href, note: "read 11 October 2026" },
+          "Fee examples are arithmetic on the rates shown, not market figures.",
+        ]}
+      />
     </GuideArticleLayout>
   );
 }

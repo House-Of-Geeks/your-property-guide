@@ -36,3 +36,21 @@ describe("buying lead blocks", () => {
     expect(src).toContain("Housing Australia and the lender decide eligibility");
   });
 });
+
+describe("/guides/buyers-agent-cost-australia", () => {
+  const src = read("src/app/(marketing)/guides/buyers-agent-cost-australia/page.tsx");
+  it("names the NSW licence the regulator names, with its source, and no stock and station licence", () => {
+    expect(src).not.toContain("Stock and Station");
+    expect(src).toContain("a real estate agent's licence, or hold a certificate of registration");
+    expect(src).toContain("using-a-real-estate-agent-to-buy-a-property");
+  });
+  it("offers one buyer introduction with the fee disclosure, not a vetted directory or the selling guide", () => {
+    expect(src).not.toMatch(/vetted|Browse buyer/i);
+    expect(src).toContain('"/find-an-expert?intent=buying"');
+    expect(src).toContain("pays us a fee for the introduction");
+    expect(src).not.toContain("<MatchCTA kind=\"buyers-agent\" />");
+  });
+  it("prints no unsourced market fee range", () => {
+    for (const old of ["$8,000 to $25,000", "$10,000 to $18,000", "$500 to $1,500", "1.5% to 3%", "$15,000 to $25,000"]) expect(src, old).not.toContain(old);
+  });
+});
