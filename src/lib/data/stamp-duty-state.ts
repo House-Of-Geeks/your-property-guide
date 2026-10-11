@@ -57,7 +57,16 @@ export const IN: Record<AustralianState, string> = {
 };
 
 export const EXAMPLE_PRICES = [500_000, 750_000, 1_000_000] as const;
+/**
+ * The "stamp duty at common prices" table on each state guide (commercial-
+ * intent review 10 Oct 2026, buying 3.1): it answers the price-point People
+ * Also Ask questions ("How much is stamp duty on a $700,000 house in QLD?")
+ * without a URL per price.
+ */
+export const COMMON_PRICES = [300_000, 400_000, 500_000, 600_000, 700_000, 750_000, 800_000, 900_000, 1_000_000, 1_250_000, 1_500_000, 2_000_000] as const;
 export const STAMP_DUTY_GUIDE_PUBLISHED = "2026-06-14";
+/** The guides' last content change (the common prices table); the rates were last checked on STAMP_DUTY_VERIFIED_ON. */
+export const STAMP_DUTY_GUIDE_UPDATED = "2026-10-11";
 
 export const stampDutySlug = (state: AustralianState) => `stamp-duty-${state.toLowerCase()}`;
 /** The H1 and Article headline. */
@@ -145,6 +154,20 @@ export function workedExamples(state: AustralianState): WorkedExampleRow[] {
 }
 
 export const hasOwnerOccupierRate = (state: AustralianState) => Boolean(STATE_DUTY_SCHEDULES[state].ownerOccupier);
+
+/** Duty at COMMON_PRICES for an owner-occupier, an eligible first home buyer (established home) and, where the rate differs, an investor. */
+export function commonPricesTable(state: AustralianState): DataTable {
+  const oo = hasOwnerOccupierRate(state);
+  return {
+    caption: `${ABBR[state]} stamp duty at common prices (rates checked 30 September 2026)`,
+    head: ["Price", oo ? "Owner-occupier" : "Duty", "Eligible first home buyer", ...(oo ? ["Investor"] : [])],
+    rows: COMMON_PRICES.map((p) => {
+      const owner = total(state, p, "owner");
+      const first = total(state, p, "first");
+      return [money(p), money(owner), first < owner ? money(first) : `${money(first)} (no relief)`, ...(oo ? [money(total(state, p, "investor"))] : [])];
+    }),
+  };
+}
 
 /** "A $750,000 purchase falls in the ... band" worked through on the standard schedule. */
 export function workedCalculation(state: AustralianState, price = 750_000): string {

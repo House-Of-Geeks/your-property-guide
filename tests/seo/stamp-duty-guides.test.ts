@@ -169,3 +169,28 @@ describe("the Queensland article fold", () => {
     expect(urls.some((u) => u.endsWith(`/guides/${OLD}`))).toBe(false);
   });
 });
+
+describe("stamp duty at common prices (commercial-intent review 10 Oct 2026, buying 3.1)", () => {
+  it("prints the engine's duty at twelve prices from $300,000 to $2,000,000 for every state", async () => {
+    const { COMMON_PRICES, commonPricesTable, hasOwnerOccupierRate } = await import("../../src/lib/data/stamp-duty-state");
+    expect(COMMON_PRICES[0]).toBe(300_000);
+    expect(COMMON_PRICES[COMMON_PRICES.length - 1]).toBe(2_000_000);
+    for (const s of AUSTRALIAN_STATES) {
+      const t = commonPricesTable(s);
+      expect(t.rows.length).toBe(COMMON_PRICES.length);
+      t.rows.forEach((row, i) => {
+        const p = COMMON_PRICES[i];
+        expect(row[0]).toBe(money(p));
+        expect(row[1]).toBe(money(calculateStampDuty(p, s, false, false, false).total));
+        expect(row[2].startsWith(money(calculateStampDuty(p, s, true, false, false).total))).toBe(true);
+        if (hasOwnerOccupierRate(s)) expect(row[3]).toBe(money(calculateStampDuty(p, s, false, false, true).total));
+      });
+    }
+  });
+
+  it("is rendered by the state template under its own heading", () => {
+    const src = read("src/components/guide/StampDutyStateGuide.tsx");
+    expect(src).toContain('<h2 id="common-prices">');
+    expect(src).toContain("commonPricesTable(state)");
+  });
+});
