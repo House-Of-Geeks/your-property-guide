@@ -17,6 +17,7 @@ import {
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { ATO_REFORM_SOURCE } from "@/lib/data/tax-reform-2027";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "How to Sell a House in Australia (2026)",
@@ -24,7 +25,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "A step-by-step guide to selling residential property in Australia: deciding when to sell, choosing the right agent, setting price, the auction vs private treaty decision, the campaign, contracts and settlement.",
   slug: "how-to-sell-a-house-australia",
   publishedAt: "2026-05-13",
-  updatedAt: "2026-05-13",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 14,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -108,7 +109,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Will I pay capital gains tax when I sell?",
     answer:
-      "Not on your principal place of residence (the main residence exemption, full or partial depending on how long you lived there and whether you ever rented it out). Investment properties trigger CGT on the gain, generally the sale price minus the cost base, with a 50% discount if held for over twelve months. Off-the-plan, deceased estate, and joint-ownership cases get complex; talk to an accountant before you list if any of those apply. We have a full capital-gains-tax guide.",
+      "Not on your principal place of residence (the main residence exemption, full or partial depending on how long you lived there and whether you ever rented it out). Investment properties trigger CGT on the gain, generally the sale price minus the cost base. For a sale before 1 July 2027, an individual who held the property for at least 12 months halves the gain. From 1 July 2027 the 50% discount is replaced by cost base indexation and a 30% minimum tax for individuals, on the part of the gain that accrues from that date, including on property you already own (ATO, last updated 29 June 2026). Off-the-plan, deceased estate, and joint-ownership cases get complex; talk to an accountant before you list if any of those apply. Our guide to the CGT changes from the 2026 Budget has worked examples.",
   },
   {
     question: "Do I have to disclose problems with the property?",
@@ -438,10 +439,21 @@ export default function HowToSellAHouseAustraliaPage() {
       <p>
         The simplified maths: <strong>(sale price − selling costs) − (purchase
         price + buying costs + capital improvements)</strong> = the gross
-        gain. Held for more than 12 months as an Australian resident? You get
-        a 50% discount on the gain before adding it to your taxable income for
-        the year. The tax bill can be material: on a $300K gain, an
-        individual in the 37% bracket pays around $55K after the 50% discount.
+        gain. For a sale before 1 July 2027, an Australian resident who held
+        the property for at least 12 months gets a 50% discount on the gain
+        before adding it to their taxable income for the year. The tax bill can
+        be material: on a $300K gain, an individual whose discounted gain is all
+        taxed at 37% pays around $55K.
+      </p>
+      <p>
+        <strong>The rules change on 1 July 2027.</strong> The 2026-27 Budget
+        measures are now law: from that date the 50% CGT discount for
+        individuals, trusts and partnerships is replaced by cost base
+        indexation and a 30% minimum tax on capital gains, and it applies to
+        the part of the gain that accrues from 1 July 2027, including on
+        property you already own (ATO, last updated 29 June 2026). Our guide to{" "}
+        <Link href="/guides/cgt-changes-2026-budget">the CGT changes from the 2026 Budget</Link>{" "}
+        works through examples for property you hold today.
       </p>
       <p>
         Get advice from an accountant before you list if any of
@@ -461,6 +473,7 @@ export default function HowToSellAHouseAustraliaPage() {
 
 const SELLING_HOUSE_SOURCES: readonly SourceItem[] = [
   { label: "ATO: CGT and the main residence exemption", href: "https://www.ato.gov.au/individuals-and-families/investments-and-assets/capital-gains-tax/property-and-capital-gains-tax", note: "Main residence rules and 50% discount cited in the tax section" },
+  ATO_REFORM_SOURCE,
   { label: "NSW Fair Trading: Real estate agents and underquoting", href: "https://www.fairtrading.nsw.gov.au/", note: "NSW agent obligations and underquoting enforcement" },
   { label: "Consumer Affairs Victoria: Section 32 vendor statements", href: "https://www.consumer.vic.gov.au/", note: "VIC pre-listing disclosure requirements" },
   { label: "Queensland Government: Property Law Act 2023 seller disclosure regime", href: "https://www.qld.gov.au/law/laws-regulated-industries-and-accountability/queensland-laws-and-regulations", note: "QLD disclosure statement commenced 1 August 2025" },
