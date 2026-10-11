@@ -8,6 +8,8 @@ import {
   KeyFigure,
   MatchCTA,
   MiniStampDutyEmbed,
+  ScrollTable,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -23,6 +25,21 @@ import {
   HG_NO_OWNERSHIP_YEARS,
   HG_SINGLE_PARENT_SELL_WEEKS,
 } from "@/lib/data/home-guarantee";
+import { FirstHomeByStateTable } from "@/components/guide/FirstHomeStateFacts";
+import { FIRST_HOME_DUTY, FIRST_HOME_GRANTS, dutyReliefCell, fmt, firstHomeSources, longDate } from "@/lib/data/first-home-grants";
+import { dutyFor, money } from "@/lib/data/stamp-duty-state";
+import { AUSTRALIAN_STATES } from "@/lib/utils/stamp-duty";
+
+// Grants and duty relief by state come from src/lib/data/first-home-grants.ts
+// and the stamp duty engine (commercial-intent review 10 Oct 2026, buying 0.1
+// row 12). The worked example replaces an unsourced "$30,000 to $60,000+".
+const G = FIRST_HOME_GRANTS;
+const QLD_STACK = G.QLD.amount! + dutyFor("QLD", 700_000, "owner").total;
+const COVERS: Record<"any" | "newOnly" | "none", string> = {
+  any: "New and established homes",
+  newOnly: "New homes, off-the-plan apartments and vacant land only",
+  none: "No first home duty relief",
+};
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide Australia: Grants, Schemes & Steps (2026)",
@@ -30,7 +47,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Complete guide for Australian first home buyers: federal grants and schemes (FHBG, Family Home Guarantee), state grants by state, stamp duty concessions, and step-by-step buying advice.",
   slug: "first-home-buyer-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 10,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -58,11 +75,11 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Combining a federal scheme like the First Home Guarantee with a state First Home Owner Grant and stamp duty concessions can save eligible buyers $30,000 to $60,000+.",
+  `Stacking helps: in Queensland, on a $700,000 new home, the ${fmt(G.QLD.amount!)} grant plus the transfer duty a first home buyer doesn't pay comes to ${money(QLD_STACK)} (Queensland Revenue Office, read ${longDate(G.QLD.checkedOn)}), before any federal scheme.`,
   `The First Home Guarantee, now called the 5% Deposit Scheme, lets eligible buyers purchase with a ${HG_MIN_DEPOSIT_PCT.firstHome}% deposit and no Lenders Mortgage Insurance. Since ${HG_DATES.expanded} there's no income test and no limit on places.`,
   `The Family Home Guarantee allows single parents to buy with a ${HG_MIN_DEPOSIT_PCT.singleParent}% deposit, no LMI, and is available even if you have previously owned a home.`,
-  "First Home Owner Grants apply mostly to new homes only and vary widely by state, from no grant in ACT up to $30,000 in QLD and TAS.",
-  "Most states offer first home buyers a full or partial stamp duty exemption, with thresholds and rules differing by jurisdiction.",
+  `First Home Owner Grants apply to new homes only and vary widely by state, from nothing in the ACT to ${fmt(G.QLD.amount!)} in Queensland and ${fmt(G.NT.amount!)} in the Northern Territory.`,
+  "NSW, Victoria, Queensland, WA and the ACT give first home buyers stamp duty relief on established homes too; South Australia only on new homes; Tasmania and the NT give none.",
   "Always verify current eligibility, price caps and grant amounts with the relevant government agency before relying on this information.",
 ];
 
@@ -95,16 +112,20 @@ const FAQS: FaqItem[] = [
     answer: "Without a government scheme, lenders typically want 20% to avoid LMI. With the First Home Guarantee you can buy with 5%. With the Family Home Guarantee a 2% deposit is enough. Even with the schemes, you also need to budget for stamp duty (where it applies), conveyancing, building inspections, and lender fees, typically 3% to 5% of purchase price on top.",
   },
   {
+    question: "What qualifies you as a first home buyer?",
+    answer: `It depends on the scheme. A state grant needs you and your partner not to have owned (or, in some states, lived in) a home in Australia before; the rules vary slightly by state. The federal 5% Deposit Scheme takes anyone who has not owned property in Australia in the last ${HG_NO_OWNERSHIP_YEARS} years (Housing Australia), and the ACT's duty scheme anyone who has not owned property anywhere in the last five years.`,
+  },
+  {
     question: "Do I have to use a mortgage broker to access the First Home Guarantee?",
     answer: "No. You can apply directly with any participating lender. A broker can compare rates across lenders, know which ones offer the 5% Deposit Scheme, and handle the FHBG paperwork as part of your loan application at no cost to you. Brokers are paid by the lender, not by you.",
   },
   {
     question: "What happens if my purchase price exceeds the price cap by a small amount?",
-    answer: "You lose access to the scheme entirely. The price caps are firm: even one dollar over disqualifies the entire purchase from the FHBG, FHOG, or stamp duty concession. Plan well under the cap to leave room for negotiation.",
+    answer: "For the grant and the 5% Deposit Scheme you lose it entirely: even one dollar over the cap disqualifies the purchase. Stamp duty relief usually tapers instead, through a concession band above the full exemption, so a little over the threshold costs some duty rather than all of it. Plan well under each cap to leave room for negotiation.",
   },
   {
     question: "Can I buy an established home as my first home and still get a grant?",
-    answer: "You can use the First Home Guarantee on an established home. But the First Home Owner Grant in most states applies only to new builds, off-the-plan, or substantially renovated homes. If you buy an established home, expect the FHBG and stamp duty concession in your state, but no FHOG.",
+    answer: "You can use the 5% Deposit Scheme on an established home, but no state pays the First Home Owner Grant on one: it applies only to new builds, off-the-plan and substantially renovated homes. Stamp duty relief on an established home depends on the state: NSW, Victoria, Queensland, WA and the ACT give it; South Australia, Tasmania and the NT don't.",
   },
 ];
 
@@ -162,9 +183,9 @@ export default function FirstHomeBuyerGuidePage() {
       </p>
 
       <KeyFigure
-        value="$30k–$60k+"
-        label="What an eligible first home buyer can save by stacking the federal scheme, state grant and stamp duty concession on a typical capital-city purchase."
-        context="Estimate, varies by state and price"
+        value={money(QLD_STACK)}
+        label={`What an eligible first home buyer in Queensland gets on a $700,000 new home: the ${fmt(G.QLD.amount!)} grant plus the transfer duty they don't pay.`}
+        context={`Queensland Revenue Office, read ${longDate(G.QLD.checkedOn)}; varies by state and price`}
       />
 
       <h2 id="federal-schemes">Federal government schemes</h2>
@@ -232,26 +253,7 @@ export default function FirstHomeBuyerGuidePage() {
         (newly built, substantially renovated, or off-the-plan), not established
         properties.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>State/Territory</th>
-            <th>Grant Amount</th>
-            <th>Eligible Property Types</th>
-            <th>Price Cap</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td><strong>QLD</strong></td><td>$30,000</td><td>New homes (never lived in)</td><td>$750,000 contract price</td></tr>
-          <tr><td><strong>NSW</strong></td><td>$10,000</td><td>New homes</td><td>$600,000 purchase price, or $750,000 for land and a building contract</td></tr>
-          <tr><td><strong>VIC</strong></td><td>$10,000</td><td>New homes</td><td>$750,000</td></tr>
-          <tr><td><strong>WA</strong></td><td>$10,000</td><td>New homes</td><td>$750,000</td></tr>
-          <tr><td><strong>SA</strong></td><td>$15,000</td><td>New homes</td><td>$650,000</td></tr>
-          <tr><td><strong>TAS</strong></td><td>$30,000</td><td>New homes (check current state offer)</td><td>No cap (check current rules)</td></tr>
-          <tr><td><strong>NT</strong></td><td>$10,000</td><td>New or substantially renovated homes</td><td>No cap</td></tr>
-          <tr><td><strong>ACT</strong></td><td>No FHOG</td><td>ACT has its own Home Buyer Concession Scheme instead</td><td></td></tr>
-        </tbody>
-      </table>
+      <FirstHomeByStateTable />
 
       <Callout variant="info" title="Always verify before relying on these figures">
         <p>
@@ -269,26 +271,34 @@ export default function FirstHomeBuyerGuidePage() {
 
       <MiniStampDutyEmbed />
 
-      <table>
-        <thead>
-          <tr>
-            <th>State</th>
-            <th>Full Exemption</th>
-            <th>Concessional Rate</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td><strong>NSW</strong></td><td>≤ $800,000</td><td>$800,001 to $1,000,000</td><td>New and established homes; buyer must occupy</td></tr>
-          <tr><td><strong>VIC</strong></td><td>≤ $600,000</td><td>$600,001 to $750,000</td><td>New and established homes</td></tr>
-          <tr><td><strong>QLD</strong></td><td>No full exemption</td><td>Concession for homes ≤ $550,000</td><td>First home concession; buyer must occupy</td></tr>
-          <tr><td><strong>WA</strong></td><td>≤ $450,000</td><td>$450,001 to $600,000</td><td>New and established homes</td></tr>
-          <tr><td><strong>SA</strong></td><td>Full exemption for new homes</td><td>N/A</td><td>Only applies to new/off-the-plan homes</td></tr>
-          <tr><td><strong>TAS</strong></td><td>50% discount on stamp duty</td><td></td><td>Applies to established and new homes ≤ $600,000</td></tr>
-          <tr><td><strong>NT</strong></td><td>Up to $18,601 off duty</td><td>Scaled reduction</td><td>First Home Owner Discount</td></tr>
-          <tr><td><strong>ACT</strong></td><td>Full exemption (income-tested)</td><td></td><td>Home Buyer Concession Scheme; income and property value limits apply</td></tr>
-        </tbody>
-      </table>
+      <ScrollTable label="First home buyer stamp duty relief by state and territory">
+        <table>
+          <thead>
+            <tr>
+              <th>State</th>
+              <th>Relief for an eligible first home buyer</th>
+              <th>Covers</th>
+              <th>Scheme and source</th>
+            </tr>
+          </thead>
+          <tbody>
+            {AUSTRALIAN_STATES.map((st) => {
+              const d = FIRST_HOME_DUTY[st];
+              return (
+                <tr key={st}>
+                  <td><strong><Link href={`/guides/stamp-duty-${st.toLowerCase()}`}>{st}</Link></strong></td>
+                  <td>{dutyReliefCell(st)}</td>
+                  <td>{COVERS[d.covers]}</td>
+                  <td>
+                    {d.scheme}:{" "}
+                    <a href={d.source.href} target="_blank" rel="noopener noreferrer">{d.source.label.split(":")[0]}</a>, read {longDate(d.checkedOn)}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </ScrollTable>
 
       <h2 id="step-by-step">Step-by-step buying process for first home buyers</h2>
       <p>
@@ -349,6 +359,8 @@ export default function FirstHomeBuyerGuidePage() {
         <li><Link href="/guides/first-home-buyer-nt">First Home Buyer Guide, Northern Territory</Link></li>
         <li><Link href="/guides/first-home-buyer-act">First Home Buyer Guide, Australian Capital Territory</Link></li>
       </ul>
+
+      <Sources items={firstHomeSources()} />
     </GuideArticleLayout>
   );
 }
