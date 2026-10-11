@@ -88,6 +88,15 @@ describe("the pages", () => {
     const page = fs.readFileSync("src/app/(marketing)/best-suburbs/[category]/[state]/page.tsx", "utf8");
     expect(page).toContain("robots: isRanked(category, upperState) ? undefined : { index: false, follow: true },");
   });
+  it("prints no unsourced state commentary (review of 10 Oct 2026, 0.6)", () => {
+    // The blocks said Tasmania pays a $30,000 grant and a 50% duty concession and that the
+    // ACT waives duty for downsizers at any price, against our own sourced duty engine.
+    expect(fs.existsSync("src/lib/data/state-commentary.ts")).toBe(false);
+    for (const f of ["src/components/best-suburbs/BestSuburbsListing.tsx", "src/app/(marketing)/market-reports/[state]/page.tsx"]) {
+      const text = fs.readFileSync(f, "utf8");
+      expect(text, f).not.toMatch(/STATE_COMMENTARY|state-commentary|Buyer tip|Watch out/);
+    }
+  });
   it("the methodology says what is done", () => {
     const text = fs.readFileSync("src/lib/data/category-commentary.ts", "utf8");
     expect(text).not.toContain("REIA");

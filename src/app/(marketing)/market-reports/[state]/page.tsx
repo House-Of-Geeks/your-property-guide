@@ -13,7 +13,6 @@ import {
   type SuburbMarketRow,
 } from "@/lib/services/market-report-service";
 import { formatPrice, formatPriceFull } from "@/lib/utils/format";
-import { STATE_COMMENTARY } from "@/lib/data/state-commentary";
 import { priceSourceLine, stateRankingLink } from "@/lib/ranking-notes";
 
 const STATE_SLUGS = ["qld", "nsw", "vic", "wa", "sa", "tas", "nt", "act"] as const;
@@ -188,7 +187,6 @@ export default async function StateMarketReportPage({
   // change outside NSW and SA, and none measures days on market.
   const growth = data.avgAnnualGrowth != null ? `${data.avgAnnualGrowth > 0 ? "+" : ""}${data.avgAnnualGrowth}%` : null;
   const priced = data.totalSuburbsWithData.toLocaleString("en-AU");
-  const commentary = STATE_COMMENTARY[upperState];
 
   return (
     <>
@@ -271,41 +269,6 @@ export default async function StateMarketReportPage({
       </section>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-        {/* State commentary */}
-        {commentary && (
-          <section className="grid lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-7">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
-                State of the market
-              </p>
-              <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-4">
-                {data.stateName} in {CURRENT_YEAR}.
-              </h2>
-              <div className="prose-ypg prose-ypg-tight">
-                <p>{commentary.marketContext}</p>
-              </div>
-            </div>
-            <aside className="lg:col-span-5 space-y-4">
-              <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
-                  Buyer tip, {upperState}
-                </p>
-                <p className="font-sans text-sm text-ink leading-relaxed">
-                  {commentary.buyerTip}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
-                  Watch out, {upperState}
-                </p>
-                <p className="font-sans text-sm text-ink leading-relaxed">
-                  {commentary.watchOut}
-                </p>
-              </div>
-            </aside>
-          </section>
-        )}
-
         {/* Tables */}
         <SuburbTable
           heading={`Top ${data.topByGrowth.length} ${data.stateName} suburbs by annual growth`}

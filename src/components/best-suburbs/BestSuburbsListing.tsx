@@ -12,7 +12,6 @@ import {
 import { formatPrice, formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { CATEGORY_COMMENTARY } from "@/lib/data/category-commentary";
 import type { RankingNote } from "@/lib/ranking-notes";
-import { STATE_COMMENTARY } from "@/lib/data/state-commentary";
 import {
   bestSuburbsHeadline,
   CATEGORY_HEADLINE,
@@ -213,7 +212,6 @@ export function BestSuburbsListing({
   const markArea = state === null;
   const stateName = state ? STATE_NAME[state] ?? state : null;
   const categoryCommentary = CATEGORY_COMMENTARY[category];
-  const stateCommentary = state ? STATE_COMMENTARY[state] : null;
 
   // The sentence the H1 prints, also the ItemList name (fix item 45).
   const headline = bestSuburbsHeadline(category, state);
@@ -297,38 +295,10 @@ export function BestSuburbsListing({
             </p>
             <div className="prose-ypg prose-ypg-tight">
               <p>{categoryCommentary.intro}</p>
-              {stateCommentary && (
-                <>
-                  <h3 className="font-display text-xl text-ink mt-6 mb-3">
-                    {stateName} property market in 2026
-                  </h3>
-                  <p>{stateCommentary.marketContext}</p>
-                </>
-              )}
             </div>
           </div>
 
           <aside className="lg:col-span-5 space-y-4">
-            {stateCommentary && (
-              <>
-                <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
-                    Buyer tip, {state}
-                  </p>
-                  <p className="font-sans text-sm text-ink leading-relaxed">
-                    {stateCommentary.buyerTip}
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
-                    Watch out, {state}
-                  </p>
-                  <p className="font-sans text-sm text-ink leading-relaxed">
-                    {stateCommentary.watchOut}
-                  </p>
-                </div>
-              </>
-            )}
             <div className="rounded-2xl border border-line bg-surface-warm p-5">
               <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
                 Methodology
