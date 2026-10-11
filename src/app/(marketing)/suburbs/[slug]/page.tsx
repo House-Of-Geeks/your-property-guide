@@ -59,6 +59,7 @@ import { publishedGrowthFor } from "@/lib/published-medians";
 import { PriceProvenance } from "@/components/suburb/PriceProvenance";
 import { buildLeadSentence } from "@/lib/suburb-snapshot";
 import { fullLgaName } from "@/lib/utils/lga-names";
+import { canonicalSuburbSlug, primaryLocalitySlug } from "@/lib/duplicate-localities";
 
 interface SuburbDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -109,13 +110,16 @@ export async function generateMetadata({ params }: SuburbDetailPageProps): Promi
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) return { title: "Suburb Not Found" };
   const thin = isThinSuburb(suburb);
+  // A row that repeats another under a second postcode (Prahran 3143 and
+  // 3181) names the primary as canonical: src/lib/duplicate-localities.ts.
+  const canonical = `${SITE_URL}/suburbs/${canonicalSuburbSlug(slug)}`;
   return {
     title: suburbTitle(suburb),
     description: suburbDescription(suburb),
-    alternates: { canonical: `${SITE_URL}/suburbs/${slug}` },
+    alternates: { canonical },
     robots: thin ? { index: false, follow: true } : undefined,
     openGraph: {
-      url: `${SITE_URL}/suburbs/${slug}`,
+      url: canonical,
       title: suburbTitle(suburb),
       description: suburbDescription(suburb),
       type: "website",
@@ -193,6 +197,9 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
   const capitalCity = capitalCityFor(suburb.state, suburb.postcode);
   const leadSentence = buildLeadSentence(suburb);
   const regionLabel = suburb.region && suburb.region !== suburb.state ? fullLgaName(suburb.region) : null;
+  // The primary row this one repeats under a second postcode, if any.
+  const primarySlug = primaryLocalitySlug(slug);
+  const primaryPostcode = primarySlug ? primarySlug.slice(primarySlug.lastIndexOf("-") + 1) : null;
 
   return (
     <>
@@ -214,6 +221,21 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
       {/* Magazine-style snapshot band, sits below the satellite hero */}
       <SuburbSnapshot suburb={suburb} />
+
+      {primarySlug && primaryPostcode && (
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8">
+          <p className="rounded-xl border border-line-warm bg-surface-warm px-5 py-4 font-sans text-sm text-ink leading-relaxed">
+            {`Australia Post's delivery postcode for ${suburb.name} is ${primaryPostcode}, not ${suburb.postcode}. The main page for this suburb is `}
+            <Link
+              href={`/suburbs/${primarySlug}`}
+              className="font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+            >
+              {`${suburb.name} ${suburb.state} ${primaryPostcode}`}
+            </Link>
+            {"."}
+          </p>
+        </div>
+      )}
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
 
