@@ -287,6 +287,7 @@ const PAGES: Array<{ path: string; state: AustralianState | null; load: () => Pr
   { path: "/guides/first-home-buyer-sa", state: "SA", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-sa/page") },
   { path: "/guides/first-home-buyer-act", state: "ACT", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-act/page") },
   { path: "/guides/first-home-buyer-qld", state: "QLD", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-qld/page") },
+  { path: "/guides/first-home-buyer-vic", state: "VIC", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-vic/page") },
 ];
 
 describe("pages rendered from the data file", () => {
