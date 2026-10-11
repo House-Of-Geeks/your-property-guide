@@ -14,18 +14,15 @@
 // feed measures one. Both read the gated Suburb object through the same
 // rules as the page (hasReliablePrice, publishedGrowthFor), so a suburb whose
 // median the page withholds shows no dollar figure and no growth figure.
-// They apply to the SA and TAS cohort first (R4); the rest of the country
-// keeps today's builders as the control, tested below as they were on main.
+// They ran on the SA and TAS cohort first (R4) and apply to every state from
+// 10 Oct 2026 (commercial intent review, suburbs-market 3.1).
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Suburb } from "@/types";
+import * as seo from "@/lib/utils/seo";
 import {
-  TITLE_COHORT_STATES,
-  inTitleCohort,
-  legacySuburbDescription,
-  legacySuburbTitle,
   suburbBuyDescription,
   suburbBuyTitle,
   suburbDescription,
@@ -337,54 +334,60 @@ describe("the profile description leads with what the page publishes", () => {
   });
 });
 
-describe("item 2 rolls out by state cohort (R4): SA and TAS first, the rest of the country is the control", () => {
-  it("names the cohort", () => {
-    expect([...TITLE_COHORT_STATES]).toEqual(["SA", "TAS"]);
-    expect(inTitleCohort({ state: "SA" })).toBe(true);
-    expect(inTitleCohort({ state: "tas" })).toBe(true);
-    for (const state of ["NSW", "VIC", "QLD", "WA", "ACT", "NT"]) expect(inTitleCohort({ state }), state).toBe(false);
-  });
-  it("a cohort suburb gets the item 2 title and description", () => {
-    const glenelg = makeSuburb({ name: "Glenelg", postcode: "5045", state: "SA", salesSource: "sales-sa" });
-    expect(suburbTitle(glenelg)).toBe(suburbTitleHousePrices(glenelg));
-    // 61 characters with Schools, so Schools drops (R6).
-    expect(suburbTitle(glenelg)).toBe("Glenelg SA 5045: House Prices, Rent & Suburb Profile");
-    expect(suburbDescription(glenelg)).toBe(suburbDescriptionHousePrices(glenelg));
-    const sandyBay = makeSuburb({ name: "Sandy Bay", postcode: "7005", state: "TAS", salesSource: "sales-abs" });
-    expect(suburbTitle(sandyBay)).toMatch(/^Sandy Bay TAS 7005: House Prices/);
-  });
-  it("a control suburb keeps today's title and description, character for character", () => {
-    const bondi = makeSuburb({ name: "Bondi", postcode: "2026", state: "NSW" });
-    expect(suburbTitle(bondi)).toBe("Bondi Postcode 2026 (NSW) — Suburb Profile & Median Price");
-    expect(suburbTitle(bondi)).toBe(legacySuburbTitle(bondi));
-    expect(suburbDescription(bondi)).toBe(legacySuburbDescription(bondi));
-    expect(suburbDescription(bondi)).toBe("Bondi, NSW's postcode is 2026, in Greater Sydney. Median house price $1.1M, growth, schools and crime. No sign-up.");
-    const hawthorn = makeSuburb({ name: "Hawthorn", postcode: "3122", state: "VIC", salesSource: "sales-vic" });
-    expect(suburbTitle(hawthorn)).toBe("Hawthorn Postcode 3122 (VIC) — Suburb Profile & Median Price");
-  });
-});
-
-describe("the control's description still respects the price-reliability gate", () => {
-  // The tests the control's builder carried on main, kept while it is live.
-  const unreliableSources: Array<string | null> = ["sales-qld", "sales-wa", "seed", null];
-  it("prints the median only when hasReliablePrice is true", () => {
-    const reliable = makeSuburb({ name: "Morayfield", postcode: "4506", state: "QLD", salesSource: "sales-abs" });
-    expect(hasReliablePrice(reliable)).toBe(true);
-    expect(legacySuburbDescription(reliable)).toMatch(/\$1\.1M/);
-    for (const source of unreliableSources) {
-      const s = makeSuburb({ name: "Morayfield", postcode: "4506", state: "QLD", salesSource: source });
-      expect(hasReliablePrice(s)).toBe(false);
-      expect(legacySuburbDescription(s), `source=${source}`).not.toMatch(/\$/);
+describe("every state gets the same rule (suburbs-market 3.1, 10 Oct 2026)", () => {
+  const STATES = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
+  it("the cohort and the legacy builders are gone", () => {
+    for (const name of ["TITLE_COHORT_STATES", "inTitleCohort", "legacySuburbTitle", "legacySuburbDescription"]) {
+      expect(Object.keys(seo), name).not.toContain(name);
     }
   });
-  it("keeps a zeroed price out even when the source is trusted", () => {
-    const s = makeSuburb({ name: "Morayfield", postcode: "4506", state: "QLD" });
-    s.stats.medianHousePrice = 0;
-    expect(legacySuburbDescription(s)).not.toMatch(/\$/);
+  it("median published: suburb, state and postcode, then House Prices, in every state", () => {
+    const sources: Record<string, string> = { NSW: "sales-nsw", VIC: "sales-vic", SA: "sales-sa" };
+    for (const state of STATES) {
+      const s = makeSuburb({ name: "Mount Waverley", postcode: "3149", state, salesSource: sources[state] ?? "sales-abs" });
+      expect(suburbTitle(s), state).toBe(suburbTitleHousePrices(s));
+      expect(suburbTitle(s), state).toMatch(new RegExp(`^Mount Waverley ${state} 3149: House Prices`));
+      expect(suburbTitle(s).length, state).toBeLessThanOrEqual(TITLE_BUDGET);
+      expect(suburbDescription(s), state).toBe(suburbDescriptionHousePrices(s));
+      expect(suburbDescription(s), state).toMatch(/^Mount Waverley('s median house price is| sits in an ABS statistical area)/);
+      expect(suburbDescription(s).length, state).toBeLessThanOrEqual(ITEM2_DESCRIPTION_BUDGET);
+    }
+    // The spec's examples.
+    const mw = makeSuburb({ name: "Mount Waverley", postcode: "3149", state: "VIC", salesSource: "sales-vic" });
+    expect(suburbTitle(mw)).toBe("Mount Waverley VIC 3149: House Prices, Rent & Suburb Profile");
+    expect(suburbTitle(mw)).toHaveLength(60);
   });
-  it("stays inside 160 characters where the builder promises it (metro and directional names)", () => {
-    expect(legacySuburbDescription(makeSuburb({ name: "Brighton East", postcode: "3187", state: "VIC", salesSource: "sales-vic" })).length).toBeLessThanOrEqual(DESCRIPTION_BUDGET);
-    expect(legacySuburbDescription(makeSuburb({ name: "Chermside South", postcode: "4032", state: "QLD", salesSource: "sales-abs" })).length).toBeLessThanOrEqual(DESCRIPTION_BUDGET);
+  it("median withheld (the NSW and VIC rows labelled by a rental feed on 1 Oct 2026): no price, median or growth promise anywhere", () => {
+    for (const state of STATES) {
+      for (const source of ["rental-nsw", "rental-vic", "rental-qld", "sales-qld", "seed", null]) {
+        const s = makeSuburb({ name: "Hurstville", postcode: "2220", state, salesSource: source });
+        s.stats.medianHousePrice = 0; // what suburb-service hands the page for a distrusted label
+        s.stats.medianUnitPrice = 0;
+        s.stats.annualGrowthHouse = 0;
+        const t = suburbTitle(s);
+        const d = suburbDescription(s);
+        expect(t, `${state} ${source}`).not.toMatch(/House Prices|Median|Price/i);
+        expect(t, `${state} ${source}`).not.toMatch(/Postcode/);
+        expect(t.length).toBeLessThanOrEqual(TITLE_BUDGET);
+        expect(d, `${state} ${source}`).not.toMatch(/\$|%|growth|median|price/i);
+        expect(d.length).toBeLessThanOrEqual(ITEM2_DESCRIPTION_BUDGET);
+      }
+    }
+    const hurstville = makeSuburb({ name: "Hurstville", postcode: "2220", state: "NSW", salesSource: "rental-nsw" });
+    hurstville.stats.medianHousePrice = 0;
+    expect(suburbTitle(hurstville)).toBe("Hurstville NSW 2220: Rent, Schools & Suburb Profile");
+    expect(suburbDescription(hurstville)).toMatch(/^Hurstville, NSW 2220, in Greater Sydney: suburb profile with weekly rent/);
+  });
+  it("switches back by itself when the label is repaired: the same suburb, sales-nsw, five or more sales", () => {
+    const repaired = makeSuburb({ name: "Bondi", postcode: "2026", state: "NSW", salesSource: "sales-nsw", freshness: { salesCount: 35 } });
+    expect(suburbTitle(repaired)).toBe("Bondi NSW 2026: House Prices, Rent, Schools & Suburb Profile");
+    expect(suburbDescription(repaired)).toMatch(/^Bondi's median house price is \$1,095,000 \(NSW Valuer General, calendar 2025, up 6\.0% in 12 months\)\./);
+  });
+  it("never names growth the page shows as a dash (Land Victoria, ABS)", () => {
+    const frankston = makeSuburb({ name: "Frankston", postcode: "3199", state: "VIC", salesSource: "sales-vic", freshness: { salesAsOf: new Date("2026-05-15T00:00:00Z") } });
+    frankston.stats.medianHousePrice = 810_000;
+    expect(suburbDescription(frankston)).not.toMatch(/growth|%/i);
+    expect(suburbDescription(frankston)).toMatch(/^Frankston's median house price is \$810,000 \(Land Victoria/);
   });
 });
 
