@@ -86,6 +86,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "how-structured",     label: "How commission is structured" },
   { id: "negotiable",         label: "Is commission negotiable?" },
   { id: "other-costs",        label: "Commission vs other selling costs" },
+  { id: "agreement",    label: "What the agency agreement must say" },
   { id: "cost-table",   label: "What it costs to sell in the NT" },
   { id: "next-steps",         label: "Where to start" },
 ];
@@ -333,6 +334,23 @@ export default function RealEstateCommissionNtPage() {
         for every line item a seller faces, and the{" "}
         <Link href="/guides/real-estate-agent-fees-australia">national agent fees guide</Link>{" "}
         for how rates and inclusions compare across Australia, the NT included.
+      </p>
+
+      <h2 id="agreement">What your agency agreement must say about commission</h2>
+      <p>
+        The NT Government says the agreement with your agent sets out the
+        services, the fees or commission you agree to pay, the agent&rsquo;s
+        authority and the estimated selling price, and that you can negotiate
+        the amount of any commission, fees or expenses. Under the Agents
+        Licensing Act 1979 the appointment must be in writing before the agent
+        acts. There is no statutory 90-day cap in the NT.
+      </p>
+      <p>
+        Our guide to{" "}
+        <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>{" "}
+        covers the clauses worth changing first. If you are weighing a flat fee instead of a percentage, see{" "}
+        <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">flat fee agents</Link>{" "}
+        and what they leave out.
       </p>
 
       <SellingCostTable state="NT" />

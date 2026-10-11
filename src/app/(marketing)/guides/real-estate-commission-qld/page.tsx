@@ -93,6 +93,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "structure",   label: "How commission is structured in QLD" },
   { id: "negotiable",  label: "Is commission negotiable in QLD?" },
   { id: "other-costs", label: "Commission vs the rest of your selling costs" },
+  { id: "agreement",    label: "What the agency agreement must say" },
   { id: "cost-table",   label: "What it costs to sell in Queensland" },
   { id: "next-steps",  label: "Getting an appraisal and the right agent" },
 ];
@@ -350,6 +351,24 @@ export default function RealEstateCommissionQldPage() {
       </p>
 
       <MatchCTA kind="selling-agent" />
+
+      <h2 id="agreement">What your agency agreement must say about commission</h2>
+      <p>
+        In Queensland the agent is appointed on the approved Form 6 under the
+        Property Occupations Act 2014. It must state each service, the fees and
+        commission for it and when they are payable, the expenses the agent may
+        incur and any rebates, and a percentage commission is worked out only on
+        the actual sale price. A sole or exclusive appointment for a residential
+        sale can run for at most 90 days, and there is no cooling-off period on
+        a Form 6.
+      </p>
+      <p>
+        Our guide to{" "}
+        <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>{" "}
+        covers the clauses worth changing first. If you are weighing a flat fee instead of a percentage, see{" "}
+        <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">flat fee agents</Link>{" "}
+        and what they leave out.
+      </p>
 
       <SellingCostTable state="QLD" />
 

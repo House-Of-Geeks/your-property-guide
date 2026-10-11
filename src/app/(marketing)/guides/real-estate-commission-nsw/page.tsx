@@ -327,7 +327,9 @@ export default function RealEstateCommissionNswPage() {
         You then have a cooling-off period: you can cancel the agreement until
         5 pm on the next business day or Saturday after you sign. Our guide to{" "}
         <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>{" "}
-        covers the clauses worth changing first.
+        covers the clauses worth changing first. If you are weighing a flat fee instead of a percentage, see{" "}
+        <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">flat fee agents</Link>{" "}
+        and what they leave out.
       </p>
 
       <MatchCTA kind="selling-agent" />

@@ -62,3 +62,15 @@ describe("NationalCommissionTable", () => {
     expect(html).toContain(`As at ${COMMISSION_AS_AT}`);
   });
 });
+
+describe("agency agreement sections (review 10 Oct 2026, selling P5)", () => {
+  it("every state guide says what its agreement must state about commission and links the agreements and flat fee guides", () => {
+    for (const st of STATE_ORDER) {
+      const src = guide(st);
+      expect(src).toContain('<h2 id="agreement">What your agency agreement must say about commission</h2>');
+      expect(src).toContain('{ id: "agreement",');
+      expect(src).toContain('<Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>');
+      expect(src).toContain('<Link href="/guides/fixed-fee-vs-commission-real-estate-agents">flat fee agents</Link>');
+    }
+  });
+});

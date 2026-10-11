@@ -86,6 +86,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "structure",   label: "How commission is structured in ACT" },
   { id: "negotiable",  label: "Is commission negotiable in ACT?" },
   { id: "other-costs", label: "Commission vs the rest of your selling costs" },
+  { id: "agreement",    label: "What the agency agreement must say" },
   { id: "cost-table",   label: "What it costs to sell in the ACT" },
   { id: "next-steps",  label: "Get the right agent first" },
 ];
@@ -325,6 +326,23 @@ export default function RealEstateCommissionACTPage() {
       </p>
 
       <MatchCTA kind="selling-agent" />
+
+      <h2 id="agreement">What your agency agreement must say about commission</h2>
+      <p>
+        Under the ACT&rsquo;s Agents Regulation 2003, the agency agreement must
+        state when the agent is entitled to commission, the amount or how it is
+        worked out, and when it is payable. Where the commission is a percentage
+        of the price, the agreement must also give the dollar amount at a stated
+        estimated sale price, so you see the figure before you sign. There is no
+        statutory 90-day cap in the ACT.
+      </p>
+      <p>
+        Our guide to{" "}
+        <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>{" "}
+        covers the clauses worth changing first. If you are weighing a flat fee instead of a percentage, see{" "}
+        <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">flat fee agents</Link>{" "}
+        and what they leave out.
+      </p>
 
       <SellingCostTable state="ACT" />
 

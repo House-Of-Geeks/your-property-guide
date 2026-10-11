@@ -89,6 +89,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "how-structured",     label: "How commission is structured" },
   { id: "negotiable",         label: "Is commission negotiable in WA?" },
   { id: "other-costs",        label: "Commission vs your other costs" },
+  { id: "agreement",    label: "What the agency agreement must say" },
   { id: "cost-table",   label: "What it costs to sell in WA" },
   { id: "next-steps",         label: "Get the right agent and rate" },
 ];
@@ -328,6 +329,25 @@ export default function RealEstateCommissionWaPage() {
         commission and fees compare across the rest of the country, the{" "}
         <Link href="/guides/real-estate-agent-fees-australia">national agent fees guide</Link>{" "}
         sets out the rates and inclusions state by state.
+      </p>
+
+      <h2 id="agreement">What your agency agreement must say about commission</h2>
+      <p>
+        Under section 60 of the Real Estate and Business Agents Act 1978, a WA
+        agent is not entitled to commission unless they were appointed in
+        writing, signed by you, setting out the property, the services and the
+        commission and how it is worked out. There is no statutory maximum term
+        and no cooling-off period, and most agencies use the REIWA Exclusive
+        Selling Agency Authority with the term left blank, so the number you
+        write in is the number you are bound by. REIWA says government
+        regulations do not fix agents&rsquo; fees.
+      </p>
+      <p>
+        Our guide to{" "}
+        <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>{" "}
+        covers the clauses worth changing first. If you are weighing a flat fee instead of a percentage, see{" "}
+        <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">flat fee agents</Link>{" "}
+        and what they leave out.
       </p>
 
       <SellingCostTable state="WA" />

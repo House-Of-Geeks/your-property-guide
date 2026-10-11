@@ -89,6 +89,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "structure",    label: "How commission is structured in SA" },
   { id: "negotiable",   label: "Is commission negotiable in SA?" },
   { id: "other-costs",  label: "Commission vs your other selling costs" },
+  { id: "agreement",    label: "What the agency agreement must say" },
   { id: "cost-table",   label: "What it costs to sell in South Australia" },
   { id: "next-steps",   label: "Get an appraisal and the right agent" },
 ];
@@ -310,6 +311,25 @@ export default function RealEstateCommissionSAPage() {
         <Link href="/guides/real-estate-agent-fees-australia">national agent fees guide</Link>.
         Both put the SA commission figure in context with everything else you
         will pay at settlement.
+      </p>
+
+      <h2 id="agreement">What your agency agreement must say about commission</h2>
+      <p>
+        South Australia&rsquo;s sales agency agreement must state the agent&rsquo;s
+        estimate of the selling price and the price you are seeking, each as a
+        single figure, the manner of sale, the services and their charges, any
+        rebates, and a duration of no more than 90 days. The SA Government says
+        fees and terms can be negotiated and must be in writing. Before you
+        sign, the agent must give you the Commissioner&rsquo;s guide to sales
+        agency agreements and the evidence behind their estimate. There is no
+        cooling-off period.
+      </p>
+      <p>
+        Our guide to{" "}
+        <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>{" "}
+        covers the clauses worth changing first. If you are weighing a flat fee instead of a percentage, see{" "}
+        <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">flat fee agents</Link>{" "}
+        and what they leave out.
       </p>
 
       <SellingCostTable state="SA" />

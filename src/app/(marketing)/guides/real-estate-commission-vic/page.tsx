@@ -90,6 +90,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "how-structured",     label: "How commission is structured" },
   { id: "negotiable",         label: "Is commission negotiable?" },
   { id: "other-costs",        label: "Commission vs other selling costs" },
+  { id: "agreement",    label: "What the agency agreement must say" },
   { id: "cost-table",   label: "What it costs to sell in Victoria" },
   { id: "next-steps",         label: "Getting the right agent and fee" },
 ];
@@ -322,6 +323,27 @@ export default function RealEstateCommissionVicPage() {
         country and what is and isn&rsquo;t included nationally, the{" "}
         <Link href="/guides/real-estate-agent-fees-australia">national agent fees guide</Link>{" "}
         sets out the rates by state.
+      </p>
+
+      <h2 id="agreement">What your agency agreement must say about commission</h2>
+      <p>
+        In Victoria the agency agreement is a sales authority. Under the Estate
+        Agents Act 1980 the agent cannot recover commission or outgoings unless
+        the authority is in writing, signed by you, states the commission and
+        expenses (as a dollar figure, or a percentage with a dollar example),
+        and you were given a copy. It must also state the agent&rsquo;s estimated
+        selling price, a single figure or a range of up to 10%, and Consumer
+        Affairs Victoria says the agent must tell you commission and expenses
+        are negotiable before you sign. Any rebate the agent receives on
+        advertising must be passed to you. There is no cooling-off period on a
+        sales authority, so read it before you sign.
+      </p>
+      <p>
+        Our guide to{" "}
+        <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>{" "}
+        covers the clauses worth changing first. If you are weighing a flat fee instead of a percentage, see{" "}
+        <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">flat fee agents</Link>{" "}
+        and what they leave out.
       </p>
 
       <SellingCostTable state="VIC" />

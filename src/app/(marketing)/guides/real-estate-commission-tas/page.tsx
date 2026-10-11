@@ -90,6 +90,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "structure",    label: "How commission is structured" },
   { id: "negotiable",   label: "Is commission negotiable?" },
   { id: "other-costs",  label: "Commission vs the rest of your costs" },
+  { id: "agreement",    label: "What the agency agreement must say" },
   { id: "cost-table",   label: "What it costs to sell in Tasmania" },
   { id: "next-steps",   label: "Getting the right agent and price" },
 ];
@@ -325,6 +326,22 @@ export default function RealEstateCommissionTasPage() {
         which walks through every line item beyond commission, and the{" "}
         <Link href="/guides/real-estate-agent-fees-australia">national agent fees guide</Link>,
         which sets the Tasmanian rates in context against the rest of the country.
+      </p>
+
+      <h2 id="agreement">What your agency agreement must say about commission</h2>
+      <p>
+        In Tasmania the appointment must be in writing before the agent acts,
+        and it must set out the commission and expenses (Property Agents and
+        Land Transactions Act 2016). There is no 90-day cap like Queensland&rsquo;s
+        or South Australia&rsquo;s, so the term you sign is the term you get, and
+        the Property Agents Board publishes no commission scale.
+      </p>
+      <p>
+        Our guide to{" "}
+        <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements by state</Link>{" "}
+        covers the clauses worth changing first. If you are weighing a flat fee instead of a percentage, see{" "}
+        <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">flat fee agents</Link>{" "}
+        and what they leave out.
       </p>
 
       <SellingCostTable state="TAS" />
