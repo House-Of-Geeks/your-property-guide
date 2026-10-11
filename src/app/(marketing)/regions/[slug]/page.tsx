@@ -51,6 +51,11 @@ import { SITE_NAME, SITE_URL } from "@/lib/constants";
 // has no suburb with a verified median, the page keeps the suburb, school
 // and listing links and claims nothing about prices.
 
+/** Guides written for a region, linked from its page (review of 10 Oct 2026, 3.4). */
+const REGION_GUIDES: Record<string, { href: string; label: string }[]> = {
+  "moreton-bay": [{ href: "/guides/top-5-suburbs-families-moreton-bay", label: "Family suburbs in the Moreton Bay region" }],
+};
+
 interface RegionPageProps {
   params: Promise<{ slug: string }>;
 }
@@ -421,6 +426,11 @@ export default async function RegionPage({ params }: RegionPageProps) {
             <Link href={`/regions/${slug}/schools`} className={linkChip}>
               Schools in {region.region}
             </Link>
+            {(REGION_GUIDES[slug] ?? []).map((g) => (
+              <Link key={g.href} href={g.href} className={linkChip}>
+                {g.label}
+              </Link>
+            ))}
             {capital && (
               <Link href={`/property-market/${capital.slug}`} className={linkChip}>
                 {capital.name} house prices
