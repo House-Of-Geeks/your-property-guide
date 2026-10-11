@@ -354,7 +354,7 @@ export const SA_BRACKETS: Bracket[] = [
 // RevenueSA, stamp duty relief for eligible first home buyers: full relief on
 // a new home, off-the-plan apartment or vacant land for a first home, with no
 // value cap for contracts from 6 June 2024; established homes are not
-// eligible. https://www.revenuesa.sa.gov.au/stamp-duty-land/first-home-buyer-relief
+// eligible (read 11 October 2026). https://www.revenuesa.sa.gov.au/stampduty/first-home-buyer-relief
 // RevenueSA, foreign ownership surcharge: 7% of the value of residential land,
 // from 1 January 2018. https://www.revenuesa.sa.gov.au/stamp-duty-land/FOS
 export const SA_FOREIGN_SURCHARGE = 0.07;
@@ -415,8 +415,9 @@ function calcTAS(price: number, isFirstHome: boolean, isForeign: boolean, _isInv
 // $5 million or more 5.95%. https://treasury.nt.gov.au/dtf/territory-revenue-office/stamp-duty
 // No first home buyer duty concession. HomeGrown Territory grant: $50,000 for
 // a first home buyer building or buying a new home, contracts 1 October 2024
-// to 30 September 2027; the $10,000 established-home grant closed to contracts
-// after 30 September 2025. https://treasury.nt.gov.au/dtf/territory-revenue-office/homegrown-territory-guide-grants
+// to 30 September 2027, no price cap; the $10,000 established-home grant closed
+// to contracts after 30 September 2025 (nt.gov.au, read 11 October 2026).
+// https://nt.gov.au/property/home-owner-assistance/buy-build-new-home
 // No foreign purchaser surcharge.
 
 export const NT_FORMULA_MAX = 525_000;
@@ -567,7 +568,7 @@ export const STATE_DUTY_SCHEDULES: Record<AustralianState, StateDutySchedule> = 
       concessionTo: NSW_FIRST_HOME.concessionTo,
       from: NSW_FIRST_HOME.from,
       schemeName: "First Home Buyers Assistance Scheme",
-      source: { label: "Revenue NSW: First Home Buyers Assistance Scheme", href: "https://www.revenue.nsw.gov.au/grants-schemes/first-home-buyer/assistance-scheme", note: "thresholds for contracts from 1 July 2023, read 30 September 2026" },
+      source: { label: "Revenue NSW: First Home Buyers Assistance Scheme", href: "https://www.revenue.nsw.gov.au/grants-schemes/first-home-buyer/assistance-scheme", note: "thresholds for contracts from 1 July 2023, read 10 October 2026" },
     },
     foreign: {
       rate: NSW_FOREIGN_SURCHARGE,
@@ -598,7 +599,7 @@ export const STATE_DUTY_SCHEDULES: Record<AustralianState, StateDutySchedule> = 
       concessionTo: VIC_FIRST_HOME.concessionTo,
       from: VIC_FIRST_HOME.from,
       schemeName: "first home buyer duty exemption and concession",
-      source: { label: "SRO Victoria: First home buyer duty exemption or concession", href: "https://www.sro.vic.gov.au/buying-property/land-transfer-stamp-duty/concessions-exemptions-and-waivers/first-home-buyers/first-home-buyer-duty-exemption-or-concession", note: "page updated 15 September 2026" },
+      source: { label: "SRO Victoria: First home buyer duty exemption or concession", href: "https://www.sro.vic.gov.au/buying-property/land-transfer-stamp-duty/concessions-exemptions-and-waivers/first-home-buyers/first-home-buyer-duty-exemption-or-concession", note: "page updated 15 September 2026, read 10 October 2026" },
     },
     foreign: {
       rate: VIC_FOREIGN_SURCHARGE,
@@ -628,7 +629,7 @@ export const STATE_DUTY_SCHEDULES: Record<AustralianState, StateDutySchedule> = 
       concessionTo: QLD_FIRST_HOME.concessionTo,
       from: QLD_FIRST_HOME.from,
       schemeName: "first home concession",
-      source: { label: "Queensland Revenue Office: First home concession amounts (contracts from 9 June 2024) and first home new home concession (from 1 May 2025)", href: "https://qro.qld.gov.au/duties/transfer-duty/calculate/concession-rates/", note: "read 30 September 2026" },
+      source: { label: "Queensland Revenue Office: First home concession amounts (contracts from 9 June 2024) and first home new home concession (from 1 May 2025)", href: "https://qro.qld.gov.au/duties/transfer-duty/calculate/concession-rates/", note: "read 10 October 2026" },
     },
     foreign: {
       rate: QLD_FOREIGN_SURCHARGE,
@@ -653,7 +654,7 @@ export const STATE_DUTY_SCHEDULES: Record<AustralianState, StateDutySchedule> = 
       concessionTo: WA_FIRST_HOME.concessionTo,
       from: WA_FIRST_HOME.from,
       schemeName: "first home owner rate of duty",
-      source: { label: "RevenueWA: Duties fact sheet, first home owner rate (thresholds for transactions on or after 7 May 2026)", href: "https://www.wa.gov.au/government/publications/duties-fact-sheet-first-home-owner-rate", note: "2026-27 Housing Taxation Package, read 30 September 2026" },
+      source: { label: "RevenueWA: Duties fact sheet, first home owner rate (thresholds for transactions on or after 7 May 2026)", href: "https://www.wa.gov.au/government/publications/duties-fact-sheet-first-home-owner-rate", note: "2026-27 Housing Taxation Package, fact sheet last updated 27 August 2026, read 10 October 2026" },
     },
     foreign: {
       rate: WA_FOREIGN_SURCHARGE,
@@ -677,7 +678,7 @@ export const STATE_DUTY_SCHEDULES: Record<AustralianState, StateDutySchedule> = 
       concessionTo: null,
       from: "6 June 2024",
       schemeName: "stamp duty relief for eligible first home buyers (new homes and vacant land only)",
-      source: { label: "RevenueSA: Stamp duty relief for eligible first home buyers (new home, off-the-plan apartment or vacant land, no value cap for contracts from 6 June 2024; established homes not eligible)", href: "https://www.revenuesa.sa.gov.au/stamp-duty-land/first-home-buyer-relief", note: "read 30 September 2026" },
+      source: { label: "RevenueSA: Stamp duty relief for eligible first home buyers (new home, off-the-plan apartment or vacant land, no value cap for contracts from 6 June 2024; established homes not eligible)", href: "https://www.revenuesa.sa.gov.au/stampduty/first-home-buyer-relief", note: "read 11 October 2026" },
     },
     foreign: {
       rate: SA_FOREIGN_SURCHARGE,
@@ -702,7 +703,7 @@ export const STATE_DUTY_SCHEDULES: Record<AustralianState, StateDutySchedule> = 
       concessionTo: null,
       from: "1 July 2026",
       schemeName: "first home buyer duty relief (ended 30 June 2026)",
-      source: { label: "State Revenue Office Tasmania: First home buyers of established homes duty relief (100% exemption to $750,000 for settlements 18 February 2024 to 30 June 2026; not available after 30 June 2026)", href: "https://www.sro.tas.gov.au/property-transfer-duties/concessions-exemptions/first-home-buyers-of-established-homes-duty-relief", note: "read 30 September 2026" },
+      source: { label: "State Revenue Office Tasmania: First home buyers of established homes duty relief (100% exemption to $750,000 for settlements 18 February 2024 to 30 June 2026; not available after 30 June 2026)", href: "https://www.sro.tas.gov.au/property-transfer-duties/concessions-exemptions/first-home-buyers-of-established-homes-duty-relief", note: "read 10 October 2026" },
     },
     foreign: {
       rate: TAS_FOREIGN_SURCHARGE,
@@ -732,7 +733,7 @@ export const STATE_DUTY_SCHEDULES: Record<AustralianState, StateDutySchedule> = 
       concessionTo: null,
       from: ACT_HBCS_FROM,
       schemeName: "Home Buyer Concession Scheme",
-      source: { label: "ACT Revenue Office: About the Home Buyer Concession Scheme, and ACT Budget 2026-27 updates (income threshold and property value limit removed from 1 July 2026)", href: "https://www.revenue.act.gov.au/about-the-act-revenue-office/news/act-budget-2026-27-updates", note: "read 30 September 2026" },
+      source: { label: "ACT Revenue Office: About the Home Buyer Concession Scheme, and ACT Budget 2026-27 updates (income threshold and property value limit removed from 1 July 2026)", href: "https://www.revenue.act.gov.au/about-the-act-revenue-office/news/act-budget-2026-27-updates", note: "read 10 October 2026" },
     },
     foreign: null,
   },
@@ -752,7 +753,7 @@ export const STATE_DUTY_SCHEDULES: Record<AustralianState, StateDutySchedule> = 
       concessionTo: null,
       from: "1 October 2024",
       schemeName: "HomeGrown Territory grant (a grant, not a duty concession)",
-      source: { label: "Territory Revenue Office: HomeGrown Territory grants ($50,000 for a first new home, contracts 1 October 2024 to 30 September 2027; the $10,000 established-home grant closed to contracts after 30 September 2025)", href: "https://treasury.nt.gov.au/dtf/territory-revenue-office/homegrown-territory-guide-grants", note: "read 30 September 2026" },
+      source: { label: "NT Government: HomeGrown Territory Grant ($50,000 for a first new home, no price cap, contracts 1 October 2024 to 30 September 2027; it replaced the $10,000 First Home Owner Grant, and the $10,000 established-home grant covered contracts to 30 September 2025 only)", href: "https://nt.gov.au/property/home-owner-assistance/buy-build-new-home", note: "page updated 13 May 2026, read 11 October 2026" },
     },
     foreign: null,
   },
