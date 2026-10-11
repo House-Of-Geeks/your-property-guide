@@ -421,7 +421,7 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
       </table>`;
     const appraisalPanel = buying
       ? (score === "HOT" || score === "WARM"
-        ? panel("Know your number", `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">Every good buying decision starts with one number: what a lender will actually approve, after the serviceability buffer. The borrowing power calculator runs it in 60 seconds, no sign-up.</p>`, emailButton("Run my borrowing power", BORROWING_URL))
+        ? panel("Know your number", `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">Every good buying decision starts with one number: an estimate of what a lender may lend on your income and expenses, at the APRA buffer. The borrowing power calculator works it out in 60 seconds, no sign-up.</p>`, emailButton("Run my borrowing power", BORROWING_URL))
         : "") +
         panel(
           "Get a buyer's agent",

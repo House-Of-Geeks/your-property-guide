@@ -17,6 +17,7 @@ import { processContent } from "@/lib/utils/blog-toc";
 import { resolveBlogCoverPath } from "@/lib/utils/blog-cover";
 import { blogTitle, absoluteUrl } from "@/lib/utils/seo";
 import { formatDate } from "@/lib/utils/format";
+import { authorAboutHref } from "@/lib/authors";
 import { Clock, ArrowLeft, ArrowRight } from "lucide-react";
 import { SITE_URL } from "@/lib/constants";
 
@@ -65,6 +66,17 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
   };
 }
 
+// The update date, only when it is later than the publication date. A
+// corrected article (the CGT article, rewritten 1 Oct 2026) showed only its
+// May publication date at the top and the update in the footer card, so a
+// reader saw the old date beside the corrected rules.
+function laterUpdate(publishedAt: string, updatedAt: string | undefined): string | undefined {
+  if (!updatedAt) return undefined;
+  const updated = new Date(updatedAt).getTime();
+  const published = new Date(publishedAt).getTime();
+  return Number.isFinite(updated) && Number.isFinite(published) && updated > published ? updatedAt : undefined;
+}
+
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { slug } = await params;
   const post = await getBlogPostBySlug(slug);
@@ -73,6 +85,9 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const relatedPosts = await getRelatedPosts(slug, 3);
   const { html: processedContent, toc } = processContent(post.content);
   const postUrl = `${SITE_URL}/guides/${slug}`;
+  // Each byline links to its own writer's card on /about (src/lib/authors.ts).
+  const authorHref = authorAboutHref(post.author.name);
+  const updatedAt = laterUpdate(post.publishedAt, post.updatedAt);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
@@ -103,7 +118,12 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
             <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              {formatDate(post.publishedAt)}
+              <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+              {updatedAt && (
+                <>
+                  {" · "}Updated <time dateTime={updatedAt}>{formatDate(updatedAt)}</time>
+                </>
+              )}
             </span>
           </div>
 
@@ -123,7 +143,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           <div className="flex flex-wrap items-center justify-between gap-4 pt-5 pb-5 border-y border-line">
             <div className="flex items-center gap-3">
               <Link
-                href="/about#andy-mcmaster"
+                href={authorHref}
                 aria-label={`About ${post.author.name}`}
                 className="block shrink-0"
               >
@@ -133,14 +153,22 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                 <p className="text-sm font-sans text-ink-muted">
                   By{" "}
                   <Link
-                    href="/about#andy-mcmaster"
+                    href={authorHref}
                     className="font-semibold text-ink hover:text-primary border-b border-transparent hover:border-primary transition-colors"
                   >
                     {post.author.name}
                   </Link>
                 </p>
-                <p className="text-xs font-sans text-ink-subtle flex items-center gap-2 mt-0.5">
-                  <span>{formatDate(post.publishedAt)}</span>
+                <p className="text-xs font-sans text-ink-subtle flex flex-wrap items-center gap-x-2 mt-0.5">
+                  <span>
+                    {updatedAt ? "Published " : ""}
+                    <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+                  </span>
+                  {updatedAt && (
+                    <span>
+                      Updated <time dateTime={updatedAt}>{formatDate(updatedAt)}</time>
+                    </span>
+                  )}
                   <span className="flex items-center gap-1">
                     <Clock className="w-3 h-3" aria-hidden="true" /> {post.readingTime} min read
                   </span>
@@ -196,12 +224,11 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           </div>
 
           {/* Author byline footer. Matches the AuthorBylineCard used on
-              all 58 guide pages so news posts carry the same E-E-A-T
-              attribution: portrait, role, last-updated date, link to
-              /about. */}
+              the guide pages so news posts carry the same E-E-A-T
+              attribution: portrait, the role and bio /about gives the
+              writer, last-updated date, link to their /about card. */}
           <AuthorBylineCard
             authorName={post.author.name}
-            authorRole="Property writer"
             authorImage={post.author.image}
             lastReviewed={post.updatedAt ?? post.publishedAt}
           />

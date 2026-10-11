@@ -163,7 +163,7 @@ export default async function BuyingGuideThanksPage({ searchParams }: PageProps)
               {
                 href: "/borrowing-power-calculator",
                 label: "Borrowing power",
-                sub: "What a lender will actually approve, buffer included",
+                sub: "An estimate of what a lender may lend on your income and expenses, at the APRA buffer",
               },
               {
                 href: suburb ? `/suburbs/${suburb}` : "/find-your-suburb",

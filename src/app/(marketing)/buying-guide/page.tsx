@@ -182,7 +182,7 @@ export default function BuyingGuidePage() {
                 <ul className="space-y-3 pt-1">
                   {[
                     "2026 schemes state by state, worth tens of thousands",
-                    "What lenders will actually approve, buffer included",
+                    "What a lender may lend on your income and expenses, at the APRA buffer",
                     "Underquoting and auction psychology, decoded",
                     "A printable 12-week buying timeline",
                   ].map((line, i) => (

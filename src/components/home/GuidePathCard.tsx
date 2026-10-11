@@ -35,7 +35,7 @@ const PATHS = {
     tagline: "Written for the buyer you actually are.",
     bullets: [
       "2026 schemes state by state, worth tens of thousands",
-      "What lenders will actually approve, buffer included",
+      "What a lender may lend on your income and expenses, at the APRA buffer",
       "Underquoting and auction psychology, decoded",
       "Printable 12-week buying timeline",
     ],

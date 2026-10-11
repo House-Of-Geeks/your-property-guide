@@ -227,8 +227,8 @@ export default function AboutPage() {
               </p>
               <p>
                 100% of our revenue comes from introduction fees paid by
-                partner agents, brokers, conveyancers, accountants and
-                builders. When you ask to be connected, your details go to one
+                partner agents, brokers, conveyancers and accountants.
+                When you ask to be connected, your details go to one
                 of them only, and they pay us a fee for that introduction.
                 It&rsquo;s not a share of their commission, and it
                 doesn&rsquo;t depend on a sale or job going ahead. No
