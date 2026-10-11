@@ -145,7 +145,7 @@ function parseCli(): CliOptions {
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
-function median(nums: number[]): number | null {
+export function median(nums: number[]): number | null {
   if (nums.length === 0) return null;
   const sorted = [...nums].sort((a, b) => a - b);
   const m = Math.floor(sorted.length / 2);
@@ -190,12 +190,12 @@ function csvField(v: string | number | Date | null | undefined): string {
 
 // ─── Parsing ────────────────────────────────────────────────────────────────
 
-interface YearAggregate {
+export interface YearAggregate {
   /** key = "SUBURB|POSTCODE"; house sales only (see isHouseSaleForAggregate) */
   prices: Map<string, { prices: number[] }>;
 }
 
-interface SaleRow {
+export interface SaleRow {
   sourceRowKey:   string;
   rawHouseNumber: string | null;
   rawUnitNumber:  string | null;
@@ -213,7 +213,7 @@ interface SaleRow {
   dealingNumber:  string | null;
 }
 
-interface ParseResult {
+export interface ParseResult {
   aggregate: YearAggregate;
   rows:      SaleRow[];
 }
@@ -395,7 +395,9 @@ async function loadYear(year: number, opts: CliOptions): Promise<ParseResult> {
 // ─── Aggregate from captured rows (no download) ─────────────────────────────
 // Same rule as the DAT path (isHouseSaleForAggregate), applied to the rows the
 // row-capture path stored earlier. Price bounds match the DAT path.
-async function loadYearFromRows(year: number): Promise<ParseResult> {
+// Exported for scripts/sync/repair-stats-source.ts, which checks a row's median
+// against this same aggregate.
+export async function loadYearFromRows(year: number): Promise<ParseResult> {
   const from = new Date(Date.UTC(year, 0, 1));
   const to   = new Date(Date.UTC(year + 1, 0, 1));
   const rows = await prisma.$queryRaw<Array<{ locality: string; postcode: string; price: number; nature: string | null; unit: string | null }>>`
