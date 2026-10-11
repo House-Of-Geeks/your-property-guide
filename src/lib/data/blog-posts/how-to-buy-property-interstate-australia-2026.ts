@@ -1,4 +1,10 @@
 import type { BlogPost } from "@/types";
+import { FIRST_HOME_DUTY as FHD, fmt } from "@/lib/data/first-home-grants";
+import { AUSTRALIAN_STATES, STATE_DUTY_SCHEDULES } from "@/lib/utils/stamp-duty";
+
+// First home thresholds from src/lib/data/first-home-grants.ts (corrected
+// 11 Oct 2026, commercial-intent review buying 0.1).
+const SURCHARGES = AUSTRALIAN_STATES.flatMap((st) => (STATE_DUTY_SCHEDULES[st].foreign ? [STATE_DUTY_SCHEDULES[st].foreign!.rate * 100] : []));
 
 export const post: BlogPost = {
   id: "blog-buying-property-interstate-2026",
@@ -22,7 +28,7 @@ export const post: BlogPost = {
 <h2>What changes between states</h2>
 
 <h3>Stamp duty</h3>
-<p>Each state calculates stamp duty differently and offers different concessions. NSW and VIC offer first home buyer exemptions to $800K and $600K respectively. QLD and WA offer concessions but no full exemptions for established homes. SA has no first home buyer concession. Foreign buyers face surcharges of 7 to 8% in most states. Use a state-specific stamp duty calculator before you commit.</p>
+<p>Each state calculates stamp duty differently and offers different concessions. On an established home, an eligible first home buyer pays no duty up to ${fmt(FHD.NSW.exemptTo!)} in NSW, ${fmt(FHD.QLD.exemptTo!)} in Queensland and ${fmt(FHD.VIC.exemptTo!)} in Victoria and WA, and the ACT charges an eligible buyer nothing at any price; SA gives relief only on new homes, and Tasmania and the NT none (each revenue office, read 10 October 2026). Foreign buyers face surcharges of ${Math.min(...SURCHARGES)}% to ${Math.max(...SURCHARGES)}% in six states. Use a state-specific stamp duty calculator before you commit.</p>
 
 <h3>Cooling-off period</h3>
 <p>NSW: 5 business days from exchange. VIC: 3 business days from signing. QLD: 5 business days from buyer's receipt of contract. SA: 2 clear business days. WA: <strong>no statutory cooling-off period at all</strong>. TAS: no statutory period. ACT: 5 business days. NT: 4 business days. Auctions waive cooling off in all states. WA's lack of cooling off is the single biggest trap for southern interstate buyers.</p>
@@ -75,5 +81,6 @@ export const post: BlogPost = {
   category: "Buying Guide",
   tags: ["interstate", "buying property", "2026", "australia", "stamp duty"],
   publishedAt: "2026-05-06",
+  updatedAt: "2026-10-11",
   readingTime: 11,
 };

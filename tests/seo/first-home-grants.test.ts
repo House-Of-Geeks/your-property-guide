@@ -28,6 +28,7 @@ import { HG_NT_CAP_BEFORE_SPLIT, HG_PRICE_CAPS } from "@/lib/data/home-guarantee
 import { HTB_INCOME_LIMITS, HTB_INCOME_LIMITS_PREVIOUS, HTB_PRICE_CAPS } from "@/lib/data/help-to-buy";
 import { FHSS_ANNUAL_LIMIT, FHSS_TOTAL_LIMIT, FHSS_TOTAL_LIMIT_BEFORE_2022 } from "@/lib/data/fhss";
 import { PERSONA_HUB_CONTENT } from "@/lib/persona-hub-content";
+import { blogPosts } from "@/lib/data/blogs";
 
 // ─── The data file ──────────────────────────────────────────────────────────
 
@@ -335,5 +336,34 @@ describe("/first-home-buyers hub copy (its FAQ answers render as FAQPage JSON-LD
   it("keeps the title within 60 characters and the description within 160", () => {
     expect(hub.metaTitle.length).toBeLessThanOrEqual(60);
     expect(hub.metaDescription.length).toBeLessThanOrEqual(160);
+  });
+});
+
+describe("blog posts that quote first home grants or duty relief (they need npm run publish:blogs)", () => {
+  const POSTS: Array<[string, AustralianState | null]> = [
+    ["first-home-buyer-schemes-by-state-australia-2026", null],
+    ["how-to-buy-property-interstate-australia-2026", null],
+    ["darwin-nt-property-market-2026", "NT"],
+    ["hobart-tasmania-property-market-2026", "TAS"],
+    ["adelaide-property-market-2026", "SA"],
+  ];
+  for (const [slug, st] of POSTS) {
+    it(`${slug}: every first home figure is in the data files, and no closed scheme is current`, () => {
+      const p = blogPosts.find((b) => b.slug === slug)!;
+      expect(p, slug).toBeDefined();
+      expect(scan(`<p>${p.title}</p><p>${p.excerpt}</p>${p.content}`, st)).toEqual([]);
+      expect(p.updatedAt).toBe("2026-10-11");
+    });
+  }
+
+  it("the schemes post dates its correction and prints every state's grant and duty source", () => {
+    const p = blogPosts.find((b) => b.slug === "first-home-buyer-schemes-by-state-australia-2026")!;
+    expect(p.content.indexOf("Correction, 11 October 2026")).toBeGreaterThanOrEqual(0);
+    expect(p.content.indexOf("Correction, 11 October 2026")).toBeLessThan(40);
+    for (const s of AUSTRALIAN_STATES) {
+      expect(p.content, s).toContain(FIRST_HOME_GRANTS[s].source.href);
+      expect(p.content, s).toContain(FIRST_HOME_DUTY[s].source.href);
+    }
+    expect(p.content).not.toContain("\u2014");
   });
 });

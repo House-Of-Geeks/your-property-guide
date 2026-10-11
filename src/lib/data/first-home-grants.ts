@@ -107,7 +107,7 @@ export const FIRST_HOME_GRANTS: Record<AustralianState, StateGrant> = {
   },
   QLD: {
     state: "QLD",
-    name: "First home owner grant",
+    name: "First Home Owner Grant",
     amount: 30_000,
     upTo: false,
     caps: [{ what: "a new home, land and contract variations included", value: 750_000, rule: "below" }],
@@ -123,7 +123,7 @@ export const FIRST_HOME_GRANTS: Record<AustralianState, StateGrant> = {
     amount: 10_000,
     upTo: true,
     caps: [
-      { what: "a new home south of the 26th parallel, which takes in all of Perth", value: 800_000, rule: "atMost" },
+      { what: "a new home south of the 26th parallel (all of Perth)", value: 800_000, rule: "atMost" },
       { what: "a new home north of the 26th parallel", value: 1_000_000, rule: "atMost" },
     ],
     window: "Transactions commencing on or after 7 May 2026; no end date published",
@@ -220,7 +220,13 @@ export function grantSentence(state: AustralianState): string {
   if (g.amount === null) {
     return `The ACT pays no first home owner grant: payments ceased for transactions from 1 July 2019 and the Home Buyer Concession Scheme replaced it ${read}.`;
   }
-  const cap = g.caps.length === 0 ? "with no price cap" : `with a price cap of ${grantCapText(state)}`;
+  const below = g.caps.length > 0 && g.caps.every((c) => c.rule === "below");
+  const cap =
+    g.caps.length === 0
+      ? "with no price cap"
+      : below
+        ? `valued under ${g.caps.map((c) => `${fmt(c.value)} (${c.what})`).join(" or ")}`
+        : `with a price cap of ${grantCapText(state)}`;
   return `${SUBJECT[state]} pays ${g.upTo ? "up to " : ""}${fmt(g.amount)} under its ${g.name}, on a new home only, ${cap}. ${g.window} ${read}.`;
 }
 
