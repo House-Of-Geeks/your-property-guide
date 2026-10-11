@@ -17,11 +17,12 @@
 //   - "seed" (default): initial seed value, may be a placeholder.
 //
 // Rule: if we don't have a high-confidence price for a suburb, we don't
-// SHOW it as if it were a verified median. We say "pending verified
-// data partner" and link to /methodology. Better to admit a gap than
-// to publish wrong numbers.
+// SHOW it as if it were a verified median. We say why it is withheld
+// (withheldPriceNote below) and link to /methodology. Better to admit a
+// gap than to publish wrong numbers.
 
 import type { Suburb, SuburbDataFreshness } from "@/types";
+import { MIN_SALES_FOR_MEDIAN, thinSalesNote } from "@/lib/sales-provenance";
 
 /** Sources we trust to publish as a verified median. */
 const RELIABLE_SOURCES = new Set<string>([
@@ -96,12 +97,182 @@ export function isPlausibleAnnualGrowth(growth: number | null | undefined): bool
 }
 
 /**
- * Human-facing label for the missing price.
+ * Human-facing label for the missing price, where no more specific reason
+ * applies (withheldPriceNote below gives one for every case it can tell).
  */
 export const PENDING_PRICE_LABEL = "Verified median pending";
 
 /**
- * Human-facing explainer one-liner for the data note.
+ * The fallback explainer. At the 10 Oct 2026 review it said "We're working on a data
+ * partner; in the meantime, treat the state-level figures as a guide only",
+ * on pages that show no state-level figure and for states whose sources
+ * exist (the commercial intent review, suburbs-market 0.5).
  */
 export const PENDING_PRICE_NOTE =
-  "We don't yet have a verified suburb-level median for this market. We're working on a data partner; in the meantime, treat the state-level figures as a guide only.";
+  "No trusted sales feed has a house median for this suburb yet, so we don't show one.";
+
+// ── Why a median is withheld (suburbs-market 0.5 and 3.1, 10 Oct 2026) ────
+//
+// The price card says why, in words that stay true until the reason goes:
+// a repaired label, a fifth sale or a corrected row publishes the median
+// and the card stops rendering this at all. Pure; tested in
+// tests/lib/suburb-data-quality.test.ts.
+
+/** The sales feed each state's suburb medians come from when they are published. */
+export const STATE_SALES_AGENCY: Record<string, string> = {
+  NSW: "the NSW Valuer General",
+  VIC: "Land Victoria",
+  SA: "the SA Government",
+  QLD: "the ABS",
+  WA: "the ABS",
+  TAS: "the ABS",
+  ACT: "the ABS",
+  NT: "the ABS",
+};
+
+const FEED_AGENCY: Record<string, string> = {
+  "sales-nsw": "the NSW Valuer General",
+  "sales-vic": "Land Victoria",
+  "sales-sa": "the SA Government",
+  "sales-abs": "the ABS",
+};
+
+/** Labels the census-mortgage estimate carries: a back-calculation, not sales. */
+const CENSUS_ESTIMATE_SOURCES = new Set<string>(["sales-qld", "sales-wa"]);
+
+export type WithheldKind = "label" | "estimate" | "no-feed" | "thin-sales" | "no-median" | "inverted";
+
+export interface WithheldPriceNote {
+  kind: WithheldKind;
+  /** The large line on the price card. */
+  label: string;
+  /** The sentence under it. */
+  note: string;
+  /** The reason as a clause, for "{Suburb} has no published median house price yet: {reason}." */
+  reason: string;
+}
+
+export interface WithheldPriceInput {
+  name: string;
+  state: string;
+  /** Suburb.statsSource (dataFreshness.salesSource). */
+  statsSource: string | null | undefined;
+  /** Recorded house sales, when the feed reports a count. */
+  salesCount: number | null | undefined;
+  /** The period the feed's medians describe ("calendar 2025", "the latest published quarter"). */
+  period?: string | null;
+  /** The row's own columns, before the gate. Needed only to tell a missing median from an inverted pair. */
+  rawHouse?: number | null;
+  rawUnit?: number | null;
+}
+
+/** "{Suburb} has no published median house price yet: {reason}." The profile's first sentence where the median is withheld. */
+export function withheldLeadSentence(name: string, note: Pick<WithheldPriceNote, "reason">): string {
+  return `${name} has no published median house price yet: ${note.reason}.`;
+}
+
+/**
+ * Why the page shows no house median, as the card's label and note. Returns
+ * the reason in this order: a rental feed's label on the sales columns (the
+ * 1 Oct 2026 NSW and VIC fault), the census-mortgage estimate, no trusted
+ * feed, fewer than five recorded sales (with the count and period), a unit
+ * median above the house median, and a trusted feed with no house median.
+ */
+export function withheldPriceNote(i: WithheldPriceInput): WithheldPriceNote {
+  const source = i.statsSource ?? "";
+  const agency = STATE_SALES_AGENCY[i.state.trim().toUpperCase()] ?? "the state's sales feed";
+  if (source.startsWith("rental-")) {
+    return {
+      kind: "label",
+      label: "Median being re-checked",
+      note: `The sales figure on file for ${i.name} carries a rental feed's label, so we can't confirm it came from ${agency}. We don't show it until it has been checked against ${agency}'s figures.`,
+      reason: `the sales figure on file is being re-checked against ${agency}'s figures`,
+    };
+  }
+  if (CENSUS_ESTIMATE_SOURCES.has(source)) {
+    return {
+      kind: "estimate",
+      label: PENDING_PRICE_LABEL,
+      note: `No trusted sales feed has a house median for ${i.name} yet. The only figure on file is an estimate worked back from 2021 Census mortgage repayments, not a record of sales, so we don't show it.`,
+      reason: "no trusted sales feed has one, and the only figure on file is an estimate from 2021 Census mortgage repayments",
+    };
+  }
+  if (!isReliableSalesSource(source)) {
+    return { kind: "no-feed", label: PENDING_PRICE_LABEL, note: `No trusted sales feed has a house median for ${i.name} yet, so we don't show one.`, reason: "no trusted sales feed has one" };
+  }
+  const feed = FEED_AGENCY[source] ?? agency;
+  const period = i.period ? ` in ${i.period}` : "";
+  const count = i.salesCount ?? 0;
+  if (count >= 1 && count < MIN_SALES_FOR_MEDIAN) {
+    return {
+      kind: "thin-sales",
+      label: "Too few sales for a median",
+      note: thinSalesNote(count, i.period || "the latest period"),
+      reason: `only ${count} house sale${count === 1 ? " was" : "s were"} recorded${period}, and we publish a median from ${MIN_SALES_FOR_MEDIAN}`,
+    };
+  }
+  const house = i.rawHouse ?? 0;
+  const unit = i.rawUnit ?? 0;
+  if (house > 0 && unit > house) {
+    return {
+      kind: "inverted",
+      label: "Median being re-checked",
+      note: `${capitalise(feed)}'s figures for ${i.name} put the unit median above the house median, which points to an error in the data, so we have withheld both while we check them.`,
+      reason: `${feed}'s figures put the unit median above the house median, so both are being checked`,
+    };
+  }
+  return {
+    kind: "no-median",
+    label: "No published house median",
+    note: `${capitalise(feed)} gives no house median for ${i.name}${period}.`,
+    reason: `${feed} gives none${period}`,
+  };
+}
+
+function capitalise(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+// ── Where the profile's figures come from (the footer's source line) ──────
+//
+// At the 10 Oct 2026 review the footer said "Median, growth and rental data from
+// state revenue offices and ABS": no revenue office supplies a median. The
+// agencies below are the feeds in scripts/sync/sources, checked against
+// their publishers on 11 Oct 2026 (NSW DCJ Rent and Sales Report; Homes
+// Victoria Rental Report, "the major source ... is the Residential
+// Tenancies Bond Authority"; SA Private Rent Report, "bonds lodged with
+// Consumer and Business Services"; Queensland RTA; WA rental bonds data;
+// the Victorian Property Sales Report, Valuer-General Victoria, published
+// by the Department of Transport and Planning).
+
+/** Sales medians, by state. */
+export const STATE_SALES_SOURCE_LINE: Record<string, string> = {
+  NSW: "House medians and 12-month changes from the NSW Valuer General's property sales records",
+  VIC: "House and unit medians from Land Victoria (the Valuer-General Victoria's quarterly property sales report)",
+  SA: "House medians and 12-month changes from the SA Government's quarterly suburb medians (data.sa.gov.au)",
+  QLD: "House and unit medians from the ABS, for the statistical area (SA2) that carries the suburb's name",
+  WA: "House and unit medians from the ABS, for the statistical area (SA2) that carries the suburb's name",
+  TAS: "House and unit medians from the ABS, for the statistical area (SA2) that carries the suburb's name",
+  ACT: "House and unit medians from the ABS, for the statistical area (SA2) that carries the suburb's name",
+  NT: "House and unit medians from the ABS, for the statistical area (SA2) that carries the suburb's name",
+};
+
+/** Weekly rents, by state: the bond authorities' figures where a feed is loaded, the 2021 Census otherwise. */
+export const STATE_RENT_SOURCE_LINE: Record<string, string> = {
+  NSW: "rents from the NSW Department of Communities and Justice's Rent and Sales Report (rental bonds)",
+  VIC: "rents from Homes Victoria's Rental Report (bonds lodged with the Residential Tenancies Bond Authority)",
+  QLD: "rents from the Residential Tenancies Authority's bond data",
+  SA: "rents from the SA Government's Private Rent Report (bonds lodged with Consumer and Business Services)",
+  WA: "rents from the WA Government's rental bonds data",
+  TAS: "rents from the 2021 Census (no bond-data feed is loaded for Tasmania yet)",
+  ACT: "rents from the 2021 Census (no bond-data feed is loaded for the ACT yet)",
+  NT: "rents from the 2021 Census (no bond-data feed is loaded for the NT yet)",
+};
+
+/** The footer's line for a suburb in this state: "{sales}; {rents}." */
+export function profileSourceLine(state: string): string {
+  const st = state.trim().toUpperCase();
+  const sales = STATE_SALES_SOURCE_LINE[st] ?? "House medians from the state's sales records and the ABS";
+  const rent = STATE_RENT_SOURCE_LINE[st] ?? "rents from the state's rental bond data";
+  return `${sales}; ${rent}.`;
+}

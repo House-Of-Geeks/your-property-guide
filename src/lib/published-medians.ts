@@ -4,7 +4,8 @@
 //
 // The suburb page withholds a median whose source is distrusted (a price
 // back-calculated from 2021 census mortgage repayments, a seed placeholder)
-// or which rests on fewer than five recorded sales: suburb-service.toSuburb.
+// or which rests on fewer than five recorded sales, and both medians of a row
+// whose unit median is above its house median: suburb-service.toSuburb.
 // The lists did not go through it. On 29 Sep 2026, in production, 2,744 rows
 // across the rankings, the price guide, the market reports and the state
 // pages printed a dollar figure, and for 1,822 of them (66%) the suburb's own
@@ -58,9 +59,48 @@ export interface PublishedSales {
  */
 export const GROWTH_SOURCES: readonly string[] = ["sales-nsw", "sales-sa"];
 
-/** The suburb page publishes this row's medians: a trusted source, and five recorded sales where the count is known. */
-export function publishesMedians(row: Pick<RawSalesRow, "statsSource" | "salesCountHouse">): boolean {
-  return isReliableSalesSource(row.statsSource) && hasEnoughSales(row.salesCountHouse);
+/**
+ * A row whose unit median is above its house median. Kew East (VIC 3102) on
+ * 10 Oct 2026 held a $660,000 house median beside a $1,396,000 unit median:
+ * the agents page worked commission on the $660,000 and the profile printed
+ * units "roughly -112% below the house median". Kew's own house median was
+ * $2,810,500 on its profile that day, so the pair describes no market: it is
+ * a fault in the row (the two columns may have crossed). Neither figure can
+ * be trusted, so
+ * both are withheld until the row is repaired, and the row is logged.
+ */
+export function hasInvertedMedians(row: Partial<Pick<RawSalesRow, "medianHousePrice" | "medianUnitPrice">>): boolean {
+  const house = row.medianHousePrice ?? 0;
+  const unit = row.medianUnitPrice ?? 0;
+  return house > 0 && unit > house;
+}
+
+// Each inverted row is logged once per server process, not on every list render.
+const loggedInverted = new Set<string>();
+
+function logInverted(row: Partial<RawSalesRow> & { slug?: unknown }): void {
+  const key = typeof row.slug === "string" ? row.slug : `${row.statsSource}:${row.medianHousePrice}:${row.medianUnitPrice}`;
+  if (loggedInverted.has(key)) return;
+  loggedInverted.add(key);
+  console.warn(
+    `[published-medians] withheld both medians: unit median ${row.medianUnitPrice} is above house median ${row.medianHousePrice} (${key}, ${row.statsSource ?? "no source"})`,
+  );
+}
+
+/**
+ * The suburb page publishes this row's medians: a trusted source, five
+ * recorded sales where the count is known, and, where the caller passes the
+ * medians, a unit median no higher than the house median (hasInvertedMedians).
+ */
+export function publishesMedians(
+  row: Pick<RawSalesRow, "statsSource" | "salesCountHouse"> & Partial<Pick<RawSalesRow, "medianHousePrice" | "medianUnitPrice">>,
+): boolean {
+  if (!isReliableSalesSource(row.statsSource) || !hasEnoughSales(row.salesCountHouse)) return false;
+  if (hasInvertedMedians(row)) {
+    logInverted(row);
+    return false;
+  }
+  return true;
 }
 
 export function medianBasis(statsSource: string | null | undefined): MedianBasis | null {
@@ -137,7 +177,14 @@ export function withPublishedSales<T extends RawSalesRow>(row: T): T & Published
 
 // ── The same rule as database filters ───────────────────────────────────────
 
-/** Prisma `where`: rows whose house median the suburb page publishes. */
+/**
+ * Prisma `where`: rows whose house median the suburb page publishes, less
+ * the inverted-median check, which compares two columns and so needs the
+ * client's field reference: spread `notInvertedMedians(prismaClient.suburb.fields.medianHousePrice)`
+ * beside it. A list that does not is still safe to print (publishedSales
+ * zeroes the inverted row), but it can count or rank a row it then shows
+ * without a figure.
+ */
 export const PUBLISHED_HOUSE_MEDIAN = {
   medianHousePrice: { gt: 0 },
   statsSource: { in: [...RELIABLE_SALES_SOURCES] },
@@ -158,9 +205,20 @@ export const PUBLISHED_CHANGE = {
   annualGrowthHouse: { gte: -MAX_PLAUSIBLE_ANNUAL_GROWTH, lte: MAX_PLAUSIBLE_ANNUAL_GROWTH, not: 0 },
 };
 
+/**
+ * Prisma `where` fragment for hasInvertedMedians: the unit median is no
+ * higher than the house median (medianUnitPrice is a non-null Int, 0 when
+ * none). Takes the field reference so this module stays free of the client:
+ * `{ ...PUBLISHED_HOUSE_MEDIAN, ...notInvertedMedians(prismaClient.suburb.fields.medianHousePrice) }`.
+ */
+export function notInvertedMedians<F>(medianHousePriceField: F): { medianUnitPrice: { lte: F } } {
+  return { medianUnitPrice: { lte: medianHousePriceField } };
+}
+
 const sqlList = (values: readonly string[]) => values.map((v) => `'${v.replace(/'/g, "''")}'`).join(", ");
 
-/** The house-median rule for raw SQL over "Suburb" aliased `s`. */
+/** The house-median rule for raw SQL over "Suburb" aliased `s`, inverted medians included. */
 export const PUBLISHED_HOUSE_MEDIAN_SQL =
   `s."medianHousePrice" > 0 AND s."statsSource" IN (${sqlList(RELIABLE_SALES_SOURCES)}) ` +
-  `AND NOT (s."salesCountHouse" >= 1 AND s."salesCountHouse" < ${MIN_SALES_FOR_MEDIAN})`;
+  `AND NOT (s."salesCountHouse" >= 1 AND s."salesCountHouse" < ${MIN_SALES_FOR_MEDIAN}) ` +
+  `AND NOT (s."medianUnitPrice" > s."medianHousePrice")`;

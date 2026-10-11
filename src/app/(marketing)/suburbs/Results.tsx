@@ -2,10 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { getSuburbs } from "@/lib/services/suburb-service";
 import { SuburbsSearchBar } from "./SuburbsSearchBar";
+import { isSecondaryLocality } from "@/lib/duplicate-localities";
 
 const PAGE_SIZE = 60;
 
-const STATES = [
+export const STATES = [
   { code: "NSW", label: "New South Wales",    bg: "bg-black",     text: "text-white" },
   { code: "VIC", label: "Victoria",           bg: "bg-[#5c2d5e]", text: "text-white" },
   { code: "QLD", label: "Queensland",         bg: "bg-[#DD3C70]", text: "text-white" },
@@ -26,14 +27,20 @@ export async function SuburbsResults({ searchParams }: SuburbsResultsProps) {
   const { state, q, count: countStr } = await searchParams;
   const limit = Math.max(PAGE_SIZE, Math.min(600, parseInt(countStr ?? String(PAGE_SIZE), 10)));
 
-  const { suburbs, total } = await getSuburbs({
+  const { suburbs: found, total } = await getSuburbs({
     state: state || undefined,
     search: q || undefined,
     limit,
     offset: 0,
   });
 
-  const hasMore = suburbs.length < total;
+  const hasMore = found.length < total;
+  // A row that repeats another under a second postcode (Prahran 3143) is not
+  // listed: its profile names the primary as canonical.
+  const suburbs = found.filter((s) => !isSecondaryLocality(s.slug));
+  // A four-digit search is a postcode: its page lists every suburb in it.
+  const postcodeQuery = q && /^\d{4}$/.test(q.trim()) ? q.trim() : null;
+  const postcode = postcodeQuery && suburbs.some((s) => s.postcode === postcodeQuery) ? postcodeQuery : null;
 
   function loadMoreUrl() {
     const params = new URLSearchParams();
@@ -43,22 +50,22 @@ export async function SuburbsResults({ searchParams }: SuburbsResultsProps) {
     return `/suburbs?${params.toString()}`;
   }
 
-  function filterUrl(newState?: string, newQ?: string) {
-    const params = new URLSearchParams();
-    if (newState) params.set("state", newState);
-    if (newQ) params.set("q", newQ);
-    const qs = params.toString();
-    return `/suburbs${qs ? `?${qs}` : ""}`;
-  }
-
   return (
     <>
       <SuburbsSearchBar defaultQ={q} defaultState={state} />
 
-      <p className="text-sm text-ink-muted mb-5 max-w-3xl mx-auto">
-        Showing {suburbs.length.toLocaleString()} of {total.toLocaleString()} suburbs
+      <p className="text-sm text-ink-muted mb-5 max-w-3xl mx-auto" aria-live="polite">
+        {`Showing ${suburbs.length.toLocaleString("en-AU")} of ${total.toLocaleString("en-AU")} suburbs`}
         {state && ` in ${STATE_MAP[state]?.label ?? state}`}
         {q && ` matching "${q}"`}
+        {postcode && (
+          <>
+            {". "}
+            <Link href={`/postcodes/${postcode}`} className="font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">
+              {`Every suburb in postcode ${postcode}`}
+            </Link>
+          </>
+        )}
       </p>
 
       {suburbs.length === 0 ? (
@@ -120,23 +127,6 @@ export async function SuburbsResults({ searchParams }: SuburbsResultsProps) {
         </div>
       )}
 
-      <div className="border-t border-line pt-10">
-        <h2 className="font-display text-2xl text-ink mb-5">Browse by State</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {STATES.map((s) => (
-            <Link
-              key={s.code}
-              href={filterUrl(s.code)}
-              className="flex items-center gap-3 p-4 border border-line rounded-xl hover:border-ink hover:bg-surface-warm transition-colors group"
-            >
-              <span className={`text-xs font-bold px-2 py-1 rounded ${s.bg} ${s.text} shrink-0`}>
-                {s.code}
-              </span>
-              <span className="text-sm font-medium text-ink-muted group-hover:text-ink">{s.label}</span>
-            </Link>
-          ))}
-        </div>
-      </div>
     </>
   );
 }

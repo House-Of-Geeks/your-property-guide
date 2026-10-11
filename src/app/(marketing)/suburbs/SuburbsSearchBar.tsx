@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Search, MapPin } from "lucide-react";
 import type { SuggestLocation } from "@/types/suggest";
@@ -31,11 +31,12 @@ export function SuburbsSearchBar({ defaultQ = "", defaultState = "" }: Props) {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const wrapperRef  = useRef<HTMLDivElement>(null);
 
-  // Fetch suggestions
+  // Fetch suggestions. Under two characters nothing is fetched and the list
+  // below shows nothing (`visible`), rather than clearing state in the effect.
   useEffect(() => {
     const q = query.trim();
-    if (q.length < 2) { setResults([]); setOpen(false); return; }
     clearTimeout(debounceRef.current);
+    if (q.length < 2) return;
     debounceRef.current = setTimeout(async () => {
       try {
         const res  = await fetch(`/api/suggest?q=${encodeURIComponent(q)}`);
@@ -58,18 +59,21 @@ export function SuburbsSearchBar({ defaultQ = "", defaultState = "" }: Props) {
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
 
+  const visible = query.trim().length >= 2 ? results : [];
+  const listOpen = open && visible.length > 0;
+
   function pickLocation(loc: SuggestLocation) {
     setOpen(false);
     router.push(`/suburbs/${loc.slug}`);
   }
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!open) return;
-    if (e.key === "ArrowDown") { e.preventDefault(); setActiveIdx((i) => Math.min(i + 1, results.length - 1)); }
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (!listOpen) return;
+    if (e.key === "ArrowDown") { e.preventDefault(); setActiveIdx((i) => Math.min(i + 1, visible.length - 1)); }
     else if (e.key === "ArrowUp") { e.preventDefault(); setActiveIdx((i) => Math.max(i - 1, -1)); }
-    else if (e.key === "Enter" && activeIdx >= 0) { e.preventDefault(); pickLocation(results[activeIdx]); }
+    else if (e.key === "Enter" && activeIdx >= 0) { e.preventDefault(); pickLocation(visible[activeIdx]); }
     else if (e.key === "Escape") setOpen(false);
-  }, [open, activeIdx, results]); // eslint-disable-line react-hooks/exhaustive-deps
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -85,23 +89,35 @@ export function SuburbsSearchBar({ defaultQ = "", defaultState = "" }: Props) {
     <form onSubmit={handleSubmit} className="flex gap-2 mb-3 max-w-3xl mx-auto">
       {/* Search input with autocomplete */}
       <div ref={wrapperRef} className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none z-10" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none z-10" aria-hidden="true" />
+        <label htmlFor="suburb-search" className="sr-only">Suburb name or postcode</label>
         <input
-          type="text"
+          id="suburb-search"
+          type="search"
+          inputMode="search"
+          enterKeyHint="search"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded={listOpen}
+          aria-controls="suburb-search-suggestions"
+          aria-activedescendant={listOpen && activeIdx >= 0 && visible[activeIdx] ? `suburb-suggestion-${visible[activeIdx].slug}` : undefined}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
-          onFocus={() => results.length > 0 && setOpen(true)}
+          onFocus={() => visible.length > 0 && setOpen(true)}
           placeholder="Search by suburb name or postcode…"
           autoComplete="off"
           className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-black bg-white"
         />
 
-        {open && results.length > 0 && (
-          <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden">
-            {results.map((loc, i) => (
+        {listOpen && (
+          <div id="suburb-search-suggestions" role="listbox" aria-label="Matching suburbs" className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden">
+            {visible.map((loc, i) => (
               <button
                 key={loc.slug}
+                id={`suburb-suggestion-${loc.slug}`}
+                role="option"
+                aria-selected={activeIdx === i}
                 type="button"
                 onMouseDown={(e) => { e.preventDefault(); pickLocation(loc); }}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors ${
@@ -119,7 +135,9 @@ export function SuburbsSearchBar({ defaultQ = "", defaultState = "" }: Props) {
         )}
       </div>
 
+      <label htmlFor="suburb-search-state" className="sr-only">State</label>
       <select
+        id="suburb-search-state"
         value={state}
         onChange={(e) => setState(e.target.value)}
         className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-700 focus:outline-none focus:border-black bg-white"
