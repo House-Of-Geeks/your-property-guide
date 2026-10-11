@@ -12,6 +12,7 @@
 
 import type { Suburb } from "@/types";
 import { hasReliablePrice } from "./suburb-data-quality";
+import { publishedGrowthFor } from "./published-medians";
 
 // ─── Formatters ───────────────────────────────────────────────────────
 
@@ -48,13 +49,18 @@ function avgIcsea(schools: Suburb["schools"]): number | null {
 
 // ─── Comparison helpers ───────────────────────────────────────────────
 //
-// percentGap returns the percentage difference of (a) vs (b), so 1.2M
-// vs 1M returns 20 (a is 20% higher). Returns null if either side is
-// missing/zero.
+// cheaperByPercent is how much cheaper the cheaper suburb is, as a share
+// of the dearer suburb's median: (dearer - cheaper) / dearer. $670,000
+// against $810,000 is 17% cheaper, whichever order the URL names them in.
+// Until 10 Oct 2026 the gap was divided by the second suburb in the URL,
+// so /frankston-vic-3199/vs/frankston-north-vic-3200 said Frankston North
+// was "roughly 21% cheaper" (140,000 / 670,000) and the reversed URL said
+// 17%. Null if either side is missing or zero.
 
-function percentGap(a: number, b: number): number | null {
-  if (!a || !b) return null;
-  return ((a - b) / b) * 100;
+export function cheaperByPercent(a: number, b: number): number | null {
+  if (!(a > 0) || !(b > 0)) return null;
+  const dearer = Math.max(a, b);
+  return ((dearer - Math.min(a, b)) / dearer) * 100;
 }
 
 function namePair(a: Suburb, b: Suburb) {
@@ -75,19 +81,22 @@ function cheaperOf(a: Suburb, b: Suburb): { cheaper: "a" | "b"; gap: number } | 
   const pa = a.stats.medianHousePrice;
   const pb = b.stats.medianHousePrice;
   if (!pa || !pb || pa === pb) return null;
-  const gap = Math.abs(percentGap(pa, pb) ?? 0);
+  const gap = cheaperByPercent(pa, pb) ?? 0;
   return { cheaper: pa < pb ? "a" : "b", gap };
 }
 
 // Higher-growth returns the stronger-growth suburb and the gap in
-// percentage points. Growth is derived from the same sales feed as
-// price, so we require reliable data on both sides.
-function higherGrowth(a: Suburb, b: Suburb): { faster: "a" | "b"; gap: number } | null {
+// percentage points, only where a feed measured a 12-month change on both
+// sides (publishedGrowthFor: NSW Valuer General and SA Government medians;
+// Land Victoria and the ABS publish none). 0 is the codebase's "not
+// measured", so a Land Victoria suburb is never "+0.0%" against a measured
+// one.
+function higherGrowth(a: Suburb, b: Suburb): { faster: "a" | "b"; gap: number; ga: number; gb: number } | null {
   if (!priceComparableBoth(a, b)) return null;
-  const ga = a.stats.annualGrowthHouse;
-  const gb = b.stats.annualGrowthHouse;
-  if (ga == null || gb == null || ga === gb) return null;
-  return { faster: ga > gb ? "a" : "b", gap: Math.abs(ga - gb) };
+  const ga = publishedGrowthFor(a);
+  const gb = publishedGrowthFor(b);
+  if (ga === 0 || gb === 0 || ga === gb) return null;
+  return { faster: ga > gb ? "a" : "b", gap: Math.abs(ga - gb), ga, gb };
 }
 
 function fasterToSell(a: Suburb, b: Suburb): { faster: "a" | "b"; aDom: number; bDom: number } | null {
@@ -148,8 +157,8 @@ export function buildCompareIntro(a: Suburb, b: Suburb): string[] {
   if (growth) {
     const fasterName = growth.faster === "a" ? aName : bName;
     const slowerName = growth.faster === "a" ? bName : aName;
-    const fasterG = growth.faster === "a" ? a.stats.annualGrowthHouse : b.stats.annualGrowthHouse;
-    const slowerG = growth.faster === "a" ? b.stats.annualGrowthHouse : a.stats.annualGrowthHouse;
+    const fasterG = growth.faster === "a" ? growth.ga : growth.gb;
+    const slowerG = growth.faster === "a" ? growth.gb : growth.ga;
     para1.push(
       `Over the past year, ${fasterName} (${formatPercent(fasterG, true)}) ran ${growth.gap.toFixed(1)} percentage points ahead of ${slowerName} (${formatPercent(slowerG, true)}) on house-price growth.`,
     );
@@ -285,19 +294,19 @@ export function buildCompareFaqs(a: Suburb, b: Suburb): CompareFaqItem[] {
       const dearerPrice  = cheap.cheaper === "a" ? b.stats.medianHousePrice : a.stats.medianHousePrice;
       faqs.push({
         question: `Is ${aName} or ${bName} cheaper to buy in?`,
-        answer: `${cheaperName} has the lower median house price at ${formatPricePrecise(cheaperPrice)}, roughly ${cheap.gap.toFixed(0)}% below ${dearerName} (${formatPricePrecise(dearerPrice)}). The gap on units is usually similar but worth checking on the full suburb profiles.`,
+        answer: `${cheaperName} has the lower median house price at ${formatPricePrecise(cheaperPrice)}, roughly ${cheap.gap.toFixed(0)}% below ${dearerName} (${formatPricePrecise(dearerPrice)}). Unit medians, where a feed publishes them, are on each suburb profile.`,
       });
     }
   }
 
-  // Q2: Which has stronger growth?
-  if (a.stats.annualGrowthHouse !== 0 || b.stats.annualGrowthHouse !== 0) {
+  // Q2: Which has stronger growth? Only where both changes were measured.
+  {
     const g = higherGrowth(a, b);
     if (g) {
       const fName = g.faster === "a" ? aName : bName;
       const sName = g.faster === "a" ? bName : aName;
-      const fG = g.faster === "a" ? a.stats.annualGrowthHouse : b.stats.annualGrowthHouse;
-      const sG = g.faster === "a" ? b.stats.annualGrowthHouse : a.stats.annualGrowthHouse;
+      const fG = g.faster === "a" ? g.ga : g.gb;
+      const sG = g.faster === "a" ? g.gb : g.ga;
       faqs.push({
         question: `Which has stronger property growth, ${aName} or ${bName}?`,
         answer: `Over the past 12 months, ${fName} grew ${formatPercent(fG, true)} vs ${formatPercent(sG, true)} in ${sName}, a gap of ${g.gap.toFixed(1)} percentage points. Twelve-month growth can swing year to year, so weight long-run trends from the individual suburb profiles before making a buy decision.`,
