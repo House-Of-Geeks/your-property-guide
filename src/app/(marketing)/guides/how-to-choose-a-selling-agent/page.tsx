@@ -4,22 +4,36 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
   type RelatedGuide,
+  type SourceItem,
 } from "@/components/guide";
+import { STATE_NAMES, STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
+import { CAV_PROPERTY_PRICES, NSW_AGENCY_AGREEMENTS, QLD_COMMISSION, cite } from "@/lib/data/appraisal-sources";
+import { COMMISSION_RULE_SOURCES } from "@/lib/suburb-agents";
+
+// The national span of the state table, so no national range is typed by
+// hand (item 7 of the 10 Oct 2026 review found five on the site).
+const COMMISSION_STATES = Object.keys(STATE_RATES) as StateCode[];
+const NATIONAL_LOW = Math.min(...COMMISSION_STATES.map((st) => STATE_RATES[st].low));
+const NATIONAL_HIGH = Math.max(...COMMISSION_STATES.map((st) => STATE_RATES[st].high));
+const NATIONAL_RANGE = `${NATIONAL_LOW}% to ${NATIONAL_HIGH}%`;
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "How to Choose a Selling Agent in Australia (2026)",
+  // Section 3.5 of the 10 Oct 2026 review: the query is "how to choose a
+  // real estate agent"; the slug stays.
+  title: "How to Choose a Real Estate Agent to Sell Your Home (2026)",
   description:
-    "A practical guide to picking the right real estate agent to sell your home: how to interview, what questions to ask, the appraisal trap, fee structures, and how to negotiate the listing agreement.",
+    "How to choose a real estate agent to sell your home: shortlist on local sales, compare agents side by side, what the law makes them tell you, and fees by state.",
   slug: "how-to-choose-a-selling-agent",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-05-06",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -47,10 +61,10 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Interview at least 3 agents who actually sell in your suburb. Local knowledge is the single biggest predictor of result.",
+  "Shortlist three agents with recent sales in your suburb, ask each for the comparable sales behind their price and their fee in writing including GST, and choose on evidence rather than the highest number.",
   "Don't pick the agent who quotes the highest price. The 'high quote then condition you down' play is one of the most common ways sellers get hurt.",
   "Demand recent comparable sales (last 90 days, same suburb, similar property type) and challenge the appraisal price against them.",
-  "Standard commission is 1.5 to 3% of sale price plus marketing costs. The lowest commission isn't automatically best, the right agent earns their fee through a higher sale price.",
+  `Commission runs from ${NATIONAL_RANGE} of the sale price across the states in our table, plus marketing and GST, and it is negotiable. The lowest commission isn't automatically best: the right agent earns their fee through a higher sale price.`,
   "Read the listing agreement carefully. Watch for: exclusive period length, marketing budget commitments, sole agency vs general agency, and 'tail clauses' that lock you in even after the agreement ends.",
   "References matter. Ask for 2 or 3 sellers from the last 6 months and call them. Ask the questions the agent didn't volunteer.",
 ];
@@ -60,6 +74,8 @@ const TOC: GuideTOCEntry[] = [
   { id: "shortlist",        label: "How to shortlist agents" },
   { id: "interview",        label: "What to ask in the interview" },
   { id: "appraisal-trap",   label: "The appraisal-price trap" },
+  { id: "compare",          label: "How to compare agents side by side" },
+  { id: "law",              label: "What the law makes an agent tell you" },
   { id: "fees",             label: "Commission and fees" },
   { id: "marketing",        label: "Marketing budget and strategy" },
   { id: "agreement",        label: "The listing agreement" },
@@ -82,7 +98,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What's a tail clause and why does it matter?",
     answer:
-      "A tail clause says that if your property sells to a buyer who was introduced during the agency period, even months after the agreement ends, the original agent is still owed commission. Tail clauses can run 60 to 180 days. That's reasonable in principle but watch the wording: 'introduced' can be defined loosely. Negotiate a tighter definition or shorter tail before signing.",
+      "A tail clause says that if your property sells to a buyer who was introduced during the agency period, even months after the agreement ends, the original agent is still owed commission. Check how long it runs and how 'introduced' is defined: it can be defined loosely. Negotiate a tighter definition or a shorter tail before signing.",
   },
   {
     question: "Sole agency vs general agency, what's the difference?",
@@ -92,12 +108,17 @@ const FAQS: FaqItem[] = [
   {
     question: "How much should I spend on marketing?",
     answer:
-      "Typically $3,000 to $10,000 for a residential sale: professional photography, a videography pass, online listing on realestate.com.au and domain.com.au, signboard, and printed brochures. Above $10,000 you're into premium photography, drone, video tour, and broader print spend. Marketing is paid by the seller separately from commission. Be wary of agents who push you toward expensive marketing packages, ask what specific spend will move your sale price.",
+      "It depends on the property, the portal listing tier and the campaign: the agent quotes a marketing budget, and it is paid by the seller separately from commission. Ask for it itemised (photography, floor plan, portal listings, signboard, print, any video or styling) and ask which lines will move your sale price. Our selling costs calculator puts a marketing line beside the commission so you see the total.",
   },
   {
     question: "Can I negotiate the commission rate?",
     answer:
-      "Yes, especially if you're getting a 3% quote. The market range is typically 1.5 to 3% of sale price; below 2% is achievable in most metro areas, particularly for higher-value properties. The trade-off: cutting commission too aggressively can reduce the agent's incentive to push for a higher price. A 0.5pp commission difference on a $1M sale is $5,000, an extra 2% on the sale price is $20,000. Pick the agent who'll get you the higher price, then negotiate the fee.",
+      `Yes. Commission is agreed with the agent: in NSW you can negotiate the commission, fees and expenses (${cite(NSW_AGENCY_AGREEMENTS, "NSW Government")}), in Victoria the agent must tell you they are negotiable, and in Queensland the government sets no limit. Our typical ranges run from ${NATIONAL_RANGE} across the states. The trade-off: a 0.5 percentage point difference on a $1,000,000 sale is $5,000, while 2% more on the sale price is $20,000. Pick the agent who will get you the higher price, then negotiate the fee.`,
+  },
+  {
+    question: "What is the biggest mistake a real estate agent can make?",
+    answer:
+      "Pricing the property to win the listing rather than to sell it. A figure far above the comparable sales brings the listing in, then the campaign runs long and the price is talked down, often below what an evidence-based price would have achieved. Ask every agent for the comparable sales behind their number before you sign.",
   },
 ];
 
@@ -122,9 +143,9 @@ export default function HowToChooseSellingAgentPage() {
           { name: "Get three written appraisals", text: "Pick agents who recently sold in your suburb. Compare appraised price ranges, recommended marketing strategy, and commission." },
           { name: "Verify each agent's licence", text: "Each Australian state has a real estate licensing register. Check the licence number is current and the agent has no recent disciplinary actions." },
           { name: "Review their last 6 months of sold listings", text: "Days on market, sale-vs-asking price, and clearance rate tell you more than any sales pitch." },
-          { name: "Negotiate the commission", text: "Standard residential commission is 1.5% to 3% depending on state and price. Higher prices and more straightforward sales attract lower rates." },
+          { name: "Negotiate the commission", text: `Commission is agreed with the agent and negotiable; our typical ranges run from ${NATIONAL_RANGE} of the sale price across the states. Get it in writing with GST shown.` },
           { name: "Read the listing agreement carefully", text: "Exclusive agency vs sole agency vs auction agreement, terms matter. Read the cancellation clause and the marketing budget commitment." },
-          { name: "Agree on a marketing campaign", text: "Photography, copywriting, signboards, online listings, print, brochures. Marketing typically runs $3K to $15K depending on property and strategy." },
+          { name: "Agree on a marketing campaign", text: "Photography, copywriting, signboards, online listings, print, brochures. Ask for the budget itemised and capped in the agreement." },
           { name: "Set a realistic reserve and start price", text: "The agent's appraisal is a guide, not gospel. Reserve too high = no buyers; reserve too low = leaves money on the table." },
         ]}
       />
@@ -149,8 +170,7 @@ export default function HowToChooseSellingAgentPage() {
         A great selling agent will get you a higher price, faster, with less
         stress. A mediocre one will list at the wrong price, market lazily, and
         condition you to accept a result well below market. The fee difference
-        between agents is small; the price difference can be five to ten times
-        the fee.
+        between agents is usually small next to the difference in sale price.
       </p>
       <p>
         Treat this like hiring a contractor for a major renovation. You
@@ -190,7 +210,9 @@ export default function HowToChooseSellingAgentPage() {
 
       <p>
         From the shortlist, invite three or four to provide an appraisal and
-        listing pitch.
+        listing pitch. To add one more name, you can{" "}
+        <Link href="/find-an-expert">find a real estate agent</Link> through
+        us: one introduction where we have an agent in your area.
       </p>
 
       <h2 id="interview">What to ask in the interview</h2>
@@ -269,21 +291,86 @@ export default function HowToChooseSellingAgentPage() {
         <li><strong>Pay attention to the spread.</strong> If one agent quotes 10%+ above the others without supporting sales, treat it as a sales tactic.</li>
       </ul>
 
-      <h2 id="fees">Commission and fees</h2>
+      <h2 id="compare">How to compare real estate agents side by side</h2>
       <p>
-        Commission is typically <strong>1.5% to 3%</strong> of the final sale
-        price, plus GST. The range is wide, with major variation by region:
+        Put the same six things side by side for every agent you interview.
+        The comparison does the deciding for you.
+      </p>
+      <div className="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Compare</th>
+              <th scope="col">Ask for</th>
+              <th scope="col">Good sign</th>
+              <th scope="col">Warning sign</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Recent local sales</th><td>Their last five sales in your suburb, with the first price guide and the result</td><td>Sales like yours, in your suburb, recently</td><td>Sales across the region but few in your suburb</td></tr>
+            <tr><th scope="row">Price evidence</th><td>The three or four comparable sales behind their figure</td><td>Comparable sales that support the number</td><td>A number with no sales behind it, or far above the others</td></tr>
+            <tr><th scope="row">Commission</th><td>The rate or fee in writing, with GST shown</td><td>All-in figure, clear about when it is earned</td><td>A rate &ldquo;excluding GST&rdquo; you have to work out yourself</td></tr>
+            <tr><th scope="row">Marketing budget</th><td>An itemised budget and a cap</td><td>Each line explained against your property</td><td>A package price with no breakdown</td></tr>
+            <tr><th scope="row">Method of sale</th><td>Auction, private treaty or expressions of interest, and why</td><td>A reason tied to your suburb and property</td><td>The same method for every property</td></tr>
+            <tr><th scope="row">Reporting</th><td>How often you hear, from whom, and what about</td><td>Weekly written updates and buyer feedback</td><td>&ldquo;We&rsquo;ll keep you posted&rdquo;</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="law">What the law makes an agent tell you</h2>
+      <p>
+        The rules differ by state. Three of them, as the states&rsquo; own pages
+        put them:
       </p>
       <ul>
-        <li><strong>Sydney metro:</strong> 1.5% to 2.2% on most sales. Higher-value properties (above $2M) often negotiate to 1.5% or below.</li>
-        <li><strong>Melbourne metro:</strong> Similar, 1.5% to 2.2%.</li>
-        <li><strong>Brisbane, Perth, Adelaide metro:</strong> 2% to 2.8% common.</li>
-        <li><strong>Regional areas:</strong> 2.5% to 3% common, sometimes higher in low-volume markets.</li>
+        <li>
+          <strong>New South Wales.</strong> The agency agreement must include
+          the agent&rsquo;s estimated selling price, as a single figure or a
+          range whose top is no more than 10% above its bottom; you can
+          negotiate the commission, fees and expenses; the agreement must warn
+          you if commission is payable even when a sale is not completed; and
+          you have one business day of cooling-off after signing ({cite(NSW_AGENCY_AGREEMENTS, "NSW Government, Agency agreements")}).
+        </li>
+        <li>
+          <strong>Victoria.</strong> The agent&rsquo;s estimated selling price
+          must be reasonable and based on research into comparable properties,
+          and the agent must tell you that commission and expenses are
+          negotiable ({COMMISSION_RULE_SOURCES.VIC ? `Consumer Affairs Victoria, ${COMMISSION_RULE_SOURCES.VIC.asAt}` : "Consumer Affairs Victoria"}).
+          Buyers see a Property Price Statement with a price or a range of up
+          to 10%, the three most comparable sales and the suburb median
+          ({cite(CAV_PROPERTY_PRICES, "Consumer Affairs Victoria")}).
+        </li>
+        <li>
+          <strong>Queensland.</strong> The government sets no limit on
+          commission; it must be set in writing, including GST, when you
+          appoint the agent, and the appointment must say whether commission
+          may still apply if the sale does not go through ({cite(QLD_COMMISSION, "Queensland Government")}).
+        </li>
       </ul>
       <p>
-        See our{" "}
-        <Link href="/guides/real-estate-agent-fees-australia">Agent Fees guide</Link>{" "}
-        for the full state-by-state breakdown.
+        Our{" "}
+        <Link href="/guides/questions-to-ask-a-real-estate-agent">questions to ask a real estate agent</Link>{" "}
+        turn these rules into questions for the interview.
+      </p>
+
+      <h2 id="fees">Commission and fees</h2>
+      <p>
+        Commission is agreed with the agent and paid on top of marketing, with
+        GST. Our typical ranges, by state:
+      </p>
+      <ul>
+        {COMMISSION_STATES.map((st) => (
+          <li key={st}>
+            <strong>{STATE_NAMES[st].replace(/^the /, "The ")}:</strong> {STATE_RATES[st].low}% to {STATE_RATES[st].high}%, around {STATE_RATES[st].typical}% common.{" "}
+            <Link href={`/guides/real-estate-commission-${st.toLowerCase()}`}>Commission in {st}</Link>
+          </li>
+        ))}
+      </ul>
+      <p>
+        These are Your Property Guide&rsquo;s typical figures as at September
+        2026; each state guide explains its range, and the{" "}
+        <Link href="/guides/real-estate-agent-fees-australia">agent fees guide</Link>{" "}
+        covers how fee structures work.
       </p>
 
       <h3>Tiered commission structures</h3>
@@ -303,33 +390,32 @@ export default function HowToChooseSellingAgentPage() {
       <h3>What&rsquo;s not in commission</h3>
       <p>Commission usually doesn&rsquo;t include:</p>
       <ul>
-        <li>Marketing costs ($3K to $10K typical, paid separately)</li>
-        <li>Auctioneer fee if going to auction ($500 to $1,500)</li>
-        <li>Conveyancing on the sell side ($1K to $2K)</li>
-        <li>Some agencies charge admin/file fees ($300 to $800), worth challenging</li>
+        <li>Marketing costs, quoted by the agent and paid separately</li>
+        <li>An auctioneer&rsquo;s fee if the property goes to auction</li>
+        <li>Your conveyancer or solicitor on the sell side</li>
+        <li>Admin or file fees some agencies charge, worth challenging</li>
       </ul>
+      <p>
+        The <Link href="/selling-costs-calculator">selling costs calculator</Link>{" "}
+        puts these beside the commission for your price and state.
+      </p>
 
       <h2 id="marketing">Marketing budget and strategy</h2>
       <p>A standard residential marketing campaign includes:</p>
       <ul>
-        <li>Professional photography (10 to 20 shots), $400 to $800</li>
-        <li>Floor plan, $200 to $400</li>
-        <li>Online listing on realestate.com.au and domain.com.au, $1,500 to $4,000+ depending on tier (highlight, premier, etc.)</li>
-        <li>Signboard, $200 to $500</li>
-        <li>Printed brochures and flyer drop, $300 to $1,000</li>
-        <li>Optional: video tour ($500 to $1,500), drone footage ($300 to $700), styling/staging ($2,000 to $8,000)</li>
+        <li>Professional photography</li>
+        <li>A floor plan</li>
+        <li>Online listings on the portals, priced by listing tier</li>
+        <li>A signboard</li>
+        <li>Printed brochures and a flyer drop</li>
+        <li>Optional: a video tour, drone footage, styling or staging</li>
       </ul>
       <p>
-        Total typical spend: <strong>$3,000 to $10,000</strong> for an
-        unstaged campaign, $5,000 to $15,000 with staging.
-      </p>
-      <p>
-        The realestate.com.au listing tier is usually the biggest line item
-        and the one with the most ROI debate. &ldquo;Premier&rdquo; or &ldquo;Highlight&rdquo;
-        listings get top placement and more views, but cost a lot more than
-        standard. For a $1M+ property in a competitive area, the upgraded
-        listing is usually justified. For a $500K property in a soft market,
-        it may be over-spend.
+        The agent quotes the budget. Ask for every line priced, and agree a
+        cap in the agreement. The portal listing tier is often the biggest
+        line and the one most worth questioning: an upgraded listing gets
+        more placement, and whether that pays depends on your property and
+        how much competing stock is listed.
       </p>
       <p>
         Ask the agent specifically: <strong>which line items in this
@@ -344,16 +430,16 @@ export default function HowToChooseSellingAgentPage() {
 
       <h3>Exclusive period</h3>
       <p>
-        How long is the agency exclusive? 60 days is typical for a campaign;
-        90 days is on the long side. Avoid anything beyond 90 days for an
-        established home.
+        How long is the agency exclusive? Agree the length before you sign:
+        a shorter period gives you a way out sooner if the campaign is not
+        working.
       </p>
 
       <h3>Tail clause</h3>
       <p>
         After the exclusive period ends, for how long is the agent still
-        owed commission if a &ldquo;buyer they introduced&rdquo; purchases? 60 to 90 days
-        is typical; some agreements have 180+ day tails. The wording of
+        owed commission if a &ldquo;buyer they introduced&rdquo; purchases? Check the
+        length, and treat a long tail as something to negotiate. The wording of
         &ldquo;introduced&rdquo; matters, push for a tight definition (e.g. &ldquo;made a
         written offer&rdquo; or &ldquo;attended an inspection during the agency period&rdquo;).
       </p>
@@ -404,7 +490,7 @@ export default function HowToChooseSellingAgentPage() {
         <li>The appraisal price is significantly above the others without supporting comparable sales</li>
         <li>The agent dismisses your questions, deflects, or gets defensive when challenged</li>
         <li>They push hard on a marketing package without explaining how each line moves the sale price</li>
-        <li>The proposed listing agreement has long tail clauses (180+ days) or vague termination terms</li>
+        <li>The proposed listing agreement has a long tail clause or vague termination terms</li>
         <li>They can&rsquo;t provide recent comparable sales they personally negotiated</li>
         <li>References are reluctantly provided, vague, or unable to be reached</li>
         <li>They promise specific buyers (&ldquo;I have 5 buyers waiting&rdquo;) without naming them or explaining how they&rsquo;ll be brought through</li>
@@ -421,7 +507,7 @@ export default function HowToChooseSellingAgentPage() {
         <li>Was direct and honest in the interview, including pushback on your assumptions</li>
         <li>Has a clear, specific marketing strategy with line-item rationale</li>
         <li>Provided strong references from recent sellers</li>
-        <li>Offered a reasonable listing agreement (60 to 90 day exclusive, tight tail clause, clear termination)</li>
+        <li>Offered a reasonable listing agreement (a short exclusive period, a tight tail clause, clear termination)</li>
       </ol>
       <p>
         Once you&rsquo;ve picked, negotiate the agreement before signing. The most
@@ -441,7 +527,18 @@ export default function HowToChooseSellingAgentPage() {
           commitment to list with them.
         </p>
       </Callout>
+
+      <Sources items={CHOOSE_AGENT_SOURCES} />
     </GuideArticleLayout>
     </>
   );
 }
+
+const CHOOSE_AGENT_SOURCES: readonly SourceItem[] = [
+  { label: NSW_AGENCY_AGREEMENTS.label, href: NSW_AGENCY_AGREEMENTS.href, note: `Updated ${NSW_AGENCY_AGREEMENTS.updated}, read ${NSW_AGENCY_AGREEMENTS.read}` },
+  { label: CAV_PROPERTY_PRICES.label, href: CAV_PROPERTY_PRICES.href, note: `Updated ${CAV_PROPERTY_PRICES.updated}, read ${CAV_PROPERTY_PRICES.read}` },
+  ...Object.values(COMMISSION_RULE_SOURCES)
+    .filter((src) => src.href !== NSW_AGENCY_AGREEMENTS.href)
+    .map((src) => ({ label: src.label, href: src.href, note: src.asAt })),
+  { label: "Your Property Guide: typical commission by state (STATE_RATES)", href: "/real-estate-commission-calculator", note: "As at September 2026; each state commission guide explains its range" },
+];
