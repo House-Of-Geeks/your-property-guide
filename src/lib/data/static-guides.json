@@ -51,7 +51,7 @@
       "title": "Bridging Loans Australia: How They Work, What They Cost & the Risks (2026)",
       "description": "How a bridging loan works when you buy before you sell: peak debt and end debt, what the interest costs in dollars, how much equity you need, what happens if your home doesn't sell, and the cheaper alternatives.",
       "publishedAt": "2026-05-06",
-      "updatedAt": "2026-10-06",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 14,
       "persona": "upgrading"
     },
@@ -87,7 +87,7 @@
       "title": "Capital growth vs cash flow: how Australian property investors actually choose (2026)",
       "description": "The investor decision that gets oversimplified into one sentence. What capital growth and cash flow really mean for an Australian property portfolio, how to model the trade-off, and which strategy fits which life stage.",
       "publishedAt": "2026-05-18",
-      "updatedAt": "2026-05-18",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 14,
       "persona": "investing"
     },
@@ -276,7 +276,7 @@
       "title": "Fixed vs variable rate home loans: which is better in 2026?",
       "description": "Pros and cons of fixed and variable rate home loans in Australia. Split loans explained, break costs that surprise borrowers, the RBA rate context for 2026, and the questions to ask before fixing.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 6,
       "persona": "first-home"
     },
@@ -447,7 +447,7 @@
       "title": "How to Choose a Mortgage Broker in Australia (2026)",
       "description": "How to pick a mortgage broker who works for you, not their lender panel. The questions to ask, what 'best interests duty' actually means, how brokers are paid, and the red flags worth walking away from.",
       "publishedAt": "2026-05-13",
-      "updatedAt": "2026-05-13",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 11,
       "persona": "first-home"
     },
@@ -519,7 +519,7 @@
       "title": "Negative gearing in Australia: how it works (2026)",
       "description": "How negative gearing works, what's deductible and what isn't, the depreciation overlay, the CGT connection, the risks, and what changes from 1 July 2027 under the law passed in June 2026.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-01",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 9,
       "persona": "investing"
     },
@@ -528,7 +528,7 @@
       "title": "Offset accounts explained: how they work, what they save, and when they don't (2026)",
       "description": "The mortgage feature most Australians use wrong. What an offset account actually does, how it saves interest mechanically, when it's worth the package fee, redraw vs offset, and how to use it as a deposit-builder for the next purchase.",
       "publishedAt": "2026-05-18",
-      "updatedAt": "2026-05-18",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 11,
       "persona": "first-home"
     },
@@ -543,10 +543,10 @@
     },
     {
       "slug": "property-depreciation-guide",
-      "title": "Property depreciation: how investors maximise tax deductions (2026)",
-      "description": "Division 40 vs Division 43 explained, who can claim, the 2017 second-hand plant and equipment rule change, quantity surveyor reports, worked examples, and how to claim in your return.",
+      "title": "Property Depreciation Schedule: What Investors Claim (2026)",
+      "description": "What a tax depreciation schedule includes, capital works at 2.5% for 40 years, plant and equipment lives, the 2017 second-hand rule and how to claim.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 7,
       "persona": "investing"
     },
@@ -761,9 +761,9 @@
     {
       "slug": "smsf-property-guide",
       "title": "Buying property in an SMSF: complete guide (2026)",
-      "description": "How SMSFs invest in property: the sole purpose test, residential vs commercial rules, LRBA borrowing, costs, tax advantages including 0% in pension phase, and the risks.",
+      "description": "How SMSFs invest in property: the sole purpose test, residential vs commercial rules, the 2026 end of new LRBA loans for homes, costs, tax and the risks.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 10,
       "persona": "investing"
     },

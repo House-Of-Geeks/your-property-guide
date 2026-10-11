@@ -5,6 +5,7 @@ import {
   Callout,
   KeyFigure,
   MatchCTA,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -12,6 +13,28 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import {
+  CASH_RATE_DECISIONS,
+  CASH_RATE_SOURCE,
+  formatLongDate,
+  latestDecision,
+} from "@/lib/data/rba-cash-rate";
+import { AVERAGE_NEW_VARIABLE_RATE, F6_RATE_CAVEAT, F6_SOURCE, describeF6 } from "@/lib/data/rba-lending-rates";
+
+// The rate context, from the dated RBA data file rather than typed in: the
+// guide said in April 2026 that the RBA had started cutting, in
+// a year of four rises (commercial-intent review 10 Oct 2026, finance-tax F7).
+const LATEST = latestDecision();
+const YEAR = LATEST.announced.slice(0, 4);
+const RISES_THIS_YEAR = CASH_RATE_DECISIONS.filter((d) => d.announced.startsWith(`${YEAR}-`) && d.change > 0);
+const CUTS_LAST_YEAR = CASH_RATE_DECISIONS.filter((d) => d.announced.startsWith(`${Number(YEAR) - 1}-`) && d.change < 0);
+const RATE_AT_YEAR_START = CASH_RATE_DECISIONS.find((d) => d.announced < `${YEAR}-01-01`)!.rate;
+const dayMonth = (iso: string) => formatLongDate(iso).replace(/ \d{4}$/, "");
+const listDates = (ds: { announced: string }[]) =>
+  ds.length > 1
+    ? `${ds.slice(0, -1).map((d) => dayMonth(d.announced)).join(", ")} and ${dayMonth(ds[ds.length - 1].announced)}`
+    : ds.map((d) => dayMonth(d.announced)).join("");
+const COUNT = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight"];
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Fixed vs variable rate home loans: which is better in 2026?",
@@ -19,7 +42,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Pros and cons of fixed and variable rate home loans in Australia. Split loans explained, break costs that surprise borrowers, the RBA rate context for 2026, and the questions to ask before fixing.",
   slug: "fixed-vs-variable-rate-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 6,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -152,7 +175,7 @@ export default function FixedVsVariableRateGuidePage() {
       <p>
         A variable rate loan has an interest rate that can change over the life
         of the loan. The most common driver of variable rate changes in
-        Australia is the RBA&rsquo;s monthly cash rate decision, when the RBA
+        Australia is the RBA&rsquo;s cash rate decision, eight times a year: when the RBA
         raises or lowers the cash rate, most lenders pass on the change (in
         full or in part) to their variable rate borrowers.
       </p>
@@ -261,18 +284,23 @@ export default function FixedVsVariableRateGuidePage() {
         </li>
       </ul>
       <p>
-        As of April 2026, the RBA has moved through a significant rate hiking
-        cycle (2022 to 2023) and has subsequently begun reducing the cash rate.
-        In a rate-cutting environment, variable rates have generally performed
-        better than fixed rates, as variable borrowers benefit from each RBA
-        cut while fixed borrowers remain locked to their prior rate.
+        After the 2022 to 2023 hiking cycle and {COUNT[CUTS_LAST_YEAR.length]} cuts in{" "}
+        {Number(YEAR) - 1}, the RBA has raised the cash rate {COUNT[RISES_THIS_YEAR.length]} times
+        in {YEAR}, on {listDates([...RISES_THIS_YEAR].reverse())}, from{" "}
+        {RATE_AT_YEAR_START.toFixed(2)}% to {LATEST.rate.toFixed(2)}%, effective{" "}
+        {formatLongDate(LATEST.effective)} (RBA). In a year of rises, variable
+        borrowers have paid more after each one, while borrowers who fixed
+        before them kept their rate until the fixed term ends. The average rate
+        on new owner-occupier variable loans was {describeF6(AVERAGE_NEW_VARIABLE_RATE)},{" "}
+        {F6_RATE_CAVEAT}.
       </p>
       <p>
-        The key question for 2026 is: are we in the middle of a rate-cutting
-        cycle, or near the bottom? If rates are expected to fall further,
-        variable is likely the better choice. If rates are expected to
-        stabilise or rise again, fixing provides security. No one can predict
-        this with certainty, including the RBA.
+        The question now is whether rates have further to rise, will hold, or
+        will fall. If you expect rises or want certainty, fixing protects your
+        repayments; if you expect cuts, variable keeps the benefit. No one can
+        predict this with certainty, including the RBA. The{" "}
+        <Link href="/rba-cash-rate">RBA cash rate tracker</Link> carries each
+        decision and the next meeting date.
       </p>
 
       <h2 id="break-costs">Break costs: the hidden danger of fixed rates</h2>
@@ -375,6 +403,17 @@ export default function FixedVsVariableRateGuidePage() {
         <Link href="/mortgage-calculator">mortgage repayment calculator</Link> to
         compare repayments at different rates.
       </p>
+
+      <Sources
+        items={[
+          { label: CASH_RATE_SOURCE.name, href: CASH_RATE_SOURCE.url, note: `the 2025 and 2026 decisions, read ${CASH_RATE_SOURCE.readOn}` },
+          {
+            label: F6_SOURCE.name,
+            href: F6_SOURCE.url,
+            note: `series ${AVERAGE_NEW_VARIABLE_RATE.series}, ${AVERAGE_NEW_VARIABLE_RATE.period}; published ${F6_SOURCE.published}, read ${F6_SOURCE.readOn}`,
+          },
+        ]}
+      />
     </GuideArticleLayout>
   );
 }

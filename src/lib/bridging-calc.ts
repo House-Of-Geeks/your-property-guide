@@ -20,6 +20,7 @@ import { calculateStampDuty, type AustralianState } from "@/lib/utils/stamp-duty
 import { computeSellingCosts, defaultSellingCostsInput } from "@/lib/selling-costs-calc";
 import { estimateConveyancingCost } from "@/lib/conveyancing-costs";
 import { monthlyRepayment } from "@/lib/utils/repayment";
+import { AVERAGE_NEW_VARIABLE_RATE } from "@/lib/data/rba-lending-rates";
 
 /** Westpac, NAB and Bendigo Bank cap total lending at 80% of both properties' combined value. */
 export const PEAK_LVR_CAP = 80;
@@ -27,12 +28,15 @@ export const PEAK_LVR_CAP = 80;
 /**
  * Example rates for the calculator's starting state and the guide's tables.
  * The bridging rate sits inside the published rates of the loans that
- * capitalise interest (9.28% to 10.29% on 6 Oct 2026); the ongoing rate is a
- * placeholder for the visitor's own home loan rate. Both are labelled as
- * examples wherever they print, and the visitor replaces them.
+ * capitalise interest (9.28% to 10.29% on 6 Oct 2026). The ongoing rate on
+ * the end debt is the average rate on new owner-occupier variable loans from
+ * RBA table F6 (src/lib/data/rba-lending-rates.ts), so it moves with the
+ * borrowing and mortgage calculators; it was an unsourced 6.5% until 11 Oct
+ * 2026. Both are labelled as examples wherever they print, and the visitor
+ * replaces them.
  */
 export const EXAMPLE_BRIDGING_RATE = 9.3;
-export const EXAMPLE_ONGOING_RATE = 6.5;
+export const EXAMPLE_ONGOING_RATE = AVERAGE_NEW_VARIABLE_RATE.rate;
 
 export type InterestMode = "capitalised" | "monthly";
 

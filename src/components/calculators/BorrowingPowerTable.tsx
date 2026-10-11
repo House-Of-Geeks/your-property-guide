@@ -1,4 +1,5 @@
-import { BORROWING_TABLE, asAt, borrowingPowerByIncome, money, percentLowerAtRate } from "@/lib/borrowing-power-table";
+import { BORROWING_TABLE, asAt, borrowingPowerByIncome, incomeNeededByLoan, money, percentLowerAtRate } from "@/lib/borrowing-power-table";
+import { getHEM } from "@/lib/utils/borrowing-power";
 
 /**
  * "Borrowing power by income" on /borrowing-power-calculator: one row per
@@ -21,10 +22,11 @@ export function BorrowingPowerTable() {
         What a single applicant and a couple can borrow on this calculator&rsquo;s
         method, before you enter your own figures. Assumptions, as at {asAt()}:
         no other debts, no dependants, living expenses at the indicative HEM floor for each
-        household and income band ({BORROWING_TABLE.asAtHem}; {money(BORROWING_TABLE.monthlyExpenses)} a month for a
-        single person on $100,000, more for a couple or a higher income, as the{" "}
-        <a href="#hem-table">HEM table</a> below shows; the calculator above starts at $3,000, so enter a
-        lower figure to reproduce a row), net income taken as 72% of gross, repayments capped at 85%
+        household and income band ({BORROWING_TABLE.asAtHem}; {money(getHEM(0, { grossIncome: 60_000 }))} a month for a
+        single person under $80,000, {money(getHEM(0, { grossIncome: 100_000 }))} from $80,000 to $150,000, more for a
+        couple or a higher income, as the <a href="#hem-table">HEM table</a> below shows; the calculator above starts
+        at $3,000, so enter a lower figure to reproduce a row), net income after 2026&ndash;27 income tax and the 2%
+        Medicare levy for each applicant, repayments capped at 85%
         of what is left, and a {rate}% assessment rate over {BORROWING_TABLE.termYears} years.
         That rate is the {BORROWING_TABLE.loanRate}% average rate on new owner-occupier variable
         loans in {BORROWING_TABLE.loanRatePeriod} (Reserve Bank of Australia, statistical table F6)
@@ -66,6 +68,33 @@ export function BorrowingPowerTable() {
           each figure as a ceiling and run your own numbers above.
         </small>
       </p>
+
+      <h2 id="income-needed">Income needed for a $500,000 to $1,000,000 loan</h2>
+      <p>
+        The same method run the other way: the gross income at which the calculator supports each loan, for a single
+        applicant and for a couple who each earn the figure shown, on the assumptions above. Rounded up to the next
+        $1,000.
+      </p>
+      <div className="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Loan</th>
+              <th>Single: income needed</th>
+              <th>Couple: income needed, each</th>
+            </tr>
+          </thead>
+          <tbody>
+            {incomeNeededByLoan().map((r) => (
+              <tr key={r.loan}>
+                <td>{money(r.loan)}</td>
+                <td>{money(r.single)}</td>
+                <td>{money(r.coupleEach)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

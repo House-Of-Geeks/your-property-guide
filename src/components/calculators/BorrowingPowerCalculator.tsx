@@ -252,6 +252,16 @@ export function BorrowingPowerCalculator() {
             />
           </div>
 
+          {/* Next steps: the affordability question and the LMI cost (commercial-intent review 10 Oct 2026, section 4 and P8) */}
+          <div className="px-6 pt-2 text-sm text-gray-700 flex flex-wrap gap-x-5 gap-y-2">
+            <Link href="/affordability-calculator" className="text-primary underline hover:no-underline">
+              How much house can I afford?
+            </Link>
+            <Link href="/lmi-calculator" className="text-primary underline hover:no-underline">
+              What LMI costs if your deposit is under 20%
+            </Link>
+          </div>
+
           {/* Disclaimer */}
           <div className="px-6 pb-6 pt-2">
             <div className="flex items-start gap-2 text-xs text-gray-500 bg-gray-50 p-3 rounded-lg">

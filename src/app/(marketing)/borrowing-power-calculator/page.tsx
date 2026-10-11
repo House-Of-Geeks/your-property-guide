@@ -7,12 +7,14 @@ import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/componen
 import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { borrowingPowerFaqs } from "@/lib/borrowing-power-table";
+import { INCOME_TAX_SOURCE, INCOME_TAX_YEAR, MEDICARE_LEVY_PCT } from "@/lib/utils/income-tax";
 import {
   APRA_BUFFER_CONFIRMED,
   APRA_SERVICEABILITY_BUFFER,
   DEFAULT_ASSESSMENT_RATE,
   REFERENCE_LOAN_RATE,
   REFERENCE_LOAN_RATE_PERIOD,
+  LENDER_POLICY_NOTE,
 } from "@/lib/utils/borrowing-power";
 
 // Static content; a weekly re-render keeps the route on ISR like the rest of the site.
@@ -24,19 +26,18 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   // 12,100 searches a month, position 32 on 30 Sep 2026); the short title
   // stays for breadcrumbs and schema.
   h1: "How much can I borrow? Borrowing power calculator",
-  description:
-    "Estimate how much you can borrow for a home loan based on your income, living expenses and current Australian lending standards.",
+  description: `Estimate your borrowing power: how much a lender may lend on your income, living expenses and debts, tested at ${DEFAULT_ASSESSMENT_RATE}%, which is ${REFERENCE_LOAN_RATE_PERIOD}'s ${REFERENCE_LOAN_RATE}% average new variable rate (RBA table F6) plus APRA's ${APRA_SERVICEABILITY_BUFFER}-point buffer.`,
   slug: "borrowing-power-calculator",
   schemaName: "Borrowing Power Calculator",
   schemaDescription: "Estimate how much you can borrow based on your income, expenses, and APRA buffer.",
-  updatedAt: "2026-10-08",
+  updatedAt: "2026-10-11",
   persona: "first-home",
 };
 
 // Title and H1 both carry "how much can I borrow", the dominant intent for
 // this page (commercial intent review, 30 Sep 2026, section 3.3).
 const META_TITLE = "How Much Can I Borrow? Borrowing Power Calculator Australia";
-const META_DESCRIPTION = "Free Australian borrowing power calculator. Estimate how much a bank will lend you for a home loan, based on your income, expenses and the APRA 3% buffer. No sign-up.";
+const META_DESCRIPTION = "Free Australian borrowing power calculator. Estimate how much a lender may lend you for a home loan, based on your income, expenses and the APRA 3% buffer.";
 
 export const metadata: Metadata = {
   title: META_TITLE,
@@ -101,6 +102,7 @@ export default function BorrowingPowerCalculatorPage() {
     <CalculatorPageLayout
       frontmatter={FRONTMATTER}
       calculator={<BorrowingPowerCalculator />}
+      estimateNote={LENDER_POLICY_NOTE}
       faqs={[...borrowingPowerFaqs(), ...FAQS]}
       related={RELATED}
       intent="buying"
@@ -122,7 +124,10 @@ export default function BorrowingPowerCalculatorPage() {
             </li>
             <li>
               <strong>Net income.</strong> An after-tax estimate is calculated. This
-              calculator uses a simple 72% net factor as an approximation.
+              calculator takes each applicant&rsquo;s income tax at the ATO&rsquo;s{" "}
+              {INCOME_TAX_YEAR} resident rates and the {MEDICARE_LEVY_PCT}% Medicare levy off
+              their gross pay, before tax offsets ({INCOME_TAX_SOURCE.dated}). Lenders use their
+              own tax tables and may shade bonus, overtime or rental income.
             </li>
             <li>
               <strong>Living expenses (HEM).</strong> Banks deduct your living costs.

@@ -25,7 +25,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "The mortgage feature most Australians use wrong. What an offset account actually does, how it saves interest mechanically, when it's worth the package fee, redraw vs offset, and how to use it as a deposit-builder for the next purchase.",
   slug: "offset-accounts-explained-australia",
   publishedAt: "2026-05-18",
-  updatedAt: "2026-05-18",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 11,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -114,7 +114,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "Home loan pre-approval guide",            href: "/guides/home-loan-pre-approval-australia", description: "How to get conditional and unconditional pre-approval before house-hunting." },
-  { title: "How to choose a mortgage broker",         href: "/guides/how-to-choose-a-mortgage-broker", description: "Brokers shop offset products across 30+ lenders; the right one matters." },
+  { title: "How to choose a mortgage broker",         href: "/guides/how-to-choose-a-mortgage-broker", description: "A broker compares many lenders' offset products for your situation." },
   { title: "Fixed vs variable rate guide",            href: "/guides/fixed-vs-variable-rate-guide", description: "Fully offset accounts are usually only available on variable rates." },
   { title: "How much deposit do I need?",             href: "/guides/how-much-deposit-to-buy-a-house", description: "The offset-as-deposit strategy for upgraders and investors." },
   { title: "Mortgage repayment calculator",           href: "/mortgage-calculator", description: "Model the interest saving from a $20K, $50K or $100K offset balance." },
@@ -316,7 +316,10 @@ export default function OffsetAccountsExplainedPage() {
       <h2 id="investment-loans">Why offset matters more on investment loans</h2>
       <p>
         Investment-loan interest is tax-deductible against rental
-        income (and other income, in the case of negative gearing).
+        income (and other income, in the case of negative gearing, though
+        from 1 July 2027 not for an established home bought after 7:30pm
+        AEST on 12 May 2026, whose losses only offset residential property
+        income and gains).
         Owner-occupier loan interest isn&rsquo;t deductible. That
         difference changes how offset and redraw work tactically.
       </p>

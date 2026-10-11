@@ -28,6 +28,7 @@ import {
   monthlyRepayment,
 } from "@/lib/bridging-calc";
 import { BRIDGING_LENDERS, BRIDGING_LENDERS_CHECKED_ON, PUBLISHED_CAPITALISED_RATES } from "@/lib/data/bridging-lenders";
+import { AVERAGE_NEW_VARIABLE_RATE, F6_RATE_CAVEAT, F6_SOURCE } from "@/lib/data/rba-lending-rates";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Bridging Loans Australia: How They Work, What They Cost & the Risks (2026)",
@@ -35,7 +36,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "How a bridging loan works when you buy before you sell: peak debt and end debt, what the interest costs in dollars, how much equity you need, what happens if your home doesn't sell, and the cheaper alternatives.",
   slug: "bridging-loans-guide",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-10-06",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 14,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -106,6 +107,11 @@ const FAQS: FaqItem[] = [
     answer:
       `About ${fmt(PER_100K_6)} for six months at ${RATE}%, with the interest added to the loan monthly. That is ${fmt(capitalisedInterest(100_000, RATE, 3))} for three months and ${fmt(capitalisedInterest(100_000, RATE, 12))} for twelve. ` +
       `Add the application, valuation and discharge fees. Scale it to your own figure: $500,000 for six months is about ${fmt(ON_500K_6)}. The bridging loan calculator works it out from your sale and purchase prices.`,
+  },
+  {
+    question: "How much do you pay back on a bridging loan?",
+    answer:
+      `The bridging part comes back out of the sale, and what is left is an ordinary home loan. In our worked example (a home in New South Wales expected to sell for ${fmt(EX.salePrice)} with ${fmt(EX.mortgageOwing)} owing, a ${fmt(EX.purchasePrice)} purchase, sold within six months), peak debt is ${fmt(EXR.peakDebt)}, including ${fmt(EXR.capitalisedInterest)} of interest added at ${RATE}%. The sale repays ${fmt(EXR.netSaleProceeds)} and leaves ${fmt(EXR.endDebt)}, about ${fmt(EXR.monthlyRepayment)} a month over 30 years at ${EXAMPLE_ONGOING_RATE}% (the ${AVERAGE_NEW_VARIABLE_RATE.period} average new variable rate, RBA table F6). The calculator works it for your own figures.`,
   },
   {
     question: "Do you make repayments during a bridging loan?",
@@ -187,6 +193,7 @@ const SOURCES: SourceItem[] = [
   { label: "NSW Government: Minimum notice periods for ending a residential tenancy", href: "https://www.nsw.gov.au/housing-and-construction/rules/minimum-notice-periods-for-ending-a-residential-tenancy", note: "read 6 October 2026" },
   { label: "Consumer Affairs Victoria: Notice to vacate in rental properties", href: "https://www.consumer.vic.gov.au/housing/renting/moving-out-giving-notice-and-evictions/notice-to-vacate/notice-to-vacate-in-rental-properties", note: "read 6 October 2026" },
   { label: "Residential Tenancies Authority (Qld): When a property is for sale", href: "https://www.rta.qld.gov.au/during-a-tenancy/events-that-impact-the-agreement/when-a-property-is-for-sale", note: "read 6 October 2026" },
+  { label: F6_SOURCE.name, href: F6_SOURCE.url, note: `series ${AVERAGE_NEW_VARIABLE_RATE.series}, ${AVERAGE_NEW_VARIABLE_RATE.period}: the ${EXAMPLE_ONGOING_RATE}% rate on the end debt in the examples. Published ${F6_SOURCE.published}, read ${F6_SOURCE.readOn}; ${F6_RATE_CAVEAT}.` },
   `Interest figures: ${RATE}% a year compounded monthly, an example rate rather than a quote. Stamp duty, selling and buying costs from the same tables as our stamp duty, selling costs and conveyancing tools.`,
 ];
 

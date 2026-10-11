@@ -2,8 +2,38 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MortgageCalculator } from "@/components/calculators/MortgageCalculator";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
-import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { Callout, KeyFigure, Sources, type FaqItem, type RelatedGuide } from "@/components/guide";
+import { SITE_URL } from "@/lib/constants";
+import { AVERAGE_NEW_VARIABLE_RATE, F6_RATE_CAVEAT, F6_SOURCE, describeF6 } from "@/lib/data/rba-lending-rates";
+import { monthlyRepayment } from "@/lib/utils/repayment";
+
+// The 25- against 30-year example in the FAQ, worked rather than typed.
+const PAY_30 = monthlyRepayment(600_000, 6, 30);
+const PAY_25 = monthlyRepayment(600_000, 6, 25);
+const INTEREST_30 = PAY_30 * 360 - 600_000;
+const INTEREST_25 = PAY_25 * 300 - 600_000;
+const roundTo = (n: number, step: number) => Math.round(n / step) * step;
+const usd = (n: number) => `$${n.toLocaleString("en-AU")}`;
+
+// Repayments by loan size at the F6 average new variable rate, 30 years,
+// principal and interest: the long-tail questions ("repayments on a 600k
+// mortgage") answered from the same function as the bridging and Help to Buy
+// calculators.
+const RATE = AVERAGE_NEW_VARIABLE_RATE.rate;
+const LOAN_SIZES = [300_000, 400_000, 500_000, 600_000, 700_000, 800_000, 900_000, 1_000_000] as const;
+const BY_SIZE = LOAN_SIZES.map((loan) => ({
+  loan,
+  monthly: monthlyRepayment(loan, RATE, 30),
+  quarterPoint: monthlyRepayment(loan, RATE + 0.25, 30) - monthlyRepayment(loan, RATE, 30),
+  interest: monthlyRepayment(loan, RATE, 30) * 360 - loan,
+}));
+const sizeFaq = (loan: number, question: string): FaqItem => {
+  const r = BY_SIZE.find((x) => x.loan === loan)!;
+  return {
+    question,
+    answer: `About ${usd(r.monthly)} a month over 30 years at ${RATE}%, the average rate on new owner-occupier variable loans in ${AVERAGE_NEW_VARIABLE_RATE.period} (RBA table F6), ${F6_RATE_CAVEAT}. Each extra quarter of a percentage point adds about ${usd(r.quarterPoint)} a month. Use the calculator for your own rate, term and repayment frequency.`,
+  };
+};
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Mortgage Repayment Calculator",
@@ -12,7 +42,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   slug: "mortgage-calculator",
   schemaName: "Mortgage Repayment Calculator",
   schemaDescription: "Calculate Australian mortgage repayments, total interest, and full amortization schedule.",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-11",
   persona: "first-home",
 };
 
@@ -36,6 +66,9 @@ export const metadata: Metadata = {
 };
 
 const FAQS: FaqItem[] = [
+  sizeFaq(600_000, "How much is a $600,000 mortgage a month?"),
+  sizeFaq(700_000, "What are the monthly repayments on a $700,000 mortgage?"),
+  sizeFaq(800_000, "How much would I repay on an $800,000 mortgage?"),
   {
     question: "How is a mortgage repayment calculated?",
     answer:
@@ -64,7 +97,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How does loan term affect total interest?",
     answer:
-      "A longer loan term means lower monthly repayments but dramatically higher total interest. A 25-year loan vs a 30-year loan on $600,000 at 6% saves around $130,000 in total interest, though the monthly repayments are about $300 higher. Use the calculator to compare.",
+      `A longer loan term means lower monthly repayments but dramatically higher total interest. A 25-year loan vs a 30-year loan on $600,000 at 6% saves around ${usd(roundTo(INTEREST_30 - INTEREST_25, 5_000))} in total interest, though the monthly repayments are about ${usd(roundTo(PAY_25 - PAY_30, 10))} higher. Use the calculator to compare.`,
   },
 ];
 
@@ -87,6 +120,40 @@ export default function MortgageCalculatorPage() {
       intent="buying"
       explainer={
         <>
+          <p>
+            The calculator opens at {describeF6(AVERAGE_NEW_VARIABLE_RATE)}, {F6_RATE_CAVEAT}.
+            Enter the rate your lender quotes you.
+          </p>
+
+          <h2 id="by-loan-size">Repayments by loan size</h2>
+          <p>
+            Monthly principal and interest repayments over 30 years at {RATE}%, the average rate on new
+            owner-occupier variable loans in {AVERAGE_NEW_VARIABLE_RATE.period} (RBA table F6), and what 0.25 points
+            more adds.
+          </p>
+          <div className="overflow-x-auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Loan</th>
+                  <th>Monthly repayment</th>
+                  <th>Total interest over 30 years</th>
+                  <th>0.25 points higher adds</th>
+                </tr>
+              </thead>
+              <tbody>
+                {BY_SIZE.map((r) => (
+                  <tr key={r.loan}>
+                    <td>{usd(r.loan)}</td>
+                    <td>{usd(r.monthly)}</td>
+                    <td>{usd(r.interest)}</td>
+                    <td>{usd(r.quarterPoint)} a month</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
           <h2>What you&rsquo;re actually paying for</h2>
           <p>
             Every monthly mortgage repayment is split between two things: a chunk
@@ -150,16 +217,26 @@ export default function MortgageCalculatorPage() {
 
           <h2>What this calculator doesn&rsquo;t do</h2>
           <ul>
-            <li>It doesn&rsquo;t apply LMI (Lenders Mortgage Insurance) when LVR exceeds 80%, see our <Link href="/guides/lenders-mortgage-insurance-guide">LMI guide</Link>.</li>
+            <li>It doesn&rsquo;t apply LMI (Lenders Mortgage Insurance) when LVR exceeds 80%: the <Link href="/lmi-calculator">LMI calculator</Link> estimates it, and our <Link href="/guides/lenders-mortgage-insurance-guide">LMI guide</Link> explains it.</li>
             <li>It doesn&rsquo;t model split-rate loans (part fixed, part variable).</li>
             <li>It doesn&rsquo;t factor in offset balance reductions, run those scenarios separately.</li>
             <li>It doesn&rsquo;t cover construction loans (interest charged on drawn amount only).</li>
           </ul>
           <p>
-            For a precise quote on your specific situation, a mortgage broker can
-            compare 30+ lenders for you in one process.{" "}
+            For a quote on your specific situation, a mortgage broker compares
+            many lenders&rsquo; policies for you in one process.{" "}
             <Link href="/find-an-expert?intent=refinancing">Get connected</Link> if you want a free intro to one.
           </p>
+
+          <Sources
+            items={[
+              {
+                label: F6_SOURCE.name,
+                href: F6_SOURCE.url,
+                note: `series ${AVERAGE_NEW_VARIABLE_RATE.series}, ${AVERAGE_NEW_VARIABLE_RATE.period}; published ${F6_SOURCE.published}, read ${F6_SOURCE.readOn}. The calculator's starting rate.`,
+              },
+            ]}
+          />
         </>
       }
     />

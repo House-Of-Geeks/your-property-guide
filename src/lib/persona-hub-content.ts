@@ -235,7 +235,7 @@ const INVESTING: PersonaHubContent = {
   calculators: [
     { label: "Rental yield calculator",       href: "/rental-yield-calculator",    blurb: "Gross and net yield, weekly cash flow, full cost picture." },
     { label: "Capital gains tax calculator",  href: "/cgt-calculator",             blurb: "Estimate CGT on a sale, including the 50% discount and main residence partial exemption." },
-    { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "What an investor loan will actually approve, after the APRA buffer and rental income shading." },
+    { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "An estimate of what a lender may lend on your income and expenses, at the APRA buffer." },
     { label: "Best suburbs for investors",    href: "/best-suburbs",               blurb: "Suburbs ranked by yield, growth, demographic demand." },
   ],
   faqs: [
@@ -247,12 +247,12 @@ const INVESTING: PersonaHubContent = {
     {
       question: "How does negative gearing work in Australia?",
       answer:
-        "Negative gearing lets you deduct the loss on an investment property (rent minus expenses including interest) against your other income, reducing your tax bill. Example: a property loses $15,000 per year on a cash basis. At a 37% marginal rate, you save $5,550 in tax, so the after-tax loss drops to $9,450. The strategy is only worth it if you expect capital growth to outweigh the holding cost over your hold period.",
+        "Negative gearing lets you deduct the loss on an investment property (rent minus expenses including interest) against your other income, reducing your tax bill. Example: a property loses $15,000 per year on a cash basis. At a 37% marginal rate, you save $5,550 in tax, so the after-tax loss drops to $9,450. From 1 July 2027 that changes for an established home bought after 7:30pm AEST on 12 May 2026: its loss can only be offset against income and gains from residential property, with the excess carried forward, while homes held before then and new builds keep negative gearing (ATO, last updated 29 June 2026). The strategy is only worth it if you expect capital growth to outweigh the holding cost over your hold period. Our negative gearing calculator works out the weekly cost before and after 1 July 2027, and our negative gearing changes explainer covers who the new rule applies to.",
     },
     {
       question: "What is the 50% capital gains tax discount?",
       answer:
-        "Individual investors (and most trusts) who hold an investment property for more than 12 months only pay CGT on 50% of the gain. Example: a $200,000 capital gain becomes $100,000 of assessable income. At a 37% marginal rate, the tax is $37,000 — effectively 18.5% on the original gain. The discount doesn't apply to companies or property held less than 12 months.",
+        "On a sale before 1 July 2027, individual investors (and most trusts) who have held an investment property for at least 12 months only pay CGT on 50% of the gain. Example: a $200,000 capital gain becomes $100,000 of assessable income. At a 37% marginal rate, the tax is $37,000, effectively 18.5% on the original gain, before the Medicare levy. The discount doesn't apply to companies or property held less than 12 months. From 1 July 2027 it is replaced, for gains that accrue from that date, by cost base indexation and a 30% minimum tax for resident individuals, including on property you already own; the gain up to 1 July 2027 keeps the discount whenever you sell (ATO, last updated 29 June 2026). Our CGT calculator estimates the tax on a sale, and our article on the 2026 Budget CGT changes sets out how the split works.",
     },
     {
       question: "What is property depreciation and who can claim it?",
@@ -267,12 +267,12 @@ const INVESTING: PersonaHubContent = {
     {
       question: "How much does it cost to hold an investment property each year?",
       answer:
-        "Roughly: mortgage interest (currently around 6.5% on investor loans), council rates ($2,000-$5,000), insurance ($1,500-$3,000), property management (7-10% of rent), maintenance (1% of property value as a rule of thumb), and strata if applicable ($3,000-$8,000 a year). For a $700,000 property on an 80% loan, you're looking at $45,000-$55,000 in annual holding costs before rental income offsets it.",
+        "Roughly: mortgage interest (6.4% was the average rate on new investor variable loans in August 2026, RBA table F6, before the 29 September 2026 cash rate rise), council rates ($2,000-$5,000), insurance ($1,500-$3,000), property management (7-10% of rent), maintenance (1% of property value as a rule of thumb), and strata if applicable ($3,000-$8,000 a year). For a $700,000 property on an 80% loan, you're looking at $45,000-$55,000 in annual holding costs before rental income offsets it.",
     },
     {
       question: "Is it better to invest through a company, trust, or in my own name?",
       answer:
-        "Most individual investors hold in their own name (or jointly with a spouse) because they get the 50% CGT discount and can negative-gear losses against personal income. Discretionary trusts give flexibility on distributing income but lose the ability to distribute losses. Companies don't get the 50% CGT discount and are usually a bad structure for residential property. Always get specific advice from a property accountant before choosing.",
+        "Most individual investors hold in their own name (or jointly with a spouse) because they get the 50% CGT discount and can negative-gear losses against personal income, though from 1 July 2027 the discount gives way to indexation for gains accruing from then, and losses on established homes bought after 7:30pm AEST on 12 May 2026 are quarantined to residential property, whichever structure holds them. Discretionary trusts give flexibility on distributing income but lose the ability to distribute losses. Companies don't get the 50% CGT discount and are usually a bad structure for residential property. Always get specific advice from a property accountant before choosing.",
     },
   ],
   matchIntent: "investing",
@@ -294,17 +294,17 @@ const UPGRADING: PersonaHubContent = {
       "Sell first means you list and sell your current home, then go house-hunting with a known budget. You'll either need short-term rental accommodation between settlements or to negotiate a long settlement on the sale (60-90 days isn't unusual) so you can buy in parallel. Cleanest financially because there's no double mortgage and no bridging fees, but the risk is finding the right next home in the available window.",
       "Buy first means you find the next home, exchange contracts subject to finance, then list your current home. This works in slow markets where you can negotiate a long settlement on the purchase (often 90-120 days). The risk: if your current home doesn't sell quickly, you're carrying two mortgages and possibly paying penalty interest. Have a serviceability buffer in mind before going down this path.",
       "Bridging finance is a short-term loan that covers the gap between buying the new home and selling the old one. Bridging lasts 6-12 months typically, the rate is usually 1-2% above standard variable, and you'll pay interest on the 'peak debt' (combined value of both loans) for the bridging period. Useful when the timing genuinely won't line up, expensive if you treat it as an alternative to selling fast.",
-      "Stamp duty on the next home is the line item most upgraders underestimate. A $1.5m purchase in NSW carries around $66,000 in stamp duty for a non-first-home buyer; a $1m purchase in VIC is roughly $55,000. Build the duty into your true cost of moving, not the headline price difference.",
+      "Stamp duty on the next home is the line item most upgraders underestimate. A $1.5m home in NSW carries around $64,000 in transfer duty for a buyer who is not a first home buyer; a $1m home in VIC about $55,000 (our stamp duty calculator, rates checked 30 September 2026). Build the duty into your true cost of moving, not the headline price difference.",
     ],
   },
   calculatorsHeading: "The numbers an upgrader has to run",
   calculatorsBlurb:
     "Two transactions, two sets of math. Get the stamp duty, repayment and borrowing-power numbers before you sign either.",
   calculators: [
-    { label: "Stamp duty (your next home)",   href: "/stamp-duty-calculator",      blurb: "The single biggest line item when moving. By state, with current 2025/26 rates." },
+    { label: "Stamp duty (your next home)",   href: "/stamp-duty-calculator",      blurb: "The single biggest line item when moving. By state, with each revenue office's current rates." },
     { label: "Mortgage repayment calculator", href: "/mortgage-calculator",        blurb: "What the new loan will actually cost each month, weekly or fortnightly." },
-    { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "What a lender will approve on your current income and equity position." },
-    { label: "Free property appraisal",       href: "/appraisal",                  blurb: "Independent estimate of your current home from a vetted local agent." },
+    { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "An estimate of what a lender may lend on your income and expenses, at the APRA buffer." },
+    { label: "Free property appraisal",       href: "/appraisal",                  blurb: "A local agent's estimate of what your current home could sell for. One agent receives your details and pays us a fee." },
   ],
   faqs: [
     {
@@ -320,7 +320,7 @@ const UPGRADING: PersonaHubContent = {
     {
       question: "How much stamp duty will I pay when upgrading?",
       answer:
-        "Stamp duty on an upgrade is calculated at the full (non-first-home) rate on the new purchase price. As an indicative scale: a $1m purchase in NSW costs around $40,000; in VIC around $55,000; in QLD around $34,000; in WA around $42,000. There is no stamp duty refund or credit for selling your old home. Build the full stamp duty into your true cost of moving.",
+        "Stamp duty on an upgrade is calculated at the full (non-first-home) rate on the new purchase price, with any home concession your state gives an owner-occupier. As an indicative scale for a home you will live in: a $1m purchase in NSW costs around $39,000; in VIC around $55,000; in QLD around $31,000 with the home concession; in WA around $43,000 (our stamp duty calculator, rates checked 30 September 2026). There is no stamp duty refund or credit for selling your old home. Build the full stamp duty into your true cost of moving.",
     },
     {
       question: "Can I take my mortgage with me when I move?",

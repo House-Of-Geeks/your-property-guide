@@ -28,7 +28,7 @@ describe("/guides/cgt-changes-2026-budget", () => {
   it("keeps its URL and news form, and dates the correction", () => {
     expect(p.category).toBe("News");
     expect(p.publishedAt).toBe("2026-05-13");
-    expect(p.updatedAt).toBe("2026-10-01");
+    expect(p.updatedAt).toBe("2026-10-11");
     expect(p.content.indexOf("Correction, 1 October 2026")).toBeGreaterThanOrEqual(0);
     expect(p.content.indexOf("Correction, 1 October 2026")).toBeLessThan(200);
   });
@@ -76,6 +76,14 @@ describe("/guides/cgt-changes-2026-budget", () => {
     expect(p.content).not.toContain("—");
   });
 
+  it("has the before-and-after table and answers the Bing and PAA questions (10 Oct 2026 review)", () => {
+    expect(p.content).toContain("<h2>Before and after 1 July 2027 at a glance</h2>");
+    expect(body).toContain("Does the new capital gains tax apply to existing investment properties?");
+    expect(body).toContain("Yes, from 1 July 2027. On property you own before then, the gain up to 1 July 2027 keeps the 50% discount");
+    expect(body).toContain("How much capital gains tax will I pay on $300,000?");
+    expect(body).toContain("$57,850");
+  });
+
   it("agrees with the now-law article on the CGT start date", () => {
     const law = text(post("negative-gearing-cgt-changes-now-law-2026").content);
     expect(law).toContain("For gains accruing after 1 July 2027");
@@ -87,8 +95,16 @@ describe("/guides/negative-gearing-australia", () => {
   const src = read("guides/negative-gearing-australia/page.tsx");
 
   it("is dated after the law passed", () => {
-    expect(src).toContain('updatedAt: "2026-10-01"');
+    expect(src).toContain('updatedAt: "2026-10-11"');
     expect(src).toContain("Updated 1 October 2026");
+  });
+
+  it("answers why negative gearing exists and how much it saves, and links the calculator first (10 Oct 2026 review)", () => {
+    expect(src).toContain('<h2 id="why">Why does negative gearing exist?</h2>');
+    expect(src).toContain('<h2 id="how-much">How much tax does negative gearing save?</h2>');
+    expect(src).toContain('question: "Why is there negative gearing?"');
+    expect(src.indexOf('href="/negative-gearing-calculator"')).toBeLessThan(src.indexOf('<h2 id="what-is">'));
+    expect(src).toContain('href="/guides/negative-gearing-changes-2026-budget"');
   });
 
   it("drops the pre-law status and the 2023–24 rates", () => {
@@ -127,8 +143,8 @@ describe("/cgt-calculator", () => {
     expect(src).toContain('title="Gains after 1 July 2027"');
     expect(src).toContain("This calculator applies the rules for");
     expect(src).toContain("ATO, last updated 29 June 2026");
-    expect(src).toContain("<Sources items={[ATO_REFORM_SOURCE");
-    expect(src).toContain('updatedAt: "2026-10-01"');
+    expect(src).toMatch(/<Sources\s+items=\{\[[\s\S]*ATO_REFORM_SOURCE/);
+    expect(src).toContain('updatedAt: "2026-10-11"');
   });
 
   it("keeps the FAQ (and so its FAQPage JSON-LD) in step with the note", () => {
@@ -147,5 +163,37 @@ describe("reform sources", () => {
       expect(s.href).toMatch(/^https:\/\/(www\.ato\.gov\.au|www\.aph\.gov\.au|parlinfo\.aph\.gov\.au|budget\.gov\.au)\//);
       expect(s.note).toMatch(/2026/);
     }
+  });
+});
+
+describe("/cgt-calculator: section 3 of the 10 Oct 2026 review", () => {
+  const src = read("cgt-calculator/page.tsx");
+
+  it("carries the query and both rule sets in the title, H1 and intro", () => {
+    expect(src).toContain('const META_TITLE = "CGT Calculator for Property: 50% Discount and 2027 Rules";');
+    expect(src).toContain('h1: "Capital gains tax calculator for property: before and after 1 July 2027"');
+    const t = src.match(/const META_TITLE = "([^"]+)"/)![1];
+    const d = src.match(/const META_DESCRIPTION = "([^"]+)"/)![1];
+    expect(t.length).toBeLessThanOrEqual(60);
+    expect(d.length).toBeLessThanOrEqual(160);
+  });
+
+  it("answers the PAA questions from the engine and the ATO", () => {
+    for (const q of ["How much capital gains tax will I pay on $300,000?", "What is the 6 year rule for capital gains tax?", "Can I move back into my investment property to avoid CGT?"]) {
+      expect(src).toContain(`question: "${q}"`);
+    }
+    expect(src).toContain("ATO, last updated 22 June 2026");
+    for (const h of ['id="by-gain"', 'id="after-2027"', 'id="six-year-rule"', 'id="structures"', 'id="capital-losses"']) expect(src).toContain(h);
+  });
+});
+
+describe("/negative-gearing-calculator: section 3 and 6 of the 10 Oct 2026 review", () => {
+  const src = read("negative-gearing-calculator/page.tsx");
+  it("answers the $100,000 tax and CGT questions from the tax table and the ATO", () => {
+    expect(src).toContain('question: "How much is $100,000 a year taxed in Australia?"');
+    expect(src).toContain("const TAX_ON_100K = incomeTax(100_000);");
+    expect(src).toContain('question: "How does negative gearing affect capital gains tax?"');
+    expect(src).toContain("110-38(8A)");
+    expect(src).toContain("<Sources");
   });
 });

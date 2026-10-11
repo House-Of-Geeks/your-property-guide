@@ -3,13 +3,29 @@
 // place means the tool and the guide can never disagree.
 //
 // Method (deliberately conservative, mirrors how lenders assess serviceability):
-//   net income  = gross x 0.72 (rough average tax + Medicare)
+//   net income  = each applicant's gross less income tax at the ATO's 2026-27
+//                 resident rates and the 2% Medicare levy, before offsets
+//                 (a flat 72% of gross until 11 Oct 2026, which understated
+//                 net pay on lower incomes and overstated it on high ones)
 //   expenses    = max(your figure, indicative HEM for the household, income band and region)
 //   surplus     = net monthly income - expenses - existing debt repayments
 //   capacity    = 85% of surplus, amortised at the assessment (buffered) rate
 //   price       = max loan / 0.8 (assumes a 20% deposit)
 
 import { indicativeHem, type Household, type Region } from "@/lib/data/hem";
+import { AVERAGE_NEW_VARIABLE_RATE } from "@/lib/data/rba-lending-rates";
+import { MEDICARE_LEVY_PCT, incomeTax } from "@/lib/utils/income-tax";
+
+/**
+ * One applicant's net annual income: gross less income tax at the ATO's
+ * 2026-27 resident rates and the 2% Medicare levy, before tax offsets and the
+ * levy's low-income reduction (src/lib/utils/income-tax.ts). About 84% of
+ * $60,000, 77% of $100,000 and 70% of $200,000.
+ */
+export function netAnnualIncome(gross: number): number {
+  const g = Math.max(0, Number.isFinite(gross) ? gross : 0);
+  return g - incomeTax(g) - (g * MEDICARE_LEVY_PCT) / 100;
+}
 
 export type { Household, Region } from "@/lib/data/hem";
 
@@ -38,12 +54,21 @@ export function getHEM(dependants: number, opts: HemOptions = {}): number {
 /**
  * The loan rate the default assessment rate starts from: the average rate on
  * new owner-occupier variable-rate loans, all institutions, in the RBA's
- * statistical table F6 (series FLRHOFVA), July 2026. Update it, and the
- * period below, when the table moves; the calculator, the income table on
- * /borrowing-power-calculator and the guide embed all read it.
+ * statistical table F6 (series FLRHOFVA). It comes from the one dated F6
+ * constant in src/lib/data/rba-lending-rates.ts, which the mortgage,
+ * refinancing and bridging calculators also read; update it there.
  */
-export const REFERENCE_LOAN_RATE = 6.2;
-export const REFERENCE_LOAN_RATE_PERIOD = "July 2026";
+export const REFERENCE_LOAN_RATE = AVERAGE_NEW_VARIABLE_RATE.rate;
+export const REFERENCE_LOAN_RATE_PERIOD = AVERAGE_NEW_VARIABLE_RATE.period;
+/**
+ * The sidebar's "Estimate, not a quote" note on the lending calculators
+ * (borrowing power, affordability, refinancing, bridging). The other
+ * calculators keep CalculatorPageLayout's general line: until 11 Oct 2026 this
+ * text showed on every calculator, the CGT, rental yield and LMI pages included.
+ */
+export const LENDER_POLICY_NOTE =
+  "Real lender policies vary widely, especially around income shading, HEM tables, and existing debts.";
+
 /** APRA's minimum serviceability buffer over the loan rate, confirmed at 3 percentage points on 28 May 2026. */
 export const APRA_SERVICEABILITY_BUFFER = 3;
 export const APRA_BUFFER_CONFIRMED = "28 May 2026";
@@ -55,6 +80,19 @@ export const APRA_BUFFER_CONFIRMED = "28 May 2026";
  * about 17%.
  */
 export const DEFAULT_ASSESSMENT_RATE = Math.round((REFERENCE_LOAN_RATE + APRA_SERVICEABILITY_BUFFER) * 10) / 10;
+
+/**
+ * How much loan each dollar a month of living expenses or debt repayments
+ * removes, on this engine: 85% of the dollar, amortised at the assessment
+ * rate. At 9.2% over 30 years it is about $104. (The pages said "$130" until
+ * 11 Oct 2026, which is the purchase price with a 20% deposit, not the loan.)
+ */
+export function loanPerMonthlyDollar(assessmentRate: number, termYears: number): number {
+  const r = assessmentRate / 100 / 12;
+  const n = termYears * 12;
+  const factor = r === 0 ? n : (1 - Math.pow(1 + r, -n)) / r;
+  return 0.85 * factor;
+}
 
 export interface BorrowingResult {
   maxLoan: number;
@@ -89,7 +127,7 @@ export function computeBorrowingPower(
   const grossAnnual = income1 + income2;
   if (grossAnnual <= 0) return null;
 
-  const netAnnual = grossAnnual * 0.72;
+  const netAnnual = netAnnualIncome(income1) + netAnnualIncome(income2);
   const monthlyNetIncome = netAnnual / 12;
 
   const household: Household = opts.household ?? (income2 > 0 ? "couple" : "single");

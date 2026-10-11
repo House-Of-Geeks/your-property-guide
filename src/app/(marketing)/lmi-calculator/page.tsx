@@ -158,7 +158,7 @@ export default function LMICalculatorPage() {
             of $1,000,000 and at 95% LVR.
           </p>
 
-          <h2>How LMI is worked out</h2>
+          <h2 id="how-calculated">How is LMI calculated?</h2>
           <p>
             Your loan to value ratio (LVR) is the loan divided by the price. At 80% or less there is no LMI. Above 80%, the
             insurer charges a percentage of the whole loan, and the percentage rises with both the LVR band and the size of

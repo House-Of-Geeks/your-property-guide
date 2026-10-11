@@ -16,7 +16,8 @@ export function AffordabilityByHouseholdTable() {
       <p>
         The purchase price a bank&rsquo;s serviceability test supports for a single applicant, a couple and a
         couple with two children, before you enter your own figures. Assumptions, as at {new Date(t.asAt).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })}:
-        a {t.depositPct}% deposit already saved, no other debts, net income taken as 72% of gross, living expenses at
+        a {t.depositPct}% deposit already saved, no other debts, net income after 2026&ndash;27 income tax and the 2%
+        Medicare levy for each applicant, living expenses at
         the indicative HEM floor for each household and income band ({t.hemAsAt}; see the{" "}
         <Link href="/borrowing-power-calculator#hem-table">HEM table</Link>), repayments capped at 85% of what is left,
         and a {t.assessmentRate}% assessment rate over {t.termYears} years, which is the {t.loanRate}% average new

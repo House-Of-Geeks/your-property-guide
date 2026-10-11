@@ -2,90 +2,111 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { TrendingDown, TrendingUp, Minus, ArrowRight, Info } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, GuideArticleJsonLd, JsonLd } from "@/components/seo";
+import { Faq, type FaqItem } from "@/components/guide";
+import { monthlyRepayment } from "@/lib/utils/repayment";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { Sources } from "@/components/guide/Sources";
+import {
+  AVERAGE_NEW_VARIABLE_RATE,
+  AVERAGE_OUTSTANDING_VARIABLE_RATE,
+  F6_RATE_CAVEAT,
+  F6_SOURCE,
+  HIKING_CYCLE_F6,
+} from "@/lib/data/rba-lending-rates";
+import {
+  CASH_RATE_DECISIONS,
+  CASH_RATE_SOURCE,
+  DECISION_TIME,
+  MEETING_SCHEDULE_SOURCE,
+  formatLongDate,
+  formatShortDate,
+  latestDecision,
+  upcomingMeetings,
+  type CashRateDecision,
+} from "@/lib/data/rba-cash-rate";
+
+const LATEST = latestDecision();
+const META_TITLE = "RBA Cash Rate: Current Rate, Next Decision and History";
+const META_DESCRIPTION = `The RBA cash rate target is ${LATEST.rate.toFixed(2)}%, effective ${formatLongDate(LATEST.effective)}. Every decision since 2020, the next meeting and what 0.25 points costs.`;
 
 export const metadata: Metadata = {
-  title: "RBA Cash Rate History & Property Market Impact",
-  description:
-    "Track the RBA cash rate history and understand how interest rate changes affect Australian property prices. Updated with each RBA decision.",
+  title: META_TITLE,
+  description: META_DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/rba-cash-rate` },
   openGraph: {
     url: `${SITE_URL}/rba-cash-rate`,
-    title: `RBA Cash Rate History & Property Market Impact | ${SITE_NAME}`,
-    description:
-      "Track the RBA cash rate history and understand how interest rate changes affect Australian property prices.",
+    title: `${META_TITLE} | ${SITE_NAME}`,
+    description: META_DESCRIPTION,
     type: "website",
   },
   twitter: { card: "summary_large_image" },
 };
 
-interface RateEntry {
-  date: string;
-  rate: number;
-  change: number;
-  note: string;
+// Every figure on this page comes from src/lib/data/rba-cash-rate.ts, which a
+// test keeps up to date with the RBA's meeting schedule. Rebuilt daily so the
+// "next decision" line moves on after each meeting.
+export const revalidate = 86400;
+
+/** The day this page's data was last checked against the RBA and edited. */
+const PAGE_UPDATED = "2026-10-11";
+
+const usd = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
+const LOANS = [400_000, 600_000, 800_000, 1_000_000] as const;
+/** Monthly repayment on a 30-year principal and interest loan at the F6 average, and 0.25 points higher. */
+const QUARTER_POINT = LOANS.map((loan) => {
+  const at = monthlyRepayment(loan, AVERAGE_NEW_VARIABLE_RATE.rate, 30);
+  const up = monthlyRepayment(loan, AVERAGE_NEW_VARIABLE_RATE.rate + 0.25, 30);
+  return { loan, at, up, diff: up - at };
+});
+const CYCLE_FROM = monthlyRepayment(600_000, HIKING_CYCLE_F6.from.rate, 30);
+const CYCLE_TO = monthlyRepayment(600_000, HIKING_CYCLE_F6.to.rate, 30);
+
+function rbaFaqs(): FaqItem[] {
+  const next = upcomingMeetings()[0];
+  const rest = upcomingMeetings().slice(1, 4).map((m) => formatLongDate(m.decision));
+  return [
+    {
+      question: "What time is the RBA decision announced?",
+      answer: `The Reserve Bank announces each cash rate decision at ${DECISION_TIME}, Sydney time, on the last day of the Monetary Policy Board's two-day meeting, and a change takes effect the next day. The cash rate target is ${LATEST.rate.toFixed(2)}%, effective ${formatLongDate(LATEST.effective)}${next ? `, and the next decision is due on ${formatLongDate(next.decision)}` : ""} (RBA).`,
+    },
+    {
+      question: "Will there be another interest rate rise in Australia in 2026?",
+      answer: `Nobody can say in advance, and we don't forecast. The Board ${latestSummary(LATEST).replace(/^Raised/, "raised the cash rate").replace(/^Held/, "held the cash rate").replace(/^Cut/, "cut the cash rate")}${next ? `, and its next decisions are due on ${[formatLongDate(next.decision), ...rest].join(", ")}` : ""}. Each decision is published at ${DECISION_TIME} Sydney time on the RBA's website, and this page is updated with it.`,
+    },
+    {
+      question: "Is 5.74% a good mortgage rate?",
+      answer: `It is ${5.74 < AVERAGE_NEW_VARIABLE_RATE.rate ? "below" : "not below"} the ${AVERAGE_NEW_VARIABLE_RATE.rate}% average rate on new owner-occupier variable loans in ${AVERAGE_NEW_VARIABLE_RATE.period} (RBA table F6), ${F6_RATE_CAVEAT}. Compare the comparison rate and fees as well as the headline rate, and ask your lender what it offers new customers.`,
+    },
+  ];
 }
 
-const rateHistory: RateEntry[] = [
-  { date: "2026-06-16", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2026-05-05", rate: 4.35, change: 0.25,  note: "Hike" },
-  { date: "2026-03-17", rate: 4.10, change: 0.25,  note: "Hike" },
-  { date: "2026-02-03", rate: 3.85, change: 0.25,  note: "Hike" },
-  { date: "2025-12-09", rate: 3.60, change: 0,     note: "Hold" },
-  { date: "2025-11-04", rate: 3.60, change: 0,     note: "Hold" },
-  { date: "2025-09-30", rate: 3.60, change: 0,     note: "Hold" },
-  { date: "2025-08-12", rate: 3.60, change: -0.25, note: "Cut" },
-  { date: "2025-07-08", rate: 3.85, change: 0,     note: "Hold" },
-  { date: "2025-05-20", rate: 3.85, change: -0.25, note: "Cut" },
-  { date: "2025-04-01", rate: 4.10, change: 0,     note: "Hold" },
-  { date: "2025-02-18", rate: 4.10, change: -0.25, note: "Cut" },
-  { date: "2024-12-10", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2024-11-05", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2024-09-24", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2024-08-06", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2024-06-18", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2024-05-07", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2024-03-19", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2024-02-06", rate: 4.35, change: 0,     note: "Hold" },
-  { date: "2023-11-07", rate: 4.35, change: 0.25,  note: "Hike" },
-  { date: "2023-09-05", rate: 4.10, change: 0,     note: "Hold" },
-  { date: "2023-07-04", rate: 4.10, change: 0,     note: "Hold" },
-  { date: "2023-06-06", rate: 4.10, change: 0.25,  note: "Hike" },
-  { date: "2023-05-02", rate: 3.85, change: 0.25,  note: "Hike" },
-  { date: "2023-04-04", rate: 3.60, change: 0,     note: "Hold" },
-  { date: "2023-03-07", rate: 3.60, change: 0.25,  note: "Hike" },
-  { date: "2023-02-07", rate: 3.35, change: 0.25,  note: "Hike" },
-  { date: "2022-12-06", rate: 3.10, change: 0.25,  note: "Hike" },
-  { date: "2022-11-01", rate: 2.85, change: 0.25,  note: "Hike" },
-  { date: "2022-10-04", rate: 2.60, change: 0.25,  note: "Hike" },
-  { date: "2022-09-06", rate: 2.35, change: 0.50,  note: "Hike" },
-  { date: "2022-08-02", rate: 1.85, change: 0.50,  note: "Hike" },
-  { date: "2022-07-05", rate: 1.35, change: 0.50,  note: "Hike" },
-  { date: "2022-06-07", rate: 0.85, change: 0.50,  note: "Hike" },
-  { date: "2022-05-03", rate: 0.35, change: 0.25,  note: "Hike" },
-  { date: "2020-11-03", rate: 0.10, change: -0.15, note: "Cut" },
-  { date: "2020-03-19", rate: 0.25, change: -0.25, note: "Emergency Cut" },
-  { date: "2020-03-03", rate: 0.50, change: -0.25, note: "Emergency Cut" },
-];
+function decisionLabel(change: number): string {
+  if (change > 0) return "Hike";
+  if (change < 0) return "Cut";
+  return "Hold";
+}
 
-const upcomingMeetings2026 = [
-  { dates: "10–11 August",    decision: "Aug 11" },
-  { dates: "28–29 September", decision: "Sep 29" },
-  { dates: "2–3 November",    decision: "Nov 3" },
-  { dates: "7–8 December",    decision: "Dec 8" },
-];
+const ORDINALS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth"];
 
-function formatRateDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString("en-AU", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
+/** "Raised 0.25 points on 29 September 2026, the fourth rise this year." */
+function latestSummary(d: CashRateDecision): string {
+  const year = Number(d.announced.slice(0, 4));
+  const inYear = CASH_RATE_DECISIONS.filter((x) => x.announced.startsWith(`${year}-`) && x.announced <= d.announced);
+  const pts = Math.abs(d.change).toFixed(2);
+  if (d.change > 0) {
+    const n = inYear.filter((x) => x.change > 0).length;
+    return `Raised ${pts} points on ${formatLongDate(d.announced)}, the ${ORDINALS[n - 1] ?? `${n}th`} rise in ${year}`;
+  }
+  if (d.change < 0) {
+    const n = inYear.filter((x) => x.change < 0).length;
+    return `Cut ${pts} points on ${formatLongDate(d.announced)}, the ${ORDINALS[n - 1] ?? `${n}th`} cut in ${year}`;
+  }
+  return `Held at ${d.rate.toFixed(2)}% on ${formatLongDate(d.announced)}`;
 }
 
 function NoteChip({ note }: { note: string }) {
-  if (note.includes("Cut") || note.includes("Emergency")) {
+  if (note === "Cut") {
     return (
       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
         <TrendingDown className="w-3 h-3" />
@@ -124,8 +145,10 @@ function ChangeCell({ change }: { change: number }) {
 }
 
 export default function RBACashRatePage() {
-  const currentRate = rateHistory[0];
-  const recentHistory = rateHistory.slice(0, 20);
+  const currentRate = latestDecision();
+  const recentHistory = CASH_RATE_DECISIONS.slice(0, 20);
+  const upcoming = upcomingMeetings();
+  const next = upcoming[0];
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
@@ -135,35 +158,48 @@ export default function RBACashRatePage() {
         description="Track the RBA cash rate history and understand how interest rate changes affect Australian property prices. Updated with each RBA decision."
         url="/rba-cash-rate"
         datePublished="2026-01-01"
-        dateModified="2026-06-16"
+        dateModified={PAGE_UPDATED}
       />
       <Breadcrumbs items={[{ label: "RBA Cash Rate" }]} />
 
       {/* Hero, Current Rate */}
       <div className="text-center mb-12">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-          RBA Cash Rate History &amp; Property Market Impact
+          RBA cash rate: the current rate, the next decision and every change since 2020
         </h1>
         <p className="text-gray-500 max-w-2xl mx-auto">
-          Track every Reserve Bank of Australia cash rate decision and understand how interest
-          rate changes flow through to Australian property prices.
+          The Reserve Bank&rsquo;s cash rate target is {currentRate.rate.toFixed(2)}%, effective{" "}
+          {formatLongDate(currentRate.effective)}
+          {currentRate.change !== 0 ? ` after ${latestSummary(currentRate).replace(/^(Raised|Cut) [\d.]+ points on [^,]+, /, "")}` : ""}
+          {next ? `, and the next decision is due at ${DECISION_TIME} on ${formatLongDate(next.decision)}` : ""} (RBA).
         </p>
       </div>
 
       {/* Current rate display */}
       <div className="max-w-4xl mx-auto mb-10">
         <div className="gradient-brand rounded-2xl p-8 text-white text-center">
-          <p className="text-sm opacity-80 mb-1">Current RBA Cash Rate</p>
+          <p className="text-sm opacity-80 mb-1">RBA cash rate target</p>
           <p className="text-7xl font-bold tracking-tight mb-2">
             {currentRate.rate.toFixed(2)}%
           </p>
           <p className="text-base opacity-90">
-            As of {formatRateDate(currentRate.date)}, {currentRate.note}
+            Effective {formatLongDate(currentRate.effective)}
           </p>
           <div className="mt-4 inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-2 text-sm">
-            <Minus className="w-4 h-4" />
-            Held at 4.35% on 16 June 2026 after three consecutive hikes this year
+            {currentRate.change > 0 ? (
+              <TrendingUp className="w-4 h-4" />
+            ) : currentRate.change < 0 ? (
+              <TrendingDown className="w-4 h-4" />
+            ) : (
+              <Minus className="w-4 h-4" />
+            )}
+            {latestSummary(currentRate)}
           </div>
+          {next && (
+            <p className="mt-4 text-sm opacity-90">
+              Next decision: {DECISION_TIME} Sydney time, {formatLongDate(next.decision)}
+            </p>
+          )}
         </div>
       </div>
 
@@ -173,7 +209,7 @@ export default function RBACashRatePage() {
           href="/guides/rba-cash-rate-june-2026-what-it-means-for-buyers"
           className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
         >
-          Read our full analysis of the June 2026 decision
+          Our analysis of the June 2026 hold
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
@@ -195,13 +231,13 @@ export default function RBACashRatePage() {
               <tbody className="divide-y divide-gray-100">
                 {recentHistory.map((entry, i) => (
                   <tr
-                    key={i}
+                    key={entry.announced}
                     className={`hover:bg-gray-50 transition-colors ${
                       i === 0 ? "bg-primary/5 font-medium" : ""
                     }`}
                   >
                     <td className="px-4 py-3 text-gray-900">
-                      {formatRateDate(entry.date)}
+                      {formatShortDate(entry.announced)}
                       {i === 0 && (
                         <span className="ml-2 text-xs bg-primary text-white px-1.5 py-0.5 rounded">
                           Latest
@@ -215,7 +251,7 @@ export default function RBACashRatePage() {
                       <ChangeCell change={entry.change} />
                     </td>
                     <td className="px-4 py-3 text-center">
-                      <NoteChip note={entry.note} />
+                      <NoteChip note={decisionLabel(entry.change)} />
                     </td>
                   </tr>
                 ))}
@@ -223,7 +259,17 @@ export default function RBACashRatePage() {
             </table>
           </div>
           <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 text-xs text-gray-500">
-            Showing {recentHistory.length} most recent decisions. Data sourced from the Reserve Bank of Australia.
+            The {recentHistory.length} most recent decisions, by the day each was announced; the new
+            target takes effect the next day. From the RBA&apos;s{" "}
+            <a
+              href={CASH_RATE_SOURCE.url}
+              target="_blank"
+              rel="nofollow noopener"
+              className="underline hover:text-gray-700"
+            >
+              Cash Rate Target table
+            </a>
+            , read {CASH_RATE_SOURCE.readOn}.
           </div>
         </div>
       </div>
@@ -297,13 +343,40 @@ export default function RBACashRatePage() {
       <div className="max-w-4xl mx-auto mb-12">
         <div className="bg-primary/5 rounded-xl border border-primary/20 p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-2">
-            Impact on Your Borrowing Power
+            What a 0.25 point change costs
           </h2>
           <p className="text-gray-700 text-sm mb-4">
-            A 0.25% rate change on a $600,000 loan changes monthly repayments by approximately{" "}
-            <strong>$90/month</strong>: or around $1,080 per year. Over a full hiking cycle of
-            4.25% (May 2022 to November 2023), monthly repayments on a $600,000 loan increased
-            by around $1,500/month.
+            Monthly repayments on a 30-year principal and interest loan at {AVERAGE_NEW_VARIABLE_RATE.rate}%, the
+            average rate on new owner-occupier variable loans in {AVERAGE_NEW_VARIABLE_RATE.period} (RBA table F6,{" "}
+            {F6_RATE_CAVEAT}), and 0.25 points higher:
+          </p>
+          <div className="overflow-x-auto mb-4">
+            <table className="w-full text-sm bg-white rounded-lg">
+              <thead>
+                <tr className="bg-gray-50 text-gray-600 text-xs font-medium uppercase tracking-wide">
+                  <th className="px-3 py-2 text-left">Loan</th>
+                  <th className="px-3 py-2 text-right">At {AVERAGE_NEW_VARIABLE_RATE.rate}%</th>
+                  <th className="px-3 py-2 text-right">At {(AVERAGE_NEW_VARIABLE_RATE.rate + 0.25).toFixed(2)}%</th>
+                  <th className="px-3 py-2 text-right">Extra a month</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {QUARTER_POINT.map((r) => (
+                  <tr key={r.loan}>
+                    <td className="px-3 py-2">{usd(r.loan)}</td>
+                    <td className="px-3 py-2 text-right">{usd(r.at)}</td>
+                    <td className="px-3 py-2 text-right">{usd(r.up)}</td>
+                    <td className="px-3 py-2 text-right font-semibold">{usd(r.diff)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-gray-700 text-sm mb-4">
+            Over the last rising cycle, the average rate on outstanding owner-occupier variable loans went from{" "}
+            {HIKING_CYCLE_F6.from.rate}% in {HIKING_CYCLE_F6.from.period} to {HIKING_CYCLE_F6.to.rate}% in{" "}
+            {HIKING_CYCLE_F6.to.period} (RBA table F6): on a $600,000, 30-year loan, from {usd(CYCLE_FROM)} to{" "}
+            {usd(CYCLE_TO)} a month, {usd(CYCLE_TO - CYCLE_FROM)} more.
           </p>
           <Link
             href="/borrowing-power-calculator"
@@ -315,47 +388,52 @@ export default function RBACashRatePage() {
         </div>
       </div>
 
-      {/* 2026 Meeting dates */}
-      <div className="max-w-4xl mx-auto mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          Remaining 2026 RBA Meeting Dates
-        </h2>
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="bg-gray-50 text-gray-600 text-xs font-medium uppercase tracking-wide">
-                  <th className="px-4 py-3 text-left">Meeting Dates</th>
-                  <th className="px-4 py-3 text-left">Decision Announced</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {upcomingMeetings2026.map((m, i) => (
-                  <tr key={i} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-4 py-3 text-gray-900">{m.dates} 2026</td>
-                    <td className="px-4 py-3 text-gray-600">{m.decision} 2026</td>
+      {/* Upcoming meetings: past meetings drop off once their decision is recorded */}
+      {upcoming.length > 0 && (
+        <div className="max-w-4xl mx-auto mb-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            When is the next RBA decision?
+          </h2>
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-gray-50 text-gray-600 text-xs font-medium uppercase tracking-wide">
+                    <th className="px-4 py-3 text-left">Meeting</th>
+                    <th className="px-4 py-3 text-left">Decision announced ({DECISION_TIME} Sydney time)</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="px-4 py-3 bg-amber-50 border-t border-amber-100 flex items-start gap-2 text-xs text-amber-800">
-            <Info className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
-            <span>
-              Dates are approximate and subject to change. Always check{" "}
-              <a
-                href="https://www.rba.gov.au"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-amber-900"
-              >
-                rba.gov.au
-              </a>{" "}
-              for confirmed meeting dates.
-            </span>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {upcoming.map((m) => (
+                    <tr key={m.decision} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-4 py-3 text-gray-900">
+                        {formatShortDate(m.start)} to {formatShortDate(m.decision)}
+                      </td>
+                      <td className="px-4 py-3 text-gray-600">{formatLongDate(m.decision)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="px-4 py-3 bg-amber-50 border-t border-amber-100 flex items-start gap-2 text-xs text-amber-800">
+              <Info className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+              <span>
+                The Monetary Policy Board&apos;s published schedule, read {MEETING_SCHEDULE_SOURCE.readOn}. The RBA can
+                change it; check{" "}
+                <a
+                  href={MEETING_SCHEDULE_SOURCE.url}
+                  target="_blank"
+                  rel="nofollow noopener"
+                  className="underline hover:text-amber-900"
+                >
+                  rba.gov.au
+                </a>{" "}
+                before a meeting.
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Refinance funnel exit. Rate-watchers checking this page after each
           decision are the site's highest-intent refinance audience. */}
@@ -365,9 +443,10 @@ export default function RBACashRatePage() {
             Is Your Rate Still Competitive?
           </h2>
           <p className="text-gray-700 text-sm mb-4">
-            Every hold or hike widens the gap between the sharpest new-customer rates and
-            what existing borrowers pay. A broker can compare your current loan against
-            30+ lenders for free.
+            In {AVERAGE_OUTSTANDING_VARIABLE_RATE.period} the average variable rate on outstanding
+            owner-occupier loans was {AVERAGE_OUTSTANDING_VARIABLE_RATE.rate}% and on new ones{" "}
+            {AVERAGE_NEW_VARIABLE_RATE.rate}% (RBA table F6), so whether switching saves you money
+            depends on your own rate. A broker compares many lenders&rsquo; policies for your situation.
           </p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
             <Link
@@ -385,6 +464,56 @@ export default function RBACashRatePage() {
             </Link>
           </div>
         </div>
+      </div>
+
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Dataset",
+          name: "RBA cash rate target decisions since March 2020",
+          description: `Every Reserve Bank of Australia cash rate target decision since March 2020: the announcement date, the effective date, the change and the new target. Latest: ${LATEST.rate.toFixed(2)}%, effective ${formatLongDate(LATEST.effective)}.`,
+          url: `${SITE_URL}/rba-cash-rate`,
+          isBasedOn: CASH_RATE_SOURCE.url,
+          creator: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+          temporalCoverage: `${CASH_RATE_DECISIONS[CASH_RATE_DECISIONS.length - 1].effective}/${LATEST.effective}`,
+          dateModified: PAGE_UPDATED,
+          variableMeasured: "Cash rate target (% a year)",
+        }}
+      />
+
+      <div className="max-w-4xl mx-auto mb-4">
+        <Faq items={rbaFaqs()} />
+      </div>
+
+      <div className="max-w-4xl mx-auto mb-8">
+        <Sources
+          items={[
+            {
+              label: CASH_RATE_SOURCE.name,
+              href: CASH_RATE_SOURCE.url,
+              note: `every decision on this page, read ${CASH_RATE_SOURCE.readOn}`,
+            },
+            ...(currentRate.statement
+              ? [
+                  {
+                    label: `Statement by the Monetary Policy Board: Monetary Policy Decision (media release ${currentRate.statement.number})`,
+                    href: currentRate.statement.url,
+                    note: formatLongDate(currentRate.announced),
+                  },
+                ]
+              : []),
+            {
+              label: MEETING_SCHEDULE_SOURCE.name,
+              href: MEETING_SCHEDULE_SOURCE.url,
+              note: `read ${MEETING_SCHEDULE_SOURCE.readOn}`,
+            },
+            {
+              label: F6_SOURCE.name,
+              href: F6_SOURCE.url,
+              note: `series ${AVERAGE_OUTSTANDING_VARIABLE_RATE.series} and ${AVERAGE_NEW_VARIABLE_RATE.series}, ${AVERAGE_NEW_VARIABLE_RATE.period}; published ${F6_SOURCE.published}, read ${F6_SOURCE.readOn}`,
+            },
+          ]}
+        />
       </div>
 
       {/* Disclaimer */}

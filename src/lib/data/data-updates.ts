@@ -21,6 +21,14 @@ export interface DataUpdate {
 
 export const DATA_UPDATES: DataUpdate[] = [
   {
+    date: "2026-10-11",
+    kind: "data",
+    title: "RBA cash rate tracker: 4.60% from 30 September 2026",
+    description:
+      "The tracker had stopped at the 16 June hold. It now shows the 11 August hold and the 29 September rise to 4.60%, the fourth this year, every decision since March 2020 from the RBA's Cash Rate Target table, and only the meetings still to come (next decision 3 November 2026). The figures come from one dated data file, and a test fails the build when a scheduled meeting's decision is missing.",
+    href: "/rba-cash-rate",
+  },
+  {
     date: "2026-06-16",
     kind: "data",
     title: "June 2026 RBA decision: cash rate held at 4.35%",

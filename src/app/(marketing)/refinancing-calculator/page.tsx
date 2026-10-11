@@ -2,22 +2,43 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { RefinancingCalculator } from "@/components/calculators/RefinancingCalculator";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
-import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
+import { Callout, KeyFigure, Sources, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
+import {
+  AVERAGE_NEW_VARIABLE_RATE,
+  AVERAGE_OUTSTANDING_VARIABLE_RATE,
+  F6_RATE_CAVEAT,
+  F6_SOURCE,
+  REFINANCE_EXAMPLE_CURRENT_RATE,
+  REFINANCE_EXAMPLE_GAP,
+  describeF6,
+} from "@/lib/data/rba-lending-rates";
+import { LENDER_POLICY_NOTE } from "@/lib/utils/borrowing-power";
+import { monthlyRepayment } from "@/lib/utils/repayment";
+
+// "Monthly saving by loan size and rate cut", worked rather than typed: a
+// current rate of REFINANCE_EXAMPLE_CURRENT_RATE, 25 years left (the
+// calculator's starting term), principal and interest.
+const TERM_LEFT = 25;
+const LOANS = [400_000, 600_000, 800_000, 1_000_000] as const;
+const CUTS = [0.25, 0.5, 1] as const;
+const saving = (loan: number, cut: number) =>
+  monthlyRepayment(loan, REFINANCE_EXAMPLE_CURRENT_RATE, TERM_LEFT) - monthlyRepayment(loan, REFINANCE_EXAMPLE_CURRENT_RATE - cut, TERM_LEFT);
+const usd = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Refinancing Calculator",
-  description:
-    "Find out whether switching your home loan is worth it. Calculate monthly savings, break-even point, and total interest saved over the life of the loan.",
+  h1: "Refinance calculator: is switching your home loan worth it?",
+  description: `Enter your balance, your rate and a new rate to see the monthly saving, the month you break even after switching costs and the interest saved, against the ${AVERAGE_NEW_VARIABLE_RATE.rate}% average rate on new owner-occupier variable loans in ${AVERAGE_NEW_VARIABLE_RATE.period} (RBA table F6).`,
   slug: "refinancing-calculator",
   schemaName: "Refinancing Calculator",
   schemaDescription: "Calculate savings from refinancing your home loan and your break-even point.",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-11",
   persona: "upgrading",
 };
 
-const META_TITLE = "Refinancing Calculator Australia 2026: Should I Refinance?";
-const META_DESCRIPTION = "Free Australian refinancing calculator. Work out monthly savings, break-even point and lifetime interest saved before you switch home loans. No sign-up.";
+const META_TITLE = "Refinance Calculator: Is Switching Your Home Loan Worth It?";
+const META_DESCRIPTION = "Free refinance calculator: monthly saving, break-even month and interest saved when you switch home loans, against the RBA F6 average new variable rate.";
 
 export const metadata: Metadata = {
   title: META_TITLE,
@@ -67,9 +88,9 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "Mortgage Repayments",          href: "/mortgage-calculator",        description: "Run the new loan numbers in detail before switching." },
-  { title: "Borrowing Power Calculator",   href: "/borrowing-power-calculator", description: "Confirm a new lender will approve you before you discharge." },
+  { title: "Borrowing Power Calculator",   href: "/borrowing-power-calculator", description: "An estimate of what a new lender may lend on your income and expenses, before you apply." },
   { title: "Fixed vs Variable Rate Guide", href: "/guides/fixed-vs-variable-rate-guide", description: "Whether to lock the new loan in or stay on variable." },
-  { title: "Get connected",                href: "/find-an-expert?intent=refinancing",  description: "We&rsquo;ll match you with a broker who can compare 30+ lenders." },
+  { title: "Get connected",                href: "/find-an-expert?intent=refinancing",  description: "One mortgage broker receives your details and pays us a fee; a broker compares many lenders' policies for your situation." },
   { title: "First Home Buyer Guide",       href: "/guides/first-home-buyer-guide", description: "If your first loan was via a scheme, check the discharge implications." },
   { title: "Affordability Calculator",     href: "/affordability-calculator",   description: "If refinancing is part of an upgrade plan, model the next purchase." },
 ];
@@ -79,11 +100,45 @@ export default function RefinancingCalculatorPage() {
     <CalculatorPageLayout
       frontmatter={FRONTMATTER}
       calculator={<RefinancingCalculator />}
+      estimateNote={LENDER_POLICY_NOTE}
       faqs={FAQS}
       related={RELATED}
       intent="buying"
       explainer={
         <>
+          <p>
+            The calculator opens with a new loan at {describeF6(AVERAGE_NEW_VARIABLE_RATE)}, and a current
+            rate {REFINANCE_EXAMPLE_GAP} points higher, {REFINANCE_EXAMPLE_CURRENT_RATE}%, as an illustration.
+            In {AVERAGE_OUTSTANDING_VARIABLE_RATE.period} the average rate on {AVERAGE_OUTSTANDING_VARIABLE_RATE.measure} was{" "}
+            {AVERAGE_OUTSTANDING_VARIABLE_RATE.rate}% (RBA table F6), so on average existing borrowers paid about what new
+            ones did: the saving depends on your own rate. Both figures are {F6_RATE_CAVEAT}. Enter your own.
+          </p>
+
+          <h2 id="by-loan-size">Monthly saving by loan size and rate cut</h2>
+          <p>
+            What a lower rate saves each month on a principal and interest loan with {TERM_LEFT} years left,
+            starting from {REFINANCE_EXAMPLE_CURRENT_RATE}% (the calculator&rsquo;s example current rate). Before
+            switching costs; the calculator above works out the break-even month.
+          </p>
+          <div className="overflow-x-auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Loan balance</th>
+                  {CUTS.map((c) => <th key={c}>{c} point lower</th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {LOANS.map((loan) => (
+                  <tr key={loan}>
+                    <td>{usd(loan)}</td>
+                    {CUTS.map((c) => <td key={c}>{usd(saving(loan, c))} a month</td>)}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
           <h2>Should you refinance your home loan?</h2>
           <p>
             Refinancing can save tens of thousands of dollars over the life of a
@@ -152,10 +207,20 @@ export default function RefinancingCalculatorPage() {
           </ul>
           <p>
             For a full refinancing analysis on your specific loan, a mortgage
-            broker can compare the actual policies and packages of 30+ lenders.
+            broker compares many lenders&rsquo; policies and packages for your situation.
             <Link href="/find-an-expert?intent=refinancing">Get connected</Link> if
             you want a free intro to one.
           </p>
+
+          <Sources
+            items={[
+              {
+                label: F6_SOURCE.name,
+                href: F6_SOURCE.url,
+                note: `series ${AVERAGE_NEW_VARIABLE_RATE.series} and ${AVERAGE_OUTSTANDING_VARIABLE_RATE.series}, ${AVERAGE_NEW_VARIABLE_RATE.period}; published ${F6_SOURCE.published}, read ${F6_SOURCE.readOn}. The calculator's example rates.`,
+              },
+            ]}
+          />
         </>
       }
     />

@@ -5,7 +5,8 @@ import { AffordabilityByHouseholdTable } from "@/components/calculators/Affordab
 import { affordabilityFaqs } from "@/lib/affordability-table";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
 import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
+import { LENDER_POLICY_NOTE } from "@/lib/utils/borrowing-power";
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Property Affordability Calculator",
@@ -17,7 +18,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   slug: "affordability-calculator",
   schemaName: "Property Affordability Calculator",
   schemaDescription: "Calculate how much property you can afford based on your deposit and borrowing power.",
-  updatedAt: "2026-10-08",
+  updatedAt: "2026-10-11",
   persona: "first-home",
 };
 
@@ -90,6 +91,7 @@ export default function AffordabilityCalculatorPage() {
     <CalculatorPageLayout
       frontmatter={FRONTMATTER}
       calculator={<AffordabilityCalculator />}
+      estimateNote={LENDER_POLICY_NOTE}
       faqs={[...affordabilityFaqs(), ...FAQS]}
       related={RELATED}
       intent="buying"

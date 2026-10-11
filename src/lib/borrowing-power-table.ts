@@ -14,11 +14,12 @@ import {
   REFERENCE_LOAN_RATE_PERIOD,
   computeBorrowingPower,
   getHEM,
+  loanPerMonthlyDollar,
 } from "@/lib/utils/borrowing-power";
 
 /** The assumptions the table states above itself. Dated, so a reader can tell when they were set. */
 export const BORROWING_TABLE = {
-  asAt: "2026-09-30",
+  asAt: "2026-10-11",
   /** The calculator's default assessment rate: the RBA's average new variable rate plus APRA's buffer. */
   assessmentRate: DEFAULT_ASSESSMENT_RATE,
   loanRate: REFERENCE_LOAN_RATE,
@@ -27,8 +28,13 @@ export const BORROWING_TABLE = {
   bufferConfirmed: APRA_BUFFER_CONFIRMED,
   termYears: 30,
   dependants: 0,
-  /** Living expenses entered for every row: the indicative HEM for a single applicant on $100,000 with no dependants. The engine lifts it to the household's own HEM where that is higher (a couple, a higher income band), so each row carries the floor for its household. */
-  monthlyExpenses: getHEM(0),
+  /**
+   * Living expenses entered for every row: none, so the engine applies each
+   * row's own indicative HEM floor (household and income band). Until 11 Oct
+   * 2026 every row entered $2,000, so the $60,000 and $70,000 single rows used
+   * $2,000 rather than their band's $1,700, against the text above the table.
+   */
+  monthlyExpenses: 0,
   asAtHem: HEM_AS_AT,
   existingDebts: 0,
   /** Gross annual income per applicant, $60,000 to $200,000 in $10,000 steps. */
@@ -92,6 +98,48 @@ export function percentLowerAtRate(assessmentRate: number, base = BORROWING_TABL
 
 export const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
 
+/** Loan sizes for the "income needed" table and FAQ. */
+export const LOANS_FOR_INCOME = [500_000, 600_000, 700_000, 800_000, 900_000, 1_000_000] as const;
+
+/**
+ * The lowest gross income (each, for a couple) at which this calculator's
+ * method supports a loan, under the table's assumptions, rounded up to the
+ * next $1,000. The engine is monotonic in income, so a bisection on whole
+ * dollars finds it.
+ */
+export function incomeNeededFor(loan: number, couple = false): number {
+  const fits = (income: number) => {
+    const r = computeBorrowingPower(
+      income,
+      couple ? income : 0,
+      BORROWING_TABLE.monthlyExpenses,
+      BORROWING_TABLE.dependants,
+      BORROWING_TABLE.existingDebts,
+      BORROWING_TABLE.assessmentRate,
+      BORROWING_TABLE.termYears,
+    );
+    return !!r && r.maxLoan >= loan;
+  };
+  let lo = 0;
+  let hi = 2_000_000;
+  while (hi - lo > 1) {
+    const mid = Math.floor((lo + hi) / 2);
+    if (fits(mid)) hi = mid;
+    else lo = mid;
+  }
+  return Math.ceil(hi / 1_000) * 1_000;
+}
+
+export interface IncomeNeededRow {
+  loan: number;
+  single: number;
+  coupleEach: number;
+}
+
+export function incomeNeededByLoan(): IncomeNeededRow[] {
+  return LOANS_FOR_INCOME.map((loan) => ({ loan, single: incomeNeededFor(loan), coupleEach: incomeNeededFor(loan, true) }));
+}
+
 /** "30 September 2026", the date the assumptions were set. */
 export const asAt = (): string => new Date(BORROWING_TABLE.asAt).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 
@@ -100,6 +148,9 @@ export function borrowingPowerFaqs(): FaqItem[] {
   const single = maxLoanFor(100_000);
   const couple = maxLoanFor(100_000, 100_000);
   const single80 = maxLoanFor(80_000);
+  const hem100 = getHEM(0, { grossIncome: 100_000 });
+  const perDollar = Math.round(loanPerMonthlyDollar(BORROWING_TABLE.assessmentRate, BORROWING_TABLE.termYears));
+  const perDollarPrice = Math.round(perDollar / 0.8 / 5) * 5;
   if (single === null || couple === null || single80 === null) return [];
   const price = toThousand(single / 0.8);
   const family = computeBorrowingPower(75_000, 75_000, 0, 2, 0, BORROWING_TABLE.assessmentRate, BORROWING_TABLE.termYears, { household: "couple" });
@@ -108,15 +159,21 @@ export function borrowingPowerFaqs(): FaqItem[] {
     ? [{
         question: "How much can a couple with two children borrow on $150,000?",
         answer:
-          `About ${money(toThousand(family.maxLoan))} on this calculator's method, against about ${money(toThousand(coupleNoKids.maxLoan))} for a couple on the same $150,000 with no children. The gap is the living-expense floor: the indicative HEM for a couple with two children on $150,000 is ${money(indicativeHem({ household: "couple", dependants: 2, grossIncome: 150_000 }))} a month, compared with ${money(indicativeHem({ household: "couple", dependants: 0, grossIncome: 150_000 }))} for a couple alone (${HEM_AS_AT}; the table below lists the floors), and at a ${BORROWING_TABLE.assessmentRate}% assessment rate over ${BORROWING_TABLE.termYears} years each dollar of monthly expenses removes roughly $130 of loan. Childcare, school fees, HECS and a car loan come off on top of HEM, so a family's real figure is often lower again.`,
+          `About ${money(toThousand(family.maxLoan))} on this calculator's method, against about ${money(toThousand(coupleNoKids.maxLoan))} for a couple on the same $150,000 with no children. The gap is the living-expense floor: the indicative HEM for a couple with two children on $150,000 is ${money(indicativeHem({ household: "couple", dependants: 2, grossIncome: 150_000 }))} a month, compared with ${money(indicativeHem({ household: "couple", dependants: 0, grossIncome: 150_000 }))} for a couple alone (${HEM_AS_AT}; the table below lists the floors), and at a ${BORROWING_TABLE.assessmentRate}% assessment rate over ${BORROWING_TABLE.termYears} years each dollar a month of expenses removes about ${money(perDollar)} of loan, or about ${money(perDollarPrice)} of purchase price with a 20% deposit. Childcare, school fees, HECS and a car loan come off on top of HEM, so a family's real figure is often lower again.`,
       }]
     : [];
+  const need700 = { single: incomeNeededFor(700_000), coupleEach: incomeNeededFor(700_000, true) };
   return [
     {
       question: "How much can I borrow on a $100,000 salary?",
       answer:
-        `About ${money(single)} as a single applicant, on this calculator's assumptions as at ${asAt()}: no other debts, no dependants, living expenses at the indicative HEM floor of ${money(BORROWING_TABLE.monthlyExpenses)} a month for a single person on that income (${HEM_AS_AT}), a ${BORROWING_TABLE.termYears}-year term and a ${BORROWING_TABLE.assessmentRate}% assessment rate, which is the ${BORROWING_TABLE.loanRate}% average rate on new owner-occupier variable loans in ${BORROWING_TABLE.loanRatePeriod} (RBA table F6) plus the ${BORROWING_TABLE.buffer} percentage point buffer APRA confirmed on ${BORROWING_TABLE.bufferConfirmed}. With a 20% deposit that is a purchase price of about ${money(price)}. A couple who both earn $100,000 come out at about ${money(couple)}, and a single applicant on $80,000 at about ${money(single80)}. Each extra percentage point on the assessment rate takes roughly ${percentLowerAtRate(BORROWING_TABLE.assessmentRate + 1)}% off these figures, and a credit card limit or a car loan takes off more, so treat them as a ceiling and run your own numbers in the calculator above.`,
+        `About ${money(single)} as a single applicant, on this calculator's assumptions as at ${asAt()}: no other debts, no dependants, living expenses at the indicative HEM floor of ${money(hem100)} a month for a single person on that income (${HEM_AS_AT}), a ${BORROWING_TABLE.termYears}-year term and a ${BORROWING_TABLE.assessmentRate}% assessment rate, which is the ${BORROWING_TABLE.loanRate}% average rate on new owner-occupier variable loans in ${BORROWING_TABLE.loanRatePeriod} (RBA table F6) plus the ${BORROWING_TABLE.buffer} percentage point buffer APRA confirmed on ${BORROWING_TABLE.bufferConfirmed}. With a 20% deposit that is a purchase price of about ${money(price)}. A couple who both earn $100,000 come out at about ${money(couple)}, and a single applicant on $80,000 at about ${money(single80)}. Each extra percentage point on the assessment rate takes roughly ${percentLowerAtRate(BORROWING_TABLE.assessmentRate + 1)}% off these figures, and a credit card limit or a car loan takes off more, so treat them as a ceiling and run your own numbers in the calculator above.`,
     },
     ...familyFaq,
+    {
+      question: "How much do you need to earn for a $700,000 mortgage?",
+      answer:
+        `On this calculator's method, about ${money(need700.single)} a year for a single applicant with no debts or children, or about ${money(need700.coupleEach)} each for a couple. The loan is tested at ${BORROWING_TABLE.assessmentRate}%: the ${BORROWING_TABLE.loanRate}% average rate on new owner-occupier variable loans in ${BORROWING_TABLE.loanRatePeriod} (RBA table F6) plus APRA's ${BORROWING_TABLE.buffer} percentage point buffer, over ${BORROWING_TABLE.termYears} years, with living expenses at the indicative HEM floor (${HEM_AS_AT}). Debts, dependants and a lender's own policies raise the income needed; the table below covers $500,000 to $1,000,000.`,
+    },
   ];
 }

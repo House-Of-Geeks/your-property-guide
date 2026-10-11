@@ -5,20 +5,56 @@ import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/componen
 import { Callout, KeyFigure, Sources, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { ATO_REFORM_SOURCE, BUDGET_EXPLAINER_SOURCE, ACT_SOURCE } from "@/lib/data/tax-reform-2027";
+import {
+  CGT_DISCOUNT_SOURCE,
+  COMPANY_RATE_SOURCE,
+  SMSF_TAX_SOURCE,
+  TAX_CUTS_2027_SOURCE,
+  computeCgt,
+  defaultCgtInput,
+  type CgtInput,
+} from "@/lib/cgt-calc";
+import { INCOME_TAX_SOURCE, INCOME_TAX_YEAR, MEDICARE_LEVY_SOURCE } from "@/lib/utils/income-tax";
+
+const src = (s: { name: string; url: string; dated: string; readOn: string }) => ({
+  label: s.name,
+  href: s.url,
+  note: `${s.dated[0].toUpperCase()}${s.dated.slice(1)}, read ${s.readOn}.`,
+});
+
+const MAIN_RESIDENCE_SOURCE = {
+  label: "ATO: Treating a former home as your main residence",
+  href: "https://www.ato.gov.au/individuals-and-families/investments-and-assets/capital-gains-tax/property-and-capital-gains-tax/your-main-residence-home/treating-former-home-as-main-residence",
+  note: "Last updated 22 June 2026, read 11 October 2026. The 6-year rule, each period of absence, and no other main residence at the same time.",
+};
+
+// Worked figures from the calculator's own engine: an individual selling an
+// investment held at least 12 months, before 1 July 2027 (sale contract
+// 1 November 2026, 2026-27 rates), no main residence use.
+const SALE_2026: CgtInput = { ...defaultCgtInput(), purchasePrice: 500_000, purchaseDate: "2021-11-01", saleDate: "2026-11-01" };
+const taxOn = (gain: number, otherIncome: number) => computeCgt({ ...SALE_2026, salePrice: 500_000 + gain, otherIncome });
+const GAINS = [100_000, 200_000, 300_000] as const;
+const INCOMES = [60_000, 100_000, 150_000, 200_000] as const;
+const T300 = taxOn(300_000, 100_000);
+const T100 = taxOn(100_000, 100_000);
+// The Budget explainer's Jane: bought $800,000 in July 2022, sold $1,600,000 in July 2032.
+const JANE = computeCgt({ ...defaultCgtInput(), purchasePrice: 800_000, salePrice: 1_600_000, purchaseDate: "2022-07-01", saleDate: "2032-07-01" });
+const usd = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Capital Gains Tax Calculator",
+  h1: "Capital gains tax calculator for property: before and after 1 July 2027",
   description:
-    "Estimate the CGT on your Australian investment property sale. Includes the 50% discount, main residence exemption and partial exemption for properties rented while being your home.",
+    "Estimate the capital gains tax on selling an Australian investment property, with the 50% discount on the gain up to 1 July 2027 and indexation and the 30% minimum tax on the gain after it, at the ATO's resident rates (2026-27 rates last updated 13 August 2026).",
   slug: "cgt-calculator",
   schemaName: "Capital Gains Tax Calculator",
-  schemaDescription: "Calculate Australian capital gains tax including the 50% CGT discount and main residence exemption.",
-  updatedAt: "2026-10-01",
+  schemaDescription: "Calculate Australian capital gains tax on property: the 50% CGT discount, the 1 July 2027 indexation and 30% minimum tax, and the main residence exemption.",
+  updatedAt: "2026-10-11",
   persona: "investing",
 };
 
-const META_TITLE = "CGT Calculator for Australian Property: 50% Discount Included";
-const META_DESCRIPTION = "Free capital gains tax calculator for Australian investment property. Includes the 50% CGT discount, main residence exemption and partial exemption. No sign-up.";
+const META_TITLE = "CGT Calculator for Property: 50% Discount and 2027 Rules";
+const META_DESCRIPTION = "Free CGT calculator for Australian property: the 50% discount, the 1 July 2027 split with indexation and the 30% minimum tax, and the main residence exemption.";
 
 export const metadata: Metadata = {
   title: META_TITLE,
@@ -35,9 +71,25 @@ export const metadata: Metadata = {
 
 const FAQS: FaqItem[] = [
   {
+    question: "How much capital gains tax will I pay on $300,000?",
+    answer:
+      `It depends on your other income. Sell a property held at least 12 months before 1 July 2027 and half the gain, ${usd(T300.taxableGain)}, is added to your taxable income. With $100,000 of other income, that adds about ${usd(T300.incomeTax)} of tax at the ATO's 2026-27 resident rates (last updated 13 August 2026), plus ${usd(T300.medicareLevy)} of Medicare levy. ` +
+      `On a $100,000 gain it is about ${usd(T100.incomeTax + T100.medicareLevy)}. The table below works other incomes and gains.`,
+  },
+  {
+    question: "What is the 6 year rule for capital gains tax?",
+    answer:
+      "If you move out of your home and rent it out, you can keep treating it as your main residence for CGT for up to 6 years, as long as you don't treat another property as your main residence in that time. Sell within those 6 years and the gain can be fully exempt; the 6 years apply to each period you are away. It only works if the property was your main residence first (ATO, last updated 22 June 2026).",
+  },
+  {
+    question: "Can I move back into my investment property to avoid CGT?",
+    answer:
+      "Only if it was your home first. A period of absence under the 6-year rule ends when you stop renting the property and move back in, and a later absence starts a new 6 years, so a former home you return to can stay exempt. A property you rented out before you ever lived in it has a taxable period that moving in later does not remove: you get a partial exemption at best (ATO, last updated 22 June 2026).",
+  },
+  {
     question: "What is the 50% CGT discount?",
     answer:
-      "If you hold an investment property for more than 12 months, you are eligible for a 50% CGT discount as an individual or trust. This means only half of your capital gain is added to your taxable income. Companies are not eligible for this discount. " +
+      "If you hold an investment property for at least 12 months, leaving out the day you bought it and the day you sell (contract dates), you are eligible for a 50% CGT discount as an individual or trust. This means only half of your capital gain is added to your taxable income. Complying super funds get a one-third discount and companies get none (ATO). " +
       "For gains that accrue from 1 July 2027 the discount is replaced by cost base indexation and, for resident individuals, a 30% minimum tax. On property you already own, the gain up to 1 July 2027 keeps the discount; investors in new builds can choose to keep it (ATO, last updated 29 June 2026).",
   },
   {
@@ -53,7 +105,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How does joint ownership affect CGT?",
     answer:
-      "In a 50/50 joint ownership arrangement, each owner is liable for CGT on their own share of the gain. Each party applies their own marginal tax rate and any applicable discounts to their half of the taxable gain.",
+      "In a 50/50 joint ownership arrangement, each owner is liable for CGT on their own share of the gain. Each party adds their half of the taxable gain to their own taxable income, so it is taxed at their own rates. The calculator assumes both owners have the same other income.",
   },
   {
     question: "What costs can I include in my cost base?",
@@ -108,9 +160,23 @@ export default function CGTCalculatorPage() {
 
           <h3>50% CGT discount</h3>
           <p>
-            If you&rsquo;ve owned the property for more than 12 months as an
+            If you&rsquo;ve owned the property for at least 12 months as an
             individual or via a trust, only 50% of the net capital gain is
-            taxable. Companies do not qualify.
+            taxable. The 12 months run between the contract dates, leaving out
+            both days. Complying super funds get a one-third discount and
+            companies get none: a company pays 25% as a base rate entity or 30%
+            otherwise on the whole gain, and a company that mainly holds
+            property is usually not a base rate entity (ATO).
+          </p>
+
+          <h3>Your tax rate on the gain</h3>
+          <p>
+            The taxable gain is added to your other income for the year and
+            taxed at the ATO&rsquo;s {INCOME_TAX_YEAR} resident rates: nil to
+            $18,200, 15% to $45,000, 30% to $135,000, 37% to $190,000 and 45%
+            above, plus the 2% Medicare levy. A large gain can push part of
+            itself into a higher bracket, which is why the calculator asks for
+            your other taxable income rather than a single rate.
           </p>
 
           <Callout variant="info" title="Gains after 1 July 2027">
@@ -124,11 +190,58 @@ export default function CGTCalculatorPage() {
               and the gain after it is indexed from the property&rsquo;s value
               on that date. Investors in new builds can choose the discount or
               indexation when they sell. This calculator applies the rules for
-              gains before 1 July 2027. Source: ATO, last updated 29 June 2026;
-              our <Link href="/guides/cgt-changes-2026-budget">CGT changes explainer</Link>{" "}
+              the sale date you enter: from 1 July 2027 it splits the gain at
+              that date, indexes the later part at the inflation rate you choose
+              (2.5% a year by default, the Budget explainer&rsquo;s assumption),
+              applies the 30% minimum unless you receive an exempting payment,
+              and offers the new build choice. Source: ATO, last updated 29 June
+              2026; our <Link href="/guides/cgt-changes-2026-budget">CGT changes explainer</Link>{" "}
               has worked examples.
             </p>
           </Callout>
+
+          <h2 id="by-gain">CGT on a $100,000, $200,000 and $300,000 gain</h2>
+          <p>
+            The tax an individual pays on a gain from an investment held at least 12 months and sold before
+            1 July 2027, by their other taxable income for the year: half the gain added to income at the
+            ATO&rsquo;s {INCOME_TAX_YEAR} resident rates, plus the 2% Medicare levy, before offsets. Worked by
+            the calculator above (a sale contract dated 1 November 2026).
+          </p>
+          <div className="overflow-x-auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Other taxable income</th>
+                  {GAINS.map((g) => <th key={g}>Gain of {usd(g)}</th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {INCOMES.map((inc) => (
+                  <tr key={inc}>
+                    <td>{usd(inc)}</td>
+                    {GAINS.map((g) => <td key={g}>{usd(taxOn(g, inc).totalTax)}</td>)}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h2 id="after-2027">Selling after 1 July 2027: the split, indexation and the 30% minimum</h2>
+          <p>
+            Enter a sale date from 1 July 2027 and the calculator switches rules. For something you own before
+            then, the gain is split at 1 July 2027: the part up to that date keeps the 50% discount, and the
+            part after it is the sale price less the asset&rsquo;s value on 1 July 2027 indexed for inflation.
+            A resident individual then pays at least 30% on that later part, unless they receive the Age
+            Pension, JobSeeker or another listed payment in the year of sale. Anything bought from 1 July
+            2027 is indexed from its own cost base.
+          </p>
+          <p>
+            The Budget explainer&rsquo;s example: Jane buys for $800,000 in July 2022 and sells for
+            $1,600,000 in July 2032. Her asset is worth {usd(JANE.valueAt2027 ?? 0)} on 1 July 2027, so{" "}
+            {usd(JANE.gainBefore2027)} of the gain is discounted to half, and the {usd(1_600_000 - (JANE.valueAt2027 ?? 0))}{" "}
+            after it falls to {usd(JANE.indexedGainAfter2027)} after five years of 2.5% indexation: a taxable
+            gain of {usd(JANE.taxableGain)}, against $400,000 if the 50% discount applied to it all.
+          </p>
 
           <h3>Main residence exemption</h3>
           <p>
@@ -140,16 +253,18 @@ export default function CGTCalculatorPage() {
 
           <KeyFigure
             value="50%"
-            label="Of your net capital gain that's taxable when an individual or trust holds an investment property for more than 12 months, on a gain that accrues before 1 July 2027. Companies don't get the discount."
+            label="Of your net capital gain that's taxable when an individual or trust holds an investment property for at least 12 months, on a gain that accrues before 1 July 2027. Companies don't get the discount."
             context="ATO, individual marginal-rate basis"
           />
 
           <h2>The biggest decisions that affect your CGT</h2>
-          <h3>Hold for at least 12 months and one day</h3>
+          <h3>Hold for at least 12 months</h3>
           <p>
-            The cliff is hard. Selling at 11 months and 30 days means 100% of the
-            gain is taxable; 12 months and one day means 50%. If you&rsquo;re close
-            to the threshold, the maths almost always favours waiting.
+            The cliff is hard. The ATO leaves out the day you bought and the day
+            you sell: its example is an asset acquired on 2 February 2021, which
+            gets the discount on a sale contract signed on or after 3 February
+            2022. A day earlier and 100% of the gain is taxable. If you&rsquo;re
+            close to the threshold, check the contract dates.
           </p>
           <h3>Sell in a low-income year</h3>
           <p>
@@ -165,13 +280,36 @@ export default function CGTCalculatorPage() {
             A 50/50 joint ownership splits the gain across two marginal-rate
             assessments, often pulling at least one party into a lower bracket.
           </p>
-          <h3>Watch the &ldquo;six-year rule&rdquo;</h3>
+          <h3 id="six-year-rule">The 6-year rule for a former home</h3>
           <p>
             If you live in a property as your main residence then move out and
             rent it, you can continue to treat it as your main residence for CGT
-            purposes for up to six years, provided you don&rsquo;t claim another
-            property as your main residence in that time. Useful for accidental
-            landlords or moves driven by work.
+            for up to 6 years, provided you don&rsquo;t treat another property
+            as your main residence in that time (except for up to 6 months when
+            moving house). The 6 years apply to each period of absence, and a
+            period ends when you stop renting and move back in. If you leave it
+            empty instead of renting it, there is no time limit. It only applies
+            to a property that was your main residence first (ATO, last updated
+            22 June 2026). Useful for accidental landlords or moves driven by
+            work.
+          </p>
+
+          <h2 id="structures">Companies, trusts and SMSFs</h2>
+          <ul>
+            <li><strong>Companies</strong> get no CGT discount and pay 25% (a base rate entity) or 30% on the whole gain; a company whose income is mostly rent and capital gains is usually not a base rate entity (ATO). The 2027 changes do not apply to them.</li>
+            <li><strong>Trusts</strong> can discount a gain by 50% and pass it to beneficiaries, who are taxed on it; from 1 July 2027 trusts are under indexation like individuals (ATO; Tax Reform No. 1 Act).</li>
+            <li><strong>Complying super funds, SMSFs included,</strong> discount a gain by one-third and pay 15%, so 10% on a gain held at least 12 months; gains on assets supporting a retirement phase pension are exempt. They are outside the 2027 changes (ATO; explanatory memorandum).</li>
+          </ul>
+
+          <h2 id="capital-losses">Capital losses</h2>
+          <p>
+            A capital loss reduces capital gains, not your other income. Each year, losses come off the year&rsquo;s
+            gains first, then any unapplied net capital losses carried forward from earlier years, and only then is
+            the discount applied to what is left. A net capital loss cannot be deducted from your other income; it
+            carries forward to later years (Income Tax Assessment Act 1997, section 100-50, as amended by the Tax
+            Reform No. 1 Act; ATO, CGT discount). From 1 July 2027, quarantined rental
+            losses on established homes bought after 7:30pm AEST on 12 May 2026 can also reduce capital gains on
+            residential property.
           </p>
 
           <Callout variant="warning" title="This is general information, not tax advice">
@@ -185,15 +323,28 @@ export default function CGTCalculatorPage() {
 
           <h2>What this calculator doesn&rsquo;t do</h2>
           <ul>
-            <li>It doesn&rsquo;t apply specific marginal-rate brackets, you input the rate.</li>
             <li>It doesn&rsquo;t handle complex partial-exemption scenarios with multiple rental periods.</li>
             <li>It doesn&rsquo;t adjust the cost base for depreciation that you claimed during ownership (which reduces your cost base on sale).</li>
-            <li>It doesn&rsquo;t handle SMSF, company or trust structures (which have different CGT treatments), see our <Link href="/guides/smsf-property-guide">SMSF Property Guide</Link>.</li>
+            <li>It treats a trust as one resident adult beneficiary taking the whole gain, an SMSF as in accumulation phase, and a company as paying the rate you pick; real structures have more moving parts, see our <Link href="/guides/smsf-property-guide">SMSF Property Guide</Link>.</li>
+            <li>It leaves out tax offsets, the Medicare levy&rsquo;s low-income reduction and the Medicare levy surcharge, and your other capital gains and losses.</li>
             <li>It doesn&rsquo;t model temporary residents, foreign residents, or non-residents (different rules apply).</li>
-            <li>It doesn&rsquo;t yet apply cost base indexation or the 30% minimum tax that replace the 50% discount for gains accruing from 1 July 2027.</li>
+            <li>For gains from 1 July 2027 it indexes at one inflation rate a year rather than the CPI quarter by quarter, and estimates the 1 July 2027 value by steady growth unless you enter one; the ATO&rsquo;s tools and the Minister&rsquo;s instruments will set both.</li>
           </ul>
 
-          <Sources items={[ATO_REFORM_SOURCE, ACT_SOURCE, BUDGET_EXPLAINER_SOURCE]} />
+          <Sources
+            items={[
+              src(INCOME_TAX_SOURCE),
+              src(TAX_CUTS_2027_SOURCE),
+              src(MEDICARE_LEVY_SOURCE),
+              src(CGT_DISCOUNT_SOURCE),
+              MAIN_RESIDENCE_SOURCE,
+              src(COMPANY_RATE_SOURCE),
+              src(SMSF_TAX_SOURCE),
+              ATO_REFORM_SOURCE,
+              ACT_SOURCE,
+              BUDGET_EXPLAINER_SOURCE,
+            ]}
+          />
         </>
       }
     />
