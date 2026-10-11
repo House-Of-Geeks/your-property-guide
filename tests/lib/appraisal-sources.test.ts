@@ -31,6 +31,7 @@ describe("no page in the vertical types the valuation cost by hand", () => {
     "src/lib/suburb-agents.ts",
     "src/app/(marketing)/suburbs/[slug]/agents/page.tsx",
     "src/app/(marketing)/property-valuation/page.tsx",
+    "src/app/(marketing)/guides/how-much-is-my-house-worth-australia/page.tsx",
   ];
   for (const f of files) {
     it(f, () => {
@@ -58,5 +59,21 @@ describe("free estimators table (section 3.3)", () => {
     const description = (src.match(/const DESCRIPTION =\s*`([^`]+)`/)?.[1] ?? "").replace("${valuationCostRange()}", valuationCostRange());
     expect(description.length).toBeGreaterThan(100);
     expect(description.length).toBeLessThanOrEqual(160);
+  });
+});
+
+describe("house-worth guide (section 3.6)", () => {
+  const src = fs.readFileSync("src/app/(marketing)/guides/how-much-is-my-house-worth-australia/page.tsx", "utf8");
+  it("answers the free report and valuation cost questions as FAQs", () => {
+    expect(src).toContain('question: "Where can I get a free property valuation report?"');
+    expect(src).toContain('question: "How much do property valuations cost?"');
+  });
+  it("keeps the three-numbers comparison on /property-valuation instead of repeating it", () => {
+    expect(src).not.toContain('id="why-they-differ"');
+    expect(src).not.toMatch(/<h3>\d\. The (agent appraisal|bank valuation|online estimate)<\/h3>/);
+    expect(src).toMatch(/<Link href="\/property-valuation">/);
+  });
+  it("cites pages that state what the guide relies on, not home pages", () => {
+    expect(src).not.toMatch(/href: "https:\/\/(www\.)?(corelogic\.com\.au|api\.org\.au|moneysmart\.gov\.au)\/"/);
   });
 });
