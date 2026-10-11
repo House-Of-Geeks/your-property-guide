@@ -406,7 +406,7 @@ export default function FirstHomeSuperSaverSchemePage() {
       </p>
 
       <MatchCTA
-        lead="Working out how FHSS fits with the rest of your deposit? Tell us where you're buying and we'll introduce one vetted specialist. Free, no commitment."
+        lead="Working out how FHSS fits with the rest of your deposit? Tell us where you're buying: one specialist receives your details and pays us a fee for the introduction; you pay us nothing. No commitment."
         ctaLabel="Find your specialist"
         href={MATCH_HREF}
       />
@@ -557,7 +557,7 @@ export default function FirstHomeSuperSaverSchemePage() {
       </p>
 
       <MatchCTA
-        lead="Ready to plan your deposit? Tell us where you're buying and we'll introduce one vetted specialist who works with first home buyers. Free, no commitment."
+        lead="Ready to plan your deposit? Tell us where you're buying: one specialist receives your details and pays us a fee for the introduction; you pay us nothing. No commitment."
         ctaLabel="Find your specialist"
         href={MATCH_HREF}
       />

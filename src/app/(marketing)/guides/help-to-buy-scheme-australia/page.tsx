@@ -576,7 +576,7 @@ export default function HelpToBuySchemeAustraliaPage() {
         worked example above shows the gap in repayments on the same home.
       </p>
       <MatchCTA
-        lead="Weighing Help to Buy against the 5% Deposit Scheme? We can introduce one vetted specialist who can model both against the loan you can actually service."
+        lead="Weighing Help to Buy against the 5% Deposit Scheme? Tell us where you're buying: one specialist receives your details and pays us a fee for the introduction; you pay us nothing."
         ctaLabel="Find your specialist"
         href={MATCH_HREF}
       />
@@ -629,12 +629,12 @@ export default function HelpToBuySchemeAustraliaPage() {
         </li>
         <li>
           <strong>Talk to a participating lender or someone who works with them.</strong>{" "}
-          <Link href={MATCH_HREF}>Tell us your situation</Link> and we&rsquo;ll introduce one
-          vetted specialist.
+          <Link href={MATCH_HREF}>Tell us your situation</Link>: one specialist receives your
+          details and pays us a fee for the introduction.
         </li>
       </ol>
       <MatchCTA
-        lead="Ready to see whether Help to Buy works for you? Tell us where you're buying and we'll introduce one vetted specialist. Free, no commitment."
+        lead="Ready to see whether Help to Buy works for you? Tell us where you're buying: one specialist receives your details and pays us a fee for the introduction; you pay us nothing. No commitment."
         ctaLabel="Find your specialist"
         href={MATCH_HREF}
       />

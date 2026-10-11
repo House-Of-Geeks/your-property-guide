@@ -230,7 +230,8 @@ export function FhssCalculator() {
         </h3>
         <p className="text-sm text-ink-muted leading-relaxed mb-5">
           FHSS is one part of a first home deposit, alongside the 5% Deposit Scheme, grants and stamp duty concessions.
-          Tell us where you&rsquo;re buying and we&rsquo;ll introduce one vetted specialist. Free, no commitment.
+          Tell us where you&rsquo;re buying: one specialist receives your details and pays us a fee for the introduction.
+          You pay us nothing, and there&rsquo;s no commitment.
         </p>
         <Suspense fallback={<div className="h-64" aria-busy="true" />}>
           <MatchAgent compact initialIntent="buying" source={FHSS_CALCULATOR_SOURCE} />

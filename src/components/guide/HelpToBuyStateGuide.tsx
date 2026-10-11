@@ -236,7 +236,7 @@ export function HelpToBuyStateGuide({ state, frontmatter }: { state: AustralianS
         </p>
       </Callout>
       <MatchCTA
-        lead={`Buying in ${page.name} with Help to Buy? Tell us where and we'll introduce one vetted specialist who can check the numbers with you. Free, no commitment.`}
+        lead={`Buying in ${page.name} with Help to Buy? Tell us where: one specialist receives your details and pays us a fee for the introduction; you pay us nothing. No commitment.`}
         ctaLabel="Find your specialist"
         href={matchHref}
       />

@@ -265,7 +265,7 @@ export default function UseSuperToBuyAHousePage() {
       </p>
 
       <MatchCTA
-        lead="Putting a deposit together from super, savings and the schemes? Tell us where you're buying and we'll introduce one vetted specialist. Free, no commitment."
+        lead="Putting a deposit together from super, savings and the schemes? Tell us where you're buying: one specialist receives your details and pays us a fee for the introduction; you pay us nothing. No commitment."
         ctaLabel="Find your specialist"
         href={MATCH_HREF}
       />
