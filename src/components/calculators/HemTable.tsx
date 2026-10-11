@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HEM_AS_AT, HEM_INCOME_BANDS, HEM_METHOD_NOTE, HEM_REGION_FACTOR, hemTableRows } from "@/lib/data/hem";
+import { HEM_AS_AT, HEM_INCOME_BANDS, HEM_METHOD_NOTE, HEM_REGION_FACTOR, HEM_SOURCES, hemTableRows } from "@/lib/data/hem";
 
 const money = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
 
@@ -41,6 +41,18 @@ export function HemTable() {
         </table>
       </div>
       <p><small>{HEM_METHOD_NOTE} HEM excludes rent or mortgage repayments; school fees, childcare, insurance, HECS and loan repayments are assessed on top of it. For context, the Australian Bureau of Statistics&rsquo; last full Household Expenditure Survey (2015-16) put average weekly household spending on goods and services at $1,425, about $6,200 a month including housing; HEM sits well below average spending by design.</small></p>
+      <p>
+        <small>
+          Sources:{" "}
+          {HEM_SOURCES.map((s, i) => (
+            <span key={s.href}>
+              {i > 0 && "; "}
+              <a href={s.href} target="_blank" rel="nofollow noopener">{s.label}</a> ({s.note})
+            </span>
+          ))}
+          .
+        </small>
+      </p>
     </>
   );
 }

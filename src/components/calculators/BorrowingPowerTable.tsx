@@ -1,4 +1,5 @@
 import { BORROWING_TABLE, asAt, borrowingPowerByIncome, money, percentLowerAtRate } from "@/lib/borrowing-power-table";
+import { getHEM } from "@/lib/utils/borrowing-power";
 
 /**
  * "Borrowing power by income" on /borrowing-power-calculator: one row per
@@ -21,10 +22,10 @@ export function BorrowingPowerTable() {
         What a single applicant and a couple can borrow on this calculator&rsquo;s
         method, before you enter your own figures. Assumptions, as at {asAt()}:
         no other debts, no dependants, living expenses at the indicative HEM floor for each
-        household and income band ({BORROWING_TABLE.asAtHem}; {money(BORROWING_TABLE.monthlyExpenses)} a month for a
-        single person on $100,000, more for a couple or a higher income, as the{" "}
-        <a href="#hem-table">HEM table</a> below shows; the calculator above starts at $3,000, so enter a
-        lower figure to reproduce a row), net income taken as 72% of gross, repayments capped at 85%
+        household and income band ({BORROWING_TABLE.asAtHem}; {money(getHEM(0, { grossIncome: 60_000 }))} a month for a
+        single person under $80,000, {money(getHEM(0, { grossIncome: 100_000 }))} from $80,000 to $150,000, more for a
+        couple or a higher income, as the <a href="#hem-table">HEM table</a> below shows; the calculator above starts
+        at $3,000, so enter a lower figure to reproduce a row), net income taken as 72% of gross, repayments capped at 85%
         of what is left, and a {rate}% assessment rate over {BORROWING_TABLE.termYears} years.
         That rate is the {BORROWING_TABLE.loanRate}% average rate on new owner-occupier variable
         loans in {BORROWING_TABLE.loanRatePeriod} (Reserve Bank of Australia, statistical table F6)

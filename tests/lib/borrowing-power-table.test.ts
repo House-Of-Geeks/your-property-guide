@@ -3,7 +3,8 @@
 // are worked by the widget's engine, state their assumptions, and never print 0.
 import { describe, expect, it } from "vitest";
 import { BORROWING_TABLE, borrowingPowerByIncome, borrowingPowerFaqs, maxLoanFor, percentLowerAtRate } from "@/lib/borrowing-power-table";
-import { APRA_SERVICEABILITY_BUFFER, DEFAULT_ASSESSMENT_RATE, REFERENCE_LOAN_RATE, computeBorrowingPower, getHEM } from "@/lib/utils/borrowing-power";
+import { APRA_SERVICEABILITY_BUFFER, DEFAULT_ASSESSMENT_RATE, REFERENCE_LOAN_RATE, computeBorrowingPower, getHEM, loanPerMonthlyDollar } from "@/lib/utils/borrowing-power";
+import { affordabilityFaqs } from "@/lib/affordability-table";
 
 describe("borrowing power by income", () => {
   it("prints one row per income from $60,000 to $200,000, each the engine's figure rounded to $1,000", () => {
@@ -12,8 +13,11 @@ describe("borrowing power by income", () => {
     expect(rows[0].income).toBe(60_000);
     expect(rows[rows.length - 1].income).toBe(200_000);
     for (const r of rows) {
-      const single = computeBorrowingPower(r.income, 0, getHEM(0), 0, 0, DEFAULT_ASSESSMENT_RATE, 30)!;
-      const couple = computeBorrowingPower(r.income, r.income, getHEM(0), 0, 0, DEFAULT_ASSESSMENT_RATE, 30)!;
+      // No expenses entered: the engine applies each row's own HEM floor.
+      const single = computeBorrowingPower(r.income, 0, 0, 0, 0, DEFAULT_ASSESSMENT_RATE, 30)!;
+      const couple = computeBorrowingPower(r.income, r.income, 0, 0, 0, DEFAULT_ASSESSMENT_RATE, 30)!;
+      expect(single.hemUsed).toBe(getHEM(0, { grossIncome: r.income }));
+      expect(couple.hemUsed).toBe(getHEM(0, { household: "couple", grossIncome: r.income * 2 }));
       expect(r.single).toBe(Math.round(single.maxLoan / 1_000) * 1_000);
       expect(r.couple).toBe(Math.round(couple.maxLoan / 1_000) * 1_000);
       expect(r.coupleIncome).toBe(r.income * 2);
@@ -36,7 +40,9 @@ describe("borrowing power by income", () => {
     expect(APRA_SERVICEABILITY_BUFFER).toBe(3);
     expect(DEFAULT_ASSESSMENT_RATE).toBe(9.2);
     expect(BORROWING_TABLE.loanRatePeriod).toMatch(/^[A-Z][a-z]+ \d{4}$/);
-    expect(BORROWING_TABLE.monthlyExpenses).toBe(getHEM(0));
+    // Each row uses its band's HEM: $1,700 for a single person under $80,000, not a flat $2,000.
+    expect(BORROWING_TABLE.monthlyExpenses).toBe(0);
+    expect(computeBorrowingPower(60_000, 0, BORROWING_TABLE.monthlyExpenses, 0, 0, DEFAULT_ASSESSMENT_RATE, 30)!.hemUsed).toBe(1_700);
     expect(BORROWING_TABLE.existingDebts).toBe(0);
     expect(BORROWING_TABLE.dependants).toBe(0);
     expect(BORROWING_TABLE.termYears).toBe(30);
@@ -68,7 +74,21 @@ describe("borrowing power by income", () => {
     expect(faq.answer).toContain(`${DEFAULT_ASSESSMENT_RATE}% assessment rate`);
     expect(faq.answer).toContain("RBA table F6");
     expect(faq.answer).toContain("28 May 2026");
-    expect(faq.answer).toContain("30 September 2026");
+    expect(faq.answer).toContain("11 October 2026");
     expect(faq.answer).not.toMatch(/\$0\b/);
+  });
+});
+
+describe("the cost of a dollar of monthly expenses", () => {
+  it("is the loan the engine loses, about $104 at 9.2% over 30 years, not the $130 the pages printed", () => {
+    const per = loanPerMonthlyDollar(DEFAULT_ASSESSMENT_RATE, 30);
+    expect(Math.round(per)).toBe(104);
+    const a = computeBorrowingPower(150_000, 0, 3_000, 0, 0, DEFAULT_ASSESSMENT_RATE, 30)!;
+    const b = computeBorrowingPower(150_000, 0, 3_100, 0, 0, DEFAULT_ASSESSMENT_RATE, 30)!;
+    expect(Math.abs((a.maxLoan - b.maxLoan) / 100 - per)).toBeLessThan(0.05);
+    const family = borrowingPowerFaqs()[1].answer;
+    expect(family).toContain("about $104 of loan, or about $130 of purchase price with a 20% deposit");
+    expect(family).not.toContain("roughly $130 of loan");
+    for (const f of affordabilityFaqs()) expect(f.answer).not.toContain("roughly $130 of borrowing capacity");
   });
 });

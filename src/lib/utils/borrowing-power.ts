@@ -57,6 +57,19 @@ export const APRA_BUFFER_CONFIRMED = "28 May 2026";
  */
 export const DEFAULT_ASSESSMENT_RATE = Math.round((REFERENCE_LOAN_RATE + APRA_SERVICEABILITY_BUFFER) * 10) / 10;
 
+/**
+ * How much loan each dollar a month of living expenses or debt repayments
+ * removes, on this engine: 85% of the dollar, amortised at the assessment
+ * rate. At 9.2% over 30 years it is about $104. (The pages said "$130" until
+ * 11 Oct 2026, which is the purchase price with a 20% deposit, not the loan.)
+ */
+export function loanPerMonthlyDollar(assessmentRate: number, termYears: number): number {
+  const r = assessmentRate / 100 / 12;
+  const n = termYears * 12;
+  const factor = r === 0 ? n : (1 - Math.pow(1 + r, -n)) / r;
+  return 0.85 * factor;
+}
+
 export interface BorrowingResult {
   maxLoan: number;
   estimatedPurchasePrice: number;

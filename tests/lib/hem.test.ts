@@ -2,7 +2,7 @@
 // calculators apply scales by household, dependants, income band and region,
 // and is labelled as an estimate wherever it prints.
 import { describe, expect, it } from "vitest";
-import { HEM_AS_AT, HEM_BASE_MONTHLY, HEM_INCOME_BANDS, HEM_METHOD_NOTE, hemIncomeBand, hemTableRows, indicativeHem } from "@/lib/data/hem";
+import { HEM_AS_AT, HEM_BASE_MONTHLY, HEM_INCOME_BANDS, HEM_METHOD_NOTE, HEM_SOURCES, hemIncomeBand, hemTableRows, indicativeHem } from "@/lib/data/hem";
 import { computeBorrowingPower, getHEM } from "@/lib/utils/borrowing-power";
 
 describe("indicativeHem", () => {
@@ -66,5 +66,18 @@ describe("the borrowing engine with the scaled HEM", () => {
     expect(family.maxLoan).toBeLessThan(couple.maxLoan);
     const regional = computeBorrowingPower(75_000, 75_000, 0, 2, 0, 9.2, 30, { region: "regional" })!;
     expect(regional.maxLoan).toBeGreaterThan(family.maxLoan);
+  });
+});
+
+describe("HEM sources", () => {
+  it("name the published ranges with their date and say which factors are ours", () => {
+    expect(HEM_SOURCES[0].href).toContain("jmdmortgages.com.au");
+    expect(HEM_SOURCES[0].note).toContain("27 March 2026");
+    expect(HEM_METHOD_NOTE).toContain("JMD Mortgages published on 27 March 2026");
+    expect(HEM_METHOD_NOTE).toContain("our assumptions");
+    // the couple-with-two-children figure sits inside JMD's $3,100 to $3,800 mid-income range
+    const c2 = indicativeHem({ household: "couple", dependants: 2, grossIncome: 120_000 });
+    expect(c2).toBeGreaterThanOrEqual(3_100);
+    expect(c2).toBeLessThanOrEqual(3_800);
   });
 });

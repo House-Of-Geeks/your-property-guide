@@ -29,7 +29,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   slug: "borrowing-power-calculator",
   schemaName: "Borrowing Power Calculator",
   schemaDescription: "Estimate how much you can borrow based on your income, expenses, and APRA buffer.",
-  updatedAt: "2026-10-08",
+  updatedAt: "2026-10-11",
   persona: "first-home",
 };
 
