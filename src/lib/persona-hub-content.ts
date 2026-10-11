@@ -280,14 +280,14 @@ const UPGRADING: PersonaHubContent = {
       "Sell first means you list and sell your current home, then go house-hunting with a known budget. You'll either need short-term rental accommodation between settlements or to negotiate a long settlement on the sale (60-90 days isn't unusual) so you can buy in parallel. Cleanest financially because there's no double mortgage and no bridging fees, but the risk is finding the right next home in the available window.",
       "Buy first means you find the next home, exchange contracts subject to finance, then list your current home. This works in slow markets where you can negotiate a long settlement on the purchase (often 90-120 days). The risk: if your current home doesn't sell quickly, you're carrying two mortgages and possibly paying penalty interest. Have a serviceability buffer in mind before going down this path.",
       "Bridging finance is a short-term loan that covers the gap between buying the new home and selling the old one. Bridging lasts 6-12 months typically, the rate is usually 1-2% above standard variable, and you'll pay interest on the 'peak debt' (combined value of both loans) for the bridging period. Useful when the timing genuinely won't line up, expensive if you treat it as an alternative to selling fast.",
-      "Stamp duty on the next home is the line item most upgraders underestimate. A $1.5m purchase in NSW carries around $66,000 in stamp duty for a non-first-home buyer; a $1m purchase in VIC is roughly $55,000. Build the duty into your true cost of moving, not the headline price difference.",
+      "Stamp duty on the next home is the line item most upgraders underestimate. A $1.5m home in NSW carries around $64,000 in transfer duty for a buyer who is not a first home buyer; a $1m home in VIC about $55,000 (our stamp duty calculator, rates checked 30 September 2026). Build the duty into your true cost of moving, not the headline price difference.",
     ],
   },
   calculatorsHeading: "The numbers an upgrader has to run",
   calculatorsBlurb:
     "Two transactions, two sets of math. Get the stamp duty, repayment and borrowing-power numbers before you sign either.",
   calculators: [
-    { label: "Stamp duty (your next home)",   href: "/stamp-duty-calculator",      blurb: "The single biggest line item when moving. By state, with current 2025/26 rates." },
+    { label: "Stamp duty (your next home)",   href: "/stamp-duty-calculator",      blurb: "The single biggest line item when moving. By state, with each revenue office's current rates." },
     { label: "Mortgage repayment calculator", href: "/mortgage-calculator",        blurb: "What the new loan will actually cost each month, weekly or fortnightly." },
     { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "An estimate of what a lender may lend on your income and expenses, at the APRA buffer." },
     { label: "Free property appraisal",       href: "/appraisal",                  blurb: "A local agent's estimate of what your current home could sell for. One agent receives your details and pays us a fee." },
@@ -306,7 +306,7 @@ const UPGRADING: PersonaHubContent = {
     {
       question: "How much stamp duty will I pay when upgrading?",
       answer:
-        "Stamp duty on an upgrade is calculated at the full (non-first-home) rate on the new purchase price. As an indicative scale: a $1m purchase in NSW costs around $40,000; in VIC around $55,000; in QLD around $34,000; in WA around $42,000. There is no stamp duty refund or credit for selling your old home. Build the full stamp duty into your true cost of moving.",
+        "Stamp duty on an upgrade is calculated at the full (non-first-home) rate on the new purchase price, with any home concession your state gives an owner-occupier. As an indicative scale for a home you will live in: a $1m purchase in NSW costs around $39,000; in VIC around $55,000; in QLD around $31,000 with the home concession; in WA around $43,000 (our stamp duty calculator, rates checked 30 September 2026). There is no stamp duty refund or credit for selling your old home. Build the full stamp duty into your true cost of moving.",
     },
     {
       question: "Can I take my mortgage with me when I move?",
