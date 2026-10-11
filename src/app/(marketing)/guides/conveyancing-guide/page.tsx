@@ -31,7 +31,22 @@ import {
   formatFeeRange,
   type ConveyancingEstimate,
 } from "@/lib/conveyancing-costs";
-import { CONVEYANCING_FAQS, NSW_EXAMPLE_PRICE } from "@/lib/data/conveyancing-faqs";
+import { CONVEYANCING_FAQS as BASE_FAQS, NSW_EXAMPLE_PRICE } from "@/lib/data/conveyancing-faqs";
+
+// Published state averages, cheapest and dearest, for the PAA answer below
+// (commercial-intent review 10 Oct 2026, buying 3.2 and section 6).
+const AVERAGES = (Object.keys(CONVEYANCING_FEES) as StateCode[])
+  .flatMap((st) => (CONVEYANCING_FEES[st].average ? [{ st, amount: CONVEYANCING_FEES[st].average!.amount }] : []))
+  .sort((a, b) => a.amount - b.amount);
+const CHEAPEST = AVERAGES[0];
+const DEAREST = AVERAGES[AVERAGES.length - 1];
+const EXTRA_FAQS = [
+  {
+    question: "Who is cheaper, solicitor or conveyancer?",
+    answer: `Neither is always cheaper. Published averages for a conveyancer's professional fee run from ${formatFee(CHEAPEST.amount)} in ${STATE_NAMES[CHEAPEST.st].replace(/^the /, "")}${CHEAPEST.st === "QLD" ? ", where only law firms do conveyancing," : ""} to ${formatFee(DEAREST.amount)} in ${STATE_NAMES[DEAREST.st]} (OpenAgent, updated 17 September 2026). Compare written quotes that include searches and registry fees, which cost the same whichever you use.`,
+  },
+];
+const CONVEYANCING_FAQS = [...BASE_FAQS, ...EXTRA_FAQS];
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Conveyancing Fees in Australia (2026): Costs in NSW, VIC, QLD and Every State",
@@ -39,7 +54,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "What conveyancing costs to buy or sell in NSW, Victoria, Queensland and every other state: professional fees, searches, PEXA and registry fees from the 2026/27 schedules, a cost estimator, and when to use a solicitor.",
   slug: "conveyancing-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 13,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -106,6 +121,11 @@ const TOC: GuideTOCEntry[] = [
   { id: "cost-vic",                 label: "Cost in Victoria" },
   { id: "cost-qld",                 label: "Cost in Queensland" },
   { id: "cost-other-states",        label: "WA, SA, Tasmania, ACT and NT" },
+  { id: "cost-wa",                  label: "Cost in WA" },
+  { id: "cost-sa",                  label: "Cost in South Australia" },
+  { id: "cost-tas",                 label: "Cost in Tasmania" },
+  { id: "cost-act",                 label: "Cost in the ACT" },
+  { id: "cost-nt",                  label: "Cost in the NT" },
   { id: "what-is",                  label: "What conveyancing is" },
   { id: "conveyancer-vs-solicitor", label: "Conveyancer vs solicitor" },
   { id: "process",                  label: "The conveyancing process step by step" },
@@ -368,13 +388,40 @@ export default function ConveyancingGuidePage() {
         </tbody>
       </table>
       </ScrollTable>
-      <ul>
-        <li><strong>Western Australia.</strong> Licensed settlement agents do conveyancing in WA, at $700 to $1,500, with disbursements of $200 to $600 including Landgate registration of about $180 to $320 (ConveyancerCompare, rates for 2025-26).</li>
-        <li><strong>South Australia.</strong> The seller&rsquo;s conveyancer prepares the Form 1 vendor statement; fee guides give $700 to $1,600 for the professional fee (Our Top 10, 27 September 2026).</li>
-        <li><strong>Tasmania.</strong> The thinnest published data of any state: Our Top 10 puts fees in line with WA and South Australia, and the published average is $1,280 (OpenAgent). Get two written quotes.</li>
-        <li><strong>The ACT.</strong> Our Top 10 lists conveyancing as solicitor work at $1,800 to $3,000; Ray Swift Moutrage publishes $1,700 plus GST for a standard purchase or sale. ACT sellers also pay for the building, compliance and pest reports up front and recover them from the buyer at completion.</li>
-        <li><strong>The Northern Territory.</strong> The highest published average at $1,875 (OpenAgent). Keylaw charges a fixed $1,490 to buy or sell (17 September 2026) and Voeux Conveyancing from $2,680 to buy and $2,580 to sell.</li>
-      </ul>
+
+      <h2 id="cost-wa">How much does conveyancing cost in WA? (settlement agents)</h2>
+      <p>
+        Licensed settlement agents do conveyancing in WA, at $700 to $1,500, with disbursements of
+        $200 to $600 including Landgate registration of about $180 to $320 (ConveyancerCompare, rates
+        for 2025-26). No Perth-specific figure is published separately.
+      </p>
+
+      <h2 id="cost-sa">How much does conveyancing cost in South Australia?</h2>
+      <p>
+        The seller&rsquo;s conveyancer prepares the Form 1 vendor statement; fee guides give $700 to
+        $1,600 for the professional fee (Our Top 10, 27 September 2026). No Adelaide-specific figure
+        is published separately.
+      </p>
+
+      <h2 id="cost-tas">How much does conveyancing cost in Tasmania?</h2>
+      <p>
+        The thinnest published data of any state: Our Top 10 puts fees in line with WA and South
+        Australia, and the published average is $1,280 (OpenAgent). Get two written quotes.
+      </p>
+
+      <h2 id="cost-act">How much does conveyancing cost in the ACT?</h2>
+      <p>
+        Our Top 10 lists conveyancing as solicitor work at $1,800 to $3,000; Ray Swift Moutrage
+        publishes $1,700 plus GST for a standard purchase or sale. ACT sellers also pay for the
+        building, compliance and pest reports up front and recover them from the buyer at completion.
+      </p>
+
+      <h2 id="cost-nt">How much does conveyancing cost in the NT?</h2>
+      <p>
+        The highest published average at $1,875 (OpenAgent). Keylaw charges a fixed $1,490 to buy or
+        sell (17 September 2026) and Voeux Conveyancing from $2,680 to buy and $2,580 to sell. No
+        Darwin-specific figure is published separately.
+      </p>
       <p>
         Outside NSW, Victoria and Queensland the estimator uses Our Top 10&rsquo;s
         disbursement range ($300 to $800 to buy, $100 to $400 to sell) because
