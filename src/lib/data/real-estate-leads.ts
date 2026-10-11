@@ -374,7 +374,7 @@ export const leadTypePages: LeadTypePage[] = [
       {
         question: "Do you supply rental or leasing appraisal leads?",
         answer:
-          "Not at the moment. Our appraisal requests are for sale appraisals. If you run a property management business and want landlord enquiries, tell us on the registration form and we will let you know if that changes.",
+          "Yes, separately from the sale appraisals on this page. Landlords who ask for a rental appraisal on our suburb rental market pages give their property address and contact details, and each request goes to one property manager, who pays us for the introduction. It is never shared or resold. If you run a property management business and want landlord enquiries, tell us on the registration form.",
       },
       {
         question: "Is buying appraisal leads legal?",
