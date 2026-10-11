@@ -15,6 +15,26 @@ const INTEREST_25 = PAY_25 * 300 - 600_000;
 const roundTo = (n: number, step: number) => Math.round(n / step) * step;
 const usd = (n: number) => `$${n.toLocaleString("en-AU")}`;
 
+// Repayments by loan size at the F6 average new variable rate, 30 years,
+// principal and interest: the long-tail questions ("repayments on a 600k
+// mortgage") answered from the same function as the bridging and Help to Buy
+// calculators.
+const RATE = AVERAGE_NEW_VARIABLE_RATE.rate;
+const LOAN_SIZES = [300_000, 400_000, 500_000, 600_000, 700_000, 800_000, 900_000, 1_000_000] as const;
+const BY_SIZE = LOAN_SIZES.map((loan) => ({
+  loan,
+  monthly: monthlyRepayment(loan, RATE, 30),
+  quarterPoint: monthlyRepayment(loan, RATE + 0.25, 30) - monthlyRepayment(loan, RATE, 30),
+  interest: monthlyRepayment(loan, RATE, 30) * 360 - loan,
+}));
+const sizeFaq = (loan: number, question: string): FaqItem => {
+  const r = BY_SIZE.find((x) => x.loan === loan)!;
+  return {
+    question,
+    answer: `About ${usd(r.monthly)} a month over 30 years at ${RATE}%, the average rate on new owner-occupier variable loans in ${AVERAGE_NEW_VARIABLE_RATE.period} (RBA table F6), ${F6_RATE_CAVEAT}. Each extra quarter of a percentage point adds about ${usd(r.quarterPoint)} a month. Use the calculator for your own rate, term and repayment frequency.`,
+  };
+};
+
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Mortgage Repayment Calculator",
   description:
@@ -46,6 +66,9 @@ export const metadata: Metadata = {
 };
 
 const FAQS: FaqItem[] = [
+  sizeFaq(600_000, "How much is a $600,000 mortgage a month?"),
+  sizeFaq(700_000, "What are the monthly repayments on a $700,000 mortgage?"),
+  sizeFaq(800_000, "How much would I repay on an $800,000 mortgage?"),
   {
     question: "How is a mortgage repayment calculated?",
     answer:
@@ -101,6 +124,35 @@ export default function MortgageCalculatorPage() {
             The calculator opens at {describeF6(AVERAGE_NEW_VARIABLE_RATE)}, {F6_RATE_CAVEAT}.
             Enter the rate your lender quotes you.
           </p>
+
+          <h2 id="by-loan-size">Repayments by loan size</h2>
+          <p>
+            Monthly principal and interest repayments over 30 years at {RATE}%, the average rate on new
+            owner-occupier variable loans in {AVERAGE_NEW_VARIABLE_RATE.period} (RBA table F6), and what 0.25 points
+            more adds.
+          </p>
+          <div className="overflow-x-auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Loan</th>
+                  <th>Monthly repayment</th>
+                  <th>Total interest over 30 years</th>
+                  <th>0.25 points higher adds</th>
+                </tr>
+              </thead>
+              <tbody>
+                {BY_SIZE.map((r) => (
+                  <tr key={r.loan}>
+                    <td>{usd(r.loan)}</td>
+                    <td>{usd(r.monthly)}</td>
+                    <td>{usd(r.interest)}</td>
+                    <td>{usd(r.quarterPoint)} a month</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           <h2>What you&rsquo;re actually paying for</h2>
           <p>
