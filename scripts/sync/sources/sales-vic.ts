@@ -14,6 +14,16 @@
  *
  * No postcode column — suburbs matched by name+state.
  *
+ * Sales count (10 Oct 2026, commercial intent review, suburbs-market 0.2a):
+ * the house file's "sales this quarter" (col 11) is written to
+ * Suburb.salesCountHouse, so the five-sale rule (MIN_SALES_FOR_MEDIAN,
+ * src/lib/sales-provenance.ts), which applies "where the count is known",
+ * applies in Victoria too. Until then the feed wrote no count, and house
+ * medians of apartment precincts (Melbourne 3000 at $381,000, Southbank,
+ * Docklands, Travancore) published on any number of sales. The count is
+ * the current quarter's, so it is written only when the latest median
+ * column is the current-quarter column (col 9) it sits beside.
+ *
  * Data sources:
  *   https://discover.data.vic.gov.au/dataset/victorian-property-sales-report-median-house-by-suburb
  *   https://discover.data.vic.gov.au/dataset/victorian-property-sales-report-median-unit-by-suburb
@@ -39,6 +49,36 @@ const QUARTER_MAP: Record<string, string> = {
 const MONTH_NUM: Record<string, number> = {
   "Jan-Mar": 3, "Apr-Jun": 6, "Jul-Sep": 9, "Oct-Dec": 12,
 };
+
+/** The current quarter's median column; "sales this quarter" (col 11) belongs to it. */
+export const CURRENT_MEDIAN_COL = 9;
+export const SALES_THIS_QUARTER_COL = 11;
+
+/** Sales recorded in the quarter, from a "sales this quarter" cell. Null when the cell holds no count ("-", "NA", blank). */
+export function parseSalesCount(cell: unknown): number | null {
+  if (typeof cell === "number") return Number.isFinite(cell) && cell >= 0 ? Math.round(cell) : null;
+  const text = String(cell ?? "").replace(/,/g, "").trim();
+  if (!/^\d+$/.test(text)) return null;
+  return parseInt(text, 10);
+}
+
+/**
+ * The house sales count for each locality in a file whose latest median sits
+ * in `latestCol`. Empty when that is not the current-quarter column: the
+ * count would then describe a different quarter from the median written.
+ */
+export function salesCountsByLocality(raw: (string | number)[][], latestCol: number, dataStart = 4): Map<string, number> {
+  const counts = new Map<string, number>();
+  if (latestCol !== CURRENT_MEDIAN_COL) return counts;
+  for (let i = dataStart; i < raw.length; i++) {
+    const row = raw[i] ?? [];
+    const locality = String(row[0] ?? "").trim();
+    if (!locality || locality.startsWith("^") || locality.startsWith("*") || locality.startsWith("Source")) continue;
+    const n = parseSalesCount(row[SALES_THIS_QUARTER_COL]);
+    if (n !== null) counts.set(locality.toLowerCase(), n);
+  }
+  return counts;
+}
 
 interface LatestResource { url: string; periodEnd: string }
 
@@ -127,7 +167,7 @@ function findLatestQuarterCol(raw: (string | number)[][]): { col: number; period
 async function processFile(
   label: "house" | "unit",
   packageId: string
-): Promise<{ medians: Map<string, number>; period: string; periodDate: Date; yoyCol: number }> {
+): Promise<{ medians: Map<string, number>; counts: Map<string, number>; period: string; periodDate: Date; yoyCol: number }> {
   const { url } = await getLatestResource(packageId);
   log(SOURCE_ID, `${label}: downloading from ${url}`);
 
@@ -158,7 +198,14 @@ async function processFile(
     medians.set(locality.toLowerCase(), median);
   }
 
-  return { medians, period: found.period, periodDate: found.periodDate, yoyCol: YOY_COL };
+  const counts = salesCountsByLocality(raw, found.col, DATA_START);
+  if (found.col !== CURRENT_MEDIAN_COL) {
+    log(SOURCE_ID, `${label}: latest median is in column ${found.col}, not ${CURRENT_MEDIAN_COL}; sales counts not read (they describe the current quarter)`);
+  } else {
+    log(SOURCE_ID, `${label}: sales counts for ${counts.size} localities`);
+  }
+
+  return { medians, counts, period: found.period, periodDate: found.periodDate, yoyCol: YOY_COL };
 }
 
 export async function run(): Promise<void> {
@@ -190,19 +237,33 @@ export async function run(): Promise<void> {
     log(SOURCE_ID, `matching against ${suburbs.length} VIC suburbs`);
 
     let count = 0;
+    let countsOnly = 0;
 
     for (const suburb of suburbs) {
       const key = suburb.name.toLowerCase();
       const medianHouse = house?.medians.get(key) ?? null;
       const medianUnit  = unit?.medians.get(key)  ?? null;
+      // House sales this quarter, from the house file (null when not read).
+      const salesHouse  = house?.counts.get(key) ?? null;
 
-      if (!medianHouse && !medianUnit) continue;
+      if (!medianHouse && !medianUnit) {
+        // No median this quarter but a count on file (too few sales for
+        // Land Victoria to publish one): record the count, so a median left
+        // by an earlier quarter on fewer than five sales is withheld. The
+        // label is left as it is.
+        if (salesHouse !== null) {
+          await prisma.suburb.update({ where: { id: suburb.id }, data: { salesCountHouse: salesHouse } });
+          countsOnly++;
+        }
+        continue;
+      }
 
       await prisma.suburb.update({
         where: { id: suburb.id },
         data: {
           ...(medianHouse ? { medianHousePrice: medianHouse } : {}),
           ...(medianUnit  ? { medianUnitPrice:  medianUnit  } : {}),
+          ...(salesHouse !== null ? { salesCountHouse: salesHouse } : {}),
           statsSource:    SOURCE_ID,
           statsUpdatedAt: new Date(),
           salesUpdatedAt: new Date(),
@@ -211,7 +272,7 @@ export async function run(): Promise<void> {
       count++;
     }
 
-    log(SOURCE_ID, `updated ${count} VIC suburbs`);
+    log(SOURCE_ID, `updated ${count} VIC suburbs; sales count only on ${countsOnly} more`);
     await finishSync(SOURCE_ID, count, periodDate);
   } catch (err) {
     await failSync(SOURCE_ID, err);

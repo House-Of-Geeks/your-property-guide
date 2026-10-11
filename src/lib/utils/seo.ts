@@ -25,32 +25,25 @@ export const TITLE_BUDGET = 60;
 /** The item 2 guardrail in the fix review: the profile description stays under 155 characters. */
 export const SUBURB_DESCRIPTION_BUDGET = 155;
 
-// ── Item 2 rollout: by state cohort (R4) ────────────────────────────────────
-// R4 of the September 2026 fix review is "stage by cohort, not by switch",
-// and item 2's own guardrails name the cohort: SA and TAS suburbs only
-// (about 10% of suburbs, low traffic) for three weeks, judged on Search
-// Console page-filtered CTR and on postcode-query impressions against the
-// rest of the country as the control. Ship to the rest when the cohort's CTR
-// is higher than the control's and its postcode impressions have not fallen
-// more than the control's. To widen, add states here; at full rollout delete
-// this list and the two legacy builders at the end of this block, and do not
-// touch the title again for 90 days. The FAQ and the price card on the same
-// page are not staged: they change on every profile, so cohort and control
-// differ only in the title and description.
-export const TITLE_COHORT_STATES: readonly string[] = ["SA", "TAS"];
+// ── The profile title and description, every state ─────────────────────
+// Item 2 ran first on an SA and TAS cohort (R4, 1 Oct 2026). On 10 Oct 2026
+// the commercial intent review (suburbs-market 3.1) widened it to every
+// state: the 1 Oct NSW and VIC relabel had made the control unreadable, and
+// its title promised "Median Price" on 162 parsed profiles that printed
+// none, 115 of 197 legacy titles ran past 60 characters, and its
+// description said "growth" beside Land Victoria and ABS medians, which the
+// page shows as "–". Compliance outranks the test. Each builder reads the
+// gated Suburb object, so a state's titles switch back to "House Prices" by
+// themselves when its medians return (the NSW and VIC label repair).
 
-export function inTitleCohort(suburb: Pick<Suburb, "state">): boolean {
-  return TITLE_COHORT_STATES.includes(suburb.state.toUpperCase());
-}
-
-/** The profile page's title: the item 2 title inside the cohort, today's title for the control. */
+/** The profile page's title: "{Suburb} {STATE} {pc}: House Prices, ..." where a median is published, no price promise where it is withheld. */
 export function suburbTitle(suburb: Suburb): string {
-  return inTitleCohort(suburb) ? suburbTitleHousePrices(suburb) : legacySuburbTitle(suburb);
+  return suburbTitleHousePrices(suburb);
 }
 
-/** The profile page's meta description: the item 2 description inside the cohort, today's for the control. */
+/** The profile page's meta description: the published median and its source first, or what the page publishes when the median is withheld. */
 export function suburbDescription(suburb: Suburb): string {
-  return inTitleCohort(suburb) ? suburbDescriptionHousePrices(suburb) : legacySuburbDescription(suburb);
+  return suburbDescriptionHousePrices(suburb);
 }
 
 // Fix item 2 (commercial intent review 3.8, 30 Sep 2026): the profile title
@@ -213,53 +206,6 @@ function fitFacts(facts: string[], render: (kept: string[]) => string): string[]
     if (render([...kept, f]).length <= SUBURB_DESCRIPTION_BUDGET) kept.push(f);
   }
   return kept;
-}
-
-// ── The control: today's profile title and description, unchanged ─────────
-// Kept verbatim for the suburbs outside TITLE_COHORT_STATES while the cohort
-// runs. Known faults, left alone so the control stays the control, and gone at
-// full rollout: the title runs past R6's 60 characters and says "Median Price"
-// on pages that withhold the median; the description says "growth" beside
-// Land Victoria and ABS medians, which carry no 12-month change.
-export function legacySuburbTitle(suburb: Suburb): string {
-  // Front-loads "{Suburb} Postcode {XXXX}" because Search Console shows the
-  // single biggest unclicked cluster is "{suburb} postcode" lookups (these
-  // pages rank ~pos 10 but the old title never said the word "postcode", so
-  // searchers scanned past it). This title now serves three intents at once:
-  // "{suburb} postcode", "{suburb} suburb profile" and "{suburb} median
-  // price". The ` | Your Property Guide` brand suffix is appended by the
-  // root title template, so this stays short enough to survive truncation.
-  return `${suburb.name} Postcode ${suburb.postcode} (${suburb.state}) — Suburb Profile & Median Price`;
-}
-
-export function legacySuburbDescription(suburb: Suburb): string {
-  // Leads with the direct postcode answer ("…'s postcode is XXXX") so the
-  // SERP snippet resolves the "{suburb} postcode" query without a click and
-  // is eligible for the featured snippet, then carries the profile/price
-  // intent. Only publishes the median when we trust it — for low-confidence
-  // suburbs (QLD/WA fallback) we skip the dollar figure rather than print
-  // fiction in the SERP snippet.
-  const alias = directionalAlias(suburb.name);
-  const aka = alias ? ` (also known as ${alias})` : "";
-  // "{suburb} {city}" navigational queries ("sunnybank brisbane") dwarf the
-  // postcode cluster in volume; the city name otherwise never appears in
-  // the snippet, so metro suburbs carry it right after the postcode answer.
-  const capital = capitalCityFor(suburb.state, suburb.postcode);
-  const cityPhrase = capital ? `, in Greater ${capital.name}` : "";
-  const lead = `${suburb.name}${aka}, ${suburb.state}'s postcode is ${suburb.postcode}${cityPhrase}.`;
-  const reliable = hasReliablePrice(suburb);
-  const tail = reliable
-    ? `Free suburb profile with the median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}, growth, schools, walkability, crime and current listings. No sign-up.`
-    : `Free suburb profile: schools, walkability, climate, crime, demographics and current listings. No sign-up.`;
-  const full = `${lead} ${tail}`;
-  // ~160 chars is the SERP truncation budget. The alias and city phrase earn
-  // their keep more than the trailing feature list does, so when they push
-  // the description over budget we shorten the tail rather than drop them.
-  if ((!alias && !capital) || full.length <= 160) return full;
-  const shortTail = reliable
-    ? `Median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}, growth, schools and crime. No sign-up.`
-    : `Suburb profile: schools, walkability, crime and demographics. No sign-up.`;
-  return `${lead} ${shortTail}`;
 }
 
 export function agentTitle(agent: Agent): string {
