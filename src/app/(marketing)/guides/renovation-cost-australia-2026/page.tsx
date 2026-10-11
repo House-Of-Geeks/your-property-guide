@@ -540,7 +540,11 @@ export default function RenovationCostAustralia2026Page() {
           href: "https://www.asbestossafety.gov.au/about-asbestos/practical-guidance/householders-and-home-renovators",
           note: "read 11 October 2026",
         },
-        "State-by-state planning portals (Service NSW Planning, VBA Victoria, QBCC Queensland, etc.) for current approval requirements.",
+        {
+          label: "Approvals: NSW, State Environmental Planning Policy (Exempt and Complying Development Codes) 2008, as named in the Housing SEPP 2021 dictionary (NSW Planning Portal for applications); VIC, Building Act 1993 and the planning scheme under the Planning and Environment Act 1987 (Cardinia Shire Council, Planning vs building); QLD, Building Act 1975 and Planning Act 2016 (Queensland legislation, current reprint)",
+          href: "https://www.legislation.qld.gov.au/view/whole/html/inforce/current/act-1975-011",
+          note: "read 11 October 2026",
+        },
       ]} />
     </GuideArticleLayout>
   );

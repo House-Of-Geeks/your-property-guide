@@ -254,6 +254,20 @@ describe("renovation guide copy", () => {
     expect(PAGE).toContain("<h3>What devalues a house</h3>");
     for (const st of ["nsw", "vic", "qld", "wa", "sa"]) expect(PAGE).toContain(`/guides/granny-flat-guide-${st}`);
   });
+  it("names the approval instruments by state and drops the old regulator names from the sources (F8d)", () => {
+    expect(PAGE).not.toMatch(/VBA Victoria|Service NSW Planning|QBCC Queensland, etc/);
+    const approval = RENOVATION_FAQS.find((f) => f.question === "Do I need council approval to renovate?")?.answer ?? "";
+    for (const law of [
+      "State Environmental Planning Policy (Exempt and Complying Development Codes) 2008",
+      "Building Act 1993",
+      "Planning and Environment Act 1987",
+      "Building Act 1975",
+      "Planning Act 2016",
+    ]) {
+      expect(approval, law).toContain(law);
+      expect(PAGE, law).toContain(law);
+    }
+  });
   it("sends contract readers to the building contract checklist, not a home loan rate guide (F8b)", () => {
     expect(PAGE).toContain('href="/guides/how-to-find-a-builder-australia#contract"');
     expect(PAGE).toContain("what to check in a building contract");
