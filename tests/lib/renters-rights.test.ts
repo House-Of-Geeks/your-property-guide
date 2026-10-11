@@ -12,6 +12,7 @@ import {
   QLD_RENTERS_SOURCES,
   SA_RENTERS_SOURCES,
   VIC_RENTERS_SOURCES,
+  WA_RENTERS_SOURCES,
   RENTERS_GUIDES,
   renterGuideLinks,
   sourceItems,
@@ -158,6 +159,28 @@ describe("QLD renters' rights guide", () => {
     expect(src).toContain("1300 366 311");
     for (const s of Object.values(QLD_RENTERS_SOURCES)) {
       expect(s.href).toMatch(/^https:\/\/www\.rta\.qld\.gov\.au\//);
+      expect(s.date).toMatch(DATE);
+    }
+  });
+});
+
+describe("WA renters' rights guide", () => {
+  const src = page("renters-rights-wa");
+
+  it("gives the 12-month rent rule and the current bond cap", () => {
+    expect(src).not.toMatch(/does not yet enforce a 12-month/);
+    expect(src).not.toMatch(/doesn't \(yet\) impose/);
+    expect(src).not.toMatch(/6 weeks for furnished/);
+    expect(src).toContain("no more than once every 12 months");
+    expect(src).toContain("$1,200");
+    expect(src).toContain("$350");
+  });
+
+  it("keeps WA's no-grounds notice, which Consumer Protection still lists", () => {
+    expect(src).toContain("60 days");
+    expect(RENTERS_GUIDES.WA.blurb).toContain("60 days");
+    for (const s of Object.values(WA_RENTERS_SOURCES)) {
+      expect(s.href).toMatch(/^https:\/\/www\.consumerprotection\.wa\.gov\.au\//);
       expect(s.date).toMatch(DATE);
     }
   });

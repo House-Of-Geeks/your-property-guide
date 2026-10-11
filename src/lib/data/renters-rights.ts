@@ -58,7 +58,7 @@ export const RENTERS_GUIDES: Record<RentersState, RentersGuide> = {
     state: "WA",
     slug: "renters-rights-wa",
     linkTitle: "Renters' rights in WA",
-    blurb: "WA's Residential Tenancies Act, bonds and entry rules.",
+    blurb: "WA still allows a no-grounds notice: 60 days on a periodic lease.",
   },
   SA: {
     state: "SA",
@@ -326,6 +326,72 @@ export const QLD_RENTERS_SOURCES = {
     label: "RTA, Disputes (free RTA dispute resolution, then QCAT)",
     href: `${RTA}/disputes`,
     date: RTA_NO_DATE,
+    read: READ,
+  },
+} as const satisfies Record<string, RentersSource>;
+
+const WA_CP = "https://www.consumerprotection.wa.gov.au";
+
+/** Consumer Protection WA pages behind /guides/renters-rights-wa. */
+export const WA_RENTERS_SOURCES = {
+  landlordEnding: {
+    label: "Consumer Protection WA, Landlord ending a tenancy",
+    href: `${WA_CP}/landlord-ending-tenancy`,
+    date: "last updated 28 August 2025",
+    read: READ,
+  },
+  tenantEnding: {
+    label: "Consumer Protection WA, Tenant ending a tenancy",
+    href: `${WA_CP}/tenant-ending-tenancy`,
+    date: "last updated 14 August 2025",
+    read: READ,
+  },
+  rentIncreases: {
+    label: "Consumer Protection WA, Rent increases",
+    href: `${WA_CP}/rent-increases`,
+    date: "last updated 20 October 2025",
+    read: READ,
+  },
+  bonds: {
+    label: "Consumer Protection WA, Rental bonds",
+    href: `${WA_CP}/rental-bonds`,
+    date: "last updated 28 March 2026",
+    read: READ,
+  },
+  entry: {
+    label: "Consumer Protection WA, Rent inspections and privacy rights",
+    href: `${WA_CP}/rent-inspections-and-privacy-rights`,
+    date: "last updated 13 August 2025",
+    read: READ,
+  },
+  repairs: {
+    label: "Consumer Protection WA, Rental home repairs",
+    href: `${WA_CP}/rental-home-repairs`,
+    date: "last updated 26 November 2024",
+    read: READ,
+  },
+  pets: {
+    label: "Consumer Protection WA, Renting with pets",
+    href: `${WA_CP}/renting-pets`,
+    date: "last updated 11 August 2026",
+    read: READ,
+  },
+  bidding: {
+    label: "Consumer Protection WA, Rent bidding, applications and option fees",
+    href: `${WA_CP}/rent-bidding-applications-and-option-fees`,
+    date: "last updated 17 June 2026",
+    read: READ,
+  },
+  disputes: {
+    label: "Consumer Protection WA, Resolving rental property issues",
+    href: `${WA_CP}/resolving-rental-property-issues`,
+    date: "last updated 15 July 2026",
+    read: READ,
+  },
+  familyViolence: {
+    label: "Consumer Protection WA, Safe tenancy: family and domestic violence",
+    href: `${WA_CP}/safe-tenancy-fdv`,
+    date: "last updated 19 February 2026",
     read: READ,
   },
 } as const satisfies Record<string, RentersSource>;
