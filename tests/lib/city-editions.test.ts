@@ -147,6 +147,18 @@ describe("which pages are city editions", () => {
   });
 });
 
+describe("the cheapest editions date their medians and give the official city figure (review 0.2c, 3.2)", () => {
+  it("puts the data period in the first sentence", () => {
+    expect(cityEditionLede(edition("most-affordable", perth))).toMatch(/^By published median house price \(medians for 2024\), the ten cheapest Greater Perth suburbs are Suburb 1/);
+  });
+  it("prints Metropolitan Adelaide's Valuer-General median in the method, and none where unverified", () => {
+    const adelaide = getCapitalCity("adelaide")!;
+    const m = cityEditionMethod(edition("most-affordable", adelaide, 15, () => ({ state: "SA", medianBasis: "suburb" }))).join(" ");
+    expect(m).toContain("For context, metropolitan Adelaide's median house sale price was $975,000 in the June 2026 quarter (SA Valuer-General): a median of every house sale, not of suburb medians.");
+    expect(cityEditionMethod(edition("most-affordable", getCapitalCity("melbourne")!)).join(" ")).not.toContain("For context");
+  });
+});
+
 describe("most walkable: a tie at the capped score is not a ranking (review of 10 Oct 2026, 0.1a)", () => {
   const capped = edition("most-walkable", sydney, 15, () => ({ state: "NSW", medianBasis: "suburb", walkScore: 100 }));
   const tied = { ...capped, atCap: 212 };

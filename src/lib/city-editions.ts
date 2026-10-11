@@ -29,6 +29,7 @@ import {
 } from "@/lib/ranking-notes";
 import { rentalSourceLabel, monthYear } from "@/lib/rental-labels";
 import { HOUSE_SCREEN_NOTE, coverageShortfall, meetsCoverageFloor, type Coverage } from "@/lib/median-coverage";
+import { officialCityMedian, officialMedianSentence } from "@/lib/data/official-city-medians";
 import type { CapitalCity } from "@/lib/utils/metro";
 import { formatPriceFull } from "@/lib/utils/format";
 
@@ -261,7 +262,7 @@ export function cityEditionDescription(e: Pick<CityEdition, "category" | "city" 
 }
 
 /** The direct answer under the H1: the ten, named. */
-export function cityEditionLede(e: Pick<CityEdition, "category" | "city" | "suburbs"> & { atCap?: number }): string {
+export function cityEditionLede(e: Pick<CityEdition, "category" | "city" | "suburbs"> & { atCap?: number; salesPeriod?: string | null }): string {
   const c = e.city.name;
   const list = joinNames(top(e).map((s) => s.name));
   switch (e.category) {
@@ -272,7 +273,8 @@ export function cityEditionLede(e: Pick<CityEdition, "category" | "city" | "subu
     case "for-families":
       return `By the average ICSEA of their schools (ACARA), among Greater ${c} suburbs where family households are at least 40% of households (2021 Census), the ten that rank highest are ${list}.`;
     case "most-affordable":
-      return `By published median house price, the ten cheapest Greater ${c} suburbs are ${list}.`;
+      // The data period in the first sentence (review of 10 Oct 2026, 0.2c: Perth's are 2024 ABS medians).
+      return `By published median house price${e.salesPeriod ? ` (medians for ${e.salesPeriod})` : ""}, the ten cheapest Greater ${c} suburbs are ${list}.`;
     case "most-walkable": {
       const tied = tiedAtCap(e);
       if (tied.length === 0) return `By walk score, the ten most walkable Greater ${c} suburbs are ${list}.`;
@@ -333,6 +335,11 @@ export function cityEditionMethod(e: CityEdition): string[] {
     case "most-affordable":
       lines.push(`Ranked by published median house price, lowest first, from ${from} with a published median above $100,000 and ${n(CITY_EDITION_MIN_POPULATION)} or more residents.`);
       lines.push(HOUSE_SCREEN_NOTE);
+      {
+        // The city-wide figure beside the suburb medians, where a government source publishes one (review 3.2).
+        const official = officialCityMedian(city.slug);
+        if (official) lines.push(`For context, ${officialMedianSentence(official).replace(/^./, (ch) => ch.toLowerCase())}: a median of every house sale, not of suburb medians.`);
+      }
       break;
     case "most-walkable":
       lines.push(`Sorted by walk score, highest first, from ${from} with a walk score and ${n(CITY_EDITION_MIN_POPULATION)} or more residents. ${WALK_SCORE_DEFINITION}`);
