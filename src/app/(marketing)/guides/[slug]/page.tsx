@@ -66,6 +66,17 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
   };
 }
 
+// The update date, only when it is later than the publication date. A
+// corrected article (the CGT article, rewritten 1 Oct 2026) showed only its
+// May publication date at the top and the update in the footer card, so a
+// reader saw the old date beside the corrected rules.
+function laterUpdate(publishedAt: string, updatedAt: string | undefined): string | undefined {
+  if (!updatedAt) return undefined;
+  const updated = new Date(updatedAt).getTime();
+  const published = new Date(publishedAt).getTime();
+  return Number.isFinite(updated) && Number.isFinite(published) && updated > published ? updatedAt : undefined;
+}
+
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { slug } = await params;
   const post = await getBlogPostBySlug(slug);
@@ -76,6 +87,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const postUrl = `${SITE_URL}/guides/${slug}`;
   // Each byline links to its own writer's card on /about (src/lib/authors.ts).
   const authorHref = authorAboutHref(post.author.name);
+  const updatedAt = laterUpdate(post.publishedAt, post.updatedAt);
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
@@ -106,7 +118,12 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
             <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              {formatDate(post.publishedAt)}
+              <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+              {updatedAt && (
+                <>
+                  {" · "}Updated <time dateTime={updatedAt}>{formatDate(updatedAt)}</time>
+                </>
+              )}
             </span>
           </div>
 
@@ -142,8 +159,16 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                     {post.author.name}
                   </Link>
                 </p>
-                <p className="text-xs font-sans text-ink-subtle flex items-center gap-2 mt-0.5">
-                  <span>{formatDate(post.publishedAt)}</span>
+                <p className="text-xs font-sans text-ink-subtle flex flex-wrap items-center gap-x-2 mt-0.5">
+                  <span>
+                    {updatedAt ? "Published " : ""}
+                    <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+                  </span>
+                  {updatedAt && (
+                    <span>
+                      Updated <time dateTime={updatedAt}>{formatDate(updatedAt)}</time>
+                    </span>
+                  )}
                   <span className="flex items-center gap-1">
                     <Clock className="w-3 h-3" aria-hidden="true" /> {post.readingTime} min read
                   </span>
