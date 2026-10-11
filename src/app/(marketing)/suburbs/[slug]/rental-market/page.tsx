@@ -18,6 +18,9 @@ import { buildLandlordModel } from "@/lib/rental-landlord";
 import { Faq } from "@/components/guide/Faq";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
+import { canonicalSuburbSlug } from "@/lib/duplicate-localities";
+import { quarterSpan, rentalSourceLabel } from "@/lib/rental-labels";
+import { salesProvenanceFor } from "@/lib/suburb-snapshot";
 
 interface RentalMarketPageProps {
   params: Promise<{ slug: string }>;
@@ -53,7 +56,10 @@ export async function generateMetadata({ params }: RentalMarketPageProps): Promi
     const all = buildAllDwellingsMarket(suburb, history);
     if (all) description = all.description;
   }
-  const canonical = `${SITE_URL}/suburbs/${slug}/rental-market`;
+  // A secondary postcode row (the same locality under a second postcode)
+  // canonicalises to the primary row's rental-market page, as its profile
+  // does (src/lib/duplicate-localities.ts). No redirect.
+  const canonical = `${SITE_URL}/suburbs/${canonicalSuburbSlug(slug)}/rental-market`;
 
   return {
     title,
@@ -67,6 +73,9 @@ export async function generateMetadata({ params }: RentalMarketPageProps): Promi
     twitter: { card: "summary_large_image" },
   };
 }
+
+/** "$1,600/wk": thousands separated, as the rest of the site prints money. */
+const wk = (n: number) => `$${n.toLocaleString("en-AU")}/wk`;
 
 function MetricCard({ label, value }: { label: string; value: string | null }) {
   return (
@@ -106,11 +115,24 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
   const landlord = buildLandlordModel(suburb, history);
 
   const latest = history[0] ?? null;
-  const currentRent = latest?.medianRentHouse ?? suburb.stats.medianRentHouse;
+  // The feed's name, not its code ("NSW rental bond data (postcode 2530)",
+  // not "rental-nsw"); null for a feed the site can't name.
+  const latestLabel = rentalSourceLabel(latest?.source, suburb.postcode);
+  // The yield block's rent comes only from the newest row of a named feed.
+  // No fallback to the Suburb row's rent, which can be a seed or census
+  // proxy value (commercial-intent review, 10 Oct 2026, renting 0.8).
+  const currentRent = latestLabel && latest?.medianRentHouse ? latest.medianRentHouse : 0;
+  // The house median is already gated by publishedSales; it is printed only
+  // with its provenance (sample, source and period).
+  const priceProvenance = salesProvenanceFor(suburb);
   const grossYield =
-    currentRent > 0 && suburb.stats.medianHousePrice > 0
+    currentRent > 0 && suburb.stats.medianHousePrice > 0 && priceProvenance
       ? ((currentRent * 52.0) / suburb.stats.medianHousePrice * 100).toFixed(2)
       : null;
+  // Article dateModified: the newest rental row, never before datePublished.
+  const DATE_PUBLISHED = "2025-01-01";
+  const newestRow = latest?.periodDate ? new Date(latest.periodDate).toISOString().slice(0, 10) : null;
+  const dateModified = newestRow && newestRow > DATE_PUBLISHED ? newestRow : DATE_PUBLISHED;
 
   return (
     <>
@@ -129,16 +151,17 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
         postalCode={suburb.postcode}
       />
       <GuideArticleJsonLd
-        title={`${model?.title ?? `${suburb.name} Rental Market | Rent Prices & Trends`} | ${SITE_NAME}`}
+        title={model?.title ?? `${suburb.name} rental market: rent prices and trends`}
         description={model?.description ?? all?.description ?? `View rental price trends and history for ${suburb.name}, ${suburb.state}. Compare weekly rent for houses, units, and bedrooms.`}
         url={`/suburbs/${slug}/rental-market`}
-        datePublished="2025-01-01"
+        datePublished={DATE_PUBLISHED}
+        dateModified={dateModified}
       />
 
       <SuburbSubrouteHeader
         suburb={suburb}
         eyebrow="Rental market in"
-        title={<>The <span className="italic text-primary">rental market</span></>}
+        title={<>{suburb.name} <span className="italic text-primary">rental market</span></>}
         subtitle={model?.current ? `Median rent, yield and what is listed now in ${suburb.name}, ${suburb.state} ${suburb.postcode}, from ${model.provenance}.` : all ? all.subtitle : `Median rent, history and gross-yield calculations for ${suburb.name}, ${suburb.state} ${suburb.postcode}.`}
         breadcrumbLeaf="Rental Market"
         tabs={getSuburbListingTabs(slug, "rental-market", availability)}
@@ -175,19 +198,19 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
                 Current rent
               </p>
               <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-                What it costs to rent here right now.
+                The latest published rents in {suburb.name}.
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-                <MetricCard label="House (median)" value={latest?.medianRentHouse != null ? `$${latest.medianRentHouse}/wk` : null} />
-                <MetricCard label="Unit (median)"  value={latest?.medianRentUnit  != null ? `$${latest.medianRentUnit}/wk`  : null} />
-                <MetricCard label="3 bedroom"       value={latest?.medianRent3Bed  != null ? `$${latest.medianRent3Bed}/wk`  : null} />
-                <MetricCard label="2 bedroom"       value={latest?.medianRent2Bed  != null ? `$${latest.medianRent2Bed}/wk`  : null} />
-                <MetricCard label="1 bedroom"       value={latest?.medianRent1Bed  != null ? `$${latest.medianRent1Bed}/wk`  : null} />
+                <MetricCard label="House (median)" value={latest?.medianRentHouse != null ? wk(latest.medianRentHouse) : null} />
+                <MetricCard label="Unit (median)"  value={latest?.medianRentUnit  != null ? wk(latest.medianRentUnit)  : null} />
+                <MetricCard label="3 bedroom"       value={latest?.medianRent3Bed  != null ? wk(latest.medianRent3Bed)  : null} />
+                <MetricCard label="2 bedroom"       value={latest?.medianRent2Bed  != null ? wk(latest.medianRent2Bed)  : null} />
+                <MetricCard label="1 bedroom"       value={latest?.medianRent1Bed  != null ? wk(latest.medianRent1Bed)  : null} />
               </div>
               <DataFreshnessNote
                 label="Rental"
                 asOf={latest?.periodDate ?? null}
-                source={latest?.source ?? undefined}
+                source={latestLabel ?? undefined}
               />
             </section>
 
@@ -209,6 +232,9 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
                     <p className="font-display text-3xl text-ink leading-none">
                       {formatPriceFull(suburb.stats.medianHousePrice)}
                     </p>
+                    {priceProvenance && (
+                      <p className="font-sans text-xs text-ink-subtle mt-2">{priceProvenance.short}</p>
+                    )}
                   </div>
                   <div>
                     <div className="flex items-center gap-2 text-ink-muted text-sm mb-2">
@@ -216,8 +242,11 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
                       Median weekly rent
                     </div>
                     <p className="font-display text-3xl text-ink leading-none">
-                      ${currentRent}/wk
+                      {wk(currentRent)}
                     </p>
+                    {latestLabel && latest && (
+                      <p className="font-sans text-xs text-ink-subtle mt-2">{`${latestLabel}, ${latest.period}`}</p>
+                    )}
                   </div>
                   <div>
                     <div className="flex items-center gap-2 text-ink-muted text-sm mb-2">
@@ -264,18 +293,18 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
                     <tbody>
                       {history.map((row) => (
                         <tr key={row.id} className="border-b border-line last:border-0 hover:bg-surface-sunken transition-colors">
-                          <td className="py-4 px-5 font-medium text-ink">{row.period}</td>
+                          <td className="py-4 px-5 font-medium text-ink">{quarterSpan(row.period)}</td>
                           <td className="py-4 px-5 text-right tabular-nums text-ink-muted">
-                            {row.medianRentHouse != null ? `$${row.medianRentHouse}/wk` : "–"}
+                            {row.medianRentHouse != null ? wk(row.medianRentHouse) : "–"}
                           </td>
                           <td className="py-4 px-5 text-right tabular-nums text-ink-muted">
-                            {row.medianRentUnit != null ? `$${row.medianRentUnit}/wk` : "–"}
+                            {row.medianRentUnit != null ? wk(row.medianRentUnit) : "–"}
                           </td>
                           <td className="py-4 px-5 text-right tabular-nums text-ink-muted hidden sm:table-cell">
-                            {row.medianRent3Bed != null ? `$${row.medianRent3Bed}/wk` : "–"}
+                            {row.medianRent3Bed != null ? wk(row.medianRent3Bed) : "–"}
                           </td>
                           <td className="py-4 px-5 text-right tabular-nums text-ink-muted hidden sm:table-cell">
-                            {row.medianRent2Bed != null ? `$${row.medianRent2Bed}/wk` : "–"}
+                            {row.medianRent2Bed != null ? wk(row.medianRent2Bed) : "–"}
                           </td>
                           <td className="py-4 px-5 text-right tabular-nums text-ink-muted hidden md:table-cell">
                             {row.bondLodgements != null ? row.bondLodgements.toLocaleString() : "–"}

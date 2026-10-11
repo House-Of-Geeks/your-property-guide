@@ -555,7 +555,7 @@
       "title": "Property Management Fees in Australia 2026: Rates by State, With Calculator",
       "description": "Management fees by state for 2026 (5.8% NSW to 8.7% WA and Tasmania), letting fees in weeks, renewal, inspection and statement charges, sourced and dated, with an annual cost calculator.",
       "publishedAt": "2026-05-06",
-      "updatedAt": "2026-09-30",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 12,
       "persona": "investing"
     },
@@ -660,75 +660,75 @@
     },
     {
       "slug": "renters-rights-act",
-      "title": "Renter's Rights in the ACT: Complete Guide for Canberra Tenants (2026)",
-      "description": "ACT tenant rights: bond, rent increases (8 weeks notice, 12 months between), no-grounds eviction protections, pet rights, minimum standards, and ACAT dispute resolution.",
+      "title": "Renters' Rights in the ACT (2026): Current Rules",
+      "description": "ACT renting rules as at October 2026: the grounds a landlord needs to end a lease, notice periods, rent increases, bond, inspections, repairs, pets and ACAT.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 10
     },
     {
       "slug": "renters-rights-nsw",
-      "title": "Renter's Rights in NSW: Complete Guide for Tenants (2026)",
-      "description": "Everything NSW tenants need to know: bond rules, rent increases, repairs, entry rights, ending a tenancy, and how to resolve disputes through NCAT.",
+      "title": "Renters' and Tenants' Rights in NSW (2026): The New Rules",
+      "description": "NSW renting rules as at October 2026: the reasons a landlord now needs to end a lease, notice periods, rent increases, bond, repairs, entry, pets and NCAT.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
-      "readingTimeMinutes": 10
+      "updatedAt": "2026-10-11",
+      "readingTimeMinutes": 12
     },
     {
       "slug": "renters-rights-nt",
-      "title": "Renter's Rights in the Northern Territory: Complete Guide (2026)",
-      "description": "NT tenant rights: bond rules, rent increases (30 days notice), tropical-climate urgent repairs, remote community housing, and NTCAT dispute resolution.",
+      "title": "Renters' Rights in the NT (2026): Current Rules",
+      "description": "NT renting rules as at October 2026: 60 days' notice to end a lease, rent increases once in six months, bonds held in trust, entry, repairs, pets and NTCAT.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
-      "readingTimeMinutes": 9
-    },
-    {
-      "slug": "renters-rights-qld",
-      "title": "Renter's Rights in Queensland: Complete Guide (2026)",
-      "description": "QLD tenant rights: bond, rent increases, repairs, entry, pet ownership reforms, and the 2024 grounds-based eviction laws. Includes RTA and QCAT dispute info.",
-      "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
-      "readingTimeMinutes": 10
-    },
-    {
-      "slug": "renters-rights-sa",
-      "title": "Renter's Rights in South Australia: Complete Guide (2026)",
-      "description": "SA tenant rights: bond, rent increases, repairs, entry rights, and ending a tenancy under the Residential Tenancies Act 1995, plus SACAT dispute resolution.",
-      "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 8
     },
     {
-      "slug": "renters-rights-tas",
-      "title": "Renter's Rights in Tasmania: Complete Guide for Tenants (2026)",
-      "description": "Tasmania tenant rights: bond rules, rent increases (12-month minimum, 42 days notice), inspections, repairs, ending a tenancy, and CBOS / Magistrates Court dispute resolution.",
+      "slug": "renters-rights-qld",
+      "title": "Tenant Rights in Queensland (2026): Renters' Rules Explained",
+      "description": "Queensland renting rules as at October 2026: the approved reasons to end a tenancy, notice periods, rent increases, bond, entry, repairs, pets and disputes.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-11",
+      "readingTimeMinutes": 11
+    },
+    {
+      "slug": "renters-rights-sa",
+      "title": "Renters' Rights in South Australia (2026): Current Rules",
+      "description": "SA renting rules as at October 2026: the prescribed reasons a landlord needs to end a lease, notice periods, rent increases, bond, entry, pets and SACAT.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-10-11",
+      "readingTimeMinutes": 10
+    },
+    {
+      "slug": "renters-rights-tas",
+      "title": "Renters' Rights in Tasmania (2026): Current Rules",
+      "description": "Tasmanian renting rules as at October 2026: when a landlord can end a lease, notice periods, rent increases, bond, inspections, repairs, pets and disputes.",
+      "publishedAt": "2026-04-01",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 9
     },
     {
       "slug": "renters-rights-vic",
-      "title": "Renter's Rights in Victoria: Complete Guide (2026)",
-      "description": "Victoria's renter rights: no-grounds evictions abolished, pet ownership, modification rights, bond rules, rent increases, and VCAT disputes.",
+      "title": "Tenant Rights in Victoria (2026): Renters' Rules Explained",
+      "description": "Victorian renting rules as at October 2026: the 2025 ban on no-fault evictions, 90 days' notice, rent increases, bond, repairs, inspections, pets and RDRV.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
-      "readingTimeMinutes": 10
+      "updatedAt": "2026-10-11",
+      "readingTimeMinutes": 12
     },
     {
       "slug": "renters-rights-wa",
-      "title": "Renter's Rights in Western Australia: Complete Guide (2026)",
-      "description": "WA tenant rights: bond, rent increases, repairs, entry rights, and ending a tenancy under the Residential Tenancies Act 1987, plus how disputes work in WA without a tribunal.",
+      "title": "Renters' Rights in Western Australia (2026): Current Rules",
+      "description": "WA renting rules as at October 2026: notice to end a lease, rent increases once in 12 months, bond and pet bond, inspections, repairs, pets and disputes.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
-      "readingTimeMinutes": 8
+      "updatedAt": "2026-10-11",
+      "readingTimeMinutes": 10
     },
     {
       "slug": "rentvesting-australia",
-      "title": "Rentvesting in Australia: A Practical Guide (2026)",
-      "description": "Rent where you want to live, buy where it makes financial sense. How rentvesting actually works in Australia, the maths, the tax position, the first home buyer scheme trade-off, and when it's the right call.",
+      "title": "Rentvesting in Australia 2026: What It Is and the Tax Change",
+      "description": "Rentvesting: rent where you live, own an investment elsewhere. How it works, the maths, the scheme trade-off and what the 1 July 2027 tax changes mean for you.",
       "publishedAt": "2026-05-13",
-      "updatedAt": "2026-10-07",
-      "readingTimeMinutes": 12,
+      "updatedAt": "2026-10-11",
+      "readingTimeMinutes": 13,
       "persona": "investing"
     },
     {

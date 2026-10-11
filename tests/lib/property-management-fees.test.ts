@@ -13,6 +13,8 @@ import {
   PM_STATE_FEES,
   PM_STATE_ORDER,
   dollarCell,
+  averageOutsideRange,
+  differentSurveyNote,
   lettingCell,
   managementCell,
   noPublishedRange,
@@ -138,7 +140,10 @@ describe("state fee table", () => {
   it("prints a footnoted cell for every published figure and says so where a state has no published range", () => {
     const wa = PM_STATE_FEES.WA;
     expect(managementCell(wa)).toEqual({ text: "8.5% to 11% (Perth; 11% or more in regional WA); state average 8.7%", refs: [1, 2, 6] });
-    expect(lettingCell(wa)).toEqual({ text: "2 to 3 weeks; state average 1.7 weeks", refs: [1, 6] });
+    expect(lettingCell(wa)).toEqual({
+      text: "2 to 3 weeks; state average 1.7 weeks (LocalAgentFinder, March 2026, a different survey that sits below this range)",
+      refs: [1, 6],
+    });
     expect(dollarCell("WA", wa.inspection)).toEqual({ text: "$50 to $100 (each, at most four a year)", refs: [6, 16] });
     expect(dollarCell("SA", PM_STATE_FEES.SA.renewal)).toEqual({ text: "1 week's rent (often one week's rent)", refs: [7] });
     expect(lettingCell(PM_STATE_FEES.NT)).toEqual({ text: "about 1 week (state average)", refs: [1] });
@@ -155,6 +160,28 @@ describe("state fee table", () => {
       }
     }
     expect(noPublishedRange("QLD")).toBe("No published QLD range");
+  });
+  it("never prints an average outside its range without saying the two surveys differ (review 10 Oct 2026, renting 0.6)", () => {
+    for (const code of PM_STATE_ORDER) {
+      const f = PM_STATE_FEES[code];
+      for (const [r, cell] of [
+        [f.management, managementCell(f)],
+        [f.letting, lettingCell(f)],
+      ] as const) {
+        const side = averageOutsideRange(r);
+        const inside = r.low === undefined || r.high === undefined || (r.low <= r.average && r.average <= r.high);
+        expect(side === null, `${code}: ${cell.text}`).toBe(inside);
+        if (side) {
+          expect(cell.text, code).toContain(differentSurveyNote(side));
+          expect(stateFeeAnswer(code), code).toMatch(/different survey/);
+        } else {
+          expect(cell.text, code).not.toContain("different survey");
+        }
+      }
+    }
+    // The two cells the review found: SA management and WA letting.
+    expect(averageOutsideRange(PM_STATE_FEES.SA.management)).toBe("below");
+    expect(averageOutsideRange(PM_STATE_FEES.WA.letting)).toBe("below");
   });
   it("answers each state's H2 in two to four sentences with the range, the average and the regulated part", () => {
     for (const s of PM_STATE_ORDER) {
@@ -191,6 +218,10 @@ describe("FAQ", () => {
 
 describe("the guide page", () => {
   const src = readFileSync(PAGE, "utf8");
+  it("offers no property manager network it does not have (review 10 Oct 2026, renting 0.6)", () => {
+    expect(src).not.toContain("Browse our network");
+    expect(src).not.toContain('href: "/find-an-expert"');
+  });
   it("promises the state table and the calculator in its title and delivers both", () => {
     // H1 and Article headline: the long form, from the frontmatter.
     expect(src).toContain('title: "Property Management Fees in Australia 2026: Rates by State, With Calculator"');
@@ -205,6 +236,6 @@ describe("the guide page", () => {
     expect(src).toContain("PropertyManagementFeesCalculator");
     expect(src).toContain("stateFeeAnswer(");
     expect(src).toContain("faqs={PM_FEES_FAQS}");
-    expect(src).toContain('updatedAt: "2026-09-30"');
+    expect(src).toContain('updatedAt: "2026-10-11"');
   });
 });
