@@ -254,4 +254,12 @@ describe("renovation guide copy", () => {
     expect(PAGE).toContain("<h3>What devalues a house</h3>");
     for (const st of ["nsw", "vic", "qld", "wa", "sa"]) expect(PAGE).toContain(`/guides/granny-flat-guide-${st}`);
   });
+  it("sends contract readers to the building contract checklist, not a home loan rate guide (F8b)", () => {
+    expect(PAGE).toContain('href="/guides/how-to-find-a-builder-australia#contract"');
+    expect(PAGE).toContain("what to check in a building contract");
+    expect(PAGE).not.toMatch(/fixed vs variable\s+guide<\/Link> \(the same principle/);
+    const contractFaq = RENOVATION_FAQS.find((f) => f.question === "Should I get a fixed-price or cost-plus contract?")?.answer ?? "";
+    expect(contractFaq).not.toContain("fixed-vs-variable contracts guide");
+    expect(contractFaq).toContain("what to check in a building contract");
+  });
 });

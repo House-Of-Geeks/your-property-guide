@@ -640,7 +640,7 @@ export const RENOVATION_FAQS: RenovationFaq[] = [
   {
     question: "Should I get a fixed-price or cost-plus contract?",
     answer:
-      "Fixed-price gives you cost certainty but at the price of a larger contingency baked into the builder's quote (typically 8–15% of the contract value). Best for straightforward jobs where the scope is clear. Cost-plus (where you pay actual costs plus a fixed builder's margin, typically 15–20%) gives you transparency on actual costs and is often cheaper if the scope is well-managed, but you carry the risk of overruns. Best for complex jobs, heritage properties, or when you trust the builder. Get our fixed-vs-variable contracts guide for the full comparison.",
+      "Fixed-price gives you cost certainty but at the price of a larger contingency baked into the builder's quote (typically 8–15% of the contract value). Best for straightforward jobs where the scope is clear. Cost-plus (where you pay actual costs plus a fixed builder's margin, typically 15–20%) gives you transparency on actual costs and is often cheaper if the scope is well-managed, but you carry the risk of overruns. Best for complex jobs, heritage properties, or when you trust the builder. Our guide to finding a builder sets out what to check in a building contract before you sign either kind.",
   },
   {
     question: "Will renovating add value at sale?",

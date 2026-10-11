@@ -464,8 +464,8 @@ export default function RenovationCostAustralia2026Page() {
         For straightforward renovations under $300K, fixed-price is usually
         the right call. For complex jobs, heritage properties, or projects
         where scope will evolve, cost-plus often delivers better value if you
-        trust the builder. Read our <Link href="/guides/fixed-vs-variable-rate-guide">fixed vs variable
-        guide</Link> (the same principle applies to contract types).
+        trust the builder. Before you sign either kind, read our guide on{" "}
+        <Link href="/guides/how-to-find-a-builder-australia#contract">what to check in a building contract</Link>.
       </p>
 
       <h2 id="finance">How to finance the work</h2>
