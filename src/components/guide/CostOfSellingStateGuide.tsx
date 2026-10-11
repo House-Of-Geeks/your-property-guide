@@ -2,8 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { Callout, GuideArticleLayout, MatchCTA, SellingCostTable, Sources, type GuideTOCEntry, type RelatedGuide } from "@/components/guide";
 import { SellingCostsCalculator } from "@/components/calculators/SellingCostsCalculator";
-import { STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
-import { EXAMPLE_PRICE, money, sellingCostTable } from "@/lib/data/selling-costs";
+import { COMMISSION_AS_AT, STATE_RATES, jurisdiction, type StateCode } from "@/lib/data/commission-rates";
+import { StateCommissionTable } from "./CommissionRateTable";
+import { EXAMPLE_PRICE, MARKETING, money, sellingCostTable } from "@/lib/data/selling-costs";
 import { COST_OF_SELLING_STATE, COST_OF_SELLING_STATES } from "@/lib/data/cost-of-selling-state";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
@@ -61,7 +62,7 @@ export function CostOfSellingStateGuide({ state }: { state: StateCode }) {
   const article = /^8/.test(String(price)) ? "an" : "a";
   const tldr = [
     `Selling ${article} ${money(price)} house in ${name} typically costs ${money(t.totalLow)} to ${money(t.totalHigh)} before GST on the commission (${t.totalLowPct}% to ${t.totalHighPct}% of the price), or ${money(t.totalLowWithGst)} to ${money(t.totalHighWithGst)} with it, before any capital gains tax.`,
-    `Commission is the biggest line: ${r.low}% to ${r.high}% in ${name}, most often around ${r.typical}%, so ${money(t.commission.lowAmount)} to ${money(t.commission.highAmount)} at ${money(price)}. GST of 10% usually applies on top, and the rate is negotiable.`,
+    `Commission is the biggest line: published figures in ${name} run ${r.low}% to ${r.high}%, with a ${jurisdiction(state)} average of ${r.typical}% (OpenAgent, September 2026), so ${money(t.commission.lowAmount)} to ${money(t.commission.highAmount)} at ${money(price)}. GST of 10% applies on top where a quote excludes it, and the rate is negotiable.`,
     `${t.documents.label}: ${money(t.documents.low)} to ${money(t.documents.high)}. ${t.documents.note}`,
     `Marketing (${money(2_000)} to ${money(8_000)}) is payable whether or not the property sells; conveyancing runs ${money(800)} to ${money(2_500)}; an auctioneer and a mortgage discharge fee apply only if you auction or have a loan.`,
     `Stamp duty is the buyer's cost. Your main residence is normally exempt from capital gains tax; an investment is not. Every seller now needs an ATO clearance certificate or the buyer withholds 15%.`,
@@ -90,8 +91,9 @@ export function CostOfSellingStateGuide({ state }: { state: StateCode }) {
       <Callout variant="warning" title="Indicative figures, not quotes">
         <p>
           Commission is not regulated in {name} and every other line is quoted individually by agents, conveyancers and lenders.
-          The ranges here are typical market figures as at September 2026. Get written quotes for your own sale and confirm anything
-          tax-related with the ATO or a registered tax agent.
+          The commission figures are published averages and medians, footnoted to their sources and read {COMMISSION_AS_AT}; the
+          other lines are indicative budgets. Get written quotes for your own sale and confirm anything tax-related with the ATO or
+          a registered tax agent.
         </p>
       </Callout>
 
@@ -101,7 +103,7 @@ export function CostOfSellingStateGuide({ state }: { state: StateCode }) {
 
       <h2 id="calculator">Selling costs calculator for {name}</h2>
       <p>
-        Preset to the typical {name} commission of {r.typical}% and the mid-point of the {lowerFirst(t.documents.label)} range.
+        Preset to the {name} average commission of {r.typical}% and the mid-point of the {lowerFirst(t.documents.label)} range.
         Change any figure, add your loan balance, and the result shows what lands in your account at settlement. The{" "}
         <Link href="/selling-costs-calculator">full selling costs calculator</Link> covers every state.
       </p>
@@ -111,14 +113,16 @@ export function CostOfSellingStateGuide({ state }: { state: StateCode }) {
 
       <h2 id="commission">Commission in {name}</h2>
       <p>
-        Agents in {name} typically charge {r.low}% to {r.high}% of the sale price, with around {r.typical}% the most common rate. At the{" "}
+        Published commission figures for {name} run from {r.low}% to {r.high}% of the sale price, with a {jurisdiction(state)} average
+        of {r.typical}% (OpenAgent, September 2026). At the{" "}
         {money(price)} this guide works its examples at, that is {money(t.commission.lowAmount)} to {money(t.commission.highAmount)}, or{" "}
-        {money(t.commission.typicalAmount)} at the typical rate, before GST. On the {g.capital} median dwelling value of {money(g.capitalMedian)}{" "}
-        (Cotality, August 2026) the same range is {money(medianCommissionLow)} to {money(medianCommissionHigh)}, with {money(medianCommissionTypical)} typical.
+        {money(t.commission.typicalAmount)} at the average, before GST. On the {g.capital} median dwelling value of {money(g.capitalMedian)}{" "}
+        (Cotality, August 2026) the same range is {money(medianCommissionLow)} to {money(medianCommissionHigh)}, with {money(medianCommissionTypical)} at the average.
         The difference between the top and bottom of the range on a median {g.capital} sale is {money(medianCommissionHigh - medianCommissionLow)}, which is why
         the rate is worth a conversation. Our <Link href={`/guides/real-estate-commission-${state.toLowerCase()}`}>{name} commission guide</Link> has the detail and the{" "}
         <Link href="/guides/how-to-negotiate-real-estate-agent-commission">negotiation guide</Link> the method.
       </p>
+      <StateCommissionTable state={state} price={price} />
       <p>
         Two checks before you compare rates. Ask whether the quote includes GST: a {r.typical}% rate excluding GST is {Number((r.typical * 1.1).toFixed(2))}% with GST.
         And ask what is included: some agents bundle the auctioneer and part of the marketing, others charge every item separately, so the cheaper
@@ -143,7 +147,8 @@ export function CostOfSellingStateGuide({ state }: { state: StateCode }) {
         </li>
         <li>
           <strong>Marketing.</strong> Insist on an itemised schedule, choose the portal tier that fits the price bracket, and ask about rebates.
-          A {money(4_000)} campaign sells most suburban houses; {money(8_000)} is for a premium listing, not a default.
+          Marketing budgets typically run {money(MARKETING.low)} to {money(MARKETING.high)} (an indicative range, not a survey), so ask what
+          each item adds before you agree to the top of it.
         </li>
         <li>
           <strong>Presentation.</strong> Spend where it returns: a clean, decluttered, freshly painted home photographs like a styled one. Our guide to{" "}

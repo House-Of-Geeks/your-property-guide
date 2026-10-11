@@ -92,3 +92,18 @@ describe("state cost guides", () => {
     }
   });
 });
+
+describe("state cost guides: commission sourcing (review 10 Oct 2026, selling 0.1 and 0.8)", () => {
+  it("cite the commission sources, drop 'compiled market figures', and make no unsourced rank claims", () => {
+    for (const s of COST_OF_SELLING_STATES) {
+      const g = COST_OF_SELLING_STATE[s];
+      const labels = g.sources.map((x) => (typeof x === "string" ? x : x.label)).join("\n");
+      expect(labels).toContain("OpenAgent");
+      expect(labels).toContain("bRight Agent");
+      expect(labels).not.toContain("compiled market figures");
+      const text = [...g.intro, ...g.faqs.map((f) => f.answer)].join(" ");
+      expect(text).not.toMatch(/cheapest agent commission|highest typical commission|Typically \d/);
+      expect(text).toContain(`${STATE_RATES[s].low}%`);
+    }
+  });
+});
