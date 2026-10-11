@@ -24,3 +24,12 @@ describe("/mortgage-calculator", () => {
     expect(monthlyRepayment(600_000, 6.45, 30) - monthlyRepayment(600_000, 6.2, 30)).toBe(98);
   });
 });
+
+describe("internal links to the newer calculators", () => {
+  it("the borrowing result links affordability and LMI; the mortgage page links the LMI calculator", () => {
+    const widget = readFileSync(join(__dirname, "../../src/components/calculators/BorrowingPowerCalculator.tsx"), "utf8");
+    expect(widget).toContain('href="/affordability-calculator"');
+    expect(widget).toContain('href="/lmi-calculator"');
+    expect(src).toContain('<Link href="/lmi-calculator">LMI calculator</Link>');
+  });
+});

@@ -217,7 +217,7 @@ export default function MortgageCalculatorPage() {
 
           <h2>What this calculator doesn&rsquo;t do</h2>
           <ul>
-            <li>It doesn&rsquo;t apply LMI (Lenders Mortgage Insurance) when LVR exceeds 80%, see our <Link href="/guides/lenders-mortgage-insurance-guide">LMI guide</Link>.</li>
+            <li>It doesn&rsquo;t apply LMI (Lenders Mortgage Insurance) when LVR exceeds 80%: the <Link href="/lmi-calculator">LMI calculator</Link> estimates it, and our <Link href="/guides/lenders-mortgage-insurance-guide">LMI guide</Link> explains it.</li>
             <li>It doesn&rsquo;t model split-rate loans (part fixed, part variable).</li>
             <li>It doesn&rsquo;t factor in offset balance reductions, run those scenarios separately.</li>
             <li>It doesn&rsquo;t cover construction loans (interest charged on drawn amount only).</li>
