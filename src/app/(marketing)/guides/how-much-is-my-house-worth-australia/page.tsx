@@ -54,10 +54,10 @@ export const metadata: Metadata = {
 const TLDR = [
   "There are three different numbers for what your house is worth: an agent appraisal (free, market-facing), a bank valuation (conservative, lender-facing) and an online estimate (automated, often wide of the mark). They measure different things, so they disagree.",
   "The agent appraisal is the figure that matters when you're selling. It's an estimate of what a real buyer would pay in today's market, built from recent comparable sales in your suburb.",
-  "A bank valuation is deliberately conservative because it protects the lender, not your sale price. It usually lands below the appraisal, sometimes 5 to 10% below.",
+  "A bank valuation is deliberately conservative because it protects the lender, not your sale price. It usually lands below the appraisal.",
   "Free online estimates work off automated models. They can be close on standard homes in high-turnover suburbs and badly wrong on anything unusual, recently renovated, or in a thin market.",
   "Your number is driven by recent comparable sales, location, land size, condition and the current state of the local market. Not what you paid, not what you owe, not what you need.",
-  "The accurate way to find out is to get two or three appraisals from agents who actually sell in your suburb, then sanity-check them against comparable sales.",
+  "The way to a figure you can rely on is two or three appraisals from agents who sell in your suburb, checked against comparable sales.",
 ];
 
 const TOC: GuideTOCEntry[] = [
@@ -65,7 +65,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "why-they-differ",  label: "Why the three disagree" },
   { id: "what-drives",      label: "What actually drives your number" },
   { id: "online-estimates", label: "Why free online estimates miss" },
-  { id: "accurate-figure",  label: "How to get an accurate figure" },
+  { id: "accurate-figure",  label: "How to get a figure you can rely on" },
   { id: "next-steps",       label: "What to do next" },
 ];
 
@@ -322,7 +322,7 @@ export default function HowMuchIsMyHouseWorthAustraliaPage() {
         figure that counts.
       </p>
 
-      <h2 id="accurate-figure">How to get an accurate figure</h2>
+      <h2 id="accurate-figure">How to get a figure you can rely on</h2>
       <p>
         If you want a number you can act on, here&rsquo;s the method that
         works:

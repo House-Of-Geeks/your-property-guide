@@ -113,3 +113,37 @@ describe("median provenance and commission sources (F3, 10 Oct 2026)", () => {
     expect(page).toContain("Your Property Guide&rsquo;s typical figure");
   });
 });
+
+describe("the real reason a median is withheld (F7, 10 Oct 2026)", () => {
+  it("gives the recorded sales count and period when a trusted feed has too few sales", () => {
+    // The service zeroes a median resting on fewer than five sales; the count stays in freshness.
+    const m = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 0 }, { salesSource: "sales-nsw", salesCount: 3 }), [], []);
+    expect(m.withheldNote).toBe("Only 3 house sales were recorded in calendar 2025, too few for a reliable median. We publish one from 5 sales or more.");
+  });
+  it("says no trusted feed covers the suburb when the source is distrusted", () => {
+    const m = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 0 }, { salesSource: "rental-nsw" }), [], []);
+    expect(m.withheldNote).toBe("We don't publish a house median for Bondi yet: no trusted sales feed covers it.");
+  });
+  it("is null when the median is published, and the page prints the note, not a bare 'not yet'", () => {
+    expect(buildSuburbAgentsModel(makeSuburb(), [], []).withheldNote).toBeNull();
+    const page = fs.readFileSync("src/app/(marketing)/suburbs/[slug]/agents/page.tsx", "utf8");
+    expect(page).toContain("{model.withheldNote}");
+    expect(page).not.toMatch(/We don&rsquo;t publish a median for \{sn\} yet/);
+  });
+  it("shows a published unit median where only the house median is missing", () => {
+    const m = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 0, medianUnitPrice: 610_000 }, { salesSource: "sales-vic", salesCount: null }, "VIC"), [], []);
+    expect(m.unitMedian?.price).toBe(610_000);
+    expect(m.unitMedian?.provenance).toContain("Land Victoria's quarterly suburb median unit price");
+    // NSW writes no unit series, so a unit figure beside it is never printed.
+    expect(buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 0, medianUnitPrice: 538_560 }), [], []).unitMedian).toBeNull();
+  });
+});
+
+describe("house-worth guide wording (F7)", () => {
+  it("promises a figure you can rely on, not an accurate one, and carries no unsourced valuation gap", () => {
+    const src = fs.readFileSync("src/app/(marketing)/guides/how-much-is-my-house-worth-australia/page.tsx", "utf8");
+    expect(src).not.toMatch(/How to get an accurate figure|The accurate way/);
+    expect(src).toContain("How to get a figure you can rely on");
+    expect(src).not.toContain("5 to 10% below");
+  });
+});

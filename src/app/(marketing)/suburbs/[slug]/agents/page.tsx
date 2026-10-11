@@ -243,7 +243,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
                   </table>
                 </div>
                 <p className="mt-5 font-sans text-xs text-ink-subtle leading-relaxed">
-                  Before GST and marketing. These are example prices, not {sn}&rsquo;s: we don&rsquo;t publish a median for {sn} yet. The calculator works the range on your own expected price.
+                  Before GST and marketing. These are example prices, not {sn}&rsquo;s. {model.withheldNote} The calculator works the range on your own expected price.
                 </p>
               </div>
             ) : null}
@@ -292,9 +292,17 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
                 {model.provenance ? <p className="text-sm text-ink-subtle">{model.provenance.sentence}</p> : null}
               </div>
             ) : (
-              <p className="font-sans text-base text-ink-muted leading-[1.7] max-w-md">
-                We don&rsquo;t publish a median for {sn} yet. An agent who sells here will still give you a figure from the comparable sales they know.
-              </p>
+              <div className="font-sans text-base text-ink-muted leading-[1.7] max-w-md space-y-3">
+                <p>
+                  {model.withheldNote} An agent who sells here can still give you a figure from the comparable sales they know.
+                </p>
+                {model.unitMedian ? (
+                  <p>
+                    Median unit price: <span className="font-medium text-ink">{formatPriceFull(model.unitMedian.price)}</span>.{" "}
+                    <span className="text-sm text-ink-subtle">{model.unitMedian.provenance}</span>
+                  </p>
+                ) : null}
+              </div>
             )}
           </div>
           <div className="lg:col-span-7">

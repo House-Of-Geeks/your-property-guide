@@ -4,7 +4,8 @@ import { hasReliablePrice } from "@/lib/suburb-data-quality";
 import { STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
 import { formatPriceFull } from "@/lib/utils/format";
 import { describeSalesProvenance, type SalesProvenance } from "@/lib/sales-provenance";
-import { medianCaption } from "@/lib/value-range";
+import { medianCaption, withheldNote } from "@/lib/value-range";
+import { buildHomeValueSummary } from "@/lib/home-value";
 
 /**
  * "Real estate agents in {Suburb}" pages (valuation plan item 4).
@@ -102,6 +103,15 @@ export interface SuburbAgentsModel {
   provenance: AgentsMedianProvenance | null;
   /** The median in words for a sentence: "Williamstown's median house price of $1,600,000" or "the ABS statistical-area (SA2) median house price for East Devonport, $473,000". */
   medianPhrase: string | null;
+  /**
+   * Why no house median is printed, in the words the instant range uses
+   * (withheldNote): the recorded sales count and period where the feed has
+   * too few, otherwise that no trusted feed covers the suburb. Null when the
+   * median is published.
+   */
+  withheldNote: string | null;
+  /** A published unit median shown where the house median is withheld, with its own source line. */
+  unitMedian: { price: number; provenance: string } | null;
   /** The state range worked on EXAMPLE_SALE_PRICES; empty when the median is published. */
   examples: CommissionOnExample[];
   agents: Agent[];
@@ -164,6 +174,11 @@ export function buildSuburbAgentsModel(
       ? `the ABS statistical-area (SA2) median house price for ${sn}, ${formatPriceFull(median)}`
       : `${sn}'s median house price of ${formatPriceFull(median)}`
     : null;
+  const summary = buildHomeValueSummary(suburb);
+  const withheld = median ? null : withheldNote(summary, "house");
+  const unitMedian = !median && summary.medianUnitPrice && summary.unitProvenance
+    ? { price: summary.medianUnitPrice, provenance: summary.unitProvenance }
+    : null;
   const stateRange = stateCommissionRange(suburb.state);
   const examples: CommissionOnExample[] = commission
     ? []
@@ -211,6 +226,8 @@ export function buildSuburbAgentsModel(
     commission,
     provenance,
     medianPhrase,
+    withheldNote: withheld,
+    unitMedian,
     examples,
     agents: shownAgents,
     agencies: shownAgencies,
