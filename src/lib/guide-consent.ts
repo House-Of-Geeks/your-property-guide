@@ -14,7 +14,7 @@ export const BUYING_EMAIL_CONSENT =
   "By requesting the guide you agree we may email it to you, plus buying tips and market updates for your suburb (unsubscribe anytime). Your details are never sold and never passed to selling agents.";
 
 export const AGENT_CALL_CONSENT =
-  "By booking a call you agree we may share your details with one top local agent, who will call you about selling your property. The agent pays us for the introduction. You pay nothing. We never sell your details to anyone else.";
+  "By booking a call you agree we may share your details with one local agent, who will call you about selling your property. The agent pays us for the introduction. You pay nothing. We never sell your details to anyone else.";
 
 export const YPG_CALL_CONSENT =
   "We’ll use your mobile only to call you ourselves. We never pass it to an agent or sell it.";

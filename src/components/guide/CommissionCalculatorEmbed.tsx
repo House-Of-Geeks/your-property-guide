@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { CommissionCalculator } from "@/components/calculators/CommissionCalculator";
-import { STATE_NAMES, STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
+import { COMMISSION_AS_AT, STATE_NAMES, STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
 import { EXAMPLE_PRICE } from "@/lib/data/selling-costs";
 
 /**
@@ -17,8 +17,9 @@ export function CommissionCalculatorEmbed({ state }: { state: StateCode }) {
     <>
       <h2 id="calculator">Work out commission on your {state} sale</h2>
       <p>
-        Preset to the typical {name} rate of {r.typical}%, with the {r.low}% to{" "}
-        {r.high}% range shown against your price. Change any figure; the
+        Preset to the {name} state average of {r.typical}% (OpenAgent, read{" "}
+        {COMMISSION_AS_AT}), with the lowest to highest published rates of{" "}
+        {r.low}% to {r.high}% shown against your price. Change any figure; the
         result updates as you type. The{" "}
         <Link href="/real-estate-commission-calculator">full commission calculator</Link>{" "}
         also links to the capital gains tax and stamp duty calculators.

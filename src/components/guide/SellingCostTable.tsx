@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { StateCode } from "@/lib/data/commission-rates";
+import { COMMISSION_AS_AT, type StateCode } from "@/lib/data/commission-rates";
 import { SELLING_COSTS_AS_AT, money, sellingCostTable } from "@/lib/data/selling-costs";
 
 const APPLIES: Record<string, string> = { auction: " (if you sell at auction)", loan: " (if you have a mortgage)" };
@@ -55,8 +55,9 @@ export function SellingCostTable({ state }: { state: StateCode }) {
       </table>
       <p>
         <small>
-          As at {SELLING_COSTS_AS_AT}. Commission is this guide&rsquo;s typical{" "}
-          {t.stateName} range. The marketing, conveyancing, auctioneer, discharge and{" "}
+          As at {SELLING_COSTS_AS_AT}. Commission runs from the lowest to the highest
+          rate published for {t.stateName}, with the state average as typical
+          (OpenAgent and bRight Agent, read {COMMISSION_AS_AT}). The marketing, conveyancing, auctioneer, discharge and{" "}
           {t.documents.label.toLowerCase()} figures are indicative ranges: each is quoted
           individually and no {t.stateName} survey publishes them, so treat them as a
           budget, not a price list. What the {t.documents.label.toLowerCase()} must
