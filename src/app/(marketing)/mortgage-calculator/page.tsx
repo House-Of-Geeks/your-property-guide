@@ -2,8 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MortgageCalculator } from "@/components/calculators/MortgageCalculator";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
-import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { Callout, KeyFigure, Sources, type FaqItem, type RelatedGuide } from "@/components/guide";
+import { SITE_URL } from "@/lib/constants";
+import { AVERAGE_NEW_VARIABLE_RATE, F6_RATE_CAVEAT, F6_SOURCE, describeF6 } from "@/lib/data/rba-lending-rates";
+import { monthlyRepayment } from "@/lib/utils/repayment";
+
+// The 25- against 30-year example in the FAQ, worked rather than typed.
+const PAY_30 = monthlyRepayment(600_000, 6, 30);
+const PAY_25 = monthlyRepayment(600_000, 6, 25);
+const INTEREST_30 = PAY_30 * 360 - 600_000;
+const INTEREST_25 = PAY_25 * 300 - 600_000;
+const roundTo = (n: number, step: number) => Math.round(n / step) * step;
+const usd = (n: number) => `$${n.toLocaleString("en-AU")}`;
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Mortgage Repayment Calculator",
@@ -12,7 +22,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   slug: "mortgage-calculator",
   schemaName: "Mortgage Repayment Calculator",
   schemaDescription: "Calculate Australian mortgage repayments, total interest, and full amortization schedule.",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-11",
   persona: "first-home",
 };
 
@@ -64,7 +74,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How does loan term affect total interest?",
     answer:
-      "A longer loan term means lower monthly repayments but dramatically higher total interest. A 25-year loan vs a 30-year loan on $600,000 at 6% saves around $130,000 in total interest, though the monthly repayments are about $300 higher. Use the calculator to compare.",
+      `A longer loan term means lower monthly repayments but dramatically higher total interest. A 25-year loan vs a 30-year loan on $600,000 at 6% saves around ${usd(roundTo(INTEREST_30 - INTEREST_25, 5_000))} in total interest, though the monthly repayments are about ${usd(roundTo(PAY_25 - PAY_30, 10))} higher. Use the calculator to compare.`,
   },
 ];
 
@@ -87,6 +97,11 @@ export default function MortgageCalculatorPage() {
       intent="buying"
       explainer={
         <>
+          <p>
+            The calculator opens at {describeF6(AVERAGE_NEW_VARIABLE_RATE)}, {F6_RATE_CAVEAT}.
+            Enter the rate your lender quotes you.
+          </p>
+
           <h2>What you&rsquo;re actually paying for</h2>
           <p>
             Every monthly mortgage repayment is split between two things: a chunk
@@ -160,6 +175,16 @@ export default function MortgageCalculatorPage() {
             compare 30+ lenders for you in one process.{" "}
             <Link href="/find-an-expert?intent=refinancing">Get connected</Link> if you want a free intro to one.
           </p>
+
+          <Sources
+            items={[
+              {
+                label: F6_SOURCE.name,
+                href: F6_SOURCE.url,
+                note: `series ${AVERAGE_NEW_VARIABLE_RATE.series}, ${AVERAGE_NEW_VARIABLE_RATE.period}; published ${F6_SOURCE.published}, read ${F6_SOURCE.readOn}. The calculator's starting rate.`,
+              },
+            ]}
+          />
         </>
       }
     />

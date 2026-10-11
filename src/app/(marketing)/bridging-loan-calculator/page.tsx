@@ -15,6 +15,7 @@ import {
   defaultBridgingInput,
 } from "@/lib/bridging-calc";
 import { PUBLISHED_CAPITALISED_RATES } from "@/lib/data/bridging-lenders";
+import { AVERAGE_NEW_VARIABLE_RATE, F6_RATE_CAVEAT, F6_SOURCE } from "@/lib/data/rba-lending-rates";
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Bridging loan calculator",
@@ -25,7 +26,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   schemaName: "Bridging Loan Calculator",
   schemaDescription:
     "Estimate an Australian bridging loan: stamp duty on the purchase, peak debt and its LVR, capitalised interest on the bridged amount, end debt, monthly repayments and the cost against selling first.",
-  updatedAt: "2026-10-06",
+  updatedAt: "2026-10-11",
   persona: "upgrading",
 };
 
@@ -158,7 +159,9 @@ export default function BridgingLoanCalculatorPage() {
             </li>
             <li>
               <strong>End debt</strong> is peak debt less the net sale proceeds. The monthly repayment assumes a 30-year
-              principal and interest loan at {EXAMPLE_ONGOING_RATE}%, which you can change.
+              principal and interest loan at {EXAMPLE_ONGOING_RATE}%, the average rate on{" "}
+              {AVERAGE_NEW_VARIABLE_RATE.measure} in {AVERAGE_NEW_VARIABLE_RATE.period} (RBA table F6, published{" "}
+              {F6_SOURCE.published}), {F6_RATE_CAVEAT}, which you can change.
             </li>
           </ul>
 

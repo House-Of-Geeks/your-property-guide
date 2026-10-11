@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { DollarSign, Info, TrendingDown, AlertCircle, CheckCircle } from "lucide-react";
 import { formatPriceFull } from "@/lib/utils/format";
+import { AVERAGE_NEW_VARIABLE_RATE, REFINANCE_EXAMPLE_CURRENT_RATE } from "@/lib/data/rba-lending-rates";
 
 function calcMonthlyRepayment(principal: number, annualRate: number, termYears: number): number {
   const r = annualRate / 100 / 12;
@@ -60,8 +61,10 @@ function computeRefinancing(inputs: {
 
 export function RefinancingCalculator() {
   const [loanBalance, setLoanBalance] = useState(400_000);
-  const [currentRate, setCurrentRate] = useState(6.5);
-  const [newRate, setNewRate] = useState(5.9);
+  // Example rates: the new loan at the average rate on new owner-occupier
+  // variable loans (RBA table F6), the current one half a point above it.
+  const [currentRate, setCurrentRate] = useState(REFINANCE_EXAMPLE_CURRENT_RATE);
+  const [newRate, setNewRate] = useState(AVERAGE_NEW_VARIABLE_RATE.rate);
   const [remainingTermYears, setRemainingTermYears] = useState(25);
   const [exitFee, setExitFee] = useState(300);
   const [establishmentFee, setEstablishmentFee] = useState(600);

@@ -2,8 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { RefinancingCalculator } from "@/components/calculators/RefinancingCalculator";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
-import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
+import { Callout, KeyFigure, Sources, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
+import {
+  AVERAGE_NEW_VARIABLE_RATE,
+  AVERAGE_OUTSTANDING_VARIABLE_RATE,
+  F6_RATE_CAVEAT,
+  F6_SOURCE,
+  REFINANCE_EXAMPLE_CURRENT_RATE,
+  REFINANCE_EXAMPLE_GAP,
+  describeF6,
+} from "@/lib/data/rba-lending-rates";
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Refinancing Calculator",
@@ -12,7 +21,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   slug: "refinancing-calculator",
   schemaName: "Refinancing Calculator",
   schemaDescription: "Calculate savings from refinancing your home loan and your break-even point.",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-11",
   persona: "upgrading",
 };
 
@@ -84,6 +93,14 @@ export default function RefinancingCalculatorPage() {
       intent="buying"
       explainer={
         <>
+          <p>
+            The calculator opens with a new loan at {describeF6(AVERAGE_NEW_VARIABLE_RATE)}, and a current
+            rate {REFINANCE_EXAMPLE_GAP} points higher, {REFINANCE_EXAMPLE_CURRENT_RATE}%, as an illustration.
+            In {AVERAGE_OUTSTANDING_VARIABLE_RATE.period} the average rate on {AVERAGE_OUTSTANDING_VARIABLE_RATE.measure} was{" "}
+            {AVERAGE_OUTSTANDING_VARIABLE_RATE.rate}% (RBA table F6), so on average existing borrowers paid about what new
+            ones did: the saving depends on your own rate. Both figures are {F6_RATE_CAVEAT}. Enter your own.
+          </p>
+
           <h2>Should you refinance your home loan?</h2>
           <p>
             Refinancing can save tens of thousands of dollars over the life of a
@@ -156,6 +173,16 @@ export default function RefinancingCalculatorPage() {
             <Link href="/find-an-expert?intent=refinancing">Get connected</Link> if
             you want a free intro to one.
           </p>
+
+          <Sources
+            items={[
+              {
+                label: F6_SOURCE.name,
+                href: F6_SOURCE.url,
+                note: `series ${AVERAGE_NEW_VARIABLE_RATE.series} and ${AVERAGE_OUTSTANDING_VARIABLE_RATE.series}, ${AVERAGE_NEW_VARIABLE_RATE.period}; published ${F6_SOURCE.published}, read ${F6_SOURCE.readOn}. The calculator's example rates.`,
+              },
+            ]}
+          />
         </>
       }
     />

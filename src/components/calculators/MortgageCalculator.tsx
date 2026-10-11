@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { DollarSign, Info, TrendingDown, ChevronDown, ChevronUp } from "lucide-react";
 import { formatPriceFull } from "@/lib/utils/format";
+import { AVERAGE_NEW_VARIABLE_RATE } from "@/lib/data/rba-lending-rates";
 
 type RepaymentFrequency = "monthly" | "fortnightly" | "weekly";
 type LoanType = "principal-interest" | "interest-only";
@@ -90,7 +91,8 @@ function computeMortgage(
 
 export function MortgageCalculator() {
   const [loanAmount, setLoanAmount] = useState(500_000);
-  const [interestRate, setInterestRate] = useState(6.5);
+  // The average rate on new owner-occupier variable loans, RBA table F6 (src/lib/data/rba-lending-rates.ts).
+  const [interestRate, setInterestRate] = useState(AVERAGE_NEW_VARIABLE_RATE.rate);
   const [termYears, setTermYears] = useState(30);
   const [frequency, setFrequency] = useState<RepaymentFrequency>("monthly");
   const [loanType, setLoanType] = useState<LoanType>("principal-interest");

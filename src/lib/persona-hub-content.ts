@@ -253,7 +253,7 @@ const INVESTING: PersonaHubContent = {
     {
       question: "How much does it cost to hold an investment property each year?",
       answer:
-        "Roughly: mortgage interest (currently around 6.5% on investor loans), council rates ($2,000-$5,000), insurance ($1,500-$3,000), property management (7-10% of rent), maintenance (1% of property value as a rule of thumb), and strata if applicable ($3,000-$8,000 a year). For a $700,000 property on an 80% loan, you're looking at $45,000-$55,000 in annual holding costs before rental income offsets it.",
+        "Roughly: mortgage interest (6.4% was the average rate on new investor variable loans in August 2026, RBA table F6, before the 29 September 2026 cash rate rise), council rates ($2,000-$5,000), insurance ($1,500-$3,000), property management (7-10% of rent), maintenance (1% of property value as a rule of thumb), and strata if applicable ($3,000-$8,000 a year). For a $700,000 property on an 80% loan, you're looking at $45,000-$55,000 in annual holding costs before rental income offsets it.",
     },
     {
       question: "Is it better to invest through a company, trust, or in my own name?",

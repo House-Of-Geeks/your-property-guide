@@ -10,6 +10,7 @@
 //   price       = max loan / 0.8 (assumes a 20% deposit)
 
 import { indicativeHem, type Household, type Region } from "@/lib/data/hem";
+import { AVERAGE_NEW_VARIABLE_RATE } from "@/lib/data/rba-lending-rates";
 
 export type { Household, Region } from "@/lib/data/hem";
 
@@ -38,12 +39,12 @@ export function getHEM(dependants: number, opts: HemOptions = {}): number {
 /**
  * The loan rate the default assessment rate starts from: the average rate on
  * new owner-occupier variable-rate loans, all institutions, in the RBA's
- * statistical table F6 (series FLRHOFVA), July 2026. Update it, and the
- * period below, when the table moves; the calculator, the income table on
- * /borrowing-power-calculator and the guide embed all read it.
+ * statistical table F6 (series FLRHOFVA). It comes from the one dated F6
+ * constant in src/lib/data/rba-lending-rates.ts, which the mortgage,
+ * refinancing and bridging calculators also read; update it there.
  */
-export const REFERENCE_LOAN_RATE = 6.2;
-export const REFERENCE_LOAN_RATE_PERIOD = "July 2026";
+export const REFERENCE_LOAN_RATE = AVERAGE_NEW_VARIABLE_RATE.rate;
+export const REFERENCE_LOAN_RATE_PERIOD = AVERAGE_NEW_VARIABLE_RATE.period;
 /** APRA's minimum serviceability buffer over the loan rate, confirmed at 3 percentage points on 28 May 2026. */
 export const APRA_SERVICEABILITY_BUFFER = 3;
 export const APRA_BUFFER_CONFIRMED = "28 May 2026";
