@@ -42,6 +42,9 @@ export const AUSSIE_GUIDE: SourceRef = {
   read: "11 October 2026",
 };
 
+/** Aussie's own words on the cost, as read on 11 October 2026. */
+export const AUSSIE_VALUATION_QUOTE = "A standard residential valuation may cost around $300 to $600";
+
 export const API_INDICATIVE_FEES_2026: readonly { kind: string; low: number; high: number }[] = [
   { kind: "Desktop valuation", low: 220, high: 385 },
   { kind: "Kerbside valuation", low: 330, high: 495 },
@@ -88,3 +91,104 @@ export function valuationCostCited(): string {
 export function cite(src: SourceRef, short: string): string {
   return `${short}, ${src.updated ? `updated ${src.updated}` : `read ${src.read}`}`;
 }
+
+/**
+ * Free online property value estimators, each described from its own page
+ * as read on the date given. Listed alphabetically, not ranked: no source
+ * compares their accuracy. Left out: realestate.com.au's realEstimate (its
+ * site could not be opened to check on 11 Oct 2026; property.com.au's
+ * PropTrack estimate is listed) and NAB (its former free report page now
+ * redirects to a research hub with no report, 11 Oct 2026).
+ */
+export interface FreeEstimator {
+  name: string;
+  runBy: string;
+  /** Whose model or data, as the page names it. */
+  data: string;
+  /** What you enter and how you get the figure. */
+  access: string;
+  /** What the page says the figure is, in its own words where quoted. */
+  says: string;
+  href: string;
+  read: string;
+}
+
+export const FREE_ESTIMATORS: readonly FreeEstimator[] = [
+  {
+    name: "ANZ Property Profile Report",
+    runBy: "ANZ (bank)",
+    data: "PropTrack price range estimate",
+    access: "Enter the property details and choose a report type; the report is emailed in minutes",
+    says: "\"NOT a valuation which may be required to assess how much a bank is willing to lend you\"",
+    href: "https://www.anz.com.au/personal/home-loans/calculators-tools/property-profile-reports/",
+    read: "11 October 2026",
+  },
+  {
+    name: "Aussie Property Report",
+    runBy: "Aussie (mortgage broker)",
+    data: "Not named on the page",
+    access: "Enter an address; free; log in to see earlier reports",
+    says: "\"Value estimates (as well as ranges)\"; Aussie's own guide calls an online estimate \"an initial indication\"",
+    href: "https://www.aussie.com.au/property-report/",
+    read: "11 October 2026",
+  },
+  {
+    name: "CommBank Property Insights",
+    runBy: "Commonwealth Bank (bank)",
+    data: "Cotality",
+    access: "Enter an address and the reason for the report; unlimited reports after an appointment with a home lending specialist",
+    says: "\"The estimate is not a valuation\"; estimates \"do not include property inspections\"",
+    href: "https://www.commbank.com.au/retail/netbank/home-buying/tools/property-insights",
+    read: "11 October 2026",
+  },
+  {
+    name: "Domain Home Price Guide",
+    runBy: "Domain (property portal)",
+    data: "Pricefinder, with state and territory sales records and agents' data",
+    access: "Search any address on the website or app",
+    says: "A price estimate range marked High, Medium or Low accuracy; \"less accurate if the property is unique\" or has few similar sales (help article, 26 May 2026)",
+    href: "https://help.domain.com.au/hc/en-au/articles/360018043914-Home-Price-Guide-Property-Profile-overview-FAQ-s",
+    read: "11 October 2026",
+  },
+  {
+    name: "OpenAgent OpenEstimates",
+    runBy: "OpenAgent",
+    data: "\"Property databases\", not named, plus your own rating of the property's condition",
+    access: "Enter an address and answer questions about the property; free",
+    says: "\"Property price predictions are estimates, not valuations\"",
+    href: "https://www.openagent.com.au/openestimates",
+    read: "11 October 2026",
+  },
+  {
+    name: "property.com.au",
+    runBy: "property.com.au (property portal)",
+    data: "PropTrack",
+    access: "Search an address; no estimate where there is too little data",
+    says: "Estimates \"serve as indicative guidelines\"",
+    href: "https://help.property.com.au/hc/en-au/articles/8004304203673-Why-can-t-I-see-an-estimated-value-of-a-property",
+    read: "11 October 2026",
+  },
+];
+
+/** What a valuer may consider for a residential property, as Aussie lists it (updated 1 October 2026). */
+export const VALUER_CONSIDERS: readonly string[] = [
+  "Location and local market conditions",
+  "Land and dwelling size",
+  "Property layout, aspect and topography",
+  "Features such as bedrooms, a pool or updated kitchen",
+  "Building condition and structure",
+  "Council zoning and planning restrictions",
+  "Heritage status",
+  "Damage or faults",
+  "Relevant title information, caveats or encumbrances",
+  "Property access",
+];
+
+/** NSW land values: the NSW Government's page, with its search. */
+export const NSW_LAND_VALUES: SourceRef & { published: string; asAt: string } = {
+  label: "NSW Government: Land values in NSW",
+  href: "https://www.nsw.gov.au/housing-and-construction/land-values-nsw",
+  read: "11 October 2026",
+  published: "November 2025",
+  asAt: "1 July 2025",
+};

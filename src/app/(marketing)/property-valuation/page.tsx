@@ -8,6 +8,17 @@ import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { COVERAGE_CAVEAT } from "@/lib/match-coverage";
+import {
+  API_INDICATIVE_FEES_2026,
+  AUSSIE_GUIDE,
+  AUSSIE_VALUATION_QUOTE,
+  FREE_ESTIMATORS,
+  NSW_LAND_VALUES,
+  VALUATION_COST,
+  VALUER_CONSIDERS,
+  valuationCostCited,
+  valuationCostRange,
+} from "@/lib/data/appraisal-sources";
 
 // Commercial intent review 3.4 (30 Sep 2026): the "property valuation" and
 // "property value" family is 101 Keyword Planner terms over 500 a month,
@@ -24,11 +35,14 @@ const PATH = "/property-valuation";
 // The <title> stays inside the ~60-character SERP budget before the
 // " | Your Property Guide" suffix; the long form is the H1 and the WebPage
 // name (tests/seo/titles.test.ts).
-const TITLE = "Property Valuation Australia: Appraisal vs Estimate (2026)";
-const HEADLINE = "Property Valuation in Australia: Appraisal vs Valuation vs Online Estimate (2026)";
+// Section 3.3 of the 10 Oct 2026 review: the title names the free
+// estimators now that the page compares them in a table.
+const TITLE = "Property Valuation Australia: Free Estimates Compared (2026)";
+const HEADLINE = "Property Valuation in Australia: Appraisal, Valuation and Free Online Estimates Compared (2026)";
 const DESCRIPTION =
-  "Appraisal, licensed valuation ($300 to $600) or online estimate: what each is for, when a lender needs one, and a suburb range from published sales medians.";
+  `Appraisal, licensed valuation (${valuationCostRange()}) or free online estimate: six free estimators compared, what each is for, and when a lender needs a valuation.`;
 const PUBLISHED = "2026-09-30";
+const MODIFIED = "2026-10-11";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -42,14 +56,13 @@ export const metadata: Metadata = {
 // range two lenders' guides publish; the free-report facts are read from the
 // banks' own pages; the land-value definition is the NSW Government's.
 const SOURCES: { label: string; href: string; note: string }[] = [
-  { label: "Aussie (Lendi Group): Property appraisals vs valuations, what's the difference?", href: "https://www.aussie.com.au/insights/articles/property-appraisals-vs-valuations-difference/", note: "31 January 2025. Valuation cost $300 to $600; who can provide each; when a valuation is needed." },
-  { label: "ANZ: Getting a property valuation, what it is and when you might need one", href: "https://www.anz.com.au/personal/home-loans/tips-and-guides/property-valuation-what-it-is-and-when-you-might-need-one/", note: "Read 30 September 2026. $300 to $600; an appraisal cannot be used for a home loan application." },
+  { label: AUSSIE_GUIDE.label, href: AUSSIE_GUIDE.href, note: `Updated ${AUSSIE_GUIDE.updated}, read ${AUSSIE_GUIDE.read}. "${AUSSIE_VALUATION_QUOTE}"; the Australian Property Institute's 2026 indicative fees by type; who provides each figure; when a valuation is needed; what a valuer considers.` },
+  { label: VALUATION_COST.source.label, href: VALUATION_COST.source.href, note: `Read ${VALUATION_COST.source.read}. "${VALUATION_COST.quote}"; an appraisal "cannot be used for your home loan application".` },
   { label: "NAB: Understanding bank valuations on your property", href: "https://www.nab.com.au/personal/life-moments/home-property/buy-next-home/valuations", note: "Read 30 September 2026. When a lender orders a valuation; inside or from the street." },
   { label: "NAB: The costs of refinancing your home loan", href: "https://www.nab.com.au/personal/life-moments/home-property/pay-off-home-loan/cost-refinance-home-loan", note: "Read 30 September 2026. Some lenders include the valuation in the application fee or cover it." },
   { label: "Westpac: What's the cost of refinancing your home loan?", href: "https://www.westpac.com.au/personal-banking/home-loans/refinance/refinance-costs/", note: "Read 30 September 2026. A new lender may need a valuation; the cost varies." },
-  { label: "CommBank: Property Insights", href: "https://www.commbank.com.au/retail/netbank/home-buying/tools/property-insights", note: "Read 30 September 2026. Estimate from Cotality data; \"the estimate is not a valuation\"." },
-  { label: "ANZ: Property Profile Reports", href: "https://www.anz.com.au/personal/home-loans/calculators-tools/property-profile-reports/", note: "Read 30 September 2026. Free report; PropTrack price range estimate; \"NOT a valuation\"." },
-  { label: "NSW Government: Land values in NSW", href: "https://www.nsw.gov.au/housing-and-construction/land-values-nsw", note: "Land values published November 2025, as at 1 July 2025. Land value is the value of the land only." },
+  ...FREE_ESTIMATORS.map((t) => ({ label: `${t.runBy.replace(/ \(.*\)$/, "")}: ${t.name}`, href: t.href, note: `Read ${t.read}. ${t.data}; ${t.says}.` })),
+  { label: NSW_LAND_VALUES.label, href: NSW_LAND_VALUES.href, note: `Read ${NSW_LAND_VALUES.read}. Land values published ${NSW_LAND_VALUES.published}, as at ${NSW_LAND_VALUES.asAt}, with a search; land value is the value of the land only.` },
   { label: "Your Property Guide: methodology and data sources", href: "/methodology", note: "The state sales feeds behind every suburb median on this site, and the rule that withholds one." },
 ];
 
@@ -61,38 +74,57 @@ const FAQS: { question: string; answer: string }[] = [
   {
     question: "Can I get a free CoreLogic property value report?",
     answer:
-      "Yes, through a bank rather than from CoreLogic itself. CoreLogic now trades as Cotality, and CommBank's Property Insights tool uses Cotality data to give customers who log in to NetBank a property estimate; CommBank's page states that the estimate is not a valuation. ANZ's free Property Profile Report uses PropTrack price ranges instead and says the same. Both are automated estimates built from recorded sales, not an inspection of your home (pages read 30 September 2026).",
+      "Through a bank rather than from CoreLogic itself. CoreLogic now trades as Cotality, and CommBank's Property Insights uses Cotality data: you enter an address and the reason for the report, and the page states that \"the estimate is not a valuation\". ANZ's free Property Profile Report uses PropTrack price ranges instead, is emailed in minutes and says the same. Both are automated estimates built from recorded sales, not an inspection of your home (pages read 11 October 2026).",
   },
   {
     question: "What is the most accurate website for property value?",
     answer:
-      "No website gives you a valuation, and the banks that publish estimates say so on the page: CommBank calls its Cotality-powered figure \"not a valuation\" and ANZ says its PropTrack range is \"NOT a valuation\" (read 30 September 2026). The estimates are built from recorded sales and property attributes, so they are closest on a standard home in a suburb with many sales and widest on anything unusual, and each site runs its own model, so two sites can give different figures for the same address. For a figure you can act on, get two or three agent appraisals; for a figure a lender or a court will accept, pay for a valuation.",
+      "No website gives you a valuation, and the banks that publish estimates say so on the page: CommBank calls its Cotality-powered figure \"not a valuation\" and ANZ says its PropTrack range is \"NOT a valuation\" (read 11 October 2026). The estimates are built from recorded sales and property attributes, so they are closest on a standard home in a suburb with many sales and widest on anything unusual, and each site runs its own model, so two sites can give different figures for the same address. For a figure you can act on, get two or three agent appraisals; for a figure a lender or a court will accept, pay for a valuation.",
   },
   {
     question: "How much do property valuations charge?",
     answer:
-      "A valuation by a licensed valuer typically costs $300 to $600, depending on your location, the size of the property and other factors (Aussie, 31 January 2025; ANZ, read 30 September 2026). When a lender orders the valuation for a home loan or a refinance the cost varies: some lenders include it in the application fee and some cover it themselves (NAB and Westpac refinancing pages, read 30 September 2026). An agent's appraisal is free.",
+      `A valuation by a licensed valuer typically costs ${valuationCostCited()}, depending on the property, its location and the valuer. Aussie's guide (updated 1 October 2026) quotes the Australian Property Institute's 2026 indicative fees including GST: ${API_INDICATIVE_FEES_2026.map((f) => `${f.kind.toLowerCase()} $${f.low} to $${f.high}`).join(", ")}. When a lender orders the valuation for a home loan or a refinance the cost varies: some lenders include it in the application fee and some cover it themselves (NAB and Westpac refinancing pages, read 30 September 2026). An agent's appraisal is free.`,
   },
   {
     question: "How do I check what my property is worth?",
     answer:
-      "Start with the published median for your suburb and dwelling type: the range tool on this page shows it with its source and period wherever a state sales feed publishes one, with 15% either side as a band. Then look up sold prices, not asking prices, for homes like yours from the last 90 days, and ask two or three agents who sell in your suburb for a free appraisal backed by those comparable sales. If a lender, a court or the tax office needs the figure, order a valuation from a licensed valuer, which costs $300 to $600 (Aussie, January 2025).",
+      `Start with the published median for your suburb and dwelling type: the range tool on this page shows it with its source and period wherever a state sales feed publishes one, with 15% either side as a band. Then look up sold prices, not asking prices, for homes like yours from the last 90 days, and ask two or three agents who sell in your suburb for a free appraisal backed by those comparable sales. If a lender, a court or the tax office needs the figure, order a valuation from a licensed valuer, which typically costs ${valuationCostCited()}.`,
   },
   {
     question: "Will a lender accept an agent's appraisal instead of a valuation?",
     answer:
-      "No. ANZ's guide puts it plainly: an appraisal has no legal standing and cannot be used for your home loan application (read 30 September 2026). When you buy, refinance or draw on equity, the lender arranges its own valuation, and the valuer may need to inspect inside or may value the property from the street (NAB, read 30 September 2026). The lender's figure exists to protect the lender, so it usually sits below an agent's appraisal.",
+      "No. ANZ's guide puts it plainly: an appraisal has no legal standing and cannot be used for your home loan application (read 11 October 2026). When you buy, refinance or draw on equity, the lender arranges its own valuation, and the valuer may need to inspect inside or may value the property from the street (NAB, read 30 September 2026). The lender's figure exists to protect the lender, so it usually sits below an agent's appraisal.",
   },
   {
     question: "Is the land value on my rates notice a valuation of my property?",
     answer:
       "No. In New South Wales the Valuer General issues a land value each year as at 1 July; the latest, published in November 2025, is as at 1 July 2025. The NSW Government's page states that land value is the value of the land only and does not include the value of a home or other structures. It is used for land tax and council rates. A market valuation of the property includes the house, so the two figures are not comparable, and the same distinction applies to the statutory values the other states issue.",
   },
+  {
+    question: "Can I find land values online in NSW?",
+    answer: `Yes. The NSW Government's Land values in NSW page links to a search for the land value of any NSW property. The Valuer General published the latest values in ${NSW_LAND_VALUES.published}, as at ${NSW_LAND_VALUES.asAt}. A land value covers the land only, not the home on it, so it is not what the property would sell for (read ${NSW_LAND_VALUES.read}).`,
+  },
+  {
+    question: "How accurate is a real estate property value estimate?",
+    answer:
+      "It depends on the property and the data. Domain marks each estimate High, Medium or Low accuracy and says estimates are less accurate for a unique property or one with few similar sales nearby; OpenAgent says a thin record can put its figure off; ANZ says its range can change daily. None of the six estimators in the table above calls its figure a valuation (pages read 11 October 2026). Treat an estimate as a starting range and check it against sold prices and two or three agent appraisals.",
+  },
+  {
+    question: "Who gives the most accurate home value estimate?",
+    answer:
+      "No one can say from what is published. The free estimators run different models (PropTrack, Cotality, Pricefinder and others) and we found no independent comparison of their accuracy, so the table above lists them alphabetically, not ranked. For one address, compare two or three of them: where they agree and the sold prices nearby support the figure, it is a fair starting point; where they disagree, an agent's appraisal or a valuation settles it.",
+  },
+  {
+    question: "How do I find the market value of a property?",
+    answer:
+      "Start with sold prices for similar homes nearby, then the suburb's published median (the range block on this page shows it with its source and period), then two or three agent appraisals backed by comparable sales. Where the three point the same way, you have a market value range. Where someone else has to rely on the figure, such as a lender or a court, a licensed valuer's report is the figure that counts.",
+  },
 ];
 
 const THREE_NUMBERS: { row: string; appraisal: string; valuation: string; estimate: string }[] = [
-  { row: "Who produces it", appraisal: "A licensed real estate agent who sells in your suburb", valuation: "A qualified, licensed valuer (Aussie, January 2025)", estimate: "An automated valuation model run by a data company such as Cotality or PropTrack, or a portal" },
-  { row: "What it costs", appraisal: "Free", valuation: "$300 to $600 (Aussie, January 2025; ANZ)", estimate: "Free, usually behind a login" },
+  { row: "Who produces it", appraisal: "A licensed real estate agent who sells in your suburb", valuation: "An appropriately qualified property valuer (Aussie)", estimate: "An automated valuation model run by a data company such as Cotality or PropTrack, or a portal" },
+  { row: "What it costs", appraisal: "Commonly free (Aussie, ANZ)", valuation: valuationCostCited(), estimate: "Free (see the table of estimators below)" },
   { row: "What it is for", appraisal: "Deciding whether and when to sell, and at what price", valuation: "Home loans, refinancing and equity release, family law settlements, deceased estates and disputes (Aussie)", estimate: "A first look before you talk to anyone" },
   { row: "How it is made", appraisal: "An inspection plus recent comparable sales", valuation: "An inspection, inside or from the street, plus sales evidence, written to a professional standard", estimate: "Statistics over recorded sales and property attributes; nobody inspects the home" },
   { row: "Legal standing", appraisal: "None: \"cannot be used for your home loan application\" (ANZ)", valuation: "Accepted by lenders and courts", estimate: "None: \"not a valuation\" (CommBank, ANZ)" },
@@ -108,7 +140,7 @@ const WEBPAGE_JSON_LD = {
   description: DESCRIPTION,
   inLanguage: "en-AU",
   datePublished: PUBLISHED,
-  dateModified: PUBLISHED,
+  dateModified: MODIFIED,
   isPartOf: { "@type": "WebSite", url: SITE_URL, name: SITE_NAME },
   publisher: { "@type": "Organization", "@id": `${SITE_URL}#organization`, name: SITE_NAME, url: SITE_URL },
   about: [
@@ -142,15 +174,14 @@ export default function PropertyValuationPage() {
               </div>
               <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl mb-6 font-medium">
                 Property valuation in Australia:{" "}
-                <span className="italic font-light text-primary">appraisal vs valuation vs online estimate</span> (2026)
+                <span className="italic font-light text-primary">appraisal, valuation and free online estimates compared</span> (2026)
               </h1>
               <div className="space-y-4 font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-2xl">
                 <p>
                   Ask what a property is worth in Australia and you get three different numbers. A real estate
                   agent&rsquo;s appraisal is free and tells you what a buyer would probably pay now. A valuation is a
                   paid report from a licensed valuer, the only one of the three that a lender, a court or the tax office
-                  will accept, and it typically costs $300 to $600 (Aussie, 31 January 2025; ANZ, read 30 September
-                  2026). An online estimate is a model&rsquo;s figure from recorded sales, and every bank that publishes
+                  will accept, and it typically costs {valuationCostCited()}. An online estimate is a model&rsquo;s figure from recorded sales, and every bank that publishes
                   one says on the page that it is not a valuation.
                 </p>
                 <p>
@@ -238,11 +269,12 @@ export default function PropertyValuationPage() {
             <div className="grid lg:grid-cols-12 gap-10">
               <div className="lg:col-span-7 space-y-4 font-sans text-base text-ink-muted leading-[1.7]">
                 <p>
-                  A valuation can only be carried out by a qualified valuer, and it typically costs between $300 and $600
-                  depending on your location, the size of the property and other factors. That figure comes from
-                  Aussie&rsquo;s guide of 31 January 2025 and is repeated in ANZ&rsquo;s valuation guide as read on 30
-                  September 2026. Because the price turns on the location and the size of the property, ask for a quote
-                  before you book.
+                  A valuation is carried out by a qualified valuer, and most cost {valuationCostRange()}, depending on the
+                  property, its location and the valuer (ANZ&rsquo;s valuation guide, read {VALUATION_COST.source.read}).
+                  Aussie&rsquo;s guide (updated {AUSSIE_GUIDE.updated}) gives the same range for a standard residential
+                  valuation and quotes the Australian Property Institute&rsquo;s 2026 indicative fees including GST:{" "}
+                  {API_INDICATIVE_FEES_2026.map((f) => `${f.kind.toLowerCase()} $${f.low} to $${f.high}`).join(", ")}.
+                  Ask for a written quote before you book.
                 </p>
                 <p>
                   You need one when someone other than you has to rely on the figure. Aussie lists the common cases:
@@ -276,7 +308,7 @@ export default function PropertyValuationPage() {
                   <dl className="space-y-4 font-sans text-sm">
                     <div>
                       <dt className="font-medium text-ink">Cost of a licensed valuation</dt>
-                      <dd className="text-ink-muted">$300 to $600, by location and property size. Aussie, 31 January 2025; ANZ, read 30 September 2026.</dd>
+                      <dd className="text-ink-muted">{valuationCostCited()}. A full residential valuation ${API_INDICATIVE_FEES_2026[2].low} to ${API_INDICATIVE_FEES_2026[2].high} (API 2026 indicative fees, via Aussie).</dd>
                     </div>
                     <div>
                       <dt className="font-medium text-ink">When a lender orders one</dt>
@@ -342,16 +374,81 @@ export default function PropertyValuationPage() {
             </div>
           </div>
 
+          <div id="free-estimators" className="scroll-mt-24">
+            <p className="font-display italic text-primary text-base mb-3 leading-none">The free ones</p>
+            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
+              Free property value estimators compared
+            </h2>
+            <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-3xl mb-6">
+              Six free online estimators, each described from its own page as read on {FREE_ESTIMATORS[0].read}. They are
+              listed alphabetically, not ranked: none publishes its accuracy in a form you can compare, and every one of
+              them gives an estimate, not a valuation.
+            </p>
+            <div className="overflow-x-auto rounded-2xl border border-line">
+              <table className="w-full min-w-[820px] font-sans text-sm text-left border-collapse">
+                <thead className="bg-surface-warm">
+                  <tr>
+                    <th scope="col" className="px-4 py-3 font-medium text-ink">Estimator</th>
+                    <th scope="col" className="px-4 py-3 font-medium text-ink">Data or model</th>
+                    <th scope="col" className="px-4 py-3 font-medium text-ink">What you enter</th>
+                    <th scope="col" className="px-4 py-3 font-medium text-ink">What the page says the figure is</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-line">
+                  {FREE_ESTIMATORS.map((t) => (
+                    <tr key={t.name} className="align-top">
+                      <th scope="row" className="px-4 py-3 font-medium text-ink">
+                        <a href={t.href} className={linkClass} rel="noopener" target="_blank">{t.name}</a>
+                        <span className="block text-xs font-normal text-ink-subtle mt-0.5">{t.runBy}</span>
+                      </th>
+                      <td className="px-4 py-3 text-ink-muted leading-relaxed">{t.data}</td>
+                      <td className="px-4 py-3 text-ink-muted leading-relaxed">{t.access}</td>
+                      <td className="px-4 py-3 text-ink-muted leading-relaxed">{t.says}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-4 font-sans text-xs text-ink-subtle leading-relaxed max-w-3xl">
+              Each page read {FREE_ESTIMATORS[0].read}; check it before you rely on it. Not listed: realestate.com.au&rsquo;s
+              estimate, whose page we could not open to check, and NAB, whose former free report page now leads to a
+              research hub without one.
+            </p>
+          </div>
+
+          <div id="what-a-valuer-considers" className="scroll-mt-24">
+            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
+              What a valuer looks at, and what lowers a valuation
+            </h2>
+            <p className="font-sans text-base text-ink-muted leading-[1.7] max-w-3xl mb-4">
+              Aussie&rsquo;s guide (updated {AUSSIE_GUIDE.updated}) lists what a valuer may consider for a home. Anything on
+              the list that compares badly with the recent sales nearby, such as damage or faults, a restrictive zoning or
+              title encumbrance, or poor access, pulls the figure down:
+            </p>
+            <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-2 font-sans text-base text-ink-muted leading-relaxed max-w-3xl">
+              {VALUER_CONSIDERS.map((item) => (
+                <li key={item} className="flex gap-3">
+                  <CheckCircle className="w-4 h-4 mt-1 flex-shrink-0 text-cta" aria-hidden="true" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 font-sans text-base text-ink-muted leading-[1.7] max-w-3xl">
+              The same guide notes that renovation costs don&rsquo;t necessarily translate dollar for dollar into a higher
+              valuation.
+            </p>
+          </div>
+
           <div id="how-to-check" className="scroll-mt-24">
             <p className="font-display italic text-primary text-base mb-3 leading-none">In order</p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
-              How to check what your property is worth
+              How to find the market value of a property
             </h2>
             <ol className="space-y-3 font-sans text-base text-ink-muted leading-relaxed list-decimal pl-5 max-w-3xl">
               <li>Pick your suburb and dwelling type in the range block above for the published median and its band. That is the suburb, not your home; it anchors everything that follows.</li>
               <li>Look up sold prices, not asking prices, for homes like yours from the last 90 days: similar bedrooms, land and condition. Our <Link href="/sold" className={linkClass}>sold listings</Link> and the suburb pages are a start.</li>
               <li>Get two or three free appraisals from agents who actually sell in your suburb, and ask each for the comparable sales behind the figure. When they cluster, that is your range; when one sits far above the rest, treat it as a pitch.</li>
-              <li>If a lender, a court or the tax office needs the number, book a licensed valuer. Expect $300 to $600 (Aussie, January 2025) and a written report you can hand over.</li>
+              <li>If a lender, a court or the tax office needs the number, book a licensed valuer. Expect {valuationCostCited()} and a written report you can hand over.</li>
               <li>Before you list, run the figure through the <Link href="/selling-costs-calculator" className={linkClass}>selling costs calculator</Link> so you know what you keep, then read <Link href="/guides/how-to-choose-a-selling-agent" className={linkClass}>how to choose a selling agent</Link>.</li>
             </ol>
           </div>
