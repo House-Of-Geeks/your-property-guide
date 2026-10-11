@@ -19,14 +19,16 @@ import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { ATO_REFORM_SOURCE } from "@/lib/data/tax-reform-2027";
 import { nationalRange, pct } from "@/lib/data/commission-rates";
-import { AUCTIONEER, CONVEYANCING, DISCHARGE, MARKETING, lineRange, money, nationalSellingCost } from "@/lib/data/selling-costs";
+import { AUCTIONEER, CONVEYANCING, DISCHARGE, MARKETING, STATE_DOCUMENTS, lineRange, money, nationalSellingCost } from "@/lib/data/selling-costs";
+import { STATE_NAMES, STATE_ORDER } from "@/lib/data/commission-rates";
+import { ScrollTable } from "@/components/guide";
 
 // Selling-cost figures come from the shared data (commercial-intent review, 10 Oct 2026, selling 0.3).
 const N = nationalRange();
 const COST = nationalSellingCost(800_000);
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "How to Sell a House in Australia (2026)",
+  title: "How to Sell a House in Australia (2026): Steps and Costs",
   description:
     "A step-by-step guide to selling residential property in Australia: deciding when to sell, choosing the right agent, setting price, the auction vs private treaty decision, the campaign, contracts and settlement.",
   slug: "how-to-sell-a-house-australia",
@@ -64,7 +66,7 @@ const TLDR = [
   "Auction works best for properties with broad appeal in active markets; private treaty suits unique homes, quieter markets, or sellers who want price certainty.",
   `Selling an $800,000 house costs ${money(COST.low)} to ${money(COST.high)} across the states before GST on the commission (${COST.lowPct}% to ${COST.highPct}%): agent commission, marketing, conveyancing and your state's documents, plus capital gains tax on an investment.`,
   "The legal stack varies by state. VIC needs a Section 32, NSW a contract with prescribed documents, QLD a disclosure statement from 2025. Get your conveyancer engaged before the agent.",
-  "Cosmetic presentation (cleaning, decluttering, styling) returns 3 to 10× its cost. Structural fixes rarely pay for themselves at sale.",
+  "Spend on presentation (cleaning, decluttering, paint, styling) before renovation: structural work rarely pays for itself at sale.",
 ];
 
 const TOC: GuideTOCEntry[] = [
@@ -75,7 +77,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "auction-vs-treaty", label: "Auction vs private treaty" },
   { id: "setting-price",     label: "Setting the price" },
   { id: "marketing",         label: "The marketing campaign" },
-  { id: "contracts",         label: "Contracts and legal docs" },
+  { id: "contracts",         label: "Before you advertise: each state" },
   { id: "negotiating",       label: "Negotiating offers" },
   { id: "settlement",        label: "Settlement day" },
   { id: "tax",               label: "Capital gains tax" },
@@ -90,7 +92,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Do I need a conveyancer or solicitor to sell?",
     answer:
-      "Yes. Every Australian state legally requires the seller to provide a contract of sale (called a Section 32 in Victoria, a disclosure statement in Queensland from 2025, and a contract with prescribed annexures in NSW). A conveyancer or solicitor prepares these documents, handles searches, manages the deposit and settlement, and protects you from contract risks. Engage them before you list, not after. The contract has to be ready when the agent starts marketing.",
+      "In practice, yes. Every sale needs a contract, and most states also require documents from the seller: in NSW the contract with its prescribed documents must exist before the property is offered for sale, Victoria's Section 32 vendor statement goes to the buyer before they sign, Queensland has required a seller disclosure statement since 1 August 2025, South Australia has the Form 1 vendor's statement, and the ACT requires building, pest and energy reports before advertising. WA and the NT require no vendor statement. A conveyancer or solicitor prepares these, handles searches, manages the deposit and settlement, and protects you from contract risks. Engage them before you list.",
   },
   {
     question: "Should I sell or rent out my house?",
@@ -105,7 +107,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I sell my house without an agent?",
     answer:
-      "Yes. It's legal in every state, and \"for sale by owner\" (FSBO) services exist that list your property on realestate.com.au and domain.com.au for a flat fee. The maths only works if you would have paid an agent who couldn't lift the sale price by more than the fee. In practice, experienced agents in active suburbs typically achieve 5 to 15% higher sale prices than FSBO sellers because they manage the buyer pool, negotiate harder, and present the property professionally. FSBO works best for straightforward properties in hot markets where the price is essentially the median.",
+      "Yes. It's legal in every state, and \"for sale by owner\" (FSBO) services exist that list your property on realestate.com.au and domain.com.au for a flat fee. The maths only works if you would have paid an agent who couldn't lift the sale price by more than the fee. Agents earn their fee through the buyer pool they reach, pricing evidence and negotiation, so FSBO suits straightforward properties in active markets where the price is easy to evidence. Our guide to selling privately sets out the costs side by side.",
   },
   {
     question: "Should I sell first or buy first?",
@@ -163,6 +165,15 @@ export default function HowToSellAHouseAustraliaPage() {
       faqs={FAQS}
       related={RELATED}
     >
+      <p className="lead">
+        Selling a house in Australia runs in five steps: get appraisals and
+        appoint one agent in writing, have the contract and your state&rsquo;s
+        disclosure documents prepared (in NSW and the ACT, before you
+        advertise), market the home and take offers, exchange contracts, then
+        settle. In NSW you can cancel the agency agreement until 5 pm on the
+        next business day or Saturday after signing.
+      </p>
+
       <Callout variant="info" title="One page, the whole process">
         <p>
           This guide covers every step from deciding to sell through to
@@ -237,10 +248,12 @@ export default function HowToSellAHouseAustraliaPage() {
 
       <h2 id="preparing-house">Preparing the house</h2>
       <p>
-        Spend money on presentation, not renovation. The data is consistent:
-        cosmetic work (cleaning, decluttering, paint, styling) typically
-        returns 3 to 10× its cost. Structural work (new kitchen, bathroom
-        renovation, extensions) rarely returns its cost at sale. You&rsquo;re
+        Spend money on presentation, not renovation. Cosmetic work (cleaning,
+        decluttering, paint, styling) is cheap and changes how a home
+        photographs and inspects. Structural work (new kitchen, bathroom
+        renovation, extensions) rarely returns its cost at sale. Our guide to{" "}
+        <Link href="/guides/what-to-fix-before-selling-a-house">what to fix before selling a house</Link>{" "}
+        ranks the jobs. You&rsquo;re
         better off pricing the property as-is and letting the buyer choose
         their own finish.
       </p>
@@ -253,7 +266,7 @@ export default function HowToSellAHouseAustraliaPage() {
         <li><strong>Touch-up paint</strong> on scuffed walls and skirting. Full repaint only if multiple rooms are obviously tired.</li>
         <li><strong>Fix obvious defects</strong> a building inspector would flag: leaking taps, loose door handles, cracked tiles, missing flyscreens.</li>
         <li><strong>Garden tidy.</strong> Mowed lawn, edged paths, weeded beds, pressure-washed driveway. Kerb appeal sets the tone for every walk-through.</li>
-        <li><strong>Professional styling</strong> for vacant or sparsely-furnished homes. $3K to $8K for a 6-week campaign, almost always returns 5× to 15× its cost.</li>
+        <li><strong>Professional styling</strong> for vacant or sparsely-furnished homes. Our <Link href="/guides/home-staging-cost-australia">home staging cost guide</Link> covers prices and when it pays.</li>
       </ol>
       <p>
         What <em>not</em> to do: don&rsquo;t renovate the kitchen or bathroom
@@ -265,9 +278,10 @@ export default function HowToSellAHouseAustraliaPage() {
 
       <Callout variant="warning" title="The over-improvement trap">
         <p>
-          Sellers routinely spend $40,000 on a pre-sale renovation expecting
-          to add $80,000 to the sale price, and end up adding $35,000.
-          Cosmetic presentation is high-ROI. Renovation is not. If the kitchen
+          A pre-sale renovation has to add more to the price than it costs, in
+          the few weeks before you list, to be worth doing, and kitchens and
+          bathrooms rarely clear that bar. Cosmetic presentation is cheaper and
+          lower risk. If the kitchen
           is dated, list at a price that reflects that and let the buyer
           decide.
         </p>
@@ -307,7 +321,11 @@ export default function HowToSellAHouseAustraliaPage() {
         anything where competition is plausible. The campaign is short (three
         to four weeks of marketing then auction day), the buyer pool is
         focused, and the unconditional sale on auction day removes
-        post-contract risk.
+        post-contract risk. Our{" "}
+        <Link href="/guides/reserve-price-auction">reserve price guide</Link>{" "}
+        covers how to set the reserve, and Victoria&rsquo;s rule that from
+        16 October 2026 it will have to be published a week before the
+        auction.
       </p>
       <p>
         Auction works less well in quieter markets, for unique properties
@@ -381,16 +399,38 @@ export default function HowToSellAHouseAustraliaPage() {
         sub-$800K property rarely returns the cost.
       </p>
 
-      <h2 id="contracts">Contracts and legal docs</h2>
+      <h2 id="contracts">Before you advertise: what each state requires</h2>
       <p>
-        The legal requirement to sell varies by state:
+        The legal documents a seller must prepare, and when, vary by state.
+        Each row names the government or legislation source; the costs are
+        indicative ranges, quoted individually by conveyancers.
       </p>
-      <ul>
-        <li><strong>VIC:</strong> Section 32 vendor statement, prepared by your conveyancer before the property is advertised. Includes title, encumbrances, planning, rates, and certain disclosures.</li>
-        <li><strong>NSW:</strong> Contract of sale with prescribed annexures (title search, zoning, drainage diagram, etc.) before exchange.</li>
-        <li><strong>QLD:</strong> From 1 August 2025, sellers must provide a prescribed seller disclosure statement before a contract is signed. Pre-2025 contracts were less prescriptive but still required disclosure of certain encumbrances.</li>
-        <li><strong>WA, SA, TAS, ACT, NT:</strong> Each has its own contract form and disclosure regime. Your conveyancer will know the local requirements.</li>
-      </ul>
+      <ScrollTable label="Seller documents by state">
+        <table>
+          <thead>
+            <tr>
+              <th>State</th>
+              <th>What you prepare</th>
+              <th>Indicative cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            {STATE_ORDER.map((st) => {
+              const d = STATE_DOCUMENTS[st];
+              return (
+                <tr key={st}>
+                  <td><strong>{STATE_NAMES[st].replace(/^the /, "")}</strong></td>
+                  <td>
+                    <strong>{d.label}.</strong> {d.note}{" "}
+                    <a href={d.source.href} target="_blank" rel="nofollow noopener">{d.source.label}</a>
+                  </td>
+                  <td>{lineRange(d)}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </ScrollTable>
       <p>
         Engage your{" "}
         <Link href="/guides/conveyancing-guide">conveyancer</Link> <em>before</em>{" "}

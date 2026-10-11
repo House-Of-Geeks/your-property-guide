@@ -21,3 +21,14 @@ describe("how to sell a house: costs (review 10 Oct 2026, selling 0.3 and P8)", 
     expect(src).toContain('<Link href="/guides/cost-of-selling-a-house-australia">what it costs to sell a house</Link>');
   });
 });
+
+describe("how to sell a house: steps (review 10 Oct 2026, selling P8)", () => {
+  it("leads with the five steps, tables each state's documents from the sourced data, and makes no unsourced return claims", () => {
+    expect(src).toContain('title: "How to Sell a House in Australia (2026): Steps and Costs",');
+    expect(src).toContain("Selling a house in Australia runs in five steps");
+    expect(src).toContain('<h2 id="contracts">Before you advertise: what each state requires</h2>');
+    expect(src).toContain("const d = STATE_DOCUMENTS[st];");
+    expect(src).toContain('<Link href="/guides/reserve-price-auction">reserve price guide</Link>');
+    expect(src).not.toMatch(/3 to 10×|5× to 15×|5 to 15% higher|\$40,000 on a pre-sale/);
+  });
+});
