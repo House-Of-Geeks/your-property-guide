@@ -22,8 +22,8 @@ import {
   fmt,
   grantSentence,
 } from "@/lib/data/first-home-grants";
-import { AUSTRALIAN_STATES, calculateStampDuty, STATE_DUTY_SCHEDULES, type AustralianState } from "@/lib/utils/stamp-duty";
-import { FIRST_HOME_SUMMARY } from "@/lib/data/stamp-duty-state";
+import { AUSTRALIAN_STATES, calculateStampDuty, QLD_FIRST_HOME_DEDUCTION, STATE_DUTY_SCHEDULES, type AustralianState } from "@/lib/utils/stamp-duty";
+import { FIRST_HOME_SUMMARY, STAMP_DUTY_GUIDES } from "@/lib/data/stamp-duty-state";
 import { HG_NT_CAP_BEFORE_SPLIT, HG_PRICE_CAPS } from "@/lib/data/home-guarantee";
 import { HTB_INCOME_LIMITS, HTB_INCOME_LIMITS_PREVIOUS, HTB_PRICE_CAPS } from "@/lib/data/help-to-buy";
 import { FHSS_ANNUAL_LIMIT, FHSS_TOTAL_LIMIT, FHSS_TOTAL_LIMIT_BEFORE_2022 } from "@/lib/data/fhss";
@@ -111,7 +111,7 @@ const STATE_PATTERNS: Record<AustralianState, RegExp> = {
 
 const FIRST_HOME_CONTEXT = /grant|FHOG|HomeGrown|first home|first-home|duty relief|exemption|exempt|concession|stamp duty|transfer duty|conveyance duty|land transfer duty/i;
 /** A sentence that dates a figure to the past may quote a superseded one. */
-const PAST = /\bbefore\b|\breplaced\b|\buntil\b|\bapplied\b|\bwas\b|\bwere\b|\bprevious|\bended\b|\bceased\b|\bclosed\b|\bcommenced\b|\bused to\b|\bup until\b|\bto \d{1,2} \w+ 20\d\d|between \d{1,2} \w+ 20\d\d and/i;
+const PAST = /\bbefore\b|\breplaced\b|\buntil\b|\bapplied\b|\bwas\b|\bwere\b|\bprevious|\bended\b|\bceased\b|\bclosed\b|\bcommenced\b|\bused to\b|\bup until\b|\bto \d{1,2} \w+ 20\d\d|between \d{1,2} \w+ 20\d\d and|last settlement date/i;
 
 /** Text a reader (or a crawler reading the JSON-LD) sees, one segment per sentence, list item or table row. */
 export function segments(html: string): string[] {
@@ -148,11 +148,11 @@ function money(raw: string, suffix?: string): number {
 const AMOUNT = String.raw`\$(\d[\d,]*(?:\.\d+)?)\s?(k|K|m|M|million)?\b`;
 /** Amounts written as a threshold or a cap. */
 const THRESHOLD = new RegExp(String.raw`(?:up to|under|below|less than|capped at|caps? of|cap is|not exceed(?:ing)?|exceeds?|over|above|between|at or under|or less than)\s+` + AMOUNT, "g");
-/** "$600,001 to $750,000", "$700,000 and $800,000": both ends of a band. */
-const RANGE = new RegExp(AMOUNT + String.raw`\s+(?:to|and)\s+` + AMOUNT, "g");
+/** "$600,001 to $750,000", "between $700,000 and $800,000": both ends of a band. */
+const RANGE = new RegExp(String.raw`(?:between\s+` + AMOUNT + String.raw`\s+and\s+` + AMOUNT + String.raw`)|(?:` + AMOUNT + String.raw`\s+to\s+` + AMOUNT + ")", "g");
 const CAP_AFTER = new RegExp(AMOUNT + String.raw`\s+(?:price |property value |value )?cap`, "g");
 /** Amounts written as a grant. */
-const GRANT_AFTER = new RegExp(AMOUNT + String.raw`\s+(?:\w+\s+){0,2}(?:First Home Owner|FHOG|first home owner|grant|HomeGrown|cash grant)`, "g");
+const GRANT_AFTER = new RegExp(AMOUNT + String.raw`\s+(?:\w+\s+){0,2}(?:First Home Owner (?:\(New Homes\) )?Grant|first home owner grant|FHOG|grant|HomeGrown|cash grant)`, "g");
 const GRANT_BEFORE = new RegExp(String.raw`(?:grant|FHOG)\s+(?:of|is|was|pays|worth|amount of)\s+(?:up to\s+)?` + AMOUNT, "g");
 
 function claimedFigures(seg: string): number[] {
@@ -160,9 +160,13 @@ function claimedFigures(seg: string): number[] {
   for (const re of [THRESHOLD, CAP_AFTER, GRANT_AFTER, GRANT_BEFORE]) {
     for (const m of seg.matchAll(re)) out.push(money(m[1], m[2]));
   }
-  for (const m of seg.matchAll(RANGE)) out.push(money(m[1], m[2]), money(m[3], m[4]));
-  // "$600,001" is the first dollar of a band that starts at $600,000.
-  return out.filter((n) => n >= 5_000).map((n) => (n % 100 === 1 ? n - 1 : n));
+  for (const m of seg.matchAll(RANGE)) {
+    if (m[1] !== undefined) out.push(money(m[1], m[2]), money(m[3], m[4]));
+    else out.push(money(m[5], m[6]), money(m[7], m[8]));
+  }
+  // "$600,001" is the first dollar of a band that starts at $600,000, and
+  // "$709,999" the last dollar of one that ends at $710,000.
+  return out.filter((n) => n >= 5_000).map((n) => (n % 100 === 1 ? n - 1 : n % 100 === 99 ? n + 1 : n));
 }
 
 function figuresIn(text: string): number[] {
@@ -182,9 +186,16 @@ function currentFor(state: AustralianState, seg: string): Set<number> {
     out.add(d.land.exemptTo);
     if (d.land.concessionTo !== null) out.add(d.land.concessionTo);
   }
-  // The owner-occupier rate's ceiling (Victoria's $550,000 PPR rate) is a duty threshold too.
-  const oo = STATE_DUTY_SCHEDULES[state].ownerOccupier?.upTo;
-  if (oo) out.add(oo);
+  // The engine's bracket edges and the owner-occupier rate's ceiling (Victoria's
+  // $550,000 PPR rate) are duty thresholds too, and Queensland's first home
+  // concession steps down at the engine's band edges.
+  const sch = STATE_DUTY_SCHEDULES[state];
+  for (const b of [...sch.standard.rows, ...(sch.ownerOccupier?.rows ?? [])]) {
+    out.add(b.min);
+    if (b.max !== Infinity) out.add(b.max);
+  }
+  if (sch.ownerOccupier?.upTo) out.add(sch.ownerOccupier.upTo);
+  if (state === "QLD") for (const r of QLD_FIRST_HOME_DEDUCTION) out.add(r.below);
   const hg = HG_PRICE_CAPS[state];
   out.add(hg.capital);
   if (hg.rest !== null) out.add(hg.rest);
@@ -366,4 +377,18 @@ describe("blog posts that quote first home grants or duty relief (they need npm 
     }
     expect(p.content).not.toContain("\u2014");
   });
+});
+
+describe("the eight stamp duty state guides' grant and first home lines", () => {
+  for (const st of AUSTRALIAN_STATES) {
+    it(`${st}: every first home figure is in the data files`, () => {
+      const strings: string[] = [];
+      JSON.stringify(STAMP_DUTY_GUIDES[st], (_k, v) => {
+        if (typeof v === "string") strings.push(v);
+        return v;
+      });
+      const html = strings.map((t) => `<p>${t.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")}</p>`).join("");
+      expect(scan(html, st)).toEqual([]);
+    });
+  }
 });
