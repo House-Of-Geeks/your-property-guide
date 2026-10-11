@@ -21,6 +21,8 @@ function row(over: Partial<CityMarketRow>): CityMarketRow {
     annualGrowthHouse: 4, population: 6000, salesCountHouse: 40, statsSource: "sales-vic", salesUpdatedAt: new Date("2026-08-01T00:00:00Z"), ...over,
   };
 }
+/** The aggregate rules on a handful of rows: a floor of one suburb (tests/lib/city-market.test.ts covers the floor). */
+const ANY = { minSuburbs: 1 };
 const geelongRows: CityMarketRow[] = [
   row({ slug: "belmont-vic-3216", name: "Belmont", postcode: "3216", salesCountHouse: 210, medianHousePrice: 720_000, annualGrowthHouse: 2.5 }),
   row({ slug: "newtown-vic-3220", name: "Newtown", salesCountHouse: 150, medianHousePrice: 1_150_000, annualGrowthHouse: 1.2 }),
@@ -44,8 +46,8 @@ describe("regionDisplayName", () => {
 });
 
 describe("titles and descriptions", () => {
-  const priced = buildCityMarket(geelongRows);
-  const unpriced = buildCityMarket([row({ statsSource: "seed" }), row({ slug: "y", medianHousePrice: 0 })]);
+  const priced = buildCityMarket(geelongRows, ANY);
+  const unpriced = buildCityMarket([row({ statsSource: "seed" }), row({ slug: "y", medianHousePrice: 0 })], ANY);
   it("leads with house prices only where the rollup has a verified median", () => {
     expect(regionHasPrices(priced)).toBe(true);
     expect(regionHasPrices(unpriced)).toBe(false);
@@ -54,7 +56,9 @@ describe("titles and descriptions", () => {
   });
   it("never puts a dollar figure in a title, and prints one in the description only behind the gate", () => {
     expect(regionTitle("Geelong", true)).not.toMatch(/\$/);
-    expect(regionDescription("Geelong", "VIC", priced, 58)).toContain("the median house price in Geelong is $705,000");
+    expect(regionDescription("Geelong", "VIC", priced, 58)).toContain("typical suburb median $705,000 across 4 suburbs");
+    expect(regionDescription("Geelong", "VIC", priced, 58)).not.toMatch(/the median house price in/);
+    expect(regionDescription("Geelong", "VIC", priced, 58).length).toBeLessThanOrEqual(160);
     expect(regionDescription("Anakie", "VIC", unpriced, 2)).not.toMatch(/\$/);
   });
   it("promises growth in a description only where the rollup holds one", () => {
@@ -62,16 +66,19 @@ describe("titles and descriptions", () => {
     expect(priced.medianAnnualGrowth).toBeNull();
     expect(rollupCovers(priced)).toBe("the most affordable and the highest-priced");
     expect(regionDescription("Geelong", "VIC", priced, 58)).not.toMatch(/growth|fastest/);
-    const nsw = buildCityMarket(geelongRows.map((r) => ({ ...r, statsSource: r.statsSource === "seed" ? "seed" : "sales-nsw" })));
+    const nsw = buildCityMarket(geelongRows.map((r) => ({ ...r, statsSource: r.statsSource === "seed" ? "seed" : "sales-nsw" })), ANY);
     expect(nsw.medianAnnualGrowth).toBe(2.8);
-    expect(regionDescription("Newcastle", "NSW", nsw, 41)).toContain("twelve-month growth, the fastest-rising and most affordable suburbs in the Newcastle region");
+    // growth is named only where held; a long description drops the list rather than pass 160 characters
+    expect(rollupCovers(nsw)).toBe("twelve-month growth, the fastest-rising and most affordable");
+    expect(regionDescription("Newcastle", "NSW", nsw, 41)).toBe("Newcastle house prices 2026: typical suburb median $705,000 across 4 suburbs, and house prices by suburb.");
+    expect(regionDescription("Bega Valley", "NSW", nsw, 41).length).toBeLessThanOrEqual(160);
   });
 });
 
 describe("buildRegionFaqs", () => {
   it("answers median, growth, fastest and cheapest from the gated rollup", () => {
     const nswRows = geelongRows.map((r) => ({ ...r, statsSource: r.statsSource === "seed" ? "seed" : "sales-nsw" }));
-    const faqs = buildRegionFaqs("Geelong", "VIC", buildCityMarket(nswRows));
+    const faqs = buildRegionFaqs("Geelong", "VIC", buildCityMarket(nswRows, ANY));
     expect(faqs.map((f) => f.question)).toEqual([
       "What is the median house price in Geelong?",
       "Are Geelong house prices rising?",
@@ -79,35 +86,38 @@ describe("buildRegionFaqs", () => {
       "What are the cheapest suburbs in Geelong?",
     ]);
     expect(faqs[0].answer).toContain("$705,000");
-    expect(faqs[0].answer).toContain("4 suburb-level medians"); // Anakie's three sales are not a median
+    expect(faqs[0].answer).toContain("the median of 4 suburb medians"); // Anakie's three sales are not a median
+    expect(faqs[0].answer).toContain("The typical suburb median house price across the Geelong region");
+    // the source line is the state's (priceSourceLine), never "state valuers-general"
+    expect(faqs[0].answer).toContain("Prices are Land Victoria's quarterly suburb medians.");
     expect(faqs[3].answer).toContain("Corio");
   });
   it("asks nothing about growth where the feed measures none", () => {
-    const faqs = buildRegionFaqs("Geelong", "VIC", buildCityMarket(geelongRows));
+    const faqs = buildRegionFaqs("Geelong", "VIC", buildCityMarket(geelongRows, ANY));
     expect(faqs.map((f) => f.question)).toEqual([
       "What is the median house price in Geelong?",
       "What are the cheapest suburbs in Geelong?",
     ]);
   });
   it("is empty when nothing clears the gate", () => {
-    expect(buildRegionFaqs("Anakie", "VIC", buildCityMarket([row({ statsSource: "seed" })]))).toEqual([]);
+    expect(buildRegionFaqs("Anakie", "VIC", buildCityMarket([row({ statsSource: "seed" })], ANY))).toEqual([]);
   });
 });
 
 describe("buildCityNarrative for a region", () => {
-  const m = buildCityMarket(geelongRows);
+  const m = buildCityMarket(geelongRows, ANY);
   const paras = buildCityNarrative({ name: "Geelong", state: "VIC" }, m, new Date("2026-09-20T00:00:00Z"), {
     area: "the Geelong region",
     unit: "region",
   });
   it("names the region, not a Greater capital, and counts the busiest table honestly", () => {
-    expect(paras[0]).toContain("median house price across the Geelong region is $705,000");
+    expect(paras[0]).toContain("typical suburb median house price across the Geelong region is $705,000");
     expect(paras[0]).not.toContain("Greater");
     // Victoria's feed measures no 12-month change, so there is no growth paragraph.
     expect(paras).toHaveLength(3);
     expect(paras[1]).toContain("gap across the one region");
     expect(paras[1]).toContain("the table below lists the 4 busiest with their medians");
-    expect(paras[2]).toMatch(/^Source: suburb medians from the VIC valuer-general/);
+    expect(paras[2]).toMatch(/^Source: Prices are Land Victoria's quarterly suburb medians\./);
   });
   it("leaves the capital-city wording unchanged when no options are passed", () => {
     const city = buildCityNarrative({ name: "Melbourne", state: "VIC" }, m, new Date("2026-09-20T00:00:00Z"));
