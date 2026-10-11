@@ -22,6 +22,7 @@ import {
   STATE_COSTS,
   STATE_ORDER,
   grannyFlatBuildRange,
+  m2For,
   rangeCellText,
   rangeText,
   type Range,
@@ -208,7 +209,7 @@ describe("estimateRenovation", () => {
 });
 
 describe("renovation guide copy", () => {
-  it("answers the four People-also-ask questions in 40+ words with a figure and a dated source (rule 9)", () => {
+  it("answers the seven People-also-ask questions in 40+ words with a figure and a dated source (rule 9)", () => {
     for (const q of RENOVATION_PAA_QUESTIONS) {
       const f = RENOVATION_FAQS.find((x) => x.question === q);
       expect(f, q).toBeDefined();
@@ -237,7 +238,7 @@ describe("renovation guide copy", () => {
     expect(PAGE).toContain("RenovationPerM2Table");
     expect(PAGE).toContain("RenovationByStateTable");
     expect(PAGE).toContain("faqs={RENOVATION_FAQS}");
-    for (const id of ["at-a-glance", "estimator", "cost-per-m2", "cost-by-state", "kitchens", "bathrooms", "laundry-living-bedrooms", "full-renovation", "extensions", "knock-down-rebuild", "pre-construction", "fixed-vs-cost-plus", "finance", "what-adds-value", "budgeting-method"]) {
+    for (const id of ["at-a-glance", "estimator", "budget-30000", "cost-per-m2", "cost-by-state", "kitchens", "bathrooms", "laundry-living-bedrooms", "full-renovation", "extensions", "knock-down-rebuild", "pre-construction", "fixed-vs-cost-plus", "finance", "what-adds-value", "budgeting-method"]) {
       expect(PAGE, id).toContain(`id: "${id}"`);
       expect(PAGE, id).toContain(`id="${id}"`);
     }
@@ -290,6 +291,18 @@ describe("renovation guide copy", () => {
       expect(published, key).toBeGreaterThanOrEqual(0);
       if (guideAt >= 0) expect(published, key).toBeLessThan(guideAt);
     }
+  });
+  it("answers the build-or-buy questions from the ABS-derived average and renames the full-house H2 (review 3.1 and 6)", () => {
+    expect(m2For(400_000, 1_967)).toBe(205);
+    expect(m2For(600_000, 1_967)).toBe(305);
+    expect(m2For(300_000, 1_967)).toBe(155);
+    const q400 = RENOVATION_FAQS.find((f) => f.question === "Is $400,000 enough to build a house?")?.answer ?? "";
+    expect(q400).toContain("$1,967");
+    expect(q400).toContain("about 205 m²");
+    const buy = RENOVATION_FAQS.find((f) => f.question === "Is it cheaper to build or buy?")?.answer ?? "";
+    expect(buy).toContain("about $475,000");
+    expect(PAGE).toContain('<h2 id="full-renovation">Full house renovation cost</h2>');
+    expect(PAGE).toContain('<h2 id="budget-30000">What can you renovate for $30,000?</h2>');
   });
   it("sends contract readers to the building contract checklist, not a home loan rate guide (F8b)", () => {
     expect(PAGE).toContain('href="/guides/how-to-find-a-builder-australia#contract"');

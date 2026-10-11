@@ -609,10 +609,19 @@ export interface RenovationFaq {
 
 export const RENOVATION_PAA_QUESTIONS = [
   "How much does it cost to fully renovate a house in Australia?",
-  "Is $100,000 a good budget for renovating my house?",
+  // Reworded 11 Oct 2026 to the People-also-ask phrasing (review 10 Oct 2026, 3.1).
+  "How much remodeling can be done with $100,000?",
   "Can I renovate a bathroom for $10,000?",
   "Is it cheaper to renovate or rebuild?",
+  // Added 11 Oct 2026 (review 10 Oct 2026, sections 3.1 and 6).
+  "Can I remodel my kitchen for $30,000?",
+  "Is $400,000 enough to build a house?",
+  "Is it cheaper to build or buy?",
 ] as const;
+
+/** Floor area a build budget buys at an ABS-derived average rate, rounded to 5 m². */
+export const m2For = (budget: number, perM2: number) => Math.round(budget / perM2 / 5) * 5;
+const thousand = (n: number) => Math.round(n / 1_000) * 1_000;
 
 export const RENOVATION_FAQS: RenovationFaq[] = [
   {
@@ -623,7 +632,7 @@ export const RENOVATION_FAQS: RenovationFaq[] = [
   {
     question: RENOVATION_PAA_QUESTIONS[1],
     answer:
-      `Yes for two rooms and a refresh, no for a whole house. At ${RENOVATION_COSTS_AS_AT_SHORT} metro prices, $100,000 covers a mid-range kitchen (${rangeText(k.mid.range as Range)}) and a standard bathroom (${rangeText(b.mid.range as Range)}) with $33,000 to $60,000 left for paint, flooring and lighting (Canstar, January 2025: a living-area refresh is ${rangeText(living)}), or about 40 to 50 m² of cosmetic work at ${rangeText(SCOPE_PER_M2.guide.cosmetic, "/m²")}. A mid-range renovation of the whole house costs ${rangeText(SCOPE_PER_M2.guide.mid, "/m²")}, ${rangeText(FULL_RENO_PER_100.mid)} for every ${FULL_RENO_EXAMPLE_M2} m². This guide's contingency is ${ON_COSTS.contingencyPct.low} to ${ON_COSTS.contingencyPct.high}%, so hold back $10,000 to $15,000 and plan the work at $85,000 to $90,000.`,
+      `Usually a kitchen, a bathroom and a refresh, not a whole house. Archicentre Australia's Cost Guide 2026 puts a standard kitchen fit-out at ${rangeText(ARCHICENTRE_2026.kitchen)} and a bathroom at ${rangeText(ARCHICENTRE_2026.bathroom)}, including GST, which leaves about ${money(100_000 - ARCHICENTRE_2026.kitchen.high - ARCHICENTRE_2026.bathroom.high)} to ${money(100_000 - ARCHICENTRE_2026.kitchen.low - ARCHICENTRE_2026.bathroom.low)} for paint, flooring and lighting; this guide's mid-range kitchen (${rangeText(k.mid.range as Range)}) and standard bathroom (${rangeText(b.mid.range as Range)}) land in the same place. A mid-range renovation of the whole house costs ${rangeText(SCOPE_PER_M2.guide.mid, "/m²")}, ${rangeText(FULL_RENO_PER_100.mid)} for every ${FULL_RENO_EXAMPLE_M2} m². This guide's contingency is ${ON_COSTS.contingencyPct.low} to ${ON_COSTS.contingencyPct.high}%, so hold back $10,000 to $15,000 and plan the work at $85,000 to $90,000.`,
   },
   {
     question: RENOVATION_PAA_QUESTIONS[2],
@@ -634,6 +643,21 @@ export const RENOVATION_FAQS: RenovationFaq[] = [
     question: RENOVATION_PAA_QUESTIONS[3],
     answer:
       `This guide's rule of thumb: once a renovation quote passes 70 to 80% of the cost of a new build, price a knock-down rebuild. The ABS-derived average for every new house built in 2024-25 is ${money(ABS_NEW_HOUSE_NATIONAL_PER_M2)}/m² (about $475,000 for the ${ABS_NEW_HOUSE_AVG_FLOOR_M2} m² average, Landmark Valuations, July 2026), plus demolition at $170 to $280/m² in Sydney (Rider Levett Bucknall, Riders Digest 2026), which is $25,500 to $42,000 for a 150 m² house. Renovation inside an existing building runs ${rangeText(SCOPE_PER_M2.archicentreExisting, "/m²")} (Archicentre Australia, 2026) but only touches the area you renovate, and rebuilding adds 8 to 14 months of rent elsewhere. Structural renovation of an older home, with asbestos, wiring and plumbing unknowns, is where rebuilding wins.`,
+  },
+  {
+    question: RENOVATION_PAA_QUESTIONS[4],
+    answer:
+      `Yes, for a standard kitchen in the same layout. Archicentre Australia's Cost Guide 2026 puts a standard kitchen fit-out at ${rangeText(ARCHICENTRE_2026.kitchen)} including GST, with white goods extra, and this guide's mid-range kitchen is ${rangeText(k.mid.range as Range)}. Moving plumbing, gas or walls adds services and structural work on top, which pushes a kitchen towards the top of those ranges or past them. Keep the layout, choose laminate or a mid-priced stone, and price the appliances separately.`,
+  },
+  {
+    question: RENOVATION_PAA_QUESTIONS[5],
+    answer:
+      `For the house alone, usually. At the ABS-derived average of ${money(ABS_NEW_HOUSE_NATIONAL_PER_M2)} per m² for every new house built in 2024-25 (Landmark Valuations, July 2026), $400,000 builds about ${m2For(400_000, ABS_NEW_HOUSE_NATIONAL_PER_M2)} m² before land, site costs, approvals and connections; at New South Wales' average of ${money(STATE_COSTS.NSW.absNewHousePerM2 as number)} per m² it builds about ${m2For(400_000, STATE_COSTS.NSW.absNewHousePerM2 as number)} m². At the national average, $600,000 covers about ${m2For(600_000, ABS_NEW_HOUSE_NATIONAL_PER_M2)} m² and $300,000 about ${m2For(300_000, ABS_NEW_HOUSE_NATIONAL_PER_M2)} m².`,
+  },
+  {
+    question: RENOVATION_PAA_QUESTIONS[6],
+    answer:
+      `It depends on the land. The ABS-derived average cost of every new house built in 2024-25 was ${money(ABS_NEW_HOUSE_NATIONAL_PER_M2)} per m² (Landmark Valuations, July 2026), about ${money(thousand(ABS_NEW_HOUSE_NATIONAL_PER_M2 * ABS_NEW_HOUSE_AVG_FLOOR_M2))} for the ${ABS_NEW_HOUSE_AVG_FLOOR_M2} m² average home, before land, site works, approvals and fees. Add the price of a block where you want to live and compare that total with established homes nearby; our suburb pages show the median sale prices where a reliable one is published.`,
   },
   {
     question: "What's the cheapest way to renovate a house?",

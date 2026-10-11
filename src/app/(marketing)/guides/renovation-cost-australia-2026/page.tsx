@@ -21,6 +21,7 @@ import {
 } from "@/components/guide/RenovationCostTables";
 import { RenovationCostEstimator } from "@/components/calculators/RenovationCostEstimator";
 import {
+  ARCHICENTRE_2026,
   ABS_PPI_HOUSE_ANNUAL_PCT,
   ABS_PPI_HOUSE_QUARTER_PCT,
   BATHROOM_CHECKS,
@@ -108,7 +109,8 @@ const TOC: GuideTOCEntry[] = [
   { id: "kitchens",               label: "Kitchen renovation costs" },
   { id: "bathrooms",              label: "Bathroom renovation costs" },
   { id: "laundry-living-bedrooms", label: "Laundry, living areas and bedrooms" },
-  { id: "full-renovation",        label: "Full house renovation" },
+  { id: "budget-30000",           label: "What can you renovate for $30,000?" },
+  { id: "full-renovation",        label: "Full house renovation cost" },
   { id: "extensions",             label: "Extensions and second storeys" },
   { id: "knock-down-rebuild",     label: "Knock-down rebuild" },
   { id: "pre-construction",       label: "Pre-construction costs" },
@@ -138,6 +140,15 @@ export default function RenovationCostAustralia2026Page() {
       faqs={RENOVATION_FAQS}
       related={RELATED}
     >
+      <p className="lead">
+        Archicentre Australia&rsquo;s Cost Guide 2026 puts a standard kitchen
+        fit-out at {rangeText(ARCHICENTRE_2026.kitchen)}, a bathroom at{" "}
+        {rangeText(ARCHICENTRE_2026.bathroom)} and renovation inside an
+        existing house at {rangeText(ARCHICENTRE_2026.renovationPerM2, "/m²")},
+        all including GST. The tables below set those figures beside every
+        other dated source, room by room, as at {RENOVATION_COSTS_AS_AT}.
+      </p>
+
       <div id={FIGURES_BASIS_ID} className="scroll-mt-28">
         <Callout variant="info" title="Where these numbers come from">
           <p>
@@ -357,7 +368,25 @@ export default function RenovationCostAustralia2026Page() {
       </p>
       <RenovationCheckTable table={SECONDARY_ROOM_CHECKS} />
 
-      <h2 id="full-renovation">Full house renovation</h2>
+      <h2 id="budget-30000">What can you renovate for $30,000?</h2>
+      <p>
+        At Archicentre Australia&rsquo;s 2026 rates, including GST, $30,000
+        pays for one of these:
+      </p>
+      <ul>
+        <li><strong>A standard kitchen in the same layout</strong>, at the lower end of the {rangeText(ARCHICENTRE_2026.kitchen)} fit-out range, with white goods extra.</li>
+        <li><strong>A bathroom or ensuite</strong> fit-out, {rangeText(ARCHICENTRE_2026.bathroom)}.</li>
+        <li><strong>A laundry</strong> fit-out ({rangeText(ARCHICENTRE_2026.laundry)}) with paint and new flooring elsewhere: interior painting is $20 to $40 per m² and carpet $45 to $165 per m².</li>
+      </ul>
+      <p>
+        It does not stretch to moving walls, plumbing or gas, which add
+        structural and services work, or to more than one wet area. Keep
+        the {ON_COSTS.contingencyPct.low} to {ON_COSTS.contingencyPct.high}%
+        contingency out of the $30,000, and use the{" "}
+        <Link href="#estimator">calculator</Link> to price your own mix.
+      </p>
+
+      <h2 id="full-renovation">Full house renovation cost</h2>
       <p className="lead">{ROOM_ANSWERS.fullHouse}</p>
       <p>
         For a standard three-bedroom house being renovated room-by-room or as
