@@ -8,6 +8,7 @@ import { ENRICH_LEAD_STORAGE_KEY } from "@/components/forms/ThanksPhoneAsk";
 import { auMobileError } from "@/lib/utils/au-mobile";
 import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
 import { AddressAutocomplete } from "@/components/forms/AddressAutocomplete";
+import { COVERAGE_CAVEAT } from "@/lib/match-coverage";
 
 interface Props {
   suburbName: string;
@@ -135,9 +136,8 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
           What&rsquo;s your home worth in {suburbName}?
         </h3>
         <p className="text-sm text-white/75 leading-relaxed max-w-md">
-          A local agent who actually sells in {suburbName} will give you an
-          honest number, backed by recent comparable sales. Free, no commitment
-          to list.
+          Ask a local agent for a figure on your home, backed by recent
+          comparable sales in {suburbName}. Free, no commitment to list.
         </p>
       </div>
 
@@ -268,16 +268,15 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
         <p className="text-[11px] text-ink-subtle leading-relaxed pt-1 flex flex-wrap items-center gap-x-2">
           <span className="inline-flex items-center gap-1">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
-            Reply within 1 business day
+            No commitment to list
           </span>
-          <span aria-hidden="true">·</span>
-          <span>No commitment to list</span>
           <span aria-hidden="true">·</span>
           <a href="/privacy" className="underline underline-offset-2 hover:text-ink">Privacy</a>
         </p>
         <p className="text-[11px] text-ink-subtle leading-relaxed">
           Your details go only to the one local agent we match you with, who
-          pays us for the introduction. We never sell them to anyone else.
+          pays us for the introduction. We never sell them to anyone else.{" "}
+          {COVERAGE_CAVEAT}
         </p>
       </form>
     </div>

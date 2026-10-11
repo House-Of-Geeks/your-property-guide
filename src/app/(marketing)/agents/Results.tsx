@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { AgentCard } from "@/components/agent/AgentCard";
+import { AgentListCard } from "./AgentListCard";
 import { getAgents } from "@/lib/services/agent-service";
 
 interface AgentsResultsProps {
@@ -82,7 +82,7 @@ export async function AgentsResults({ searchParams }: AgentsResultsProps) {
       {agents.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {agents.map((agent) => (
-            <AgentCard key={agent.id} agent={agent} />
+            <AgentListCard key={agent.id} agent={agent} />
           ))}
         </div>
       ) : (

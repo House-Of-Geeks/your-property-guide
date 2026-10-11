@@ -539,12 +539,12 @@ describe("/property-valuation title", () => {
   const title = src.match(/const TITLE = "([^"]+)";/)?.[1] ?? "";
   const headline = src.match(/const HEADLINE = "([^"]+)";/)?.[1] ?? "";
   it("is under 60 characters and is what the metadata uses", () => {
-    expect(title).toBe("Property Valuation Australia: Appraisal vs Estimate (2026)");
+    expect(title).toBe("Property Valuation Australia: Free Estimates Compared (2026)");
     expect(title.length).toBeLessThanOrEqual(TITLE_BUDGET);
     expect(src).toMatch(/export const metadata[\s\S]*?title: TITLE,/);
   });
   it("keeps the long form as the H1 and the WebPage name", () => {
-    expect(headline).toBe("Property Valuation in Australia: Appraisal vs Valuation vs Online Estimate (2026)");
+    expect(headline).toBe("Property Valuation in Australia: Appraisal, Valuation and Free Online Estimates Compared (2026)");
     expect(src).toContain("name: HEADLINE,");
     const h1 = (src.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? "").replace(/<[^>]+>|\{" "\}/g, " ").replace(/\s+/g, " ").trim();
     expect(h1.toLowerCase()).toBe(headline.toLowerCase());

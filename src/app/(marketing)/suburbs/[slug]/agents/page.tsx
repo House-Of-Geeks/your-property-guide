@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
+import { Suspense, cache } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, CheckCircle } from "lucide-react";
@@ -9,7 +9,20 @@ import { MatchAgent } from "@/components/journey/MatchAgent";
 import { BreadcrumbJsonLd, FAQPageJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getAgents, getAgenciesBySuburbSlug } from "@/lib/services/agent-service";
-import { buildSuburbAgentsModel, CHOOSING_POINTS } from "@/lib/suburb-agents";
+import {
+  buildSuburbAgentsModel,
+  CHOOSING_POINTS,
+  COMMISSION_RULE_SOURCES,
+  directionalVariants,
+  parentLocalityName,
+  pickNearbyAgentLinks,
+  type NearbyAgentsRow,
+} from "@/lib/suburb-agents";
+import { db } from "@/lib/db";
+import { LOCALITIES_ONLY } from "@/lib/non-localities";
+import { hasPublishedHouseMedian } from "@/lib/suburb-indexability";
+import { canonicalSuburbSlug, isSecondaryLocality } from "@/lib/duplicate-localities";
+import { COVERAGE_CAVEAT } from "@/lib/match-coverage";
 import { STATE_NAMES, type StateCode } from "@/lib/data/commission-rates";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
@@ -24,18 +37,57 @@ export const revalidate = 604800;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
 
+// One query for the neighbour links and the title's postcode rule: the
+// stored neighbours, the parent locality of a directional name (Kew for Kew
+// East), the directional variants of this name (Kew East for Kew), and any
+// other locality in the state with this name (Lilli Pilli 2229 and 2536).
+// Each row carries the agents sitemap's own gate (a published house median),
+// so a link never points at a page that noindexes itself. Memoised per
+// request: generateMetadata and the page both call load().
+const getNeighbourRows = cache(async (slug: string): Promise<{ rows: NearbyAgentsRow[]; nameShared: boolean; rawMedians: { house: number | null; unit: number | null } | null }> => {
+  const suburb = await getSuburbBySlug(slug);
+  if (!suburb) return { rows: [], nameShared: false, rawMedians: null };
+  const parent = parentLocalityName(suburb.name);
+  const names = [suburb.name, ...directionalVariants(suburb.name), ...(parent ? [parent] : [])];
+  try {
+    const raw = await db.suburb.findMany({
+      where: {
+        ...LOCALITIES_ONLY,
+        OR: [{ slug: { in: suburb.nearbySuburbs } }, { state: suburb.state, name: { in: names } }],
+      },
+      select: { slug: true, name: true, state: true, postcode: true, medianHousePrice: true, medianUnitPrice: true, population: true, statsSource: true, salesCountHouse: true },
+    });
+    return {
+      // A secondary postcode row canonicals to its primary, so it is never a link target
+      // and does not count as a second locality of the same name.
+      rows: raw.map((r) => ({ slug: r.slug, name: r.name, state: r.state, postcode: r.postcode, indexable: hasPublishedHouseMedian(r) && !isSecondaryLocality(r.slug) })),
+      nameShared: raw.some((r) => r.slug !== slug && !isSecondaryLocality(r.slug) && r.state === suburb.state && r.name === suburb.name),
+      // The page's own row comes back with the same-name rows: its medians
+      // before the gate tell an inverted pair (Kew East) from a missing one.
+      rawMedians: ((self) => (self ? { house: self.medianHousePrice, unit: self.medianUnitPrice } : null))(raw.find((r) => r.slug === slug)),
+    };
+  } catch {
+    // The links are a convenience: a failed read leaves the page without them.
+    return { rows: [], nameShared: false, rawMedians: null };
+  }
+});
+
 async function load(slug: string) {
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) return null;
   const [agents, agencies] = await Promise.all([getAgents(slug), getAgenciesBySuburbSlug(slug)]);
-  return { suburb, model: buildSuburbAgentsModel(suburb, agents, agencies) };
+  const neighbours = await getNeighbourRows(slug);
+  const nearby = pickNearbyAgentLinks(suburb, suburb.nearbySuburbs, neighbours.rows);
+  return { suburb, nearby, model: buildSuburbAgentsModel(suburb, agents, agencies, undefined, { nameShared: neighbours.nameShared, rawMedians: neighbours.rawMedians }) };
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const data = await load(slug);
   if (!data) return { title: "Suburb Not Found" };
-  const canonical = `${SITE_URL}/suburbs/${slug}/agents`;
+  // A duplicate postcode row (Prahran 3143) canonicals to the primary's
+  // agents page (Prahran 3181): src/lib/duplicate-localities.ts. No redirect.
+  const canonical = `${SITE_URL}/suburbs/${canonicalSuburbSlug(slug)}/agents`;
   return {
     title: data.model.title,
     description: data.model.description,
@@ -53,10 +105,11 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
   const { slug } = await params;
   const data = await load(slug);
   if (!data) notFound();
-  const { suburb, model } = data;
+  const { suburb, model, nearby } = data;
   const sn = suburb.name;
   const stateName = STATE_NAMES[suburb.state as StateCode] ?? suburb.state;
   const commissionGuide = `/guides/real-estate-commission-${suburb.state.toLowerCase()}`;
+  const ruleSource = COMMISSION_RULE_SOURCES[suburb.state as StateCode] ?? null;
 
   return (
     <>
@@ -75,11 +128,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
         eyebrow="Real estate agents in"
         breadcrumbLeaf="Real Estate Agents"
         title={<>Real estate agents in <span className="italic text-primary">{sn}</span>.</>}
-        subtitle={
-          model.commission && model.medianHousePrice
-            ? `What agents charge on ${sn}'s ${formatPriceFull(model.medianHousePrice)} median, how to choose an agent, and a free match with one who sells here.`
-            : `How to choose an agent in ${sn}, what they charge, and a free match with one agent who sells here.`
-        }
+        subtitle={model.intro}
       />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
@@ -87,18 +136,19 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
             with intent and suburb pre-set so the visitor lands on timeframe. */}
         <section id="match" className="scroll-mt-16 grid lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-5">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">Get matched</p>
+            <p className="font-display italic text-primary text-base mb-3 leading-none">Ask for an introduction</p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-4">
-              One agent who sells in {sn}.
+              One local agent, not a panel.
             </h2>
             <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-md">
-              Tell us your timeframe and we connect you with one agent who has recent sales in {sn}, not a call centre and not a panel. Free, and no obligation to list.
+              Tell us your timeframe. Where we have an agent who sells in or around {sn}, we introduce you to that one agent, not a call centre and not a panel. Free, and no obligation to list.
             </p>
             <ul className="mt-6 space-y-2 font-sans text-sm text-ink-muted">
-              {["Recent sales in this suburb, not the wider region", "One agent, not five, and you decide whether to meet them", "Free for you. The agent pays us for the introduction"].map((t) => (
+              {["One agent, not five, and you decide whether to meet them", "Free for you. The agent pays us for the introduction", "No agent here yet? We tell you rather than pass your details on"].map((t) => (
                 <li key={t} className="flex gap-2.5"><CheckCircle className="w-4 h-4 mt-0.5 text-cta flex-shrink-0" aria-hidden="true" />{t}</li>
               ))}
             </ul>
+            <p className="mt-4 font-sans text-xs text-ink-subtle leading-relaxed max-w-md">{COVERAGE_CAVEAT}</p>
           </div>
           <div className="lg:col-span-7">
             <Suspense fallback={<div className="rounded-2xl border border-line bg-surface-warm p-8 min-h-[280px]" aria-hidden="true" />}>
@@ -112,18 +162,20 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
         <section id="agents" className="scroll-mt-16">
           <p className="font-display italic text-primary text-base mb-3 leading-none">Who sells here</p>
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-            Agents who sell in {sn}.
+            {model.agents.length === 0 && model.agencies.length === 0 ? <>Finding an agent in {sn}.</> : <>Agents listed for {sn}.</>}
           </h2>
           {model.agents.length === 0 && model.agencies.length === 0 ? (
             <div className="rounded-2xl border border-line bg-surface-warm p-6 sm:p-8 max-w-2xl">
               <p className="font-sans text-base text-ink leading-relaxed">
-                We&rsquo;re adding vetted agents in {sn}. Until they&rsquo;re listed here,{" "}
-                <a href="#match" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">request a match</a>{" "}
-                and our team will find you one who sells in the suburb.
+                We don&rsquo;t list agents for {sn} on this page yet. Compare two or three who sell here on the five questions below, or{" "}
+                <a href="#match" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">ask for an introduction</a>:
+                where we have an agent who covers {sn}, we introduce one; where we don&rsquo;t, we tell you.
               </p>
               <p className="mt-3 font-sans text-sm text-ink-muted leading-relaxed">
                 Are you an agent who sells in {sn}?{" "}
-                <Link href="/real-estate-leads" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">Join the network</Link>.
+                <Link href="/real-estate-leads" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">Join the network</Link>{" "}
+                or see how{" "}
+                <Link href="/real-estate-leads/appraisal-leads" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">appraisal leads</Link> work.
               </p>
             </div>
           ) : (
@@ -161,8 +213,13 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
               What agents charge in {sn}.
             </h2>
             <p className="font-sans text-base text-ink-muted leading-[1.7] max-w-md">
-              Commission in {stateName} is set by agreement, not regulation. Agents typically charge{" "}
-              {model.commission ? `${model.commission.lowPct}% to ${model.commission.highPct}%` : "between 1.6% and 3.25%"} of the sale price, plus marketing and GST, and every figure is negotiable.
+              {/* Always the state's own range (F2, 10 Oct 2026): the median
+                  only decides whether the worked figures use the suburb's
+                  price or example prices. */}
+              Commission in {stateName} is agreed between you and the agent.
+              {model.stateRange
+                ? <> Agents typically charge {model.stateRange.lowPct}% to {model.stateRange.highPct}% of the sale price, around {model.stateRange.typicalPct}% being common, plus marketing and GST, and every figure is negotiable.</>
+                : <> Marketing and GST come on top, and every figure is negotiable.</>}
             </p>
             <p className="mt-4 font-sans text-sm">
               <Link href={commissionGuide} className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">
@@ -173,12 +230,23 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
                 Work out your own sale
               </Link>
             </p>
+            {/* F3 (10 Oct 2026): name where the range and the rule come from. */}
+            <p className="mt-4 font-sans text-xs text-ink-subtle leading-relaxed max-w-md">
+              The range is Your Property Guide&rsquo;s typical figure for {stateName} as at September 2026, explained in our {suburb.state} commission guide.
+              {ruleSource ? (
+                <>
+                  {" "}On the rule:{" "}
+                  <a href={ruleSource.href} target="_blank" rel="noopener" className="underline underline-offset-2 hover:text-ink">{ruleSource.label}</a>
+                  {" "}({ruleSource.asAt}): {ruleSource.says}.
+                </>
+              ) : null}
+            </p>
           </div>
           <div className="lg:col-span-7">
             {model.commission && model.medianHousePrice ? (
               <div className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
                 <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-4">
-                  On {sn}&rsquo;s median house price of {formatPriceFull(model.medianHousePrice)}
+                  On {model.medianPhrase}
                 </p>
                 <div className="grid grid-cols-3 gap-4">
                   {[
@@ -193,16 +261,41 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
                   ))}
                 </div>
                 <p className="mt-5 font-sans text-xs text-ink-subtle leading-relaxed">
-                  Before GST and marketing. Typical {stateName} ranges as at September 2026, from published agent-comparison guides; no state sets an official rate.
+                  Before GST and marketing.{model.provenance ? <> The median: {model.provenance.sentence}</> : null}
                 </p>
               </div>
-            ) : (
-              <div className="rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
-                <p className="font-sans text-base text-ink-muted leading-relaxed">
-                  We don&rsquo;t publish a median for {sn} yet, so we can&rsquo;t work the commission on a local figure. The {stateName} range still applies; the calculator works it on your expected price.
+            ) : model.examples.length > 0 ? (
+              <div className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
+                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-4">
+                  The {stateName} range on example sale prices
+                </p>
+                <div className="overflow-x-auto">
+                  <table className="w-full font-sans text-sm text-left border-collapse">
+                    <thead>
+                      <tr className="text-xs text-ink-subtle">
+                        <th scope="col" className="py-2 pr-3 font-normal">Example sale price</th>
+                        <th scope="col" className="py-2 pr-3 font-normal">Low, {model.examples[0].lowPct}%</th>
+                        <th scope="col" className="py-2 pr-3 font-normal">Typical, {model.examples[0].typicalPct}%</th>
+                        <th scope="col" className="py-2 font-normal">High, {model.examples[0].highPct}%</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-line">
+                      {model.examples.map((e) => (
+                        <tr key={e.price}>
+                          <th scope="row" className="py-2 pr-3 font-medium text-ink tabular-nums">{formatPriceFull(e.price)}</th>
+                          <td className="py-2 pr-3 text-ink-muted tabular-nums">{formatPriceFull(e.lowAmount)}</td>
+                          <td className="py-2 pr-3 text-ink-muted tabular-nums">{formatPriceFull(e.typicalAmount)}</td>
+                          <td className="py-2 text-ink-muted tabular-nums">{formatPriceFull(e.highAmount)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="mt-5 font-sans text-xs text-ink-subtle leading-relaxed">
+                  Before GST and marketing. These are example prices, not {sn}&rsquo;s. {model.withheldNote} The calculator works the range on your own expected price.
                 </p>
               </div>
-            )}
+            ) : null}
           </div>
         </section>
 
@@ -231,29 +324,91 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
         </section>
 
         {/* 5. Selling here right now: the price context and the appraisal. */}
+        {/* 5. The appraisal (section 3.1 of the 10 Oct 2026 review): suburb
+            appraisal searches land here, so the H2 says so. #selling is the
+            anchor the rental-market page links to. */}
         <section id="selling" className="scroll-mt-16 grid lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-5">
             <p className="font-display italic text-primary text-base mb-3 leading-none">Selling in {sn}</p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-4">
-              Where prices sit right now.
+              Free property appraisal in {sn}.
             </h2>
-            {model.medianHousePrice ? (
-              <p className="font-sans text-base text-ink-muted leading-[1.7] max-w-md">
-                The median house price in {sn} is <span className="font-medium text-ink">{formatPriceFull(model.medianHousePrice)}</span>
-                {suburb.stats.annualGrowthHouse ? <>, <span className={`font-medium ${suburb.stats.annualGrowthHouse >= 0 ? "text-success" : "text-danger"}`}>{formatPercentage(suburb.stats.annualGrowthHouse)}</span> over the past year</> : null}
-                {suburb.dataFreshness?.salesCount ? <>, from {suburb.dataFreshness.salesCount} recorded house sales</> : null}.{" "}
-                <Link href={`/suburbs/${slug}#market`} className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">Full house prices for {sn}</Link>.
+            <div className="font-sans text-base text-ink-muted leading-[1.7] max-w-md space-y-3">
+              <p>
+                An appraisal is an agent&rsquo;s estimate of what your home would sell for now, built from recent comparable sales. It costs nothing and does not commit you to list. It is not a valuation: a lender or a court needs a licensed valuer&rsquo;s report, which is paid.
               </p>
-            ) : (
-              <p className="font-sans text-base text-ink-muted leading-[1.7] max-w-md">
-                We don&rsquo;t publish a median for {sn} yet. An agent who sells here will still give you a figure from the comparable sales they know.
+              <p className="text-sm">
+                <Link href="/property-valuation" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">Appraisal, valuation or online estimate?</Link>
+                <span className="text-ink-subtle"> · </span>
+                <Link href="/guides/how-much-is-my-house-worth-australia" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">How much is my house worth?</Link>
               </p>
-            )}
+            </div>
           </div>
           <div className="lg:col-span-7">
             <SuburbAppraisalCTA suburbName={sn} suburbSlug={slug} source={model.appraisalSource} formName="suburb-agents-appraisal" />
           </div>
         </section>
+
+        {/* 6. The suburb's own figures, with their source. */}
+        <section id="market" className="scroll-mt-16">
+          <p className="font-display italic text-primary text-base mb-3 leading-none">Prices</p>
+          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-4">
+            {sn} property market at a glance.
+          </h2>
+          {model.medianHousePrice ? (
+            <div className="font-sans text-base text-ink-muted leading-[1.7] max-w-2xl space-y-3">
+              <p>
+                {model.provenance?.caption ?? `Median house price in ${sn}`}:{" "}
+                <span className="font-medium text-ink">{formatPriceFull(model.medianHousePrice)}</span>
+                {suburb.stats.annualGrowthHouse ? <>, <span className={`font-medium ${suburb.stats.annualGrowthHouse >= 0 ? "text-success" : "text-danger"}`}>{formatPercentage(suburb.stats.annualGrowthHouse)}</span> over the past year</> : null}.{" "}
+                <Link href={`/suburbs/${slug}#market`} className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">Full house prices for {sn}</Link>.
+              </p>
+              {model.provenance ? <p className="text-sm text-ink-subtle">{model.provenance.sentence}</p> : null}
+            </div>
+          ) : (
+            <div className="font-sans text-base text-ink-muted leading-[1.7] max-w-2xl space-y-3">
+              <p>
+                {model.withheldNote} An agent who sells here can still give you a figure from the comparable sales they know.{" "}
+                <Link href={`/suburbs/${slug}`} className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">{sn} suburb profile</Link>.
+              </p>
+              {model.unitMedian ? (
+                <p>
+                  Median unit price: <span className="font-medium text-ink">{formatPriceFull(model.unitMedian.price)}</span>.{" "}
+                  <span className="text-sm text-ink-subtle">{model.unitMedian.provenance}</span>
+                </p>
+              ) : null}
+            </div>
+          )}
+          {/* Weekly rent from a bond feed, with its source and month. */}
+          {model.rent ? (
+            <p className="mt-3 font-sans text-base text-ink-muted leading-[1.7] max-w-2xl">
+              Median weekly rent:{" "}
+              {[
+                model.rent.house ? `houses ${formatPriceFull(model.rent.house)}` : null,
+                model.rent.unit ? `units ${formatPriceFull(model.rent.unit)}` : null,
+                !model.rent.house && !model.rent.unit && model.rent.all ? `all dwellings ${formatPriceFull(model.rent.all)}` : null,
+              ].filter(Boolean).join(", ")}{" "}
+              <span className="text-sm text-ink-subtle">({model.rent.source}{model.rent.asAt ? `, ${model.rent.asAt}` : ""})</span>.{" "}
+              <Link href={`/suburbs/${slug}/rental-market`} className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">Rents in {sn}</Link>.
+            </p>
+          ) : null}
+        </section>
+
+        {/* 7. Neighbouring agents pages, indexable ones only, parent locality first. */}
+        {nearby.length > 0 && (
+          <section id="nearby" className="scroll-mt-16">
+            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-5">
+              Real estate agents in nearby suburbs.
+            </h2>
+            <ul className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-2 font-sans text-sm">
+              {nearby.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">{l.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* Visible FAQ backing the FAQPage schema */}
         <section id="faq" className="scroll-mt-16">

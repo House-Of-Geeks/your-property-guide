@@ -315,7 +315,9 @@ export default function RealEstateLeadsPage() {
                 profile, a commission guide, a selling-costs calculator, and
                 then a separate decision: yes, I want a local agent to call me.
                 One lead, one agent, matched to your suburbs. Pay per lead. No
-                lock-in, and no share of your commission.
+                lock-in, and no share of your commission. Most begin as{" "}
+                <Link href="/real-estate-leads/vendor-leads">vendor leads</Link> or{" "}
+                <Link href="/real-estate-leads/appraisal-leads">appraisal leads</Link>.
               </p>
               <div className={`${s.heroCtas} rise rise-d3`}>
                 <a href="#register" className={CTA_CLASS}>

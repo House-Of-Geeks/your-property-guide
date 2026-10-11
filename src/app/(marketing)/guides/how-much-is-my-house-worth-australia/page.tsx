@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
-  KeyFigure,
   MatchCTA,
   Sources,
   EditorNote,
@@ -17,6 +16,7 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { SuburbValueRange } from "@/components/journey/SuburbValueRange";
+import { API_INDICATIVE_FEES_2026, AUSSIE_GUIDE, FREE_ESTIMATORS, VALUATION_COST, valuationCostCited } from "@/lib/data/appraisal-sources";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "How Much Is My House Worth? Free Property Appraisal (Australia)",
@@ -24,7 +24,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Pick your suburb, see what houses there are selling for, and get a free appraisal from a local agent. Plus the three ways a house is valued in Australia, why they disagree, and what actually drives your number.",
   slug: "how-much-is-my-house-worth-australia",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -54,18 +54,17 @@ export const metadata: Metadata = {
 const TLDR = [
   "There are three different numbers for what your house is worth: an agent appraisal (free, market-facing), a bank valuation (conservative, lender-facing) and an online estimate (automated, often wide of the mark). They measure different things, so they disagree.",
   "The agent appraisal is the figure that matters when you're selling. It's an estimate of what a real buyer would pay in today's market, built from recent comparable sales in your suburb.",
-  "A bank valuation is deliberately conservative because it protects the lender, not your sale price. It usually lands below the appraisal, sometimes 5 to 10% below.",
+  "A bank valuation is deliberately conservative because it protects the lender, not your sale price. It usually lands below the appraisal.",
   "Free online estimates work off automated models. They can be close on standard homes in high-turnover suburbs and badly wrong on anything unusual, recently renovated, or in a thin market.",
   "Your number is driven by recent comparable sales, location, land size, condition and the current state of the local market. Not what you paid, not what you owe, not what you need.",
-  "The accurate way to find out is to get two or three appraisals from agents who actually sell in your suburb, then sanity-check them against comparable sales.",
+  "The way to a figure you can rely on is two or three appraisals from agents who sell in your suburb, checked against comparable sales.",
 ];
 
 const TOC: GuideTOCEntry[] = [
-  { id: "three-numbers",    label: "The three different numbers" },
-  { id: "why-they-differ",  label: "Why the three disagree" },
+  { id: "three-numbers",    label: "Appraisal, valuation or online estimate" },
   { id: "what-drives",      label: "What actually drives your number" },
   { id: "online-estimates", label: "Why free online estimates miss" },
-  { id: "accurate-figure",  label: "How to get an accurate figure" },
+  { id: "accurate-figure",  label: "How to get a figure you can rely on" },
   { id: "next-steps",       label: "What to do next" },
 ];
 
@@ -95,10 +94,19 @@ const FAQS: FaqItem[] = [
     answer:
       "No. The price you paid, the size of your mortgage and the amount you'd like to walk away with have no bearing on what your home is worth today. Value is set by what a buyer is willing to pay right now, which is driven by recent comparable sales, location, land size, condition and the state of the local market. Anchoring to your purchase price or your loan balance is one of the most common ways sellers misprice a home.",
   },
+  {
+    question: "Where can I get a free property valuation report?",
+    answer:
+      "Banks and portals give free automated estimates, not valuations: CommBank's Property Insights uses Cotality data and ANZ's Property Profile Report uses PropTrack, and both say on the page that the figure is not a valuation (read 11 October 2026). An agent's appraisal is free too. A valuation a lender accepts is a paid report from a licensed valuer. Six free estimators are compared on our property valuation page.",
+  },
+  {
+    question: "How much do property valuations cost?",
+    answer: `A valuation by a licensed valuer typically costs ${valuationCostCited()}. Aussie's guide (updated 1 October 2026) quotes the Australian Property Institute's 2026 indicative fees including GST: ${API_INDICATIVE_FEES_2026.map((f) => `${f.kind.toLowerCase()} $${f.low} to $${f.high}`).join(", ")}. When a lender orders one for a loan, it may arrange or cover the cost. An agent's appraisal is free.`,
+  },
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Free Property Appraisal",            href: "/appraisal",                                 description: "An independent appraisal from a vetted local agent, no commitment." },
+  { title: "Free Property Appraisal",            href: "/appraisal",                                 description: "Ask one local agent for a free appraisal, no commitment to list." },
   { title: "Appraisal vs Valuation vs Online Estimate", href: "/property-valuation",              description: "The three numbers side by side, what a valuation costs, and when a lender needs one." },
   { title: "Free Selling Guide (PDF)",            href: "/selling-guide",                             description: "The full process from listing to settlement, personalised to your suburb." },
   { title: "How to Sell a House in Australia",    href: "/guides/how-to-sell-a-house-australia",       description: "Every step from pre-listing prep through to settlement day." },
@@ -147,85 +155,31 @@ export default function HowMuchIsMyHouseWorthAustraliaPage() {
         </p>
       </EditorNote>
 
-      <h2 id="three-numbers">The three different numbers</h2>
+      {/* Section 3.6 of the 10 Oct 2026 review: the three-numbers
+          comparison lives on /property-valuation, which ranks for the
+          valuation and estimator queries; this guide keeps a summary and
+          links there rather than duplicating it. */}
+      <h2 id="three-numbers">Appraisal, valuation or online estimate</h2>
       <p className="lead">
-        When people ask &quot;how much is my house worth?&quot; they&rsquo;re
-        usually after one figure. In practice there are three, and they answer
-        different questions.
-      </p>
-
-      <h3>1. The agent appraisal</h3>
-      <p>
-        A free estimate from a real estate agent of what your home would most
-        likely sell for in the current market. It&rsquo;s built from recent
-        comparable sales in your suburb, adjusted for your home&rsquo;s
-        condition, position and features. This is the number that matters when
-        you&rsquo;re selling, because it&rsquo;s the agent&rsquo;s read on what
-        a buyer will actually pay. It&rsquo;s an estimate, not a promise, and
-        it usually comes as a range rather than a single figure.
-      </p>
-
-      <h3>2. The bank valuation</h3>
-      <p>
-        A formal figure produced by or for a lender when you borrow against the
-        property. Sometimes it&rsquo;s a full inspection by a licensed valuer,
-        sometimes it&rsquo;s a desktop or kerbside assessment. Its job is to
-        protect the bank if you default, so it&rsquo;s deliberately
-        conservative. A bank valuation typically lands below the agent
-        appraisal, sometimes well below.
-      </p>
-
-      <h3>3. The online estimate</h3>
-      <p>
-        An automated number from a property portal or data site, generated by
-        an automated valuation model (AVM) that crunches sales data and
-        property attributes. It&rsquo;s instant and free, and it&rsquo;s the
-        roughest of the three. On a standard home in a busy suburb it can be
-        close. On anything out of the ordinary it can be a long way off.
+        When people ask &quot;how much is my house worth?&quot; there are three
+        answers, and they answer different questions. An agent&rsquo;s{" "}
+        <strong>appraisal</strong> is a free estimate of what a buyer would pay
+        now, built from recent comparable sales. A <strong>valuation</strong> is
+        a licensed valuer&rsquo;s paid report, typically {valuationCostCited()},
+        and the only one of the three a lender or a court will rely on. An{" "}
+        <strong>online estimate</strong> is an automated model&rsquo;s figure from
+        recorded sales, free and instant, and every bank that publishes one says
+        it is not a valuation.
       </p>
       <p>
-        For what each of the three costs, when a lender insists on a valuation
-        and how the automated models are built, read{" "}
-        <Link href="/property-valuation">property valuation in Australia: appraisal vs valuation vs online estimate</Link>.
-      </p>
-
-      <KeyFigure
-        value="3 numbers"
-        label="Appraisal, bank valuation and online estimate measure different things"
-        context="Disagreement between them is normal, not an error"
-      />
-
-      <h2 id="why-they-differ">Why the three disagree</h2>
-      <p>
-        The gap between the three numbers confuses a lot of sellers. It
-        shouldn&rsquo;t. Each is built for a different audience:
-      </p>
-      <ul>
-        <li>
-          <strong>The appraisal is optimistic by design,</strong> in the sense
-          that it reflects what a motivated buyer might pay in a competitive
-          campaign. A good agent prices to the market, but the appraisal is
-          still a forward-looking estimate of a sale that hasn&rsquo;t happened
-          yet.
-        </li>
-        <li>
-          <strong>The bank valuation is pessimistic by design.</strong> The
-          lender assumes a forced or quick sale and wants a figure it could
-          recover even in a soft market. That&rsquo;s why it&rsquo;s
-          conservative, and why a valuation coming in under your contract price
-          is a known headache for buyers arranging finance.
-        </li>
-        <li>
-          <strong>The online estimate is statistical, not personal.</strong>
-          {" "}The model has never been inside your home. It can&rsquo;t see the
-          renovated kitchen, the awkward floor plan, the district view or the
-          main road at the front. It fills those gaps with averages.
-        </li>
-      </ul>
-      <p>
-        So a home might appraise at $880,000, value at $820,000 for the bank,
-        and show $910,000 on a portal. None of those is a lie. They&rsquo;re
-        three tools doing three different jobs.
+        They disagree by design: the appraisal looks forward to a sale that has
+        not happened, the valuation protects the lender and so is conservative,
+        and the estimate has never seen inside your home. A home might appraise
+        at $880,000, value at $820,000 for the bank and show $910,000 on a
+        portal, and none of those would be wrong. The three are compared side by
+        side, with six free estimators and when a lender insists on a valuation,
+        in{" "}
+        <Link href="/property-valuation">property valuation in Australia: appraisal, valuation and free online estimates compared</Link>.
       </p>
 
       <Callout variant="warning" title="When a low bank valuation bites">
@@ -322,7 +276,7 @@ export default function HowMuchIsMyHouseWorthAustraliaPage() {
         figure that counts.
       </p>
 
-      <h2 id="accurate-figure">How to get an accurate figure</h2>
+      <h2 id="accurate-figure">How to get a figure you can rely on</h2>
       <p>
         If you want a number you can act on, here&rsquo;s the method that
         works:
@@ -378,7 +332,7 @@ export default function HowMuchIsMyHouseWorthAustraliaPage() {
       <MatchCTA
         kind="selling-agent"
         href="/appraisal"
-        lead="Want a real number, not an automated guess? Get a free appraisal from a vetted local agent who sells your type of property in your suburb."
+        lead="Want a real number, not an automated guess? Ask a local agent for a free appraisal, backed by the comparable sales in your suburb."
         ctaLabel="Get my free appraisal"
       />
 
@@ -417,9 +371,10 @@ export default function HowMuchIsMyHouseWorthAustraliaPage() {
   );
 }
 
+// Pages that state what the guide relies on, each with the date read
+// (10 Oct 2026 review: the old list linked home pages that state none of it).
 const HOUSE_VALUE_SOURCES: readonly SourceItem[] = [
-  { label: "CoreLogic Australia: Property valuations and automated valuation models", href: "https://www.corelogic.com.au/", note: "Background on AVMs and comparable-sales methodology" },
-  { label: "Australian Property Institute: What a valuation is and who provides it", href: "https://www.api.org.au/", note: "Distinction between an agent appraisal and a licensed valuation" },
-  { label: "ASIC MoneySmart: Buying and selling property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on appraisals, valuations and pricing" },
-  { label: "CoreLogic Australia: Home Value Index and market conditions", href: "https://www.corelogic.com.au/our-data/corelogic-indices", note: "Market-condition factors cited in the value drivers section" },
+  { label: VALUATION_COST.source.label, href: VALUATION_COST.source.href, note: `Read ${VALUATION_COST.source.read}. Valuation cost; an appraisal cannot be used for a home loan application` },
+  { label: AUSSIE_GUIDE.label, href: AUSSIE_GUIDE.href, note: `Updated ${AUSSIE_GUIDE.updated}, read ${AUSSIE_GUIDE.read}. Appraisal, valuation and online estimate compared; API 2026 indicative fees` },
+  ...FREE_ESTIMATORS.filter((t) => /ANZ|CommBank/.test(t.name)).map((t) => ({ label: t.name, href: t.href, note: `Read ${t.read}. ${t.data}; ${t.says}` })),
 ];

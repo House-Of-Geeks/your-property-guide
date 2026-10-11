@@ -14,6 +14,7 @@ import { LISTING_SUBPAGE_FILTERS, type ListingInventoryRow } from "@/lib/suburb-
 import { getSuburbSlugsWithRentalData } from "@/lib/services/rental-service";
 import { getSuburbSlugsWithReliablePrice } from "@/lib/services/suburb-service";
 import { NOT_PLACES_VERSION } from "@/lib/non-localities";
+import { isSecondaryLocality } from "@/lib/duplicate-localities";
 
 // Suburb intent sub-pages (/suburbs/[slug]/houses etc.). Split into one
 // sitemap per type: ~15k indexable suburbs × 8 types would overflow the
@@ -82,7 +83,9 @@ export default async function sitemap(props: {
   // so reject ids outside the known types rather than emitting junk URLs.
   if (!(SUBPAGE_TYPES as readonly string[]).includes(type)) return [];
 
-  let suburbs = await getIndexableSuburbsForSitemaps();
+  // Duplicate postcode rows canonical to their primary (duplicate-localities.ts),
+  // so no sub-page sitemap lists them.
+  let suburbs = (await getIndexableSuburbsForSitemaps()).filter(({ slug }) => !isSecondaryLocality(slug));
 
   if (type === "rental-market") {
     const withData = new Set(await getCachedRentalSuburbs());

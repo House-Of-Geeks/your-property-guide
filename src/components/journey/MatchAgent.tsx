@@ -7,6 +7,7 @@ import { SuburbAutocomplete, slugToSuburbLabel } from "@/components/search/Subur
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 import { auMobileError } from "@/lib/utils/au-mobile";
 import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
+import { MATCH_COVERAGE_CAVEAT } from "@/lib/match-coverage";
 
 type Intent =
   | "buying"
@@ -224,19 +225,19 @@ export function MatchAgent({
             </div>
             <h2 className="font-display text-white leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">
               Tell us your situation.{" "}
-              <span className="italic font-light text-cta">We&rsquo;ll find</span>{" "}
-              the right person.
+              <span className="italic font-light text-cta">One introduction,</span>{" "}
+              not five.
             </h2>
             <p className="font-display font-light text-xl sm:text-2xl text-white/80 leading-snug max-w-md mb-12">
-              Three questions. One specialist (agent, broker, accountant or
-              conveyancer). 24-hour response. Free for buyers and sellers,
-              no commitment.
+              Three questions. Where we have an agent, broker or other
+              specialist for your situation in your area, we introduce one.
+              Free for buyers and sellers, no commitment.
             </p>
             <div className="grid grid-cols-2 gap-x-6 gap-y-6 max-w-md">
               {[
                 ["01", "You answer 3 questions (60 seconds)"],
-                ["02", "We pick ONE specialist, not five"],
-                ["03", "They reach out within 24 hours"],
+                ["02", "We look for ONE specialist, not five"],
+                ["03", "If we have one, they contact you; if not, we tell you"],
                 ["04", "You decide. Walk away anytime, no follow-up."],
               ].map(([n, t]) => (
                 <div key={n} className="border-t border-white/15 pt-4">
@@ -391,14 +392,13 @@ export function MatchAgent({
               {step === 3 && (
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-3">
-                    We&rsquo;ve got the right person for you
+                    Last step
                   </p>
                   <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-3">
-                    Pop your details in and we&rsquo;ll make the introduction.
+                    Pop your details in and we&rsquo;ll look for the right introduction.
                   </h3>
                   <p className="text-sm text-ink-muted leading-relaxed mb-5">
-                    You&rsquo;ll get an email confirmation with their profile before they reach out.
-                    No commitment, no comparison spam.
+                    One introduction, not five. No commitment, no comparison spam.
                   </p>
                   <form onSubmit={onSubmit} className="space-y-3">
                     {/* Honeypot: visually hidden, off-screen, aria-hidden. */}
@@ -498,7 +498,7 @@ export function MatchAgent({
                     <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
                       Free, no commitment. Your details go only to the one specialist
                       you&rsquo;re matched with, who pays us a fee for the introduction.
-                      We never sell them to anyone else. Read our{" "}
+                      We never sell them to anyone else. {MATCH_COVERAGE_CAVEAT} Read our{" "}
                       <a href="/privacy" className="underline underline-offset-2 hover:text-ink">privacy policy</a>.
                     </p>
                   </form>

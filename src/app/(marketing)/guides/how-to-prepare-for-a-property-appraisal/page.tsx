@@ -17,6 +17,7 @@ import {
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { VALUATION_COST, valuationCostCited, valuationCostRange } from "@/lib/data/appraisal-sources";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "How to Prepare for a Property Appraisal (2026): What Agents Look For",
@@ -76,7 +77,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Is a property appraisal free?",
     answer:
-      "Yes. A market appraisal from a real estate agent is free, because the agent provides it hoping to win your listing. There is no obligation to sell, or to sell with that agent. A formal valuation is different: it's a paid, legally recognised assessment by a certified valuer, typically costing a few hundred dollars for a standard home (commonly quoted in the $300 to $600 range, more for complex or rural properties). Most sellers only need agent appraisals; formal valuations are used for lending, family law, tax and deceased estates.",
+      `Yes. A market appraisal from a real estate agent is free, because the agent provides it hoping to win your listing. There is no obligation to sell, or to sell with that agent. A formal valuation is different: it's a paid, legally recognised assessment by a certified valuer, typically ${valuationCostCited()} for a standard home, more for complex or rural properties. Most sellers only need agent appraisals; formal valuations are used for lending, family law, tax and deceased estates.`,
   },
   {
     question: "How long does a property appraisal take?",
@@ -106,7 +107,7 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Free Property Appraisal",             href: "/appraisal",                                   description: "An independent appraisal from a vetted local agent, no commitment to list." },
+  { title: "Free Property Appraisal",             href: "/appraisal",                                   description: "Ask one local agent for a free appraisal, no commitment to list." },
   { title: "How to Choose a Selling Agent",       href: "/guides/how-to-choose-a-selling-agent",        description: "The interview process, the appraisal-price trap, and what to negotiate." },
   { title: "How Much Is My House Worth?",         href: "/guides/how-much-is-my-house-worth-australia", description: "The three ways to value a home and how to land on a figure you can trust." },
   { title: "Cost of Selling a House",             href: "/guides/cost-of-selling-a-house-australia",    description: "Every fee from commission to conveyancing, with a worked example." },
@@ -196,7 +197,7 @@ export default function HowToPrepareForAPropertyAppraisalPage() {
         </thead>
         <tbody>
           <tr><td>Who does it</td><td>A local real estate agent</td><td>A certified, independent valuer</td></tr>
-          <tr><td>Cost</td><td>Free</td><td>Commonly $300 to $600 for a standard home; more for complex, rural or high-value properties</td></tr>
+          <tr><td>Cost</td><td>Free</td><td>Typically {valuationCostRange()} for a standard home (ANZ, read {VALUATION_COST.source.read}); more for complex, rural or high-value properties</td></tr>
           <tr><td>Legal standing</td><td>None, it&rsquo;s a market opinion</td><td>A formal report relied on by lenders, courts and the ATO</td></tr>
           <tr><td>Used for</td><td>Deciding whether and how to sell, and at what price to list</td><td>Home loans, refinancing, family law, tax and deceased estates</td></tr>
           <tr><td>Typical tone</td><td>Optimistic, it doubles as a listing pitch</td><td>Conservative, the valuer carries liability for the number</td></tr>
@@ -212,15 +213,18 @@ export default function HowToPrepareForAPropertyAppraisalPage() {
         their loan. Lender valuations are typically more conservative than
         agent appraisals, and if the valuation lands below the agreed price,
         the buyer&rsquo;s finance can fall short and the deal can wobble. A
-        realistic appraisal at the start reduces that risk at the end.
+        realistic appraisal at the start reduces that risk at the end. The
+        appraisal, the valuation and the free online estimates are compared
+        side by side in{" "}
+        <Link href="/property-valuation">property valuation in Australia</Link>.
       </p>
 
       <Callout variant="info" title="Want a number without the sales pitch pressure?">
         <p>
           Our <Link href="/appraisal">free property appraisal</Link> service
-          connects you with a vetted local agent who provides an honest
-          appraisal backed by comparable sales evidence. No obligation to list,
-          no lock-in.
+          introduces you to a local agent, where we have one in your area,
+          for an appraisal backed by comparable sales evidence. No obligation
+          to list, no lock-in.
         </p>
       </Callout>
 
@@ -466,11 +470,11 @@ export default function HowToPrepareForAPropertyAppraisalPage() {
       <Callout variant="info" title="Ready for an honest number?">
         <p>
           Start with a{" "}
-          <Link href="/appraisal">free property appraisal</Link> from a vetted
-          local agent, backed by comparable sales evidence and with no
-          obligation to list. Or{" "}
-          <Link href="/find-an-expert">find a local expert</Link> if
-          you&rsquo;d rather browse agents in your area first.
+          <Link href="/appraisal">free property appraisal</Link> from a local
+          agent, backed by comparable sales evidence and with no obligation to
+          list. Or{" "}
+          <Link href="/find-an-expert">ask for one introduction</Link> to an
+          agent who covers your area.
         </p>
       </Callout>
 
@@ -482,7 +486,7 @@ export default function HowToPrepareForAPropertyAppraisalPage() {
 
 const APPRAISAL_PREP_SOURCES: readonly SourceItem[] = [
   { label: "NSW Government: Price estimation and underquoting when selling a property", href: "https://www.nsw.gov.au/housing-and-construction/buying-and-selling-property/selling-a-property/price-estimation-and-underquoting", note: "Estimated selling price rules, evidence requirements and the 10% range cap" },
-  { label: "Consumer Affairs Victoria: Understanding property prices and underquoting", href: "https://www.consumer.vic.gov.au/housing/buying-and-selling-property/understanding-property-prices-and-underquoting-for-buyers", note: "Statement of Information and the three comparable sales requirement" },
+  { label: "Consumer Affairs Victoria: Understanding property prices and underquoting", href: "https://www.consumer.vic.gov.au/housing/buying-and-selling-property/understanding-property-prices-and-underquoting-for-buyers", note: "Updated 1 October 2026, read 11 October 2026. The Property Price Statement and the three comparable sales requirement" },
   { label: "Queensland Government: Commissions and costs when selling a home", href: "https://www.qld.gov.au/law/housing-and-neighbours/buying-and-selling-a-property/selling-a-home/before-you-put-your-home-on-the-market/commissions-and-costs", note: "Written commission agreements and comparing multiple agents" },
   { label: "Cotality (formerly CoreLogic): What is my property worth", href: "https://www.cotality.com/au/insights/articles/what-is-my-property-worth-a-definitive-australian-guide-to-discovering-your-homes-value", note: "Agent appraisals vs certified valuations and how value estimates work" },
   { label: "Australian Taxation Office: Capital gains tax", href: "https://www.ato.gov.au/individuals-and-families/investments-and-assets/capital-gains-tax", note: "Selling costs and the CGT cost base on investment property" },

@@ -9,7 +9,8 @@ import { AgentListingsTabs } from "@/components/agent/AgentListingsTabs";
 import { AgentContactSection } from "@/components/agent/AgentContactSection";
 import { getAgentBySlug, getAgencyById } from "@/lib/services/agent-service";
 import { getPropertiesByAgent } from "@/lib/services/property-service";
-import { agentTitle, agentDescription, absoluteUrl } from "@/lib/utils/seo";
+import { agentTitle, absoluteUrl } from "@/lib/utils/seo";
+import { agentMetaDescription, showsRating, showsSalesTotal } from "../agent-meta";
 import { SITE_URL } from "@/lib/constants";
 
 interface AgentProfilePageProps {
@@ -21,11 +22,14 @@ export async function generateMetadata({ params }: AgentProfilePageProps): Promi
   const agent = await getAgentBySlug(slug);
   if (!agent) return { title: "Agent Not Found" };
   const title       = agent.metaTitle       ?? agentTitle(agent);
-  const description = agent.metaDescription ?? agentDescription(agent);
+  // Not the shared agentDescription: it printed the profile's sales field
+  // ("0 properties sold") beside a page listing seven sold properties, and
+  // the suburbs as slugs (owner decision, 10 Oct 2026).
+  const description = agent.metaDescription ?? agentMetaDescription(agent);
   const image       = agent.ogImage         ?? absoluteUrl(agent.image);
   return {
-    // Directory paused (placeholder profiles only) per Andy, 2026-07-03 —
-    // pages stay reachable but out of the index until real agents load.
+    // Out of the index while the directory is paused (3 Jul 2026); the
+    // profiles are real agents who agreed to be listed (10 Oct 2026).
     robots: { index: false, follow: true },
     title,
     description,
@@ -185,15 +189,17 @@ export default async function AgentProfilePage({ params }: AgentProfilePageProps
             {agent.firstName}&apos;s statistics
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="rounded-xl bg-white shadow-card border border-gray-100 p-5 text-center">
-              <p className="text-3xl font-bold text-primary">{agent.propertiesSold}</p>
-              <p className="text-xs text-gray-500 mt-1">Total Sales</p>
-            </div>
+            {showsSalesTotal(agent) && (
+              <div className="rounded-xl bg-white shadow-card border border-gray-100 p-5 text-center">
+                <p className="text-3xl font-bold text-primary">{agent.propertiesSold}</p>
+                <p className="text-xs text-gray-500 mt-1">Total Sales</p>
+              </div>
+            )}
             <div className="rounded-xl bg-white shadow-card border border-gray-100 p-5 text-center">
               <p className="text-3xl font-bold text-primary">{agent.yearsExperience}</p>
               <p className="text-xs text-gray-500 mt-1">Years Experience</p>
             </div>
-            {agent.reviewCount > 0 && (
+            {showsRating(agent) && (
               <div className="rounded-xl bg-white shadow-card border border-gray-100 p-5 text-center">
                 <p className="text-3xl font-bold text-primary">{agent.averageRating}</p>
                 <p className="text-xs text-gray-500 mt-1">Average Rating</p>
