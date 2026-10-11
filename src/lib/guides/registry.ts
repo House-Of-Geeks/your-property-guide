@@ -183,7 +183,7 @@ export const GUIDE_SECTIONS: readonly GuideSection[] = [
   {
     id: "finance",
     label: "Home loans and stamp duty",
-    blurb: "What a lender will approve, how to structure the loan, and the duty each state charges on the purchase.",
+    blurb: "What a lender may lend on your income and expenses, how to structure the loan, and the duty each state charges on the purchase.",
     icon: "/images/icons/calculator.svg",
     guides: [
       "how-much-can-i-borrow-australia",
