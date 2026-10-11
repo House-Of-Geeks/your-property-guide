@@ -288,6 +288,7 @@ const PAGES: Array<{ path: string; state: AustralianState | null; load: () => Pr
   { path: "/guides/first-home-buyer-act", state: "ACT", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-act/page") },
   { path: "/guides/first-home-buyer-qld", state: "QLD", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-qld/page") },
   { path: "/guides/first-home-buyer-vic", state: "VIC", load: () => import("../../src/app/(marketing)/guides/first-home-buyer-vic/page") },
+  { path: "/guides/first-home-owner-grant-australia", state: null, load: () => import("../../src/app/(marketing)/guides/first-home-owner-grant-australia/page") },
 ];
 
 describe("pages rendered from the data file", () => {
