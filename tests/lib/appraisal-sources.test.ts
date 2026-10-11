@@ -33,6 +33,7 @@ describe("no page in the vertical types the valuation cost by hand", () => {
     "src/app/(marketing)/property-valuation/page.tsx",
     "src/app/(marketing)/guides/how-much-is-my-house-worth-australia/page.tsx",
     "src/app/(marketing)/appraisal/page.tsx",
+    "src/app/(marketing)/guides/how-to-prepare-for-a-property-appraisal/page.tsx",
   ];
   for (const f of files) {
     it(f, () => {
