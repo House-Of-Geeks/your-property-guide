@@ -3,7 +3,17 @@ import { describe, expect, it } from "vitest";
 import type { Suburb } from "@/types";
 import type { Agent, Agency } from "@/types/agent";
 import fs from "node:fs";
-import { AGENT_LISTINGS_ENABLED, COMMISSION_RULE_SOURCES, EXAMPLE_SALE_PRICES, buildSuburbAgentsModel, commissionOnMedian } from "@/lib/suburb-agents";
+import {
+  AGENT_LISTINGS_ENABLED,
+  AGENTS_TITLE_BUDGET,
+  COMMISSION_RULE_SOURCES,
+  EXAMPLE_SALE_PRICES,
+  agentsPageTitle,
+  buildSuburbAgentsModel,
+  commissionOnMedian,
+  parentLocalityName,
+  pickNearbyAgentLinks,
+} from "@/lib/suburb-agents";
 import { STATE_RATES } from "@/lib/data/commission-rates";
 
 function makeSuburb(over: Partial<Suburb["stats"]> = {}, freshness: Partial<NonNullable<Suburb["dataFreshness"]>> = {}, state = "NSW"): Suburb {
@@ -32,13 +42,13 @@ describe("commissionOnMedian", () => {
 describe("buildSuburbAgentsModel", () => {
   it("is indexable with a reliable median, titles for the search phrase, and works the commission on the median", () => {
     const m = buildSuburbAgentsModel(makeSuburb(), [agent], [agency]);
-    expect(m.title).toBe("Real Estate Agents in Bondi NSW 2026");
+    expect(m.title).toBe("Real Estate Agents in Bondi, NSW: Fees & Free Appraisal");
     expect(m.indexable).toBe(true);
     expect(m.commission?.lowAmount).toBe(77_400);
     expect(m.commission?.highAmount).toBe(107_500);
     expect(m.faqs[0].question).toBe("What do real estate agents charge in Bondi?");
     expect(m.faqs[0].answer).toContain("$77,400 to $107,500");
-    expect(m.description).toContain("$4,300,000 median (NSW Valuer General, 1.8% to 2.5%)");
+    expect(m.description).toBe("Real estate agents in Bondi: 1.8% to 2.5% commission on the $4,300,000 median (NSW Valuer General), how to choose one, and a free appraisal.");
     expect(m.matchSource).toBe("suburb-agents-bondi-nsw-2026");
   });
   it("is not indexable without a reliable median, and works the state range on example prices instead", () => {
@@ -87,7 +97,7 @@ describe("median provenance and commission sources (F3, 10 Oct 2026)", () => {
     expect(m.provenance?.sentence).toContain("May 2026");
     expect(m.medianPhrase).toBe("Bondi's median house price of $1,600,000");
     expect(m.faqs[0].answer).toContain("(Land Victoria, the latest published quarter, updated May 2026)");
-    expect(m.description).toContain("(Land Victoria,");
+    expect(m.description).toContain("median (Land Victoria)");
   });
   it("calls an ABS figure the statistical area's, never the suburb's own median", () => {
     const m = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 473_000 }, { salesSource: "sales-abs", salesCount: null, salesPeriodEnd: new Date("2024-12-31T00:00:00Z") }, "TAS"), [], []);
@@ -145,5 +155,91 @@ describe("house-worth guide wording (F7)", () => {
     expect(src).not.toMatch(/How to get an accurate figure|The accurate way/);
     expect(src).toContain("How to get a figure you can rely on");
     expect(src).not.toContain("5 to 10% below");
+  });
+});
+
+describe("agents page title, intro and description (section 3.1, 10 Oct 2026)", () => {
+  it("carries 'Appraisal' inside 60 characters, keeping the postcode only for a shared name", () => {
+    expect(agentsPageTitle("Lane Cove", "NSW", "2066")).toBe("Real Estate Agents in Lane Cove, NSW: Fees & Free Appraisal");
+    expect(agentsPageTitle("North Batemans Bay", "NSW", "2536")).toBe("North Batemans Bay Real Estate Agents: Fees & Free Appraisal");
+    expect(agentsPageTitle("Lilli Pilli", "NSW", "2536", true)).toBe("Lilli Pilli 2536 Real Estate Agents: Fees & Free Appraisal");
+    for (const name of ["Bondi", "Williamstown", "Glenelg North", "Port Macquarie", "Mount Martha", "Bannockburn", "Wollongong", "Castle Hill", "Mount Lofty Ranges", "Kangaroo Island Coast"]) {
+      for (const keep of [false, true]) {
+        const t = agentsPageTitle(name, "NSW", "2000", keep);
+        expect(t.length, t).toBeLessThanOrEqual(AGENTS_TITLE_BUDGET);
+        expect(t, t).toMatch(/Appraisal/);
+        expect(t).not.toMatch(/House Prices|Suburb Profile/);
+      }
+    }
+  });
+  it("passes the shared-name flag through to the title", () => {
+    expect(buildSuburbAgentsModel(makeSuburb(), [], [], false, { nameShared: true }).title).toBe("Real Estate Agents in Bondi 2026: Fees & Free Appraisal");
+  });
+  it("opens with the fee range worked on the median, or on an example price when it is withheld", () => {
+    const pub = buildSuburbAgentsModel(makeSuburb(), [], []);
+    expect(pub.intro).toBe("Agents in Bondi typically charge 1.8% to 2.5% of the sale price, about $77,400 to $107,500 on Bondi's median house price of $4,300,000 (NSW Valuer General, calendar 2025). Here is how to choose one and how to get a free appraisal.");
+    const wh = buildSuburbAgentsModel(makeSuburb({ medianHousePrice: 0 }), [], []);
+    expect(wh.intro).toBe("Agents in New South Wales typically charge 1.8% to 2.5% of the sale price, $18,000 to $25,000 on a $1,000,000 sale. Here is how to choose one in Bondi and how to get a free appraisal.");
+  });
+  it("keeps every description inside 160 characters and says 'appraisal'", () => {
+    for (const name of ["Bondi", "North Batemans Bay", "Kangaroo Island Coastal Strip"]) {
+      for (const [over, fr, st] of [[{}, {}, "NSW"], [{ medianHousePrice: 0 }, {}, "QLD"], [{ medianHousePrice: 1_234_567 }, { salesSource: "sales-abs", salesCount: null }, "TAS"]] as const) {
+        const sub = { ...makeSuburb(over, fr, st), name };
+        const d = buildSuburbAgentsModel(sub, [], []).description;
+        expect(d.length, d).toBeLessThanOrEqual(160);
+        expect(d, d).toMatch(/appraisal/);
+      }
+    }
+  });
+  it("adds the appraisal and 'paid if it doesn't sell' FAQs with sourced state rules", () => {
+    const nsw = buildSuburbAgentsModel(makeSuburb(), [], []);
+    const q = nsw.faqs.map((f) => f.question);
+    expect(q).toContain("Is a property appraisal in Bondi free?");
+    expect(q).toContain("Do real estate agents in Bondi get paid if the house doesn't sell?");
+    const free = nsw.faqs.find((f) => f.question.startsWith("Is a property appraisal"))!.answer;
+    expect(free).toContain("$300 to $600 (ANZ, read 11 October 2026)");
+    const paid = nsw.faqs.find((f) => f.question.startsWith("Do real estate agents"))!.answer;
+    expect(paid).toContain("NSW Government, Agency agreements, updated 8 July 2026");
+    const good = nsw.faqs.find((f) => f.question.startsWith("How do I find"))!.answer;
+    expect(good).toContain("more than 10% above the bottom");
+    const vic = buildSuburbAgentsModel(makeSuburb({}, { salesSource: "sales-vic" }, "VIC"), [], []);
+    expect(vic.faqs.find((f) => f.question.startsWith("How do I find"))!.answer).toContain("Property Price Statement");
+    const wa = buildSuburbAgentsModel(makeSuburb({}, { salesSource: "sales-abs" }, "WA"), [], []);
+    expect(wa.faqs.find((f) => f.question.startsWith("Do real estate agents"))!.answer).not.toMatch(/NSW|Queensland/);
+  });
+});
+
+describe("nearby agents links (section 3.1)", () => {
+  const row = (slug: string, name: string, indexable = true, state = "VIC", postcode = "3000") => ({ slug, name, state, postcode, indexable });
+  it("puts the parent locality first on a directional name and links only indexable pages", () => {
+    const links = pickNearbyAgentLinks(
+      { slug: "kew-east-vic-3102", name: "Kew East", state: "VIC" },
+      ["balwyn-vic-3103", "kew-vic-3101", "deepdene-vic-3103", "box-hill-vic-3128"],
+      [row("balwyn-vic-3103", "Balwyn"), row("kew-vic-3101", "Kew"), row("deepdene-vic-3103", "Deepdene", false), row("box-hill-vic-3128", "Box Hill"), row("kew-east-vic-3102", "Kew East")],
+    );
+    expect(links.map((l) => l.label)).toEqual(["Real estate agents in Kew", "Real estate agents in Balwyn", "Real estate agents in Box Hill"]);
+    expect(links[0].href).toBe("/suburbs/kew-vic-3101/agents");
+  });
+  it("links a parent to its directional variants, skips duplicate rows of its own name, and caps at eight", () => {
+    const nearby = Array.from({ length: 12 }, (_, i) => `n${i}-vic-3000`);
+    const rows = [row("kew-east-vic-3102", "Kew East"), row("kew-vic-3999", "Kew"), ...nearby.map((sl, i) => row(sl, `Near ${i}`))];
+    const links = pickNearbyAgentLinks({ slug: "kew-vic-3101", name: "Kew", state: "VIC" }, nearby, rows);
+    expect(links[0].label).toBe("Real estate agents in Kew East");
+    expect(links.some((l) => l.href.includes("kew-vic-3999"))).toBe(false);
+    expect(links).toHaveLength(8);
+  });
+  it("adds the postcode where two links share a name, and never crosses the state line", () => {
+    const links = pickNearbyAgentLinks(
+      { slug: "x-nsw-2000", name: "X", state: "NSW" },
+      ["kingswood-nsw-2747", "kingswood-nsw-2340", "albury-nsw-2640", "wodonga-vic-3690"],
+      [row("kingswood-nsw-2747", "Kingswood", true, "NSW", "2747"), row("kingswood-nsw-2340", "Kingswood", true, "NSW", "2340"), row("albury-nsw-2640", "Albury", true, "NSW", "2640"), row("wodonga-vic-3690", "Wodonga", true, "VIC", "3690")],
+    );
+    expect(links.map((l) => l.label)).toEqual(["Real estate agents in Kingswood 2747", "Real estate agents in Kingswood 2340", "Real estate agents in Albury"]);
+  });
+  it("finds the parent of a directional name", () => {
+    expect(parentLocalityName("Kew East")).toBe("Kew");
+    expect(parentLocalityName("North Batemans Bay")).toBe("Batemans Bay");
+    expect(parentLocalityName("Westmead")).toBeNull();
+    expect(parentLocalityName("East")).toBeNull();
   });
 });
