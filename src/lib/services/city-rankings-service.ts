@@ -2,7 +2,7 @@ import { cache } from "react";
 import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY, NON_LOCALITY_SLUGS, NOT_PLACES_VERSION, isNonLocalitySlug } from "@/lib/non-localities";
-import { PUBLISHED_GROWTH, PUBLISHED_HOUSE_MEDIAN, publishedSales } from "@/lib/published-medians";
+import { PUBLISHED_GROWTH, PUBLISHED_HOUSE_MEDIAN, notInvertedMedians, publishedSales } from "@/lib/published-medians";
 import { describeSalesProvenance } from "@/lib/sales-provenance";
 import { WALK_SCORE_CAP, isRanked, type RankingCategory } from "@/lib/ranking-notes";
 import { yieldFromSql, yieldStates } from "@/lib/services/suburb-rankings-service";
@@ -137,8 +137,16 @@ const yieldFrom = (city: CapitalCity): string | null => {
   return states.length === 0 ? null : yieldFromSql(states, cityPostcodeSql(city));
 };
 
-const growthWhere = (city: CapitalCity) => ({ ...baseWhere(city), ...PUBLISHED_GROWTH });
-const affordableWhere = (city: CapitalCity) => ({ ...baseWhere(city), ...PUBLISHED_HOUSE_MEDIAN, medianHousePrice: { gt: 100000 } });
+// notInvertedMedians: a row whose unit median is above its house median
+// publishes neither (published-medians.hasInvertedMedians), so it is not
+// counted or ranked either.
+const growthWhere = (city: CapitalCity) => ({ ...baseWhere(city), ...PUBLISHED_GROWTH, ...notInvertedMedians(db.suburb.fields.medianHousePrice) });
+const affordableWhere = (city: CapitalCity) => ({
+  ...baseWhere(city),
+  ...PUBLISHED_HOUSE_MEDIAN,
+  ...notInvertedMedians(db.suburb.fields.medianHousePrice),
+  medianHousePrice: { gt: 100000 },
+});
 const walkableWhere = (city: CapitalCity) => ({ ...baseWhere(city), walkScore: { gt: 0 } });
 // Every family suburb in the city with a school ICSEA, ranked here on the
 // average: the state ranking sorts the first 500 it finds (tracker item 49).

@@ -1,13 +1,15 @@
 // A list prints what the suburb's own page prints (fix item 47).
 import fs from "node:fs";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   GROWTH_SOURCES,
   PUBLISHED_GROWTH,
   PUBLISHED_HOUSE_MEDIAN,
   PUBLISHED_HOUSE_MEDIAN_SQL,
   UNIT_MEDIAN_SOURCES,
+  hasInvertedMedians,
   measuresGrowth,
+  notInvertedMedians,
   medianBasis,
   publishedGrowth,
   publishedGrowthFor,
@@ -51,6 +53,39 @@ describe("what is published", () => {
     const r = withPublishedSales({ ...row({ statsSource: "sales-wa" }), slug: "x-wa-6000" });
     expect(r.slug).toBe("x-wa-6000");
     expect(r.medianHousePrice).toBe(0);
+  });
+});
+
+describe("a unit median above the house median (Kew East, 10 Oct 2026)", () => {
+  // Land Victoria row for Kew East VIC 3102: house $660,000, unit $1,396,000.
+  const kewEast = () => ({ ...row({ statsSource: "sales-vic", salesCountHouse: 0, medianHousePrice: 660_000, medianUnitPrice: 1_396_000, annualGrowthHouse: 0 }), slug: "kew-east-vic-3102" });
+  it("withholds both medians and logs the row once", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    expect(hasInvertedMedians(kewEast())).toBe(true);
+    expect(publishesMedians(kewEast())).toBe(false);
+    expect(publishedSales(kewEast())).toEqual({ medianHousePrice: 0, medianUnitPrice: 0, annualGrowthHouse: 0, basis: null });
+    expect(publishesUnitMedian(kewEast())).toBe(false);
+    expect(withPublishedSales(kewEast()).medianUnitPrice).toBe(0);
+    const logged = warn.mock.calls.filter((c) => String(c[0]).includes("kew-east-vic-3102"));
+    expect(logged).toHaveLength(1);
+    expect(String(logged[0][0])).toMatch(/unit median 1396000 is above house median 660000/);
+    warn.mockRestore();
+  });
+  it("publishes a normal pair, an equal pair, and a house median with no unit median", () => {
+    expect(hasInvertedMedians(row())).toBe(false);
+    expect(hasInvertedMedians(row({ medianUnitPrice: 850_000 }))).toBe(false);
+    expect(hasInvertedMedians(row({ medianUnitPrice: 0 }))).toBe(false);
+    expect(hasInvertedMedians(row({ medianUnitPrice: null }))).toBe(false);
+    expect(hasInvertedMedians(row({ medianHousePrice: 0 }))).toBe(false);
+    expect(publishedSales(row({ statsSource: "sales-vic", salesCountHouse: 0, medianUnitPrice: 850_000 })).medianHousePrice).toBe(850_000);
+  });
+  it("a caller that passes no medians keeps the source and count rule", () => {
+    expect(publishesMedians({ statsSource: "sales-vic", salesCountHouse: 0 })).toBe(true);
+  });
+  it("the raw SQL and the Prisma fragment carry the same check", () => {
+    expect(PUBLISHED_HOUSE_MEDIAN_SQL).toContain(`NOT (s."medianUnitPrice" > s."medianHousePrice")`);
+    const field = { name: "medianHousePrice" };
+    expect(notInvertedMedians(field)).toEqual({ medianUnitPrice: { lte: field } });
   });
 });
 
@@ -137,19 +172,24 @@ describe("the same rule as database filters", () => {
     expect(PUBLISHED_HOUSE_MEDIAN_SQL).toContain(`NOT (s."salesCountHouse" >= 1 AND s."salesCountHouse" < 5)`);
   });
   it("agrees with the row rule on every combination", () => {
-    // The filters, read as a predicate, against publishedSales.
+    // The filters (with notInvertedMedians beside them), read as a predicate, against publishedSales.
     const where = (r: RawSalesRow) =>
       r.medianHousePrice > 0 &&
       PUBLISHED_HOUSE_MEDIAN.statsSource.in.includes(r.statsSource ?? "") &&
-      !((r.salesCountHouse ?? 0) >= 1 && (r.salesCountHouse ?? 0) < MIN_SALES_FOR_MEDIAN);
+      !((r.salesCountHouse ?? 0) >= 1 && (r.salesCountHouse ?? 0) < MIN_SALES_FOR_MEDIAN) &&
+      (r.medianUnitPrice ?? 0) <= r.medianHousePrice;
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     for (const statsSource of ["sales-nsw", "sales-vic", "sales-sa", "sales-abs", "sales-qld", "seed", "rental-vic"]) {
       for (const salesCountHouse of [0, 1, 4, 5, 60]) {
         for (const medianHousePrice of [0, 420_000]) {
-          const r = row({ statsSource, salesCountHouse, medianHousePrice });
-          expect(where(r), `${statsSource} ${salesCountHouse} ${medianHousePrice}`).toBe(publishedSales(r).medianHousePrice > 0);
+          for (const medianUnitPrice of [0, 380_000, 610_000]) {
+            const r = row({ statsSource, salesCountHouse, medianHousePrice, medianUnitPrice });
+            expect(where(r), `${statsSource} ${salesCountHouse} ${medianHousePrice} ${medianUnitPrice}`).toBe(publishedSales(r).medianHousePrice > 0);
+          }
         }
       }
     }
+    warn.mockRestore();
   });
   it("is what the suburb service and the indexability rule read", () => {
     expect(fs.readFileSync("src/lib/services/suburb-service.ts", "utf8")).toContain("= publishedSales(s);");

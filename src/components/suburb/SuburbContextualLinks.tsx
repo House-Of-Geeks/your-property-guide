@@ -36,26 +36,37 @@ function nearbyName(slug: string): string {
 }
 
 // Evergreen guide + calculator links for the lead-gen surface, split into
-// buying and selling intent. State label personalises the two state-aware
-// rows; the destinations are the canonical national guides.
-function buyingLinksForState(state: string | undefined): { label: string; href: string }[] {
+// buying and selling intent. A state-labelled link goes to that state's
+// guide (buying 3.1 and 3.3 of the commercial intent review, 10 Oct 2026):
+// until then "First home buyer guide, NSW" and the stamp duty link landed on
+// the national pages, and the suburb template is the one surface that can
+// give the eight state guides contextual, state-partitioned links. Without
+// a known state the national pages stay.
+export const STATE_GUIDE_STATES = new Set(["nsw", "vic", "qld", "wa", "sa", "tas", "act", "nt"]);
+
+export function buyingLinksForState(state: string | undefined): { label: string; href: string }[] {
   const stateUpper = (state ?? "").toUpperCase();
-  const firstHome = stateUpper
-    ? `First home buyer guide, ${stateUpper}`
-    : "First home buyer guide";
+  const stateSlug = stateUpper.toLowerCase();
+  const known = STATE_GUIDE_STATES.has(stateSlug);
+  const firstHome = known
+    ? { label: `First home buyer guide, ${stateUpper}`, href: `/guides/first-home-buyer-${stateSlug}` }
+    : { label: "First home buyer guide", href: "/guides/first-home-buyer-guide" };
+  const stampDuty = known
+    ? { label: `${stateUpper} stamp duty calculator`, href: `/guides/stamp-duty-${stateSlug}` }
+    : { label: "Stamp duty calculator", href: "/stamp-duty-calculator" };
   return [
-    { label: firstHome, href: "/guides/first-home-buyer-guide" },
+    firstHome,
     { label: "How much deposit to buy a house", href: "/guides/how-much-deposit-to-buy-a-house" },
     { label: "Buying property in Australia", href: "/guides/buying-property-australia" },
     { label: "Borrowing power calculator", href: "/borrowing-power-calculator" },
-    { label: "Stamp duty calculator", href: "/stamp-duty-calculator" },
+    stampDuty,
   ];
 }
 
 // States with a dedicated commission guide at /guides/real-estate-commission-{slug}.
-const COMMISSION_GUIDE_STATES = new Set(["nsw", "vic", "qld", "wa", "sa", "tas", "act", "nt"]);
+const COMMISSION_GUIDE_STATES = STATE_GUIDE_STATES;
 
-function sellingLinksForState(state: string | undefined): { label: string; href: string }[] {
+export function sellingLinksForState(state: string | undefined): { label: string; href: string }[] {
   const stateUpper = (state ?? "").toUpperCase();
   const stateSlug = stateUpper.toLowerCase();
   // The state-labelled anchor should land on the state commission page, not

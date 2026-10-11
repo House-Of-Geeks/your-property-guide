@@ -7,7 +7,7 @@ import { BreadcrumbJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY } from "@/lib/non-localities";
-import { PUBLISHED_CHANGE, PUBLISHED_HOUSE_MEDIAN, withPublishedSales } from "@/lib/published-medians";
+import { PUBLISHED_CHANGE, PUBLISHED_HOUSE_MEDIAN, notInvertedMedians, withPublishedSales } from "@/lib/published-medians";
 import { priceSourceLine } from "@/lib/ranking-notes";
 import { formatPrice, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
@@ -79,6 +79,8 @@ export default async function PriceGuidePage({
   // have none to sort on.
   const where = {
     ...(sort === "growth-desc" ? PUBLISHED_CHANGE : PUBLISHED_HOUSE_MEDIAN),
+    // A row whose unit median is above its house median publishes neither.
+    ...notInvertedMedians(db.suburb.fields.medianHousePrice),
     ...(state ? { state } : {}),
     ...LOCALITIES_ONLY,
   };

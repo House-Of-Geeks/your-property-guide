@@ -132,6 +132,9 @@ describe("which pages are city editions", () => {
     const service = read("src/lib/services/city-rankings-service.ts");
     expect(service).toContain("...PUBLISHED_GROWTH");
     expect(service).toContain("...PUBLISHED_HOUSE_MEDIAN,");
+    // the inverted-median rule in the database filters (published-medians.notInvertedMedians)
+    expect(service.match(/\.\.\.notInvertedMedians\(db\.suburb\.fields\.medianHousePrice\)/g)).toHaveLength(2);
+    expect(read("src/app/(marketing)/price-guide/page.tsx")).toContain("...notInvertedMedians(db.suburb.fields.medianHousePrice),");
     expect(service).toContain("publishedSales(row)");
     expect(service).toContain("LOCALITIES_ONLY");
     expect(service).toContain("isNonLocalitySlug(r.slug)");
