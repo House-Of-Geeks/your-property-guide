@@ -33,25 +33,38 @@ const COMMON_WORDS = new Set([
 interface CompiledTerm {
   slug: string;
   term: string;
-  // Pre-built RegExp matching the term with word boundaries, case-insensitive,
-  // and avoiding matches inside HTML tag attributes.
+  // Matches the term case-insensitively, not inside a longer word. Global, so
+  // every occurrence in a text run can be checked against the ones already
+  // taken by a longer term.
   regex: RegExp;
+}
+
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/**
+ * The regex source for a term. Word boundaries are written as lookarounds
+ * because `\b` never matches after a closing bracket: with `\b...\b`, a term
+ * such as "Capital Gains Tax (CGT)" could never be linked. An apostrophe
+ * matches the straight and curly forms and their entities. A term whose
+ * bracket holds an acronym ("Lenders Mortgage Insurance (LMI)") also matches
+ * its name without the bracket, which is how articles write it.
+ */
+function termPattern(term: string): string {
+  const one = (t: string) =>
+    escapeRe(t)
+      .split("'")
+      .join("(?:'|\u2019|&apos;|&rsquo;|&#39;)");
+  const variants = [term];
+  const acronym = /^(.*\S)\s+\(([A-Z]{2,4})\)$/.exec(term);
+  if (acronym) variants.push(acronym[1]);
+  return `(?<![A-Za-z0-9])(?:${variants.map(one).join("|")})(?![A-Za-z0-9])`;
 }
 
 const LINKABLE_TERMS: CompiledTerm[] = GLOSSARY_TERMS
   .filter((t) => !COMMON_WORDS.has(t.slug))
   // Prefer longer terms first so "auction clearance rate" wins over "auction"
   .sort((a, b) => b.term.length - a.term.length)
-  .map((t) => {
-    // Escape regex special chars in the term name. Word boundaries (\b)
-    // prevent partial matches like "title-deed" matching inside "subtitle".
-    const escaped = t.term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    return {
-      slug: t.slug,
-      term: t.term,
-      regex: new RegExp(`\\b(${escaped})\\b`, "i"),
-    };
-  });
+  .map((t) => ({ slug: t.slug, term: t.term, regex: new RegExp(termPattern(t.term), "gi") }));
 
 /**
  * Auto-link the first occurrence of each glossary term in an HTML string.
@@ -108,19 +121,35 @@ export function linkGlossaryTerms(html: string): string {
       continue;
     }
 
-    let text = tok;
+    // Find every term's first free occurrence in the original text run, then
+    // insert the links in one pass. Matching against text that already holds
+    // inserted links nested them: "mortgage" matched inside the href of the
+    // "Mortgage Broker" link, and readers saw raw markup (four posts, found
+    // 10 Oct 2026).
+    const hits: { start: number; end: number; slug: string }[] = [];
     for (const t of LINKABLE_TERMS) {
       if (linked.has(t.slug)) continue;
-      const match = text.match(t.regex);
-      if (!match || match.index === undefined) continue;
-      // Replace the first match only
-      const before = text.slice(0, match.index);
-      const matched = match[1];
-      const after = text.slice(match.index + matched.length);
-      const link = `<a href="/glossary/${t.slug}" class="glossary-link" data-glossary-slug="${t.slug}">${matched}</a>`;
-      text = before + link + after;
-      linked.add(t.slug);
+      t.regex.lastIndex = 0;
+      let hit: RegExpExecArray | null;
+      while ((hit = t.regex.exec(tok)) !== null) {
+        const start = hit.index;
+        const end = start + hit[0].length;
+        if (hits.some((h) => start < h.end && end > h.start)) continue;
+        hits.push({ start, end, slug: t.slug });
+        linked.add(t.slug);
+        break;
+      }
     }
+    hits.sort((x, y) => x.start - y.start);
+    let text = "";
+    let at = 0;
+    for (const h of hits) {
+      const matched = tok.slice(h.start, h.end);
+      text += tok.slice(at, h.start);
+      text += `<a href="/glossary/${h.slug}" class="glossary-link" data-glossary-slug="${h.slug}">${matched}</a>`;
+      at = h.end;
+    }
+    text += tok.slice(at);
     parts.push(text);
   }
 
