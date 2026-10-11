@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY } from "@/lib/non-localities";
-import { PUBLISHED_HOUSE_MEDIAN, publishedSales, type MedianBasis } from "@/lib/published-medians";
+import { PUBLISHED_HOUSE_MEDIAN, publishedSales, type MedianBasis, notInvertedMedians } from "@/lib/published-medians";
 import { GROWTH_RANKED_STATES, YIELD_RANKED_STATES, priceSourceLine } from "@/lib/ranking-notes";
 import { yieldFromSql, yieldStates } from "@/lib/services/suburb-rankings-service";
 import { grossYieldPercent } from "@/lib/suburb-snapshot";
@@ -361,7 +361,7 @@ export async function findSuburbMatches(answers: QuizAnswers, limit = 6): Promis
     where: {
       ...(state ? { state } : {}),
       ...LOCALITIES_ONLY,
-      ...PUBLISHED_HOUSE_MEDIAN,
+      ...PUBLISHED_HOUSE_MEDIAN, ...notInvertedMedians(db.suburb.fields.medianHousePrice),
       population: { gt: 500 }, // skip tiny localities
     },
     select: {

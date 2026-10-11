@@ -6,6 +6,7 @@ import {
   PUBLISHED_HOUSE_MEDIAN_SQL,
   publishedSales,
   type MedianBasis,
+  notInvertedMedians,
 } from "@/lib/published-medians";
 import { MAX_PLAUSIBLE_GROSS_YIELD } from "@/lib/suburb-snapshot";
 import { YIELD_MIN_POPULATION, YIELD_RANKED_STATES, type RankingCategory } from "@/lib/ranking-notes";
@@ -180,7 +181,7 @@ export async function getRankedSuburbs(
 
     case "highest-growth": {
       const rows = await db.suburb.findMany({
-        where: { ...stateFilter, ...PUBLISHED_GROWTH },
+        where: { ...stateFilter, ...PUBLISHED_GROWTH, ...notInvertedMedians(db.suburb.fields.medianHousePrice) },
         select: SUBURB_SELECT,
         orderBy: [{ annualGrowthHouse: "desc" }, { name: "asc" }],
         take: limit,
@@ -193,7 +194,7 @@ export async function getRankedSuburbs(
       const rows = await db.suburb.findMany({
         where: {
           ...stateFilter,
-          ...PUBLISHED_HOUSE_MEDIAN,
+          ...PUBLISHED_HOUSE_MEDIAN, ...notInvertedMedians(db.suburb.fields.medianHousePrice),
           medianHousePrice: { gt: 100000 },
         },
         select: SUBURB_SELECT,
@@ -369,9 +370,9 @@ export async function getRankingEligibleCount(category: RankingCategory, state?:
   const stateFilter = { ...(state ? { state } : {}), ...LOCALITIES_ONLY };
   switch (category) {
     case "highest-growth":
-      return db.suburb.count({ where: { ...stateFilter, ...PUBLISHED_GROWTH } });
+      return db.suburb.count({ where: { ...stateFilter, ...PUBLISHED_GROWTH, ...notInvertedMedians(db.suburb.fields.medianHousePrice) } });
     case "most-affordable":
-      return db.suburb.count({ where: { ...stateFilter, ...PUBLISHED_HOUSE_MEDIAN, medianHousePrice: { gt: 100000 } } });
+      return db.suburb.count({ where: { ...stateFilter, ...PUBLISHED_HOUSE_MEDIAN, ...notInvertedMedians(db.suburb.fields.medianHousePrice), medianHousePrice: { gt: 100000 } } });
     case "best-rental-yield": {
       const states = yieldStates(state);
       if (states.length === 0) return 0;

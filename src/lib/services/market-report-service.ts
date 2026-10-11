@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY } from "@/lib/non-localities";
-import { PUBLISHED_GROWTH, PUBLISHED_HOUSE_MEDIAN, publishedSales } from "@/lib/published-medians";
+import { PUBLISHED_GROWTH, PUBLISHED_HOUSE_MEDIAN, publishedSales, notInvertedMedians } from "@/lib/published-medians";
 
 export interface SuburbMarketRow {
   slug: string;
@@ -93,25 +93,25 @@ export async function getStateMarketData(state: string): Promise<StateMarketData
   // the raw columns: the NSW report led its growth table with +4,612.1%.
   // One query after another: the runtime pool holds a single connection.
   const topByGrowthRaw = await db.suburb.findMany({
-    where: { ...inState, ...PUBLISHED_GROWTH, medianHousePrice: { gt: 100_000 } },
+    where: { ...inState, ...PUBLISHED_GROWTH, ...notInvertedMedians(db.suburb.fields.medianHousePrice), medianHousePrice: { gt: 100_000 } },
     select: SUBURB_SELECT,
     orderBy: [{ annualGrowthHouse: "desc" }, { name: "asc" }],
     take: 10,
   });
   const topByPriceRaw = await db.suburb.findMany({
-    where: { ...inState, ...PUBLISHED_HOUSE_MEDIAN, medianHousePrice: { gt: 100_000 } },
+    where: { ...inState, ...PUBLISHED_HOUSE_MEDIAN, ...notInvertedMedians(db.suburb.fields.medianHousePrice), medianHousePrice: { gt: 100_000 } },
     select: SUBURB_SELECT,
     orderBy: [{ medianHousePrice: "desc" }, { name: "asc" }],
     take: 10,
   });
   const topAffordableRaw = await db.suburb.findMany({
-    where: { ...inState, ...PUBLISHED_HOUSE_MEDIAN, medianHousePrice: { gt: 100_000 } },
+    where: { ...inState, ...PUBLISHED_HOUSE_MEDIAN, ...notInvertedMedians(db.suburb.fields.medianHousePrice), medianHousePrice: { gt: 100_000 } },
     select: SUBURB_SELECT,
     orderBy: [{ medianHousePrice: "asc" }, { name: "asc" }],
     take: 10,
   });
   const allPriced = await db.suburb.findMany({
-    where: { ...inState, ...PUBLISHED_HOUSE_MEDIAN },
+    where: { ...inState, ...PUBLISHED_HOUSE_MEDIAN, ...notInvertedMedians(db.suburb.fields.medianHousePrice) },
     select: {
       medianHousePrice: true,
       medianUnitPrice: true,
