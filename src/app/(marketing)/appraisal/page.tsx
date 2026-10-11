@@ -9,6 +9,7 @@ import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
 import Link from "next/link";
 import { SITE_URL } from "@/lib/constants";
 import { COVERAGE_CAVEAT } from "@/lib/match-coverage";
+import { AUSSIE_GUIDE, CAV_PROPERTY_PRICES, NSW_AGENCY_AGREEMENTS, cite, valuationCostCited } from "@/lib/data/appraisal-sources";
 
 // Form lives in the hero's right column (above the fold on desktop, second
 // position on mobile after the headline) so visitors arrive on a page that
@@ -35,6 +36,8 @@ const TRUST_POINTS = [
 // month for "property appraisal" and its variants. The copy below answers
 // those searches in plain English and is mirrored into FAQPage JSON-LD.
 // Every figure carries an "as at" date; nothing recommends.
+// Section 3.7 and 6 of the 10 Oct 2026 review add the market value and red
+// flag questions; the valuation cost renders from appraisal-sources.ts.
 const APPRAISAL_FAQS: { question: string; answer: string }[] = [
   {
     question: "What is a property appraisal?",
@@ -44,7 +47,7 @@ const APPRAISAL_FAQS: { question: string; answer: string }[] = [
   {
     question: "Is a property appraisal free?",
     answer:
-      "Yes. Agents provide appraisals free of charge because it is how they meet sellers before a listing decision. A formal valuation by a licensed valuer is different: that is a paid report, typically $300 to $800 as at September 2026, used for lending, legal or tax purposes.",
+      `Yes. Agents commonly appraise a home at no cost when you are thinking of selling (${cite(AUSSIE_GUIDE, "Aussie")}): it is how they meet sellers before a listing decision. A formal valuation by a licensed valuer is different: a paid report, typically ${valuationCostCited()}, used for lending, legal or tax purposes.`,
   },
   {
     question: "What is the difference between an appraisal and a valuation?",
@@ -65,6 +68,15 @@ const APPRAISAL_FAQS: { question: string; answer: string }[] = [
     question: "Do I have to sell if I get an appraisal?",
     answer:
       "No. An appraisal is information, not a commitment. Many owners get one to check where they stand, to plan a move a year out, or to compare with an online estimate. You are under no obligation to list, and not obliged to list with the agent who appraised your home.",
+  },
+  {
+    question: "How do I find the market value of a property?",
+    answer:
+      "Start with sold prices for similar homes nearby, then the suburb's published median (the range block on this page shows it with its source and period), then two or three agent appraisals backed by comparable sales. Where the three point the same way, you have a market value range. Where a lender or a court has to rely on the figure, a licensed valuer's report is the one that counts.",
+  },
+  {
+    question: "What is a red flag on an appraisal?",
+    answer: `A figure with no comparable sales behind it, or one far above every other agent's. The rules expect evidence: in Victoria the agent's estimated selling price must be reasonable and based on research into comparable properties, and the Property Price Statement buyers see must give a price or a range of up to 10%, the three most comparable sales and the suburb median (${cite(CAV_PROPERTY_PRICES, "Consumer Affairs Victoria")}). In NSW the agency agreement must state the estimate, and a range cannot have its top more than 10% above its bottom (${cite(NSW_AGENCY_AGREEMENTS, "NSW Government, Agency agreements")}).`,
   },
 ];
 

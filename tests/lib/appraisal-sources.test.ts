@@ -32,6 +32,7 @@ describe("no page in the vertical types the valuation cost by hand", () => {
     "src/app/(marketing)/suburbs/[slug]/agents/page.tsx",
     "src/app/(marketing)/property-valuation/page.tsx",
     "src/app/(marketing)/guides/how-much-is-my-house-worth-australia/page.tsx",
+    "src/app/(marketing)/appraisal/page.tsx",
   ];
   for (const f of files) {
     it(f, () => {
@@ -75,5 +76,16 @@ describe("house-worth guide (section 3.6)", () => {
   });
   it("cites pages that state what the guide relies on, not home pages", () => {
     expect(src).not.toMatch(/href: "https:\/\/(www\.)?(corelogic\.com\.au|api\.org\.au|moneysmart\.gov\.au)\/"/);
+  });
+});
+
+describe("/appraisal FAQs (section 3.7)", () => {
+  const src = fs.readFileSync("src/app/(marketing)/appraisal/page.tsx", "utf8");
+  it("answers the market value and red flag questions with the state rules, dated", () => {
+    expect(src).toContain('question: "How do I find the market value of a property?"');
+    expect(src).toContain('question: "What is a red flag on an appraisal?"');
+    expect(src).toContain("cite(CAV_PROPERTY_PRICES");
+    expect(src).toContain("cite(NSW_AGENCY_AGREEMENTS");
+    expect(src).not.toContain("$300 to $800");
   });
 });
