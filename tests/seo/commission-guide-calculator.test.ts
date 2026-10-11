@@ -22,8 +22,9 @@ const TITLE_BUDGET = 67;
 
 const guide = (st: StateCode) => readFileSync(`src/app/(marketing)/guides/real-estate-commission-${st.toLowerCase()}/page.tsx`, "utf8");
 const field = (src: string, key: string) => new RegExp(`^  ${key}: "([^"]+)",$`, "m").exec(src)?.[1];
-const description = (src: string) => /^  description:\n    "([^"]+)",$/m.exec(src)?.[1];
-const firstTldr = (src: string) => /^const TLDR = \[\n  "([^"]+)",$/m.exec(src)?.[1];
+// Since the 10 Oct 2026 review the description and TL;DR are template literals built from the sourced rates.
+const description = (src: string) => /^  description:\n    (?:`([^`]+)`|"([^"]+)"),$/m.exec(src)?.slice(1).find(Boolean);
+const firstTldr = (src: string) => /^const TLDR = \[\n  (?:`([^`]+)`|"([^"]+)"),$/m.exec(src)?.slice(1).find(Boolean);
 
 describe("calculator embed", () => {
   for (const st of STATES) {
@@ -75,7 +76,7 @@ describe("rollout cohort", () => {
       expect(description(src)).toContain(city);
       expect(description(src)).toContain(`a calculator preset to the ${st} rate`);
       expect(firstTldr(src)).toContain(city);
-      expect(field(src, "updatedAt")).toBe("2026-09-30");
+      expect(field(src, "updatedAt")).toBe("2026-10-11");
     }
   });
   it("NT keeps the pilot title with no h1 override", () => {

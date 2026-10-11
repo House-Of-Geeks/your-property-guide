@@ -19,15 +19,37 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { COMMISSION_PAA_FAQ } from "@/lib/data/commission-faqs";
+import { StateCommissionTable, commissionSourceItems } from "@/components/guide/CommissionRateTable";
+import {
+  STATE_COMMISSION,
+  STATE_RATES,
+  commissionAmount,
+  commissionWithGst,
+  pct,
+  regionalRange,
+  stateRateSummary,
+  stateSources,
+  whereInState,
+  workedExamples,
+} from "@/lib/data/commission-rates";
+
+// Every rate on this page comes from the sourced table in
+// src/lib/data/commission-rates.ts (commercial-intent review, 10 Oct 2026, 0.1).
+const R = STATE_RATES.QLD;
+const C = STATE_COMMISSION.QLD;
+const REG = regionalRange("QLD");
+const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
+/** The old two-part quote, 5% of the first $18,000 and 2.5% of the balance, on $800,000. */
+const OLD_SCALE_800 = Math.round(18_000 * 0.05 + (800_000 - 18_000) * 0.025);
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real Estate Commission QLD 2026: Brisbane Rates, Fees & Calculator",
   h1: "Real Estate Commission QLD 2026: Brisbane & QLD Rates, Fees & Calculator",
   description:
-    "What real estate agents charge in Brisbane and across Queensland: the typical 2.3% to 2.9% commission range, a calculator preset to the QLD rate, worked dollar examples, GST, how commission is structured, and how to negotiate in a deregulated market.",
+    "Brisbane and Queensland agent commission: published averages 2.33% to 2.91%, a calculator preset to the QLD rate, dollar examples with GST, and the Form 6.",
   slug: "real-estate-commission-qld",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -55,10 +77,10 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Real estate commission in Brisbane and across Queensland typically runs from 2.3% to 2.9% of the sale price, with 2.5% the most common rate.",
+  `Published averages for real estate commission in Brisbane and across Queensland run from ${pct(R.low)} (${whereInState("QLD", R.low)}) to ${pct(R.high)} (${whereInState("QLD", R.high)}), with a state average of ${pct(R.typical)} (OpenAgent, September 2026).`,
   "Commission is a percentage of the final sale price, paid by the seller out of the proceeds at settlement, and it is always negotiable.",
-  "At the typical 2.5% rate, an $800,000 sale costs around $20,000 in commission before GST.",
-  "Commission usually attracts 10% GST on top, and quotes vary on whether that GST is shown, so always check.",
+  `At the ${pct(R.typical)} state average, an $800,000 sale costs ${money(commissionAmount(800_000, R.typical))} in commission before GST, or ${money(commissionWithGst(800_000, R.typical))} with it.`,
+  "The Form 6 that appoints your agent must state the commission as a GST-inclusive amount, so check the dollar figure on the form, not just the percentage.",
   "\"No sale, no fee\" is the norm in QLD, so commission is generally only payable if the property actually sells.",
   "Marketing, photography and styling are charged separately, so compare agents on the full package, not just the headline rate.",
 ];
@@ -66,6 +88,7 @@ const TLDR = [
 const TOC: GuideTOCEntry[] = [
   { id: "calculator",   label: "Commission calculator" },
   { id: "average",     label: "Average real estate commission in QLD" },
+  { id: "old-scale",   label: "Why some agents still quote 5% on the first $18,000" },
   { id: "examples",    label: "Worked examples by sale price" },
   { id: "structure",   label: "How commission is structured in QLD" },
   { id: "negotiable",  label: "Is commission negotiable in QLD?" },
@@ -78,12 +101,12 @@ const FAQS: FaqItem[] = [
   {
     question: "What is the average real estate commission in QLD?",
     answer:
-      "In Queensland, real estate commission typically ranges from 2.3% to 2.9% of the final sale price, with 2.5% the most common rate. There is no official or fixed figure because commission in QLD is deregulated, so the rate you are quoted is a starting point set by the individual agent. Premium suburbs and higher-value homes often attract a lower percentage because the dollar amount is already large, while smaller sales can sit at the higher end of the range. Commission is also usually subject to 10% GST on top, so confirm whether a quote includes it.",
+      `OpenAgent's Queensland state average is ${pct(R.typical)} of the sale price (September 2026), with Brisbane at ${pct(C.capital.rate)} and regional areas from ${pct(REG!.low)} to ${pct(REG!.high)}; bRight Agent's median across Queensland postcodes is ${pct(C.median)} (February 2026). There is no official or fixed figure: Queensland deregulated maximum commission in 2014, and the REIQ says there is no "standard" rate. The rate you are quoted is a starting point, and the Form 6 must state it as a GST-inclusive amount.`,
   },
   {
     question: "How much do real estate agents charge in Queensland?",
     answer:
-      "Most Queensland agents charge a percentage of the sale price, typically between 2.3% and 2.9%, with 2.5% the usual figure. On an $800,000 sale at 2.5% that is around $20,000, and at $1,000,000 it is about $25,000, before GST. Marketing, professional photography and styling are charged separately on top of commission. Some agents will offer a tiered or performance-based structure that pays them more above an agreed target price. Always get the rate, the GST treatment and the marketing budget in writing before you sign an agency agreement.",
+      `Most Queensland agents charge a percentage of the sale price, and published averages run from ${pct(R.low)} to ${pct(R.high)}. At the ${pct(R.typical)} state average, an $800,000 sale costs ${money(commissionAmount(800_000, R.typical))} and a $1,000,000 sale ${money(commissionAmount(1_000_000, R.typical))}, before GST. Marketing, professional photography and styling are charged separately on top of commission. Some agents will offer a tiered or performance-based structure that pays them more above an agreed target price. Always get the rate, the GST treatment and the marketing budget in writing before you sign an agency agreement.`,
   },
   {
     question: "Is real estate commission negotiable in QLD?",
@@ -98,7 +121,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Does commission include GST in QLD?",
     answer:
-      "Commission usually attracts 10% GST on top of the quoted percentage, and quotes vary on whether that GST is shown. Some agents quote a rate exclusive of GST and add it at settlement, while others quote an all-in figure. On a 2.5% commission for an $800,000 sale, the commission is around $20,000 and GST would add roughly $2,000 on top. Because the presentation differs between agents, always ask whether the rate you are comparing includes GST so you are comparing like with like.",
+      `GST of 10% applies to the agent's commission. Under the Property Occupations Act 2014, the Form 6 appointment must state the commission as a GST-inclusive amount (REIQ), so the dollar figure on the form already includes it, while a percentage quoted in conversation may not. At the ${pct(R.typical)} state average on an $800,000 sale, commission is ${money(commissionAmount(800_000, R.typical))} before GST and ${money(commissionWithGst(800_000, R.typical))} with it. Ask each agent for the GST-inclusive dollar amount so you are comparing like with like.`,
   },
 ];
 
@@ -120,12 +143,17 @@ export default function RealEstateCommissionQldPage() {
       related={RELATED}
     >
       <CommissionCalculatorEmbed state="QLD" />
+      <p>
+        Selling in another state? See{" "}
+        <Link href="/guides/real-estate-agent-fees-australia">real estate agent fees in every state</Link>.
+      </p>
 
       <Callout variant="warning" title="Commission is not fixed, and it is always negotiable">
         <p>
           Commission in Queensland is not regulated or set at a fixed rate. The
-          2.3% to 2.9% range in this guide reflects typical market figures, not
-          official rates, and every agent sets their own pricing. Treat every
+          figures in this guide are published averages and medians, each named
+          and dated in the table below, not official rates, and every agent sets
+          their own pricing. Treat every
           percentage and dollar amount here as indicative, get written quotes
           from your own local agents, and confirm the current rate, the GST
           treatment and the marketing budget before you sign anything.
@@ -134,7 +162,7 @@ export default function RealEstateCommissionQldPage() {
 
       <EditorNote>
         <p>
-          Queensland sellers ask me the same thing every time: is 2.5% fair? The
+          Queensland sellers ask me the same thing every time: is the rate fair? The
           honest answer is that there is no official rate to be fair against.
           Commission here is deregulated, so the number on the agreement is
           whatever the agent decided to write down. The sellers who do best treat
@@ -146,60 +174,65 @@ export default function RealEstateCommissionQldPage() {
 
       <h2 id="average">Average real estate commission in QLD</h2>
       <p className="lead">
-        In Brisbane and across Queensland, real estate commission typically ranges from{" "}
-        <strong>2.3% to 2.9%</strong> of the final sale price, with{" "}
-        <strong>2.5% the most common</strong> rate. Commission is a percentage of
-        the sale price, paid by the seller out of the proceeds at settlement, and
-        it is negotiable.
+        {stateRateSummary("QLD")} Commission is a percentage of the sale price,
+        paid by the seller out of the proceeds at settlement, and it is
+        negotiable.
+      </p>
+      <StateCommissionTable state="QLD" price={800_000} />
+      <p>
+        On OpenAgent&rsquo;s figures Queensland&rsquo;s state average of{" "}
+        {pct(R.typical)} is above Sydney ({pct(STATE_COMMISSION.NSW.capital.rate)}) and
+        Melbourne ({pct(STATE_COMMISSION.VIC.capital.rate)}). Within the state,
+        Brisbane averages {pct(C.capital.rate)} and the regional areas run from{" "}
+        {pct(REG!.low)} in {whereInState("QLD", REG!.low)} to {pct(REG!.high)} in{" "}
+        {whereInState("QLD", REG!.high)}. None of this is fixed, which is the
+        single most important thing to understand before you sign.
+      </p>
+
+      <h2 id="old-scale">Why some Queensland agents still quote 5% on the first $18,000</h2>
+      <p>
+        WhichRealEstateAgent&rsquo;s Brisbane fee guide (updated 9 December 2025)
+        notes that many agents still quote the old two-part structure: 5% of the
+        first $18,000, then 2.5% of the balance. On an $800,000 sale that is{" "}
+        {money(OLD_SCALE_800)} before GST, or {pct(Math.round((OLD_SCALE_800 / 800_000) * 10_000) / 100)} of
+        the price.
       </p>
       <p>
-        That puts Queensland a little above the rate you would expect in the
-        larger southern capitals. In Sydney and Melbourne, where property values
-        are higher, percentage rates are often pulled down towards 2% because the
-        dollar amount on a high-priced home is already substantial. Queensland
-        sits higher because sale prices across much of the state are lower and
-        more spread out, from inner Brisbane through to the Gold Coast, Sunshine
-        Coast and the regions, so agents recover their costs over a smaller base.
-        The typical 2.5% reflects that middle position rather than any rule.
-      </p>
-      <p>
-        Within the range, the rate you are quoted depends on your price point and
-        location. Higher-value Brisbane and coastal homes can attract a rate
-        nearer the lower 2.3% end, because the commission in dollars is large even
-        at a smaller percentage. More modest sales, or properties in slower
-        markets where the agent expects a longer campaign, can sit closer to
-        2.9%. None of this is fixed, which is the single most important thing to
-        understand before you sign.
+        It is a habit, not a rule. Maximum commission rates were deregulated in
+        Queensland in 2014, and the REIQ reminds agents that there is no
+        &ldquo;standard&rdquo; or REIQ-approved commission: describing a rate
+        that way can be misleading. Under the Property Occupations Act 2014 the
+        commission is whatever you and the agent write into the Form 6, stated
+        as a GST-inclusive amount, and you can negotiate it.
       </p>
 
       <KeyFigure
-        value="2.3–2.9%"
-        label="Typical real estate commission range in Queensland, with 2.5% the most common rate. A percentage of the sale price, paid by the seller at settlement."
-        context="Indicative market figures, not official rates, and negotiable"
+        value={pct(R.typical)}
+        label={`OpenAgent's QLD state average commission (September 2026). On an $800,000 sale that's ${money(commissionAmount(800_000, R.typical))} before GST.`}
+        context={`Published averages run ${pct(R.low)} to ${pct(R.high)}, before GST, and it's negotiable`}
       />
 
       <h2 id="examples">Worked examples by sale price</h2>
       <p>
         Because commission is a percentage, the dollar figure scales with your
-        sale price. The table below shows what the QLD range works out to across
-        a few common price points, at the lower (2.3%), typical (2.5%) and higher
-        (2.9%) ends.
+        sale price. The table below shows the QLD figures across a few common
+        price points, at the lowest published average ({pct(R.low)}), the state
+        average ({pct(R.typical)}) and the highest published average ({pct(R.high)}).
       </p>
 
       <table>
         <thead>
           <tr>
             <th>Sale price</th>
-            <th>At 2.3% (lower)</th>
-            <th>At 2.5% (typical)</th>
-            <th>At 2.9% (higher)</th>
+            <th>At {pct(R.low)} (lowest)</th>
+            <th>At {pct(R.typical)} (state average)</th>
+            <th>At {pct(R.high)} (highest)</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>$600,000</td><td>$13,800</td><td>$15,000</td><td>$17,400</td></tr>
-          <tr><td>$800,000</td><td>$18,400</td><td>$20,000</td><td>$23,200</td></tr>
-          <tr><td>$1,000,000</td><td>$23,000</td><td>$25,000</td><td>$29,000</td></tr>
-          <tr><td>$1,500,000</td><td>$34,500</td><td>$37,500</td><td>$43,500</td></tr>
+          {workedExamples("QLD").map((w) => (
+            <tr key={w.price}><td>{money(w.price)}</td><td>{money(w.low)}</td><td>{money(w.typical)}</td><td>{money(w.high)}</td></tr>
+          ))}
         </tbody>
       </table>
 
@@ -355,8 +388,7 @@ export default function RealEstateCommissionQldPage() {
 }
 
 const QLD_COMMISSION_SOURCES: readonly SourceItem[] = [
+  ...commissionSourceItems(stateSources("QLD")),
   { label: "Queensland Government: Seller disclosure scheme", href: "https://www.qld.gov.au/housing/buying-owning-home/seller-disclosure-scheme", note: "The seller disclosure statement (Form 2) required since 1 August 2025" },
-  { label: "Office of Fair Trading Queensland: Property agents and licensing", href: "https://www.qld.gov.au/law/fair-trading", note: "Licensing and conduct rules for Queensland real estate agents" },
-  { label: "Real Estate Institute of Queensland (REIQ)", href: "https://www.reiq.com/", note: "State peak body for agent standards and industry guidance" },
-  { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent commission, GST and marketing costs" },
+  { label: "WhichRealEstateAgent, Brisbane Real Estate Agent Fees [2026 Guide] (many agents still quote 5% of the first $18,000, then 2.5% of the balance)", href: "https://whichrealestateagent.com.au/agent-fees/real-estate-agent-commission-qld/", note: "updated 9 December 2025, read 11 October 2026" },
 ];

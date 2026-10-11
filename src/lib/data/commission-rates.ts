@@ -418,3 +418,49 @@ export const commissionAmount = (price: number, rate: number) => Math.round((pri
 
 /** Commission in whole dollars, with 10% GST added. */
 export const commissionWithGst = (price: number, rate: number) => Math.round(commissionAmount(price, rate) * (1 + GST_RATE));
+
+/** Where a state's lowest or highest published figure comes from ("Sydney", "Western NSW", "the state median"). */
+export function whereInState(state: StateCode, value: number): string {
+  const s = STATE_COMMISSION[state];
+  if (s.capital.rate === value) return s.capital.name;
+  const r = s.regions.find((x) => x.rate === value);
+  if (r) return r.name;
+  if (s.median === value) return `the ${jurisdiction(state)} median`;
+  return `the ${jurisdiction(state)} average`;
+}
+
+/** "territory" for the ACT and the NT, "state" elsewhere. */
+export const jurisdiction = (state: StateCode) => (state === "ACT" || state === "NT" ? "territory" : "state");
+
+/**
+ * The sentence every state page uses for its rates, from the table:
+ * "Published figures for Victoria run from 1.78% (Melbourne) to 2.79%
+ * (Grampians). OpenAgent's state average is 1.83% (September 2026) and
+ * bRight Agent's state median is 2.35% (February 2026)."
+ */
+export function stateRateSummary(state: StateCode): string {
+  const r = STATE_RATES[state];
+  const s = STATE_COMMISSION[state];
+  const j = jurisdiction(state);
+  return `Published figures for ${STATE_NAMES[state]} run from ${pct(r.low)} (${whereInState(state, r.low)}) to ${pct(r.high)} (${whereInState(state, r.high)}). OpenAgent's ${j} average is ${pct(s.stateAverage)} (September 2026) and bRight Agent's ${j} median is ${pct(s.median)} (February 2026).`;
+}
+
+export interface WorkedRow {
+  price: number;
+  low: number;
+  typical: number;
+  high: number;
+  typicalWithGst: number;
+}
+
+/** Commission in dollars at the state's low, typical and high rates, for the worked-examples tables. */
+export function workedExamples(state: StateCode, prices: number[] = [600_000, 800_000, 1_000_000, 1_500_000]): WorkedRow[] {
+  const r = STATE_RATES[state];
+  return prices.map((price) => ({
+    price,
+    low: commissionAmount(price, r.low),
+    typical: commissionAmount(price, r.typical),
+    high: commissionAmount(price, r.high),
+    typicalWithGst: commissionWithGst(price, r.typical),
+  }));
+}
