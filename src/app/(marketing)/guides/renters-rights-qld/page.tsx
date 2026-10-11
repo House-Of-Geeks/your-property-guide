@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -11,6 +10,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { renterGuideLinks } from "@/lib/data/renters-rights";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Renter's Rights in Queensland: Complete Guide (2026)",
@@ -100,10 +100,7 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "Compare QLD reforms to NSW where no-grounds evictions remain." },
-  { title: "Renter's Rights in Victoria", href: "/guides/renters-rights-vic", description: "VIC's 2021 reforms that QLD is moving toward." },
-  { title: "Renter's Rights in WA",       href: "/guides/renters-rights-wa",  description: "WA's Residential Tenancies Act and entry rules." },
-  { title: "Renter's Rights in SA",       href: "/guides/renters-rights-sa",  description: "SA tenant rules and SACAT dispute resolution." },
+  ...renterGuideLinks(["NSW", "VIC", "WA", "SA"]),
   { title: "First Home Buyer Guide QLD",  href: "/guides/first-home-buyer-qld", description: "When you're ready to stop renting and buy your first home." },
 ];
 
@@ -131,7 +128,7 @@ export default function RentersRightsQLDPage() {
       <Callout variant="info" title="2024 QLD reforms">
         <p>
           QLD introduced new laws in 2024 requiring landlords to have valid
-          grounds for ending a tenancy (similar to Victoria's 2021 reforms) and
+          grounds for ending a tenancy (similar to Victoria&apos;s 2021 reforms) and
           making it harder to unreasonably refuse pets. Implementation has been
           phased, so check the RTA for the current position on each provision.
         </p>
@@ -155,7 +152,7 @@ export default function RentersRightsQLDPage() {
       <ul>
         <li><strong>Maximum bond:</strong> 4 weeks rent (higher allowable thresholds for very high rent, check RTA for current limits)</li>
         <li><strong>Lodgement:</strong> Lodged with the RTA within 10 days of the tenancy starting; you should receive a receipt</li>
-        <li><strong>Refund:</strong> At end of tenancy, both parties can agree to a refund via the RTA's online system; disputes go to the RTA dispute resolution service or QCAT</li>
+        <li><strong>Refund:</strong> At end of tenancy, both parties can agree to a refund via the RTA&apos;s online system; disputes go to the RTA dispute resolution service or QCAT</li>
       </ul>
       <p>
         Complete a detailed property condition report on move-in and request a
@@ -169,7 +166,7 @@ export default function RentersRightsQLDPage() {
         <li>For fixed-term agreements, the increase amount must be specified in the agreement</li>
       </ul>
       <p>
-        QLD doesn't cap the amount of an increase, only the frequency and
+        QLD doesn&apos;t cap the amount of an increase, only the frequency and
         notice. If you believe an increase is excessive, seek advice from the
         RTA.
       </p>
@@ -181,7 +178,7 @@ export default function RentersRightsQLDPage() {
       <p>
         Must be addressed <strong>immediately</strong>. Examples: burst water
         pipe, gas leak, serious roof damage after storm, breakdown of essential
-        services. If the landlord can't be reached, tenants can arrange
+        services. If the landlord can&apos;t be reached, tenants can arrange
         emergency repairs themselves up to $300 and reclaim the cost.
       </p>
 
@@ -201,7 +198,7 @@ export default function RentersRightsQLDPage() {
 
       <h2 id="entry-rights">Landlord entry rights</h2>
       <ul>
-        <li><strong>Routine inspections:</strong> Maximum 4 per year. The first inspection can't occur until at least 3 months after tenancy starts. <strong>7 days written notice</strong> required.</li>
+        <li><strong>Routine inspections:</strong> Maximum 4 per year. The first inspection can&apos;t occur until at least 3 months after tenancy starts. <strong>7 days written notice</strong> required.</li>
         <li><strong>General entry for repairs:</strong> 24 hours notice required</li>
         <li><strong>Emergency:</strong> No notice required</li>
       </ul>
@@ -214,7 +211,7 @@ export default function RentersRightsQLDPage() {
       <h2 id="pets">Pet ownership, 2024 reforms</h2>
       <p>
         Following the 2024 reforms, Queensland landlords <strong>cannot
-        unreasonably refuse</strong> a tenant's request to keep a pet.
+        unreasonably refuse</strong> a tenant&apos;s request to keep a pet.
         Acceptable grounds for refusal:
       </p>
       <ul>

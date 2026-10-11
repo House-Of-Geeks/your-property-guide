@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -11,6 +10,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { renterGuideLinks } from "@/lib/data/renters-rights";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Renter's Rights in the ACT: Complete Guide for Canberra Tenants (2026)",
@@ -101,10 +101,7 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "Compare ACT to NSW where no-grounds evictions remain on periodic tenancies." },
-  { title: "Renter's Rights in Victoria", href: "/guides/renters-rights-vic", description: "VIC's 2021 reforms also abolished no-grounds evictions." },
-  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD's 2024 reforms toward grounds-based evictions." },
-  { title: "Renter's Rights in WA",       href: "/guides/renters-rights-wa",  description: "WA's Residential Tenancies Act and entry rules." },
+  ...renterGuideLinks(["NSW", "VIC", "QLD", "WA"]),
   { title: "First Home Buyer Guide ACT",  href: "/guides/first-home-buyer-act", description: "Canberra's HBCS stamp duty waiver and Crown Lease land." },
 ];
 
@@ -126,7 +123,7 @@ export default function RentersRightsACTPage() {
           </a>{" "}
           or the{" "}
           <a href="https://www.tenantsact.org.au" target="_blank" rel="noopener noreferrer">
-            Tenants' Union ACT
+            Tenants&apos; Union ACT
           </a>{" "}
           before taking action.
         </p>
@@ -134,14 +131,14 @@ export default function RentersRightsACTPage() {
 
       <h2 id="rta">The Residential Tenancies Act 1997 (ACT)</h2>
       <p className="lead">
-        The ACT's residential tenancy laws are governed by the Residential
+        The ACT&apos;s residential tenancy laws are governed by the Residential
         Tenancies Act 1997. The ACT has progressively strengthened tenant
         protections, and as of 2026, it offers some of the strongest renter
         protections of any Australian jurisdiction.
       </p>
       <p>Key improvements in recent ACT reforms:</p>
       <ul>
-        <li>Abolition of "no cause" (no-grounds) evictions in most circumstances</li>
+        <li>Abolition of &quot;no cause&quot; (no-grounds) evictions in most circumstances</li>
         <li>Increased notice periods for rent increases</li>
         <li>Strengthened pet ownership rights</li>
         <li>Enhanced minimum standards for rental properties</li>
@@ -155,7 +152,7 @@ export default function RentersRightsACTPage() {
       <ul>
         <li>
           <strong>Fixed term:</strong> Defined start and end dates. Landlord
-          can't end except for specific grounds (e.g. serious breach). Tenant
+          can&apos;t end except for specific grounds (e.g. serious breach). Tenant
           may vacate early but may be liable for a break fee.
         </li>
         <li>
@@ -173,7 +170,7 @@ export default function RentersRightsACTPage() {
 
       <h2 id="bond">Bond rules</h2>
       <ul>
-        <li><strong>Maximum bond:</strong> 4 weeks rent. Landlords can't request more.</li>
+        <li><strong>Maximum bond:</strong> 4 weeks rent. Landlords can&apos;t request more.</li>
         <li><strong>Lodgement:</strong> Lodged with the ACT Revenue Office within 14 days. You should receive a receipt.</li>
         <li><strong>Condition report:</strong> The landlord must provide an ingoing report before the tenancy begins. Both parties sign and retain a copy. Photograph any existing damage.</li>
         <li><strong>Refund:</strong> Refunded if the property is in the same condition as on move-in (allowing fair wear and tear). Disputes go to ACAT.</li>
@@ -188,7 +185,7 @@ export default function RentersRightsACTPage() {
       <ul>
         <li><strong>Minimum period:</strong> At least 12 months between any two rent increases</li>
         <li><strong>Notice required:</strong> At least 8 weeks written notice, one of the longest in Australia</li>
-        <li><strong>Fixed term:</strong> Rent can't be increased unless the amount or formula is specified in the agreement</li>
+        <li><strong>Fixed term:</strong> Rent can&apos;t be increased unless the amount or formula is specified in the agreement</li>
         <li><strong>Excessive increases:</strong> Apply to ACAT for review; ACAT considers comparable rents in the area</li>
       </ul>
 
@@ -199,7 +196,7 @@ export default function RentersRightsACTPage() {
       />
 
       <p>
-        ACT doesn't have formal rent caps, but the combination of the 12-month
+        ACT doesn&apos;t have formal rent caps, but the combination of the 12-month
         minimum, 8-week notice, and ACAT review rights provides meaningful
         protection against rapid or unreasonable increases.
       </p>
@@ -211,7 +208,7 @@ export default function RentersRightsACTPage() {
         <li><strong>Reasonable time:</strong> Not excessively early, late, or on public holidays</li>
       </ul>
       <p>
-        If your landlord gives less than 2 weeks notice, you don't have to
+        If your landlord gives less than 2 weeks notice, you don&apos;t have to
         allow entry for a routine inspection. Document any breach and contact
         ACAT if the problem persists.
       </p>
@@ -242,7 +239,7 @@ export default function RentersRightsACTPage() {
       <h3>Non-urgent repairs</h3>
       <p>
         Put your request in writing and allow a reasonable time (generally 14
-        days). If repairs aren't made, apply to ACAT for a repair order or
+        days). If repairs aren&apos;t made, apply to ACAT for a repair order or
         compensation.
       </p>
 
@@ -256,11 +253,11 @@ export default function RentersRightsACTPage() {
         <li>Adequate weatherproofing</li>
       </ul>
       <p>
-        If your property doesn't meet minimum standards, contact ACAT for a
+        If your property doesn&apos;t meet minimum standards, contact ACAT for a
         compliance order.
       </p>
 
-      <h2 id="no-grounds">No-grounds evictions, ACT's strong protections</h2>
+      <h2 id="no-grounds">No-grounds evictions, ACT&apos;s strong protections</h2>
       <p>
         The ACT has significantly stronger eviction protections than most other
         states. <strong>Landlords generally need grounds to end a tenancy</strong>,
@@ -275,14 +272,12 @@ export default function RentersRightsACTPage() {
         <li>The tenant has caused serious damage or injury</li>
       </ul>
       <p>
-        If a landlord gives a "no grounds" notice, the tenant can challenge it
+        If a landlord gives a &quot;no grounds&quot; notice, the tenant can challenge it
         at ACAT, and the landlord must establish that a valid ground exists.
-        This is a significant practical protection compared to NSW and WA,
-        where no-grounds evictions on periodic tenancies remain available.
       </p>
       <p>
         If you receive an eviction notice that appears to be without valid
-        grounds, contact ACAT or the Tenants' Union ACT immediately.
+        grounds, contact ACAT or the Tenants&apos; Union ACT immediately.
       </p>
 
       <h2 id="pets">Pets in rental properties</h2>
@@ -291,7 +286,7 @@ export default function RentersRightsACTPage() {
         refuse pets without good reason.
       </p>
       <ul>
-        <li>Tenants can apply to keep a pet; landlords must have <strong>reasonable grounds</strong> to refuse. A blanket "no pets" policy isn't sufficient.</li>
+        <li>Tenants can apply to keep a pet; landlords must have <strong>reasonable grounds</strong> to refuse. A blanket &quot;no pets&quot; policy isn&apos;t sufficient.</li>
         <li>Reasonable grounds: no secure yard, strata bylaws prohibit pets, the specific animal would cause irreparable damage.</li>
         <li>If refused, apply to ACAT to challenge the decision.</li>
       </ul>
@@ -317,7 +312,7 @@ export default function RentersRightsACTPage() {
       <p>
         <strong>Family violence:</strong> Tenants experiencing family violence
         can end a tenancy without standard notice or break fees. Contact the
-        Tenants' Union ACT or 1800RESPECT (1800 737 732) for support.
+        Tenants&apos; Union ACT or 1800RESPECT (1800 737 732) for support.
       </p>
 
       <h2 id="disputes">Resolving disputes, ACAT</h2>
@@ -337,7 +332,7 @@ export default function RentersRightsACTPage() {
       <p>
         Applications can be lodged online. Designed to be accessible to
         self-represented parties, legal representation is not required for most
-        matters. The Tenants' Union ACT can assist in preparing your application.
+        matters. The Tenants&apos; Union ACT can assist in preparing your application.
       </p>
       <p>
         Modest application fee, reduced or waived for concession-card holders.
@@ -351,7 +346,7 @@ export default function RentersRightsACTPage() {
           <a href="https://www.acat.act.gov.au" target="_blank" rel="noopener noreferrer">acat.act.gov.au</a>
         </li>
         <li>
-          <strong>Tenants' Union ACT</strong>, free advice and advocacy:{" "}
+          <strong>Tenants&apos; Union ACT</strong>, free advice and advocacy:{" "}
           <a href="https://www.tenantsact.org.au" target="_blank" rel="noopener noreferrer">tenantsact.org.au</a>
         </li>
         <li>

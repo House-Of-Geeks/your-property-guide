@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -10,6 +9,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { renterGuideLinks } from "@/lib/data/renters-rights";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Renter's Rights in Tasmania: Complete Guide for Tenants (2026)",
@@ -98,10 +98,7 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "NSW also still permits no-grounds evictions." },
-  { title: "Renter's Rights in Victoria", href: "/guides/renters-rights-vic", description: "VIC's 2021 reforms abolished no-grounds evictions." },
-  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD's 2024 reforms toward grounds-based evictions." },
-  { title: "Renter's Rights in WA",       href: "/guides/renters-rights-wa",  description: "WA's Residential Tenancies Act and entry rules." },
+  ...renterGuideLinks(["NSW", "VIC", "QLD", "WA"]),
   { title: "First Home Buyer Guide TAS",  href: "/guides/first-home-buyer-tas", description: "Tasmania's $30K FHOG and 50% stamp duty concession." },
 ];
 
@@ -123,7 +120,7 @@ export default function RentersRightsTasPage() {
           </a>{" "}
           or the{" "}
           <a href="https://www.tutas.org.au" target="_blank" rel="noopener noreferrer">
-            Tenants' Union of Tasmania
+            Tenants&apos; Union of Tasmania
           </a>{" "}
           before taking action.
         </p>
@@ -131,7 +128,7 @@ export default function RentersRightsTasPage() {
 
       <h2 id="rta">The Residential Tenancy Act 1997 (Tasmania)</h2>
       <p className="lead">
-        Tasmania's residential tenancy laws are governed by the Residential
+        Tasmania&apos;s residential tenancy laws are governed by the Residential
         Tenancy Act 1997. It establishes the rights and obligations of
         landlords and tenants, from rental agreement through bond refunds and
         dispute resolution.
@@ -151,8 +148,8 @@ export default function RentersRightsTasPage() {
       <ul>
         <li>
           <strong>Fixed term:</strong> Defined start and end dates, typically 6
-          or 12 months. Landlord can't end without grounds during the term;
-          tenant generally can't vacate without a break fee unless an exemption
+          or 12 months. Landlord can&apos;t end without grounds during the term;
+          tenant generally can&apos;t vacate without a break fee unless an exemption
           applies (e.g. family violence).
         </li>
         <li>
@@ -169,7 +166,7 @@ export default function RentersRightsTasPage() {
 
       <h2 id="bond">Bond rules and the Rental Deposit Authority</h2>
       <ul>
-        <li><strong>Maximum bond:</strong> 4 weeks rent. A landlord can't legally request more.</li>
+        <li><strong>Maximum bond:</strong> 4 weeks rent. A landlord can&apos;t legally request more.</li>
         <li><strong>Lodgement:</strong> The landlord must lodge the bond with the Rental Deposit Authority (RDA), under CBOS, within a specified timeframe. You should receive confirmation.</li>
         <li><strong>Condition report:</strong> Complete a detailed report at the start. Both parties should sign. This is your primary evidence in any bond dispute.</li>
         <li><strong>Refund:</strong> If the property is in the same condition as on move-in (allowing for fair wear and tear), the full bond must be returned. Disputes go to CBOS or the Magistrates Court.</li>
@@ -184,7 +181,7 @@ export default function RentersRightsTasPage() {
       <ul>
         <li><strong>Minimum period:</strong> At least <strong>12 months</strong> between any two rent increases.</li>
         <li><strong>Notice required:</strong> At least <strong>42 days written notice</strong> before the increase takes effect.</li>
-        <li><strong>Fixed term:</strong> Rent can't be increased during the fixed term unless the increase amount or method is specified in the agreement.</li>
+        <li><strong>Fixed term:</strong> Rent can&apos;t be increased during the fixed term unless the increase amount or method is specified in the agreement.</li>
       </ul>
       <p>
         No rent caps in Tasmania. Landlords can increase by any amount, subject
@@ -229,14 +226,14 @@ export default function RentersRightsTasPage() {
       </ul>
       <p>
         Notify the landlord or agent in writing (email or text) for urgent
-        repairs, even if you also call. If they can't be reached or fail to
+        repairs, even if you also call. If they can&apos;t be reached or fail to
         act, document attempts and contact CBOS.
       </p>
 
       <h3>Non-urgent repairs</h3>
       <p>
         Put requests in writing. Landlord should respond within a reasonable
-        time. If repairs aren't carried out, apply to the Magistrates Court for
+        time. If repairs aren&apos;t carried out, apply to the Magistrates Court for
         a repair order. Email is ideal because it timestamps your communication.
       </p>
 
@@ -255,14 +252,14 @@ export default function RentersRightsTasPage() {
         <strong>Breaking a fixed-term lease early</strong> may make you liable
         for rent until a new tenant is found, plus reasonable re-letting costs.
         Exemptions include family violence and the property becoming
-        uninhabitable. Get advice from CBOS or the Tenants' Union before
+        uninhabitable. Get advice from CBOS or the Tenants&apos; Union before
         breaking a fixed-term lease.
       </p>
       <p>
         <strong>Family violence:</strong> Tasmania has provisions allowing
         tenants experiencing family violence to end a tenancy with appropriate
         notice and supporting documentation, without break fees. Contact the
-        Tenants' Union for support.
+        Tenants&apos; Union for support.
       </p>
 
       <h2 id="disputes">Resolving disputes</h2>
@@ -281,7 +278,7 @@ export default function RentersRightsTasPage() {
         Magistrates Court of Tasmania, which has a residential tenancy division.
         Filing fees are modest, and applications can be made without a lawyer
         for straightforward matters. For complex disputes, get advice from the
-        Tenants' Union or Legal Aid Tasmania.
+        Tenants&apos; Union or Legal Aid Tasmania.
       </p>
 
       <h2 id="resources">Resources and contacts</h2>
@@ -291,7 +288,7 @@ export default function RentersRightsTasPage() {
           <a href="https://www.cbos.tas.gov.au" target="_blank" rel="noopener noreferrer">cbos.tas.gov.au</a>
         </li>
         <li>
-          <strong>Tenants' Union of Tasmania</strong>, free advice for tenants:{" "}
+          <strong>Tenants&apos; Union of Tasmania</strong>, free advice for tenants:{" "}
           <a href="https://www.tutas.org.au" target="_blank" rel="noopener noreferrer">tutas.org.au</a>
         </li>
         <li>

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -10,6 +9,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { renterGuideLinks } from "@/lib/data/renters-rights";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Renter's Rights in Western Australia: Complete Guide (2026)",
@@ -97,10 +97,7 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "NSW also still permits no-grounds evictions." },
-  { title: "Renter's Rights in Victoria", href: "/guides/renters-rights-vic", description: "VIC's 2021 reforms abolished no-grounds evictions." },
-  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD's 2024 reforms toward grounds-based evictions." },
-  { title: "Renter's Rights in SA",       href: "/guides/renters-rights-sa",  description: "SA tenant rules and SACAT dispute resolution." },
+  ...renterGuideLinks(["NSW", "VIC", "QLD", "SA"]),
   { title: "First Home Buyer Guide WA",   href: "/guides/first-home-buyer-wa", description: "When you're ready to stop renting and buy your first home." },
 ];
 
@@ -127,7 +124,7 @@ export default function RentersRightsWAPage() {
       <h2 id="act">The WA Residential Tenancies Act 1987</h2>
       <p className="lead">
         The Residential Tenancies Act 1987 (WA) is the primary legislation
-        governing residential tenancies in WA. While WA hasn't introduced the
+        governing residential tenancies in WA. While WA hasn&apos;t introduced the
         sweeping reforms seen in Victoria and Queensland, tenants still have
         significant legal protections.
       </p>
@@ -150,7 +147,7 @@ export default function RentersRightsWAPage() {
       </ul>
       <p>
         Always complete the property condition report and take photos on day
-        one. In WA, "fair wear and tear" can't be claimed from the bond, only
+        one. In WA, &quot;fair wear and tear&quot; can&apos;t be claimed from the bond, only
         damage beyond normal use.
       </p>
 
@@ -158,7 +155,7 @@ export default function RentersRightsWAPage() {
       <ul>
         <li>
           <strong>Periodic tenancies:</strong> At least 60 days written notice.
-          Unlike NSW, QLD, and VIC, WA doesn't yet have a statutory minimum of
+          Unlike NSW, QLD, and VIC, WA doesn&apos;t yet have a statutory minimum of
           12 months between increases for periodic tenancies. Always verify
           the current rule.
         </li>
@@ -181,7 +178,7 @@ export default function RentersRightsWAPage() {
       <h3>Urgent repairs</h3>
       <p>
         Must be addressed immediately. Examples: burst pipe, gas leak, roof
-        damage after storm, electrical fault. If you can't contact the
+        damage after storm, electrical fault. If you can&apos;t contact the
         landlord or agent, you may arrange urgent repairs and seek
         reimbursement up to $1,000.
       </p>
@@ -189,7 +186,7 @@ export default function RentersRightsWAPage() {
       <h3>Non-urgent repairs</h3>
       <p>
         Must be carried out within a reasonable time after written notice.
-        Always put requests in writing. If the landlord doesn't act, apply to
+        Always put requests in writing. If the landlord doesn&apos;t act, apply to
         the Magistrates Court for a repair order.
       </p>
 
@@ -228,10 +225,10 @@ export default function RentersRightsWAPage() {
       </p>
 
       <h2 id="disputes">Resolving disputes</h2>
-      <p>WA doesn't have a dedicated residential tenancy tribunal. Disputes go through:</p>
+      <p>WA doesn&apos;t have a dedicated residential tenancy tribunal. Disputes go through:</p>
       <ul>
         <li><strong>Consumer Protection WA:</strong> Free conciliation and mediation. Contact 1300 304 054.</li>
-        <li><strong>Magistrates Court:</strong> For disputes that can't be resolved through mediation, including bond claims and repair orders.</li>
+        <li><strong>Magistrates Court:</strong> For disputes that can&apos;t be resolved through mediation, including bond claims and repair orders.</li>
       </ul>
 
       <h2 id="resources">Resources and contacts</h2>

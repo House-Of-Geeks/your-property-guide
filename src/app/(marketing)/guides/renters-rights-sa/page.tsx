@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -10,6 +9,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { renterGuideLinks } from "@/lib/data/renters-rights";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Renter's Rights in South Australia: Complete Guide (2026)",
@@ -97,10 +97,7 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "Compare to NSW which also still permits no-grounds evictions." },
-  { title: "Renter's Rights in Victoria", href: "/guides/renters-rights-vic", description: "VIC's 2021 reforms abolished no-grounds evictions." },
-  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD's 2024 reforms toward grounds-based evictions." },
-  { title: "Renter's Rights in WA",       href: "/guides/renters-rights-wa",  description: "WA's Residential Tenancies Act and entry rules." },
+  ...renterGuideLinks(["NSW", "VIC", "QLD", "WA"]),
   { title: "First Home Buyer Guide SA",   href: "/guides/first-home-buyer-sa", description: "When you're ready to stop renting and buy your first home." },
 ];
 
@@ -133,7 +130,7 @@ export default function RentersRightsSAPage() {
       </p>
       <p>
         The Act is administered by Consumer and Business Services SA (CBS).
-        Disputes that can't be resolved through CBS are referred to the South
+        Disputes that can&apos;t be resolved through CBS are referred to the South
         Australian Civil and Administrative Tribunal (SACAT).
       </p>
       <p>
@@ -159,7 +156,7 @@ export default function RentersRightsSAPage() {
       <ul>
         <li><strong>Frequency:</strong> Once every 12 months for periodic tenancies</li>
         <li><strong>Notice:</strong> At least 60 days written notice</li>
-        <li><strong>Fixed-term:</strong> Rent can't be increased during a fixed term unless the increase amount is specified in the agreement</li>
+        <li><strong>Fixed-term:</strong> Rent can&apos;t be increased during a fixed term unless the increase amount is specified in the agreement</li>
       </ul>
       <p>
         If you believe a rent increase is excessive, apply to SACAT for review.
@@ -177,7 +174,7 @@ export default function RentersRightsSAPage() {
         Must be fixed as soon as possible. Examples: burst pipes, gas leaks,
         major structural damage, electrical faults, loss of essential services
         (water, gas, electricity), breakdown of heating/cooling in extreme
-        weather. If the landlord can't be reached, tenants may arrange urgent
+        weather. If the landlord can&apos;t be reached, tenants may arrange urgent
         repairs and seek reimbursement, check CBS for current limits.
       </p>
 
@@ -185,7 +182,7 @@ export default function RentersRightsSAPage() {
       <p>
         Must be addressed within a reasonable time after written notice.
         Always put requests in writing (email is acceptable) and keep records.
-        If the landlord doesn't act, apply to SACAT for a repair order.
+        If the landlord doesn&apos;t act, apply to SACAT for a repair order.
       </p>
 
       <h2 id="entry-rights">Landlord entry rights</h2>
@@ -219,7 +216,7 @@ export default function RentersRightsSAPage() {
       </p>
       <p>
         Breaking a fixed-term lease early may make you liable for the
-        landlord's reasonable reletting costs. Check your agreement and seek
+        landlord&apos;s reasonable reletting costs. Check your agreement and seek
         advice before acting.
       </p>
 
@@ -248,7 +245,7 @@ export default function RentersRightsSAPage() {
           <a href="https://www.cbs.sa.gov.au/renting" target="_blank" rel="noopener noreferrer">cbs.sa.gov.au/renting</a>
         </li>
         <li>
-          <strong>Tenants' Information &amp; Advocacy Service (TIAS)</strong>:{" "}
+          <strong>Tenants&apos; Information &amp; Advocacy Service (TIAS)</strong>:{" "}
           <a href="https://www.syc.net.au/tias" target="_blank" rel="noopener noreferrer">syc.net.au/tias</a>
         </li>
         <li>

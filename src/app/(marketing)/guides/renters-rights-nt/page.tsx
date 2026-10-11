@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -10,6 +9,7 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { renterGuideLinks } from "@/lib/data/renters-rights";
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Renter's Rights in the Northern Territory: Complete Guide (2026)",
@@ -99,10 +99,7 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "Compare NT to NSW where 12-month rent-increase minimum applies." },
-  { title: "Renter's Rights in Victoria", href: "/guides/renters-rights-vic", description: "VIC's 2021 reforms abolished no-grounds evictions." },
-  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD's 2024 reforms toward grounds-based evictions." },
-  { title: "Renter's Rights in WA",       href: "/guides/renters-rights-wa",  description: "WA's Residential Tenancies Act and no dedicated tribunal." },
+  ...renterGuideLinks(["NSW", "VIC", "QLD", "WA"]),
   { title: "First Home Buyer Guide NT",   href: "/guides/first-home-buyer-nt", description: "When you're ready to stop renting and buy your first home." },
 ];
 
@@ -152,12 +149,12 @@ export default function RentersRightsNTPage() {
         <li>
           <strong>Fixed term:</strong> Agreed start and end dates. Neither
           party can end without grounds during the term (limited exceptions
-          such as family violence). Rent can't be increased unless the increase
+          such as family violence). Rent can&apos;t be increased unless the increase
           is specified in the agreement.
         </li>
         <li>
           <strong>Periodic:</strong> Ongoing tenancy with no fixed end date,
-          often created when a fixed term lease expires and isn't renewed.
+          often created when a fixed term lease expires and isn&apos;t renewed.
           Either party can end it with appropriate notice.
         </li>
       </ul>
@@ -188,10 +185,10 @@ export default function RentersRightsNTPage() {
           increases for periodic tenancies. Landlords can technically increase
           every 30 days on a periodic tenancy with proper notice.
         </li>
-        <li><strong>Fixed term:</strong> Rent can't be increased unless the agreement specifies the amount or method</li>
+        <li><strong>Fixed term:</strong> Rent can&apos;t be increased unless the agreement specifies the amount or method</li>
       </ul>
       <p>
-        No rent caps. If you're in a periodic tenancy and facing frequent
+        No rent caps. If you&apos;re in a periodic tenancy and facing frequent
         increases, your options are to negotiate, accept, or give 14 days
         notice to vacate. Contact NT Consumer Affairs if you believe the
         increase is retaliatory.
@@ -218,7 +215,7 @@ export default function RentersRightsNTPage() {
       <p>
         Urgent repairs make the property uninhabitable, unsafe, or affect an
         essential service. The landlord must arrange these as soon as possible.
-        In Darwin's tropical climate, urgent repairs also include:
+        In Darwin&apos;s tropical climate, urgent repairs also include:
       </p>
       <ul>
         <li>Air conditioning breakdown (during wet season or extreme heat)</li>
@@ -237,7 +234,7 @@ export default function RentersRightsNTPage() {
       <h3>General (non-urgent) repairs</h3>
       <p>
         Submit a written request and allow a reasonable time. Keep copies of
-        all correspondence. If repairs aren't completed within a reasonable
+        all correspondence. If repairs aren&apos;t completed within a reasonable
         period, apply to NTCAT for a repair order.
       </p>
 
@@ -289,7 +286,7 @@ export default function RentersRightsNTPage() {
         </li>
       </ul>
       <p>
-        If you're renting in a remote NT community, contact the North Australian
+        If you&apos;re renting in a remote NT community, contact the North Australian
         Aboriginal Justice Agency (NAAJA) or Central Australian Aboriginal Legal
         Aid Service (CAALAS) for specialist advice.
       </p>
