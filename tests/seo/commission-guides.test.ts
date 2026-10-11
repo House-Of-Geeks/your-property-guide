@@ -102,3 +102,33 @@ describe("fees guide cooling-off (review 10 Oct 2026, selling 0.5)", () => {
     expect(agreements).toContain("Victoria, Queensland, SA and WA have none");
   });
 });
+
+describe("national fees guide (review 10 Oct 2026, selling P1, 0.2, 0.3, 0.6a, 0.8)", () => {
+  const fees = readFileSync("src/app/(marketing)/guides/real-estate-agent-fees-australia/page.tsx", "utf8");
+  it("carries the calculator, the sourced state table, a GST section and a sources block", () => {
+    expect(fees).toContain('<CommissionCalculator initialState="NSW" initialPrice={800_000} headingLevel="h3" showGuideCta={false} />');
+    expect(fees).toMatch(/const TOC: GuideTOCEntry\[\] = \[\n  \{ id: "calculator",/);
+    expect(fees).toContain("<NationalCommissionTable price={800_000} />");
+    expect(fees).toContain('<h2 id="gst">Does commission include GST?</h2>');
+    expect(fees).toContain("<Sources items={SOURCES} />");
+    expect(fees).not.toContain("WebApplication");
+  });
+  it("links the national pages the review lists, with its anchors", () => {
+    for (const [href, anchor] of [
+      ["/guides/fixed-fee-vs-commission-real-estate-agents", "fixed fee vs commission agents"],
+      ["/guides/cost-of-selling-a-house-australia", "the full cost of selling a house"],
+      ["/selling-costs-calculator", "selling costs calculator"],
+      ["/guides/real-estate-agency-agreements-by-state", "agency agreements by state"],
+      ["/guides/how-to-negotiate-real-estate-agent-commission", "how to negotiate real estate agent commission"],
+      ["/guides/sell-your-house-privately-australia", "sell your house privately"],
+    ]) expect(fees).toContain(`<Link href="${href}">${anchor}</Link>`);
+  });
+  it("types no national range and makes no unsourced claims", () => {
+    expect(fees).not.toMatch(/1\.5% to 3\.5%|1\.5% to 3\.0%|\$3,000 to \$6,000|above \$2M|below 1\.5%|\$3k/);
+    expect(fees).toContain("nationalRange()");
+    const title = /^  title: "([^"]+)",$/m.exec(fees)![1];
+    expect(title).toBe("Real Estate Agent Fees & Commission 2026: Rates by State");
+    expect(title.length).toBeLessThanOrEqual(60);
+    expect(/^    "([^"]+)",$/m.exec(fees.slice(fees.indexOf("  description:")))![1].length).toBeLessThanOrEqual(160);
+  });
+});
