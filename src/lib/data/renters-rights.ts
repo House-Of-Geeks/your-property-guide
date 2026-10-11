@@ -64,7 +64,7 @@ export const RENTERS_GUIDES: Record<RentersState, RentersGuide> = {
     state: "SA",
     slug: "renters-rights-sa",
     linkTitle: "Renters' rights in SA",
-    blurb: "SA tenancy rules and SACAT dispute resolution.",
+    blurb: "Since 1 July 2024 a South Australian landlord needs a prescribed reason to end a lease.",
   },
   TAS: {
     state: "TAS",
@@ -169,6 +169,78 @@ export const NSW_RENTERS_SOURCES = {
     label: "NSW Fair Trading, Ending a tenancy because of domestic violence and abuse",
     href: `${NSW_GOV}/rules/ending-a-tenancy-because-of-domestic-violence-and-abuse`,
     date: "no date shown",
+    read: READ,
+  },
+} as const satisfies Record<string, RentersSource>;
+
+const SA_GOV = "https://www.sa.gov.au/topics/housing/renting-and-letting";
+
+/** Consumer and Business Services and SA.GOV.AU pages behind /guides/renters-rights-sa. */
+export const SA_RENTERS_SOURCES = {
+  reforms: {
+    label: "Consumer and Business Services (CBS), Tenancy reforms for landlords and agents (sections of the Residential Tenancies Act 1995 as amended)",
+    href: "https://cbs.sa.gov.au/sections/renting/renting/tenancy-reforms-for-landlords-and-agents",
+    date: "no date shown (covers changes to 1 January 2026)",
+    read: READ,
+  },
+  release: {
+    label: "CBS media release, Overhaul of SA's rental laws take effect 1 July 2024",
+    href: "https://cbs.sa.gov.au/news/overhaul-of-sas-rental-laws-take-effect-1-july-2024",
+    date: "published 23 June 2024",
+    read: READ,
+  },
+  leases: {
+    label: "SA.GOV.AU, Lease agreements (notice to end fixed and periodic agreements)",
+    href: `${SA_GOV}/renting-privately/start-of-tenancy/Lease-agreements`,
+    date: "last updated 15 January 2026",
+    read: READ,
+  },
+  rentIncreases: {
+    label: "SA.GOV.AU, Increasing the rent",
+    href: `${SA_GOV}/renting-privately/during-a-tenancy/rent-increases`,
+    date: "last updated 8 May 2026",
+    read: READ,
+  },
+  bondMax: {
+    label: "SA.GOV.AU, Maximum amount of bond",
+    href: `${SA_GOV}/residential-bonds/lodging-a-bond/maximum-amount-of-bond`,
+    date: "last updated 10 November 2023",
+    read: READ,
+  },
+  bondLodging: {
+    label: "SA.GOV.AU, Lodging a bond",
+    href: `${SA_GOV}/renting-privately/start-of-tenancy/lodging-a-bond`,
+    date: "last updated 12 August 2026",
+    read: READ,
+  },
+  entry: {
+    label: "SA.GOV.AU, Landlord's rights to enter a property",
+    href: `${SA_GOV}/renting-privately/during-a-tenancy/Right-of-entry`,
+    date: "last updated 25 May 2026",
+    read: READ,
+  },
+  repairs: {
+    label: "SA.GOV.AU, Repairs and maintenance in private rental properties",
+    href: `${SA_GOV}/renting-privately/during-a-tenancy/Repairs-and-maintenance`,
+    date: "last updated 1 July 2026",
+    read: READ,
+  },
+  pets: {
+    label: "SA.GOV.AU, Pets in private rental properties",
+    href: `${SA_GOV}/renting-privately/during-a-tenancy/pets-in-private-rentals`,
+    date: "last updated 15 November 2024",
+    read: READ,
+  },
+  eviction: {
+    label: "SA.GOV.AU, Eviction and breaking the lease agreement",
+    href: `${SA_GOV}/renting-privately/ending-a-tenancy/Breach-of-agreement-and-eviction`,
+    date: "last updated 13 August 2026",
+    read: READ,
+  },
+  breakLease: {
+    label: "SA.GOV.AU, Ending a fixed term lease early",
+    href: `${SA_GOV}/renting-privately/ending-a-tenancy/ending-a-fixed-term-lease-early`,
+    date: "last updated 10 July 2026",
     read: READ,
   },
 } as const satisfies Record<string, RentersSource>;

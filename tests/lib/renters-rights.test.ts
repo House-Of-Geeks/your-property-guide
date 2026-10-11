@@ -8,6 +8,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   NSW_RENTERS_SOURCES,
+  SA_RENTERS_SOURCES,
   RENTERS_GUIDES,
   renterGuideLinks,
   sourceItems,
@@ -16,6 +17,7 @@ import {
 
 const GUIDES = path.resolve(__dirname, "../../src/app/(marketing)/guides");
 const STATES = Object.keys(RENTERS_GUIDES) as RentersState[];
+const DATE = /^(last updated \d{1,2} \w+ 20\d\d|published \d{1,2} \w+ 20\d\d|no date shown.*)$/;
 const page = (slug: string) => fs.readFileSync(path.join(GUIDES, slug, "page.tsx"), "utf8");
 
 describe("renters' rights link cards", () => {
@@ -76,9 +78,33 @@ describe("NSW renters' rights guide", () => {
     expect(src).toMatch(/\n\s+sourced\n/);
     for (const s of Object.values(NSW_RENTERS_SOURCES)) {
       expect(s.href).toMatch(/^https:\/\/www\.nsw\.gov\.au\//);
-      expect(s.date).toMatch(/^(last updated \d{1,2} \w+ 20\d\d|no date shown)$/);
+      expect(s.date).toMatch(DATE);
       expect(s.read).toMatch(/^\d{1,2} \w+ 2026$/);
     }
     expect(sourceItems(NSW_RENTERS_SOURCES).length).toBe(Object.keys(NSW_RENTERS_SOURCES).length);
+  });
+});
+
+describe("SA renters' rights guide", () => {
+  const src = page("renters-rights-sa");
+
+  it("states the prescribed-grounds rule from 1 July 2024", () => {
+    expect(src).not.toMatch(/still permits no-grounds/i);
+    expect(src).not.toMatch(/90 days notice required/);
+    expect(src).toContain("Since 1 July 2024 a South Australian landlord");
+    expect(RENTERS_GUIDES.SA.blurb).toContain("1 July 2024");
+    const faq = src.match(/question: "Can my landlord still evict me without a reason in SA\?",\s*answer:\s*"([^"]+)"/);
+    expect(faq?.[1].startsWith("No. Since 1 July 2024")).toBe(true);
+  });
+
+  it("prints the bond threshold and the notice periods from the SA sources", () => {
+    expect(src).toContain("$800");
+    expect(src).toContain("60 days");
+    expect(src).toContain("90 days");
+    expect(src).toMatch(/\n\s+sourced\n/);
+    for (const s of Object.values(SA_RENTERS_SOURCES)) {
+      expect(s.href).toMatch(/^https:\/\/(www\.sa\.gov\.au|cbs\.sa\.gov\.au)\//);
+      expect(s.date).toMatch(DATE);
+    }
   });
 });
