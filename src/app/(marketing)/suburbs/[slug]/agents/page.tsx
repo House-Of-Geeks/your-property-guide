@@ -21,6 +21,7 @@ import {
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY } from "@/lib/non-localities";
 import { hasPublishedHouseMedian } from "@/lib/suburb-indexability";
+import { canonicalSuburbSlug, isSecondaryLocality } from "@/lib/duplicate-localities";
 import { COVERAGE_CAVEAT } from "@/lib/match-coverage";
 import { STATE_NAMES, type StateCode } from "@/lib/data/commission-rates";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
@@ -57,8 +58,10 @@ const getNeighbourRows = cache(async (slug: string): Promise<{ rows: NearbyAgent
       select: { slug: true, name: true, state: true, postcode: true, medianHousePrice: true, medianUnitPrice: true, population: true, statsSource: true, salesCountHouse: true },
     });
     return {
-      rows: raw.map((r) => ({ slug: r.slug, name: r.name, state: r.state, postcode: r.postcode, indexable: hasPublishedHouseMedian(r) })),
-      nameShared: raw.some((r) => r.slug !== slug && r.state === suburb.state && r.name === suburb.name),
+      // A secondary postcode row canonicals to its primary, so it is never a link target
+      // and does not count as a second locality of the same name.
+      rows: raw.map((r) => ({ slug: r.slug, name: r.name, state: r.state, postcode: r.postcode, indexable: hasPublishedHouseMedian(r) && !isSecondaryLocality(r.slug) })),
+      nameShared: raw.some((r) => r.slug !== slug && !isSecondaryLocality(r.slug) && r.state === suburb.state && r.name === suburb.name),
     };
   } catch {
     // The links are a convenience: a failed read leaves the page without them.
@@ -79,7 +82,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const data = await load(slug);
   if (!data) return { title: "Suburb Not Found" };
-  const canonical = `${SITE_URL}/suburbs/${slug}/agents`;
+  // A duplicate postcode row (Prahran 3143) canonicals to the primary's
+  // agents page (Prahran 3181): src/lib/duplicate-localities.ts. No redirect.
+  const canonical = `${SITE_URL}/suburbs/${canonicalSuburbSlug(slug)}/agents`;
   return {
     title: data.model.title,
     description: data.model.description,
