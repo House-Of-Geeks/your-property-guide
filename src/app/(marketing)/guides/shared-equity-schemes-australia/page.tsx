@@ -249,7 +249,7 @@ export default function SharedEquitySchemesPage() {
         read the scheme&rsquo;s terms before you sign.
       </p>
       <MatchCTA
-        lead="Not sure which scheme fits? Tell us where you're buying and we'll introduce one vetted specialist who can compare them on your numbers."
+        lead="Not sure which scheme fits? Tell us where you're buying: one specialist receives your details and pays us a fee for the introduction; you pay us nothing."
         ctaLabel="Find your specialist"
         href={MATCH_HREF}
       />

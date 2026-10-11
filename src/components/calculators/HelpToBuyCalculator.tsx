@@ -146,14 +146,19 @@ export function HelpToBuyCalculator() {
               ) : (
                 <Row label="Stamp duty on a new home" value="See your state" />
               )}
-              <div className="flex items-center justify-between pt-1">
-                <dt className="text-sm font-medium text-gray-900">{r.eligible ? "You look eligible on these figures" : "Not eligible on these figures"}</dt>
-                <dd className={`text-sm font-semibold ${r.eligible ? "text-green-800" : "text-red-700"}`}>{r.eligible ? "Yes" : "No"}</dd>
+              <div className="flex items-center justify-between gap-4 pt-1">
+                <dt className="text-sm font-medium text-gray-900">
+                  {r.eligible
+                    ? `Within the ${HTB_YEAR} income limit and your area's price cap`
+                    : `Outside a ${HTB_YEAR} limit on these figures`}
+                </dt>
+                <dd className={`text-sm font-semibold ${r.eligible ? "text-green-800" : "text-red-700"}`}>{r.eligible ? "Within" : "Outside"}</dd>
               </div>
             </dl>
             <p className="mt-4 text-xs text-gray-500">
-              An estimate, not an approval. You also need to be an Australian citizen aged 18 or over, not own property now,
-              and live in the home. Lenders check that you couldn&rsquo;t buy without the scheme.
+              An estimate, not an approval: Housing Australia and the lender decide eligibility. You also need to be an
+              Australian citizen aged 18 or over, not own property now, and live in the home. Lenders check that you
+              couldn&rsquo;t buy without the scheme.
               {r.stampDuty === null && " Several states exempt first home buyers from duty on new homes; check your state guide."}
             </p>
           </>
@@ -198,7 +203,8 @@ export function HelpToBuyCalculator() {
         </h3>
         <p className="text-sm text-ink-muted leading-relaxed mb-5">
           Help to Buy only runs through a handful of lenders, and the government share is set when you apply. Tell us where
-          you&rsquo;re buying and we&rsquo;ll introduce one vetted specialist for your situation. Free, no commitment.
+          you&rsquo;re buying: one specialist receives your details and pays us a fee for the introduction. You pay us
+          nothing, and there&rsquo;s no commitment.
         </p>
         <Suspense fallback={<div className="h-64" aria-busy="true" />}>
           <MatchAgent compact initialIntent="buying" source={HELP_TO_BUY_CALCULATOR_SOURCE} />

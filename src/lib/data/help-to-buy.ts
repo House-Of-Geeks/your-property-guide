@@ -197,7 +197,7 @@ export const SHARED_EQUITY_SCHEMES: readonly StateScheme[] = [
     state: "NSW",
     status: "closed",
     statusNote: "Closed on 30 June 2024",
-    source: { label: "Revenue NSW: Shared Equity Home Buyer Helper", href: "https://www.revenue.nsw.gov.au/grants-schemes/previous-schemes/shared-equity-home-buyer-helper" },
+    source: { label: "Revenue NSW: Shared Equity Home Buyer Helper (previous schemes, closed 30 June 2024)", href: "https://www.revenue.nsw.gov.au/grants-schemes/previous-schemes/shared-equity-home-buyer-helper" },
   },
 ];
 

@@ -6,7 +6,7 @@ import {
   GuideArticleLayout,
   Callout,
   EditorNote,
-  KeyFigure,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -16,6 +16,19 @@ import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
+import { FirstHomeDutyFacts, FirstHomeGrantFacts } from "@/components/guide/FirstHomeStateFacts";
+import { FIRST_HOME_DUTY, FIRST_HOME_GRANTS, fmt, firstHomeSources, longDate } from "@/lib/data/first-home-grants";
+import { dutyFor, money } from "@/lib/data/stamp-duty-state";
+import { VIC_PPR_MAX } from "@/lib/utils/stamp-duty";
+
+// Grant and duty figures come from src/lib/data/first-home-grants.ts and the
+// stamp duty engine (commercial-intent review 10 Oct 2026, buying 0.1 minor
+// rows and row 18).
+const GRANT = FIRST_HOME_GRANTS.VIC;
+const DUTY = FIRST_HOME_DUTY.VIC;
+const GRANT_AMOUNT = fmt(GRANT.amount!);
+const GRANT_CAP = fmt(GRANT.caps[0].value);
+const DUTY_550K = money(dutyFor("VIC", 550_000, "owner").total);
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide VIC: Grants, Stamp Duty & Schemes (2026)",
@@ -23,7 +36,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Victoria first home buyer guide: the $10,000 FHOG on new homes, stamp duty exemption up to $600K and concession to $750K, Help to Buy and federal schemes, and VIC buying tips.",
   slug: "first-home-buyer-vic",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -51,9 +64,9 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Victoria's FHOG is $10,000 on new homes only, capped at $750,000. The $20,000 regional grant ended on 30 June 2021.",
-  "Full stamp duty exemption applies to any first home (new or established) up to $600,000, with a scaled concession up to $750,000.",
-  "On a $550,000 first home, eligible buyers pay $0 stamp duty, saving roughly $26,000.",
+  `Victoria's First Home Owner Grant is ${GRANT_AMOUNT} on new homes only, valued up to ${GRANT_CAP} (SRO Victoria, read ${longDate(GRANT.checkedOn)}). The $20,000 regional grant applied only from 1 July 2017 to 30 June 2021.`,
+  `No land transfer duty on any first home, new or established, valued up to ${fmt(DUTY.exemptTo!)}, and a reduced amount up to ${fmt(DUTY.concessionTo!)}.`,
+  `On a $550,000 first home an eligible buyer pays $0 duty, where an owner-occupier who is not a first home buyer pays ${DUTY_550K} at the principal place of residence rate.`,
   `Federal schemes all work in VIC. The 5% Deposit Scheme has had no income test or limit on places since ${HG_DATES.expanded}; its price cap is ${fmtCap(HG_PRICE_CAPS.VIC.capital)} in Greater Melbourne and Geelong and ${fmtCap(HG_PRICE_CAPS.VIC.rest)} elsewhere.`,
   "The Victorian Homebuyer Fund closed to new applications on 10 September 2025; the federal Help to Buy scheme is now Victoria's shared equity option.",
   "Always verify amounts and thresholds with the State Revenue Office Victoria before signing.",
@@ -64,16 +77,15 @@ const TOC: GuideTOCEntry[] = [
   { id: "stamp-duty-vic", label: "Stamp duty exemption and concession" },
   { id: "federal-schemes",label: "Federal schemes in VIC" },
   { id: "vic-specific",   label: "VIC-specific schemes and resources" },
-  { id: "median-prices",  label: "Median property prices" },
   { id: "buying-process", label: "The VIC buying process" },
   { id: "contacts",       label: "Key contacts" },
 ];
 
 const FAQS: FaqItem[] = [
   {
-    question: "Is there still a $20,000 FHOG for regional Victoria?",
+    question: "Is the first home grant bigger in regional Victoria?",
     answer:
-      "No. The State Revenue Office's historical rates show the $20,000 regional grant ran from 1 July 2017 to 30 June 2021. The grant is now $10,000 for a new home anywhere in Victoria, capped at $750,000.",
+      `No. The State Revenue Office's historical rates show the $20,000 regional grant ran from 1 July 2017 to 30 June 2021. The grant is now ${GRANT_AMOUNT} for a new home anywhere in Victoria valued up to ${GRANT_CAP} (SRO Victoria, read ${longDate(GRANT.checkedOn)}).`,
   },
   {
     question: "Can I get the VIC FHOG on an established home?",
@@ -83,12 +95,12 @@ const FAQS: FaqItem[] = [
   {
     question: "What's the price cap for the VIC FHOG?",
     answer:
-      "$750,000 total value (house plus land). One dollar over the cap and you lose the entire grant.",
+      `${GRANT_CAP} total value (house plus land), SRO Victoria (read ${longDate(GRANT.checkedOn)}). One dollar over the cap and you lose the entire grant.`,
   },
   {
     question: "Do I really pay $0 stamp duty in VIC for a first home?",
     answer:
-      "Up to $600,000 purchase price, yes, full exemption. Between $600,001 and $750,000 a scaled concession applies (not zero, but significantly reduced). Above $750,000 the standard rate kicks in.",
+      `Up to ${fmt(DUTY.exemptTo!)}, yes: an eligible first home buyer pays no land transfer duty. From ${fmt(DUTY.exemptTo! + 1)} to ${fmt(DUTY.concessionTo!)} a reduced amount applies, on a sliding scale, and above ${fmt(DUTY.concessionTo!)} the general rate (SRO Victoria, read ${longDate(DUTY.checkedOn)}). On $550,000 that saves ${DUTY_550K}.`,
   },
   {
     question: "Is the Victorian Homebuyer Fund still open?",
@@ -148,17 +160,7 @@ export default function FirstHomeBuyerVICPage() {
         new homes, the same amount anywhere in the state.
       </p>
 
-      <KeyFigure
-        value="$10,000"
-        label="The FHOG for a new home in Victoria, for contracts from 1 July 2013."
-        context="Capped at $750,000 total value"
-      />
-
-      <p>
-        The $20,000 grant for new homes in regional Victoria ran from 1 July 2017 to
-        30 June 2021 and no longer applies, according to the State Revenue
-        Office&rsquo;s historical rates.
-      </p>
+      <FirstHomeGrantFacts state="VIC" />
 
       <h3>Eligibility requirements</h3>
       <ul>
@@ -170,7 +172,7 @@ export default function FirstHomeBuyerVICPage() {
 
       <h3>Eligible properties</h3>
       <ul>
-        <li>New homes (first time sold as residential) with a total value (house plus land) of $750,000 or less</li>
+        <li>New homes (first time sold as residential) with a total value (house plus land) of {GRANT_CAP} or less</li>
         <li>Substantially renovated homes (extensive renovation where the original dwelling was effectively removed/replaced)</li>
         <li>Established homes do <strong>not</strong> qualify</li>
       </ul>
@@ -181,33 +183,22 @@ export default function FirstHomeBuyerVICPage() {
         home buyers on both new and established properties.
       </p>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Purchase price</th>
-            <th>Duty payable</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Up to $600,000</td><td>$0 (full exemption)</td></tr>
-          <tr><td>$600,001 to $750,000</td><td>Concession (scaled reduction, not zero but significantly reduced)</td></tr>
-          <tr><td>Over $750,000</td><td>Full transfer duty applies</td></tr>
-        </tbody>
-      </table>
+      <FirstHomeDutyFacts state="VIC" />
 
       <p>
         On a $550,000 purchase, an eligible first home buyer in Victoria pays{" "}
-        <strong>$0</strong> in stamp duty. Without the concession, stamp duty would
-        be roughly $26,000. Use our{" "}
+        <strong>$0</strong> in duty; an owner-occupier who is not a first home buyer pays{" "}
+        {DUTY_550K}. Use our{" "}
         <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link> for your
-        exact figures.
+        own price.
       </p>
 
       <h3>Principal Place of Residence concession (non-first home buyers)</h3>
       <p>
-        Victoria also offers a PPR concession for owner-occupiers who are{" "}
-        <em>not</em> first home buyers, on properties up to $550,000. It's a
-        separate concession from the first home buyer exemption.
+        Victoria also charges a lower principal place of residence rate to any
+        owner-occupier, first home buyer or not, on a home valued up to{" "}
+        {fmt(VIC_PPR_MAX)} (SRO Victoria). It&rsquo;s a separate concession from the first home
+        buyer exemption.
       </p>
 
       <h2 id="federal-schemes">Federal schemes available in VIC</h2>
@@ -235,27 +226,18 @@ export default function FirstHomeBuyerVICPage() {
         </li>
       </ul>
 
-      <h2 id="median-prices">Median property prices for first home buyers</h2>
       <p>
-        Melbourne's property market has large price variation by distance from the
-        CBD. First home buyers typically focus on:
-      </p>
-      <ul>
-        <li><strong>Outer Melbourne suburbs:</strong> Western (Werribee, Hoppers Crossing), Outer North (Craigieburn, Epping), South East (Berwick, Cranbourne), house medians $580K to $780K</li>
-        <li><strong>Units and apartments:</strong> CBD fringe and inner suburbs like Footscray and Sunshine, unit medians $400K to $600K</li>
-        <li><strong>Regional Victoria:</strong> Geelong (houses $700K to $800K), Ballarat ($500K to $600K), Bendigo ($450K to $550K), all highly affordable versus Melbourne</li>
-      </ul>
-      <p>
-        Browse our <Link href="/suburbs">suburb profiles</Link> for current market
-        data on any Victorian suburb.
+        To compare prices before you set a budget, search any Victorian suburb in our{" "}
+        <Link href="/suburbs">suburb profiles</Link>; each one shows its median only where the
+        sales data behind it passes our checks.
       </p>
 
       <h2 id="buying-process">The VIC buying process</h2>
       <p>Victoria has some distinct features:</p>
       <ul>
-        <li><strong>Section 32 (Vendor's Statement):</strong> Vendors must provide a Section 32 before a contract is signed. It contains title, planning overlays, outgoings, and building permits. Review with your solicitor before signing.</li>
+        <li><strong>Section 32 (Vendor&rsquo;s Statement):</strong> Vendors must provide a Section 32 before a contract is signed. It contains title, planning overlays, outgoings, and building permits. Review with your solicitor before signing.</li>
         <li><strong>Cooling-off period:</strong> 3 business days from signing the contract of sale. No cooling-off at auction.</li>
-        <li><strong>Auction market:</strong> Melbourne is one of Australia's most active auction markets. Pre-auction due diligence (building inspections, finance, contract review) needs to be done before bidding.</li>
+        <li><strong>Auction market:</strong> Melbourne is one of Australia&rsquo;s most active auction markets. Pre-auction due diligence (building inspections, finance, contract review) needs to be done before bidding.</li>
         <li><strong>Settlement:</strong> Typically 30 to 60 days, conducted via PEXA.</li>
       </ul>
 
@@ -280,6 +262,8 @@ export default function FirstHomeBuyerVICPage() {
           </a>
         </li>
       </ul>
+
+      <Sources items={firstHomeSources(["VIC"])} />
     </GuideArticleLayout>
   );
 }

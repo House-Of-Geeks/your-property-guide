@@ -28,7 +28,7 @@ export const post: BlogPost = {
 <li>Continued steady growth, 4 to 7% annually, with low volatility</li>
 <li>Rental tightness will persist; vacancy below 1.5% likely through year-end</li>
 <li>Interstate investor inflow expected to continue, particularly into outer-northern and southern suburbs</li>
-<li>The HomeSeeker SA shared-equity scheme and SA's $15K FHOG continue to support first home buyer activity</li>
+<li>SA's First Home Owner Grant (up to $15,000) and first home stamp duty relief on new homes, both with no price cap since 6 June 2024 (RevenueSA, read 11 October 2026), and HomeStart's Shared Equity Option continue to support first home buyer activity</li>
 <li>Off-the-plan apartment concession is still attracting CBD-fringe development activity</li>
 </ul>
 
@@ -38,5 +38,6 @@ export const post: BlogPost = {
   category: "Market Update",
   tags: ["adelaide", "south australia", "market update", "2026", "property prices"],
   publishedAt: "2026-05-06",
+  updatedAt: "2026-10-11",
   readingTime: 7,
 };

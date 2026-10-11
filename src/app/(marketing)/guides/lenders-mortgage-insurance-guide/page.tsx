@@ -5,6 +5,8 @@ import {
   Callout,
   KeyFigure,
   MatchCTA,
+  ScrollTable,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -13,15 +15,36 @@ import {
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
-import { HG_MIN_DEPOSIT_PCT } from "@/lib/data/home-guarantee";
+import { HG_CHECKED_ON, HG_MIN_DEPOSIT_PCT, HG_SOURCES } from "@/lib/data/home-guarantee";
+import { LMI_RATE_SOURCE, LMI_RATES, LOAN_BANDS, computeLmi, premiumAt } from "@/lib/lmi-calc";
+import { AUSTRALIAN_STATES } from "@/lib/utils/stamp-duty";
+import { dutyFor } from "@/lib/data/stamp-duty-state";
+import { longDate } from "@/lib/data/first-home-grants";
+
+// Every LMI dollar figure on this page comes from the /lmi-calculator table in
+// src/lib/lmi-calc.ts (commercial-intent review 10 Oct 2026, buying 0.1 row 16:
+// the hand-typed ranges ran $8,000 to $14,000 below that table at 95% LVR).
+const fmt = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
+const prem = (price: number, depositPct: number) => fmt(premiumAt(price, depositPct)!);
+/** Premium on a given loan at a given LVR (price backed out from the LVR). */
+const onLoan = (loan: number, lvr: number) =>
+  fmt(computeLmi({ price: Math.round(loan / (lvr / 100)), mode: "loan", loan, deposit: 0, state: "NSW", firstHomeBuyer: false }).premium);
+const LMI_SRC = `${LMI_RATE_SOURCE.name.split(",")[0]}'s published lender table, ${LMI_RATE_SOURCE.dated}`;
+const TABLE_PRICES = [400_000, 500_000, 700_000, 1_000_000] as const;
+const TABLE_DEPOSITS = [15, 10, 5] as const;
+// The 90% step for a loan of $500,001 to $600,000: the rate at 89.01% to 90% LVR, then at 90.01% to 91%.
+const BAND_600K = LOAN_BANDS.findIndex((b) => b.max === 600_000);
+const RATE_AT_90 = LMI_RATES.find((r) => r.lvrMax === 90)!.rates[BAND_600K];
+const RATE_OVER_90 = LMI_RATES.find((r) => r.lvrMin === 90)!.rates[BAND_600K];
+const DUTY_700K = AUSTRALIAN_STATES.map((st) => dutyFor(st, 700_000, "owner").total);
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "Lenders Mortgage Insurance: What it costs and how to avoid it (2026)",
+  title: "Lenders Mortgage Insurance 2026: What It Costs, How to Avoid",
   description:
-    "Complete guide to LMI in Australia. What it is (and isn't), when it applies, what it costs, who provides it (Helia, Arch), how to capitalise it into your loan, and four ways to avoid it.",
+    "What lenders mortgage insurance costs in 2026 by price and deposit, from a published lender table; when it applies, who provides it and four ways to avoid it.",
   slug: "lenders-mortgage-insurance-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -51,7 +74,7 @@ export const metadata: Metadata = {
 const TLDR = [
   "LMI protects the lender, not the borrower. You pay the premium, the bank is the beneficiary, and you remain liable for any shortfall if you default.",
   "LMI applies whenever your loan-to-value ratio (LVR) exceeds 80%, meaning you're borrowing more than 80% of the property's value.",
-  "On a $700,000 property at 95% LVR, LMI typically costs $22,000 to $28,000. Costs rise disproportionately as LVR rises.",
+  `On a $700,000 home with a 5% deposit, one lender's published table puts LMI at ${prem(700_000, 5)} before state duty (${LMI_SRC}). The premium rises steeply with the LVR.`,
   "Australia's LMI market is dominated by Helia (formerly Genworth) and Arch (formerly QBE). Some lenders self-insure.",
   "LMI premiums are not portable: refinance before your LVR falls below 80% and you'll typically pay LMI again with the new lender.",
   "Four ways to avoid LMI: save a 20% deposit, use the First Home Guarantee, use a family guarantor, or qualify for a professional-package waiver.",
@@ -81,7 +104,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How much does LMI typically cost?",
     answer:
-      "It depends on the loan amount and LVR. As a rough guide: on a $500,000 loan at 90% LVR, expect $9,500 to $12,500. At 95% LVR, expect $15,000 to $20,000. On a $700,000 loan at 95% LVR, $22,000 to $28,000 is typical. Always get a personalised quote because premiums vary by lender and LMI provider.",
+      `It depends on the loan and the LVR. On one lender's published table, a $500,000 loan costs ${onLoan(500_000, 90)} at 90% LVR and ${onLoan(500_000, 95)} at 95%; a $700,000 loan at 95% costs ${onLoan(700_000, 95)}, before state duty (${LMI_SRC}). Premiums vary by lender and insurer, so ask your lender for its figure.`,
   },
   {
     question: "Should I capitalise LMI into my loan or pay it upfront?",
@@ -119,7 +142,7 @@ export default function LMIGuidePage() {
         steps={[
           { name: "Check your loan-to-value ratio (LVR)", text: "If your deposit is below 20%, LMI is likely required. Calculate LVR as loan amount divided by property price." },
           { name: "Check eligibility for federal schemes", text: `The 5% Deposit Scheme (First Home Guarantee) and the Family Home Guarantee for single parents waive LMI for eligible buyers with a ${HG_MIN_DEPOSIT_PCT.firstHome}% (or ${HG_MIN_DEPOSIT_PCT.singleParent}%) deposit.` },
-          { name: "Estimate the LMI premium", text: "LMI scales with both LVR and loan amount. On a 95% LVR loan of $600K, expect ~$22K. On a 90% LVR loan of $600K, expect ~$13K.", url: "/lmi-calculator" },
+          { name: "Estimate the LMI premium", text: `LMI scales with both LVR and loan amount. On one lender's published table a $600,000 loan costs ${onLoan(600_000, 95)} at 95% LVR and ${onLoan(600_000, 90)} at 90% (${LMI_SRC}).`, url: "/lmi-calculator" },
           { name: "Decide upfront vs capitalised", text: "Pay LMI as a one-off cost or add it to your loan principal (capitalising). Capitalising costs more long-term in interest." },
           { name: "Consider professional or industry exemptions", text: "Some lenders waive LMI for eligible doctors, lawyers, accountants and other low-risk professions, even at 90% LVR.", url: "/borrowing-power-calculator" },
           { name: "Get a written quote and re-check at settlement", text: "LMI is calculated at the point your loan is approved. If your deposit grows or property valuation comes in higher, ask the lender to re-quote." },
@@ -184,9 +207,10 @@ export default function LMIGuidePage() {
       <p>
         To avoid LMI entirely, you need a deposit of at least 20% of the purchase
         price plus enough to cover stamp duty, legal fees, and other upfront costs.
-        For a $700,000 property, that means at least $140,000 in deposit plus
-        approximately $30,000 to $40,000 in transaction costs, a total of
-        $170,000 to $180,000+ before you can buy without LMI.
+        For a $700,000 property, that means at least $140,000 in deposit, plus
+        stamp duty of {fmt(Math.min(...DUTY_700K))} to {fmt(Math.max(...DUTY_700K))} for an
+        owner-occupier depending on the state (less for an eligible first home buyer), plus
+        conveyancing and inspections.
       </p>
       <p>Most lenders set 80% as the standard LMI threshold, but:</p>
       <ul>
@@ -197,40 +221,51 @@ export default function LMIGuidePage() {
 
       <KeyFigure
         value="$140k+"
-        label="Deposit required to avoid LMI on a $700,000 property at 20% LVR. On top of that you'll need 4 to 6% of purchase price in transaction costs."
-        context="Estimate, before scheme alternatives"
+        label="Deposit required to avoid LMI on a $700,000 property at 80% LVR. Stamp duty, conveyancing and inspections come on top."
+        context="20% of the price, before scheme alternatives"
       />
 
       <h2 id="cost">How much does LMI cost?</h2>
       <p>
-        LMI is calculated as a percentage of the loan amount, and increases
-        significantly as the LVR increases. Indicative figures across loan size
-        and LVR:
+        LMI is charged as a percentage of the whole loan, and the percentage rises with both
+        the LVR and the size of the loan. These are the premiums before state duty for a 15%,
+        10% or 5% deposit, from the same published lender table our{" "}
+        <Link href="/lmi-calculator">LMI calculator</Link> uses:
       </p>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Loan amount</th>
-            <th>LVR 85%</th>
-            <th>LVR 90%</th>
-            <th>LVR 95%</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>$400,000</td><td>~$5,000 to $7,000</td><td>~$7,500 to $10,000</td><td>~$12,000 to $16,000</td></tr>
-          <tr><td>$500,000</td><td>~$6,500 to $9,000</td><td>~$9,500 to $12,500</td><td>~$15,000 to $20,000</td></tr>
-          <tr><td>$700,000</td><td>~$9,000 to $13,000</td><td>~$14,000 to $18,000</td><td>~$22,000 to $28,000</td></tr>
-          <tr><td>$1,000,000</td><td>~$13,000 to $18,000</td><td>~$20,000 to $26,000</td><td>~$32,000 to $40,000</td></tr>
-        </tbody>
-      </table>
+      <ScrollTable label="LMI premium by price and deposit">
+        <table>
+          <thead>
+            <tr>
+              <th>Price</th>
+              {TABLE_DEPOSITS.map((d) => <th key={d}>{d}% deposit</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {TABLE_PRICES.map((p) => (
+              <tr key={p}>
+                <td>{fmt(p)}</td>
+                {TABLE_DEPOSITS.map((d) => {
+                  const v = premiumAt(p, d);
+                  return <td key={d}>{v === null ? "Not in the table" : fmt(v)}</td>;
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </ScrollTable>
+      <p>
+        Source: <a href={LMI_RATE_SOURCE.url} target="_blank" rel="noopener noreferrer">{LMI_RATE_SOURCE.name}</a>,{" "}
+        {LMI_RATE_SOURCE.dated}, read {LMI_RATE_SOURCE.readOn}. One lender&rsquo;s table: insurers and
+        lenders price differently, and most states add duty on the premium.
+      </p>
 
       <Callout variant="info" title="A few observations">
         <p>
-          LMI costs increase disproportionately at higher LVRs: going from 85% to
-          95% roughly doubles the premium. On larger loans, LMI can be a very
-          significant upfront cost. The jump from 89.9% to 90% LVR can dramatically
-          increase the premium, lenders price in tiers, not continuously.
+          LMI costs rise much faster than the LVR: at $700,000, going from a 15% to a 5% deposit
+          takes the premium from {prem(700_000, 15)} to {prem(700_000, 5)}. Lenders price in
+          bands, not continuously: for a loan of $500,001 to $600,000 the rate goes from{" "}
+          {RATE_AT_90}% of the loan at 90% LVR to {RATE_OVER_90}% just over it.
         </p>
       </Callout>
 
@@ -360,12 +395,11 @@ export default function LMIGuidePage() {
         <li>
           <strong>Wait two more years to save the full 20% deposit.</strong>{" "}
           During that time, the property market might rise, say 5% per year. The
-          same $800,000 property could now cost $882,000, requiring a higher
-          deposit. The cost of waiting is potentially the additional $82,000 plus
-          $82,000 more in stamp duty and ongoing costs.
+          same $800,000 property could now cost $882,000, so a 20% deposit grows
+          from $160,000 to $176,400, and the stamp duty grows with the price.
         </li>
         <li>
-          <strong>Buy now with 10% deposit and pay around $18,000 LMI.</strong>{" "}
+          <strong>Buy now with a 10% deposit and pay {prem(800_000, 10)} LMI</strong> (on the same lender table).{" "}
           Enter the market two years earlier, benefit from any capital growth,
           and pay off LMI over time.
         </li>
@@ -386,6 +420,14 @@ export default function LMIGuidePage() {
         <Link href="/borrowing-power-calculator">borrowing power calculator</Link>{" "}
         to model different scenarios and see what makes sense for your situation.
       </p>
+
+      <Sources
+        items={[
+          { label: LMI_RATE_SOURCE.name, href: LMI_RATE_SOURCE.url, note: `${LMI_RATE_SOURCE.dated}, read ${LMI_RATE_SOURCE.readOn}` },
+          { label: HG_SOURCES.scheme.label, href: HG_SOURCES.scheme.href, note: `read ${longDate(HG_CHECKED_ON)}` },
+          "Stamp duty figures are our stamp duty calculator's, on each revenue office's rates checked 30 September 2026.",
+        ]}
+      />
     </GuideArticleLayout>
     </>
   );

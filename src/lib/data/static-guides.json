@@ -60,25 +60,25 @@
       "title": "Building and Pest Inspection Cost in Australia (2026): Prices by City and Property Type",
       "description": "What a building and pest inspection costs in Sydney, Melbourne, Brisbane, Perth, Adelaide, Hobart, Canberra and Darwin, by unit, house and large property, combined or separate, from inspectors' own price lists, plus who pays and what the report covers.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-09-30",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 11,
       "persona": "first-home"
     },
     {
       "slug": "buyers-agent-cost-australia",
-      "title": "How Much Does a Buyer's Agent Cost in Australia? (2026)",
-      "description": "Buyer's agent fees in Australia: fixed fees vs percentage commissions, typical ranges by market, what's included, and when paying $10K to $25K is worth it.",
+      "title": "Buyer's Agent Fees in Australia 2026: How They Charge",
+      "description": "How buyer's agents charge in Australia: fixed fees, percentages and bidding-only, what each costs on a worked example, licensing, and how to check one first.",
       "publishedAt": "2026-05-06",
-      "updatedAt": "2026-05-06",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 8,
       "persona": "investing"
     },
     {
       "slug": "buying-property-australia",
-      "title": "How to buy property in Australia: the complete step-by-step guide (2026)",
+      "title": "How to buy a house in Australia: 10 steps from deposit to settlement (2026)",
       "description": "Everything you need to know about buying property in Australia. From assessing your finances and researching suburbs through to inspections, exchange, and settlement.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 15,
       "persona": "first-home"
     },
@@ -96,7 +96,7 @@
       "title": "Conveyancing Fees in Australia (2026): Costs in NSW, VIC, QLD and Every State",
       "description": "What conveyancing costs to buy or sell in NSW, Victoria, Queensland and every other state: professional fees, searches, PEXA and registry fees from the 2026/27 schedules, a cost estimator, and when to use a solicitor.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-09-30",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 13,
       "persona": "first-home"
     },
@@ -157,9 +157,9 @@
     {
       "slug": "first-home-buyer-act",
       "title": "First Home Buyer Guide ACT: Schemes, Stamp Duty & Canberra Property (2026)",
-      "description": "ACT first home buyer guide: no FHOG (instead a full stamp duty waiver via the Home Buyer Concession Scheme), ACT Shared Equity, the $1 million 5% Deposit Scheme cap, and how leasehold land works.",
+      "description": "ACT first home buyer guide: no grant since 2019, but no stamp duty for eligible buyers from 1 July 2026, with no income test or price cap, plus leasehold.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 9,
       "persona": "first-home"
     },
@@ -168,7 +168,7 @@
       "title": "First Home Buyer Guide Australia: Grants, Schemes & Steps (2026)",
       "description": "Complete guide for Australian first home buyers: federal grants and schemes (FHBG, Family Home Guarantee), state grants by state, stamp duty concessions, and step-by-step buying advice.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 10,
       "persona": "first-home"
     },
@@ -177,52 +177,52 @@
       "title": "10 First Home Buyer Mistakes to Avoid (and How to Fix Them), Australia 2026",
       "description": "The 10 most expensive mistakes Australian first home buyers make in 2026, from over-stretching on a deposit to skipping building inspections. Each mistake explained with the simple fix.",
       "publishedAt": "2026-05-06",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 9,
       "persona": "first-home"
     },
     {
       "slug": "first-home-buyer-nsw",
       "title": "First Home Buyer Guide NSW: Grants, Stamp Duty & Schemes (2026)",
-      "description": "NSW first home buyer guide: $10,000 FHOG for new homes, stamp duty exemption up to $800K, concession to $1M, federal schemes, and step-by-step NSW buying advice.",
+      "description": "NSW first home buyer guide: $10,000 grant on new homes to $600,000, no stamp duty to $800,000 and a concession to $1,000,000, plus the federal schemes.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 7,
       "persona": "first-home"
     },
     {
       "slug": "first-home-buyer-nt",
       "title": "First Home Buyer Guide Northern Territory: Grants & Schemes (2026)",
-      "description": "NT first home buyer guide: $10,000 FHOG, First Home Owner Discount of up to $23,928.60 in stamp duty relief, leasehold land considerations, and federal scheme caps for Darwin.",
+      "description": "NT first home buyer guide: the $50,000 HomeGrown Territory Grant on new homes for contracts to 30 Sep 2027, no first home duty concession, and federal schemes.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 8,
       "persona": "first-home"
     },
     {
       "slug": "first-home-buyer-qld",
       "title": "First Home Buyer Guide QLD: $30K Grant, Stamp Duty & Schemes (2026)",
-      "description": "Queensland first home buyer guide: $30,000 FHOG for new homes under $750K (locked in by the 2026-27 QLD Budget), zero stamp duty on new homes, federal schemes, and QLD buying tips.",
+      "description": "Queensland first home buyer guide: $30,000 grant on new homes under $750,000, no transfer duty on a new home, and $0 on an established home to $700,000.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 7,
       "persona": "first-home"
     },
     {
       "slug": "first-home-buyer-sa",
       "title": "First Home Buyer Guide South Australia: Grants, Stamp Duty & Schemes (2026)",
-      "description": "Complete guide for first home buyers in South Australia: $15,000 FHOG, stamp duty rules, First Home Guarantee, HomeSeeker SA shared equity, and off-the-plan concessions.",
+      "description": "SA first home buyer guide: up to $15,000 grant and no stamp duty on a new home, both with no price cap since 6 June 2024; full duty on established homes.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 9,
       "persona": "first-home"
     },
     {
       "slug": "first-home-buyer-tas",
       "title": "First Home Buyer Guide Tasmania: Grants, Stamp Duty & Schemes (2026)",
-      "description": "Tasmania first home buyer guide: $30,000 FHOG on new homes, 50% stamp duty concession on established homes up to $600K, federal schemes, and Tasmania's affordability advantage.",
+      "description": "Tasmania first home buyer guide: a $20,000 grant on new homes for contracts to 30 June 2027, no first home duty relief since 1 July 2026, and federal schemes.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 8,
       "persona": "first-home"
     },
@@ -231,34 +231,34 @@
       "title": "First Home Buyer Guide VIC: Grants, Stamp Duty & Schemes (2026)",
       "description": "Victoria first home buyer guide: the $10,000 FHOG on new homes, stamp duty exemption up to $600K and concession to $750K, Help to Buy and federal schemes, and VIC buying tips.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 7,
       "persona": "first-home"
     },
     {
       "slug": "first-home-buyer-wa",
       "title": "First Home Buyer Guide WA: $10K Grant, Stamp Duty & Schemes (2026)",
-      "description": "Western Australia first home buyer guide: $10,000 FHOG for new homes under $750K, stamp duty exemption under $450K, concession to $600K, federal schemes, and Keystart loans.",
+      "description": "WA first home buyer guide: up to $10,000 grant on new homes to $800,000 in Perth, no transfer duty to $600,000, a concession to $800,000, and Keystart.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 7,
       "persona": "first-home"
     },
     {
       "slug": "first-home-guarantee",
-      "title": "First Home Guarantee 2026: Buy With a 5% Deposit, No LMI",
+      "title": "Australian Government 5% Deposit Scheme (First Home Guarantee): 2026 caps and rules",
       "description": "How the Australian Government 5% Deposit Scheme (the expanded First Home Guarantee) lets eligible first home buyers purchase with a 5% deposit and no Lenders Mortgage Insurance. The 2025 expansion, price caps, the Family Home Guarantee, and how it stacks with the FHOG.",
       "publishedAt": "2026-06-14",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 8,
       "persona": "first-home"
     },
     {
       "slug": "first-home-owner-grant-australia",
-      "title": "First Home Owner Grant (FHOG) by State: 2026 Amounts & Eligibility",
-      "description": "The First Home Owner Grant is a state grant, not federal. See FHOG amounts, price caps and eligibility for every state and territory, plus links to each state's detailed guide.",
+      "title": "First Home Owner Grant 2026: Amounts and Caps by State",
+      "description": "Each state's First Home Owner Grant, new homes only: $50,000 in the NT, $30,000 in QLD, $20,000 in TAS, up to $15,000 in SA, $10,000 in NSW, VIC and WA.",
       "publishedAt": "2026-06-14",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 8,
       "persona": "first-home"
     },
@@ -339,7 +339,7 @@
       "title": "Help to Buy Scheme Australia: How the Shared Equity Scheme Works (2026)",
       "description": "The federal Help to Buy scheme for 2026–27: income limits ($103,000 single, $165,000 joint), price caps by state, the 2% deposit, the government's 30% or 40% share, participating lenders, what happens when you sell, and how it compares with the 5% Deposit Scheme.",
       "publishedAt": "2026-06-14",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 14,
       "persona": "first-home"
     },
@@ -426,10 +426,10 @@
     },
     {
       "slug": "how-much-deposit-to-buy-a-house",
-      "title": "How Much Deposit Do You Need to Buy a House in Australia? (2026)",
-      "description": "The full breakdown of house deposit requirements in Australia: 5% with LMI, 10% standard, 20% to skip LMI. Includes worked examples, government schemes, and a practical roadmap.",
+      "title": "How Much Deposit Do You Need for a House? 2026 Guide",
+      "description": "House deposits in Australia: 5% with LMI, 10%, or 20% to skip it, with LMI and stamp duty by price from a published lender table and our calculator.",
       "publishedAt": "2026-05-06",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 9,
       "persona": "first-home"
     },
@@ -507,10 +507,10 @@
     },
     {
       "slug": "lenders-mortgage-insurance-guide",
-      "title": "Lenders Mortgage Insurance: What it costs and how to avoid it (2026)",
-      "description": "Complete guide to LMI in Australia. What it is (and isn't), when it applies, what it costs, who provides it (Helia, Arch), how to capitalise it into your loan, and four ways to avoid it.",
+      "title": "Lenders Mortgage Insurance 2026: What It Costs, How to Avoid",
+      "description": "What lenders mortgage insurance costs in 2026 by price and deposit, from a published lender table; when it applies, who provides it and four ways to avoid it.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-11",
       "readingTimeMinutes": 7,
       "persona": "first-home"
     },

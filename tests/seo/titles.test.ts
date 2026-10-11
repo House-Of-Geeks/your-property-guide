@@ -513,7 +513,7 @@ describe("cost-first guide titles", () => {
     expect(h1Of(src)).toBe("Building and Pest Inspection Cost in Australia (2026): Prices by City and Property Type");
     usesSeoTitle(src);
     expect(src).toContain("faqs={INSPECTION_FAQS}");
-    expect(src).toContain('updatedAt: "2026-09-30"');
+    expect(src).toContain('updatedAt: "2026-10-11"');
   });
 
   it("conveyancing guide: short <title> naming NSW, long H1", () => {
@@ -524,7 +524,7 @@ describe("cost-first guide titles", () => {
     expect(h1Of(src)).toBe("Conveyancing Fees in Australia (2026): Costs in NSW, VIC, QLD and Every State");
     usesSeoTitle(src);
     expect(src).toContain("faqs={CONVEYANCING_FAQS}");
-    expect(src).toContain('updatedAt: "2026-09-30"');
+    expect(src).toContain('updatedAt: "2026-10-11"');
     for (const id of ["cost-nsw", "cost-vic", "cost-qld", "cost-other-states", "estimator"]) {
       expect(src).toContain(`id="${id}"`);
     }

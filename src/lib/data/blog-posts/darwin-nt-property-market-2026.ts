@@ -30,7 +30,7 @@ export const post: BlogPost = {
 <h2>What to expect through 2026</h2>
 <ul>
 <li>Continued stable growth, 3 to 6% annually, with less volatility than the 2020 to 2024 cycle</li>
-<li>$10,000 NT FHOG plus $23,928 First Home Owner Discount continue to make the NT one of Australia's most generous environments for first home buyers by total value</li>
+<li>The $50,000 HomeGrown Territory Grant for a first new home (contracts to 30 September 2027, no price cap) is the largest first home grant in the country; the NT has no first home stamp duty concession (NT Government, read 11 October 2026)</li>
 <li>The federal 5% Deposit Scheme (First Home Guarantee) cap rose from ${fmtCap(HG_NT_CAP_BEFORE_SPLIT)} to ${fmtCap(HG_PRICE_CAPS.NT.capital)} in Greater Darwin on ${HG_DATES.ntCapSplit}, above the median house price; it stays at ${fmtCap(HG_PRICE_CAPS.NT.rest)} in the rest of the NT</li>
 <li>Defence and resource sector employment support medium-term rental demand</li>
 <li>Climate-resilient construction premiums likely to widen as insurance costs rise</li>
@@ -42,6 +42,6 @@ export const post: BlogPost = {
   category: "Market Update",
   tags: ["darwin", "northern territory", "nt", "market update", "2026"],
   publishedAt: "2026-05-06",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-11",
   readingTime: 7,
 };

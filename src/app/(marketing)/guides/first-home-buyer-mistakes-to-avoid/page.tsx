@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -12,6 +13,15 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { HG_DATES, HG_PREAPPROVAL_DAYS } from "@/lib/data/home-guarantee";
+import { AUSTRALIAN_STATES } from "@/lib/utils/stamp-duty";
+import { dutyFor } from "@/lib/data/stamp-duty-state";
+import { HOUSE_ALL, formatCostRange } from "@/lib/data/inspection-costs";
+
+// Settlement cash figures from the stamp duty engine and the inspection price
+// data (commercial-intent review 10 Oct 2026: no unsourced cost ranges).
+const fmt = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
+const DUTY_700K = AUSTRALIAN_STATES.map((st) => dutyFor(st, 700_000, "owner").total);
+const DUTY_RANGE = `${fmt(Math.min(...DUTY_700K))} to ${fmt(Math.max(...DUTY_700K))}`;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "10 First Home Buyer Mistakes to Avoid (and How to Fix Them), Australia 2026",
@@ -19,7 +29,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "The 10 most expensive mistakes Australian first home buyers make in 2026, from over-stretching on a deposit to skipping building inspections. Each mistake explained with the simple fix.",
   slug: "first-home-buyer-mistakes-to-avoid",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -73,7 +83,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What's the most common first home buyer mistake?",
     answer:
-      "Underestimating the cash needed at settlement. Most first home buyers focus on the deposit (which they save diligently) but forget that stamp duty, conveyancing, building inspections, lender fees, and council adjustments add another 5% on top. On a $700K home with no first home buyer concession, that's an extra $35K beyond the deposit.",
+      `Underestimating the cash needed at settlement. Most first home buyers focus on the deposit (which they save diligently) but forget that stamp duty, conveyancing, building inspections, lender fees, and council adjustments come on top. On a $700,000 home with no first home buyer relief, stamp duty alone is ${DUTY_RANGE} depending on the state (our stamp duty calculator, rates checked 30 September 2026).`,
   },
   {
     question: "Can I lose my deposit if I pull out of a contract?",
@@ -134,12 +144,13 @@ export default function FirstHomeBuyerMistakesGuide() {
       <p>
         <strong>The mistake:</strong> You save a 20% deposit, then discover at
         settlement that stamp duty, conveyancing, building inspection, and
-        lender fees add another $25K to $40K you don&rsquo;t have.
+        lender fees add thousands more you don&rsquo;t have: stamp duty alone on a $700,000
+        home is {DUTY_RANGE} for a buyer without first home relief, depending on the state.
       </p>
       <p>
         <strong>The fix:</strong> Budget the deposit + 5% on top for
         ancillary costs. Use our{" "}
-        <a href="/stamp-duty-calculator">Stamp Duty Calculator</a> to lock in
+        <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link> to lock in
         the biggest single number.
       </p>
 
@@ -189,9 +200,9 @@ export default function FirstHomeBuyerMistakesGuide() {
         your max bid.
       </p>
 
-      <h2 id="skipping-bandp">5. Skipping building &amp; pest to save $600</h2>
+      <h2 id="skipping-bandp">5. Skipping building &amp; pest to save a few hundred dollars</h2>
       <p>
-        <strong>The mistake:</strong> Inspection costs $500 to $900. You skip
+        <strong>The mistake:</strong> Inspection costs {formatCostRange(HOUSE_ALL, "prose")} on a standard house. You skip
         it to save money or speed things up. Three months in, you discover
         $40K of structural repairs the report would have caught.
       </p>
@@ -199,7 +210,7 @@ export default function FirstHomeBuyerMistakesGuide() {
         <strong>The fix:</strong> Always commission building &amp; pest. For
         auctions, do it before bidding (you can&rsquo;t back out after).
         See our{" "}
-        <a href="/guides/building-pest-inspection">building &amp; pest inspection guide</a>.
+        <Link href="/guides/building-pest-inspection">building &amp; pest inspection guide</Link>.
       </p>
 
       <h2 id="address-blindspot">6. Buying on suburb reputation, not address-level data</h2>
@@ -281,7 +292,7 @@ export default function FirstHomeBuyerMistakesGuide() {
       <ol>
         <li>
           Build the all-in cash budget using our{" "}
-          <a href="/guides/how-much-deposit-to-buy-a-house">deposit guide</a>.
+          <Link href="/guides/how-much-deposit-to-buy-a-house">deposit guide</Link>.
         </li>
         <li>
           Get pre-approval (free, 90-day validity) before your first open
@@ -293,11 +304,11 @@ export default function FirstHomeBuyerMistakesGuide() {
         </li>
         <li>
           Stress-test repayments at +2% rates using the{" "}
-          <a href="/mortgage-calculator">Mortgage Calculator</a>.
+          <Link href="/mortgage-calculator">Mortgage Calculator</Link>.
         </li>
         <li>
           Read our{" "}
-          <a href="/guides/cooling-off-period-by-state-australia">cooling-off period guide</a>{" "}
+          <Link href="/guides/cooling-off-period-by-state-australia">cooling-off period guide</Link>{" "}
           before signing any contract.
         </li>
       </ol>

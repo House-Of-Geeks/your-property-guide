@@ -16,6 +16,7 @@ import {
   STAMP_DUTY_GUIDES,
   STAMP_DUTY_GUIDE_PUBLISHED,
   STAMP_DUTY_VERIFIED_ON,
+  commonPricesTable,
   firstHomeTable,
   hasOwnerOccupierRate,
   money,
@@ -107,6 +108,7 @@ export function StampDutyStateGuide({ state }: { state: AustralianState }) {
   const toc: GuideTOCEntry[] = [
     { id: "calculator", label: `${abbr} stamp duty calculator` },
     { id: "worked-examples", label: "Worked examples: $500k, $750k, $1m" },
+    { id: "common-prices", label: "Stamp duty at common prices" },
     { id: "rates", label: `${abbr} stamp duty rates` },
     { id: "first-home", label: "First home buyer thresholds" },
     { id: "concessions", label: "Concession rates" },
@@ -193,6 +195,14 @@ export function StampDutyStateGuide({ state }: { state: AustralianState }) {
         The figures exclude the land titles registration and transfer fees. First home buyer figures assume an
         established home and that you meet the eligibility rules set out below.
       </p>
+
+      <h2 id="common-prices">{abbr} stamp duty at common prices</h2>
+      <p>
+        What a buyer pays at twelve prices from $300,000 to $2,000,000, on the same {s.office.name} rates. The first
+        home buyer column is for an eligible buyer of an established home
+        {state === "SA" || state === "QLD" ? "; a new home can attract more relief, as set out below" : ""}.
+      </p>
+      <Table table={commonPricesTable(state)} />
 
       <h2 id="rates">{abbr} stamp duty rates 2026</h2>
       {g.howCalculated.map((p, i) => <Para key={i} text={p} />)}

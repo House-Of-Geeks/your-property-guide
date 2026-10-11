@@ -100,8 +100,16 @@ describe("no pre-October 2025 scheme figures", () => {
   });
 
   it("in the ACT guide's description, which has to be a literal", () => {
+    // Since 11 Oct 2026 the description leads with the Home Buyer Concession
+    // Scheme (no income test or price cap from 1 July 2026) and names no
+    // 5% Deposit Scheme cap; if it names one again, it must be the current one.
     const act = fs.readFileSync(path.join(GUIDES, "first-home-buyer-act/page.tsx"), "utf8");
+    const description = /description:\n\s+"([^"]+)"/.exec(act)?.[1] ?? "";
+    expect(description).toContain("no income test or price cap");
     expect(HG_PRICE_CAPS.ACT.capital).toBe(1_000_000);
-    expect(act).toContain("the $1 million 5% Deposit Scheme cap");
+    for (const m of description.matchAll(/\$([\d,.]+) ?(million|m)?\b[^.]*?5% Deposit Scheme cap/g)) {
+      const n = Number(m[1].replace(/,/g, "")) * (m[2] ? 1_000_000 : 1);
+      expect(n).toBe(HG_PRICE_CAPS.ACT.capital);
+    }
   });
 });

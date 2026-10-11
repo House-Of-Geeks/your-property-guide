@@ -11,6 +11,7 @@ import {
   EditorNote,
   PullQuote,
   Sources,
+  ScrollTable,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
@@ -20,14 +21,40 @@ import {
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { AUSTRALIAN_STATES, type AustralianState } from "@/lib/utils/stamp-duty";
+import { dutyFor } from "@/lib/data/stamp-duty-state";
+import { CONVEYANCING_FEES } from "@/lib/data/conveyancing-fees";
+import { formatFeeRange } from "@/lib/conveyancing-costs";
+import { HOUSE_ALL, cityCosts, formatCostRange } from "@/lib/data/inspection-costs";
+import { LMI_RATE_SOURCE, premiumAt } from "@/lib/lmi-calc";
+
+// Commercial-intent review 10 Oct 2026, buying 3.12: the query and the AI
+// Overview say "house", and the upfront costs come from our sourced engines
+// and data files instead of hand-typed figures (the old NSW and QLD duty
+// examples were wrong by $1,170 and $3,175).
+const fmt = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
+const SEO_TITLE = "How to Buy a House in Australia: 10 Steps (2026)";
+const NSW_750K = fmt(dutyFor("NSW", 750_000, "owner").total);
+const CAPITAL: Record<AustralianState, string> = {
+  NSW: "Sydney", VIC: "Melbourne", QLD: "Brisbane", WA: "Perth", SA: "Adelaide", TAS: "Hobart", ACT: "Canberra", NT: "Darwin",
+};
+const DUTY_700K = AUSTRALIAN_STATES.map((st) => dutyFor(st, 700_000, "owner").total);
+const INSPECTION = formatCostRange(HOUSE_ALL, "prose");
+const CONVEY_ALL = formatFeeRange(
+  {
+    low: Math.min(...AUSTRALIAN_STATES.map((st) => CONVEYANCING_FEES[st].buy.low)),
+    high: Math.max(...AUSTRALIAN_STATES.map((st) => CONVEYANCING_FEES[st].buy.high)),
+  },
+  "prose",
+);
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "How to buy property in Australia: the complete step-by-step guide (2026)",
+  title: "How to buy a house in Australia: 10 steps from deposit to settlement (2026)",
   description:
     "Everything you need to know about buying property in Australia. From assessing your finances and researching suburbs through to inspections, exchange, and settlement.",
   slug: "buying-property-australia",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-11",
   readingTimeMinutes: 15,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -35,12 +62,12 @@ const FRONTMATTER: GuideFrontmatter = {
 };
 
 export const metadata: Metadata = {
-  title: FRONTMATTER.title,
+  title: SEO_TITLE,
   description: FRONTMATTER.description,
   alternates: { canonical: `${SITE_URL}/guides/${FRONTMATTER.slug}` },
   openGraph: {
     url: `${SITE_URL}/guides/${FRONTMATTER.slug}`,
-    title: FRONTMATTER.title,
+    title: SEO_TITLE,
     description: FRONTMATTER.description,
     type: "article",
     publishedTime: FRONTMATTER.publishedAt,
@@ -57,10 +84,10 @@ export const metadata: Metadata = {
 const TLDR = [
   "Australian property buying involves ten distinct stages, from financial health-check through to settlement, with rules that vary meaningfully by state.",
   "Most lenders require a minimum 5% to 10% deposit; 20% avoids LMI. First home buyer schemes can let you buy with 5% deposit and no LMI.",
-  "Budget an additional 3% to 5% of purchase price for upfront transaction costs (stamp duty, conveyancing, inspections, insurance).",
+  `Budget for upfront costs on top of the deposit: stamp duty alone is ${fmt(Math.min(...DUTY_700K))} to ${fmt(Math.max(...DUTY_700K))} on a $700,000 home for an owner-occupier, depending on the state, before conveyancing, inspections and insurance.`,
   "Pre-approval typically lasts 90 days and is conditional on the property valuing correctly and your circumstances not changing. It's not a guarantee.",
   "Cooling-off periods exist in most states (3 to 5 business days) but never apply to auction purchases, which are unconditional from the moment the hammer falls.",
-  "A building and pest inspection costs $400 to $800 and can save you from buying a structurally compromised property. Never skip it.",
+  `A building and pest inspection on a standard house costs ${INSPECTION} across the capitals (inspector price lists, read 30 September 2026) and can save you from buying a structurally compromised property. Never skip it.`,
   "Settlement usually occurs 30 to 90 days after exchange and happens electronically via PEXA. You don't need to attend, just collect the keys when it clears.",
 ];
 
@@ -93,7 +120,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What costs are there beyond the deposit?",
     answer:
-      "Stamp duty (the largest, varies by state and price), conveyancing ($1,000 to $3,000), building and pest inspection ($400 to $800), LMI if applicable, lender fees ($0 to $600), title and registration fees, building insurance, and moving costs. Budget 3% to 5% of purchase price for these on top of your deposit.",
+      `Stamp duty (the largest, varies by state and price: ${fmt(Math.min(...DUTY_700K))} to ${fmt(Math.max(...DUTY_700K))} on a $700,000 home for an owner-occupier), conveyancing (${CONVEY_ALL} to buy, by state), a building and pest inspection (${INSPECTION} on a standard house), LMI if your deposit is under 20%, lender fees, title and registration fees, building insurance, and moving costs.`,
   },
   {
     question: "Should I buy at auction or by private treaty?",
@@ -168,7 +195,14 @@ export default function BuyingPropertyAustraliaPage() {
 
       <h2 id="overview">Why buying property in Australia is complex but manageable</h2>
       <p className="lead">
-        Buying property in Australia is one of the largest financial decisions
+        Buying a house in Australia takes ten steps, from your deposit and
+        pre-approval to settlement, and the upfront costs on top of the deposit are
+        larger than most buyers expect: on a $750,000 home in NSW, stamp duty alone
+        is {NSW_750K} for a buyer who is not a first home buyer (Revenue NSW rates,
+        read 30 September 2026).
+      </p>
+      <p>
+        Buying property is one of the largest financial decisions
         most people will ever make. The process involves multiple professionals,
         mortgage brokers, conveyancers, building inspectors, and real estate
         agents, and varies meaningfully by state. In Queensland, property is
@@ -196,8 +230,8 @@ export default function BuyingPropertyAustraliaPage() {
         Most lenders require a minimum 5 to 10% deposit, though 20% avoids
         Lenders Mortgage Insurance (LMI). LMI protects the lender, not you, if
         you default, and can add tens of thousands of dollars to the cost of
-        your loan. On a $700,000 purchase with a 10% deposit, LMI might cost
-        $10,000 to $18,000 depending on the lender and insurer.
+        your loan. On a $700,000 purchase with a 10% deposit, one lender&rsquo;s published table puts
+        LMI at {fmt(premiumAt(700_000, 10)!)} before state duty; insurers and lenders price differently.
       </p>
       <p>
         If you&rsquo;re a first home buyer, certain government schemes allow
@@ -259,21 +293,56 @@ export default function BuyingPropertyAustraliaPage() {
         the following:
       </p>
       <ul>
-        <li><strong>Stamp duty (transfer duty).</strong> The largest upfront cost after the deposit. Use our <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link> to estimate the amount for your state, it varies significantly. For a $700,000 property in QLD, expect around $14,175 (owner-occupier); in NSW, approximately $26,857.</li>
-        <li><strong>Conveyancing fees.</strong> $1,000 to $3,000 depending on state and complexity.</li>
-        <li><strong>Building and pest inspection.</strong> $400 to $800. Essential, do not skip this.</li>
-        <li><strong>Lenders Mortgage Insurance (LMI).</strong> If your deposit is below 20%, potentially $5,000 to $30,000+.</li>
-        <li><strong>Loan application or establishment fees.</strong> $0 to $600 depending on lender.</li>
+        <li><strong>Stamp duty (transfer duty).</strong> The largest upfront cost after the deposit. Use our <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link> to estimate the amount for your state, it varies significantly. For a $700,000 home an owner-occupier pays {fmt(dutyFor("QLD", 700_000, "owner").total)} in Queensland and {fmt(dutyFor("NSW", 700_000, "owner").total)} in NSW; an eligible first home buyer pays nothing in either.</li>
+        <li><strong>Conveyancing fees.</strong> The professional fee to buy varies by state; see the table below and our <Link href="/guides/conveyancing-guide">conveyancing guide</Link>.</li>
+        <li><strong>Building and pest inspection.</strong> Priced by city and house size; see the table below. Essential, do not skip this.</li>
+        <li><strong>Lenders Mortgage Insurance (LMI).</strong> If your deposit is below 20%: on a $750,000 home, {fmt(premiumAt(750_000, 10)!)} with 10% down and {fmt(premiumAt(750_000, 5)!)} with 5% down, on one lender&rsquo;s published table ({LMI_RATE_SOURCE.name.split(",")[0]}, {LMI_RATE_SOURCE.dated}).</li>
+        <li><strong>Loan application or establishment fees.</strong> Some lenders charge none; ask for the figure in writing.</li>
         <li><strong>Title search fees.</strong> Typically included in conveyancing.</li>
-        <li><strong>Building insurance.</strong> Required from exchange (or earlier in some states). Budget $1,200 to $3,000 a year.</li>
-        <li><strong>Moving costs.</strong> $500 to $5,000 depending on volume and distance.</li>
+        <li><strong>Building insurance.</strong> Required from exchange (or earlier in some states). Get a quote before you exchange.</li>
+        <li><strong>Moving costs.</strong> Depend on volume and distance; get two quotes.</li>
         <li><strong>Strata fees (if buying an apartment).</strong> Ongoing quarterly fees. Check the strata records before committing.</li>
       </ul>
 
+      <h3 id="upfront-costs">What buying a house costs upfront, by state</h3>
+      <ScrollTable label="Upfront costs of buying a $750,000 house by state">
+        <table>
+          <thead>
+            <tr>
+              <th>State</th>
+              <th>Stamp duty on $750,000 (owner-occupier)</th>
+              <th>Eligible first home buyer</th>
+              <th>Conveyancing fee to buy</th>
+              <th>Building and pest, 3 to 4 bed house</th>
+            </tr>
+          </thead>
+          <tbody>
+            {AUSTRALIAN_STATES.map((st) => (
+              <tr key={st}>
+                <td><Link href={`/guides/stamp-duty-${st.toLowerCase()}`}>{st}</Link></td>
+                <td>{fmt(dutyFor(st, 750_000, "owner").total)}</td>
+                <td>{fmt(dutyFor(st, 750_000, "first").total)}</td>
+                <td>{formatFeeRange(CONVEYANCING_FEES[st].buy)}</td>
+                <td>{formatCostRange(cityCosts(CAPITAL[st]).combined.house)} ({CAPITAL[st]})</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </ScrollTable>
+      <p>
+        <small>
+          Stamp duty: our calculator on each revenue office&rsquo;s rates, checked 30 September 2026
+          (first home buyer column for an established home). Conveyancing: professional fee ranges
+          published by conveyancers and fee guides in August and September 2026, as listed in our
+          conveyancing guide. Inspections: capital-city inspector price lists, read 30 September 2026,
+          GST included. LMI comes on top where your deposit is under 20%.
+        </small>
+      </p>
+
       <KeyFigure
-        value="3–5%"
-        label="Of purchase price you should budget for upfront transaction costs (stamp duty, conveyancing, inspection, insurance, lender fees) on top of the deposit."
-        context="Rough rule, varies by state and purchase type"
+        value={`${fmt(Math.min(...DUTY_700K))} to ${fmt(Math.max(...DUTY_700K))}`}
+        label="Stamp duty on a $700,000 home for an owner-occupier who is not a first home buyer, from the cheapest state to the dearest."
+        context="Our stamp duty calculator, rates checked 30 September 2026"
       />
 
       <MiniStampDutyEmbed />
@@ -352,7 +421,7 @@ export default function BuyingPropertyAustraliaPage() {
       <MatchCTA kind="buyers-agent" />
 
       <PullQuote attribution="Andy McMaster, Editor">
-        Skipping the building inspection to save $600 is the
+        Skipping the building inspection to save a few hundred dollars is the
         single most expensive shortcut in Australian property.
       </PullQuote>
 
@@ -360,7 +429,7 @@ export default function BuyingPropertyAustraliaPage() {
       <p>
         A professional building and pest inspection can save you from buying a
         property with serious structural defects, rising damp, or active
-        termite infestation. Cost: $400 to $800. Worth every dollar.
+        termite infestation. Cost: {INSPECTION} on a standard house. Worth every dollar.
       </p>
       <p>A qualified building inspector will examine:</p>
       <ul>
@@ -395,7 +464,7 @@ export default function BuyingPropertyAustraliaPage() {
         Conveyancers are licensed property transfer specialists. Solicitors can
         also do conveyancing and may be preferred for complex transactions
         (deceased estates, company sales, unusual structures). Fees typically
-        range from $1,000 to $3,000 plus disbursements (search fees,
+        range from {CONVEY_ALL} to buy, by state, plus disbursements (search fees,
         registration). Read our{" "}
         <Link href="/guides/conveyancing-guide">Conveyancing Guide</Link> for
         the full picture.

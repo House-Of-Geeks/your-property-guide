@@ -54,13 +54,18 @@ const FRONTMATTER: GuideFrontmatter = {
   persona: "first-home",
 };
 
+// The <title> is shorter than the H1 (FRONTMATTER.title), which ran to 73
+// characters before the site suffix (commercial-intent review 10 Oct 2026,
+// buying 3.8).
+const SEO_TITLE = "First Home Super Saver Scheme 2026: Limits, Tax, How to Use";
+
 export const metadata: Metadata = {
-  title: FRONTMATTER.title,
+  title: SEO_TITLE,
   description: FRONTMATTER.description,
   alternates: { canonical: `${SITE_URL}/guides/${FRONTMATTER.slug}` },
   openGraph: {
     url: `${SITE_URL}/guides/${FRONTMATTER.slug}`,
-    title: FRONTMATTER.title,
+    title: SEO_TITLE,
     description: FRONTMATTER.description,
     type: "article",
     publishedTime: FRONTMATTER.publishedAt,
@@ -406,7 +411,7 @@ export default function FirstHomeSuperSaverSchemePage() {
       </p>
 
       <MatchCTA
-        lead="Working out how FHSS fits with the rest of your deposit? Tell us where you're buying and we'll introduce one vetted specialist. Free, no commitment."
+        lead="Working out how FHSS fits with the rest of your deposit? Tell us where you're buying: one specialist receives your details and pays us a fee for the introduction; you pay us nothing. No commitment."
         ctaLabel="Find your specialist"
         href={MATCH_HREF}
       />
@@ -557,7 +562,7 @@ export default function FirstHomeSuperSaverSchemePage() {
       </p>
 
       <MatchCTA
-        lead="Ready to plan your deposit? Tell us where you're buying and we'll introduce one vetted specialist who works with first home buyers. Free, no commitment."
+        lead="Ready to plan your deposit? Tell us where you're buying: one specialist receives your details and pays us a fee for the introduction; you pay us nothing. No commitment."
         ctaLabel="Find your specialist"
         href={MATCH_HREF}
       />

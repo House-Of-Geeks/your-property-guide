@@ -7,7 +7,7 @@ import type { GuideFrontmatter } from "@/components/guide/GuideArticleLayout";
 import {
   STAMP_DUTY_GUIDES,
   STAMP_DUTY_GUIDE_PUBLISHED,
-  STAMP_DUTY_VERIFIED_ON,
+  STAMP_DUTY_GUIDE_UPDATED,
   type AustralianState,
 } from "@/lib/data/stamp-duty-state";
 
@@ -18,7 +18,7 @@ export function stampDutyFrontmatter(state: AustralianState): GuideFrontmatter {
     description: g.description,
     slug: g.slug,
     publishedAt: STAMP_DUTY_GUIDE_PUBLISHED,
-    updatedAt: STAMP_DUTY_VERIFIED_ON,
+    updatedAt: STAMP_DUTY_GUIDE_UPDATED,
     readingTimeMinutes: 8,
     author: { name: "Your Property Guide editorial", role: "Australian property research" },
     reviewedBy: { name: "Andy McMaster", role: "Editor" },
