@@ -10,6 +10,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { blogPosts } from "@/lib/data/blogs";
 import { ATO_REFORM_SOURCE } from "@/lib/data/tax-reform-2027";
+import { computeNegativeGearing, defaultNegativeGearingInput } from "@/lib/negative-gearing-calc";
 
 const MARKETING = join(__dirname, "../../src/app/(marketing)");
 const text = (html: string) => html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
@@ -81,5 +82,92 @@ describe("/guides/federal-budget-2026-property", () => {
     expect(p.content).toContain(ATO_REFORM_SOURCE.href);
     expect(p.content).toContain("budget-overview-2026-27.pdf");
     expect(p.content).not.toContain("\u2014");
+  });
+});
+
+describe("/guides/negative-gearing-changes-2026-budget", () => {
+  const p = post("negative-gearing-changes-2026-budget");
+  const body = text(p.content);
+  const afterNote = text(p.content.slice(p.content.indexOf("</em></p>")));
+
+  it("dates the correction at the top, drops the false banner and trims the title", () => {
+    expect(p.updatedAt).toBe("2026-10-11");
+    expect(p.content.indexOf("Correction, 11 October 2026")).toBeLessThan(200);
+    expect(p.title.length).toBeLessThanOrEqual(60);
+    expect(p.title).toContain("Negative Gearing Changes 2026");
+    expect(afterNote).not.toContain("reflects the rules as legislated");
+  });
+
+  it("states who the change covers, from section 26-155", () => {
+    expect(body).toContain("Companies and most trusts : covered");
+    expect(body).toContain("Complying super funds, including SMSFs : excluded");
+    expect(body).toContain("section 26-155(3)");
+    expect(body).toContain("7:30pm AEST on 12 May 2026");
+    expect(body).toContain("2027-28 income year");
+  });
+
+  it("no longer carries the withdrawn statements after the correction note", () => {
+    for (const wrong of [
+      "SMSF investors purchasing new residential property within their fund, same rules apply",
+      "were never subject to",
+      "new homes are exempt from those changes too",
+      "the policy is now law from budget night",
+      "essentially the same one the ATO already uses for GST",
+      "1.1 million Australians",
+    ]) {
+      expect(afterNote, wrong).not.toContain(wrong);
+    }
+  });
+
+  it("links to the calculator that exists, and to the CGT article", () => {
+    expect(p.content).not.toContain("/tools/negative-gearing-calculator");
+    expect(p.content).toContain('<a href="/negative-gearing-calculator">negative gearing calculator</a>');
+    expect(p.content).toContain('href="/guides/cgt-changes-2026-budget"');
+    expectLinksResolve(p.content);
+  });
+
+  it("prints the calculator's own figures in the worked example", () => {
+    const i = defaultNegativeGearingInput();
+    const at37 = computeNegativeGearing(i);
+    const at45 = computeNegativeGearing({ ...i, marginalRate: 45 });
+    expect(i.timing).toBe("established-after-cutoff");
+    const usd = (n: number) => `$${Math.abs(n).toLocaleString("en-AU")}`;
+    expect(body).toContain(`loss of ${usd(at37.netRentalResult)} a year`);
+    expect(body).toContain(`saves ${usd(at37.taxEffect)} of tax`);
+    expect(body).toContain(`costs ${usd(at37.weeklyCostAfterTax)} a week after tax`);
+    expect(body).toContain(`costs ${usd(at37.weeklyCostFrom2027)} a week`);
+    expect(body).toContain(`${usd(at45.weeklyCostAfterTax)} a week before 1 July 2027 against ${usd(at45.weeklyCostFrom2027)} after`);
+  });
+
+  it("answers its FAQs in the body and cites dated primary sources", () => {
+    expect(body).toContain("What are the changes in Australia's negative gearing policy for 2026?");
+    expect(body).toContain("Does the change apply to SMSFs?");
+    for (const s of ["last updated 29 June 2026", "Royal Assent 26 June 2026", "Act No. 49 of 2026", "10 August 2026"]) {
+      expect(body, s).toContain(s);
+    }
+    expect(p.content).toContain(ATO_REFORM_SOURCE.href);
+    expect(p.content).not.toContain("\u2014");
+  });
+});
+
+describe("/guides/negative-gearing-cgt-changes-now-law-2026", () => {
+  const p = post("negative-gearing-cgt-changes-now-law-2026");
+  const body = text(p.content);
+
+  it("has a title of 60 characters or fewer and a dated update", () => {
+    expect(p.title.length).toBeLessThanOrEqual(60);
+    expect(p.updatedAt).toBe("2026-10-11");
+    expect(p.content.indexOf("Update, 11 October 2026")).toBeLessThan(200);
+  });
+
+  it("sends readers to the corrected explainer with the agreed anchor", () => {
+    expect(p.content).toContain('<a href="/guides/negative-gearing-changes-2026-budget">what the negative gearing change does</a>');
+    expectLinksResolve(p.content);
+  });
+
+  it("dates the SMSF borrowing ban and states its scope", () => {
+    expect(body).toContain("from 10 August 2026, the 45th day after Royal Assent");
+    expect(body).toContain("other than business real property");
+    expect(body).not.toContain("98 votes to 39");
   });
 });

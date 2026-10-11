@@ -3,111 +3,101 @@ import type { BlogPost } from "@/types";
 export const post: BlogPost = {
   id: "blog-negative-gearing-changes-2026-budget",
   slug: "negative-gearing-changes-2026-budget",
-  title: "Negative Gearing Changes 2026: What Every Property Investor Needs to Know",
+  title: "Negative Gearing Changes 2026: What the New Law Does",
   excerpt:
-    "The 2026-27 federal budget restricts negative gearing to new builds from 1 July 2027 for properties purchased after 7:30pm on budget night. Existing investors are grandfathered. Here's exactly what's changing, who is affected, and what it means for your strategy.",
-  content: `<p><em><strong>Update (July 2026):</strong> these changes are now law. Parliament passed the package on 25 June 2026 and the ATO has confirmed the measures, including a late Senate amendment ending new SMSF property borrowing. See our <a href="/guides/negative-gearing-cgt-changes-now-law-2026">coverage of the final legislation</a> for what passed and the 11-month runway to 1 July 2027. The explainer below reflects the rules as legislated.</em></p>
+    "From 1 July 2027, losses on an established home bought after 7:30pm AEST on 12 May 2026 can only be offset against income and gains from residential property, under the law Parliament passed on 25 June 2026. Homes held before then, and new builds bought by their first owner, keep negative gearing. Who it covers, what counts as a new build, and a worked example.",
+  content: `<p><em><strong>Correction, 11 October 2026:</strong> earlier versions of this article (published 13 May 2026, updated 24 July 2026) carried a note saying the explainer "reflects the rules as legislated". It did not. It said SMSF investors buying new residential property face the same rules (complying super funds, including SMSFs, are excluded from the change); that trust and company structures "were never subject" to it (companies and most trusts are covered); that new homes are exempt from the CGT change (the first buyer of a new build gets a choice between the 50% discount and indexation); that the new build test is the GST definition (the Minister sets it by legislative instrument); and that "the policy is now law from budget night" (Parliament passed it on 25 June 2026 and it applies from 1 July 2027). Its link to our negative gearing calculator pointed to a page that does not exist. We have rewritten the article to the Treasury Laws Amendment (Tax Reform No. 1) Act 2026, the Budget explainer and the ATO. The sources are listed at the end.</em></p>
 
-<p>The federal budget handed down on 12 May 2026 contained the most significant change to negative gearing since the rules were last touched in the late 1980s. From 1 July 2027, negative gearing for residential investment property will be limited to new builds only, but only for properties purchased after 7:30pm AEST on budget night. Everything else is grandfathered.</p>
+<p>From 1 July 2027, losses on an established home bought after 7:30pm AEST on 12 May 2026 can only be offset against income and gains from residential property, under the law Parliament passed on 25 June 2026 (ATO, last updated 29 June 2026). Homes held before that time keep negative gearing for as long as you own them, and so do new builds bought by their first owner.</p>
 
-<p>This article unpacks exactly what's changing, the timing rules that matter, who is and isn't affected, and what investors should actually do with the information.</p>
+<p>This article explains what the new section 26-155 of the Income Tax Assessment Act 1997 does, who it covers, what counts as a new build, what it costs on a typical property, and what it does not touch. The CGT change in the same law is separate, and covered in our article on <a href="/guides/cgt-changes-2026-budget">how the CGT change works from 1 July 2027</a>.</p>
 
 <h2>Negative gearing in plain English</h2>
-<p>Negative gearing happens when the costs of owning an investment property, interest, council rates, insurance, repairs, depreciation, are higher than the rental income. The "loss" can currently be deducted against your salary and other income, reducing the total tax you pay. For high-income earners on the 37% or 45% marginal rate, the tax saving from negative gearing has historically been substantial.</p>
-<p>Approximately 1.1 million Australians currently negatively gear an investment property, claiming roughly $11 billion in net rental losses annually against their other income. The system has been a structural feature of Australian property investment for nearly four decades.</p>
+<p>A property is negatively geared when its deductible costs (interest, council rates, insurance, management, repairs, depreciation) are more than the rent. Until 30 June 2027 the loss reduces your other taxable income, such as wages, so it is partly refunded through a lower tax bill: at a 37% marginal rate, a $10,000 loss saves $3,700. The Budget explainer puts the number of people who buy a negatively geared property each year at around 1% of taxfilers, about 230,000 individuals in 2022-23.</p>
 
-<h2>What's actually changing on 1 July 2027</h2>
-<p>From 1 July 2027, residential investment property losses will only be deductible against <em>other property income</em>, not against salary, business or other income, for properties purchased after the cut-off time. Losses can be carried forward indefinitely to be used against future property profits or against the capital gain when the property is sold.</p>
-<p>Two key carve-outs:</p>
+<h2>What changes on 1 July 2027</h2>
+<p>From the 2027-28 income year, section 26-155 compares your deductions for residential dwellings with your rental income from them each year. Where the deductions are higher:</p>
 <ul>
-<li><strong>New builds are exempt.</strong> If the property is a new home (newly constructed, never previously occupied for residential purposes) at the time you buy it, it retains full negative gearing eligibility under the old rules</li>
-<li><strong>Existing properties are grandfathered.</strong> Any residential investment property you owned on 12 May 2026 keeps the old negative gearing treatment, regardless of when it was bought</li>
+<li>the excess is not deductible against your wages, business or other income that year;</li>
+<li>it can be used to reduce capital gains on residential property, including the gain when you sell;</li>
+<li>whatever is left carries forward to the next year as a residential deduction, and so on each year until it is used.</li>
+</ul>
+<p>A loss is delayed, not lost. It comes back when the property, or another residential property you own, makes a profit or a capital gain. The Act's own example: an investor with $50,000 of rent and $65,000 of deductions in 2028-29 deducts $50,000 and carries $15,000 forward, and uses it up in a later year when the rent exceeds the costs.</p>
+<p>Three kinds of residential property are left out of the comparison, so their losses still reduce tax on your other income:</p>
+<ul>
+<li><strong>A home you held at 7:30pm AEST on 12 May 2026</strong> (section 26-155(2)(a))</li>
+<li><strong>A new residential dwelling</strong> as the Minister defines it (section 26-155(2)(b))</li>
+<li><strong>A dwelling used for an activity the Minister determines</strong>, which must improve social or affordable housing or housing for First Nations people, people with a disability, older people or another disadvantaged group (section 26-155(2)(c) and (3A))</li>
+</ul>
+<p>An established home bought between budget night and 30 June 2027 can be negatively geared until 30 June 2027, but not from 1 July 2027 (Budget explainer, transitional arrangements). Caravans and mobile homes, hotels, motels and boarding houses, student accommodation and boats are not residential dwellings for this rule (section 26-160(1)), and commercial property and shares are not affected.</p>
+
+<h2>Who the change covers: individuals, trusts, companies and super funds</h2>
+<ul>
+<li><strong>Individuals and partnerships</strong>: covered</li>
+<li><strong>Companies and most trusts</strong>: covered. The Budget explainer says the change applies to individuals, partnerships, companies and most trusts. A beneficiary's share of a trust's net income that comes from residential property counts as residential income in the beneficiary's own comparison (section 26-155(7))</li>
+<li><strong>Widely held unit trusts</strong>, such as most managed investment trusts: excluded (section 26-155(4)(a))</li>
+<li><strong>Complying super funds, including SMSFs</strong>: excluded (section 26-155(4)(b)). The same law separately stops SMSFs taking out new limited recourse loans to buy residential property from 10 August 2026; our <a href="/guides/smsf-property-guide">SMSF property guide</a> covers what remains possible</li>
 </ul>
 
-<h2>The 7:30pm cut-off, why it matters</h2>
-<p>The precise cut-off is 7:30pm AEST on Tuesday 12 May 2026, the moment the Treasurer began his budget speech. Contract date is what counts. If you signed a contract to purchase an established residential investment property before that moment, you're grandfathered. If you signed after, you're under the new rules.</p>
-<p>Settlement date doesn't change this. A property you contracted to buy on 10 May 2026 but only settled on 1 June 2026 is grandfathered. A property you contracted to buy at 8pm on 12 May 2026 falls under the new rules even if you'd been negotiating for weeks beforehand. Speak to your conveyancer if you have any contract straddling the date.</p>
+<h2>The 7:30pm cut-off and the contract date</h2>
+<p>The cut-off is 7:30pm by legal time in the Australian Capital Territory on 12 May 2026, the time of the Budget announcement. For a home bought under a contract, you hold it from the day you sign the contract (section 26-155(3)), so a contract signed before the cut-off and settled afterwards keeps negative gearing. A contract signed after it does not, however long the negotiation ran. Keep the signed contract with your tax records; speak to your conveyancer if a contract straddles the time.</p>
 
-<h2>Who is affected and who isn't</h2>
-<h3>Not affected</h3>
+<h2>New builds: what counts, and only for the first buyer</h2>
+<p>The Act leaves the definition of a new residential dwelling to a legislative instrument made by the Minister, which must aim at genuinely adding to housing supply (section 26-160(3) to (4A)). The Act does not borrow the GST definition of new residential premises. The Budget explainer gives examples (table 2):</p>
 <ul>
-<li>Anyone who owned a residential investment property on 12 May 2026, your existing properties keep their existing treatment for life</li>
-<li>Investors in commercial property, industrial property, retail property, the change is for residential only</li>
-<li>Owner-occupiers, your principal place of residence has nothing to do with negative gearing</li>
-<li>Investors who only buy new builds going forward, full negative gearing remains available</li>
+<li><strong>Eligible:</strong> an apartment bought off the plan; any home built on previously vacant land; a duplex replacing a single house through a knock-down rebuild; a newly built home occupied for less than 12 months before it is first sold</li>
+<li><strong>Not eligible:</strong> an established home extended with extra bedrooms; a knock-down rebuild that replaces one house with one house; a granny flat added to an established property that is not itself eligible; a new home occupied for more than 12 months before it is sold to an investor</li>
 </ul>
-<h3>Affected</h3>
+<p>The concession belongs to the first buyer. Subsequent purchasers of the dwelling cannot use the 50% CGT discount or negative gearing on it (Budget explainer). The first buyer of a new build also keeps a choice on sale between the 50% CGT discount and indexation with the 30% minimum tax. Check the instrument before relying on either concession.</p>
+
+<h2>Before and after 1 July 2027: a worked example</h2>
+<p><strong>Our assumptions:</strong> an established $700,000 home contracted after budget night, a $560,000 interest-only loan at 6.5%, rent of $625 a week all year, council rates of $2,000, insurance of $1,500, management at 8.5% of rent and $1,000 of maintenance; no depreciation; the owner's other income is taxed at 37% (the ATO's 2026-27 resident rates, before the Medicare levy) and they own no other rental property. These are the starting figures of our <a href="/negative-gearing-calculator">negative gearing calculator</a>.</p>
 <ul>
-<li>Investors who purchase established residential property after the cut-off date, losses no longer offset salary income</li>
-<li>Investors who contract for property settlements before but buy further established properties after, the new properties only fall under the new rules</li>
-<li>SMSF investors purchasing new residential property within their fund, same rules apply</li>
+<li>Rent $32,500 less costs of $7,263 and interest of $36,400 leaves a loss of $11,163 a year</li>
+<li><strong>In 2026-27:</strong> the loss saves $4,130 of tax, so the property costs $135 a week after tax</li>
+<li><strong>From 1 July 2027:</strong> the loss saves no tax that year and carries forward, so the property costs $215 a week, until rent rises or a residential capital gain absorbs the carried-forward losses</li>
 </ul>
+<p>The same property held on budget night, or a new build bought by its first owner, stays at $135 a week. At a 45% marginal rate the gap is wider: $118 a week before 1 July 2027 against $215 after.</p>
 
-<h2>What "new build" actually means</h2>
-<p>For the purposes of the exemption, a "new build" is a residential dwelling that has not previously been sold as a residential premises and has not been previously occupied for residential purposes. In practical terms this captures:</p>
+<h2>Existing investors who buy more property</h2>
+<p>The cut-off attaches to each property, not to the investor. If you held three rentals on 12 May 2026, they keep negative gearing. A fourth established home bought after the cut-off is in the comparison from 1 July 2027. Net rental income from your other residential properties, including the ones outside the comparison, reduces the excess before it is quarantined (section 26-155(6)(a)), so a portfolio with positively geared properties softens the effect. Losses on the properties outside the comparison stay deductible against your other income, as before.</p>
+
+<h2>What the change does not touch</h2>
 <ul>
-<li>Off-the-plan apartments purchased before completion</li>
-<li>House and land packages where the home is newly constructed</li>
-<li>Newly built spec homes from a builder that have not been lived in</li>
-<li>Substantially renovated homes meeting the ATO's "substantial renovation" definition (rarely simple to qualify)</li>
-</ul>
-<p>It does not include a 6-month-old house someone has lived in, or a property that was previously rented as a residence and is being on-sold. The definition is essentially the same one the ATO already uses for GST on new residential property, so accountants and developers are familiar with it.</p>
-
-<h2>The investment implications</h2>
-<p>The shift in incentives is significant. For new investors entering the market after budget night, the relative attractiveness of property segments changes:</p>
-<h3>Existing established property, the after-tax case weakens</h3>
-<p>The classic negatively-geared 1990s townhouse or 1980s unit, purchased to generate a modest yield with capital growth and tax savings, becomes less attractive on an after-tax basis. The same gross cashflow position produces a worse net result because rental losses no longer reduce your salary tax. Many established residential investments shift from negatively geared to neutrally or positively geared (with no benefit beyond the cash return) under the new rules.</p>
-<h3>New builds, the after-tax case strengthens (relatively)</h3>
-<p>A new house and land package, off-the-plan apartment, or newly-built townhouse keeps full negative gearing eligibility. With investor demand redirecting toward new supply, the new-build segment becomes structurally more attractive. The combination of full negative gearing, full CGT discount (new homes are exempt from those changes too), and depreciation makes the after-tax case for new builds materially better than established for most investor profiles.</p>
-<h3>Cashflow-positive established property, the same as before, or slightly better</h3>
-<p>Investors targeting yield rather than capital growth, typically in regional Australia, outer suburbs, or specialised stock like NDIS housing or rooming houses, see no material change. The properties were positively geared anyway, so the negative gearing rules were never doing the heavy lifting in their returns.</p>
-
-<h2>What about existing investors who buy more property later?</h2>
-<p>Critical point: the grandfathering applies to specific properties, not to specific investors. If you own three rentals on 12 May 2026, those three are grandfathered for life. If you buy a fourth established property in 2027, the new property is under the new rules. Losses on property #4 cannot be deducted against your salary.</p>
-<p>But losses on property #4 <em>can</em> be deducted against rental income from properties #1, #2 and #3 (subject to general loss-quarantining rules). The new regime requires rental losses to flow within the property silo, not into salary income. For portfolio investors with multiple properties, this softens but does not eliminate the impact.</p>
-
-<h2>Should you sell to lock in the old rules?</h2>
-<p>This is the question every accountant is being asked. The answer in almost every case: <strong>no, do not sell to "lock in" the grandfathering</strong>. The reasoning:</p>
-<ul>
-<li>Grandfathering applies to the property as long as you own it, you don't need to do anything to preserve it</li>
-<li>Selling generates a capital gains tax event right now, which crystallises tax you may have deferred indefinitely</li>
-<li>Transaction costs of selling and buying again are usually 5 to 8% of property value (agent fees, marketing, stamp duty on the new purchase, conveyancing, etc.), far more than the marginal annual benefit</li>
-<li>Once you sell, you can't buy back into the same property treatment</li>
-</ul>
-<p>There may be specific situations, significant portfolio rebalancing, retirement planning, family transfers, where selling makes sense for non-tax reasons. The new rules don't change those calculations meaningfully.</p>
-
-<h2>Should you buy now (before 7:30pm 12 May 2026 has long passed)?</h2>
-<p>The cut-off has already passed for contracts dated 13 May 2026 onward. Anyone reading this is now under the new rules for any new established residential purchase. The question becomes: given the new regime, does the investment still make sense?</p>
-<p>For many investors, the answer is still yes, but the analysis is different:</p>
-<ul>
-<li><strong>Run the numbers without negative gearing.</strong> Assume zero salary deduction benefit. Does the property still meet your return target on cashflow + capital growth alone?</li>
-<li><strong>Consider yield-focused locations.</strong> Brisbane, Perth, Adelaide and regional markets with 4%+ gross yields work better in the new regime than 2% inner-Sydney yields</li>
-<li><strong>Look harder at new builds.</strong> The tax wrapper is more favourable, and developers know investor capital is flowing toward them, be careful on pricing</li>
-<li><strong>Talk to a mortgage broker about lending impacts.</strong> Without negative gearing, serviceability buffers may calculate differently</li>
+<li><strong>Deductions themselves</strong>: interest, rates, repairs and depreciation are still deductible against residential rental income. The change decides only what happens to the excess</li>
+<li><strong>Your home</strong>: negative gearing applies to rental property; the main residence CGT exemption is unchanged (Budget explainer)</li>
+<li><strong>Commercial property and shares</strong>: outside the change (Budget explainer)</li>
+<li><strong>The cost base</strong>: an expense you could not deduct because of section 26-155 does not join the cost base for CGT (section 110-38(8A)), so it cannot be counted twice</li>
 </ul>
 
-<h2>What the changes don't touch</h2>
-<p>Several things remain unchanged that investors often expect would be touched by negative gearing reform:</p>
+<h2>The CGT change is separate</h2>
+<p>The same Act replaces the 50% CGT discount from 1 July 2027 with cost base indexation and a 30% minimum tax for resident individuals, for gains that accrue from that date. Unlike negative gearing, there is no 12 May 2026 cut-off for CGT: on any asset you own on 1 July 2027, the gain up to that date keeps the discount and the gain after it falls under the new rules. Our article on <a href="/guides/cgt-changes-2026-budget">how the CGT change works from 1 July 2027</a> covers it with worked examples, and the <a href="/cgt-calculator">CGT calculator</a> estimates the tax on a sale.</p>
+
+<h2>Should you sell, or buy, before 1 July 2027?</h2>
+<p>Selling does not help you keep negative gearing: a home held on budget night keeps it for as long as you own it, and selling costs, stamp duty on any replacement and CGT on the sale come straight off your return. Selling to protect the 50% CGT discount does not work either, because the gain up to 1 July 2027 keeps the discount whenever you sell.</p>
+<p>For a purchase now, run the numbers without the tax saving on an established home, or check a new build against the Minister's definition. A property that runs close to break-even before tax, usually a higher-yield one, loses little when its losses are quarantined. The <a href="/rental-yield-calculator">rental yield calculator</a> and the <a href="/negative-gearing-calculator">negative gearing calculator</a> show where a property sits.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>What are the changes in Australia's negative gearing policy for 2026?</h3>
+<p>From 1 July 2027, losses on an established home bought after 7:30pm AEST on 12 May 2026 can only be offset against income and gains from residential property, with any excess carried forward. Homes held before then, and new builds, keep negative gearing. Parliament passed the law on 25 June 2026 (ATO, last updated 29 June 2026).</p>
+<h3>Does the change apply to SMSFs?</h3>
+<p>No. Complying super funds, including SMSFs, are excluded from section 26-155, as are widely held unit trusts. The same Act stops super funds entering new limited recourse borrowing arrangements to buy real property other than business real property, such as a home, from 10 August 2026, the 45th day after Royal Assent. Arrangements entered into before then, and refinancing of them, continue.</p>
+<h3>Does the 50% capital gains tax discount still apply in 2026?</h3>
+<p>Yes, for a sale before 1 July 2027, on an asset held for at least 12 months by an individual or trust. For a sale after that date, the discount still applies to the part of the gain that accrued up to 1 July 2027, and indexation and the 30% minimum tax apply to the rest.</p>
+<h3>Are Age Pension recipients exempt?</h3>
+<p>From the 30% minimum tax on capital gains, yes, in any year they receive the Age Pension or another payment listed in section 119-15 of the Act. They are not exempt from the negative gearing change or from CGT itself.</p>
+<h3>Can I still claim depreciation?</h3>
+<p>Yes. Depreciation is still a deduction, but from 1 July 2027 on an established home bought after the cut-off it counts towards the residential loss that is carried forward, rather than reducing tax on your wages.</p>
+
+<p><em>This article is general information, not tax advice. How the rules apply depends on your circumstances and on the Minister's instruments; speak to a registered tax agent before acting.</em></p>
+
+<h2>Sources</h2>
 <ul>
-<li><strong>Depreciation rules</strong>: division 40 (plant and equipment) and division 43 (building) depreciation remain available as before</li>
-<li><strong>Interest deductibility itself</strong>: interest on investment property loans is still fully deductible against rental income. The change is only about what happens with the leftover loss</li>
-<li><strong>Loss carry-forward</strong>: losses you can't use against salary are not lost. They carry forward indefinitely to be used against future rental income or, ultimately, against the capital gain when you sell</li>
-<li><strong>Trust and company structures</strong>: these were never subject to "personal" negative gearing anyway. Investment property held in a unit trust or company has always been on a different regime</li>
+<li>Australian Taxation Office, <a href="https://www.ato.gov.au/about-ato/new-legislation/in-detail/individuals/tax-reform-boosting-home-ownership-reforming-negative-gearing-and-capital-gains-tax" rel="nofollow noopener">Tax reform – Boosting home ownership – Reforming negative gearing and capital gains tax</a>, last updated 29 June 2026 (read 10 October 2026).</li>
+<li>Parliament of Australia, <a href="https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7493" rel="nofollow noopener">Treasury Laws Amendment (Tax Reform No. 1) Bill 2026</a>: passed both Houses 25 June 2026, Royal Assent 26 June 2026 (Act No. 49 of 2026). Text as passed: Schedule 2 (sections 26-155 and 26-160, and section 110-38(8A), applying from the 2027-28 income year), section 119-15 (payments that exempt you from the minimum tax) and Schedule 5 (limited recourse borrowing) (read 10 October 2026).</li>
+<li>Australian Government, <a href="https://budget.gov.au/content/factsheets/download/tax-explainers-negative-gearing-capital-gains-tax.pdf" rel="nofollow noopener">Budget 2026-27 Tax Explainer: Negative Gearing and Capital Gains Tax Reform</a>, 12 May 2026 (who is covered, transitional arrangements, new builds and table 2, other exemptions) (read 11 October 2026).</li>
+<li>Australian Taxation Office, <a href="https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents" rel="nofollow noopener">Tax rates: Australian residents</a>, 2026-27 rates, last updated 13 August 2026 (read 10 October 2026; used in the worked example).</li>
 </ul>
-
-<h2>The political reality</h2>
-<p>This is a clear break of a pre-election commitment, and the government has been honest about that. The framing is that the housing affordability problem has worsened enough that the original commitment was no longer tenable. Whatever your view on the politics, the policy is now law from budget night and the timing rules are locked. Future political changes, including potential repeal or further modification under a different government, are possible but speculative. Plan for the rules as they are now.</p>
-
-<h2>Practical next steps for current investors</h2>
-<ol>
-<li><strong>Don't panic-sell.</strong> Your existing properties are protected. The grandfathering is permanent for as long as you hold the property</li>
-<li><strong>Update your records.</strong> Confirm with your accountant that each property's purchase date and contract date are documented clearly, this matters if there's ever a question about which regime applies</li>
-<li><strong>Review your strategy for future purchases.</strong> The new regime favours yield over loss-driven returns, and new builds over established. Adjust accordingly</li>
-<li><strong>Talk to your accountant before the 2026-27 financial year close.</strong> There may be ways to bring forward maintenance, repairs or depreciation reviews to maximise current-year deductions while the old rules still apply to all property types</li>
-<li><strong>Use our <a href="/tools/negative-gearing-calculator">negative gearing calculator</a></strong> with and without the new rules to see how the change affects your specific portfolio</li>
-</ol>
-
-<p>The negative gearing changes are real, structural, and significant, but they don't break the case for property investment in Australia. They reshape it. Investors who think carefully about location, yield, supply incentives and tax positioning under the new regime can still build sustainable property portfolios. The strategy needs to be sharper than it was, but the opportunity remains.</p>
 
 <p style="font-size:0.75rem;color:#7A7A8E;font-style:italic;margin-top:2rem">Cover photo: sv1ambo, CC BY 2.0, via Wikimedia Commons.</p>`,
   coverImage: "/images/blog/cover-negative-gearing-changes-2026-budget.jpg",
@@ -122,6 +112,6 @@ export const post: BlogPost = {
     "2026",
   ],
   publishedAt: "2026-05-13",
-  updatedAt: "2026-07-24",
-  readingTime: 13,
+  updatedAt: "2026-10-11",
+  readingTime: 11,
 };
