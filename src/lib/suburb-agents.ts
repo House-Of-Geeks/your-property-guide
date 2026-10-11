@@ -326,7 +326,7 @@ export function buildSuburbAgentsModel(
         : "";
   faqs.push({
     question: `Do real estate agents in ${sn} get paid if the house doesn't sell?`,
-    answer: `It depends on the agency agreement, so read its commission and expenses clauses before you sign: they say when commission is earned and which costs, such as marketing, you pay either way.${notSoldRule}`,
+    answer: `It depends on the agency agreement, so read its commission and expenses clauses before you sign: they say when commission is earned and what you pay for marketing.${notSoldRule}`,
   });
   faqs.push({
     question: `Do I have to pay to be matched with an agent in ${sn}?`,

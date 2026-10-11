@@ -4,19 +4,96 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 import { MatchAgentEmbed, TrustStrip } from "@/components/journey";
-import { BreadcrumbJsonLd } from "@/components/seo";
-import { SITE_URL } from "@/lib/constants";
+import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
+import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { STATE_NAMES, STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
+import { CAV_PROPERTY_PRICES, NSW_AGENCY_AGREEMENTS, QLD_COMMISSION, cite } from "@/lib/data/appraisal-sources";
+import { CHOOSING_POINTS, COMMISSION_RULE_SOURCES } from "@/lib/suburb-agents";
 
 // The canonical matters here more than on most pages: every suburb and
 // rental-market page links to this one with its own query string
 // (?intent=…&suburb=…), and without a canonical each of those was a separate
 // duplicate to a crawler (Search Console, "Duplicate without user-selected
 // canonical", 29 Sep 2026).
+// Section 3.2 of the 10 Oct 2026 review: "find a real estate agent" (170 a
+// month on Google, 444 AI searches) has government pages unrelated to agents
+// at positions 3 to 8, and this page carried neither the phrase nor FAQ
+// schema. Title inside 60 characters before the brand suffix.
+const TITLE = "Find a Real Estate Agent or Property Expert: Free Intro";
+const DESCRIPTION =
+  "Find a real estate agent, buyer's agent or broker for your area: how to choose one, what agents charge by state, and one free introduction where we have one.";
+
 export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}/find-an-expert` },
-  title: "Find your expert, agent, broker, or specialist",
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: { url: `${SITE_URL}/find-an-expert`, title: TITLE, description: DESCRIPTION, type: "website" },
+};
+
+const COMMISSION_STATES = Object.keys(STATE_RATES) as StateCode[];
+
+const REB_TOP_100_2026 = {
+  label: "Real Estate Business: Who are the Top 100 Agents of 2026 in Australia?",
+  href: "https://www.realestatebusiness.com.au/rankings/31934-who-are-the-top-100-agents-of-2026-in-australia",
+  published: "5 June 2026",
+  read: "11 October 2026",
+};
+
+const CAV_SELLING = {
+  label: "Consumer Affairs Victoria: Selling property with or without an agent",
+  href: "https://www.consumer.vic.gov.au/housing/buying-and-selling-property/selling-property/selling-property-with-or-without-an-agent",
+  updated: "5 May 2021",
+  read: "11 October 2026",
+};
+
+// People Also Ask on the "find", "compare" and "how to choose" SERPs, and the
+// AI-search questions in section 6 of the review. Answers name their source
+// and date; nothing ranks agents or promises a match.
+const FIND_AGENT_FAQS: { question: string; answer: string }[] = [
+  {
+    question: "What is the best way to find a real estate agent?",
+    answer:
+      "Shortlist three agents with recent sales in your own suburb, not just the region, and ask each the same questions: the comparable sales behind their price, their commission and marketing costs in writing including GST, the method of sale they recommend and how they will report to you. Choose on the evidence, not the highest price. Every suburb page on this site links to a page on its agents with the state's fee range and these questions.",
+  },
+  {
+    question: "How do I find the best estate agent in my area?",
+    answer: `Ask two or three agents who sell in your suburb for their estimated selling price and the comparable sales behind it, then compare evidence, fee and marketing. In NSW the agency agreement must state that estimate, and a range cannot have a top more than 10% above its bottom (${cite(NSW_AGENCY_AGREEMENTS, "NSW Government, Agency agreements")}). In Victoria the estimate must be reasonable and based on comparable sales (${cite(CAV_PROPERTY_PRICES, "Consumer Affairs Victoria")}).`,
+  },
+  {
+    question: "Who is the most successful real estate agent in Australia?",
+    answer: `No official body ranks agents. The best-known list is Real Estate Business's Top 100 Agents: the 2026 edition (published ${REB_TOP_100_2026.published}) ranks agents on their 2025 results, mainly the value of settled residential sales, the number sold and the average price. Its 100 agents sold 12,154 properties worth $28.4 billion in 2025, and PPD Real Estate's Alexander Phillips ranked first for the 11th year. A national ranking says little about your sale: ask agents for their recent sales in your own suburb.`,
+  },
+  {
+    question: "Which estate agent has the lowest fees?",
+    answer: `No agency is cheapest everywhere: commission is agreed with each agent and can be negotiated. Our typical ranges run from ${Math.min(...COMMISSION_STATES.map((s) => STATE_RATES[s].low))}% to ${Math.max(...COMMISSION_STATES.map((s) => STATE_RATES[s].high))}% of the sale price depending on the state (table above). Compare quotes all-in, including GST and the marketing budget, and on what each agent will do for the fee.`,
+  },
+  {
+    question: "Do all estate agents work on no sale, no fee?",
+    answer: `No. When commission is earned depends on the agreement you sign. In NSW the agreement must carry a warning if commission is payable even when a sale is not completed (${cite(NSW_AGENCY_AGREEMENTS, "NSW Government, Agency agreements")}); in Queensland the appointment must say whether commission may still apply if the sale does not go through (${cite(QLD_COMMISSION, "Queensland Government")}). Marketing costs are set out separately in the agreement, so read both clauses before you sign.`,
+  },
+  {
+    question: "How can I avoid paying estate agent fees?",
+    answer: `You can sell without an agent: Consumer Affairs Victoria notes that most sales go through an agent but you can choose to sell your property without one (Selling property with or without an agent, updated ${CAV_SELLING.updated}). You then run the marketing, inspections and negotiation yourself and still pay for the contract and conveyancing. With an agent, the commission and other outgoings are negotiable, and in Victoria the agent must tell you so.`,
+  },
+  {
+    question: "Does it cost anything to ask Your Property Guide for an introduction?",
+    answer:
+      "No. The introduction is free for buyers and sellers and carries no obligation. Your details go to one agent or specialist only, who pays us a fee for the introduction. Where we do not yet have one who covers your area, we tell you rather than pass your details on.",
+  },
+];
+
+const SERVICE_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": `${SITE_URL}/find-an-expert#service`,
+  name: "Real estate agent introduction",
+  serviceType: "Real estate agent introduction",
   description:
-    "Ask for one introduction to an agent, broker or other property specialist for your situation, where we have one in your area. Free for buyers and sellers, no commitment.",
+    "A free introduction to one real estate agent, buyer's agent, mortgage broker or other property specialist who covers the enquirer's area, where Your Property Guide has one. The specialist pays a fee for the introduction.",
+  url: `${SITE_URL}/find-an-expert`,
+  provider: { "@type": "Organization", "@id": `${SITE_URL}#organization`, name: SITE_NAME, url: SITE_URL },
+  areaServed: { "@type": "Country", name: "Australia" },
+  offers: { "@type": "Offer", price: "0", priceCurrency: "AUD", description: "Free for buyers and sellers." },
 };
 
 // Editorial hub explaining how the match flow works. The actual lead engine
@@ -112,6 +189,8 @@ export default function FindAnExpertPage() {
   return (
     <>
       <BreadcrumbJsonLd items={[{ name: "Find an expert", url: "/find-an-expert" }]} />
+      <JsonLd data={SERVICE_JSON_LD} />
+      <FAQPageJsonLd faqs={FIND_AGENT_FAQS} />
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
@@ -279,6 +358,113 @@ export default function FindAnExpertPage() {
             >
               Get connected <ArrowRight className="w-4 h-4" />
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Finding an agent yourself (section 3.2 of the 10 Oct 2026 review):
+          the steps, the criteria, the fees by state and the questions. */}
+      <section className="py-16 sm:py-20 border-t border-line">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 space-y-14">
+          <div>
+            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
+              How to find a real estate agent to sell your house
+            </h2>
+            <ol className="space-y-3 font-sans text-base text-ink-muted leading-relaxed list-decimal pl-5">
+              <li>List the agents with recent sales in your suburb: sold listings on the portals and the boards in your street show who is selling there now. Your <Link href="/suburbs" className="text-ink underline decoration-line-strong underline-offset-2 hover:text-primary">suburb&rsquo;s page</Link> links to a page on its agents, with the state&rsquo;s fee range.</li>
+              <li>Ask three of them for an appraisal, each with the comparable sales behind the figure. It is free and commits you to nothing.</li>
+              <li>Get each agent&rsquo;s commission, marketing budget and method of sale in writing, with GST shown.</li>
+              <li>Compare the evidence, not the highest number, and read the agency agreement before you sign: how long it runs, when commission is earned and what you pay if it does not sell.</li>
+            </ol>
+          </div>
+
+          <div>
+            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
+              How to find a good agent in your area
+            </h2>
+            <p className="font-sans text-base text-ink-muted leading-relaxed mb-5">
+              Five things separate a good agent for your sale from a good pitch. Ask every agent on your list the same questions, in the same order.
+            </p>
+            <ol className="grid md:grid-cols-2 gap-4">
+              {CHOOSING_POINTS.map((p, i) => (
+                <li key={p.point} className="rounded-2xl border border-line bg-surface-raised p-5 flex gap-4">
+                  <span className="font-display text-2xl text-primary leading-none tabular-nums">{i + 1}</span>
+                  <div>
+                    <p className="font-sans font-medium text-ink">{p.point}</p>
+                    <p className="font-sans text-sm text-ink-muted mt-1 leading-relaxed">{p.detail}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <p className="mt-5 font-sans text-sm">
+              <Link href="/guides/questions-to-ask-a-real-estate-agent" className="text-ink underline decoration-line-strong underline-offset-2 hover:text-primary">Questions to ask a real estate agent</Link>
+              <span className="text-ink-subtle"> · </span>
+              <Link href="/guides/how-to-choose-a-selling-agent" className="text-ink underline decoration-line-strong underline-offset-2 hover:text-primary">How to choose a real estate agent</Link>
+            </p>
+          </div>
+
+          <div>
+            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
+              What agents charge, by state
+            </h2>
+            <div className="overflow-x-auto rounded-2xl border border-line">
+              <table className="w-full min-w-[480px] font-sans text-sm text-left border-collapse">
+                <thead className="bg-surface-warm">
+                  <tr>
+                    <th scope="col" className="px-4 py-3 font-medium text-ink">State</th>
+                    <th scope="col" className="px-4 py-3 font-medium text-ink">Typical commission</th>
+                    <th scope="col" className="px-4 py-3 font-medium text-ink">Common rate</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-line">
+                  {COMMISSION_STATES.map((st) => (
+                    <tr key={st}>
+                      <th scope="row" className="px-4 py-3 font-medium text-ink">
+                        <Link href={`/guides/real-estate-commission-${st.toLowerCase()}`} className="underline decoration-line-strong underline-offset-2 hover:text-primary">{st}</Link>
+                      </th>
+                      <td className="px-4 py-3 text-ink-muted tabular-nums">{STATE_RATES[st].low}% to {STATE_RATES[st].high}%</td>
+                      <td className="px-4 py-3 text-ink-muted tabular-nums">{STATE_RATES[st].typical}%</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-4 font-sans text-xs text-ink-subtle leading-relaxed">
+              Before GST and marketing. Your Property Guide&rsquo;s typical ranges as at September 2026; each state&rsquo;s commission guide (linked) explains its range. Commission is agreed with the agent:{" "}
+              {(Object.entries(COMMISSION_RULE_SOURCES) as [StateCode, NonNullable<(typeof COMMISSION_RULE_SOURCES)[StateCode]>][]).map(([st, src], i, all) => (
+                <span key={st}>
+                  <a href={src.href} target="_blank" rel="noopener" className="underline underline-offset-2 hover:text-ink">{STATE_NAMES[st]}</a> ({src.asAt}): {src.says}{i < all.length - 1 ? "; " : "."}
+                </span>
+              ))}
+            </p>
+          </div>
+
+          <div>
+            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
+              Finding an agent: common questions
+            </h2>
+            <dl className="divide-y divide-line border-y border-line">
+              {FIND_AGENT_FAQS.map((f) => (
+                <div key={f.question} className="py-5">
+                  <dt className="font-display text-lg text-ink leading-snug mb-2">{f.question}</dt>
+                  <dd className="font-sans text-base text-ink-muted leading-relaxed">{f.answer}</dd>
+                </div>
+              ))}
+            </dl>
+            <h3 className="mt-10 font-display text-lg text-ink mb-3">Sources</h3>
+            <ul className="space-y-1.5 font-sans text-xs text-ink-subtle">
+              {[
+                { label: NSW_AGENCY_AGREEMENTS.label, href: NSW_AGENCY_AGREEMENTS.href, note: `updated ${NSW_AGENCY_AGREEMENTS.updated}, read ${NSW_AGENCY_AGREEMENTS.read}` },
+                { label: CAV_PROPERTY_PRICES.label, href: CAV_PROPERTY_PRICES.href, note: `updated ${CAV_PROPERTY_PRICES.updated}, read ${CAV_PROPERTY_PRICES.read}` },
+                { label: CAV_SELLING.label, href: CAV_SELLING.href, note: `updated ${CAV_SELLING.updated}, read ${CAV_SELLING.read}` },
+                { label: QLD_COMMISSION.label, href: QLD_COMMISSION.href, note: `updated ${QLD_COMMISSION.updated}, read ${QLD_COMMISSION.read}` },
+                { label: REB_TOP_100_2026.label, href: REB_TOP_100_2026.href, note: `published ${REB_TOP_100_2026.published}, read ${REB_TOP_100_2026.read}` },
+              ].map((src) => (
+                <li key={src.href}>
+                  <a href={src.href} target="_blank" rel="noopener" className="underline underline-offset-2 hover:text-ink">{src.label}</a>, {src.note}.
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
