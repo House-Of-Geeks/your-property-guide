@@ -1,6 +1,7 @@
 import type { Property, Agent, Agency, BlogPost, Suburb, HouseAndLandPackage } from "@/types";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION_LONG, SITE_KNOWS_ABOUT } from "@/lib/constants";
 import { resolveBlogCoverPath } from "@/lib/utils/blog-cover";
+import { authorAboutHref } from "@/lib/authors";
 
 function JsonLdScript({ data }: { data: Record<string, unknown> }) {
   return (
@@ -320,7 +321,7 @@ export function ArticleJsonLd({ post }: { post: BlogPost }) {
         author: {
           "@type": "Person",
           name: post.author.name,
-          url: `${SITE_URL}/about`,
+          url: `${SITE_URL}${authorAboutHref(post.author.name)}`,
         },
         publisher: {
           "@type": "Organization",
@@ -645,7 +646,7 @@ export function GuideArticleJsonLd({
         "@type": "Person" as const,
         name: author.name,
         ...(author.role && { jobTitle: author.role }),
-        url: `${SITE_URL}/about`,
+        url: `${SITE_URL}${authorAboutHref(author.name)}`,
       }
     : {
         "@type": "Organization" as const,

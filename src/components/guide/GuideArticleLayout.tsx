@@ -11,6 +11,7 @@ import { Faq, type FaqItem } from "./Faq";
 import { RelatedGuides, type RelatedGuide } from "./RelatedGuides";
 import { AuthorBylineCard } from "./AuthorBylineCard";
 import { PERSONA_BY_ID, type PersonaId } from "@/lib/constants/journey";
+import { authorAboutHref } from "@/lib/authors";
 
 export interface GuideFrontmatter {
   title: string;          // SERP title (metadata); also the H1 unless h1 is set
@@ -160,7 +161,10 @@ export function GuideArticleLayout({
           <div className="pt-6 border-t border-line flex flex-wrap items-center gap-x-6 gap-y-2 font-sans text-sm text-ink-muted">
             <span className="inline-flex items-center gap-2">
               <User className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
-              By <span className="text-ink font-medium">{frontmatter.author.name}</span>
+              By{" "}
+              <Link href={authorAboutHref(frontmatter.author.name)} className="text-ink font-medium hover:text-primary">
+                {frontmatter.author.name}
+              </Link>
               {frontmatter.author.role && (
                 <span className="text-ink-subtle">, {frontmatter.author.role}</span>
               )}
@@ -168,7 +172,10 @@ export function GuideArticleLayout({
             {frontmatter.reviewedBy && (
               <span className="inline-flex items-center gap-2">
                 <span className="text-ink-subtle">·</span>
-                Reviewed by <span className="text-ink font-medium">{frontmatter.reviewedBy.name}</span>
+                Reviewed by{" "}
+                <Link href={authorAboutHref(frontmatter.reviewedBy.name)} className="text-ink font-medium hover:text-primary">
+                  {frontmatter.reviewedBy.name}
+                </Link>
                 {frontmatter.reviewedBy.role && (
                   <span className="text-ink-subtle">, {frontmatter.reviewedBy.role}</span>
                 )}
