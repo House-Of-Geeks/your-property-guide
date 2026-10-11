@@ -103,3 +103,22 @@ describe("/rba-cash-rate", () => {
     expect(DATA_UPDATES.some((u) => u.href === "/rba-cash-rate" && u.title.includes(`${latestDecision().rate.toFixed(2)}%`))).toBe(true);
   });
 });
+
+describe("/guides/fixed-vs-variable-rate-guide", () => {
+  const src = readFileSync(join(__dirname, "../../src/app/(marketing)/guides/fixed-vs-variable-rate-guide/page.tsx"), "utf8");
+
+  it("takes its rate context from the data file, not April 2026 copy", () => {
+    expect(src).not.toContain("begun reducing the cash rate");
+    expect(src).not.toContain("As of April 2026");
+    expect(src).not.toContain("monthly cash rate decision");
+    expect(src).toContain('from "@/lib/data/rba-cash-rate"');
+    expect(src).toContain('updatedAt: "2026-10-11"');
+  });
+
+  it("would print four rises in 2026, from 3.60% to 4.60%", () => {
+    const rises = CASH_RATE_DECISIONS.filter((d) => d.announced.startsWith("2026-") && d.change > 0);
+    expect(rises).toHaveLength(4);
+    expect(CASH_RATE_DECISIONS.find((d) => d.announced < "2026-01-01")!.rate).toBe(3.6);
+    expect(CASH_RATE_DECISIONS.filter((d) => d.announced.startsWith("2025-") && d.change < 0)).toHaveLength(3);
+  });
+});
