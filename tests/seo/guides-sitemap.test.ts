@@ -66,10 +66,14 @@ describe("guides sitemap", () => {
     }
   });
 
-  it("the entries do not share one timestamp (the build-time stamp is gone)", () => {
+  it("the entries do not all share one timestamp (the build-time stamp is gone)", () => {
+    // Not "under half": the 10 Oct 2026 commercial-intent fixes re-dated 84
+    // of the guides on one day, legitimately. The check that each lastmod is
+    // the guide's own date is the test above; this one only catches a single
+    // stamp applied to every entry.
     const counts = new Map<string, number>();
     for (const e of entries) counts.set(String(e.lastModified), (counts.get(String(e.lastModified)) ?? 0) + 1);
-    expect(Math.max(...counts.values())).toBeLessThan(entries.length / 2);
+    expect(Math.max(...counts.values())).toBeLessThan(entries.length);
   });
 
   it("a guide with no recorded date gets no lastmod rather than today's", () => {

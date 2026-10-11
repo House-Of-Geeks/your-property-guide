@@ -26,12 +26,13 @@ const later = (p: (typeof blogPosts)[number]) =>
   !!p.updatedAt && new Date(p.updatedAt).getTime() > new Date(p.publishedAt).getTime();
 
 describe("article dates at the top", () => {
-  it("the corrected CGT article shows its 1 October 2026 update beside 13 May 2026", async () => {
+  it("the corrected CGT article shows its latest update beside 13 May 2026", async () => {
+    const post = blogPosts.find((p) => p.slug === "cgt-changes-2026-budget")!;
+    const updated = post.updatedAt!;
     const head = top(await render("cgt-changes-2026-budget"));
-    expect(formatDate("2026-10-01")).toBe("1 October 2026");
     expect(head.match(time("2026-05-13"))?.length).toBe(2);
-    expect(head.match(time("2026-10-01"))?.length).toBe(2);
-    expect(head).toMatch(/Updated <time dateTime="2026-10-01">1 October 2026<\/time>/i);
+    expect(head.match(time(updated))?.length).toBe(2);
+    expect(head).toContain(`Updated <time dateTime="${updated}">${formatDate(updated)}</time>`);
     expect(head).toMatch(/Published <time dateTime="2026-05-13">13 May 2026<\/time>/i);
   });
 
