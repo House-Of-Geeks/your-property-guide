@@ -54,13 +54,18 @@ const FRONTMATTER: GuideFrontmatter = {
   persona: "first-home",
 };
 
+// The <title> is shorter than the H1 (FRONTMATTER.title), which ran to 73
+// characters before the site suffix (commercial-intent review 10 Oct 2026,
+// buying 3.8).
+const SEO_TITLE = "First Home Super Saver Scheme 2026: Limits, Tax, How to Use";
+
 export const metadata: Metadata = {
-  title: FRONTMATTER.title,
+  title: SEO_TITLE,
   description: FRONTMATTER.description,
   alternates: { canonical: `${SITE_URL}/guides/${FRONTMATTER.slug}` },
   openGraph: {
     url: `${SITE_URL}/guides/${FRONTMATTER.slug}`,
-    title: FRONTMATTER.title,
+    title: SEO_TITLE,
     description: FRONTMATTER.description,
     type: "article",
     publishedTime: FRONTMATTER.publishedAt,
