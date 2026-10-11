@@ -132,3 +132,11 @@ describe("national fees guide (review 10 Oct 2026, selling P1, 0.2, 0.3, 0.6a, 0
     expect(/^    "([^"]+)",$/m.exec(fees.slice(fees.indexOf("  description:")))![1].length).toBeLessThanOrEqual(160);
   });
 });
+
+describe("negotiation guide (review 10 Oct 2026, selling 0.3 and 0.8)", () => {
+  it("shows the sourced state table and makes no unsourced rate claims", () => {
+    const src = readFileSync("src/app/(marketing)/guides/how-to-negotiate-real-estate-agent-commission/page.tsx", "utf8");
+    expect(src).toContain("<NationalCommissionTable price={800_000} />");
+    expect(src).not.toMatch(/\$2 million|below 1\.5%|1\.5 to 3\.5%|last to cap|last legislated|<td>1\.8% to 2\.5%<\/td>/);
+  });
+});
