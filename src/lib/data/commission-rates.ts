@@ -464,3 +464,26 @@ export function workedExamples(state: StateCode, prices: number[] = [600_000, 80
     typicalWithGst: commissionWithGst(price, r.typical),
   }));
 }
+
+/** Short state names for lists ("NSW", "Victoria", "the ACT"). */
+export const SHORT_NAMES: Record<StateCode, string> = {
+  NSW: "NSW", VIC: "Victoria", QLD: "Queensland", SA: "South Australia", WA: "WA", TAS: "Tasmania", ACT: "the ACT", NT: "the NT",
+};
+
+/** "a, b and c" */
+export const listJoin = (items: string[]) =>
+  items.length <= 1 ? items.join("") : `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
+
+/**
+ * Where a quoted rate sits against each state's published average: the
+ * answer to "Is 2% a good commission?", from the table rather than typed.
+ */
+export function rateAgainstAverages(rate: number): string {
+  const below = STATE_ORDER.filter((s) => STATE_COMMISSION[s].stateAverage < rate);
+  const above = STATE_ORDER.filter((s) => STATE_COMMISSION[s].stateAverage > rate);
+  const fmt = (ss: StateCode[]) => listJoin(ss.map((s) => `${SHORT_NAMES[s]} (${pct(STATE_COMMISSION[s].stateAverage)})`));
+  const parts: string[] = [];
+  if (below.length) parts.push(`above OpenAgent's state averages for ${fmt(below)}`);
+  if (above.length) parts.push(`below them in ${fmt(above)}`);
+  return `${pct(rate)} is ${parts.join(", and ")} (September 2026).`;
+}
