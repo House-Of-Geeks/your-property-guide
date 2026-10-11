@@ -340,6 +340,8 @@ export const getIndexableCityEditions = unstable_cache(
     for (const category of CITY_EDITION_CATEGORIES) {
       for (const city of CAPITAL_CITIES) {
         if (!isRanked(category, city.state)) continue;
+        // Never indexable while the walk score ties at 100: no query needed.
+        if (!isCityEditionIndexable(category, city.state, CITY_EDITION_POOL, { pool: Number.MAX_SAFE_INTEGER, suburbs: 1 })) continue;
         // The page's own edition query, and the page's own predicate on it.
         const edition = await fetchCityEdition(category, city);
         if (isCityEditionIndexable(category, city.state, edition.suburbs.length, editionCoverage(edition))) out.push({ category, citySlug: city.slug });
