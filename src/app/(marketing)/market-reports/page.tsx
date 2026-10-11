@@ -8,7 +8,7 @@ import { SITE_NAME, SITE_URL } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Australian Property Market Reports",
   description:
-    "State-by-state Australian property market reports with median prices, growth trends, and suburb rankings. Updated quarterly.",
+    "State-by-state Australian property market reports: the suburb medians we publish, ranked lists where enough suburbs have one, and the source of each figure.",
   alternates: { canonical: `${SITE_URL}/market-reports` },
   openGraph: {
     url: `${SITE_URL}/market-reports`,
@@ -97,14 +97,15 @@ export default function MarketReportsHubPage() {
           </div>
 
           <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
-            Updated quarterly
+            Eight states and territories
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
             Property markets, <span className="italic text-primary">state by state</span>.
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            Median prices, annual growth, top performing suburbs, and affordability rankings,
-            sourced from state revenue offices and sales data.
+            The suburb medians each state&rsquo;s suburb pages publish, the 12-month change where a
+            feed measures one, and the most affordable and highest-priced suburbs where enough
+            suburbs have a median.
           </p>
         </div>
       </section>
@@ -132,7 +133,9 @@ export default function MarketReportsHubPage() {
         </div>
 
         <p className="mt-10 text-xs font-sans text-ink-subtle">
-          Market data sourced from state revenue offices and property sales data. Updated quarterly.
+          Medians come from each suburb&rsquo;s own page: NSW Valuer General sales, Land Victoria and SA
+          Government quarterly medians, and ABS statistical-area medians in the other states and
+          territories. Periods differ by source.
         </p>
       </div>
     </>

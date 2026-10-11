@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY } from "@/lib/non-localities";
-import { publishedGrowth, publishesMedians, publishesUnitMedian } from "@/lib/published-medians";
+import { PUBLISHED_HOUSE_MEDIAN, notInvertedMedians, publishedGrowth, publishesMedians, publishesUnitMedian } from "@/lib/published-medians";
 import {
   COVERAGE_MIN_SUBURBS,
   REGION_COVERAGE_MIN_SUBURBS,
@@ -392,4 +392,19 @@ async function withSalesPeriod(market: CityMarket, rows: CityMarketRow[]): Promi
   const feed = await db.dataSource.findUnique({ where: { id: source }, select: { dataAsOf: true } });
   const period = describeSalesProvenance({ source, periodEnd: feed?.dataAsOf ?? null, updatedAt: market.salesAsOf, salesCount: null, suburbName: "" })?.period ?? null;
   return { ...market, salesPeriod: period };
+}
+
+/**
+ * A state's coverage: published medians among, and all, its suburbs of 1,000
+ * or more residents. A statewide average of 61 ABS area medians stood for
+ * Queensland on 10 Oct 2026; below the floor (src/lib/median-coverage.ts)
+ * the state pages print no average and no ranked list (review of 10 Oct
+ * 2026, suburbs-market 0.3 and 3.10).
+ */
+export async function getStateCoverage(state: string): Promise<Coverage> {
+  const base = { state, ...LOCALITIES_ONLY, population: { gte: LIST_MIN_POPULATION } };
+  // One after the other: the runtime pool holds a single connection.
+  const pool = await db.suburb.count({ where: { ...base, ...PUBLISHED_HOUSE_MEDIAN, ...notInvertedMedians(db.suburb.fields.medianHousePrice) } });
+  const suburbs = await db.suburb.count({ where: base });
+  return { pool, suburbs };
 }

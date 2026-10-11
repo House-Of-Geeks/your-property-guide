@@ -39,3 +39,32 @@ describe("the national best-suburbs hub (review 3.8)", () => {
     expect(hub).not.toMatch(/will (boom|grow|rise)/);
   });
 });
+
+describe("the state market reports (review 0.3 and 3.10)", () => {
+  const page = fs.readFileSync("src/app/(marketing)/market-reports/[state]/page.tsx", "utf8");
+  it("print a statewide average and ranked lists only above the coverage floor", () => {
+    expect(page).toContain("const covered = meetsCoverageFloor(coverage, COVERAGE_MIN_SUBURBS);");
+    expect(page).toContain("const housePrice = covered && data.avgMedianHousePrice ? formatPrice(data.avgMedianHousePrice) : null;");
+    expect(page).toContain("{covered && (");
+    expect(page).not.toMatch(/label="Avg median house"|"N\/A"/);
+  });
+  it("link the capital's house prices and its indexable city lists", () => {
+    expect(page).toContain("cityEditionLinks(await indexableCityEditionsForLinks(), { state: upperState })");
+    expect(page).toContain("house prices by suburb");
+  });
+});
+
+describe("the state pages and the report hub (review 0.3 and 3.10)", () => {
+  it("print a statewide average only above the coverage floor", () => {
+    const state = fs.readFileSync("src/app/(marketing)/states/[state]/page.tsx", "utf8");
+    expect(state).toContain("const covered = meetsCoverageFloor(await getStateCoverage(upperState), COVERAGE_MIN_SUBURBS);");
+    expect(state).not.toMatch(/Free, ungated, sourced and dated|Avg median house/);
+    const hub = fs.readFileSync("src/app/(marketing)/states/page.tsx", "utf8");
+    expect(hub).toContain("covered ? s : { ...s, avgMedianHousePrice: null, avgAnnualGrowth: null }");
+  });
+  it("name the agencies the medians come from, not the revenue offices", () => {
+    const reports = fs.readFileSync("src/app/(marketing)/market-reports/page.tsx", "utf8");
+    expect(reports).not.toMatch(/state revenue offices|Updated quarterly/);
+    expect(reports).toContain("NSW Valuer General sales, Land Victoria and SA");
+  });
+});

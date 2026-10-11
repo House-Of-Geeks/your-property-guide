@@ -5,6 +5,8 @@ import { MapPin, Home, TrendingUp } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { getAllStatesWithStats } from "@/lib/services/suburb-rankings-service";
+import { getStateCoverage } from "@/lib/services/city-market-service";
+import { COVERAGE_MIN_SUBURBS, meetsCoverageFloor } from "@/lib/median-coverage";
 import { formatPrice } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
@@ -31,10 +33,18 @@ export default async function StatesPage() {
   // Skip the DB at build (Railway proxy drops build-time connections); ISR
   // (revalidate above) fills real data on first request. Empty renders cleanly
   // — the cards map below produces nothing for an empty list.
-  const states =
+  const listed =
     process.env.NEXT_PHASE === "phase-production-build"
       ? ([] as Awaited<ReturnType<typeof getAllStatesWithStats>>)
       : await getAllStatesWithStats();
+  // A statewide average only where enough of the state publishes a median
+  // (src/lib/median-coverage.ts; review of 10 Oct 2026, 0.3). One state
+  // after another: the runtime pool holds a single connection.
+  const states: typeof listed = [];
+  for (const s of listed) {
+    const covered = meetsCoverageFloor(await getStateCoverage(s.state), COVERAGE_MIN_SUBURBS);
+    states.push(covered ? s : { ...s, avgMedianHousePrice: null, avgAnnualGrowth: null });
+  }
 
   return (
     <>
@@ -103,11 +113,10 @@ export default async function StatesPage() {
                   <div className="flex items-center gap-2 text-sm font-sans text-ink-muted">
                     <Home className="w-4 h-4 text-ink-subtle shrink-0" />
                     <span>
-                      Avg{" "}
                       <strong className="text-ink font-display text-base">
                         {formatPrice(state.avgMedianHousePrice)}
                       </strong>{" "}
-                      median
+                      average of suburb medians
                     </span>
                   </div>
                 )}
