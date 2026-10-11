@@ -314,7 +314,7 @@ export default function BestTimeToSellAHouseAustraliaPage() {
         <Link href="/guides/how-to-sell-a-house-australia">how to sell a house guide</Link>{" "}
         walks the full process from prep to settlement. The guide to{" "}
         <Link href="/guides/how-much-is-my-house-worth-australia">what your house is worth</Link>{" "}
-        helps you land on a price you can trust. And if you are weighing both
+        helps you land on a realistic price range. And if you are weighing both
         sides of a move, the{" "}
         <Link href="/guides/best-time-to-buy-property-australia">buyer&rsquo;s view of timing</Link>{" "}
         shows the same market from the other side of the table.

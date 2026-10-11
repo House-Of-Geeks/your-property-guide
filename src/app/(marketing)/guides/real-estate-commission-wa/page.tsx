@@ -107,7 +107,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The Cost of Selling a House",          href: "/guides/cost-of-selling-a-house-australia",  description: "Every selling cost beyond commission." },
   { title: "Real Estate Agent Fees (National)",    href: "/guides/real-estate-agent-fees-australia",   description: "How fees and commission work across Australia." },
   { title: "How to Choose a Selling Agent",        href: "/guides/how-to-choose-a-selling-agent",      description: "Pick the right agent, then negotiate the fee." },
-  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get an accurate value before you list." },
+  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get a realistic price range before you list." },
 ];
 
 export default function RealEstateCommissionWaPage() {
@@ -330,11 +330,10 @@ export default function RealEstateCommissionWaPage() {
       </p>
       <ol>
         <li>
-          <strong>Get a real appraisal.</strong> Before you talk fees, get an
-          accurate read on what your home is worth. The{" "}
+          <strong>Get a real appraisal.</strong> Before you talk fees, get a
+          realistic price range for your home. The{" "}
           <Link href="/guides/how-much-is-my-house-worth-australia">how much is my house worth guide</Link>{" "}
-          covers the three ways to value a home and how to land on a figure you
-          can trust.
+          covers the three ways to value a home and how to land on a realistic range.
         </li>
         <li>
           <strong>Choose the agent on merit.</strong> Our{" "}

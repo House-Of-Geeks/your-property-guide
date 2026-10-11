@@ -80,3 +80,13 @@ describe("commission copy (review 10 Oct 2026, selling 0.4)", () => {
     expect(fees).toContain("covers the $1,600 gap between a 1.8% and a 2% quote on $800,000 more than twelve times");
   });
 });
+
+describe("valuation wording (review 10 Oct 2026, selling 0.9)", () => {
+  it("promises no 'accurate value': the guides offer a realistic price range", () => {
+    for (const s of STATES) {
+      const src = readFileSync(`src/app/(marketing)/guides/real-estate-commission-${s.toLowerCase()}/page.tsx`, "utf8");
+      expect(src).not.toMatch(/accurate (value|read)|you can trust/i);
+      expect(src).toContain("realistic price range");
+    }
+  });
+});
