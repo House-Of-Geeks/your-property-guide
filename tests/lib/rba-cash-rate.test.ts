@@ -122,3 +122,22 @@ describe("/guides/fixed-vs-variable-rate-guide", () => {
     expect(CASH_RATE_DECISIONS.filter((d) => d.announced.startsWith("2025-") && d.change < 0)).toHaveLength(3);
   });
 });
+
+describe("/rba-cash-rate: section 3 of the 10 Oct 2026 review", () => {
+  const src = readFileSync(join(__dirname, "../../src/app/(marketing)/rba-cash-rate/page.tsx"), "utf8");
+
+  it("leads with the current rate and the next decision", () => {
+    expect(src).toContain('const META_TITLE = "RBA Cash Rate: Current Rate, Next Decision and History";');
+    expect(src).toContain("RBA cash rate: the current rate, the next decision and every change since 2020");
+    expect(src).not.toContain("$90/month");
+    expect(src).not.toContain("around $1,500/month");
+  });
+
+  it("answers its FAQs with FAQPage and marks up the history as a Dataset", () => {
+    expect(src).toContain("<Faq items={rbaFaqs()} />");
+    expect(src).toContain('"@type": "Dataset"');
+    for (const q of ["What time is the RBA decision announced?", "Will there be another interest rate rise in Australia in 2026?", "Is 5.74% a good mortgage rate?"]) {
+      expect(src).toContain(q);
+    }
+  });
+});

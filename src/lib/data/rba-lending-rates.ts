@@ -58,6 +58,17 @@ export const AVERAGE_NEW_INVESTOR_VARIABLE_RATE: F6Rate = {
 };
 
 /**
+ * The average rate on outstanding owner-occupier variable loans (FLRHOOVA)
+ * before and after the 2022 to 2023 rises, for /rba-cash-rate's "what the
+ * last cycle cost" line (F6, read 10 Oct 2026).
+ */
+export const HIKING_CYCLE_F6 = {
+  series: "FLRHOOVA",
+  from: { rate: 2.9, period: "April 2022" },
+  to: { rate: 6.4, period: "December 2023" },
+} as const;
+
+/**
  * The refinancing calculator's example current rate: half a point above the
  * average new variable rate. An illustration, not a published figure: in
  * August 2026 the average outstanding variable rate (FLRHOOVA) equalled the
