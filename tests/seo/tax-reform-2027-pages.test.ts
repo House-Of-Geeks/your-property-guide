@@ -170,3 +170,14 @@ describe("/cgt-calculator: section 3 of the 10 Oct 2026 review", () => {
     for (const h of ['id="by-gain"', 'id="after-2027"', 'id="six-year-rule"', 'id="structures"', 'id="capital-losses"']) expect(src).toContain(h);
   });
 });
+
+describe("/negative-gearing-calculator: section 3 and 6 of the 10 Oct 2026 review", () => {
+  const src = read("negative-gearing-calculator/page.tsx");
+  it("answers the $100,000 tax and CGT questions from the tax table and the ATO", () => {
+    expect(src).toContain('question: "How much is $100,000 a year taxed in Australia?"');
+    expect(src).toContain("const TAX_ON_100K = incomeTax(100_000);");
+    expect(src).toContain('question: "How does negative gearing affect capital gains tax?"');
+    expect(src).toContain("110-38(8A)");
+    expect(src).toContain("<Sources");
+  });
+});

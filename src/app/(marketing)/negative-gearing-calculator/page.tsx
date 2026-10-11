@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { NegativeGearingCalculator } from "@/components/calculators/NegativeGearingCalculator";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
-import { Callout, type FaqItem, type RelatedGuide } from "@/components/guide";
+import { Callout, Sources, type FaqItem, type RelatedGuide } from "@/components/guide";
+import { ACT_SOURCE } from "@/lib/data/tax-reform-2027";
 import { SITE_URL } from "@/lib/constants";
+import { MEDICARE_LEVY_PCT, incomeTax } from "@/lib/utils/income-tax";
 import {
   BUDGET_SOURCE,
   TAX_RATES_2026_27,
@@ -20,7 +22,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   schemaName: "Negative Gearing Calculator",
   schemaDescription:
     "Calculate the net rental loss, tax saving at the ATO 2026–27 resident rates and weekly after-tax cost of an Australian investment property.",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-11",
   persona: "investing",
 };
 
@@ -48,7 +50,21 @@ const ex45 = exAt(45);
 const exDep = computeNegativeGearing({ ...EX_INPUT, depreciation: 8_000 });
 const exQuarantined = computeNegativeGearing({ ...EX_INPUT, timing: "established-after-cutoff" });
 
+const TAX_ON_100K = incomeTax(100_000);
+
 const FAQS: FaqItem[] = [
+  {
+    question: "How much is $100,000 a year taxed in Australia?",
+    answer:
+      `${fmt(TAX_ON_100K)} of income tax at the 2026–27 resident rates, plus the ${fmt((100_000 * MEDICARE_LEVY_PCT) / 100)} Medicare levy, before offsets (ATO, ${TAX_RATES_SOURCE.dated}). ` +
+      "Every dollar between $45,001 and $135,000 is taxed at 30%, which is also what a rental loss in that band saves you, before the Medicare levy.",
+  },
+  {
+    question: "How does negative gearing affect capital gains tax?",
+    answer:
+      "Interest, rates, insurance and repairs you deduct while you hold the property don't change the capital gain when you sell. Capital works (building) deductions do: they come off the cost base, so the gain is larger by the amount you claimed (ATO, Cost base adjustments for capital works, last updated 22 June 2026). " +
+      "From 1 July 2027, losses quarantined on an established home bought after 7:30pm AEST on 12 May 2026 can reduce capital gains on residential property, including the gain on that home when you sell, and an expense the quarantine stops you deducting does not join the cost base (Tax Reform No. 1 Act, sections 26-155 and 110-38(8A)).",
+  },
   {
     question: "How do I calculate negative gearing?",
     answer:
@@ -169,6 +185,19 @@ export default function NegativeGearingCalculatorPage() {
             <li>It doesn&rsquo;t track losses carried forward after 1 July 2027 or offset them against other rental properties you own.</li>
             <li>It is general information, not tax advice. A registered tax agent can confirm what you can claim.</li>
           </ul>
+
+          <Sources
+            items={[
+              { label: TAX_RATES_SOURCE.name, href: TAX_RATES_SOURCE.url, note: `${TAX_RATES_SOURCE.dated}, read ${TAX_RATES_SOURCE.readOn}` },
+              { label: BUDGET_SOURCE.name, href: BUDGET_SOURCE.url, note: `${BUDGET_SOURCE.dated}, read ${BUDGET_SOURCE.readOn}` },
+              ACT_SOURCE,
+              {
+                label: "ATO: Cost base adjustments for capital works",
+                href: "https://www.ato.gov.au/individuals-and-families/investments-and-assets/capital-gains-tax/calculating-your-cgt/cost-base-adjustments-for-capital-works",
+                note: "last updated 22 June 2026, read 11 October 2026",
+              },
+            ]}
+          />
         </>
       }
     />
