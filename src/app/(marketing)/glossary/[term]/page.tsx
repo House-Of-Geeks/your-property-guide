@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
+import { HeroTitle, PhotoHero } from "@/components/premium";
 import { BreadcrumbJsonLd, DefinedTermJsonLd } from "@/components/seo";
 import { GuideStartInline } from "@/components/guide/GuideStartInline";
 import { GuideNextStep } from "@/components/guide/GuideNextStep";
@@ -164,17 +164,16 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
         url={`/glossary/${entry.slug}`}
       />
 
-      <div className="mx-auto w-full max-w-[64rem] px-4 sm:px-6">
-        <div className="pt-2 sm:pt-4">
-          <Breadcrumbs
-            items={[
-              { label: "Glossary", href: "/glossary" },
-              { label: name },
-            ]}
-          />
-        </div>
-        <header className="max-w-3xl pt-4 sm:pt-8 pb-2">
-          <p className="mb-3 text-sm font-semibold text-ink-muted">
+      {/* A reference page: a plain charcoal hero (BRAND.md §11), with the
+          definition straight under it. */}
+      <PhotoHero
+        breadcrumbs={[
+          { label: "Glossary", href: "/glossary" },
+          { label: name },
+        ]}
+      >
+        <header>
+          <p className="mb-4 text-sm font-semibold text-ink-muted">
             <Link href="/glossary" className="hover:text-ink hover:underline underline-offset-4">Property glossary</Link>
             {kicker && (
               <>
@@ -183,16 +182,16 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
               </>
             )}
           </p>
-          <h1 className="font-display font-bold text-ink text-[2rem] leading-[1.08] tracking-[-0.03em] sm:text-5xl">
+          <HeroTitle>
             What is {name}?
-          </h1>
+          </HeroTitle>
         </header>
-      </div>
+      </PhotoHero>
 
       {/* Definition body + sidebar */}
       <article>
-        <div className="mx-auto w-full max-w-[64rem] px-4 sm:px-6 pt-6 pb-16">
-          <div className="lg:grid lg:grid-cols-[minmax(0,40rem)_16rem] lg:justify-between lg:gap-x-16">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 pb-16">
+          <div className="lg:grid lg:grid-cols-[minmax(0,40rem)_16rem] lg:gap-x-16 xl:gap-x-24">
             {/* Main body */}
             <div className="min-w-0">
               <div
