@@ -2,8 +2,14 @@
 // narrative built from it. Fix item 47: the rollup counts what each suburb's
 // own page publishes, so the rows below carry a feed that measures a
 // 12-month change (sales-nsw) where a change is expected.
+import fs from "node:fs";
 import { describe, expect, it } from "vitest";
-import { buildCityMarket, type CityMarketRow } from "@/lib/services/city-market-service";
+import {
+  buildCityMarket,
+  cityCardFigure,
+  summarizeCityMarket,
+  type CityMarketRow,
+} from "@/lib/services/city-market-service";
 import { buildCityNarrative } from "@/lib/city-narrative";
 import { CAPITAL_CITIES } from "@/lib/utils/metro";
 
@@ -97,5 +103,43 @@ describe("buildCityNarrative", () => {
   });
   it("returns nothing for a city with no priced suburbs", () => {
     expect(buildCityNarrative(perth, buildCityMarket([row({ statsSource: "seed" })]))).toEqual([]);
+  });
+});
+
+describe("the /property-market hub cards", () => {
+  // 13 Oct 2026: every card printed "—" while each city page printed its
+  // median. The hub was a static ISR page whose DB-free build render (no
+  // figures) was served for a day after every deploy.
+  it("print the city median and growth from the same rollup as the city page", () => {
+    const summary = summarizeCityMarket(buildCityMarket(rows));
+    expect(summary).toEqual({ pricedSuburbCount: 6, medianHousePrice: 800_000, medianAnnualGrowth: 6.5 });
+    expect(cityCardFigure(summary)).toEqual({ kind: "median", price: "$800K", growth: 6.5 });
+    // A summary survives unstable_cache's JSON round trip unchanged.
+    expect(JSON.parse(JSON.stringify(summary))).toEqual(summary);
+  });
+  it("say plainly that a city has no verified median, and never print a figure the suburb pages withhold", () => {
+    const withheld = buildCityMarket([
+      row({ slug: "seed", statsSource: "seed", medianHousePrice: 2_000_000 }),
+      row({ slug: "thin", salesCountHouse: 2, medianHousePrice: 3_000_000 }),
+    ]);
+    expect(withheld.suburbCount).toBe(2);
+    const figure = cityCardFigure(summarizeCityMarket(withheld));
+    expect(figure).toEqual({
+      kind: "none",
+      label: "No verified median yet",
+      note: "Too few verified sales to publish a city figure",
+    });
+    expect(JSON.stringify(figure)).not.toMatch(/\$|—/);
+    expect(cityCardFigure(summarizeCityMarket(buildCityMarket([]))).kind).toBe("none");
+  });
+  it("render on request from cached summaries, not from a build-time placeholder", () => {
+    const page = fs.readFileSync("src/app/(marketing)/property-market/page.tsx", "utf8");
+    expect(page).toContain('export const dynamic = "force-dynamic";');
+    expect(page).not.toMatch(/export const revalidate/);
+    expect(page).not.toContain("phase-production-build");
+    expect(page).toContain("cityCardFigure(summary)");
+    // The data cache outlives a deploy; the key moves with each one.
+    expect(page).toContain('["property-market-hub:v1", NOT_PLACES_VERSION, process.env.VERCEL_DEPLOYMENT_ID ?? "local"]');
+    expect(page).not.toMatch(/:\s*"—"/);
   });
 });

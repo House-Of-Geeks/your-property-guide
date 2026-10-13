@@ -5,15 +5,35 @@ import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
+import { unstable_cache } from "next/cache";
 import { SITE_URL } from "@/lib/constants";
-import { getCityMarket } from "@/lib/services/city-market-service";
+import { NOT_PLACES_VERSION } from "@/lib/non-localities";
+import {
+  cityCardFigure,
+  getCityMarketSummaries,
+  type CityMarketSummary,
+} from "@/lib/services/city-market-service";
 import { CAPITAL_CITIES } from "@/lib/utils/metro";
-import { formatPrice } from "@/lib/utils/format";
 
 // Hub for the eight capital-city market pages. Kept lean: its job is to
 // route users and internal equity into /property-market/{city}.
 
-export const revalidate = 86400;
+// The cards query the DB. As a static ISR page the hub served its build-time
+// render (the build is DB-free, so no figures) for up to a day after every
+// deploy: on 13 Oct 2026, after four deploys that day, all eight cards
+// showed a bare dash while every city page printed its median. Render on
+// request instead and cache the eight summaries, the pattern /regions moved
+// to for the same reason.
+export const dynamic = "force-dynamic";
+
+// The data cache outlives a deploy, so the deployment is part of the key:
+// the cards change with the code that computes the city pages, never a day
+// later.
+const getCachedSummaries = unstable_cache(
+  getCityMarketSummaries,
+  ["property-market-hub:v1", NOT_PLACES_VERSION, process.env.VERCEL_DEPLOYMENT_ID ?? "local"],
+  { revalidate: 86400, tags: ["city-markets"] },
+);
 
 export const metadata: Metadata = {
   title: "Australian Property Market 2026 — City House Prices & Growth",
@@ -32,19 +52,19 @@ export const metadata: Metadata = {
 };
 
 export default async function PropertyMarketHubPage() {
-  // Build must stay DB-free (see 460c601): this static route prerenders at
-  // `next build`, and an unguarded fetch here failed a deploy the moment
-  // the DB was busy. Empty renders cleanly ("—" cards); ISR (revalidate
-  // above) fills real data on first request.
-  const markets =
-    process.env.NEXT_PHASE === "phase-production-build"
-      ? CAPITAL_CITIES.map((city) => ({
-          city,
-          market: null as Awaited<ReturnType<typeof getCityMarket>> | null,
-        }))
-      : await Promise.all(
-          CAPITAL_CITIES.map(async (city) => ({ city, market: await getCityMarket(city) })),
-        );
+  // A DB failure on a cold cache leaves the cards without a figure for this
+  // one request (nothing is cached), rather than failing the page.
+  let summaries: Map<string, CityMarketSummary> | null = null;
+  try {
+    const rows = await getCachedSummaries();
+    summaries = new Map(rows.map((r) => [r.slug, r.summary]));
+  } catch (err) {
+    console.error("[property-market] city summaries unavailable", err);
+  }
+  const markets = CAPITAL_CITIES.map((city) => {
+    const summary = summaries?.get(city.slug);
+    return { city, figure: summary ? cityCardFigure(summary) : null };
+  });
 
   return (
     <>
@@ -74,7 +94,7 @@ export default async function PropertyMarketHubPage() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {markets.map(({ city, market }) => (
+          {markets.map(({ city, figure }) => (
             <Link
               key={city.slug}
               href={`/property-market/${city.slug}`}
@@ -86,21 +106,29 @@ export default async function PropertyMarketHubPage() {
               <h2 className="font-display text-2xl text-ink leading-tight group-hover:text-primary transition-colors">
                 {city.name}
               </h2>
-              <p className="font-display text-xl text-ink mt-4">
-                {market?.medianHousePrice ? formatPrice(market.medianHousePrice) : "—"}
-              </p>
-              <p className="text-xs font-sans text-ink-subtle mt-1">
-                median house price
-                {market != null && market.medianAnnualGrowth != null && (
-                  <>
-                    {" · "}
-                    <span className={market.medianAnnualGrowth >= 0 ? "text-emerald-700" : "text-red-700"}>
-                      {market.medianAnnualGrowth > 0 ? "+" : ""}
-                      {market.medianAnnualGrowth}% yr
-                    </span>
-                  </>
-                )}
-              </p>
+              {figure?.kind === "median" && (
+                <>
+                  <p className="font-display text-xl text-ink mt-4">{figure.price}</p>
+                  <p className="text-xs font-sans text-ink-subtle mt-1">
+                    median house price
+                    {figure.growth != null && (
+                      <>
+                        {" · "}
+                        <span className={figure.growth >= 0 ? "text-emerald-700" : "text-red-700"}>
+                          {figure.growth > 0 ? "+" : ""}
+                          {figure.growth}% yr
+                        </span>
+                      </>
+                    )}
+                  </p>
+                </>
+              )}
+              {figure?.kind === "none" && (
+                <>
+                  <p className="font-display text-lg text-ink mt-4">{figure.label}</p>
+                  <p className="text-xs font-sans text-ink-subtle mt-1">{figure.note}</p>
+                </>
+              )}
               <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-sans font-medium text-ink group-hover:text-primary transition-colors">
                 View market
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
