@@ -1,8 +1,10 @@
 // Mobile checks for the flagged phone field, AuPhoneInput (Oct 2026,
 // ported from Why Solar's rebate quiz). Stricter than ./phone on purpose:
-// these fields ask for a mobile someone will call, so landlines and dummy
-// numbers are turned away everywhere, and overseas numbers everywhere but
-// the listing enquiry forms (overseas buyers are real buyers). Client side
+// these fields ask for a number someone will call, so dummy numbers are
+// turned away everywhere, landlines everywhere but the appraisal forms
+// (older owners often give a home number; 13 Oct 2026), and overseas
+// numbers everywhere but the listing enquiry forms (overseas buyers are
+// real buyers). Client side
 // only, because it pulls in libphonenumber's metadata; the leads API keeps
 // the lenient normalizePhone and never bounces a lead.
 
@@ -19,11 +21,16 @@ import {
 export const AU_MOBILE_ERROR = "Please enter a valid Australian mobile number (e.g. 0491 570 156)";
 export const NON_AU_MOBILE_ERROR = "Sorry, we can only call Australian mobile numbers.";
 export const MOBILE_ERROR = "Please enter a valid mobile number (e.g. 0491 570 156)";
+// 07 5550 1234 is also in ACMA's fictional-use range.
+export const AU_PHONE_ERROR = "Please enter a valid Australian mobile or landline (e.g. 0491 570 156 or 07 5550 1234)";
+export const NON_AU_PHONE_ERROR = "Sorry, we can only call Australian numbers.";
 
 /** `overseas`: the listing enquiry forms, which also take a valid
- *  overseas number. Everywhere else it's an Australian mobile. */
+ *  overseas number. `landline`: the appraisal forms, which also take an
+ *  Australian landline. Everywhere else it's an Australian mobile. */
 export interface MobileRules {
   overseas?: boolean;
+  landline?: boolean;
 }
 
 /** The field's E.164 value ("+61412345678") is a real AU mobile (04 / 05). */
@@ -34,6 +41,17 @@ export function isValidAusMobile(phone: string | undefined): boolean {
     if (!parsed || parsed.country !== "AU") return false;
     const type = parsed.getType();
     return type === "MOBILE" || type === "FIXED_LINE_OR_MOBILE";
+  } catch {
+    return false;
+  }
+}
+
+/** The field's E.164 value is a real AU landline (02 / 03 / 07 / 08). */
+export function isValidAusLandline(phone: string | undefined): boolean {
+  if (!phone || !isValidPhoneNumber(phone)) return false;
+  try {
+    const parsed = parsePhoneNumber(phone);
+    return !!parsed && parsed.country === "AU" && parsed.getType() === "FIXED_LINE";
   } catch {
     return false;
   }
@@ -90,9 +108,15 @@ export function pastedAuPhone(text: string): string | null {
 }
 
 /** What to show under the field, or null when the number can be sent. */
-export function auMobileError(phone: string | undefined, { overseas = false }: MobileRules = {}): string | null {
-  if (isNonAusValidNumber(phone)) return overseas ? null : NON_AU_MOBILE_ERROR;
-  if (!isValidAusMobile(phone) || isLikelyTestNumber(phone!)) return overseas ? MOBILE_ERROR : AU_MOBILE_ERROR;
+export function auMobileError(
+  phone: string | undefined,
+  { overseas = false, landline = false }: MobileRules = {},
+): string | null {
+  if (isNonAusValidNumber(phone)) return overseas ? null : landline ? NON_AU_PHONE_ERROR : NON_AU_MOBILE_ERROR;
+  if (landline && isValidAusLandline(phone)) return null;
+  if (!isValidAusMobile(phone) || isLikelyTestNumber(phone!)) {
+    return overseas ? MOBILE_ERROR : landline ? AU_PHONE_ERROR : AU_MOBILE_ERROR;
+  }
   return null;
 }
 

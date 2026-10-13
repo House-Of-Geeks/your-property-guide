@@ -24,7 +24,7 @@ import { AuPhoneField } from "@/components/forms/AuPhoneInput";
 const appraisalSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   email: z.string().email("Valid email is required"),
-  phone: requiredMobileSchema("Mobile is required so we can arrange the appraisal"),
+  phone: requiredMobileSchema("A phone number is required so we can arrange the appraisal", { landline: true }),
   address: z.string().min(5, "Property address is required"),
   suburb: z.string().min(1, "Suburb is required"),
   propertyType: z.string().optional(),
@@ -152,11 +152,11 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
           render={({ field }) => (
             <AuPhoneField
               id="appraisal-phone"
-              label="Mobile"
+              label="Phone"
               value={field.value ?? ""}
               onChange={field.onChange}
               onBlur={field.onBlur}
-              placeholder="0491 570 156"
+              placeholder="Mobile or landline"
               error={errors.phone?.message}
             />
           )}

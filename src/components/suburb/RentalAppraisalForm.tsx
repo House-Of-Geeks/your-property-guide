@@ -62,7 +62,7 @@ export function RentalAppraisalForm({ suburbName, suburbSlug, state, postcode }:
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const mobileError = auMobileError(phone);
+    const mobileError = auMobileError(phone, { landline: true });
     if (mobileError) {
       setPhoneError(mobileError);
       return;
@@ -158,7 +158,7 @@ export function RentalAppraisalForm({ suburbName, suburbSlug, state, postcode }:
 
         <div>
           <label htmlFor="rental-appraisal-phone" className={labelClass}>
-            Mobile <span className="font-normal text-ink-subtle">so the property manager can arrange the appraisal</span>
+            Phone <span className="font-normal text-ink-subtle">mobile or landline, so we can arrange the appraisal</span>
           </label>
           <AuPhoneInput
             id="rental-appraisal-phone"
@@ -167,7 +167,7 @@ export function RentalAppraisalForm({ suburbName, suburbSlug, state, postcode }:
             required
             invalid={!!phoneError}
             aria-describedby={phoneError ? "rental-appraisal-phone-error" : undefined}
-            placeholder="0491 570 156"
+            placeholder="Mobile or landline"
             tone="raised"
             size="md"
           />

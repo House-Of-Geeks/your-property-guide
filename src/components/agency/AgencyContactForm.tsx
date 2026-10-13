@@ -55,11 +55,11 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
     e.preventDefault();
     const phone = form.phone.trim();
     if (requirePhone && !phone) {
-      setPhoneError("Mobile is required so the agency can reach you");
+      setPhoneError("A phone number is required so the agency can reach you");
       return;
     }
-    // Optional or not, a typed number must be an Australian mobile.
-    const mobileError = phone ? auMobileError(phone) : null;
+    // Optional or not, a typed number must be an Australian mobile or landline.
+    const mobileError = phone ? auMobileError(phone, { landline: true }) : null;
     if (mobileError) {
       setPhoneError(mobileError);
       return;
@@ -171,7 +171,7 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Mobile {requirePhone && <span className="text-red-500">*</span>}
+              Phone {requirePhone && <span className="text-red-500">*</span>}
             </label>
             <AuPhoneInput
               value={form.phone}
@@ -179,7 +179,8 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
                 set("phone", v);
                 if (phoneError) setPhoneError("");
               }}
-              aria-label="Mobile"
+              aria-label="Phone"
+              placeholder="Mobile or landline"
               invalid={!!phoneError}
               tone="plain"
               size="md"
