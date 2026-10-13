@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
-import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
 import { Faq } from "@/components/guide";
-import { MatchAgent, StickyMatchCTA } from "@/components/journey";
+import { SuburbSubrouteHeader, SubrouteActionCard, SubpageNextSteps, type NextStepGroup } from "@/components/suburb";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
+import { getNearbySubpages } from "@/lib/services/nearby-subpages";
 import { nonLocalityBySlug } from "@/lib/non-localities";
+import { canonicalComparePath } from "@/lib/suburb-indexability";
+import { publishedGrowthFor } from "@/lib/published-medians";
+import { hasReliablePrice } from "@/lib/suburb-data-quality";
+import { guideFunnelHref } from "@/lib/guide-funnel";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 import {
@@ -105,23 +108,6 @@ export async function generateMetadata({ params }: ComparePageProps): Promise<Me
 
 type Winner = "a" | "b" | "tie" | "none";
 
-function rowSideClass(side: "a" | "b", winner: Winner): string {
-  if (winner === "none" || winner === "tie") return "text-ink";
-  if (winner === side) return "text-emerald-700 font-semibold";
-  return "text-ink-muted";
-}
-
-function rowDot(side: "a" | "b", winner: Winner): React.ReactNode {
-  if (winner === "none" || winner === "tie") return null;
-  if (winner !== side) return null;
-  return (
-    <span
-      className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-600 mr-1.5 align-middle"
-      aria-label="Better on this metric"
-    />
-  );
-}
-
 function floodRiskScore(cls: string | null | undefined): number {
   if (!cls) return 0;
   const map: Record<string, number> = { floodway: 0, high: 1, medium: 2, low: 3 };
@@ -151,58 +137,35 @@ function fmtFloat(val: number | null | undefined, decimals = 1): string {
   return val.toFixed(decimals);
 }
 
-function fmtFlood(cls: string | null | undefined): string {
-  if (!cls) return "–";
-  return cls.charAt(0).toUpperCase() + cls.slice(1);
+function capitalise(v: string | null | undefined): string {
+  if (!v) return "–";
+  return v.charAt(0).toUpperCase() + v.slice(1);
 }
 
-function fmtBushfire(risk: string | null | undefined): string {
-  if (!risk) return "–";
-  return risk.charAt(0).toUpperCase() + risk.slice(1);
-}
+const fmtGrowth = (g: number) => (g ? `${g > 0 ? "+" : ""}${g.toFixed(1)}%` : "–");
 
-// ─── Row component ───────────────────────────────────────────────────────────
+// ─── Table ───────────────────────────────────────────────────────────────────
 
-function CompareRow({
-  label,
-  valA,
-  valB,
-  winner,
-}: {
+interface Row {
   label: string;
-  valA: string;
-  valB: string;
+  a: React.ReactNode;
+  b: React.ReactNode;
+  /** True when neither side has a figure: the row is left out. */
+  empty: boolean;
   winner: Winner;
-}) {
-  return (
-    <div className="grid grid-cols-12 gap-4 py-3 border-b border-line last:border-b-0 items-baseline text-sm font-sans">
-      <div className={`col-span-4 sm:col-span-4 text-right tabular-nums ${rowSideClass("a", winner)}`}>
-        {rowDot("a", winner)}
-        {valA}
-      </div>
-      <div className="col-span-4 sm:col-span-4 text-center text-[13px] text-ink-subtle">
-        {label}
-      </div>
-      <div className={`col-span-4 sm:col-span-4 text-left tabular-nums ${rowSideClass("b", winner)}`}>
-        {rowDot("b", winner)}
-        {valB}
-      </div>
-    </div>
-  );
 }
 
-function CompareSection({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+function row(label: string, a: string, b: string, winner: Winner = "none"): Row {
+  return { label, a, b, empty: a === "–" && b === "–", winner };
+}
+
+function Cell({ side, r }: { side: "a" | "b"; r: Row }) {
+  const better = r.winner === side;
   return (
-    <section className="rounded-2xl border border-line bg-surface-raised p-6 sm:p-8">
-      <h2 className="font-display text-xl text-ink mb-2">{title}</h2>
-      <div className="border-t border-line">{children}</div>
-    </section>
+    <td className={`py-3 px-3 sm:px-4 text-right whitespace-nowrap ${better ? "font-semibold text-ink" : "text-ink-muted"}`}>
+      {better && <span className="inline-block w-1.5 h-1.5 rounded-full bg-success mr-1.5 align-middle" aria-label="Better on this measure" />}
+      {side === "a" ? r.a : r.b}
+    </td>
   );
 }
 
@@ -243,14 +206,20 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
   const bushfireA = bushfireRiskScore(suburbA.hazard?.bushfireRisk);
   const bushfireB = bushfireRiskScore(suburbB.hazard?.bushfireRisk);
 
+  // A 12-month change only where the feed measures one: 0 is "not
+  // measured", never "+0.0%" (review 10 Oct 2026, suburbs 0.4).
+  const growthA = publishedGrowthFor(suburbA);
+  const growthB = publishedGrowthFor(suburbB);
+
   const suburbAName = suburbA.name;
   const suburbBName = suburbB.name;
 
-  // Algorithmic narrative. Generates 2-paragraph intro, three persona
-  // verdicts (buyers/investors/families), and 5-7 dynamic FAQs based
-  // on the data gaps between the two suburbs. Deterministic, caches
-  // cleanly under the 24h ISR.
+  // Algorithmic narrative: the answer sentence (price and growth), a
+  // paragraph on schools and walkability, three persona verdicts and the
+  // per-pair FAQs. Deterministic, caches cleanly under the ISR.
   const narrative = buildCompareNarrative(suburbA, suburbB);
+  const nearbyA = (await getNearbySubpages(suburbA.nearbySuburbs.filter((s) => s !== compareSlug))).slice(0, 6);
+  const nearbyB = (await getNearbySubpages(suburbB.nearbySuburbs.filter((s) => s !== slug))).slice(0, 6);
 
   function cmp(
     vA: number | null | undefined,
@@ -262,18 +231,113 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
     return higherIsBetter ? (vA > vB ? "a" : "b") : (vA < vB ? "a" : "b");
   }
 
-  // High-level synopsis. We score each suburb on 4 broad categories so the
-  // article-style intro tells a story, not just numbers.
-  const aWins =
-    Number(cmp(a.medianHousePrice || null, b.medianHousePrice || null, false) === "a") +
-    Number(cmp(a.annualGrowthHouse, b.annualGrowthHouse, true) === "a") +
-    Number(cmp(a.walkScore, b.walkScore, true) === "a") +
-    Number(cmp(icseaA, icseaB, true) === "a");
-  const bWins =
-    Number(cmp(a.medianHousePrice || null, b.medianHousePrice || null, false) === "b") +
-    Number(cmp(a.annualGrowthHouse, b.annualGrowthHouse, true) === "b") +
-    Number(cmp(a.walkScore, b.walkScore, true) === "b") +
-    Number(cmp(icseaA, icseaB, true) === "b");
+  // The median cell links to the suburb's own price section, anchored
+  // "{Suburb} median house price" (review 10 Oct 2026, suburbs 3.1).
+  const medianCell = (s: Suburb, slugFor: string) =>
+    s.stats.medianHousePrice > 0 ? (
+      <Link
+        href={`/suburbs/${slugFor}#market`}
+        className="underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary"
+        aria-label={`${s.name} median house price`}
+      >
+        {formatPriceFull(s.stats.medianHousePrice)}
+      </Link>
+    ) : "–";
+
+  const sections: { title: string; rows: Row[] }[] = [
+    {
+      title: "Price and market",
+      rows: [
+        {
+          label: "Median house",
+          a: medianCell(suburbA, slug),
+          b: medianCell(suburbB, compareSlug),
+          empty: !(a.medianHousePrice > 0) && !(b.medianHousePrice > 0),
+          winner: cmp(a.medianHousePrice || null, b.medianHousePrice || null, false),
+        },
+        row("Median unit", a.medianUnitPrice > 0 ? formatPriceFull(a.medianUnitPrice) : "–", b.medianUnitPrice > 0 ? formatPriceFull(b.medianUnitPrice) : "–", cmp(a.medianUnitPrice || null, b.medianUnitPrice || null, false)),
+        row("House price change, 12 months", fmtGrowth(growthA), fmtGrowth(growthB), cmp(growthA || null, growthB || null, true)),
+        row("Days on market", a.daysOnMarket > 0 ? `${a.daysOnMarket} days` : "–", b.daysOnMarket > 0 ? `${b.daysOnMarket} days` : "–", cmp(a.daysOnMarket || null, b.daysOnMarket || null, false)),
+      ],
+    },
+    {
+      title: "Renting",
+      rows: [
+        row("House rent", a.medianRentHouse > 0 ? `$${a.medianRentHouse}/wk` : "–", b.medianRentHouse > 0 ? `$${b.medianRentHouse}/wk` : "–"),
+        row("Unit rent", a.medianRentUnit > 0 ? `$${a.medianRentUnit}/wk` : "–", b.medianRentUnit > 0 ? `$${b.medianRentUnit}/wk` : "–"),
+        row("Owner occupied", a.ownerOccupied > 0 ? `${a.ownerOccupied.toFixed(1)}%` : "–", b.ownerOccupied > 0 ? `${b.ownerOccupied.toFixed(1)}%` : "–", cmp(a.ownerOccupied || null, b.ownerOccupied || null, true)),
+        row("Renter occupied", a.renterOccupied > 0 ? `${a.renterOccupied.toFixed(1)}%` : "–", b.renterOccupied > 0 ? `${b.renterOccupied.toFixed(1)}%` : "–"),
+      ],
+    },
+    {
+      title: "Schools",
+      rows: [
+        row("Schools nearby", String(schoolCountA), String(schoolCountB), cmp(schoolCountA, schoolCountB, true)),
+        row("Average ICSEA", icseaA !== null ? String(icseaA) : "–", icseaB !== null ? String(icseaB) : "–", cmp(icseaA, icseaB, true)),
+      ],
+    },
+    {
+      title: "Lifestyle and people",
+      rows: [
+        row("Walk score", fmtScore(a.walkScore), fmtScore(b.walkScore), cmp(a.walkScore, b.walkScore, true)),
+        row("Transit score", fmtScore(a.transitScore), fmtScore(b.transitScore), cmp(a.transitScore, b.transitScore, true)),
+        row("Bike score", fmtScore(a.bikeScore), fmtScore(b.bikeScore), cmp(a.bikeScore, b.bikeScore, true)),
+        row("Population", a.population > 0 ? a.population.toLocaleString("en-AU") : "–", b.population > 0 ? b.population.toLocaleString("en-AU") : "–"),
+        row("Median age", a.medianAge > 0 ? String(a.medianAge) : "–", b.medianAge > 0 ? String(b.medianAge) : "–"),
+      ],
+    },
+    {
+      title: "Risk",
+      rows: [
+        row("Flood class", capitalise(suburbA.hazard?.floodClass), capitalise(suburbB.hazard?.floodClass),
+          suburbA.hazard?.floodClass && suburbB.hazard?.floodClass ? cmp(floodA, floodB, true) : "none"),
+        row("Bushfire risk", capitalise(suburbA.hazard?.bushfireRisk), capitalise(suburbB.hazard?.bushfireRisk),
+          suburbA.hazard?.bushfireRisk && suburbB.hazard?.bushfireRisk ? cmp(bushfireA, bushfireB, true) : "none"),
+      ],
+    },
+    {
+      title: "Climate",
+      rows: [
+        row("Annual rainfall",
+          suburbA.climate?.annualRainfallMm != null ? `${Math.round(suburbA.climate.annualRainfallMm)} mm` : "–",
+          suburbB.climate?.annualRainfallMm != null ? `${Math.round(suburbB.climate.annualRainfallMm)} mm` : "–"),
+        row("Mean max, January",
+          suburbA.climate?.meanMaxTemp?.[0] != null ? `${fmtFloat(suburbA.climate.meanMaxTemp[0])}°C` : "–",
+          suburbB.climate?.meanMaxTemp?.[0] != null ? `${fmtFloat(suburbB.climate.meanMaxTemp[0])}°C` : "–"),
+      ],
+    },
+  ]
+    .map((sec) => ({ ...sec, rows: sec.rows.filter((r) => !r.empty) }))
+    .filter((sec) => sec.rows.length > 0);
+
+  // The answer: the price and growth sentence when both medians are
+  // published, else what the page compares.
+  const answer = narrative.intro[0] ?? `${suburbAName} and ${suburbBName} side by side: prices, rents, schools, walkability and risk, from each suburb's published data.`;
+  const lifestyle = narrative.intro.length > 1 ? narrative.intro[1] : null;
+
+  const buyHref = guideFunnelHref("buying", { suburb: slug, from: "suburb-vs" });
+  const nextSteps: NextStepGroup[] = [
+    {
+      title: "The two suburbs",
+      links: [
+        { href: `/suburbs/${slug}`, label: `${suburbAName} suburb profile` },
+        { href: `/suburbs/${compareSlug}`, label: `${suburbBName} suburb profile` },
+        ...(hasReliablePrice(suburbA) ? [{ href: `/suburbs/${slug}#market`, label: `${suburbAName} house prices` }] : []),
+        ...(hasReliablePrice(suburbB) ? [{ href: `/suburbs/${compareSlug}#market`, label: `${suburbBName} house prices` }] : []),
+      ],
+    },
+    {
+      title: `Compare ${suburbAName} with`,
+      links: nearbyA.map((n) => ({ href: canonicalComparePath(slug, n.slug), label: `${suburbAName} vs ${n.name}` })),
+    },
+    {
+      title: `Compare ${suburbBName} with`,
+      links: [
+        ...nearbyB.map((n) => ({ href: canonicalComparePath(compareSlug, n.slug), label: `${suburbBName} vs ${n.name}` })),
+        { href: "/compare", label: "Compare any two suburbs" },
+      ],
+    },
+  ];
 
   return (
     <>
@@ -303,425 +367,116 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
         postalCode={suburbB.postcode}
       />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs
-              items={[
-                { label: "Suburbs", href: "/suburbs" },
-                { label: suburbAName, href: `/suburbs/${slug}` },
-                { label: `vs ${suburbBName}` },
-              ]}
-            />
-          </div>
-
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              Side by side
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              Suburb comparison
-            </span>
-          </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[20ch] font-bold">
-            {suburbAName}{" "}
-            <span>vs</span>{" "}
-            {suburbBName}
-          </h1>
-          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            {a.medianHousePrice > 0 && b.medianHousePrice > 0 ? (
-              <>
-                Comparing two suburbs with median house prices of{" "}
-                <strong className="text-ink font-medium">{formatPriceFull(a.medianHousePrice)}</strong>{" "}
-                and{" "}
-                <strong className="text-ink font-medium">{formatPriceFull(b.medianHousePrice)}</strong>.
-              </>
-            ) : (
-              <>Suburb-to-suburb comparison across price, growth, lifestyle, schools and risk.</>
-            )}
-            {aWins > bWins && (
-              <> {suburbAName} edges out on more headline metrics in this comparison.</>
-            )}
-            {bWins > aWins && (
-              <> {suburbBName} edges out on more headline metrics in this comparison.</>
-            )}
-          </p>
-
-          {/* Algorithmic comparative narrative. Two paragraphs that
-              read like a property column lede — anchored to the actual
-              gaps in the data, not generic "compare two suburbs" copy. */}
-          {narrative.intro.length > 0 && (
-            <div className="mt-8 space-y-4 max-w-3xl">
-              {narrative.intro.map((para, i) => (
-                <p key={i} className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7]">
-                  {para}
-                </p>
-              ))}
-            </div>
-          )}
-
-          {/* Two suburb header cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10">
-            {[
-              { suburb: suburbA, slug: slug, stats: a },
-              { suburb: suburbB, slug: compareSlug, stats: b },
-            ].map(({ suburb, slug: s, stats }) => (
+      <SuburbSubrouteHeader
+        suburb={suburbA}
+        title={`${suburbAName} vs ${suburbBName}`}
+        subtitle={<p>{answer}</p>}
+        breadcrumbLeaf={`vs ${suburbBName}`}
+        action={
+          // Comparison traffic is mostly buyers choosing between two
+          // suburbs: the buying guide. (The match form that sat at the end
+          // offered buyers an agent introduction we do not provide.)
+          <SubrouteActionCard
+            heading={`Buying in ${suburbAName} or ${suburbBName}?`}
+            body="The free buying guide: what you can really spend, the schemes and stamp duty in your state, inspecting, and making the offer."
+            href={buyHref}
+            cta="Get the free buying guide"
+          >
+            <p>
+              {`Selling in ${suburbAName}? `}
               <Link
-                key={s}
-                href={`/suburbs/${s}`}
-                className="rounded-2xl border border-line bg-surface-raised p-5 hover:border-primary/40 hover:shadow-md transition-all group"
+                href={guideFunnelHref("selling", { suburb: slug, from: "suburb-vs" })}
+                className="text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary"
               >
-                <p className="text-[13px] font-sans text-ink-subtle mb-1">
-                  {suburb.state} &middot; {suburb.postcode}
-                </p>
-                <h2 className="font-display text-2xl text-ink group-hover:text-primary transition-colors leading-tight">
-                  {suburb.name}
-                </h2>
-                {stats.medianHousePrice > 0 && (
-                  <p className="mt-3 font-sans text-sm text-ink-muted">
-                    Median house{" "}
-                    <span className="font-display text-base text-ink">
-                      {formatPriceFull(stats.medianHousePrice)}
-                    </span>
-                  </p>
-                )}
-                {stats.annualGrowthHouse != null && (
-                  <p className="mt-1 font-sans text-sm text-ink-muted">
-                    Growth{" "}
-                    <span
-                      className={`font-display text-base ${stats.annualGrowthHouse >= 0 ? "text-emerald-700" : "text-red-700"}`}
-                    >
-                      {stats.annualGrowthHouse >= 0 ? "+" : ""}
-                      {stats.annualGrowthHouse.toFixed(1)}%
-                    </span>
-                  </p>
-                )}
+                The free selling guide
               </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+            </p>
+          </SubrouteActionCard>
+        }
+      />
 
-      {/* Comparison */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-8">
-        {/* Persona verdicts — moved ABOVE the stat tables in the
-            2026-05 education-led reposition. The page now leads with
-            "which suburb suits which buyer" (interpretation) and
-            "common questions" (FAQ) before getting into the data
-            tables. Education first, data as supporting evidence. */}
-        <section>
-          <div className="flex items-center gap-4 mb-6">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              The take
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              Which suburb suits which buyer
-            </span>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-12 sm:space-y-16">
+        {/* The numbers, side by side. Rows with no figure on either side
+            are left out. */}
+        <section id="side-by-side" className="scroll-mt-20 max-w-4xl">
+          <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+            {`${suburbAName} and ${suburbBName} side by side`}
+          </h2>
+          <div className="overflow-x-auto rounded-xl border border-line">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-line">
+                  <th scope="col" className="py-3 px-3 sm:px-4 text-left font-normal text-ink-muted w-[40%]"><span className="sr-only">Measure</span></th>
+                  <th scope="col" className="py-3 px-3 sm:px-4 text-right font-semibold text-ink">
+                    <Link href={`/suburbs/${slug}`} className="hover:text-primary">{suburbAName}</Link>
+                  </th>
+                  <th scope="col" className="py-3 px-3 sm:px-4 text-right font-semibold text-ink">
+                    <Link href={`/suburbs/${compareSlug}`} className="hover:text-primary">{suburbBName}</Link>
+                  </th>
+                </tr>
+              </thead>
+              {sections.map((sec) => (
+                <tbody key={sec.title}>
+                  <tr className="bg-surface-warm border-b border-line">
+                    <th scope="colgroup" colSpan={3} className="py-2 px-3 sm:px-4 text-left text-[13px] font-semibold text-ink">{sec.title}</th>
+                  </tr>
+                  {sec.rows.map((r) => (
+                    <tr key={r.label} className="border-b border-line last:border-0">
+                      <th scope="row" className="py-3 px-3 sm:px-4 text-left font-normal text-ink-muted">{r.label}</th>
+                      <Cell side="a" r={r} />
+                      <Cell side="b" r={r} />
+                    </tr>
+                  ))}
+                </tbody>
+              ))}
+            </table>
           </div>
-          <div className="grid sm:grid-cols-3 gap-4">
-            <div className="rounded-2xl border border-line bg-surface-raised p-6">
-              <p className="text-[13px] font-sans text-cta mb-3">
-                For buyers
-              </p>
-              <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
-                {narrative.verdicts.forBuyers}
-              </p>
-            </div>
-            <div className="rounded-2xl border border-line bg-surface-raised p-6">
-              <p className="text-[13px] font-sans text-cta mb-3">
-                For investors
-              </p>
-              <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
-                {narrative.verdicts.forInvestors}
-              </p>
-            </div>
-            <div className="rounded-2xl border border-line bg-surface-raised p-6">
-              <p className="text-[13px] font-sans text-cta mb-3">
-                For families
-              </p>
-              <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
-                {narrative.verdicts.forFamilies}
-              </p>
-            </div>
-          </div>
+          <p className="mt-3 font-sans text-xs text-ink-subtle leading-relaxed">
+            Green dot: better on that measure (lower price, higher growth, higher walkability, lower risk). Each suburb&rsquo;s profile gives the source and period of its figures.
+          </p>
         </section>
 
-        {/* FAQ also moved up. Dynamic per-pair questions, FAQPage
-            schema attached for rich-snippet eligibility on the
-            "X vs Y" SERPs. */}
+        {/* Which suburb suits which buyer. */}
+        <section id="verdicts" className="scroll-mt-20">
+          <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-4">Which suits whom</h2>
+          {lifestyle && <p className="font-sans text-base text-ink leading-relaxed max-w-3xl mb-6">{lifestyle}</p>}
+          <dl className="grid gap-x-10 md:grid-cols-3 border-t border-line">
+            {[
+              { k: "For buyers", v: narrative.verdicts.forBuyers },
+              { k: "For investors", v: narrative.verdicts.forInvestors },
+              { k: "For families", v: narrative.verdicts.forFamilies },
+            ].map(({ k, v }) => (
+              <div key={k} className="border-b border-line md:border-b-0 py-4">
+                <dt className="font-sans text-sm font-semibold text-ink mb-1.5">{k}</dt>
+                <dd className="font-sans text-[15px] text-ink-muted leading-relaxed">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        {/* Dynamic per-pair questions; <Faq> emits the FAQPage schema. */}
         {narrative.faqs.length > 0 && (
-          <section>
-            <div className="flex items-center gap-4 mb-6">
-              <span className="text-sm font-semibold text-ink-muted leading-none">
-                Common questions
-              </span>
-              <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-              <span className="text-[13px] text-ink-subtle font-sans font-medium">
-                {suburbAName} vs {suburbBName}
-              </span>
-            </div>
-            <div className="max-w-3xl">
-              <Faq items={narrative.faqs} />
-            </div>
-          </section>
-        )}
-
-        {/* Stat tables. Now framed as supporting evidence for the
-            verdict above, not the headline. Eyebrow makes that clear. */}
-        <div className="pt-4 border-t border-line">
-          <p className="text-[13px] text-ink-subtle font-sans font-medium mb-3">
-            The numbers behind the take
-          </p>
-        </div>
-
-        {/* Sticky column legend */}
-        <div className="grid grid-cols-12 gap-4 text-center text-sm font-sans border-b border-line pb-3 sticky top-0 bg-surface-warm/95 backdrop-blur z-10 pt-3 -mx-4 px-4">
-          <div className="col-span-4 text-right font-display text-base text-ink truncate">
-            {suburbAName}
-          </div>
-          <div className="col-span-4 text-[13px] text-ink-subtle self-center">
-            Metric
-          </div>
-          <div className="col-span-4 text-left font-display text-base text-ink truncate">
-            {suburbBName}
-          </div>
-        </div>
-
-        <CompareSection title="Price &amp; Market">
-          <CompareRow
-            label="Median house"
-            valA={a.medianHousePrice > 0 ? formatPriceFull(a.medianHousePrice) : "–"}
-            valB={b.medianHousePrice > 0 ? formatPriceFull(b.medianHousePrice) : "–"}
-            winner={cmp(a.medianHousePrice || null, b.medianHousePrice || null, false)}
-          />
-          <CompareRow
-            label="Median unit"
-            valA={a.medianUnitPrice > 0 ? formatPriceFull(a.medianUnitPrice) : "–"}
-            valB={b.medianUnitPrice > 0 ? formatPriceFull(b.medianUnitPrice) : "–"}
-            winner={cmp(a.medianUnitPrice || null, b.medianUnitPrice || null, false)}
-          />
-          <CompareRow
-            label="Annual growth (house)"
-            valA={a.annualGrowthHouse != null ? `${a.annualGrowthHouse >= 0 ? "+" : ""}${a.annualGrowthHouse.toFixed(1)}%` : "–"}
-            valB={b.annualGrowthHouse != null ? `${b.annualGrowthHouse >= 0 ? "+" : ""}${b.annualGrowthHouse.toFixed(1)}%` : "–"}
-            winner={cmp(a.annualGrowthHouse, b.annualGrowthHouse, true)}
-          />
-          <CompareRow
-            label="Days on market"
-            valA={a.daysOnMarket > 0 ? `${a.daysOnMarket} days` : "–"}
-            valB={b.daysOnMarket > 0 ? `${b.daysOnMarket} days` : "–"}
-            winner={cmp(a.daysOnMarket || null, b.daysOnMarket || null, false)}
-          />
-        </CompareSection>
-
-        <CompareSection title="Rental">
-          <CompareRow
-            label="Rent (house / wk)"
-            valA={a.medianRentHouse > 0 ? `$${a.medianRentHouse}/wk` : "–"}
-            valB={b.medianRentHouse > 0 ? `$${b.medianRentHouse}/wk` : "–"}
-            winner="none"
-          />
-          <CompareRow
-            label="Rent (unit / wk)"
-            valA={a.medianRentUnit > 0 ? `$${a.medianRentUnit}/wk` : "–"}
-            valB={b.medianRentUnit > 0 ? `$${b.medianRentUnit}/wk` : "–"}
-            winner="none"
-          />
-          <CompareRow
-            label="Owner occupied"
-            valA={a.ownerOccupied > 0 ? `${a.ownerOccupied.toFixed(1)}%` : "–"}
-            valB={b.ownerOccupied > 0 ? `${b.ownerOccupied.toFixed(1)}%` : "–"}
-            winner={cmp(a.ownerOccupied || null, b.ownerOccupied || null, true)}
-          />
-          <CompareRow
-            label="Renter occupied"
-            valA={a.renterOccupied > 0 ? `${a.renterOccupied.toFixed(1)}%` : "–"}
-            valB={b.renterOccupied > 0 ? `${b.renterOccupied.toFixed(1)}%` : "–"}
-            winner="none"
-          />
-        </CompareSection>
-
-        <CompareSection title="Lifestyle &amp; Demographics">
-          <CompareRow
-            label="Walk score"
-            valA={fmtScore(a.walkScore)}
-            valB={fmtScore(b.walkScore)}
-            winner={cmp(a.walkScore, b.walkScore, true)}
-          />
-          <CompareRow
-            label="Transit score"
-            valA={fmtScore(a.transitScore)}
-            valB={fmtScore(b.transitScore)}
-            winner={cmp(a.transitScore, b.transitScore, true)}
-          />
-          <CompareRow
-            label="Bike score"
-            valA={fmtScore(a.bikeScore)}
-            valB={fmtScore(b.bikeScore)}
-            winner={cmp(a.bikeScore, b.bikeScore, true)}
-          />
-          <CompareRow
-            label="Population"
-            valA={a.population > 0 ? a.population.toLocaleString() : "–"}
-            valB={b.population > 0 ? b.population.toLocaleString() : "–"}
-            winner="none"
-          />
-          <CompareRow
-            label="Median age"
-            valA={a.medianAge > 0 ? String(a.medianAge) : "–"}
-            valB={b.medianAge > 0 ? String(b.medianAge) : "–"}
-            winner="none"
-          />
-        </CompareSection>
-
-        <CompareSection title="Risk &amp; Hazard">
-          <CompareRow
-            label="Flood class"
-            valA={fmtFlood(suburbA.hazard?.floodClass)}
-            valB={fmtFlood(suburbB.hazard?.floodClass)}
-            winner={
-              suburbA.hazard?.floodClass && suburbB.hazard?.floodClass
-                ? cmp(floodA, floodB, true)
-                : "none"
-            }
-          />
-          <CompareRow
-            label="Bushfire risk"
-            valA={fmtBushfire(suburbA.hazard?.bushfireRisk)}
-            valB={fmtBushfire(suburbB.hazard?.bushfireRisk)}
-            winner={
-              suburbA.hazard?.bushfireRisk && suburbB.hazard?.bushfireRisk
-                ? cmp(bushfireA, bushfireB, true)
-                : "none"
-            }
-          />
-        </CompareSection>
-
-        <CompareSection title="Schools">
-          <CompareRow
-            label="Schools nearby"
-            valA={String(schoolCountA)}
-            valB={String(schoolCountB)}
-            winner={cmp(schoolCountA, schoolCountB, true)}
-          />
-          <CompareRow
-            label="Avg ICSEA"
-            valA={icseaA !== null ? String(icseaA) : "–"}
-            valB={icseaB !== null ? String(icseaB) : "–"}
-            winner={cmp(icseaA, icseaB, true)}
-          />
-        </CompareSection>
-
-        <CompareSection title="Climate">
-          <CompareRow
-            label="Annual rainfall"
-            valA={suburbA.climate?.annualRainfallMm != null ? `${Math.round(suburbA.climate.annualRainfallMm)} mm` : "–"}
-            valB={suburbB.climate?.annualRainfallMm != null ? `${Math.round(suburbB.climate.annualRainfallMm)} mm` : "–"}
-            winner="none"
-          />
-          <CompareRow
-            label="Mean max (Jan)"
-            valA={
-              suburbA.climate?.meanMaxTemp?.[0] != null
-                ? `${fmtFloat(suburbA.climate.meanMaxTemp[0])}°C`
-                : "–"
-            }
-            valB={
-              suburbB.climate?.meanMaxTemp?.[0] != null
-                ? `${fmtFloat(suburbB.climate.meanMaxTemp[0])}°C`
-                : "–"
-            }
-            winner="none"
-          />
-        </CompareSection>
-
-        {/* Legend */}
-        <p className="text-xs font-sans text-ink-subtle text-center">
-          Green dot = better on that metric (lower price, higher growth, higher walkability,
-          lower risk).
-        </p>
-
-        {/* CTA buttons */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-          <Link
-            href={`/suburbs/${slug}`}
-            className="group flex items-center justify-between rounded-2xl border border-line bg-surface-raised px-6 py-4 hover:border-primary/40 hover:shadow-md transition-all"
-          >
-            <span className="font-display text-lg text-ink group-hover:text-primary transition-colors">
-              Full {suburbAName} profile
-            </span>
-            <ArrowRight className="w-4 h-4 text-ink-subtle group-hover:text-primary transition-colors" />
-          </Link>
-          <Link
-            href={`/suburbs/${compareSlug}`}
-            className="group flex items-center justify-between rounded-2xl border border-line bg-surface-raised px-6 py-4 hover:border-primary/40 hover:shadow-md transition-all"
-          >
-            <span className="font-display text-lg text-ink group-hover:text-primary transition-colors">
-              Full {suburbBName} profile
-            </span>
-            <ArrowRight className="w-4 h-4 text-ink-subtle group-hover:text-primary transition-colors" />
-          </Link>
-        </div>
-
-        {/* Compare with more */}
-        {suburbA.nearbySuburbs.length > 0 && (
-          <div className="rounded-2xl border border-line bg-surface-warm p-6">
-            <p className="text-[13px] font-sans text-ink-subtle mb-4">
-              Compare {suburbAName} against another suburb
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {suburbA.nearbySuburbs
-                .filter((s) => s !== compareSlug)
-                .slice(0, 12)
-                .map((s) => {
-                  const label = s
-                    .split("-")
-                    .slice(0, -2)
-                    .join(" ")
-                    .replace(/\b\w/g, (c) => c.toUpperCase());
-                  return (
-                    <Link
-                      key={s}
-                      href={`/suburbs/${slug}/vs/${s}`}
-                      className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors"
-                    >
-                      vs {label}
-                    </Link>
-                  );
-                })}
-            </div>
-            <p className="mt-5 text-sm font-sans text-ink-muted">
-              Or{" "}
-              <Link
-                href="/compare"
-                className="font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-              >
-                compare any two suburbs nationally →
-              </Link>
-            </p>
+          <div className="max-w-3xl [&>section]:my-0">
+            <Faq items={narrative.faqs} title={`${suburbAName} vs ${suburbBName}: common questions`} />
           </div>
         )}
+
+        <SubpageNextSteps id="next" title="Keep comparing" groups={nextSteps} />
+
+        {/* The same one action, once more where the page ends. */}
+        <section className="rounded-xl bg-surface-inverse text-white p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+          <div>
+            <h2 className="font-display text-xl sm:text-2xl font-bold tracking-tight">Choosing between {suburbAName} and {suburbBName}?</h2>
+            <p className="font-sans text-sm text-white/75 mt-1.5 max-w-xl">The free buying guide: budget, schemes, inspections and how not to overpay.</p>
+          </div>
+          <Link
+            href={buyHref}
+            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors"
+          >
+            Get the free buying guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
+          </Link>
+        </section>
       </div>
-
-      {/* MatchAgent — visitors who got this far are evaluating two
-          options and likely high-intent. Drop the lead form right
-          where the decision is being made. Intent defaults to buying
-          since most comparison traffic is purchase-led. */}
-      <Suspense fallback={null}>
-        <MatchAgent initialIntent="buying" />
-      </Suspense>
-
-      {/* Persistent sticky CTA — slides in once the visitor has
-          scrolled past 30% of the comparison. Suburb-aware label
-          uses the first suburb so the bar feels contextual. */}
-      <StickyMatchCTA
-        suburb={slug}
-        intent="buying"
-        dismissKey={`compare:${slug}-vs-${compareSlug}`}
-      />
     </>
   );
 }

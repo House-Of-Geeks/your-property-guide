@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { GraduationCap, ArrowRight } from "lucide-react";
-import { SuburbSubrouteHeader } from "@/components/suburb";
-import { ExpertCTA } from "@/components/journey";
+import { ArrowRight } from "lucide-react";
+import { SuburbSubrouteHeader, SubrouteActionCard, SubpageNextSteps, type NextStepGroup } from "@/components/suburb";
 import { BreadcrumbJsonLd, PlaceJsonLd, ItemListJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availability";
+import { getNearbySubpages } from "@/lib/services/nearby-subpages";
+import { guideFunnelHref } from "@/lib/guide-funnel";
+import { hasReliablePrice } from "@/lib/suburb-data-quality";
 import { makeSchoolSlug } from "@/lib/utils/school";
-import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import type { School } from "@/types";
 
@@ -41,6 +42,15 @@ function sectorLabel(sector: School["sector"]) {
   return "Independent";
 }
 
+/** "12 primary, 5 secondary and 3 combined", largest first. */
+function typeBreakdown(schools: readonly School[]): string {
+  const counts = new Map<string, number>();
+  for (const s of schools) counts.set(typeLabel(s.type).toLowerCase(), (counts.get(typeLabel(s.type).toLowerCase()) ?? 0) + 1);
+  const parts = [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([t, n]) => `${n} ${t}`);
+  if (parts.length <= 1) return parts[0] ?? "";
+  return `${parts.slice(0, -1).join(", ")} and ${parts[parts.length - 1]}`;
+}
+
 export async function generateMetadata({ params }: SuburbSchoolsPageProps): Promise<Metadata> {
   const { slug } = await params;
   const suburb = await getSuburbBySlug(slug);
@@ -66,9 +76,10 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) notFound();
 
-  // The closing block links to the listings only when there are any;
-  // otherwise to the profile.
-  const { buy: hasListings } = await getSuburbSubpageAvailability(suburb);
+  // Links to the listings only when there are any; otherwise to the profile.
+  const availability = await getSuburbSubpageAvailability(suburb);
+  const hasListings = availability.buy;
+  const nearby = await getNearbySubpages(suburb.nearbySuburbs);
 
   const schools = [...suburb.schools].sort((a, b) => {
     if (a.icsea == null && b.icsea == null) return 0;
@@ -77,26 +88,55 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
     return b.icsea - a.icsea;
   });
 
+  const name = suburb.name;
   const icseaValues = schools.map((s) => s.icsea).filter((v): v is number => v != null);
   const lowestIcsea = icseaValues.length > 0 ? Math.min(...icseaValues) : null;
   const highestIcsea = icseaValues.length > 0 ? Math.max(...icseaValues) : null;
 
+  // The answer. The list is the schools in and around the suburb (the
+  // nearest within 10 km, wider for rural suburbs), so the copy says so.
   const subtitle = schools.length > 0 ? (
-    <>
-      There {schools.length === 1 ? "is" : "are"}{" "}
-      <strong className="text-ink">{schools.length}</strong>{" "}
-      school{schools.length !== 1 ? "s" : ""} in {suburb.name}
-      {lowestIcsea != null && highestIcsea != null && lowestIcsea !== highestIcsea && (
-        <>, ranging from ICSEA {lowestIcsea.toLocaleString()} to {highestIcsea.toLocaleString()}</>
-      )}
-      {lowestIcsea != null && highestIcsea != null && lowestIcsea === highestIcsea && (
-        <> with an ICSEA score of {highestIcsea.toLocaleString()}</>
-      )}
-      .
-    </>
+    <p>
+      {`There ${schools.length === 1 ? "is" : "are"} `}
+      <strong className="font-semibold">{`${schools.length} school${schools.length !== 1 ? "s" : ""} in and around ${name}`}</strong>
+      {schools.length > 1 ? `: ${typeBreakdown(schools)}.` : "."}
+      {lowestIcsea != null && highestIcsea != null && lowestIcsea !== highestIcsea &&
+        ` Their ICSEA scores run from ${lowestIcsea} to ${highestIcsea} (ACARA).`}
+      {lowestIcsea != null && highestIcsea != null && lowestIcsea === highestIcsea &&
+        ` ICSEA score ${highestIcsea} (ACARA).`}
+    </p>
   ) : (
-    `No schools found near ${suburb.name}.`
+    <p>{`We have no school data for ${name} yet. The ${name} profile has prices, rents and who lives there.`}</p>
   );
+
+  const buyHref = guideFunnelHref("buying", { suburb: slug, from: "suburb-schools", toForm: true });
+  const stateLower = suburb.state.toLowerCase();
+  const nextSteps: NextStepGroup[] = [
+    {
+      title: `More on ${name}`,
+      links: [
+        { href: `/suburbs/${slug}`, label: `${name} suburb profile` },
+        ...(hasReliablePrice(suburb) ? [{ href: `/suburbs/${slug}#market`, label: `${name} house prices` }] : []),
+        ...(availability["rental-market"] ? [{ href: `/suburbs/${slug}/rental-market`, label: `${name} rental market` }] : []),
+      ],
+    },
+    {
+      title: `Schools near ${name}`,
+      links: nearby
+        .filter((n) => n.schoolCount > 0)
+        .slice(0, 6)
+        .map((n) => ({ href: `/suburbs/${n.slug}/schools`, label: `Schools in ${n.name}` })),
+    },
+    {
+      title: `Buying in ${suburb.state}`,
+      links: [
+        { href: `/guides/stamp-duty-${stateLower}`, label: `Stamp duty in ${suburb.state}` },
+        { href: `/guides/first-home-buyer-${stateLower}`, label: `First home buyers in ${suburb.state}` },
+        { href: "/guides/due-diligence-checklist-buying-a-house", label: "Due diligence checklist" },
+        { href: "/schools", label: "Find a school by name" },
+      ],
+    },
+  ];
 
   return (
     <>
@@ -130,67 +170,76 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
 
       <SuburbSubrouteHeader
         suburb={suburb}
-        eyebrow="Schools in"
-        title={
-          <>
-            <span>{schools.length}</span>{" "}
-            school{schools.length !== 1 ? "s" : ""} in {suburb.name}.
-          </>
-        }
+        title={`Schools in ${name}`}
         subtitle={subtitle}
         breadcrumbLeaf="Schools"
+        action={
+          // Families researching schools are buyers: the buying guide, not
+          // "Selling in {suburb}?".
+          <SubrouteActionCard
+            heading={`Moving to ${name} for the schools?`}
+            body={`The free buying guide, personalised to ${name}: what you can really spend, the ${suburb.state} schemes and stamp duty, and how not to overpay.`}
+            href={buyHref}
+            cta="Get the free buying guide"
+          >
+            <p>
+              {"Selling first? "}
+              <Link
+                href={guideFunnelHref("selling", { suburb: slug, from: "suburb-schools" })}
+                className="text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary"
+              >
+                The free selling guide
+              </Link>
+            </p>
+          </SubrouteActionCard>
+        }
       />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-12 sm:space-y-16">
         {schools.length > 0 ? (
-          <>
+          <section id="schools" className="scroll-mt-20">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-2">
+              {`${name} schools by ICSEA`}
+            </h2>
+            <p className="font-sans text-sm text-ink-muted mb-5 max-w-3xl leading-relaxed">
+              ICSEA describes the socio-educational background of a school&rsquo;s students (the national average is 1000). It is not a measure of teaching quality, so visit, and read each school&rsquo;s results on My School.
+            </p>
+
             {/* Desktop table */}
-            <div className="hidden sm:block rounded-2xl border border-line bg-surface-raised overflow-hidden shadow-card">
+            <div className="hidden sm:block overflow-hidden rounded-xl border border-line">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-surface-warm border-b border-line-warm">
-                    <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle w-10">#</th>
-                    <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle">School</th>
-                    <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle">Type</th>
-                    <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle">Sector</th>
-                    <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle">Years</th>
-                    <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">ICSEA</th>
-                    <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">Enrolment</th>
+                  <tr className="bg-surface-warm border-b border-line text-left">
+                    <th scope="col" className="py-3 px-4 font-semibold text-ink">School</th>
+                    <th scope="col" className="py-3 px-4 font-semibold text-ink">Type</th>
+                    <th scope="col" className="py-3 px-4 font-semibold text-ink">Sector</th>
+                    <th scope="col" className="py-3 px-4 font-semibold text-ink">Years</th>
+                    <th scope="col" className="py-3 px-4 font-semibold text-ink text-right">ICSEA</th>
+                    <th scope="col" className="py-3 px-4 font-semibold text-ink text-right">Enrolment</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {schools.map((school, i) => {
-                    const schoolSlug = school.acaraId
-                      ? makeSchoolSlug(school.name, school.acaraId)
-                      : null;
+                  {schools.map((school) => {
+                    const schoolSlug = school.acaraId ? makeSchoolSlug(school.name, school.acaraId) : null;
                     return (
-                      <tr
-                        key={school.name}
-                        className="border-b border-line last:border-0 hover:bg-surface-sunken transition-colors"
-                      >
-                        <td className="py-4 px-5 text-ink-subtle tabular-nums font-display">
-                          {i + 1}
-                        </td>
-                        <td className="py-4 px-5">
+                      <tr key={school.name} className="border-b border-line last:border-0">
+                        <th scope="row" className="py-3 px-4 text-left font-medium">
                           {schoolSlug ? (
-                            <Link
-                              href={`/schools/${schoolSlug}`}
-                              className="font-medium text-ink hover:text-primary transition-colors"
-                            >
+                            <Link href={`/schools/${schoolSlug}`} className="text-ink hover:text-primary transition-colors">
                               {school.name}
                             </Link>
                           ) : (
-                            <span className="font-medium text-ink">{school.name}</span>
+                            <span className="text-ink">{school.name}</span>
                           )}
+                        </th>
+                        <td className="py-3 px-4 text-ink-muted">{typeLabel(school.type)}</td>
+                        <td className="py-3 px-4 text-ink-muted">{sectorLabel(school.sector)}</td>
+                        <td className="py-3 px-4 text-ink-muted">{school.yearRange ?? "–"}</td>
+                        <td className={`py-3 px-4 text-right ${icseaColour(school.icsea)}`}>
+                          {school.icsea ?? "–"}
                         </td>
-                        <td className="py-4 px-5 text-ink-muted">{typeLabel(school.type)}</td>
-                        <td className="py-4 px-5 text-ink-muted">{sectorLabel(school.sector)}</td>
-                        <td className="py-4 px-5 text-ink-subtle">{school.yearRange ?? "–"}</td>
-                        <td className={`py-4 px-5 text-right tabular-nums ${icseaColour(school.icsea)}`}>
-                          {school.icsea?.toLocaleString() ?? "–"}
-                        </td>
-                        <td className="py-4 px-5 text-right tabular-nums text-ink-muted">
-                          {school.enrolment?.toLocaleString() ?? "–"}
+                        <td className="py-3 px-4 text-right text-ink-muted">
+                          {school.enrolment?.toLocaleString("en-AU") ?? "–"}
                         </td>
                       </tr>
                     );
@@ -199,110 +248,90 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
               </table>
             </div>
 
-            {/* Mobile cards */}
-            <div className="sm:hidden space-y-3">
-              {schools.map((school, i) => {
-                const schoolSlug = school.acaraId
-                  ? makeSchoolSlug(school.name, school.acaraId)
-                  : null;
+            {/* Phone: one line per school */}
+            <p className="sm:hidden flex justify-between border-b border-line pb-2 text-[13px] font-semibold text-ink" aria-hidden="true">
+              <span>School</span>
+              <span>ICSEA</span>
+            </p>
+            <ul className="sm:hidden">
+              {schools.map((school) => {
+                const schoolSlug = school.acaraId ? makeSchoolSlug(school.name, school.acaraId) : null;
                 return (
-                  <div
-                    key={school.name}
-                    className="rounded-xl border border-line bg-surface-raised p-5 shadow-card"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-display text-cta tabular-nums mb-1">#{i + 1}</p>
-                        {schoolSlug ? (
-                          <Link
-                            href={`/schools/${schoolSlug}`}
-                            className="font-medium text-ink hover:text-primary transition-colors block"
-                          >
-                            {school.name}
-                          </Link>
-                        ) : (
-                          <span className="font-medium text-ink block">{school.name}</span>
-                        )}
-                        <p className="text-xs text-ink-muted mt-1">
-                          {typeLabel(school.type)} · {sectorLabel(school.sector)}
-                          {school.yearRange ? ` · ${school.yearRange}` : ""}
-                        </p>
-                      </div>
-                      {school.icsea != null && (
-                        <div className="text-right shrink-0">
-                          <p className="text-xs text-ink-subtle">ICSEA</p>
-                          <p className={`font-display text-2xl tabular-nums leading-none ${icseaColour(school.icsea)}`}>
-                            {school.icsea.toLocaleString()}
-                          </p>
-                        </div>
+                  <li key={school.name} className="flex items-start justify-between gap-4 border-b border-line py-3">
+                    <div className="min-w-0">
+                      {schoolSlug ? (
+                        <Link href={`/schools/${schoolSlug}`} className="font-medium text-ink hover:text-primary transition-colors">
+                          {school.name}
+                        </Link>
+                      ) : (
+                        <span className="font-medium text-ink">{school.name}</span>
                       )}
+                      <p className="text-[13px] text-ink-muted mt-0.5">
+                        {typeLabel(school.type)} · {sectorLabel(school.sector)}
+                        {school.yearRange ? ` · ${school.yearRange}` : ""}
+                      </p>
                     </div>
-                  </div>
+                    <p className={`shrink-0 text-right ${icseaColour(school.icsea)}`}>{school.icsea ?? "–"}</p>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
 
-            {/* ICSEA legend */}
-            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-xs text-ink-muted font-sans">
+            <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1.5 text-xs text-ink-muted font-sans">
               <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-success inline-block" />
-                ICSEA ≥ 1100 (above average)
+                <span className="w-2 h-2 rounded-full bg-success inline-block" aria-hidden="true" />
+                1100 and above
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-ink-subtle inline-block" />
-                ICSEA 1000 to 1099 (average)
+                <span className="w-2 h-2 rounded-full bg-ink inline-block" aria-hidden="true" />
+                1000 to 1099
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-warning inline-block" />
-                ICSEA below 1000 (below average)
+                <span className="w-2 h-2 rounded-full bg-warning inline-block" aria-hidden="true" />
+                Below 1000
               </span>
+              <span>School data licensed from ACARA under CC BY 4.0.</span>
             </div>
-          </>
+          </section>
         ) : (
-          <div className="rounded-2xl border border-line bg-surface-raised p-12 text-center">
-            <GraduationCap className="w-10 h-10 text-ink-subtle mx-auto mb-3" />
-            <p className="text-ink-muted">No school data available for {suburb.name} yet.</p>
+          <div className="rounded-xl border border-line bg-surface-warm p-6">
+            <p className="font-sans text-base text-ink">No school data available for {name} yet.</p>
           </div>
         )}
 
-        {/* Property CTA, soft */}
-        <div className="mt-12 rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+        {/* Before you buy for a school: zones are by address. */}
+        <section className="rounded-xl border border-line p-5 sm:p-6 max-w-3xl">
+          <h2 className="font-display text-lg sm:text-xl font-bold text-ink">School zones go by address, not suburb</h2>
+          <p className="mt-2 font-sans text-[15px] text-ink-muted leading-relaxed">
+            {`A government school's catchment can split a suburb, so two streets in ${name} can belong to different schools. Check the exact address with the ${suburb.state} education department's school finder before you make an offer, and ask the agent for it in writing.`}
+          </p>
+          <p className="mt-3 font-sans text-[15px]">
+            <Link
+              href={hasListings ? `/suburbs/${slug}/buy` : `/suburbs/${slug}`}
+              className="inline-flex items-center gap-2 font-medium text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary"
+            >
+              {hasListings ? `Homes for sale in ${name}` : `Living in ${name}: prices, rents and who lives there`}
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
+          </p>
+        </section>
+
+        <SubpageNextSteps id="next" title={`Next steps for ${name} buyers`} groups={nextSteps} />
+
+        {/* The same one action, once more where the page ends. */}
+        <section className="rounded-xl bg-surface-inverse text-white p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
           <div>
-            <p className="text-[13px] font-sans text-ink-subtle mb-2">
-              {hasListings ? "Nearby properties" : "The suburb"}
-            </p>
-            <h2 className="font-display text-xl sm:text-2xl text-ink leading-tight">
-              {hasListings ? `Family-friendly homes in ${suburb.name}.` : `Living in ${suburb.name}.`}
-            </h2>
-            <p className="font-sans text-sm text-ink-muted mt-2">
-              {suburb.stats.medianHousePrice > 0
-                ? `Median house price ${formatPriceFull(suburb.stats.medianHousePrice)}.`
-                : hasListings
-                  ? "Browse current listings."
-                  : "Prices, rents and who lives here."}
-            </p>
+            <h2 className="font-display text-xl sm:text-2xl font-bold tracking-tight">Buying in {name}?</h2>
+            <p className="font-sans text-sm text-white/75 mt-1.5 max-w-xl">The free buying guide, personalised to {name}: budget, schemes, inspections and the offer.</p>
           </div>
           <Link
-            href={hasListings ? `/suburbs/${slug}/buy` : `/suburbs/${slug}`}
-            className="shrink-0 inline-flex items-center gap-2 rounded-lg border border-line-strong bg-surface-raised text-ink hover:border-ink hover:bg-surface-raised font-medium px-5 py-2.5 transition-colors"
+            href={buyHref}
+            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors"
           >
-            {hasListings ? "View properties" : "Suburb profile"} <ArrowRight className="w-4 h-4" />
+            Get the free buying guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </Link>
-        </div>
-
-        <p className="text-xs text-ink-subtle mt-6 px-1">
-          School data licensed from ACARA under CC BY 4.0.
-        </p>
+        </section>
       </div>
-
-      {/* School researchers are family buyers. Deep-links the buying-guide
-          funnel with the suburb pre-answered. */}
-      <ExpertCTA
-        headline={`Moving to ${suburb.name} for the schools?`}
-        body={`The complete buying guide, personalised to ${suburb.name}: what you can really spend, 2026 schemes state by state, and how not to overpay. Free PDF, 60 seconds.`}
-        ctaLabel="Get the free buying guide"
-        href={`/buying-guide?suburb=${slug}`}
-      />
     </>
   );
 }
