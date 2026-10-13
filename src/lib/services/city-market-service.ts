@@ -1,7 +1,8 @@
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY } from "@/lib/non-localities";
 import { publishedGrowth, publishesMedians } from "@/lib/published-medians";
-import { cityPostcodeWhere, type CapitalCity } from "@/lib/utils/metro";
+import { formatPrice } from "@/lib/utils/format";
+import { CAPITAL_CITIES, cityPostcodeWhere, type CapitalCity } from "@/lib/utils/metro";
 
 // City-level market rollups for the /property-market/{city} pages.
 // Aggregates the suburb dataset upward using the rule the suburb pages
@@ -63,6 +64,41 @@ export interface CityMarket {
   salesAsOf: Date | null;
 }
 
+/**
+ * What the /property-market hub card prints for a city. Numbers only, so it
+ * survives unstable_cache's JSON round trip (a CityMarket's dates would not).
+ */
+export interface CityMarketSummary {
+  pricedSuburbCount: number;
+  /** Null when none of the city's suburbs publishes a median. */
+  medianHousePrice: number | null;
+  medianAnnualGrowth: number | null;
+}
+
+export function summarizeCityMarket(m: CityMarket): CityMarketSummary {
+  return {
+    pricedSuburbCount: m.pricedSuburbCount,
+    medianHousePrice: m.medianHousePrice,
+    medianAnnualGrowth: m.medianAnnualGrowth,
+  };
+}
+
+/** The hub card's figure: the median, or a plain statement that there is none. Never a bare dash. */
+export type CityCardFigure =
+  | { kind: "median"; price: string; growth: number | null }
+  | { kind: "none"; label: string; note: string };
+
+export function cityCardFigure(s: CityMarketSummary): CityCardFigure {
+  if (s.medianHousePrice != null && s.medianHousePrice > 0) {
+    return { kind: "median", price: formatPrice(s.medianHousePrice), growth: s.medianAnnualGrowth };
+  }
+  return {
+    kind: "none",
+    label: "No verified median yet",
+    note: "Too few verified sales to publish a city figure",
+  };
+}
+
 function median(values: number[]): number | null {
   if (values.length === 0) return null;
   const sorted = [...values].sort((a, b) => a - b);
@@ -105,6 +141,13 @@ export async function getCityMarket(city: CapitalCity): Promise<CityMarket> {
     },
   });
   return buildCityMarket(rows);
+}
+
+/** Every capital's hub summary, in CAPITAL_CITIES order. */
+export async function getCityMarketSummaries(): Promise<{ slug: string; summary: CityMarketSummary }[]> {
+  return Promise.all(
+    CAPITAL_CITIES.map(async (city) => ({ slug: city.slug, summary: summarizeCityMarket(await getCityMarket(city)) })),
+  );
 }
 
 /** Pure rollup over the metro's suburb rows. */
