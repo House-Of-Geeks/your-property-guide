@@ -248,9 +248,10 @@ describe("lists that must not carry them", () => {
       "src/app/(marketing)/compare/sitemap.ts": 1,
       "src/app/(marketing)/regions/sitemap.ts": 1,
       "src/app/(marketing)/regions/page.tsx": 1,
+      "src/app/(marketing)/property-market/page.tsx": 1,
     };
     for (const [file, keys] of Object.entries(cached)) {
-      const found = fs.readFileSync(file, "utf8").match(/\["[a-z-]+:v\d+", NOT_PLACES_VERSION\]/g) ?? [];
+      const found = fs.readFileSync(file, "utf8").match(/\["[a-z-]+:v\d+", NOT_PLACES_VERSION[\],]/g) ?? [];
       expect(found.length, file).toBe(keys);
     }
     expect(NOT_PLACES_VERSION).toMatch(/^not-places:\d{4}-\d{2}-\d{2}:\d+\+\d+$/);
