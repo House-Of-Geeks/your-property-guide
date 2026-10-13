@@ -79,10 +79,10 @@ export default function AboutPage() {
           <p className="font-display font-normal text-xl sm:text-2xl lg:text-3xl text-ink leading-[1.25] max-w-3xl">
             Property is the biggest financial decision most Australians ever
             make. Most of the people explaining it have something to sell. We
-            wrote this site because that&rsquo;s a problem. Sixty plain-English
-            guides, every property calculator, suburb profiles for every
-            suburb in Australia, and one local agent when you&rsquo;re ready
-            to sell. Education first. No sign-up, no agenda.
+            wrote this site because that&rsquo;s a problem. Free guides to
+            selling and buying in every state, the calculators that go with
+            them, and, when you ask, one local agent for a free appraisal. Our
+            team talks to you first, and the agent pays us for the introduction.
           </p>
         </div>
       </section>
