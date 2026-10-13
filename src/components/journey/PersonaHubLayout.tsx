@@ -145,24 +145,10 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
         }))}
       />
 
-      {/* Editorial hero. Magazine masthead with numbered persona slug,
-          display-scale H1 with italic emphasis on the persona noun, serif
-          standfirst. Illustration column dropped: hub pages read as
-          authoritative editorial when the headline owns the page. */}
+      {/* Hero: the persona heading and a standfirst. */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-20 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-32">
-          {/* Magazine masthead: italic persona ordinal + hairline + label */}
-          <div className="rise flex items-center gap-4 mb-12">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
-              No. {String(persona.order).padStart(2, "0")}
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              Your Property Guide for
-            </span>
-          </div>
-
           {/* Display-scale H1. Persona heading owns the page */}
           <h1 className="rise rise-d1 font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
             {persona.hubHeading}
