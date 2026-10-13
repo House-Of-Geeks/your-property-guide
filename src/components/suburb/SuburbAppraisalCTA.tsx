@@ -69,7 +69,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const mobileError = auMobileError(phone);
+    const mobileError = auMobileError(phone, { landline: true });
     if (mobileError) {
       setPhoneError(mobileError);
       return;
@@ -189,7 +189,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
 
         <div>
           <label htmlFor="suburb-appraisal-phone" className="block text-xs font-medium text-ink-muted mb-1">
-            Mobile <span className="font-normal text-ink-subtle">so your agent can arrange the appraisal</span>
+            Phone <span className="font-normal text-ink-subtle">mobile or landline, so we can arrange the appraisal</span>
           </label>
           <AuPhoneInput
             id="suburb-appraisal-phone"
@@ -201,7 +201,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
             required
             invalid={!!phoneError}
             aria-describedby={phoneError ? "suburb-appraisal-phone-error" : undefined}
-            placeholder="0491 570 156"
+            placeholder="Mobile or landline"
             tone="raised"
             size="md"
           />

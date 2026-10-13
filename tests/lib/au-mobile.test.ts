@@ -1,6 +1,9 @@
 import { describe, it, expect } from "vitest";
 import {
   AU_MOBILE_ERROR,
+  AU_PHONE_ERROR,
+  NON_AU_PHONE_ERROR,
+  isValidAusLandline,
   MOBILE_ERROR,
   NON_AU_MOBILE_ERROR,
   auMobileError,
@@ -146,5 +149,23 @@ describe("displayPhone", () => {
     expect(displayPhone("+61491570156")).toBe("0491 570 156");
     expect(displayPhone("+447911123456")).toBe("+44 7911 123456");
     expect(displayPhone("0491 570 156")).toBe("0491 570 156");
+  });
+});
+
+describe("landlines on the appraisal forms (13 Oct 2026)", () => {
+  it("accepts an Australian landline only when the form allows it", () => {
+    expect(auMobileError("+61755501234")).toBe(AU_MOBILE_ERROR);
+    expect(auMobileError("+61755501234", { landline: true })).toBeNull();
+    expect(auMobileError("+61294561234", { landline: true })).toBeNull();
+  });
+  it("still accepts mobiles and turns away junk and overseas numbers", () => {
+    expect(auMobileError("+61491570156", { landline: true })).toBeNull();
+    expect(auMobileError("+61412345678", { landline: true })).toBe(AU_PHONE_ERROR);
+    expect(auMobileError("+611300123456", { landline: true })).toBe(AU_PHONE_ERROR);
+    expect(auMobileError("+447911123456", { landline: true })).toBe(NON_AU_PHONE_ERROR);
+  });
+  it("gives an example landline that itself validates", () => {
+    expect(isValidAusLandline("+61755501234")).toBe(true);
+    expect(AU_PHONE_ERROR).toContain("07 5550 1234");
   });
 });
