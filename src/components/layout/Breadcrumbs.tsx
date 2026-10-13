@@ -13,7 +13,7 @@ interface BreadcrumbsProps {
 export function Breadcrumbs({ items }: BreadcrumbsProps) {
   return (
     <nav aria-label="Breadcrumb" className="py-3">
-      <ol className="flex items-center gap-1 text-sm text-gray-500 flex-wrap">
+      <ol className="flex items-center gap-1 text-sm text-ink-subtle flex-wrap">
         <li>
           <Link href="/" className="hover:text-primary transition-colors">
             Home
@@ -27,7 +27,7 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
                 {item.label}
               </Link>
             ) : (
-              <span className="text-gray-900 font-medium">{item.label}</span>
+              <span className="text-ink font-medium">{item.label}</span>
             )}
           </li>
         ))}
