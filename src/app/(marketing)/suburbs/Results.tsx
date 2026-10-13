@@ -1,19 +1,22 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getSuburbs } from "@/lib/services/suburb-service";
+import { BUTTON_SECONDARY } from "@/components/premium";
 import { SuburbsSearchBar } from "./SuburbsSearchBar";
 
 const PAGE_SIZE = 60;
 
+// State codes are set as plain small type (brand v4.1: no coloured chips;
+// the purple and pink fills were the v2 palette).
 const STATES = [
-  { code: "NSW", label: "New South Wales",    bg: "bg-black",     text: "text-white" },
-  { code: "VIC", label: "Victoria",           bg: "bg-[#5c2d5e]", text: "text-white" },
-  { code: "QLD", label: "Queensland",         bg: "bg-[#DD3C70]", text: "text-white" },
-  { code: "WA",  label: "Western Australia",  bg: "bg-black",     text: "text-white" },
-  { code: "SA",  label: "South Australia",    bg: "bg-[#5c2d5e]", text: "text-white" },
-  { code: "TAS", label: "Tasmania",           bg: "bg-[#DD3C70]", text: "text-white" },
-  { code: "NT",  label: "Northern Territory", bg: "bg-black",     text: "text-white" },
-  { code: "ACT", label: "ACT",                bg: "bg-[#5c2d5e]", text: "text-white" },
+  { code: "NSW", label: "New South Wales" },
+  { code: "VIC", label: "Victoria" },
+  { code: "QLD", label: "Queensland" },
+  { code: "WA",  label: "Western Australia" },
+  { code: "SA",  label: "South Australia" },
+  { code: "TAS", label: "Tasmania" },
+  { code: "NT",  label: "Northern Territory" },
+  { code: "ACT", label: "ACT" },
 ];
 
 const STATE_MAP = Object.fromEntries(STATES.map((s) => [s.code, s]));
@@ -62,7 +65,7 @@ export async function SuburbsResults({ searchParams }: SuburbsResultsProps) {
       </p>
 
       {suburbs.length === 0 ? (
-        <div className="rounded-2xl border border-line-warm bg-surface-warm p-12 text-center max-w-2xl mx-auto">
+        <div className="rounded-xl border border-line bg-surface-warm p-12 text-center max-w-2xl mx-auto">
           <Image
             src="/images/illustrations/data-empty.svg"
             alt=""
@@ -77,7 +80,7 @@ export async function SuburbsResults({ searchParams }: SuburbsResultsProps) {
           </p>
           <Link
             href="/suburbs"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-cta hover:text-cta-hover"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink"
           >
             Clear filters
           </Link>
@@ -97,7 +100,7 @@ export async function SuburbsResults({ searchParams }: SuburbsResultsProps) {
                     {suburb.name}
                   </span>
                   {stateInfo && (
-                    <span className={`shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded ${stateInfo.bg} ${stateInfo.text}`}>
+                    <span className="shrink-0 text-[11px] font-semibold text-ink-subtle">
                       {suburb.state}
                     </span>
                   )}
@@ -111,25 +114,22 @@ export async function SuburbsResults({ searchParams }: SuburbsResultsProps) {
 
       {hasMore && (
         <div className="text-center mb-12">
-          <Link
-            href={loadMoreUrl()}
-            className="inline-flex items-center gap-2 px-6 py-3 border border-line-strong rounded-lg text-sm font-medium text-ink hover:border-ink hover:bg-surface-warm transition-colors"
-          >
+          <Link href={loadMoreUrl()} className={BUTTON_SECONDARY}>
             Load More ↓
           </Link>
         </div>
       )}
 
-      <div className="border-t border-line pt-10">
-        <h2 className="font-display text-2xl text-ink mb-5">Browse by State</h2>
+      <div className="border-t border-line pt-12 sm:pt-16">
+        <h2 className="text-3xl sm:text-4xl leading-[1.1] tracking-[-0.025em] text-ink mb-8">Browse by State</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {STATES.map((s) => (
             <Link
               key={s.code}
               href={filterUrl(s.code)}
-              className="flex items-center gap-3 p-4 border border-line rounded-xl hover:border-ink hover:bg-surface-warm transition-colors group"
+              className="flex items-center gap-3 p-4 border border-line rounded-xl hover:border-ink transition-colors group"
             >
-              <span className={`text-xs font-bold px-2 py-1 rounded ${s.bg} ${s.text} shrink-0`}>
+              <span className="text-sm font-bold text-ink shrink-0 w-9">
                 {s.code}
               </span>
               <span className="text-sm font-medium text-ink-muted group-hover:text-ink">{s.label}</span>

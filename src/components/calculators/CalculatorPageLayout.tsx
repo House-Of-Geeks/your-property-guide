@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
+import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 import { BUYING_GUIDE_CTA, ExpertCTA } from "@/components/journey";
 import { Faq, type FaqItem, GuideStartInline, RelatedGuides, type RelatedGuide } from "@/components/guide";
 import { BreadcrumbJsonLd, WebApplicationJsonLd } from "@/components/seo";
@@ -63,43 +63,39 @@ export function CalculatorPageLayout({
         url={pageUrl}
       />
 
-      {/* Short hero so the calculator is on the first screen, phones
-          included: the H1 that names the tool, one line on what it does,
-          the date. The persona hub link stays as a plain text link. */}
-      <section className="bg-surface-warm border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-6 sm:pb-10">
-          <div className="mb-4 sm:mb-6">
-            <Breadcrumbs items={[{ label: frontmatter.title }]} />
-          </div>
-          <h1 className="font-display text-ink tracking-[-0.03em] text-[1.875rem] leading-[1.08] sm:text-4xl lg:text-5xl lg:leading-[1.04] font-bold max-w-4xl">
-            {frontmatter.h1 ?? frontmatter.title}
-          </h1>
-          <p className="mt-3 sm:mt-4 text-base sm:text-lg text-ink leading-normal sm:leading-relaxed max-w-3xl">
-            {frontmatter.description}
-          </p>
-          <p className="mt-3 sm:mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink-muted">
-            <span>
-              Updated <FormattedDate iso={frontmatter.updatedAt} />
-            </span>
-            <span aria-hidden="true">·</span>
-            <span>Free, no sign-up</span>
-            {persona && (
-              <>
-                <span aria-hidden="true">·</span>
-                <Link href={persona.hubPath} className="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
-                  {persona.hubHeading}
-                </Link>
-              </>
-            )}
-          </p>
-        </div>
-      </section>
+      {/* Compact hero so the calculator is on the first screen: the H1 that
+          names the tool, one line on what it does, the date. A plain
+          charcoal band (BRAND.md section 11: tools and reference pages may
+          drop the photo), so nothing heavier than type sits above the
+          widget. The persona hub link stays as a plain text link. */}
+      <PhotoHero breadcrumbs={[{ label: frontmatter.title }]}>
+        <HeroTitle>{frontmatter.h1 ?? frontmatter.title}</HeroTitle>
+        <HeroLead>{frontmatter.description}</HeroLead>
+        <p className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink-muted">
+          <span>
+            Updated <FormattedDate iso={frontmatter.updatedAt} />
+          </span>
+          <span aria-hidden="true">·</span>
+          <span>Free, no sign-up</span>
+          {persona && (
+            <>
+              <span aria-hidden="true">·</span>
+              <Link href={persona.hubPath} className="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+                {persona.hubHeading}
+              </Link>
+            </>
+          )}
+        </p>
+      </PhotoHero>
 
       {/* The calculator, then the one action that fits the result: seller
           calculators start the selling guide in place (with the appraisal
-          as the alternative), buyer calculators offer the buying guide. */}
-      <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-10 sm:pt-10 sm:pb-12">
+          as the alternative), buyer calculators offer the buying guide. A
+          light band straight under the hero, with less room on top than a
+          Band so the widget starts as high as it can; widgets are white
+          cards, so they stay on white. */}
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8 pb-14 sm:pt-12 sm:pb-20">
           {calculator}
           {sellerCalculator ? (
             <>
@@ -122,10 +118,7 @@ export function CalculatorPageLayout({
                   Free PDF, personalised to your situation, in 60 seconds.
                 </p>
               </div>
-              <Link
-                href={funnelHref}
-                className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-5 py-3 transition-colors"
-              >
+              <Link href={funnelHref} className={`shrink-0 justify-center ${BUTTON_PRIMARY}`}>
                 Get the free buying guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
             </aside>
@@ -133,59 +126,58 @@ export function CalculatorPageLayout({
         </div>
       </section>
 
-      {/* Explainer + FAQ + related, two-column with a short sidebar note */}
-      <section className="bg-white border-t border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-          <div className="grid lg:grid-cols-12 gap-12">
-            <aside className="hidden lg:block lg:col-span-3 lg:order-2">
-              <div className="sticky top-28 space-y-6 border-t border-line pt-4">
-                <div>
-                  <p className="text-sm font-semibold text-ink mb-1">
-                    An estimate, not a quote
-                  </p>
-                  <p className="text-sm text-ink-muted leading-relaxed">
-                    These figures use simplified assumptions.{" "}
-                    {intent === "buying"
-                      ? "Real lender policies vary, especially around income shading, living-expense benchmarks and existing debts."
-                      : "Check them with a professional before you act on them."}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-ink mb-1">
-                    Spotted an error?
-                  </p>
-                  <p className="text-sm text-ink-muted leading-relaxed">
-                    Tell us and we&rsquo;ll fix it.{" "}
-                    <Link href="/about#corrections" className="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
-                      How corrections work
-                    </Link>
-                  </p>
-                </div>
+      {/* Explainer + FAQ + related, two-column with a short sidebar note.
+          Light: explainers carry tables and quiet cards. */}
+      <Band spacing="compact">
+        <div className="grid lg:grid-cols-12 gap-12">
+          <aside className="hidden lg:block lg:col-span-3 lg:order-2">
+            <div className="sticky top-28 space-y-6 border-t border-line pt-4">
+              <div>
+                <p className="text-sm font-semibold text-ink mb-1">
+                  An estimate, not a quote
+                </p>
+                <p className="text-sm text-ink-muted leading-relaxed">
+                  These figures use simplified assumptions.{" "}
+                  {intent === "buying"
+                    ? "Real lender policies vary, especially around income shading, living-expense benchmarks and existing debts."
+                    : "Check them with a professional before you act on them."}
+                </p>
               </div>
-            </aside>
-
-            {/* min-w-0: a wide table in the explainer scrolls inside its
-                wrapper instead of stretching the grid column past the phone's width. */}
-            <div className="min-w-0 lg:col-span-9 lg:order-1">
-              <div className="prose-ypg [&>*:first-child]:mt-0">
-                {explainer}
+              <div>
+                <p className="text-sm font-semibold text-ink mb-1">
+                  Spotted an error?
+                </p>
+                <p className="text-sm text-ink-muted leading-relaxed">
+                  Tell us and we&rsquo;ll fix it.{" "}
+                  <Link href="/about#corrections" className="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+                    How corrections work
+                  </Link>
+                </p>
               </div>
-
-              {/* Funnel exit at the end of the read. Seller-economics
-                  calculators push the selling guide; buyer-finance
-                  calculators the buying guide. */}
-              <ExpertCTA
-                variant="inline"
-                {...(intent === "buying" ? BUYING_GUIDE_CTA : {})}
-                href={funnelHref}
-              />
-
-              <Faq items={faqs} title="Common questions" />
-              <RelatedGuides items={related} title="Keep reading" />
             </div>
+          </aside>
+
+          {/* min-w-0: a wide table in the explainer scrolls inside its
+              wrapper instead of stretching the grid column past the phone's width. */}
+          <div className="min-w-0 lg:col-span-9 lg:order-1">
+            <div className="prose-ypg [&>*:first-child]:mt-0">
+              {explainer}
+            </div>
+
+            {/* Funnel exit at the end of the read. Seller-economics
+                calculators push the selling guide; buyer-finance
+                calculators the buying guide. */}
+            <ExpertCTA
+              variant="inline"
+              {...(intent === "buying" ? BUYING_GUIDE_CTA : {})}
+              href={funnelHref}
+            />
+
+            <Faq items={faqs} title="Common questions" />
+            <RelatedGuides items={related} title="Keep reading" />
           </div>
         </div>
-      </section>
+      </Band>
 
       {/* Next-step rail: the natural next calculator or guide, after the
           read, so the calculator is never a dead end. */}
@@ -270,25 +262,21 @@ function NextStepRail({
   if (steps.length === 0) return null;
 
   return (
-    <section className="border-t border-line bg-surface-warm">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-        <h2 className="font-display text-xl sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-4">
-          {persona ? "Pair this with" : "Keep going"}
-        </h2>
-        <ul className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 border-t border-line">
-          {steps.map((s) => (
-            <li key={s.href} className="border-b border-line">
-              <Link href={s.href} className="group flex items-start justify-between gap-3 py-4">
-                <span className="min-w-0">
-                  <span className="block font-semibold text-ink group-hover:underline underline-offset-4">{s.label}</span>
-                  <span className="block mt-0.5 text-sm text-ink-muted leading-snug">{s.description}</span>
-                </span>
-                <ArrowRight className="w-4 h-4 mt-1 shrink-0 text-ink-subtle group-hover:text-ink" aria-hidden="true" />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
+    <Band tone="quiet" spacing="compact">
+      <SectionHeading size="md" title={persona ? "Pair this with" : "Keep going"} />
+      <ul className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-x-8 border-t border-line">
+        {steps.map((s) => (
+          <li key={s.href} className="border-b border-line">
+            <Link href={s.href} className="group flex items-start justify-between gap-3 py-4">
+              <span className="min-w-0">
+                <span className="block font-semibold text-ink group-hover:underline underline-offset-4">{s.label}</span>
+                <span className="block mt-0.5 text-sm text-ink-muted leading-snug">{s.description}</span>
+              </span>
+              <ArrowRight className="w-4 h-4 mt-1 shrink-0 text-ink-subtle group-hover:text-ink" aria-hidden="true" />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </Band>
   );
 }

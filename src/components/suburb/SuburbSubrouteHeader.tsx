@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
+import { BUTTON_PRIMARY, HeroTitle, PhotoHero } from "@/components/premium";
 import { guideFunnelHref } from "@/lib/guide-funnel";
 import { subpageTabs, type SubpageAvailability, type SubpageTab, type SuburbSubpage } from "@/lib/suburb-subpages";
 
@@ -37,12 +37,17 @@ interface SuburbSubrouteHeaderProps {
   breadcrumbLeaf?: string;
   /** Sibling sub-pages. Drawn from two tabs: the page being read alone is not navigation. */
   tabs?: readonly SuburbSubrouteTab[];
-  /** Key figures under the answer, left column. */
+  /**
+   * Key figures under the answer, left column. They sit on the dark hero:
+   * text in ink tokens reads as is, and a white panel carries .tone-light.
+   */
   children?: React.ReactNode;
   /**
-   * The page's one action, beside the answer on desktop and straight after
-   * it on a phone. Defaults to the selling guide with the suburb answered;
-   * pass null for none (a page whose form sits right below the header).
+   * The page's one action. Defaults to the selling guide button, under the
+   * answer; a page's own action (a card or a form) sits beside the answer
+   * on desktop and straight after it on a phone, as a white card (it is
+   * wrapped in .tone-light). Pass null for none (a page whose form sits
+   * right below the header).
    */
   action?: React.ReactNode | null;
   /** Recorded with a lead from the default action (?from=). */
@@ -52,9 +57,10 @@ interface SuburbSubrouteHeaderProps {
 /**
  * Shared header for the sub-pages under /suburbs/[slug]. Answer first: the
  * H1 names the query, the subtitle answers it with a sourced figure, and the
- * one action sits beside it. Kept short so the answer and the action fit a
- * phone's first screen (brand v4: white page, quiet band, one roof-tile
- * button, lines not shadows).
+ * one action sits beside it. Premium hero (BRAND.md section 11): the library
+ * street photo under the flat charcoal overlay, decorative and never
+ * captioned as the suburb, then the sub-page strip on white. Kept short so
+ * the answer and the action fit a phone's first screen.
  */
 export function SuburbSubrouteHeader({
   suburb,
@@ -66,49 +72,40 @@ export function SuburbSubrouteHeader({
   action,
   from,
 }: SuburbSubrouteHeaderProps) {
-  const act =
+  const defaultAction =
     action === undefined ? (
       <Link
         href={guideFunnelHref("selling", { suburb: suburb.slug, from })}
-        className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors"
+        className={`${BUTTON_PRIMARY} w-full sm:w-auto justify-center`}
       >
         Selling in {suburb.name}? Get the free guide
         <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
       </Link>
-    ) : (
-      action
-    );
+    ) : null;
 
   return (
-    <section className="bg-surface-warm border-b border-line">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4">
-        <Breadcrumbs
-          items={[
-            { label: "Suburbs", href: "/suburbs" },
-            { label: suburb.name, href: `/suburbs/${suburb.slug}` },
-            ...(breadcrumbLeaf ? [{ label: breadcrumbLeaf }] : []),
-          ]}
-        />
-
-        <div className={`grid gap-6 lg:gap-12 pt-3 pb-8 sm:pb-10 ${act ? "lg:grid-cols-12 lg:items-start" : ""}`}>
-          <div className={act ? "lg:col-span-7 xl:col-span-7" : "max-w-4xl"}>
-            <h1 className="font-display text-ink font-bold leading-[1.05] tracking-[-0.03em] text-[2rem] sm:text-5xl lg:text-[3.25rem] text-balance">
-              {title}
-            </h1>
-            {subtitle && (
-              <div className="mt-4 font-sans text-base sm:text-lg text-ink leading-relaxed max-w-2xl">
-                {subtitle}
-              </div>
-            )}
-            {children && <div className="mt-6">{children}</div>}
+    <>
+      <PhotoHero
+        photo="street"
+        breadcrumbs={[
+          { label: "Suburbs", href: "/suburbs" },
+          { label: suburb.name, href: `/suburbs/${suburb.slug}` },
+          ...(breadcrumbLeaf ? [{ label: breadcrumbLeaf }] : []),
+        ]}
+        aside={action ? <div className="tone-light">{action}</div> : undefined}
+      >
+        <HeroTitle>{title}</HeroTitle>
+        {subtitle && (
+          <div className="mt-6 text-lg sm:text-xl text-ink-muted leading-relaxed max-w-2xl [&_strong]:text-ink">
+            {subtitle}
           </div>
-          {act && <div className="lg:col-span-5 xl:col-span-5 lg:pt-1">{act}</div>}
-        </div>
+        )}
+        {children && <div className="mt-8">{children}</div>}
+        {defaultAction && <div className="mt-8">{defaultAction}</div>}
+      </PhotoHero>
 
-        <nav
-          aria-label={`${suburb.name} pages`}
-          className="-mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto border-t border-line"
-        >
+      <nav aria-label={`${suburb.name} pages`} className="border-b border-line bg-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 overflow-x-auto">
           <ol className="flex items-center gap-6 min-w-max text-sm">
             <li>
               <Link
@@ -139,9 +136,9 @@ export function SuburbSubrouteHeader({
                 );
               })}
           </ol>
-        </nav>
-      </div>
-    </section>
+        </div>
+      </nav>
+    </>
   );
 }
 
@@ -156,16 +153,13 @@ interface SubrouteActionCardProps {
   note?: React.ReactNode;
 }
 
-/** The one action of a sub-page, as a card beside the answer. */
+/** The one action of a sub-page, as a white card beside the answer on the dark hero. */
 export function SubrouteActionCard({ heading, body, href, cta, children, note }: SubrouteActionCardProps) {
   return (
-    <div className="rounded-xl border border-line bg-white p-5 sm:p-6">
+    <div className="tone-light rounded-xl border border-line bg-white p-5 sm:p-6">
       <h2 className="font-display text-lg sm:text-xl font-bold text-ink leading-snug tracking-tight">{heading}</h2>
       {body && <div className="mt-1.5 font-sans text-sm sm:text-[15px] text-ink-muted leading-relaxed">{body}</div>}
-      <Link
-        href={href}
-        className="mt-4 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors"
-      >
+      <Link href={href} className={`mt-4 ${BUTTON_PRIMARY} w-full sm:w-auto justify-center`}>
         {cta}
         <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
       </Link>
