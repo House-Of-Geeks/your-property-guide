@@ -120,14 +120,6 @@ export default function FindAnExpertPage() {
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="grid lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-7">

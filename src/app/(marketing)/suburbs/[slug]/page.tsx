@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MapPin, Bus, ShoppingBag, BarChart3, TrendingUp } from "lucide-react";
 import {
@@ -397,14 +396,6 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             aria-hidden="true"
             className="absolute inset-y-0 -inset-x-4 sm:-inset-x-6 lg:-inset-x-8 overflow-x-clip pointer-events-none -z-10"
           >
-            <Image
-              src="/images/illustrations/contour.svg"
-              alt=""
-              width={1200}
-              height={800}
-              aria-hidden="true"
-              className="absolute -right-28 sm:-right-26 lg:-right-24 -top-16 w-[800px] max-w-none opacity-[0.08] select-none"
-            />
           </div>
           <div className="grid lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-3">

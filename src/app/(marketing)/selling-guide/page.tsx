@@ -252,7 +252,7 @@ export default function SellingGuidePage() {
       {/* The money band. Three numbers, all drawn from the guide's own
           content, that answer "why is a free PDF worth my email address"
           in the reader's units: dollars. */}
-      <section className="bg-accent-lighter border-y border-line-warm">
+      <section className="bg-surface-warm border-y border-line">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
           <p className="text-[13px] text-primary-dark font-sans font-semibold mb-10 text-center">
             What the right moves are worth

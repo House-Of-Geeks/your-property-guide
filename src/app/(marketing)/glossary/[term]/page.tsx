@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, DefinedTermJsonLd } from "@/components/seo";
@@ -141,14 +140,6 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-16 sm:pb-20">
           <div className="mb-10">
             <Breadcrumbs

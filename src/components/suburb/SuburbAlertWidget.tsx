@@ -162,7 +162,7 @@ export function SuburbAlertWidget({ suburbName, suburbSlug }: Props) {
                   setPhone(v);
                   if (phoneError) setPhoneError(null);
                 }}
-                placeholder="0412 345 678"
+                placeholder="0491 570 156"
                 invalid={!!phoneError}
                 tone="plain"
                 size="sm"

@@ -167,7 +167,7 @@ export function RentalAppraisalForm({ suburbName, suburbSlug, state, postcode }:
             required
             invalid={!!phoneError}
             aria-describedby={phoneError ? "rental-appraisal-phone-error" : undefined}
-            placeholder="0412 345 678"
+            placeholder="0491 570 156"
             tone="raised"
             size="md"
           />

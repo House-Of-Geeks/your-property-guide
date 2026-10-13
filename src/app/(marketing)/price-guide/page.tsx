@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -119,14 +118,6 @@ export default async function PriceGuidePage({
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
           <div className="mb-8">
             <Breadcrumbs items={[{ label: "Price Guide" }]} />

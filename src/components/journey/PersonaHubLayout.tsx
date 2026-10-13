@@ -327,14 +327,6 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
 
       {/* Suburb data CTA, universal */}
       <section className="relative py-16 sm:py-20 bg-surface-warm border-y border-line-warm overflow-hidden">
-        <Image
-          src="/images/illustrations/street-grid.svg"
-          alt=""
-          width={400}
-          height={400}
-          aria-hidden="true"
-          className="absolute -right-12 -bottom-12 w-[400px] opacity-[0.12] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-7">

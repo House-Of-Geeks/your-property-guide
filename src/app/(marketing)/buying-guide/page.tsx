@@ -243,7 +243,7 @@ export default function BuyingGuidePage() {
       </section>
 
       {/* The money band, buyer numbers, all drawn from the guide. */}
-      <section className="bg-accent-lighter border-y border-line-warm">
+      <section className="bg-surface-warm border-y border-line">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
           <p className="text-[13px] text-primary-dark font-sans font-semibold mb-10 text-center">
             What knowing the game is worth
