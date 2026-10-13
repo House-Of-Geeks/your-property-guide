@@ -91,7 +91,7 @@ export function emailLayout({
               <td style="padding-right:8px;vertical-align:middle;"><img src="${MARK_URL}" width="24" height="24" alt="" style="display:block;width:24px;height:24px;" /></td>
               <td style="vertical-align:middle;font-family:${FONT_SANS};font-size:17px;font-weight:700;letter-spacing:-0.3px;color:${C.ink};">Your Property Guide</td>
             </tr></table>`}
-            <p style="margin:0;color:${eyebrowColor};font-size:13px;font-weight:600;font-family:${FONT_SANS};">${eyebrow}</p>
+            ${alert || eyebrow !== "Your Property Guide" ? `<p style="margin:0;color:${eyebrowColor};font-size:13px;font-weight:600;font-family:${FONT_SANS};">${eyebrow}</p>` : ""}
             ${title ? `<h1 style="margin:6px 0 0;color:${titleColor};font-size:22px;line-height:1.25;font-weight:700;font-family:${FONT_SERIF};letter-spacing:-0.3px;">${title}</h1>` : ""}
           </td>
         </tr>
