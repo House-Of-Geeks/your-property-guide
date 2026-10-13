@@ -5,9 +5,9 @@ import { CheckCircle } from "lucide-react";
 import { FaqAccordion } from "@/components/guide";
 import { AppraisalForm } from "@/components/forms/AppraisalForm";
 import { SuburbValueRange } from "@/components/journey/SuburbValueRange";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 
 // Commercial intent review 3.4 (30 Sep 2026): the "property valuation" and
 // "property value" family is 101 Keyword Planner terms over 500 a month,
@@ -120,7 +120,6 @@ const WEBPAGE_JSON_LD = {
 };
 
 const linkClass = "text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink";
-const h2Class = "font-display text-ink tracking-[-0.02em] text-[1.75rem] sm:text-4xl leading-tight font-bold mb-5";
 
 export default function PropertyValuationPage() {
   return (
@@ -134,263 +133,244 @@ export default function PropertyValuationPage() {
           the first screen on phones). The suburb range sits beside the
           answer on desktop and under it on phones; a suburb picked there
           fills the appraisal form (?suburb=&type=). */}
-      <section className="bg-surface-warm border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-10 sm:pb-16">
-          <div className="mb-4 sm:mb-8">
-            <Breadcrumbs items={[{ label: "Property valuation" }]} />
+      <PhotoHero
+        photo="kitchen"
+        breadcrumbs={[{ label: "Property valuation" }]}
+        aside={
+          <div className="tone-light">
+            <SuburbValueRange after="link" appraisalHref="#appraisal-form" headingLevel="h2" />
           </div>
-          <div className="grid lg:grid-cols-12 gap-x-12 gap-y-8 items-start">
-            <div className="lg:col-span-7">
-              <h1 className="font-display text-ink tracking-[-0.03em] text-[1.875rem] leading-[1.08] sm:text-5xl sm:leading-[1.05] font-bold">
-                Property valuation in Australia: appraisal vs valuation vs online estimate (2026)
-              </h1>
-              <p className="mt-4 sm:mt-6 text-base sm:text-lg text-ink leading-[1.6] max-w-2xl">
-                Ask what a property is worth in Australia and you get three different numbers. A real estate
-                agent&rsquo;s appraisal is free and tells you what a buyer would probably pay now. A valuation is a
-                paid report from a licensed valuer, the only one of the three that a lender, a court or the tax office
-                will accept, and it typically costs $300 to $600 (Aussie, 31 January 2025; ANZ, read 30 September
-                2026). An online estimate is a model&rsquo;s figure from recorded sales, and every bank that publishes
-                one says on the page that it is not a valuation.
-              </p>
-              <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
-                <a
-                  href="#appraisal-form"
-                  className="inline-flex items-center justify-center rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3 transition-colors"
-                >
-                  Get a free appraisal
-                </a>
-                <a href="#three-numbers" className="text-sm font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
-                  Compare the three side by side
-                </a>
-              </div>
-            </div>
-            <div className="lg:col-span-5">
-              <SuburbValueRange after="link" appraisalHref="#appraisal-form" headingLevel="h2" />
-            </div>
-          </div>
+        }
+      >
+        <HeroTitle>
+          Property valuation in Australia: appraisal vs valuation vs online estimate (2026)
+        </HeroTitle>
+        <HeroLead>
+          Ask what a property is worth in Australia and you get three different numbers. A real estate
+          agent&rsquo;s appraisal is free and tells you what a buyer would probably pay now. A valuation is a
+          paid report from a licensed valuer, the only one of the three that a lender, a court or the tax office
+          will accept, and it typically costs $300 to $600 (Aussie, 31 January 2025; ANZ, read 30 September
+          2026). An online estimate is a model&rsquo;s figure from recorded sales, and every bank that publishes
+          one says on the page that it is not a valuation.
+        </HeroLead>
+        <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+          <a href="#appraisal-form" className={`${BUTTON_PRIMARY} justify-center`}>
+            Get a free appraisal
+          </a>
+          <a href="#three-numbers" className="text-sm font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+            Compare the three side by side
+          </a>
         </div>
-      </section>
+      </PhotoHero>
 
-      <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-14">
-          <div id="three-numbers" className="scroll-mt-24">
-            <h2 className={h2Class}>
-              The three numbers and why they differ
-            </h2>
-            <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-3xl mb-6">
+      <Band id="three-numbers" className="scroll-mt-16">
+        <SectionHeading
+          title="The three numbers and why they differ"
+          intro={
+            <>
               The word &ldquo;valuation&rdquo; gets used for all three, which is where most of the confusion starts. They
               are made by different people, for different readers, from different evidence, and each is right for its
               own job.
+            </>
+          }
+        />
+        <div className="mt-12 overflow-x-auto rounded-xl border border-line">
+          <table className="w-full min-w-[640px] font-sans text-sm text-left border-collapse">
+            <thead className="bg-surface-warm">
+              <tr>
+                <th scope="col" className="px-4 py-3 font-medium text-ink-subtle text-[13px]"><span className="sr-only">Aspect</span></th>
+                <th scope="col" className="px-4 py-3 font-display text-base text-ink">Agent appraisal</th>
+                <th scope="col" className="px-4 py-3 font-display text-base text-ink">Licensed valuation</th>
+                <th scope="col" className="px-4 py-3 font-display text-base text-ink">Online estimate</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-line">
+              {THREE_NUMBERS.map((r) => (
+                <tr key={r.row} className="align-top">
+                  <th scope="row" className="px-4 py-3 font-medium text-ink whitespace-nowrap">{r.row}</th>
+                  <td className="px-4 py-3 text-ink-muted leading-relaxed">{r.appraisal}</td>
+                  <td className="px-4 py-3 text-ink-muted leading-relaxed">{r.valuation}</td>
+                  <td className="px-4 py-3 text-ink-muted leading-relaxed">{r.estimate}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-6 space-y-4 font-sans text-base text-ink-muted leading-[1.7] max-w-3xl">
+          <p>
+            The gap between the three is built in. The appraisal looks forward to a campaign that has not happened
+            yet, so a good agent prices to the market and a poor one prices to win your listing. The valuation looks
+            back to what the property would fetch if the lender had to sell it, so it is conservative on purpose;
+            NAB&rsquo;s own guide says the market value &ldquo;is just a guide of what your property may be
+            worth&rdquo;. The online estimate has never been inside the house, so it fills every gap with the
+            average for the street.
+          </p>
+          <p>
+            As an illustration, a home might appraise at $880,000, value at $820,000 for the bank and show $910,000
+            on a portal, and none of those would be wrong. When you are selling, the appraisal is the figure that matters. When someone else
+            needs to rely on the number, it is the valuation.
+          </p>
+        </div>
+      </Band>
+
+      <Band tone="quiet" id="valuation-cost" className="scroll-mt-16">
+        <SectionHeading title="What a formal valuation costs, and when a lender needs one" />
+        <div className="mt-12 grid lg:grid-cols-12 gap-10 lg:gap-16">
+          <div className="lg:col-span-7 space-y-4 font-sans text-base text-ink-muted leading-[1.7]">
+            <p>
+              A valuation can only be carried out by a qualified valuer, and it typically costs between $300 and $600
+              depending on your location, the size of the property and other factors. That figure comes from
+              Aussie&rsquo;s guide of 31 January 2025 and is repeated in ANZ&rsquo;s valuation guide as read on 30
+              September 2026. Because the price turns on the location and the size of the property, ask for a quote
+              before you book.
             </p>
-            <div className="overflow-x-auto rounded-xl border border-line">
-              <table className="w-full min-w-[640px] font-sans text-sm text-left border-collapse">
-                <thead className="bg-surface-warm">
-                  <tr>
-                    <th scope="col" className="px-4 py-3 font-medium text-ink-subtle text-[13px]"><span className="sr-only">Aspect</span></th>
-                    <th scope="col" className="px-4 py-3 font-display text-base text-ink">Agent appraisal</th>
-                    <th scope="col" className="px-4 py-3 font-display text-base text-ink">Licensed valuation</th>
-                    <th scope="col" className="px-4 py-3 font-display text-base text-ink">Online estimate</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-line">
-                  {THREE_NUMBERS.map((r) => (
-                    <tr key={r.row} className="align-top">
-                      <th scope="row" className="px-4 py-3 font-medium text-ink whitespace-nowrap">{r.row}</th>
-                      <td className="px-4 py-3 text-ink-muted leading-relaxed">{r.appraisal}</td>
-                      <td className="px-4 py-3 text-ink-muted leading-relaxed">{r.valuation}</td>
-                      <td className="px-4 py-3 text-ink-muted leading-relaxed">{r.estimate}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="mt-6 space-y-4 font-sans text-base text-ink-muted leading-[1.7] max-w-3xl">
-              <p>
-                The gap between the three is built in. The appraisal looks forward to a campaign that has not happened
-                yet, so a good agent prices to the market and a poor one prices to win your listing. The valuation looks
-                back to what the property would fetch if the lender had to sell it, so it is conservative on purpose;
-                NAB&rsquo;s own guide says the market value &ldquo;is just a guide of what your property may be
-                worth&rdquo;. The online estimate has never been inside the house, so it fills every gap with the
-                average for the street.
-              </p>
-              <p>
-                As an illustration, a home might appraise at $880,000, value at $820,000 for the bank and show $910,000
-                on a portal, and none of those would be wrong. When you are selling, the appraisal is the figure that matters. When someone else
-                needs to rely on the number, it is the valuation.
-              </p>
-            </div>
+            <p>
+              You need one when someone other than you has to rely on the figure. Aussie lists the common cases:
+              a property settlement, a home loan including a refinance or an equity loan, working out your equity,
+              proving the value of a deceased estate, and resolving a dispute. A tax matter can call for one too,
+              such as the market value of a home on the day it was first rented out, which sets the cost base
+              for capital gains tax later; our{" "}
+              <Link href="/guides/selling-a-house-with-tenants" className={linkClass}>guide to selling with tenants</Link>{" "}
+              covers that rule.
+            </p>
+            <p>
+              A lender orders its own valuation when you buy, refinance or draw on the equity in your property
+              (NAB, read 30 September 2026). You do not choose the valuer. The valuer may need to get inside or may
+              value the property from the street and compare it with recent sales (NAB, Westpac). Whether you pay
+              is the lender&rsquo;s call: the cost varies, some lenders include it in the application fee and some
+              cover it themselves (NAB and Westpac refinancing pages, read 30 September 2026). What you cannot do
+              is hand the bank an agent&rsquo;s appraisal instead; ANZ&rsquo;s guide states that an appraisal has no
+              legal standing and cannot be used for your home loan application.
+            </p>
+            <p>
+              One more figure is often mistaken for a valuation: the land value on a rates or land tax notice. In
+              New South Wales the Valuer General issues it each year as at 1 July (the latest, published November
+              2025, is as at 1 July 2025), and the NSW Government&rsquo;s page says it is the value of the land only
+              and does not include the value of a home or other structures. It is a statutory figure for land tax
+              and council rates, not what the property would sell for.
+            </p>
           </div>
-
-          <div id="valuation-cost" className="scroll-mt-24">
-            <h2 className={h2Class}>
-              What a formal valuation costs, and when a lender needs one
-            </h2>
-            <div className="grid lg:grid-cols-12 gap-10">
-              <div className="lg:col-span-7 space-y-4 font-sans text-base text-ink-muted leading-[1.7]">
-                <p>
-                  A valuation can only be carried out by a qualified valuer, and it typically costs between $300 and $600
-                  depending on your location, the size of the property and other factors. That figure comes from
-                  Aussie&rsquo;s guide of 31 January 2025 and is repeated in ANZ&rsquo;s valuation guide as read on 30
-                  September 2026. Because the price turns on the location and the size of the property, ask for a quote
-                  before you book.
-                </p>
-                <p>
-                  You need one when someone other than you has to rely on the figure. Aussie lists the common cases:
-                  a property settlement, a home loan including a refinance or an equity loan, working out your equity,
-                  proving the value of a deceased estate, and resolving a dispute. A tax matter can call for one too,
-                  such as the market value of a home on the day it was first rented out, which sets the cost base
-                  for capital gains tax later; our{" "}
-                  <Link href="/guides/selling-a-house-with-tenants" className={linkClass}>guide to selling with tenants</Link>{" "}
-                  covers that rule.
-                </p>
-                <p>
-                  A lender orders its own valuation when you buy, refinance or draw on the equity in your property
-                  (NAB, read 30 September 2026). You do not choose the valuer. The valuer may need to get inside or may
-                  value the property from the street and compare it with recent sales (NAB, Westpac). Whether you pay
-                  is the lender&rsquo;s call: the cost varies, some lenders include it in the application fee and some
-                  cover it themselves (NAB and Westpac refinancing pages, read 30 September 2026). What you cannot do
-                  is hand the bank an agent&rsquo;s appraisal instead; ANZ&rsquo;s guide states that an appraisal has no
-                  legal standing and cannot be used for your home loan application.
-                </p>
-                <p>
-                  One more figure is often mistaken for a valuation: the land value on a rates or land tax notice. In
-                  New South Wales the Valuer General issues it each year as at 1 July (the latest, published November
-                  2025, is as at 1 July 2025), and the NSW Government&rsquo;s page says it is the value of the land only
-                  and does not include the value of a home or other structures. It is a statutory figure for land tax
-                  and council rates, not what the property would sell for.
-                </p>
-              </div>
-              <aside className="lg:col-span-5">
-                <div className="rounded-xl border border-line bg-surface-warm p-5 sm:p-6">
-                  <h3 className="font-display text-lg font-bold text-ink mb-3">At a glance</h3>
-                  <dl className="space-y-4 font-sans text-sm">
-                    <div>
-                      <dt className="font-medium text-ink">Cost of a licensed valuation</dt>
-                      <dd className="text-ink-muted">$300 to $600, by location and property size. Aussie, 31 January 2025; ANZ, read 30 September 2026.</dd>
-                    </div>
-                    <div>
-                      <dt className="font-medium text-ink">When a lender orders one</dt>
-                      <dd className="text-ink-muted">Buying, refinancing or accessing equity. The lender picks the valuer; inside or from the street. NAB, Westpac, read 30 September 2026.</dd>
-                    </div>
-                    <div>
-                      <dt className="font-medium text-ink">Who pays on a loan</dt>
-                      <dd className="text-ink-muted">Varies: some lenders include it in the application fee, some cover it. NAB and Westpac refinancing pages.</dd>
-                    </div>
-                    <div>
-                      <dt className="font-medium text-ink">An appraisal in its place</dt>
-                      <dd className="text-ink-muted">Not accepted: &ldquo;cannot be used for your home loan application&rdquo;. ANZ.</dd>
-                    </div>
-                    <div>
-                      <dt className="font-medium text-ink">Land value on the rates notice</dt>
-                      <dd className="text-ink-muted">Land only, no house. NSW Government, land values as at 1 July 2025.</dd>
-                    </div>
-                  </dl>
+          <aside className="lg:col-span-5">
+            <div className="rounded-xl border border-line bg-white p-5 sm:p-6">
+              <h3 className="font-display text-lg font-bold text-ink mb-3">At a glance</h3>
+              <dl className="space-y-4 font-sans text-sm">
+                <div>
+                  <dt className="font-medium text-ink">Cost of a licensed valuation</dt>
+                  <dd className="text-ink-muted">$300 to $600, by location and property size. Aussie, 31 January 2025; ANZ, read 30 September 2026.</dd>
                 </div>
-              </aside>
+                <div>
+                  <dt className="font-medium text-ink">When a lender orders one</dt>
+                  <dd className="text-ink-muted">Buying, refinancing or accessing equity. The lender picks the valuer; inside or from the street. NAB, Westpac, read 30 September 2026.</dd>
+                </div>
+                <div>
+                  <dt className="font-medium text-ink">Who pays on a loan</dt>
+                  <dd className="text-ink-muted">Varies: some lenders include it in the application fee, some cover it. NAB and Westpac refinancing pages.</dd>
+                </div>
+                <div>
+                  <dt className="font-medium text-ink">An appraisal in its place</dt>
+                  <dd className="text-ink-muted">Not accepted: &ldquo;cannot be used for your home loan application&rdquo;. ANZ.</dd>
+                </div>
+                <div>
+                  <dt className="font-medium text-ink">Land value on the rates notice</dt>
+                  <dd className="text-ink-muted">Land only, no house. NSW Government, land values as at 1 July 2025.</dd>
+                </div>
+              </dl>
+            </div>
+          </aside>
+        </div>
+      </Band>
+
+      <Band id="online-estimates" className="scroll-mt-16">
+        <SectionHeading title="How automated estimates work, and where they miss" />
+        <div className="mt-10 space-y-4 font-sans text-base text-ink-muted leading-[1.7] max-w-3xl">
+          <p>
+            The instant figures on the portals and the banks&rsquo; free property reports come from automated
+            valuation models. A model takes every recorded sale it can see, the attributes on file for each
+            property (bedrooms, land size, year built, last sale price) and the movement of the local market, and
+            works out where a property with your attributes would sit. CommBank&rsquo;s Property Insights draws on
+            Cotality data and says its estimates &ldquo;do not include property inspections&rdquo; and may miss
+            recent changes to the property. ANZ&rsquo;s free Property Profile Report uses PropTrack price ranges
+            and says a price range estimate &ldquo;is an estimate only&rdquo; and not a valuation (both read 30
+            September 2026).
+          </p>
+          <p>They miss for four reasons, and the banks&rsquo; own disclaimers name most of them:</p>
+          <ul className="space-y-2.5">
+            {[
+              "The model has never been inside. A renovated kitchen, a poor floor plan, a district view and a main road are invisible to it, so it prices the average home on your street.",
+              "Thin data breaks it. In a suburb with few recent sales, or for an unusual property, the model has little to compare against and the range widens.",
+              "It lags. Sales take weeks to settle and be recorded, so in a fast market the estimate reads last quarter.",
+              "Different models disagree. Each site runs its own model on its own data, so two estimates for the same address rarely match.",
+            ].map((item) => (
+              <li key={item} className="flex gap-3">
+                <CheckCircle className="w-4 h-4 mt-1 flex-shrink-0 text-ink" aria-hidden="true" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p>
+            The range on this page is different in kind, and it is worth being clear about how. It is not a model
+            of your property. It is the suburb&rsquo;s published median for houses or units, taken from the state
+            sales feed with its source and period printed beside it, and a band of 15% either side. An ABS figure
+            covers the statistical area that carries the suburb&rsquo;s name and is labelled that way. Where a feed
+            publishes no median for a suburb, or the median rests on fewer than five recorded sales, the block says
+            so and shows nothing. The{" "}
+            <Link href="/methodology" className={linkClass}>methodology page</Link> lists the feeds.
+          </p>
+        </div>
+      </Band>
+
+      <Band tone="quiet" id="how-to-check" className="scroll-mt-16">
+        <SectionHeading title="How to check what your property is worth" />
+        <ol className="mt-10 space-y-3 font-sans text-base text-ink-muted leading-relaxed list-decimal pl-5 max-w-3xl">
+          <li>Pick your suburb and dwelling type in the range block above for the published median and its band. That is the suburb, not your home; it anchors everything that follows.</li>
+          <li>Look up sold prices, not asking prices, for homes like yours from the last 90 days: similar bedrooms, land and condition. Our <Link href="/sold" className={linkClass}>sold listings</Link> and the suburb pages are a start.</li>
+          <li>Get two or three free appraisals from agents who actually sell in your suburb, and ask each for the comparable sales behind the figure. When they cluster, that is your range; when one sits far above the rest, treat it as a pitch.</li>
+          <li>If a lender, a court or the tax office needs the number, book a licensed valuer. Expect $300 to $600 (Aussie, January 2025) and a written report you can hand over.</li>
+          <li>Before you list, run the figure through the <Link href="/selling-costs-calculator" className={linkClass}>selling costs calculator</Link> so you know what you keep, then read <Link href="/guides/how-to-choose-a-selling-agent" className={linkClass}>how to choose a selling agent</Link>.</li>
+        </ol>
+      </Band>
+
+      {/* The one form on the page, on charcoal; the white card resets the
+          tone with .tone-light. */}
+      <Band tone="dark">
+        <div className="grid lg:grid-cols-12 gap-x-16 gap-y-10 items-start">
+          <div className="lg:col-span-5">
+            <SectionHeading title="Get a free appraisal from a local agent" />
+            <div className="mt-8 space-y-4 text-base sm:text-lg text-ink-muted leading-[1.65] max-w-xl">
+              <p>
+                An appraisal is the number that matters when you are deciding whether to sell, because it comes from
+                someone who watches buyers in your street every week and can show you the sales behind it. Tell us
+                where the property is and we introduce you to one local agent who sells in your area. If we don&rsquo;t
+                have one yet, we&rsquo;ll tell you. Our team will call you within one business day; the agent inspects
+                and gives you a figure or a range in writing. There is no commitment to list, with them or with anyone.
+              </p>
+              <p>
+                Not ready for an agent yet? Read{" "}
+                <Link href="/guides/how-much-is-my-house-worth-australia" className={linkClass}>how much is my house worth</Link>{" "}
+                for what drives the number, or the{" "}
+                <Link href="/appraisal" className={linkClass}>appraisal page</Link> for what to have ready.
+              </p>
             </div>
           </div>
-
-          <div id="online-estimates" className="scroll-mt-24">
-            <h2 className={h2Class}>
-              How automated estimates work, and where they miss
-            </h2>
-            <div className="space-y-4 font-sans text-base text-ink-muted leading-[1.7] max-w-3xl">
-              <p>
-                The instant figures on the portals and the banks&rsquo; free property reports come from automated
-                valuation models. A model takes every recorded sale it can see, the attributes on file for each
-                property (bedrooms, land size, year built, last sale price) and the movement of the local market, and
-                works out where a property with your attributes would sit. CommBank&rsquo;s Property Insights draws on
-                Cotality data and says its estimates &ldquo;do not include property inspections&rdquo; and may miss
-                recent changes to the property. ANZ&rsquo;s free Property Profile Report uses PropTrack price ranges
-                and says a price range estimate &ldquo;is an estimate only&rdquo; and not a valuation (both read 30
-                September 2026).
-              </p>
-              <p>They miss for four reasons, and the banks&rsquo; own disclaimers name most of them:</p>
-              <ul className="space-y-2.5">
-                {[
-                  "The model has never been inside. A renovated kitchen, a poor floor plan, a district view and a main road are invisible to it, so it prices the average home on your street.",
-                  "Thin data breaks it. In a suburb with few recent sales, or for an unusual property, the model has little to compare against and the range widens.",
-                  "It lags. Sales take weeks to settle and be recorded, so in a fast market the estimate reads last quarter.",
-                  "Different models disagree. Each site runs its own model on its own data, so two estimates for the same address rarely match.",
-                ].map((item) => (
-                  <li key={item} className="flex gap-3">
-                    <CheckCircle className="w-4 h-4 mt-1 flex-shrink-0 text-ink" aria-hidden="true" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <p>
-                The range on this page is different in kind, and it is worth being clear about how. It is not a model
-                of your property. It is the suburb&rsquo;s published median for houses or units, taken from the state
-                sales feed with its source and period printed beside it, and a band of 15% either side. An ABS figure
-                covers the statistical area that carries the suburb&rsquo;s name and is labelled that way. Where a feed
-                publishes no median for a suburb, or the median rests on fewer than five recorded sales, the block says
-                so and shows nothing. The{" "}
-                <Link href="/methodology" className={linkClass}>methodology page</Link> lists the feeds.
-              </p>
+          <div className="lg:col-span-7">
+            <div id="appraisal-form" className="tone-light scroll-mt-24 rounded-xl border border-line bg-white p-5 sm:p-8 shadow-[0_12px_40px_-14px_rgb(22_25_29/0.22)]">
+              <h3 className="font-display text-ink tracking-[-0.02em] text-xl sm:text-2xl font-bold leading-tight mb-1">
+                Two minutes, then we take it from there
+              </h3>
+              <p className="text-sm text-ink-muted mb-5">Tell us about the property.</p>
+              <Suspense fallback={<div className="h-96" aria-busy="true" />}>
+                <AppraisalForm />
+              </Suspense>
             </div>
-          </div>
-
-          <div id="how-to-check" className="scroll-mt-24">
-            <h2 className={h2Class}>
-              How to check what your property is worth
-            </h2>
-            <ol className="space-y-3 font-sans text-base text-ink-muted leading-relaxed list-decimal pl-5 max-w-3xl">
-              <li>Pick your suburb and dwelling type in the range block above for the published median and its band. That is the suburb, not your home; it anchors everything that follows.</li>
-              <li>Look up sold prices, not asking prices, for homes like yours from the last 90 days: similar bedrooms, land and condition. Our <Link href="/sold" className={linkClass}>sold listings</Link> and the suburb pages are a start.</li>
-              <li>Get two or three free appraisals from agents who actually sell in your suburb, and ask each for the comparable sales behind the figure. When they cluster, that is your range; when one sits far above the rest, treat it as a pitch.</li>
-              <li>If a lender, a court or the tax office needs the number, book a licensed valuer. Expect $300 to $600 (Aussie, January 2025) and a written report you can hand over.</li>
-              <li>Before you list, run the figure through the <Link href="/selling-costs-calculator" className={linkClass}>selling costs calculator</Link> so you know what you keep, then read <Link href="/guides/how-to-choose-a-selling-agent" className={linkClass}>how to choose a selling agent</Link>.</li>
-            </ol>
           </div>
         </div>
-      </section>
+      </Band>
 
-      <section className="bg-surface-warm border-y border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="grid lg:grid-cols-12 gap-x-12 gap-y-6 items-start">
-            <div className="lg:col-span-5">
-              <h2 className={h2Class}>
-                Get a free appraisal from a local agent
-              </h2>
-              <div className="space-y-4 text-base text-ink-muted leading-[1.65] max-w-xl">
-                <p>
-                  An appraisal is the number that matters when you are deciding whether to sell, because it comes from
-                  someone who watches buyers in your street every week and can show you the sales behind it. Tell us
-                  where the property is and we introduce you to one local agent who sells in your area. If we don&rsquo;t
-                  have one yet, we&rsquo;ll tell you. Our team will call you within one business day; the agent inspects
-                  and gives you a figure or a range in writing. There is no commitment to list, with them or with anyone.
-                </p>
-                <p>
-                  Not ready for an agent yet? Read{" "}
-                  <Link href="/guides/how-much-is-my-house-worth-australia" className={linkClass}>how much is my house worth</Link>{" "}
-                  for what drives the number, or the{" "}
-                  <Link href="/appraisal" className={linkClass}>appraisal page</Link> for what to have ready.
-                </p>
-              </div>
-            </div>
-            <div className="lg:col-span-7">
-              <div id="appraisal-form" className="scroll-mt-24 rounded-xl border border-line bg-white p-5 sm:p-8 shadow-[0_12px_40px_-14px_rgb(22_25_29/0.22)]">
-                <h3 className="font-display text-ink tracking-[-0.02em] text-xl sm:text-2xl font-bold leading-tight mb-1">
-                  Two minutes, then we take it from there
-                </h3>
-                <p className="text-sm text-ink-muted mb-5">Tell us about the property.</p>
-                <Suspense fallback={<div className="h-96" aria-busy="true" />}>
-                  <AppraisalForm />
-                </Suspense>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <h2 className={h2Class}>
-            Property valuation questions
-          </h2>
+      <Band>
+        <div className="max-w-3xl">
+          <SectionHeading title="Property valuation questions" />
           {/* Answers stay in the HTML inside <details>; FAQPage JSON-LD above. */}
-          <div className="border-b border-line">
+          <div className="mt-10 border-b border-line">
             <FaqAccordion items={FAQS} />
           </div>
 
@@ -412,7 +392,7 @@ export default function PropertyValuationPage() {
             </p>
           </div>
         </div>
-      </section>
+      </Band>
     </>
   );
 }

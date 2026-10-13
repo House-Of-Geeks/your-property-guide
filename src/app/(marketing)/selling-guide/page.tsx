@@ -8,6 +8,7 @@ import { FaqAccordion } from "@/components/guide";
 import { SellingGuideFunnel } from "@/components/journey";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { GuideEntryCapture } from "@/components/analytics/GuideEntryCapture";
+import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { StickyGuideBar } from "./StickyGuideBar";
@@ -74,6 +75,43 @@ const FAQS = [
   },
 ];
 
+// The cover and the pitch under the hero's lede: under the funnel on
+// phones, beside it (left column) on desktop. Figures are the guide's own.
+function GuidePitch() {
+  return (
+    <>
+      <div className="flex items-start gap-5 sm:gap-6">
+        <Image
+          src="/images/guide/selling-guide-cover.png"
+          alt="The Complete Guide to Selling Your Property in Australia, 2026 edition"
+          width={168}
+          height={238}
+          className="block shrink-0 w-[88px] sm:w-[132px] lg:w-[150px] h-auto rounded-md shadow-[0_12px_28px_rgb(22_25_29/0.28)]"
+        />
+        <ul className="space-y-3">
+          {[
+            "The 10 questions that expose an average agent before you sign",
+            "Fee negotiation that typically saves $1,700 to $3,400",
+            "Presentation moves that return 3 to 10 times their cost",
+            "The 60-day trap that quietly discounts stale listings",
+          ].map((line) => (
+            <li key={line} className="flex items-start gap-2.5">
+              <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" aria-hidden="true" />
+              <span className="text-sm sm:text-base text-ink leading-snug">{line}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <p className="mt-6 text-sm text-ink-muted">
+        10 chapters · 60-second form · One agent, never a list
+      </p>
+      <p className="mt-1 text-xs text-ink-subtle">
+        Figures are typical ranges from the guide, chapters 3 to 5. Your sale will vary.
+      </p>
+    </>
+  );
+}
+
 export default function SellingGuidePage() {
   return (
     <>
@@ -110,40 +148,28 @@ export default function SellingGuidePage() {
         }}
       />
 
-      {/* Hero. Phones: headline, the lede, then the funnel, so the form is
-          on the first screen; the cover and the pitch follow it. Desktop:
-          headline and pitch on the left, the funnel beside them on the
-          right (it spans both rows and stays in view while the pitch is
-          read). The funnel card is the point of the page. */}
-      <section id="get-the-guide" className="bg-surface-warm border-b border-line scroll-mt-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-10 sm:pt-12 sm:pb-16 lg:pt-16 lg:pb-20">
-          <div className="grid lg:grid-cols-12 gap-x-12 gap-y-6 sm:gap-y-8 items-start">
-            <div className="lg:col-span-6 lg:row-start-1">
-              <p className="text-sm font-semibold text-ink-muted mb-3 sm:mb-5">
-                Free PDF, 2026 edition
-              </p>
-              <h1 className="font-display text-ink tracking-[-0.035em] text-[2.125rem] leading-[1.05] sm:text-5xl lg:text-6xl lg:leading-[1.02] font-bold">
-                The agent you pick is a $20,000 decision
-              </h1>
-              <p className="mt-4 sm:mt-6 text-base sm:text-xl text-ink leading-normal sm:leading-[1.4]">
-                On a typical sale, the gap between a strong agent and an
-                average one runs five figures. This free guide shows you how
-                to tell them apart, what selling really costs, and where to
-                claw thousands back. Ten chapters, personalised to your
-                suburb, in your inbox in 60 seconds.
-              </p>
-            </div>
-
-            <div className="lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:row-span-2 lg:sticky lg:top-24">
+      {/* Hero, over the selling photo. Phones: headline, the lede, then the
+          funnel, so the form is on the first screen; the cover and the
+          pitch follow it. Desktop: headline, lede and pitch on the left, the
+          funnel beside them on the right. The funnel card is the point of
+          the page. The pitch is set once and placed twice (one per
+          breakpoint) so each layout keeps its order. #get-the-guide wraps
+          the hero for the sticky bar and the anchor-arrival pulse. */}
+      <div id="get-the-guide" className="scroll-mt-16">
+        <PhotoHero
+          photo="selling"
+          size="lg"
+          aside={
+            <>
               {/* relative z-10: the suburb autocomplete's dropdown must
                   paint over whatever follows the card. */}
               <div id="guide-funnel" className="relative z-10 scroll-mt-24">
-                <Suspense fallback={<div className="h-64 rounded-xl border border-line bg-white" aria-busy="true" />}>
+                <Suspense fallback={<div className="tone-light h-64 rounded-xl border border-line bg-white" aria-busy="true" />}>
                   <SellingGuideFunnel source="selling-guide-page" />
                 </Suspense>
               </div>
 
-              <div className="mt-5 px-1">
+              <div className="mt-6 px-1">
                 <p className="text-sm font-semibold text-ink mb-2">What happens next</p>
                 <ol className="space-y-1.5 text-sm text-ink-muted leading-snug list-decimal pl-5 marker:text-ink-subtle">
                   <li>Answer seven quick questions, about 60 seconds</li>
@@ -155,69 +181,55 @@ export default function SellingGuidePage() {
                   for the introduction; it doesn&rsquo;t change what you pay them.
                 </p>
               </div>
-            </div>
 
-            <div className="lg:col-span-6 lg:row-start-2">
-              <div className="flex items-start gap-5 sm:gap-6">
-                <Image
-                  src="/images/guide/selling-guide-cover.png"
-                  alt="The Complete Guide to Selling Your Property in Australia, 2026 edition"
-                  width={168}
-                  height={238}
-                  priority
-                  className="block shrink-0 w-[88px] sm:w-[132px] lg:w-[150px] h-auto rounded-md shadow-[0_12px_28px_rgb(22_25_29/0.28)]"
-                />
-                <ul className="space-y-3">
-                  {[
-                    "The 10 questions that expose an average agent before you sign",
-                    "Fee negotiation that typically saves $1,700 to $3,400",
-                    "Presentation moves that return 3 to 10 times their cost",
-                    "The 60-day trap that quietly discounts stale listings",
-                  ].map((line) => (
-                    <li key={line} className="flex items-start gap-2.5">
-                      <CheckCircle2 className="w-5 h-5 text-ink shrink-0 mt-0.5" aria-hidden="true" />
-                      <span className="text-sm sm:text-base text-ink leading-snug">{line}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className="lg:hidden mt-10">
+                <GuidePitch />
               </div>
-              <p className="mt-5 text-sm text-ink-muted">
-                10 chapters · 60-second form · One agent, never a list
-              </p>
-              <p className="mt-1 text-xs text-ink-subtle">
-                Figures are typical ranges from the guide, chapters 3 to 5. Your sale will vary.
-              </p>
-            </div>
+            </>
+          }
+        >
+          <p className="text-sm font-semibold text-ink-muted mb-3 sm:mb-5">
+            Free PDF, 2026 edition
+          </p>
+          <HeroTitle>The agent you pick is a $20,000 decision</HeroTitle>
+          {/* Phone-sized lede, as before: the funnel stays on the first screen. */}
+          <HeroLead className="max-sm:mt-4 max-sm:text-base">
+            On a typical sale, the gap between a strong agent and an
+            average one runs five figures. This free guide shows you how
+            to tell them apart, what selling really costs, and where to
+            claw thousands back. Ten chapters, personalised to your
+            suburb, in your inbox in 60 seconds.
+          </HeroLead>
+          <div className="hidden lg:block mt-12">
+            <GuidePitch />
           </div>
-        </div>
-      </section>
+        </PhotoHero>
+      </div>
 
       {/* Chapter contents. Doubles as the SEO body for "selling property
           guide" queries and as proof the guide is a real document. */}
-      <section className="bg-white">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <h2 className="font-display text-ink tracking-[-0.02em] text-[1.75rem] sm:text-4xl leading-tight font-bold mb-6 sm:mb-8">
-            Ten chapters, no filler
-          </h2>
+      <Band>
+        <div className="max-w-5xl">
+          <SectionHeading title="Ten chapters, no filler" />
 
           {/* CSS columns so chapters 1 to 5 read down the left column. */}
-          <ol className="sm:columns-2 sm:gap-x-10 border-b border-line">
+          <ol className="mt-10 sm:mt-12 sm:columns-2 sm:gap-x-10 border-b border-line">
             {CHAPTERS.map((c, i) => (
-              <li key={c.title} className="flex items-start gap-3 border-t border-line py-3.5 break-inside-avoid">
-                <span className="w-5 shrink-0 text-sm text-ink-subtle leading-6">{i + 1}</span>
+              <li key={c.title} className="flex items-start gap-4 border-t border-line py-4 break-inside-avoid">
+                <span className="w-6 shrink-0 text-base font-semibold text-ink-subtle leading-6">{i + 1}</span>
                 <div>
-                  <p className="text-sm font-semibold text-ink leading-6">{c.title}</p>
-                  <p className="text-sm text-ink-muted leading-snug">{c.sub}</p>
+                  <p className="text-base font-semibold text-ink leading-6">{c.title}</p>
+                  <p className="mt-0.5 text-sm text-ink-muted leading-snug">{c.sub}</p>
                 </div>
               </li>
             ))}
           </ol>
 
-          <div className="mt-8">
-            <p className="text-sm text-ink-muted mb-3">
+          <div className="mt-10">
+            <p className="text-base text-ink-muted mb-3">
               Prefer to read on the site first? The guide pulls these together:
             </p>
-            <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+            <ul className="flex flex-wrap gap-x-6 gap-y-2 text-base">
               {[
                 ["/guides/how-to-sell-a-house-australia", "How to sell a house"],
                 ["/guides/real-estate-agent-fees-australia", "Agent fees by state"],
@@ -234,23 +246,18 @@ export default function SellingGuidePage() {
             </ul>
           </div>
         </div>
-      </section>
+      </Band>
 
       {/* FAQ. Mirrors the FAQPageJsonLd above. */}
-      <section className="bg-surface-warm border-t border-line">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <h2 className="font-display text-ink tracking-[-0.02em] text-[1.75rem] sm:text-4xl leading-tight font-bold mb-6 sm:mb-8">
-            Questions sellers ask us
-          </h2>
-          <div className="border-b border-line">
+      <Band tone="quiet">
+        <div className="max-w-3xl">
+          <SectionHeading title="Questions sellers ask us" />
+          <div className="mt-10 border-b border-line">
             <FaqAccordion items={FAQS} />
           </div>
 
-          <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-            <a
-              href="#get-the-guide"
-              className="inline-flex items-center justify-center rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3 transition-colors"
-            >
+          <div className="mt-12 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+            <a href="#get-the-guide" className={`${BUTTON_PRIMARY} justify-center`}>
               Get the free guide
             </a>
             <p className="text-sm text-ink-muted">
@@ -261,7 +268,7 @@ export default function SellingGuidePage() {
             </p>
           </div>
         </div>
-      </section>
+      </Band>
 
       <StickyGuideBar />
       {/* Records the ?from=<page slug> a guide CTA adds to this link in the

@@ -7,7 +7,7 @@ import { ArrowUp } from "lucide-react";
  * Mobile-only sticky bar on /selling-guide. The funnel lives at the top
  * of the page; once a phone reader scrolls into the chapters/FAQ they're
  * two thumb-flicks from the form, so give them a one-tap way back.
- * Hidden on desktop where the funnel card is sticky in the viewport.
+ * Hidden from sm up, where the funnel sits beside the pitch in the hero.
  */
 export function StickyGuideBar() {
   const [visible, setVisible] = useState(false);

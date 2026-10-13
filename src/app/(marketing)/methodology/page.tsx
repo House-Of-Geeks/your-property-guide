@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
-import { SITE_URL, SITE_NAME } from "@/lib/constants";
+import { SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero, RuleGrid, RuleItem, SectionHeading } from "@/components/premium";
 
 export const metadata: Metadata = {
   // Title aligned with the education-led positioning. The methodology
@@ -126,131 +126,114 @@ export default function MethodologyPage() {
     <>
       <BreadcrumbJsonLd items={[{ name: "Methodology", url: "/methodology" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-20 sm:pb-24">
-          <div className="mb-10">
-            <Breadcrumbs items={[{ label: "Methodology" }]} />
-          </div>
-
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              Editorial methodology
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              Sources, dated
-            </span>
-          </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[22ch] font-bold">
-            How we source the data, and what we{" "}
-            <span>don&rsquo;t</span>{" "}
-            claim to know
-          </h1>
-          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            Every figure on the site carries a source and an as-of date.
-            Where we don&rsquo;t have a source we trust, we say so rather than
-            publish a guess. This page documents where each data type comes
-            from, how often we refresh, and the gaps we&rsquo;re honest about.
-          </p>
-          <p className="mt-6">
-            <Link
-              href="/data"
-              className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-            >
-              See live dataset counts →
-            </Link>
-          </p>
+      {/* Hero, over the paperwork photo. */}
+      <PhotoHero photo="paperwork" breadcrumbs={[{ label: "Methodology" }]}>
+        <div className="flex items-center gap-4 mb-8">
+          <span className="text-sm font-semibold text-ink-muted leading-none">
+            Editorial methodology
+          </span>
+          <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+          <span className="text-sm text-ink-subtle font-medium">
+            Sources, dated
+          </span>
         </div>
-      </section>
+        <HeroTitle>
+          How we source the data, and what we{" "}
+          <span>don&rsquo;t</span>{" "}
+          claim to know
+        </HeroTitle>
+        <HeroLead>
+          Every figure on the site carries a source and an as-of date.
+          Where we don&rsquo;t have a source we trust, we say so rather than
+          publish a guess. This page documents where each data type comes
+          from, how often we refresh, and the gaps we&rsquo;re honest about.
+        </HeroLead>
+        <p className="mt-8">
+          <Link
+            href="/data"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+          >
+            See live dataset counts →
+          </Link>
+        </p>
+      </PhotoHero>
 
       {/* Editorial principles row */}
-      <section className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { title: "Sourced",   body: "Every figure cites the body that publishes it. No second-hand &lsquo;industry estimates&rsquo;." },
-              { title: "Dated",     body: "Every figure carries the as-of date in a tooltip on the suburb page." },
-              { title: "Corrected", body: "We log every correction in the footer of the page where the error appeared." },
-            ].map((p) => (
-              <div key={p.title} className="rounded-2xl border border-line bg-surface-warm p-6">
-                <p className="font-display text-2xl text-ink leading-tight mb-2">{p.title}</p>
-                <p className="font-sans text-sm text-ink-muted leading-relaxed" dangerouslySetInnerHTML={{ __html: p.body }} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Band spacing="compact">
+        <RuleGrid columns={3} className="">
+          {[
+            { title: "Sourced",   body: "Every figure cites the body that publishes it. No second-hand &lsquo;industry estimates&rsquo;." },
+            { title: "Dated",     body: "Every figure carries the as-of date in a tooltip on the suburb page." },
+            { title: "Corrected", body: "We log every correction in the footer of the page where the error appeared." },
+          ].map((p) => (
+            <RuleItem key={p.title} title={p.title}>
+              <p dangerouslySetInnerHTML={{ __html: p.body }} />
+            </RuleItem>
+          ))}
+        </RuleGrid>
+      </Band>
 
       {/* Source-by-source */}
-      <section className="bg-surface-warm">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="mb-10">
-            <p className="text-[13px] font-sans text-ink-subtle mb-3">
-              Data sources, line by line
-            </p>
-            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight">
-              {SOURCES.length} data types, {SOURCES.length} named sources
-            </h2>
-          </div>
+      <Band tone="quiet">
+        <p className="text-sm font-semibold text-ink-muted mb-4">
+          Data sources, line by line
+        </p>
+        <SectionHeading title={`${SOURCES.length} data types, ${SOURCES.length} named sources`} />
 
-          <div className="space-y-5">
-            {SOURCES.map((s) => (
-              <article
-                key={s.id}
-                id={s.id}
-                className="rounded-2xl border border-line bg-surface-raised p-6 sm:p-7 scroll-mt-24"
-              >
-                <div className="grid lg:grid-cols-12 gap-5">
-                  <div className="lg:col-span-4">
-                    <h3
-                      className="font-display text-xl text-ink leading-tight"
-                      dangerouslySetInnerHTML={{ __html: s.label }}
-                    />
-                    <p className="text-[13px] font-sans text-ink-subtle mt-2">
-                      {s.cadence}
-                    </p>
-                  </div>
-                  <div className="lg:col-span-8">
-                    <p className="font-sans text-base text-ink leading-relaxed">
-                      {s.description}
-                    </p>
-                    <p className="mt-4 font-sans text-sm text-ink-muted">
-                      <span className="text-ink-subtle text-[13px] mr-2">
-                        Source
-                      </span>
-                      {s.source}
-                    </p>
-                    {s.link && (
-                      <p className="mt-2">
-                        <a
-                          href={s.link.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center font-sans text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-                        >
-                          {s.link.label} →
-                        </a>
-                      </p>
-                    )}
-                  </div>
+        <div className="mt-12 border-b border-line">
+          {SOURCES.map((s) => (
+            <article
+              key={s.id}
+              id={s.id}
+              className="border-t border-line py-8 sm:py-10 scroll-mt-24"
+            >
+              <div className="grid lg:grid-cols-12 gap-5 lg:gap-10">
+                <div className="lg:col-span-4">
+                  <h3
+                    className="text-xl font-bold text-ink leading-tight"
+                    dangerouslySetInnerHTML={{ __html: s.label }}
+                  />
+                  <p className="text-sm text-ink-subtle mt-2">
+                    {s.cadence}
+                  </p>
                 </div>
-              </article>
-            ))}
-          </div>
+                <div className="lg:col-span-8">
+                  <p className="text-base sm:text-lg text-ink leading-relaxed">
+                    {s.description}
+                  </p>
+                  <p className="mt-4 text-sm text-ink-muted">
+                    <span className="text-ink-subtle text-[13px] mr-2">
+                      Source
+                    </span>
+                    {s.source}
+                  </p>
+                  {s.link && (
+                    <p className="mt-2">
+                      <a
+                        href={s.link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                      >
+                        {s.link.label} →
+                      </a>
+                    </p>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
-      </section>
+      </Band>
 
       {/* Editorial process */}
-      <section className="bg-surface-raised border-t border-line">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16">
-          <p className="text-[13px] font-sans text-ink-subtle mb-5">
+      <Band>
+        <div className="max-w-3xl">
+          <p className="text-sm font-semibold text-ink-muted mb-4">
             Editorial process
           </p>
-          <h2 className="font-display text-ink leading-tight tracking-tight text-3xl mb-6">
-            Three checks before anything publishes
-          </h2>
-          <div className="prose-ypg">
+          <SectionHeading title="Three checks before anything publishes" />
+          <div className="mt-8 prose-ypg">
             <p>
               Every guide and every data refresh goes through the same three
               steps: a writer drafts to a published outline, a domain reviewer
@@ -266,25 +249,23 @@ export default function MethodologyPage() {
             </p>
           </div>
         </div>
-      </section>
+      </Band>
 
       {/* Corrections */}
-      <section className="bg-surface-warm border-y border-line-warm">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16">
-          <p className="text-[13px] font-sans text-ink-subtle mb-5">
+      <Band tone="quiet">
+        <div className="max-w-3xl">
+          <p className="text-sm font-semibold text-ink-muted mb-4">
             Corrections &amp; feedback
           </p>
-          <h2 className="font-display text-ink leading-tight tracking-tight text-3xl mb-6">
-            Spotted something off? Tell us
-          </h2>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed mb-6">
+          <SectionHeading title="Spotted something off? Tell us" />
+          <p className="mt-6 text-lg text-ink-muted leading-relaxed mb-6">
             We&rsquo;ll investigate and respond within a week. Confirmed
             corrections are logged in the footer of the affected page.
           </p>
           <p>
             <a
               href="mailto:andy@theandylife.com"
-              className="inline-flex items-center font-sans text-base font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+              className="inline-flex items-center text-base font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
             >
               andy@theandylife.com →
             </a>
@@ -292,13 +273,13 @@ export default function MethodologyPage() {
           <p className="mt-8">
             <Link
               href="/about"
-              className="inline-flex items-center font-sans text-sm text-ink-muted hover:text-primary transition-colors"
+              className="inline-flex items-center text-sm text-ink-muted hover:text-primary transition-colors"
             >
               ← Back to about
             </Link>
           </p>
         </div>
-      </section>
+      </Band>
     </>
   );
 }

@@ -3,10 +3,10 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
-import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { FaqAccordion } from "@/components/guide/FaqAccordion";
 import { AgentEnquiryForm } from "@/components/forms/AgentEnquiryForm";
 import { StatNumber } from "@/components/motion/StatNumber";
+import { HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 import { SITE_URL } from "@/lib/constants/seo";
 import { guideOgImages } from "@/lib/og/helpers";
 import { leadTypePages, type DocketRow } from "@/lib/data/real-estate-leads";
@@ -295,47 +295,47 @@ export default function RealEstateLeadsPage() {
         }}
       />
 
-      <div className="bg-surface border-b border-line">
-        <div className={s.container}>
-          <Breadcrumbs items={[{ label: "Real Estate Leads" }]} />
-        </div>
-      </div>
-
       {/* ── Hero ─────────────────────────────────────────────────────── */}
-      <section className={s.hero}>
-        <div className={s.container}>
-          <div className={s.heroGrid}>
-            <div>
-              <div className={`${s.eyebrow} rise`}>A prospectus for Australian agents · Vol. I</div>
-              <h1 className={`${s.heroTitle} rise rise-d1`}>
-                Real estate leads from homeowners who <em>asked for an agent.</em>
-              </h1>
-              <p className={`${s.lede} ${s.heroLede} rise rise-d2`}>
-                Every lead on this page began as someone reading. A suburb
-                profile, a commission guide, a selling-costs calculator, and
-                then a separate decision: yes, I want a local agent to call me.
-                One lead, one agent, matched to your suburbs. Pay per lead. No
-                lock-in, and no share of your commission.
-              </p>
-              <div className={`${s.heroCtas} rise rise-d3`}>
-                <a href="#register" className={CTA_CLASS}>
-                  Register for leads
-                  <ArrowRight className="w-5 h-5" aria-hidden="true" />
-                </a>
-                <a href="#docket" className={s.ghostLink}>
-                  Read one lead, start to finish <span aria-hidden="true">↓</span>
-                </a>
-              </div>
-              <div className={`${s.heroFoot} rise rise-d4`}>
-                <span>Opt-in only</span>
-                <span>100% exclusive</span>
-                <span>7-day replacement</span>
-                <span>Licensed agents only</span>
-              </div>
-            </div>
-            <Docket title="Vendor lead · No. 0908-2012" rows={heroDocket} consents={["Agent contact consent", "Mobile supplied", "Suburb matched"]} />
-          </div>
+      {/* Over the selling photo; the illustrative docket is a paper record
+          with its own light palette (the module's --fl tokens), so it reads
+          on the charcoal as it did on white. */}
+      <PhotoHero
+        photo="selling"
+        size="lg"
+        breadcrumbs={[{ label: "Real Estate Leads" }]}
+        aside={<Docket title="Vendor lead · No. 0908-2012" rows={heroDocket} consents={["Agent contact consent", "Mobile supplied", "Suburb matched"]} />}
+      >
+        <p className="text-sm font-semibold text-ink-muted mb-4">A prospectus for Australian agents · Vol. I</p>
+        <HeroTitle>
+          Real estate leads from homeowners who asked for an agent.
+        </HeroTitle>
+        <HeroLead>
+          Every lead on this page began as someone reading. A suburb
+          profile, a commission guide, a selling-costs calculator, and
+          then a separate decision: yes, I want a local agent to call me.
+          One lead, one agent, matched to your suburbs. Pay per lead. No
+          lock-in, and no share of your commission.
+        </HeroLead>
+        <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+          <a href="#register" className={CTA_CLASS}>
+            Register for leads
+            <ArrowRight className="w-5 h-5" aria-hidden="true" />
+          </a>
+          <a href="#docket" className="inline-flex items-center gap-2 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
+            Read one lead, start to finish <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+        <p className="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-t border-line pt-6 text-sm text-ink-muted max-w-xl">
+          <span>Opt-in only</span>
+          <span>100% exclusive</span>
+          <span>7-day replacement</span>
+          <span>Licensed agents only</span>
+        </p>
+      </PhotoHero>
 
+      {/* The numbers that used to sit under the hero, in their own band. */}
+      <section className={s.railBand}>
+        <div className={s.container}>
           <div className={s.rail}>
             <div className={s.railItem}>
               <div className={s.railValue}><StatNumber value="9,600+" /></div>
@@ -374,7 +374,7 @@ export default function RealEstateLeadsPage() {
           </div>
           <div className={s.storyGrid}>
             <div className={s.storyBody} data-reveal>
-              <p className={s.dropcap}>
+              <p>
                 Call her Leanne. Fifty-one, a four-bedroom house in North Lakes,
                 the youngest has moved out and the plan is to sell and move
                 closer to the coast. She is not looking for an agent. She is
@@ -562,13 +562,12 @@ export default function RealEstateLeadsPage() {
 
       {/* ── Dark chapter: what we will not promise ───────────────────── */}
       <section className={s.dark}>
-        <div className={s.darkMark} aria-hidden="true">y</div>
         <div className={s.container}>
           <div className={s.darkGrid}>
             <div data-reveal>
               <div className={`${s.eyebrow} ${s.eyebrowOnDark}`}>V. The part other pages leave out</div>
               <h2 className={s.darkTitle}>
-                Four things we will <em>not</em> promise you
+                Four things we will not promise you
               </h2>
               <p className={s.darkIntro}>
                 Readers trust this site because it names the trade-offs. Agents
@@ -771,11 +770,11 @@ export default function RealEstateLeadsPage() {
       {/* ── Closing ──────────────────────────────────────────────────── */}
       <section className={s.close}>
         <div className={s.container} style={{ position: "relative" }}>
-          <div className={`${s.eyebrow} ${s.eyebrowOnDark}`} style={{ justifyContent: "center", marginBottom: 26 }}>
+          <div className={s.eyebrow} style={{ justifyContent: "center", marginBottom: 26 }}>
             Exclusive · Pay per lead · No lock-in
           </div>
           <h2 className={s.closeTitle}>
-            Homeowners who did the reading, delivered to <em>one</em> agent
+            Homeowners who did the reading, delivered to one agent
           </h2>
           <p className={s.closeText}>
             Register your suburbs and lead types. Within one business day you

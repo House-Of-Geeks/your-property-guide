@@ -9,6 +9,7 @@ import { RelatedGuidesSection } from "@/components/guide/GuideLinkList";
 import { BuyingGuideFunnel } from "@/components/journey";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { GuideEntryCapture } from "@/components/analytics/GuideEntryCapture";
+import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
@@ -72,6 +73,46 @@ const FAQS = [
   },
 ];
 
+// The cover and the pitch under the hero's lede: under the funnel on
+// phones, beside it (left column) on desktop.
+function GuidePitch() {
+  return (
+    <>
+      <div className="flex items-start gap-5 sm:gap-6">
+        <Image
+          src="/images/guide/buying-guide-cover.png"
+          alt="The Complete Guide to Buying Property in Australia, 2026 edition"
+          width={168}
+          height={238}
+          className="block shrink-0 w-[88px] sm:w-[132px] lg:w-[150px] h-auto rounded-md shadow-[0_12px_28px_rgb(22_25_29/0.28)]"
+        />
+        <ul className="space-y-3">
+          {[
+            "2026 schemes state by state, worth tens of thousands",
+            "What a lender may lend you, buffer included",
+            "Underquoting and auction psychology, decoded",
+            "A printable 12-week buying timeline",
+          ].map((line) => (
+            <li key={line} className="flex items-start gap-2.5">
+              <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" aria-hidden="true" />
+              <span className="text-sm sm:text-base text-ink leading-snug">{line}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <p className="mt-6 text-sm text-ink-muted">
+        10 chapters · 60-second form · Never shared with selling agents
+      </p>
+      <p className="mt-1 text-sm text-ink-muted">
+        Want the steps now?{" "}
+        <Link href="/guides/buying-property-australia" className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+          How to buy a house in Australia, step by step
+        </Link>
+      </p>
+    </>
+  );
+}
+
 export default function BuyingGuidePage() {
   return (
     <>
@@ -104,40 +145,28 @@ export default function BuyingGuidePage() {
         }}
       />
 
-      {/* Hero, same layout as the selling guide. Phones: headline, lede,
-          then the funnel on the first screen, the pitch after it. Desktop:
-          headline and pitch left, the funnel right across both rows. */}
-      <section id="get-the-guide" className="bg-surface-warm border-b border-line scroll-mt-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-10 sm:pt-12 sm:pb-16 lg:pt-16 lg:pb-20">
-          <div className="grid lg:grid-cols-12 gap-x-12 gap-y-6 sm:gap-y-8 items-start">
-            <div className="lg:col-span-6 lg:row-start-1">
-              <p className="text-sm font-semibold text-ink-muted mb-3 sm:mb-5">
-                Free PDF, 2026 edition
-              </p>
-              <h1 className="font-display text-ink tracking-[-0.035em] text-[2.125rem] leading-[1.05] sm:text-5xl lg:text-6xl lg:leading-[1.02] font-bold">
-                Overpaying is the default. This is the fix
-              </h1>
-              <p className="mt-4 sm:mt-6 text-base sm:text-xl text-ink leading-normal sm:leading-[1.4]">
-                The complete guide to buying property in Australia, written
-                for the buyer you actually are: first home, upgrading,
-                investing or downsizing. What you can really spend, the
-                schemes worth tens of thousands, and how the selling side
-                plays you. Free, in your inbox in 60 seconds.
-              </p>
-            </div>
-
-            <div className="lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:row-span-2 lg:sticky lg:top-24">
+      {/* Hero, same layout as the selling guide, over the buying photo.
+          Phones: headline, lede, then the funnel on the first screen, the
+          pitch after it. Desktop: headline, lede and pitch left, the funnel
+          right. The pitch is set once and placed twice (one per breakpoint)
+          so each layout keeps its order. */}
+      <div id="get-the-guide" className="scroll-mt-16">
+        <PhotoHero
+          photo="buying"
+          size="lg"
+          aside={
+            <>
               {/* relative z-10: the suburb autocomplete's dropdown must
                   paint over whatever follows the card. data-funnel-card
                   drives the #get-the-guide:target ping (the buying funnel
                   card doesn't carry it on the anchor itself). */}
               <div id="guide-funnel" data-funnel-card className="relative z-10 rounded-xl scroll-mt-24">
-                <Suspense fallback={<div className="h-64 rounded-xl border border-line bg-white" aria-busy="true" />}>
+                <Suspense fallback={<div className="tone-light h-64 rounded-xl border border-line bg-white" aria-busy="true" />}>
                   <BuyingGuideFunnel source="buying-guide-page" />
                 </Suspense>
               </div>
 
-              <div className="mt-5 px-1">
+              <div className="mt-6 px-1">
                 <p className="text-sm font-semibold text-ink mb-2">What happens next</p>
                 <ol className="space-y-1.5 text-sm text-ink-muted leading-snug list-decimal pl-5 marker:text-ink-subtle">
                   <li>Answer six quick questions, about 60 seconds</li>
@@ -148,67 +177,50 @@ export default function BuyingGuidePage() {
                   Free. Your details are never sold and never passed to selling agents.
                 </p>
               </div>
-            </div>
 
-            <div className="lg:col-span-6 lg:row-start-2">
-              <div className="flex items-start gap-5 sm:gap-6">
-                <Image
-                  src="/images/guide/buying-guide-cover.png"
-                  alt="The Complete Guide to Buying Property in Australia, 2026 edition"
-                  width={168}
-                  height={238}
-                  priority
-                  className="block shrink-0 w-[88px] sm:w-[132px] lg:w-[150px] h-auto rounded-md shadow-[0_12px_28px_rgb(22_25_29/0.28)]"
-                />
-                <ul className="space-y-3">
-                  {[
-                    "2026 schemes state by state, worth tens of thousands",
-                    "What a lender may lend you, buffer included",
-                    "Underquoting and auction psychology, decoded",
-                    "A printable 12-week buying timeline",
-                  ].map((line) => (
-                    <li key={line} className="flex items-start gap-2.5">
-                      <CheckCircle2 className="w-5 h-5 text-ink shrink-0 mt-0.5" aria-hidden="true" />
-                      <span className="text-sm sm:text-base text-ink leading-snug">{line}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className="lg:hidden mt-10">
+                <GuidePitch />
               </div>
-              <p className="mt-5 text-sm text-ink-muted">
-                10 chapters · 60-second form · Never shared with selling agents
-              </p>
-              <p className="mt-1 text-sm text-ink-muted">
-                Want the steps now?{" "}
-                <Link href="/guides/buying-property-australia" className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
-                  How to buy a house in Australia, step by step
-                </Link>
-              </p>
-            </div>
+            </>
+          }
+        >
+          <p className="text-sm font-semibold text-ink-muted mb-3 sm:mb-5">
+            Free PDF, 2026 edition
+          </p>
+          <HeroTitle>Overpaying is the default. This is the fix</HeroTitle>
+          {/* Phone-sized lede, as before: the funnel stays on the first screen. */}
+          <HeroLead className="max-sm:mt-4 max-sm:text-base">
+            The complete guide to buying property in Australia, written
+            for the buyer you actually are: first home, upgrading,
+            investing or downsizing. What you can really spend, the
+            schemes worth tens of thousands, and how the selling side
+            plays you. Free, in your inbox in 60 seconds.
+          </HeroLead>
+          <div className="hidden lg:block mt-12">
+            <GuidePitch />
           </div>
-        </div>
-      </section>
+        </PhotoHero>
+      </div>
 
       {/* Chapter contents */}
-      <section className="bg-white">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <h2 className="font-display text-ink tracking-[-0.02em] text-[1.75rem] sm:text-4xl leading-tight font-bold mb-6 sm:mb-8">
-            Ten chapters, four buyers, no filler
-          </h2>
+      <Band>
+        <div className="max-w-5xl">
+          <SectionHeading title="Ten chapters, four buyers, no filler" />
 
           {/* CSS columns so chapters 1 to 5 read down the left column. */}
-          <ol className="sm:columns-2 sm:gap-x-10 border-b border-line">
+          <ol className="mt-10 sm:mt-12 sm:columns-2 sm:gap-x-10 border-b border-line">
             {CHAPTERS.map((c, i) => (
-              <li key={c.title} className="flex items-start gap-3 border-t border-line py-3.5 break-inside-avoid">
-                <span className="w-5 shrink-0 text-sm text-ink-subtle leading-6">{i + 1}</span>
+              <li key={c.title} className="flex items-start gap-4 border-t border-line py-4 break-inside-avoid">
+                <span className="w-6 shrink-0 text-base font-semibold text-ink-subtle leading-6">{i + 1}</span>
                 <div>
-                  <p className="text-sm font-semibold text-ink leading-6">{c.title}</p>
-                  <p className="text-sm text-ink-muted leading-snug">{c.sub}</p>
+                  <p className="text-base font-semibold text-ink leading-6">{c.title}</p>
+                  <p className="mt-0.5 text-sm text-ink-muted leading-snug">{c.sub}</p>
                 </div>
               </li>
             ))}
           </ol>
 
-          <p className="mt-8 text-sm text-ink-muted">
+          <p className="mt-10 text-base text-ink-muted">
             Selling as well?{" "}
             <Link href="/selling-guide" className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
               The selling guide
@@ -216,23 +228,18 @@ export default function BuyingGuidePage() {
             is the other half of the move, also free.
           </p>
         </div>
-      </section>
+      </Band>
 
       {/* FAQ. Mirrors the FAQPageJsonLd above. */}
-      <section className="bg-surface-warm border-t border-line">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <h2 className="font-display text-ink tracking-[-0.02em] text-[1.75rem] sm:text-4xl leading-tight font-bold mb-6 sm:mb-8">
-            Questions buyers ask us
-          </h2>
-          <div className="border-b border-line">
+      <Band tone="quiet">
+        <div className="max-w-3xl">
+          <SectionHeading title="Questions buyers ask us" />
+          <div className="mt-10 border-b border-line">
             <FaqAccordion items={FAQS} />
           </div>
 
-          <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-            <a
-              href="#get-the-guide"
-              className="inline-flex items-center justify-center rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3 transition-colors"
-            >
+          <div className="mt-12 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+            <a href="#get-the-guide" className={`${BUTTON_PRIMARY} justify-center`}>
               Get the free guide
             </a>
             <p className="text-sm text-ink-muted">
@@ -243,7 +250,7 @@ export default function BuyingGuidePage() {
             </p>
           </div>
         </div>
-      </section>
+      </Band>
 
       {/* The process guides, below the sales flow: the page linked none of
           them until 30 Sep 2026. Titles come from the guide registry. */}
