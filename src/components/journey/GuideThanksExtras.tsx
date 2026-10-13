@@ -42,7 +42,7 @@ export function GuideEmailNote({ guide }: { guide: "selling" | "buying" }) {
   const ctx = useGuideThanks(guide);
   if (!ctx?.emailOnItsWay) return null;
   return (
-    <p className="mt-2 text-xs text-white/72">
+    <p className="mt-2 text-xs text-ink-muted">
       We&rsquo;ve also emailed you the link, so it&rsquo;s there whenever you need it.
     </p>
   );
@@ -140,16 +140,16 @@ function GuideCallForm({ ctx }: { ctx: GuideThanksContext }) {
   };
 
   return (
-    <div className="rise rise-d3 w-full max-w-lg mx-auto lg:mx-0 text-left rounded-2xl border border-line bg-surface-raised p-5 sm:p-6 shadow-card">
+    <div data-call-card className="w-full text-left rounded-xl border border-line bg-white p-5 sm:p-6">
       {done ? (
         <p className="flex items-start gap-2.5 text-sm text-ink leading-relaxed" role="status">
-          <Check className="check-pop mt-0.5 w-4 h-4 shrink-0 text-cta" aria-hidden="true" />
+          <Check className="check-pop mt-0.5 w-4 h-4 shrink-0 text-success" aria-hidden="true" />
           {copy.done}
         </p>
       ) : (
         <>
-          <p className="text-[13px] text-cta font-medium mb-2">{copy.kicker}</p>
-          <h2 className="font-display text-xl sm:text-2xl text-ink leading-tight tracking-tight mb-2">{copy.heading}</h2>
+          <p className="text-[13px] text-ink-muted font-medium mb-1.5">{copy.kicker}</p>
+          <h2 className="font-display text-xl sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">{copy.heading}</h2>
           <p className="text-sm text-ink-muted leading-relaxed mb-4">{copy.body}</p>
           <form onSubmit={onSubmit} className="space-y-3">
             <div>
@@ -168,7 +168,7 @@ function GuideCallForm({ ctx }: { ctx: GuideThanksContext }) {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3.5 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer press"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3.5 text-base sm:text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer press"
             >
               {submitting ? (
                 <>

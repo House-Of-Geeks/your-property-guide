@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Suspense, type CSSProperties } from "react";
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { BookOpen, CheckCircle2, Clock, ShieldCheck } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 
 import { FaqAccordion } from "@/components/guide";
 import { RelatedGuidesSection } from "@/components/guide/GuideLinkList";
@@ -37,16 +37,16 @@ export const metadata: Metadata = {
 };
 
 const CHAPTERS = [
-  { n: "01", title: "Which buyer are you?", sub: "First home, upgrader, investor, downsizer: the playbook for each" },
-  { n: "02", title: "What you can actually spend", sub: "Borrowing power, the lender buffer, deposits, LMI, true upfront costs" },
-  { n: "03", title: "Schemes, state by state", sub: "2026 settings: 5% Deposit Scheme, Help to Buy, FHOG, duty concessions" },
-  { n: "04", title: "Finding the right suburb", sub: "The data that matters, school catchments, growth signals" },
-  { n: "05", title: "Inspecting like a professional", sub: "The 30-minute method, building and pest, strata, when to walk" },
-  { n: "06", title: "How the selling side plays you", sub: "Underquoting, price guides decoded, auction psychology" },
-  { n: "07", title: "Making the offer", sub: "Negotiation, protective conditions, auction strategy" },
-  { n: "08", title: "Finance to unconditional", sub: "Pre-approval realities, valuation shortfalls, investor lending" },
-  { n: "09", title: "Contracts to keys", sub: "Conveyancing, cooling-off by state, settlement day" },
-  { n: "10", title: "Your 12-week buying timeline", sub: "A printable week-by-week plan, persona footnotes included" },
+  { title: "Which buyer are you?", sub: "First home, upgrader, investor, downsizer: the playbook for each" },
+  { title: "What you can actually spend", sub: "Borrowing power, the lender buffer, deposits, LMI, true upfront costs" },
+  { title: "Schemes, state by state", sub: "2026 settings: 5% Deposit Scheme, Help to Buy, FHOG, duty concessions" },
+  { title: "Finding the right suburb", sub: "The data that matters, school catchments, growth signals" },
+  { title: "Inspecting like a professional", sub: "The 30-minute method, building and pest, strata, when to walk" },
+  { title: "How the selling side plays you", sub: "Underquoting, price guides decoded, auction psychology" },
+  { title: "Making the offer", sub: "Negotiation, protective conditions, auction strategy" },
+  { title: "Finance to unconditional", sub: "Pre-approval realities, valuation shortfalls, investor lending" },
+  { title: "Contracts to keys", sub: "Conveyancing, cooling-off by state, settlement day" },
+  { title: "Your 12-week buying timeline", sub: "A printable week-by-week plan, persona footnotes included" },
 ];
 
 const FAQS = [
@@ -104,202 +104,113 @@ export default function BuyingGuidePage() {
         }}
       />
 
-      {/* Hero: pitch left, funnel right, same publication formula as the
-          selling guide so the two lead magnets read as a series. */}
-      <section id="get-the-guide" className="relative bg-surface-warm overflow-hidden border-b border-line scroll-mt-16">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-16 sm:pb-20">
-          <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-            <div className="lg:col-span-6">
-              <div className="rise flex items-center gap-4 mb-8">
-                <span className="text-sm font-semibold text-ink-muted leading-none">
-                  Free PDF
-                </span>
-                <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-                <span className="text-[13px] text-ink-subtle font-sans font-medium">
-                  2026 edition
-                </span>
-              </div>
-
-              <h1 className="rise rise-d1 font-display text-ink tracking-tight mb-6 text-4xl sm:text-5xl lg:text-6xl leading-[1.02] font-bold">
-                Overpaying is the default.{" "}
-                <span className="relative inline-block">
-                  This
-                  {/* Hand-drawn underline, draws in after the entrance */}
-                  <svg
-                    className="absolute left-[-2%] right-0 bottom-[-0.12em] w-[104%] h-[0.22em]"
-                    viewBox="0 0 120 12"
-                    fill="none"
-                    preserveAspectRatio="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M3 8.5C24 4.5 50 3.5 73 5c18 1.2 32 3 44 4.5"
-                      stroke="var(--cta)"
-                      strokeWidth="3.2"
-                      strokeLinecap="round"
-                      pathLength="1"
-                    />
-                  </svg>
-                </span>{" "}
-                is the fix
+      {/* Hero, same layout as the selling guide. Phones: headline, lede,
+          then the funnel on the first screen, the pitch after it. Desktop:
+          headline and pitch left, the funnel right across both rows. */}
+      <section id="get-the-guide" className="bg-surface-warm border-b border-line scroll-mt-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-10 sm:pt-12 sm:pb-16 lg:pt-16 lg:pb-20">
+          <div className="grid lg:grid-cols-12 gap-x-12 gap-y-6 sm:gap-y-8 items-start">
+            <div className="lg:col-span-6 lg:row-start-1">
+              <p className="text-sm font-semibold text-ink-muted mb-3 sm:mb-5">
+                Free PDF, 2026 edition
+              </p>
+              <h1 className="font-display text-ink tracking-[-0.035em] text-[2.125rem] leading-[1.05] sm:text-5xl lg:text-6xl lg:leading-[1.02] font-bold">
+                Overpaying is the default. This is the fix
               </h1>
-
-              <p className="rise rise-d2 font-display text-lg sm:text-xl text-ink leading-[1.35] mb-8 font-normal">
+              <p className="mt-4 sm:mt-6 text-base sm:text-xl text-ink leading-normal sm:leading-[1.4]">
                 The complete guide to buying property in Australia, written
                 for the buyer you actually are: first home, upgrading,
                 investing or downsizing. What you can really spend, the
                 schemes worth tens of thousands, and how the selling side
                 plays you. Free, in your inbox in 60 seconds.
               </p>
-
-              <div className="flex items-start gap-6 mb-8">
-                {/* cover-settle owns the resting -2deg tilt, so no static
-                    rotate here (the two would compound to -4deg). */}
-                <a
-                  href="#get-the-guide"
-                  className="cover-settle shrink-0 transition-transform duration-300 ease-[var(--ease-out-quint)] hover:rotate-0 hover:-translate-y-1"
-                >
-                  <Image
-                    src="/images/guide/buying-guide-cover.png"
-                    alt="The Complete Guide to Buying Property in Australia, 2026 edition"
-                    width={168}
-                    height={238}
-                    priority
-                    className="block w-[96px] sm:w-[150px] lg:w-[168px] h-auto rounded-md shadow-[0_24px_48px_rgba(23,16,11,0.35)]"
-                  />
-                </a>
-                <ul className="space-y-3 pt-1">
-                  {[
-                    "2026 schemes state by state, worth tens of thousands",
-                    "What lenders will actually approve, buffer included",
-                    "Underquoting and auction psychology, decoded",
-                    "A printable 12-week buying timeline",
-                  ].map((line, i) => (
-                    <li
-                      key={line}
-                      className="rise flex items-start gap-3"
-                      style={{ animationDelay: `${280 + i * 70}ms` }}
-                    >
-                      <CheckCircle2 className="w-5 h-5 text-cta shrink-0 mt-0.5" aria-hidden="true" />
-                      <span className="font-sans text-sm sm:text-base text-ink leading-relaxed">{line}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-ink-subtle font-sans font-medium">
-                <span className="inline-flex items-center gap-1.5">
-                  <BookOpen className="w-3.5 h-3.5" aria-hidden="true" /> 10 chapters
-                </span>
-                <span aria-hidden="true">·</span>
-                <span className="inline-flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5" aria-hidden="true" /> 60-second form
-                </span>
-                <span aria-hidden="true">·</span>
-                <span className="inline-flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" /> Never shared with selling agents
-                </span>
-              </p>
             </div>
 
-            <div className="rise rise-d2 lg:col-span-6 lg:sticky lg:top-24">
-              {/* data-funnel-card drives the #get-the-guide:target ping
-                  (the buying funnel card doesn't carry it internally).
-                  rounded-2xl keeps the ping ring on the card's corners.
-                  relative z-10: the suburb autocomplete's dropdown must
-                  paint OVER the backdrop-blur card below — a later sibling
-                  with its own stacking context that otherwise buries the
-                  suggestion list (same fix as the selling page). */}
-              <div id="guide-funnel" data-funnel-card className="relative z-10 rounded-2xl scroll-mt-24">
-                <Suspense fallback={<div className="text-sm text-ink-muted">Loading…</div>}>
+            <div className="lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:row-span-2 lg:sticky lg:top-24">
+              {/* relative z-10: the suburb autocomplete's dropdown must
+                  paint over whatever follows the card. data-funnel-card
+                  drives the #get-the-guide:target ping (the buying funnel
+                  card doesn't carry it on the anchor itself). */}
+              <div id="guide-funnel" data-funnel-card className="relative z-10 rounded-xl scroll-mt-24">
+                <Suspense fallback={<div className="h-64 rounded-xl border border-line bg-white" aria-busy="true" />}>
                   <BuyingGuideFunnel source="buying-guide-page" />
                 </Suspense>
               </div>
 
-              <div className="mt-5 rounded-2xl border border-line bg-surface-raised/80 backdrop-blur-[2px] px-6 py-5">
-                <p className="text-[13px] text-ink-subtle font-sans font-medium mb-4">
-                  What happens next
+              <div className="mt-5 px-1">
+                <p className="text-sm font-semibold text-ink mb-2">What happens next</p>
+                <ol className="space-y-1.5 text-sm text-ink-muted leading-snug list-decimal pl-5 marker:text-ink-subtle marker:tabular-nums">
+                  <li>Answer six quick questions, about 60 seconds</li>
+                  <li>Download instantly, plus a copy lands in your inbox</li>
+                  <li>We point you at the chapters for your situation</li>
+                </ol>
+                <p className="mt-3 text-xs text-ink-subtle leading-relaxed">
+                  Free. Your details are never sold and never passed to selling agents.
                 </p>
-                <ol className="space-y-3">
+              </div>
+            </div>
+
+            <div className="lg:col-span-6 lg:row-start-2">
+              <div className="flex items-start gap-5 sm:gap-6">
+                <Image
+                  src="/images/guide/buying-guide-cover.png"
+                  alt="The Complete Guide to Buying Property in Australia, 2026 edition"
+                  width={168}
+                  height={238}
+                  priority
+                  className="block shrink-0 w-[88px] sm:w-[132px] lg:w-[150px] h-auto rounded-md shadow-[0_12px_28px_rgb(22_25_29/0.28)]"
+                />
+                <ul className="space-y-3">
                   {[
-                    ["01", "Answer six quick questions, about 60 seconds"],
-                    ["02", "Download instantly, plus a copy lands in your inbox"],
-                    ["03", "We point you at the chapters for your situation"],
-                  ].map(([n, t], i) => (
-                    <li
-                      key={n}
-                      className="rise flex items-baseline gap-3"
-                      style={{ animationDelay: `${280 + i * 70}ms` }}
-                    >
-                      <span className="font-display text-cta text-base tabular-nums shrink-0">{n}</span>
-                      <span className="font-sans text-sm text-ink-muted leading-snug">{t}</span>
+                    "2026 schemes state by state, worth tens of thousands",
+                    "What a lender may lend you, buffer included",
+                    "Underquoting and auction psychology, decoded",
+                    "A printable 12-week buying timeline",
+                  ].map((line) => (
+                    <li key={line} className="flex items-start gap-2.5">
+                      <CheckCircle2 className="w-5 h-5 text-ink shrink-0 mt-0.5" aria-hidden="true" />
+                      <span className="text-sm sm:text-base text-ink leading-snug">{line}</span>
                     </li>
                   ))}
-                </ol>
+                </ul>
               </div>
+              <p className="mt-5 text-sm text-ink-muted">
+                10 chapters · 60-second form · Never shared with selling agents
+              </p>
+              <p className="mt-1 text-sm text-ink-muted">
+                Want the steps now?{" "}
+                <Link href="/guides/buying-property-australia" className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+                  How to buy a house in Australia, step by step
+                </Link>
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* The money band, buyer numbers, all drawn from the guide. */}
-      <section className="bg-surface-warm border-y border-line">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
-          <p className="text-[13px] text-primary-dark font-sans font-semibold mb-10 text-center">
-            What knowing the game is worth
-          </p>
-          <div data-reveal-group className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
-            {[
-              ["5%", "the deposit that skips lenders mortgage insurance entirely under the 2026 federal scheme, if you know to use it"],
-              ["$10k to $50k+", "what first home buyer schemes and duty concessions are worth, state by state, chapter 3"],
-              ["5 to 10%", "how far auction price guides routinely run under the final result, decoded in chapter 6"],
-            ].map(([n, label]) => (
-              <div key={n} className="text-center sm:text-left">
-                <span className="block h-px w-10 bg-primary-dark/40 rule-draw mb-4 mx-auto sm:mx-0" aria-hidden="true" />
-                <p className="font-display text-primary-dark text-4xl sm:text-5xl leading-none mb-3 tracking-tight">{n}</p>
-                <p className="font-sans text-sm text-ink-muted leading-relaxed">{label}</p>
-              </div>
-            ))}
-          </div>
-          <p className="mt-10 text-center text-xs text-ink-subtle font-sans">
-            Figures are typical ranges from the guide. Your purchase will vary. That is exactly why chapter 2 exists.
-          </p>
-        </div>
-      </section>
-
       {/* Chapter contents */}
-      <section className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-14 pb-12 sm:pt-16 sm:pb-14">
-          <div className="flex items-center gap-4 mb-6">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              Inside
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              What you get
-            </span>
-          </div>
-
-          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-bold mb-10">
+      <section className="bg-white">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <h2 className="font-display text-ink tracking-[-0.02em] text-[1.75rem] sm:text-4xl leading-tight font-bold mb-6 sm:mb-8">
             Ten chapters, four buyers, no filler
           </h2>
 
-          {/* CSS columns so chapters 01-05 read down the left column. */}
-          <div data-reveal-group className="sm:columns-2 sm:gap-x-10">
-            {CHAPTERS.map((c) => (
-              <div key={c.n} className="group flex items-start gap-4 border-t border-line py-4 break-inside-avoid transition-colors duration-200">
-                <span className="font-display text-primary text-base tabular-nums leading-6 transition-all duration-200 group-hover:translate-x-[3px] group-hover:text-primary-dark">{c.n}</span>
+          {/* CSS columns so chapters 1 to 5 read down the left column. */}
+          <ol className="sm:columns-2 sm:gap-x-10 border-b border-line">
+            {CHAPTERS.map((c, i) => (
+              <li key={c.title} className="flex items-start gap-3 border-t border-line py-3.5 break-inside-avoid">
+                <span className="w-5 shrink-0 text-sm text-ink-subtle tabular-nums leading-6">{i + 1}</span>
                 <div>
-                  <p className="font-sans text-sm font-semibold text-ink leading-6 transition-colors group-hover:text-primary">{c.title}</p>
-                  <p className="font-sans text-xs text-ink-subtle leading-relaxed">{c.sub}</p>
+                  <p className="text-sm font-semibold text-ink leading-6">{c.title}</p>
+                  <p className="text-sm text-ink-muted leading-snug">{c.sub}</p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
 
           <p className="mt-8 text-sm text-ink-muted">
             Selling as well?{" "}
-            <Link href="/selling-guide" className="text-ink underline decoration-line-strong underline-offset-2 hover:text-primary hover:decoration-primary transition-colors">
+            <Link href="/selling-guide" className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
               The selling guide
             </Link>{" "}
             is the other half of the move, also free.
@@ -307,44 +218,29 @@ export default function BuyingGuidePage() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="bg-surface-warm">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-14 pb-14 sm:pt-16 sm:pb-16">
-          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-bold mb-10">
+      {/* FAQ. Mirrors the FAQPageJsonLd above. */}
+      <section className="bg-surface-warm border-t border-line">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <h2 className="font-display text-ink tracking-[-0.02em] text-[1.75rem] sm:text-4xl leading-tight font-bold mb-6 sm:mb-8">
             Questions buyers ask us
           </h2>
-          <FaqAccordion items={FAQS} />
+          <div className="border-b border-line">
+            <FaqAccordion items={FAQS} />
+          </div>
 
-          {/* Page closer: same night-suburb treatment as the selling guide */}
-          <div className="band-glow mt-12 relative rounded-2xl overflow-hidden bg-surface-inverse text-center shadow-2xl">
-            <div className="relative px-6 sm:px-10 pt-10 pb-24 sm:pb-28">
-              <p data-reveal className="font-display text-2xl sm:text-3xl text-white mb-2 tracking-tight">
-                Buy it once. Buy it well.
-              </p>
-              <p
-                data-reveal
-                style={{ "--reveal-delay": "90ms" } as CSSProperties}
-                className="mb-6 text-sm text-white/78"
-              >
-                60 seconds, matched to your situation, free.
-              </p>
-              {/* data-reveal lives on the wrapper so the CTA's own hover
-                  transition isn't overridden by the reveal transition. */}
-              <div data-reveal style={{ "--reveal-delay": "180ms" } as CSSProperties}>
-                <a
-                  href="#get-the-guide"
-                  className="press inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-8 py-3.5 text-sm transition-[transform,translate,background-color,box-shadow] duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
-                >
-                  Get the free guide
-                </a>
-              </div>
-              <p className="mt-5 text-xs text-white/72">
-                Selling, not buying?{" "}
-                <Link href="/selling-guide" className="text-white/92 hover:text-white underline underline-offset-4 transition-colors">
-                  There&rsquo;s a selling guide too
-                </Link>
-              </p>
-            </div>
+          <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+            <a
+              href="#get-the-guide"
+              className="inline-flex items-center justify-center rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3 transition-colors"
+            >
+              Get the free guide
+            </a>
+            <p className="text-sm text-ink-muted">
+              Selling, not buying?{" "}
+              <Link href="/selling-guide" className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+                There&rsquo;s a selling guide too
+              </Link>
+            </p>
           </div>
         </div>
       </section>
