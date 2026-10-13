@@ -141,6 +141,9 @@
   --line:         rgb(255 255 255 / 0.16);
   --line-strong:  rgb(255 255 255 / 0.32);
   --primary:      var(--primary-lighter);
+  /* State colours light enough for charcoal (AA on #16191d). */
+  --success:      #5fd18b;
+  --danger:       #ff8f8f;
   color: var(--ink);
 }
 .tone-light {
@@ -151,6 +154,8 @@
   --line:         var(--gray-200);
   --line-strong:  var(--gray-300);
   --primary:      #a8401a;
+  --success:      #157f3c;
+  --danger:       #b42233;
   color: var(--ink);
 }
 

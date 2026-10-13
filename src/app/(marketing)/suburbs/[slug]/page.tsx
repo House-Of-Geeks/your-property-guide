@@ -292,10 +292,9 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 <p className="mt-3 font-sans text-base text-ink-muted leading-relaxed">
                   {houseGrowth !== 0 && (
                     <>
-                      {/* White on the dark hero: the state green and red
-                          fail contrast on charcoal, and the sign carries
-                          the direction. */}
-                      <span className="font-semibold text-ink">
+                      {/* text-success / text-danger take their light
+                          values inside the hero's .tone-dark scope. */}
+                      <span className={`font-semibold ${houseGrowth > 0 ? "text-success" : "text-danger"}`}>
                         {formatPercentage(houseGrowth)}
                       </span>
                       {" over the past year. "}
