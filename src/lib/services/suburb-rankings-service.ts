@@ -506,8 +506,12 @@ export async function getTopSuburbsByState(state: string, limit = 12) {
 }
 
 export async function getAllStatesWithStats(): Promise<StateStats[]> {
-  const states = Object.keys(STATE_NAMES);
-  return Promise.all(states.map((s) => getStateStats(s)));
+  // One state at a time: each query reads every suburb row in its state, and
+  // at runtime all eight queue on the pool's single connection (lib/db.ts),
+  // where a query that waits more than 5s fails the /states render.
+  const stats: StateStats[] = [];
+  for (const s of Object.keys(STATE_NAMES)) stats.push(await getStateStats(s));
+  return stats;
 }
 
 export interface ComparisonPair {

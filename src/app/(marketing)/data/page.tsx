@@ -2,12 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
+import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
-import { LOCALITIES_ONLY } from "@/lib/non-localities";
+import { LOCALITIES_ONLY, NOT_PLACES_VERSION } from "@/lib/non-localities";
 import { GLOSSARY_TERMS } from "@/lib/data/glossary";
 import { SITE_URL } from "@/lib/constants";
 
-export const revalidate = 3600; // refresh hourly
+// The counts come from the DB. As a static ISR page this served its
+// build-time render (the build is DB-free, so every count read 0) for the
+// first hour after every deploy, under "Every number, sourced and live".
+// Render on request instead and cache the counts for an hour, the pattern
+// /regions uses.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Our Data, Sources &amp; Live Numbers",
@@ -41,33 +47,24 @@ function formatCount(n: number): string {
 }
 
 async function getCounts() {
-  const [
-    suburbs,
-    schools,
-    propertiesActive,
-    propertiesSold,
-    propertyAddresses,
-    propertySales,
-    hazards,
-    climates,
-    agents,
-    agencies,
-    blogPosts,
-    houseAndLand,
-  ] = await Promise.all([
-    db.suburb.count({ where: LOCALITIES_ONLY }),
-    db.school.count(),
-    db.property.count({ where: { status: "active" } }),
-    db.property.count({ where: { status: "sold" } }),
-    db.propertyAddress.count(),
-    db.propertySale.count(),
-    db.suburbHazard.count(),
-    db.suburbClimate.count(),
-    db.agent.count(),
-    db.agency.count(),
-    db.blogPost.count(),
-    db.houseAndLandPackage.count(),
-  ]);
+  // One count at a time. At runtime the pool holds one connection (lib/db.ts)
+  // and a query waiting for it gives up after 5s. The address and sales
+  // counts take most of a second each, so twelve started at once left the
+  // last ones waiting too long: rendered against the Railway proxy from
+  // outside Vercel, the page failed with "timeout exceeded when trying to
+  // connect".
+  const suburbs = await db.suburb.count({ where: LOCALITIES_ONLY });
+  const schools = await db.school.count();
+  const propertiesActive = await db.property.count({ where: { status: "active" } });
+  const propertiesSold = await db.property.count({ where: { status: "sold" } });
+  const propertyAddresses = await db.propertyAddress.count();
+  const propertySales = await db.propertySale.count();
+  const hazards = await db.suburbHazard.count();
+  const climates = await db.suburbClimate.count();
+  const agents = await db.agent.count();
+  const agencies = await db.agency.count();
+  const blogPosts = await db.blogPost.count();
+  const houseAndLand = await db.houseAndLandPackage.count();
   return {
     suburbs,
     schools,
@@ -84,27 +81,16 @@ async function getCounts() {
   };
 }
 
+// The data cache outlives a deploy, so the deployment is part of the key:
+// a count added to getCounts reaches the page with the deploy that adds it.
+const getCachedCounts = unstable_cache(
+  getCounts,
+  ["data-counts:v1", NOT_PLACES_VERSION, process.env.VERCEL_DEPLOYMENT_ID ?? "local"],
+  { revalidate: 3600, tags: ["data-counts"] },
+);
+
 export default async function DataPage() {
-  // Skip the DB at build (Railway proxy drops build-time connections); ISR
-  // (revalidate above) fills real counts on first request. Empty renders
-  // cleanly — every count below is zero-safe via formatCount/String.
-  const c =
-    process.env.NEXT_PHASE === "phase-production-build"
-      ? ({
-          suburbs: 0,
-          schools: 0,
-          propertiesActive: 0,
-          propertiesSold: 0,
-          propertyAddresses: 0,
-          propertySales: 0,
-          hazards: 0,
-          climates: 0,
-          agents: 0,
-          agencies: 0,
-          blogPosts: 0,
-          houseAndLand: 0,
-        } satisfies Awaited<ReturnType<typeof getCounts>>)
-      : await getCounts();
+  const c = await getCachedCounts();
   const totalGuides = 50; // hand-tracked; matches the guides hub
   const totalGlossary = GLOSSARY_TERMS.length;
 
