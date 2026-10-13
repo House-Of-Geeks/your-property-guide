@@ -106,18 +106,6 @@ export default function BuyingGuidePage() {
       {/* Hero: pitch left, funnel right, same publication formula as the
           selling guide so the two lead magnets read as a series. */}
       <section id="get-the-guide" className="relative bg-surface-warm overflow-hidden border-b border-line scroll-mt-16">
-        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-          <Image
-            src="/images/hero/suburb-dusk.jpg"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-left-bottom opacity-[0.55]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-surface-warm from-30% via-surface-warm/85 via-60% to-surface-warm/25" />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-15% via-surface-warm/60 via-50% to-surface-warm/10" />
-        </div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-16 sm:pb-20">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
             <div className="lg:col-span-6">
@@ -328,16 +316,6 @@ export default function BuyingGuidePage() {
 
           {/* Page closer: same night-suburb treatment as the selling guide */}
           <div className="band-glow mt-12 relative rounded-2xl overflow-hidden bg-surface-inverse text-center shadow-2xl">
-            <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-              <Image
-                src="/images/hero/suburb-night-v2.jpg"
-                alt=""
-                fill
-                sizes="(min-width: 768px) 768px, 100vw"
-                className="object-cover object-bottom opacity-90"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-20% via-surface-inverse/70 via-50% to-surface-inverse/10" />
-            </div>
             <div className="relative px-6 sm:px-10 pt-10 pb-24 sm:pb-28">
               <p data-reveal className="font-display text-2xl sm:text-3xl text-white mb-2 tracking-tight">
                 Buy it once. Buy it well.

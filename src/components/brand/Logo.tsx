@@ -29,7 +29,7 @@ export function LogoMark({ className, title }: { className?: string; title?: str
 
 const SIZES = {
   sm: { mark: "w-6 h-6", text: "text-[17px]" },
-  md: { mark: "w-7 h-7", text: "text-[19px] sm:text-[21px]" },
+  md: { mark: "w-6 h-6 sm:w-7 sm:h-7", text: "text-[16px] sm:text-[21px]" },
   lg: { mark: "w-9 h-9", text: "text-[26px]" },
 } as const;
 

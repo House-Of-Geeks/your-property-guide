@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import Image from "next/image";
 import { CheckCircle } from "lucide-react";
 import { AppraisalForm } from "@/components/forms/AppraisalForm";
 import { SuburbValueRange } from "@/components/journey/SuburbValueRange";
@@ -83,19 +82,6 @@ export default function AppraisalPage() {
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        {/* The Queenslander artwork anchors the appraisal ask: this is
-            about your home. Washed back so the form stays the hero. */}
-        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-          <Image
-            src="/images/art/queenslander.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-right-bottom opacity-[0.5]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-surface-warm from-30% via-surface-warm/85 via-60% to-surface-warm/20" />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-12% via-surface-warm/55 via-45% to-surface-warm/10" />
-        </div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
           <div className="mb-8">
             <Breadcrumbs items={[{ label: "Free Appraisal" }]} />

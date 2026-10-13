@@ -150,19 +150,6 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
           standfirst. Illustration column dropped: hub pages read as
           authoritative editorial when the headline owns the page. */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        {/* The golden-hour suburb runs quietly behind every persona hub
-            so the five hubs and the homepage read as one publication. */}
-        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-          <Image
-            src="/images/hero/suburb-dusk.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-right-bottom opacity-[0.45]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-surface-warm from-30% via-surface-warm/85 via-60% to-surface-warm/25" />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-12% via-surface-warm/55 via-45% to-surface-warm/10" />
-        </div>
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-20 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-32">
           {/* Magazine masthead: italic persona ordinal + hairline + label */}
@@ -422,16 +409,6 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
           guide; selling and renovating get the selling guide. Same dark
           night-suburb band as the homepage finale. */}
       <section id="guide" className="band-glow bg-surface-inverse text-white scroll-mt-24">
-        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-          <Image
-            src="/images/hero/suburb-night-v2.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-bottom opacity-80"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-30% via-surface-inverse/85 via-68% to-surface-inverse/15" />
-        </div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
             <div className="lg:col-span-5">

@@ -41,6 +41,8 @@ const FOOTER_COLUMNS = [
       { label: "All guides",          href: "/guides" },
       { label: "Latest news",         href: "/guides/category/news" },
       { label: "All calculators",     href: "/tools" },
+      { label: "LMI calculator",      href: "/lmi-calculator" },
+      { label: "Negative gearing",    href: "/negative-gearing-calculator" },
       { label: "Property glossary",   href: "/glossary" },
       { label: "Suburb profiles",     href: "/suburbs" },
       { label: "Browse by postcode",  href: "/postcodes" },

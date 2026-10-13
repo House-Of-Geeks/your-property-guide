@@ -1,22 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export default function NotFound() {
   return (
     <div className="relative bg-surface-warm min-h-[80vh] flex items-center overflow-hidden">
-      {/* Wrong street, right neighbourhood. */}
-      <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-        <Image
-          src="/images/art/queenslander.jpg"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover object-right-bottom opacity-[0.4]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-surface-warm from-35% via-surface-warm/85 via-65% to-surface-warm/25" />
-        <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-15% via-surface-warm/60 to-surface-warm/15" />
-      </div>
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 w-full">
         <div className="flex items-center gap-4 mb-10">
           <span className="font-display italic text-primary text-base sm:text-lg leading-none">

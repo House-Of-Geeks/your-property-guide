@@ -51,16 +51,6 @@ export default async function BuyingGuideThanksPage({ searchParams }: PageProps)
       </Suspense>
 
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-          <Image
-            src="/images/art/queenslander.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-bottom opacity-[0.32]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-30% via-surface-warm/80 to-surface-warm/35" />
-        </div>
         <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-8 pb-12 sm:pt-12 sm:pb-16 text-center flex flex-col">
           {/* Phones: the download as a slim banner up top, so the call card
               and its mobile field come straight after the headline and the

@@ -176,7 +176,7 @@ export function SuburbAutocomplete({
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           autoComplete="off"
-          className={`w-full rounded-xl border-0 bg-transparent pl-9 pr-8 focus:ring-2 focus:ring-primary outline-none ${padClass} ${inputClassName}`}
+          className={`w-full rounded-lg border border-line-strong bg-white pl-9 pr-8 text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] ${padClass} ${inputClassName}`}
         />
         {hasValue && (
           <button

@@ -55,11 +55,18 @@ const NAV_LINKS: NavLink[] = [
       { label: "Stamp duty calculator",   href: "/stamp-duty-calculator",      group: "Calculators" },
       { label: "Borrowing power",         href: "/borrowing-power-calculator", group: "Calculators" },
       { label: "Mortgage repayments",     href: "/mortgage-calculator",        group: "Calculators" },
-      { label: "All calculators",         href: "/tools",                      group: "Calculators" },
+      { label: "Rental yield",            href: "/rental-yield-calculator",    group: "Calculators" },
+      { label: "All calculators",       href: "/tools",                      group: "Calculators" },
     ],
   },
-  { label: "Guides", href: "/guides" },
-  { label: "Suburbs", href: "/suburbs" },
+  {
+    label: "Guides",
+    href: "/guides",
+  },
+  {
+    label: "Suburbs",
+    href: "/suburbs",
+  },
   {
     label: "About",
     href: "/about",
@@ -108,8 +115,7 @@ export function Header() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 sm:h-[72px] items-center justify-between gap-3">
           <Link href="/" className="shrink-0" aria-label="Your Property Guide, home">
-            <Logo size="sm" className="sm:hidden" />
-            <Logo size="md" className="hidden sm:inline-flex" />
+            <Logo size="md" />
           </Link>
 
           {/* Full navigation from 67.5rem (1080px); the menu button below
