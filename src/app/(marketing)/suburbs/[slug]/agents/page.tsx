@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { SuburbSubrouteHeader } from "@/components/suburb";
 import { SuburbAppraisalCTA } from "@/components/suburb/SuburbAppraisalCTA";
 import { MatchAgent } from "@/components/journey/MatchAgent";
@@ -107,53 +107,11 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* 2. Agents who sell here. Fills in as agents are onboarded; while
-            the directory is paused it says so and points back to the match. */}
-        <section id="agents" className="scroll-mt-16">
-          <p className="font-display italic text-primary text-base mb-3 leading-none">Who sells here</p>
-          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-            Agents who sell in {sn}.
-          </h2>
-          {model.agents.length === 0 && model.agencies.length === 0 ? (
-            <div className="rounded-2xl border border-line bg-surface-warm p-6 sm:p-8 max-w-2xl">
-              <p className="font-sans text-base text-ink leading-relaxed">
-                We&rsquo;re adding vetted agents in {sn}. Until they&rsquo;re listed here,{" "}
-                <a href="#match" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">request a match</a>{" "}
-                and our team will find you one who sells in the suburb.
-              </p>
-              <p className="mt-3 font-sans text-sm text-ink-muted leading-relaxed">
-                Are you an agent who sells in {sn}?{" "}
-                <Link href="/real-estate-leads" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">Join the network</Link>.
-              </p>
-            </div>
-          ) : (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {model.agents.map((a) => (
-                <div key={a.id} className="rounded-2xl border border-line bg-surface-raised p-5">
-                  <p className="font-display text-lg text-ink leading-tight">{a.fullName}</p>
-                  {a.agencyName && <p className="font-sans text-sm text-ink-muted mt-1">{a.agencyName}</p>}
-                  {a.suburbs.length > 1 && (
-                    <p className="font-sans text-xs text-ink-subtle mt-2">Also sells in {a.suburbs.length - 1} nearby suburb{a.suburbs.length - 1 === 1 ? "" : "s"}</p>
-                  )}
-                  <Link href={`/agents/${a.slug}`} className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-ink hover:text-primary">
-                    Profile <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              ))}
-              {model.agencies.map((ag) => (
-                <div key={ag.id} className="rounded-2xl border border-line bg-surface-raised p-5">
-                  <p className="font-display text-lg text-ink leading-tight">{ag.name}</p>
-                  <p className="font-sans text-sm text-ink-muted mt-1">Agency</p>
-                  <Link href={`/real-estate-agencies/${ag.slug}`} className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-ink hover:text-primary">
-                    Agency profile <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
+        {/* The "Agents who sell in {suburb}" listing that sat here is gone
+            while agent profiles are paused (AGENT_LISTINGS_ENABLED in
+            lib/suburb-agents): with no listings it was an empty promise. */}
 
-        {/* 3. What agents charge, worked on the suburb's own median. */}
+        {/* 2. What agents charge, worked on the suburb's own median. */}
         <section id="fees" className="scroll-mt-16 grid lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-5">
             <p className="font-display italic text-primary text-base mb-3 leading-none">Fees</p>
@@ -206,7 +164,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* 4. Choosing an agent here. */}
+        {/* 3. Choosing an agent here. */}
         <section id="choosing" className="scroll-mt-16">
           <p className="font-display italic text-primary text-base mb-3 leading-none">Choosing</p>
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
@@ -230,7 +188,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
           </p>
         </section>
 
-        {/* 5. Selling here right now: the price context and the appraisal. */}
+        {/* 4. Selling here right now: the price context and the appraisal. */}
         <section id="selling" className="scroll-mt-16 grid lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-5">
             <p className="font-display italic text-primary text-base mb-3 leading-none">Selling in {sn}</p>

@@ -11,7 +11,9 @@ import { formatPriceFull } from "@/lib/utils/format";
  * how to choose one, the suburb's prices, and a match request. The agent
  * listing is built but switched off until the directory holds real, consenting
  * agents: the Agent table currently carries placeholder profiles only (agent
- * directory paused 3 Jul 2026). Flip AGENT_LISTINGS_ENABLED when it does.
+ * directory paused 3 Jul 2026). Flip AGENT_LISTINGS_ENABLED when it does, and
+ * put the "Agents who sell in {suburb}" section back on the page (removed Oct
+ * 2026: while empty it only promised agents we don't list).
  */
 export const AGENT_LISTINGS_ENABLED = false;
 
