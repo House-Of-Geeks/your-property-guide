@@ -11,10 +11,11 @@
 //              form) must ask the same questions, show the same agent-contact
 //              consent and post as "guide-download" so it is scored:
 //              suburb, property type + beds, timeframe, agent status,
-//              motivation (opt), price expectation (opt), then name and
-//              email for the guide (a download, never sold). The vendor
-//              lead is the optional call booked on the thanks page: a
-//              mobile plus the one-agent consent, offered only to HOT and
+//              motivation (opt), price expectation (opt), then name, email
+//              and mobile for the guide (a download, never sold; the
+//              mobile is for YPG's own call). The vendor lead is the
+//              optional call booked on the thanks page: the mobile
+//              confirmed plus the one-agent consent, offered only to HOT and
 //              WARM vendors who didn't say "already listed" (guideCallKind
 //              / sent247HoldReason), and sent to Sent 24/7. Scored
 //              HOT/WARM/COLD by scoreGuideLead().
