@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { SuburbSubrouteHeader, SubpageNextSteps, type NextStepGroup } from "@/components/suburb";
 import { MatchAgent } from "@/components/journey/MatchAgent";
+import { Band } from "@/components/premium";
 import { BreadcrumbJsonLd, FAQPageJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getAgents, getAgenciesBySuburbSlug } from "@/lib/services/agent-service";
@@ -156,7 +157,8 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
       >
         {fees && (
           <div>
-            <dl className="grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line">
+            {/* White figures on the dark hero (.tone-light). */}
+            <dl className="tone-light grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line">
               {[
                 { label: `Low, ${fees.lowPct}%`, value: fees.lowAmount },
                 { label: `Typical, ${fees.typicalPct}%`, value: fees.typicalAmount },
@@ -179,90 +181,96 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
         )}
       </SuburbSubrouteHeader>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-12 sm:space-y-16">
-        {/* The "Agents who sell in {suburb}" listing that sat here is gone
-            while agent profiles are paused (AGENT_LISTINGS_ENABLED in
-            lib/suburb-agents): with no listings it was an empty promise. */}
+      <Band spacing="compact">
+        <div className="space-y-12 sm:space-y-16">
+          {/* The "Agents who sell in {suburb}" listing that sat here is gone
+              while agent profiles are paused (AGENT_LISTINGS_ENABLED in
+              lib/suburb-agents): with no listings it was an empty promise. */}
 
-        {/* Choosing an agent here. */}
-        <section id="choosing" className="scroll-mt-20">
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
-            Five things to ask an agent in {sn}
-          </h2>
-          <ol className="grid md:grid-cols-2 gap-x-10 border-t border-line md:border-t-0">
-            {CHOOSING_POINTS.map((p, i) => (
-              <li key={p.point} className="flex gap-4 border-b border-line py-4 md:first:border-t md:[&:nth-child(2)]:border-t">
-                <span className="font-display text-lg font-bold text-ink leading-snug w-5 shrink-0">{i + 1}</span>
-                <div>
-                  <p className="font-sans font-semibold text-ink leading-snug">{p.point}</p>
-                  <p className="font-sans text-sm text-ink-muted mt-1 leading-relaxed">{p.detail}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        {/* Appraisal intent ("{suburb} property appraisal") lands on this
-            page: answer it, with the price context, and point at the one
-            form above rather than a second form. */}
-        <section id="appraisal" className="scroll-mt-20 max-w-3xl">
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-4">
-            Free property appraisal in {sn}
-          </h2>
-          <p className="font-sans text-base text-ink leading-relaxed">
-            {`An appraisal is an agent's estimate of what your home would sell for, from the recent comparable sales they know in ${sn}. It is free and you are under no obligation to list. Ask for the three or four sales behind the figure, and compare two or three agents before you choose.`}
-            {model.medianHousePrice
-              ? " "
-              : ` We don't publish a median for ${sn} yet, so an agent's figure from local sales is the best guide you will get. `}
-            {model.medianHousePrice && (
-              <>
-                {"For the suburb's own figures, see "}
-                <Link href={`/suburbs/${slug}#market`} className={linkClass}>{`${sn} house prices`}</Link>
-                {"."}
-              </>
-            )}
-          </p>
-          <p className="mt-4 font-sans text-[15px]">
-            <a href="#agent-match" className={`font-medium ${linkClass}`}>Ask for a free appraisal</a>
-            <span className="text-ink-subtle">{" · "}</span>
-            <Link href="/property-valuation" className={linkClass}>Appraisal, valuation or online estimate?</Link>
-          </p>
-        </section>
-
-        {nearbyAgents.length > 0 && (
-          <section id="nearby-agents" className="scroll-mt-20">
+          {/* Choosing an agent here. */}
+          <section id="choosing" className="scroll-mt-20">
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
-              Real estate agents in nearby suburbs
+              Five things to ask an agent in {sn}
             </h2>
-            <ul className="grid gap-x-10 sm:grid-cols-2 lg:grid-cols-4 border-t border-line sm:border-t-0">
-              {nearbyAgents.map((n) => (
-                <li key={n.slug} className="border-b border-line sm:first:border-t sm:[&:nth-child(2)]:border-t lg:[&:nth-child(3)]:border-t lg:[&:nth-child(4)]:border-t">
-                  <Link href={`/suburbs/${n.slug}/agents`} className="block py-2.5 font-sans text-[15px] text-ink hover:text-primary transition-colors">
-                    {`Real estate agents in ${n.name}`}
-                  </Link>
+            <ol className="grid md:grid-cols-2 gap-x-10 border-t border-line md:border-t-0">
+              {CHOOSING_POINTS.map((p, i) => (
+                <li key={p.point} className="flex gap-4 border-b border-line py-4 md:first:border-t md:[&:nth-child(2)]:border-t">
+                  <span className="font-display text-lg font-bold text-ink leading-snug w-5 shrink-0">{i + 1}</span>
+                  <div>
+                    <p className="font-sans font-semibold text-ink leading-snug">{p.point}</p>
+                    <p className="font-sans text-sm text-ink-muted mt-1 leading-relaxed">{p.detail}</p>
+                  </div>
                 </li>
               ))}
-            </ul>
+            </ol>
           </section>
-        )}
 
-        {/* Visible FAQ backing the FAQPage schema */}
-        <section id="faq" className="scroll-mt-20 max-w-3xl">
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-4">
-            Agents in {sn}: common questions
-          </h2>
-          <dl className="divide-y divide-line border-y border-line">
-            {model.faqs.map((f) => (
-              <div key={f.question} className="py-5">
-                <dt className="font-display text-lg font-bold text-ink leading-snug mb-2">{f.question}</dt>
-                <dd className="font-sans text-base text-ink-muted leading-relaxed">{f.answer}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+          {/* Appraisal intent ("{suburb} property appraisal") lands on this
+              page: answer it, with the price context, and point at the one
+              form above rather than a second form. */}
+          <section id="appraisal" className="scroll-mt-20 max-w-3xl">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-4">
+              Free property appraisal in {sn}
+            </h2>
+            <p className="font-sans text-base text-ink leading-relaxed">
+              {`An appraisal is an agent's estimate of what your home would sell for, from the recent comparable sales they know in ${sn}. It is free and you are under no obligation to list. Ask for the three or four sales behind the figure, and compare two or three agents before you choose.`}
+              {model.medianHousePrice
+                ? " "
+                : ` We don't publish a median for ${sn} yet, so an agent's figure from local sales is the best guide you will get. `}
+              {model.medianHousePrice && (
+                <>
+                  {"For the suburb's own figures, see "}
+                  <Link href={`/suburbs/${slug}#market`} className={linkClass}>{`${sn} house prices`}</Link>
+                  {"."}
+                </>
+              )}
+            </p>
+            <p className="mt-4 font-sans text-[15px]">
+              <a href="#agent-match" className={`font-medium ${linkClass}`}>Ask for a free appraisal</a>
+              <span className="text-ink-subtle">{" · "}</span>
+              <Link href="/property-valuation" className={linkClass}>Appraisal, valuation or online estimate?</Link>
+            </p>
+          </section>
 
-        <SubpageNextSteps id="next" title={`Next steps for ${sn} sellers`} groups={nextSteps} />
-      </div>
+          {nearbyAgents.length > 0 && (
+            <section id="nearby-agents" className="scroll-mt-20">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+                Real estate agents in nearby suburbs
+              </h2>
+              <ul className="grid gap-x-10 sm:grid-cols-2 lg:grid-cols-4 border-t border-line sm:border-t-0">
+                {nearbyAgents.map((n) => (
+                  <li key={n.slug} className="border-b border-line sm:first:border-t sm:[&:nth-child(2)]:border-t lg:[&:nth-child(3)]:border-t lg:[&:nth-child(4)]:border-t">
+                    <Link href={`/suburbs/${n.slug}/agents`} className="block py-2.5 font-sans text-[15px] text-ink hover:text-primary transition-colors">
+                      {`Real estate agents in ${n.name}`}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {/* Visible FAQ backing the FAQPage schema */}
+          <section id="faq" className="scroll-mt-20 max-w-3xl">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-4">
+              Agents in {sn}: common questions
+            </h2>
+            <dl className="divide-y divide-line border-y border-line">
+              {model.faqs.map((f) => (
+                <div key={f.question} className="py-5">
+                  <dt className="font-display text-lg font-bold text-ink leading-snug mb-2">{f.question}</dt>
+                  <dd className="font-sans text-base text-ink-muted leading-relaxed">{f.answer}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        </div>
+      </Band>
+
+      <Band tone="quiet" spacing="compact">
+        <div className="space-y-12 sm:space-y-16">
+          <SubpageNextSteps id="next" title={`Next steps for ${sn} sellers`} groups={nextSteps} />
+        </div>
+      </Band>
     </>
   );
 }

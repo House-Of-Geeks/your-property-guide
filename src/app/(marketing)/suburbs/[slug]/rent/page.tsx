@@ -7,6 +7,7 @@ import { FilteredPropertyGrid } from "@/components/property/FilteredPropertyGrid
 import { PropertyFilters } from "@/components/property/PropertyFilters";
 import { SuburbSubrouteHeader, getSuburbListingTabs } from "@/components/suburb";
 import { ExpertCTA } from "@/components/journey";
+import { Band } from "@/components/premium";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availability";
@@ -100,14 +101,16 @@ export default async function SuburbRentPage({ params }: Props) {
         tabs={getSuburbListingTabs(slug, "rent", availability)}
       />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-8">
-        <Suspense fallback={null}>
-          <PropertyFilters listingType="rent" />
-        </Suspense>
-        <Suspense fallback={<PropertyGrid properties={properties} emptyMessage={emptyMessage} />}>
-          <FilteredPropertyGrid properties={properties} listingType="rent" emptyMessage={emptyMessage} />
-        </Suspense>
-      </div>
+      <Band spacing="compact">
+        <div className="space-y-8">
+          <Suspense fallback={null}>
+            <PropertyFilters listingType="rent" />
+          </Suspense>
+          <Suspense fallback={<PropertyGrid properties={properties} emptyMessage={emptyMessage} />}>
+            <FilteredPropertyGrid properties={properties} listingType="rent" emptyMessage={emptyMessage} />
+          </Suspense>
+        </div>
+      </Band>
 
       {/* Renters here are often next year's buyers. Deep-links the
           buying-guide funnel with the suburb pre-answered. */}

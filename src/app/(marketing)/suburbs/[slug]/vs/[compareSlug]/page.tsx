@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Faq } from "@/components/guide";
 import { SuburbSubrouteHeader, SubrouteActionCard, SubpageNextSteps, type NextStepGroup } from "@/components/suburb";
+import { BUTTON_PRIMARY, Band } from "@/components/premium";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getNearbySubpages } from "@/lib/services/nearby-subpages";
@@ -395,88 +396,94 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
         }
       />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-12 sm:space-y-16">
-        {/* The numbers, side by side. Rows with no figure on either side
-            are left out. */}
-        <section id="side-by-side" className="scroll-mt-20 max-w-4xl">
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
-            {`${suburbAName} and ${suburbBName} side by side`}
-          </h2>
-          <div className="overflow-x-auto rounded-xl border border-line">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-line">
-                  <th scope="col" className="py-3 px-3 sm:px-4 text-left font-normal text-ink-muted w-[40%]"><span className="sr-only">Measure</span></th>
-                  <th scope="col" className="py-3 px-3 sm:px-4 text-right font-semibold text-ink">
-                    <Link href={`/suburbs/${slug}`} className="hover:text-primary">{suburbAName}</Link>
-                  </th>
-                  <th scope="col" className="py-3 px-3 sm:px-4 text-right font-semibold text-ink">
-                    <Link href={`/suburbs/${compareSlug}`} className="hover:text-primary">{suburbBName}</Link>
-                  </th>
-                </tr>
-              </thead>
-              {sections.map((sec) => (
-                <tbody key={sec.title}>
-                  <tr className="bg-surface-warm border-b border-line">
-                    <th scope="colgroup" colSpan={3} className="py-2 px-3 sm:px-4 text-left text-[13px] font-semibold text-ink">{sec.title}</th>
+      <Band spacing="compact">
+        <div className="space-y-12 sm:space-y-16">
+          {/* The numbers, side by side. Rows with no figure on either side
+              are left out. */}
+          <section id="side-by-side" className="scroll-mt-20 max-w-4xl">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+              {`${suburbAName} and ${suburbBName} side by side`}
+            </h2>
+            <div className="overflow-x-auto rounded-xl border border-line">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-line">
+                    <th scope="col" className="py-3 px-3 sm:px-4 text-left font-normal text-ink-muted w-[40%]"><span className="sr-only">Measure</span></th>
+                    <th scope="col" className="py-3 px-3 sm:px-4 text-right font-semibold text-ink">
+                      <Link href={`/suburbs/${slug}`} className="hover:text-primary">{suburbAName}</Link>
+                    </th>
+                    <th scope="col" className="py-3 px-3 sm:px-4 text-right font-semibold text-ink">
+                      <Link href={`/suburbs/${compareSlug}`} className="hover:text-primary">{suburbBName}</Link>
+                    </th>
                   </tr>
-                  {sec.rows.map((r) => (
-                    <tr key={r.label} className="border-b border-line last:border-0">
-                      <th scope="row" className="py-3 px-3 sm:px-4 text-left font-normal text-ink-muted">{r.label}</th>
-                      <Cell side="a" r={r} />
-                      <Cell side="b" r={r} />
+                </thead>
+                {sections.map((sec) => (
+                  <tbody key={sec.title}>
+                    <tr className="bg-surface-warm border-b border-line">
+                      <th scope="colgroup" colSpan={3} className="py-2 px-3 sm:px-4 text-left text-[13px] font-semibold text-ink">{sec.title}</th>
                     </tr>
-                  ))}
-                </tbody>
+                    {sec.rows.map((r) => (
+                      <tr key={r.label} className="border-b border-line last:border-0">
+                        <th scope="row" className="py-3 px-3 sm:px-4 text-left font-normal text-ink-muted">{r.label}</th>
+                        <Cell side="a" r={r} />
+                        <Cell side="b" r={r} />
+                      </tr>
+                    ))}
+                  </tbody>
+                ))}
+              </table>
+            </div>
+            <p className="mt-3 font-sans text-xs text-ink-subtle leading-relaxed">
+              Green dot: better on that measure (lower price, higher growth, higher walkability, lower risk). Each suburb&rsquo;s profile gives the source and period of its figures.
+            </p>
+          </section>
+
+          {/* Which suburb suits which buyer. */}
+          <section id="verdicts" className="scroll-mt-20">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-4">Which suits whom</h2>
+            {lifestyle && <p className="font-sans text-base text-ink leading-relaxed max-w-3xl mb-6">{lifestyle}</p>}
+            <dl className="grid gap-x-10 md:grid-cols-3 border-t border-line">
+              {[
+                { k: "For buyers", v: narrative.verdicts.forBuyers },
+                { k: "For investors", v: narrative.verdicts.forInvestors },
+                { k: "For families", v: narrative.verdicts.forFamilies },
+              ].map(({ k, v }) => (
+                <div key={k} className="border-b border-line md:border-b-0 py-4">
+                  <dt className="font-sans text-sm font-semibold text-ink mb-1.5">{k}</dt>
+                  <dd className="font-sans text-[15px] text-ink-muted leading-relaxed">{v}</dd>
+                </div>
               ))}
-            </table>
-          </div>
-          <p className="mt-3 font-sans text-xs text-ink-subtle leading-relaxed">
-            Green dot: better on that measure (lower price, higher growth, higher walkability, lower risk). Each suburb&rsquo;s profile gives the source and period of its figures.
-          </p>
-        </section>
+            </dl>
+          </section>
 
-        {/* Which suburb suits which buyer. */}
-        <section id="verdicts" className="scroll-mt-20">
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-4">Which suits whom</h2>
-          {lifestyle && <p className="font-sans text-base text-ink leading-relaxed max-w-3xl mb-6">{lifestyle}</p>}
-          <dl className="grid gap-x-10 md:grid-cols-3 border-t border-line">
-            {[
-              { k: "For buyers", v: narrative.verdicts.forBuyers },
-              { k: "For investors", v: narrative.verdicts.forInvestors },
-              { k: "For families", v: narrative.verdicts.forFamilies },
-            ].map(({ k, v }) => (
-              <div key={k} className="border-b border-line md:border-b-0 py-4">
-                <dt className="font-sans text-sm font-semibold text-ink mb-1.5">{k}</dt>
-                <dd className="font-sans text-[15px] text-ink-muted leading-relaxed">{v}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+          {/* Dynamic per-pair questions; <Faq> emits the FAQPage schema. */}
+          {narrative.faqs.length > 0 && (
+            <div className="max-w-3xl [&>section]:my-0">
+              <Faq items={narrative.faqs} title={`${suburbAName} vs ${suburbBName}: common questions`} />
+            </div>
+          )}
+        </div>
+      </Band>
 
-        {/* Dynamic per-pair questions; <Faq> emits the FAQPage schema. */}
-        {narrative.faqs.length > 0 && (
-          <div className="max-w-3xl [&>section]:my-0">
-            <Faq items={narrative.faqs} title={`${suburbAName} vs ${suburbBName}: common questions`} />
-          </div>
-        )}
+      <Band tone="quiet" spacing="compact">
+        <div className="space-y-12 sm:space-y-16">
+          <SubpageNextSteps id="next" title="Keep comparing" groups={nextSteps} />
 
-        <SubpageNextSteps id="next" title="Keep comparing" groups={nextSteps} />
-
-        {/* The same one action, once more where the page ends. */}
-        <section className="rounded-xl bg-surface-inverse text-white p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-          <div>
-            <h2 className="font-display text-xl sm:text-2xl font-bold tracking-tight">Choosing between {suburbAName} and {suburbBName}?</h2>
-            <p className="font-sans text-sm text-white/75 mt-1.5 max-w-xl">The free buying guide: budget, schemes, inspections and how not to overpay.</p>
-          </div>
-          <Link
-            href={buyHref}
-            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors"
-          >
-            Get the free buying guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
-          </Link>
-        </section>
-      </div>
+          {/* The same one action, once more where the page ends. */}
+          <section className="tone-dark rounded-xl bg-surface-inverse p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+            <div>
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight">Choosing between {suburbAName} and {suburbBName}?</h2>
+              <p className="font-sans text-sm text-ink-muted mt-1.5 max-w-xl">The free buying guide: budget, schemes, inspections and how not to overpay.</p>
+            </div>
+            <Link
+              href={buyHref}
+              className={`shrink-0 justify-center ${BUTTON_PRIMARY}`}
+            >
+              Get the free buying guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
+          </section>
+        </div>
+      </Band>
     </>
   );
 }

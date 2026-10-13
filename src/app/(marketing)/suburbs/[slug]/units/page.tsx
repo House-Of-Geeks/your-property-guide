@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { SuburbSubrouteHeader, getSuburbListingTabs } from "@/components/suburb";
 import { StickyMatchCTA } from "@/components/journey";
+import { Band } from "@/components/premium";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availability";
@@ -94,12 +95,12 @@ export default async function SuburbUnitsPage({ params }: Props) {
         tabs={getSuburbListingTabs(slug, "units", availability)}
       />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <Band spacing="compact">
         <PropertyGrid
           properties={properties}
           emptyMessage={emptyListingMessage("units", suburb.name, availability)}
         />
-      </div>
+      </Band>
 
       <StickyMatchCTA
         suburb={slug}
