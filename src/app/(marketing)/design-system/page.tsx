@@ -388,7 +388,7 @@ export default function DesignSystemPage() {
       {/* Charter */}
       <Section id="charter" eyebrow="05 · Voice" title="Charter (DRAFT)">
         <p className="font-sans text-sm text-ink-muted mb-8 max-w-prose">
-          The four principles that anchor every lead form&apos;s fine print and the <code>/why-were-free</code> page.
+          The four principles that anchor every lead form&apos;s fine print and the <code>/why-were-free</code>{" "}page.
           Property-economics rewrite of YFG&apos;s charter. Needs Andy sign-off before shipping.
         </p>
 

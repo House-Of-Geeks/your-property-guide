@@ -224,7 +224,7 @@ export function HelpToBuyStateGuide({ state, frontmatter }: { state: AustralianS
       <h2 id="apply">How to apply</h2>
       <p>
         Apply through a participating lender or a broker that works with one: {HTB_LENDERS.map((l) => l.name).join(", ")}.{" "}
-        {page.lenderNote} The lender&rsquo;s conditional approval reserves a place for 90 days, and your contract
+        {page.lenderNote}{" "}The lender&rsquo;s conditional approval reserves a place for 90 days, and your contract
         must allow at least 30 days to settlement.
       </p>
       <Callout variant="info" title="Places">

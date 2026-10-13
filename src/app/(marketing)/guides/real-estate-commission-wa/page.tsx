@@ -270,20 +270,20 @@ export default function RealEstateCommissionWaPage() {
           going rate locally.
         </li>
         <li>
-          <strong>Negotiate on the rate and the marketing.</strong> The
+          <strong>Negotiate on the rate and the marketing.</strong>{" "}The
           commission percentage is only half the cost. The marketing and
           advertising budget is the other half, and it&rsquo;s often where the
           bigger savings sit, so push on both.
         </li>
         <li>
-          <strong>Be wary of the cheapest quote.</strong> The lowest rate
+          <strong>Be wary of the cheapest quote.</strong>{" "}The lowest rate
           isn&rsquo;t the same as the lowest cost. An agent who negotiates a
           stronger sale price can easily earn back a slightly higher rate many
           times over, while a bargain agent juggling too many listings can cost
           you far more in a weaker result.
         </li>
         <li>
-          <strong>Confirm whether GST is included.</strong> Ask every agent
+          <strong>Confirm whether GST is included.</strong>{" "}Ask every agent
           whether their quoted rate is before or after the 10% GST, so you&rsquo;re
           comparing like with like.
         </li>
@@ -346,7 +346,7 @@ export default function RealEstateCommissionWaPage() {
           so you know what commission means in dollars before any conversation.
         </li>
         <li>
-          <strong>Then negotiate.</strong> With the value, the agent shortlist
+          <strong>Then negotiate.</strong>{" "}With the value, the agent shortlist
           and the dollar figure in hand, you&rsquo;re in the strongest position
           to negotiate both the rate and the marketing.
         </li>

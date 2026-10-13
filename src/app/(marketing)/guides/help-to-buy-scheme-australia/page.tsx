@@ -306,7 +306,7 @@ export default function HelpToBuySchemeAustraliaPage() {
       </p>
       <ul>
         <li>
-          <strong>The home is yours.</strong> It&rsquo;s in your name and you
+          <strong>The home is yours.</strong>{" "}It&rsquo;s in your name and you
           live in it as your own. The government&rsquo;s contribution is secured
           by a second mortgage.
         </li>
@@ -316,7 +316,7 @@ export default function HelpToBuySchemeAustraliaPage() {
           lower than a standard purchase at the same price.
         </li>
         <li>
-          <strong>No LMI.</strong> The small deposit doesn&rsquo;t trigger
+          <strong>No LMI.</strong>{" "}The small deposit doesn&rsquo;t trigger
           Lenders Mortgage Insurance, the way it normally would below a 20%
           deposit.
         </li>
@@ -343,7 +343,7 @@ export default function HelpToBuySchemeAustraliaPage() {
         </table>
       </ScrollTable>
       <p>
-        Help to Buy saves {fmt(EXR.fivePercent.monthlyRepayment - EXR.monthlyRepayment)} a month in
+        Help to Buy saves {fmt(EXR.fivePercent.monthlyRepayment - EXR.monthlyRepayment)}{" "}a month in
         repayments here. In exchange, the government&rsquo;s {EXR.sharePct}% follows the home&rsquo;s value:
         it put in {fmt(EXR.governmentContribution)} and receives {fmt(GOV_AT_SALE)} on an {fmt(SALE_PRICE)} sale.
         Try your own figures in the <Link href="/help-to-buy-calculator">Help to Buy calculator</Link>.
@@ -470,7 +470,7 @@ export default function HelpToBuySchemeAustraliaPage() {
       </p>
       <h3>Renovating</h3>
       <p>
-        Tell Housing Australia before work costing {fmt(HTB_RENOVATION_NOTICE)} or more in
+        Tell Housing Australia before work costing {fmt(HTB_RENOVATION_NOTICE)}{" "}or more in
         12 months, or any work that needs council approval. The government&rsquo;s
         share is then adjusted so you keep the value you add. If you don&rsquo;t
         tell them, there&rsquo;s no adjustment.
@@ -527,7 +527,7 @@ export default function HelpToBuySchemeAustraliaPage() {
       </ScrollTable>
       <p>
         <strong>Places:</strong> {HTB_PLACES.perYear.toLocaleString("en-AU")} a year, shared between the states
-        by population, with unused places carried over and {HTB_PLACES.totalCap.toLocaleString("en-AU")} in
+        by population, with unused places carried over and {HTB_PLACES.totalCap.toLocaleString("en-AU")}{" "}in
         total. From 1 March each year, uncommitted places can be used in any state. Housing Australia
         doesn&rsquo;t publish how many are left. There are no application fees; you pay the usual costs plus
         the registration of the government&rsquo;s mortgage.

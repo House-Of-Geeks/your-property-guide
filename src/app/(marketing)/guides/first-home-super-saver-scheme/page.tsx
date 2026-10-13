@@ -330,7 +330,7 @@ export default function FirstHomeSuperSaverSchemePage() {
       <p>Other things to know:</p>
       <ul>
         <li>
-          <strong>Study loans (HECS-HELP):</strong> salary sacrifice counts in your repayment income in the
+          <strong>Study loans (HECS-HELP):</strong>{" "}salary sacrifice counts in your repayment income in the
           year you make it. The released amount doesn&rsquo;t count for study loan repayments, family
           assistance, the Medicare levy surcharge or child support.
         </li>
@@ -409,7 +409,7 @@ export default function FirstHomeSuperSaverSchemePage() {
       <h2 id="contributing">How to contribute</h2>
       <ul>
         <li>
-          <strong>Salary sacrifice:</strong> ask your employer to pay part of your pre-tax salary into your
+          <strong>Salary sacrifice:</strong>{" "}ask your employer to pay part of your pre-tax salary into your
           super. It&rsquo;s the simplest route and the tax saving comes through your pay.
         </li>
         <li>
@@ -418,7 +418,7 @@ export default function FirstHomeSuperSaverSchemePage() {
           You claim the deduction in your tax return. It counts as before-tax, the same as salary sacrifice.
         </li>
         <li>
-          <strong>Personal after-tax contribution:</strong> pay in and don&rsquo;t claim a deduction. It comes
+          <strong>Personal after-tax contribution:</strong>{" "}pay in and don&rsquo;t claim a deduction. It comes
           back in full, but saves no tax.
         </li>
       </ul>
@@ -514,7 +514,7 @@ export default function FirstHomeSuperSaverSchemePage() {
       <p>If you&rsquo;ve had the money released and don&rsquo;t sign a contract in time, you have two options:</p>
       <ul>
         <li>
-          <strong>Put it back into super:</strong> recontribute the assessable amount, less the tax withheld, as
+          <strong>Put it back into super:</strong>{" "}recontribute the assessable amount, less the tax withheld, as
           a non-concessional contribution and tell the ATO. It then stays in super until retirement, and you
           can&rsquo;t use FHSS again.
         </li>
@@ -528,7 +528,7 @@ export default function FirstHomeSuperSaverSchemePage() {
       <h2 id="couples">Couples, siblings and friends</h2>
       <p>
         FHSS is per person, not per home. Two eligible buyers can each release up to {fmt(FHSS_TOTAL_LIMIT)} of
-        contributions plus earnings towards the same purchase, which is {fmt(FHSS_TOTAL_LIMIT * 2)} of
+        contributions plus earnings towards the same purchase, which is {fmt(FHSS_TOTAL_LIMIT * 2)}{" "}of
         contributions between a couple. Siblings and friends buying together can do the same. Each of you
         applies through your own myGov account and must be on the title. If your partner has owned property
         before, that doesn&rsquo;t stop you using FHSS, as long as you never have.

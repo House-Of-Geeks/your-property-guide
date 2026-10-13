@@ -227,14 +227,14 @@ export default function OffsetAccountsExplainedPage() {
       </p>
       <ul>
         <li>
-          <strong>Status of the money.</strong> Offset balance is your
+          <strong>Status of the money.</strong>{" "}Offset balance is your
           money in an account. Redraw is a repayment you&rsquo;ve made
           that the lender allows you to reverse. For most owner-occupier
           purposes that distinction doesn&rsquo;t matter; it matters a
           lot for investment loans (see below).
         </li>
         <li>
-          <strong>Cost.</strong> Offset is almost always part of a
+          <strong>Cost.</strong>{" "}Offset is almost always part of a
           packaged loan with an annual fee ($250 to $400). Redraw is
           often included for free on basic-rate variable loans. If you
           don&rsquo;t need offset specifically, a basic loan with
@@ -375,7 +375,7 @@ export default function OffsetAccountsExplainedPage() {
           lower than the offset saving on any loan above 4 per cent.
         </li>
         <li>
-          <strong>Using redraw on an investment loan.</strong> Will
+          <strong>Using redraw on an investment loan.</strong>{" "}Will
           cost you tax deductions you can&rsquo;t get back.
         </li>
         <li>
@@ -416,13 +416,13 @@ export default function OffsetAccountsExplainedPage() {
       </p>
       <ul>
         <li>
-          <strong>Tiny balances.</strong> If your offset average sits
+          <strong>Tiny balances.</strong>{" "}If your offset average sits
           below the package-fee breakeven (typically under $5,000),
           you&rsquo;re paying more in fees than you&rsquo;re saving in
           interest. Switch to a basic variable loan.
         </li>
         <li>
-          <strong>Fixed-rate loans.</strong> Most fixed-rate loans
+          <strong>Fixed-rate loans.</strong>{" "}Most fixed-rate loans
           don&rsquo;t allow offset at all, or only allow it on a
           portion of the loan (10 to 50 per cent of the fixed
           balance). If you&rsquo;ve fixed everything, offset
@@ -431,7 +431,7 @@ export default function OffsetAccountsExplainedPage() {
           for the trade-off.
         </li>
         <li>
-          <strong>You actively pay down the loan.</strong> If your
+          <strong>You actively pay down the loan.</strong>{" "}If your
           strategy is to make extra repayments and never withdraw
           them, redraw on a basic-rate loan gives you the same
           interest saving without the package fee. The offset

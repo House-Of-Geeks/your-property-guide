@@ -276,7 +276,7 @@ export default function RealEstateCommissionVicPage() {
           is included in the rate.
         </li>
         <li>
-          <strong>Be wary of the cheapest quote.</strong> The lowest rate is not
+          <strong>Be wary of the cheapest quote.</strong>{" "}The lowest rate is not
           automatically the best value. An agent who negotiates a higher sale
           price earns their commission back many times over, so weigh the rate
           against the campaign and the agent&rsquo;s track record, not in isolation.

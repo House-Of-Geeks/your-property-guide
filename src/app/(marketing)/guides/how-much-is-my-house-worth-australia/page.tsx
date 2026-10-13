@@ -202,14 +202,14 @@ export default function HowMuchIsMyHouseWorthAustraliaPage() {
       </p>
       <ul>
         <li>
-          <strong>The appraisal is optimistic by design,</strong> in the sense
+          <strong>The appraisal is optimistic by design,</strong>{" "}in the sense
           that it reflects what a motivated buyer might pay in a competitive
           campaign. A good agent prices to the market, but the appraisal is
           still a forward-looking estimate of a sale that hasn&rsquo;t happened
           yet.
         </li>
         <li>
-          <strong>The bank valuation is pessimistic by design.</strong> The
+          <strong>The bank valuation is pessimistic by design.</strong>{" "}The
           lender assumes a forced or quick sale and wants a figure it could
           recover even in a soft market. That&rsquo;s why it&rsquo;s
           conservative, and why a valuation coming in under your contract price
@@ -305,7 +305,7 @@ export default function HowMuchIsMyHouseWorthAustraliaPage() {
           confidence range blows out.
         </li>
         <li>
-          <strong>It lags the market.</strong> Sales data takes weeks to
+          <strong>It lags the market.</strong>{" "}Sales data takes weeks to
           settle and report. In a fast-moving market the estimate is reading
           last quarter&rsquo;s prices, not this week&rsquo;s.
         </li>
@@ -345,7 +345,7 @@ export default function HowMuchIsMyHouseWorthAustraliaPage() {
           letterboxes you most. Each appraisal is free.
         </li>
         <li>
-          <strong>Make each agent justify the number.</strong> Ask for the
+          <strong>Make each agent justify the number.</strong>{" "}Ask for the
           comparable sales behind their figure. A confident appraisal that
           can&rsquo;t be backed with recent comparables is a warning sign.
         </li>

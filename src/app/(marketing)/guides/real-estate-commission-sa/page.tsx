@@ -267,7 +267,7 @@ export default function RealEstateCommissionSAPage() {
       </ul>
       <p>
         For a sense of what is normal and who is licensed, the{" "}
-        <strong>Real Estate Institute of South Australia (REISA)</strong> is the
+        <strong>Real Estate Institute of South Australia (REISA)</strong>{" "}is the
         state&rsquo;s industry body, and agents in SA are licensed and regulated
         through <strong>Consumer and Business Services SA</strong>. Checking that
         an agent is properly licensed is a basic first step before you hand over

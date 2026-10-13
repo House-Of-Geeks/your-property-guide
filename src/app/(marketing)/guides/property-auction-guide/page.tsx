@@ -174,7 +174,7 @@ export default function PropertyAuctionGuidePage() {
           agent for bidder registration.
         </li>
         <li>
-          <strong>Register as a bidder.</strong> You must register to bid. In
+          <strong>Register as a bidder.</strong>{" "}You must register to bid. In
           some states this is mandatory by law; in others it&rsquo;s standard
           practice. You will receive a bidder number.
         </li>
@@ -198,7 +198,7 @@ export default function PropertyAuctionGuidePage() {
           market. The next successful bid wins.
         </li>
         <li>
-          <strong>Hammer falls.</strong> The auctioneer calls &ldquo;going
+          <strong>Hammer falls.</strong>{" "}The auctioneer calls &ldquo;going
           once, going twice, sold&rdquo; (or similar), and the property is
           sold unconditionally to the highest bidder.
         </li>
@@ -217,7 +217,7 @@ export default function PropertyAuctionGuidePage() {
         the auction and is not disclosed to buyers.
       </p>
       <p>
-        The agent&rsquo;s pre-auction <em>price guide</em> is not the reserve,
+        The agent&rsquo;s pre-auction <em>price guide</em>{" "}is not the reserve,
         it is an indication of expected bidding range. Price guides must be
         genuinely representative of the vendor&rsquo;s expectations under
         Australian consumer law and cannot be set artificially low to attract
@@ -332,7 +332,7 @@ export default function PropertyAuctionGuidePage() {
           recourse if issues are discovered post-sale.
         </li>
         <li>
-          <strong>Review the contract of sale.</strong> Have your conveyancer
+          <strong>Review the contract of sale.</strong>{" "}Have your conveyancer
           or solicitor review the vendor&rsquo;s contract and Section 32 (VIC)
           or equivalent before auction day. Clarify any unusual clauses.
         </li>

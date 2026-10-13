@@ -333,7 +333,7 @@ export default function RealEstateAgentFeesPage() {
           Be cautious about signing for more than 90 days without a strong reason.
         </li>
         <li>
-          <strong>Cooling-off period.</strong> In most states, you have a short
+          <strong>Cooling-off period.</strong>{" "}In most states, you have a short
           cooling-off period (often 1 to 3 days) after signing an agency agreement
           to cancel without penalty. Check your state&rsquo;s rules.
         </li>
@@ -342,7 +342,7 @@ export default function RealEstateAgentFeesPage() {
           is payable, usually on unconditional exchange or settlement.
         </li>
         <li>
-          <strong>Conjunctional sales.</strong> Some agreements allow the listing
+          <strong>Conjunctional sales.</strong>{" "}Some agreements allow the listing
           agent to &ldquo;conjunct&rdquo; with another agent. Understand how
           commission is shared in this case.
         </li>

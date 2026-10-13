@@ -549,7 +549,7 @@ export default function GlossaryPage() {
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
               Two ways to co-own property. <em>Joint tenants</em> each own 100% of the property
               together, if one owner dies, their share automatically passes to the surviving owner(s)
-              (right of survivorship). Commonly used by married couples. <em>Tenants in common</em>
+              (right of survivorship). Commonly used by married couples. <em>Tenants in common</em>{" "}
               each own a defined share (e.g. 50/50 or 70/30), which can be passed through a will.
               Commonly used by business partners or unmarried couples.
             </dd>

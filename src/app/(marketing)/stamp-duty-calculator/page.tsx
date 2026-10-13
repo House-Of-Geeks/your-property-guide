@@ -104,7 +104,7 @@ export default function StampDutyCalculatorPage() {
         <>
           <h2>What stamp duty actually is</h2>
           <p>
-            Stamp duty (officially called <em>transfer duty</em> or <em>conveyance duty</em> in
+            Stamp duty (officially called <em>transfer duty</em> or <em>conveyance duty</em>{" "}in
             most states) is a state government tax on property transfers. It&rsquo;s
             charged on the contract price of the property and is paid by the buyer
             at settlement.

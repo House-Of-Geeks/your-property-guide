@@ -513,11 +513,11 @@ export default function HowToNegotiatePropertyPricePage() {
           time to shop your offer. 24 to 48 hours forces a decision.
         </li>
         <li>
-          <strong>Revealing your ceiling.</strong> Never tell the agent your
+          <strong>Revealing your ceiling.</strong>{" "}Never tell the agent your
           maximum. Once they know it, you&rsquo;ll pay it.
         </li>
         <li>
-          <strong>Subject-to-sale on a strong market.</strong> Most vendors
+          <strong>Subject-to-sale on a strong market.</strong>{" "}Most vendors
           won&rsquo;t accept it. Sell first or use{" "}
           <Link href="/guides/bridging-loans-guide">bridging finance</Link> instead.
         </li>

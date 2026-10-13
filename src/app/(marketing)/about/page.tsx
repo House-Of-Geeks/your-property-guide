@@ -358,7 +358,7 @@ export default function AboutPage() {
               industry data) and never opinion blogs.
             </p>
             <p>
-              <strong>AI usage.</strong> We don&rsquo;t publish AI-generated
+              <strong>AI usage.</strong>{" "}We don&rsquo;t publish AI-generated
               copy. AI may be used for research summarisation and outline
               drafting by the editor, but every word that ships through our
               site is written and edited by named humans.

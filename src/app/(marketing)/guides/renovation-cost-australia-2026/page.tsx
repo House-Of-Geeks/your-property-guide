@@ -431,7 +431,7 @@ export default function RenovationCostAustralia2026Page() {
         <li><strong>Heritage / planning reports</strong> where applicable: $2,000–$10,000.</li>
       </ul>
       <p>
-        Total pre-construction costs typically run <strong>8–15%</strong> of
+        Total pre-construction costs typically run <strong>8–15%</strong>{" "}of
         project value. On a $400,000 renovation that&rsquo;s $32,000–$60,000
         spent before any tools come out.
       </p>

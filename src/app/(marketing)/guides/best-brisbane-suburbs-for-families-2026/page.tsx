@@ -240,7 +240,7 @@ export default function BestBrisbaneFamilySuburbsGuide() {
           fall into different catchments.
         </li>
         <li>
-          <strong>Plan for the secondary catchment, not just primary.</strong>
+          <strong>Plan for the secondary catchment, not just primary.</strong>{" "}
           Primary catchments are easy to satisfy across most suburbs. The
           binding constraint is usually the high school catchment 7 to 8 years
           later.

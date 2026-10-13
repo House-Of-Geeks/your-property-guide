@@ -244,7 +244,7 @@ export default function HowToSellAHouseAustraliaPage() {
         <li><strong>Professional styling</strong> for vacant or sparsely-furnished homes. $3K to $8K for a 6-week campaign, almost always returns 5× to 15× its cost.</li>
       </ol>
       <p>
-        What <em>not</em> to do: don&rsquo;t renovate the kitchen or bathroom
+        What <em>not</em>{" "}to do: don&rsquo;t renovate the kitchen or bathroom
         before selling. The cost recovery is poor. The buyer who pays for
         renovation prefers to choose their own finishes anyway. Read our{" "}
         <Link href="/guides/renovation-cost-australia-2026">renovation cost guide</Link>{" "}
@@ -321,7 +321,7 @@ export default function HowToSellAHouseAustraliaPage() {
         avoid the public theatre of auction.
       </p>
       <p>
-        <strong>Off-market</strong> sales happen entirely without a public
+        <strong>Off-market</strong>{" "}sales happen entirely without a public
         listing: agents shop the property to their database. Suits sellers
         who want discretion (and who don&rsquo;t mind the smaller buyer pool).
         See our <Link href="/off-market">off-market property page</Link>.

@@ -236,7 +236,7 @@ export default function CoolingOffPeriodByStateGuide() {
       <h2 id="how-to-use">How to use cooling-off well</h2>
       <ol>
         <li>
-          <strong>Commission inspections immediately.</strong> Building &amp;
+          <strong>Commission inspections immediately.</strong>{" "}Building &amp;
           pest takes 1 to 3 business days; strata report (for apartments)
           takes 2 to 4. Order on day one.
         </li>

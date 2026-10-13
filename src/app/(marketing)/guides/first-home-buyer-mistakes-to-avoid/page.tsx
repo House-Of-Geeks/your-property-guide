@@ -132,7 +132,7 @@ export default function FirstHomeBuyerMistakesGuide() {
 
       <h2 id="all-in-cash">1. Underestimating the all-in cash needed</h2>
       <p>
-        <strong>The mistake:</strong> You save a 20% deposit, then discover at
+        <strong>The mistake:</strong>{" "}You save a 20% deposit, then discover at
         settlement that stamp duty, conveyancing, building inspection, and
         lender fees add another $25K to $40K you don&rsquo;t have.
       </p>
@@ -153,12 +153,12 @@ export default function FirstHomeBuyerMistakesGuide() {
 
       <h2 id="skipping-preapp">2. Skipping pre-approval (or letting it go stale)</h2>
       <p>
-        <strong>The mistake:</strong> You shop without pre-approval, then your
+        <strong>The mistake:</strong>{" "}You shop without pre-approval, then your
         offer is rejected because you can&rsquo;t prove finance. Or your 90-day
         pre-approval expired and you didn&rsquo;t renew before bidding.
       </p>
       <p>
-        <strong>The fix:</strong> Get pre-approval before any open homes. It&rsquo;s
+        <strong>The fix:</strong>{" "}Get pre-approval before any open homes. It&rsquo;s
         free, takes 1 to 2 weeks, and lasts 90 days. Renew if you&rsquo;re
         still searching past the expiry.
       </p>
@@ -170,20 +170,20 @@ export default function FirstHomeBuyerMistakesGuide() {
         A 0.5% rate rise pushes you into mortgage stress.
       </p>
       <p>
-        <strong>The fix:</strong> Stress-test your repayments at 2% above
+        <strong>The fix:</strong>{" "}Stress-test your repayments at 2% above
         today&rsquo;s rate. If they exceed 30% of your take-home pay at the
         stress-test rate, buy less.
       </p>
 
       <h2 id="auction-no-finance">4. Bidding at auction without unconditional finance</h2>
       <p>
-        <strong>The mistake:</strong> You attend an auction with pre-approval,
+        <strong>The mistake:</strong>{" "}You attend an auction with pre-approval,
         win at $50K above the bank&rsquo;s valuation, and your finance gets
         cut back. You&rsquo;re bound by the contract with no cooling-off, and
         no funding gap solution.
       </p>
       <p>
-        <strong>The fix:</strong> Before auction, get the bank to formally
+        <strong>The fix:</strong>{" "}Before auction, get the bank to formally
         value the specific property and confirm finance up to the auction
         ceiling. If the valuation doesn&rsquo;t support your max bid, lower
         your max bid.
@@ -196,7 +196,7 @@ export default function FirstHomeBuyerMistakesGuide() {
         $40K of structural repairs the report would have caught.
       </p>
       <p>
-        <strong>The fix:</strong> Always commission building &amp; pest. For
+        <strong>The fix:</strong>{" "}Always commission building &amp; pest. For
         auctions, do it before bidding (you can&rsquo;t back out after).
         See our{" "}
         <a href="/guides/building-pest-inspection">building &amp; pest inspection guide</a>.
@@ -204,12 +204,12 @@ export default function FirstHomeBuyerMistakesGuide() {
 
       <h2 id="address-blindspot">6. Buying on suburb reputation, not address-level data</h2>
       <p>
-        <strong>The mistake:</strong> &ldquo;This suburb has good schools&rdquo;
+        <strong>The mistake:</strong>{" "}&ldquo;This suburb has good schools&rdquo;
        , but your specific address is in a different school catchment, or
         the block backs onto a flood-prone creek you didn&rsquo;t notice.
       </p>
       <p>
-        <strong>The fix:</strong> For each shortlisted property, check (1) the
+        <strong>The fix:</strong>{" "}For each shortlisted property, check (1) the
         official school catchment finder for the address, and (2) the council
         flood overlay map for the specific lot. Don&rsquo;t rely on suburb
         averages.
@@ -245,12 +245,12 @@ export default function FirstHomeBuyerMistakesGuide() {
 
       <h2 id="no-buffer">9. No emergency buffer at settlement</h2>
       <p>
-        <strong>The mistake:</strong> Every dollar goes into the deposit and
+        <strong>The mistake:</strong>{" "}Every dollar goes into the deposit and
         purchase costs. You move in with $500 in savings. Six weeks later the
         hot water system dies and you can&rsquo;t cover the $4K repair.
       </p>
       <p>
-        <strong>The fix:</strong> Hold back at least 2 months of mortgage
+        <strong>The fix:</strong>{" "}Hold back at least 2 months of mortgage
         repayments and $5K of cash buffer for repairs. Don&rsquo;t deplete
         your savings to the deposit minimum.
       </p>

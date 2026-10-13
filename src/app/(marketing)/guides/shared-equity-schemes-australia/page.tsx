@@ -235,7 +235,7 @@ export default function SharedEquitySchemesPage() {
         <li><strong>Availability.</strong> {helpToBuy.statusNote}; Boost to Buy has regional places only in its current round.</li>
       </ul>
       <p>
-        The <Link href="/help-to-buy-calculator">Help to Buy calculator</Link> shows the national
+        The <Link href="/help-to-buy-calculator">Help to Buy calculator</Link>{" "}shows the national
         scheme&rsquo;s numbers; for a state scheme, ask its lender for the same figures and compare.
       </p>
 

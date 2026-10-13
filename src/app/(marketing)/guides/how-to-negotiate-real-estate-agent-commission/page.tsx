@@ -156,12 +156,12 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
       <p>Five things are on the table before you sign:</p>
       <ul>
         <li>
-          <strong>The rate itself.</strong> The percentage of the sale price
+          <strong>The rate itself.</strong>{" "}The percentage of the sale price
           the agent keeps. Even 0.2 percentage points matters, that&rsquo;s
           $1,600 on an $800,000 sale.
         </li>
         <li>
-          <strong>The structure.</strong> Flat percentage, fixed fee, or a
+          <strong>The structure.</strong>{" "}Flat percentage, fixed fee, or a
           tiered rate with a performance bonus above a target price. Each
           shifts the agent&rsquo;s incentive differently.
         </li>
@@ -176,7 +176,7 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
           60 days is a reasonable ask, 90 is the common maximum.
         </li>
         <li>
-          <strong>The tail clause.</strong> How long after the agreement ends
+          <strong>The tail clause.</strong>{" "}How long after the agreement ends
           the agent is still owed commission for a buyer they
           &ldquo;introduced&rdquo;, and how loosely that word is defined.
         </li>
@@ -300,7 +300,7 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
       <p>Your position is strongest when:</p>
       <ul>
         <li>
-          <strong>Multiple agents are pitching.</strong> Three written
+          <strong>Multiple agents are pitching.</strong>{" "}Three written
           proposals is the minimum. Competition does most of the negotiating
           for you, agents sharpen their numbers when they know they&rsquo;re
           being compared.
@@ -336,30 +336,30 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
       </p>
       <ul>
         <li>
-          <strong>The comparison.</strong> &ldquo;I&rsquo;ve got written
+          <strong>The comparison.</strong>{" "}&ldquo;I&rsquo;ve got written
           proposals from three agents and two are under 2%. You&rsquo;re my
           preferred agent, can you meet that rate?&rdquo; Simple, honest,
           and it works because it&rsquo;s true, so make it true.
         </li>
         <li>
-          <strong>The performance trade.</strong> &ldquo;I&rsquo;ll agree to
+          <strong>The performance trade.</strong>{" "}&ldquo;I&rsquo;ll agree to
           your rate if we restructure it: a lower base, plus a bonus on
           everything above the top of your own appraisal range. If you
           believe your number, this pays you more.&rdquo;
         </li>
         <li>
-          <strong>The marketing challenge.</strong> &ldquo;Walk me through
+          <strong>The marketing challenge.</strong>{" "}&ldquo;Walk me through
           this budget line by line. Which items move my sale price? I&rsquo;ll
           approve those today and we&rsquo;ll cut the rest.&rdquo;
         </li>
         <li>
-          <strong>The exclusivity trade.</strong> &ldquo;I&rsquo;ll sign 60
+          <strong>The exclusivity trade.</strong>{" "}&ldquo;I&rsquo;ll sign 60
           days exclusive rather than 90. If it hasn&rsquo;t sold by then,
           we&rsquo;ll renegotiate, and I&rsquo;m happy to extend if the
           campaign is on track.&rdquo;
         </li>
         <li>
-          <strong>The GST check.</strong> &ldquo;Is that rate inclusive of
+          <strong>The GST check.</strong>{" "}&ldquo;Is that rate inclusive of
           GST? Put the inclusive figure in the agreement.&rdquo; Ten seconds,
           and it prevents the most common quiet 10% surprise.
         </li>
@@ -454,7 +454,7 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
           buyer enquiry.
         </li>
         <li>
-          <strong>Weak negotiation at the pointy end.</strong> The entire
+          <strong>Weak negotiation at the pointy end.</strong>{" "}The entire
           value of a good agent concentrates in the final negotiation with
           buyers. It&rsquo;s the hardest thing to discount-shop and the most
           expensive thing to get wrong.
@@ -491,7 +491,7 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
           authority, so negotiate everything first.
         </li>
         <li>
-          <strong>QLD.</strong> Appointment is via the government&rsquo;s
+          <strong>QLD.</strong>{" "}Appointment is via the government&rsquo;s
           Form 6, which must state the commission and when it&rsquo;s
           payable. A sole or exclusive agency is capped at 90 days, and if
           the appointment runs longer than 60 days either party can end it

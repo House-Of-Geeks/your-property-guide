@@ -199,7 +199,7 @@ export default function DueDiligenceChecklistPage() {
         Auction contracts are unconditional from the fall of the hammer.
         You can&rsquo;t make the bid subject to inspections, finance, or
         anything else. This means all due diligence must happen{" "}
-        <em>before</em> you bid. In active auction markets you&rsquo;ll
+        <em>before</em>{" "}you bid. In active auction markets you&rsquo;ll
         often pay for inspections on multiple properties you don&rsquo;t
         win. Frustrating, but the alternative (skipping due diligence to
         save money on losing bids) is much worse.
@@ -282,7 +282,7 @@ export default function DueDiligenceChecklistPage() {
       </ul>
       <p>
         Use our <Link href="/best-suburbs">best suburbs</Link> and{" "}
-        <Link href="/price-guide">median price lookup</Link> as starting
+        <Link href="/price-guide">median price lookup</Link>{" "}as starting
         points; cross-reference against the agent&rsquo;s claims.
       </p>
 

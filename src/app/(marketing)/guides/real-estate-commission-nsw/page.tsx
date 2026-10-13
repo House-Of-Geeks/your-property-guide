@@ -210,7 +210,7 @@ export default function RealEstateCommissionNswPage() {
       <h2 id="structure">How commission is structured in NSW</h2>
       <p>
         The standard structure in New South Wales is a{" "}
-        <strong>flat percentage</strong> of the sale price. The agent quotes a
+        <strong>flat percentage</strong>{" "}of the sale price. The agent quotes a
         single rate, say 2%, and that rate applies to the whole sale price
         whatever the property eventually sells for. It&rsquo;s simple to compare
         between agents, which is why most NSW vendors see it.
@@ -225,7 +225,7 @@ export default function RealEstateCommissionNswPage() {
         especially if you think there&rsquo;s upside in your sale.
       </p>
       <p>
-        Almost all NSW agents work on a <strong>no sale, no fee</strong> basis.
+        Almost all NSW agents work on a <strong>no sale, no fee</strong>{" "}basis.
         Commission is only payable if the property sells, and it comes out of the
         proceeds at settlement rather than being paid upfront. That&rsquo;s a big
         part of why agents are motivated to achieve the best price they can.
@@ -264,7 +264,7 @@ export default function RealEstateCommissionNswPage() {
       <p>How to negotiate commission in NSW without shooting yourself in the foot:</p>
       <ol>
         <li>
-          <strong>Compare two or three agents.</strong> Getting competing
+          <strong>Compare two or three agents.</strong>{" "}Getting competing
           appraisals gives you both leverage and a sense of what&rsquo;s fair in
           your suburb. Choose agents who genuinely sell your type of property
           locally, not whoever letterboxes you most.

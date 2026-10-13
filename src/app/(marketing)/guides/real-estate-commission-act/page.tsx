@@ -246,7 +246,7 @@ export default function RealEstateCommissionACTPage() {
 
       <h2 id="negotiable">Is commission negotiable in ACT?</h2>
       <p>
-        Yes. Commission is <strong>deregulated</strong> in the ACT, which means
+        Yes. Commission is <strong>deregulated</strong>{" "}in the ACT, which means
         there is no official, legislated or fixed rate. Agents set their own
         fees, so the percentage on the first agency agreement you read is an
         opening number, not a fixed price. Most sellers don&rsquo;t realise this,
@@ -261,7 +261,7 @@ export default function RealEstateCommissionACTPage() {
           of what is fair.
         </li>
         <li>
-          <strong>Negotiate the rate and the marketing together.</strong> A lower
+          <strong>Negotiate the rate and the marketing together.</strong>{" "}A lower
           commission paired with a large marketing package you didn&rsquo;t need
           is not a saving. Look at the total cost of the campaign, not just the
           percentage.

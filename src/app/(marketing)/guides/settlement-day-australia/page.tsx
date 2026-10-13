@@ -416,7 +416,7 @@ export default function SettlementDayAustraliaPage() {
           rates notices will come to you directly.
         </li>
         <li>
-          <strong>Strata body (if applicable):</strong> notify them of
+          <strong>Strata body (if applicable):</strong>{" "}notify them of
           the change of ownership and your contact details. You&rsquo;ll
           be invited to the next AGM.
         </li>
@@ -425,7 +425,7 @@ export default function SettlementDayAustraliaPage() {
           paid redirection service. Worth setting up for 6 to 12 months.
         </li>
         <li>
-          <strong>Locks:</strong> at minimum, change the front door lock.
+          <strong>Locks:</strong>{" "}at minimum, change the front door lock.
           You don&rsquo;t know who else has keys.
         </li>
       </ul>

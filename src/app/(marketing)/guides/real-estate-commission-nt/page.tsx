@@ -266,7 +266,7 @@ export default function RealEstateCommissionNtPage() {
       <p>How to negotiate well in the NT:</p>
       <ol>
         <li>
-          <strong>Compare two or three local agents.</strong> Competing quotes
+          <strong>Compare two or three local agents.</strong>{" "}Competing quotes
           give you both leverage and a sense of what is fair in your suburb.
           Don&rsquo;t accept the first number you are handed.
         </li>

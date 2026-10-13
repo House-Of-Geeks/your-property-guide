@@ -248,7 +248,7 @@ export default function DepositBondsGuidePage() {
       <p>The seller doesn&rsquo;t have to, so ask the agent before you make an offer. What the standard contracts say:</p>
       <ul>
         <li>
-          <strong>New South Wales:</strong> the deposit bond clause in the Law
+          <strong>New South Wales:</strong>{" "}the deposit bond clause in the Law
           Society&rsquo;s standard contract applies only if the seller accepts a
           bond. You hand it over at or before exchange. If settlement
           hasn&rsquo;t happened 14 days before the bond expires, you must give a
@@ -256,12 +256,12 @@ export default function DepositBondsGuidePage() {
           contract.
         </li>
         <li>
-          <strong>Victoria:</strong> the standard contract requires the bond to
+          <strong>Victoria:</strong>{" "}the standard contract requires the bond to
           expire at least 45 days after the due settlement date, according to
           the Legal Practitioners&rsquo; Liability Committee.
         </li>
         <li>
-          <strong>Western Australia:</strong> off-the-plan developers don&rsquo;t
+          <strong>Western Australia:</strong>{" "}off-the-plan developers don&rsquo;t
           have to accept deposit bonds or bank guarantees, says Consumer
           Protection WA.
         </li>

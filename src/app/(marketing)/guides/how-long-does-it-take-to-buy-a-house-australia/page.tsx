@@ -288,7 +288,7 @@ export default function HowLongBuyHouseGuide() {
       <h2 id="common-delays">Common delays</h2>
       <ul>
         <li>
-          <strong>Low valuation.</strong> The bank&rsquo;s valuer comes in
+          <strong>Low valuation.</strong>{" "}The bank&rsquo;s valuer comes in
           below your purchase price; the lender wants you to top up the
           deposit or renegotiate. Adds 1 to 2 weeks.
         </li>
@@ -308,7 +308,7 @@ export default function HowLongBuyHouseGuide() {
           can trigger a re-assessment. Adds 1 to 2 weeks.
         </li>
         <li>
-          <strong>Settlement booking issues.</strong> The PEXA workspace
+          <strong>Settlement booking issues.</strong>{" "}The PEXA workspace
           isn&rsquo;t set up in time, or one party isn&rsquo;t ready.
           Settlement reschedules to the next business day or week.
         </li>
