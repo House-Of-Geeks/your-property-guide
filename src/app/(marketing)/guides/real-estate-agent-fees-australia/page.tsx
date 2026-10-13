@@ -51,7 +51,7 @@ const TLDR = [
   "Marketing costs (photography, online listings, signboard, styling) are usually charged separately on top of commission and typically run $3,000 to $6,000 for an average home.",
   "Fixed-fee agencies charge $3,000 to $10,000 flat. They can save money on high-value sales but reduce the agent's incentive to negotiate hard for you.",
   "Always interview at least three agents and compare the full package: pricing strategy, marketing plan, suburb track record, not just the commission rate.",
-  "An agent who negotiates an extra $20,000 on the sale earns back their commission many times over. Cheapest agent rarely means best return.",
+  "An extra $20,000 on the sale more than covers a slightly higher rate (0.25% on $800,000 is $2,000). The cheapest agent is not always the best return.",
 ];
 
 const TOC: GuideTOCEntry[] = [
@@ -298,7 +298,7 @@ export default function RealEstateAgentFeesPage() {
         based on the lowest commission can be a costly mistake.
       </p>
       <ul>
-        <li>An agent who negotiates an extra $20,000 on a sale earns back their commission many times over, even if their rate is slightly higher than competitors.</li>
+        <li>An agent who negotiates an extra $20,000 on a sale more than covers a slightly higher rate: 0.25% more on an $800,000 sale is $2,000.</li>
         <li>A low-commission agent who is juggling 50 listings may not give your property the attention it deserves.</li>
         <li>Poor photography, weak marketing, or a low-energy campaign can cost you more in foregone sale price than you saved in commission.</li>
       </ul>

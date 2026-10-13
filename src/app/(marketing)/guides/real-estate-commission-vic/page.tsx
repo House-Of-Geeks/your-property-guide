@@ -106,7 +106,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The Cost of Selling a House",           href: "/guides/cost-of-selling-a-house-australia",  description: "Every selling cost beyond commission." },
   { title: "Real Estate Agent Fees (National)",     href: "/guides/real-estate-agent-fees-australia",   description: "How fees and commission work across Australia." },
   { title: "How to Choose a Selling Agent",         href: "/guides/how-to-choose-a-selling-agent",      description: "Pick the right agent, then negotiate the fee." },
-  { title: "How Much Is My House Worth?",           href: "/guides/how-much-is-my-house-worth-australia", description: "Get an accurate value before you list." },
+  { title: "How Much Is My House Worth?",           href: "/guides/how-much-is-my-house-worth-australia", description: "Get a realistic price before you list." },
 ];
 
 export default function RealEstateCommissionVicPage() {
@@ -277,8 +277,8 @@ export default function RealEstateCommissionVicPage() {
         </li>
         <li>
           <strong>Be wary of the cheapest quote.</strong>{" "}The lowest rate is not
-          automatically the best value. An agent who negotiates a higher sale
-          price earns their commission back many times over, so weigh the rate
+          automatically the best value. A small difference in rate is worth
+          less than a better sale price (0.25% on $900,000 is $2,250), so weigh the rate
           against the campaign and the agent&rsquo;s track record, not in isolation.
         </li>
       </ol>

@@ -111,6 +111,8 @@ export function GuideArticleLayout({
         author={frontmatter.author}
         reviewedBy={frontmatter.reviewedBy}
       />
+      {/* Tells the phone bar (MobileBottomNav) which guide this reader gets. */}
+      {nextStep && <span hidden data-guide-audience={nextStep} />}
 
       {/* Hero: the query's answer in the first screen. H1, the one-paragraph
           answer, then who checked it and when. */}

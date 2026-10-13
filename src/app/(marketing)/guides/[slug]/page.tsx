@@ -113,6 +113,8 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           { name: post.title, url: `/guides/${post.slug}` },
         ]}
       />
+      {/* Tells the phone bar (MobileBottomNav) which guide this reader gets. */}
+      <span hidden data-guide-audience={nextStep} />
 
       <div className={SHELL}>
         <div className="pt-2 sm:pt-4 [&_ol]:flex-nowrap [&_li:last-child]:hidden sm:[&_li:last-child]:flex sm:[&_li:last-child]:min-w-0 [&_li:last-child_span]:min-w-0 [&_li:last-child_span]:truncate">

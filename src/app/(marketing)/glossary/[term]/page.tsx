@@ -65,9 +65,8 @@ const CATEGORY_LABEL: Record<string, string> = {
   renters: "Renting",
 };
 
-// Two terms are stored with an HTML entity in the name (Buyer&apos;s Agent);
-// decode it wherever the name is shown on the page. (The <title> and JSON-LD
-// still carry the stored name: fix the two entries in src/lib/data/glossary.ts.)
+// Term names were extracted from HTML and two carried an entity (fixed in
+// src/lib/data/glossary.ts, 13 Oct 2026); decode defensively anyway.
 function decodeTerm(term: string): string {
   return term.replace(/&apos;|&#39;/g, "’").replace(/&amp;/g, "&").replace(/&quot;/g, '"');
 }
