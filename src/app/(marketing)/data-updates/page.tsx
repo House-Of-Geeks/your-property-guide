@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Database, BookOpen, Wrench, AlertCircle } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { DATA_UPDATES, type UpdateKind } from "@/lib/data/data-updates";
 import { formatDate } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero, RuleGrid, SectionHeading } from "@/components/premium";
 
 export const metadata: Metadata = {
   title: "Data Updates & Changelog",
@@ -22,29 +22,23 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
-const KIND_META: Record<
-  UpdateKind,
-  { label: string; icon: React.ReactNode; tone: string }
-> = {
+// Each kind reads as an icon and a word: no coloured tags (BRAND.md §11).
+const KIND_META: Record<UpdateKind, { label: string; icon: React.ReactNode }> = {
   data: {
     label: "Data",
-    icon: <Database className="w-3.5 h-3.5" aria-hidden="true" />,
-    tone: "bg-emerald-50 border-emerald-200 text-emerald-700",
+    icon: <Database className="w-4 h-4 text-primary" aria-hidden="true" />,
   },
   guide: {
     label: "Guide",
-    icon: <BookOpen className="w-3.5 h-3.5" aria-hidden="true" />,
-    tone: "bg-amber-50 border-amber-200 text-amber-800",
+    icon: <BookOpen className="w-4 h-4 text-primary" aria-hidden="true" />,
   },
   tool: {
     label: "Tool",
-    icon: <Wrench className="w-3.5 h-3.5" aria-hidden="true" />,
-    tone: "bg-blue-50 border-blue-200 text-blue-700",
+    icon: <Wrench className="w-4 h-4 text-primary" aria-hidden="true" />,
   },
   correction: {
     label: "Correction",
-    icon: <AlertCircle className="w-3.5 h-3.5" aria-hidden="true" />,
-    tone: "bg-red-50 border-red-200 text-red-700",
+    icon: <AlertCircle className="w-4 h-4 text-primary" aria-hidden="true" />,
   },
 };
 
@@ -86,155 +80,145 @@ export default function DataUpdatesPage() {
     <>
       <BreadcrumbJsonLd items={[{ name: "Data updates", url: "/data-updates" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Data updates" }]} />
-          </div>
-
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              {DATA_UPDATES.length} events
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              Editorial log
-            </span>
-          </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
-            What we changed,{" "}
-            <span>and when</span>
-          </h1>
-          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            Every significant data refresh, guide release, tool launch and
-            correction since 2026. Dated, sourced, transparent.
-          </p>
+      {/* A plain charcoal hero: a reference log needs no photo. */}
+      <PhotoHero breadcrumbs={[{ label: "Data updates" }]}>
+        <div className="flex items-center gap-4 mb-8">
+          <span className="text-sm font-semibold text-ink-muted leading-none">
+            {DATA_UPDATES.length} events
+          </span>
+          <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+          <span className="text-sm text-ink-subtle font-medium">
+            Editorial log
+          </span>
         </div>
-      </section>
+        <HeroTitle>
+          What we changed,{" "}
+          <span>and when</span>
+        </HeroTitle>
+        <HeroLead>
+          Every significant data refresh, guide release, tool launch and
+          correction since 2026. Dated, sourced, transparent.
+        </HeroLead>
+      </PhotoHero>
 
       {/* Counts by kind */}
-      <section className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {(Object.keys(counts) as UpdateKind[]).map((k) => (
-              <div key={k} className="rounded-2xl border border-line bg-surface-warm p-5">
-                <div className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-sans font-medium ${KIND_META[k].tone}`}>
-                  {KIND_META[k].icon}
-                  {KIND_META[k].label}
-                </div>
-                <p className="mt-3 font-display text-3xl text-ink leading-none">
-                  {counts[k]}
-                </p>
-                <p className="mt-2 text-[13px] font-sans text-ink-subtle">
-                  {k === "data" && "Refreshes logged"}
-                  {k === "guide" && "Releases & rewrites"}
-                  {k === "tool" && "New tools shipped"}
-                  {k === "correction" && "Reader-flagged fixes"}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Band tone="quiet" spacing="compact">
+        <RuleGrid className="">
+          {(Object.keys(counts) as UpdateKind[]).map((k) => (
+            <li key={k} className="border-t-2 border-ink pt-6">
+              <p className="inline-flex items-center gap-2 text-sm font-semibold text-ink">
+                {KIND_META[k].icon}
+                {KIND_META[k].label}
+              </p>
+              <p className="mt-4 text-5xl font-bold text-ink leading-none tracking-[-0.03em]">
+                {counts[k]}
+              </p>
+              <p className="mt-2 text-sm text-ink-muted">
+                {k === "data" && "Refreshes logged"}
+                {k === "guide" && "Releases & rewrites"}
+                {k === "tool" && "New tools shipped"}
+                {k === "correction" && "Reader-flagged fixes"}
+              </p>
+            </li>
+          ))}
+        </RuleGrid>
+      </Band>
 
       {/* Timeline */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-        {grouped.map(([month, items]) => (
-          <section key={month}>
-            <h2 className="font-display text-2xl text-ink mb-6 pb-2 border-b border-line">
-              {monthLabel(month)}
-            </h2>
-            <ol className="space-y-4">
-              {items.map((u) => {
-                const meta = KIND_META[u.kind];
-                const inner = (
-                  <>
-                    <div className="flex items-baseline justify-between gap-4 mb-2">
-                      <span
-                        className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-sans font-medium ${meta.tone}`}
-                      >
-                        {meta.icon}
-                        {meta.label}
-                      </span>
-                      <p className="text-[13px] font-sans text-ink-subtle">
-                        {formatDate(u.date)}
-                      </p>
-                    </div>
-                    <h3 className="font-display text-lg text-ink leading-tight mb-1">
-                      {u.title}
-                    </h3>
-                    <p className="font-sans text-sm text-ink-muted leading-relaxed">
-                      {u.description}
-                    </p>
-                    {u.href && (
-                      <p className="mt-3 inline-flex items-center gap-1 text-[13px] font-sans text-ink group-hover:text-primary transition-colors">
-                        See more <ArrowRight className="w-3.5 h-3.5" />
-                      </p>
-                    )}
-                  </>
-                );
-                return (
-                  <li
-                    key={`${u.date}-${u.title}`}
-                    className="rounded-2xl border border-line bg-surface-raised p-6 group"
-                  >
-                    {u.href ? (
-                      <Link
-                        href={u.href}
-                        className="block hover:cursor-pointer"
-                      >
-                        {inner}
-                      </Link>
-                    ) : (
-                      inner
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-          </section>
-        ))}
-
-        {/* Closer */}
-        <section className="rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
-          <div className="grid lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-7">
-              <p className="text-[13px] font-sans text-ink-subtle mb-3">
-                Spotted something off?
-              </p>
-              <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-3">
-                Tell us, and we&rsquo;ll log the correction here
+      <Band>
+        <div className="space-y-16">
+          {grouped.map(([month, items]) => (
+            <section key={month}>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-[-0.025em] text-ink pb-4 border-b-2 border-ink">
+                {monthLabel(month)}
               </h2>
-              <p className="font-sans text-base text-ink-muted leading-relaxed">
-                We log every reader-flagged correction in this changelog with
-                the date it was fixed. If a figure looks wrong, email{" "}
-                <a
-                  href="mailto:andy@theandylife.com"
-                  className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-                >
-                  andy@theandylife.com
-                </a>{" "}
-                and we&rsquo;ll respond within a week.
-              </p>
-            </div>
-            <div className="lg:col-span-5 lg:flex lg:items-end lg:justify-end gap-3 flex flex-wrap">
-              <Link
-                href="/methodology"
-                className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+              <ol className="divide-y divide-line">
+                {items.map((u) => {
+                  const meta = KIND_META[u.kind];
+                  const inner = (
+                    <>
+                      <div className="flex items-baseline justify-between gap-4 mb-2">
+                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-muted">
+                          {meta.icon}
+                          {meta.label}
+                        </span>
+                        <p className="text-sm text-ink-subtle">
+                          {formatDate(u.date)}
+                        </p>
+                      </div>
+                      <h3 className="text-xl font-bold text-ink leading-tight mb-1 group-hover:text-primary transition-colors">
+                        {u.title}
+                      </h3>
+                      <p className="text-base text-ink-muted leading-relaxed max-w-3xl">
+                        {u.description}
+                      </p>
+                      {u.href && (
+                        <p className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-ink group-hover:text-primary transition-colors">
+                          See more <ArrowRight className="w-3.5 h-3.5" />
+                        </p>
+                      )}
+                    </>
+                  );
+                  return (
+                    <li
+                      key={`${u.date}-${u.title}`}
+                      className="py-6 group"
+                    >
+                      {u.href ? (
+                        <Link
+                          href={u.href}
+                          className="block hover:cursor-pointer"
+                        >
+                          {inner}
+                        </Link>
+                      ) : (
+                        inner
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+            </section>
+          ))}
+        </div>
+      </Band>
+
+      {/* Closer */}
+      <Band tone="quiet" spacing="compact">
+        <div className="grid lg:grid-cols-12 gap-6 lg:gap-16">
+          <div className="lg:col-span-7">
+            <p className="text-sm font-semibold text-ink-muted mb-3">
+              Spotted something off?
+            </p>
+            <SectionHeading size="md" title={<>Tell us, and we&rsquo;ll log the correction here</>} />
+            <p className="mt-4 text-base sm:text-lg text-ink-muted leading-relaxed">
+              We log every reader-flagged correction in this changelog with
+              the date it was fixed. If a figure looks wrong, email{" "}
+              <a
+                href="mailto:andy@theandylife.com"
+                className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
               >
-                Read the methodology →
-              </Link>
-              <Link
-                href="/data"
-                className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-              >
-                See live data counts →
-              </Link>
-            </div>
+                andy@theandylife.com
+              </a>{" "}
+              and we&rsquo;ll respond within a week.
+            </p>
           </div>
-        </section>
-      </div>
+          <div className="lg:col-span-5 lg:flex lg:items-end lg:justify-end gap-x-6 gap-y-3 flex flex-wrap">
+            <Link
+              href="/methodology"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+            >
+              Read the methodology →
+            </Link>
+            <Link
+              href="/data"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+            >
+              See live data counts →
+            </Link>
+          </div>
+        </div>
+      </Band>
     </>
   );
 }

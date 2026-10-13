@@ -4,10 +4,10 @@ import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
-import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { FaqAccordion } from "@/components/guide/FaqAccordion";
 import { AgentEnquiryForm } from "@/components/forms/AgentEnquiryForm";
 import { SITE_URL } from "@/lib/constants/seo";
+import { HeroLead, HeroTitle, PhotoHero, type PhotoKey } from "@/components/premium";
 import { guideOgImages } from "@/lib/og/helpers";
 import { leadTypePages, getLeadTypePage } from "@/lib/data/real-estate-leads";
 import { CTA_CLASS, Chapter, Clauses, Docket, FinePrint, WhatHappensNext } from "../_parts";
@@ -45,6 +45,14 @@ export async function generateMetadata(props: { params: Promise<{ type: string }
 }
 
 const ROMAN = ["I.", "II.", "III.", "IV.", "V.", "VI.", "VII.", "VIII.", "IX."];
+
+// One library photo per lead type (BRAND.md §11, by reader).
+const LEAD_TYPE_PHOTO: Record<string, PhotoKey> = {
+  "vendor-leads": "selling",
+  "appraisal-leads": "kitchen",
+  "buyer-leads": "buying",
+  "property-developer-leads": "investing",
+};
 
 export default async function LeadTypePage(props: { params: Promise<{ type: string }> }) {
   const { type } = await props.params;
@@ -88,43 +96,42 @@ export default async function LeadTypePage(props: { params: Promise<{ type: stri
         }}
       />
 
-      <div className="bg-surface border-b border-line">
-        <div className={s.container}>
-          <Breadcrumbs items={[{ label: "Real Estate Leads", href: "/real-estate-leads" }, { label: page.name }]} />
+      {/* Hero, over the photo for this lead type; the illustrative docket
+          keeps its own light paper palette on the charcoal. */}
+      <PhotoHero
+        photo={LEAD_TYPE_PHOTO[page.slug] ?? "street"}
+        size="lg"
+        breadcrumbs={[{ label: "Real Estate Leads", href: "/real-estate-leads" }, { label: page.name }]}
+        aside={<Docket title={page.docketTitle} rows={page.docket} consents={page.docketConsents} recipient={page.recipient} />}
+      >
+        <p className="text-sm font-semibold text-ink-muted mb-4">
+          Real estate leads · Lead type {page.n} of {String(leadTypePages.length).padStart(2, "0")}
+        </p>
+        <HeroTitle>
+          {page.h1} {page.h1Em}
+        </HeroTitle>
+        <HeroLead>{page.lede}</HeroLead>
+        <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+          <a href="#register" className={CTA_CLASS}>
+            Register for {page.shortName}
+            <ArrowRight className="w-5 h-5" aria-hidden="true" />
+          </a>
+          <Link href="/real-estate-leads" className="inline-flex items-center gap-2 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
+            All lead types and terms <span aria-hidden="true">→</span>
+          </Link>
         </div>
-      </div>
+        <p className="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-t border-line pt-6 text-sm text-ink-muted max-w-xl">
+          <span>Opt-in only</span>
+          <span>100% exclusive</span>
+          <span>Matched to you</span>
+          <span>7-day replacement</span>
+        </p>
+      </PhotoHero>
 
-      {/* Hero */}
-      <section className={s.hero}>
+      {/* The numbers that used to sit under the hero, in a grey band so the
+          white chapter after it alternates. */}
+      <section className={`${s.railBand} ${s.sectionPaper}`}>
         <div className={s.container}>
-          <div className={s.heroGrid}>
-            <div>
-              <div className={`${s.eyebrow} rise`}>
-                Real estate leads · Lead type {page.n} of {String(leadTypePages.length).padStart(2, "0")}
-              </div>
-              <h1 className={`${s.heroTitle} rise rise-d1`}>
-                {page.h1} <em>{page.h1Em}</em>
-              </h1>
-              <p className={`${s.lede} ${s.heroLede} rise rise-d2`}>{page.lede}</p>
-              <div className={`${s.heroCtas} rise rise-d3`}>
-                <a href="#register" className={CTA_CLASS}>
-                  Register for {page.shortName}
-                  <ArrowRight className="w-5 h-5" aria-hidden="true" />
-                </a>
-                <Link href="/real-estate-leads" className={s.ghostLink}>
-                  All lead types and terms <span aria-hidden="true">→</span>
-                </Link>
-              </div>
-              <div className={`${s.heroFoot} rise rise-d4`}>
-                <span>Opt-in only</span>
-                <span>100% exclusive</span>
-                <span>Matched to you</span>
-                <span>7-day replacement</span>
-              </div>
-            </div>
-            <Docket title={page.docketTitle} rows={page.docket} consents={page.docketConsents} recipient={page.recipient} />
-          </div>
-
           <div className={s.rail}>
             {page.stats.map((st) => (
               <div key={st.label} className={s.railItem}>
@@ -324,8 +331,9 @@ export default async function LeadTypePage(props: { params: Promise<{ type: stri
         </div>
       </section>
 
-      {/* FAQ. Mirrors the FAQPageJsonLd above. */}
-      <section className={s.section}>
+      {/* FAQ. Mirrors the FAQPageJsonLd above. Grey or white, whichever
+          the register band before it isn't. */}
+      <section className={`${s.section} ${page.chapter ? s.sectionPaper : ""}`}>
         <div className={s.container} style={{ maxWidth: 860 }}>
           <div data-reveal>
             <Chapter num={next()} title={`${page.name}: questions ${page.askers} ask.`} kicker="Straight answers on what these leads contain, exclusivity, pricing and who can register" />
@@ -334,14 +342,15 @@ export default async function LeadTypePage(props: { params: Promise<{ type: stri
         </div>
       </section>
 
-      {/* Closing */}
-      <section className={s.close}>
+      {/* Closing: a light band (the footer is charcoal), grey or white
+          opposite the FAQ. */}
+      <section className={`${s.close} ${page.chapter ? "" : s.sectionPaper}`}>
         <div className={s.container} style={{ position: "relative" }}>
-          <div className={`${s.eyebrow} ${s.eyebrowOnDark}`} style={{ justifyContent: "center", marginBottom: 26 }}>
+          <div className={s.eyebrow} style={{ justifyContent: "center", marginBottom: 26 }}>
             Exclusive · Pay per lead · No lock-in
           </div>
           <h2 className={s.closeTitle}>
-            {page.name}, delivered to <em>one</em> {page.recipient}
+            {page.name}, delivered to one {page.recipient}
           </h2>
           <p className={s.closeText}>
             Tell us your suburbs. Within one business day you will have

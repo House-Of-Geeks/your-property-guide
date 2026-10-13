@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CheckCircle, Download, ArrowRight } from "lucide-react";
 import { ConversionTracker } from "@/components/journey/ConversionTracker";
 import { GuideCallCard, GuideEmailNote } from "@/components/journey/GuideThanksExtras";
+import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 
 export const metadata: Metadata = {
   title: "Your selling guide is ready",
@@ -89,24 +90,23 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
       </Suspense>
 
       {/* The download and the optional call card side by side from lg and
-          stacked on phones, both on the first screen. The download button is
-          the solid action until the call card renders; then the call takes
-          the solid button and the download goes to outline (one solid
-          action per screen). Nothing decorative. */}
-      <section className="bg-surface-warm border-b border-line">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-6 pb-10 sm:pt-12 sm:pb-16 flex flex-col">
-          <p className="inline-flex items-center gap-2 text-sm font-semibold text-ink-muted mb-2">
-            <CheckCircle className="w-4 h-4 text-success" aria-hidden="true" />
+          stacked on phones, both on the first screen, over a photo. The
+          download button is the solid action until the call card renders;
+          then the call takes the solid button and the download goes to
+          outline (one solid action per screen). The two white cards reset
+          the hero's dark tone with .tone-light. */}
+      <PhotoHero photo="kitchen">
+        <div className="flex flex-col">
+          <p className="inline-flex items-center gap-2 text-sm font-semibold text-ink-muted mb-3">
+            <CheckCircle className="w-4 h-4 text-primary" aria-hidden="true" />
             Guide sent
           </p>
-          <h1 className="font-display text-ink tracking-[-0.03em] text-[1.75rem] sm:text-4xl lg:text-5xl leading-[1.08] font-bold">
-            {copy.headline}
-          </h1>
-          <p className="mt-4 text-base text-ink-muted leading-relaxed max-w-2xl max-lg:order-last max-lg:mt-6">
+          <HeroTitle>{copy.headline}</HeroTitle>
+          <HeroLead className="max-lg:order-last max-lg:text-base">
             {copy.body}
-          </p>
+          </HeroLead>
 
-          <div className="group/thanks mt-6 lg:mt-8 grid lg:grid-cols-2 gap-4 lg:gap-6 items-start">
+          <div className="tone-light group/thanks mt-8 lg:mt-10 grid lg:grid-cols-2 gap-4 lg:gap-6 items-start">
             <div className="rounded-xl border border-line bg-white p-5 sm:p-6">
               <div className="flex items-start gap-4 sm:gap-5">
                 <Image
@@ -114,7 +114,6 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
                   alt="The Complete Guide to Selling Your Property in Australia, 2026 edition"
                   width={190}
                   height={269}
-                  priority
                   className="shrink-0 w-[64px] sm:w-[84px] h-auto rounded shadow-[0_6px_16px_rgb(22_25_29/0.22)]"
                 />
                 <div className="min-w-0 flex-1">
@@ -136,19 +135,17 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
             <GuideCallCard guide="selling" />
           </div>
         </div>
-      </section>
+      </PhotoHero>
 
-      <section className="bg-white">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-          <h2 className="font-display text-ink tracking-[-0.02em] text-xl sm:text-2xl font-bold mb-5">
-            While you&rsquo;re here
-          </h2>
-          <ul className={`grid grid-cols-1 gap-x-8 border-t border-line ${crossSells.length === 4 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}>
+      <Band spacing="compact">
+        <div className="max-w-5xl">
+          <SectionHeading size="md" title={<>While you&rsquo;re here</>} />
+          <ul className={`mt-8 grid grid-cols-1 gap-x-10 border-t border-line ${crossSells.length === 4 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}>
             {crossSells.map((card) => (
               <li key={card.href} className="border-b border-line">
-                <Link href={card.href} className="group flex items-start justify-between gap-3 py-4">
+                <Link href={card.href} className="group flex items-start justify-between gap-3 py-5">
                   <span className="min-w-0">
-                    <span className="block text-sm font-semibold text-ink group-hover:underline underline-offset-4">{card.label}</span>
+                    <span className="block text-base font-semibold text-ink group-hover:underline underline-offset-4">{card.label}</span>
                     <span className="block text-sm text-ink-muted leading-snug mt-0.5">{card.sub}</span>
                   </span>
                   <ArrowRight className="w-4 h-4 shrink-0 mt-0.5 text-ink-subtle group-hover:text-ink" aria-hidden="true" />
@@ -157,7 +154,7 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
             ))}
           </ul>
         </div>
-      </section>
+      </Band>
     </>
   );
 }

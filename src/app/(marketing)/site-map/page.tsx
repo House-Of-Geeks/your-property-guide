@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 
 export const metadata: Metadata = {
   title: "Site Map",
@@ -156,59 +156,55 @@ export default function SiteMapPage() {
     <>
       <BreadcrumbJsonLd items={[{ name: "Site map", url: "/site-map" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-20 sm:pb-24">
-          <div className="mb-10">
-            <Breadcrumbs items={[{ label: "Site map" }]} />
-          </div>
-
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              The full index
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              {totalLinks} links · {SECTIONS.length} sections
-            </span>
-          </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
-            Everything we do, on{" "}
-            <span>one page</span>
-          </h1>
-          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            Looking for something specific? Browse every section, calculator,
-            guide and hub from here.
-          </p>
+      {/* A plain charcoal hero: an index needs no photo. */}
+      <PhotoHero breadcrumbs={[{ label: "Site map" }]}>
+        <div className="flex items-center gap-4 mb-8">
+          <span className="text-sm font-semibold text-ink-muted leading-none">
+            The full index
+          </span>
+          <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+          <span className="text-sm text-ink-subtle font-medium">
+            {totalLinks} links · {SECTIONS.length} sections
+          </span>
         </div>
-      </section>
+        <HeroTitle>
+          Everything we do, on{" "}
+          <span>one page</span>
+        </HeroTitle>
+        <HeroLead>
+          Looking for something specific? Browse every section, calculator,
+          guide and hub from here.
+        </HeroLead>
+      </PhotoHero>
 
       {/* Sections */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-        {SECTIONS.map((s) => (
-          <section key={s.title}>
-            <div className="mb-5 pb-3 border-b border-line">
-              <h2
-                className="font-display text-2xl text-ink leading-tight"
-                dangerouslySetInnerHTML={{ __html: s.title }}
-              />
-              <p className="mt-1 font-sans text-sm text-ink-muted">{s.blurb}</p>
-            </div>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-2.5">
-              {s.links.map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="font-sans text-sm text-ink-muted hover:text-primary transition-colors"
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
-      </div>
+      <Band spacing="compact">
+        <div className="space-y-14">
+          {SECTIONS.map((s) => (
+            <section key={s.title}>
+              <div className="mb-6 pb-4 border-b-2 border-ink">
+                <h2
+                  className="text-2xl sm:text-3xl font-bold tracking-[-0.02em] text-ink leading-tight"
+                  dangerouslySetInnerHTML={{ __html: s.title }}
+                />
+                <p className="mt-2 text-base text-ink-muted">{s.blurb}</p>
+              </div>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-3">
+                {s.links.map((l) => (
+                  <li key={l.href}>
+                    <Link
+                      href={l.href}
+                      className="text-base text-ink-muted hover:text-primary transition-colors"
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      </Band>
     </>
   );
 }

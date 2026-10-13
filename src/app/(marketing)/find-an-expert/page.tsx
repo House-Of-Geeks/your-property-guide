@@ -4,9 +4,9 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { FaqAccordion } from "@/components/guide";
 import { MatchAgentEmbed } from "@/components/journey";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading, StepTimeline } from "@/components/premium";
 
 // The canonical matters here more than on most pages: every suburb and
 // rental-market page links to this one with its own query string
@@ -146,7 +146,6 @@ const AGENT_GUIDES: [string, string][] = [
   ["/borrowing-power-calculator", "How much can I borrow?"],
 ];
 
-const h2 = "font-display text-ink tracking-[-0.02em] text-[1.75rem] sm:text-4xl leading-tight font-bold";
 const textLink = "font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink";
 
 export default function FindAnExpertPage() {
@@ -155,119 +154,105 @@ export default function FindAnExpertPage() {
       <BreadcrumbJsonLd items={[{ name: "Find an expert", url: "/find-an-expert" }]} />
       <FAQPageJsonLd faqs={FAQS} />
 
-      {/* Answer first, the form beside it (under it on phones). */}
-      <section className="bg-surface-warm border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-10 sm:pb-16">
-          <div className="mb-4 sm:mb-8">
-            <Breadcrumbs items={[{ label: "Find an expert" }]} />
+      {/* Answer first, the form beside it (under it on phones), over a
+          photo. The form card resets the hero's dark tone. */}
+      <PhotoHero
+        photo="kitchen"
+        size="lg"
+        breadcrumbs={[{ label: "Find an expert" }]}
+        aside={
+          <div className="tone-light rounded-xl border border-line bg-white p-5 sm:p-8 shadow-[0_12px_40px_-14px_rgb(22_25_29/0.22)] [&_#match]:scroll-mt-24">
+            <Suspense fallback={<div className="h-80" aria-busy="true" />}>
+              <MatchAgentEmbed compact />
+            </Suspense>
           </div>
-          <div className="grid lg:grid-cols-12 gap-x-12 gap-y-6 items-start">
-            <div className="lg:col-span-6">
-              <h1 className="font-display text-ink tracking-[-0.035em] text-[2.125rem] leading-[1.05] sm:text-5xl lg:text-6xl lg:leading-[1.02] font-bold">
-                Find a real estate agent who sells in your area
-              </h1>
-              <p className="mt-4 sm:mt-6 text-base sm:text-xl text-ink leading-normal sm:leading-[1.4] max-w-xl">
-                Selling? Tell us where, and we introduce you to one local agent
-                who sells in your area. If we don&rsquo;t have one yet,
-                we&rsquo;ll tell you. The agent pays us for the introduction;
-                you pay nothing and there&rsquo;s no obligation to list.
-              </p>
-              <p className="mt-3 text-sm sm:text-base text-ink-muted max-w-xl">
-                Buying, refinancing or something messier? Use the same form and
-                we&rsquo;ll point you to the right next step.
-              </p>
-              <ul className="hidden lg:block mt-8 space-y-2 text-sm text-ink-muted">
-                <li><span className="font-semibold text-ink">One agent, not five.</span> Never a list.</li>
-                <li><span className="font-semibold text-ink">One business day.</span> Our team is in touch by phone or email, your choice.</li>
-                <li><span className="font-semibold text-ink">Never passed around.</span> Your details go only to the one agent we introduce you to.</li>
-              </ul>
-            </div>
-            <div className="lg:col-span-6">
-              <div className="rounded-xl border border-line bg-white p-5 sm:p-8 shadow-[0_12px_40px_-14px_rgb(22_25_29/0.22)] [&_#match]:scroll-mt-24">
-                <Suspense fallback={<div className="h-80" aria-busy="true" />}>
-                  <MatchAgentEmbed compact />
-                </Suspense>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+        }
+      >
+        <HeroTitle>Find a real estate agent who sells in your area</HeroTitle>
+        {/* Phone-sized lede, as before: the form stays on the first screen. */}
+        <HeroLead className="max-sm:mt-4 max-sm:text-base">
+          Selling? Tell us where, and we introduce you to one local agent
+          who sells in your area. If we don&rsquo;t have one yet,
+          we&rsquo;ll tell you. The agent pays us for the introduction;
+          you pay nothing and there&rsquo;s no obligation to list.
+        </HeroLead>
+        <p className="mt-4 text-sm sm:text-base text-ink-muted max-w-xl">
+          Buying, refinancing or something messier? Use the same form and
+          we&rsquo;ll point you to the right next step.
+        </p>
+        <ul className="hidden lg:block mt-10 space-y-2 text-base text-ink-muted border-t border-line pt-6 max-w-xl">
+          <li><span className="font-semibold text-ink">One agent, not five.</span> Never a list.</li>
+          <li><span className="font-semibold text-ink">One business day.</span> Our team is in touch by phone or email, your choice.</li>
+          <li><span className="font-semibold text-ink">Never passed around.</span> Your details go only to the one agent we introduce you to.</li>
+        </ul>
+      </PhotoHero>
 
       {/* Four situations. Each link reopens the form above at that intent. */}
-      <section className="bg-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <h2 className={`${h2} mb-6 sm:mb-8 max-w-2xl`}>Whichever situation you&rsquo;re in</h2>
-          <div className="grid md:grid-cols-2 gap-x-12 border-t border-line">
-            {LANES.map((lane) => (
-              <div key={lane.intent} className="border-b border-line py-6">
-                <p className="text-sm font-semibold text-ink-muted mb-1">{lane.label}</p>
-                <h3 className="font-display text-xl font-bold text-ink leading-snug tracking-[-0.01em] mb-2">
-                  {lane.headline}
-                </h3>
-                <p className="text-base text-ink-muted leading-relaxed mb-3">{lane.body}</p>
-                <ul className="mb-4 space-y-1 text-sm text-ink-muted list-disc pl-5 marker:text-ink-subtle">
-                  {lane.fits.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-                <Link href={`/find-an-expert?intent=${lane.intent}#match`} className={`inline-flex items-center gap-1.5 text-sm ${textLink}`}>
-                  {lane.cta} <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                </Link>
-              </div>
-            ))}
-          </div>
+      <Band>
+        <SectionHeading title={<>Whichever situation you&rsquo;re in</>} />
+        <div className="mt-12 grid md:grid-cols-2 gap-x-16 border-t border-line">
+          {LANES.map((lane) => (
+            <div key={lane.intent} className="border-b border-line py-8">
+              <p className="text-sm font-semibold text-ink-muted mb-2">{lane.label}</p>
+              <h3 className="text-xl sm:text-2xl font-bold text-ink leading-snug tracking-[-0.01em] mb-3">
+                {lane.headline}
+              </h3>
+              <p className="text-base text-ink-muted leading-relaxed mb-3">{lane.body}</p>
+              <ul className="mb-5 space-y-1 text-sm text-ink-muted list-disc pl-5 marker:text-ink-subtle">
+                {lane.fits.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <Link href={`/find-an-expert?intent=${lane.intent}#match`} className={`inline-flex items-center gap-1.5 text-sm ${textLink}`}>
+                {lane.cta} <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              </Link>
+            </div>
+          ))}
         </div>
-      </section>
+      </Band>
 
-      {/* How it works and how we're paid, side by side. */}
-      <section className="bg-surface-warm border-t border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid lg:grid-cols-12 gap-10 lg:gap-12">
+      {/* How it works and how we're paid, side by side, on charcoal. */}
+      <Band tone="dark">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
           <div className="lg:col-span-7">
-            <h2 className={`${h2} mb-6`}>How it works</h2>
-            <ol className="space-y-5 list-decimal pl-5 marker:text-ink-subtle marker:font-semibold">
-              {HOW_IT_WORKS.map((s) => (
-                <li key={s.title} className="pl-1">
-                  <p className="font-semibold text-ink">{s.title}</p>
-                  <p className="mt-1 text-base text-ink-muted leading-relaxed">{s.body}</p>
-                </li>
-              ))}
-            </ol>
+            <SectionHeading title="How it works" />
+            <StepTimeline steps={HOW_IT_WORKS} />
           </div>
-          <div className="lg:col-span-5">
-            <h2 className="font-display text-xl sm:text-2xl font-bold text-ink leading-snug tracking-[-0.02em] mb-3">
+          <div className="lg:col-span-5 lg:border-l lg:border-line lg:pl-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-ink leading-snug tracking-[-0.02em] mb-4">
               Buyers and sellers pay nothing. Agents pay us a fee for each introduction
             </h2>
-            <p className="text-base text-ink-muted leading-relaxed">
+            <p className="text-base sm:text-lg text-ink-muted leading-relaxed">
               We disclose this on every introduction. The fee comes out of the
               agent&rsquo;s pocket and doesn&rsquo;t change what you pay them.
               Your details go only to the one agent we introduce you to. We never
               sell them to anyone else, and we don&rsquo;t take fees from anyone
               we wouldn&rsquo;t use ourselves.
             </p>
-            <Link href="/about" className={`mt-4 inline-flex items-center gap-1.5 text-sm ${textLink}`}>
+            <Link href="/about" className={`mt-6 inline-flex items-center gap-1.5 text-sm ${textLink}`}>
               Who we are and how we&rsquo;re paid <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
         </div>
-      </section>
+      </Band>
 
       {/* Questions, then the guides that help you choose. */}
-      <section className="bg-white border-t border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid lg:grid-cols-12 gap-10 lg:gap-12">
+      <Band>
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
           <div className="lg:col-span-7">
-            <h2 className={`${h2} mb-6`}>Questions people ask us</h2>
-            <div className="border-b border-line">
+            <SectionHeading title="Questions people ask us" />
+            <div className="mt-10 border-b border-line">
               <FaqAccordion items={FAQS} />
             </div>
           </div>
           <nav aria-label="Guides for choosing an agent" className="lg:col-span-5">
-            <h2 className="font-display text-xl sm:text-2xl font-bold text-ink leading-snug tracking-[-0.02em] mb-3">
+            <h2 className="text-2xl sm:text-3xl font-bold text-ink leading-snug tracking-[-0.02em] mb-5">
               Choosing an agent yourself
             </h2>
             <ul className="border-t border-line">
               {AGENT_GUIDES.map(([href, label]) => (
                 <li key={href} className="border-b border-line">
-                  <Link href={href} className="group flex items-center justify-between gap-3 py-3 text-ink">
+                  <Link href={href} className="group flex items-center justify-between gap-3 py-3.5 text-ink">
                     <span className="group-hover:underline underline-offset-4">{label}</span>
                     <ArrowRight className="w-4 h-4 shrink-0 text-ink-subtle group-hover:text-ink" aria-hidden="true" />
                   </Link>
@@ -276,7 +261,7 @@ export default function FindAnExpertPage() {
             </ul>
           </nav>
         </div>
-      </section>
+      </Band>
     </>
   );
 }

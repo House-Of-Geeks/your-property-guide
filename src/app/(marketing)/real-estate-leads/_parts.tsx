@@ -1,12 +1,13 @@
 import type { DocketRow } from "@/lib/data/real-estate-leads";
+import { BUTTON_PRIMARY } from "@/components/premium";
 import s from "./real-estate-leads.module.css";
 
 // Shared pieces of "The Docket" layout, used by the /real-estate-leads hub
 // and every /real-estate-leads/[type] page. Scroll reveals use YPG's
 // data-reveal system (MotionObserver + globals.css), not a wrapper component.
 
-export const CTA_CLASS =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-7 py-3.5 text-base transition-colors";
+// The site's one solid button (BRAND.md §11), not a pill.
+export const CTA_CLASS = `${BUTTON_PRIMARY} justify-center`;
 
 export function Chapter({ num, title, kicker }: { num: string; title: string; kicker?: string }) {
   return (
