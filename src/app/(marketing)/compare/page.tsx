@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { ExpertCTA, BUYING_GUIDE_CTA } from "@/components/journey";
 import {
@@ -11,6 +10,7 @@ import {
 } from "@/lib/services/suburb-rankings-service";
 import { SITE_URL } from "@/lib/constants";
 import { CompareForm } from "./CompareForm";
+import { Band, HeroLead, HeroTitle, PhotoHero, RuleGrid, RuleItem, SectionHeading } from "@/components/premium";
 
 export const revalidate = 86400;
 
@@ -84,206 +84,187 @@ export default async function ComparePage() {
     <>
       <BreadcrumbJsonLd items={[{ name: "Compare Suburbs", url: "/compare" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Compare suburbs" }]} />
-          </div>
+      <PhotoHero photo="street" breadcrumbs={[{ label: "Compare suburbs" }]}>
+        <p className="text-sm text-ink-muted mb-5">
+          Compare suburbs head to head
+        </p>
+        <HeroTitle>
+          Two suburbs, <span>one verdict</span>
+        </HeroTitle>
+        <HeroLead>
+          Pick any two Australian suburbs and we&rsquo;ll line them up
+          side by side, median prices, growth, schools, walkability,
+          and risk in one view.
+        </HeroLead>
+        <p className="mt-6 text-base text-ink-muted">
+          Not sure where to start?{" "}
+          <Link
+            href="/find-your-suburb"
+            className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
+          >
+            Take the 4-question suburb quiz →
+          </Link>
+        </p>
+      </PhotoHero>
 
-          <p className="text-[13px] font-sans text-ink-subtle mb-5">
-            Compare suburbs head to head
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Two suburbs, <span>one verdict</span>
-          </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl mb-3">
-            Pick any two Australian suburbs and we&rsquo;ll line them up
-            side by side, median prices, growth, schools, walkability,
-            and risk in one view.
-          </p>
-          <p className="font-sans text-sm text-ink-muted mb-10">
-            Not sure where to start?{" "}
-            <Link
-              href="/find-your-suburb"
-              className="font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-            >
-              Take the 4-question suburb quiz →
-            </Link>
-          </p>
-
-          {/* Picker */}
-          <div className="rounded-2xl border border-line bg-surface-raised p-6 sm:p-8 max-w-4xl shadow-card">
-            <CompareForm />
-          </div>
+      {/* Picker: the page's job, directly under the hero */}
+      <Band tone="quiet" spacing="compact">
+        <div className="rounded-xl border border-line bg-surface-raised p-6 sm:p-8 max-w-4xl">
+          <CompareForm />
         </div>
-      </section>
+      </Band>
 
       {/* Popular pairings */}
-      <section className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-          <div className="mb-8">
-            <p className="text-[13px] font-sans text-ink-subtle mb-3">
-              Popular comparisons
-            </p>
-            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-              Suburb pairings people search the most
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {POPULAR_PAIRS.map(({ aSlug, bSlug, aName, bName, subtitle }) => (
-              <Link
-                key={`${aSlug}-${bSlug}`}
-                href={`/suburbs/${aSlug}/vs/${bSlug}`}
-                className="group rounded-2xl border border-line bg-surface-warm p-6 hover:border-primary/40 hover:shadow-md transition-all"
-              >
-                <p className="text-[13px] font-sans text-ink-subtle mb-3">
-                  {subtitle}
-                </p>
-                <p className="font-display text-xl text-ink group-hover:text-primary transition-colors leading-tight">
-                  {aName} <span>vs</span> {bName}
-                </p>
-                <p className="mt-3 font-sans text-[13px] text-ink-subtle">
-                  Compare →
-                </p>
-              </Link>
-            ))}
-          </div>
+      <Band spacing="compact">
+        <div className="mb-10">
+          <p className="text-sm text-ink-muted mb-3">
+            Popular comparisons
+          </p>
+          <SectionHeading size="md" title="Suburb pairings people search the most" />
         </div>
-      </section>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {POPULAR_PAIRS.map(({ aSlug, bSlug, aName, bName, subtitle }) => (
+            <Link
+              key={`${aSlug}-${bSlug}`}
+              href={`/suburbs/${aSlug}/vs/${bSlug}`}
+              className="group flex flex-col rounded-xl border border-line bg-surface-warm p-6 hover:border-ink transition-colors"
+            >
+              <p className="text-sm text-ink-muted mb-3">
+                {subtitle}
+              </p>
+              <p className="text-2xl font-bold text-ink group-hover:text-primary transition-colors leading-tight tracking-[-0.02em]">
+                {aName} <span>vs</span> {bName}
+              </p>
+              <p className="mt-auto pt-5 text-base font-semibold text-ink">
+                Compare →
+              </p>
+            </Link>
+          ))}
+        </div>
+      </Band>
 
       {/* Top comparisons by state, auto-generated from data so every
           state (incl. WA / SA / TAS / NT / ACT) gets coverage, not just
           the hand-curated pairs above. Each link goes to a real
           comparison page rendered by /suburbs/[slug]/vs/[compareSlug]. */}
-      <section className="bg-surface-warm border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-          <div className="mb-8">
-            <p className="text-[13px] font-sans text-ink-subtle mb-3">
-              By state
-            </p>
-            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-              Top comparisons in every state
-            </h2>
-            <p className="mt-2 font-sans text-sm text-ink-muted max-w-2xl">
-              Sourced from the most populous suburbs in each state and the
-              neighbours people compare them with, see how they line up on
-              price, growth, schools, walkability and risk.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {pairsWithData.map(({ state, stateName, pairs }) => (
-              <div key={state}>
-                <h3 className="font-display text-lg text-ink mb-4 pb-2 border-b border-line">
-                  {stateName}
-                </h3>
-                <ul className="space-y-2">
-                  {pairs.map((p: ComparisonPair) => (
-                    <li key={`${p.aSlug}-${p.bSlug}`}>
-                      <Link
-                        href={`/suburbs/${p.aSlug}/vs/${p.bSlug}`}
-                        className="group inline-flex items-center gap-2 text-sm font-sans text-ink-muted hover:text-primary transition-colors"
-                      >
-                        <span className="text-ink font-medium">{p.aName}</span>
-                        <span className="text-ink-subtle">vs</span>
-                        <span className="text-ink font-medium">{p.bName}</span>
-                        <span className="text-ink-subtle text-xs">→</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+      <Band tone="quiet" spacing="compact">
+        <div className="mb-10">
+          <p className="text-sm text-ink-muted mb-3">
+            By state
+          </p>
+          <SectionHeading
+            size="md"
+            title="Top comparisons in every state"
+            intro={
+              <>
+                Sourced from the most populous suburbs in each state and the
+                neighbours people compare them with, see how they line up on
+                price, growth, schools, walkability and risk.
+              </>
+            }
+          />
         </div>
-      </section>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-10">
+          {pairsWithData.map(({ state, stateName, pairs }) => (
+            <div key={state}>
+              <h3 className="text-xl text-ink mb-4 pb-3 border-b-2 border-ink">
+                {stateName}
+              </h3>
+              <ul className="space-y-2">
+                {pairs.map((p: ComparisonPair) => (
+                  <li key={`${p.aSlug}-${p.bSlug}`}>
+                    <Link
+                      href={`/suburbs/${p.aSlug}/vs/${p.bSlug}`}
+                      className="group inline-flex items-center gap-2 text-base text-ink-muted hover:text-primary transition-colors"
+                    >
+                      <span className="text-ink font-semibold group-hover:text-primary transition-colors">{p.aName}</span>
+                      <span className="text-ink-subtle">vs</span>
+                      <span className="text-ink font-semibold group-hover:text-primary transition-colors">{p.bName}</span>
+                      <span className="text-ink-subtle text-sm">→</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </Band>
 
       {/* By state, populous suburbs as starting points */}
-      <section className="bg-surface-warm">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-          <div className="mb-8">
-            <p className="text-[13px] font-sans text-ink-subtle mb-3">
-              Or start from a popular suburb
-            </p>
-            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-              Top suburbs by state
-            </h2>
-            <p className="mt-2 font-sans text-sm text-ink-muted">
-              Click any suburb to view its profile, then pick a comparison from
-              the &ldquo;vs nearby&rdquo; rail at the bottom.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {[
-              { label: "New South Wales", suburbs: topNSW },
-              { label: "Victoria",         suburbs: topVIC },
-              { label: "Queensland",       suburbs: topQLD },
-            ].map(({ label, suburbs }) => (
-              <div key={label}>
-                <h3 className="font-display text-lg text-ink mb-3 pb-2 border-b border-line">
-                  {label}
-                </h3>
-                <ul className="space-y-1.5">
-                  {suburbs.map((s) => (
-                    <li key={s.slug}>
-                      <Link
-                        href={`/suburbs/${s.slug}`}
-                        className="font-sans text-sm text-ink-muted hover:text-primary transition-colors"
-                      >
-                        {s.name}{" "}
-                        <span className="text-ink-subtle">
-                          ({s.state} {s.postcode})
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+      <Band spacing="compact">
+        <div className="mb-10">
+          <p className="text-sm text-ink-muted mb-3">
+            Or start from a popular suburb
+          </p>
+          <SectionHeading
+            size="md"
+            title="Top suburbs by state"
+            intro={
+              <>
+                Click any suburb to view its profile, then pick a comparison from
+                the &ldquo;vs nearby&rdquo; rail at the bottom.
+              </>
+            }
+          />
         </div>
-      </section>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-16 gap-y-10">
+          {[
+            { label: "New South Wales", suburbs: topNSW },
+            { label: "Victoria",         suburbs: topVIC },
+            { label: "Queensland",       suburbs: topQLD },
+          ].map(({ label, suburbs }) => (
+            <div key={label}>
+              <h3 className="text-xl text-ink mb-4 pb-3 border-b-2 border-ink">
+                {label}
+              </h3>
+              <ul className="space-y-2">
+                {suburbs.map((s) => (
+                  <li key={s.slug}>
+                    <Link
+                      href={`/suburbs/${s.slug}`}
+                      className="text-base text-ink hover:text-primary transition-colors"
+                    >
+                      {s.name}{" "}
+                      <span className="text-ink-subtle">
+                        ({s.state} {s.postcode})
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </Band>
 
       {/* What we compare */}
-      <section className="bg-surface-raised border-t border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-          <div className="mb-8">
-            <p className="text-[13px] font-sans text-ink-subtle mb-3">
-              What we compare
-            </p>
-            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-              Six dimensions, one verdict
-            </h2>
-          </div>
+      <Band tone="dark" spacing="compact">
+        <p className="text-sm text-ink-muted mb-3">
+          What we compare
+        </p>
+        <SectionHeading size="md" title="Six dimensions, one verdict" />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {[
-              { title: "Price &amp; market",  body: "Median house and unit prices, annual growth, days on market." },
-              { title: "Rental",             body: "Weekly rents, owner-occupied vs rented, demographic context." },
-              { title: "Lifestyle",          body: "Walk, transit, and bike scores. Population and median age." },
-              { title: "Risk",               body: "Flood class and bushfire rating from Geoscience Australia." },
-              { title: "Schools",            body: "Schools nearby and average ICSEA from ACARA data." },
-              { title: "Climate",            body: "Annual rainfall and average summer max temp from BoM." },
-            ].map((d) => (
-              <div
-                key={d.title}
-                className="rounded-2xl border border-line bg-surface-warm p-6"
-              >
-                <h3
-                  className="font-display text-lg text-ink leading-tight"
-                  dangerouslySetInnerHTML={{ __html: d.title }}
-                />
-                <p className="mt-2 font-sans text-sm text-ink-muted leading-relaxed">
-                  {d.body}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        <RuleGrid columns={3} className="mt-12">
+          {[
+            { title: "Price &amp; market",  body: "Median house and unit prices, annual growth, days on market." },
+            { title: "Rental",             body: "Weekly rents, owner-occupied vs rented, demographic context." },
+            { title: "Lifestyle",          body: "Walk, transit, and bike scores. Population and median age." },
+            { title: "Risk",               body: "Flood class and bushfire rating from Geoscience Australia." },
+            { title: "Schools",            body: "Schools nearby and average ICSEA from ACARA data." },
+            { title: "Climate",            body: "Annual rainfall and average summer max temp from BoM." },
+          ].map((d) => (
+            <RuleItem
+              key={d.title}
+              title={<span dangerouslySetInnerHTML={{ __html: d.title }} />}
+            >
+              {d.body}
+            </RuleItem>
+          ))}
+        </RuleGrid>
+      </Band>
 
       {/* Funnel exit: comparison shoppers are deep-research buyers — the
           tool previously dead-ended with no path to a lead form. */}

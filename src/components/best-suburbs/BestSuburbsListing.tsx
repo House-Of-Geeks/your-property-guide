@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, ItemListJsonLd, FAQPageJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
 import { cityEditionLinkLabel, cityEditionPath } from "@/lib/city-editions";
@@ -19,6 +18,7 @@ import {
   STATES,
   STATE_NAME,
 } from "@/lib/best-suburbs-headlines";
+import { Band, HeroLead, HeroTitle, PhotoHero, RuleGrid, RuleItem, SectionHeading } from "@/components/premium";
 
 export interface CategoryConfig {
   title: string;
@@ -79,7 +79,7 @@ const SECONDARY_LABEL: Record<RankingCategory, string> = {
 function floodBadge(floodClass: string | null): React.ReactElement {
   if (!floodClass) {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-sans font-medium bg-surface-warm border border-line text-ink-muted">
+      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-surface-warm border border-line text-ink-muted">
         No data
       </span>
     );
@@ -92,7 +92,7 @@ function floodBadge(floodClass: string | null): React.ReactElement {
   };
   const cls = classes[floodClass] ?? "bg-surface-warm border-line text-ink-muted";
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-sans font-medium capitalize border ${cls}`}>
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium capitalize border ${cls}`}>
       {floodClass}
     </span>
   );
@@ -105,7 +105,7 @@ function AreaMark({ suburb, show }: { suburb: RankedSuburb; show: boolean }) {
   return (
     <abbr
       title="ABS statistical-area (SA2) median: the area that carries the suburb's name, which can take in surrounding localities"
-      className="ml-1 font-sans text-[13px] text-ink-subtle no-underline"
+      className="ml-1 text-sm text-ink-subtle no-underline"
     >
       area
     </abbr>
@@ -115,32 +115,32 @@ function AreaMark({ suburb, show }: { suburb: RankedSuburb; show: boolean }) {
 function PrimaryMetric({ category, suburb, markArea }: { category: RankingCategory; suburb: RankedSuburb; markArea: boolean }) {
   switch (category) {
     case "for-families":
-      return <span className="font-display text-base text-ink">{suburb.avgSchoolIcsea != null ? suburb.avgSchoolIcsea.toLocaleString() : "–"}</span>;
+      return <span className="text-base font-semibold text-ink">{suburb.avgSchoolIcsea != null ? suburb.avgSchoolIcsea.toLocaleString() : "–"}</span>;
     case "highest-growth":
       return (
-        <span className={`font-display text-base ${suburb.annualGrowthHouse >= 0 ? "text-emerald-700" : "text-red-700"}`}>
+        <span className={`text-base font-semibold ${suburb.annualGrowthHouse >= 0 ? "text-emerald-700" : "text-red-700"}`}>
           {suburb.annualGrowthHouse !== 0 ? formatPercentage(suburb.annualGrowthHouse) : "–"}
         </span>
       );
     case "most-affordable":
       return (
-        <span className="font-display text-base text-ink">
+        <span className="text-base font-semibold text-ink">
           {suburb.medianHousePrice > 0 ? formatPriceFull(suburb.medianHousePrice) : "–"}
           <AreaMark suburb={suburb} show={markArea} />
         </span>
       );
     case "most-walkable":
       return (
-        <span className="font-display text-base text-ink">
+        <span className="text-base font-semibold text-ink">
           {suburb.walkScore != null ? suburb.walkScore : "–"}
-          <span className="text-ink-subtle font-sans text-xs ml-0.5">/100</span>
+          <span className="text-ink-subtle text-xs ml-0.5">/100</span>
         </span>
       );
     case "lowest-flood-risk":
       return floodBadge(suburb.hazard?.floodClass ?? null);
     case "best-rental-yield":
       return (
-        <span className="font-display text-base text-emerald-700">
+        <span className="text-base font-semibold text-emerald-700">
           {suburb.grossRentalYield != null ? `${suburb.grossRentalYield.toFixed(2)}%` : "–"}
         </span>
       );
@@ -150,30 +150,30 @@ function PrimaryMetric({ category, suburb, markArea }: { category: RankingCatego
 function SecondaryMetric({ category, suburb, markArea }: { category: RankingCategory; suburb: RankedSuburb; markArea: boolean }) {
   switch (category) {
     case "for-families":
-      return <span className="font-sans text-sm text-ink-muted">{suburb.householdsFamily > 0 ? `${suburb.householdsFamily.toFixed(0)}%` : "–"}</span>;
+      return <span className="text-sm text-ink-muted">{suburb.householdsFamily > 0 ? `${suburb.householdsFamily.toFixed(0)}%` : "–"}</span>;
     case "highest-growth":
       return (
-        <span className="font-sans text-sm text-ink-muted">
+        <span className="text-sm text-ink-muted">
           {suburb.medianHousePrice > 0 ? formatPrice(suburb.medianHousePrice) : "–"}
           <AreaMark suburb={suburb} show={markArea} />
         </span>
       );
     case "most-affordable":
       return (
-        <span className={`font-sans text-sm ${suburb.annualGrowthHouse !== 0 ? (suburb.annualGrowthHouse >= 0 ? "text-emerald-700" : "text-red-700") : "text-ink-subtle"}`}>
+        <span className={`text-sm ${suburb.annualGrowthHouse !== 0 ? (suburb.annualGrowthHouse >= 0 ? "text-emerald-700" : "text-red-700") : "text-ink-subtle"}`}>
           {suburb.annualGrowthHouse !== 0 ? formatPercentage(suburb.annualGrowthHouse) : "–"}
         </span>
       );
     case "most-walkable":
     case "lowest-flood-risk":
       return (
-        <span className="font-sans text-sm text-ink-muted">
+        <span className="text-sm text-ink-muted">
           {suburb.medianHousePrice > 0 ? formatPrice(suburb.medianHousePrice) : "–"}
           <AreaMark suburb={suburb} show={markArea} />
         </span>
       );
     case "best-rental-yield":
-      return <span className="font-sans text-sm text-ink-muted">{suburb.medianRentHouse > 0 ? `$${suburb.medianRentHouse}/wk` : "–"}</span>;
+      return <span className="text-sm text-ink-muted">{suburb.medianRentHouse > 0 ? `$${suburb.medianRentHouse}/wk` : "–"}</span>;
   }
 }
 
@@ -246,110 +246,85 @@ export function BestSuburbsListing({
         }))}
       />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs
-              items={[
-                { label: "Best Suburbs", href: "/best-suburbs" },
-                ...(stateName
-                  ? [
-                      { label: config.title, href: baseUrl },
-                      { label: state ?? "" },
-                    ]
-                  : [{ label: config.title }]),
-              ]}
-            />
-          </div>
+      {/* Hero: the ranking's headline sentence and what it ranks on. */}
+      <PhotoHero
+        photo="street"
+        breadcrumbs={[
+          { label: "Best Suburbs", href: "/best-suburbs" },
+          ...(stateName
+            ? [
+                { label: config.title, href: baseUrl },
+                { label: state ?? "" },
+              ]
+            : [{ label: config.title }]),
+        ]}
+      >
+        <p className="text-sm text-ink-muted mb-5">
+          {eyebrow}
+        </p>
+        {/* Fix item 45: one string after the italic span, so React writes a
+            single text node and no <!-- --> boundary before the full stop. */}
+        <HeroTitle>
+          The <span>{h1.lead}</span>
+          {` ${h1.noun} in ${placeName(state)}.`}
+        </HeroTitle>
+        <HeroLead>
+          {config.description}
+          {stateName && ` Filtered to ${stateName} suburbs only.`}
+        </HeroLead>
+      </PhotoHero>
 
-          <p className="text-[13px] font-sans text-ink-subtle mb-5">
-            {eyebrow}
+      {/* Editorial commentary band, what this ranking is and how to use it */}
+      <Band spacing="compact">
+        <section className="max-w-3xl">
+          <p className="text-sm font-semibold text-ink mb-3">
+            About this ranking
           </p>
-          {/* Fix item 45: one string after the italic span, so React writes a
-              single text node and no <!-- --> boundary before the full stop. */}
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            The <span>{h1.lead}</span>
-            {` ${h1.noun} in ${placeName(state)}.`}
-          </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            {config.description}
-            {stateName && ` Filtered to ${stateName} suburbs only.`}
-          </p>
-        </div>
-      </section>
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-        {/* Editorial commentary band, what this ranking is and how to use it */}
-        <section className="mb-10 grid lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-7">
-            <p className="text-[13px] font-sans text-ink-subtle mb-3">
-              About this ranking
-            </p>
-            <div className="prose-ypg prose-ypg-tight">
-              <p>{categoryCommentary.intro}</p>
-              {stateCommentary && (
-                <>
-                  <h3 className="font-display text-xl text-ink mt-6 mb-3">
-                    {stateName} property market in 2026
-                  </h3>
-                  <p>{stateCommentary.marketContext}</p>
-                </>
-              )}
-            </div>
-          </div>
-
-          <aside className="lg:col-span-5 space-y-4">
+          <div className="prose-ypg prose-ypg-tight">
+            <p>{categoryCommentary.intro}</p>
             {stateCommentary && (
               <>
-                <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
-                    Buyer tip, {state}
-                  </p>
-                  <p className="font-sans text-sm text-ink leading-relaxed">
-                    {stateCommentary.buyerTip}
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
-                    Watch out, {state}
-                  </p>
-                  <p className="font-sans text-sm text-ink leading-relaxed">
-                    {stateCommentary.watchOut}
-                  </p>
-                </div>
+                <h3 className="text-xl text-ink mt-6 mb-3">
+                  {stateName} property market in 2026
+                </h3>
+                <p>{stateCommentary.marketContext}</p>
               </>
             )}
-            <div className="rounded-2xl border border-line bg-surface-warm p-5">
-              <p className="text-[13px] font-sans text-ink-subtle mb-2">
-                Methodology
-              </p>
-              <p className="font-sans text-sm text-ink-muted leading-relaxed">
-                {categoryCommentary.methodology}
-              </p>
-            </div>
-            <div className="rounded-2xl border border-line bg-surface-warm p-5">
-              <p className="text-[13px] font-sans text-ink-subtle mb-2">
-                Best for
-              </p>
-              <p className="font-sans text-sm text-ink-muted leading-relaxed">
-                {categoryCommentary.bestFor}
-              </p>
-            </div>
-          </aside>
+          </div>
         </section>
 
-        {/* State filter pills */}
-        <div className="flex flex-wrap items-center gap-2 mb-6">
-          <span className="text-[13px] font-sans text-ink-subtle mr-2">
+        <RuleGrid columns={stateCommentary ? 4 : 2} className="mt-12">
+          {stateCommentary && (
+            <>
+              <RuleItem title={<>Buyer tip, {state}</>}>
+                {stateCommentary.buyerTip}
+              </RuleItem>
+              <RuleItem title={<>Watch out, {state}</>}>
+                {stateCommentary.watchOut}
+              </RuleItem>
+            </>
+          )}
+          <RuleItem title="Methodology">
+            {categoryCommentary.methodology}
+          </RuleItem>
+          <RuleItem title="Best for">
+            {categoryCommentary.bestFor}
+          </RuleItem>
+        </RuleGrid>
+      </Band>
+
+      <Band tone="quiet" spacing="compact">
+        {/* State filter chips */}
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          <span className="text-sm font-semibold text-ink mr-2">
             By state
           </span>
           <Link
             href={allHref}
-            className={`px-3 py-1.5 rounded-lg text-sm font-sans font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               !state
-                ? "bg-ink text-white"
-                : "bg-surface-raised border border-line text-ink hover:border-primary/40 hover:text-primary"
+                ? "bg-ink text-ink-inverse border border-ink"
+                : "bg-surface-raised border border-line text-ink hover:border-ink"
             }`}
           >
             All Australia
@@ -358,10 +333,10 @@ export function BestSuburbsListing({
             <Link
               key={s}
               href={stateHref(s)}
-              className={`px-3 py-1.5 rounded-lg text-sm font-sans font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 state === s
-                  ? "bg-ink text-white"
-                  : "bg-surface-raised border border-line text-ink hover:border-primary/40 hover:text-primary"
+                  ? "bg-ink text-ink-inverse border border-ink"
+                  : "bg-surface-raised border border-line text-ink hover:border-ink"
               }`}
             >
               {s}
@@ -371,15 +346,15 @@ export function BestSuburbsListing({
 
         {/* The city editions: the same ranking over a greater capital city, one section per suburb */}
         {cityEditions.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2 mb-6">
-            <span className="text-[13px] font-sans text-ink-subtle mr-2">
+          <div className="flex flex-wrap items-center gap-2 mb-4">
+            <span className="text-sm font-semibold text-ink mr-2">
               By city
             </span>
             {cityEditions.map((e) => (
               <Link
                 key={e.city.slug}
                 href={cityEditionPath(e.category, e.city.slug)}
-                className="px-3 py-1.5 rounded-lg text-sm font-sans font-medium bg-surface-raised border border-line text-ink hover:border-primary/40 hover:text-primary transition-colors"
+                className="px-3 py-1.5 rounded-lg text-sm font-medium bg-surface-raised border border-line text-ink hover:border-ink transition-colors"
               >
                 {cityEditionLinkLabel(e.category, e.city)}
               </Link>
@@ -389,39 +364,39 @@ export function BestSuburbsListing({
 
         {/* Results count, and where the figures come from */}
         {suburbs.length > 0 && (
-          <div className="mb-4 max-w-3xl">
-            <p className="text-sm font-sans text-ink-muted">
+          <div className="mt-8 mb-5 max-w-3xl">
+            <p className="text-base font-semibold text-ink">
               Showing top {suburbs.length} suburbs
               {stateName ? ` in ${stateName}` : " across Australia"}
             </p>
             {note.text && (
-              <p className="mt-1 text-sm font-sans text-ink-subtle leading-relaxed">{note.text}</p>
+              <p className="mt-1 text-sm text-ink-muted leading-relaxed">{note.text}</p>
             )}
           </div>
         )}
 
         {suburbs.length === 0 ? (
-          <div className="rounded-2xl border border-line bg-surface-raised p-8 sm:p-10">
-            <p className="font-display text-xl text-ink mb-2">Nothing to rank here yet.</p>
-            <p className="font-sans text-ink-muted leading-relaxed max-w-2xl">{note.text}</p>
+          <div className="mt-8 rounded-xl border border-line bg-surface-raised p-8 sm:p-10">
+            <p className="text-xl font-semibold text-ink mb-2">Nothing to rank here yet.</p>
+            <p className="text-ink-muted leading-relaxed max-w-2xl">{note.text}</p>
           </div>
         ) : (
           <>
             {/* Desktop table */}
-            <div className="hidden sm:block overflow-x-auto rounded-2xl bg-surface-raised border border-line">
+            <div className="hidden sm:block overflow-x-auto rounded-xl bg-surface-raised border border-line">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-surface-warm border-b border-line">
-                    <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink w-10">#</th>
-                    <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink">Suburb</th>
-                    <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink">State</th>
-                    <th className="py-3 px-4 text-right text-[13px] font-sans font-medium text-ink">
+                    <th className="py-3 px-4 text-left text-sm font-semibold text-ink w-10">#</th>
+                    <th className="py-3 px-4 text-left text-sm font-semibold text-ink">Suburb</th>
+                    <th className="py-3 px-4 text-left text-sm font-semibold text-ink">State</th>
+                    <th className="py-3 px-4 text-right text-sm font-semibold text-ink">
                       {PRIMARY_LABEL[category]}
                     </th>
-                    <th className="py-3 px-4 text-right text-[13px] font-sans font-medium text-ink">
+                    <th className="py-3 px-4 text-right text-sm font-semibold text-ink">
                       {SECONDARY_LABEL[category]}
                     </th>
-                    <th className="py-3 px-4 text-right text-[13px] font-sans font-medium text-ink">Profile</th>
+                    <th className="py-3 px-4 text-right text-sm font-semibold text-ink">Profile</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-line">
@@ -430,17 +405,17 @@ export function BestSuburbsListing({
                       key={suburb.slug}
                       className="hover:bg-surface-warm/60 transition-colors"
                     >
-                      <td className="py-3 px-4 text-ink-subtle font-sans">{i + 1}</td>
+                      <td className="py-3 px-4 text-ink-subtle">{i + 1}</td>
                       <td className="py-3 px-4">
                         <Link
                           href={`/suburbs/${suburb.slug}`}
-                          className="font-sans font-medium text-ink hover:text-primary transition-colors"
+                          className="font-semibold text-ink hover:text-primary transition-colors"
                         >
                           {suburb.name}
                         </Link>
-                        <p className="text-xs font-sans text-ink-subtle mt-0.5">{suburb.postcode}</p>
+                        <p className="text-xs text-ink-subtle mt-0.5">{suburb.postcode}</p>
                       </td>
-                      <td className="py-3 px-4 font-sans text-ink-muted">{suburb.state}</td>
+                      <td className="py-3 px-4 text-ink-muted">{suburb.state}</td>
                       <td className="py-3 px-4 text-right">
                         <PrimaryMetric category={category} suburb={suburb} markArea={markArea} />
                       </td>
@@ -450,7 +425,7 @@ export function BestSuburbsListing({
                       <td className="py-3 px-4 text-right">
                         <Link
                           href={`/suburbs/${suburb.slug}`}
-                          className="font-sans text-xs font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors whitespace-nowrap"
+                          className="text-sm font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink whitespace-nowrap"
                         >
                           View profile →
                         </Link>
@@ -467,34 +442,34 @@ export function BestSuburbsListing({
                 <Link
                   key={suburb.slug}
                   href={`/suburbs/${suburb.slug}`}
-                  className="block rounded-2xl border border-line bg-surface-raised p-4 hover:border-primary/40 hover:shadow-sm transition-all"
+                  className="block rounded-xl border border-line bg-surface-raised p-4 hover:border-ink transition-colors"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-sans text-ink-subtle">#{i + 1}</span>
-                        <span className="font-display text-base text-ink truncate">{suburb.name}</span>
+                        <span className="text-xs text-ink-subtle">#{i + 1}</span>
+                        <span className="text-base font-semibold text-ink truncate">{suburb.name}</span>
                       </div>
-                      <p className="text-xs font-sans text-ink-subtle mt-0.5">
+                      <p className="text-xs text-ink-subtle mt-0.5">
                         {suburb.state} {suburb.postcode}
                       </p>
                     </div>
                   </div>
                   <div className="mt-3 grid grid-cols-2 gap-3">
                     <div>
-                      <p className="text-xs font-sans text-ink-subtle">{PRIMARY_LABEL[category]}</p>
+                      <p className="text-xs text-ink-subtle">{PRIMARY_LABEL[category]}</p>
                       <p className="mt-0.5">
                         <PrimaryMetric category={category} suburb={suburb} markArea={markArea} />
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs font-sans text-ink-subtle">{SECONDARY_LABEL[category]}</p>
+                      <p className="text-xs text-ink-subtle">{SECONDARY_LABEL[category]}</p>
                       <p className="mt-0.5">
                         <SecondaryMetric category={category} suburb={suburb} markArea={markArea} />
                       </p>
                     </div>
                   </div>
-                  <p className="mt-3 text-[13px] font-sans text-ink">
+                  <p className="mt-3 text-sm font-semibold text-ink">
                     View profile →
                   </p>
                 </Link>
@@ -502,36 +477,36 @@ export function BestSuburbsListing({
             </div>
           </>
         )}
+      </Band>
 
-        {/* FAQ section, emits FAQPage schema for rich-results */}
-        <section className="mt-14 grid lg:grid-cols-12 gap-8">
+      {/* FAQ section, emits FAQPage schema for rich-results */}
+      <Band spacing="compact">
+        <section className="grid lg:grid-cols-12 gap-8 lg:gap-16">
           <div className="lg:col-span-4">
-            <p className="text-[13px] font-sans text-ink-subtle mb-3">
+            <p className="text-sm text-ink-muted mb-3">
               Common questions
             </p>
-            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-              About this ranking
-            </h2>
+            <SectionHeading size="md" title="About this ranking" />
           </div>
           <div className="lg:col-span-8 space-y-4">
             {categoryCommentary.faqs.map((faq) => (
               <details
                 key={faq.question}
-                className="group rounded-2xl border border-line bg-surface-raised p-5 sm:p-6 [&_summary::-webkit-details-marker]:hidden"
+                className="group rounded-xl border border-line bg-surface-raised p-5 sm:p-6 [&_summary::-webkit-details-marker]:hidden"
               >
                 <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
-                  <span className="font-display text-lg text-ink leading-tight">
+                  <span className="text-lg font-semibold text-ink leading-tight">
                     {faq.question}
                   </span>
                   <span
-                    className="shrink-0 mt-1 w-6 h-6 rounded-full border border-line-strong text-ink-subtle group-open:bg-ink group-open:text-white group-open:border-ink flex items-center justify-center transition-colors text-sm font-display"
+                    className="shrink-0 mt-0.5 w-6 h-6 rounded-md border border-line-strong text-ink-subtle group-open:bg-ink group-open:text-ink-inverse group-open:border-ink flex items-center justify-center transition-colors text-sm"
                     aria-hidden="true"
                   >
                     <span className="group-open:hidden">+</span>
                     <span className="hidden group-open:inline">−</span>
                   </span>
                 </summary>
-                <p className="mt-3 font-sans text-base text-ink-muted leading-relaxed">
+                <p className="mt-3 text-base text-ink-muted leading-relaxed">
                   {faq.answer}
                 </p>
               </details>
@@ -539,27 +514,27 @@ export function BestSuburbsListing({
           </div>
         </section>
         <FAQPageJsonLd faqs={categoryCommentary.faqs} />
+      </Band>
 
-        {/* Cross-link to other categories */}
-        <div className="mt-12 rounded-2xl border border-line bg-surface-warm p-6">
-          <p className="text-[13px] font-sans text-ink-subtle mb-3">
-            Other rankings
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {(Object.keys(CATEGORY_CONFIG) as RankingCategory[])
-              .filter((c) => c !== category)
-              .map((c) => (
-                <Link
-                  key={c}
-                  href={state ? (useStaticStateRoutes ? `/best-suburbs/${c}/${state.toLowerCase()}` : `/best-suburbs/${c}?state=${state}`) : `/best-suburbs/${c}`}
-                  className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors"
-                >
-                  {CATEGORY_CONFIG[c].title}
-                </Link>
-              ))}
-          </div>
+      {/* Cross-link to other categories */}
+      <Band tone="quiet" spacing="compact">
+        <p className="text-sm font-semibold text-ink mb-3">
+          Other rankings
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {(Object.keys(CATEGORY_CONFIG) as RankingCategory[])
+            .filter((c) => c !== category)
+            .map((c) => (
+              <Link
+                key={c}
+                href={state ? (useStaticStateRoutes ? `/best-suburbs/${c}/${state.toLowerCase()}` : `/best-suburbs/${c}?state=${state}`) : `/best-suburbs/${c}`}
+                className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-medium text-ink hover:border-ink transition-colors"
+              >
+                {CATEGORY_CONFIG[c].title}
+              </Link>
+            ))}
         </div>
-      </div>
+      </Band>
 
       {/* Buyer funnel exit, shared by the national and per-state ranking
           routes. Readers here are shortlisting where to buy next. */}

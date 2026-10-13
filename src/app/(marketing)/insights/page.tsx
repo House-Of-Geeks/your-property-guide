@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Clock, TrendingUp } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { getBlogPosts } from "@/lib/services/blog-service";
 import { formatDate } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 import { getRecentUpdates } from "@/lib/data/data-updates";
+import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 
 export const revalidate = 86400; // daily. Page lists blog posts + data updates, neither change hourly.
 
@@ -78,124 +78,111 @@ export default async function InsightsPage() {
         url="/insights"
       />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-20 sm:pb-24">
-          <div className="mb-10">
-            <Breadcrumbs items={[{ label: "Insights" }]} />
-          </div>
-
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              Insights
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
-              <TrendingUp className="w-3 h-3" aria-hidden="true" />
-              Updated {formatDate(new Date().toISOString())}
-            </span>
-          </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
-            Australian property,{" "}
-            <span>explained</span>
-          </h1>
-          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            Capital city market reads, RBA decisions, suburb data refreshes,
-            and the guides our readers are turning to right now. Sourced and
-            dated.
-          </p>
-        </div>
-      </section>
+      <PhotoHero photo="market" breadcrumbs={[{ label: "Insights" }]}>
+        <p className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-ink-muted mb-5">
+          <span className="font-semibold">
+            Insights
+          </span>
+          <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+          <span className="inline-flex items-center gap-1.5">
+            <TrendingUp className="w-3.5 h-3.5" aria-hidden="true" />
+            Updated {formatDate(new Date().toISOString())}
+          </span>
+        </p>
+        <HeroTitle>
+          Australian property,{" "}
+          <span>explained</span>
+        </HeroTitle>
+        <HeroLead>
+          Capital city market reads, RBA decisions, suburb data refreshes,
+          and the guides our readers are turning to right now. Sourced and
+          dated.
+        </HeroLead>
+      </PhotoHero>
 
       {/* Featured: capital city market reads */}
       {featuredPosts.length > 0 && (
-        <section className="bg-surface-raised border-b border-line">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-            <div className="flex items-end justify-between gap-4 mb-8">
-              <div>
-                <p className="text-[13px] font-sans text-ink-subtle mb-3">
-                  Capital cities
-                </p>
-                <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-                  2026 market outlooks
-                </h2>
-              </div>
-              <Link
-                href="/guides"
-                className="hidden sm:inline-flex items-center gap-1.5 font-sans text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-              >
-                All articles
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+        <Band spacing="compact">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="text-sm text-ink-subtle mb-3">
+                Capital cities
+              </p>
+              <SectionHeading size="md" title="2026 market outlooks" />
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {featuredPosts.map((p) => (
-                <Link
-                  key={p.slug}
-                  href={`/guides/${p.slug}`}
-                  className="group flex flex-col rounded-2xl border border-line bg-surface-warm overflow-hidden hover:border-primary/40 hover:shadow-md transition-all"
-                >
-                  {p.coverImage && (
-                    <div className="relative aspect-[16/10] overflow-hidden bg-surface-warm-sunken">
-                      <Image
-                        src={p.coverImage}
-                        alt={`Cover image for ${p.title}`}
-                        fill
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                    </div>
-                  )}
-                  <div className="p-5 flex-1 flex flex-col">
-                    <p className="text-[13px] font-sans text-ink-subtle mb-2">
-                      {formatDate(p.publishedAt)}
-                    </p>
-                    <h3 className="font-display text-lg text-ink group-hover:text-primary transition-colors leading-tight">
-                      {p.title}
-                    </h3>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            <Link
+              href="/guides"
+              className="hidden sm:inline-flex items-center gap-1.5 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
+            >
+              All articles
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
           </div>
-        </section>
+
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {featuredPosts.map((p) => (
+              <Link
+                key={p.slug}
+                href={`/guides/${p.slug}`}
+                className="group flex flex-col rounded-xl border border-line bg-surface-raised overflow-hidden hover:border-ink transition-colors"
+              >
+                {p.coverImage && (
+                  <div className="relative aspect-[16/10] overflow-hidden bg-surface-warm-sunken">
+                    <Image
+                      src={p.coverImage}
+                      alt={`Cover image for ${p.title}`}
+                      fill
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+                <div className="p-5 flex-1 flex flex-col">
+                  <p className="text-sm text-ink-subtle mb-2">
+                    {formatDate(p.publishedAt)}
+                  </p>
+                  <h3 className="text-lg text-ink group-hover:text-primary transition-colors leading-tight">
+                    {p.title}
+                  </h3>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </Band>
       )}
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <Band tone="quiet" spacing="compact">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
           {/* Recent posts main column */}
           <div className="lg:col-span-2">
-            <div className="mb-6">
-              <p className="text-[13px] font-sans text-ink-subtle mb-3">
+            <div className="mb-8">
+              <p className="text-sm text-ink-subtle mb-3">
                 Latest
               </p>
-              <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-                Recent articles
-              </h2>
+              <SectionHeading size="md" title="Recent articles" />
             </div>
-            <ul className="space-y-5">
+            <ul className="space-y-4">
               {recentPosts.map((p) => (
                 <li key={p.slug}>
                   <Link
                     href={`/guides/${p.slug}`}
-                    className="group grid grid-cols-[80px_1fr] sm:grid-cols-[120px_1fr] gap-4 rounded-2xl border border-line bg-surface-raised p-4 hover:border-primary/40 hover:shadow-md transition-all"
+                    className="group grid grid-cols-[80px_1fr] sm:grid-cols-[120px_1fr] gap-4 rounded-xl border border-line bg-surface-raised p-4 hover:border-ink transition-colors"
                   >
                     {p.coverImage ? (
-                      <div className="relative aspect-square sm:aspect-[5/4] overflow-hidden rounded-xl bg-surface-warm">
+                      <div className="relative aspect-square sm:aspect-[5/4] overflow-hidden rounded-lg bg-surface-warm">
                         <Image
                           src={p.coverImage}
                           alt=""
                           fill
                           sizes="120px"
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="object-cover"
                         />
                       </div>
                     ) : (
-                      <div className="aspect-square sm:aspect-[5/4] rounded-xl bg-surface-warm-sunken" />
+                      <div className="aspect-square sm:aspect-[5/4] rounded-lg bg-surface-warm-sunken" />
                     )}
                     <div className="min-w-0 flex flex-col">
-                      <p className="text-[13px] font-sans text-ink-subtle mb-1.5">
+                      <p className="text-sm text-ink-subtle mb-1.5">
                         {formatDate(p.publishedAt)}
                         {p.category && (
                           <>
@@ -204,10 +191,10 @@ export default async function InsightsPage() {
                           </>
                         )}
                       </p>
-                      <h3 className="font-display text-lg text-ink group-hover:text-primary transition-colors leading-tight mb-1">
+                      <h3 className="text-lg text-ink group-hover:text-primary transition-colors leading-tight mb-1">
                         {p.title}
                       </h3>
-                      <p className="font-sans text-sm text-ink-muted line-clamp-2">
+                      <p className="text-sm text-ink-muted line-clamp-2">
                         {p.excerpt}
                       </p>
                     </div>
@@ -216,37 +203,37 @@ export default async function InsightsPage() {
               ))}
             </ul>
 
-            <div className="mt-6">
+            <div className="mt-8">
               <Link
                 href="/guides"
-                className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                className="inline-flex items-center gap-1.5 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
               >
                 Browse all articles
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
             </div>
           </div>
 
           {/* Sidebar */}
-          <aside className="space-y-10">
+          <aside className="space-y-12">
             {/* RBA + market reports */}
             <div>
-              <p className="text-[13px] font-sans text-ink-subtle mb-3">
+              <p className="text-sm text-ink-subtle mb-3">
                 Live market data
               </p>
-              <h2 className="font-display text-xl text-ink leading-tight mb-4">
+              <h2 className="text-2xl text-ink leading-tight tracking-[-0.02em] mb-5">
                 Track the numbers
               </h2>
               <ul className="space-y-3">
                 <li>
                   <Link
                     href="/rba-cash-rate"
-                    className="block rounded-xl border border-line bg-surface-warm p-4 hover:border-primary/40 transition-colors group"
+                    className="block rounded-xl border border-line bg-surface-raised p-4 hover:border-ink transition-colors group"
                   >
-                    <p className="text-[13px] font-sans text-ink-subtle mb-1">
+                    <p className="text-sm text-ink-subtle mb-1">
                       RBA
                     </p>
-                    <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
+                    <p className="text-base font-semibold text-ink group-hover:text-primary transition-colors leading-tight">
                       Cash rate history &amp; latest decision →
                     </p>
                   </Link>
@@ -254,12 +241,12 @@ export default async function InsightsPage() {
                 <li>
                   <Link
                     href="/market-reports"
-                    className="block rounded-xl border border-line bg-surface-warm p-4 hover:border-primary/40 transition-colors group"
+                    className="block rounded-xl border border-line bg-surface-raised p-4 hover:border-ink transition-colors group"
                   >
-                    <p className="text-[13px] font-sans text-ink-subtle mb-1">
+                    <p className="text-sm text-ink-subtle mb-1">
                       Market reports
                     </p>
-                    <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
+                    <p className="text-base font-semibold text-ink group-hover:text-primary transition-colors leading-tight">
                       State-by-state quarterly reports →
                     </p>
                   </Link>
@@ -267,12 +254,12 @@ export default async function InsightsPage() {
                 <li>
                   <Link
                     href="/best-suburbs/highest-growth"
-                    className="block rounded-xl border border-line bg-surface-warm p-4 hover:border-primary/40 transition-colors group"
+                    className="block rounded-xl border border-line bg-surface-raised p-4 hover:border-ink transition-colors group"
                   >
-                    <p className="text-[13px] font-sans text-ink-subtle mb-1">
+                    <p className="text-sm text-ink-subtle mb-1">
                       Live ranking
                     </p>
-                    <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
+                    <p className="text-base font-semibold text-ink group-hover:text-primary transition-colors leading-tight">
                       Highest growth suburbs right now →
                     </p>
                   </Link>
@@ -282,24 +269,24 @@ export default async function InsightsPage() {
 
             {/* Most-read guides */}
             <div>
-              <p className="text-[13px] font-sans text-ink-subtle mb-3">
+              <p className="text-sm text-ink-subtle mb-3">
                 Most-read guides
               </p>
-              <h2 className="font-display text-xl text-ink leading-tight mb-4">
+              <h2 className="text-2xl text-ink leading-tight tracking-[-0.02em] mb-5">
                 What others are reading
               </h2>
-              <ul className="space-y-1.5">
+              <ul className="divide-y divide-line border-y border-line">
                 {TOP_GUIDES.map((g) => (
                   <li key={g.href}>
                     <Link
                       href={g.href}
-                      className="block py-2 group"
+                      className="block py-3 group"
                     >
-                      <p className="text-[13px] font-sans text-ink-subtle mb-0.5">
+                      <p className="text-sm text-ink-subtle mb-0.5">
                         {g.eyebrow}
                       </p>
-                      <p className="font-sans text-sm text-ink group-hover:text-primary transition-colors leading-snug">
-                        {g.title} <ArrowRight className="inline w-3 h-3 ml-0.5" />
+                      <p className="text-base text-ink group-hover:text-primary transition-colors leading-snug">
+                        {g.title} <ArrowRight className="inline w-3.5 h-3.5 ml-0.5" aria-hidden="true" />
                       </p>
                     </Link>
                   </li>
@@ -309,26 +296,26 @@ export default async function InsightsPage() {
 
             {/* Recent data updates */}
             <div>
-              <p className="text-[13px] font-sans text-ink-subtle mb-3">
+              <p className="text-sm text-ink-subtle mb-3">
                 Data updates
               </p>
-              <h2 className="font-display text-xl text-ink leading-tight mb-4">
+              <h2 className="text-2xl text-ink leading-tight tracking-[-0.02em] mb-5">
                 Recent refreshes
               </h2>
-              <ol className="space-y-3">
+              <ol className="space-y-4">
                 {DATA_UPDATES.map((u) => (
                   <li
                     key={u.title}
-                    className="flex gap-3 text-sm font-sans"
+                    className="flex gap-3 text-sm"
                   >
                     <Clock className="w-3.5 h-3.5 text-ink-subtle mt-1 shrink-0" aria-hidden="true" />
                     <div className="min-w-0">
-                      <p className="text-[13px] text-ink-subtle mb-0.5">
+                      <p className="text-sm text-ink-subtle mb-0.5">
                         {formatDate(u.date)} · {u.type}
                       </p>
                       <Link
                         href={u.href}
-                        className="text-ink hover:text-primary transition-colors leading-snug"
+                        className="text-base text-ink hover:text-primary transition-colors leading-snug"
                       >
                         {u.title}
                       </Link>
@@ -336,16 +323,16 @@ export default async function InsightsPage() {
                   </li>
                 ))}
               </ol>
-              <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+              <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
                 <Link
                   href="/data-updates"
-                  className="inline-flex items-center gap-1 text-[13px] font-sans text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                  className="inline-flex items-center gap-1 text-sm font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
                 >
                   Full changelog →
                 </Link>
                 <Link
                   href="/methodology"
-                  className="inline-flex items-center gap-1 text-[13px] font-sans text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                  className="inline-flex items-center gap-1 text-sm font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
                 >
                   Methodology →
                 </Link>
@@ -353,7 +340,7 @@ export default async function InsightsPage() {
             </div>
           </aside>
         </div>
-      </div>
+      </Band>
     </>
   );
 }

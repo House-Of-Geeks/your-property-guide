@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 
 export const metadata: Metadata = {
   title: "Property Research Tools",
@@ -172,20 +172,20 @@ function Card({ card }: { card: ResearchCard }) {
   return (
     <Link
       href={card.href}
-      className="group flex flex-col gap-4 rounded-2xl bg-surface-raised border border-line p-6 hover:border-primary/40 hover:shadow-md transition-all"
+      className="group flex flex-col gap-4 rounded-xl bg-surface-raised border border-line p-6 hover:border-ink transition-colors"
     >
-      <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-surface-warm border border-line">
+      <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-surface-warm border border-line">
         <Image src={card.icon} alt="" width={28} height={28} aria-hidden="true" />
       </div>
       <div>
-        <h3 className="font-display text-lg text-ink group-hover:text-primary transition-colors leading-tight">
+        <h3 className="text-lg text-ink group-hover:text-primary transition-colors leading-tight">
           {card.title}
         </h3>
-        <p className="font-sans text-sm text-ink-muted mt-2 leading-relaxed">
+        <p className="text-sm text-ink-muted mt-2 leading-relaxed">
           {card.description}
         </p>
       </div>
-      <span className="mt-auto font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
+      <span className="mt-auto pt-2 text-base font-semibold text-ink group-hover:text-primary transition-colors self-start">
         Explore →
       </span>
     </Link>
@@ -197,54 +197,37 @@ export default function ResearchPage() {
     <>
       <BreadcrumbJsonLd items={[{ name: "Research", url: "/research" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Research" }]} />
-          </div>
+      <PhotoHero photo="market" breadcrumbs={[{ label: "Research" }]}>
+        <p className="flex items-center gap-4 text-sm text-ink-muted mb-5">
+          <span className="font-semibold">
+            Free tools and data
+          </span>
+          <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+          <span>
+            Research desk
+          </span>
+        </p>
+        <HeroTitle>
+          Everything you need to{" "}
+          <span>decide with confidence</span>
+        </HeroTitle>
+        <HeroLead>
+          Calculators, suburb profiles, market reports, school catchments
+          and plain-English guides. All free. No login.
+        </HeroLead>
+      </PhotoHero>
 
-          <div className="grid lg:grid-cols-[1fr_auto] gap-8 items-end">
-            <div>
-              <div className="flex items-center gap-4 mb-10">
-                <span className="text-sm font-semibold text-ink-muted leading-none">
-                  Free tools and data
-                </span>
-                <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-                <span className="text-[13px] text-ink-subtle font-sans font-medium">
-                  Research desk
-                </span>
-              </div>
-              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[20ch] font-bold">
-                Everything you need to{" "}
-                <span>decide with confidence</span>
-              </h1>
-              <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-2xl">
-                Calculators, suburb profiles, market reports, school catchments
-                and plain-English guides. All free. No login.
-              </p>
-            </div>
+      {/* Sections: bands alternate light and quiet. */}
+      {sections.map((section, i) => (
+        <Band key={section.heading} tone={i % 2 === 0 ? "light" : "quiet"} spacing="compact">
+          <SectionHeading size="md" title={section.heading} />
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {section.cards.map((card) => (
+              <Card key={card.href} card={card} />
+            ))}
           </div>
-        </div>
-      </section>
-
-      {/* Sections */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="space-y-12">
-          {sections.map((section) => (
-            <section key={section.heading}>
-              <h2 className="font-display text-2xl text-ink mb-5 pb-2 border-b border-line">
-                {section.heading}
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {section.cards.map((card) => (
-                  <Card key={card.href} card={card} />
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
-      </div>
+        </Band>
+      ))}
     </>
   );
 }

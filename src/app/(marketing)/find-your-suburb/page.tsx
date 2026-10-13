@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { ExpertCTA, BUYING_GUIDE_CTA } from "@/components/journey";
+import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero, RuleGrid, SectionHeading } from "@/components/premium";
 import {
   findSuburbMatches,
   priorityLabel,
@@ -110,38 +110,31 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
     <>
       <BreadcrumbJsonLd items={[{ name: "Find your suburb", url: "/find-your-suburb" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Find your suburb" }]} />
-          </div>
-
-          <p className="text-[13px] font-sans text-ink-subtle mb-5 inline-flex items-center gap-2">
-            <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
-            30-second match quiz
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Find your <span>suburb</span> in 4 questions
-          </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            Tell us what matters most, your budget, and your lifestyle stage.
-            We&rsquo;ll score every suburb with a published median price
-            against your priorities and surface the top six matches.
-          </p>
-        </div>
-      </section>
+      <PhotoHero photo="street" breadcrumbs={[{ label: "Find your suburb" }]}>
+        <p className="flex items-center gap-2 text-sm text-ink-muted mb-5">
+          <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
+          30-second match quiz
+        </p>
+        <HeroTitle>
+          Find your <span>suburb</span> in 4 questions
+        </HeroTitle>
+        <HeroLead>
+          Tell us what matters most, your budget, and your lifestyle stage.
+          We&rsquo;ll score every suburb with a published median price
+          against your priorities and surface the top six matches.
+        </HeroLead>
+      </PhotoHero>
 
       {/* Quiz form, GET so the result URL is shareable + crawlable */}
-      <section className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12">
+      <Band spacing="compact">
+        <div className="max-w-4xl">
           <form method="GET" action="/find-your-suburb" className="space-y-10">
             {/* Q1, Priority */}
             <fieldset>
-              <legend className="block font-display text-xl text-ink mb-1">
+              <legend className="block text-xl font-bold text-ink mb-1">
                 1. What matters most?
               </legend>
-              <p className="font-sans text-sm text-ink-muted mb-4">
+              <p className="text-base text-ink-muted mb-4">
                 Pick the single dimension you weight most heavily.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -151,7 +144,7 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
                     className={`relative flex flex-col rounded-xl border p-4 cursor-pointer transition-colors ${
                       priority === p.value
                         ? "border-primary bg-primary/5"
-                        : "border-line bg-surface-warm hover:border-primary/40"
+                        : "border-line bg-surface-warm hover:border-ink"
                     }`}
                   >
                     <input
@@ -161,10 +154,10 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
                       defaultChecked={priority === p.value}
                       className="sr-only"
                     />
-                    <span className="font-display text-base text-ink leading-tight mb-1">
+                    <span className="text-base font-semibold text-ink leading-tight mb-1">
                       {p.label}
                     </span>
-                    <span className="font-sans text-xs text-ink-muted leading-relaxed">
+                    <span className="text-sm text-ink-muted leading-relaxed">
                       {p.tagline}
                     </span>
                   </label>
@@ -174,20 +167,20 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
 
             {/* Q2, Budget */}
             <fieldset>
-              <legend className="block font-display text-xl text-ink mb-1">
+              <legend className="block text-xl font-bold text-ink mb-1">
                 2. What&rsquo;s your budget for the median home?
               </legend>
-              <p className="font-sans text-sm text-ink-muted mb-4">
+              <p className="text-base text-ink-muted mb-4">
                 Approximate is fine, we&rsquo;ll give partial credit on either side.
               </p>
               <div className="flex flex-wrap gap-2">
                 {BUDGETS.map((b) => (
                   <label
                     key={b.value}
-                    className={`px-4 py-2 rounded-lg border cursor-pointer text-sm font-sans font-medium transition-colors ${
+                    className={`px-4 py-2 rounded-lg border cursor-pointer text-sm font-medium transition-colors ${
                       budget === b.value
-                        ? "bg-ink text-white border-ink"
-                        : "bg-surface-warm border-line text-ink hover:border-primary/40 hover:text-primary"
+                        ? "bg-ink text-ink-inverse border-ink"
+                        : "bg-surface-warm border-line text-ink hover:border-ink"
                     }`}
                   >
                     <input
@@ -205,20 +198,20 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
 
             {/* Q3, Stage */}
             <fieldset>
-              <legend className="block font-display text-xl text-ink mb-1">
+              <legend className="block text-xl font-bold text-ink mb-1">
                 3. What stage are you at?
               </legend>
-              <p className="font-sans text-sm text-ink-muted mb-4">
+              <p className="text-base text-ink-muted mb-4">
                 Tweaks the secondary weights (e.g. families get a school bump).
               </p>
               <div className="flex flex-wrap gap-2">
                 {STAGES.map((s) => (
                   <label
                     key={s.value}
-                    className={`px-4 py-2 rounded-lg border cursor-pointer text-sm font-sans font-medium transition-colors ${
+                    className={`px-4 py-2 rounded-lg border cursor-pointer text-sm font-medium transition-colors ${
                       stage === s.value
-                        ? "bg-ink text-white border-ink"
-                        : "bg-surface-warm border-line text-ink hover:border-primary/40 hover:text-primary"
+                        ? "bg-ink text-ink-inverse border-ink"
+                        : "bg-surface-warm border-line text-ink hover:border-ink"
                     }`}
                   >
                     <input
@@ -236,17 +229,17 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
 
             {/* Q4, State */}
             <fieldset>
-              <legend className="block font-display text-xl text-ink mb-1">
+              <legend className="block text-xl font-bold text-ink mb-1">
                 4. Which state?
               </legend>
-              <p className="font-sans text-sm text-ink-muted mb-4">
+              <p className="text-base text-ink-muted mb-4">
                 Pick a state if you&rsquo;re committed, or &ldquo;any&rdquo; for
                 national matches.
               </p>
               <select
                 name="state"
                 defaultValue={state}
-                className="rounded-lg border border-line bg-surface-warm px-4 py-2.5 font-sans text-base text-ink focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary min-w-[280px]"
+                className="rounded-lg border border-line-strong bg-white px-4 py-3 text-base text-ink focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary min-w-[280px] max-w-full"
               >
                 {STATES.map((s) => (
                   <option key={s.value} value={s.value}>
@@ -259,208 +252,204 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
             <div className="pt-2">
               <button
                 type="submit"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-cta px-6 py-3 font-sans font-medium text-white hover:bg-cta-hover transition-colors"
+                className={BUTTON_PRIMARY}
               >
                 Find my matches
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
           </form>
         </div>
-      </section>
+      </Band>
 
       {/* Results */}
       {answers && (
-        <section className="bg-surface-warm">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-            <div className="mb-8 max-w-3xl">
-              <p className="text-[13px] font-sans text-ink-subtle mb-3">
-                Your matches
-              </p>
-              <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-3">
-                {unmeasured ? (
+        <Band tone="quiet" spacing="compact">
+          <div className="mb-10">
+            <p className="text-sm text-ink-subtle mb-3">
+              Your matches
+            </p>
+            <SectionHeading
+              size="md"
+              title={
+                unmeasured ? (
                   <>Nothing to rank on {priorityLabel(answers.priority).toLowerCase()} yet.</>
                 ) : matches.length === 0 ? (
                   <>No strong matches found.</>
                 ) : (
                   <>Top {matches.length} suburbs for <span>{priorityLabel(answers.priority).toLowerCase()}</span>.</>
-                )}
-              </h2>
-              {matches.length > 0 && (
-                <p className="font-sans text-base text-ink-muted leading-relaxed">
-                  Scored across budget, your priority, and your stage, on the
-                  figures each suburb&rsquo;s own page publishes. Click any
-                  suburb to see its full profile.
-                </p>
-              )}
-            </div>
-
-            {matches.length === 0 ? (
-              <div className="rounded-2xl border border-line bg-surface-raised p-8 text-center">
-                <p className="font-sans text-ink-muted max-w-2xl mx-auto leading-relaxed">
-                  {unmeasured ?? (
-                    <>
-                      No suburbs matched. Try widening your budget or selecting
-                      &ldquo;any state&rdquo;.
-                    </>
-                  )}
-                </p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {matches.map((m, i) => (
-                  <Link
-                    key={m.slug}
-                    href={`/suburbs/${m.slug}`}
-                    className="group rounded-2xl border border-line bg-surface-raised p-6 hover:border-primary/40 hover:shadow-md transition-all"
-                  >
-                    <div className="flex items-baseline justify-between mb-3">
-                      <p className="text-[13px] font-sans text-ink-subtle">
-                        Match #{i + 1}
-                      </p>
-                      <p className="font-display text-2xl text-primary leading-none">
-                        {m.score}
-                      </p>
-                    </div>
-                    <h3 className="font-display text-2xl text-ink group-hover:text-primary transition-colors leading-tight">
-                      {m.name}
-                    </h3>
-                    <p className="text-[13px] font-sans text-ink-subtle mt-1">
-                      {m.state} {m.postcode}
-                    </p>
-
-                    {m.reasons.length > 0 && (
-                      <ul className="mt-5 space-y-2">
-                        {m.reasons.map((r, ri) => (
-                          <li
-                            key={ri}
-                            className="font-sans text-sm text-ink-muted flex gap-2 items-start"
-                          >
-                            <span className="inline-block w-1 h-1 rounded-full bg-primary mt-2 shrink-0" />
-                            <span>{r}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {/* items-end: a label that wraps in a narrow card must not push its figure off the row */}
-                    <div className="mt-5 pt-5 border-t border-line grid grid-cols-3 gap-3 items-end">
-                      <div>
-                        <p className="text-[13px] font-sans text-ink-subtle">
-                          {m.medianBasis === "area" ? "Area median" : "Median"}
-                        </p>
-                        <p className="font-display text-sm text-ink">
-                          {m.medianHousePrice > 0 ? formatPrice(m.medianHousePrice) : "–"}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-[13px] font-sans text-ink-subtle">12-month change</p>
-                        {/* 0 is "none published", not a flat year */}
-                        {m.annualGrowthHouse !== 0 ? (
-                          <p className={`font-display text-sm ${m.annualGrowthHouse > 0 ? "text-emerald-700" : "text-red-700"}`}>
-                            {m.annualGrowthHouse > 0 ? "+" : ""}
-                            {m.annualGrowthHouse.toFixed(1)}%
-                          </p>
-                        ) : (
-                          <p className="font-display text-sm text-ink">–</p>
-                        )}
-                      </div>
-                      <div>
-                        <p className="text-[13px] font-sans text-ink-subtle">Yield</p>
-                        <p className="font-display text-sm text-ink">
-                          {m.grossYield != null ? `${m.grossYield.toFixed(1)}%` : "–"}
-                        </p>
-                      </div>
-                    </div>
-
-                    <p className="mt-4 font-sans text-[13px] text-ink group-hover:text-primary transition-colors">
-                      See profile →
-                    </p>
-                  </Link>
-                ))}
-              </div>
-            )}
-
-            {matches.length > 0 && notes.length > 0 && (
-              <div className="mt-8 max-w-3xl space-y-2">
-                {notes.map((n) => (
-                  <p key={n} className="font-sans text-sm text-ink-subtle leading-relaxed">
-                    {n}
-                  </p>
-                ))}
-              </div>
-            )}
-
-            {matches.length >= 2 && (
-              <div className="mt-10 rounded-2xl border border-line bg-surface-raised p-6">
-                <p className="text-[13px] font-sans text-ink-subtle mb-2">
-                  Compare your top two
-                </p>
-                <p className="font-display text-xl text-ink leading-tight mb-3">
-                  {matches[0].name} <span>vs</span> {matches[1].name}
-                </p>
-                <Link
-                  href={`/suburbs/${matches[0].slug}/vs/${matches[1].slug}`}
-                  className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-                >
-                  See them side by side
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            )}
+                )
+              }
+              intro={
+                matches.length > 0 ? (
+                  <>
+                    Scored across budget, your priority, and your stage, on the
+                    figures each suburb&rsquo;s own page publishes. Click any
+                    suburb to see its full profile.
+                  </>
+                ) : undefined
+              }
+            />
           </div>
-        </section>
+
+          {matches.length === 0 ? (
+            <div className="rounded-xl border border-line bg-surface-raised p-8 text-center">
+              <p className="text-base text-ink-muted max-w-2xl mx-auto leading-relaxed">
+                {unmeasured ?? (
+                  <>
+                    No suburbs matched. Try widening your budget or selecting
+                    &ldquo;any state&rdquo;.
+                  </>
+                )}
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {matches.map((m, i) => (
+                <Link
+                  key={m.slug}
+                  href={`/suburbs/${m.slug}`}
+                  className="group flex flex-col rounded-xl border border-line bg-surface-raised p-6 hover:border-ink transition-colors"
+                >
+                  <div className="flex items-baseline justify-between mb-3">
+                    <p className="text-sm text-ink-subtle">
+                      Match #{i + 1}
+                    </p>
+                    <p className="text-2xl font-bold text-primary leading-none">
+                      {m.score}
+                    </p>
+                  </div>
+                  <h3 className="text-2xl text-ink group-hover:text-primary transition-colors leading-tight">
+                    {m.name}
+                  </h3>
+                  <p className="text-sm text-ink-subtle mt-1">
+                    {m.state} {m.postcode}
+                  </p>
+
+                  {m.reasons.length > 0 && (
+                    <ul className="mt-5 space-y-2">
+                      {m.reasons.map((r, ri) => (
+                        <li
+                          key={ri}
+                          className="text-sm text-ink-muted flex gap-2 items-start"
+                        >
+                          <span className="inline-block w-1 h-1 rounded-full bg-primary mt-2 shrink-0" />
+                          <span>{r}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {/* items-end: a label that wraps in a narrow card must not push its figure off the row */}
+                  <div className="mt-5 pt-5 border-t border-line grid grid-cols-3 gap-3 items-end">
+                    <div>
+                      <p className="text-sm text-ink-subtle">
+                        {m.medianBasis === "area" ? "Area median" : "Median"}
+                      </p>
+                      <p className="text-base font-semibold text-ink">
+                        {m.medianHousePrice > 0 ? formatPrice(m.medianHousePrice) : "–"}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-ink-subtle">12-month change</p>
+                      {/* 0 is "none published", not a flat year */}
+                      {m.annualGrowthHouse !== 0 ? (
+                        <p className={`text-base font-semibold ${m.annualGrowthHouse > 0 ? "text-emerald-700" : "text-red-700"}`}>
+                          {m.annualGrowthHouse > 0 ? "+" : ""}
+                          {m.annualGrowthHouse.toFixed(1)}%
+                        </p>
+                      ) : (
+                        <p className="text-base font-semibold text-ink">–</p>
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-sm text-ink-subtle">Yield</p>
+                      <p className="text-base font-semibold text-ink">
+                        {m.grossYield != null ? `${m.grossYield.toFixed(1)}%` : "–"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className="mt-auto pt-5 text-sm font-semibold text-ink group-hover:text-primary transition-colors">
+                    See profile →
+                  </p>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {matches.length > 0 && notes.length > 0 && (
+            <div className="mt-8 max-w-3xl space-y-2">
+              {notes.map((n) => (
+                <p key={n} className="text-sm text-ink-subtle leading-relaxed">
+                  {n}
+                </p>
+              ))}
+            </div>
+          )}
+
+          {matches.length >= 2 && (
+            <div className="mt-10 rounded-xl border border-line bg-surface-raised p-6">
+              <p className="text-sm text-ink-subtle mb-2">
+                Compare your top two
+              </p>
+              <p className="text-xl font-bold text-ink leading-tight mb-4">
+                {matches[0].name} <span>vs</span> {matches[1].name}
+              </p>
+              <Link
+                href={`/suburbs/${matches[0].slug}/vs/${matches[1].slug}`}
+                className="inline-flex items-center gap-1.5 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
+              >
+                See them side by side
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              </Link>
+            </div>
+          )}
+        </Band>
       )}
 
       {/* How it works (only if no answers yet, so the page is useful with no params) */}
       {!answers && (
-        <section className="bg-surface-warm">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-            <div className="mb-8">
-              <p className="text-[13px] font-sans text-ink-subtle mb-3">
-                How it works
-              </p>
-              <h2 className="font-display text-3xl text-ink leading-tight">
-                Real data, weighted to what matters to you
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-              {[
-                {
-                  num: "01",
-                  title: "Score every suburb with a published median",
-                  body: "We read the median price each suburb's own page publishes, its 12-month change and gross yield where they are measured, ICSEA school scores, walk score and hazard records.",
-                },
-                {
-                  num: "02",
-                  title: "Weight to your priority",
-                  body: "Your top priority gets 40% of the weight; budget always gets at least 20%. Stage tweaks the secondary mix. A measure we hold nothing on is left out of the score, and the results say so.",
-                },
-                {
-                  num: "03",
-                  title: "Surface the top six",
-                  body: "We rank, leave out localities of 500 residents or fewer, and show why each suburb scored where it did.",
-                },
-              ].map((s) => (
-                <div
-                  key={s.num}
-                  className="rounded-2xl border border-line bg-surface-raised p-7"
-                >
-                  <p className="font-display text-primary text-3xl leading-none mb-3">
-                    {s.num}
-                  </p>
-                  <h3 className="font-display text-lg text-ink leading-tight mb-2">
-                    {s.title}
-                  </h3>
-                  <p className="font-sans text-sm text-ink-muted leading-relaxed">
-                    {s.body}
-                  </p>
-                </div>
-              ))}
-            </div>
+        <Band tone="dark" spacing="compact">
+          <div>
+            <p className="text-sm text-ink-subtle mb-3">
+              How it works
+            </p>
+            <SectionHeading size="md" title="Real data, weighted to what matters to you" />
           </div>
-        </section>
+
+          <RuleGrid columns={3} className="mt-12">
+            {[
+              {
+                num: "01",
+                title: "Score every suburb with a published median",
+                body: "We read the median price each suburb's own page publishes, its 12-month change and gross yield where they are measured, ICSEA school scores, walk score and hazard records.",
+              },
+              {
+                num: "02",
+                title: "Weight to your priority",
+                body: "Your top priority gets 40% of the weight; budget always gets at least 20%. Stage tweaks the secondary mix. A measure we hold nothing on is left out of the score, and the results say so.",
+              },
+              {
+                num: "03",
+                title: "Surface the top six",
+                body: "We rank, leave out localities of 500 residents or fewer, and show why each suburb scored where it did.",
+              },
+            ].map((s) => (
+              <li key={s.num} className="border-t-2 border-ink pt-6">
+                <p className="text-primary text-3xl font-bold leading-none mb-5">
+                  {s.num}
+                </p>
+                <h3 className="text-xl text-ink">
+                  {s.title}
+                </h3>
+                <p className="mt-2 text-base text-ink-muted leading-relaxed">
+                  {s.body}
+                </p>
+              </li>
+            ))}
+          </RuleGrid>
+        </Band>
       )}
 
       {/* Funnel exit: quiz-takers just told us their criteria — highest

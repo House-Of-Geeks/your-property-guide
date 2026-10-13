@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { TrendingUp, TrendingDown } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
 import { db } from "@/lib/db";
@@ -10,6 +9,7 @@ import { PUBLISHED_CHANGE, PUBLISHED_HOUSE_MEDIAN, withPublishedSales } from "@/
 import { priceSourceLine } from "@/lib/ranking-notes";
 import { formatPrice, formatPercentage } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
+import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 
 // ISR, DB-querying services have build-phase guards, so we cache for 24h
 // instead of running a function on every visit.
@@ -116,46 +116,33 @@ export default async function PriceGuidePage({
     <>
       <BreadcrumbJsonLd items={[{ name: "Price Guide", url: "/price-guide" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Price Guide" }]} />
-          </div>
+      <PhotoHero photo="market" breadcrumbs={[{ label: "Price Guide" }]}>
+        <p className="text-sm text-ink-muted mb-5">
+          {total.toLocaleString()}{" "}suburbs &middot; Updated quarterly
+        </p>
+        <HeroTitle>
+          Median prices,{" "}
+          <span>side by side</span>
+        </HeroTitle>
+        <HeroLead>
+          Filter and compare the median house and unit prices we publish,
+          suburb by suburb, with the 12-month change where it is measured.
+        </HeroLead>
+      </PhotoHero>
 
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              {total.toLocaleString()} suburbs
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              Updated quarterly
-            </span>
-          </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
-            Median prices,{" "}
-            <span>side by side</span>
-          </h1>
-          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            Filter and compare the median house and unit prices we publish,
-            suburb by suburb, with the 12-month change where it is measured.
-          </p>
-        </div>
-      </section>
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <Band tone="quiet" spacing="compact">
       {/* Filters */}
-      <form method="GET" action="/price-guide" className="mb-6 flex flex-wrap gap-3 items-center">
+      <form method="GET" action="/price-guide" className="mb-8 flex flex-wrap gap-4 items-center">
         {/* State filter */}
         <div className="flex items-center gap-2">
-          <label htmlFor="state-select" className="text-sm font-sans font-medium text-ink whitespace-nowrap">
+          <label htmlFor="state-select" className="text-sm font-semibold text-ink whitespace-nowrap">
             State
           </label>
           <select
             id="state-select"
             name="state"
             defaultValue={state ?? ""}
-            className="rounded-lg border border-line bg-surface-raised px-3 py-2 text-sm font-sans text-ink focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            className="rounded-lg border border-line-strong bg-surface-raised px-3 py-3 text-base text-ink focus:border-ink focus:outline-none focus:ring-2 focus:ring-primary/20"
           >
             <option value="">All States</option>
             {STATES.map((s) => (
@@ -168,14 +155,14 @@ export default async function PriceGuidePage({
 
         {/* Sort filter */}
         <div className="flex items-center gap-2">
-          <label htmlFor="sort-select" className="text-sm font-sans font-medium text-ink whitespace-nowrap">
+          <label htmlFor="sort-select" className="text-sm font-semibold text-ink whitespace-nowrap">
             Sort by
           </label>
           <select
             id="sort-select"
             name="sort"
             defaultValue={sort}
-            className="rounded-lg border border-line bg-surface-raised px-3 py-2 text-sm font-sans text-ink focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            className="rounded-lg border border-line-strong bg-surface-raised px-3 py-3 text-base text-ink focus:border-ink focus:outline-none focus:ring-2 focus:ring-primary/20"
           >
             <option value="price-desc">Highest Price</option>
             <option value="price-asc">Lowest Price</option>
@@ -185,39 +172,39 @@ export default async function PriceGuidePage({
 
         <button
           type="submit"
-          className="rounded-lg bg-cta px-4 py-2 text-sm font-sans font-medium text-white hover:bg-cta/90 transition-colors"
+          className={`${BUTTON_PRIMARY} cursor-pointer`}
         >
           Apply
         </button>
       </form>
 
       {/* Results summary */}
-      <p className="text-sm font-sans text-ink-muted mb-4">
+      <p className="text-sm text-ink-muted mb-4">
         Showing {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, total)} of{" "}
         {total.toLocaleString()} suburbs
       </p>
 
       {/* Desktop table */}
-      <div className="hidden sm:block overflow-x-auto rounded-2xl bg-surface-raised border border-line">
+      <div className="hidden sm:block overflow-x-auto rounded-xl bg-surface-raised border border-line">
         <table className="min-w-full divide-y divide-line text-sm">
           <thead className="bg-surface-warm">
             <tr>
-              <th className="px-4 py-3 text-left font-sans font-medium text-ink text-[13px]">
+              <th className="px-4 py-3 text-left font-semibold text-ink text-sm">
                 Suburb
               </th>
-              <th className="px-4 py-3 text-left font-sans font-medium text-ink text-[13px]">
+              <th className="px-4 py-3 text-left font-semibold text-ink text-sm">
                 State
               </th>
-              <th className="px-4 py-3 text-left font-sans font-medium text-ink text-[13px]">
+              <th className="px-4 py-3 text-left font-semibold text-ink text-sm">
                 Postcode
               </th>
-              <th className="px-4 py-3 text-right font-sans font-medium text-ink text-[13px]">
+              <th className="px-4 py-3 text-right font-semibold text-ink text-sm">
                 Median House
               </th>
-              <th className="px-4 py-3 text-right font-sans font-medium text-ink text-[13px]">
+              <th className="px-4 py-3 text-right font-semibold text-ink text-sm">
                 Median Unit
               </th>
-              <th className="px-4 py-3 text-right font-sans font-medium text-ink text-[13px]">
+              <th className="px-4 py-3 text-right font-semibold text-ink text-sm">
                 Annual Growth
               </th>
             </tr>
@@ -225,20 +212,20 @@ export default async function PriceGuidePage({
           <tbody className="divide-y divide-line">
             {suburbs.map((suburb) => (
               <tr key={suburb.slug} className="hover:bg-surface-warm/50 transition-colors">
-                <td className="px-4 py-3 font-medium">
+                <td className="px-4 py-3 font-semibold">
                   <Link
                     href={`/suburbs/${suburb.slug}`}
-                    className="font-sans text-ink border-b border-line-strong hover:border-primary hover:text-primary transition-colors pb-0.5"
+                    className="text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink hover:text-primary transition-colors"
                   >
                     {suburb.name}
                   </Link>
                 </td>
-                <td className="px-4 py-3 font-sans text-ink-muted">{suburb.state}</td>
-                <td className="px-4 py-3 font-sans text-ink-muted">{suburb.postcode}</td>
-                <td className="px-4 py-3 text-right font-display text-ink">
+                <td className="px-4 py-3 text-ink-muted">{suburb.state}</td>
+                <td className="px-4 py-3 text-ink-muted">{suburb.postcode}</td>
+                <td className="px-4 py-3 text-right font-semibold text-ink">
                   {formatPrice(suburb.medianHousePrice)}
                 </td>
-                <td className="px-4 py-3 text-right font-sans text-ink-muted">
+                <td className="px-4 py-3 text-right text-ink-muted">
                   {suburb.medianUnitPrice > 0
                     ? formatPrice(suburb.medianUnitPrice)
                     : <span className="text-ink-subtle">-</span>}
@@ -275,18 +262,18 @@ export default async function PriceGuidePage({
           <Link
             key={suburb.slug}
             href={`/suburbs/${suburb.slug}`}
-            className="block rounded-2xl bg-surface-raised border border-line p-4 hover:border-primary/40 hover:shadow-md transition-all"
+            className="block rounded-xl bg-surface-raised border border-line p-4 hover:border-ink transition-colors"
           >
             <div className="flex items-start justify-between">
               <div>
-                <p className="font-display text-lg text-ink leading-tight">{suburb.name}</p>
-                <p className="text-xs font-sans text-ink-subtle mt-0.5">
+                <p className="text-lg font-semibold text-ink leading-tight">{suburb.name}</p>
+                <p className="text-xs text-ink-subtle mt-0.5">
                   {suburb.state} {suburb.postcode}
                 </p>
               </div>
               {suburb.annualGrowthHouse !== 0 && (
                 <span
-                  className={`text-xs font-medium px-2 py-0.5 rounded-md font-sans ${
+                  className={`text-xs font-medium px-2 py-0.5 rounded-md ${
                     suburb.annualGrowthHouse >= 0
                       ? "bg-emerald-50 text-emerald-700"
                       : "bg-red-50 text-red-700"
@@ -298,15 +285,15 @@ export default async function PriceGuidePage({
             </div>
             <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
               <div>
-                <p className="text-xs font-sans text-ink-subtle">House</p>
-                <p className="font-display text-base text-ink">
+                <p className="text-xs text-ink-subtle">House</p>
+                <p className="text-base font-semibold text-ink">
                   {formatPrice(suburb.medianHousePrice)}
                 </p>
               </div>
               {suburb.medianUnitPrice > 0 && (
                 <div>
-                  <p className="text-xs font-sans text-ink-subtle">Unit</p>
-                  <p className="font-display text-base text-ink">
+                  <p className="text-xs text-ink-subtle">Unit</p>
+                  <p className="text-base font-semibold text-ink">
                     {formatPrice(suburb.medianUnitPrice)}
                   </p>
                 </div>
@@ -319,8 +306,8 @@ export default async function PriceGuidePage({
       {/* Empty state */}
       {suburbs.length === 0 && (
         <div className="text-center py-16">
-          <p className="font-display text-xl text-ink">Nothing to list here yet</p>
-          <p className="mt-1 text-sm font-sans text-ink-muted max-w-xl mx-auto">
+          <p className="text-xl font-semibold text-ink">Nothing to list here yet</p>
+          <p className="mt-1 text-sm text-ink-muted max-w-xl mx-auto">
             {sort === "growth-desc"
               ? "A 12-month change is measured in New South Wales and South Australia only. Sort by price to see the other states."
               : "No suburb matches that filter with a published median."}
@@ -337,18 +324,18 @@ export default async function PriceGuidePage({
           {page > 1 && (
             <Link
               href={buildUrl({ state, sort, page: page - 1 })}
-              className="rounded-lg border border-line px-3 py-2 text-sm font-sans text-ink-muted hover:bg-surface-warm transition-colors"
+              className="rounded-lg border border-line bg-surface-raised px-3 py-2 text-sm font-semibold text-ink hover:border-ink transition-colors"
             >
               Previous
             </Link>
           )}
-          <span className="text-sm font-sans text-ink-muted">
+          <span className="text-sm text-ink-muted">
             Page {page} of {totalPages}
           </span>
           {page < totalPages && (
             <Link
               href={buildUrl({ state, sort, page: page + 1 })}
-              className="rounded-lg border border-line px-3 py-2 text-sm font-sans text-ink-muted hover:bg-surface-warm transition-colors"
+              className="rounded-lg border border-line bg-surface-raised px-3 py-2 text-sm font-semibold text-ink hover:border-ink transition-colors"
             >
               Next
             </Link>
@@ -357,14 +344,14 @@ export default async function PriceGuidePage({
       )}
 
       {/* Data source note */}
-      <div className="mt-8 rounded-2xl border border-line bg-surface-warm p-5 text-sm font-sans text-ink-muted">
-        <p className="text-[13px] text-ink-subtle mb-1.5">Data source</p>
-        <p>
+      <div className="mt-10 max-w-3xl border-t border-line pt-6 text-sm text-ink-muted">
+        <p className="text-sm font-semibold text-ink mb-1.5">Data source</p>
+        <p className="leading-relaxed">
           {priceSourceLine(state ?? null)} A suburb is listed only when its own
           page publishes the median.
         </p>
       </div>
-      </div>
+      </Band>
 
       {/* Seller-valuation funnel exit. Price-guide readers are asking "what
           are homes worth" — the appraisal answers it for their own place,
@@ -378,7 +365,7 @@ export default async function PriceGuidePage({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 -mt-6 text-center">
         <Link
           href="/selling-guide"
-          className="font-sans text-sm text-ink-muted border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+          className="text-sm text-ink-muted underline underline-offset-4 decoration-line-strong hover:text-ink hover:decoration-ink"
         >
           Not ready for an agent yet? Get the free selling guide.
         </Link>

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { AgentSearch } from "@/components/search/AgentSearch";
 import { SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 import { AgentsResults } from "./Results";
 
 // ISR, page shell caches as static. searchParams reads are isolated to
@@ -31,44 +31,39 @@ export default function AgentsPage({ searchParams }: AgentsPageProps) {
     <>
       <BreadcrumbJsonLd items={[{ name: "Find Agents", url: "/agents" }]} />
 
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Find Agents" }]} />
-          </div>
+      <PhotoHero breadcrumbs={[{ label: "Find Agents" }]}>
+        <p className="flex items-center gap-4 text-sm text-ink-muted mb-5">
+          <span className="font-semibold">
+            Local agent network
+          </span>
+          <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+          <span>
+            Vetted directory
+          </span>
+        </p>
+        <HeroTitle>
+          Find your{" "}
+          <span>local agent</span>
+        </HeroTitle>
+        <HeroLead>
+          Browse trusted local real estate agents across Australia.
+          Search by suburb to see who knows your area.
+        </HeroLead>
+      </PhotoHero>
 
-          <div className="grid lg:grid-cols-[1fr_auto] gap-8 items-end">
-            <div>
-              <div className="flex items-center gap-4 mb-10">
-                <span className="text-sm font-semibold text-ink-muted leading-none">
-                  Local agent network
-                </span>
-                <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-                <span className="text-[13px] text-ink-subtle font-sans font-medium">
-                  Vetted directory
-                </span>
-              </div>
-              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 max-w-[20ch] font-bold">
-                Find your{" "}
-                <span>local agent</span>
-              </h1>
-              <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-2xl mb-8">
-                Browse trusted local real estate agents across Australia.
-                Search by suburb to see who knows your area.
-              </p>
-              <div className="max-w-xl">
-                <AgentSearch />
-              </div>
-            </div>
-          </div>
+      {/* The search box opens the first band (not the hero, whose
+          overflow-hidden would clip its suggestion dropdown). */}
+      <Band spacing="compact">
+        <div className="max-w-xl">
+          <AgentSearch />
         </div>
-      </section>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <Suspense fallback={null}>
-          <AgentsResults searchParams={searchParams} />
-        </Suspense>
-      </div>
+        <div className="mt-12">
+          <Suspense fallback={null}>
+            <AgentsResults searchParams={searchParams} />
+          </Suspense>
+        </div>
+      </Band>
     </>
   );
 }

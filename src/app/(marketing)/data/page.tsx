@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY } from "@/lib/non-localities";
 import { GLOSSARY_TERMS } from "@/lib/data/glossary";
 import { SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero, RuleGrid, RuleItem, SectionHeading } from "@/components/premium";
 
 export const revalidate = 3600; // refresh hourly
 
@@ -176,116 +176,100 @@ export default async function DataPage() {
     <>
       <BreadcrumbJsonLd items={[{ name: "Our data", url: "/data" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Our data" }]} />
-          </div>
-
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              Live counts
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              Refreshed hourly
-            </span>
-          </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
-            Every number,{" "}
-            <span>sourced and live</span>
-          </h1>
-          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            Here&rsquo;s the data behind every page on Your Property Guide,
-            counted live from our database. Each row names the body that
-            publishes it.
-          </p>
-        </div>
-      </section>
+      <PhotoHero photo="paperwork" breadcrumbs={[{ label: "Our data" }]}>
+        <p className="text-sm text-ink-muted mb-5">
+          Live counts &middot; Refreshed hourly
+        </p>
+        <HeroTitle>
+          Every number,{" "}
+          <span>sourced and live</span>
+        </HeroTitle>
+        <HeroLead>
+          Here&rsquo;s the data behind every page on Your Property Guide,
+          counted live from our database. Each row names the body that
+          publishes it.
+        </HeroLead>
+      </PhotoHero>
 
       {/* Hero stat grid */}
-      <section className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {heroStats.map((s) => {
-              const inner = (
-                <>
-                  <p className="font-display text-5xl text-ink leading-none mb-3">
-                    {s.value}
-                  </p>
-                  <p className="text-[13px] font-sans text-ink-subtle mb-3">
-                    {s.label}
-                  </p>
-                  <p className="font-sans text-sm text-ink-muted leading-relaxed mb-3">
-                    {s.context}
-                  </p>
-                  <p className="font-sans text-xs text-ink-subtle">
-                    Source: {s.source}
-                  </p>
-                </>
-              );
-              return s.href ? (
-                <Link
-                  key={s.label}
-                  href={s.href}
-                  className="group rounded-2xl border border-line bg-surface-warm p-6 hover:border-primary/40 hover:shadow-md transition-all"
-                >
-                  {inner}
-                </Link>
-              ) : (
-                <div
-                  key={s.label}
-                  className="rounded-2xl border border-line bg-surface-warm p-6"
-                >
-                  {inner}
-                </div>
-              );
-            })}
-          </div>
+      <Band tone="quiet" spacing="compact">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {heroStats.map((s) => {
+            const inner = (
+              <>
+                <p className="text-4xl sm:text-5xl font-bold text-ink leading-none tracking-[-0.03em] mb-4">
+                  {s.value}
+                </p>
+                <p className="text-base font-semibold text-ink mb-3">
+                  {s.label}
+                </p>
+                <p className="text-sm text-ink-muted leading-relaxed mb-3">
+                  {s.context}
+                </p>
+                <p className="mt-auto text-sm text-ink-subtle">
+                  Source: {s.source}
+                </p>
+              </>
+            );
+            return s.href ? (
+              <Link
+                key={s.label}
+                href={s.href}
+                className="group flex flex-col rounded-xl border border-line bg-surface-raised p-6 hover:border-ink transition-colors"
+              >
+                {inner}
+              </Link>
+            ) : (
+              <div
+                key={s.label}
+                className="flex flex-col rounded-xl border border-line bg-surface-raised p-6"
+              >
+                {inner}
+              </div>
+            );
+          })}
         </div>
-      </section>
+      </Band>
 
       {/* Detailed dataset breakdown */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+      <Band spacing="compact">
+        <div className="space-y-14">
         {datasets.map((d) => (
           <section key={d.heading}>
-            <div className="mb-5 pb-3 border-b border-line">
-              <p className="text-[13px] font-sans text-ink-subtle mb-2">
+            <div className="mb-6">
+              <p className="text-sm text-ink-muted mb-2">
                 Dataset
               </p>
-              <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-                {d.heading}
-              </h2>
+              <SectionHeading size="md" title={d.heading} />
             </div>
-            <div className="overflow-x-auto rounded-2xl border border-line bg-surface-raised">
+            <div className="overflow-x-auto rounded-xl border border-line bg-surface-raised">
               <table className="w-full text-sm">
                 <thead className="bg-surface-warm border-b border-line">
                   <tr>
-                    <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink w-32">Count</th>
-                    <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink w-48">Dataset</th>
-                    <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink">What it covers</th>
-                    <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink w-72">Source</th>
+                    <th className="py-3 px-4 text-left text-sm font-semibold text-ink w-32">Count</th>
+                    <th className="py-3 px-4 text-left text-sm font-semibold text-ink w-48">Dataset</th>
+                    <th className="py-3 px-4 text-left text-sm font-semibold text-ink">What it covers</th>
+                    <th className="py-3 px-4 text-left text-sm font-semibold text-ink w-72">Source</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-line">
                   {d.rows.map((r) => (
                     <tr key={r.label} className="hover:bg-surface-warm/60 transition-colors">
-                      <td className="py-4 px-4 font-display text-xl text-ink whitespace-nowrap">{r.value}</td>
-                      <td className="py-4 px-4 font-sans">
+                      <td className="py-4 px-4 text-xl font-bold text-ink whitespace-nowrap">{r.value}</td>
+                      <td className="py-4 px-4">
                         {r.href ? (
                           <Link
                             href={r.href}
-                            className="font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                            className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
                           >
                             {r.label}
                           </Link>
                         ) : (
-                          <span className="font-medium text-ink">{r.label}</span>
+                          <span className="font-semibold text-ink">{r.label}</span>
                         )}
                       </td>
-                      <td className="py-4 px-4 font-sans text-ink-muted leading-relaxed">{r.context}</td>
-                      <td className="py-4 px-4 font-sans text-xs text-ink-subtle leading-relaxed">{r.source}</td>
+                      <td className="py-4 px-4 text-ink-muted leading-relaxed">{r.context}</td>
+                      <td className="py-4 px-4 text-sm text-ink-subtle leading-relaxed">{r.source}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -293,43 +277,35 @@ export default async function DataPage() {
             </div>
           </section>
         ))}
+        </div>
+      </Band>
 
-        {/* Editorial commitments */}
-        <section className="rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
-          <div className="grid lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-4">
-              <p className="text-[13px] font-sans text-ink-subtle mb-3">
-                Editorial commitments
-              </p>
-              <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-                Sourced. Dated. Free
-              </h2>
-            </div>
-            <div className="lg:col-span-8">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                {[
-                  { title: "Sourced",   body: "Every figure on the site cites the body that publishes it." },
-                  { title: "Dated",     body: "Every figure carries the as-of date, surface it and we'll show you in a tooltip on the suburb page." },
-                  { title: "Free",      body: "No paywall, no email gate. The data is the product, and it stays free." },
-                ].map((c) => (
-                  <div key={c.title}>
-                    <p className="font-display text-xl text-ink leading-tight mb-2">{c.title}</p>
-                    <p className="font-sans text-sm text-ink-muted leading-relaxed">{c.body}</p>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-6">
-                <Link
-                  href="/methodology"
-                  className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-                >
-                  Read the full methodology →
-                </Link>
-              </p>
-            </div>
-          </div>
-        </section>
-      </div>
+      {/* Editorial commitments */}
+      <Band tone="quiet" spacing="compact">
+        <p className="text-sm text-ink-muted mb-3">
+          Editorial commitments
+        </p>
+        <SectionHeading size="md" title="Sourced. Dated. Free" />
+        <RuleGrid columns={3} className="mt-10">
+          {[
+            { title: "Sourced",   body: "Every figure on the site cites the body that publishes it." },
+            { title: "Dated",     body: "Every figure carries the as-of date, surface it and we'll show you in a tooltip on the suburb page." },
+            { title: "Free",      body: "No paywall, no email gate. The data is the product, and it stays free." },
+          ].map((c) => (
+            <RuleItem key={c.title} title={c.title}>
+              {c.body}
+            </RuleItem>
+          ))}
+        </RuleGrid>
+        <p className="mt-10">
+          <Link
+            href="/methodology"
+            className="inline-flex items-center gap-1.5 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
+          >
+            Read the full methodology →
+          </Link>
+        </p>
+      </Band>
     </>
   );
 }
