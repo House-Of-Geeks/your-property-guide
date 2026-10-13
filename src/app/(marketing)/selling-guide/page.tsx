@@ -8,6 +8,7 @@ import { FaqAccordion } from "@/components/guide";
 import { SellingGuideFunnel } from "@/components/journey";
 import { StatNumber } from "@/components/motion/StatNumber";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
+import { GuideEntryCapture } from "@/components/analytics/GuideEntryCapture";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { StickyGuideBar } from "./StickyGuideBar";
@@ -214,7 +215,7 @@ export default function SellingGuidePage() {
                   later sibling with its own stacking context (backdrop
                   filters create one), so without an explicit z the DOM
                   order buried the suggestion list under it. */}
-              <div className="relative z-10">
+              <div id="guide-funnel" className="relative z-10 scroll-mt-24">
                 <Suspense fallback={<div className="text-sm text-ink-muted">Loading…</div>}>
                   <SellingGuideFunnel source="selling-guide-page" />
                 </Suspense>
@@ -388,6 +389,9 @@ export default function SellingGuidePage() {
       </section>
 
       <StickyGuideBar />
+      {/* Records the ?from=<page slug> a guide CTA adds to this link in the
+          attribution cookie, so the lead says which page sent it. */}
+      <GuideEntryCapture />
     </>
   );
 }

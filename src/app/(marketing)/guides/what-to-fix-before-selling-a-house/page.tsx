@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   EditorNote,
   PullQuote,
@@ -266,8 +265,6 @@ export default function WhatToFixBeforeSellingAHousePage() {
         covers what&rsquo;s checked and what reports cost in each state.
       </p>
 
-      <MatchCTA kind="builder" />
-
       <h2 id="cosmetic-wins">Cosmetic wins under $5,000</h2>
       <p>
         Once the scary stuff is fixed, presentation is where each dollar works
@@ -445,16 +442,14 @@ export default function WhatToFixBeforeSellingAHousePage() {
           landscape, clean.
         </li>
         <li>
-          <strong>Line up the right people.</strong> A vetted local agent and
-          trades you can trust, our{" "}
-          <Link href="/find-an-expert">find an expert</Link> service covers
-          both, and the{" "}
+          <strong>Line up the right people.</strong> A local agent who sells
+          in your area (our{" "}
+          <Link href="/find-an-expert">find an expert</Link> service introduces
+          one) and trades you can trust, and the{" "}
           <Link href="/guides/cost-of-selling-a-house-australia">cost of selling guide</Link>{" "}
           maps every other fee between here and settlement.
         </li>
       </ol>
-
-      <MatchCTA kind="selling-agent" />
 
       <Sources items={PRE_SALE_FIX_SOURCES} />
     </GuideArticleLayout>

@@ -145,8 +145,8 @@ export function RentalMarketSections({ suburb, slug, model: m, landlord }: { sub
       )}
 
       {/* Landlord intent ("rental appraisal {suburb}", "property managers
-          {suburb}") lands here: the rental appraisal request and the fee
-          table (commercial intent review 30 Sep 2026, section 3.1). */}
+          {suburb}") lands here: the selling-your-investment block and the
+          fee table (commercial intent review 30 Sep 2026, section 3.1). */}
       <RentalMarketLandlordSections suburb={suburb} landlord={landlord} />
 
       {/* Sale-appraisal searches ("{suburb} property appraisal") were landing

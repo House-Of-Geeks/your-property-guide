@@ -37,7 +37,7 @@ const PRINCIPLES = [
   {
     icon: "/images/icons/broker.svg",
     title: "Honest about money",
-    body: "You pay nothing. Your details go only to the one agent or specialist you're matched with, who pays us for the introduction. We say so on every match, and we never sell your details to anyone else.",
+    body: "You pay nothing. Your details go only to the one agent we introduce you to, who pays us for the introduction. We say so on every introduction, and we never sell your details to anyone else.",
   },
 ];
 
@@ -89,8 +89,8 @@ export default function AboutPage() {
             make. Most of the people explaining it have something to sell. We
             wrote this site because that&rsquo;s a problem. Sixty plain-English
             guides, every property calculator, suburb profiles for every
-            suburb in Australia, and one vetted specialist when you&rsquo;re
-            ready. Education first. No sign-up, no agenda.
+            suburb in Australia, and one local agent when you&rsquo;re ready
+            to sell. Education first. No sign-up, no agenda.
           </p>
         </div>
       </section>
@@ -174,19 +174,18 @@ export default function AboutPage() {
           </h2>
           <div className="prose-ypg">
             <p>
-              When you&rsquo;re ready to talk to a specialist, whether that&rsquo;s
-              an agent, broker, property accountant or conveyancer, we&rsquo;ll
-              match you with one person we&rsquo;d use ourselves. They pay us
-              a fee for the introduction. It&rsquo;s not a share of their
+              When you&rsquo;re ready to sell, we&rsquo;ll introduce you to one
+              local agent who sells in your area. If we don&rsquo;t have one
+              yet, we&rsquo;ll tell you. The agent pays us a fee for the
+              introduction. It&rsquo;s not a share of their
               commission, and they pay it whether or not you go ahead with
               them.
             </p>
             <p>
               That fee comes out of their pocket, not yours. It doesn&rsquo;t
               change what you pay: you agree any commission or fee directly
-              with them. We disclose this on every match. We never sell your
-              details, and we never pass them to a second agent or
-              specialist. We don&rsquo;t accept fees from anyone we
+              with them. We disclose this on every introduction. We never sell
+              your details, and we never pass them to a second agent. We don&rsquo;t accept fees from anyone we
               wouldn&rsquo;t use ourselves. And the data,
               guides, calculators and suburb profiles stay free regardless.
             </p>
@@ -227,9 +226,9 @@ export default function AboutPage() {
               </p>
               <p>
                 100% of our revenue comes from introduction fees paid by
-                partner agents, brokers, conveyancers, accountants and
-                builders. When you ask to be connected, your details go to one
-                of them only, and they pay us a fee for that introduction.
+                partner agents. When you ask to be connected with an agent,
+                your details go to one agent only, and they pay us a fee for
+                that introduction.
                 It&rsquo;s not a share of their commission, and it
                 doesn&rsquo;t depend on a sale or job going ahead. No
                 advertising. No paid placements in editorial. No fees from any
@@ -534,8 +533,8 @@ export default function AboutPage() {
             variant="rich"
             items={[
               { lead: "No paywall.", body: "Every page is free, and stays that way. No login, no email gate." },
-              { lead: "One match, no lists.", body: "Your details go only to the one agent or specialist you're matched with. We never sell them to anyone else." },
-              { lead: "Disclosed matches.", body: "The partner you're matched with pays us for the introduction. We say so on every match." },
+              { lead: "One agent, no lists.", body: "Your details go only to the one agent we introduce you to. We never sell them to anyone else." },
+              { lead: "Disclosed introductions.", body: "The agent we introduce you to pays us for the introduction. We say so every time." },
               { lead: "Vetted only.", body: "We don't take referrals from anyone we wouldn't use ourselves." },
             ]}
           />

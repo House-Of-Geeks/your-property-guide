@@ -51,7 +51,7 @@ export function HomeValueAppraisal() {
           Where&rsquo;s the house?
         </h2>
         <p className="text-sm text-ink-muted mb-5 max-w-lg">
-          We&rsquo;ll show you what houses in that suburb are selling for, then a local agent who sells there gives you a figure for yours. Free, no commitment to list.
+          We&rsquo;ll show you what houses in that suburb are selling for, then introduce you to one local agent who sells in your area for a figure on yours. If we don&rsquo;t have one yet, we&rsquo;ll tell you. Free, no commitment to list.
         </p>
         <SuburbAutocomplete
           placeholder="Suburb or postcode, e.g. Hawthorn or 3122"

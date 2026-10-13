@@ -3,9 +3,10 @@ import Link from "next/link";
 import { Calendar, Calculator as CalculatorIcon, ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BUYING_GUIDE_CTA, ExpertCTA, StickyMatchCTA } from "@/components/journey";
-import { Faq, type FaqItem, RelatedGuides, type RelatedGuide } from "@/components/guide";
+import { Faq, type FaqItem, GuideStartInline, RelatedGuides, type RelatedGuide } from "@/components/guide";
 import { BreadcrumbJsonLd, WebApplicationJsonLd } from "@/components/seo";
 import { PERSONA_BY_ID, type PersonaId } from "@/lib/constants/journey";
+import { guideAudienceForPersona, guideFunnelHref } from "@/lib/guide-funnel";
 
 export interface CalculatorPageFrontmatter {
   // Page-level metadata
@@ -48,6 +49,11 @@ export function CalculatorPageLayout({
 }: CalculatorPageLayoutProps) {
   const persona = frontmatter.persona ? PERSONA_BY_ID[frontmatter.persona] : null;
   const pageUrl = `/${frontmatter.slug}`;
+  const funnelHref = guideFunnelHref(intent, { from: frontmatter.slug });
+  // Seller calculators (commission, selling costs) start the selling-guide
+  // funnel right under the result, where the reader has just seen what
+  // selling will cost them.
+  const sellerCalculator = guideAudienceForPersona(frontmatter.persona) === "selling";
 
   return (
     <>
@@ -123,6 +129,7 @@ export function CalculatorPageLayout({
       <section className="bg-surface-raised">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
           {calculator}
+          {sellerCalculator && <GuideStartInline from={frontmatter.slug} className="mt-10" />}
         </div>
       </section>
 
@@ -169,6 +176,7 @@ export function CalculatorPageLayout({
               <ExpertCTA
                 variant="inline"
                 {...(intent === "buying" ? BUYING_GUIDE_CTA : {})}
+                href={funnelHref}
               />
 
               <Faq items={faqs} title="Common questions" />
@@ -194,7 +202,7 @@ export function CalculatorPageLayout({
             : undefined
         }
         label={intent === "buying" ? "Get the free buying guide" : undefined}
-        href={intent === "buying" ? "/buying-guide" : undefined}
+        href={funnelHref}
         dismissKey={`calc:${frontmatter.slug}`}
       />
     </>

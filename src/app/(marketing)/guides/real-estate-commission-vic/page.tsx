@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   SellingCostTable,
   CommissionCalculatorEmbed,
@@ -284,8 +283,6 @@ export default function RealEstateCommissionVicPage() {
         </li>
       </ol>
 
-      <MatchCTA kind="selling-agent" />
-
       <h2 id="other-costs">Commission vs the rest of your selling costs</h2>
       <p>
         Commission is the largest cost of selling in Victoria, but it is not the
@@ -333,8 +330,6 @@ export default function RealEstateCommissionVicPage() {
           personalised to your suburb.
         </li>
       </ol>
-
-      <MatchCTA kind="selling-agent" />
 
       <Sources items={VIC_COMMISSION_SOURCES} />
     </GuideArticleLayout>

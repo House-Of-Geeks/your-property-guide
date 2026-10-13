@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   EditorNote,
   PullQuote,
@@ -283,8 +282,6 @@ export default function HowToSellAHouseAustraliaPage() {
         <li>Read the listing agreement carefully: exclusive period, marketing commitment, tail clause length, termination terms.</li>
       </ul>
 
-      <MatchCTA kind="selling-agent" />
-
       <h2 id="auction-vs-treaty">Auction vs private treaty</h2>
       <p>
         The two main sale methods in Australia. Each has clear use cases.
@@ -450,8 +447,6 @@ export default function HowToSellAHouseAustraliaPage() {
         you&rsquo;ve claimed depreciation. Our <Link href="/cgt-calculator">CGT calculator</Link> gives you a
         rough estimate.
       </p>
-
-      <MatchCTA kind="accountant" />
 
       <Sources items={SELLING_HOUSE_SOURCES} />
     </GuideArticleLayout>

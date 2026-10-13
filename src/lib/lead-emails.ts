@@ -303,10 +303,12 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
         next: "A property manager who works in your suburb will be in touch within one business day to arrange it. They will give you a rent figure and their fee schedule; there is no commitment until you decide to appoint them.",
       };
     case "match-request":
+      // Only what exists: one local agent for a seller, a pointer to the
+      // right next step for anyone else. No profile email (directory paused).
       return {
-        subject: "We're matching you with a specialist",
+        subject: "Your request is in",
         intro: `Thanks ${firstName}. Your request is in.`,
-        next: `We'll match you with one vetted specialist for ${suburb}. Expect an email with their profile within one business day, before they reach out.`,
+        next: `Our team will be in touch within one business day. If you're selling, we'll introduce you to one local agent who sells in ${suburb}; if we don't have one there yet, we'll tell you.`,
       };
     case "suburb-alert":
       return {

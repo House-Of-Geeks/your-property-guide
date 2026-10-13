@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   EditorNote,
   PullQuote,
@@ -268,8 +267,6 @@ export default function AuctionVsPrivateTreatyPage() {
         <Link href="/guides/cost-of-selling-a-house-australia">cost of selling guide</Link>.
       </p>
 
-      <MatchCTA kind="selling-agent" />
-
       <h2 id="clearance-rates">Clearance rates in 2026</h2>
       <p>
         The auction clearance rate is the share of auctioned properties that
@@ -532,8 +529,6 @@ export default function AuctionVsPrivateTreatyPage() {
           commitment to list.
         </p>
       </Callout>
-
-      <MatchCTA kind="selling-agent" />
 
       <Sources items={AUCTION_VS_TREATY_SOURCES} />
     </GuideArticleLayout>

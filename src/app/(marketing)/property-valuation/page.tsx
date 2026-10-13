@@ -369,9 +369,9 @@ export default function PropertyValuationPage() {
                 <p>
                   An appraisal is the number that matters when you are deciding whether to sell, because it comes from
                   someone who watches buyers in your street every week and can show you the sales behind it. Tell us
-                  where the property is and we match you with one vetted agent who sells there. They contact you within
-                  one business day, inspect, and give you a figure or a range in writing. There is no commitment to
-                  list, with them or with anyone.
+                  where the property is and we introduce you to one local agent who sells in your area. If we don&rsquo;t
+                  have one yet, we&rsquo;ll tell you. Our team will call you within one business day; the agent inspects
+                  and gives you a figure or a range in writing. There is no commitment to list, with them or with anyone.
                 </p>
                 <p>
                   Not ready for an agent yet? Read{" "}

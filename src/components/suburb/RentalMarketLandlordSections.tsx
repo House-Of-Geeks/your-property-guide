@@ -1,12 +1,15 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import type { Suburb } from "@/types/suburb";
 import { FEE_SOURCES, STATE_FEES, formatPct, formatPctRange, formatWeeksOfRent, type LandlordModel } from "@/lib/rental-landlord";
-import { RentalAppraisalForm } from "./RentalAppraisalForm";
+import { guideFunnelHref } from "@/lib/guide-funnel";
 
 /**
  * The landlord blocks of the rental-market sub-page (commercial intent review
- * 30 Sep 2026, section 3.1): the rental appraisal request and what property
- * managers charge in the suburb's state. Rendered on every rental-market
+ * 30 Sep 2026, section 3.1): a route into the selling guide for owners
+ * thinking of selling, and what property managers charge in the suburb's
+ * state. (The rental appraisal request is gone: no property manager is
+ * contracted to take it. RentalAppraisalForm stays for if one is.) Rendered on every rental-market
  * page, with or without rental data; the worked line prints only where the
  * model found a rent whose source it can name. Copy that follows an
  * expression is written as a string so the Turbopack build keeps its
@@ -17,23 +20,32 @@ export function RentalMarketLandlordSections({ suburb, landlord }: { suburb: Sub
   const ancillarySources = [...new Map(ancillary.map((f) => [f.source.label, f.source])).values()];
   return (
     <>
-      <section id="rental-appraisal" className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+      {/* Owners. The rental appraisal form that sat here promised a call
+          from a property manager, and no property manager takes our
+          referrals, so the block now serves the owner we can help: one
+          weighing up a sale, the most common reason sellers come to us. */}
+      <section id="selling-an-investment" className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
         <div className="lg:col-span-2">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">Landlords</p>
-          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-4">
-            Get a rental appraisal for your {suburb.name} property.
+          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">Owners</p>
+          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight">
+            Thinking of selling your investment?
           </h2>
-          <p className="font-sans text-base text-ink-muted leading-relaxed">
-            {`A rental appraisal tells you what your property should let for in ${suburb.name} today, from recent comparable lettings rather than the suburb median. One local property manager receives your request and calls to arrange it; there is no charge and no obligation to appoint them.`}
-          </p>
-          <ul className="mt-5 space-y-2 font-sans text-sm text-ink-muted">
-            <li className="flex gap-2"><span className="text-cta" aria-hidden="true">•</span>A weekly rent range for your property, in writing.</li>
-            <li className="flex gap-2"><span className="text-cta" aria-hidden="true">•</span>Their management and letting fees, so you can check them against the table below.</li>
-            <li className="flex gap-2"><span className="text-cta" aria-hidden="true">•</span>Suits an owner with a tenant in place, a vacant property, or one still being bought.</li>
-          </ul>
         </div>
-        <div className="lg:col-span-3">
-          <RentalAppraisalForm suburbName={suburb.name} suburbSlug={suburb.slug} state={suburb.state} postcode={suburb.postcode} />
+        <div className="lg:col-span-3 rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
+          <p className="font-sans text-base text-ink-muted leading-relaxed">
+            {`The free selling guide covers what selling really costs, capital gains tax included, how to choose an agent, and how to time the sale. Personalised to ${suburb.name}, in your inbox in 60 seconds.`}
+          </p>
+          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <Link
+              href={guideFunnelHref("selling", { suburb: suburb.slug, from: "rental-market", toForm: true })}
+              className="inline-flex items-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3 text-sm transition-colors"
+            >
+              Get the free selling guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
+            <Link href="/guides/selling-a-house-with-tenants" className="font-sans text-sm text-ink underline underline-offset-4 decoration-line-strong hover:text-primary hover:decoration-primary transition-colors">
+              Selling with a tenant in place
+            </Link>
+          </div>
         </div>
       </section>
 

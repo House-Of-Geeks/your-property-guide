@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   attributionEmailRows,
+  entryFromLanding,
   leadGclid,
   parseAttribution,
   serializeAttribution,
@@ -98,6 +99,63 @@ describe("updateAttribution", () => {
     const existing: AttributionState = { first: { at: T1 } };
     const s = updateAttribution(existing, "https://x.test/?utm_source=newsletter&utm_medium=email", "", T2);
     expect(s?.last?.utm_source).toBe("newsletter");
+  });
+});
+
+describe("guide entry (?from=)", () => {
+  const COMMISSION = "https://x.test/selling-guide?suburb=paddington-qld-4064&from=real-estate-commission-qld";
+
+  it("reads the page slug a guide CTA adds, lowercased; ignores anything that is not a slug", () => {
+    expect(entryFromLanding(COMMISSION, T1)).toEqual({
+      from: "real-estate-commission-qld",
+      landing_page: "/selling-guide?suburb=paddington-qld-4064&from=real-estate-commission-qld",
+      at: T1,
+    });
+    expect(entryFromLanding("https://x.test/selling-guide?from=Cost-Of-Selling", T1)?.from).toBe("cost-of-selling");
+    expect(entryFromLanding("https://x.test/selling-guide", T1)).toBeNull();
+    expect(entryFromLanding("https://x.test/selling-guide?from=%3Cscript%3E", T1)).toBeNull();
+    expect(entryFromLanding(`https://x.test/selling-guide?from=${"a".repeat(101)}`, T1)).toBeNull();
+  });
+
+  it("records the entry on a returning visitor without touching first, last or the Google click", () => {
+    const existing: AttributionState = {
+      first: { at: T1, landing_page: "/guides/real-estate-commission-qld", referrer: "https://www.bing.com/" },
+      google: { at: T1, gclid: "G1" },
+    };
+    const s = updateAttribution(existing, COMMISSION, "https://www.bing.com/", T2);
+    expect(s?.first).toEqual(existing.first);
+    expect(s?.google).toEqual(existing.google);
+    expect(s?.last).toBeUndefined();
+    expect(s?.entry).toMatchObject({ from: "real-estate-commission-qld", at: T2 });
+  });
+
+  it("a reload of the same entry changes nothing; a later CTA replaces it", () => {
+    const s1 = updateAttribution({ first: { at: T1 } }, COMMISSION, "", T1)!;
+    expect(updateAttribution(s1, COMMISSION, "", T2)).toBeNull();
+    const s2 = updateAttribution(s1, "https://x.test/buying-guide?from=stamp-duty-nsw", "", T2);
+    expect(s2?.entry).toMatchObject({ from: "stamp-duty-nsw", landing_page: "/buying-guide?from=stamp-duty-nsw", at: T2 });
+  });
+
+  it("keeps the entry when a later ad click lands", () => {
+    const s1 = updateAttribution({ first: { at: T1 } }, COMMISSION, "", T1)!;
+    const s2 = updateAttribution(s1, "https://x.test/?gclid=G2", "", T2);
+    expect(s2?.last?.gclid).toBe("G2");
+    expect(s2?.entry?.from).toBe("real-estate-commission-qld");
+  });
+
+  it("survives the cookie round trip, and a tampered entry is dropped", () => {
+    const state = updateAttribution(null, COMMISSION, "", T1)!;
+    expect(parseAttribution(serializeAttribution(state))).toEqual(state);
+    const raw = encodeURIComponent(JSON.stringify({ first: { at: T1 }, entry: { from: "<b>", landing_page: "/", at: T1 } }));
+    expect(parseAttribution(raw)).toEqual({ first: { at: T1 } });
+  });
+
+  it("is the first row after the submit page in the team email", () => {
+    const rows = attributionEmailRows(
+      { first: { at: T1 }, entry: { from: "real-estate-agent-fees-australia", landing_page: "/selling-guide?from=real-estate-agent-fees-australia", at: T2 } },
+      "/selling-guide?from=real-estate-agent-fees-australia",
+    );
+    expect(rows[1]).toEqual(["Guide CTA clicked on", "real-estate-agent-fees-australia"]);
   });
 });
 

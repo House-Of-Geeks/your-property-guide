@@ -16,6 +16,7 @@ export { GuideGlossaryRail } from "./GuideGlossaryRail";
 export { GlossaryLink } from "./GlossaryLink";
 export { ReadingProgressBar } from "./ReadingProgressBar";
 export { MatchCTA } from "./MatchCTA";
+export { GuideStartInline } from "./GuideStartInline";
 export { Sources } from "./Sources";
 export { PullQuote } from "./PullQuote";
 export { EditorNote } from "./EditorNote";

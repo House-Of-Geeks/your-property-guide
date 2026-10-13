@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { guideFunnelHref, type GuideAudience } from "@/lib/guide-funnel";
+import { useGuidePage } from "./GuideAudienceContext";
 
 // In-content guide CTA. Sits inline mid-article at natural decision points
 // (after the "How to interview agents" section in a selling guide, after
@@ -7,11 +11,12 @@ import { ArrowRight } from "lucide-react";
 // distinct enough to be a CTA, restrained enough not to feel like an
 // interstitial ad.
 //
-// Since the June 2026 lead-gen pivot every kind pushes the selling-guide
-// funnel (the site's single conversion point) with a contextual lead, so
-// a buyer reading the LMI guide and a vendor reading the agent-fees guide
-// each get a line that makes sense where they are. `kind` picks the copy;
-// authors can override any piece via the explicit props.
+// Routes by the page's audience: buyer-persona guides push the buying
+// guide, everything else the selling guide (the site's main conversion
+// point). GuideArticleLayout supplies the audience and the page slug from
+// the guide's frontmatter, so a call site only names the kind; `kind` picks
+// the copy for that audience, and authors can override any piece via the
+// explicit props.
 
 export type MatchCTAKind =
   | "selling-agent"
@@ -21,7 +26,9 @@ export type MatchCTAKind =
   | "builder"
   | "accountant";
 
-const KIND_DEFAULTS: Record<MatchCTAKind, { lead: string; ctaLabel: string }> = {
+type KindCopy = { lead: string; ctaLabel: string };
+
+const SELLING_KIND_DEFAULTS: Record<MatchCTAKind, KindCopy> = {
   "selling-agent": {
     lead:     "Choosing an agent soon? The free selling guide has the 10 questions that catch bad agents out, plus fee benchmarks for your state.",
     ctaLabel: "Get the free selling guide",
@@ -48,6 +55,34 @@ const KIND_DEFAULTS: Record<MatchCTAKind, { lead: string; ctaLabel: string }> = 
   },
 };
 
+// Copy drawn from the /buying-guide chapter list.
+const BUYING_KIND_DEFAULTS: Record<MatchCTAKind, KindCopy> = {
+  "selling-agent": {
+    lead:     "Buying as well as selling? The free buying guide covers what you can really spend, how not to overpay, and the contract through to settlement.",
+    ctaLabel: "Get the free buying guide",
+  },
+  "mortgage-broker": {
+    lead:     "Working out what you can borrow? The free buying guide covers borrowing power, the lender buffer, deposits and LMI, plus the 2026 schemes state by state.",
+    ctaLabel: "Get the free buying guide",
+  },
+  "buyers-agent": {
+    lead:     "Inspecting and getting ready to offer? The free buying guide covers how to inspect like a professional, how the selling side plays you, and making the offer.",
+    ctaLabel: "Get the free buying guide",
+  },
+  conveyancer: {
+    lead:     "Contract on the way? The free buying guide covers conveyancing, cooling-off by state and settlement day.",
+    ctaLabel: "Get the free buying guide",
+  },
+  builder: {
+    lead:     "Buying with renovation in mind? The free buying guide covers what you can really spend and the building and pest checks to run before you offer.",
+    ctaLabel: "Get the free buying guide",
+  },
+  accountant: {
+    lead:     "Buying an investment property? The free buying guide covers what you can really spend, investor lending and the true upfront costs.",
+    ctaLabel: "Get the free buying guide",
+  },
+};
+
 interface MatchCTAProps {
   /** Picks default copy. Required unless every field below is overridden. */
   kind?: MatchCTAKind;
@@ -59,13 +94,17 @@ interface MatchCTAProps {
   intent?: string;
   /** Override the destination href entirely. */
   href?: string;
+  /** Which guide to push. Defaults to the page's audience, else selling. */
+  audience?: GuideAudience;
 }
 
-export function MatchCTA({ kind, lead, ctaLabel, href }: MatchCTAProps) {
-  const defaults = kind ? KIND_DEFAULTS[kind] : null;
+export function MatchCTA({ kind, lead, ctaLabel, href, audience: audienceProp }: MatchCTAProps) {
+  const page = useGuidePage();
+  const audience = audienceProp ?? page.audience ?? "selling";
+  const defaults = kind ? (audience === "buying" ? BUYING_KIND_DEFAULTS : SELLING_KIND_DEFAULTS)[kind] : null;
   const resolvedLead  = lead     ?? defaults?.lead     ?? "Want the complete picture before your next step?";
-  const resolvedLabel = ctaLabel ?? defaults?.ctaLabel ?? "Get the free selling guide";
-  const resolvedHref  = href ?? "/selling-guide";
+  const resolvedLabel = ctaLabel ?? defaults?.ctaLabel ?? `Get the free ${audience} guide`;
+  const resolvedHref  = href ?? guideFunnelHref(audience, { from: page.from });
 
   return (
     <aside className="my-8 rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-7">
