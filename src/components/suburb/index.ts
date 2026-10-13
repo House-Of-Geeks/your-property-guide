@@ -1,6 +1,8 @@
 export { SuburbHero, SuburbStats } from "./SuburbHero";
 export { SuburbSnapshot } from "./SuburbSnapshot";
-export { SuburbSubrouteHeader, getSuburbListingTabs } from "./SuburbSubrouteHeader";
+export { SuburbSubrouteHeader, SubrouteActionCard, getSuburbListingTabs } from "./SuburbSubrouteHeader";
+export { SubpageNextSteps } from "./SubpageNextSteps";
+export type { NextStepGroup, NextStepLink } from "./SubpageNextSteps";
 export type { SuburbSubrouteTab, SuburbListingTab } from "./SuburbSubrouteHeader";
 export { SectionDivider } from "./SectionDivider";
 export { SuburbSchools } from "./SuburbSchools";

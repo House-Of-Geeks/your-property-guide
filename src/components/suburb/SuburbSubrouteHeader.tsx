@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { SuburbMatchButton } from "./SuburbMatchButton";
+import { guideFunnelHref } from "@/lib/guide-funnel";
 import { subpageTabs, type SubpageAvailability, type SubpageTab, type SuburbSubpage } from "@/lib/suburb-subpages";
 
 export type SuburbSubrouteTab = SubpageTab;
@@ -23,115 +23,154 @@ export function getSuburbListingTabs(
 
 interface SuburbSubrouteHeaderProps {
   suburb: { name: string; slug: string; state: string; postcode: string };
-  // Eyebrow above the H1, e.g. "Listings in", "Schools in", "Rental market in".
-  eyebrow: string;
-  // The H1.
+  /**
+   * Kept for the listing sub-pages that still pass it ("Listings in").
+   * Not drawn: the H1 says what the page is, and the location line under
+   * the breadcrumbs says where.
+   */
+  eyebrow?: string;
+  /** The H1. Say the query: "Frankston rental market", "Schools in Frankston". */
   title: React.ReactNode;
-  // Subtitle line below H1, optional.
+  /** The answer: one or two sentences with the figure people searched for, and its source. */
   subtitle?: React.ReactNode;
-  // Optional final breadcrumb leaf label (e.g. "Houses for Sale"). When set,
-  // breadcrumbs render Suburbs > {suburb name} > {leaf}.
+  /** Optional final breadcrumb leaf label (e.g. "Houses for Sale"). */
   breadcrumbLeaf?: string;
-  // Optional tab strip across the bottom of the header. Drawn from two tabs:
-  // the page being read alone is not navigation (the profile link above is).
+  /** Sibling sub-pages. Drawn from two tabs: the page being read alone is not navigation. */
   tabs?: readonly SuburbSubrouteTab[];
+  /** Key figures under the answer, left column. */
+  children?: React.ReactNode;
+  /**
+   * The page's one action, beside the answer on desktop and straight after
+   * it on a phone. Defaults to the selling guide with the suburb answered;
+   * pass null for none (a page whose form sits right below the header).
+   */
+  action?: React.ReactNode | null;
+  /** Recorded with a lead from the default action (?from=). */
+  from?: string;
 }
 
-// Shared editorial header for any sub-page under /suburbs/[slug]. Carries the
-// suburb-page visual language down through the children: warm-cream surface,
-// faint contour SVG behind the copy, Playfair display H1, optional tab strip
-// of sibling sub-routes for fast switching.
-
+/**
+ * Shared header for the sub-pages under /suburbs/[slug]. Answer first: the
+ * H1 names the query, the subtitle answers it with a sourced figure, and the
+ * one action sits beside it. Kept short so the answer and the action fit a
+ * phone's first screen (brand v4: white page, quiet band, one roof-tile
+ * button, lines not shadows).
+ */
 export function SuburbSubrouteHeader({
   suburb,
-  eyebrow,
   title,
   subtitle,
   breadcrumbLeaf,
   tabs,
+  children,
+  action,
+  from,
 }: SuburbSubrouteHeaderProps) {
+  const act =
+    action === undefined ? (
+      <Link
+        href={guideFunnelHref("selling", { suburb: suburb.slug, from })}
+        className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors"
+      >
+        Selling in {suburb.name}? Get the free guide
+        <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+      </Link>
+    ) : (
+      action
+    );
+
   return (
-    <section className="relative bg-surface-warm border-b border-line overflow-hidden">
+    <section className="bg-surface-warm border-b border-line">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4">
+        <Breadcrumbs
+          items={[
+            { label: "Suburbs", href: "/suburbs" },
+            { label: suburb.name, href: `/suburbs/${suburb.slug}` },
+            ...(breadcrumbLeaf ? [{ label: breadcrumbLeaf }] : []),
+          ]}
+        />
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-        <div className="mb-8">
-          <Breadcrumbs
-            items={[
-              { label: "Suburbs", href: "/suburbs" },
-              { label: suburb.name, href: `/suburbs/${suburb.slug}` },
-              ...(breadcrumbLeaf ? [{ label: breadcrumbLeaf }] : []),
-            ]}
-          />
-        </div>
-
-        <div className="grid lg:grid-cols-12 gap-6 items-end">
-          <div className="lg:col-span-9">
-            <div className="flex items-center gap-4 mb-6 flex-wrap">
-              <span className="text-sm font-semibold text-ink-muted leading-none">
-                {eyebrow}
-              </span>
-              <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-              <span className="text-[13px] text-ink-subtle font-sans font-medium">
-                {suburb.name} {suburb.state} {suburb.postcode}
-              </span>
-            </div>
-            <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold max-w-[20ch]">
+        <div className={`grid gap-6 lg:gap-12 pt-3 pb-8 sm:pb-10 ${act ? "lg:grid-cols-12 lg:items-start" : ""}`}>
+          <div className={act ? "lg:col-span-7 xl:col-span-7" : "max-w-4xl"}>
+            <h1 className="font-display text-ink font-bold leading-[1.05] tracking-[-0.03em] text-[2rem] sm:text-5xl lg:text-[3.25rem] text-balance">
               {title}
             </h1>
             {subtitle && (
-              <p className="font-display font-normal text-lg sm:text-xl text-ink leading-snug max-w-2xl mt-5">
+              <div className="mt-4 font-sans text-base sm:text-lg text-ink leading-relaxed max-w-2xl">
                 {subtitle}
-              </p>
+              </div>
             )}
+            {children && <div className="mt-6">{children}</div>}
           </div>
-          <div className="lg:col-span-3 lg:text-right space-y-3">
-            {/* Above-the-fold guide CTA. Same button as the main suburb-page
-                hero, deep-links the selling-guide funnel with this suburb
-                pre-answered. Visitors landing on a listings sub-page from
-                Google ("[suburb] houses for sale" etc.) are mid-decision;
-                give them a one-click path into the funnel. */}
-            <div className="lg:flex lg:justify-end">
-              <SuburbMatchButton suburbSlug={suburb.slug} suburbName={suburb.name} />
-            </div>
-            <Link
-              href={`/suburbs/${suburb.slug}`}
-              className="inline-flex items-center gap-1 text-sm font-medium text-ink hover:text-primary transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              {suburb.name} profile
-            </Link>
-          </div>
+          {act && <div className="lg:col-span-5 xl:col-span-5 lg:pt-1">{act}</div>}
         </div>
 
-        {tabs && tabs.length > 1 && (
-          <nav
-            aria-label={`${suburb.name} sub-pages`}
-            className="mt-8 -mb-2 overflow-x-auto"
-          >
-            <ol className="flex gap-2 min-w-max">
-              {tabs.map((tab) => {
+        <nav
+          aria-label={`${suburb.name} pages`}
+          className="-mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto border-t border-line"
+        >
+          <ol className="flex items-center gap-6 min-w-max text-sm">
+            <li>
+              <Link
+                href={`/suburbs/${suburb.slug}`}
+                className="inline-flex items-center gap-1.5 py-3 font-medium text-ink hover:text-primary transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+                {suburb.name} profile
+              </Link>
+            </li>
+            {tabs && tabs.length > 1 &&
+              tabs.map((tab) => {
                 const isActive = tab.active === true;
                 return (
                   <li key={tab.href}>
                     <Link
                       href={tab.href}
                       aria-current={isActive ? "page" : undefined}
-                      className={`
-                        inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition-colors
-                        ${isActive
-                          ? "bg-ink text-white"
-                          : "bg-surface-raised border border-line-strong text-ink-muted hover:border-ink hover:text-ink"}
-                      `}
+                      className={`inline-flex py-3 border-b-2 transition-colors ${
+                        isActive
+                          ? "border-ink text-ink font-semibold"
+                          : "border-transparent text-ink-muted hover:text-ink"
+                      }`}
                     >
                       {tab.label}
                     </Link>
                   </li>
                 );
               })}
-            </ol>
-          </nav>
-        )}
+          </ol>
+        </nav>
       </div>
     </section>
+  );
+}
+
+interface SubrouteActionCardProps {
+  heading: string;
+  body?: React.ReactNode;
+  href: string;
+  cta: string;
+  /** Secondary links under the button: text links, never a second button. */
+  children?: React.ReactNode;
+  /** Small print, e.g. the fee disclosure. */
+  note?: React.ReactNode;
+}
+
+/** The one action of a sub-page, as a card beside the answer. */
+export function SubrouteActionCard({ heading, body, href, cta, children, note }: SubrouteActionCardProps) {
+  return (
+    <div className="rounded-xl border border-line bg-white p-5 sm:p-6">
+      <h2 className="font-display text-lg sm:text-xl font-bold text-ink leading-snug tracking-tight">{heading}</h2>
+      {body && <div className="mt-1.5 font-sans text-sm sm:text-[15px] text-ink-muted leading-relaxed">{body}</div>}
+      <Link
+        href={href}
+        className="mt-4 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors"
+      >
+        {cta}
+        <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+      </Link>
+      {children && <div className="mt-4 font-sans text-sm text-ink-muted leading-relaxed">{children}</div>}
+      {note && <p className="mt-3 font-sans text-xs text-ink-subtle leading-relaxed">{note}</p>}
+    </div>
   );
 }
