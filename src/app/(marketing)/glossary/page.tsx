@@ -42,22 +42,23 @@ export default function GlossaryPage() {
         </header>
       </div>
 
-      {/* Alphabet: stays under the header while you scroll the list. */}
-      <nav aria-label="Glossary letters" className="sticky top-16 sm:top-[72px] z-20 border-y border-line bg-white/95 backdrop-blur">
+      {/* Alphabet: two rows on phones; one row that stays under the header
+          from tablet up. */}
+      <nav aria-label="Glossary letters" className="sm:sticky sm:top-[72px] z-20 border-y border-line bg-white/95 backdrop-blur">
         <div className="mx-auto w-full max-w-[64rem] px-4 sm:px-6">
-          <ul className="flex gap-0.5 overflow-x-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <ul className="grid grid-cols-[repeat(13,minmax(0,1fr))] sm:flex sm:gap-0.5 py-2">
             {alphabet.map((letter) =>
               LETTERS.has(letter) ? (
                 <li key={letter}>
                   <a
                     href={`#section-${letter}`}
-                    className="flex h-9 w-8 items-center justify-center rounded-md text-sm font-semibold text-ink hover:bg-surface-warm"
+                    className="flex h-9 sm:w-8 items-center justify-center rounded-md text-sm font-semibold text-ink hover:bg-surface-warm"
                   >
                     {letter}
                   </a>
                 </li>
               ) : (
-                <li key={letter} aria-hidden="true" className="flex h-9 w-8 items-center justify-center text-sm text-line-strong">
+                <li key={letter} aria-hidden="true" className="flex h-9 sm:w-8 items-center justify-center text-sm text-line-strong">
                   {letter}
                 </li>
               ),

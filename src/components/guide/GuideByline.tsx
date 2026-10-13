@@ -88,17 +88,21 @@ export function GuideByline({ author, reviewer, updatedAt, publishedAt, readingM
       )}
       <div className="min-w-0 text-sm leading-relaxed">
         <p className="text-ink">{lead}</p>
-        <p className="text-ink-muted">
-          {meta.map((m, i) => (
-            <span key={i}>
-              {i > 0 && " "}
-              <span className="whitespace-nowrap">
-                {i > 0 && <span aria-hidden="true" className="pr-1.5 text-line-strong">·</span>}
+        {/* Items wrap whole. The separator sits in a gutter left of each
+            item, and the gutter of whichever item starts a line is clipped,
+            so no line begins with a dot. */}
+        <div className="overflow-hidden">
+          <p className="-ml-3 flex flex-wrap text-ink-muted">
+            {meta.map((m, i) => (
+              <span
+                key={i}
+                className="[&:not(:first-child)]:whitespace-nowrap before:inline-block before:w-3 before:text-center before:text-line-strong before:content-['·']"
+              >
                 {m}
               </span>
-            </span>
-          ))}
-        </p>
+            ))}
+          </p>
+        </div>
         <p className="text-ink-muted">
           <Link href={METHODOLOGY_HREF} className="underline decoration-line-strong underline-offset-4 hover:text-ink hover:decoration-ink">
             How we keep this accurate
