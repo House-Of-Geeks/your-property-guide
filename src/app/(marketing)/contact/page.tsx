@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { Phone, Mail, Clock, ArrowRight } from "lucide-react";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
@@ -62,19 +61,6 @@ export default function ContactPage() {
                 Want to partner? Drop us a line, we&rsquo;ll respond within one
                 business day.
               </p>
-            </div>
-            <div className="lg:col-span-5">
-              <div className="rounded-2xl border border-line-warm bg-surface-raised shadow-card overflow-hidden">
-                <Image
-                  src="/images/illustrations/expert-match.svg"
-                  alt=""
-                  aria-hidden="true"
-                  width={320}
-                  height={220}
-                  className="w-full h-auto"
-                  priority
-                />
-              </div>
             </div>
           </div>
         </div>

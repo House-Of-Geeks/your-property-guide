@@ -78,19 +78,6 @@ export default function GuidesHubPage() {
               </p>
             </div>
 
-            <div className="lg:col-span-4">
-              <div className="rounded-2xl border border-line-warm bg-surface-raised shadow-card overflow-hidden">
-                <Image
-                  src="/images/illustrations/guides-hero.svg"
-                  alt=""
-                  aria-hidden="true"
-                  width={320}
-                  height={220}
-                  className="w-full h-auto"
-                  priority
-                />
-              </div>
-            </div>
           </div>
 
           {/* Stat anchor row: the headline count by section, each a jump link */}

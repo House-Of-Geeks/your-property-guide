@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 import { MatchAgentEmbed, TrustStrip } from "@/components/journey";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -168,19 +167,6 @@ export default function FindAnExpertPage() {
               />
             </div>
 
-            <div className="lg:col-span-5">
-              <div className="rounded-2xl border border-line-warm bg-surface-raised shadow-card overflow-hidden">
-                <Image
-                  src="/images/illustrations/expert-match.svg"
-                  alt=""
-                  aria-hidden="true"
-                  width={320}
-                  height={220}
-                  className="w-full h-auto"
-                  priority
-                />
-              </div>
-            </div>
           </div>
         </div>
       </section>

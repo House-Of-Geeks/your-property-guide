@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Suspense } from "react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
@@ -53,19 +52,6 @@ export default function SuburbsPage({ searchParams }: PageProps) {
               </p>
             </div>
 
-            <div className="lg:col-span-5">
-              <div className="rounded-2xl border border-line-warm bg-surface-raised shadow-card overflow-hidden">
-                <Image
-                  src="/images/illustrations/suburb-data.svg"
-                  alt=""
-                  aria-hidden="true"
-                  width={320}
-                  height={220}
-                  className="w-full h-auto"
-                  priority
-                />
-              </div>
-            </div>
           </div>
 
           <div className="mt-12 flex flex-wrap gap-x-10 gap-y-6">

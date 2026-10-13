@@ -459,14 +459,6 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
                 href={p.hubPath}
                 className="group inline-flex items-center gap-3 rounded-md border border-line-strong px-5 py-3 text-sm font-medium text-ink hover:bg-surface-warm hover:border-ink transition-colors"
               >
-                <Image
-                  src={p.illustration}
-                  alt=""
-                  aria-hidden="true"
-                  width={48}
-                  height={32}
-                  className="w-12 h-8 object-contain"
-                />
                 {p.cardLabel}
                 <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
               </Link>

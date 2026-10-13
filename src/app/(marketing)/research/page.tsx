@@ -224,14 +224,6 @@ export default function ResearchPage() {
                 and plain-English guides. All free. No login.
               </p>
             </div>
-            <Image
-              src="/images/illustrations/suburb-data.svg"
-              alt=""
-              width={320}
-              height={220}
-              aria-hidden="true"
-              className="hidden lg:block w-[280px] h-auto opacity-90"
-            />
           </div>
         </div>
       </section>

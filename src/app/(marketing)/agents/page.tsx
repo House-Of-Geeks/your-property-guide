@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Suspense } from "react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -61,14 +60,6 @@ export default function AgentsPage({ searchParams }: AgentsPageProps) {
                 <AgentSearch />
               </div>
             </div>
-            <Image
-              src="/images/illustrations/expert-match.svg"
-              alt=""
-              width={320}
-              height={220}
-              aria-hidden="true"
-              className="hidden lg:block w-[280px] h-auto opacity-90"
-            />
           </div>
         </div>
       </section>
