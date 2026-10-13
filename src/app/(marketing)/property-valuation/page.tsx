@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
 import { CheckCircle } from "lucide-react";
+import { FaqAccordion } from "@/components/guide";
 import { AppraisalForm } from "@/components/forms/AppraisalForm";
 import { SuburbValueRange } from "@/components/journey/SuburbValueRange";
 import { Breadcrumbs } from "@/components/layout";
@@ -118,7 +119,8 @@ const WEBPAGE_JSON_LD = {
   isAccessibleForFree: true,
 };
 
-const linkClass = "text-ink hover:text-primary underline underline-offset-4 decoration-line-strong";
+const linkClass = "text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink";
+const h2Class = "font-display text-ink tracking-[-0.02em] text-[1.75rem] sm:text-4xl leading-tight font-bold mb-5";
 
 export default function PropertyValuationPage() {
   return (
@@ -127,49 +129,40 @@ export default function PropertyValuationPage() {
       <JsonLd data={WEBPAGE_JSON_LD} />
       <FAQPageJsonLd faqs={FAQS} />
 
+      {/* Answer first: the H1, the three numbers in one paragraph, then the
+          one action (the free appraisal form, further down; its link sits on
+          the first screen on phones). The suburb range sits beside the
+          answer on desktop and under it on phones; a suburb picked there
+          fills the appraisal form (?suburb=&type=). */}
       <section className="bg-surface-warm border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-10 sm:pb-16">
+          <div className="mb-4 sm:mb-8">
             <Breadcrumbs items={[{ label: "Property valuation" }]} />
           </div>
-          <div className="grid lg:grid-cols-12 gap-10 items-start">
+          <div className="grid lg:grid-cols-12 gap-x-12 gap-y-8 items-start">
             <div className="lg:col-span-7">
-              <div className="flex items-center gap-4 mb-6">
-                <span className="text-sm font-semibold text-ink-muted leading-none">Three numbers, one house</span>
-                <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-                <span className="text-[13px] text-ink-subtle font-sans font-medium">Property valuation</span>
-              </div>
-              <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl mb-6 font-bold">
-                Property valuation in Australia:{" "}
-                <span>appraisal vs valuation vs online estimate</span> (2026)
+              <h1 className="font-display text-ink tracking-[-0.03em] text-[1.875rem] leading-[1.08] sm:text-5xl sm:leading-[1.05] font-bold">
+                Property valuation in Australia: appraisal vs valuation vs online estimate (2026)
               </h1>
-              <div className="space-y-4 font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-2xl">
-                <p>
-                  Ask what a property is worth in Australia and you get three different numbers. A real estate
-                  agent&rsquo;s appraisal is free and tells you what a buyer would probably pay now. A valuation is a
-                  paid report from a licensed valuer, the only one of the three that a lender, a court or the tax office
-                  will accept, and it typically costs $300 to $600 (Aussie, 31 January 2025; ANZ, read 30 September
-                  2026). An online estimate is a model&rsquo;s figure from recorded sales, and every bank that publishes
-                  one says on the page that it is not a valuation.
-                </p>
-                <p>
-                  This page sets the three side by side, gives the sourced cost of a valuation and the moments a lender
-                  insists on one, and shows what homes like yours sell for in your suburb from the published median,
-                  before an agent puts a figure on yours.
-                </p>
+              <p className="mt-4 sm:mt-6 text-base sm:text-lg text-ink leading-[1.6] max-w-2xl">
+                Ask what a property is worth in Australia and you get three different numbers. A real estate
+                agent&rsquo;s appraisal is free and tells you what a buyer would probably pay now. A valuation is a
+                paid report from a licensed valuer, the only one of the three that a lender, a court or the tax office
+                will accept, and it typically costs $300 to $600 (Aussie, 31 January 2025; ANZ, read 30 September
+                2026). An online estimate is a model&rsquo;s figure from recorded sales, and every bank that publishes
+                one says on the page that it is not a valuation.
+              </p>
+              <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+                <a
+                  href="#appraisal-form"
+                  className="inline-flex items-center justify-center rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3 transition-colors"
+                >
+                  Get a free appraisal
+                </a>
+                <a href="#three-numbers" className="text-sm font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+                  Compare the three side by side
+                </a>
               </div>
-              <ul className="mt-6 flex flex-col gap-2.5 font-sans text-sm text-ink-muted">
-                {[
-                  "Every figure carries its source and date",
-                  "The suburb range comes from the state sales feeds, never a model of your home",
-                  "The appraisal is free, from one vetted local agent, with no commitment to list",
-                ].map((p) => (
-                  <li key={p} className="inline-flex items-start gap-2">
-                    <CheckCircle className="w-4 h-4 mt-0.5 text-cta shrink-0" aria-hidden="true" />
-                    <span>{p}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
             <div className="lg:col-span-5">
               <SuburbValueRange after="link" appraisalHref="#appraisal-form" headingLevel="h2" />
@@ -178,11 +171,10 @@ export default function PropertyValuationPage() {
         </div>
       </section>
 
-      <section className="bg-surface-raised border-t border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16 space-y-14">
-          <div>
-            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">Side by side</p>
-            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
+      <section className="bg-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-14">
+          <div id="three-numbers" className="scroll-mt-24">
+            <h2 className={h2Class}>
               The three numbers and why they differ
             </h2>
             <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-3xl mb-6">
@@ -190,7 +182,7 @@ export default function PropertyValuationPage() {
               are made by different people, for different readers, from different evidence, and each is right for its
               own job.
             </p>
-            <div className="overflow-x-auto rounded-2xl border border-line">
+            <div className="overflow-x-auto rounded-xl border border-line">
               <table className="w-full min-w-[640px] font-sans text-sm text-left border-collapse">
                 <thead className="bg-surface-warm">
                   <tr>
@@ -230,8 +222,7 @@ export default function PropertyValuationPage() {
           </div>
 
           <div id="valuation-cost" className="scroll-mt-24">
-            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">The paid one</p>
-            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
+            <h2 className={h2Class}>
               What a formal valuation costs, and when a lender needs one
             </h2>
             <div className="grid lg:grid-cols-12 gap-10">
@@ -270,8 +261,8 @@ export default function PropertyValuationPage() {
                 </p>
               </div>
               <aside className="lg:col-span-5">
-                <div className="rounded-2xl border border-line bg-surface-warm p-6">
-                  <p className="text-[13px] font-sans text-ink-subtle mb-3">At a glance</p>
+                <div className="rounded-xl border border-line bg-surface-warm p-5 sm:p-6">
+                  <h3 className="font-display text-lg font-bold text-ink mb-3">At a glance</h3>
                   <dl className="space-y-4 font-sans text-sm">
                     <div>
                       <dt className="font-medium text-ink">Cost of a licensed valuation</dt>
@@ -300,8 +291,7 @@ export default function PropertyValuationPage() {
           </div>
 
           <div id="online-estimates" className="scroll-mt-24">
-            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">The instant one</p>
-            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
+            <h2 className={h2Class}>
               How automated estimates work, and where they miss
             </h2>
             <div className="space-y-4 font-sans text-base text-ink-muted leading-[1.7] max-w-3xl">
@@ -324,7 +314,7 @@ export default function PropertyValuationPage() {
                   "Different models disagree. Each site runs its own model on its own data, so two estimates for the same address rarely match.",
                 ].map((item) => (
                   <li key={item} className="flex gap-3">
-                    <CheckCircle className="w-4 h-4 mt-1 flex-shrink-0 text-cta" aria-hidden="true" />
+                    <CheckCircle className="w-4 h-4 mt-1 flex-shrink-0 text-ink" aria-hidden="true" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -342,8 +332,7 @@ export default function PropertyValuationPage() {
           </div>
 
           <div id="how-to-check" className="scroll-mt-24">
-            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">In order</p>
-            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
+            <h2 className={h2Class}>
               How to check what your property is worth
             </h2>
             <ol className="space-y-3 font-sans text-base text-ink-muted leading-relaxed list-decimal pl-5 max-w-3xl">
@@ -357,15 +346,14 @@ export default function PropertyValuationPage() {
         </div>
       </section>
 
-      <section id="appraisal-form" className="scroll-mt-24 bg-surface-warm border-t border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
-          <div className="grid lg:grid-cols-12 gap-10 items-start">
-            <div className="lg:col-span-6">
-              <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">The free one</p>
-              <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
+      <section className="bg-surface-warm border-y border-line">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="grid lg:grid-cols-12 gap-x-12 gap-y-6 items-start">
+            <div className="lg:col-span-5">
+              <h2 className={h2Class}>
                 Get a free appraisal from a local agent
               </h2>
-              <div className="space-y-4 font-sans text-base text-ink-muted leading-[1.7] max-w-xl">
+              <div className="space-y-4 text-base text-ink-muted leading-[1.65] max-w-xl">
                 <p>
                   An appraisal is the number that matters when you are deciding whether to sell, because it comes from
                   someone who watches buyers in your street every week and can show you the sales behind it. Tell us
@@ -381,12 +369,12 @@ export default function PropertyValuationPage() {
                 </p>
               </div>
             </div>
-            <div className="lg:col-span-6">
-              <div className="rounded-2xl border border-line bg-surface-raised shadow-card p-6 sm:p-8">
-                <p className="text-[13px] font-sans text-ink-subtle mb-2">Tell us about the property</p>
-                <h3 className="font-display text-ink leading-tight tracking-tight text-xl sm:text-2xl mb-5">
+            <div className="lg:col-span-7">
+              <div id="appraisal-form" className="scroll-mt-24 rounded-xl border border-line bg-white p-5 sm:p-8 shadow-[0_12px_40px_-14px_rgb(22_25_29/0.22)]">
+                <h3 className="font-display text-ink tracking-[-0.02em] text-xl sm:text-2xl font-bold leading-tight mb-1">
                   Two minutes, then we take it from there
                 </h3>
+                <p className="text-sm text-ink-muted mb-5">Tell us about the property.</p>
                 <Suspense fallback={<div className="h-96" aria-busy="true" />}>
                   <AppraisalForm />
                 </Suspense>
@@ -396,22 +384,18 @@ export default function PropertyValuationPage() {
         </div>
       </section>
 
-      <section className="bg-surface-raised border-t border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
-          <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
+      <section className="bg-white">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <h2 className={h2Class}>
             Property valuation questions
           </h2>
-          <dl className="divide-y divide-line border-y border-line">
-            {FAQS.map((faq) => (
-              <div key={faq.question} className="py-5">
-                <dt className="font-display text-lg text-ink leading-snug mb-2">{faq.question}</dt>
-                <dd className="font-sans text-base text-ink-muted leading-relaxed max-w-3xl">{faq.answer}</dd>
-              </div>
-            ))}
-          </dl>
+          {/* Answers stay in the HTML inside <details>; FAQPage JSON-LD above. */}
+          <div className="border-b border-line">
+            <FaqAccordion items={FAQS} />
+          </div>
 
           <div className="mt-12">
-            <h2 className="font-display text-xl text-ink leading-tight tracking-tight mb-4">Sources</h2>
+            <h2 className="font-display text-xl font-bold text-ink leading-tight tracking-[-0.02em] mb-4">Sources</h2>
             <ul className="space-y-2 font-sans text-sm text-ink-muted">
               {SOURCES.map((s) => (
                 <li key={s.href}>

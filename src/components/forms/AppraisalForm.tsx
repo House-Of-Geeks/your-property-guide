@@ -3,7 +3,7 @@
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Input, Select } from "@/components/ui";
 import { PROPERTY_TYPES } from "@/lib/constants";
@@ -12,6 +12,7 @@ import { AddressAutocomplete } from "@/components/forms/AddressAutocomplete";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 import { requiredMobileSchema } from "@/lib/utils/au-mobile";
 import { AuPhoneField } from "@/components/forms/AuPhoneInput";
+import { appraisalTypeParam } from "@/lib/appraisal-prefill";
 
 // Free-appraisal request form. Visitor is on /appraisal explicitly asking
 // for a valuation, so intent is implicit. Trimmed from the original 9
@@ -62,11 +63,18 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
     clarityTag("form_name", formName);
   };
 
+  // Prefill from the URL: ?suburb= and ?type= (src/lib/appraisal-prefill.ts).
+  // The instant price range on the same page rewrites both after the form
+  // has mounted, so they are followed below, not only read at mount.
+  const prefillSuburb = searchParams.get("suburb") ?? "";
+  const prefillType = appraisalTypeParam(searchParams.get("type"));
+
   const {
     register,
     control,
     handleSubmit,
     setValue,
+    getValues,
     clearErrors,
     watch,
     formState: { errors, isSubmitting },
@@ -75,7 +83,8 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
     defaultValues: {
       phone: "",
       address: searchParams.get("address") ?? "",
-      suburb: searchParams.get("suburb") ?? "",
+      suburb: prefillSuburb,
+      propertyType: prefillType,
     },
   });
 
@@ -83,6 +92,17 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
   // Suburb filled from the chosen address; when set, the suburb search is
   // replaced by a one-line confirmation with a "Change" link.
   const [resolvedSuburb, setResolvedSuburb] = useState<{ slug: string; label: string } | null>(null);
+
+  // Follow the range block's choices. A suburb resolved from the street
+  // address wins over the range's suburb.
+  useEffect(() => {
+    if (!prefillSuburb || resolvedSuburb || getValues("suburb") === prefillSuburb) return;
+    setValue("suburb", prefillSuburb);
+    clearErrors("suburb");
+  }, [prefillSuburb, resolvedSuburb, getValues, setValue, clearErrors]);
+  useEffect(() => {
+    if (prefillType) setValue("propertyType", prefillType);
+  }, [prefillType, setValue]);
 
   const onSubmit = async (data: AppraisalFormData) => {
     setError(null);
@@ -215,7 +235,9 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
           </p>
         ) : (
           <SuburbAutocomplete
-            defaultSlug={searchParams.get("suburb") ?? undefined}
+            // Re-keyed so a suburb chosen in the range block shows here.
+            key={prefillSuburb}
+            defaultSlug={prefillSuburb || undefined}
             placeholder="Suburb or postcode, e.g. Bondi or 2026"
             onSelectLocation={(slug) => {
               setValue("suburb", slug, { shouldValidate: true });
@@ -235,7 +257,7 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
           id="appraisal-propertyType"
           label="Type"
           options={PROPERTY_TYPES.map((t) => ({ value: t.value, label: t.label }))}
-          placeholder="Any"
+          placeholder="Choose"
           {...register("propertyType")}
         />
         <Select
@@ -248,7 +270,7 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
             { value: "4", label: "4" },
             { value: "5+", label: "5+" },
           ]}
-          placeholder="Any"
+          placeholder="Choose"
           {...register("bedrooms")}
         />
       </div>
@@ -257,7 +279,7 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-ink font-semibold px-6 py-3.5 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+        className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3.5 text-base sm:text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
       >
         {isSubmitting ? "Sending…" : "Get my free appraisal"}
         {!isSubmitting && <span aria-hidden="true">→</span>}
