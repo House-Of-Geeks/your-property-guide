@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import { ArrowRight, Check, Phone } from "lucide-react";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 import { auMobileError } from "@/lib/utils/au-mobile";
@@ -48,12 +48,14 @@ export function GuideEmailNote({ guide }: { guide: "selling" | "buying" }) {
   );
 }
 
-function callCopy(ctx: GuideThanksContext) {
+// `mobile`: how the copy asks for the number. "Check" once the funnel's
+// mobile is prefilled, "Add" for a hand-off from before it asked for one.
+function callCopy(ctx: GuideThanksContext, mobile: "Add" | "Check") {
   if (ctx.kind === "agent") {
     return {
       kicker: "Free appraisal",
       heading: "Want to know what your place is worth?",
-      body: "Add your mobile and one top local agent will call you to arrange a free appraisal. No obligation.",
+      body: `${mobile} your mobile and one top local agent will call you to arrange a free appraisal. No obligation.`,
       button: "Book my call",
       done: "Done. One top local agent will call you within one business day.",
     };
@@ -64,61 +66,55 @@ function callCopy(ctx: GuideThanksContext) {
     return {
       ...common,
       heading: "Want help planning your next step?",
-      body: "Add your mobile and we'll give you a call. Buying help only, never selling agents.",
+      body: `${mobile} your mobile and we'll give you a call. Buying help only, never selling agents.`,
     };
   }
   if (p.agentStatus === "already-listed") {
     return {
       ...common,
       heading: "Want a hand with your campaign?",
-      body: "Add your mobile and we'll give you a call. We won't pass your details to any agent.",
+      body: `${mobile} your mobile and we'll give you a call. We won't pass your details to any agent.`,
     };
   }
   return {
     ...common,
     heading: "Want a call when you're closer?",
-    body: "Add your mobile and we'll check in when it's time to plan your sale. We won't pass it to an agent.",
+    body: `${mobile} your mobile and we'll check in when it's time to plan your sale. We won't pass it to an agent.`,
   };
 }
 
 /**
  * The optional call. "agent" (sellers moving within six months, not listed):
  * one agent calls, a vendor lead. "ypg": YPG calls, never passed on. Either
- * way /api/leads gets the download's answers again with the phone.
+ * way /api/leads gets the download's answers again with the phone and
+ * call: true, and only when they press the button, the action the consent
+ * statement under it describes.
  */
 export function GuideCallCard({ guide }: { guide: "selling" | "buying" }) {
   const ctx = useGuideThanks(guide);
-  // E.164 from the flagged field ("+61412345678"); the API stores 04…
-  const [phone, setPhone] = useState("");
+  // The form mounts once storage has been read, so its state starts from
+  // the funnel's hand-off (the prefilled mobile) rather than the server's
+  // empty snapshot.
+  return ctx ? <GuideCallForm ctx={ctx} /> : null;
+}
+
+function GuideCallForm({ ctx }: { ctx: GuideThanksContext }) {
+  // The mobile the visitor gave for the guide: prefilled (still editable),
+  // so booking the call is one tap.
+  const savedPhone = typeof ctx.payload.phone === "string" ? ctx.payload.phone : "";
+  // E.164 from the flagged field ("+61491570156"); the API stores 04…
+  const [phone, setPhone] = useState(savedPhone);
   // Errors show once they've left the field or pressed the button, then
   // update as they type (Why Solar's rebate quiz).
   const [phoneTouched, setPhoneTouched] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
-  // Safety net (Why Solar's usePartialLead promotion): a valid mobile that
-  // loses focus sends the request at once, keepalive; the button finishes it.
-  const promotion = useRef<{ phone: string; done: Promise<boolean> } | null>(null);
 
-  if (!ctx) return null;
-  const copy = callCopy(ctx);
+  const copy = callCopy(ctx, savedPhone ? "Check" : "Add");
   const phoneError = phoneTouched ? auMobileError(phone) : null;
 
-  const send = async (typed: string, keepalive = false) => {
-    const res = await fetch("/api/leads", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...ctx.payload, phone: typed, call: true }),
-      keepalive,
-    });
-    if (!res.ok) throw new Error("Submit failed");
-  };
-
-  const promote = () => {
-    if (promotion.current || auMobileError(phone)) return;
-    promotion.current = { phone, done: send(phone, true).then(() => true, () => false) };
-  };
-
+  // Nothing is sent on blur or before the button: the press is the request.
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const typed = phone;
@@ -127,9 +123,12 @@ export function GuideCallCard({ guide }: { guide: "selling" | "buying" }) {
     setError(null);
     setSubmitting(true);
     try {
-      const promoted = promotion.current;
-      const sent = promoted?.phone === typed && (await promoted.done);
-      if (!sent) await send(typed);
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...ctx.payload, phone: typed, call: true }),
+      });
+      if (!res.ok) throw new Error("Submit failed");
       clarityEvent("guide_call_requested");
       clarityTag("guide_call_kind", ctx.kind);
       setDone(true);
@@ -158,9 +157,7 @@ export function GuideCallCard({ guide }: { guide: "selling" | "buying" }) {
                 value={phone}
                 onChange={setPhone}
                 onBlur={() => {
-                  if (!phone) return;
-                  setPhoneTouched(true);
-                  promote();
+                  if (phone) setPhoneTouched(true);
                 }}
                 aria-label="Mobile"
                 invalid={!!phoneError}

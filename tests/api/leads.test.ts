@@ -11,7 +11,8 @@ const { dbLeadCreate, dbAgentFind, sendMailMock, deferred } = vi.hoisted(() => (
 }));
 
 // after() queues its callback here instead of running it, so a test can
-// see that background work (the lead magnet retry) was scheduled.
+// see that background work (the lead magnet retry, a download's team
+// email) was scheduled, and run it.
 vi.mock("next/server", async (importOriginal) => ({
   ...(await importOriginal<typeof import("next/server")>()),
   after: (fn: () => unknown) => {
@@ -132,7 +133,7 @@ describe("POST /api/leads", () => {
         type: "guide-download",
         firstName: "Sarah",
         email: "sarah@example.com",
-        phone: "0412 345 678",
+        phone: "+61491570156",
         suburb: "burpengary-qld-4505",
         propertyType: "house",
         bedrooms: "4",
@@ -146,7 +147,9 @@ describe("POST /api/leads", () => {
     );
     expect(res.status).toBe(200);
 
-    // Score lands in the admin subject for inbox-level triage.
+    // Score lands in the admin subject for inbox-level triage. A download's
+    // team email goes after the response.
+    await Promise.all(deferred.map((task) => task()));
     const adminCall = sendMailMock.mock.calls.map((c) => c[0]).find((c) => c.to === "andy@theandylife.com");
     expect(adminCall.subject).toContain("[HOT]");
     expect(adminCall.subject).toContain("burpengary-qld-4505");
@@ -157,7 +160,9 @@ describe("POST /api/leads", () => {
     expect(saved.message).toContain("Score: HOT");
     expect(saved.message).toContain("Timeframe: Within 3 months");
     expect(saved.message).toContain("Marketing consent: yes");
-    expect(saved.message).toContain("Consent: one agent may call");
+    // A phone on a download is the team's to call, not an agent call.
+    expect(saved.message).toContain("Consent: guide and tips emails, and a call from YPG, no agent unless they ask (download)");
+    expect(saved.message).not.toContain("one agent may call");
   });
 
   it("rejects a guide-download with an invalid timeframe enum", async () => {
@@ -212,9 +217,10 @@ describe("POST /api/leads", () => {
 // Each case mirrors the exact JSON a client form posts (JSON.stringify drops
 // undefined keys, same as the browser). If a form and the schema drift apart
 // again, it fails here instead of 400-ing real leads in production.
-// Guide funnels (Oct 2026, Why Solar's ebook flow): a download is name +
-// email and gets the guide (Sent 24/7 lead magnet when switched on); a call
-// request from the thanks page is the lead, for one agent or for YPG.
+// Guide funnels (Oct 2026, Why Solar's ebook flow): a download is name,
+// email and (since 13 Oct) a mobile for the team, and gets the guide (Sent
+// 24/7 lead magnet when switched on); a call request from the thanks page
+// (call: true) is the lead, for one agent or for YPG.
 describe("guide funnels: download, call request and Sent 24/7", () => {
   const seller = {
     type: "guide-download" as const,
@@ -232,6 +238,7 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
   const mails = () => sendMailMock.mock.calls.map((c) => c[0]);
   const adminMail = () => mails().find((m) => m.to === "andy@theandylife.com");
   const readerMail = () => mails().find((m) => m.to === "Sarah@Example.com");
+  const runDeferred = () => Promise.all(deferred.map((task) => task()));
   const fetchMock = vi.fn();
 
   beforeEach(() => {
@@ -251,7 +258,7 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
     fetchMock.mockResolvedValue(new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } }));
 
   describe("a download (no phone)", () => {
-    it("is saved, YPG emails the guide while Sent 24/7 is off, and the team is not emailed", async () => {
+    it("is saved, YPG emails the guide while Sent 24/7 is off, and the team hears after the response", async () => {
       const res = await POST(makeRequest(seller));
       expect(res.status).toBe(200);
       expect((await res.json()).emailOnItsWay).toBe(true);
@@ -260,6 +267,12 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       expect(mails()).toHaveLength(1);
       expect(readerMail().subject).toBe("Your selling guide + the $20,000 question");
       expect(fetchMock).not.toHaveBeenCalled();
+      expect(deferred).toHaveLength(1);
+      await runDeferred();
+      expect(adminMail().subject).toBe("[HOT] Selling Guide Download, Sarah Lee (burpengary-qld-4505)");
+      expect(adminMail().cc).toBe("leads-cc@example.com");
+      expect(adminMail().html).toContain("Guide email");
+      expect(adminMail().html).toContain("Sent by YPG");
     });
 
     it("is posted to Sent 24/7 as a lead magnet when switched on, and YPG sends nothing", async () => {
@@ -316,8 +329,65 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       const res = await POST(makeRequest(seller));
       expect(res.status).toBe(200);
       expect((await res.json()).emailOnItsWay).toBe(false);
-      expect(deferred).toHaveLength(1);
+      // The lead magnet retry, then the team email.
+      expect(deferred).toHaveLength(2);
       expect(sendMailMock).not.toHaveBeenCalled();
+    });
+  });
+
+  // 13 Oct 2026: the email step requires a mobile, so the team can call
+  // every guide reader. That mobile must never turn a download into an
+  // agent lead: only the call card's button (call: true) can.
+  describe("a download with a mobile (no call request)", () => {
+    const download = { ...seller, phone: "+61491570156" };
+
+    it("goes to Sent 24/7 only as a lead magnet, without the phone, and never to the vendor campaign", async () => {
+      configure();
+      s247(201, { success: true, signup_id: "sg_2", status: "new", emails: "started" });
+      const res = await POST(makeRequest(download));
+      expect(res.status).toBe(200);
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+      const [url, init] = fetchMock.mock.calls[0];
+      expect(url).toBe("https://api.sent247.com/api/v1/lead-magnets");
+      const body = JSON.parse(init.body);
+      expect(JSON.stringify(body)).not.toContain("491570156");
+      expect(body.consent.consent_text).toBe(SELLING_EMAIL_CONSENT);
+      await runDeferred();
+      expect(fetchMock.mock.calls.map(([u]) => u)).not.toContain("https://api.sent247.com/api/v1/leads");
+    });
+
+    it("stores the mobile and emails the team a callable lead with its score", async () => {
+      const res = await POST(makeRequest(download));
+      expect((await res.json()).emailOnItsWay).toBe(true);
+      const data = dbLeadCreate.mock.calls[0][0].data;
+      expect(data.phone).toBe("0491570156");
+      expect(data.message).toContain("Consent: guide and tips emails, and a call from YPG, no agent unless they ask (download)");
+      expect(readerMail().subject).toBe("Your selling guide + the $20,000 question");
+      await runDeferred();
+      expect(adminMail().subject).toBe("[HOT] Selling Guide Download, Sarah Lee (burpengary-qld-4505)");
+      expect(adminMail().subject).not.toContain("Appraisal call");
+      const html = adminMail().html;
+      expect(html).toContain("0491570156");
+      expect(html).toContain("Within 3 months");
+      expect(html).toContain("burpengary-qld-4505");
+      expect(html).toContain("No (guide download). Our team may call. No agent unless they ask.");
+      expect(html).not.toContain("One top local agent");
+    });
+
+    it("tells the team never to pass a buyer on", async () => {
+      await POST(makeRequest({ ...download, guideType: "buying", agentStatus: undefined, buyerPersona: "first-home", financeStatus: "cash" }));
+      await runDeferred();
+      expect(adminMail().subject).toMatch(/^\[HOT\] Buying Guide Download, Sarah Lee/);
+      expect(adminMail().html).toContain("Never pass to an agent.");
+    });
+
+    it("still gets the guide when it comes from a tab loaded before Oct 2026's flow, and isn't sent as a lead", async () => {
+      configure(false);
+      await POST(makeRequest({ ...seller, phone: "0412 345 678" }));
+      expect(fetchMock).not.toHaveBeenCalled();
+      expect(readerMail().subject).toBe("Your selling guide + the $20,000 question");
+      await runDeferred();
+      expect(adminMail()).toBeTruthy();
     });
   });
 
@@ -377,10 +447,12 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       expect(adminMail().html).toContain("FAILED, not delivered: HTTP 502: bad gateway");
     });
 
-    it("a one-step guide submit with a phone (a tab from before this change) still gets the guide", async () => {
-      await POST(makeRequest({ ...seller, phone: "0412 345 678" }));
-      expect(readerMail().subject).toBe("Your selling guide + the $20,000 question");
-      expect(adminMail()).toBeTruthy();
+    it("from a HOT seller who skipped the suburb is held for the team to call first", async () => {
+      configure(false);
+      await POST(makeRequest({ ...call, suburb: undefined }));
+      expect(fetchMock).not.toHaveBeenCalled();
+      expect(adminMail().subject).toMatch(/^\[HOT\] Appraisal call: /);
+      expect(adminMail().html).toContain("Not sent (no suburb: team to call first)");
     });
   });
 });

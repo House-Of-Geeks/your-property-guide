@@ -60,6 +60,14 @@ describe("auMobileError", () => {
     expect(auMobileError("+6421123456")).toBe(NON_AU_MOBILE_ERROR);
   });
 
+  it("gives an example in its errors that it would accept", () => {
+    for (const message of [AU_MOBILE_ERROR, MOBILE_ERROR]) {
+      const example = message.match(/e\.g\. ([\d ]+)\)/)?.[1];
+      expect(example, message).toBeTruthy();
+      expect(auMobileError(pastedAuPhone(example!)!), message).toBeNull();
+    }
+  });
+
   it("lets a listing enquiry give an overseas number, never a landline or dummy", () => {
     const overseas = { overseas: true };
     expect(auMobileError("+6421123456", overseas)).toBeNull();

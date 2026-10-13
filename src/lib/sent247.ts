@@ -21,7 +21,10 @@ import { normalizePhone } from "@/lib/utils/phone";
 //
 // A call request from a seller YPG may sell is a lead: POST /api/v1/leads to
 // the vendor campaign, which hands it to one agent. Any lead with an email and
-// a phone also stops that address's guide series in Sent 24/7.
+// a phone also stops that address's guide series in Sent 24/7. A download's
+// mobile (required on the email step since 13 Oct 2026) is for the YPG team
+// only: the lead magnet body never carries it, and /api/leads posts a lead
+// only for an explicit call request (call: true from the thanks page).
 //
 // Both need SENT247_API_KEY (a seller key in the YPG tenant) and
 // SENT247_VENDOR_CAMPAIGN_ID. Only leads YPG may sell are ever posted as
@@ -85,6 +88,10 @@ export function sent247HoldReason(lead: GuideLeadFields): string | null {
   if (lead.agentStatus === "already-listed") return "already listed: promised no agent contact";
   const score = scoreGuideLead(lead);
   if (score !== "HOT" && score !== "WARM") return `${score} vendor: cold vendors are not sold`;
+  // The suburb step can be skipped, and with no suburb there is no local
+  // agent to hand it to: the team calls first (the call's one-agent consent
+  // still lets them pass it on once they know where the property is).
+  if (!lead.suburb?.trim()) return "no suburb: team to call first";
   return null;
 }
 

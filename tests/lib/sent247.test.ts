@@ -36,6 +36,13 @@ describe("sent247HoldReason: only leads YPG may sell go to Sent 24/7", () => {
     expect(sent247HoldReason({ ...seller, guideType: "buying", financeStatus: "cash" })).toMatch(/buying guide/);
     expect(sent247HoldReason({ ...seller, type: "appraisal-request" })).toMatch(/not a guide lead/);
   });
+  it("holds a vendor with no suburb for the team to call first (no local agent to match)", () => {
+    expect(sent247HoldReason({ ...seller, suburb: undefined })).toBe("no suburb: team to call first");
+    expect(sent247HoldReason({ ...seller, suburb: " " })).toBe("no suburb: team to call first");
+    expect(sent247HoldReason({ ...seller, sellingTimeframe: "3-6-months", suburb: "" })).toBe("no suburb: team to call first");
+    // The other reasons still win: they say why it can never go to an agent.
+    expect(sent247HoldReason({ ...seller, suburb: undefined, agentStatus: "already-listed" })).toMatch(/already listed/);
+  });
 });
 
 describe("payload helpers", () => {

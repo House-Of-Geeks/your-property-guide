@@ -56,7 +56,7 @@ export function AuPhoneInput({
   size = "lg",
   id,
   name,
-  placeholder = "Mobile, e.g. 0412 345 678",
+  placeholder = "Mobile, e.g. 0491 570 156",
   required,
   disabled,
   autoFocus,
