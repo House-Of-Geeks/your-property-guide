@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { MapPin, Home, TrendingUp, GraduationCap, Users } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, PlaceJsonLd, FAQPageJsonLd } from "@/components/seo";
-import { Badge } from "@/components/ui";
+import { SubpageNextSteps, type NextStepGroup } from "@/components/suburb";
+import { guideFunnelHref } from "@/lib/guide-funnel";
+import { STATE_NAMES, type StateCode } from "@/lib/data/commission-rates";
+import { makeSchoolSlug } from "@/lib/utils/school";
 import {
   getSuburbsByPostcode,
   getAllPostcodes,
@@ -12,7 +15,7 @@ import {
   getPostalNamesByPostcode,
 } from "@/lib/services/postcode-service";
 import { nonLocalityLabel } from "@/lib/locality-names";
-import { postcodeDescription, postcodeFaqs as buildPostcodeFaqs, postcodeLead, postcodeTitle } from "@/lib/postcode-copy";
+import { postcodeDescription, postcodeFaqs as buildPostcodeFaqs, postcodeTitle } from "@/lib/postcode-copy";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
@@ -76,18 +79,36 @@ export async function generateMetadata({ params }: PostcodePageProps): Promise<M
   };
 }
 
+/** "A, B and C" with each name linked to its profile. */
+function LinkedList({ items }: { items: { slug: string; name: string }[] }) {
+  return (
+    <>
+      {items.map((s, i) => (
+        <span key={s.slug}>
+          {i > 0 && (i === items.length - 1 ? " and " : ", ")}
+          <Link href={`/suburbs/${s.slug}`} className="font-semibold text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary">
+            {s.name}
+          </Link>
+        </span>
+      ))}
+    </>
+  );
+}
+
+const plainList = (names: string[]) =>
+  names.length <= 1 ? names[0] ?? "" : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+
 export default async function PostcodePage({ params }: PostcodePageProps) {
   const { postcode } = await params;
 
-  const [suburbs, stats] = await Promise.all([
-    getSuburbsByPostcode(postcode),
-    getPostcodeStats(postcode),
-  ]);
+  const suburbs = await getSuburbsByPostcode(postcode);
 
   const postalNames = getPostalNamesByPostcode(postcode);
   if (suburbs.length === 0 && postalNames.length === 0) notFound();
 
   const state = suburbs[0]?.state ?? postalNames[0].state;
+  const stateName = STATE_NAMES[state as StateCode] ?? state;
+  const stateLower = state.toLowerCase();
   const copy = {
     postcode,
     state,
@@ -110,6 +131,39 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
     }))
   );
 
+  // Price columns only where at least one suburb publishes a median.
+  const anyHouse = suburbs.some((s) => s.medianHousePrice > 0);
+  const anyUnit = suburbs.some((s) => s.medianUnitPrice > 0);
+  const anySchools = suburbs.some((s) => s.schools.length > 0);
+
+  const from = `postcode-${postcode}`;
+  const nextSteps: NextStepGroup[] = [
+    {
+      title: `Selling in ${state}`,
+      links: [
+        { href: guideFunnelHref("selling", { from }), label: "The free selling guide" },
+        { href: `/guides/real-estate-commission-${stateLower}`, label: `Agent commission in ${state}` },
+        { href: `/guides/cost-of-selling-a-house-${stateLower}`, label: `Cost of selling in ${state}` },
+        { href: "/real-estate-commission-calculator", label: "Commission calculator" },
+      ],
+    },
+    {
+      title: `Buying in ${state}`,
+      links: [
+        { href: guideFunnelHref("buying", { from }), label: "The free buying guide" },
+        { href: `/guides/stamp-duty-${stateLower}`, label: `Stamp duty in ${state}` },
+        { href: `/guides/first-home-buyer-${stateLower}`, label: `First home buyers in ${state}` },
+      ],
+    },
+    {
+      title: "More postcodes",
+      links: [
+        { href: `/postcodes#${stateLower}`, label: `${stateName} postcodes` },
+        { href: "/postcodes", label: "Every postcode, by state" },
+      ],
+    },
+  ];
+
   return (
     <>
       <BreadcrumbJsonLd
@@ -126,158 +180,156 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
       />
       <FAQPageJsonLd faqs={postcodeFaqs} />
 
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-primary/10 to-white border-b border-gray-100">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      {/* Answer first: which suburbs the postcode covers, every one named
+          and linked, then the one action (the selling guide, with the
+          reader's own suburb picked rather than the first in the list). */}
+      <section className="bg-surface-warm border-b border-line">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-8 sm:pb-10">
           <Breadcrumbs
             items={[
               { label: "Postcodes", href: "/postcodes" },
               { label: `Postcode ${postcode}` },
             ]}
           />
+          <div className="grid gap-6 lg:grid-cols-12 lg:gap-12 pt-3">
+            <div className="lg:col-span-7">
+              <h1 className="font-display text-ink font-bold leading-[1.05] tracking-[-0.03em] text-[2rem] sm:text-5xl lg:text-[3.25rem]">
+                Postcode {postcode}
+              </h1>
+              <div className="mt-4 font-sans text-base sm:text-lg text-ink leading-relaxed max-w-2xl space-y-3">
+                {suburbs.length > 0 ? (
+                  <p>
+                    {suburbs.length === 1 ? `Postcode ${postcode} is ` : `Postcode ${postcode} covers ${suburbs.length} suburbs in ${stateName}: `}
+                    <LinkedList items={suburbs} />
+                    {suburbs.length === 1 ? `, ${stateName}.` : "."}
+                  </p>
+                ) : (
+                  <p>{`Postcode ${postcode} is in ${stateName}. Australia Post uses it for ${plainList(postalNames.map((p) => p.name))}; it has no residential suburbs of its own.`}</p>
+                )}
+                {suburbs.length > 0 && postalNames.length > 0 && (
+                  <p className="text-[15px] text-ink-muted">
+                    {`Australia Post also uses ${postcode} for ${plainList(postalNames.map((p) => p.name))}, ${postalNames.length === 1 ? "a delivery name rather than a suburb" : "delivery names rather than suburbs"}.`}
+                  </p>
+                )}
+              </div>
+            </div>
 
-          <div className="flex items-center gap-3 mt-4">
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
-              Postcode {postcode}
-            </h1>
-            <Badge variant="default">{state}</Badge>
-          </div>
-          <p className="text-lg text-gray-600 mt-3 max-w-2xl">{postcodeLead(copy)}</p>
-
-          {/* Aggregate stats */}
-          <div className="flex flex-wrap gap-6 mt-8">
-            {suburbs.length > 0 && (
-              <div className="flex items-center gap-2 text-sm">
-                <MapPin className="w-4 h-4 text-primary" />
-                <span className="font-semibold text-gray-900">{suburbs.length}</span>
-                <span className="text-gray-500">suburb{suburbs.length !== 1 ? "s" : ""}</span>
+            <div className="lg:col-span-5">
+              <div className="rounded-xl border border-line bg-white p-5 sm:p-6">
+                <h2 className="font-display text-lg sm:text-xl font-bold text-ink leading-snug tracking-tight">
+                  Selling in {postcode}?
+                </h2>
+                <p className="mt-1.5 font-sans text-sm sm:text-[15px] text-ink-muted leading-relaxed">
+                  The free selling guide: pricing, real agent fees in {state}, choosing an agent and getting to settlement, personalised to your suburb.
+                </p>
+                {suburbs.length > 1 ? (
+                  // A plain GET form: picking a suburb opens the funnel with
+                  // it answered (?suburb=), no script needed.
+                  <form action="/selling-guide#guide-funnel" method="get" className="mt-4 flex flex-col sm:flex-row gap-3">
+                    <input type="hidden" name="from" value={from} />
+                    <label htmlFor="postcode-suburb" className="sr-only">Your suburb</label>
+                    <select
+                      id="postcode-suburb"
+                      name="suburb"
+                      required
+                      defaultValue=""
+                      className="flex-1 min-w-0 rounded-lg border border-line-strong bg-white px-3 py-3 font-sans text-[15px] text-ink focus:border-ink focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    >
+                      <option value="" disabled>Your suburb</option>
+                      {[...suburbs].sort((x, y) => x.name.localeCompare(y.name)).map((s) => (
+                        <option key={s.slug} value={s.slug}>{s.name}</option>
+                      ))}
+                    </select>
+                    <button
+                      type="submit"
+                      className="shrink-0 inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors cursor-pointer"
+                    >
+                      Get the free guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                    </button>
+                  </form>
+                ) : (
+                  <Link
+                    href={guideFunnelHref("selling", { suburb: suburbs[0]?.slug, from, toForm: true })}
+                    className="mt-4 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors"
+                  >
+                    Get the free selling guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  </Link>
+                )}
+                <p className="mt-4 font-sans text-sm text-ink-muted">
+                  {"Buying here? "}
+                  <Link href={guideFunnelHref("buying", { from })} className="text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary">
+                    The free buying guide
+                  </Link>
+                </p>
               </div>
-            )}
-            {stats.totalPopulation > 0 && (
-              <div className="flex items-center gap-2 text-sm">
-                <Users className="w-4 h-4 text-primary" />
-                <span className="font-semibold text-gray-900">
-                  {stats.totalPopulation.toLocaleString()}
-                </span>
-                <span className="text-gray-500">total population</span>
-              </div>
-            )}
-            {stats.avgMedianHousePrice && (
-              <div className="flex items-center gap-2 text-sm">
-                <Home className="w-4 h-4 text-primary" />
-                <span className="font-semibold text-gray-900">
-                  {formatPriceFull(stats.avgMedianHousePrice)}
-                </span>
-                <span className="text-gray-500">avg median house price</span>
-              </div>
-            )}
-            {stats.avgAnnualGrowthHouse !== null && (
-              <div className="flex items-center gap-2 text-sm">
-                <TrendingUp className="w-4 h-4 text-primary" />
-                <span className="font-semibold text-gray-900">
-                  {stats.avgAnnualGrowthHouse >= 0 ? "+" : ""}
-                  {stats.avgAnnualGrowthHouse}%
-                </span>
-                <span className="text-gray-500">avg annual growth</span>
-              </div>
-            )}
-            {stats.totalSchoolCount > 0 && (
-              <div className="flex items-center gap-2 text-sm">
-                <GraduationCap className="w-4 h-4 text-primary" />
-                <span className="font-semibold text-gray-900">{stats.totalSchoolCount}</span>
-                <span className="text-gray-500">schools</span>
-              </div>
-            )}
-          </div>
-
-          {/* Buyer / seller funnel entry. Routes the postcode page's human
-              traffic into the transactional guides, pre-filled to the lead
-              suburb in this postcode. */}
-          <div className="flex flex-wrap gap-3 mt-8">
-            <Link
-              href={suburbs[0] ? `/selling-guide?suburb=${suburbs[0].slug}` : "/selling-guide"}
-              className="inline-flex items-center gap-2 bg-primary text-white text-sm font-semibold rounded-lg px-5 py-2.5 hover:bg-primary/90 transition-colors w-fit"
-            >
-              Get the free selling guide
-            </Link>
-            <Link
-              href={suburbs[0] ? `/buying-guide?suburb=${suburbs[0].slug}` : "/buying-guide"}
-              className="inline-flex items-center gap-2 bg-white border border-primary text-primary text-sm font-semibold rounded-lg px-5 py-2.5 hover:bg-primary/5 transition-colors w-fit"
-            >
-              Get the free buying guide
-            </Link>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 space-y-14">
-
-        {/* Suburbs grid */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-12 sm:space-y-16">
+        {/* The suburbs, one line each: the profile link and the published
+            figures only. */}
         {suburbs.length > 0 && (
-        <section>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Suburbs in Postcode {postcode}
-          </h2>
-          <p className="text-sm text-gray-500 mb-6">
-            Explore suburb profiles, median prices, annual growth and schools.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {suburbs.map((suburb) => (
-              <Link
-                key={suburb.slug}
-                href={`/suburbs/${suburb.slug}`}
-                className="group rounded-xl border border-gray-200 bg-white p-5 hover:border-primary hover:shadow-md transition-all shadow-card"
-              >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors">
-                      {suburb.name}
-                    </h3>
-                    <p className="text-xs text-gray-400 mt-0.5">
-                      {suburb.state} {suburb.postcode}
-                    </p>
-                  </div>
-                  {suburb.annualGrowthHouse != null && (
-                    <span
-                      className={`text-xs font-medium px-2 py-1 rounded-md ${
-                        suburb.annualGrowthHouse >= 0
-                          ? "bg-green-50 text-green-700"
-                          : "bg-red-50 text-red-700"
-                      }`}
-                    >
-                      {suburb.annualGrowthHouse >= 0 ? "+" : ""}
-                      {suburb.annualGrowthHouse.toFixed(1)}%
-                    </span>
-                  )}
-                </div>
-                <div className="mt-4 flex items-center gap-4">
-                  <div>
-                    <p className="text-xs text-gray-400">Median house</p>
-                    <p className="text-sm font-bold text-gray-900">
-                      {suburb.medianHousePrice > 0
-                        ? formatPriceFull(suburb.medianHousePrice)
-                        : "–"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-400">Median unit</p>
-                    <p className="text-sm font-bold text-gray-900">
-                      {suburb.medianUnitPrice > 0
-                        ? formatPriceFull(suburb.medianUnitPrice)
-                        : "–"}
-                    </p>
-                  </div>
-                  {suburb.schools.length > 0 && (
-                    <div className="ml-auto">
-                      <p className="text-xs text-gray-400">Schools</p>
-                      <p className="text-sm font-bold text-gray-900">{suburb.schools.length}</p>
-                    </div>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
+          <section id="suburbs" className="scroll-mt-20">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+              Suburbs in postcode {postcode}
+            </h2>
+            {anyHouse || anyUnit ? (
+              <div className="overflow-x-auto rounded-xl border border-line max-w-4xl">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-surface-warm border-b border-line text-left">
+                      <th scope="col" className="py-3 px-4 font-semibold text-ink">Suburb</th>
+                      {anyHouse && <th scope="col" className="py-3 px-4 font-semibold text-ink text-right">Median house</th>}
+                      {anyUnit && <th scope="col" className="py-3 px-4 font-semibold text-ink text-right hidden sm:table-cell">Median unit</th>}
+                      {anySchools && <th scope="col" className="py-3 px-4 font-semibold text-ink text-right hidden sm:table-cell">Schools nearby</th>}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {suburbs.map((suburb) => (
+                      <tr key={suburb.slug} className="border-b border-line last:border-0">
+                        <th scope="row" className="py-3 px-4 text-left font-medium">
+                          <Link href={`/suburbs/${suburb.slug}`} className="text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary">
+                            {suburb.name}
+                          </Link>
+                        </th>
+                        {anyHouse && (
+                          <td className="py-3 px-4 text-right text-ink">
+                            {suburb.medianHousePrice > 0 ? (
+                              <Link href={`/suburbs/${suburb.slug}#market`} className="hover:text-primary" aria-label={`${suburb.name} house prices`}>
+                                {formatPriceFull(suburb.medianHousePrice)}
+                              </Link>
+                            ) : "–"}
+                          </td>
+                        )}
+                        {anyUnit && <td className="py-3 px-4 text-right text-ink-muted hidden sm:table-cell">{suburb.medianUnitPrice > 0 ? formatPriceFull(suburb.medianUnitPrice) : "–"}</td>}
+                        {anySchools && <td className="py-3 px-4 text-right text-ink-muted hidden sm:table-cell">{suburb.schools.length || "–"}</td>}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <ul className="grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3 border-t border-line sm:border-t-0">
+                {suburbs.map((suburb, i) => (
+                  <li key={suburb.slug} className={`border-b border-line ${i < 2 ? "sm:border-t" : ""} ${i === 2 ? "lg:border-t" : ""}`}>
+                    <Link href={`/suburbs/${suburb.slug}`} className="flex items-baseline justify-between gap-4 py-3 font-sans text-[15px] text-ink hover:text-primary transition-colors">
+                      <span className="font-medium">{suburb.name}</span>
+                      {suburb.schools.length > 0 && (
+                        <span className="text-sm text-ink-muted">{`${suburb.schools.length} school${suburb.schools.length === 1 ? "" : "s"}`}</span>
+                      )}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {(anyHouse || anyUnit) && (
+              <p className="mt-3 font-sans text-xs text-ink-subtle max-w-3xl">
+                Medians are shown only where the state or the ABS publishes one for the suburb; each profile gives the source and period.
+              </p>
+            )}
+          </section>
         )}
 
         {/* Delivery names: what Australia Post calls its delivery centres,
@@ -285,32 +337,32 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
             profile links: they are not places people live, and their old
             profile URLs redirect here or to the suburb they sit in. */}
         {postalNames.length > 0 && (
-          <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <section id="delivery-names" className="scroll-mt-20 max-w-4xl">
+            <h2 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight mb-2">
               Postal delivery names in {postcode}
             </h2>
-            <p className="text-sm text-gray-500 mb-6 max-w-2xl">
+            <p className="font-sans text-sm text-ink-muted mb-4 max-w-2xl">
               Australia Post uses {postalNames.length === 1 ? "this name" : "these names"} for mail
               in postcode {postcode}. {postalNames.length === 1 ? "It is not a suburb" : "They are not suburbs"},
               so there is no suburb profile to show.
             </p>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <ul className="border-t border-line">
               {postalNames.map((p) => {
                 const parent = p.parent ? suburbs.find((s) => s.slug === p.parent) : undefined;
                 return (
-                  <li key={p.slug} className="rounded-xl border border-gray-200 bg-white p-4">
-                    <p className="font-semibold text-gray-900">{p.name}</p>
-                    <p className="text-xs text-gray-500 mt-1">
+                  <li key={p.slug} className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-line py-2.5 font-sans text-[15px]">
+                    <span className="font-medium text-ink">{p.name}</span>
+                    <span className="text-sm text-ink-muted">
                       {nonLocalityLabel(p.kind)}
                       {parent && (
                         <>
-                          {" "}in{" "}
-                          <Link href={`/suburbs/${parent.slug}`} className="text-primary hover:underline">
+                          {" in "}
+                          <Link href={`/suburbs/${parent.slug}`} className="underline decoration-line-strong underline-offset-4 hover:text-primary">
                             {parent.name}
                           </Link>
                         </>
                       )}
-                    </p>
+                    </span>
                   </li>
                 );
               })}
@@ -320,76 +372,44 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
 
         {/* Schools */}
         {allSchools.length > 0 && (
-          <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Schools in Postcode {postcode}
+          <section id="schools" className="scroll-mt-20 max-w-4xl">
+            <h2 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight mb-2">
+              Schools in postcode {postcode}
             </h2>
-            <p className="text-sm text-gray-500 mb-6">
-              All schools across suburbs in this postcode.
+            <p className="font-sans text-sm text-ink-muted mb-4">
+              Schools listed against the suburbs in this postcode, with their ICSEA (ACARA).
             </p>
-            <div className="rounded-xl border border-gray-200 bg-white shadow-card overflow-hidden">
+            <div className="overflow-x-auto rounded-xl border border-line">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-100 bg-gray-50">
-                    <th className="text-left px-4 py-3 font-semibold text-gray-700">School</th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-700 hidden sm:table-cell">
-                      Type
-                    </th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-700 hidden sm:table-cell">
-                      Sector
-                    </th>
-                    <th className="text-right px-4 py-3 font-semibold text-gray-700 hidden md:table-cell">
-                      ICSEA
-                    </th>
-                    <th className="text-left px-4 py-3 font-semibold text-gray-700 hidden lg:table-cell">
-                      Suburb
-                    </th>
+                  <tr className="bg-surface-warm border-b border-line text-left">
+                    <th scope="col" className="py-3 px-4 font-semibold text-ink">School</th>
+                    <th scope="col" className="py-3 px-4 font-semibold text-ink hidden sm:table-cell">Type</th>
+                    <th scope="col" className="py-3 px-4 font-semibold text-ink hidden sm:table-cell">Sector</th>
+                    <th scope="col" className="py-3 px-4 font-semibold text-ink text-right">ICSEA</th>
+                    <th scope="col" className="py-3 px-4 font-semibold text-ink hidden md:table-cell">Suburb</th>
                   </tr>
                 </thead>
                 <tbody>
                   {allSchools.map((school, i) => {
-                    const schoolSlug = school.acaraId
-                      ? `${school.name
-                          .toLowerCase()
-                          .replace(/[^a-z0-9]+/g, "-")
-                          .replace(/^-|-$/g, "")}-${school.acaraId}`
-                      : null;
+                    const schoolSlug = school.acaraId ? makeSchoolSlug(school.name, school.acaraId) : null;
                     return (
-                      <tr
-                        key={i}
-                        className="border-b border-gray-50 last:border-b-0 hover:bg-gray-50 transition-colors"
-                      >
-                        <td className="px-4 py-3">
+                      <tr key={i} className="border-b border-line last:border-b-0">
+                        <td className="py-3 px-4">
                           {schoolSlug ? (
-                            <Link
-                              href={`/schools/${schoolSlug}`}
-                              className="font-medium text-gray-900 hover:text-primary transition-colors"
-                            >
+                            <Link href={`/schools/${schoolSlug}`} className="font-medium text-ink hover:text-primary transition-colors">
                               {school.name}
                             </Link>
                           ) : (
-                            <span className="font-medium text-gray-900">{school.name}</span>
+                            <span className="font-medium text-ink">{school.name}</span>
                           )}
-                          {school.yearRange && (
-                            <span className="text-xs text-gray-400 ml-2">
-                              ({school.yearRange})
-                            </span>
-                          )}
+                          {school.yearRange && <span className="text-xs text-ink-subtle ml-2">{school.yearRange}</span>}
                         </td>
-                        <td className="px-4 py-3 text-gray-500 capitalize hidden sm:table-cell">
-                          {school.type}
-                        </td>
-                        <td className="px-4 py-3 text-gray-500 capitalize hidden sm:table-cell">
-                          {school.sector}
-                        </td>
-                        <td className="px-4 py-3 text-right text-gray-700 hidden md:table-cell">
-                          {school.icsea ?? "–"}
-                        </td>
-                        <td className="px-4 py-3 hidden lg:table-cell">
-                          <Link
-                            href={`/suburbs/${school.suburbSlug}`}
-                            className="text-gray-500 hover:text-primary transition-colors"
-                          >
+                        <td className="py-3 px-4 text-ink-muted capitalize hidden sm:table-cell">{school.type}</td>
+                        <td className="py-3 px-4 text-ink-muted capitalize hidden sm:table-cell">{school.sector}</td>
+                        <td className="py-3 px-4 text-right text-ink">{school.icsea ?? "–"}</td>
+                        <td className="py-3 px-4 hidden md:table-cell">
+                          <Link href={`/suburbs/${school.suburbSlug}/schools`} className="text-ink-muted hover:text-primary transition-colors">
                             {school.suburbName}
                           </Link>
                         </td>
@@ -402,86 +422,24 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
           </section>
         )}
 
-        {/* Buying / selling resource block. Sends postcode-page authority and
-            readers into the transactional guides and calculators rather than
-            leaving them on a reference page. */}
-        <section className="rounded-2xl border border-gray-100 bg-gray-50 p-6 sm:p-8">
-          <p className="text-[13px] text-gray-400 font-medium mb-1">
-            Thinking of a move in {state}?
-          </p>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Buying or selling in {state}?
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">Buying</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link href="/guides/first-home-buyer-guide" className="text-gray-700 hover:text-primary hover:underline">
-                    First home buyer guide
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/guides/how-much-deposit-to-buy-a-house" className="text-gray-700 hover:text-primary hover:underline">
-                    How much deposit you need
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/stamp-duty-calculator" className="text-gray-700 hover:text-primary hover:underline">
-                    Stamp duty calculator
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">Selling</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link href="/guides/how-to-sell-a-house-australia" className="text-gray-700 hover:text-primary hover:underline">
-                    How to sell a house
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/guides/real-estate-agent-fees-australia" className="text-gray-700 hover:text-primary hover:underline">
-                    Real estate agent fees
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/real-estate-commission-calculator" className="text-gray-700 hover:text-primary hover:underline">
-                    Commission calculator
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
         {/* Reverse-lookup FAQ. Visible Q&A backs the FAQPage schema above so
             Google can surface a direct answer for "what suburb is postcode X"
             and "what state is postcode X in". */}
-        <section className="pt-4">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+        <section id="questions" className="scroll-mt-20 max-w-3xl">
+          <h2 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight mb-4">
             Postcode {postcode} questions
           </h2>
-          <dl className="divide-y divide-gray-100 border-t border-gray-100">
+          <dl className="divide-y divide-line border-y border-line">
             {postcodeFaqs.map((faq) => (
-              <div key={faq.question} className="py-5">
-                <dt className="text-lg font-semibold text-gray-900 mb-2">{faq.question}</dt>
-                <dd className="text-gray-600 leading-relaxed">{faq.answer}</dd>
+              <div key={faq.question} className="py-4">
+                <dt className="font-sans text-base font-semibold text-ink mb-1.5">{faq.question}</dt>
+                <dd className="font-sans text-[15px] text-ink-muted leading-relaxed">{faq.answer}</dd>
               </div>
             ))}
           </dl>
         </section>
 
-        {/* Back to postcodes */}
-        <div className="pt-4 border-t border-gray-100">
-          <Link
-            href="/postcodes"
-            className="text-sm text-primary hover:underline"
-          >
-            Browse all postcodes
-          </Link>
-        </div>
+        <SubpageNextSteps id="next" title={`Buying or selling in ${stateName}`} groups={nextSteps} />
       </div>
     </>
   );

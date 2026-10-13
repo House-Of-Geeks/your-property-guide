@@ -65,57 +65,60 @@ export default async function PostcodesPage() {
       />
       <BreadcrumbJsonLd items={[{ name: "Postcodes", url: "/postcodes" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Postcodes" }]} />
-          </div>
-
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              {postcodes.length.toLocaleString()} postcodes
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              Browse by state
-            </span>
-          </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
-            Browse by{" "}
-            <span>postcode</span>
+      {/* Answer first: what the page is, then a jump to each state. */}
+      <section className="bg-surface-warm border-b border-line">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-8 sm:pb-10">
+          <Breadcrumbs items={[{ label: "Postcodes" }]} />
+          <h1 className="pt-3 font-display text-ink font-bold leading-[1.05] tracking-[-0.03em] text-[2rem] sm:text-5xl lg:text-[3.25rem]">
+            Australian postcodes by state
           </h1>
-          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            Property data, suburb profiles, and market statistics for every
-            Australian postcode, grouped by state.
+          <p className="mt-4 font-sans text-base sm:text-lg text-ink leading-relaxed max-w-2xl">
+            {`${postcodes.length.toLocaleString("en-AU")} postcodes, grouped by state. Each postcode page names the suburbs it covers and links to their profiles, prices and schools.`}
           </p>
+          {sortedStates.length > 0 && (
+            <nav aria-label="Jump to a state" className="mt-6">
+              <ul className="flex flex-wrap gap-2">
+                {sortedStates.map((state) => (
+                  <li key={state}>
+                    <a
+                      href={`#${state.toLowerCase()}`}
+                      className="inline-flex items-center rounded-lg border border-line-strong bg-white px-3 py-2 text-sm font-semibold text-ink hover:border-ink transition-colors"
+                    >
+                      {state}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
         </div>
       </section>
 
       {/* Postcode directory */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-10 sm:space-y-12">
         {sortedStates.map((state) => {
           const codes = byState.get(state) ?? [];
           const stateLabel = STATE_LABELS[state] ?? state;
           return (
-            <section key={state}>
-              <h2 className="font-display text-2xl text-ink mb-5 pb-2 border-b border-line">
+            <section key={state} id={state.toLowerCase()} className="scroll-mt-20">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight mb-4 pb-2 border-b border-line">
                 {stateLabel}{" "}
-                <span className="text-sm font-sans font-normal text-ink-subtle">
-                  ({codes.length} postcode{codes.length !== 1 ? "s" : ""})
+                <span className="text-sm font-sans font-normal text-ink-muted">
+                  {codes.length} postcode{codes.length !== 1 ? "s" : ""}
                 </span>
               </h2>
-              <div className="flex flex-wrap gap-2">
+              <ul className="flex flex-wrap gap-1.5">
                 {codes.map((postcode) => (
-                  <Link
-                    key={postcode}
-                    href={`/postcodes/${postcode}`}
-                    className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors"
-                  >
-                    {postcode}
-                  </Link>
+                  <li key={postcode}>
+                    <Link
+                      href={`/postcodes/${postcode}`}
+                      className="inline-flex items-center rounded-lg border border-line bg-white px-2.5 py-1.5 text-sm font-medium text-ink hover:border-ink transition-colors"
+                    >
+                      {postcode}
+                    </Link>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </section>
           );
         })}
