@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BUTTON_PRIMARY, BUTTON_SECONDARY } from "@/components/premium";
 
 // Buyer / seller funnel entry band for geography pages (states, regions),
 // mirroring the postcode-page guide pair. When the page has a natural lead
@@ -12,24 +13,24 @@ interface GuidePairCTAProps {
 
 export function GuidePairCTA({ placeName, suburbSlug }: GuidePairCTAProps) {
   return (
-    <section className="rounded-2xl border border-gray-200 bg-white p-6 sm:p-8">
-      <h2 className="text-lg font-bold text-gray-900 mb-2">
+    <section className="tone-light rounded-xl border border-line bg-surface-raised p-6 sm:p-8">
+      <h2 className="text-2xl sm:text-3xl leading-tight tracking-[-0.02em] text-ink mb-3">
         Buying or selling in {placeName}?
       </h2>
-      <p className="text-sm text-gray-500 mb-4 max-w-2xl">
+      <p className="text-base text-ink-muted leading-relaxed mb-6 max-w-2xl">
         Free guides covering what it really costs, how agents work, and a
         12-week plan to settlement, personalised to your suburb.
       </p>
       <div className="flex flex-wrap gap-3">
         <Link
           href={suburbSlug ? `/selling-guide?suburb=${suburbSlug}` : "/selling-guide"}
-          className="inline-flex items-center gap-2 bg-primary text-white text-sm font-semibold rounded-lg px-5 py-2.5 hover:bg-primary/90 transition-colors w-fit"
+          className={`w-fit ${BUTTON_PRIMARY}`}
         >
           Get the free selling guide
         </Link>
         <Link
           href={suburbSlug ? `/buying-guide?suburb=${suburbSlug}` : "/buying-guide"}
-          className="inline-flex items-center gap-2 bg-white border border-primary text-primary text-sm font-semibold rounded-lg px-5 py-2.5 hover:bg-primary/5 transition-colors w-fit"
+          className={`w-fit ${BUTTON_SECONDARY}`}
         >
           Get the free buying guide
         </Link>

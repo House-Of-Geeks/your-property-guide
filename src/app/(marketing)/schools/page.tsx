@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
+import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 import { SITE_URL } from "@/lib/constants";
 import { SchoolsResults } from "./Results";
 
@@ -33,41 +33,32 @@ export default function SchoolsPage({ searchParams }: SchoolsPageProps) {
       />
       <BreadcrumbJsonLd items={[{ name: "Schools", url: "/schools" }]} />
 
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Schools" }]} />
-          </div>
+      <PhotoHero photo="verandah" breadcrumbs={[{ label: "Schools" }]}>
+        <p className="flex items-center gap-4 text-sm text-ink-muted mb-5">
+          <span className="font-semibold">9,600+ schools</span>
+          <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+          <span>National coverage</span>
+        </p>
+        <HeroTitle>
+          Find your{" "}
+          <span>school</span>
+        </HeroTitle>
+        <HeroLead>
+          Search every public, Catholic and independent school in Australia,
+          with catchments, ICSEA, and nearby suburbs all in one view.
+        </HeroLead>
+      </PhotoHero>
 
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              9,600+ schools
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              National coverage
-            </span>
-          </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
-            Find your{" "}
-            <span>school</span>
-          </h1>
-          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            Search every public, Catholic and independent school in Australia,
-            with catchments, ICSEA, and nearby suburbs all in one view.
-          </p>
-        </div>
-      </section>
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      {/* The search form and results are the page's job: first band under the hero. */}
+      <Band tone="quiet" spacing="compact">
         <Suspense fallback={null}>
           <SchoolsResults searchParams={searchParams} />
         </Suspense>
 
-        <p className="text-xs font-sans text-ink-subtle mt-10 text-center">
+        <p className="text-sm text-ink-subtle mt-10 text-center">
           School data sourced from ACARA, licensed under CC BY 4.0.
         </p>
-      </div>
+      </Band>
 
       {/* Buyer funnel exit. Catchment researchers are family buyers — the
           buying guide is the natural next step after shortlisting schools. */}

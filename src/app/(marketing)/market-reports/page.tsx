@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 
 export const metadata: Metadata = {
   title: "Australian Property Market Reports",
@@ -81,56 +80,45 @@ export default function MarketReportsHubPage() {
       />
       <BreadcrumbJsonLd items={[{ name: "Market Reports", url: "/market-reports" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Market Reports" }]} />
-          </div>
+      <PhotoHero photo="market" breadcrumbs={[{ label: "Market Reports" }]}>
+        <p className="text-sm text-ink-muted mb-5">
+          Updated quarterly
+        </p>
+        <HeroTitle>
+          Property markets, <span>state by state</span>
+        </HeroTitle>
+        <HeroLead>
+          Median prices, annual growth, top performing suburbs, and affordability rankings,
+          sourced from state revenue offices and sales data.
+        </HeroLead>
+      </PhotoHero>
 
-          <p className="text-[13px] font-sans text-ink-subtle mb-5">
-            Updated quarterly
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Property markets, <span>state by state</span>
-          </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            Median prices, annual growth, top performing suburbs, and affordability rankings,
-            sourced from state revenue offices and sales data.
-          </p>
-        </div>
-      </section>
-
-      <div className="relative h-[180px] sm:h-[260px] lg:h-[320px] border-b border-line bg-surface-sunken">
-        <Image src="/images/photos/auction.jpg" alt="A crowd gathered on the footpath outside a brick house for an auction" fill sizes="100vw" className="object-cover object-[50%_45%]" />
-      </div>
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      <Band tone="quiet" spacing="compact">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {STATES.map((state) => (
             <Link
               key={state.slug}
               href={`/market-reports/${state.slug}`}
-              className="group flex flex-col gap-3 rounded-2xl bg-surface-raised border border-line p-6 hover:border-primary/40 hover:shadow-md transition-all"
+              className="group flex flex-col rounded-xl bg-surface-raised border border-line p-6 hover:border-ink transition-colors"
             >
-              <p className="text-[13px] font-sans text-ink-subtle">
+              <p className="text-sm text-ink-subtle mb-2">
                 {state.abbr}
               </p>
-              <h2 className="font-display text-xl text-ink group-hover:text-primary transition-colors leading-tight">
+              <h2 className="text-2xl text-ink leading-tight tracking-[-0.02em] group-hover:text-primary transition-colors">
                 {state.name}
               </h2>
-              <p className="font-sans text-sm text-ink-muted leading-relaxed">{state.description}</p>
-              <span className="mt-auto font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
+              <p className="mt-3 text-sm text-ink-muted leading-relaxed">{state.description}</p>
+              <span className="mt-auto pt-6 inline-flex items-center gap-1.5 text-base font-semibold text-ink group-hover:text-primary transition-colors">
                 View report →
               </span>
             </Link>
           ))}
         </div>
 
-        <p className="mt-10 text-xs font-sans text-ink-subtle">
+        <p className="mt-10 max-w-3xl border-t border-line pt-6 text-sm text-ink-muted leading-relaxed">
           Market data sourced from state revenue offices and property sales data. Updated quarterly.
         </p>
-      </div>
+      </Band>
     </>
   );
 }

@@ -3,11 +3,11 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Bed, Bath, Car, Maximize2, MapPin, ExternalLink } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, JsonLd } from "@/components/seo";
 import { Badge } from "@/components/ui";
 import { getBestDealById, formatBestDealPrice } from "@/lib/services/best-deal-service";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -91,18 +91,67 @@ export default async function BestDealDetailPage({ params }: PageProps) {
       />
       <JsonLd data={offerSchema} />
 
-      <section className="bg-surface-warm border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-8">
-          <Breadcrumbs items={breadcrumb} />
+      {/* Hero: plain charcoal (never the deal's own photo), carrying the
+          title, the headline and the key facts. */}
+      <PhotoHero breadcrumbs={breadcrumb}>
+        <div className="flex items-center gap-4 mb-5 flex-wrap">
+          <span className="text-sm font-semibold text-ink-muted leading-none">
+            Featured deal
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {deal.dealTypes.map((t) => (
+              <Badge key={t} variant="outline">{t.replace("-", " ")}</Badge>
+            ))}
+          </div>
         </div>
-      </section>
 
-      <article className="bg-surface-raised">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
-          <div className="grid lg:grid-cols-12 gap-10">
-            {/* Hero + body */}
+        <HeroTitle>
+          {deal.title}
+        </HeroTitle>
+        <HeroLead>
+          {deal.headline}
+        </HeroLead>
+
+        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-line pt-6 text-base text-ink-muted">
+          <span className="inline-flex items-center gap-1.5">
+            <MapPin className="w-4 h-4 text-ink-subtle" />
+            {deal.suburbName}, {deal.state} {deal.postcode}
+          </span>
+          {deal.bedrooms != null && (
+            <span className="inline-flex items-center gap-1.5">
+              <Bed className="w-4 h-4 text-ink-subtle" />
+              {deal.bedrooms} bed
+            </span>
+          )}
+          {deal.bathrooms != null && (
+            <span className="inline-flex items-center gap-1.5">
+              <Bath className="w-4 h-4 text-ink-subtle" />
+              {deal.bathrooms} bath
+            </span>
+          )}
+          {deal.carSpaces != null && (
+            <span className="inline-flex items-center gap-1.5">
+              <Car className="w-4 h-4 text-ink-subtle" />
+              {deal.carSpaces} car
+            </span>
+          )}
+          {deal.landArea != null && (
+            <span className="inline-flex items-center gap-1.5">
+              <Maximize2 className="w-4 h-4 text-ink-subtle" />
+              {deal.landArea} m²
+            </span>
+          )}
+        </div>
+      </PhotoHero>
+
+      {/* The deal's own photos, the pitch and the disclosure, beside the
+          sticky price and agent panel. */}
+      <Band spacing="compact">
+        <article>
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-12">
+            {/* Photos + body */}
             <div className="lg:col-span-7">
-              <div className="relative aspect-[16/10] rounded-2xl overflow-hidden border border-line bg-surface-warm mb-3">
+              <div className="relative aspect-[16/10] rounded-xl overflow-hidden border border-line bg-surface-warm mb-3">
                 <Image
                   src={deal.heroImage}
                   alt={deal.title}
@@ -117,7 +166,7 @@ export default async function BestDealDetailPage({ params }: PageProps) {
               </div>
 
               {deal.gallery.length > 0 && (
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-8">
+                <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-10">
                   {deal.gallery.slice(0, 8).map((src, i) => (
                     <div key={i} className="relative aspect-square rounded-lg overflow-hidden bg-surface-warm border border-line">
                       <Image src={src} alt={`${deal.title} photo ${i + 2}`} fill sizes="120px" className="object-cover" />
@@ -125,56 +174,6 @@ export default async function BestDealDetailPage({ params }: PageProps) {
                   ))}
                 </div>
               )}
-
-              <div className="flex items-center gap-4 mb-8 flex-wrap">
-                <span className="text-sm font-semibold text-ink-muted leading-none">
-                  Featured deal
-                </span>
-                <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-                <div className="flex flex-wrap gap-2">
-                  {deal.dealTypes.map((t) => (
-                    <Badge key={t} variant="outline">{t.replace("-", " ")}</Badge>
-                  ))}
-                </div>
-              </div>
-
-              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 font-bold">
-                {deal.title}
-              </h1>
-              <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-8">
-                {deal.headline}
-              </p>
-
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 py-4 border-y border-line text-sm font-sans text-ink-muted mb-8">
-                <span className="inline-flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-ink-subtle" />
-                  {deal.suburbName}, {deal.state} {deal.postcode}
-                </span>
-                {deal.bedrooms != null && (
-                  <span className="inline-flex items-center gap-1.5">
-                    <Bed className="w-4 h-4 text-ink-subtle" />
-                    {deal.bedrooms} bed
-                  </span>
-                )}
-                {deal.bathrooms != null && (
-                  <span className="inline-flex items-center gap-1.5">
-                    <Bath className="w-4 h-4 text-ink-subtle" />
-                    {deal.bathrooms} bath
-                  </span>
-                )}
-                {deal.carSpaces != null && (
-                  <span className="inline-flex items-center gap-1.5">
-                    <Car className="w-4 h-4 text-ink-subtle" />
-                    {deal.carSpaces} car
-                  </span>
-                )}
-                {deal.landArea != null && (
-                  <span className="inline-flex items-center gap-1.5">
-                    <Maximize2 className="w-4 h-4 text-ink-subtle" />
-                    {deal.landArea} m²
-                  </span>
-                )}
-              </div>
 
               <div className="prose-ypg max-w-none mb-8">
                 <h2>Why we&rsquo;re featuring this deal</h2>
@@ -187,18 +186,18 @@ export default async function BestDealDetailPage({ params }: PageProps) {
                     href={deal.externalListingUrl}
                     target="_blank"
                     rel="nofollow noopener"
-                    className="inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-primary underline decoration-line-strong underline-offset-4"
+                    className="inline-flex items-center gap-2 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
                   >
-                    View agent&rsquo;s full listing <ExternalLink className="w-3.5 h-3.5" />
+                    View agent&rsquo;s full listing <ExternalLink className="w-4 h-4" />
                   </a>
                 </p>
               )}
 
-              <div className="rounded-2xl border border-line-warm bg-surface-warm p-5 sm:p-6">
-                <p className="text-[13px] font-sans text-ink-subtle mb-2">
+              <div className="rounded-xl border border-line bg-surface-warm p-5 sm:p-6">
+                <p className="text-sm font-semibold text-ink mb-2">
                   Partner disclosure
                 </p>
-                <p className="font-sans text-sm text-ink-muted leading-relaxed">
+                <p className="text-sm text-ink-muted leading-relaxed">
                   {deal.disclosureText}
                 </p>
               </div>
@@ -207,15 +206,15 @@ export default async function BestDealDetailPage({ params }: PageProps) {
             {/* Sticky agent panel */}
             <aside className="lg:col-span-5 lg:order-2">
               <div className="lg:sticky lg:top-24 space-y-5">
-                <div className="rounded-2xl border border-line bg-surface-raised p-6 shadow-card">
-                  <p className="text-[13px] font-sans text-ink-subtle mb-3">
+                <div className="rounded-xl border border-line bg-surface-raised p-6">
+                  <p className="text-sm text-ink-subtle mb-3">
                     Price guide
                   </p>
-                  <p className="font-display text-3xl sm:text-4xl text-ink leading-none mb-1">
+                  <p className="text-3xl sm:text-4xl font-bold text-ink leading-none tracking-[-0.03em] mb-1">
                     {price}
                   </p>
                   {deal.priceText && (deal.priceMin || deal.priceMax) && (
-                    <p className="font-sans text-sm text-ink-muted mt-1">{deal.priceText}</p>
+                    <p className="text-sm text-ink-muted mt-2">{deal.priceText}</p>
                   )}
 
                   {deal.agent && (
@@ -226,9 +225,9 @@ export default async function BestDealDetailPage({ params }: PageProps) {
                         )}
                       </div>
                       <div>
-                        <p className="font-medium text-ink text-sm">{deal.agent.fullName}</p>
+                        <p className="font-semibold text-ink text-sm">{deal.agent.fullName}</p>
                         {deal.agent.agencyName && (
-                          <p className="text-xs text-ink-muted">{deal.agent.agencyName}</p>
+                          <p className="text-sm text-ink-muted">{deal.agent.agencyName}</p>
                         )}
                       </div>
                     </div>
@@ -236,23 +235,23 @@ export default async function BestDealDetailPage({ params }: PageProps) {
 
                   <Link
                     href={`/find-an-expert?intent=buying`}
-                    className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-ink text-surface-raised hover:bg-primary font-medium px-5 py-3 transition-colors"
+                    className={`${BUTTON_PRIMARY} mt-6 w-full justify-center`}
                   >
                     Get connected
                     <ArrowRight className="w-4 h-4" />
                   </Link>
-                  <p className="text-[11px] font-sans text-ink-subtle mt-3 leading-relaxed text-center">
+                  <p className="text-xs text-ink-subtle mt-3 leading-relaxed text-center">
                     Free for buyers. We match you with one vetted specialist, who pays us for the introduction.
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                  <p className="text-[13px] font-sans text-ink-subtle mb-3">
+                <div className="rounded-xl border border-line bg-surface-warm p-5">
+                  <p className="text-sm font-semibold text-ink mb-2">
                     Listed for
                   </p>
-                  <p className="font-sans text-sm text-ink-muted leading-relaxed">
+                  <p className="text-sm text-ink-muted leading-relaxed">
                     This deal expires on{" "}
-                    <span className="text-ink font-medium">
+                    <span className="text-ink font-semibold">
                       {new Date(deal.expiresAt).toLocaleDateString("en-AU", {
                         day: "numeric",
                         month: "long",
@@ -263,23 +262,23 @@ export default async function BestDealDetailPage({ params }: PageProps) {
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-line bg-surface-raised p-5">
-                  <p className="text-[13px] font-sans text-ink-subtle mb-3">
+                <div className="rounded-xl border border-line bg-surface-raised p-5">
+                  <p className="text-sm font-semibold text-ink mb-2">
                     Why we feature these
                   </p>
-                  <p className="font-sans text-sm text-ink-muted leading-relaxed mb-3">
+                  <p className="text-sm text-ink-muted leading-relaxed mb-3">
                     A small, vetted set of partner-agent properties. Every deal is reviewed before
                     it goes live. Buyers and sellers never pay us.
                   </p>
-                  <Link href="/about" className="text-sm font-medium text-ink hover:text-primary inline-flex items-center gap-1">
+                  <Link href="/about" className="text-sm font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink inline-flex items-center gap-1">
                     Read our charter <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </div>
             </aside>
           </div>
-        </div>
-      </article>
+        </article>
+      </Band>
     </>
   );
 }

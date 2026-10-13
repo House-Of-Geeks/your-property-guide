@@ -14,11 +14,11 @@ interface Props {
 // nothing below five entries (the smaller states and cities).
 export function MostSearchedSuburbs({ label, suburbs, tone = "gray" }: Props) {
   if (suburbs.length < 5) return null;
-  const h = tone === "ink" ? "font-display text-2xl sm:text-3xl text-ink leading-tight mb-2" : "text-2xl font-bold text-gray-900 mb-2";
+  const h = tone === "ink" ? "text-3xl sm:text-4xl text-ink leading-[1.1] tracking-[-0.025em] mb-3" : "text-2xl font-bold text-gray-900 mb-2";
   const p = tone === "ink" ? "font-sans text-sm text-ink-muted mb-6" : "text-sm text-gray-500 mb-6";
   const chip = tone === "ink"
-    ? "inline-block rounded-full border border-line bg-surface-raised px-3 py-1.5 text-sm text-ink hover:border-primary hover:text-primary transition-colors"
-    : "inline-block rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-800 hover:border-primary hover:text-primary transition-colors";
+    ? "inline-block rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm text-ink hover:border-ink transition-colors"
+    : "inline-block rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-800 hover:border-gray-900 transition-colors";
   const muted = tone === "ink" ? "text-ink-subtle" : "text-gray-400";
   return (
     <section aria-labelledby="most-searched-suburbs">

@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
+import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 import { unstable_cache } from "next/cache";
 import { SITE_URL } from "@/lib/constants";
 import { NOT_PLACES_VERSION } from "@/lib/non-localities";
@@ -70,46 +69,37 @@ export default async function PropertyMarketHubPage() {
     <>
       <BreadcrumbJsonLd items={[{ name: "Property Market", url: "/property-market" }]} />
 
-      <section className="bg-surface-warm border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Property Market" }]} />
-          </div>
-          <p className="text-[13px] font-sans text-ink-subtle mb-5">
-            Updated July 2026
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            The Australian property market, <span>city by city</span>
-          </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            Median house prices, 12-month growth and the fastest-moving suburbs in every capital,
-            aggregated from verified government sales data.
-          </p>
-        </div>
-      </section>
+      <PhotoHero photo="market" breadcrumbs={[{ label: "Property Market" }]}>
+        <p className="text-sm text-ink-muted mb-5">
+          Updated July 2026
+        </p>
+        <HeroTitle>
+          The Australian property market, <span>city by city</span>
+        </HeroTitle>
+        <HeroLead>
+          Median house prices, 12-month growth and the fastest-moving suburbs in every capital,
+          aggregated from verified government sales data.
+        </HeroLead>
+      </PhotoHero>
 
-      <div className="relative h-[180px] sm:h-[260px] lg:h-[320px] border-b border-line bg-surface-sunken">
-        <Image src="/images/photos/brisbane-view.jpg" alt="Old iron rooftops and jacarandas in flower with a city skyline in the distance" fill sizes="100vw" className="object-cover object-[50%_55%]" />
-      </div>
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <Band tone="quiet" spacing="compact">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {markets.map(({ city, figure }) => (
             <Link
               key={city.slug}
               href={`/property-market/${city.slug}`}
-              className="group rounded-2xl border border-line bg-surface-raised p-6 hover:border-primary/40 hover:shadow-card transition-all"
+              className="group flex flex-col rounded-xl border border-line bg-surface-raised p-6 hover:border-ink transition-colors"
             >
-              <p className="text-[13px] font-sans text-ink-subtle mb-2">
+              <p className="text-sm text-ink-subtle mb-2">
                 {city.state}
               </p>
-              <h2 className="font-display text-2xl text-ink leading-tight group-hover:text-primary transition-colors">
+              <h2 className="text-3xl text-ink leading-tight tracking-[-0.025em] group-hover:text-primary transition-colors">
                 {city.name}
               </h2>
               {figure?.kind === "median" && (
                 <>
-                  <p className="font-display text-xl text-ink mt-4">{figure.price}</p>
-                  <p className="text-xs font-sans text-ink-subtle mt-1">
+                  <p className="text-2xl font-bold text-ink mt-5">{figure.price}</p>
+                  <p className="text-sm text-ink-subtle mt-1">
                     median house price
                     {figure.growth != null && (
                       <>
@@ -125,31 +115,29 @@ export default async function PropertyMarketHubPage() {
               )}
               {figure?.kind === "none" && (
                 <>
-                  <p className="font-display text-lg text-ink mt-4">{figure.label}</p>
-                  <p className="text-xs font-sans text-ink-subtle mt-1">{figure.note}</p>
+                  <p className="text-lg font-semibold text-ink mt-5">{figure.label}</p>
+                  <p className="text-sm text-ink-subtle mt-1">{figure.note}</p>
                 </>
               )}
-              <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-sans font-medium text-ink group-hover:text-primary transition-colors">
+              <span className="mt-auto pt-6 inline-flex items-center gap-1.5 text-base font-semibold text-ink group-hover:text-primary transition-colors">
                 View market
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </span>
             </Link>
           ))}
         </div>
 
-        <section className="mt-10 rounded-2xl border border-line bg-surface-warm p-5 text-sm font-sans text-ink-muted">
-          <p className="leading-relaxed">
-            City figures are the median of suburb-level medians from state valuers-general, state
-            government sales records and the ABS; only verified sources contribute.{" "}
-            <Link
-              href="/methodology#median-prices"
-              className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-            >
-              Full methodology →
-            </Link>
-          </p>
-        </section>
-      </div>
+        <p className="mt-10 max-w-3xl border-t border-line pt-6 text-sm text-ink-muted leading-relaxed">
+          City figures are the median of suburb-level medians from state valuers-general, state
+          government sales records and the ABS; only verified sources contribute.{" "}
+          <Link
+            href="/methodology#median-prices"
+            className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
+          >
+            Full methodology →
+          </Link>
+        </p>
+      </Band>
 
       <ExpertCTA
         headline="Selling into this market?"

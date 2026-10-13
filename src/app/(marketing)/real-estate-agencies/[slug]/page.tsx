@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Phone, Mail, Globe, MapPin, ChevronRight, Building2 } from "lucide-react";
+import { Phone, Mail, Globe, MapPin, Building2 } from "lucide-react";
 import { AgencyJsonLd, BreadcrumbJsonLd } from "@/components/seo";
 import { PropertyCard } from "@/components/property/PropertyCard";
 import { AgencyCard } from "@/components/agent/AgencyCard";
@@ -12,6 +12,7 @@ import { getPropertiesByAgency } from "@/lib/services/property-service";
 import { agencyTitle, absoluteUrl } from "@/lib/utils/seo";
 import { SITE_URL } from "@/lib/constants";
 import type { Agent, Agency } from "@/types";
+import { BUTTON_PRIMARY, BUTTON_SECONDARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 
 // suburb slugs end in "-[state2-3]-[postcode4]" e.g. "margate-qld-4019"
 function isSuburbSlug(slug: string) {
@@ -168,31 +169,24 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
           ]}
         />
 
-        {/* Breadcrumbs */}
-        <div className="bg-white border-b border-gray-100">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-3">
-            <nav className="flex items-center gap-1.5 text-xs text-gray-500">
-              <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-              <ChevronRight className="w-3 h-3 text-gray-300" />
-              <Link href="/real-estate-agencies" className="hover:text-primary transition-colors">Real Estate Agencies</Link>
-              <ChevronRight className="w-3 h-3 text-gray-300" />
-              <span className="text-gray-700 font-medium">{displayName}</span>
-            </nav>
-          </div>
-        </div>
+        {/* Hero: the H1 and the agency count. */}
+        <PhotoHero
+          breadcrumbs={[
+            { label: "Real Estate Agencies", href: "/real-estate-agencies" },
+            { label: displayName },
+          ]}
+        >
+          <HeroTitle>
+            Real Estate Agencies in {name}
+          </HeroTitle>
+          <HeroLead>
+            {agencies.length > 0
+              ? `${agencies.length} agenc${agencies.length === 1 ? "y" : "ies"} serving ${displayName}`
+              : `No agencies found in ${displayName}`}
+          </HeroLead>
+        </PhotoHero>
 
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">
-              Real Estate Agencies in {name}
-            </h1>
-            <p className="text-gray-500 mt-1">
-              {agencies.length > 0
-                ? `${agencies.length} agenc${agencies.length === 1 ? "y" : "ies"} serving ${displayName}`
-                : `No agencies found in ${displayName}`}
-            </p>
-          </div>
-
+        <Band spacing="compact">
           {agencies.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {agencies.map((agency) => (
@@ -200,15 +194,15 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
               ))}
             </div>
           ) : (
-            <div className="text-center py-16 text-gray-400">
-              <Building2 className="w-12 h-12 mx-auto mb-4 opacity-30" />
-              <p className="text-lg">No agencies listed in {displayName} yet.</p>
-              <Link href="/real-estate-agencies" className="mt-4 inline-block text-primary hover:underline text-sm">
+            <div className="text-center py-16 text-ink-subtle">
+              <Building2 className="w-12 h-12 mx-auto mb-4 opacity-30" aria-hidden="true" />
+              <p className="text-lg text-ink-muted">No agencies listed in {displayName} yet.</p>
+              <Link href="/real-estate-agencies" className="mt-4 inline-block text-sm font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
                 Browse all agencies →
               </Link>
             </div>
           )}
-        </div>
+        </Band>
       </div>
     );
   }
@@ -247,163 +241,142 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
         ]}
       />
 
-      {/* Breadcrumbs, above hero on white bg */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-3">
-          <nav className="flex items-center gap-1.5 text-xs text-gray-500">
-            <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-            <ChevronRight className="w-3 h-3 text-gray-300" />
-            <Link href="/real-estate-agencies" className="hover:text-primary transition-colors">Real Estate Agencies</Link>
-            <ChevronRight className="w-3 h-3 text-gray-300" />
-            <Link
-              href={`/real-estate-agencies/${agency.address.suburb.toLowerCase().replace(/\s+/g, "-")}-${agency.address.state.toLowerCase()}-${agency.address.postcode}`}
-              className="hover:text-primary transition-colors"
-            >
-              {agency.address.suburb}
-            </Link>
-            <ChevronRight className="w-3 h-3 text-gray-300" />
-            <span className="text-gray-700 font-medium">{agency.name}</span>
-          </nav>
-        </div>
-      </div>
-
-      {/* Hero */}
-      <div
-        className="relative h-64 sm:h-80 overflow-hidden"
-        style={{ background: agency.primaryColor ? `${agency.primaryColor}` : "#1B3A5C" }}
+      {/* Hero: the agency's own photo when it has one (else plain
+          charcoal), carrying the H1, the address and the agency's links. */}
+      <PhotoHero
+        image={agency.heroBg ? { src: agency.heroBg } : undefined}
+        breadcrumbs={[
+          { label: "Real Estate Agencies", href: "/real-estate-agencies" },
+          {
+            label: agency.address.suburb,
+            href: `/real-estate-agencies/${agency.address.suburb.toLowerCase().replace(/\s+/g, "-")}-${agency.address.state.toLowerCase()}-${agency.address.postcode}`,
+          },
+          { label: agency.name },
+        ]}
       >
-        {agency.heroBg ? (
-          <Image src={agency.heroBg} alt={`${agency.name} office`} fill className="object-cover" priority sizes="100vw" />
-        ) : null}
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4 gap-3">
-          <p className="font-display text-white/80 text-sm sm:text-base leading-none mb-1">
-            Local agency
-          </p>
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl drop-shadow-lg leading-[1.02] tracking-tight font-bold">
-            {agency.name}
-          </h1>
-          <p className="flex items-center gap-1.5 text-white/80 text-sm">
-            <MapPin className="w-4 h-4 flex-shrink-0" />
-            {agency.address.full}
-          </p>
-          {socialLinks.length > 0 && (
-            <div className="flex items-center gap-4 mt-1 text-white/70">
-              {socialLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={link.label}
-                  className="hover:text-white transition-colors"
-                >
-                  {link.icon}
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+        <p className="text-sm text-ink-muted mb-5">
+          Local agency
+        </p>
+        <HeroTitle>
+          {agency.name}
+        </HeroTitle>
+        <HeroLead className="flex items-start gap-2">
+          <MapPin className="w-5 h-5 mt-1 flex-shrink-0" aria-hidden="true" />
+          {agency.address.full}
+        </HeroLead>
+        {socialLinks.length > 0 && (
+          <div className="flex items-center gap-4 mt-6 text-ink-muted">
+            {socialLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={link.label}
+                className="hover:text-ink transition-colors"
+              >
+                {link.icon}
+              </a>
+            ))}
+          </div>
+        )}
+      </PhotoHero>
 
       {/* Logo + CTA bar */}
-      <div className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-[72px]">
+      <div className="bg-white border-b border-line">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap items-center justify-between gap-4">
           <div className="relative h-10 w-40">
             <Image src={agency.logo} alt={agency.name} fill className="object-contain object-left" sizes="160px" />
           </div>
           <div className="flex gap-3">
             <a
               href={`tel:${agency.phone}`}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:border-primary hover:text-primary transition-colors"
+              className={BUTTON_SECONDARY}
             >
-              <Phone className="w-4 h-4" />
+              <Phone className="w-4 h-4" aria-hidden="true" />
               Call
             </a>
             <a
               href={`mailto:${agency.email}`}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-medium hover:bg-primary/90 transition-colors"
+              className={BUTTON_PRIMARY}
             >
-              <Mail className="w-4 h-4" />
+              <Mail className="w-4 h-4" aria-hidden="true" />
               Email
             </a>
           </div>
         </div>
       </div>
 
-      {/* Body */}
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+      {/* Properties stats and About */}
+      <Band spacing="compact">
+        <div className="space-y-10">
 
-        {/* Properties stats */}
-        {totalSold > 0 && (
-          <div>
-            <h2 className="text-xl font-bold text-gray-900">Properties</h2>
-            <p className="text-sm text-gray-500 mt-0.5">12 month period to {today}</p>
-            <div className="mt-4">
-              <p className="text-5xl font-bold text-gray-900 leading-none">{totalSold}</p>
-              <p className="text-[13px] font-semibold text-gray-500 mt-1">Sold</p>
+          {/* Properties stats */}
+          {totalSold > 0 && (
+            <div>
+              <SectionHeading size="md" title="Properties" />
+              <p className="text-sm text-ink-muted mt-2">12 month period to {today}</p>
+              <div className="mt-6">
+                <p className="text-5xl font-bold text-ink leading-none tracking-[-0.03em]">{totalSold}</p>
+                <p className="text-sm font-semibold text-ink-muted mt-2">Sold</p>
+              </div>
+              <hr className="mt-10 border-line" />
             </div>
-            <hr className="mt-8 border-gray-200" />
-          </div>
-        )}
-
-        {/* About */}
-        <div>
-          <h2 className="text-xl font-bold text-gray-900">About {agency.name}</h2>
-          <p className="mt-4 text-gray-700 leading-relaxed whitespace-pre-line line-clamp-[10]">
-            {agency.description}
-          </p>
-          {agency.website && (
-            <a
-              href={agency.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 mt-4 text-primary text-sm font-medium hover:underline"
-            >
-              Visit website <Globe className="w-3.5 h-3.5" />
-            </a>
           )}
+
+          {/* About */}
+          <div>
+            <SectionHeading size="md" title={<>About {agency.name}</>} />
+            <p className="mt-6 max-w-3xl text-lg text-ink-muted leading-relaxed whitespace-pre-line line-clamp-[10]">
+              {agency.description}
+            </p>
+            {agency.website && (
+              <a
+                href={agency.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 mt-6 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
+              >
+                Visit website <Globe className="w-4 h-4" aria-hidden="true" />
+              </a>
+            )}
+          </div>
         </div>
+      </Band>
 
-        <hr className="border-gray-200" />
+      {/* Our Team */}
+      <Band tone="quiet" spacing="compact">
+        <SectionHeading size="md" title="Our Team" />
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {agents.map((agent) => (
+            <AgencyTeamCard key={agent.id} agent={agent} agency={agency} />
+          ))}
+        </div>
+      </Band>
 
-        {/* Our Team */}
-        <div>
-          <h2 className="text-xl font-bold text-gray-900">Our Team</h2>
-          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {agents.map((agent) => (
-              <AgencyTeamCard key={agent.id} agent={agent} agency={agency} />
+      {/* Current Listings */}
+      {listings.length > 0 && (
+        <Band spacing="compact">
+          <SectionHeading size="md" title="Current Listings" />
+          <p className="text-base text-ink-muted mt-3">Active properties listed by {agency.name}</p>
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {listings.map((property) => (
+              <PropertyCard key={property.id} property={property} variant="grid" />
             ))}
           </div>
-        </div>
+          <div className="mt-8">
+            <Link href={`/buy?agency=${agency.slug}`} className="text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
+              View all listings by {agency.name} →
+            </Link>
+          </div>
+        </Band>
+      )}
 
-        {/* Current Listings */}
-        {listings.length > 0 && (
-          <>
-            <hr className="border-gray-200" />
-            <div>
-              <h2 className="text-xl font-bold text-gray-900">Current Listings</h2>
-              <p className="text-sm text-gray-500 mt-1">Active properties listed by {agency.name}</p>
-              <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {listings.map((property) => (
-                  <PropertyCard key={property.id} property={property} variant="grid" />
-                ))}
-              </div>
-              <div className="mt-5">
-                <Link href={`/buy?agency=${agency.slug}`} className="text-primary text-sm font-medium hover:underline">
-                  View all listings by {agency.name} →
-                </Link>
-              </div>
-            </div>
-          </>
-        )}
-
-        <hr className="border-gray-200" />
-
-        {/* Contact form */}
-        <div>
-          <h2 className="text-xl font-bold text-gray-900">Contact {agency.name}</h2>
-          <div className="mt-6">
+      {/* Contact form; the bands alternate whether or not listings show. */}
+      <Band tone={listings.length > 0 ? "quiet" : "light"} spacing="compact">
+        <div className="max-w-3xl">
+          <SectionHeading size="md" title={<>Contact {agency.name}</>} />
+          <div className="mt-8">
             <AgencyContactForm agencyId={agency.id} agencyName={agency.name} />
           </div>
         </div>
@@ -411,8 +384,8 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
         {/* YouTube embed */}
         {agency.youtubeVideoId && (
           <>
-            <hr className="border-gray-200" />
-            <div className="aspect-video w-full rounded-xl overflow-hidden shadow-sm">
+            <hr className="my-12 border-line" />
+            <div className="aspect-video w-full max-w-5xl rounded-xl overflow-hidden">
               <iframe
                 src={`https://www.youtube.com/embed/${agency.youtubeVideoId}`}
                 title={`${agency.name} video`}
@@ -423,8 +396,7 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
             </div>
           </>
         )}
-
-      </div>
+      </Band>
     </div>
   );
 }

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, MapPin, GraduationCap, BookOpen, FileText, Search as SearchIcon } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { unifiedSearch } from "@/lib/services/search-service";
 import { JumpToSuburb } from "@/components/search/JumpToSuburb";
 import { formatPrice } from "@/lib/utils/format";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { BUTTON_PRIMARY, Band, HeroTitle, PhotoHero } from "@/components/premium";
 
 interface SearchPageProps {
   searchParams: Promise<{ q?: string }>;
@@ -53,53 +53,47 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     <>
       <BreadcrumbJsonLd items={[{ name: "Search", url: "/search" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Search" }]} />
-          </div>
+      <PhotoHero photo="market" breadcrumbs={[{ label: "Search" }]}>
+        <p className="flex items-center gap-2 text-sm text-ink-muted mb-5">
+          <SearchIcon className="w-3.5 h-3.5" aria-hidden="true" />
+          {query ? `${results.totalCount} matches for "${query}"` : "Site search"}
+        </p>
+        <HeroTitle>
+          {query ? (
+            <>Search results for <span>{query}</span>.</>
+          ) : (
+            <>Find <span>anything</span> on the site.</>
+          )}
+        </HeroTitle>
 
-          <p className="text-[13px] font-sans text-ink-subtle mb-5 inline-flex items-center gap-2">
-            <SearchIcon className="w-3.5 h-3.5" aria-hidden="true" />
-            {query ? `${results.totalCount} matches for "${query}"` : "Site search"}
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            {query ? (
-              <>Search results for <span>{query}</span>.</>
-            ) : (
-              <>Find <span>anything</span> on the site.</>
-            )}
-          </h1>
-
-          {/* Search box at top, submits via GET so URL is bookmarkable */}
-          <form method="GET" action="/search" className="mt-6 max-w-2xl">
-            <label htmlFor="search-q" className="sr-only">Search</label>
-            <div className="flex gap-2">
-              <div className="relative flex-1 min-w-0">
-                <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-subtle pointer-events-none" />
-                <input
-                  id="search-q"
-                  type="search"
-                  name="q"
-                  defaultValue={query}
-                  autoFocus={!query}
-                  placeholder="Suburb, school, postcode, or topic…"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-line bg-surface-raised text-base font-sans text-ink placeholder:text-ink-subtle focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-                />
-              </div>
-              <button
-                type="submit"
-                className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-cta px-5 py-3 text-sm font-sans font-medium text-white hover:bg-cta-hover transition-colors shrink-0"
-              >
-                Search
-              </button>
+        {/* Search box at top, submits via GET so URL is bookmarkable. The
+            field is white on the dark hero, so its root resets the tone. */}
+        <form method="GET" action="/search" className="tone-light mt-8 max-w-2xl">
+          <label htmlFor="search-q" className="sr-only">Search</label>
+          <div className="flex gap-2">
+            <div className="relative flex-1 min-w-0">
+              <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-subtle pointer-events-none" aria-hidden="true" />
+              <input
+                id="search-q"
+                type="search"
+                name="q"
+                defaultValue={query}
+                autoFocus={!query}
+                placeholder="Suburb, school, postcode, or topic…"
+                className="w-full h-full pl-11 pr-4 py-3 rounded-lg border border-line bg-surface-raised text-base text-ink placeholder:text-ink-subtle focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              />
             </div>
-          </form>
-        </div>
-      </section>
+            <button
+              type="submit"
+              className={`${BUTTON_PRIMARY} justify-center shrink-0`}
+            >
+              Search
+            </button>
+          </div>
+        </form>
+      </PhotoHero>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <Band tone="quiet" spacing="compact">
         {!query ? (
           <EmptyState />
         ) : results.totalCount === 0 ? (
@@ -107,7 +101,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         ) : (
           <ResultsGrid results={results} />
         )}
-      </div>
+      </Band>
     </>
   );
 }
@@ -118,46 +112,46 @@ function EmptyState() {
   return (
     <div className="grid lg:grid-cols-2 gap-8">
       <section>
-        <p className="text-[13px] font-sans text-ink-subtle mb-3">
+        <p className="text-sm text-ink-subtle mb-3">
           Quick suburb lookup
         </p>
-        <h2 className="font-display text-2xl text-ink leading-tight mb-4">
+        <h2 className="text-2xl sm:text-3xl text-ink leading-tight tracking-[-0.02em] mb-5">
           Or jump straight to a suburb
         </h2>
         <JumpToSuburb placeholder="Try Bondi, Newtown, or 4006" size="lg" />
-        <p className="mt-3 font-sans text-sm text-ink-muted">
+        <p className="mt-3 text-sm text-ink-muted">
           Pick a suburb to see its profile. Or use the full-text search above
           to find suburbs, schools, guides, and glossary terms.
         </p>
       </section>
       <section>
-        <p className="text-[13px] font-sans text-ink-subtle mb-3">
+        <p className="text-sm text-ink-subtle mb-3">
           What you can search
         </p>
-        <h2 className="font-display text-2xl text-ink leading-tight mb-4">
+        <h2 className="text-2xl sm:text-3xl text-ink leading-tight tracking-[-0.02em] mb-5">
           Four kinds of results
         </h2>
-        <ul className="space-y-3 font-sans text-sm text-ink leading-relaxed">
+        <ul className="space-y-3 text-base text-ink leading-relaxed">
           <li className="flex gap-3 items-start">
-            <MapPin className="w-4 h-4 text-ink-subtle mt-1 shrink-0" />
+            <MapPin className="w-4 h-4 text-primary mt-1.5 shrink-0" aria-hidden="true" />
             <span>
               <strong>Suburbs &amp; postcodes</strong>: every Australian suburb with median, growth, schools, walk score and hazard.
             </span>
           </li>
           <li className="flex gap-3 items-start">
-            <GraduationCap className="w-4 h-4 text-ink-subtle mt-1 shrink-0" />
+            <GraduationCap className="w-4 h-4 text-primary mt-1.5 shrink-0" aria-hidden="true" />
             <span>
               <strong>Schools</strong>: 9,600+ government, Catholic, and independent schools with catchments and ICSEA.
             </span>
           </li>
           <li className="flex gap-3 items-start">
-            <FileText className="w-4 h-4 text-ink-subtle mt-1 shrink-0" />
+            <FileText className="w-4 h-4 text-primary mt-1.5 shrink-0" aria-hidden="true" />
             <span>
               <strong>Guides</strong>: 60+ guides on buying, selling, investing and renting.
             </span>
           </li>
           <li className="flex gap-3 items-start">
-            <BookOpen className="w-4 h-4 text-ink-subtle mt-1 shrink-0" />
+            <BookOpen className="w-4 h-4 text-primary mt-1.5 shrink-0" aria-hidden="true" />
             <span>
               <strong>Glossary terms</strong>: 99 plain-English definitions of property terms.
             </span>
@@ -170,11 +164,11 @@ function EmptyState() {
 
 function NoResultsState({ query }: { query: string }) {
   return (
-    <div className="rounded-2xl border border-line bg-surface-raised p-10 text-center max-w-2xl mx-auto">
-      <p className="font-display text-2xl text-ink mb-3">
+    <div className="rounded-xl border border-line bg-surface-raised p-10 text-center max-w-2xl mx-auto">
+      <p className="text-2xl font-bold text-ink mb-3">
         Nothing matched &ldquo;{query}&rdquo;.
       </p>
-      <p className="font-sans text-base text-ink-muted leading-relaxed">
+      <p className="text-base text-ink-muted leading-relaxed">
         Try a shorter query, a postcode, or browse one of these starting points:
       </p>
       <div className="mt-6 flex flex-wrap justify-center gap-2">
@@ -187,7 +181,7 @@ function NoResultsState({ query }: { query: string }) {
           <Link
             key={l.href}
             href={l.href}
-            className="inline-flex items-center rounded-lg border border-line bg-surface-warm px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors"
+            className="inline-flex items-center rounded-lg border border-line bg-surface-warm px-3 py-1.5 text-sm font-medium text-ink hover:border-ink transition-colors"
           >
             {l.label}
           </Link>
@@ -205,7 +199,7 @@ function ResultsGrid({
   results: Awaited<ReturnType<typeof unifiedSearch>>;
 }) {
   return (
-    <div className="space-y-12">
+    <div className="space-y-14">
       {results.suburbs.length > 0 && (
         <ResultSection
           icon={<MapPin className="w-4 h-4" aria-hidden="true" />}
@@ -217,24 +211,24 @@ function ResultsGrid({
               <Link
                 key={s.slug}
                 href={`/suburbs/${s.slug}`}
-                className="group rounded-2xl border border-line bg-surface-raised p-5 hover:border-primary/40 hover:shadow-md transition-all"
+                className="group flex flex-col rounded-xl border border-line bg-surface-raised p-5 hover:border-ink transition-colors"
               >
-                <p className="text-[13px] font-sans text-ink-subtle mb-1">
+                <p className="text-sm text-ink-subtle mb-1">
                   {s.state} · {s.postcode}
                 </p>
-                <h3 className="font-display text-xl text-ink group-hover:text-primary transition-colors leading-tight">
+                <h3 className="text-xl text-ink group-hover:text-primary transition-colors leading-tight">
                   {s.name}
                 </h3>
                 {s.medianHousePrice > 0 && (
-                  <p className="mt-3 font-sans text-sm text-ink-muted">
+                  <p className="mt-3 text-sm text-ink-muted">
                     Median{" "}
-                    <span className="font-display text-base text-ink">
+                    <span className="text-base font-semibold text-ink">
                       {formatPrice(s.medianHousePrice)}
                     </span>
                   </p>
                 )}
-                <span className="mt-4 inline-flex items-center gap-1 text-[13px] font-sans text-ink group-hover:text-primary transition-colors">
-                  See profile <ArrowRight className="w-3.5 h-3.5" />
+                <span className="mt-auto pt-4 inline-flex items-center gap-1 text-sm font-semibold text-ink group-hover:text-primary transition-colors">
+                  See profile <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
                 </span>
               </Link>
             ))}
@@ -253,12 +247,12 @@ function ResultsGrid({
               <li key={g.slug}>
                 <Link
                   href={`/guides/${g.slug}`}
-                  className="group block rounded-2xl border border-line bg-surface-raised p-5 hover:border-primary/40 hover:shadow-md transition-all"
+                  className="group block h-full rounded-xl border border-line bg-surface-raised p-5 hover:border-ink transition-colors"
                 >
-                  <h3 className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
+                  <h3 className="text-lg text-ink group-hover:text-primary transition-colors leading-tight">
                     {g.title}
                   </h3>
-                  <p className="mt-1.5 font-sans text-sm text-ink-muted leading-relaxed">
+                  <p className="mt-1.5 text-sm text-ink-muted leading-relaxed">
                     {g.description}
                   </p>
                 </Link>
@@ -279,12 +273,12 @@ function ResultsGrid({
               <li key={g.slug}>
                 <Link
                   href={`/glossary/${g.slug}`}
-                  className="group block rounded-xl border border-line bg-surface-raised p-4 hover:border-primary/40 hover:shadow-sm transition-all"
+                  className="group block h-full rounded-xl border border-line bg-surface-raised p-4 hover:border-ink transition-colors"
                 >
-                  <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
+                  <p className="text-base font-semibold text-ink group-hover:text-primary transition-colors leading-tight">
                     {g.term}
                   </p>
-                  <p className="mt-1 font-sans text-xs text-ink-muted leading-snug">
+                  <p className="mt-1 text-sm text-ink-muted leading-snug">
                     {g.preview}
                   </p>
                 </Link>
@@ -305,12 +299,12 @@ function ResultsGrid({
               <li key={s.slug}>
                 <Link
                   href={`/schools/${s.slug}`}
-                  className="group block rounded-xl border border-line bg-surface-raised p-4 hover:border-primary/40 hover:shadow-sm transition-all"
+                  className="group block h-full rounded-xl border border-line bg-surface-raised p-4 hover:border-ink transition-colors"
                 >
-                  <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
+                  <p className="text-base font-semibold text-ink group-hover:text-primary transition-colors leading-tight">
                     {s.name}
                   </p>
-                  <p className="mt-1 font-sans text-xs text-ink-muted">
+                  <p className="mt-1 text-sm text-ink-muted">
                     {s.suburbName}, {s.state}
                   </p>
                 </Link>
@@ -336,12 +330,12 @@ function ResultSection({
 }) {
   return (
     <section>
-      <div className="flex items-center justify-between mb-5 pb-3 border-b border-line">
-        <h2 className="font-display text-2xl text-ink leading-tight inline-flex items-center gap-2">
-          <span className="text-ink-subtle">{icon}</span>
+      <div className="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-line">
+        <h2 className="text-2xl sm:text-3xl text-ink leading-tight tracking-[-0.02em] inline-flex items-center gap-3">
+          <span className="text-primary">{icon}</span>
           {label}
         </h2>
-        <p className="text-[13px] font-sans text-ink-subtle">
+        <p className="text-sm text-ink-subtle">
           {count} {count === 1 ? "match" : "matches"}
         </p>
       </div>

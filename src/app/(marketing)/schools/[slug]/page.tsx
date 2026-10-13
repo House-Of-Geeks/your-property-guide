@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { ChevronRight, GraduationCap, ExternalLink } from "lucide-react";
+import { GraduationCap, ExternalLink } from "lucide-react";
 import { getSchoolBySlug, getSchoolsInSuburb, makeSchoolSlug } from "@/lib/services/school-service";
 import { getProperties } from "@/lib/services/property-service";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
@@ -10,6 +10,7 @@ import { SchoolListings, SchoolListingsEmpty } from "@/components/school/SchoolL
 import { SchoolSearchBar } from "@/components/school/SchoolSearchBar";
 import { SITE_URL } from "@/lib/constants";
 import { BreadcrumbJsonLd, EducationalOrganizationJsonLd } from "@/components/seo";
+import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 
 interface SchoolPageProps {
   params: Promise<{ slug: string }>;
@@ -120,33 +121,27 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
         educationalLevel={typeLabel(school.type)}
         website={school.website ?? undefined}
       />
-      <div className="min-h-screen bg-gray-50">
+      {/* Hero: a reference page, so plain charcoal. The page had no H1; the
+          school's name is it, with the type tags and suburb from the card
+          below (which sits under the listings on phones). */}
+      <PhotoHero
+        breadcrumbs={[
+          { label: school.suburb.name, href: `/suburbs/${school.suburb.slug}` },
+          { label: school.name },
+        ]}
+      >
+        <p className="text-sm text-ink-muted mb-5">{tags.join(" · ")}</p>
+        <HeroTitle>{school.name}</HeroTitle>
+        <HeroLead>{school.suburb.name}, {school.suburb.state}</HeroLead>
+      </PhotoHero>
+
       {/* Sticky search/filter bar */}
       <Suspense fallback={null}>
         <SchoolSearchBar schoolName={school.name} />
       </Suspense>
 
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
-          <ol className="flex items-center gap-1.5 text-sm text-gray-500 flex-wrap">
-            <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
-            <li className="flex items-center gap-1.5">
-              <ChevronRight className="w-3.5 h-3.5" />
-              <Link href={`/suburbs/${school.suburb.slug}`} className="hover:text-primary transition-colors">
-                {school.suburb.name}
-              </Link>
-            </li>
-            <li className="flex items-center gap-1.5">
-              <ChevronRight className="w-3.5 h-3.5" />
-              <span className="text-gray-900 font-medium">{school.name}</span>
-            </li>
-          </ol>
-        </div>
-      </div>
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex flex-col lg:flex-row gap-6">
+      <Band tone="quiet" spacing="compact">
+        <div className="flex flex-col lg:flex-row gap-8">
 
           {/* ── Left: property listings ───────────────────────────────── */}
           <div className="flex-1 min-w-0">
@@ -172,7 +167,7 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
           <div className="w-full lg:w-80 xl:w-96 shrink-0 space-y-4">
 
             {/* Map */}
-            <div className="rounded-xl overflow-hidden border border-gray-200 bg-gray-100" style={{ height: 300 }}>
+            <div className="rounded-xl overflow-hidden border border-line bg-white" style={{ height: 300 }}>
               {mapSrc ? (
                 <iframe
                   src={mapSrc}
@@ -183,70 +178,70 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
                   title={`Map of ${school.name}`}
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-400">
-                  <GraduationCap className="w-10 h-10" />
+                <div className="w-full h-full flex items-center justify-center text-ink-subtle">
+                  <GraduationCap className="w-10 h-10" aria-hidden="true" />
                 </div>
               )}
             </div>
 
             {/* School info card */}
-            <div className="bg-white rounded-xl border border-gray-200 p-5">
+            <div className="bg-white rounded-xl border border-line p-5">
               {/* Header row */}
               <div className="flex items-start justify-between">
-                <GraduationCap className="w-5 h-5 text-gray-500 mt-0.5 shrink-0" />
+                <GraduationCap className="w-5 h-5 text-ink-subtle mt-0.5 shrink-0" aria-hidden="true" />
                 {school.updatedFromAcara && (
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-ink-subtle">
                     Updated: {school.updatedFromAcara.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })}
                   </span>
                 )}
               </div>
 
-              <h2 className="text-base font-bold text-gray-900 mt-2 leading-snug">{school.name}</h2>
-              <p className="text-sm text-gray-500 mt-0.5">{school.suburb.name}, {school.suburb.state}</p>
+              <h2 className="text-lg text-ink mt-2 leading-snug">{school.name}</h2>
+              <p className="text-sm text-ink-muted mt-0.5">{school.suburb.name}, {school.suburb.state}</p>
 
               {/* Tags */}
               <div className="flex flex-wrap gap-1.5 mt-3">
                 {tags.map((tag) => (
-                  <span key={tag} className="text-xs font-medium px-2.5 py-0.5 rounded-md border border-gray-300 text-gray-600 bg-white">
+                  <span key={tag} className="text-xs font-medium px-2.5 py-0.5 rounded-md border border-line-strong text-ink-muted bg-white">
                     {tag}
                   </span>
                 ))}
               </div>
 
-              <hr className="my-4 border-gray-100" />
+              <hr className="my-4 border-line" />
 
               {/* Stats */}
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">Students and school staff</h3>
-              <dl className="divide-y divide-gray-100">
+              <h3 className="text-base text-ink mb-3">Students and school staff</h3>
+              <dl className="divide-y divide-line">
                 {staffRows.map(({ label, value }) => (
                   <div key={label} className="flex justify-between gap-3 py-2 text-sm">
-                    <dt className="text-gray-500 leading-snug">{label}</dt>
-                    <dd className="font-medium text-gray-900 shrink-0">{value}</dd>
+                    <dt className="text-ink-muted leading-snug">{label}</dt>
+                    <dd className="font-semibold text-ink shrink-0">{value}</dd>
                   </div>
                 ))}
               </dl>
 
               {/* Disclaimer */}
-              <p className="text-[11px] text-gray-400 mt-3 leading-snug">
+              <p className="text-xs text-ink-subtle mt-3 leading-snug">
                 Disclaimer: Always check directly with the local school to verify school catchment data.
               </p>
 
               {/* External links */}
-              <div className="mt-4 pt-4 border-t border-gray-100 space-y-2.5">
+              <div className="mt-4 pt-4 border-t border-line space-y-2.5">
                 {school.website && (
                   <a href={school.website} target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors">
+                    className="flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-ink transition-colors">
                     <ExternalLink className="w-3.5 h-3.5 shrink-0" /> School website
                   </a>
                 )}
                 {school.acaraId && (
                   <>
                     <a href={`https://www.myschool.edu.au/school/${school.acaraId}/naplan`} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors">
+                      className="flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-ink transition-colors">
                       <ExternalLink className="w-3.5 h-3.5 shrink-0" /> School NAPLAN results
                     </a>
                     <a href={`https://www.myschool.edu.au/school/${school.acaraId}`} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors">
+                      className="flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-ink transition-colors">
                       <ExternalLink className="w-3.5 h-3.5 shrink-0" /> School ICSEA value
                     </a>
                   </>
@@ -256,8 +251,8 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
 
             {/* Compare this school */}
             {school.acaraId && nearbySchools.length > 0 && (
-              <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-sm font-semibold text-gray-900 mb-3">Compare {school.name}</h3>
+              <div className="bg-white rounded-xl border border-line p-5">
+                <h3 className="text-base text-ink mb-3">Compare {school.name}</h3>
                 <ul className="space-y-2">
                   {nearbySchools.map((other) => {
                     if (!other.acaraId) return null;
@@ -266,11 +261,11 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
                       <li key={other.acaraId}>
                         <Link
                           href={`/schools/${slug}/vs/${otherSlug}`}
-                          className="flex items-center justify-between gap-2 text-sm text-gray-700 hover:text-primary transition-colors group"
+                          className="flex items-center justify-between gap-2 text-sm text-ink hover:text-primary transition-colors group"
                         >
                           <span className="truncate group-hover:underline">{other.name}</span>
                           {other.icsea != null && (
-                            <span className="shrink-0 text-xs text-gray-400">
+                            <span className="shrink-0 text-xs text-ink-subtle">
                               ICSEA {other.icsea}
                             </span>
                           )}
@@ -282,30 +277,29 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
               </div>
             )}
 
-            <p className="text-xs text-gray-400 px-1">© ACARA, licensed under CC BY 4.0.</p>
+            <p className="text-xs text-ink-subtle px-1">© ACARA, licensed under CC BY 4.0.</p>
           </div>
         </div>
+      </Band>
 
-        {/* Buyer funnel exit. School-profile visitors are researching a
-            catchment to buy into — deep-link the guide to this suburb. */}
-        <div className="mt-8 bg-white rounded-xl border border-gray-200 p-6 sm:p-8 text-center">
-          <h2 className="text-lg font-bold text-gray-900 mb-1.5">
-            Buying near {school.name}?
-          </h2>
-          <p className="text-sm text-gray-500 max-w-xl mx-auto mb-4">
+      {/* Buyer funnel exit. School-profile visitors are researching a
+          catchment to buy into — deep-link the guide to this suburb. */}
+      <Band spacing="compact">
+        <div className="max-w-3xl">
+          <SectionHeading size="md" title={<>Buying near {school.name}?</>} />
+          <p className="mt-4 text-lg text-ink-muted leading-relaxed max-w-2xl">
             The free buying guide, personalised to {school.suburb.name}: how school
             catchments affect prices, what you can actually spend, and how not to
             overpay. In your inbox in 60 seconds.
           </p>
           <Link
             href={`/buying-guide?suburb=${school.suburb.slug}`}
-            className="inline-flex items-center gap-2 bg-primary text-white text-sm font-semibold rounded-lg px-5 py-2.5 hover:bg-primary/90 transition-colors"
+            className={`mt-8 ${BUTTON_PRIMARY}`}
           >
             Get the free buying guide
           </Link>
         </div>
-      </div>
-    </div>
+      </Band>
     </>
   );
 }

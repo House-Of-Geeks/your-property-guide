@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MapPin, Home, TrendingUp, GraduationCap, Building2 } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
 import { GuidePairCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, PlaceJsonLd, ItemListJsonLd } from "@/components/seo";
 import {
@@ -16,6 +15,7 @@ import { formatPrice, formatPriceFull, formatPercentage } from "@/lib/utils/form
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { MostSearchedSuburbs } from "@/components/suburb/MostSearchedSuburbs";
 import { topSuburbsForState } from "@/lib/data/top-suburbs";
+import { BUTTON_SECONDARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 
 const VALID_STATES = ["qld", "nsw", "vic", "wa", "sa", "tas", "nt", "act"];
 
@@ -73,7 +73,7 @@ export default async function StatePage({ params }: StatePageProps) {
   ]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
       <BreadcrumbJsonLd
         items={[
           { name: "States", url: "/states" },
@@ -91,250 +91,249 @@ export default async function StatePage({ params }: StatePageProps) {
         items={topSuburbs.slice(0, 10).map((s) => ({ name: s.name, url: "/suburbs/" + s.slug }))}
       />
 
-      {/* Editorial hero. Magazine masthead + display-scale H1 + hairline
-          stats row, matching the homepage and persona-hub language. */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-16 sm:pb-20">
-          <div className="mb-10">
-            <Breadcrumbs
-              items={[
-                { label: "States", href: "/states" },
-                { label: stateName },
-              ]}
-            />
-          </div>
-
-          {/* Magazine masthead */}
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              State profile
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              Australia&rsquo;s property reference
-            </span>
-          </div>
-
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
-            {stateName}{" "}
-            <span>property</span>,
-            mapped
-          </h1>
-          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl mb-12">
-            Suburb profiles, school data, and property market insights across{" "}
-            {stateName}. Free, ungated, sourced and dated.
-          </p>
-
-          {/* Hairline-divided stats row */}
-          <div className="border-y border-line grid grid-cols-2 sm:grid-cols-3">
-            <div className="py-6 sm:py-7 pr-4 sm:pr-6">
-              <p className="font-display text-4xl sm:text-5xl text-ink leading-none mb-2.5 tracking-tight">
-                {stats.suburbCount.toLocaleString()}
-              </p>
-              <p className="text-[13px] sm:text-[13px] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
-                <MapPin className="w-3 h-3" aria-hidden="true" />
-                Suburbs covered
-              </p>
-            </div>
-            {stats.avgMedianHousePrice && (
-              <div className="py-6 sm:py-7 px-4 sm:px-6 border-l border-line">
-                <p className="font-display text-4xl sm:text-5xl text-ink leading-none mb-2.5 tracking-tight">
-                  {formatPriceFull(stats.avgMedianHousePrice)}
-                </p>
-                <p className="text-[13px] sm:text-[13px] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
-                  <Home className="w-3 h-3" aria-hidden="true" />
-                  Avg median house
-                </p>
-              </div>
-            )}
-            {stats.avgAnnualGrowth != null && (
-              <div className="py-6 sm:py-7 px-4 sm:px-6 border-l border-line border-t sm:border-t-0">
-                <p
-                  className={`font-display text-4xl sm:text-5xl leading-none mb-2.5 tracking-tight ${
-                    stats.avgAnnualGrowth >= 0 ? "text-ink" : "text-danger"
-                  }`}
-                >
-                  {stats.avgAnnualGrowth >= 0 ? "+" : ""}
-                  {stats.avgAnnualGrowth}%
-                </p>
-                <p className="text-[13px] sm:text-[13px] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
-                  <TrendingUp className="w-3 h-3" aria-hidden="true" />
-                  Avg annual growth
-                </p>
-              </div>
-            )}
-          </div>
-          <p className="mt-4 max-w-3xl font-sans text-sm text-ink-subtle leading-relaxed">
-            {stats.avgMedianHousePrice
-              ? `The average is of the ${stats.pricedSuburbCount.toLocaleString("en-AU")} suburb medians we publish for ${stateName}. `
-              : ""}
-            {priceSourceLine(upperState)}
-          </p>
+      {/* Hero: masthead, H1 and standfirst. The stats row follows directly
+          under it on a light band, where a falling growth figure can keep
+          its danger red. */}
+      <PhotoHero
+        photo="street"
+        breadcrumbs={[
+          { label: "States", href: "/states" },
+          { label: stateName },
+        ]}
+      >
+        {/* Masthead */}
+        <div className="flex items-center gap-4 mb-5">
+          <span className="text-sm font-semibold text-ink-muted leading-none">
+            State profile
+          </span>
+          <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+          <span className="text-sm text-ink-muted leading-none">
+            Australia&rsquo;s property reference
+          </span>
         </div>
-      </section>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 space-y-14">
+        <HeroTitle>
+          {stateName}{" "}
+          <span>property</span>,
+          mapped
+        </HeroTitle>
+        <HeroLead>
+          Suburb profiles, school data, and property market insights across{" "}
+          {stateName}. Free, ungated, sourced and dated.
+        </HeroLead>
+      </PhotoHero>
 
-        {/* Most searched suburbs (fix item 5): the pages that carry the
-            impressions, two clicks from the root so they are recrawled first. */}
-        <MostSearchedSuburbs label={stateName} suburbs={topSuburbsForState(upperState, 24)} />
-
-        {/* Top Regions */}
-        {regions.length > 0 && (
-          <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Regions in {stateName}</h2>
-            <p className="text-sm text-gray-500 mb-6">
-              Explore property data across {regions.length} regions in {stateName}.
+      {/* Hairline-divided stats row */}
+      <Band spacing="compact">
+        <div className="border-y border-line grid grid-cols-2 sm:grid-cols-3">
+          <div className="py-6 sm:py-7 pr-4 sm:pr-6">
+            <p className="text-4xl sm:text-5xl font-bold text-ink leading-none mb-3 tracking-[-0.03em]">
+              {stats.suburbCount.toLocaleString()}
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-              {regions.map((region) => (
-                <Link
-                  key={region.slug}
-                  href={`/regions/${region.slug}`}
-                  className="group rounded-xl border border-gray-200 bg-white p-4 hover:border-primary hover:shadow-md transition-all"
-                >
-                  <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors text-sm leading-tight">
-                    {region.region}
-                  </h3>
-                  <p className="text-xs text-gray-400 mt-1">
-                    {region.suburbCount} suburb{region.suburbCount !== 1 ? "s" : ""}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Top Suburbs by population */}
-        {topSuburbs.length > 0 && (
-          <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Top Suburbs in {stateName}</h2>
-            <p className="text-sm text-gray-500 mb-6">
-              The largest suburbs by population across {stateName}.
+            <p className="text-sm text-ink-subtle font-medium inline-flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
+              Suburbs covered
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {topSuburbs.map((suburb) => (
-                <Link
-                  key={suburb.slug}
-                  href={`/suburbs/${suburb.slug}`}
-                  className="group rounded-xl border border-gray-200 bg-white p-5 hover:border-primary hover:shadow-md transition-all"
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors">
-                        {suburb.name}
-                      </h3>
-                      <p className="text-xs text-gray-400 mt-0.5">
-                        {suburb.state} {suburb.postcode}
-                      </p>
-                    </div>
-                    {suburb.annualGrowthHouse !== 0 && (
-                      <span
-                        className={`text-xs font-medium px-2 py-1 rounded-md ${
-                          suburb.annualGrowthHouse >= 0
-                            ? "bg-green-50 text-green-700"
-                            : "bg-red-50 text-red-700"
-                        }`}
-                      >
-                        {suburb.annualGrowthHouse >= 0 ? "+" : ""}
-                        {suburb.annualGrowthHouse.toFixed(1)}%
-                      </span>
-                    )}
-                  </div>
-                  <div className="mt-4 flex items-center gap-4">
-                    <div>
-                      <p className="text-xs text-gray-400">Median house</p>
-                      <p className="text-sm font-bold text-gray-900">
-                        {suburb.medianHousePrice > 0 ? formatPrice(suburb.medianHousePrice) : "–"}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-400">Population</p>
-                      <p className="text-sm font-bold text-gray-900">
-                        {suburb.population > 0 ? suburb.population.toLocaleString() : "–"}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+          </div>
+          {stats.avgMedianHousePrice && (
+            <div className="py-6 sm:py-7 px-4 sm:px-6 border-l border-line">
+              <p className="text-4xl sm:text-5xl font-bold text-ink leading-none mb-3 tracking-[-0.03em]">
+                {formatPriceFull(stats.avgMedianHousePrice)}
+              </p>
+              <p className="text-sm text-ink-subtle font-medium inline-flex items-center gap-1.5">
+                <Home className="w-3.5 h-3.5" aria-hidden="true" />
+                Avg median house
+              </p>
             </div>
-          </section>
-        )}
+          )}
+          {stats.avgAnnualGrowth != null && (
+            <div className="py-6 sm:py-7 px-4 sm:px-6 border-l border-line border-t sm:border-t-0">
+              <p
+                className={`text-4xl sm:text-5xl font-bold leading-none mb-3 tracking-[-0.03em] ${
+                  stats.avgAnnualGrowth >= 0 ? "text-ink" : "text-danger"
+                }`}
+              >
+                {stats.avgAnnualGrowth >= 0 ? "+" : ""}
+                {stats.avgAnnualGrowth}%
+              </p>
+              <p className="text-sm text-ink-subtle font-medium inline-flex items-center gap-1.5">
+                <TrendingUp className="w-3.5 h-3.5" aria-hidden="true" />
+                Avg annual growth
+              </p>
+            </div>
+          )}
+        </div>
+        <p className="mt-6 max-w-3xl text-sm text-ink-subtle leading-relaxed">
+          {stats.avgMedianHousePrice
+            ? `The average is of the ${stats.pricedSuburbCount.toLocaleString("en-AU")} suburb medians we publish for ${stateName}. `
+            : ""}
+          {priceSourceLine(upperState)}
+        </p>
+      </Band>
 
-        {/* CTAs */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <Band tone="quiet" spacing="compact">
+        <div className="space-y-14">
+          {/* Most searched suburbs (fix item 5): the pages that carry the
+              impressions, two clicks from the root so they are recrawled first. */}
+          <MostSearchedSuburbs label={stateName} suburbs={topSuburbsForState(upperState, 24)} tone="ink" />
+
+          {/* Top Regions */}
+          {regions.length > 0 && (
+            <section>
+              <SectionHeading size="md" title={<>Regions in {stateName}</>} />
+              <p className="mt-3 text-sm text-ink-muted mb-8">
+                Explore property data across {regions.length} regions in {stateName}.
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                {regions.map((region) => (
+                  <Link
+                    key={region.slug}
+                    href={`/regions/${region.slug}`}
+                    className="group rounded-xl border border-line bg-surface-raised p-4 hover:border-ink transition-colors"
+                  >
+                    <h3 className="font-semibold text-ink group-hover:text-primary transition-colors text-sm leading-tight">
+                      {region.region}
+                    </h3>
+                    <p className="text-xs text-ink-subtle mt-1">
+                      {region.suburbCount} suburb{region.suburbCount !== 1 ? "s" : ""}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Top Suburbs by population */}
+          {topSuburbs.length > 0 && (
+            <section>
+              <SectionHeading size="md" title={<>Top Suburbs in {stateName}</>} />
+              <p className="mt-3 text-sm text-ink-muted mb-8">
+                The largest suburbs by population across {stateName}.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {topSuburbs.map((suburb) => (
+                  <Link
+                    key={suburb.slug}
+                    href={`/suburbs/${suburb.slug}`}
+                    className="group rounded-xl border border-line bg-surface-raised p-5 hover:border-ink transition-colors"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h3 className="text-base font-semibold text-ink group-hover:text-primary transition-colors">
+                          {suburb.name}
+                        </h3>
+                        <p className="text-xs text-ink-subtle mt-0.5">
+                          {suburb.state} {suburb.postcode}
+                        </p>
+                      </div>
+                      {suburb.annualGrowthHouse !== 0 && (
+                        <span
+                          className={`text-xs font-medium px-2 py-1 rounded-md ${
+                            suburb.annualGrowthHouse >= 0
+                              ? "bg-green-50 text-green-700"
+                              : "bg-red-50 text-red-700"
+                          }`}
+                        >
+                          {suburb.annualGrowthHouse >= 0 ? "+" : ""}
+                          {suburb.annualGrowthHouse.toFixed(1)}%
+                        </span>
+                      )}
+                    </div>
+                    <div className="mt-4 flex items-center gap-4">
+                      <div>
+                        <p className="text-xs text-ink-subtle">Median house</p>
+                        <p className="text-sm font-bold text-ink">
+                          {suburb.medianHousePrice > 0 ? formatPrice(suburb.medianHousePrice) : "–"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-ink-subtle">Population</p>
+                        <p className="text-sm font-bold text-ink">
+                          {suburb.population > 0 ? suburb.population.toLocaleString() : "–"}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+      </Band>
+
+      {/* CTAs */}
+      <Band tone="dark" spacing="compact">
+        <section className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-12">
           {/* Buy CTA */}
-          <div className="rounded-2xl border border-gray-200 bg-white p-6 flex flex-col gap-3">
-            <div className="flex items-center gap-3">
-              <Building2 className="w-6 h-6 text-primary" />
-              <h2 className="text-lg font-bold text-gray-900">
-                Properties for Sale in {stateName}
-              </h2>
-            </div>
-            <p className="text-sm text-gray-500">
+          <div className="border-t-2 border-ink pt-6 flex flex-col gap-3">
+            <Building2 className="w-7 h-7 text-primary mb-2" strokeWidth={1.75} aria-hidden="true" />
+            <h2 className="text-2xl sm:text-3xl leading-tight tracking-[-0.02em] text-ink">
+              Properties for Sale in {stateName}
+            </h2>
+            <p className="text-base text-ink-muted leading-relaxed">
               Browse active property listings across {stateName}.
             </p>
             <Link
               href={`/buy?state=${upperState}`}
-              className="mt-auto inline-flex items-center gap-2 bg-primary text-white text-sm font-semibold rounded-lg px-5 py-2.5 hover:bg-primary/90 transition-colors w-fit"
+              className={`mt-auto w-fit ${BUTTON_SECONDARY}`}
             >
               Browse Properties for Sale →
             </Link>
           </div>
 
           {/* Schools CTA */}
-          <div className="rounded-2xl border border-gray-200 bg-white p-6 flex flex-col gap-3">
-            <div className="flex items-center gap-3">
-              <GraduationCap className="w-6 h-6 text-primary" />
-              <h2 className="text-lg font-bold text-gray-900">
-                Schools in {stateName}
-              </h2>
-            </div>
-            <p className="text-sm text-gray-500">
+          <div className="border-t-2 border-ink pt-6 flex flex-col gap-3">
+            <GraduationCap className="w-7 h-7 text-primary mb-2" strokeWidth={1.75} aria-hidden="true" />
+            <h2 className="text-2xl sm:text-3xl leading-tight tracking-[-0.02em] text-ink">
+              Schools in {stateName}
+            </h2>
+            <p className="text-base text-ink-muted leading-relaxed">
               Find and compare schools across {stateName} using ICSEA data.
             </p>
             <Link
               href={`/schools?state=${upperState}`}
-              className="mt-auto inline-flex items-center gap-2 bg-white border border-primary text-primary text-sm font-semibold rounded-lg px-5 py-2.5 hover:bg-primary/5 transition-colors w-fit"
+              className={`mt-auto w-fit ${BUTTON_SECONDARY}`}
             >
               Find Schools in {upperState} →
             </Link>
           </div>
         </section>
+      </Band>
 
-        {/* Best suburbs cross-link */}
-        <section className="rounded-2xl border border-gray-100 bg-gradient-to-br from-primary/5 to-white p-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-2">
-            Ranked Suburb Lists for {stateName}
-          </h2>
-          <p className="text-sm text-gray-500 mb-4">
-            Suburb rankings filtered to {stateName}.
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {[
-              { label: "Best for Families", slug: "for-families" },
-              { label: "Highest Growth", slug: "highest-growth" },
-              { label: "Most Affordable", slug: "most-affordable" },
-              { label: "Most Walkable", slug: "most-walkable" },
-              { label: "Lowest Flood Risk", slug: "lowest-flood-risk" },
-              { label: "Best Rental Yield", slug: "best-rental-yield" },
-            ].map(({ label, slug }) => (
-              <Link
-                key={slug}
-                href={`/best-suburbs/${slug}?state=${upperState}`}
-                className="px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-sm text-gray-700 font-medium hover:border-primary hover:text-primary transition-colors"
-              >
-                {label}
-              </Link>
-            ))}
-          </div>
-        </section>
+      <Band spacing="compact">
+        <div className="space-y-14">
+          {/* Best suburbs cross-link */}
+          <section>
+            <SectionHeading size="md" title={<>Ranked Suburb Lists for {stateName}</>} />
+            <p className="mt-3 text-sm text-ink-muted mb-6">
+              Suburb rankings filtered to {stateName}.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: "Best for Families", slug: "for-families" },
+                { label: "Highest Growth", slug: "highest-growth" },
+                { label: "Most Affordable", slug: "most-affordable" },
+                { label: "Most Walkable", slug: "most-walkable" },
+                { label: "Lowest Flood Risk", slug: "lowest-flood-risk" },
+                { label: "Best Rental Yield", slug: "best-rental-yield" },
+              ].map(({ label, slug }) => (
+                <Link
+                  key={slug}
+                  href={`/best-suburbs/${slug}?state=${upperState}`}
+                  className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-medium text-ink hover:border-ink transition-colors"
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
+          </section>
 
-        {/* Buyer / seller funnel entry. A whole state is too broad for a
-            suburb deep-link, so no suburbSlug: the guides open with the
-            suburb step unanswered. */}
-        <GuidePairCTA placeName={stateName} />
-      </div>
-    </div>
+          {/* Buyer / seller funnel entry. A whole state is too broad for a
+              suburb deep-link, so no suburbSlug: the guides open with the
+              suburb step unanswered. */}
+          <GuidePairCTA placeName={stateName} />
+        </div>
+      </Band>
+    </>
   );
 }

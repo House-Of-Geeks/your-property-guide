@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { BestDealCard } from "@/components/best-deal";
 import { getLiveBestDeals } from "@/lib/services/best-deal-service";
 import { SITE_URL } from "@/lib/constants";
 import type { DealAudience, DealPropertyType } from "@/types/best-deal";
+import { BUTTON_PRIMARY, BUTTON_SECONDARY, Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 
 interface PageProps {
   searchParams: Promise<{ state?: string; type?: string; audience?: string }>;
@@ -77,50 +77,44 @@ export default async function BestDealsPage({ searchParams }: PageProps) {
         url={PAGE_PATH}
       />
 
-      <section className="relative bg-surface-warm border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <Breadcrumbs items={[{ label: "Best Deals" }]} />
-          <p className="text-[13px] font-sans text-cta mt-6 mb-3">
-            From our partners
-          </p>
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-ink leading-[1.05] tracking-tight max-w-3xl mb-5">
-            Featured opportunities, reviewed first
-          </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            A small, deliberately limited set of partner-agent properties we think are worth a closer
-            look. Every deal is reviewed by us before going live. If you ask to be connected, we
-            introduce you to one agent, who pays us for the introduction. Buyers never pay.
-          </p>
-        </div>
-      </section>
+      <PhotoHero photo="investing" breadcrumbs={[{ label: "Best Deals" }]}>
+        <p className="text-sm text-ink-muted mb-5">
+          From our partners
+        </p>
+        <HeroTitle>
+          Featured opportunities, reviewed first
+        </HeroTitle>
+        <HeroLead>
+          A small, deliberately limited set of partner-agent properties we think are worth a closer
+          look. Every deal is reviewed by us before going live. If you ask to be connected, we
+          introduce you to one agent, who pays us for the introduction. Buyers never pay.
+        </HeroLead>
+      </PhotoHero>
 
-      <section className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-          <div className="grid sm:grid-cols-3 gap-3">
-            <FilterRow label="State" current={state} options={STATES.map((s) => ({ id: s.toLowerCase(), label: s }))} paramName="state" />
-            <FilterRow label="Type" current={type} options={PROPERTY_TYPES.map((t) => ({ id: t.id, label: t.label }))} paramName="type" />
-            <FilterRow label="Audience" current={audience} options={DEAL_AUDIENCES.map((a) => ({ id: a.id, label: a.label }))} paramName="audience" />
+      {/* The filters, then the deals, in the first band under the hero. */}
+      <Band tone="quiet" spacing="compact">
+        <div className="grid sm:grid-cols-3 gap-6">
+          <FilterRow label="State" current={state} options={STATES.map((s) => ({ id: s.toLowerCase(), label: s }))} paramName="state" />
+          <FilterRow label="Type" current={type} options={PROPERTY_TYPES.map((t) => ({ id: t.id, label: t.label }))} paramName="type" />
+          <FilterRow label="Audience" current={audience} options={DEAL_AUDIENCES.map((a) => ({ id: a.id, label: a.label }))} paramName="audience" />
+        </div>
+        {hasFilters && (
+          <div className="mt-5">
+            <Link href={PAGE_PATH} className="text-sm font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
+              Clear filters
+            </Link>
           </div>
-          {hasFilters && (
-            <div className="mt-4">
-              <Link href={PAGE_PATH} className="text-sm font-medium text-ink hover:text-primary underline decoration-line-strong underline-offset-4">
-                Clear filters
-              </Link>
-            </div>
-          )}
-        </div>
-      </section>
+        )}
 
-      <section className="bg-surface-raised">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+        <div className="mt-10 border-t border-line pt-10">
           {deals.length === 0 ? (
             <EmptyState hasFilters={hasFilters} />
           ) : (
             <>
-              <p className="font-sans text-sm text-ink-muted mb-6">
-                Showing <span className="text-ink font-medium">{deals.length}</span> featured {deals.length === 1 ? "deal" : "deals"}.
+              <p className="text-sm text-ink-muted mb-6">
+                Showing <span className="text-ink font-semibold">{deals.length}</span> featured {deals.length === 1 ? "deal" : "deals"}.
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {deals.map((d) => (
                   <BestDealCard key={d.id} deal={d} variant="compact" />
                 ))}
@@ -128,7 +122,7 @@ export default async function BestDealsPage({ searchParams }: PageProps) {
             </>
           )}
         </div>
-      </section>
+      </Band>
     </>
   );
 }
@@ -146,7 +140,7 @@ function FilterRow({
 }) {
   return (
     <div>
-      <p className="text-[13px] font-sans text-ink-subtle mb-2">{label}</p>
+      <p className="text-sm font-semibold text-ink mb-2">{label}</p>
       <div className="flex flex-wrap gap-1.5">
         {options.map((opt) => {
           const active = current?.toLowerCase() === opt.id.toLowerCase();
@@ -154,10 +148,10 @@ function FilterRow({
             <Link
               key={opt.id}
               href={`?${paramName}=${opt.id}`}
-              className={`inline-flex items-center text-xs font-medium rounded-md px-3 py-1.5 border transition-colors ${
+              className={`inline-flex items-center text-sm font-medium rounded-lg px-3 py-1.5 border transition-colors ${
                 active
-                  ? "border-ink bg-ink text-surface-raised"
-                  : "border-line-strong text-ink-muted hover:border-ink hover:text-ink"
+                  ? "border-ink bg-ink text-ink-inverse"
+                  : "border-line-strong bg-surface-raised text-ink-muted hover:border-ink hover:text-ink"
               }`}
             >
               {opt.label}
@@ -171,14 +165,14 @@ function FilterRow({
 
 function EmptyState({ hasFilters }: { hasFilters: boolean }) {
   return (
-    <div className="rounded-2xl border border-line bg-surface-warm p-10 sm:p-14 text-center">
-      <p className="text-[13px] font-sans text-ink-subtle mb-3">No live deals right now</p>
-      <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-3 max-w-xl mx-auto">
+    <div className="rounded-xl border border-line bg-surface-raised p-10 sm:p-14 text-center">
+      <p className="text-sm text-ink-subtle mb-3">No live deals right now</p>
+      <h2 className="text-3xl sm:text-4xl text-ink leading-[1.1] tracking-[-0.025em] mb-4 max-w-xl mx-auto">
         {hasFilters
           ? "Nothing matches those filters at the moment."
           : "Our Best Deals queue is empty right now."}
       </h2>
-      <p className="font-sans text-base text-ink-muted leading-relaxed max-w-xl mx-auto mb-6">
+      <p className="text-base sm:text-lg text-ink-muted leading-relaxed max-w-xl mx-auto mb-8">
         {hasFilters
           ? "Try clearing a filter, or browse the full list."
           : "We keep the queue small and deliberate. Partner agents submit, we review, and only the strongest deals go live. Check back soon."}
@@ -187,14 +181,14 @@ function EmptyState({ hasFilters }: { hasFilters: boolean }) {
         {hasFilters && (
           <Link
             href="/best-deals"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-line-strong text-ink hover:bg-surface-raised hover:border-ink font-medium px-5 py-2.5 text-sm transition-colors"
+            className={BUTTON_SECONDARY}
           >
             Clear filters
           </Link>
         )}
         <Link
           href="/find-an-expert"
-          className="inline-flex items-center gap-1.5 rounded-lg bg-ink text-surface-raised hover:bg-primary font-medium px-5 py-2.5 text-sm transition-colors"
+          className={BUTTON_PRIMARY}
         >
           Talk to a specialist instead
         </Link>

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PropertyFilters } from "@/components/property/PropertyFilters";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 import { RentResults } from "./Results";
 
 // ISR, page shell caches as static. searchParams reads are isolated to
@@ -27,23 +27,19 @@ export default function RentPage({ searchParams }: RentPageProps) {
     <>
       <BreadcrumbJsonLd items={[{ name: "Rent", url: "/rent" }]} />
 
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Rent" }]} />
-          </div>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Properties for rent, <span>around Australia</span>
-          </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            Houses, units and apartments. Filter by suburb, price, bedrooms.
-            Suburb data and tenant rights guides alongside every listing.
-          </p>
-        </div>
-      </section>
+      <PhotoHero photo="flats" breadcrumbs={[{ label: "Rent" }]}>
+        <HeroTitle>
+          Properties for rent, <span>around Australia</span>
+        </HeroTitle>
+        <HeroLead>
+          Houses, units and apartments. Filter by suburb, price, bedrooms.
+          Suburb data and tenant rights guides alongside every listing.
+        </HeroLead>
+      </PhotoHero>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-        <div className="mb-6">
+      {/* The filters and results are the page's job: first band under the hero. */}
+      <Band tone="quiet" spacing="compact">
+        <div className="mb-8">
           <Suspense fallback={null}>
             <PropertyFilters listingType="rent" />
           </Suspense>
@@ -52,7 +48,7 @@ export default function RentPage({ searchParams }: RentPageProps) {
         <Suspense fallback={null}>
           <RentResults searchParams={searchParams} />
         </Suspense>
-      </div>
+      </Band>
     </>
   );
 }

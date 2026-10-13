@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, PlaceJsonLd, FAQPageJsonLd } from "@/components/seo";
 import { SubpageNextSteps, type NextStepGroup } from "@/components/suburb";
 import { guideFunnelHref } from "@/lib/guide-funnel";
@@ -18,6 +17,7 @@ import { nonLocalityLabel } from "@/lib/locality-names";
 import { postcodeDescription, postcodeFaqs as buildPostcodeFaqs, postcodeTitle } from "@/lib/postcode-copy";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 
 interface PostcodePageProps {
   params: Promise<{ postcode: string }>;
@@ -183,100 +183,90 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
       {/* Answer first: which suburbs the postcode covers, every one named
           and linked, then the one action (the selling guide, with the
           reader's own suburb picked rather than the first in the list). */}
-      <section className="bg-surface-warm border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-8 sm:pb-10">
-          <Breadcrumbs
-            items={[
-              { label: "Postcodes", href: "/postcodes" },
-              { label: `Postcode ${postcode}` },
-            ]}
-          />
-          <div className="grid gap-6 lg:grid-cols-12 lg:gap-12 pt-3">
-            <div className="lg:col-span-7">
-              <h1 className="font-display text-ink font-bold leading-[1.05] tracking-[-0.03em] text-[2rem] sm:text-5xl lg:text-[3.25rem]">
-                Postcode {postcode}
-              </h1>
-              <div className="mt-4 font-sans text-base sm:text-lg text-ink leading-relaxed max-w-2xl space-y-3">
-                {suburbs.length > 0 ? (
-                  <p>
-                    {suburbs.length === 1 ? `Postcode ${postcode} is ` : `Postcode ${postcode} covers ${suburbs.length} suburbs in ${stateName}: `}
-                    <LinkedList items={suburbs} />
-                    {suburbs.length === 1 ? `, ${stateName}.` : "."}
-                  </p>
-                ) : (
-                  <p>{`Postcode ${postcode} is in ${stateName}. Australia Post uses it for ${plainList(postalNames.map((p) => p.name))}; it has no residential suburbs of its own.`}</p>
-                )}
-                {suburbs.length > 0 && postalNames.length > 0 && (
-                  <p className="text-[15px] text-ink-muted">
-                    {`Australia Post also uses ${postcode} for ${plainList(postalNames.map((p) => p.name))}, ${postalNames.length === 1 ? "a delivery name rather than a suburb" : "delivery names rather than suburbs"}.`}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="lg:col-span-5">
-              <div className="rounded-xl border border-line bg-white p-5 sm:p-6">
-                <h2 className="font-display text-lg sm:text-xl font-bold text-ink leading-snug tracking-tight">
-                  Selling in {postcode}?
-                </h2>
-                <p className="mt-1.5 font-sans text-sm sm:text-[15px] text-ink-muted leading-relaxed">
-                  The free selling guide: pricing, real agent fees in {state}, choosing an agent and getting to settlement, personalised to your suburb.
-                </p>
-                {suburbs.length > 1 ? (
-                  // A plain GET form: picking a suburb opens the funnel with
-                  // it answered (?suburb=), no script needed.
-                  <form action="/selling-guide#guide-funnel" method="get" className="mt-4 flex flex-col sm:flex-row gap-3">
-                    <input type="hidden" name="from" value={from} />
-                    <label htmlFor="postcode-suburb" className="sr-only">Your suburb</label>
-                    <select
-                      id="postcode-suburb"
-                      name="suburb"
-                      required
-                      defaultValue=""
-                      className="flex-1 min-w-0 rounded-lg border border-line-strong bg-white px-3 py-3 font-sans text-[15px] text-ink focus:border-ink focus:outline-none focus:ring-2 focus:ring-primary/20"
-                    >
-                      <option value="" disabled>Your suburb</option>
-                      {[...suburbs].sort((x, y) => x.name.localeCompare(y.name)).map((s) => (
-                        <option key={s.slug} value={s.slug}>{s.name}</option>
-                      ))}
-                    </select>
-                    <button
-                      type="submit"
-                      className="shrink-0 inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors cursor-pointer"
-                    >
-                      Get the free guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                    </button>
-                  </form>
-                ) : (
-                  <Link
-                    href={guideFunnelHref("selling", { suburb: suburbs[0]?.slug, from, toForm: true })}
-                    className="mt-4 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors"
-                  >
-                    Get the free selling guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                  </Link>
-                )}
-                <p className="mt-4 font-sans text-sm text-ink-muted">
-                  {"Buying here? "}
-                  <Link href={guideFunnelHref("buying", { from })} className="text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary">
-                    The free buying guide
-                  </Link>
-                </p>
-              </div>
-            </div>
+      <PhotoHero
+        photo="street"
+        breadcrumbs={[
+          { label: "Postcodes", href: "/postcodes" },
+          { label: `Postcode ${postcode}` },
+        ]}
+        aside={
+          <div className="tone-light rounded-xl border border-line bg-white p-5 sm:p-6">
+            <h2 className="text-lg sm:text-xl text-ink leading-snug tracking-tight">
+              Selling in {postcode}?
+            </h2>
+            <p className="mt-1.5 text-sm sm:text-[15px] text-ink-muted leading-relaxed">
+              The free selling guide: pricing, real agent fees in {state}, choosing an agent and getting to settlement, personalised to your suburb.
+            </p>
+            {suburbs.length > 1 ? (
+              // A plain GET form: picking a suburb opens the funnel with
+              // it answered (?suburb=), no script needed.
+              <form action="/selling-guide#guide-funnel" method="get" className="mt-4 flex flex-col sm:flex-row gap-3">
+                <input type="hidden" name="from" value={from} />
+                <label htmlFor="postcode-suburb" className="sr-only">Your suburb</label>
+                <select
+                  id="postcode-suburb"
+                  name="suburb"
+                  required
+                  defaultValue=""
+                  className="flex-1 min-w-0 rounded-lg border border-line-strong bg-white px-3 py-3 text-[15px] text-ink focus:border-ink focus:outline-none focus:ring-2 focus:ring-primary/20"
+                >
+                  <option value="" disabled>Your suburb</option>
+                  {[...suburbs].sort((x, y) => x.name.localeCompare(y.name)).map((s) => (
+                    <option key={s.slug} value={s.slug}>{s.name}</option>
+                  ))}
+                </select>
+                <button
+                  type="submit"
+                  className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors cursor-pointer"
+                >
+                  Get the free guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                </button>
+              </form>
+            ) : (
+              <Link
+                href={guideFunnelHref("selling", { suburb: suburbs[0]?.slug, from, toForm: true })}
+                className="mt-4 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors"
+              >
+                Get the free selling guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              </Link>
+            )}
+            <p className="mt-4 text-sm text-ink-muted">
+              {"Buying here? "}
+              <Link href={guideFunnelHref("buying", { from })} className="text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary">
+                The free buying guide
+              </Link>
+            </p>
           </div>
-        </div>
-      </section>
+        }
+      >
+        <HeroTitle>
+          Postcode {postcode}
+        </HeroTitle>
+        {suburbs.length > 0 ? (
+          <HeroLead>
+            {suburbs.length === 1 ? `Postcode ${postcode} is ` : `Postcode ${postcode} covers ${suburbs.length} suburbs in ${stateName}: `}
+            <LinkedList items={suburbs} />
+            {suburbs.length === 1 ? `, ${stateName}.` : "."}
+          </HeroLead>
+        ) : (
+          <HeroLead>{`Postcode ${postcode} is in ${stateName}. Australia Post uses it for ${plainList(postalNames.map((p) => p.name))}; it has no residential suburbs of its own.`}</HeroLead>
+        )}
+        {suburbs.length > 0 && postalNames.length > 0 && (
+          <p className="mt-4 text-base text-ink-muted leading-relaxed max-w-2xl">
+            {`Australia Post also uses ${postcode} for ${plainList(postalNames.map((p) => p.name))}, ${postalNames.length === 1 ? "a delivery name rather than a suburb" : "delivery names rather than suburbs"}.`}
+          </p>
+        )}
+      </PhotoHero>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-12 sm:space-y-16">
+      <Band spacing="compact">
+        <div className="space-y-14">
         {/* The suburbs, one line each: the profile link and the published
             figures only. */}
         {suburbs.length > 0 && (
           <section id="suburbs" className="scroll-mt-20">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
-              Suburbs in postcode {postcode}
-            </h2>
+            <SectionHeading size="md" title={<>Suburbs in postcode {postcode}</>} />
             {anyHouse || anyUnit ? (
-              <div className="overflow-x-auto rounded-xl border border-line max-w-4xl">
+              <div className="mt-6 overflow-x-auto rounded-xl border border-line bg-surface-raised max-w-4xl">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="bg-surface-warm border-b border-line text-left">
@@ -311,10 +301,10 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
                 </table>
               </div>
             ) : (
-              <ul className="grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3 border-t border-line sm:border-t-0">
+              <ul className="mt-6 grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3 border-t border-line sm:border-t-0">
                 {suburbs.map((suburb, i) => (
                   <li key={suburb.slug} className={`border-b border-line ${i < 2 ? "sm:border-t" : ""} ${i === 2 ? "lg:border-t" : ""}`}>
-                    <Link href={`/suburbs/${suburb.slug}`} className="flex items-baseline justify-between gap-4 py-3 font-sans text-[15px] text-ink hover:text-primary transition-colors">
+                    <Link href={`/suburbs/${suburb.slug}`} className="flex items-baseline justify-between gap-4 py-3 text-[15px] text-ink hover:text-primary transition-colors">
                       <span className="font-medium">{suburb.name}</span>
                       {suburb.schools.length > 0 && (
                         <span className="text-sm text-ink-muted">{`${suburb.schools.length} school${suburb.schools.length === 1 ? "" : "s"}`}</span>
@@ -325,7 +315,7 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
               </ul>
             )}
             {(anyHouse || anyUnit) && (
-              <p className="mt-3 font-sans text-xs text-ink-subtle max-w-3xl">
+              <p className="mt-3 text-sm text-ink-subtle max-w-3xl">
                 Medians are shown only where the state or the ABS publishes one for the suburb; each profile gives the source and period.
               </p>
             )}
@@ -338,10 +328,10 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
             profile URLs redirect here or to the suburb they sit in. */}
         {postalNames.length > 0 && (
           <section id="delivery-names" className="scroll-mt-20 max-w-4xl">
-            <h2 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight mb-2">
+            <h2 className="text-2xl sm:text-3xl text-ink tracking-[-0.02em] mb-3">
               Postal delivery names in {postcode}
             </h2>
-            <p className="font-sans text-sm text-ink-muted mb-4 max-w-2xl">
+            <p className="text-base text-ink-muted mb-5 max-w-2xl">
               Australia Post uses {postalNames.length === 1 ? "this name" : "these names"} for mail
               in postcode {postcode}. {postalNames.length === 1 ? "It is not a suburb" : "They are not suburbs"},
               so there is no suburb profile to show.
@@ -350,7 +340,7 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
               {postalNames.map((p) => {
                 const parent = p.parent ? suburbs.find((s) => s.slug === p.parent) : undefined;
                 return (
-                  <li key={p.slug} className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-line py-2.5 font-sans text-[15px]">
+                  <li key={p.slug} className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-line py-2.5 text-[15px]">
                     <span className="font-medium text-ink">{p.name}</span>
                     <span className="text-sm text-ink-muted">
                       {nonLocalityLabel(p.kind)}
@@ -369,17 +359,18 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
             </ul>
           </section>
         )}
+        </div>
+      </Band>
 
-        {/* Schools */}
-        {allSchools.length > 0 && (
+      {/* Schools */}
+      {allSchools.length > 0 && (
+        <Band tone="quiet" spacing="compact">
           <section id="schools" className="scroll-mt-20 max-w-4xl">
-            <h2 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight mb-2">
-              Schools in postcode {postcode}
-            </h2>
-            <p className="font-sans text-sm text-ink-muted mb-4">
+            <SectionHeading size="md" title={<>Schools in postcode {postcode}</>} />
+            <p className="mt-3 text-base text-ink-muted mb-6">
               Schools listed against the suburbs in this postcode, with their ICSEA (ACARA).
             </p>
-            <div className="overflow-x-auto rounded-xl border border-line">
+            <div className="overflow-x-auto rounded-xl border border-line bg-surface-raised">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-surface-warm border-b border-line text-left">
@@ -420,27 +411,29 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
               </table>
             </div>
           </section>
-        )}
+        </Band>
+      )}
 
+      <Band tone={allSchools.length > 0 ? "light" : "quiet"} spacing="compact">
+        <div className="space-y-14 sm:space-y-16">
         {/* Reverse-lookup FAQ. Visible Q&A backs the FAQPage schema above so
             Google can surface a direct answer for "what suburb is postcode X"
             and "what state is postcode X in". */}
         <section id="questions" className="scroll-mt-20 max-w-3xl">
-          <h2 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight mb-4">
-            Postcode {postcode} questions
-          </h2>
-          <dl className="divide-y divide-line border-y border-line">
+          <SectionHeading size="md" title={<>Postcode {postcode} questions</>} />
+          <dl className="mt-6 divide-y divide-line border-y border-line">
             {postcodeFaqs.map((faq) => (
               <div key={faq.question} className="py-4">
-                <dt className="font-sans text-base font-semibold text-ink mb-1.5">{faq.question}</dt>
-                <dd className="font-sans text-[15px] text-ink-muted leading-relaxed">{faq.answer}</dd>
+                <dt className="text-base font-semibold text-ink mb-1.5">{faq.question}</dt>
+                <dd className="text-[15px] text-ink-muted leading-relaxed">{faq.answer}</dd>
               </div>
             ))}
           </dl>
         </section>
 
         <SubpageNextSteps id="next" title={`Buying or selling in ${stateName}`} groups={nextSteps} />
-      </div>
+        </div>
+      </Band>
     </>
   );
 }
