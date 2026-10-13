@@ -201,7 +201,7 @@ export default function BridgingLoansGuidePage() {
     >
       <Callout variant="info" title="Run your own numbers">
         <p>
-          The <Link href="/bridging-loan-calculator">bridging loan calculator</Link> works out your peak debt, whether it
+          The <Link href="/bridging-loan-calculator">bridging loan calculator</Link>{" "}works out your peak debt, whether it
           fits a lender&rsquo;s {PEAK_LVR_CAP}% limit, the interest added while you sell, and the loan you&rsquo;re left
           with. Start from your suburb&rsquo;s median sale price.
         </p>
@@ -247,7 +247,7 @@ export default function BridgingLoansGuidePage() {
       <p>
         <strong>Closed bridging</strong> is when your current home has already
         sold and you know the settlement date; the loan covers a gap of weeks.{" "}
-        <strong>Open bridging</strong> is when it hasn&rsquo;t sold yet. Open
+        <strong>Open bridging</strong>{" "}is when it hasn&rsquo;t sold yet. Open
         bridging is the riskier of the two, for you and the lender, because the
         sale could take longer or bring less than planned. Westpac, CBA, NAB,
         ANZ and the St.George group all publish open bridging; Bendigo Bank
@@ -519,7 +519,7 @@ export default function BridgingLoansGuidePage() {
         Our guide to the{" "}
         <Link href="/guides/bridging-loan-alternatives">alternatives to a bridging loan</Link>{" "}
         compares each in detail, and the{" "}
-        <Link href="/guides/deposit-bonds">deposit bond guide</Link> explains
+        <Link href="/guides/deposit-bonds">deposit bond guide</Link>{" "}explains
         how a bond works on a contract. A &ldquo;relocation loan&rdquo; at
         St.George, Bank of Melbourne or BankSA is their bridging loan, so it is
         in the table above. For the decision itself, read{" "}
@@ -638,7 +638,7 @@ export default function BridgingLoansGuidePage() {
         <li><strong>Settle the new property</strong> using the bridging loan and move in.</li>
         <li><strong>Sell the old home</strong> within the bridging term.</li>
         <li>
-          <strong>Settle the sale.</strong> The proceeds repay the bridging part
+          <strong>Settle the sale.</strong>{" "}The proceeds repay the bridging part
           and you&rsquo;re left with the end debt you were assessed for.
         </li>
       </ol>

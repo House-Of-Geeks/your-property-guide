@@ -175,7 +175,7 @@ export default function CapitalGrowthVsCashFlowPage() {
         meaningful, and they measure completely different things.
       </p>
       <p>
-        <strong>Capital growth</strong> is the increase in the property&rsquo;s
+        <strong>Capital growth</strong>{" "}is the increase in the property&rsquo;s
         market value over time. A property bought for $600,000 and worth
         $750,000 ten years later has experienced $150,000 of capital
         growth, or roughly 2.3 per cent compound annual growth. It&rsquo;s
@@ -391,7 +391,7 @@ export default function CapitalGrowthVsCashFlowPage() {
           enough to absorb both rounds of friction.
         </li>
         <li>
-          <strong>Modelling yield without vacancy.</strong> Gross yield
+          <strong>Modelling yield without vacancy.</strong>{" "}Gross yield
           assumes 100 per cent occupancy. Real markets average 95 to 98
           per cent. Model 4 to 5 per cent vacancy into your cash-flow
           numbers or you&rsquo;ll be optimistic by a meaningful margin.
@@ -418,14 +418,14 @@ export default function CapitalGrowthVsCashFlowPage() {
       </p>
       <ol>
         <li>
-          <strong>What is your portfolio currently missing?</strong> If
+          <strong>What is your portfolio currently missing?</strong>{" "}If
           you already own two growth properties bleeding cash, your next
           purchase probably needs to be cash-flow positive. If you own
           two yielders growing slowly, your next purchase probably needs
           to be growth-focused. Rebalance, don&rsquo;t double down.
         </li>
         <li>
-          <strong>What is your runway?</strong> If serviceability is
+          <strong>What is your runway?</strong>{" "}If serviceability is
           tight, cash flow wins. If you&rsquo;ve got runway and a long
           horizon, growth wins.
         </li>

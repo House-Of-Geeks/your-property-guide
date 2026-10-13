@@ -151,7 +151,7 @@ export default function BestTimeToBuyGuide() {
         homes), and sellers who list in winter are usually motivated.
       </p>
       <p>
-        <strong>Buyer advantage:</strong> Less competition, more leverage on
+        <strong>Buyer advantage:</strong>{" "}Less competition, more leverage on
         well-priced stock that&rsquo;s been sitting.
       </p>
       <p>

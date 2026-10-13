@@ -4,10 +4,11 @@ import Link from "next/link";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, DefinedTermJsonLd } from "@/components/seo";
-import { ExpertCTA, BUYING_GUIDE_CTA } from "@/components/journey";
+import { GuideStartInline } from "@/components/guide/GuideStartInline";
+import { GuideNextStep } from "@/components/guide/GuideNextStep";
 import { GLOSSARY_GUIDE_LINKS, GLOSSARY_TERMS, getGlossaryTerm } from "@/lib/data/glossary";
 import { GuideLinkList } from "@/components/guide/GuideLinkList";
-import { resolveGuides } from "@/lib/guides/registry";
+import { GUIDE_SECTIONS, resolveGuides } from "@/lib/guides/registry";
 import { getCalculator, toGuideLinks, type GuideLink } from "@/lib/guides/hub-guides";
 import { SITE_URL } from "@/lib/constants";
 
@@ -54,6 +55,21 @@ const PERSONA_GUIDE: Record<
     description: "Bond, rent increases, repairs, entry, and ending a tenancy.",
   },
 };
+
+// Category labels for the kicker above the H1.
+const CATEGORY_LABEL: Record<string, string> = {
+  "first-home": "Buying",
+  selling: "Selling",
+  upgrading: "Upgrading",
+  investing: "Investing",
+  renters: "Renting",
+};
+
+// Term names were extracted from HTML and two carried an entity (fixed in
+// src/lib/data/glossary.ts, 13 Oct 2026); decode defensively anyway.
+function decodeTerm(term: string): string {
+  return term.replace(/&apos;|&#39;/g, "’").replace(/&amp;/g, "&").replace(/&quot;/g, '"');
+}
 
 // Strip HTML tags for meta-description and the DefinedTerm schema description.
 function stripHtml(html: string): string {
@@ -123,6 +139,16 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
   const relatedGuide = PERSONA_GUIDE[entry.category];
 
   const plain = stripHtml(entry.html);
+  const name = decodeTerm(entry.term);
+  // The next step follows the term's reader: a selling term (by its
+  // category, or because its "Go deeper" guides are selling guides, as for
+  // "appraisal") starts the selling guide in place; every other term keeps
+  // the buying guide.
+  const sellingSlugs = GUIDE_SECTIONS.find((s) => s.id === "selling")?.guides ?? [];
+  const sellingTerm =
+    entry.category === "selling" || (mapped?.guides ?? []).some((g) => sellingSlugs.includes(g));
+  const kicker = sellingTerm ? "Selling" : CATEGORY_LABEL[entry.category];
+  const from = `glossary-${entry.slug}`;
 
   return (
     <>
@@ -138,40 +164,37 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
         url={`/glossary/${entry.slug}`}
       />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-16 sm:pb-20">
-          <div className="mb-10">
-            <Breadcrumbs
-              items={[
-                { label: "Glossary", href: "/glossary" },
-                { label: entry.term },
-              ]}
-            />
-          </div>
-
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              Glossary
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              {entry.category.replace(/-/g, " ")}
-            </span>
-          </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-4 max-w-[18ch] font-bold">
-            What is{" "}
-            <span>{entry.term}</span>?
-          </h1>
+      <div className="mx-auto w-full max-w-[64rem] px-4 sm:px-6">
+        <div className="pt-2 sm:pt-4">
+          <Breadcrumbs
+            items={[
+              { label: "Glossary", href: "/glossary" },
+              { label: name },
+            ]}
+          />
         </div>
-      </section>
+        <header className="max-w-3xl pt-4 sm:pt-8 pb-2">
+          <p className="mb-3 text-sm font-semibold text-ink-muted">
+            <Link href="/glossary" className="hover:text-ink hover:underline underline-offset-4">Property glossary</Link>
+            {kicker && (
+              <>
+                <span aria-hidden="true" className="px-1.5 text-line-strong">·</span>
+                {kicker}
+              </>
+            )}
+          </p>
+          <h1 className="font-display font-bold text-ink text-[2rem] leading-[1.08] tracking-[-0.03em] sm:text-5xl">
+            What is {name}?
+          </h1>
+        </header>
+      </div>
 
       {/* Definition body + sidebar */}
-      <article className="bg-surface-raised">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="grid lg:grid-cols-12 gap-12">
+      <article>
+        <div className="mx-auto w-full max-w-[64rem] px-4 sm:px-6 pt-6 pb-16">
+          <div className="lg:grid lg:grid-cols-[minmax(0,40rem)_16rem] lg:justify-between lg:gap-x-16">
             {/* Main body */}
-            <div className="lg:col-span-8">
+            <div className="min-w-0">
               <div
                 className="prose-ypg prose-ypg-tight"
                 dangerouslySetInnerHTML={{ __html: `<p class="lead">${entry.html}</p>` }}
@@ -179,28 +202,31 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
 
               {/* Cross-link to the guide on this topic, else the persona guide */}
               {topicLinks.length > 0 ? (
-                <div className="mt-10 rounded-2xl border border-line bg-surface-warm p-6">
-                  <p className="text-[13px] font-sans text-ink-subtle mb-4">
-                    Go deeper
-                  </p>
+                <section className="mt-10">
+                  <h2 className="text-lg font-bold text-ink mb-3">Go deeper</h2>
                   <GuideLinkList groups={[{ links: topicLinks }]} columns={2} />
-                </div>
+                </section>
               ) : relatedGuide && (
-                <div className="mt-10 rounded-2xl border border-line bg-surface-warm p-6">
-                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
-                    Go deeper
-                  </p>
+                <section className="mt-10">
+                  <h2 className="text-lg font-bold text-ink mb-3">Go deeper</h2>
                   <Link
                     href={relatedGuide.href}
-                    className="font-display text-2xl text-ink hover:text-primary transition-colors leading-tight inline-flex items-center gap-2 group"
+                    className="text-lg font-semibold text-ink hover:underline underline-offset-4 inline-flex items-center gap-2 group"
                   >
                     {relatedGuide.label}
-                    <ArrowRight className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity" />
+                    <ArrowRight className="w-4 h-4 text-ink-muted" aria-hidden="true" />
                   </Link>
-                  <p className="mt-2 font-sans text-sm text-ink-muted leading-relaxed">
+                  <p className="mt-1 text-[15px] text-ink-muted leading-relaxed">
                     {relatedGuide.description}
                   </p>
-                </div>
+                </section>
+              )}
+
+              {/* The one next step, by the term's reader. */}
+              {sellingTerm ? (
+                <GuideStartInline from={from} />
+              ) : (
+                <GuideNextStep audience="buying" from={from} />
               )}
 
               {/* Prev / Next */}
@@ -211,13 +237,13 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
                 {prev ? (
                   <Link
                     href={`/glossary/${prev.slug}`}
-                    className="group rounded-2xl border border-line bg-surface-raised p-4 hover:border-primary/40 transition-colors"
+                    className="group rounded-xl border border-line p-4 hover:border-ink"
                   >
-                    <p className="text-[13px] font-sans text-ink-subtle mb-1 inline-flex items-center gap-1">
+                    <p className="text-sm text-ink-muted mb-1 inline-flex items-center gap-1">
                       <ArrowLeft className="w-3 h-3" /> Previous
                     </p>
-                    <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
-                      {prev.term}
+                    <p className="text-base font-semibold text-ink leading-tight">
+                      {decodeTerm(prev.term)}
                     </p>
                   </Link>
                 ) : (
@@ -226,13 +252,13 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
                 {next ? (
                   <Link
                     href={`/glossary/${next.slug}`}
-                    className="group rounded-2xl border border-line bg-surface-raised p-4 hover:border-primary/40 transition-colors text-right"
+                    className="group rounded-xl border border-line p-4 hover:border-ink text-right"
                   >
-                    <p className="text-[13px] font-sans text-ink-subtle mb-1 inline-flex items-center gap-1 justify-end w-full">
+                    <p className="text-sm text-ink-muted mb-1 inline-flex items-center gap-1 justify-end w-full">
                       Next <ArrowRight className="w-3 h-3" />
                     </p>
-                    <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
-                      {next.term}
+                    <p className="text-base font-semibold text-ink leading-tight">
+                      {decodeTerm(next.term)}
                     </p>
                   </Link>
                 ) : (
@@ -242,11 +268,11 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
             </div>
 
             {/* Sidebar, nearby terms + back to A-Z */}
-            <aside className="lg:col-span-4">
+            <aside className="mt-12 lg:mt-0">
               <div className="lg:sticky lg:top-24 space-y-8">
                 <Link
                   href="/glossary"
-                  className="inline-flex items-center gap-2 font-sans text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Back to A–Z glossary
@@ -254,7 +280,7 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
 
                 {nearby.length > 0 && (
                   <div>
-                    <p className="text-[13px] font-sans text-ink-subtle mb-4">
+                    <p className="text-sm font-semibold text-ink mb-3">
                       Nearby terms
                     </p>
                     <ul className="space-y-1.5">
@@ -262,9 +288,9 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
                         <li key={n.slug}>
                           <Link
                             href={`/glossary/${n.slug}`}
-                            className="font-sans text-sm text-ink-muted hover:text-primary transition-colors"
+                            className="text-sm text-ink-muted hover:text-ink hover:underline underline-offset-4"
                           >
-                            {n.term}
+                            {decodeTerm(n.term)}
                           </Link>
                         </li>
                       ))}
@@ -272,11 +298,11 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
                   </div>
                 )}
 
-                <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
+                <div className="border-t border-line pt-5">
+                  <p className="text-sm font-semibold text-ink mb-1">
                     Editorial note
                   </p>
-                  <p className="font-sans text-sm text-ink-muted leading-relaxed">
+                  <p className="text-sm text-ink-muted leading-relaxed">
                     Plain-English definitions written for Australian buyers,
                     sellers, investors and renters. Anything looks off?{" "}
                     <a
@@ -293,10 +319,6 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
           </div>
         </div>
       </article>
-
-      {/* Funnel exit: glossary terms were sitemapped in 9aa8e65 and were
-          the last growing template with no path to a lead form. */}
-      <ExpertCTA {...BUYING_GUIDE_CTA} />
     </>
   );
 }

@@ -1,24 +1,23 @@
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { Suspense } from "react";
-import { ArrowRight, MapPin, Calculator } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { SellingGuideFunnel } from "./SellingGuideFunnel";
 import { BuyingGuideFunnel } from "./BuyingGuideFunnel";
-import { StickyMatchCTA } from "./StickyMatchCTA";
 import { EditorNote, Faq } from "@/components/guide";
 import { RelatedGuidesSection } from "@/components/guide/GuideLinkList";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { PERSONAS, getPersonaById, type PersonaId } from "@/lib/constants/journey";
 import { PERSONA_HUB_CONTENT } from "@/lib/persona-hub-content";
 import { hubGuideGroups, hubGuideList } from "@/lib/guides/hub-guides";
+import { guideFunnelHref } from "@/lib/guide-funnel";
 
 interface PersonaHubLayoutProps {
   personaId: PersonaId;
 }
 
-// Per-persona editor's notes shown under the hero standfirst. Andy's
-// first-person voice on what this hub is really about. Sets the editorial
-// tone before the three-starting-points grid loads.
+// Per-persona editor's notes, Andy's first-person voice on what this hub is
+// really about, closing the briefing.
 const PERSONA_EDITOR_NOTE: Record<PersonaId, React.ReactNode> = {
   "first-home": (
     <p>
@@ -69,54 +68,51 @@ const PERSONA_EDITOR_NOTE: Record<PersonaId, React.ReactNode> = {
   ),
 };
 
-// Shared layout for all four persona hubs (/first-home-buyers, /selling,
-// /upgrading, /investing). Editorial, education-first. Each hub leads with
-// the persona's bespoke illustration over a warm hero, then surfaces three
-// real existing pages as starting points, then a universal suburb-data CTA,
-// then a soft expert CTA, then chips to the other personas.
+// Shared layout for the persona hubs (/first-home-buyers, /selling,
+// /upgrading, /investing, /renovating). Brand v4, answer first: the H1, the
+// direct answer (the briefing's first paragraph), one action (sellers: the
+// selling guide, with the appraisal as the alternative; buyers: the buying
+// guide), and the three first reads beside it. Then the rest of the briefing,
+// every guide for the persona, the calculators, the FAQ, and the guide
+// funnel itself at the end, where intent peaks.
 
-// Renders an H2 with an italic emphasis token. Pass the heading with the
-// emphasised phrase wrapped in asterisks, e.g. "Pick your *starting point*".
-function HeadingWithEmphasis({ heading, className }: { heading: string; className: string }) {
-  const parts = heading.split(/\*([^*]+)\*/g);
-  return (
-    <h2 className={className}>
-      {parts.map((part, i) =>
-        i % 2 === 1 ? (
-          <span key={i}>{part}</span>
-        ) : (
-          <span key={i}>{part}</span>
-        ),
-      )}
-    </h2>
-  );
-}
+// One documentary photo per hub, full bleed under the hero (BRAND.md §6:
+// generated to the brief, generic people, never a named place or person).
+const PERSONA_PHOTO: Record<PersonaId, { src: string; alt: string; position: string }> = {
+  "first-home": {
+    src: "/images/photos/first-home.jpg",
+    alt: "New brick homes with Colorbond roofs on a young estate street",
+    position: "object-[50%_55%]",
+  },
+  "selling": {
+    src: "/images/photos/selling-house.jpg",
+    alt: "A Federation brick home with a blank sale board out the front",
+    position: "object-[50%_55%]",
+  },
+  "upgrading": {
+    src: "/images/photos/verandah-couple.jpg",
+    alt: "A couple sitting on the verandah of a weatherboard house among pot plants",
+    position: "object-[50%_45%]",
+  },
+  "investing": {
+    src: "/images/photos/flats.jpg",
+    alt: "A red-brick block of flats behind a jacaranda in flower",
+    position: "object-[50%_50%]",
+  },
+  "renovating": {
+    src: "/images/photos/renovation.jpg",
+    alt: "A room mid-renovation with a ladder, paint tins and a floor sander",
+    position: "object-[50%_60%]",
+  },
+};
 
-// Italic emphasis word in the dark guide band H2 with the same hand-drawn
-// terracotta underline as the homepage hero, drawn on scroll reveal
-// (.u-draw-scroll activates when the ancestor [data-reveal] intersects).
-function GuideWordUnderline({ word }: { word: string }) {
-  return (
-    <span className="u-draw-scroll relative inline-block">
-      {word}
-      <svg
-        className="absolute left-[-2%] right-0 bottom-[-0.12em] w-[104%] h-[0.22em]"
-        viewBox="0 0 120 12"
-        fill="none"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-      >
-        <path
-          d="M3 8.5C24 4.5 50 3.5 73 5c18 1.2 32 3 44 4.5"
-          stroke="var(--cta)"
-          strokeWidth="3.2"
-          strokeLinecap="round"
-          pathLength="1"
-        />
-      </svg>
-    </span>
-  );
-}
+// Hub content headings mark an emphasis token with asterisks (v3 italics);
+// v4 sets no italics, so the markers are dropped.
+const plainHeading = (heading: string) => heading.replace(/\*([^*]+)\*/g, "$1").replace(/\.$/, "");
+
+// The calculator cards repeat the hero's own actions on some hubs; the hero
+// already carries those.
+const HERO_ACTION_HREFS = new Set(["/selling-guide", "/buying-guide", "/appraisal"]);
 
 export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
   const persona = getPersonaById(personaId);
@@ -127,6 +123,12 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
   const isBuyingHub = personaId === "first-home" || personaId === "upgrading" || personaId === "investing";
   // The hub's full guide list (titles from the guide registry), where one is defined.
   const guideList = hubGuideList(persona.hubPath);
+
+  const [answer, ...briefing] = content?.deepDive.paragraphs ?? [persona.hubLede];
+  const guideHref = guideFunnelHref(isBuyingHub ? "buying" : "selling", { from: persona.hubPath.slice(1) });
+  const calculators = (content?.calculators ?? []).filter((c) => !HERO_ACTION_HREFS.has(c.href));
+  const photo = PERSONA_PHOTO[personaId];
+  const h2 = "font-display text-ink tracking-[-0.02em] text-[1.75rem] sm:text-4xl leading-tight font-bold";
 
   return (
     <>
@@ -145,286 +147,144 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
         }))}
       />
 
-      {/* Hero: the persona heading and a standfirst. */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
+      {/* Hero: the answer and the one action on the left, the three first
+          reads on the right. The hub's photo runs full bleed under it. */}
+      <section className="bg-surface-warm border-b border-line">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8 pb-10 sm:pt-14 sm:pb-16">
+          <div className="grid lg:grid-cols-12 gap-x-12 gap-y-10 items-start">
+            <div className="lg:col-span-7">
+              <h1 className="font-display text-ink tracking-[-0.035em] text-[2.25rem] leading-[1.04] sm:text-5xl lg:text-6xl font-bold">
+                {persona.hubHeading}
+              </h1>
+              <p className="mt-4 sm:mt-6 text-base sm:text-xl text-ink leading-normal sm:leading-[1.45] max-w-2xl">
+                {answer}
+              </p>
+              <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3">
+                <Link
+                  href={guideHref}
+                  className="inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3 transition-colors"
+                >
+                  {isBuyingHub ? "Get the free buying guide" : "Get the free selling guide"}
+                </Link>
+                {personaId === "selling" && (
+                  <Link
+                    href="/appraisal"
+                    className="inline-flex items-center justify-center rounded-md border border-ink text-ink hover:bg-ink hover:text-white font-semibold px-6 py-3 transition-colors"
+                  >
+                    Free appraisal
+                  </Link>
+                )}
+              </div>
+              <p className="mt-3 text-sm text-ink-muted">
+                {isBuyingHub
+                  ? "Free PDF in 60 seconds. Never passed to selling agents."
+                  : "Free PDF in 60 seconds. Agents pay us for introductions; it costs you nothing."}
+              </p>
+            </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-20 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-32">
-          {/* Display-scale H1. Persona heading owns the page */}
-          <h1 className="rise rise-d1 font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
-            {persona.hubHeading}
-          </h1>
-
-          {/* Standfirst */}
-          <p className="rise rise-d2 font-display font-normal text-xl sm:text-2xl lg:text-3xl text-ink leading-[1.25] max-w-3xl">
-            {persona.hubLede}
-          </p>
-
-          {/* Editor's note: per-persona first-person framing. Sets the
-              editorial voice before the three-starting-points grid. */}
-          <div className="rise rise-d3 max-w-3xl mt-10">
-            <EditorNote>
-              {PERSONA_EDITOR_NOTE[personaId]}
-            </EditorNote>
+            <nav aria-label="Start here" className="lg:col-span-5">
+              <h2 className="text-sm font-semibold text-ink mb-2">Start here</h2>
+              <ul className="border-t border-line">
+                {persona.startingPoints.map((sp) => (
+                  <li key={sp.href} className="border-b border-line">
+                    <Link href={sp.href} className="group flex items-start justify-between gap-3 py-3.5">
+                      <span className="min-w-0">
+                        <span className="block font-semibold text-ink group-hover:underline underline-offset-4">{sp.label}</span>
+                        <span className="block mt-0.5 text-sm text-ink-muted leading-snug">{sp.description}</span>
+                      </span>
+                      <ArrowRight className="w-4 h-4 mt-1 shrink-0 text-ink-subtle group-hover:text-ink" aria-hidden="true" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
         </div>
       </section>
 
-      {/* Deep-dive editorial content. This is the section that turns
-          the hub from a navigation page into a ranking page: 4-5
-          paragraphs of plain-English depth on what the persona actually
-          needs to understand. Schemes, fees, math, common pitfalls. */}
+      <div className="relative h-[180px] sm:h-[280px] lg:h-[340px] border-b border-line bg-surface-sunken">
+        <Image src={photo.src} alt={photo.alt} fill sizes="100vw" className={`object-cover ${photo.position}`} />
+      </div>
+
+      {/* The rest of the briefing: plain-English depth on what the persona
+          needs to understand (the ranking body of the hub). */}
       {content && (
-        <section className="bg-surface border-b border-line">
-          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-            <div className="flex items-center gap-4 mb-6" data-reveal>
-              <span className="text-sm font-semibold text-ink-muted leading-none">
-                Briefing
-              </span>
-              <span className="rule-draw w-12 h-px bg-line-strong" aria-hidden="true" />
-              <span className="text-[13px] text-ink-subtle font-sans font-medium">
-                {content.deepDive.eyebrow}
-              </span>
-            </div>
-            <HeadingWithEmphasis
-              heading={content.deepDive.heading}
-              className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium mb-10"
-            />
-            <div className="space-y-6">
-              {content.deepDive.paragraphs.map((para, i) => (
-                <p key={i} className="font-sans text-base sm:text-lg text-ink leading-[1.75]">
+        <section className="bg-white">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+            <p className="text-sm font-semibold text-ink-muted mb-2">{content.deepDive.eyebrow}</p>
+            <h2 className={`${h2} mb-6`}>{plainHeading(content.deepDive.heading)}</h2>
+            <div className="space-y-5">
+              {briefing.map((para, i) => (
+                <p key={i} className="text-base sm:text-lg text-ink leading-[1.7]">
                   {para}
                 </p>
               ))}
             </div>
+            <EditorNote>{PERSONA_EDITOR_NOTE[personaId]}</EditorNote>
           </div>
         </section>
       )}
 
-      {/* Persona-fit calculator grid. These are tappable cards rather
-          than links in a paragraph — visitors who came to "run the
-          numbers" get a one-tap path to the relevant tool. */}
-      {content && content.calculators.length > 0 && (
-        <section className="bg-surface-warm border-b border-line">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-            <div className="flex items-center gap-4 mb-6" data-reveal>
-              <Calculator className="w-5 h-5 text-cta" aria-hidden="true" />
-              <span className="text-[13px] text-ink-subtle font-sans font-medium">
-                Run the numbers
-              </span>
-            </div>
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 lg:gap-8 mb-10">
-              <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl font-bold max-w-2xl">
-                {content.calculatorsHeading}
-              </h2>
-              <p className="font-sans text-sm sm:text-base text-ink-muted leading-relaxed max-w-md">
-                {content.calculatorsBlurb}
-              </p>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {content.calculators.map((c) => (
-                <Link
-                  key={c.href}
-                  href={c.href}
-                  className="group card-lift flex flex-col rounded-2xl border border-line bg-surface-raised p-6 hover:border-ink"
-                >
-                  <h3 className="font-display text-lg text-ink group-hover:text-primary transition-colors leading-tight mb-2">
-                    {c.label}
-                  </h3>
-                  <p className="font-sans text-sm text-ink-muted leading-relaxed flex-1 mb-4">
-                    {c.blurb}
-                  </p>
-                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-ink">
-                    Open
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Three starting points */}
-      <section className="py-20 sm:py-24 bg-surface-raised">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {/* Magazine-style section masthead */}
-          <div className="flex items-center gap-4 mb-10" data-reveal>
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              Start here
-            </span>
-            <span className="rule-draw w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              Three first reads
-            </span>
-          </div>
-
-          <div className="grid lg:grid-cols-12 gap-x-8 gap-y-6 mb-14">
-            <div className="lg:col-span-7">
-              <h2 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl font-bold">
-                Three places worth your{" "}
-                <span>first ten minutes</span>
-              </h2>
-            </div>
-            <div className="lg:col-span-5 lg:col-start-8 flex items-end">
-              <p className="font-display font-normal text-lg sm:text-xl text-ink leading-snug max-w-md">
-                Real pages on the site, not lead-capture forms. If they answer
-                your question, great. If not, the rest of the hub is below.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid sm:grid-cols-3 gap-4" data-reveal-group>
-            {persona.startingPoints.map((sp, i) => (
-              <Link
-                key={sp.href}
-                href={sp.href}
-                className="group card-lift rounded-2xl border border-line bg-surface-raised hover:border-ink p-7 flex flex-col"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  {sp.icon ? (
-                    <div className="w-10 h-10 rounded-lg bg-surface-warm border border-line-warm flex items-center justify-center">
-                      <Image
-                        src={sp.icon}
-                        alt=""
-                        width={24}
-                        height={24}
-                        className="w-6 h-6"
-                        aria-hidden="true"
-                      />
-                    </div>
-                  ) : <span />}
-                  <p className="font-display text-cta text-xl">
-                    0{i + 1}
-                  </p>
-                </div>
-                <h3 className="font-display text-xl text-ink leading-tight mb-3">
-                  {sp.label}
-                </h3>
-                <p className="font-sans text-sm text-ink-muted leading-relaxed flex-1 mb-5">
-                  {sp.description}
-                </p>
-                <span className="inline-flex items-center gap-1 text-sm font-medium text-ink">
-                  Open
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Every guide for this persona, not just the three first reads.
-          Until 30 Sep 2026 the hubs linked two guides or none, so the
-          guides hung off /guides alone. */}
+      {/* Every guide for this persona (titles from the guide registry). */}
       {guideList && (
         <RelatedGuidesSection
           heading={guideList.heading}
           intro={guideList.intro}
           groups={hubGuideGroups(guideList)}
+          tone="warm"
           id="guides"
         />
       )}
 
-      {/* Suburb data CTA, universal */}
-      <section className="relative py-16 sm:py-20 bg-surface-warm border-y border-line-warm overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-7">
-              <MapPin className="w-7 h-7 text-cta mb-4" />
-              <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl mb-4">
-                Suburb data, free for everyone
-              </h2>
-              <p className="font-sans text-lg text-ink-muted leading-relaxed mb-7 max-w-xl">
-                Median, twelve-month growth, days on market, rental yield, schools, walkability,
-                climate and crime. The numbers we&rsquo;d want for our own move, ungated.
-              </p>
-              <Link
-                href="/suburbs"
-                className="group inline-flex items-center gap-2 rounded-lg border border-line-strong text-ink hover:bg-surface-raised hover:border-ink font-medium px-5 py-2.5 transition-colors"
-              >
-                Browse suburbs <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </div>
-            <ul className="lg:col-span-5 space-y-4 font-sans text-sm text-ink-muted border-l border-line-strong pl-6" data-reveal-group>
-              <li>
-                <p className="text-ink font-medium mb-1">Sources cited</p>
-                <p className="leading-relaxed">Every figure tagged with where it came from and when it was last refreshed.</p>
-              </li>
-              <li>
-                <p className="text-ink font-medium mb-1">Comparison-ready</p>
-                <p className="leading-relaxed">Side-by-side any two suburbs in Australia.</p>
-              </li>
-              <li>
-                <p className="text-ink font-medium mb-1">No login</p>
-                <p className="leading-relaxed">No paywall, no sign-up, no download form.</p>
-              </li>
+      {/* The calculators that fit the situation, as a plain list. */}
+      {content && calculators.length > 0 && (
+        <section className="bg-white border-t border-line">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+            <h2 className={`${h2} mb-2`}>{content.calculatorsHeading}</h2>
+            <p className="text-base text-ink-muted leading-relaxed max-w-2xl mb-6">{content.calculatorsBlurb}</p>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 border-t border-line">
+              {calculators.map((c) => (
+                <li key={c.href} className="border-b border-line">
+                  <Link href={c.href} className="group flex items-start justify-between gap-3 py-4">
+                    <span className="min-w-0">
+                      <span className="block font-semibold text-ink group-hover:underline underline-offset-4">{c.label}</span>
+                      <span className="block mt-0.5 text-sm text-ink-muted leading-snug">{c.blurb}</span>
+                    </span>
+                    <ArrowRight className="w-4 h-4 mt-1 shrink-0 text-ink-subtle group-hover:text-ink" aria-hidden="true" />
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* FAQ section. Renders both visible Q&A and FAQPage schema, so
-          the hub becomes eligible for rich-result snippets in SERPs. */}
+      {/* FAQ. Renders both visible Q&A and FAQPage schema. */}
       {content && content.faqs.length > 0 && (
-        <section className="bg-surface border-y border-line">
-          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-            <div className="flex items-center gap-4 mb-6" data-reveal>
-              <span className="text-sm font-semibold text-ink-muted leading-none">
-                Common questions
-              </span>
-              <span className="rule-draw w-12 h-px bg-line-strong" aria-hidden="true" />
-              <span className="text-[13px] text-ink-subtle font-sans font-medium">
-                FAQ
-              </span>
-            </div>
+        <section className="bg-white border-t border-line">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
             <Faq items={content.faqs} />
           </div>
         </section>
       )}
 
-      {/* Guide funnel band — the lead-capture surface. Buying-side
-          personas (first home, upgrading, investing) get the buying
-          guide; selling and renovating get the selling guide. Same dark
-          night-suburb band as the homepage finale. */}
-      <section id="guide" className="band-glow bg-surface-inverse text-white scroll-mt-24">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-          <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+      {/* The guide funnel, at the end of the read. Buying-side personas
+          (first home, upgrading, investing) get the buying guide; selling
+          and renovating get the selling guide. */}
+      <section id="guide" className="bg-surface-warm border-t border-line scroll-mt-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             <div className="lg:col-span-5">
-              <div className="flex items-center gap-4 mb-10" data-reveal>
-                <span className="text-sm font-semibold text-ink-muted leading-none">
-                  Free PDF
-                </span>
-                <span className="rule-draw w-12 h-px bg-white/20" aria-hidden="true" />
-                <span className="text-[13px] text-white/75 font-sans font-medium">
-                  2026 edition
-                </span>
-              </div>
-              <h2
-                className="font-display text-white leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-8 font-bold"
-                data-reveal
-                style={{ "--reveal-delay": "90ms" } as React.CSSProperties}
-              >
-                {isBuyingHub ? (
-                  <>The complete guide to <GuideWordUnderline word="buying" /> property.</>
-                ) : (
-                  <>The complete guide to <GuideWordUnderline word="selling" /> your property.</>
-                )}
+              <h2 className={`${h2} mb-4`}>
+                {isBuyingHub ? "The complete guide to buying property" : "The complete guide to selling your property"}
               </h2>
-              <p
-                className="font-display font-normal text-xl sm:text-2xl text-white/88 leading-snug max-w-md"
-                data-reveal
-                style={{ "--reveal-delay": "180ms" } as React.CSSProperties}
-              >
+              <p className="text-base sm:text-lg text-ink-muted leading-relaxed max-w-md">
                 {isBuyingHub
                   ? "Ten chapters written for the buyer you actually are. Schemes, finance, inspections, the offer. Free, personalised, 60 seconds."
                   : "Selling costs 3 to 5 percent of your price. The right moves claw thousands of it back. Ten chapters, personalised to your suburb, free."}
               </p>
             </div>
-            <div
-              className="lg:col-span-7 lg:col-start-6"
-              data-reveal
-              style={{ "--reveal-delay": "180ms" } as React.CSSProperties}
-            >
+            <div className="lg:col-span-7">
               <Suspense fallback={null}>
                 {isBuyingHub ? (
                   <BuyingGuideFunnel source={`hub-${personaId}`} />
@@ -437,30 +297,19 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
         </div>
       </section>
 
-      {/* Persistent sticky CTA — slides up once visitor has scrolled
-          past the hero. Deep-links the right guide funnel. */}
-      <StickyMatchCTA
-        intent={content?.matchIntent}
-        label={isBuyingHub ? "Get the free buying guide" : "Get the free selling guide"}
-        href={isBuyingHub ? "/buying-guide" : "/selling-guide"}
-        dismissKey={`hub:${personaId}`}
-      />
-
       {/* Other personas */}
-      <section className="py-12 border-t border-line bg-surface-raised">
+      <section className="py-10 border-t border-line bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="text-[13px] font-sans text-ink-subtle mb-5">
-            Not what you came for?
-          </p>
+          <h2 className="text-sm font-semibold text-ink mb-4">Not what you came for?</h2>
           <div className="flex flex-wrap gap-3">
             {otherPersonas.map((p) => (
               <Link
                 key={p.id}
                 href={p.hubPath}
-                className="group inline-flex items-center gap-3 rounded-md border border-line-strong px-5 py-3 text-sm font-medium text-ink hover:bg-surface-warm hover:border-ink transition-colors"
+                className="inline-flex items-center gap-2 rounded-md border border-line-strong px-4 py-2.5 text-sm font-medium text-ink hover:border-ink transition-colors"
               >
                 {p.cardLabel}
-                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
               </Link>
             ))}
           </div>

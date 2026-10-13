@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
@@ -66,6 +67,10 @@ export default async function PropertyMarketHubPage() {
           </p>
         </div>
       </section>
+
+      <div className="relative h-[180px] sm:h-[260px] lg:h-[320px] border-b border-line bg-surface-sunken">
+        <Image src="/images/photos/brisbane-view.jpg" alt="Old iron rooftops and jacarandas in flower with a city skyline in the distance" fill sizes="100vw" className="object-cover object-[50%_55%]" />
+      </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

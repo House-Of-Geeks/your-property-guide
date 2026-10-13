@@ -1,19 +1,23 @@
 import Link from "next/link";
-import { Calendar, Clock, User, ShieldCheck } from "lucide-react";
+import { Children, Fragment, isValidElement, type ReactElement, type ReactNode } from "react";
 import { Breadcrumbs } from "@/components/layout";
-import { BUYING_GUIDE_CTA, ExpertCTA, StickyMatchCTA } from "@/components/journey";
 import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
-import { ReadingProgressBar } from "./ReadingProgressBar";
 import { GuideTOC, type GuideTOCEntry } from "./GuideTOC";
 import { Tldr } from "./Tldr";
 import { Faq, type FaqItem } from "./Faq";
-import { RelatedGuides, type RelatedGuide } from "./RelatedGuides";
+import { RelatedGuides, isCalculatorHref, type RelatedGuide } from "./RelatedGuides";
 import { AuthorBylineCard } from "./AuthorBylineCard";
+import { GuideByline } from "./GuideByline";
+import { GuideNextStep } from "./GuideNextStep";
 import { GuideAudienceProvider } from "./GuideAudienceContext";
 import { GuideStartInline } from "./GuideStartInline";
+import { Sources } from "./Sources";
 import { splitAfterFirstSection } from "./split-first-section";
+import articleScope from "./article-scope.module.css";
 import { PERSONA_BY_ID, type PersonaId } from "@/lib/constants/journey";
-import { guideAudienceForPersona, guideFunnelHref } from "@/lib/guide-funnel";
+import { guideAudienceForPersona } from "@/lib/guide-funnel";
+import { GUIDE_SECTIONS, resolveGuides } from "@/lib/guides/registry";
+import { CALCULATOR_GUIDES } from "@/lib/guides/hub-guides";
 
 export interface GuideFrontmatter {
   title: string;          // SERP title (metadata); also the H1 unless h1 is set
@@ -26,7 +30,7 @@ export interface GuideFrontmatter {
   // EEAT signals per SEO ranking advice doc
   author: { name: string; role?: string };
   reviewedBy?: { name: string; role?: string };
-  // Persona this guide primarily serves; powers the soft sidebar CTA.
+  // Persona this guide primarily serves; routes the page's guide CTAs.
   persona?: PersonaId;
 }
 
@@ -41,6 +45,10 @@ interface GuideArticleLayoutProps {
   children: React.ReactNode;
 }
 
+// One measure for the page: the reading column is 40rem (about 68
+// characters of body text), the rail 16rem, and the shell centres both.
+const SHELL = "mx-auto w-full max-w-[64rem] px-4 sm:px-6";
+
 export function GuideArticleLayout({
   frontmatter,
   tldr,
@@ -52,17 +60,6 @@ export function GuideArticleLayout({
 }: GuideArticleLayoutProps) {
   const persona = frontmatter.persona ? PERSONA_BY_ID[frontmatter.persona] : null;
   const updatedAt = frontmatter.updatedAt ?? frontmatter.publishedAt;
-  const reading = frontmatter.readingTimeMinutes;
-
-  // Map the guide's persona onto a MatchAgent intent so the sticky CTA
-  // pre-fills the form when the reader clicks through. Guides without a
-  // persona (e.g. general explainers) skip the sticky entirely, see below.
-  const stickyIntent: "buying" | "selling" | "investing" | undefined =
-    frontmatter.persona === "first-home" ? "buying" :
-    frontmatter.persona === "upgrading"  ? "buying" :
-    frontmatter.persona === "selling"    ? "selling" :
-    frontmatter.persona === "investing"  ? "investing" :
-                                            undefined;
 
   // Buyer-persona guides must not pitch the selling guide — a first-home
   // buyer reading "how much deposit do I need" has nothing to sell. Route
@@ -71,15 +68,19 @@ export function GuideArticleLayout({
   // MatchCTAs read the same audience from GuideAudienceProvider below.
   const audience = guideAudienceForPersona(frontmatter.persona);
   const from = frontmatter.slug;
-  const funnelHref = guideFunnelHref(audience ?? "selling", { from });
-  const buyerFunnel = audience === "buying" ? BUYING_GUIDE_CTA : undefined;
+  // Guides with no persona (renters' rights) carry no guide pitch at all.
+  const nextStep = persona ? audience ?? "selling" : null;
 
   // Seller guides (the commission and fees guides are where the site's
   // sellers come from) start the selling-guide funnel in place: once after
   // the first section and once at the end, instead of outline buttons to
   // the landing page.
   const sellerGuide = audience === "selling";
-  const body = sellerGuide ? splitAfterFirstSection(children) : null;
+
+  // The sources block moves to the foot of the article, after the questions
+  // and the reading list, where a reader checking a figure expects it.
+  const { body: bodyNodes, sources } = partitionSources(children);
+  const body = sellerGuide ? splitAfterFirstSection(bodyNodes) : null;
 
   const guideUrl = `/guides/${frontmatter.slug}`;
   const heading = frontmatter.h1 ?? frontmatter.title;
@@ -92,9 +93,14 @@ export function GuideArticleLayout({
     { name: frontmatter.title, url: guideUrl },
   ];
 
+  const relatedItems = withCalculatorAndSection(frontmatter.slug, related);
+  const contents: GuideTOCEntry[] = [
+    ...toc,
+    ...(faqs.length > 0 ? [{ id: "faq", label: "Common questions" }] : []),
+  ];
+
   return (
     <>
-      <ReadingProgressBar />
       <BreadcrumbJsonLd items={schemaBreadcrumbItems} />
       <GuideArticleJsonLd
         title={heading}
@@ -105,154 +111,67 @@ export function GuideArticleLayout({
         author={frontmatter.author}
         reviewedBy={frontmatter.reviewedBy}
       />
+      {/* Tells the phone bar (MobileBottomNav) which guide this reader gets. */}
+      {nextStep && <span hidden data-guide-audience={nextStep} />}
 
-      {/* Editorial hero. Magazine-style masthead with persona department
-          slug, display-scale H1, serif standfirst, hairline-separated
-          byline. Illustration column dropped: guides read as authoritative
-          editorial when the headline owns the page. */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className={`relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 ${beforeBody ? "pb-8 sm:pb-10" : "pb-14 sm:pb-20 lg:pb-24"}`}>
-          <div className="mb-10">
-            <Breadcrumbs items={breadcrumbItems} />
-          </div>
-
-          {/* Editorial masthead: persona department + hairline + dated slug */}
-          <div className="flex items-center gap-4 mb-10">
-            {persona ? (
-              <Link
-                href={persona.hubPath}
-                className="font-display text-primary hover:text-cta-hover text-base sm:text-lg leading-none transition-colors"
-              >
-                For {persona.cardLabel.toLowerCase()}
-              </Link>
-            ) : (
-              <span className="text-sm font-semibold text-ink-muted leading-none">
-                The reading list
-              </span>
-            )}
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
-              <ShieldCheck className="w-3 h-3 text-emerald-700" aria-hidden="true" />
-              Reviewed <FormattedDate iso={updatedAt} />
-            </span>
-          </div>
-
-          {/* Display-scale H1. text-7xl/lg:8xl for editorial weight */}
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-bold">
-            {heading}
-          </h1>
-
-          {/* Standfirst in serif light for editorial colour. Marked
-              data-speakable-summary so voice assistants (Google Assistant,
-              Siri Reading Mode) pick up this paragraph as the canonical
-              spoken summary alongside the H1. */}
+      {/* Hero: the query's answer in the first screen. H1, the one-paragraph
+          answer, then who checked it and when. */}
+      <div className={SHELL}>
+        <div className="pt-2 sm:pt-4 [&_ol]:flex-nowrap [&_li:last-child]:hidden sm:[&_li:last-child]:flex sm:[&_li:last-child]:min-w-0 [&_li:last-child_span]:min-w-0 [&_li:last-child_span]:truncate">
+          <Breadcrumbs items={breadcrumbItems} />
+        </div>
+        <header className={`max-w-[46rem] pt-4 sm:pt-8 ${beforeBody ? "pb-8" : "pb-8 sm:pb-10"}`}>
+          {persona && (
+            <Link
+              href={persona.hubPath}
+              className="inline-block text-sm font-semibold text-ink-muted hover:text-ink underline-offset-4 hover:underline mb-3"
+            >
+              {persona.hubHeading}
+            </Link>
+          )}
+          <h1 className="font-display font-bold text-ink text-[1.875rem] leading-[1.1] tracking-[-0.03em] sm:text-[2.375rem] lg:text-[2.625rem] lg:leading-[1.08]">{heading}</h1>
+          {/* Standfirst. Marked data-speakable-summary so voice assistants
+              (Google Assistant, Siri Reading Mode) pick up this paragraph as
+              the canonical spoken summary alongside the H1. */}
           <p
             data-speakable-summary
-            className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10"
+            className="mt-4 text-[1.0625rem] sm:text-xl text-ink-muted leading-relaxed"
           >
             {frontmatter.description}
           </p>
-
-          {/* Byline strip with hairline rule above. Cleaner typographic
-              hierarchy. */}
-          <div className="pt-6 border-t border-line flex flex-wrap items-center gap-x-6 gap-y-2 font-sans text-sm text-ink-muted">
-            <span className="inline-flex items-center gap-2">
-              <User className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
-              By <span className="text-ink font-medium">{frontmatter.author.name}</span>
-              {frontmatter.author.role && (
-                <span className="text-ink-subtle">, {frontmatter.author.role}</span>
-              )}
-            </span>
-            {frontmatter.reviewedBy && (
-              <span className="inline-flex items-center gap-2">
-                <span className="text-ink-subtle">·</span>
-                Reviewed by <span className="text-ink font-medium">{frontmatter.reviewedBy.name}</span>
-                {frontmatter.reviewedBy.role && (
-                  <span className="text-ink-subtle">, {frontmatter.reviewedBy.role}</span>
-                )}
-              </span>
-            )}
-            <span className="inline-flex items-center gap-2">
-              <span className="text-ink-subtle">·</span>
-              <Calendar className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
-              Updated <FormattedDate iso={updatedAt} />
-            </span>
-            {reading && (
-              <span className="inline-flex items-center gap-2">
-                <span className="text-ink-subtle">·</span>
-                <Clock className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
-                {reading} min read
-              </span>
-            )}
+          <div className="mt-6">
+            <GuideByline
+              author={frontmatter.author}
+              reviewer={frontmatter.reviewedBy}
+              updatedAt={updatedAt}
+              readingMinutes={frontmatter.readingTimeMinutes}
+              sourcesHref={sources.length > 0 ? "#sources" : undefined}
+            />
           </div>
-        </div>
-      </section>
+        </header>
+      </div>
 
       {/* Calculator-first guides put the tool straight under the H1. */}
       {beforeBody && (
-        <section className="bg-surface-raised border-b border-line">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
-            {beforeBody}
-          </div>
+        <section className="bg-surface-warm border-y border-line">
+          <div className={`${SHELL} py-8 sm:py-10`}>{beforeBody}</div>
         </section>
       )}
 
-      {/* Body, two-column with sticky sidebar on desktop */}
-      <article className="bg-surface-raised">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="grid lg:grid-cols-12 gap-12">
-            {/* Sidebar, sticky TOC + meta on desktop, hidden on mobile (TOC renders inline below) */}
-            <aside className="hidden lg:block lg:col-span-3 lg:order-2">
-              <div className="sticky top-28 space-y-8">
-                <GuideTOC entries={toc} variant="sidebar" />
+      <div className={`${SHELL} ${beforeBody ? "pt-10 sm:pt-12" : "pt-2"} pb-16`}>
+        <div className="lg:grid lg:grid-cols-[minmax(0,40rem)_16rem] lg:justify-between lg:gap-x-16">
+          {/* Reading column. min-w-0 so a wide table scrolls inside its own
+              wrapper instead of stretching the grid track past the phone;
+              the scope makes body tables scroll on phones and lets
+              .not-prose blocks keep their own styles. */}
+          <article className={`min-w-0 ${articleScope.scope}`}>
+            <Tldr points={tldr} />
 
-                <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                  <p className="text-[13px] font-sans text-ink-subtle mb-2 inline-flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" aria-hidden="true" />
-                    Last reviewed
-                  </p>
-                  <p className="font-display text-lg text-ink leading-tight mb-1">
-                    <FormattedDate iso={updatedAt} />
-                  </p>
-                  {frontmatter.reviewedBy && (
-                    <p className="font-sans text-xs text-ink-muted leading-relaxed">
-                      by {frontmatter.reviewedBy.name}
-                      {frontmatter.reviewedBy.role && (
-                        <span className="text-ink-subtle">, {frontmatter.reviewedBy.role}</span>
-                      )}
-                    </p>
-                  )}
-                </div>
+            <div className="lg:hidden mt-4">
+              <GuideTOC entries={contents} />
+            </div>
 
-                <div>
-                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
-                    Editorial integrity
-                  </p>
-                  <p className="font-sans text-sm text-ink-muted leading-relaxed">
-                    Every figure on this page is sourced and dated. If anything looks off, tell us and we&rsquo;ll fix it within a week.
-                  </p>
-                  <p className="mt-3">
-                    <Link
-                      href="/methodology"
-                      className="inline-flex items-center gap-1 font-sans text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-                    >
-                      How we source data →
-                    </Link>
-                  </p>
-                </div>
-              </div>
-            </aside>
-
-            {/* Main column. min-w-0 so a wide table scrolls inside its own
-                wrapper instead of stretching the grid track past the phone. */}
-            <div className="min-w-0 lg:col-span-9 lg:order-1">
-              <Tldr points={tldr} />
-
-              {/* Mobile-only inline TOC */}
-              <div className="lg:hidden">
-                <GuideTOC entries={toc} />
-              </div>
-
+            <div className="mt-10 sm:mt-12">
               <GuideAudienceProvider audience={audience} from={from}>
                 {body ? (
                   <>
@@ -261,67 +180,89 @@ export function GuideArticleLayout({
                     <div className="prose-ypg">{body.tail}</div>
                   </>
                 ) : (
-                  <div className="prose-ypg">
-                    {children}
-                  </div>
+                  <div className="prose-ypg">{bodyNodes}</div>
                 )}
               </GuideAudienceProvider>
-
-              {/* undefined props fall through to ExpertCTA's selling
-                  defaults, so only buyer personas are overridden. */}
-              {sellerGuide ? (
-                <GuideStartInline from={from} />
-              ) : (
-                persona && (
-                  <ExpertCTA
-                    variant="inline"
-                    body={buyerFunnel?.body}
-                    ctaLabel={buyerFunnel?.ctaLabel}
-                    href={funnelHref}
-                  />
-                )
-              )}
-
-              <Faq items={faqs} />
-              <RelatedGuides items={related} />
-
-              {/* Author byline footer. E-E-A-T signal for Google + Bing: a
-                  named author with portrait, role and link to /about
-                  appears on every guide. */}
-              <AuthorBylineCard
-                authorName={frontmatter.author.name}
-                authorRole={frontmatter.author.role}
-                reviewerName={frontmatter.reviewedBy?.name}
-                reviewerRole={frontmatter.reviewedBy?.role}
-                lastReviewed={updatedAt}
-              />
             </div>
-          </div>
-        </div>
-      </article>
 
-      {/* Floating sticky CTA for guide readers. Only renders when the
-          guide has a persona, general explainers (no persona) skip the
-          sticky to keep them quiet. Per-guide dismiss key. Buyer personas
-          get the buying-guide funnel; everyone else falls through to the
-          StickyMatchCTA default ("Get the free selling guide"). */}
-      {persona && stickyIntent && (
-        <StickyMatchCTA
-          intent={stickyIntent}
-          href={funnelHref}
-          label={buyerFunnel?.ctaLabel}
-          dismissKey={`guide:${frontmatter.slug}`}
-        />
-      )}
+            {/* The one end-of-article action. Sellers (and the investor or
+                renovator who sells) start the selling guide in place; buyers
+                get the buying guide. */}
+            {nextStep === "selling" && <GuideStartInline from={from} className="mt-12 mb-10" />}
+            {nextStep === "buying" && <GuideNextStep audience="buying" from={from} />}
+
+            <Faq items={faqs} id="faq" />
+            <RelatedGuides items={relatedItems} />
+
+            {sources}
+
+            <AuthorBylineCard
+              authorName={frontmatter.author.name}
+              authorRole={frontmatter.author.role}
+              reviewerName={frontmatter.reviewedBy?.name}
+              reviewerRole={frontmatter.reviewedBy?.role}
+              lastReviewed={updatedAt}
+            />
+          </article>
+
+          {/* Desktop rail: the contents, marking the section in view, and
+              the page's one next step under them. */}
+          <aside className="hidden lg:block">
+            <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pb-6 space-y-8">
+              <GuideTOC entries={contents} variant="sidebar" />
+              {nextStep && <GuideNextStep audience={nextStep} from={from} variant="rail" />}
+            </div>
+          </aside>
+        </div>
+      </div>
     </>
   );
 }
 
-// Render YYYY-MM-DD as "Month YYYY" for human reading. Server-rendered so no
-// hydration mismatch.
-function FormattedDate({ iso }: { iso: string }) {
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return <>{iso}</>;
-  const month = d.toLocaleString("en-AU", { month: "long", timeZone: "Australia/Brisbane" });
-  return <>{month} {d.getUTCFullYear()}</>;
+/** Pull top-level <Sources> blocks (including ones inside a fragment) out of a guide body. */
+function partitionSources(children: ReactNode): { body: ReactNode[]; sources: ReactElement[] } {
+  const body: ReactNode[] = [];
+  const sources: ReactElement[] = [];
+  const walk = (nodes: ReactNode) => {
+    for (const node of Children.toArray(nodes)) {
+      if (isValidElement(node) && node.type === Sources) sources.push(node);
+      else if (isValidElement<{ children?: ReactNode }>(node) && node.type === Fragment) walk(node.props.children);
+      else body.push(node);
+    }
+  };
+  walk(children);
+  return { body, sources };
+}
+
+const STATE_SUFFIX = /-(nsw|vic|qld|wa|sa|tas|act|nt|victoria)$/;
+
+/**
+ * The guide's own reading list, plus the calculator that pairs with it
+ * (CALCULATOR_GUIDES) when the list has none, topped up from the guide's own
+ * section on /guides so every guide ends with at least four next reads.
+ * Sibling state editions of the same guide are left out of the top-up.
+ */
+function withCalculatorAndSection(slug: string, curated: readonly RelatedGuide[]): RelatedGuide[] {
+  const self = `/guides/${slug}`;
+  const items = curated.filter((r) => r.href !== self);
+  const seen = new Set(items.map((r) => r.href));
+
+  const series = STATE_SUFFIX.test(slug) ? slug.replace(STATE_SUFFIX, "") : null;
+  const section = GUIDE_SECTIONS.find((s) => s.guides.includes(slug));
+  const guideCount = () => items.filter((r) => !isCalculatorHref(r.href)).length;
+  if (section && guideCount() < 4) {
+    for (const g of resolveGuides(section.guides)) {
+      if (guideCount() >= 4) break;
+      if (g.slug === slug || seen.has(g.href)) continue;
+      if (series && g.slug.replace(STATE_SUFFIX, "") === series) continue;
+      items.push({ title: g.title, href: g.href, description: g.description });
+      seen.add(g.href);
+    }
+  }
+
+  if (!items.some((r) => isCalculatorHref(r.href))) {
+    const calc = CALCULATOR_GUIDES.find((c) => c.guides.includes(slug));
+    if (calc) items.push({ title: calc.label, href: calc.href });
+  }
+  return items;
 }

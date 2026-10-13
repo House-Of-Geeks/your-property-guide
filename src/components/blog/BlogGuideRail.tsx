@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { ArrowRight, BookOpen } from "lucide-react";
+import { resolveGuides } from "@/lib/guides/registry";
+import type { RelatedGuide } from "@/components/guide/RelatedGuides";
 
 interface RailGuide {
   href: string;
@@ -7,11 +7,11 @@ interface RailGuide {
   description: string;
 }
 
-// Hand-mapped recommendations. Each blog post slug maps to 2-3 guides that are
-// the natural deeper read for that topic. Adding more entries here is the
-// fastest way to increase internal-link density across blog content.
-//
-// Fallbacks are picked by tag categories at the bottom of this file.
+// "Read next" for articles: each article slug maps to 2-3 guides that are
+// the natural deeper read for that topic. Adding entries here is the fastest
+// way to add internal links from articles to the guides. An article with no
+// entry falls back to the guides for its blog category (below), so a selling
+// article never ends on buyer guides.
 const RAIL_BY_BLOG_SLUG: Record<string, RailGuide[]> = {
   // First-home / SEQ blog cluster
   "first-home-buyer-guide-moreton-bay-2025": [
@@ -72,21 +72,21 @@ const RAIL_BY_BLOG_SLUG: Record<string, RailGuide[]> = {
     { href: "/guides/best-time-to-buy-property-australia",   title: "Best time to buy",                   description: "Perth's seasonality is mild but matters." },
   ],
   "adelaide-property-market-2026": [
-    { href: "/guides/first-home-buyer-sa",                   title: "First home buyer guide, SA",         description: "$15K FHOG, HomeSeeker shared equity." },
+    { href: "/guides/first-home-buyer-sa",                   title: "First home buyer guide, SA",         description: "Grants, duty relief and schemes for first buyers in South Australia." },
     { href: "/market-reports/sa",                            title: "SA market report",                   description: "Median prices, growth, suburb rankings." },
     { href: "/guides/best-time-to-buy-property-australia",   title: "Best time to buy",                   description: "Seasonal patterns and the rate cycle." },
   ],
   "hobart-tasmania-property-market-2026": [
-    { href: "/guides/first-home-buyer-tas",                  title: "First home buyer guide, TAS",        description: "$30K FHOG and stamp duty concession." },
+    { href: "/guides/first-home-buyer-tas",                  title: "First home buyer guide, TAS",        description: "Grants and duty rules for first buyers in Tasmania." },
     { href: "/market-reports/tas",                           title: "Tasmania market report",             description: "Median prices, growth, suburb rankings." },
     { href: "/guides/best-time-to-buy-property-australia",   title: "Best time to buy",                   description: "Hobart's seasonality is more pronounced." },
   ],
   "canberra-act-property-market-2026": [
-    { href: "/guides/first-home-buyer-act",                  title: "First home buyer guide, ACT",        description: "Full stamp duty waiver via HBCS." },
+    { href: "/guides/first-home-buyer-act",                  title: "First home buyer guide, ACT",        description: "Duty relief and grants for first buyers in the ACT." },
     { href: "/market-reports/act",                           title: "ACT market report",                  description: "Median prices, growth, suburb rankings." },
   ],
   "darwin-nt-property-market-2026": [
-    { href: "/guides/first-home-buyer-nt",                   title: "First home buyer guide, NT",         description: "$10K FHOG plus the NT-specific stamp duty discount." },
+    { href: "/guides/first-home-buyer-nt",                   title: "First home buyer guide, NT",         description: "Grants and duty rules for first buyers in the Territory." },
     { href: "/market-reports/nt",                            title: "NT market report",                   description: "Median prices, growth, suburb rankings." },
   ],
 
@@ -114,7 +114,7 @@ const RAIL_BY_BLOG_SLUG: Record<string, RailGuide[]> = {
   "australia-fastest-growing-suburbs-2026": [
     { href: "/best-suburbs/highest-growth",                  title: "Highest growth suburbs ranking",    description: "Live ranking based on annual growth." },
     { href: "/guides/house-vs-apartment-investment-australia", title: "House vs apartment investment",   description: "Where growth is happening and what it means for you." },
-    { href: "/find-your-suburb",                             title: "Find your suburb (quiz)",            description: "Pick &lsquo;capital growth&rsquo; as your top priority." },
+    { href: "/find-your-suburb",                             title: "Find your suburb (quiz)",            description: "Pick ‘capital growth’ as your top priority." },
   ],
   "first-home-buyer-schemes-by-state-australia-2026": [
     { href: "/guides/how-much-deposit-to-buy-a-house",       title: "How much deposit do you need?",     description: "Schemes that drop the requirement to 5% or 2%." },
@@ -123,54 +123,22 @@ const RAIL_BY_BLOG_SLUG: Record<string, RailGuide[]> = {
   ],
 };
 
-// Default fallback, used if the blog slug isn't mapped above. Picks the
-// most universally-relevant guides.
-const DEFAULT_RAIL: RailGuide[] = [
-  { href: "/guides/buying-property-australia",         title: "How to buy property in Australia",   description: "Step-by-step from deposit to settlement." },
-  { href: "/guides/how-much-deposit-to-buy-a-house",   title: "How much deposit do you need?",      description: "5%, 10%, 20%, what each tier unlocks." },
-  { href: "/find-your-suburb",                         title: "Find your suburb (quiz)",            description: "4 questions, 6 matched suburbs." },
-];
+// Fallback by blog category: the pillar guides for that reader, by slug, so
+// titles come from the guide registry and cannot go stale.
+const FALLBACK_BY_CATEGORY: Record<string, readonly string[]> = {
+  Selling: ["how-to-sell-a-house-australia", "real-estate-agent-fees-australia", "cost-of-selling-a-house-australia"],
+  "Buying Guide": ["buying-property-australia", "how-much-deposit-to-buy-a-house", "due-diligence-checklist-buying-a-house"],
+  Investment: ["negative-gearing-australia", "capital-growth-vs-cash-flow-australia", "property-management-fees-australia"],
+};
+const DEFAULT_FALLBACK: readonly string[] = ["how-to-sell-a-house-australia", "buying-property-australia", "how-much-is-my-house-worth-australia"];
 
-interface BlogGuideRailProps {
-  blogSlug: string;
-}
-
-/**
- * "Read next" rail of guide recommendations rendered after every blog post
- * body. Pairs the casual blog content with the deeper guide content for
- * topical link density and longer session duration.
- */
-export function BlogGuideRail({ blogSlug }: BlogGuideRailProps) {
-  const guides = RAIL_BY_BLOG_SLUG[blogSlug] ?? DEFAULT_RAIL;
-  return (
-    <section className="mt-12 rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
-      <p className="text-[13px] font-sans text-ink-subtle mb-2 inline-flex items-center gap-2">
-        <BookOpen className="w-3.5 h-3.5" aria-hidden="true" />
-        Read next
-      </p>
-      <h2 className="font-display text-2xl text-ink leading-tight mb-5">
-        Go deeper with our <span>guides</span>
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {guides.map((g) => (
-          <Link
-            key={g.href}
-            href={g.href}
-            className="group flex flex-col rounded-xl border border-line bg-surface-raised p-5 hover:border-primary/40 hover:shadow-md transition-all"
-          >
-            <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight mb-2">
-              {g.title}
-            </p>
-            <p
-              className="font-sans text-sm text-ink-muted leading-relaxed flex-1"
-              dangerouslySetInnerHTML={{ __html: g.description }}
-            />
-            <span className="mt-4 inline-flex items-center gap-1 text-[13px] font-sans text-ink group-hover:text-primary transition-colors">
-              Read the guide <ArrowRight className="w-3.5 h-3.5" />
-            </span>
-          </Link>
-        ))}
-      </div>
-    </section>
-  );
+/** The guides an article points readers to next. */
+export function blogReadNext(blogSlug: string, category: string): RelatedGuide[] {
+  const mapped = RAIL_BY_BLOG_SLUG[blogSlug];
+  if (mapped) return mapped.map((g) => ({ title: g.title, href: g.href, description: g.description }));
+  return resolveGuides(FALLBACK_BY_CATEGORY[category] ?? DEFAULT_FALLBACK).map((g) => ({
+    title: g.title,
+    href: g.href,
+    description: g.description,
+  }));
 }

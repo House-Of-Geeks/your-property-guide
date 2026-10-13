@@ -549,7 +549,7 @@ export default function ConveyancingGuidePage() {
           should flag these.
         </li>
         <li>
-          <strong>Sunset clauses (off-the-plan).</strong> A clause allowing the
+          <strong>Sunset clauses (off-the-plan).</strong>{" "}A clause allowing the
           developer to cancel the contract if completion doesn&rsquo;t occur by
           a certain date. Controversial and sometimes misused.
         </li>

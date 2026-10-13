@@ -106,7 +106,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The Cost of Selling a House",          href: "/guides/cost-of-selling-a-house-australia",  description: "Every selling cost beyond commission." },
   { title: "Real Estate Agent Fees (National)",    href: "/guides/real-estate-agent-fees-australia",   description: "How fees and commission work across Australia." },
   { title: "How to Choose a Selling Agent",        href: "/guides/how-to-choose-a-selling-agent",      description: "Pick the right agent, then negotiate the fee." },
-  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get an accurate value before you list." },
+  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get a realistic price before you list." },
 ];
 
 export default function RealEstateCommissionNswPage() {
@@ -210,7 +210,7 @@ export default function RealEstateCommissionNswPage() {
       <h2 id="structure">How commission is structured in NSW</h2>
       <p>
         The standard structure in New South Wales is a{" "}
-        <strong>flat percentage</strong> of the sale price. The agent quotes a
+        <strong>flat percentage</strong>{" "}of the sale price. The agent quotes a
         single rate, say 2%, and that rate applies to the whole sale price
         whatever the property eventually sells for. It&rsquo;s simple to compare
         between agents, which is why most NSW vendors see it.
@@ -225,7 +225,7 @@ export default function RealEstateCommissionNswPage() {
         especially if you think there&rsquo;s upside in your sale.
       </p>
       <p>
-        Almost all NSW agents work on a <strong>no sale, no fee</strong> basis.
+        Almost all NSW agents work on a <strong>no sale, no fee</strong>{" "}basis.
         Commission is only payable if the property sells, and it comes out of the
         proceeds at settlement rather than being paid upfront. That&rsquo;s a big
         part of why agents are motivated to achieve the best price they can.
@@ -264,7 +264,7 @@ export default function RealEstateCommissionNswPage() {
       <p>How to negotiate commission in NSW without shooting yourself in the foot:</p>
       <ol>
         <li>
-          <strong>Compare two or three agents.</strong> Getting competing
+          <strong>Compare two or three agents.</strong>{" "}Getting competing
           appraisals gives you both leverage and a sense of what&rsquo;s fair in
           your suburb. Choose agents who genuinely sell your type of property
           locally, not whoever letterboxes you most.
@@ -277,8 +277,8 @@ export default function RealEstateCommissionNswPage() {
         </li>
         <li>
           <strong>Be wary of the cheapest.</strong> An agent who negotiates an
-          extra $20,000 on your sale earns their commission back many times over,
-          even at a slightly higher rate. The lowest quote is rarely the best
+          extra $20,000 on your sale more than covers a slightly higher rate:
+          0.25% more on an $800,000 sale is $2,000. The lowest quote is rarely the best
           result. Ask each agent to back their number with recent comparable
           sales in your area.
         </li>
@@ -326,7 +326,7 @@ export default function RealEstateCommissionNswPage() {
       </p>
       <ol>
         <li>
-          <strong>Get an accurate value.</strong> Before you talk fees, know what
+          <strong>Get a realistic price.</strong> Before you talk fees, know what
           your home is worth. Our guide to{" "}
           <Link href="/guides/how-much-is-my-house-worth-australia">how much your house is worth</Link>{" "}
           covers the three ways to value a home and how to land on a figure you

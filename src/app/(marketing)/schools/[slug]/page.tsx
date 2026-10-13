@@ -221,7 +221,7 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
                 {staffRows.map(({ label, value }) => (
                   <div key={label} className="flex justify-between gap-3 py-2 text-sm">
                     <dt className="text-gray-500 leading-snug">{label}</dt>
-                    <dd className="font-medium text-gray-900 shrink-0 tabular-nums">{value}</dd>
+                    <dd className="font-medium text-gray-900 shrink-0">{value}</dd>
                   </div>
                 ))}
               </dl>
@@ -270,7 +270,7 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
                         >
                           <span className="truncate group-hover:underline">{other.name}</span>
                           {other.icsea != null && (
-                            <span className="shrink-0 text-xs text-gray-400 tabular-nums">
+                            <span className="shrink-0 text-xs text-gray-400">
                               ICSEA {other.icsea}
                             </span>
                           )}

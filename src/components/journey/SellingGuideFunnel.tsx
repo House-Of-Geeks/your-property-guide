@@ -239,13 +239,13 @@ export function SellingGuideFunnel({
   const stepTotal = 8;
   const stepIndex = Math.min(step, stepTotal - 1);
 
-  // Shared option-button styling. Tactile: options rise a hair on hover
-  // and press down on click, so every step feels like a physical choice.
+  // Shared option-button styling (brand v4: 6px corners, lines not
+  // shadows). The border darkens on hover and the press confirms the tap.
   const optionClass = (active: boolean) =>
-    `relative text-left rounded-xl border px-4 py-3.5 transition-all duration-200 cursor-pointer press active:translate-y-0 ${
+    `relative text-left rounded-lg border px-4 py-3.5 transition-colors duration-150 cursor-pointer press ${
       active
         ? "bg-ink text-white border-ink"
-        : "bg-surface-raised text-ink border-line hover:border-line-strong hover:-translate-y-0.5 hover:shadow-md"
+        : "bg-white text-ink border-line-strong hover:border-ink"
     }${active && isAdvancing ? " opt-confirm" : ""}`;
 
   // Tick on the just-selected card during the confirm beat.
@@ -268,27 +268,28 @@ export function SellingGuideFunnel({
   );
 
   return (
-    <div data-funnel-card className="bg-white text-ink rounded-xl p-6 sm:p-8 border border-line shadow-[0_12px_40px_-14px_rgb(22_25_29/0.22)]">
+    <div data-funnel-card className="bg-white text-ink rounded-xl p-5 sm:p-8 border border-line shadow-[0_12px_40px_-14px_rgb(22_25_29/0.22)]">
       {/* Progress. Hidden on the opening question (a bar on screen one
-          costs conversions); from step 2 it shows already-earned progress.
-          Each segment is a track with a fill that sweeps in from the left;
-          the newest segment waits a beat so the step lands first. */}
+          costs conversions); from step 2 it shows already-earned progress
+          as one bar and a plain step count. */}
       {step > 0 && (
-        <div className="flex items-center gap-2 mb-7">
-          {Array.from({ length: stepTotal }, (_, i) => (
-            <div key={i} className="flex-1 h-[3px] rounded-full bg-line overflow-hidden">
-              <span
-                className="block h-full bg-cta origin-left transition-transform duration-[450ms] ease-[var(--ease-out-quint)]"
-                style={{
-                  transform: i <= stepIndex ? "scaleX(1)" : "scaleX(0)",
-                  transitionDelay: i === stepIndex ? "120ms" : "0ms",
-                }}
-              />
-            </div>
-          ))}
-          <p className="ml-2 text-[13px] font-medium text-ink-subtle whitespace-nowrap">
-            {Math.min(step + 1, stepTotal)} / {stepTotal}
+        <div className="mb-6">
+          <p className="mb-2 text-[13px] font-medium text-ink-muted">
+            Step {Math.min(step + 1, stepTotal)} of {stepTotal}
           </p>
+          <div
+            className="h-1 rounded-full bg-line overflow-hidden"
+            role="progressbar"
+            aria-label="Guide questions"
+            aria-valuemin={1}
+            aria-valuemax={stepTotal}
+            aria-valuenow={stepIndex + 1}
+          >
+            <span
+              className="block h-full bg-ink origin-left transition-transform duration-300 ease-[var(--ease-out-quint)]"
+              style={{ transform: `scaleX(${(stepIndex + 1) / stepTotal})` }}
+            />
+          </div>
         </div>
       )}
 
@@ -300,10 +301,10 @@ export function SellingGuideFunnel({
       {/* Step 0, suburb */}
       {step === 0 && (
         <div>
-          <p className="text-[13px] text-cta font-medium mb-3">
+          <p className="text-[13px] text-ink-muted font-medium mb-2">
             Free guide · Takes about 60 seconds
           </p>
-          <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-2">
+          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">
             Where&rsquo;s the property?
           </h3>
           <p className="text-sm text-ink-muted mb-5">
@@ -343,7 +344,7 @@ export function SellingGuideFunnel({
       {/* Step 1, property type */}
       {step === 1 && (
         <div>
-          <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
+          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-6">
             What type of property{suburbLabel ? ` in ${suburbLabel}` : ""}?
           </h3>
           <div className={`grid grid-cols-1 sm:grid-cols-2 gap-3 ${isAdvancing ? "pointer-events-none" : ""}`}>
@@ -370,7 +371,7 @@ export function SellingGuideFunnel({
       {/* Step 2, bedrooms */}
       {step === 2 && (
         <div>
-          <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
+          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-6">
             How many bedrooms?
           </h3>
           <div className={`grid grid-cols-5 gap-2 ${isAdvancing ? "pointer-events-none" : ""}`}>
@@ -382,10 +383,10 @@ export function SellingGuideFunnel({
                   setBedrooms(b);
                   advanceTo(3);
                 }}
-                className={`relative rounded-xl border py-4 text-center text-sm font-semibold transition-all duration-200 cursor-pointer press ${
+                className={`relative rounded-lg border py-4 text-center text-sm font-semibold transition-colors duration-150 cursor-pointer press ${
                   bedrooms === b
                     ? "bg-ink text-white border-ink"
-                    : "bg-surface-raised text-ink border-line hover:border-line-strong hover:-translate-y-0.5 hover:shadow-md"
+                    : "bg-white text-ink border-line-strong hover:border-ink"
                 }${bedrooms === b && isAdvancing ? " opt-confirm" : ""}`}
               >
                 {b}
@@ -402,7 +403,7 @@ export function SellingGuideFunnel({
       {/* Step 3, timeframe (the money question) */}
       {step === 3 && (
         <div>
-          <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
+          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-6">
             When are you thinking of selling?
           </h3>
           <div className={`flex flex-col gap-2.5 ${isAdvancing ? "pointer-events-none" : ""}`}>
@@ -414,10 +415,10 @@ export function SellingGuideFunnel({
                   setTimeframe(opt.id);
                   advanceTo(4);
                 }}
-                className={`relative flex items-center justify-between rounded-xl border px-5 py-3.5 transition-all duration-200 cursor-pointer press active:translate-y-0 ${
+                className={`relative flex items-center justify-between rounded-lg border px-4 sm:px-5 py-3.5 transition-colors duration-150 cursor-pointer press ${
                   timeframe === opt.id
                     ? "bg-ink text-white border-ink"
-                    : "bg-surface-raised text-ink border-line hover:border-line-strong hover:-translate-y-0.5 hover:shadow-md"
+                    : "bg-white text-ink border-line-strong hover:border-ink"
                 }${timeframe === opt.id && isAdvancing ? " opt-confirm" : ""}`}
               >
                 <div className="text-left">
@@ -438,7 +439,7 @@ export function SellingGuideFunnel({
       {/* Step 4, agent status (kill / branch question) */}
       {step === 4 && (
         <div>
-          <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-2">
+          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">
             Where are you up to with agents?
           </h3>
           <p className="text-sm text-ink-muted mb-5">
@@ -453,10 +454,10 @@ export function SellingGuideFunnel({
                   setAgentStatus(opt.id);
                   advanceTo(5);
                 }}
-                className={`relative flex items-center justify-between rounded-xl border px-5 py-3.5 transition-all duration-200 cursor-pointer press active:translate-y-0 ${
+                className={`relative flex items-center justify-between rounded-lg border px-4 sm:px-5 py-3.5 transition-colors duration-150 cursor-pointer press ${
                   agentStatus === opt.id
                     ? "bg-ink text-white border-ink"
-                    : "bg-surface-raised text-ink border-line hover:border-line-strong hover:-translate-y-0.5 hover:shadow-md"
+                    : "bg-white text-ink border-line-strong hover:border-ink"
                 }${agentStatus === opt.id && isAdvancing ? " opt-confirm" : ""}`}
               >
                 <div className="text-left">
@@ -477,7 +478,7 @@ export function SellingGuideFunnel({
       {/* Step 5, motivation (optional) */}
       {step === 5 && (
         <div>
-          <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
+          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-6">
             What&rsquo;s prompting the move?
           </h3>
           <div className={`grid grid-cols-1 sm:grid-cols-2 gap-3 ${isAdvancing ? "pointer-events-none" : ""}`}>
@@ -515,7 +516,7 @@ export function SellingGuideFunnel({
       {/* Step 6, price expectation (optional) */}
       {step === 6 && (
         <div>
-          <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-2">
+          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">
             Roughly what&rsquo;s it worth?
           </h3>
           <p className="text-sm text-ink-muted mb-5">
@@ -545,13 +546,13 @@ export function SellingGuideFunnel({
       {/* Step 7, contact (PII last) */}
       {step === 7 && (
         <div>
-          <p className="rise text-[13px] text-cta font-medium mb-3">
+          <p className="text-[13px] text-ink-muted font-medium mb-2">
             Your guide is ready
           </p>
-          <h3 className="rise rise-d1 font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-3">
+          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-3">
             Where should we send it?
           </h3>
-          <form onSubmit={onSubmit} className="rise rise-d2 space-y-3">
+          <form onSubmit={onSubmit} className="space-y-3">
             {/* Honeypot: visually hidden, off-screen, aria-hidden. */}
             <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
               <label htmlFor="guide-website">Website</label>
@@ -572,7 +573,7 @@ export function SellingGuideFunnel({
                 autoComplete="given-name"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="w-full min-w-0 rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
+                className="w-full min-w-0 rounded-lg border border-line-strong bg-white px-4 py-3 text-base sm:text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
               />
               <input
                 type="text"
@@ -581,7 +582,7 @@ export function SellingGuideFunnel({
                 autoComplete="family-name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                className="w-full min-w-0 rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
+                className="w-full min-w-0 rounded-lg border border-line-strong bg-white px-4 py-3 text-base sm:text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
               />
             </div>
             <input
@@ -591,7 +592,7 @@ export function SellingGuideFunnel({
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
+              className="w-full rounded-lg border border-line-strong bg-white px-4 py-3 text-base sm:text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
             />
             <div>
               <AuPhoneInput
@@ -621,7 +622,7 @@ export function SellingGuideFunnel({
             <button
               type="submit"
               disabled={submitting || submitted}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3.5 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer press"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3.5 text-base sm:text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer press"
             >
               {submitted ? (
                 <>

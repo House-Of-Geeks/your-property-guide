@@ -1,24 +1,23 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
-import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/seo";
-import { Badge } from "@/components/ui";
-import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
+import { ArticleJsonLd, BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
 import { BlogShareButtons } from "@/components/blog/BlogShareButtons";
-import { BlogGuideRail } from "@/components/blog/BlogGuideRail";
-import { BUYING_GUIDE_CTA, ExpertCTA } from "@/components/journey";
-import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
-import { AuthorBylineCard, GuideStartInline } from "@/components/guide";
 import { BlogCover } from "@/components/blog/BlogCover";
-import { getBlogPostBySlug, getRelatedPosts } from "@/lib/services/blog-service";
+import { blogReadNext } from "@/components/blog/BlogGuideRail";
+import { AuthorBylineCard, GuideStartInline } from "@/components/guide";
+import { GuideByline } from "@/components/guide/GuideByline";
+import { GuideTOC, type GuideTOCEntry } from "@/components/guide/GuideTOC";
+import { GuideNextStep } from "@/components/guide/GuideNextStep";
+import { RelatedGuides, type RelatedGuide } from "@/components/guide/RelatedGuides";
+import articleScope from "@/components/guide/article-scope.module.css";
+import { categoryToSlug, getBlogPostBySlug, getRelatedPosts } from "@/lib/services/blog-service";
 import { processContent, splitHtmlAfterFirstSection } from "@/lib/utils/blog-toc";
-import { guideAudienceForBlogCategory, guideFunnelHref } from "@/lib/guide-funnel";
+import { extractArticleFaqs } from "@/lib/utils/blog-faq";
+import { guideAudienceForBlogCategory } from "@/lib/guide-funnel";
 import { resolveBlogCoverPath } from "@/lib/utils/blog-cover";
 import { blogTitle, absoluteUrl } from "@/lib/utils/seo";
-import { formatDate } from "@/lib/utils/format";
-import { Clock, ArrowLeft, ArrowRight } from "lucide-react";
 import { SITE_URL } from "@/lib/constants";
 
 interface BlogDetailPageProps {
@@ -66,6 +65,10 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
   };
 }
 
+// Same measure as GuideArticleLayout: a 40rem reading column and a 16rem
+// rail, centred.
+const SHELL = "mx-auto w-full max-w-[64rem] px-4 sm:px-6";
+
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { slug } = await params;
   const post = await getBlogPostBySlug(slug);
@@ -74,216 +77,151 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const relatedPosts = await getRelatedPosts(slug, 3);
   const { html: processedContent, toc } = processContent(post.content);
   const postUrl = `${SITE_URL}/guides/${slug}`;
+  const updatedAt = post.updatedAt ?? post.publishedAt;
+  // The FAQ the article already shows, as FAQPage JSON-LD (selling review P7).
+  const faqs = extractArticleFaqs(post.content);
+  const sourcesEntry = toc.find((t) => t.level === 2 && /^sources\b/i.test(t.text));
 
   // CTAs follow the post's blog category: selling posts start the selling
   // guide in place (after the first section and again at the end), buying
-  // posts push the buying guide, and everything else (news, market updates)
-  // keeps the selling-guide default.
+  // posts end on the buying guide, and everything else (news, market
+  // updates) keeps the selling-guide default.
   const audience = guideAudienceForBlogCategory(post.category);
+  const nextStep = audience ?? "selling";
   const sellingPost = audience === "selling";
   const sections = sellingPost ? splitHtmlAfterFirstSection(processedContent) : null;
 
+  // A real photograph shows at every width. The typeset cover repeats the
+  // H1, so it shows as a slim band from tablet up and not at all on phones.
+  const realCover = resolveBlogCoverPath(post.coverImage);
+
+  // Contents list the article's sections (h2); the h3s under them would
+  // make the list longer than the article's first screen.
+  const contents: GuideTOCEntry[] = toc.filter((t) => t.level === 2).map((t) => ({ id: t.id, label: t.text }));
+  const keepReading = dedupe([
+    ...blogReadNext(post.slug, post.category),
+    ...relatedPosts.map((rp) => ({ title: rp.title, href: `/guides/${rp.slug}`, description: rp.excerpt })),
+  ]).slice(0, 6);
+
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+    <>
       <ArticleJsonLd post={post} />
+      {faqs.length > 0 && <FAQPageJsonLd faqs={faqs} />}
       <BreadcrumbJsonLd
         items={[
           { name: "Guides", url: "/guides" },
           { name: post.title, url: `/guides/${post.slug}` },
         ]}
       />
-      <Breadcrumbs items={[{ label: "Guides", href: "/guides" }, { label: post.title }]} />
+      {/* Tells the phone bar (MobileBottomNav) which guide this reader gets. */}
+      <span hidden data-guide-audience={nextStep} />
 
-      <div className="mt-6 grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-10 items-start">
+      <div className={SHELL}>
+        <div className="pt-2 sm:pt-4 [&_ol]:flex-nowrap [&_li:last-child]:hidden sm:[&_li:last-child]:flex sm:[&_li:last-child]:min-w-0 [&_li:last-child_span]:min-w-0 [&_li:last-child_span]:truncate">
+          <Breadcrumbs items={[{ label: "Guides", href: "/guides" }, { label: post.title }]} />
+        </div>
 
-        {/* ── Article column ── */}
-        <article>
+        <header className="max-w-[46rem] pt-4 sm:pt-8 pb-8">
           <Link
-            href="/guides"
-            className="text-sm font-sans text-ink-muted hover:text-primary flex items-center gap-1.5 mb-8 transition-colors"
+            href={`/guides/category/${categoryToSlug(post.category)}`}
+            className="inline-block text-sm font-semibold text-ink-muted hover:text-ink underline-offset-4 hover:underline mb-3"
           >
-            <ArrowLeft className="w-3.5 h-3.5" /> Back to guides
+            {post.category}
           </Link>
-
-          {/* Magazine-style masthead: italic category + hairline + dated slug */}
-          <div className="flex items-center gap-4 mb-8">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              {post.category}
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              {formatDate(post.publishedAt)}
-            </span>
-          </div>
-
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-bold">
+          <h1 className="font-display font-bold text-ink text-[1.875rem] leading-[1.1] tracking-[-0.03em] sm:text-[2.375rem] lg:text-[2.625rem] lg:leading-[1.08]">
             {post.title}
           </h1>
           {/* Standfirst marked data-speakable-summary so voice assistants
               pick up this paragraph alongside the H1. */}
-          <p
-            data-speakable-summary
-            className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10"
-          >
+          <p data-speakable-summary className="mt-4 text-[1.0625rem] sm:text-xl text-ink-muted leading-relaxed">
             {post.excerpt}
           </p>
-
-          {/* Author + meta row with hairline above */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-5 pb-5 border-y border-line">
-            <div className="flex items-center gap-3">
-              <Link
-                href="/about#andy-mcmaster"
-                aria-label={`About ${post.author.name}`}
-                className="block shrink-0"
-              >
-                <AuthorAvatar name={post.author.name} image={post.author.image} size={40} />
-              </Link>
-              <div>
-                <p className="text-sm font-sans text-ink-muted">
-                  By{" "}
-                  <Link
-                    href="/about#andy-mcmaster"
-                    className="font-semibold text-ink hover:text-primary border-b border-transparent hover:border-primary transition-colors"
-                  >
-                    {post.author.name}
-                  </Link>
-                </p>
-                <p className="text-xs font-sans text-ink-subtle flex items-center gap-2 mt-0.5">
-                  <span>{formatDate(post.publishedAt)}</span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" aria-hidden="true" /> {post.readingTime} min read
-                  </span>
-                </p>
-              </div>
-            </div>
-            <BlogShareButtons title={post.title} url={postUrl} />
-          </div>
-
-          {/* Hero image */}
-          <div className="relative aspect-[16/9] rounded-2xl overflow-hidden mt-6 border border-line">
-            <BlogCover
-              slug={post.slug}
-              title={post.title}
-              category={post.category}
-              coverImage={post.coverImage}
-              sizes="(max-width: 768px) 100vw, 800px"
-              priority
+          <div className="mt-6">
+            <GuideByline
+              author={{ name: post.author.name, image: post.author.image }}
+              updatedAt={updatedAt}
+              publishedAt={post.publishedAt}
+              readingMinutes={post.readingTime}
+              sourcesHref={sourcesEntry ? `#${sourcesEntry.id}` : undefined}
             />
           </div>
-
-          {/* Content */}
-          {sections ? (
-            <>
-              <div
-                className="mt-8 prose-ypg"
-                dangerouslySetInnerHTML={{ __html: sections[0] }}
-              />
-              <GuideStartInline from={post.slug} />
-              <div
-                className="prose-ypg"
-                dangerouslySetInnerHTML={{ __html: sections[1] }}
-              />
-            </>
-          ) : (
-            <div
-              className="mt-8 prose-ypg"
-              dangerouslySetInnerHTML={{ __html: processedContent }}
-            />
-          )}
-
-          {/* Guide funnel exit, routed by the post's category. */}
-          {sellingPost ? (
-            <GuideStartInline from={post.slug} />
-          ) : (
-            <ExpertCTA
-              variant="inline"
-              {...(audience === "buying" ? BUYING_GUIDE_CTA : {})}
-              href={guideFunnelHref(audience ?? "selling", { from: post.slug })}
-            />
-          )}
-
-          {/* "Read next" rail of relevant guides, internal-link booster */}
-          <BlogGuideRail blogSlug={post.slug} />
-
-          {/* Tags */}
-          {post.tags.length > 0 && (
-            <div className="mt-8 flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <Badge key={tag} variant="outline">{tag}</Badge>
-              ))}
-            </div>
-          )}
-
-          {/* Share (bottom) */}
-          <div className="mt-8 pt-6 border-t border-line flex items-center justify-between flex-wrap gap-3">
-            <BlogShareButtons title={post.title} url={postUrl} />
-            <Link
-              href="/guides"
-              className="text-sm font-sans font-medium text-ink hover:text-primary border-b border-line-strong hover:border-primary pb-0.5 inline-flex items-center gap-1"
-            >
-              More guides <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          {/* Author byline footer. Matches the AuthorBylineCard used on
-              all 58 guide pages so news posts carry the same E-E-A-T
-              attribution: portrait, role, last-updated date, link to
-              /about. */}
-          <AuthorBylineCard
-            authorName={post.author.name}
-            authorRole="Property writer"
-            authorImage={post.author.image}
-            lastReviewed={post.updatedAt ?? post.publishedAt}
-          />
-        </article>
-
-        {/* ── Sticky sidebar ── */}
-        <aside className="hidden lg:block">
-          <div className="sticky top-24">
-            <BlogTableOfContents toc={toc} />
-          </div>
-        </aside>
+        </header>
       </div>
 
-      {/* Related posts */}
-      {relatedPosts.length > 0 && (
-        <div className="mt-16 pt-10 border-t border-line max-w-4xl">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="font-display text-primary text-base leading-none">
-              Keep reading
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-          </div>
-          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-8 font-bold">
-            Related <span>articles</span>
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            {relatedPosts.map((rp) => (
-              <Link key={rp.slug} href={`/guides/${rp.slug}`} className="group">
-                <div className="relative aspect-[16/10] rounded-2xl overflow-hidden mb-3 border border-line">
-                  <Image
-                    src={rp.coverImage}
-                    alt={rp.title}
-                    fill
-                    className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                    sizes="280px"
-                  />
-                  <div className="absolute top-2 left-2">
-                    <Badge variant="primary">{rp.category}</Badge>
-                  </div>
-                </div>
-                <h3 className="font-display text-base text-ink leading-tight group-hover:text-primary line-clamp-2 transition-colors">
-                  {rp.title}
-                </h3>
-                <p className="text-xs font-sans text-ink-muted mt-2 line-clamp-2 leading-relaxed">{rp.excerpt}</p>
-                <p className="text-xs font-sans text-ink-subtle mt-2 flex items-center gap-1">
-                  <Clock className="w-3 h-3" aria-hidden="true" /> {rp.readingTime} min read
-                </p>
+      <div className={`${SHELL} pb-16`}>
+        <div className="lg:grid lg:grid-cols-[minmax(0,40rem)_16rem] lg:justify-between lg:gap-x-16">
+          <article className={`min-w-0 ${articleScope.scope}`}>
+            <div
+              className={`relative overflow-hidden rounded-xl border border-line ${
+                realCover ? "aspect-[16/9]" : "hidden sm:block aspect-[3/1]"
+              }`}
+            >
+              <BlogCover
+                slug={post.slug}
+                title={post.title}
+                category={post.category}
+                coverImage={post.coverImage}
+                sizes="(max-width: 768px) 100vw, 640px"
+                priority
+              />
+            </div>
+
+            {contents.length > 1 && (
+              <div className="lg:hidden mt-2 sm:mt-6">
+                <GuideTOC entries={contents} title="In this article" />
+              </div>
+            )}
+
+            {sections ? (
+              <>
+                <div className="mt-8 sm:mt-10 prose-ypg" dangerouslySetInnerHTML={{ __html: sections[0] }} />
+                <GuideStartInline from={post.slug} />
+                <div className="prose-ypg" dangerouslySetInnerHTML={{ __html: sections[1] }} />
+              </>
+            ) : (
+              <div className="mt-8 sm:mt-10 prose-ypg" dangerouslySetInnerHTML={{ __html: processedContent }} />
+            )}
+
+            {/* The one end-of-article action, routed by the post's category. */}
+            {nextStep === "selling" ? (
+              <GuideStartInline from={post.slug} className="mt-12 mb-10" />
+            ) : (
+              <GuideNextStep audience="buying" from={post.slug} />
+            )}
+
+            <RelatedGuides items={keepReading} />
+
+            <div className="mt-10 flex flex-wrap items-center justify-between gap-3">
+              <BlogShareButtons title={post.title} url={postUrl} />
+              <Link
+                href="/guides"
+                className="text-sm font-medium text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
+              >
+                All guides
               </Link>
-            ))}
-          </div>
+            </div>
+
+            {/* About this article: the writer's own photo, role and bio. */}
+            <AuthorBylineCard
+              authorName={post.author.name}
+              authorImage={post.author.image}
+              lastReviewed={updatedAt}
+            />
+          </article>
+
+          <aside className="hidden lg:block">
+            <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pb-6 space-y-8">
+              {contents.length > 0 && <GuideTOC entries={contents} variant="sidebar" title="In this article" />}
+              <GuideNextStep audience={nextStep} from={post.slug} variant="rail" />
+            </div>
+          </aside>
         </div>
-      )}
-    </div>
+      </div>
+    </>
   );
+}
+
+function dedupe(items: RelatedGuide[]): RelatedGuide[] {
+  const seen = new Set<string>();
+  return items.filter((i) => (seen.has(i.href) ? false : (seen.add(i.href), true)));
 }

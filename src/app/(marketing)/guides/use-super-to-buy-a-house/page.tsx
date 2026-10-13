@@ -220,7 +220,7 @@ export default function UseSuperToBuyAHousePage() {
       </p>
       <ul>
         <li>
-          <strong>Severe financial hardship:</strong> before 60, up to $10,000 once every 12 months, if
+          <strong>Severe financial hardship:</strong>{" "}before 60, up to $10,000 once every 12 months, if
           you&rsquo;ve been on eligible income support for at least 26 weeks and can&rsquo;t pay urgent living
           costs.
         </li>

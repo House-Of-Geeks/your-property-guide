@@ -1,238 +1,107 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import type { ReactNode } from "react";
+import { Breadcrumbs } from "@/components/layout";
 import { SuburbSearch } from "./SuburbSearch";
-import { SuburbMatchButton } from "./SuburbMatchButton";
 import type { Suburb } from "@/types";
-import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { fullLgaName } from "@/lib/utils/lga-names";
-import { SourceTooltip } from "./SourceTooltip";
 
 interface SuburbHeroProps {
   suburb: Suburb;
+  /** The Greater-capital the suburb sits in, for the place line and the city market link. */
+  capitalCity?: { name: string; slug: string } | null;
+  /** The answer: the published median (or why there is none) and the next step. */
+  children: ReactNode;
+  /** Supporting figures: beside the answer on a wide screen, under it on a phone. */
+  aside?: ReactNode;
 }
 
-const GMAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? "";
-
-const TAB_LINKS = [
-  { label: "Prices",       href: "#market"       },
-  { label: "About",        href: "#about"        },
-  { label: "Demographics", href: "#demographics" },
-  { label: "Location",     href: "#location"     },
-  { label: "Schools",      href: "#schools"      },
-];
-
-export function SuburbHero({ suburb }: SuburbHeroProps) {
-  const query = encodeURIComponent(`${suburb.name} ${suburb.state} ${suburb.postcode}`);
-  const embedUrl = GMAPS_KEY
-    ? `https://www.google.com/maps/embed/v1/place?key=${GMAPS_KEY}&q=${query}&zoom=13&maptype=satellite`
-    : null;
-
+// The first screen of a suburb profile (Oct 2026 layout). Three quarters of
+// the template's searches are lookups ("{suburb} postcode", "{suburb} median
+// house price"), so it answers them before anything else: the H1 carries the
+// suburb, state and postcode (the form every ranking rival uses), the line
+// under it places the suburb, and the page passes in the median with its
+// source and the next step. Typeset, no imagery: the satellite iframe that
+// sat here was the page's LCP and its heaviest request, and moved to a
+// click-to-load map in the Location section.
+export function SuburbHero({ suburb, capitalCity, children, aside }: SuburbHeroProps) {
+  const regionLabel = suburb.region && suburb.region !== suburb.state ? fullLgaName(suburb.region) : null;
   return (
-    <>
-      {/* Breadcrumb + search bar */}
-      <div className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-4">
-          {/* Breadcrumb */}
-          <nav aria-label="Breadcrumb">
-            <ol className="flex items-center gap-1 text-sm font-sans text-ink-subtle flex-wrap">
-              <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
-              <li className="flex items-center gap-1">
-                <ChevronRight className="w-3.5 h-3.5" />
-                <Link href="/suburbs" className="hover:text-primary transition-colors">Suburbs</Link>
-              </li>
-              <li className="flex items-center gap-1">
-                <ChevronRight className="w-3.5 h-3.5" />
-                <span className="text-ink font-medium">
-                  {suburb.name} {suburb.state} {suburb.postcode}
-                </span>
-              </li>
-            </ol>
-          </nav>
-
+    <section className="border-b border-line">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12">
+        <div className="flex items-center justify-between gap-4">
+          <Breadcrumbs
+            items={[
+              { label: "Suburbs", href: "/suburbs" },
+              { label: `${suburb.name} ${suburb.state} ${suburb.postcode}` },
+            ]}
+          />
           <SuburbSearch />
         </div>
-      </div>
 
-      {/* Satellite hero */}
-      <div className="relative h-64 sm:h-80 lg:h-96 overflow-hidden bg-gray-900">
-        {embedUrl ? (
-          <iframe
-            src={embedUrl}
-            className="absolute inset-0 w-full h-full border-0"
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title={`Aerial map of ${suburb.name}`}
-          />
-        ) : (
-          <Image
-            src={suburb.heroImage}
-            alt={`${suburb.name} ${suburb.state}`}
-            fill
-            className="object-cover"
-            sizes="100vw"
-            priority
-          />
-        )}
-        {/* Editorial gradient overlay for text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/15 to-black/55 pointer-events-none" />
-        {/* Editorial suburb label with Playfair display */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-4 text-center">
-          <p className="text-[13px] font-sans text-white/70 mb-3 drop-shadow">
-            {fullLgaName(suburb.region)}
-          </p>
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-white drop-shadow-lg leading-[1.05] tracking-tight">
-            <span>{suburb.name}</span>
-          </h1>
-          <div className="mt-4 inline-flex items-center gap-3 px-4 py-1.5 rounded-md bg-white/10 backdrop-blur-sm border border-white/20">
-            <span className="text-sm font-sans font-medium tracking-wide text-white">
-              {suburb.state}
-            </span>
-            <span className="w-px h-3 bg-white/30" />
-            {/* Links the suburb to its postcode page (the parent container
-                is pointer-events-none, so re-enable on the link itself). */}
-            <Link
-              href={`/postcodes/${suburb.postcode}`}
-              title={`All suburbs in postcode ${suburb.postcode}`}
-              className="pointer-events-auto text-sm font-sans tracking-wide text-white/80 hover:text-white underline-offset-4 hover:underline transition-colors"
-            >
-              {suburb.postcode}
-            </Link>
-          </div>
-
-          {/* Above-the-fold match CTA, visitors researching this suburb are
-              mid-decision; give them the option to act before they scroll. */}
-          <div className="mt-6 pointer-events-none">
-            <SuburbMatchButton suburbSlug={suburb.slug} suburbName={suburb.name} />
-          </div>
-        </div>
-      </div>
-
-      {/* Tab navigation bar */}
-      <nav className="sticky top-0 z-30 bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex gap-0 overflow-x-auto scrollbar-none">
-            {TAB_LINKS.map((tab) => (
-              <a
-                key={tab.href}
-                href={tab.href}
-                className="flex-shrink-0 px-5 py-4 text-[13px] font-sans text-ink-muted hover:text-ink border-b-2 border-transparent hover:border-cta transition-colors"
+        <div className="mt-3 sm:mt-6 grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          <div className={aside ? "lg:col-span-7" : "lg:col-span-8"}>
+            <h1 className="font-display text-[2.5rem] sm:text-5xl lg:text-[3.5rem] font-bold text-ink leading-[1.05] tracking-[-0.035em]">
+              {suburb.name}, {suburb.state} {suburb.postcode}
+            </h1>
+            <p className="mt-3 text-[15px] sm:text-base text-ink-muted leading-relaxed">
+              {regionLabel && <span>{regionLabel}</span>}
+              {regionLabel && capitalCity && <span aria-hidden="true"> · </span>}
+              {capitalCity && (
+                <Link
+                  href={`/property-market/${capitalCity.slug}`}
+                  className="text-ink-muted underline decoration-line-strong underline-offset-4 hover:text-ink hover:decoration-ink"
+                >
+                  Greater {capitalCity.name}
+                </Link>
+              )}
+              {(regionLabel || capitalCity) && <span aria-hidden="true"> · </span>}
+              <Link
+                href={`/postcodes/${suburb.postcode}`}
+                className="text-ink-muted underline decoration-line-strong underline-offset-4 hover:text-ink hover:decoration-ink"
               >
-                {tab.label}
-              </a>
-            ))}
+                All suburbs in postcode {suburb.postcode}
+              </Link>
+            </p>
+            {children}
           </div>
+          {aside && <div className="lg:col-span-5">{aside}</div>}
         </div>
-      </nav>
-    </>
-  );
-}
-
-export function SuburbStats({ suburb }: SuburbHeroProps) {
-  const { stats, dataFreshness: f } = suburb;
-  // Only render tiles backed by real data. No "Sales data pending" / dash
-  // placeholders — empty tiles erode trust faster than a shorter strip does.
-  const tiles: Array<{
-    label: string;
-    value: string;
-    subtext?: string;
-    icon: string;
-    source?: string | null;
-    asOf?: Date | string | null;
-  }> = [];
-
-  if (stats.medianHousePrice) {
-    tiles.push({
-      label: "Median House Price",
-      value: formatPriceFull(stats.medianHousePrice),
-      subtext: stats.annualGrowthHouse ? `${formatPercentage(stats.annualGrowthHouse)} annual growth` : undefined,
-      icon: "/images/icons/median.svg",
-      source: f?.salesSource,
-      asOf: f?.salesAsOf,
-    });
-  }
-  if (stats.medianUnitPrice) {
-    tiles.push({
-      label: "Median Unit Price",
-      value: formatPriceFull(stats.medianUnitPrice),
-      subtext: stats.annualGrowthUnit ? `${formatPercentage(stats.annualGrowthUnit)} annual growth` : undefined,
-      icon: "/images/icons/yield.svg",
-      source: f?.salesSource,
-      asOf: f?.salesAsOf,
-    });
-  }
-  if (stats.daysOnMarket) {
-    tiles.push({
-      label: "Days on Market",
-      value: String(stats.daysOnMarket),
-      subtext: "Average days to sell",
-      icon: "/images/icons/growth.svg",
-      source: f?.salesSource,
-      asOf: f?.salesAsOf,
-    });
-  }
-  if (stats.population) {
-    tiles.push({
-      label: "Population",
-      value: stats.population.toLocaleString(),
-      subtext: stats.medianAge ? `Median age: ${stats.medianAge}` : undefined,
-      icon: "/images/icons/people.svg",
-      source: "abs-census",
-      asOf: f?.censusAsOf,
-    });
-  }
-
-  if (tiles.length === 0) return null;
-
-  // Tailwind needs explicit class names at build time; map count → grid.
-  const cols =
-    tiles.length === 1 ? "grid-cols-1" :
-    tiles.length === 2 ? "grid-cols-1 sm:grid-cols-2" :
-    tiles.length === 3 ? "grid-cols-1 sm:grid-cols-3" :
-    "grid-cols-2 sm:grid-cols-4";
-
-  return (
-    <div className={`grid ${cols} gap-4`}>
-      {tiles.map((t) => (
-        <StatCard
-          key={t.label}
-          label={t.label}
-          value={t.value}
-          subtext={t.subtext}
-          icon={t.icon}
-          source={t.source}
-          asOf={t.asOf}
-        />
-      ))}
-    </div>
-  );
-}
-
-function StatCard({
-  label,
-  value,
-  subtext,
-  icon,
-  source,
-  asOf,
-}: {
-  label: string;
-  value: string;
-  subtext?: string;
-  icon: string;
-  source?: string | null;
-  asOf?: Date | string | null;
-}) {
-  return (
-    <div className="p-5 rounded-xl bg-surface-raised border border-line">
-      <div className="flex items-center gap-2 mb-2">
-        <Image src={icon} alt="" width={20} height={20} className="w-5 h-5" aria-hidden="true" />
-        <span className="text-[13px] font-sans font-medium text-ink-subtle">{label}</span>
-        <SourceTooltip source={source} asOf={asOf} />
       </div>
-      <p className="font-display text-3xl text-ink leading-none mt-2">{value}</p>
-      {subtext && <p className="text-xs font-sans text-ink-muted mt-2">{subtext}</p>}
-    </div>
+    </section>
+  );
+}
+
+export interface SuburbSectionLink {
+  label: string;
+  href: string;
+}
+
+/**
+ * The in-page section bar. Sticks under the site header (64px on a phone,
+ * 72px from sm), which sits above it (z-50): at top-0 it slid under the
+ * header and vanished. Sections give themselves scroll-mt-32 / sm:scroll-mt-36
+ * so a jump lands below both bars.
+ */
+export function SuburbSectionNav({ links }: { links: readonly SuburbSectionLink[] }) {
+  return (
+    <nav
+      aria-label="On this page"
+      className="sticky top-16 sm:top-[72px] z-30 border-b border-line bg-white/95 backdrop-blur"
+    >
+      <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <ul className="flex overflow-x-auto px-2 sm:px-0 sm:-mx-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {links.map((l) => (
+            <li key={l.href} className="shrink-0">
+              <a
+                href={l.href}
+                className="block px-3 py-3 text-sm font-medium text-ink-muted hover:text-ink border-b-2 border-transparent hover:border-ink transition-colors"
+              >
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
   );
 }

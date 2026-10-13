@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { DataFreshnessNote } from "@/components/suburb/DataFreshnessNote";
 import type { AllDwellingsMarket } from "@/lib/rental-market";
 import { ALL_DWELLINGS_LABEL, SMALL_SAMPLE_BONDS, quarterSpan } from "@/lib/rental-labels";
 
@@ -12,9 +11,9 @@ import { ALL_DWELLINGS_LABEL, SMALL_SAMPLE_BONDS, quarterSpan } from "@/lib/rent
 
 function MetricCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-line bg-surface-raised p-4 shadow-card">
-      <p className="text-[13px] font-sans text-ink-subtle mb-1">{label}</p>
-      <p className="font-display text-2xl text-ink leading-none">{value}</p>
+    <div className="rounded-xl border border-line bg-white p-4">
+      <p className="font-sans text-[13px] text-ink-muted mb-1.5">{label}</p>
+      <p className="font-display text-2xl font-bold text-ink leading-none">{value}</p>
     </div>
   );
 }
@@ -37,12 +36,9 @@ export function RentalMarketAllDwellings({
   const bondsText = c.bonds !== null ? `${c.bonds.toLocaleString("en-AU")} bonds lodged` : "the bonds lodged";
   return (
     <>
-      <section>
-        <p className="text-[13px] font-sans text-ink-subtle mb-3">
-          Current rent
-        </p>
-        <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-          What it costs to rent here right now
+      <section id="current-rent" className="scroll-mt-20">
+        <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+          {`Median weekly rent in ${name}`}
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           <MetricCard label={`${ALL_DWELLINGS_LABEL} (median)`} value={`${money(c.weekly)}/wk`} />
@@ -54,40 +50,36 @@ export function RentalMarketAllDwellings({
             />
           )}
         </div>
-        <p className="font-sans text-sm text-ink-muted mt-4 max-w-3xl">
+        <p className="font-sans text-sm text-ink-muted mt-4 max-w-3xl leading-relaxed">
           {`The median of the ${bondsText} in ${c.span} for properties in ${name}: houses, units and every other dwelling together. The bond records carry no dwelling type, so this page shows no separate house or unit rent and no gross yield, which needs a house rent against the house price.`}
           {c.smallSample && c.bonds !== null
             ? ` With ${c.bonds} bonds (${SMALL_SAMPLE_BONDS} or fewer) this is a small sample: a few unusual leases move it, so read it as a guide.`
             : ""}
           {change ? ` A year earlier, in ${quarterSpan(change.fromPeriod)}, the median was ${money(change.fromWeekly)}.` : ""}
         </p>
-        <DataFreshnessNote label="Rental" asOf={c.periodDate} source={c.label} />
       </section>
 
       {all.quarters.length >= 2 && (
-        <section>
-          <p className="text-[13px] font-sans text-ink-subtle mb-3">
-            History
-          </p>
-          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
+        <section id="history" className="scroll-mt-20">
+          <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
             How rents have moved
           </h2>
-          <div className="rounded-2xl border border-line bg-surface-raised overflow-hidden shadow-card">
+          <div className="rounded-xl border border-line overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-surface-warm border-b border-line-warm">
-                    <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle">Quarter</th>
-                    <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">{`${ALL_DWELLINGS_LABEL} (median)`}</th>
-                    <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">Bonds lodged</th>
+                  <tr className="bg-surface-warm border-b border-line">
+                    <th scope="col" className="py-3 px-4 text-left font-semibold text-ink">Quarter</th>
+                    <th scope="col" className="py-3 px-4 text-right font-semibold text-ink">{`${ALL_DWELLINGS_LABEL} (median)`}</th>
+                    <th scope="col" className="py-3 px-4 text-right font-semibold text-ink">Bonds lodged</th>
                   </tr>
                 </thead>
                 <tbody>
                   {all.quarters.map((q) => (
-                    <tr key={q.period} className="border-b border-line last:border-0 hover:bg-surface-sunken transition-colors">
-                      <td className="py-4 px-5 font-medium text-ink">{quarterSpan(q.period)}</td>
-                      <td className="py-4 px-5 text-right tabular-nums text-ink-muted">{`${money(q.weekly)}/wk`}</td>
-                      <td className="py-4 px-5 text-right tabular-nums text-ink-muted">{q.bonds !== null ? q.bonds.toLocaleString("en-AU") : "–"}</td>
+                    <tr key={q.period} className="border-b border-line last:border-0">
+                      <td className="py-3 px-4 font-medium text-ink">{quarterSpan(q.period)}</td>
+                      <td className="py-3 px-4 text-right text-ink">{`${money(q.weekly)}/wk`}</td>
+                      <td className="py-3 px-4 text-right text-ink">{q.bonds !== null ? q.bonds.toLocaleString("en-AU") : "–"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -101,9 +93,9 @@ export function RentalMarketAllDwellings({
       )}
 
       {all.attribution && (
-        <section className="rounded-2xl border border-line bg-surface-raised p-5 sm:p-6">
-          <p className="text-[13px] font-sans text-ink-subtle mb-2">Source</p>
-          <p className="font-sans text-sm text-ink-muted leading-relaxed">
+        <section className="border-t border-line pt-4">
+          <p className="font-sans text-xs text-ink-muted leading-relaxed max-w-3xl">
+            {"Source: "}
             <a href={all.attribution.datasetUrl} className="underline hover:text-primary" rel="noopener">
               {all.attribution.dataset}
             </a>
@@ -117,25 +109,14 @@ export function RentalMarketAllDwellings({
       )}
 
       {rentListings && (
-        <div className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
-          <div>
-            <p className="text-[13px] font-sans text-ink-subtle mb-2">
-              Active listings
-            </p>
-            <h3 className="font-display text-xl sm:text-2xl text-ink leading-tight">
-              {`Properties for rent in ${name}.`}
-            </h3>
-            <p className="font-sans text-sm text-ink-muted mt-2">
-              Browse current rental listings.
-            </p>
-          </div>
+        <p className="font-sans text-base text-ink">
           <Link
             href={`/suburbs/${slug}/rent`}
-            className="shrink-0 inline-flex items-center gap-2 rounded-lg border border-line-strong bg-surface-raised text-ink hover:border-ink font-medium px-5 py-2.5 transition-colors"
+            className="inline-flex items-center gap-2 font-medium underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary"
           >
-            View rentals <ArrowRight className="w-4 h-4" />
+            {`Properties for rent in ${name} now`} <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </Link>
-        </div>
+        </p>
       )}
     </>
   );

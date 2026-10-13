@@ -271,7 +271,7 @@ export default async function DataPage() {
                 <tbody className="divide-y divide-line">
                   {d.rows.map((r) => (
                     <tr key={r.label} className="hover:bg-surface-warm/60 transition-colors">
-                      <td className="py-4 px-4 font-display text-xl text-ink tabular-nums whitespace-nowrap">{r.value}</td>
+                      <td className="py-4 px-4 font-display text-xl text-ink whitespace-nowrap">{r.value}</td>
                       <td className="py-4 px-4 font-sans">
                         {r.href ? (
                           <Link

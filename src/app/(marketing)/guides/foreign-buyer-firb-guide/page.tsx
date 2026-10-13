@@ -178,7 +178,7 @@ export default function ForeignBuyerFIRBGuidePage() {
         <li>Vacant land for development (subject to FIRB approval and construction conditions).</li>
       </ul>
       <p>
-        Temporary residents <strong>cannot</strong> buy established dwellings
+        Temporary residents <strong>cannot</strong>{" "}buy established dwellings
         as investment properties or holiday homes. The &ldquo;must live in
         it&rdquo; and &ldquo;must sell when leaving&rdquo; conditions are firm.
       </p>

@@ -247,7 +247,7 @@ export default function HomeStagingCostAustraliaPage() {
       </p>
       <p>
         Published pricing puts partial or occupied-home styling at{" "}
-        <strong>30 to 50 per cent less</strong> than a full vacant style, with
+        <strong>30 to 50 per cent less</strong>{" "}than a full vacant style, with
         minimum jobs starting around $1,500 to $1,800. The stylist will be
         blunt about which of your pieces can stay and which need to go into
         storage, and that honesty is a large part of what you&rsquo;re paying

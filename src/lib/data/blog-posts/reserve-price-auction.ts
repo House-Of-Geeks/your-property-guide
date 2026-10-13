@@ -82,7 +82,7 @@ export const post: BlogPost = {
 <li>Consumer Protection WA, <a href="https://www.consumerprotection.wa.gov.au/selling-property-auction" rel="nofollow noopener">Selling a property by auction</a> and <a href="https://www.consumerprotection.wa.gov.au/buying-property-auction" rel="nofollow noopener">Buying property at an auction</a> (reserve confidentiality, quoted; REIWA vendor-bid conditions).</li>
 <li>Passed-in negotiation practice outside Victoria, the mid-auction consult and the auctioneer fee range are described as conventions, not rules.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-selling.svg",
+  coverImage: "/images/blog/cover-reserve-price-auction.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Selling",
   tags: ["reserve price","auction","price guide","underquoting","vendor bid","passed in","selling a house","Victoria auction laws 2026","2026"],

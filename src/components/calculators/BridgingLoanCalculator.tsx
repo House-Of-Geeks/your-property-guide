@@ -120,7 +120,7 @@ export function BridgingLoanCalculator() {
           )}
           {loading && (
             <p className="mt-2 inline-flex items-center gap-2 text-sm text-gray-500">
-              <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" /> Loading the suburb&hellip;
+              <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />{" "}Loading the suburb&hellip;
             </p>
           )}
           {lookupError && <p className="mt-2 text-sm text-red-700">{lookupError}</p>}

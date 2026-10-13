@@ -61,7 +61,7 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
           {
             href: suburb ? `/appraisal?suburb=${suburb}` : "/appraisal",
             label: "Book your free appraisal now",
-            sub: "A top local agent values your home — free, no obligation",
+            sub: "One local agent who sells in your area values your home, free, no obligation",
           },
         ]
       : []),
@@ -88,88 +88,45 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
         <ConversionTracker flow="selling-guide" />
       </Suspense>
 
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-8 pb-12 sm:pt-12 sm:pb-16 text-center flex flex-col">
-          {/* Phones: the download as a slim banner up top, so the call card
-              and its mobile field come straight after the headline and the
-              full download card follows them (Oct 2026). */}
-          <a
-            href={GUIDE_PDF_PATH}
-            download
-            className="rise lg:hidden group press mb-6 flex items-center gap-3 rounded-xl bg-surface-inverse px-4 py-3 text-left shadow-card"
-          >
-            <span className="grid place-items-center w-9 h-9 shrink-0 rounded-full bg-cta text-white">
-              <Download className="w-4 h-4 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-sm font-medium text-white">Your selling guide (PDF)</span>
-              <span className="block text-xs text-white/64">2026 edition</span>
-            </span>
-            <span className="shrink-0 text-sm font-medium text-accent-lighter">Download</span>
-          </a>
-
-          <div className="relative w-12 h-12 mx-auto mb-4">
-            {/* Confetti burst: ypg-rise played in reverse (fade out while
-                travelling) inside rotated, scaled anchors so each dot flies
-                outward from the badge rim as it pops. Base opacity-0 keeps
-                the dots gone whenever the animation is off (reduced motion
-                sets .rise to animation: none). */}
-            {[
-              { pos: "left-1/2 top-0", dir: "rotate-180 scale-[2]", tone: "bg-cta" },
-              { pos: "left-[86%] top-[14%]", dir: "rotate-[225deg] scale-[1.8]", tone: "bg-accent-lighter" },
-              { pos: "left-[14%] top-[14%]", dir: "rotate-[135deg] scale-[2.3]", tone: "bg-accent-lighter" },
-              { pos: "left-full top-1/2", dir: "rotate-[270deg] scale-[1.7]", tone: "bg-cta" },
-              { pos: "left-[14%] top-[86%]", dir: "rotate-45 scale-[2]", tone: "bg-cta" },
-            ].map((dot) => (
-              <span key={dot.pos} aria-hidden="true" className={`absolute ${dot.pos} ${dot.dir}`}>
-                <span
-                  className={`rise block w-0.5 h-0.5 rounded-full opacity-0 ${dot.tone}`}
-                  style={{
-                    animationDirection: "reverse",
-                    animationFillMode: "forwards",
-                    animationDuration: "650ms",
-                    animationDelay: "250ms",
-                  }}
-                />
-              </span>
-            ))}
-            <div className="pop-in w-12 h-12 rounded-full bg-cta text-white grid place-items-center">
-              <CheckCircle className="w-6 h-6" aria-hidden="true" />
-            </div>
-          </div>
-
-          <h1 className="rise rise-d1 font-display text-ink tracking-tight text-3xl sm:text-4xl lg:text-5xl leading-[1.05] font-bold mb-3">
+      {/* The download and the optional call card side by side from lg and
+          stacked on phones, both on the first screen. The download button is
+          the solid action until the call card renders; then the call takes
+          the solid button and the download goes to outline (one solid
+          action per screen). Nothing decorative. */}
+      <section className="bg-surface-warm border-b border-line">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-6 pb-10 sm:pt-12 sm:pb-16 flex flex-col">
+          <p className="inline-flex items-center gap-2 text-sm font-semibold text-ink-muted mb-2">
+            <CheckCircle className="w-4 h-4 text-success" aria-hidden="true" />
+            Guide sent
+          </p>
+          <h1 className="font-display text-ink tracking-[-0.03em] text-[1.75rem] sm:text-4xl lg:text-5xl leading-[1.08] font-bold">
             {copy.headline}
           </h1>
-          <p className="rise rise-d2 font-sans text-base text-ink-muted leading-relaxed max-w-xl mx-auto mb-8 max-lg:order-last max-lg:mt-8 max-lg:mb-0">
+          <p className="mt-4 text-base text-ink-muted leading-relaxed max-w-2xl max-lg:order-last max-lg:mt-6">
             {copy.body}
           </p>
 
-          {/* Download and the optional call side by side from lg, so both
-              sit on the first screen (Oct 2026: the full-size cover pushed
-              the call card below the fold). Below lg the call card comes
-              first and the download card follows it. */}
-          <div className="flex flex-col lg:flex-row lg:items-start justify-center gap-5 lg:gap-6 text-left">
-            {/* Download card: a cover thumbnail beside the button, so the
-                button sits high on the page. */}
-            <div className="rise rise-d3 max-lg:order-last w-full max-w-lg mx-auto lg:mx-0 rounded-2xl bg-surface-inverse p-5 sm:p-6 shadow-2xl">
-              <div className="flex items-center gap-4 sm:gap-5">
+          <div className="group/thanks mt-6 lg:mt-8 grid lg:grid-cols-2 gap-4 lg:gap-6 items-start">
+            <div className="rounded-xl border border-line bg-white p-5 sm:p-6">
+              <div className="flex items-start gap-4 sm:gap-5">
                 <Image
                   src="/images/guide/selling-guide-cover.png"
                   alt="The Complete Guide to Selling Your Property in Australia, 2026 edition"
                   width={190}
                   height={269}
                   priority
-                  className="cover-settle shrink-0 w-[72px] sm:w-[96px] h-auto rounded-md shadow-[0_14px_32px_rgba(0,0,0,0.5)]"
+                  className="shrink-0 w-[64px] sm:w-[84px] h-auto rounded shadow-[0_6px_16px_rgb(22_25_29/0.22)]"
                 />
                 <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-ink leading-snug">Your selling guide (PDF)</p>
+                  <p className="text-sm text-ink-muted mb-3">2026 edition, 10 chapters</p>
                   <a
                     href={GUIDE_PDF_PATH}
                     download
-                    className="group press w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-4 py-3.5 text-sm sm:text-base transition-[transform,translate,box-shadow,background-color] duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(189,89,47,0.35)] active:translate-y-0"
+                    className="press w-full inline-flex items-center justify-center gap-2 rounded-md border border-cta bg-cta hover:bg-cta-hover text-white font-semibold px-4 py-3 text-base sm:text-sm transition-colors group-has-[[data-call-card]]/thanks:bg-white group-has-[[data-call-card]]/thanks:border-ink group-has-[[data-call-card]]/thanks:text-ink group-has-[[data-call-card]]/thanks:hover:bg-ink group-has-[[data-call-card]]/thanks:hover:text-white"
                   >
-                    <Download className="w-5 h-5 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
-                    Download your guide (PDF)
+                    <Download className="w-4 h-4" aria-hidden="true" />
+                    Download the guide
                   </a>
                   <GuideEmailNote guide="selling" />
                 </div>
@@ -181,29 +138,24 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
         </div>
       </section>
 
-      <section className="bg-surface-raised">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
-          <h2 className="font-display text-ink tracking-tight text-2xl sm:text-3xl font-bold mb-8 text-center">
+      <section className="bg-white">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+          <h2 className="font-display text-ink tracking-[-0.02em] text-xl sm:text-2xl font-bold mb-5">
             While you&rsquo;re here
           </h2>
-          <div
-            data-reveal-group
-            className={`grid grid-cols-1 gap-4 ${crossSells.length === 4 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}
-          >
+          <ul className={`grid grid-cols-1 gap-x-8 border-t border-line ${crossSells.length === 4 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}>
             {crossSells.map((card) => (
-              <Link
-                key={card.href}
-                href={card.href}
-                className="card-lift group flex flex-col rounded-2xl border border-line bg-surface-warm p-5 hover:border-primary/50"
-              >
-                <p className="font-sans text-sm font-semibold text-ink group-hover:text-primary transition-colors mb-1.5">
-                  {card.label}
-                </p>
-                <p className="font-sans text-xs text-ink-subtle leading-relaxed mb-3 flex-1">{card.sub}</p>
-                <ArrowRight className="w-4 h-4 text-ink-subtle group-hover:text-primary group-hover:translate-x-1 transition-[transform,translate,color] duration-200" aria-hidden="true" />
-              </Link>
+              <li key={card.href} className="border-b border-line">
+                <Link href={card.href} className="group flex items-start justify-between gap-3 py-4">
+                  <span className="min-w-0">
+                    <span className="block text-sm font-semibold text-ink group-hover:underline underline-offset-4">{card.label}</span>
+                    <span className="block text-sm text-ink-muted leading-snug mt-0.5">{card.sub}</span>
+                  </span>
+                  <ArrowRight className="w-4 h-4 shrink-0 mt-0.5 text-ink-subtle group-hover:text-ink" aria-hidden="true" />
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
     </>

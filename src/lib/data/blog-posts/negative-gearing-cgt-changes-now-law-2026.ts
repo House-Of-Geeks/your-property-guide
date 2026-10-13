@@ -43,7 +43,7 @@ export const post: BlogPost = {
 </ul>
 
 <p><em>This article is general information, not tax advice. The new rules interact with individual circumstances in ways that genuinely require a registered tax agent or financial adviser.</em></p>`,
-  coverImage: "/images/blog/cover-negative-gearing-cgt-now-law-2026.jpg",
+  coverImage: "/images/blog/cover-negative-gearing-cgt-changes-now-law-2026.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "News",
   tags: ["negative gearing","capital gains tax","property investment","tax reform","SMSF","new builds","federal budget","rental yields","2026"],

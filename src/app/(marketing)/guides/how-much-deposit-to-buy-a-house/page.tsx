@@ -311,7 +311,7 @@ export default function HowMuchDepositGuidePage() {
           The money takes {FHSS_RELEASE_BUSINESS_DAYS.min} to{" "}
           {FHSS_RELEASE_BUSINESS_DAYS.max} business days to arrive after you
           request the release. You can request it up to{" "}
-          {FHSS_TIMING.releaseAfterSigningDays} days after signing a contract, so
+          {FHSS_TIMING.releaseAfterSigningDays}{" "}days after signing a contract, so
           plan for the deposit due when you sign to come from elsewhere. Once
           it&rsquo;s released you have {FHSS_TIMING.contractMonths} months to
           sign (the ATO can extend this), or you must put it back into super or
@@ -327,7 +327,7 @@ export default function HowMuchDepositGuidePage() {
           account adds $500 to $2,000 a year on a deposit balance.
         </li>
         <li>
-          <strong>Auto-transfer on payday.</strong> Money you don&rsquo;t see is money
+          <strong>Auto-transfer on payday.</strong>{" "}Money you don&rsquo;t see is money
           you don&rsquo;t spend. Treat your deposit savings as a fixed expense.
         </li>
         <li>
@@ -365,7 +365,7 @@ export default function HowMuchDepositGuidePage() {
           a realistic price range.
         </li>
         <li>
-          <strong>Get pre-approval.</strong> Most lenders give 90-day pre-approval
+          <strong>Get pre-approval.</strong>{" "}Most lenders give 90-day pre-approval
           for free. It tells you exactly what you&rsquo;ll be allowed to borrow at
           today&rsquo;s rates.
         </li>

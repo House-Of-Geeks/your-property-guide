@@ -247,7 +247,7 @@ export default function LMIGuidePage() {
       </p>
       <ul>
         <li>
-          <strong>Helia</strong> (formerly Genworth Australia), one of Australia&rsquo;s
+          <strong>Helia</strong>{" "}(formerly Genworth Australia), one of Australia&rsquo;s
           largest LMI providers, used by many major banks and lenders.
         </li>
         <li>
@@ -277,7 +277,7 @@ export default function LMIGuidePage() {
         the LMI.
       </p>
       <p>
-        <strong>The advantage:</strong> you don&rsquo;t need to find the LMI premium
+        <strong>The advantage:</strong>{" "}you don&rsquo;t need to find the LMI premium
         in cash at settlement.
       </p>
       <p>

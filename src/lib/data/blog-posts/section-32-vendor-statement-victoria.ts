@@ -113,7 +113,7 @@ export const post: BlogPost = {
 <li>Due diligence checklist: <a href="https://www.consumer.vic.gov.au/" rel="nofollow noopener">Consumer Affairs Victoria</a>, approved form under section 33B.</li>
 <li>Preparation fees: published 2026 fee schedules of Victorian conveyancing practices, collated 20 September 2026; ranges quoted are typical fixed fees, not quotes.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-selling.svg",
+  coverImage: "/images/blog/cover-section-32-vendor-statement-victoria.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Selling",
   tags: ["section 32","vendor statement","selling a house","Victoria","Sale of Land Act","conveyancing","contract of sale","selling costs","2026"],

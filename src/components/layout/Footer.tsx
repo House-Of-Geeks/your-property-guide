@@ -192,7 +192,7 @@ export function Footer() {
             </p>
             <a
               href={`tel:${CONTACT_PHONE_E164}`}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-accent-light transition-colors tabular-nums w-fit"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-accent-light transition-colors w-fit"
             >
               <Phone className="w-4 h-4" aria-hidden="true" />
               {CONTACT_PHONE_DISPLAY}

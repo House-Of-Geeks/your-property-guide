@@ -46,7 +46,7 @@ export function PersonaPicker({ className, highlightActive = true, variant = "gr
                     ${isActive ? "bg-surface-warm" : "hover:bg-surface-warm"}
                   `}
                 >
-                  <span className="font-display text-primary text-base sm:text-lg tabular-nums leading-none w-8 sm:w-10 shrink-0">
+                  <span className="font-display text-primary text-base sm:text-lg leading-none w-8 sm:w-10 shrink-0">
                     0{i + 1}
                   </span>
                   <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg bg-surface-raised border border-line-warm shrink-0 overflow-hidden flex items-center justify-center">
@@ -139,7 +139,7 @@ export function PersonaPicker({ className, highlightActive = true, variant = "gr
                   aligned and trimmed, giving each card a magazine-cover
                   layout instead of a centered SaaS card. */}
               <div className="media-warm aspect-[16/9] bg-surface-raised border-b border-line-warm relative overflow-hidden">
-                <span className="absolute top-4 left-5 font-display text-primary text-xl leading-none tabular-nums z-10">
+                <span className="absolute top-4 left-5 font-display text-primary text-xl leading-none z-10">
                   No. {String(i + 1).padStart(2, "0")}
                 </span>
                 <Image

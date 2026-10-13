@@ -253,7 +253,7 @@ export default function AuctionVsPrivateTreatyPage() {
           payable whether or not the property sells.
         </li>
         <li>
-          <strong>Venue and extras.</strong> Most auctions run on-site or in
+          <strong>Venue and extras.</strong>{" "}Most auctions run on-site or in
           the agency&rsquo;s rooms at no extra charge, but in-room auction
           events can add a venue cost. Ask.
         </li>
@@ -316,13 +316,13 @@ export default function AuctionVsPrivateTreatyPage() {
           method works best.
         </li>
         <li>
-          <strong>QLD:</strong> Mostly private treaty, with auctions
+          <strong>QLD:</strong>{" "}Mostly private treaty, with auctions
           concentrated in inner Brisbane and prestige coastal markets. The
           state&rsquo;s ban on auction price guides (more below) adds friction
           for buyers.
         </li>
         <li>
-          <strong>WA and regional Australia:</strong> Overwhelmingly private
+          <strong>WA and regional Australia:</strong>{" "}Overwhelmingly private
           treaty. Perth&rsquo;s auction volumes are a rounding error, and in
           markets without auction culture, an auction can actively repel
           buyers who are unfamiliar with unconditional bidding.
@@ -401,7 +401,7 @@ export default function AuctionVsPrivateTreatyPage() {
       </p>
       <ul>
         <li>
-          <strong>NSW:</strong> The agent must record a reasonable estimated
+          <strong>NSW:</strong>{" "}The agent must record a reasonable estimated
           selling price in your agency agreement, and nothing can be
           advertised below it. Price ranges can span at most 10% from bottom
           to top, and phrases like &ldquo;offers over $X&rdquo; are banned.
@@ -412,7 +412,7 @@ export default function AuctionVsPrivateTreatyPage() {
           $110,000.
         </li>
         <li>
-          <strong>VIC:</strong> Agents must publish a Statement of Information
+          <strong>VIC:</strong>{" "}Agents must publish a Statement of Information
           with an indicative selling price and the three most comparable sales
           (within 6 months and 2km in metro Melbourne; 18 months and 5km
           outside). Advertising below the estimate, the vendor&rsquo;s asking
@@ -480,7 +480,7 @@ export default function AuctionVsPrivateTreatyPage() {
       </p>
       <ol>
         <li>
-          <strong>Is your property scarce?</strong> Unique homes, land-value
+          <strong>Is your property scarce?</strong>{" "}Unique homes, land-value
           sites, renovator&rsquo;s opportunities and blue-chip streets are
           hard to price and attract emotional competition: auction territory.
           A unit in a large complex or a house in an estate with three
@@ -499,7 +499,7 @@ export default function AuctionVsPrivateTreatyPage() {
           price bracket, not the national headline.
         </li>
         <li>
-          <strong>How much certainty do you need?</strong> Already bought
+          <strong>How much certainty do you need?</strong>{" "}Already bought
           elsewhere, or on a deadline? Auction&rsquo;s unconditional exchange
           and fixed date are worth real money. No deadline? Private
           treaty&rsquo;s flexibility costs you nothing.
@@ -511,7 +511,7 @@ export default function AuctionVsPrivateTreatyPage() {
           you can better absorb.
         </li>
         <li>
-          <strong>What does the local evidence say?</strong> Ask each agent
+          <strong>What does the local evidence say?</strong>{" "}Ask each agent
           you interview: for properties like mine, in this suburb, over the
           last three months, which method produced the better results, and
           show me. A specific, data-backed answer is a good sign you&rsquo;ve

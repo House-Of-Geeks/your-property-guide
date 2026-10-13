@@ -341,7 +341,7 @@ export default function PropertyManagementFeesGuide() {
       <h2 id="annual-example">A worked annual example</h2>
       <p>
         Western Australia and South Australia are the two states where every
-        line has a published range, so here is Perth at {money(EXAMPLE_RENT)} a
+        line has a published range, so here is Perth at {money(EXAMPLE_RENT)}{" "}a
         week on the table&rsquo;s figures: a management fee of{" "}
         {PM_STATE_FEES.WA.management.average}%, a letting fee of{" "}
         {PM_STATE_FEES.WA.letting.average} weeks spread over a two-year tenancy

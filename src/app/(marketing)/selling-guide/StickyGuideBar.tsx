@@ -49,18 +49,21 @@ export function StickyGuideBar() {
 
   const shown = visible && !funnelVisible;
 
-  // bottom-16 clears the site's fixed mobile bottom nav (same offset the
-  // floating guide pill uses elsewhere).
+  // The site's mobile bottom bar is hidden on the guide pages (the page is
+  // the form), so the bar sits at the bottom edge.
   return (
     <div
       aria-hidden={!shown}
-      className={`sm:hidden fixed inset-x-0 bottom-16 z-30 px-4 pointer-events-none transition-[opacity,transform,translate,scale] duration-[400ms] ease-[var(--ease-out-quint)] ${
-        shown ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-6 scale-[0.97]"
+      className={`sm:hidden fixed inset-x-0 bottom-4 z-30 px-4 pointer-events-none transition-opacity duration-200 ${
+        shown ? "opacity-100" : "opacity-0"
       }`}
     >
       <a
         href="#get-the-guide"
-        className="pointer-events-auto flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3.5 text-sm shadow-2xl border border-white/20 transition-colors"
+        tabIndex={shown ? undefined : -1}
+        className={`flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3.5 text-sm shadow-[0_8px_24px_rgb(22_25_29/0.25)] transition-colors ${
+          shown ? "pointer-events-auto" : ""
+        }`}
       >
         Get the free guide
         <ArrowUp className="w-4 h-4" aria-hidden="true" />

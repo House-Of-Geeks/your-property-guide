@@ -67,9 +67,10 @@ export function SuburbPriceTrend({
   const pathArea = `${pathLine} L${points[points.length - 1].x.toFixed(1)},${h - padY} L${points[0].x.toFixed(1)},${h - padY} Z`;
 
   const isPositive = annualGrowthHouse >= 0;
-  const stroke = isPositive ? "#059669" : "#b91c1c"; // emerald-600 or red-700
-  const fillFrom = isPositive ? "rgba(5,150,105,0.20)" : "rgba(185,28,28,0.18)";
-  const fillTo = isPositive ? "rgba(5,150,105,0.00)" : "rgba(185,28,28,0.00)";
+  // Ink line on a faint ink wash (brand v4: colour is for actions and state).
+  const stroke = "#16191d";
+  const fillFrom = "rgba(22,25,29,0.10)";
+  const fillTo = "rgba(22,25,29,0.00)";
 
   const startPrice = points[0].price;
   const endPrice = points[points.length - 1].price;
@@ -77,7 +78,7 @@ export function SuburbPriceTrend({
 
   return (
     <div
-      className="rounded-2xl border border-line bg-surface-warm p-5"
+      className="rounded-xl border border-line bg-white p-5"
       role="figure"
       aria-label={`${suburbName} median house price trend over ${years} years at ${annualGrowthHouse.toFixed(1)}% annual growth`}
     >
@@ -130,7 +131,7 @@ export function SuburbPriceTrend({
           <p className="text-[13px] font-sans text-ink-subtle">
             {years}-year change
           </p>
-          <p className={`font-display text-base leading-tight ${totalChange >= 0 ? "text-emerald-700" : "text-red-700"}`}>
+          <p className="font-display text-base font-semibold text-ink leading-tight">
             {totalChange >= 0 ? "+" : ""}
             {totalChange.toFixed(0)}%
           </p>

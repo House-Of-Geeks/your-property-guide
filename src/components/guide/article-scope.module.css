@@ -1,0 +1,43 @@
+/*
+ * Scope for guide and article bodies (GuideArticleLayout, the article
+ * template at /guides/[slug]).
+ *
+ * .prose-ypg (globals.css) is unlayered CSS, so inside it its rules on p, a,
+ * ul, img, table and the rest beat every Tailwind utility, which live in
+ * @layer utilities. Components that sit inside a guide body and style
+ * themselves (callouts, the editor's note, calculators, guide starts) mark
+ * their root .not-prose; nothing implemented that, so they picked up article
+ * margins and colours (the editor's portrait was pushed out of its circle by
+ * the article image margin). revert-layer hands those elements back to the
+ * layered styles: their own utilities, then the base layer.
+ *
+ * The doubled .scope lifts specificity above .prose-ypg p:first-child.
+ */
+.scope.scope :global(.not-prose) :is(p, h2, h3, h4, a, strong, ul, ol, li, blockquote, code, hr, table, thead, th, td, img),
+.scope.scope :global(.not-prose) :is(ul, ol) > li::before,
+.scope.scope :global(.not-prose) tbody tr:hover {
+  all: revert-layer;
+}
+
+/* The reading column sets the measure (40rem), so prose fills it. */
+.scope.scope :global(.prose-ypg) {
+  max-width: none;
+}
+
+/* Phones: a wide table scrolls sideways inside the column instead of
+   widening the page, with tighter cells and headers that may wrap. */
+@media (max-width: 639.98px) {
+  .scope.scope :global(.prose-ypg) table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .scope.scope :global(.prose-ypg) :is(th, td) {
+    padding-left: 0.65em;
+    padding-right: 0.65em;
+  }
+  .scope.scope :global(.prose-ypg) th {
+    white-space: normal;
+    min-width: 5.5em;
+  }
+}

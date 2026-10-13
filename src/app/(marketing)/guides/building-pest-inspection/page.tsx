@@ -326,7 +326,7 @@ export default function BuildingPestInspectionPage() {
       <p>
         When purchasing property in Australia, you have limited rights to seek
         remedies after settlement for defects you could have discovered
-        beforehand. The principle of <em>caveat emptor</em> (buyer beware)
+        beforehand. The principle of <em>caveat emptor</em>{" "}(buyer beware)
         means the burden is on you to investigate the property&rsquo;s
         condition before signing an unconditional contract.
       </p>

@@ -12,6 +12,7 @@
 
 import type { Suburb } from "@/types";
 import { hasReliablePrice } from "./suburb-data-quality";
+import { publishedGrowthFor } from "./published-medians";
 
 // ─── Formatters ───────────────────────────────────────────────────────
 
@@ -69,13 +70,16 @@ function priceComparableBoth(a: Suburb, b: Suburb): boolean {
 
 // Cheaper-of returns the cheaper suburb and the % gap, used to drive
 // "Suburb X is N% cheaper" sentences. Returns null if data is missing
-// or either suburb's price is unreliable.
+// or either suburb's price is unreliable. "N% cheaper" is measured
+// against the dearer suburb: (dearer - cheaper) / dearer. Dividing by
+// the second suburb printed "21% cheaper" for Frankston North ($670,000)
+// against Frankston ($810,000), which is 17% (review 10 Oct 2026, 0.4).
 function cheaperOf(a: Suburb, b: Suburb): { cheaper: "a" | "b"; gap: number } | null {
   if (!priceComparableBoth(a, b)) return null;
   const pa = a.stats.medianHousePrice;
   const pb = b.stats.medianHousePrice;
   if (!pa || !pb || pa === pb) return null;
-  const gap = Math.abs(percentGap(pa, pb) ?? 0);
+  const gap = Math.abs(percentGap(Math.min(pa, pb), Math.max(pa, pb)) ?? 0);
   return { cheaper: pa < pb ? "a" : "b", gap };
 }
 
@@ -84,9 +88,10 @@ function cheaperOf(a: Suburb, b: Suburb): { cheaper: "a" | "b"; gap: number } | 
 // price, so we require reliable data on both sides.
 function higherGrowth(a: Suburb, b: Suburb): { faster: "a" | "b"; gap: number } | null {
   if (!priceComparableBoth(a, b)) return null;
-  const ga = a.stats.annualGrowthHouse;
-  const gb = b.stats.annualGrowthHouse;
-  if (ga == null || gb == null || ga === gb) return null;
+  // 0 is "not measured" (Land Victoria publishes no change): no comparison.
+  const ga = publishedGrowthFor(a);
+  const gb = publishedGrowthFor(b);
+  if (!ga || !gb || ga === gb) return null;
   return { faster: ga > gb ? "a" : "b", gap: Math.abs(ga - gb) };
 }
 

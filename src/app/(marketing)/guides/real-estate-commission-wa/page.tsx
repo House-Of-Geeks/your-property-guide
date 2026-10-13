@@ -106,7 +106,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The Cost of Selling a House",          href: "/guides/cost-of-selling-a-house-australia",  description: "Every selling cost beyond commission." },
   { title: "Real Estate Agent Fees (National)",    href: "/guides/real-estate-agent-fees-australia",   description: "How fees and commission work across Australia." },
   { title: "How to Choose a Selling Agent",        href: "/guides/how-to-choose-a-selling-agent",      description: "Pick the right agent, then negotiate the fee." },
-  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get an accurate value before you list." },
+  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get a realistic price before you list." },
 ];
 
 export default function RealEstateCommissionWaPage() {
@@ -270,20 +270,20 @@ export default function RealEstateCommissionWaPage() {
           going rate locally.
         </li>
         <li>
-          <strong>Negotiate on the rate and the marketing.</strong> The
+          <strong>Negotiate on the rate and the marketing.</strong>{" "}The
           commission percentage is only half the cost. The marketing and
           advertising budget is the other half, and it&rsquo;s often where the
           bigger savings sit, so push on both.
         </li>
         <li>
-          <strong>Be wary of the cheapest quote.</strong> The lowest rate
+          <strong>Be wary of the cheapest quote.</strong>{" "}The lowest rate
           isn&rsquo;t the same as the lowest cost. An agent who negotiates a
           stronger sale price can easily earn back a slightly higher rate many
           times over, while a bargain agent juggling too many listings can cost
           you far more in a weaker result.
         </li>
         <li>
-          <strong>Confirm whether GST is included.</strong> Ask every agent
+          <strong>Confirm whether GST is included.</strong>{" "}Ask every agent
           whether their quoted rate is before or after the 10% GST, so you&rsquo;re
           comparing like with like.
         </li>
@@ -346,7 +346,7 @@ export default function RealEstateCommissionWaPage() {
           so you know what commission means in dollars before any conversation.
         </li>
         <li>
-          <strong>Then negotiate.</strong> With the value, the agent shortlist
+          <strong>Then negotiate.</strong>{" "}With the value, the agent shortlist
           and the dollar figure in hand, you&rsquo;re in the strongest position
           to negotiate both the rate and the marketing.
         </li>

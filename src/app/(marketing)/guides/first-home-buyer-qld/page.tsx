@@ -121,7 +121,7 @@ export default function FirstHomeBuyerQLDPage() {
     >
       <Callout variant="success" title="The $30,000 grant stays — the 1 July step-down was cancelled">
         <p>
-          Queensland&rsquo;s boosted <strong>$30,000</strong> First Home Owner
+          Queensland&rsquo;s boosted <strong>$30,000</strong>{" "}First Home Owner
           Grant was scheduled to revert to $15,000 for contracts signed from 1
           July 2026. It didn&rsquo;t: the <strong>2026-27 Queensland Budget</strong>{" "}
           (23 June 2026) locked the $30,000 grant in for another four years, and

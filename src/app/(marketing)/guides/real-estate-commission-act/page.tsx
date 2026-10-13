@@ -106,7 +106,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The Cost of Selling a House",          href: "/guides/cost-of-selling-a-house-australia", description: "Every selling cost beyond commission." },
   { title: "Real Estate Agent Fees (National)",    href: "/guides/real-estate-agent-fees-australia", description: "How fees and commission work across Australia." },
   { title: "How to Choose a Selling Agent",        href: "/guides/how-to-choose-a-selling-agent",    description: "Pick the right agent, then negotiate the fee." },
-  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get an accurate value before you list." },
+  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get a realistic price before you list." },
 ];
 
 export default function RealEstateCommissionACTPage() {
@@ -246,7 +246,7 @@ export default function RealEstateCommissionACTPage() {
 
       <h2 id="negotiable">Is commission negotiable in ACT?</h2>
       <p>
-        Yes. Commission is <strong>deregulated</strong> in the ACT, which means
+        Yes. Commission is <strong>deregulated</strong>{" "}in the ACT, which means
         there is no official, legislated or fixed rate. Agents set their own
         fees, so the percentage on the first agency agreement you read is an
         opening number, not a fixed price. Most sellers don&rsquo;t realise this,
@@ -261,7 +261,7 @@ export default function RealEstateCommissionACTPage() {
           of what is fair.
         </li>
         <li>
-          <strong>Negotiate the rate and the marketing together.</strong> A lower
+          <strong>Negotiate the rate and the marketing together.</strong>{" "}A lower
           commission paired with a large marketing package you didn&rsquo;t need
           is not a saving. Look at the total cost of the campaign, not just the
           percentage.
@@ -318,7 +318,7 @@ export default function RealEstateCommissionACTPage() {
       </p>
       <ol>
         <li>
-          <strong>Get an accurate value.</strong> A market-facing figure from a
+          <strong>Get a realistic price.</strong> A market-facing figure from a
           local agent is the starting point.{" "}
           <Link href="/guides/how-much-is-my-house-worth-australia">How much is my house worth?</Link>{" "}
           covers how to land on a number you can trust.

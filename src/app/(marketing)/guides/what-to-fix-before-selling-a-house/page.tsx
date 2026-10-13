@@ -195,7 +195,7 @@ export default function WhatToFixBeforeSellingAHousePage() {
       </p>
       <ul>
         <li>
-          <strong>Queensland: smoke alarms.</strong> For sale contracts signed
+          <strong>Queensland: smoke alarms.</strong>{" "}For sale contracts signed
           from 1 January 2022, the home must be fitted with interconnected
           photoelectric smoke alarms (compliant with AS&nbsp;3786:2014) before
           transfer, and the seller declares compliance on the transfer form.
@@ -244,7 +244,7 @@ export default function WhatToFixBeforeSellingAHousePage() {
         <li>Deteriorating subfloor framing and stumps</li>
       </ul>
       <p>
-        Anything labelled a <strong>major defect</strong> becomes a
+        Anything labelled a <strong>major defect</strong>{" "}becomes a
         renegotiation lever or an excuse to walk away, usually at the worst
         possible moment, after you&rsquo;ve mentally banked the offer.
       </p>
@@ -286,14 +286,14 @@ export default function WhatToFixBeforeSellingAHousePage() {
           first open home.
         </li>
         <li>
-          <strong>Street appeal.</strong> Mow, edge, mulch, prune, pressure-wash
+          <strong>Street appeal.</strong>{" "}Mow, edge, mulch, prune, pressure-wash
           the driveway and paths, repaint or oil the front door, new house
           numbers and doormat. A hard weekend plus a few hundred dollars in
           materials, and it sets the buyer&rsquo;s expectation before they
           reach the front step.
         </li>
         <li>
-          <strong>Bathroom and kitchen mini-refresh.</strong> Re-caulk the
+          <strong>Bathroom and kitchen mini-refresh.</strong>{" "}Re-caulk the
           shower and bath, replace mouldy grout, new tapware, new cabinet
           handles, a clean or replaced shower screen. Hundreds, not thousands,
           and it takes &ldquo;tired&rdquo; off the table.
@@ -426,7 +426,7 @@ export default function WhatToFixBeforeSellingAHousePage() {
       <ol>
         <li>
           <strong>Get the ceiling first.</strong> A{" "}
-          <Link href="/appraisal">free appraisal</Link> tells you what your
+          <Link href="/appraisal">free appraisal</Link>{" "}tells you what your
           home is worth now and what the suburb&rsquo;s realistic top looks
           like, so every repair decision has a number behind it.
         </li>

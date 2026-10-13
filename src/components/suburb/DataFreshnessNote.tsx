@@ -15,10 +15,10 @@ export function DataFreshnessNote({ label, asOf, source }: DataFreshnessNoteProp
   });
 
   return (
-    <p className="flex items-center gap-1 text-xs text-gray-400 mt-2">
+    <p className="flex items-center gap-1 text-xs text-ink-subtle mt-2">
       <RefreshCw className="w-3 h-3 flex-shrink-0" />
       {label} data as of {formatted}
-      {source && <span className="text-gray-300">· {source}</span>}
+      {source && <span>· {source}</span>}
     </p>
   );
 }

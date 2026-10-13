@@ -302,7 +302,7 @@ export default function DownsizersGuidePage() {
 
       <Callout variant="warning" title="Get retirement-village-specialist legal advice">
         <p>
-          Always obtain <strong>independent legal advice</strong> from a
+          Always obtain <strong>independent legal advice</strong>{" "}from a
           solicitor who specialises in retirement village contracts before
           signing anything. Do not rely on the village&rsquo;s own
           representatives or generic advice. The financial implications of a

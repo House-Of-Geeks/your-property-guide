@@ -241,7 +241,7 @@ export function MatchAgent({
                 ["04", "You decide. No commitment to anything."],
               ].map(([n, t]) => (
                 <div key={n} className="border-t border-white/15 pt-4">
-                  <p className="font-display text-cta text-base mb-1.5 tabular-nums">{n}</p>
+                  <p className="font-display text-cta text-base mb-1.5">{n}</p>
                   <p className="text-sm text-white/85 leading-snug">{t}</p>
                 </div>
               ))}

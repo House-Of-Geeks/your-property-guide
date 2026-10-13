@@ -1,8 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Calculator as CalculatorIcon, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { BUYING_GUIDE_CTA, ExpertCTA, StickyMatchCTA } from "@/components/journey";
+import { BUYING_GUIDE_CTA, ExpertCTA } from "@/components/journey";
 import { Faq, type FaqItem, GuideStartInline, RelatedGuides, type RelatedGuide } from "@/components/guide";
 import { BreadcrumbJsonLd, WebApplicationJsonLd } from "@/components/seo";
 import { PERSONA_BY_ID, type PersonaId } from "@/lib/constants/journey";
@@ -64,91 +63,102 @@ export function CalculatorPageLayout({
         url={pageUrl}
       />
 
-      {/* Editorial hero. Magazine masthead with persona department slug
-          and "Free calculator" date marker, display-scale H1, serif
-          standfirst. Illustration column dropped: calculators read as
-          authoritative tools when the title owns the page. */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-14 sm:pb-20">
-          <div className="mb-10">
+      {/* Short hero so the calculator is on the first screen, phones
+          included: the H1 that names the tool, one line on what it does,
+          the date. The persona hub link stays as a plain text link. */}
+      <section className="bg-surface-warm border-b border-line">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-6 sm:pb-10">
+          <div className="mb-4 sm:mb-6">
             <Breadcrumbs items={[{ label: frontmatter.title }]} />
           </div>
-
-          {/* Magazine masthead: persona department + hairline + tool slug */}
-          <div className="flex items-center gap-4 mb-10">
-            {persona ? (
-              <Link
-                href={persona.hubPath}
-                className="font-display text-primary hover:text-cta-hover text-base sm:text-lg leading-none transition-colors"
-              >
-                For {persona.cardLabel.toLowerCase()}
-              </Link>
-            ) : (
-              <span className="text-sm font-semibold text-ink-muted leading-none">
-                Free tool
-              </span>
-            )}
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
-              <CalculatorIcon className="w-3 h-3" aria-hidden="true" />
-              Free calculator
-            </span>
-          </div>
-
-          {/* Display-scale H1 */}
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-bold">
+          <h1 className="font-display text-ink tracking-[-0.03em] text-[1.875rem] leading-[1.08] sm:text-4xl lg:text-5xl lg:leading-[1.04] font-bold max-w-4xl">
             {frontmatter.h1 ?? frontmatter.title}
           </h1>
-
-          {/* Standfirst */}
-          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-8">
+          <p className="mt-3 sm:mt-4 text-base sm:text-lg text-ink leading-normal sm:leading-relaxed max-w-3xl">
             {frontmatter.description}
           </p>
-
-          {/* Updated dateline */}
-          <div className="pt-5 border-t border-line flex flex-wrap items-center gap-x-5 gap-y-2 font-sans text-sm text-ink-muted">
-            <span className="inline-flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-ink-subtle" aria-hidden="true" />
+          <p className="mt-3 sm:mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink-muted">
+            <span>
               Updated <FormattedDate iso={frontmatter.updatedAt} />
             </span>
-            <span className="text-ink-subtle">·</span>
+            <span aria-hidden="true">·</span>
             <span>Free, no sign-up</span>
-          </div>
+            {persona && (
+              <>
+                <span aria-hidden="true">·</span>
+                <Link href={persona.hubPath} className="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+                  {persona.hubHeading}
+                </Link>
+              </>
+            )}
+          </p>
         </div>
       </section>
 
-      {/* Calculator widget */}
-      <section className="bg-surface-raised">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      {/* The calculator, then the one action that fits the result: seller
+          calculators start the selling guide in place (with the appraisal
+          as the alternative), buyer calculators offer the buying guide. */}
+      <section className="bg-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-10 sm:pt-10 sm:pb-12">
           {calculator}
-          {sellerCalculator && <GuideStartInline from={frontmatter.slug} className="mt-10" />}
+          {sellerCalculator ? (
+            <>
+              <GuideStartInline from={frontmatter.slug} className="mt-8" />
+              <p className="mt-3 text-sm text-ink-muted">
+                Rather talk to someone who sells in your suburb?{" "}
+                <Link href="/appraisal" className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+                  Get a free appraisal
+                </Link>
+              </p>
+            </>
+          ) : intent === "buying" ? (
+            <aside className="mt-8 rounded-xl border border-line bg-surface-warm p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+              <div className="flex-1">
+                <p className="font-display text-lg sm:text-xl font-bold text-ink leading-snug tracking-[-0.01em]">
+                  Buying? Get the free buying guide
+                </p>
+                <p className="mt-1 text-sm text-ink-muted leading-relaxed max-w-2xl">
+                  What you can really spend, the 2026 schemes state by state and how not to overpay.
+                  Free PDF, personalised to your situation, in 60 seconds.
+                </p>
+              </div>
+              <Link
+                href={funnelHref}
+                className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-5 py-3 transition-colors"
+              >
+                Get the free buying guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              </Link>
+            </aside>
+          ) : null}
         </div>
       </section>
 
-      {/* Next-step rail: keeps users moving to the next logical calculator
-          or guide based on persona, so the calculator is never a dead-end. */}
-      <NextStepRail currentSlug={frontmatter.slug} persona={frontmatter.persona} />
-
-      {/* Explainer + FAQ + related, two-column with sticky meta sidebar */}
-      <section className="bg-surface-raised border-t border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      {/* Explainer + FAQ + related, two-column with a short sidebar note */}
+      <section className="bg-white border-t border-line">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
           <div className="grid lg:grid-cols-12 gap-12">
             <aside className="hidden lg:block lg:col-span-3 lg:order-2">
-              <div className="sticky top-28 space-y-8">
+              <div className="sticky top-28 space-y-6 border-t border-line pt-4">
                 <div>
-                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
-                    Estimate, not a quote
+                  <p className="text-sm font-semibold text-ink mb-1">
+                    An estimate, not a quote
                   </p>
-                  <p className="font-sans text-sm text-ink-muted leading-relaxed">
-                    These numbers use simplified assumptions. Real lender policies vary widely, especially around income shading, HEM tables, and existing debts.
+                  <p className="text-sm text-ink-muted leading-relaxed">
+                    These figures use simplified assumptions.{" "}
+                    {intent === "buying"
+                      ? "Real lender policies vary, especially around income shading, living-expense benchmarks and existing debts."
+                      : "Check them with a professional before you act on them."}
                   </p>
                 </div>
                 <div>
-                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
-                    Editorial integrity
+                  <p className="text-sm font-semibold text-ink mb-1">
+                    Spotted an error?
                   </p>
-                  <p className="font-sans text-sm text-ink-muted leading-relaxed">
-                    Every figure on this page is sourced and dated. If anything looks off, tell us and we&rsquo;ll fix it within a week.
+                  <p className="text-sm text-ink-muted leading-relaxed">
+                    Tell us and we&rsquo;ll fix it.{" "}
+                    <Link href="/about#corrections" className="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+                      How corrections work
+                    </Link>
                   </p>
                 </div>
               </div>
@@ -157,14 +167,13 @@ export function CalculatorPageLayout({
             {/* min-w-0: a wide table in the explainer scrolls inside its
                 wrapper instead of stretching the grid column past the phone's width. */}
             <div className="min-w-0 lg:col-span-9 lg:order-1">
-              <div className="prose-ypg">
+              <div className="prose-ypg [&>*:first-child]:mt-0">
                 {explainer}
               </div>
 
-              {/* Funnel exit. Seller-economics calculators push the selling
-                  guide (the original conversion point of the June 2026
-                  lead-gen pivot); buyer-finance calculators push the buying
-                  guide so the offer matches the visitor's intent. */}
+              {/* Funnel exit at the end of the read. Seller-economics
+                  calculators push the selling guide; buyer-finance
+                  calculators the buying guide. */}
               <ExpertCTA
                 variant="inline"
                 {...(intent === "buying" ? BUYING_GUIDE_CTA : {})}
@@ -178,25 +187,9 @@ export function CalculatorPageLayout({
         </div>
       </section>
 
-      {/* Persistent sticky CTA on calculator pages — visitor has
-          engaged enough to scroll past the calculator widget, give
-          them a one-tap path to a specialist. Intent maps from the
-          calculator's persona; buyer-finance calculators deep-link
-          the buying-guide funnel instead of the selling default. */}
-      <StickyMatchCTA
-        intent={
-          frontmatter.persona === "first-home" || frontmatter.persona === "upgrading"
-            ? "buying"
-            : frontmatter.persona === "investing"
-            ? "investing"
-            : frontmatter.persona === "selling"
-            ? "selling"
-            : undefined
-        }
-        label={intent === "buying" ? "Get the free buying guide" : undefined}
-        href={funnelHref}
-        dismissKey={`calc:${frontmatter.slug}`}
-      />
+      {/* Next-step rail: the natural next calculator or guide, after the
+          read, so the calculator is never a dead end. */}
+      <NextStepRail currentSlug={frontmatter.slug} persona={frontmatter.persona} />
     </>
   );
 }
@@ -216,34 +209,33 @@ interface NextStepLink {
   label: string;
   description: string;
   href: string;
-  icon: string;
 }
 
 const ALL_NEXT_STEPS: Record<string, NextStepLink> = {
-  "mortgage-calculator":           { label: "Mortgage repayments",          description: "Monthly repayments and total interest over the loan term.", href: "/mortgage-calculator",           icon: "/images/icons/calculator.svg" },
-  "stamp-duty-calculator":         { label: "Stamp duty",                   description: "What stamp duty actually costs in your state.",              href: "/stamp-duty-calculator",         icon: "/images/icons/calculator.svg" },
-  "borrowing-power-calculator":    { label: "Borrowing power",              description: "What lenders will let you borrow on your income.",           href: "/borrowing-power-calculator",    icon: "/images/icons/calculator.svg" },
-  "affordability-calculator":      { label: "Affordability",                description: "What price you can actually afford.",                        href: "/affordability-calculator",      icon: "/images/icons/median.svg" },
-  "rental-yield-calculator":       { label: "Rental yield",                 description: "Gross and net yield on a shortlisted investment property.",  href: "/rental-yield-calculator",       icon: "/images/icons/yield.svg" },
-  "cgt-calculator":                { label: "Capital gains tax",            description: "Estimate CGT on a property sale, including the discount.",  href: "/cgt-calculator",                icon: "/images/icons/calculator.svg" },
-  "refinancing-calculator":        { label: "Refinancing break-even",       description: "How long until refinancing actually saves you money.",       href: "/refinancing-calculator",        icon: "/images/icons/calculator.svg" },
-  "lmi-calculator":                { label: "LMI",                          description: "What lenders mortgage insurance costs on a deposit under 20%.", href: "/lmi-calculator",               icon: "/images/icons/calculator.svg" },
-  "negative-gearing-calculator":   { label: "Negative gearing",             description: "Your weekly cost after tax on an investment property.",     href: "/negative-gearing-calculator",   icon: "/images/icons/calculator.svg" },
-  "bridging-loan-calculator":      { label: "Bridging loan",                description: "Peak debt, end debt and what buying before you sell costs.", href: "/bridging-loan-calculator",      icon: "/images/icons/calculator.svg" },
-  "selling-costs-calculator":      { label: "Selling costs",                description: "Commission, marketing and legal costs on your sale.",       href: "/selling-costs-calculator",      icon: "/images/icons/calculator.svg" },
-  "help-to-buy-calculator":         { label: "Help to Buy",                  description: "Eligibility, the government's share and your repayments.",   href: "/help-to-buy-calculator",        icon: "/images/icons/calculator.svg" },
-  "fhss-calculator":               { label: "FHSS",                         description: "What the First Home Super Saver scheme adds to your deposit.", href: "/fhss-calculator",               icon: "/images/icons/calculator.svg" },
-  "guide-fhss":                    { label: "First Home Super Saver scheme", description: "The limits, the tax, and the timing rules since 2024.",       href: "/guides/first-home-super-saver-scheme", icon: "/images/icons/guide.svg" },
-  "guide-help-to-buy":             { label: "Help to Buy scheme",           description: "How shared equity works, the rules and what happens at sale.", href: "/guides/help-to-buy-scheme-australia", icon: "/images/icons/guide.svg" },
-  "guide-sell-first":              { label: "Sell first or buy first?",     description: "The decision before you commit to a bridging loan.",        href: "/guides/sell-first-or-buy-first", icon: "/images/icons/guide.svg" },
-  "guide-deposit":                 { label: "How much deposit do I need?",  description: "5%, 10%, 20%, plus government schemes and FHSS.",            href: "/guides/how-much-deposit-to-buy-a-house", icon: "/images/icons/guide.svg" },
-  "guide-buying":                  { label: "How to buy property in Australia", description: "Step-by-step from deposit to settlement.",               href: "/guides/buying-property-australia", icon: "/images/icons/guide.svg" },
-  "guide-bridging":                { label: "Bridging loans",               description: "Peak debt, end debt, and when bridging is the right call.", href: "/guides/bridging-loans-guide",   icon: "/images/icons/guide.svg" },
-  "guide-house-vs-apartment":      { label: "House vs apartment",           description: "Capital growth vs cash flow, a 20-year worked example.",    href: "/guides/house-vs-apartment-investment-australia", icon: "/images/icons/guide.svg" },
-  "guide-negative-gearing":        { label: "Negative gearing",             description: "How it works and whether it fits your strategy.",            href: "/guides/negative-gearing-australia", icon: "/images/icons/guide.svg" },
-  "guide-negative-gearing-2027":   { label: "Negative gearing from 2027",   description: "Who is grandfathered and what counts as a new build.",       href: "/guides/negative-gearing-changes-2026-budget", icon: "/images/icons/guide.svg" },
-  "guide-first-home-guarantee":    { label: "First Home Guarantee",         description: "Buy with a 5% deposit and no LMI.",                          href: "/guides/first-home-guarantee",   icon: "/images/icons/guide.svg" },
-  "best-suburbs":                  { label: "Best suburbs by category",     description: "Schools, growth, affordability, walkability, yield.",        href: "/best-suburbs",                  icon: "/images/icons/map.svg" },
+  "mortgage-calculator":           { label: "Mortgage repayments",          description: "Monthly repayments and total interest over the loan term.", href: "/mortgage-calculator" },
+  "stamp-duty-calculator":         { label: "Stamp duty",                   description: "What stamp duty actually costs in your state.",              href: "/stamp-duty-calculator" },
+  "borrowing-power-calculator":    { label: "Borrowing power",              description: "What lenders will let you borrow on your income.",           href: "/borrowing-power-calculator" },
+  "affordability-calculator":      { label: "Affordability",                description: "What price you can actually afford.",                        href: "/affordability-calculator" },
+  "rental-yield-calculator":       { label: "Rental yield",                 description: "Gross and net yield on a shortlisted investment property.",  href: "/rental-yield-calculator" },
+  "cgt-calculator":                { label: "Capital gains tax",            description: "Estimate CGT on a property sale, including the discount.",  href: "/cgt-calculator" },
+  "refinancing-calculator":        { label: "Refinancing break-even",       description: "How long until refinancing actually saves you money.",       href: "/refinancing-calculator" },
+  "lmi-calculator":                { label: "LMI",                          description: "What lenders mortgage insurance costs on a deposit under 20%.", href: "/lmi-calculator" },
+  "negative-gearing-calculator":   { label: "Negative gearing",             description: "Your weekly cost after tax on an investment property.",     href: "/negative-gearing-calculator" },
+  "bridging-loan-calculator":      { label: "Bridging loan",                description: "Peak debt, end debt and what buying before you sell costs.", href: "/bridging-loan-calculator" },
+  "selling-costs-calculator":      { label: "Selling costs",                description: "Commission, marketing and legal costs on your sale.",       href: "/selling-costs-calculator" },
+  "help-to-buy-calculator":         { label: "Help to Buy",                  description: "Eligibility, the government's share and your repayments.",   href: "/help-to-buy-calculator" },
+  "fhss-calculator":               { label: "FHSS",                         description: "What the First Home Super Saver scheme adds to your deposit.", href: "/fhss-calculator" },
+  "guide-fhss":                    { label: "First Home Super Saver scheme", description: "The limits, the tax, and the timing rules since 2024.",       href: "/guides/first-home-super-saver-scheme" },
+  "guide-help-to-buy":             { label: "Help to Buy scheme",           description: "How shared equity works, the rules and what happens at sale.", href: "/guides/help-to-buy-scheme-australia" },
+  "guide-sell-first":              { label: "Sell first or buy first?",     description: "The decision before you commit to a bridging loan.",        href: "/guides/sell-first-or-buy-first" },
+  "guide-deposit":                 { label: "How much deposit do I need?",  description: "5%, 10%, 20%, plus government schemes and FHSS.",            href: "/guides/how-much-deposit-to-buy-a-house" },
+  "guide-buying":                  { label: "How to buy property in Australia", description: "Step-by-step from deposit to settlement.",               href: "/guides/buying-property-australia" },
+  "guide-bridging":                { label: "Bridging loans",               description: "Peak debt, end debt, and when bridging is the right call.", href: "/guides/bridging-loans-guide" },
+  "guide-house-vs-apartment":      { label: "House vs apartment",           description: "Capital growth vs cash flow, a 20-year worked example.",    href: "/guides/house-vs-apartment-investment-australia" },
+  "guide-negative-gearing":        { label: "Negative gearing",             description: "How it works and whether it fits your strategy.",            href: "/guides/negative-gearing-australia" },
+  "guide-negative-gearing-2027":   { label: "Negative gearing from 2027",   description: "Who is grandfathered and what counts as a new build.",       href: "/guides/negative-gearing-changes-2026-budget" },
+  "guide-first-home-guarantee":    { label: "First Home Guarantee",         description: "Buy with a 5% deposit and no LMI.",                          href: "/guides/first-home-guarantee" },
+  "best-suburbs":                  { label: "Best suburbs by category",     description: "Schools, growth, affordability, walkability, yield.",        href: "/best-suburbs" },
 };
 
 const NEXT_STEPS_FOR_SLUG: Record<string, string[]> = {
@@ -280,44 +272,22 @@ function NextStepRail({
   return (
     <section className="border-t border-line bg-surface-warm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-        <div className="flex items-end justify-between gap-4 mb-6">
-          <div>
-            <p className="text-[13px] font-sans text-ink-subtle mb-2">
-              What to do next
-            </p>
-            <h2 className="font-display text-2xl text-ink leading-tight">
-              {persona ? "Pair this with…" : "Keep going"}
-            </h2>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <h2 className="font-display text-xl sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-4">
+          {persona ? "Pair this with" : "Keep going"}
+        </h2>
+        <ul className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 border-t border-line">
           {steps.map((s) => (
-            <Link
-              key={s.href}
-              href={s.href}
-              className="group flex items-start gap-4 rounded-2xl border border-line bg-surface-raised p-5 hover:border-primary/40 hover:shadow-md transition-all"
-            >
-              <Image
-                src={s.icon}
-                alt=""
-                width={32}
-                height={32}
-                aria-hidden="true"
-                className="shrink-0 mt-0.5 opacity-90"
-              />
-              <div className="min-w-0 flex-1">
-                <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
-                  {s.label}
-                </p>
-                <p className="font-sans text-sm text-ink-muted mt-1 leading-relaxed">
-                  {s.description}
-                </p>
-              </div>
-              <ArrowRight className="w-4 h-4 text-ink-subtle group-hover:text-primary transition-colors mt-1 shrink-0" />
-            </Link>
+            <li key={s.href} className="border-b border-line">
+              <Link href={s.href} className="group flex items-start justify-between gap-3 py-4">
+                <span className="min-w-0">
+                  <span className="block font-semibold text-ink group-hover:underline underline-offset-4">{s.label}</span>
+                  <span className="block mt-0.5 text-sm text-ink-muted leading-snug">{s.description}</span>
+                </span>
+                <ArrowRight className="w-4 h-4 mt-1 shrink-0 text-ink-subtle group-hover:text-ink" aria-hidden="true" />
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

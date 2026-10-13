@@ -48,7 +48,7 @@ export const post: BlogPost = {
 <li><strong>Buyers: use the window.</strong> Sub-50% clearance rates mean negotiating room now, with more competition likely once spring stock and any rate relief arrive.</li>
 <li><strong>Everyone: re-run your numbers.</strong> Three hikes this year have moved borrowing capacity; the <a href="/borrowing-power-calculator">borrowing power calculator</a> takes two minutes.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-property-market-wrap-late-july-2026.jpg",
+  coverImage: "/images/blog/cover-property-market-wrap-late-july-2026-spring-outlook.jpg",
   author: { name: "Bec Ramirez", image: "/images/agents/bec-ramirez.jpg" },
   category: "Market Update",
   tags: ["property market","RBA cash rate","inflation","spring selling season","auction clearance rates","price forecasts","selling a house","buying property","2026"],

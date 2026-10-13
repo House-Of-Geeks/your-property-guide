@@ -8,6 +8,7 @@ import { SuburbAppraisalCTA } from "@/components/suburb/SuburbAppraisalCTA";
 import { formatPriceFull } from "@/lib/utils/format";
 import { homeValueSource, type HomeValueSummary } from "@/lib/home-value";
 import { medianCaption, publishedRange, rangeCaption, rangeLabel, sourceLine, withheldNote, type Dwelling } from "@/lib/value-range";
+import { appraisalPrefillHref } from "@/lib/appraisal-prefill";
 
 interface Props {
   /**
@@ -53,6 +54,20 @@ export function SuburbValueRange({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // On /appraisal and /property-valuation (after="link") the chosen suburb
+  // and dwelling go into the page's query string, which the appraisal form
+  // on the same page reads (?suburb=, ?type=), so the form arrives filled
+  // in. history.replaceState: no navigation, no new history entry, and
+  // Next syncs useSearchParams with it.
+  const shareWithForm = (slug: string, type: Dwelling) => {
+    if (after !== "link") return;
+    try {
+      window.history.replaceState(null, "", appraisalPrefillHref(window.location.href, slug, type));
+    } catch {
+      // A blocked history call only costs the prefill.
+    }
+  };
+
   const pick = async (slug: string, picked: string) => {
     setLabel(picked);
     setLoading(true);
@@ -63,7 +78,9 @@ export function SuburbValueRange({
       const next = (await res.json()) as HomeValueSummary;
       setSummary(next);
       // Open on the type the suburb publishes, house first.
-      setDwelling(next.medianHousePrice !== null || next.medianUnitPrice === null ? "house" : "unit");
+      const opening: Dwelling = next.medianHousePrice !== null || next.medianUnitPrice === null ? "house" : "unit";
+      setDwelling(opening);
+      shareWithForm(next.slug, opening);
     } catch {
       setError("We couldn't load that suburb. Try again or pick a nearby one.");
       setSummary(null);
@@ -81,16 +98,16 @@ export function SuburbValueRange({
 
   if (!summary) {
     return (
-      <div className="not-prose rounded-2xl border border-cta/30 bg-surface-warm p-6 sm:p-8 shadow-card">
-        <p className="text-[13px] text-cta font-medium mb-3">{eyebrow}</p>
-        <Heading className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-2">
+      <div className="not-prose rounded-xl border border-line bg-white p-5 sm:p-7">
+        <p className="text-[13px] text-ink-muted font-medium mb-2">{eyebrow}</p>
+        <Heading className="font-display text-xl sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">
           What homes like yours sell for
         </Heading>
         <p className="font-sans text-sm text-ink-muted mb-5 max-w-lg leading-relaxed">
           Pick your suburb and we show the published median for houses or units there, with its source and
           period, and a range either side of it. It is the suburb&rsquo;s figure, not a valuation of your home.
         </p>
-        <div className="rounded-xl border border-line-strong bg-surface-raised">
+        <div>
           <SuburbAutocomplete
             placeholder="Suburb or postcode, e.g. Bondi or 2026"
             onSelectLocation={pick}
@@ -112,9 +129,9 @@ export function SuburbValueRange({
 
   return (
     <div className="not-prose space-y-4">
-      <div className="rounded-2xl border border-line bg-surface-warm p-6 sm:p-8 shadow-card">
+      <div className="rounded-xl border border-line bg-white p-5 sm:p-7">
         <div className="flex items-start justify-between gap-4 mb-3">
-          <p className="inline-flex items-center gap-2 text-[13px] text-cta font-medium">
+          <p className="inline-flex items-center gap-2 text-[13px] text-ink-muted font-medium">
             <MapPin className="w-3.5 h-3.5" aria-hidden="true" /> {summary.name}, {summary.state} {summary.postcode}
           </p>
           <button
@@ -125,11 +142,11 @@ export function SuburbValueRange({
             Change suburb
           </button>
         </div>
-        <Heading className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-4">
+        <Heading className="font-display text-xl sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-4">
           What homes like yours sell for in {summary.name}
         </Heading>
 
-        <div role="group" aria-label="Dwelling type" className="inline-flex rounded-full border border-line bg-surface-raised p-0.5 mb-5">
+        <div role="group" aria-label="Dwelling type" className="inline-flex rounded-lg border border-line-strong bg-white p-0.5 mb-5">
           {DWELLINGS.map((d) => {
             const active = dwelling === d.id;
             return (
@@ -137,7 +154,10 @@ export function SuburbValueRange({
                 key={d.id}
                 type="button"
                 aria-pressed={active}
-                onClick={() => setDwelling(d.id)}
+                onClick={() => {
+                  setDwelling(d.id);
+                  shareWithForm(summary.slug, d.id);
+                }}
                 className={`rounded-md px-4 py-1.5 font-sans text-xs font-medium transition-colors cursor-pointer ${
                   active ? "bg-ink text-white" : "text-ink-muted hover:text-ink"
                 }`}
@@ -153,13 +173,13 @@ export function SuburbValueRange({
             <p className="font-sans text-[13px] text-ink-subtle mb-1">
               {medianCaption(summary, dwelling)}
             </p>
-            <p className="font-display text-4xl sm:text-5xl text-ink leading-none tracking-tight">
+            <p className="font-display text-4xl sm:text-5xl font-bold text-ink leading-none tracking-[-0.03em]">
               {formatPriceFull(range.median)}
             </p>
             <p className="font-sans text-[13px] text-ink-subtle mt-5 mb-1">
               {rangeCaption()}
             </p>
-            <p className="font-display text-2xl sm:text-3xl text-ink leading-none tracking-tight">
+            <p className="font-display text-2xl sm:text-3xl font-bold text-ink leading-none tracking-[-0.02em]">
               {formatPriceFull(range.low)} to {formatPriceFull(range.high)}
             </p>
             <p className="font-sans text-sm text-ink-muted mt-4 leading-relaxed max-w-xl">
@@ -181,7 +201,7 @@ export function SuburbValueRange({
         {after === "link" && (
           <Link
             href={appraisalHref}
-            className="group mt-6 inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-ink font-semibold px-5 py-3 font-sans text-sm transition-colors"
+            className="group mt-6 inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-5 py-3 font-sans text-sm transition-colors"
           >
             Get a free appraisal of your {dwelling}
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />

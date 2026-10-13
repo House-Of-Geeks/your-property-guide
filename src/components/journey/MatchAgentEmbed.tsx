@@ -14,9 +14,9 @@ import { MatchAgent } from "./MatchAgent";
  * pattern is a no-op (the key never changes during the session), so it's
  * safe to use everywhere MatchAgent is embedded.
  */
-export function MatchAgentEmbed() {
+export function MatchAgentEmbed({ compact = false }: { compact?: boolean } = {}) {
   const params = useSearchParams();
-  return <MatchAgent key={params.toString()} source={matchSourceFromParam(params.get("from"))} />;
+  return <MatchAgent key={params.toString()} compact={compact} source={matchSourceFromParam(params.get("from"))} />;
 }
 
 /**

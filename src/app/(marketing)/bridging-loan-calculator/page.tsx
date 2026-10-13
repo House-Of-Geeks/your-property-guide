@@ -138,12 +138,12 @@ export default function BridgingLoanCalculatorPage() {
           <h2>How each figure is worked out</h2>
           <ul>
             <li>
-              <strong>Stamp duty</strong> on the new home at your state&rsquo;s owner-occupier rate, from the same tables as
+              <strong>Stamp duty</strong>{" "}on the new home at your state&rsquo;s owner-occupier rate, from the same tables as
               our <Link href="/stamp-duty-calculator">stamp duty calculator</Link>. First home and off-the-plan concessions
               are left out because a bridging buyer already owns a home.
             </li>
             <li>
-              <strong>Selling costs</strong> start from the typical commission for your state plus GST, $4,000 of marketing,
+              <strong>Selling costs</strong>{" "}start from the typical commission for your state plus GST, $4,000 of marketing,
               conveyancing, the state&rsquo;s legal documents and the mortgage discharge fee, as in our{" "}
               <Link href="/selling-costs-calculator">selling costs calculator</Link>. Replace them with your agent&rsquo;s
               quote.

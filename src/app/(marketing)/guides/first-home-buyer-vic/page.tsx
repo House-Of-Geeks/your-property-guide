@@ -225,7 +225,7 @@ export default function FirstHomeBuyerVICPage() {
       <h2 id="vic-specific">VIC-specific schemes and resources</h2>
       <ul>
         <li>
-          <strong>Victorian Homebuyer Fund:</strong> closed to new applications on
+          <strong>Victorian Homebuyer Fund:</strong>{" "}closed to new applications on
           10 September 2025. Victoria&rsquo;s shared equity option is now the federal{" "}
           <Link href="/guides/help-to-buy-scheme-victoria">Help to Buy scheme</Link>.
         </li>

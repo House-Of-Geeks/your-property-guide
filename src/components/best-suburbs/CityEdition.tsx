@@ -241,7 +241,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
                 {ten.map((s, i) => (
                   <article key={s.slug} className="max-w-3xl border-t border-line pt-8" id={s.slug}>
                     <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-3">
-                      <span className="text-ink-subtle tabular-nums mr-2">{`${i + 1}.`}</span>
+                      <span className="text-ink-subtle mr-2">{`${i + 1}.`}</span>
                       {` ${s.name}, ${s.postcode}`}
                     </h2>
                     <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7]">{suburbParagraph(edition, s, i + 1)}</p>
@@ -249,7 +249,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
                       {cols.map((c) => (
                         <div key={c.label} className="flex items-baseline gap-2">
                           <dt className="text-ink-subtle">{c.label}</dt>
-                          <dd className="text-ink tabular-nums">{c.cell(s)}</dd>
+                          <dd className="text-ink">{c.cell(s)}</dd>
                         </div>
                       ))}
                     </dl>
@@ -286,7 +286,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
                   <tbody className="divide-y divide-line">
                     {ten.map((s, i) => (
                       <tr key={s.slug} className="hover:bg-surface-warm/60 transition-colors">
-                        <td className="py-3 px-4 text-ink-subtle tabular-nums font-sans">{i + 1}</td>
+                        <td className="py-3 px-4 text-ink-subtle font-sans">{i + 1}</td>
                         <td className="py-3 px-4">
                           <a href={`#${s.slug}`} className="font-sans font-medium text-ink hover:text-primary transition-colors">
                             {s.name}
@@ -294,7 +294,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
                           <p className="text-xs font-sans text-ink-subtle mt-0.5">{s.postcode}</p>
                         </td>
                         {cols.map((c) => (
-                          <td key={c.label} className="py-3 px-4 text-right tabular-nums font-sans text-ink">
+                          <td key={c.label} className="py-3 px-4 text-right font-sans text-ink">
                             {c.cell(s)}
                           </td>
                         ))}

@@ -96,7 +96,7 @@ export const post: BlogPost = {
 <li>NSW penalty unit value, $110: <em>Crimes (Sentencing Procedure) Act 1999</em> (NSW), section 17.</li>
 <li>Preparation and search costs: the NSW lines of our cost-of-selling data, sourced to <a href="https://www.nsw.gov.au/housing-and-construction/buying-and-selling-property/selling-a-property" rel="nofollow noopener">NSW Government, selling a property</a>; ranges are typical fees, not quotes.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-selling.svg",
+  coverImage: "/images/blog/cover-contract-of-sale-nsw.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Selling",
   tags: ["contract of sale","NSW","selling a house","cooling-off period","section 66W","Conveyancing Act","conveyancing","exchange","selling costs","2026"],

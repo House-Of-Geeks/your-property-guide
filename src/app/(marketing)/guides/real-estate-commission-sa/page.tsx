@@ -106,7 +106,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The Cost of Selling a House",         href: "/guides/cost-of-selling-a-house-australia",  description: "Every selling cost beyond commission." },
   { title: "Real Estate Agent Fees (National)",   href: "/guides/real-estate-agent-fees-australia",   description: "How fees and commission work across Australia." },
   { title: "How to Choose a Selling Agent",       href: "/guides/how-to-choose-a-selling-agent",      description: "Pick the right agent, then negotiate the fee." },
-  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get an accurate value before you list." },
+  { title: "How Much Is My House Worth?",          href: "/guides/how-much-is-my-house-worth-australia", description: "Get a realistic price before you list." },
 ];
 
 export default function RealEstateCommissionSAPage() {
@@ -262,12 +262,12 @@ export default function RealEstateCommissionSAPage() {
       <ul>
         <li><strong>Compare two or three local agents.</strong> Getting competing appraisals gives you the leverage and the information to push on the rate.</li>
         <li><strong>Negotiate on the rate <em>and</em> the marketing.</strong> A slightly lower percentage means little if the marketing budget is padded. Treat both as part of the same deal.</li>
-        <li><strong>Be wary of the cheapest.</strong> The lowest rate is not the best outcome if it comes with a thin campaign or an agent juggling too many listings. A good agent who achieves more on the sale earns their fee back many times over.</li>
+        <li><strong>Be wary of the cheapest.</strong> The lowest rate is not the best outcome if it comes with a thin campaign or an agent juggling too many listings. A good agent who achieves a better price can more than cover a slightly higher rate.</li>
         <li><strong>Get it in writing.</strong> Confirm the rate, whether GST is included, and what marketing costs sit on top, all in the agency agreement.</li>
       </ul>
       <p>
         For a sense of what is normal and who is licensed, the{" "}
-        <strong>Real Estate Institute of South Australia (REISA)</strong> is the
+        <strong>Real Estate Institute of South Australia (REISA)</strong>{" "}is the
         state&rsquo;s industry body, and agents in SA are licensed and regulated
         through <strong>Consumer and Business Services SA</strong>. Checking that
         an agent is properly licensed is a basic first step before you hand over

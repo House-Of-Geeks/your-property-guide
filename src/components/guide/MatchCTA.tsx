@@ -107,27 +107,19 @@ export function MatchCTA({ kind, lead, ctaLabel, href, audience: audienceProp }:
   const resolvedHref  = href ?? guideFunnelHref(audience, { from: page.from });
 
   return (
-    <aside className="my-8 rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-7">
+    <aside className="not-prose my-8 rounded-xl border border-line p-5 sm:p-6">
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-        <div className="flex-1">
-          <p className="text-[13px] font-sans text-ink-subtle mb-2">
-            Free guide · 2026 edition
-          </p>
-          <p className="font-sans text-base text-ink leading-snug">
-            {resolvedLead}
-          </p>
-        </div>
+        <p className="flex-1 text-[15px] sm:text-base text-ink leading-snug">
+          {resolvedLead}
+        </p>
         <Link
           href={resolvedHref}
-          className="shrink-0 inline-flex items-center justify-center gap-2 rounded-lg border border-line-strong bg-surface-raised text-ink hover:bg-ink hover:text-surface-raised hover:border-ink font-medium px-5 py-2.5 transition-colors"
+          className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md border border-ink text-ink hover:bg-ink hover:text-white font-semibold px-5 py-2.5 text-sm"
         >
           {resolvedLabel}
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-4 h-4" aria-hidden="true" />
         </Link>
       </div>
-      <p className="text-[11px] font-sans text-ink-subtle mt-3 leading-relaxed">
-        Free PDF, personalised to your suburb. 60 seconds, no card, no catch.
-      </p>
     </aside>
   );
 }

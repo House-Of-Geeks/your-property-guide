@@ -163,7 +163,7 @@ export async function LatestGuides() {
                 href={g.href}
                 className="group flex items-start gap-5 py-6 border-b border-line hover:border-ink transition-colors"
               >
-                <span className="font-display text-4xl sm:text-5xl text-ink-subtle group-hover:text-primary transition-colors leading-none mt-0.5 tabular-nums">
+                <span className="font-display text-4xl sm:text-5xl text-ink-subtle group-hover:text-primary transition-colors leading-none mt-0.5">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div className="flex-1 min-w-0">

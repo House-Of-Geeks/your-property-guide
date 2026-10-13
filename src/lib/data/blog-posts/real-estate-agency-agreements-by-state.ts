@@ -118,7 +118,7 @@ export const post: BlogPost = {
 <li><em>Real Estate and Business Agents Act 1978</em> (WA), sections 60 and 63, and the <em>Real Estate and Business Agents and Sales Representatives Code of Conduct 2016</em>: <a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/law_a681.html" rel="nofollow noopener">legislation.wa.gov.au</a>; Consumer Protection WA, <a href="https://www.consumerprotection.wa.gov.au/selling-property" rel="nofollow noopener">Selling property</a>.</li>
 <li>Typical term lengths, tail-clause periods and the negotiating points are described as market practice, not rules.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-selling.svg",
+  coverImage: "/images/blog/cover-real-estate-agency-agreements-by-state.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Selling",
   tags: ["agency agreement","exclusive agency","sole agency","open listing","Form 6","sales authority","cooling-off","real estate agent","selling a house","2026"],

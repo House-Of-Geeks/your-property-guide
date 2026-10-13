@@ -215,7 +215,7 @@ export default function HomeLoanPreApprovalAustraliaPage() {
       <p>
         Often offered by online lenders or comparison sites. Pre-qualification
         is a{" "}
-        <Link href="/borrowing-power-calculator">borrowing-power</Link> estimate based on self-reported information,
+        <Link href="/borrowing-power-calculator">borrowing-power</Link>{" "}estimate based on self-reported information,
         with no credit check or document verification. It carries no weight
         with agents and isn&rsquo;t a substitute for real pre-approval.
         Useful only for your own internal planning.
@@ -353,7 +353,7 @@ export default function HomeLoanPreApprovalAustraliaPage() {
       <p>
         Pre-approval is the start of the loan process, not the end. After
         the seller accepts your offer (or you win the auction), the lender
-        moves to <strong>formal approval</strong> (also called
+        moves to <strong>formal approval</strong>{" "}(also called
         &quot;unconditional&quot; or &quot;full&quot; approval). The steps:
       </p>
       <ol>

@@ -73,7 +73,7 @@ export const post: BlogPost = {
 <li><em>Australian Consumer Law</em> (Schedule 2, <em>Competition and Consumer Act 2010</em>), section 30: <a href="https://www.legislation.gov.au/C2004A00109/latest/text" rel="nofollow noopener">legislation.gov.au</a>; Consumer Protection WA, <a href="https://www.consumerprotection.wa.gov.au/selling-property-auction" rel="nofollow noopener">Selling a property by auction</a>.</li>
 <li>Regulator contact numbers as published on each regulator's website in September 2026.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-selling.svg",
+  coverImage: "/images/blog/cover-underquoting-laws-by-state.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Selling",
   tags: ["underquoting","price guide","statement of information","estimated selling price","Fair Trading","Consumer Affairs Victoria","auction","buying a house","selling a house","2026"],

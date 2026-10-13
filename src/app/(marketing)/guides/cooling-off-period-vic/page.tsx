@@ -120,7 +120,7 @@ export default function CoolingOffPeriodVicPage() {
       <Callout variant="info" title="Cooling-off is a backstop, not a strategy">
         <p>
           The right way to buy property is to do due diligence{" "}
-          <em>before</em> signing. The 3-business-day cooling-off period
+          <em>before</em>{" "}signing. The 3-business-day cooling-off period
           gives you a narrow escape hatch, but using it costs you 0.2% of
           the purchase price and you can&rsquo;t reuse it. Treat cooling-off
           as the last-resort exit, not the plan.
@@ -146,7 +146,7 @@ export default function CoolingOffPeriodVicPage() {
 
       <h2 id="how-long">How long the period is</h2>
       <p>
-        The period is <strong>3 clear business days</strong> from the date
+        The period is <strong>3 clear business days</strong>{" "}from the date
         the contract is signed by both parties. &quot;Clear business
         days&quot; excludes weekends, public holidays, and both the day you
         sign and the day you withdraw.

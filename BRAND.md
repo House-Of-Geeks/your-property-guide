@@ -58,7 +58,7 @@ Rules:
 | Body | 16–18px | 400, line-height 1.6 |
 | Small / meta | 14px | 400–600 |
 
-Rules: sentence case everywhere. No italics for emphasis. No full stop at the end of a heading. No uppercase letter-spaced labels. Tabular figures for prices and phone numbers.
+Rules: sentence case everywhere. No italics for emphasis. No full stop at the end of a heading. No uppercase letter-spaced labels. Never `tabular-nums`: Schibsted Grotesk sets its commas and full stops tabular too, so $810,000 renders as "$810 ,000". Proportional figures everywhere.
 
 ## 5. Shape and depth
 
@@ -68,10 +68,12 @@ Rules: sentence case everywhere. No italics for emphasis. No full stop at the en
 
 ## 6. Imagery
 
-- Real photographs of real Australian homes, streets and people. No AI-generated imagery; any generated image that remains is labelled.
-- People: real team members who agreed to be shown. Andy's headshot is at `/images/agents/andy-mcmaster.jpg`.
-- Brand objects (guide covers, share cards) are typeset, not illustrated: `GuideCover` component, `public/images/guide/*-cover*.{png,jpg}`, `public/og-image.jpg`, `src/lib/og/render.tsx`.
-- Open item: replace the generated blog cover series and remaining artwork (night-suburb hero, illustrated Queenslander) with real photography.
+- Photography is generated with ImagineArt (Nano Banana Pro) to a strict brief, and must look like ordinary documentary photography of real Australian places: soft natural daylight, true colours, eye level. No golden hour, lens flare, HDR, cinematic grading or illustration.
+- Every prompt anchors Australian vernacular: Queenslanders on stumps, Federation brick, brick veneer with Colorbond roofs, corrugated iron, jacaranda, gum trees, frangipani, nature strips, timber power poles, bluestone kerbs (Melbourne), utes. Sale boards are blank and on two posts. No text, logos or readable signs.
+- People are generic and seen naturally (side-on, from behind, at a distance). Never present a generated person as our team, a real agent or a real customer, and never caption a generated image as a specific real property or street.
+- Library: `public/images/photos/` (home-street, selling-house, appraisal-kitchen, open-home, first-home, verandah-couple, townhouses, renovation, brisbane-view, auction, paperwork, flats). JPEG, 1800px wide (2400px for full-bleed), quality 80; `next/image` does the rest.
+- Brand objects stay typeset: guide covers (`GuideCover`, `public/images/guide/`), share cards (`public/og-image.jpg`, `src/lib/og/render.tsx`).
+- Real people: Andy's own photo (`/images/agents/andy-mcmaster.jpg`) beside forms and bylines.
 
 ## 7. Voice
 
