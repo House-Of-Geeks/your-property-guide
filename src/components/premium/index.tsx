@@ -71,9 +71,10 @@ export function PhotoHero({ photo, image: ownImage, breadcrumbs, children, aside
     : size === "lg" ? "pt-12 sm:pt-16 lg:pt-24" : "pt-8 sm:pt-10 lg:pt-14";
   const bottom = size === "lg" ? "pb-16 sm:pb-24 lg:pb-32" : "pb-12 sm:pb-16 lg:pb-20";
   return (
-    // No overflow-hidden: the fill image is already held by inset-0, and a
-    // suburb autocomplete in a form near the hero's foot must drop below it.
-    <section className={`tone-dark relative isolate bg-surface-inverse ${className}`}>
+    // Clipped sideways only: a suburb autocomplete in a form near the hero's
+    // foot must still drop below it (overflow-hidden clipped it), while a
+    // decorative card leaning past the edge must not widen the page on phones.
+    <section className={`tone-dark relative isolate overflow-x-clip bg-surface-inverse ${className}`}>
       {image && (
         <>
           <Image src={image.src} alt="" fill preload unoptimized={image.unoptimized} sizes="100vw" className={`-z-20 object-cover ${image.position}`} />
