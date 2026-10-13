@@ -36,8 +36,10 @@ interface Crumb {
 }
 
 interface PhotoHeroProps {
-  /** A library photo behind the hero. Without one the hero is a plain charcoal band. */
+  /** A library photo behind the hero. Without one (or `image`) the hero is a plain charcoal band. */
   photo?: PhotoKey;
+  /** A page's own photo instead of a library one, e.g. a post's cover. */
+  image?: { src: string; position?: string };
   breadcrumbs?: Crumb[];
   /** The main column: HeroTitle, HeroLead, points, a byline. */
   children: ReactNode;
@@ -53,8 +55,8 @@ interface PhotoHeroProps {
  * so white type reads on the photo; the photo is decorative, so its alt is
  * empty and it is preloaded as the page's largest image.
  */
-export function PhotoHero({ photo, breadcrumbs, children, aside, size = "md", className = "" }: PhotoHeroProps) {
-  const image = photo ? PHOTOS[photo] : null;
+export function PhotoHero({ photo, image: ownImage, breadcrumbs, children, aside, size = "md", className = "" }: PhotoHeroProps) {
+  const image = ownImage ? { src: ownImage.src, position: ownImage.position ?? "object-center" } : photo ? PHOTOS[photo] : null;
   // Less room on top when breadcrumbs already sit above the heading.
   const top = breadcrumbs
     ? size === "lg" ? "pt-6 sm:pt-10 lg:pt-16" : "pt-4 sm:pt-6 lg:pt-8"
