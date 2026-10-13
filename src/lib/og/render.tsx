@@ -1,19 +1,20 @@
 import { ImageResponse } from "next/og";
 
-// Brand tokens duplicated here as raw hex so OG rendering doesn't depend on
-// the Tailwind/CSS pipeline. These are the sRGB renderings of the warm
-// oklch tokens in src/app/globals.css (same set as src/lib/email-theme.ts).
-// Keep in sync if the palette changes.
+import { LOGO_MARK_PATH } from "@/components/brand/Logo";
+
+// Brand v4 tokens duplicated as raw hex so OG rendering doesn't depend on
+// the Tailwind/CSS pipeline. Same set as src/app/globals.css and
+// src/lib/email-theme.ts; keep in sync if the palette changes.
 export const OG_BRAND = {
-  primary: "#953407",
-  primaryDark: "#842c02",
-  accent: "#bd592f",
-  ink: "#17100b",
-  inkMuted: "#564b42",
-  inkSubtle: "#9b9086",
-  surfaceWarm: "#f6ede2",
-  surfaceCard: "#fefbf7",
-  line: "#d9cfc5",
+  primary: "#a8401a",
+  primaryDark: "#8f3612",
+  accent: "#c24a1c",
+  ink: "#16191d",
+  inkMuted: "#565e68",
+  inkSubtle: "#6b737c",
+  surfaceWarm: "#ffffff",
+  surfaceCard: "#ffffff",
+  line: "#dfe2e6",
 } as const;
 
 export const OG_SIZE = { width: 1200, height: 630 } as const;
@@ -32,12 +33,12 @@ interface RenderOgOptions {
   accentColor?: string;
 }
 
-// Shared editorial OG renderer. Renders the brand-consistent card with:
-// - warm-cream background
-// - top-left brand mark
-// - eyebrow + title + optional subtitle
+// Shared OG renderer. Renders the brand card with:
+// - white background
+// - top-left logo (house bubble mark + wordmark)
+// - label + title + optional subtitle
 // - optional stat cards along the bottom
-// - accent stripe down the right edge
+// - a roof-tile rule along the bottom edge
 export function renderOgImage(opts: RenderOgOptions): ImageResponse {
   const accent = opts.accentColor ?? OG_BRAND.accent;
 
@@ -56,14 +57,14 @@ export function renderOgImage(opts: RenderOgOptions): ImageResponse {
           padding: "60px 80px",
         }}
       >
-        {/* Accent stripe along the right edge */}
+        {/* Roof-tile rule along the bottom edge */}
         <div
           style={{
             position: "absolute",
+            left: 0,
             right: 0,
-            top: 0,
             bottom: 0,
-            width: 12,
+            height: 10,
             background: accent,
           }}
         />
@@ -73,40 +74,25 @@ export function renderOgImage(opts: RenderOgOptions): ImageResponse {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 14,
-            color: OG_BRAND.inkMuted,
-            fontSize: 22,
-            letterSpacing: 2,
-            textTransform: "uppercase",
+            gap: 12,
+            color: OG_BRAND.ink,
+            fontSize: 30,
+            fontWeight: 700,
+            letterSpacing: -0.5,
           }}
         >
-          <div
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: 999,
-              background: OG_BRAND.primary,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "white",
-              fontSize: 18,
-              fontWeight: 700,
-            }}
-          >
-            Y
-          </div>
+          <svg width="40" height="40" viewBox="0 0 32 32">
+            <path d={LOGO_MARK_PATH} fill={OG_BRAND.accent} />
+          </svg>
           Your Property Guide
         </div>
 
         {/* Eyebrow */}
         <div
           style={{
-            marginTop: 60,
-            color: accent,
-            fontSize: 22,
-            letterSpacing: 4,
-            textTransform: "uppercase",
+            marginTop: 56,
+            color: OG_BRAND.primary,
+            fontSize: 26,
             fontWeight: 600,
           }}
         >
@@ -183,9 +169,7 @@ export function renderOgImage(opts: RenderOgOptions): ImageResponse {
                 <div
                   style={{
                     marginTop: 8,
-                    fontSize: 16,
-                    letterSpacing: 2,
-                    textTransform: "uppercase",
+                    fontSize: 18,
                     color: OG_BRAND.inkSubtle,
                   }}
                 >

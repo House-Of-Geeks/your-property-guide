@@ -1,25 +1,17 @@
 import type { Metadata } from "next";
-import { Fraunces, Manrope } from "next/font/google";
+import { Schibsted_Grotesk } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 import { Providers } from "@/components/analytics/Providers";
 
-// Display / heading font, Fraunces, the YFG editorial serif. Light weights only,
-// matching the YFG hero treatment (weight 400 + light italic 300).
-const fraunces = Fraunces({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
-
-// UI / body font, Manrope, paired with Fraunces on YFG. Clean modern sans.
-const manrope = Manrope({
+// One typeface for the whole brand (v4, Oct 2026): Schibsted Grotesk, a
+// newsroom grotesk that stays sharp at headline sizes and reads cleanly at
+// body sizes. --font-display points at the same face in globals.css, so
+// every heading and body style shares one family.
+const brandFont = Schibsted_Grotesk({
   variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -28,7 +20,7 @@ export const metadata: Metadata = {
   title: {
     // Default title for any page that doesn't set its own. Aligned
     // with the education-led positioning (2026-05 reposition).
-    default: `${SITE_NAME}: Plain-English Australian property`,
+    default: `${SITE_NAME}: free guides to selling and buying property in Australia`,
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
@@ -38,7 +30,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "en_AU",
     url: SITE_URL,
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: `${SITE_NAME}: Plain-English Australian property` }],
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: `${SITE_NAME}: free guides to selling and buying property in Australia` }],
   },
   twitter: {
     card: "summary_large_image",
@@ -74,7 +66,7 @@ export default function RootLayout({
     <html
       suppressHydrationWarning
       lang="en"
-      className={`${fraunces.variable} ${manrope.variable} h-full antialiased`}
+      className={`${brandFont.variable} h-full antialiased`}
     >
       <head>
         {/* Preconnect to high-priority third-party origins. dns-prefetch is a
@@ -95,9 +87,8 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.clarity.ms" />
         <link rel="dns-prefetch" href="https://secure.quantserve.com" />
 
-        {/* Theme colour for the address bar on mobile browsers, matches our
-            warm-cream surface (oklch 0.975 0.012 80 ≈ #f9f6f1). */}
-        <meta name="theme-color" content="#f9f6f1" />
+        {/* Theme colour for the address bar on mobile browsers: the white page. */}
+        <meta name="theme-color" content="#ffffff" />
       </head>
       <body className="min-h-full flex flex-col">
         {/* Pre-paint motion gate: reveal styles only apply under

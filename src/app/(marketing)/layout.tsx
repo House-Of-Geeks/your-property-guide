@@ -24,7 +24,7 @@ export default function MarketingLayout({
       {/* Mobile-only sticky bottom nav. Spacer below the footer on mobile so
           the last footer rows aren't covered by the sticky bar. */}
       <MobileBottomNav />
-      <div className="h-14 sm:hidden" aria-hidden="true" />
+      <div className="h-16 sm:hidden" aria-hidden="true" />
     </>
   );
 }

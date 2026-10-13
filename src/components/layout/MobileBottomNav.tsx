@@ -2,66 +2,61 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Sparkles, Layers, Wrench } from "lucide-react";
+import { Phone } from "lucide-react";
+import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164 } from "@/lib/constants";
 
-// Mobile bottom nav: 4 highest-leverage destinations. Reordered
-// 2026-05 to put Guides first, aligned with the education-led
-// positioning (Guides is the site's primary value, education is what
-// we own). Search dropped — the header search icon already covers it.
-const ITEMS = [
-  { href: "/guides",           label: "Guides",   icon: BookOpen, matchPrefix: "/guides" },
-  { href: "/find-your-suburb", label: "Quiz",     icon: Sparkles, matchPrefix: "/find-your-suburb" },
-  { href: "/compare",          label: "Compare",  icon: Layers,   matchPrefix: "/compare" },
-  { href: "/tools",            label: "Tools",    icon: Wrench,   matchPrefix: "/tools" },
-] as const;
+// Brand v4 (Oct 2026): the phone bar carries the two actions the business
+// runs on, the free guide and a free appraisal, plus a call button. Phones
+// carry most visits, and the old bar (Guides, Quiz, Compare, Tools) had no
+// way to ask for help.
 
-/**
- * Mobile-only sticky bottom navigation. Shows the four highest-leverage
- * destinations (Quiz, Compare, Tools, Search) so first-time visitors always
- * have a way into a tool from any page.
- *
- * Hidden on:
- * - Tablet+ (sm: breakpoint and above), desktop has the header
- * - Inside the bottom nav's own destination pages, since the same option is
- *   already prominent on the page (avoids redundancy).
- *
- * Renders a `pb-16` spacer at the bottom of the page wrapper so content
- * doesn't get covered. The spacer is added at the layout level rather than
- * here so each page's footer renders correctly above the sticky nav.
- */
+// Hidden where the page itself is the form, so the bar never competes with it.
+const HIDE_ON = [
+  "/selling-guide", "/buying-guide", "/appraisal", "/find-an-expert",
+  "/get-connected", "/contact", "/dashboard",
+];
+
+const BUYER_PATHS = [
+  "/first-home-buyers", "/investing", "/upgrading", "/buy",
+  "/stamp-duty-calculator", "/borrowing-power-calculator", "/mortgage-calculator",
+  "/affordability-calculator", "/lmi-calculator", "/help-to-buy-calculator", "/fhss-calculator",
+];
+
+const matches = (pathname: string, p: string) => pathname === p || pathname.startsWith(`${p}/`);
+
 export function MobileBottomNav() {
   const pathname = usePathname();
+  if (HIDE_ON.some((p) => matches(pathname, p))) return null;
 
-  // Hide entirely on the destination pages themselves
-  const isActive = (prefix: string) => pathname === prefix || pathname.startsWith(`${prefix}/`);
+  const buyer = BUYER_PATHS.some((p) => matches(pathname, p));
 
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-40 border-t border-line bg-surface-warm/95 backdrop-blur-md sm:hidden"
-      aria-label="Primary mobile navigation"
+      className="fixed bottom-0 inset-x-0 z-40 border-t border-line bg-white/95 backdrop-blur-md sm:hidden"
+      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+      aria-label="Get help"
     >
-      <ul className="grid grid-cols-4">
-        {ITEMS.map((item) => {
-          const Icon = item.icon;
-          const active = isActive(item.matchPrefix);
-          return (
-            <li key={item.href}>
-              <Link
-                href={item.href}
-                className={`flex flex-col items-center justify-center gap-1 py-2.5 px-1 text-[11px] font-sans uppercase tracking-[0.15em] transition-colors ${
-                  active
-                    ? "text-primary"
-                    : "text-ink-muted hover:text-primary"
-                }`}
-                aria-current={active ? "page" : undefined}
-              >
-                <Icon className="w-5 h-5" aria-hidden="true" />
-                {item.label}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+      <div className="grid grid-cols-[1.35fr_1fr_auto] gap-2 px-3 py-2">
+        <Link
+          href={buyer ? "/buying-guide" : "/selling-guide"}
+          className="flex items-center justify-center rounded-md bg-cta hover:bg-cta-hover text-white px-2 py-2.5 text-sm font-semibold"
+        >
+          {buyer ? "Free buying guide" : "Free selling guide"}
+        </Link>
+        <Link
+          href="/appraisal"
+          className="flex items-center justify-center rounded-md border border-ink text-ink px-2 py-2.5 text-sm font-semibold"
+        >
+          Free appraisal
+        </Link>
+        <a
+          href={`tel:${CONTACT_PHONE_E164}`}
+          className="flex items-center justify-center rounded-md border border-line text-ink w-11"
+          aria-label={`Call us on ${CONTACT_PHONE_DISPLAY}`}
+        >
+          <Phone className="w-5 h-5" aria-hidden="true" />
+        </a>
+      </div>
     </nav>
   );
 }
