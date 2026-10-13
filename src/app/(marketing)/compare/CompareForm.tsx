@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
-import { BUTTON_PRIMARY } from "@/components/premium";
+import { BUTTON_PRIMARY } from "@/components/premium/buttons";
 
 // Two side-by-side autocompletes that build /suburbs/{a}/vs/{b} on submit.
 // Lives on /compare. The submit button is disabled until both suburbs are
