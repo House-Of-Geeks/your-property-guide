@@ -1,4 +1,4 @@
-import { ShieldCheck } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 interface CrimeStat {
   totalOffences: number;
@@ -31,11 +31,9 @@ function parseBreakdown(raw: unknown): Record<string, number> {
 export function SuburbCrime({ crimeStat }: SuburbCrimeProps) {
   if (!crimeStat) {
     return (
-      <div className="bg-surface-raised rounded-2xl border border-line p-5">
-        <p className="text-sm font-sans text-ink-muted">
-          Crime data not available for this suburb.
-        </p>
-      </div>
+      <p className="text-sm font-sans text-ink-muted">
+        Crime data not available for this suburb.
+      </p>
     );
   }
 
@@ -49,54 +47,45 @@ export function SuburbCrime({ crimeStat }: SuburbCrimeProps) {
   const maxCount = topCategories.length > 0 ? topCategories[0][1] : 1;
 
   return (
-    <div className="space-y-4">
-      <div className="bg-surface-raised rounded-2xl border border-line p-5">
-        <div className="flex items-center gap-2 mb-4">
-          <ShieldCheck className="w-5 h-5 text-info flex-shrink-0" />
-          <span className="font-display text-base text-ink">Offence Summary</span>
-        </div>
+    <div>
+      <p className="text-ink">
+        <span className="font-display text-3xl font-bold tracking-tight">{total.toLocaleString()}</span>{" "}
+        <span className="text-[15px] text-ink-muted">
+          {crimeStat.geoLevel === "lga"
+            ? <>offences recorded in {crimeStat.period} across the {crimeStat.lgaName} LGA</>
+            : <>offences recorded in {crimeStat.period}</>}
+        </span>
+      </p>
 
-        <div className="mb-5">
-          {crimeStat.geoLevel === "lga" && (
-            <div className="mb-4 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2.5 text-sm font-sans text-amber-900">
-              <p className="font-medium mb-1">
-                LGA-wide data, not suburb-specific
-              </p>
-              <p className="text-xs leading-relaxed">
-                {crimeStat.state} Police only publishes crime statistics at the
-                local government area / region level. The numbers below cover
-                the entire <strong>{crimeStat.lgaName ?? "LGA"}</strong>, which
-                may include suburbs with very different crime profiles.
-                Quieter residential pockets within the LGA likely have lower
-                rates than the total suggests; busier areas may have higher.
-              </p>
-            </div>
-          )}
-          <p className="font-display text-3xl text-ink leading-none">
-            {total.toLocaleString()}
-          </p>
-          <p className="text-sm font-sans text-ink-muted mt-2">
-            {crimeStat.geoLevel === "lga"
-              ? <>total offences in {crimeStat.period} across the {crimeStat.lgaName} LGA</>
-              : <>total offences in {crimeStat.period}</>}
-          </p>
-        </div>
+      {crimeStat.geoLevel === "lga" && (
+        <p className="mt-3 text-sm font-sans text-ink-muted leading-relaxed">
+          {crimeStat.state} Police publishes these figures only for the whole{" "}
+          <span className="font-medium text-ink">{crimeStat.lgaName ?? "LGA"}</span>, which
+          may include suburbs with very different crime profiles. Quieter
+          residential pockets likely have lower rates than the total suggests;
+          busier areas may have higher.
+        </p>
+      )}
 
-        {topCategories.length > 0 && (
-          <div className="space-y-3">
-            <p className="text-[13px] font-sans text-ink-subtle">
-              Top offence categories
-            </p>
+      {/* The breakdown stays in the HTML, folded: the total answers most
+          readers, and five bars cost a phone screen. */}
+      {topCategories.length > 0 && (
+        <details className="group mt-4 border-y border-line">
+          <summary className="flex cursor-pointer list-none items-center justify-between py-3 text-sm font-semibold text-ink [&::-webkit-details-marker]:hidden">
+            Top offence categories
+            <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180" aria-hidden="true" />
+          </summary>
+          <div className="space-y-3 pb-4">
             {topCategories.map(([category, count]) => {
               const pct = total > 0 ? (count / total) * 100 : 0;
               const barWidth = maxCount > 0 ? (count / maxCount) * 100 : 0;
               return (
                 <div key={category}>
-                  <div className="flex items-center justify-between text-sm font-sans mb-1">
+                  <div className="flex items-center justify-between gap-3 text-sm font-sans mb-1">
                     <span className="text-ink capitalize">
                       {category.replace(/_/g, " ")}
                     </span>
-                    <span className="text-ink-muted tabular-nums">
+                    <span className="text-ink-muted tabular-nums shrink-0">
                       {count.toLocaleString()}{" "}
                       <span className="text-ink-subtle">
                         ({pct.toFixed(1)}%)
@@ -105,7 +94,7 @@ export function SuburbCrime({ crimeStat }: SuburbCrimeProps) {
                   </div>
                   <div className="h-1.5 bg-surface-warm rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-primary-light rounded-full"
+                      className="h-full bg-ink-muted rounded-full"
                       style={{ width: `${barWidth}%` }}
                     />
                   </div>
@@ -113,17 +102,12 @@ export function SuburbCrime({ crimeStat }: SuburbCrimeProps) {
               );
             })}
           </div>
-        )}
+        </details>
+      )}
 
-        <div className="mt-5 pt-4 border-t border-line space-y-1">
-          <p className="text-xs font-sans text-ink-subtle">
-            Crime statistics are reported at LGA level and may cover a broader area than this suburb.
-          </p>
-          <p className="text-xs font-sans text-ink-subtle">
-            Source: State Police Open Data
-          </p>
-        </div>
-      </div>
+      <p className="mt-3 text-xs font-sans text-ink-subtle">
+        Source: State Police Open Data
+      </p>
     </div>
   );
 }

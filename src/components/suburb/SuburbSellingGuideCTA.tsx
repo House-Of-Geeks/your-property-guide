@@ -1,54 +1,56 @@
-import { GuideCover } from "@/components/brand/GuideCover";
 import Link from "next/link";
-import { ArrowRight, BookOpen } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { GuideCover } from "@/components/brand/GuideCover";
+import { guideFunnelHref } from "@/lib/guide-funnel";
 
 interface Props {
   suburbName: string;
   suburbSlug: string;
+  /** Recorded with the lead as ?from= (Lead.attribution.entry). */
+  from?: string;
 }
 
 /**
- * Compact selling-guide banner for suburb profiles. Complements the
- * appraisal CTA: the appraisal form captures vendors who are ready to
- * talk to an agent today; this captures the larger group who are months
- * out and researching. Deep-links into /selling-guide with the suburb
- * step pre-answered, which is what turns the suburb-page organic
- * footprint into funnel entries.
- *
- * Carries the commissioned Queenslander artwork on the right (sm+), so
- * every one of the ~9,600 suburb pages gets a moment of the brand's
- * illustration language. Server component, zero JS.
+ * The selling-guide offer at the end of a suburb profile: the page's one
+ * guide block, after the reader has the prices, the schools and the
+ * answers. Deep-links /selling-guide with the suburb pre-answered, so the
+ * funnel starts on its second question, and names the sending page. The
+ * buying guide is a plain link under it (buyers are the smaller, lower-value
+ * group on this template, and two equal cards split the click).
+ * Server component, zero JS.
  */
-export function SuburbSellingGuideCTA({ suburbName, suburbSlug }: Props) {
+export function SuburbSellingGuideCTA({ suburbName, suburbSlug, from = "suburb-profile" }: Props) {
   return (
-    <div className="card-lift relative rounded-2xl border border-line bg-surface-warm overflow-hidden">
-      {/* The guide itself, typeset (brand v4) */}
-      <div className="absolute right-8 top-1/2 -translate-y-1/2 w-[92px] hidden sm:block text-[13px] rotate-[-3deg]" aria-hidden="true">
-        <GuideCover guide="selling" />
-      </div>
-
-      <div className="relative px-6 sm:px-8 py-6 sm:py-7 flex flex-col sm:flex-row sm:items-center gap-5">
-        <div className="flex-1 sm:max-w-[58%]">
-          <p className="text-[13px] text-cta font-medium mb-2 flex items-center gap-1.5">
-            <BookOpen className="w-3.5 h-3.5" aria-hidden="true" />
-            Free guide · 2026 edition
+    <div className="rounded-xl border border-line bg-surface-warm overflow-hidden">
+      <div className="flex items-center gap-6 sm:gap-10 p-6 sm:p-10">
+        <div className="flex-1 min-w-0">
+          <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink leading-tight tracking-[-0.02em]">
+            Selling in {suburbName}? Get the free selling guide
+          </h2>
+          <p className="mt-3 font-sans text-[15px] sm:text-base text-ink-muted leading-relaxed max-w-xl">
+            What selling costs, how agents price homes, what to ask them and a
+            12-week plan to settlement, personalised to {suburbName}. A free
+            PDF, in about a minute.
           </p>
-          <h3 className="font-display text-xl sm:text-2xl text-ink leading-tight tracking-tight mb-1.5">
-            Thinking of selling in {suburbName}?
-          </h3>
-          <p className="font-sans text-sm text-ink-muted leading-relaxed max-w-xl">
-            The complete guide to selling: what it costs, how agents price
-            your home, and a 12-week plan to settlement. Personalised to{" "}
-            {suburbName}, free, in 60 seconds.
-          </p>
+          <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-4">
+            <Link
+              href={guideFunnelHref("selling", { suburb: suburbSlug, from })}
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white px-5 py-3 font-semibold transition-colors"
+            >
+              Get the free selling guide
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
+            <Link
+              href={guideFunnelHref("buying", { suburb: suburbSlug, from })}
+              className="text-sm font-semibold text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink"
+            >
+              Buying instead? Get the buying guide
+            </Link>
+          </div>
         </div>
-        <Link
-          href={`/selling-guide?suburb=${suburbSlug}`}
-          className="shrink-0 inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3.5 text-sm transition-colors shadow-lg"
-        >
-          Get the free guide
-          <ArrowRight className="w-4 h-4" aria-hidden="true" />
-        </Link>
+        <div className="hidden sm:block w-28 lg:w-36 shrink-0 text-[13px] lg:text-[15px]" aria-hidden="true">
+          <GuideCover guide="selling" />
+        </div>
       </div>
     </div>
   );

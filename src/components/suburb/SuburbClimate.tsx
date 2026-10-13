@@ -1,3 +1,4 @@
+import { ChevronDown } from "lucide-react";
 import type { Suburb } from "@/types/suburb";
 
 interface SuburbClimateProps {
@@ -24,43 +25,39 @@ export function SuburbClimate({ climate }: SuburbClimateProps) {
   // Bar chart, scale bars to max rainfall
   const maxRainfall = meanRainfall.length > 0 ? Math.max(...meanRainfall, 1) : 1;
 
+  const stats = [
+    { label: "Annual rainfall", value: annualRainfallMm !== null ? `${Math.round(annualRainfallMm).toLocaleString("en-AU")} mm` : "–" },
+    { label: "Hottest month, avg max", value: hottest !== null ? `${hottest.toFixed(1)}°C` : "–" },
+    { label: "Coldest month, avg min", value: coldest !== null ? `${coldest.toFixed(1)}°C` : "–" },
+  ];
+
   return (
-    <div className="space-y-5">
+    <div>
+      <dl className="grid grid-cols-3 divide-x divide-line border-y border-line">
+        {stats.map((s) => (
+          <div key={s.label} className="py-3 px-3 first:pl-0 flex flex-col justify-between gap-1">
+            <dt className="text-[13px] font-sans text-ink-muted leading-snug">{s.label}</dt>
+            <dd className="font-display text-xl sm:text-2xl font-bold text-ink leading-none">{s.value}</dd>
+          </div>
+        ))}
+      </dl>
 
-      {/* Summary cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-surface-raised rounded-2xl border border-line p-5">
-          <p className="text-[13px] font-sans text-ink-subtle mb-2">Annual Rainfall</p>
-          <p className="font-display text-2xl text-ink leading-none">
-            {annualRainfallMm !== null ? `${Math.round(annualRainfallMm)} mm` : "–"}
-          </p>
-        </div>
-        <div className="bg-surface-raised rounded-2xl border border-line p-5">
-          <p className="text-[13px] font-sans text-ink-subtle mb-2">Hottest Month (avg max)</p>
-          <p className="font-display text-2xl text-ink leading-none">
-            {hottest !== null ? `${hottest.toFixed(1)}°C` : "–"}
-          </p>
-        </div>
-        <div className="bg-surface-raised rounded-2xl border border-line p-5">
-          <p className="text-[13px] font-sans text-ink-subtle mb-2">Coldest Month (avg min)</p>
-          <p className="font-display text-2xl text-ink leading-none">
-            {coldest !== null ? `${coldest.toFixed(1)}°C` : "–"}
-          </p>
-        </div>
-      </div>
-
-      {/* Monthly rainfall bar chart */}
+      {/* Monthly rainfall, folded: the three figures above answer the
+          question; the chart stays in the HTML for anyone who opens it. */}
       {meanRainfall.length === 12 && (
-        <div className="bg-surface-raised rounded-2xl border border-line p-5">
-          <p className="text-[13px] font-sans text-ink-subtle mb-4">Monthly Rainfall (mm)</p>
-          <div className="flex items-end gap-1 h-24">
+        <details className="group border-b border-line">
+          <summary className="flex cursor-pointer list-none items-center justify-between py-3 text-sm font-semibold text-ink [&::-webkit-details-marker]:hidden">
+            Rainfall by month
+            <ChevronDown className="w-4 h-4 transition-transform group-open:rotate-180" aria-hidden="true" />
+          </summary>
+          <div className="flex items-end gap-1 h-24 pb-4">
             {meanRainfall.map((mm, i) => {
               const heightPct = (mm / maxRainfall) * 100;
               return (
                 <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                  <div className="w-full flex flex-col justify-end" style={{ height: "80px" }}>
+                  <div className="w-full flex flex-col justify-end" style={{ height: "64px" }}>
                     <div
-                      className="w-full rounded-t bg-primary-light"
+                      className="w-full rounded-t-sm bg-ink-muted"
                       style={{ height: `${heightPct}%` }}
                       title={`${MONTH_LABELS[i]}: ${mm.toFixed(0)} mm`}
                     />
@@ -70,14 +67,12 @@ export function SuburbClimate({ climate }: SuburbClimateProps) {
               );
             })}
           </div>
-        </div>
+        </details>
       )}
 
-      {/* Attribution */}
-      <p className="text-xs font-sans text-ink-subtle">
+      <p className="mt-3 text-xs font-sans text-ink-subtle">
         Weather data from BOM station {bomStationName} ({distanceKm.toFixed(0)} km away)
       </p>
-
     </div>
   );
 }

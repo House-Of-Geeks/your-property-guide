@@ -1,5 +1,4 @@
-export { SuburbHero, SuburbStats } from "./SuburbHero";
-export { SuburbSnapshot } from "./SuburbSnapshot";
+export { SuburbHero, SuburbSectionNav } from "./SuburbHero";
 export { SuburbSubrouteHeader, getSuburbListingTabs } from "./SuburbSubrouteHeader";
 export type { SuburbSubrouteTab, SuburbListingTab } from "./SuburbSubrouteHeader";
 export { SectionDivider } from "./SectionDivider";

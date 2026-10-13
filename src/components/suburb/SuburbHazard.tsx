@@ -49,40 +49,30 @@ export function SuburbHazard({ floodClass, bushfireRisk, floodSource, bushfireSo
   const floodBadge    = badgeConfig(floodLevel);
   const bushfireBadge = badgeConfig(bushfireLevel);
 
+  const rows = [
+    { label: "Flood risk", icon: <Droplets className="w-4 h-4 text-ink-muted flex-shrink-0" aria-hidden="true" />, level: floodLevel, raw: floodClass, badge: floodBadge, source: floodSource },
+    { label: "Bushfire risk", icon: <Flame className="w-4 h-4 text-ink-muted flex-shrink-0" aria-hidden="true" />, level: bushfireLevel, raw: bushfireRisk, badge: bushfireBadge, source: bushfireSource },
+  ];
+
   return (
-    <div className="space-y-3">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-        {/* Flood card */}
-        <div className="bg-surface-raised rounded-2xl border border-line p-5">
-          <div className="flex items-center gap-2 mb-3">
-            <Droplets className="w-5 h-5 text-info flex-shrink-0" />
-            <span className="font-display text-base text-ink">Flood Risk</span>
+    <div>
+      <dl className="divide-y divide-line border-y border-line">
+        {rows.map((r) => (
+          <div key={r.label} className="py-3 grid grid-cols-[1fr_auto] items-center gap-x-3">
+            <dt className="flex items-center gap-2 text-[15px] font-sans text-ink">
+              {r.icon}
+              {r.label}
+            </dt>
+            <dd>
+              <span className={`inline-block text-sm font-medium px-2.5 py-0.5 rounded-md ${r.badge.className}`}>
+                {r.level ? (r.raw ?? r.badge.label) : r.badge.label}
+              </span>
+            </dd>
+            {r.source && <dd className="col-span-2 mt-1 text-xs font-sans text-ink-subtle">{r.source}</dd>}
           </div>
-          <span className={`inline-block text-sm font-medium px-3 py-1 rounded-md ${floodBadge.className}`}>
-            {floodLevel ? (floodClass ?? floodBadge.label) : floodBadge.label}
-          </span>
-          {floodSource && (
-            <p className="mt-3 text-xs font-sans text-ink-subtle">{floodSource}</p>
-          )}
-        </div>
-
-        {/* Bushfire card */}
-        <div className="bg-surface-raised rounded-2xl border border-line p-5">
-          <div className="flex items-center gap-2 mb-3">
-            <Flame className="w-5 h-5 text-warning flex-shrink-0" />
-            <span className="font-display text-base text-ink">Bushfire Risk</span>
-          </div>
-          <span className={`inline-block text-sm font-medium px-3 py-1 rounded-md ${bushfireBadge.className}`}>
-            {bushfireLevel ? (bushfireRisk ?? bushfireBadge.label) : bushfireBadge.label}
-          </span>
-          {bushfireSource && (
-            <p className="mt-3 text-xs font-sans text-ink-subtle">{bushfireSource}</p>
-          )}
-        </div>
-
-      </div>
-      <p className="text-xs font-sans text-ink-subtle">
+        ))}
+      </dl>
+      <p className="mt-3 text-xs font-sans text-ink-subtle">
         Risk levels are indicative. Always check with local council.
       </p>
     </div>
