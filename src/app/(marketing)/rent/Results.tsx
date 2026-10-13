@@ -20,7 +20,7 @@ export async function RentResults({ searchParams }: RentResultsProps) {
 
   return (
     <>
-      <p className="text-[13px] font-sans text-ink-subtle mb-5">
+      <p className="text-sm text-ink-muted mb-5">
         {properties.length.toLocaleString()} rental {properties.length === 1 ? "property" : "properties"}
       </p>
       <PropertyGrid properties={properties} />

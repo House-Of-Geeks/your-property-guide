@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, FAQPageJsonLd, ItemListJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
@@ -28,6 +27,7 @@ import {
 import { cityEditionLinks, type IndexableCityEdition } from "@/lib/services/city-rankings-service";
 import { getStateName } from "@/lib/services/suburb-rankings-service";
 import { CATEGORY_CONFIG } from "@/components/best-suburbs/BestSuburbsListing";
+import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 
 // /best-suburbs/{category}/{city}: the shape the SERP rewards for "best
 // suburbs to invest in brisbane" and "best suburbs in perth" (review of 30
@@ -54,7 +54,7 @@ function Median({ s }: { s: CityEditionSuburb }) {
       {s.medianBasis === "area" && (
         <abbr
           title="ABS statistical-area (SA2) median: the area that carries the suburb's name, which can take in surrounding localities"
-          className="ml-1 font-sans text-[13px] text-ink-subtle no-underline"
+          className="ml-1 text-sm text-ink-subtle no-underline"
         >
           area
         </abbr>
@@ -116,7 +116,7 @@ function columns(category: RankingCategory, state: string): Column[] {
 }
 
 const pill =
-  "inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors";
+  "inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-medium text-ink hover:border-ink transition-colors";
 
 interface Props {
   edition: CityEdition;
@@ -165,98 +165,98 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
       )}
       {faqs.length > 0 && <FAQPageJsonLd faqs={faqs} />}
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs
-              items={[
-                { label: "Best Suburbs", href: "/best-suburbs" },
-                { label: config.title, href: `/best-suburbs/${category}` },
-                { label: city.name },
-              ]}
-            />
-          </div>
-          <p className="text-[13px] font-sans text-ink-subtle mb-5">
-            {config.eyebrow} · Greater {city.name}
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            {h1}
-          </h1>
-          {full ? (
-            <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-3xl">{cityEditionLede(edition)}</p>
-          ) : (
-            <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-3xl">
-              {config.description} Greater {city.name} only.
-            </p>
+      {/* Hero: the list's headline, its lede and its date. */}
+      <PhotoHero
+        photo="market"
+        breadcrumbs={[
+          { label: "Best Suburbs", href: "/best-suburbs" },
+          { label: config.title, href: `/best-suburbs/${category}` },
+          { label: city.name },
+        ]}
+      >
+        <p className="text-sm text-ink-muted mb-5">
+          {config.eyebrow} · Greater {city.name}
+        </p>
+        <HeroTitle>
+          {h1}
+        </HeroTitle>
+        {full ? (
+          <HeroLead>{cityEditionLede(edition)}</HeroLead>
+        ) : (
+          <HeroLead>
+            {config.description} Greater {city.name} only.
+          </HeroLead>
+        )}
+        <p className="mt-6 text-sm text-ink-subtle">
+          <span className="text-ink">Updated {fmtDate(updatedAt)}.</span>
+          {edition.salesPeriod ? ` Medians for ${edition.salesPeriod}.` : ""}
+          {full ? ` Ranked from ${n(edition.eligible)} Greater ${city.name} suburbs.` : ""}
+        </p>
+      </PhotoHero>
+
+      <Band spacing="compact">
+        <div className="space-y-14">
+          {!full && (
+            <section className="rounded-xl border border-line bg-surface-raised p-8 sm:p-10 max-w-3xl">
+              <p className="text-xl font-semibold text-ink mb-2">No {city.name} edition yet.</p>
+              <p className="text-ink-muted leading-relaxed">
+                {!ranked
+                  ? note.text
+                  : `A city edition needs ${CITY_EDITION_SIZE} suburbs to show, and ${ten.length === 0 ? "none" : ten.length === 1 ? "only one" : `only ${ten.length}`} in Greater ${city.name} ${ten.length === 1 ? "qualifies" : "qualify"} on the rules below. The ${stateName} ranking has the full list.`}
+              </p>
+              <p className="mt-4">
+                <Link href={ranked ? stateHref : `/best-suburbs/${category}`} className={pill}>
+                  {config.title} in {ranked ? stateName : "Australia"}
+                </Link>
+              </p>
+            </section>
           )}
-          <p className="mt-5 font-sans text-sm text-ink-subtle">
-            <span className="text-ink">Updated {fmtDate(updatedAt)}.</span>
-            {edition.salesPeriod ? ` Medians for ${edition.salesPeriod}.` : ""}
-            {full ? ` Ranked from ${n(edition.eligible)} Greater ${city.name} suburbs.` : ""}
-          </p>
+
+          {/* How we ranked them: not on a category the state's figures cannot rank */}
+          {ranked && (
+            <section className="max-w-3xl">
+              <SectionHeading size="md" title="How we ranked them" />
+              <ul className="mt-6 space-y-3 text-base text-ink-muted leading-relaxed list-disc pl-5">
+                {method.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+              <p className="mt-5 text-sm text-ink-subtle">
+                <Link href="/methodology#median-prices" className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
+                  Full methodology →
+                </Link>
+              </p>
+            </section>
+          )}
         </div>
-      </section>
+      </Band>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 space-y-14">
-        {!full && (
-          <section className="rounded-2xl border border-line bg-surface-raised p-8 sm:p-10 max-w-3xl">
-            <p className="font-display text-xl text-ink mb-2">No {city.name} edition yet.</p>
-            <p className="font-sans text-ink-muted leading-relaxed">
-              {!ranked
-                ? note.text
-                : `A city edition needs ${CITY_EDITION_SIZE} suburbs to show, and ${ten.length === 0 ? "none" : ten.length === 1 ? "only one" : `only ${ten.length}`} in Greater ${city.name} ${ten.length === 1 ? "qualifies" : "qualify"} on the rules below. The ${stateName} ranking has the full list.`}
-            </p>
-            <p className="mt-4">
-              <Link href={ranked ? stateHref : `/best-suburbs/${category}`} className={pill}>
-                {config.title} in {ranked ? stateName : "Australia"}
-              </Link>
-            </p>
-          </section>
-        )}
-
-        {/* How we ranked them: not on a category the state's figures cannot rank */}
-        {ranked && (
-          <section className="max-w-3xl">
-            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-5">How we ranked them</h2>
-            <ul className="space-y-3 font-sans text-base text-ink-muted leading-relaxed list-disc pl-5">
-              {method.map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-            </ul>
-            <p className="mt-4 font-sans text-sm text-ink-subtle">
-              <Link href="/methodology#median-prices" className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors">
-                Full methodology →
-              </Link>
-            </p>
-          </section>
-        )}
-
-        {full && (
-          <>
-            {/* One section per suburb */}
+      {full && (
+        <>
+          {/* One section per suburb */}
+          <Band tone="quiet" spacing="compact">
             <section>
-              <p className="text-[13px] font-sans text-ink-subtle mb-6">The ten, in order</p>
+              <p className="text-sm font-semibold text-ink mb-6">The ten, in order</p>
               <div className="space-y-10">
                 {ten.map((s, i) => (
                   <article key={s.slug} className="max-w-3xl border-t border-line pt-8" id={s.slug}>
-                    <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-3">
+                    <h2 className="text-2xl sm:text-3xl text-ink leading-tight tracking-[-0.02em] mb-3">
                       <span className="text-ink-subtle mr-2">{`${i + 1}.`}</span>
                       {` ${s.name}, ${s.postcode}`}
                     </h2>
-                    <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7]">{suburbParagraph(edition, s, i + 1)}</p>
-                    <dl className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-sans text-sm">
+                    <p className="text-base sm:text-lg text-ink-muted leading-[1.7]">{suburbParagraph(edition, s, i + 1)}</p>
+                    <dl className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm">
                       {cols.map((c) => (
                         <div key={c.label} className="flex items-baseline gap-2">
                           <dt className="text-ink-subtle">{c.label}</dt>
-                          <dd className="text-ink">{c.cell(s)}</dd>
+                          <dd className="font-semibold text-ink">{c.cell(s)}</dd>
                         </div>
                       ))}
                     </dl>
                     <p className="mt-4">
                       <Link
                         href={`/suburbs/${s.slug}`}
-                        className="font-sans text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                        className="text-sm font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
                       >
                         {s.name} suburb profile →
                       </Link>
@@ -265,141 +265,143 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
                 ))}
               </div>
             </section>
+          </Band>
 
-            {/* Comparison table */}
-            <section>
-              <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-5">The ten compared</h2>
-              <div className="overflow-x-auto rounded-2xl bg-surface-raised border border-line">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="bg-surface-warm border-b border-line">
-                      <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink w-10">#</th>
-                      <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink">Suburb</th>
-                      {cols.map((c) => (
-                        <th key={c.label} className="py-3 px-4 text-right text-[13px] font-sans font-medium text-ink whitespace-nowrap">
-                          {c.label}
-                        </th>
-                      ))}
-                      <th className="py-3 px-4 text-right text-[13px] font-sans font-medium text-ink">Profile</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-line">
-                    {ten.map((s, i) => (
-                      <tr key={s.slug} className="hover:bg-surface-warm/60 transition-colors">
-                        <td className="py-3 px-4 text-ink-subtle font-sans">{i + 1}</td>
-                        <td className="py-3 px-4">
-                          <a href={`#${s.slug}`} className="font-sans font-medium text-ink hover:text-primary transition-colors">
-                            {s.name}
-                          </a>{" "}
-                          <p className="text-xs font-sans text-ink-subtle mt-0.5">{s.postcode}</p>
-                        </td>
+          <Band spacing="compact">
+            <div className="space-y-14">
+              {/* Comparison table */}
+              <section>
+                <SectionHeading size="md" title="The ten compared" />
+                <div className="mt-6 overflow-x-auto rounded-xl bg-surface-raised border border-line">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-surface-warm border-b border-line">
+                        <th className="py-3 px-4 text-left text-sm font-semibold text-ink w-10">#</th>
+                        <th className="py-3 px-4 text-left text-sm font-semibold text-ink">Suburb</th>
                         {cols.map((c) => (
-                          <td key={c.label} className="py-3 px-4 text-right font-sans text-ink">
-                            {c.cell(s)}
-                          </td>
+                          <th key={c.label} className="py-3 px-4 text-right text-sm font-semibold text-ink whitespace-nowrap">
+                            {c.label}
+                          </th>
                         ))}
-                        <td className="py-3 px-4 text-right">
-                          <Link
-                            href={`/suburbs/${s.slug}`}
-                            className="font-sans text-xs font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors whitespace-nowrap"
-                          >
-                            View profile →
-                          </Link>
-                        </td>
+                        <th className="py-3 px-4 text-right text-sm font-semibold text-ink">Profile</th>
                       </tr>
+                    </thead>
+                    <tbody className="divide-y divide-line">
+                      {ten.map((s, i) => (
+                        <tr key={s.slug} className="hover:bg-surface-warm/60 transition-colors">
+                          <td className="py-3 px-4 text-ink-subtle">{i + 1}</td>
+                          <td className="py-3 px-4">
+                            <a href={`#${s.slug}`} className="font-semibold text-ink hover:text-primary transition-colors">
+                              {s.name}
+                            </a>{" "}
+                            <p className="text-xs text-ink-subtle mt-0.5">{s.postcode}</p>
+                          </td>
+                          {cols.map((c) => (
+                            <td key={c.label} className="py-3 px-4 text-right text-ink">
+                              {c.cell(s)}
+                            </td>
+                          ))}
+                          <td className="py-3 px-4 text-right">
+                            <Link
+                              href={`/suburbs/${s.slug}`}
+                              className="text-sm font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink whitespace-nowrap"
+                            >
+                              View profile →
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="mt-3 text-sm text-ink-subtle max-w-3xl">
+                  A dash means the suburb&rsquo;s own page publishes no figure. &ldquo;Area&rdquo; marks an ABS statistical-area median.
+                </p>
+              </section>
+
+              {/* Ranks 11 to 15 */}
+              {five.length > 0 && (
+                <section className="max-w-3xl">
+                  <SectionHeading size="md" title={<>{five.length === 5 ? "Five" : n(five.length)} more worth a look</>} />
+                  <p className="mt-4 text-base text-ink-muted leading-relaxed mb-5">
+                    Ranks {CITY_EDITION_SIZE + 1} to {CITY_EDITION_SIZE + five.length} on the same rule, for a shortlist that runs past the ten.
+                  </p>
+                  <ol className="space-y-2 text-base text-ink-muted" start={CITY_EDITION_SIZE + 1}>
+                    {five.map((s) => (
+                      <li key={s.slug} className="flex flex-wrap items-baseline gap-x-3">
+                        <Link href={`/suburbs/${s.slug}`} className="font-semibold text-ink hover:text-primary transition-colors">
+                          {`${s.name}, ${s.postcode}`}
+                        </Link>
+                        {metricSummary(category, s) && <span className="text-sm text-ink-subtle">{`: ${metricSummary(category, s)}`}</span>}
+                      </li>
                     ))}
-                  </tbody>
-                </table>
-              </div>
-              <p className="mt-3 font-sans text-sm text-ink-subtle max-w-3xl">
-                A dash means the suburb&rsquo;s own page publishes no figure. &ldquo;Area&rdquo; marks an ABS statistical-area median.
-              </p>
-            </section>
+                  </ol>
+                </section>
+              )}
 
-            {/* Ranks 11 to 15 */}
-            {five.length > 0 && (
-              <section className="max-w-3xl">
-                <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-3">
-                  {five.length === 5 ? "Five" : n(five.length)} more worth a look
-                </h2>
-                <p className="font-sans text-base text-ink-muted leading-relaxed mb-5">
-                  Ranks {CITY_EDITION_SIZE + 1} to {CITY_EDITION_SIZE + five.length} on the same rule, for a shortlist that runs past the ten.
-                </p>
-                <ol className="space-y-2 font-sans text-base text-ink-muted" start={CITY_EDITION_SIZE + 1}>
-                  {five.map((s) => (
-                    <li key={s.slug} className="flex flex-wrap items-baseline gap-x-3">
-                      <Link href={`/suburbs/${s.slug}`} className="font-medium text-ink hover:text-primary transition-colors">
-                        {`${s.name}, ${s.postcode}`}
-                      </Link>
-                      {metricSummary(category, s) && <span className="text-sm text-ink-subtle">{`: ${metricSummary(category, s)}`}</span>}
-                    </li>
-                  ))}
-                </ol>
-              </section>
-            )}
+              {/* Under the budget */}
+              {cheap.length > 0 && (
+                <section className="max-w-3xl">
+                  <SectionHeading size="md" title={<>Under {formatPriceFull(CITY_EDITION_BUDGET)}</>} />
+                  <p className="mt-4 text-base text-ink-muted leading-relaxed mb-5">
+                    The suburbs among the {n(edition.suburbs.length)} above whose published median house price is under {formatPriceFull(CITY_EDITION_BUDGET)}, in ranking order.
+                  </p>
+                  <ul className="space-y-2 text-base text-ink-muted">
+                    {cheap.map((s) => (
+                      <li key={s.slug} className="flex flex-wrap items-baseline gap-x-3">
+                        <Link href={`/suburbs/${s.slug}`} className="font-semibold text-ink hover:text-primary transition-colors">
+                          {`${s.name}, ${s.postcode}`}
+                        </Link>
+                        <span className="text-sm text-ink-subtle">
+                          {": "}
+                          {formatPriceFull(s.medianHousePrice)}
+                          {s.grossRentalYield != null ? `, gross yield ${s.grossRentalYield.toFixed(1)}%` : ""}
+                          {s.annualGrowthHouse !== 0 ? `, ${formatPercentage(s.annualGrowthHouse)} in 12 months` : ""}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+            </div>
+          </Band>
 
-            {/* Under the budget */}
-            {cheap.length > 0 && (
-              <section className="max-w-3xl">
-                <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-3">
-                  Under {formatPriceFull(CITY_EDITION_BUDGET)}
-                </h2>
-                <p className="font-sans text-base text-ink-muted leading-relaxed mb-5">
-                  The suburbs among the {n(edition.suburbs.length)} above whose published median house price is under {formatPriceFull(CITY_EDITION_BUDGET)}, in ranking order.
-                </p>
-                <ul className="space-y-2 font-sans text-base text-ink-muted">
-                  {cheap.map((s) => (
-                    <li key={s.slug} className="flex flex-wrap items-baseline gap-x-3">
-                      <Link href={`/suburbs/${s.slug}`} className="font-medium text-ink hover:text-primary transition-colors">
-                        {`${s.name}, ${s.postcode}`}
-                      </Link>
-                      <span className="text-sm text-ink-subtle">
-                        {": "}
-                        {formatPriceFull(s.medianHousePrice)}
-                        {s.grossRentalYield != null ? `, gross yield ${s.grossRentalYield.toFixed(1)}%` : ""}
-                        {s.annualGrowthHouse !== 0 ? `, ${formatPercentage(s.annualGrowthHouse)} in 12 months` : ""}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* FAQ */}
-            <section className="grid lg:grid-cols-12 gap-8">
+          {/* FAQ */}
+          <Band tone="quiet" spacing="compact">
+            <section className="grid lg:grid-cols-12 gap-8 lg:gap-16">
               <div className="lg:col-span-4">
-                <p className="text-[13px] font-sans text-ink-subtle mb-3">Common questions</p>
-                <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-                  {CITY_EDITION_LABEL[category]} in {city.name}: what people ask
-                </h2>
+                <p className="text-sm text-ink-muted mb-3">Common questions</p>
+                <SectionHeading size="md" title={<>{CITY_EDITION_LABEL[category]} in {city.name}: what people ask</>} />
               </div>
               <div className="lg:col-span-8 space-y-4">
                 {faqs.map((faq) => (
                   <details
                     key={faq.question}
-                    className="group rounded-2xl border border-line bg-surface-raised p-5 sm:p-6 [&_summary::-webkit-details-marker]:hidden"
+                    className="group rounded-xl border border-line bg-surface-raised p-5 sm:p-6 [&_summary::-webkit-details-marker]:hidden"
                   >
                     <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
-                      <span className="font-display text-lg text-ink leading-tight">{faq.question}</span>
+                      <span className="text-lg font-semibold text-ink leading-tight">{faq.question}</span>
                       <span
-                        className="shrink-0 mt-1 w-6 h-6 rounded-full border border-line-strong text-ink-subtle group-open:bg-ink group-open:text-white group-open:border-ink flex items-center justify-center transition-colors text-sm font-display"
+                        className="shrink-0 mt-0.5 w-6 h-6 rounded-md border border-line-strong text-ink-subtle group-open:bg-ink group-open:text-ink-inverse group-open:border-ink flex items-center justify-center transition-colors text-sm"
                         aria-hidden="true"
                       >
                         <span className="group-open:hidden">+</span>
                         <span className="hidden group-open:inline">−</span>
                       </span>
                     </summary>
-                    <p className="mt-3 font-sans text-base text-ink-muted leading-relaxed">{faq.answer}</p>
+                    <p className="mt-3 text-base text-ink-muted leading-relaxed">{faq.answer}</p>
                   </details>
                 ))}
               </div>
             </section>
-          </>
-        )}
+          </Band>
+        </>
+      )}
 
-        {/* Where next */}
-        <section className="rounded-2xl border border-line bg-surface-warm p-6">
-          <p className="text-[13px] font-sans text-ink-subtle mb-3">Keep exploring</p>
+      {/* Where next */}
+      <Band tone={full ? "light" : "quiet"} spacing="compact">
+        <section>
+          <p className="text-sm font-semibold text-ink mb-3">Keep exploring</p>
           <div className="flex flex-wrap gap-2">
             {ranked && (
               <Link href={stateHref} className={pill}>
@@ -425,7 +427,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
           </div>
           {otherLists.length > 0 && (
             <>
-              <p className="text-[13px] font-sans text-ink-subtle mt-6 mb-3">More {city.name} lists</p>
+              <p className="text-sm font-semibold text-ink mt-8 mb-3">More {city.name} lists</p>
               <div className="flex flex-wrap gap-2">
                 {otherLists.map((e) => (
                   <Link key={e.category} href={cityEditionPath(e.category, e.city.slug)} className={pill}>
@@ -437,7 +439,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
           )}
           {otherCities.length > 0 && (
             <>
-              <p className="text-[13px] font-sans text-ink-subtle mt-6 mb-3">Other cities</p>
+              <p className="text-sm font-semibold text-ink mt-8 mb-3">Other cities</p>
               <div className="flex flex-wrap gap-2">
                 {otherCities.map((e) => (
                   <Link key={e.city.slug} href={cityEditionPath(e.category, e.city.slug)} className={pill}>
@@ -448,7 +450,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
             </>
           )}
         </section>
-      </div>
+      </Band>
 
       <ExpertCTA
         headline="Shortlisted a suburb? Buy it well."

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { TrendingUp, Home, DollarSign, Building2 } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, FAQPageJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
@@ -16,6 +15,7 @@ import { HomeValueAppraisal } from "@/components/journey/HomeValueAppraisal";
 import { StatCard, SuburbTable } from "@/components/market/MarketTables";
 import { stateRankingLink } from "@/lib/ranking-notes";
 import { rollupCovers } from "@/lib/region-market";
+import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 
 // City-level market pages targeting the "{city} property market" /
 // "{city} house prices" / "median house price {city}" query cluster —
@@ -143,164 +143,161 @@ export default async function CityMarketPage({
       />
       {faqs.length > 0 && <FAQPageJsonLd faqs={faqs} />}
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs
-              items={[
-                { label: "Property Market", href: "/property-market" },
-                { label: city.name },
-              ]}
-            />
-          </div>
-
-          <p className="text-[13px] font-sans text-ink-subtle mb-5">
-            Greater {city.name} &middot; {market.suburbCount.toLocaleString()} suburbs tracked
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            {city.name} house prices, <span>{CURRENT_YEAR}</span>
-          </h1>
-          {/* Direct answer sentence for "median house price {city}" — kept as
-              plain prose so answer engines can quote it verbatim. */}
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            {market.medianHousePrice ? (
-              <>
-                The median house price in {city.name} is{" "}
-                <span className="font-medium text-ink">
-                  {formatPriceFull(market.medianHousePrice)}
-                </span>
-                , the median of {market.pricedSuburbCount.toLocaleString()} suburb medians from
-                verified government sales data.
-              </>
-            ) : (
-              <>
-                Suburb medians, annual growth and rankings across Greater {city.name}, from
-                verified government sales data.
-              </>
-            )}{" "}
-            Below: house prices in the twenty busiest suburbs, then the fastest-growing, most
-            affordable and highest-priced suburbs in Greater {city.name}.
-          </p>
-        </div>
-      </section>
+      {/* Hero: the median answer sentence stays in the lead. */}
+      <PhotoHero
+        photo="street"
+        breadcrumbs={[
+          { label: "Property Market", href: "/property-market" },
+          { label: city.name },
+        ]}
+      >
+        <p className="text-sm text-ink-muted mb-5">
+          Greater {city.name} &middot; {market.suburbCount.toLocaleString()} suburbs tracked
+        </p>
+        <HeroTitle>
+          {city.name} house prices, <span>{CURRENT_YEAR}</span>
+        </HeroTitle>
+        {/* Direct answer sentence for "median house price {city}" — kept as
+            plain prose so answer engines can quote it verbatim. */}
+        <HeroLead>
+          {market.medianHousePrice ? (
+            <>
+              The median house price in {city.name} is{" "}
+              <span className="font-semibold text-ink">
+                {formatPriceFull(market.medianHousePrice)}
+              </span>
+              , the median of {market.pricedSuburbCount.toLocaleString()} suburb medians from
+              verified government sales data.
+            </>
+          ) : (
+            <>
+              Suburb medians, annual growth and rankings across Greater {city.name}, from
+              verified government sales data.
+            </>
+          )}{" "}
+          Below: house prices in the twenty busiest suburbs, then the fastest-growing, most
+          affordable and highest-priced suburbs in Greater {city.name}.
+        </HeroLead>
+      </PhotoHero>
 
       {/* Stat anchor row */}
-      <section className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-          <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-6">
-            Median house price in {city.name}
-          </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCard
-              icon={<Home className="w-4 h-4" />}
-              label="Median house"
-              value={housePrice}
-              sub="median of suburb medians"
-            />
-            <StatCard
-              icon={<Building2 className="w-4 h-4" />}
-              label="Median unit"
-              value={unitPrice}
-              sub="median of suburb medians"
-            />
-            <StatCard
-              icon={<TrendingUp className="w-4 h-4" />}
-              label="Typical annual growth"
-              value={growth}
-              sub="house prices, last 12 months"
-            />
-            <StatCard
-              icon={<DollarSign className="w-4 h-4" />}
-              label="Median house rent"
-              value={rent}
-              sub="weekly, across tracked suburbs"
-            />
-          </div>
+      <Band spacing="compact">
+        <SectionHeading size="md" title={<>Median house price in {city.name}</>} />
+        <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <StatCard
+            icon={<Home className="w-4 h-4" />}
+            label="Median house"
+            value={housePrice}
+            sub="median of suburb medians"
+          />
+          <StatCard
+            icon={<Building2 className="w-4 h-4" />}
+            label="Median unit"
+            value={unitPrice}
+            sub="median of suburb medians"
+          />
+          <StatCard
+            icon={<TrendingUp className="w-4 h-4" />}
+            label="Typical annual growth"
+            value={growth}
+            sub="house prices, last 12 months"
+          />
+          <StatCard
+            icon={<DollarSign className="w-4 h-4" />}
+            label="Median house rent"
+            value={rent}
+            sub="weekly, across tracked suburbs"
+          />
         </div>
-      </section>
+      </Band>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-        {/* What the numbers show, built from the same rollup (sourced and
-            dated in its last paragraph). Describes; never recommends. */}
-        {narrative.length > 0 && (
-          <section className="max-w-3xl">
-            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-5">
-              What {city.name} house prices are doing
-            </h2>
-            <div className="space-y-4">
+      {/* What the numbers show, built from the same rollup (sourced and
+          dated in its last paragraph). Describes; never recommends. */}
+      {narrative.length > 0 && (
+        <Band tone="dark" spacing="compact">
+          <div className="max-w-3xl">
+            <SectionHeading size="md" title={<>What {city.name} house prices are doing</>} />
+            <div className="mt-8 space-y-4">
               {narrative.map((p, i) => (
                 <p
                   key={i}
                   className={
                     i === narrative.length - 1
-                      ? "font-sans text-sm text-ink-subtle leading-relaxed"
-                      : "font-sans text-base sm:text-lg text-ink-muted leading-[1.7]"
+                      ? "text-sm text-ink-subtle leading-relaxed"
+                      : "text-base sm:text-lg text-ink-muted leading-[1.7]"
                   }
                 >
                   {p}
                 </p>
               ))}
             </div>
-          </section>
-        )}
+          </div>
+        </Band>
+      )}
 
-        {/* House prices by suburb: the twenty busiest established suburbs. */}
-        <SuburbTable
-          as="h2"
-          heading={`House prices by suburb: ${city.name}'s twenty busiest`}
-          rows={market.busiest}
-          showGrowth
-          showSales
-        />
+      <Band tone="quiet" spacing="compact">
+        <div className="space-y-14">
+          {/* House prices by suburb: the twenty busiest established suburbs. */}
+          <SuburbTable
+            as="h2"
+            heading={`House prices by suburb: ${city.name}'s twenty busiest`}
+            rows={market.busiest}
+            showGrowth
+            showSales
+          />
 
-        <SuburbTable
-          heading={`Fastest-growing ${city.name} suburbs`}
-          rows={market.topGrowth}
-          showGrowth
-        />
-        <SuburbTable
-          heading={`Most affordable ${city.name} suburbs`}
-          rows={market.mostAffordable}
-          showGrowth
-        />
-        <SuburbTable heading={`${city.name}'s highest median prices`} rows={market.premium} />
+          <SuburbTable
+            heading={`Fastest-growing ${city.name} suburbs`}
+            rows={market.topGrowth}
+            showGrowth
+          />
+          <SuburbTable
+            heading={`Most affordable ${city.name} suburbs`}
+            rows={market.mostAffordable}
+            showGrowth
+          />
+          <SuburbTable heading={`${city.name}'s highest median prices`} rows={market.premium} />
+        </div>
+      </Band>
 
-        {/* Most searched suburbs (fix item 5) */}
-        <MostSearchedSuburbs label={`Greater ${city.name}`} suburbs={topSuburbsForCity(city.slug, 24)} tone="ink" />
+      <Band spacing="compact">
+        <div className="space-y-14">
+          {/* Most searched suburbs (fix item 5) */}
+          <MostSearchedSuburbs label={`Greater ${city.name}`} suburbs={topSuburbsForCity(city.slug, 24)} tone="ink" />
 
-        {/* Visible FAQ backing the FAQPage schema */}
-        {faqs.length > 0 && (
-          <section>
-            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-6">
-              {city.name} property market questions
-            </h2>
-            <dl className="divide-y divide-line border-y border-line">
-              {faqs.map((faq) => (
-                <div key={faq.question} className="py-5">
-                  <dt className="font-display text-lg text-ink leading-snug mb-2">{faq.question}</dt>
-                  <dd className="font-sans text-base text-ink-muted leading-relaxed">{faq.answer}</dd>
-                </div>
-              ))}
-            </dl>
-          </section>
-        )}
+          {/* Visible FAQ backing the FAQPage schema */}
+          {faqs.length > 0 && (
+            <section>
+              <SectionHeading size="md" title={<>{city.name} property market questions</>} />
+              <dl className="mt-8 divide-y divide-line border-y border-line">
+                {faqs.map((faq) => (
+                  <div key={faq.question} className="py-5">
+                    <dt className="text-lg font-semibold text-ink leading-snug mb-2">{faq.question}</dt>
+                    <dd className="text-base text-ink-muted leading-relaxed">{faq.answer}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          )}
+        </div>
+      </Band>
 
+      <Band tone="quiet" spacing="compact">
         {/* Cross-links: other capitals + the state report */}
-        <section className="rounded-2xl border border-line bg-surface-warm p-6">
-          <p className="text-[13px] font-sans text-ink-subtle mb-3">
+        <section>
+          <p className="text-sm text-ink-subtle mb-3">
             Keep exploring
           </p>
           <div className="flex flex-wrap gap-2">
             <Link
               href={`/market-reports/${stateSlug}`}
-              className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors"
+              className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-medium text-ink hover:border-ink transition-colors"
             >
               {city.state} state market report
             </Link>
             <Link
               href={stateRankingLink(city.state).href}
-              className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors"
+              className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-medium text-ink hover:border-ink transition-colors"
             >
               {stateRankingLink(city.state).label}
             </Link>
@@ -308,7 +305,7 @@ export default async function CityMarketPage({
               <Link
                 key={c.slug}
                 href={`/property-market/${c.slug}`}
-                className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors"
+                className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-medium text-ink hover:border-ink transition-colors"
               >
                 {c.name}
               </Link>
@@ -317,8 +314,8 @@ export default async function CityMarketPage({
         </section>
 
         {/* Source note */}
-        <section className="rounded-2xl border border-line bg-surface-warm p-5 text-sm font-sans text-ink-muted">
-          <p className="text-[13px] text-ink-subtle mb-2">Data source</p>
+        <section className="mt-10 max-w-3xl border-t border-line pt-6 text-sm text-ink-muted">
+          <p className="text-sm font-semibold text-ink mb-2">Data source</p>
           <p className="leading-relaxed">
             Figures are aggregated from suburb-level medians sourced from state valuers-general,
             state government sales records and the ABS. Only suburbs whose own page publishes a
@@ -329,21 +326,21 @@ export default async function CityMarketPage({
             left out beyond 25%.{" "}
             <Link
               href="/methodology#median-prices"
-              className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+              className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
             >
               Full methodology →
             </Link>
           </p>
         </section>
-      </div>
+      </Band>
 
       {/* Appraisal entry: city-price readers are one step from "what's mine
           worth". Suburb first, that suburb's median, then the appraisal form. */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12">
+      <Band spacing="compact">
         <div className="max-w-3xl">
           <HomeValueAppraisal />
         </div>
-      </section>
+      </Band>
 
       {/* Seller funnel exit — city-market readers are gauging whether it's
           a good time to sell. */}

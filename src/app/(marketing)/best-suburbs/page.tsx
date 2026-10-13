@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
+import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -75,54 +75,39 @@ export default function BestSuburbsHubPage() {
       />
       <BreadcrumbJsonLd items={[{ name: "Best Suburbs", url: "/best-suburbs" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-20 sm:pb-24">
-          <div className="mb-10">
-            <Breadcrumbs items={[{ label: "Best Suburbs" }]} />
-          </div>
-
-          {/* Magazine masthead */}
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              Six ranked lists
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              Best suburbs
-            </span>
-          </div>
-
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
-            The best suburbs, by{" "}
-            <span>what matters</span>{" "}
-            to you
-          </h1>
-          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            Six rankings across schools, growth, affordability, walkability,
-            flood safety and rental yield. Built on real public data, with no
-            marketing spin.
-          </p>
-        </div>
-      </section>
+      <PhotoHero photo="market" breadcrumbs={[{ label: "Best Suburbs" }]}>
+        <p className="text-sm text-ink-muted mb-5">
+          Six ranked lists &middot; Best suburbs
+        </p>
+        <HeroTitle>
+          The best suburbs, by{" "}
+          <span>what matters</span>{" "}
+          to you
+        </HeroTitle>
+        <HeroLead>
+          Six rankings across schools, growth, affordability, walkability,
+          flood safety and rental yield. Built on real public data, with no
+          marketing spin.
+        </HeroLead>
+      </PhotoHero>
 
       {/* Category cards */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <Band tone="quiet" spacing="compact">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {CATEGORIES.map(({ slug, title, description, icon }) => (
             <Link
               key={slug}
               href={`/best-suburbs/${slug}`}
-              className="group rounded-2xl border border-line bg-surface-raised p-6 hover:border-primary/40 hover:shadow-md transition-all"
+              className="group flex flex-col rounded-xl border border-line bg-surface-raised p-6 hover:border-ink transition-colors"
             >
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-surface-warm border border-line mb-4">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-lg bg-surface-warm border border-line mb-5">
                 <Image src={icon} alt="" width={32} height={32} aria-hidden="true" />
               </div>
-              <h2 className="font-display text-xl text-ink group-hover:text-primary transition-colors mb-2 leading-tight">
+              <h2 className="text-2xl text-ink leading-tight tracking-[-0.02em] group-hover:text-primary transition-colors mb-2">
                 {title}
               </h2>
-              <p className="font-sans text-sm text-ink-muted leading-relaxed mb-5">{description}</p>
-              <span className="font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors">
+              <p className="text-base text-ink-muted leading-relaxed">{description}</p>
+              <span className="mt-auto pt-6 text-base font-semibold text-ink group-hover:text-primary transition-colors">
                 Browse rankings →
               </span>
             </Link>
@@ -130,15 +115,15 @@ export default function BestSuburbsHubPage() {
         </div>
 
         {/* Methodology note */}
-        <div className="mt-12 rounded-2xl border border-line bg-surface-warm p-6 text-sm font-sans text-ink-muted leading-relaxed">
-          <p className="text-[13px] text-ink-subtle mb-2">Methodology</p>
+        <div className="mt-10 max-w-3xl border-t border-line pt-6 text-sm text-ink-muted leading-relaxed">
+          <p className="text-sm font-semibold text-ink mb-2">Methodology</p>
           <p>
             Rankings are built from publicly available data, ACARA school scores, ABS Census
             demographics, Geoscience Australia flood risk assessments, and OpenStreetMap walkability
             indicators. Updated periodically.
           </p>
         </div>
-      </div>
+      </Band>
     </>
   );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
-import { Breadcrumbs } from "@/components/layout";
+import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading, type PhotoKey } from "@/components/premium";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -70,7 +70,19 @@ const H1_BY_SLUG: Record<string, string> = {
   "suburb-guide": "Suburb guides",
 };
 
-const SHELL = "mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8";
+// The premium bands' measure (src/components/premium).
+const SHELL = "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8";
+
+// The hero photo for the category's reader (BRAND.md §11); any other
+// category gets the paperwork photo.
+const PHOTO_BY_SLUG: Record<string, PhotoKey> = {
+  selling: "selling",
+  "buying-guide": "buying",
+  investment: "investing",
+  news: "market",
+  "market-update": "market",
+  "suburb-guide": "street",
+};
 
 export default async function BlogCategoryPage({ params }: Props) {
   const { category } = await params;
@@ -112,29 +124,24 @@ export default async function BlogCategoryPage({ params }: Props) {
         ]}
       />
 
-      <div className={SHELL}>
-        <div className="pt-2 sm:pt-4">
-          <Breadcrumbs
-            items={[
-              { label: "Guides", href: "/guides" },
-              { label },
-            ]}
-          />
-        </div>
+      <PhotoHero
+        photo={PHOTO_BY_SLUG[slug] ?? "paperwork"}
+        breadcrumbs={[
+          { label: "Guides", href: "/guides" },
+          { label },
+        ]}
+      >
+        <HeroTitle>{heading}</HeroTitle>
+        <HeroLead>
+          {guideCount > 0 ? `${posts.length} articles and ${guideCount} guides` : `${posts.length} articles`}, newest
+          first. Every one is dated and names who wrote it.
+        </HeroLead>
+      </PhotoHero>
 
-        <header className="max-w-3xl pt-4 sm:pt-8 pb-6">
-          <h1 className="font-display font-bold text-ink text-[2rem] leading-[1.08] tracking-[-0.03em] sm:text-5xl">
-            {heading}
-          </h1>
-          <p className="mt-3 text-[1.0625rem] sm:text-lg text-ink-muted leading-relaxed">
-            {guideCount > 0 ? `${posts.length} articles and ${guideCount} guides` : `${posts.length} articles`}, newest
-            first. Every one is dated and names who wrote it.
-          </p>
-        </header>
-
-        {/* The other categories, as links (the old pills filtered this
-            page's own posts, so every other pill showed an empty list). */}
-        <nav aria-label="Article categories" className="border-y border-line py-3">
+      {/* The other categories, as links (the old pills filtered this
+          page's own posts, so every other pill showed an empty list). */}
+      <nav aria-label="Article categories" className="border-b border-line bg-surface-warm">
+        <div className={`${SHELL} py-3.5`}>
           <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
             <li>
               <Link href="/guides" className="font-medium text-ink-muted hover:text-ink">All guides</Link>
@@ -155,9 +162,11 @@ export default async function BlogCategoryPage({ params }: Props) {
               );
             })}
           </ul>
-        </nav>
+        </div>
+      </nav>
 
-        <div className="grid gap-x-16 lg:grid-cols-[minmax(0,1fr)_18rem] pb-16">
+      <div className={SHELL}>
+        <div className="grid gap-x-16 lg:grid-cols-[minmax(0,1fr)_18rem] pt-4 pb-16 sm:pb-20">
           <div className="min-w-0">
             <ul>
               {posts.map((p) => (
@@ -190,21 +199,6 @@ export default async function BlogCategoryPage({ params }: Props) {
             ) : (
               <GuideNextStep audience="buying" from={from} />
             )}
-
-            {guideSections.length > 0 && (
-              <section className="mt-14 border-t border-line pt-10">
-                <h2 className="font-display text-[1.625rem] sm:text-[2rem] font-bold text-ink leading-tight tracking-[-0.02em] mb-2">
-                  Step-by-step guides
-                </h2>
-                <p className="text-[15px] sm:text-base text-ink-muted leading-relaxed max-w-2xl mb-6">
-                  {`The guides that sit alongside the ${label} articles above.`}
-                </p>
-                <GuideLinkList
-                  columns={2}
-                  groups={guideSections.map(({ section, guides }) => ({ label: section.label, links: toGuideLinks(guides) }))}
-                />
-              </section>
-            )}
           </div>
 
           <aside className="hidden lg:block pt-6">
@@ -214,6 +208,22 @@ export default async function BlogCategoryPage({ params }: Props) {
           </aside>
         </div>
       </div>
+
+      {guideSections.length > 0 && (
+        <Band tone="quiet" spacing="compact">
+          <SectionHeading
+            title="Step-by-step guides"
+            intro={`The guides that sit alongside the ${label} articles above.`}
+            size="md"
+          />
+          <div className="mt-8 sm:mt-10">
+            <GuideLinkList
+              columns={2}
+              groups={guideSections.map(({ section, guides }) => ({ label: section.label, links: toGuideLinks(guides) }))}
+            />
+          </div>
+        </Band>
+      )}
     </>
   );
 }

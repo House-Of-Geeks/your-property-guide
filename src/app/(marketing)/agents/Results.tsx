@@ -26,7 +26,7 @@ export async function AgentsResults({ searchParams }: AgentsResultsProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
           <Link
             href="/appraisal"
-            className="flex items-center gap-5 p-6 rounded-2xl bg-surface-raised border border-line hover:border-primary/40 hover:shadow-md transition-all group"
+            className="flex items-center gap-5 p-6 rounded-xl bg-surface-raised border border-line hover:border-ink transition-colors group"
           >
             <Image
               src="/images/icons/calculator.svg"
@@ -37,17 +37,17 @@ export async function AgentsResults({ searchParams }: AgentsResultsProps) {
               className="shrink-0 opacity-90"
             />
             <div>
-              <p className="text-[13px] font-sans text-ink-subtle mb-1">
+              <p className="text-sm text-ink-subtle mb-1">
                 Looking to sell?
               </p>
-              <p className="font-display text-lg text-ink group-hover:text-primary transition-colors leading-tight">
+              <p className="text-lg font-semibold text-ink group-hover:text-primary transition-colors leading-tight">
                 Get a free property appraisal
               </p>
             </div>
           </Link>
           <Link
             href="/sold"
-            className="flex items-center gap-5 p-6 rounded-2xl bg-surface-raised border border-line hover:border-primary/40 hover:shadow-md transition-all group"
+            className="flex items-center gap-5 p-6 rounded-xl bg-surface-raised border border-line hover:border-ink transition-colors group"
           >
             <Image
               src="/images/icons/growth.svg"
@@ -58,10 +58,10 @@ export async function AgentsResults({ searchParams }: AgentsResultsProps) {
               className="shrink-0 opacity-90"
             />
             <div>
-              <p className="text-[13px] font-sans text-ink-subtle mb-1">
+              <p className="text-sm text-ink-subtle mb-1">
                 Market activity
               </p>
-              <p className="font-display text-lg text-ink group-hover:text-primary transition-colors leading-tight">
+              <p className="text-lg font-semibold text-ink group-hover:text-primary transition-colors leading-tight">
                 See recently sold properties
               </p>
             </div>
@@ -71,10 +71,10 @@ export async function AgentsResults({ searchParams }: AgentsResultsProps) {
 
       {/* Section header */}
       <div className="mb-6 flex items-baseline justify-between gap-4 border-b border-line pb-4">
-        <h2 className="font-display text-2xl text-ink">
+        <h2 className="text-2xl sm:text-3xl text-ink leading-tight tracking-[-0.02em]">
           {suburbName ? `Agents serving ${suburbName}` : "All agents"}
         </h2>
-        <p className="font-sans text-sm text-ink-muted shrink-0">
+        <p className="text-sm text-ink-muted shrink-0">
           {agents.length.toLocaleString()} {agents.length !== 1 ? "agents" : "agent"}
         </p>
       </div>
@@ -87,15 +87,15 @@ export async function AgentsResults({ searchParams }: AgentsResultsProps) {
         </div>
       ) : (
         <div className="text-center py-16">
-          <p className="font-sans text-lg text-ink-muted">
+          <p className="text-lg text-ink-muted">
             No agents found{suburbName ? ` in ${suburbName}` : ""}.
           </p>
-          <p className="font-sans text-sm text-ink-subtle mt-2">
+          <p className="text-sm text-ink-subtle mt-2">
             Try searching for a nearby suburb or browse all agents.
           </p>
           <Link
             href="/agents"
-            className="mt-4 inline-block font-sans text-sm font-medium text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+            className="mt-4 inline-block text-sm font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
           >
             Browse all agents →
           </Link>

@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { unstable_cache } from "next/cache";
 import { getAllRegions } from "@/lib/services/region-service";
 import { NOT_PLACES_VERSION } from "@/lib/non-localities";
 import { SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 
 // The index queries the DB. It used to be a static ISR page, which meant
 // the build-time render (no DB, so no regions) was served for up to a day
@@ -62,41 +62,34 @@ export default async function RegionsPage() {
       />
       <BreadcrumbJsonLd items={[{ name: "Regions", url: "/regions" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Regions" }]} />
-          </div>
-
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              {regions.length} regions
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              Nationwide coverage
-            </span>
-          </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
-            Property regions,{" "}
-            <span>coast to coast</span>
-          </h1>
-          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            Median house prices, market trends, and suburb profiles grouped by
-            region, from the Sunshine Coast to the South West.
-          </p>
+      <PhotoHero photo="market" breadcrumbs={[{ label: "Regions" }]}>
+        <div className="flex items-center gap-4 mb-5">
+          <span className="text-sm font-semibold text-ink-muted leading-none">
+            {regions.length} regions
+          </span>
+          <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+          <span className="text-sm text-ink-muted leading-none">
+            Nationwide coverage
+          </span>
         </div>
-      </section>
+        <HeroTitle>
+          Property regions,{" "}
+          <span>coast to coast</span>
+        </HeroTitle>
+        <HeroLead>
+          Median house prices, market trends, and suburb profiles grouped by
+          region, from the Sunshine Coast to the South West.
+        </HeroLead>
+      </PhotoHero>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="space-y-12">
+      <Band tone="quiet" spacing="compact">
+        <div className="space-y-14">
           {STATE_ORDER.map((state) => {
             const stateRegions = byState[state];
             if (!stateRegions?.length) return null;
             return (
               <section key={state}>
-                <h2 className="font-display text-2xl text-ink mb-5 pb-2 border-b border-line">
+                <h2 className="text-2xl sm:text-3xl tracking-[-0.02em] text-ink mb-6 pb-3 border-b border-line">
                   {STATE_NAMES[state]}
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
@@ -104,15 +97,15 @@ export default async function RegionsPage() {
                     <Link
                       key={region.slug}
                       href={`/regions/${region.slug}`}
-                      className="flex items-center justify-between rounded-xl border border-line bg-surface-raised px-4 py-3 hover:border-primary/40 hover:shadow-sm transition-all group"
+                      className="flex items-center justify-between rounded-xl border border-line bg-surface-raised px-4 py-3 hover:border-ink transition-colors group"
                     >
                       <div className="flex items-center gap-2 min-w-0">
                         <MapPin className="w-3.5 h-3.5 text-ink-subtle flex-shrink-0 group-hover:text-primary transition-colors" />
-                        <span className="font-sans text-sm font-medium text-ink group-hover:text-primary transition-colors truncate">
+                        <span className="text-sm font-medium text-ink group-hover:text-primary transition-colors truncate">
                           {region.region}
                         </span>
                       </div>
-                      <span className="font-sans text-xs text-ink-subtle flex-shrink-0 ml-2">
+                      <span className="text-sm text-ink-subtle flex-shrink-0 ml-2">
                         {region.suburbCount}
                       </span>
                     </Link>
@@ -122,7 +115,7 @@ export default async function RegionsPage() {
             );
           })}
         </div>
-      </div>
+      </Band>
     </>
   );
 }

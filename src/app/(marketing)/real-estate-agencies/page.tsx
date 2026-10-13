@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { AgencyCard } from "@/components/agent/AgencyCard";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { getAgencies } from "@/lib/services/agent-service";
 import { SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 
 // ISR, DB-querying services have build-phase guards, so we cache for 24h
 // instead of running a function on every visit.
@@ -51,38 +51,31 @@ export default async function AgenciesPage({ searchParams }: AgenciesPageProps) 
     <>
       <BreadcrumbJsonLd items={[{ name: "Agencies", url: "/real-estate-agencies" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Agencies" }]} />
-          </div>
+      <PhotoHero photo="street" breadcrumbs={[{ label: "Agencies" }]}>
+        <p className="flex items-center gap-4 text-sm text-ink-muted mb-5">
+          <span className="font-semibold">
+            {agencies.length.toLocaleString()} {agencies.length !== 1 ? "agencies" : "agency"}
+          </span>
+          <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
+          <span>
+            Local directory
+          </span>
+        </p>
+        <HeroTitle>
+          {suburbName ? (
+            <>Agencies in{" "}<span>{suburbName}</span>.</>
+          ) : (
+            <>Real estate{" "}<span>agencies</span>.</>
+          )}
+        </HeroTitle>
+        <HeroLead>
+          {suburbName
+            ? `Local agencies and their teams covering ${suburbName} and surrounding suburbs.`
+            : "Browse local agencies across Australia. Compare teams, listings, and the suburbs they cover."}
+        </HeroLead>
+      </PhotoHero>
 
-          <div className="flex items-center gap-4 mb-10">
-            <span className="text-sm font-semibold text-ink-muted leading-none">
-              {agencies.length.toLocaleString()} {agencies.length !== 1 ? "agencies" : "agency"}
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[13px] text-ink-subtle font-sans font-medium">
-              Local directory
-            </span>
-          </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
-            {suburbName ? (
-              <>Agencies in{" "}<span>{suburbName}</span>.</>
-            ) : (
-              <>Real estate{" "}<span>agencies</span>.</>
-            )}
-          </h1>
-          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
-            {suburbName
-              ? `Local agencies and their teams covering ${suburbName} and surrounding suburbs.`
-              : "Browse local agencies across Australia. Compare teams, listings, and the suburbs they cover."}
-          </p>
-        </div>
-      </section>
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <Band spacing="compact">
         {agencies.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {agencies.map((agency) => (
@@ -90,11 +83,11 @@ export default async function AgenciesPage({ searchParams }: AgenciesPageProps) 
             ))}
           </div>
         ) : (
-          <p className="font-sans text-ink-muted">
+          <p className="text-lg text-ink-muted">
             No agencies found{suburbName ? ` for ${suburbName}` : ""}.
           </p>
         )}
-      </div>
+      </Band>
     </>
   );
 }

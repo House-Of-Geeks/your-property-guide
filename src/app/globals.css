@@ -122,12 +122,48 @@
   /* CTA, the one action colour */
   --cta:       var(--accent);
   --cta-hover: var(--accent-dark);
+
+  /* Text drawn on an ink-filled shape (a step number on bg-ink). */
+  --ink-inverse: #ffffff;
+}
+
+/* ── Tone scopes (premium bands, Oct 2026) ────────────────────────
+   Inside a charcoal band or a photo hero (.tone-dark), the ink and line
+   roles flip to light values, so breadcrumbs, bylines and links drawn with
+   text-ink / text-ink-muted / border-line read on dark with no per-component
+   variant. A white card inside one (a form, the guide funnel) resets with
+   .tone-light. See BRAND.md section 11 and src/components/premium. */
+.tone-dark {
+  --ink:          #ffffff;
+  --ink-muted:    rgb(255 255 255 / 0.78);
+  --ink-subtle:   rgb(255 255 255 / 0.62);
+  --ink-inverse:  var(--surface-inverse);
+  --line:         rgb(255 255 255 / 0.16);
+  --line-strong:  rgb(255 255 255 / 0.32);
+  --primary:      var(--primary-lighter);
+  /* State colours light enough for charcoal (AA on #16191d). */
+  --success:      #5fd18b;
+  --danger:       #ff8f8f;
+  color: var(--ink);
+}
+.tone-light {
+  --ink:          var(--gray-900);
+  --ink-muted:    var(--gray-600);
+  --ink-subtle:   var(--gray-500);
+  --ink-inverse:  #ffffff;
+  --line:         var(--gray-200);
+  --line-strong:  var(--gray-300);
+  --primary:      #a8401a;
+  --success:      #157f3c;
+  --danger:       #b42233;
+  color: var(--ink);
 }
 
 @theme inline {
   --color-ink:                var(--ink);
   --color-ink-muted:          var(--ink-muted);
   --color-ink-subtle:         var(--ink-subtle);
+  --color-ink-inverse:        var(--ink-inverse);
   --color-surface:            var(--surface);
   --color-surface-raised:     var(--surface-raised);
   --color-surface-sunken:     var(--surface-sunken);

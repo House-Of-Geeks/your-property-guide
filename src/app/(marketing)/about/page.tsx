@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, PersonJsonLd } from "@/components/seo";
 import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164, SITE_NAME, SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero, RuleGrid, RuleItem, SectionHeading } from "@/components/premium";
 
 export const metadata: Metadata = {
   // Aligned with the education-led repositioning (2026-05). The about
@@ -48,7 +48,6 @@ const ON_THIS_PAGE: [string, string][] = [
   ["#contact", "Contact"],
 ];
 
-const h2 = "font-display text-ink tracking-[-0.02em] text-[1.75rem] sm:text-4xl leading-tight font-bold";
 const h3 = "font-display text-xl sm:text-2xl font-bold text-ink leading-snug tracking-[-0.01em]";
 const textLink = "text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink";
 
@@ -65,74 +64,68 @@ export default function AboutPage() {
         sameAs={["https://www.linkedin.com/in/andymcmaster"]}
       />
 
-      {/* Who we are, how we're paid, who to contact: in the first screen. */}
-      <section className="bg-surface-warm border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-10 sm:pb-16">
-          <div className="mb-4 sm:mb-8">
-            <Breadcrumbs items={[{ label: "About" }]} />
+      {/* Who we are, how we're paid, who to contact: in the first screen,
+          over a photo. The "At a glance" card resets the dark tone. */}
+      <PhotoHero
+        photo="verandah"
+        breadcrumbs={[{ label: "About" }]}
+        aside={
+          <div className="tone-light rounded-xl border border-line bg-white p-5 sm:p-6">
+            <h2 className="text-sm font-semibold text-ink mb-3">At a glance</h2>
+            <dl className="divide-y divide-line text-sm">
+              <div className="py-2.5 first:pt-0">
+                <dt className="font-semibold text-ink">What we do</dt>
+                <dd className="text-ink-muted">Free guides to selling and buying property, and one local agent for a free appraisal when you ask.</dd>
+              </div>
+              <div className="py-2.5">
+                <dt className="font-semibold text-ink">How we&rsquo;re paid</dt>
+                <dd className="text-ink-muted">Agents pay us a fee for each introduction. Buyers and sellers pay nothing.</dd>
+              </div>
+              <div className="py-2.5">
+                <dt className="font-semibold text-ink">Who owns it</dt>
+                <dd className="text-ink-muted">Profit Geeks Pty Ltd, an Australian-registered private company.</dd>
+              </div>
+              <div className="py-2.5">
+                <dt className="font-semibold text-ink">Editor</dt>
+                <dd className="text-ink-muted">Andy McMaster, Brisbane</dd>
+              </div>
+              <div className="py-2.5 last:pb-0">
+                <dt className="font-semibold text-ink">Contact</dt>
+                <dd className="text-ink-muted">
+                  <a href={`tel:${CONTACT_PHONE_E164}`} className={`${textLink}`}>{CONTACT_PHONE_DISPLAY}</a>
+                  {" · "}
+                  <a href="mailto:andy@theandylife.com" className={textLink}>andy@theandylife.com</a>
+                </dd>
+              </div>
+            </dl>
           </div>
-          <div className="grid lg:grid-cols-12 gap-x-12 gap-y-8 items-start">
-            <div className="lg:col-span-7">
-              <h1 className="font-display text-ink tracking-[-0.035em] text-[2.25rem] leading-[1.04] sm:text-5xl lg:text-6xl font-bold">
-                About Your Property Guide
-              </h1>
-              <p className="mt-4 sm:mt-6 text-base sm:text-xl text-ink leading-normal sm:leading-[1.45] max-w-2xl">
-                Property is the biggest financial decision most Australians ever
-                make. Most of the people explaining it have something to sell. We
-                wrote this site because that&rsquo;s a problem. Free guides to
-                selling and buying in every state, the calculators that go with
-                them, and, when you ask, one local agent for a free appraisal. Our
-                team talks to you first, and the agent pays us for the introduction.
-              </p>
-              <nav aria-label="On this page" className="mt-6">
-                <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
-                  {ON_THIS_PAGE.map(([href, label]) => (
-                    <li key={href}>
-                      <a href={href} className={`font-medium ${textLink}`}>{label}</a>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </div>
-
-            <div className="lg:col-span-5 rounded-xl border border-line bg-white p-5 sm:p-6">
-              <h2 className="text-sm font-semibold text-ink mb-3">At a glance</h2>
-              <dl className="divide-y divide-line text-sm">
-                <div className="py-2.5 first:pt-0">
-                  <dt className="font-semibold text-ink">What we do</dt>
-                  <dd className="text-ink-muted">Free guides to selling and buying property, and one local agent for a free appraisal when you ask.</dd>
-                </div>
-                <div className="py-2.5">
-                  <dt className="font-semibold text-ink">How we&rsquo;re paid</dt>
-                  <dd className="text-ink-muted">Agents pay us a fee for each introduction. Buyers and sellers pay nothing.</dd>
-                </div>
-                <div className="py-2.5">
-                  <dt className="font-semibold text-ink">Who owns it</dt>
-                  <dd className="text-ink-muted">Profit Geeks Pty Ltd, an Australian-registered private company.</dd>
-                </div>
-                <div className="py-2.5">
-                  <dt className="font-semibold text-ink">Editor</dt>
-                  <dd className="text-ink-muted">Andy McMaster, Brisbane</dd>
-                </div>
-                <div className="py-2.5 last:pb-0">
-                  <dt className="font-semibold text-ink">Contact</dt>
-                  <dd className="text-ink-muted">
-                    <a href={`tel:${CONTACT_PHONE_E164}`} className={`${textLink}`}>{CONTACT_PHONE_DISPLAY}</a>
-                    {" · "}
-                    <a href="mailto:andy@theandylife.com" className={textLink}>andy@theandylife.com</a>
-                  </dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-        </div>
-      </section>
+        }
+      >
+        <HeroTitle>About Your Property Guide</HeroTitle>
+        <HeroLead>
+          Property is the biggest financial decision most Australians ever
+          make. Most of the people explaining it have something to sell. We
+          wrote this site because that&rsquo;s a problem. Free guides to
+          selling and buying in every state, the calculators that go with
+          them, and, when you ask, one local agent for a free appraisal. Our
+          team talks to you first, and the agent pays us for the introduction.
+        </HeroLead>
+        <nav aria-label="On this page" className="mt-8">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+            {ON_THIS_PAGE.map(([href, label]) => (
+              <li key={href}>
+                <a href={href} className={`font-medium ${textLink}`}>{label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </PhotoHero>
 
       {/* Who we are: why the site exists, then the people. */}
-      <section id="people" className="bg-white scroll-mt-16">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <h2 className={`${h2} mb-6`}>Who we are</h2>
-          <div className="space-y-4 text-base sm:text-lg text-ink-muted leading-[1.7]">
+      <Band id="people" className="scroll-mt-16">
+        <div className="max-w-3xl">
+          <SectionHeading title="Who we are" />
+          <div className="mt-8 space-y-4 text-base sm:text-lg text-ink-muted leading-[1.7]">
             <p>
               Most of what passes for property research in Australia is funded by
               the people selling you the property. The biggest portals are
@@ -272,15 +265,15 @@ export default function AboutPage() {
             </article>
           </div>
         </div>
-      </section>
+      </Band>
 
       {/* How we're paid, and who owns the site. #ownership-funding is the
           JSON-LD ownershipFundingInfo anchor and the header's "How we're
           paid" link. */}
-      <section id="ownership-funding" className="bg-surface-warm border-y border-line scroll-mt-16">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <h2 className={`${h2} mb-6`}>How we&rsquo;re paid</h2>
-          <div className="space-y-4 text-base sm:text-lg text-ink-muted leading-[1.7]">
+      <Band tone="dark" id="ownership-funding" className="scroll-mt-16">
+        <div className="max-w-3xl">
+          <SectionHeading title={<>How we&rsquo;re paid</>} />
+          <div className="mt-8 space-y-4 text-base sm:text-lg text-ink-muted leading-[1.7]">
             <p>
               Buyers and sellers pay nothing. When you&rsquo;re ready to sell,
               we&rsquo;ll introduce you to one local agent who sells in your area.
@@ -321,21 +314,18 @@ export default function AboutPage() {
             </p>
           </div>
         </div>
-      </section>
+      </Band>
 
       {/* Editorial standards. #methodology is the JSON-LD publishingPrinciples
           and ethicsPolicy anchor; #coverage the diversityPolicy one. */}
-      <section id="methodology" className="bg-white scroll-mt-16">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <h2 className={`${h2} mb-6`}>Editorial standards</h2>
-          <dl className="grid sm:grid-cols-2 gap-x-8 border-t border-line mb-10">
+      <Band id="methodology" className="scroll-mt-16">
+        <div className="max-w-3xl">
+          <SectionHeading title="Editorial standards" />
+          <RuleGrid columns={2} className="mt-10 mb-14">
             {PRINCIPLES.map((p) => (
-              <div key={p.title} className="border-b border-line py-4">
-                <dt className="font-semibold text-ink">{p.title}</dt>
-                <dd className="mt-1 text-sm text-ink-muted leading-relaxed">{p.body}</dd>
-              </div>
+              <RuleItem key={p.title} title={p.title}>{p.body}</RuleItem>
             ))}
-          </dl>
+          </RuleGrid>
 
           <h3 className={`${h3} mb-3`}>How we write, source, and update</h3>
           <div className="prose-ypg">
@@ -398,13 +388,13 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-      </section>
+      </Band>
 
       {/* Corrections. Anchor for the actionableFeedbackPolicy statement. */}
-      <section id="corrections" className="bg-surface-warm border-t border-line scroll-mt-16">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <h2 className={`${h2} mb-6`}>Corrections</h2>
-          <div className="prose-ypg">
+      <Band tone="quiet" id="corrections" className="scroll-mt-16">
+        <div className="max-w-3xl">
+          <SectionHeading title="Corrections" />
+          <div className="mt-8 prose-ypg">
             <p>
               If you spot a factual error, a stale figure, or a number that
               doesn&rsquo;t match its source, email{" "}
@@ -419,13 +409,13 @@ export default function AboutPage() {
             </ul>
           </div>
         </div>
-      </section>
+      </Band>
 
       {/* Contact */}
-      <section id="contact" className="bg-white border-t border-line scroll-mt-16">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <h2 className={`${h2} mb-4`}>Contact</h2>
-          <p className="text-base sm:text-lg text-ink-muted leading-relaxed mb-6">
+      <Band id="contact" className="scroll-mt-16">
+        <div className="max-w-3xl">
+          <SectionHeading title="Contact" />
+          <p className="mt-6 text-base sm:text-lg text-ink-muted leading-relaxed mb-8">
             For broader feedback, topics we should cover, gaps in our
             guides or suggestions for the data, use our contact form or email
             the editor directly.
@@ -451,7 +441,7 @@ export default function AboutPage() {
             </div>
           </dl>
         </div>
-      </section>
+      </Band>
     </>
   );
 }

@@ -268,7 +268,7 @@ export function SellingGuideFunnel({
   );
 
   return (
-    <div data-funnel-card className="bg-white text-ink rounded-xl p-5 sm:p-8 border border-line shadow-[0_12px_40px_-14px_rgb(22_25_29/0.22)]">
+    <div data-funnel-card className="tone-light bg-white text-ink rounded-xl p-5 sm:p-8 border border-line shadow-[0_12px_40px_-14px_rgb(22_25_29/0.22)]">
       {/* Progress. Hidden on the opening question (a bar on screen one
           costs conversions); from step 2 it shows already-earned progress
           as one bar and a plain step count. */}

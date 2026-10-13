@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PropertyFilters } from "@/components/property/PropertyFilters";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 import { BuyResults } from "./Results";
 
 // ISR, page shell caches as static. searchParams reads are isolated to
@@ -28,23 +28,19 @@ export default function BuyPage({ searchParams }: BuyPageProps) {
     <>
       <BreadcrumbJsonLd items={[{ name: "Buy", url: "/buy" }]} />
 
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Buy" }]} />
-          </div>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Properties for sale, <span>across Australia</span>
-          </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            Houses, units, townhouses and land. Filter by suburb, price, bedrooms.
-            Each listing comes with the suburb&rsquo;s data alongside.
-          </p>
-        </div>
-      </section>
+      <PhotoHero photo="buying" breadcrumbs={[{ label: "Buy" }]}>
+        <HeroTitle>
+          Properties for sale, <span>across Australia</span>
+        </HeroTitle>
+        <HeroLead>
+          Houses, units, townhouses and land. Filter by suburb, price, bedrooms.
+          Each listing comes with the suburb&rsquo;s data alongside.
+        </HeroLead>
+      </PhotoHero>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-        <div className="mb-6">
+      {/* The filters and results are the page's job: first band under the hero. */}
+      <Band tone="quiet" spacing="compact">
+        <div className="mb-8">
           <Suspense fallback={null}>
             <PropertyFilters listingType="buy" />
           </Suspense>
@@ -53,7 +49,7 @@ export default function BuyPage({ searchParams }: BuyPageProps) {
         <Suspense fallback={null}>
           <BuyResults searchParams={searchParams} />
         </Suspense>
-      </div>
+      </Band>
     </>
   );
 }

@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { TrendingUp, Home, DollarSign, Building2 } from "lucide-react";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
-import { Breadcrumbs } from "@/components/layout";
 import { ExpertCTA } from "@/components/journey";
 import { HomeValueAppraisal } from "@/components/journey/HomeValueAppraisal";
 import { MatchAgent } from "@/components/journey/MatchAgent";
@@ -41,6 +40,7 @@ import { stateRankingLink } from "@/lib/ranking-notes";
 import { capitalCityFor } from "@/lib/utils/metro";
 import { formatPrice, formatPriceFull } from "@/lib/utils/format";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 
 // Region (LGA) house-prices pages. Content gap item 6: the same template
 // the capital-city pages use (house prices first, the busiest suburbs, a
@@ -145,7 +145,7 @@ export default async function RegionPage({ params }: RegionPageProps) {
   const rent = market.medianRentHouse ? `$${market.medianRentHouse}/wk` : "N/A";
 
   const linkChip =
-    "inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors";
+    "inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-medium text-ink hover:border-ink transition-colors";
 
   return (
     <>
@@ -169,276 +169,278 @@ export default async function RegionPage({ params }: RegionPageProps) {
       />
       {faqs.length > 0 && <FAQPageJsonLd faqs={faqs} />}
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs
-              items={[
-                { label: "Regions", href: "/regions" },
-                { label: region.region },
-              ]}
-            />
-          </div>
-
-          <p className="text-[13px] font-sans text-ink-subtle mb-5">
-            {regionEyebrow(region.region, region.state, region.suburbCount)}
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            {hasPrices ? (
-              <>
-                {name} house prices, <span>{REGION_MARKET_YEAR}</span>.
-              </>
-            ) : (
-              <>
-                {name} property market, <span>{REGION_MARKET_YEAR}</span>.
-              </>
-            )}
-          </h1>
-          {/* Direct answer sentence for "median house price {region}", kept as
-              plain prose so answer engines can quote it verbatim. */}
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            {market.medianHousePrice ? (
-              <>
-                The median house price in {name} is{" "}
-                <span className="font-medium text-ink">{formatPriceFull(market.medianHousePrice)}</span>, the
-                median of {market.pricedSuburbCount.toLocaleString()} suburb medians from verified government
-                sales data. Below: house prices in the busiest suburbs, then the fastest-growing, most affordable
-                and highest-priced suburbs in the {name} region of {stateName}.
-              </>
-            ) : (
-              <>
-                Suburb profiles, schools and listings across the {region.suburbCount.toLocaleString()} suburbs of
-                the {name} region, {stateName}. Verified sales data has not yet been published for these suburbs,
-                so this page shows no median prices until it is.
-              </>
-            )}
-          </p>
-        </div>
-      </section>
+      {/* Hero: the median answer sentence stays in the lead. */}
+      <PhotoHero
+        photo="street"
+        breadcrumbs={[
+          { label: "Regions", href: "/regions" },
+          { label: region.region },
+        ]}
+      >
+        <p className="text-sm text-ink-muted mb-5">
+          {regionEyebrow(region.region, region.state, region.suburbCount)}
+        </p>
+        <HeroTitle>
+          {hasPrices ? (
+            <>
+              {name} house prices, <span>{REGION_MARKET_YEAR}</span>.
+            </>
+          ) : (
+            <>
+              {name} property market, <span>{REGION_MARKET_YEAR}</span>.
+            </>
+          )}
+        </HeroTitle>
+        {/* Direct answer sentence for "median house price {region}", kept as
+            plain prose so answer engines can quote it verbatim. */}
+        <HeroLead>
+          {market.medianHousePrice ? (
+            <>
+              The median house price in {name} is{" "}
+              <span className="font-semibold text-ink">{formatPriceFull(market.medianHousePrice)}</span>, the
+              median of {market.pricedSuburbCount.toLocaleString()} suburb medians from verified government
+              sales data. Below: house prices in the busiest suburbs, then the fastest-growing, most affordable
+              and highest-priced suburbs in the {name} region of {stateName}.
+            </>
+          ) : (
+            <>
+              Suburb profiles, schools and listings across the {region.suburbCount.toLocaleString()} suburbs of
+              the {name} region, {stateName}. Verified sales data has not yet been published for these suburbs,
+              so this page shows no median prices until it is.
+            </>
+          )}
+        </HeroLead>
+      </PhotoHero>
 
       {/* Stat anchor row, only where the rollup found verified prices */}
       {hasPrices && (
-        <section className="bg-surface-raised border-b border-line">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-6">
-              Median house price in {name}
-            </h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <StatCard icon={<Home className="w-4 h-4" />} label="Median house" value={housePrice} sub="median of suburb medians" />
-              <StatCard icon={<Building2 className="w-4 h-4" />} label="Median unit" value={unitPrice} sub="median of suburb medians" />
-              <StatCard icon={<TrendingUp className="w-4 h-4" />} label="Typical annual growth" value={growth} sub="house prices, last 12 months" />
-              <StatCard icon={<DollarSign className="w-4 h-4" />} label="Median house rent" value={rent} sub="weekly, across tracked suburbs" />
-            </div>
+        <Band spacing="compact">
+          <SectionHeading size="md" title={<>Median house price in {name}</>} />
+          <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <StatCard icon={<Home className="w-4 h-4" />} label="Median house" value={housePrice} sub="median of suburb medians" />
+            <StatCard icon={<Building2 className="w-4 h-4" />} label="Median unit" value={unitPrice} sub="median of suburb medians" />
+            <StatCard icon={<TrendingUp className="w-4 h-4" />} label="Typical annual growth" value={growth} sub="house prices, last 12 months" />
+            <StatCard icon={<DollarSign className="w-4 h-4" />} label="Median house rent" value={rent} sub="weekly, across tracked suburbs" />
           </div>
-        </section>
+        </Band>
       )}
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-        {/* What the numbers show, built from the same rollup (sourced and
-            dated in its last paragraph). Describes; never recommends. */}
-        {narrative.length > 0 && (
-          <section className="max-w-3xl">
-            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-5">
-              What {name} house prices are doing
-            </h2>
-            <div className="space-y-4">
+      {/* What the numbers show, built from the same rollup (sourced and
+          dated in its last paragraph). Describes; never recommends. Only
+          present with a median, so it always follows the light stat band. */}
+      {narrative.length > 0 && (
+        <Band tone="dark" spacing="compact">
+          <div className="max-w-3xl">
+            <SectionHeading size="md" title={<>What {name} house prices are doing</>} />
+            <div className="mt-8 space-y-4">
               {narrative.map((p, i) => (
                 <p
                   key={i}
                   className={
                     i === narrative.length - 1
-                      ? "font-sans text-sm text-ink-subtle leading-relaxed"
-                      : "font-sans text-base sm:text-lg text-ink-muted leading-[1.7]"
+                      ? "text-sm text-ink-subtle leading-relaxed"
+                      : "text-base sm:text-lg text-ink-muted leading-[1.7]"
                   }
                 >
                   {p}
                 </p>
               ))}
             </div>
-          </section>
-        )}
+          </div>
+        </Band>
+      )}
 
-        {/* House prices by suburb: the busiest established suburbs. */}
-        <SuburbTable
-          as="h2"
-          heading={
-            market.busiest.length >= 20
-              ? `House prices by suburb: ${name}'s twenty busiest`
-              : `House prices by suburb in ${name}`
-          }
-          rows={market.busiest}
-          showGrowth
-          showSales
-        />
+      {/* The agents section closes this band so it is never empty: a region
+          with no verified prices has no tables, and may have too few
+          searched suburbs for that list. */}
+      <Band tone="quiet" spacing="compact">
+        <div className="space-y-14">
+          {/* House prices by suburb: the busiest established suburbs. */}
+          <SuburbTable
+            as="h2"
+            heading={
+              market.busiest.length >= 20
+                ? `House prices by suburb: ${name}'s twenty busiest`
+                : `House prices by suburb in ${name}`
+            }
+            rows={market.busiest}
+            showGrowth
+            showSales
+          />
 
-        {market.topGrowth.length >= 3 && (
-          <SuburbTable heading={`Fastest-growing ${name} suburbs`} rows={market.topGrowth} showGrowth />
-        )}
-        {market.mostAffordable.length >= 3 && (
-          <SuburbTable heading={`Most affordable ${name} suburbs`} rows={market.mostAffordable} showGrowth />
-        )}
-        {market.premium.length >= 3 && (
-          <SuburbTable heading={`${name}'s highest median prices`} rows={market.premium} />
-        )}
+          {market.topGrowth.length >= 3 && (
+            <SuburbTable heading={`Fastest-growing ${name} suburbs`} rows={market.topGrowth} showGrowth />
+          )}
+          {market.mostAffordable.length >= 3 && (
+            <SuburbTable heading={`Most affordable ${name} suburbs`} rows={market.mostAffordable} showGrowth />
+          )}
+          {market.premium.length >= 3 && (
+            <SuburbTable heading={`${name}'s highest median prices`} rows={market.premium} />
+          )}
 
-        {/* Most searched suburbs in the region (from the Search Console export) */}
-        <MostSearchedSuburbs label={name} suburbs={mostSearched} tone="ink" />
+          {/* Most searched suburbs in the region (from the Search Console export) */}
+          <MostSearchedSuburbs label={name} suburbs={mostSearched} tone="ink" />
 
-        {/* Real estate agents in the region: the regional "agents in" home
-            the valuation plan owes, as a section rather than a new URL. The
-            match request pre-sets the selling intent; the suburb is chosen
-            on the form. Listing real agents follows the suburb agents pages
-            once the directory holds them. */}
-        <section id="agents" className="scroll-mt-16 rounded-2xl border border-line bg-surface-raised p-6 sm:p-8">
-          <div className="grid gap-8 lg:grid-cols-2 lg:items-start">
-            <div>
-              <p className="text-[13px] font-sans text-ink-subtle mb-3">
-                Real estate agents in {name}
-              </p>
-              <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-4">
-                Selling in {name}? Get matched to one local agent
-              </h2>
-              <p className="font-sans text-base text-ink-muted leading-relaxed">
-                Tell us the suburb and when you plan to sell. We match you to one agent who sells in that part of{" "}
-                {name}, with recent sales there, and you decide whether to talk to them. Free for sellers.
-              </p>
-              {commission && market.medianHousePrice && (
-                <p className="mt-4 font-sans text-sm text-ink-muted leading-relaxed">
-                  Commission in {stateName} typically runs {commission.lowPct}% to {commission.highPct}%. On the{" "}
-                  {name} median of {formatPriceFull(market.medianHousePrice)} that is{" "}
-                  {formatPriceFull(commission.lowAmount)} to {formatPriceFull(commission.highAmount)}, before
-                  marketing. Rates are negotiable; see the{" "}
-                  <Link
-                    href={`/guides/real-estate-commission-${stateSlug}`}
-                    className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-                  >
-                    {region.state} commission guide
-                  </Link>
-                  .
+          {/* Real estate agents in the region: the regional "agents in" home
+              the valuation plan owes, as a section rather than a new URL. The
+              match request pre-sets the selling intent; the suburb is chosen
+              on the form. Listing real agents follows the suburb agents pages
+              once the directory holds them. */}
+          <section id="agents" className="scroll-mt-16 rounded-xl border border-line bg-surface-raised p-6 sm:p-8">
+            <div className="grid gap-8 lg:grid-cols-2 lg:items-start">
+              <div>
+                <p className="text-sm text-ink-subtle mb-3">
+                  Real estate agents in {name}
                 </p>
-              )}
+                <h2 className="text-2xl sm:text-3xl leading-tight tracking-[-0.02em] text-ink mb-4">
+                  Selling in {name}? Get matched to one local agent
+                </h2>
+                <p className="text-base text-ink-muted leading-relaxed">
+                  Tell us the suburb and when you plan to sell. We match you to one agent who sells in that part of{" "}
+                  {name}, with recent sales there, and you decide whether to talk to them. Free for sellers.
+                </p>
+                {commission && market.medianHousePrice && (
+                  <p className="mt-4 text-sm text-ink-muted leading-relaxed">
+                    Commission in {stateName} typically runs {commission.lowPct}% to {commission.highPct}%. On the{" "}
+                    {name} median of {formatPriceFull(market.medianHousePrice)} that is{" "}
+                    {formatPriceFull(commission.lowAmount)} to {formatPriceFull(commission.highAmount)}, before
+                    marketing. Rates are negotiable; see the{" "}
+                    <Link
+                      href={`/guides/real-estate-commission-${stateSlug}`}
+                      className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
+                    >
+                      {region.state} commission guide
+                    </Link>
+                    .
+                  </p>
+                )}
+              </div>
+              <Suspense fallback={null}>
+                <MatchAgent initialIntent="selling" source={`region-agents-${slug}`} compact />
+              </Suspense>
             </div>
-            <Suspense fallback={null}>
-              <MatchAgent initialIntent="selling" source={`region-agents-${slug}`} compact />
-            </Suspense>
-          </div>
-        </section>
-
-        {/* Visible FAQ backing the FAQPage schema */}
-        {faqs.length > 0 && (
-          <section>
-            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-6">
-              {name} property market questions
-            </h2>
-            <dl className="divide-y divide-line border-y border-line">
-              {faqs.map((faq) => (
-                <div key={faq.question} className="py-5">
-                  <dt className="font-display text-lg text-ink leading-snug mb-2">{faq.question}</dt>
-                  <dd className="font-sans text-base text-ink-muted leading-relaxed">{faq.answer}</dd>
-                </div>
-              ))}
-            </dl>
           </section>
-        )}
+        </div>
+      </Band>
 
-        {/* Every suburb in the region, medians only where the source is trusted */}
-        <section>
-          <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-2">
-            Suburbs in {region.region}
-          </h2>
-          <p className="font-sans text-sm text-ink-muted mb-6">
-            All {suburbs.length.toLocaleString()} suburbs in the {region.region} region, {stateName}. Medians are
-            shown only where the suburb&rsquo;s own page publishes one.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {suburbs.map((suburb) => {
-              // Published figures: getRegionSuburbs has applied the suburb pages' rule.
-              const house = suburb.medianHousePrice > 0 ? formatPriceFull(suburb.medianHousePrice) : "–";
-              const unit = suburb.medianUnitPrice > 0 ? formatPriceFull(suburb.medianUnitPrice) : "–";
-              return (
-                <Link
-                  key={suburb.slug}
-                  href={`/suburbs/${suburb.slug}`}
-                  className="group rounded-xl border border-line bg-surface-raised px-4 py-3 hover:border-primary/40 hover:shadow-sm transition-all"
-                >
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span className="font-sans text-sm font-medium text-ink group-hover:text-primary transition-colors truncate">
-                      {suburb.name}
-                      <span className="text-xs text-ink-subtle font-normal ml-1.5">{suburb.postcode}</span>
-                    </span>
-                    <span className="font-display text-sm text-ink whitespace-nowrap">{house}</span>
+      {/* The suburb list closes this band, so it is never empty either. */}
+      <Band spacing="compact">
+        <div className="space-y-14">
+          {/* Visible FAQ backing the FAQPage schema */}
+          {faqs.length > 0 && (
+            <section>
+              <SectionHeading size="md" title={<>{name} property market questions</>} />
+              <dl className="mt-8 divide-y divide-line border-y border-line">
+                {faqs.map((faq) => (
+                  <div key={faq.question} className="py-5">
+                    <dt className="text-lg font-semibold text-ink leading-snug mb-2">{faq.question}</dt>
+                    <dd className="text-base text-ink-muted leading-relaxed">{faq.answer}</dd>
                   </div>
-                  <p className="text-xs font-sans text-ink-subtle mt-1">Units {unit}</p>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
+                ))}
+              </dl>
+            </section>
+          )}
 
-        {/* Listings, where any are on file */}
-        {properties.length > 0 && (
+          {/* Every suburb in the region, medians only where the source is trusted */}
           <section>
-            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-2">
-              Houses for sale in {name}
-            </h2>
-            <p className="font-sans text-sm text-ink-muted mb-6">Active listings across the {region.region} region.</p>
-            <PropertyGrid properties={properties} />
+            <SectionHeading size="md" title={<>Suburbs in {region.region}</>} />
+            <p className="mt-3 text-sm text-ink-muted mb-8">
+              All {suburbs.length.toLocaleString()} suburbs in the {region.region} region, {stateName}. Medians are
+              shown only where the suburb&rsquo;s own page publishes one.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {suburbs.map((suburb) => {
+                // Published figures: getRegionSuburbs has applied the suburb pages' rule.
+                const house = suburb.medianHousePrice > 0 ? formatPriceFull(suburb.medianHousePrice) : "–";
+                const unit = suburb.medianUnitPrice > 0 ? formatPriceFull(suburb.medianUnitPrice) : "–";
+                return (
+                  <Link
+                    key={suburb.slug}
+                    href={`/suburbs/${suburb.slug}`}
+                    className="group rounded-xl border border-line bg-surface-raised px-4 py-3 hover:border-ink transition-colors"
+                  >
+                    <div className="flex items-baseline justify-between gap-3">
+                      <span className="text-sm font-medium text-ink group-hover:text-primary transition-colors truncate">
+                        {suburb.name}
+                        <span className="text-xs text-ink-subtle font-normal ml-1.5">{suburb.postcode}</span>
+                      </span>
+                      <span className="text-sm font-semibold text-ink whitespace-nowrap">{house}</span>
+                    </div>
+                    <p className="text-xs text-ink-subtle mt-1">Units {unit}</p>
+                  </Link>
+                );
+              })}
+            </div>
           </section>
-        )}
+        </div>
+      </Band>
 
-        {/* Cross-links */}
-        <section className="rounded-2xl border border-line bg-surface-warm p-6">
-          <p className="text-[13px] font-sans text-ink-subtle mb-3">Keep exploring</p>
-          <div className="flex flex-wrap gap-2">
-            <Link href={`/regions/${slug}/schools`} className={linkChip}>
-              Schools in {region.region}
-            </Link>
-            {capital && (
-              <Link href={`/property-market/${capital.slug}`} className={linkChip}>
-                {capital.name} house prices
-              </Link>
-            )}
-            <Link href={`/market-reports/${stateSlug}`} className={linkChip}>
-              {region.state} state market report
-            </Link>
-            <Link href={stateRankingLink(region.state).href} className={linkChip}>
-              {stateRankingLink(region.state).label}
-            </Link>
-            <Link href="/regions" className={linkChip}>
-              All regions
-            </Link>
+      <Band tone="quiet" spacing="compact">
+        <div className="space-y-14">
+          {/* Listings, where any are on file */}
+          {properties.length > 0 && (
+            <section>
+              <SectionHeading size="md" title={<>Houses for sale in {name}</>} />
+              <p className="mt-3 text-sm text-ink-muted mb-8">Active listings across the {region.region} region.</p>
+              <PropertyGrid properties={properties} />
+            </section>
+          )}
+
+          <div>
+            {/* Cross-links */}
+            <section>
+              <p className="text-sm text-ink-subtle mb-3">Keep exploring</p>
+              <div className="flex flex-wrap gap-2">
+                <Link href={`/regions/${slug}/schools`} className={linkChip}>
+                  Schools in {region.region}
+                </Link>
+                {capital && (
+                  <Link href={`/property-market/${capital.slug}`} className={linkChip}>
+                    {capital.name} house prices
+                  </Link>
+                )}
+                <Link href={`/market-reports/${stateSlug}`} className={linkChip}>
+                  {region.state} state market report
+                </Link>
+                <Link href={stateRankingLink(region.state).href} className={linkChip}>
+                  {stateRankingLink(region.state).label}
+                </Link>
+                <Link href="/regions" className={linkChip}>
+                  All regions
+                </Link>
+              </div>
+            </section>
+
+            {/* Source note */}
+            <section className="mt-10 max-w-3xl border-t border-line pt-6 text-sm text-ink-muted">
+              <p className="text-sm font-semibold text-ink mb-2">Data source</p>
+              <p className="leading-relaxed">
+                Figures are aggregated from suburb-level medians sourced from state valuers-general, state government
+                sales records and the ABS. Only suburbs whose own page publishes a median contribute to price figures (
+                {market.pricedSuburbCount.toLocaleString()} of {market.suburbCount.toLocaleString()} tracked{" "}
+                {region.region}
+                {" suburbs): "}a verified sales source, and at least five recorded sales where the count is reported.
+                A 12-month change is shown where the state&rsquo;s sales feed measures one, and left out beyond
+                25%.{" "}
+                <Link
+                  href="/methodology#median-prices"
+                  className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
+                >
+                  Full methodology →
+                </Link>
+              </p>
+            </section>
           </div>
-        </section>
-
-        {/* Source note */}
-        <section className="rounded-2xl border border-line bg-surface-warm p-5 text-sm font-sans text-ink-muted">
-          <p className="text-[13px] text-ink-subtle mb-2">Data source</p>
-          <p className="leading-relaxed">
-            Figures are aggregated from suburb-level medians sourced from state valuers-general, state government
-            sales records and the ABS. Only suburbs whose own page publishes a median contribute to price figures (
-            {market.pricedSuburbCount.toLocaleString()} of {market.suburbCount.toLocaleString()} tracked{" "}
-            {region.region}
-            {" suburbs): "}a verified sales source, and at least five recorded sales where the count is reported.
-            A 12-month change is shown where the state&rsquo;s sales feed measures one, and left out beyond
-            25%.{" "}
-            <Link
-              href="/methodology#median-prices"
-              className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
-            >
-              Full methodology →
-            </Link>
-          </p>
-        </section>
-      </div>
+        </div>
+      </Band>
 
       {/* Appraisal entry: region-price readers are one step from "what's mine
           worth". Suburb first, that suburb's median, then the appraisal form. */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12">
+      <Band spacing="compact">
         <div className="max-w-3xl">
           <HomeValueAppraisal />
         </div>
-      </section>
+      </Band>
 
       {/* Seller funnel exit */}
       <ExpertCTA

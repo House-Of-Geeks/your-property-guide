@@ -19,13 +19,13 @@ export function StatCard({
   sub?: string;
 }) {
   return (
-    <div className="rounded-2xl border border-line bg-surface-raised p-6">
-      <div className="flex items-center gap-2 mb-3 text-ink-subtle">
+    <div className="tone-light rounded-xl border border-line bg-surface-raised p-6">
+      <div className="flex items-center gap-2 mb-4 text-ink-subtle">
         {icon}
-        <p className="text-[13px] font-sans">{label}</p>
+        <p className="text-sm">{label}</p>
       </div>
-      <p className="font-display text-3xl text-ink leading-none">{value}</p>
-      {sub && <p className="mt-2 text-xs font-sans text-ink-subtle">{sub}</p>}
+      <p className="text-3xl sm:text-4xl font-bold text-ink leading-none tracking-[-0.03em]">{value}</p>
+      {sub && <p className="mt-3 text-sm text-ink-subtle">{sub}</p>}
     </div>
   );
 }
@@ -47,8 +47,12 @@ export function SuburbTable({
   const Heading = as ?? "h3";
   return (
     <section>
-      <Heading className={`font-display ${as === "h2" ? "text-2xl sm:text-3xl" : "text-2xl"} text-ink mb-4 leading-tight`}>{heading}</Heading>
-      <div className="overflow-x-auto rounded-2xl border border-line bg-surface-raised">
+      <Heading
+        className={`${as === "h2" ? "text-3xl sm:text-4xl leading-[1.1] tracking-[-0.025em] mb-6" : "text-2xl leading-tight mb-4"} text-ink`}
+      >
+        {heading}
+      </Heading>
+      <div className="tone-light overflow-x-auto rounded-xl border border-line bg-surface-raised">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-surface-warm border-b border-line">

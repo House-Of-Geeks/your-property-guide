@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MapPin, Home, TrendingUp } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { unstable_cache } from "next/cache";
 import { getAllStatesWithStats } from "@/lib/services/suburb-rankings-service";
 import { NOT_PLACES_VERSION } from "@/lib/non-localities";
 import { formatPrice } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 
 // The cards query the DB. As a static ISR page this served its build-time
 // render (the build is DB-free, so no cards) for up to a day after every
@@ -50,58 +50,51 @@ export default async function StatesPage() {
       />
       <BreadcrumbJsonLd items={[{ name: "States", url: "/states" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "States" }]} />
-          </div>
-
-          <p className="text-[13px] font-sans text-ink-subtle mb-5">
-            All 8 states &amp; territories
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Australia, <span>one state at a time</span>
-          </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            Suburb profiles, median prices, growth trends, and local market data for
-            every state and territory.
-          </p>
-        </div>
-      </section>
+      <PhotoHero photo="market" breadcrumbs={[{ label: "States" }]}>
+        <p className="text-sm text-ink-muted mb-5">
+          All 8 states &amp; territories
+        </p>
+        <HeroTitle>
+          Australia, <span>one state at a time</span>
+        </HeroTitle>
+        <HeroLead>
+          Suburb profiles, median prices, growth trends, and local market data for
+          every state and territory.
+        </HeroLead>
+      </PhotoHero>
 
       {/* State cards */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <Band tone="quiet" spacing="compact">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {states.map((state) => (
             <Link
               key={state.state}
               href={`/states/${state.state.toLowerCase()}`}
-              className="group rounded-2xl border border-line bg-surface-raised p-6 hover:border-primary/40 hover:shadow-md transition-all"
+              className="group flex flex-col rounded-xl border border-line bg-surface-raised p-6 hover:border-ink transition-colors"
             >
-              <p className="text-[13px] font-sans text-ink-subtle mb-2">
+              <p className="text-sm text-ink-subtle mb-2">
                 {state.state}
               </p>
-              <h2 className="font-display text-xl text-ink group-hover:text-primary transition-colors mb-5 leading-tight">
+              <h2 className="text-2xl text-ink leading-tight tracking-[-0.02em] group-hover:text-primary transition-colors mb-5">
                 {state.stateName}
               </h2>
 
               <div className="space-y-2.5">
-                <div className="flex items-center gap-2 text-sm font-sans text-ink-muted">
+                <div className="flex items-center gap-2 text-sm text-ink-muted">
                   <MapPin className="w-4 h-4 text-ink-subtle shrink-0" />
                   <span>
-                    <strong className="text-ink font-display text-base">
+                    <strong className="text-ink font-semibold text-base">
                       {state.suburbCount.toLocaleString()}
                     </strong>{" "}
                     suburbs
                   </span>
                 </div>
                 {state.avgMedianHousePrice && (
-                  <div className="flex items-center gap-2 text-sm font-sans text-ink-muted">
+                  <div className="flex items-center gap-2 text-sm text-ink-muted">
                     <Home className="w-4 h-4 text-ink-subtle shrink-0" />
                     <span>
                       Avg{" "}
-                      <strong className="text-ink font-display text-base">
+                      <strong className="text-ink font-semibold text-base">
                         {formatPrice(state.avgMedianHousePrice)}
                       </strong>{" "}
                       median
@@ -109,14 +102,14 @@ export default async function StatesPage() {
                   </div>
                 )}
                 {state.avgAnnualGrowth != null && (
-                  <div className="flex items-center gap-2 text-sm font-sans text-ink-muted">
+                  <div className="flex items-center gap-2 text-sm text-ink-muted">
                     <TrendingUp className="w-4 h-4 text-ink-subtle shrink-0" />
                     <span>
                       <strong
                         className={
                           state.avgAnnualGrowth >= 0
-                            ? "text-emerald-700 font-display text-base"
-                            : "text-red-700 font-display text-base"
+                            ? "text-emerald-700 font-semibold text-base"
+                            : "text-red-700 font-semibold text-base"
                         }
                       >
                         {state.avgAnnualGrowth >= 0 ? "+" : ""}
@@ -128,13 +121,13 @@ export default async function StatesPage() {
                 )}
               </div>
 
-              <p className="font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors mt-5 inline-block">
+              <p className="mt-auto pt-6 inline-flex items-center gap-1.5 text-base font-semibold text-ink group-hover:text-primary transition-colors">
                 Explore {state.state} →
               </p>
             </Link>
           ))}
         </div>
-      </div>
+      </Band>
     </>
   );
 }

@@ -543,7 +543,8 @@ describe("/property-valuation title", () => {
   it("keeps the long form as the H1 and the WebPage name", () => {
     expect(headline).toBe("Property Valuation in Australia: Appraisal vs Valuation vs Online Estimate (2026)");
     expect(src).toContain("name: HEADLINE,");
-    const h1 = (src.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? "").replace(/<[^>]+>|\{" "\}/g, " ").replace(/\s+/g, " ").trim();
+    // The H1 is a literal <h1> or the premium <HeroTitle> (which renders one).
+    const h1 = (src.match(/<(h1|HeroTitle)\b[^>]*>([\s\S]*?)<\/\1>/)?.[2] ?? "").replace(/<[^>]+>|\{" "\}/g, " ").replace(/\s+/g, " ").trim();
     expect(h1.toLowerCase()).toBe(headline.toLowerCase());
   });
 });

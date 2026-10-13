@@ -19,6 +19,7 @@ import { SuburbPriceTrend } from "@/components/suburb/SuburbPriceTrend";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { Button } from "@/components/ui";
+import { BUTTON_PRIMARY, Band, SectionHeading } from "@/components/premium";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { isThinProfile } from "@/lib/suburb-indexability";
 import { getPropertiesBySuburb } from "@/lib/services/property-service";
@@ -125,7 +126,9 @@ export async function generateMetadata({ params }: SuburbDetailPageProps): Promi
 
 
 // Shared section rhythm. Sections clear the sticky header (64px / 72px) and
-// the section bar under it when jumped to.
+// the section bar under it when jumped to. The page runs in premium bands
+// (BRAND.md section 11): the photo hero, then light and quiet bands; the
+// data, maps and charts stay on light bands.
 const SECTION = "scroll-mt-32 sm:scroll-mt-36";
 const H2 = "font-display text-[1.75rem] sm:text-3xl font-bold text-ink leading-tight tracking-[-0.02em]";
 const H2_SMALL = "font-display text-2xl font-bold text-ink leading-tight tracking-[-0.02em]";
@@ -244,7 +247,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         suburb={suburb}
         capitalCity={capitalCity}
         aside={glance.length > 0 ? (
-          <div className="rounded-xl border border-line">
+          <div className="tone-light rounded-xl border border-line bg-white">
             <p className="px-5 pt-4 pb-3 text-[15px] font-semibold text-ink">
               {suburb.name} at a glance
             </p>
@@ -289,7 +292,9 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 <p className="mt-3 font-sans text-base text-ink-muted leading-relaxed">
                   {houseGrowth !== 0 && (
                     <>
-                      <span className={`font-semibold ${houseGrowth >= 0 ? "text-success" : "text-danger"}`}>
+                      {/* text-success / text-danger take their light
+                          values inside the hero's .tone-dark scope. */}
+                      <span className={`font-semibold ${houseGrowth > 0 ? "text-success" : "text-danger"}`}>
                         {formatPercentage(houseGrowth)}
                       </span>
                       {" over the past year. "}
@@ -340,10 +345,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             for a free appraisal from a local agent.
           </p>
           <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-4">
-            <Link
-              href={guideHref}
-              className="inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white px-5 py-3 font-semibold transition-colors"
-            >
+            <Link href={guideHref} className={`${BUTTON_PRIMARY} justify-center`}>
               Get the free selling guide
               <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
@@ -356,309 +358,310 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
       <SuburbSectionNav links={sectionLinks} />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-        {/* Prices: the reading of the median, the trend where growth is
-            measured, what it means for each side, and the rent. */}
-        <section id="market" className={SECTION}>
-          <h2 className={H2}>
-            {priceTrusted ? `House prices in ${suburb.name}` : `Rent in ${suburb.name}`}
-          </h2>
-          <div className={`mt-5 grid gap-8 lg:gap-12 ${hasPriceStory ? "lg:grid-cols-12" : ""}`}>
-            {hasPriceStory && (
-              <div className="lg:col-span-7 space-y-6">
-                {marketSummary && <p className={PROSE}>{marketSummary}</p>}
-                {(sellerView || buyerView) && (
-                  <div className="grid sm:grid-cols-2 gap-6 border-t border-line pt-6">
-                    {sellerView && (
-                      <div>
-                        <h3 className="font-sans text-base font-bold text-ink">For sellers</h3>
-                        <p className="mt-1.5 font-sans text-[15px] text-ink-muted leading-relaxed">{sellerView}</p>
-                        <p className="mt-2 text-sm">
-                          <Link href="/real-estate-commission-calculator" className={TEXT_LINK}>
-                            Work out your selling costs
-                          </Link>
-                        </p>
-                      </div>
-                    )}
-                    {buyerView && (
-                      <div>
-                        <h3 className="font-sans text-base font-bold text-ink">For buyers</h3>
-                        <p className="mt-1.5 font-sans text-[15px] text-ink-muted leading-relaxed">{buyerView}</p>
-                        <p className="mt-2 text-sm">
-                          <Link href="/borrowing-power-calculator" className={TEXT_LINK}>
-                            See what you can borrow
-                          </Link>
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
-
-            <div className={hasPriceStory ? "lg:col-span-5 space-y-6" : "max-w-xl space-y-6"}>
-              {/* Five-year trajectory, same trust gate as the median. */}
-              {priceTrusted && suburb.stats.medianHousePrice > 0 && suburb.stats.annualGrowthHouse !== 0 && (
-                <SuburbPriceTrend
-                  medianHousePrice={suburb.stats.medianHousePrice}
-                  annualGrowthHouse={suburb.stats.annualGrowthHouse}
-                  suburbName={suburb.name}
-                />
+      {/* Prices: the reading of the median, the trend where growth is
+          measured, what it means for each side, and the rent. */}
+      <Band id="market" spacing="compact" className={SECTION}>
+        <SectionHeading
+          size="md"
+          title={priceTrusted ? `House prices in ${suburb.name}` : `Rent in ${suburb.name}`}
+        />
+        <div className={`mt-8 grid gap-8 lg:gap-12 ${hasPriceStory ? "lg:grid-cols-12" : ""}`}>
+          {hasPriceStory && (
+            <div className="lg:col-span-7 space-y-6">
+              {marketSummary && <p className={PROSE}>{marketSummary}</p>}
+              {(sellerView || buyerView) && (
+                <div className="grid sm:grid-cols-2 gap-6 border-t border-line pt-6">
+                  {sellerView && (
+                    <div>
+                      <h3 className="font-sans text-base font-bold text-ink">For sellers</h3>
+                      <p className="mt-1.5 font-sans text-[15px] text-ink-muted leading-relaxed">{sellerView}</p>
+                      <p className="mt-2 text-sm">
+                        <Link href="/real-estate-commission-calculator" className={TEXT_LINK}>
+                          Work out your selling costs
+                        </Link>
+                      </p>
+                    </div>
+                  )}
+                  {buyerView && (
+                    <div>
+                      <h3 className="font-sans text-base font-bold text-ink">For buyers</h3>
+                      <p className="mt-1.5 font-sans text-[15px] text-ink-muted leading-relaxed">{buyerView}</p>
+                      <p className="mt-2 text-sm">
+                        <Link href="/borrowing-power-calculator" className={TEXT_LINK}>
+                          See what you can borrow
+                        </Link>
+                      </p>
+                    </div>
+                  )}
+                </div>
               )}
-              {/* The rent, unless the panel at the top already shows it. */}
-              <div>
-                {!inGlance.has("rent") && (
-                  <dl className="grid grid-cols-2 border-y border-line">
-                    {(suburb.stats.medianRentAll ?? 0) > 0 && !suburb.stats.medianRentHouse && !suburb.stats.medianRentUnit ? (
-                      // WA bond data: one median across all dwellings, no split.
-                      <>
-                        <Figure label="Weekly rent (all dwellings)" value={`$${suburb.stats.medianRentAll}/wk`} />
-                        <Figure label="House or unit rent" value="Not published" divided />
-                      </>
-                    ) : (
-                      <>
-                        <Figure label="Weekly rent (house)" value={suburb.stats.medianRentHouse ? `$${suburb.stats.medianRentHouse}/wk` : "–"} />
-                        <Figure label="Weekly rent (unit)" value={suburb.stats.medianRentUnit ? `$${suburb.stats.medianRentUnit}/wk` : "–"} divided />
-                      </>
-                    )}
-                  </dl>
-                )}
-                <DataFreshnessNote
-                  label="Rental"
-                  asOf={suburb.dataFreshness?.rentalAsOf ?? null}
-                  source={rentalSourceLabel(suburb.dataFreshness?.rentalSource, suburb.postcode) ?? suburb.dataFreshness?.rentalSource ?? undefined}
-                />
-                {availability["rental-market"] && (
-                  <div className="mt-3">
-                    <Link
-                      href={`/suburbs/${suburb.slug}/rental-market`}
-                      className="inline-flex items-center gap-1 text-sm font-semibold text-ink hover:text-primary"
-                    >
-                      The full {suburb.name} rental market <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                    </Link>
-                  </div>
-                )}
-              </div>
+            </div>
+          )}
+
+          <div className={hasPriceStory ? "lg:col-span-5 space-y-6" : "max-w-xl space-y-6"}>
+            {/* Five-year trajectory, same trust gate as the median. */}
+            {priceTrusted && suburb.stats.medianHousePrice > 0 && suburb.stats.annualGrowthHouse !== 0 && (
+              <SuburbPriceTrend
+                medianHousePrice={suburb.stats.medianHousePrice}
+                annualGrowthHouse={suburb.stats.annualGrowthHouse}
+                suburbName={suburb.name}
+              />
+            )}
+            {/* The rent, unless the panel at the top already shows it. */}
+            <div>
+              {!inGlance.has("rent") && (
+                <dl className="grid grid-cols-2 border-y border-line">
+                  {(suburb.stats.medianRentAll ?? 0) > 0 && !suburb.stats.medianRentHouse && !suburb.stats.medianRentUnit ? (
+                    // WA bond data: one median across all dwellings, no split.
+                    <>
+                      <Figure label="Weekly rent (all dwellings)" value={`$${suburb.stats.medianRentAll}/wk`} />
+                      <Figure label="House or unit rent" value="Not published" divided />
+                    </>
+                  ) : (
+                    <>
+                      <Figure label="Weekly rent (house)" value={suburb.stats.medianRentHouse ? `$${suburb.stats.medianRentHouse}/wk` : "–"} />
+                      <Figure label="Weekly rent (unit)" value={suburb.stats.medianRentUnit ? `$${suburb.stats.medianRentUnit}/wk` : "–"} divided />
+                    </>
+                  )}
+                </dl>
+              )}
+              <DataFreshnessNote
+                label="Rental"
+                asOf={suburb.dataFreshness?.rentalAsOf ?? null}
+                source={rentalSourceLabel(suburb.dataFreshness?.rentalSource, suburb.postcode) ?? suburb.dataFreshness?.rentalSource ?? undefined}
+              />
+              {availability["rental-market"] && (
+                <div className="mt-3">
+                  <Link
+                    href={`/suburbs/${suburb.slug}/rental-market`}
+                    className="inline-flex items-center gap-1 text-sm font-semibold text-ink hover:text-primary"
+                  >
+                    The full {suburb.name} rental market <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </Band>
 
       {/* The one appraisal form, straight after the prices: the moment a
           reader has a number for the suburb and wants one for their home. */}
-      <section id="appraisal" className={`${SECTION} bg-surface-warm border-y border-line`}>
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 py-10 sm:py-14">
+      <Band id="appraisal" tone="quiet" spacing="compact" className={SECTION}>
+        <div className="mx-auto max-w-3xl">
           <SuburbAppraisalCTA suburbName={suburb.name} suburbSlug={suburb.slug} />
         </div>
-      </section>
+      </Band>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-14 sm:space-y-20">
-        {/* What it's like to live here: the curated description where there
-            is one, else the narrative built from the suburb's own data, and
-            the lifestyle summary woven from climate, schools and walkability. */}
-        <section id="about" className={SECTION}>
-          <div className="max-w-3xl">
-            <h2 className={H2}>What to know about {suburb.name}</h2>
-            <div className="mt-5 space-y-4">
-              {stubDescription
-                ? intro.map((para, i) => (
-                    <p key={i} className="font-sans text-[17px] sm:text-xl text-ink leading-[1.65]">
-                      {para}
+      <Band spacing="compact">
+        <div className="space-y-14 sm:space-y-20">
+          {/* What it's like to live here: the curated description where there
+              is one, else the narrative built from the suburb's own data, and
+              the lifestyle summary woven from climate, schools and walkability. */}
+          <section id="about" className={SECTION}>
+            <div className="max-w-3xl">
+              <SectionHeading size="md" title={<>What to know about {suburb.name}</>} />
+              <div className="mt-6 space-y-4">
+                {stubDescription
+                  ? intro.map((para, i) => (
+                      <p key={i} className="font-sans text-[17px] sm:text-xl text-ink leading-[1.65]">
+                        {para}
+                      </p>
+                    ))
+                  : (
+                    <p className="font-sans text-[17px] sm:text-xl text-ink leading-[1.65]">
+                      {suburb.description}
                     </p>
-                  ))
-                : (
-                  <p className="font-sans text-[17px] sm:text-xl text-ink leading-[1.65]">
-                    {suburb.description}
-                  </p>
-                )}
-            </div>
-            {lifestyleSummary.length > 0 && (
-              <div id="lifestyle" className={`mt-10 ${SECTION}`}>
-                <h2 className={H2}>What it&rsquo;s like to live here</h2>
-                <div className="mt-5 space-y-4">
-                  {lifestyleSummary.map((para, i) => (
-                    <p key={i} className={PROSE}>
-                      {para}
-                    </p>
-                  ))}
-                </div>
+                  )}
               </div>
-            )}
-          </div>
-        </section>
+              {lifestyleSummary.length > 0 && (
+                <div id="lifestyle" className={`mt-12 ${SECTION}`}>
+                  <h2 className={H2}>What it&rsquo;s like to live here</h2>
+                  <div className="mt-5 space-y-4">
+                    {lifestyleSummary.map((para, i) => (
+                      <p key={i} className={PROSE}>
+                        {para}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
 
-        {/* Schools and location: side by side on a wide screen. */}
-        <div className="grid lg:grid-cols-12 gap-14 lg:gap-12">
-          {hasSchools && (
-            <section id="schools" className={`${SECTION} lg:col-span-7`}>
+          {/* Schools and location: side by side on a wide screen. */}
+          <div className="grid lg:grid-cols-12 gap-14 lg:gap-12 border-t border-line pt-12 sm:pt-16">
+            {hasSchools && (
+              <section id="schools" className={`${SECTION} lg:col-span-7`}>
+                <div>
+                  <h2 className={H2}>Schools in {suburb.name}</h2>
+                  <div className="mt-4">
+                    <SuburbSchools suburbName={suburb.name} schools={suburb.schools} />
+                  </div>
+                  <div className="mt-4">
+                    <Link
+                      href={`/suburbs/${suburb.slug}/schools`}
+                      className="inline-flex items-center gap-1 text-sm font-semibold text-ink hover:text-primary"
+                    >
+                      All {suburb.schools.length} schools, with catchments <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                    </Link>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* Location: the map loads only when asked for. */}
+            <section id="location" className={`${SECTION} ${hasSchools ? "lg:col-span-5" : "lg:col-span-8"}`}>
               <div>
-                <h2 className={H2}>Schools in {suburb.name}</h2>
-                <div className="mt-4">
-                  <SuburbSchools suburbName={suburb.name} schools={suburb.schools} />
+                <h2 className={H2}>Location</h2>
+                <div className="mt-5">
+                  <SuburbMap name={suburb.name} state={suburb.state} postcode={suburb.postcode} />
                 </div>
-                <div className="mt-4">
-                  <Link
-                    href={`/suburbs/${suburb.slug}/schools`}
-                    className="inline-flex items-center gap-1 text-sm font-semibold text-ink hover:text-primary"
-                  >
-                    All {suburb.schools.length} schools, with catchments <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                  </Link>
-                </div>
+                {suburb.stats.walkScore !== null && (
+                  <div id="walkability" className={`mt-8 ${SECTION}`}>
+                    <h3 className="font-display text-xl font-bold text-ink mb-3">Walkability</h3>
+                    <SuburbWalkability
+                      walkScore={suburb.stats.walkScore}
+                      transitScore={suburb.stats.transitScore}
+                      bikeScore={suburb.stats.bikeScore}
+                    />
+                    <DataFreshnessNote
+                      label="Walkability"
+                      asOf={suburb.dataFreshness?.walkabilityAsOf ?? null}
+                      source="OpenStreetMap"
+                    />
+                  </div>
+                )}
+                {hasLocationExtras && (
+                  <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-1 gap-6">
+                    {suburb.amenities.length > 0 && (
+                      <div>
+                        <h3 className="font-display text-xl font-bold text-ink mb-3">Amenities</h3>
+                        <ul className="flex flex-wrap gap-2">
+                          {suburb.amenities.map((a) => (
+                            <li key={a} className="rounded-md border border-line px-2.5 py-1 text-sm text-ink-muted">{a}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {suburb.transportLinks.length > 0 && (
+                      <div>
+                        <h3 className="font-display text-xl font-bold text-ink mb-3">Transport</h3>
+                        <ul className="flex flex-wrap gap-2">
+                          {suburb.transportLinks.map((t) => (
+                            <li key={t} className="rounded-md border border-line px-2.5 py-1 text-sm text-ink-muted">{t}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </section>
-          )}
+          </div>
 
-          {/* Location: the map loads only when asked for. */}
-          <section id="location" className={`${SECTION} ${hasSchools ? "lg:col-span-5" : "lg:col-span-8"}`}>
-            <div>
-              <h2 className={H2}>Location</h2>
-              <div className="mt-5">
-                <SuburbMap name={suburb.name} state={suburb.state} postcode={suburb.postcode} />
-              </div>
-              {suburb.stats.walkScore !== null && (
-                <div id="walkability" className={`mt-8 ${SECTION}`}>
-                  <h3 className="font-display text-xl font-bold text-ink mb-3">Walkability</h3>
-                  <SuburbWalkability
-                    walkScore={suburb.stats.walkScore}
-                    transitScore={suburb.stats.transitScore}
-                    bikeScore={suburb.stats.bikeScore}
-                  />
-                  <DataFreshnessNote
-                    label="Walkability"
-                    asOf={suburb.dataFreshness?.walkabilityAsOf ?? null}
-                    source="OpenStreetMap"
-                  />
-                </div>
-              )}
-              {hasLocationExtras && (
-                <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-1 gap-6">
-                  {suburb.amenities.length > 0 && (
-                    <div>
-                      <h3 className="font-display text-xl font-bold text-ink mb-3">Amenities</h3>
-                      <ul className="flex flex-wrap gap-2">
-                        {suburb.amenities.map((a) => (
-                          <li key={a} className="rounded-md border border-line px-2.5 py-1 text-sm text-ink-muted">{a}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {suburb.transportLinks.length > 0 && (
-                    <div>
-                      <h3 className="font-display text-xl font-bold text-ink mb-3">Transport</h3>
-                      <ul className="flex flex-wrap gap-2">
-                        {suburb.transportLinks.map((t) => (
-                          <li key={t} className="rounded-md border border-line px-2.5 py-1 text-sm text-ink-muted">{t}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </section>
-        </div>
-
-        {/* The data sections, compact and side by side on a wide screen:
-            who lives here, the investment figures, safety, hazard, weather. */}
-        <div className="grid lg:grid-cols-2 gap-x-12 gap-y-14 border-t border-line pt-12 sm:pt-16">
-          {/* Census data is independent of the sales feed, so always shown. */}
-          <section id="demographics" className={SECTION}>
-            <h2 className={H2_SMALL}>Demographics</h2>
-            {demographicsSummary && (
-              <p className="mt-3 font-sans text-[15px] sm:text-base text-ink-muted leading-relaxed">
-                {demographicsSummary}
-              </p>
-            )}
-            <dl className={`mt-4 grid grid-cols-2 ${demographicFigures.length === 4 ? "sm:grid-cols-4" : "sm:grid-cols-3"} border-t border-line`}>
-              {demographicFigures.map((f) => (
-                <div key={f.label} className="py-3 pr-3 border-b border-line">
-                  <dt className="text-[13px] text-ink-muted">{f.label}</dt>
-                  <dd className="mt-1 font-display text-xl font-bold text-ink leading-none">{f.value}</dd>
-                </div>
-              ))}
-            </dl>
-            <DataFreshnessNote
-              label="Demographics"
-              asOf={suburb.dataFreshness?.censusAsOf ?? null}
-              source="ABS 2021 Census"
-            />
-          </section>
-
-          {(suburb.stats.medianHousePrice > 0 || suburb.stats.medianUnitPrice > 0) && (
-            <section id="investment" className={SECTION}>
-              <h2 className={H2_SMALL}>Investment overview</h2>
-              {investorView && (
+          {/* The data sections, compact and side by side on a wide screen:
+              who lives here, the investment figures, safety, hazard, weather. */}
+          <div className="grid lg:grid-cols-2 gap-x-12 gap-y-14 border-t border-line pt-12 sm:pt-16">
+            {/* Census data is independent of the sales feed, so always shown. */}
+            <section id="demographics" className={SECTION}>
+              <h2 className={H2_SMALL}>Demographics</h2>
+              {demographicsSummary && (
                 <p className="mt-3 font-sans text-[15px] sm:text-base text-ink-muted leading-relaxed">
-                  {investorView}
+                  {demographicsSummary}
                 </p>
               )}
-              <div className="mt-4">
-                <SuburbInvestment suburb={suburb} />
-              </div>
-            </section>
-          )}
-
-          {/* Crime: only with actual figures. Empty modules erode trust. */}
-          {crimeStat && (
-            <section id="crime" className={SECTION}>
-              <h2 className={`${H2_SMALL} mb-4`}>Crime and safety</h2>
-              <SuburbCrime
-                crimeStat={{
-                  totalOffences: crimeStat.totalOffences,
-                  offenceBreakdown: crimeStat.offenceBreakdown,
-                  period: crimeStat.period,
-                  state: crimeStat.state,
-                  geoLevel: crimeStat.geoLevel,
-                  lgaName: crimeStat.lgaName,
-                }}
-              />
+              <dl className={`mt-4 grid grid-cols-2 ${demographicFigures.length === 4 ? "sm:grid-cols-4" : "sm:grid-cols-3"} border-t border-line`}>
+                {demographicFigures.map((f) => (
+                  <div key={f.label} className="py-3 pr-3 border-b border-line">
+                    <dt className="text-[13px] text-ink-muted">{f.label}</dt>
+                    <dd className="mt-1 font-display text-xl font-bold text-ink leading-none">{f.value}</dd>
+                  </div>
+                ))}
+              </dl>
               <DataFreshnessNote
-                label="Crime"
-                asOf={suburb.dataFreshness?.crimeAsOf ?? null}
-                source={crimeStat.geoLevel === "lga" ? `${crimeStat.lgaName} (LGA-wide)` : undefined}
+                label="Demographics"
+                asOf={suburb.dataFreshness?.censusAsOf ?? null}
+                source="ABS 2021 Census"
               />
             </section>
-          )}
 
-          {suburb.hazard && (
-            <section id="hazard" className={SECTION}>
-              <h2 className={`${H2_SMALL} mb-4`}>Flood and bushfire risk</h2>
-              <SuburbHazard
-                floodClass={suburb.hazard.floodClass}
-                bushfireRisk={suburb.hazard.bushfireRisk}
-                floodSource={suburb.hazard.floodSource}
-                bushfireSource={suburb.hazard.bushfireSource}
-              />
-              <DataFreshnessNote
-                label="Hazard"
-                asOf={suburb.dataFreshness?.hazardAsOf ?? null}
-                source="Geoscience Australia"
-              />
-            </section>
-          )}
+            {(suburb.stats.medianHousePrice > 0 || suburb.stats.medianUnitPrice > 0) && (
+              <section id="investment" className={SECTION}>
+                <h2 className={H2_SMALL}>Investment overview</h2>
+                {investorView && (
+                  <p className="mt-3 font-sans text-[15px] sm:text-base text-ink-muted leading-relaxed">
+                    {investorView}
+                  </p>
+                )}
+                <div className="mt-4">
+                  <SuburbInvestment suburb={suburb} />
+                </div>
+              </section>
+            )}
 
-          {/* Climate: only when BoM data is attached to the suburb. */}
-          {suburb.climate && (
-            <section id="climate" className={SECTION}>
-              <h2 className={`${H2_SMALL} mb-4`}>Weather year-round</h2>
-              <SuburbClimate climate={suburb.climate} />
-              <DataFreshnessNote
-                label="Climate"
-                asOf={suburb.dataFreshness?.climateAsOf ?? null}
-                source="Bureau of Meteorology"
-              />
-            </section>
-          )}
+            {/* Crime: only with actual figures. Empty modules erode trust. */}
+            {crimeStat && (
+              <section id="crime" className={SECTION}>
+                <h2 className={`${H2_SMALL} mb-4`}>Crime and safety</h2>
+                <SuburbCrime
+                  crimeStat={{
+                    totalOffences: crimeStat.totalOffences,
+                    offenceBreakdown: crimeStat.offenceBreakdown,
+                    period: crimeStat.period,
+                    state: crimeStat.state,
+                    geoLevel: crimeStat.geoLevel,
+                    lgaName: crimeStat.lgaName,
+                  }}
+                />
+                <DataFreshnessNote
+                  label="Crime"
+                  asOf={suburb.dataFreshness?.crimeAsOf ?? null}
+                  source={crimeStat.geoLevel === "lga" ? `${crimeStat.lgaName} (LGA-wide)` : undefined}
+                />
+              </section>
+            )}
+
+            {suburb.hazard && (
+              <section id="hazard" className={SECTION}>
+                <h2 className={`${H2_SMALL} mb-4`}>Flood and bushfire risk</h2>
+                <SuburbHazard
+                  floodClass={suburb.hazard.floodClass}
+                  bushfireRisk={suburb.hazard.bushfireRisk}
+                  floodSource={suburb.hazard.floodSource}
+                  bushfireSource={suburb.hazard.bushfireSource}
+                />
+                <DataFreshnessNote
+                  label="Hazard"
+                  asOf={suburb.dataFreshness?.hazardAsOf ?? null}
+                  source="Geoscience Australia"
+                />
+              </section>
+            )}
+
+            {/* Climate: only when BoM data is attached to the suburb. */}
+            {suburb.climate && (
+              <section id="climate" className={SECTION}>
+                <h2 className={`${H2_SMALL} mb-4`}>Weather year-round</h2>
+                <SuburbClimate climate={suburb.climate} />
+                <DataFreshnessNote
+                  label="Climate"
+                  asOf={suburb.dataFreshness?.climateAsOf ?? null}
+                  source="Bureau of Meteorology"
+                />
+              </section>
+            )}
+          </div>
         </div>
+      </Band>
 
-        {/* Properties */}
-        {properties.length > 0 && (
+      {/* Properties */}
+      {properties.length > 0 && (
+        <Band tone="quiet" spacing="compact">
           <section className={SECTION}>
-            <div className="grid lg:grid-cols-12 gap-6 mb-8 items-end">
+            <div className="grid lg:grid-cols-12 gap-6 mb-10 items-end">
               <div className="lg:col-span-7">
-                <h2 className={H2}>
-                  Properties in {suburb.name}
-                </h2>
+                <SectionHeading size="md" title={<>Properties in {suburb.name}</>} />
               </div>
               <div className="lg:col-span-5 flex flex-wrap gap-2 lg:justify-end">
                 {availability.buy && (
@@ -690,56 +693,60 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             </div>
             <PropertyGrid properties={properties} />
           </section>
-        )}
+        </Band>
+      )}
 
-        {/* Long-tail FAQ, answers the "people also ask" queries Google
-            surfaces for "[suburb] real estate / suburb / postcode / rent".
-            Emits FAQPage JSON-LD so answers can appear directly in SERP. */}
-        <SuburbFAQ suburb={suburb} />
+      <Band spacing="compact">
+        <div className="space-y-14 sm:space-y-20">
+          {/* Long-tail FAQ, answers the "people also ask" queries Google
+              surfaces for "[suburb] real estate / suburb / postcode / rent".
+              Emits FAQPage JSON-LD so answers can appear directly in SERP. */}
+          <SuburbFAQ suburb={suburb} />
 
-        {/* The page's one guide block, where a reader who has read this far
-            decides. The buying guide is a link inside it. */}
-        <SuburbSellingGuideCTA suburbName={suburb.name} suburbSlug={suburb.slug} />
+          {/* The page's one guide block, where a reader who has read this far
+              decides. The buying guide is a link inside it. */}
+          <SuburbSellingGuideCTA suburbName={suburb.name} suburbSlug={suburb.slug} />
 
-        {/* Related links: the suburb's pages, its neighbours and the
-            comparisons, the state's seller guides, the buyer tools. */}
-        <SuburbContextualLinks
-          suburb={{
-            name: suburb.name,
-            slug: suburb.slug,
-            state: suburb.state,
-            postcode: suburb.postcode,
-            nearbySuburbs: suburb.nearbySuburbs,
-          }}
-          availability={availability}
-        />
+          {/* Related links: the suburb's pages, its neighbours and the
+              comparisons, the state's seller guides, the buyer tools. */}
+          <SuburbContextualLinks
+            suburb={{
+              name: suburb.name,
+              slug: suburb.slug,
+              state: suburb.state,
+              postcode: suburb.postcode,
+              nearbySuburbs: suburb.nearbySuburbs,
+            }}
+            availability={availability}
+          />
 
-        {/* Sources and how we are paid */}
-        <section className="border-t border-line pt-8 max-w-4xl space-y-3 font-sans text-sm text-ink-muted leading-relaxed">
-          <p>
-            <span className="font-semibold text-ink">Sources.</span>{" "}
-            House and unit medians from the NSW Valuer General, Land Victoria,
-            the SA Government and the ABS; rents from the state rental bond
-            authorities. Census from the ABS (2021), climate from the Bureau of
-            Meteorology, hazard from Geoscience Australia, schools from ACARA
-            and crime from state police open data. Each figure carries its
-            source and date.{" "}
-            <Link href="/methodology" className={TEXT_LINK}>
-              How we source data
-            </Link>
-          </p>
-          <p>
-            <span className="font-semibold text-ink">How we&rsquo;re paid.</span>{" "}
-            The guides and this page are free. When a seller asks, we introduce
-            one local agent, and the agent pays us for the introduction; it
-            costs the seller nothing. If a figure looks wrong,{" "}
-            <Link href="/contact" className={TEXT_LINK}>
-              tell us
-            </Link>{" "}
-            and we&rsquo;ll fix it.
-          </p>
-        </section>
-      </div>
+          {/* Sources and how we are paid */}
+          <section className="border-t border-line pt-8 max-w-4xl space-y-3 font-sans text-sm text-ink-muted leading-relaxed">
+            <p>
+              <span className="font-semibold text-ink">Sources.</span>{" "}
+              House and unit medians from the NSW Valuer General, Land Victoria,
+              the SA Government and the ABS; rents from the state rental bond
+              authorities. Census from the ABS (2021), climate from the Bureau of
+              Meteorology, hazard from Geoscience Australia, schools from ACARA
+              and crime from state police open data. Each figure carries its
+              source and date.{" "}
+              <Link href="/methodology" className={TEXT_LINK}>
+                How we source data
+              </Link>
+            </p>
+            <p>
+              <span className="font-semibold text-ink">How we&rsquo;re paid.</span>{" "}
+              The guides and this page are free. When a seller asks, we introduce
+              one local agent, and the agent pays us for the introduction; it
+              costs the seller nothing. If a figure looks wrong,{" "}
+              <Link href="/contact" className={TEXT_LINK}>
+                tell us
+              </Link>{" "}
+              and we&rsquo;ll fix it.
+            </p>
+          </section>
+        </div>
+      </Band>
     </>
   );
 }

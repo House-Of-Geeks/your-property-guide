@@ -9,6 +9,7 @@ import {
   getSuburbListingTabs,
   type NextStepGroup,
 } from "@/components/suburb";
+import { BUTTON_PRIMARY, Band } from "@/components/premium";
 import { guideFunnelHref } from "@/lib/guide-funnel";
 import { BreadcrumbJsonLd, PlaceJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
@@ -327,147 +328,153 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
         }
       />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-12 sm:space-y-16">
-        {model?.current ? (
-          <RentalMarketSections suburb={suburb} slug={slug} model={model} landlord={landlord} />
-        ) : history.length === 0 ? (
-          // The header already says no rent is published; point at the
-          // listings when there are some, else straight on to the fees.
-          availability.rent && (
-            <p className="font-sans text-base text-ink">
-              <Link
-                href={`/suburbs/${slug}/rent`}
-                className="inline-flex items-center gap-2 font-medium underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary"
-              >
-                Browse current rental listings in {suburb.name} <ArrowRight className="w-4 h-4" aria-hidden="true" />
-              </Link>
-            </p>
-          )
-        ) : all ? (
-          <RentalMarketAllDwellings name={suburb.name} slug={slug} all={all} rentListings={availability.rent} />
-        ) : (
-          <>
-            {legacyCards.some(([label]) => label.includes("bedroom")) && (
-              <section id="current-rent" className="scroll-mt-20">
-                <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
-                  Median weekly rent in {name}
-                </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-                  {legacyCards.map(([label, v]) => (
-                    <MetricCard key={label} label={label} value={`${money(v as number)}/wk`} />
-                  ))}
-                </div>
-                <p className="font-sans text-xs text-ink-subtle mt-3">
-                  {`Source: ${latestLabel ?? "state rental data"}, ${latestWhen}. Medians of new rentals recorded in the period.`}
-                </p>
-              </section>
-            )}
-
-            {/* Yield vs price: keeps the median for the yield, labelled and
-                linked to the profile's price section (review 10 Oct 2026,
-                suburbs 3.1: price-anchor links back to the profile). */}
-            {grossYield && suburb.stats.medianHousePrice > 0 && (
-              <section id="yield" className="scroll-mt-20 rounded-xl border border-line p-5 sm:p-8">
-                <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
-                  Rental yield against the purchase price
-                </h2>
-                <dl className="grid grid-cols-3 gap-4 sm:gap-6">
-                  <div>
-                    <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Median house price</dt>
-                    <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{formatPriceFull(suburb.stats.medianHousePrice)}</dd>
-                  </div>
-                  <div>
-                    <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Median house rent</dt>
-                    <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{money(currentRent)}/wk</dd>
-                  </div>
-                  <div>
-                    <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Gross yield</dt>
-                    <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{grossYield}%</dd>
-                  </div>
-                </dl>
-                <p className="font-sans text-xs text-ink-subtle mt-5 leading-relaxed">
-                  {"Gross yield = weekly rent × 52 ÷ median house price. Before rates, insurance, management fees, maintenance and vacancy. The "}
-                  <Link href="/rental-yield-calculator" className="underline hover:text-primary">rental yield calculator</Link>
-                  {" gives a net estimate. Price: "}
-                  <Link href={`/suburbs/${slug}#market`} className="underline hover:text-primary">{`${name} median house price`}</Link>
-                  {"."}
-                </p>
-              </section>
-            )}
-
-            {history.length > 1 && (
-              <section id="history" className="scroll-mt-20">
-                <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
-                  How rents have moved
-                </h2>
-                <div className="overflow-x-auto rounded-xl border border-line">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="bg-surface-warm border-b border-line">
-                        <th scope="col" className="py-3 px-4 text-left font-semibold text-ink">Period</th>
-                        <th scope="col" className="py-3 px-4 text-right font-semibold text-ink">Houses</th>
-                        {legacyColumns.unit && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink">Units</th>}
-                        {legacyColumns.bed3 && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink hidden sm:table-cell">3 bed</th>}
-                        {legacyColumns.bed2 && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink hidden sm:table-cell">2 bed</th>}
-                        {legacyColumns.bonds && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink hidden md:table-cell">New bonds</th>}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {history.map((row) => (
-                        <tr key={row.id} className="border-b border-line last:border-0">
-                          <td className="py-3 px-4 font-medium text-ink whitespace-nowrap">{monthYear(row.periodDate)}</td>
-                          <td className="py-3 px-4 text-right text-ink">{positive(row.medianRentHouse) ? `${money(row.medianRentHouse)}/wk` : "–"}</td>
-                          {legacyColumns.unit && <td className="py-3 px-4 text-right text-ink">{positive(row.medianRentUnit) ? `${money(row.medianRentUnit)}/wk` : "–"}</td>}
-                          {legacyColumns.bed3 && <td className="py-3 px-4 text-right text-ink hidden sm:table-cell">{positive(row.medianRent3Bed) ? `${money(row.medianRent3Bed)}/wk` : "–"}</td>}
-                          {legacyColumns.bed2 && <td className="py-3 px-4 text-right text-ink hidden sm:table-cell">{positive(row.medianRent2Bed) ? `${money(row.medianRent2Bed)}/wk` : "–"}</td>}
-                          {legacyColumns.bonds && <td className="py-3 px-4 text-right text-ink hidden md:table-cell">{positive(row.bondLodgements) ? row.bondLodgements.toLocaleString("en-AU") : "–"}</td>}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </section>
-            )}
-
-            {/* Rental listings, as a link: only when there are some to browse */}
-            {availability.rent && (
+      <Band spacing="compact">
+        <div className="space-y-12 sm:space-y-16">
+          {model?.current ? (
+            <RentalMarketSections suburb={suburb} slug={slug} model={model} landlord={landlord} />
+          ) : history.length === 0 ? (
+            // The header already says no rent is published; point at the
+            // listings when there are some, else straight on to the fees.
+            availability.rent && (
               <p className="font-sans text-base text-ink">
                 <Link
                   href={`/suburbs/${slug}/rent`}
                   className="inline-flex items-center gap-2 font-medium underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary"
                 >
-                  Properties for rent in {suburb.name} now <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  Browse current rental listings in {suburb.name} <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </Link>
               </p>
-            )}
-          </>
-        )}
+            )
+          ) : all ? (
+            <RentalMarketAllDwellings name={suburb.name} slug={slug} all={all} rentListings={availability.rent} />
+          ) : (
+            <>
+              {legacyCards.some(([label]) => label.includes("bedroom")) && (
+                <section id="current-rent" className="scroll-mt-20">
+                  <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+                    Median weekly rent in {name}
+                  </h2>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                    {legacyCards.map(([label, v]) => (
+                      <MetricCard key={label} label={label} value={`${money(v as number)}/wk`} />
+                    ))}
+                  </div>
+                  <p className="font-sans text-xs text-ink-subtle mt-3">
+                    {`Source: ${latestLabel ?? "state rental data"}, ${latestWhen}. Medians of new rentals recorded in the period.`}
+                  </p>
+                </section>
+              )}
 
-        {!model?.current && (
-          <>
-            <RentalMarketLandlordSections suburb={suburb} landlord={landlord} />
-            <Faq items={landlord.faqs} title={`Renting and investing in ${suburb.name}`} />
-          </>
-        )}
+              {/* Yield vs price: keeps the median for the yield, labelled and
+                  linked to the profile's price section (review 10 Oct 2026,
+                  suburbs 3.1: price-anchor links back to the profile). */}
+              {grossYield && suburb.stats.medianHousePrice > 0 && (
+                <section id="yield" className="scroll-mt-20 rounded-xl border border-line p-5 sm:p-8">
+                  <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+                    Rental yield against the purchase price
+                  </h2>
+                  <dl className="grid grid-cols-3 gap-4 sm:gap-6">
+                    <div>
+                      <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Median house price</dt>
+                      <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{formatPriceFull(suburb.stats.medianHousePrice)}</dd>
+                    </div>
+                    <div>
+                      <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Median house rent</dt>
+                      <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{money(currentRent)}/wk</dd>
+                    </div>
+                    <div>
+                      <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Gross yield</dt>
+                      <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{grossYield}%</dd>
+                    </div>
+                  </dl>
+                  <p className="font-sans text-xs text-ink-subtle mt-5 leading-relaxed">
+                    {"Gross yield = weekly rent × 52 ÷ median house price. Before rates, insurance, management fees, maintenance and vacancy. The "}
+                    <Link href="/rental-yield-calculator" className="underline hover:text-primary">rental yield calculator</Link>
+                    {" gives a net estimate. Price: "}
+                    <Link href={`/suburbs/${slug}#market`} className="underline hover:text-primary">{`${name} median house price`}</Link>
+                    {"."}
+                  </p>
+                </section>
+              )}
 
-        <NearbyRents name={name} nearby={nearby} />
+              {history.length > 1 && (
+                <section id="history" className="scroll-mt-20">
+                  <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+                    How rents have moved
+                  </h2>
+                  <div className="overflow-x-auto rounded-xl border border-line">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="bg-surface-warm border-b border-line">
+                          <th scope="col" className="py-3 px-4 text-left font-semibold text-ink">Period</th>
+                          <th scope="col" className="py-3 px-4 text-right font-semibold text-ink">Houses</th>
+                          {legacyColumns.unit && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink">Units</th>}
+                          {legacyColumns.bed3 && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink hidden sm:table-cell">3 bed</th>}
+                          {legacyColumns.bed2 && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink hidden sm:table-cell">2 bed</th>}
+                          {legacyColumns.bonds && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink hidden md:table-cell">New bonds</th>}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {history.map((row) => (
+                          <tr key={row.id} className="border-b border-line last:border-0">
+                            <td className="py-3 px-4 font-medium text-ink whitespace-nowrap">{monthYear(row.periodDate)}</td>
+                            <td className="py-3 px-4 text-right text-ink">{positive(row.medianRentHouse) ? `${money(row.medianRentHouse)}/wk` : "–"}</td>
+                            {legacyColumns.unit && <td className="py-3 px-4 text-right text-ink">{positive(row.medianRentUnit) ? `${money(row.medianRentUnit)}/wk` : "–"}</td>}
+                            {legacyColumns.bed3 && <td className="py-3 px-4 text-right text-ink hidden sm:table-cell">{positive(row.medianRent3Bed) ? `${money(row.medianRent3Bed)}/wk` : "–"}</td>}
+                            {legacyColumns.bed2 && <td className="py-3 px-4 text-right text-ink hidden sm:table-cell">{positive(row.medianRent2Bed) ? `${money(row.medianRent2Bed)}/wk` : "–"}</td>}
+                            {legacyColumns.bonds && <td className="py-3 px-4 text-right text-ink hidden md:table-cell">{positive(row.bondLodgements) ? row.bondLodgements.toLocaleString("en-AU") : "–"}</td>}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              )}
 
-        <SubpageNextSteps id="next" title={`Next steps for ${name} owners`} groups={nextSteps} />
+              {/* Rental listings, as a link: only when there are some to browse */}
+              {availability.rent && (
+                <p className="font-sans text-base text-ink">
+                  <Link
+                    href={`/suburbs/${slug}/rent`}
+                    className="inline-flex items-center gap-2 font-medium underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary"
+                  >
+                    Properties for rent in {suburb.name} now <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  </Link>
+                </p>
+              )}
+            </>
+          )}
 
-        {/* The same one action, once more where the page ends. */}
-        <section className="rounded-xl bg-surface-inverse text-white p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-          <div>
-            <h2 className="font-display text-xl sm:text-2xl font-bold tracking-tight">Selling an investment property in {name}?</h2>
-            <p className="font-sans text-sm text-white/75 mt-1.5 max-w-xl">Free guide, personalised to {name}: costs and tax, timing around a lease, and how to pick an agent.</p>
-          </div>
-          <Link
-            href={sellHref}
-            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors"
-          >
-            Get the free selling guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
-          </Link>
-        </section>
-      </div>
+          {!model?.current && (
+            <>
+              <RentalMarketLandlordSections suburb={suburb} landlord={landlord} />
+              <Faq items={landlord.faqs} title={`Renting and investing in ${suburb.name}`} />
+            </>
+          )}
+
+          <NearbyRents name={name} nearby={nearby} />
+        </div>
+      </Band>
+
+      <Band tone="quiet" spacing="compact">
+        <div className="space-y-12 sm:space-y-16">
+          <SubpageNextSteps id="next" title={`Next steps for ${name} owners`} groups={nextSteps} />
+
+          {/* The same one action, once more where the page ends. */}
+          <section className="tone-dark rounded-xl bg-surface-inverse p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+            <div>
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight">Selling an investment property in {name}?</h2>
+              <p className="font-sans text-sm text-ink-muted mt-1.5 max-w-xl">Free guide, personalised to {name}: costs and tax, timing around a lease, and how to pick an agent.</p>
+            </div>
+            <Link
+              href={sellHref}
+              className={`shrink-0 justify-center ${BUTTON_PRIMARY}`}
+            >
+              Get the free selling guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
+          </section>
+        </div>
+      </Band>
     </>
   );
 }

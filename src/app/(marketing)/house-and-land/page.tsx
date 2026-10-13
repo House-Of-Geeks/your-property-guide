@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { HouseLandCard } from "@/components/property/HouseLandCard";
 import { RelatedGuidesSection } from "@/components/guide/GuideLinkList";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import {
   getHouseAndLandPackages,
@@ -15,6 +14,7 @@ import {
 } from "@/lib/house-and-land-indexability";
 import { HUB_GUIDE_LISTS, hubGuideGroups } from "@/lib/guides/hub-guides";
 import { SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 
 // Rendered on every request: the suburb filter reads searchParams, which
 // opts the route into dynamic rendering, so it is never prerendered at
@@ -71,35 +71,28 @@ export default async function HouseAndLandPage({ searchParams }: PageProps) {
     <>
       <BreadcrumbJsonLd items={[{ name: "House & Land", url: "/house-and-land" }]} />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "House & Land" }]} />
-          </div>
+      <PhotoHero photo="firstHome" breadcrumbs={[{ label: "House & Land" }]}>
+        {/* A count only when there is one to print: never "0 new packages". */}
+        <p className="text-sm text-ink-muted mb-5">
+          {listed ? `${packages.length} new ${packages.length !== 1 ? "packages" : "package"}` : "House & land"}
+        </p>
+        <HeroTitle>
+          {suburbName ? (
+            <>House &amp; land in <span>{suburbName}</span>.</>
+          ) : listed ? (
+            <>House &amp; land, <span>brand new</span>.</>
+          ) : (
+            <>House &amp; land packages</>
+          )}
+        </HeroTitle>
+        <HeroLead>
+          {listed
+            ? "New build packages from top Australian builders, with land titled, fixed prices, and stamp-duty savings on the building component."
+            : noneListed}
+        </HeroLead>
+      </PhotoHero>
 
-          {/* A count only when there is one to print: never "0 new packages". */}
-          <p className="text-[13px] font-sans text-ink-subtle mb-5">
-            {listed ? `${packages.length} new ${packages.length !== 1 ? "packages" : "package"}` : "House & land"}
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            {suburbName ? (
-              <>House &amp; land in <span>{suburbName}</span>.</>
-            ) : listed ? (
-              <>House &amp; land, <span>brand new</span>.</>
-            ) : (
-              <>House &amp; land packages</>
-            )}
-          </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            {listed
-              ? "New build packages from top Australian builders, with land titled, fixed prices, and stamp-duty savings on the building component."
-              : noneListed}
-          </p>
-        </div>
-      </section>
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <Band tone="quiet" spacing="compact">
         {listed ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {packages.map((pkg) => (
@@ -107,7 +100,7 @@ export default async function HouseAndLandPage({ searchParams }: PageProps) {
             ))}
           </div>
         ) : (
-          <div className="max-w-2xl space-y-4 font-sans text-base text-ink-muted leading-relaxed">
+          <div className="max-w-2xl space-y-4 text-base sm:text-lg text-ink-muted leading-relaxed">
             <p>
               When a builder or agent lists a package with us, it will appear on this page. Until then, the guides
               below cover what a package price leaves out, how to check a builder, and the grants and stamp duty that
@@ -115,19 +108,19 @@ export default async function HouseAndLandPage({ searchParams }: PageProps) {
             </p>
             <p>
               To work out the duty on a purchase, use the{" "}
-              <Link href="/stamp-duty-calculator" className="underline hover:text-primary">stamp duty calculator</Link>
+              <Link href="/stamp-duty-calculator" className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">stamp duty calculator</Link>
               {". Every grant and scheme for a first home is on the "}
-              <Link href="/first-home-buyers" className="underline hover:text-primary">first home buyers</Link>
+              <Link href="/first-home-buyers" className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">first home buyers</Link>
               {" page."}
             </p>
             {stocked && suburbName && (
               <p>
-                <Link href="/house-and-land" className="underline hover:text-primary">See every package listed</Link>
+                <Link href="/house-and-land" className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">See every package listed</Link>
               </p>
             )}
           </div>
         )}
-      </div>
+      </Band>
 
       <RelatedGuidesSection heading={guides.heading} intro={guides.intro} groups={hubGuideGroups(guides)} id="guides" />
     </>

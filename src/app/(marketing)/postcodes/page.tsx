@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { unstable_cache } from "next/cache";
 import { getAllPostcodesWithState } from "@/lib/services/postcode-service";
 import { NOT_PLACES_VERSION } from "@/lib/non-localities";
 import { SITE_URL } from "@/lib/constants";
+import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 
 // The directory queries the DB. As a static ISR page this served its
 // build-time render (the build is DB-free) for up to a day after every
@@ -72,44 +72,42 @@ export default async function PostcodesPage() {
       <BreadcrumbJsonLd items={[{ name: "Postcodes", url: "/postcodes" }]} />
 
       {/* Answer first: what the page is, then a jump to each state. */}
-      <section className="bg-surface-warm border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-8 sm:pb-10">
-          <Breadcrumbs items={[{ label: "Postcodes" }]} />
-          <h1 className="pt-3 font-display text-ink font-bold leading-[1.05] tracking-[-0.03em] text-[2rem] sm:text-5xl lg:text-[3.25rem]">
-            Australian postcodes by state
-          </h1>
-          <p className="mt-4 font-sans text-base sm:text-lg text-ink leading-relaxed max-w-2xl">
-            {`${postcodes.length.toLocaleString("en-AU")} postcodes, grouped by state. Each postcode page names the suburbs it covers and links to their profiles, prices and schools.`}
-          </p>
-          {sortedStates.length > 0 && (
-            <nav aria-label="Jump to a state" className="mt-6">
-              <ul className="flex flex-wrap gap-2">
-                {sortedStates.map((state) => (
-                  <li key={state}>
-                    <a
-                      href={`#${state.toLowerCase()}`}
-                      className="inline-flex items-center rounded-lg border border-line-strong bg-white px-3 py-2 text-sm font-semibold text-ink hover:border-ink transition-colors"
-                    >
-                      {state}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          )}
-        </div>
-      </section>
+      <PhotoHero breadcrumbs={[{ label: "Postcodes" }]}>
+        <HeroTitle>
+          Australian postcodes by state
+        </HeroTitle>
+        <HeroLead>
+          {`${postcodes.length.toLocaleString("en-AU")} postcodes, grouped by state. Each postcode page names the suburbs it covers and links to their profiles, prices and schools.`}
+        </HeroLead>
+        {sortedStates.length > 0 && (
+          <nav aria-label="Jump to a state" className="mt-8">
+            <ul className="flex flex-wrap gap-2">
+              {sortedStates.map((state) => (
+                <li key={state}>
+                  <a
+                    href={`#${state.toLowerCase()}`}
+                    className="inline-flex items-center rounded-lg border border-line-strong px-3 py-2 text-sm font-semibold text-ink hover:border-ink transition-colors"
+                  >
+                    {state}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+      </PhotoHero>
 
       {/* Postcode directory */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-10 sm:space-y-12">
+      <Band spacing="compact">
+        <div className="space-y-12 sm:space-y-14">
         {sortedStates.map((state) => {
           const codes = byState.get(state) ?? [];
           const stateLabel = STATE_LABELS[state] ?? state;
           return (
             <section key={state} id={state.toLowerCase()} className="scroll-mt-20">
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight mb-4 pb-2 border-b border-line">
+              <h2 className="text-2xl sm:text-3xl text-ink tracking-[-0.02em] mb-5 pb-3 border-b-2 border-ink">
                 {stateLabel}{" "}
-                <span className="text-sm font-sans font-normal text-ink-muted">
+                <span className="text-sm font-normal text-ink-muted tracking-normal">
                   {codes.length} postcode{codes.length !== 1 ? "s" : ""}
                 </span>
               </h2>
@@ -118,7 +116,7 @@ export default async function PostcodesPage() {
                   <li key={postcode}>
                     <Link
                       href={`/postcodes/${postcode}`}
-                      className="inline-flex items-center rounded-lg border border-line bg-white px-2.5 py-1.5 text-sm font-medium text-ink hover:border-ink transition-colors"
+                      className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-2.5 py-1.5 text-sm font-medium text-ink hover:border-ink transition-colors"
                     >
                       {postcode}
                     </Link>
@@ -128,7 +126,8 @@ export default async function PostcodesPage() {
             </section>
           );
         })}
-      </div>
+        </div>
+      </Band>
     </>
   );
 }

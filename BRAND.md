@@ -123,4 +123,18 @@ Rules: sentence case everywhere. No italics for emphasis. No full stop at the en
 | Email shell | `src/lib/email-theme.ts` |
 | Lead engine | `src/components/journey/SellingGuideFunnel.tsx` |
 
-*End of BRAND.md v4.*
+
+## 11. Premium bands (v4.1, 13 Oct 2026)
+
+Andy, after v4 shipped: "too plain, not premium". v4.1 keeps every v4 rule (one typeface, roof tile for actions, no italics, gradients, pills, letter-spaced labels or ornamental motion) and adds presence. The homepage is the reference; the parts live in `src/components/premium`.
+
+- **Open on a photo or on charcoal.** Every page opens with `PhotoHero`: a library photo, full bleed, under a flat 70% charcoal overlay (no gradient), white type. Use `size="lg"` on the homepage and conversion pages and `size="md"` elsewhere. Reference and data pages may drop the photo for a plain charcoal band. One hero per page; its photo is decorative (`alt=""`) and preloaded.
+- **Pick the photo for the reader.** Selling: `selling`. Buying: `buying` or `firstHome`. Investing: `investing` or `flats`. Renovating: `renovating`. Markets and data: `market` or `street`. Auctions: `auction`. Paperwork, costs and rules: `paperwork`. See `PHOTOS`. Never caption a library photo as a real place, team member, agent or customer.
+- **Big, tight headings.** Hero H1 via `HeroTitle` (76px lg, 60px md at desktop). Section H2 via `SectionHeading`: 48px, with the intro in a right-hand column on desktop.
+- **Generous bands that alternate.** `Band` with `tone` light, quiet (grey) or dark (charcoal); `py-20 sm:py-28` (or `spacing="compact"` for dense reference pages). Don't stack two dark bands.
+- **Editorial grids.** `RuleGrid` and `RuleItem`: a heavy 2px ink rule above each item and an optional line icon in the primary colour. Prefer these to boxed cards for lists of three to four points.
+- **Sequences as a timeline.** `StepTimeline` for real steps in order: numbered circles joined by a line.
+- **Tone scopes.** Dark surfaces carry `.tone-dark` (globals.css), which flips `text-ink`, `text-ink-muted`, `border-line` and `text-primary` to light values. Write components with those tokens, never `text-gray-*` or `text-white`, and they work on both. A white card on a dark band (a form, the funnel) carries `.tone-light`.
+- **Buttons.** `BUTTON_PRIMARY` (roof tile, the one solid button on a screen) and `BUTTON_SECONDARY` (outlined in the current ink).
+
+*End of BRAND.md v4.1.*

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Breadcrumbs } from "@/components/layout";
+import { HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 
@@ -27,25 +27,20 @@ export default function GlossaryPage() {
     <>
       <BreadcrumbJsonLd items={[{ name: "Property Glossary", url: "/glossary" }]} />
 
-      <div className="mx-auto w-full max-w-[64rem] px-4 sm:px-6">
-        <div className="pt-2 sm:pt-4">
-          <Breadcrumbs items={[{ label: "Property Glossary" }]} />
-        </div>
-        <header className="max-w-3xl pt-4 sm:pt-8 pb-6 sm:pb-8">
-          <h1 className="font-display font-bold text-ink text-[2rem] leading-[1.08] tracking-[-0.03em] sm:text-5xl">
-            Property glossary: Australian real estate terms, A to Z
-          </h1>
-          <p className="mt-4 text-[1.0625rem] sm:text-xl text-ink-muted leading-relaxed">
-            Plain-English definitions of the terms you&rsquo;ll meet buying, selling, investing or renting in
-            Australia. Each one links to a page of its own and to the guide that goes deeper.
-          </p>
-        </header>
-      </div>
+      {/* A reference page: the paperwork photo (BRAND.md §11, rules and
+          terms). */}
+      <PhotoHero photo="paperwork" breadcrumbs={[{ label: "Property Glossary" }]}>
+        <HeroTitle>Property glossary: Australian real estate terms, A to Z</HeroTitle>
+        <HeroLead>
+          Plain-English definitions of the terms you&rsquo;ll meet buying, selling, investing or renting in
+          Australia. Each one links to a page of its own and to the guide that goes deeper.
+        </HeroLead>
+      </PhotoHero>
 
       {/* Alphabet: two rows on phones; one row that stays under the header
           from tablet up. */}
       <nav aria-label="Glossary letters" className="sm:sticky sm:top-[72px] z-20 border-y border-line bg-white/95 backdrop-blur">
-        <div className="mx-auto w-full max-w-[64rem] px-4 sm:px-6">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <ul className="grid grid-cols-[repeat(13,minmax(0,1fr))] sm:flex sm:gap-0.5 py-2">
             {alphabet.map((letter) =>
               LETTERS.has(letter) ? (
@@ -67,7 +62,7 @@ export default function GlossaryPage() {
         </div>
       </nav>
 
-      <div className="mx-auto w-full max-w-[64rem] px-4 sm:px-6 pt-10 pb-16">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-16">
         <div className="max-w-3xl [&_section]:scroll-mt-32 [&_dd_em]:not-italic [&_dd_em]:font-medium [&_dd_em]:text-ink [&_dd_a]:text-ink [&_dd_a]:underline [&_dd_a]:underline-offset-4 [&_dd_a]:decoration-line-strong">
         {/* A */}
         <section id="section-A" className="mb-10">

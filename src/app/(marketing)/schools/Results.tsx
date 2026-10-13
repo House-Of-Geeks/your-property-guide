@@ -2,6 +2,7 @@ import Link from "next/link";
 import { GraduationCap, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { searchSchools } from "@/lib/services/school-service";
 import { makeSchoolSlug } from "@/lib/utils/school";
+import { BUTTON_PRIMARY, BUTTON_SECONDARY } from "@/components/premium";
 
 const PAGE_SIZE = 20;
 
@@ -22,18 +23,12 @@ function sectorLabel(sector: string): string {
   return sector;
 }
 
-function typeBadgeClass(type: string): string {
-  if (type === "primary") return "bg-blue-100 text-blue-700";
-  if (type === "secondary") return "bg-purple-100 text-purple-700";
-  if (type === "combined") return "bg-teal-100 text-teal-700";
-  return "bg-gray-100 text-gray-600";
-}
+// Type and sector tags: neutral, the words carry the meaning (BRAND.md §3,
+// colour is for actions and state).
+const TAG = "inline-flex items-center px-2 py-0.5 rounded-md border border-line bg-surface-warm text-xs font-medium text-ink-muted";
 
-function sectorBadgeClass(sector: string): string {
-  if (sector === "government") return "bg-green-100 text-green-700";
-  if (sector === "catholic") return "bg-amber-100 text-amber-700";
-  return "bg-orange-100 text-orange-700";
-}
+// Form fields share one look; the row stretches them to the button's height.
+const FIELD = "py-3 text-base text-ink border border-line-strong rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary";
 
 function buildPageUrl(base: Record<string, string>, page: number): string {
   const params = new URLSearchParams(base);
@@ -78,23 +73,23 @@ export async function SchoolsResults({ searchParams }: SchoolsResultsProps) {
   return (
     <>
       {/* Filter bar */}
-      <form method="GET" action="/schools" className="bg-surface-raised rounded-2xl border border-line p-5 mb-6">
+      <form method="GET" action="/schools" className="bg-surface-raised rounded-xl border border-line p-5 mb-6">
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-subtle pointer-events-none" aria-hidden="true" />
             <input
               type="text"
               name="q"
               defaultValue={q}
               placeholder="Search school name…"
-              className="w-full pl-9 pr-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
+              className={`w-full h-full pl-9 pr-3 ${FIELD} placeholder:text-ink-subtle`}
             />
           </div>
 
           <select
             name="type"
             defaultValue={type}
-            className="py-2.5 px-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary bg-white min-w-[140px]"
+            className={`${FIELD} px-3 min-w-[140px]`}
           >
             <option value="">All Types</option>
             <option value="primary">Primary</option>
@@ -106,7 +101,7 @@ export async function SchoolsResults({ searchParams }: SchoolsResultsProps) {
           <select
             name="sector"
             defaultValue={sector}
-            className="py-2.5 px-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary bg-white min-w-[150px]"
+            className={`${FIELD} px-3 min-w-[150px]`}
           >
             <option value="">All Sectors</option>
             <option value="government">Government</option>
@@ -117,7 +112,7 @@ export async function SchoolsResults({ searchParams }: SchoolsResultsProps) {
           <select
             name="state"
             defaultValue={state}
-            className="py-2.5 px-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary bg-white min-w-[130px]"
+            className={`${FIELD} px-3 min-w-[130px]`}
           >
             <option value="">All States</option>
             {STATES.map((s) => (
@@ -127,7 +122,7 @@ export async function SchoolsResults({ searchParams }: SchoolsResultsProps) {
 
           <button
             type="submit"
-            className="px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors whitespace-nowrap"
+            className={`${BUTTON_PRIMARY} justify-center whitespace-nowrap`}
           >
             Search
           </button>
@@ -135,7 +130,7 @@ export async function SchoolsResults({ searchParams }: SchoolsResultsProps) {
           {hasFilters && (
             <Link
               href="/schools"
-              className="px-4 py-2.5 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap flex items-center"
+              className={`${BUTTON_SECONDARY} justify-center whitespace-nowrap`}
             >
               Clear
             </Link>
@@ -143,7 +138,7 @@ export async function SchoolsResults({ searchParams }: SchoolsResultsProps) {
         </div>
       </form>
 
-      <p className="text-sm text-gray-500 mb-4">
+      <p className="text-sm text-ink-muted mb-4">
         {total === 0
           ? "No schools found"
           : `Showing ${(page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, total)} of ${total.toLocaleString()} school${total !== 1 ? "s" : ""}`}
@@ -155,37 +150,37 @@ export async function SchoolsResults({ searchParams }: SchoolsResultsProps) {
             {schools.map((school) => {
               const slug = school.acaraId ? makeSchoolSlug(school.name, school.acaraId) : null;
               const card = (
-                <div className="bg-white rounded-xl border border-gray-200 p-4 h-full flex flex-col gap-3 hover:shadow-md hover:border-gray-300 transition-all">
+                <div className="bg-white rounded-xl border border-line p-4 h-full flex flex-col gap-3 hover:border-ink transition-colors">
                   <div className="flex items-start gap-2">
-                    <GraduationCap className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm font-semibold text-gray-900 leading-snug line-clamp-2">
+                    <GraduationCap className="w-4 h-4 text-ink-subtle mt-0.5 flex-shrink-0" aria-hidden="true" />
+                    <span className="text-base font-semibold text-ink leading-snug line-clamp-2">
                       {school.name}
                     </span>
                   </div>
 
-                  <p className="text-xs text-gray-500">
+                  <p className="text-sm text-ink-muted">
                     {school.suburb.name}, {school.suburb.state} {school.suburb.postcode}
                   </p>
 
                   <div className="flex flex-wrap gap-1.5 mt-auto">
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${typeBadgeClass(school.type)}`}>
+                    <span className={TAG}>
                       {typeLabel(school.type)}
                     </span>
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${sectorBadgeClass(school.sector)}`}>
+                    <span className={TAG}>
                       {sectorLabel(school.sector)}
                     </span>
                   </div>
 
                   {school.yearRange && (
-                    <p className="text-xs text-gray-500">
-                      <span className="text-gray-400">Years:</span> {school.yearRange}
+                    <p className="text-sm text-ink-muted">
+                      <span className="text-ink-subtle">Years:</span> {school.yearRange}
                     </p>
                   )}
 
                   {school.icsea != null && (
-                    <p className="text-xs text-gray-500">
-                      <span className="text-gray-400">ICSEA:</span>{" "}
-                      <span className="font-medium text-gray-700">{school.icsea}</span>
+                    <p className="text-sm text-ink-muted">
+                      <span className="text-ink-subtle">ICSEA:</span>{" "}
+                      <span className="font-semibold text-ink">{school.icsea}</span>
                     </p>
                   )}
                 </div>
@@ -208,32 +203,32 @@ export async function SchoolsResults({ searchParams }: SchoolsResultsProps) {
               {page > 1 ? (
                 <Link
                   href={buildPageUrl(baseParams, page - 1)}
-                  className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-ink bg-white border border-line-strong rounded-lg hover:border-ink transition-colors"
                 >
                   <ChevronLeft className="w-4 h-4" />
                   Previous
                 </Link>
               ) : (
-                <span className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-gray-300 bg-white border border-gray-200 rounded-lg cursor-not-allowed">
+                <span className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-ink-subtle/60 bg-white border border-line rounded-lg cursor-not-allowed">
                   <ChevronLeft className="w-4 h-4" />
                   Previous
                 </span>
               )}
 
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-ink-muted">
                 Page {page} of {totalPages.toLocaleString()}
               </span>
 
               {page < totalPages ? (
                 <Link
                   href={buildPageUrl(baseParams, page + 1)}
-                  className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-ink bg-white border border-line-strong rounded-lg hover:border-ink transition-colors"
                 >
                   Next
                   <ChevronRight className="w-4 h-4" />
                 </Link>
               ) : (
-                <span className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-gray-300 bg-white border border-gray-200 rounded-lg cursor-not-allowed">
+                <span className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-ink-subtle/60 bg-white border border-line rounded-lg cursor-not-allowed">
                   Next
                   <ChevronRight className="w-4 h-4" />
                 </span>
@@ -242,15 +237,15 @@ export async function SchoolsResults({ searchParams }: SchoolsResultsProps) {
           )}
         </>
       ) : (
-        <div className="bg-white rounded-xl border border-gray-200 py-16 flex flex-col items-center text-center px-6">
-          <GraduationCap className="w-12 h-12 text-gray-300 mb-4" />
-          <h2 className="text-lg font-semibold text-gray-700 mb-1">No schools found</h2>
-          <p className="text-sm text-gray-500 max-w-xs mb-5">
+        <div className="bg-white rounded-xl border border-line py-16 flex flex-col items-center text-center px-6">
+          <GraduationCap className="w-12 h-12 text-ink-subtle mb-4" aria-hidden="true" />
+          <h2 className="text-xl text-ink mb-2">No schools found</h2>
+          <p className="text-base text-ink-muted max-w-xs mb-6">
             Try adjusting your search filters or clearing them to browse all schools.
           </p>
           <Link
             href="/schools"
-            className="px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-primary/5 transition-colors"
+            className={BUTTON_SECONDARY}
           >
             Clear filters
           </Link>

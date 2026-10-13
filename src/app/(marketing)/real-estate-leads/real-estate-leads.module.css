@@ -2,7 +2,10 @@
    /finance-leads (Your Finance Guide) so the two lead-supply prospectuses
    read as one network. YPG shares YFG's oklch palette and Fraunces /
    Manrope stack but names some tokens differently, so the aliases below
-   map YFG's names onto YPG's. Everything bespoke to this page lives here. */
+   map YFG's names onto YPG's. Everything bespoke to this page lives here.
+   v4.1 (Oct 2026): the page opens on the shared PhotoHero, sets one
+   typeface, bold headings, no gradients, watermarks, drop caps or pills,
+   and alternates white and grey bands with one charcoal chapter. */
 
 .page {
   /* YFG token names this module uses that YPG's globals.css doesn't define. */
@@ -21,8 +24,8 @@
   --fl-accent-deep: var(--color-primary-dark);
   --fl-accent-soft: color-mix(in oklch, var(--color-primary) 10%, transparent);
   --fl-stamp: oklch(0.52 0.19 28);
-  /* YPG doesn't load JetBrains Mono; the system mono stack carries the docket. */
-  --fl-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* One typeface (BRAND.md §4): the labels and the docket set in the sans. */
+  --fl-mono: var(--font-sans), "Helvetica Neue", Arial, sans-serif;
   --fl-serif: var(--font-display), "Helvetica Neue", Arial, sans-serif;
   --fl-sans: var(--font-sans), "Helvetica Neue", Arial, sans-serif;
   color: var(--fl-ink);
@@ -40,42 +43,36 @@
 /* === Type primitives ===================================================== */
 .mono {
   font-family: var(--fl-mono);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0;
   text-transform: none;
   font-weight: 500;
 }
 .eyebrow {
   composes: mono;
-  color: var(--fl-accent-deep);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fl-ink-2);
   display: inline-flex;
   align-items: center;
   gap: 10px;
 }
-.eyebrow::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--fl-accent);
-  flex-shrink: 0;
-}
 .display {
   font-family: var(--fl-serif);
-  font-weight: 400;
-  letter-spacing: -0.028em;
-  line-height: 1.02;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
   color: var(--fl-ink);
   text-wrap: balance;
 }
 .display em {
   font-style: normal;
-  font-weight: 300;
-  color: var(--fl-accent-deep);
+  font-weight: inherit;
+  color: inherit;
 }
 .lede {
-  font-family: var(--fl-serif);
-  font-weight: 300;
+  font-family: var(--fl-sans);
+  font-weight: 400;
   font-size: clamp(19px, 1.6vw, 23px);
   line-height: 1.5;
   color: var(--fl-ink-2);
@@ -89,15 +86,6 @@
 .prose p { margin: 0 0 1.15em; }
 .prose p:last-child { margin-bottom: 0; }
 .prose strong { font-weight: 700; color: var(--fl-ink); }
-.dropcap::first-letter {
-  font-family: var(--fl-serif);
-  font-weight: 400;
-  float: left;
-  font-size: 4.6em;
-  line-height: 0.82;
-  padding: 0.08em 0.12em 0 0;
-  color: var(--fl-accent-deep);
-}
 
 /* Chapter header: roman numeral, rule, title */
 .chapter {
@@ -108,104 +96,31 @@
   margin-bottom: 40px;
 }
 .chapterNum {
-  font-family: var(--fl-serif);
+  font-family: var(--fl-sans);
   font-style: normal;
-  font-weight: 300;
-  font-size: clamp(28px, 3vw, 40px);
-  color: var(--fl-accent-deep);
+  font-weight: 700;
+  font-size: clamp(22px, 2.4vw, 32px);
+  color: var(--fl-ink-2);
   line-height: 1;
 }
 .chapterTitle {
   composes: display;
-  font-size: clamp(32px, 4vw, 54px);
+  font-size: clamp(32px, 4vw, 48px);
   margin: 0;
 }
 .chapterKicker {
-  composes: mono;
+  font-family: var(--fl-sans);
+  font-size: clamp(16px, 1.3vw, 18px);
+  line-height: 1.5;
   color: var(--fl-ink-2);
   grid-column: 2;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 .chapterRule {
   grid-column: 1 / -1;
-  height: 1px;
-  background: linear-gradient(90deg, var(--fl-rule-strong), transparent);
-  margin-top: 22px;
-}
-
-/* === Hero ================================================================ */
-.hero {
-  position: relative;
-  overflow: hidden;
-  padding: 56px 0 64px;
-  background:
-    radial-gradient(ellipse at 12% 18%, color-mix(in oklch, var(--fl-accent) 9%, transparent) 0%, transparent 46%),
-    radial-gradient(ellipse at 88% 88%, color-mix(in oklch, var(--fl-accent) 6%, transparent) 0%, transparent 42%),
-    var(--color-background);
-}
-.hero::after {
-  /* fine paper grain */
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.35;
-  background-image: radial-gradient(color-mix(in oklch, var(--fl-ink) 9%, transparent) 0.6px, transparent 0.6px);
-  background-size: 22px 22px;
-  mask-image: radial-gradient(ellipse at 60% 40%, black 30%, transparent 78%);
-  -webkit-mask-image: radial-gradient(ellipse at 60% 40%, black 30%, transparent 78%);
-}
-.heroGrid {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  gap: clamp(32px, 5vw, 72px);
-  align-items: center;
-}
-@media (max-width: 960px) {
-  .heroGrid { grid-template-columns: 1fr; }
-}
-.heroTitle {
-  composes: display;
-  font-size: clamp(44px, 6.2vw, 84px);
-  margin: 18px 0 22px;
-  max-width: 13ch;
-}
-.heroLede { max-width: 54ch; margin: 0 0 30px; }
-.heroCtas { display: flex; flex-wrap: wrap; gap: 12px 14px; align-items: center; }
-.ghostLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 3.5rem;
-  padding: 0 0.5rem;
-  font-family: var(--fl-sans);
-  font-weight: 600;
-  font-size: 15px;
-  color: var(--fl-ink);
-  text-decoration: none;
-  border-bottom: 1px solid var(--fl-rule-strong);
-  transition: border-color 0.2s ease, color 0.2s ease;
-}
-.ghostLink:hover { color: var(--fl-accent-deep); border-color: var(--fl-accent); }
-.heroFoot {
-  composes: mono;
-  color: var(--fl-ink-2);
+  height: 2px;
+  background: var(--fl-ink);
   margin-top: 26px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 18px;
-  letter-spacing: 0;
-}
-.heroFoot span::before {
-  content: '';
-  display: inline-block;
-  width: 4px;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--fl-accent);
-  margin-right: 8px;
-  vertical-align: middle;
 }
 
 /* === The Docket ========================================================== */
@@ -367,7 +282,9 @@
 }
 .docketCaption {
   composes: mono;
-  color: var(--fl-ink-2);
+  /* The caption sits on the hero's charcoal, so it follows the tone scope
+     rather than the module's light palette. */
+  color: var(--ink-muted);
   text-align: center;
   margin-top: 26px;
   letter-spacing: 0;
@@ -393,8 +310,12 @@
 }
 
 /* === Stat rail =========================================================== */
+/* Its own band under the hero. */
+.railBand {
+  padding: clamp(40px, 5vw, 64px) 0;
+  border-bottom: 1px solid var(--fl-rule);
+}
 .rail {
-  margin-top: 56px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   border-top: 1px solid var(--fl-rule-strong);
@@ -414,6 +335,7 @@
 }
 .railValue {
   font-family: var(--fl-serif);
+  font-weight: 700;
   font-size: clamp(30px, 3.2vw, 44px);
   letter-spacing: -0.03em;
   line-height: 1;
@@ -425,7 +347,7 @@
 /* === Ticker strip ======================================================= */
 .ticker {
   border-bottom: 1px solid var(--fl-rule);
-  background: var(--fl-paper);
+  background: var(--surface-warm);
   overflow: hidden;
 }
 .tickerTrack {
@@ -445,12 +367,9 @@
   gap: 12px;
 }
 .tickerItem::after {
-  content: '';
-  width: 5px;
-  height: 5px;
-  border-radius: 999px;
-  background: var(--fl-accent);
+  content: '·';
   margin-left: 16px;
+  color: var(--fl-ink-2);
 }
 @keyframes tickerMove {
   from { transform: translateX(0); }
@@ -463,7 +382,7 @@
 
 /* === Sections ============================================================ */
 .section { padding: clamp(72px, 9vw, 120px) 0; }
-.sectionPaper { background: var(--fl-paper); border-top: 1px solid var(--fl-rule); border-bottom: 1px solid var(--fl-rule); }
+.sectionPaper { background: var(--surface-warm); border-top: 1px solid var(--fl-rule); border-bottom: 1px solid var(--fl-rule); }
 
 /* Story: chapter one */
 .storyGrid {
@@ -480,11 +399,11 @@
 .pull {
   font-family: var(--fl-serif);
   font-style: normal;
-  font-weight: 300;
+  font-weight: 600;
   font-size: clamp(22px, 2.2vw, 30px);
   line-height: 1.3;
   color: var(--fl-ink);
-  border-left: 2px solid var(--fl-accent);
+  border-left: 2px solid var(--fl-ink);
   padding-left: 22px;
   margin: 2em 0;
   letter-spacing: -0.01em;
@@ -500,7 +419,6 @@
   border: 1px solid var(--fl-rule);
   border-radius: 12px;
   background: var(--fl-paper);
-  box-shadow: 0 16px 34px -28px color-mix(in oklch, var(--fl-ink) 40%, transparent);
 }
 .noteKey { composes: mono; color: var(--fl-accent-deep); margin-bottom: 8px; }
 .noteVal { font-size: 15px; line-height: 1.55; color: var(--fl-ink); }
@@ -692,17 +610,15 @@
   border: 1px solid var(--fl-rule);
   border-radius: 16px;
   background: var(--fl-paper);
-  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+  transition: border-color 0.2s ease;
 }
 .indexCard:hover {
-  transform: translateY(-4px);
-  border-color: color-mix(in oklch, var(--fl-accent) 40%, var(--fl-rule));
-  box-shadow: 0 30px 60px -40px color-mix(in oklch, var(--fl-ink) 55%, transparent);
+  border-color: var(--fl-ink);
 }
 .indexNum {
   font-family: var(--fl-serif);
   font-style: normal;
-  font-weight: 300;
+  font-weight: 700;
   font-size: 34px;
   line-height: 1;
   color: var(--fl-accent-deep);
@@ -728,7 +644,7 @@
   color: var(--fl-ink);
   background: var(--color-surface-sunken);
   border: 1px solid var(--fl-rule);
-  border-radius: 999px;
+  border-radius: 4px;
   padding: 3px 10px;
 }
 .indexFoot {
@@ -752,31 +668,6 @@
   color: var(--color-background);
   padding: clamp(80px, 10vw, 140px) 0;
 }
-.dark::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse at 20% 30%, color-mix(in oklch, var(--fl-accent) 16%, transparent), transparent 55%),
-    radial-gradient(circle, color-mix(in oklch, var(--color-background) 10%, transparent) 1px, transparent 1px);
-  background-size: auto, 30px 30px;
-  opacity: 0.6;
-  mask-image: radial-gradient(ellipse at 40% 40%, black 30%, transparent 80%);
-  -webkit-mask-image: radial-gradient(ellipse at 40% 40%, black 30%, transparent 80%);
-}
-.darkMark {
-  position: absolute;
-  right: -2vw;
-  top: -6vw;
-  font-family: var(--fl-serif);
-  font-style: normal;
-  font-size: clamp(220px, 32vw, 460px);
-  line-height: 1;
-  color: color-mix(in oklch, var(--color-background) 5%, transparent);
-  user-select: none;
-  pointer-events: none;
-}
 .darkGrid {
   position: relative;
   display: grid;
@@ -791,7 +682,7 @@
   font-size: clamp(36px, 4.6vw, 62px);
   margin: 14px 0 0;
 }
-.darkTitle em { color: var(--color-primary-light); }
+.darkTitle em { color: inherit; font-style: normal; }
 .darkList { list-style: none; margin: 0; padding: 0; display: grid; }
 .darkList li {
   padding: 22px 0;
@@ -965,35 +856,30 @@
 .gazNote { font-size: 13.5px; line-height: 1.55; color: var(--fl-ink-2); }
 
 /* === Closing CTA ======================================================== */
+/* A light band: the page no longer ends on charcoal above the charcoal
+   footer. Add .sectionPaper for the grey version. */
 .close {
   position: relative;
   overflow: hidden;
-  background: var(--fl-ink);
-  color: var(--color-background);
+  border-top: 1px solid var(--fl-rule);
+  color: var(--fl-ink);
   padding: clamp(80px, 10vw, 130px) 0;
   text-align: center;
 }
-.close::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(circle at 50% 30%, color-mix(in oklch, var(--fl-accent) 14%, transparent), transparent 56%);
-}
 .closeTitle {
   composes: display;
-  color: var(--color-background);
+  color: var(--fl-ink);
   font-size: clamp(38px, 5.2vw, 70px);
   margin: 0 auto 20px;
   max-width: 18ch;
 }
-.closeTitle em { color: var(--color-primary-light); }
+.closeTitle em { color: inherit; font-style: normal; }
 .closeText {
   font-size: clamp(16px, 1.2vw, 19px);
   line-height: 1.6;
   max-width: 54ch;
   margin: 0 auto 36px;
-  color: color-mix(in oklch, var(--color-background) 65%, transparent);
+  color: var(--fl-ink-2);
 }
 .closeLink {
   display: inline-flex;
@@ -1003,9 +889,9 @@
   padding: 0 1.25rem;
   font-weight: 600;
   font-size: 15px;
-  color: var(--color-background);
+  color: var(--fl-ink);
   text-decoration: none;
-  border-bottom: 1px solid color-mix(in oklch, var(--color-background) 18%, transparent);
+  border-bottom: 1px solid var(--fl-rule-strong);
 }
 
 /* ── YPG additions (not in the YFG original) ─────────────────────────── */

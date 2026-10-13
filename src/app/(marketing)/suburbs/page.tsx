@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Breadcrumbs } from "@/components/layout";
+import { CloudSun, Footprints, GraduationCap, House, ShieldAlert, TrendingUp } from "lucide-react";
+import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { SuburbsResults } from "./Results";
@@ -18,6 +19,17 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+// What every profile carries. Line icons in the primary colour (they sat on
+// the grey band as two-tone SVGs that vanish on the charcoal hero).
+const FEATURES = [
+  { icon: House,         title: "Median",  note: "house & unit prices" },
+  { icon: TrendingUp,    title: "12mo",    note: "growth & trend" },
+  { icon: GraduationCap, title: "Schools", note: "primary & secondary" },
+  { icon: Footprints,    title: "Walk",    note: "score & transit" },
+  { icon: ShieldAlert,   title: "Risk",    note: "flood, bushfire, crime" },
+  { icon: CloudSun,      title: "Climate", note: "temp, rain, sun" },
+] as const;
+
 interface PageProps {
   searchParams: Promise<{ state?: string; q?: string; count?: string }>;
 }
@@ -32,80 +44,38 @@ export default function SuburbsPage({ searchParams }: PageProps) {
       />
       <BreadcrumbJsonLd items={[{ name: "Suburbs", url: "/suburbs" }]} />
 
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs items={[{ label: "Suburbs" }]} />
-          </div>
+      {/* Premium hero (BRAND.md section 11): the library street photo, a
+          generic street that is decorative and never captioned as a place. */}
+      <PhotoHero photo="street" breadcrumbs={[{ label: "Suburbs" }]}>
+        <p className="text-[13px] font-sans text-ink-subtle mb-5">
+          Every Australian suburb
+        </p>
+        <HeroTitle>
+          Australian suburbs, <span>data and all</span>
+        </HeroTitle>
+        <HeroLead>
+          Median prices, growth, schools, walk score, climate, hazard and
+          crime. Sourced and dated. No paywall, no sign-up, no email gate.
+        </HeroLead>
 
-          <div className="grid lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-7">
-              <p className="text-[13px] font-sans text-ink-subtle mb-5">
-                Every Australian suburb
-              </p>
-              <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6">
-                Australian suburbs, <span>data and all</span>
-              </h1>
-              <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-xl">
-                Median prices, growth, schools, walk score, climate, hazard and
-                crime. Sourced and dated. No paywall, no sign-up, no email gate.
-              </p>
-            </div>
+        <ul className="mt-10 grid grid-cols-2 sm:grid-cols-3 gap-x-10 gap-y-6 border-t border-line pt-8">
+          {FEATURES.map(({ icon: Icon, title, note }) => (
+            <li key={title} className="flex items-start gap-3">
+              <Icon className="w-6 h-6 mt-0.5 shrink-0 text-primary" strokeWidth={1.75} aria-hidden="true" />
+              <div>
+                <p className="font-display text-2xl text-ink leading-none mb-1">{title}</p>
+                <p className="font-sans text-[13px] text-ink-subtle">{note}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </PhotoHero>
 
-          </div>
-
-          <div className="mt-12 flex flex-wrap gap-x-10 gap-y-6">
-            <div className="flex items-start gap-3">
-              <img src="/images/icons/median.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
-              <div>
-                <p className="font-display text-2xl text-ink leading-none mb-1">Median</p>
-                <p className="font-sans text-[13px] text-ink-subtle">house &amp; unit prices</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <img src="/images/icons/growth.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
-              <div>
-                <p className="font-display text-2xl text-ink leading-none mb-1">12mo</p>
-                <p className="font-sans text-[13px] text-ink-subtle">growth &amp; trend</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <img src="/images/icons/schools.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
-              <div>
-                <p className="font-display text-2xl text-ink leading-none mb-1">Schools</p>
-                <p className="font-sans text-[13px] text-ink-subtle">primary &amp; secondary</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <img src="/images/icons/walkability.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
-              <div>
-                <p className="font-display text-2xl text-ink leading-none mb-1">Walk</p>
-                <p className="font-sans text-[13px] text-ink-subtle">score &amp; transit</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <img src="/images/icons/hazard.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
-              <div>
-                <p className="font-display text-2xl text-ink leading-none mb-1">Risk</p>
-                <p className="font-sans text-[13px] text-ink-subtle">flood, bushfire, crime</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <img src="/images/icons/climate.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
-              <div>
-                <p className="font-display text-2xl text-ink leading-none mb-1">Climate</p>
-                <p className="font-sans text-[13px] text-ink-subtle">temp, rain, sun</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+      <Band spacing="compact">
         <Suspense fallback={null}>
           <SuburbsResults searchParams={searchParams} />
         </Suspense>
-      </div>
+      </Band>
     </>
   );
 }

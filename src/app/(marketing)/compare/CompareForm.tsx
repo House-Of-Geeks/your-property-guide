@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
+import { BUTTON_PRIMARY } from "@/components/premium/buttons";
 
 // Two side-by-side autocompletes that build /suburbs/{a}/vs/{b} on submit.
 // Lives on /compare. The submit button is disabled until both suburbs are
@@ -25,7 +26,7 @@ export function CompareForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-3 items-stretch">
         <div>
-          <label className="block text-[13px] font-sans text-ink-subtle mb-2">
+          <label className="block text-sm font-semibold text-ink mb-2">
             First suburb
           </label>
           <SuburbAutocomplete
@@ -37,11 +38,11 @@ export function CompareForm() {
         </div>
 
         <div className="hidden md:flex items-end justify-center pb-3">
-          <span className="font-display text-primary text-2xl">vs</span>
+          <span className="text-ink-subtle text-2xl font-bold">vs</span>
         </div>
 
         <div>
-          <label className="block text-[13px] font-sans text-ink-subtle mb-2">
+          <label className="block text-sm font-semibold text-ink mb-2">
             Second suburb
           </label>
           <SuburbAutocomplete
@@ -56,14 +57,14 @@ export function CompareForm() {
       <button
         type="submit"
         disabled={!ready}
-        className="inline-flex items-center justify-center gap-2 rounded-xl bg-cta px-6 py-3 font-sans font-medium text-white hover:bg-cta-hover transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        className={`${BUTTON_PRIMARY} justify-center disabled:opacity-40 disabled:cursor-not-allowed`}
       >
         Compare side by side
-        <ArrowRight className="w-4 h-4" />
+        <ArrowRight className="w-4 h-4" aria-hidden="true" />
       </button>
 
       {slugA && slugB && slugA === slugB && (
-        <p className="font-sans text-sm text-red-700">
+        <p className="text-sm text-danger">
           Choose two different suburbs to compare.
         </p>
       )}

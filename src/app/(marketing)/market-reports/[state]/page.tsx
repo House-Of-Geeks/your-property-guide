@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, TrendingUp, Home, DollarSign } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
@@ -14,6 +13,7 @@ import {
 import { formatPrice, formatPriceFull } from "@/lib/utils/format";
 import { STATE_COMMENTARY } from "@/lib/data/state-commentary";
 import { priceSourceLine, stateRankingLink } from "@/lib/ranking-notes";
+import { BUTTON_PRIMARY, BUTTON_SECONDARY, Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 
 const STATE_SLUGS = ["qld", "nsw", "vic", "wa", "sa", "tas", "nt", "act"] as const;
 type StateSlug = (typeof STATE_SLUGS)[number];
@@ -67,14 +67,14 @@ interface StatCardProps {
 
 function StatCard({ icon, label, value, sub }: StatCardProps) {
   return (
-    <div className="rounded-2xl border border-line bg-surface-raised p-6">
-      <div className="flex items-center gap-2 mb-3 text-ink-subtle">
+    <div className="tone-light rounded-xl border border-line bg-surface-raised p-6">
+      <div className="flex items-center gap-2 mb-4 text-ink-subtle">
         {icon}
-        <p className="text-[13px] font-sans">{label}</p>
+        <p className="text-sm">{label}</p>
       </div>
-      <p className="font-display text-3xl text-ink leading-none">{value}</p>
+      <p className="text-3xl sm:text-4xl font-bold text-ink leading-none tracking-[-0.03em]">{value}</p>
       {sub && (
-        <p className="mt-2 text-xs font-sans text-ink-subtle">{sub}</p>
+        <p className="mt-3 text-sm text-ink-subtle">{sub}</p>
       )}
     </div>
   );
@@ -92,10 +92,10 @@ function SuburbTable({
   if (rows.length === 0) return null;
   return (
     <section>
-      <h3 className="font-display text-2xl text-ink mb-4 leading-tight">
+      <h3 className="text-2xl text-ink mb-4 leading-tight">
         {heading}
       </h3>
-      <div className="overflow-x-auto rounded-2xl border border-line bg-surface-raised">
+      <div className="tone-light overflow-x-auto rounded-xl border border-line bg-surface-raised">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-surface-warm border-b border-line">
@@ -204,118 +204,116 @@ export default async function StateMarketReportPage({
         datePublished="2026-01-01"
       />
 
-      {/* Editorial hero */}
-      <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
-          <div className="mb-8">
-            <Breadcrumbs
-              items={[
-                { label: "Market Reports", href: "/market-reports" },
-                { label: data.stateName },
-              ]}
-            />
-          </div>
-
-          <p className="text-[13px] font-sans text-ink-subtle mb-5">
-            {CURRENT_YEAR} &middot; {priced} suburbs with a published median
-          </p>
-          <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            {data.stateName} property market, <span>{CURRENT_YEAR}</span>
-          </h1>
-          <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
-            Median prices and the state&rsquo;s most affordable and
-            highest-priced suburbs, from the figures each suburb&rsquo;s own
-            page publishes.
-          </p>
-        </div>
-      </section>
+      <PhotoHero
+        photo="street"
+        breadcrumbs={[
+          { label: "Market Reports", href: "/market-reports" },
+          { label: data.stateName },
+        ]}
+      >
+        <p className="text-sm text-ink-muted mb-5">
+          {CURRENT_YEAR} &middot; {priced} suburbs with a published median
+        </p>
+        <HeroTitle>
+          {data.stateName} property market, <span>{CURRENT_YEAR}</span>
+        </HeroTitle>
+        <HeroLead>
+          Median prices and the state&rsquo;s most affordable and
+          highest-priced suburbs, from the figures each suburb&rsquo;s own
+          page publishes.
+        </HeroLead>
+      </PhotoHero>
 
       {/* Stat anchor row */}
-      <section className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-          <div className={`grid grid-cols-2 ${growth ? "lg:grid-cols-3" : ""} gap-4`}>
+      <Band spacing="compact">
+        <div className={`grid grid-cols-2 ${growth ? "lg:grid-cols-3" : ""} gap-4`}>
+          <StatCard
+            icon={<Home className="w-4 h-4" />}
+            label="Avg median house"
+            value={housePrice}
+            sub={`across ${priced} suburbs`}
+          />
+          <StatCard
+            icon={<DollarSign className="w-4 h-4" />}
+            label="Avg median unit"
+            value={unitPrice}
+            sub="where a unit median is published"
+          />
+          {growth && (
             <StatCard
-              icon={<Home className="w-4 h-4" />}
-              label="Avg median house"
-              value={housePrice}
-              sub={`across ${priced} suburbs`}
+              icon={<TrendingUp className="w-4 h-4" />}
+              label="Avg annual growth"
+              value={growth}
+              sub="house prices, last 12 months"
             />
-            <StatCard
-              icon={<DollarSign className="w-4 h-4" />}
-              label="Avg median unit"
-              value={unitPrice}
-              sub="where a unit median is published"
-            />
-            {growth && (
-              <StatCard
-                icon={<TrendingUp className="w-4 h-4" />}
-                label="Avg annual growth"
-                value={growth}
-                sub="house prices, last 12 months"
-              />
-            )}
-          </div>
-          <p className="mt-4 max-w-3xl font-sans text-sm text-ink-subtle leading-relaxed">
-            {priceSourceLine(upperState)}
-          </p>
+          )}
         </div>
-      </section>
+        <p className="mt-6 max-w-3xl text-sm text-ink-subtle leading-relaxed">
+          {priceSourceLine(upperState)}
+        </p>
+      </Band>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-        {/* State commentary */}
-        {commentary && (
-          <section className="grid lg:grid-cols-12 gap-8">
+      {/* State commentary */}
+      {commentary && (
+        <Band tone="dark" spacing="compact">
+          <section className="grid lg:grid-cols-12 gap-10 lg:gap-16">
             <div className="lg:col-span-7">
-              <p className="text-[13px] font-sans text-ink-subtle mb-3">
+              <p className="text-sm text-ink-subtle mb-3">
                 State of the market
               </p>
-              <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-4">
+              <h2 className="text-3xl sm:text-4xl leading-[1.1] tracking-[-0.025em] text-ink mb-6">
                 {data.stateName} in {CURRENT_YEAR}
               </h2>
               <div className="prose-ypg prose-ypg-tight">
                 <p>{commentary.marketContext}</p>
               </div>
             </div>
-            <aside className="lg:col-span-5 space-y-4">
-              <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                <p className="text-[13px] font-sans text-ink-subtle mb-2">
+            <aside className="lg:col-span-5 space-y-8">
+              <div className="border-t-2 border-ink pt-5">
+                <p className="text-sm text-ink-subtle mb-2">
                   Buyer tip, {upperState}
                 </p>
-                <p className="font-sans text-sm text-ink leading-relaxed">
+                <p className="text-base text-ink leading-relaxed">
                   {commentary.buyerTip}
                 </p>
               </div>
-              <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                <p className="text-[13px] font-sans text-ink-subtle mb-2">
+              <div className="border-t-2 border-ink pt-5">
+                <p className="text-sm text-ink-subtle mb-2">
                   Watch out, {upperState}
                 </p>
-                <p className="font-sans text-sm text-ink leading-relaxed">
+                <p className="text-base text-ink leading-relaxed">
                   {commentary.watchOut}
                 </p>
               </div>
             </aside>
           </section>
-        )}
+        </Band>
+      )}
 
-        {/* Tables */}
-        <SuburbTable
-          heading={`Top ${data.topByGrowth.length} ${data.stateName} suburbs by annual growth`}
-          rows={data.topByGrowth}
-          showGrowth
-        />
-        <SuburbTable
-          heading={`${data.stateName}'s most affordable suburbs`}
-          rows={data.topMostAffordable}
-          showGrowth
-        />
-        <SuburbTable
-          heading={`${data.stateName}'s highest median prices`}
-          rows={data.topByMedianPrice}
-        />
+      {/* Tables */}
+      <Band tone="quiet" spacing="compact">
+        <div className="space-y-14">
+          <SuburbTable
+            heading={`Top ${data.topByGrowth.length} ${data.stateName} suburbs by annual growth`}
+            rows={data.topByGrowth}
+            showGrowth
+          />
+          <SuburbTable
+            heading={`${data.stateName}'s most affordable suburbs`}
+            rows={data.topMostAffordable}
+            showGrowth
+          />
+          <SuburbTable
+            heading={`${data.stateName}'s highest median prices`}
+            rows={data.topByMedianPrice}
+          />
+        </div>
+      </Band>
 
+      <Band spacing="compact">
         {/* Cross-link to other state reports */}
-        <section className="rounded-2xl border border-line bg-surface-warm p-6">
-          <p className="text-[13px] font-sans text-ink-subtle mb-3">
+        <section>
+          <p className="text-sm text-ink-subtle mb-3">
             Other state reports
           </p>
           <div className="flex flex-wrap gap-2">
@@ -323,7 +321,7 @@ export default async function StateMarketReportPage({
               <Link
                 key={s}
                 href={`/market-reports/${s}`}
-                className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors"
+                className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-medium text-ink hover:border-ink transition-colors"
               >
                 {getStateNameForReport(s)}
               </Link>
@@ -332,8 +330,8 @@ export default async function StateMarketReportPage({
         </section>
 
         {/* Source note */}
-        <section className="rounded-2xl border border-line bg-surface-warm p-5 text-sm font-sans text-ink-muted">
-          <p className="text-[13px] text-ink-subtle mb-2">
+        <section className="mt-10 max-w-3xl border-t border-line pt-6 text-sm text-ink-muted">
+          <p className="text-sm font-semibold text-ink mb-2">
             Data source
           </p>
           <p className="leading-relaxed">
@@ -342,43 +340,45 @@ export default async function StateMarketReportPage({
             state. Averages are of suburb medians, not of sales.{" "}
             <Link
               href="/methodology#median-prices"
-              className="text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+              className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
             >
               Full methodology →
             </Link>
           </p>
         </section>
+      </Band>
 
-        {/* CTA strip */}
-        <section className="rounded-2xl border border-primary/20 bg-primary/5 p-6 sm:p-8 grid lg:grid-cols-12 gap-6 items-center">
+      {/* CTA strip */}
+      <Band tone="dark" spacing="compact">
+        <section className="grid lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-7">
-            <p className="text-[13px] font-sans text-ink-subtle mb-2">
+            <p className="text-sm text-ink-subtle mb-3">
               Ready to act on the data?
             </p>
-            <h3 className="font-display text-2xl text-ink leading-tight">
+            <h3 className="text-3xl sm:text-4xl leading-[1.1] tracking-[-0.025em] text-ink">
               Search {data.stateName} properties for sale
             </h3>
-            <p className="mt-2 font-sans text-sm text-ink-muted">
+            <p className="mt-4 text-lg text-ink-muted leading-relaxed">
               Browse listings across all suburbs in {data.stateName}.
             </p>
           </div>
           <div className="lg:col-span-5 flex flex-wrap gap-3 lg:justify-end">
             <Link
               href={`/buy?state=${state}`}
-              className="inline-flex items-center gap-2 bg-cta text-white px-5 py-3 rounded-lg text-sm font-sans font-medium hover:bg-cta-hover transition-colors"
+              className={BUTTON_PRIMARY}
             >
               Browse {upperState} listings
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
             <Link
               href={stateRankingLink(upperState).href}
-              className="inline-flex items-center gap-2 border border-line bg-surface-raised text-ink px-5 py-3 rounded-lg text-sm font-sans font-medium hover:border-primary/40 hover:text-primary transition-colors"
+              className={BUTTON_SECONDARY}
             >
               {stateRankingLink(upperState).label}
             </Link>
           </div>
         </section>
-      </div>
+      </Band>
 
       {/* Seller funnel exit. Readers of a state market report are gauging
           whether it's a good time to sell — route them into the guide. */}

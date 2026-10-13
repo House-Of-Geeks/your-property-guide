@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Children, Fragment, isValidElement, type ReactElement, type ReactNode } from "react";
-import { Breadcrumbs } from "@/components/layout";
+import { HeroLead, HeroTitle, PhotoHero, type PhotoKey } from "@/components/premium";
 import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { GuideTOC, type GuideTOCEntry } from "./GuideTOC";
 import { Tldr } from "./Tldr";
@@ -46,8 +46,25 @@ interface GuideArticleLayoutProps {
 }
 
 // One measure for the page: the reading column is 40rem (about 68
-// characters of body text), the rail 16rem, and the shell centres both.
-const SHELL = "mx-auto w-full max-w-[64rem] px-4 sm:px-6";
+// characters of body text) and the rail 16rem beside it. The shell is the
+// premium bands' measure, so the column lines up with the hero's heading.
+const SHELL = "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8";
+
+// The hero photo follows the guide's reader (BRAND.md §11): the persona, with
+// upgraders read as buyers (their guide CTA is the buying guide). Guides with
+// no persona (renters' rights) get the paperwork photo.
+const HERO_PHOTO: Record<PersonaId, PhotoKey> = {
+  selling: "selling",
+  "first-home": "firstHome",
+  upgrading: "buying",
+  investing: "investing",
+  renovating: "renovating",
+};
+
+// On phones the breadcrumb trail stays on one line and drops the current
+// page (the H1 says it); from tablet up the last crumb truncates.
+const CRUMB_TRUNCATE =
+  "[&_nav_ol]:flex-nowrap [&_nav_li:last-child]:hidden sm:[&_nav_li:last-child]:flex sm:[&_nav_li:last-child]:min-w-0 [&_nav_li:last-child_span]:min-w-0 [&_nav_li:last-child_span]:truncate";
 
 export function GuideArticleLayout({
   frontmatter,
@@ -114,32 +131,31 @@ export function GuideArticleLayout({
       {/* Tells the phone bar (MobileBottomNav) which guide this reader gets. */}
       {nextStep && <span hidden data-guide-audience={nextStep} />}
 
-      {/* Hero: the query's answer in the first screen. H1, the one-paragraph
-          answer, then who checked it and when. */}
-      <div className={SHELL}>
-        <div className="pt-2 sm:pt-4 [&_ol]:flex-nowrap [&_li:last-child]:hidden sm:[&_li:last-child]:flex sm:[&_li:last-child]:min-w-0 [&_li:last-child_span]:min-w-0 [&_li:last-child_span]:truncate">
-          <Breadcrumbs items={breadcrumbItems} />
-        </div>
-        <header className={`max-w-[46rem] pt-4 sm:pt-8 ${beforeBody ? "pb-8" : "pb-8 sm:pb-10"}`}>
+      {/* Hero: the query's answer in the first screen, over the photo for
+          the guide's reader. H1, the one-paragraph answer, then who checked
+          it and when. */}
+      <PhotoHero
+        photo={frontmatter.persona ? HERO_PHOTO[frontmatter.persona] : "paperwork"}
+        breadcrumbs={breadcrumbItems}
+        className={CRUMB_TRUNCATE}
+      >
+        <header>
           {persona && (
             <Link
               href={persona.hubPath}
-              className="inline-block text-sm font-semibold text-ink-muted hover:text-ink underline-offset-4 hover:underline mb-3"
+              className="inline-block text-sm font-semibold text-ink-muted hover:text-ink underline-offset-4 hover:underline mb-4"
             >
               {persona.hubHeading}
             </Link>
           )}
-          <h1 className="font-display font-bold text-ink text-[1.875rem] leading-[1.1] tracking-[-0.03em] sm:text-[2.375rem] lg:text-[2.625rem] lg:leading-[1.08]">{heading}</h1>
+          <HeroTitle>{heading}</HeroTitle>
           {/* Standfirst. Marked data-speakable-summary so voice assistants
               (Google Assistant, Siri Reading Mode) pick up this paragraph as
               the canonical spoken summary alongside the H1. */}
-          <p
-            data-speakable-summary
-            className="mt-4 text-[1.0625rem] sm:text-xl text-ink-muted leading-relaxed"
-          >
-            {frontmatter.description}
-          </p>
-          <div className="mt-6">
+          <div data-speakable-summary>
+            <HeroLead>{frontmatter.description}</HeroLead>
+          </div>
+          <div className="mt-8 max-w-2xl border-t border-line pt-6">
             <GuideByline
               author={frontmatter.author}
               reviewer={frontmatter.reviewedBy}
@@ -149,17 +165,17 @@ export function GuideArticleLayout({
             />
           </div>
         </header>
-      </div>
+      </PhotoHero>
 
-      {/* Calculator-first guides put the tool straight under the H1. */}
+      {/* Calculator-first guides put the tool straight under the hero. */}
       {beforeBody && (
-        <section className="bg-surface-warm border-y border-line">
+        <section className="bg-surface-warm border-b border-line">
           <div className={`${SHELL} py-8 sm:py-10`}>{beforeBody}</div>
         </section>
       )}
 
-      <div className={`${SHELL} ${beforeBody ? "pt-10 sm:pt-12" : "pt-2"} pb-16`}>
-        <div className="lg:grid lg:grid-cols-[minmax(0,40rem)_16rem] lg:justify-between lg:gap-x-16">
+      <div className={`${SHELL} pt-10 sm:pt-12 pb-16`}>
+        <div className="lg:grid lg:grid-cols-[minmax(0,40rem)_16rem] lg:gap-x-16 xl:gap-x-24">
           {/* Reading column. min-w-0 so a wide table scrolls inside its own
               wrapper instead of stretching the grid track past the phone;
               the scope makes body tables scroll on phones and lets
