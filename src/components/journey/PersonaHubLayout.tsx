@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { ArrowRight } from "lucide-react";
@@ -75,6 +76,36 @@ const PERSONA_EDITOR_NOTE: Record<PersonaId, React.ReactNode> = {
 // every guide for the persona, the calculators, the FAQ, and the guide
 // funnel itself at the end, where intent peaks.
 
+// One documentary photo per hub, full bleed under the hero (BRAND.md §6:
+// generated to the brief, generic people, never a named place or person).
+const PERSONA_PHOTO: Record<PersonaId, { src: string; alt: string; position: string }> = {
+  "first-home": {
+    src: "/images/photos/first-home.jpg",
+    alt: "New brick homes with Colorbond roofs on a young estate street",
+    position: "object-[50%_55%]",
+  },
+  "selling": {
+    src: "/images/photos/selling-house.jpg",
+    alt: "A Federation brick home with a blank sale board out the front",
+    position: "object-[50%_55%]",
+  },
+  "upgrading": {
+    src: "/images/photos/verandah-couple.jpg",
+    alt: "A couple sitting on the verandah of a weatherboard house among pot plants",
+    position: "object-[50%_45%]",
+  },
+  "investing": {
+    src: "/images/photos/flats.jpg",
+    alt: "A red-brick block of flats behind a jacaranda in flower",
+    position: "object-[50%_50%]",
+  },
+  "renovating": {
+    src: "/images/photos/renovation.jpg",
+    alt: "A room mid-renovation with a ladder, paint tins and a floor sander",
+    position: "object-[50%_60%]",
+  },
+};
+
 // Hub content headings mark an emphasis token with asterisks (v3 italics);
 // v4 sets no italics, so the markers are dropped.
 const plainHeading = (heading: string) => heading.replace(/\*([^*]+)\*/g, "$1").replace(/\.$/, "");
@@ -96,6 +127,7 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
   const [answer, ...briefing] = content?.deepDive.paragraphs ?? [persona.hubLede];
   const guideHref = guideFunnelHref(isBuyingHub ? "buying" : "selling", { from: persona.hubPath.slice(1) });
   const calculators = (content?.calculators ?? []).filter((c) => !HERO_ACTION_HREFS.has(c.href));
+  const photo = PERSONA_PHOTO[personaId];
   const h2 = "font-display text-ink tracking-[-0.02em] text-[1.75rem] sm:text-4xl leading-tight font-bold";
 
   return (
@@ -116,7 +148,7 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
       />
 
       {/* Hero: the answer and the one action on the left, the three first
-          reads on the right (a photo can take that column later). */}
+          reads on the right. The hub's photo runs full bleed under it. */}
       <section className="bg-surface-warm border-b border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8 pb-10 sm:pt-14 sm:pb-16">
           <div className="grid lg:grid-cols-12 gap-x-12 gap-y-10 items-start">
@@ -169,6 +201,10 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
           </div>
         </div>
       </section>
+
+      <div className="relative h-[180px] sm:h-[280px] lg:h-[340px] border-b border-line bg-surface-sunken">
+        <Image src={photo.src} alt={photo.alt} fill sizes="100vw" className={`object-cover ${photo.position}`} />
+      </div>
 
       {/* The rest of the briefing: plain-English depth on what the persona
           needs to understand (the ranking body of the hub). */}

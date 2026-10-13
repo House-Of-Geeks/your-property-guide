@@ -6,6 +6,7 @@ import { AppraisalForm } from "@/components/forms/AppraisalForm";
 import { SuburbValueRange } from "@/components/journey/SuburbValueRange";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
+import Image from "next/image";
 import Link from "next/link";
 import { SITE_URL } from "@/lib/constants";
 
@@ -202,6 +203,15 @@ export default function AppraisalPage() {
             </div>
 
             <aside className="lg:col-span-5 space-y-5">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-line bg-surface-sunken">
+                <Image
+                  src="/images/photos/appraisal-kitchen.jpg"
+                  alt="Two people at a kitchen bench going over paperwork"
+                  fill
+                  sizes="(min-width: 1024px) 40vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
               <div className="rounded-xl border border-line p-5 sm:p-6">
                 <h2 className="font-display text-lg font-bold text-ink leading-tight mb-4">Appraisals across Australia</h2>
                 <dl className="space-y-3">
