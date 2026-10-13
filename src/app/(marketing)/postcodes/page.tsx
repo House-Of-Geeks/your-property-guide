@@ -2,12 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
+import { unstable_cache } from "next/cache";
 import { getAllPostcodesWithState } from "@/lib/services/postcode-service";
+import { NOT_PLACES_VERSION } from "@/lib/non-localities";
 import { SITE_URL } from "@/lib/constants";
 
-// Page body queries the DB; render on every request (no build-time prerender,
-// no stale cache). Add HTTP caching at the edge later if traffic warrants it.
-export const revalidate = 86400;
+// The directory queries the DB. As a static ISR page this served its
+// build-time render (the build is DB-free) for up to a day after every
+// deploy: on 13 Oct 2026 it read "0 postcodes" and linked none of the 2,661.
+// Render on request instead and cache the list behind the postcode
+// sitemap's tag, the pattern /regions uses.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Australian Postcode Property Guide",
@@ -36,14 +41,15 @@ const STATE_LABELS: Record<string, string> = {
   WA: "Western Australia",
 };
 
+// The data cache outlives a deploy, so the deployment is part of the key.
+const getCachedPostcodes = unstable_cache(
+  getAllPostcodesWithState,
+  ["postcodes-index:v1", NOT_PLACES_VERSION, process.env.VERCEL_DEPLOYMENT_ID ?? "local"],
+  { revalidate: 86400, tags: ["sitemap-postcodes"] },
+);
+
 export default async function PostcodesPage() {
-  // Skip the DB at build (Railway proxy drops build-time connections); ISR
-  // (revalidate above) fills real data on first request. Empty renders cleanly
-  // — the grouping below drops empty states.
-  const postcodes =
-    process.env.NEXT_PHASE === "phase-production-build"
-      ? ([] as Awaited<ReturnType<typeof getAllPostcodesWithState>>)
-      : await getAllPostcodesWithState();
+  const postcodes = await getCachedPostcodes();
 
   // Group by state
   const byState = new Map<string, string[]>();

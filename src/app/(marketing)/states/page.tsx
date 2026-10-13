@@ -3,13 +3,17 @@ import Link from "next/link";
 import { MapPin, Home, TrendingUp } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
+import { unstable_cache } from "next/cache";
 import { getAllStatesWithStats } from "@/lib/services/suburb-rankings-service";
+import { NOT_PLACES_VERSION } from "@/lib/non-localities";
 import { formatPrice } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
-// ISR, DB-querying services have build-phase guards, so we cache for 24h
-// instead of running a function on every visit.
-export const revalidate = 86400;
+// The cards query the DB. As a static ISR page this served its build-time
+// render (the build is DB-free, so no cards) for up to a day after every
+// deploy: on 13 Oct 2026 /states listed no state at all. Render on request
+// instead and cache the eight summaries, the pattern /regions uses.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Australian States Property Guide",
@@ -26,14 +30,16 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+// The data cache outlives a deploy, so the deployment is part of the key:
+// the averages change with the code that computes the state pages.
+const getCachedStates = unstable_cache(
+  getAllStatesWithStats,
+  ["states-index:v1", NOT_PLACES_VERSION, process.env.VERCEL_DEPLOYMENT_ID ?? "local"],
+  { revalidate: 86400, tags: ["states-index"] },
+);
+
 export default async function StatesPage() {
-  // Skip the DB at build (Railway proxy drops build-time connections); ISR
-  // (revalidate above) fills real data on first request. Empty renders cleanly
-  // — the cards map below produces nothing for an empty list.
-  const states =
-    process.env.NEXT_PHASE === "phase-production-build"
-      ? ([] as Awaited<ReturnType<typeof getAllStatesWithStats>>)
-      : await getAllStatesWithStats();
+  const states = await getCachedStates();
 
   return (
     <>

@@ -1,0 +1,6 @@
+path,checked_utc,x_nextjs_prerender,x_vercel_cache,age_s,response_date_utc,words_in_main,db_links_live,db_links_expected,shown_live,expected_from_db
+/states,2026-10-13T10:50:06Z,1,HIT,1903,2026-10-13T10:50:06Z,28,0,8,no state cards,8 state cards
+/postcodes,2026-10-13T10:50:06Z,1,HIT,1901,2026-10-13T10:50:06Z,27,0,2661,"0 postcodes, grouped by state",2661 postcodes
+/compare,2026-10-13T10:50:07Z,1,HIT,9121,2026-10-13T08:18:04Z,771,88,88,rails present (render 3 min after deploy),64 pairs + 24 suburbs; build render has 0
+/off-market,2026-10-13T10:50:07Z,1,HIT,1899,2026-10-13T10:50:07Z,119,0,0,0 current listings,0 off-market rows
+/data,2026-10-13T10:50:07Z,1,HIT,1306,2026-10-13T09:18:27Z,359,,,real counts (regenerated 1 h after deploy),17673 suburbs; 9693 schools; build render all 0

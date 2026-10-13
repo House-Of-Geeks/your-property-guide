@@ -3,12 +3,16 @@ import { OffMarketTeaser } from "@/components/property/OffMarketTeaser";
 import { OffMarketRegisterForm } from "@/components/forms/OffMarketRegisterForm";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
+import { unstable_cache } from "next/cache";
 import { getOffMarketProperties } from "@/lib/services/property-service";
 import { SITE_URL } from "@/lib/constants";
 
-// ISR, DB-querying services have build-phase guards, so we cache for 24h
-// instead of running a function on every visit.
-export const revalidate = 86400;
+// The listings come from the DB. As a static ISR page this served its
+// build-time render (the build is DB-free: "0 live listings") for up to a
+// day after every deploy, so a listing added in that window stayed hidden.
+// Render on request instead and cache the listings for an hour, the pattern
+// /regions uses.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Off-Market Properties",
@@ -18,14 +22,16 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+// The data cache outlives a deploy, so the deployment is part of the key:
+// a listing's shape changes with the code that renders it.
+const getCachedOffMarket = unstable_cache(
+  () => getOffMarketProperties(),
+  ["off-market:v1", process.env.VERCEL_DEPLOYMENT_ID ?? "local"],
+  { revalidate: 3600, tags: ["off-market"] },
+);
+
 export default async function OffMarketPage() {
-  // Skip the DB at build (Railway proxy drops build-time connections); ISR
-  // (revalidate above) fills real data on first request. Empty renders cleanly
-  // — the counts read 0 and the teaser grid maps over nothing.
-  const offMarketProperties =
-    process.env.NEXT_PHASE === "phase-production-build"
-      ? ([] as Awaited<ReturnType<typeof getOffMarketProperties>>)
-      : await getOffMarketProperties();
+  const offMarketProperties = await getCachedOffMarket();
 
   return (
     <>

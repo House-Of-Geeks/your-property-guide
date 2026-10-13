@@ -3,16 +3,24 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { ExpertCTA, BUYING_GUIDE_CTA } from "@/components/journey";
+import { unstable_cache } from "next/cache";
 import {
   getTopSuburbsByState,
   getTopComparisonPairsByState,
   getStateName,
   type ComparisonPair,
 } from "@/lib/services/suburb-rankings-service";
+import { NOT_PLACES_VERSION } from "@/lib/non-localities";
 import { SITE_URL } from "@/lib/constants";
 import { CompareForm } from "./CompareForm";
 
-export const revalidate = 86400;
+// The two rails below the curated pairs query the DB. As a static ISR page
+// this served its build-time render (the build is DB-free) for up to a day
+// after every deploy: "Top comparisons in every state" and "Top suburbs by
+// state" were headings over empty lists, 88 internal links short. Render on
+// request instead and cache both rails behind the comparison sitemap's tag,
+// the pattern /regions uses.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Compare Suburbs Side by Side",
@@ -49,35 +57,37 @@ const POPULAR_PAIRS: { aSlug: string; bSlug: string; aName: string; bName: strin
 
 const ALL_STATES = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"];
 
-export default async function ComparePage() {
+// One query at a time. At runtime the pool holds one connection (lib/db.ts)
+// and a query waiting for it gives up after 5s; the 19 below, started at
+// once, took 3.6 to 4.2s from outside Vercel, the last of them close to that
+// limit. Run in turn they take as long and none waits.
+async function getCompareRails() {
   // Pull a small set of popular suburbs from each big state for the
   // "popular suburbs" rail at the bottom. Each one becomes a sortable starting
   // point for a fresh comparison.
-  // Skip the DB at build (Railway proxy drops build-time connections); ISR
-  // (revalidate above) fills real data on first request. Empty renders cleanly
-  // — every rail below maps over arrays and the by-state list drops empties.
-  const isBuild = process.env.NEXT_PHASE === "phase-production-build";
-
-  const [topNSW, topVIC, topQLD] = isBuild
-    ? ([[], [], []] as Awaited<ReturnType<typeof getTopSuburbsByState>>[])
-    : await Promise.all([
-        getTopSuburbsByState("NSW", 8),
-        getTopSuburbsByState("VIC", 8),
-        getTopSuburbsByState("QLD", 8),
-      ]);
+  const topNSW = await getTopSuburbsByState("NSW", 8);
+  const topVIC = await getTopSuburbsByState("VIC", 8);
+  const topQLD = await getTopSuburbsByState("QLD", 8);
 
   // Top auto-generated comparison pairs per state, fills the SEO gap
   // for WA / SA / TAS / NT / ACT that the hand-curated POPULAR_PAIRS
   // doesn't cover, and gives Google many more pages to crawl.
-  const pairsByState = await Promise.all(
-    ALL_STATES.map(async (state) => ({
-      state,
-      stateName: getStateName(state),
-      pairs: isBuild
-        ? ([] as Awaited<ReturnType<typeof getTopComparisonPairsByState>>)
-        : await getTopComparisonPairsByState(state, 8),
-    })),
-  );
+  const pairsByState: { state: string; stateName: string; pairs: ComparisonPair[] }[] = [];
+  for (const state of ALL_STATES) {
+    pairsByState.push({ state, stateName: getStateName(state), pairs: await getTopComparisonPairsByState(state, 8) });
+  }
+  return { topNSW, topVIC, topQLD, pairsByState };
+}
+
+// The data cache outlives a deploy, so the deployment is part of the key.
+const getCachedRails = unstable_cache(
+  getCompareRails,
+  ["compare-hub:v1", NOT_PLACES_VERSION, process.env.VERCEL_DEPLOYMENT_ID ?? "local"],
+  { revalidate: 86400, tags: ["sitemap-compare"] },
+);
+
+export default async function ComparePage() {
+  const { topNSW, topVIC, topQLD, pairsByState } = await getCachedRails();
   const pairsWithData = pairsByState.filter((s) => s.pairs.length > 0);
 
   return (
