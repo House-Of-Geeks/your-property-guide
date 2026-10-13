@@ -5,6 +5,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { ArrowRight, ArrowLeft, Check } from "lucide-react";
 import { SuburbAutocomplete, slugToSuburbLabel } from "@/components/search/SuburbAutocomplete";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
+import { auMobileError } from "@/lib/utils/au-mobile";
+import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
 import { GUIDE_THANKS_KEY, BUYING_EMAIL_CONSENT, guideCallKind, type GuideThanksContext } from "@/lib/guide-consent";
 
 // ----- Option sets ---------------------------------------------------------
@@ -109,6 +111,9 @@ export function BuyingGuideFunnel({
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  // E.164 from the flagged field ("+61491570156"); the API stores 04…
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState<string | null>(null);
   const [website, setWebsite] = useState(""); // honeypot, must stay empty
 
   const [submitting, setSubmitting] = useState(false);
@@ -150,6 +155,15 @@ export function BuyingGuideFunnel({
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!timeframe || !persona) return;
+    // Mobile is required (13 Oct 2026: a number the team can call on every
+    // guide lead) and must be a real AU mobile. The API stays lenient
+    // (never reject a lead over a phone format); this gate is the check.
+    const mobileError = auMobileError(phone);
+    if (mobileError) {
+      setPhoneError(mobileError);
+      return;
+    }
+    setPhoneError(null);
     setError(null);
     setSubmitting(true);
     try {
@@ -159,6 +173,7 @@ export function BuyingGuideFunnel({
         firstName: firstName.trim(),
         lastName: lastName.trim() || undefined,
         email: email.trim(),
+        phone,
         suburb: suburbSlug ?? undefined,
         propertyType: propertyType ?? undefined,
         sellingTimeframe: timeframe,
@@ -166,8 +181,8 @@ export function BuyingGuideFunnel({
         financeStatus: finance ?? undefined,
         budget: budget ?? undefined,
         // Requesting the guide is the consent to the guide and tips
-        // emails: the statement under the button says so (no checkbox
-        // since Oct 2026).
+        // emails and a call from our team (never an agent): the statement
+        // under the button says so (no checkbox since Oct 2026).
         marketingConsent: true,
         // ?c= from a Sent 24/7 email link: credits that email if they book a call.
         resumeClickId: params.get("c") ?? undefined,
@@ -186,8 +201,8 @@ export function BuyingGuideFunnel({
       const saved = (await res.json().catch(() => null)) as { emailOnItsWay?: boolean } | null;
       // Hand the thanks page what its call card needs, in sessionStorage
       // (this tab only, never the URL): who a call would go to, whether
-      // the guide email is on its way, and the answers to re-send with a
-      // phone if they book one.
+      // the guide email is on its way, and the answers (mobile included,
+      // to prefill the call card) to re-send if they book one.
       const handoff: GuideThanksContext = {
         guide: "buying",
         kind: guideCallKind({ guideType: "buying", sellingTimeframe: timeframe }),
@@ -515,8 +530,8 @@ export function BuyingGuideFunnel({
               />
               <input
                 type="text"
-                required
                 placeholder="Last name"
+                aria-label="Last name (optional)"
                 autoComplete="family-name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
@@ -532,6 +547,28 @@ export function BuyingGuideFunnel({
               onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
             />
+            <div>
+              <AuPhoneInput
+                id="buying-guide-phone"
+                value={phone}
+                onChange={(v) => {
+                  setPhone(v);
+                  if (phoneError) setPhoneError(null);
+                }}
+                required
+                aria-label="Mobile"
+                aria-describedby="buying-guide-phone-note"
+                invalid={!!phoneError}
+                tone="raised"
+              />
+              {phoneError ? (
+                <p id="buying-guide-phone-note" className="mt-1.5 text-xs text-danger">{phoneError}</p>
+              ) : (
+                <p id="buying-guide-phone-note" className="mt-1.5 text-[11px] text-ink-subtle leading-relaxed">
+                  So our team can call you if you have questions. We never pass it to selling agents.
+                </p>
+              )}
+            </div>
 
             {error && <p className="text-sm text-danger">{error}</p>}
 
@@ -559,9 +596,10 @@ export function BuyingGuideFunnel({
             </button>
 
             {/* Collection statement, also the marketing-email consent (no
-                checkbox), at the point of collection (APP 5). An optional
-                call is asked for on the thanks page, with its own statement
-                (lib/guide-consent.ts). */}
+                checkbox), at the point of collection (APP 5): the guide and
+                tips emails and a call from our team, never selling agents.
+                An optional call is asked for on the thanks page, with its
+                own statement (lib/guide-consent.ts). */}
             <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
               {BUYING_EMAIL_CONSENT} Read our{" "}
               <a href="/privacy" className="underline underline-offset-2 hover:text-ink">

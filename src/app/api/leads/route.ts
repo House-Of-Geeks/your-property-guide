@@ -98,8 +98,9 @@ const leadSchema = z.object({
   // that email with the lead.
   resumeClickId: z.string().max(200).optional(),
   // Guide funnels: a call request from the thanks page (the download's
-  // answers again, now with a phone). Without it a guide lead with a phone
-  // is a one-step submit from a tab loaded before Oct 2026's flow.
+  // answers again, with the confirmed phone), sent only when the visitor
+  // presses the call card's button. Without it a guide lead is a download,
+  // phone or not, and never goes to an agent.
   call: z.boolean().optional(),
   // Rental-appraisal (landlord) answers. No Lead columns: serialised into
   // message below, the way the appraisal timeframe is.
@@ -149,12 +150,16 @@ export async function POST(request: Request) {
     const attribution = attributionFromRequest(request);
     const ctx = requestContext(request);
 
-    // Guide leads (Oct 2026, Why Solar's ebook flow): a download is name +
-    // email, no phone, and gets the guide; a call request from the thanks
-    // page re-sends the answers with a phone. Who that call goes to (one
-    // agent, or YPG itself) follows from the answers.
-    const guideDownload = lead.type === "guide-download" && !lead.phone;
-    const callKind = lead.type === "guide-download" && lead.phone ? guideCallKind(lead) : null;
+    // Guide leads (Oct 2026, Why Solar's ebook flow): a download gets the
+    // guide, and since 13 Oct carries a mobile for the YPG team to call (its
+    // consent covers that, not agents). Only a call request from the thanks
+    // page (call: true, sent when the visitor presses the call card's
+    // button) is a call, and only a call can reach an agent, via the Sent
+    // 24/7 vendor campaign. Who that call goes to (one agent, or YPG
+    // itself) follows from the answers.
+    const guideCall = lead.type === "guide-download" && lead.call === true && !!lead.phone;
+    const guideDownload = lead.type === "guide-download" && !guideCall;
+    const callKind = guideCall ? guideCallKind(lead) : null;
 
     // Route the lead. Null unless the visitor chose an agent; unassigned
     // leads get no "Routed to" row in the email.
@@ -217,7 +222,9 @@ export async function POST(request: Request) {
         lead.priceExpectation && `Price expectation: ${lead.priceExpectation}`,
         `Marketing consent: ${lead.marketingConsent ? "yes" : "no"}`,
         guideDownload
-          ? "Consent: guide and tips emails (download)"
+          ? lead.phone
+            ? "Consent: guide and tips emails, and a call from YPG, no agent unless they ask (download)"
+            : "Consent: guide and tips emails (download)"
           : callKind === "agent"
             ? "Consent: one agent may call (call request)"
             : "Consent: call from YPG only, never an agent (call request)",
@@ -261,14 +268,74 @@ export async function POST(request: Request) {
     // Guide leads no longer sync to ActiveCampaign (Oct 2026): Sent 24/7's
     // lead magnet series is the only thing that emails guide readers.
 
-    // A download: the guide, and nothing for the team (they hear about
-    // calls). Sent 24/7 emails the guide when switched on; otherwise, or when
-    // it won't (no series yet, a rejected post), YPG sends its own guide
-    // email. A retryable failure is retried in the background and YPG stays
-    // quiet, so nobody gets the guide twice: the thanks page has it anyway.
+    const typeLabel = labelFor(lead.type, lead.guideType);
+    // Score prefix on guide leads so a HOT vendor is visible from the
+    // inbox list without opening the email. Speed-to-lead is the whole
+    // game: an appraisal-ready vendor contacted inside 24h converts at
+    // roughly 4x the rate of one contacted later.
+    const scorePrefix =
+      lead.type === "guide-download"
+        ? `[${scoreGuideLead(lead)}] `
+        : lead.type === "appraisal-request" && lead.sellingTimeframe === "0-3-months"
+          ? "[HOT] "
+          : lead.type === "rental-appraisal" && lead.managerTimeframe === "asap"
+            ? "[HOT] "
+            : "";
+    const callLabel = callKind === "agent" ? "Appraisal call: " : callKind === "ypg" ? "Call from YPG (not for agents): " : "";
+    const subject     = `${scorePrefix}${callLabel}${typeLabel}, ${lead.firstName}${lead.lastName ? ` ${lead.lastName}` : ""}${lead.suburb ? ` (${lead.suburb})` : ""}`;
+
+    // Match-request leads (the homepage MatchAgent flow) go ONLY to
+    // andy@theandylife.com, no CC. Per Andy 2026-05-10. Other lead
+    // types keep the standard CC list.
+    const isMatchRequest = lead.type === "match-request";
+    // The team email shows the number as stored, ready to dial.
+    const notifyLead = { ...lead, phone: storedPhone };
+
+    // Internal notification to the team. Best-effort. If SendGrid is
+    // down or the key is rotated, log + escalate via a fallback alert
+    // so the lead is never silently lost.
+    const notifyTeam = async (deliveryRows: Array<[string, string]>) => {
+      try {
+        await sendMail({
+          to: NOTIFY_EMAIL,
+          cc: isMatchRequest ? undefined : CC_EMAIL,
+          subject,
+          html: buildAdminEmailHtml(notifyLead, agentName, routing?.reason ?? "", attributionRowsFor(attribution), deliveryRows),
+        });
+      } catch (mailErr) {
+        console.error("Lead notification email failed (lead saved to DB):", {
+          leadId: saved.id,
+          type: lead.type,
+          error: mailErr instanceof Error ? mailErr.message : String(mailErr),
+        });
+        // Fallback alert — a second, simpler message from a different
+        // code path. If THIS also fails the DB row is still the source of
+        // truth and the daily zero-floor cron will surface a wider outage.
+        try {
+          await sendMail({
+            to: NOTIFY_EMAIL,
+            subject: `ALERT: Lead notification failed (${saved.id})`,
+            html: buildFailureAlertHtml(saved.id, notifyLead, mailErr),
+          });
+        } catch (alertErr) {
+          console.error("Lead failure-alert email ALSO failed:", {
+            leadId: saved.id,
+            error: alertErr instanceof Error ? alertErr.message : String(alertErr),
+          });
+        }
+      }
+    };
+
+    // A download: the guide, plus the team email after the response (the
+    // mobile is for the team to call; nothing goes to an agent). Sent 24/7
+    // emails the guide when switched on; otherwise, or when it won't (no
+    // series yet, a rejected post), YPG sends its own guide email. A
+    // retryable failure is retried in the background and YPG stays quiet,
+    // so nobody gets the guide twice: the thanks page has it anyway.
     if (guideDownload) {
       let emailOnItsWay = false;
       let sendOwnEmail = true;
+      let guideEmail = "Not sent";
       const cfg = sent247Config();
       if (cfg && leadMagnetDeliveryEnabled()) {
         const outcome = await sendSent247LeadMagnet(
@@ -288,8 +355,10 @@ export async function POST(request: Request) {
           // Repeat downloads ("already_started") and suppressed addresses
           // get nothing more; only a series that never started falls back.
           sendOwnEmail = outcome.emails === "not_started" && outcome.emailsReason !== "suppressed";
+          guideEmail = `Sent 24/7: ${outcome.emails ?? "accepted"}${outcome.emailsReason ? ` (${outcome.emailsReason})` : ""}`;
         } else {
           sendOwnEmail = outcome.kind === "rejected";
+          if (outcome.kind === "failed") guideEmail = `Sent 24/7 unavailable (${outcome.reason}), retrying in the background`;
         }
       }
       if (sendOwnEmail) {
@@ -301,12 +370,32 @@ export async function POST(request: Request) {
             html: buildConfirmationHtml(lead),
           });
           emailOnItsWay = true;
+          guideEmail = "Sent by YPG";
         } catch (confirmErr) {
+          guideEmail = "FAILED, not sent (the thanks page has the download)";
           console.error("Guide email failed (download saved to DB):", {
             leadId: saved.id,
             error: confirmErr instanceof Error ? confirmErr.message : String(confirmErr),
           });
         }
+      }
+      // After the response, as the phone-added email is: the reader
+      // shouldn't wait out an SMTP round-trip for the team's copy.
+      const notify = () =>
+        notifyTeam([
+          [
+            "Call requested",
+            lead.guideType === "buying" || lead.agentStatus === "already-listed"
+              ? "No (guide download). Our team may call. Never pass to an agent."
+              : "No (guide download). Our team may call. No agent unless they ask.",
+          ],
+          ["Guide email", guideEmail],
+        ]);
+      try {
+        after(notify);
+      } catch {
+        // No request scope (unit tests): fire and forget instead.
+        void notify();
       }
       return NextResponse.json({ success: true, message: "Enquiry submitted successfully", id: saved.id, emailOnItsWay });
     }
@@ -315,6 +404,8 @@ export async function POST(request: Request) {
     // vendor campaign, which hands it to one agent (and stops the address's
     // guide series). Awaited, as Why Solar does, so the team email can say
     // whether it went; a failure never costs the lead (DB row + email).
+    // This is the only path from here to an agent: callKind is set only
+    // for an explicit call request.
     const deliveryRows: Array<[string, string]> = [];
     if (callKind) {
       deliveryRows.push([
@@ -342,68 +433,17 @@ export async function POST(request: Request) {
       deliveryRows.push(["Sent 24/7", describeSent247(outcome)]);
     }
 
-    const typeLabel = labelFor(lead.type, lead.guideType);
-    // Score prefix on guide leads so a HOT vendor is visible from the
-    // inbox list without opening the email. Speed-to-lead is the whole
-    // game: an appraisal-ready vendor contacted inside 24h converts at
-    // roughly 4x the rate of one contacted later.
-    const scorePrefix =
-      lead.type === "guide-download"
-        ? `[${scoreGuideLead(lead)}] `
-        : lead.type === "appraisal-request" && lead.sellingTimeframe === "0-3-months"
-          ? "[HOT] "
-          : lead.type === "rental-appraisal" && lead.managerTimeframe === "asap"
-            ? "[HOT] "
-            : "";
-    const callLabel = callKind === "agent" ? "Appraisal call: " : callKind === "ypg" ? "Call from YPG (not for agents): " : "";
-    const subject     = `${scorePrefix}${callLabel}${typeLabel}, ${lead.firstName}${lead.lastName ? ` ${lead.lastName}` : ""}${lead.suburb ? ` (${lead.suburb})` : ""}`;
-
-    // Match-request leads (the homepage MatchAgent flow) go ONLY to
-    // andy@theandylife.com, no CC. Per Andy 2026-05-10. Other lead
-    // types keep the standard CC list.
-    const isMatchRequest = lead.type === "match-request";
-
-    // 1. Internal notification to the team. Best-effort. If SendGrid is
-    //    down or the key is rotated, log + escalate via a fallback alert
-    //    so the lead is never silently lost.
-    try {
-      await sendMail({
-        to: NOTIFY_EMAIL,
-        cc: isMatchRequest ? undefined : CC_EMAIL,
-        subject,
-        html: buildAdminEmailHtml(lead, agentName, routing?.reason ?? "", attributionRowsFor(attribution), deliveryRows),
-      });
-    } catch (mailErr) {
-      console.error("Lead notification email failed (lead saved to DB):", {
-        leadId: saved.id,
-        type: lead.type,
-        error: mailErr instanceof Error ? mailErr.message : String(mailErr),
-      });
-      // Fallback alert — a second, simpler message from a different
-      // code path. If THIS also fails the DB row is still the source of
-      // truth and the daily zero-floor cron will surface a wider outage.
-      try {
-        await sendMail({
-          to: NOTIFY_EMAIL,
-          subject: `ALERT: Lead notification failed (${saved.id})`,
-          html: buildFailureAlertHtml(saved.id, lead, mailErr),
-        });
-      } catch (alertErr) {
-        console.error("Lead failure-alert email ALSO failed:", {
-          leadId: saved.id,
-          error: alertErr instanceof Error ? alertErr.message : String(alertErr),
-        });
-      }
-    }
+    // 1. Internal notification to the team (above), awaited here; only a
+    //    download sends its copy after the response.
+    await notifyTeam(deliveryRows);
 
     // 2. Transactional confirmation to the submitter. Best-effort. Never
     //    blocks the success response. If it fails the user already saw
     //    the in-page confirmation; admin notification carries the data.
     //    replyTo routes "reply to this email" responses (the HOT email's
     //    P.S. fast-track line) to a monitored inbox instead of noreply@.
-    //    A guide call request gets a call confirmation (callKind); a one-step
-    //    guide submit from an old tab still gets the guide.
-    const confirmLead = callKind && lead.call ? { ...lead, callKind } : lead;
+    //    A guide call request gets a call confirmation (callKind).
+    const confirmLead = callKind ? { ...lead, callKind } : lead;
     try {
       const { subject: confirmSubject } = confirmationCopy(confirmLead);
       await sendMail({

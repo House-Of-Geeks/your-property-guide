@@ -97,7 +97,7 @@ export function PhoneFollowUp({
             if (error) setError(null);
           }}
           overseas={overseas}
-          placeholder="0412 345 678"
+          placeholder="0491 570 156"
           aria-label="Mobile number"
           invalid={!!error}
           tone="field"

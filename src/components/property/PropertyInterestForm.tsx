@@ -163,7 +163,7 @@ export function PropertyInterestForm({ address, suburbName, suburbSlug }: Props)
               if (phoneError) setPhoneError(null);
             }}
             overseas
-            placeholder="0412 345 678"
+            placeholder="0491 570 156"
             invalid={!!phoneError}
             tone="plain"
             size="sm"

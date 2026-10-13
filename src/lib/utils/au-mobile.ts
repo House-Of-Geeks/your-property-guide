@@ -14,9 +14,11 @@ import {
   parsePhoneNumber,
 } from "react-phone-number-input";
 
-export const AU_MOBILE_ERROR = "Please enter a valid Australian mobile number (e.g. 0412 345 678)";
+// The example must pass auMobileError (tested): 0412 345 678 is on the
+// dummy list below. 0491 570 156 is in ACMA's range for fictional use.
+export const AU_MOBILE_ERROR = "Please enter a valid Australian mobile number (e.g. 0491 570 156)";
 export const NON_AU_MOBILE_ERROR = "Sorry, we can only call Australian mobile numbers.";
-export const MOBILE_ERROR = "Please enter a valid mobile number (e.g. 0412 345 678)";
+export const MOBILE_ERROR = "Please enter a valid mobile number (e.g. 0491 570 156)";
 
 /** `overseas`: the listing enquiry forms, which also take a valid
  *  overseas number. Everywhere else it's an Australian mobile. */

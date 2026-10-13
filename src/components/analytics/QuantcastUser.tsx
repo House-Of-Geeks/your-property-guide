@@ -1,23 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-import { useSession } from "next-auth/react";
-
-declare global {
-  interface Window {
-    _qevents: Array<Record<string, string>>;
-  }
-}
-
+// Used to push a signed-in user's raw email to Quantcast as `uid`. Stopped
+// 13 Oct 2026 for privacy: it renders nothing and sends nothing. The
+// page-level Quantcast tag in the root layout is unchanged.
 export function QuantcastUser() {
-  const { data: session } = useSession();
-  const email = session?.user?.email;
-
-  useEffect(() => {
-    if (!email) return;
-    window._qevents = window._qevents || [];
-    window._qevents.push({ qacct: "p-0nXpAVdp8GeS5", uid: email });
-  }, [email]);
-
   return null;
 }
