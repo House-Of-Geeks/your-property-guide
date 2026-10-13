@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BarChart3, Home, TrendingUp } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { Suburb } from "@/types/suburb";
 import type { RentalMarketModel } from "@/lib/rental-market";
 import type { LandlordModel } from "@/lib/rental-landlord";
@@ -12,9 +12,9 @@ const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
 
 function MetricCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="rounded-xl border border-line bg-surface-raised p-4 shadow-card">
-      <p className="text-[13px] font-sans text-ink-subtle mb-1">{label}</p>
-      <p className="font-display text-2xl text-ink leading-none">{value}</p>
+    <div className="rounded-xl border border-line bg-white p-4">
+      <p className="font-sans text-[13px] text-ink-muted mb-1.5">{label}</p>
+      <p className="font-display text-2xl font-bold text-ink leading-none">{value}</p>
       {sub && <p className="font-sans text-xs text-ink-muted mt-2">{sub}</p>}
     </div>
   );
@@ -22,11 +22,14 @@ function MetricCard({ label, value, sub }: { label: string; value: string; sub?:
 
 const changeText = (n: number | null) => (n === null ? undefined : `${n > 0 ? "+" : ""}${n}% over 12 months`);
 
+const h2 = "font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight";
+
 /**
  * The rebuilt rental-market sub-page (fix item 13). Every section renders
  * only when the model says its data exists; the model also built the title
  * and the FAQ from the same figures, so nothing on the page promises what
- * another section cannot show.
+ * another section cannot show. The header above it carries the answer
+ * sentence and the page's one action (the selling guide for owners).
  */
 export function RentalMarketSections({ suburb, slug, model: m, landlord }: { suburb: Suburb; slug: string; model: RentalMarketModel; landlord: LandlordModel }) {
   const c = m.current;
@@ -34,13 +37,15 @@ export function RentalMarketSections({ suburb, slug, model: m, landlord }: { sub
   const has = (s: RentalMarketModel["sections"][number]) => m.sections.includes(s);
   // One FAQPage per page: the rent FAQs and the landlord FAQs share it.
   const faqs = [...m.faqs, ...landlord.faqs];
+  // The header's answer sentence already gives the house and unit medians
+  // with their source; the cards earn their place only with more than that
+  // (bedrooms or a 12-month change).
+  const moreThanTheAnswer = Boolean(c.bed3 || c.bed2 || c.bed1 || m.change?.house != null || m.change?.unit != null);
   return (
     <>
-      <section id="current-rent">
-        <p className="text-[13px] font-sans text-ink-subtle mb-3">Current rent</p>
-        <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-          What it costs to rent in {suburb.name} now
-        </h2>
+      {moreThanTheAnswer && (
+      <section id="current-rent" className="scroll-mt-20">
+        <h2 className={`${h2} mb-5`}>Median weekly rent in {suburb.name}</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {c.house && <MetricCard label="Houses (median)" value={`${money(c.house)}/wk`} sub={changeText(m.change?.house ?? null)} />}
           {c.unit && <MetricCard label="Units (median)" value={`${money(c.unit)}/wk`} sub={changeText(m.change?.unit ?? null)} />}
@@ -49,121 +54,97 @@ export function RentalMarketSections({ suburb, slug, model: m, landlord }: { sub
           {c.bed1 && <MetricCard label="1 bedroom" value={`${money(c.bed1)}/wk`} />}
         </div>
         {m.provenance && (
-          <p className="font-sans text-xs text-ink-subtle mt-4">
+          <p className="font-sans text-xs text-ink-subtle mt-3">
             Source: {m.provenance}. Medians of new rentals recorded in the period.
           </p>
         )}
       </section>
+      )}
 
       {has("yield") && (
-        <section id="yield" className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
-          <p className="text-[13px] font-sans text-ink-subtle mb-3">Investor view</p>
-          <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
-            Rental yield against the purchase price
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {m.yieldHouse && c.house && (
-              <>
-                <div>
-                  <div className="flex items-center gap-2 text-ink-muted text-sm mb-2"><Home className="w-4 h-4 text-cta" />Median house price</div>
-                  <p className="font-display text-3xl text-ink leading-none">{formatPriceFull(suburb.stats.medianHousePrice)}</p>
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 text-ink-muted text-sm mb-2"><BarChart3 className="w-4 h-4 text-cta" />Median house rent</div>
-                  <p className="font-display text-3xl text-ink leading-none">{money(c.house)}/wk</p>
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 text-ink-muted text-sm mb-2"><TrendingUp className="w-4 h-4 text-cta" />Gross yield, houses</div>
-                  <p className="font-display text-3xl text-success leading-none">{m.yieldHouse}%</p>
-                </div>
-              </>
-            )}
-          </div>
+        <section id="yield" className="scroll-mt-20 rounded-xl border border-line p-5 sm:p-8">
+          <h2 className={`${h2} mb-5`}>Rental yield against the purchase price</h2>
+          {m.yieldHouse && c.house && (
+            <dl className="grid grid-cols-3 gap-4 sm:gap-6">
+              <div>
+                <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Median house price</dt>
+                <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{formatPriceFull(suburb.stats.medianHousePrice)}</dd>
+              </div>
+              <div>
+                <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Median house rent</dt>
+                <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{money(c.house)}/wk</dd>
+              </div>
+              <div>
+                <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Gross yield, houses</dt>
+                <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{m.yieldHouse}%</dd>
+              </div>
+            </dl>
+          )}
           {m.yieldUnit && c.unit && (
             <p className="font-sans text-sm text-ink-muted mt-5">
               Units: {money(c.unit)}/wk against a {formatPriceFull(suburb.stats.medianUnitPrice)} median, a gross yield of about {m.yieldUnit}%.
             </p>
           )}
-          <p className="font-sans text-xs text-ink-subtle mt-6">
-            Gross yield = weekly rent × 52 ÷ median price. Before rates, insurance, management fees, maintenance and vacancy. The{" "}
-            <Link href="/rental-yield-calculator" className="underline hover:text-primary">rental yield calculator</Link>{" "}
-            gives a net estimate.
+          <p className="font-sans text-xs text-ink-subtle mt-5 leading-relaxed">
+            {"Gross yield = weekly rent × 52 ÷ median price. Before rates, insurance, management fees, maintenance and vacancy. The "}
+            <Link href="/rental-yield-calculator" className="underline hover:text-primary">rental yield calculator</Link>
+            {" gives a net estimate. Price: "}
+            <Link href={`/suburbs/${slug}#market`} className="underline hover:text-primary">{`${suburb.name} median house price`}</Link>
+            {"."}
           </p>
         </section>
       )}
 
       {has("history") && (
-        <section id="history">
-          <p className="text-[13px] font-sans text-ink-subtle mb-3">History</p>
-          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">How rents have moved</h2>
-          <div className="rounded-2xl border border-line bg-surface-raised overflow-hidden shadow-card">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-surface-warm border-b border-line-warm">
-                    <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle">Period</th>
-                    <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">Houses</th>
-                    <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">Units</th>
-                    {m.columns.bed3 && <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden sm:table-cell">3 bed</th>}
-                    {m.columns.bed2 && <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden sm:table-cell">2 bed</th>}
-                    {m.columns.bed1 && <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden sm:table-cell">1 bed</th>}
-                    {m.columns.bonds && <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden md:table-cell">New bonds</th>}
+        <section id="history" className="scroll-mt-20">
+          <h2 className={`${h2} mb-5`}>How rents have moved</h2>
+          <div className="overflow-x-auto rounded-xl border border-line">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-surface-warm border-b border-line">
+                  <th scope="col" className="py-3 px-4 text-left font-semibold text-ink">Period</th>
+                  <th scope="col" className="py-3 px-4 text-right font-semibold text-ink">Houses</th>
+                  <th scope="col" className="py-3 px-4 text-right font-semibold text-ink">Units</th>
+                  {m.columns.bed3 && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink hidden sm:table-cell">3 bed</th>}
+                  {m.columns.bed2 && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink hidden sm:table-cell">2 bed</th>}
+                  {m.columns.bed1 && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink hidden sm:table-cell">1 bed</th>}
+                  {m.columns.bonds && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink hidden md:table-cell">New bonds</th>}
+                </tr>
+              </thead>
+              <tbody>
+                {m.history.map((row) => (
+                  <tr key={row.id} className="border-b border-line last:border-0">
+                    <td className="py-3 px-4 font-medium text-ink whitespace-nowrap">{monthYear(row.periodDate)}</td>
+                    <td className="py-3 px-4 text-right text-ink">{row.medianRentHouse ? `${money(row.medianRentHouse)}/wk` : "–"}</td>
+                    <td className="py-3 px-4 text-right text-ink">{row.medianRentUnit ? `${money(row.medianRentUnit)}/wk` : "–"}</td>
+                    {m.columns.bed3 && <td className="py-3 px-4 text-right text-ink hidden sm:table-cell">{row.medianRent3Bed ? `${money(row.medianRent3Bed)}/wk` : "–"}</td>}
+                    {m.columns.bed2 && <td className="py-3 px-4 text-right text-ink hidden sm:table-cell">{row.medianRent2Bed ? `${money(row.medianRent2Bed)}/wk` : "–"}</td>}
+                    {m.columns.bed1 && <td className="py-3 px-4 text-right text-ink hidden sm:table-cell">{row.medianRent1Bed ? `${money(row.medianRent1Bed)}/wk` : "–"}</td>}
+                    {m.columns.bonds && <td className="py-3 px-4 text-right text-ink hidden md:table-cell">{row.bondLodgements ? row.bondLodgements.toLocaleString("en-AU") : "–"}</td>}
                   </tr>
-                </thead>
-                <tbody>
-                  {m.history.map((row) => (
-                    <tr key={row.id} className="border-b border-line last:border-0">
-                      <td className="py-4 px-5 font-medium text-ink">{monthYear(row.periodDate)}</td>
-                      <td className="py-4 px-5 text-right tabular-nums text-ink-muted">{row.medianRentHouse ? `${money(row.medianRentHouse)}/wk` : "–"}</td>
-                      <td className="py-4 px-5 text-right tabular-nums text-ink-muted">{row.medianRentUnit ? `${money(row.medianRentUnit)}/wk` : "–"}</td>
-                      {m.columns.bed3 && <td className="py-4 px-5 text-right tabular-nums text-ink-muted hidden sm:table-cell">{row.medianRent3Bed ? `${money(row.medianRent3Bed)}/wk` : "–"}</td>}
-                      {m.columns.bed2 && <td className="py-4 px-5 text-right tabular-nums text-ink-muted hidden sm:table-cell">{row.medianRent2Bed ? `${money(row.medianRent2Bed)}/wk` : "–"}</td>}
-                      {m.columns.bed1 && <td className="py-4 px-5 text-right tabular-nums text-ink-muted hidden sm:table-cell">{row.medianRent1Bed ? `${money(row.medianRent1Bed)}/wk` : "–"}</td>}
-                      {m.columns.bonds && <td className="py-4 px-5 text-right tabular-nums text-ink-muted hidden md:table-cell">{row.bondLodgements ? row.bondLodgements.toLocaleString("en-AU") : "–"}</td>}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
         </section>
       )}
 
       {has("listings") && (
-        <section id="listings" className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
-          <div>
-            <p className="text-[13px] font-sans text-ink-subtle mb-2">For rent now</p>
-            <h2 className="font-display text-xl sm:text-2xl text-ink leading-tight">
-              {m.listings} {m.listings === 1 ? "property" : "properties"} for rent in {suburb.name}
-            </h2>
-            <p className="font-sans text-sm text-ink-muted mt-2">Current listings with prices, bedrooms and inspection times.</p>
-          </div>
-          <Link href={`/suburbs/${slug}/rent`} className="shrink-0 inline-flex items-center gap-2 rounded-lg border border-line-strong bg-surface-raised text-ink hover:border-ink font-medium px-5 py-2.5 transition-colors">
-            View rentals <ArrowRight className="w-4 h-4" />
+        <p id="listings" className="font-sans text-base text-ink">
+          <Link
+            href={`/suburbs/${slug}/rent`}
+            className="inline-flex items-center gap-2 font-medium underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary"
+          >
+            {m.listings} {m.listings === 1 ? "property" : "properties"} for rent in {suburb.name} now <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </Link>
-        </section>
+        </p>
       )}
 
       {/* Landlord intent ("rental appraisal {suburb}", "property managers
-          {suburb}") lands here: the selling-your-investment block and the
-          fee table (commercial intent review 30 Sep 2026, section 3.1). */}
+          {suburb}") lands here: the fee table (commercial intent review
+          30 Sep 2026, section 3.1). The owner's action (the selling guide)
+          and the sale-appraisal link sit in the page header. */}
       <RentalMarketLandlordSections suburb={suburb} landlord={landlord} />
-
-      {/* Sale-appraisal searches ("{suburb} property appraisal") were landing
-          here instead of on the profile page. Send sellers to the appraisal
-          block on the profile so this page stops absorbing that intent. */}
-      <section className="rounded-2xl border border-line bg-surface-raised p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <p className="text-[13px] font-sans text-ink-subtle mb-2">Selling instead?</p>
-          <h2 className="font-display text-xl sm:text-2xl text-ink leading-tight">
-            Get a free property appraisal in {suburb.name}
-          </h2>
-          <p className="font-sans text-sm text-ink-muted mt-2">A local agent who sells in {suburb.name} will give you a figure based on recent comparable sales. No commitment.</p>
-        </div>
-        <Link href={`/suburbs/${slug}#appraisal`} className="shrink-0 inline-flex items-center gap-2 rounded-lg border border-line-strong bg-surface-raised text-ink px-4 py-2 text-sm font-medium hover:text-primary hover:border-primary">
-          Request an appraisal <ArrowRight className="w-4 h-4" />
-        </Link>
-      </section>
 
       {faqs.length > 0 && <Faq items={faqs} title={`Renting and investing in ${suburb.name}`} />}
     </>

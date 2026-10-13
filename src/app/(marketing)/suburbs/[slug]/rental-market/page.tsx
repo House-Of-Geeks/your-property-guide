@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Home, TrendingUp, BarChart3, ArrowRight } from "lucide-react";
-import { SuburbSubrouteHeader, getSuburbListingTabs, DataFreshnessNote } from "@/components/suburb";
-import { ExpertCTA } from "@/components/journey";
+import { ArrowRight } from "lucide-react";
+import {
+  SuburbSubrouteHeader,
+  SubrouteActionCard,
+  SubpageNextSteps,
+  getSuburbListingTabs,
+  type NextStepGroup,
+} from "@/components/suburb";
 import { guideFunnelHref } from "@/lib/guide-funnel";
 import { BreadcrumbJsonLd, PlaceJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availability";
 import { getSuburbRentalHistory } from "@/lib/services/rental-service";
+import { getNearbySubpages, type NearbySubpage } from "@/lib/services/nearby-subpages";
 import { countProperties } from "@/lib/services/property-service";
 import { buildAllDwellingsMarket, buildRentalMarket } from "@/lib/rental-market";
 import { isRentalMarketPilot } from "@/lib/data/rental-market-pilot";
@@ -16,6 +22,8 @@ import { RentalMarketSections } from "@/components/suburb/RentalMarketSections";
 import { RentalMarketLandlordSections } from "@/components/suburb/RentalMarketLandlordSections";
 import { RentalMarketAllDwellings } from "@/components/suburb/RentalMarketAllDwellings";
 import { buildLandlordModel } from "@/lib/rental-landlord";
+import { ALL_DWELLINGS_LABEL, monthYear, rentalSourceLabel } from "@/lib/rental-labels";
+import { hasReliablePrice } from "@/lib/suburb-data-quality";
 import { Faq } from "@/components/guide/Faq";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
@@ -69,12 +77,75 @@ export async function generateMetadata({ params }: RentalMarketPageProps): Promi
   };
 }
 
-function MetricCard({ label, value }: { label: string; value: string | null }) {
+const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
+const positive = (n: number | null | undefined): n is number => typeof n === "number" && n > 0;
+
+function MetricCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-line bg-surface-raised p-4 shadow-card">
-      <p className="text-[13px] font-sans text-ink-subtle mb-1">{label}</p>
-      <p className="font-display text-2xl text-ink leading-none">{value ?? "–"}</p>
+    <div className="rounded-xl border border-line bg-white p-4">
+      <p className="font-sans text-[13px] text-ink-muted mb-1.5">{label}</p>
+      <p className="font-display text-2xl font-bold text-ink leading-none">{value}</p>
     </div>
+  );
+}
+
+/** "$550 for houses and $298 for units", from whichever is published. */
+function houseUnitPhrase(house: number | null, unit: number | null): string | null {
+  if (house && unit) return `${money(house)} for houses and ${money(unit)} for units`;
+  if (house) return `${money(house)} for houses`;
+  if (unit) return `${money(unit)} for units`;
+  return null;
+}
+
+/**
+ * Nearby suburbs' latest rents, each linked to its own rental-market page
+ * (commercial intent review 10 Oct 2026, renting page 1: rivals list
+ * neighbours, and neighbour names are the terms they carry that we lack).
+ */
+function NearbyRents({ name, nearby }: { name: string; nearby: NearbySubpage[] }) {
+  const rows = nearby.filter((n) => n.rent);
+  if (rows.length === 0) return null;
+  const anyAll = rows.some((n) => n.rent?.all);
+  const anySplit = rows.some((n) => n.rent?.house || n.rent?.unit);
+  return (
+    <section id="nearby-rents" className="scroll-mt-20">
+      <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-2">Rents in suburbs near {name}</h2>
+      <p className="font-sans text-sm text-ink-muted mb-5 max-w-2xl">The latest published median weekly rent in each neighbouring suburb. Each links to its own rental market page.</p>
+      <div className="overflow-x-auto rounded-xl border border-line">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="bg-surface-warm border-b border-line text-left">
+              <th scope="col" className="py-3 px-4 font-semibold text-ink">Suburb</th>
+              {anySplit && <th scope="col" className="py-3 px-4 font-semibold text-ink text-right">Houses</th>}
+              {anySplit && <th scope="col" className="py-3 px-4 font-semibold text-ink text-right">Units</th>}
+              {anyAll && <th scope="col" className="py-3 px-4 font-semibold text-ink text-right">{ALL_DWELLINGS_LABEL}</th>}
+              <th scope="col" className="py-3 px-4 font-semibold text-ink text-right hidden sm:table-cell">As at</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((n) => {
+              const r = n.rent!;
+              return (
+                <tr key={n.slug} className="border-b border-line last:border-0">
+                  <th scope="row" className="py-3 px-4 text-left font-medium">
+                    <Link href={`/suburbs/${n.slug}/rental-market`} className="text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary">
+                      {n.name}
+                    </Link>
+                  </th>
+                  {anySplit && <td className="py-3 px-4 text-right text-ink">{r.house ? `${money(r.house)}/wk` : "–"}</td>}
+                  {anySplit && <td className="py-3 px-4 text-right text-ink">{r.unit ? `${money(r.unit)}/wk` : "–"}</td>}
+                  {anyAll && <td className="py-3 px-4 text-right text-ink">{r.all ? `${money(r.all)}/wk` : "–"}</td>}
+                  <td className="py-3 px-4 text-right text-ink-muted hidden sm:table-cell whitespace-nowrap">{monthYear(r.periodDate)}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <p className="font-sans text-xs text-ink-subtle mt-3">
+        {`Sources: ${[...new Set(rows.map((n) => n.rent!.label))].join("; ")}. Medians of new rentals recorded in the period shown.`}
+      </p>
+    </section>
   );
 }
 
@@ -98,6 +169,7 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
 
   // Tabs and rent links only where the pages behind them have something on them.
   const availability = await getSuburbSubpageAvailability(suburb);
+  const nearby = await getNearbySubpages(suburb.nearbySuburbs);
 
   // Landlord blocks on every rental-market page, with or without rental
   // data (commercial intent review 30 Sep 2026, section 3.1): "rental
@@ -107,11 +179,97 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
   const landlord = buildLandlordModel(suburb, history);
 
   const latest = history[0] ?? null;
-  const currentRent = latest?.medianRentHouse ?? suburb.stats.medianRentHouse;
+  // The legacy branch prints the row's own figures only: the Suburb row's
+  // rent can be a seed or census proxy (review 10 Oct 2026, renting 0.8).
+  const currentRent = latest && positive(latest.medianRentHouse) ? latest.medianRentHouse : 0;
   const grossYield =
     currentRent > 0 && suburb.stats.medianHousePrice > 0
       ? ((currentRent * 52.0) / suburb.stats.medianHousePrice * 100).toFixed(2)
       : null;
+  const latestLabel = latest ? rentalSourceLabel(latest.source, suburb.postcode) : null;
+  const latestWhen = latest ? monthYear(latest.periodDate) : null;
+  const legacyCards = latest
+    ? ([
+        ["Houses (median)", latest.medianRentHouse],
+        ["Units (median)", latest.medianRentUnit],
+        ["3 bedroom", latest.medianRent3Bed],
+        ["2 bedroom", latest.medianRent2Bed],
+        ["1 bedroom", latest.medianRent1Bed],
+      ] as const).filter(([, v]) => positive(v))
+    : [];
+  const legacyColumns = {
+    unit: history.some((r) => positive(r.medianRentUnit)),
+    bed3: history.some((r) => positive(r.medianRent3Bed)),
+    bed2: history.some((r) => positive(r.medianRent2Bed)),
+    bonds: history.some((r) => positive(r.bondLodgements)),
+  };
+
+  // The answer, first: the figure people searched for, with its source.
+  const name = suburb.name;
+  let answer: React.ReactNode;
+  if (model?.current) {
+    const phrase = houseUnitPhrase(model.current.house, model.current.unit);
+    answer = phrase ? (
+      <p>
+        {`${name}'s median weekly rent is `}<strong className="font-semibold">{phrase}</strong>{model.provenance ? ` (${model.provenance}).` : "."}
+      </p>
+    ) : null;
+  } else if (all) {
+    const c = all.current;
+    answer = (
+      <p>
+        {`${name}'s median weekly rent is `}<strong className="font-semibold">{`${money(c.weekly)} across all dwellings`}</strong>
+        {`, from ${c.bonds !== null ? `${c.bonds.toLocaleString("en-AU")} bonds` : "the bonds"} lodged in ${c.span} (${c.label}).`}
+      </p>
+    );
+  } else if (latest) {
+    const phrase = houseUnitPhrase(positive(latest.medianRentHouse) ? latest.medianRentHouse : null, positive(latest.medianRentUnit) ? latest.medianRentUnit : null);
+    answer = phrase ? (
+      <p>
+        {`${name}'s median weekly rent is `}<strong className="font-semibold">{phrase}</strong>
+        {latestLabel ? ` (${latestLabel}, ${latestWhen}).` : ` (${latestWhen}).`}
+      </p>
+    ) : null;
+  }
+  if (!answer) {
+    answer = history.length > 0 && latestWhen ? (
+      <p>{`The latest published rents for ${name} are below${latestLabel ? ` (${latestLabel}, ${latestWhen})` : ` (${latestWhen})`}, with what property managers charge in ${landlord.fees?.name ?? suburb.state}.`}</p>
+    ) : (
+      <p>{`No median rent is published for ${name} yet. Below: what property managers charge in ${landlord.fees?.name ?? suburb.state}, and what to ask before you sign.`}</p>
+    );
+  }
+
+  const sellHref = guideFunnelHref("selling", { suburb: slug, from: "rental-market", toForm: true });
+  const nearbyWithRent = nearby.filter((n) => n.rent);
+  const stateLower = suburb.state.toLowerCase();
+  const nextSteps: NextStepGroup[] = [
+    {
+      title: `More on ${name}`,
+      links: [
+        { href: `/suburbs/${slug}`, label: `${name} suburb profile` },
+        ...(hasReliablePrice(suburb) ? [{ href: `/suburbs/${slug}#market`, label: `${name} house prices` }] : []),
+        ...(suburb.schools.length > 0 ? [{ href: `/suburbs/${slug}/schools`, label: `Schools in ${name}` }] : []),
+        { href: `/suburbs/${slug}/agents`, label: `Real estate agents in ${name}` },
+      ],
+    },
+    {
+      title: "Selling an investment property",
+      links: [
+        { href: "/guides/selling-a-house-with-tenants", label: "Selling with a tenant in place" },
+        { href: "/cgt-calculator", label: "Capital gains tax calculator" },
+        { href: `/guides/cost-of-selling-a-house-${stateLower}`, label: `Cost of selling in ${suburb.state}` },
+        { href: `/guides/real-estate-commission-${stateLower}`, label: `Agent commission in ${suburb.state}` },
+      ],
+    },
+    {
+      title: "Landlords and investors",
+      links: [
+        { href: "/guides/property-management-fees-australia", label: "Property management fees by state" },
+        { href: "/rental-yield-calculator", label: "Rental yield calculator" },
+        { href: guideFunnelHref("buying", { suburb: slug, from: "rental-market" }), label: "Buying an investment? The free buying guide" },
+      ],
+    },
+  ];
 
   return (
     <>
@@ -138,178 +296,149 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
 
       <SuburbSubrouteHeader
         suburb={suburb}
-        eyebrow="Rental market in"
-        title={<>The <span>rental market</span></>}
-        subtitle={model?.current ? `Median rent, yield and what is listed now in ${suburb.name}, ${suburb.state} ${suburb.postcode}, from ${model.provenance}.` : all ? all.subtitle : `Median rent, history and gross-yield calculations for ${suburb.name}, ${suburb.state} ${suburb.postcode}.`}
+        title={`${name} rental market`}
+        subtitle={answer}
         breadcrumbLeaf="Rental Market"
         tabs={getSuburbListingTabs(slug, "rental-market", availability)}
+        action={
+          <SubrouteActionCard
+            heading="Thinking of selling your investment?"
+            body={`The free selling guide covers capital gains tax, selling with a tenant in place and choosing an agent, personalised to ${name}.`}
+            href={sellHref}
+            cta="Get the free selling guide"
+          >
+            <p>
+              <Link href={`/suburbs/${slug}/agents#appraisal`} className="text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary">
+                Want a price first? Free appraisal from a local agent
+              </Link>
+            </p>
+            <p className="mt-2">
+              {"Renting here? See the "}
+              <Link href={`/suburbs/${slug}`} className="text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary">{`${name} profile`}</Link>
+              {nearbyWithRent.length > 0 ? (
+                <>
+                  {" and "}
+                  <a href="#nearby-rents" className="text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary">rents nearby</a>
+                </>
+              ) : null}
+              .
+            </p>
+          </SubrouteActionCard>
+        }
       />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 space-y-14">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-12 sm:space-y-16">
         {model?.current ? (
           <RentalMarketSections suburb={suburb} slug={slug} model={model} landlord={landlord} />
         ) : history.length === 0 ? (
-          <div className="rounded-2xl border border-line bg-surface-raised p-12 text-center">
-            <BarChart3 className="w-10 h-10 text-ink-subtle mx-auto mb-3" />
-            <p className="font-display text-xl text-ink">No rental data available yet</p>
-            <p className="font-sans text-sm text-ink-muted mt-2 max-w-md mx-auto">
-              Rental statistics for {suburb.name} have not yet been loaded into the database.
-              Check back soon
-              {availability.rent && (
-                <>
-                  , or{" "}
-                  <Link href={`/suburbs/${slug}/rent`} className="underline hover:text-primary">
-                    browse current rental listings
-                  </Link>
-                </>
-              )}
-              .
+          // The header already says no rent is published; point at the
+          // listings when there are some, else straight on to the fees.
+          availability.rent && (
+            <p className="font-sans text-base text-ink">
+              <Link
+                href={`/suburbs/${slug}/rent`}
+                className="inline-flex items-center gap-2 font-medium underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary"
+              >
+                Browse current rental listings in {suburb.name} <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              </Link>
             </p>
-          </div>
+          )
         ) : all ? (
           <RentalMarketAllDwellings name={suburb.name} slug={slug} all={all} rentListings={availability.rent} />
         ) : (
           <>
-            {/* Current rent summary */}
-            <section>
-              <p className="text-[13px] font-sans text-ink-subtle mb-3">
-                Current rent
-              </p>
-              <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-                What it costs to rent here right now
-              </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-                <MetricCard label="House (median)" value={latest?.medianRentHouse != null ? `$${latest.medianRentHouse}/wk` : null} />
-                <MetricCard label="Unit (median)"  value={latest?.medianRentUnit  != null ? `$${latest.medianRentUnit}/wk`  : null} />
-                <MetricCard label="3 bedroom"       value={latest?.medianRent3Bed  != null ? `$${latest.medianRent3Bed}/wk`  : null} />
-                <MetricCard label="2 bedroom"       value={latest?.medianRent2Bed  != null ? `$${latest.medianRent2Bed}/wk`  : null} />
-                <MetricCard label="1 bedroom"       value={latest?.medianRent1Bed  != null ? `$${latest.medianRent1Bed}/wk`  : null} />
-              </div>
-              <DataFreshnessNote
-                label="Rental"
-                asOf={latest?.periodDate ?? null}
-                source={latest?.source ?? undefined}
-              />
-            </section>
-
-            {/* Yield vs price */}
-            {grossYield && suburb.stats.medianHousePrice > 0 && (
-              <section className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
-                <p className="text-[13px] font-sans text-ink-subtle mb-3">
-                  Investor view
-                </p>
-                <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
-                  Rental yield versus purchase price
+            {legacyCards.some(([label]) => label.includes("bedroom")) && (
+              <section id="current-rent" className="scroll-mt-20">
+                <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+                  Median weekly rent in {name}
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                  <div>
-                    <div className="flex items-center gap-2 text-ink-muted text-sm mb-2">
-                      <Home className="w-4 h-4 text-cta" />
-                      Median house price
-                    </div>
-                    <p className="font-display text-3xl text-ink leading-none">
-                      {formatPriceFull(suburb.stats.medianHousePrice)}
-                    </p>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 text-ink-muted text-sm mb-2">
-                      <BarChart3 className="w-4 h-4 text-cta" />
-                      Median weekly rent
-                    </div>
-                    <p className="font-display text-3xl text-ink leading-none">
-                      ${currentRent}/wk
-                    </p>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 text-ink-muted text-sm mb-2">
-                      <TrendingUp className="w-4 h-4 text-cta" />
-                      Gross rental yield
-                    </div>
-                    <p className="font-display text-3xl text-success leading-none">
-                      {grossYield}%
-                    </p>
-                  </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                  {legacyCards.map(([label, v]) => (
+                    <MetricCard key={label} label={label} value={`${money(v as number)}/wk`} />
+                  ))}
                 </div>
-                <p className="font-sans text-xs text-ink-subtle mt-6">
-                  Gross yield = (weekly rent × 52) ÷ median house price × 100. Does not account for
-                  expenses, vacancy, or management fees. Use the{" "}
-                  <Link href="/rental-yield-calculator" className="underline hover:text-primary">
-                    rental yield calculator
-                  </Link>{" "}
-                  for a net-yield estimate.
+                <p className="font-sans text-xs text-ink-subtle mt-3">
+                  {`Source: ${latestLabel ?? "state rental data"}, ${latestWhen}. Medians of new rentals recorded in the period.`}
                 </p>
               </section>
             )}
 
-            {/* Rental history table */}
-            <section>
-              <p className="text-[13px] font-sans text-ink-subtle mb-3">
-                History
-              </p>
-              <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-                How rents have moved
-              </h2>
-              <div className="rounded-2xl border border-line bg-surface-raised overflow-hidden shadow-card">
-                <div className="overflow-x-auto">
+            {/* Yield vs price: keeps the median for the yield, labelled and
+                linked to the profile's price section (review 10 Oct 2026,
+                suburbs 3.1: price-anchor links back to the profile). */}
+            {grossYield && suburb.stats.medianHousePrice > 0 && (
+              <section id="yield" className="scroll-mt-20 rounded-xl border border-line p-5 sm:p-8">
+                <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+                  Rental yield against the purchase price
+                </h2>
+                <dl className="grid grid-cols-3 gap-4 sm:gap-6">
+                  <div>
+                    <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Median house price</dt>
+                    <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{formatPriceFull(suburb.stats.medianHousePrice)}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Median house rent</dt>
+                    <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{money(currentRent)}/wk</dd>
+                  </div>
+                  <div>
+                    <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Gross yield</dt>
+                    <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{grossYield}%</dd>
+                  </div>
+                </dl>
+                <p className="font-sans text-xs text-ink-subtle mt-5 leading-relaxed">
+                  {"Gross yield = weekly rent × 52 ÷ median house price. Before rates, insurance, management fees, maintenance and vacancy. The "}
+                  <Link href="/rental-yield-calculator" className="underline hover:text-primary">rental yield calculator</Link>
+                  {" gives a net estimate. Price: "}
+                  <Link href={`/suburbs/${slug}#market`} className="underline hover:text-primary">{`${name} median house price`}</Link>
+                  {"."}
+                </p>
+              </section>
+            )}
+
+            {history.length > 1 && (
+              <section id="history" className="scroll-mt-20">
+                <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+                  How rents have moved
+                </h2>
+                <div className="overflow-x-auto rounded-xl border border-line">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="bg-surface-warm border-b border-line-warm">
-                        <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle">Period</th>
-                        <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">House median</th>
-                        <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">Unit median</th>
-                        <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden sm:table-cell">3 bed</th>
-                        <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden sm:table-cell">2 bed</th>
-                        <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden md:table-cell">Bond lodgements</th>
+                      <tr className="bg-surface-warm border-b border-line">
+                        <th scope="col" className="py-3 px-4 text-left font-semibold text-ink">Period</th>
+                        <th scope="col" className="py-3 px-4 text-right font-semibold text-ink">Houses</th>
+                        {legacyColumns.unit && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink">Units</th>}
+                        {legacyColumns.bed3 && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink hidden sm:table-cell">3 bed</th>}
+                        {legacyColumns.bed2 && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink hidden sm:table-cell">2 bed</th>}
+                        {legacyColumns.bonds && <th scope="col" className="py-3 px-4 text-right font-semibold text-ink hidden md:table-cell">New bonds</th>}
                       </tr>
                     </thead>
                     <tbody>
                       {history.map((row) => (
-                        <tr key={row.id} className="border-b border-line last:border-0 hover:bg-surface-sunken transition-colors">
-                          <td className="py-4 px-5 font-medium text-ink">{row.period}</td>
-                          <td className="py-4 px-5 text-right tabular-nums text-ink-muted">
-                            {row.medianRentHouse != null ? `$${row.medianRentHouse}/wk` : "–"}
-                          </td>
-                          <td className="py-4 px-5 text-right tabular-nums text-ink-muted">
-                            {row.medianRentUnit != null ? `$${row.medianRentUnit}/wk` : "–"}
-                          </td>
-                          <td className="py-4 px-5 text-right tabular-nums text-ink-muted hidden sm:table-cell">
-                            {row.medianRent3Bed != null ? `$${row.medianRent3Bed}/wk` : "–"}
-                          </td>
-                          <td className="py-4 px-5 text-right tabular-nums text-ink-muted hidden sm:table-cell">
-                            {row.medianRent2Bed != null ? `$${row.medianRent2Bed}/wk` : "–"}
-                          </td>
-                          <td className="py-4 px-5 text-right tabular-nums text-ink-muted hidden md:table-cell">
-                            {row.bondLodgements != null ? row.bondLodgements.toLocaleString() : "–"}
-                          </td>
+                        <tr key={row.id} className="border-b border-line last:border-0">
+                          <td className="py-3 px-4 font-medium text-ink whitespace-nowrap">{monthYear(row.periodDate)}</td>
+                          <td className="py-3 px-4 text-right text-ink">{positive(row.medianRentHouse) ? `${money(row.medianRentHouse)}/wk` : "–"}</td>
+                          {legacyColumns.unit && <td className="py-3 px-4 text-right text-ink">{positive(row.medianRentUnit) ? `${money(row.medianRentUnit)}/wk` : "–"}</td>}
+                          {legacyColumns.bed3 && <td className="py-3 px-4 text-right text-ink hidden sm:table-cell">{positive(row.medianRent3Bed) ? `${money(row.medianRent3Bed)}/wk` : "–"}</td>}
+                          {legacyColumns.bed2 && <td className="py-3 px-4 text-right text-ink hidden sm:table-cell">{positive(row.medianRent2Bed) ? `${money(row.medianRent2Bed)}/wk` : "–"}</td>}
+                          {legacyColumns.bonds && <td className="py-3 px-4 text-right text-ink hidden md:table-cell">{positive(row.bondLodgements) ? row.bondLodgements.toLocaleString("en-AU") : "–"}</td>}
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
-              </div>
-            </section>
+              </section>
+            )}
 
-            {/* CTA, soft: only when there are rentals listed to browse */}
+            {/* Rental listings, as a link: only when there are some to browse */}
             {availability.rent && (
-            <div className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
-              <div>
-                <p className="text-[13px] font-sans text-ink-subtle mb-2">
-                  Active listings
-                </p>
-                <h3 className="font-display text-xl sm:text-2xl text-ink leading-tight">
-                  Properties for rent in {suburb.name}
-                </h3>
-                <p className="font-sans text-sm text-ink-muted mt-2">
-                  Browse current rental listings.
-                </p>
-              </div>
-              <Link
-                href={`/suburbs/${slug}/rent`}
-                className="shrink-0 inline-flex items-center gap-2 rounded-lg border border-line-strong bg-surface-raised text-ink hover:border-ink font-medium px-5 py-2.5 transition-colors"
-              >
-                View rentals <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
+              <p className="font-sans text-base text-ink">
+                <Link
+                  href={`/suburbs/${slug}/rent`}
+                  className="inline-flex items-center gap-2 font-medium underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary"
+                >
+                  Properties for rent in {suburb.name} now <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                </Link>
+              </p>
             )}
           </>
         )}
@@ -320,19 +449,25 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
             <Faq items={landlord.faqs} title={`Renting and investing in ${suburb.name}`} />
           </>
         )}
-      </div>
 
-      {/* Readers here carry investor/landlord intent. Owners thinking of
-          selling have the block above; for the would-be investor, the
-          buying guide (investor lending, inspecting, the offer). This used
-          to promise a match with a local investment expert, which nobody
-          on our side provides. */}
-      <ExpertCTA
-        headline={`Thinking about investing in ${suburb.name}?`}
-        body="Gross yield is only half the picture. The free buying guide covers what you can really spend, investor lending, inspecting like a professional and making the offer. Free PDF, in your inbox in 60 seconds."
-        ctaLabel="Get the free buying guide"
-        href={guideFunnelHref("buying", { suburb: slug, from: "rental-market" })}
-      />
+        <NearbyRents name={name} nearby={nearby} />
+
+        <SubpageNextSteps id="next" title={`Next steps for ${name} owners`} groups={nextSteps} />
+
+        {/* The same one action, once more where the page ends. */}
+        <section className="rounded-xl bg-surface-inverse text-white p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+          <div>
+            <h2 className="font-display text-xl sm:text-2xl font-bold tracking-tight">Selling an investment property in {name}?</h2>
+            <p className="font-sans text-sm text-white/75 mt-1.5 max-w-xl">Free guide, personalised to {name}: costs and tax, timing around a lease, and how to pick an agent.</p>
+          </div>
+          <Link
+            href={sellHref}
+            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors"
+          >
+            Get the free selling guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
+          </Link>
+        </section>
+      </div>
     </>
   );
 }
