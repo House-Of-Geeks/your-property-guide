@@ -123,7 +123,6 @@ Rules: sentence case everywhere. No italics for emphasis. No full stop at the en
 | Email shell | `src/lib/email-theme.ts` |
 | Lead engine | `src/components/journey/SellingGuideFunnel.tsx` |
 
-*End of BRAND.md v4.*
 
 ## 11. Premium bands (v4.1, 13 Oct 2026)
 
@@ -137,3 +136,5 @@ Andy, after v4 shipped: "too plain, not premium". v4.1 keeps every v4 rule (one 
 - **Sequences as a timeline.** `StepTimeline` for real steps in order: numbered circles joined by a line.
 - **Tone scopes.** Dark surfaces carry `.tone-dark` (globals.css), which flips `text-ink`, `text-ink-muted`, `border-line` and `text-primary` to light values. Write components with those tokens, never `text-gray-*` or `text-white`, and they work on both. A white card on a dark band (a form, the funnel) carries `.tone-light`.
 - **Buttons.** `BUTTON_PRIMARY` (roof tile, the one solid button on a screen) and `BUTTON_SECONDARY` (outlined in the current ink).
+
+*End of BRAND.md v4.1.*
