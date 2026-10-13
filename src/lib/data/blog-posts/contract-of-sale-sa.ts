@@ -104,7 +104,7 @@ export const post: BlogPost = {
 <li>Consumer and Business Services SA, buying and selling property guidance: <a href="https://www.cbs.sa.gov.au/" rel="nofollow noopener">cbs.sa.gov.au</a>.</li>
 <li>Preparation and search costs: the South Australian lines of our cost-of-selling data, sourced to the Law Handbook Form 1 page; ranges are typical fees, not quotes.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-selling.svg",
+  coverImage: "/images/blog/cover-contract-of-sale-sa.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Selling",
   tags: ["contract of sale","South Australia","Form 1","vendor's statement","selling a house","cooling-off period","Land and Business (Sale and Conveyancing) Act","conveyancing","selling costs","2026"],

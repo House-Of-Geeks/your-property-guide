@@ -129,7 +129,7 @@ export const post: BlogPost = {
 <li>REIQ and Queensland Law Society, <em>Contract for Sale and Purchase of Residential Real Estate</em> (1st edition, for use from 1 August 2025): <a href="https://www.qls.com.au/resource-centre/reiq-property-contracts" rel="nofollow noopener">Queensland Law Society</a> and <a href="https://www.qlsproctor.com.au/2025/07/advance-copies-of-reiq-contracts-ready/" rel="nofollow noopener">Proctor, July 2025</a>. Standard-condition descriptions are paraphrased; settlement and deposit practice are conventions, not requirements.</li>
 <li>Preparation and search costs: the Queensland lines of our cost-of-selling data, sourced to the Queensland Government seller disclosure page above; ranges are typical fees, not quotes.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-selling.svg",
+  coverImage: "/images/blog/cover-contract-of-sale-qld.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Selling",
   tags: ["contract of sale","Queensland","seller disclosure","Form 2","selling a house","cooling-off period","Property Law Act 2023","REIQ contract","conveyancing","selling costs","2026"],

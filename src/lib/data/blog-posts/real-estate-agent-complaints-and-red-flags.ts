@@ -103,7 +103,7 @@ export const post: BlogPost = {
 <li>Property Agents Board of Tasmania, <a href="https://www.propertyagentsboard.com.au/making-a-complaint.html" rel="nofollow noopener">Making a complaint</a>; Access Canberra, <a href="https://www.accesscanberra.act.gov.au/contact-us/feedback-and-complaints" rel="nofollow noopener">Feedback and complaints</a>; NT Consumer Affairs, <a href="https://consumeraffairs.nt.gov.au/for-consumers/complaints-and-disputes" rel="nofollow noopener">Complaints and disputes</a>.</li>
 <li>Phone numbers as published on each regulator's website in September 2026. Descriptions of tribunal jurisdiction are general; check the relevant tribunal's own guidance before filing.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-selling.svg",
+  coverImage: "/images/blog/cover-real-estate-agent-complaints-and-red-flags.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Selling",
   tags: ["real estate agent complaints","Fair Trading","Consumer Affairs Victoria","Office of Fair Trading","red flags","bad real estate agent","commission dispute","selling a house","2026"],

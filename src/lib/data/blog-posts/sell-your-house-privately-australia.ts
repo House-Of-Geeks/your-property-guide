@@ -94,7 +94,7 @@ export const post: BlogPost = {
 <li>Victorian Section 32 vendor statement: <a href="https://www.consumer.vic.gov.au/" rel="nofollow noopener">Consumer Affairs Victoria</a>.</li>
 <li>Conveyancing fee ranges: published 2026 fee guides from Australian conveyancing practices, collated September 2026.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-selling.svg",
+  coverImage: "/images/blog/cover-sell-your-house-privately-australia.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Selling",
   tags: ["selling a house","sell privately","for sale by owner","real estate commission","conveyancing","Section 32","contract for sale","selling costs","2026"],

@@ -102,7 +102,7 @@ export const post: BlogPost = {
 <li><em>Real Estate and Business Agents and Sales Representatives Code of Conduct 2016</em> (WA), regulation 24: <a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/main_mrtitle_13816_homepage.html" rel="nofollow noopener">legislation.wa.gov.au</a>. Quotations are from regulation 24(1) and (2).</li>
 <li>Preparation and settlement costs: the Western Australian lines of our cost-of-selling data, sourced to Consumer Protection WA; ranges are typical fees, not quotes.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-selling.svg",
+  coverImage: "/images/blog/cover-contract-of-sale-wa.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Selling",
   tags: ["contract of sale","Western Australia","offer and acceptance","Joint Form of General Conditions","selling a house","cooling-off period","strata disclosure","RCD","smoke alarms","conveyancing","selling costs","2026"],

@@ -78,7 +78,7 @@ export const post: BlogPost = {
 <li><em>Land and Business (Sale and Conveyancing) Act 1994</em> (SA), section 20 (single-figure estimate and vendor price).</li>
 <li>The observation that agents achieve more when selling their own homes is from Levitt and Syverson, "Market Distortions when Agents are Better Informed: The Value of Information in Real Estate Transactions", <em>Review of Economics and Statistics</em>, 2008; it is US data and is cited for the incentive argument only.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-selling.svg",
+  coverImage: "/images/blog/cover-fixed-fee-vs-commission-real-estate-agents.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Selling",
   tags: ["fixed fee real estate agent","flat fee","commission","low commission agent","tiered commission","agent fees","selling a house","2026"],

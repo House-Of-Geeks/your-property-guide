@@ -111,7 +111,7 @@ export const post: BlogPost = {
 <li>State duty: <em>Duties Act 1997</em> (NSW) s 68; <em>Duties Act 2000</em> (Vic) s 44 (authorised version 141, quoted); <em>Duties Act 2001</em> (Qld) ss 424–425 and <a href="https://qro.qld.gov.au/duties/transfer-duty/exemptions/matrimonial/" rel="nofollow noopener">Queensland Revenue Office, matrimonial exemptions</a>; <em>Duties Act 2008</em> (WA) ss 128–131 (version 03-y0-00, 1 September 2026); <em>Stamp Duties Act 1923</em> (SA) s 71CA. Read on the state legislation sites and AustLII, September 2026.</li>
 <li>Selling-cost percentages and valuation fee ranges are conventions from our cost-of-selling data, not rules.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-selling.svg",
+  coverImage: "/images/blog/cover-selling-a-house-after-separation-or-divorce.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Selling",
   tags: ["divorce","separation","property settlement","consent orders","binding financial agreement","stamp duty exemption","CGT rollover","Family Law Act","selling a house","2026"],

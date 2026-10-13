@@ -129,7 +129,7 @@ export const post: BlogPost = {
 <li>Probate procedure: <a href="https://www.legalaid.nsw.gov.au/my-problem-is-about/someone-who-died/wills-and-estates/applying-for-probate" rel="nofollow noopener">Legal Aid NSW, Applying for probate</a> (real estate rule and six-month expectation, quoted); <a href="https://www.supremecourt.vic.gov.au/wills-and-probate/how-to-apply-for-a-grant-of-probate-or-administration" rel="nofollow noopener">Supreme Court of Victoria, How to apply for a grant</a> (15-day notice, quoted); Supreme Court of NSW Online Registry (14-day notice of intended application).</li>
 <li>Insurance vacancy clauses, campaign and settlement durations and auction practice are described as market conventions, not rules.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-selling.svg",
+  coverImage: "/images/blog/cover-selling-a-deceased-estate-property.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Selling",
   tags: ["deceased estate","inherited property","probate","capital gains tax","CGT","executor","selling a house","two-year rule","family provision","2026"],

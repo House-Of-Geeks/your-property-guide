@@ -113,7 +113,7 @@ export const post: BlogPost = {
 <li>Domain, <a href="https://www.domain.com.au/group/media-releases/forecast-fy27-interest-rate-pressure-drives-price-falls-in-sydney-and-melbourne-as-market-fragments/" rel="nofollow noopener">Forecast FY27: Interest rate pressure drives price falls in Sydney and Melbourne as market fragments</a>, 25 June 2026 (Dr Nicola Powell; house and unit tables).</li>
 <li>All forecasts are the published views of the organisations named, as at the dates shown. Your Property Guide does not forecast prices; our market pages report recorded sales.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-market.svg",
+  coverImage: "/images/blog/cover-house-price-forecasts-2026-2027-by-capital-city.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Market Update",
   tags: ["house price forecast","property market forecast 2026","property market forecast 2027","Sydney","Melbourne","Brisbane","Perth","Adelaide","CBA","Westpac","NAB","ANZ","Domain","Cotality","2026"],

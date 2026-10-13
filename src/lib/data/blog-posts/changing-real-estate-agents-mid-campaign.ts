@@ -81,7 +81,7 @@ export const post: BlogPost = {
 <li><em>Real Estate and Business Agents Act 1978</em> (WA), sections 60 and 63: <a href="https://www.legislation.wa.gov.au/legislation/statutes.nsf/law_a681.html" rel="nofollow noopener">legislation.wa.gov.au</a>.</li>
 <li>Tail-clause periods, release practice and relaunch tactics are described as market practice, not rules.</li>
 </ul>`,
-  coverImage: "/images/blog/cover-selling.svg",
+  coverImage: "/images/blog/cover-changing-real-estate-agents-mid-campaign.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Selling",
   tags: ["changing agents","agency agreement","exclusive agency","tail clause","double commission","real estate agent","selling a house","2026"],
