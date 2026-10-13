@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -291,7 +290,7 @@ export default function HowToChooseMortgageBrokerPage() {
       <ul>
         <li><strong>Referrals from people whose financial judgement you trust.</strong> Friends, family, your accountant, your conveyancer. The single best source.</li>
         <li><strong>MFAA and FBAA &quot;find a broker&quot; directories.</strong> Both industry associations list accredited members. Filter by suburb and specialisation.</li>
-        <li><strong>Vetted-broker matching services.</strong> Services that screen brokers on track record, lender panel, and complaints history before referring you. Faster than DIY-sourcing if you don&rsquo;t have a personal referral. (We run one: see <Link href="/find-an-expert">Find an expert</Link>.)</li>
+        <li><strong>Vetted-broker matching services.</strong> Services that screen brokers on track record, lender panel, and complaints history before referring you. Faster than DIY-sourcing if you don&rsquo;t have a personal referral.</li>
       </ul>
       <p>
         Avoid: brokers who cold-call you, brokers from comparison-site

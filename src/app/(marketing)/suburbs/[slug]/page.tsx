@@ -9,7 +9,6 @@ import {
   SuburbSnapshot,
   SectionDivider,
   DataFreshnessNote,
-  SuburbAlertWidget,
   SuburbFAQ,
 } from "@/components/suburb";
 import { SuburbAppraisalCTA } from "@/components/suburb/SuburbAppraisalCTA";
@@ -570,13 +569,9 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           <SuburbBuyingGuideCTA suburbName={suburb.name} suburbSlug={suburb.slug} />
         </section>
 
-        {/* Secondary capture for visitors who aren't selling. Smaller
-            footprint, lower visual weight. */}
-        <section className="relative rounded-2xl border border-line-warm bg-surface-warm overflow-hidden">
-          <div className="relative px-6 sm:px-8 py-6 sm:py-7">
-            <SuburbAlertWidget suburbName={suburb.name} suburbSlug={suburb.slug} />
-          </div>
-        </section>
+        {/* The listing-alert signup that sat here is gone: nothing sends
+            those alert emails yet (SuburbAlertWidget is kept for when
+            something does). */}
 
         {/* Investment Overview */}
         {(suburb.stats.medianHousePrice > 0 || suburb.stats.medianUnitPrice > 0) && (

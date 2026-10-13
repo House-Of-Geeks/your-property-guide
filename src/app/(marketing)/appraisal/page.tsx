@@ -210,8 +210,8 @@ export default function AppraisalPage() {
                   What happens after you ask.
                 </h2>
                 <ol className="space-y-3 font-sans text-base text-ink-muted leading-relaxed list-decimal pl-5">
-                  <li>We match your request to an agent who sells in your suburb.</li>
-                  <li>The agent contacts you, by phone or email as you prefer, to arrange a time to see the property.</li>
+                  <li>Our team calls you within one business day and introduces you to one local agent who sells in your area. If we don&rsquo;t have one yet, we&rsquo;ll tell you.</li>
+                  <li>The agent arranges a time to see the property, by phone or email as you prefer.</li>
                   <li>They inspect and give you a figure or a range, most often as a short written appraisal with the comparable sales listed.</li>
                   <li>You decide what to do with it. Sell now, sell later, get a second appraisal, or file it away. There is no obligation at any step.</li>
                 </ol>
@@ -272,11 +272,12 @@ export default function AppraisalPage() {
             How matching works
           </p>
           <p className="font-sans text-base text-ink-muted leading-relaxed">
-            Every appraisal request is read and matched personally by our team.
-            We pick one local agent who actually sells in your area, no call
-            centre, no auto-routing, no comparison spam. You&rsquo;ll hear from
-            them within one business day. That agent pays us a fee for the
-            introduction, whether or not you list with them. You pay nothing,
+            Every appraisal request is read personally by our team, no call
+            centre, no auto-routing, no comparison spam. We introduce you to one
+            local agent who sells in your area. If we don&rsquo;t have one yet,
+            we&rsquo;ll tell you. Our team will call you within one business
+            day. That agent pays us a fee for the introduction, whether or not
+            you list with them. You pay nothing,
             and your details go to no one else.
           </p>
           <p className="mt-5 font-sans text-sm text-ink-muted">

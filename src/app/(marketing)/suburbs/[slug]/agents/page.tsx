@@ -77,8 +77,8 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
         title={<>Real estate agents in <span className="italic text-primary">{sn}</span>.</>}
         subtitle={
           model.commission && model.medianHousePrice
-            ? `What agents charge on ${sn}'s ${formatPriceFull(model.medianHousePrice)} median, how to choose an agent, and a free match with one who sells here.`
-            : `How to choose an agent in ${sn}, what they charge, and a free match with one agent who sells here.`
+            ? `What agents charge on ${sn}'s ${formatPriceFull(model.medianHousePrice)} median, how to choose an agent, and a free introduction to one local agent.`
+            : `How to choose an agent in ${sn}, what they charge, and a free introduction to one local agent.`
         }
       />
 
@@ -89,13 +89,13 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
           <div className="lg:col-span-5">
             <p className="font-display italic text-primary text-base mb-3 leading-none">Get matched</p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-4">
-              One agent who sells in {sn}.
+              One local agent, not a panel.
             </h2>
             <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-md">
-              Tell us your timeframe and we connect you with one agent who has recent sales in {sn}, not a call centre and not a panel. Free, and no obligation to list.
+              Tell us your timeframe and we&rsquo;ll introduce you to one local agent who sells in your area. If we don&rsquo;t have one yet, we&rsquo;ll tell you. Free, and no obligation to list.
             </p>
             <ul className="mt-6 space-y-2 font-sans text-sm text-ink-muted">
-              {["Recent sales in this suburb, not the wider region", "One agent, not five, and you decide whether to meet them", "Free for you. The agent pays us for the introduction"].map((t) => (
+              {["Our team will call you within one business day", "One agent, not five, and you decide whether to meet them", "Free for you. The agent pays us for the introduction"].map((t) => (
                 <li key={t} className="flex gap-2.5"><CheckCircle className="w-4 h-4 mt-0.5 text-cta flex-shrink-0" aria-hidden="true" />{t}</li>
               ))}
             </ul>

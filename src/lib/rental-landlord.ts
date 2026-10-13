@@ -315,7 +315,7 @@ export function rentalAppraisalFaqs(name: string, rent: PublishedRent | null, al
     {
       question: "Does it cost money to get a rental appraisal?",
       answer:
-        "No. A rental appraisal from a property manager is free: the agency provides it in the hope of winning the management of your property, and you are under no obligation to appoint them. It is different from a valuation by a licensed valuer, which is a paid written report used by lenders and courts. The request form on this page goes to one local property manager, who pays us for the introduction; you pay nothing.",
+        "No. A rental appraisal from a property manager is free: the agency provides it in the hope of winning the management of your property, and you are under no obligation to appoint them. It is different from a valuation by a licensed valuer, which is a paid written report used by lenders and courts. Ask two or three local agencies for one and compare their fee schedules with the table on this page before you choose.",
     },
     {
       question: "What is involved in a rental appraisal?",

@@ -135,9 +135,10 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
           What&rsquo;s your home worth in {suburbName}?
         </h3>
         <p className="text-sm text-white/75 leading-relaxed max-w-md">
-          A local agent who actually sells in {suburbName} will give you an
-          honest number, backed by recent comparable sales. Free, no commitment
-          to list.
+          We&rsquo;ll introduce you to one local agent who sells in your area.
+          If we don&rsquo;t have one yet, we&rsquo;ll tell you. They&rsquo;ll give
+          you an honest number, backed by recent comparable sales. Free, no
+          commitment to list.
         </p>
       </div>
 
@@ -268,7 +269,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
         <p className="text-[11px] text-ink-subtle leading-relaxed pt-1 flex flex-wrap items-center gap-x-2">
           <span className="inline-flex items-center gap-1">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
-            Reply within 1 business day
+            Our team will call you within one business day
           </span>
           <span aria-hidden="true">·</span>
           <span>No commitment to list</span>

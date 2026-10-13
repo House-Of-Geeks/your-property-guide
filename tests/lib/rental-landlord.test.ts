@@ -149,7 +149,8 @@ describe("the People Also Ask answers", () => {
     expect(withRent.map((f) => f.question)).toEqual(["Does it cost money to get a rental appraisal?", "What is involved in a rental appraisal?"]);
     for (const f of withRent) expect(words(f.answer), f.question).toBeGreaterThanOrEqual(40);
     expect(withRent[0].answer).toMatch(/^No\./);
-    expect(withRent[0].answer).toContain("who pays us for the introduction");
+    // No property manager takes our referrals, so the answer must not promise one.
+    expect(withRent[0].answer).not.toMatch(/form on this page|pays us/);
     expect(withRent[1].answer).toContain("In Picton the median house rent is $650 a week (NSW rental bond data (postcode 2571), June 2026)");
     const without = rentalAppraisalFaqs("Tom Price", null);
     expect(without[1].answer).not.toMatch(/median house rent/);

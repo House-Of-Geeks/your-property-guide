@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Home, TrendingUp, BarChart3, ArrowRight } from "lucide-react";
 import { SuburbSubrouteHeader, getSuburbListingTabs, DataFreshnessNote } from "@/components/suburb";
 import { ExpertCTA } from "@/components/journey";
+import { guideFunnelHref } from "@/lib/guide-funnel";
 import { BreadcrumbJsonLd, PlaceJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availability";
@@ -321,14 +322,16 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
         )}
       </div>
 
-      {/* Readers here carry investor/landlord intent, so the selling- and
-          buying-guide funnels are the wrong offer. Deep-link the
-          expert-match form with the investing intent pre-answered. */}
+      {/* Readers here carry investor/landlord intent. Owners thinking of
+          selling have the block above; for the would-be investor, the
+          buying guide (investor lending, inspecting, the offer). This used
+          to promise a match with a local investment expert, which nobody
+          on our side provides. */}
       <ExpertCTA
         headline={`Thinking about investing in ${suburb.name}?`}
-        body={`Gross yield is only half the picture. Get matched with a local expert who knows vacancy, tenant demand and what actually rents in ${suburb.name}. Free, no obligation.`}
-        ctaLabel="Talk to an investment expert"
-        href="/find-an-expert?intent=investing#match"
+        body="Gross yield is only half the picture. The free buying guide covers what you can really spend, investor lending, inspecting like a professional and making the offer. Free PDF, in your inbox in 60 seconds."
+        ctaLabel="Get the free buying guide"
+        href={guideFunnelHref("buying", { suburb: slug, from: "rental-market" })}
       />
     </>
   );

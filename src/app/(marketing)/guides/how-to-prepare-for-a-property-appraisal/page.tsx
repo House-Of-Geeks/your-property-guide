@@ -465,9 +465,7 @@ export default function HowToPrepareForAPropertyAppraisalPage() {
           Start with a{" "}
           <Link href="/appraisal">free property appraisal</Link> from a vetted
           local agent, backed by comparable sales evidence and with no
-          obligation to list. Or{" "}
-          <Link href="/find-an-expert">find a local expert</Link> if
-          you&rsquo;d rather browse agents in your area first.
+          obligation to list.
         </p>
       </Callout>
 

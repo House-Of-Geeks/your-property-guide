@@ -74,7 +74,7 @@ export function buildSuburbAgentsModel(
   }
   faqs.push({
     question: `How do I find a good real estate agent in ${sn}?`,
-    answer: `Look for agents with recent sales in ${sn} itself, not just the wider area, and ask each for the comparable sales behind their price opinion. Compare two or three on their answers, their fee and marketing costs, and how they will report to you during the campaign. Your Property Guide can match you with one agent who sells in ${sn}; request a match on this page.`,
+    answer: `Look for agents with recent sales in ${sn} itself, not just the wider area, and ask each for the comparable sales behind their price opinion. Compare two or three on their answers, their fee and marketing costs, and how they will report to you during the campaign. Your Property Guide can introduce you to one local agent who sells in your area, and if we don't have one yet, we'll tell you; request a match on this page.`,
   });
   faqs.push({
     question: `Do I have to pay to be matched with an agent in ${sn}?`,
