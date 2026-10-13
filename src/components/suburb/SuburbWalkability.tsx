@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Footprints, Bus, Bike } from "lucide-react";
+import { walkLabel } from "@/lib/suburb-snapshot";
 
 interface SuburbWalkabilityProps {
   walkScore:    number | null;
@@ -13,34 +14,26 @@ interface ScoreConfig {
   icon:    ReactNode;
 }
 
-function scoreColour(score: number): { text: string; bar: string } {
-  if (score >= 70) return { text: "text-success", bar: "bg-success" };
-  if (score >= 40) return { text: "text-warning", bar: "bg-warning" };
-  return              { text: "text-danger",  bar: "bg-danger" };
-}
-
-function ScoreBar({ label, score, icon }: ScoreConfig) {
-  const colours = score !== null ? scoreColour(score) : null;
-
+// One row of three scores out of 100, each with a thin bar. Ink, not
+// traffic-light colours: a score is a measure, not a warning.
+function Score({ label, score, icon }: ScoreConfig) {
   return (
-    <div className="bg-surface-raised rounded-2xl border border-line p-5 flex flex-col gap-3">
-      <div className="flex items-center gap-2 text-ink-muted">
+    <div className="py-3 px-3 first:pl-0">
+      <dt className="flex items-center gap-1.5 text-[13px] font-sans text-ink-muted">
         {icon}
-        <span className="text-[13px] font-sans text-ink-subtle">{label}</span>
-      </div>
-
-      {score !== null && colours ? (
+        {label}
+      </dt>
+      {score !== null ? (
         <>
-          <p className={`font-display text-4xl leading-none ${colours.text}`}>{score}</p>
-          <div className="h-1.5 w-full rounded-full bg-surface-warm overflow-hidden">
-            <div
-              className={`h-full rounded-full ${colours.bar}`}
-              style={{ width: `${score}%` }}
-            />
-          </div>
+          <dd className="mt-1 font-display text-2xl font-bold text-ink leading-none">
+            {score}<span className="text-sm font-normal text-ink-subtle">/100</span>
+          </dd>
+          <dd className="mt-2 h-1 w-full rounded-full bg-surface-warm overflow-hidden" aria-hidden="true">
+            <div className="h-full rounded-full bg-ink" style={{ width: `${score}%` }} />
+          </dd>
         </>
       ) : (
-        <p className="font-display text-3xl text-ink-subtle">–</p>
+        <dd className="mt-1 font-display text-2xl text-ink-subtle leading-none">–</dd>
       )}
     </div>
   );
@@ -56,26 +49,15 @@ export function SuburbWalkability({ walkScore, transitScore, bikeScore }: Suburb
   }
 
   return (
-    <div className="space-y-3">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <ScoreBar
-          label="Walk Score"
-          score={walkScore}
-          icon={<Footprints className="w-5 h-5" />}
-        />
-        <ScoreBar
-          label="Transit Score"
-          score={transitScore}
-          icon={<Bus className="w-5 h-5" />}
-        />
-        <ScoreBar
-          label="Bike Score"
-          score={bikeScore}
-          icon={<Bike className="w-5 h-5" />}
-        />
-      </div>
-      <p className="text-xs font-sans text-ink-subtle">
-        Scores calculated from OpenStreetMap data (ODbL)
+    <div>
+      <dl className="grid grid-cols-3 divide-x divide-line border-y border-line">
+        <Score label="Walk" score={walkScore} icon={<Footprints className="w-4 h-4" aria-hidden="true" />} />
+        <Score label="Transit" score={transitScore} icon={<Bus className="w-4 h-4" aria-hidden="true" />} />
+        <Score label="Bike" score={bikeScore} icon={<Bike className="w-4 h-4" aria-hidden="true" />} />
+      </dl>
+      <p className="mt-3 text-xs font-sans text-ink-subtle">
+        {walkScore !== null && <>{walkLabel(walkScore)}. </>}
+        Scores out of 100, calculated from OpenStreetMap data (ODbL).
       </p>
     </div>
   );

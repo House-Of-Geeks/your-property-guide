@@ -121,10 +121,10 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
   };
 
   return (
-    <div className="rounded-2xl overflow-hidden border border-cta/30 shadow-card">
+    <div className="rounded-xl overflow-hidden border border-line bg-white">
       <div className="bg-ink band-glow px-6 sm:px-8 py-6 sm:py-7 text-white">
         <div className="flex items-center gap-3 mb-2">
-          <div className="flex-shrink-0 w-9 h-9 rounded-full bg-cta text-ink grid place-items-center">
+          <div className="flex-shrink-0 w-9 h-9 rounded-full bg-white/10 text-white grid place-items-center">
             <Home className="w-4.5 h-4.5" />
           </div>
           <p className="text-[13px] text-white/78 font-medium">
@@ -251,7 +251,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
         <button
           type="submit"
           disabled={loading}
-          className="group press w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-ink font-semibold px-5 py-3 text-sm transition-colors active:translate-y-px disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+          className="group press w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-semibold px-5 py-3 text-sm transition-colors active:translate-y-px disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
         >
           {loading ? (
             <>

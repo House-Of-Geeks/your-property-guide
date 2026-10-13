@@ -27,25 +27,12 @@ function calcYield(rentPerWeek: number, price: number): string {
   return `${yld.toFixed(2)}%`;
 }
 
-interface StatCardProps {
+interface Row {
   label: string;
   value: string;
   sub?: string;
   source?: string | null;
   asOf?: Date | string | null;
-}
-
-function StatCard({ label, value, sub, source, asOf }: StatCardProps) {
-  return (
-    <div className="p-5 rounded-xl bg-surface-raised border border-line">
-      <div className="flex items-center gap-1">
-        <p className="text-[13px] font-sans text-ink-subtle flex-1">{label}</p>
-        <SourceTooltip source={source} asOf={asOf} />
-      </div>
-      <p className="font-display text-2xl text-ink leading-none mt-2">{value}</p>
-      {sub && <p className="text-xs text-ink-muted mt-2 leading-snug">{sub}</p>}
-    </div>
-  );
 }
 
 export function SuburbInvestment({ suburb }: SuburbInvestmentProps) {
@@ -68,72 +55,49 @@ export function SuburbInvestment({ suburb }: SuburbInvestmentProps) {
     ? `${s.annualGrowthUnit >= 0 ? "+" : ""}${s.annualGrowthUnit.toFixed(1)}%`
     : "–";
 
-  const ownerOccupied = s.ownerOccupied ? `${s.ownerOccupied.toFixed(0)}%` : "–";
-  const daysOnMarket = s.daysOnMarket ? `${s.daysOnMarket} days` : "–";
+  // Owner occupancy sits with the demographics and days on market with the
+  // figures at the top of the page, so they are not repeated here. A row
+  // with nothing to show is left out rather than printed as a dash.
+  const rows: Row[] = [
+    {
+      label: "Gross yield, houses",
+      value: houseYield,
+      sub: s.medianHousePrice ? `On the ${formatPriceFull(s.medianHousePrice)} median` : undefined,
+      source: f?.salesSource ?? f?.rentalSource,
+      asOf: f?.salesAsOf ?? f?.rentalAsOf,
+    },
+    {
+      label: "Gross yield, units",
+      value: unitYield,
+      sub: s.medianUnitPrice ? `On the ${formatPriceFull(s.medianUnitPrice)} median` : undefined,
+      source: f?.salesSource ?? f?.rentalSource,
+      asOf: f?.salesAsOf ?? f?.rentalAsOf,
+    },
+    { label: "12-month change, houses", value: houseGrowth, source: f?.salesSource, asOf: f?.salesAsOf },
+    { label: "12-month change, units", value: unitGrowth, source: f?.salesSource, asOf: f?.salesAsOf },
+  ].filter((r) => r.value !== "–");
+
+  if (rows.length === 0) return null;
 
   return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        <StatCard
-          label="Gross Yield (House)"
-          value={houseYield}
-          sub={
-            s.medianHousePrice
-              ? `Based on ${formatPriceFull(s.medianHousePrice)} median`
-              : undefined
-          }
-          source={f?.salesSource ?? f?.rentalSource}
-          asOf={f?.salesAsOf ?? f?.rentalAsOf}
-        />
-        <StatCard
-          label="Gross Yield (Unit)"
-          value={unitYield}
-          sub={
-            s.medianUnitPrice
-              ? `Based on ${formatPriceFull(s.medianUnitPrice)} median`
-              : undefined
-          }
-          source={f?.salesSource ?? f?.rentalSource}
-          asOf={f?.salesAsOf ?? f?.rentalAsOf}
-        />
-        <StatCard
-          label="Annual Growth (House)"
-          value={houseGrowth}
-          sub="Year-on-year capital growth"
-          source={f?.salesSource}
-          asOf={f?.salesAsOf}
-        />
-        <StatCard
-          label="Annual Growth (Unit)"
-          value={unitGrowth}
-          sub="Year-on-year capital growth"
-          source={f?.salesSource}
-          asOf={f?.salesAsOf}
-        />
-        <StatCard
-          label="Owner Occupancy"
-          value={ownerOccupied}
-          sub="Higher = more owner-occupier demand"
-          source="abs-census"
-          asOf={f?.censusAsOf}
-        />
-        <StatCard
-          label="Days on Market"
-          value={daysOnMarket}
-          sub="Lower = higher buyer demand"
-          source={f?.salesSource}
-          asOf={f?.salesAsOf}
-        />
-      </div>
-
-      <div className="rounded-xl border border-line-warm bg-surface-warm p-4">
-        <p className="text-xs font-sans text-ink-muted leading-relaxed">
-          <span className="font-semibold text-ink">Gross rental yield</span> is annual rent divided
-          by purchase price, before expenses. It does not account for vacancy
-          rates, management fees, maintenance, or financing costs. Use this as
-          a starting point for further research.
-        </p>
-      </div>
+    <div>
+      <dl className="grid grid-cols-2 border-t border-line">
+        {rows.map((r, i) => (
+          <div key={r.label} className={`py-3 border-b border-line ${i % 2 === 1 ? "pl-4 border-l" : "pr-4"}`}>
+            <dt className="flex items-center gap-1 text-[13px] font-sans text-ink-muted">
+              <span className="flex-1">{r.label}</span>
+              <SourceTooltip source={r.source} asOf={r.asOf} />
+            </dt>
+            <dd className="mt-1 font-display text-2xl font-bold text-ink leading-none">{r.value}</dd>
+            {r.sub && <dd className="mt-1.5 text-xs text-ink-muted leading-snug">{r.sub}</dd>}
+          </div>
+        ))}
+      </dl>
+      <p className="mt-3 text-xs font-sans text-ink-muted leading-relaxed">
+        Gross rental yield is a year&rsquo;s rent divided by the purchase
+        price, before expenses. It leaves out vacancy, management fees,
+        maintenance and financing costs, so treat it as a starting point.
+      </p>
     </div>
   );
 }

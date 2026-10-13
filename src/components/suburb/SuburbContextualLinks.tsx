@@ -16,16 +16,6 @@ interface SuburbContextualLinksProps {
   availability: SubpageAvailability;
 }
 
-// Two columns on a phone; from there the grid follows the number of columns
-// drawn, so four columns sit two by two on a tablet instead of three and one.
-// Tailwind reads class names from the source, so each is spelt out.
-const GRID_COLUMNS: Record<number, string> = {
-  3: "sm:grid-cols-3",
-  4: "sm:grid-cols-2 lg:grid-cols-4",
-  5: "sm:grid-cols-3 lg:grid-cols-5",
-  6: "sm:grid-cols-3 lg:grid-cols-6",
-};
-
 function nearbyName(slug: string): string {
   // Strip trailing state-postcode suffix (e.g. "-qld-4500") and title-case
   return slug
@@ -52,32 +42,76 @@ function buyingLinksForState(state: string | undefined): { label: string; href: 
   ];
 }
 
-// States with a dedicated commission guide at /guides/real-estate-commission-{slug}.
-const COMMISSION_GUIDE_STATES = new Set(["nsw", "vic", "qld", "wa", "sa", "tas", "act", "nt"]);
+// States with dedicated guides at /guides/real-estate-commission-{slug} and
+// /guides/cost-of-selling-a-house-{slug}.
+const STATE_GUIDE_STATES = new Set(["nsw", "vic", "qld", "wa", "sa", "tas", "act", "nt"]);
 
 function sellingLinksForState(state: string | undefined): { label: string; href: string }[] {
   const stateUpper = (state ?? "").toUpperCase();
   const stateSlug = stateUpper.toLowerCase();
-  // The state-labelled anchor should land on the state commission page, not
-  // the national hub — the suburb template is the only surface that can give
-  // the eight state pages contextual, state-partitioned internal links.
-  const agentFees = COMMISSION_GUIDE_STATES.has(stateSlug)
-    ? { label: `Real estate agent fees, ${stateUpper}`, href: `/guides/real-estate-commission-${stateSlug}` }
+  // The state-labelled anchors land on the state pages, not the national
+  // hubs: the suburb template is the only surface that can give the state
+  // guides contextual, state-partitioned internal links (and Bing ranks
+  // them for the seller searches that become leads).
+  const hasStateGuides = STATE_GUIDE_STATES.has(stateSlug);
+  const agentFees = hasStateGuides
+    ? { label: `Agent fees and commission in ${stateUpper}`, href: `/guides/real-estate-commission-${stateSlug}` }
     : { label: "Real estate agent fees", href: "/guides/real-estate-agent-fees-australia" };
+  const costOfSelling = hasStateGuides
+    ? { label: `Cost of selling a house in ${stateUpper}`, href: `/guides/cost-of-selling-a-house-${stateSlug}` }
+    : { label: "Cost of selling a house", href: "/guides/cost-of-selling-a-house-australia" };
   return [
-    { label: "How to sell a house in Australia", href: "/guides/how-to-sell-a-house-australia" },
     agentFees,
+    costOfSelling,
+    { label: "How to sell a house in Australia", href: "/guides/how-to-sell-a-house-australia" },
     { label: "Sell first or buy first?", href: "/guides/sell-first-or-buy-first" },
     { label: "Commission calculator", href: "/real-estate-commission-calculator" },
     { label: "Free property appraisal", href: "/appraisal" },
   ];
 }
 
+// Desktop columns by the number of link groups drawn, so no group sits alone
+// on a second row. Tailwind reads class names from the source: spelt out.
+const LG_COLUMNS: Record<number, string> = {
+  3: "lg:grid-cols-3",
+  4: "lg:grid-cols-4",
+  5: "lg:grid-cols-5",
+  6: "lg:grid-cols-3",
+  7: "lg:grid-cols-4",
+};
+
+const LINK = "font-sans text-[15px] text-ink-muted hover:text-ink underline-offset-4 hover:underline leading-snug";
+
+function LinkColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
+  return (
+    <div>
+      <h3 className="text-[15px] font-sans font-semibold text-ink mb-3">{title}</h3>
+      <ul className="space-y-2">
+        {links.map((l) => (
+          <li key={l.href}>
+            <Link href={l.href} className={LINK}>
+              {l.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/**
+ * The related-links block at the foot of a suburb profile: the suburb's
+ * own pages, its neighbours (profiles and side-by-side comparisons), the
+ * seller guides for its state and the buyer tools. One tidy block, so the
+ * neighbours are linked once here rather than in three places up the page.
+ */
 export function SuburbContextualLinks({ suburb, availability }: SuburbContextualLinksProps) {
   const { name, slug, state, postcode, nearbySuburbs } = suburb;
-  const nearby = nearbySuburbs.slice(0, 6);
+  const nearby = nearbySuburbs.slice(0, 10);
+  const compare = nearbySuburbs.slice(0, 6);
   const buyingLinks = buyingLinksForState(state);
   const sellingLinks = sellingLinksForState(state);
+  const stateUpper = (state ?? "").toUpperCase();
   // Canonical static sub-pages, not /buy?suburb=… query-param URLs:
   // query-param variants split link equity and aren't the indexed canonical
   // for these property-type queries.
@@ -88,149 +122,72 @@ export function SuburbContextualLinks({ suburb, availability }: SuburbContextual
     { show: availability.land,       label: `Land for sale in ${name}`,       href: `/suburbs/${slug}/land` },
     { show: availability.buy,        label: `All properties for sale in ${name}`, href: `/suburbs/${slug}/buy` },
   ].filter((l) => l.show);
-  const columns = 3 + (forSaleLinks.length > 0 ? 1 : 0) + (availability.rent ? 1 : 0) + (nearby.length > 0 ? 1 : 0);
+
+  const suburbLinks = [
+    { label: `${name} house prices`, href: `/suburbs/${slug}#market` },
+    ...(availability["rental-market"]
+      ? [{ label: `${name} rental market`, href: `/suburbs/${slug}/rental-market` }]
+      : []),
+    { label: `Schools in ${name}`, href: `/suburbs/${slug}#schools` },
+    // Postcode pages rank for "{suburb} postcode" queries but had
+    // zero inlinks from their member suburbs — this row gives every
+    // postcode page contextual internal equity from its suburbs.
+    ...(postcode
+      ? [{ label: `All suburbs in ${postcode}`, href: `/postcodes/${postcode}` }]
+      : []),
+    // Points at the match funnel, not /agents — the agent
+    // directory is paused (placeholder profiles only) per Andy,
+    // 2026-07-03, and the funnel converts better anyway.
+    { label: `Real estate agents in ${name}`, href: `/suburbs/${slug}/agents` },
+    { label: "Find a local expert", href: `/find-an-expert?suburb=${slug}` },
+  ];
+
+  const groups = 3 + (nearby.length > 0 ? 2 : 0) + (forSaleLinks.length > 0 ? 1 : 0) + (availability.rent ? 1 : 0);
 
   return (
-    <div className="border-t border-line mt-16 pt-10">
-      <div className={`grid grid-cols-2 ${GRID_COLUMNS[columns]} gap-8`}>
+    <section aria-labelledby="related-heading" className="border-t border-line pt-10 sm:pt-12">
+      <h2 id="related-heading" className="font-display text-2xl sm:text-3xl font-bold text-ink leading-tight tracking-[-0.02em] mb-8">
+        More on {name} and nearby
+      </h2>
+      <div className={`grid grid-cols-2 ${LG_COLUMNS[groups]} gap-x-6 sm:gap-x-8 gap-y-10`}>
+        <LinkColumn title={name} links={suburbLinks} />
+
+        {nearby.length > 0 && (
+          <LinkColumn
+            title="Nearby suburbs"
+            links={nearby.map((s) => ({ label: nearbyName(s), href: `/suburbs/${s}` }))}
+          />
+        )}
+
+        {/* Compare: drives readers into the side-by-side pages. */}
+        {compare.length > 0 && (
+          <LinkColumn
+            title="Compare side by side"
+            links={compare.map((s) => ({ label: `${name} vs ${nearbyName(s)}`, href: `/suburbs/${slug}/vs/${s}` }))}
+          />
+        )}
+
+        <LinkColumn title={stateUpper ? `Selling in ${stateUpper}` : "Selling"} links={sellingLinks} />
+
+        <LinkColumn title="Buying" links={buyingLinks} />
 
         {/* For Sale: the listing pages that have stock */}
         {forSaleLinks.length > 0 && (
-          <div>
-            <h3 className="text-[13px] font-sans font-medium text-ink mb-3">For Sale</h3>
-            <ul className="space-y-2">
-              {forSaleLinks.map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className="font-sans text-sm text-ink-muted hover:text-primary transition-colors leading-snug block">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <LinkColumn title="For sale" links={forSaleLinks} />
         )}
 
         {/* For Rent: only when rentals are listed */}
         {availability.rent && (
-          <div>
-            <h3 className="text-[13px] font-sans font-medium text-ink mb-3">For Rent</h3>
-            <ul className="space-y-2">
-              {[
-                { label: `Houses for rent in ${name}`,    href: `/rent?suburb=${slug}&propertyType=house` },
-                { label: `Units for rent in ${name}`,     href: `/rent?suburb=${slug}&propertyType=unit` },
-                { label: `All rentals in ${name}`,        href: `/suburbs/${slug}/rent` },
-              ].map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className="font-sans text-sm text-ink-muted hover:text-primary transition-colors leading-snug block">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* Suburb */}
-        <div>
-          <h3 className="text-[13px] font-sans font-medium text-ink mb-3">{name}</h3>
-          <ul className="space-y-2">
-            {[
-              { label: `${name} suburb profile`,  href: `/suburbs/${slug}` },
-              { label: `Schools in ${name}`,      href: `/suburbs/${slug}#schools` },
-              { label: `Market data for ${name}`, href: `/suburbs/${slug}#market` },
-              // Postcode pages rank for "{suburb} postcode" queries but had
-              // zero inlinks from their member suburbs — this row gives every
-              // postcode page contextual internal equity from its suburbs.
-              ...(postcode
-                ? [{ label: `All suburbs in ${postcode}`, href: `/postcodes/${postcode}` }]
-                : []),
-              // Points at the match funnel, not /agents — the agent
-              // directory is paused (placeholder profiles only) per Andy,
-              // 2026-07-03, and the funnel converts better anyway.
-              { label: `Real estate agents in ${name}`, href: `/suburbs/${slug}/agents` },
-              { label: "Find a local expert",     href: `/find-an-expert?suburb=${slug}` },
-              { label: "Get a free appraisal",   href: `/appraisal` },
-            ].map((l) => (
-              <li key={l.href}>
-                <Link href={l.href} className="font-sans text-sm text-ink-muted hover:text-primary transition-colors leading-snug block">
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Buying */}
-        <div>
-          <h3 className="text-[13px] font-sans font-medium text-ink mb-3">Buying</h3>
-          <ul className="space-y-2">
-            {buyingLinks.map((l) => (
-              <li key={l.href}>
-                <Link href={l.href} className="font-sans text-sm text-ink-muted hover:text-primary transition-colors leading-snug block">
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Selling */}
-        <div>
-          <h3 className="text-[13px] font-sans font-medium text-ink mb-3">Selling</h3>
-          <ul className="space-y-2">
-            {sellingLinks.map((l) => (
-              <li key={l.href}>
-                <Link href={l.href} className="font-sans text-sm text-ink-muted hover:text-primary transition-colors leading-snug block">
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Surrounding Suburbs */}
-        {nearby.length > 0 && (
-          <div>
-            <h3 className="text-[13px] font-sans font-medium text-ink mb-3">Surrounding Suburbs</h3>
-            <ul className="space-y-2">
-              {nearby.map((nearSlug) => (
-                <li key={nearSlug}>
-                  <Link href={`/suburbs/${nearSlug}`} className="font-sans text-sm text-ink-muted hover:text-primary transition-colors leading-snug block">
-                    {nearbyName(nearSlug)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <LinkColumn
+            title="For rent"
+            links={[
+              { label: `Houses for rent in ${name}`,    href: `/rent?suburb=${slug}&propertyType=house` },
+              { label: `Units for rent in ${name}`,     href: `/rent?suburb=${slug}&propertyType=unit` },
+              { label: `All rentals in ${name}`,        href: `/suburbs/${slug}/rent` },
+            ]}
+          />
         )}
       </div>
-
-      {/* Compare prompt: drives users into the high-SEO-value compare page. */}
-      {nearby.length > 0 && (
-        <div className="mt-12 rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
-          <p className="text-[13px] font-sans text-ink-subtle mb-2">
-            Side by side
-          </p>
-          <h3 className="font-display text-2xl text-ink mb-3 leading-tight">
-            Compare {name} <span>vs</span> a nearby suburb
-          </h3>
-          <p className="font-sans text-sm text-ink-muted leading-relaxed mb-5 max-w-2xl">
-            See median prices, growth, schools, walkability and risk side by side
-            in one view.
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {nearby.slice(0, 8).map((nearSlug) => (
-              <Link
-                key={nearSlug}
-                href={`/suburbs/${slug}/vs/${nearSlug}`}
-                className="inline-flex items-center rounded-lg border border-line bg-surface-raised px-3 py-1.5 text-sm font-sans font-medium text-ink hover:border-primary/40 hover:text-primary transition-colors"
-              >
-                vs {nearbyName(nearSlug)}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
+    </section>
   );
 }
