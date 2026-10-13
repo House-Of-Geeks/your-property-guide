@@ -1,16 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { METHODOLOGY_HREF, findPerson, formatGuideDate, personHref } from "./people";
 
 interface AuthorBylineCardProps {
   /** Name of the author. */
   authorName: string;
   /** Optional role/title for the author. */
   authorRole?: string;
-  /** Author headshot. Defaults to Andy's portrait, since most guides are
-   *  written or edited by him. */
+  /** Author headshot; falls back to the person's photo on /about. */
   authorImage?: string;
-  /** Optional reviewer for the article (shown as a second line). */
+  /** Optional reviewer for the article. */
   reviewerName?: string;
   reviewerRole?: string;
   /** ISO date of last review. */
@@ -18,87 +17,75 @@ interface AuthorBylineCardProps {
 }
 
 /**
- * Author byline footer card for guide articles. Sits at the bottom of every
- * guide body, after the related-guides rail, and reinforces E-E-A-T (Google's
- * authorship + expertise signals) with a portrait, role, and link to the
- * editor's page. Bing reads it as a named-author signal too.
- *
- * Renders in the main column inside prose-ypg flow; uses not-prose so the
- * portrait + text don't pick up article typography.
+ * "About this guide" at the foot of every guide and article: the named
+ * person behind it (the writer when they are a named person, otherwise the
+ * editor who reviewed it), with their own photo, role, bio and /about link,
+ * plus the update date and the methodology link. A team byline never borrows
+ * a person's face or bio.
  */
 export function AuthorBylineCard({
   authorName,
   authorRole,
-  authorImage = "/images/agents/andy-mcmaster.jpg",
+  authorImage,
   reviewerName,
   reviewerRole,
   lastReviewed,
 }: AuthorBylineCardProps) {
+  const author = findPerson(authorName);
+  const reviewer = reviewerName && reviewerName !== authorName ? findPerson(reviewerName) : undefined;
+  const featured = author ?? reviewer;
+  const featuredIsAuthor = featured !== undefined && featured === author;
+  const image = featuredIsAuthor ? authorImage ?? featured.image : featured?.image;
+  const role = featuredIsAuthor ? authorRole ?? featured.role : reviewerRole ?? featured?.role;
+
+  const credit: string[] = [];
+  if (!featuredIsAuthor) credit.push(`Written by ${authorName}${authorRole ? `, ${authorRole}` : ""}`);
+  if (featuredIsAuthor && reviewerName && reviewerName !== authorName) credit.push(`Reviewed by ${reviewerName}`);
+
   return (
-    <aside className="not-prose mt-12 rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
-      <div className="flex items-start gap-5">
-        <Link
-          href="/about#andy-mcmaster"
-          className="relative w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-full overflow-hidden border border-line-warm hover:border-ink transition-colors block"
-          aria-label={`About ${authorName}`}
-        >
-          <Image
-            src={authorImage}
-            alt={`${authorName} portrait`}
-            fill
-            className="object-cover"
-            sizes="80px"
-          />
-        </Link>
-        <div className="flex-1 min-w-0">
-          <p className="font-display text-primary text-sm leading-none mb-2">
-            About the author
+    <aside className="not-prose mt-12 rounded-xl border border-line p-5 sm:p-6" aria-label="About this guide">
+      <div className="flex items-start gap-4">
+        {featured && image && (
+          <Link href={personHref(featured)} className="shrink-0" aria-label={`About ${featured.name}`}>
+            <Image
+              src={image}
+              alt={featured.name}
+              width={64}
+              height={64}
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border border-line"
+            />
+          </Link>
+        )}
+        <div className="min-w-0 flex-1">
+          <p className="text-sm text-ink-muted">{featuredIsAuthor ? "Written by" : featured ? "Reviewed by" : "Written by"}</p>
+          <p className="text-lg font-bold text-ink leading-tight">
+            {featured ? featured.name : authorName}
+            {role && <span className="font-normal text-ink-muted">, {role}</span>}
           </p>
-          <p className="font-display text-xl sm:text-2xl text-ink leading-tight mb-1 font-medium">
-            {authorName}
-          </p>
-          {authorRole && (
-            <p className="text-[13px] text-ink-subtle font-sans font-medium mb-3">
-              {authorRole}
-            </p>
-          )}
-          <p className="font-sans text-sm text-ink-muted leading-relaxed max-w-prose mb-4">
-            Editor of Your Property Guide. Writes the editorial
-            methodology, scheme and policy commentary, and oversees the
-            suburb data review. Based in Brisbane, Australia.
-          </p>
-          {(reviewerName || lastReviewed) && (
-            <p className="font-sans text-xs text-ink-subtle leading-relaxed mb-4">
-              {reviewerName && (
-                <>
-                  Reviewed by <span className="text-ink font-medium">{reviewerName}</span>
-                  {reviewerRole && <span className="text-ink-subtle">, {reviewerRole}</span>}
-                </>
-              )}
-              {reviewerName && lastReviewed && " · "}
+          {featured && <p className="mt-2 text-[15px] text-ink-muted leading-relaxed">{featured.bio}</p>}
+          {(credit.length > 0 || lastReviewed) && (
+            <p className="mt-3 text-sm text-ink-muted">
+              {credit.join(" · ")}
+              {credit.length > 0 && lastReviewed && " · "}
               {lastReviewed && (
                 <>
-                  Last updated <FormattedDate iso={lastReviewed} />
+                  Updated <time dateTime={lastReviewed.slice(0, 10)}>{formatGuideDate(lastReviewed)}</time>
                 </>
               )}
             </p>
           )}
-          <Link
-            href="/about#andy-mcmaster"
-            className="inline-flex items-center gap-1.5 text-sm font-sans font-medium text-ink hover:text-primary border-b border-line-strong hover:border-primary pb-0.5 transition-colors"
-          >
-            Read the editor&rsquo;s page
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+          <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm font-medium">
+            {featured && (
+              <Link href={personHref(featured)} className="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+                More about {featured.name.split(" ")[0]}
+              </Link>
+            )}
+            <Link href={METHODOLOGY_HREF} className="text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+              How we keep this accurate
+            </Link>
+          </p>
         </div>
       </div>
     </aside>
   );
-}
-
-function FormattedDate({ iso }: { iso: string }) {
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return <>{iso}</>;
-  const month = d.toLocaleString("en-AU", { month: "long", timeZone: "Australia/Brisbane" });
-  return <>{month} {d.getUTCFullYear()}</>;
 }

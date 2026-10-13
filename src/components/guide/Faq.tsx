@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react";
 import { FAQPageJsonLd } from "@/components/seo";
 
 export interface FaqItem {
@@ -8,39 +9,36 @@ export interface FaqItem {
 interface FaqProps {
   items: readonly FaqItem[];
   title?: string;
+  /** Anchor id for the section, so a contents list can link to it. */
+  id?: string;
 }
 
 // End-of-article structured Q&A. Renders the visible Q&A AND the FAQPage
 // JSON-LD schema so Google AI Overviews and structured-data crawlers can
-// pick it up. Per the SEO ranking advice doc, FAQ schema MUST match visible
-// content, otherwise Google penalises.
+// pick it up. FAQ schema must match visible content: the answers stay in the
+// HTML inside native <details>, open or closed.
 
-export function Faq({ items, title = "Common questions" }: FaqProps) {
+export function Faq({ items, title = "Common questions", id }: FaqProps) {
   if (items.length === 0) return null;
   return (
-    <section className="my-12">
+    <section id={id} className="my-12 scroll-mt-28">
       <FAQPageJsonLd faqs={items as FaqItem[]} />
-      <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
+      <h2 className="font-display text-[1.625rem] sm:text-[1.75rem] font-bold text-ink leading-tight tracking-[-0.02em] mb-4">
         {title}
       </h2>
-      <div className="rounded-2xl border border-line bg-surface-raised divide-y divide-line">
+      <div className="border-b border-line">
         {items.map((item, i) => (
-          <details
-            key={i}
-            className="group p-6 sm:p-7"
-          >
-            <summary className="flex items-start justify-between gap-4 cursor-pointer list-none">
-              <h3 className="font-display text-lg sm:text-xl text-ink leading-snug pr-4">
+          <details key={i} className="group border-t border-line">
+            <summary className="flex items-start justify-between gap-4 py-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+              <h3 className="text-base sm:text-[17px] font-semibold text-ink leading-snug">
                 {item.question}
               </h3>
-              <span
+              <Plus
+                className="w-5 h-5 shrink-0 mt-0.5 text-ink-muted group-open:rotate-45"
                 aria-hidden="true"
-                className="shrink-0 w-6 h-6 rounded-full border border-line-strong flex items-center justify-center text-ink-muted text-sm leading-none transition-transform group-open:rotate-45"
-              >
-                +
-              </span>
+              />
             </summary>
-            <div className="mt-3 font-sans text-base text-ink-muted leading-relaxed">
+            <div className="pb-5 -mt-1 text-[15px] sm:text-base text-ink-muted leading-relaxed max-w-[65ch]">
               {item.answer.split("\n\n").map((para, pi) => (
                 <p key={pi} className={pi > 0 ? "mt-3" : ""}>{para}</p>
               ))}

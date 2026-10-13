@@ -19,14 +19,14 @@ export function Callout({ variant = "info", title, children }: CalloutProps) {
   const styles = VARIANT_STYLES[variant];
   const Icon = styles.icon;
   return (
-    <div className={`my-8 rounded-xl border ${styles.border} ${styles.bg} p-5 sm:p-6`}>
+    <div className={`not-prose my-8 rounded-xl border ${styles.border} ${styles.bg} p-5 sm:p-6`}>
       <div className="flex gap-3">
         <Icon className={`w-5 h-5 shrink-0 mt-0.5 ${styles.iconClass}`} aria-hidden="true" />
         <div className="flex-1 min-w-0">
           {title && (
-            <p className="font-medium text-ink mb-1">{title}</p>
+            <p className="font-semibold text-ink leading-snug mb-1.5">{title}</p>
           )}
-          <div className="font-sans text-base text-ink-muted leading-relaxed [&>p:not(:first-child)]:mt-2 [&>p:last-child]:mb-0">
+          <div className="font-sans text-[15px] sm:text-base text-ink-muted leading-relaxed [&>p:not(:first-child)]:mt-2 [&_a]:text-ink [&_a]:underline [&_a]:underline-offset-4 [&_a]:decoration-line-strong [&_strong]:font-semibold [&_strong]:text-ink [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mt-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mt-1">
             {children}
           </div>
         </div>

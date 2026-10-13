@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 interface EditorNoteProps {
-  /** Name of the editor or contributor (shown in caps under the photo). */
+  /** Name of the editor or contributor. */
   editorName?: string;
   /** Photo path under /public. Defaults to Andy's portrait. */
   editorImage?: string;
@@ -12,10 +12,10 @@ interface EditorNoteProps {
 }
 
 /**
- * First-person editor's note for opening cornerstone guides. Sits at the
- * top of the article body (between TLDR and the first H2) and gives the
- * piece a human voice. Renders inside the prose-ypg flow but resets prose
- * via not-prose for clean control.
+ * First-person editor's note for opening cornerstone guides. Sits in the
+ * article body and gives the piece a human voice: the person, their face and
+ * role on one line, the note under it at full column width (phones too).
+ * Marked .not-prose so article styles don't reach the portrait or text.
  *
  * Use sparingly: cornerstone guides and pieces where the editorial voice
  * should be loud.
@@ -27,28 +27,22 @@ export function EditorNote({
   children,
 }: EditorNoteProps) {
   return (
-    <aside className="not-prose my-10 rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
-      <div className="flex items-start gap-5">
-        <div className="relative w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-full overflow-hidden border border-line-warm">
-          <Image
-            src={editorImage}
-            alt={`${editorName} portrait`}
-            fill
-            className="object-cover"
-            sizes="64px"
-          />
+    <aside className="not-prose my-10 border-l-2 border-ink pl-5 sm:pl-6" aria-label={`A note from ${editorName}`}>
+      <div className="flex items-center gap-3">
+        <Image
+          src={editorImage}
+          alt={editorName}
+          width={44}
+          height={44}
+          className="w-11 h-11 rounded-full object-cover border border-line"
+        />
+        <div className="leading-tight">
+          <p className="text-sm font-semibold text-ink">A note from {editorName}</p>
+          <p className="mt-0.5 text-sm text-ink-muted">{editorRole}</p>
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="font-display text-primary text-sm leading-none mb-1.5">
-            A note from the editor
-          </p>
-          <p className="text-[13px] text-ink-subtle font-sans font-medium mb-4">
-            {editorName} · {editorRole}
-          </p>
-          <div className="font-display font-normal text-lg sm:text-xl text-ink leading-[1.4] [&>p:not(:first-child)]:mt-3 [&>p:last-child]:mb-0">
-            {children}
-          </div>
-        </div>
+      </div>
+      <div className="mt-3 text-[1.0625rem] sm:text-lg text-ink leading-relaxed [&>p+p]:mt-3">
+        {children}
       </div>
     </aside>
   );

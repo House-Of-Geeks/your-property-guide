@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
+import { GuideCover } from "@/components/brand/GuideCover";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 import { guideFunnelHref } from "@/lib/guide-funnel";
 
@@ -43,16 +44,25 @@ export function GuideStartInline({
   };
 
   return (
-    <aside className={`not-prose rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8 ${className}`}>
-      <div className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-2">{heading}</div>
-      <div className="font-sans text-sm sm:text-base text-ink-muted leading-relaxed mb-5 max-w-2xl">{body}</div>
+    <aside className={`not-prose rounded-xl border border-line bg-surface-warm p-5 sm:p-7 ${className}`}>
+      <div className="flex items-start gap-4 sm:gap-6">
+        <div className="w-[58px] sm:w-[76px] shrink-0 text-[5.5px] sm:text-[7.2px] pt-0.5" aria-hidden="true">
+          <GuideCover guide="selling" />
+        </div>
+        <div className="min-w-0">
+          <p className="text-[1.25rem] sm:text-2xl font-bold text-ink leading-[1.15] tracking-[-0.02em]">{heading}</p>
+          <p className="mt-2 text-[15px] sm:text-base text-ink-muted leading-relaxed">{body}</p>
+        </div>
+      </div>
 
-      <div className="flex flex-col sm:flex-row gap-3">
+      <p className="mt-5 text-sm font-semibold text-ink">Where is the property?</p>
+      <div className="mt-2 flex flex-col sm:flex-row sm:items-stretch gap-2.5">
         {/* relative z-10 keeps the suggestion list above later blocks
             that make their own stacking context. */}
-        <div ref={inputWrap} className="relative z-10 flex-1 rounded-xl border border-line-strong bg-surface-raised">
+        <div ref={inputWrap} className="relative z-10 flex-1 min-w-0">
           <SuburbAutocomplete
-            placeholder="Your suburb or postcode, e.g. Paddington or 4064"
+            size="lg"
+            placeholder="Your suburb or postcode"
             onSelectLocation={(slug) => start(slug)}
           />
         </div>
@@ -62,21 +72,21 @@ export function GuideStartInline({
             setNudge(true);
             inputWrap.current?.querySelector("input")?.focus();
           }}
-          className="shrink-0 inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3 text-sm transition-colors cursor-pointer"
+          className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3.5 text-base cursor-pointer"
         >
           Start my free guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
         </button>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 font-sans text-xs text-ink-subtle">
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm text-ink-muted">
         <span aria-live="polite">
-          {nudge ? "Type your suburb, then pick it from the list." : "Free PDF. 60 seconds, no card, no catch."}
+          {nudge ? "Type your suburb, then pick it from the list." : "Free PDF, personalised to your suburb. Takes about a minute."}
         </span>
         <Link
           href={guideFunnelHref("selling", { from })}
-          className="text-ink-muted underline underline-offset-4 decoration-line-strong hover:text-ink hover:decoration-ink transition-colors"
+          className="underline underline-offset-4 decoration-line-strong hover:text-ink hover:decoration-ink"
         >
-          or skip to the guide
+          Open the guide without a suburb
         </Link>
       </div>
     </aside>

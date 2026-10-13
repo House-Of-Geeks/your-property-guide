@@ -1,4 +1,3 @@
-import { Sparkles } from "lucide-react";
 import { NewsletterForm } from "@/components/newsletter/NewsletterForm";
 
 interface GuideNewsletterCalloutProps {
@@ -20,15 +19,14 @@ export function GuideNewsletterCallout({
   subtitle = "Capital city outlooks, RBA changes, and the data updates worth knowing about. One email a quarter, no more.",
 }: GuideNewsletterCalloutProps) {
   return (
-    <div className="not-prose my-10 rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
-      <p className="text-[13px] font-sans text-ink-subtle mb-2 inline-flex items-center gap-2">
-        <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
+    <div className="not-prose my-10 rounded-xl border border-line p-5 sm:p-7">
+      <p className="text-sm font-semibold text-ink-muted mb-1">
         The quarterly read
       </p>
-      <h3 className="font-display text-2xl text-ink leading-tight mb-2">
+      <h3 className="text-xl sm:text-2xl font-bold text-ink leading-tight tracking-[-0.01em] mb-2">
         {title}
       </h3>
-      <p className="font-sans text-sm text-ink-muted leading-relaxed mb-5 max-w-2xl">
+      <p className="text-[15px] text-ink-muted leading-relaxed mb-5 max-w-2xl">
         {subtitle}
       </p>
       <NewsletterForm variant="inline" />
