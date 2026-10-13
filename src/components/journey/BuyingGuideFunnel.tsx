@@ -271,7 +271,7 @@ export function BuyingGuideFunnel({
           as one bar and a plain step count. */}
       {step > 0 && (
         <div className="mb-6">
-          <p className="mb-2 text-[13px] font-medium text-ink-muted tabular-nums">
+          <p className="mb-2 text-[13px] font-medium text-ink-muted">
             Step {Math.min(step + 1, stepTotal)} of {stepTotal}
           </p>
           <div

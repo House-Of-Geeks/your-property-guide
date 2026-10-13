@@ -367,7 +367,7 @@ export default async function RegionPage({ params }: RegionPageProps) {
                       {suburb.name}
                       <span className="text-xs text-ink-subtle font-normal ml-1.5">{suburb.postcode}</span>
                     </span>
-                    <span className="font-display text-sm text-ink tabular-nums whitespace-nowrap">{house}</span>
+                    <span className="font-display text-sm text-ink whitespace-nowrap">{house}</span>
                   </div>
                   <p className="text-xs font-sans text-ink-subtle mt-1">Units {unit}</p>
                 </Link>

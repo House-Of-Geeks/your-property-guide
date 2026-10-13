@@ -85,7 +85,7 @@ export function SuburbCrime({ crimeStat }: SuburbCrimeProps) {
                     <span className="text-ink capitalize">
                       {category.replace(/_/g, " ")}
                     </span>
-                    <span className="text-ink-muted tabular-nums shrink-0">
+                    <span className="text-ink-muted shrink-0">
                       {count.toLocaleString()}{" "}
                       <span className="text-ink-subtle">
                         ({pct.toFixed(1)}%)

@@ -99,7 +99,7 @@ export function GuideBandSwitcher() {
                 className="step-in border-t border-white/15 pt-4"
                 style={{ animationDelay: `${i * 70}ms` }}
               >
-                <p className="font-display text-cta text-base mb-1.5 tabular-nums">{n}</p>
+                <p className="font-display text-cta text-base mb-1.5">{n}</p>
                 <p className="text-sm text-white/92 leading-snug">{t}</p>
               </div>
             ))}

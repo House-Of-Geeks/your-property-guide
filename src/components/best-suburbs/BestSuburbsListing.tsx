@@ -430,7 +430,7 @@ export function BestSuburbsListing({
                       key={suburb.slug}
                       className="hover:bg-surface-warm/60 transition-colors"
                     >
-                      <td className="py-3 px-4 text-ink-subtle tabular-nums font-sans">{i + 1}</td>
+                      <td className="py-3 px-4 text-ink-subtle font-sans">{i + 1}</td>
                       <td className="py-3 px-4">
                         <Link
                           href={`/suburbs/${suburb.slug}`}
@@ -441,10 +441,10 @@ export function BestSuburbsListing({
                         <p className="text-xs font-sans text-ink-subtle mt-0.5">{suburb.postcode}</p>
                       </td>
                       <td className="py-3 px-4 font-sans text-ink-muted">{suburb.state}</td>
-                      <td className="py-3 px-4 text-right tabular-nums">
+                      <td className="py-3 px-4 text-right">
                         <PrimaryMetric category={category} suburb={suburb} markArea={markArea} />
                       </td>
-                      <td className="py-3 px-4 text-right tabular-nums">
+                      <td className="py-3 px-4 text-right">
                         <SecondaryMetric category={category} suburb={suburb} markArea={markArea} />
                       </td>
                       <td className="py-3 px-4 text-right">
@@ -472,7 +472,7 @@ export function BestSuburbsListing({
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-sans text-ink-subtle tabular-nums">#{i + 1}</span>
+                        <span className="text-xs font-sans text-ink-subtle">#{i + 1}</span>
                         <span className="font-display text-base text-ink truncate">{suburb.name}</span>
                       </div>
                       <p className="text-xs font-sans text-ink-subtle mt-0.5">

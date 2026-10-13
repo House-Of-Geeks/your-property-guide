@@ -164,7 +164,7 @@ export function Header() {
             </Link>
             <a
               href={`tel:${CONTACT_PHONE_E164}`}
-              className="hidden xl:inline-flex items-center gap-1.5 px-2 py-1.5 text-sm font-semibold text-ink hover:text-primary transition-colors tabular-nums"
+              className="hidden xl:inline-flex items-center gap-1.5 px-2 py-1.5 text-sm font-semibold text-ink hover:text-primary transition-colors"
               aria-label={`Call us on ${CONTACT_PHONE_DISPLAY}`}
             >
               <Phone className="w-4 h-4" aria-hidden="true" />
@@ -249,7 +249,7 @@ export function Header() {
             </div>
             <a
               href={`tel:${CONTACT_PHONE_E164}`}
-              className="mt-6 flex items-center justify-center gap-2 w-full rounded-md border border-line px-4 py-3 text-sm font-semibold text-ink hover:border-ink transition-colors tabular-nums"
+              className="mt-6 flex items-center justify-center gap-2 w-full rounded-md border border-line px-4 py-3 text-sm font-semibold text-ink hover:border-ink transition-colors"
               aria-label={`Call us on ${CONTACT_PHONE_DISPLAY}`}
             >
               <Phone className="w-4 h-4" aria-hidden="true" />

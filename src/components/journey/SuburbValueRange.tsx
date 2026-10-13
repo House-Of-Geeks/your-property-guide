@@ -173,13 +173,13 @@ export function SuburbValueRange({
             <p className="font-sans text-[13px] text-ink-subtle mb-1">
               {medianCaption(summary, dwelling)}
             </p>
-            <p className="font-display text-4xl sm:text-5xl font-bold text-ink leading-none tracking-[-0.03em] tabular-nums">
+            <p className="font-display text-4xl sm:text-5xl font-bold text-ink leading-none tracking-[-0.03em]">
               {formatPriceFull(range.median)}
             </p>
             <p className="font-sans text-[13px] text-ink-subtle mt-5 mb-1">
               {rangeCaption()}
             </p>
-            <p className="font-display text-2xl sm:text-3xl font-bold text-ink leading-none tracking-[-0.02em] tabular-nums">
+            <p className="font-display text-2xl sm:text-3xl font-bold text-ink leading-none tracking-[-0.02em]">
               {formatPriceFull(range.low)} to {formatPriceFull(range.high)}
             </p>
             <p className="font-sans text-sm text-ink-muted mt-4 leading-relaxed max-w-xl">

@@ -58,7 +58,7 @@ Rules:
 | Body | 16–18px | 400, line-height 1.6 |
 | Small / meta | 14px | 400–600 |
 
-Rules: sentence case everywhere. No italics for emphasis. No full stop at the end of a heading. No uppercase letter-spaced labels. Tabular figures for prices and phone numbers.
+Rules: sentence case everywhere. No italics for emphasis. No full stop at the end of a heading. No uppercase letter-spaced labels. Never `tabular-nums`: Schibsted Grotesk sets its commas and full stops tabular too, so $810,000 renders as "$810 ,000". Proportional figures everywhere.
 
 ## 5. Shape and depth
 

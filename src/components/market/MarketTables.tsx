@@ -67,7 +67,7 @@ export function SuburbTable({
           <tbody className="divide-y divide-line">
             {rows.map((row, i) => (
               <tr key={row.slug} className="hover:bg-surface-warm/60 transition-colors">
-                <td className="px-4 py-3 font-sans text-ink-subtle tabular-nums">{i + 1}</td>
+                <td className="px-4 py-3 font-sans text-ink-subtle">{i + 1}</td>
                 <td className="px-4 py-3">
                   <Link
                     href={`/suburbs/${row.slug}#market`}
@@ -77,13 +77,13 @@ export function SuburbTable({
                   </Link>
                   <span className="text-xs font-sans text-ink-subtle ml-1.5">{row.postcode}</span>
                 </td>
-                <td className="px-4 py-3 text-right tabular-nums">
+                <td className="px-4 py-3 text-right">
                   <span className="font-display text-base text-ink">
                     {row.medianHousePrice > 0 ? formatPriceFull(row.medianHousePrice) : "-"}
                   </span>
                 </td>
                 {showGrowth && (
-                  <td className="px-4 py-3 text-right tabular-nums">
+                  <td className="px-4 py-3 text-right">
                     <span
                       className={`font-display text-base ${
                         (row.annualGrowthHouse ?? 0) > 0
@@ -100,7 +100,7 @@ export function SuburbTable({
                   </td>
                 )}
                 {showSales && (
-                  <td className="px-4 py-3 text-right tabular-nums font-sans text-sm text-ink-muted">
+                  <td className="px-4 py-3 text-right font-sans text-sm text-ink-muted">
                     {row.salesCountHouse > 0 ? row.salesCountHouse.toLocaleString() : "–"}
                   </td>
                 )}

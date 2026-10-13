@@ -72,7 +72,7 @@ async function LatestGuidesList() {
       {posts.map((p) => (
         <li key={p.slug}>
           <Link href={`/guides/${p.slug}`} className="group flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 py-4">
-            <span className="text-sm text-ink-subtle sm:w-40 shrink-0 tabular-nums">{fmtDate(p.updatedAt ?? p.publishedAt)}</span>
+            <span className="text-sm text-ink-subtle sm:w-40 shrink-0">{fmtDate(p.updatedAt ?? p.publishedAt)}</span>
             <span className="text-base font-semibold text-ink group-hover:text-primary transition-colors">{p.title}</span>
           </Link>
         </li>
@@ -160,7 +160,7 @@ export default function HomePage() {
           <ol className="mt-10 grid gap-8 md:grid-cols-3">
             {STEPS.map((s, i) => (
               <li key={s.title} className="grid gap-3 content-start">
-                <span className="inline-flex w-9 h-9 items-center justify-center rounded-full bg-ink text-white text-sm font-bold tabular-nums">
+                <span className="inline-flex w-9 h-9 items-center justify-center rounded-full bg-ink text-white text-sm font-bold">
                   {i + 1}
                 </span>
                 <h3 className="text-xl text-ink">{s.title}</h3>
@@ -191,7 +191,7 @@ export default function HomePage() {
               <ol className="mt-8 grid sm:grid-cols-2 gap-x-10 border-t border-line">
                 {CHAPTERS.map((c, i) => (
                   <li key={c} className="flex gap-4 py-3 border-b border-line text-base text-ink">
-                    <span className="w-6 shrink-0 text-ink-subtle font-semibold tabular-nums">{i + 1}</span>
+                    <span className="w-6 shrink-0 text-ink-subtle font-semibold">{i + 1}</span>
                     {c}
                   </li>
                 ))}

@@ -114,7 +114,7 @@ function SuburbTable({
                 key={row.slug}
                 className="hover:bg-surface-warm/60 transition-colors"
               >
-                <td className="px-4 py-3 font-sans text-ink-subtle tabular-nums">{i + 1}</td>
+                <td className="px-4 py-3 font-sans text-ink-subtle">{i + 1}</td>
                 <td className="px-4 py-3">
                   <Link
                     href={`/suburbs/${row.slug}`}
@@ -126,7 +126,7 @@ function SuburbTable({
                     {row.postcode}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-right tabular-nums">
+                <td className="px-4 py-3 text-right">
                   <span className="font-display text-base text-ink">
                     {row.medianHousePrice > 0
                       ? formatPriceFull(row.medianHousePrice)
@@ -134,7 +134,7 @@ function SuburbTable({
                   </span>
                 </td>
                 {showGrowth && (
-                  <td className="px-4 py-3 text-right tabular-nums">
+                  <td className="px-4 py-3 text-right">
                     <span
                       className={`font-display text-base ${
                         row.annualGrowthHouse > 0

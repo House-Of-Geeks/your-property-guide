@@ -139,7 +139,7 @@ export default function BuyingGuidePage() {
 
               <div className="mt-5 px-1">
                 <p className="text-sm font-semibold text-ink mb-2">What happens next</p>
-                <ol className="space-y-1.5 text-sm text-ink-muted leading-snug list-decimal pl-5 marker:text-ink-subtle marker:tabular-nums">
+                <ol className="space-y-1.5 text-sm text-ink-muted leading-snug list-decimal pl-5 marker:text-ink-subtle">
                   <li>Answer six quick questions, about 60 seconds</li>
                   <li>Download instantly, plus a copy lands in your inbox</li>
                   <li>We point you at the chapters for your situation</li>
@@ -199,7 +199,7 @@ export default function BuyingGuidePage() {
           <ol className="sm:columns-2 sm:gap-x-10 border-b border-line">
             {CHAPTERS.map((c, i) => (
               <li key={c.title} className="flex items-start gap-3 border-t border-line py-3.5 break-inside-avoid">
-                <span className="w-5 shrink-0 text-sm text-ink-subtle tabular-nums leading-6">{i + 1}</span>
+                <span className="w-5 shrink-0 text-sm text-ink-subtle leading-6">{i + 1}</span>
                 <div>
                   <p className="text-sm font-semibold text-ink leading-6">{c.title}</p>
                   <p className="text-sm text-ink-muted leading-snug">{c.sub}</p>

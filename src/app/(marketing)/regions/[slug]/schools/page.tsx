@@ -151,7 +151,7 @@ export default async function RegionSchoolsPage({ params }: RegionSchoolsPagePro
                         key={school.id}
                         className="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors"
                       >
-                        <td className="py-3 px-4 text-gray-400 tabular-nums">{i + 1}</td>
+                        <td className="py-3 px-4 text-gray-400">{i + 1}</td>
                         <td className="py-3 px-4">
                           {schoolSlug ? (
                             <Link
@@ -175,10 +175,10 @@ export default async function RegionSchoolsPage({ params }: RegionSchoolsPagePro
                         <td className="py-3 px-4 text-gray-600">{typeLabel(school.type)}</td>
                         <td className="py-3 px-4 text-gray-600">{sectorLabel(school.sector)}</td>
                         <td className="py-3 px-4 text-gray-500">{school.yearRange ?? "–"}</td>
-                        <td className={`py-3 px-4 text-right tabular-nums ${icseaColour(school.icsea)}`}>
+                        <td className={`py-3 px-4 text-right ${icseaColour(school.icsea)}`}>
                           {school.icsea?.toLocaleString() ?? "–"}
                         </td>
-                        <td className="py-3 px-4 text-right tabular-nums text-gray-700">
+                        <td className="py-3 px-4 text-right text-gray-700">
                           {school.enrolment?.toLocaleString() ?? "–"}
                         </td>
                       </tr>
@@ -200,7 +200,7 @@ export default async function RegionSchoolsPage({ params }: RegionSchoolsPagePro
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1 min-w-0">
-                        <span className="text-xs text-gray-400 tabular-nums">#{i + 1}</span>
+                        <span className="text-xs text-gray-400">#{i + 1}</span>
                         {schoolSlug ? (
                           <Link
                             href={`/schools/${schoolSlug}`}
@@ -230,7 +230,7 @@ export default async function RegionSchoolsPage({ params }: RegionSchoolsPagePro
                       {school.icsea != null && (
                         <div className="text-right shrink-0">
                           <p className="text-xs text-gray-400">ICSEA</p>
-                          <p className={`text-base tabular-nums ${icseaColour(school.icsea)}`}>
+                          <p className={`text-base ${icseaColour(school.icsea)}`}>
                             {school.icsea.toLocaleString()}
                           </p>
                         </div>

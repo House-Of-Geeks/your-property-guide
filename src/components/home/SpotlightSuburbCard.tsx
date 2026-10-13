@@ -49,7 +49,7 @@ export async function SpotlightSuburbCard() {
               Spotlight
             </p>
           </div>
-          <span className="font-display text-white/75 text-sm tabular-nums">
+          <span className="font-display text-white/75 text-sm">
             {suburb.state} {suburb.postcode}
           </span>
         </div>
@@ -71,7 +71,7 @@ export async function SpotlightSuburbCard() {
               <dt className="text-[13px] text-ink-subtle font-sans font-medium">
                 Median house
               </dt>
-              <dd className="font-display text-base sm:text-lg text-ink tabular-nums">
+              <dd className="font-display text-base sm:text-lg text-ink">
                 {formatPriceFull(s.medianHousePrice)}
               </dd>
             </div>
@@ -81,7 +81,7 @@ export async function SpotlightSuburbCard() {
               <dt className="text-[13px] text-ink-subtle font-sans font-medium">
                 12-month growth
               </dt>
-              <dd className={`font-display text-base sm:text-lg tabular-nums ${growthClass}`}>
+              <dd className={`font-display text-base sm:text-lg ${growthClass}`}>
                 {growthSign}{(s.annualGrowthHouse ?? 0).toFixed(1)}%
               </dd>
             </div>
@@ -91,7 +91,7 @@ export async function SpotlightSuburbCard() {
               <dt className="text-[13px] text-ink-subtle font-sans font-medium">
                 Median rent (house)
               </dt>
-              <dd className="font-display text-base sm:text-lg text-ink tabular-nums">
+              <dd className="font-display text-base sm:text-lg text-ink">
                 ${s.medianRentHouse}/wk
               </dd>
             </div>
@@ -101,7 +101,7 @@ export async function SpotlightSuburbCard() {
               <dt className="text-[13px] text-ink-subtle font-sans font-medium">
                 Walk score
               </dt>
-              <dd className="font-display text-base sm:text-lg text-ink tabular-nums">
+              <dd className="font-display text-base sm:text-lg text-ink">
                 {s.walkScore}/100
               </dd>
             </div>
@@ -111,7 +111,7 @@ export async function SpotlightSuburbCard() {
               <dt className="text-[13px] text-ink-subtle font-sans font-medium">
                 Population
               </dt>
-              <dd className="font-display text-base sm:text-lg text-ink tabular-nums">
+              <dd className="font-display text-base sm:text-lg text-ink">
                 {s.population.toLocaleString("en-AU")}
               </dd>
             </div>

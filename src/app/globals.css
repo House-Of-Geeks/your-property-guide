@@ -561,7 +561,6 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   font-weight: 700;
   color: var(--ink);
   font-size: 1em;
-  font-variant-numeric: tabular-nums;
 }
 
 .prose-ypg blockquote {

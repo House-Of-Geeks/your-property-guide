@@ -4,7 +4,7 @@
  */
 export function StatNumber({ value, className }: { value: string; className?: string }) {
   return (
-    <span className={className ? `tabular-nums ${className}` : "tabular-nums"}>
+    <span className={className ? `${className}` : ""}>
       {value}
     </span>
   );

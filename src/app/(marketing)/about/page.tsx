@@ -117,7 +117,7 @@ export default function AboutPage() {
                 <div className="py-2.5 last:pb-0">
                   <dt className="font-semibold text-ink">Contact</dt>
                   <dd className="text-ink-muted">
-                    <a href={`tel:${CONTACT_PHONE_E164}`} className={`tabular-nums ${textLink}`}>{CONTACT_PHONE_DISPLAY}</a>
+                    <a href={`tel:${CONTACT_PHONE_E164}`} className={`${textLink}`}>{CONTACT_PHONE_DISPLAY}</a>
                     {" · "}
                     <a href="mailto:andy@theandylife.com" className={textLink}>andy@theandylife.com</a>
                   </dd>
@@ -434,7 +434,7 @@ export default function AboutPage() {
             <div className="border-b border-line py-4">
               <dt className="text-sm font-semibold text-ink">Phone</dt>
               <dd className="mt-1">
-                <a href={`tel:${CONTACT_PHONE_E164}`} className={`tabular-nums ${textLink}`}>{CONTACT_PHONE_DISPLAY}</a>
+                <a href={`tel:${CONTACT_PHONE_E164}`} className={`${textLink}`}>{CONTACT_PHONE_DISPLAY}</a>
               </dd>
             </div>
             <div className="border-b border-line py-4">
