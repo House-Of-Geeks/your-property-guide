@@ -72,10 +72,6 @@ describe("the static hub pages", () => {
 // its guard never runs.
 describe("no static page renders a build-phase placeholder", () => {
   const stripComments = (src: string) => src.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, "");
-  // Fixed in its own PR (House-Of-Geeks/your-property-guide#119), tested in
-  // tests/lib/city-market.test.ts. This entry can go once that lands.
-  const FIXED_ELSEWHERE = ["(marketing)/property-market/page.tsx"];
-
   const pages = (fs.readdirSync(APP, { recursive: true, encoding: "utf8" }) as string[])
     .map((f) => f.split("\\").join("/"))
     .filter((f) => f.endsWith("/page.tsx") && !f.includes("["));
@@ -88,7 +84,6 @@ describe("no static page renders a build-phase placeholder", () => {
   it("a guarded page reads searchParams, so it renders on request", () => {
     const guarded = pages.filter((f) => stripComments(fs.readFileSync(path.join(APP, f), "utf8")).includes("phase-production-build"));
     for (const f of guarded) {
-      if (FIXED_ELSEWHERE.includes(f)) continue;
       expect(stripComments(fs.readFileSync(path.join(APP, f), "utf8")), f).toMatch(/await\s+(props\.)?searchParams/);
     }
   });
