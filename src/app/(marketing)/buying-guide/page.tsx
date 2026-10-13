@@ -8,6 +8,7 @@ import { FaqAccordion } from "@/components/guide";
 import { RelatedGuidesSection } from "@/components/guide/GuideLinkList";
 import { BuyingGuideFunnel } from "@/components/journey";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
+import { GuideEntryCapture } from "@/components/analytics/GuideEntryCapture";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
@@ -221,7 +222,7 @@ export default function BuyingGuidePage() {
                   paint OVER the backdrop-blur card below — a later sibling
                   with its own stacking context that otherwise buries the
                   suggestion list (same fix as the selling page). */}
-              <div data-funnel-card className="relative z-10 rounded-2xl">
+              <div id="guide-funnel" data-funnel-card className="relative z-10 rounded-2xl scroll-mt-24">
                 <Suspense fallback={<div className="text-sm text-ink-muted">Loading…</div>}>
                   <BuyingGuideFunnel source="buying-guide-page" />
                 </Suspense>
@@ -379,6 +380,9 @@ export default function BuyingGuidePage() {
       />
 
       <StickyGuideBar />
+      {/* Records the ?from=<page slug> a guide CTA adds to this link in the
+          attribution cookie, so the lead says which page sent it. */}
+      <GuideEntryCapture />
     </>
   );
 }

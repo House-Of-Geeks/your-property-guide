@@ -24,6 +24,12 @@
 //              Meta link can't throw the Google click away; it is what an
 //              offline conversion upload needs.
 //   microsoft  the most recent landing with a Microsoft Ads msclkid.
+//   entry      the on-site CTA that most recently sent this browser into a
+//              lead form: guide CTAs add ?from=<page slug> to their
+//              /selling-guide or /buying-guide link, so a lead can say which
+//              article or calculator converted. Internal links don't make a
+//              full page load, so the guide pages also record it on mount
+//              (components/analytics/GuideEntryCapture).
 
 export const ATTRIBUTION_COOKIE = "ypg_attr";
 export const ATTRIBUTION_MAX_AGE_DAYS = 90;
@@ -53,17 +59,32 @@ export type Touch = Partial<Record<ClickIdKey | CampaignKey, string>> & {
   at: string;
 };
 
+/** Query param an on-site CTA adds to a funnel link: the slug of the page it sat on. */
+export const ENTRY_PARAM = "from";
+
+export interface EntryTouch {
+  /** Slug of the page whose CTA was clicked, e.g. "real-estate-commission-qld". */
+  from: string;
+  /** Path and query of the page the CTA opened (the funnel). */
+  landing_page: string;
+  /** ISO timestamp of the click-through. */
+  at: string;
+}
+
 export interface AttributionState {
   first: Touch;
   last?: Touch;
   google?: Touch;
   microsoft?: Touch;
+  entry?: EntryTouch;
 }
 
 const MAX_VALUE = 300;
 const GOOGLE_IDS = ["gclid", "gbraid", "wbraid"] as const;
 /** Google click ids are URL-safe base64; anything else is not worth indexing. */
 const GCLID_RE = /^[A-Za-z0-9_-]{1,300}$/;
+/** A page slug: lowercase letters, digits and hyphens. Anything else is not ours. */
+const ENTRY_RE = /^[a-z0-9][a-z0-9-]{0,99}$/;
 
 // The cookie is client-controlled, so every value is cleaned here on both
 // sides. Postgres jsonb rejects \u0000 and unpaired surrogates and TEXT
@@ -111,6 +132,18 @@ export function touchFromLanding(href: string, referrer: string, nowIso: string)
   return touch;
 }
 
+/** The ?from= entry on a landing URL, or null when it has none (or a malformed one). */
+export function entryFromLanding(href: string, nowIso: string): EntryTouch | null {
+  const url = new URL(href);
+  const from = url.searchParams.get(ENTRY_PARAM)?.trim().toLowerCase();
+  if (!from || !ENTRY_RE.test(from)) return null;
+  return { from, landing_page: clip(url.pathname + url.search, 500), at: nowIso };
+}
+
+function sameEntry(a: EntryTouch | undefined, b: EntryTouch): boolean {
+  return !!a && a.from === b.from && a.landing_page === b.landing_page;
+}
+
 /**
  * Apply one page load to the stored state. Returns the new state, or null
  * when nothing changed (so the caller can skip rewriting the cookie).
@@ -125,25 +158,32 @@ export function updateAttribution(
   const campaign = isCampaignTouch(touch);
   const google = hasGoogle(touch) ? touch : undefined;
   const microsoft = touch.msclkid ? touch : undefined;
+  const entry = entryFromLanding(href, nowIso);
   if (!existing) {
     return {
       first: touch,
       ...(campaign && { last: touch }),
       ...(google && { google }),
       ...(microsoft && { microsoft }),
+      ...(entry && { entry }),
     };
   }
-  if (!campaign) return null;
   // A reload or restored tab of the same campaign landing is not a new
-  // click: keep the original click time and don't extend the cookie.
-  if (existing.last?.landing_page === touch.landing_page) return null;
-  const nextGoogle = google ?? existing.google;
-  const nextMicrosoft = microsoft ?? existing.microsoft;
+  // click: keep the original click time and don't extend the cookie. The
+  // same goes for a reload of the same guide entry.
+  const newCampaign = campaign && existing.last?.landing_page !== touch.landing_page;
+  const newEntry = entry && !sameEntry(existing.entry, entry) ? entry : undefined;
+  if (!newCampaign && !newEntry) return null;
+  const nextLast = newCampaign ? touch : existing.last;
+  const nextGoogle = newCampaign ? (google ?? existing.google) : existing.google;
+  const nextMicrosoft = newCampaign ? (microsoft ?? existing.microsoft) : existing.microsoft;
+  const nextEntry = newEntry ?? existing.entry;
   return {
     first: existing.first,
-    last: touch,
+    ...(nextLast && { last: nextLast }),
     ...(nextGoogle && { google: nextGoogle }),
     ...(nextMicrosoft && { microsoft: nextMicrosoft }),
+    ...(nextEntry && { entry: nextEntry }),
   };
 }
 
@@ -162,6 +202,16 @@ function sanitizeTouch(raw: unknown): Touch | null {
   return out as Touch;
 }
 
+function sanitizeEntry(raw: unknown): EntryTouch | null {
+  if (!raw || typeof raw !== "object") return null;
+  const r = raw as Record<string, unknown>;
+  if (typeof r.from !== "string" || typeof r.at !== "string" || typeof r.landing_page !== "string") return null;
+  const from = clip(r.from, 100);
+  const at = clip(r.at);
+  if (!ENTRY_RE.test(from) || !at) return null;
+  return { from, landing_page: clip(r.landing_page, 500), at };
+}
+
 /** Parse the cookie value (already URI-decoded or not). Never throws. */
 export function parseAttribution(raw: string | undefined | null): AttributionState | null {
   if (!raw) return null;
@@ -176,6 +226,8 @@ export function parseAttribution(raw: string | undefined | null): AttributionSta
       const t = sanitizeTouch(parsed[key]);
       if (t) state[key] = t;
     }
+    const entry = sanitizeEntry(parsed.entry);
+    if (entry) state.entry = entry;
     return state;
   } catch {
     return null;
@@ -188,13 +240,14 @@ export function serializeAttribution(state: AttributionState): string {
   if (value.length > 3500) {
     // Long landing URLs are the only thing that can blow the limit; the
     // click ids and UTMs are already copied out of them.
-    const trim = (t?: Touch) => (t ? { ...t, landing_page: t.landing_page?.split("?")[0] } : t);
+    const trim = <T extends { landing_page?: string }>(t?: T) => (t ? { ...t, landing_page: t.landing_page?.split("?")[0] } : t);
     value = encodeURIComponent(
       JSON.stringify({
         first: trim(state.first),
         last: trim(state.last),
         google: trim(state.google),
         microsoft: trim(state.microsoft),
+        entry: trim(state.entry),
       }),
     );
   }
@@ -216,6 +269,10 @@ export function attributionEmailRows(state: AttributionState | null, sourcePage?
   const rows: Array<[string, string]> = [];
   if (sourcePage) rows.push(["Submitted on", sourcePage]);
   if (!state) return rows;
+  if (state.entry) {
+    rows.push(["Guide CTA clicked on", state.entry.from]);
+    rows.push(["Guide CTA clicked at", state.entry.at]);
+  }
   const last = state.last;
   const google = state.google;
   if (google && google !== last && google.at !== last?.at) {
