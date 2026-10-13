@@ -30,7 +30,7 @@ export function SectionDivider({ label, className }: SectionDividerProps) {
         <span className="h-px flex-1 bg-line" />
       </div>
       {label && (
-        <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle">
+        <p className="text-[13px] font-sans text-ink-subtle">
           {label}
         </p>
       )}

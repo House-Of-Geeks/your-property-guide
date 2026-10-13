@@ -25,7 +25,7 @@ export function CompareForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-3 items-stretch">
         <div>
-          <label className="block text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+          <label className="block text-[13px] font-sans text-ink-subtle mb-2">
             First suburb
           </label>
           <SuburbAutocomplete
@@ -37,11 +37,11 @@ export function CompareForm() {
         </div>
 
         <div className="hidden md:flex items-end justify-center pb-3">
-          <span className="font-display italic text-primary text-2xl">vs</span>
+          <span className="font-display text-primary text-2xl">vs</span>
         </div>
 
         <div>
-          <label className="block text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+          <label className="block text-[13px] font-sans text-ink-subtle mb-2">
             Second suburb
           </label>
           <SuburbAutocomplete

@@ -135,7 +135,7 @@ export function StampDutyStateGuide({ state }: { state: AustralianState }) {
   const calculator = (
     <div id="calculator" className="scroll-mt-28 grid lg:grid-cols-12 gap-8 items-start">
       <div className="lg:col-span-5">
-        <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">Free calculator</p>
+        <p className="text-[13px] font-sans text-ink-subtle mb-2">Free calculator</p>
         <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-4">
           Work out your {abbr} stamp duty
         </h2>

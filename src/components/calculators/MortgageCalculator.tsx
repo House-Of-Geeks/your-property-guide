@@ -315,7 +315,7 @@ export function MortgageCalculator() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-gray-50 text-gray-600 text-xs font-medium uppercase tracking-wide">
+              <tr className="bg-gray-50 text-gray-600 text-[13px] font-medium">
                 <th className="px-4 py-3 text-left">Year</th>
                 <th className="px-4 py-3 text-right">Opening Balance</th>
                 <th className="px-4 py-3 text-right">Principal</th>

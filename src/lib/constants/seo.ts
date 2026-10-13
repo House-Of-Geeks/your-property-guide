@@ -2,22 +2,18 @@ export const SITE_NAME = "Your Property Guide";
 export const SITE_URL = "https://www.yourpropertyguide.com.au";
 
 // Short meta description used as the default across the site and OG
-// card subtitle. Repositioned 2026-05 from data-led ("Australia's
-// plain-English property reference") to education-led: the site
-// teaches the Australian property machinery in plain English. Once
-// readers know what's really happening they can make better choices.
-// Stays under 160 chars so Google doesn't truncate.
+// card subtitle. Repositioned Oct 2026 (brand v4): YPG is a guide and an
+// introduction service for sellers and buyers, not a data tool. Stays
+// under 160 chars so Google doesn't truncate.
 export const SITE_DESCRIPTION =
-  "Plain-English Australian property: 60+ guides, every property calculator, suburb profiles. We explain what's happening so you can make better choices. Free, no sign-up.";
+  "Free guides to selling and buying property in Australia: pricing, agent fees, choosing an agent and settlement. One trusted local agent when you're ready.";
 
 // Long-form description used inside JSON-LD Organization schema and any
 // AI-citation surface (llms.txt, etc.) where richer context helps.
-// Education-led: positions YPG as the place that explains the rules,
-// not the place that reports the prices.
 export const SITE_DESCRIPTION_LONG =
-  "Your Property Guide is Australia's plain-English property education site. We publish 60+ guides on buying, selling, renovating, investing and renting; we run every property calculator that matters; we hold suburb-by-suburb profiles for every Australian suburb. The site exists because property is the biggest financial decision most Australians make, and most of the people explaining it have something to sell. Once readers understand what's actually happening, they can make better choices. When they want to talk to a person, we introduce them to one vetted specialist for their situation, free for buyers and sellers, fully disclosed.";
+  "Your Property Guide helps Australians sell and buy property with confidence. We publish free, practical guides on pricing, agent fees, choosing an agent, contracts and settlement for every state, with calculators for commission, selling costs, stamp duty and borrowing. When a seller wants help, our team talks to them first and, if they ask, introduces one local agent for a free appraisal. The agent pays us for the introduction; it costs the seller nothing and doesn't change what they pay the agent.";
 
-export const SITE_TAGLINE = "Plain-English Australian property.";
+export const SITE_TAGLINE = "Property, explained by people.";
 export const DEFAULT_OG_IMAGE = "/og-image.jpg";
 
 // Topics we claim authority on — used in OrganizationJsonLd `knowsAbout`

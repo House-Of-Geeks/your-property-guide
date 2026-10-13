@@ -83,7 +83,7 @@ function Section({ id, eyebrow, title, children }: { id: string; eyebrow: string
   return (
     <section id={id} className="border-t border-line py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-2">{eyebrow}</p>
+        <p className="text-[13px] font-sans text-ink-subtle mb-2">{eyebrow}</p>
         <h2 className="text-3xl sm:text-4xl text-ink mb-8">{title}</h2>
         {children}
       </div>
@@ -127,7 +127,7 @@ export default function DesignSystemPage() {
       {/* Hero */}
       <header className="bg-surface-inverse text-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
-          <p className="text-xs font-sans uppercase tracking-[0.3em] text-white/40 mb-4">
+          <p className="text-[13px] font-sans text-white/40 mb-4">
             Internal · Design System v0.1
           </p>
           <h1 className="text-5xl sm:text-6xl leading-tight mb-6">
@@ -138,11 +138,11 @@ export default function DesignSystemPage() {
             {" "}The operating principle behind every layout, copy and CTA decision on the site.
           </p>
           <div className="mt-8 flex flex-wrap gap-3 font-sans text-sm">
-            <a href="#colour" className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors">Colour</a>
-            <a href="#type" className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors">Type</a>
-            <a href="#components" className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors">Components</a>
-            <a href="#surfaces" className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors">Surfaces</a>
-            <a href="#charter" className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors">Charter</a>
+            <a href="#colour" className="px-3 py-1.5 rounded-md bg-white/10 hover:bg-white/20 transition-colors">Colour</a>
+            <a href="#type" className="px-3 py-1.5 rounded-md bg-white/10 hover:bg-white/20 transition-colors">Type</a>
+            <a href="#components" className="px-3 py-1.5 rounded-md bg-white/10 hover:bg-white/20 transition-colors">Components</a>
+            <a href="#surfaces" className="px-3 py-1.5 rounded-md bg-white/10 hover:bg-white/20 transition-colors">Surfaces</a>
+            <a href="#charter" className="px-3 py-1.5 rounded-md bg-white/10 hover:bg-white/20 transition-colors">Charter</a>
           </div>
         </div>
       </header>
@@ -172,7 +172,7 @@ export default function DesignSystemPage() {
             <div className="space-y-6">
               {SEMANTIC_TOKENS.map((group) => (
                 <div key={group.group}>
-                  <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-2">{group.group}</p>
+                  <p className="text-[13px] font-sans text-ink-subtle mb-2">{group.group}</p>
                   <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
                     {group.items.map((s) => (
                       <SemanticSwatch key={s.name} name={s.name} bg={s.bg} textOn={s.textOn as "white" | "black"} />
@@ -190,14 +190,14 @@ export default function DesignSystemPage() {
         <div className="space-y-10">
           <div className="grid sm:grid-cols-2 gap-8">
             <div className="rounded-xl border border-line bg-surface-raised p-6">
-              <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-2">Display / Headings</p>
+              <p className="text-[13px] font-sans text-ink-subtle mb-2">Display / Headings</p>
               <p className="text-5xl font-display text-ink mb-2 leading-tight">Playfair Display</p>
               <p className="font-sans text-sm text-ink-muted">
                 <code>--font-display</code> · weights 400 / 500 / 600 / 700 · loaded via <code>next/font/google</code> in <code>app/layout.tsx</code>.
               </p>
             </div>
             <div className="rounded-xl border border-line bg-surface-raised p-6">
-              <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-2">Body / UI</p>
+              <p className="text-[13px] font-sans text-ink-subtle mb-2">Body / UI</p>
               <p className="text-3xl font-sans text-ink mb-2">Plus Jakarta Sans</p>
               <p className="font-sans text-sm text-ink-muted">
                 <code>--font-sans</code> · weights 300 / 400 / 500 / 600 / 700 · body line-height 1.625.
@@ -208,7 +208,7 @@ export default function DesignSystemPage() {
           <div className="space-y-6">
             {TYPE_SCALE.map((row) => (
               <div key={row.label} className="grid grid-cols-12 items-baseline gap-4 border-b border-line pb-4">
-                <p className="col-span-3 font-sans text-xs uppercase tracking-wider text-ink-subtle">{row.label}</p>
+                <p className="col-span-3 font-sans text-[13px] text-ink-subtle">{row.label}</p>
                 <p className={`col-span-7 text-ink ${row.className}`}>Suburb first. Property second.</p>
                 <p className="col-span-2 text-right font-sans text-xs text-ink-muted">{row.size}</p>
               </div>
@@ -247,7 +247,7 @@ export default function DesignSystemPage() {
                 </Button>
               </div>
               <div className="flex flex-wrap gap-3 items-center">
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle w-full">Phase 3 target, token-driven CTA:</p>
+                <p className="text-[13px] font-sans text-ink-subtle w-full">Phase 3 target, token-driven CTA:</p>
                 <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors cursor-pointer">
                   Match me with a buyer&apos;s agent <ArrowRight className="w-4 h-4" />
                 </button>
@@ -271,11 +271,11 @@ export default function DesignSystemPage() {
                 <Badge variant="outline">Outline</Badge>
               </div>
               <div className="flex flex-wrap gap-3 items-center">
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle w-full">Phase 3 target, token-driven status badges:</p>
-                <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-success text-white">For sale</span>
-                <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-warning text-white">Off-market</span>
-                <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-danger text-white">Withdrawn</span>
-                <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-info text-white">Indexed</span>
+                <p className="text-[13px] font-sans text-ink-subtle w-full">Phase 3 target, token-driven status badges:</p>
+                <span className="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium bg-success text-white">For sale</span>
+                <span className="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium bg-warning text-white">Off-market</span>
+                <span className="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium bg-danger text-white">Withdrawn</span>
+                <span className="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium bg-info text-white">Indexed</span>
               </div>
             </div>
           </div>
@@ -286,20 +286,20 @@ export default function DesignSystemPage() {
             <div className="grid sm:grid-cols-3 gap-4">
               <Card>
                 <CardContent>
-                  <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-1">Suburb</p>
+                  <p className="text-[13px] font-sans text-ink-subtle mb-1">Suburb</p>
                   <h4 className="text-xl text-ink mb-1">Newport</h4>
                   <p className="font-sans text-sm text-ink-muted">QLD 4020 · Moreton Bay</p>
                 </CardContent>
               </Card>
               <Card hover>
                 <CardContent>
-                  <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-1">Suburb · hover me</p>
+                  <p className="text-[13px] font-sans text-ink-subtle mb-1">Suburb · hover me</p>
                   <h4 className="text-xl text-ink mb-1">Burpengary</h4>
                   <p className="font-sans text-sm text-ink-muted">QLD 4505 · Moreton Bay</p>
                 </CardContent>
               </Card>
               <div className="rounded-xl border border-line-warm bg-surface-warm p-4">
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-1">Editorial tile</p>
+                <p className="text-[13px] font-sans text-ink-subtle mb-1">Editorial tile</p>
                 <h4 className="text-xl text-ink mb-1">Renting in QLD</h4>
                 <p className="font-sans text-sm text-ink-muted">Warm-neutral surface for content tiles.</p>
               </div>
@@ -343,7 +343,7 @@ export default function DesignSystemPage() {
         <div className="space-y-6">
           {/* Default surface */}
           <div className="rounded-2xl border border-line bg-surface-raised p-8">
-            <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">Default surface</p>
+            <p className="text-[13px] font-sans text-ink-subtle mb-3">Default surface</p>
             <h3 className="text-2xl text-ink mb-2">Suburb profile · Newport QLD</h3>
             <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[70ch]">
               Median house price $872k. 12-month growth +6.4%. Median days on market 28. Walk score 51.
@@ -353,7 +353,7 @@ export default function DesignSystemPage() {
 
           {/* Warm surface */}
           <div className="rounded-2xl border border-line-warm bg-surface-warm p-8">
-            <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">Warm surface</p>
+            <p className="text-[13px] font-sans text-ink-subtle mb-3">Warm surface</p>
             <h3 className="text-2xl text-ink mb-2">Buying guides</h3>
             <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[70ch]">
               Editorial / tile background. Tokenises the warm-neutral hex literals already inlined in
@@ -367,7 +367,7 @@ export default function DesignSystemPage() {
 
           {/* Sunken surface */}
           <div className="rounded-2xl border border-line bg-surface-sunken p-8">
-            <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">Sunken surface</p>
+            <p className="text-[13px] font-sans text-ink-subtle mb-3">Sunken surface</p>
             <h3 className="text-2xl text-ink mb-2">Inset content</h3>
             <p className="font-sans text-base text-ink-muted leading-relaxed max-w-[70ch]">
               For footnotes, code, quoted blocks. Subtle recess from the page background.
@@ -376,7 +376,7 @@ export default function DesignSystemPage() {
 
           {/* Inverse */}
           <div className="rounded-2xl bg-surface-inverse text-white p-8">
-            <p className="text-xs font-sans uppercase tracking-wider text-white/40 mb-3">Inverse surface</p>
+            <p className="text-[13px] font-sans text-white/40 mb-3">Inverse surface</p>
             <h3 className="text-2xl mb-2">Header / Footer / dark CTA blocks</h3>
             <p className="font-sans text-base text-white/70 leading-relaxed max-w-[70ch]">
               The brand&apos;s confident black. Used by <code>Header</code>, <code>Footer</code>, and the homepage Sell-CTA.
@@ -416,7 +416,7 @@ export default function DesignSystemPage() {
             },
           ].map((p) => (
             <div key={p.n} className="rounded-xl border border-line bg-surface-raised p-6">
-              <p className="text-xs font-sans uppercase tracking-[0.2em] text-cta mb-3">Principle {p.n}</p>
+              <p className="text-[13px] font-sans text-cta mb-3">Principle {p.n}</p>
               <h3 className="text-2xl text-ink mb-3 leading-tight">{p.title}</h3>
               <p className="font-sans text-base text-ink-muted leading-relaxed">{p.body}</p>
             </div>

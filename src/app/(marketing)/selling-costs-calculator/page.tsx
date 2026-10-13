@@ -78,7 +78,7 @@ export default function SellingCostsCalculatorPage() {
   return (
     <CalculatorPageLayout
       frontmatter={FRONTMATTER}
-      calculator={<SellingCostsCalculator />}
+      calculator={<SellingCostsCalculator showGuideCta={false} />}
       faqs={FAQS}
       related={RELATED}
       explainer={

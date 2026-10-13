@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, MapPin, GraduationCap, BookOpen, FileText, Search as SearchIcon } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -56,28 +55,20 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
           <div className="mb-8">
             <Breadcrumbs items={[{ label: "Search" }]} />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5 inline-flex items-center gap-2">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5 inline-flex items-center gap-2">
             <SearchIcon className="w-3.5 h-3.5" aria-hidden="true" />
             {query ? `${results.totalCount} matches for "${query}"` : "Site search"}
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
             {query ? (
-              <>Search results for <span className="italic text-primary">{query}</span>.</>
+              <>Search results for <span>{query}</span>.</>
             ) : (
-              <>Find <span className="italic text-primary">anything</span> on the site.</>
+              <>Find <span>anything</span> on the site.</>
             )}
           </h1>
 
@@ -127,11 +118,11 @@ function EmptyState() {
   return (
     <div className="grid lg:grid-cols-2 gap-8">
       <section>
-        <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+        <p className="text-[13px] font-sans text-ink-subtle mb-3">
           Quick suburb lookup
         </p>
         <h2 className="font-display text-2xl text-ink leading-tight mb-4">
-          Or jump straight to a suburb.
+          Or jump straight to a suburb
         </h2>
         <JumpToSuburb placeholder="Try Bondi, Newtown, or 4006" size="lg" />
         <p className="mt-3 font-sans text-sm text-ink-muted">
@@ -140,11 +131,11 @@ function EmptyState() {
         </p>
       </section>
       <section>
-        <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+        <p className="text-[13px] font-sans text-ink-subtle mb-3">
           What you can search
         </p>
         <h2 className="font-display text-2xl text-ink leading-tight mb-4">
-          Four kinds of results.
+          Four kinds of results
         </h2>
         <ul className="space-y-3 font-sans text-sm text-ink leading-relaxed">
           <li className="flex gap-3 items-start">
@@ -228,7 +219,7 @@ function ResultsGrid({
                 href={`/suburbs/${s.slug}`}
                 className="group rounded-2xl border border-line bg-surface-raised p-5 hover:border-primary/40 hover:shadow-md transition-all"
               >
-                <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-1">
+                <p className="text-[13px] font-sans text-ink-subtle mb-1">
                   {s.state} · {s.postcode}
                 </p>
                 <h3 className="font-display text-xl text-ink group-hover:text-primary transition-colors leading-tight">
@@ -242,7 +233,7 @@ function ResultsGrid({
                     </span>
                   </p>
                 )}
-                <span className="mt-4 inline-flex items-center gap-1 text-xs font-sans uppercase tracking-wider text-ink group-hover:text-primary transition-colors">
+                <span className="mt-4 inline-flex items-center gap-1 text-[13px] font-sans text-ink group-hover:text-primary transition-colors">
                   See profile <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </Link>
@@ -350,7 +341,7 @@ function ResultSection({
           <span className="text-ink-subtle">{icon}</span>
           {label}
         </h2>
-        <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle">
+        <p className="text-[13px] font-sans text-ink-subtle">
           {count} {count === 1 ? "match" : "matches"}
         </p>
       </div>

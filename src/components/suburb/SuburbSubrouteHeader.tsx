@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
@@ -53,14 +52,6 @@ export function SuburbSubrouteHeader({
 }: SuburbSubrouteHeaderProps) {
   return (
     <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-      <Image
-        src="/images/illustrations/contour.svg"
-        alt=""
-        width={1200}
-        height={800}
-        aria-hidden="true"
-        className="absolute -right-32 -top-32 w-[1000px] max-w-none opacity-[0.10] pointer-events-none select-none"
-      />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
         <div className="mb-8">
@@ -76,19 +67,19 @@ export function SuburbSubrouteHeader({
         <div className="grid lg:grid-cols-12 gap-6 items-end">
           <div className="lg:col-span-9">
             <div className="flex items-center gap-4 mb-6 flex-wrap">
-              <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              <span className="text-sm font-semibold text-ink-muted leading-none">
                 {eyebrow}
               </span>
               <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-              <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              <span className="text-[13px] text-ink-subtle font-sans font-medium">
                 {suburb.name} {suburb.state} {suburb.postcode}
               </span>
             </div>
-            <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-medium max-w-[20ch]">
+            <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold max-w-[20ch]">
               {title}
             </h1>
             {subtitle && (
-              <p className="font-display font-light text-lg sm:text-xl text-ink leading-snug max-w-2xl mt-5">
+              <p className="font-display font-normal text-lg sm:text-xl text-ink leading-snug max-w-2xl mt-5">
                 {subtitle}
               </p>
             )}
@@ -126,7 +117,7 @@ export function SuburbSubrouteHeader({
                       href={tab.href}
                       aria-current={isActive ? "page" : undefined}
                       className={`
-                        inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition-colors
+                        inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition-colors
                         ${isActive
                           ? "bg-ink text-white"
                           : "bg-surface-raised border border-line-strong text-ink-muted hover:border-ink hover:text-ink"}

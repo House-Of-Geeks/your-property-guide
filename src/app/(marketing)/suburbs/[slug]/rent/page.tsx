@@ -94,7 +94,7 @@ export default async function SuburbRentPage({ params }: Props) {
       <SuburbSubrouteHeader
         suburb={suburb}
         eyebrow="Listings in"
-        title={<>Properties <span className="italic text-primary">for rent</span></>}
+        title={<>Properties <span>for rent</span></>}
         subtitle={`${count} ${count === 1 ? "rental" : "rentals"} available in ${suburb.name}, ${suburb.state} ${suburb.postcode}.`}
         breadcrumbLeaf="For rent"
         tabs={getSuburbListingTabs(slug, "rent", availability)}

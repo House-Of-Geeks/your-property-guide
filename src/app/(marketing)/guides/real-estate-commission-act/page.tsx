@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   SellingCostTable,
   CommissionCalculatorEmbed,
@@ -307,8 +306,6 @@ export default function RealEstateCommissionACTPage() {
         <Link href="/guides/real-estate-agent-fees-australia">national agent fees guide</Link>.
       </p>
 
-      <MatchCTA kind="selling-agent" />
-
       <SellingCostTable state="ACT" />
 
       <h2 id="next-steps">Get the right agent first</h2>
@@ -337,8 +334,6 @@ export default function RealEstateCommissionACTPage() {
           so you know what commission means in dollars before any conversation.
         </li>
       </ol>
-
-      <MatchCTA kind="selling-agent" />
 
       <Sources items={COMMISSION_ACT_SOURCES} />
     </GuideArticleLayout>

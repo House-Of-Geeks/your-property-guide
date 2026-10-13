@@ -292,7 +292,7 @@ export default async function SchoolVsPage({ params }: SchoolVsPageProps) {
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-1">
             <GraduationCap className="w-5 h-5 text-primary" />
-            <span className="text-sm font-medium text-primary uppercase tracking-wide">
+            <span className="text-sm font-medium text-primary">
               School Comparison
             </span>
           </div>
@@ -323,7 +323,7 @@ export default async function SchoolVsPage({ params }: SchoolVsPageProps) {
               </p>
               {schoolA.icsea != null && (
                 <span
-                  className={`inline-block mt-1.5 text-xs font-semibold px-2 py-0.5 rounded-full ${
+                  className={`inline-block mt-1.5 text-xs font-semibold px-2 py-0.5 rounded-md ${
                     icseaWinner === "A"
                       ? "bg-green-100 text-green-700"
                       : "bg-gray-100 text-gray-600"
@@ -345,7 +345,7 @@ export default async function SchoolVsPage({ params }: SchoolVsPageProps) {
               </p>
               {schoolB.icsea != null && (
                 <span
-                  className={`inline-block mt-1.5 text-xs font-semibold px-2 py-0.5 rounded-full ${
+                  className={`inline-block mt-1.5 text-xs font-semibold px-2 py-0.5 rounded-md ${
                     icseaWinner === "B"
                       ? "bg-green-100 text-green-700"
                       : "bg-gray-100 text-gray-600"

@@ -17,7 +17,7 @@ export async function LatestNewsCallout() {
     <section className="bg-surface-warm-sunken border-b border-line">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4">
         <Link href={`/guides/${post.slug}`} className="group flex items-center gap-3 sm:gap-5">
-          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary/10 text-primary text-[11px] font-sans font-medium uppercase tracking-[0.2em] px-2.5 py-1">
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-primary/10 text-primary text-[13px] font-sans font-medium px-2.5 py-1">
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" aria-hidden="true" />
             Latest news
           </span>

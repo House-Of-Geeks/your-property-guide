@@ -79,13 +79,13 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/15 to-black/55 pointer-events-none" />
         {/* Editorial suburb label with Playfair display */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-4 text-center">
-          <p className="text-xs font-sans uppercase tracking-[0.3em] text-white/70 mb-3 drop-shadow">
+          <p className="text-[13px] font-sans text-white/70 mb-3 drop-shadow">
             {fullLgaName(suburb.region)}
           </p>
           <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-white drop-shadow-lg leading-[1.05] tracking-tight">
-            <span className="italic">{suburb.name}</span>
+            <span>{suburb.name}</span>
           </h1>
-          <div className="mt-4 inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20">
+          <div className="mt-4 inline-flex items-center gap-3 px-4 py-1.5 rounded-md bg-white/10 backdrop-blur-sm border border-white/20">
             <span className="text-sm font-sans font-medium tracking-wide text-white">
               {suburb.state}
             </span>
@@ -117,7 +117,7 @@ export function SuburbHero({ suburb }: SuburbHeroProps) {
               <a
                 key={tab.href}
                 href={tab.href}
-                className="flex-shrink-0 px-5 py-4 text-xs font-sans uppercase tracking-[0.2em] text-ink-muted hover:text-ink border-b-2 border-transparent hover:border-cta transition-colors"
+                className="flex-shrink-0 px-5 py-4 text-[13px] font-sans text-ink-muted hover:text-ink border-b-2 border-transparent hover:border-cta transition-colors"
               >
                 {tab.label}
               </a>
@@ -228,7 +228,7 @@ function StatCard({
     <div className="p-5 rounded-xl bg-surface-raised border border-line">
       <div className="flex items-center gap-2 mb-2">
         <Image src={icon} alt="" width={20} height={20} className="w-5 h-5" aria-hidden="true" />
-        <span className="text-xs font-sans font-medium text-ink-subtle uppercase tracking-wider">{label}</span>
+        <span className="text-[13px] font-sans font-medium text-ink-subtle">{label}</span>
         <SourceTooltip source={source} asOf={asOf} />
       </div>
       <p className="font-display text-3xl text-ink leading-none mt-2">{value}</p>

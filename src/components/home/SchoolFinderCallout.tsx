@@ -18,17 +18,17 @@ export function SchoolFinderCallout() {
           <div data-reveal-group className="flex-1 max-w-xl">
             {/* Magazine masthead in dark mode */}
             <div className="flex items-center gap-4 mb-6">
-              <span className="font-display italic text-cta text-base sm:text-lg leading-none">
+              <span className="text-sm font-semibold text-ink-muted leading-none">
                 Schools
               </span>
               <span className="w-12 h-px bg-white/20" aria-hidden="true" />
-              <span className="text-[11px] uppercase tracking-[0.32em] text-white/75 font-sans font-medium">
+              <span className="text-[13px] text-white/75 font-sans font-medium">
                 Catchment research
               </span>
             </div>
-            <h2 className="font-display font-medium tracking-tight text-3xl sm:text-4xl text-white leading-tight">
+            <h2 className="font-display font-bold tracking-tight text-3xl sm:text-4xl text-white leading-tight">
               Find homes near<br className="hidden sm:block" />{" "}
-              <span className="italic text-cta">the right school</span>
+              <span>the right school</span>
             </h2>
             <p className="text-white/75 mt-4 text-lg leading-relaxed">
               School catchment boundaries matter. Research any school in Australia, view enrolment statistics, and browse properties within the catchment zone. All in one place.
@@ -70,7 +70,7 @@ export function SchoolFinderCallout() {
                 {/* Tags */}
                 <div className="flex flex-wrap gap-1.5">
                   {["Catholic", "Secondary", "Co-ed", "Yr 7–12"].map((tag) => (
-                    <span key={tag} className="text-xs font-medium px-2.5 py-1 rounded-full bg-surface-sunken text-ink-muted">
+                    <span key={tag} className="text-xs font-medium px-2.5 py-1 rounded-md bg-surface-sunken text-ink-muted">
                       {tag}
                     </span>
                   ))}
@@ -92,7 +92,7 @@ export function SchoolFinderCallout() {
 
                 {/* Nearby listings */}
                 <div className="border-t border-line pt-3">
-                  <p className="text-xs font-medium text-ink-subtle mb-2.5 uppercase tracking-wide">Nearby properties</p>
+                  <p className="text-[13px] font-medium text-ink-subtle mb-2.5">Nearby properties</p>
                   <div className="space-y-2">
                     {[
                       { address: "12 Redland Bay Rd, Capalaba", detail: "3 bed · 2 bath · $720k" },

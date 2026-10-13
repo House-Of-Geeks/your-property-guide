@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { ReactNode } from "react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, FAQPageJsonLd, ItemListJsonLd } from "@/components/seo";
@@ -55,7 +54,7 @@ function Median({ s }: { s: CityEditionSuburb }) {
       {s.medianBasis === "area" && (
         <abbr
           title="ABS statistical-area (SA2) median: the area that carries the suburb's name, which can take in surrounding localities"
-          className="ml-1 font-sans text-[10px] uppercase tracking-wide text-ink-subtle no-underline"
+          className="ml-1 font-sans text-[13px] text-ink-subtle no-underline"
         >
           area
         </abbr>
@@ -168,14 +167,6 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
           <div className="mb-8">
             <Breadcrumbs
@@ -186,7 +177,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
               ]}
             />
           </div>
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             {config.eyebrow} · Greater {city.name}
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
@@ -227,7 +218,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
         {/* How we ranked them: not on a category the state's figures cannot rank */}
         {ranked && (
           <section className="max-w-3xl">
-            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-5">How we ranked them.</h2>
+            <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-5">How we ranked them</h2>
             <ul className="space-y-3 font-sans text-base text-ink-muted leading-relaxed list-disc pl-5">
               {method.map((line) => (
                 <li key={line}>{line}</li>
@@ -245,7 +236,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
           <>
             {/* One section per suburb */}
             <section>
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-6">The ten, in order</p>
+              <p className="text-[13px] font-sans text-ink-subtle mb-6">The ten, in order</p>
               <div className="space-y-10">
                 {ten.map((s, i) => (
                   <article key={s.slug} className="max-w-3xl border-t border-line pt-8" id={s.slug}>
@@ -277,19 +268,19 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
 
             {/* Comparison table */}
             <section>
-              <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-5">The ten compared.</h2>
+              <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-5">The ten compared</h2>
               <div className="overflow-x-auto rounded-2xl bg-surface-raised border border-line">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="bg-surface-warm border-b border-line">
-                      <th className="py-3 px-4 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide w-10">#</th>
-                      <th className="py-3 px-4 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide">Suburb</th>
+                      <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink w-10">#</th>
+                      <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink">Suburb</th>
                       {cols.map((c) => (
-                        <th key={c.label} className="py-3 px-4 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide whitespace-nowrap">
+                        <th key={c.label} className="py-3 px-4 text-right text-[13px] font-sans font-medium text-ink whitespace-nowrap">
                           {c.label}
                         </th>
                       ))}
-                      <th className="py-3 px-4 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">Profile</th>
+                      <th className="py-3 px-4 text-right text-[13px] font-sans font-medium text-ink">Profile</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-line">
@@ -329,7 +320,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
             {five.length > 0 && (
               <section className="max-w-3xl">
                 <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-3">
-                  {five.length === 5 ? "Five" : n(five.length)} more worth a look.
+                  {five.length === 5 ? "Five" : n(five.length)} more worth a look
                 </h2>
                 <p className="font-sans text-base text-ink-muted leading-relaxed mb-5">
                   Ranks {CITY_EDITION_SIZE + 1} to {CITY_EDITION_SIZE + five.length} on the same rule, for a shortlist that runs past the ten.
@@ -351,7 +342,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
             {cheap.length > 0 && (
               <section className="max-w-3xl">
                 <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-3">
-                  Under {formatPriceFull(CITY_EDITION_BUDGET)}.
+                  Under {formatPriceFull(CITY_EDITION_BUDGET)}
                 </h2>
                 <p className="font-sans text-base text-ink-muted leading-relaxed mb-5">
                   The suburbs among the {n(edition.suburbs.length)} above whose published median house price is under {formatPriceFull(CITY_EDITION_BUDGET)}, in ranking order.
@@ -377,9 +368,9 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
             {/* FAQ */}
             <section className="grid lg:grid-cols-12 gap-8">
               <div className="lg:col-span-4">
-                <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">Common questions</p>
+                <p className="text-[13px] font-sans text-ink-subtle mb-3">Common questions</p>
                 <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-                  {CITY_EDITION_LABEL[category]} in {city.name}: what people ask.
+                  {CITY_EDITION_LABEL[category]} in {city.name}: what people ask
                 </h2>
               </div>
               <div className="lg:col-span-8 space-y-4">
@@ -408,7 +399,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
 
         {/* Where next */}
         <section className="rounded-2xl border border-line bg-surface-warm p-6">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">Keep exploring</p>
+          <p className="text-[13px] font-sans text-ink-subtle mb-3">Keep exploring</p>
           <div className="flex flex-wrap gap-2">
             {ranked && (
               <Link href={stateHref} className={pill}>
@@ -434,7 +425,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
           </div>
           {otherLists.length > 0 && (
             <>
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mt-6 mb-3">More {city.name} lists</p>
+              <p className="text-[13px] font-sans text-ink-subtle mt-6 mb-3">More {city.name} lists</p>
               <div className="flex flex-wrap gap-2">
                 {otherLists.map((e) => (
                   <Link key={e.category} href={cityEditionPath(e.category, e.city.slug)} className={pill}>
@@ -446,7 +437,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
           )}
           {otherCities.length > 0 && (
             <>
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mt-6 mb-3">Other cities</p>
+              <p className="text-[13px] font-sans text-ink-subtle mt-6 mb-3">Other cities</p>
               <div className="flex flex-wrap gap-2">
                 {otherCities.map((e) => (
                   <Link key={e.city.slug} href={cityEditionPath(e.category, e.city.slug)} className={pill}>

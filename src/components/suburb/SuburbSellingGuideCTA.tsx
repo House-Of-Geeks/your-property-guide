@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { GuideCover } from "@/components/brand/GuideCover";
 import Link from "next/link";
 import { ArrowRight, BookOpen } from "lucide-react";
 
@@ -22,21 +22,14 @@ interface Props {
 export function SuburbSellingGuideCTA({ suburbName, suburbSlug }: Props) {
   return (
     <div className="card-lift relative rounded-2xl border border-line bg-surface-warm overflow-hidden">
-      {/* Artwork strip, fades in from the right behind the CTA button */}
-      <div className="absolute inset-y-0 right-0 w-[46%] hidden sm:block pointer-events-none select-none" aria-hidden="true">
-        <Image
-          src="/images/art/queenslander.jpg"
-          alt=""
-          fill
-          sizes="(min-width: 640px) 40vw, 0px"
-          className="object-cover object-[65%_35%]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-surface-warm via-surface-warm/55 to-surface-warm/5" />
+      {/* The guide itself, typeset (brand v4) */}
+      <div className="absolute right-8 top-1/2 -translate-y-1/2 w-[92px] hidden sm:block text-[13px] rotate-[-3deg]" aria-hidden="true">
+        <GuideCover guide="selling" />
       </div>
 
       <div className="relative px-6 sm:px-8 py-6 sm:py-7 flex flex-col sm:flex-row sm:items-center gap-5">
         <div className="flex-1 sm:max-w-[58%]">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-2 flex items-center gap-1.5">
+          <p className="text-[13px] text-cta font-medium mb-2 flex items-center gap-1.5">
             <BookOpen className="w-3.5 h-3.5" aria-hidden="true" />
             Free guide · 2026 edition
           </p>

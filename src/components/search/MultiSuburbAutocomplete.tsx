@@ -159,7 +159,7 @@ export function MultiSuburbAutocomplete({
         {selected.map((s) => (
           <span
             key={s.slug}
-            className="inline-flex items-center gap-1 bg-primary/10 text-primary text-sm font-medium px-2.5 py-0.5 rounded-full"
+            className="inline-flex items-center gap-1 bg-primary/10 text-primary text-sm font-medium px-2.5 py-0.5 rounded-md"
           >
             {s.type === "school"
               ? <GraduationCap className="w-3 h-3 shrink-0" />
@@ -208,7 +208,7 @@ export function MultiSuburbAutocomplete({
         <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden max-h-72 overflow-y-auto">
           {results.locations.length > 0 && (
             <div>
-              <p className="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Locations</p>
+              <p className="px-4 pt-3 pb-1 text-[13px] font-semibold text-gray-400">Locations</p>
               {results.locations.map((loc, i) => (
                 <button
                   key={loc.slug}
@@ -230,7 +230,7 @@ export function MultiSuburbAutocomplete({
 
           {showSchools && results.schools.length > 0 && (
             <div className={results.locations.length > 0 ? "border-t border-gray-100" : ""}>
-              <p className="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Schools</p>
+              <p className="px-4 pt-3 pb-1 text-[13px] font-semibold text-gray-400">Schools</p>
               {results.schools.map((school, i) => {
                 const idx = results.locations.length + i;
                 return (
@@ -257,7 +257,7 @@ export function MultiSuburbAutocomplete({
 
           {results.properties.length > 0 && (
             <div className={results.locations.length > 0 || results.schools.length > 0 ? "border-t border-gray-100" : ""}>
-              <p className="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Properties</p>
+              <p className="px-4 pt-3 pb-1 text-[13px] font-semibold text-gray-400">Properties</p>
               {results.properties.map((prop, i) => {
                 const idx = results.locations.length + (showSchools ? results.schools.length : 0) + i;
                 return (

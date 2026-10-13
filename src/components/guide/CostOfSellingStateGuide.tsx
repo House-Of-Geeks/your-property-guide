@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Callout, GuideArticleLayout, MatchCTA, SellingCostTable, Sources, type GuideTOCEntry, type RelatedGuide } from "@/components/guide";
+import { Callout, GuideArticleLayout, SellingCostTable, Sources, type GuideTOCEntry, type RelatedGuide } from "@/components/guide";
 import { SellingCostsCalculator } from "@/components/calculators/SellingCostsCalculator";
 import { STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
 import { EXAMPLE_PRICE, money, sellingCostTable } from "@/lib/data/selling-costs";
@@ -126,8 +126,6 @@ export function CostOfSellingStateGuide({ state }: { state: StateCode }) {
         alternative models.
       </p>
 
-      <MatchCTA kind="selling-agent" />
-
       {g.differences.map((d) => (
         <section key={d.heading}>
           <h2 id={slugify(d.heading)}>{d.heading}</h2>
@@ -173,8 +171,6 @@ export function CostOfSellingStateGuide({ state }: { state: StateCode }) {
           </li>
         ))}
       </ul>
-
-      <MatchCTA kind="selling-agent" />
 
       <Sources items={g.sources} />
     </GuideArticleLayout>

@@ -18,13 +18,13 @@ import { AuPhoneField } from "@/components/forms/AuPhoneInput";
 // fields to 6 (3 required, 3 optional but in-line) — lastName and message
 // removed because they were friction with no measurable lead-quality lift;
 // the agent can ask either in their follow-up call.
-// Phone is required here: an appraisal only happens once an agent calls
-// to arrange the walk-through, so a number IS the deliverable. The field
+// Phone is required here: an appraisal only happens once we call to
+// arrange the walk-through, so a number IS the deliverable. The field
 // copy says exactly that, which keeps the ask feeling fair.
 const appraisalSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   email: z.string().email("Valid email is required"),
-  phone: requiredMobileSchema("Mobile is required so your agent can arrange the appraisal"),
+  phone: requiredMobileSchema("Mobile is required so we can arrange the appraisal"),
   address: z.string().min(5, "Property address is required"),
   suburb: z.string().min(1, "Suburb is required"),
   propertyType: z.string().optional(),
@@ -156,13 +156,13 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
               value={field.value ?? ""}
               onChange={field.onChange}
               onBlur={field.onBlur}
-              placeholder="0412 345 678"
+              placeholder="0491 570 156"
               error={errors.phone?.message}
             />
           )}
         />
         <p className="mt-1 text-[11px] text-ink-subtle leading-relaxed">
-          Your agent calls this number once to arrange the appraisal — nothing else.
+          Our team will call you within one business day to arrange the appraisal — nothing else.
         </p>
       </div>
 
@@ -263,7 +263,7 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
         {!isSubmitting && <span aria-hidden="true">→</span>}
       </button>
       <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
-        Free, no commitment. Your details go only to the one vetted local agent we match you with, who pays us for the introduction. We never sell them to anyone else.{" "}
+        Free, no commitment. We introduce you to one local agent who sells in your area. If we don&rsquo;t have one yet, we&rsquo;ll tell you. Your details go only to that agent, who pays us for the introduction. We never sell them to anyone else.{" "}
         <a href="/privacy" className="underline underline-offset-2 hover:text-ink">Privacy policy</a>.
       </p>
     </form>

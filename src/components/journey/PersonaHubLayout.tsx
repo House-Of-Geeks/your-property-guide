@@ -83,7 +83,7 @@ function HeadingWithEmphasis({ heading, className }: { heading: string; classNam
     <h2 className={className}>
       {parts.map((part, i) =>
         i % 2 === 1 ? (
-          <span key={i} className="italic font-light text-primary">{part}</span>
+          <span key={i}>{part}</span>
         ) : (
           <span key={i}>{part}</span>
         ),
@@ -97,7 +97,7 @@ function HeadingWithEmphasis({ heading, className }: { heading: string; classNam
 // (.u-draw-scroll activates when the ancestor [data-reveal] intersects).
 function GuideWordUnderline({ word }: { word: string }) {
   return (
-    <span className="u-draw-scroll relative inline-block italic font-light text-cta">
+    <span className="u-draw-scroll relative inline-block">
       {word}
       <svg
         className="absolute left-[-2%] right-0 bottom-[-0.12em] w-[104%] h-[0.22em]"
@@ -145,44 +145,17 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
         }))}
       />
 
-      {/* Editorial hero. Magazine masthead with numbered persona slug,
-          display-scale H1 with italic emphasis on the persona noun, serif
-          standfirst. Illustration column dropped: hub pages read as
-          authoritative editorial when the headline owns the page. */}
+      {/* Hero: the persona heading and a standfirst. */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        {/* The golden-hour suburb runs quietly behind every persona hub
-            so the five hubs and the homepage read as one publication. */}
-        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-          <Image
-            src="/images/hero/suburb-dusk.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-right-bottom opacity-[0.45]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-surface-warm from-30% via-surface-warm/85 via-60% to-surface-warm/25" />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-12% via-surface-warm/55 via-45% to-surface-warm/10" />
-        </div>
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-20 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-32">
-          {/* Magazine masthead: italic persona ordinal + hairline + label */}
-          <div className="rise flex items-center gap-4 mb-12">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
-              No. {String(persona.order).padStart(2, "0")}
-            </span>
-            <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              Your Property Guide for
-            </span>
-          </div>
-
           {/* Display-scale H1. Persona heading owns the page */}
-          <h1 className="rise rise-d1 font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
+          <h1 className="rise rise-d1 font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
             {persona.hubHeading}
           </h1>
 
           {/* Standfirst */}
-          <p className="rise rise-d2 font-display font-light text-xl sm:text-2xl lg:text-3xl text-ink leading-[1.25] max-w-3xl">
+          <p className="rise rise-d2 font-display font-normal text-xl sm:text-2xl lg:text-3xl text-ink leading-[1.25] max-w-3xl">
             {persona.hubLede}
           </p>
 
@@ -204,11 +177,11 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
         <section className="bg-surface border-b border-line">
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
             <div className="flex items-center gap-4 mb-6" data-reveal>
-              <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              <span className="text-sm font-semibold text-ink-muted leading-none">
                 Briefing
               </span>
               <span className="rule-draw w-12 h-px bg-line-strong" aria-hidden="true" />
-              <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              <span className="text-[13px] text-ink-subtle font-sans font-medium">
                 {content.deepDive.eyebrow}
               </span>
             </div>
@@ -235,12 +208,12 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
             <div className="flex items-center gap-4 mb-6" data-reveal>
               <Calculator className="w-5 h-5 text-cta" aria-hidden="true" />
-              <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              <span className="text-[13px] text-ink-subtle font-sans font-medium">
                 Run the numbers
               </span>
             </div>
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 lg:gap-8 mb-10">
-              <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl font-medium max-w-2xl">
+              <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl font-bold max-w-2xl">
                 {content.calculatorsHeading}
               </h2>
               <p className="font-sans text-sm sm:text-base text-ink-muted leading-relaxed max-w-md">
@@ -276,24 +249,24 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Magazine-style section masthead */}
           <div className="flex items-center gap-4 mb-10" data-reveal>
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               Start here
             </span>
             <span className="rule-draw w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               Three first reads
             </span>
           </div>
 
           <div className="grid lg:grid-cols-12 gap-x-8 gap-y-6 mb-14">
             <div className="lg:col-span-7">
-              <h2 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl font-medium">
+              <h2 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl font-bold">
                 Three places worth your{" "}
-                <span className="italic font-light text-primary">first ten minutes</span>.
+                <span>first ten minutes</span>
               </h2>
             </div>
             <div className="lg:col-span-5 lg:col-start-8 flex items-end">
-              <p className="font-display font-light text-lg sm:text-xl text-ink leading-snug max-w-md">
+              <p className="font-display font-normal text-lg sm:text-xl text-ink leading-snug max-w-md">
                 Real pages on the site, not lead-capture forms. If they answer
                 your question, great. If not, the rest of the hub is below.
               </p>
@@ -320,7 +293,7 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
                       />
                     </div>
                   ) : <span />}
-                  <p className="font-display italic text-cta text-xl">
+                  <p className="font-display text-cta text-xl">
                     0{i + 1}
                   </p>
                 </div>
@@ -354,20 +327,12 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
 
       {/* Suburb data CTA, universal */}
       <section className="relative py-16 sm:py-20 bg-surface-warm border-y border-line-warm overflow-hidden">
-        <Image
-          src="/images/illustrations/street-grid.svg"
-          alt=""
-          width={400}
-          height={400}
-          aria-hidden="true"
-          className="absolute -right-12 -bottom-12 w-[400px] opacity-[0.12] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-7">
               <MapPin className="w-7 h-7 text-cta mb-4" />
               <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl mb-4">
-                Suburb data, free for everyone.
+                Suburb data, free for everyone
               </h2>
               <p className="font-sans text-lg text-ink-muted leading-relaxed mb-7 max-w-xl">
                 Median, twelve-month growth, days on market, rental yield, schools, walkability,
@@ -404,11 +369,11 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
         <section className="bg-surface border-y border-line">
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
             <div className="flex items-center gap-4 mb-6" data-reveal>
-              <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              <span className="text-sm font-semibold text-ink-muted leading-none">
                 Common questions
               </span>
               <span className="rule-draw w-12 h-px bg-line-strong" aria-hidden="true" />
-              <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              <span className="text-[13px] text-ink-subtle font-sans font-medium">
                 FAQ
               </span>
             </div>
@@ -422,30 +387,20 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
           guide; selling and renovating get the selling guide. Same dark
           night-suburb band as the homepage finale. */}
       <section id="guide" className="band-glow bg-surface-inverse text-white scroll-mt-24">
-        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-          <Image
-            src="/images/hero/suburb-night-v2.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-bottom opacity-80"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-30% via-surface-inverse/85 via-68% to-surface-inverse/15" />
-        </div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
             <div className="lg:col-span-5">
               <div className="flex items-center gap-4 mb-10" data-reveal>
-                <span className="font-display italic text-cta text-base sm:text-lg leading-none">
+                <span className="text-sm font-semibold text-ink-muted leading-none">
                   Free PDF
                 </span>
                 <span className="rule-draw w-12 h-px bg-white/20" aria-hidden="true" />
-                <span className="text-[11px] uppercase tracking-[0.32em] text-white/75 font-sans font-medium">
+                <span className="text-[13px] text-white/75 font-sans font-medium">
                   2026 edition
                 </span>
               </div>
               <h2
-                className="font-display text-white leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-8 font-medium"
+                className="font-display text-white leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-8 font-bold"
                 data-reveal
                 style={{ "--reveal-delay": "90ms" } as React.CSSProperties}
               >
@@ -456,7 +411,7 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
                 )}
               </h2>
               <p
-                className="font-display font-light text-xl sm:text-2xl text-white/88 leading-snug max-w-md"
+                className="font-display font-normal text-xl sm:text-2xl text-white/88 leading-snug max-w-md"
                 data-reveal
                 style={{ "--reveal-delay": "180ms" } as React.CSSProperties}
               >
@@ -494,7 +449,7 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
       {/* Other personas */}
       <section className="py-12 border-t border-line bg-surface-raised">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             Not what you came for?
           </p>
           <div className="flex flex-wrap gap-3">
@@ -502,16 +457,8 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
               <Link
                 key={p.id}
                 href={p.hubPath}
-                className="group inline-flex items-center gap-3 rounded-full border border-line-strong px-5 py-3 text-sm font-medium text-ink hover:bg-surface-warm hover:border-ink transition-colors"
+                className="group inline-flex items-center gap-3 rounded-md border border-line-strong px-5 py-3 text-sm font-medium text-ink hover:bg-surface-warm hover:border-ink transition-colors"
               >
-                <Image
-                  src={p.illustration}
-                  alt=""
-                  aria-hidden="true"
-                  width={48}
-                  height={32}
-                  className="w-12 h-8 object-contain"
-                />
                 {p.cardLabel}
                 <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
               </Link>

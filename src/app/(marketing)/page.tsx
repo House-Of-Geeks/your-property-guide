@@ -2,401 +2,298 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
-import { StatNumber } from "@/components/motion/StatNumber";
+import { SellingGuideFunnel } from "@/components/journey";
+import { GuideCover } from "@/components/brand/GuideCover";
+import { getBlogPosts } from "@/lib/services/blog-service";
+import { SITE_URL, SITE_DESCRIPTION } from "@/lib/constants";
 
-import { LatestGuides } from "@/components/home/LatestGuides";
-import { LatestNewsCallout } from "@/components/home/LatestNewsCallout";
-import { CapitalCityOutlook } from "@/components/home/CapitalCityOutlook";
-import { GuidePathCard } from "@/components/home/GuidePathCard";
-import { PersonaPicker, GuideBandSwitcher } from "@/components/journey";
-import { BestDealsRail } from "@/components/best-deal";
-import { SITE_URL } from "@/lib/constants";
-import { HomeSuburbSearch } from "./HomeSuburbSearch";
-
-// ISR — services have build-phase guards, so we cache for 24h instead of
-// running a function on every visit. Was force-dynamic; that poisoned
-// cache-control for the entire site.
+// Brand v4 homepage (Oct 2026). One job above the fold: get sellers into the
+// free guide, with a real person beside it. Buying, guides and research
+// follow. Suburb data is supporting material here, not the headline.
 export const revalidate = 86400;
 
-// Metadata title aligned with the education-led positioning. Leads
-// with "plain-English guides" — the differentiator — then the scope.
-// Brand appended by root template. Calculators moved to the description:
-// with the brand suffix the old title ran 93 chars and SERPs truncated
-// mid-word (Lighthouse title_too_long).
-const META_TITLE = "Plain-English Australian property guides & suburb profiles";
-const META_DESCRIPTION = "Sixty plain-English guides on Australian property: schemes, stamp duty, finance, settlement, investing, renovating. Every calculator. Suburb profiles. Free, no sign-up.";
+const META_TITLE = "Free guides to selling and buying property in Australia";
 
 export const metadata: Metadata = {
   title: META_TITLE,
-  description: META_DESCRIPTION,
+  description: SITE_DESCRIPTION,
   alternates: { canonical: SITE_URL },
-  openGraph: {
-    title: META_TITLE,
-    description: META_DESCRIPTION,
-    type: "website",
-  },
+  openGraph: { title: META_TITLE, description: SITE_DESCRIPTION, type: "website" },
   twitter: { card: "summary_large_image" },
 };
+
+const STEPS = [
+  {
+    title: "Get the free guide",
+    body: "Answer a few questions about your sale and we email you the guide, with the costs and rules for your state.",
+  },
+  {
+    title: "Talk it through with us",
+    body: "If you're selling in the next six months, someone from our team gives you a call to understand your plans. No pressure.",
+  },
+  {
+    title: "Meet one local agent, if you want",
+    body: "Ask for a free appraisal and we introduce one agent who sells in your area. If we don't have one there yet, we'll tell you.",
+  },
+] as const;
+
+const CHAPTERS = [
+  "Is now the right time to sell?",
+  "What your property is really worth",
+  "The real cost of selling",
+  "Preparing your property",
+  "Choosing your agent",
+  "Auction, private sale or off-market",
+  "Marketing that sells",
+  "Offers, negotiation and exchange",
+  "Contracts and settlement",
+  "Your 12-week selling timeline",
+] as const;
+
+const SELLER_GUIDES = [
+  { title: "How to sell a house in Australia",            href: "/guides/how-to-sell-a-house-australia",         note: "The whole process, step by step" },
+  { title: "How to choose a selling agent",               href: "/guides/how-to-choose-a-selling-agent",         note: "What to compare, and what to ignore" },
+  { title: "Real estate agent fees and commission",       href: "/guides/real-estate-agent-fees-australia",      note: "Typical rates by state, and how to negotiate" },
+  { title: "The cost of selling a house",                 href: "/guides/cost-of-selling-a-house-australia",     note: "Every cost, from marketing to conveyancing" },
+  { title: "Questions to ask a real estate agent",        href: "/guides/questions-to-ask-a-real-estate-agent",  note: "Take this list to every appraisal" },
+  { title: "Auction or private sale?",                    href: "/guides/auction-vs-private-treaty",             note: "Which method suits your home" },
+] as const;
+
+const fmtDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" });
+
+async function LatestGuidesList() {
+  const posts = (await getBlogPosts()).slice(0, 4);
+  if (posts.length === 0) return null;
+  return (
+    <ul className="divide-y divide-line border-y border-line">
+      {posts.map((p) => (
+        <li key={p.slug}>
+          <Link href={`/guides/${p.slug}`} className="group flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 py-4">
+            <span className="text-sm text-ink-subtle sm:w-40 shrink-0 tabular-nums">{fmtDate(p.updatedAt ?? p.publishedAt)}</span>
+            <span className="text-base font-semibold text-ink group-hover:text-primary transition-colors">{p.title}</span>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export default function HomePage() {
   return (
     <>
-      {/* 1. Hero. Three jobs named, search front and centre. Built off
-            real AU search demand: "property value" / "stamp duty calculator"
-            / "how much can I borrow" / "suburb profile" all dwarf the
-            "research" framing we used to lead with. The suburb search box
-            in-hero is the visual proof of what the site does. */}
-      <section className="band-glow relative bg-surface-inverse text-white overflow-hidden border-b border-white/10">
-        {/* The cover of the issue: the commissioned night suburb, lights
-            on, rises along the hero's lower edge. Ink sky in the art is
-            the section's own colour so the scene and the page are one
-            field, exactly like the guide cover and the OG card. */}
-        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-          <Image
-            src="/images/hero/suburb-night-v2.jpg"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="hero-settle object-cover object-bottom opacity-95"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-34% via-surface-inverse/90 via-62% to-surface-inverse/10" />
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-14 sm:pt-14 sm:pb-16 lg:pt-16 lg:pb-20">
-          {/* Eyebrow: positions the site as education-led, not
-              data-led. The brand competes on plain-English explanation
-              of the Australian property machinery, not on real-time
-              data feeds (which the portals own and we can't afford). */}
-          <div className="rise flex items-center gap-4 mb-8 sm:mb-10">
-            <span className="font-display italic text-cta text-base sm:text-lg leading-none">
-              No. 01
-            </span>
-            <span className="w-12 h-px bg-white/25" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-white/70 font-sans font-medium">
-              Australian property, in plain English
-            </span>
-          </div>
-
-          {/* 2-column hero on desktop. Left: copy + actions. Right:
-              today's spotlight suburb card (real data, rotates daily).
-              Show, don't tell: the visitor sees the actual depth of a
-              suburb profile before they've typed a single character.
-              On mobile, single column with the spotlight after the
-              actions so the primary CTA (search) stays at the top. */}
-          <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start mb-10 lg:mb-12">
-            {/* Left column: H1 + sub + actions */}
-            <div className="lg:col-span-7">
-              {/* H1: three questions every property visitor needs
-                  answered. "What to skip" is the contrarian last
-                  beat — implies we'll tell you what NOT to do, not
-                  just what to do (counter-portal). Italic emphasis
-                  lands on "skip" as the loudest word. */}
-              <h1 className="rise rise-d1 font-display text-white tracking-tight mb-8 text-5xl sm:text-6xl lg:text-[72px] xl:text-[84px] leading-[0.98] font-medium">
-                What to ask. What to sign. What to{" "}
-                <span className="u-draw relative inline-block italic font-light text-accent-lighter">
-                  skip
-                  {/* Hand-drawn underline, draws in after the entrance */}
-                  <svg
-                    className="absolute left-[-2%] right-0 bottom-[-0.12em] w-[104%] h-[0.22em]"
-                    viewBox="0 0 120 12"
-                    fill="none"
-                    preserveAspectRatio="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M3 8.5C24 4.5 50 3.5 73 5c18 1.2 32 3 44 4.5"
-                      stroke="var(--cta)"
-                      strokeWidth="3.2"
-                      strokeLinecap="round"
-                      pathLength="1"
-                    />
-                  </svg>
-                </span>
-                .
+      {/* 1. Hero: the promise, a person, and the guide funnel itself. */}
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-14 sm:pt-14 sm:pb-20">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+            <div className="lg:col-span-6 lg:pt-6">
+              <h1 className="text-ink text-[40px] leading-[1.04] sm:text-6xl lg:text-[64px] tracking-[-0.035em] font-bold">
+                Selling your home? Start with the free guide
               </h1>
-
-              {/* Sub names the scope (60+ guides, every calculator)
-                  and the positioning (written for buyers and sellers,
-                  not portals). Education-first, not data-first. */}
-              <p className="rise rise-d2 font-display text-xl sm:text-2xl text-white/90 leading-[1.3] mb-8 font-light">
-                Sixty plain-English guides. Every property calculator.
-                Written for buyers and sellers, not portals. Free, no
-                sign-up.
+              <p className="mt-5 text-lg sm:text-xl text-ink-muted leading-relaxed max-w-xl">
+                Pricing, agent fees, choosing an agent and settlement, explained
+                for your state. When you&rsquo;re ready, we&rsquo;ll introduce one
+                trusted local agent for a free appraisal.
               </p>
 
-              {/* Primary action: suburb search box. Label echoes the
-                  H1's first verb. */}
-              <div className="rise rise-d3 mb-6">
-                <p className="text-[11px] uppercase tracking-[0.25em] text-white/70 font-sans font-medium mb-3">
-                  Know the suburb
-                </p>
-                <HomeSuburbSearch />
-                <p className="mt-3 text-sm text-white/90">
-                  Try{" "}
-                  <Link href="/suburbs/bondi-nsw-2026" className="text-white/90 underline decoration-white/30 underline-offset-2 hover:decoration-cta hover:text-accent-lighter transition-colors">
-                    Bondi
-                  </Link>
-                  ,{" "}
-                  <Link href="/suburbs/toorak-vic-3142" className="text-white/90 underline decoration-white/30 underline-offset-2 hover:decoration-cta hover:text-accent-lighter transition-colors">
-                    Toorak
-                  </Link>
-                  , or{" "}
-                  <Link href="/suburbs/surfers-paradise-qld-4217" className="text-white/90 underline decoration-white/30 underline-offset-2 hover:decoration-cta hover:text-accent-lighter transition-colors">
-                    Surfers Paradise
-                  </Link>
-                  .
-                </p>
-              </div>
+              <ul className="mt-6 grid gap-2.5 text-base text-ink">
+                {[
+                  "Free, and yours to keep",
+                  "Written for Australian sellers, state by state",
+                  "No obligation to list with anyone",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-2.5">
+                    <Check className="mt-1 w-4 h-4 shrink-0 text-cta" strokeWidth={3} aria-hidden="true" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
 
-              {/* Secondary action: calculator chips. Label echoes the
-                  H1's second verb. */}
-              <div className="rise rise-d4 mb-5">
-                <p className="text-[11px] uppercase tracking-[0.25em] text-white/70 font-sans font-medium mb-3">
-                  Run the numbers
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    { label: "Selling costs",    href: "/real-estate-commission-calculator" },
-                    { label: "Stamp duty",       href: "/stamp-duty-calculator" },
-                    { label: "Borrowing power",  href: "/borrowing-power-calculator" },
-                    { label: "Mortgage",         href: "/mortgage-calculator" },
-                    { label: "First home buyer", href: "/first-home-buyers" },
-                  ].map((c) => (
-                    <Link
-                      key={c.href}
-                      href={c.href}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/5 px-4 py-2 text-sm font-medium text-white hover:border-cta hover:text-accent-lighter hover:bg-white/10 motion-safe:hover:-translate-y-0.5 active:translate-y-0 transition-[color,background-color,border-color,transform] duration-200"
-                    >
-                      {c.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Trust strip — four micro-proof points in editorial
-                  caps. Leads with guide count to reinforce the
-                  education positioning. */}
-              <p className="rise rise-d4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.18em] text-white/70 font-sans font-medium">
-                <span className="inline-flex items-center gap-1.5">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
-                  60+ guides
-                </span>
-                <span aria-hidden="true">·</span>
-                <span>Independent, no portal ties</span>
-                <span aria-hidden="true">·</span>
-                <span>Plain-English, no jargon</span>
-                <span aria-hidden="true">·</span>
-                <span>No login, no paywall</span>
-              </p>
-            </div>
-
-            {/* Right column: the guide lead magnets behind a
-                selling/buying toggle. The hero's right column is the
-                most valuable surface on the site, so it sells the assets
-                that capture and qualify both sides. */}
-            <div className="rise rise-d2 lg:col-span-5 lg:sticky lg:top-24 order-last lg:order-none">
-              <GuidePathCard />
-            </div>
-          </div>
-
-          {/* Stats row. Reordered to lead with guides (the education
-              positioning) instead of suburbs. Calculators second,
-              suburbs third, free fourth. The order signals what the
-              site IS to anyone who only reads the stats. */}
-          <div className="rise rise-d5 border-y border-white/15 grid grid-cols-2 sm:grid-cols-4 bg-surface-inverse/55 backdrop-blur-[3px] rounded-xl">
-            {[
-              { value: "60+",    label: "Plain-English guides" },
-              { value: "30+",    label: "Calculators and tools" },
-              { value: "9,600+", label: "Suburb profiles" },
-              { value: "$0",     label: "Free, no sign-up" },
-            ].map((s, i) => (
-              <div
-                key={s.label}
-                className={[
-                  "py-6 sm:py-7 px-4 sm:px-6",
-                  i === 1 || i === 3 ? "border-l border-white/15" : "",
-                  i === 2 ? "sm:border-l sm:border-white/15" : "",
-                  i >= 2 ? "border-t sm:border-t-0 border-white/15" : "",
-                ].filter(Boolean).join(" ")}
-              >
-                <p className="font-display text-4xl sm:text-5xl text-white leading-none mb-2.5 tracking-tight">
-                  {/* "$0" stays static; a count-up from $0 to $0 reads as a glitch */}
-                  {s.value === "$0" ? s.value : <StatNumber value={s.value} />}
-                </p>
-                <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-white/70 font-sans font-medium">
-                  {s.label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Latest-news callout. Compact, always-current strip surfacing the
-          newest News post high on the page, above the persona spine. */}
-      <LatestNewsCallout />
-
-      {/* 2. Persona picker. The IA spine. Reworked from a 2,100px feature
-            grid into a dense editorial list. Numeral + thumb + label + brief
-            + arrow per row, hairline-divided. Reads as a contents page, not
-            a SaaS feature grid. */}
-      <section id="personas" className="bg-surface-raised border-b border-line scroll-mt-16">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-20 pb-14 sm:pt-24 sm:pb-16">
-          {/* Compressed masthead. Eyebrow + single-row H2 + brief sub on
-              one line at lg+. No more 2-col display layout. */}
-          <div data-reveal className="flex items-center gap-4 mb-6">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
-              No. 02
-            </span>
-            <span className="rule-draw w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              Where are you up to?
-            </span>
-          </div>
-
-          <div data-reveal className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 lg:gap-8 mb-8 sm:mb-10">
-            <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium">
-              Pick your{" "}
-              <span className="italic font-light text-primary whitespace-nowrap">starting point</span>.
-            </h2>
-            <p className="font-sans text-sm sm:text-base text-ink-muted leading-relaxed max-w-md">
-              Five plain-English guides, each written for one person, with
-              the calculators, suburb profiles and explainers that fit the
-              decisions they&rsquo;re actually making.
-            </p>
-          </div>
-
-          <PersonaPicker variant="rail" />
-        </div>
-      </section>
-
-      {/* 3. Featured guides */}
-      <Suspense fallback={null}>
-        <LatestGuides />
-      </Suspense>
-
-      {/* 4. Tools rail. Trimmed from 3 cards to 2 — "All tools" duplicated
-            the calculator chips already in the hero. Reframed from the
-            slightly negative "Don't know where to start?" into a positive
-            invitation to deepen the research one notch. */}
-      <section className="bg-surface-raised border-b border-line">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-20 pb-14 sm:pt-24 sm:pb-16">
-          <div data-reveal className="flex items-center gap-4 mb-6">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
-              No. 04
-            </span>
-            <span className="rule-draw w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
-              Go a level deeper
-            </span>
-          </div>
-
-          <div data-reveal className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 lg:gap-8 mb-8 sm:mb-10">
-            <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium">
-              Build your{" "}
-              <span className="italic font-light text-primary whitespace-nowrap">short list</span>.
-            </h2>
-            <p className="font-sans text-sm sm:text-base text-ink-muted leading-relaxed max-w-md">
-              Two free tools that go past the headline numbers. Take the
-              4-question quiz, or line up any two suburbs side by side.
-            </p>
-          </div>
-
-          <div data-reveal-group className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <Link
-              href="/find-your-suburb"
-              className="card-lift group flex flex-col rounded-2xl border border-line-warm shadow-card bg-surface-warm p-7 hover:border-primary/40"
-            >
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-cta mb-3">Quiz · 2 minutes</p>
-              <h3 className="font-display text-2xl sm:text-3xl text-ink group-hover:text-primary transition-colors leading-tight mb-3 tracking-tight">
-                Find your suburb in 4 questions
-              </h3>
-              <p className="font-sans text-sm text-ink-muted leading-relaxed mb-5 flex-1">
-                Tell us what matters and what you can spend. We score six
-                Australian suburbs against your priorities.
-              </p>
-              <span className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
-                Find my suburb (2 min)
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-              </span>
-            </Link>
-
-            <Link
-              href="/compare"
-              className="card-lift group relative overflow-hidden flex flex-col rounded-2xl border border-line-warm shadow-card bg-surface-warm p-7 hover:border-primary/40"
-            >
-              {/* Aerial cadastral artwork: comparing suburbs is comparing
-                  territory. Faded right edge, content stays legible. */}
-              <div className="absolute inset-y-0 right-0 w-[55%] pointer-events-none select-none" aria-hidden="true">
+              <div className="mt-8 flex items-center gap-4 border-t border-line pt-6 max-w-xl">
                 <Image
-                  src="/images/art/suburb-aerial.jpg"
-                  alt=""
-                  fill
-                  sizes="(min-width: 640px) 30vw, 60vw"
-                  className="object-cover object-center opacity-60 transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.04]"
+                  src="/images/agents/andy-mcmaster.jpg"
+                  alt="Andy McMaster"
+                  width={56}
+                  height={56}
+                  className="w-14 h-14 rounded-full object-cover object-top shrink-0"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-surface-warm via-surface-warm/70 to-surface-warm/20" />
+                <p className="text-[15px] text-ink-muted leading-snug">
+                  <span className="font-semibold text-ink">Andy McMaster, founder.</span>{" "}
+                  Our team reads every request, and we only introduce an agent when
+                  you ask us to.
+                </p>
               </div>
-              <p className="relative text-xs font-sans uppercase tracking-[0.25em] text-cta mb-3">Tool · Side by side</p>
-              <h3 className="relative font-display text-2xl sm:text-3xl text-ink group-hover:text-primary transition-colors leading-tight mb-3 tracking-tight">
-                Compare two suburbs head to head
-              </h3>
-              <p className="relative font-sans text-sm text-ink-muted leading-relaxed mb-5 flex-1">
-                Pick any two Australian suburbs and line them up: median,
-                growth, schools, walkability, climate, crime.
+            </div>
+
+            <div id="guide-start" className="lg:col-span-6 scroll-mt-24">
+              <Suspense fallback={null}>
+                <SellingGuideFunnel source="homepage-hero" />
+              </Suspense>
+              <p className="mt-4 text-sm text-ink-muted">
+                Buying instead?{" "}
+                <Link href="/buying-guide" className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
+                  Get the free buying guide
+                </Link>
               </p>
-              <span className="relative inline-flex items-center gap-1.5 font-sans text-sm font-medium text-ink border-b border-line-strong group-hover:border-primary group-hover:text-primary pb-0.5 transition-colors self-start">
-                Pick two suburbs
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. How it works: the real sequence a seller goes through. */}
+      <section className="border-b border-line bg-surface-warm">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+          <h2 className="text-3xl sm:text-4xl text-ink max-w-2xl">How it works</h2>
+          <ol className="mt-10 grid gap-8 md:grid-cols-3">
+            {STEPS.map((s, i) => (
+              <li key={s.title} className="grid gap-3 content-start">
+                <span className="inline-flex w-9 h-9 items-center justify-center rounded-full bg-ink text-white text-sm font-bold tabular-nums">
+                  {i + 1}
+                </span>
+                <h3 className="text-xl text-ink">{s.title}</h3>
+                <p className="text-base text-ink-muted leading-relaxed">{s.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* 3. What's inside the selling guide. */}
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-4">
+              <div className="mx-auto max-w-[260px] text-[22px] sm:text-[26px] rotate-[-2deg]">
+                <GuideCover guide="selling" />
+              </div>
+            </div>
+            <div className="lg:col-span-8">
+              <h2 className="text-3xl sm:text-4xl text-ink max-w-2xl">
+                Ten chapters on selling well, for your state
+              </h2>
+              <p className="mt-4 text-lg text-ink-muted leading-relaxed max-w-2xl">
+                The questions sellers ask us most, answered in order. Read it
+                before you talk to agents, and keep it for when the offers come in.
+              </p>
+              <ol className="mt-8 grid sm:grid-cols-2 gap-x-10 border-t border-line">
+                {CHAPTERS.map((c, i) => (
+                  <li key={c} className="flex gap-4 py-3 border-b border-line text-base text-ink">
+                    <span className="w-6 shrink-0 text-ink-subtle font-semibold tabular-nums">{i + 1}</span>
+                    {c}
+                  </li>
+                ))}
+              </ol>
+              <Link
+                href="#guide-start"
+                className="mt-8 inline-flex items-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white px-5 py-3 text-base font-semibold transition-colors"
+              >
+                Get the free guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Guides sellers read first, and the latest. */}
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 grid lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-7">
+            <h2 className="text-3xl sm:text-4xl text-ink">Guides sellers read first</h2>
+            <ul className="mt-8 grid sm:grid-cols-2 gap-x-8 border-t border-line">
+              {SELLER_GUIDES.map((g) => (
+                <li key={g.href} className="border-b border-line">
+                  <Link href={g.href} className="group block py-4">
+                    <span className="block text-base font-semibold text-ink group-hover:text-primary transition-colors">{g.title}</span>
+                    <span className="block mt-1 text-sm text-ink-muted">{g.note}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Link href="/guides" className="mt-6 inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-primary">
+              All guides <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Link>
+          </div>
+          <div className="lg:col-span-5">
+            <h2 className="text-2xl sm:text-3xl text-ink">Latest</h2>
+            <div className="mt-8">
+              <Suspense fallback={null}>
+                <LatestGuidesList />
+              </Suspense>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Buying band. */}
+      <section className="border-b border-line bg-surface-inverse text-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+          <div className="grid lg:grid-cols-12 gap-10 items-center">
+            <div className="lg:col-span-8">
+              <h2 className="text-3xl sm:text-4xl text-white max-w-2xl">Buying? There&rsquo;s a free guide for that too</h2>
+              <p className="mt-4 text-lg text-white/75 leading-relaxed max-w-2xl">
+                Grants and schemes by state, deposits, pre-approval, inspections
+                and making an offer. We never pass buyers&rsquo; details to selling agents.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+                <Link
+                  href="/buying-guide"
+                  className="inline-flex items-center gap-2 rounded-md bg-white text-ink hover:bg-white/90 px-5 py-3 text-base font-semibold transition-colors"
+                >
+                  Get the free buying guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                </Link>
+                <Link href="/first-home-buyers" className="text-base font-semibold text-white/85 hover:text-white underline underline-offset-4 decoration-white/30">
+                  First home buyers
+                </Link>
+                <Link href="/stamp-duty-calculator" className="text-base font-semibold text-white/85 hover:text-white underline underline-offset-4 decoration-white/30">
+                  Stamp duty calculator
+                </Link>
+              </div>
+            </div>
+            <div className="lg:col-span-4 hidden lg:block">
+              <div className="ml-auto max-w-[220px] text-[22px] rotate-[2deg]">
+                <GuideCover guide="buying" className="ring-1 ring-white/15" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. How we're paid, in plain words. */}
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 grid lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-4">
+            <h2 className="text-3xl sm:text-4xl text-ink">How we&rsquo;re paid</h2>
+          </div>
+          <div className="lg:col-span-8 grid gap-4 text-lg text-ink-muted leading-relaxed max-w-3xl">
+            <p>
+              Our guides and calculators are free. If you ask us to introduce an
+              agent, that agent pays us a fee for the introduction, whether or
+              not you list with them.
+            </p>
+            <p>
+              It doesn&rsquo;t change what you pay the agent, and you&rsquo;re never
+              obliged to list. We introduce one agent, not a list, and only when
+              you ask.
+            </p>
+            <Link href="/about#ownership-funding" className="inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-primary w-fit">
+              More about how we work <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 5. Capital city outlook — quarterly authoritative read. Moved up
-            so editorial authority is stacked together (Guides → Outlook)
-            before any commercial surface. */}
-      <Suspense fallback={null}>
-        <CapitalCityOutlook />
-      </Suspense>
-
-      {/* 6. Best Deals rail. Reframed away from listings-portal language
-            into specialist-introduction language so it doesn't conflict
-            with the hero's "no email gate" positioning. Renders nothing
-            if no live deals exist (no empty rail). */}
-      <Suspense fallback={null}>
-        <BestDealsRail
-          eyebrow="When you're ready to act"
-          heading="A short list, hand-picked by our editors."
-          body="A small, considered set of properties from partner agents we'd happily put a family member in front of. We review every one before it goes live. You never pay us. Partner agents pay us a fee for each introduction we make."
-        />
-      </Suspense>
-
-      {/* 7. Guide funnel — the lead-capture surface and the page's
-            close. Embeds the same qualification funnel as /selling-guide
-            so homepage visitors convert without a page hop. The soft
-            newsletter fallback for non-converters lives in the global
-            footer ("The quarterly read"). */}
-      <section id="guide" className="band-glow bg-surface-inverse text-white scroll-mt-24">
-        {/* Night variant of the commissioned suburb artwork: lamplit
-            rooflines along the bottom of the band. The art's ink sky is
-            the band's own colour, so it reads as one continuous scene. */}
-        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-          <Image
-            src="/images/hero/suburb-night-v2.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-bottom opacity-80"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-30% via-surface-inverse/85 via-68% to-surface-inverse/15" />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-          <GuideBandSwitcher />
+      {/* 7. Research tools, kept low on the page. */}
+      <section>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+          <p className="text-base text-ink-muted">
+            Also here:{" "}
+            <Link href="/real-estate-commission-calculator" className="font-semibold text-ink hover:text-primary">commission calculator</Link>,{" "}
+            <Link href="/tools" className="font-semibold text-ink hover:text-primary">all calculators</Link>,{" "}
+            <Link href="/suburbs" className="font-semibold text-ink hover:text-primary">suburb profiles</Link> and{" "}
+            <Link href="/market-reports" className="font-semibold text-ink hover:text-primary">market reports</Link>.
+          </p>
         </div>
       </section>
     </>

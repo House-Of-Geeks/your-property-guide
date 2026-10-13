@@ -127,7 +127,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
           <div className="flex-shrink-0 w-9 h-9 rounded-full bg-cta text-ink grid place-items-center">
             <Home className="w-4.5 h-4.5" />
           </div>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-white/78 font-medium">
+          <p className="text-[13px] text-white/78 font-medium">
             Free property appraisal in {suburbName}
           </p>
         </div>
@@ -135,9 +135,10 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
           What&rsquo;s your home worth in {suburbName}?
         </h3>
         <p className="text-sm text-white/75 leading-relaxed max-w-md">
-          A local agent who actually sells in {suburbName} will give you an
-          honest number, backed by recent comparable sales. Free, no commitment
-          to list.
+          We&rsquo;ll introduce you to one local agent who sells in your area.
+          If we don&rsquo;t have one yet, we&rsquo;ll tell you. They&rsquo;ll give
+          you an honest number, backed by recent comparable sales. Free, no
+          commitment to list.
         </p>
       </div>
 
@@ -200,7 +201,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
             required
             invalid={!!phoneError}
             aria-describedby={phoneError ? "suburb-appraisal-phone-error" : undefined}
-            placeholder="0412 345 678"
+            placeholder="0491 570 156"
             tone="raised"
             size="md"
           />
@@ -232,7 +233,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
                   type="button"
                   aria-pressed={active}
                   onClick={() => setTimeframe(active ? null : t.id)}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                  className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
                     active
                       ? "bg-ink text-white border-ink"
                       : "bg-surface-raised text-ink border-line hover:border-line-strong"
@@ -268,7 +269,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
         <p className="text-[11px] text-ink-subtle leading-relaxed pt-1 flex flex-wrap items-center gap-x-2">
           <span className="inline-flex items-center gap-1">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
-            Reply within 1 business day
+            Our team will call you within one business day
           </span>
           <span aria-hidden="true">·</span>
           <span>No commitment to list</span>

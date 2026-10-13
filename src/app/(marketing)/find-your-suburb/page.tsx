@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -113,25 +112,17 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
           <div className="mb-8">
             <Breadcrumbs items={[{ label: "Find your suburb" }]} />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5 inline-flex items-center gap-2">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5 inline-flex items-center gap-2">
             <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
             30-second match quiz
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Find your <span className="italic text-primary">suburb</span> in 4 questions.
+            Find your <span>suburb</span> in 4 questions
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             Tell us what matters most, your budget, and your lifestyle stage.
@@ -283,7 +274,7 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
         <section className="bg-surface-warm">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
             <div className="mb-8 max-w-3xl">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              <p className="text-[13px] font-sans text-ink-subtle mb-3">
                 Your matches
               </p>
               <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-3">
@@ -292,7 +283,7 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
                 ) : matches.length === 0 ? (
                   <>No strong matches found.</>
                 ) : (
-                  <>Top {matches.length} suburbs for <span className="italic text-primary">{priorityLabel(answers.priority).toLowerCase()}</span>.</>
+                  <>Top {matches.length} suburbs for <span>{priorityLabel(answers.priority).toLowerCase()}</span>.</>
                 )}
               </h2>
               {matches.length > 0 && (
@@ -324,7 +315,7 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
                     className="group rounded-2xl border border-line bg-surface-raised p-6 hover:border-primary/40 hover:shadow-md transition-all"
                   >
                     <div className="flex items-baseline justify-between mb-3">
-                      <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle">
+                      <p className="text-[13px] font-sans text-ink-subtle">
                         Match #{i + 1}
                       </p>
                       <p className="font-display text-2xl text-primary leading-none">
@@ -334,7 +325,7 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
                     <h3 className="font-display text-2xl text-ink group-hover:text-primary transition-colors leading-tight">
                       {m.name}
                     </h3>
-                    <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mt-1">
+                    <p className="text-[13px] font-sans text-ink-subtle mt-1">
                       {m.state} {m.postcode}
                     </p>
 
@@ -355,7 +346,7 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
                     {/* items-end: a label that wraps in a narrow card must not push its figure off the row */}
                     <div className="mt-5 pt-5 border-t border-line grid grid-cols-3 gap-3 items-end">
                       <div>
-                        <p className="text-[10px] font-sans uppercase tracking-wider text-ink-subtle">
+                        <p className="text-[13px] font-sans text-ink-subtle">
                           {m.medianBasis === "area" ? "Area median" : "Median"}
                         </p>
                         <p className="font-display text-sm text-ink">
@@ -363,7 +354,7 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
                         </p>
                       </div>
                       <div>
-                        <p className="text-[10px] font-sans uppercase tracking-wider text-ink-subtle">12-month change</p>
+                        <p className="text-[13px] font-sans text-ink-subtle">12-month change</p>
                         {/* 0 is "none published", not a flat year */}
                         {m.annualGrowthHouse !== 0 ? (
                           <p className={`font-display text-sm ${m.annualGrowthHouse > 0 ? "text-emerald-700" : "text-red-700"}`}>
@@ -375,14 +366,14 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
                         )}
                       </div>
                       <div>
-                        <p className="text-[10px] font-sans uppercase tracking-wider text-ink-subtle">Yield</p>
+                        <p className="text-[13px] font-sans text-ink-subtle">Yield</p>
                         <p className="font-display text-sm text-ink">
                           {m.grossYield != null ? `${m.grossYield.toFixed(1)}%` : "–"}
                         </p>
                       </div>
                     </div>
 
-                    <p className="mt-4 font-sans text-xs uppercase tracking-wider text-ink group-hover:text-primary transition-colors">
+                    <p className="mt-4 font-sans text-[13px] text-ink group-hover:text-primary transition-colors">
                       See profile →
                     </p>
                   </Link>
@@ -402,11 +393,11 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
 
             {matches.length >= 2 && (
               <div className="mt-10 rounded-2xl border border-line bg-surface-raised p-6">
-                <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+                <p className="text-[13px] font-sans text-ink-subtle mb-2">
                   Compare your top two
                 </p>
                 <p className="font-display text-xl text-ink leading-tight mb-3">
-                  {matches[0].name} <span className="italic text-primary">vs</span> {matches[1].name}
+                  {matches[0].name} <span>vs</span> {matches[1].name}
                 </p>
                 <Link
                   href={`/suburbs/${matches[0].slug}/vs/${matches[1].slug}`}
@@ -426,11 +417,11 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
         <section className="bg-surface-warm">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
             <div className="mb-8">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              <p className="text-[13px] font-sans text-ink-subtle mb-3">
                 How it works
               </p>
               <h2 className="font-display text-3xl text-ink leading-tight">
-                Real data, weighted to what matters to you.
+                Real data, weighted to what matters to you
               </h2>
             </div>
 
@@ -456,7 +447,7 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
                   key={s.num}
                   className="rounded-2xl border border-line bg-surface-raised p-7"
                 >
-                  <p className="font-display italic text-primary text-3xl leading-none mb-3">
+                  <p className="font-display text-primary text-3xl leading-none mb-3">
                     {s.num}
                   </p>
                   <h3 className="font-display text-lg text-ink leading-tight mb-2">

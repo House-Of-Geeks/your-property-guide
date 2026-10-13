@@ -29,11 +29,19 @@ export function getAvailableBlogCovers(): Set<string> {
 // the file exists in /public/images/blog. Anything outside that pattern is
 // returned as-is on the assumption the caller meant to point at a remote
 // URL or another known path.
+// Brand v4 (Oct 2026): the /images/blog cover series was AI-generated, and
+// the brand uses no generated imagery. Until real photography replaces it,
+// every local cover resolves to null, so pages render the typeset cover
+// (BlogCoverFallback) and social cards use the OG renderer. Set to true once
+// the folder holds real photographs.
+const PHOTO_COVERS_ENABLED = false;
+
 export function resolveBlogCoverPath(
   coverImage: string | null | undefined,
 ): string | null {
   if (!coverImage) return null;
   if (!coverImage.startsWith("/images/blog/")) return coverImage;
+  if (!PHOTO_COVERS_ENABLED) return null;
   const filename = coverImage.slice("/images/blog/".length);
   if (!filename) return null;
   return getAvailableBlogCovers().has(filename) ? coverImage : null;

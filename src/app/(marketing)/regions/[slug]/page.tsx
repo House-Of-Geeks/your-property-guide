@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { TrendingUp, Home, DollarSign, Building2 } from "lucide-react";
 import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { Breadcrumbs } from "@/components/layout";
@@ -172,14 +171,6 @@ export default async function RegionPage({ params }: RegionPageProps) {
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
           <div className="mb-8">
             <Breadcrumbs
@@ -190,17 +181,17 @@ export default async function RegionPage({ params }: RegionPageProps) {
             />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             {regionEyebrow(region.region, region.state, region.suburbCount)}
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
             {hasPrices ? (
               <>
-                {name} house prices, <span className="italic text-primary">{REGION_MARKET_YEAR}</span>.
+                {name} house prices, <span>{REGION_MARKET_YEAR}</span>.
               </>
             ) : (
               <>
-                {name} property market, <span className="italic text-primary">{REGION_MARKET_YEAR}</span>.
+                {name} property market, <span>{REGION_MARKET_YEAR}</span>.
               </>
             )}
           </h1>
@@ -231,7 +222,7 @@ export default async function RegionPage({ params }: RegionPageProps) {
         <section className="bg-surface-raised border-b border-line">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
             <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-6">
-              Median house price in {name}.
+              Median house price in {name}
             </h2>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <StatCard icon={<Home className="w-4 h-4" />} label="Median house" value={housePrice} sub="median of suburb medians" />
@@ -249,7 +240,7 @@ export default async function RegionPage({ params }: RegionPageProps) {
         {narrative.length > 0 && (
           <section className="max-w-3xl">
             <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-5">
-              What {name} house prices are doing.
+              What {name} house prices are doing
             </h2>
             <div className="space-y-4">
               {narrative.map((p, i) => (
@@ -302,11 +293,11 @@ export default async function RegionPage({ params }: RegionPageProps) {
         <section id="agents" className="scroll-mt-16 rounded-2xl border border-line bg-surface-raised p-6 sm:p-8">
           <div className="grid gap-8 lg:grid-cols-2 lg:items-start">
             <div>
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              <p className="text-[13px] font-sans text-ink-subtle mb-3">
                 Real estate agents in {name}
               </p>
               <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-4">
-                Selling in {name}? Get matched to one local agent.
+                Selling in {name}? Get matched to one local agent
               </h2>
               <p className="font-sans text-base text-ink-muted leading-relaxed">
                 Tell us the suburb and when you plan to sell. We match you to one agent who sells in that part of{" "}
@@ -398,7 +389,7 @@ export default async function RegionPage({ params }: RegionPageProps) {
 
         {/* Cross-links */}
         <section className="rounded-2xl border border-line bg-surface-warm p-6">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">Keep exploring</p>
+          <p className="text-[13px] font-sans text-ink-subtle mb-3">Keep exploring</p>
           <div className="flex flex-wrap gap-2">
             <Link href={`/regions/${slug}/schools`} className={linkChip}>
               Schools in {region.region}
@@ -422,7 +413,7 @@ export default async function RegionPage({ params }: RegionPageProps) {
 
         {/* Source note */}
         <section className="rounded-2xl border border-line bg-surface-warm p-5 text-sm font-sans text-ink-muted">
-          <p className="text-xs uppercase tracking-[0.25em] text-ink-subtle mb-2">Data source</p>
+          <p className="text-[13px] text-ink-subtle mb-2">Data source</p>
           <p className="leading-relaxed">
             Figures are aggregated from suburb-level medians sourced from state valuers-general, state government
             sales records and the ABS. Only suburbs whose own page publishes a median contribute to price figures (

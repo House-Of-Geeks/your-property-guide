@@ -24,7 +24,7 @@ export function KeyFigure({ value, label, context, tone = "default" }: KeyFigure
       <div className="sm:col-span-8">
         <p className="font-sans text-base text-ink leading-relaxed">{label}</p>
         {context && (
-          <p className="font-sans text-xs text-ink-subtle uppercase tracking-wider mt-2">{context}</p>
+          <p className="font-sans text-[13px] text-ink-subtle mt-2">{context}</p>
         )}
       </div>
     </div>

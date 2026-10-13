@@ -265,7 +265,7 @@ export function BuyingGuideFunnel({
   );
 
   return (
-    <div data-funnel-card className="bg-surface-warm text-ink rounded-2xl p-6 sm:p-8 shadow-2xl border border-line border-t-[3px] border-t-cta">
+    <div data-funnel-card className="bg-white text-ink rounded-xl p-6 sm:p-8 border border-line shadow-[0_12px_40px_-14px_rgb(22_25_29/0.22)]">
       {/* Progress. Hidden on the opening question (a bar on screen one
           costs conversions); from step 2 it shows already-earned progress.
           Each segment is a track with a fill that sweeps in from the left;
@@ -283,7 +283,7 @@ export function BuyingGuideFunnel({
               />
             </div>
           ))}
-          <p className="ml-2 text-[11px] font-medium uppercase tracking-wider text-ink-subtle whitespace-nowrap">
+          <p className="ml-2 text-[13px] font-medium text-ink-subtle whitespace-nowrap">
             {Math.min(step + 1, stepTotal)} / {stepTotal}
           </p>
         </div>
@@ -297,7 +297,7 @@ export function BuyingGuideFunnel({
       {/* Step 0, suburb */}
       {step === 0 && (
         <div>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-3">
+          <p className="text-[13px] text-cta font-medium mb-3">
             Free guide · Takes about 60 seconds
           </p>
           <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-2">
@@ -499,7 +499,7 @@ export function BuyingGuideFunnel({
       {/* Step 6, contact (PII last) */}
       {step === 6 && (
         <div>
-          <p className="rise text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-3">
+          <p className="rise text-[13px] text-cta font-medium mb-3">
             Your guide is ready
           </p>
           <h3 className="rise rise-d1 font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-3">

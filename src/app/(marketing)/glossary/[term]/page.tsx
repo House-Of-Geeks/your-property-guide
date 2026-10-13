@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, DefinedTermJsonLd } from "@/components/seo";
@@ -141,14 +140,6 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-16 sm:pb-20">
           <div className="mb-10">
             <Breadcrumbs
@@ -160,17 +151,17 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
           </div>
 
           <div className="flex items-center gap-4 mb-10">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               Glossary
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               {entry.category.replace(/-/g, " ")}
             </span>
           </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-4 max-w-[18ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-4 max-w-[18ch] font-bold">
             What is{" "}
-            <span className="italic font-light text-primary">{entry.term}</span>?
+            <span>{entry.term}</span>?
           </h1>
         </div>
       </section>
@@ -189,14 +180,14 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
               {/* Cross-link to the guide on this topic, else the persona guide */}
               {topicLinks.length > 0 ? (
                 <div className="mt-10 rounded-2xl border border-line bg-surface-warm p-6">
-                  <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-4">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-4">
                     Go deeper
                   </p>
                   <GuideLinkList groups={[{ links: topicLinks }]} columns={2} />
                 </div>
               ) : relatedGuide && (
                 <div className="mt-10 rounded-2xl border border-line bg-surface-warm p-6">
-                  <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
                     Go deeper
                   </p>
                   <Link
@@ -222,7 +213,7 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
                     href={`/glossary/${prev.slug}`}
                     className="group rounded-2xl border border-line bg-surface-raised p-4 hover:border-primary/40 transition-colors"
                   >
-                    <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-1 inline-flex items-center gap-1">
+                    <p className="text-[13px] font-sans text-ink-subtle mb-1 inline-flex items-center gap-1">
                       <ArrowLeft className="w-3 h-3" /> Previous
                     </p>
                     <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
@@ -237,7 +228,7 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
                     href={`/glossary/${next.slug}`}
                     className="group rounded-2xl border border-line bg-surface-raised p-4 hover:border-primary/40 transition-colors text-right"
                   >
-                    <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-1 inline-flex items-center gap-1 justify-end w-full">
+                    <p className="text-[13px] font-sans text-ink-subtle mb-1 inline-flex items-center gap-1 justify-end w-full">
                       Next <ArrowRight className="w-3 h-3" />
                     </p>
                     <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
@@ -263,7 +254,7 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
 
                 {nearby.length > 0 && (
                   <div>
-                    <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-4">
+                    <p className="text-[13px] font-sans text-ink-subtle mb-4">
                       Nearby terms
                     </p>
                     <ul className="space-y-1.5">
@@ -282,7 +273,7 @@ export default async function GlossaryTermPage({ params }: TermPageProps) {
                 )}
 
                 <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
                     Editorial note
                   </p>
                   <p className="font-sans text-sm text-ink-muted leading-relaxed">

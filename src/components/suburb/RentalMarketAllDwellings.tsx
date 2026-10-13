@@ -13,7 +13,7 @@ import { ALL_DWELLINGS_LABEL, SMALL_SAMPLE_BONDS, quarterSpan } from "@/lib/rent
 function MetricCard({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-line bg-surface-raised p-4 shadow-card">
-      <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-1">{label}</p>
+      <p className="text-[13px] font-sans text-ink-subtle mb-1">{label}</p>
       <p className="font-display text-2xl text-ink leading-none">{value}</p>
     </div>
   );
@@ -38,11 +38,11 @@ export function RentalMarketAllDwellings({
   return (
     <>
       <section>
-        <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+        <p className="text-[13px] font-sans text-ink-subtle mb-3">
           Current rent
         </p>
         <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-          What it costs to rent here right now.
+          What it costs to rent here right now
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           <MetricCard label={`${ALL_DWELLINGS_LABEL} (median)`} value={`${money(c.weekly)}/wk`} />
@@ -66,20 +66,20 @@ export function RentalMarketAllDwellings({
 
       {all.quarters.length >= 2 && (
         <section>
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+          <p className="text-[13px] font-sans text-ink-subtle mb-3">
             History
           </p>
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-            How rents have moved.
+            How rents have moved
           </h2>
           <div className="rounded-2xl border border-line bg-surface-raised overflow-hidden shadow-card">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-surface-warm border-b border-line-warm">
-                    <th className="py-4 px-5 text-left text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">Quarter</th>
-                    <th className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">{`${ALL_DWELLINGS_LABEL} (median)`}</th>
-                    <th className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">Bonds lodged</th>
+                    <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle">Quarter</th>
+                    <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">{`${ALL_DWELLINGS_LABEL} (median)`}</th>
+                    <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">Bonds lodged</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -102,7 +102,7 @@ export function RentalMarketAllDwellings({
 
       {all.attribution && (
         <section className="rounded-2xl border border-line bg-surface-raised p-5 sm:p-6">
-          <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">Source</p>
+          <p className="text-[13px] font-sans text-ink-subtle mb-2">Source</p>
           <p className="font-sans text-sm text-ink-muted leading-relaxed">
             <a href={all.attribution.datasetUrl} className="underline hover:text-primary" rel="noopener">
               {all.attribution.dataset}
@@ -119,7 +119,7 @@ export function RentalMarketAllDwellings({
       {rentListings && (
         <div className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
           <div>
-            <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+            <p className="text-[13px] font-sans text-ink-subtle mb-2">
               Active listings
             </p>
             <h3 className="font-display text-xl sm:text-2xl text-ink leading-tight">

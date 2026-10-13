@@ -37,7 +37,7 @@ export function BlogTableOfContents({ toc }: Props) {
 
   return (
     <nav aria-label="Table of contents">
-      <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
+      <p className="text-[13px] font-semibold text-gray-400 mb-3">
         On this page
       </p>
       <ul className="space-y-1">

@@ -39,13 +39,13 @@ export function EditorNote({
           />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="font-display italic text-primary text-sm leading-none mb-1.5">
+          <p className="font-display text-primary text-sm leading-none mb-1.5">
             A note from the editor
           </p>
-          <p className="text-[11px] uppercase tracking-[0.22em] text-ink-subtle font-sans font-medium mb-4">
+          <p className="text-[13px] text-ink-subtle font-sans font-medium mb-4">
             {editorName} · {editorRole}
           </p>
-          <div className="font-display font-light text-lg sm:text-xl text-ink leading-[1.4] [&>p:not(:first-child)]:mt-3 [&>p:last-child]:mb-0">
+          <div className="font-display font-normal text-lg sm:text-xl text-ink leading-[1.4] [&>p:not(:first-child)]:mt-3 [&>p:last-child]:mb-0">
             {children}
           </div>
         </div>

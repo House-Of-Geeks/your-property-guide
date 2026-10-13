@@ -1,8 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <!-- Warm ink tile, matches the brand's dark surfaces -->
-  <rect width="32" height="32" rx="7" fill="#17100b"/>
-  <!-- House silhouette in apricot, the brand's light-on-dark accent -->
-  <path fill="#ffddc6" d="M16 5 L28.5 17 L25 17 L25 27.5 L19 27.5 L19 21 L13 21 L13 27.5 L7 27.5 L7 17 L3.5 17 Z"/>
-  <!-- Terracotta lamplit window -->
-  <rect x="14" y="13.5" width="4" height="4" rx="0.8" fill="#bd592f"/>
+  <!-- Brand v4: the house bubble in white on a roof-tile tile -->
+  <rect width="32" height="32" rx="7" fill="#c24a1c"/>
+  <path fill="#ffffff" transform="translate(4.4 4.2) scale(0.725)" d="M16 2.5 L28.5 12 L28.5 25 L12.5 25 L6.5 30.5 L7.6 25 L3.5 25 L3.5 12 Z"/>
 </svg>

@@ -176,7 +176,7 @@ export function SuburbAutocomplete({
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           autoComplete="off"
-          className={`w-full rounded-xl border-0 bg-transparent pl-9 pr-8 focus:ring-2 focus:ring-primary outline-none ${padClass} ${inputClassName}`}
+          className={`w-full rounded-lg border border-line-strong bg-white pl-9 pr-8 text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] ${padClass} ${inputClassName}`}
         />
         {hasValue && (
           <button
@@ -197,7 +197,7 @@ export function SuburbAutocomplete({
         >
           {results.locations.length > 0 && (
             <div>
-              <p className="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+              <p className="px-4 pt-3 pb-1 text-[13px] font-semibold text-gray-400">
                 Locations
               </p>
               {results.locations.map((loc, i) => {
@@ -224,7 +224,7 @@ export function SuburbAutocomplete({
 
           {showSchools && results.schools.length > 0 && (
             <div className={results.locations.length > 0 ? "border-t border-gray-100" : ""}>
-              <p className="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+              <p className="px-4 pt-3 pb-1 text-[13px] font-semibold text-gray-400">
                 Schools
               </p>
               {results.schools.map((school, i) => {

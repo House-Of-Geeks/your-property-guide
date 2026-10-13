@@ -106,21 +106,21 @@ export default async function StatePage({ params }: StatePageProps) {
 
           {/* Magazine masthead */}
           <div className="flex items-center gap-4 mb-10">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               State profile
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               Australia&rsquo;s property reference
             </span>
           </div>
 
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
             {stateName}{" "}
-            <span className="italic font-light text-primary">property</span>,
-            mapped.
+            <span>property</span>,
+            mapped
           </h1>
-          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl mb-12">
+          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl mb-12">
             Suburb profiles, school data, and property market insights across{" "}
             {stateName}. Free, ungated, sourced and dated.
           </p>
@@ -131,7 +131,7 @@ export default async function StatePage({ params }: StatePageProps) {
               <p className="font-display text-4xl sm:text-5xl text-ink leading-none mb-2.5 tracking-tight">
                 {stats.suburbCount.toLocaleString()}
               </p>
-              <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
+              <p className="text-[13px] sm:text-[13px] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
                 <MapPin className="w-3 h-3" aria-hidden="true" />
                 Suburbs covered
               </p>
@@ -141,7 +141,7 @@ export default async function StatePage({ params }: StatePageProps) {
                 <p className="font-display text-4xl sm:text-5xl text-ink leading-none mb-2.5 tracking-tight">
                   {formatPriceFull(stats.avgMedianHousePrice)}
                 </p>
-                <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
+                <p className="text-[13px] sm:text-[13px] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
                   <Home className="w-3 h-3" aria-hidden="true" />
                   Avg median house
                 </p>
@@ -157,7 +157,7 @@ export default async function StatePage({ params }: StatePageProps) {
                   {stats.avgAnnualGrowth >= 0 ? "+" : ""}
                   {stats.avgAnnualGrowth}%
                 </p>
-                <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
+                <p className="text-[13px] sm:text-[13px] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
                   <TrendingUp className="w-3 h-3" aria-hidden="true" />
                   Avg annual growth
                 </p>
@@ -230,7 +230,7 @@ export default async function StatePage({ params }: StatePageProps) {
                     </div>
                     {suburb.annualGrowthHouse !== 0 && (
                       <span
-                        className={`text-xs font-medium px-2 py-1 rounded-full ${
+                        className={`text-xs font-medium px-2 py-1 rounded-md ${
                           suburb.annualGrowthHouse >= 0
                             ? "bg-green-50 text-green-700"
                             : "bg-red-50 text-red-700"

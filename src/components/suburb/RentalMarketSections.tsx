@@ -13,7 +13,7 @@ const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
 function MetricCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
     <div className="rounded-xl border border-line bg-surface-raised p-4 shadow-card">
-      <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-1">{label}</p>
+      <p className="text-[13px] font-sans text-ink-subtle mb-1">{label}</p>
       <p className="font-display text-2xl text-ink leading-none">{value}</p>
       {sub && <p className="font-sans text-xs text-ink-muted mt-2">{sub}</p>}
     </div>
@@ -37,9 +37,9 @@ export function RentalMarketSections({ suburb, slug, model: m, landlord }: { sub
   return (
     <>
       <section id="current-rent">
-        <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">Current rent</p>
+        <p className="text-[13px] font-sans text-ink-subtle mb-3">Current rent</p>
         <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-          What it costs to rent in {suburb.name} now.
+          What it costs to rent in {suburb.name} now
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
           {c.house && <MetricCard label="Houses (median)" value={`${money(c.house)}/wk`} sub={changeText(m.change?.house ?? null)} />}
@@ -57,9 +57,9 @@ export function RentalMarketSections({ suburb, slug, model: m, landlord }: { sub
 
       {has("yield") && (
         <section id="yield" className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">Investor view</p>
+          <p className="text-[13px] font-sans text-ink-subtle mb-3">Investor view</p>
           <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
-            Rental yield against the purchase price.
+            Rental yield against the purchase price
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {m.yieldHouse && c.house && (
@@ -94,20 +94,20 @@ export function RentalMarketSections({ suburb, slug, model: m, landlord }: { sub
 
       {has("history") && (
         <section id="history">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">History</p>
-          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">How rents have moved.</h2>
+          <p className="text-[13px] font-sans text-ink-subtle mb-3">History</p>
+          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">How rents have moved</h2>
           <div className="rounded-2xl border border-line bg-surface-raised overflow-hidden shadow-card">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-surface-warm border-b border-line-warm">
-                    <th className="py-4 px-5 text-left text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">Period</th>
-                    <th className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">Houses</th>
-                    <th className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">Units</th>
-                    {m.columns.bed3 && <th className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider hidden sm:table-cell">3 bed</th>}
-                    {m.columns.bed2 && <th className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider hidden sm:table-cell">2 bed</th>}
-                    {m.columns.bed1 && <th className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider hidden sm:table-cell">1 bed</th>}
-                    {m.columns.bonds && <th className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider hidden md:table-cell">New bonds</th>}
+                    <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle">Period</th>
+                    <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">Houses</th>
+                    <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">Units</th>
+                    {m.columns.bed3 && <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden sm:table-cell">3 bed</th>}
+                    {m.columns.bed2 && <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden sm:table-cell">2 bed</th>}
+                    {m.columns.bed1 && <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden sm:table-cell">1 bed</th>}
+                    {m.columns.bonds && <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden md:table-cell">New bonds</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -132,9 +132,9 @@ export function RentalMarketSections({ suburb, slug, model: m, landlord }: { sub
       {has("listings") && (
         <section id="listings" className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
           <div>
-            <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">For rent now</p>
+            <p className="text-[13px] font-sans text-ink-subtle mb-2">For rent now</p>
             <h2 className="font-display text-xl sm:text-2xl text-ink leading-tight">
-              {m.listings} {m.listings === 1 ? "property" : "properties"} for rent in {suburb.name}.
+              {m.listings} {m.listings === 1 ? "property" : "properties"} for rent in {suburb.name}
             </h2>
             <p className="font-sans text-sm text-ink-muted mt-2">Current listings with prices, bedrooms and inspection times.</p>
           </div>
@@ -145,8 +145,8 @@ export function RentalMarketSections({ suburb, slug, model: m, landlord }: { sub
       )}
 
       {/* Landlord intent ("rental appraisal {suburb}", "property managers
-          {suburb}") lands here: the rental appraisal request and the fee
-          table (commercial intent review 30 Sep 2026, section 3.1). */}
+          {suburb}") lands here: the selling-your-investment block and the
+          fee table (commercial intent review 30 Sep 2026, section 3.1). */}
       <RentalMarketLandlordSections suburb={suburb} landlord={landlord} />
 
       {/* Sale-appraisal searches ("{suburb} property appraisal") were landing
@@ -154,9 +154,9 @@ export function RentalMarketSections({ suburb, slug, model: m, landlord }: { sub
           block on the profile so this page stops absorbing that intent. */}
       <section className="rounded-2xl border border-line bg-surface-raised p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">Selling instead?</p>
+          <p className="text-[13px] font-sans text-ink-subtle mb-2">Selling instead?</p>
           <h2 className="font-display text-xl sm:text-2xl text-ink leading-tight">
-            Get a free property appraisal in {suburb.name}.
+            Get a free property appraisal in {suburb.name}
           </h2>
           <p className="font-sans text-sm text-ink-muted mt-2">A local agent who sells in {suburb.name} will give you a figure based on recent comparable sales. No commitment.</p>
         </div>

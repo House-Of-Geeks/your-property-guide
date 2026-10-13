@@ -35,7 +35,7 @@ export function BestDealCard({ deal, variant = "compact" }: BestDealCardProps) {
             />
           </Link>
           <div className="p-5 sm:p-6">
-            <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-2">
+            <p className="text-[13px] font-sans text-cta mb-2">
               Featured opportunity · Partner agent
             </p>
             <Link href={href}>

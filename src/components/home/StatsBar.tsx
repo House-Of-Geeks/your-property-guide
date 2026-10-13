@@ -34,7 +34,7 @@ export async function StatsBar() {
               <Image src={icon} alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">{value}</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">{label}</p>
+                <p className="font-sans text-[13px] text-ink-subtle">{label}</p>
               </div>
             </div>
           ))}

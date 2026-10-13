@@ -21,7 +21,7 @@ export function Sources({ items, title = "Sources and methodology" }: SourcesPro
   if (items.length === 0) return null;
   return (
     <section className="mt-12 pt-8 border-t border-line">
-      <p className="text-xs font-sans uppercase tracking-[0.22em] text-ink-subtle mb-3">
+      <p className="text-[13px] font-sans text-ink-subtle mb-3">
         {title}
       </p>
       <ul className="font-sans text-sm text-ink-muted leading-relaxed space-y-1.5 list-disc pl-5">

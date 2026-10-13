@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { OffMarketTeaser } from "@/components/property/OffMarketTeaser";
 import { OffMarketRegisterForm } from "@/components/forms/OffMarketRegisterForm";
 import { Breadcrumbs } from "@/components/layout";
@@ -34,24 +33,16 @@ export default async function OffMarketPage() {
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
           <div className="mb-8">
             <Breadcrumbs items={[{ label: "Off-Market" }]} />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             {offMarketProperties.length} current {offMarketProperties.length === 1 ? "listing" : "listings"}
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Properties <span className="italic text-primary">before they hit the market</span>.
+            Properties <span>before they hit the market</span>
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             Off-market opportunities not listed on realestate.com.au or Domain.
@@ -65,19 +56,19 @@ export default async function OffMarketPage() {
               <p className="font-display text-2xl text-ink leading-none">
                 {offMarketProperties.length}
               </p>
-              <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mt-1.5">
+              <p className="text-[13px] font-sans text-ink-subtle mt-1.5">
                 live listings
               </p>
             </div>
             <div>
               <p className="font-display text-2xl text-ink leading-none">Instant</p>
-              <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mt-1.5">
+              <p className="text-[13px] font-sans text-ink-subtle mt-1.5">
                 email alerts
               </p>
             </div>
             <div>
               <p className="font-display text-2xl text-ink leading-none">Free</p>
-              <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mt-1.5">
+              <p className="text-[13px] font-sans text-ink-subtle mt-1.5">
                 no obligation
               </p>
             </div>
@@ -102,7 +93,7 @@ export default async function OffMarketPage() {
           {/* Register form */}
           <div>
             <div className="rounded-2xl bg-surface-raised border border-line p-6 sticky top-24">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+              <p className="text-[13px] font-sans text-ink-subtle mb-2">
                 Private brief
               </p>
               <h3 className="font-display text-xl text-ink mb-2 leading-tight">

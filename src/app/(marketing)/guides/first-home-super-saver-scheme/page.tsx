@@ -76,9 +76,6 @@ export const metadata: Metadata = {
 
 const fmt = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
 const checkedOn = new Date(FHSS_CHECKED_ON).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
-/** Leads from this guide go to the buyer match, tagged with where they started. */
-const MATCH_HREF = "/find-an-expert?intent=buying&from=fhss-guide#match";
-
 // The worked example is the calculator's opening state, computed by the same
 // engine (src/lib/fhss-calc.ts, pinned by tests/lib/fhss-calc.test.ts).
 const EX = defaultFhssInput();
@@ -406,9 +403,7 @@ export default function FirstHomeSuperSaverSchemePage() {
       </p>
 
       <MatchCTA
-        lead="Working out how FHSS fits with the rest of your deposit? Tell us where you're buying and we'll introduce one vetted specialist. Free, no commitment."
-        ctaLabel="Find your specialist"
-        href={MATCH_HREF}
+        lead="Working out how FHSS fits with the rest of your deposit? The free buying guide covers deposits, LMI and every 2026 scheme you can stack, state by state."
       />
 
       <h2 id="contributing">How to contribute</h2>
@@ -557,9 +552,7 @@ export default function FirstHomeSuperSaverSchemePage() {
       </p>
 
       <MatchCTA
-        lead="Ready to plan your deposit? Tell us where you're buying and we'll introduce one vetted specialist who works with first home buyers. Free, no commitment."
-        ctaLabel="Find your specialist"
-        href={MATCH_HREF}
+        lead="Ready to plan your deposit? The free buying guide covers what you can really spend, the schemes you can stack, and a 12-week plan to settlement."
       />
 
       <Sources items={FHSS_GUIDE_SOURCES} />

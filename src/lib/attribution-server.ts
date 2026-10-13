@@ -57,6 +57,9 @@ export function attributionJson(a: LeadAttribution): Prisma.InputJsonObject | un
     if (a.state.last) out.last = a.state.last;
     if (a.state.google) out.google = a.state.google;
     if (a.state.microsoft) out.microsoft = a.state.microsoft;
+    // The on-site CTA (?from=<page slug>) that sent the visitor into the
+    // funnel; see EntryTouch in lib/attribution.
+    if (a.state.entry) out.entry = a.state.entry;
   }
   if (a.sourcePage) out.source_page = a.sourcePage;
   return out as Prisma.InputJsonObject;

@@ -97,7 +97,7 @@ function StatCard({ icon, label, value, href }: { icon: React.ReactNode; label: 
 
 function StatusBadge({ status }: { status: string }) {
   const cls = status === "active" ? "bg-green-100 text-green-700" : status === "under-contract" ? "bg-amber-100 text-amber-700" : "bg-gray-100 text-gray-600";
-  return <span className={`text-xs font-medium px-2 py-0.5 rounded-full whitespace-nowrap ${cls}`}>{status}</span>;
+  return <span className={`text-xs font-medium px-2 py-0.5 rounded-md whitespace-nowrap ${cls}`}>{status}</span>;
 }
 
 function RoleBadge({ role }: { role: string }) {
@@ -105,5 +105,5 @@ function RoleBadge({ role }: { role: string }) {
     role === "admin"        ? "bg-primary/10 text-primary" :
     role === "agency_admin" ? "bg-cta/10 text-cta-hover" :
                               "bg-surface-warm-sunken text-ink-muted border border-line-warm";
-  return <span className={`text-xs font-medium px-2 py-0.5 rounded-full whitespace-nowrap ${cls}`}>{role}</span>;
+  return <span className={`text-xs font-medium px-2 py-0.5 rounded-md whitespace-nowrap ${cls}`}>{role}</span>;
 }

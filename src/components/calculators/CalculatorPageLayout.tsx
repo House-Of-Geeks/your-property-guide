@@ -3,9 +3,10 @@ import Link from "next/link";
 import { Calendar, Calculator as CalculatorIcon, ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BUYING_GUIDE_CTA, ExpertCTA, StickyMatchCTA } from "@/components/journey";
-import { Faq, type FaqItem, RelatedGuides, type RelatedGuide } from "@/components/guide";
+import { Faq, type FaqItem, GuideStartInline, RelatedGuides, type RelatedGuide } from "@/components/guide";
 import { BreadcrumbJsonLd, WebApplicationJsonLd } from "@/components/seo";
 import { PERSONA_BY_ID, type PersonaId } from "@/lib/constants/journey";
+import { guideAudienceForPersona, guideFunnelHref } from "@/lib/guide-funnel";
 
 export interface CalculatorPageFrontmatter {
   // Page-level metadata
@@ -48,6 +49,11 @@ export function CalculatorPageLayout({
 }: CalculatorPageLayoutProps) {
   const persona = frontmatter.persona ? PERSONA_BY_ID[frontmatter.persona] : null;
   const pageUrl = `/${frontmatter.slug}`;
+  const funnelHref = guideFunnelHref(intent, { from: frontmatter.slug });
+  // Seller calculators (commission, selling costs) start the selling-guide
+  // funnel right under the result, where the reader has just seen what
+  // selling will cost them.
+  const sellerCalculator = guideAudienceForPersona(frontmatter.persona) === "selling";
 
   return (
     <>
@@ -63,14 +69,6 @@ export function CalculatorPageLayout({
           standfirst. Illustration column dropped: calculators read as
           authoritative tools when the title owns the page. */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-14 sm:pb-20">
           <div className="mb-10">
             <Breadcrumbs items={[{ label: frontmatter.title }]} />
@@ -81,29 +79,29 @@ export function CalculatorPageLayout({
             {persona ? (
               <Link
                 href={persona.hubPath}
-                className="font-display italic text-primary hover:text-cta-hover text-base sm:text-lg leading-none transition-colors"
+                className="font-display text-primary hover:text-cta-hover text-base sm:text-lg leading-none transition-colors"
               >
                 For {persona.cardLabel.toLowerCase()}
               </Link>
             ) : (
-              <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              <span className="text-sm font-semibold text-ink-muted leading-none">
                 Free tool
               </span>
             )}
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
               <CalculatorIcon className="w-3 h-3" aria-hidden="true" />
               Free calculator
             </span>
           </div>
 
           {/* Display-scale H1 */}
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-bold">
             {frontmatter.h1 ?? frontmatter.title}
           </h1>
 
           {/* Standfirst */}
-          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-8">
+          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-8">
             {frontmatter.description}
           </p>
 
@@ -123,6 +121,7 @@ export function CalculatorPageLayout({
       <section className="bg-surface-raised">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
           {calculator}
+          {sellerCalculator && <GuideStartInline from={frontmatter.slug} className="mt-10" />}
         </div>
       </section>
 
@@ -137,7 +136,7 @@ export function CalculatorPageLayout({
             <aside className="hidden lg:block lg:col-span-3 lg:order-2">
               <div className="sticky top-28 space-y-8">
                 <div>
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
                     Estimate, not a quote
                   </p>
                   <p className="font-sans text-sm text-ink-muted leading-relaxed">
@@ -145,7 +144,7 @@ export function CalculatorPageLayout({
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
                     Editorial integrity
                   </p>
                   <p className="font-sans text-sm text-ink-muted leading-relaxed">
@@ -169,6 +168,7 @@ export function CalculatorPageLayout({
               <ExpertCTA
                 variant="inline"
                 {...(intent === "buying" ? BUYING_GUIDE_CTA : {})}
+                href={funnelHref}
               />
 
               <Faq items={faqs} title="Common questions" />
@@ -194,7 +194,7 @@ export function CalculatorPageLayout({
             : undefined
         }
         label={intent === "buying" ? "Get the free buying guide" : undefined}
-        href={intent === "buying" ? "/buying-guide" : undefined}
+        href={funnelHref}
         dismissKey={`calc:${frontmatter.slug}`}
       />
     </>
@@ -282,7 +282,7 @@ function NextStepRail({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex items-end justify-between gap-4 mb-6">
           <div>
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+            <p className="text-[13px] font-sans text-ink-subtle mb-2">
               What to do next
             </p>
             <h2 className="font-display text-2xl text-ink leading-tight">

@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   SellingCostTable,
   CommissionCalculatorEmbed,
@@ -275,8 +274,6 @@ export default function RealEstateCommissionSAPage() {
         your largest asset.
       </p>
 
-      <MatchCTA kind="selling-agent" />
-
       <h2 id="other-costs">Commission vs your other selling costs</h2>
       <p>
         Commission is the largest single cost of selling, but it is not the only
@@ -320,8 +317,6 @@ export default function RealEstateCommissionSAPage() {
           so you know the dollar figure before any conversation.
         </li>
       </ol>
-
-      <MatchCTA kind="selling-agent" />
 
       <Sources items={SA_COMMISSION_SOURCES} />
     </GuideArticleLayout>

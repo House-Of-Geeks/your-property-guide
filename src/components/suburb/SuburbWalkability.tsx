@@ -26,7 +26,7 @@ function ScoreBar({ label, score, icon }: ScoreConfig) {
     <div className="bg-surface-raised rounded-2xl border border-line p-5 flex flex-col gap-3">
       <div className="flex items-center gap-2 text-ink-muted">
         {icon}
-        <span className="text-xs font-sans uppercase tracking-wider text-ink-subtle">{label}</span>
+        <span className="text-[13px] font-sans text-ink-subtle">{label}</span>
       </div>
 
       {score !== null && colours ? (
@@ -49,7 +49,7 @@ function ScoreBar({ label, score, icon }: ScoreConfig) {
 export function SuburbWalkability({ walkScore, transitScore, bikeScore }: SuburbWalkabilityProps) {
   if (walkScore === null && transitScore === null && bikeScore === null) {
     return (
-      <p className="text-sm font-sans text-ink-muted italic py-2">
+      <p className="text-sm font-sans text-ink-muted py-2">
         Walkability data not yet available for this suburb.
       </p>
     );

@@ -37,7 +37,7 @@ export function MatchDrawer({
   intent,
   source = "match-drawer",
   heading = "Tell us your situation",
-  subhead = "Three quick questions and we’ll match you with the right specialist, usually within one business day.",
+  subhead = "Three quick questions. Selling? We introduce one local agent who sells in your area. Anything else, we’ll point you to the right next step, within one business day.",
 }: MatchDrawerProps) {
   // Lock body scroll while open
   useEffect(() => {
@@ -75,7 +75,7 @@ export function MatchDrawer({
         </button>
 
         <div className="px-6 sm:px-8 py-8 sm:py-10">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-primary mb-3">
+          <p className="text-[13px] text-primary mb-3">
             Free, no commitment
           </p>
           <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-2">

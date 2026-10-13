@@ -89,19 +89,6 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
       </Suspense>
 
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        {/* The Queenslander artwork grounds the moment: you did the
-            right thing, here's home. Washed back so the download card
-            stays the hero. */}
-        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-          <Image
-            src="/images/art/queenslander.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-bottom opacity-[0.32]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-30% via-surface-warm/80 to-surface-warm/35" />
-        </div>
         <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-8 pb-12 sm:pt-12 sm:pb-16 text-center flex flex-col">
           {/* Phones: the download as a slim banner up top, so the call card
               and its mobile field come straight after the headline and the
@@ -151,7 +138,7 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
             </div>
           </div>
 
-          <h1 className="rise rise-d1 font-display text-ink tracking-tight text-3xl sm:text-4xl lg:text-5xl leading-[1.05] font-medium mb-3">
+          <h1 className="rise rise-d1 font-display text-ink tracking-tight text-3xl sm:text-4xl lg:text-5xl leading-[1.05] font-bold mb-3">
             {copy.headline}
           </h1>
           <p className="rise rise-d2 font-sans text-base text-ink-muted leading-relaxed max-w-xl mx-auto mb-8 max-lg:order-last max-lg:mt-8 max-lg:mb-0">
@@ -196,7 +183,7 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
 
       <section className="bg-surface-raised">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
-          <h2 className="font-display text-ink tracking-tight text-2xl sm:text-3xl font-medium mb-8 text-center">
+          <h2 className="font-display text-ink tracking-tight text-2xl sm:text-3xl font-bold mb-8 text-center">
             While you&rsquo;re here
           </h2>
           <div

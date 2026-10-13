@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { HouseLandCard } from "@/components/property/HouseLandCard";
 import { RelatedGuidesSection } from "@/components/guide/GuideLinkList";
@@ -74,28 +73,20 @@ export default async function HouseAndLandPage({ searchParams }: PageProps) {
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
           <div className="mb-8">
             <Breadcrumbs items={[{ label: "House & Land" }]} />
           </div>
 
           {/* A count only when there is one to print: never "0 new packages". */}
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             {listed ? `${packages.length} new ${packages.length !== 1 ? "packages" : "package"}` : "House & land"}
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
             {suburbName ? (
-              <>House &amp; land in <span className="italic text-primary">{suburbName}</span>.</>
+              <>House &amp; land in <span>{suburbName}</span>.</>
             ) : listed ? (
-              <>House &amp; land, <span className="italic text-primary">brand new</span>.</>
+              <>House &amp; land, <span>brand new</span>.</>
             ) : (
               <>House &amp; land packages</>
             )}

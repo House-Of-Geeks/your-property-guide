@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Calendar, Clock, User, ShieldCheck } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BUYING_GUIDE_CTA, ExpertCTA, StickyMatchCTA } from "@/components/journey";
@@ -10,7 +9,11 @@ import { Tldr } from "./Tldr";
 import { Faq, type FaqItem } from "./Faq";
 import { RelatedGuides, type RelatedGuide } from "./RelatedGuides";
 import { AuthorBylineCard } from "./AuthorBylineCard";
+import { GuideAudienceProvider } from "./GuideAudienceContext";
+import { GuideStartInline } from "./GuideStartInline";
+import { splitAfterFirstSection } from "./split-first-section";
 import { PERSONA_BY_ID, type PersonaId } from "@/lib/constants/journey";
+import { guideAudienceForPersona, guideFunnelHref } from "@/lib/guide-funnel";
 
 export interface GuideFrontmatter {
   title: string;          // SERP title (metadata); also the H1 unless h1 is set
@@ -64,8 +67,19 @@ export function GuideArticleLayout({
   // Buyer-persona guides must not pitch the selling guide — a first-home
   // buyer reading "how much deposit do I need" has nothing to sell. Route
   // them to the buying-guide funnel; every other persona keeps the
-  // selling-guide default (the site's primary conversion point).
-  const buyerFunnel = stickyIntent === "buying" ? BUYING_GUIDE_CTA : undefined;
+  // selling-guide default (the site's primary conversion point). In-body
+  // MatchCTAs read the same audience from GuideAudienceProvider below.
+  const audience = guideAudienceForPersona(frontmatter.persona);
+  const from = frontmatter.slug;
+  const funnelHref = guideFunnelHref(audience ?? "selling", { from });
+  const buyerFunnel = audience === "buying" ? BUYING_GUIDE_CTA : undefined;
+
+  // Seller guides (the commission and fees guides are where the site's
+  // sellers come from) start the selling-guide funnel in place: once after
+  // the first section and once at the end, instead of outline buttons to
+  // the landing page.
+  const sellerGuide = audience === "selling";
+  const body = sellerGuide ? splitAfterFirstSection(children) : null;
 
   const guideUrl = `/guides/${frontmatter.slug}`;
   const heading = frontmatter.h1 ?? frontmatter.title;
@@ -97,14 +111,6 @@ export function GuideArticleLayout({
           byline. Illustration column dropped: guides read as authoritative
           editorial when the headline owns the page. */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className={`relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 ${beforeBody ? "pb-8 sm:pb-10" : "pb-14 sm:pb-20 lg:pb-24"}`}>
           <div className="mb-10">
             <Breadcrumbs items={breadcrumbItems} />
@@ -115,24 +121,24 @@ export function GuideArticleLayout({
             {persona ? (
               <Link
                 href={persona.hubPath}
-                className="font-display italic text-primary hover:text-cta-hover text-base sm:text-lg leading-none transition-colors"
+                className="font-display text-primary hover:text-cta-hover text-base sm:text-lg leading-none transition-colors"
               >
                 For {persona.cardLabel.toLowerCase()}
               </Link>
             ) : (
-              <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              <span className="text-sm font-semibold text-ink-muted leading-none">
                 The reading list
               </span>
             )}
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
               <ShieldCheck className="w-3 h-3 text-emerald-700" aria-hidden="true" />
               Reviewed <FormattedDate iso={updatedAt} />
             </span>
           </div>
 
           {/* Display-scale H1. text-7xl/lg:8xl for editorial weight */}
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-bold">
             {heading}
           </h1>
 
@@ -142,7 +148,7 @@ export function GuideArticleLayout({
               spoken summary alongside the H1. */}
           <p
             data-speakable-summary
-            className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10"
+            className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10"
           >
             {frontmatter.description}
           </p>
@@ -201,7 +207,7 @@ export function GuideArticleLayout({
                 <GuideTOC entries={toc} variant="sidebar" />
 
                 <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2 inline-flex items-center gap-1.5">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-2 inline-flex items-center gap-1.5">
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" aria-hidden="true" />
                     Last reviewed
                   </p>
@@ -219,7 +225,7 @@ export function GuideArticleLayout({
                 </div>
 
                 <div>
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
                     Editorial integrity
                   </p>
                   <p className="font-sans text-sm text-ink-muted leading-relaxed">
@@ -247,19 +253,33 @@ export function GuideArticleLayout({
                 <GuideTOC entries={toc} />
               </div>
 
-              <div className="prose-ypg">
-                {children}
-              </div>
+              <GuideAudienceProvider audience={audience} from={from}>
+                {body ? (
+                  <>
+                    {body.head.length > 0 && <div className="prose-ypg">{body.head}</div>}
+                    <GuideStartInline from={from} />
+                    <div className="prose-ypg">{body.tail}</div>
+                  </>
+                ) : (
+                  <div className="prose-ypg">
+                    {children}
+                  </div>
+                )}
+              </GuideAudienceProvider>
 
               {/* undefined props fall through to ExpertCTA's selling
                   defaults, so only buyer personas are overridden. */}
-              {persona && (
-                <ExpertCTA
-                  variant="inline"
-                  body={buyerFunnel?.body}
-                  ctaLabel={buyerFunnel?.ctaLabel}
-                  href={buyerFunnel?.href}
-                />
+              {sellerGuide ? (
+                <GuideStartInline from={from} />
+              ) : (
+                persona && (
+                  <ExpertCTA
+                    variant="inline"
+                    body={buyerFunnel?.body}
+                    ctaLabel={buyerFunnel?.ctaLabel}
+                    href={funnelHref}
+                  />
+                )
               )}
 
               <Faq items={faqs} />
@@ -288,7 +308,7 @@ export function GuideArticleLayout({
       {persona && stickyIntent && (
         <StickyMatchCTA
           intent={stickyIntent}
-          href={buyerFunnel?.href}
+          href={funnelHref}
           label={buyerFunnel?.ctaLabel}
           dismissKey={`guide:${frontmatter.slug}`}
         />

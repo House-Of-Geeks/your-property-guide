@@ -176,11 +176,11 @@ export function CommissionCalculator({
           answers "how do I keep that number down". */}
       {showGuideCta && (
       <div className="rounded-xl border border-line bg-surface-warm p-6 sm:p-7">
-        <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-2">
+        <p className="text-[13px] text-cta font-medium mb-2">
           Free guide
         </p>
         <h3 className="font-display text-xl sm:text-2xl text-ink leading-tight tracking-tight mb-2">
-          Commission is negotiable. Most sellers never ask.
+          Commission is negotiable. Most sellers never ask
         </h3>
         <p className="text-sm text-ink-muted leading-relaxed mb-4">
           Our free selling guide covers how to compare agents on results

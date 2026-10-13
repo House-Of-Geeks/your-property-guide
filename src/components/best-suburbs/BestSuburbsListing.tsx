@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, ItemListJsonLd, FAQPageJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
@@ -80,7 +79,7 @@ const SECONDARY_LABEL: Record<RankingCategory, string> = {
 function floodBadge(floodClass: string | null): React.ReactElement {
   if (!floodClass) {
     return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-sans font-medium bg-surface-warm border border-line text-ink-muted">
+      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-sans font-medium bg-surface-warm border border-line text-ink-muted">
         No data
       </span>
     );
@@ -93,7 +92,7 @@ function floodBadge(floodClass: string | null): React.ReactElement {
   };
   const cls = classes[floodClass] ?? "bg-surface-warm border-line text-ink-muted";
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-sans font-medium capitalize border ${cls}`}>
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-sans font-medium capitalize border ${cls}`}>
       {floodClass}
     </span>
   );
@@ -106,7 +105,7 @@ function AreaMark({ suburb, show }: { suburb: RankedSuburb; show: boolean }) {
   return (
     <abbr
       title="ABS statistical-area (SA2) median: the area that carries the suburb's name, which can take in surrounding localities"
-      className="ml-1 font-sans text-[10px] uppercase tracking-wide text-ink-subtle no-underline"
+      className="ml-1 font-sans text-[13px] text-ink-subtle no-underline"
     >
       area
     </abbr>
@@ -249,14 +248,6 @@ export function BestSuburbsListing({
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
           <div className="mb-8">
             <Breadcrumbs
@@ -272,13 +263,13 @@ export function BestSuburbsListing({
             />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             {eyebrow}
           </p>
           {/* Fix item 45: one string after the italic span, so React writes a
               single text node and no <!-- --> boundary before the full stop. */}
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            The <span className="italic text-primary">{h1.lead}</span>
+            The <span>{h1.lead}</span>
             {` ${h1.noun} in ${placeName(state)}.`}
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
@@ -292,7 +283,7 @@ export function BestSuburbsListing({
         {/* Editorial commentary band, what this ranking is and how to use it */}
         <section className="mb-10 grid lg:grid-cols-12 gap-8">
           <div className="lg:col-span-7">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+            <p className="text-[13px] font-sans text-ink-subtle mb-3">
               About this ranking
             </p>
             <div className="prose-ypg prose-ypg-tight">
@@ -312,7 +303,7 @@ export function BestSuburbsListing({
             {stateCommentary && (
               <>
                 <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
                     Buyer tip, {state}
                   </p>
                   <p className="font-sans text-sm text-ink leading-relaxed">
@@ -320,7 +311,7 @@ export function BestSuburbsListing({
                   </p>
                 </div>
                 <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
                     Watch out, {state}
                   </p>
                   <p className="font-sans text-sm text-ink leading-relaxed">
@@ -330,7 +321,7 @@ export function BestSuburbsListing({
               </>
             )}
             <div className="rounded-2xl border border-line bg-surface-warm p-5">
-              <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+              <p className="text-[13px] font-sans text-ink-subtle mb-2">
                 Methodology
               </p>
               <p className="font-sans text-sm text-ink-muted leading-relaxed">
@@ -338,7 +329,7 @@ export function BestSuburbsListing({
               </p>
             </div>
             <div className="rounded-2xl border border-line bg-surface-warm p-5">
-              <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+              <p className="text-[13px] font-sans text-ink-subtle mb-2">
                 Best for
               </p>
               <p className="font-sans text-sm text-ink-muted leading-relaxed">
@@ -350,7 +341,7 @@ export function BestSuburbsListing({
 
         {/* State filter pills */}
         <div className="flex flex-wrap items-center gap-2 mb-6">
-          <span className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mr-2">
+          <span className="text-[13px] font-sans text-ink-subtle mr-2">
             By state
           </span>
           <Link
@@ -381,7 +372,7 @@ export function BestSuburbsListing({
         {/* The city editions: the same ranking over a greater capital city, one section per suburb */}
         {cityEditions.length > 0 && (
           <div className="flex flex-wrap items-center gap-2 mb-6">
-            <span className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mr-2">
+            <span className="text-[13px] font-sans text-ink-subtle mr-2">
               By city
             </span>
             {cityEditions.map((e) => (
@@ -421,16 +412,16 @@ export function BestSuburbsListing({
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-surface-warm border-b border-line">
-                    <th className="py-3 px-4 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide w-10">#</th>
-                    <th className="py-3 px-4 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide">Suburb</th>
-                    <th className="py-3 px-4 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide">State</th>
-                    <th className="py-3 px-4 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">
+                    <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink w-10">#</th>
+                    <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink">Suburb</th>
+                    <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink">State</th>
+                    <th className="py-3 px-4 text-right text-[13px] font-sans font-medium text-ink">
                       {PRIMARY_LABEL[category]}
                     </th>
-                    <th className="py-3 px-4 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">
+                    <th className="py-3 px-4 text-right text-[13px] font-sans font-medium text-ink">
                       {SECONDARY_LABEL[category]}
                     </th>
-                    <th className="py-3 px-4 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">Profile</th>
+                    <th className="py-3 px-4 text-right text-[13px] font-sans font-medium text-ink">Profile</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-line">
@@ -503,7 +494,7 @@ export function BestSuburbsListing({
                       </p>
                     </div>
                   </div>
-                  <p className="mt-3 text-xs font-sans uppercase tracking-wider text-ink">
+                  <p className="mt-3 text-[13px] font-sans text-ink">
                     View profile →
                   </p>
                 </Link>
@@ -515,11 +506,11 @@ export function BestSuburbsListing({
         {/* FAQ section, emits FAQPage schema for rich-results */}
         <section className="mt-14 grid lg:grid-cols-12 gap-8">
           <div className="lg:col-span-4">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+            <p className="text-[13px] font-sans text-ink-subtle mb-3">
               Common questions
             </p>
             <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-              About this ranking.
+              About this ranking
             </h2>
           </div>
           <div className="lg:col-span-8 space-y-4">
@@ -551,7 +542,7 @@ export function BestSuburbsListing({
 
         {/* Cross-link to other categories */}
         <div className="mt-12 rounded-2xl border border-line bg-surface-warm p-6">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+          <p className="text-[13px] font-sans text-ink-subtle mb-3">
             Other rankings
           </p>
           <div className="flex flex-wrap gap-2">

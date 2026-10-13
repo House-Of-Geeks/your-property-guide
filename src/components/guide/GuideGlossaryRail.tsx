@@ -40,7 +40,7 @@ export function GuideGlossaryRail({
 
   return (
     <aside className="not-prose my-10 rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
-      <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2 inline-flex items-center gap-2">
+      <p className="text-[13px] font-sans text-ink-subtle mb-2 inline-flex items-center gap-2">
         <BookOpen className="w-3.5 h-3.5" aria-hidden="true" />
         Glossary
       </p>

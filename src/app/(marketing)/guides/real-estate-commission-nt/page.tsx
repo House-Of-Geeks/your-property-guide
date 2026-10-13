@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   SellingCostTable,
   CommissionCalculatorEmbed,
@@ -303,8 +302,6 @@ export default function RealEstateCommissionNtPage() {
         rate. The rate is between you and the agent.
       </p>
 
-      <MatchCTA kind="selling-agent" />
-
       <h2 id="other-costs">Commission vs the rest of your selling costs</h2>
       <p>
         Commission is the single largest cost of selling in the Northern
@@ -350,8 +347,6 @@ export default function RealEstateCommissionNtPage() {
           have picked your agent.
         </li>
       </ol>
-
-      <MatchCTA kind="selling-agent" />
 
       <Sources items={NT_COMMISSION_SOURCES} />
     </GuideArticleLayout>

@@ -111,9 +111,9 @@ export function RentalAppraisalForm({ suburbName, suburbSlug, state, postcode }:
       <div className="rounded-2xl border border-cta/30 bg-surface-raised p-6 sm:p-8 shadow-card" role="status">
         <div className="flex items-center gap-3 mb-3">
           <div className="w-9 h-9 rounded-full bg-cta text-ink grid place-items-center"><CheckCircle className="w-5 h-5" /></div>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-medium">Request received</p>
+          <p className="text-[13px] text-ink-subtle font-medium">Request received</p>
         </div>
-        <h3 className="font-display text-2xl text-ink leading-tight mb-2">Your rental appraisal request is in, {done}.</h3>
+        <h3 className="font-display text-2xl text-ink leading-tight mb-2">Your rental appraisal request is in, {done}</h3>
         <p className="font-sans text-sm text-ink-muted leading-relaxed max-w-md">
           {`Look for a confirmation in your inbox in the next few minutes. A property manager who works in ${suburbName} will call within one business day to arrange the appraisal.`}
         </p>
@@ -128,7 +128,7 @@ export function RentalAppraisalForm({ suburbName, suburbSlug, state, postcode }:
           <div className="flex-shrink-0 w-9 h-9 rounded-full bg-cta text-ink grid place-items-center">
             <KeyRound className="w-4.5 h-4.5" />
           </div>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-white/78 font-medium">Free rental appraisal in {suburbName}</p>
+          <p className="text-[13px] text-white/78 font-medium">Free rental appraisal in {suburbName}</p>
         </div>
         <h3 className="font-display text-2xl sm:text-3xl text-white leading-tight tracking-tight mb-2">
           What should your {suburbName} property rent for?
@@ -167,7 +167,7 @@ export function RentalAppraisalForm({ suburbName, suburbSlug, state, postcode }:
             required
             invalid={!!phoneError}
             aria-describedby={phoneError ? "rental-appraisal-phone-error" : undefined}
-            placeholder="0412 345 678"
+            placeholder="0491 570 156"
             tone="raised"
             size="md"
           />

@@ -24,11 +24,11 @@ export function SuburbFAQ({ suburb }: SuburbFAQProps) {
       <section id="faq" className="scroll-mt-16">
         <div className="grid lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-4">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">
+            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">
               Frequently asked
             </p>
-            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight font-medium">
-              About <span className="italic font-light text-primary">{sn}</span>.
+            <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight font-bold">
+              About <span>{sn}</span>
             </h2>
           </div>
           <div className="lg:col-span-8">

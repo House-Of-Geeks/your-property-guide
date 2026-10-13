@@ -102,7 +102,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Property Auction Guide", href: "/guides/property-auction-guide", description: "If you're heading to auction with or without a buyer's agent, here's the playbook." },
   { title: "Real Estate Agent Fees in Australia", href: "/guides/real-estate-agent-fees-australia", description: "Selling agent commissions across every state, side-by-side." },
   { title: "Off-Market Properties", href: "/off-market", description: "Properties before they hit Domain or realestate.com.au, what buyer's agents access on your behalf." },
-  { title: "Find an Expert", href: "/find-an-expert", description: "Browse buyer's agents and brokers we've vetted." },
+  { title: "Free buying guide", href: "/buying-guide", description: "What you can really spend, how not to overpay, and the contract through to settlement." },
 ];
 
 export default function BuyersAgentCostGuide() {

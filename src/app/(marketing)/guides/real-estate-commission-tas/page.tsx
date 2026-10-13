@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   SellingCostTable,
   CommissionCalculatorEmbed,
@@ -291,8 +290,6 @@ export default function RealEstateCommissionTasPage() {
         licensed through CBOS is a sensible step before you sign.
       </p>
 
-      <MatchCTA kind="selling-agent" />
-
       <h2 id="other-costs">Commission vs the rest of your selling costs</h2>
       <p>
         Commission is the largest cost of selling, but it is not the only one.
@@ -338,8 +335,6 @@ export default function RealEstateCommissionTasPage() {
           on its TAS setting so you know the dollar figure before any meeting.
         </li>
       </ol>
-
-      <MatchCTA kind="selling-agent" />
 
       <Sources items={TAS_COMMISSION_SOURCES} />
     </GuideArticleLayout>

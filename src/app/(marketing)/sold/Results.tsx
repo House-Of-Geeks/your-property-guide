@@ -20,7 +20,7 @@ export async function SoldResults({ searchParams }: SoldResultsProps) {
 
   return (
     <>
-      <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+      <p className="text-[13px] font-sans text-ink-subtle mb-5">
         {properties.length.toLocaleString()} recently sold
       </p>
       <PropertyGrid properties={properties} emptyMessage="No sold results found matching your criteria." />

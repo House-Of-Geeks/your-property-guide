@@ -124,7 +124,7 @@ export function AgentSearch() {
         >
           {results.locations.length > 0 && (
             <div>
-              <p className="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Suburbs</p>
+              <p className="px-4 pt-3 pb-1 text-[13px] font-semibold text-gray-400">Suburbs</p>
               {results.locations.map((loc, i) => (
                 <button
                   key={loc.slug}
@@ -144,7 +144,7 @@ export function AgentSearch() {
 
           {results.agencies.length > 0 && (
             <div className={results.locations.length > 0 ? "border-t border-gray-100" : ""}>
-              <p className="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Agencies</p>
+              <p className="px-4 pt-3 pb-1 text-[13px] font-semibold text-gray-400">Agencies</p>
               {results.agencies.map((agency, i) => {
                 const idx = results.locations.length + i;
                 return (

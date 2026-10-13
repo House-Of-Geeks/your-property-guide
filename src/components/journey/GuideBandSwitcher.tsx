@@ -51,11 +51,11 @@ export function GuideBandSwitcher() {
       {/* Left, pitch */}
       <div className="lg:col-span-5">
         <div className="flex items-center gap-4 mb-8">
-          <span className="font-display italic text-cta text-base sm:text-lg leading-none">
+          <span className="text-sm font-semibold text-ink-muted leading-none">
             No. 06
           </span>
           <span className="w-12 h-px bg-white/20" aria-hidden="true" />
-          <span className="text-[11px] uppercase tracking-[0.32em] text-white/75 font-sans font-medium">
+          <span className="text-[13px] text-white/75 font-sans font-medium">
             Free PDF · 2026 edition
           </span>
         </div>
@@ -73,7 +73,7 @@ export function GuideBandSwitcher() {
               aria-selected={path === key}
               onClick={() => setPath(key)}
               className={[
-                "rounded-full px-5 py-2 text-sm font-sans font-semibold transition-colors cursor-pointer",
+                "rounded-md px-5 py-2 text-sm font-sans font-semibold transition-colors cursor-pointer",
                 path === key ? "bg-cta text-white" : "text-white/75 hover:text-white",
               ].join(" ")}
             >
@@ -84,12 +84,12 @@ export function GuideBandSwitcher() {
 
         {/* Re-keyed on toggle so the pitch steps in for each path */}
         <div key={path} className="step-in">
-          <h2 className="font-display text-white leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">
+          <h2 className="font-display text-white leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-bold">
             {c.headlineLead}{" "}
-            <span className="italic font-light text-cta">{c.headlineAccent}</span>{" "}
+            <span>{c.headlineAccent}</span>{" "}
             {c.headlineTail}
           </h2>
-          <p className="font-display font-light text-xl sm:text-2xl text-white/88 leading-snug max-w-md mb-12">
+          <p className="font-display font-normal text-xl sm:text-2xl text-white/88 leading-snug max-w-md mb-12">
             {c.pitch}
           </p>
           <div className="grid grid-cols-2 gap-x-6 gap-y-6 max-w-md">
@@ -99,7 +99,7 @@ export function GuideBandSwitcher() {
                 className="step-in border-t border-white/15 pt-4"
                 style={{ animationDelay: `${i * 70}ms` }}
               >
-                <p className="font-display italic text-cta text-base mb-1.5 tabular-nums">{n}</p>
+                <p className="font-display text-cta text-base mb-1.5 tabular-nums">{n}</p>
                 <p className="text-sm text-white/92 leading-snug">{t}</p>
               </div>
             ))}

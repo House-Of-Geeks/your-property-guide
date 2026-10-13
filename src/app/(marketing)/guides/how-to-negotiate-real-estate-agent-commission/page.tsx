@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   EditorNote,
   PullQuote,
@@ -374,8 +373,6 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
         precisely the work you&rsquo;re paying them for.
       </p>
 
-      <MatchCTA kind="selling-agent" />
-
       <h2 id="marketing">Marketing costs to challenge</h2>
       <p>
         Marketing is billed on top of commission and usually payable whether
@@ -544,8 +541,6 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
           the scripts above, everything in the agreement in numbers.
         </li>
       </ol>
-
-      <MatchCTA kind="selling-agent" />
 
       <Sources items={COMMISSION_NEGOTIATION_SOURCES} />
     </GuideArticleLayout>

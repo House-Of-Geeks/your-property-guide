@@ -1,145 +1,82 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Key } from "lucide-react";
+import { Phone } from "lucide-react";
 import { NewsletterForm as NewsletterFormFooter } from "@/components/newsletter/NewsletterForm";
+import { Logo } from "@/components/brand/Logo";
+import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164 } from "@/lib/constants";
 
-type SvgProps = { className?: string };
-
-function IconFacebook({ className }: SvgProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-    </svg>
-  );
-}
-
-function IconInstagram({ className }: SvgProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-    </svg>
-  );
-}
-
-function IconLinkedIn({ className }: SvgProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-    </svg>
-  );
-}
-
-function IconYouTube({ className }: SvgProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-    </svg>
-  );
-}
-
-function IconX({ className }: SvgProps) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  );
-}
-
-const SOCIAL_LINKS = [
-  { label: "Facebook",  href: "#", Icon: IconFacebook },
-  { label: "Instagram", href: "#", Icon: IconInstagram },
-  { label: "LinkedIn",  href: "#", Icon: IconLinkedIn },
-  { label: "YouTube",   href: "#", Icon: IconYouTube },
-  { label: "X (Twitter)", href: "#", Icon: IconX },
-];
-
-// Education-first column structure. Replaced the prior listings-portal
-// columns ("Capital Cities real estate", "Capital Cities Rentals",
-// "Popular Areas" — all /buy?state=... and /rent?suburb=...) which were
-// SEO-baiting for keywords we deliberately don't compete on. The new
-// columns reflect what we are: a property reference, not a listings site.
+// Brand v4 (Oct 2026). Columns follow the two jobs (selling, buying), then
+// guides and tools, then the company. Agent-facing links sit in their own
+// group. Social icons were removed until the accounts exist (they linked
+// to "#").
 const FOOTER_COLUMNS = [
   {
-    heading: "Learn",
+    heading: "Selling",
     links: [
-      { label: "Browse all guides",        href: "/guides" },
-      { label: "Free buying guide (PDF)",  href: "/buying-guide" },
-      { label: "Free selling guide (PDF)", href: "/selling-guide" },
-      { label: "First home buyers",        href: "/first-home-buyers" },
-      { label: "Selling your home",        href: "/selling" },
-      { label: "Investing in property",    href: "/investing" },
-      { label: "Renovating your home",     href: "/renovating" },
-      { label: "Upgrading or downsizing",  href: "/upgrading" },
-      { label: "Property glossary",        href: "/glossary" },
+      { label: "Free selling guide",        href: "/selling-guide" },
+      { label: "Free property appraisal",   href: "/appraisal" },
+      { label: "Selling your home",         href: "/selling" },
+      { label: "Choosing a selling agent",  href: "/guides/how-to-choose-a-selling-agent" },
+      { label: "Agent fees and commission", href: "/guides/real-estate-agent-fees-australia" },
+      { label: "Cost of selling",           href: "/guides/cost-of-selling-a-house-australia" },
+      { label: "Commission calculator",     href: "/real-estate-commission-calculator" },
+      { label: "Selling costs calculator",  href: "/selling-costs-calculator" },
     ],
   },
   {
-    heading: "Tools",
+    heading: "Buying",
     links: [
-      { label: "All calculators",          href: "/tools" },
-      { label: "Agent commission",         href: "/real-estate-commission-calculator" },
-      { label: "Property valuation range", href: "/property-valuation" },
-      { label: "Find your suburb (quiz)",  href: "/find-your-suburb" },
-      { label: "Compare two suburbs",      href: "/compare" },
-      { label: "Mortgage calculator",      href: "/mortgage-calculator" },
-      { label: "Stamp duty by state",      href: "/stamp-duty-calculator" },
-      { label: "Borrowing power",          href: "/borrowing-power-calculator" },
-      { label: "Affordability",            href: "/affordability-calculator" },
-      { label: "Rental yield",             href: "/rental-yield-calculator" },
-      { label: "LMI calculator",           href: "/lmi-calculator" },
-      { label: "Negative gearing",         href: "/negative-gearing-calculator" },
-      { label: "Bridging loan",            href: "/bridging-loan-calculator" },
-      { label: "Help to Buy",              href: "/help-to-buy-calculator" },
-      { label: "FHSS",                     href: "/fhss-calculator" },
+      { label: "Free buying guide",       href: "/buying-guide" },
+      { label: "First home buyers",       href: "/first-home-buyers" },
+      { label: "Upgrading or downsizing", href: "/upgrading" },
+      { label: "Investing",               href: "/investing" },
+      { label: "Renovating",              href: "/renovating" },
+      { label: "Stamp duty calculator",   href: "/stamp-duty-calculator" },
+      { label: "Borrowing power",         href: "/borrowing-power-calculator" },
+      { label: "Mortgage calculator",     href: "/mortgage-calculator" },
     ],
   },
   {
-    heading: "Suburb data",
+    heading: "Guides and tools",
     links: [
-      { label: "All Australian suburbs",   href: "/suburbs" },
-      { label: "Best suburbs rankings",    href: "/best-suburbs" },
-      { label: "Price guide",              href: "/price-guide" },
-      { label: "Search by school",         href: "/schools" },
-      { label: "Browse by state",          href: "/states" },
-      { label: "Browse by postcode",       href: "/postcodes" },
-      { label: "Browse by region",         href: "/regions" },
+      { label: "All guides",          href: "/guides" },
+      { label: "Latest news",         href: "/guides/category/news" },
+      { label: "All calculators",     href: "/tools" },
+      { label: "LMI calculator",      href: "/lmi-calculator" },
+      { label: "Negative gearing",    href: "/negative-gearing-calculator" },
+      { label: "Property glossary",   href: "/glossary" },
+      { label: "Suburb profiles",     href: "/suburbs" },
+      { label: "Browse by postcode",  href: "/postcodes" },
+      { label: "Market reports",      href: "/market-reports" },
+      { label: "RBA cash rate",       href: "/rba-cash-rate" },
     ],
   },
   {
-    heading: "Market",
+    heading: "Company",
     links: [
-      { label: "Capital city outlooks",    href: "/market-reports" },
-      { label: "Latest news",              href: "/guides/category/news" },
-      { label: "RBA cash rate history",    href: "/rba-cash-rate" },
-      { label: "Best Deals",               href: "/best-deals" },
-      { label: "Find an expert",           href: "/find-an-expert" },
-      { label: "Free property appraisal",  href: "/appraisal" },
-      { label: "Real estate leads",        href: "/real-estate-leads" },
+      { label: "About us",            href: "/about" },
+      { label: "How we're paid",      href: "/about#ownership-funding" },
+      { label: "Editorial standards", href: "/about#methodology" },
+      { label: "Our team",            href: "/about#people" },
+      { label: "Corrections",         href: "/about#corrections" },
+      { label: "Contact",             href: "/contact" },
+      { label: "Privacy policy",      href: "/privacy" },
+      { label: "Site map",            href: "/site-map" },
     ],
   },
   {
-    heading: "About & trust",
+    heading: "For agents",
     links: [
-      { label: "About us",                 href: "/about" },
-      { label: "Editorial methodology",    href: "/about#methodology" },
-      { label: "Ownership & funding",      href: "/about#ownership-funding" },
-      { label: "Coverage & inclusivity",   href: "/about#coverage" },
-      { label: "Corrections policy",       href: "/about#corrections" },
-      { label: "Editorial team",           href: "/about#people" },
-      { label: "Contact",                  href: "/contact" },
-      { label: "RSS feed",                 href: "/guides/feed.xml" },
-      { label: "Site map",                 href: "/site-map" },
-      { label: "Privacy policy",           href: "/privacy" },
+      { label: "Seller leads for agents", href: "/real-estate-leads" },
+      { label: "Agent login",             href: "/dashboard/login" },
     ],
   },
 ];
 
-// Cross-promo network links. Rendered as a single inline row rather than a
-// full column so the link grid stays focused on this site's own content.
+// Sister sites in the same network. Kept as one quiet line.
 const NETWORK_LINKS = [
+  { label: "Your Finance Guide",   href: "https://www.yourfinanceguide.com.au" },
   { label: "Your Caravan Guide",   href: "https://www.yourcaravanguide.com.au" },
   { label: "Your Crypto Guide",    href: "https://www.yourcryptoguide.com.au" },
-  { label: "Your Finance Guide",   href: "https://www.yourfinanceguide.com.au" },
   { label: "Your Lifestyle Guide", href: "https://www.yourlifestyleguide.com.au" },
   { label: "Your Motorbike Guide", href: "https://www.yourmotorbikeguide.com.au" },
   { label: "Need a Tradie",        href: "https://www.needatradie.com" },
@@ -147,38 +84,19 @@ const NETWORK_LINKS = [
   { label: "Why Solar",            href: "https://www.whysolar.com.au" },
 ];
 
-function NetworkRow() {
+function LinkCol({ heading, links }: { heading: string; links: { label: string; href: string }[] }) {
   return (
-    <div className="mt-10">
-      <p className="text-[11px] font-semibold text-white/60 uppercase tracking-wider mb-2">
-        More from Profit Geeks
-      </p>
-      <p className="text-xs leading-relaxed">
-        {NETWORK_LINKS.map((l, i) => (
-          <span key={l.href}>
-            {i > 0 && (
-              <>
-                <span className="mx-2 text-white/55" aria-hidden="true">
-                  &middot;
-                </span>
-                {/* The one place this row may wrap. Each link is nowrap and
-                    nothing between them is a space, so without this the row
-                    was a single 893px line and made every page scroll
-                    sideways on screens narrower than that. */}
-                <wbr />
-              </>
-            )}
-            <a
-              href={l.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/55 hover:text-white/80 transition-colors whitespace-nowrap"
-            >
+    <div>
+      <h3 className="text-sm font-semibold text-white mb-3 tracking-normal">{heading}</h3>
+      <ul className="space-y-2">
+        {links.map((l) => (
+          <li key={l.href}>
+            <Link href={l.href} className="text-sm text-white/70 hover:text-white transition-colors leading-snug block">
               {l.label}
-            </a>
-          </span>
+            </Link>
+          </li>
         ))}
-      </p>
+      </ul>
     </div>
   );
 }
@@ -193,117 +111,58 @@ function nearbyName(slug: string): string {
 
 function FooterBottom() {
   return (
-    <div className="mt-12 pt-8 border-t border-white/10">
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
-        <div className="flex flex-col items-center sm:items-start gap-3">
-          <Link href="/" className="flex items-center gap-3">
-            <Key className="w-6 h-6 text-accent shrink-0" aria-hidden="true" strokeWidth={2.25} />
-            <div className="flex flex-col leading-none">
-              <span className="font-display text-white text-2xl tracking-tight leading-none">Your Property Guide</span>
-              <span className="font-display italic text-accent text-[11px] tracking-tight leading-none mt-1.5">
-                Plain-English Australian property
-              </span>
-            </div>
-          </Link>
-          <p className="text-sm text-white/70 max-w-xs leading-relaxed">
-            Plain-English Australian property education. Once you know
-            what&rsquo;s actually happening, you make better choices.
-            Published from Brisbane, Australia.
-          </p>
-        </div>
-        <div className="flex flex-col items-center gap-3">
-          <div className="flex gap-4">
-            {SOCIAL_LINKS.map(({ label, href, Icon }) => (
-              <Link
-                key={label}
-                href={href}
-                aria-label={label}
-                className="text-white/55 hover:text-white transition-colors"
-              >
-                <Icon className="w-5 h-5" />
-              </Link>
-            ))}
-          </div>
-          <p className="text-sm text-white/50">
-            &copy; {new Date().getFullYear()} Your Property Guide. All rights reserved.
-          </p>
-        </div>
-        <div className="flex gap-6">
-          <Link href="/privacy" className="text-sm text-white/55 hover:text-white transition-colors">Privacy</Link>
-          <Link href="/contact" className="text-sm text-white/55 hover:text-white transition-colors">Contact</Link>
-          <Link href="/sitemap.xml" className="text-sm text-white/55 hover:text-white transition-colors">Sitemap</Link>
-          <Link href="/dashboard/login" className="text-sm text-white/55 hover:text-white transition-colors">Agent login</Link>
+    <div className="mt-12 pt-8 border-t border-white/10 grid gap-6">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <p className="text-sm text-white/60">
+          &copy; {new Date().getFullYear()} Your Property Guide. Published from Brisbane, Australia.
+        </p>
+        <div className="flex flex-wrap gap-x-6 gap-y-2">
+          <Link href="/privacy" className="text-sm text-white/60 hover:text-white transition-colors">Privacy</Link>
+          <Link href="/contact" className="text-sm text-white/60 hover:text-white transition-colors">Contact</Link>
+          <Link href="/sitemap.xml" className="text-sm text-white/60 hover:text-white transition-colors">Sitemap</Link>
         </div>
       </div>
-    </div>
-  );
-}
-
-function LinkCol({ heading, links }: { heading: string; links: { label: string; href: string }[] }) {
-  return (
-    <div>
-      <h3 className="text-xs font-semibold text-white/60 uppercase tracking-wider mb-3">{heading}</h3>
-      <ul className="space-y-2">
-        {links.map((l) => (
-          <li key={l.href}>
-            {l.href.startsWith("http") ? (
-              <a href={l.href} target="_blank" rel="noopener noreferrer" className="text-sm text-white/75 hover:text-white transition-colors leading-snug block">
-                {l.label}
-              </a>
-            ) : (
-              <Link href={l.href} className="text-sm text-white/75 hover:text-white transition-colors leading-snug block">
-                {l.label}
-              </Link>
-            )}
-          </li>
+      <p className="text-xs leading-relaxed text-white/45">
+        Part of the Profit Geeks network:{" "}
+        {NETWORK_LINKS.map((l, i) => (
+          <span key={l.href}>
+            {i > 0 && <span aria-hidden="true">, </span>}
+            <a href={l.href} target="_blank" rel="noopener noreferrer" className="hover:text-white/80 transition-colors">
+              {l.label}
+            </a>
+          </span>
         ))}
-      </ul>
+        .
+      </p>
     </div>
   );
 }
 
 function SuburbFooter({ name, slug, nearbySuburbs }: { name: string; slug: string; nearbySuburbs: string[] }) {
   const nearby = nearbySuburbs.slice(0, 8);
-
-  const forSale = [
-    { label: `Houses for sale in ${name}`,         href: `/buy?suburb=${slug}&propertyType=house` },
-    { label: `Units for sale in ${name}`,          href: `/buy?suburb=${slug}&propertyType=unit` },
-    { label: `Townhouses for sale in ${name}`,     href: `/buy?suburb=${slug}&propertyType=townhouse` },
-    { label: `All properties for sale in ${name}`, href: `/suburbs/${slug}/buy` },
-  ];
-  const forRent = [
-    { label: `Houses for rent in ${name}`,  href: `/rent?suburb=${slug}&propertyType=house` },
-    { label: `Units for rent in ${name}`,   href: `/rent?suburb=${slug}&propertyType=unit` },
-    { label: `Townhouses for rent in ${name}`, href: `/rent?suburb=${slug}&propertyType=townhouse` },
-    { label: `All rentals in ${name}`,      href: `/suburbs/${slug}/rent` },
+  const selling = [
+    { label: `Selling in ${name}`,       href: `/selling-guide?suburb=${slug}` },
+    { label: "Free property appraisal",  href: "/appraisal" },
+    { label: "Commission calculator",    href: "/real-estate-commission-calculator" },
   ];
   const suburbLinks = [
-    { label: `${name} suburb profile`,          href: `/suburbs/${slug}` },
-    { label: `House and Land in ${name}`,       href: `/house-and-land?suburb=${slug}` },
-    { label: `Schools in ${name}`,              href: `/suburbs/${slug}#schools` },
-    { label: "Home Price Guide",                href: "/price-guide" },
-    { label: "Privacy Policy",                  href: "/privacy" },
-    { label: "Get a free appraisal",            href: "/appraisal" },
+    { label: `${name} suburb profile`, href: `/suburbs/${slug}` },
+    { label: `Schools in ${name}`,     href: `/suburbs/${slug}#schools` },
+    { label: "Privacy policy",         href: "/privacy" },
   ];
 
   return (
-    <footer className="band-glow bg-surface-inverse text-white border-t-4 border-t-white">
+    <footer className="bg-surface-inverse text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
-          <LinkCol heading="For Sale"           links={forSale} />
-          <LinkCol heading="For Rent"           links={forRent} />
-          <LinkCol heading={name}               links={suburbLinks} />
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
+          <LinkCol heading="Selling" links={selling} />
+          <LinkCol heading={name} links={suburbLinks} />
           <LinkCol
-            heading="Surrounding Suburbs"
+            heading="Nearby suburbs"
             links={
               nearby.length > 0
                 ? nearby.map((s) => ({ label: nearbyName(s), href: `/suburbs/${s}` }))
-                : [
-                    { label: "Explore all suburbs", href: "/suburbs" },
-                    { label: "Buy property",        href: "/buy" },
-                    { label: "Rent property",       href: "/rent" },
-                    { label: "Free appraisal",      href: "/appraisal" },
-                  ]
+                : [{ label: "All suburbs", href: "/suburbs" }]
             }
           />
         </div>
@@ -312,70 +171,58 @@ function SuburbFooter({ name, slug, nearbySuburbs }: { name: string; slug: strin
     </footer>
   );
 }
+export { SuburbFooter };
 
-// Pure component, no headers() / cookies() / DB calls. Reading request-time
-// APIs from the shared marketing layout opted every page into dynamic
-// rendering and prevented CDN caching. The previous "suburb-aware" Footer
-// variant on /suburbs/{slug} and /buy|/rent|/sold/{slug} has been retired,
-// the suburb-context links it provided are already rendered in the page
-// body via the suburb page's own components (`SuburbContextualLinks`,
-// nearby-suburb chips, etc.). Pages that genuinely need a different footer
-// can import `SuburbFooter` directly and replace `<Footer />` for that
-// route group.
+// Pure component, no headers() / cookies() / DB calls, so marketing pages
+// stay cacheable.
 export function Footer() {
   return (
-    <footer className="band-glow bg-surface-inverse text-white border-t border-white/10">
+    <footer className="bg-surface-inverse text-white">
       <NewsletterBand />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
-          {FOOTER_COLUMNS.map((col) => (
-            <LinkCol key={col.heading} heading={col.heading} links={col.links} />
-          ))}
+        <div className="grid gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-3 grid gap-4 content-start">
+            <Link href="/" aria-label="Your Property Guide, home">
+              <Logo tone="light" size="md" />
+            </Link>
+            <p className="text-sm text-white/70 leading-relaxed max-w-xs">
+              Free guides to selling and buying property in Australia. When
+              you&rsquo;re ready, one trusted local agent. Agents pay us for
+              introductions; it costs you nothing.
+            </p>
+            <a
+              href={`tel:${CONTACT_PHONE_E164}`}
+              className="inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-accent-light transition-colors tabular-nums w-fit"
+            >
+              <Phone className="w-4 h-4" aria-hidden="true" />
+              {CONTACT_PHONE_DISPLAY}
+            </a>
+          </div>
+          <div className="lg:col-span-9 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
+            {FOOTER_COLUMNS.map((col) => (
+              <LinkCol key={col.heading} heading={col.heading} links={col.links} />
+            ))}
+          </div>
         </div>
-        <NetworkRow />
         <FooterBottom />
       </div>
     </footer>
   );
 }
 
-// Newsletter capture band, single email field with editorial framing.
-// Renders above the link grid in the dark footer.
+// Newsletter capture band above the link grid.
 function NewsletterBand() {
   return (
-    <section className="relative border-b border-white/10 overflow-hidden">
-      {/* The night suburb closes every page: lamplit rooflines under the
-          newsletter ask, same signature as the hero and the guide band. */}
-      <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-        <Image
-          src="/images/hero/suburb-night-v2.jpg"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover object-bottom opacity-45"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-25% via-surface-inverse/80 via-60% to-surface-inverse/25" />
-      </div>
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid lg:grid-cols-12 gap-x-10 gap-y-8 items-end">
+    <section className="border-b border-white/10">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+        <div className="grid lg:grid-cols-12 gap-x-10 gap-y-6 items-center">
           <div className="lg:col-span-7">
-            <div className="flex items-center gap-4 mb-6">
-              <span className="font-display italic text-accent text-base leading-none">
-                The quarterly read
-              </span>
-              <span className="w-12 h-px bg-white/25" aria-hidden="true" />
-              <span className="text-[11px] uppercase tracking-[0.32em] text-white/70 font-sans font-medium">
-                Editor&rsquo;s note
-              </span>
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-white leading-[0.98] tracking-tight font-medium">
-              Plain-English property, in your{" "}
-              <span className="italic font-light text-accent">inbox</span>.
+            <h2 className="text-2xl sm:text-3xl text-white leading-tight">
+              One useful email a quarter
             </h2>
-            <p className="mt-4 font-display font-light text-lg sm:text-xl text-white/70 leading-snug max-w-lg">
-              One email a quarter, no more. New guides, scheme and policy
-              changes that actually matter, and the explainers worth your
-              time.
+            <p className="mt-2 text-base text-white/70 leading-relaxed max-w-lg">
+              Rule changes, new guides and what they mean if you&rsquo;re
+              selling or buying. Nothing else.
             </p>
           </div>
           <div className="lg:col-span-5">

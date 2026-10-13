@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 import { MatchAgentEmbed, TrustStrip } from "@/components/journey";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -14,14 +13,19 @@ import { SITE_URL } from "@/lib/constants";
 // canonical", 29 Sep 2026).
 export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}/find-an-expert` },
-  title: "Find your expert, agent, broker, or specialist",
+  title: "Find an expert: help selling or buying your home",
   description:
-    "Get connected with one vetted specialist for your property situation, agent, broker, accountant, conveyancer, whoever fits. Free for buyers and sellers, no commitment.",
+    "Selling? We introduce you to one local agent who sells in your area. Buying, or something else? Tell us your situation and we'll point you to the right next step. Free, no commitment.",
 };
 
 // Editorial hub explaining how the match flow works. The actual lead engine
 // lives at /#match (homepage MatchAgent). All CTAs on this page deep-link
 // to it with the right intent pre-filled.
+//
+// The promise is only what exists: sellers get one local agent (who pays us
+// for the introduction); everyone else gets pointed to the right next step.
+// No broker, accountant, conveyancer or lawyer matches, and no agent profile
+// emails (the agent directory is paused).
 
 interface Lane {
   intent: string; // matches MatchAgent Intent ids
@@ -38,52 +42,52 @@ const LANES: Lane[] = [
     eyebrow: "Buying",
     headline: "When you're searching, inspecting, or about to bid.",
     body:
-      "A buyer's agent works for you, not the seller. They know the suburb's real selling prices, run inspections on your behalf, vet the property, and handle the auction or negotiation.",
+      "Tell us where and when you're buying and we'll point you to the right next step: the guide chapter, the scheme or the calculator that fits your situation, before you inspect, bid or sign.",
     fits: [
       "You're comparing suburbs and shortlisting",
       "You're going to opens this weekend",
       "You've found the place and need to bid Saturday",
     ],
-    cta: "Get connected, buying",
+    cta: "Get help buying",
   },
   {
     intent: "selling",
     eyebrow: "Selling",
     headline: "When you want an appraisal or a real selling plan.",
     body:
-      "A listing agent who actually knows your suburb, recent sales, what buyers are paying, the right campaign for your property. Not the agent who knocks on the door with a flyer; the one who's selling in your street.",
+      "We introduce you to one local agent who sells in your area. If we don't have one yet, we'll tell you. You get an honest appraisal and a plan for your sale, with no obligation to list.",
     fits: [
       "You want an honest appraisal before you commit",
       "You're weighing private sale vs auction",
       "You're moving and need to plan the timing",
     ],
-    cta: "Get connected, selling",
+    cta: "Get help selling",
   },
   {
     intent: "refinancing",
     eyebrow: "Refinancing",
     headline: "When you need finance, pre-approval, or a better rate.",
     body:
-      "A mortgage broker compares 30+ lenders for you, not just one bank. They know which lender will say yes to your situation, what documents you need, and where the rate cut hides.",
+      "Tell us what you're trying to do with your loan and we'll point you to the right next step, starting with the calculators and guides that answer most finance questions.",
     fits: [
       "You want to know what you can borrow",
       "You need pre-approval before you bid",
       "Your rate hasn't been reviewed in over a year",
     ],
-    cta: "Get connected, refinancing",
+    cta: "Get help with finance",
   },
   {
     intent: "something-else",
     eyebrow: "Something else",
     headline: "Inheritance, divorce, downsizing, or planning ahead.",
     body:
-      "Property situations don't always reduce to buy/sell/invest. We work with property accountants, conveyancers, family lawyers and estate planners, and we'll point you at the right one for your situation, not the closest one to a sale.",
+      "Property situations don't always reduce to buy/sell/invest. Tell us yours and we'll point you to the right next step, and if a sale is part of it, to one local agent who sells in your area.",
     fits: [
       "You've inherited a property and don't know where to start",
       "You're separating and need to deal with a shared property",
       "You're downsizing and want to plan the order of moves",
     ],
-    cta: "Get connected, something else",
+    cta: "Get help with something else",
   },
 ];
 
@@ -96,13 +100,13 @@ const HOW_IT_WORKS = [
   },
   {
     step: "02",
-    title: "We pick the right specialist",
+    title: "We work out the right next step",
     body:
-      "One match, vetted for your suburb and your situation. Not three competing quotes, not a bidding war for your enquiry.",
+      "Selling: one local agent who sells in your area, not three competing quotes. If we don't have one yet, we'll tell you. Anything else: we point you to the right next step.",
   },
   {
     step: "03",
-    title: "They reach out within one business day",
+    title: "We're in touch within one business day",
     body:
       "By phone or email, your choice. No commitment until you decide to take the next step.",
   },
@@ -115,47 +119,39 @@ export default function FindAnExpertPage() {
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="grid lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-7">
               <div className="flex items-center gap-4 mb-10">
-                <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                <span className="text-sm font-semibold text-ink-muted leading-none">
                   How matching works
                 </span>
                 <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-                <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+                <span className="text-[13px] text-ink-subtle font-sans font-medium">
                   The match
                 </span>
               </div>
-              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">
+              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-bold">
                 Tell us your situation.{" "}
-                <span className="italic font-light text-primary">We&rsquo;ll find</span>{" "}
-                the right person.
+                <span>We&rsquo;ll find</span>{" "}
+                the right next step
               </h1>
-              <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-2xl mb-10">
-                Property situations are messier than buyer-or-seller. We match
-                you with one vetted specialist for your situation, whether
-                that&rsquo;s an agent, broker, accountant or conveyancer. Free
-                for buyers and sellers, no commitment, no comparison spam.
+              <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-2xl mb-10">
+                Selling? We introduce you to one local agent who sells in your
+                area. Buying, or something messier? We&rsquo;ll point you to the
+                right next step. Free for buyers and sellers, no commitment, no
+                comparison spam.
               </p>
               <div className="flex flex-wrap gap-3 mb-10">
                 <Link
                   href="#match"
-                  className="inline-flex items-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors"
+                  className="inline-flex items-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors"
                 >
                   Get connected <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href="/about"
-                  className="inline-flex items-center gap-2 rounded-full border border-line-strong text-ink hover:border-ink font-medium px-6 py-3 transition-colors"
+                  className="inline-flex items-center gap-2 rounded-md border border-line-strong text-ink hover:border-ink font-medium px-6 py-3 transition-colors"
                 >
                   Read our charter
                 </Link>
@@ -163,27 +159,14 @@ export default function FindAnExpertPage() {
               <TrustStrip
                 variant="rich"
                 items={[
-                  { lead: "One match, not five.", body: "We pick the right specialist; you don't get five competing quotes." },
-                  { lead: "One business day.", body: "They reach out by phone or email, your choice." },
-                  { lead: "Free for buyers and sellers.", body: "The specialist pays us a fee for each introduction." },
-                  { lead: "Never passed around.", body: "Your details go only to the specialist you're matched with. We never sell them to anyone else." },
+                  { lead: "One agent, not five.", body: "Selling? We introduce one local agent, never a list." },
+                  { lead: "One business day.", body: "Our team is in touch by phone or email, your choice." },
+                  { lead: "Free for buyers and sellers.", body: "The agent pays us a fee for each introduction." },
+                  { lead: "Never passed around.", body: "Your details go only to the one agent we introduce you to. We never sell them to anyone else." },
                 ]}
               />
             </div>
 
-            <div className="lg:col-span-5">
-              <div className="rounded-2xl border border-line-warm bg-surface-raised shadow-card overflow-hidden">
-                <Image
-                  src="/images/illustrations/expert-match.svg"
-                  alt=""
-                  aria-hidden="true"
-                  width={320}
-                  height={220}
-                  className="w-full h-auto"
-                  priority
-                />
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -192,11 +175,11 @@ export default function FindAnExpertPage() {
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 max-w-2xl">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+            <p className="text-[13px] font-sans text-ink-subtle mb-3">
               Four situations, one engine
             </p>
             <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
-              Whichever bucket you&rsquo;re in, we&rsquo;ll find the right specialist for it.
+              Whichever bucket you&rsquo;re in, we&rsquo;ll point you to the right next step
             </h2>
           </div>
 
@@ -206,14 +189,14 @@ export default function FindAnExpertPage() {
                 key={lane.intent}
                 className="rounded-2xl border border-line bg-surface-raised p-8 flex flex-col"
               >
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-2">
+                <p className="text-[13px] font-sans text-ink-subtle mb-2">
                   {lane.eyebrow}
                 </p>
                 <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-4">
                   {lane.headline}
                 </h3>
                 <p className="font-sans text-base text-ink-muted leading-relaxed mb-6">{lane.body}</p>
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">
+                <p className="text-[13px] font-sans text-ink-subtle mb-3">
                   Good fit if:
                 </p>
                 <ul className="space-y-2 mb-8 flex-1">
@@ -236,12 +219,12 @@ export default function FindAnExpertPage() {
           </div>
 
           <div className="mt-12 rounded-2xl border border-line-warm bg-surface-warm p-8 max-w-3xl mx-auto text-center">
-            <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-2">How matching works</p>
+            <p className="text-[13px] font-sans text-ink-subtle mb-2">How matching works</p>
             <p className="font-sans text-base text-ink-muted leading-relaxed">
-              Every enquiry is read and matched personally by our team. We pick
-              one vetted specialist for your situation, no call centre, no
-              auto-routing, no comparison spam. You&rsquo;ll hear from them
-              within one business day.
+              Every enquiry is read personally by our team, no call centre, no
+              auto-routing, no comparison spam. Sellers get one local agent who
+              sells in their area; if we don&rsquo;t have one yet, we&rsquo;ll
+              tell you. You&rsquo;ll hear from us within one business day.
             </p>
           </div>
         </div>
@@ -262,12 +245,12 @@ export default function FindAnExpertPage() {
       <section className="py-16 bg-surface-sunken">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-12 max-w-2xl">
-            How matching works.
+            How matching works
           </h2>
           <div className="grid sm:grid-cols-3 gap-8">
             {HOW_IT_WORKS.map((s) => (
               <div key={s.step}>
-                <p className="text-xs font-sans uppercase tracking-[0.2em] text-cta mb-3">{s.step}</p>
+                <p className="text-[13px] font-sans text-cta mb-3">{s.step}</p>
                 <h3 className="font-display text-2xl text-ink leading-tight mb-3">{s.title}</h3>
                 <p className="font-sans text-base text-ink-muted leading-relaxed">{s.body}</p>
               </div>
@@ -276,7 +259,7 @@ export default function FindAnExpertPage() {
           <div className="mt-12">
             <Link
               href="#match"
-              className="inline-flex items-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors"
+              className="inline-flex items-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors"
             >
               Get connected <ArrowRight className="w-4 h-4" />
             </Link>
@@ -287,16 +270,16 @@ export default function FindAnExpertPage() {
       {/* Why we're free */}
       <section className="py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">Why we&rsquo;re free</p>
+          <p className="text-[13px] font-sans text-ink-subtle mb-3">Why we&rsquo;re free</p>
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-6">
-            Buyers and sellers pay nothing. Specialists pay us a fee for each introduction.
+            Buyers and sellers pay nothing. Agents pay us a fee for each introduction
           </h2>
           <p className="font-sans text-lg text-ink-muted leading-relaxed mb-8">
-            We disclose this on every match. The fee comes out of the
-            specialist&rsquo;s pocket and doesn&rsquo;t change what you pay them.
-            Your details go only to the one specialist you&rsquo;re matched with.
-            We never sell them to anyone else, and we don&rsquo;t take fees from
-            anyone we wouldn&rsquo;t use ourselves.
+            We disclose this on every introduction. The fee comes out of the
+            agent&rsquo;s pocket and doesn&rsquo;t change what you pay them.
+            Your details go only to the one agent we introduce you to. We never
+            sell them to anyone else, and we don&rsquo;t take fees from anyone
+            we wouldn&rsquo;t use ourselves.
           </p>
           <Link
             href="/about"

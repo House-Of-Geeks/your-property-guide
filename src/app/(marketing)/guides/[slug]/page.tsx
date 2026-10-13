@@ -8,12 +8,13 @@ import { Badge } from "@/components/ui";
 import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
 import { BlogShareButtons } from "@/components/blog/BlogShareButtons";
 import { BlogGuideRail } from "@/components/blog/BlogGuideRail";
-import { ExpertCTA } from "@/components/journey";
+import { BUYING_GUIDE_CTA, ExpertCTA } from "@/components/journey";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
-import { AuthorBylineCard } from "@/components/guide";
+import { AuthorBylineCard, GuideStartInline } from "@/components/guide";
 import { BlogCover } from "@/components/blog/BlogCover";
 import { getBlogPostBySlug, getRelatedPosts } from "@/lib/services/blog-service";
-import { processContent } from "@/lib/utils/blog-toc";
+import { processContent, splitHtmlAfterFirstSection } from "@/lib/utils/blog-toc";
+import { guideAudienceForBlogCategory, guideFunnelHref } from "@/lib/guide-funnel";
 import { resolveBlogCoverPath } from "@/lib/utils/blog-cover";
 import { blogTitle, absoluteUrl } from "@/lib/utils/seo";
 import { formatDate } from "@/lib/utils/format";
@@ -74,6 +75,14 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { html: processedContent, toc } = processContent(post.content);
   const postUrl = `${SITE_URL}/guides/${slug}`;
 
+  // CTAs follow the post's blog category: selling posts start the selling
+  // guide in place (after the first section and again at the end), buying
+  // posts push the buying guide, and everything else (news, market updates)
+  // keeps the selling-guide default.
+  const audience = guideAudienceForBlogCategory(post.category);
+  const sellingPost = audience === "selling";
+  const sections = sellingPost ? splitHtmlAfterFirstSection(processedContent) : null;
+
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
       <ArticleJsonLd post={post} />
@@ -98,23 +107,23 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
           {/* Magazine-style masthead: italic category + hairline + dated slug */}
           <div className="flex items-center gap-4 mb-8">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               {post.category}
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               {formatDate(post.publishedAt)}
             </span>
           </div>
 
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-bold">
             {post.title}
           </h1>
           {/* Standfirst marked data-speakable-summary so voice assistants
               pick up this paragraph alongside the H1. */}
           <p
             data-speakable-summary
-            className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10"
+            className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10"
           >
             {post.excerpt}
           </p>
@@ -163,14 +172,35 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           </div>
 
           {/* Content */}
-          <div
-            className="mt-8 prose-ypg"
-            dangerouslySetInnerHTML={{ __html: processedContent }}
-          />
+          {sections ? (
+            <>
+              <div
+                className="mt-8 prose-ypg"
+                dangerouslySetInnerHTML={{ __html: sections[0] }}
+              />
+              <GuideStartInline from={post.slug} />
+              <div
+                className="prose-ypg"
+                dangerouslySetInnerHTML={{ __html: sections[1] }}
+              />
+            </>
+          ) : (
+            <div
+              className="mt-8 prose-ypg"
+              dangerouslySetInnerHTML={{ __html: processedContent }}
+            />
+          )}
 
-          {/* Guide funnel exit. Every news/blog post points at the
-              site's single conversion point. */}
-          <ExpertCTA variant="inline" />
+          {/* Guide funnel exit, routed by the post's category. */}
+          {sellingPost ? (
+            <GuideStartInline from={post.slug} />
+          ) : (
+            <ExpertCTA
+              variant="inline"
+              {...(audience === "buying" ? BUYING_GUIDE_CTA : {})}
+              href={guideFunnelHref(audience ?? "selling", { from: post.slug })}
+            />
+          )}
 
           {/* "Read next" rail of relevant guides, internal-link booster */}
           <BlogGuideRail blogSlug={post.slug} />
@@ -219,13 +249,13 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
       {relatedPosts.length > 0 && (
         <div className="mt-16 pt-10 border-t border-line max-w-4xl">
           <div className="flex items-center gap-3 mb-6">
-            <span className="font-display italic text-primary text-base leading-none">
+            <span className="font-display text-primary text-base leading-none">
               Keep reading
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-8 font-medium">
-            Related <span className="italic font-light text-primary">articles</span>.
+          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-8 font-bold">
+            Related <span>articles</span>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {relatedPosts.map((rp) => (

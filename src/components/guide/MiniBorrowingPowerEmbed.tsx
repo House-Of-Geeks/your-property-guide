@@ -55,7 +55,7 @@ export function MiniBorrowingPowerEmbed({
 
   return (
     <div className="not-prose my-10 rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
-      <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+      <p className="text-[13px] font-sans text-ink-subtle mb-2">
         Quick estimate
       </p>
       <h3 className="font-display text-2xl text-ink leading-tight mb-5">
@@ -66,7 +66,7 @@ export function MiniBorrowingPowerEmbed({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {/* Income */}
         <div>
-          <label className="block text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+          <label className="block text-[13px] font-sans text-ink-subtle mb-2">
             Combined gross income
           </label>
           <input
@@ -97,7 +97,7 @@ export function MiniBorrowingPowerEmbed({
 
         {/* Expenses */}
         <div>
-          <label className="block text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+          <label className="block text-[13px] font-sans text-ink-subtle mb-2">
             Monthly living expenses
           </label>
           <input
@@ -116,7 +116,7 @@ export function MiniBorrowingPowerEmbed({
 
       {/* Dependants */}
       <div className="mt-5">
-        <label className="block text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+        <label className="block text-[13px] font-sans text-ink-subtle mb-2">
           Dependants
         </label>
         <div className="flex flex-wrap gap-1.5">
@@ -139,7 +139,7 @@ export function MiniBorrowingPowerEmbed({
 
       {/* Result */}
       <div className="mt-7 rounded-xl border border-line bg-surface-raised p-5">
-        <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-1">
+        <p className="text-[13px] font-sans text-ink-subtle mb-1">
           Estimated borrowing capacity
         </p>
         {result ? (

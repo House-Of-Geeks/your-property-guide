@@ -192,7 +192,7 @@ export function HelpToBuyCalculator() {
       )}
 
       <div id="match-help-to-buy" className="scroll-mt-24 rounded-xl border border-line bg-surface-warm p-6 sm:p-7">
-        <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-2">Next step</p>
+        <p className="text-[13px] text-cta font-medium mb-2">Next step</p>
         <h3 className="font-display text-xl sm:text-2xl text-ink leading-tight tracking-tight mb-2">
           Talk to someone who works with Help to Buy
         </h3>

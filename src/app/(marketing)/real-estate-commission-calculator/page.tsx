@@ -80,7 +80,7 @@ export default function CommissionCalculatorPage() {
   return (
     <CalculatorPageLayout
       frontmatter={FRONTMATTER}
-      calculator={<CommissionCalculator />}
+      calculator={<CommissionCalculator showGuideCta={false} />}
       faqs={FAQS}
       related={RELATED}
       explainer={

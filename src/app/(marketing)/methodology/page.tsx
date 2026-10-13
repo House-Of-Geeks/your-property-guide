@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
@@ -129,34 +128,26 @@ export default function MethodologyPage() {
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-20 sm:pb-24">
           <div className="mb-10">
             <Breadcrumbs items={[{ label: "Methodology" }]} />
           </div>
 
           <div className="flex items-center gap-4 mb-10">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               Editorial methodology
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               Sources, dated
             </span>
           </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[22ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[22ch] font-bold">
             How we source the data, and what we{" "}
-            <span className="italic font-light text-primary">don&rsquo;t</span>{" "}
-            claim to know.
+            <span>don&rsquo;t</span>{" "}
+            claim to know
           </h1>
-          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
+          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
             Every figure on the site carries a source and an as-of date.
             Where we don&rsquo;t have a source we trust, we say so rather than
             publish a guess. This page documents where each data type comes
@@ -195,11 +186,11 @@ export default function MethodologyPage() {
       <section className="bg-surface-warm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <div className="mb-10">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+            <p className="text-[13px] font-sans text-ink-subtle mb-3">
               Data sources, line by line
             </p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight">
-              {SOURCES.length} data types, {SOURCES.length} named sources.
+              {SOURCES.length} data types, {SOURCES.length} named sources
             </h2>
           </div>
 
@@ -216,7 +207,7 @@ export default function MethodologyPage() {
                       className="font-display text-xl text-ink leading-tight"
                       dangerouslySetInnerHTML={{ __html: s.label }}
                     />
-                    <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mt-2">
+                    <p className="text-[13px] font-sans text-ink-subtle mt-2">
                       {s.cadence}
                     </p>
                   </div>
@@ -225,7 +216,7 @@ export default function MethodologyPage() {
                       {s.description}
                     </p>
                     <p className="mt-4 font-sans text-sm text-ink-muted">
-                      <span className="text-ink-subtle uppercase tracking-wider text-xs mr-2">
+                      <span className="text-ink-subtle text-[13px] mr-2">
                         Source
                       </span>
                       {s.source}
@@ -253,11 +244,11 @@ export default function MethodologyPage() {
       {/* Editorial process */}
       <section className="bg-surface-raised border-t border-line">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             Editorial process
           </p>
           <h2 className="font-display text-ink leading-tight tracking-tight text-3xl mb-6">
-            Three checks before anything publishes.
+            Three checks before anything publishes
           </h2>
           <div className="prose-ypg">
             <p>
@@ -280,11 +271,11 @@ export default function MethodologyPage() {
       {/* Corrections */}
       <section className="bg-surface-warm border-y border-line-warm">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             Corrections &amp; feedback
           </p>
           <h2 className="font-display text-ink leading-tight tracking-tight text-3xl mb-6">
-            Spotted something off? Tell us.
+            Spotted something off? Tell us
           </h2>
           <p className="font-sans text-lg text-ink-muted leading-relaxed mb-6">
             We&rsquo;ll investigate and respond within a week. Confirmed

@@ -77,14 +77,6 @@ export default function BestSuburbsHubPage() {
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-20 sm:pb-24">
           <div className="mb-10">
             <Breadcrumbs items={[{ label: "Best Suburbs" }]} />
@@ -92,21 +84,21 @@ export default function BestSuburbsHubPage() {
 
           {/* Magazine masthead */}
           <div className="flex items-center gap-4 mb-10">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               Six ranked lists
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               Best suburbs
             </span>
           </div>
 
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
             The best suburbs, by{" "}
-            <span className="italic font-light text-primary">what matters</span>{" "}
-            to you.
+            <span>what matters</span>{" "}
+            to you
           </h1>
-          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
+          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
             Six rankings across schools, growth, affordability, walkability,
             flood safety and rental yield. Built on real public data, with no
             marketing spin.
@@ -139,7 +131,7 @@ export default function BestSuburbsHubPage() {
 
         {/* Methodology note */}
         <div className="mt-12 rounded-2xl border border-line bg-surface-warm p-6 text-sm font-sans text-ink-muted leading-relaxed">
-          <p className="text-xs uppercase tracking-[0.25em] text-ink-subtle mb-2">Methodology</p>
+          <p className="text-[13px] text-ink-subtle mb-2">Methodology</p>
           <p>
             Rankings are built from publicly available data, ACARA school scores, ABS Census
             demographics, Geoscience Australia flood risk assessments, and OpenStreetMap walkability

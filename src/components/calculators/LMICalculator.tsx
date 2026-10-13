@@ -122,7 +122,7 @@ export function LMICalculator() {
 
       {r.lvr > 80 && r.status !== "invalid" && (
         <div className="rounded-xl border border-line bg-surface-warm p-6 sm:p-7">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-2">The alternative</p>
+          <p className="text-[13px] text-cta font-medium mb-2">The alternative</p>
           {input.firstHomeBuyer ? (
             <>
               <h3 className="font-display text-xl sm:text-2xl text-ink leading-tight tracking-tight mb-2">

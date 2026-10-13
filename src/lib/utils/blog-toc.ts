@@ -50,3 +50,30 @@ export function processContent(html: string): { html: string; toc: TocItem[] } {
 
   return { html: processed, toc };
 }
+
+// Block elements a cut must not land inside. Article HTML is a flat run of
+// headings, paragraphs, lists and tables, so a balanced head means the cut
+// sits between two top-level blocks.
+const BLOCK_TAGS = ["div", "section", "aside", "article", "details", "blockquote", "table", "ul", "ol", "figure"];
+
+function count(html: string, re: RegExp): number {
+  return html.match(re)?.length ?? 0;
+}
+
+/**
+ * Split article HTML before its second <h2>, so a CTA can render after the
+ * intro and first section. Null when there is no second h2, or when the cut
+ * would fall inside an open block (an h2 nested in a wrapper), in which case
+ * the caller renders the article whole.
+ */
+export function splitHtmlAfterFirstSection(html: string): [string, string] | null {
+  const re = /<h2[\s>]/gi;
+  re.exec(html);
+  const second = re.exec(html);
+  if (!second) return null;
+  const head = html.slice(0, second.index);
+  for (const tag of BLOCK_TAGS) {
+    if (count(head, new RegExp(`<${tag}[\\s>]`, "gi")) !== count(head, new RegExp(`</${tag}>`, "gi"))) return null;
+  }
+  return [head, html.slice(second.index)];
+}

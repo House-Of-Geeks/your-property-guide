@@ -60,7 +60,7 @@ export function GuidePathCard() {
       <div className="px-5 pt-4 pb-4 border-b border-line">
         <p
           id="guide-path-label"
-          className="mb-2.5 text-center text-[10px] uppercase tracking-[0.26em] text-ink-muted font-sans font-medium"
+          className="mb-2.5 text-center text-[13px] text-ink-muted font-sans font-medium"
         >
           Choose your guide
         </p>
@@ -126,10 +126,10 @@ export function GuidePathCard() {
                 title whenever the title wrapped to three lines (cards under
                 about 400px wide: phones and 1024px laptops). */}
             <div className="mb-2 flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
-              <span className="inline-flex items-center rounded-full bg-cta text-white text-[10px] font-sans font-semibold uppercase tracking-wider px-3 py-1">
+              <span className="inline-flex items-center rounded-md bg-cta text-white text-[13px] font-sans font-semibold px-3 py-1">
                 Free PDF
               </span>
-              <p className="text-[10px] uppercase tracking-[0.26em] text-white/70 font-sans font-medium">
+              <p className="text-[13px] text-white/70 font-sans font-medium">
                 2026 edition
               </p>
             </div>

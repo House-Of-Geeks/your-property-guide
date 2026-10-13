@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   SellingCostTable,
   CommissionCalculatorEmbed,
@@ -300,8 +299,6 @@ export default function RealEstateCommissionWaPage() {
         current licence is a quick, sensible step before you sign anything.
       </p>
 
-      <MatchCTA kind="selling-agent" />
-
       <h2 id="other-costs">Commission vs the rest of your selling costs</h2>
       <p>
         Commission is the single largest cost of selling in WA, but it isn&rsquo;t
@@ -354,8 +351,6 @@ export default function RealEstateCommissionWaPage() {
           to negotiate both the rate and the marketing.
         </li>
       </ol>
-
-      <MatchCTA kind="selling-agent" />
 
       <Sources items={WA_COMMISSION_SOURCES} />
     </GuideArticleLayout>

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, Clock } from "lucide-react";
 import { getBlogPostBySlug } from "@/lib/services/blog-service";
 import { pickSpotlightGuideSlug } from "@/lib/guide-spotlight";
@@ -32,33 +31,17 @@ export async function SpotlightGuideCard() {
           no per-guide cover image dependency so the card works for
           every guide in the rotation. */}
       <div className="relative bg-ink overflow-hidden h-32 sm:h-36">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover opacity-[0.22] invert"
-        />
-        <Image
-          src="/images/illustrations/street-grid.svg"
-          alt=""
-          width={400}
-          height={400}
-          aria-hidden="true"
-          className="absolute -right-4 -bottom-4 w-44 opacity-[0.18] invert pointer-events-none select-none"
-        />
         <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 flex items-end justify-between gap-3">
           <div>
-            <p className="text-[11px] uppercase tracking-[0.32em] text-white/70 font-sans font-medium mb-1">
+            <p className="text-[13px] text-white/70 font-sans font-medium mb-1">
               Today&rsquo;s read
             </p>
-            <p className="font-display italic text-cta text-sm leading-none">
+            <p className="font-display text-cta text-sm leading-none">
               Featured guide
             </p>
           </div>
           {readingTime && (
-            <span className="font-sans text-white/75 text-xs uppercase tracking-[0.22em] inline-flex items-center gap-1.5">
+            <span className="font-sans text-white/75 text-[13px] inline-flex items-center gap-1.5">
               <Clock className="w-3 h-3" aria-hidden="true" />
               {readingTime}
             </span>
@@ -70,7 +53,7 @@ export async function SpotlightGuideCard() {
           uppercase tag above the title. */}
       <div className="p-5 sm:p-6">
         {post.category && (
-          <p className="text-[11px] uppercase tracking-[0.25em] text-cta font-sans font-medium mb-3">
+          <p className="text-[13px] text-cta font-sans font-medium mb-3">
             {post.category}
           </p>
         )}

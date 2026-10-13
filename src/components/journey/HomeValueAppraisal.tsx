@@ -44,14 +44,14 @@ export function HomeValueAppraisal() {
   if (!summary) {
     return (
       <div className="not-prose rounded-2xl border border-cta/30 bg-surface-warm p-6 sm:p-8 shadow-card">
-        <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-3">
+        <p className="text-[13px] text-cta font-medium mb-3">
           Free property appraisal · Start with your suburb
         </p>
         <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-2">
           Where&rsquo;s the house?
         </h2>
         <p className="text-sm text-ink-muted mb-5 max-w-lg">
-          We&rsquo;ll show you what houses in that suburb are selling for, then a local agent who sells there gives you a figure for yours. Free, no commitment to list.
+          We&rsquo;ll show you what houses in that suburb are selling for, then introduce you to one local agent who sells in your area for a figure on yours. If we don&rsquo;t have one yet, we&rsquo;ll tell you. Free, no commitment to list.
         </p>
         <SuburbAutocomplete
           placeholder="Suburb or postcode, e.g. Hawthorn or 3122"
@@ -72,7 +72,7 @@ export function HomeValueAppraisal() {
     <div className="not-prose space-y-4">
       <div className="rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
         <div className="flex items-start justify-between gap-4 mb-4">
-          <p className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-cta font-medium">
+          <p className="inline-flex items-center gap-2 text-[13px] text-cta font-medium">
             <MapPin className="w-3.5 h-3.5" /> {summary.name}, {summary.state} {summary.postcode}
           </p>
           <button type="button" onClick={reset} className="text-xs text-ink-muted hover:text-ink underline underline-offset-4">
@@ -81,7 +81,7 @@ export function HomeValueAppraisal() {
         </div>
         {summary.reliable && summary.medianHousePrice ? (
           <>
-            <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-1">Median house price in {summary.name}</p>
+            <p className="text-[13px] font-sans text-ink-subtle mb-1">Median house price in {summary.name}</p>
             <p className="font-display text-4xl sm:text-5xl text-ink leading-none tracking-tight">
               {formatPriceFull(summary.medianHousePrice)}
             </p>

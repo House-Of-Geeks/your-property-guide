@@ -82,10 +82,10 @@ export function SuburbPriceTrend({
       aria-label={`${suburbName} median house price trend over ${years} years at ${annualGrowthHouse.toFixed(1)}% annual growth`}
     >
       <div className="flex items-baseline justify-between mb-3 gap-3">
-        <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle">
+        <p className="text-[13px] font-sans text-ink-subtle">
           {years}-year trajectory
         </p>
-        <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle">
+        <p className="text-[13px] font-sans text-ink-subtle">
           at {annualGrowthHouse > 0 ? "+" : ""}{annualGrowthHouse.toFixed(1)}%/yr
         </p>
       </div>
@@ -119,7 +119,7 @@ export function SuburbPriceTrend({
 
       <div className="mt-3 grid grid-cols-3 gap-2 items-baseline">
         <div>
-          <p className="text-[10px] font-sans uppercase tracking-wider text-ink-subtle">
+          <p className="text-[13px] font-sans text-ink-subtle">
             {trajectory[0].year}
           </p>
           <p className="font-display text-base text-ink-muted leading-tight">
@@ -127,7 +127,7 @@ export function SuburbPriceTrend({
           </p>
         </div>
         <div className="text-center">
-          <p className="text-[10px] font-sans uppercase tracking-wider text-ink-subtle">
+          <p className="text-[13px] font-sans text-ink-subtle">
             {years}-year change
           </p>
           <p className={`font-display text-base leading-tight ${totalChange >= 0 ? "text-emerald-700" : "text-red-700"}`}>
@@ -136,7 +136,7 @@ export function SuburbPriceTrend({
           </p>
         </div>
         <div className="text-right">
-          <p className="text-[10px] font-sans uppercase tracking-wider text-ink-subtle">
+          <p className="text-[13px] font-sans text-ink-subtle">
             {trajectory[trajectory.length - 1].year}
           </p>
           <p className="font-display text-base text-ink leading-tight">

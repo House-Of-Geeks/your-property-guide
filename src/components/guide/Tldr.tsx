@@ -13,7 +13,7 @@ interface TldrProps {
 export function Tldr({ points }: TldrProps) {
   return (
     <aside className="my-8 rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-7">
-      <p className="text-xs font-sans uppercase tracking-[0.2em] text-cta mb-4">
+      <p className="text-[13px] font-sans text-cta mb-4">
         Key takeaways
       </p>
       <ul className="space-y-3">

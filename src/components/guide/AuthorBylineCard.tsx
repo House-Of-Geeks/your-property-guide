@@ -51,14 +51,14 @@ export function AuthorBylineCard({
           />
         </Link>
         <div className="flex-1 min-w-0">
-          <p className="font-display italic text-primary text-sm leading-none mb-2">
+          <p className="font-display text-primary text-sm leading-none mb-2">
             About the author
           </p>
           <p className="font-display text-xl sm:text-2xl text-ink leading-tight mb-1 font-medium">
             {authorName}
           </p>
           {authorRole && (
-            <p className="text-[11px] uppercase tracking-[0.22em] text-ink-subtle font-sans font-medium mb-3">
+            <p className="text-[13px] text-ink-subtle font-sans font-medium mb-3">
               {authorRole}
             </p>
           )}

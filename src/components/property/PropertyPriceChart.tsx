@@ -55,7 +55,7 @@ export function PropertyPriceChart({ points, suburbMedian }: PropertyPriceChartP
           </p>
         </div>
         <span
-          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold ${
+          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold ${
             isUp
               ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
               : "bg-red-50 text-red-700 border border-red-100"

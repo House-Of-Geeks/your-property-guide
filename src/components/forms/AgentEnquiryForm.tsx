@@ -87,7 +87,7 @@ export function AgentEnquiryForm({ defaultLeadTypes = [] }: { defaultLeadTypes?:
         <div className="w-12 h-12 rounded-full bg-cta text-white grid place-items-center mx-auto mb-4">
           <CheckCircle className="w-6 h-6" aria-hidden="true" />
         </div>
-        <h3 className="font-display text-xl text-ink mb-2">Thanks, we&rsquo;ll be in touch.</h3>
+        <h3 className="font-display text-xl text-ink mb-2">Thanks, we&rsquo;ll be in touch</h3>
         <p className="text-sm text-ink-muted leading-relaxed">
           Within one business day you&rsquo;ll hear back with current lead
           availability for your patch and a per-lead price in writing.
@@ -105,11 +105,11 @@ export function AgentEnquiryForm({ defaultLeadTypes = [] }: { defaultLeadTypes?:
       onSubmit={onSubmit}
       className="bg-surface-warm text-ink rounded-2xl p-6 sm:p-8 border border-line shadow-2xl space-y-3 scroll-mt-24"
     >
-      <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium">
+      <p className="text-[13px] text-cta font-medium">
         Register for leads
       </p>
       <h3 className="font-display text-2xl text-ink leading-tight tracking-tight pb-1">
-        Tell us your patch.
+        Tell us your patch
       </h3>
 
       {/* Honeypot: visually hidden, off-screen, aria-hidden. */}
@@ -166,7 +166,7 @@ export function AgentEnquiryForm({ defaultLeadTypes = [] }: { defaultLeadTypes?:
                 type="button"
                 aria-pressed={on}
                 onClick={() => toggleLeadType(o.value)}
-                className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
+                className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                   on ? "border-cta bg-cta text-white" : "border-line-strong bg-surface-raised text-ink hover:border-cta"
                 }`}
               >

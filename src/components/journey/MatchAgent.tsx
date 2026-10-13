@@ -19,9 +19,9 @@ type Timeframe = "looking" | "soon" | "now";
 type ContactPref = "call" | "text" | "email";
 
 // Giving people a say in HOW they're contacted lowers the anxiety of
-// handing over a mobile number — the number is required (a match without
-// a reachable phone is worth little to the specialist), so the preference
-// chips are the pressure valve.
+// handing over a mobile number — the number is required (a seller's agent
+// introduction without a reachable phone is worth little), so the
+// preference chips are the pressure valve.
 const CONTACT_PREFS: { id: ContactPref; label: string }[] = [
   { id: "call",  label: "Call me" },
   { id: "text",  label: "Text first" },
@@ -42,9 +42,10 @@ interface TimeframeOption {
 
 // Broad intent set, property situations are messier than buy/sell/invest.
 // "Something else" exists so people in unique situations (divorce, inheritance,
-// estate, downsizing, planning ahead) feel covered. The right "person" we
-// match them with depends on the intent, could be a buyer's agent, a
-// listing agent, a broker, a property accountant, or a conveyancer.
+// estate, downsizing, planning ahead) feel covered. What we can actually offer
+// depends on the intent: sellers get one local agent who sells in their area;
+// everyone else gets pointed to the right next step by our team. The copy
+// promises no more than that (no broker, accountant or conveyancer matches).
 const INTENTS: IntentOption[] = [
   { id: "buying",         label: "Buying",         sub: "First or next home" },
   { id: "selling",        label: "Selling",        sub: "Get an appraisal or plan" },
@@ -145,7 +146,7 @@ export function MatchAgent({
     if (!intent || !timeframe) return;
     // Phone is required and must be an Australian mobile. The API stays
     // lenient (never reject a lead over a phone format) — this gate is
-    // purely so the specialist gets a number they can actually dial.
+    // purely so we have a number we can actually dial.
     const mobileError = auMobileError(phone);
     if (mobileError) {
       setPhoneError(mobileError);
@@ -214,33 +215,33 @@ export function MatchAgent({
           <div className="lg:col-span-5">
             {/* Magazine masthead in dark mode */}
             <div className="flex items-center gap-4 mb-10">
-              <span className="font-display italic text-cta text-base sm:text-lg leading-none">
+              <span className="text-sm font-semibold text-ink-muted leading-none">
                 When you&rsquo;re ready
               </span>
               <span className="w-12 h-px bg-white/20" aria-hidden="true" />
-              <span className="text-[11px] uppercase tracking-[0.32em] text-white/75 font-sans font-medium">
+              <span className="text-[13px] text-white/75 font-sans font-medium">
                 The match
               </span>
             </div>
-            <h2 className="font-display text-white leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">
+            <h2 className="font-display text-white leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-bold">
               Tell us your situation.{" "}
-              <span className="italic font-light text-cta">We&rsquo;ll find</span>{" "}
-              the right person.
+              <span>We&rsquo;ll find</span>{" "}
+              the right person
             </h2>
-            <p className="font-display font-light text-xl sm:text-2xl text-white/80 leading-snug max-w-md mb-12">
-              Three questions. One specialist (agent, broker, accountant or
-              conveyancer). 24-hour response. Free for buyers and sellers,
-              no commitment.
+            <p className="font-display font-normal text-xl sm:text-2xl text-white/80 leading-snug max-w-md mb-12">
+              Three questions. Selling? One local agent who sells in your
+              area. Anything else, we&rsquo;ll point you to the right next
+              step. Free for buyers and sellers, no commitment.
             </p>
             <div className="grid grid-cols-2 gap-x-6 gap-y-6 max-w-md">
               {[
                 ["01", "You answer 3 questions (60 seconds)"],
-                ["02", "We pick ONE specialist, not five"],
-                ["03", "They reach out within 24 hours"],
-                ["04", "You decide. Walk away anytime, no follow-up."],
+                ["02", "Selling? We pick ONE local agent, not five"],
+                ["03", "We're in touch within one business day"],
+                ["04", "You decide. No commitment to anything."],
               ].map(([n, t]) => (
                 <div key={n} className="border-t border-white/15 pt-4">
-                  <p className="font-display italic text-cta text-base mb-1.5 tabular-nums">{n}</p>
+                  <p className="font-display text-cta text-base mb-1.5 tabular-nums">{n}</p>
                   <p className="text-sm text-white/85 leading-snug">{t}</p>
                 </div>
               ))}
@@ -262,7 +263,7 @@ export function MatchAgent({
                     }}
                   />
                 ))}
-                <p className="ml-2 text-[11px] font-medium uppercase tracking-wider text-ink-subtle whitespace-nowrap">
+                <p className="ml-2 text-[13px] font-medium text-ink-subtle whitespace-nowrap">
                   {Math.min(step + 1, stepTotal)} / {stepTotal}
                 </p>
               </div>
@@ -390,15 +391,15 @@ export function MatchAgent({
               {/* Step 3, Contact */}
               {step === 3 && (
                 <div>
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-3">
-                    We&rsquo;ve got the right person for you
+                  <p className="text-[13px] text-cta font-medium mb-3">
+                    Last step
                   </p>
                   <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-3">
-                    Pop your details in and we&rsquo;ll make the introduction.
+                    Pop your details in and we&rsquo;ll take it from here
                   </h3>
                   <p className="text-sm text-ink-muted leading-relaxed mb-5">
-                    You&rsquo;ll get an email confirmation with their profile before they reach out.
-                    No commitment, no comparison spam.
+                    You&rsquo;ll get an email confirmation now, and our team will be in touch
+                    within one business day. No commitment, no comparison spam.
                   </p>
                   <form onSubmit={onSubmit} className="space-y-3">
                     {/* Honeypot: visually hidden, off-screen, aria-hidden. */}
@@ -438,7 +439,7 @@ export function MatchAgent({
                         <p className="mt-1 text-xs text-danger">{phoneError}</p>
                       ) : (
                         <p className="mt-1 text-[11px] text-ink-subtle leading-relaxed">
-                          Used only for your introduction, never for marketing calls.
+                          Used only for this request, never for marketing calls.
                         </p>
                       )}
                     </div>
@@ -460,7 +461,7 @@ export function MatchAgent({
                       className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
                     />
                     <div className="flex items-center gap-2 pt-1">
-                      <span className="text-[11px] uppercase tracking-wider text-ink-subtle font-medium whitespace-nowrap">
+                      <span className="text-[13px] text-ink-subtle font-medium whitespace-nowrap">
                         Reach me by
                       </span>
                       <div className="flex gap-1.5">
@@ -472,7 +473,7 @@ export function MatchAgent({
                               type="button"
                               onClick={() => setContactPref(p.id)}
                               aria-pressed={active}
-                              className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
+                              className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                                 active
                                   ? "bg-ink text-white border-ink"
                                   : "bg-surface-raised text-ink-muted border-line hover:border-line-strong"
@@ -492,13 +493,13 @@ export function MatchAgent({
                       disabled={submitting}
                       className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3.5 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
                     >
-                      {submitting ? "Sending…" : "Send my introduction"}
+                      {submitting ? "Sending…" : "Send my request"}
                       {!submitting && <ArrowRight className="w-4 h-4" />}
                     </button>
                     <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
-                      Free, no commitment. Your details go only to the one specialist
-                      you&rsquo;re matched with, who pays us a fee for the introduction.
-                      We never sell them to anyone else. Read our{" "}
+                      Free, no commitment. If you&rsquo;re selling, your details go only to
+                      the one local agent we introduce you to, who pays us a fee for the
+                      introduction. We never sell them to anyone else. Read our{" "}
                       <a href="/privacy" className="underline underline-offset-2 hover:text-ink">privacy policy</a>.
                     </p>
                   </form>

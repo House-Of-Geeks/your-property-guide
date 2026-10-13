@@ -133,7 +133,7 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
         eyebrow="Schools in"
         title={
           <>
-            <span className="italic text-primary">{schools.length}</span>{" "}
+            <span>{schools.length}</span>{" "}
             school{schools.length !== 1 ? "s" : ""} in {suburb.name}.
           </>
         }
@@ -149,13 +149,13 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-surface-warm border-b border-line-warm">
-                    <th className="py-4 px-5 text-left text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider w-10">#</th>
-                    <th className="py-4 px-5 text-left text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">School</th>
-                    <th className="py-4 px-5 text-left text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">Type</th>
-                    <th className="py-4 px-5 text-left text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">Sector</th>
-                    <th className="py-4 px-5 text-left text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">Years</th>
-                    <th className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">ICSEA</th>
-                    <th className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">Enrolment</th>
+                    <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle w-10">#</th>
+                    <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle">School</th>
+                    <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle">Type</th>
+                    <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle">Sector</th>
+                    <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle">Years</th>
+                    <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">ICSEA</th>
+                    <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">Enrolment</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -168,7 +168,7 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
                         key={school.name}
                         className="border-b border-line last:border-0 hover:bg-surface-sunken transition-colors"
                       >
-                        <td className="py-4 px-5 text-ink-subtle tabular-nums font-display italic">
+                        <td className="py-4 px-5 text-ink-subtle tabular-nums font-display">
                           {i + 1}
                         </td>
                         <td className="py-4 px-5">
@@ -212,7 +212,7 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-display italic text-cta tabular-nums mb-1">#{i + 1}</p>
+                        <p className="text-xs font-display text-cta tabular-nums mb-1">#{i + 1}</p>
                         {schoolSlug ? (
                           <Link
                             href={`/schools/${schoolSlug}`}
@@ -268,7 +268,7 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
         {/* Property CTA, soft */}
         <div className="mt-12 rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
           <div>
-            <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+            <p className="text-[13px] font-sans text-ink-subtle mb-2">
               {hasListings ? "Nearby properties" : "The suburb"}
             </p>
             <h2 className="font-display text-xl sm:text-2xl text-ink leading-tight">

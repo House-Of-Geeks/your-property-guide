@@ -8,6 +8,7 @@ import { FaqAccordion } from "@/components/guide";
 import { RelatedGuidesSection } from "@/components/guide/GuideLinkList";
 import { BuyingGuideFunnel } from "@/components/journey";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
+import { GuideEntryCapture } from "@/components/analytics/GuideEntryCapture";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
@@ -106,34 +107,22 @@ export default function BuyingGuidePage() {
       {/* Hero: pitch left, funnel right, same publication formula as the
           selling guide so the two lead magnets read as a series. */}
       <section id="get-the-guide" className="relative bg-surface-warm overflow-hidden border-b border-line scroll-mt-16">
-        <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-          <Image
-            src="/images/hero/suburb-dusk.jpg"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-left-bottom opacity-[0.55]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-surface-warm from-30% via-surface-warm/85 via-60% to-surface-warm/25" />
-          <div className="absolute inset-0 bg-gradient-to-b from-surface-warm from-15% via-surface-warm/60 via-50% to-surface-warm/10" />
-        </div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-16 sm:pt-16 sm:pb-20">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
             <div className="lg:col-span-6">
               <div className="rise flex items-center gap-4 mb-8">
-                <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                <span className="text-sm font-semibold text-ink-muted leading-none">
                   Free PDF
                 </span>
                 <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-                <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+                <span className="text-[13px] text-ink-subtle font-sans font-medium">
                   2026 edition
                 </span>
               </div>
 
-              <h1 className="rise rise-d1 font-display text-ink tracking-tight mb-6 text-4xl sm:text-5xl lg:text-6xl leading-[1.02] font-medium">
+              <h1 className="rise rise-d1 font-display text-ink tracking-tight mb-6 text-4xl sm:text-5xl lg:text-6xl leading-[1.02] font-bold">
                 Overpaying is the default.{" "}
-                <span className="u-draw relative inline-block italic font-light text-primary">
+                <span className="relative inline-block">
                   This
                   {/* Hand-drawn underline, draws in after the entrance */}
                   <svg
@@ -152,10 +141,10 @@ export default function BuyingGuidePage() {
                     />
                   </svg>
                 </span>{" "}
-                is the fix.
+                is the fix
               </h1>
 
-              <p className="rise rise-d2 font-display text-lg sm:text-xl text-ink leading-[1.35] mb-8 font-light">
+              <p className="rise rise-d2 font-display text-lg sm:text-xl text-ink leading-[1.35] mb-8 font-normal">
                 The complete guide to buying property in Australia, written
                 for the buyer you actually are: first home, upgrading,
                 investing or downsizing. What you can really spend, the
@@ -198,7 +187,7 @@ export default function BuyingGuidePage() {
                 </ul>
               </div>
 
-              <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-sans font-medium">
+              <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-ink-subtle font-sans font-medium">
                 <span className="inline-flex items-center gap-1.5">
                   <BookOpen className="w-3.5 h-3.5" aria-hidden="true" /> 10 chapters
                 </span>
@@ -221,14 +210,14 @@ export default function BuyingGuidePage() {
                   paint OVER the backdrop-blur card below — a later sibling
                   with its own stacking context that otherwise buries the
                   suggestion list (same fix as the selling page). */}
-              <div data-funnel-card className="relative z-10 rounded-2xl">
+              <div id="guide-funnel" data-funnel-card className="relative z-10 rounded-2xl scroll-mt-24">
                 <Suspense fallback={<div className="text-sm text-ink-muted">Loading…</div>}>
                   <BuyingGuideFunnel source="buying-guide-page" />
                 </Suspense>
               </div>
 
               <div className="mt-5 rounded-2xl border border-line bg-surface-raised/80 backdrop-blur-[2px] px-6 py-5">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-ink-subtle font-sans font-medium mb-4">
+                <p className="text-[13px] text-ink-subtle font-sans font-medium mb-4">
                   What happens next
                 </p>
                 <ol className="space-y-3">
@@ -242,7 +231,7 @@ export default function BuyingGuidePage() {
                       className="rise flex items-baseline gap-3"
                       style={{ animationDelay: `${280 + i * 70}ms` }}
                     >
-                      <span className="font-display italic text-cta text-base tabular-nums shrink-0">{n}</span>
+                      <span className="font-display text-cta text-base tabular-nums shrink-0">{n}</span>
                       <span className="font-sans text-sm text-ink-muted leading-snug">{t}</span>
                     </li>
                   ))}
@@ -254,9 +243,9 @@ export default function BuyingGuidePage() {
       </section>
 
       {/* The money band, buyer numbers, all drawn from the guide. */}
-      <section className="bg-accent-lighter border-y border-line-warm">
+      <section className="bg-surface-warm border-y border-line">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
-          <p className="text-[11px] uppercase tracking-[0.32em] text-primary-dark font-sans font-semibold mb-10 text-center">
+          <p className="text-[13px] text-primary-dark font-sans font-semibold mb-10 text-center">
             What knowing the game is worth
           </p>
           <div data-reveal-group className="grid grid-cols-1 sm:grid-cols-3 gap-10 sm:gap-8">
@@ -267,7 +256,7 @@ export default function BuyingGuidePage() {
             ].map(([n, label]) => (
               <div key={n} className="text-center sm:text-left">
                 <span className="block h-px w-10 bg-primary-dark/40 rule-draw mb-4 mx-auto sm:mx-0" aria-hidden="true" />
-                <p className="font-display italic text-primary-dark text-4xl sm:text-5xl leading-none mb-3 tracking-tight">{n}</p>
+                <p className="font-display text-primary-dark text-4xl sm:text-5xl leading-none mb-3 tracking-tight">{n}</p>
                 <p className="font-sans text-sm text-ink-muted leading-relaxed">{label}</p>
               </div>
             ))}
@@ -282,24 +271,24 @@ export default function BuyingGuidePage() {
       <section className="bg-surface-raised border-b border-line">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-14 pb-12 sm:pt-16 sm:pb-14">
           <div className="flex items-center gap-4 mb-6">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               Inside
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               What you get
             </span>
           </div>
 
-          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium mb-10">
-            Ten chapters, four buyers, no filler.
+          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-bold mb-10">
+            Ten chapters, four buyers, no filler
           </h2>
 
           {/* CSS columns so chapters 01-05 read down the left column. */}
           <div data-reveal-group className="sm:columns-2 sm:gap-x-10">
             {CHAPTERS.map((c) => (
               <div key={c.n} className="group flex items-start gap-4 border-t border-line py-4 break-inside-avoid transition-colors duration-200">
-                <span className="font-display italic text-primary text-base tabular-nums leading-6 transition-all duration-200 group-hover:translate-x-[3px] group-hover:text-primary-dark">{c.n}</span>
+                <span className="font-display text-primary text-base tabular-nums leading-6 transition-all duration-200 group-hover:translate-x-[3px] group-hover:text-primary-dark">{c.n}</span>
                 <div>
                   <p className="font-sans text-sm font-semibold text-ink leading-6 transition-colors group-hover:text-primary">{c.title}</p>
                   <p className="font-sans text-xs text-ink-subtle leading-relaxed">{c.sub}</p>
@@ -321,23 +310,13 @@ export default function BuyingGuidePage() {
       {/* FAQ */}
       <section className="bg-surface-warm">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-14 pb-14 sm:pt-16 sm:pb-16">
-          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium mb-10">
-            Questions buyers ask us.
+          <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-bold mb-10">
+            Questions buyers ask us
           </h2>
           <FaqAccordion items={FAQS} />
 
           {/* Page closer: same night-suburb treatment as the selling guide */}
           <div className="band-glow mt-12 relative rounded-2xl overflow-hidden bg-surface-inverse text-center shadow-2xl">
-            <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
-              <Image
-                src="/images/hero/suburb-night-v2.jpg"
-                alt=""
-                fill
-                sizes="(min-width: 768px) 768px, 100vw"
-                className="object-cover object-bottom opacity-90"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-surface-inverse from-20% via-surface-inverse/70 via-50% to-surface-inverse/10" />
-            </div>
             <div className="relative px-6 sm:px-10 pt-10 pb-24 sm:pb-28">
               <p data-reveal className="font-display text-2xl sm:text-3xl text-white mb-2 tracking-tight">
                 Buy it once. Buy it well.
@@ -354,7 +333,7 @@ export default function BuyingGuidePage() {
               <div data-reveal style={{ "--reveal-delay": "180ms" } as CSSProperties}>
                 <a
                   href="#get-the-guide"
-                  className="press inline-flex items-center justify-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-semibold px-8 py-3.5 text-sm transition-[transform,translate,background-color,box-shadow] duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+                  className="press inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-8 py-3.5 text-sm transition-[transform,translate,background-color,box-shadow] duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
                 >
                   Get the free guide
                 </a>
@@ -379,6 +358,9 @@ export default function BuyingGuidePage() {
       />
 
       <StickyGuideBar />
+      {/* Records the ?from=<page slug> a guide CTA adds to this link in the
+          attribution cookie, so the lead says which page sent it. */}
+      <GuideEntryCapture />
     </>
   );
 }

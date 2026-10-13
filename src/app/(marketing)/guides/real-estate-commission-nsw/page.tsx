@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   SellingCostTable,
   CommissionCalculatorEmbed,
@@ -298,8 +297,6 @@ export default function RealEstateCommissionNswPage() {
         properly licensed is a sensible first step.
       </p>
 
-      <MatchCTA kind="selling-agent" />
-
       <h2 id="other-costs">Commission vs your other selling costs</h2>
       <p>
         Commission is the largest single cost of selling in NSW, but it
@@ -347,8 +344,6 @@ export default function RealEstateCommissionNswPage() {
           conversation.
         </li>
       </ol>
-
-      <MatchCTA kind="selling-agent" />
 
       <Sources items={NSW_COMMISSION_SOURCES} />
     </GuideArticleLayout>

@@ -50,6 +50,16 @@ describe("POST /api/attr", () => {
     expect(res.headers.get("set-cookie")).toBeNull();
   });
 
+  it("records a guide CTA's ?from= for a returning visitor, so a client-side hop into the funnel is attributed", async () => {
+    const first = cookieValue(await POST(req({ href: "https://www.yourpropertyguide.com.au/guides/real-estate-commission-nsw" })))!;
+    const res = await POST(
+      req({ href: "https://www.yourpropertyguide.com.au/selling-guide?suburb=bondi-nsw-2026&from=real-estate-commission-nsw" }, { cookie: `ypg_attr=${first}` }),
+    );
+    const state = parseAttribution(cookieValue(res));
+    expect(state?.first.landing_page).toBe("/guides/real-estate-commission-nsw");
+    expect(state?.entry?.from).toBe("real-estate-commission-nsw");
+  });
+
   it("ignores other hosts, bad JSON and missing href", async () => {
     expect((await POST(req({ href: "https://evil.example.net/?gclid=X" }))).headers.get("set-cookie")).toBeNull();
     expect((await POST(req("not json"))).headers.get("set-cookie")).toBeNull();

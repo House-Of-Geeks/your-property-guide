@@ -160,7 +160,7 @@ export function SchoolSearchBar({ schoolName, currentMode }: Props) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-2 flex-wrap">
 
         {/* School name */}
-        <div className="flex items-center gap-2 flex-1 min-w-0 bg-white border border-gray-300 rounded-full px-4 py-2 hover:border-gray-400 transition-colors cursor-default max-w-sm">
+        <div className="flex items-center gap-2 flex-1 min-w-0 bg-white border border-gray-300 rounded-md px-4 py-2 hover:border-gray-400 transition-colors cursor-default max-w-sm">
           <Search className="w-4 h-4 text-gray-400 shrink-0" />
           <span className="text-sm text-gray-800 truncate font-medium">{schoolName}</span>
         </div>
@@ -242,12 +242,12 @@ export function SchoolSearchBar({ schoolName, currentMode }: Props) {
                 <p className="text-sm font-semibold text-gray-900 mb-3">Bedrooms</p>
                 <div className="flex gap-1.5 flex-wrap">
                   <button type="button" onClick={() => setDraftMinBeds("")}
-                    className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${!draftMinBeds ? "border-primary text-primary bg-primary/5 font-medium" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>
+                    className={`px-3 py-1.5 rounded-md text-sm border transition-colors ${!draftMinBeds ? "border-primary text-primary bg-primary/5 font-medium" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>
                     Any
                   </button>
                   {BEDROOM_OPTIONS.map((b) => (
                     <button key={b.value} type="button" onClick={() => setDraftMinBeds(b.value)}
-                      className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${draftMinBeds === b.value ? "border-primary text-primary bg-primary/5 font-medium" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>
+                      className={`px-3 py-1.5 rounded-md text-sm border transition-colors ${draftMinBeds === b.value ? "border-primary text-primary bg-primary/5 font-medium" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>
                       {b.label}
                     </button>
                   ))}
@@ -259,12 +259,12 @@ export function SchoolSearchBar({ schoolName, currentMode }: Props) {
                 <p className="text-sm font-semibold text-gray-900 mb-3">Bathrooms</p>
                 <div className="flex gap-1.5 flex-wrap">
                   <button type="button" onClick={() => setDraftMinBaths("")}
-                    className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${!draftMinBaths ? "border-primary text-primary bg-primary/5 font-medium" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>
+                    className={`px-3 py-1.5 rounded-md text-sm border transition-colors ${!draftMinBaths ? "border-primary text-primary bg-primary/5 font-medium" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>
                     Any
                   </button>
                   {BEDROOM_OPTIONS.map((b) => (
                     <button key={b.value} type="button" onClick={() => setDraftMinBaths(b.value)}
-                      className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${draftMinBaths === b.value ? "border-primary text-primary bg-primary/5 font-medium" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>
+                      className={`px-3 py-1.5 rounded-md text-sm border transition-colors ${draftMinBaths === b.value ? "border-primary text-primary bg-primary/5 font-medium" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>
                       {b.label}
                     </button>
                   ))}
@@ -276,12 +276,12 @@ export function SchoolSearchBar({ schoolName, currentMode }: Props) {
                 <p className="text-sm font-semibold text-gray-900 mb-3">Parking</p>
                 <div className="flex gap-1.5 flex-wrap">
                   <button type="button" onClick={() => setDraftMinCars("")}
-                    className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${!draftMinCars ? "border-primary text-primary bg-primary/5 font-medium" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>
+                    className={`px-3 py-1.5 rounded-md text-sm border transition-colors ${!draftMinCars ? "border-primary text-primary bg-primary/5 font-medium" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>
                     Any
                   </button>
                   {PARKING_OPTIONS.map((p) => (
                     <button key={p.value} type="button" onClick={() => setDraftMinCars(p.value)}
-                      className={`px-3 py-1.5 rounded-full text-sm border transition-colors ${draftMinCars === p.value ? "border-primary text-primary bg-primary/5 font-medium" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>
+                      className={`px-3 py-1.5 rounded-md text-sm border transition-colors ${draftMinCars === p.value ? "border-primary text-primary bg-primary/5 font-medium" : "border-gray-200 text-gray-600 hover:border-gray-400"}`}>
                       {p.label}
                     </button>
                   ))}
@@ -298,11 +298,11 @@ export function SchoolSearchBar({ schoolName, currentMode }: Props) {
                 </button>
                 <div className="flex gap-2">
                   <button type="button" onClick={() => setFilterOpen(false)}
-                    className="px-4 py-2 text-sm font-medium border border-gray-200 text-gray-700 rounded-full hover:bg-gray-50 transition-colors">
+                    className="px-4 py-2 text-sm font-medium border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50 transition-colors">
                     Cancel
                   </button>
                   <button type="button" onClick={applyFilters}
-                    className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+                    className="px-4 py-2 text-sm font-medium bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
                     Apply
                   </button>
                 </div>
@@ -316,7 +316,7 @@ export function SchoolSearchBar({ schoolName, currentMode }: Props) {
           <button
             type="button"
             onClick={() => { setModeOpen((o) => !o); setPriceOpen(false); setBedsOpen(false); setTypeOpen(false); setFilterOpen(false); }}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-full border text-sm font-medium transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-md border text-sm font-medium transition-colors cursor-pointer ${
               mode !== "buy" ? "border-primary text-primary bg-primary/5" : "border-gray-300 text-gray-700 hover:border-gray-400"
             }`}
           >
@@ -339,7 +339,7 @@ export function SchoolSearchBar({ schoolName, currentMode }: Props) {
           <button
             type="button"
             onClick={() => { setPriceOpen((o) => !o); setModeOpen(false); setBedsOpen(false); setTypeOpen(false); setFilterOpen(false); }}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-full border text-sm font-medium transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-md border text-sm font-medium transition-colors cursor-pointer ${
               (minPrice || maxPrice) ? "border-primary text-primary bg-primary/5" : "border-gray-300 text-gray-700 hover:border-gray-400"
             }`}
           >
@@ -374,7 +374,7 @@ export function SchoolSearchBar({ schoolName, currentMode }: Props) {
           <button
             type="button"
             onClick={() => { setBedsOpen((o) => !o); setModeOpen(false); setPriceOpen(false); setTypeOpen(false); setFilterOpen(false); }}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-full border text-sm font-medium transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-md border text-sm font-medium transition-colors cursor-pointer ${
               minBeds ? "border-primary text-primary bg-primary/5" : "border-gray-300 text-gray-700 hover:border-gray-400"
             }`}
           >
@@ -399,7 +399,7 @@ export function SchoolSearchBar({ schoolName, currentMode }: Props) {
           <button
             type="button"
             onClick={() => { setTypeOpen((o) => !o); setModeOpen(false); setPriceOpen(false); setBedsOpen(false); setFilterOpen(false); }}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-full border text-sm font-medium transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-md border text-sm font-medium transition-colors cursor-pointer ${
               typeActiveCount > 0 ? "border-primary text-primary bg-primary/5" : "border-gray-300 text-gray-700 hover:border-gray-400"
             }`}
           >

@@ -231,25 +231,17 @@ export default function ToolsPage() {
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
           <div className="mb-8">
             <Breadcrumbs items={[{ label: "Tools" }]} />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5 inline-flex items-center gap-2">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5 inline-flex items-center gap-2">
             <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
             {totalTools} free tools
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Every property tool, <span className="italic text-primary">in one place</span>.
+            Every property tool, <span>in one place</span>
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             Calculators, the suburb match quiz, side-by-side comparison, and the
@@ -280,7 +272,7 @@ export default function ToolsPage() {
                       className="shrink-0 opacity-90"
                     />
                     <div>
-                      <p className="text-xs font-sans uppercase tracking-[0.25em] text-cta mb-2">
+                      <p className="text-[13px] font-sans text-cta mb-2">
                         {t.badge}
                       </p>
                       <h2 className="font-display text-2xl text-ink group-hover:text-primary transition-colors leading-tight">
@@ -306,7 +298,7 @@ export default function ToolsPage() {
         {GROUPS.map((g) => (
           <section key={g.id}>
             <div className="mb-6">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+              <p className="text-[13px] font-sans text-ink-subtle mb-2">
                 {g.label}
               </p>
               <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
@@ -330,7 +322,7 @@ export default function ToolsPage() {
                   />
                   <div className="min-w-0 flex-1">
                     {t.badge && (
-                      <p className="text-[10px] font-sans uppercase tracking-[0.2em] text-cta mb-1">
+                      <p className="text-[13px] font-sans text-cta mb-1">
                         {t.badge}
                       </p>
                     )}
@@ -361,11 +353,11 @@ export default function ToolsPage() {
       {/* Methodology link */}
       <section className="bg-surface-warm border-t border-line-warm">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 text-center">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+          <p className="text-[13px] font-sans text-ink-subtle mb-3">
             How it&rsquo;s built
           </p>
           <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-4">
-            Sourced from official Australian data.
+            Sourced from official Australian data
           </h2>
           <p className="font-sans text-base text-ink-muted leading-relaxed mb-6">
             Every tool runs on data from state Valuer-General offices, ABS,

@@ -87,7 +87,7 @@ function formatRateDate(dateStr: string): string {
 function NoteChip({ note }: { note: string }) {
   if (note.includes("Cut") || note.includes("Emergency")) {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-green-100 text-green-700">
         <TrendingDown className="w-3 h-3" />
         {note}
       </span>
@@ -95,14 +95,14 @@ function NoteChip({ note }: { note: string }) {
   }
   if (note === "Hike") {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-red-100 text-red-700">
         <TrendingUp className="w-3 h-3" />
         Hike
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-gray-100 text-gray-600">
       <Minus className="w-3 h-3" />
       Hold
     </span>
@@ -160,7 +160,7 @@ export default function RBACashRatePage() {
           <p className="text-base opacity-90">
             As of {formatRateDate(currentRate.date)}, {currentRate.note}
           </p>
-          <div className="mt-4 inline-flex items-center gap-2 bg-white/20 rounded-full px-4 py-2 text-sm">
+          <div className="mt-4 inline-flex items-center gap-2 bg-white/20 rounded-md px-4 py-2 text-sm">
             <Minus className="w-4 h-4" />
             Held at 4.35% on 16 June 2026 after three consecutive hikes this year
           </div>
@@ -185,7 +185,7 @@ export default function RBACashRatePage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-gray-50 text-gray-600 text-xs font-medium uppercase tracking-wide">
+                <tr className="bg-gray-50 text-gray-600 text-[13px] font-medium">
                   <th className="px-4 py-3 text-left">Date</th>
                   <th className="px-4 py-3 text-right">Cash Rate</th>
                   <th className="px-4 py-3 text-right">Change</th>
@@ -324,7 +324,7 @@ export default function RBACashRatePage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-gray-50 text-gray-600 text-xs font-medium uppercase tracking-wide">
+                <tr className="bg-gray-50 text-gray-600 text-[13px] font-medium">
                   <th className="px-4 py-3 text-left">Meeting Dates</th>
                   <th className="px-4 py-3 text-left">Decision Announced</th>
                 </tr>

@@ -39,7 +39,7 @@ function StatCard({ label, value, sub, source, asOf }: StatCardProps) {
   return (
     <div className="p-5 rounded-xl bg-surface-raised border border-line">
       <div className="flex items-center gap-1">
-        <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle flex-1">{label}</p>
+        <p className="text-[13px] font-sans text-ink-subtle flex-1">{label}</p>
         <SourceTooltip source={source} asOf={asOf} />
       </div>
       <p className="font-display text-2xl text-ink leading-none mt-2">{value}</p>

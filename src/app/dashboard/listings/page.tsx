@@ -73,11 +73,11 @@ export default async function ListingsPage() {
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Type</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Price</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">Date Added</th>
+                <th className="text-left px-4 py-3 text-[13px] font-medium text-gray-500">Address</th>
+                <th className="text-left px-4 py-3 text-[13px] font-medium text-gray-500 hidden sm:table-cell">Type</th>
+                <th className="text-left px-4 py-3 text-[13px] font-medium text-gray-500">Status</th>
+                <th className="text-left px-4 py-3 text-[13px] font-medium text-gray-500 hidden md:table-cell">Price</th>
+                <th className="text-left px-4 py-3 text-[13px] font-medium text-gray-500 hidden lg:table-cell">Date Added</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
@@ -87,7 +87,7 @@ export default async function ListingsPage() {
                   <td className="px-4 py-3 text-gray-900 font-medium max-w-[200px] truncate">{p.addressFull}</td>
                   <td className="px-4 py-3 text-gray-500 capitalize hidden sm:table-cell">{p.propertyType}</td>
                   <td className="px-4 py-3">
-                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium capitalize ${STATUS_BADGE[p.status] ?? "bg-gray-100 text-gray-600"}`}>
+                    <span className={`inline-block px-2 py-0.5 rounded-md text-xs font-medium capitalize ${STATUS_BADGE[p.status] ?? "bg-gray-100 text-gray-600"}`}>
                       {p.status.replace("-", " ")}
                     </span>
                   </td>

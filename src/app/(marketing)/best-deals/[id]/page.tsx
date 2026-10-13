@@ -127,7 +127,7 @@ export default async function BestDealDetailPage({ params }: PageProps) {
               )}
 
               <div className="flex items-center gap-4 mb-8 flex-wrap">
-                <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                <span className="text-sm font-semibold text-ink-muted leading-none">
                   Featured deal
                 </span>
                 <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
@@ -138,10 +138,10 @@ export default async function BestDealDetailPage({ params }: PageProps) {
                 </div>
               </div>
 
-              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 font-medium">
+              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 font-bold">
                 {deal.title}
               </h1>
-              <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-8">
+              <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-8">
                 {deal.headline}
               </p>
 
@@ -195,7 +195,7 @@ export default async function BestDealDetailPage({ params }: PageProps) {
               )}
 
               <div className="rounded-2xl border border-line-warm bg-surface-warm p-5 sm:p-6">
-                <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-ink-subtle mb-2">
+                <p className="text-[13px] font-sans text-ink-subtle mb-2">
                   Partner disclosure
                 </p>
                 <p className="font-sans text-sm text-ink-muted leading-relaxed">
@@ -208,7 +208,7 @@ export default async function BestDealDetailPage({ params }: PageProps) {
             <aside className="lg:col-span-5 lg:order-2">
               <div className="lg:sticky lg:top-24 space-y-5">
                 <div className="rounded-2xl border border-line bg-surface-raised p-6 shadow-card">
-                  <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-ink-subtle mb-3">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-3">
                     Price guide
                   </p>
                   <p className="font-display text-3xl sm:text-4xl text-ink leading-none mb-1">
@@ -247,7 +247,7 @@ export default async function BestDealDetailPage({ params }: PageProps) {
                 </div>
 
                 <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                  <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-ink-subtle mb-3">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-3">
                     Listed for
                   </p>
                   <p className="font-sans text-sm text-ink-muted leading-relaxed">
@@ -264,7 +264,7 @@ export default async function BestDealDetailPage({ params }: PageProps) {
                 </div>
 
                 <div className="rounded-2xl border border-line bg-surface-raised p-5">
-                  <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-ink-subtle mb-3">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-3">
                     Why we feature these
                   </p>
                   <p className="font-sans text-sm text-ink-muted leading-relaxed mb-3">

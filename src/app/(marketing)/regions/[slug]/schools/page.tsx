@@ -116,28 +116,28 @@ export default async function RegionSchoolsPage({ params }: RegionSchoolsPagePro
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-200">
-                    <th className="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide w-10">
+                    <th className="py-3 px-4 text-left text-[13px] font-semibold text-gray-500 w-10">
                       #
                     </th>
-                    <th className="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    <th className="py-3 px-4 text-left text-[13px] font-semibold text-gray-500">
                       School
                     </th>
-                    <th className="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    <th className="py-3 px-4 text-left text-[13px] font-semibold text-gray-500">
                       Suburb
                     </th>
-                    <th className="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    <th className="py-3 px-4 text-left text-[13px] font-semibold text-gray-500">
                       Type
                     </th>
-                    <th className="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    <th className="py-3 px-4 text-left text-[13px] font-semibold text-gray-500">
                       Sector
                     </th>
-                    <th className="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    <th className="py-3 px-4 text-left text-[13px] font-semibold text-gray-500">
                       Years
                     </th>
-                    <th className="py-3 px-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    <th className="py-3 px-4 text-right text-[13px] font-semibold text-gray-500">
                       ICSEA
                     </th>
-                    <th className="py-3 px-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    <th className="py-3 px-4 text-right text-[13px] font-semibold text-gray-500">
                       Enrolment
                     </th>
                   </tr>

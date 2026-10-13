@@ -325,17 +325,17 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                 {(suburbData.walkScore != null || suburbHazard) && (
                   <div className="flex flex-wrap gap-2 mt-4">
                     {suburbData.walkScore != null && (
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-info/10 border border-info/30 px-3 py-1 text-xs font-sans font-medium text-info">
+                      <span className="inline-flex items-center gap-1.5 rounded-md bg-info/10 border border-info/30 px-3 py-1 text-xs font-sans font-medium text-info">
                         Walk score: {suburbData.walkScore}
                       </span>
                     )}
                     {suburbHazard?.floodClass && suburbHazard.floodClass !== "low" && (
-                      <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-sans font-medium ${suburbHazard.floodClass === "high" || suburbHazard.floodClass === "floodway" ? "bg-danger/10 border-danger/30 text-danger" : "bg-warning/10 border-warning/30 text-warning"}`}>
+                      <span className={`inline-flex items-center gap-1.5 rounded-md border px-3 py-1 text-xs font-sans font-medium ${suburbHazard.floodClass === "high" || suburbHazard.floodClass === "floodway" ? "bg-danger/10 border-danger/30 text-danger" : "bg-warning/10 border-warning/30 text-warning"}`}>
                         Flood: {suburbHazard.floodClass}
                       </span>
                     )}
                     {suburbHazard?.bushfireRisk && suburbHazard.bushfireRisk !== "low" && (
-                      <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-sans font-medium ${suburbHazard.bushfireRisk === "high" ? "bg-danger/10 border-danger/30 text-danger" : "bg-warning/10 border-warning/30 text-warning"}`}>
+                      <span className={`inline-flex items-center gap-1.5 rounded-md border px-3 py-1 text-xs font-sans font-medium ${suburbHazard.bushfireRisk === "high" ? "bg-danger/10 border-danger/30 text-danger" : "bg-warning/10 border-warning/30 text-warning"}`}>
                         Bushfire: {suburbHazard.bushfireRisk}
                       </span>
                     )}
@@ -427,7 +427,7 @@ function InsightStat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl bg-surface-raised border border-line p-4 text-center">
       <p className="font-display text-xl text-ink leading-tight">{value}</p>
-      <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mt-2">{label}</p>
+      <p className="text-[13px] font-sans text-ink-subtle mt-2">{label}</p>
     </div>
   );
 }

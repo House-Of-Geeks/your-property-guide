@@ -85,7 +85,7 @@ function SchoolGroup({ schools, label }: { schools: School[]; label?: string }) 
   return (
     <div className="mb-6">
       {label && (
-        <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">{label}</p>
+        <p className="text-[13px] font-sans text-ink-subtle mb-2">{label}</p>
       )}
       <div>
         {shown.map((school) => (
@@ -150,11 +150,11 @@ export function SuburbSchools({ suburbName, schools }: SuburbSchoolsProps) {
       </div>
 
       {ordered.length === 0 ? (
-        <p className="text-sm font-sans text-ink-muted italic">No schools found for this filter.</p>
+        <p className="text-sm font-sans text-ink-muted">No schools found for this filter.</p>
       ) : (
         <div>
           {govCount > 0 && (
-            <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+            <p className="text-[13px] font-sans text-ink-subtle mb-2">
               Government School Catchment
             </p>
           )}
@@ -167,7 +167,7 @@ export function SuburbSchools({ suburbName, schools }: SuburbSchoolsProps) {
           {shown.length > govCount && (
             <>
               {govCount > 0 && (
-                <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mt-5 mb-2">
+                <p className="text-[13px] font-sans text-ink-subtle mt-5 mb-2">
                   Non-Government Schools
                 </p>
               )}

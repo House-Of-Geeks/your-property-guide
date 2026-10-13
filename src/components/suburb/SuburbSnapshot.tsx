@@ -35,7 +35,7 @@ export function SuburbSnapshot({ suburb }: SuburbSnapshotProps) {
       className="bg-surface-warm border-b border-line-warm"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-6">
+        <p className="text-[13px] font-sans text-ink-subtle mb-6">
           {suburb.name} at a glance
         </p>
         <div className={`grid ${colsClass} gap-y-6 lg:gap-y-0`}>
@@ -48,7 +48,7 @@ export function SuburbSnapshot({ suburb }: SuburbSnapshotProps) {
             >
               <div className="flex items-center gap-2 mb-2">
                 <Image src={s.icon} alt="" width={18} height={18} className="w-[18px] h-[18px]" aria-hidden="true" />
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle">
+                <p className="text-[13px] font-sans text-ink-subtle">
                   {s.label}
                 </p>
               </div>

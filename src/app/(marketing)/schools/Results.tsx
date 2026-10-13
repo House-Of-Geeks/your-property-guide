@@ -168,10 +168,10 @@ export async function SchoolsResults({ searchParams }: SchoolsResultsProps) {
                   </p>
 
                   <div className="flex flex-wrap gap-1.5 mt-auto">
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${typeBadgeClass(school.type)}`}>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${typeBadgeClass(school.type)}`}>
                       {typeLabel(school.type)}
                     </span>
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${sectorBadgeClass(school.sector)}`}>
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${sectorBadgeClass(school.sector)}`}>
                       {sectorLabel(school.sector)}
                     </span>
                   </div>

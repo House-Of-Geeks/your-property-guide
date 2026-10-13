@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Suspense } from "react";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
@@ -34,14 +33,6 @@ export default function SuburbsPage({ searchParams }: PageProps) {
       <BreadcrumbJsonLd items={[{ name: "Suburbs", url: "/suburbs" }]} />
 
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
           <div className="mb-8">
             <Breadcrumbs items={[{ label: "Suburbs" }]} />
@@ -49,11 +40,11 @@ export default function SuburbsPage({ searchParams }: PageProps) {
 
           <div className="grid lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-7">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+              <p className="text-[13px] font-sans text-ink-subtle mb-5">
                 Every Australian suburb
               </p>
               <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6">
-                Australian suburbs, <span className="italic text-primary">data and all</span>.
+                Australian suburbs, <span>data and all</span>
               </h1>
               <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-xl">
                 Median prices, growth, schools, walk score, climate, hazard and
@@ -61,19 +52,6 @@ export default function SuburbsPage({ searchParams }: PageProps) {
               </p>
             </div>
 
-            <div className="lg:col-span-5">
-              <div className="rounded-2xl border border-line-warm bg-surface-raised shadow-card overflow-hidden">
-                <Image
-                  src="/images/illustrations/suburb-data.svg"
-                  alt=""
-                  aria-hidden="true"
-                  width={320}
-                  height={220}
-                  className="w-full h-auto"
-                  priority
-                />
-              </div>
-            </div>
           </div>
 
           <div className="mt-12 flex flex-wrap gap-x-10 gap-y-6">
@@ -81,42 +59,42 @@ export default function SuburbsPage({ searchParams }: PageProps) {
               <img src="/images/icons/median.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">Median</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">house &amp; unit prices</p>
+                <p className="font-sans text-[13px] text-ink-subtle">house &amp; unit prices</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <img src="/images/icons/growth.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">12mo</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">growth &amp; trend</p>
+                <p className="font-sans text-[13px] text-ink-subtle">growth &amp; trend</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <img src="/images/icons/schools.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">Schools</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">primary &amp; secondary</p>
+                <p className="font-sans text-[13px] text-ink-subtle">primary &amp; secondary</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <img src="/images/icons/walkability.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">Walk</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">score &amp; transit</p>
+                <p className="font-sans text-[13px] text-ink-subtle">score &amp; transit</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <img src="/images/icons/hazard.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">Risk</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">flood, bushfire, crime</p>
+                <p className="font-sans text-[13px] text-ink-subtle">flood, bushfire, crime</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <img src="/images/icons/climate.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">Climate</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">temp, rain, sun</p>
+                <p className="font-sans text-[13px] text-ink-subtle">temp, rain, sun</p>
               </div>
             </div>
           </div>

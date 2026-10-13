@@ -62,7 +62,6 @@ export const metadata: Metadata = {
 
 const fmt = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
 const checkedOn = new Date(HTB_CHECKED_ON).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
-const MATCH_HREF = "/find-an-expert?intent=buying&from=shared-equity#match";
 const scheme = (name: string) => SHARED_EQUITY_SCHEMES.find((s) => s.name === name) as StateScheme;
 const STATUS_LABEL: Record<StateScheme["status"], string> = { open: "Open", limited: "Open, limited", closed: "Closed" };
 const where = (s: StateScheme) => (s.state === "national" ? "Australia-wide" : STATE_NAMES[s.state].replace(/^the /, ""));
@@ -249,9 +248,7 @@ export default function SharedEquitySchemesPage() {
         read the scheme&rsquo;s terms before you sign.
       </p>
       <MatchCTA
-        lead="Not sure which scheme fits? Tell us where you're buying and we'll introduce one vetted specialist who can compare them on your numbers."
-        ctaLabel="Find your specialist"
-        href={MATCH_HREF}
+        lead="Not sure which scheme fits? The free buying guide compares the 2026 schemes state by state, alongside what you can really borrow."
       />
 
       <Sources items={SOURCES} />

@@ -199,14 +199,6 @@ export default function ResearchPage() {
 
       {/* Editorial hero */}
       <section className="relative bg-surface-warm border-b border-line overflow-hidden">
-        <Image
-          src="/images/illustrations/contour.svg"
-          alt=""
-          width={1200}
-          height={800}
-          aria-hidden="true"
-          className="absolute -right-40 -top-40 w-[1100px] max-w-none opacity-[0.10] pointer-events-none select-none"
-        />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
           <div className="mb-8">
             <Breadcrumbs items={[{ label: "Research" }]} />
@@ -215,31 +207,23 @@ export default function ResearchPage() {
           <div className="grid lg:grid-cols-[1fr_auto] gap-8 items-end">
             <div>
               <div className="flex items-center gap-4 mb-10">
-                <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                <span className="text-sm font-semibold text-ink-muted leading-none">
                   Free tools and data
                 </span>
                 <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-                <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+                <span className="text-[13px] text-ink-subtle font-sans font-medium">
                   Research desk
                 </span>
               </div>
-              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[20ch] font-medium">
+              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[20ch] font-bold">
                 Everything you need to{" "}
-                <span className="italic font-light text-primary">decide with confidence</span>.
+                <span>decide with confidence</span>
               </h1>
-              <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-2xl">
+              <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-2xl">
                 Calculators, suburb profiles, market reports, school catchments
                 and plain-English guides. All free. No login.
               </p>
             </div>
-            <Image
-              src="/images/illustrations/suburb-data.svg"
-              alt=""
-              width={320}
-              height={220}
-              aria-hidden="true"
-              className="hidden lg:block w-[280px] h-auto opacity-90"
-            />
           </div>
         </div>
       </section>
