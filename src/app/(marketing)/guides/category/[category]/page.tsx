@@ -2,14 +2,18 @@ import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { Breadcrumbs } from "@/components/layout";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
-import { BlogGrid } from "@/components/blog/BlogGrid";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { GuideLinkList } from "@/components/guide/GuideLinkList";
+import { GuideStartInline } from "@/components/guide/GuideStartInline";
+import { GuideNextStep } from "@/components/guide/GuideNextStep";
+import { formatGuideDate } from "@/components/guide/people";
+import { guideAudienceForBlogCategory } from "@/lib/guide-funnel";
 import {
   categoryToSlug,
   getBlogPostsByCategory,
   getDistinctBlogCategories,
 } from "@/lib/services/blog-service";
-import { resolveBlogCoverPath } from "@/lib/utils/blog-cover";
 import { staticGuidesForCategoryPage } from "@/lib/guides/registry";
 import { toGuideLinks } from "@/lib/guides/hub-guides";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
@@ -56,6 +60,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+// Page headings by category slug; any other category reads "<Label> articles".
+const H1_BY_SLUG: Record<string, string> = {
+  selling: "Selling guides and articles",
+  "buying-guide": "Buying guides and articles",
+  investment: "Investment guides and articles",
+  news: "Property news",
+  "market-update": "Market updates",
+  "suburb-guide": "Suburb guides",
+};
+
+const SHELL = "mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8";
+
 export default async function BlogCategoryPage({ params }: Props) {
   const { category } = await params;
   const slug = categoryToSlug(category);
@@ -77,19 +93,14 @@ export default async function BlogCategoryPage({ params }: Props) {
 
   if (posts.length === 0) notFound();
 
-  // Pre-resolve cover paths on the server so BlogGrid (client) doesn't need
-  // filesystem access. Missing files become "", BlogGrid renders the
-  // BlogCoverFallback in that case.
-  const resolvedPosts = posts.map((p) => ({
-    ...p,
-    coverImage: resolveBlogCoverPath(p.coverImage) ?? "",
-  }));
-
   // posts is non-empty here, so the stored label is always available.
   const label = posts[0].category;
+  const heading = H1_BY_SLUG[slug] ?? `${label} articles`;
+  const audience = guideAudienceForBlogCategory(label) ?? "selling";
+  const from = `category-${slug}`;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+    <>
       <CollectionPageJsonLd
         name={label + " Articles"}
         url={"/guides/category/" + slug}
@@ -100,42 +111,109 @@ export default async function BlogCategoryPage({ params }: Props) {
           { name: label, url: `/guides/category/${slug}` },
         ]}
       />
-      <Breadcrumbs
-        items={[
-          { label: "Guides", href: "/guides" },
-          { label },
-        ]}
-      />
 
-      {/* Hero */}
-      <div className="rounded-2xl bg-black px-8 py-10 mb-10 mt-4">
-        <span className="inline-block rounded-md bg-white/10 border border-white/20 px-3 py-1 text-xs font-semibold text-white/80 mb-3">
-          {label}
-        </span>
-        <h1 className="text-3xl sm:text-4xl font-bold text-white">{label} Articles</h1>
-        <p className="text-white/70 mt-2 max-w-xl">
-          All articles and guides in the {label} category from the Your Property Guide research blog.
-        </p>
-        <p className="text-white/40 text-sm mt-3">
-          {guideCount > 0 ? `${posts.length} articles and ${guideCount} guides` : `${posts.length} articles`}
-        </p>
-      </div>
-
-      <BlogGrid posts={resolvedPosts} categories={allCategories} />
-
-      {guideSections.length > 0 && (
-        <section className="mt-16 border-t border-line pt-12">
-          <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl mb-3">
-            Step-by-step guides
-          </h2>
-          <p className="font-sans text-base text-ink-muted leading-relaxed max-w-2xl mb-8">
-            {`The guides that sit alongside the ${label} articles above.`}
-          </p>
-          <GuideLinkList
-            groups={guideSections.map(({ section, guides }) => ({ label: section.label, links: toGuideLinks(guides) }))}
+      <div className={SHELL}>
+        <div className="pt-2 sm:pt-4">
+          <Breadcrumbs
+            items={[
+              { label: "Guides", href: "/guides" },
+              { label },
+            ]}
           />
-        </section>
-      )}
-    </div>
+        </div>
+
+        <header className="max-w-3xl pt-4 sm:pt-8 pb-6">
+          <h1 className="font-display font-bold text-ink text-[2rem] leading-[1.08] tracking-[-0.03em] sm:text-5xl">
+            {heading}
+          </h1>
+          <p className="mt-3 text-[1.0625rem] sm:text-lg text-ink-muted leading-relaxed">
+            {guideCount > 0 ? `${posts.length} articles and ${guideCount} guides` : `${posts.length} articles`}, newest
+            first. Every one is dated and names who wrote it.
+          </p>
+        </header>
+
+        {/* The other categories, as links (the old pills filtered this
+            page's own posts, so every other pill showed an empty list). */}
+        <nav aria-label="Article categories" className="border-y border-line py-3">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+            <li>
+              <Link href="/guides" className="font-medium text-ink-muted hover:text-ink">All guides</Link>
+            </li>
+            {allCategories.map((c) => {
+              const cs = categoryToSlug(c);
+              const current = cs === slug;
+              return (
+                <li key={c}>
+                  <Link
+                    href={`/guides/category/${cs}`}
+                    aria-current={current ? "page" : undefined}
+                    className={current ? "font-semibold text-ink underline underline-offset-4" : "font-medium text-ink-muted hover:text-ink"}
+                  >
+                    {c}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        <div className="grid gap-x-16 lg:grid-cols-[minmax(0,1fr)_18rem] pb-16">
+          <div className="min-w-0">
+            <ul>
+              {posts.map((p) => (
+                <li key={p.slug} className="border-b border-line">
+                  <Link href={`/guides/${p.slug}`} className="group flex items-start gap-4 py-5">
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[17px] sm:text-lg font-bold text-ink leading-snug tracking-[-0.01em] group-hover:underline underline-offset-4 decoration-line-strong">
+                        {p.title}
+                      </span>
+                      <span className="mt-1.5 text-[15px] text-ink-muted leading-relaxed line-clamp-2">{p.excerpt}</span>
+                      <span className="mt-2 block text-sm text-ink-muted">
+                        {p.author.name}
+                        <span aria-hidden="true" className="px-1.5 text-line-strong">·</span>
+                        <time dateTime={(p.updatedAt ?? p.publishedAt).slice(0, 10)}>
+                          {p.updatedAt ? "Updated " : ""}
+                          {formatGuideDate(p.updatedAt ?? p.publishedAt)}
+                        </time>
+                        <span aria-hidden="true" className="px-1.5 text-line-strong">·</span>
+                        {p.readingTime} min read
+                      </span>
+                    </span>
+                    <ArrowRight className="w-4 h-4 shrink-0 mt-1.5 text-ink-muted group-hover:text-ink" aria-hidden="true" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            {audience === "selling" ? (
+              <GuideStartInline from={from} className="mt-12" />
+            ) : (
+              <GuideNextStep audience="buying" from={from} />
+            )}
+
+            {guideSections.length > 0 && (
+              <section className="mt-14 border-t border-line pt-10">
+                <h2 className="font-display text-[1.625rem] sm:text-[2rem] font-bold text-ink leading-tight tracking-[-0.02em] mb-2">
+                  Step-by-step guides
+                </h2>
+                <p className="text-[15px] sm:text-base text-ink-muted leading-relaxed max-w-2xl mb-6">
+                  {`The guides that sit alongside the ${label} articles above.`}
+                </p>
+                <GuideLinkList
+                  columns={2}
+                  groups={guideSections.map(({ section, guides }) => ({ label: section.label, links: toGuideLinks(guides) }))}
+                />
+              </section>
+            )}
+          </div>
+
+          <aside className="hidden lg:block pt-6">
+            <div className="sticky top-24">
+              <GuideNextStep audience={audience} from={from} variant="rail" />
+            </div>
+          </aside>
+        </div>
+      </div>
+    </>
   );
 }

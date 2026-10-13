@@ -20,11 +20,11 @@ interface SourcesProps {
 export function Sources({ items, title = "Sources and methodology" }: SourcesProps) {
   if (items.length === 0) return null;
   return (
-    <section className="mt-12 pt-8 border-t border-line">
-      <p className="text-[13px] font-sans text-ink-subtle mb-3">
+    <section id="sources" className="mt-12 pt-8 border-t border-line scroll-mt-28">
+      <h2 className="text-base font-bold text-ink mb-3">
         {title}
-      </p>
-      <ul className="font-sans text-sm text-ink-muted leading-relaxed space-y-1.5 list-disc pl-5">
+      </h2>
+      <ul className="font-sans text-sm text-ink-muted leading-relaxed space-y-2 list-disc pl-5 marker:text-line-strong">
         {items.map((item, i) => {
           if (typeof item === "string") return <li key={i}>{item}</li>;
           const isExternal = item.href ? /^https?:\/\//.test(item.href) : false;

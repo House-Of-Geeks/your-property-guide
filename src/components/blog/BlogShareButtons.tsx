@@ -23,13 +23,13 @@ export function BlogShareButtons({ title, url }: Props) {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-xs text-gray-400 mr-1">Share:</span>
+      <span className="text-sm text-ink-muted mr-1">Share</span>
 
       <a
         href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="rounded-full bg-gray-100 hover:bg-blue-100 text-gray-500 hover:text-blue-700 p-2 transition-colors"
+        className="rounded-md border border-line text-ink-muted hover:text-ink hover:border-ink p-2 cursor-pointer"
         aria-label="Share on Facebook"
       >
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -41,7 +41,7 @@ export function BlogShareButtons({ title, url }: Props) {
         href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="rounded-full bg-gray-100 hover:bg-sky-100 text-gray-500 hover:text-sky-600 p-2 transition-colors"
+        className="rounded-md border border-line text-ink-muted hover:text-ink hover:border-ink p-2 cursor-pointer"
         aria-label="Share on X (Twitter)"
       >
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -53,7 +53,7 @@ export function BlogShareButtons({ title, url }: Props) {
         href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="rounded-full bg-gray-100 hover:bg-blue-100 text-gray-500 hover:text-blue-800 p-2 transition-colors"
+        className="rounded-md border border-line text-ink-muted hover:text-ink hover:border-ink p-2 cursor-pointer"
         aria-label="Share on LinkedIn"
       >
         <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -63,7 +63,7 @@ export function BlogShareButtons({ title, url }: Props) {
 
       <button
         onClick={copyLink}
-        className="rounded-full bg-gray-100 hover:bg-green-100 text-gray-500 hover:text-green-700 p-2 transition-colors"
+        className="rounded-md border border-line text-ink-muted hover:text-ink hover:border-ink p-2 cursor-pointer"
         aria-label="Copy link"
       >
         {copied ? <Check className="w-4 h-4" /> : <Link2 className="w-4 h-4" />}
