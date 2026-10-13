@@ -61,8 +61,6 @@ export const metadata: Metadata = {
 
 const fmt = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
 const checkedOn = new Date(FHSS_CHECKED_ON).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
-const MATCH_HREF = "/find-an-expert?intent=buying&from=super-to-buy-guide#match";
-
 // From the FHSS calculator's engine (src/lib/fhss-calc.ts): three years of
 // salary sacrifice on the calculator's example salary, at three amounts.
 const EX = defaultFhssInput();
@@ -265,9 +263,7 @@ export default function UseSuperToBuyAHousePage() {
       </p>
 
       <MatchCTA
-        lead="Putting a deposit together from super, savings and the schemes? Tell us where you're buying and we'll introduce one vetted specialist. Free, no commitment."
-        ctaLabel="Find your specialist"
-        href={MATCH_HREF}
+        lead="Putting a deposit together from super, savings and the schemes? The free buying guide covers deposits, the schemes you can stack and a 12-week plan to settlement."
       />
 
       <p className="text-sm text-ink-muted">Rules checked {checkedOn}.</p>

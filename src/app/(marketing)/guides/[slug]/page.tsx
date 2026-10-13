@@ -8,12 +8,13 @@ import { Badge } from "@/components/ui";
 import { BlogTableOfContents } from "@/components/blog/BlogTableOfContents";
 import { BlogShareButtons } from "@/components/blog/BlogShareButtons";
 import { BlogGuideRail } from "@/components/blog/BlogGuideRail";
-import { ExpertCTA } from "@/components/journey";
+import { BUYING_GUIDE_CTA, ExpertCTA } from "@/components/journey";
 import { AuthorAvatar } from "@/components/blog/AuthorAvatar";
-import { AuthorBylineCard } from "@/components/guide";
+import { AuthorBylineCard, GuideStartInline } from "@/components/guide";
 import { BlogCover } from "@/components/blog/BlogCover";
 import { getBlogPostBySlug, getRelatedPosts } from "@/lib/services/blog-service";
-import { processContent } from "@/lib/utils/blog-toc";
+import { processContent, splitHtmlAfterFirstSection } from "@/lib/utils/blog-toc";
+import { guideAudienceForBlogCategory, guideFunnelHref } from "@/lib/guide-funnel";
 import { resolveBlogCoverPath } from "@/lib/utils/blog-cover";
 import { blogTitle, absoluteUrl } from "@/lib/utils/seo";
 import { formatDate } from "@/lib/utils/format";
@@ -73,6 +74,14 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const relatedPosts = await getRelatedPosts(slug, 3);
   const { html: processedContent, toc } = processContent(post.content);
   const postUrl = `${SITE_URL}/guides/${slug}`;
+
+  // CTAs follow the post's blog category: selling posts start the selling
+  // guide in place (after the first section and again at the end), buying
+  // posts push the buying guide, and everything else (news, market updates)
+  // keeps the selling-guide default.
+  const audience = guideAudienceForBlogCategory(post.category);
+  const sellingPost = audience === "selling";
+  const sections = sellingPost ? splitHtmlAfterFirstSection(processedContent) : null;
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
@@ -163,14 +172,35 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           </div>
 
           {/* Content */}
-          <div
-            className="mt-8 prose-ypg"
-            dangerouslySetInnerHTML={{ __html: processedContent }}
-          />
+          {sections ? (
+            <>
+              <div
+                className="mt-8 prose-ypg"
+                dangerouslySetInnerHTML={{ __html: sections[0] }}
+              />
+              <GuideStartInline from={post.slug} />
+              <div
+                className="prose-ypg"
+                dangerouslySetInnerHTML={{ __html: sections[1] }}
+              />
+            </>
+          ) : (
+            <div
+              className="mt-8 prose-ypg"
+              dangerouslySetInnerHTML={{ __html: processedContent }}
+            />
+          )}
 
-          {/* Guide funnel exit. Every news/blog post points at the
-              site's single conversion point. */}
-          <ExpertCTA variant="inline" />
+          {/* Guide funnel exit, routed by the post's category. */}
+          {sellingPost ? (
+            <GuideStartInline from={post.slug} />
+          ) : (
+            <ExpertCTA
+              variant="inline"
+              {...(audience === "buying" ? BUYING_GUIDE_CTA : {})}
+              href={guideFunnelHref(audience ?? "selling", { from: post.slug })}
+            />
+          )}
 
           {/* "Read next" rail of relevant guides, internal-link booster */}
           <BlogGuideRail blogSlug={post.slug} />

@@ -223,6 +223,7 @@ export interface StampDutyGuide {
   faqs: FaqItem[];
   sources: SourceItem[];
   related: RelatedGuide[];
+  /** In-body CTA. The guides are first-home persona pages, so MatchCTA routes it to the buying guide. */
   cta: { kind: MatchCTAKind; lead?: string; ctaLabel?: string; href?: string };
 }
 
@@ -369,7 +370,10 @@ function buildNSW(): StampDutyGuide {
       { title: "How Much Deposit Do You Need?", href: "/guides/how-much-deposit-to-buy-a-house", description: "Deposit, LMI and the schemes that waive it." },
       { title: "Conveyancing in Australia", href: "/guides/conveyancing-guide", description: "What conveyancers do and what they cost." },
     ],
-    cta: { kind: "buyers-agent" },
+    cta: {
+      kind: "buyers-agent",
+      lead: "Buying in New South Wales? The free buying guide covers the true upfront costs, duty included, the 2026 schemes state by state, and a step-by-step plan for the purchase.",
+    },
   };
 }
 
@@ -453,7 +457,10 @@ function buildVIC(): StampDutyGuide {
       { title: "How Much Deposit Do You Need?", href: "/guides/how-much-deposit-to-buy-a-house", description: "Deposit, LMI and the schemes that waive it." },
       { title: "Conveyancing in Australia", href: "/guides/conveyancing-guide", description: "What conveyancers do and what they cost." },
     ],
-    cta: { kind: "buyers-agent" },
+    cta: {
+      kind: "buyers-agent",
+      lead: "Buying in Victoria? The free buying guide covers the true upfront costs, duty included, the 2026 schemes state by state, and a step-by-step plan for the purchase.",
+    },
   };
 }
 
@@ -560,7 +567,10 @@ function buildQLD(): StampDutyGuide {
       { title: "How Much Deposit Do You Need?", href: "/guides/how-much-deposit-to-buy-a-house", description: "Deposit, LMI and the schemes that waive it." },
       { title: "Conveyancing in Australia", href: "/guides/conveyancing-guide", description: "What conveyancers do and what they cost." },
     ],
-    cta: { kind: "buyers-agent" },
+    cta: {
+      kind: "buyers-agent",
+      lead: "Buying in Queensland? The free buying guide covers the true upfront costs, duty included, the 2026 schemes state by state, and a step-by-step plan for the purchase.",
+    },
   };
 }
 
@@ -657,8 +667,6 @@ function buildWA(): StampDutyGuide {
     cta: {
       kind: "buyers-agent",
       lead: "Buying your first home in WA? The free buying guide walks through deposit, duty, the schemes and a step-by-step plan for the purchase.",
-      ctaLabel: "Get the free buying guide",
-      href: "/buying-guide",
     },
   };
 }
@@ -743,8 +751,6 @@ function buildSA(): StampDutyGuide {
     cta: {
       kind: "conveyancer",
       lead: "Buying in SA and want the costs and the process in one place? The free buying guide covers stamp duty, deposit, conveyancing and a clear step-by-step plan.",
-      ctaLabel: "Get the free buying guide",
-      href: "/buying-guide",
     },
   };
 }
@@ -829,7 +835,10 @@ function buildTAS(): StampDutyGuide {
       { title: "How Much Deposit Do You Need?", href: "/guides/how-much-deposit-to-buy-a-house", description: "Deposit, LMI and the schemes that waive it." },
       { title: "Conveyancing in Australia", href: "/guides/conveyancing-guide", description: "What conveyancers do and what they cost." },
     ],
-    cta: { kind: "buyers-agent" },
+    cta: {
+      kind: "buyers-agent",
+      lead: "Buying in Tasmania? The free buying guide covers the true upfront costs, duty included, the 2026 schemes state by state, and a step-by-step plan for the purchase.",
+    },
   };
 }
 
@@ -922,9 +931,7 @@ function buildACT(): StampDutyGuide {
     ],
     cta: {
       kind: "conveyancer",
-      href: "/selling-guide",
-      lead: "Buying in Canberra and selling elsewhere first? The free guide covers the sell side: your real costs, settlement timing, and buying and selling at the same time.",
-      ctaLabel: "Get the free guide",
+      lead: "Buying in Canberra? The free buying guide covers the true upfront costs, duty included, the 2026 schemes, and a step-by-step plan from deposit to settlement.",
     },
   };
 }
@@ -1008,9 +1015,7 @@ function buildNT(): StampDutyGuide {
     ],
     cta: {
       kind: "buyers-agent",
-      href: "/selling-guide",
-      lead: "Buying your first place in the Territory and a sale is part of the move? The free selling guide covers costs, timing and selling and buying at once.",
-      ctaLabel: "Get the free guide",
+      lead: "Buying your first place in the Territory? The free buying guide covers deposit, duty, the schemes and a step-by-step plan for the purchase.",
     },
   };
 }

@@ -10,7 +10,11 @@ import { Tldr } from "./Tldr";
 import { Faq, type FaqItem } from "./Faq";
 import { RelatedGuides, type RelatedGuide } from "./RelatedGuides";
 import { AuthorBylineCard } from "./AuthorBylineCard";
+import { GuideAudienceProvider } from "./GuideAudienceContext";
+import { GuideStartInline } from "./GuideStartInline";
+import { splitAfterFirstSection } from "./split-first-section";
 import { PERSONA_BY_ID, type PersonaId } from "@/lib/constants/journey";
+import { guideAudienceForPersona, guideFunnelHref } from "@/lib/guide-funnel";
 
 export interface GuideFrontmatter {
   title: string;          // SERP title (metadata); also the H1 unless h1 is set
@@ -64,8 +68,19 @@ export function GuideArticleLayout({
   // Buyer-persona guides must not pitch the selling guide — a first-home
   // buyer reading "how much deposit do I need" has nothing to sell. Route
   // them to the buying-guide funnel; every other persona keeps the
-  // selling-guide default (the site's primary conversion point).
-  const buyerFunnel = stickyIntent === "buying" ? BUYING_GUIDE_CTA : undefined;
+  // selling-guide default (the site's primary conversion point). In-body
+  // MatchCTAs read the same audience from GuideAudienceProvider below.
+  const audience = guideAudienceForPersona(frontmatter.persona);
+  const from = frontmatter.slug;
+  const funnelHref = guideFunnelHref(audience ?? "selling", { from });
+  const buyerFunnel = audience === "buying" ? BUYING_GUIDE_CTA : undefined;
+
+  // Seller guides (the commission and fees guides are where the site's
+  // sellers come from) start the selling-guide funnel in place: once after
+  // the first section and once at the end, instead of outline buttons to
+  // the landing page.
+  const sellerGuide = audience === "selling";
+  const body = sellerGuide ? splitAfterFirstSection(children) : null;
 
   const guideUrl = `/guides/${frontmatter.slug}`;
   const heading = frontmatter.h1 ?? frontmatter.title;
@@ -247,19 +262,33 @@ export function GuideArticleLayout({
                 <GuideTOC entries={toc} />
               </div>
 
-              <div className="prose-ypg">
-                {children}
-              </div>
+              <GuideAudienceProvider audience={audience} from={from}>
+                {body ? (
+                  <>
+                    {body.head.length > 0 && <div className="prose-ypg">{body.head}</div>}
+                    <GuideStartInline from={from} />
+                    <div className="prose-ypg">{body.tail}</div>
+                  </>
+                ) : (
+                  <div className="prose-ypg">
+                    {children}
+                  </div>
+                )}
+              </GuideAudienceProvider>
 
               {/* undefined props fall through to ExpertCTA's selling
                   defaults, so only buyer personas are overridden. */}
-              {persona && (
-                <ExpertCTA
-                  variant="inline"
-                  body={buyerFunnel?.body}
-                  ctaLabel={buyerFunnel?.ctaLabel}
-                  href={buyerFunnel?.href}
-                />
+              {sellerGuide ? (
+                <GuideStartInline from={from} />
+              ) : (
+                persona && (
+                  <ExpertCTA
+                    variant="inline"
+                    body={buyerFunnel?.body}
+                    ctaLabel={buyerFunnel?.ctaLabel}
+                    href={funnelHref}
+                  />
+                )
               )}
 
               <Faq items={faqs} />
@@ -288,7 +317,7 @@ export function GuideArticleLayout({
       {persona && stickyIntent && (
         <StickyMatchCTA
           intent={stickyIntent}
-          href={buyerFunnel?.href}
+          href={funnelHref}
           label={buyerFunnel?.ctaLabel}
           dismissKey={`guide:${frontmatter.slug}`}
         />

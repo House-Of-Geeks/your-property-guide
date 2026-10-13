@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   EditorNote,
   PullQuote,
@@ -354,8 +353,6 @@ export default function HowToPrepareForAPropertyAppraisalPage() {
         covers the full interview and what to negotiate in the agency
         agreement before you sign anything.
       </p>
-
-      <MatchCTA kind="selling-agent" />
 
       <h2 id="inflated-appraisals">The inflated-appraisal trap (&ldquo;buying the listing&rdquo;)</h2>
       <p>

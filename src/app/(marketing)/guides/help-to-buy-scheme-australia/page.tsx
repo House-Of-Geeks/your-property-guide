@@ -74,9 +74,6 @@ export const metadata: Metadata = {
 
 const fmt = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
 const checkedOn = new Date(HTB_CHECKED_ON).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
-/** Leads from this guide go to the buyer match, tagged with where they started. */
-const MATCH_HREF = "/find-an-expert?intent=buying&from=help-to-buy#match";
-
 // The worked example is the calculator's opening state, computed by the same
 // engine (src/lib/help-to-buy-calc.ts, pinned by tests/lib/help-to-buy-calc.test.ts).
 const EX = defaultHtbInput();
@@ -576,9 +573,7 @@ export default function HelpToBuySchemeAustraliaPage() {
         worked example above shows the gap in repayments on the same home.
       </p>
       <MatchCTA
-        lead="Weighing Help to Buy against the 5% Deposit Scheme? We can introduce one vetted specialist who can model both against the loan you can actually service."
-        ctaLabel="Find your specialist"
-        href={MATCH_HREF}
+        lead="Weighing Help to Buy against the 5% Deposit Scheme? The free buying guide sets the 2026 schemes side by side, state by state, next to what you can really borrow."
       />
 
       <h2 id="downsides">The downsides</h2>
@@ -629,14 +624,12 @@ export default function HelpToBuySchemeAustraliaPage() {
         </li>
         <li>
           <strong>Talk to a participating lender or someone who works with them.</strong>{" "}
-          <Link href={MATCH_HREF}>Tell us your situation</Link> and we&rsquo;ll introduce one
-          vetted specialist.
+          Ask your bank whether it is one, or use a broker who works with
+          the participating lenders.
         </li>
       </ol>
       <MatchCTA
-        lead="Ready to see whether Help to Buy works for you? Tell us where you're buying and we'll introduce one vetted specialist. Free, no commitment."
-        ctaLabel="Find your specialist"
-        href={MATCH_HREF}
+        lead="Ready to see whether Help to Buy works for you? The free buying guide covers the schemes, your borrowing power and the order to do things in."
       />
 
       <Sources items={HELP_TO_BUY_SOURCES} />

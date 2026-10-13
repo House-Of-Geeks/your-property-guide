@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   EditorNote,
   PullQuote,
@@ -221,8 +220,6 @@ export default function CostOfSellingAHouseAustraliaPage() {
         included.
       </p>
 
-      <MatchCTA kind="selling-agent" />
-
       <h2 id="marketing">Marketing and professional photography</h2>
       <p>
         Marketing is usually billed separately from commission and is paid by
@@ -411,8 +408,6 @@ export default function CostOfSellingAHouseAustraliaPage() {
           walks through pricing, presentation and settlement end to end.
         </li>
       </ol>
-
-      <MatchCTA kind="selling-agent" />
 
       <Sources items={SELLING_COST_SOURCES} />
     </GuideArticleLayout>

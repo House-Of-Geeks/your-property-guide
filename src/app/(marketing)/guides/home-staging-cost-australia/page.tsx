@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   EditorNote,
   PullQuote,
@@ -343,8 +342,6 @@ export default function HomeStagingCostAustraliaPage() {
         and the rest of the campaign budget.
       </p>
 
-      <MatchCTA kind="builder" lead="Weighing up what to spend before you list? Chapter 4 of the free selling guide covers which presentation spend pays for itself and which never does." />
-
       <h2 id="diy">DIY staging on a budget</h2>
       <p>
         If a full package isn&rsquo;t justified, most of staging&rsquo;s value
@@ -446,8 +443,6 @@ export default function HomeStagingCostAustraliaPage() {
           always with the hire terms in writing.
         </li>
       </ol>
-
-      <MatchCTA kind="selling-agent" />
 
       <Sources items={STAGING_COST_SOURCES} />
     </GuideArticleLayout>

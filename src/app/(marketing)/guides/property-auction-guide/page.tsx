@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   GuideGlossaryRail,
   MiniStampDutyEmbed,
   type GuideFrontmatter,
@@ -410,8 +409,6 @@ export default function PropertyAuctionGuidePage() {
         label="Deposit you'll pay on the spot if you win at auction. By cheque, bank transfer, or sometimes deposit bond. The vendor's contract specifies which is acceptable."
         context="Sometimes negotiable down to 5%, but not after the hammer falls"
       />
-
-      <MatchCTA kind="buyers-agent" />
 
       <h2 id="vendor-bid">Vendor bids explained</h2>
       <p>

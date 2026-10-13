@@ -410,8 +410,6 @@ export default function HowMuchIsMyHouseWorthAustraliaPage() {
         </li>
       </ol>
 
-      <MatchCTA kind="selling-agent" />
-
       <Sources items={HOUSE_VALUE_SOURCES} />
     </GuideArticleLayout>
   );

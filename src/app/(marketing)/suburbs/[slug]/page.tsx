@@ -885,10 +885,12 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
       {/* Floating guide pill, slides up once the user scrolls past 30%
           of the page. Pre-fills the suburb on click. Dismissible per
-          session. Sits above the mobile bottom nav. */}
+          session. Sits above the mobile bottom nav. It opens the selling
+          guide, so it says so (same label as the suburb sub-pages); buyers
+          have the link under the bottom CTA. */}
       <StickyMatchCTA
         suburb={slug}
-        label={`Buying or selling in ${suburb.name}? Free guide`}
+        label={`Selling in ${suburb.name}? Free guide`}
         dismissKey={`suburb:${slug}`}
       />
     </>

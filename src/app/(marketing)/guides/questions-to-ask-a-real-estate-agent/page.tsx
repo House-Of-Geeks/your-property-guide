@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   EditorNote,
   PullQuote,
@@ -367,8 +366,6 @@ export default function QuestionsToAskARealEstateAgentPage() {
         <strong>Good answer:</strong> a complete written fee schedule.{" "}
         <strong>Evasive:</strong> "just the usual costs".
       </p>
-
-      <MatchCTA kind="selling-agent" />
 
       <h2 id="agreement">The agency agreement</h2>
       <p>

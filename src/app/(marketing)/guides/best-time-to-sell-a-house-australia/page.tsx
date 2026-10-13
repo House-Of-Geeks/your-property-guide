@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   EditorNote,
   PullQuote,
@@ -330,8 +329,6 @@ export default function BestTimeToSellAHouseAustraliaPage() {
         Pick a sensible window, then spend your effort getting ready. That is the
         order that actually lifts the result.
       </p>
-
-      <MatchCTA kind="selling-agent" />
 
       <Sources items={BEST_TIME_TO_SELL_SOURCES} />
     </GuideArticleLayout>

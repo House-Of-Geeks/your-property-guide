@@ -4,7 +4,6 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
-  MatchCTA,
   Sources,
   SellingCostTable,
   CommissionCalculatorEmbed,
@@ -318,8 +317,6 @@ export default function RealEstateCommissionQldPage() {
         sets out the ranges state by state and what is and is not included.
       </p>
 
-      <MatchCTA kind="selling-agent" />
-
       <SellingCostTable state="QLD" />
 
       <h2 id="next-steps">Getting an appraisal and the right agent</h2>
@@ -348,8 +345,6 @@ export default function RealEstateCommissionQldPage() {
         the whole process together, including the fee benchmarks and the questions
         that catch over-priced agents out, personalised to your suburb.
       </p>
-
-      <MatchCTA kind="selling-agent" />
 
       <Sources items={QLD_COMMISSION_SOURCES} />
     </GuideArticleLayout>

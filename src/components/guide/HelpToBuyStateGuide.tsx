@@ -113,7 +113,6 @@ export function htbStateRelated(state: AustralianState): RelatedGuide[] {
 
 export function HelpToBuyStateGuide({ state, frontmatter }: { state: AustralianState; frontmatter: GuideFrontmatter }) {
   const { page, caps, ex, duty, stateScheme } = htbStateFigures(state);
-  const matchHref = `/find-an-expert?intent=buying&from=help-to-buy-${page.slugSuffix}#match`;
   const sources: SourceItem[] = [
     { label: HTB_SOURCES.priceCaps.label, href: HTB_SOURCES.priceCaps.href, note: `read ${checkedOn}` },
     { label: HTB_SOURCES.thresholds.label, href: HTB_SOURCES.thresholds.href },
@@ -236,9 +235,7 @@ export function HelpToBuyStateGuide({ state, frontmatter }: { state: AustralianS
         </p>
       </Callout>
       <MatchCTA
-        lead={`Buying in ${page.name} with Help to Buy? Tell us where and we'll introduce one vetted specialist who can check the numbers with you. Free, no commitment.`}
-        ctaLabel="Find your specialist"
-        href={matchHref}
+        lead={`Buying in ${page.name} with Help to Buy? The free buying guide covers the 2026 schemes state by state and what you can really borrow.`}
       />
 
       <Sources items={sources} />
